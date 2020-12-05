@@ -181,7 +181,7 @@ $(document).ready(function(){
 			url:baseurl+"CateringManagement/ReceiptBatch/Checkpph",
 			success:function(result)
 			{
-				calculation(result);
+				calculationBatch(result);
 			},
 			error: function() {
 				alert('error');
@@ -207,6 +207,9 @@ $(document).ready(function(){
 	$("#tbodyFineCateringBatch input").click(checkncalcBatch);
 	$("#tbodyFineCateringBatch select").change(checkncalcBatch);
 	$("#bonusBatch, #slcLocationBatch, orderqtyBatch").change(checkncalcBatch);
+	$("#txtDeptQtyBatch1, #txtDeptQtyBatch2, #txtDeptQtyBatch3, #txtDeptQtyBatch4").keyup(checkncalcBatch);
+    $("#txtDeptQtyBatch1, #txtDeptQtyBatch2, #txtDeptQtyBatch3, #txtDeptQtyBatch4").click(checkncalcBatch);
+
 
 	$('#txtDeptQtyBatch1, #txtDeptQtyBatch2, #txtDeptQtyBatch3, #txtDeptQtyBatch4').on('change',function(){
 		var qty1 = $('#txtDeptQtyBatch1').val();
@@ -234,7 +237,7 @@ $(document).ready(function(){
 		}
 	});
 
-	function calculation(pphstatus){
+	function calculation(pphvalue){
 		var $qty = $('#orderqty').val();
 		var $price = $('#singleprice').val();
 		var $ordertype = $('#ordertype').val();
@@ -251,11 +254,7 @@ $(document).ready(function(){
 		var $fine = $('#fine').val();
 		var $est = $calc - $fine;
 
-		if (pphstatus==1){
-			var $pph = Math.ceil((2 / 100) * $est);
-		} else {
-			var $pph = Math.ceil((0 / 100) * $est);
-		}
+		$pph = Math.ceil((pphvalue / 100) * $est);
 
 		var $total = $est - $pph;
 
@@ -263,10 +262,12 @@ $(document).ready(function(){
 		$("#ordernet").val($net);
 		$("#calc").val($calc);
 		$("#pph").val($pph);
+		$("#viewpphvalue").text("PPH (" + pphvalue + "%)");
 		$("#total").val($total);
 	};
 
-	function calculationBatch(pphstatus){
+	function calculationBatch(pphvalue){
+		console.log(pphvalue)
 		var $qty = $('#orderqtyBatch').val();
 		var $price = $('#singlepriceBatch').val();
 		var $ordertype = $('#ordertypeBatch').val();
@@ -283,11 +284,7 @@ $(document).ready(function(){
 		var $fine = $('#fineBatch').val();
 		var $est = $calc - $fine;
 
-		if (pphstatus==1){
-			var $pph = Math.ceil((2 / 100) * $est);
-		} else {
-			var $pph = Math.ceil((0 / 100) * $est);
-		}
+		$pph = Math.ceil((pphvalue / 100) * $est);
 
 		var $total = $est - $pph;
 
@@ -295,6 +292,7 @@ $(document).ready(function(){
 		$("#ordernetBatch").val($net);
 		$("#calcBatch").val($calc);
 		$("#pphBatch").val($pph);
+		$("#viewpphvalueBatch").text("PPH (" + pphvalue + "%)");
 		$("#totalBatch").val($total);
 	};
 
@@ -635,7 +633,7 @@ $(document).ready(function(){
 		};
 
 		//FUNCTION 3 : FINAL CALCULATION (COPY)
-		function calculationalias(pphstatus){
+		function calculationalias(pphvalue){
 
 			var $qty = $('#orderqty').val();
 			var $price = $('#singleprice').val();
@@ -651,11 +649,8 @@ $(document).ready(function(){
 			var $calc = (($qty-$bonus_qty) * $price);
 			var $fine = $('#fine').val();
 			var $est = $calc - $fine;
-			if (pphstatus==1){
-				var $pph = Math.ceil((2 / 100) * $est);
-			} else {
-				var $pph = Math.ceil((0 / 100) * $est);
-			}
+			
+			$pph = Math.ceil((pphvalue / 100) * $est);
 
 			var $total = $est - $pph;
 
@@ -797,7 +792,7 @@ $(document).ready(function(){
 		};
 
 		//FUNCTION 3 : FINAL CALCULATION (COPY)
-		function calculationalias(pphstatus){
+		function calculationalias(pphvalue){
 
 			var $qty = $('#orderqtyBatch').val();
 			var $price = $('#singlepriceBatch').val();
@@ -813,12 +808,9 @@ $(document).ready(function(){
 			var $calc = (($qty-$bonus_qty) * $price);
 			var $fine = $('#fineBatch').val();
 			var $est = $calc - $fine;
-			if (pphstatus==1){
-				var $pph = Math.ceil((2 / 100) * $est);
-			} else {
-				var $pph = Math.ceil((0 / 100) * $est);
-			}
-
+			
+			$pph = Math.ceil((pphvalue / 100) * $est);
+			
 			var $total = $est - $pph;
 
 			$("#calcBatch").val($calc);
@@ -7086,3 +7078,7 @@ $(document).ready(function(){
 	})
 })
 // end edit tempat makan
+
+$(document).ready(function () {
+  $("#dataTables-listCatering").DataTable();
+});

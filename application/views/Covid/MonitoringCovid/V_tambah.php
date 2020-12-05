@@ -1,3 +1,8 @@
+<style>
+	.cvd_bg_trans{
+		background-color: transparent;
+	}
+</style>
 <section class="content">
 	<div class="inner">
 		<div class="row">
@@ -92,7 +97,10 @@
 														if (isset($lampiran) && !empty($lampiran)) {
 															foreach ($lampiran as $key_lamp => $val_lamp) {
 																?>
-																<a target="_blank" href="<?php echo base_url($val_lamp['lampiran_path']) ?>"  class="label label-info" style="margin: 5px;"><?php echo $val_lamp['lampiran_nama'] ?></a>
+																<div class="btn-group">
+																<a type="button" target="_blank" href="<?php echo base_url($val_lamp['lampiran_path']) ?>"  class="btn btn-info btn-xs cvd_popoverAttc"><?php echo $val_lamp['lampiran_nama'] ?></a>
+																<button value="<?= $val_lamp['lampiran_id'] ?>" text="<?= $val_lamp['lampiran_nama'] ?>" type="button" class="btn btn-danger btn-xs cvd_btndelAttc"><i class="fa fa-trash"></i></button>
+																</div>
 																<?php 
 															}
 														}

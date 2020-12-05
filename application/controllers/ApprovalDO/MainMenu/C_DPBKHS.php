@@ -11,7 +11,7 @@ class C_DPBKHS extends CI_Controller {
         $this->load->model('ApprovalDO/M_dpb');
         $this->load->model('SystemAdministration/MainMenu/M_user');
     }
-    
+
     private function checkSession()
     {
         if ( ! $this->session->is_logged ) {
@@ -30,23 +30,23 @@ class C_DPBKHS extends CI_Controller {
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $resp_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $resp_id);
         $data['DPBKHSList']     = $this->M_dpb->getDPBKHSList();
-        $data['UserAccess']     = [   
+        $data['UserAccess']     = [
             'add_data'  => 'disabled',
             'delete'    => 'disabled'
         ];
 
-        if ( $this->session->user === 'B0445' ) {
-            $data['UserAccess'] = [   
+        if ( $this->session->user === 'B0445' || $this->session->user === 'A2146') {
+            $data['UserAccess'] = [
                 'add_data' => '',
                 'delete'   => ''
             ];
         } else if ( $this->session->user === 'F2326' ) {
-            $data['UserAccess'] = [   
+            $data['UserAccess'] = [
                 'add_data' => '',
                 'delete'   => ''
             ];
         } else if ( $this->session->user === 'J1396' ) {
-            $data['UserAccess'] = [ 
+            $data['UserAccess'] = [
                 'add_data' => '',
                 'delete'   => ''
             ];
@@ -69,23 +69,23 @@ class C_DPBKHS extends CI_Controller {
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $resp_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $resp_id);
         $data['DPBKHSList']     = $this->M_dpb->getListDPBKHS();
-        $data['UserAccess']     = [   
+        $data['UserAccess']     = [
             'add_data'  => 'disabled',
             'delete'    => 'disabled'
         ];
 
         if ( $this->session->user === 'B0445' ) {
-            $data['UserAccess'] = [   
+            $data['UserAccess'] = [
                 'add_data' => '',
                 'delete'   => ''
             ];
         } else if ( $this->session->user === 'F2326' ) {
-            $data['UserAccess'] = [   
+            $data['UserAccess'] = [
                 'add_data' => '',
                 'delete'   => ''
             ];
         } else if ( $this->session->user === 'J1396' ) {
-            $data['UserAccess'] = [ 
+            $data['UserAccess'] = [
                 'add_data' => '',
                 'delete'   => ''
             ];
@@ -112,7 +112,7 @@ class C_DPBKHS extends CI_Controller {
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $resp_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $resp_id);
         $data['DPBKHSDetail']   = $this->M_dpb->getDPBKHSDetail($data['NO_PR']);
-        $data['UserAccess']     = [   
+        $data['UserAccess']     = [
             'add_row'    => 'disabled',
             'edit_field' => 'readonly',
             'delete_row' => 'disabled',
@@ -120,21 +120,21 @@ class C_DPBKHS extends CI_Controller {
         ];
 
         if ( $this->session->user === 'B0445' ) {
-            $data['UserAccess'] = [   
+            $data['UserAccess'] = [
                 'add_row'    => '',
                 'edit_field' => '',
                 'delete_row' => '',
                 'save'       => ''
             ];
         } else if ( $this->session->user === 'F2326' ) {
-            $data['UserAccess'] = [   
+            $data['UserAccess'] = [
                 'add_row'    => '',
                 'edit_field' => '',
                 'delete_row' => '',
                 'save'       => ''
             ];
         } else if ( $this->session->user === 'J1396' ) {
-            $data['UserAccess'] = [   
+            $data['UserAccess'] = [
                 'add_row'    => '',
                 'edit_field' => '',
                 'delete_row' => '',
@@ -184,7 +184,7 @@ class C_DPBKHS extends CI_Controller {
 
         $data = $this->input->post();
 
-        //cek onhand 
+        //cek onhand
 
         $gudang = $data['header']['gudangPengirim'];
 
@@ -192,13 +192,15 @@ class C_DPBKHS extends CI_Controller {
             $kode_gudang = 'MLATI-DM';
         }elseif ($gudang == 'TUKSONO') {
             $kode_gudang = 'FG-TKS';
+        }elseif ($gudang == 'PUSAT') {
+            $kode_gudang = 'FG-DM';
         }
 
         $line = $data['line'];
 
         $nomor_do = '';
-        
-        for ($i=0; $i < count($line); $i++) { 
+
+        for ($i=0; $i < count($line); $i++) {
             if ($nomor_do == '') {
                 $nomor_do .= $line[$i]['doNumber'];
             }else {
@@ -211,11 +213,11 @@ class C_DPBKHS extends CI_Controller {
         //end
 
         if ($returnOnhand[0]['STOCKONHAND'] == 0) {
-            
+
             foreach ($data['line'] as $key => $val) {
-                
+
                 $this->M_dpb->procedureLockStock($val['doNumber'], $kode_gudang, $noind);
-    
+
                 $this->M_dpb->insertNewDetailKHS([
                     'NO_PR'            => $new_pr_number,
                     'JENIS_KENDARAAN'  => $data['header']['vehicleCategory'],
@@ -239,7 +241,7 @@ class C_DPBKHS extends CI_Controller {
         }else{
             echo json_encode('error stok gudang tidak mencukupi');
         }
-        
+
 
     }
 
@@ -247,7 +249,7 @@ class C_DPBKHS extends CI_Controller {
     {
         if ( ! $this->input->is_ajax_request())
             redirect('ApprovalDO/DPBKHS');
-        
+
         $data = $this->input->post();
 
         if (array_key_exists('deleteLine', $data)) {
@@ -298,7 +300,7 @@ class C_DPBKHS extends CI_Controller {
                 ]);
             }
         }
-        
+
         echo json_encode('Success');
     }
 
@@ -306,12 +308,12 @@ class C_DPBKHS extends CI_Controller {
     {
         if ( ! $this->input->is_ajax_request())
             redirect('ApprovalDO/DPBKHS');
-        
+
         $this->M_dpb->deleteDPBKHS($this->input->post('prNumber'));
 
         echo json_encode('Success');
     }
-    
+
     public function AddDetailInformationList()
     {
         $kode_do = $_GET['q'];

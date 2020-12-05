@@ -154,133 +154,20 @@ class C_Packing extends CI_Controller
 		$this->M_packing->waktuPacking($nospb, $jenis, $slsh);
 	}
 
-	// public function modalColly(){
-	// 	$date 	= $this->input->post('date');
-	// 	$jenis	= $this->input->post('jenis');
-	// 	$nospb 	= $this->input->post('no_spb');
-	// 	$mulai 	= $this->input->post('mulai');
-	// 	$selesai = $this->input->post('wkt');
-	// 	$pic 	= $this->input->post('pic');
-	// 	$no 	= $this->input->post('no');
-
-	// 	$cek = $this->M_packing->cekPacking($nospb);
-	// 	if (empty($cek)) {
-	// 		$tbl = '<h3 style="text-align:center">Konfirmasi Packing Ke-1</h3>';
-	// 	}else {
-	// 		$jml = count($cek) + 1;
-	// 		$tbl = '<h3 style="text-align:center">Konfirmasi Packing Ke-'.$jml.'</h3>';
-	// 	}
-
-	// 	$tbl .= '<input type="hidden" id="date" value="'.$date.'">
-	// 	<input type="hidden" id="jenis" value="'.$jenis.'">
-	// 	<input type="hidden" id="no_spb" value="'.$nospb.'">
-	// 	<input type="hidden" id="mulai" value="'.$mulai.'">
-	// 	<input type="hidden" id="selesai" value="'.$selesai.'">
-	// 	<input type="hidden" id="pic" value="'.$pic.'">
-	// 	<input type="hidden" id="no" value="'.$no.'">';
-
-	// 	echo $tbl;
-	// }
-
 	public function modalColly2(){
-		$date 	= $this->input->post('date');
-		$jenis	= $this->input->post('jenis');
-		$nospb 	= $this->input->post('no_spb');
-		$mulai 	= $this->input->post('mulai');
-		$selesai = $this->input->post('wkt');
-		$pic 	= $this->input->post('pic');
-		$nomor 	= $this->input->post('no');
+		$data['date'] 	= $this->input->post('date');
+		$data['jenis']	= $this->input->post('jenis');
+		$data['nospb'] 	= $this->input->post('no_spb');
+		$data['mulai'] 	= $this->input->post('mulai');
+		$data['selesai'] = $this->input->post('wkt');
+		$data['pic'] 	= $this->input->post('pic');
+		$data['nomor'] 	= $this->input->post('no');
+		$data['ket']	= 'packing';
 
-		$cek = $this->M_packing->cekPacking($nospb);
-		// echo "<pre>";print_r($cek);exit();
-		$tr = '';
+		$data['data'] = $this->M_packing->cekPacking($data['nospb']);
 		
-		if (!empty($cek)) {
-			$no = 1;
-			foreach ($cek as $val) {
-				if ($val['kode_packing'] == 1) {
-					$kemasan = 'KARDUS KECIL';
-				}elseif ($val['kode_packing'] == 2) {
-					$kemasan = 'KARDUS SEDANG';
-				}elseif ($val['kode_packing'] == 3) {
-					$kemasan = 'KARDUS PANJANG';
-				}elseif ($val['kode_packing'] == 4) {
-					$kemasan = 'KARUNG';
-				}elseif ($val['kode_packing'] == 5) {
-					$kemasan = 'PETI';
-				}
-				$tr .= '<tr>
-							<td>'.$no.'</td>
-							<td><select class="form-control select2" id="jenis_kemasan'.$no.'" name="jenis_kemasan" style="width:100%" data-placeholder="pilih kemasan" onchange="gantikemasan('.$no.')">
-								<option value="'.$val['kode_packing'].'">'.$kemasan.'</option>
-								<option value="1">KARDUS KECIL</option>
-								<option value="2">KARDUS SEDANG</option>
-								<option value="3">KARDUS PANJANG</option>
-								<option value="4">KARUNG</option>
-								<option value="5">PETI</option>
-								</select>
-							</td>
-							<td><input type="text" class="form-control" id="berat'.$no.'" name="berat" value="'.$val['berat'].'" onchange="gantikemasan('.$no.')">
-							<input type="hidden" id="no_spb'.$no.'" value="'.$nospb.'"></td>
-						</tr>';
-						$no++;
-			}
-					$tr .= '<tr>
-								<td>'.$no.'</td>
-								<td><select class="form-control select2" id="jenis_kemasan'.$no.'" name="jenis_kemasan" style="width:100%" data-placeholder="pilih kemasan">
-									<option></option>
-									<option value="1">KARDUS KECIL</option>
-									<option value="2">KARDUS SEDANG</option>
-									<option value="3">KARDUS PANJANG</option>
-									<option value="4">KARUNG</option>
-									<option value="5">PETI</option>
-									</select>
-								</td>
-								<td><input type="text" class="form-control" id="berat'.$no.'" name="berat" placeholder="masukkan berat (KG)" onchange="saveBeratPack('.$no.')">
-								<input type="hidden" id="no_spb'.$no.'" value="'.$nospb.'"></td>
-							</tr>';
-				$no++;
-		}else {
-			$no = 1;
-				$tr .= '<tr>
-							<td>'.$no.'</td>
-							<td><select class="form-control select2" id="jenis_kemasan'.$no.'" name="jenis_kemasan" style="width:100%" data-placeholder="pilih kemasan">
-								<option></option>
-								<option value="1">KARDUS KECIL</option>
-								<option value="2">KARDUS SEDANG</option>
-								<option value="3">KARDUS PANJANG</option>
-								<option value="4">KARUNG</option>
-								<option value="5">PETI</option>
-								</select>
-							</td>
-							<td><input type="text" class="form-control" id="berat'.$no.'" name="berat" placeholder="masukkan berat (KG)" onchange="saveBeratPack('.$no.')">
-							<input type="hidden" id="no_spb'.$no.'" value="'.$nospb.'"></td>
-						</tr>';
-			$no++;
-		}
-		$tbl = '<div class="table-responsive">
-			<table class="table table-stripped table-hovered text-center" style="width:100%">
-				<thead>
-					<tr>
-						<td>No</td>
-						<td>Jenis Kemasan</td>
-						<td>Berat (KG)</td>
-					</tr>
-				</thead>
-				<tbody id="tambahbrt">
-					'.$tr.'
-				</tbody>
-			</table>
-		</div>
-		<input type="hidden" id="date" value="'.$date.'">
-		<input type="hidden" id="jenis" value="'.$jenis.'">
-		<input type="hidden" id="no_spb" value="'.$nospb.'">
-		<input type="hidden" id="mulai" value="'.$mulai.'">
-		<input type="hidden" id="selesai" value="'.$selesai.'">
-		<input type="hidden" id="pic" value="'.$pic.'">
-		<input type="hidden" id="no" value="'.$nomor.'">';
-
-		echo $tbl;
+		$this->load->view('KapasitasGdSparepart/V_ModalArsipColy', $data);
+		// echo "<pre>";print_r($cek);exit();
 	}
 
 	public function saveberatPacking(){
@@ -288,8 +175,15 @@ class C_Packing extends CI_Controller
 		$jenis = $this->input->post('jenis_kemasan');
 		$berat = $this->input->post('berat');
 		$no = $this->input->post('no');
-		$save = $this->M_packing->insertBerat($no_spb, $jenis, $berat, $no);
-		// echo "<pre>";print_r($save);exit();
+		$cek = $this->M_packing->cekBeratPacking($no_spb, $no);
+		// echo "<pre>";print_r($cek);exit();
+		if (empty($cek)) {
+			$save = $this->M_packing->insertBerat($no_spb, $jenis, $berat, $no);
+			echo "save";
+		}else {
+			$save = $this->M_packing->updateBerat($no_spb, $jenis, $berat, $no);
+			echo "update";
+		}
 	}
 
 	public function gantiPacking(){

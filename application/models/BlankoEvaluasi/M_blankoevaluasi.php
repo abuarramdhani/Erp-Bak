@@ -44,7 +44,7 @@ class M_blankoevaluasi extends CI_Model
                             inner join hrd_khs.tseksi ts on tp.kodesie = ts.kodesie 
                         WHERE (tp.noind like '%$keyword%' or tp.nama like '%$keyword%') AND tp.keluar='0' $stringWithJabatan $stringFilterSie
                         ORDER BY tp.nama
-                        LIMIT 5";
+                        LIMIT 50";
         $result = $this->personalia->query($queryNoind)->result_array();
 
         return $result;
@@ -77,7 +77,7 @@ class M_blankoevaluasi extends CI_Model
                 tp.keluar='0' 
                 AND substring(tp.noind, 1, 1) in ('G', 'J') 
                 $stringFilterSie 
-            ORDER BY tp.nama LIMIT 5";
+            ORDER BY tp.nama LIMIT 50";
 
         $result = $this->personalia->query($queryNoind)->result_array();
         return $result;
@@ -85,6 +85,15 @@ class M_blankoevaluasi extends CI_Model
 
     public function getWorkerInformation($noind)
     {
+        /**
+         * 3 Desember 2020
+         * Penarikan 3 bulan dihitung dari tgl akhir kontrak - 10 hari(kontrak) & - 7 hari(OS)
+         */
+        $perhitungan = (object)[
+            'os' => 7,
+            'staff' => 10
+        ];
+
         $query = "SELECT 
                 tp.noind,
                 tp.kodesie,
@@ -101,7 +110,7 @@ class M_blankoevaluasi extends CI_Model
                 ts.dept as departemen,
                 tpkj.pekerjaan,
                 (select nama_status from hrd_khs.tb_status_jabatan where noind = tp.noind limit 1) status_jabatan,
-                (SELECT to_char((tanggal_akhir::date + INTERVAL '1 DAY')::date, 'dd-mm-yyyy') from \"Surat\".tevaluasi_nonstaff where noind = tp.noind and deleted = '0' order by tanggal_akhir desc limit 1) periode_awal,
+                (SELECT to_char((tanggal_akhir::date - INTERVAL '5 DAY')::date, 'dd-mm-yyyy') from \"Surat\".tevaluasi_nonstaff where noind = tp.noind and deleted = '0' order by tanggal_akhir desc limit 1) periode_awal,
                 null as periode_akhir,
                 null as presensi_ok,
                 (
@@ -121,7 +130,8 @@ class M_blankoevaluasi extends CI_Model
                             
                     END
                 ) as masa_kerja,
-                to_char(tp.akhkontrak::date, 'DD-MM-YYYY') akhir_kontrak
+                to_char(tp.akhkontrak::date, 'DD-MM-YYYY') akhir_kontrak,
+                to_char(tp.masukkerja::date, 'DD-MM-YYYY') tgl_masuk
             FROM 
                 hrd_khs.tpribadi tp 
                 inner join hrd_khs.tseksi ts on ts.kodesie = tp.kodesie
@@ -133,6 +143,19 @@ class M_blankoevaluasi extends CI_Model
 
         $result = $this->personalia->query($query)->row();
         if (!$result) return [];
+
+        /**
+         * Perhitungan tanggal awal penarikan
+         */
+
+        // setelah tgl 09-12-2020, tolong hapus kondisi ini in_array($noind, ['K2177', 'K2178'])
+        if (!$result->periode_awal || (in_array($noind, ['K2177', 'K2178']) && date('Y-m-d') <= '2020-12-09')) {
+            if ($result->jenis_kode == 'nonstaff') {
+                // $result->periode_awal = date('d-m-Y', strtotime($result->akhir_kontrak . "-20 month -$perhitungan->nonstaff day"));
+            } elseif ($result->jenis_kode == 'os') {
+                $result->periode_awal = date('d-m-Y', strtotime($result->akhir_kontrak . " -3 month +1 day -7 day"));
+            }
+        }
 
         $allSupervisor = $this->getAllAtasan($result->kodesie);
         $result->atasan = $allSupervisor;
@@ -215,11 +238,12 @@ class M_blankoevaluasi extends CI_Model
 
             $trimmedSie = array_map('trimSie', $refJabatan);
             $filterKodesie = rtrim(implode('', $trimmedSie), ' OR');
+            $filterKodesie = "($filterKodesie)";
 
             $query = "
                 SELECT ten.*, tp.kodesie 
                 FROM \"Surat\".tevaluasi_nonstaff ten inner join hrd_khs.tpribadi tp on ten.noind = tp.noind 
-                WHERE $filterKodesie and ten.deleted = '0'
+                WHERE $filterKodesie and ten.deleted = false
                 ORDER BY ten.created_time desc";
             return $this->personalia->query($query);
         }
@@ -227,7 +251,9 @@ class M_blankoevaluasi extends CI_Model
         $query = "
             SELECT ten.*, tp.kodesie , tp.kd_jabatan
             FROM \"Surat\".tevaluasi_nonstaff ten inner join hrd_khs.tpribadi tp on ten.noind = tp.noind 
-            WHERE ten.id = '$id'
+            WHERE 
+                ten.id = '$id' and
+                ten.deleted = false
             ORDER BY ten.created_time desc";
 
         return $this->personalia->query($query);
@@ -283,11 +309,35 @@ class M_blankoevaluasi extends CI_Model
         $awal = date('Y-m-d', strtotime($awal));
         $akhir = date('Y-m-d', strtotime($akhir));
 
-        $q_terlambat = "SELECT tanggal::date FROM \"Presensi\".tdatatim where kd_ket = 'TT' and point <> '0' and noind = '$noind' and tanggal between '$awal' and '$akhir '";
-        $q_izin = "SELECT tanggal::date FROM \"Presensi\".tdatatim where kd_ket = 'TIK' and point <> '0' and noind = '$noind' and tanggal between '$awal' and '$akhir '";
-        $q_mangkir = "SELECT tanggal::date FROM \"Presensi\".tdatatim where kd_ket = 'TM' and point <> '0' and noind = '$noind' and tanggal between '$awal' and '$akhir '";
-        $q_sakit = "SELECT tanggal::date FROM \"Presensi\".tdatapresensi where kd_ket in ('PSP', 'PSK') and noind = '$noind' and tanggal between '$awal' and '$akhir '";
-        $q_pamit = "SELECT tanggal::date FROM \"Presensi\".tdatapresensi where kd_ket in ('PIP') and noind = '$noind' and tanggal between '$awal' and '$akhir '";
+        /**
+         * Kondisi khusus untuk noind T yang sebelumnya ber noind J
+         * akan select range presensi noind sebelumnya jika ada
+         */
+        $arrayNoind = [$noind];
+        if (substr($noind, 0, 1) == 'T') {
+            $pekerja = $this->personalia->from('hrd_khs.tpribadi')->select('noind_baru')->where('noind', $noind)->get()->row();
+            // jika ada
+            if ($pekerja) {
+                $allNoind = $this->personalia->from('hrd_khs.tpribadi')->select('noind')->where('noind_baru', $pekerja->noind_baru)->get()->result_array();
+                // jika ada
+                if ($allNoind) {
+                    $arrayNoind = array_map(function ($item) {
+                        return $item['noind'];
+                    }, $allNoind);
+                }
+            }
+        }
+
+        // array noind to string "'Txxxx', 'Txxxxx'"
+        $stringNoind = implode(', ', array_map(function ($item) {
+            return "'$item'";
+        }, $arrayNoind));
+
+        $q_terlambat = "SELECT tanggal::date FROM \"Presensi\".tdatatim where kd_ket = 'TT' and point <> '0' and noind in ($stringNoind) and tanggal between '$awal' and '$akhir '";
+        $q_izin = "SELECT tanggal::date FROM \"Presensi\".tdatatim where kd_ket = 'TIK' and point <> '0' and noind in ($stringNoind) and tanggal between '$awal' and '$akhir '";
+        $q_mangkir = "SELECT tanggal::date FROM \"Presensi\".tdatatim where kd_ket = 'TM' and point <> '0' and noind in ($stringNoind) and tanggal between '$awal' and '$akhir '";
+        $q_sakit = "SELECT tanggal::date FROM \"Presensi\".tdatapresensi where kd_ket in ('PSP', 'PSK') and noind in ($stringNoind) and tanggal between '$awal' and '$akhir '";
+        $q_pamit = "SELECT tanggal::date FROM \"Presensi\".tdatapresensi where kd_ket in ('PIP') and noind in ($stringNoind) and tanggal between '$awal' and '$akhir '";
         // $q_freq_all = "SELECT count(*) FROM \"Presensi\".tdatatim where kd_ket in ('PSP', 'PSK', 'TM', 'TT', 'TIK') and point <> '0' and noind = '$noind' and tanggal between '$awal' and '$akhir '";
 
         $terlambat = $this->personalia->query($q_terlambat)->result_array();

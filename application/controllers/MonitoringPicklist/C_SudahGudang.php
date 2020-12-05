@@ -52,8 +52,15 @@ class C_SudahGudang extends CI_Controller
 		$subinv 	= $this->input->post('subinv');
 		$tanggal1 	= $this->input->post('tanggal1');
 		$tanggal2 	= $this->input->post('tanggal2');
+		$dept		= $this->input->post('dept');
 
-		$getdata = $this->M_pickgudang->getdataSudah($subinv, $tanggal1, $tanggal2);
+		if (!empty($dept)) {
+			$department = "and bd.DEPARTMENT_CLASS_CODE = '$dept'";
+		}else {
+			$department = '';
+		}
+
+		$getdata = $this->M_pickgudang->getdataSudah($subinv, $tanggal1, $tanggal2, $department);
 		foreach ($getdata as $key => $get) {
 			$cek = $this->M_pickgudang->cekdeliver($get['PICKLIST']);
 			$getdata[$key]['DELIVER'] = $cek[0]['DELIVER'];

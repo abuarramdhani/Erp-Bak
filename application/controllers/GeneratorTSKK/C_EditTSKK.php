@@ -6,7 +6,7 @@ class C_EditTSKK extends CI_Controller {
 	public function __construct()
     {
         parent::__construct();
-		  
+
         $this->load->helper('form');
         $this->load->helper('url');
         $this->load->helper('html');
@@ -18,9 +18,9 @@ class C_EditTSKK extends CI_Controller {
 		$this->load->model('M_Index');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
         $this->load->model('GeneratorTSKK/M_gentskk');
-        
+
         date_default_timezone_set('Asia/Jakarta');
-		  
+
 		if($this->session->userdata('logged_in')!=TRUE) {
 			$this->load->helper('url');
 			$this->session->set_userdata('last_page', current_url());
@@ -30,7 +30,7 @@ class C_EditTSKK extends CI_Controller {
 
 	public function checkSession()
 	{
-		if($this->session->is_logged){		
+		if($this->session->is_logged){
 		}else{
 			redirect();
 		}
@@ -67,7 +67,7 @@ class C_EditTSKK extends CI_Controller {
 		}else{
 			$nama_part 	      = $this->input->post('txtNamaPart');
 		}
-		
+
 		//EQUIPMENT
 		$jenis_inputEquipment  = $this->input->post('equipmenTerdaftar');
 		$no_mesin	      	   = $this->input->post('txtNoMesin[]');
@@ -79,7 +79,7 @@ class C_EditTSKK extends CI_Controller {
 		$resource         = $this->input->post('txtResource[]');
 		$rsc = implode("; ", $resource);
 		$resource = trim(preg_replace('/\s\s+/', '; ', $rsc));
-		$line             = $this->input->post('txtLine');		
+		$line             = $this->input->post('txtLine');
 		$alat_bantu	      = $this->input->post('txtAlatBantu[]');
 		if ($alat_bantu == null) {
 			$alat_bantu	      = $this->input->post('txtAlatBantuT');
@@ -107,7 +107,7 @@ class C_EditTSKK extends CI_Controller {
 		$proses_ke 	      = $this->input->post('txtProsesKe');
 		$dari 	          = $this->input->post('txtDariProses');
 		$tanggal          = $this->input->post('txtTanggal');
-		// die;	
+		// die;
 		$qty 	          = $this->input->post('txtQtyProses');
 		// exit();
 		//SEKSI PEMBUAT
@@ -120,7 +120,7 @@ class C_EditTSKK extends CI_Controller {
 		$nama_pekerja = $name[0]['nama'];
 		$sang_pembuat = $noind." - ".$nama_pekerja;
 		$creationDate = date('Y/m/d h:i:s', time());
-		
+
 			if ($nd == null) {
 				$nilai_distribusi = 0;
 			}else{
@@ -132,10 +132,10 @@ class C_EditTSKK extends CI_Controller {
 					  $nilai_distribusi,$takt_time,$no_mesin,$resource,$line,$alat_bantu,$tools,
 					  $jml_operator,$dr_operator,$seksi_pembuat,$jenis_inputPart,$jenis_inputEquipment,
 					  $sang_pembuat,$creationDate);
-		
+
 		//LEMBAR OBSERVASI ELEMEN KERJA
-		$deleteElement 	  = $this->M_gentskk->deleteObservation($id); 
-	
+		$deleteElement 	  = $this->M_gentskk->deleteObservation($id);
+
 		$waktu_1          = $this->input->post('waktu1[]');
 		$waktu_2          = $this->input->post('waktu2[]');
 		$waktu_3          = $this->input->post('waktu3[]');
@@ -156,117 +156,118 @@ class C_EditTSKK extends CI_Controller {
 		$elemen           = $this->input->post('txtSlcElemen[]');
 		$keterangan_elemen= $this->input->post('elemen[]');
 		$tipe_urutan 	  = $this->input->post('checkBoxParalel[]');
-		
-		for ($i=0; $i < count($elemen); $i++) { 
-	
+		$startTimeTogether =  $this->input->post('start_time_together[]');
+
+		for ($i=0; $i < count($elemen); $i++) {
+
 			if ($waktu_1[$i] != ''){
 				$w1             = $waktu_1[$i];
 			}else{
 				$w1 	        = null;
 			}
-	
+
 			if ($waktu_2[$i] != ''){
 				$w2             = $waktu_2[$i];
 			}else{
 				$w2 	        = null;
 			}
-	
+
 			if ($waktu_3[$i] != ''){
 				$w3             = $waktu_3[$i];
 			}else{
 				$w3 	        = null;
 			}
-	
+
 			if ($waktu_4[$i] != ''){
 				$w4             = $waktu_4[$i];
 			}else{
 				$w4 	        = null;
 			}
-	
+
 			if ($waktu_5[$i] != ''){
 				$w5             = $waktu_5[$i];
 			}else{
 				$w5 	        = null;
 			}
-	
+
 			if ($waktu_6[$i] != ''){
 				$w6            = $waktu_6[$i];
 			}else{
 				$w6 	       = null;
 			}
-	
+
 			if ($waktu_7[$i] != ''){
 				$w7            = $waktu_7[$i];
 			}else{
 				$w7	           = null;
 			}
-	
+
 			if ($waktu_8[$i] != ''){
 				$w8            = $waktu_8[$i];
 			}else{
 				$w8 	       = null;
 			}
-	
+
 			if ($waktu_9[$i] != ''){
 				$w9            = $waktu_9[$i];
 			}else{
 				$w9 	       = null;
 			}
-	
+
 			if ($waktu_10[$i] != ''){
 				$w10           = $waktu_10[$i];
 			}else{
 				$w10 	       = null;
 			}
-	
+
 			if ($x_min[$i] != ''){
 				$xm            = $x_min[$i];
 			}else{
 				$xm 	       = null;
 			}
-	
+
 			if ($range[$i] != ''){
 				$r            = $range[$i];
 			}else{
 				$r 	          = null;
 			}
-	
+
 			if ($waktu_distribusi[$i] != ''){
 				$w_dst         = $waktu_distribusi[$i];
 			}else{
 				$w_dst 	       = null;
 			}
-	
+
 			if ($waktu_kerja[$i] != ''){
 				$wk            = $waktu_kerja[$i];
 			}else{
 				$wk 	       = null;
 			}
-	
+
 			if ($keterangan[$i] != ''){
 				$ktr           = $keterangan[$i];
 			}else{
 				$ktr 	       = null;
 			}
-	
+
 			if ($jenis_proses[$i] != ''){
 				$jp            = $jenis_proses[$i];
 			}else{
 				$jp 	       = null;
 			}
-	
+
 			if ($elemen[$i] != ''){
 				$elm           = $elemen[$i];
 			}else{
 				$elm 	       = null;
 			}
-	
+
 			if ($keterangan_elemen[$i] != ''){
 				$ktr_elm       = $keterangan_elemen[$i];
 			}else{
 				$ktr_elm 	   = null;
 			}
-	
+
 			// if (array_key_exists($i,$tipe_urutan)){
 			// 	$tu            = $tipe_urutan[$i];
 			// }else{
@@ -281,7 +282,11 @@ class C_EditTSKK extends CI_Controller {
 			}else {
 					$tu 	       = 'SERIAL';
 			}
-	
+
+			if ($startTimeTogether[$i] == ''){
+					$startTimeTogether[$i] = null;
+			}
+
 				$data = array(
 				'id_tskk'  	        => $id,
 				'waktu_1' 	        => $w1,
@@ -304,6 +309,7 @@ class C_EditTSKK extends CI_Controller {
 				'elemen'        	=> $elm,
 				'keterangan_elemen' => $ktr_elm,
 				'tipe_urutan'       => $tu,
+				'start_together'		=> $startTimeTogether[$i]
 				);
 				// echo"<pre>";print_r($data);
 			if ($data['jenis_proses'] != null) {
@@ -312,14 +318,14 @@ class C_EditTSKK extends CI_Controller {
 		}
 
 		//IRREGULAR JOBS
-		$deleteIrregularJobs =  $this->M_gentskk->deleteIrregularJobs($id); 	
+		$deleteIrregularJobs =  $this->M_gentskk->deleteIrregularJobs($id);
 
 		$irregular_jobs  = $this->input->post('txtIrregularJob[]');
 		$ratio_irregular = $this->input->post('txtRatioIrregular[]');
 		$waktu_irregular = $this->input->post('txtWaktuIrregular[]');
 		$hasil_irregular = $this->input->post('txtHasilWaktuIrregular[]');
-	
-		for ($i=0; $i < count($ratio_irregular); $i++) { 
+
+		for ($i=0; $i < count($ratio_irregular); $i++) {
 				$data = array(
 				'id_irregular_job'      => $id,
 				'irregular_job' 	    => $irregular_jobs[$i],
@@ -336,7 +342,7 @@ class C_EditTSKK extends CI_Controller {
 		$jumlah_shift       = $this->input->post('txtJumlahShift');
 		$forecast           = $this->input->post('txtForecast');
 		$qty_unit           = $this->input->post('txtQtyUnit');
-		$rencana_produksi   = $this->input->post('txtForecast');
+		$rencana_produksi   = $forecast * $qty_unit;
 		$jumlah_hari_kerja  = $this->input->post('txtJumlahHariKerja');
 
 		$checkTaktTime = $this->M_gentskk->selectTaktTimeCalculation($id);
@@ -348,7 +354,7 @@ class C_EditTSKK extends CI_Controller {
 		}
 
 		// exit();
-	
+
 		redirect('GeneratorTSKK/Generate/');
 	}
 
@@ -356,28 +362,28 @@ class C_EditTSKK extends CI_Controller {
 	{
 		$this->checkSession();
 		$user_id = $this->session->userid;
-		
+
 		$data['Menu'] = 'Dashboard';
 		$data['SubMenuOne'] = '';
-		
+
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-	
+
 		// $dataId = $this->M_gentskk->selectIdHeader();
-		// $id = $dataId[0]['id'];	
+		// $id = $dataId[0]['id'];
 		$data['status'] = 1;
 		$data['lihat_tabelElemen_Edit'] = $this->M_gentskk->getAllElementsWhenEdit($id); //TE
 
 		$data['lihat_hasilObservasi_elemen'] = $this->M_gentskk->getAllObservation($id); //TO
 
 		$data['lihat_hasilObservasi'] = $this->M_gentskk->getAllObservation($id);
-		// echo"<pre>";print_r($data['lihat_tabelElemen_Edit']);exit();		
+		// echo"<pre>";print_r($data['lihat_tabelElemen_Edit']);exit();
 
 		$hitungData = count($data['lihat_hasilObservasi']);
 		if (count($data['lihat_hasilObservasi']) < 10){
-			for ($i=0; $i < 10 - $hitungData ; $i++) { 
-				$data['lihat_hasilObservasi'][] = array("id_tskk"=>"", 
+			for ($i=0; $i < 10 - $hitungData ; $i++) {
+				$data['lihat_hasilObservasi'][] = array("id_tskk"=>"",
 				"judul_tskk"=>"",
 				"tipe"=>"",
 				"kode_part"=>"",
@@ -415,10 +421,10 @@ class C_EditTSKK extends CI_Controller {
 				"tipe_urutan"=>"");
 			}
 		}
-	
+
 	    $data['lihat_irregular_jobs'] = $this->M_gentskk->selectIrregularJobs($id);
     	$data['lihat_perhitungan_takt_time'] = $this->M_gentskk->selectTaktTimeCalculation($id);
-    	
+
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('GeneratorTSKK/V_EditTSKK');

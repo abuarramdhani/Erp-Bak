@@ -152,6 +152,11 @@ class M_index extends CI_Model
                         when jenis_ijin = 2 then 'IZIN SAKIT PERUSAHAAN'
                         else 'IZIN DINAS KELUAR PERUSAHAAN'
                     end jenis_ijin,
+                    (select string_agg((case when b.id_ = '03' then 'JOGJA' else b.lokasi_kerja end), ',') from hrd_khs.tpribadi tpd 
+                        LEFT join hrd_khs.tlokasi_kerja b on b.id_ = tpd.lokasi_kerja 
+                        where tpd.noind in
+                        (select noind from \"Surat\".tizin_pribadi_detail a where a.id = ip.id)
+                        ) as lokasi_kerja,
                     concat(ip.set_manual_by, ' - ', (SELECT trim(nama) from hrd_khs.tpribadi tp where tp.noind = ip.set_manual_by)) as set_manual,
                     ip.keperluan,
                     ip.manual,
@@ -205,6 +210,8 @@ class M_index extends CI_Model
                         ip.appr_paramedik,
                         ip.wkt_keluar keluar,
                         ip.ket_sakit,
+                        (SELECT (case when b.id_ = '03' then 'JOGJA' else b.lokasi_kerja end) from hrd_khs.tpribadi a 
+                            LEFT join hrd_khs.tlokasi_kerja b on b.id_ = a.lokasi_kerja where ipd.noind = a.noind) as lokasi_kerja,
                         (SELECT seksi from hrd_khs.tseksi ts left join hrd_khs.tpribadi tp on tp.kodesie = ts.kodesie where tp.noind = ipd.noind) as seksi,
                         case
                             when jenis_ijin = 1 then 'IZIN KELUAR PRIBADI'

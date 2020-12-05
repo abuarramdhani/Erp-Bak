@@ -15,6 +15,7 @@ class C_BelumGudang extends CI_Controller
 
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('MonitoringPicklist/M_pickgudang');
+		date_default_timezone_set('Asia/Jakarta');
 
 		$this->checkSession();
 	}
@@ -55,28 +56,128 @@ class C_BelumGudang extends CI_Controller
 		$data = $this->M_pickgudang->getSubinv($term);
 		echo json_encode($data);
 	}
+	
+	function getDept()
+	{
+		$term = $this->input->get('term',TRUE);
+		$term = strtoupper($term);
+		$data = $this->M_pickgudang->getDept($term);
+		echo json_encode($data);
+	}
+
 
 	function searchData(){
+		// echo "<pre>";print_r((sprintf("%02d", (date('d') - 1)).'-'.strtoupper(date('M-y'))));exit();
 		$subinv 	= $this->input->post('subinv');
 		$tanggal1 	= $this->input->post('tanggal1');
 		$tanggal2 	= $this->input->post('tanggal2');
+		$dept 		= $this->input->post('dept');
 
-		$getdata = $this->M_pickgudang->getdataBelum($subinv, $tanggal1, $tanggal2);
+		if (!empty($dept)) {
+			$department = "and bd.DEPARTMENT_CLASS_CODE = '$dept'";
+		}else {
+			$department = '';
+		}
+
+		$getdata = $this->M_pickgudang->getdataBelum($subinv, $tanggal1, $tanggal2, $department);
 		foreach ($getdata as $key => $get) {
 			$cek = $this->M_pickgudang->cekdeliver($get['PICKLIST']);
 			$getdata[$key]['DELIVER'] = $cek[0]['DELIVER'];
 		}
-		$data['data'] = $getdata;
+		$datanya = $this->sortbyTanggalPelayanan($getdata);
+		$data['data'] = $datanya;
+		// echo "<pre>";print_r($getdata);exit();
 		
 		$this->load->view('MonitoringPicklist/GUDANG/V_TblBelumGudang', $data);
+	}
+
+	public function sortbyTanggalPelayanan($getdata){
+		$pelayanan = $this->M_pickgudang->cariReqPelayanan();
+		$datanya = $nojob = $datanya2 = array();
+		foreach ($pelayanan as $key => $value) {
+			foreach ($getdata as $key2 => $get) {
+				if ($get['JOB_NO'] == $value['JOB_NUMBER']) {
+					$getdata[$key2]['TGL_PELAYANAN'] = $value['TANGGAL_PELAYANAN'];
+					$shift = $this->M_pickgudang->getShift($value['SHIFT']);
+					$getdata[$key2]['SHIFT'] = $shift[0]['DESCRIPTION'];
+					$getdata[$key2]['OVERDUE'] = $this->getdataOverdue($value['TANGGAL_PELAYANAN'], $shift[0]['DESCRIPTION']);
+					array_push($datanya, $getdata[$key2]);
+					array_push($nojob, $get['JOB_NO']);
+				}
+			}
+		}
+		foreach ($getdata as $key => $val) {
+			if (!in_array($val['JOB_NO'], $nojob)) {
+				$getdata[$key]['TGL_PELAYANAN'] = $getdata[$key]['SHIFT'] = '';
+				array_push($datanya2, $getdata[$key]);
+			}
+		}
+		
+		foreach ($datanya as $key => $value) {
+			array_push($datanya2, $datanya[$key]);
+		}
+		// echo "<pre>";print_r($datanya);exit();
+		return $datanya2;
+	}
+
+	public function getdataOverdue($tgl_pelayanan, $shift){
+        $hari = date('D');
+        $jam = date('H:i');
+        if ($tgl_pelayanan < strtoupper(date('d-M-y')) && $tgl_pelayanan != '') {
+            $kemarin = (sprintf("%02d", (date('d') - 1))).'-'.(strtoupper(date('M-y'))); 
+            $jam_akhir = $hari == 'Sat' ? '04:20' : '06:00';
+            if ($tgl_pelayanan == $kemarin && stripos($shift, 'SHIFT 3') !== FALSE && $jam < $jam_akhir) {
+                $baris = '';
+            }else {
+                $baris = 'bg-danger';
+            }
+         }elseif ($tgl_pelayanan == strtoupper(date('d-M-y'))) {
+            if ($hari == 'Fri') {
+                if (stripos($shift, 'SHIFT 3') !== FALSE) {
+                    $baris = '';
+                }elseif (stripos($shift, 'SHIFT 2') !== FALSE) {
+                    $baris = $jam > '21:35' ? 'bg-danger' : '';
+                }else{
+                    $baris = $jam > '14:35' ? 'bg-danger' : '';
+                }
+            }elseif ($hari == 'Sat') {
+                if (stripos($shift, 'SHIFT 1') !== FALSE) {
+                    $baris = $jam > '12:15' ? 'bg-danger' : '';
+                }elseif (stripos($shift, 'SHIFT 2') !== FALSE) {
+                    $baris = $jam > '19:15' ? 'bg-danger' : '';
+                }else{
+                    $baris = $jam > '14:20' ? 'bg-danger' : '';
+                }
+            }else {
+                if (stripos($shift, 'SHIFT 1') !== FALSE) {
+                    $baris = $jam > '14:00' ? 'bg-danger' : '';
+                }elseif (stripos($shift, 'SHIFT 2') !== FALSE) {
+                    $baris = $jam > '22:00' ? 'bg-danger' : '';
+                }elseif (stripos($shift, 'UMUM') !== FALSE) {
+                    $baris = $jam > '15:20' ? 'bg-danger' : '';
+                }else{
+                    $baris = '';
+                }
+            }
+         }else {
+             $baris = '';
+		 }
+		 return $baris;
 	}
 
 	function searchData2(){
 		$subinv 	= $this->input->post('subinv');
 		$tanggal1 	= $this->input->post('tanggal1');
 		$tanggal2 	= $this->input->post('tanggal2');
+		$dept 		= $this->input->post('dept');
 
-		$getdata = $this->M_pickgudang->getdataBelum($subinv, $tanggal1, $tanggal2);
+		if (!empty($dept)) {
+			$department = "and bd.DEPARTMENT_CLASS_CODE = '$dept'";
+		}else {
+			$department = '';
+		}
+
+		$getdata = $this->M_pickgudang->getdataBelum($subinv, $tanggal1, $tanggal2, $department);
 		foreach ($getdata as $key => $get) {
 			$cek = $this->M_pickgudang->cekdeliver($get['PICKLIST']);
 			$getdata[$key]['DELIVER'] = $cek[0]['DELIVER'];

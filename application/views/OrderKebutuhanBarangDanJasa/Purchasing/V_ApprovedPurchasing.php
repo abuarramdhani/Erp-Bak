@@ -129,11 +129,12 @@
                                                                 <h4 class="modal-title">Detail Order</h4>
                                                             </div>
                                                             <div class="modal-body">
-                                                                <div class="text-center newtableDetailOKB">
+                                                                <div class="text-center newtableDetailOKB-<?php echo $list['PRE_REQ_ID']; ?>">
                                                                     <img src="<?= base_url('assets/img/gif/loading5.gif') ?>" class="imgOKBLoading" style="width:35px; height:35px;">
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">
+                                                                <a href="<?= base_url('OrderKebutuhanBarangDanJasa/Purchasing/cetakOrder/'.$list['PRE_REQ_ID']);?>" target="_blank" type="button" class="btn btn-default"><i class="fa fa-print"></i> cetak</a>
                                                                 <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
                                                             </div>
                                                         </div>

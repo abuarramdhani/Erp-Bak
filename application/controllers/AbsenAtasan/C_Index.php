@@ -101,9 +101,17 @@ class C_Index extends CI_Controller
 					$atasan2 = $this->M_absenatasan->getAtasanApprover($noinduk, 2,$getKodeJabatan);
 					$data['atasan1'] = $atasan1;
 					$data['atasan2'] = $atasan2;
+				}elseif (intval($getKodeJabatan) <= 8) {
+					$atasan2 = $this->M_absenatasan->getAtasanApprover($noinduk, 3,$getKodeJabatan);
+					$data['atasan2'] = $atasan2;
 				}else{
 					$atasan2 = $this->M_absenatasan->getAtasanApprover($noinduk, 2,$getKodeJabatan);
 					$data['atasan2'] = $atasan2;
+				}
+
+				if ($noinduk == 'B0571') {
+					$data['atasan2'][] = array('employee_code'	=>	'B0344',
+						'employee_name'	=>	'B ENARYONO');
 				}
 			}
 			

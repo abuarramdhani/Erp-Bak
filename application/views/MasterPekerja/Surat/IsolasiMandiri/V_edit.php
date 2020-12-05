@@ -19,7 +19,7 @@
 										if (isset($data) && !empty($data)) {
 											foreach ($data as $dt) {
 												?>
-										<form class="form-horizontal" method="POST" action="<?php echo site_url('MasterPekerja/Surat/SuratIsolasiMandiri/Update/'.$id_encoded.(isset($encrypted_pekerja_id) ? '/'.$encrypted_pekerja_id : '')) ?>">
+										<form class="form-horizontal" method="POST" action="<?php echo site_url('MasterPekerja/Surat/SuratIsolasiMandiri/Update/'.$id_encoded.(isset($encrypted_pekerja_id) ? '/'.$encrypted_pekerja_id : '')) ?>" target="_blank" onsubmit="setTimeout(function () { window.location.href = baseurl+'Covid/MonitoringCovid'; }, 2000)" id="mpk_frmis">
 											<div class="form-group">
 												<label class="control-label col-lg-4">No. Surat</label>
 												<div class="col-lg-4">
@@ -29,8 +29,11 @@
 											<div class="form-group">
 												<label class="control-label col-lg-4">Kepada</label>
 												<div class="col-lg-4">
-													<select class="slcMPSuratIsolasiMandiriPekerja" data-placeholder="Ditujukan Kepada" name="slcMPSuratIsolasiMandiriTo" id="slcMPSuratIsolasiMandiriTo" style="width: 100%" required>
-														<option value="<?php echo $dt['kepada'] ?>"><?php echo $dt['kepada'].' - '.$dt['kepada_nama'] ?></option>
+													<select class="slcMPSuratIsolasiMandiriPekerjax" data-placeholder="Ditujukan Kepada" name="slcMPSuratIsolasiMandiriTo" id="slcMPSuratIsolasiMandiriTo" style="width: 100%" required>
+														<option selected="" value="<?php echo $dt['kepada'] ?>"><?php echo $dt['kepada'].' - '.$dt['kepada_nama'] ?></option>
+														<?php foreach ($atasan as $k): ?>
+															<option value="<?= $k['noind'] ?>" ><?= $k['noind'].' - '.$k['nama'] ?></option>
+														<?php endforeach ?>
 													</select>
 												</div>
 											</div>
@@ -67,15 +70,54 @@
 													<input type="text" name="txtMPSuratIsolasiMandiriJumlahHari" id="txtMPSuratIsolasiMandiriJumlahHari" value="<?php echo $dt['jml_hari'] ?>" class="form-control" placeholder="Jumlah Hari" readonly required>
 												</div>
 											</div>
-											<div class="form-group">
-												<label class="control-label col-lg-4">Status</label>
-												<div class="col-lg-4">
-													<select class="select2" data-placeholder="Status Isolasi Mandiri" name="slcMPSuratIsolasiMandiriStatus" id="slcMPSuratIsolasiMandiriStatus" style="width: 100%" required>
-														<option>PRM</option>
-														<option>PSK</option>
-													</select>
-												</div>
+											<div class="col-md-3"></div>
+											<div class="col-md-6">
+												<table class="table table-bordered" id="cvd_tbladdAS">
+													<thead>
+														<tr class="bg-primary">
+															<th style="text-align: center;">Tanggal</th>
+															<th style="text-align: center; min-width: 100px;">Status</th>
+															<th style="text-align: center;">Alasan</th>
+															<th style="text-align: center;"></th>
+														</tr>
+													</thead>
+													<tbody>
+														<?php $zz = 0; foreach ($pres as $y): ?>
+															<tr>
+															<td style="text-align: center; white-space: nowrap;"><?= $y['tanggal'] ?>
+																	<input hidden name="tgl_perperiode[]" value="<?= $y['tanggal'] ?>">
+																</td>
+																<td>
+																	<select class="select2 cvd_status_table" data-placeholder="Status Isolasi Mandiri" name="slcMPSuratIsolasiMandiriStatus2[]" id="slcMPSuratIsolasiMandiriStatus" style="width: 100%" required>
+																		<option <?= $y['status'] == 'PRM' ? 'selected':'' ?>>PRM</option>
+																		<option <?= $y['status'] == 'PSK' ? 'selected':'' ?>>PSK</option>
+																		<option <?= $y['status'] == 'PKJ' ? 'selected':'' ?>>PKJ</option>
+																	</select>
+																</td>
+																<td>
+																	<select class="select2 cvd_alasan_table" data-placeholder="Alasan" name="slcMPSuratIsolasiMandiriAlasan2[]" id="slcMPSuratIsolasiMandiriAlasan" style="width: 100%" required>
+																		<option></option>
+																		<option <?= $y['alasan'] == 'ISOLASI DIRI - DL - WFH' ? 'selected':'' ?> >ISOLASI DIRI - DL - WFH</option>
+																		<option <?= $y['alasan'] == 'ISOLASI DIRI - DL - NON WFH' ? 'selected':'' ?> >ISOLASI DIRI - DL - NON WFH</option>
+																		<option <?= $y['alasan'] == 'ISOLASI DIRI - NON DL -WFH' ? 'selected':'' ?> >ISOLASI DIRI - NON DL -WFH</option>
+																		<option <?= $y['alasan'] == 'ISOLASI DIRI - NON DL - NON WFH' ? 'selected':'' ?> >ISOLASI DIRI - NON DL - NON WFH</option>
+																	</select>
+																</td>
+																<?php if ($zz == 0): ?>
+																	<td>
+																		<label style="white-space: nowrap;"><input type="checkbox" id="cvd_samastatus"/> Samakan Status</label>
+																		<br>
+																		<label style="white-space: nowrap;"><input type="checkbox" id="cvd_samaalasan"/> Samakan Alasan</label>
+																	</td>
+																<?php else: ?>
+																	<td></td>
+																<?php endif ?>
+															</tr>
+														<?php $zz++; endforeach ?>
+													</tbody>
+												</table>
 											</div>
+											<div class="col-md-12"></div>
 											<div class="form-group">
 												<label class="control-label col-lg-4">Tanggal Cetak</label>
 												<div class="col-lg-4">
@@ -83,38 +125,27 @@
 												</div>
 											</div>
 											<div class="form-group">
-												<label class="control-label col-lg-4">Dibuat Oleh</label>
-												<div class="col-lg-4">
-													<select class="slcMPSuratIsolasiMandiriPekerja" data-placeholder="Dibuat Oleh" name="slcMPSuratIsolasiMandiriDibuat" id="slcMPSuratIsolasiMandiriDibuat" style="width: 100%" required>
-														<option value="<?php echo $dt['dibuat'] ?>"><?php echo $dt['dibuat'].' - '.$dt['dibuat_nama'] ?></option>
-													</select>
-												</div>
-											</div>
-											<div class="form-group">
-												<label class="control-label col-lg-4">Menyetujui</label>
-												<div class="col-lg-4">
-													<select class="slcMPSuratIsolasiMandiriPekerja" data-placeholder="Menyetujui" name="slcMPSuratIsolasiMandirimenyetujui" id="slcMPSuratIsolasiMandirimenyetujui" style="width: 100%" required>
-														<option value="<?php echo $dt['menyetujui'] ?>"><?php echo $dt['menyetujui'].' - '.$dt['menyetujui_nama'] ?></option>
-													</select>
-												</div>
-											</div>
-											<div class="form-group">
-												<label class="control-label col-lg-4">Mengetahui</label>
-												<div class="col-lg-4">
-													<select class="slcMPSuratIsolasiMandiriPekerja" data-placeholder="Mengetahui" name="slcMPSuratIsolasiMandiriMengetahui" id="slcMPSuratIsolasiMandiriMengetahui" style="width: 100%" required>
-														<option value="<?php echo $dt['mengetahui'] ?>"><?php echo $dt['mengetahui'].' - '.$dt['mengetahui_nama'] ?></option>
-													</select>
-												</div>
-											</div>
-											<div class="form-group">
 												<div class="col-lg-6 text-right">
-													<button class="btn btn-primary" id="btnMPSuratIsolasiMandiriPreview" type="button"><span class="fa fa-print"></span>&nbsp;Preview</button>
+													<button class="btn btn-primary cekAbsens cvd_btncektim cvd_btncekabsen" id="btnMPSuratIsolasiMandiriPreview" type="button"><span class="fa fa-print"></span>&nbsp;Preview</button>
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="col-lg-12 text-center">
+													<label style="color: red;" id="cvd_lbleditpres"></label>
 												</div>
 											</div>
 											<div class="form-group">
                                                 <label class="col-lg-2 control-label">Format Surat</label>
                                                 <div class="col-lg-8">
                                                     <textarea name="txaMPSuratIsolasiMandiriRedactor" class="form-control" id="txaMPSuratIsolasiMandiriRedactor" disabled required></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="col-lg-12 text-center" id="cvd_divtim">
+                                                    
+                                                </div>
+                                                <div class="col-lg-12 text-center" id="cvd_divtim2">
+                                                    
                                                 </div>
                                             </div>
 											<div class="form-group">
@@ -137,3 +168,9 @@
 		</div>
 	</div>
 </section>
+<script>
+	var awal = "<?= $data[0]['tgl_mulai'] ?>";
+	var akhir = "<?= $data[0]['tgl_selesai'] ?>";
+	var pkj = "<?= $data[0]['pekerja'] ?>";
+	var isolasi_id = "<?= $isolasi_id ?>";
+</script>

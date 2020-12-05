@@ -6,7 +6,29 @@ class M_pickfabrikasi extends CI_Model
     {
         parent::__construct();
         $this->load->database();    
-    }
+	}
+	
+	function getShift($date=FALSE)
+	{
+		$oracle = $this->load->database('oracle',TRUE);
+		if ($date === FALSE) {
+			$date = date('Y/m/d');
+		}
+		$sql = "select BCS.SHIFT_NUM,BCS.DESCRIPTION
+				from BOM_SHIFT_TIMES bst
+				    ,BOM_CALENDAR_SHIFTS bcs
+				    ,bom_shift_dates bsd
+				where bst.CALENDAR_CODE = bcs.CALENDAR_CODE
+				  and bst.SHIFT_NUM = bcs.SHIFT_NUM
+				  and bcs.CALENDAR_CODE='KHS_CAL'
+				  and bst.shift_num = bsd.shift_num
+				  and bst.calendar_code=bsd.calendar_code
+				  and bsd.SEQ_NUM is not null
+				  and bsd.shift_date=trunc(to_date('$date','YYYY/MM/DD'))
+				  ORDER BY BCS.SHIFT_NUM asc";
+		$query = $oracle->query($sql);
+		return $query->result_array();
+	}
 
     function getdataBelum($dept, $tgl1, $tgl2)
 	{
@@ -56,7 +78,7 @@ class M_pickfabrikasi extends CI_Model
 			and wro.WIP_ENTITY_ID = wo.WIP_ENTITY_ID
 			and wro.OPERATION_SEQ_NUM = wo.OPERATION_SEQ_NUM
 			and wo.DEPARTMENT_ID = bd.DEPARTMENT_ID
-			and wdj.STATUS_TYPE not in (5, 6, 12)
+			and wdj.STATUS_TYPE not in (4, 5, 6, 12)
 			--
 			and mtrh.REQUEST_NUMBER = kpa.PICKLIST 
 			-- 
@@ -177,7 +199,7 @@ class M_pickfabrikasi extends CI_Model
 			and wro.WIP_ENTITY_ID = wo.WIP_ENTITY_ID
 			and wro.OPERATION_SEQ_NUM = wo.OPERATION_SEQ_NUM
 			and wo.DEPARTMENT_ID = bd.DEPARTMENT_ID
-			and wdj.STATUS_TYPE not in (5, 6, 12)
+			and wdj.STATUS_TYPE not in (4, 5, 6, 12)
 			--
 			and mtrh.REQUEST_NUMBER = kpa.PICKLIST 
 			-- 
@@ -246,7 +268,7 @@ class M_pickfabrikasi extends CI_Model
 			and wro.WIP_ENTITY_ID = wo.WIP_ENTITY_ID
 			and wro.OPERATION_SEQ_NUM = wo.OPERATION_SEQ_NUM
 			and wo.DEPARTMENT_ID = bd.DEPARTMENT_ID
-			and wdj.STATUS_TYPE not in (5, 6, 12)
+			and wdj.STATUS_TYPE not in (4, 5, 6, 12)
 			--
 			and mtrh.REQUEST_NUMBER = kpa.PICKLIST 
 			-- 
@@ -299,6 +321,81 @@ class M_pickfabrikasi extends CI_Model
 		mtl_txn_request_lines mtrl
 		where mtrh.HEADER_ID = mtrl.HEADER_ID
 		and mtrh.REQUEST_NUMBER = '$picklist'";
+		$query = $oracle->query($sql);
+		return $query->result_array();
+	}
+
+	public function cekpermintaanPelayanan($nojob){
+		$oracle = $this->load->database('oracle', true);
+		$sql = "select * from khs_pelayanan_picklist where job_number = '$nojob'";
+		$query = $oracle->query($sql);
+		return $query->result_array();
+	}
+	
+	public function permintaanApprove($nojob, $date, $shift){
+		$oracle = $this->load->database('oracle', true);
+		$sql = "insert into khs_pelayanan_picklist(JOB_NUMBER, TANGGAL_PELAYANAN, SHIFT)
+		VALUES('$nojob', to_date('$date', 'DD/MM/YYYY') ,$shift)";
+		$query = $oracle->query($sql);
+		$query = $oracle->query('commit');
+	}
+
+	public function recallpermintaan($nojob){
+		$oracle = $this->load->database('oracle', true);
+		$sql = "delete from khs_pelayanan_picklist where job_number = '$nojob'";
+		$query = $oracle->query($sql);
+		$query = $oracle->query('commit');
+	}
+	
+	public function cariReqPelayanan(){
+		$oracle = $this->load->database('oracle', true);
+		$sql = "select * from khs_pelayanan_picklist order by 2, 3";
+		$query = $oracle->query($sql);
+		return $query->result_array();
+	}
+
+	function getShift2($shift)
+	{
+		$oracle = $this->load->database('oracle',TRUE);
+		$sql = "select BCS.SHIFT_NUM,BCS.DESCRIPTION
+				from BOM_SHIFT_TIMES bst
+				    ,BOM_CALENDAR_SHIFTS bcs
+				    ,bom_shift_dates bsd
+				where bst.CALENDAR_CODE = bcs.CALENDAR_CODE
+				  and bst.SHIFT_NUM = bcs.SHIFT_NUM
+				  and bcs.CALENDAR_CODE='KHS_CAL'
+				  and bst.shift_num = bsd.shift_num
+				  and bst.calendar_code=bsd.calendar_code
+				  and bsd.SEQ_NUM is not null
+				  and BCS.SHIFT_NUM = $shift
+				  ORDER BY BCS.SHIFT_NUM asc";
+		$query = $oracle->query($sql);
+		return $query->result_array();
+	}
+
+	function getPerbedaan($no_mo)
+	{		
+		$oracle = $this->load->database('oracle',TRUE);
+		$sql = "with kqem as
+				(
+				select distinct 
+					kqem.*
+					,case when nvl (kqem.job_from_subinv,'N') <> nvl (kqem.bom_from_subinv,'N')
+							then 'Job Subinventory : ' || kqem.job_from_subinv || ' - BOM Subinventory : ' || kqem.bom_from_subinv
+							when nvl (kqem.job_from_loc,'N') <> nvl (kqem.bom_from_loc,'N')
+							then 'Job Locator : ' || kqem.job_from_loc || ' - BOM Locator : ' || kqem.bom_from_loc
+							when nvl (kqem.job_comp_qty,0) <> nvl (kqem.bom_comp_qty,0)
+							then 'Job Quantity : ' || kqem.job_comp_qty || ' - BOM Quantity : ' || kqem.bom_comp_qty
+					else null
+					end perbedaan
+				from khs_qweb_ect_jobom_mo kqem
+				where kqem.NO_MO = '$no_mo'
+				--  and kqej.bom_from_subinv = kqej.job_from_subinv
+				--  and nvl (kqej.bom_loc_id,0) = nvl (kqej.job_loc_id,0)
+				)
+				select *
+				from kqem
+				where kqem.perbedaan is not null";
 		$query = $oracle->query($sql);
 		return $query->result_array();
 	}

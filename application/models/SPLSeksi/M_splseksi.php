@@ -346,11 +346,11 @@ class M_splseksi extends CI_Model
 
 	public function getPresensi($noind, $tanggal)
 	{
-		$sql = "select 	tdp.noind,
+		$sql = "SELECT 	tdp.noind,
 						tsp.kd_shift,
 						tdp.tanggal::date,
 						cast(concat(tdp.tanggal::date,' ',tdp.masuk) as timestamp) as masuk,
-						case when tdp.keluar::time < tdp.masuk::time then 
+						case when tdp.keluar::time < tdp.masuk::time or ((select count(*) from \"Presensi\".tprs_shift where noind = tdp.noind and tanggal = tsp.tanggal and waktu = tdp.keluar limit 1) = 0) then 
 							cast(concat((tdp.tanggal::date + interval '1 day')::date,' ',tdp.keluar) as timestamp)
 						else 
 							cast(concat(tdp.tanggal::date,' ',tdp.keluar) as timestamp)

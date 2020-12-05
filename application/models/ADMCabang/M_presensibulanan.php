@@ -10,93 +10,109 @@ class M_presensibulanan extends Ci_Model
 	{
 		parent::__construct();
 		$this->load->database();
-		$this->personalia = $this->load->database('personalia',true);
+		$this->personalia = $this->load->database('personalia', true);
 	}
 
-	public function getSeksiByKodesie($kd){
+	public function getSeksiByKodesie($kd)
+	{
 		$sql = "select kodesie,seksi from hrd_khs.tseksi where kodesie = '$kd'";
 		$result = $this->personalia->query($sql);
 		return $result->result_array();
 	}
 
-	public function getPekerjaByKodesie($kd){
-	    $noind = $this->session->user;
+	public function getPekerjaByKodesie($kd)
+	{
+		$noind = $this->session->user;
 
-	    if ($noind == 'B0380') { // ada di ticket
-			 $sql = "select a.noind,a.nama, b.seksi
+		if ($noind == 'B0380') { // ada di ticket
+			$sql = "select a.noind,a.nama, b.seksi
 				from hrd_khs.tpribadi a
 				left join hrd_khs.tseksi b on a.kodesie=b.kodesie
 				where (left(a.kodesie,7) = left('$kd',7) or a.noind in ('J1171','G1041','L8001'))
 				and a.keluar = false
 				order by a.kodesie,a.noind;";
-		}elseif ($noind == 'B0370') { //ada di ticket
-			 $sql = "select a.noind,a.nama, b.seksi
+		} elseif ($noind == 'B0370') { //ada di ticket
+			$sql = "select a.noind,a.nama, b.seksi
 				from hrd_khs.tpribadi a
 				left join hrd_khs.tseksi b on a.kodesie=b.kodesie
 				where (left(a.kodesie,7) = left('$kd',7) or a.noind in ('D1535','P0426'))
 				and a.keluar = false
 				order by a.kodesie,a.noind;";
-		}elseif ($noind == 'H7726') { //Order #972784 (PENAMBAHAN AKSES BUKA PRESENSI DI PROGRAM ERP)
-	    	 $sql = "select a.noind,a.nama, b.seksi
+		} elseif ($noind == 'H7726') { //Order #972784 (PENAMBAHAN AKSES BUKA PRESENSI DI PROGRAM ERP)
+			$sql = "select a.noind,a.nama, b.seksi
 				from hrd_khs.tpribadi a
 				left join hrd_khs.tseksi b on a.kodesie=b.kodesie
 	    		where left(a.kodesie,5) = left('$kd',5)
 	    		and a.keluar = false
 				order by a.kodesie,a.noind;";
-		}elseif ($noind == 'B0717') { //Order ##954281 (PERMOHONAN HAK AKSES DI PROGRAM ERP)
-	    	 $sql = "select a.noind,a.nama, b.seksi
+		} elseif ($noind == 'B0717') { //Order ##954281 (PERMOHONAN HAK AKSES DI PROGRAM ERP)
+			$sql = "select a.noind,a.nama, b.seksi
 				from hrd_khs.tpribadi a
 				left join hrd_khs.tseksi b on a.kodesie=b.kodesie
 	    		where left(a.kodesie,7) in (select left(kodesie,7) from hrd_khs.trefjabatan where noind = 'B0717')
 	    		and a.keluar = false
 				order by a.kodesie,a.noind;";
-	    }elseif ($noind == 'J1378') { //Order #112817 (Pembuatan Login ERP)
-	    	 $sql = "select a.noind,a.nama, b.seksi
+		} elseif ($noind == 'J1378') { //Order #112817 (Pembuatan Login ERP)
+			$sql = "select a.noind,a.nama, b.seksi
 				from hrd_khs.tpribadi a
 				left join hrd_khs.tseksi b on a.kodesie=b.kodesie
 	    		where left(a.kodesie,5) in ('10101','10102')
 	    		and a.keluar = false
 				order by a.kodesie,a.noind;";
-	    }elseif ($noind == 'J1338') { //Order #456799 (Pembuatan Login ERP)
-	    	 $sql = "select a.noind,a.nama, b.seksi
+		} elseif ($noind == 'J1338') { //Order #456799 (Pembuatan Login ERP)
+			$sql = "select a.noind,a.nama, b.seksi
 				from hrd_khs.tpribadi a
 				left join hrd_khs.tseksi b on a.kodesie=b.kodesie
 	    		where left(a.kodesie,3) in ('302','324','325')
 	    		and a.keluar = false
 				order by a.kodesie,a.noind;";
-	    }elseif ($noind == 'H8455') { //Order #456799 (Pembuatan Login ERP)
-	    	 $sql = "select a.noind,a.nama, b.seksi
+		} elseif ($noind == 'H8455') { //Order #456799 (Pembuatan Login ERP)
+			$sql = "select a.noind,a.nama, b.seksi
 				from hrd_khs.tpribadi a
 				left join hrd_khs.tseksi b on a.kodesie=b.kodesie
 	    		where left(a.kodesie,7) in ('3070103','3070201','3070301')
 	    		and a.keluar = false
 				order by a.kodesie,a.noind;";
-	    }else{
-			    if('306030'==substr($kd,0,6)) //ada diticket
-			    {
-			    $sql = "select a.noind,a.nama, b.seksi
-				from hrd_khs.tpribadi a
-				left join hrd_khs.tseksi b on a.kodesie=b.kodesie
-						where left(a.kodesie,6) = left('$kd',6)
-						and a.keluar = false
-						order by a.kodesie,a.noind;";
-			    }
-			    else
-			    {
+		} elseif ($noind == 'B0365') { // Suwardi | #401628 akses seksi pengembangan prototype A(3060403) & B(3060404)
+			$sql = "select a.noind,a.nama, b.seksi
+				 from hrd_khs.tpribadi a
+				 left join hrd_khs.tseksi b on a.kodesie=b.kodesie
+					 where left(a.kodesie,7) in (left('$kd', 7), '3060403', '3060404')
+					 and a.keluar = false
+				 order by a.kodesie,a.noind;";
+		} elseif ($noind == 'B0267') { // Nugroho Budi Utomo | #854719 akses seksi toolware house-tks(3240101) dan seksi assembling gear transmission-tks(3250201)
+			$sql = "select a.noind,a.nama, b.seksi
+				 from hrd_khs.tpribadi a
+				 left join hrd_khs.tseksi b on a.kodesie=b.kodesie
+					 where left(a.kodesie, 7) in (left('$kd', 7), '3240101', '3250201')
+					 or a.kodesie like trim(TRAILING '0' FROM '$kd') || '%'
+					 and a.keluar = false
+				 order by a.kodesie,a.noind;";
+		} else {
+			if ('306030' == substr($kd, 0, 6)) //ada diticket
+			{
+				$sql = "select a.noind,a.nama, b.seksi
+									from hrd_khs.tpribadi a
+									left join hrd_khs.tseksi b on a.kodesie=b.kodesie
+									where left(a.kodesie,6) = left('$kd',6)
+									and a.keluar = false
+									order by a.kodesie,a.noind;";
+			} else {
 				$sql = "select a.noind,a.nama, b.seksi
 				from hrd_khs.tpribadi a
 				left join hrd_khs.tseksi b on a.kodesie=b.kodesie
 						where left(a.kodesie,7) = left('$kd',7)
 						and a.keluar = false
 						order by a.kodesie,a.noind;";
-			    }
+			}
 		}
 
 		$result = $this->personalia->query($sql);
 		return $result->result_array();
 	}
 
-	public function getPresensiByNoind($noind,$tgl){
+	public function getPresensiByNoind($noind, $tgl)
+	{
 		$sql = "select 	case when kd_ket in ('PKJ','PLB') then
 							case when 	(
 											select count(*)
@@ -133,7 +149,8 @@ class M_presensibulanan extends Ci_Model
 		return $result->result_array();
 	}
 
-	public function getTanggal($tgl){
+	public function getTanggal($tgl)
+	{
 		$tanggal = explode(" - ", $tgl);
 		$tgl1 = $tanggal[0];
 		$tgl2 = $tanggal[1];
@@ -144,38 +161,38 @@ class M_presensibulanan extends Ci_Model
 	}
 
 	public function rekapTIMS($tgl, $kd)
-	    {
-	    	$tanggal = explode(" - ", $tgl);
-			$tgl1 = $tanggal[0];
-			$tgl2 = $tanggal[1];
-			$noind = $this->session->user;
+	{
+		$tanggal = explode(" - ", $tgl);
+		$tgl1 = $tanggal[0];
+		$tgl2 = $tanggal[1];
+		$noind = $this->session->user;
 
-			$param = "";
-			// left(pri.kodesie,7) = left('$kodesie',7)
-			if ($noind == 'B0380') { // ada di ticket
-			 $param = "(left(pri.kodesie,7) = left('$kd',7) or pri.noind in ('J1171','G1041','L8001'))";
-		}elseif ($noind == 'B0370') { //ada di ticket
-			 $param = "(left(pri.kodesie,7) = left('$kd',7) or pri.noind in ('D1535','P0426'))";
-		}elseif ($noind == 'H7726') { //Order #972784 (PENAMBAHAN AKSES BUKA PRESENSI DI PROGRAM ERP)
-	    	 $param = "left(pri.kodesie,5) = left('$kd',5)";
-		}elseif ($noind == 'B0717') { //Order ##954281 (PERMOHONAN HAK AKSES DI PROGRAM ERP)
-	    	 $param = "left(pri.kodesie,7) in ('3070103','3070104','3070102','3070201','3070301')";
-	    }elseif ($noind == 'J1378') { //Order #112817 (Pembuatan Login ERP)
-	    	 $param = "left(pri.kodesie,5) in ('10101','10102')";
-	    }elseif ($noind == 'J1338') { //Order #456799 (Pembuatan Login ERP)
-	    	 $param = "left(pri.kodesie,3) in ('302','324','325')";
-	    }else{
-			    if('306030'==substr($kd,0,6)) //ada diticket
-			    {
-			    $param = "left(pri.kodesie,6) = left('$kd',6)";
-			    }
-			    else
-			    {
+		$param = "";
+		// left(pri.kodesie,7) = left('$kodesie',7)
+		if ($noind == 'B0380') { // ada di ticket
+			$param = "(left(pri.kodesie,7) = left('$kd',7) or pri.noind in ('J1171','G1041','L8001'))";
+		} elseif ($noind == 'B0370') { //ada di ticket
+			$param = "(left(pri.kodesie,7) = left('$kd',7) or pri.noind in ('D1535','P0426'))";
+		} elseif ($noind == 'H7726') { //Order #972784 (PENAMBAHAN AKSES BUKA PRESENSI DI PROGRAM ERP)
+			$param = "left(pri.kodesie,5) = left('$kd',5)";
+		} elseif ($noind == 'B0717') { //Order ##954281 (PERMOHONAN HAK AKSES DI PROGRAM ERP)
+			$param = "left(pri.kodesie,7) in ('3070103','3070104','3070102','3070201','3070301')";
+		} elseif ($noind == 'J1378') { //Order #112817 (Pembuatan Login ERP)
+			$param = "left(pri.kodesie,5) in ('10101','10102')";
+		} elseif ($noind == 'J1338') { //Order #456799 (Pembuatan Login ERP)
+			$param = "left(pri.kodesie,3) in ('302','324','325')";
+		} else if ($noind == 'B0267') { // Nugroho Budi Utomo | #854719 akses seksi toolware house-tks(3240101) dan seksi assembling gear transmission-tks(3250201)
+			$param = "left(pri.kodesie, 7) in (left('$kd', 7), '3240101', '3250201') or pri.kodesie like trim(TRAILING '0' FROM '$kd') || '%'";
+		} else {
+			if ('306030' == substr($kd, 0, 6)) //ada diticket
+			{
+				$param = "left(pri.kodesie,6) = left('$kd',6)";
+			} else {
 				$param = "left(pri.kodesie,7) = left('$kd',7)";
-			    }
+			}
 		}
 
-	    	$rekapTIMS		= "	select 		pri.noind,
+		$rekapTIMS		= "	select 		pri.noind,
 											pri.noind_baru,
 											pri.nik,
 											pri.tgllahir,
@@ -682,10 +699,9 @@ class M_presensibulanan extends Ci_Model
 								order by 	tseksi.kodesie,
 											pri.kd_jabatan,
 											pri.noind";
-			// echo $rekapTIMS.'<br/>'; exit();
-			// echo $parameter;exit();
-			$queryRekapTIMS =	$this->personalia->query($rekapTIMS);
-			return $queryRekapTIMS->result_array();
-	    }
+		// echo $rekapTIMS.'<br/>'; exit();
+		// echo $parameter;exit();
+		$queryRekapTIMS =	$this->personalia->query($rekapTIMS);
+		return $queryRekapTIMS->result_array();
+	}
 }
-?>

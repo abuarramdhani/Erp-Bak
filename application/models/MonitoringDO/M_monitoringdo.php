@@ -241,6 +241,7 @@ class M_monitoringdo extends CI_Model
                      AND msib.inventory_item_id = mtrl.inventory_item_id
                      AND msib.organization_id = mtrl.organization_id
                      AND mtrh.request_number = '$data'
+                     AND mtrl.line_status in (3,7)
                 ORDER BY msib.description";
 
         if (!empty($data)) {
@@ -268,7 +269,9 @@ class M_monitoringdo extends CI_Model
                              THEN 1
                           ELSE 0
                        END,
-                       TRUNC (kqt.tgl_kirim) DESC";
+                       TRUNC (kqt.tgl_kirim) DESC,
+                       kqt.plat_number,
+                       1";
         $response = $this->oracle->query($sql)->result_array();
 
         return $response;
@@ -291,6 +294,7 @@ class M_monitoringdo extends CI_Model
                      AND msib.inventory_item_id = mtrl.inventory_item_id
                      AND msib.organization_id = mtrl.organization_id
                      AND mtrh.request_number = '$data'
+                     AND mtrl.line_status in (3,7)
                 ORDER BY msib.description";
 
         if (!empty($data)) {
@@ -377,7 +381,9 @@ class M_monitoringdo extends CI_Model
                              THEN 1
                           ELSE 0
                        END,
-                       TRUNC (kqsm.tgl_kirim) DESC";
+                       TRUNC (kqsm.tgl_kirim) DESC,
+                       kqsm.plat_number,
+                       1";
         $response = $this->oracle->query($sql)->result_array();
 
         return $response;
@@ -435,7 +441,9 @@ class M_monitoringdo extends CI_Model
                              THEN 1
                           ELSE 0
                        END,
-                       TRUNC (kqsc.tgl_kirim) DESC";
+                       TRUNC (kqsc.tgl_kirim) DESC,
+                       kqsc.plat_number,
+                       1";
         $query = $this->oracle->query($sql);
         return $query->result_array();
     }
@@ -545,72 +553,89 @@ class M_monitoringdo extends CI_Model
         return 0;
       }
     }
+    
+    
+    public function cek_checklist($req)
+    {
+      $sql = "SELECT *
+                FROM khs_cetak_checklist_do kccd
+               WHERE kccd.request_number = '$req'";
+
+      $response = $this->oracle->query($sql)->num_rows();
+
+      if ($response < 1) {
+        return 1;
+      }else {
+        return 0;
+      }
+    }
 
 
-    // public function insertDO($data)
-    // {
-    //     $user_login = $this->session->user;
-    //     $date_now = date('d-M-Y');
-    //     if (!empty($data['HEADER_ID'])) {
-    //         if (!empty($data['REQUEST_NUMBER'])) {
-    //             if (!empty($data['PERSON_ID'])) {
-    //                 if (!empty($data['DELIVERY_FLAG'])) {
-    //                     if (!empty($data['PLAT_NUMBER'])) {
-    //                         $this->oracle->query("INSERT INTO KHS_PERSON_DELIVERY(HEADER_ID
-    //                                          ,REQUEST_NUMBER
-    //                                          ,PERSON_ID
-    //                                          ,DELIVERY_FLAG
-    //                                          ,PLAT_NUMBER
-    //                                          ,ASSIGNER_ID
-    //                                          ,ASSIGN_DATE
-    //                                          )
-    //                         VALUES ('$data[HEADER_ID]'
-    //                                ,'$data[REQUEST_NUMBER]'
-    //                                ,'$data[PERSON_ID]'
-    //                                ,'$data[DELIVERY_FLAG]'
-    //                                ,'$data[PLAT_NUMBER]'
-    //                                ,'$user_login'
-    //                                ,'$date_now'
-    //                                )
-    //                         ");
-    //                         $response = 1;
-    //                     } else {
-    //                         $response = 0;
-    //                         // $response = array(
-    //                         //     'success' => false,
-    //                         //     'message' => 'PLAT_NUMBER is empty, cannot do this action'
-    //                         // );
-    //                     }
-    //                 } else {
-    //                     $response = 0;
-    //                     // $response = array(
-    //                     //     'success' => false,
-    //                     //     'message' => 'DELIVERY_FLAG is empty, cannot do this action'
-    //                     // );
-    //                 }
-    //             } else {
-    //                 $response = 0;
-    //                 // $response = array(
-    //                 //     'success' => false,
-    //                 //     'message' => 'PERSON_ID is empty, cannot do this action'
-    //                 // );
-    //             }
-    //         } else {
-    //             $response = 0;
-    //             // $response = array(
-    //             //     'success' => false,
-    //             //     'message' => 'REQUEST_NUMBER is empty, cannot do this action'
-    //             // );
-    //         }
-    //     } else {
-    //         $response = 0;
-    //         // $response = array(
-    //         //     'success' => false,
-    //         //     'message' => 'header id is empty, cannot do this action'
-    //         // );
-    //     }
-    //     return $response;
-    // }
+    public function insertDO($data)
+    {
+        // $user_login = $this->session->user;
+        // $date_now = date('d-M-Y');
+        // if (!empty($data['HEADER_ID'])) {
+        //     if (!empty($data['REQUEST_NUMBER'])) {
+        //         if (!empty($data['PERSON_ID'])) {
+        //             if (!empty($data['DELIVERY_FLAG'])) {
+        //                 if (!empty($data['PLAT_NUMBER'])) {
+        //                     $this->oracle->query("INSERT INTO KHS_PERSON_DELIVERY(HEADER_ID
+        //                                      ,REQUEST_NUMBER
+        //                                      ,PERSON_ID
+        //                                      ,DELIVERY_FLAG
+        //                                      ,PLAT_NUMBER
+        //                                      ,ASSIGNER_ID
+        //                                      ,ASSIGN_DATE
+        //                                      )
+        //                     VALUES ('$data[HEADER_ID]'
+        //                             ,'$data[REQUEST_NUMBER]'
+        //                             ,'$data[PERSON_ID]'
+        //                             ,'$data[DELIVERY_FLAG]'
+        //                             ,'$data[PLAT_NUMBER]'
+        //                             ,'$user_login'
+        //                             ,'$date_now'
+        //                             )
+        //                     ");
+        //                     $response = 1;
+        //                 } else {
+        //                     $response = 0;
+        //                     // $response = array(
+        //                     //     'success' => false,
+        //                     //     'message' => 'PLAT_NUMBER is empty, cannot do this action'
+        //                     // );
+        //                 }
+        //             } else {
+        //                 $response = 0;
+        //                 // $response = array(
+        //                 //     'success' => false,
+        //                 //     'message' => 'DELIVERY_FLAG is empty, cannot do this action'
+        //                 // );
+        //             }
+        //         } else {
+        //             $response = 0;
+        //             // $response = array(
+        //             //     'success' => false,
+        //             //     'message' => 'PERSON_ID is empty, cannot do this action'
+        //             // );
+        //         }
+        //     } else {
+        //         $response = 0;
+        //         // $response = array(
+        //         //     'success' => false,
+        //         //     'message' => 'REQUEST_NUMBER is empty, cannot do this action'
+        //         // );
+        //     }
+        // } else {
+        //     $response = 0;
+        //     // $response = array(
+        //     //     'success' => false,
+        //     //     'message' => 'header id is empty, cannot do this action'
+        //     // );
+        // }
+        $response = 1;
+        return $response;
+    }
 
 
     public function updateDO($data)
@@ -768,11 +793,19 @@ class M_monitoringdo extends CI_Model
     }
 
 
-    public function bodySurat($data)
+    public function bodySurat($data,$tipe)
     {
+        if ($tipe == 'DO') {
+          $order = 'kqbd.line_number';
+        }
+        else {
+          $order = 'kqbd.item';
+        }
+
         $query = "SELECT *
                     FROM khs_qweb_body_dospb1 kqbd
-                   WHERE kqbd.request_number = '$data'";
+                   WHERE kqbd.request_number = '$data'
+                ORDER BY $order";
 
         $response = $this->oracle->query($query)->result_array();
 

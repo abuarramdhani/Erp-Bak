@@ -997,7 +997,9 @@ function saveBeratPack(no) {
         type : "POST",
         dataType: "html",
         success: function(data){
-            $('#tambahbrt').append('<tr><td>'+nomor+'</td><td><select class="form-control select2" id="jenis_kemasan'+nomor+'" name="jenis_kemasan" style="width:100%" data-placeholder="pilih kemasan"><option></option><option value="1">KARDUS KECIL</option><option value="2">KARDUS SEDANG</option><option value="3">KARDUS PANJANG</option><option value="4">KARUNG</option><option value="5">PETI</option></select></td><td><input type="text" class="form-control" id="berat'+nomor+'" name="berat" placeholder="masukkan berat (KG)" onchange="saveBeratPack('+nomor+')"><input type="hidden" id="no_spb'+nomor+'" value="'+no_spb+'"></td></tr>');
+            if (data == 'save') {
+                $('#tambahbrt').append('<tr><td>'+nomor+'</td><td><select class="form-control select2" id="jenis_kemasan'+nomor+'" name="jenis_kemasan" style="width:100%" data-placeholder="pilih kemasan"><option></option><option value="1">KARDUS KECIL</option><option value="2">KARDUS SEDANG</option><option value="3">KARDUS PANJANG</option><option value="4">KARUNG</option><option value="5">PETI</option></select></td><td><input type="text" class="form-control" id="berat'+nomor+'" name="berat" placeholder="masukkan berat (KG)" onchange="saveBeratPack('+nomor+')"><input type="hidden" id="no_spb'+nomor+'" value="'+no_spb+'"></td></tr>');
+            }
         }
     });
 }
@@ -1230,3 +1232,42 @@ function editColy(no) {
         })
 }
 
+//---------------------------------------HISTORY-----------------------------------------------------------------------------
+
+function detailJenisItem(no) {
+    var tanggal = $('#tgl_input'+no).val();
+
+    $.ajax({
+        url : baseurl + "KapasitasGdSparepart/History/detailJenisItem",
+        data : {tanggal : tanggal},
+        type : 'POST',
+        datatype : "html",
+        success : function (result) {
+            $('#datajenisitem').html(result);
+            $('#detailjenisitem').modal('show'); 
+            $('#tbl_jenisitem').dataTable({
+                "scrollX": true,
+            });
+        }
+    })
+}
+
+function schPICdospb(th) {
+    var tgl_awal = $('#tglAwal').val();
+    var tgl_akhir = $('#tglAkhir').val();
+    $.ajax({
+        url : baseurl + "KapasitasGdSparepart/History/searchDataPIC",
+        data : {tgl_awal : tgl_awal, tgl_akhir : tgl_akhir},
+        type : 'POST',
+        datatype : "html",
+        beforeSend: function() {
+            $('div#tbl_pic_dospb' ).html('<center><img style="width:80px; height:auto" src="'+baseurl+'assets/img/gif/loading11.gif"></center>' );
+        },
+        success : function (result) {
+            $('div#tbl_pic_dospb' ).html(result);
+            $('#tbl_pic_history').dataTable({
+                "scrollX": true,
+            });
+        }
+    })
+}

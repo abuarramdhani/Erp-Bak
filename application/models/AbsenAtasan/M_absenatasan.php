@@ -96,11 +96,25 @@ class M_absenatasan extends CI_Model
 		$this->load->model('SystemIntegration/M_submit');
 		$data = array();
 		$kodesie = $this->session->kodesie;
+		//cek perbantuan jika ada pakai kodesinya
+		$d = date('Y-m-d');
+		$sqll = "select
+					kodesie_baru
+				from
+					\"Surat\".tsurat_perbantuan tp
+				where
+					noind = '$noind'
+					and tanggal_selesai_perbantuan > '$d'";
+		if($this->personalia->query($sqll)->num_rows() > 0){
+			$kodesie = $this->personalia->query($sqll)->row()->kodesie_baru;
+		}
+
 		if(!empty($kodesie)){
 			$kodesie = $kodesie;
 		}else{
 			$kodesie = $this->personalia->query("select * from hrd_khs.trefjabatan where noind='$noind'")->result_array()[0]['kodesie'];
 		}
+
 		$kodesie_subs = substr($kodesie, 0, 4);
 		$kodesie_5 = substr($kodesie,0,5);
 			
@@ -146,20 +160,20 @@ class M_absenatasan extends CI_Model
 					FROM hrd_khs.tpribadi a 
 						INNER JOIN hrd_khs.tseksi b on a.kodesie=b.kodesie
 						INNER JOIN hrd_khs.torganisasi c on a.kd_jabatan=c.kd_jabatan
+						INNER join hrd_khs.trefjabatan t on t.noind = a.noind 
 					WHERE
 						$where
-						and substring(a.kodesie, 1, 4) = (
-							SELECT substring( kodesie, 1, 4 )
-							FROM hrd_khs.tpribadi d
-							WHERE d.noind = '$noind'
-								and d.keluar = '0'
-						)
-						and a.keluar ='0'
-					ORDER BY a.noind,a.nama";
+					and substring(t.kodesie, 1, 4) = (
+						SELECT substring( '$kodesie', 1, 4 )
+					)
+					and a.keluar ='0'
+					group by a.noind,a.nama
+					ORDER BY a.noind,a.nama;";
 			$result2 = $personalia->query($sql2)->result_array();
 			$sql3 = "SELECT su.user_name employee_code, su.employee_name FROM si.si_approver_khusus ak 
 					LEFT JOIN sys.vi_sys_user su ON su.user_name =  ak.no_induk
-					WHERE ak.kodesie = '$kodesie_subs'";
+					WHERE ak.kodesie like '$kodesie_subs%'";
+
 			$result3 = $this->db->query($sql3)->result_array();
 
 			$sqlPosShowroom = "select * from hrd_khs.trefjabatan where substr(kodesie,1,3) = '209' and kd_jabatan = '11' and substr(kodesie,7,1) != '1' order by substr(kodesie,7,1)";

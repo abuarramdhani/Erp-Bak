@@ -10,8 +10,8 @@
         <th><center>Tujuan</center></th>
         <th><center>Tanggal Input</center></th>
         <th><center>Status</center></th>
-        <th ><center>Detail</center></th>
-        <th ><center>Aksi</center></th>
+        <th style="width: 9%"><center>Detail</center></th>
+        <th style="width: 9%"><center>Aksi</center></th>
       </tr>
     </thead>
     <tbody>

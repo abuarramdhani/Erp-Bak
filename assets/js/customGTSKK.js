@@ -13,20 +13,52 @@ $('#tabel_daftarTSKK').DataTable({
 	"lengthChange": false
 });
 
-// $(document).ready(function () {
+$(document).ready(function () {
 
-// })
+$('input[name="perhitunganTakt"]').on('ifChanged', function () {
+	if ($('input[name=perhitunganTakt]:checked').val() == "1") {
+		$('.tskk_delik_cek').show()
+		$('.tskk_tt').show()
+		$('input[name=taktTime]').show()
+		$('input[name=taktTime]').val('')
+		$('input[name=txtWaktu1Shift]').val('')
+		$('input[name=txtJumlahShift]').val('')
+		$('input[name=txtJumlahHariKerja]').val('')
+		$('input[name=txtForecast]').val('')
+		$('input[name=txtRencana]').val('')
+		$('input[name=txtQtyUnit]').val('')
+		// console.log("Ya");
+	} else if ($('input[name=perhitunganTakt]:checked').val() == "0") {
+		// console.log("Tidak");
+		$('.tskk_delik_cek').hide()
+		$('.tskk_tt').hide()
+		$('input[name=taktTime]').hide()
+		$('input[name=taktTime]').val('99999')
+		$('input[name=txtWaktu1Shift]').val('0')
+		$('input[name=txtJumlahShift]').val('0')
+		$('input[name=txtJumlahHariKerja]').val('0')
+		$('input[name=txtForecast]').val('0')
+		$('input[name=txtRencana]').val('0')
+		$('input[name=txtQtyUnit]').val('0')
+	}
+});
+})
 
 //ADD ROWS FOR OBSERVATION SHEET//
 	var nomor ="6";
 	// var nc = nomor-1;
 	function addRowObservation(){
+		// 2-10-2020
+		let no_gaes = $(`#tblObservasi tbody tr`).length;
+		nomor = Number(no_gaes) + 1;
 		// KOLOM 1
 		var html = '<tr class="nomor_'+nomor+'"><td class="posisi">'+nomor+'</td>';
 		console.log(nomor);
 		// KOLOM 2
 		html += '<td><input type="checkbox" name="checkBoxParalel['+(nomor-1)+']" value="PARALEL" class="checkBoxParalel" onchange="//chckParalel(this)"></td>'
-		// KOLOM 3 
+		// KOLOM 2.5
+		html += '<td><input type="number" class="form-control" style="width: 70px;" name="start_time_together[]" value=""></td>'
+		// KOLOM 3
 		html += '<td><select id="slcJenis_'+nomor+'" onchange="myFunctionTSKK(this)" name="slcJenisProses[]" class="form-control select4" id="" style="width:100%;" title="Jenis Proses" >';
 		html += '<option value=""> </option>';
 		html += '<option value="MANUAL" id="manual"> MANUAL </option>';
@@ -36,13 +68,13 @@ $('#tabel_daftarTSKK').DataTable({
 		// html += '<option value="WALK (Inheritance)" id="walk"> WALK (Inheritance) </option>';
 		html += "</select></td>";
 		html += '<td><div class="col-lg-12"><div class="col-lg-6"><select class="form-control select2 slcElemen" id="slcElemen_'+nomor+'" name="txtSlcElemen[]" data-placeholder="Elemen" tabindex="-1" aria-hidden="true" ></select></div><div class="col-lg-6"><input type="text" class="form-control elemen" style="width: 100%" type="text" id="elemen_'+nomor+'" name="elemen[]" placeholder="Keterangan Elemen"></div></div></td>';
-		// KOLOM 4         
+		// KOLOM 4
 		html += '<td><input type="number" onchange="minMaxId(this)" name="waktu1[]" class="form-control waktuObs inputWaktuKolom1" placeholder="Detik" ></td>';
 		// KOLOM 6
 		html += '<td><input type="number" onchange="minMaxId(this)"  name="waktu2[]" class="form-control waktuObs inputWaktuKolom2" placeholder="Detik" ></td>';
 		// KOLOM 7
 		html += '<td><input type="number" onchange="minMaxId(this)"  name="waktu3[]" class="form-control waktuObs inputWaktuKolom3" placeholder="Detik" ></td>';
-		//KOLOM 8 
+		//KOLOM 8
 		html += '<td><input type="number" onchange="minMaxId(this)"  name="waktu4[]" class="form-control waktuObs inputWaktuKolom4" placeholder="Detik" ></td>';
 		//KOLOM 9
 		html += '<td><input type="number" onchange="minMaxId(this)"  name="waktu5[]" class="form-control waktuObs inputWaktuKolom5" placeholder="Detik" ></td>';
@@ -63,7 +95,7 @@ $('#tabel_daftarTSKK').DataTable({
 		//KOLOM 17
 		html += '<td><input type="number" onchange="minMaxId(this)" id="wDistribusi_".$no name="wDistribusi[]" class="form-control wDistribusi" placeholder="Detik" readonly></td>';
 		//KOLOM SELIPAN
-		html += '<td><input type="number" onchange="minMaxId(this)" onclick="checkDistributionTime(this)" name="wDistribusiAuto[]" class="form-control wDistribusiAuto" placeholder="Detik" readonly></td>';																		
+		html += '<td><input type="number" onchange="minMaxId(this)" onclick="checkDistributionTime(this)" name="wDistribusiAuto[]" class="form-control wDistribusiAuto" placeholder="Detik" readonly></td>';
 		//KOLOM 18
 		html += '<td><input type="number" id="wKerja_".$no name="wKerja[]" class="form-control wKerja" placeholder="Detik" readonly></td>';
 		//KOLOM 19
@@ -74,14 +106,14 @@ $('#tabel_daftarTSKK').DataTable({
 
 		nomor++;
 		// console.log(html);
-		
+
 		$('#tbodyLembarObservasi').append(html);
 
 		$('input').iCheck({
 			checkboxClass: 'icheckbox_flat-blue',
 			radioClass: 'iradio_flat-blue'
 		});
-		
+
 		$('input[name="terdaftar"]').on('ifChanged', function () {
 			if ($('input[name=terdaftar]:checked').val() == "TidakTerdaftar") {
 				console.log("tdk");
@@ -122,7 +154,7 @@ $('#tabel_daftarTSKK').DataTable({
 				});
 
 			$('.slcElemen').select2({
-				ajax: {	
+				ajax: {
 				url:baseurl+'GeneratorTSKK/C_GenTSKK/ElemenKerja/',
 				dataType: 'json',
 				type: "GET",
@@ -141,7 +173,7 @@ $('#tabel_daftarTSKK').DataTable({
 							})
 						};
 					}
-				}	
+				}
 			});
 
 			$('.posisi').each((i, item) => {
@@ -162,7 +194,7 @@ $('#tabel_daftarTSKK').DataTable({
 		// html += '<option value="AUTO (Inheritance)">AUTO (Inheritance)</option>';
 		html += '<option value="WALK" id="walk"> WALK </option>';
 		html += "</select></td>";
-		// KOLOM 3 
+		// KOLOM 3
 		html += '<td><div class="col-lg-12"><div class="col-lg-6"><select class="form-control select2 slcElemen" id="slcElemen_'+nomor+'" name="txtSlcElemen[]" data-placeholder="Elemen" tabindex="-1" aria-hidden="true" disabled></select></div><div class="col-lg-6" disabled><input type="text" class="form-control elemen" style="width: 100%" type="text" id="elemen_'+nomor+'" name="elemen[]" placeholder="Keterangan Elemen" readonly></div></div></td>';
 		// KOLOM 4
 		html += '<td><select id="slcTipeUrutan_'+nomor+'" name="slcTipeUrutan[]" class="form-control tipe_urutan" style="width:100%;" title="Tipe Urutan Proses" disabled>';
@@ -176,7 +208,7 @@ $('#tabel_daftarTSKK').DataTable({
 		html += '<td><input type="number" onchange="minMaxId(this)"  name="waktu2[]" class="form-control waktuObs inputWaktuKolom2" placeholder="Detik" readonly></td>';
 		// KOLOM 7
 		html += '<td><input type="number" onchange="minMaxId(this)"  name="waktu3[]" class="form-control waktuObs inputWaktuKolom3" placeholder="Detik" readonly></td>';
-		//KOLOM 8 
+		//KOLOM 8
 		html += '<td><input type="number" onchange="minMaxId(this)"  name="waktu4[]" class="form-control waktuObs inputWaktuKolom4" placeholder="Detik" readonly></td>';
 		//KOLOM 9
 		html += '<td><input type="number" onchange="minMaxId(this)"  name="waktu5[]" class="form-control waktuObs inputWaktuKolom5" placeholder="Detik" readonly></td>';
@@ -226,7 +258,7 @@ $('#tabel_daftarTSKK').DataTable({
 
 			$('.slcElemen').select2({
 				// minimumInputLength: 3,
-				ajax: {	
+				ajax: {
 				url:baseurl+'GeneratorTSKK/C_GenTSKK/ElemenKerja/',
 				dataType: 'json',
 				type: "GET",
@@ -245,7 +277,7 @@ $('#tabel_daftarTSKK').DataTable({
 							})
 						};
 					}
-				}	
+				}
 			});
 
 			$('.posisi').each((i, item) => {
@@ -256,9 +288,14 @@ $('#tabel_daftarTSKK').DataTable({
 	//ADD ROWS FOR OBSERVATION SHEET ON EDIT PAGE//
 	var nomor ="6";
 	function addRowObservationEdit(){
+		// 2-10-2020 hia
+		let no_gaes = $(`#tblObservasiEdit tbody tr`).length;
+		nomor = Number(no_gaes) + 1;
 		// KOLOM 1
 		var html = '<tr class="nomor_'+nomor+'"><td class="posisi">'+nomor+'</td>';
 		html += '<td><input type="checkbox" name="checkBoxParalel['+(nomor-1)+']" value="PARALEL" class="checkBoxParalel"></td>'
+		// KOLOM 2.5
+		html += '<td><input type="number" class="form-control" style="width: 70px;" name="start_time_together[]" value=""></td>'
 		// KOLOM 2
 		html += '<td><select id="slcJenis_'+nomor+'" onchange="myFunctionTSKK(this)" name="slcJenisProses[]" class="form-control select4" id="" style="width:100%;" title="Jenis Proses">';
 		html += '<option value=""> </option>';
@@ -267,7 +304,8 @@ $('#tabel_daftarTSKK').DataTable({
 		// html += '<option value="AUTO (Inheritance)">AUTO (Inheritance)</option>';
 		html += '<option value="WALK" id="walk"> WALK </option>';
 		html += "</select></td>";
-		// KOLOM 3 
+
+		// KOLOM 3
 		html += '<td><div class="col-lg-12"><div class="col-lg-6"><select class="form-control select2 slcElemen" id="slcElemen_'+nomor+'" name="txtSlcElemen[]" data-placeholder="Elemen" tabindex="-1" aria-hidden="true" ></select></div><div class="col-lg-6"><input type="text" class="form-control elemen" style="width: 100%" type="text" id="elemen_'+nomor+'" name="elemen[]" placeholder="Keterangan Elemen"></div></div></td>';
 		// KOLOM 4
 		// KOLOM 5
@@ -276,7 +314,7 @@ $('#tabel_daftarTSKK').DataTable({
 		html += '<td><input type="number" onchange="minMaxId(this)"  name="waktu2[]" class="form-control waktuObs inputWaktuKolom2" placeholder="Detik" ></td>';
 		// KOLOM 7
 		html += '<td><input type="number" onchange="minMaxId(this)"  name="waktu3[]" class="form-control waktuObs inputWaktuKolom3" placeholder="Detik" ></td>';
-		//KOLOM 8 
+		//KOLOM 8
 		html += '<td><input type="number" onchange="minMaxId(this)"  name="waktu4[]" class="form-control waktuObs inputWaktuKolom4" placeholder="Detik" ></td>';
 		//KOLOM 9
 		html += '<td><input type="number" onchange="minMaxId(this)"  name="waktu5[]" class="form-control waktuObs inputWaktuKolom5" placeholder="Detik" ></td>';
@@ -295,7 +333,7 @@ $('#tabel_daftarTSKK').DataTable({
 		//KOLOM 16
 		html += '<td><input type="number" id="range_".$no name="range[]" class="form-control range" placeholder="Detik" readonly></td>';
 		//KOLOM 17
-		html += '<td><input type="number" onchange="minMaxId(this)" onclick="checkDistributionTime(this)" id="wDistribusi" name="wDistribusi[]" class="form-control wDistribusi" placeholder="Detik" readonly></td>';			
+		html += '<td><input type="number" onchange="minMaxId(this)" onclick="checkDistributionTime(this)" id="wDistribusi" name="wDistribusi[]" class="form-control wDistribusi" placeholder="Detik" readonly></td>';
 		//KOLOM 18
 		html += '<td><input type="number" onchange="minMaxId(this)" onclick="checkDistributionTime(this)" name="wDistribusiAuto[]" class="form-control wDistribusiAuto" placeholder="Detik" readonly></td>';
 		//KOLOM 19
@@ -357,7 +395,7 @@ $('#tabel_daftarTSKK').DataTable({
 
 			$('.slcElemen').select2({
 				// minimumInputLength: 3,
-				ajax: {	
+				ajax: {
 				url:baseurl+'GeneratorTSKK/C_GenTSKK/ElemenKerja/',
 				dataType: 'json',
 				type: "GET",
@@ -376,7 +414,7 @@ $('#tabel_daftarTSKK').DataTable({
 							})
 						};
 					}
-				}	
+				}
 			});
 
 			$('.posisi').each((i, item) => {
@@ -391,13 +429,13 @@ $('#tabel_daftarTSKK').DataTable({
 		for(var i = 0; i < a.length; i++) result.set(i, a[i])
 		return result
   	}
-  
+
 // fungsi sort descending map
   	function sortMapDescendingByValue(a, b) { return b[1] - a[1]; }
-  
+
 // fungsi total array
   	function total(a, b) { return a + b; }
-  
+
 // fungsi distinct array
   	function unique (value, index, self) { return self.indexOf(value) === index; }
 
@@ -406,15 +444,15 @@ $('#tabel_daftarTSKK').DataTable({
 
 		//CHANGE THE NUMBER FROM DECIMAL INTO CEIL MATH
 
-		$(a).closest('tr').find('input.waktuObs').each(function() { 
+		$(a).closest('tr').find('input.waktuObs').each(function() {
 			var val = $(this).val();
 			if(val != ""){
 				$(this).val(Math.ceil(val));
 			}
 		});
-	
+
 		//FIND MIN & R
-		var arr = [];	
+		var arr = [];
 		$(a).closest('tr').find('input.waktuObs').each(function() {
 			// alert();
 			var val = $(this).val();
@@ -423,10 +461,10 @@ $('#tabel_daftarTSKK').DataTable({
 			}
 		});
 		// console.log(arr);
-		
+
 		var minimum = Math.min.apply(Math,arr);
 		var maximum = Math.max.apply(Math,arr);
-		
+
 		$(a).closest('tr').find('input.xmin').val(minimum);                               //SET Xmin
 		$(a).closest('tr').find('input.range').val(Number(maximum) - Number(minimum));	  //SET R
 
@@ -439,7 +477,7 @@ $('#tabel_daftarTSKK').DataTable({
 					return;
 				}
 				total += Number(item.value)
-			})		
+			})
 			if(total == false){
 				continue;
 			}
@@ -480,11 +518,11 @@ $('#tabel_daftarTSKK').DataTable({
 				range[rangeIndex++] = 0;
 			} else {
 				range[rangeIndex++] = parseInt($(this).val())
-			} 
+			}
 		})
 		///////////////////////////////////////////////////////////////////////////
 		console.log('RANGE : ' + range)
-		
+
 		// TOTAL RANGE
 		var totalRange = 0
 		range.forEach(function(i) { totalRange += i })
@@ -529,7 +567,7 @@ $('#tabel_daftarTSKK').DataTable({
 		// resultMap.forEach(function(value, _) { result[resultIndex++] = value })
 		resultMap.forEach(function(value, key) { result[key] = value })
 
-		//NGURANGIN HASIL AUTO DISTRIBUSI w/ RANGE 
+		//NGURANGIN HASIL AUTO DISTRIBUSI w/ RANGE
 		var distributionTime = []
 		var rangeAwal = []
 		var rangeAwalIndex = 0
@@ -539,7 +577,7 @@ $('#tabel_daftarTSKK').DataTable({
 				rangeAwal[rangeAwalIndex++] = 0;
 			} else {
 				rangeAwal[rangeAwalIndex++] = parseInt($(this).val())
-			} 
+			}
 		})
 		/////////////////////////////////////////////////////////////////
 		for(let i = 0; i < rangeAwal.length; i++) {
@@ -569,8 +607,8 @@ $('#tabel_daftarTSKK').DataTable({
 			total_Wdistribusi += Number(item.value)
 		})
 		console.log(total_Wdistribusi, "ini total waktu distribusi");
-		
-		var kurang = Number(distribusi) - Number(total_Wdistribusi); 
+
+		var kurang = Number(distribusi) - Number(total_Wdistribusi);
 
 		//i think over here//
 		if(kurang < 0){
@@ -580,7 +618,7 @@ $('#tabel_daftarTSKK').DataTable({
 			// console.log(krg);
 			var dstMin = (Number(distribusi) - Number(krg));
 			// console.log(dstMin, "dstMin");
-			kurang = dstMin;	
+			kurang = dstMin;
 			$(a).closest('tr').find('.wKerja').val(Number(minimum) + Number(0)); //jumlah dari x min + yg distribusi
 			// $(a).closest('tr').find('.wKerja').val(Number(minimum) + Number(input_distribusi)); //jumlah dari x min + yg distribusi
 			console.log("MINIMUM: " + maximum + "+" + "ID" + input_distribusi)
@@ -599,14 +637,14 @@ $('#tabel_daftarTSKK').DataTable({
 
 		//AUTO NGURANGIN WAKTU DISTRIBUSINYA
 		if (input_distribusi == null) {
-			$('#dst').val(distribusi);	
+			$('#dst').val(distribusi);
 		}else{
-			$('#dst').val(kurang);	
+			$('#dst').val(kurang);
 		}
-		
+
 		//5. KALO MISAL HASIL WAKTU DISTRIBUSINYA < 1 a.k.a 0 KE BAWAH
 		if (kurang < 1) {
-			$('.wDistribusi').each((i, item) => { 
+			$('.wDistribusi').each((i, item) => {
 				if(item.value != false){return}item.value = "0"
 			})
 		}
@@ -618,9 +656,9 @@ $('#tabel_daftarTSKK').DataTable({
 					// console.log(waktumu)
 					for (let i = 0; i < $('.wDistribusiAuto').size(); i++) {
 						$(".wDistribusi").eq(i).val(waktumu[i]);
-						
+
 					}
-				
+
 				//1. FIND TOTAL TIMES PER COLUMN
 				let totalKolomArr = []
 				for (let index = 0; index < 10; index++) {
@@ -630,14 +668,14 @@ $('#tabel_daftarTSKK').DataTable({
 							return;
 						}
 						total += Number(item.value)
-					})		
+					})
 					if(total == false){
 						continue;
 					}
 					// console.log(total, "total  kolom " + (index + 1));
 					totalKolomArr.push(total)
-				}			
-					
+				}
+
 				//2. CARI TERKECIL
 				var minimalAllKolom = Math.min.apply(Math, totalKolomArr);
 
@@ -657,7 +695,7 @@ $('#tabel_daftarTSKK').DataTable({
 				var input_distribusi = $(a).closest('tr').find('.wDistribusi').val();
 				var distribusi = Number(minimalAllKolom) - Number(total_min);
 				console.log('DISTRIBUSI : ' + distribusi);
-				
+
 				var autoDistribusi = [];
 				$('input[name^=wDistribusiAuto]').each(function(){
 					autoDistribusi.push($(this).val());
@@ -675,13 +713,13 @@ $('#tabel_daftarTSKK').DataTable({
 					xMin.push($(this).val());
 				});
 				console.log("xMin:" ,xMin);
-				
+
 				//SET WAKTU KERJA OTOMATIS
 				const set = document.querySelectorAll('.wKerja');
 				// console.log(`INPUT: ${input}`);
 				for(let i = 0; i < xMin.length; i++) if(xMin[i] != null) set[i].value = Number(xMin[i]) + Number(autoDistribusi[i]);
 				console.log("x min: " + xMin + "ditambah" + waktuDistribusi);
-				
+
 
 				var total_Wdistribusi = 0;
 				$('.wDistribusi').each((i, item) => {
@@ -691,16 +729,16 @@ $('#tabel_daftarTSKK').DataTable({
 					total_Wdistribusi += Number(item.value)
 				})
 				console.log(total_Wdistribusi);
-				
-				var kurang = Number(distribusi) - Number(total_Wdistribusi); 
+
+				var kurang = Number(distribusi) - Number(total_Wdistribusi);
 				console.log(kurang);
 
 				var sisa_nilai_distribusi = $('#dst').val();
 				//AUTO NGURANGIN WAKTU DISTRIBUSINYA
 				if (sisa_nilai_distribusi == total_Wdistribusi) {
-					$('#dst').val(0);	
+					$('#dst').val(0);
 				}
-				
+
 	}
 
 //YA GITU POKONYA, KALO PAS NGISI WAKTU DISTRIBUSI NILAINYA MINUS//
@@ -713,7 +751,7 @@ $('#tabel_daftarTSKK').DataTable({
 						title: 'Tidak Dapat Mengisi Waktu Distribusi',
 						type: 'error',
 						text :'Nilai Distribusi Sudah Habis'
-					});	
+					});
 					// $('#dst').val(0);
 				}
 			});
@@ -722,12 +760,16 @@ $('#tabel_daftarTSKK').DataTable({
 //DELETE CURRENT ROWS IN OBSERVATION SHEET//
 	function deleteObserve(th) {
 		var curr_row = $(th).parent().parent('tr');
-		//remove row 
+		//remove row
 		curr_row.remove();
 
 		$('.posisi').each((i, item) => {
-			document.getElementsByClassName('posisi')[i].innerHTML = i + 1
+			document.getElementsByClassName('posisi')[i].innerHTML = i + 1;
 		})
+		$('.checkBoxParalel').each((i, v) =>{
+			$(v).attr('name', `checkBoxParalel[${i}]`)
+		})
+
 	}
 
 //ADD ROWS GENERATE//
@@ -742,7 +784,7 @@ $('#tabel_daftarTSKK').DataTable({
 			html += '<option value="WALK" id="walk"> WALK </option>';
 			// html += '<option value="WALK (Inheritance)" id="walk"> WALK (Inheritance) </option>';
 			html += "</select></td>";
-			// KOLOM 3 
+			// KOLOM 3
 			html += '<td><select class="form-control select2 slcElemen"  onmouseover="slcElemen('+num+')" id="slcElemen_'+num+'" name="txtSlcElemen[]" data-placeholder="Elemen" tabindex="-1" aria-hidden="true"></select><input type="text" class="form-control" style="width: 100%" type="text" onchange="myFunctionTSKK('+num+')" id="elemen_'+num+'" name="elemen[]" placeholder="Input Keterangan"></td>';
 			// KOLOM 4
 			html += '<td><select id="slcTipeUrutan_'+num+'" name="slcTipeUrutan[]" class="form-control tipe_urutan" style="width:100%;" onchange="editTimie('+num+')" title="Tipe Urutan Proses">';
@@ -756,10 +798,10 @@ $('#tabel_daftarTSKK').DataTable({
 			html += '<td><input type="number" class="form-control" style="width: 100%" type="text" oninput="setFinishGTSKK('+num+')" id="mulai_'+num+'" name="mulai[]" placeholder="Detik"></td>';
 			// KOLOM 7
 			html += '<td><input type="number" class="form-control finish" style="width: 100%" type="text" onclick="setFinishGTSKK('+num+')" id="finish_'+num+'" name="finish[]" placeholder="Detik"></td>';
-			//KOLOM 8 
+			//KOLOM 8
 			html += '<td><i class="fa fa-times fa-2x" onClick="onClickNasgor('+num+')" style="color:red" id="hapus" title="Hapus Elemen"></i> <i class="fa fa-plus fa-2x" onclick="addRowElement($(this))" style="color:green" id="hapus" title="Tambah Elemen"></i></td>';
 			html += "</tr>";
-			
+
 		num++;
 
 			$('#tbodyGeneratorTSKK').append(html);
@@ -769,7 +811,7 @@ $('#tabel_daftarTSKK').DataTable({
 					placeholder: 'Jenis Proses',
 					allowClear: true,
 				  });
-				  
+
 			    $('.tipe_urutan').select2({
 					placeholder: 'Tipe Urutan',
 					allowClear: true,
@@ -782,7 +824,7 @@ $('#tabel_daftarTSKK').DataTable({
 
 					$('.slcElemen').select2({
 						// minimumInputLength: 3,
-						ajax: {	
+						ajax: {
 						url:baseurl+'GeneratorTSKK/C_GenTSKK/ElemenKerja/',
 						dataType: 'json',
 						type: "GET",
@@ -801,12 +843,12 @@ $('#tabel_daftarTSKK').DataTable({
 									})
 								};
 							}
-						}	
+						}
 					});
 
 		};
 
-	$('#txtTanggal').datepicker({ 
+	$('#txtTanggal').datepicker({
 		todayHighlight: true,
 		format: 'dd-M-yyyy',
 		autoclose: true
@@ -826,18 +868,18 @@ const editTimie = (num) => {
 
 	let no = Number(num - 1);
 	console.log("Ini nomor sebelumnya : ", no);
-	let waktuSblm = $("#waktu_" + no).val();          
+	let waktuSblm = $("#waktu_" + no).val();
 	console.log("Ini waktu sebelumnya : ", waktuSblm);
-	
+
 	let jnsProsesBfr = $('#slcJenis_' + no).val();
 	console.log("Ini jenis proses sebelumnya : ", jnsProsesBfr);
-	
+
 	if (tu == "SERIAL" && jnsProses == "MANUAL" && jnsProsesBfr == "AUTO") {
 
 		$('#mulai_'+num).val(Number(endTime) + 1 - Number(waktuSblm));
 		$('#mulai_'+num).trigger("change");
 		$('#mulai_'+num).prop('readonly', true);
-		
+
 	}else if (tu == "SERIAL" && jnsProses == "WALK (Inheritance)" && jnsProsesBfr == "MANUAL"){
 		$('#mulai_'+num).val(Number(endTime) + 1);
 		$('#mulai_'+num).trigger("change");
@@ -856,7 +898,7 @@ const editTimie = (num) => {
 		$('#mulai_'+num).val(Number(endTime) + 1);
 		$('#mulai_'+num).trigger("change");
 		$('#mulai_'+num).prop('readonly', true);
-	
+
 	//if WALK INHERITANCE and WALK, the start value will as same as AUTO
 	} else if (tu == "SERIAL" && jnsProses == "WALK" && jnsProsesBfr == "WALK (Inheritance)") {
 
@@ -864,7 +906,7 @@ const editTimie = (num) => {
 		$('#mulai_'+num).trigger("change");
 		$('#mulai_'+num).prop('readonly', true);
 
-	} else if (tu == "SERIAL" && jnsProses == 'WALK (Inheritance)' || jnsProses == 'WALK') { 
+	} else if (tu == "SERIAL" && jnsProses == 'WALK (Inheritance)' || jnsProses == 'WALK') {
 
 		$('#mulai_'+num).val(Number(endTime) + 1 - Number(waktuSblm));
 		$('#mulai_'+num).prop('readonly', true);
@@ -882,7 +924,7 @@ const editTimie = (num) => {
 		$('#mulai_'+num).trigger("change");
 		$('#mulai_'+num).prop('readonly', false);
 	}
-	
+
 }
 
 //DELETE ROW'S ELEMENTS//
@@ -930,7 +972,7 @@ $(document).ready(function () {
 $(document).ready(function() {
 	$("#typeProduct").select2({
 		// minimumInputLength: 3,
-		ajax: {	
+		ajax: {
 		url:baseurl+'GeneratorTSKK/C_GenTSKK/tipeProduk/',
 		dataType: 'json',
 		type: "GET",
@@ -945,11 +987,11 @@ $(document).ready(function() {
 	return {
 		results: $.map(tipeProduk, function(obj) {
 	return { id:obj.DESCRIPTION, text:obj.DESCRIPTION };
-	// id:obj.KODE_DIGIT, 
+	// id:obj.KODE_DIGIT,
 					})
 				};
 			}
-		}	
+		}
 	});
 });
 
@@ -958,7 +1000,7 @@ $(document).ready(function() {
 	$("#kodepart").select2({
 		minimumInputLength: 3,
 		maximumSelectionLength: 1,
-		ajax: {	
+		ajax: {
 		url:baseurl+'GeneratorTSKK/C_GenTSKK/kodePart/',
 		dataType: 'json',
 		type: "GET",
@@ -973,14 +1015,14 @@ $(document).ready(function() {
 	return {
 		results: $.map(kode, function(obj) {
 	if (kode !== null) {
-		return { id:obj.SEGMENT1, text:obj.SEGMENT1 }; 
+		return { id:obj.SEGMENT1, text:obj.SEGMENT1 };
 	}else{
 		$('.namaPart').val('');
 	}
 					})
 				};
 			}
-		}	
+		}
 	});
 });
 
@@ -999,7 +1041,7 @@ $(document).ready(function() {
 //AUTOFILL NAMA PART//
 	$('#kodepart').change(function(){
 		var isiKodePart  = $('.kodepart').val();
-		
+
 		if (isiKodePart !== null) {
 			$.ajax({
 				type: "POST",
@@ -1012,8 +1054,8 @@ $(document).ready(function() {
 			e.overrideMimeType("application/json;charset=UTF-8");
 				}
 			},
-			success: function(response){ 
-		
+			success: function(response){
+
 				if(response != null){
 					// alert("Data Masuk")
 					var sblm = $('#namaPart').val();
@@ -1022,16 +1064,16 @@ $(document).ready(function() {
 						$("#namaPart").val(response[0].DESCRIPTION);
 					} else {
 						$("#namaPart").val(sblm+' , '+response[0].DESCRIPTION);
-					} 
+					}
 				// console.log(response[0].DESCRIPTION);
-				}else{ 
+				}else{
 					alert("Data Tidak Ditemukan");
 				}
 			},
-			error: function (xhr) { 
+			error: function (xhr) {
 			alert(xhr.responseText);
 				}
-			});	
+			});
 		}else{
 			$('.namaPart').val('');
 		}
@@ -1042,7 +1084,7 @@ $(document).ready(function() {
 	$("#txtNoMesinTSKK").select2({
 		minimumInputLength: 3,
 		maximumSelectionLength: 6,
-		ajax: {	
+		ajax: {
 		url:baseurl+'GeneratorTSKK/C_GenTSKK/NoMesin/',
 		dataType: 'json',
 		type: "GET",
@@ -1060,21 +1102,21 @@ $(document).ready(function() {
 					})
 				};
 			}
-		}	
+		}
 	});
 });
 
-//AUTOFILL JENIS MESIN// 
+//AUTOFILL JENIS MESIN//
 $('#txtNoMesinTSKK').change(function(){
 	var isiNoMesin = $('.noMesin').val();
-	
+
 	if (isiNoMesin !== null) {
 		$.ajax({
 			type: "POST",
 			url: baseurl+'GeneratorTSKK/C_GenTSKK/jenisMesin/',
 			dataType: "json",
 			data:{
-				params:isiNoMesin 
+				params:isiNoMesin
 			},
 			beforeSend: e => {
 				if(e && e.overrideMimeType) {
@@ -1085,17 +1127,17 @@ $('#txtNoMesinTSKK').change(function(){
 				console.log(res);
 				$('.jenisMesin').val(res);
 			},
-			error: function (xhr) { 
+			error: function (xhr) {
 			alert(xhr.responseText);
 				}
-			});	
+			});
 	}else{
 		$('.jenisMesin').val('');
 	}
 
 });
 
-//AUTOFILL RESOURCE MESIN// 
+//AUTOFILL RESOURCE MESIN//
 $('#txtNoMesinTSKK').change(function(){
 	var isiNoMesin = $('.noMesin').val();
 	console.log(isiNoMesin);
@@ -1112,11 +1154,11 @@ $('#txtNoMesinTSKK').change(function(){
 				e.overrideMimeType("application/json;charset=UTF-8");
 			}
 		},
-		success: res => { 
+		success: res => {
 			console.log(res);
 			$('.resource').val(res);
 		},
-		error: function (xhr) { 
+		error: function (xhr) {
 		alert(xhr.responseText);
 			}
 		});
@@ -1131,7 +1173,7 @@ $(document).ready(function() {
 	$("#txtAlatBantu").select2({
 		minimumInputLength: 3,
 		maximumSelectionLength: 3,
-		ajax: {	
+		ajax: {
 		url:baseurl+'GeneratorTSKK/C_GenTSKK/AlatBantu/',
 		dataType: 'json',
 		type: "GET",
@@ -1149,7 +1191,7 @@ $(document).ready(function() {
 					})
 				};
 			}
-		}	
+		}
 	});
 });
 
@@ -1158,7 +1200,7 @@ $(document).ready(function() {
 	$("#txtTools").select2({
 		minimumInputLength: 3,
 		maximumSelectionLength: 5,
-		ajax: {	
+		ajax: {
 		url:baseurl+'GeneratorTSKK/C_GenTSKK/Tools/',
 		dataType: 'json',
 		type: "GET",
@@ -1176,15 +1218,15 @@ $(document).ready(function() {
 					})
 				};
 			}
-		}	
+		}
 	});
 });
 
 //SELECT SEKSI//
-$(document).ready(function(){    
+$(document).ready(function(){
 	$("#pilihseksi").select2({
 		minimumInputLength: 3,
-		ajax: {	
+		ajax: {
 		url:baseurl+'GeneratorTSKK/C_GenTSKK/Seksi/',
 		dataType: 'json',
 		type: "GET",
@@ -1198,19 +1240,19 @@ $(document).ready(function(){
 		processResults: function (seksi) {
 	return {
 		results: $.map(seksi, function(obj) {
-	return { id:obj.SEKSI_PENGEBON, text:obj.SEKSI_PENGEBON}; 
+	return { id:obj.SEKSI_PENGEBON, text:obj.SEKSI_PENGEBON};
 					})
 				};
 			}
-		}	
+		}
 	});
 });
 
 //SELECT MESIN//
-// $(document).ready(function(){    
+// $(document).ready(function(){
 // 	$("#txtMesin").select2({
 // 		minimumInputLength: 3,
-// 		ajax: {	
+// 		ajax: {
 // 		url:baseurl+'GeneratorTSKK/C_GenTSKK/Mesin/',
 // 		dataType: 'json',
 // 		type: "GET",
@@ -1224,11 +1266,11 @@ $(document).ready(function(){
 // 		processResults: function (mesin) {
 // 	return {
 // 		results: $.map(mesin, function(obj) {
-// 	return { id:obj.ATTRIBUTE1, text:obj.ATTRIBUTE1}; 
+// 	return { id:obj.ATTRIBUTE1, text:obj.ATTRIBUTE1};
 // 					})
 // 				};
 // 			}
-// 		}	
+// 		}
 // 	});
 // });
 
@@ -1236,7 +1278,7 @@ $(document).ready(function(){
 $(document).ready(function() {
 	$("#txtOperator").select2({
 		minimumInputLength: 3,
-		ajax: {	
+		ajax: {
 		url:baseurl+'GeneratorTSKK/C_GenTSKK/Operator/',
 		dataType: 'json',
 		type: "GET",
@@ -1250,12 +1292,12 @@ $(document).ready(function() {
 		processResults: function (operator) {
 	return {
 		results: $.map(operator, function(obj) {
-			// id:obj.noind+' - '+obj.nama, text:obj.noind+' - '+obj.nama 
+			// id:obj.noind+' - '+obj.nama, text:obj.noind+' - '+obj.nama
 	return { id:obj.nama+' - '+obj.noind, text:obj.nama+' - '+obj.noind };
 					})
 				};
 			}
-		}	
+		}
 	});
 });
 
@@ -1263,7 +1305,7 @@ $(document).ready(function() {
 $(document).ready(function() {
 	$('.slcElemen').select2({
 		// minimumInputLength: 3,
-		ajax: {	
+		ajax: {
 		url:baseurl+'GeneratorTSKK/C_GenTSKK/ElemenKerja/',
 		dataType: 'json',
 		type: "GET",
@@ -1282,7 +1324,7 @@ $(document).ready(function() {
 					})
 				};
 			}
-		}	
+		}
 	});
 });
 
@@ -1290,32 +1332,32 @@ $(document).ready(function() {
 function myAutomatically(no){
 	var num = Number(no) - 1;
 	console.log("ini num : ", num, "ini no : ", no);
-	
+
 	var oldJenis= $('#slcJenis_' + no).val()
 	var elemen = $('#elemen_'+num).val()
 	var keterangan = $('#slcElemen_'+num).val()
-	
-	if(oldJenis == 'AUTO'){		
+
+	if(oldJenis == 'AUTO'){
 		var Element = `<option value="${keterangan}">${keterangan}</option>`;
 		$('#slcElemen_' + no).append(Element)
 
 		$('#elemen_'+ no).val(elemen)
 		$('#slcTipeUrutan_' + no).val('SERIAL');
 		$('#slcTipeUrutan_' + no).trigger('change');
-		$('#slcElemen_'+ no).val(keterangan);  
-		$('#slcElemen_' + no).trigger('change'); 
-	}else if(oldJenis == 'MANUAL'){  
+		$('#slcElemen_'+ no).val(keterangan);
+		$('#slcElemen_' + no).trigger('change');
+	}else if(oldJenis == 'MANUAL'){
 		$('#slcElemen_' + no).val(null).trigger('change'); 		 //temporary on
-		$('#elemen_'+no).val('');	
-		$('#slcTipeUrutan_' + no).val(null).trigger('change');			
-	}else if(oldJenis == 'WALK'){				
+		$('#elemen_'+no).val('');
+		$('#slcTipeUrutan_' + no).val(null).trigger('change');
+	}else if(oldJenis == 'WALK'){
 		$('#slcElemen_' + no).val(null).trigger('change'); 		 //temporary on
 		$('#elemen_'+no).val('');
 		$('#slcTipeUrutan_' + no).val('SERIAL').trigger('change');
 	}else if(oldJenis == 'WALK (Inheritance)'){
 		var Element = `<option value="${keterangan}">${keterangan}</option>`;
 		$('#slcElemen_' + no).append(Element)
-		
+
 		$('#elemen_'+no).val(elemen)
 		$('#slcTipeUrutan_' + no).val('SERIAL');
 		$('#slcTipeUrutan_' + no).trigger('change');
@@ -1368,41 +1410,41 @@ function myFunctionTSKK(th){
 		console.log(elemen, elemen_kerja, keterangan)
 
 		if (elemen != null) {
-			$('table tbody tr:nth('+row_index+') td .wDistribusi').attr('readonly', false);	
-			// $('.wDistribusi').attr('readonly', false);	
+			$('table tbody tr:nth('+row_index+') td .wDistribusi').attr('readonly', false);
+			// $('.wDistribusi').attr('readonly', false);
 		}
 
-		if(elemen == 'AUTO (Inheritance)') {		
+		if(elemen == 'AUTO (Inheritance)') {
 			var Element = `<option value="${elemen_kerja}">${elemen_kerja}</option>`;
 			$('table tbody tr:nth('+row_index+') td .slcElemen').append(Element); //auto isi elemen kerja
-			$('table tbody tr:nth('+row_index+') td .slcElemen').trigger('change'); 
+			$('table tbody tr:nth('+row_index+') td .slcElemen').trigger('change');
 			$('table tbody tr:nth('+row_index+') td .elemen').val(keterangan);   //auto isi keterangan
 			$('table tbody tr:nth('+row_index+') td .tipe_urutan').val('SERIAL');
 			$('table tbody tr:nth('+row_index+') td .tipe_urutan').trigger('change');
 		// console.log("ini element: ", Element, elemen, elemen_kerja, keterangan)
 		}else if(elemen == 'AUTO'){ //how to make it works completely?
-			$('table tbody tr:nth('+row_index+') td .slcElemen').val(null).trigger('change'); 				
-			$('table tbody tr:nth('+row_index+') td .elemen').val('');  	
+			$('table tbody tr:nth('+row_index+') td .slcElemen').val(null).trigger('change');
+			$('table tbody tr:nth('+row_index+') td .elemen').val('');
 			$('table tbody tr:nth('+row_index+') td .tipe_urutan').val(null).trigger('change');
 		}else if(elemen == 'MANUAL'){ //how to make it works completely?
-			$('table tbody tr:nth('+row_index+') td .slcElemen').val(null).trigger('change'); 				
-			$('table tbody tr:nth('+row_index+') td .elemen').val('');  	
+			$('table tbody tr:nth('+row_index+') td .slcElemen').val(null).trigger('change');
+			$('table tbody tr:nth('+row_index+') td .elemen').val('');
 			$('table tbody tr:nth('+row_index+') td .tipe_urutan').val(null).trigger('change');
-		}else if(elemen == 'WALK'){	//how to make it works completely?					
-			$('table tbody tr:nth('+row_index+') td .slcElemen').val(null).trigger('change'); 				
-			$('table tbody tr:nth('+row_index+') td .elemen').val('');  
+		}else if(elemen == 'WALK'){	//how to make it works completely?
+			$('table tbody tr:nth('+row_index+') td .slcElemen').val(null).trigger('change');
+			$('table tbody tr:nth('+row_index+') td .elemen').val('');
 			$('table tbody tr:nth('+row_index+') td .tipe_urutan').val('SERIAL').trigger('change');
 		}else if(elemen == 'WALK (Inheritance)'){
 			var Element = `<option value="${elemen_kerja}">${elemen_kerja}</option>`;
 			$('table tbody tr:nth('+row_index+') td .slcElemen').append(Element); //auto isi elemen kerja
-			$('table tbody tr:nth('+row_index+') td .slcElemen').trigger('change'); 
+			$('table tbody tr:nth('+row_index+') td .slcElemen').trigger('change');
 			$('table tbody tr:nth('+row_index+') td .elemen').val(keterangan);   //auto isi keterangan
 			$('table tbody tr:nth('+row_index+') td .tipe_urutan').val('SERIAL');
 			$('table tbody tr:nth('+row_index+') td .tipe_urutan').trigger('change');
-		} 
+		}
 	}
 
-//SET THE FINISH AND START FOR EDIT PAGE 
+//SET THE FINISH AND START FOR EDIT PAGE
 function newFinish(th) {
 	var row_index = $(th).parent().parent('tr').index();
 	var oldRow = Number(row_index) - 1;
@@ -1419,7 +1461,7 @@ function newFinish(th) {
 	}else if (row_index != 0 && tu == 'SERIAL'){
 		var finish = Number(waktu) + Number(oldFinish);
 	}else if (row_index != 0 && tu == 'PARALEL'){
-		var finish = Number(waktu) + Number(mulai) - 1;	
+		var finish = Number(waktu) + Number(mulai) - 1;
 	}
 
 	$('table tbody tr:nth('+row_index+') td .finish').val(finish)
@@ -1428,14 +1470,14 @@ function newFinish(th) {
 	for (let index = row_index + 1; index < countRow ; index++) {
 		var urutan = $('table tbody tr:nth('+index+') td .tipe_urutan').val();
 		var proses = $('table tbody tr:nth('+index+') td .select4').val();
-		
+
 		if (urutan == 'PARALEL'){
 			break;
 		}
 
 		var oldFinish = $('table tbody tr:nth('+(index - 1)+') td .finish').val();
-		var prosesAtas = $('table tbody tr:nth('+(index - 1)+') td .select4').val(); 
-		var startBfr = $('table tbody tr:nth('+(index - 1)+') td .mulai').val(); 
+		var prosesAtas = $('table tbody tr:nth('+(index - 1)+') td .select4').val();
+		var startBfr = $('table tbody tr:nth('+(index - 1)+') td .mulai').val();
 
 		//KALO GINI JADI GITU, KALO GITU JADI GINI :)
 		if (prosesAtas == 'AUTO'){
@@ -1447,24 +1489,32 @@ function newFinish(th) {
 		var start = $('table tbody tr:nth('+(index)+') td .mulai').val()
 		var waktu = $('table tbody tr:nth('+index+') td .waktu').val();
 
-		// console.log(oldFinish) 	
+		// console.log(oldFinish)
 		$('table tbody tr:nth('+(index)+') td .finish').val((Number(start) + Number(waktu)) - 1);
 		// console.log(Number(start) + Number(waktu), "finish")
 		console.log(start)
 	}
 	// console.log("end", countRow)
-} 
+}
 
 //SET START AND FINISH FOR TABLE ELEMENT//
 function finishTableElement(th) {
-	
+
+	// console.log($(th).val(), 'ini value nya..');
+	const my_n = $(th).parent().parent('tr').attr('class').split('_');
+  const my_number = my_n[1];
+
+	// $(`input[check-start-no="${my_number}"]`).val($(th).val());
+	// end kondisi jika waktu start sama
+
 	var curr_row = $(th).parent().parent('tr');
+
 	var nextRow = curr_row.next();
 	// console.log(nextRow, "ini next rownya");
-	
+
 	var w_now = curr_row.children().children('.waktu').val();
-	var s_now = curr_row.children().children('.mulai').val();	
-	// var f_now = curr_row.children().children('.finish').val();	
+	var s_now = curr_row.children().children('.mulai').val();
+	// var f_now = curr_row.children().children('.finish').val();
 	var takt_time = $('#inputInsert').val();
 	let finishNow = curr_row.children('td').children('.finish');
 	let finishRN = Number(w_now) + Number(s_now) - 1;
@@ -1480,7 +1530,7 @@ function finishTableElement(th) {
 // 		let finish = Number(w_now)+Number(s_now)-1
 // 	finishNow.val(Number(finish));
 // console.log("ini finish kurang dari takt time AWAL: ", finish);
-// 	}	
+// 	}
 
 	// finishNow.val(finish); //set finish at current row that being clicked
 
@@ -1488,16 +1538,20 @@ function finishTableElement(th) {
 	var indexRow = nextRow.find('.position').html();
 
 	for (let index = indexRow; index < (maxRow + 1); index++) {
-		
-		// const curr_row = $(th).parent().parent('tr');
+
+		// const curr_row = $(th).parent().parent('tr')
 		// const nextRow = curr_row.next();
+
 		const prevRow = nextRow.prev();
 		// console.log(prevRow, "ini prevRow");
 		// console.log(nextRow, "ini next rownya");
 
+
 		let tu = nextRow.children('td').children('.tipe_urutan').val();
 		// console.log("ini tipe urutannya gan: ", tu);
-		
+
+		// $(`tr[class="number_${index}"]`).attr('check-waktu-serentak') === 'Y';
+
 		if(tu == "PARALEL"){
 			break;
 		}
@@ -1514,9 +1568,15 @@ function finishTableElement(th) {
 
 		let finish1 = Number(currWaktu) + Number(prevStart) - 1;
 		let finishAI = Number(currWaktu) + Number(currMulai) - 1;
-		let startRN = (Number(prevFinish) + 1)
+		let startRN = (Number(prevFinish) + 1);
+		if ($(`tr[class="number_${index}"]`).attr('check-waktu-serentak') === 'Y' && $(`input[baris="${index}"]`).attr('check-start-no') === my_number) {
+			startRN = $(th).val();
+		}else if ($(`tr[class="number_${index}"]`).attr('check-waktu-serentak') === 'Y' && $(`input[baris="${index}"]`).attr('check-start-no') !== my_number) {
+				let another_index = $(`input[baris="${index}"]`).attr('check-start-no');
+				startRN = $(`input[baris="${another_index}"]`).val();
+		}
 		let finish2 = Number(currWaktu) + Number(startRN) - 1;
-		
+
 		if (jp == "AUTO (Inheritance)" && finish1 > takt_time) {
 			// let finish = Number(finish1) - Number(takt_time)
 			let finish = Number(finish1)
@@ -1529,6 +1589,7 @@ function finishTableElement(th) {
 
 			currStart.val(Number(prevStart));
 			currFinish.val(finish);
+
 			console.log("AI > TAKT TIME");
 		}else if (jp == "AUTO (Inheritance)" && finish1 < takt_time) {
 			let finish = Number(finsih1)
@@ -1538,18 +1599,18 @@ function finishTableElement(th) {
 				console.log("AI < TAKT TIME");
 		}else if (jp != "AUTO (Inheritance)" && finish1 > takt_time) {
 			// let finish = Number(finish2)
-			// let finish = Number(finish2) - Number(takt_time) 
+			// let finish = Number(finish2) - Number(takt_time)
 			let finish = Number(finish2)
 				console.log("ini finish lebih dari takt time: ", finish);
 				console.log(nextFinish, "dikurangi" , takt_time);
 				console.log("finishAI :", currWaktu, "ditambah", currMulai);
 				console.log("finishYGBENAR :", currWaktu, "ditambah", finish2);
 				console.log("finish 2: ", finish2);
-			
+
 			if (finish < 0) {
 				finish = Number(currWaktu) + Number(startRN) - 1;
 			}
-			 
+
 			currStart.val(startRN);
 			currFinish.val(finish);
 				console.log("BUKAN AI > TAKT TIME");
@@ -1560,16 +1621,18 @@ function finishTableElement(th) {
 			currFinish.val(finish);
 				console.log("BUKAN AI < TAKT TIME");
 		}
+		console.log($(`input[baris="${index}"]`).val(), "ini value tiap baris mulai");
+
 		nextRow = nextRow.next()
 	}
-} 
+}
 
 //DELETE THE ELEMENT FROM EDIT MENU
 function newDeletion(th) {
 	var curr_row = $(th).parent().parent('tr');
 	var prevRow = curr_row.prev();
 	var nextRow = curr_row.next();
-	//remove row 
+	//remove row
 	curr_row.remove();
 
 	$('.posisi').each((i, item) => {
@@ -1578,7 +1641,7 @@ function newDeletion(th) {
 
 	var maxRow = $('.posisi').length;
 	var indexRow = nextRow.children('td.posisi').html()
-	
+
 	for (let index = indexRow; index < (maxRow + 1); index++) {
 		console.log(index);
 		let tu = nextRow.children('td').children('.tipe_urutan').val();
@@ -1598,9 +1661,9 @@ function newDeletion(th) {
 		let waktuNow = curr_row.children('td').children('.waktu').val();
 		console.log("index yg dihapus : ", indexNow);
 		console.log("waktu now : ", waktuNow);
-		
-		if (index == 1){	
-			
+
+		if (index == 1){
+
 			currStart.val(Number(1))
 			currFinish.val(Number(currWaktu))
 
@@ -1634,31 +1697,31 @@ function attachRow() {
 
 	var newRow = $(`
 	<tr class = "number_${num}">
-		<td class="posisi"> ${posisi} </td> 
+		<td class="posisi"> ${posisi} </td>
 		<td>
 			<select id="slcJenis_${num}" name="slcJenisProses[]" onchange="myFunctionTSKK(this)" class="form-control select4 slcJenisProses_num" style="width:100%;" onFocus="onBakso()" title="Jenis Proses"><option value=""> </option><option value="MANUAL" id="manual"> MANUAL </option><option value="AUTO" id="auto" onclick="setElemenGTSKK()"> AUTO </option><option value="WALK" id="walk"> WALK </option><option value="WALK (Inheritance)" id="walk"> WALK (Inheritance) </option></select>
-		</td> 
+		</td>
 		<td>
 			<select class="form-control select2 slcElemen" id="slcElemen_${num}" name="txtSlcElemen[]" data-placeholder="Input Elemen Kerja" tabindex="-1" aria-hidden="true"></select><input type="text" class="form-control elemen" style="width: 100%" type="text" id="elemen_${num}" name="elemen[]" placeholder="Input Keterangan">
-		</td> 
+		</td>
 		<td>
 			<select id="slcTipeUrutan_${num}" name="slcTipeUrutan[]" class="form-control tipe_urutan" style="width:100%;" onchange="AutomaticTime(this)" title="Tipe Urutan Proses"><option value="" >  </option><option value="SERIAL"> SERIAL  </option><option value="PARALEL"> PARALEL </option></select>
-		</td> 
+		</td>
 		<td>
 			<input type="number" class="form-control waktu" style="width: 100%" type="text" onchange="newFinish(this)"  id="waktu_${num}" name="waktu[]" placeholder="Detik">
-		</td> 
+		</td>
 		<td>
 			<input type="number" class="form-control mulai" style="width: 100%" type="text" id="mulai_${num}" name="mulai[]" placeholder="Detik">
-		</td> 
+		</td>
 		<td>
 			<input type="number" class="form-control finish" style="width: 100%" type="text"  id="finish_${num}" name="finish[]" placeholder="Detik">
-		</td> 
+		</td>
 		<td>
 			<i class="fa fa-times fa-2x" style="color:red" id="hapus" title="Hapus Elemen" onclick="newDeletion(this)"></i>
-		</td> 
+		</td>
 	</tr>
 	`);
-	
+
 	if( indx < maxRow){
 		newRow.insertBefore($('.tblEditTSKK tbody tr:nth('+indx+')'));
 
@@ -1685,7 +1748,7 @@ function attachRow() {
 
 				$('.slcElemen').select2({
 					// minimumInputLength: 3,
-					ajax: {	
+					ajax: {
 					url:baseurl+'GeneratorTSKK/C_GenTSKK/ElemenKerja/',
 					dataType: 'json',
 					type: "GET",
@@ -1704,7 +1767,7 @@ function attachRow() {
 								})
 							};
 						}
-					}	
+					}
 				});
 
 	}else{
@@ -1729,7 +1792,7 @@ function attachRow() {
 
 			$('.slcElemen').select2({
 				// minimumInputLength: 3,
-				ajax: {	
+				ajax: {
 				url:baseurl+'GeneratorTSKK/C_GenTSKK/ElemenKerja/',
 				dataType: 'json',
 				type: "GET",
@@ -1748,7 +1811,7 @@ function attachRow() {
 							})
 						};
 					}
-				}	
+				}
 			});
 	}
 
@@ -1762,13 +1825,13 @@ function attachRowObservation() {
 	var maxRow = $('#tblObservasiEdit tbody tr').length;
 	var indx = posisi - 1;
 	var index = posisi + 1;
-	// name="checkBoxParalel['+(nomor-1)+']" 
+	// name="checkBoxParalel['+(nomor-1)+']"
 	var newRow = $(`
 	<tr class = "number_${num}">
-		<td class="posisi"> ${posisi} </td> 
+		<td class="posisi"> ${posisi} </td>
 		<td>
 		<input type="checkbox" name="checkBoxParalel[${indx}]" value="PARALEL" class="checkBoxParalel" onchange="//chckParalel(this)">
-		</td> 
+		</td>
 		<td>
 		<select id="slcJenis_'+nomor+'" onchange="myFunctionTSKK(this)" name="slcJenisProses[]" class="form-control select4" id="" style="width:100%;" title="Jenis Proses" >';
 		<option value=""> </option>';
@@ -1779,61 +1842,61 @@ function attachRowObservation() {
 		</td>
 		<td>
 		<div class="col-lg-12"><div class="col-lg-6"><select class="form-control select2 slcElemen" id="slcElemen_'+nomor+'" name="txtSlcElemen[]" data-placeholder="Elemen" tabindex="-1" aria-hidden="true"></select></div><div class="col-lg-6"><input type="text" class="form-control elemen" style="width: 100%" type="text" id="elemen_'+nomor+'" name="elemen[]" placeholder="Keterangan Elemen"></div></div>
-		</td> 
+		</td>
 		<td>
 		<input type="number" onchange="minMaxId(this)" name="waktu1[]" class="form-control waktuObs inputWaktuKolom1" placeholder="Detik">
-		</td> 
+		</td>
 		<td>
 		<input type="number" onchange="minMaxId(this)"  name="waktu2[]" class="form-control waktuObs inputWaktuKolom2" placeholder="Detik">
-		</td> 
+		</td>
 		<td>
 		<input type="number" onchange="minMaxId(this)"  name="waktu3[]" class="form-control waktuObs inputWaktuKolom3" placeholder="Detik">
-		</td> 
+		</td>
 		<td>
 		<input type="number" onchange="minMaxId(this)"  name="waktu4[]" class="form-control waktuObs inputWaktuKolom4" placeholder="Detik">
-		</td> 
+		</td>
 		<td>
 		<input type="number" onchange="minMaxId(this)"  name="waktu5[]" class="form-control waktuObs inputWaktuKolom5" placeholder="Detik">
-		</td> 
+		</td>
 		<td>
 		<input type="number" onchange="minMaxId(this)"  name="waktu6[]" class="form-control waktuObs inputWaktuKolom6" placeholder="Detik">
-		</td> 
+		</td>
 		<td>
 		<input type="number" onchange="minMaxId(this)"  name="waktu7[]" class="form-control waktuObs inputWaktuKolom7" placeholder="Detik">
-		</td> 
+		</td>
 		<td>
 		<input type="number" onchange="minMaxId(this)"  name="waktu8[]" class="form-control waktuObs inputWaktuKolom8" placeholder="Detik">
-		</td> 
+		</td>
 		<td>
 		<input type="number" onchange="minMaxId(this)"  name="waktu9[]" class="form-control waktuObs inputWaktuKolom9" placeholder="Detik">
-		</td> 
+		</td>
 		<td>
 		<input type="number" onchange="minMaxId(this)" name="waktu10[]" class="form-control waktuObs inputWaktuKolom10" placeholder="Detik">
-		</td> 
+		</td>
 		<td>
 		<input type="number" id="xmin_".$no name="xmin[]" class="form-control xmin" placeholder="Detik" readonly>
-		</td> 
+		</td>
 		<td>
 		<input type="number" id="range_".$no name="range[]" class="form-control range" placeholder="Detik" readonly>
-		</td> 
+		</td>
 		<td>
 		<input type="number" onchange="minMaxId(this)" id="wDistribusi_".$no name="wDistribusi[]" class="form-control wDistribusi" placeholder="Detik">
-		</td> 
+		</td>
 		<td>
 		<input type="number" onchange="minMaxId(this)" onclick="checkDistributionTime(this)" name="wDistribusiAuto[]" class="form-control wDistribusiAuto" placeholder="Detik" readonly>
 		</td>
 		<td>
 		<input type="number" id="wKerja_".$no name="wKerja[]" class="form-control wKerja" placeholder="Detik" readonly>
-		</td> 
+		</td>
 		<td>
 		<input type="text" id="keterangan_".$no name="keterangan[]" class="form-control keterangan" placeholder="Input Keterangan">
 		</td>
 		<td>
 		<i class="fa fa-times fa-2x" onclick="deleteObserve(this)" style="color:red" id="hapus" title="Hapus Elemen"></i>
-		</td> 
+		</td>
 	</tr>
 	`);
-	
+
 	if( indx < maxRow){
 		newRow.insertBefore($('#tblObservasiEdit tbody tr:nth('+indx+')'));
 
@@ -1860,7 +1923,7 @@ function attachRowObservation() {
 
 				$('.slcElemen').select2({
 					// minimumInputLength: 3,
-					ajax: {	
+					ajax: {
 					url:baseurl+'GeneratorTSKK/C_GenTSKK/ElemenKerja/',
 					dataType: 'json',
 					type: "GET",
@@ -1879,7 +1942,7 @@ function attachRowObservation() {
 								})
 							};
 						}
-					}	
+					}
 				});
 
 				$('input').iCheck({
@@ -1909,7 +1972,7 @@ function attachRowObservation() {
 
 			$('.slcElemen').select2({
 				// minimumInputLength: 3,
-				ajax: {	
+				ajax: {
 				url:baseurl+'GeneratorTSKK/C_GenTSKK/ElemenKerja/',
 				dataType: 'json',
 				type: "GET",
@@ -1928,7 +1991,7 @@ function attachRowObservation() {
 							})
 						};
 					}
-				}	
+				}
 			});
 
 			$('input').iCheck({
@@ -1937,8 +2000,13 @@ function attachRowObservation() {
 			});
 	}
 
+	$('.checkBoxParalel').each((i, v) =>{
+		$(v).attr('name', `checkBoxParalel[${i}]`)
+	})
+
 	console.log("add new line",  indx, maxRow)
 	console.log(newRow)
+
 }
 
 	//Edit Time Set Auto Start//
@@ -1951,7 +2019,7 @@ function attachRowObservation() {
 		console.log(endTime, ': ini finish sblm');
 		var jnsProses = $('table tbody tr:nth('+row_index+') td .select4').val();
 		console.log(jnsProses, ': jenis prosesnya');
-	
+
 		var waktuSblm = $('table tbody tr:nth('+oldRow+') td .waktu').val()
 		console.log("Ini waktu elemen sebelumnya : ", waktuSblm);
 
@@ -1960,7 +2028,7 @@ function attachRowObservation() {
 
 			var waktuSkrg = $('table tbody tr:nth('+row_index+') td .waktu').val();
 			console.log("Ini waktuSkrg : ", waktuSkrg);
-	
+
 			var startSkrg = $('table tbody tr:nth('+row_index+') td .mulai').val();
 			console.log("Ini startSkrg : ", startSkrg);
 
@@ -1983,19 +2051,19 @@ function attachRowObservation() {
 			$('table tbody tr:nth('+row_index+') td .mulai').val(Number(endTime) + 1);
 			$('table tbody tr:nth('+row_index+') td .mulai').trigger("change");
 			$('table tbody tr:nth('+row_index+') td .mulai').prop('readonly', true);
-		
+
 		}else if(tu == "SERIAL" && jnsProses == "WALK" && jnsProsesBfr == "WALK (Inheritance)"){
 			$('table tbody tr:nth('+row_index+') td .mulai').val(Number(endTime) + 1);
 			$('table tbody tr:nth('+row_index+') td .mulai').trigger("change");
 			$('table tbody tr:nth('+row_index+') td .mulai').prop('readonly', true);
 
 		//if WALK INHERITANCE and WALK, the start value will as same as AUTO
-		}else if (tu == "SERIAL" && jnsProses == 'WALK (Inheritance)' || jnsProses == 'WALK'){ 
+		}else if (tu == "SERIAL" && jnsProses == 'WALK (Inheritance)' || jnsProses == 'WALK'){
 			$('table tbody tr:nth('+row_index+') td .mulai').val(Number(endTime) + 1 - Number(waktuSblm))
 			$('table tbody tr:nth('+row_index+') td .mulai').prop('readonly', true);
 			$('table tbody tr:nth('+row_index+') td .mulai').prop('readonly', true);
 			$('table tbody tr:nth('+row_index+') td .finish').prop('readonly', true);
-	
+
 			console.log(endTime, 'ini endTime cuy');
 			console.log(waktuSblm, 'ini waktuSblm cuy');
 
@@ -2009,24 +2077,24 @@ function attachRowObservation() {
 
 		}
 
-		//bikin kalo nyelipin di urutan 1 maka startnya auto 1 uga 
+		//bikin kalo nyelipin di urutan 1 maka startnya auto 1 uga
 		var posisi = $('#inputInsert').val();
 		var indx = posisi - 1;
 
-		if (tu == "SERIAL" && jnsProses == 'MANUAL' && indx == 0){ 
+		if (tu == "SERIAL" && jnsProses == 'MANUAL' && indx == 0){
 			$('table tbody tr:nth('+row_index+') td .mulai').val(1);
 			$('table tbody tr:nth('+row_index+') td .mulai').prop('readonly', true);
 
 			console.log('masuk kondisi ini nich');
 		}
-		
+
 		var oldJenis= $('table tbody tr:nth('+oldRow+') td .select4').val();
 		console.log(row_index, oldJenis)
 
 		var elemen = $('table tbody tr:nth('+row_index+') td .select4').val();
 		var elemen_kerja = $('table tbody tr:nth('+oldRow+') td .slcElemen').val();
 		var keterangan = $('table tbody tr:nth('+oldRow+') td .elemen').val();
-		console.log(elemen, elemen_kerja, keterangan) 
+		console.log(elemen, elemen_kerja, keterangan)
 	}
 
 //DELETE ROW'S ELEMENTS FROM ATTACHMENT ELEMENTS//
@@ -2077,7 +2145,7 @@ const onClickDeleteEditPage = (th) => {
 		var kode_part        	= $('.kodepart').val();
 		var nama_part        	= $('.namaPart').val();
 		//EQUIPMENT
-		var no_mesin		 	= $('.noMesin').val();                    
+		var no_mesin		 	= $('.noMesin').val();
 		var jenis_mesin      	= $('.jenisMesin').val();
 		var resource      	 	= $('.resource').val();
 		var line      	 	 	= $('.line').val();
@@ -2091,20 +2159,20 @@ const onClickDeleteEditPage = (th) => {
 		//PROCESS
 		var proses           	= $('.process').val(); //asw
 		var kode_proses      	= $('.kodeproses').val();
-		var proses_ke        	= $('.proses_ke').val(); 
-		var dari             	= $('.txtDariProses').val(); 
+		var proses_ke        	= $('.proses_ke').val();
+		var dari             	= $('.txtDariProses').val();
 		var qty              	= $('.qty_proses').val();
 		//ACTIVITY
 		var tanggal          	= $('.txtTanggal').val();
 		//TAKT TIME
 		var waktu_satu_shift 	= $('.waktu1Shift').val();
 		var jumlah_shift 		= $('.jumlahShift').val();
-		var forecast 			= $('.forecast').val();
+		var forecast 			= $('#txtForecast').val(); //rev 5
 		var qty_unit 			= $('.qtyUnit').val();
-		var rencana_kerja 		= $('.forecast').val();
+		var rencana_kerja 		= $('#txtForecastRP').val(); //rev 4
 		var jumlah_hari_kerja 	= $('.jumlahHariKerja').val();
 
-		console.log(id, judul, type, kode_part, nama_part, no_mesin, jenis_mesin, resource, 
+		console.log(id, judul, type, kode_part, nama_part, no_mesin, jenis_mesin, resource,
 			line, alat_bantu, tools,nama, jumlah_operator,dari_operator,seksi, proses, kode_proses, proses_ke,
 			dari, tanggal, qty, waktu_satu_shift, jumlah_shift, rencana_kerja, jumlah_hari_kerja);
 
@@ -2181,7 +2249,7 @@ const onClickDeleteEditPage = (th) => {
 			hasil_ij.push($(this).val());
 		});
 		console.log("hasil_ij:" ,hasil_ij);
-		
+
 
 		var takt_time = $('#inputInsert').val();
 		console.log("takt time: ", takt_time);
@@ -2223,15 +2291,15 @@ const onClickDeleteEditPage = (th) => {
 			ratio_ij 	 		    : ratio_ij,
 			waktu_ij 	 		    : waktu_ij,
 			hasil_ij 	 		    : hasil_ij,
-			waktu_satu_shift        : waktu_satu_shift, 
-			jumlah_shift 			: jumlah_shift, 
+			waktu_satu_shift        : waktu_satu_shift,
+			jumlah_shift 			: jumlah_shift,
 			forecast				: forecast,
-			qty_unit				: qty_unit,	
-			rencana_kerja 			: rencana_kerja, 	
+			qty_unit				: qty_unit,
+			rencana_kerja 			: rencana_kerja,
 			jumlah_hari_kerja		: jumlah_hari_kerja
 			},
-			dataType: 'json',	
-			url: baseurl+'GeneratorTSKK/C_GenTSKK/exportExcel/',	
+			dataType: 'json',
+			url: baseurl+'GeneratorTSKK/C_GenTSKK/exportExcel/paklut',
 			// cache:false,
 			success:function(data){
 					// console.log(result);
@@ -2250,7 +2318,7 @@ const onClickDeleteEditPage = (th) => {
 			error: function (xhr, ajaxOptions, thrownError){
 				console.log(xhr.responseText);
 			}
-			
+
 		});
 	}
 
@@ -2278,9 +2346,9 @@ $(document).ready(function(){
 			var waktu_distribusi = $(this).val();
 			console.log(waktu_distribusi);
 			if(waktu_distribusi == ''){
-				$(this).prop('readonly', true); 
+				$(this).prop('readonly', true);
 			}else{
-				$(this).prop('readonly', false); 
+				$(this).prop('readonly', false);
 			}
 		});
 		$('.keterangan').prop('readonly', false);
@@ -2301,9 +2369,9 @@ function checkNilaiDistribusi(){
 			text: 'Anda Harus Mendistribusikan Nilai Distribusi',
 			// footer: '<a href>Why do I have this issue?</a>'
 		})
-		// $('#btnShow').click();	
+		// $('#btnShow').click();
 	}else{
-		$('#btnHidden').click();		
+		$('#btnHidden').click();
 		return true;
 	}
 }
@@ -2319,9 +2387,9 @@ function checkNilaiDistribusiObservasi(){
 			text: 'Anda Harus Mendistribusikan Nilai Distribusi',
 			// footer: '<a href>Why do I have this issue?</a>'
 		})
-		// $('#btnSaveObservation').click();	
+		// $('#btnSaveObservation').click();
 	}else{
-		$('#Observasi').submit();	
+		$('#Observasi').submit();
 		return true;
 	}
 }
@@ -2330,7 +2398,7 @@ function checkNilaiDistribusiObservasi(){
 $(document).ready(function() {
 	$("#pelaksanaReparasi").select2({
 		minimumInputLength: 3,
-		ajax: {	
+		ajax: {
 		url:baseurl+'TicketingMaintenance/C_OrderList/Pelaksana/',
 		dataType: 'json',
 		type: "GET",
@@ -2348,7 +2416,7 @@ $(document).ready(function() {
 					})
 				};
 			}
-		}	
+		}
 	});
 });
 
@@ -2356,8 +2424,8 @@ function detectSelectKodePart() {
 	var kode_part = $('.kodepart').val();
 	console.log(kode_part);
 	if (kode_part == null) {
-		$('.namaPart').attr('value', '');  
-	}	
+		$('.namaPart').attr('value', '');
+	}
 }
 
 function AreYouSureWantToDelete(id){
@@ -2399,9 +2467,9 @@ function addRowIrregularJob(){
 	console.log(nmbr);
 	// KOLOM 2
 	html += '<td style="text-align: center;"><input type="text" class="form-control irregularJob" name="txtIrregularJob[]" id="irregularJob" placeholder="Input Irregular Job"></td>'
-	// KOLOM 3 
+	// KOLOM 3
 	html += '<td style="text-align: center;"> <input type="number" onchange="countIrregularJobs(this)" style="text-align: center;" class="form-control ratio" name="txtRatioIrregular[]" id="ratio" placeholder="Input Ratio"></td>';
-	// KOLOM 4         
+	// KOLOM 4
 	html += '<td style="text-align: center;"> <input type="number" onchange="countIrregularJobs(this)" style="text-align: center;" class="form-control waktu" name="txtWaktuIrregular[]" id="waktu" placeholder="Input Waktu"></td>';
 	// KOLOM 5
 	html += '<td style="text-align: center;" class="hasilIrregularJob" id="hasilIrregularJob"><input type="text" style="text-align: center;" class="form-control hasilIrregularJob" name="txtHasilWaktuIrregular[]" placeholder="Hasil" readonly></td>';
@@ -2411,7 +2479,7 @@ function addRowIrregularJob(){
 
 	nmbr++;
 	// console.log(html);
-	
+
 	$('#tbodyIrregularJob').append(html);
 
 	$('.position').each((i, item) => {
@@ -2423,8 +2491,8 @@ function addRowIrregularJob(){
 function deleteIrregularJobs(th) {
 	var curr_row = $(th).parent().parent('tr')
 	console.log(curr_row)
-	
-	//remove row 
+
+	//remove row
 	curr_row.remove();
 
 	$('.position').each((i, item) => {
@@ -2433,14 +2501,14 @@ function deleteIrregularJobs(th) {
 }
 
 //COUNT IRREGULAR JOBS//
-function countIrregularJobs(a) { 
-	var ratio =  $(a).closest('tr').find('input.ratio').val()	  //GET THE RATIO	
-	var waktu =  $(a).closest('tr').find('input.waktu').val()	  //GET THE TIME	
-	
+function countIrregularJobs(a) {
+	var ratio =  $(a).closest('tr').find('input.ratio').val()	  //GET THE RATIO
+	var waktu =  $(a).closest('tr').find('input.waktu').val()	  //GET THE TIME
+
 	// console.log('waktu ' + waktu + 'dibagi ' + 'rasio ' +  ratio);
 	// console.log((Math.ceil(Number(waktu) / Number(ratio))));
-	
-	$(a).closest('tr').find('input.hasilIrregularJob').val(Math.ceil(Number(waktu) / Number(ratio)))	  //SET THE RESULT	
+
+	$(a).closest('tr').find('input.hasilIrregularJob').val(Math.ceil(Number(waktu) / Number(ratio)))	  //SET THE RESULT
 }
 
 //RENCANA PRODUKSI CALCULATION
@@ -2450,6 +2518,20 @@ function countRencanaProduksi() {
 	// console.log(forecast, qty_unit);
 
 	$('.rencanaKerja').val(Number(forecast) * Number(qty_unit))
+
+	setTimeout(function () {
+		var waktu_satu_shift 	= $('.waktu1Shift').val();
+		var jumlah_shift 		= $('.jumlahShift').val();
+		var rencana_kerja 		= $('.rencanaKerja').val();
+		var jumlah_hari_kerja 	= $('.jumlahHariKerja').val();
+		// console.log(waktu_satu_shift + ',' + jumlah_shift + ',' + rencana_kerja + ',' + jumlah_hari_kerja);
+
+		var a = Number(waktu_satu_shift) * Number(jumlah_shift)
+		var b = Number(rencana_kerja) / Number(jumlah_hari_kerja)
+		var result = Number(a) / Number(b)
+
+		$('#inputInsert').val(Math.floor(Number(result))); //round down the result
+	}, 100);
 }
 
 //TAKT TIME CALCULATION
@@ -2459,7 +2541,7 @@ function countTaktTime() {
 	var rencana_kerja 		= $('.rencanaKerja').val();
 	var jumlah_hari_kerja 	= $('.jumlahHariKerja').val();
 	// console.log(waktu_satu_shift + ',' + jumlah_shift + ',' + rencana_kerja + ',' + jumlah_hari_kerja);
-	
+
 	var a = Number(waktu_satu_shift) * Number(jumlah_shift)
 	var b = Number(rencana_kerja) / Number(jumlah_hari_kerja)
 	var result = Number(a) / Number(b)

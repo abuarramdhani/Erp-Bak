@@ -79,7 +79,8 @@
                                         <table class="table table-bordered table-hover table-striped tblOKBOrderList text-center" width="100%">
                                             <thead class="bg-primary">
                                                 <tr>
-                                                    <th><input type="checkbox" class="minimal checkAllApproveOKB"></th>
+                                                    <!-- <input type="checkbox" class="minimal checkAllApproveOKB"> -->
+                                                    <th></th>
                                                     <th style="width:10px;">No</th>
                                                     <th>Pre_req_id</th>
                                                     <th>Creation Date</th>
@@ -110,14 +111,14 @@
                                                     <td><button type="button" class="btn btn-info btn-xs btnOKBDetailReleasedOrder">Detail</button></td>
                                                 </tr>
                                                 <div class="modal fade modalDetailReleasedOrderOKB-<?php echo $list['PRE_REQ_ID']; ?>" tabindex="-1" role="dialog" id="">
-                                                    <div class="modal-dialog modal-lg" role="document">
+                                                    <div class="modal-dialog modal-lg" role="document" style="width:1200px;">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
                                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                                                 <h4 class="modal-title">Detail Order</h4>
                                                             </div>
-                                                            <div class="modal-body">
-                                                                <div class="text-center newtableDetailOKB">
+                                                            <div class="modal-body" style="min-height: 500px;">
+                                                                <div class="text-center newtableDetailOKB-<?php echo $list['PRE_REQ_ID']; ?>">
                                                                     <img src="<?= base_url('assets/img/gif/loading5.gif') ?>" class="imgOKBLoading" style="width:35px; height:35px;">
                                                                 </div>
                                                             </div>

@@ -11,42 +11,52 @@ class M_approver extends CI_Model
 
     public function getListDataOrder()
     {
-        $oracle_dev = $this->load->database('oracle_dev', true);
-        $query = $oracle_dev->get('KHS.KHS_OKBJ_ORDER_HEADER');
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->get('KHS.KHS_OKBJ_ORDER_HEADER');
 
         return $query->result_array();
     }
 
     public function getListDataOrderCondition($and)
     {
-        $oracle_dev = $this->load->database('oracle_dev', true);
-        $query = $oracle_dev->query("SELECT * From KHS.KHS_OKBJ_ORDER_HEADER where $and");
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query("SELECT * From KHS.KHS_OKBJ_ORDER_HEADER where $and");
 
         return $query->result_array();
     }
 
-    public function ApproveOrder($orderid, $person_id, $approve)
+    public function ApproveOrder($orderid, $person_id, $approve, $type)
     {
-        $oracle_dev = $this->load->database('oracle_dev', true);
-        $oracle_dev->set('JUDGEMENT_DATE',"SYSDATE",false);
-        $oracle_dev->where('APPROVER_ID', $person_id);
-        $oracle_dev->where('ORDER_ID', $orderid);
-        $oracle_dev->update('KHS.KHS_OKBJ_ORDER_APPROVAL', $approve);
+        $oracle = $this->load->database('oracle', true);
+        $oracle->set('JUDGEMENT_DATE',"SYSDATE",false);
+        $oracle->where('APPROVER_ID', $person_id);
+        $oracle->where('APPROVER_TYPE', $type);
+        $oracle->where('ORDER_ID', $orderid);
+        $oracle->update('KHS.KHS_OKBJ_ORDER_APPROVAL', $approve);
+    }
+
+    public function ApproveOrderKaDep($orderid, $person_id, $approve)
+    {
+        $oracle = $this->load->database('oracle', true);
+        $oracle->set('JUDGEMENT_DATE',"SYSDATE",false);
+        $oracle->where('APPROVER_ID', $person_id);
+        $oracle->where('ORDER_ID', $orderid);
+        $oracle->update('KHS.KHS_OKBJ_ORDER_APPROVAL', $approve);
     }
 
     public function ApproveOrderPR($pre_req_id, $person_id, $approve)
     {
-        $oracle_dev = $this->load->database('oracle_dev', true);
-        $oracle_dev->set('JUDGEMENT_DATE',"SYSDATE",false);
-        $oracle_dev->where('APPROVER_ID', $person_id);
-        $oracle_dev->where('PRE_REQ_ID', $pre_req_id);
-        $oracle_dev->update('KHS.KHS_OKBJ_PRE_REQ_APPROVAL', $approve);
+        $oracle = $this->load->database('oracle', true);
+        $oracle->set('JUDGEMENT_DATE',"SYSDATE",false);
+        $oracle->where('APPROVER_ID', $person_id);
+        $oracle->where('PRE_REQ_ID', $pre_req_id);
+        $oracle->update('KHS.KHS_OKBJ_PRE_REQ_APPROVAL', $approve);
     }
 
     public function checkOrder($order_id)
     {
-        $oracle_dev = $this->load->database('oracle_dev', true);
-        $query = $oracle_dev->query("SELECT
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query("SELECT
         APPROVER_TYPE
         ,APPROVER_ID
         FROM
@@ -95,8 +105,8 @@ class M_approver extends CI_Model
 
     public function checkOrderPR($approver_id)
     {
-        $oracle_dev = $this->load->database('oracle_dev', true);
-        $query = $oracle_dev->query("SELECT * FROM 
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query("SELECT * FROM 
                                     KHS.KHS_OKBJ_PRE_REQ_APPROVAL
                                 WHERE APPROVER_ID ='$approver_id' 
                                 AND JUDGEMENT IS NULL");
@@ -106,20 +116,23 @@ class M_approver extends CI_Model
 
     public function getOrderToApprove($orderid)
     {
-        $oracle_dev = $this->load->database('oracle_dev', true);
-        $query = $oracle_dev->query("SELECT DISTINCT
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query("SELECT DISTINCT
         ooh.*,
         msib.SEGMENT1,
         msib.DESCRIPTION,
+        msib.ALLOW_ITEM_DESC_UPDATE_FLAG ALLOW_DESC,
         ppf.NATIONAL_IDENTIFIER,
         ppf.FULL_NAME,
-        ppf.ATTRIBUTE3
+        ppf.ATTRIBUTE3,
+        (SELECT count(FILE_NAME) FROM KHS.KHS_OKBJ_ORDER_ATTACHMENTS 
+        WHERE ORDER_ID = ooh.ORDER_ID) attachment
     FROM
         KHS.KHS_OKBJ_ORDER_HEADER ooh,
         PER_PEOPLE_F ppf,
         mtl_system_items_b msib
     WHERE
-        ooh.CREATE_BY = ppf.PERSON_ID
+        ooh.REQUESTER = ppf.PERSON_ID
         AND ooh.INVENTORY_ITEM_ID = msib.INVENTORY_ITEM_ID
         AND ooh.ORDER_ID = '$orderid'");
 
@@ -128,8 +141,8 @@ class M_approver extends CI_Model
 
     public function getOrderToApprove1($orderid)
     {
-        $oracle_dev = $this->load->database('oracle_dev', true);
-        $query = $oracle_dev->query("SELECT DISTINCT
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query("SELECT DISTINCT
         ooh.*,
         msib.SEGMENT1,
         msib.DESCRIPTION,
@@ -150,74 +163,74 @@ class M_approver extends CI_Model
 
     public function checkApproval($orderid, $approverType)
     {
-        $oracle_dev = $this->load->database('oracle_dev', true);
-        $oracle_dev->where('APPROVER_TYPE',$approverType);
-        $oracle_dev->where('ORDER_ID',$orderid);
-        $query = $oracle_dev->get('KHS.KHS_OKBJ_ORDER_APPROVAL');
+        $oracle = $this->load->database('oracle', true);
+        $oracle->where('APPROVER_TYPE',$approverType);
+        $oracle->where('ORDER_ID',$orderid);
+        $query = $oracle->get('KHS.KHS_OKBJ_ORDER_APPROVAL');
 
         return $query->result_array();
     }
 
     public function checkApprovalPR($orderid, $approverType)
     {
-        $oracle_dev = $this->load->database('oracle_dev', true);
-        $oracle_dev->where('APPROVER_TYPE',$approverType);
-        $oracle_dev->where('PRE_REQ_ID',$orderid);
-        $query = $oracle_dev->get('KHS.KHS_OKBJ_PRE_REQ_APPROVAL');
+        $oracle = $this->load->database('oracle', true);
+        $oracle->where('APPROVER_TYPE',$approverType);
+        $oracle->where('PRE_REQ_ID',$orderid);
+        $query = $oracle->get('KHS.KHS_OKBJ_PRE_REQ_APPROVAL');
 
         return $query->result_array();
     }
 
     public function checkPositionApprover($orderid,$person_id)
     {
-        $oracle_dev = $this->load->database('oracle_dev', true);
-        $query =$oracle_dev->query("SELECT APPROVER_TYPE from KHS.KHS_OKBJ_ORDER_APPROVAL where ORDER_ID='$orderid' and APPROVER_ID='$person_id'");
+        $oracle = $this->load->database('oracle', true);
+        $query =$oracle->query("SELECT APPROVER_TYPE from KHS.KHS_OKBJ_ORDER_APPROVAL where ORDER_ID='$orderid' and APPROVER_ID='$person_id' AND JUDGEMENT IS NULL");
         
         return $query->result_array();
     }
 
     public function checkPositionApproverPR($pre_req_id,$person_id)
     {
-        $oracle_dev = $this->load->database('oracle_dev', true);
-        $query =$oracle_dev->query("SELECT APPROVER_TYPE from KHS.KHS_OKBJ_PRE_REQ_APPROVAL where PRE_REQ_ID='$pre_req_id' and APPROVER_ID='$person_id'");
+        $oracle = $this->load->database('oracle', true);
+        $query =$oracle->query("SELECT APPROVER_TYPE from KHS.KHS_OKBJ_PRE_REQ_APPROVAL where PRE_REQ_ID='$pre_req_id' and APPROVER_ID='$person_id'");
         
         return $query->result_array();
     }
 
     public function updatePosOrder($orderid,$orderPos)
     {
-        $oracle_dev = $this->load->database('oracle_dev', true);
-        $oracle_dev->where('ORDER_ID',$orderid);
-        $oracle_dev->update('KHS.KHS_OKBJ_ORDER_HEADER', $orderPos);
+        $oracle = $this->load->database('oracle', true);
+        $oracle->where('ORDER_ID',$orderid);
+        $oracle->update('KHS.KHS_OKBJ_ORDER_HEADER', $orderPos);
     }
 
     public function updatePosOrderPR($pre_req_id,$orderPos)
     {
-        $oracle_dev = $this->load->database('oracle_dev', true);
-        $oracle_dev->where('PRE_REQ_ID',$pre_req_id);
-        $oracle_dev->update('KHS.KHS_OKBJ_PRE_REQ_HEADER', $orderPos);
+        $oracle = $this->load->database('oracle', true);
+        $oracle->where('PRE_REQ_ID',$pre_req_id);
+        $oracle->update('KHS.KHS_OKBJ_PRE_REQ_HEADER', $orderPos);
     }
 
     public function checkFinishOrder($orderid)
     {
-        $oracle_dev = $this->load->database('oracle_dev', true);
-        $query = $oracle_dev->query("SELECT APPROVER_ID from KHS.KHS_OKBJ_ORDER_APPROVAL
-                                    WHERE APPROVER_TYPE = (select MAX(APPROVER_TYPE) from KHS.KHS_OKBJ_ORDER_APPROVAL where ORDER_ID = '$orderid')");
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query("SELECT APPROVER_ID from KHS.KHS_OKBJ_ORDER_APPROVAL
+                                    WHERE APPROVER_TYPE = (select MAX(APPROVER_TYPE) from KHS.KHS_OKBJ_ORDER_APPROVAL where ORDER_ID = '$orderid') AND ORDER_ID = '$orderid'");
         return $query->result_array();
     }
 
     public function checkFinishOrderPR($pre_req_id)
     {
-        $oracle_dev = $this->load->database('oracle_dev', true);
-        $query = $oracle_dev->query("SELECT APPROVER_ID from KHS.KHS_OKBJ_PRE_REQ_APPROVAL
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query("SELECT APPROVER_ID from KHS.KHS_OKBJ_PRE_REQ_APPROVAL
                                     WHERE APPROVER_TYPE = (select MAX(APPROVER_TYPE) from KHS.KHS_OKBJ_PRE_REQ_APPROVAL where PRE_REQ_ID = '$pre_req_id')");
         return $query->result_array();
     }
 
     public function getOrderToApprovePR($orderid)
     {
-        $oracle_dev = $this->load->database('oracle_dev', true);
-        $query = $oracle_dev->query("SELECT DISTINCT
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query("SELECT DISTINCT
         oprh.*,
         msib.SEGMENT1,
         msib.DESCRIPTION,
@@ -238,23 +251,23 @@ class M_approver extends CI_Model
 
     public function getPreReqOrdertoInterface($pre_req_id)
     {
-        $oracle_dev = $this->load->database('oracle_dev', true);
-        $oracle_dev->where('PRE_REQ_ID',$pre_req_id);
-        $query = $oracle_dev->get('KHS.KHS_OKBJ_PRE_REQ_HEADER');
+        $oracle = $this->load->database('oracle', true);
+        $oracle->where('PRE_REQ_ID',$pre_req_id);
+        $query = $oracle->get('KHS.KHS_OKBJ_PRE_REQ_HEADER');
 
         return $query->result_array();
     }
 
     public function insertPo_Requisitions_Interface_all($order)
     {
-        $oracle_dev = $this->load->database('oracle_dev', true);
-        $oracle_dev->insert('PO_REQUISITIONS_INTERFACE_ALL', $order);
+        $oracle = $this->load->database('oracle', true);
+        $oracle->insert('PO_REQUISITIONS_INTERFACE_ALL', $order);
     }
 
     public function getKeterangan($pre_req_id)
     {
-        $oracle_dev = $this->load->database('oracle_dev', true);
-        $query = $oracle_dev->query("SELECT
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query("SELECT
                                     kooh.ORDER_PURPOSE,
                                     ppf.ATTRIBUTE3
                                 FROM
@@ -268,8 +281,8 @@ class M_approver extends CI_Model
 
     public function getAllApprover($order_id)
     {
-        $oracle_dev = $this->load->database('oracle_dev', true);
-        $query = $oracle_dev->query("SELECT
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query("SELECT
                             *
                         FROM
                             KHS.KHS_OKBJ_ORDER_APPROVAL
@@ -283,8 +296,8 @@ class M_approver extends CI_Model
 
     public function getDetailOrderNormalTotal($person_id)
     {
-        $oracle_dev = $this->load->database('oracle_dev', true);
-        $query = $oracle_dev->query("SELECT
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query("SELECT
                 DISTINCT ooa.ORDER_ID,
                 ooa.APPROVER_ID,
                 ooa.JUDGEMENT
@@ -295,14 +308,15 @@ class M_approver extends CI_Model
                 ooa.APPROVER_ID = '$person_id'
                 AND ooa.ORDER_ID = ooh.ORDER_ID
                 AND ooh.URGENT_FLAG = 'N'
-                AND ooh.IS_SUSULAN = 'N'");
+                AND ooh.IS_SUSULAN = 'N'
+                AND ooh.ORDER_STATUS_ID <> 4");
         return $query->result_array();
         
     }
     public function getDetailOrderUrgentTotal($person_id)
     {
-        $oracle_dev = $this->load->database('oracle_dev', true);
-        $query = $oracle_dev->query("SELECT
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query("SELECT
                 DISTINCT ooa.ORDER_ID,
                 ooa.APPROVER_ID,
                 ooa.JUDGEMENT
@@ -320,8 +334,8 @@ class M_approver extends CI_Model
 
     public function getDetailOrderSusulanTotal($person_id)
     {
-        $oracle_dev = $this->load->database('oracle_dev', true);
-        $query = $oracle_dev->query("SELECT
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query("SELECT
                 DISTINCT ooa.ORDER_ID,
                 ooa.APPROVER_ID,
                 ooa.JUDGEMENT
@@ -339,8 +353,8 @@ class M_approver extends CI_Model
     public function GetActionOrder($person_id, $judgement)
     {
 
-        $oracle_dev = $this->load->database('oracle_dev', true);
-        $query = $oracle_dev->query("SELECT
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query("SELECT
                     DISTINCT ooa.ORDER_ID,
                     ooa.APPROVER_ID,
                     ooa.JUDGEMENT
@@ -357,80 +371,84 @@ class M_approver extends CI_Model
 
     function getStock($itemkode)
     {
-        $oracle_dev = $this->load->database('oracle_dev', true);
-        $query = $oracle_dev->query("SELECT
-        DISTINCT msib.SEGMENT1 item ,
-        msib.DESCRIPTION ,
-        msib.MINIMUM_ORDER_QUANTITY moq,
-        msib.FIXED_LOT_MULTIPLIER flm,
-        SUM(moqd.PRIMARY_TRANSACTION_QUANTITY) OVER (PARTITION BY moqd.INVENTORY_ITEM_ID ,
-        moqd.ORGANIZATION_ID ,
-        moqd.SUBINVENTORY_CODE) onhand ,
-        khs_inv_qty_att(moqd.ORGANIZATION_ID,
-        moqd.INVENTORY_ITEM_ID,
-        moqd.SUBINVENTORY_CODE,
-        '',
-        '') att ,
-        khs_inv_qty_atr(moqd.ORGANIZATION_ID,
-        moqd.INVENTORY_ITEM_ID,
-        moqd.SUBINVENTORY_CODE,
-        '',
-        '') atr ,
-        moqd.SUBINVENTORY_CODE ,
-        mp.ORGANIZATION_CODE
-    FROM
-        mtl_onhand_quantities_detail moqd ,
-        mtl_system_items_b msib ,
-        mtl_parameters mp
-    WHERE
-        msib.ORGANIZATION_ID = moqd.ORGANIZATION_ID(+)
-        AND msib.INVENTORY_ITEM_ID = moqd.INVENTORY_ITEM_ID(+)
-        AND mp.ORGANIZATION_ID(+) = moqd.ORGANIZATION_ID
-        AND msib.SEGMENT1 = NVL('$itemkode', msib.SEGMENT1)
-    ORDER BY
-        item ,
-        moqd.SUBINVENTORY_CODE");
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query("SELECT
+            DISTINCT msib.SEGMENT1 item ,
+            msib.DESCRIPTION ,
+            msib.MINIMUM_ORDER_QUANTITY moq,
+            msib.FIXED_LOT_MULTIPLIER flm,
+            SUM(moqd.PRIMARY_TRANSACTION_QUANTITY) OVER (PARTITION BY moqd.INVENTORY_ITEM_ID ,
+            moqd.ORGANIZATION_ID ,
+            moqd.SUBINVENTORY_CODE) onhand ,
+            khs_inv_qty_att(moqd.ORGANIZATION_ID,
+            moqd.INVENTORY_ITEM_ID,
+            moqd.SUBINVENTORY_CODE,
+            '',
+            '') att ,
+            khs_inv_qty_atr(moqd.ORGANIZATION_ID,
+            moqd.INVENTORY_ITEM_ID,
+            moqd.SUBINVENTORY_CODE,
+            '',
+            '') atr ,
+            moqd.SUBINVENTORY_CODE ,
+            mp.ORGANIZATION_CODE
+        FROM
+            mtl_onhand_quantities_detail moqd ,
+            mtl_system_items_b msib ,
+            mtl_parameters mp
+        WHERE
+            msib.ORGANIZATION_ID = moqd.ORGANIZATION_ID(+)
+            AND msib.INVENTORY_ITEM_ID = moqd.INVENTORY_ITEM_ID(+)
+            AND mp.ORGANIZATION_ID(+) = moqd.ORGANIZATION_ID
+            AND msib.SEGMENT1 = NVL('$itemkode', msib.SEGMENT1)
+        ORDER BY
+            item ,
+            moqd.SUBINVENTORY_CODE");
 
         return $query->result_array();
     }
 
     public function getStandingPO($itemcode)
     {
-        $oracle_dev = $this->load->database('oracle_dev', true);
-        $query = $oracle_dev->query("SELECT DISTINCT
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query("SELECT DISTINCT
                 PHA.SEGMENT1 PO_NUMBER
                 ,PLA.LINE_NUM
                 ,plla.PROMISED_DATE
                 ,MSIB.DESCRIPTION NAMA_BARANG
-                ,PLLA.QUANTITY QTY
+                ,SUM(prla.QUANTITY - nvl(PLLA.QUANTITY_RECEIVED,0)) QTY
                 ,prha.segment1 pr_number
                 ,papf.full_name requestor
             FROM
-                po_headers_all pha
-                ,po_lines_all pla
+                po_requisition_headers_all prha
                 ,po_requisition_lines_all prla
-                ,po_requisition_headers_all prha
+                ,po_req_distributions_all prda
+                ,po_distributions_all pda
+                ,po_headers_all pha
+                ,po_lines_all pla
                 ,po_line_locations_all plla
                 ,mtl_system_items_b msib
                 ,per_all_people_f papf
             where
-                pha.po_header_id = pla.po_header_Id(+)
-                and pla.po_line_id = plla.po_line_id(+)
-                and plla.line_location_id = prla.LINE_LOCATION_ID(+)
-                and prla.REQUISITION_HEADER_ID = prha.REQUISITION_HEADER_ID(+)
-                and pla.ITEM_ID = msib.INVENTORY_ITEM_ID(+)
-                and prla.to_person_id = papf.person_id(+)
+                prha.REQUISITION_HEADER_ID = prla.REQUISITION_HEADER_ID
+                and prla.ITEM_ID = msib.INVENTORY_ITEM_ID
+                and prla.DESTINATION_ORGANIZATION_ID = msib.ORGANIZATION_ID
+                and prla.REQUISITION_LINE_ID = prda.REQUISITION_LINE_ID
+                and prda.DISTRIBUTION_ID = pda.REQ_DISTRIBUTION_ID(+)
+                and pda.PO_LINE_ID = pla.PO_LINE_ID(+)
+                and pda.PO_HEADER_ID = pha.PO_HEADER_ID(+)
+                and pda.PO_LINE_ID = plla.PO_LINE_ID(+)
+                and (plla.CLOSED_CODE <> 'CLOSED' or plla.CLOSED_CODE is null)
+                and prla.MODIFIED_BY_AGENT_FLAG is null
+                and prla.TO_PERSON_ID = papf.PERSON_ID
                 and msib.segment1 = '$itemcode'
-                and (select 
-                    max(rt.transaction_date)
-                from
-                    rcv_transactions rt
-                where
-                    rt.PO_HEADER_ID = pha.po_header_id
-                    and rt.po_line_id = pla.po_line_id
-                    and rt.transaction_type = 'RECEIVE'
-                group by 
-                    pla.po_line_id) is null
+        group by
+                PHA.SEGMENT1
+                ,PLA.LINE_NUM
+                ,plla.PROMISED_DATE
+                ,MSIB.DESCRIPTION
+                ,prha.segment1
+                ,papf.full_name            
         ORDER BY PO_NUMBER");
 
         return $query->result_array();
@@ -438,16 +456,16 @@ class M_approver extends CI_Model
 
     public function getAttachment($order_id)
     {
-        $oracle_dev = $this->load->database('oracle_dev', true);
-        $query = $oracle_dev->get_where('KHS.KHS_OKBJ_ORDER_ATTACHMENTS',array('ORDER_ID' => $order_id, ));
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->get_where('KHS.KHS_OKBJ_ORDER_ATTACHMENTS',array('ORDER_ID' => $order_id, ));
 
         return $query->result_array();
     }
 
     public function getNextApproval($order_id)
     {
-        $oracle_dev = $this->load->database('oracle_dev', true);
-        $query = $oracle_dev->query("SELECT
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query("SELECT
         APPROVER_TYPE
         ,APPROVER_ID
         ,NATIONAL_IDENTIFIER
@@ -494,6 +512,64 @@ class M_approver extends CI_Model
            ORDER BY ooa.APPROVER_TYPE ASC)   
         WHERE
         ROWNUM=1");
+
+        return $query->result_array();
+    }
+
+    public function checkPositionApproverIni($person_id)
+    {
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query(" SELECT * from KHS.KHS_OKBJ_APPROVE_HIR 
+        WHERE APPROVER = '$person_id'");
+
+        return $query->result_array();
+    }
+
+    public function UbahApproverOrder($person_id,$order_id,$ubah)
+    {
+        $oracle = $this->load->database('oracle', true);
+        $oracle->where('APPROVER_ID', $person_id);
+        $oracle->where('ORDER_ID', $order_id);
+        $oracle->update('KHS.KHS_OKBJ_ORDER_APPROVAL', $ubah);
+    }
+
+    public function UbahOrderHeader($order_id,$data)
+    {
+        
+        $oracle = $this->load->database('oracle', true);
+        $oracle->where('ORDER_ID', $order_id);
+        $oracle->update('KHS.KHS_OKBJ_ORDER_HEADER',$data);
+    }
+
+    public function getHistoryEditOrder($order_id)
+    {
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query("SELECT
+                        ppf.FULL_NAME ,
+                        ooa.APPROVER_ID ,
+                        ooa.ITEM_DESCRIPTION_BEFORE ,
+                        ooa.ITEM_DESCRIPTION_AFTER ,
+                        ooa.QUANTITY_BEFORE ,
+                        ooa.QUANTITY_AFTER ,
+                        ooh.UOM,
+                        ooa.ORDER_PURPOSE_BEFORE ,
+                        ooa.ORDER_PURPOSE_AFTER
+                    FROM
+                        KHS.KHS_OKBJ_ORDER_APPROVAL ooa,
+                        KHS.KHS_OKBJ_ORDER_HEADER ooh,
+                        PER_PEOPLE_F ppf
+                    WHERE
+                        ppf.PERSON_ID = ooa.APPROVER_ID
+                        AND ooa.ORDER_ID = ooh.ORDER_ID
+                        AND ooa.ORDER_ID = '$order_id'");
+
+        return $query->result_array();
+    }
+
+    public function getEmail($noind)
+    {
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query("SELECT * FROM KHS.KHS_EMAIL_PEKERJA where NATIONAL_IDENTIFIER='$noind'");
 
         return $query->result_array();
     }

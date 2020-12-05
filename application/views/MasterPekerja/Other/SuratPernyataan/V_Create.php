@@ -69,8 +69,7 @@
                                         </div>
                                         <div class="col-md-8">
                                             <select class="form-control" multiple="" id="mpslcnohubkrd" name="nohp[]" required="">
-                                            <option selected value="085101423576">085101423576</option>
-                                            <option selected value="085101423576">08112545940</option>
+                                            <option selected value="08112545940">08112545940</option>
                                             </select>
                                         </div>
                                         <br><br>

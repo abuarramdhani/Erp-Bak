@@ -1266,9 +1266,18 @@ and tahun_surat = '$tahun' and bulan_surat = '$bulan'";
 		return $this->personalia->query($sql)->result();
 	}
 
-	public function getNamaJabatanUpah()
+	public function getNamaJabatanUpah($term)
 	{
-		$sql = "SELECT distinct nama_jabatan from hrd_khs.tb_status_jabatan WHERE nama_jabatan!='' order by nama_jabatan";
+		$t = strtoupper($term);
+		$sql = "SELECT
+					*
+				from
+					hrd_khs.tb_master_jab tmj
+				where
+					'2020-10-08'::date between tgl_berlaku and tgl_tberlaku
+					and nama_jabatan like '%$t%'
+				order by
+					kd_jabatan ";
 		return $this->personalia->query($sql)->result();
 	}
 }

@@ -79,7 +79,8 @@
                                         <table class="table table-bordered table-hover table-striped tblOKBOrderList text-center">
                                             <thead class="bg-primary">
                                                 <tr>
-                                                    <th><input type="checkbox" class="minimal checkAllApproveOKB"></th>
+                                                    <!-- <input type="checkbox" class="minimal checkAllApproveOKB"> -->
+                                                    <th></th>
                                                     <!-- <th>No</th> -->
                                                     <th style="width:100px;">Order id</th>
                                                     <!-- <th style="width:100px;">Tanggal Order</th> -->
@@ -93,6 +94,7 @@
                                                     <th style="width:100px;">Need By Date</th>
                                                     <th style="width:100px;">Alasan Order</th>
                                                     <th style="width:120px;">Note To Pengelola</th>
+                                                    <th style="width:120px;">Note To Buyer</th>
                                                     <th style="width:100px;">Status</th>
                                                     <!-- <th>Action</th> -->
                                                 </tr>
@@ -107,13 +109,16 @@
                                                     <td><?php echo $list['NATIONAL_IDENTIFIER'].'-'.$list['FULL_NAME'].'<br>'.$list['ATTRIBUTE3'];?></td>
                                                     <!-- <td><?php echo $list['ATTRIBUTE3'];?></td> -->
                                                     <td><button type="button" class="btn btn-xs btn-default checkStokOKB"><?php echo $list['SEGMENT1'].'-'.$list['DESCRIPTION']; ?></button></td>
-                                                    <td><?php echo $list['ITEM_DESCRIPTION']; ?><br><button type="button" class="btn btn-info btn-xs btnAttachmentOKB">view attachment</button></td>
+                                                    <td><?php echo $list['ITEM_DESCRIPTION']; ?><br><?php if ($list['ATTACHMENT'] != 0) { ?>
+                                                        <button type="button" class="btn btn-info btn-xs btnAttachmentOKB">view attachment</button>
+                                                    <?php }?></td>
                                                     <!-- <td><?php echo $list['DESCRIPTION']; ?></td> -->
                                                     <td><?php echo $list['QUANTITY'].' '.$list['UOM']; ?></td>
                                                     <!-- <td><?php echo $list['UOM']; ?></td> -->
                                                     <td><?php echo date("d-M-Y", strtotime($list['NEED_BY_DATE'])); ?></td>
                                                     <td><?php echo $list['ORDER_PURPOSE']; ?></td>
                                                     <td><?php echo $list['NOTE_TO_PENGELOLA']; ?></td>
+                                                    <td><?php echo $list['NOTE_TO_BUYER']; ?></td>
                                                     <?php if ($list['ORDER_STATUS_ID'] == '3') { 
                                                         $status = "ORDER APPROVED";
                                                     } ?>
@@ -152,7 +157,7 @@
                                                             <div class="modal-body" style="height: 300px;">
                                                                 <center>
                                                                     <div class="row text-primary divOKBListOrderStockLoading-<?php echo $list['ORDER_ID']; ?>" style="width: 400px; margin-top: 25px; display: none;">
-                                                                        <label class="control-label"> <h4><img src="<? echo base_url('assets/img/gif/loading5.gif') ?>" style="width:30px"> <b>Sedang Mengambil Data ...</b></h4> </label>
+                                                                        <label class="control-label"> <h4><img src="<?php echo base_url('assets/img/gif/loading5.gif') ?>" style="width:30px"> <b>Sedang Mengambil Data ...</b></h4> </label>
                                                                     </div>
                                                                 </center>
                                                                     <div class="row divStockOKB-<?php echo $list['ORDER_ID'];?>"></div>
@@ -173,7 +178,7 @@
                                                             <div class="modal-body" style="height: 400px;">
                                                                 <center>
                                                                     <div class="row text-primary divOKBListOrderAttachmentLoading-<?php echo $list['ORDER_ID']; ?>" style="width: 400px; margin-top: 25px; display: none;">
-                                                                        <label class="control-label"> <h4><img src="<? echo base_url('assets/img/gif/loading5.gif') ?>" style="width:30px"> <b>Sedang Mengambil Data ...</b></h4> </label>
+                                                                        <label class="control-label"> <h4><img src="<?php echo base_url('assets/img/gif/loading5.gif') ?>" style="width:30px"> <b>Sedang Mengambil Data ...</b></h4> </label>
                                                                     </div>
                                                                 </center>
                                                                     <div class="row divAttachmentOKB-<?php echo $list['ORDER_ID'];?>"></div>

@@ -19,11 +19,12 @@ class C_Requisition extends CI_Controller {
 		$this->load->model('OrderKebutuhanBarangDanJasa/Approver/M_approver');
 		
         	  
-		 if($this->session->userdata('logged_in')!=TRUE) {
+		if($this->session->userdata('logged_in')!=TRUE) {
 			$this->load->helper('url');
 			$this->session->set_userdata('last_page', current_url());
 			$this->session->set_userdata('Responsbility', 'some_value');
-         }
+		}
+		
         if($this->session->is_logged == FALSE){
             redirect();
 		}
@@ -52,6 +53,7 @@ class C_Requisition extends CI_Controller {
 	{
 		$string = $_GET['q'];
 		$data = $this->M_requisition->getItem(strtoupper($string));
+
 		echo json_encode($data);
 	}
 
@@ -72,6 +74,9 @@ class C_Requisition extends CI_Controller {
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		
 		$data['pengorder'] = $this->M_requisition->getPersonId($noind);
+
+		// echo '<pre>';
+		// print_r($data['UserMenu']);exit;
 		
 		if ($this->session->responsibility_id == 2678) { //set admin atau bukan
 			$data['requester'] = $this->M_requisition->getRequsterAdmin($noind);
@@ -81,15 +86,14 @@ class C_Requisition extends CI_Controller {
 		
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-        $this->load->view('OrderKebutuhanBarangDanJasa/Requisition/V_Input2',$data);
+        $this->load->view('OrderKebutuhanBarangDanJasa/Requisition/V_Input3',$data);
         $this->load->view('V_Footer',$data);
 	}
 
 	public function createOrder()
 	{
 		$noind = $this->session->user;
-		// print_r($noind);exit;
-
+		
 		$creator = $this->input->post('txtOKBOrderCreatorId');
 		$requster = $this->input->post('txtOKBOrderRequesterId');
 		$itemCode = $this->input->post('slcOKBinputCode[]');
@@ -100,28 +104,31 @@ class C_Requisition extends CI_Controller {
 		$orderReason = $this->input->post('txtOKBinputReason[]');
 		$orderNote = $this->input->post('txtOKBinputNote[]');
 		$destination = $this->input->post('hdnDestinationOKB[]');
-		$organization = $this->input->post('hdnOrganizationOKB[]');
-		$location = $this->input->post('hdnLocationOKB[]');
-		$subinventory = $this->input->post('hdnSubinventoyOKB[]');
+		$organization = $this->input->post('organizationOKB[]');
+		$location = $this->input->post('locationOKB[]');
+		$subinventory = $this->input->post('subinventoyOKB[]');
 		$urgentFlag = $this->input->post('hdnUrgentFlagOKB[]');
 		$urgentReason = $this->input->post('txtOKBinputUrgentReason[]');
 		$statusOrder = $this->input->post('txtOKBHdnStatusOrder');
 
-		$itemkodDanNamaBarang = $this->input->post('hdnItemCodeOKB[]');
+		$statusPage = $this->input->post('btnOKBSubmit');
 
-		if ($subinventory == '') {
-			$subinventory = null;
-		}
-		if ($urgentReason == '') {
-			$urgentReason = null;
-		}
+		$itemkodDanNamaBarang = $this->input->post('hdnItemCodeOKB[]');
 
 		$emailBatch = array();
 		for ($i=0; $i < count($itemCode); $i++) { 
+
+			if ($subinventory[$i] == '') {
+				$subinventory[$i] = null;
+			}
+			if ($urgentReason[$i] == '') {
+				$urgentReason[$i] = null;
+			}
+
 			$line = array(
 							'CREATE_BY' => $creator, 
 							'INVENTORY_ITEM_ID' => $itemCode[$i], 
-							'QUANTITY' => $quantity[$i], 
+							'QUANTITY' => str_replace(',','',$quantity[$i]), 
 							'UOM' => $uom[$i], 
 							'ORDER_PURPOSE' => $orderReason[$i], 
 							'NOTE_TO_PENGELOLA' => $orderNote[$i], 
@@ -162,11 +169,14 @@ class C_Requisition extends CI_Controller {
 			if($urgentFlag[$i] == 'Y'){
 
 				$setApprover = $this->M_requisition->setApproverItemUrgent($creator, $itemCode[$i]);
+				
 			}else {
 							
 				$setApprover = $this->M_requisition->setApproverItem($creator, $itemCode[$i]);
+				
 			}
 
+			
 			foreach ($setApprover as $key => $set) {
 							
 				$approver = array(
@@ -220,7 +230,7 @@ class C_Requisition extends CI_Controller {
 				$_FILES['fileOKBAttachment'.$x]['name']		= $files['name'][$j];
 				$_FILES['fileOKBAttachment'.$x]['type']		= $files['type'][$j];
 				$_FILES['fileOKBAttachment'.$x]['tmp_name']	= $files['tmp_name'][$j];
-				$_FILES['fileOKBAttachment'.$x]['error']		= $files['error'][$j];
+				$_FILES['fileOKBAttachment'.$x]['error']	= $files['error'][$j];
 				$_FILES['fileOKBAttachment'.$x]['size']		= $files['size'][$j];
 				
 				$this->upload->initialize($config);
@@ -235,7 +245,7 @@ class C_Requisition extends CI_Controller {
 				}else {
 					// echo('nothing');
 				}
-				$replaceFileName = str_replace(' ','_',$files['name'][$j]);
+				$replaceFileName = str_replace(' ','_',$media['file_name']);
 				$upload = array(
 					'ORDER_ID' => $order_id[0]['ORDER_ID'],
 					'ADDRESS' => $path,
@@ -253,7 +263,7 @@ class C_Requisition extends CI_Controller {
 		}
 
 		foreach ($emailBatch as $key => $pesan) {
-
+			$noindemail = $key;
 			$normal = array();
 			$urgent = array();
 			$susulan = array();
@@ -307,7 +317,7 @@ class C_Requisition extends CI_Controller {
 				$jklCreator = 'Ibu ';
 			};
 
-			$subject = '[TRIAL]Persetujuan Order Kebutuhan Barang Dan jasa';
+			$subject = '[PRE-LAUNCH]Persetujuan Order Kebutuhan Barang Dan jasa';
 			$body = "<b>Yth. $jklApprover $namaApprover</b>,<br><br>";
 			$body .= "$jklCreator $namaCreator meminta approval Anda terkait order barang-barang berikut : <br><br>";
 			$body .= "	<table border='1' style=' border-collapse: collapse;'>
@@ -327,9 +337,9 @@ class C_Requisition extends CI_Controller {
 							if ($pesan[$i]['URGENT_FLAG']=='Y' && $pesan[$i]['IS_SUSULAN'] =='N') {
 								$statusOrder = 'Urgent';
 							}else if($pesan[$i]['URGENT_FLAG']=='N' && $pesan[$i]['IS_SUSULAN'] =='N'){
-								$statusOrder = 'Normal';
+								$statusOrder = 'Reguler';
 							}elseif ($pesan[$i]['IS_SUSULAN'] =='Y') {
-								$statusOrder = 'Susulan';
+								$statusOrder = 'Emergency';
                             }
 
 							if ($pesan[$i]['URGENT_REASON']=='') {
@@ -360,7 +370,7 @@ class C_Requisition extends CI_Controller {
 						$body .= "</body>";
 						$body .= "</table> <br><br>";
 						$body .= "<b>INFO :</b><br>";
-						$body .= "Terdapat <b>".count($normal)." order normal, ".count($susulan)." order susulan, dan ". count($urgent)." order urgent</b> menunggu keputusan Anda!<br>";
+						$body .= "Terdapat <b>".count($normal)." order reguler, ".count($susulan)." order emergency, dan ". count($urgent)." order urgent</b> menunggu keputusan Anda!<br>";
 						$body .= "Apabila Anda ingin mengambil tindakan terhadap Order tersebut, Anda dapat klik link <b>$link</b> <br><br>";
 						$body .= "Demikian yang dapat kami sampaikan. Atas perhatian dan kerjasamanya kami ucapkan terima kasih. <br><br>";
 						$body .= "<span style='font-size:10px;'>*Email ini dikirimkan secara otomatis oleh aplikasi <b>Order Kebutuhan Barang Dan Jasa</b> pada $emailSendDate pukul $pukul<br>";
@@ -368,10 +378,15 @@ class C_Requisition extends CI_Controller {
 
 
 
-			$this->EmailAlert($subject,$body);
+			$this->EmailAlert($noindemail,$subject,$body);
+			// echo $key;
 		}
 
-		redirect('OrderKebutuhanBarangDanJasa/Requisition/Input', 'refresh');
+		if ($statusPage == 0) {
+			redirect('OrderKebutuhanBarangDanJasa/Requisition/Input', 'refresh');
+		}elseif ($statusPage == 1) {
+			redirect('OrderKebutuhanBarangDanJasa/Requisition/InputExcel', 'refresh');
+		}
 	}
 
 	public function listData()
@@ -389,11 +404,16 @@ class C_Requisition extends CI_Controller {
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		
 		$data['pengorder'] = $this->M_requisition->getPengorder($noind);
-		$data['listOrder'] = $this->M_requisition->getListDataOrder($noind);
+
+		if ($this->session->responsibility == '(Admin)Order Kebutuhan Barang dan Jasa') {
+			$data['listOrder'] = $this->M_requisition->getListDataOrderAdmin($noind);
+		}elseif ($this->session->responsibility == 'Order Kebutuhan Barang dan Jasa') {
+			$data['listOrder'] = $this->M_requisition->getListDataOrder2($noind);
+		}
 
 		// echo '<pre>';
 		// print_r($data['listOrder']);exit;
-     
+
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
         $this->load->view('OrderKebutuhanBarangDanJasa/Requisition/V_Listdata',$data);
@@ -449,7 +469,7 @@ class C_Requisition extends CI_Controller {
 		$noind = $this->session->user;
 		
 		$data['Menu'] = 'Order';
-		$data['SubMenuOne'] = 'Setup Approver';
+		$data['SubMenuOne'] = 'Setup User';
 		$data['SubMenuTwo'] = '';
 		
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -524,15 +544,15 @@ class C_Requisition extends CI_Controller {
 		$user_id = $this->session->userid;
 
 		$noind = $this->session->user;
-			
+
 		$data['Menu'] = 'Order';
 		$data['SubMenuOne'] = 'Setup User';
 		$data['SubMenuTwo'] = '';
-			
+
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-			
+
 		$data['pengorder'] = $this->M_requisition->getPersonId($noind);
 
 		$this->load->view('V_Header',$data);
@@ -598,7 +618,7 @@ class C_Requisition extends CI_Controller {
 	{
 		$approver = $_POST['approver'];
 		$person_id = $_POST['person_id'];
-		
+
 		$this->M_requisition->setDeactiveApprover($approver,$person_id);
 		$this->M_requisition->setActiveApprover($approver,$person_id);
 
@@ -632,21 +652,32 @@ class C_Requisition extends CI_Controller {
 		echo($returnTable);
 	}
 
-	public function EmailAlert($subject , $body)
+	public function CancelOrder()
+	{
+		$order_id = $_POST['order_id'];
+
+		$this->M_requisition->CancelOrder($order_id);
+
+		echo 1;
+	}
+
+	public function EmailAlert($noind, $subject, $body)
 	{
 		//email
-		// $getEmail = $this->M_ApprovalRequisition->getEmail($user_id);
-		// $emailUser = $getEmail[0]['internal_mail'];
+		// echo $noind;exit;
+		$getEmail = $this->M_approver->getEmail($noind);
+		// print_r($getEmail);exit;
+		$emailUser = $getEmail[0]['EMAIL_INTERNAL'];
 		// echo 
-		$emailUser = 'bondan_surya_n@quick.com';
-		
+		// $emailUser = 'bondan_surya_n@quick.com';
+
 		//send Email
 
 		$this->load->library('PHPMailerAutoload');
 		$mail = new PHPMailer();
         $mail->SMTPDebug = 0;
         $mail->Debugoutput = 'html';
-		
+
         // set smtp
         $mail->isSMTP();
         $mail->Host = 'm.quick.com';
@@ -662,19 +693,46 @@ class C_Requisition extends CI_Controller {
         $mail->Username = 'no-reply';
         $mail->Password = '123456';
         $mail->WordWrap = 50;
-		
+
         // set email content
         $mail->setFrom('no-reply@quick.com', 'ERP OKEBAJA');
         $mail->addAddress($emailUser);
         $mail->Subject = $subject;
 		$mail->msgHTML($body);
 
-		
 		if (!$mail->send()) {
 			echo "Mailer Error: " . $mail->ErrorInfo;
 			exit();
 		} else {
 			echo "Message sent!";
 		}
+	}
+
+	public function InputExcel()
+	{
+		$user_id = $this->session->userid;
+
+		$noind = $this->session->user;
+
+		$data['Menu'] = 'Order';
+		$data['SubMenuOne'] = 'Input Order Via Excel';
+		$data['SubMenuTwo'] = '';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$data['pengorder'] = $this->M_requisition->getPersonId($noind);
+
+		if ($this->session->responsibility_id == 2678) { //set admin atau bukan
+			$data['requester'] = $this->M_requisition->getRequsterAdmin($noind);
+		} else {
+			$data['requester'] = $data['pengorder'];
+		}
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+        $this->load->view('OrderKebutuhanBarangDanJasa/Requisition/V_ImportOrder',$data);
+        $this->load->view('V_Footer',$data);
 	}
 }

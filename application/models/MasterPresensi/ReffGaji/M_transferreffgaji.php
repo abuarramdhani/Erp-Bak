@@ -65,7 +65,10 @@ class M_transferreffgaji extends CI_Model
 					 			or left(noind,1) = 'D' 
 					 			or left(noind,1) = 'J' 
 					 			or left(noind,1) = 'T' 
-					 			or left(noind,1) = 'G'
+					 			or (
+					 				left(noind,1) = 'G' 
+					 				and noind != 'G1040'
+					 			)
 					 			or left(noind,1) = 'Q'
 					 		) 
 					and to_char(tanggal,'mmyy') ='$periode'
@@ -77,7 +80,10 @@ class M_transferreffgaji extends CI_Model
 					 			or left(noind,1) = 'D' 
 					 			or left(noind,1) = 'J' 
 					 			or left(noind,1) = 'T' 
-					 			or left(noind,1) = 'G'
+					 			or (
+					 				left(noind,1) = 'G' 
+					 				and noind != 'G1040'
+					 			)
 					 			or left(noind,1) = 'Q'
 					 		) 
 					and to_char(tanggal_keluar,'mmyy') ='$periode'
@@ -130,9 +136,14 @@ class M_transferreffgaji extends CI_Model
 
 	public function getDataNonStaff($periode){
 		$sql = "select * from \"Presensi\".Treffgaji 
-				 where (left(noind,1) = 'A' or left(noind,1) = 'C' or left(noind,1) = 'E' or left(noind,1) = 'H') 
-				 and to_char(tanggal,'mmyy') ='$periode'
-				 and jns_transaksi in('01') order by noind";
+				where (
+					left(noind,1) = 'A' 
+					or left(noind,1) = 'C' 
+					or left(noind,1) = 'E' 
+					or left(noind,1) = 'H'
+				) 
+				and to_char(tanggal,'mmyy') ='$periode'
+				and jns_transaksi in('01') order by noind";
 		return $this->personalia->query($sql)->result_array();
 	}
 
@@ -339,6 +350,7 @@ class M_transferreffgaji extends CI_Model
 				from \"Presensi\".treffgaji
 				where to_char(tanggal,'mmyy') ='$periode'
 				and left(noind,1) in ('B','D','J','G','T','Q','A','E','F','H')
+				and noind != 'G1040'
 				group by left(noind,1)
 				order by 1";
 		return $this->personalia->query($sql)->result_array();
@@ -399,7 +411,7 @@ class M_transferreffgaji extends CI_Model
 					) 
 				) as tbl 
 				where left(noind,1) in ('A','E','F','H','K','P')
-				ORDER BY left(noind,1), asal_outsourcing, kodesie, noind";
+				ORDER BY noind";
 		return $this->personalia->query($sql)->result_array();
 	}
 
@@ -458,6 +470,7 @@ class M_transferreffgaji extends CI_Model
 					) 
 				) as tbl 
 				where left(noind,1) in ('B','D','J','G','Q','T')
+				and noind != 'G1040'
 				ORDER BY noind";
 		return $this->personalia->query($sql)->result_array();
 	}

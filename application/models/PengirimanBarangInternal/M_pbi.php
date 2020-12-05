@@ -168,7 +168,8 @@ class M_pbi extends CI_Model
                  END status2,
                  (SELECT ksi.no_suratjalan
                     FROM khs_sj_internal ksi
-                   WHERE ksi.no_fpb = kki.doc_number) no_surat_jalan
+                   WHERE ksi.no_fpb = kki.doc_number
+                   AND ROWNUM = 1) no_surat_jalan
               FROM khs_kirim_internal kki
               WHERE kki.seksi_tujuan = '$response->seksi'
               AND kki.status >= '5'
@@ -205,7 +206,8 @@ class M_pbi extends CI_Model
                END status2,
                (SELECT ksi.no_suratjalan
                   FROM khs_sj_internal ksi
-                 WHERE ksi.no_fpb = kki.doc_number) no_surat_jalan
+                 WHERE ksi.no_fpb = kki.doc_number
+                 AND ROWNUM = 1) no_surat_jalan
             FROM khs_kirim_internal kki
             WHERE kki.APPROVED_BY = '$user_login'
             ORDER BY kki.doc_number DESC";
@@ -242,9 +244,10 @@ class M_pbi extends CI_Model
                     WHEN kki.status = 6
                        THEN 'Diterima Seksi Tujuan'
                  END status2,
-                 (SELECT ksi.no_suratjalan
+                 (SELECT DISTINCT ksi.no_suratjalan
                     FROM khs_sj_internal ksi
-                   WHERE ksi.no_fpb = kki.doc_number) no_surat_jalan
+                   WHERE ksi.no_fpb = kki.doc_number
+                   AND ROWNUM = 1) no_surat_jalan
               FROM khs_kirim_internal kki
               WHERE kki.seksi_kirim = '$response->seksi'
               ORDER BY kki.doc_number DESC";
@@ -291,7 +294,8 @@ class M_pbi extends CI_Model
          END status2,
          (SELECT ksi.no_suratjalan
             FROM khs_sj_internal ksi
-           WHERE ksi.no_fpb = kki.doc_number) no_surat_jalan
+           WHERE ksi.no_fpb = kki.doc_number
+           AND ROWNUM = 1) no_surat_jalan
       FROM khs_kirim_internal kki
       WHERE kki.doc_number = '$d'";
         $query = $this->oracle->query($sql);
@@ -506,4 +510,12 @@ class M_pbi extends CI_Model
         return $response;
     }
 
+    public function getJadwal()
+    {
+        $sql = "SELECT   *
+                  FROM khs_jadwal_hiwing
+              ORDER BY 1";
+        $response = $this->oracle->query($sql)->result_array();
+        return $response;
+    }
 }

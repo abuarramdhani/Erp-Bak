@@ -10,7 +10,7 @@
             <div class="col-md-12">
               <div class="form-group">
                 <div class="col-md-12">
-                  <label> Piih Department </label>
+                  <label> Pilih Department </label>
                 </div>
                 <div class="col-md-4">
                   <select class="select4 form-control" style="width: 100%" name="slcDeptIMO" id="selectDept">
@@ -23,12 +23,12 @@
               </div>
               <div class="form-group">
                 <div class="col-md-12">
-                  <label> Piih Tanggal </label>
+                  <label> Pilih Tanggal </label>
                 </div>
                 <div class="col-md-4">
                   <div class="input-group date">
                     <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
-                    <input type="text" class="form-control pull-right" id="txtTanggalIMO" name="txtTanggalIMO" placeholder="Start Date..">
+                    <input type="text" class="form-control pull-right" id="txtTanggalIMO" name="txtTanggalIMO" placeholder="Start Date.." autocomplete="off">
                   </div>
                 </div>
               </div>
@@ -67,3 +67,36 @@
     </div>
   </div>
 </section>
+
+<!-- modal create picklist sebagian -->
+<div class="modal fade" id="mdlCreateSebagian" role="dialog">
+    <div class="modal-dialog" style="padding-left:5px;">
+      <div class="modal-content">
+        <div class="modal-header" style="font-size:20px;background-color:#82E5FA">
+            <i class="fa fa-list-alt"></i> CREATE PICKLIST SEBAGIAN
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="panel-body text-center">
+							Masukkan Quantity Request :
+						</div>
+            <div class="panel-body">
+							<div class="col-md-3"></div>
+							<div class="col-md-6">
+								<div class="input-group">
+									<input type="number" id="qty_request" class="form-control form-lg" style="width:100%" placeholder="masukkan qty" autocomplete="off">
+										<span class="input-group-btn" id="btncheckqty">
+										</span>
+								</div>
+							</div>
+						</div>
+						<div class="panel-body text-center" id="loadcheckqty"></div>
+            <div class="panel-body text-center" id="printpicksebelumnya"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+</div>
+<!-- modal create picklist sebagian -->

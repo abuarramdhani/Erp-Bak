@@ -35,6 +35,11 @@
                                                 <option></option>
                                             </select>
                                         </div>
+                                        <div class="col-md-3">
+                                            <select id="dept" class="form-control select2 deptpickgd" data-placeholder="pilih department" style="width:100%">
+                                                <option></option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="panel-body" style="background-color: #c4ffef;">

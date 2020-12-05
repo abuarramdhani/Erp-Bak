@@ -43,7 +43,7 @@
 					<label><b>Nomor Polisi :</b></label><br>
 					<span><?php echo $get['Header'][0]['PLAT_NUMBER'] ?></span> <br><br>
 					<label><b>Tanggal :</b></label><br>
-					<span><?php echo date('d-M-Y H:i:s',strtotime($get['Header'][0]['CREATION_DATE'])) ?></span>
+					<span><?php echo date('d-M-Y H:i:s',strtotime($get['Header'][0]['PRINT_DATE'])) ?></span>
 				</div>
 				<div style="width:69.15%;float:left">
 					<table style="width:100%;border-bottom: 1px solid black; font-size: 12px; border-collapse: collapse !important;">

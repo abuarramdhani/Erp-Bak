@@ -118,7 +118,7 @@
             <div id="datacoly2"></div>
             <div class="panel-body">
                 <div class="col-md-12 text-center">
-                    <button type="button" class="btn btn-danger">SAVE</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" aria-label="Close">SAVE</button>
                 </div>
             </div>
 		    </div>

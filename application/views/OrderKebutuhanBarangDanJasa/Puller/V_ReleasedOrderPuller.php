@@ -102,7 +102,7 @@
                                                         <?php } elseif ($list['APPROVED_FLAG'] == 'Y') { ?>
                                                             <label class="label label-success"><i>Approved</i></label>
                                                         <?php }elseif ($list['APPROVED_FLAG'] == 'N') { ?>
-                                                            <label class="label label-danger"><i>Rejected</i></label>
+                                                            <label class="label label-danger"><i>Rejected</i></label> - <?= $list['NOTE'];?>
                                                         <?php }?>
                                                     </td>
                                                     <td>
@@ -129,7 +129,7 @@
                                                                 <h4 class="modal-title">Detail Order</h4>
                                                             </div>
                                                             <div class="modal-body">
-                                                                <div class="text-center newtableDetailOKB">
+                                                                <div class="text-center newtableDetailOKB-<?php echo $list['PRE_REQ_ID']; ?>">
                                                                     <img src="<?= base_url('assets/img/gif/loading5.gif') ?>" class="imgOKBLoading" style="width:35px; height:35px;">
                                                                 </div>
                                                             </div>

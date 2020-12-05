@@ -79,7 +79,8 @@
                                         <table class="table table-bordered table-hover table-striped tblOKBOrderList">
                                             <thead class="bg-primary">
                                                 <tr>
-                                                    <th class="bg-primary"><input type="checkbox" class="minimal checkAllApproveOKB"></th>
+                                                <!-- <input type="checkbox" class="minimal checkAllApproveOKB"> -->
+                                                    <th class="bg-primary"></th>
                                                     <!-- <th class="bg-primary">No</th> -->
                                                     <th class="bg-primary" style="width:60px;">Order id</th>
                                                     <!-- <th class="bg-primary" style="width:60px;">Tanggal Order</th> -->
@@ -92,7 +93,9 @@
                                                     <th style="width:100px;">Need By Date</th>
                                                     <th style="width:100px;">Alasan Order</th>
                                                     <th style="width:100px;">Alasan Urgensi</th>
-                                                    <!-- <th style="width:120px;">Note To Pengelola</th> -->
+                                                    <?php if ($position[0]['APPROVER_LEVEL'] > 5) { ?>
+                                                    <th style="width:120px;">Note To Buyer</th>
+                                                    <?php } ?>
                                                     <th style="width:100px;">Status</th>
                                                     <!-- <th>Action</th> -->
                                                 </tr>
@@ -101,24 +104,31 @@
                                             <?php $no=0; foreach ($listOrder as $key => $list) { $no++; ?>
                                                 <tr>
                                                     <td style="text-align:center;"><input type="checkbox" class="minimal checkApproveOKB" value="<?php echo $list['ORDER_ID']; ?>"></td>
-                                                    <!-- <td><?php echo $no; ?></td> -->
                                                     <td><span class="tdOKBListOrderId"><?php echo $list['ORDER_ID']; ?></span><br><?= date("d-M-Y",strtotime($list['ORDER_DATE'])); ?>
                                                     </td>
-                                                    <!-- <td><?php echo date("d-M-Y",strtotime($list['ORDER_DATE'])); ?></td> -->
                                                     <td><?php echo $list['NATIONAL_IDENTIFIER'].'-'.$list['FULL_NAME'].'<br>'.$list['ATTRIBUTE3'];?></td>
-                                                    <!-- <td><span style="font-size:11px;"><?php echo $list['ATTRIBUTE3'];?></span></td> -->
+                                                    
                                                     <td><button type="button" class="btn btn-xs btn-default checkStokOKB"><?php echo $list['SEGMENT1'].'-'.$list['DESCRIPTION']; ?></button></td>
-                                                    <td><?php echo $list['ITEM_DESCRIPTION']; ?><br><button type="button" class="btn btn-info btn-xs btnAttachmentOKB">view attachment</button></td>
-                                                    <td><?php echo $list['QUANTITY'].' '.$list['UOM']; ?></td>
+                                                    <td><span class="okbDesc"><?php echo $list['ITEM_DESCRIPTION']; ?></span><br><?php if ($list['ALLOW_DESC'] == 'Y') {?>
+                                                        <button type="button" class="btn btn-xs btn-primary btnUbahDescOKB">Edit Desc</button>
+                                                    <?php }?><br><?php if ($list['ATTACHMENT'] != 0) { ?>
+                                                        <button type="button" class="btn btn-info btn-xs btnAttachmentOKB">view attachment</button>
+                                                    <?php }?></td>
+                                                    <td><span class="okbQty"><?php echo $list['QUANTITY'].' '.$list['UOM']; ?></span><br><button type="button" class="btn btn-xs btn-primary btnUbahQtyOKB">Edit</button></td>
                                                     <!-- <td><?php echo $list['UOM']; ?></td> -->
                                                     <td><?php echo date("d-M-Y", strtotime($list['NEED_BY_DATE'])); ?></td>
-                                                    <td><?php echo $list['ORDER_PURPOSE']; ?></td>
+                                                    <td><span class="okbOrderPurp"><?php echo $list['ORDER_PURPOSE']; ?></span><br><button type="button" class="btn btn-xs btn-primary btnUbahOrderPurpOKB">Edit</button></td>
                                                     <td><?php echo $list['URGENT_REASON']; ?></td>
-                                                    <!-- <td><?php echo $list['NOTE_TO_PENGELOLA']; ?></td> -->
+                                                    <?php if ($position[0]['APPROVER_LEVEL'] > 5) { ?>
+                                                        <td><?php echo $list['NOTE_TO_BUYER']; ?></td>
+                                                    <?php } ?>
                                                     <?php if ($list['ORDER_STATUS_ID'] == '2') { 
                                                         $status = "WIP APPROVE ORDER";
                                                     } ?>
-                                                    <td><button type="button" class="btn btn-info btn-sm btnOKBListOrderHistory"><?php echo $status; ?></button></td>
+                                                    <td><button type="button" class="btn btn-info btn-sm btnOKBListOrderHistory"><?php echo $status; ?></button>
+                                                    <!-- <br><br> -->
+                                                    <!-- <button type="button" class="btn btn-warning btn-sm btnOKBEditOrderHistory">History Edit</button> -->
+                                                    </td>
                                                 </tr>
                                                 <div class="modal fade mdlOKBListOrderHistory-<?php echo $list['ORDER_ID']; ?>" role="dialog" aria-labelledby="modalDelete" aria-hidden="true">
                                                     <div class="modal-dialog">
@@ -174,7 +184,7 @@
                                                             <div class="modal-body" style="height: 400px;">
                                                                 <center>
                                                                     <div class="row text-primary divOKBListOrderAttachmentLoading-<?php echo $list['ORDER_ID']; ?>" style="width: 400px; margin-top: 25px; display: none;">
-                                                                        <label class="control-label"> <h4><img src="<? echo base_url('assets/img/gif/loading5.gif') ?>" style="width:30px"> <b>Sedang Mengambil Data ...</b></h4> </label>
+                                                                        <label class="control-label"> <h4><img src="<?php echo base_url('assets/img/gif/loading5.gif') ?>" style="width:30px"> <b>Sedang Mengambil Data ...</b></h4> </label>
                                                                     </div>
                                                                 </center>
                                                                     <div class="row divAttachmentOKB-<?php echo $list['ORDER_ID'];?>"></div>
@@ -225,5 +235,68 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <div class="modal fade mdlUbahDeskripsiApproverOKB" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Ubah Deskripsi</h4>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" class="form-control txtEditDescBeforeOKB">                    <textArea class="form-control txtEditDescOKB"></textArea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary btnActUbahDescOKB">Save changes</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
+    <div class="modal fade mdlUbahAlasanOrderApproverOKB" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Ubah Alasan Order</h4>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" class="form-control txtEditOrderPurpBeforeOKB">              <textArea class="form-control txtEditOrderPurpOKB"></textArea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary btnActUbahOrderPurpOKB">Save changes</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
+    <div class="modal fade mdlUbahQtyOrderApproverOKB" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Ubah Quantity Order</h4>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" class="form-control txtEditQtyOrderBeforeOKB">
+                    <div align="center">
+                        <table>
+                            <td><input type="text" style="width: 150px;" class="form-control txtEditQtyOrderOKB txtOKBNewOrderListQty"></td>
+                            <td>&nbsp;<span class="OKBafterUOM"></span></td>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary btnActUbahQtyOrderOKB">Save changes</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
     </div>
         

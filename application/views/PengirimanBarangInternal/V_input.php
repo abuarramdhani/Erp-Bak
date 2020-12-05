@@ -33,10 +33,8 @@
                   <div class="col-md-2"></div>
                   <div class="col-md-8 mt-4">
                     <br>
-                    <?php echo $error ?>
-                    <div class="error_ga_ini">
-
-                    </div>
+                    <?php echo $this->session->flashdata('message_pbi') ?>
+                    <div class="error_ga_ini"></div>
                     <div class="form-group">
                       <label for="seksi_pengirim">Tujuan</label>
                       <div class="row">

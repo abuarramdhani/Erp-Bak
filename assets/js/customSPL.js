@@ -571,15 +571,20 @@ $(function () {
 				noi: $("#noi").val(),
 				noind: $("#noind").val(),
 			},
-			success: function (data) {
-				if (data != "[]") {
-					var send = $.parseJSON(data);
-					table.rows.add(send);
+			dataType: 'JSON',
+			success(data) {
+				if (data) {
+				    table.clear().draw();
+					table.rows.add(data);
 					table.draw();
 				} else {
 					// alert('Data tidak di temukan');
+					console.info("Data tidak ditemukan")
 				}
 			},
+			error() {
+			    console.error("#spl-rekap -> error")
+			}
 		});
 	});
 

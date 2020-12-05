@@ -6,17 +6,46 @@ var master = document.getElementById("tbl_master_category");
       
 var simulasi = document.getElementById("tbl_simulasi_produksi");
     if(simulasi){
-        getSimulasiProduksi(this);
+        getSimulasiProduksi('');
     }
+
+var user = document.getElementById("tbl_usermng");
+    if(user){
+        getUserMngProduksi(this);
+    }
+
+    $(".getusermjp").select2({
+        allowClear: true,
+        placeholder: "pilih User",
+        minimumInputLength: 3,
+        ajax: {
+            url: baseurl + "MonitoringJobProduksi/UserManagement/getuserMJP",
+            dataType: 'json',
+            type: "GET",
+            data: function (params) {
+                    var queryParameters = {
+                            term: params.term,
+                    }
+                    return queryParameters;
+            },
+            processResults: function (data) {
+                return {
+                    results: $.map(data, function (obj) {
+                        return {id:obj.noind, text:obj.noind+' - '+obj.nama};
+                    })
+                };
+            }
+        }
+    });	 
 });
 
 //-----------------------------------------------MONITORING---------------------------------------------------------------------------------
-function schMonJob(th) {
+function schMonJob(ket) {
     var  kategori   = $('#kategori').val();
     var  bulan      = $('#periode_bulan').val();
     $.ajax({
         url : baseurl + "MonitoringJobProduksi/Monitoring/search",
-        data : {bulan : bulan, kategori : kategori},
+        data : {bulan : bulan, kategori : kategori, ket : ket},
         dataType : 'html',
         type : 'POST',
         beforeSend: function() {
@@ -40,17 +69,136 @@ function schMonJob(th) {
                     leftColumns: 3,
                 }
             });
+
+            var nomor = $('.nomorr:last').val();
+            // console.log(nomor);
+            if (nomor != undefined) {
+                getWipMonitoring(1, nomor);
+                getGdMonitoring(1, nomor);
+                getPickMonitoring(1, nomor);
+                $('.loadingwip').html('<center><img style="width:30px; height:auto" src="'+baseurl+'assets/img/gif/loading5.gif"></center>' );
+                $('.loadingpick').html('<center><img style="width:30px; height:auto" src="'+baseurl+'assets/img/gif/loading5.gif"></center>' );
+                $('.loadinggd').html('<center><img style="width:30px; height:auto" src="'+baseurl+'assets/img/gif/loading5.gif"></center>' );
+            }
         }
     })
 }
 
-function getSimulasiProduksi(th) {
+function getWipMonitoring(no, batas) {
+    if (no <= batas) {
+        var item = $('#item'+no).val();
+        $.ajax ({
+            url : baseurl + "MonitoringJobProduksi/Monitoring/searchwipmonitoring",
+            data : {item : item},
+            dataType : 'json',
+            type : 'POST',
+            success : function (result) {
+                // console.log(result,no)
+                $('[name = "ini_wip'+no+'"]').html('<b>WIP :</b> '+result+'')
+                $('[name ="wip'+no+'"]').val(result);
+                getWipMonitoring((no+1), batas);
+            }
+        })
+    }
+}
+
+function getPickMonitoring(no, batas) {
+    if (no <= batas) {
+        var item = $('#item'+no).val();
+        $.ajax ({
+            url : baseurl + "MonitoringJobProduksi/Monitoring/searchpickmonitoring",
+            data : {item : item},
+            dataType : 'json',
+            type : 'POST',
+            success : function (result) {
+                // console.log(result,no)
+                $('[name = "ini_pick'+no+'"]').html('<b>Picklist :</b> '+result+'')
+                $('[name ="picklist'+no+'"]').val(result);
+                getPickMonitoring((no+1), batas);
+            }
+        })
+    }
+}
+
+function getGdMonitoring(no, batas) {
+    if (no <= batas) {
+        var item = $('#item'+no).val();
+        $.ajax ({
+            url : baseurl + "MonitoringJobProduksi/Monitoring/searchgdmonitoring",
+            data : {item : item},
+            dataType : 'json',
+            type : 'POST',
+            success : function (result) {
+                // console.log(result,no)
+                $('[name = "ini_gd'+no+'"]').html('<b>FG-TKS :</b> '+result[0]+'<br><b>MLATI-DM :</b> '+result[1]+'')
+                $('[name ="fg_tks'+no+'"]').val(result[2]);
+                $('[name ="mlati'+no+'"]').val(result[3]);
+                getGdMonitoring((no+1), batas);
+            }
+        })
+    }
+}
+
+function commentmin(no, tgl, ket) {
+    var item    = $('#item'+no).val();
+    var desc    = $('#desc'+no).val();
+    var inv     = $('#inv'+no).val();
+    var bulan   = $('#bulan').val();
+    var bulan2   = $('#bulan2').val();
+    var kategori = $('#kategori2').val();
+
+    $.ajax({
+        url : baseurl + "MonitoringJobProduksi/Monitoring/commentmin",
+        data : {item : item, desc : desc, inv : inv, bulan : bulan, bulan2 : bulan2,
+                kategori : kategori, tgl : tgl, ket : ket},
+        dataType : 'html',
+        type : 'POST',
+        success : function (data) {
+            $('#mdlcommentmin').modal('show');
+            $('#datacommentmin').html(data);
+        }
+    })
+}
+
+function editcomment(){
+    // console.log('woy')
+    $('#savecommentmin').css('display','');
+    $('#editcommentmin').css('display','none');
+    $('#comment').removeAttr('disabled');
+}
+
+function saveCommentmin(ket) {
+    var kategori = $('#kategori').val();
+    var inv     = $('#inv').val();
+    var bulan   = $('#bulanmin').val();
+    var tgl     = $('#tgl').val();
+    var comment = $('#comment').val();
+    if (ket == 1) {
+        tujuan = 'saveComment';
+    }else if (ket == 2) {
+        tujuan = 'saveCommentPL';
+    }else{
+        tujuan = 'saveCommentC';
+    }
+    $.ajax({
+        url : baseurl + "MonitoringJobProduksi/Monitoring/"+tujuan+"",
+        data : {inv : inv, bulan : bulan, comment : comment,
+                kategori : kategori, tgl : tgl},
+        dataType : 'html',
+        type : 'POST',
+        success : function (data) {
+            $('#mdlcommentmin').modal('hide');
+        }
+    })
+}
+
+function getSimulasiProduksi(ket) {
     var item    = $('#item').val();
     var qty     = $('#qty').val();
     // console.log(item, qty)
     $.ajax({
         url : baseurl + "MonitoringJobProduksi/Monitoring/searchSimulasi",
-        data : {item : item, qty : qty, level: 1},
+        data : {item : item, qty : qty, level: 1, ket : ket},
         dataType : 'html',
         type : 'POST',
         beforeSend: function() {
@@ -92,6 +240,7 @@ function tambahsimulasi(level, no, num) {
         })
     }else{
         $('#tr_simulasi'+nomor).css('display','none');   
+        $('#tr_simulasi'+nomor).html('');
         $('#penanda'+nomor).val('off');
     }
 }
@@ -145,6 +294,42 @@ function mdlWIPSimulasi(no) {
             $('#mdlGDSimulasi').modal('show');
             $('#datamdlsimulasi').html(result);
             $('#tbl_modal_simulasi').dataTable();
+        }
+    })
+}
+
+function schMonJob2(th) {
+    var kategori = $('#kategori_range').map(function(){return $(this).val();}).get();
+    var tglawal = $('#tgl_awal').val();
+    var tglakhir = $('#tgl_akhir').val();
+    var bulan = $('#periode_bulan_range').val();
+// console.log(kategori);
+    $.ajax({
+        url : baseurl + "MonitoringJobProduksi/Monitoring/searchReport",
+        data : {kategori : kategori, tglawal : tglawal, tglakhir : tglakhir, bulan : bulan},
+        dataType : 'html',
+        type : 'POST',
+        beforeSend: function() {
+        $('div#tbl_monjob_produksi2' ).html('<center><img style="width:70px; height:auto" src="'+baseurl+'assets/img/gif/loading11.gif"></center>' );
+        },
+        success : function(data) {
+            $('div#tbl_monjob_produksi2' ).html(data);
+            $('.tb_monjob').dataTable({
+                "scrollX": true,
+                paging : false,
+                scrollY : 500,
+                ordering : false,
+                fixedColumns:   {
+                    leftColumns: 3,
+                }
+            });
+            $('.tb_monjob2').dataTable({
+                "scrollX": true,
+                ordering : false,
+                fixedColumns:   {
+                    leftColumns: 3,
+                }
+            });
         }
     })
 }
@@ -432,4 +617,118 @@ function saveCategory(th) {
             }
         }
     }) 
+}
+
+//------------------------------------------------- USER MANAGEMENT ------------------------------------------------------------------
+
+function getUserMngProduksi(th) {
+    $.ajax({
+        url : baseurl + "MonitoringJobProduksi/UserManagement/getdata",
+        beforeSend: function() {
+        $('div#tbl_usermng' ).html('<center><img style="width:70px; height:auto" src="'+baseurl+'assets/img/gif/loading11.gif"></center>' );
+        },
+        success : function(data) {
+            $('div#tbl_usermng' ).html(data);
+            $('#tb_user_mng').dataTable({
+                "scrollX": true,
+            });
+        }
+    })
+}
+
+function saveUserMng(th) {
+    var jenis = $('#kategori').val();
+    var user = $('#user').val();
+
+    $.ajax({
+        url : baseurl + "MonitoringJobProduksi/UserManagement/saveUser",
+        data : { jenis : jenis, user : user},
+        dataType : 'html',
+        type : 'POST',
+        success : function (data) {
+            if (data == 'oke') {
+                Swal.fire({
+                    title: 'User Berhasil Ditambahkan!',
+                    type: 'success',
+                    allowOutsideClick: true
+                }).then(result => {
+                    if (result.value) {
+                        getUserMngProduksi(this);
+                }}) 
+            }else{
+                swal.fire("User Sudah Ada", "", "error");
+            }
+            $('#kategori').select2('val','');
+            $('#user').select2('val','');
+            
+            $(".getusermjp").select2({
+                allowClear: true,
+                placeholder: "pilih User",
+                minimumInputLength: 3,
+                ajax: {
+                    url: baseurl + "MonitoringJobProduksi/UserManagement/getuserMJP",
+                    dataType: 'json',
+                    type: "GET",
+                    data: function (params) {
+                            var queryParameters = {
+                                    term: params.term,
+                            }
+                            return queryParameters;
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: $.map(data, function (obj) {
+                                return {id:obj.noind, text:obj.noind+' - '+obj.nama};
+                            })
+                        };
+                    }
+                }
+            });		
+        }
+    })    
+}
+
+function editUser(no) {
+    var noind = $('#noind'+no).val();
+    var nama = $('#nama'+no).val();
+    var jenis = $('#jenis'+no).val();
+
+    $.ajax({
+        url : baseurl + "MonitoringJobProduksi/UserManagement/editUser",
+        data : {noind : noind, nama : nama, jenis : jenis},
+        dataType : 'html',
+        type : 'POST',
+        success : function (result) {
+            $('#mdleditUser').modal('show');
+            $('#dataedituser').html(result);
+            
+            $("#jenis").select2({
+                allowClear: true,
+            });		
+        }
+    })
+}
+
+function deleteUser(no) {
+    var noind = $('#noind'+no).val();
+    var jenis = $('#jenis'+no).val();
+
+    Swal.fire({
+        title: 'Apakah Anda Yakin?',
+        type: 'question',
+        showCancelButton: true,
+        allowOutsideClick: false
+    }).then(result => {
+        if (result.value) {
+            $.ajax({
+                url : baseurl + "MonitoringJobProduksi/UserManagement/deleteUser",
+                data : {noind : noind, jenis : jenis},
+                dataType : 'html',
+                type : 'POST',
+                success : function (result) {
+                    swal.fire("User Berhasil Dihapus!", "", "success");
+                    getUserMngProduksi(this);
+                }
+            })
+    }}) 
 }

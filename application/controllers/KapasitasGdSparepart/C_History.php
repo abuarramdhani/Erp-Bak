@@ -32,8 +32,8 @@ class C_History extends CI_Controller
 		$user = $this->session->username;
 		$user_id = $this->session->userid;
 
-		$data['Title'] = 'History SPB/DO';
-		$data['Menu'] = 'History SPB/DO';
+		$data['Title'] = 'Analisis SPB/DO';
+		$data['Menu'] = 'Analisis';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
 
@@ -42,7 +42,11 @@ class C_History extends CI_Controller
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
         $hasil = $this->olahdata();
         $data['data'] = $hasil;
-        // echo "<pre>";print_r($tampung);exit();
+        $data['jml_diesel'] = $this->getJenisItem('DIESEL');
+        $data['jml_vbelt'] = $this->getJenisItem('VBELT');
+        $data['jml_sap'] = $this->getJenisItem('SAP');
+        $data['datapic'] = $this->datapic(date('d/m/Y'), date('d/m/Y'));
+        // echo "<pre>";print_r($data);exit();
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -87,7 +91,7 @@ class C_History extends CI_Controller
         for ($i=0; $i < count($val); $i++) { 
             if (!in_array($val[$i]['TGL_INPUT'], $tgl)) {
                 array_push($tgl, $val[$i]['TGL_INPUT']);
-                $tampung[$a]['TANGGAL']   = $val[$i]['TGL_INPUT'];
+                $tampung[$a]['TANGGAL']     = $val[$i]['TGL_INPUT'];
                 $tampung[$a]['TGL_INPUT']   = $val[$i]['JAM'];
                 $masuk     = $this->caridatamasuk($val, $val[$i]['JAM_INPUT']);
                 $tampung[$a]['ITEM_MASUK']  = $masuk['item_in'];
@@ -314,6 +318,141 @@ class C_History extends CI_Controller
                 'item_in' => $in);
         // echo "<pre>";print_r($hasil);exit();
         return $hasil;
+    }
+
+    
+    public function getJenisItem($jenis){
+        $getdata = $this->M_history->getItemDOSPB();
+        // echo "<pre>";print_r($tgl);exit();
+        $pelayanan = $pengeluaran = $packing = $jumlah = $item = $pcs = 0;
+        foreach ($getdata as $key => $value) {
+            if ($value['FINAL'] == $jenis) {
+                // if ($value['WAKTU_PELAYANAN']) {
+                //     $wkt_plyn = explode(":", $value['WAKTU_PELAYANAN']);
+                //     $wkt_plyn2 = ($wkt_plyn[0]*3600) + ($wkt_plyn[1]*60) + $wkt_plyn[2];
+                //     $pelayanan += $wkt_plyn2;
+                // }
+                
+                // if ($value['WAKTU_PENGELUARAN']) {
+                //     $wkt_pglr = explode(":", $value['WAKTU_PENGELUARAN']);
+                //     $wkt_pglr2 = ($wkt_pglr[0]*3600) + ($wkt_pglr[1]*60) + $wkt_pglr[2];
+                //     $pengeluaran += $wkt_pglr2;
+                // }
+                
+                // if ($value['WAKTU_PACKING']) {
+                //     $wkt_pck = explode(":", $value['WAKTU_PACKING']);
+                //     $wkt_pck2 = ($wkt_pck[0]*3600) + ($wkt_pck[1]*60) + $wkt_pck[2];
+                //     $packing += $wkt_pck2;
+                // }
+
+                $jumlah += 1;
+                $item += $value['JUMLAH_ITEM'];
+                $pcs += $value['JUMLAH_PCS'];
+            }
+        }
+        $pcs = $pcs /100;
+        $item = $item /10;
+        $hasil = array($jumlah, $item, $pcs);
+        return $hasil;
+    }
+
+    public function detailJenisItem(){
+        $tanggal = $this->input->post('tanggal');
+        
+        $getdata = $this->M_history->getItemDOSPB();
+        $datanya = array();
+        foreach ($getdata as $key => $value) {
+            if ($value['JAM_INPUT'] == $tanggal) {
+                array_push($datanya, $value);
+            }
+        }
+        // echo "<pre>";print_r($datanya);exit();
+        $data['data'] = $datanya;
+        $this->load->view('KapasitasGdSparepart/V_ModalJenisItem', $data);
+    }
+
+    public function datapic($date1, $date2){
+        $pic = $this->M_history->getPIC();
+        $val = $this->M_history->getDataSPB('');
+        // echo "<pre>";print_r($val);exit();
+        $datanya = array();
+        $doc_plyn_kosong = $item_plyn_kosong = $pcs_plyn_kosong = 0;
+        $doc_pglr_kosong = $item_pglr_kosong = $pcs_pglr_kosong = 0;
+        $doc_pck_kosong = $item_pck_kosong = $pcs_pck_kosong = 0;
+        foreach ($pic as $key => $p) {
+            $doc_plyn = $item_plyn = $pcs_plyn = 0;
+            $doc_pglr = $item_pglr = $pcs_pglr = 0;
+            $doc_pck = $item_pck = $pcs_pck = 0;
+            foreach ($val as $key => $value) {
+                if ($p['PIC'] == $value['PIC_PELAYAN'] && $value['SELESAI_PELAYANAN2'] >= $date1 && $value['SELESAI_PELAYANAN2'] <= $date2) {
+                    $doc_plyn += 1;
+                    $item_plyn += $value['JUMLAH_ITEM'];
+                    $pcs_plyn += $value['JUMLAH_PCS'];
+                }elseif (empty($value['PIC_PELAYAN'])  && $value['SELESAI_PELAYANAN2'] >= $date1 && $value['SELESAI_PELAYANAN2'] <= $date2) {
+                    $doc_plyn_kosong += 1;
+                    $item_plyn_kosong += $value['JUMLAH_ITEM'];
+                    $pcs_plyn_kosong += $value['JUMLAH_PCS'];
+                }
+                
+                if ($p['PIC'] == $value['PIC_PENGELUARAN']  && $value['SELESAI_PENGELUARAN2'] >= $date1 && $value['SELESAI_PENGELUARAN2'] <= $date2) {
+                    $doc_pglr += 1;
+                    $item_pglr += $value['JUMLAH_ITEM'];
+                    $pcs_pglr += $value['JUMLAH_PCS'];
+                }elseif (empty($value['PIC_PENGELUARAN']) && $value['SELESAI_PENGELUARAN2'] >= $date1 && $value['SELESAI_PENGELUARAN2'] <= $date2) {
+                    $doc_pglr_kosong += 1;
+                    $item_pglr_kosong += $value['JUMLAH_ITEM'];
+                    $pcs_pglr_kosong += $value['JUMLAH_PCS'];
+                }
+                
+                if ($p['PIC'] == $value['PIC_PACKING'] && $value['SELESAI_PACKING2'] >= $date1 && $value['SELESAI_PACKING2'] <= $date2) {
+                    $doc_pck += 1;
+                    $item_pck += $value['JUMLAH_ITEM'];
+                    $pcs_pck += $value['JUMLAH_PCS'];
+                }elseif (empty($value['PIC_PACKING']) && $value['SELESAI_PACKING2'] >= $date1 && $value['SELESAI_PACKING2'] <= $date2) {
+                    $doc_pglr_kosong += 1;
+                    $item_pglr_kosong += $value['JUMLAH_ITEM'];
+                    $pcs_pglr_kosong += $value['JUMLAH_PCS'];
+                }
+
+            }
+
+            // if ($doc_plyn == 0 && $doc_pglr == 0 && $doc_pck == 0) {
+            // }else {
+                $hasil = array('PIC' => $p['PIC'],
+                                'DOKUMEN_PELAYANAN' => $doc_plyn,
+                                'ITEM_PELAYANAN' => $item_plyn,
+                                'PCS_PELAYANAN' => $pcs_plyn,
+                                'DOKUMEN_PENGELUARAN' => $doc_pglr,
+                                'ITEM_PENGELUARAN' => $item_pglr,
+                                'PCS_PENGELUARAN' => $pcs_pglr,
+                                'DOKUMEN_PACKING' => $doc_pck,
+                                'ITEM_PACKING' => $item_pck,
+                                'PCS_PACKING' => $pcs_pck,
+                        );  
+                array_push($datanya, $hasil);
+            // }
+        }
+        $hasil_kosong = array('PIC' => '',
+                        'DOKUMEN_PELAYANAN' => $doc_plyn_kosong,
+                        'ITEM_PELAYANAN' => $item_plyn_kosong,
+                        'PCS_PELAYANAN' => $pcs_plyn_kosong,
+                        'DOKUMEN_PENGELUARAN' => $doc_pglr_kosong,
+                        'ITEM_PENGELUARAN' => $item_pglr_kosong,
+                        'PCS_PENGELUARAN' => $pcs_pglr_kosong,
+                        'DOKUMEN_PACKING' => $doc_pck_kosong,
+                        'ITEM_PACKING' => $item_pck_kosong,
+                        'PCS_PACKING' => $pcs_pck_kosong,
+                );  
+        array_push($datanya, $hasil_kosong);
+        // echo "<pre>";print_r($datanya);exit();
+        return $datanya;
+    }
+
+    public function searchDataPIC(){
+        $tgl_awal = $this->input->post('tgl_awal');
+        $tgl_akhir = $this->input->post('tgl_akhir');
+        $data['datapic'] = $this->datapic($tgl_awal, $tgl_akhir);
+        $this->load->view('KapasitasGdSparepart/V_TblPICHistory', $data);
     }
 
 }

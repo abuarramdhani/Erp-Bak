@@ -74,21 +74,23 @@ class C_PenjadwalanOtomatis extends CI_Controller
 		$katering = $this->M_penjadwalanotomatis->getCateringActive($lokasi);
 		$jumlah = $this->M_penjadwalanotomatis->getCateringCount($lokasi);
 		$jumlah = $jumlah['0']['jml2'];
+		
 		foreach ($katering as $kat) {
 			$urutan = $this->M_penjadwalanotomatis->getCateringUrutan($kat['fs_kd_katering'],$periode,$mulai,$lokasi);
-			if ($jumlah < $urutan['0']['fn_urutan_jadwal']) {
-				$urutan2 = $this->M_penjadwalanotomatis->getCateringNonActiveUrutan($kat['fs_kd_katering'],$periode,$mulai,$lokasi);
-				$urut = $urutan2['0']['fn_urutan_jadwal'];
+			if (!empty($urutan)) {
+				if ($jumlah < $urutan['0']['fn_urutan_jadwal']) {
+					$urutan2 = $this->M_penjadwalanotomatis->getCateringNonActiveUrutan($kat['fs_kd_katering'],$periode,$mulai,$lokasi);
+					$urut = $urutan2['0']['fn_urutan_jadwal'];
+				}else{
+					$urut = $urutan['0']['fn_urutan_jadwal'];
+				}
 			}else{
-				$urut = $urutan['0']['fn_urutan_jadwal'];
+				$urut = 1;
 			}
 			
 			$awal = $this->M_penjadwalanotomatis->getFirstDay($periode);
 			$akhir = $this->M_penjadwalanotomatis->getLastDay($periode);
 			
-			
-			
-
 			$awal = $awal['0']['tanggal'];
 			$akhir = $akhir['0']['tanggal'];
 			$harilm = '0';
@@ -98,7 +100,6 @@ class C_PenjadwalanOtomatis extends CI_Controller
 				$awal = $mulai;
 			}
 			
-			// echo $mulai;exit();
 			for ($i=1; $i <= $akhir; $i++) { 
 				$day = $this->M_penjadwalanotomatis->getDay($periode,$i);
 				

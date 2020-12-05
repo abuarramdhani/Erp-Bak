@@ -22,9 +22,10 @@ class C_MonitoringCovid extends CI_Controller
 		$this->load->library('General');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('Covid/MonitoringCovid/M_monitoringcovid');
+		$this->load->model('MasterPekerja/Surat/IsolasiMandiri/M_isolasimandiri');
 		date_default_timezone_set('Asia/Jakarta');
 
-		$this->checkSession();
+		// $this->checkSession();
 	}
 
 	public function checkSession()
@@ -77,7 +78,7 @@ class C_MonitoringCovid extends CI_Controller
 		$status_pemantauan = $this->M_monitoringcovid->getPekerjaByStatus('2');
 		if (!empty($status_pemantauan)) {
 			foreach ($status_pemantauan as $pt) {
-				if (!empty($br['selesai_isolasi'])) {
+				if (!empty($pt['selesai_isolasi'])) {
 					if (strtotime(date('Y-m-d')) >= strtotime($pt['selesai_isolasi'])) {
 						$this->M_monitoringcovid->updateStatusPekerjaById(3,$pt['cvd_pekerja_id']);
 					}
@@ -204,7 +205,7 @@ class C_MonitoringCovid extends CI_Controller
 		    		else
 		    		{
 		    			$errorinfo = $this->upload->display_errors();
-		    			echo $errorinfo;
+		    			echo $errorinfo;exit();
 		    		}
 				}
 			}
@@ -265,7 +266,7 @@ class C_MonitoringCovid extends CI_Controller
 		    		else
 		    		{
 		    			$errorinfo = $this->upload->display_errors();
-		    			echo $errorinfo;
+		    			echo $errorinfo;exit();
 		    		}
 				}
 			}
@@ -299,6 +300,13 @@ class C_MonitoringCovid extends CI_Controller
 		$plaintext_string = $this->encrypt->decode($plaintext_string);
 		$status = $this->input->get('status');
 
+		$pkj = $this->M_monitoringcovid->getDetailcvdPekerja($plaintext_string);
+		if (!empty($pkj['isolasi_id'])) {
+			$surat = $this->M_monitoringcovid->getSuratIs($pkj['isolasi_id']);
+			$del = $this->M_monitoringcovid->delSuratIs($pkj['noind'], $surat['status'], $surat['tgl_mulai'], $surat['tgl_selesai']);
+			$del = $this->M_monitoringcovid->delSuratIs2($pkj['noind'], $surat['status'], $surat['tgl_mulai'], $surat['tgl_selesai']);
+			$del = $this->M_monitoringcovid->delwktIs($pkj['isolasi_id']);
+		}
 		$this->M_monitoringcovid->deletePekerjaById($plaintext_string);
 
 		$result = array(
@@ -369,7 +377,6 @@ class C_MonitoringCovid extends CI_Controller
 	public function MemoIsolasi($encrypted_id){
 		$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $encrypted_id);
 		$plaintext_string = $this->encrypt->decode($plaintext_string);
-
 		$isolasi_id = $this->M_monitoringcovid->getPekerjaById($plaintext_string);
 		// echo "<pre>";print_r($isolasi_id);exit();
 
@@ -604,6 +611,523 @@ class C_MonitoringCovid extends CI_Controller
 		}
 		redirect(base_url('Covid/MonitoringCovid/'));
 	}
-}
 
-?>
+	public function CekAbsensiPrm()
+	{
+		$encrypted_id = $this->input->get('id');
+		$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $encrypted_id);
+		$plaintext_string = $this->encrypt->decode($plaintext_string);
+		$status = $this->input->get('status');
+
+		$pkj = $this->M_monitoringcovid->getDetailcvdPekerja($plaintext_string);
+		if (!empty($pkj['isolasi_id'])) {
+			$surat = $this->M_monitoringcovid->getSuratIs($pkj['isolasi_id']);
+			$getAbsen = $this->M_monitoringcovid->getAbsenIs($pkj['noind'], $surat['status'], $surat['tgl_mulai'], $surat['tgl_selesai']);
+			if (!empty($getAbsen)) {
+				echo "1";
+			}else{
+				echo "0";
+			}
+		}else{
+			echo '0';
+		}
+		// $dataAbsen = $this->M_monitoringcovid->getAbsenPRM($);
+	}
+
+	public function delAttch()
+	{
+		$id = $this->input->post('id');
+		$del = $this->M_monitoringcovid->delAttchcvd($id);
+		echo $del;
+	}
+
+	public function Tracing(){
+		$user_id = $this->session->userid;
+		$user = $this->session->user;
+
+		$data['Title']			=	'Tim Covid 19';
+		$data['Header']			=	'Tim Covid 19';
+		$data['Menu'] 			= 	'';
+		$data['SubMenuOne'] 	= 	'';
+		$data['SubMenuTwo'] 	= 	'';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('Covid/V_Index',$data); -
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function DiriSendiri(){
+		$user_id = $this->session->userid;
+		$user = $this->session->user;
+		$data['Title']			=	'Tim Covid 19';
+		$data['Header']			=	'Tim Covid 19';
+		$data['Menu'] 			= 	'';
+		$data['SubMenuOne'] 	= 	'';
+		$data['SubMenuTwo'] 	= 	'';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('Covid/MonitoringCovid/V_Inputdirisendiri',$data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function AnggotaKeluargaSerumah(){
+		$user_id = $this->session->userid;
+		$user = $this->session->user;
+
+		$data['Title']			=	'Tim Covid 19';
+		$data['Header']			=	'Tim Covid 19';
+		$data['Menu'] 			= 	'';
+		$data['SubMenuOne'] 	= 	'';
+		$data['SubMenuTwo'] 	= 	'';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('Covid/MonitoringCovid/V_Inputanggotakeluarga',$data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function KedatanganTamu(){
+		$user_id = $this->session->userid;
+		$user = $this->session->user;
+
+		$data['Title']			=	'Tim Covid 19';
+		$data['Header']			=	'Tim Covid 19';
+		$data['Menu'] 			= 	'';
+		$data['SubMenuOne'] 	= 	'';
+		$data['SubMenuTwo'] 	= 	'';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('Covid/MonitoringCovid/V_Inputkedatangantamu',$data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function Melaksanakan(){
+		$user_id = $this->session->userid;
+		$user = $this->session->user;
+
+		$data['Title']			=	'Tim Covid 19';
+		$data['Header']			=	'Tim Covid 19';
+		$data['Menu'] 			= 	'';
+		$data['SubMenuOne'] 	= 	'';
+		$data['SubMenuTwo'] 	= 	'';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('Covid/MonitoringCovid/V_Inputmelaksanakanacara',$data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function Menghadiri(){
+		$user_id = $this->session->userid;
+		$user = $this->session->user;
+
+		$data['Title']			=	'Tim Covid 19';
+		$data['Header']			=	'Tim Covid 19';
+		$data['Menu'] 			= 	'';
+		$data['SubMenuOne'] 	= 	'';
+		$data['SubMenuTwo'] 	= 	'';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('Covid/MonitoringCovid/V_Inputmenghadiriacara',$data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function getAtasan($value='')
+	{
+		$nid = $this->input->post('noind');
+		echo json_encode($this->M_monitoringcovid->getApprover($nid));
+	}
+
+	public function insertDiriSendiri()
+	{
+		$covid_menginap = $this->input->post('covid_menginap');
+		if($covid_menginap == 1)
+		{
+			$covid_menginap = 'Ya';
+		}
+		else {
+			$covid_menginap = 'Tidak';
+		}
+
+		$covid_sakit_kembali = $this->input->post('covid_sakit_kembali');
+		if($covid_sakit_kembali == 1)
+		{
+			$covid_sakit_kembali = 'Ya';
+		}
+		else {
+			$covid_sakit_kembali = 'Tidak';
+		}
+
+		$covid_interaksi = $this->input->post('covid_interaksi');
+
+		if($covid_interaksi == 1)
+		{
+			$covid_interaksi = 'Ya';
+		}
+		else {
+			$covid_interaksi = 'Tidak';
+		}
+
+		$user = $this->session->user;
+		$data = [
+		'no_induk' => $this->input->post('slc-CVD-MonitoringCovid-Tambah-Pekerja'),
+		'id_pekerja' => $this->input->post('slc-CVD-MonitoringCovid-Tambah-PekerjaId'),
+		'seksi' => $this->input->post('slc-CVD-MonitoringCovid-Tambah-Seksi'),
+		'dept' => $this->input->post('slc-CVD-MonitoringCovid-Tambah-Departemen'),
+		'tgl_kejadian' => $this->input->post('txtPeriodeKejadian'),
+		'keterangan' => $this->input->post('txt-CVD-MonitoringCovid-Tambah-Keterangan'),
+		'wilayah' => $this->input->post('Wilayah'),
+		'transportasi' => $this->input->post('Transportasi'),
+		'anggota' => $this->input->post('Anggota'),
+		'tujuan_alasan' => $this->input->post('Tujuan_Alasan'),
+		'aktivitas' => $this->input->post('txt-CVD-Aktifitas'),
+		'prokes' => $this->input->post('txt-CVD-Prokes'),
+		'covid_menginap' => $covid_menginap,
+		'nbr_jumlah_hari' => $this->input->post('nbr-jumlah-hari'),
+		'covid_sakit' => $this->input->post('covid_sakit'),
+		'penyakit' => $this->input->post('txt-CVD-Penyakit'),
+		'covid_sakit_kembali' => $covid_sakit_kembali,
+		'penyakit_kembali' => $this->input->post('txt-CVD-Penyakit_kembali'),
+		'covid_interaksi' => $covid_interaksi,
+		'jenis_interaksi' => $this->input->post('txt-CVD-Jenis_interaksi'),
+		'atasan' => $this->input->post('slc-CVD-MonitoringCovid-Atasan'),
+		];
+
+		$id_wawancara = $this->M_monitoringcovid->insertDiriSendiri($data, $user);
+		// $id_wawancara = 233;
+		$this->uploadLampiranCvd($id_wawancara);
+		$this->session->set_userdata('result', 'berhasil');
+		$src = $this->input->post('source');
+		if ($src == 'diri_sendiri') {
+			redirect('Covid/PelaporanPekerja/LuarKota/diri_sendiri');
+		}else{
+
+		}
+	}
+
+
+
+
+	public function insertAnggotaKeluarga($value='')
+	{
+		$covid_menginap = $this->input->post('covid_menginap');
+		if($covid_menginap == 1)
+		{
+			$covid_menginap = 'Ya';
+		}
+		else {
+			$covid_menginap = 'Tidak';
+		}
+
+		$covid_sakit_kembali = $this->input->post('covid_sakit_kembali');
+		if($covid_sakit_kembali == 1)
+		{
+			$covid_sakit_kembali = 'Ya';
+		}
+		else {
+			$covid_sakit_kembali = 'Tidak';
+		}
+
+		$covid_interaksi = $this->input->post('covid_interaksi');
+		if($covid_interaksi == 1)
+		{
+			$covid_interaksi = 'Ya';
+		}
+		else {
+			$covid_interaksi = 'Tidak';
+		}
+
+		$user = $this->session->user;
+		$data = [
+		'no_induk' => $this->input->post('slc-CVD-MonitoringCovid-Tambah-Pekerja'),
+		'id_pekerja' => $this->input->post('slc-CVD-MonitoringCovid-Tambah-PekerjaId'),
+		'seksi' => $this->input->post('txt-CVD-MonitoringCovid-Tambah-Seksi'),
+		'dept' => $this->input->post('txt-CVD-MonitoringCovid-Tambah-Departemen'),
+		'status_anggota' => $this->input->post('Status_anggota'),
+		'tgl_kejadian' => $this->input->post('txtPeriodeKejadian'),
+		'keterangan' => $this->input->post('txt-CVD-MonitoringCovid-Tambah-Keterangan'),
+		'wilayah' => $this->input->post('Wilayah'),
+		'transportasi' => $this->input->post('Transportasi'),
+		'anggota' => $this->input->post('Anggota'),
+		'tujuan_alasan' => $this->input->post('Tujuan_Alasan'),
+		'aktivitas' => $this->input->post('txt-CVD-Aktifitas'),
+		'prokes' => $this->input->post('txt-CVD-Prokes'),
+		'covid_menginap' => $covid_menginap,
+		'nbr_jumlah_hari' => $this->input->post('nbr-jumlah-hari'),
+		'covid_sakit' => $this->input->post('covid_sakit'),
+		'penyakit' => $this->input->post('txt-CVD-Penyakit'),
+		'covid_sakit_kembali' => $covid_sakit_kembali,
+		'penyakit_kembali' => $this->input->post('txt-CVD-Penyakit_kembali'),
+		'covid_interaksi' => $covid_interaksi,
+		'jenis_interaksi' => $this->input->post('txt-CVD-Jenis_interaksi'),
+		'atasan' => $this->input->post('slc-CVD-MonitoringCovid-Atasan'),
+		];
+
+		$id_wawancara = $this->M_monitoringcovid->insertAnggotaKeluarga($data, $user);
+		// $id_wawancara = 198;
+		$this->uploadLampiranCvd($id_wawancara);
+		$this->session->set_userdata('result', 'berhasil');
+		$src = $this->input->post('source');
+		if ($src == 'anggota_keluarga') {
+			redirect('Covid/PelaporanPekerja/LuarKota/anggota_keluarga');
+		}else{
+
+		}
+	}
+
+
+	public function insertKedatanganTamu($value='')
+	{
+		$covid_menginap = $this->input->post('covid_menginap');
+		if($covid_menginap == 1)
+		{
+			$covid_menginap = 'Ya';
+		}
+		else {
+			$covid_menginap = 'Tidak';
+		}
+
+		$covid_sakit_kembali = $this->input->post('covid_sakit_kembali');
+		if($covid_sakit_kembali == 1)
+		{
+			$covid_sakit_kembali = 'Ya';
+		}
+		else {
+			$covid_sakit_kembali = 'Tidak';
+		}
+
+		$covid_interaksi = $this->input->post('covid_interaksi');
+
+		if($covid_interaksi == 1)
+		{
+			$covid_interaksi = 'Ya';
+		}
+		else {
+			$covid_interaksi = 'Tidak';
+		}
+
+		$user = $this->session->user;
+		$data = [
+		'no_induk' => $this->input->post('slc-CVD-MonitoringCovid-Tambah-Pekerja'),
+		'id_pekerja' => $this->input->post('slc-CVD-MonitoringCovid-Tambah-PekerjaId'),
+		'seksi' => $this->input->post('txt-CVD-MonitoringCovid-Tambah-Seksi'),
+		'dept' => $this->input->post('txt-CVD-MonitoringCovid-Tambah-Departemen'),
+		'tgl_kejadian' => $this->input->post('txtPeriodeKejadian'),
+		'keterangan' => $this->input->post('txt-CVD-MonitoringCovid-Tambah-Keterangan'),
+		'wilayah' => $this->input->post('Wilayah'),
+		'transportasi' => $this->input->post('Transportasi'),
+		'jumlah_tamu' => $this->input->post('Jumlah_tamu'),
+		'tujuan_alasan' => $this->input->post('Tujuan_Alasan'),
+		'aktivitas' => $this->input->post('txt-CVD-Aktifitas'),
+		'prokes' => $this->input->post('txt-CVD-Prokes'),
+		'covid_menginap' => $covid_menginap,
+		'nbr_jumlah_hari' => $this->input->post('nbr-jumlah-hari'),
+		'covid_sakit' => $this->input->post('covid_sakit'),
+		'penyakit' => $this->input->post('txt-CVD-Penyakit'),
+		'covid_interaksi' => $covid_interaksi,
+		'jenis_interaksi' => $this->input->post('txt-CVD-Jenis_interaksi'),
+		'atasan' => $this->input->post('slc-CVD-MonitoringCovid-Atasan'),
+		];
+
+		$id_wawancara = $this->M_monitoringcovid->insertKedatanganTamu($data, $user);
+		// $id_wawancara = 237;
+		$this->uploadLampiranCvd($id_wawancara);
+		$this->session->set_userdata('result', 'berhasil');
+		$src = $this->input->post('source');
+		if ($src == 'kedatangan_tamu') {
+			redirect('Covid/PelaporanPekerja/LuarKota/kedatangan_tamu');
+		}else{
+
+		}
+	}
+
+	public function insertMelaksanakanAcara($value='')
+	{
+		$covid_tamu_luar = $this->input->post('covid_tamu_luar');
+		if($covid_tamu_luar == 1)
+		{
+			$covid_tamu_luar = 'Ya';
+		}
+		else {
+			$covid_tamu_luar = 'Tidak';
+		}
+
+		$covid_lokasi_acara = $this->input->post('covid_lokasi_acara');
+		if($covid_lokasi_acara == 1)
+		{
+			$covid_lokasi_acara = 'Indoor';
+		}
+		else {
+			$covid_lokasi_acara = 'Outdoor';
+		}
+
+		$user = $this->session->user;
+		$data = [
+		'no_induk' => $this->input->post('slc-CVD-MonitoringCovid-Tambah-Pekerja'),
+		'id_pekerja' => $this->input->post('slc-CVD-MonitoringCovid-Tambah-PekerjaId'),
+		'seksi' => $this->input->post('txt-CVD-MonitoringCovid-Tambah-Seksi'),
+		'dept' => $this->input->post('txt-CVD-MonitoringCovid-Tambah-Departemen'),
+		'tgl_kejadian' => $this->input->post('txtPeriodeKejadian'),
+		'keterangan' => $this->input->post('txt-CVD-MonitoringCovid-Tambah-Keterangan'),
+		'jenis_acara' => $this->input->post('Jenis_acara'),
+		'jumlah_tamu' => $this->input->post('Jumlah_tamu'),
+		'covid_tamu_luar' => $covid_tamu_luar,
+		'asal_tamu' => $this->input->post('txt-CVD-Tamu-Luar'),
+		'waktu_run_down' => $this->input->post('txt-CVD-MonitoringCovid-Run-Down'),
+		'prokes' => $this->input->post('txt-CVD-Prokes'),
+		'lokasi_acara' => $covid_lokasi_acara,
+		'kapasitas_tempat' => $this->input->post('Kapasitas_tempat'),
+		'atasan' => $this->input->post('slc-CVD-MonitoringCovid-Atasan'),
+		];
+		$id_wawancara = $this->M_monitoringcovid->insertMelaksanakanAcara($data, $user);
+		$this->uploadLampiranCvd($id_wawancara);
+		$this->session->set_userdata('result', 'berhasil');
+		$src = $this->input->post('source');
+		if ($src == 'melaksanakan_acara') {
+			redirect('Covid/PelaporanPekerja/AcaraMelibatkanBanyakOrang/melaksanakan_acara');
+		}else{
+
+		}
+	}
+
+	public function insertMenghadiriAcara($value='')
+	{
+
+		$covid_tamu_luar = $this->input->post('covid_tamu_luar');
+
+		if($covid_tamu_luar == 1)
+		{
+			$covid_tamu_luar = 'Ya';
+		}
+		else {
+			$covid_tamu_luar = 'Tidak';
+		}
+
+		$covid_lokasi_acara = $this->input->post('covid_lokasi_acara');
+
+		if($covid_lokasi_acara == 1)
+		{
+			$covid_lokasi_acara = 'Indoor';
+		}
+		else {
+			$covid_lokasi_acara = 'Outdoor';
+		}
+
+		$user = $this->session->user;
+		$data = [
+		'no_induk' => $this->input->post('slc-CVD-MonitoringCovid-Tambah-Pekerja'),
+		'id_pekerja' => $this->input->post('slc-CVD-MonitoringCovid-Tambah-PekerjaId'),
+		'seksi' => $this->input->post('txt-CVD-MonitoringCovid-Tambah-Seksi'),
+		'dept' => $this->input->post('txt-CVD-MonitoringCovid-Tambah-Departemen'),
+		'tgl_kejadian' => $this->input->post('txtPeriodeKejadian'),
+		'keterangan' => $this->input->post('txt-CVD-MonitoringCovid-Tambah-Keterangan'),
+		'jenis_acara' => $this->input->post('Jenis_acara'),
+		'jumlah_tamu' => $this->input->post('Jumlah_tamu'),
+		'covid_tamu_luar' => $covid_tamu_luar,
+		'asal_tamu' => $this->input->post('txt-CVD-Tamu-Luar'),
+		'waktu_run_down' => $this->input->post('txt-CVD-MonitoringCovid-Run-Down'),
+		'prokes' => $this->input->post('txt-CVD-Prokes'),
+		'lokasi_acara' => $covid_lokasi_acara,
+		'kapasitas_tempat' => $this->input->post('Kapasitas_tempat'),
+		'atasan' => $this->input->post('slc-CVD-MonitoringCovid-Atasan'),
+		];
+		
+		$id_wawancara = $this->M_monitoringcovid->insertMelaksanakanAcara($data, $user);
+		$this->uploadLampiranCvd($id_wawancara);
+		$this->session->set_userdata('result', 'berhasil');
+		$src = $this->input->post('source');
+		if ($src == 'menghadiri_acara') {
+			redirect('Covid/PelaporanPekerja/AcaraMelibatkanBanyakOrang/menghadiri_acara');
+		}else{
+
+		}
+	}
+
+	public function uploadLampiranCvd($id_wawancara)
+	{
+		$files = $_FILES;
+		if (empty($files)) {
+			return 'no image';
+		}
+		$user = $this->session->user;
+		$this->load->library('upload');
+		$user_form = $this->input->post('slc-CVD-MonitoringCovid-Tambah-Pekerja');
+		$jumlahimg = count($_FILES['filesCVDLampiran']['name']);
+
+		for ($a = 0; $a < $jumlahimg; $a++) {
+			if (empty($files['filesCVDLampiran']['name'][$a]))
+				continue;
+
+			if (!is_dir('./assets/upload/Covid/Wawancara')) {
+				mkdir('./assets/upload/Covid/Wawancara', 0777, true);
+				chmod('./assets/upload/Covid/Wawancara', 0777);
+			}
+			$_FILES['filesCVDLampiran']['name']			= $files['filesCVDLampiran']['name'][$a];
+			$_FILES['filesCVDLampiran']['type']			= $files['filesCVDLampiran']['type'][$a];
+			$_FILES['filesCVDLampiran']['tmp_name']		= $files['filesCVDLampiran']['tmp_name'][$a];
+			$_FILES['filesCVDLampiran']['error']		= $files['filesCVDLampiran']['error'][$a];
+			$_FILES['filesCVDLampiran']['size']			= $files['filesCVDLampiran']['size'][$a];
+			$this->load->library('image_lib');
+			$ext = pathinfo($_FILES['filesCVDLampiran']['name'], PATHINFO_EXTENSION);
+			$config =  array(
+				'image_library'   => 'gd2',
+				'source_image'    =>  $files['filesCVDLampiran']['tmp_name'][$a],
+				'maintain_ratio'  =>  TRUE,
+				'width'           =>  1000,
+				'height'          =>  797,
+				);
+			$this->image_lib->clear();
+			$this->image_lib->initialize($config);
+			$this->image_lib->resize();
+			$config['upload_path']      = './assets/upload/Covid/Wawancara/';
+			$config['file_name']        = $user_form.'_cvd_'.date('YmdHis').'.'.$ext;
+			$config['remove_spaces']    = true;
+			$config['allowed_types']    = 'jpg|png';
+
+			$this->upload->initialize($config);
+			if (!$this->upload->do_upload('filesCVDLampiran')) {
+				echo $this->upload->display_errors();
+				exit();
+			} else {
+				$data = array('upload_data' => $this->upload->data());
+			}
+
+			$pathfile = $config['upload_path'].$config['file_name'];
+			$data2 = [
+			'lampiran_path' => substr($pathfile, 1),
+			'lampiran_nama' => $config['file_name'],
+			'wawancara_id' => $id_wawancara
+			];
+			$res2 = $this->M_monitoringcovid->insertLampiran21($data2, $user);
+		}
+	}
+}

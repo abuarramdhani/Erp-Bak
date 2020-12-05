@@ -14,32 +14,72 @@ class M_cetak extends CI_Model {
     //cost center
     public function getCostCenter($cost_center) {
         $oracle = $this->load->database('oracle', true);
-        $sql = "
-        select distinct ffv.FLEX_VALUE COST_CENTER
-        ,NVL(SUBSTR(ffvt.DESCRIPTION, 0, INSTR(ffvt.DESCRIPTION, '-')-1), ffvt.DESCRIPTION) SEKSI
-        ,NVL(SUBSTR(ffvt.DESCRIPTION, INSTR(ffvt.DESCRIPTION, '-') + 2),ffvt.DESCRIPTION) LINE
-        from fa_additions_b fab
-        ,FA_ADDITIONS_TL fat
-        ,fa_books fb
-        ,fa_categories fc
-        ,FA_DISTRIBUTION_HISTORY fdh
-        ,gl_code_combinations gcc
-        ,fnd_flex_values ffv
-        ,fnd_flex_values_tl ffvt
-        where fab.asset_id = fdh.ASSET_ID
-        and fdh.DATE_INEFFECTIVE is null
-        and fb.DATE_INEFFECTIVE is null
-        and fab.ASSET_ID = fb.ASSET_ID
-        and fab.ASSET_CATEGORY_ID = fc.CATEGORY_ID
-        and fab.ASSET_ID = fat.ASSET_ID
-        and fdh.CODE_COMBINATION_ID = gcc.CODE_COMBINATION_ID
-        and gcc.SEGMENT4 = ffv.FLEX_VALUE
-        and ffv.FLEX_VALUE_SET_ID = 1013709
-        and ffv.FLEX_VALUE_ID = ffvt.FLEX_VALUE_ID
-        and fdh.BOOK_TYPE_CODE = 'KHS CORP BOOK'
-        and fdh.BOOK_TYPE_CODE = fb.BOOK_TYPE_CODE
-        and ffv.FLEX_VALUE = '".$cost_center."'
-        and fab.attribute1 is not null";
+        //lama
+        // $sql = "
+        // select distinct ffv.FLEX_VALUE COST_CENTER
+        // ,NVL(SUBSTR(ffvt.DESCRIPTION, 0, INSTR(ffvt.DESCRIPTION, '-')-1), ffvt.DESCRIPTION) SEKSI
+        // ,NVL(SUBSTR(ffvt.DESCRIPTION, INSTR(ffvt.DESCRIPTION, '-') + 2),ffvt.DESCRIPTION) LINE
+        // from fa_additions_b fab
+        // ,FA_ADDITIONS_TL fat
+        // ,fa_books fb
+        // ,fa_categories fc
+        // ,FA_DISTRIBUTION_HISTORY fdh
+        // ,gl_code_combinations gcc
+        // ,fnd_flex_values ffv
+        // ,fnd_flex_values_tl ffvt
+        // where fab.asset_id = fdh.ASSET_ID
+        // and fdh.DATE_INEFFECTIVE is null
+        // and fb.DATE_INEFFECTIVE is null
+        // and fab.ASSET_ID = fb.ASSET_ID
+        // and fab.ASSET_CATEGORY_ID = fc.CATEGORY_ID
+        // and fab.ASSET_ID = fat.ASSET_ID
+        // and fdh.CODE_COMBINATION_ID = gcc.CODE_COMBINATION_ID
+        // and gcc.SEGMENT4 = ffv.FLEX_VALUE
+        // and ffv.FLEX_VALUE_SET_ID = 1013709
+        // and ffv.FLEX_VALUE_ID = ffvt.FLEX_VALUE_ID
+        // and fdh.BOOK_TYPE_CODE = 'KHS CORP BOOK'
+        // and fdh.BOOK_TYPE_CODE = fb.BOOK_TYPE_CODE
+        // and ffv.FLEX_VALUE = '".$cost_center."'
+        // and fab.attribute1 is not null";
+        
+        $sql = "SELECT ffv.flex_value cost_center, ffvt.description,
+                 (CASE
+                     WHEN ffvt.description LIKE 'INACTIVE%'
+                        THEN TRIM (SUBSTR (ffvt.description,
+                                           INSTR (ffvt.description, '-', 1, 1) + 1,
+                                             INSTR (ffvt.description, '-', 1, 2)
+                                           - INSTR (ffvt.description, '-', 1, 1)
+                                           - 1
+                                          )
+                                  )
+                     ELSE TRIM (SUBSTR (ffvt.description,
+                                        1,
+                                        INSTR (ffvt.description, '-') - 1
+                                       )
+                               )
+                  END
+                 ) seksi,
+                 (CASE
+                     WHEN ffvt.description LIKE 'INACTIVE%'
+                        THEN TRIM (SUBSTR (ffvt.description,
+                                           INSTR (ffvt.description, '-', 1, 2) + 1,
+                                             LENGTH (ffvt.description)
+                                           - INSTR (ffvt.description, '-', 1, 2)
+                                          )
+                                  )
+                     ELSE TRIM (SUBSTR (ffvt.description,
+                                        INSTR (ffvt.description, '-', 1, 1) + 1,
+                                          LENGTH (ffvt.description)
+                                        - INSTR (ffvt.description, '-', 1, 1)
+                                       )
+                               )
+                  END
+                 ) line
+            FROM fnd_flex_values ffv, fnd_flex_values_tl ffvt
+           WHERE ffv.flex_value = '$cost_center'
+             AND ffv.flex_value_set_id = 1013709
+             AND ffv.flex_value_id = ffvt.flex_value_id";
+             
         $query = $oracle->query($sql);
         return $query->result_array();
     }
@@ -71,22 +111,49 @@ class M_cetak extends CI_Model {
         // and fdh.BOOK_TYPE_CODE = fb.BOOK_TYPE_CODE
         // and ffv.FLEX_VALUE = '".$cost_center."'
         // and fab.attribute1 is not null";
-        $sql = "
-        select fab.attribute1 NO_MESIN
-        from fa_additions_b fab
-        ,FA_DISTRIBUTION_HISTORY fdh
-        ,gl_code_combinations gcc
-        ,fnd_flex_values ffv
-        ,fnd_flex_values_tl ffvt
-        where fab.asset_id = fdh.ASSET_ID
-        and fdh.DATE_INEFFECTIVE is null
-        and fdh.CODE_COMBINATION_ID = gcc.CODE_COMBINATION_ID
-        and gcc.SEGMENT4 = ffv.FLEX_VALUE
-        and ffv.FLEX_VALUE_SET_ID = 1013709
-        and ffv.FLEX_VALUE_ID = ffvt.FLEX_VALUE_ID
-        and fdh.BOOK_TYPE_CODE = 'KHS CORP BOOK'
-        and ffv.FLEX_VALUE = '".$cost_center."'
-        and fab.attribute1 is not null";
+        
+        // $sql = "
+        // select fab.attribute1 NO_MESIN
+        // from fa_additions_b fab
+        // ,FA_DISTRIBUTION_HISTORY fdh
+        // ,gl_code_combinations gcc
+        // ,fnd_flex_values ffv
+        // ,fnd_flex_values_tl ffvt
+        // where fab.asset_id = fdh.ASSET_ID
+        // and fdh.DATE_INEFFECTIVE is null
+        // and fdh.CODE_COMBINATION_ID = gcc.CODE_COMBINATION_ID
+        // and gcc.SEGMENT4 = ffv.FLEX_VALUE
+        // and ffv.FLEX_VALUE_SET_ID = 1013709
+        // and ffv.FLEX_VALUE_ID = ffvt.FLEX_VALUE_ID
+        // and fdh.BOOK_TYPE_CODE = 'KHS CORP BOOK'
+        // and ffv.FLEX_VALUE = '".$cost_center."'
+        // and fab.attribute1 is not null";
+        
+        $sql = "SELECT ffv.flex_value, NVL (aa.attribute1, NULL) no_mesin
+                FROM fnd_flex_values ffv,
+                     fnd_flex_values_tl ffvt,
+                     (SELECT gcc.segment4, fab.attribute1
+                        FROM fa_additions_b fab,
+                             fa_distribution_history fdh,
+                             gl_code_combinations gcc
+                       WHERE fab.asset_id = fdh.asset_id
+                         AND fdh.date_ineffective IS NULL
+                         AND fdh.code_combination_id = gcc.code_combination_id
+                      UNION
+                      SELECT gcc.segment4, fab.attribute1
+                        FROM fa_additions_b fab,
+                             bom_resources br,
+                             khs_daftar_mesin_resource kdmr,
+                             gl_code_combinations gcc
+                       WHERE fab.tag_number = kdmr.tag_number
+                         AND br.resource_id = kdmr.resource_id
+                         AND br.absorption_account = gcc.code_combination_id) aa
+               WHERE ffv.flex_value = '$cost_center'
+                 AND ffv.flex_value_set_id = 1013709
+                 AND ffv.flex_value_id = ffvt.flex_value_id
+                 AND ffv.flex_value = aa.segment4
+            ORDER BY 1";
+        
         $query = $oracle->query($sql);
         return $query->result_array();
     }

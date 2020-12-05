@@ -215,7 +215,7 @@ class C_HitungPesanan extends CI_Controller
       }elseif ($shift == '3') {
         $dataAbsenShift = $this->M_hitungpesanan->getAbsenShiftTigaByTanggalLokasi($tanggal,$lokasi,$jenis);
       }
-      if (!empty($dataAbsenShift)) {
+      if (!empty($dataAbsenShift) || $shift == '3') {
         $data['jumlahAbsenShift'] = count($dataAbsenShift);
         $data['statusAbsenShift'] = 'ada';
       }else{
@@ -309,7 +309,7 @@ class C_HitungPesanan extends CI_Controller
       }elseif ($shift == '3') {
         $dataAbsenShift = $this->M_hitungpesanan->getAbsenShiftTigaByTanggalLokasi($tanggal,$lokasi,$jenis);
       }
-      if (!empty($dataAbsenShift)) {
+      if (!empty($dataAbsenShift) || $shift == '3') {
         $data['jumlahAbsenShift'] = count($dataAbsenShift);
         $data['statusAbsenShift'] = 'ada';
       }else{
@@ -2011,6 +2011,11 @@ class C_HitungPesanan extends CI_Controller
           </table>";
           $isi .= $isi_footer;
           if ($jenis !== "0") {
+            if (substr($this->session->kodesie,-2) != '00') {
+              $jabatan = "Admin";
+            }else{
+              $jabatan = "Kepala Seksi";
+            }
             $isi .= "<table style=\"width: 100%\">
               <tr>
                 <td style=\"width: 70%\">&nbsp;</td>
@@ -2018,7 +2023,7 @@ class C_HitungPesanan extends CI_Controller
               </tr>
               <tr>
                 <td>&nbsp;</td>
-                <td style=\"text-align: center\">Kepala Seksi General Affair</td>
+                <td style=\"text-align: center\">$jabatan General Affair</td>
               </tr>
               <tr>
                 <td>&nbsp;</td>

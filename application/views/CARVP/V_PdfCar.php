@@ -1,7 +1,7 @@
 <?php foreach ($car as $c) { ?>
     <!-- Page1 -->
     <strong style="font-size:10pt;font-family:arial">Filled By CV. KHS</strong>
-    <table style="width: 100%;border:1px solid black;border-collapse:collapse;font-family:arial;font-size:10pt;margin-bottom:10px">
+    <table style="width: 100%;border:1px solid black;border-collapse:collapse;font-family:arial;font-size:10pt;">
         <tr>
             <td style="padding-left:10px;padding-top:10px;font-size:10pt" colspan="3"><strong>Requested To</strong></td>
         </tr>
@@ -51,7 +51,12 @@
             <td style="padding-left:10px;padding-top:10px;font-size:10pt;border-top:1px solid black;border-collapse:collapse" colspan="3"><strong>Description of Fact Finding</strong></td>
         </tr>
         <tr>
-            <td style="padding-left:10px;font-size:10pt;vertical-align:top" rowspan="5" colspan="2"><?= $c['DETAIL'][0]['ROOTCAUSE_CATEGORI'] ?></td>
+            <?php if ($c['DETAIL'][0]['NC_SCOPE'] == 'DELIVERY') {
+                $finding = 'PENGIRIMAN BARANG/JASA TERLAMBAT SAMPAI CV. KHS';
+            } else {
+                $finding = $c['DETAIL'][0]['ROOTCAUSE_CATEGORI'];
+            } ?>
+            <td style="padding-left:10px;font-size:10pt;vertical-align:top" rowspan="5" colspan="2"><?= $finding ?></td>
             <td style="padding-left:10px;font-size:10pt;border:1px solid black; border-collapse:collapse;width:250px;text-align:center;background-color:lightgray"><strong>Approved by,</strong></td>
 
         </tr>
@@ -77,6 +82,7 @@
 
         </tr>
     </table>
+    <p style="text-align: right;margin-bottom:10px;font-size:8pt;font-style:italic;font-family:Arial, Helvetica, sans-serif"><?= $c['KET'] ?></p>
     <strong style="font-size:10pt;font-family:arial;">Filled By Vendor</strong>
     <table style="width: 100%;border:1px solid black;border-collapse:collapse;font-family:arial;font-size:10pt;margin-bottom:10px">
         <tr>
@@ -118,7 +124,7 @@
         </tr>
     </table>
 
-    <strong style="font-size:10pt;font-family:arial;">Filled By Cv. KHS</strong>
+    <strong style="font-size:10pt;font-family:arial;">Filled By CV. KHS</strong>
     <table style="width: 100%;border:1px solid black;border-collapse:collapse;font-family:arial;font-size:10pt">
         <tr>
             <td style="padding-left:10px;padding-top:10px;font-size:10pt;border-top:1px solid black;border-collapse:collapse" colspan="5"><strong>Verification <br><br><br><br></strong></td>

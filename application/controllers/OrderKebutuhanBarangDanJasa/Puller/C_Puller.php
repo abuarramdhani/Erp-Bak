@@ -73,7 +73,7 @@ class C_Puller extends CI_Controller {
         $noind = $this->session->user;
 		
 		$data['Menu'] = 'Order';
-		$data['SubMenuOne'] = 'List Normal Order';
+		$data['SubMenuOne'] = 'List Reguler Order';
 		
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
@@ -84,10 +84,11 @@ class C_Puller extends CI_Controller {
 
         $and = "AND ooh.URGENT_FLAG ='N' AND ooh.IS_SUSULAN ='N'";
 
-        $data['listOrder'] = $this->M_puller->getOrderToPulled($and);
+        $data['listOrder'] = $this->M_puller->getOrderToPulled($and,$noind);
+        // print_r($data['listOrder']);exit;
 
         $data['panelStatOrder'] = 'panel-success';
-        $data['statOrder'] = 'Normal';
+        $data['statOrder'] = 'Reguler';
      
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -112,7 +113,8 @@ class C_Puller extends CI_Controller {
 
         // $and = "AND ooh.URGENT_FLAG ='N' AND ooh.IS_SUSULAN ='N'";
 
-        $data['listOrder'] = $this->M_puller->getOrderToReleased();
+        $data['listOrder'] = $this->M_puller->getOrderToReleased($noind);
+        // print_r($data['listOrder']);exit;
 
         $data['panelStatOrder'] = 'panel-success';
         $data['statOrder'] = 'Normal';
@@ -129,7 +131,7 @@ class C_Puller extends CI_Controller {
         $noind = $this->session->user;
 		
 		$data['Menu'] = 'Order';
-		$data['SubMenuOne'] = 'List Susulan Order';
+		$data['SubMenuOne'] = 'List Emergency Order';
 		
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
@@ -140,10 +142,10 @@ class C_Puller extends CI_Controller {
 
         $and = "AND ooh.IS_SUSULAN ='Y'";
 
-        $data['listOrder'] = $this->M_puller->getOrderToPulled($and);
+        $data['listOrder'] = $this->M_puller->getOrderToPulled($and,$noind);
 
         $data['panelStatOrder'] = 'panel-warning';
-        $data['statOrder'] = 'Susulan';
+        $data['statOrder'] = 'Emergency';
      
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -168,7 +170,7 @@ class C_Puller extends CI_Controller {
 
         $and = "AND ooh.URGENT_FLAG ='Y' AND ooh.IS_SUSULAN ='N'";
 
-        $data['listOrder'] = $this->M_puller->getOrderToPulled($and);
+        $data['listOrder'] = $this->M_puller->getOrderToPulled($and,$noind);
 
         $data['panelStatOrder'] = 'panel-danger';
         $data['statOrder'] = 'Urgent';
@@ -198,6 +200,7 @@ class C_Puller extends CI_Controller {
             
             $order = array(
                             'PRE_REQ_ID' => $pre_req_id[0]['PRE_REQ_ID'],
+                            'ORDER_STATUS_ID' => '6'
                          );
             
             $this->M_puller->updateOrder($order_id[$i],$order);
@@ -227,6 +230,7 @@ class C_Puller extends CI_Controller {
                 
             $order = array(
                                 'PRE_REQ_ID' => $pre_req_id[0]['PRE_REQ_ID'],
+                                'ORDER_STATUS_ID' => '6'
                             );
                 
             $this->M_puller->updateOrderBatch($item_code[$i],$order);

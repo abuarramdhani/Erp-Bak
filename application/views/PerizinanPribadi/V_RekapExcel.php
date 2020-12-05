@@ -72,26 +72,30 @@ $array_judul = array(
         'lebar' => 40
     ),
     '7' => array(
-        'nama' => 'Jenis Izin',
+        'nama' => 'Lokasi Kerja',
         'lebar' => 15
     ),
     '8' => array(
+        'nama' => 'Jenis Izin',
+        'lebar' => 15
+    ),
+    '9' => array(
         'nama' => 'Waktu Keluar',
         'lebar' => 10
     ),
-    '9' => array(
+    '10' => array(
         'nama' => 'Atasan',
         'lebar' => 30
     ),
-    '10' => array(
+    '11' => array(
         'nama' => 'Keterangan',
         'lebar' => 30
     ),
-    '11' => array(
+    '12' => array(
         'nama' => 'Status',
         'lebar' => 30
     ),
-    '12' => array(
+    '13' => array(
         'nama' => 'Poin',
         'lebar' => 15
     ),
@@ -137,14 +141,39 @@ for ($i = 'A'; $i <= $objWriter->getActiveSheet()->getHighestColumn(); $i++) {
 $i = 5;
 $no = 1;
 
-foreach ($IzinApprove as $key) {
+foreach ($dataReal as $key) {
     $nama = '';
     $kodesie = '';
+    $poin = '';
+    $lokasi = '';
     foreach (explode(',', $key['nama_pkj']) as $a) {
         $nama .= "$a\n";
     }
     if ($jenis == '2') {
         $kodesie = $key['seksi'];
+        $lokasi = $key['lokasi_kerja'];
+
+        if ($key['jumlah'] > 1 && $key['point'] > 0) {
+            if ($key['jenis_ijin'] == 'IZIN KELUAR PRIBADI') {
+                if (date("Y-m-d", strtotime($key['created_date'])) == date("Y-m-d") && empty($key['point'])) {
+                    $poin =  '-';
+                } elseif (date("Y-m-d", strtotime($key['created_date'])) <= date("Y-m-d") && empty($key['point'])) {
+                    $poin = '0';
+                } else {
+                    $poin = $key['point'];
+                }
+            } else {
+                $poin = '0';
+            }
+        } else {
+            if (date("Y-m-d", strtotime($key['created_date'])) == date("Y-m-d") && empty($key['point'])) {
+                $poin = '-';
+            } elseif (date("Y-m-d", strtotime($key['created_date'])) <= date("Y-m-d") && empty($key['point'])) {
+                $poin = '0';
+            } else {
+                $poin = $key['point'];
+            };
+        }
     } else {
         foreach (explode(',', $key['kodesie']) as $b) {
             foreach ($seksi as $value) {
@@ -153,15 +182,11 @@ foreach ($IzinApprove as $key) {
                 }
             }
         }
+        foreach (explode(',', $key['lokasi_kerja']) as $t) {
+            $lokasi .= $t . "\n";
+        }
     }
 
-    if (date("Y-m-d", strtotime($key['created_date'])) == date("Y-m-d") && empty($key['point'])) {
-        $poin = '-';
-    } elseif (date("Y-m-d", strtotime($key['created_date'])) <= date("Y-m-d") && empty($key['point'])) {
-        $poin = '0';
-    } else {
-        $poin = $key['point'];
-    }
 
 
     $array_value = array(
@@ -172,6 +197,7 @@ foreach ($IzinApprove as $key) {
         date('d M Y', strtotime($key['created_date'])),
         $nama,
         $kodesie,
+        $lokasi,
         $key['jenis_ijin'],
         $key['keluar'],
         $key['atasan'],

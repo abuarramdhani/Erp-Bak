@@ -47,7 +47,7 @@ public function checkSession()
 
     public function index()
     {
-        $this->checkSession();
+      
         $user_id = $this->session->userid;
 
         $data['Menu'] = 'Dashboard';

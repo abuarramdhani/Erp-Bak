@@ -110,7 +110,13 @@ class C_List extends CI_Controller {
 		$status		= $this->input->post('txtStatus');
 		$pph		= $this->input->post('TxtPph');
 		
-		$this->M_list->AddCatering($name,$code,$address,$phone,$pph,$status);
+		if ($pph == 1) {
+			$pph_value = $this->input->post('TxtPphValue');
+		} else {
+			$pph_value	= 0;
+		}
+		
+		$this->M_list->AddCatering($name,$code,$address,$phone,$pph,$status,$pph_value);
 		redirect('CateringManagement/List');
 	}
 	
@@ -123,7 +129,13 @@ class C_List extends CI_Controller {
 		$status		= $this->input->post('txtStatus');
 		$pph		= $this->input->post('TxtPph');
 		
-		$this->M_list->UpdateCatering($id,$name,$code,$address,$phone,$pph,$status);
+		if ($pph == 1) {
+			$pph_value = $this->input->post('TxtPphValue');
+		} else {
+			$pph_value	= 0;
+		}
+		
+		$this->M_list->UpdateCatering($id,$name,$code,$address,$phone,$pph,$status,$pph_value);
 		redirect('CateringManagement/List');
 	}
 	

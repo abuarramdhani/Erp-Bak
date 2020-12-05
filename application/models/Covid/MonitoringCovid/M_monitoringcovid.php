@@ -36,8 +36,13 @@ class M_monitoringcovid extends CI_Model {
 	}
 
 	function getStatusKondisi(){
-		$sql = "select *
-				from cvd.cvd_status_kondisi
+		$sql = "select *,
+					(
+						select count(*)
+						from cvd.cvd_pekerja b
+						where a.status_kondisi_id = b.status_kondisi_id
+					) as jumlah
+				from cvd.cvd_status_kondisi a
 				order by 1 ";
 		return $this->erp->query($sql)->result_array();
 	}
@@ -67,6 +72,7 @@ class M_monitoringcovid extends CI_Model {
 				inner join er.er_section c 
 				on b.section_code = c.section_code
 				order by a.status_kondisi_id ";
+				// echo $sql;exit();
 		return $this->erp->query($sql)->result_array();
 	}
 
@@ -187,7 +193,7 @@ class M_monitoringcovid extends CI_Model {
 				on a.noind = b.employee_code
 				inner join er.er_section c 
 				on b.section_code = c.section_code
-				where cvd_pekerja_id = ?";
+				where cvd_pekerja_id::text = ?";
 		return $this->erp->query($sql,array($id))->row();
 	}
 
@@ -210,4 +216,385 @@ class M_monitoringcovid extends CI_Model {
 		return $this->personalia->query($sql, array($id))->row();
 	}
 
-} ?>
+	function getDetailcvdPekerja($id)
+	{
+		$this->db->where('cvd_pekerja_id', $id);
+		return $this->db->get('cvd.cvd_pekerja')->row_array();
+	}
+
+	function getSuratIs($id)
+	{
+		$sql = "select *
+			from \"Surat\".tsurat_isolasi_mandiri
+			where id_isolasi_mandiri = ? ";
+		return $this->personalia->query($sql, array($id))->row_array();
+	}
+
+	function getAbsenIs($noind, $status, $mulai, $selesai)
+	{
+		$sql = "select
+					*
+				from
+					\"Presensi\".tinput_edit_presensi tep
+				where
+					noind = '$noind'
+					and kd_ket = '$status'
+					and tanggal1 >= '$mulai'
+					and tanggal1 <= '$selesai'";
+		return $this->personalia->query($sql)->result_array();
+	}
+
+	function delSuratIs($noind, $status, $awal, $akhir)
+	{
+		$sql = "DELETE from \"Presensi\".tinput_edit_presensi where noind = '$noind' and kd_ket = '$status'
+				and tanggal1 >= '$awal' and tanggal1 <= '$akhir'";
+		$this->personalia->query($sql);
+		return $this->personalia->affected_rows();
+	}
+
+	function delSuratIs2($noind, $status, $awal, $akhir)
+	{
+		$sql = "DELETE from \"Presensi\".tdatapresensi where noind = '$noind' and kd_ket = '$status'
+				and tanggal >= '$awal' and tanggal <= '$akhir'";
+		$this->personalia->query($sql);
+		return $this->personalia->affected_rows();
+	}
+
+	function delAttchcvd($id)
+	{
+		$this->db->where('lampiran_id', $id);
+		$this->db->delete('cvd.cvd_wawancara_lampiran');
+		return $this->db->affected_rows();
+	}
+
+	function delwktIs($isID)
+	{
+		$this->db->where('isolasi_id', $isID);
+		$this->db->delete('cvd.cvd_waktu_isolasi');
+	}
+
+	public function insertDiriSendiri($paramnya, $yanglogin)
+	{
+		$wawancara = "<p>Wilayah : ".$paramnya['wilayah'].'_'.
+		"Transportasi : ".$paramnya['transportasi'].'_'.
+		"Yang ikut : ".$paramnya['anggota'].'_'.
+		"Tujuan alasan : ".$paramnya['tujuan_alasan'].'_'.
+		"Aktifitas : ".$paramnya['aktivitas'].'_'.
+		"Protokol : ".$paramnya['prokes'].'_'.
+		"Menginap : ".$paramnya['covid_menginap'].','.$paramnya['nbr_jumlah_hari'].'_'.
+		"Yang dikunjungi sakit : ".$paramnya['covid_sakit'].','.$paramnya['penyakit'].'_'.
+		"Sakit Setelah kembali : ".$paramnya['covid_sakit_kembali'].','.$paramnya['penyakit_kembali'].'_'.
+		"Interaksi probable covid : ".$paramnya['covid_interaksi'].','.$paramnya['jenis_interaksi']."</p>";
+		$this->db->query("INSERT into cvd.cvd_pekerja
+			(noind,
+			status_kondisi_id,
+			range_tgl_interaksi,
+			kasus,
+			keterangan,
+			created_date,
+			created_by,
+			updated_date,
+			updated_by,
+			pic_followup,
+			status_approval)
+			values
+			(
+			'$paramnya[no_induk]',
+			'1',
+			'$paramnya[tgl_kejadian]',
+			'DIRI SENDIRI KE LUAR KOTA',
+			'$paramnya[keterangan]',
+			current_timestamp,
+			'$yanglogin',
+			current_timestamp,
+			'$yanglogin',
+			'$paramnya[atasan]',
+			1
+			)");
+		if ($this->db->affected_rows() == 1) {
+			$id_before = $this->db->insert_id();
+			$this->db->query("INSERT into cvd.cvd_wawancara
+				(cvd_pekerja_id,
+				hasil_wawancara,
+				created_date,
+				created_by,
+				updated_date,
+				updated_by
+				)
+				values
+				('$id_before',
+				'$wawancara',
+				current_timestamp,
+				'$yanglogin',
+				current_timestamp,
+				'$yanglogin'
+				)");
+
+			if ($this->db->affected_rows() == 1) {
+				return $id_before;
+			}else {
+				die('Gagal Insert :(');
+			}
+		}else {
+			die('Gagal Insert :(');
+		}
+
+	}
+
+	public function insertAnggotaKeluarga($paramnya, $yanglogin)
+	{
+		$statusnya_anggota = $paramnya['status_anggota']."_".$paramnya['keterangan'];
+		$wawancara = "<p>Wilayah : ".$paramnya['wilayah'].'_'.
+		"Transportasi : ".$paramnya['transportasi'].'_'.
+		"Yang ikut : ".$paramnya['anggota'].'_'.
+		"Tujuan alasan : ".$paramnya['tujuan_alasan'].'_'.
+		"Aktifitas : ".$paramnya['aktivitas'].'_'.
+		"Protokol : ".$paramnya['prokes'].'_'.
+		"Menginap : ".$paramnya['covid_menginap'].','.$paramnya['nbr_jumlah_hari'].'_'.
+		"Yang dikunjungi sakit : ".$paramnya['covid_sakit'].','.$paramnya['penyakit'].'_'.
+		"Sakit Setelah kembali : ".$paramnya['covid_sakit_kembali'].','.$paramnya['penyakit_kembali'].'_'.
+		"Interaksi probable covid : ".$paramnya['covid_interaksi'].','.$paramnya['jenis_interaksi']."</p>";
+		$this->db->query("insert into cvd.cvd_pekerja
+			(noind,
+			status_kondisi_id,
+			range_tgl_interaksi,
+			kasus,
+			keterangan,
+			created_date,
+			created_by,
+			updated_date,
+			updated_by,
+			pic_followup,
+			status_approval)
+			values
+			(
+			'$paramnya[no_induk]',
+			'1',
+			'$paramnya[tgl_kejadian]',
+			'ANGGOTA KELUARGA KE LUAR KOTA',
+			'$statusnya_anggota',
+			current_timestamp,
+			'$yanglogin',
+			current_timestamp,
+			'$yanglogin',
+			'$paramnya[atasan]',
+			1
+			)");
+
+		if ($this->db->affected_rows() == 1) {
+			$id_before = $this->db->insert_id();
+			$this->db->query("INSERT into cvd.cvd_wawancara
+				(cvd_pekerja_id,
+				hasil_wawancara,
+				created_date,
+				created_by,
+				updated_date,
+				updated_by
+				)
+				values
+				('$id_before',
+				'$wawancara',
+				current_timestamp,
+				'$yanglogin',
+				current_timestamp,
+				'$yanglogin'
+				)");
+
+			if ($this->db->affected_rows() == 1) {
+				return $id_before;
+			}else {
+				die('Gagal Insert :(');
+			}
+		}else {
+			die('Gagal Insert :(');
+		}
+	}
+
+	public function insertKedatanganTamu($paramnya, $yanglogin)
+	{
+		$wawancara = "<p>Wilayah : ".$paramnya['wilayah'].'_'.
+		"Transportasi : ".$paramnya['transportasi'].'_'.
+		"Jumlah tamu : ".$paramnya['jumlah_tamu'].'_'.
+		"Tujuan alasan : ".$paramnya['tujuan_alasan'].'_'.
+		"Aktifitas : ".$paramnya['aktivitas'].'_'.
+		"Protokol : ".$paramnya['prokes'].'_'.
+		"Menginap : ".$paramnya['covid_menginap'].','.$paramnya['nbr_jumlah_hari'].'_'.
+		"Tamu yang datang sakit : ".$paramnya['covid_sakit'].','.$paramnya['penyakit'].'_'.
+		"Interaksi probable covid : ".$paramnya['covid_interaksi'].','.$paramnya['jenis_interaksi']."</p>";
+
+		$this->db->query("INSERT into cvd.cvd_pekerja
+			(noind,
+			status_kondisi_id,
+			range_tgl_interaksi,
+			kasus,
+			keterangan,
+			created_date,
+			created_by,
+			updated_date,
+			updated_by,
+			pic_followup,
+			status_approval)
+			values
+			(
+			'$paramnya[no_induk]',
+			'1',
+			'$paramnya[tgl_kejadian]',
+			'KEDATANGAN TAMU DARI LUAR KOTA',
+			'$paramnya[keterangan]',
+			current_timestamp,
+			'$yanglogin',
+			current_timestamp,
+			'$yanglogin',
+			'$paramnya[atasan]',
+			1
+			)");
+		if ($this->db->affected_rows() == 1) {
+			$id_before = $this->db->insert_id();
+			$this->db->query("INSERT into cvd.cvd_wawancara
+				(cvd_pekerja_id,
+				hasil_wawancara,
+				created_date,
+				created_by,
+				updated_date,
+				updated_by
+				)
+				values
+				('$id_before',
+				'$wawancara',
+				current_timestamp,
+				'$yanglogin',
+				current_timestamp,
+				'$yanglogin'
+				)");
+
+			if ($this->db->affected_rows() == 1) {
+				return $id_before;
+			}else {
+				die('Gagal Insert :(');
+			}
+		}else {
+			die('Gagal Insert :(');
+		}
+	}
+
+	public function insertMelaksanakanAcara($paramnya, $yanglogin)
+	{
+		$wawancara = "<p>Jenis acara : ".$paramnya['jenis_acara'].'_'.
+		"Jumlah tamu : ".$paramnya['jumlah_tamu'].'_'.
+		"Ada tamu luar : ".$paramnya['covid_tamu_luar'].','.$paramnya['asal_tamu'].'_'.
+		"Waktu dan Run Down : ".$paramnya['waktu_run_down'].'_'.
+		"Protokol : ".$paramnya['prokes'].'_'.
+		"Lokasi acara : ".$paramnya['lokasi_acara'].'_'.
+		"Kapasitas tempat : ".$paramnya['kapasitas_tempat']."</p>";
+		$this->db->query("INSERT into cvd.cvd_pekerja
+			(noind,
+			status_kondisi_id,
+			range_tgl_interaksi,
+			kasus,
+			keterangan,
+			created_date,
+			created_by,
+			updated_date,
+			updated_by,
+			pic_followup,
+			status_approval)
+			values
+			(
+			'$paramnya[no_induk]',
+			'1',
+			'$paramnya[tgl_kejadian]',
+			'MELAKSANAKAN ACARA',
+			'$paramnya[keterangan]',
+			current_timestamp,
+			'$yanglogin',
+			current_timestamp,
+			'$yanglogin',
+			'$paramnya[atasan]',
+			1
+			)");
+
+		if ($this->db->affected_rows() == 1) {
+			$id_before = $this->db->insert_id();
+			$this->db->query("INSERT into cvd.cvd_wawancara
+				(cvd_pekerja_id,
+				hasil_wawancara,
+				created_date,
+				created_by,
+				updated_date,
+				updated_by
+				)
+				values
+				($id_before,
+				'$wawancara',
+				current_timestamp,
+				'$yanglogin',
+				current_timestamp,
+				'$yanglogin'
+				)");
+			if ($this->db->affected_rows() == 1) {
+				$id_before2 = $this->db->insert_id();
+				return $id_before2;
+			}else {
+				return 0;
+			}
+		}else {
+			return 0;
+		}
+	}
+
+	public function insertLampiran21($paramnya, $yanglogin)
+	{
+		$this->db->query("INSERT into cvd.cvd_wawancara_lampiran
+			(wawancara_id,
+			lampiran_nama,
+			created_date,
+			created_by,
+			updated_date,
+			updated_by,
+			lampiran_path
+			)
+			values
+			('$paramnya[wawancara_id]',
+			'$paramnya[lampiran_nama]',
+			current_timestamp,
+			'$yanglogin',
+			current_timestamp,
+			'$yanglogin',
+			'$paramnya[lampiran_path]')");
+
+		if ($this->db->affected_rows() == 1) {
+			return 1;
+		}else {
+			return 0;
+		}
+	}
+
+	public function getApprover($noind)
+	{
+		$sql = "SELECT
+					distinct tp.noind,
+					trim(tp.nama) nama,
+					tp.email_internal,
+					tp.kd_jabatan
+				from
+					hrd_khs.trefjabatan tj,
+					hrd_khs.tpribadi tp,
+					(
+					select
+						tp2.*
+					from
+						hrd_khs.tpribadi tp2
+					where
+						tp2.noind = '$noind' ) tpp
+				where
+					tj.noind = tp.noind
+					and tp.keluar = '0'
+					and substring(tp.kodesie, 1, 1) = substring(tpp.kodesie, 1, 1)
+					and tp.kd_jabatan <= '11'
+					and tj.noind <> tpp.noind
+				order by
+					tp.kd_jabatan desc,
+					tp.noind";
+		return $this->personalia->query($sql)->result_array();
+	}
+}

@@ -10,8 +10,8 @@ class M_setplan extends CI_Model
         $this->oracle = $this->load->database('oracle', true);
     }
     
-    public function getCategory(){
-        $sql = "select * from khs_kategori_item_monitoring";
+    public function getCategory($term){
+        $sql = "select * from khs_kategori_item_monitoring $term";
         $query = $this->oracle->query($sql);
         return $query->result_array();
     }

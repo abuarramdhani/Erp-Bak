@@ -431,7 +431,6 @@ class C_Index extends CI_Controller {
 
  			 $pdf = $this->pdf->load();
  			 $pdf = new mPDF('P','A4',0,'',10,10,10,10,0,0);
-
 			 if($alasan == "PUTUS HUBUNGAN KERJA KARENA USIA LANJUT"){
 				 $filename = 'Perjanjian Bersama Usia Lanjut.pdf'.$date;
 				 $html = $this->load->view('MasterPekerja/PerhitunganPesangon/Perjanjian/V_lansia', $data, true);
@@ -441,12 +440,15 @@ class C_Index extends CI_Controller {
 			 }elseif($alasan == 'PUTUS HUBUNGAN KERJA KARENA NON USIA LANJUT'){
 				 $filename = 'Perjanjian Bersama Non Usia Lanjut.pdf'.$date;
 				 $html = $this->load->view('MasterPekerja/PerhitunganPesangon/Perjanjian/V_non_lansia', $data, true);
+			 }else{
+			 	$filename = 'Perjanjian Bersama meninggal dunia.pdf'.$date;
+				 $html = $this->load->view('MasterPekerja/PerhitunganPesangon/Perjanjian/V_meninggal_dunia', $data, true);
 			 }
 
  			 $stylesheet1 = file_get_contents(base_url('assets/plugins/bootstrap/3.3.7/css/bootstrap.css'));
  			 $pdf->WriteHTML($stylesheet1,1);
  			 $pdf->WriteHTML($html, 2);
- 	     $pdf->setTitle($filename);
+ 	     	$pdf->setTitle($filename);
  			 $pdf->Output($filename, 'I');
 		 }
 

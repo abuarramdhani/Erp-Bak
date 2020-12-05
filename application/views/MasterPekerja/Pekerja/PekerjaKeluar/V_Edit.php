@@ -1511,13 +1511,6 @@
 								</tr>
 							</thead>
 							<tbody>
-								<!-- <?php for ($x = 1; $x <= 3; $x++) : ?>
-									<tr>
-										<td><?= $x ?></td>
-										<td>2020-01-01</td>
-										<td>2020-05-01</td>
-									</tr>
-								<?php endfor ?> -->
 								<!-- using AJAX ? -->
 							</tbody>
 						</table>
@@ -1586,6 +1579,21 @@
 									<select name="" id="assignment_hubker" data-placeholder="-- Pilih --" class="form-control select2">
 										<!-- <option value=""></option> -->
 										<?php foreach ($atasanhubker as $item) : ?>
+											<option value="<?= $item['noind'] ?>"><?= $item['noind'] . " - " . $item['nama'] ?></option>
+										<?php endforeach ?>
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-12 mb-1" mb-1>
+							<div class="row">
+								<div class="col-md-5">
+									<label for="">Atasan 3</label>
+								</div>
+								<div class="col-md-7">
+									<select name="" id="assignment_3" data-placeholder="-- Pilih --" class="form-control select2">
+										<!-- <option value=""></option> -->
+										<?php foreach ($atasan3 as $item) : ?>
 											<option value="<?= $item['noind'] ?>"><?= $item['noind'] . " - " . $item['nama'] ?></option>
 										<?php endforeach ?>
 									</select>

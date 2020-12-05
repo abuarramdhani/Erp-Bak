@@ -68,7 +68,10 @@ class M_kirim extends Ci_Model
           $filterSeksi .= "or limkir.kodesie_kirim = left('$kodesie[$i]',7) ";
         }
       }
-      if (!empty($filterSeksi)) {
+      
+      if(count($kodesie) > 1) {
+         $filterSeksi = "($filterSeksi) and";
+      } else if (!empty($filterSeksi)) {
          $filterSeksi .= 'and';
       }
 

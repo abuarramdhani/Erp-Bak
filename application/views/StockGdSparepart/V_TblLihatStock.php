@@ -1,12 +1,3 @@
-<script src="<?php echo base_url('assets/plugins/dataTables/jquery.dataTables.js');?>"></script>
-	<script src="<?php echo base_url('assets/plugins/dataTables/dataTables.bootstrap.js');?>"></script>
-    <script>
-         $(document).ready(function () {
-            $('.myTable').dataTable({
-                "scrollX": true,
-            });
-         });
-    </script>
 <div class="table-responsive">
     <table class="datatable table table-bordered table-hover table-striped myTable text-center" id="myTable" style="width: 100%;">
         <thead class="bg-primary text-nowrap">
@@ -42,6 +33,13 @@
             }else {
                 $td = '';
             }
+            
+		$filename = './assets/upload/wipp/setelah/'.$val['ITEM'].'.png';
+		if (file_exists($filename)) {
+			$ket_img = 'bg-teal';
+		}else {
+			$ket_img = 'btn-default';
+		}
         ?>
             <tr>
                 <td class="<?= $td?>"><?= $i?>
@@ -61,7 +59,7 @@
                 <td class="<?= $td?>"><input type="hidden" id="alamat<?= $i?>" value="<?= $val['LOKASI']?>"><?= $val['LOKASI']?></td>
                 <td class="<?= $td?>"><input type="hidden" id="subinv<?= $i?>" value="<?= $val['SUBINV']?>"><?= $val['SUBINV']?></td>
                 <td class="<?= $td?>"><button type="button" class="btn btn-md btn-info" onclick="modalHistory(<?= $i?>)"><i class="fa fa-search"></i></button>
-                   <button type="button" class="btn btn-md bg-teal" onclick="modalGambarItem(<?= $i?>)"><i class="fa fa-photo"></i></button>
+                   <button type="button" class="btn btn-md <?= $ket_img?>" onclick="modalGambarItem(<?= $i?>)"><i class="fa fa-photo"></i></button>
                 </td>
             </tr>
         <?php $i++; } ?>
@@ -104,7 +102,7 @@
 </div>
 
 <div class="modal fade" id="mdlGambarItem" role="dialog">
-    <div class="modal-dialog" style="padding-right:5px">
+    <div class="modal-dialog" style="padding-right:5px;width:90%">
       <!-- Modal content-->
       <div class="modal-content">
         <div class="modal-header">

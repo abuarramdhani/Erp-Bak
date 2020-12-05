@@ -15,7 +15,7 @@
 							</div>
 							<div class="box-body">
 								<div class="row">
-									<div class="col-lg-12 text-right">
+									<div class="col-lg-12 text-right" style="margin-bottom: 1em;">
 										<a href="" target="_blank" id="btnSimForkliftCetakPdf" class="btn btn-danger" disabled><span class="fa fa-file-pdf-o"></span> Cetak SIM PDF</a>
 										<a href="" target="_blank" id="btnSimForkliftCetakImg" class="btn btn-warning" disabled><span class="fa fa-file-image-o"></span> Cetak SIM IMG</a>
 										<a href="" target="_blank" id="btnSimForkliftCetakCrl" class="btn btn-success" disabled><span class="fa fa-file-image-o"></span> Cetak SIM COREL</a>
@@ -48,7 +48,7 @@
 													<th style="text-align: center;">Jenis</th>
 													<th style="text-align: center;">Mulai Berlaku</th>
 													<th style="text-align: center;">Selesai Berlaku</th>
-													<th style="text-align: center;">File</th>
+													<th style="text-align: center;">Action</th>
 												</tr>
 											</thead>
 											<tbody>
@@ -56,6 +56,9 @@
 												if (isset($data) && !empty($data)) {
 													$nomor = 1;
 													foreach ($data as $dt) {
+														$encrypted_string = $this->encrypt->encode($dt['id_sim']);
+	                                                	$encrypted_string = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
+
 														?>
 														<tr>
 															<td style="text-align: center;">
@@ -68,7 +71,9 @@
 															<td><?php echo $dt['jenis'] ?></td>
 															<td><?php echo strftime('%B %Y',strtotime($dt['mulai_berlaku'])) ?></td>
 															<td><?php echo strftime('%B %Y',strtotime($dt['selesai_berlaku'])) ?></td>
-															<td></td>
+															<td>
+																<button type="button" data-id="<?php echo $dt['id_sim'] ?>" class="btn btn-danger btnMPKSimForkliftHapus"><span class="fa fa-trash"></span> Hapus</button>
+															</td>
 														</tr>
 														<?php
 														$nomor++;

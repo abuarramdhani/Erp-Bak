@@ -102,8 +102,11 @@ class C_Rekap extends CI_Controller
 			$explode = explode(' - ', $replace);
 			$periode1 = date('Y-m-d', strtotime($explode[0]));
 			$periode2 = date('Y-m-d', strtotime($explode[1]));
-
-			$periode = "WHERE ip.created_date::date between '$periode1' and '$periode2'";
+			if ($periode1 == $periode2) {
+				$periode = "WHERE ip.created_date::date = '$periode1'";
+			} else {
+				$periode = "WHERE ip.created_date::date between '$periode1' and '$periode2'";
+			}
 		} else {
 			$periode = '';
 		}
@@ -151,6 +154,35 @@ class C_Rekap extends CI_Controller
 		$data['seksi'] = $this->M_index->getSeksi();
 		$data['perseksi'] = $perseksi;
 		$data['jenis'] = $jenis;
+
+		$arData = array();
+		foreach ($data['IzinApprove'] as $key) {
+			$tanggalIndex = date('Y-m-d', strtotime($key['created_date']));
+			$arData[$tanggalIndex][] = $key;
+		}
+
+		$data['izinBanyak'] = array();
+		$dataBanyak = array();
+		foreach ($arData as $key => $value) {
+			$colomPekerja = array_column($value, 'nama_pkj');
+			$dataBanyak[$key] = array_count_values($colomPekerja);
+		}
+
+		$data['dataReal'] = array();
+		foreach ($dataBanyak as $row => $key) {
+			foreach ($key as $val => $a) {
+				foreach ($data['IzinApprove'] as $dataIzin) {
+					$x = date('Y-m-d', strtotime($dataIzin['created_date']));
+					if (date('Y-m-d', strtotime($row)) == $x && $val == $dataIzin['nama_pkj']) {
+						$jumlah = array(
+							'jumlah' => $a
+						);
+						$data['dataReal'][] = array_merge($dataIzin, $jumlah);
+					}
+				}
+			}
+		}
+
 		if ($export == 'Excel') {
 			$data['date'] = date("d-m-Y");
 

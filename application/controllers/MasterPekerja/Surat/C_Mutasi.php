@@ -588,14 +588,15 @@ class C_Mutasi extends CI_Controller
 
 		// }
 		// exit();
+		$lokasi_finger_awal = ($finger_awal == ' - ') ? '-' : substr($finger_awal, 7);
 		$inputFingerMutasi			= 	array(
 			'no_surat'				=>	$nomor_surat,
 			'kode' 					=>	$kodeSurat,
 			'hal_surat'				=>	$hal_surat,
 			'noind'					=>	$nomor_induk,
 			'finger_pindah'			=>	$finger_pindah,
-			'finger_awal'			=>  substr($finger_awal, 0, 5),
-			'lokasifinger_awal'		=>  substr($finger_awal, 7),
+			'finger_awal'			=> ($finger_awal == '-') ? '-' : substr($finger_awal, 0, 5),
+			'lokasifinger_awal'		=>  $lokasi_finger_awal,
 			'finger_akhir'  		=>	substr($finger_akhir, 0, 5),
 			'lokasifinger_akhir'  	=>	substr($finger_akhir, 7),
 			'created_date'			=>  $tanggal_cetak,
@@ -604,7 +605,7 @@ class C_Mutasi extends CI_Controller
 
 		$inputFingerPindah = $this->M_surat->inputFingerMutasi($inputFingerMutasi);
 		if ($finger_pindah == 't') {
-			$this->kirim_email_ict($noind_baru, $nomor_induk, substr($finger_awal, 7), substr($finger_akhir, 7), 'MUTASI');
+			$this->kirim_email_ict($noind_baru, $nomor_induk, $lokasi_finger_awal, substr($finger_akhir, 7), 'MUTASI');
 		}
 		$this->M_surat->inputSuratMutasi($inputSuratMutasi);
 		$bulan_surat = date('m', strtotime($tanggal_cetak));

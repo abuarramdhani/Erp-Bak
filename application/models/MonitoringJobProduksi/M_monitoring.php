@@ -22,36 +22,44 @@ class M_monitoring extends CI_Model
         return $query->result_array();
     }
 
-    
-    public function getAktual($kategori, $bulan){
-        $sql = "select distinct
-                       kgim.INVENTORY_ITEM_ID
-                      ,msib.SEGMENT1                                             item
-                      ,msib.DESCRIPTION
-                      ,to_char(wdj.SCHEDULED_START_DATE,'DD-MON-YYYY')           tanggal
-                      ,to_char(wdj.SCHEDULED_START_DATE,'YYYYMMDD')               tgl_urut
-                      ,sum(wdj.START_QUANTITY) over (partition by wdj.PRIMARY_ITEM_ID
-                                                                 ,wdj.ORGANIZATION_ID
-                                                                 ,to_char(wdj.SCHEDULED_START_DATE,'DD-MON-YYYY')
-                                                                 )          quantity
-                      ,sum(wdj.QUANTITY_COMPLETED) over (partition by wdj.PRIMARY_ITEM_ID
-                                                                 ,wdj.ORGANIZATION_ID
-                                                                 ,to_char(wdj.SCHEDULED_START_DATE,'DD-MON-YYYY')
-                                                                 )          quantity_complete
-                from wip_discrete_jobs wdj
-                    ,khs_category_item_monitoring kgim
-                    ,mtl_system_items_b msib
-                where wdj.PRIMARY_ITEM_ID = kgim.INVENTORY_ITEM_ID
-                  and wdj.ORGANIZATION_ID = kgim.ORGANIZATION_ID
-                  and msib.INVENTORY_ITEM_ID = kgim.INVENTORY_ITEM_ID
-                  and msib.ORGANIZATION_ID = kgim.ORGANIZATION_ID
-                  and wdj.STATUS_TYPE in (1,3,12,4,5) -- unreleased, released, closed, complete
-                  and trunc(wdj.SCHEDULED_START_DATE) between nvl(TO_DATE ('01/' || '$bulan', 'DD/MM/YYYY'),wdj.SCHEDULED_START_DATE) and nvl(LAST_DAY (TO_DATE ('01/' || '$bulan', 'DD/MM/YYYY')),wdj.SCHEDULED_START_DATE)
-                  and kgim.CATEGORY_NAME = '$kategori'
-                order by tgl_urut, item";
+    public function getAktual2($kategori, $bulan){
+        $sql = "select *            
+        from khs_qweb_mon_produksi kqmp            
+        where kqmp.CATEGORY_NAME = $kategori
+        and kqmp.tgl_urut like '$bulan%'";
         $query = $this->oracle->query($sql);
         return $query->result_array();
     }
+    
+    // public function getAktual($kategori, $bulan){
+    //     $sql = "select distinct
+    //                    kgim.INVENTORY_ITEM_ID
+    //                   ,msib.SEGMENT1                                             item
+    //                   ,msib.DESCRIPTION
+    //                   ,to_char(wdj.SCHEDULED_START_DATE,'DD-MON-YYYY')           tanggal
+    //                   ,to_char(wdj.SCHEDULED_START_DATE,'YYYYMMDD')               tgl_urut
+    //                   ,sum(wdj.START_QUANTITY) over (partition by wdj.PRIMARY_ITEM_ID
+    //                                                              ,wdj.ORGANIZATION_ID
+    //                                                              ,to_char(wdj.SCHEDULED_START_DATE,'DD-MON-YYYY')
+    //                                                              )          quantity
+    //                   ,sum(wdj.QUANTITY_COMPLETED) over (partition by wdj.PRIMARY_ITEM_ID
+    //                                                              ,wdj.ORGANIZATION_ID
+    //                                                              ,to_char(wdj.SCHEDULED_START_DATE,'DD-MON-YYYY')
+    //                                                              )          quantity_complete
+    //             from wip_discrete_jobs wdj
+    //                 ,khs_category_item_monitoring kgim
+    //                 ,mtl_system_items_b msib
+    //             where wdj.PRIMARY_ITEM_ID = kgim.INVENTORY_ITEM_ID
+    //               and wdj.ORGANIZATION_ID = kgim.ORGANIZATION_ID
+    //               and msib.INVENTORY_ITEM_ID = kgim.INVENTORY_ITEM_ID
+    //               and msib.ORGANIZATION_ID = kgim.ORGANIZATION_ID
+    //               and wdj.STATUS_TYPE in (1,3,12,4,5,15) -- unreleased, released, closed, complete,failed close
+    //               and trunc(wdj.SCHEDULED_START_DATE) between nvl(TO_DATE ('01/' || '$bulan', 'DD/MM/YYYY'),wdj.SCHEDULED_START_DATE) and nvl(LAST_DAY (TO_DATE ('01/' || '$bulan', 'DD/MM/YYYY')),wdj.SCHEDULED_START_DATE)
+    //               and kgim.CATEGORY_NAME = '$kategori'
+    //             order by tgl_urut, item";
+    //     $query = $this->oracle->query($sql);
+    //     return $query->result_array();
+    // }
     
     public function getitem($term){
         $sql = "SELECT DISTINCT msib.segment1, msib.description, msib.inventory_item_id, msib.organization_id             
@@ -77,7 +85,7 @@ class M_monitoring extends CI_Model
         return $query->result_array();
     }
 
-    public function getdataSimulasi($kode, $qty){
+    public function getdataSimulasi($kode, $qty, $param){
       $sql = "select
                 msib.segment1 ASSY_code
                 ,msib.description assy_Desc
@@ -99,8 +107,9 @@ class M_monitoring extends CI_Model
                 ,bic.SUPPLY_SUBINVENTORY gudang_tujuan
                 ,bic.SUPPLY_LOCATOR_ID locator_tujuan_id 
                 ,mil.SEGMENT1 locator_tujuan
-                ,khs_inv_qty_att(msib2.ORGANIZATION_ID,msib2.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'') att
-                ,(khs_inv_qty_att(msib2.ORGANIZATION_ID,msib2.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'') - bic.COMPONENT_QUANTITY*'$qty') kekurangan
+                --,khs_inv_qty_att(msib2.ORGANIZATION_ID,msib2.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'') att
+                ,(khs_inv_qty_att(msib2.ORGANIZATION_ID,msib2.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'') - khs_inv_qty_att(msib2.ORGANIZATION_ID,msib2.INVENTORY_ITEM_ID,'SS-ODM',bic.ATTRIBUTE2,'')) att
+                ,((khs_inv_qty_att(msib2.ORGANIZATION_ID,msib2.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'') - khs_inv_qty_att(msib2.ORGANIZATION_ID,msib2.INVENTORY_ITEM_ID,'SS-ODM',bic.ATTRIBUTE2,'')) - bic.COMPONENT_QUANTITY*'$qty') kekurangan
                 ,nvl(
                         (select sum(mtrl.QUANTITY)
                             from mtl_txn_request_headers mtrh
@@ -151,12 +160,12 @@ class M_monitoring extends CI_Model
                 ,khs_inv_qty_att(msib2.organization_id,msib2.inventory_item_id,'PNL-TKS','','') PNL_TKS            
                 --,khs_inv_qty_att(msib2.organization_id,msib2.inventory_item_id,'SM-TKS','','') SM_TKS
                 ,khs_inv_qty_att(101,msib2.inventory_item_id,'SM-TKS','','') SM_TKS
-                ,khs_inv_qty_att(msib.organization_id,msib.inventory_item_id,'INT-ASSYGT','','') INT_ASSYGT,
-                khs_inv_qty_att(msib.organization_id,msib.inventory_item_id,'INT-ASSY','','') INT_ASSY,
-                khs_inv_qty_att(msib.organization_id,msib.inventory_item_id,'INT-MACHA','','') INT_MACHA,
-                khs_inv_qty_att(msib.organization_id,msib.inventory_item_id,'INT-MACHB','','') INT_MACHB,
-                khs_inv_qty_att(msib.organization_id,msib.inventory_item_id,'INT-MACHC','','') INT_MACHC,
-                khs_inv_qty_att(msib.organization_id,msib.inventory_item_id,'INT-MACHD','','') INT_MACHD     
+                ,khs_inv_qty_att(msib2.organization_id,msib2.inventory_item_id,'INT-ASSYGT','','') INT_ASSYGT,
+                khs_inv_qty_att(msib2.organization_id,msib2.inventory_item_id,'INT-ASSY','','') INT_ASSY,
+                khs_inv_qty_att(msib2.organization_id,msib2.inventory_item_id,'INT-MACHA','','') INT_MACHA,
+                khs_inv_qty_att(msib2.organization_id,msib2.inventory_item_id,'INT-MACHB','','') INT_MACHB,
+                khs_inv_qty_att(msib2.organization_id,msib2.inventory_item_id,'INT-MACHC','','') INT_MACHC,
+                khs_inv_qty_att(msib2.organization_id,msib2.inventory_item_id,'INT-MACHD','','') INT_MACHD     
                 ,wip.qty wip
                 --,decode(bic.basis_type,'','Item','2','Lot') Basis
                 --,bic.INCLUDE_IN_COST_ROLLUP
@@ -192,6 +201,7 @@ class M_monitoring extends CI_Model
                 and bom.ALTERNATE_BOM_DESIGNATOR is null
                 and bic.DISABLE_DATE is null
                 and msib.INVENTORY_ITEM_STATUS_CODE = 'Active'
+                $param
                 --and bic.ATTRIBUTE1 is not null
                 order by 21,1,2,3,4,5";
       $query = $this->oracle->query($sql);
@@ -199,36 +209,130 @@ class M_monitoring extends CI_Model
   }
   
   public function getdataWIP($item){
-    $sql = "SELECT msib.SEGMENT1  ASSY
-    ,msib.DESCRIPTION
-    ,we.WIP_ENTITY_NAME
-    ,wdj.START_QUANTITY
-    ,decode(wdj.status_type,12,'Closed',3,'Released',4,'Complete',7,'Cancelled') job_status
-    ,to_char(wdj.SCHEDULED_START_DATE,'DD-MM-YYYY HH24:MI:SS')                SCHEDULED_START_DATE
-                    from wip_discrete_jobs wdj
-                        ,wip_entities we
-                        ,mtl_system_items_b msib
-                        ,wip_operations wipo
-                        ,wip_operation_resources wipor
-                        ,bom_departments bd
-                        ,bom_resources br
-                    where wdj.WIP_ENTITY_ID = we.WIP_ENTITY_ID
-                        and wdj.PRIMARY_ITEM_ID = msib.INVENTORY_ITEM_ID
-                        and wdj.ORGANIZATION_ID = msib.ORGANIZATION_ID
-                        and wipo.WIP_ENTITY_ID = wdj.WIP_ENTITY_ID
-                        and wipo.ORGANIZATION_ID = wdj.ORGANIZATION_ID
-                        and wipor.WIP_ENTITY_ID = wipo.WIP_ENTITY_ID
-                        and wipor.OPERATION_SEQ_NUM = wipo.OPERATION_SEQ_NUM
-                        and wipo.department_id = bd.department_id
-                        and wipo.ORGANIZATION_ID = bd.ORGANIZATION_ID
-                        and wipor.RESOURCE_ID = br.RESOURCE_ID
-                        and wipor.ORGANIZATION_ID = br.ORGANIZATION_ID
-                        and br.RESOURCE_TYPE = 1
-                        and wdj.STATUS_TYPE = 3
-                        and msib.SEGMENT1 = '$item'
-                    order by 1";
+    $sql = "select *
+            from khs_qweb_job_wipicklist kqjw
+            where kqjw.ASSY = '$item'";
     $query = $this->oracle->query($sql);
     return $query->result_array();
+}
+
+public function getRemainingWIP($item){
+    $sql = "select xx.ASSY
+                ,sum (xx.START_QUANTITY) START_QUANTITY 
+                ,sum (xx.REMAINING_QTY) REMAINING_QTY
+            from (
+            select distinct
+                kqj.ASSY
+                ,kqj.START_QUANTITY
+                ,kqj.REMAINING_QTY
+                ,kqj.NO_JOB
+            from khs_qweb_job kqj
+            where kqj.ASSY = '$item'
+            ) xx
+            group by xx.ASSY";
+    $query = $this->oracle->query($sql);
+    return $query->result_array();
+}
+
+public function getPicklist($item){
+    $sql = "select kqjw.ASSY
+                ,sum (kqjw.QPL_ASSY) QPL_ASSY
+            from khs_qweb_job_wipicklist kqjw
+            where kqjw.ASSY = '$item'
+            group by kqjw.ASSY";
+    $query = $this->oracle->query($sql);
+    return $query->result_array();
+}
+
+public function getGudang($item){
+    $sql = "SELECT DISTINCT msib.segment1
+                ,khs_inv_qty_att(102,msib.inventory_item_id,'FG-TKS','','') FG_TKS
+            ,khs_inv_qty_att(102,msib.inventory_item_id,'MLATI-DM','','') MLATI_DM
+            FROM mtl_system_items_b msib
+            WHERE msib.segment1 = '$item'";
+    $query = $this->oracle->query($sql);
+    return $query->result_array();
+}
+
+public function getcomment($kategori, $bulan, $inv, $tgl){
+    $sql = "select * from khs_comment_item_monitoring
+            where id_category = $kategori
+            and bulan = $bulan
+            and inventory_item_id = $inv
+            and tanggal = $tgl";
+    $query = $this->oracle->query($sql);
+    return $query->result_array();
+}
+
+public function savecomment($kategori, $bulan, $inv, $tgl, $comment){
+    $sql = "insert into khs_comment_item_monitoring (id_category, inventory_item_id, bulan, tanggal, keterangan)
+            values($kategori, $inv, $bulan, $tgl, '$comment')";
+    $query = $this->oracle->query($sql);
+    $query = $this->oracle->query('commit');
+}
+
+public function updatecomment($kategori, $bulan, $inv, $tgl, $comment){
+    $sql = "update khs_comment_item_monitoring set keterangan = '$comment'
+            where id_category = $kategori
+            and bulan = $bulan
+            and inventory_item_id = $inv
+            and tanggal = $tgl";
+    $query = $this->oracle->query($sql);
+    $query = $this->oracle->query('commit');
+}
+
+public function getcommentPL($kategori, $bulan, $inv, $tgl){
+    $sql = "select * from khs_commentpl_item_monitoring
+            where id_category = $kategori
+            and bulan = $bulan
+            and inventory_item_id = $inv
+            and tanggal = $tgl";
+    $query = $this->oracle->query($sql);
+    return $query->result_array();
+}
+
+public function savecommentPL($kategori, $bulan, $inv, $tgl, $comment){
+    $sql = "insert into khs_commentpl_item_monitoring (id_category, inventory_item_id, bulan, tanggal, keterangan)
+            values($kategori, $inv, $bulan, $tgl, '$comment')";
+    $query = $this->oracle->query($sql);
+    $query = $this->oracle->query('commit');
+}
+
+public function updatecommentPL($kategori, $bulan, $inv, $tgl, $comment){
+    $sql = "update khs_commentpl_item_monitoring set keterangan = '$comment'
+            where id_category = $kategori
+            and bulan = $bulan
+            and inventory_item_id = $inv
+            and tanggal = $tgl";
+    $query = $this->oracle->query($sql);
+    $query = $this->oracle->query('commit');
+}
+
+public function getcommentC($kategori, $bulan, $inv, $tgl){
+    $sql = "select * from khs_commentc_item_monitoring
+            where id_category = $kategori
+            and bulan = $bulan
+            and inventory_item_id = $inv
+            and tanggal = $tgl";
+    $query = $this->oracle->query($sql);
+    return $query->result_array();
+}
+
+public function savecommentC($kategori, $bulan, $inv, $tgl, $comment){
+    $sql = "insert into khs_commentc_item_monitoring (id_category, inventory_item_id, bulan, tanggal, keterangan)
+            values($kategori, $inv, $bulan, $tgl, '$comment')";
+    $query = $this->oracle->query($sql);
+    $query = $this->oracle->query('commit');
+}
+
+public function updatecommentC($kategori, $bulan, $inv, $tgl, $comment){
+    $sql = "update khs_commentc_item_monitoring set keterangan = '$comment'
+            where id_category = $kategori
+            and bulan = $bulan
+            and inventory_item_id = $inv
+            and tanggal = $tgl";
+    $query = $this->oracle->query($sql);
+    $query = $this->oracle->query('commit');
 }
 
 

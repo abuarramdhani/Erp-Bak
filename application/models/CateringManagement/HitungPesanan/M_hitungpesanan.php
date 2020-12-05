@@ -1812,6 +1812,25 @@ class M_hitungpesanan extends Ci_Model
 									and trim(ts.waktu) not in ('0') 
 								) = 1
 							) 
+							and trim(tpres.noind) not in (
+								select 	trim(a.noind)
+								from hrd_khs.tpribadi a 
+								inner join \"Presensi\".tshiftpekerja b 
+									on trim(a.noind) = trim(b.noind) 
+								inner join \"Catering\".ttempat_makan tmkn 
+									on a.tempat_makan = tmkn.fs_tempat_makan 
+									and tmkn.fs_lokasi = ?
+								left join \"Catering\".tpuasa p 
+									on b.tanggal=p.fd_tanggal 
+									and trim(b.noind) = trim(p.fs_noind) 
+								where b.tanggal = ? 
+									and b.kd_shift in('5','8','18') 
+									and left(trim(a.noind), 1) not in ('M','Z') 
+									and (
+										p.fb_status is null 
+										or p.fb_status<>'1'
+									) 
+							)
 							group by tpri.tempat_makan, trim(tpres.noind)
 							union 
 							select 	trim(a.noind) as noind,
@@ -1837,7 +1856,7 @@ class M_hitungpesanan extends Ci_Model
 							group by a.tempat_makan, a.nama,trim(a.noind),b.jam_msk
 						) derivedtbl 
 					order by tempat_makan ";
-			return $this->personalia->query($sql,array($tanggal,$tanggal,$tanggal,$lokasi,$tanggal,$tanggal,$tanggal,$tanggal,$lokasi,$tanggal))->result_array();
+			return $this->personalia->query($sql,array($tanggal,$tanggal,$tanggal,$lokasi,$tanggal,$tanggal,$tanggal,$tanggal,$lokasi,$tanggal,$lokasi,$tanggal))->result_array();
 		}
 	}
 

@@ -179,28 +179,29 @@
                       <div class="col-md-4">
                         <div class="form-group">
                           <label for="">Berat 1</label>
-                          <input type="text" style="width:85%;float:left;" class="form-control" id="berat1" placeholder="Berat 1" value="" required>
+                          <input type="text" style="width:85%;float:left;" disabled class="form-control" id="berat1" placeholder="Berat 1" value="" required>
                           <span style="width:10%;float:left;padding:5px"><b>Kg</b></span>
                         </div>
                       </div>
                       <div class="col-md-4">
                         <div class="form-group">
                           <label for="">Berat 2</label>
-                          <input type="text" class="form-control" id="berat2" placeholder="Berat 2" style="width:85%;float:left;" value="" required>
+                          <input type="text" class="form-control" disabled id="berat2" placeholder="Berat 2" style="width:85%;float:left;" value="" required>
                           <span style="width:10%;float:left;padding:5px"><b>Kg</b></span>
                         </div>
                       </div>
                       <div class="col-md-4">
                         <div class="form-group">
                           <label for="">Berat 3</label>
-                          <input type="text" class="form-control" style="width:85%;float:left;" id="berat3" placeholder="Berat 3" value="" required>
+                          <input type="text" class="form-control" disabled style="width:85%;float:left;" id="berat3" placeholder="Berat 3" value="" required>
                           <span style="width:10%;float:left;padding:5px"><b>Kg</b></span>
                         </div>
                       </div>
                     </div>
                   </div>
                   <div class="col-md-2">
-                    <button type="button" style="height:150px !important" onclick="SubmitMasterTimbangan()" class="btn btn-primary btn-sm btn-block">
+                    <!-- onclick="SubmitMasterTimbangan()" -->
+                    <button type="button" style="height:150px !important" disabled class="btn btn-primary btn-sm btn-block">
                         <h4 style="text-align:center"><i class="fa fa-file-pdf-o"></i></h4>
                         <h4 style="text-align:center">CETAK<br>DOKUMEN</h4>
                     </button>

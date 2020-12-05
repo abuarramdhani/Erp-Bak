@@ -111,9 +111,10 @@ class M_disnaker extends CI_Model
 					left join hrd_khs.tbpjstk tb2 on tb2.noind = tp.noind
 					left join hrd_khs.torganisasi tor on tor.kd_jabatan = tp.kd_jabatan
 					where
-					tglkeluar > '$tgl' and lokasi_kerja like'$lokasi%' and left(tp.noind,1) in ('A','B','J','H')
+					tglkeluar > '$tgl' and lokasi_kerja like'$lokasi%' and left(tp.noind,1) in ('A','B','J','H','T')
 					and tp.masukkerja <='$tgl'
 					order by tp.noind";
+					// echo $sql;exit();
 		return $this->personalia->query($sql)->result_array();
 	}
 	public function getPkjDisResign($tgl,$lokasi)
@@ -143,7 +144,7 @@ class M_disnaker extends CI_Model
 					left join hrd_khs.tbpjstk tb2 on tb2.noind = tp.noind
 					left join hrd_khs.torganisasi tor on tor.kd_jabatan = tp.kd_jabatan
 					where
-					(tglkeluar between '$tgl_awal' and '$tgl') and lokasi_kerja like '$lokasi%' and left(tp.noind,1) in ('A','B','J','H')
+					(tglkeluar between '$tgl_awal' and '$tgl') and lokasi_kerja like '$lokasi%' and left(tp.noind,1) in ('A','B','J','H','T')
 					order by tglkeluar asc";
 					// echo $sql;exit();
 		return $this->personalia->query($sql)->result_array();

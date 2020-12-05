@@ -13,13 +13,26 @@ class M_pickgudang extends CI_Model
         $sql = "SELECT msi.secondary_inventory_name sub_inv_code,
                         msi.description sub_inv_desc
                 FROM mtl_secondary_inventories msi
-                WHERE msi.secondary_inventory_name LIKE '%$term%'";
+				WHERE msi.secondary_inventory_name LIKE '%$term%'
+				order by 1";
         $query = $oracle->query($sql);
         return $query->result_array();
         // return $sql;
 	}
 	
-	public function getdataBelum($sub, $tgl1, $tgl2) {
+    public function getDept($term) {
+        $oracle = $this->load->database('oracle', true);
+        $sql = "SELECT DISTINCT bd.DEPARTMENT_CLASS_CODE dept, kd.DESCRIPTION  
+				FROM bom_departments bd, KHS_DEPT_ROUT_CLASS_V kd
+				where bd.DEPARTMENT_CLASS_CODE = kd.DEPT
+				and bd.DEPARTMENT_CLASS_CODE like '%$term%'
+				order by 1";
+        $query = $oracle->query($sql);
+        return $query->result_array();
+        // return $sql;
+	}
+	
+	public function getdataBelum($sub, $tgl1, $tgl2, $dept) {
         $oracle = $this->load->database('oracle', true);
         $sql = "select distinct
 					msib_produk.SEGMENT1 produk
@@ -74,7 +87,7 @@ class M_pickgudang extends CI_Model
 			and wro.OPERATION_SEQ_NUM = wo.OPERATION_SEQ_NUM
             and wro.SUPPLY_LOCATOR_ID = mil.INVENTORY_LOCATION_ID (+)
 			and wo.DEPARTMENT_ID = bd.DEPARTMENT_ID
-			and wdj.STATUS_TYPE not in (5, 6, 12)
+			and wdj.STATUS_TYPE not in (4, 5, 6, 12)
 			--
 			and mtrh.REQUEST_NUMBER = kpa.PICKLIST 
 			-- 
@@ -87,13 +100,14 @@ class M_pickgudang extends CI_Model
 			and mtrl.FROM_SUBINVENTORY_CODE = '$sub'
 			--  and bd.DEPARTMENT_CLASS_CODE = 'WELD'
 			and TRUNC(wdj.SCHEDULED_START_DATE) BETWEEN to_date('$tgl1','DD/MM/YYYY') AND to_date('$tgl2','DD/MM/YYYY')
+			$dept
 			order by 12 desc ";
         $query = $oracle->query($sql);
         return $query->result_array();
         // return $sql;
 	}
 	
-	public function getdataSudah($sub, $tgl1, $tgl2) {
+	public function getdataSudah($sub, $tgl1, $tgl2, $dept) {
         $oracle = $this->load->database('oracle', true);
         $sql = "select distinct
 					msib_produk.SEGMENT1 produk
@@ -148,7 +162,7 @@ class M_pickgudang extends CI_Model
 			and wro.OPERATION_SEQ_NUM = wo.OPERATION_SEQ_NUM            
             and wro.SUPPLY_LOCATOR_ID = mil.INVENTORY_LOCATION_ID (+)       
 			and wo.DEPARTMENT_ID = bd.DEPARTMENT_ID
-			and wdj.STATUS_TYPE not in (5, 6, 12)
+			and wdj.STATUS_TYPE not in (4, 5, 6, 12)
 			--
 			and mtrh.REQUEST_NUMBER = kpa.PICKLIST 
 			-- 
@@ -160,7 +174,8 @@ class M_pickgudang extends CI_Model
 			and kpa.PROCESS = 3 -- gudang
 			and mtrl.FROM_SUBINVENTORY_CODE = '$sub'
 			--  and bd.DEPARTMENT_CLASS_CODE = 'WELD'
-			and TRUNC(wdj.SCHEDULED_START_DATE) BETWEEN to_date('$tgl1','DD/MM/YYYY') AND to_date('$tgl2','DD/MM/YYYY')";
+			and TRUNC(wdj.SCHEDULED_START_DATE) BETWEEN to_date('$tgl1','DD/MM/YYYY') AND to_date('$tgl2','DD/MM/YYYY')
+			$dept";
         $query = $oracle->query($sql);
         return $query->result_array();
         // return $sql;
@@ -215,6 +230,32 @@ class M_pickgudang extends CI_Model
 		mtl_txn_request_lines mtrl
 		where mtrh.HEADER_ID = mtrl.HEADER_ID
 		and mtrh.REQUEST_NUMBER = '$picklist'";
+		$query = $oracle->query($sql);
+		return $query->result_array();
+	}
+
+	public function cariReqPelayanan(){
+		$oracle = $this->load->database('oracle', true);
+		$sql = "select * from khs_pelayanan_picklist order by 2, 3";
+		$query = $oracle->query($sql);
+		return $query->result_array();
+	}
+
+	function getShift($shift)
+	{
+		$oracle = $this->load->database('oracle',TRUE);
+		$sql = "select BCS.SHIFT_NUM,BCS.DESCRIPTION
+				from BOM_SHIFT_TIMES bst
+				    ,BOM_CALENDAR_SHIFTS bcs
+				    ,bom_shift_dates bsd
+				where bst.CALENDAR_CODE = bcs.CALENDAR_CODE
+				  and bst.SHIFT_NUM = bcs.SHIFT_NUM
+				  and bcs.CALENDAR_CODE='KHS_CAL'
+				  and bst.shift_num = bsd.shift_num
+				  and bst.calendar_code=bsd.calendar_code
+				  and bsd.SEQ_NUM is not null
+				  and BCS.SHIFT_NUM = $shift
+				  ORDER BY BCS.SHIFT_NUM asc";
 		$query = $oracle->query($sql);
 		return $query->result_array();
 	}

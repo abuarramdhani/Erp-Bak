@@ -1079,7 +1079,7 @@ class C_TransferReffGaji extends CI_Controller
 					$record->NOIND = $do['noind'];
 					$record->NAMAOPR =  $do['nama'];
 					$record->KODESIE =  $do['kodesie'];
-					$record->SEKSI =  $seksi->seksi;
+					$record->SEKSI =  isset($seksi->seksi) ? $seksi->seksi : 'tidak diketahui';
 					$record->TGL_GJ = '0000-00-00';
 					$record->JLB =  round($jam_lembur,2) ;
 					$record->HMM =  round($imm,2) ;
@@ -1120,7 +1120,7 @@ class C_TransferReffGaji extends CI_Controller
 		if (!empty($data_cetak_per_kode_induk)) {
 			$pdf_cetak_per_kode_induk = $this->pdf->load();
 			$pdf_cetak_per_kode_induk->debug = true;
-			$pdf_cetak_per_kode_induk = new mPDF('utf-8', 'A4-L', 8, '', 5, 5, 20, 25, 5, 5);
+			$pdf_cetak_per_kode_induk = new mPDF('utf-8', 'A4-L', 8, '', 5, 5, 10, 25, 5, 5);
 			$filename = 'CETAKALL'.$periode.$waktu.'.pdf';
 
 			// $html_cetak_per_kode_induk = $this->cetakAll($data_cetak_per_kode_induk,$user,$progres);
@@ -1138,7 +1138,7 @@ class C_TransferReffGaji extends CI_Controller
 				foreach ($data_cetak_per_kode_induk as $key => $value) {
 					if ($simpan_kode_induk != substr($value['noind'], 0, 1)) {
 						if ($simpan_kode_induk !== "") {
-							if (in_array($simpan_kode_induk, array("A","E","H","T","F","K","P"))) {
+							if (in_array($simpan_kode_induk, array("A","E","H","F","K","P"))) {
 								$html_cetak_per_kode_induk .= "
 								<tr>
 									<td style='border: 1px solid #b2bec3;'></td>
@@ -1168,7 +1168,7 @@ class C_TransferReffGaji extends CI_Controller
 									<td style='border: 1px solid #b2bec3;'></td>
 									<td style='border: 1px solid #b2bec3;'></td>
 								</tr>";
-							}elseif(in_array($simpan_kode_induk, array("B","D","G","J"))){
+							}elseif(in_array($simpan_kode_induk, array("B","D","G","J","T"))){
 								$html_cetak_per_kode_induk .= "
 								<tr>
 									<td style='border: 1px solid #b2bec3;'></td>
@@ -1235,7 +1235,7 @@ class C_TransferReffGaji extends CI_Controller
 							}
 							$html_cetak_per_kode_induk .= "</tbody></table><div style='page-break-after: always'></div>";
 						}
-						if (in_array(substr($value['noind'], 0, 1), array("A","E","H","P","T"))) {
+						if (in_array(substr($value['noind'], 0, 1), array("A","E","H","P"))) {
 							$html_cetak_per_kode_induk .= "<table style='border-collapse: collapse;width: 100%;font-size: 8pt'>
 									<thead>
 										<tr>
@@ -1268,7 +1268,7 @@ class C_TransferReffGaji extends CI_Controller
 										</tr>
 									</thead>
 									<tbody>";
-						}elseif(in_array(substr($value['noind'], 0, 1), array("B","D","G","J"))){
+						}elseif(in_array(substr($value['noind'], 0, 1), array("B","D","G","J","T"))){
 							$html_cetak_per_kode_induk .= "<table style='border-collapse: collapse;font-size: 8pt'>
 									<thead>
 										<tr>
@@ -1288,11 +1288,11 @@ class C_TransferReffGaji extends CI_Controller
 											<td style='border: 1px solid #b2bec3;width: 30px;text-align: center'>UMC</td>
 											<td style='border: 1px solid #b2bec3;width: 30px;text-align: center'>UBT</td>
 											<td style='border: 1px solid #b2bec3;width: 30px;text-align: center'>HUP AMK</td>
-											<td style='border: 1px solid #b2bec3;width: 90px;text-align: center'>KET. ABSEN</td>
+											<td style='border: 1px solid #b2bec3;width: 100px;text-align: center'>KET. ABSEN</td>
 											<td style='border: 1px solid #b2bec3;width: 60px;text-align: center'>DL&<br>OBAT</td>
 											<td style='border: 1px solid #b2bec3;width: 40px;text-align: center'>I+ ABS</td>
 											<td style='border: 1px solid #b2bec3;width: 60px;text-align: center'>P.KOPR</td>
-											<td style='border: 1px solid #b2bec3;width: 60px;text-align: center'>P.DUKA+SPSI</td>
+											<td style='border: 1px solid #b2bec3;width: 50px;text-align: center'>P.DUKA<br>+SPSI</td>
 											<td style='border: 1px solid #b2bec3;width: 60px;text-align: center'>P.LAIN</td>
 										</tr>
 									</thead>
@@ -1389,7 +1389,7 @@ class C_TransferReffGaji extends CI_Controller
 					}else{
 						$tanda = '*';
 					}
-					if (in_array(substr($value['noind'], 0, 1), array("A","E","H","T","F","K","P"))) {
+					if (in_array(substr($value['noind'], 0, 1), array("A","E","H","F","K","P"))) {
 						$html_cetak_per_kode_induk .= "
 						<tr>
 							<td style='border: 1px solid #b2bec3;'>".$tanda.$nomor."</td>
@@ -1419,7 +1419,7 @@ class C_TransferReffGaji extends CI_Controller
 							<td style='border: 1px solid #b2bec3;text-align: right;'>".$value['potongan_str']."</td>
 							<td style='border: 1px solid #b2bec3;text-align: right;'>".$value['tambahan_str']."</td>
 						</tr>";
-					}elseif(in_array(substr($value['noind'], 0, 1), array("B","D","G","J"))){
+					}elseif(in_array(substr($value['noind'], 0, 1), array("B","D","G","J","T"))){
 						$html_cetak_per_kode_induk .= "
 						<tr>
 							<td style='border: 1px solid #b2bec3;'>".$tanda.$nomor."</td>
@@ -1438,7 +1438,7 @@ class C_TransferReffGaji extends CI_Controller
 							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['um_cabang']))."</td>
 							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['ubt']))."</td>
 							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['upamk']))."</td>
-							<td style='border: 1px solid #b2bec3;'>".wordwrap(str_replace(".00", "", trim($value['ket'])),13,"<br>", true)."</td>
+							<td style='border: 1px solid #b2bec3;text-align: center;'>".wordwrap(str_replace(".00", "", trim((trim($value['ket']) == '0' ? '' : trim($value['ket'])))),13,"<br>", true)."</td>
 							<td style='border: 1px solid #b2bec3;text-align: right;'>".number_format(trim($value['dldobat']),0,',','.')."</td>
 							<td style='border: 1px solid #b2bec3;text-align: right;'>".($value['ijin'] + $value['htm'])."</td>
 							<td style='border: 1px solid #b2bec3;text-align: right;'>".number_format((intval(trim($value['putkop'])) + intval(trim($value['pikop']))),0,',','.')."</td>
@@ -1499,7 +1499,7 @@ class C_TransferReffGaji extends CI_Controller
 					flush();
 				}
 			}
-			if (in_array($simpan_kode_induk, array("A","E","H","T","F","K","P"))) {
+			if (in_array($simpan_kode_induk, array("A","E","H","F","K","P"))) {
 				$html_cetak_per_kode_induk .= "
 				<tr>
 					<td style='border: 1px solid #b2bec3;'></td>
@@ -1529,7 +1529,7 @@ class C_TransferReffGaji extends CI_Controller
 					<td style='border: 1px solid #b2bec3;'></td>
 					<td style='border: 1px solid #b2bec3;'></td>
 				</tr>";
-			}elseif(in_array($simpan_kode_induk, array("B","D","G","J"))){
+			}elseif(in_array($simpan_kode_induk, array("B","D","G","J","T"))){
 				$html_cetak_per_kode_induk .= "
 				<tr>
 					<td style='border: 1px solid #b2bec3;'></td>
@@ -1635,7 +1635,7 @@ class C_TransferReffGaji extends CI_Controller
 		if (!empty($data_cetak_per_kodesie)) {
 			$pdf_cetak_per_kodesie = $this->pdf->load();
 			$pdf_cetak_per_kodesie->debug = true;
-			$pdf_cetak_per_kodesie = new mPDF('utf-8', 'A4-L', 8, '', 5, 5, 5, 23, 5, 5);
+			$pdf_cetak_per_kodesie = new mPDF('utf-8', 'A4-L', 8, '', 5, 5, 10, 23, 5, 5);
 			$filename = 'CETAKSEKSI'.$periode.$waktu.'.pdf';
 
 			$html_cetak_per_kodesie = "<!DOCTYPE html>
@@ -1647,41 +1647,10 @@ class C_TransferReffGaji extends CI_Controller
 				$simpan_asal_os = "";
 				$nomor = 1;
 				foreach ($data_cetak_per_kodesie as $key => $value) {
-					if ($simpan_kode_induk != substr($value['noind'], 0, 1) && $simpan_kode_induk !== "") {
-						$html_cetak_per_kodesie .= "</tbody></table><div style='page-break-after: always'></div>";
-					}
-					if (substr($value['kodesie'], 0, 7) != $simpan_kodesie || (in_array(substr($value['noind'], 0, 1), array("P","K")) && $simpan_asal_os != $value['asal_outsourcing'])) {
-						if ($simpan_kodesie != "" && $simpan_kode_induk == substr($value['noind'], 0, 1)) {
-							$html_cetak_per_kodesie .= "</tbody></table><br><br>";
+					if ($simpan_kode_induk != substr($value['noind'], 0, 1)) {
+						if ($simpan_kode_induk !== "") {
+							$html_cetak_per_kodesie .= "</tbody></table><div style='page-break-after: always'></div>";
 						}
-						if(in_array(substr($value['noind'], 0, 1), array("P","K"))){
-							$asal_os = "<tr>
-											<td>Asal OS</td>
-											<td>:</td>
-											<td colspan='4'>".$value['asal_outsourcing']."</td>
-										</tr>";
-						}else{
-							$asal_os = "";
-						}
-						$html_cetak_per_kodesie .= "<table style='width: 100%'>
-									".$asal_os."
-									<tr>
-										<td style='width: 10%'>Unit</td>
-										<td style='width: 3%'>:</td>
-										<td style='width: 37%'>".$value['unit']."</td>
-										<td style='width: 10%'>Data Bulan</td>
-										<td style='width: 3%'>:</td>
-										<td style='width: 37%'>$bulan_gaji $periode_penggajian</td>
-									</tr>
-									<tr>
-										<td>Seksi</td>
-										<td>:</td>
-										<td>".$value['seksi']."</td>
-										<td>Tanggal Cetak</td>
-										<td>:</td>
-										<td>".$hari_string."</td>
-									</tr>
-								</table>";
 						if (in_array(substr($value['noind'], 0, 1), array("A","E","H","T","P"))) {
 							$html_cetak_per_kodesie .= "<table style='width:100%;border-collapse: collapse;'>
 									<thead>
@@ -1941,6 +1910,16 @@ class C_TransferReffGaji extends CI_Controller
 								</body>
 							</html>";
 			// echo $html_cetak_per_kodesie;exit();
+			$pdf_cetak_per_kodesie->setHTMLHeader("<table style='width: 100%'>
+					<tr>
+						<td style='width: 10%'>Data Bulan</td>
+						<td style='width: 3%'>:</td>
+						<td style='width: 32%'>$bulan_gaji $periode_penggajian</td>
+						<td style='width: 10%'>Tanggal Cetak</td>
+						<td style='width: 3%'>:</td>
+						<td style='width: 32%'>".$hari_string."</td>
+					</tr>
+				</table>");
 			$pdf_cetak_per_kodesie->SetHTMLFooter("<table style='width: 100%'>
 					<tr>
 						<td style='width: 50%'></td>

@@ -94,3 +94,21 @@
 </section>
 
 
+
+<div class="modal fade" id="mdlApproveFab" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header text-center" style="background-color:#49D3F5;font-size:18px">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <label>Approve Fabrikasi</label>
+        </div>
+        <div class="modal-body" id="saveappFab">
+            
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+</div>

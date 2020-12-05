@@ -107,7 +107,7 @@
 </div>
 
 <div class="modal fade" id="mdlGambarItem" role="dialog">
-    <div class="modal-dialog" style="padding-right:5px">
+    <div class="modal-dialog" style="width:90%">
       <!-- Modal content-->
       <div class="modal-content">
         <div class="modal-header">

@@ -61,9 +61,39 @@ class C_SudahFabrikasi extends CI_Controller
 			$cek = $this->M_pickfabrikasi->cekdeliver($get['PICKLIST']);
 			$getdata[$key]['DELIVER'] = $cek[0]['DELIVER'];
 		}
-		$data['data'] = $getdata;
+		$datanya = $this->sortbyTanggalPelayanan($getdata);
+		// echo "<pre>";print_r($datanya);exit();
+		$data['data'] = $datanya;
 		
 		$this->load->view('MonitoringPicklist/FABRIKASI/V_TblSudahFabrikasi', $data);
+	}
+	
+	public function sortbyTanggalPelayanan($getdata){
+		$pelayanan = $this->M_pickfabrikasi->cariReqPelayanan();
+		$datanya = $nojob = $datanya2 = array();
+		foreach ($pelayanan as $key => $value) {
+			foreach ($getdata as $key2 => $get) {
+				if ($get['JOB_NO'] == $value['JOB_NUMBER']) {
+					$getdata[$key2]['TGL_PELAYANAN'] = $value['TANGGAL_PELAYANAN'];
+					$shift = $this->M_pickfabrikasi->getShift2($value['SHIFT']);
+					$getdata[$key2]['SHIFT'] = $shift[0]['DESCRIPTION'];
+					array_push($datanya, $getdata[$key2]);
+					array_push($nojob, $get['JOB_NO']);
+				}
+			}
+		}
+		foreach ($getdata as $key => $val) {
+			if (!in_array($val['JOB_NO'], $nojob)) {
+				$getdata[$key]['TGL_PELAYANAN'] = $getdata[$key]['SHIFT'] = '';
+				array_push($datanya2, $getdata[$key]);
+			}
+		}
+		
+		foreach ($datanya as $key => $value) {
+			array_push($datanya2, $datanya[$key]);
+		}
+		// echo "<pre>";print_r($datanya);exit();
+		return $datanya2;
 	}
 
 	function recallData(){
@@ -74,6 +104,7 @@ class C_SudahFabrikasi extends CI_Controller
 		// echo "<pre>";print_r($cek);exit();
 		if (empty($cek)) {
 			$this->M_pickfabrikasi->recallData($picklist, $nojob);
+			$this->M_pickfabrikasi->recallpermintaan($nojob);
 		}
 	}
 

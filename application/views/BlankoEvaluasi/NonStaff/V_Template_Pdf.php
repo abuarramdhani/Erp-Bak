@@ -500,11 +500,15 @@ function repeat($string, $x)
   </div>
   <table cellspacing="5">
     <tr>
-      <td class="center bold" style="width: 40px; height: 30px; border: 3px solid black;"> </td>
+      <td class="center bold" style="width: 40px; height: 30px; border: 3px solid black;">
+        <?= ($four['usulan'] > 0 || !empty($four['usulan'])) ? '<h2 style="font-weight: bold">✓</h2>' : '' ?>
+      </td>
       <td><b>Diperpanjang: <?= $four['usulan'] ?> bulan</b></td>
     </tr>
     <tr>
-      <td class="center bold" style="width: 40px; height: 30px; border: 3px solid black;"> </td>
+      <td class="center bold" style="width: 40px; height: 30px; border: 3px solid black;">
+        <?= ($four['usulan'] == 0 || empty($four['usulan'])) ? '<h2 style="font-weight: bold">✓</h2>' : '' ?>
+      </td>
       <td><b>Tidak Diperpanjang</b></td>
     </tr>
   </table>
