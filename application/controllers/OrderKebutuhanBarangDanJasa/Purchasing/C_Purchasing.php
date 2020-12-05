@@ -310,5 +310,39 @@ class C_Purchasing extends CI_Controller {
 
         echo $returnTable;
     }
+
+    public function cetakOrder($pre_req_id)
+    {
+        $this->load->library('pdf');
+		$pdf = $this->pdf->load();
+		$filename = 'Okebaja-pre_req_id-'.$pre_req_id.'-tanggal_cetak-'.date('d-m-Y').'.pdf';
+		$pdf = new mPDF('utf-8', 'A4-L', 0, 'arial',3, 3, 43, 3, 3, 3);
+        
+        $lines = $this->M_purchasing->cetakOrder($pre_req_id);
+
+        $finishLines = array();
+        for ($i=0; $i < count($lines); $i++) { 
+            $approver = $this->M_purchasing->cetakApprover($lines[$i]['ORDER_ID']);
+
+            if (!isset($lines[$i]['APPROVER'])) {        
+				$lines[$i]['APPROVER'] = $approver;    
+			}
+            array_push($finishLines,$lines[$i]);
+        }
+        $data['headers'] = $this->M_purchasing->cetakHeader($pre_req_id);
+        $data['lines'] = $finishLines;
+
+        // echo '<pre>';
+        // print_r($data['lines']);
+        // exit;
+
+        $header = $this->load->view('OrderKebutuhanBarangDanJasa/Purchasing/V_CetakOrderHeader',$data,true);
+        $line = $this->load->view('OrderKebutuhanBarangDanJasa/Purchasing/V_CetakOrderLine',$data,true);
+
+        $pdf->setHeader($header, 2);
+        $pdf->writeHTML($line, 2);
+		$pdf->setTitle($filename);
+		$pdf->Output($filename, 'I');
+    }
     
 }

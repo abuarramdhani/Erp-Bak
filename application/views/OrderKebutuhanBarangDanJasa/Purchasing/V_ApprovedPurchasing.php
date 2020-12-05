@@ -134,6 +134,7 @@
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">
+                                                                <a href="<?= base_url('OrderKebutuhanBarangDanJasa/Purchasing/cetakOrder/'.$list['PRE_REQ_ID']);?>" target="_blank" type="button" class="btn btn-default"><i class="fa fa-print"></i> cetak</a>
                                                                 <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
                                                             </div>
                                                         </div>
