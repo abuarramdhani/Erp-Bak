@@ -155,4 +155,105 @@ class M_purchasing extends CI_Model
         $oracle->where('PRE_REQ_ID',$pre_req_id);
         $oracle->update('KHS.KHS_OKBJ_ORDER_HEADER',$orderHead);
     }
+
+    public function cetakHeader($pre_req_id)
+    {
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query("SELECT
+                    oprh.* ,
+                    ppf.NATIONAL_IDENTIFIER noind ,
+                    ppf.full_name creator ,
+                    ppf2.FULL_NAME approver
+                FROM
+                    KHS.KHS_OKBJ_PRE_REQ_HEADER oprh,
+                    PER_PEOPLE_F ppf,
+                    PER_PEOPLE_F ppf2
+                WHERE
+                    oprh.CREATED_BY = ppf.person_id
+                    AND oprh.APPROVED_BY = ppf2.PERSON_ID(+)
+                    AND oprh.APPROVED_FLAG = 'Y'
+                    AND oprh.PRE_REQ_ID = '$pre_req_id'");
+
+        return $query->result_array();
+    }
+
+    public function cetakOrder($pre_req_id)
+    {
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query("select
+        koprh.PRE_REQ_ID
+        ,kooh.ORDER_ID
+        ,kooh.ORDER_DATE
+        ,pr.SEGMENT1 as PR
+        ,pr.LINE_NUM
+        ,ppfo.NATIONAL_IDENTIFIER
+        ,ppfo.FULL_NAME
+        ,ppfo.ATTRIBUTE3
+        ,msib.SEGMENT1
+        ,msib.DESCRIPTION
+        ,kooh.ITEM_DESCRIPTION
+        ,kooh.QUANTITY
+        ,kooh.UOM
+        ,kooh.NEED_BY_DATE
+        ,kooh.URGENT_FLAG
+        ,kooh.IS_SUSULAN
+        ,mp.ORGANIZATION_CODE
+        ,kooh.DESTINATION_SUBINVENTORY
+        ,hla.LOCATION_CODE
+        ,kooh.ORDER_PURPOSE
+        ,kooh.URGENT_REASON
+        ,kooh.NOTE_TO_BUYER
+        from
+        khs.khs_okbj_pre_req_header koprh
+        ,khs.khs_okbj_order_header kooh
+        ,mtl_system_items_b msib
+        ,per_people_f ppfo
+        ,mtl_parameters mp
+        ,HR_LOCATIONS_ALL hla
+        ,(select
+        prha.SEGMENT1
+        ,prla.LINE_NUM
+        ,prla.ATTRIBUTE9
+        from
+        po_requisition_lines_all prla
+        ,po_requisition_headers_all prha
+        where
+        prla.REQUISITION_HEADER_ID = prha.REQUISITION_HEADER_ID
+        and REGEXP_LIKE(prla.ATTRIBUTE9, '^[[:digit:]]+$')
+        ) pr
+        where 1=1
+        and koprh.PRE_REQ_ID = kooh.PRE_REQ_ID
+        and kooh.INVENTORY_ITEM_ID = msib.INVENTORY_ITEM_ID
+        and kooh.DESTINATION_ORGANIZATION_ID = msib.ORGANIZATION_ID
+        and kooh.CREATE_BY = ppfo.PERSON_ID
+        and kooh.DESTINATION_ORGANIZATION_ID = mp.ORGANIZATION_ID
+        and kooh.DELIVER_TO_LOCATION_ID = hla.LOCATION_ID(+)
+        and kooh.ORDER_ID = pr.ATTRIBUTE9(+)
+        and koprh.PRE_REQ_ID = $pre_req_id -- parameter
+        order by
+        kooh.ORDER_ID");
+
+        return $query->result_array();
+    }
+
+    public function cetakApprover($order_id)
+    {
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query("SELECT
+        kooa.APPROVER_TYPE
+        ,koal.DESCRIPTION
+        ,kooa.JUDGEMENT_DATE
+        ,ppf.FULL_NAME
+        from
+        khs.khs_okbj_order_approval kooa
+        ,khs.khs_okbj_approver_level koal
+        ,per_people_f ppf
+        where
+        kooa.APPROVER_TYPE = koal.LEVEL_NUMBER
+        and kooa.APPROVER_ID = ppf.PERSON_ID
+        and kooa.ORDER_ID = $order_id -- parameter
+        order by kooa.APPROVER_TYPE");
+
+        return $query->result_array();
+    }
 }
