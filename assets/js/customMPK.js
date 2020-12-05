@@ -4364,10 +4364,14 @@ $(document).ready(function () {
     buttonsHide: ["image"],
   });
 
-  $(".txtMPSuratIsolasiMandiriTanggal").datepicker({
-    autoclose: true,
-    todayHiglight: true,
-    format: "yyyy-mm-dd",
+  $(".txtMPSuratIsolasiMandiriTanggal").daterangepicker({
+    singleDatePicker: true,
+    timePicker: false,
+    timePicker24Hour: true,
+    showDropdowns: true,
+    locale: {
+      format: "YYYY-MM-DD",
+    },
   });
 
   $(".slcMPSuratIsolasiMandiriPekerja").select2({
@@ -4419,9 +4423,6 @@ $(document).ready(function () {
       simSelesai &&
       simHari &&
       simStatus &&
-      simDibuat &&
-      simMenyetujui &&
-      simMengetahui &&
       simCetak &&
       simNo
     ) {
@@ -4478,6 +4479,9 @@ $(document).ready(function () {
         simMengetahui: simMengetahui,
         simCetak: simCetak,
         simNo: simNo,
+        al: $('[name="slcMPSuratIsolasiMandiriAlasan2[]"]').map(function(){return $(this).val();}).get(),
+        st: $('[name="slcMPSuratIsolasiMandiriStatus2[]"]').map(function(){return $(this).val();}).get(),
+        tgl: $('[name="tgl_perperiode[]"]').map(function(){return $(this).val();}).get()
       },
       type: "GET",
       url: baseurl + "MasterPekerja/Surat/SuratIsolasiMandiri/Preview",

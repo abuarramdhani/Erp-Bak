@@ -110,32 +110,7 @@ $(document).ready(function(){
 			cancelButtonText: 'Tidak'
 		}).then((result) => {
 		  	if (result.value) {
-		  		$.ajax({
-		  			data: params,
-					method: 'GET',
-					url: baseurl + 'Covid/MonitoringCovid/hapus',
-					error: function(xhr,status,error){
-						swal.fire({
-			                title: xhr['status'] + "(" + xhr['statusText'] + ")",
-			                html: xhr['responseText'],
-			                type: "error",
-			                confirmButtonText: 'OK',
-			                confirmButtonColor: '#d63031',
-			            })
-					},
-					success: function(data){
-						obj = JSON.parse(data);
-						if (obj.status == "sukses") {
-							Swal.fire(
-								'Sukses !!!',
-								'Data Berhasil Dihapus',
-								'success'
-							).then( () => {
-								window.location.href = baseurl + 'Covid/MonitoringCovid';
-							})
-						}
-					}
-		  		})
+		  		showAjaxGetPRM(params);
 		  	}
 		});
 	})
@@ -184,5 +159,251 @@ $(document).ready(function(){
 		}else{
 			console.log('bukan follow up');
 		}
-	})
-})
+	});
+
+	$('.cekAbsens').click(function(){
+		$.ajax({
+			data: {
+				pkj: pkj,
+				awal_lama: awal,
+				awal_baru: $('#txtMPSuratIsolasiMandiriMulaiIsolasiTanggal').val(),
+				akhir_lama: akhir,
+				akhir_baru: $('#txtMPSuratIsolasiMandiriSelesaiIsolasiTanggal').val()
+			},
+			method: 'GET',
+			url: baseurl + 'MasterPekerja/Surat/SuratIsolasiMandiri/cekTinput',
+			error: function(xhr,status,error){
+				swal.fire({
+					title: xhr['status'] + "(" + xhr['statusText'] + ")",
+					html: xhr['responseText'],
+					type: "error",
+					confirmButtonText: 'OK',
+					confirmButtonColor: '#d63031',
+				})
+			},
+			success: function(data){
+				$('#cvd_lbleditpres').text(data);	
+			}
+		});
+	});
+
+	$('#slcMPSuratIsolasiMandiriTo').select2();
+
+	$('.cvd_btncektim').click(function(){
+		$.ajax({
+			data: {
+				pkj: $('#slcMPSuratIsolasiMandiriPekerja').val(),
+				awal: $('#txtMPSuratIsolasiMandiriMulaiIsolasiTanggal').val(),
+				akhir: $('#txtMPSuratIsolasiMandiriSelesaiIsolasiTanggal').val()
+			},
+			method: 'GET',
+			url: baseurl + 'MasterPekerja/Surat/SuratIsolasiMandiri/cekTimIs',
+			error: function(xhr,status,error){
+				swal.fire({
+					title: xhr['status'] + "(" + xhr['statusText'] + ")",
+					html: xhr['responseText'],
+					type: "error",
+					confirmButtonText: 'OK',
+					confirmButtonColor: '#d63031',
+				})
+			},
+			success: function(data){
+				$('#cvd_divtim').html(data);	
+			}
+		});
+	});
+
+	var elem = '<div class="cvd_bg_trans" style="text-align: center;">'+
+				'<a class="btn btn-default btn-xs" type="button" style="width:100px;">Lihat</a>'+
+				'<br><button class="btn btn-default btn-xs" type="button" style="width:100px; margin-top:10px;">Hapus</button>'+
+				'</div>';
+
+	// $('.cvd_popoverAttc').popover({animation:true, content:elem, html:true, placement:'top', trigger:'focus'});
+
+	$('.cvd_btndelAttc').click(function(){
+		var val = $(this).val();
+		var txt = $(this).attr('text');
+		Swal.fire({
+			type: 'warning',
+			title: "Hapus Lampiran Ini?",
+			html: txt+'<br>(You won\'t be able to revert this!)',
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: 'Ya',
+			cancelButtonText: 'Tidak'
+		}).then((result) => {
+			if (result.value) {
+				cvd_deleteAttachment(val);
+			}
+		});
+	});
+
+	$('#txtMPSuratIsolasiMandiriSelesaiIsolasiTanggal, #txtMPSuratIsolasiMandiriMulaiIsolasiTanggal').change(function(){
+		var mulai = $('#txtMPSuratIsolasiMandiriMulaiIsolasiTanggal').val();
+		var selesai = $('#txtMPSuratIsolasiMandiriSelesaiIsolasiTanggal').val();
+		var pkj = $('#slcMPSuratIsolasiMandiriPekerja').val();
+		if (mulai != '' && selesai != '' && pkj != '') {
+			var d1 = new Date(mulai);
+			var d2 = new Date(selesai);
+			if (d1.getTime() <= d2.getTime()) {
+				$.ajax({
+					data: {
+						mulai: mulai,
+						selesai:selesai,
+						pkj: pkj,
+						isolasi_id: isolasi_id
+					},
+					method: 'get',
+					url: baseurl + 'MasterPekerja/Surat/SuratIsolasiMandiri/getIsolasiRow',
+					error: function(xhr,status,error){
+						swal.fire({
+							title: xhr['status'] + "(" + xhr['statusText'] + ")",
+							html: xhr['responseText'],
+							type: "error",
+							confirmButtonText: 'OK',
+							confirmButtonColor: '#d63031',
+						})
+					},
+					success: function(data){
+						$('#cvd_tbladdAS tbody').html('');
+						$('#cvd_tbladdAS tbody').html(data);
+						$('#cvd_tbladdAS .select2').select2();
+					}
+				});
+			}
+		}
+	});
+
+	$('.cvd_btncekabsen').click(function(){
+		$.ajax({
+			data: {
+				pkj: $('#slcMPSuratIsolasiMandiriPekerja').val(),
+				awal: $('#txtMPSuratIsolasiMandiriMulaiIsolasiTanggal').val(),
+				akhir: $('#txtMPSuratIsolasiMandiriSelesaiIsolasiTanggal').val()
+			},
+			method: 'GET',
+			url: baseurl + 'MasterPekerja/Surat/SuratIsolasiMandiri/cekPresensiIs',
+			error: function(xhr,status,error){
+				swal.fire({
+					title: xhr['status'] + "(" + xhr['statusText'] + ")",
+					html: xhr['responseText'],
+					type: "error",
+					confirmButtonText: 'OK',
+					confirmButtonColor: '#d63031',
+				})
+			},
+			success: function(data){
+				$('#cvd_divtim2').html(data);	
+			}
+		});
+	});
+});
+
+function cvd_deleteAttachment(id)
+{
+	$.ajax({
+		data: {id: id},
+		method: 'POST',
+		url: baseurl + 'Covid/MonitoringCovid/delAttch',
+		error: function(xhr,status,error){
+			swal.fire({
+				title: xhr['status'] + "(" + xhr['statusText'] + ")",
+				html: xhr['responseText'],
+				type: "error",
+				confirmButtonText: 'OK',
+				confirmButtonColor: '#d63031',
+			})
+		},
+		success: function(data){
+			window.location.reload();
+		}
+	});
+}
+
+function showAjaxGetPRM(params)
+{
+	$.ajax({
+		data: params,
+		method: 'GET',
+		url: baseurl + 'Covid/MonitoringCovid/CekAbsensiPrm',
+		error: function(xhr,status,error){
+			swal.fire({
+				title: xhr['status'] + "(" + xhr['statusText'] + ")",
+				html: xhr['responseText'],
+				type: "error",
+				confirmButtonText: 'OK',
+				confirmButtonColor: '#d63031',
+			})
+		},
+		success: function(data){
+				if (data == '1') {
+					alertLagi(params);
+				}else{
+					hapusDataIsolasi(params);
+				}
+			}
+		});
+}
+
+function alertLagi(params)
+{
+	Swal.fire({
+		title: 'Hapus Data Presensi',
+		text: "Anda yakin akan menghapus Data Presensinya juga ?",
+		type: 'question',
+		showCancelButton: true,
+		confirmButtonColor: '#3085d6',
+		cancelButtonColor: '#d33',
+		confirmButtonText: 'Ya',
+		cancelButtonText: 'Tidak'
+	}).then((result) => {
+		if (result.value) {
+			hapusDataIsolasi(params);
+		}
+	});
+}
+
+function hapusDataIsolasi(params)
+{
+	$.ajax({
+		data: params,
+		method: 'GET',
+		url: baseurl + 'Covid/MonitoringCovid/hapus',
+		error: function(xhr,status,error){
+			swal.fire({
+				title: xhr['status'] + "(" + xhr['statusText'] + ")",
+				html: xhr['responseText'],
+				type: "error",
+				confirmButtonText: 'OK',
+				confirmButtonColor: '#d63031',
+			})
+		},
+		success: function(data){
+			obj = JSON.parse(data);
+			if (obj.status == "sukses") {
+				Swal.fire(
+					'Sukses !!!',
+					'Data Berhasil Dihapus',
+					'success'
+					).then( () => {
+						window.location.href = baseurl + 'Covid/MonitoringCovid';
+					})
+				}
+			}
+		});
+}
+
+$(document).on('change', '#cvd_samastatus', function(){
+	var val = $('.cvd_status_table').eq(0).val();
+	$('.cvd_status_table').each(function(){
+		$(this).val(val).trigger('change');
+	});
+});
+
+$(document).on('change', '#cvd_samaalasan', function(){
+	var val = $('.cvd_alasan_table').eq(0).val();
+	$('.cvd_alasan_table').each(function(){
+		$(this).val(val).trigger('change');
+	});
+});

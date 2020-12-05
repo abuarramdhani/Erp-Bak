@@ -22,11 +22,16 @@
 											$link = "";
 										}
 										?>
-										<form class="form-horizontal" method="POST" action="<?php echo site_url('MasterPekerja/Surat/SuratIsolasiMandiri/Simpan'.$link) ?>">
+										<form class="form-horizontal" method="POST" action="<?php echo site_url('MasterPekerja/Surat/SuratIsolasiMandiri/Simpan'.$link) ?>" target="_blank" onsubmit="setTimeout(function () { window.location.href = baseurl+'Covid/MonitoringCovid'; }, 5000)" id="mpk_frmis">
 											<div class="form-group">
 												<label class="control-label col-lg-4">Kepada</label>
 												<div class="col-lg-4">
-													<select class="slcMPSuratIsolasiMandiriPekerja" data-placeholder="Ditujukan Kepada" name="slcMPSuratIsolasiMandiriTo" id="slcMPSuratIsolasiMandiriTo" style="width: 100%" required></select>
+													<select class="slcMPSuratIsolasiMandiriPekerjax" data-placeholder="Ditujukan Kepada" name="slcMPSuratIsolasiMandiriTo" id="slcMPSuratIsolasiMandiriTo" style="width: 100%" required>
+														<option></option>
+														<?php foreach ($atasan as $k): ?>
+															<option value="<?= $k['noind'] ?>" ><?= $k['noind'].' - '.$k['nama'] ?></option>
+														<?php endforeach ?>
+													</select>
 												</div>
 											</div>
 											<div class="form-group">
@@ -69,15 +74,23 @@
 													<input type="text" name="txtMPSuratIsolasiMandiriJumlahHari" id="txtMPSuratIsolasiMandiriJumlahHari" class="form-control" placeholder="Jumlah Hari" readonly required>
 												</div>
 											</div>
-											<div class="form-group">
-												<label class="control-label col-lg-4">Status</label>
-												<div class="col-lg-4">
-													<select class="select2" data-placeholder="Status Isolasi Mandiri" name="slcMPSuratIsolasiMandiriStatus" id="slcMPSuratIsolasiMandiriStatus" style="width: 100%" required>
-														<option>PRM</option>
-														<option>PSK</option>
-													</select>
-												</div>
+											<div class="col-md-3"></div>
+											<div class="col-md-6">
+												<table class="table table-bordered" id="cvd_tbladdAS">
+													<thead>
+														<tr class="bg-primary">
+															<th style="text-align: center;">Tanggal</th>
+															<th style="text-align: center;">Status</th>
+															<th style="text-align: center;">Alasan</th>
+															<th style="text-align: center;"></th>
+														</tr>
+													</thead>
+													<tbody>
+														
+													</tbody>
+												</table>
 											</div>
+											<div class="col-md-12"></div>
 											<div class="form-group">
 												<label class="control-label col-lg-4">Tanggal Cetak</label>
 												<div class="col-lg-4">
@@ -85,32 +98,22 @@
 												</div>
 											</div>
 											<div class="form-group">
-												<label class="control-label col-lg-4">Dibuat Oleh</label>
-												<div class="col-lg-4">
-													<select class="slcMPSuratIsolasiMandiriPekerja" data-placeholder="Dibuat Oleh" name="slcMPSuratIsolasiMandiriDibuat" id="slcMPSuratIsolasiMandiriDibuat" style="width: 100%" required></select>
-												</div>
-											</div>
-											<div class="form-group">
-												<label class="control-label col-lg-4">Menyetujui</label>
-												<div class="col-lg-4">
-													<select class="slcMPSuratIsolasiMandiriPekerja" data-placeholder="Menyetujui" name="slcMPSuratIsolasiMandirimenyetujui" id="slcMPSuratIsolasiMandirimenyetujui" style="width: 100%" required></select>
-												</div>
-											</div>
-											<div class="form-group">
-												<label class="control-label col-lg-4">Mengetahui</label>
-												<div class="col-lg-4">
-													<select class="slcMPSuratIsolasiMandiriPekerja" data-placeholder="Mengetahui" name="slcMPSuratIsolasiMandiriMengetahui" id="slcMPSuratIsolasiMandiriMengetahui" style="width: 100%" required></select>
-												</div>
-											</div>
-											<div class="form-group">
 												<div class="col-lg-6 text-right">
-													<button class="btn btn-primary" id="btnMPSuratIsolasiMandiriPreview" type="button" disabled><span class="fa fa-print"></span>&nbsp;Preview</button>
+													<button class="btn btn-primary cvd_btncektim cvd_btncekabsen" id="btnMPSuratIsolasiMandiriPreview" type="button" disabled><span class="fa fa-print"></span>&nbsp;Preview</button>
 												</div>
 											</div>
 											<div class="form-group">
                                                 <label class="col-lg-2 control-label">Format Surat</label>
                                                 <div class="col-lg-8">
                                                     <textarea name="txaMPSuratIsolasiMandiriRedactor" class="form-control" id="txaMPSuratIsolasiMandiriRedactor" disabled required></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="col-lg-12 text-center" id="cvd_divtim">
+                                                    
+                                                </div>
+                                                <div class="col-lg-12 text-center" id="cvd_divtim2">
+                                                    
                                                 </div>
                                             </div>
 											<div class="form-group">
@@ -129,3 +132,6 @@
 		</div>
 	</div>
 </section>
+<script>
+	var isolasi_id = '';
+</script>
