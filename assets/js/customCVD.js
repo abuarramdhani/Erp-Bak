@@ -298,6 +298,160 @@ $(document).ready(function(){
 			}
 		});
 	});
+	$('#slc-CVD-MonitoringCovid-Tambah-Pekerja').on('change', function(){
+		var noind = $(this).val();
+		$.ajax({
+			data: {noind: noind},
+			method: 'GET',
+			url: baseurl + 'Covid/MonitoringCovid/getDetailPekerja',
+			error: function(xhr,status,error){
+				swal.fire({
+					title: xhr['status'] + "(" + xhr['statusText'] + ")",
+					html: xhr['responseText'],
+					type: "error",
+					confirmButtonText: 'OK',
+					confirmButtonColor: '#d63031',
+				})
+			},
+			success: function(data){
+				var obj = JSON.parse(data);
+				if (obj.status == 'success') {
+					$('#txt-CVD-MonitoringCovid-Tambah-Seksi').val(obj.seksi);
+					$('#txt-CVD-MonitoringCovid-Tambah-Departemen').val(obj.dept);
+				}
+			}
+		})
+
+		$.ajax({
+			data: {noind: noind},
+			method: 'POST',
+			dataType: 'JSON',
+			url: baseurl + 'Covid/MonitoringCovid/getAtasan',
+			beforeSend: function () {
+				$('.select2Covid').html('<option value=""></option>')
+			},
+			error: function(xhr,status,error){
+				swal.fire({
+					title: xhr['status'] + "(" + xhr['statusText'] + ")",
+					html: xhr['responseText'],
+					type: "error",
+					confirmButtonText: 'OK',
+					confirmButtonColor: '#d63031',
+				})
+			},
+			success: function(data){
+				let tampung = [];
+				data.forEach((value,indexnya) => {
+					let hhtml = `<option value="${value.noind}"> ${value.noind} - ${value.nama} </option>`;
+					tampung.push(hhtml);
+				})
+				$('.select2Covid').append(tampung.join(''));
+			}
+		});
+	});
+
+	$('#txt-CVD-Aktifitas').redactor({
+		imageUpload: baseurl + 'Covid/MonitoringCovid/uploadRedactor',
+		imageUploadErrorCallback: function(json) {
+			alert(json.error);
+		}
+	})
+	$('#txt-CVD-Prokes').redactor({
+		imageUpload: baseurl + 'Covid/MonitoringCovid/uploadRedactor',
+		imageUploadErrorCallback: function(json) {
+			alert(json.error);
+		}
+	})
+
+	$('input[name="covid_menginap"]').on('change', function () {
+		if ($('input[name="covid_menginap"]:checked').val() == "1") {
+			$('.covid_show_menginap').show();
+		} else if ($('input[name="covid_menginap"]:checked').val() == "0") {
+			$('.covid_show_menginap').hide();
+		}
+	});
+
+	$('input[name="covid_sakit"]').on('change', function () {
+		if ($('input[name="covid_sakit"]:checked').val() == "1") {
+			$('.covid_show_sakit').show();
+		} else if ($('input[name="covid_sakit"]:checked').val() == "0") {
+			$('.covid_show_sakit').hide();
+		}
+	});
+
+	$('#txt-CVD-Penyakit').redactor({
+		imageUpload: baseurl + 'Covid/MonitoringCovid/uploadRedactor',
+		imageUploadErrorCallback: function(json) {
+			alert(json.error);
+		}
+	})
+
+	$('input[name="covid_sakit_kembali"]').on('change', function () {
+		if ($('input[name="covid_sakit_kembali"]:checked').val() == "1") {
+			$('.covid_show_sakit_kembali').show();
+		} else if ($('input[name="covid_sakit_kembali"]:checked').val() == "0") {
+			$('.covid_show_sakit_kembali').hide();
+		}
+	});
+
+	$('#txt-CVD-Penyakit_kembali').redactor({
+		imageUpload: baseurl + 'Covid/MonitoringCovid/uploadRedactor',
+		imageUploadErrorCallback: function(json) {
+			alert(json.error);
+		}
+	})
+
+	$('input[name="covid_tamu_luar"]').on('change', function () {
+		if ($('input[name="covid_tamu_luar"]:checked').val() == "1") {
+			$('.covid_show_tamu_luar').show();
+		} else if ($('input[name="covid_tamu_luar"]:checked').val() == "0") {
+			$('.covid_show_tamu_luar').hide();
+		}
+	});
+
+	$('#txt-CVD-Tamu-Luar').redactor({
+		imageUpload: baseurl + 'Covid/MonitoringCovid/uploadRedactor',
+		imageUploadErrorCallback: function(json) {
+			alert(json.error);
+		}
+	})
+
+	$('input[name="covid_orang_luar"]').on('change', function () {
+		if ($('input[name="covid_orang_luar"]:checked').val() == "1") {
+			$('.covid_show_orang_luar').show();
+		} else if ($('input[name="covid_orang_luar"]:checked').val() == "0") {
+			$('.covid_show_orang_luar').hide();
+		}
+	});
+
+	$('#txt-CVD-Orang-Luar').redactor({
+		imageUpload: baseurl + 'Covid/MonitoringCovid/uploadRedactor',
+		imageUploadErrorCallback: function(json) {
+			alert(json.error);
+		}
+	})
+
+	$('input[name="covid_interaksi"]').on('change', function () {
+		if ($('input[name="covid_interaksi"]:checked').val() == "1") {
+			$('.covid_show_interaksi').show();
+		} else if ($('input[name="covid_interaksi"]:checked').val() == "0") {
+			$('.covid_show_interaksi').hide();
+		}
+	});
+
+	$('#txt-CVD-Jenis_interaksi').redactor({
+		imageUpload: baseurl + 'Covid/MonitoringCovid/uploadRedactor',
+		imageUploadErrorCallback: function(json) {
+			alert(json.error);
+		}
+	})
+
+	$('#txt-CVD-MonitoringCovid-Run-Down').redactor({
+		imageUpload: baseurl + 'Covid/MonitoringCovid/uploadRedactor',
+		imageUploadErrorCallback: function(json) {
+			alert(json.error);
+		}
+	})
 });
 
 function cvd_deleteAttachment(id)
@@ -407,3 +561,59 @@ $(document).on('change', '#cvd_samaalasan', function(){
 		$(this).val(val).trigger('change');
 	});
 });
+
+$(function(){
+	$('#txtPeriodeKejadian').daterangepicker({
+		"todayHighlight" : true,
+		"autoclose": true,
+		locale: {
+					format: 'DD MMMM YYYY'
+				},
+	});
+	$('#txtPeriodeKejadian').on('apply.daterangepicker', function(ev, picker) {
+		$(this).val(picker.startDate.format('DD MMMM YYYY') + ' - ' + picker.endDate.format('DD MMMM YYYY'));
+	});
+
+	$('#txtPeriodeKejadian').on('cancel.daterangepicker', function(ev, picker) {
+		$(this).val('');
+	});
+});
+
+function readFilePdf(input, n) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            $(`img[preview_cvd="${n}"]`)
+                .attr('src', e.target.result)
+                .width(400)
+                .height(300);
+        };
+    reader.readAsDataURL(input.files[0]);
+    }
+}
+
+const addimgcvd = () =>{
+		let jumlah_isi_table_saat_ini = $('.table-add-image-cvd tbody tr').length;
+		if (jumlah_isi_table_saat_ini > 3) {
+			swal.fire({
+								type: "warning",
+								text: 'Max 4 File!!!'
+						})
+		}else {
+			let html = `<tr row="${Number(jumlah_isi_table_saat_ini)+1}">
+										<td>
+											<input type="file" class="form-control" name="filesCVDLampiran[]"  onchange="readFilePdf(this, ${Number(jumlah_isi_table_saat_ini)+1})" multiple="multiple" style="margin-bottom:12px;">
+											<center><img preview_cvd="${Number(jumlah_isi_table_saat_ini)+1}" src=""></center>
+										</td>
+										<td style="text-align:center">
+											<button type="button" class="btn btn-sm btn-success" onclick="minimgcvd(${Number(jumlah_isi_table_saat_ini)+1})" name="button"> <i class="fa fa-minus"></i> </button>
+										</td>
+									</tr>`;
+			$('.table-add-image-cvd').append(html);
+		}
+}
+
+const minimgcvd = (id) =>{
+	$(`.table-add-image-cvd tbody tr[row="${id}"]`).remove();
+}
