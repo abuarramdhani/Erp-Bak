@@ -97,6 +97,57 @@
                 }
 			});
 	}
+	
+	function delete_flow(id) {
+		console.log(id); 
+		Swal.fire({
+			title: 'Are you sure?',
+			text: "Data akan di hapus !",
+			type: 'warning',
+			showCancelButton: true,
+			confirmButtonText: 'Delete',
+			cancelButtonText: 'Cancel',
+			reverseButtons: true
+		}).then(function(isConfirm) {
+			console.log(id);
+				if (isConfirm.value === true) {
+				$.ajax({
+					type: 'POST',
+					url: baseurl + "PengembanganSistem/delete_flow/"+id,
+					contentType: false,
+					processData: false,
+					dataType: 'JSON',
+					beforeSend: function() {
+					Swal.showLoading()
+					},
+					success: function(response) {
+						console.log(response);
+						if (response == 1) {
+							Swal.fire({
+								type: 'success',
+								title: 'Berhasil',
+								text: 'Data berhasil dihapus!'
+							}).then(function() {
+								location.reload();
+							});
+						} else {
+							Swal.fire({
+								type: 'error',
+								title: 'Gagal',
+								text: 'Format file tidak sesuai / Kolom belum diisi!',
+							});
+						}
+					}
+				});
+			} else {
+				Swal.fire({
+					type: 'error',
+					title: 'Cencel',
+					text: 'Data tidak jadi di hapus ',
+				});
+			}
+		  })
+	}
 
 	function link_ps(id) {
 		var a = $("#fp_lilola"+id).attr('href');
@@ -105,6 +156,57 @@
 	};
 
 //COPWI
+	
+	function delete_cop_wi(id) {
+		console.log(id); 
+		Swal.fire({
+			title: 'Are you sure?',
+			text: "Data akan di hapus !",
+			type: 'warning',
+			showCancelButton: true,
+			confirmButtonText: 'Delete',
+			cancelButtonText: 'Cancel',
+			reverseButtons: true
+		}).then(function(isConfirm) {
+			console.log(id);
+				if (isConfirm.value === true) {
+				$.ajax({
+					type: 'POST',
+					url: baseurl + "PengembanganSistem/delete_cop_wi/"+id,
+					contentType: false,
+					processData: false,
+					dataType: 'JSON',
+					beforeSend: function() {
+					Swal.showLoading()
+					},
+					success: function(response) {
+						console.log(response);
+						if (response == 1) {
+							Swal.fire({
+								type: 'success',
+								title: 'Berhasil',
+								text: 'Data berhasil dihapus!'
+							}).then(function() {
+								location.reload();
+							});
+						} else {
+							Swal.fire({
+								type: 'error',
+								title: 'Gagal',
+								text: 'Format file tidak sesuai / Kolom belum diisi!',
+							});
+						}
+					}
+				});
+			} else {
+				Swal.fire({
+					type: 'error',
+					title: 'Cencel',
+					text: 'Data tidak jadi di hapus ',
+				});
+			}
+		  })
+	}
 
 	$("#number_rev-cw").change(function(){
 		var number = $("#number_rev-cw").val();
@@ -572,6 +674,57 @@
 
 
 	//User Manual
+	
+	function delete_usermanual(id) {
+		console.log(id); 
+		Swal.fire({
+			title: 'Are you sure?',
+			text: "Data akan di hapus !",
+			type: 'warning',
+			showCancelButton: true,
+			confirmButtonText: 'Delete',
+			cancelButtonText: 'Cancel',
+			reverseButtons: true
+		}).then(function(isConfirm) {
+			console.log(id);
+				if (isConfirm.value === true) {
+				$.ajax({
+					type: 'POST',
+					url: baseurl + "PengembanganSistem/delete_UM/"+id,
+					contentType: false,
+					processData: false,
+					dataType: 'JSON',
+					beforeSend: function() {
+					Swal.showLoading()
+					},
+					success: function(response) {
+						console.log(response);
+						if (response == 1) {
+							Swal.fire({
+								type: 'success',
+								title: 'Berhasil',
+								text: 'Data berhasil dihapus!'
+							}).then(function() {
+								location.reload();
+							});
+						} else {
+							Swal.fire({
+								type: 'error',
+								title: 'Gagal',
+								text: 'Format file tidak sesuai / Kolom belum diisi!',
+							});
+						}
+					}
+				});
+			} else {
+				Swal.fire({
+					type: 'error',
+					title: 'Cencel',
+					text: 'Data tidak jadi di hapus ',
+				});
+			}
+		  })
+	}
 
 
 	$("#nomor_sop_um").change(function(){
@@ -801,7 +954,90 @@
 	};
 
 	//Memo
-	$("#ditujukan_ms1").ready(function(){
+	$('select[class=notif_mss]').ready(function(index) {
+		var a = $("#ditujukan_ms1").select2().val();
+		console.log(a);
+		$.ajax({
+			type: "POST",
+			url: baseurl+"PengembanganSistem/select_seksi",
+			data: {
+				seksi : a,
+			},
+			dataType: "JSON",
+			success: function (data) {
+				console.log(data);
+				$("#check").val(data[0].singkat);
+				$("#check").text(data[0].seksi);
+				$("#select2-ditujukan_ms1-container").text(data[0].seksi);
+			}
+		});
+	})
+
+		$("#ditujukan_ms1").ready(function(){
+		
+		$('input[type=radio]').iCheck({
+			checkboxClass: 'icheckbox_flat-blue',
+			radioClass: 'iradio_flat-blue'
+		});
+
+				if ($('input[name="r2sys"]:checked').val() == "user") {
+					console.log("user");
+					$('#ditujukan_ms1').select2({
+					ajax: {
+						url: baseurl + 'PengembanganSistem/ambilSemuaPekerja',
+						dataType: 'json',
+						delay: 250,
+						data: function (params) {
+							var queryParameters = {
+								noind: params.term.toUpperCase(),
+							}
+							return queryParameters;
+						},
+						processResults: function(data) {
+							
+							return {
+								results: $.map(data, function(item) {
+									return {
+										id: item.daftar_pekerja,
+										text: item.daftar_pekerja,
+									}
+								})
+							};
+						},
+						cache: true,
+					},
+					minimumInputLength: 4,
+					placeholder: 'Pilih data',
+				})
+			}else if ($('input[name="r2sys"]:checked').val() == "siedept") {
+				console.log("seksi");
+					$('#ditujukan_ms1').select2({
+					ajax: {
+						url: baseurl + 'PengembanganSistem/select_all_seksi',
+						dataType: 'json',
+						delay: 250,
+						data: function(params) {
+							return {
+								seksi: params.term.toUpperCase(),
+							};
+						},
+						processResults: function(data) {
+							return {
+								results: $.map(data, function(item) {
+									return {
+										id: item.singkat,
+										text: item.seksi,
+									}
+								})
+							};
+						},
+						cache: true,
+					},
+					minimumInputLength: 3,
+					placeholder: 'Pilih data',
+				})
+			}
+
 		$('input[name="r2sys"]').on('ifChanged', function () {
 				if ($('input[name="r2sys"]:checked').val() == "user") {
 					console.log("user");
@@ -1095,14 +1331,15 @@
 		var a	= date_lkh.split("-");
 		var a1 = a[2] + '-' +a[1]+ '-' +a[0];
 
-		$.ajax({
-                type: "POST",
-                url: baseurl+"PengembanganSistem/cek_lkh_ps",
-                data: {
+		if (date_lkh != 0) {
+			$.ajax({
+				type: "POST",
+				url: baseurl+"PengembanganSistem/cek_lkh_ps",
+				data: {
 					date_lkh :a1,
-                },
-                dataType: "JSON",
-                success: function (data) {
+				},
+				dataType: "JSON",
+				success: function (data) {
 						if (data.length > 0) {
 							if (confirm('Data dengan tanggal tersebut sudah pernah diinput.')) {
 								$("#date_masuk").val('')
@@ -1112,6 +1349,9 @@
 						}
 				}
 		  });
+		} else {
+			
+		}
 	});
 
 	$("#hari_masuk").change(function() {
@@ -1265,4 +1505,114 @@
 	function exspotpdf(){
 		$('.printexcel').attr('action',"print_lkh");
 	}
+	
+	function delete_lkh(id) {
+			console.log(id); 
+			Swal.fire({
+				title: 'Are you sure?',
+				text: "Data akan di hapus !",
+				type: 'warning',
+				showCancelButton: true,
+				confirmButtonText: 'Delete',
+				cancelButtonText: 'Cancel',
+				reverseButtons: true
+			}).then(function(isConfirm) {
+				console.log(isConfirm);
+					if (isConfirm.value === true) {
+					$.ajax({
+						type: 'POST',
+						url: baseurl + "PengembanganSistem/delete_lkh/"+id,
+						contentType: false,
+						processData: false,
+						dataType: 'JSON',
+						beforeSend: function() {
+						Swal.showLoading()
+						},
+						success: function(response) {
+							if (response == 1) {
+								Swal.fire({
+									type: 'success',
+									title: 'Berhasil',
+									text: 'Data berhasil dihapus!'
+								}).then(function() {
+									location.reload();
+								});
+							} else {
+								Swal.fire({
+									type: 'error',
+									title: 'Gagal',
+									text: 'Format file tidak sesuai / Kolom belum diisi!',
+								});
+							}
+						}
+					});
+				} else {
+					Swal.fire({
+						type: 'error',
+						title: 'Cencel',
+						text: 'Data tidak jadi di hapus ',
+					});
+				}
+			  })
+	}
+
+	$(".input_selectps").ready(function() {
+			$(".input_selectps").select2({
+			ajax: {
+				url: baseurl + 'PengembanganSistem/ambilSemuaPekerja',
+				dataType: 'json',
+				delay: 250,
+				data: function (params) {
+					var queryParameters = {
+						noind: params.term.toUpperCase(),
+					}
+					return queryParameters;
+				},
+				processResults: function(data) {
+					
+					return {
+						results: $.map(data, function(item) {
+							return {
+								id: item.nama_pekerja,
+								text: item.daftar_pekerja,
+							}
+						})
+					};
+				},
+				cache: true,
+			},
+			minimumInputLength: 4,
+			placeholder: 'Pilih data',
+		})
+	})
+
+	$(".input_selectpic").ready(function() {
+			$(".input_selectpic").select2({
+			ajax: {
+				url: baseurl + 'PengembanganSistem/ambilSemuaPekerja',
+				dataType: 'json',
+				delay: 250,
+				data: function (params) {
+					var queryParameters = {
+						noind: params.term.toUpperCase(),
+					}
+					return queryParameters;
+				},
+				processResults: function(data) {
+					
+					return {
+						results: $.map(data, function(item) {
+							return {
+								id: item.daftar_pekerja,
+								text: item.daftar_pekerja,
+							}
+						})
+					};
+				},
+				cache: true,
+			},
+			minimumInputLength: 4,
+			placeholder: 'Pilih data',
+		})
+	})
 	
