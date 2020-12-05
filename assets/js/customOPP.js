@@ -100,6 +100,13 @@ const oppSaveOrderOut = () => {
 }
 
 const opp_add_to_order_out = () =>{
+  $('.opp_area_loading').html(`<div id="loadingArea0">
+                                  <center>
+                                    <img style="width: 5%;margin-bottom:13px" src="${baseurl}assets/img/gif/ripple.gif">
+                                    <br><span style="font-size:10px">Sedang Menyiapkan Data...</span>
+                                  </center>
+                                </div>`);
+
   $('#opp_order_out_tampung').html('')
   let data = $('#opp_keranjang').text()
   let tm = []
@@ -140,43 +147,53 @@ const opp_add_to_order_out = () =>{
             console.error()
           }
         })
-      let r = 0;
-        console.log(tampung.length);
-        tampung.forEach((v, ii) => {
-        let opp_ajax_1 = $.ajax({
-            url: baseurl + 'OrderPrototypePPIC/OrderOut/getOrder',
-            type: 'POST',
-            dataType: 'JSON',
-            async: true,
-            data: {
-              id: v[1],
-            },
-            beforeSend: function () {
-              $('.opp_area_loading').html(`<div id="loadingArea0">
-                                              <center>
-                                                <img style="width: 5%;margin-bottom:13px" src="${baseurl}assets/img/gif/ripple.gif">
-                                                <br><span style="font-size:10px">Sedang Menyiapkan Data...</span>
-                                              </center>
-                                            </div>`)
-            },
-            success: function(result) {
-              $('.opp_area_loading').html('')
-              let html = `<tr>
-                            <input type="hidden" class="id_proses" value="${v[0]}">
-                            <input type="hidden" class="id_order" value="${v[1]}">
-                            <td style="text-align:center">${ii+1}</td>
-                            <td>${result.jenis}</td>
-                            <td>${result.qty}</td>
-                            <td>${result.kode_komponen}</td>
-                            <td>${v[2]}</td>
-                          </tr>`;
-                $('#opp_order_out_tampung').append(html)
-            },
-            error: function(XMLHttpRequest, textStatus, errorThrown) {
-              console.error()
-            },
-          })
-      })
+        let r = 0;
+        console.log(tampung);
+
+        function asyncFunction (item, cb, i) {
+              $.ajax({
+              url: baseurl + 'OrderPrototypePPIC/OrderOut/getOrder',
+              type: 'POST',
+              dataType: 'JSON',
+              async: true,
+              data: {
+                id: item[1],
+              },
+              beforeSend: function () {
+                console.log(item[1]);
+              },
+              success: function(result) {
+                console.log(i);
+                if (i == Number(tampung.length)-1) {
+                  $('.opp_area_loading').html('')
+                }
+                let html = `<tr>
+                              <input type="hidden" class="id_proses" value="${item[0]}">
+                              <input type="hidden" class="id_order" value="${item[1]}">
+                              <td style="text-align:center">${i+1}</td>
+                              <td>${result.jenis}</td>
+                              <td>${result.qty}</td>
+                              <td>${result.kode_komponen}</td>
+                              <td>${item[2]}</td>
+                            </tr>`;
+                  $('#opp_order_out_tampung').append(html)
+                  cb();
+              },
+              error: function(XMLHttpRequest, textStatus, errorThrown) {
+                console.error()
+              },
+            })
+        }
+
+        let requests = tampung.reduce((promiseChain, item, i) => {
+            return promiseChain.then(() => new Promise((resolve) => {
+              asyncFunction(item, resolve, i);
+            }));
+        }, Promise.resolve());
+
+        requests.then(() => console.log('done'))
+
+
       $.ajax({
           url: baseurl + 'OrderPrototypePPIC/OrderOut/generateOrderOut',
           type: 'POST',
@@ -247,7 +264,7 @@ const opp_detail_proses_mon = (id) => {
     row.child(format_dtl_mon(row.data(), id)).show();
     tr.addClass('shown');
     $.ajax({
-  		url: baseurl + 'OrderPrototypePPIC/OrderIn/getProsesOPP',
+  		url: baseurl + 'OrderPrototypePPIC/OrderIn/getProsesMonOPP',
   		type: 'POST',
   		data: {
   			id: id,

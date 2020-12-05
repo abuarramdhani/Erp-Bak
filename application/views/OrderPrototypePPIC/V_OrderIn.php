@@ -142,7 +142,7 @@
                       <center class="opp_area_loading"></center>
                     </div>
                     <br>
-                    <center><button type="button" name="button" onclick="oppSaveOrderOut()" style="width:30%" class="btn btn-success opp_save_order_out"> <b class="fa fa-floppy-o"></b> <b>Save</b> </button></center>
+                    <center><button type="button" name="button" onclick="oppSaveOrderOut()" style="width:30%;margin-bottom:10px" class="btn btn-success opp_save_order_out"> <b class="fa fa-floppy-o"></b> <b>Save</b> </button></center>
                   </div>
                 </div>
               </div>

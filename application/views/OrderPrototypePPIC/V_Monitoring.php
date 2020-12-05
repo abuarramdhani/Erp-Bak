@@ -22,7 +22,6 @@
 												<th class="text-center" colspan="2">PROSES SAAT INI</th>
                         <th class="text-center" colspan="2">NEXT PROSES</th>
                         <th class="text-center" rowspan="2" style="vertical-align:middle">PROSES</th>
-                        <th class="text-center" rowspan="2" style="vertical-align:middle">ORDER</th>
                         <!-- Alasan terlambat -->
                       </tr>
                       <tr class="bg-primary">
@@ -43,29 +42,27 @@
                           <td><?php echo $val['no_order'] ?></td>
                           <td><?php echo $val['qty'] ?></td>
 
-                          <?php foreach ($val['proses'] as $key2 => $val2): ?>
-                            <?php if ($val2['status'] == 'Y'){ ?>
-                              <td><?php echo $val2['proses'] ?></td>
-                              <td><?php echo $val2['seksi'] ?></td>
-                              <td><?php echo empty($val['proses'][$key2+1]['proses'])?'-':$val['proses'][$key2+1]['proses'] ?></td>
-                              <td><?php echo empty($val['proses'][$key2+1]['seksi'])?'-':$val['proses'][$key2+1]['seksi'] ?></td>
-                            <?php }else{ ?>
+                            <?php if (!empty($val['proses'][0]['id'])){ ?>
 
+                              <td><?php echo $val['proses'][0]['proses'] ?></td>
+                              <td><?php echo $val['proses'][0]['seksi'] ?></td>
+
+                              <?php if (!empty($val['proses'][1]['id'])){ ?>
+                                <td><?php echo $val['proses'][1]['proses'] ?></td>
+                                <td><?php echo $val['proses'][1]['seksi'] ?></td>
+                              <?php }else { ?>
+                                <td> - </td>
+                                <td> - </td>
+                              <?php } ?>
+
+                            <?php }else { ?>
+                              <td> - </td>
+                              <td> - </td>
+                              <td> - </td>
+                              <td> - </td>
                             <?php } ?>
 
-                          <?php endforeach; ?>
-
-                          <?php if (!empty($val['proses'][$key2-1]['status']) || !empty($val['proses'][$key2]['status'])) { ?>
-
-                          <?php }else { ?>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
-                          <?php } ?>
-
                           <td><button type="button" class="btn btn-primary" name="button" onclick="opp_detail_proses_mon(<?php echo $val['id'] ?>)"> <b class="fa fa-cube"></b> Detail</button> </td>
-                          <td>-</td>
 
                         </tr>
                       <?php $no++;} ?>

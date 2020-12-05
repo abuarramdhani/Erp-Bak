@@ -160,6 +160,13 @@ class C_OrderIn extends CI_Controller
       $this->load->view('OrderPrototypePPIC/ajax/V_DetailProses', $data);
     }
 
+    public function getProsesMonOPP()
+    {
+      $data['get'] = $this->M_master->getProsesOPP($this->input->post('id'));
+      $data['no_urut'] = $this->input->post('nomer_urut');
+      $this->load->view('OrderPrototypePPIC/ajax/V_Detail_Mon', $data);
+    }
+
     public function getEditProsesOPP()
     {
       $data['get'] = $this->M_master->getProsesOPP($this->input->post('id'));

@@ -12,15 +12,28 @@ class M_master extends CI_Model
 
     public function getMonitoring($value='')
     {
-      $res = $this->db->select('o.*')
-                      // ->join('opp.proses p', 'p.id_order = o.id', 'right')
-                      // ->join('opp.order_out oo', 'oo.id_order = o.id', 'left')
-                      ->get('opp.order o')->result_array();
-    // echo  $this->db->last_query();
+    $res = $this->db->select('o.*')->get('opp.order o')->result_array();
+      // echo  $this->db->last_query();
       if (!empty($res)) {
         foreach ($res as $key => $value) {
-          $res[$key]['proses'] = $this->db->where('id_order', $value['id'])->get('opp.proses')->result_array();
+
+        $proses = $this->db->where('id_order', $value['id'])
+                           ->order_by('id', 'asc')
+                           ->get('opp.proses')->result_array();
+
+         $key2 = array_search('Y', array_column($proses, 'status'));
+
+         if (!empty($proses) && is_numeric($key2)) {
+           $tampung[0] = $proses[$key2];
+           $tampung[1] = !empty($proses[$key2+1]) ? $proses[$key2+1] : [];
+         }else {
+           $tampung = [];
+         }
+          $res[$key]['proses'] = $tampung;
         }
+        // echo "<pre>";print_r($res);
+        // die;
+
       }
 
       return $res;
