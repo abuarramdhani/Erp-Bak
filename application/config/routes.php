@@ -4801,6 +4801,17 @@ $route['Covid/MonitoringCovid/(:any)'] = 'Covid/MonitoringCovid/C_MonitoringCovi
 $route['Covid/MonitoringCovid/(:any)/(:any)'] = 'Covid/MonitoringCovid/C_MonitoringCovid/$1/$2';
 $route['Covid/MonitoringCovid/(:any)/(:any)/(:any)'] = 'Covid/MonitoringCovid/C_MonitoringCovid/$1/$2/$3';
 
+$route['Covid/PelaporanPekerja/LuarKota/DiriSendiri'] = 'Covid/MonitoringCovid/C_MonitoringCovid/DiriSendiri';
+$route['Covid/PelaporanPekerja/LuarKota/AnggotaKeluargaSerumah'] = 'Covid/MonitoringCovid/C_MonitoringCovid/AnggotaKeluargaSerumah';
+$route['Covid/PelaporanPekerja/LuarKota/KedatanganTamu'] = 'Covid/MonitoringCovid/C_MonitoringCovid/KedatanganTamu';
+$route['Covid/PelaporanPekerja/AcaraMelibatkanBanyakOrang/Melaksanakan'] = 'Covid/MonitoringCovid/C_MonitoringCovid/Melaksanakan';
+$route['Covid/PelaporanPekerja/AcaraMelibatkanBanyakOrang/Menghadiri'] = 'Covid/MonitoringCovid/C_MonitoringCovid/Menghadiri';
+
+$route['Covid/PelaporanPekerja/index'] = 'Covid/PelaporanPekerja/C_PelaporanPekerja/index';
+$route['Covid/PelaporanPekerja/LuarKota/(:any)'] = 'Covid/PelaporanPekerja/C_PelaporanPekerja/$1';
+$route['Covid/PelaporanPekerja/AcaraMelibatkanBanyakOrang/(:any)'] = 'Covid/PelaporanPekerja/C_PelaporanPekerja/$1';
+$route['Covid/PelaporanPekerja/Interaksi'] = 'Covid/PelaporanPekerja/C_PelaporanPekerja/interaksi';
+
 
 // --------------------------------- Laporan Kerja Operator welding ------------------------------ //
 $route['LaporanKerjaOperator'] = 'LKOWelding/C_Index';
