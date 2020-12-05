@@ -8,8 +8,8 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="box box-primary box-solid">
-                                <div class="box-header with-border">
-                                    Input Data Laporan Pekerja Anggota Keluarga Serumah Keluar Kota
+                                <div class="box-header with-border text-center" style="font-weight: bold; font-size: 20px;">
+                                     Luar Kota - Anggota Keluarga Serumah
                                 </div>
                                 <div class="panel-body">
                                   <div class="row">
