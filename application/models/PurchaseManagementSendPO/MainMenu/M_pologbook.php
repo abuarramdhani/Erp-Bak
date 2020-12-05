@@ -9,7 +9,7 @@ class M_pologbook extends CI_Model
         $this->load->database();
         $this->oracle = $this->load->database('oracle', TRUE);
     }
-    public function getDataPoKoor($team)
+    public function getDataPoTeam($team)
     {
         $sql = 
         "SELECT
