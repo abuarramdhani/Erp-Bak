@@ -142,8 +142,6 @@
                                           </div>
                                       <div class="panel-footer">
                                           <div class="row text-right">
-                                              <a href="javascript:history.back(1)" class="btn btn-primary btn-rect">Back</a>
-                                              &nbsp;&nbsp;
                                               <button type="button" onclick="notif_input_lkh()" data-toggle="modal" data-target="#modal-default" class="btn btn-primary btn-rect">Save Data</button>
                                           </div>
                                       </div>
@@ -265,13 +263,9 @@
                                         </div>
                                             <form class="printexcel" action="<?php echo base_url('PengembanganSistem/print_lkh');?>" method="post">
                                                 <div class="col-sm-2 float-right">
-                                                    <select name="kasie" id="pilihkasie" class="form-control select2" data-placeholder="--pilih approver--">
+                                                    <select name="kasie" id="pilihkasie" class="form-control select2 input_selectps" data-placeholder="--pilih approver--">
                                                         <option hidden=""></option>
-                                                        <?php foreach ($listorg as $org) 
-                                                        {
-                                                            echo '  <option value="'.$org['nama_pekerja'].'">'.$org['nama_pekerja'].'</option>';
-                                                        }
-                                                        ?>
+                                                      
                                                     </select>
                                                 </div>
                                                 <input type="text" name="data" value="<?php if(strlen($bulan)>1){echo $bulan.'-'.$tahun;} ?>" required="required" hidden="hidden">
@@ -337,7 +331,7 @@
                                             <td><?php if ($row["ct"]=='V') {echo "✓"; } ;?></td>
                                             <td><?php if ($row["ip"]=='V') {echo "✓"; } ;?></td>
                                             <td>
-                                                <a class="btn btn-danger" style="padding: 6px;" href="<?php echo base_url('PengembanganSistem/delete_lkh/'.$row['id'])?>" title="Delete" onclick="return confirm('Anda Yakin Dengan Langkah Pilihan Anda ?')"><i class="fa fa-close"></i></a>
+                                                <a class="btn btn-danger" style="padding: 6px;" title="Delete" onclick="delete_lkh(<?= $row['id']?>)"><i class="fa fa-close"></i></a>
                                             </td>
                                             </tr>
                                             <?php } ?>

@@ -306,9 +306,8 @@ class C_Penomoran extends CI_Controller
 
 	public function delete_data_flow($id)
 	{
-
 		$this->M_pengsistem->delete_flow($id);
-		redirect('PengembanganSistem/Flow_Proses');
+		echo 1;
 	}
 
 	//COP_WI
@@ -521,7 +520,7 @@ class C_Penomoran extends CI_Controller
 			$nama_baru = preg_replace("/[\/\&%#\$]/", "_", $judul_baru);
 			$nama_baru_post = preg_replace("/\s+/", "_", $judul_baru);
 			
-			$config['upload_path'] 			= 'assets/upload/PengembanganSistem/um/';
+			$config['upload_path'] 			= 'assets/upload/PengembanganSistem/copwi/';
 			$config['allowed_types']		= 'gif|jpg|png|jpeg|bmp|pdf|doc|wps|odt';
 			$config['max_size']             = 0;
 			// $config['max_width']            = 1000;
@@ -559,7 +558,7 @@ class C_Penomoran extends CI_Controller
 	{
 
 		$this->M_pengsistem->delete_copwi($id);
-		redirect('PengembanganSistem/cop_wi');
+		echo 1;
 	}
 	
 
@@ -826,9 +825,8 @@ class C_Penomoran extends CI_Controller
 
 	public function delete_data_um($id)
 	{
-
 		$this->M_pengsistem->delete_um($id);
-		redirect('PengembanganSistem/Usermanual');
+		echo 1;
 	}
 
 	//DOKUMEN MEMO
@@ -1383,14 +1381,15 @@ class C_Penomoran extends CI_Controller
 	public function delete_lkh($id)
 	{
 		$this->M_pengsistem->delete_lkh_get($id);
-		redirect('PengembanganSistem/lkh_ps');
+		echo 1 ;
 	}
 
 	public function cek_tgl_lkh()
 	{
+		$data_user = $this->session->user;
 		$data_number = $_POST['date_lkh'];
 
-		$data = $this->M_pengsistem->cek_data_lkh($data_number);
+		$data = $this->M_pengsistem->cek_data_lkh($data_number, $data_user);
 
 		echo json_encode($data);
 	}

@@ -109,13 +109,8 @@
                                                   <div class="form-group row">
                                                       <label for="pic_cw" class="control-label col-lg-4">PIC Pembuat</label>
                                                       <div class="col-lg-8">
-                                                          <select name="pic_cw" required="" id="pic-cw" class="form-control select2" data-placeholder="--Pilih data--">
+                                                          <select name="pic_cw" required="" id="pic-cw" class="form-control select2 input_selectpic" data-placeholder="--Pilih data--">
                                                               <option hidden=""></option>
-                                                                    <?php foreach ($listorg as $org) 
-                                                                    {
-                                                                        echo '  <option value="'.$org['daftar_pekerja'].'">'.$org['daftar_pekerja'].'</option>';
-                                                                    }
-                                                                    ?>
                                                           </select>
                                                       </div>
                                                   </div>
@@ -241,7 +236,7 @@
                                                         <div class="btn-group">
                                                             <a style="padding: 6px" class="icon-action btn btn-success" href="<?php echo base_url('PengembanganSistem/edit_cop_wi/'.$row['id'])?>" title="Edit"><i class="fa fa-pencil"></i></a>
                                                             <a style="padding: 6px" class="icon-action btn btn-warning" data-toggle="modal" data-toggle="tooltip" data-target="<?php echo "#modal_edit".$row['id'];?>" title="Upload"><i class="fa fa-cloud-upload"></i></a>
-                                                            <a style="padding: 6px" class="icon-action btn btn-danger" href="<?php echo base_url('PengembanganSistem/delete_cop_wi/'.$row['id'])?>" title="Delete" onclick="return confirm('Anda Yakin Dengan Langkah Pilihan Anda ?')"><i class="fa fa-close"></i></a>
+                                                            <a style="padding: 6px" class="icon-action btn btn-danger" title="Delete" onclick="delete_cop_wi(<?= $row['id'];?>)"><i class="fa fa-close"></i></a>
                                                         </div>
                                                     </div>
                                                 </td>

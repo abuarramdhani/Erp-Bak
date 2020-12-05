@@ -70,13 +70,8 @@
                                                   <div class="form-group row">
                                                       <label for="pic_fp" class="control-label col-lg-4">PIC Pembuat</label>
                                                       <div class="col-lg-8">
-                                                          <select name="pic_fp" required="" id="pic-fp" class="form-control select2" data-placeholder="--Pilih data--">
+                                                          <select name="pic_fp" required="" id="pic-fp" class="form-control select2 input_selectpic" data-placeholder="--Pilih data--">
                                                               <option></option>
-                                                                    <?php foreach ($listorg as $org) 
-                                                                    {
-                                                                        echo '  <option value="'.$org['daftar_pekerja'].'">'.$org['daftar_pekerja'].'</option>';
-                                                                    }
-                                                                    ?>
                                                           </select>
                                                       </div>
                                                   </div>
@@ -104,7 +99,7 @@
                                   </div>
                                       <!--/.modal -->
                                       <div class="modal fade" id="modal-default">
-                                      <div class="modal-dialog">
+                                      <div class="modal-dialog" style="width:80%;">
                                           <div class="modal-content">
                                           <div class="modal-header">
                                               <h4 class="modal-title"><b> Perhatian !!! </b>, Pastikan Data Benar &hellip;</h4>
@@ -196,7 +191,7 @@
                                             <div class="btn-group">
                                             <a class="btn btn-success" style="padding: 6px;" href="<?php echo base_url('PengembanganSistem/edit_flow/'.$row['id'])?>" title="Edit"><i class="fa fa-pencil"></i></a>
                                             <a class="btn btn-warning" style="padding: 6px;" data-toggle="modal" data-toggle="tooltip" data-target="<?php echo "#modal_edit".$row['id'];?>" title="Upload"><i class="fa fa-cloud-upload"></i></a>
-                                            <a class="btn btn-danger" style="padding: 6px;" href="<?php echo base_url('PengembanganSistem/delete_flow/'.$row['id'])?>" title="Delete" onclick="return confirm('Anda Yakin Dengan Langkah Pilihan Anda ?')"><i class="fa fa-close"></i></a>
+                                            <a class="btn btn-danger" style="padding: 6px;" title="Delete" onclick="delete_flow(<?= $row['id']?>)"><i class="fa fa-close"></i></a>
                                             </div>
                                         </div>
                                         </td>
