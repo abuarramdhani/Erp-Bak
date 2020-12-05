@@ -1044,7 +1044,7 @@ $(document).ready(function(){
 				// console.log($(menu).attr('data-nama'));
 				var namaResponsibility = $(menu).attr('data-nama');
 				if (namaResponsibility.toLowerCase().search(nama.toLowerCase()) >= 0) {
-					$(menu).find("a").html(namaResponsibility.toLowerCase().replace(nama.toLowerCase(),"<b style='color: blue'>" + nama.toLowerCase() + "</b>"));
+					$(menu).find("a").find('span').html(namaResponsibility.toLowerCase().replace(nama.toLowerCase(),"<b style='color: blue'>" + nama.toLowerCase() + "</b>"));
 					// console.log($(menu).find("a").html() + " --- " + namaResponsibility);
 					$(menu).show();
 				}else{
