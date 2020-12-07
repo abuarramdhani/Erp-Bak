@@ -191,14 +191,14 @@ class C_MonitoringCovid extends CI_Controller
 					$this->upload->initialize($config);
 		    		if ($this->upload->do_upload('lampiranWawancara'.$key_lamp))
 		    		{
-		        		$this->upload->data();
+		        		$uploaded = $this->upload->data();
 		        		
 						$lampiran = array(
 							'wawancara_id' => $id_wawancara,
 							'lampiran_nama' => $filename,
 							'created_date' => date('Y-m-d H:i:s'),
 							'created_by' => $this->session->user,
-							'lampiran_path' => 'assets/upload/Covid/Wawancara/'.$nama
+							'lampiran_path' => 'assets/upload/Covid/Wawancara/'.$uploaded['file_name']
 						);
 						$this->M_monitoringcovid->insertLampiran($lampiran);
 		    		}
@@ -252,14 +252,14 @@ class C_MonitoringCovid extends CI_Controller
 					$this->upload->initialize($config);
 		    		if ($this->upload->do_upload('lampiranWawancara'.$key_lamp))
 		    		{
-		        		$this->upload->data();
+		        		$uploaded = $this->upload->data();
 		        		
 						$lampiran = array(
 							'wawancara_id' => $id_wawancara,
 							'lampiran_nama' => $filename,
 							'created_date' => date('Y-m-d H:i:s'),
 							'created_by' => $this->session->user,
-							'lampiran_path' => 'assets/upload/Covid/Wawancara/'.$nama
+							'lampiran_path' => 'assets/upload/Covid/Wawancara/'.$uploaded['file_name']
 						);
 						$this->M_monitoringcovid->insertLampiran($lampiran);
 		    		}
@@ -591,14 +591,14 @@ class C_MonitoringCovid extends CI_Controller
 				$this->upload->initialize($config);
 	    		if ($this->upload->do_upload('lampiranWawancara'.$key_lamp))
 	    		{
-	        		$this->upload->data();
+	        		$uploaded = $this->upload->data();
 	        		
 					$lampiran = array(
 						'wawancara_id' => $id_wawancara,
 						'lampiran_nama' => $filename,
 						'created_date' => date('Y-m-d H:i:s'),
 						'created_by' => $this->session->user,
-						'lampiran_path' => 'assets/upload/Covid/Wawancara/'.$nama
+						'lampiran_path' => 'assets/upload/Covid/Wawancara/'.$uploaded['file_name']
 					);
 					$this->M_monitoringcovid->insertLampiran($lampiran);
 	    		}
