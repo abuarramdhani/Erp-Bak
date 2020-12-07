@@ -1,27 +1,28 @@
 <?php
-class M_monitoringakuntansi extends CI_Model {
+class M_monitoringakuntansi extends CI_Model
+{
 
-	public function __construct()
-	{
-		 $this->load->database();
-		$this->load->library('encrypt');
-	}
-//---------------------untuk koneksi local, aktifkan ini ------------------------------------//
-   // public function checkLoginInAkuntansi($employee_code)
-   //  {
-   //      $oracle = $this->load->database();
-   //      $sql = "select eea.employee_code, es.unit_name
-   //                  from er.er_employee_all eea, er.er_section es
-   //                  where eea.section_code = es.section_code
-   //                  and eea.employee_code = '$employee_code' ";
-   //      $runQuery = $this->db->query($sql);
-   //      return $runQuery->result_array();
-   //  }
-//-------------------untuk diupload ke PROD aktifkan ini -----------------------------------//
+    public function __construct()
+    {
+        $this->load->database();
+        $this->load->library('encrypt');
+    }
+    //---------------------untuk koneksi local, aktifkan ini ------------------------------------//
+    // public function checkLoginInAkuntansi($employee_code)
+    //  {
+    //      $oracle = $this->load->database();
+    //      $sql = "select eea.employee_code, es.unit_name
+    //                  from er.er_employee_all eea, er.er_section es
+    //                  where eea.section_code = es.section_code
+    //                  and eea.employee_code = '$employee_code' ";
+    //      $runQuery = $this->db->query($sql);
+    //      return $runQuery->result_array();
+    //  }
+    //-------------------untuk diupload ke PROD aktifkan ini -----------------------------------//
 
     public function checkLoginInAkuntansi($employee_code)
     {
-        $oracle = $this->load->database('erp_db',true);
+        $oracle = $this->load->database('erp_db', true);
         $query = "select eea.employee_code, es.unit_name
                     from er.er_employee_all eea, er.er_section es
                     where eea.section_code = es.section_code
@@ -35,14 +36,14 @@ class M_monitoringakuntansi extends CI_Model {
     {
         $size = $value->size();
         $result = $value->read($size);
-        return ($result)?$result:NULL;
+        return ($result) ? $result : NULL;
     }
 
     //---------------------------------------------------tambahan menu start from here-----------------------//
 
-   public function getStatusSatu()
+    public function getStatusSatu()
     {
-        $oracle = $this->load->database('oracle',TRUE);
+        $oracle = $this->load->database('oracle', TRUE);
         $sql = " SELECT ami.invoice_id, ami.vendor_name vendor_name,
                 ami.invoice_number invoice_number,
                 ami.invoice_date invoice_date,
@@ -99,7 +100,7 @@ class M_monitoringakuntansi extends CI_Model {
 
     public function getStatusEnam()
     {
-        $oracle = $this->load->database('oracle',TRUE);
+        $oracle = $this->load->database('oracle', TRUE);
         $sql = "SELECT ami.invoice_id, ami.vendor_name vendor_name,
                 ami.invoice_number invoice_number,
                 ami.invoice_date invoice_date,
@@ -158,9 +159,9 @@ class M_monitoringakuntansi extends CI_Model {
         return $run->num_rows();
     }
 
-     public function saveReconfirmInvBermasalah($invoice_id,$action_date,$status_berkas)
+    public function saveReconfirmInvBermasalah($invoice_id, $action_date, $status_berkas)
     {
-        $erp_db = $this->load->database('oracle',true);
+        $erp_db = $this->load->database('oracle', true);
         $sql = "UPDATE KHS_AP_MONITORING_INVOICE 
                 SET 
                 AKT_RESTATUS_DATE = to_date('$action_date', 'DD/MM/YYYY HH24:MI:SS'),
@@ -172,15 +173,15 @@ class M_monitoringakuntansi extends CI_Model {
 
     public function getReturnedData($invoice_id)
     {
-        $oracle = $this->load->database('oracle',TRUE);
+        $oracle = $this->load->database('oracle', TRUE);
         $sql = "SELECT NOTE_RETURN_AKT, KELENGKAPAN_DOC_INV_RETURNED FROM KHS_AP_MONITORING_INVOICE WHERE INVOICE_ID = '$invoice_id'";
         $run = $oracle->query($sql);
         return $run->result_array();
     }
 
-    public function ReupdateTabelBerkas($waktu_berkas,$doc_id,$hasil,$invoice_id)
+    public function ReupdateTabelBerkas($waktu_berkas, $doc_id, $hasil, $invoice_id)
     {
-        $erp_db = $this->load->database('oracle',true);
+        $erp_db = $this->load->database('oracle', true);
         $sql = "UPDATE KHS_AP_DOKUMEN_INV
                 SET REDATE_CONFIRMATION_AKT = '$waktu_berkas',
                 RESTATUS_DOCUMENT_AKT = '$hasil'
@@ -189,8 +190,8 @@ class M_monitoringakuntansi extends CI_Model {
     }
 
     public function getDokumenRekonfirmasi($invoice_id)
-      {
-        $erp_db = $this->load->database('oracle',true);
+    {
+        $erp_db = $this->load->database('oracle', true);
         $sql = "SELECT 
                     DOCUMENT_ID, 
                     INVOICE_ID, 
@@ -204,11 +205,11 @@ class M_monitoringakuntansi extends CI_Model {
                 WHERE INVOICE_ID = $invoice_id";
         $runQuery = $erp_db->query($sql);
         return $runQuery->result_array();
-      }
+    }
 
     public function getHasilKonfirmasi($invoice_id)
     {
-        $erp_db = $this->load->database('oracle',true);
+        $erp_db = $this->load->database('oracle', true);
         $sql = "SELECT 
                     DOCUMENT_ID, 
                     INVOICE_ID, 
@@ -222,22 +223,22 @@ class M_monitoringakuntansi extends CI_Model {
         return $runQuery->result_array();
     }
 
-    public function EndInvoiceBermasalah($invoice_id,$end_date)
+    public function EndInvoiceBermasalah($invoice_id, $end_date)
     {
-         $erp_db = $this->load->database('oracle',true);
-         $sql = "UPDATE khs_ap_monitoring_invoice SET 
+        $erp_db = $this->load->database('oracle', true);
+        $sql = "UPDATE khs_ap_monitoring_invoice SET 
                 status_inv_bermasalah = '5',
                 source_bermasalah = 'AKUNTANSI',
                 akt_finished_date = to_date('$end_date', 'DD/MM/YYYY HH24:MI:SS')
             WHERE invoice_id = '$invoice_id'";
-         $runQuery = $erp_db->query($sql);
+        $runQuery = $erp_db->query($sql);
     }
 
-public function UpdatePoNumber2($invoice_id,$invoice_number, $invoice_date, $amount, $tax_invoice_number,$vendor_name,$vendor_number,$last_admin_date,$note_admin,$invoice_category,$source_login,$top)
+    public function UpdatePoNumber2($invoice_id, $invoice_number, $invoice_date, $amount, $tax_invoice_number, $vendor_name, $vendor_number, $last_admin_date, $note_admin, $invoice_category, $source_login, $top)
 
-{
-    $erp_db = $this->load->database('oracle',true);
-    $sql = "UPDATE khs_ap_monitoring_invoice SET 
+    {
+        $erp_db = $this->load->database('oracle', true);
+        $sql = "UPDATE khs_ap_monitoring_invoice SET 
                 invoice_number = '$invoice_number',
                 invoice_date = '$invoice_date',
                 invoice_amount = '$amount',
@@ -250,31 +251,31 @@ public function UpdatePoNumber2($invoice_id,$invoice_number, $invoice_date, $amo
                 source = '$source_login',
                 term_of_payment = '$top'
             WHERE invoice_id = '$invoice_id'";
-    $runQuery = $erp_db->query($sql);
-}
+        $runQuery = $erp_db->query($sql);
+    }
 
-public function UpdatePoNumber($po_number,$invoice_id)
-{
-    $erp_db = $this->load->database('oracle',true);
-    $sql = "UPDATE khs_ap_invoice_purchase_order SET 
+    public function UpdatePoNumber($po_number, $invoice_id)
+    {
+        $erp_db = $this->load->database('oracle', true);
+        $sql = "UPDATE khs_ap_invoice_purchase_order SET 
             po_number = '$po_number'
             WHERE invoice_id = '$invoice_id'";
-    $runQuery = $erp_db->query($sql);
-}
+        $runQuery = $erp_db->query($sql);
+    }
 
-public function UpdatePoNumber3($invoice_id,$action_date)
-{
-    $erp_db = $this->load->database('oracle',true);
-    $sql = "UPDATE khs_ap_invoice_action_detail 
+    public function UpdatePoNumber3($invoice_id, $action_date)
+    {
+        $erp_db = $this->load->database('oracle', true);
+        $sql = "UPDATE khs_ap_invoice_action_detail 
             SET action_date = to_date('$action_date', 'DD/MM/YYYY HH24:MI:SS')
             WHERE invoice_id = '$invoice_id'";
-    $runQuery = $erp_db->query($sql);
-}
+        $runQuery = $erp_db->query($sql);
+    }
 
 
-public function editInvData($invoice_id)
+    public function editInvData($invoice_id)
     {
-        $erp_db = $this->load->database('oracle',true);
+        $erp_db = $this->load->database('oracle', true);
         $sql = "SELECT aipo.invoice_id invoice_id, 
                 invoice_number invoice_number,
                 invoice_date invoice_date,
@@ -317,7 +318,7 @@ public function editInvData($invoice_id)
 
     public function resetInvoiceBermasalah($invoice_id)
     {
-        $erp_db = $this->load->database('oracle',true);
+        $erp_db = $this->load->database('oracle', true);
         $sql = "UPDATE khs_ap_monitoring_invoice 
                 SET 
                     KATEGORI_INV_BERMASALAH = '',
@@ -358,9 +359,9 @@ public function editInvData($invoice_id)
 
     public function tarikDataPo($nomor_po)
     {
-        $oracle = $this->load->database("oracle",TRUE);
+        $oracle = $this->load->database("oracle", TRUE);
         $query = $oracle->query(
-            
+
             "SELECT pha.segment1 no_po, att.NAME payment_terms, pv.vendor_name,
                  pv.vendor_id, pha.attribute2 ppn, ppf.full_name buyer,
                  po_headers_sv3.get_po_status (pha.po_header_id) status,
@@ -380,7 +381,8 @@ public function editInvData($invoice_id)
              AND pha.agent_id = ppf.person_id
              AND pha.vendor_id = pv.vendor_id
              AND pha.SEGMENT1 = '$nomor_po'
-             and (ppf.effective_end_date >= sysdate or ppf.effective_end_date is null)");
+             and (ppf.effective_end_date >= sysdate or ppf.effective_end_date is null)"
+        );
         return $query->result_array();
     }
 
@@ -400,7 +402,7 @@ public function editInvData($invoice_id)
 
     public function getInvNumber($invNumber)
     {
-        $oracle = $this->load->database("oracle",TRUE);
+        $oracle = $this->load->database("oracle", TRUE);
         $query = $oracle->query("SELECT DISTINCT 
                 pol.po_line_id line_id, 
                 pol.line_num line_num,
@@ -480,21 +482,20 @@ public function editInvData($invoice_id)
                    SELECT rt.po_line_id
                      FROM rcv_transactions rt
                     WHERE pol.po_line_id = rt.po_line_id)");
-    return $query->result_array();
-     }
+        return $query->result_array();
+    }
 
-     public function getIdVendor($nama_vendor)
-     {
-        $oracle = $this->load->database('oracle',true);
+    public function getIdVendor($nama_vendor)
+    {
+        $oracle = $this->load->database('oracle', true);
         $query = "SELECT vendor_id FROM po_vendors WHERE VENDOR_NAME LIKE '%$nama_vendor%'";
         $ini = $oracle->query($query);
         return $ini->result_array();
+    }
 
-     }
-
-     public function savePoNumber($po_number,$inv_id)
-     {
-        $oracle = $this->load->database('oracle',true);
+    public function savePoNumber($po_number, $inv_id)
+    {
+        $oracle = $this->load->database('oracle', true);
         $query = "INSERT INTO khs_ap_invoice_purchase_order
                     (po_number,invoice_id)
                     VALUES 
@@ -502,9 +503,9 @@ public function editInvData($invoice_id)
         $oracle->query($query);
     }
 
-    public function savePoNumber2($invoice_number, $invoice_date, $invoice_amount, $tax_invoice_number,$vendor_number,$vendor_name,$last_admin_date,$info,$invoice_category,$source_login,$top,$jenis_dokumen)
+    public function savePoNumber2($invoice_number, $invoice_date, $invoice_amount, $tax_invoice_number, $vendor_number, $vendor_name, $last_admin_date, $info, $invoice_category, $source_login, $top, $jenis_dokumen)
     {
-        $oracle = $this->load->database('oracle',true);
+        $oracle = $this->load->database('oracle', true);
         $query = "INSERT INTO khs_ap_monitoring_invoice
                     (invoice_number, invoice_date, invoice_amount,tax_invoice_number, vendor_name, vendor_number, last_admin_date, info,invoice_category,source,last_finance_invoice_status,term_of_payment,jenis_dokumen)
                     VALUES 
@@ -514,11 +515,10 @@ public function editInvData($invoice_id)
                     from khs_ap_monitoring_invoice";
         $lastId = $oracle->query($query2);
         return $lastId->result_array();
-
     }
-    public function savePoNumber3($invoice_id,$action_date)
+    public function savePoNumber3($invoice_id, $action_date)
     {
-        $oracle = $this->load->database('oracle',true);
+        $oracle = $this->load->database('oracle', true);
         $query = "INSERT INTO khs_ap_invoice_action_detail (invoice_id, action_date)
                 VALUES ($invoice_id,to_date('$action_date', 'DD/MM/YYYY HH24:MI:SS'))";
         $oracle->query($query);
@@ -528,24 +528,26 @@ public function editInvData($invoice_id)
         return $last_id->result_array();
     }
 
-    public function saveTableDokumen($invoice_id,$dokumen,$action_date)
+    public function saveTableDokumen($invoice_id, $dokumen, $action_date)
     {
-        $oracle = $this->load->database('oracle',true);
+        $oracle = $this->load->database('oracle', true);
         $query = "INSERT INTO khs_ap_dokumen_inv (invoice_id, document_name, creation_date)
                 VALUES ($invoice_id,'$dokumen', to_date('$action_date', 'DD/MM/YYYY HH24:MI:SS'))";
         $oracle->query($query);
     }
 
-    public function checkBatchNumbercount($batch_number){ //kepake
-        $erp_db = $this->load->database('oracle',true);
+    public function checkBatchNumbercount($batch_number)
+    { //kepake
+        $erp_db = $this->load->database('oracle', true);
         $sql = "SELECT batch_number batch_number
                 FROM khs_ap_monitoring_invoice
                 WHERE batch_number LIKE '$batch_number%'";
         $runQuery = $erp_db->query($sql);
         return $runQuery->result_array();
     }
-     public function saveBatchNumberById($id, $batch_number, $date, $status){ //this function is for saving finance's invoice batches
-        $oracle = $this->load->database('oracle',true);
+    public function saveBatchNumberById($id, $batch_number, $date, $status)
+    { //this function is for saving finance's invoice batches
+        $oracle = $this->load->database('oracle', true);
         $query = "UPDATE khs_ap_monitoring_invoice
                     SET batch_number = '$batch_number',
                     last_status_finance_date = to_date('$date', 'DD/MM/YYYY HH24:MI:SS'),
@@ -554,17 +556,18 @@ public function editInvData($invoice_id)
         $oracle->query($query);
         // oci_commit($oracle);
     }
-     public function saveBatchNumberById2($invoice_id,$action_date,$status)//this function is for saving finance's invoice batches
+    public function saveBatchNumberById2($invoice_id, $action_date, $status) //this function is for saving finance's invoice batches
     {
-        $oracle = $this->load->database('oracle',true);
+        $oracle = $this->load->database('oracle', true);
         $sql = "INSERT INTO khs_ap_invoice_action_detail (invoice_id,action_date,finance_status)
                 VALUES($invoice_id, to_date('$action_date', 'DD/MM/YYYY HH24:MI:SS'), '$status')";
         $run = $oracle->query($sql);
         // echo "<pre>"; echo $sql;
     }
 
-        public function saveInvBermasalah2($invoice_number, $invoice_date, $amount, $vendor_name,$vendor_number,$last_admin_date,$invoice_category,$source_login,$jenis_jasa,$top,$kategori,$dokumen,$keterangan,$action_date){
-        $oracle = $this->load->database('oracle',true);
+    public function saveInvBermasalah2($invoice_number, $invoice_date, $amount, $vendor_name, $vendor_number, $last_admin_date, $invoice_category, $source_login, $jenis_jasa, $top, $kategori, $dokumen, $keterangan, $action_date)
+    {
+        $oracle = $this->load->database('oracle', true);
         $query = "INSERT INTO khs_ap_monitoring_invoice
                     (invoice_number, 
                     invoice_date, 
@@ -607,30 +610,29 @@ public function editInvData($invoice_id)
                     from khs_ap_monitoring_invoice";
         $lastId = $oracle->query($query2);
         return $lastId->result_array();
-
     }
 
     public function getVendorName()
-     {
+    {
         $oracle = $this->load->database('oracle', true);
         $query = "SELECT VENDOR_NAME, VENDOR_ID
                   FROM po_vendors pov";
         $runQuery = $oracle->query($query);
         return $runQuery->result_array();
-     }
+    }
 
 
     public function getNamaVendor($id)
-     {
+    {
         $oracle = $this->load->database('oracle', true);
         $query = "SELECT vendor_name
                   FROM po_vendors where vendor_id = '$id'";
         $runQuery = $oracle->query($query);
         return $runQuery->result_array();
-     }
+    }
 
-     public function finishAktNew()
-     {
+    public function finishAktNew()
+    {
         $oracle = $this->load->database('oracle', true);
         $query = " SELECT distinct ami.invoice_id invoice_id,
                          ami.term_of_payment top,
@@ -670,11 +672,11 @@ public function editInvData($invoice_id)
 
         $runQuery = $oracle->query($query);
         return $runQuery->result_array();
-     }
+    }
 
-     public function detailInvoiceAkt($batchNumber)
-    {   
-        $erp_db = $this->load->database('oracle',true);
+    public function detailInvoiceAkt($batchNumber)
+    {
+        $erp_db = $this->load->database('oracle', true);
         $sql = "SELECT distinct ami.invoice_id invoice_id,
                          ami.vendor_name vendor_name,
                          ami.invoice_number invoice_number, 
@@ -706,7 +708,7 @@ public function editInvData($invoice_id)
 
     public function invBermasalah($invoice_id)
     {
-        $erp_db = $this->load->database('oracle',true);
+        $erp_db = $this->load->database('oracle', true);
         $sql = "SELECT aipo.invoice_id invoice_id, 
                 invoice_number invoice_number,
                 invoice_date invoice_date,
@@ -742,15 +744,14 @@ public function editInvData($invoice_id)
                 FROM khs_ap_monitoring_invoice ami
                 JOIN khs_ap_invoice_purchase_order aipo ON ami.invoice_id = aipo.invoice_id
                 WHERE ami.last_finance_invoice_status = 2
-                AND ami.invoice_id = '$invoice_id'"
-                ;
+                AND ami.invoice_id = '$invoice_id'";
         $runQuery = $erp_db->query($sql);
         return $runQuery->result_array();
     }
 
     public function invBermasalahChecking($invoice_id)
     {
-        $erp_db = $this->load->database('oracle',true);
+        $erp_db = $this->load->database('oracle', true);
         $sql = "SELECT aipo.invoice_id invoice_id, 
                 invoice_number invoice_number,
                 invoice_date invoice_date,
@@ -794,7 +795,7 @@ public function editInvData($invoice_id)
 
     public function invBermasalahSuperEdit($invoice_id)
     {
-        $erp_db = $this->load->database('oracle',true);
+        $erp_db = $this->load->database('oracle', true);
         $sql = "SELECT aipo.invoice_id invoice_id, 
                 invoice_number invoice_number,
                 invoice_date invoice_date,
@@ -839,7 +840,7 @@ public function editInvData($invoice_id)
 
     public function invBermasalahFinish($invoice_id)
     {
-        $erp_db = $this->load->database('oracle',true);
+        $erp_db = $this->load->database('oracle', true);
         $sql = "SELECT aipo.invoice_id invoice_id, 
                 invoice_number invoice_number,
                 invoice_date invoice_date,
@@ -879,9 +880,9 @@ public function editInvData($invoice_id)
         return $runQuery->result_array();
     }
 
-    public function saveInvBermasalah($imp_kategori,$imp_dokumen,$keterangan,$invoice_id,$action_date)
+    public function saveInvBermasalah($imp_kategori, $imp_dokumen, $keterangan, $invoice_id, $action_date)
     {
-        $erp_db = $this->load->database('oracle',true);
+        $erp_db = $this->load->database('oracle', true);
         $sql = "UPDATE KHS_AP_MONITORING_INVOICE 
                 SET KATEGORI_INV_BERMASALAH = '$imp_kategori', 
                     KELENGKAPAN_DOC_INV_BERMASALAH = '$imp_dokumen', 
@@ -896,7 +897,7 @@ public function editInvData($invoice_id)
 
     public function listInvBermasalah()
     {
-        $erp_db = $this->load->database('oracle',true);
+        $erp_db = $this->load->database('oracle', true);
         $sql = "SELECT ami.invoice_id, ami.vendor_name vendor_name,
                 ami.invoice_number invoice_number,
                 ami.invoice_date invoice_date,
@@ -949,12 +950,11 @@ public function editInvData($invoice_id)
         ORDER BY ami.akt_action_bermasalah DESC";
         $runQuery = $erp_db->query($sql);
         return $runQuery->result_array();
-
     }
 
     public function listInvReturned()
     {
-        $erp_db = $this->load->database('oracle',true);
+        $erp_db = $this->load->database('oracle', true);
         $sql = "SELECT ami.invoice_id, ami.vendor_name vendor_name,
                 ami.invoice_number invoice_number,
                 ami.invoice_date invoice_date,
@@ -1011,12 +1011,11 @@ public function editInvData($invoice_id)
         ORDER BY ami.akt_action_bermasalah DESC";
         $runQuery = $erp_db->query($sql);
         return $runQuery->result_array();
-
     }
 
     public function finishInvBermasalah()
     {
-        $erp_db = $this->load->database('oracle',true);
+        $erp_db = $this->load->database('oracle', true);
         $sql = "SELECT ami.invoice_id, ami.vendor_name vendor_name,
                 ami.invoice_number invoice_number,
                 ami.invoice_date invoice_date,
@@ -1070,10 +1069,10 @@ public function editInvData($invoice_id)
     //----------------------------------------------------tambahan menu invoice khusus akuntansi-----------------------------------//
 
 
-	public function unprocessedInvoice($batchNumber)
-	{   
-		$erp_db = $this->load->database('oracle',true);
-		$sql = "SELECT  ami.invoice_id, ami.vendor_name vendor_name,
+    public function unprocessedInvoice($batchNumber)
+    {
+        $erp_db = $this->load->database('oracle', true);
+        $sql = "SELECT  ami.invoice_id, ami.vendor_name vendor_name,
                 ami.invoice_number invoice_number, 
                 rsh.receipt_num,
                 ami.invoice_date invoice_date,
@@ -1094,36 +1093,36 @@ public function editInvData($invoice_id)
             WHERE ami.last_finance_invoice_status = 1 
             AND ami.batch_number=  '$batchNumber'
             AND ami.INVOICE_ID = rsh.ATTRIBUTE2(+)
-            ORDER BY ami.last_admin_date DESC";
-		    $run = $erp_db->query($sql);
-            return $run->result_array();
-	}
+            ORDER BY ami.vendor_name, ami.last_admin_date DESC";
+        $run = $erp_db->query($sql);
+        return $run->result_array();
+    }
 
 
-	public function poAmount($id)
-	{
-		$erp_db = $this->load->database('oracle',true);
-		$sql = "SELECT unit_price unit_price,
+    public function poAmount($id)
+    {
+        $erp_db = $this->load->database('oracle', true);
+        $sql = "SELECT unit_price unit_price,
 				qty_invoice qty_invoice
 				FROM khs_ap_invoice_purchase_order
 				WHERE invoice_id = $id";
-		$run = $erp_db->query($sql);
-		return $run->result_array();
-	}
+        $run = $erp_db->query($sql);
+        return $run->result_array();
+    }
 
-	public function namaVendor($id)
-	{
-		$oracle = $this->load->database('oracle',true);
-		$sql = "SELECT vendor_name 
+    public function namaVendor($id)
+    {
+        $oracle = $this->load->database('oracle', true);
+        $sql = "SELECT vendor_name 
 				FROM po_vendors
 				WHERE vendor_id = $id";
-		$run = $oracle->query($sql);
-		return $run->result_array();
-	}
+        $run = $oracle->query($sql);
+        return $run->result_array();
+    }
 
-	public function DetailUnprocess($batch_num,$invoice_id)
-	{   
-		$erp_db = $this->load->database('oracle',true);
+    public function DetailUnprocess($batch_num, $invoice_id)
+    {
+        $erp_db = $this->load->database('oracle', true);
         $sql = "SELECT aipo.invoice_id invoice_id, 
         		invoice_number invoice_number,
                 invoice_date invoice_date,
@@ -1157,23 +1156,23 @@ public function editInvData($invoice_id)
         //    exit();
         $runQuery = $erp_db->query($sql);
         return $runQuery->result_array();
-	}
+    }
 
-	public function saveProsesTerimaAkuntansi($finance_date,$id)
-	{
-		$erp_db = $this->load->database('oracle',true);
-		$sql = "UPDATE khs_ap_monitoring_invoice
+    public function saveProsesTerimaAkuntansi($finance_date, $id)
+    {
+        $erp_db = $this->load->database('oracle', true);
+        $sql = "UPDATE khs_ap_monitoring_invoice
 				SET last_finance_invoice_status = 2,
 				last_status_finance_date = to_date('$finance_date', 'DD/MM/YYYY HH24:MI:SS')
 				WHERE invoice_id = $id";
         // echo "<pre>"; echo $sql;
-		$runQuery = $erp_db->query($sql);
-		// oci_commit($erp_db);
-	}
+        $runQuery = $erp_db->query($sql);
+        // oci_commit($erp_db);
+    }
 
-	public function saveProsesTolakAkuntansi($finance_date,$id,$reason)
+    public function saveProsesTolakAkuntansi($finance_date, $id, $reason)
     {
-        $erp_db = $this->load->database('oracle',true);
+        $erp_db = $this->load->database('oracle', true);
         $sql = "UPDATE khs_ap_monitoring_invoice
                 SET last_finance_invoice_status = 3,
                 last_status_finance_date = to_date('$finance_date', 'DD/MM/YYYY HH24:MI:SS'),
@@ -1183,29 +1182,29 @@ public function editInvData($invoice_id)
         // oci_commit($erp_db);
     }
 
-    public function insertprosesAkuntansiTerima($invoice_id,$action_date)
+    public function insertprosesAkuntansiTerima($invoice_id, $action_date)
     {
-        $erp_db = $this->load->database('oracle',true);
+        $erp_db = $this->load->database('oracle', true);
         $sql = "INSERT INTO khs_ap_invoice_action_detail (invoice_id,action_date,purchasing_status,finance_status)
                 VALUES($invoice_id, to_date('$action_date', 'DD/MM/YYYY HH24:MI:SS'),'2','2')";
         $runQuery = $erp_db->query($sql);
     }
 
-      public function insertprosesAkuntansiTolak($invoice_id,$action_date)
+    public function insertprosesAkuntansiTolak($invoice_id, $action_date)
     {
-        $oracle = $this->load->database('oracle',true);
+        $oracle = $this->load->database('oracle', true);
         $sql = "INSERT INTO khs_ap_invoice_action_detail (invoice_id,action_date,purchasing_status,finance_status)
                 VALUES($invoice_id, to_date('$action_date', 'DD/MM/YYYY HH24:MI:SS'),'2','3')";
-       // echo "<pre>";  echo $sql;
+        // echo "<pre>";  echo $sql;
         // exit();
 
         $run = $oracle->query($sql);
     }
 
-	public function processedInvoice($batchNumber)
-	{   
-		$erp_db = $this->load->database('oracle',true);
-		$sql = "SELECT distinct ami.invoice_id invoice_id,
+    public function processedInvoice($batchNumber)
+    {
+        $erp_db = $this->load->database('oracle', true);
+        $sql = "SELECT distinct ami.invoice_id invoice_id,
                          ami.vendor_name vendor_name,
                          ami.invoice_number invoice_number, 
                          ami.invoice_date invoice_date, 
@@ -1230,13 +1229,13 @@ public function editInvData($invoice_id)
                 and poh.segment1 = aipo.po_number
                 and last_finance_invoice_status = 2
                 ORDER BY vendor_name, invoice_number";
-		$run = $erp_db->query($sql);
-		return $run->result_array();
-	}
+        $run = $erp_db->query($sql);
+        return $run->result_array();
+    }
 
-	public function DetailProcess($invoice_id)
-	{    
-		$erp_db = $this->load->database('oracle',true);
+    public function DetailProcess($invoice_id)
+    {
+        $erp_db = $this->load->database('oracle', true);
         $sql = "SELECT ami.invoice_number invoice_number,
                 ami.invoice_date invoice_date,
                 ami.invoice_amount invoice_amount,
@@ -1267,41 +1266,44 @@ public function editInvData($invoice_id)
                 AND ami.invoice_id = $invoice_id";
         $runQuery = $erp_db->query($sql);
         return $runQuery->result_array();
-	}
+    }
 
-	public function showFinanceNumber($login){
-		$erp_db = $this->load->database('oracle',true);
+    public function showFinanceNumber($login)
+    {
+        $erp_db = $this->load->database('oracle', true);
         $sql = "SELECT batch_number batch_number, to_date(last_status_finance_date) submited_date, source
         FROM khs_ap_monitoring_invoice
         WHERE last_finance_invoice_status = 1
         $login
         GROUP BY batch_number, to_date(last_status_finance_date), source
         ORDER BY submited_date";
-		$run = $erp_db->query($sql);
-		return $run->result_array();
-	}
+        $run = $erp_db->query($sql);
+        return $run->result_array();
+    }
 
-	public function jumlahFinanceBatch($batch){
-        $erp_db = $this->load->database('oracle',true);
+    public function jumlahFinanceBatch($batch)
+    {
+        $erp_db = $this->load->database('oracle', true);
         $sql = "SELECT batch_number FROM khs_ap_monitoring_invoice WHERE batch_number = $batch
         and last_purchasing_invoice_status = 2";
         $run = $erp_db->query($sql);
         return $run->num_rows();
     }
 
-    public function reason_finance($invoice_id,$reason)
+    public function reason_finance($invoice_id, $reason)
     {
-       $oracle = $this->load->database('oracle',true);
-       $query2 = "UPDATE khs_ap_monitoring_invoice 
+        $oracle = $this->load->database('oracle', true);
+        $query2 = "UPDATE khs_ap_monitoring_invoice 
                   SET reason = '$reason'
                  WHERE invoice_id = '$invoice_id' ";
         $runQuery2 = $oracle->query($query2);
         // oci_commit($oracle);
     }
 
-    public function podetails($po_number,$lppb_number,$line_number){
-       
-       $oracle = $this->load->database('oracle',TRUE);
+    public function podetails($po_number, $lppb_number, $line_number)
+    {
+
+        $oracle = $this->load->database('oracle', TRUE);
         $query = "SELECT * FROM(SELECT distinct
                             pol.line_num line_num,
                             poh.SEGMENT1 no_po,
@@ -1339,8 +1341,9 @@ public function editInvData($invoice_id)
         return $runQuery->result_array();
     }
 
-    public function showFinishBatch($login){
-        $erp_db = $this->load->database('oracle',true);
+    public function showFinishBatch($login)
+    {
+        $erp_db = $this->load->database('oracle', true);
         $sql = "SELECT DISTINCT 
                 a.purchasing_batch_number, 
                 a.batch_number, 
@@ -1365,8 +1368,9 @@ public function editInvData($invoice_id)
         return $run->result_array();
     }
 
-    public function detailBatch($batch_number){
-        $oracle = $this->load->database('oracle',true);
+    public function detailBatch($batch_number)
+    {
+        $oracle = $this->load->database('oracle', true);
         $sql = "SELECT COUNT (last_finance_invoice_status) approve
                       FROM khs_ap_monitoring_invoice b
                      WHERE b.last_finance_invoice_status = 2
@@ -1376,8 +1380,9 @@ public function editInvData($invoice_id)
         return $run->result_array();
     }
 
-    public function jumlahInvoice($batch_number){
-        $oracle = $this->load->database('oracle',true);
+    public function jumlahInvoice($batch_number)
+    {
+        $oracle = $this->load->database('oracle', true);
         $sql = "SELECT COUNT (last_finance_invoice_status) jumlah_invoice
                       FROM khs_ap_monitoring_invoice b
                      WHERE b.batch_number = '$batch_number'
@@ -1386,8 +1391,9 @@ public function editInvData($invoice_id)
         return $run->result_array();
     }
 
-    public function checkPPN($po_numberInv){
-        $oracle = $this->load->database("oracle",TRUE);
+    public function checkPPN($po_numberInv)
+    {
+        $oracle = $this->load->database("oracle", TRUE);
         $query = "SELECT distinct poh.attribute2 ppn
                             from PO_HEADERS_ALL POH
                             ,PO_LINES_ALL POL
@@ -1399,8 +1405,9 @@ public function editInvData($invoice_id)
         return $runQuery->result_array();
     }
 
-    public function po_numberr($invoice_id){
-        $oracle = $this->load->database("oracle",TRUE);
+    public function po_numberr($invoice_id)
+    {
+        $oracle = $this->load->database("oracle", TRUE);
         $query = "SELECT DISTINCT aipo.po_number, aipo.invoice_id, poh.attribute2 ppn
                   FROM khs_ap_invoice_purchase_order aipo, po_headers_all poh
                   WHERE invoice_id = '$invoice_id'
@@ -1409,22 +1416,22 @@ public function editInvData($invoice_id)
         return $runQuery->result_array();
     }
 
-    public function getUpdatePONumber($invoice_id,$nomor_po,$vendor_id,$vendor_name,$top)
+    public function getUpdatePONumber($invoice_id, $nomor_po, $vendor_id, $vendor_name, $top)
     {
-        $oracle = $this->load->database("oracle",TRUE);
+        $oracle = $this->load->database("oracle", TRUE);
         $query = "update khs_ap_monitoring_invoice
                             set vendor_number = '$vendor_id', 
                             vendor_name = '$vendor_name', 
                             term_of_payment = '$top' 
-                            where invoice_id = '$invoice_id'";      
+                            where invoice_id = '$invoice_id'";
         $runQuery = $oracle->query($query);
         $query2 = "update khs_ap_invoice_purchase_order set po_number = '$nomor_po' where invoice_id = '$invoice_id'";
         $runQuery2 = $oracle->query($query2);
     }
 
-    public function returning($invoice_id,$action_date,$note,$imp_dokumen)
+    public function returning($invoice_id, $action_date, $note, $imp_dokumen)
     {
-        $oracle = $this->load->database("oracle",TRUE);
+        $oracle = $this->load->database("oracle", TRUE);
         $query = "update khs_ap_monitoring_invoice
                             set 
                             returned_flag = 'Y',
@@ -1432,13 +1439,13 @@ public function editInvData($invoice_id)
                             source_bermasalah = 'AKUNTANSI',
                             note_return_akt = '$note',
                             kelengkapan_doc_inv_returned = '$imp_dokumen'
-                            where invoice_id = '$invoice_id'";      
+                            where invoice_id = '$invoice_id'";
         $runQuery = $oracle->query($query);
     }
 
     public function getInvoice($invoice_number)
     {
-        $oracle = $this->load->database("oracle",TRUE);
+        $oracle = $this->load->database("oracle", TRUE);
         $query = $oracle->query("select
             ami.INVOICE_ID
             ,ami.INVOICE_NUMBER
@@ -1457,7 +1464,7 @@ public function editInvData($invoice_id)
 
     public function receiptNexval()
     {
-        $oracle = $this->load->database("oracle",TRUE);
+        $oracle = $this->load->database("oracle", TRUE);
         $query = $oracle->query("SELECT rcv_interface_groups_s.NEXTVAL FROM DUAL");
 
         return $query->result_array();
@@ -1466,33 +1473,32 @@ public function editInvData($invoice_id)
     public function receipt_po_invoice($invoice_id, $p_group_id)
     {
         $conn = oci_connect('APPS', 'APPS', '192.168.7.1:1521/PROD');
-		if (!$conn) {
-			$e = oci_error();
-			trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
-		}
-		$sql = "BEGIN khs_receipt_po_invoice (:invoice_id, :p_group_id); END;";
+        if (!$conn) {
+            $e = oci_error();
+            trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
+        }
+        $sql = "BEGIN khs_receipt_po_invoice (:invoice_id, :p_group_id); END;";
 
-		$message = '';
-		$stmt = oci_parse($conn,$sql);
-		oci_bind_by_name($stmt,':invoice_id',$invoice_id,100);
-		oci_bind_by_name($stmt,':p_group_id',$p_group_id,100);
-		oci_execute($stmt);
+        $message = '';
+        $stmt = oci_parse($conn, $sql);
+        oci_bind_by_name($stmt, ':invoice_id', $invoice_id, 100);
+        oci_bind_by_name($stmt, ':p_group_id', $p_group_id, 100);
+        oci_execute($stmt);
     }
 
     public function run_fnd_receiving($p_group_id)
     {
         $conn = oci_connect('APPS', 'APPS', '192.168.7.1:1521/PROD');
-		if (!$conn) {
-			$e = oci_error();
-			trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
-		}
-		$sql = "BEGIN APPS.KHS_RUN_FND_RECEIVING (:tetap,:p_group_id); END;";
+        if (!$conn) {
+            $e = oci_error();
+            trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
+        }
+        $sql = "BEGIN APPS.KHS_RUN_FND_RECEIVING (:tetap,:p_group_id); END;";
 
-		$tetap = '5182';
-		$stmt = oci_parse($conn,$sql);
-		oci_bind_by_name($stmt,':p_group_id',$p_group_id,100);
-		oci_bind_by_name($stmt,':tetap',$tetap,100);
-		oci_execute($stmt);
-    
+        $tetap = '5182';
+        $stmt = oci_parse($conn, $sql);
+        oci_bind_by_name($stmt, ':p_group_id', $p_group_id, 100);
+        oci_bind_by_name($stmt, ':tetap', $tetap, 100);
+        oci_execute($stmt);
     }
 }
