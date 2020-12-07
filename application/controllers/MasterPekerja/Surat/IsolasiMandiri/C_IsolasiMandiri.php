@@ -107,7 +107,7 @@ class C_IsolasiMandiri extends CI_Controller
 		$selesai = $this->input->get('simSelesai');
 		$hari = $this->input->get('simHari');
 		$status = $this->input->get('simStatus');
-		$dibuat = $pekerja;
+		$dibuat = $this->session->user;
 		$menyetujui = $this->input->get('simMenyetujui');
 		$mengetahui = $this->input->get('simMengetahui');
 		$cetak = $this->input->get('simCetak');
@@ -128,11 +128,11 @@ class C_IsolasiMandiri extends CI_Controller
 			}
 		}
 		$qq = count($status);
-		if ($status[$qq-1] == $status[$qq-2]) {
+		if (isset($status[$qq-2]) && $status[$qq-1] == $status[$qq-2]) {
 			$arr[$q][] = $qq-1;
 		}else{
 			$q++;
-			$arr[$q][] = $$qq-1;
+			$arr[$q][] = $qq-1;
 		}
 		for ($i=0; $i < count($arr); $i++) {
 			$fi = $arr[$i][0];
