@@ -29,6 +29,7 @@ class C_OrderIn extends CI_Controller
             $this->session->set_userdata('last_page', current_url());
             $this->session->set_userdata('Responsbility', 'some_value');
         }
+
     }
 
     public function checkSession()
@@ -44,13 +45,22 @@ class C_OrderIn extends CI_Controller
     {
         $this->checkSession();
         $user_id = $this->session->userid;
-
         $data['Menu'] = 'Order In';
         $data['SubMenuOne'] = '';
 
-        $data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
-        $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
-        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
+        $menu = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+        // $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+        // $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
+        if ($this->session->user === 'T0012' || $this->session->user === 'B0681') {
+          unset($menu[0]);
+          foreach ($menu as $key => $value) {
+            $menu_baru[] = $value;
+          }
+          $menu = $menu_baru;
+          $data['UserMenu'] = $menu;
+        }else {
+          redirect('OrderPrototypePPIC');
+        }
 
         $data['get'] = $this->M_master->getOrderIn();
 
@@ -71,9 +81,19 @@ class C_OrderIn extends CI_Controller
         $data['Menu'] = 'Create';
         $data['SubMenuOne'] = '';
 
-        $data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
-        $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
-        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
+        $menu = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+        // $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+        // $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
+        if ($this->session->user === 'T0012' || $this->session->user === 'B0681') {
+          unset($menu[0]);
+          foreach ($menu as $key => $value) {
+            $menu_baru[] = $value;
+          }
+          $menu = $menu_baru;
+          $data['UserMenu'] = $menu;
+        }else {
+          redirect('OrderPrototypePPIC');
+        }
 
         $data['jenis_proses'] = $this->db->order_by('nama_proses', 'asc')->get('opp.jenis_proses')->result_array();
         $this->load->view('V_Header', $data);
@@ -162,7 +182,7 @@ class C_OrderIn extends CI_Controller
 
     public function getProsesMonOPP()
     {
-      $data['get'] = $this->M_master->getProsesOPP($this->input->post('id'));
+      $data['get'] = $this->M_master->getProsesMon($this->input->post('id'));
       $data['no_urut'] = $this->input->post('nomer_urut');
       $this->load->view('OrderPrototypePPIC/ajax/V_Detail_Mon', $data);
     }

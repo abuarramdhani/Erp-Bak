@@ -3,7 +3,7 @@
     <div class="col-lg-12">
       <div class="box box-primary box-solid">
         <div class="box-header with-border">
-          <center><h4 style="font-weight:bold;"><i class="fa fa-hourglass-3"></i> Order Keluar Prototype</h4></center>
+          <center><h4 style="font-weight:bold;"><i class="fa fa-hourglass-3"></i> Terima Order PPIC Prototype</h4></center>
         </div>
         <div class="box-body" style="background:#f0f0f0;">
           <div class="row">
@@ -19,9 +19,7 @@
                         <th class="text-center">PROSES</th>
                         <th class="text-center">SEKSI</th>
                         <th class="text-center">QTY</th>
-                        <th class="text-center">NO ORDER</th>
-                        <th class="text-center">PENERIMA</th>
-                        <th class="text-center">STATUS</th>
+                        <th class="text-center">NO ORDER OUT</th>
                         <th class="text-center">AKSI</th>
                       </tr>
                     </thead>
@@ -34,22 +32,18 @@
                           <td><?php echo $val['proses'] ?></td>
                           <td><?php echo $val['seksi'] ?></td>
                           <td><?php echo $val['qty'] ?></td>
-                          <td><?php echo $val['no_order'] ?></td>
-                          <td><?php echo $val['penerima'] ?></td>
-                          <td>
-                            <center>
-                              <?php if (empty($val['status'])) { ?>
-                                <span class="label label-warning" style="font-size:12px;"><i class="fa fa-check"></i> Pending </span>
-                              <?php }elseif($val['status'] == 'Y') {?>
-                                <span class="label label-primary" style="font-size:12px;"><i class="fa fa-check"></i> Order Diterima </span>
-                              <?php }elseif($val['status'] == 'D') {?>
-                                <span class="label label-success" style="font-size:12px;"><i class="fa fa-check"></i> Order Selesai Dibuat </span>
-                              <?php }?>
-                            </center>
+                          <td style="text-align:center"><?php echo $val['no_order_out'] ?></td>
+                          <td style="text-align:center" opp_btn="<?php echo $val['id_out'] ?>">
+                            <?php if (empty($val['status'])) { ?>
+                              <button type="button" class="btn btn-sm btn-default" name="button" style="font-weight:bold" onclick="opp_terimaorder(<?php echo $val['id_out'] ?>)"> <i class="fa fa-check"></i> Terima Order </button>
+                            <?php }elseif($val['status'] == 'Y') {?>
+                              <button type="button" class="btn btn-sm btn-primary" name="button" style="font-weight:bold" onclick="opp_konfirmorder(<?php echo $val['id_out'] ?>)"> <i class="fa fa-check-square-o"></i> Konfirmasi Order Selesai</button>
+                            <?php }elseif($val['status'] == 'D') {?>
+                              <div style="padding:10px;">
+                                <span class="label label-success" style="font-size:12px;padding:6.5px"><i class="fa fa-check"></i> Order Selesai Dibuat </span>
+                              </div>
+                            <?php }?>
                           </td>
-                          <td style="text-align:center">
-                            <button type="button" class="btn btn-sm btn-danger" disabled title="Fitur Perlu Didiskusikan" name="button"> <i class="fa fa-trash"></i> </button>
-                           </td>
                         </tr>
                       <?php } ?>
                     </tbody>

@@ -48,9 +48,20 @@ class C_OrderOut extends CI_Controller
         $data['Menu'] = 'Order Out';
         $data['SubMenuOne'] = '';
 
-        $data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
-        $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
-        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
+        $menu = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+        // $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+        // $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
+        if ($this->session->user === 'T0012' || $this->session->user === 'B0681') {
+          unset($menu[0]);
+          foreach ($menu as $key => $value) {
+            $menu_baru[] = $value;
+          }
+          $menu = $menu_baru;
+          $data['UserMenu'] = $menu;
+        }else {
+          redirect('OrderPrototypePPIC');
+        }
+
         $data['get'] = $this->M_master->getOrderOut();
 
         $this->load->view('V_Header', $data);

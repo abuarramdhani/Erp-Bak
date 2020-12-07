@@ -62,7 +62,7 @@
                               <td> - </td>
                             <?php } ?>
 
-                          <td><button type="button" class="btn btn-primary" name="button" onclick="opp_detail_proses_mon(<?php echo $val['id'] ?>)"> <b class="fa fa-cube"></b> Detail</button> </td>
+                          <td><button type="button" class="btn btn-success" name="button" onclick="opp_detail_proses_mon(<?php echo $val['id'] ?>)"> <b class="fa fa-cube"></b> Detail</button> </td>
 
                         </tr>
                       <?php $no++;} ?>

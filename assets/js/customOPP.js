@@ -11,6 +11,18 @@ const toastOPP = (type, message) => {
   })
 }
 
+const toastOPPLoading = (pesan) => {
+  Swal.fire({
+    toast: true,
+    position: 'top-end',
+    onBeforeOpen: () => {
+       Swal.showLoading();
+       $('.swal2-loading').children('button').css({'width': '20px', 'height': '20px'})
+     },
+    text: pesan
+  })
+}
+
 const swalOPP = (type, title) => {
   Swal.fire({
     type: type,
@@ -776,5 +788,89 @@ const opp_close_proses = () => {
  let param = param_before.split('_');
  $('#opp_modaldetail').modal('show');
  opp_detail_proses(param[0], param[1], param[2]);
+}
 
+const opp_terimaorder = (id_proses) => {
+  Swal.fire({
+    title: 'Apakah anda yakin?',
+    text: "Anda tidak akan dapat mengembalikan ini!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Ya, terima saja!'
+  }).then((result) => {
+    if (result.value) {
+      $.ajax({
+        url: baseurl + 'OrderPrototypePPIC/Order/terima',
+        type: 'POST',
+        dataType: 'JSON',
+        async: true,
+        cache:false,
+        data: {
+          id_proses : id_proses,
+        },
+        beforeSend: function() {
+          toastOPPLoading('Sedang memproses data...');
+        },
+        success: function(result) {
+          if (result) {
+            toastOPP('success', 'Data Berhasil Diupdate.');
+          }else {
+            toastOPP('warning', 'Gagal Melakukan Update Data, Coba lagi..');
+          }
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+          swalOPP('error', textStatus);
+          console.error();
+        }
+      }).then(()=>{
+        let html = `<button type="button" class="btn btn-sm btn-primary" name="button" style="font-weight:bold" onclick="opp_konfirmorder(${id_proses})"> <i class="fa fa-check-square-o"></i> Konfirmasi Order Selesai</button>`
+        $(`td[opp_btn="${id_proses}"]`).html(html);
+      })
+    }
+  })
+}
+
+
+const opp_konfirmorder = (id_proses) => {
+  Swal.fire({
+    title: 'Apakah anda yakin?',
+    text: "",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Ya, konfirmasi saja!'
+  }).then((result) => {
+    if (result.value) {
+      $.ajax({
+        url: baseurl + 'OrderPrototypePPIC/Order/konfirmasi',
+        type: 'POST',
+        dataType: 'JSON',
+        async: true,
+        cache:false,
+        data: {
+          id_proses : id_proses,
+        },
+        beforeSend: function() {
+          toastOPPLoading('Sedang memproses data...');
+        },
+        success: function(result) {
+          if (result) {
+            toastOPP('success', 'Data Berhasil Dikonfirmasi.');
+          }else {
+            toastOPP('warning', 'Gagal Melakukan Konfirmasi Order, Coba lagi..');
+          }
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+          swalOPP('error', textStatus);
+          console.error();
+        }
+      }).then(()=>{
+        let html = `<span class="label label-success" style="font-size:12px;"><i class="fa fa-check"></i> Order Selesai Dibuat </span>`
+        $(`td[opp_btn="${id_proses}"]`).html(html);
+      })
+    }
+  })
 }

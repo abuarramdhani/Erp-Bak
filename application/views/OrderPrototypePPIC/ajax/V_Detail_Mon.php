@@ -5,7 +5,8 @@
         <th style="width:15%"><center>Urutan Proses</center></th>
         <th><center>Proses</center></th>
         <th><center>Seksi</center></th>
-        <th ><center>Order</center></th>
+        <th ><center>No Order Out</center></th>
+        <th ><center>Status</center></th>
       </tr>
     </thead>
     <tbody>
@@ -16,7 +17,18 @@
           <td><center><?php echo $g['seksi'] ?></center></td>
           <td>
             <center>
-              -
+              <?php echo $g['no_order_out'] ?>
+            </center>
+          </td>
+          <td>
+            <center>
+              <?php if (empty($g['status'])) { ?>
+                <span class="label label-warning" style="font-size:12px;"><i class="fa fa-check"></i> Pending </span>
+              <?php }elseif($g['status'] == 'Y') {?>
+                <span class="label label-primary" style="font-size:12px;"><i class="fa fa-check"></i> Order Diterima </span>
+              <?php }elseif($g['status'] == 'D') {?>
+                <span class="label label-success" style="font-size:12px;"><i class="fa fa-check"></i> Order Selesai Dibuat </span>
+              <?php }?>
             </center>
           </td>
         </tr>

@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class C_Index extends CI_Controller
+class C_Order extends CI_Controller
 {
     public function __construct()
     {
@@ -16,7 +16,6 @@ class C_Index extends CI_Controller
         $this->load->library('session');
         $this->load->library('ciqrcode');
         $this->load->model('M_Index');
-        $this->load->library('upload');
         $this->load->model('SystemAdministration/MainMenu/M_user');
 
         //local
@@ -45,21 +44,15 @@ class C_Index extends CI_Controller
         $this->checkSession();
         $user_id = $this->session->userid;
 
-        $data['Menu'] = 'Dashboard';
+        $data['Menu'] = 'Order PPIC';
         $data['SubMenuOne'] = '';
 
         $menu = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
-        $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
-        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
-
+        // $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+        // $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
         if ($this->session->user === 'T0012' || $this->session->user === 'B0681') {
-          unset($menu[0]);
-          foreach ($menu as $key => $value) {
-            $menu_baru[] = $value;
-          }
-          $menu = $menu_baru;
+          redirect('OrderPrototypePPIC');
         }else {
-          // unset($menu[0]);
           unset($menu[1]);
           unset($menu[2]);
           unset($menu[3]);
@@ -67,10 +60,41 @@ class C_Index extends CI_Controller
 
         $data['UserMenu'] = $menu;
 
+        $data['get'] = $this->M_master->getOrderOutAcc();
+
         $this->load->view('V_Header', $data);
         $this->load->view('V_Sidemenu', $data);
-        $this->load->view('OrderPrototypePPIC/V_Index');
+        $this->load->view('OrderPrototypePPIC/V_Order');
         $this->load->view('V_Footer', $data);
+    }
+
+    public function terima($value='')
+    {
+      if ($this->input->is_ajax_request()) {
+        $penerima = $this->session->user.' - '.$this->session->employee;
+        $this->db->where('id', $this->input->post('id_proses'))->update('opp.proses', ['status' => 'Y', 'penerima' => $penerima]);
+        if ($this->db->affected_rows() == 1) {
+          echo json_encode(1);
+        }else {
+          echo json_encode(0);
+        }
+      }else {
+        echo "hello..";
+      }
+    }
+
+    public function konfirmasi($value='')
+    {
+      if ($this->input->is_ajax_request()) {
+        $this->db->where('id', $this->input->post('id_proses'))->update('opp.proses', ['status' => 'D']);
+        if ($this->db->affected_rows() == 1) {
+          echo json_encode(1);
+        }else {
+          echo json_encode(0);
+        }
+      }else {
+        echo "hello..";
+      }
     }
 
 }

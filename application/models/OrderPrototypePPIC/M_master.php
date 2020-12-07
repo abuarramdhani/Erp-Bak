@@ -31,8 +31,6 @@ class M_master extends CI_Model
          }
           $res[$key]['proses'] = $tampung;
         }
-        // echo "<pre>";print_r($res);
-        // die;
 
       }
 
@@ -41,16 +39,34 @@ class M_master extends CI_Model
 
     public function getOrderOut($value='')
     {
-      return $this->db->select('p.*, o.*')
+      return $this->db->select('p.id as id_out, p.proses, p.seksi, p.status, p.penerima, oo.no_order_out, o.*')
                       ->join('opp.order o', 'o.id = oo.id_order', 'inner')
                       ->join('opp.proses p', 'p.id = oo.id_proses', 'inner')
                       ->order_by('o.id')
                       ->get('opp.order_out oo')->result_array();
     }
 
+    public function getOrderOutAcc($value='')
+    {
+      return $this->db->select('p.id as id_out, p.proses, p.seksi, p.status, p.penerima, oo.no_order_out, o.*')
+                      ->join('opp.order o', 'o.id = oo.id_order', 'inner')
+                      ->join('opp.proses p', 'p.id = oo.id_proses', 'inner')
+                      ->order_by('oo.no_order_out')
+                      ->get('opp.order_out oo')->result_array();
+    }
+
     public function getProsesOPP($id='')
     {
       return $this->db->where('id_order', $id)->get('opp.proses')->result_array();
+    }
+
+    public function getProsesMon($id='')
+    {
+      return $this->db->select('pro.*, out.no_order_out')
+                      ->join('opp.order_out out', 'out.id_proses = pro.id', 'left')
+                      ->where('pro.id_order', $id)
+                      ->order_by('pro.id', 'asc')
+                      ->get('opp.proses pro')->result_array();
     }
 
     public function getOrderIn()
