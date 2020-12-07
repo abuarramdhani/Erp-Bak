@@ -55,7 +55,7 @@ $actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 							<span style="text-transform: uppercase;"><?= $UserResponsibility_item['user_group_menu_name']?></span>
 							</a>
 						</li>
-					<?php endforeach ?>
+					<?php } ?>
 				</ul>
 			<?php
 			} else {
