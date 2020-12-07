@@ -102,7 +102,6 @@
 			<th width="13%">KODE ITEM</th>
 			<th width="14%">NAMA ITEM </th>
 			<th width="5%">QTY</th>
-			<!-- <th width="5%">QTY SUDAH PICKLIST</th> -->
 			<th width="10%">DEPT CLASS</th>
 			<th width="20%">DESCRIPTION</th>
 			<th width="15%">KETERANGAN</th>
@@ -121,10 +120,6 @@
 			$allSubFrom = array();
 			$allLocatorTo = array();
 			$allLocatorFrom = array();
-			$allLocatorFromId = array();
-			$allStartQTY = array();
-			$allQTYSudah = array();
-			$allATT = array();
 			$no = 1; 
 			foreach ($requirement as $key => $value) {                                                                                                                                                                                                                                   
 			$arrErr = array();
@@ -139,18 +134,15 @@
 			}
 
 
-			if($value['header']['KET'] == 0 || $value['header']['KET'] == 2){
-				if(count($arrErr) > 0 && $value['header']['KET'] == 0){
+			if($value['header']['KET'] == 0){
+				if(count($arrErr) > 0){
 					$penanda = 'bg-danger';
-					// $penandabutton = 1; //-----------------> harusnya 1
-					// $text_button = '<b>Create Picklist</b>';
-					$penandabutton = 0;
-					$text_button = '<b>Create Picklist Sebagian</b>';
-					$text_button2 = '<b>Create PL Header</b>';
+					$penandabutton = 1; //-----------------> harusnya 1
+					$text_button = '<b>Create Picklist</b>';
 				}else{
-					$penanda = $value['header']['KET'] == 0 ? '' : 'bg-warning';
+					$penanda = '';
 					$penandabutton = 0;
-					$text_button = $value['header']['KET'] == 0 ? '<b>Create Picklist</b>' : '<b>Create Picklist Sebagian</b>' ;
+					$text_button = '<b>Create Picklist</b>';
 					$text_button2 = '<b>Create PL Header</b>';
 				}
 			}else{
@@ -180,16 +172,9 @@
 			<td class="<?= $penanda ?>" ><?= $value['header']['ITEM_CODE'] ?></td>
 			<td class="<?= $penanda ?>" ><?= $value['header']['ITEM_DESC'] ?></td>
 			<td class="<?= $penanda ?>" ><?= $value['header']['START_QUANTITY'] ?></td>
-			<!-- <td class="<?= $penanda ?>" id="sdh_att4"><?= $value['header']['ATTRIBUTE4'] ?></td> -->
 			<td class="<?= $penanda ?>" ><?= $value['header']['DEPT_CLASS'] ?></td>
 			<td class="<?= $penanda ?>" ><?= $value['header']['DESCRIPTION'] ?></td>
-			<td class="<?= $penanda ?>" ><?= ($value['header']['KET'] == 1) ? '<b>Sudah Dibuat Picklist</b>' : 
-																				($value['header']['KET'] == 2 ?  '<b>Sudah Dibuat Picklist Sebagian</b>' : 'Belum Dibuat Picklist') ?>
-					<input type="hidden" id="nojob_header<?= $no?>" value="<?= $value['header']['WIP_ENTITY_NAME']; ?>">
-					<input type="hidden" id="qty_header<?= $no?>" value="<?= $value['header']['START_QUANTITY'] ?>">
-					<input type="hidden" id="qty_sudah_header<?= $no?>" value="<?= $value['header']['ATTRIBUTE4']?>">
-					<input type="hidden" id="wip_entity_name<?= $no?>" value="<?= $value['header']['WIP_ENTITY_NAME']?>">
-					<input type="hidden" id="keterangan_picklist<?= $no?>" value="<?= $value['header']['KET']?>">
+			<td class="<?= $penanda ?>" ><?= ($value['header']['KET'] == 1) ? '<b>Sudah Dibuat Picklist</b>' : 'Belum Dibuat Picklist' ?>
 			</td>
 <!-- YANG INI BENAR -->
 			<!--td class="<?= $penanda ?>">
@@ -219,13 +204,11 @@
 						</button>
 					<?php } else { ?>
 						<button class="btn btn-sm  <?= ($value['body']) ? 'btn-success' : 'disabled btn-default' ?>" target="_blank" 
-								 <?= ($value['body']) ? "onclick=cekCreatePicklist(".$no.",1);" :'' ?>>
-								 <!-- <?= ($value['body']) ? "onclick=document.getElementById('form".$value['header']['WIP_ENTITY_NAME']."').submit();" :'' ?>> -->
+								 <?= ($value['body']) ? "onclick=document.getElementById('form".$value['header']['WIP_ENTITY_NAME']."').submit();" :'' ?>>
 								 <?= $text_button; ?> 
 						</button><br><br>
 						<button class="btn btn-sm  <?= ($value['body']) ? 'btn-success' : 'disabled btn-default' ?>" target="_blank" 
-								 <?= ($value['body']) ? "onclick=cekCreatePicklist(".$no.",2);" :'' ?>>
-								 <!-- <?= ($value['body']) ? "onclick=document.getElementById('form2".$value['header']['WIP_ENTITY_NAME']."').submit();" :'' ?>> -->
+								 <?= ($value['body']) ? "onclick=document.getElementById('form2".$value['header']['WIP_ENTITY_NAME']."').submit();" :'' ?>>
 								 <?= $text_button2; ?> 
 						</button>
 					<?php } ?>
@@ -246,7 +229,7 @@
 			<td colspan="8"  class="<?= $penanda ?>" ><span onclick="seeDetailIMO(this,'<?= $key ?>')" class="btn btn-xs btn-primary"> see detail >> </span>
 				<div style="margin-top: 5px ; display: none; " id="detail<?= $key ?>" >
 				<form method="post" target="_blank" id="form<?= $value['header']['WIP_ENTITY_NAME']; ?>" action="<?php echo base_url('InventoryManagement/CreateMoveOrder/create'); ?>">
-				<table class="table table-sm table-bordered table-hover table-responsive"  style="border: 2px solid #ddd">
+				<table class="table table-sm table-bordered table-hover table-striped table-responsive"  style="border: 2px solid #ddd">
 					<thead>
 						<tr class="text-center">
 							<th>NO.</th>
@@ -267,11 +250,9 @@
 						<?php 
 						$no2 = 1;
 						if ($value['body']):
-						foreach ($value['body'] as $kut => $vulue) { 
-							$item_create = $vulue['TANDA'] == 'SUDAH' ? 'background-color:#F0F0F0' : '';
-						?>
+						foreach ($value['body'] as $kut => $vulue) { ?>
 						<tr class="baris<?=$no2?>">
-							<td style="<?= $item_create?>"><?= $no2++; ?>
+							<td><?= $no2++; ?>
 								<input type="hidden" name="no_job" value="<?= $vulue['WIP_ENTITY_NAME'] ?>">
 								<input type="hidden" name="invID[]" value="<?= $vulue['INVENTORY_ITEM_ID'] ?>">
 								<input type="hidden" name="qty[]" value="<?= $vulue['REQUIRED_QUANTITY'] ?>">
@@ -284,19 +265,16 @@
 								<input type="hidden" name="locatorfromid[]" value="<?= $vulue['LOCATOR_ASAL_ID'] ?>">
 								<input type="hidden" name="departement" value="NONE">
 								<input type="hidden" name="piklis" value="1">
-								<input type="hidden" name="start_qty" value="<?= $value['header']['START_QUANTITY'] ?>">
-								<input type="hidden" class="qty_sudahpick<?= $no?>" name="qty_sudah" value="<?= $value['header']['ATTRIBUTE4']?>">
-								<input type="hidden" class="att_komponen<?= $no?>" name="att[]" value="<?= $vulue['ATR'] ?>">
 							</td>
-							<td style="<?= $item_create?>"><?= $vulue['KOMPONEN'] ?></td>
-							<td style="<?= $item_create?>"><?= $vulue['KOMP_DESC'] ?></td>
-							<td style="<?= $item_create?>"><?= $vulue['GUDANG_ASAL'] ?></td>
-							<td style="<?= $item_create?>"><?= $vulue['LOCATOR_ASAL'] ?></td>
-							<td style="<?= $item_create?>"><?= $vulue['PRIMARY_UOM_CODE'] ?></td>
-							<td <?= ($vulue['REQUIRED_QUANTITY'] > $vulue['ATR']) ? 'class="bg-danger"' : 'style="'.$item_create.'""' ?>><?= $vulue['REQUIRED_QUANTITY'] ?></td>
-							<td style="<?= $item_create?>" class="<?= ($vulue['REQUIRED_QUANTITY'] > $vulue['ATR']) ? "text-danger text-bold-cuk" : "" ?>"><?= $vulue['ATR'] ?></td>
-							<td style="<?= $item_create?>" ><?= $vulue['MO']?></td>
-							<td style="<?= $item_create?>" class="<?= ($vulue['REQUIRED_QUANTITY'] > $vulue['KURANG']) ? "text-danger text-bold-cuk" : "" ?>"><?= $vulue['KURANG'] ?></td>
+							<td><?= $vulue['KOMPONEN'] ?></td>
+							<td><?= $vulue['KOMP_DESC'] ?></td>
+							<td><?= $vulue['GUDANG_ASAL'] ?></td>
+							<td><?= $vulue['LOCATOR_ASAL'] ?></td>
+							<td><?= $vulue['PRIMARY_UOM_CODE'] ?></td>
+							<td class="<?= ($vulue['REQUIRED_QUANTITY'] > $vulue['ATR']) ? "bg-danger " : "" ?>"><?= $vulue['REQUIRED_QUANTITY'] ?></td>
+							<td class="<?= ($vulue['REQUIRED_QUANTITY'] > $vulue['ATR']) ? "text-danger text-bold-cuk" : "" ?>"><?= $vulue['ATR'] ?></td>
+							<td ><?= $vulue['MO']?></td>
+							<td class="<?= ($vulue['REQUIRED_QUANTITY'] > $vulue['KURANG']) ? "text-danger text-bold-cuk" : "" ?>"><?= $vulue['KURANG'] ?></td>
 						</tr>
 						<?php 
 							$allNojob[$no][] =  $vulue['WIP_ENTITY_NAME'];
@@ -310,9 +288,6 @@
 							$allLocatorTo[$no][] =  $vulue['LOCATOR_TUJUAN_ID'];
 							$allLocatorFrom[$no][] =  $vulue['LOCATOR_ASAL'];
 							$allLocatorFromId[$no][] =  $vulue['LOCATOR_ASAL_ID'];
-							$allStartQTY[$no][] =  $value['header']['START_QUANTITY'];
-							$allQTYSudah[$no][] =  $value['header']['ATTRIBUTE4'];
-							$allATT[$no][] =  $vulue['ATR'];
 						?>
 						<?php }
 						else:?>
@@ -345,9 +320,6 @@
 								<input type="hidden" name="locatorfrom[]" value="<?= $vulue['LOCATOR_ASAL_ID'] ?>">
 								<input type="hidden" name="departement" value="NONE">
 								<input type="hidden" name="piklis" value="2">
-								<input type="hidden" name="start_qty" value="<?= $value['header']['START_QUANTITY'] ?>">
-								<input type="hidden" class="qty_sudahpick<?= $no?>" name="qty_sudah" value="<?= $value['header']['ATTRIBUTE4']?>">
-								<input type="hidden" class="att_komponen<?= $no?>" name="att[]" value="<?= $vulue['ATR'] ?>">
 						<?php 
 							$allNojob[$no][] =  $vulue['WIP_ENTITY_NAME'];
 							$allAssy[$no][] =  $value['header']['ITEM_CODE'];
@@ -360,9 +332,6 @@
 							$allLocatorTo[$no][] =  $vulue['LOCATOR_TUJUAN_ID'];
 							$allLocatorFrom[$no][] =  $vulue['LOCATOR_ASAL'];
 							$allLocatorFromId[$no][] =  $vulue['LOCATOR_ASAL_ID'];
-							$allStartQTY[$no][] =  $value['header']['START_QUANTITY'];
-							$allQTYSudah[$no][] =  $value['header']['ATTRIBUTE4'];
-							$allATT[$no][] =  $vulue['ATR'];
 						?>
 						<?php }
 						else:?>
@@ -374,6 +343,7 @@
 						<?php endif;
 						 ?>
 			</form>
+
 
 				</div>
 			</td>
@@ -401,15 +371,10 @@
 		<input type="hidden" name="locatorto[]" value="<?= implode('<>', $allLocatorTo[$key]) ?>">
 		<input type="hidden" name="locatorfrom[]" value="<?= implode('<>', $allLocatorFrom[$key]) ?>">
 		<input type="hidden" name="locatorfromid[]" value="<?= implode('<>', $allLocatorFromId[$key]) ?>">
-		<input type="hidden" name="startqty[]" value="<?= implode('<>', $allStartQTY[$key]) ?>">
-		<input type="hidden" name="qtysudahpick[]" value="<?= implode('<>', $allQTYSudah[$key]) ?>">
-		<input type="hidden" name="att_all[]" value="<?= implode('<>', $allATT[$key]) ?>">
 		<input type="hidden" name="departement" value="NONE">
 		<input type="hidden" name="piklis" value="1">
 		<?php } ?>
-	<!-- <button type="submit" class="btn btn-success pull-right" disabled="disabled" id="btnSelectedIMO"><b> CREATE PICKLIST SELECTED </b><b id="jmlSlcIMO"></b></button> -->
-	<button type="submit" class="btn btn-success pull-right" style="display:none" id="btnSelectedIMOSubmit"></button>
-	<button type="button" class="btn btn-success pull-right" disabled="disabled" id="btnSelectedIMO" onclick="cekSelectPicklist(1)"><b> CREATE PICKLIST SELECTED </b><b id="jmlSlcIMO"></b></button>
+	<button type="submit" class="btn btn-success pull-right" disabled="disabled" id="btnSelectedIMO"><b> CREATE PICKLIST SELECTED </b><b id="jmlSlcIMO"></b></button>
 	</form>
 	<br><br>
 	<form method="post" target="_blank" action="<?php echo base_url('InventoryManagement/CreateMoveOrder/createall'); ?>">
@@ -425,15 +390,10 @@
 		<input type="hidden" name="locatorto[]" value="<?= implode('<>', $allLocatorTo[$key]) ?>">
 		<input type="hidden" name="locatorfrom[]" value="<?= implode('<>', $allLocatorFrom[$key]) ?>">
 		<input type="hidden" name="locatorfromid[]" value="<?= implode('<>', $allLocatorFromId[$key]) ?>">
-		<input type="hidden" name="startqty[]" value="<?= implode('<>', $allStartQTY[$key]) ?>">
-		<input type="hidden" name="qtysudahpick[]" value="<?= implode('<>', $allQTYSudah[$key]) ?>">
-		<input type="hidden" name="att_all[]" value="<?= implode('<>', $allATT[$key]) ?>">
 		<input type="hidden" name="departement" value="NONE">
 		<input type="hidden" name="piklis" value="2">
 		<?php } ?>
-	<!-- <button type="submit" class="btn btn-success pull-right" disabled="disabled" id="btnSelectedIMO2"><b> CREATE PL HEADER SELECTED </b><b id="jmlSlcIMO2"></b></button> -->
-	<button type="submit" class="btn btn-success pull-right" style="display:none" id="btnSelectedIMO2Submit"></button>
-	<button type="button" class="btn btn-success pull-right" disabled="disabled" id="btnSelectedIMO2" onclick="cekSelectPicklist(2)"><b> CREATE PL HEADER SELECTED </b><b id="jmlSlcIMO2"></b></button>
+	<button type="submit" class="btn btn-success pull-right" disabled="disabled" id="btnSelectedIMO2"><b> CREATE PL HEADER SELECTED </b><b id="jmlSlcIMO2"></b></button>
 	</form>
 
 	<form method="post" target="_blank" action="<?php echo base_url('InventoryManagement/Monitoring/exportPending'); ?>">
@@ -479,9 +439,6 @@
 			<input type="hidden" name="locatorfrom[]" value="<?= $vulue['LOCATOR_ASAL'] ?>">
 			<input type="hidden" name="locatorfromid[]" value="<?= $vulue['LOCATOR_ASAL_ID'] ?>">
 			<input type="hidden" name="departement" value="SUBKT">
-			<input type="hidden" name="start_qty" value="<?= $value['header']['START_QUANTITY'] ?>">
-			<input type="hidden" class="qty_sudahpick<?= $no?>" name="qty_sudah" value="<?= $value['header']['ATTRIBUTE4']?>">
-			<input type="hidden" class="att_komponen<?= $no?>" name="att[]" value="<?= $vulue['ATR'] ?>">
 
 			<?php endforeach;?>
 
