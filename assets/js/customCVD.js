@@ -617,3 +617,451 @@ const addimgcvd = () =>{
 const minimgcvd = (id) =>{
 	$(`.table-add-image-cvd tbody tr[row="${id}"]`).remove();
 }
+
+// start Zona KHS
+$(document).on('ready', function(){
+	var tblCVDZonaKHS = $('#tbl-CVD-ZonaKHS').DataTable({
+        "lengthMenu": [
+            [ 5, 10, 25, 50, -1 ],
+            [ '5 rows', '10 rows', '25 rows', '50 rows', 'Show all' ]
+        ],
+        "dom" : 'Bfrtip',
+        "buttons" : [
+            'copy', 'csv', 'excel', 
+            {
+                extend: 'pdfHtml5',
+                orientation: 'landscape',
+                pageSize: 'LEGAL'
+            },
+            'print', 'pageLength'
+        ],
+        "columnDefs": [
+		    {
+		        targets: -1,
+		        className: 'text-center'
+		    },
+		    {
+		        targets: 0,
+		        className: 'text-center'
+		    },
+		    {
+		        targets: 3,
+		        className: 'text-center'
+		    },
+		    {
+		        targets: 4,
+		        className: 'text-center'
+		    },
+		    {
+		        targets: 5,
+		        className: 'text-center'
+		    }
+		]
+	});
+
+	$('input[name="txt-CVD-ZonaKHS-Isolasi"]').on('change', function(){
+		isolasi = $(this).val();
+		if (isolasi == "0") {
+			$('#txt-CVD-ZonaKHS-PeriodeAwal').attr('disabled', true);
+			$('#txt-CVD-ZonaKHS-PeriodeAkhir').attr('disabled', true);
+			$('#txa-CVD-ZonaKHS-Kasus').attr('disabled', true);
+			$('#txt-CVD-ZonaKHS-PeriodeAwal').val("");
+			$('#txt-CVD-ZonaKHS-PeriodeAkhir').val("");
+			$('#txa-CVD-ZonaKHS-Kasus').val("");
+		}else{
+			$('#txt-CVD-ZonaKHS-PeriodeAwal').attr('disabled', false);
+			$('#txt-CVD-ZonaKHS-PeriodeAkhir').attr('disabled', false);
+			$('#txa-CVD-ZonaKHS-Kasus').attr('disabled', false);
+		}
+	})
+
+	$('#txt-CVD-ZonaKHS-PeriodeAwal, #txt-CVD-ZonaKHS-PeriodeAkhir').datepicker({
+		"autoclose": true,
+		"todayHighlight": true,
+		"todayBtn": "linked",
+		"format":'yyyy-mm-dd'
+	});
+
+	$('#btn-CVD-ZonaKHS-Simpan').on('click', function(){
+		seksi = $('#txt-CVD-ZonaKHS-Seksi').val();
+		lokasi = $('#slc-CVD-ZonaKHS-Lokasi').val();
+		isolasi = $('input[name=txt-CVD-ZonaKHS-Isolasi]:checked').val();
+		tglAwal = $('#txt-CVD-ZonaKHS-PeriodeAwal').val();
+		tglAkhir = $('#txt-CVD-ZonaKHS-PeriodeAkhir').val();
+		kasus = $('#txa-CVD-ZonaKHS-Kasus').val();
+		email = $('input[name=txt-CVD-ZonaKHS-Email]:checked').val();
+		koor = $('#txt-CVD-ZonaKHS-Koordinat').val();
+
+		if (seksi !== null && seksi.length > 0 && lokasi !== null && lokasi.length > 0 && isolasi !== null && isolasi.length > 0 && koor !== null && koor.length > 0) {
+			if (isolasi === "1") {
+				if (tglAwal !== null && seksi.length > 0 && tglAkhir !== null && tglAkhir.length > 0 && kasus !== null && kasus.length > 0 && email !== null && email.length > 0) {
+					$('#ldg-CVD-ZonaKHS-Add').show();
+					$.ajax({
+						method: 'POST',
+			    		url: baseurl + 'Covid/ZonaKHS/Insert',
+			    		data: {
+			    			seksi 		: seksi,
+			    			lokasi 		: lokasi,
+			    			isolasi 	: isolasi,
+			    			tgl_awal 	: tglAwal,
+			    			tgl_akhir 	: tglAkhir,
+			    			kasus 		: kasus,
+			    			email 		: email,
+			    			koordinat	: koor
+			    		},
+			    		error: function(xhr,status,error){
+							$('#ldg-CVD-ZonaKHS-Add').hide();
+							swal.fire({
+				                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+				                html: xhr['responseText'],
+				                type: "error",
+				                confirmButtonText: 'OK',
+				                confirmButtonColor: '#d63031',
+				            })
+						},
+						success: function(data){
+							$('#ldg-CVD-ZonaKHS-Add').hide();
+							if (data == "sukses") {
+								Swal.fire(
+									'Simpan Sukses !!!',
+									'Data Berhasil Disimpan !!',
+									'success'
+								).then(function(){
+							  		Swal.fire({
+										title: 'Apakah Anda Ingin menginput Data lagi ?',
+										text: "jika tidak akan diredirect ke halaman list Zona Covid KHS",
+										type: 'question',
+										showCancelButton: true,
+										confirmButtonColor: '#3085d6',
+										cancelButtonColor: '#d33',
+										confirmButtonText: 'Ya',
+										cancelButtonText: 'Tidak'
+									}).then((result) => {
+									  	if (result.value) {
+									  		$('#txt-CVD-ZonaKHS-Seksi').val("");
+											$('#slc-CVD-ZonaKHS-Lokasi').val("");
+											$('#txt-CVD-ZonaKHS-PeriodeAwal').val("");
+											$('#txt-CVD-ZonaKHS-PeriodeAkhir').val("");
+											$('#txa-CVD-ZonaKHS-Kasus').val("");
+									  	}else{
+							  				window.location.href = baseurl + 'Covid/ZonaKHS';
+									  	}
+									});
+								});
+							}else{
+								swal.fire({
+					                title: "Error",
+					                html: data,
+					                type: "error",
+					                confirmButtonText: 'OK',
+					                confirmButtonColor: '#d63031',
+					            })
+							}
+						}
+					})
+				}else{
+					Swal.fire(
+						'Peringatan !!!',
+						'Periode Isolasi, Kasus dan email harus terisi',
+						'warning'
+					)
+				}
+			}else{
+				$('#ldg-CVD-ZonaKHS-Add').show();
+				$.ajax({
+					method: 'POST',
+		    		url: baseurl + 'Covid/ZonaKHS/Insert',
+		    		data: {
+		    			seksi 		: seksi,
+		    			lokasi 		: lokasi,
+		    			isolasi 	: isolasi,
+		    			koordinat 	: koor
+		    		},
+		    		error: function(xhr,status,error){
+						$('#ldg-CVD-ZonaKHS-Add').hide();
+						swal.fire({
+			                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+			                html: xhr['responseText'],
+			                type: "error",
+			                confirmButtonText: 'OK',
+			                confirmButtonColor: '#d63031',
+			            })
+					},
+					success: function(data){
+						$('#ldg-CVD-ZonaKHS-Add').hide();
+						if (data == "sukses") {
+							Swal.fire(
+								'Simpan Sukses !!!',
+								'Data Berhasil Disimpan !!',
+								'success'
+							).then(function(){
+								Swal.fire({
+									title: 'Apakah Anda Ingin menginput Data lagi ?',
+									text: "jika tidak akan diredirect ke halaman list Zona Covid KHS",
+									type: 'question',
+									showCancelButton: true,
+									confirmButtonColor: '#3085d6',
+									cancelButtonColor: '#d33',
+									confirmButtonText: 'Ya',
+									cancelButtonText: 'Tidak'
+								}).then((result) => {
+								  	if (result.value) {
+								  		$('#txt-CVD-ZonaKHS-Seksi').val("");
+										$('#slc-CVD-ZonaKHS-Lokasi').val("");
+										$('#txt-CVD-ZonaKHS-PeriodeAwal').val("");
+										$('#txt-CVD-ZonaKHS-PeriodeAkhir').val("");
+										$('#txa-CVD-ZonaKHS-Kasus').val("");
+								  	}else{
+						  				window.location.href = baseurl + 'Covid/ZonaKHS';
+								  	}
+								});
+							});
+						}else{
+							swal.fire({
+				                title: "Error",
+				                html: data,
+				                type: "error",
+				                confirmButtonText: 'OK',
+				                confirmButtonColor: '#d63031',
+				            })
+						}
+					}
+				})
+			}
+		}else{
+			Swal.fire(
+				'Peringatan !!!',
+				'Seksi, Lokasi, dan Isolasi harus terisi',
+				'warning'
+			)
+		}
+	})
+
+	$('#btn-CVD-ZonaKHS-Update').on('click', function(){
+		idZona = $(this).attr('data-id');
+		seksi = $('#txt-CVD-ZonaKHS-Seksi').val();
+		lokasi = $('#slc-CVD-ZonaKHS-Lokasi').val();
+		isolasi = $('input[name=txt-CVD-ZonaKHS-Isolasi]:checked').val();
+		tglAwal = $('#txt-CVD-ZonaKHS-PeriodeAwal').val();
+		tglAkhir = $('#txt-CVD-ZonaKHS-PeriodeAkhir').val();
+		kasus = $('#txa-CVD-ZonaKHS-Kasus').val();
+		email = $('input[name=txt-CVD-ZonaKHS-Email]:checked').val();
+		koor = $('#txt-CVD-ZonaKHS-Koordinat').val();
+
+		if (seksi !== null && seksi.length > 0 && lokasi !== null && lokasi.length > 0 && isolasi !== null && isolasi.length > 0 && koor !== null && koor.length > 0) {
+			if (isolasi === "1") {
+				if (tglAwal !== null && seksi.length > 0 && tglAkhir !== null && tglAkhir.length > 0 && kasus !== null && kasus.length > 0 && email !== null && email.length > 0) {
+					$('#ldg-CVD-ZonaKHS-Add').show();
+					$.ajax({
+						method: 'POST',
+			    		url: baseurl + 'Covid/ZonaKHS/Update/' + idZona,
+			    		data: {
+			    			seksi 		: seksi,
+			    			lokasi 		: lokasi,
+			    			isolasi 	: isolasi,
+			    			tgl_awal 	: tglAwal,
+			    			tgl_akhir 	: tglAkhir,
+			    			kasus 		: kasus,
+			    			email 		: email,
+			    			koordinat 	: koor
+			    		},
+			    		error: function(xhr,status,error){
+							$('#ldg-CVD-ZonaKHS-Add').hide();
+							swal.fire({
+				                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+				                html: xhr['responseText'],
+				                type: "error",
+				                confirmButtonText: 'OK',
+				                confirmButtonColor: '#d63031',
+				            })
+						},
+						success: function(data){
+							$('#ldg-CVD-ZonaKHS-Add').hide();
+							if (data == "sukses") {
+								Swal.fire(
+									'Simpan Sukses !!!',
+									'Data Berhasil Disimpan !!',
+									'success'
+								).then(function(){
+							  		Swal.fire({
+										title: 'Apakah Anda Ingin meng-update Data lagi ?',
+										text: "jika tidak akan diredirect ke halaman list Zona Covid KHS",
+										type: 'question',
+										showCancelButton: true,
+										confirmButtonColor: '#3085d6',
+										cancelButtonColor: '#d33',
+										confirmButtonText: 'Ya',
+										cancelButtonText: 'Tidak'
+									}).then((result) => {
+									  	if (!result.value) {
+							  				window.location.href = baseurl + 'Covid/ZonaKHS';
+									  	}
+									});
+								});
+							}else{
+								swal.fire({
+					                title: "Error",
+					                html: data,
+					                type: "error",
+					                confirmButtonText: 'OK',
+					                confirmButtonColor: '#d63031',
+					            })
+							}
+						}
+					})
+				}else{
+					Swal.fire(
+						'Peringatan !!!',
+						'Periode Isolasi, Kasus dan email harus terisi',
+						'warning'
+					)
+				}
+			}else{
+				$('#ldg-CVD-ZonaKHS-Add').show();
+				$.ajax({
+					method: 'POST',
+		    		url: baseurl + 'Covid/ZonaKHS/Update/' + idZona,
+		    		data: {
+		    			seksi 		: seksi,
+		    			lokasi 		: lokasi,
+		    			isolasi 	: isolasi,
+		    			koordinat   : koor
+		    		},
+		    		error: function(xhr,status,error){
+						$('#ldg-CVD-ZonaKHS-Add').hide();
+						swal.fire({
+			                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+			                html: xhr['responseText'],
+			                type: "error",
+			                confirmButtonText: 'OK',
+			                confirmButtonColor: '#d63031',
+			            })
+					},
+					success: function(data){
+						$('#ldg-CVD-ZonaKHS-Add').hide();
+						if (data == "sukses") {
+							Swal.fire(
+								'Simpan Sukses !!!',
+								'Data Berhasil Disimpan !!',
+								'success'
+							).then(function(){
+								Swal.fire({
+									title: 'Apakah Anda Ingin meng-update Data lagi ?',
+									text: "jika tidak akan diredirect ke halaman list Zona Covid KHS",
+									type: 'question',
+									showCancelButton: true,
+									confirmButtonColor: '#3085d6',
+									cancelButtonColor: '#d33',
+									confirmButtonText: 'Ya',
+									cancelButtonText: 'Tidak'
+								}).then((result) => {
+								  	if (!result.value) {
+						  				window.location.href = baseurl + 'Covid/ZonaKHS';
+								  	}
+								});
+							});
+						}else{
+							swal.fire({
+				                title: "Error",
+				                html: data,
+				                type: "error",
+				                confirmButtonText: 'OK',
+				                confirmButtonColor: '#d63031',
+				            })
+						}
+					}
+				})
+			}
+		}else{
+			Swal.fire(
+				'Peringatan !!!',
+				'Seksi, Lokasi, dan Isolasi harus terisi',
+				'warning'
+			)
+		}
+	})
+
+	$('#tbl-CVD-ZonaKHS').on('click', '.btn-CVD-ZonaKHS-Hapus', function(){
+		idZona = $(this).closest('tr').find('input').val();
+		Swal.fire({
+			title: 'Apakah Anda Ingin menghapus Data ini ?',
+			text: "data yang sudah dihapus tidak dapat dikembalikan.",
+			type: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: 'Ya',
+			cancelButtonText: 'Tidak'
+		}).then((result) => {
+		  	if (result.value) {
+				$('#ldg-CVD-ZonaKHS').show();
+		  		$.ajax({
+		    		method: 'GET',
+		    		url: baseurl + 'Covid/ZonaKHS/Delete/' + idZona,
+		    		error: function(xhr,status,error){
+						$('#ldg-CVD-ZonaKHS').hide();
+						swal.fire({
+			                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+			                html: xhr['responseText'],
+			                type: "error",
+			                confirmButtonText: 'OK',
+			                confirmButtonColor: '#d63031',
+			            })
+					},
+					success: function(data){
+						if (obj = JSON.parse(data)) {
+							tblCVDZonaKHS.clear().draw();
+							button = '<button class="btn btn-info btn-CVD-ZonaKHS-Edit" title="Edit"><span class="fa fa-edit"></span></button>'
+							button += '<button class="btn btn-danger btn-CVD-ZonaKHS-Hapus" title="Hapus"><span class="fa fa-trash"></span></button>'
+							obj.forEach(function(daftar, index){
+								tblCVDZonaKHS.row.add([
+									(index + 1) + '<input type="hidden" value="' + daftar.id_zona +'">',
+									daftar.lokasi,
+									daftar.nama_seksi,
+									daftar.isolasi,
+									daftar.tgl_awal_isolasi,
+									daftar.tgl_akhir_isolasi,
+									daftar.kasus,
+									button
+								]).draw(false);
+							})
+							tblCVDZonaKHS.columns.adjust().draw();
+							Swal.fire(
+								'Hapus Data Sukses !!!',
+								'Data Berhasil Dihapus !!',
+								'success'
+							);
+							$('#ldg-CVD-ZonaKHS').hide();
+						}else{
+							$('#ldg-CVD-ZonaKHS').hide();
+							swal.fire({
+				                title: "Error",
+				                html: data,
+				                type: "error",
+				                confirmButtonText: 'OK',
+				                confirmButtonColor: '#d63031',
+				            })
+						}
+					}
+		    	});
+		  	}
+		});
+	})
+
+	$('#tbl-CVD-ZonaKHS').on('click', '.btn-CVD-ZonaKHS-Edit', function(){
+		idZona = $(this).closest('tr').find('input').val();
+		window.location.href = baseurl + 'Covid/ZonaKHS/Edit/' + idZona;
+	})
+
+	$('#slc-CVD-ZonaKHS-Lokasi').on('change', function(){
+		lokasi = $(this).val();
+		if (lokasi == "JOGJA") {
+			$('#map-pst').show();
+			$('#map-tks').hide();
+		}else{
+			$('#map-tks').show();
+			$('#map-pst').hide();
+		}
+	})
+})
+// end Zona KHS
