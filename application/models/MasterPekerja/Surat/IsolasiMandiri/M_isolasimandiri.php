@@ -85,6 +85,11 @@ class M_isolasimandiri extends CI_Model
 					(
 						select trim(nama)
 						from hrd_khs.tpribadi tp 
+						where sim.tembusan = tp.noind 
+					) as tembusan_nama,
+					(
+						select trim(nama)
+						from hrd_khs.tpribadi tp 
 						where sim.mengetahui = tp.noind 
 					) as mengetahui_nama,
 					(
@@ -301,11 +306,12 @@ class M_isolasimandiri extends CI_Model
 		return $this->personalia->query($sql)->result_array();
 	}
 
-	public function delTim($tglt, $wkt1, $wkt2)
+	public function delTim($tglt, $wkt1, $wkt2, $pekerja)
 	{
 		$this->personalia->where('tanggal', $tglt);
 		$this->personalia->where('masuk', $wkt1);
 		$this->personalia->where('keluar', $wkt2);
+		$this->personalia->where('noind', $pekerja);
 		// echo $this->personalia->get_compiled_delete('"Presensi".tdatatim');
 		$this->personalia->delete('"Presensi".tdatatim');
 		return $this->personalia->affected_rows();

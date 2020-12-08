@@ -187,7 +187,7 @@ $(document).ready(function(){
 		});
 	});
 
-	$('#slcMPSuratIsolasiMandiriTo').select2();
+	$('.slcMPSuratIsolasiMandiriTo').select2();
 
 	$('.cvd_btncektim').click(function(){
 		$.ajax({
@@ -361,8 +361,13 @@ $(document).ready(function(){
 		imageUploadErrorCallback: function(json) {
 			alert(json.error);
 		}
-	})
-
+	});
+	$('.txt-CVD-Prokes').redactor({
+		imageUpload: baseurl + 'Covid/MonitoringCovid/uploadRedactor',
+		imageUploadErrorCallback: function(json) {
+			alert(json.error);
+		}
+	});
 	$('input[name="covid_menginap"]').on('change', function () {
 		if ($('input[name="covid_menginap"]:checked').val() == "1") {
 			$('.covid_show_menginap').show();
@@ -450,6 +455,107 @@ $(document).ready(function(){
 		imageUpload: baseurl + 'Covid/MonitoringCovid/uploadRedactor',
 		imageUploadErrorCallback: function(json) {
 			alert(json.error);
+		}
+	});
+
+	$('.cvd_arahanprob').change(function(){
+		var id = $('input:radio.cvd_arahanprob:checked').val();
+		if (id == '1') {
+			$('#cvd_arahan123').show();
+			$('#cvd_arahan123 textarea').attr('disabled', false);
+			$('#cvd_arahan123 textarea').redactor({
+				imageUpload: baseurl + 'Covid/MonitoringCovid/uploadRedactor',
+				imageUploadErrorCallback: function(json) {
+					alert(json.error);
+				}
+			});
+		}else{
+			$('#cvd_arahan123').hide();
+			$('#cvd_arahan123 textarea').redactor('destroy');
+			$('#cvd_arahan123 textarea').attr('disabled', true);
+		}
+	});
+
+	$('[name="hubungan"]').change(function(){
+		var id = $('input:radio[name="hubungan"]:checked').val();
+		if (id == 'lainnya') {
+			$('[name="lainnya"]').show();
+			$('[name="lainnya"]').attr('disabled', false);
+		}else{
+			$('[name="lainnya"]').hide();
+			$('[name="lainnya"]').attr('disabled', true);
+		}
+	});
+
+	$(".cvd_drange").daterangepicker({
+		singleDatePicker: true,
+		timePicker: false,
+		timePicker24Hour: true,
+		showDropdowns: true,
+		locale: {
+			format: "YYYY-MM-DD",
+		},
+	});
+
+	$('[name="hasil_uji"]').change(function(){
+		var id = $(this).val();
+		if (id == 'Ya') {
+			$('#cvd_divtest').show();
+		}else{
+			$('#cvd_divtest').hide();
+		}
+	});
+
+	$('[name="fantibody"]').change(function(){
+		if ($(this).is(':checked')) {
+			$(this).closest('div').find('input').not($(this)).attr('disabled', false);
+		}else{
+			$(this).closest('div').find('input').not($(this)).attr('disabled', true);
+		}
+	});
+	$('[name="fantigen"]').change(function(){
+		if ($(this).is(':checked')) {
+			$(this).closest('div').find('input').not($(this)).attr('disabled', false);
+		}else{
+			$(this).closest('div').find('input').not($(this)).attr('disabled', true);
+		}
+	});
+	$('[name="fpcr"]').change(function(){
+		if ($(this).is(':checked')) {
+			$(this).closest('div').find('input').not($(this)).attr('disabled', false);
+		}else{
+			$(this).closest('div').find('input').not($(this)).attr('disabled', true);
+		}
+	});
+
+	$('[name="lapor_puskesmas"]').change(function(){
+		var id = $(this).val();
+		if (id == 'Sudah') {
+			$('#cvd_divlappuskes').show();
+			$('#cvd_divlappuskes input').attr('disabled', false);
+		}else{
+			$('#cvd_divlappuskes').hide();
+			$('#cvd_divlappuskes input').attr('disabled', true);
+		}
+	});
+	$('#cvd_btnaddfasilitas').click(function(){
+		var clone = $(this).closest('table').find('tbody').find('tr').eq(0).clone();
+		$(this).closest('table').find('tbody').append(clone);
+		$(this).closest('table').find('tbody').find('tr').find('input').last().val('');
+	});
+	$(document).on('click', '.cvd_btnrmfasilitas' ,function(){
+		var sum = $(this).closest('table').find('tbody').find('tr').size();
+		if (sum > 1) {
+			$(this).closest('tr').remove();
+		}
+	});
+
+	$('.cvd_inboxjml').change(function(){
+		var t = $(this).is(':checked');
+		if ($(this).is(':checked')) {
+			$(this).parents('div').eq(1).find('input').not($(this)).attr('disabled', false);
+		}else{
+			$(this).parents('div').eq(1).find('input').not($(this)).attr('disabled', true).val('');
 		}
 	})
 });
