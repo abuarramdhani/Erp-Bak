@@ -281,7 +281,7 @@ class C_IsolasiMandiri extends CI_Controller
 				$wkt1 = $ex[1];
 				$wkt2 = $ex[2];
 
-				$deltim = $this->M_isolasimandiri->delTim($tglt, $wkt1, $wkt2);
+				$deltim = $this->M_isolasimandiri->delTim($tglt, $wkt1, $wkt2, $pekerja);
 
 				$arl = array(
 					'wkt'	=>	date('Y-m-d H:i:s'),
@@ -748,7 +748,7 @@ class C_IsolasiMandiri extends CI_Controller
 					$wkt1 = $ex[1];
 					$wkt2 = $ex[2];
 
-					$deltim = $this->M_isolasimandiri->delTim($tglt, $wkt1, $wkt2);
+					$deltim = $this->M_isolasimandiri->delTim($tglt, $wkt1, $wkt2, $pekerja);
 
 					$arl = array(
 						'wkt'	=>	date('Y-m-d H:i:s'),

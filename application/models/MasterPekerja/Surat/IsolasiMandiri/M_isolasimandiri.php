@@ -306,11 +306,12 @@ class M_isolasimandiri extends CI_Model
 		return $this->personalia->query($sql)->result_array();
 	}
 
-	public function delTim($tglt, $wkt1, $wkt2)
+	public function delTim($tglt, $wkt1, $wkt2, $pekerja)
 	{
 		$this->personalia->where('tanggal', $tglt);
 		$this->personalia->where('masuk', $wkt1);
 		$this->personalia->where('keluar', $wkt2);
+		$this->personalia->where('noind', $pekerja);
 		// echo $this->personalia->get_compiled_delete('"Presensi".tdatatim');
 		$this->personalia->delete('"Presensi".tdatatim');
 		return $this->personalia->affected_rows();
