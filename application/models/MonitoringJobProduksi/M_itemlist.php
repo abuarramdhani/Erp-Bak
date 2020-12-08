@@ -40,7 +40,7 @@ class M_itemlist extends CI_Model
                 WHERE msib.inventory_item_status_code = 'Active'              
                 AND msib.inventory_item_id = '$term'
                 AND msib.organization_id IN (101, 102) --OPM, ODM         
-                ORDER BY msib.segment1
+                ORDER BY msib.organization_id desc
                 ";
         $query = $this->oracle->query($sql);
         return $query->result_array();
