@@ -29,8 +29,19 @@
 											<div class="form-group">
 												<label class="control-label col-lg-4">Kepada</label>
 												<div class="col-lg-4">
-													<select class="slcMPSuratIsolasiMandiriPekerjax" data-placeholder="Ditujukan Kepada" name="slcMPSuratIsolasiMandiriTo" id="slcMPSuratIsolasiMandiriTo" style="width: 100%" required>
+													<select class="slcMPSuratIsolasiMandiriPekerjax slcMPSuratIsolasiMandiriTo" data-placeholder="Ditujukan Kepada" name="slcMPSuratIsolasiMandiriTo" id="slcMPSuratIsolasiMandiriTo" style="width: 100%" required>
 														<option selected="" value="<?php echo $dt['kepada'] ?>"><?php echo $dt['kepada'].' - '.$dt['kepada_nama'] ?></option>
+														<?php foreach ($atasan as $k): ?>
+															<option value="<?= $k['noind'] ?>" ><?= $k['noind'].' - '.$k['nama'] ?></option>
+														<?php endforeach ?>
+													</select>
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="control-label col-lg-4">Tembusan</label>
+												<div class="col-lg-4">
+													<select class="slcMPSuratIsolasiMandiriPekerjax slcMPSuratIsolasiMandiriTo" data-placeholder="Ditujukan Kepada" name="slcMPSuratIsolasiMandiriTembusan" id="slcMPSuratIsolasiMandiriTembusan" style="width: 100%" required>
+														<option selected="" value="<?php echo $dt['tembusan'] ?>"><?php echo $dt['tembusan'].' - '.$dt['tembusan_nama'] ?></option>
 														<?php foreach ($atasan as $k): ?>
 															<option value="<?= $k['noind'] ?>" ><?= $k['noind'].' - '.$k['nama'] ?></option>
 														<?php endforeach ?>

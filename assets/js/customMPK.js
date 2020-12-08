@@ -4464,6 +4464,7 @@ $(document).ready(function () {
     var simMengetahui = $("#slcMPSuratIsolasiMandiriMengetahui").val();
     var simCetak = $("#txtMPSuratIsolasiMandiriCetakTanggal").val();
     var simNo = $("#txtMPSuratIsolasiMandiriNoSurat").val();
+    var simTembusan = $('#slcMPSuratIsolasiMandiriTembusan').val();
 
     $.ajax({
       data: {
@@ -4479,6 +4480,7 @@ $(document).ready(function () {
         simMengetahui: simMengetahui,
         simCetak: simCetak,
         simNo: simNo,
+        simTembusan: simTembusan,
         al: $('[name="slcMPSuratIsolasiMandiriAlasan2[]"]').map(function(){return $(this).val();}).get(),
         st: $('[name="slcMPSuratIsolasiMandiriStatus2[]"]').map(function(){return $(this).val();}).get(),
         tgl: $('[name="tgl_perperiode[]"]').map(function(){return $(this).val();}).get()

@@ -85,6 +85,11 @@ class M_isolasimandiri extends CI_Model
 					(
 						select trim(nama)
 						from hrd_khs.tpribadi tp 
+						where sim.tembusan = tp.noind 
+					) as tembusan_nama,
+					(
+						select trim(nama)
+						from hrd_khs.tpribadi tp 
 						where sim.mengetahui = tp.noind 
 					) as mengetahui_nama,
 					(

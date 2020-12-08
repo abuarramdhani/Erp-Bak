@@ -112,6 +112,7 @@ class C_IsolasiMandiri extends CI_Controller
 		$mengetahui = $this->input->get('simMengetahui');
 		$cetak = $this->input->get('simCetak');
 		$noSurat = $this->input->get('simNo');
+		$tembusan = $this->input->get('simTembusan');
 
 		$tgl = $this->input->get('tgl');
 		$status = $this->input->get('st');
@@ -151,6 +152,7 @@ class C_IsolasiMandiri extends CI_Controller
 		// echo $tabl;exit();
 
 		$pekerja_arr = $this->M_isolasimandiri->getDetailPekerjaByNoind($pekerja);
+		$tembusanarr = $this->M_isolasimandiri->getDetailPekerjaByNoind($tembusan);
 		$kepada_arr = $this->M_isolasimandiri->getDetailPekerjaByNoind($kepada);
 		$dibuat_arr = $this->M_isolasimandiri->getDetailPekerjaByNoind($dibuat);
 		$menyetujui_arr = $this->M_isolasimandiri->getDetailPekerjaByNoind($menyetujui);
@@ -181,6 +183,7 @@ class C_IsolasiMandiri extends CI_Controller
 		// $surat_text = str_replace("surat_isolasi_mandiri_mengetahui_nama", ucwords(strtolower($mengetahui_arr[0]['nama'])), $surat_text);
 		// $surat_text = str_replace("surat_isolasi_mandiri_menyetujui_nama", ucwords(strtolower($menyetujui_arr[0]['nama'])), $surat_text);
 		$surat_text = str_replace("surat_isolasi_mandiri_dibuat_nama", ucwords(strtolower($dibuat_arr[0]['nama'])), $surat_text);
+		$surat_text = str_replace("nama_tembusan", ucwords(strtolower($tembusanarr[0]['nama'])), $surat_text);
 		$surat_text = str_replace("surat_isolasi_mandiri_dibuat_table", $tabl, $surat_text);
 
 		$data = array(
@@ -239,6 +242,7 @@ class C_IsolasiMandiri extends CI_Controller
 			$data_insert = array(
 				'pekerja' 				=> $pekerja,
 				'kepada' 				=> $this->input->post('slcMPSuratIsolasiMandiriTo'),
+				'tembusan' 				=> $this->input->post('slcMPSuratIsolasiMandiriTembusan'),
 				'dibuat' 				=> $user,
 				'no_surat' 				=> $no_surat,
 				'tgl_wawancara' 		=> $this->input->post('txtMPSuratIsolasiMandiriWawancaraTanggal'),
@@ -254,6 +258,7 @@ class C_IsolasiMandiri extends CI_Controller
 			$data_insert = array(
 				'pekerja' 				=> $pekerja,
 				'kepada' 				=> $this->input->post('slcMPSuratIsolasiMandiriTo'),
+				'tembusan' 				=> $this->input->post('slcMPSuratIsolasiMandiriTembusan'),
 				'dibuat' 				=> $user,
 				'no_surat' 				=> $no_surat,
 				'tgl_wawancara' 		=> $this->input->post('txtMPSuratIsolasiMandiriWawancaraTanggal'),
@@ -590,6 +595,7 @@ class C_IsolasiMandiri extends CI_Controller
 		$data_update = array(
 			'pekerja' 				=> $pkj,
 			'kepada' 				=> $this->input->post('slcMPSuratIsolasiMandiriTo'),
+			'tembusan' 				=> $this->input->post('slcMPSuratIsolasiMandiriTembusan'),
 			'dibuat' 				=> $user,
 			'no_surat' 				=> $no_surat,
 			'tgl_wawancara' 		=> $this->input->post('txtMPSuratIsolasiMandiriWawancaraTanggal'),
