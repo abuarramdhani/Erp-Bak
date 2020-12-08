@@ -117,6 +117,9 @@ class C_IsolasiMandiri extends CI_Controller
 		$tgl = $this->input->get('tgl');
 		$status = $this->input->get('st');
 		$alasan = $this->input->get('al');
+		$lama1 = $tgl[0];
+		$c = count($tgl);
+		$lama2 = $tgl[$c-1];
 
 		$q = 0;
 		$arr = array();
@@ -138,16 +141,19 @@ class C_IsolasiMandiri extends CI_Controller
 		for ($i=0; $i < count($arr); $i++) {
 			$fi = $arr[$i][0];
 			$li = $arr[$i][count($arr[$i])-1];
+			$awl = date('d M Y', strtotime($tgl[$fi]));
+			$akh = date('d M Y', strtotime($tgl[$li]));
+			$jml = date_diff(date_create($akh), date_create($awl))->format('%d')+1;
 			$arr2[] = array(
 				'awal' => date('d M Y', strtotime($tgl[$fi])),
 				'akhir' => date('d M Y', strtotime($tgl[$li])),
-				'jml'	=> count($arr[$i]),
+				'jml'	=> $jml,
 				'st' => $status[$fi],
 				);
 		}
 		//table
 		$data['arr2'] = $arr2;
-		$data['qq'] = $qq;
+		$data['qq'] = date_diff(date_create($lama2), date_create($lama1))->format('%d')+1;;
 		$tabl = $this->load->view('MasterPekerja/Surat/IsolasiMandiri/V_Tabel',$data, true);
 		// echo $tabl;exit();
 

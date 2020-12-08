@@ -161,7 +161,6 @@ class C_MonitoringCovid extends CI_Controller
 
 			$wawancara = $this->M_monitoringcovid->getWawancaraIsolasiByPekerjaId($pekerja_id);
 			$id_wawancara = $wawancara->wawancara_id;
-			// echo $id_wawancara;exit();
 			$data = array(
 				'hasil_wawancara' => $hasil_wawancara,
 				'updated_date' => date('Y-m-d H:i:s'),
@@ -183,6 +182,8 @@ class C_MonitoringCovid extends CI_Controller
 					$filename						= $_FILES['file-CVD-MonitoringCovid-Tambah-Lampiran']['name'][$key_lamp];
 					$ekstensi						= pathinfo($filename,PATHINFO_EXTENSION);
 					$nama 							= str_replace(array(".".$ekstensi," "),array("","_"), $filename)."_".time().".".$ekstensi;
+					$nama 							= str_replace('.', '_', $nama);
+					$nama 							= str_replace('_'.$ekstensi, '.'.$ekstensi, $nama);
 					$config['upload_path']          = './assets/upload/Covid/Wawancara/';
 					$config['allowed_types']        = 'jpg|png|gif|bmp|jpeg|jpe|tiff|tif|svg|cdr|psd';
 					$config['file_name']		 	= $nama;
@@ -244,6 +245,8 @@ class C_MonitoringCovid extends CI_Controller
 					$filename						= $_FILES['file-CVD-MonitoringCovid-Tambah-Lampiran']['name'][$key_lamp];
 					$ekstensi						= pathinfo($filename,PATHINFO_EXTENSION);
 					$nama 							= str_replace(array(".".$ekstensi," "),array("","_"), $filename)."_".time().".".$ekstensi;
+					$nama 							= str_replace('.', '_', $nama);
+					$nama 							= str_replace('_'.$ekstensi, '.'.$ekstensi, $nama);
 					$config['upload_path']          = './assets/upload/Covid/Wawancara/';
 					$config['allowed_types']        = 'jpg|png|gif|bmp|jpeg|jpe|tiff|tif|svg|cdr|psd';
 					$config['file_name']		 	= $nama;
@@ -1021,9 +1024,7 @@ class C_MonitoringCovid extends CI_Controller
 
 	public function insertMenghadiriAcara($value='')
 	{
-
 		$covid_tamu_luar = $this->input->post('covid_tamu_luar');
-
 		if($covid_tamu_luar == 1)
 		{
 			$covid_tamu_luar = 'Ya';
@@ -1033,7 +1034,6 @@ class C_MonitoringCovid extends CI_Controller
 		}
 
 		$covid_lokasi_acara = $this->input->post('covid_lokasi_acara');
-
 		if($covid_lokasi_acara == 1)
 		{
 			$covid_lokasi_acara = 'Indoor';
@@ -1072,11 +1072,55 @@ class C_MonitoringCovid extends CI_Controller
 		}
 	}
 
-	public function uploadLampiranCvd($id_wawancara)
+	public function insertProblaby()
+	{
+		$hubungan = $this->input->post('hubungan');
+		$arahan = $this->input->post('hubungan');
+		if ($hubungan == 'lainnya') {
+			$hubungan = $this->input->post('lainnya');
+		}
+
+		if ($arahan == '1') {
+			$arahan = $this->input->post('arahan_deskripsi');
+		}else{
+			$arahan = 'Tidak Ada';
+		}
+		$user = $this->session->user;
+		$data = [
+		'no_induk' => $this->input->post('slc-CVD-MonitoringCovid-Tambah-Pekerja'),
+		'id_pekerja' => $this->input->post('slc-CVD-MonitoringCovid-Tambah-PekerjaId'),
+		'seksi' => $this->input->post('txt-CVD-MonitoringCovid-Tambah-Seksi'),
+		'dept' => $this->input->post('txt-CVD-MonitoringCovid-Tambah-Departemen'),
+		'tgl_kejadian' => $this->input->post('txtPeriodeKejadian'),
+		'keterangan' => $this->input->post('txt-CVD-MonitoringCovid-Tambah-Keterangan'),
+		'yang_kontak'	=> $this->input->post('yang_kontak'),
+		'hubungan'	=> $hubungan,
+		'jenis_interaksi'	=> $this->input->post('jenis_interaksi'),
+		'intensitas'	=> $this->input->post('intensitas'),
+		'durasi'	=> $this->input->post('durasi'),
+		'protokol'	=> $this->input->post('protokol'),
+		'arahan'	=> $arahan,
+		'atasan' => $this->input->post('slc-CVD-MonitoringCovid-Atasan'),
+		];
+		
+		$id_wawancara = $this->M_monitoringcovid->kontakProblaby($data, $user);
+		$this->uploadLampiranCvd($id_wawancara);
+		$this->session->set_userdata('result', 'berhasil');
+		$src = $this->input->post('source');
+		if ($src == 'problaby') {
+			redirect('Covid/PelaporanPekerja/Interaksi');
+		}else{
+
+		}
+	}
+
+	public function uploadLampiranCvd($id_wawancara = '')
 	{
 		$files = $_FILES;
 		if (empty($files)) {
 			return 'no image';
+		}elseif ($id_wawancara == '') {
+			return 'no id';
 		}
 		$user = $this->session->user;
 		$this->load->library('upload');
