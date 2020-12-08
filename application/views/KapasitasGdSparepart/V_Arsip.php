@@ -22,8 +22,20 @@
                 },
                 ],
             });
+            $('.datepicktgl').datepicker({
+                format: 'dd/mm/yyyy',
+                todayHighlight: true,
+                autoClose: true
+            }).on('change', function(){
+                $('.datepicker').hide();
+            });
          });
     </script>
+<style>
+#DataTables_Table_0_processing {
+    height:70px;
+}
+</style>
 <section class="content">
     <div class="inner">
         <div class="row">
@@ -63,7 +75,22 @@
                                     <label class="control-label"><?php echo gmdate("l, d F Y, H:i:s", time()+60*60*7) ?></label>
                                 </div>
                                 <div class="col-md-12">
-                                <div class="panel-body">
+                                    <div class="col-md-3">
+                                        <label>Tanggal Awal</label>
+                                        <input id="tglAwal" name="tglAwal" class="form-control pull-right datepicktgl" placeholder="dd/mm/yyyy" autocomplete="off">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label>Tanggal Akhir</label>
+                                        <div class="input-group">
+                                        <input id="tglAkhir" name="tglAkhir" class="form-control pull-right datepicktgl" placeholder="dd/mm/yyyy" autocomplete="off">
+                                        <span class="input-group-btn">
+                                            <button type="button" onclick="schArsipdospb(this)" class="btn btn-flat" style="background:inherit; text-align:left;padding:0px;padding-left:10px;"><i class="fa fa-2x fa-arrow-circle-right" ></i></button>    
+                                        </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                <div class="panel-body" id="tbl_arsip_dospb">
                                     <div class="table-responsive" >
                                         <table class="datatable table table-bordered table-hover table-striped text-center tblarsipkgs" style="width: 100%;">
                                             <thead class="bg-black">
@@ -79,10 +106,10 @@
                                                     <th>Selesai Pelayanan</th>
                                                     <th>Waktu Pelayanan</th>
                                                     <th>PIC Pelayanan</th>
-                                                    <th>Mulai Pengeluaran</th>
-                                                    <th>Selesai Pengeluaran</th>
-                                                    <th>Waktu Pengeluaran</th>
-                                                    <th>PIC Pengeluaran</th>
+                                                    <th>Mulai Pengecekan</th>
+                                                    <th>Selesai Pengecekan</th>
+                                                    <th>Waktu Pengecekan</th>
+                                                    <th>PIC Pengecekan</th>
                                                     <th>Mulai Packing</th>
                                                     <th>Selesai Packing</th>
                                                     <th>Waktu Packing</th>

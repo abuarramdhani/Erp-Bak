@@ -5,7 +5,7 @@
             <th rowspan="2" style="width:5%">No</th>
             <th rowspan="2"><?= $tambahan?>Nama PIC<?= $tambahan?></th>
             <th colspan="3">Pelayanan</th>
-            <th colspan="3">Pengeluaran</th>
+            <th colspan="3">Pengecekan</th>
             <th colspan="3">Packing</th>
         </tr>
         <tr>
