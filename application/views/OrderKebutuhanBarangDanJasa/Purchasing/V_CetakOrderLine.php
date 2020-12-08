@@ -7,6 +7,7 @@
         <td style="border:1px solid black; text-align:center; font-size:10px;">Item Code</td>
         <td style="border:1px solid black; text-align:center; font-size:10px;">Item Description</td>
         <td style="border:1px solid black; text-align:center; font-size:10px;">Quantity</td>
+        <td style="border:1px solid black; text-align:center; font-size:10px;">Cut Off date</td>
         <td style="border:1px solid black; text-align:center; font-size:10px;">NBD</td>
         <td style="border:1px solid black; text-align:center; font-size:10px;">Flag</td>
         <td style="border:1px solid black; text-align:center; font-size:10px; width:11%; word-wrap:break-word">Destination Information</td>
@@ -23,6 +24,7 @@
             <td style="text-align:center; border:1px solid black; font-size:10px;"><?= $line['SEGMENT1'];?></td>
             <td style="text-align:center; border:1px solid black; font-size:10px;"><?= $line['ITEM_DESCRIPTION'];?></td>
             <td style="text-align:center; border:1px solid black; font-size:10px;"><?= $line['QUANTITY'].' '.$line['UOM'];?></td>
+            <td style="text-align:center; border:1px solid black; font-size:10px;"><?= $line['CUT_OFF_DATE'];?></td>
             <td style="text-align:center; border:1px solid black; font-size:10px;"><?= $line['NEED_BY_DATE'];?></td>
             <td style="text-align:center; border:1px solid black; font-size:10px;">
                 <?php

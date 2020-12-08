@@ -79,6 +79,7 @@ class C_Requisition extends CI_Controller {
 		// print_r($data['UserMenu']);exit;
 		
 		if ($this->session->responsibility_id == 2678) { //set admin atau bukan
+		// if ($this->session->responsibility_id == 2683) { //set admin atau bukan dev
 			$data['requester'] = $this->M_requisition->getRequsterAdmin($noind);
 		} else {
 			$data['requester'] = $data['pengorder'];
@@ -110,6 +111,7 @@ class C_Requisition extends CI_Controller {
 		$urgentFlag = $this->input->post('hdnUrgentFlagOKB[]');
 		$urgentReason = $this->input->post('txtOKBinputUrgentReason[]');
 		$statusOrder = $this->input->post('txtOKBHdnStatusOrder');
+		$cutoff = $this->input->post('cutoff[]');
 
 		$statusPage = $this->input->post('btnOKBSubmit');
 
@@ -164,7 +166,7 @@ class C_Requisition extends CI_Controller {
 				'KODEITEM' => $itemkodDanNamaBarang[$i]
 			);
 
-			$order_id = $this->M_requisition->saveLine($line, date("Y-m-d", strtotime($nbd[$i])));
+			$order_id = $this->M_requisition->saveLine($line, date("Y-m-d", strtotime($nbd[$i])), date("Y-m-d", strtotime($cutoff[$i])));
 
 			if($urgentFlag[$i] == 'Y'){
 
@@ -666,7 +668,6 @@ class C_Requisition extends CI_Controller {
 		//email
 		// echo $noind;exit;
 		$getEmail = $this->M_approver->getEmail($noind);
-		// print_r($getEmail);exit;
 		$emailUser = $getEmail[0]['EMAIL_INTERNAL'];
 		// echo 
 		// $emailUser = 'bondan_surya_n@quick.com';
@@ -704,7 +705,7 @@ class C_Requisition extends CI_Controller {
 			echo "Mailer Error: " . $mail->ErrorInfo;
 			exit();
 		} else {
-			echo "Message sent!";
+			// echo "Message sent!";
 		}
 	}
 
