@@ -148,6 +148,12 @@ class C_Purchasing extends CI_Controller {
                         $itemdesc = $desc[0]['DESCRIPTION'].' '.$data['ITEM_DESCRIPTION'];
                     }
 
+                    if($data['IS_SUSULAN'] == 'Y'){
+                        $notebuyer = 'SUSULAN - '.$data['NOTE_TO_BUYER'];
+                    }else{
+                        $notebuyer = $data['NOTE_TO_BUYER'];
+                    }
+
                     $orderPR = array(
                         'INTERFACE_SOURCE_CODE' => $interface_source_code[0]['INTERFACE_SOURCE_CODE'],
                         'ORG_ID' => 82,
@@ -163,7 +169,7 @@ class C_Purchasing extends CI_Controller {
                         'NEED_BY_DATE' => $data['NEED_BY_DATE'],
                         'CHARGE_ACCOUNT_ID' => $charge_account_id[0]['CHARGE_ACCOUNT_ID'],
                         'LINE_TYPE_ID' => 1,
-                        'NOTE_TO_BUYER' => $data['NOTE_TO_BUYER'],
+                        'NOTE_TO_BUYER' => $notebuyer,
                         'CATEGORY_ID' => $category_id[0]['CATEGORY_ID'],
                         'DELIVER_TO_REQUESTOR_ID' => $data['REQUESTER'],
                         'PREPARER_ID' => $puller[0]['CREATED_BY'],
@@ -313,12 +319,16 @@ class C_Purchasing extends CI_Controller {
 
     public function cetakOrder($pre_req_id)
     {
+
+        $plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $pre_req_id);
+        $plaintext_string = $this->encrypt->decode($plaintext_string);
+        
         $this->load->library('pdf');
 		$pdf = $this->pdf->load();
-		$filename = 'Okebaja-pre_req_id-'.$pre_req_id.'-tanggal_cetak-'.date('d-m-Y').'.pdf';
-		$pdf = new mPDF('utf-8', 'A4-L', 0, 'arial',3, 3, 43, 3, 3, 3);
+		$filename = 'Okebaja-pre_req_id-'.$plaintext_string.'-tanggal_cetak-'.date('d-m-Y').'.pdf';
+		$pdf = new mPDF('utf-8', 'A4-L', 0, 'arial',3, 3, 46, 3, 3, 3);
         
-        $lines = $this->M_purchasing->cetakOrder($pre_req_id);
+        $lines = $this->M_purchasing->cetakOrder($plaintext_string);
 
         $finishLines = array();
         for ($i=0; $i < count($lines); $i++) { 
@@ -329,11 +339,11 @@ class C_Purchasing extends CI_Controller {
 			}
             array_push($finishLines,$lines[$i]);
         }
-        $data['headers'] = $this->M_purchasing->cetakHeader($pre_req_id);
+        $data['headers'] = $this->M_purchasing->cetakHeader($plaintext_string);
         $data['lines'] = $finishLines;
 
         // echo '<pre>';
-        // print_r($data['lines']);
+        // print_r($data['headers']);
         // exit;
 
         $header = $this->load->view('OrderKebutuhanBarangDanJasa/Purchasing/V_CetakOrderHeader',$data,true);

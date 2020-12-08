@@ -134,7 +134,11 @@
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">
-                                                                <a href="<?= base_url('OrderKebutuhanBarangDanJasa/Purchasing/cetakOrder/'.$list['PRE_REQ_ID']);?>" target="_blank" type="button" class="btn btn-default"><i class="fa fa-print"></i> cetak</a>
+                                                            <?php 
+                                                                $encrypted_string = $this->encrypt->encode($list['PRE_REQ_ID']);
+                                                                $encrypted_string = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
+                                                            ?>
+                                                                <a href="<?= base_url('OrderKebutuhanBarangDanJasa/Purchasing/cetakOrder/'.$encrypted_string);?>" target="_blank" type="button" class="btn btn-default"><i class="fa fa-print"></i> cetak</a>
                                                                 <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
                                                             </div>
                                                         </div>

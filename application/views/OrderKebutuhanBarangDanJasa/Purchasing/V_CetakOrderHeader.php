@@ -4,9 +4,9 @@
             <img src="<?= base_url('/assets/img/quick-logo.jpg');?>" alt="" style="max-width:100px; max-height:150px;">
         </th>
         <th style="border-top:1px solid black; width:500px; height:10px;" colspan="7"></th>
-        <th style="border-left:1px solid black; border-top:1px solid black; width:150px; height:10px;" colspan="2"></th>
-        <th style="border-top:1px solid black; height:10px;"></th>
-        <th style="border-top:1px solid black; border-right:1px solid black; width:100px; height:10px;"></th>
+        <td style="border-left:1px solid black; border-top:1px solid black; width:150px; height:10px; font-size:10px; padding-left:2mm;" colspan="2">Pre requisition id</td>
+        <td style="border-top:1px solid black; height:10px;">:</td>
+        <td style="border-top:1px solid black; border-right:1px solid black; width:100px; height:10px;font-size:10px;"><?= $headers[0]['PRE_REQ_ID'];?></td>
         <th style="border-top:1px solid black; border-right:1px solid black; height:10px; width:200px;"></th>
     </tr>
     <tr>
@@ -43,7 +43,7 @@
     <tr>
         <th style="border-right:1px solid black; border-bottom:1px solid black; height:10px;" colspan="7"></th>
         <th style="border-bottom:1px solid black; height:10px;" colspan="4"></th>
-        <td style="border:1px solid black; height:10px; font-size:10px; text-align:center"></td>
+        <td style="border:1px solid black; height:10px; font-size:10px; text-align:center">verificator : <?= $headers[0]['APPROVER'];?></td>
     </tr>
     <tr>
         <th style="border:1px solid black;" colspan="14">Order Lines Details</th>
