@@ -81,39 +81,39 @@ $tambahan = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&
                         <?php }else { ?>
                             <button type="button" class="btn btn-xs" style="background-color:inherit;height:22px"></button>
                         <?php }?>
-                        <input type="hidden" name="plan<?= $no?><?= $i+1?>" value="<?= $value['plan'.$i.'']?>">
+                        <input type="hidden" name="plan<?= $value['INVENTORY_ITEM_ID']?><?= $i+1?>" value="<?= $value['plan'.$i.'']?>">
                     </p>
                 <?php if ($ket == 'All' || $ket == 'PA') { ?>
                     <p>
                         <?= $value['akt'.$i.''] != '' ? $value['akt'.$i.''] : "<br>" ?>
-                        <input type="hidden" name="akt<?= $no?><?= $i+1?>" value="<?= $value['akt'.$i.'']?>">
+                        <input type="hidden" name="akt<?= $value['INVENTORY_ITEM_ID']?><?= $i+1?>" value="<?= $value['akt'.$i.'']?>">
                     </p>
                     <p><?php $valmin = $value['min'.$i.''] != '' ? '': 'width:20px' ?>
                             <button type="button" class="btn btn-xs" style="background-color:#F6D673;font-size:12px;height:22px;<?= $valmin?>" onclick="commentmin(<?= $no?>, <?= $i+1?>, 'MIN')"><?= $value['min'.$i.'']?></button>
-                        <input type="hidden" id="min<?= $no?><?= $i+1?>" name="min<?= $no?><?= $i+1?>" value="<?= $value['min'.$i.'']?>">
+                        <input type="hidden" id="min<?= $value['INVENTORY_ITEM_ID']?><?= $i+1?>" name="min<?= $value['INVENTORY_ITEM_ID']?><?= $i+1?>" value="<?= $value['min'.$i.'']?>">
                     </p>
                 <?php }?>
                 
                 <?php if ($ket == 'All' || $ket == 'PLP') { ?>
                     <p>
                         <?= $value['pl'.$i.''] != '' ? $value['pl'.$i.''] : "<br>" ?>
-                        <input type="hidden" name="pl<?= $no?><?= $i+1?>" value="<?= $value['pl'.$i.'']?>">
+                        <input type="hidden" name="pl<?= $value['INVENTORY_ITEM_ID']?><?= $i+1?>" value="<?= $value['pl'.$i.'']?>">
                     </p>
                     <p><?php $valplmin = $value['plmin'.$i.''] != '' ? '': 'width:20px' ?>
                         <!-- <?= $value['plmin'.$i.''] == '' ? "<br>" : $value['plmin'.$i.''] ?> -->
                         <button type="button" class="btn btn-xs" style="background-color:#FFB670;font-size:12px;height:22px;<?= $valplmin?>" onclick="commentmin(<?= $no?>, <?= $i+1?>, 'PLMIN')"><?= $value['plmin'.$i.'']?></button>
-                        <input type="hidden" name="plmin<?= $no?><?= $i+1?>" value="<?= $value['plmin'.$i.'']?>">
+                        <input type="hidden" name="plmin<?= $value['INVENTORY_ITEM_ID']?><?= $i+1?>" value="<?= $value['plmin'.$i.'']?>">
                     </p>
                 <?php }?>
                 
                 <?php if ($ket == 'All' || $ket == 'PC') { ?>
                     <p>
                         <?= $value['com'.$i.''] != '' ? $value['com'.$i.''] : "<br>" ?>
-                        <input type="hidden" name="com<?= $no?><?= $i+1?>" value="<?= $value['com'.$i.'']?>">
+                        <input type="hidden" name="com<?= $value['INVENTORY_ITEM_ID']?><?= $i+1?>" value="<?= $value['com'.$i.'']?>">
                     </p>
                     <p><?php $valcmin = $value['cmin'.$i.''] != '' ? '': 'width:20px' ?>
                         <button type="button" class="btn btn-xs" style="background-color:#F5817F;font-size:12px;height:22px;<?= $valcmin?>" onclick="commentmin(<?= $no?>, <?= $i+1?>, 'CMIN')"><?= $value['cmin'.$i.'']?></button>
-                        <input type="hidden" name="cmin<?= $no?><?= $i+1?>" value="<?= $value['cmin'.$i.'']?>">
+                        <input type="hidden" name="cmin<?= $value['INVENTORY_ITEM_ID']?><?= $i+1?>" value="<?= $value['cmin'.$i.'']?>">
                     </p>
                 <?php }?>
                 </td>

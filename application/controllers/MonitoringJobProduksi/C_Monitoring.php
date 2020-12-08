@@ -65,7 +65,7 @@ class C_Monitoring extends CI_Controller
 		$this->load->view('V_Footer',$data);
 	}
 	
-	public function getdataMonitoring($kategori, $inibulan, $hari, $bulan){
+	public function getdataMonitoring($kategori, $inibulan, $hari, $bulan, $urutan){
 		$getdata = $this->M_monitoring->getdataMonitoring($kategori);
 		$cariakt = $this->M_monitoring->getAktual2($kategori, $inibulan);
 		// $cariakt = $this->M_monitoring->getAktual($kategori, $data['bulan']);
@@ -136,8 +136,11 @@ class C_Monitoring extends CI_Controller
 				}
 			}
 		}
-		function querySort ($x, $y) {
-			return strcasecmp($x['ITEM'], $y['ITEM']);
+
+		if ($urutan == 0) {
+			function querySort ($x, $y) {
+				return strcasecmp($x['ITEM'], $y['ITEM']);
+			}
 		}
 		
 		usort($datanya, 'querySort');
@@ -205,7 +208,7 @@ class C_Monitoring extends CI_Controller
 
 		$data['hari'] = $this->jumlahHari($bulan);
 
-		$datanya = $this->getdataMonitoring($kategori, $inibulan, $data['hari'], $data['bulan']);
+		$datanya = $this->getdataMonitoring($kategori, $inibulan, $data['hari'], $data['bulan'], 0);
 		// echo "<pre>";print_r($datanya);exit();
 
 		$data['data'] = $datanya[0];
@@ -224,7 +227,7 @@ class C_Monitoring extends CI_Controller
 		$hari			= $this->jumlahHari($bulan2);
 		$inidata = array();
 		for ($i=0; $i < count($kategori) ; $i++) { 
-			$datanya 	= $this->getdataMonitoring($kategori[$i], $inibulan, $hari, $bulan);
+			$datanya 	= $this->getdataMonitoring($kategori[$i], $inibulan, $hari, $bulan, $i);
 			$ctgr 		= $this->M_monitoring->getCategory("where id_category = '".$kategori[$i]."'");
 			$datanya['kategori'] = $ctgr[0]['CATEGORY_NAME'];
 			$datanya['kategori2'] = $kategori[$i];
@@ -381,7 +384,8 @@ class C_Monitoring extends CI_Controller
 		$data['bulan'] 		= $this->input->post('bulan');
 		$data['item'] 		= $this->input->post('item'.$no.'');
 		$data['desc'] 		= $this->input->post('desc'.$no.'');
-		$data['plan'] 		= $this->input->post('plan'.$no.''.$tgl.'');
+		$data['inv'] 		= $this->input->post('inv'.$no.'');
+		$data['plan'] 		= $this->input->post('plan'.$data['inv'].''.$tgl.'');
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -500,13 +504,13 @@ class C_Monitoring extends CI_Controller
 			$baris['jml_plmin'] = $this->input->post('jml_plmin'.$no[$i].'');
 			$baris['jml_cmin'] = $this->input->post('jml_cmin'.$no[$i].'');
 			for ($x=0; $x < $hari; $x++) { 
-				$baris['plan'.$x.''] = $this->input->post('plan'.$no[$i].''.($x+1).'');
-				$baris['akt'.$x.''] = $this->input->post('akt'.$no[$i].''.($x+1).'');
-				$baris['min'.$x.''] = $this->input->post('min'.$no[$i].''.($x+1).'');
-				$baris['com'.$x.''] = $this->input->post('com'.$no[$i].''.($x+1).'');
-				$baris['pl'.$x.''] = $this->input->post('pl'.$no[$i].''.($x+1).'');
-				$baris['plmin'.$x.''] = $this->input->post('plmin'.$no[$i].''.($x+1).'');
-				$baris['cmin'.$x.''] = $this->input->post('cmin'.$no[$i].''.($x+1).'');
+				$baris['plan'.$x.''] = $this->input->post('plan'.$baris['inv'].''.($x+1).'');
+				$baris['akt'.$x.''] = $this->input->post('akt'.$baris['inv'].''.($x+1).'');
+				$baris['min'.$x.''] = $this->input->post('min'.$baris['inv'].''.($x+1).'');
+				$baris['com'.$x.''] = $this->input->post('com'.$baris['inv'].''.($x+1).'');
+				$baris['pl'.$x.''] = $this->input->post('pl'.$baris['inv'].''.($x+1).'');
+				$baris['plmin'.$x.''] = $this->input->post('plmin'.$baris['inv'].''.($x+1).'');
+				$baris['cmin'.$x.''] = $this->input->post('cmin'.$baris['inv'].''.($x+1).'');
 			}
 			array_push($datanya, $baris);
 		}
@@ -974,16 +978,16 @@ class C_Monitoring extends CI_Controller
 				$baris['jml_min'] = $this->input->post('jml_cmin'.$no[$i].'');
 			}
 			for ($x=0; $x < $hari; $x++) { 
-				$baris['plan'.$x.''] = $this->input->post('plan'.$no[$i].''.($x+1).'');
+				$baris['plan'.$x.''] = $this->input->post('plan'.$baris['inv'].''.($x+1).'');
 				if ($ket == 'PA') {
-					$baris['pa'.$x.''] = $this->input->post('akt'.$no[$i].''.($x+1).'');
-					$baris['min'.$x.''] = $this->input->post('min'.$no[$i].''.($x+1).'');
+					$baris['pa'.$x.''] = $this->input->post('akt'.$baris['inv'].''.($x+1).'');
+					$baris['min'.$x.''] = $this->input->post('min'.$baris['inv'].''.($x+1).'');
 				}elseif($ket == 'PLP'){
-					$baris['pa'.$x.''] = $this->input->post('pl'.$no[$i].''.($x+1).'');
-					$baris['min'.$x.''] = $this->input->post('plmin'.$no[$i].''.($x+1).'');
+					$baris['pa'.$x.''] = $this->input->post('pl'.$baris['inv'].''.($x+1).'');
+					$baris['min'.$x.''] = $this->input->post('plmin'.$baris['inv'].''.($x+1).'');
 				}elseif($ket == 'PC'){
-					$baris['pa'.$x.''] = $this->input->post('com'.$no[$i].''.($x+1).'');
-					$baris['min'.$x.''] = $this->input->post('cmin'.$no[$i].''.($x+1).'');
+					$baris['pa'.$x.''] = $this->input->post('com'.$baris['inv'].''.($x+1).'');
+					$baris['min'.$x.''] = $this->input->post('cmin'.$baris['inv'].''.($x+1).'');
 				}
 			}
 			array_push($datanya, $baris);
@@ -1417,13 +1421,13 @@ class C_Monitoring extends CI_Controller
 				$baris['jml_com'] = $this->input->post('jml_com'.$i.($j+1).'');
 				$baris['jml_cmin'] = $this->input->post('jml_cmin'.$i.($j+1).'');
 				for ($p=0; $p < ($tglakhir[0] - $tglawal[0] +1) ; $p++) { 
-					$baris['plan'.$p.''] = $this->input->post('plan'.$i.($j+1).$p.'');
-					$baris['akt'.$p.''] = $this->input->post('akt'.$i.($j+1).$p.'');
-					$baris['min'.$p.''] = $this->input->post('min'.$i.($j+1).$p.'');
-					$baris['pl'.$p.''] = $this->input->post('pl'.$i.($j+1).$p.'');
-					$baris['plmin'.$p.''] = $this->input->post('plmin'.$i.($j+1).$p.'');
-					$baris['com'.$p.''] = $this->input->post('com'.$i.($j+1).$p.'');
-					$baris['cmin'.$p.''] = $this->input->post('cmin'.$i.($j+1).$p.'');
+					$baris['plan'.$p.''] = $this->input->post('plan'.$kategori2[$i].$baris['inv'].$p.'');
+					$baris['akt'.$p.''] = $this->input->post('akt'.$kategori2[$i].$baris['inv'].$p.'');
+					$baris['min'.$p.''] = $this->input->post('min'.$kategori2[$i].$baris['inv'].$p.'');
+					$baris['pl'.$p.''] = $this->input->post('pl'.$kategori2[$i].$baris['inv'].$p.'');
+					$baris['plmin'.$p.''] = $this->input->post('plmin'.$kategori2[$i].$baris['inv'].$p.'');
+					$baris['com'.$p.''] = $this->input->post('com'.$kategori2[$i].$baris['inv'].$p.'');
+					$baris['cmin'.$p.''] = $this->input->post('cmin'.$kategori2[$i].$baris['inv'].$p.'');
 					$baris['total_plan'.$p.''] = $this->input->post('total_plan'.$i.$p.'');
 					$baris['total_akt'.$p.''] = $this->input->post('total_akt'.$i.$p.'');
 					$baris['total_min'.$p.''] = $this->input->post('total_min'.$i.$p.'');

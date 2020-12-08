@@ -86,30 +86,30 @@
             for ($i=($tglawal-1); $i < ($tglakhir) ; $i++) { 
             ?>
                 <td><p><?= $value['plan'.$i.''] != '' ? $value['plan'.$i.''] : "<br>" ?>
-                        <input type="hidden" name="plan<?= $key?><?= $no?><?= $n?>" value="<?= $value['plan'.$i.'']?>">
+                        <input type="hidden" name="plan<?= $val['kategori2']?><?= $value['INVENTORY_ITEM_ID']?><?= $n?>" value="<?= $value['plan'.$i.'']?>">
                     </p>
                     <p>
                         <?= $value['akt'.$i.''] != '' ? $value['akt'.$i.''] : "<br>" ?>
-                        <input type="hidden" name="akt<?= $key?><?= $no?><?= $n?>" value="<?= $value['akt'.$i.'']?>">
+                        <input type="hidden" name="akt<?= $val['kategori2']?><?= $value['INVENTORY_ITEM_ID']?><?= $n?>" value="<?= $value['akt'.$i.'']?>">
                     </p>
                     <p><?= $value['min'.$i.''] != '' ? $value['min'.$i.''] : "<br>" ?>
-                        <input type="hidden" id="min<?= $no?><?= $n?>" name="min<?= $key?><?= $no?><?= $n?>" value="<?= $value['min'.$i.'']?>">
+                        <input type="hidden" id="min<?= $no?><?= $n?>" name="min<?= $val['kategori2']?><?= $value['INVENTORY_ITEM_ID']?><?= $n?>" value="<?= $value['min'.$i.'']?>">
                     </p>
                 
                     <p>
                         <?= $value['pl'.$i.''] != '' ? $value['pl'.$i.''] : "<br>" ?>
-                        <input type="hidden" name="pl<?= $key?><?= $no?><?= $n?>" value="<?= $value['pl'.$i.'']?>">
+                        <input type="hidden" name="pl<?= $val['kategori2']?><?= $value['INVENTORY_ITEM_ID']?><?= $n?>" value="<?= $value['pl'.$i.'']?>">
                     </p>
                     <p><?= $value['plmin'.$i.''] != '' ? $value['plmin'.$i.''] : "<br>" ?>
-                        <input type="hidden" name="plmin<?= $key?><?= $no?><?= $n?>" value="<?= $value['plmin'.$i.'']?>">
+                        <input type="hidden" name="plmin<?= $val['kategori2']?><?= $value['INVENTORY_ITEM_ID']?><?= $n?>" value="<?= $value['plmin'.$i.'']?>">
                     </p>
                 
                     <p>
                         <?= $value['com'.$i.''] != '' ? $value['com'.$i.''] : "<br>" ?>
-                        <input type="hidden" name="com<?= $key?><?= $no?><?= $n?>" value="<?= $value['com'.$i.'']?>">
+                        <input type="hidden" name="com<?= $val['kategori2']?><?= $value['INVENTORY_ITEM_ID']?><?= $n?>" value="<?= $value['com'.$i.'']?>">
                     </p>
                     <p><?= $value['cmin'.$i.''] != '' ? $value['cmin'.$i.''] : "<br>" ?>
-                        <input type="hidden" name="cmin<?= $key?><?= $no?><?= $n?>" value="<?= $value['cmin'.$i.'']?>">
+                        <input type="hidden" name="cmin<?= $val['kategori2']?><?= $value['INVENTORY_ITEM_ID']?><?= $n?>" value="<?= $value['cmin'.$i.'']?>">
                     </p>
                 </td>
             <?php $n++; }?>

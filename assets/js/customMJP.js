@@ -75,7 +75,7 @@ function schMonJob(ket) {
             if (nomor != undefined) {
                 getWipMonitoring(1, nomor);
                 getGdMonitoring(1, nomor);
-                getPickMonitoring(1, nomor);
+                // getPickMonitoring(1, nomor);
                 $('.loadingwip').html('<center><img style="width:30px; height:auto" src="'+baseurl+'assets/img/gif/loading5.gif"></center>' );
                 $('.loadingpick').html('<center><img style="width:30px; height:auto" src="'+baseurl+'assets/img/gif/loading5.gif"></center>' );
                 $('.loadinggd').html('<center><img style="width:30px; height:auto" src="'+baseurl+'assets/img/gif/loading5.gif"></center>' );
@@ -99,6 +99,8 @@ function getWipMonitoring(no, batas) {
                 getWipMonitoring((no+1), batas);
             }
         })
+    }else{
+        getPickMonitoring(1, batas);
     }
 }
 
@@ -131,8 +133,8 @@ function getGdMonitoring(no, batas) {
             success : function (result) {
                 // console.log(result,no)
                 $('[name = "ini_gd'+no+'"]').html('<b>FG-TKS :</b> '+result[0]+'<br><b>MLATI-DM :</b> '+result[1]+'')
-                $('[name ="fg_tks'+no+'"]').val(result[2]);
-                $('[name ="mlati'+no+'"]').val(result[3]);
+                $('[name ="fg_tks'+no+'"]').val(result[0]);
+                $('[name ="mlati'+no+'"]').val(result[1]);
                 getGdMonitoring((no+1), batas);
             }
         })
