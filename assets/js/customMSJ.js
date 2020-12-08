@@ -390,3 +390,48 @@ const updateSJ = _ => {
     console.log('hai');
   })
 }
+
+const tblmonmsj = $('#tbl_mon_msj').DataTable({
+    // dom: 'rtp',
+    ajax: {
+      data: (d) => $.extend({}, d, {
+        org: null,
+        id_plan: null
+      }),
+      url: baseurl + "MonitoringSuratJalan/Monitoring/buildMSJDataTable",
+      type: 'POST',
+    },
+    ordering: false,
+    pageLength: 10,
+    pagingType: 'first_last_numbers',
+    processing: true,
+    serverSide: true,
+    preDrawCallback: function(settings) {
+         if ($.fn.DataTable.isDataTable('#tbl_mon_msj')) {
+             var dt = $('#tbl_mon_msj').DataTable();
+
+             //Abort previous ajax request if it is still in process.
+             var settings = dt.settings();
+             if (settings[0].jqXHR) {
+                 settings[0].jqXHR.abort();
+             }
+         }
+     },
+    createdRow: function( row, data, dataIndex ) {
+       $(row).attr('row', data[0]);
+    },
+    columnDefs : [
+     {
+        'targets': 2,
+        'createdCell':  function (td, cellData, rowData, row, col) {
+          $(td).attr('id', 'sopir_up');
+        }
+     },
+     {
+        'targets': 3,
+        'createdCell':  function (td, cellData, rowData, row, col) {
+          $(td).attr("id", 'plat_up');
+        }
+     }
+    ]
+});

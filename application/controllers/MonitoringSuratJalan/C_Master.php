@@ -200,12 +200,69 @@ class C_Master extends CI_Controller
         $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
-        $data['get'] = $this->M_msj->getSj();
+        // $data['get'] = $this->M_msj->getSj();
 
         $this->load->view('V_Header', $data);
         $this->load->view('V_Sidemenu', $data);
         $this->load->view('MonitoringSuratJalan/V_Monitoring');
         $this->load->view('V_Footer', $data);
+    }
+
+    public function buildMSJDataTable($value='')
+    {
+      $post = $this->input->post();
+
+      foreach ($post['columns'] as $val) {
+          $post['search'][$val['data']]['value'] = $val['search']['value'];
+      }
+
+      $countall = $this->M_msj->countAllSJ()['count'];
+      $countfilter = $this->M_msj->countFilteredSJ($post)['count'];
+
+      $post['pagination']['from'] = $post['start'] + 1;
+      $post['pagination']['to'] = $post['start'] + $post['length'];
+
+      $protodata = $this->M_msj->selectSJ($post);
+      // echo "<pre>";
+      // print_r($ascpdata);
+      // die;
+      $data = [];
+      foreach ($protodata as $row) {
+
+          $sub_array   = [];
+          $sub_array[] = $row['PAGINATION'];
+          $sub_array[] = '<center>'.$row['NO_SURATJALAN'].'</center>';
+          $sub_array[] = '<center>'.$row['NAMA_SUPIR'].'</center>';
+          $sub_array[] = '<center>'.$row['PLAT_NUMBER'].'</center>';
+          $sub_array[] = '<center>'.$row['JENIS_KENDARAAN'].'</center>';
+          $sub_array[] = '<center>'.$row['DARI'].'</center>';
+          $sub_array[] = '<center>'.$row['TUJUAN'].'</center>';
+          $sub_array[] = '<center>
+                            <button type="button" class="btn bg-navy" style="border-radius: 8px" name="button" style="font-weight:bold;" onclick="detailSJ(\''.$row['NO_SURATJALAN'].'\')" data-toggle="modal" data-target="#Mmsj">
+                              <i class="fa fa-eye"></i> Detail
+                            </button>
+                            <button type="button" class="btn bg-gray" style="margin-left:5px;border-radius: 8px" name="button" style="font-weight:bold;" onclick="editSJ(\''.$row['NO_SURATJALAN'].'\', '.$row['PAGINATION'].')" data-toggle="modal" data-target="#editmsj">
+                               <i class="fa fa-edit"></i> Edit
+                            </button>
+                            <a href="'.base_url('MonitoringSuratJalan/Cetak/'.$row['NO_SURATJALAN']).'" target="_blank" class="btn bg-red" style="border-radius: 8px;margin-left:5px;"><i class="fa fa-file-pdf-o"></i> Cetak</a>
+                          </center>';
+
+
+          $data[] = $sub_array;
+      }
+
+      $output = [
+          'draw' => $post['draw'],
+          'recordsTotal' => $countall,
+          'recordsFiltered' => $countfilter,
+          'data' => $data,
+      ];
+
+      die($this->output
+              ->set_status_header(200)
+              ->set_content_type('application/json')
+              ->set_output(json_encode($output))
+              ->_display());
     }
 
     public function getEdit()

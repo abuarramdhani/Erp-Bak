@@ -317,4 +317,76 @@ class M_msj extends CI_Model
         ");
         }
     }
+
+    public function selectSJ($data)
+    {
+      $explode = strtoupper($data['search']['value']);
+        $res = $this->oracle
+            ->query(
+                "SELECT kdav.*
+                FROM
+                    (
+                    SELECT
+                            skdav.*,
+                            ROW_NUMBER () OVER (ORDER BY NO_SURATJALAN DESC) as pagination
+                        FROM
+                            (
+                              SELECT ksi.*
+                              FROM
+                                  (SELECT DISTINCT NO_SURATJALAN, NAMA_SUPIR, PLAT_NUMBER, JENIS_KENDARAAN, DARI, TUJUAN, PRINT_DATE
+                                          FROM KHS_SJ_INTERNAL
+                                          ORDER BY NO_SURATJALAN DESC) ksi
+                              WHERE
+                                    (
+                                      NO_SURATJALAN LIKE '%{$explode}%'
+                                      OR NAMA_SUPIR LIKE '%{$explode}%'
+                                      OR PLAT_NUMBER LIKE '%{$explode}%'
+                                      OR DARI LIKE '%{$explode}%'
+                                      OR TUJUAN LIKE '%{$explode}%'
+                                    )
+                            ) skdav
+
+                    ) kdav
+                WHERE
+                    pagination BETWEEN {$data['pagination']['from']} AND {$data['pagination']['to']}"
+            )->result_array();
+
+        return $res;
+    }
+
+    public function countAllSJ()
+    {
+        return $this->oracle
+            ->query(
+                "SELECT
+                    COUNT(*) AS \"count\"
+                FROM
+                (SELECT DISTINCT NO_SURATJALAN, NAMA_SUPIR, PLAT_NUMBER, JENIS_KENDARAAN, DARI, TUJUAN, PRINT_DATE
+                        FROM KHS_SJ_INTERNAL
+                        ORDER BY NO_SURATJALAN) ksi"
+            )->row_array();
+    }
+
+    public function countFilteredSJ($data)
+    {
+        $explode = strtoupper($data['search']['value']);
+
+        return $this->oracle->query(
+            "SELECT
+                    COUNT(*) AS \"count\"
+                FROM
+                (SELECT DISTINCT NO_SURATJALAN, NAMA_SUPIR, PLAT_NUMBER, JENIS_KENDARAAN, DARI, TUJUAN, PRINT_DATE
+                        FROM KHS_SJ_INTERNAL
+                        ORDER BY NO_SURATJALAN DESC) ksi
+                        WHERE
+                         (
+                           NO_SURATJALAN LIKE '%{$explode}%'
+                           OR NAMA_SUPIR LIKE '%{$explode}%'
+                           OR PLAT_NUMBER LIKE '%{$explode}%'
+                           OR DARI LIKE '%{$explode}%'
+                           OR TUJUAN LIKE '%{$explode}%'
+                         )"
+        )->row_array();
+    }
+
 }
