@@ -1214,6 +1214,26 @@ function upnostttpenyerahan(event, th) {
 
 //---------------------------------------------ARSIP---------------------------------------------------------------------
 
+function schArsipdospb(th) {
+    var tgl_awal = $('#tglAwal').val();
+    var tgl_akhir = $('#tglAkhir').val();
+    $.ajax({
+        url : baseurl + "KapasitasGdSparepart/Arsip/searchDataArsip",
+        data : {tgl_awal : tgl_awal, tgl_akhir : tgl_akhir},
+        type : 'POST',
+        datatype : "html",
+        beforeSend: function() {
+            $('div#tbl_arsip_dospb' ).html('<center><img style="width:80px; height:auto" src="'+baseurl+'assets/img/gif/loading11.gif"></center>' );
+        },
+        success : function (result) {
+            $('div#tbl_arsip_dospb' ).html(result);
+            $('#tbl_arsip').dataTable({
+                "scrollX": true,
+            });
+        }
+    })
+}
+
 function editColy(no) {
     var jenis  = $('#jenis'+no).val();
     var no_spb = $('#nospb'+no).val();
@@ -1255,6 +1275,32 @@ function detailJenisItem(no) {
 function schPICdospb(th) {
     var tgl_awal = $('#tglAwal').val();
     var tgl_akhir = $('#tglAkhir').val();
+    getdataPIC(tgl_awal, tgl_akhir);
+}
+
+
+$(document).ready(function(){
+    var history = document.getElementById('tbl_pic_dospb');
+    if (history) { 
+        var d    = new Date();
+        var tanggal  = ((d.getDate()).toString().length==2?(d.getDate()).toString():"0"+(d.getDate()).toString())+'/'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'/'+d.getFullYear();
+        getdataPIC(tanggal, tanggal);
+
+        $.ajax({
+            url : baseurl + "KapasitasGdSparepart/History/searchDataHistory",
+            type : 'POST',
+            datatype : "html",
+            beforeSend: function() {
+                $('div#data_dospb_history' ).html('<center><img style="width:80px; height:auto" src="'+baseurl+'assets/img/gif/loading11.gif"></center>' );
+            },
+            success : function (result) {
+                $('div#data_dospb_history' ).html(result);
+            }
+        })
+    }
+})
+
+function getdataPIC(tgl_awal, tgl_akhir) {
     $.ajax({
         url : baseurl + "KapasitasGdSparepart/History/searchDataPIC",
         data : {tgl_awal : tgl_awal, tgl_akhir : tgl_akhir},

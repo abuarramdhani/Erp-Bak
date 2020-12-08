@@ -54,6 +54,28 @@ class M_arsip extends CI_Model {
         return $query->result_array();
         // echo $sql;
     }
+    
+    public function getDataSPB3($tgl1, $tgl2) {
+        $oracle = $this->load->database('oracle', true);
+        $sql ="select distinct
+                to_char(jam_input, 'DD/MM/YYYY HH24:MI:SS') as jam_input, 
+                tgl_dibuat,
+                jenis_dokumen, no_dokumen, jumlah_item, jumlah_pcs,
+                to_char(mulai_pelayanan, 'DD/MM/YYYY HH24:MI:SS') as mulai_pelayanan, 
+                to_char(selesai_pelayanan, 'DD/MM/YYYY HH24:MI:SS') as selesai_pelayanan,waktu_pelayanan,
+                to_char(mulai_pengeluaran, 'DD/MM/YYYY HH24:MI:SS') as mulai_pengeluaran, 
+                to_char(selesai_pengeluaran, 'DD/MM/YYYY HH24:MI:SS') as selesai_pengeluaran, waktu_pengeluaran,
+                to_char(mulai_packing, 'DD/MM/YYYY HH24:MI:SS') as mulai_packing, 
+                to_char(selesai_packing, 'DD/MM/YYYY HH24:MI:SS') as selesai_packing, waktu_packing,
+                urgent, pic_pelayan, pic_pengeluaran, pic_packing, bon, cancel
+                from khs_tampung_spb
+                where trunc (selesai_packing) BETWEEN TO_DATE('$tgl1', 'DD/MM/YYYY') AND TO_DATE('$tgl2', 'DD/MM/YYYY')
+                order by selesai_packing asc";
+        // echo "<pre>";print_r($sql);exit();
+        $query = $oracle->query($sql);
+        return $query->result_array();
+        // echo $sql;
+    }
 
     public function dataSPB($noSPB) {
         $oracle = $this->load->database('oracle', true);
