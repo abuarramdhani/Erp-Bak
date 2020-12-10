@@ -1082,7 +1082,7 @@ $(function () {
           $("#txtMPSuratPengalamanKerjaUnit").val(result[0]["unit"]);
           $("#txtMPSuratPengalamanKerjaDept").val(result[0]["dept"]);
           $("#txtMPSuratPengalamanKerjaMasuk").val(result[0]["masukkerja"]);
-          $("#txtMPSuratPengalamanKerjaMasuk").val(result[0]["masukkerja"]);
+          $("#txtMPSuratPengalamanKerjaMasuk").datepicker('update', result[0]["masukkerja"]);
           //var sampaiHtml = '<option value=""></option>';
           //sampaiHtml = sampaiHtml + '<option value="' + result[0]['akhkontrak'] + '">' + result[0]['akhkontrak'] + '</option>';
           //sampaiHtml = sampaiHtml + '<option value="1900-01-01">Tanggal dibuatnya surat keterangan ini dan masih bekerja</option>';
