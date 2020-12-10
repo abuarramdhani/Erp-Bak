@@ -18,7 +18,7 @@
         </div>
         <div class="box-body">
           <div class="table-responsive">
-            <table class="table table-striped table-bordered table-hover text-left " id="tblpbi" style="font-size:12px;">
+            <table class="table table-striped table-bordered table-hover text-left " id="tbl_mon_msj" style="font-size:12px;">
               <thead>
                 <tr class="bg-info">
                   <th><center>No</center></th>
@@ -32,29 +32,7 @@
                 </tr>
               </thead>
               <tbody>
-                <?php $no = 1; foreach ($get as $key => $g): ?>
-                  <tr row="<?php echo $no ?>">
-                    <td><center><?php echo $no; ?></center></td>
-                    <td><center><?php echo $g['NO_SURATJALAN'] ?></center></td>
-                    <td id="sopir_up"><center><?php echo $g['NAMA_SUPIR'] ?></center></td>
-                    <td id="plat_up"><center><?php echo $g['PLAT_NUMBER'] ?></center></td>
-                    <td><center><?php echo $g['JENIS_KENDARAAN'] ?></center></td>
-                    <td><center><?php echo $g['DARI'] ?></center></td>
-                    <td><center><?php echo $g['TUJUAN'] ?></center></td>
-                    <td>
-                      <center>
-                        <button type="button" class="btn bg-navy" style="border-radius: 8px" name="button" style="font-weight:bold;" onclick="detailSJ('<?php echo $g['NO_SURATJALAN'] ?>')" data-toggle="modal" data-target="#Mmsj">
-                          <i class="fa fa-eye"></i> Detail
-                        </button>
-                        <button type="button" class="btn bg-gray" style="margin-left:5px;border-radius: 8px" name="button" style="font-weight:bold;" onclick="editSJ('<?php echo $g['NO_SURATJALAN'] ?>', <?php echo $no ?>)" data-toggle="modal" data-target="#editmsj">
-                           <i class="fa fa-edit"></i> Edit
-                        </button>
-                        <a href="<?php echo base_url('MonitoringSuratJalan/Cetak/'.$g['NO_SURATJALAN']) ?>" target="_blank" class="btn bg-red" style="border-radius: 8px;margin-left:5px;"><i class="fa fa-file-pdf-o"></i> Cetak</a>
-                      </center>
-                    </td>
-                  </tr>
-                <?php $no++; endforeach; ?>
-              </tr>
+
               </tbody>
             </table>
           </div>
