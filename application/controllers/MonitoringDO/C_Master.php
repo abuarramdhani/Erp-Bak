@@ -297,9 +297,64 @@ class C_Master extends CI_Controller
     public function GetSudahCetak()
     {
         // $data['get'] = $this->M_monitoringdo->sudahCetak();
-        $data['get'] = $this->M_monitoringdo->GetSudahCetak();
+        $data['get'] = []; //$this->M_monitoringdo->GetSudahCetak();
         $this->load->view('MonitoringDO/V_Ajax_SudahCetak', $data);
     }
+
+    //sudah cetak
+    public function buildMDDataTable()
+    {
+      $post = $this->input->post();
+
+      foreach ($post['columns'] as $val) {
+          $post['search'][$val['data']]['value'] = $val['search']['value'];
+      }
+
+      $countall = $this->M_monitoringdo->countAllDO()['count'];
+      $countfilter = $this->M_monitoringdo->countFilteredDO($post)['count'];
+
+      $post['pagination']['from'] = $post['start'] + 1;
+      $post['pagination']['to'] = $post['start'] + $post['length'];
+
+      $protodata = $this->M_monitoringdo->selectDO($post);
+      // echo "<pre>";
+      // print_r($protodata);
+      // die;
+      $data = [];
+      foreach ($protodata as $row) {
+
+          $sub_array   = [];
+          $sub_array[] = $row['PAGINATION'];
+          $sub_array[] = '<center>'.$row['DO/SPB'].'</center>';
+          $sub_array[] = '<center>'.$row['JENIS_KENDARAAN'].'</center>';
+          $sub_array[] = '<center>'.$row['EKSPEDISI'].'</center>';
+          $sub_array[] = '<center>'.$row['PLAT_NUMBER'].'</center>';
+          $sub_array[] = '<center>'.$row['PETUGAS'].'</center>';
+          $sub_array[] = '<center>'.strtoupper(date("d-M-Y", strtotime($row['TGL_KIRIM']))).'</center>';
+          $sub_array[] = '<center>
+                            <button type="button" class="btn btn-info" name="button" style="font-weight:bold;" onclick="GetSudahCetakDetail(\''.$row['DO/SPB'].'\', \''.$row['PAGINATION'].'\')" data-toggle="modal" data-target="#MyModalTransact"><i class="fa fa-eye"></i></button>
+                          </center>';
+          $sub_array[] = '<center>
+                            <a href="'.base_url('MonitoringDO/SettingDO/PDF2/'.$row['DO/SPB']).'" target="_blank" class="btn btn-danger"><i class="fa fa-file-pdf-o"></i></a>
+                          </center>';
+
+          $data[] = $sub_array;
+      }
+
+      $output = [
+          'draw' => $post['draw'],
+          'recordsTotal' => $countall,
+          'recordsFiltered' => $countfilter,
+          'data' => $data,
+      ];
+
+      die($this->output
+              ->set_status_header(200)
+              ->set_content_type('application/json')
+              ->set_output(json_encode($output))
+              ->_display());
+    }
+
     public function GetSudahCetakDetail()
     {
         $id = $this->input->post('requests_number');

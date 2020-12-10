@@ -14,29 +14,39 @@
       </tr>
     </thead>
     <tbody>
-      <?php $no = 1; foreach ($get as $g): ?>
-        <tr>
-          <td><center><?php echo $no; ?></center></td>
-          <td><center><?php echo $g['DO/SPB'] ?></center></td>
-          <td><center><?php echo $g['JENIS_KENDARAAN'] ?></center></td>
-          <td><center><?php echo $g['EKSPEDISI'] ?></center></td>
-          <td><center><?php echo $g['PLAT_NUMBER'] ?></center></td>
-          <td><center><?php echo $g['PETUGAS'] ?></center></td>
-          <td><center><?php echo strtoupper(date("d-M-Y", strtotime($g['TGL_KIRIM']))) ?></center></td>
 
-          <td><center><button type="button" class="btn btn-info" name="button" style="font-weight:bold;" onclick="GetSudahCetakDetail('<?php echo $g['DO/SPB'] ?>', <?php echo $no ?>)" data-toggle="modal" data-target="#MyModalTransact"><i class="fa fa-eye"></i></button> </center></td>
-          <td>
-            <center>
-              <a href="<?php echo base_url('MonitoringDO/SettingDO/PDF2/'.$g['DO/SPB']) ?>" target="_blank" onclick="clickCetak('<?php echo $g['DO/SPB'] ?>')" class="btn btn-danger"><i class="fa fa-file-pdf-o"></i></a>
-            </center>
-          </td>
-        </tr>
-      <?php $no++; endforeach; ?>
-    </tr>
     </tbody>
   </table>
 </div>
 
 <script type="text/javascript">
-  $('#tblMonitoringDOSudahCetak').DataTable();
+  // $('#tblMonitoringDOSudahCetak').DataTable();
+  const tblmondo = $('#tblMonitoringDOSudahCetak').DataTable({
+      // dom: 'rtp',
+      ajax: {
+        data: (d) => $.extend({}, d, {
+          org: null,
+          id_plan: null
+        }),
+        url: baseurl + "MonitoringDO/SettingDO/buildMDDataTable",
+        type: 'POST',
+      },
+      ordering: false,
+      pageLength: 10,
+      pagingType: 'first_last_numbers',
+      processing: true,
+      serverSide: true,
+      preDrawCallback: function(settings) {
+           if ($.fn.DataTable.isDataTable('#tblMonitoringDOSudahCetak')) {
+               var dt = $('#tblMonitoringDOSudahCetak').DataTable();
+
+               //Abort previous ajax request if it is still in process.
+               var settings = dt.settings();
+               if (settings[0].jqXHR) {
+                   settings[0].jqXHR.abort();
+               }
+           }
+       }
+  });
+
 </script>

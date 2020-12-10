@@ -448,6 +448,106 @@ class M_monitoringdo extends CI_Model
         return $query->result_array();
     }
 
+    //DATATABLE SERVER SIDE SUDAH CETAK
+    public function selectDO($data)
+    {
+      $subinv = $this->session->datasubinven;
+      $explode = strtoupper($data['search']['value']);
+        $res = $this->oracle
+            ->query(
+                "SELECT kdav.*
+                FROM
+                    (
+                    SELECT
+                            skdav.*,
+                            ROW_NUMBER () OVER (ORDER BY 'DO/SPB' DESC) as pagination
+                        FROM
+                            (
+                              SELECT kdo.*
+                              FROM
+                                  (SELECT *
+                                            FROM khs_qweb_sudah_cetak1 kqsc
+                                           WHERE kqsc.subinventory = '$subinv'
+                                        ORDER BY CASE
+                                                    WHEN kqsc.tgl_kirim IS NULL
+                                                       THEN 1
+                                                    ELSE 0
+                                                 END,
+                                                 TRUNC (kqsc.tgl_kirim) DESC,
+                                                 kqsc.plat_number,
+                                                 1) kdo
+                              WHERE
+                                    (
+                                      'DO/SPB' LIKE '%{$explode}%'
+                                      OR JENIS_KENDARAAN LIKE '%{$explode}%'
+                                      OR EKSPEDISI LIKE '%{$explode}%'
+                                      OR PLAT_NUMBER LIKE '%{$explode}%'
+                                      OR PETUGAS LIKE '%{$explode}%'
+                                    )
+                            ) skdav
+
+                    ) kdav
+                WHERE
+                    pagination BETWEEN {$data['pagination']['from']} AND {$data['pagination']['to']}"
+            )->result_array();
+
+        return $res;
+    }
+
+    public function countAllDO()
+    {
+      $subinv = $this->session->datasubinven;
+        return $this->oracle
+            ->query(
+                "SELECT
+                    COUNT(*) AS \"count\"
+                FROM
+                (SELECT *
+                          FROM khs_qweb_sudah_cetak1 kqsc
+                         WHERE kqsc.subinventory = '$subinv'
+                      ORDER BY CASE
+                                  WHEN kqsc.tgl_kirim IS NULL
+                                     THEN 1
+                                  ELSE 0
+                               END,
+                               TRUNC (kqsc.tgl_kirim) DESC,
+                               kqsc.plat_number,
+                               1) kdo"
+            )->row_array();
+    }
+
+    public function countFilteredDO($data)
+    {
+      $subinv = $this->session->datasubinven;
+        $explode = strtoupper($data['search']['value']);
+
+        return $this->oracle->query(
+            "SELECT
+                    COUNT(*) AS \"count\"
+                FROM
+                (SELECT *
+                          FROM khs_qweb_sudah_cetak1 kqsc
+                         WHERE kqsc.subinventory = '$subinv'
+                      ORDER BY CASE
+                                  WHEN kqsc.tgl_kirim IS NULL
+                                     THEN 1
+                                  ELSE 0
+                               END,
+                               TRUNC (kqsc.tgl_kirim) DESC,
+                               kqsc.plat_number,
+                               1) kdo
+                        WHERE
+                         (
+                           'DO/SPB' LIKE '%{$explode}%'
+                           OR JENIS_KENDARAAN LIKE '%{$explode}%'
+                           OR EKSPEDISI LIKE '%{$explode}%'
+                           OR PLAT_NUMBER LIKE '%{$explode}%'
+                           OR PETUGAS LIKE '%{$explode}%'
+                         )"
+        )->row_array();
+    }
+    //END SERVERSIDE DATATABLE
+
 
     public function GetSudahCetakDetail($data)
     {
