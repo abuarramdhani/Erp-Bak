@@ -23,7 +23,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = '';
+$config['base_url'] = 'http://erp.quick.com/assets/covid19/wilayah-khs/';
 
 /*
 |--------------------------------------------------------------------------
