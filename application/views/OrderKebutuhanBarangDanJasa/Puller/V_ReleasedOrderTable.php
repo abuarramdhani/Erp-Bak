@@ -7,6 +7,7 @@
             <th>Item Kode</th>
             <th>Deskripsi Item</th>
             <th>Quantity</th>
+            <th>Cut Off</th>
             <th>NBD</th>
             <th>Flag</th>
             <th>Buyer</th>
@@ -25,6 +26,7 @@
                 <a class="btn btn-info" href="<?= base_url('OrderKebutuhanBarangDanJasa/Purchasing/ShowAttachment/'.$list['ORDER_ID']); ?>" target="_blank" rel="noopener noreferrer">View Attachment</a>
             <?php } ?></td>
             <td><?php echo $list['QUANTITY'].' '.$list['UOM']; ?></td>
+            <td><?php echo $list['CUT_OFF_DATE'];?></td>
             <td><?php echo $list['NEED_BY_DATE']; ?></td>
             <td>
                 <?php if ($list['URGENT_FLAG'] == 'Y' && $list['IS_SUSULAN'] == 'N') { ?>

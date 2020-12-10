@@ -4812,6 +4812,10 @@ $route['Covid/PelaporanPekerja/LuarKota/(:any)'] = 'Covid/PelaporanPekerja/C_Pel
 $route['Covid/PelaporanPekerja/AcaraMelibatkanBanyakOrang/(:any)'] = 'Covid/PelaporanPekerja/C_PelaporanPekerja/$1';
 $route['Covid/PelaporanPekerja/Interaksi'] = 'Covid/PelaporanPekerja/C_PelaporanPekerja/interaksi';
 
+$route['Covid/ZonaKHS'] = 'Covid/ZonaKHS/C_ZonaCovidKhs';
+$route['Covid/ZonaKHS/(:any)'] = 'Covid/ZonaKHS/C_ZonaCovidKhs/$1';
+$route['Covid/ZonaKHS/(:any)/(:any)'] = 'Covid/ZonaKHS/C_ZonaCovidKhs/$1/$2';
+$route['Covid/ZonaKHS/(:any)/(:any)/(:any)'] = 'Covid/ZonaKHS/C_ZonaCovidKhs/$1/$2/$3';
 
 // --------------------------------- Laporan Kerja Operator welding ------------------------------ //
 $route['LaporanKerjaOperator'] = 'LKOWelding/C_Index';

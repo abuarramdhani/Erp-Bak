@@ -135,10 +135,11 @@ class M_requisition extends CI_Model
     //     return $last_insert_id;
     // }
 
-    public function saveLine($line, $nbd)
+    public function saveLine($line, $nbd, $cutoff)
     {
         $oracle = $this->load->database('oracle', true);
         $oracle->set('NEED_BY_DATE',"TO_DATE('$nbd','YYYY-MM-DD')",false);
+        $oracle->set('CUT_OFF_DATE',"TO_DATE('$cutoff','YYYY-MM-DD')",false);
         $oracle->set('ORDER_DATE',"SYSDATE",false);
         $oracle->insert('KHS.KHS_OKBJ_ORDER_HEADER', $line);
         $order_id = $oracle->query("SELECT MAX(ORDER_ID) ORDER_ID FROM KHS.KHS_OKBJ_ORDER_HEADER");

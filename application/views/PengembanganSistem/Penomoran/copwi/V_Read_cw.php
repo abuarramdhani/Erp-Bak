@@ -110,13 +110,8 @@
                                                 <div class="form-group row">
                                                     <label for="pic_fp" class="control-label col-lg-4">PIC Pembuat</label>
                                                     <div class="col-lg-8">
-                                                        <select name="pic_cw" id="pic-cw" class="form-control select2">
+                                                        <select name="pic_cw" id="pic-cw" class="form-control select2 input_selectpic">
                                                             <option value="<?= $listdatacw[0]['a'].' - '.$listdatacw[0]['pic_doc'];?>"><?= $listdatacw[0]['a'].' - '.$listdatacw[0]['pic_doc'];?></option>
-                                                            <?php foreach ($listorg as $org) 
-                                                            {
-                                                                echo '  <option value="'.$org['nama_pekerja'].'">'.$org['daftar_pekerja'].'</option>';
-                                                            }
-                                                            ?>
                                                         </select>
                                                     </div>
                                                 </div>

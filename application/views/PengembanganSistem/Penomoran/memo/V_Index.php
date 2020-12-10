@@ -50,11 +50,11 @@
                                                     <div class="col-sm-8">
                                                         <!-- radio -->
                                                         <div class="col-sm-6">
-                                                            <input type="radio" class="radioselectsys" name="r2sys" value="user">
+                                                            <input type="radio" name="r2sys" value="user">
                                                             Orang/Penerima
                                                         </div>
                                                         <div class="col-sm-6">
-                                                            <input type="radio" class="radioselectsys" name="r2sys" value="siedept">
+                                                            <input type="radio" name="r2sys" value="siedept">
                                                             Seksi/Unit/Deprt
                                                         </div>
                                                         <div class="orang">
@@ -82,13 +82,8 @@
                                                 <div class="form-group row">
                                                     <label for="makeby_ms" class="control-label col-lg-4">Dibuat</label>
                                                     <div class="col-lg-8">
-                                                        <select required="" name="pic_ms" id="makeby_ms" class="form-control select2" data-placeholder="-->Pilih Data<--">
+                                                        <select required="" name="pic_ms" id="makeby_ms" class="form-control select2 input_selectpic" data-placeholder="-->Pilih Data<--">
                                                             <option></option>
-                                                                            <?php foreach ($listorg as $org) 
-                                                                            {
-                                                                                echo '  <option value="'.$org['daftar_pekerja'].'">'.$org['daftar_pekerja'].'</option>';
-                                                                            }
-                                                                            ?>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -122,7 +117,7 @@
                                     </div>
                                     <!--/.modal -->
                                     <div class="modal fade" id="modal-default">
-                                        <div class="modal-dialog" style="width: fit-content">
+                                        <div class="modal-dialog" style="width:80%;">
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <h4 class="modal-title">Perhatian !!!</h4>

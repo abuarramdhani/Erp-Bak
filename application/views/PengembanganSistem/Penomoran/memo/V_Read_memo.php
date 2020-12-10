@@ -56,61 +56,32 @@
                                                 <div class="form-group row">
                                                     <label class="control-label col-lg-4">Ditujukan :</label>
                                                     <div class="col-sm-8">
-                                                    <!-- radio -->
-                                                    <div class="form-group clearfix">
-                                                        <div class="icheck-primary d-inline col-sm-6">
-                                                            <input type="radio" class="radioselectsys1" name="r3sys" value="user" <?php if ($listdata_memo[0]['conect'] == 'user') {
+                                                        <!-- radio -->
+                                                        <div class="col-sm-6" style="padding-bottom: 10px;">
+                                                            <input type="radio" name="r2sys" value="user"value="user" <?php if ($listdata_memo[0]['conect'] == 'user') {
                                                                 echo'checked=""';
                                                             } else {
                                                                 true;
                                                             }
                                                             ?>>
-                                                                <label for="radioselectsys">Orang/Penerima</label>
+                                                            Orang/Penerima
                                                         </div>
-                                                        <div class="icheck-primary d-inline serc">
-                                                            <input type="radio" class="radioselectsys" name="r3sys" value="siedept" <?php if ($listdata_memo[0]['conect'] == 'siedept') {
+                                                        <div class="col-sm-6" style="padding-bottom: 10px;">
+                                                            <input type="radio" name="r2sys" value="siedept"<?php if ($listdata_memo[0]['conect'] == 'siedept') {
                                                                 echo'checked=""';
                                                             } else {
                                                                 false;
                                                             }
                                                             ?>>
-                                                                <label for="radioselectsys">Seksi/Unit/Deprt</label>
+                                                            Seksi/Unit/Deprt
+                                                        </div>
+                                                        <div class="orang">
+                                                            <select onload="ditujukan_ms1_(<?=$listdata_memo[0]['for_doc'];?>)" data-id="<?=$listdata_memo[0]['for_doc'];?>" name="ditujukan_ms" id="ditujukan_ms1" class="form-control notif_mss select2" data-placeholder="-->Pilih Data<--" >
+                                                                <option id="check" value="<?= $listdata_memo[0]['for_doc'];?>"></option>
+                                                            </select>
                                                         </div>
                                                     </div>
-                                                    <input class="psq" style="display: none" value="<?= $listdata_memo[0]['conect'];?>">
-                                                    <div class="orang-update" <?php if ($listdata_memo[0]['conect'] == 'siedept') {
-                                                        echo'style="display:none"';
-                                                    } else {
-                                                        true;
-                                                    }
-                                                    ?>>
-                                                            <select name="ditujukan_ms" id="ditujukan_ms1" class="form-control notif_ms select2" data-placeholder="-->Pilih Data<--" style="width:325px;">
-                                                                <option hidden value="<?= $listdata_memo[0]['for_doc'];?>"><?= $listdata_memo[0]['for_doc'];?></option>
-                                                                            <?php foreach ($listorg as $org) 
-                                                                            {
-                                                                                echo '  <option value="'.$org['daftar_pekerja'].'">'.$org['daftar_pekerja'].'</option>';
-                                                                            }
-                                                                            ?>
-                                                            </select>
-                                                    </div>
-                                                    <div class="unit-depart-update"<?php if ($listdata_memo[0]['conect'] == 'user') {
-                                                        echo'style="display:none"';
-                                                    } else {
-                                                        false;
-                                                    }
-                                                    ?>>
-                                                            <select name="" id="ditujukan_ms" class="form-control notif_ms select2" data-placeholder="-->Pilih Data<--"  style="width:325px;">
-                                                                <option hidden value="<?= $listdata_memo[0]['for_doc'];?>"><?= $listdata_memo[0]['for_doc'];?></option>
-                                                                            <?php foreach ($listseksi as $seksi) 
-                                                                            {
-                                                                                echo '  <option value="'.$seksi['seksi'].'">'.$seksi['seksi'].'</option>';
-                                                                            }
-                                                                            ?>
-                                                            </select>
-                                                        </select>
-                                                    </div>
-                                                    </div>
-                                                </div>
+                                                </div></br>
                                                 <div class="form-group row">
                                                     <label for="siepenerima_ms" class="control-label col-lg-4">Penerima Surat/Memo</label>
                                                     <div class="col-lg-8">
@@ -129,14 +100,9 @@
                                                 <div class="form-group row">
                                                     <label for="makeby_ms" class="control-label col-lg-4">Dibuat</label>
                                                     <div class="col-lg-8">
-                                                        <select name="pembuat_ms" id="makeby_ms" class="form-control select2">
+                                                        <select name="pembuat_ms" id="makeby_ms" class="form-control select2 input_selectpic">
                                                             <option value="<?= $listdata_memo[0]['pic_doc']?>"><?= $listdata_memo[0]['pic_doc']?></option>
-                                                            <?php foreach ($listorg as $org) 
-                                                            {
-                                                                echo '  <option value="'.$org['daftar_pekerja'].'">'.$org['daftar_pekerja'].'</option>';
-                                                            }
-                                                            ?>
-                                                        </select>
+                                                            </select>
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">

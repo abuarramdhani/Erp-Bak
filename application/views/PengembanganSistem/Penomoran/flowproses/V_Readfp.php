@@ -70,13 +70,8 @@
                                                 <div class="form-group row">
                                                     <label for="pic_fp" class="control-label col-lg-4">PIC Pembuat</label>
                                                     <div class="col-lg-8">
-                                                        <select name="pic_fp" id="pic-fp" class="form-control select2">
+                                                        <select name="pic_fp" id="pic-fp" class="form-control select2 input_selectpic">
                                                             <option value="<?= $listdatafp[0]['a'].' - '.$listdatafp[0]['pic_doc'];?>"><?= $listdatafp[0]['a'].' - '.$listdatafp[0]['pic_doc'];?></option>
-                                                            <?php foreach ($listorg as $org) 
-                                                            {
-                                                                echo '  <option value="'.$org['daftar_pekerja'].'">'.$org['daftar_pekerja'].'</option>';
-                                                            }
-                                                            ?>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -118,7 +113,7 @@
                                 </div>
                                     <!--/.modal -->
                                     <div class="modal fade" id="modal-default">
-                                    <div class="modal-dialog">
+                                    <div class="modal-dialog" style="width:80%;">
                                         <div class="modal-content">
                                         <div class="modal-header">
                                               <h4 class="modal-title"><b> Perhatian !!! </b>, Pastikan Data Benar &hellip;</h4>

@@ -122,18 +122,23 @@
                                                     <td><button type="button" class="btn btn-info btn-xs btnOKBDetailReleasedOrder">Detail</button></td>
                                                 </tr>
                                                 <div class="modal fade modalDetailReleasedOrderOKB-<?php echo $list['PRE_REQ_ID']; ?>" tabindex="-1" role="dialog" id="">
-                                                    <div class="modal-dialog modal-lg" role="document">
+                                                    <div class="modal-dialog modal-lg" role="document" style="width:1200px;">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
                                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                                                 <h4 class="modal-title">Detail Order</h4>
                                                             </div>
-                                                            <div class="modal-body">
+                                                            <div class="modal-body" style="min-height: 500px;">
                                                                 <div class="text-center newtableDetailOKB-<?php echo $list['PRE_REQ_ID']; ?>">
                                                                     <img src="<?= base_url('assets/img/gif/loading5.gif') ?>" class="imgOKBLoading" style="width:35px; height:35px;">
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">
+                                                            <?php 
+                                                                $encrypted_string = $this->encrypt->encode($list['PRE_REQ_ID']);
+                                                                $encrypted_string = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
+                                                            ?>
+                                                                <a href="<?= base_url('OrderKebutuhanBarangDanJasa/Purchasing/cetakOrder/'.$encrypted_string);?>" target="_blank" type="button" class="btn btn-default"><i class="fa fa-print"></i> cetak</a>
                                                                 <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
                                                             </div>
                                                         </div>

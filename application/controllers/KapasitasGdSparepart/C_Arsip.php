@@ -130,4 +130,20 @@ class C_Arsip extends CI_Controller
 		// echo "<pre>";print_r($cek);exit();
 	}
 
+	public function searchDataArsip(){
+		$tgl_awal = $this->input->post('tgl_awal');
+		$tgl_akhir = $this->input->post('tgl_akhir');
+		
+		$val = $this->M_arsip->getDataSPB3($tgl_awal, $tgl_akhir);
+		$getdata = array();
+		for ($i= 0; $i < count($val) ; $i++) { 
+			$coly = $this->M_packing->cekPacking($val[$i]['NO_DOKUMEN']);
+			$val[$i]['COLY'] = count($coly);
+			array_push($getdata, $val[$i]);
+		}
+		// echo "<pre>";print_r($val);exit();
+		$data['data'] = $getdata;
+		$this->load->view('KapasitasGdSparepart/V_TblArsip', $data);
+	}
+
 }

@@ -54,8 +54,8 @@ class C_Monitoring extends CI_Controller {
         $ticket = $this->input->post('ticketIPM');
         $noind = $this->session->user;
         
-		if($ip == '172.16.100.93') {
-            $link = 'IconPlus PUSAT-BANJARMASIN';
+		if($ip == '172.10.10.18') {
+            $link = 'LA PUSAT-BANJARMASIN';
         }else if($ip == '172.16.100.25') {
             $link = 'IconPlus PUSAT-JAKARTA';
         }else if($ip == '172.16.100.61') {
@@ -70,8 +70,8 @@ class C_Monitoring extends CI_Controller {
             $link = 'IconPlus PUSAT-PALU';
         }else if($ip == '172.16.100.89') {
             $link = 'IconPlus PUSAT-PEKANBARU';
-        }else if($ip == '172.16.100.49') {
-            $link = 'IconPlus PUSAT-PONTIANAK';
+        }else if($ip == '172.10.10.38') {
+            $link = 'LA PUSAT-PONTIANAK';
         }else if($ip == '172.16.100.9') {
             $link = 'IconPlus PUSAT-SURABAYA';
         }else if($ip == '172.16.100.5') {

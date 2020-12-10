@@ -50,10 +50,15 @@ class C_Index extends CI_Controller {
 	{
 		// echo date('d-m-Y H:i:s');exit;
 		$ipName = array(
+					//array(
+					//	'name' => 'IconPlus PUSAT-BANJARMASIN',
+				//		'ip' => '172.16.100.93',
+				//		'ip2' => '172.16.100.94',
+				//	),
 					array(
-						'name' => 'IconPlus PUSAT-BANJARMASIN',
-						'ip' => '172.16.100.93',
-						'ip2' => '172.16.100.94',
+						'name' => 'LA PUSAT-BANJARMASIN',
+						'ip' => '172.10.10.18',
+						'ip2' => '172.10.10.18',
 					),
 					array(
 						'name' => 'IconPlus PUSAT-JAKARTA',
@@ -71,6 +76,11 @@ class C_Index extends CI_Controller {
 						'ip2' => '172.16.100.30',
 					),
 					array(
+						'name' => 'LA PUSAT-MAKASSAR',
+						'ip' => '172.10.10.22',
+						'ip2' => '172.10.10.22',
+					),
+					array(
 						'name' => 'IconPlus PUSAT-MEDAN',
 						'ip' => '172.16.100.17',
 						'ip2' => '172.16.100.18',
@@ -86,14 +96,24 @@ class C_Index extends CI_Controller {
 						'ip2' => '172.16.100.102',
 					),
 					array(
+						'name' => 'LA PUSAT-PALU',
+						'ip' => '172.10.10.30',
+						'ip2' => '172.10.10.30',
+					),
+					array(
 						'name' => 'IconPlus PUSAT-PEKANBARU',
 						'ip' => '172.16.100.89',
 						'ip2' => '172.16.100.90',
 					),
-					array(
-						'name' => 'IconPlus PUSAT-PONTIANAK',
-						'ip' => '172.16.100.49',
-						'ip2' => '172.16.100.50',
+				//	array(
+				//		'name' => 'IconPlus PUSAT-PONTIANAK',
+				//		'ip' => '172.16.100.49',
+				//		'ip2' => '172.16.100.50',
+				//	),
+						array(
+						'name' => 'LA PUSAT-PONTIANAK',
+						'ip' => '172.10.10.38',
+						'ip2' => '172.10.10.38',
 					),
 				// 	array(
 				// 		'name' => 'IconPlus PUSAT-SURABAYA',

@@ -120,9 +120,11 @@ class M_pengsistem extends CI_Model
 	{
 		$_id = $this->db->get_where('saps.doc_flowproses',['id' => $data])->row();
 		$query = $this->db->delete('saps.doc_flowproses',['id'=>$data]);
-		
-		if($query){
-			unlink("assets/upload/PengembanganSistem/fp/".$_id->file);
+		$nama_baru = preg_replace("/[\/\&%#\$]/", "_", $_id->file);
+		if($_id->file == null){
+			echo null;
+		}else {
+			unlink("assets/upload/PengembanganSistem/fp/".$nama_baru);
 		}
 	}
 
@@ -183,9 +185,11 @@ class M_pengsistem extends CI_Model
 	{
 		$_id = $this->db->get_where('saps.doc_cop_wi',['id' => $data])->row();
 		$query = $this->db->delete('saps.doc_cop_wi',['id'=>$data]);
-		
-		if($query){
-			unlink("assets/upload/PengembanganSistem/copwi/".$_id->file);
+		$nama_baru = preg_replace("/[\/\&%#\$]/", "_", $_id->file);
+		if($_id->file == null){
+			echo null;
+		}else {
+			unlink("assets/upload/PengembanganSistem/copwi/".$nama_baru);
 		}
 	}
 
@@ -246,9 +250,11 @@ class M_pengsistem extends CI_Model
 	{
 		$_id = $this->db->get_where('saps.doc_usermanual',['id' => $data])->row();
 		$query = $this->db->delete('saps.doc_usermanual',['id'=>$data]);
-		
-		if($query){
-			unlink("assets/upload/PengembanganSistem/um/".$_id->file);
+		$nama_baru = preg_replace("/[\/\&%#\$]/", "_", $_id->file);
+		if($_id->file == null){
+			echo null;
+		}else {
+			unlink("assets/upload/PengembanganSistem/um/".$nama_baru);
 		}
 	}
 
@@ -309,9 +315,11 @@ class M_pengsistem extends CI_Model
 	{
 		$_id = $this->db->get_where('saps.doc_penomoran_memo',['id' => $data])->row();
 		$query = $this->db->delete('saps.doc_penomoran_memo',['id'=>$data]);
-		
-		if($query){
-			unlink("assets/upload/PengembanganSistem/memo/".$_id->file);
+		$nama_baru = preg_replace("/[\/\&%#\$]/", "_", $_id->file);
+		if($_id->file == null){
+			echo null;
+		}else {
+			unlink("assets/upload/PengembanganSistem/memo/".$nama_baru);
 		}
 	}
 
@@ -362,9 +370,9 @@ class M_pengsistem extends CI_Model
 		return $query->result_array();
 	}
 
-	public function cek_data_lkh($data)
+	public function cek_data_lkh($data,$data_user)
 	{
-		$query = $this->db->query("select * from saps.lkh_operator_ps where tglmasuk = '$data'");
+		$query = $this->db->query("select * from saps.lkh_operator_ps where tglmasuk = '$data' and pic = '$data_user'");
 		return $query->result_array();
 	}
 
