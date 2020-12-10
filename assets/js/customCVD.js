@@ -120,9 +120,14 @@ $(document).ready(function(){
 	})
 
 	$(document).on('change','.file-CVD-MonitoringCovid-Tambah-Lampiran', function(){
-		$(this).closest('div').append('<label class="label label-success" style="margin: 5px;">' + $(this).val().substring(12) + '</label>');
+		$(this).closest('div').append('<div class="btn-group"><button class="btn btn-success btn-xs" type="button">' + $(this).val().substring(12) + '</button><button class="btn btn-danger btn-xs file-CVD-MonitoringCovid-Hapus-Lampiran"><i class="fa fa-remove"></i></button></div>');
 		$(this).clone().val('').appendTo($(this).closest('div'));
-	})
+	});
+
+	$(document).on('click', '.file-CVD-MonitoringCovid-Hapus-Lampiran', function(){
+		$(this).closest('div').next().remove();
+		$(this).closest('div').remove();
+	});
 
 	$('#tbl-CVD-MonitoringCovid').on('click', '.btn-CVD-MonitoringCovid-FollowUp', function(){
 		var status = $(this).attr('data-status');
@@ -659,6 +664,17 @@ $(document).on('change', '#cvd_samastatus', function(){
 	$('.cvd_status_table').each(function(){
 		$(this).val(val).trigger('change');
 	});
+});
+
+$(document).on('change', '.cvd_status_table', function(){
+	var id = $(this).val();
+
+	if (id == 'PKJ' || id == 'PSK') {
+		$(this).closest('td').next().find('select').val(null).trigger('change');
+		$(this).closest('td').next().find('select').attr('disabled', true);
+	}else{
+		$(this).closest('td').next().find('select').attr('disabled', false);
+	}
 });
 
 $(document).on('change', '#cvd_samaalasan', function(){
