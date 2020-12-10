@@ -460,7 +460,7 @@ class M_monitoringdo extends CI_Model
                     (
                     SELECT
                             skdav.*,
-                            ROW_NUMBER () OVER (ORDER BY 'DO/SPB' DESC) as pagination
+                            ROW_NUMBER () OVER (ORDER BY TGL_KIRIM DESC) as pagination
                         FROM
                             (
                               SELECT kdo.*
@@ -478,7 +478,7 @@ class M_monitoringdo extends CI_Model
                                                  1) kdo
                               WHERE
                                     (
-                                      'DO/SPB' LIKE '%{$explode}%'
+                                      \"DO/SPB\" LIKE '%{$explode}%'
                                       OR JENIS_KENDARAAN LIKE '%{$explode}%'
                                       OR EKSPEDISI LIKE '%{$explode}%'
                                       OR PLAT_NUMBER LIKE '%{$explode}%'
@@ -538,7 +538,7 @@ class M_monitoringdo extends CI_Model
                                1) kdo
                         WHERE
                          (
-                           'DO/SPB' LIKE '%{$explode}%'
+                           \"DO/SPB\" LIKE '%{$explode}%'
                            OR JENIS_KENDARAAN LIKE '%{$explode}%'
                            OR EKSPEDISI LIKE '%{$explode}%'
                            OR PLAT_NUMBER LIKE '%{$explode}%'
