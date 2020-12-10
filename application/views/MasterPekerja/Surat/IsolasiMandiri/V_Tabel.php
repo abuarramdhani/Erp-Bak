@@ -1,4 +1,4 @@
-<p>Lama Isolasi <?= $qq ?> Hari :</p>
+<!-- <p>Lama Isolasi <?= $qq ?> Hari :</p> -->
 <table style="width: 100%; border-collapse: collapse;" border="1">
 	<tr>
 		<td>Tanggal</td>
@@ -20,7 +20,7 @@
 				<?= $key['jml'] ?> Hari
 			</td>
 			<td>
-			<?php if ($key['st'] == 'PKJ'): ?>
+			<?php if ($key['st'] == 'PRM' || $key['st'] == 'PSK'): ?>
 				Rumah
 			<?php else: ?>
 				Perusahaan
