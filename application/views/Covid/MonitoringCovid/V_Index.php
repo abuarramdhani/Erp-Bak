@@ -171,7 +171,7 @@
 															<td><?php echo $value['seksi'] ?></td>
 															<td><?php echo $value['dept'] ?></td>
 															<td style="text-align: center;"><?php echo $stat ?></td>
-															<td><?php echo strftime('%d %h %Y',strtotime($value['tgl_interaksi'])) ?></td>
+															<td data-order="<?= date('Y-m-d', strtotime($value['tgl_interaksi'])) ?>"><?php echo strftime('%d %h %Y',strtotime($value['tgl_interaksi'])) ?></td>
 															<td><?php echo $value['kasus'] ?></td>
 															<td><?php echo $value['keterangan'] ?></td>
 															<td><?php echo !empty($value['mulai_isolasi']) ? strftime('%d %h %Y',strtotime($value['mulai_isolasi'])) : '-' ?></td>

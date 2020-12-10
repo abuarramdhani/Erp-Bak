@@ -257,7 +257,7 @@ class M_isolasimandiri extends CI_Model
 		return $this->db->query($sql)->row()->cvd_pekerja_id;
 	}
 
-	public function getAtasanIS($kd_pkj)
+	public function getAtasanIS($kd_pkj, $kst)
 	{
 		$sql = "SELECT
 					*
@@ -265,7 +265,11 @@ class M_isolasimandiri extends CI_Model
 					hrd_khs.tpribadi
 				where
 					kd_jabatan < '$kd_pkj'
-					and keluar = false";
+					and trim(kd_jabatan) != ''
+					and kodesie like '$kst%'
+					and keluar = false
+					order by kd_jabatan desc";
+			// echo $sql;exit();
 		return $this->personalia->query($sql)->result_array();
 	}
 
@@ -356,6 +360,20 @@ class M_isolasimandiri extends CI_Model
 	public function getTliburIs($mulai, $selesai)
 	{
 		$sql = "SELECT * from \"Dinas_Luar\".tlibur where tanggal between '$mulai' and '$selesai'";
+		return $this->personalia->query($sql)->result_array();
+	}
+
+	public function getTembusanD($kst)
+	{
+		$sql = "select
+					*
+				from
+					hrd_khs.tpribadi t
+				where
+					kodesie like '$kst%'
+					and kd_jabatan < '10'
+					and keluar = false
+					order by kd_jabatan desc";
 		return $this->personalia->query($sql)->result_array();
 	}
 }

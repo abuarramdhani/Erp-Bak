@@ -64,16 +64,18 @@ class C_IsolasiMandiri extends CI_Controller
 			$plaintext_string = $this->encrypt->decode($plaintext_string);
 			$data['data'] = $this->M_monitoringcovid->getPekerjaById($plaintext_string);
 			$pkj = $this->M_consumable->getDetailPekerja($data['data']->noind)->row_array();
+			$ks = substr($pkj['kodesie'], 0,7);
+			$kst = substr($ks, 0,1);
 			if ($pkj['kd_jabatan'] <= 14) {
 				//spv ke atas
-				$atasan = $this->M_isolasimandiri->getAtasanIS($pkj['kd_jabatan']);
+				$atasan = $this->M_isolasimandiri->getAtasanIS($pkj['kd_jabatan'], $kst);
 			}else{
 				//operator
-				$ks = substr($pkj['kodesie'], 0,7);
 				$atasan = $this->M_isolasimandiri->getAtasanIS2($ks);
 			}
 			$data['atasan'] = $atasan;
 			$data['encrypted_id'] = $encrypted_id;
+			$data['tembusan'] = $this->M_isolasimandiri->getTembusanD($kst);
 		}
 		$user_id = $this->session->userid;
 		$user = $this->session->user;
@@ -117,37 +119,48 @@ class C_IsolasiMandiri extends CI_Controller
 		$tgl = $this->input->get('tgl');
 		$status = $this->input->get('st');
 		$alasan = $this->input->get('al');
+		$lama1 = $tgl[0];
+		$c = count($tgl);
+		$lama2 = $tgl[$c-1];
 
+		$lastx = '';
 		$q = 0;
 		$arr = array();
 		for ($i=0; $i < (count($tgl)-1); $i++) { 
 			if ($status[$i] != $status[$i+1]) {
 				$arr[$q][] = $i;
 				$q++;
+				$lastx = '1';
 			}else{
 				$arr[$q][] = $i;
+				$lastx = '2';
 			}
 		}
 		$qq = count($status);
 		if (isset($status[$qq-2]) && $status[$qq-1] == $status[$qq-2]) {
 			$arr[$q][] = $qq-1;
 		}else{
-			$q++;
+			if ($lastx == '2') {
+				$q++;
+			}
 			$arr[$q][] = $qq-1;
 		}
 		for ($i=0; $i < count($arr); $i++) {
 			$fi = $arr[$i][0];
 			$li = $arr[$i][count($arr[$i])-1];
+			$awl = date('d M Y', strtotime($tgl[$fi]));
+			$akh = date('d M Y', strtotime($tgl[$li]));
+			$jml = date_diff(date_create($akh), date_create($awl))->format('%d')+1;
 			$arr2[] = array(
 				'awal' => date('d M Y', strtotime($tgl[$fi])),
 				'akhir' => date('d M Y', strtotime($tgl[$li])),
-				'jml'	=> count($arr[$i]),
+				'jml'	=> $jml,
 				'st' => $status[$fi],
 				);
 		}
 		//table
 		$data['arr2'] = $arr2;
-		$data['qq'] = $qq;
+		$data['qq'] = date_diff(date_create($lama2), date_create($lama1))->format('%d')+1;;
 		$tabl = $this->load->view('MasterPekerja/Surat/IsolasiMandiri/V_Tabel',$data, true);
 		// echo $tabl;exit();
 
@@ -540,14 +553,16 @@ class C_IsolasiMandiri extends CI_Controller
 		$data['data'] = $this->M_isolasimandiri->getSuratIsolasiMandiriById($id);
 		if (!empty($data['data'])) {
 			$pkj = $this->M_consumable->getDetailPekerja($data['data'][0]['pekerja'])->row_array();
+			$ks = substr($pkj['kodesie'], 0,7);
+			$kst = substr($ks, 0,1);
 			if ($pkj['kd_jabatan'] <= 14) {
 				//spv ke atas
-				$atasan = $this->M_isolasimandiri->getAtasanIS($pkj['kd_jabatan']);
+				$atasan = $this->M_isolasimandiri->getAtasanIS($pkj['kd_jabatan'], $kst);
 			}else{
 				//operator
-				$ks = substr($pkj['kodesie'], 0,7);
 				$atasan = $this->M_isolasimandiri->getAtasanIS2($ks);
 			}
+			$data['tembusan'] = $this->M_isolasimandiri->getTembusanD($kst);
 		}
 		$data['atasan'] = $atasan;
 		// print_r($data['atasan']);exit();
