@@ -93,27 +93,34 @@
 									if (isset($zona) && !empty($zona)) {
 										$nomor = 1;
 										foreach ($zona as $z) {
-											?>
-											<tr>
-												<td style="text-align: center;"><?php echo $nomor ?></td>
-												<td><?php echo $z['lokasi'] ?></td>
-												<td><?php echo $z['nama_seksi'] ?></td>
-												<td style="text-align: center;"><?php echo $z['isolasi'] ?></td>
-												<td style="text-align: center;"><?php echo !empty($z['tgl_awal_isolasi']) ? date('d/m/Y',strtotime($z['tgl_awal_isolasi'])) : '' ?></td>
-												<td style="text-align: center;"><?php echo !empty($z['tgl_akhir_isolasi']) ? date('d/m/Y',strtotime($z['tgl_akhir_isolasi'])) : '' ?></td>
-												<td><?php echo $z['kasus'] ?></td>
-											<?php 
 											if ($z['isolasi'] == "Ya") {
-												?>
-												<td style="background-color: #d63031;color: white;font-weight: bold;text-align: center;">Tidak Boleh Dikunjungi</td>
+											?>
+												<tr>
+													<td style="text-align: center;"><?php echo $nomor ?></td>
+													<td><?php echo $z['lokasi'] ?></td>
+													<td><?php echo $z['nama_seksi'] ?></td>
+													<td style="text-align: center;"><?php echo $z['isolasi'] ?></td>
+													<td style="text-align: center;"><?php echo !empty($z['tgl_awal_isolasi']) ? date('d/m/Y',strtotime($z['tgl_awal_isolasi'])) : '' ?></td>
+													<td style="text-align: center;"><?php echo !empty($z['tgl_akhir_isolasi']) ? date('d/m/Y',strtotime($z['tgl_akhir_isolasi'])) : '' ?></td>
+													<td><?php echo $z['kasus'] ?></td>
+													<td style="background-color: #d63031;color: white;font-weight: bold;text-align: center;">Tidak Boleh Dikunjungi</td>
+												</tr>
 												<?php
-											}else{
+											}elseif ($z['isolasi'] == "Tidak" && !empty($z['last_tgl_akhir_isolasi']) && strtotime($z['last_tgl_akhir_isolasi']) > strtotime(date('Y-m-d')." - 2 day")) {
 												?>
-												<td style="background-color: #00b894;color: white;font-weight: bold;text-align: center;">Boleh Dikunjungi</td>
+												<tr>
+													<td style="text-align: center;"><?php echo $nomor ?></td>
+													<td><?php echo $z['lokasi'] ?></td>
+													<td><?php echo $z['nama_seksi'] ?></td>
+													<td style="text-align: center;"><?php echo $z['isolasi'] ?></td>
+													<td style="text-align: center;">-</td>
+													<td style="text-align: center;">-</td>
+													<td><?php echo $z['kasus'] ?></td>
+													<td style="background-color: #00b894;color: white;font-weight: bold;text-align: center;">Boleh Dikunjungi</td>
+												</tr>
 												<?php
 											}
 											?>
-											</tr>
 											<?php
 											$nomor++;
 										}
