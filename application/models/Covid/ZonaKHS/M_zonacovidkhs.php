@@ -100,6 +100,15 @@ class M_zonacovidkhs extends CI_Model {
 		return $this->erp->query($sql,array($key))->result_array();
 	}
 
+	function getIsolasiBerakhirHariIni(){
+		$sql = "select *
+				from cvd.cvd_zona_khs
+				where isolasi = '1'
+				and tgl_akhir_isolasi = current_date
+				order by lokasi,nama_seksi";
+		return $this->erp->query($sql)->result_array();
+	}
+
 }
 
 ?>

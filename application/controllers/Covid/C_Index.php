@@ -21,6 +21,7 @@ class C_Index extends CI_Controller
 		$this->load->library('encrypt');
 		$this->load->library('General');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
+		$this->load->model('Covid/ZonaKHS/M_zonacovidkhs');
 		date_default_timezone_set('Asia/Jakarta');
 
 		$this->checkSession();
@@ -48,7 +49,8 @@ class C_Index extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-
+		$data['reminder'] = $this->M_zonacovidkhs->getIsolasiBerakhirHariIni();
+		
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('Covid/V_Index',$data);
