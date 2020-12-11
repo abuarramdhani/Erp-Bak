@@ -274,6 +274,7 @@ class C_Index extends CI_Controller
 			'dept' 		          => $seksi->dept,
 
 			// lain 
+			'jenis_baju'        => $pekerja->jenis_baju,
 			'uk_baju'           => $pekerja->uk_baju,
 			'uk_celana'         => $pekerja->uk_celana,
 			'uk_sepatu'         => $pekerja->uk_sepatu,
@@ -587,6 +588,7 @@ class C_Index extends CI_Controller
 				'statpajak'					=> $this->input->post('statpajak'),
 				'jtanak'						=> $this->input->post('jtanak'),
 				'jtbknanak'					=> $this->input->post('jtbknanak'),
+				'jenis_baju'        => $this->input->post('jenis_baju'),
 				'uk_baju'           => $this->input->post('uk_baju'),
 				'uk_celana'         => $this->input->post('uk_celana'),
 				'uk_sepatu'         => $this->input->post('uk_sepatu'),
