@@ -119,7 +119,6 @@ class C_ZonaCovidKhs extends CI_Controller
 			$tgl_awal = $this->input->post('tgl_awal');
 			$tgl_akhir = $this->input->post('tgl_akhir');
 			$kasus = $this->input->post('kasus');
-			$email = $this->input->post('email');
 
 			$data = array(
 				'nama_seksi' => $seksi,
@@ -136,42 +135,7 @@ class C_ZonaCovidKhs extends CI_Controller
 			$id = $this->M_zonacovidkhs->insertZonaKhs($data);
 			$this->M_zonacovidkhs->insertZonaKhsHistory($id,$user);
 
-			if ($email == "1") {
-				$this->load->library('PHPMailerAutoload');
-				$mail = new PHPMailer;
-				$mail->isSMTP();
-				$mail->SMTPDebug = 0;
-				$mail->Debugoutput = 'html';
-				$mail->Host = "m.quick.com";
-				$mail->Port = 25;
-				$mail->SMTPAuth = true;
-				$mail->SMTPAutoTLS = false;
-				$mail->SMTPOptions = array(
-					'ssl' => array(
-						'verify_peer' => false,
-						'verify_peer_name' => false,
-						'allow_self_signed' => true
-					)
-				);
-				$mail->Username = "no-reply@quick.com";
-				$mail->Password = "123456";
-				$mail->setFrom('no-reply@quick.com', 'Email Sistem');
-				$mail->addAddress('aji_kurniawan@quick.com', 'Aji');
-				$mail->addAddress('rheza_egha@quick.com', 'Rheza');
-				$mail->IsHTML(true);
-				$mail->AltBody = 'This is a plain-text message body';
-
-				$mail->Subject = 'Update Area Zona Merah di Perusahaan';
-				$msgbody = $this->getMessageBody($data);
-				$mail->msgHTML($msgbody);
-				if (!$mail->send()) {
-					echo "Mailer Error: " . $mail->ErrorInfo;
-				}else{
-					echo "sukses";
-				}
-			}else{
-				echo "sukses";
-			}
+			echo "sukses";
 		}else{
 			$data = array(
 				'nama_seksi' => $seksi,
@@ -200,7 +164,6 @@ class C_ZonaCovidKhs extends CI_Controller
 			$tgl_awal = $this->input->post('tgl_awal');
 			$tgl_akhir = $this->input->post('tgl_akhir');
 			$kasus = $this->input->post('kasus');
-			$email = $this->input->post('email');
 
 			$data = array(
 				'nama_seksi' => $seksi,
@@ -216,42 +179,7 @@ class C_ZonaCovidKhs extends CI_Controller
 			$this->M_zonacovidkhs->updateZonaKhsByIdZona($data,$id_zona);
 			$this->M_zonacovidkhs->insertZonaKhsHistory($id_zona,$user);
 
-			if ($email == "1") {
-				$this->load->library('PHPMailerAutoload');
-				$mail = new PHPMailer;
-				$mail->isSMTP();
-				$mail->SMTPDebug = 0;
-				$mail->Debugoutput = 'html';
-				$mail->Host = "m.quick.com";
-				$mail->Port = 25;
-				$mail->SMTPAuth = true;
-				$mail->SMTPAutoTLS = false;
-				$mail->SMTPOptions = array(
-					'ssl' => array(
-						'verify_peer' => false,
-						'verify_peer_name' => false,
-						'allow_self_signed' => true
-					)
-				);
-				$mail->Username = "no-reply@quick.com";
-				$mail->Password = "123456";
-				$mail->setFrom('no-reply@quick.com', 'Email Sistem');
-				$mail->addAddress('aji_kurniawan@quick.com', 'Aji');
-				$mail->addAddress('rheza_egha@quick.com', 'Rheza');
-				$mail->IsHTML(true);
-				$mail->AltBody = 'This is a plain-text message body';
-
-				$mail->Subject = 'Update Area Zona Merah di Perusahaan';
-				$msgbody = $this->getMessageBody($data);
-				$mail->msgHTML($msgbody);
-				if (!$mail->send()) {
-					echo "Mailer Error: " . $mail->ErrorInfo;
-				}else{
-					echo "sukses";
-				}
-			}else{
-				echo "sukses";
-			}
+			echo "sukses";
 		}else{
 			$zona = $this->M_zonacovidkhs->getZonaKhsByIdZona($id_zona);
 			if (!empty($zona) && $zona->isolasi == '1') {
@@ -285,7 +213,103 @@ class C_ZonaCovidKhs extends CI_Controller
 		}
 	}
 
-	function getMessageBody($data){
+	function Email(){
+		$user_id = $this->session->userid;
+		$user = $this->session->user;
+
+		$data['Title']			=	'Zonasi Covid KHS';
+		$data['Header']			=	'Zonasi Covid KHS';
+		$data['Menu'] 			= 	'Zonasi Covid KHS';
+		$data['SubMenuOne'] 	= 	'';
+		$data['SubMenuTwo'] 	= 	'';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$data['lokasi'] = $this->M_zonacovidkhs->getLokasiKerja();
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('Covid/ZonaKHS/V_Email',$data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	function sendEmail(){
+		$emailBody = $this->input->post('email_body');
+		$penerima = $this->input->post('penerima');
+		if (!empty($emailBody) && !empty($penerima)) {
+			$this->load->library('PHPMailerAutoload');
+			$mail = new PHPMailer;
+			$mail->isSMTP();
+			$mail->SMTPDebug = 0;
+			$mail->Debugoutput = 'html';
+			$mail->Host = "m.quick.com";
+			$mail->Port = 25;
+			$mail->SMTPAuth = true;
+			$mail->SMTPAutoTLS = false;
+			$mail->SMTPOptions = array(
+				'ssl' => array(
+					'verify_peer' => false,
+					'verify_peer_name' => false,
+					'allow_self_signed' => true
+				)
+			);
+			$mail->Username = "no-reply@quick.com";
+			$mail->Password = "123456";
+			$mail->setFrom('no-reply@quick.com', 'Email Sistem');
+			foreach ($penerima as $rcv) {
+				$mail->addAddress($rcv['alamat'], $rcv['nama']);
+			}
+			$mail->IsHTML(true);
+			$mail->AltBody = 'This is a plain-text message body';
+
+			$mail->Subject = 'Update Area Zona Merah di Perusahaan';
+			$mail->msgHTML($emailBody);
+			if (!$mail->send()) {
+				echo "Mailer Error: " . $mail->ErrorInfo;
+			}else{
+				echo "sukses";
+			}
+		}else{
+			echo "Harus Preview Dulu dan Penerima minimal 1";
+		}
+	}
+
+	function getMessageBody($data = false){
+		if ($data === false) {
+			$seksi = $this->input->post('area');
+			$area = "";
+			$isolasi = "";
+			if (!empty($seksi)) {
+				foreach ($seksi as $key => $value) {
+					$id_zona = str_replace(array('-', '_', '~'), array('+', '/', '='), $value);
+					$id_zona = $this->encrypt->decode($id_zona);
+					$zona = $this->M_zonacovidkhs->getZonaKhsByIdZona($id_zona);
+
+					$nama_seksi = $zona->nama_seksi;
+					$tgl_awal = date("d/m/Y",strtotime($zona->tgl_awal_isolasi));
+					$tgl_akhir = date("d/m/Y",strtotime($zona->tgl_akhir_isolasi));
+
+					$area .= "<ul style=\"list-style-type:circle\">
+								<li>$nama_seksi</li>
+							</ul>";
+					$isolasi .= "<ul style=\"list-style-type:circle\">
+								<li>$nama_seksi : $tgl_awal - $tgl_akhir</li>
+							</ul>";
+				}
+			}
+		}else{
+			$nama_seksi = $data['nama_seksi'];
+			$tgl_awal = date("d/m/Y",strtotime($data['tgl_awal_isolasi']));
+			$tgl_akhir = date("d/m/Y",strtotime($data['tgl_akhir_isolasi']));
+			$area = "<ul style=\"list-style-type:circle\">
+						<li>$nama_seksi</li>
+					</ul>";
+			$isolasi = "<ul style=\"list-style-type:circle\">
+						<li>$nama_seksi : $tgl_awal - $tgl_akhir</li>
+					</ul>";
+		}
 		if (strtotime(date('H:i:s')) < strtotime("11:00:00")) {
 			$waktu = "pagi";
 		}elseif (strtotime(date('H:i:s')) > strtotime("14:00:00") && strtotime(date('H:i:s')) < strtotime("18:00:00")) {
@@ -297,21 +321,14 @@ class C_ZonaCovidKhs extends CI_Controller
 		}else{
 			$waktu = "pagi";
 		}
-		$nama_seksi = $data['nama_seksi'];
-		$tgl_awal = date("d/m/Y",strtotime($data['tgl_awal_isolasi']));
-		$tgl_akhir = date("d/m/Y",strtotime($data['tgl_akhir_isolasi']));
 		$text = "Selamat $waktu Bapak/Ibu,<br>
 			Berkaitan dengan Update Zona Merah di Area CV KHS yaitu:
 			<ul style=\"list-style-type:square\">
 				<li>Pekerja yang isolasi di area sbb :
-					<ul style=\"list-style-type:circle\">
-						<li>$nama_seksi</li>
-					</ul>
+					$area
 				</li>
 				<li>Masa Isolasi Area tsb :
-					<ul style=\"list-style-type:circle\">
-						<li>$nama_seksi : $tgl_awal - $tgl_akhir</li>
-					</ul>
+					$isolasi
 				</li>
 			</ul> 
 			Maka,
@@ -330,7 +347,31 @@ class C_ZonaCovidKhs extends CI_Controller
 			Salam sehat,<br>
 			<br>
 			Tim Pencegahan Penularan Covid19 KHS";
-		return $text;
+		if ($data === false) {
+			$paket = array(
+				'messageBody' => $text
+			);
+			echo json_encode($paket);
+		}else{
+			return $text;
+		}
+	}
+
+	function getAreaIsolasi($idEncoded = FALSE){
+		if ($idEncoded === FALSE) {
+			$key = $this->input->get('term');
+			$data = $this->M_zonacovidkhs->getAreaIsolasiByKey($key);
+			foreach ($data as $key => $value) {
+				$idEncoded = $this->encrypt->encode($value['id_zona']);
+				$idEncoded = str_replace(array('+', '/', '='), array('-', '_', '~'), $idEncoded);
+				$data[$key]['id_zona'] = $idEncoded;
+			}
+		}else{
+			$id_zona = str_replace(array('-', '_', '~'), array('+', '/', '='), $idEncoded);
+			$id_zona = $this->encrypt->decode($id_zona);
+			$data = $this->M_zonacovidkhs->getZonaKhsByIdZona($id_zona);
+		}
+		echo json_encode($data);
 	}
 
 	public function Delete($idEncoded){

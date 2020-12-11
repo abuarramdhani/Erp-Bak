@@ -11,7 +11,8 @@
 					<div class="col-lg-12">
 						<div class="box box-primary box-solid">
 							<div class="box-header with-border">
-								<a href="<?php echo base_url('Covid/ZonaKHS/Add') ?>" class="btn btn-primary btn-success"><span class="fa fa-plus"></span> Tambah</a>
+								<a href="<?php echo base_url('Covid/ZonaKHS/Add') ?>" class="btn btn-success"><span class="fa fa-plus"></span> Tambah</a>
+								<a href="<?php echo base_url('Covid/ZonaKHS/Email') ?>" class="btn btn-info"><span class="fa fa-paper-plane"></span> Kirim Email</a>
 							</div>
 							<div class="box-body">
 								<div class="row">
