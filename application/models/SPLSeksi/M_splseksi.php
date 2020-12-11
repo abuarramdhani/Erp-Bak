@@ -734,12 +734,11 @@ class M_splseksi extends CI_Model
 		// cek shift $masuk = min(tanggal1) & $pulang = shift max(tanggal1) 
 		if ($tanggal1 == $tanggal2) {
 			$tglKemarin = date('Y-m-d', strtotime('-1 day ' . $tanggal1));
-			$selectAbsenPulangKemarin = "SELECT keluar from \"Presensi\".tdatapresensi where noind='$noind' and tanggal='$tglKemarin'";
-
-			$execute = $this->prs->query($selectAbsenPulangKemarin);
+			$absenPulangKemarin = $this->getPresensi($noind, $tanggal1); // array<array>
+			
 			$tommorow = '';
-			if ($execute->num_rows() > 0) {
-				$tommorow = "AND waktu <> '{$execute->row()->keluar}' ";
+			if (count($absenPulangKemarin) > 0) {
+				$tommorow = "AND concat(tanggal, ' ', waktu) <> '{$absenPulangKemarin[0]['keluar']}'";
 			}
 
 			$sql = "SELECT min(concat(tanggal::date,' ',waktu)::timestamp) as in, 
