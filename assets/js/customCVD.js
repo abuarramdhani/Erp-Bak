@@ -1168,7 +1168,7 @@ $(document).on('ready', function(){
 
 	$('.slc-CVD-ZonaKHS-Email-Area').select2({
 		placeholder: 'Area',
-		minimumInputLength: 1,
+		minimumInputLength: 0,
 		ajax: {
 			url: baseurl+'Covid/ZonaKHS/getAreaIsolasi',
 			dataType:'json',
@@ -1233,7 +1233,7 @@ $(document).on('ready', function(){
 
 		$('.slc-CVD-ZonaKHS-Email-Area').select2({
 			placeholder: 'Area ',
-			minimumInputLength: 1,
+			minimumInputLength: 0,
 			ajax: {
 				url: baseurl+'Covid/ZonaKHS/getAreaIsolasi',
 				dataType:'json',
