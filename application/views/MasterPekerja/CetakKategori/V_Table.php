@@ -146,7 +146,7 @@
                         if (in_array("tp.email", $select)) { echo "<td>" . $val['email'] . "</td>";}
                         if (in_array("tp.telkomsel_mygroup", $select)) { echo "<td>" . $val['telkomsel_mygroup'] . "</td>";}
                         if (in_array("tp.pidgin_account", $select)) { echo "<td>" . $val['pidgin_account'] . "</td>";}
-                        if (in_array("tp.uk_baju", $select)) { echo "<td>" . $val['uk_baju'] . "</td>";}
+                        if (in_array("tp.uk_baju", $select)) { echo "<td>" . trim($val['uk_baju'])." ".$val['jenis_baju']."</td>";}
                         if (in_array("tp.uk_celana", $select)) { echo "<td>" . $val['uk_celana'] . "</td>";}
                         if (in_array("tp.uk_sepatu", $select)) { echo "<td>" . $val['uk_sepatu'] . "</td>";}
 

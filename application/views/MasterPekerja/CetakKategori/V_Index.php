@@ -309,7 +309,7 @@
                                                 <label> Telkomsel Mygroup</label><br>
                                                 <input name="pidgin" type="checkbox" class="chk_FilterTarikData" value="tp.pidgin_account">
                                                 <label> Akun Pidgin</label><br>
-                                                <input name="uk_baju" type="checkbox" class="chk_FilterTarikData" value="tp.uk_baju">
+                                                <input name="uk_baju" type="checkbox" class="chk_FilterTarikData" value="tp.uk_baju, tp.jenis_baju">
                                                 <label> Ukuran Baju</label><br>
                                                 <input name="uk_celana" type="checkbox" class="chk_FilterTarikData" value="tp.uk_celana">
                                                 <label> Ukuran Celana</label><br>
