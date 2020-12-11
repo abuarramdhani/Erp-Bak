@@ -81,19 +81,6 @@
 												</div>
 											</div>
 											<div class="form-group">
-												<label class="control-label col-md-4">Kirim Email Ke Pekerja</label>
-												<div class="col-md-4">
-													<label for="txt-CVD-ZonaKHS-Email-Ya" class="col-md-6">
-														<input type="radio" value="1" name="txt-CVD-ZonaKHS-Email" id="txt-CVD-ZonaKHS-Email-Ya">
-														Ya
-													</label>
-													<label for="txt-CVD-ZonaKHS-Email-Tidak" class="col-md-6">
-														<input type="radio" value="0" name="txt-CVD-ZonaKHS-Email" id="txt-CVD-ZonaKHS-Email-Tidak">
-														Tidak
-													</label>
-												</div>
-											</div>
-											<div class="form-group">
 												<div class="col-md-12 text-center">
 													<button type="button" class="btn btn-primary" id="btn-CVD-ZonaKHS-Simpan"><span class="fa fa-save"></span> Simpan</button>
 												</div>

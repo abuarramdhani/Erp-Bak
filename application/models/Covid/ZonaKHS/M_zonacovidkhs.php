@@ -92,6 +92,14 @@ class M_zonacovidkhs extends CI_Model {
 		$this->erp->query($sql,array($user,$id_zona));
 	}
 
+	function getAreaIsolasiByKey($key){
+		$sql = "select *
+			from cvd.cvd_zona_khs
+			where upper(nama_seksi) like upper(concat('%',?,'%'))
+			and isolasi = '1'";
+		return $this->erp->query($sql,array($key))->result_array();
+	}
+
 }
 
 ?>
