@@ -343,7 +343,7 @@ function donejti() {
   }).then((result) => {
     if (result.value) {
       Swal.fire(
-        'Sukses!',
+        'Sukses!'
       ).then(function () {
         $.ajax({
           url: baseurl+'jtipembelian/Input/updateResponseJTIDone',
