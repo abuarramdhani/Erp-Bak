@@ -571,7 +571,26 @@
 																<label for="PK_txt_ukuranbaju">Ukuran Baju </label>
 															</div>
 															<div class="col-lg-8">
-																<input type="text" name="uk_baju" id="" class="form-control" value="<?= $data['uk_baju'] ?>">
+																<div class="row">
+																	<div class="col-lg-8">
+																		<select name="jenis_baju" id="jenis_baju" data-placeholder="Jenis baju" class="form-control select2">
+																			<option value="-">-</option>
+																			<option value="MAN" <?= $data['jenis_baju'] === 'MAN' ? 'selected' : '' ?>>MAN</option>
+																			<option value="LADIES" <?= $data['jenis_baju'] === 'LADIES' ? 'selected' : '' ?>>LADIES</option>
+																		</select>
+																	</div>
+																	<div class="col-lg-4">
+																		<?php
+																		$cloth_size = ['S', 'M', 'L', 'XL', 'XXL']
+																		?>
+																		<select name="uk_baju" id="uk_baju" data-placeholder="Size" class="form-control select2">
+																			<option value="-">-</option>
+																			<?php foreach ($cloth_size as $size) : ?>
+																				<option value="<?= $size ?>" <?= trim($data['uk_baju']) == $size ? 'selected' : ''; ?>><?= $size ?></option>
+																			<?php endforeach ?>
+																		</select>
+																	</div>
+																</div>
 															</div>
 														</div>
 														<div class="row" style="margin-top: 10px;">
