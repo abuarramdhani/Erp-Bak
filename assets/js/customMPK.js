@@ -1943,7 +1943,9 @@ $(function () {
   //  {
   $("#MasterPekerja-txtPokokMasalah").redactor();
   $("#MasterPekerja-Surat-txaPreview").redactor();
-  $(".MasterPekerja-Surat-txaPreview").redactor();
+  $(".MasterPekerja-Surat-txaPreview").redactor({
+    linebreaks: true
+  });
   $("#MasterPekerja-SuratPerbantuan-txaPreview").redactor();
   $(".MasterPekerja-SuratRotasi-txaPreview").redactor();
   $(".MasterPekerja-SuratUsiaLanjut-txaPreview").redactor();
