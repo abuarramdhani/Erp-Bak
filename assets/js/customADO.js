@@ -169,6 +169,17 @@ $( () => {
         placeholder : 'Pilih Gudang Pengirim'
     })
 
+    $('.slcADOPakaiBongkar').select2();
+
+    $(document).on('change','.slcADOPakaiBongkar', function() {
+        var value = $(this).val();
+        if (value == 0) {
+            $('.txtADOAlamatBongkar').attr('readonly','readonly');
+        }else if(value == 1){
+            $('.txtADOAlamatBongkar').removeAttr('readonly');
+        }
+    })
+
     $(document).on('ifChanged', '.chkADOPickedReleaseAll', function (e) {
         e.target.checked ?
             $(dataTableADODetailAllPageList).find('.chkADOPickedRelease').iCheck('check') :
@@ -348,17 +359,37 @@ $( () => {
             alamatBongkar         : $('.txtADOAlamatBongkar').val(),
             catatan               : $('.txtADOCatatan').val()
         }
-        let url      = `${baseurl}ApprovalDO/ListDPBVendor/saveDetail`
-        let question = 'Simpan Data Ini?'
-        let success  = 'Berhasil Menyimpan Data'
-        let fail     = 'Gagal Menyimpan Data'
-        swalADOQuestionAjax(question, success, fail, url, data)
+        var pakaiAlamatBongkar = $('.slcADOPakaiBongkar').val();
+        var alamatBongkar = $('.txtADOAlamatBongkar').val();
+        if (pakaiAlamatBongkar == 0) {
+            
+            let url      = `${baseurl}ApprovalDO/ListDPBVendor/saveDetail`
+            let question = 'Simpan Data Ini?'
+            let success  = 'Berhasil Menyimpan Data'
+            let fail     = 'Gagal Menyimpan Data'
+            swalADOQuestionAjax(question, success, fail, url, data)
+        }else if (pakaiAlamatBongkar == 1) {
+            if (alamatBongkar) {
+                let url      = `${baseurl}ApprovalDO/ListDPBVendor/saveDetail`
+                let question = 'Simpan Data Ini?'
+                let success  = 'Berhasil Menyimpan Data'
+                let fail     = 'Gagal Menyimpan Data'
+                swalADOQuestionAjax(question, success, fail, url, data)
+            }else{
+                Swal.fire({
+                    customClass: 'swal-font-large',
+                    type: 'error',
+                    title: 'Gagal',
+                    text: 'Alamat Bongkar tidak boleh kosong!',
+                });
+            }
+        }
     })
 
     $('.btnADOCekStok').on('click', function () {
         var no_do = new Array();
         var gudang_pengirim = $('.slcADOGudangPengirim').val();
-
+        
         if (gudang_pengirim) {
 
             $('.nodoADO').each(function (i) {
@@ -612,24 +643,50 @@ $( () => {
                 return data
             }) ()
         }
-        let url      = `${baseurl}ApprovalDO/DPBKHS/saveNew`
-        let question = 'Simpan Data Ini?'
-        let success  = 'Berhasil Menyimpan Data'
-        let fail     = 'Gagal Menyimpan Data'
-        swalADOQuestionAjax(question, success, fail, url, data).then( (resp) => {
-            if ( resp !== 'Cancelled' && resp !== 'Fail' ) {
-                Swal.fire({
-                    customClass : 'swal-font-small',
-                    type        : 'success',
-                    title       : 'Berhasil!',
-                    text        : `Sukses menambahkan data dengan Nomor PR ${resp} !`,
-                    footer      : `<form action="${baseurl}ApprovalDO/DPBKHS/Detail" method="post">
-                                        <input type="hidden" name="data-pr" value="${resp}">
-                                        <button class="btn-link">Untuk memperbarui data ini silahkan klik disini.</button>
-                                   </form>`
+        var pakaiAlamatBongkar = $('.slcADOPakaiBongkar').val();
+        var alamatBongkar = $('.txtADOAlamatBongkar').val();
+        if (pakaiAlamatBongkar == 0) {
+
+            let url      = `${baseurl}ApprovalDO/DPBKHS/saveNew`
+            let question = 'Simpan Data Ini?'
+            let success  = 'Berhasil Menyimpan Data'
+            let fail     = 'Gagal Menyimpan Data'
+            swalADOQuestionAjax(question, success, fail, url, data).then( (resp) => {
+                if ( resp !== 'Cancelled' && resp !== 'Fail' ) {
+                    Swal.fire({
+                        customClass : 'swal-font-small',
+                        type        : 'success',
+                        title       : 'Berhasil!',
+                        text        : `Sukses menambahkan data dengan Nomor PR ${resp} !`,
+                        footer      : `<form action="${baseurl}ApprovalDO/DPBKHS/Detail" method="post">
+                                            <input type="hidden" name="data-pr" value="${resp}">
+                                            <button class="btn-link">Untuk memperbarui data ini silahkan klik disini.</button>
+                                       </form>`
+                    })
+                }
+            })
+        }else if (pakaiAlamatBongkar == 1) {
+            if (alamatBongkar) {
+                let url      = `${baseurl}ApprovalDO/DPBKHS/saveNew`
+                let question = 'Simpan Data Ini?'
+                let success  = 'Berhasil Menyimpan Data'
+                let fail     = 'Gagal Menyimpan Data'
+                swalADOQuestionAjax(question, success, fail, url, data).then( (resp) => {
+                    if ( resp !== 'Cancelled' && resp !== 'Fail' ) {
+                        Swal.fire({
+                            customClass : 'swal-font-small',
+                            type        : 'success',
+                            title       : 'Berhasil!',
+                            text        : `Sukses menambahkan data dengan Nomor PR ${resp} !`,
+                            footer      : `<form action="${baseurl}ApprovalDO/DPBKHS/Detail" method="post">
+                                                <input type="hidden" name="data-pr" value="${resp}">
+                                                <button class="btn-link">Untuk memperbarui data ini silahkan klik disini.</button>
+                                        </form>`
+                        })
+                    }
                 })
-            }
-        })
+                }
+        }
     })
 
     $('.tblADODetailList').on('click', '.btnADODeleteRow', function () {
