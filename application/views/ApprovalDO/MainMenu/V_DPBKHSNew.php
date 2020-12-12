@@ -88,11 +88,24 @@
                         </div>
                         <br />
                         <div class="form-group">
+                            <label class="col-sm-2 control-label">Pakai Alamat Bongkar ?</label>
+                            <div class="col-sm-5">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i style="width:15px;" class="fa fa-question"></i></span>
+                                    <select class="form-control slcADOPakaiBongkar" id="" <?= $UserAccess['gudang_pengirim'] ?>>
+                                        <option value="0">Tidak</option>
+                                        <option value="1">Ya</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="form-group">
                             <label class="col-sm-2 control-label">Alamat Bongkar</label>
                             <div class="col-sm-5">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i style="width:15px;" class="fa fa-home"></i></span>
-                                    <input class="form-control txtADOAlamatBongkar">
+                                    <input class="form-control txtADOAlamatBongkar" readonly>
                                 </div>
                             </div>
                         </div>

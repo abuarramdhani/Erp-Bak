@@ -46,7 +46,7 @@ class C_DPBVendor extends CI_Controller {
         if ( ! $data['NO_PR'] = $this->input->post('data-pr') ) {
             redirect('ApprovalDO/ListDPBVendor');
         }
-
+        
         $user_id = $this->session->userid;
         $resp_id = $this->session->responsibility_id;
 
@@ -79,7 +79,7 @@ class C_DPBVendor extends CI_Controller {
                     'kontak_supir'     => 'readonly',
                     'vendor_ekspedisi' => 'readonly',
                     'estimasi_datang'  => 'readonly',
-                    'alamat_bongkar'   => '',
+                    'alamat_bongkar'   => 'readonly',
                     'catatan'          => '',
                     'estdate'          => '',
                     'tgl_kirim'        => '',
