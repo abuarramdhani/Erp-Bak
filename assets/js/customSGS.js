@@ -112,7 +112,7 @@ function getLihatStock(no, ket) {
 					text: '<i class="fa fa-download"></i> Download',
 					exportOptions: {
 						columns: ':visible',
-						columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+						columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13],
 					},
 				}        
 			

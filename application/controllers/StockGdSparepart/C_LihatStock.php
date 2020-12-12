@@ -49,7 +49,7 @@ class C_LihatStock extends CI_Controller
 			$data['UserMenu'] = $UserMenu;
 		}
 		
-		if ($user == 'B0901') {
+		if ($user == 'B0901' || $user == 'T0016') {
 			$data['tglawal']    = date('d/m/Y', strtotime('-1 year', strtotime( date('Y-m-d') )));;
 			$data['tglakhir']   = date('d/m/Y');
 			$data['subinv']     = 'SP-YSP';
