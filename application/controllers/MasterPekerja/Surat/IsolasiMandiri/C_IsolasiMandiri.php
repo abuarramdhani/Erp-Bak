@@ -307,6 +307,19 @@ class C_IsolasiMandiri extends CI_Controller
 				$this->M_isolasimandiri->instoLog($arl);
 			}
 		}
+
+		//delete presensi di tanggal mulai - selesai jika pkj
+		// $dataPrez = $this->M_isolasimandiri->getDataPresensiIs($pekerja, $mulai, $selesai);
+		// $arl = array(
+		// 	'wkt'	=>	date('Y-m-d H:i:s'),
+		// 	'transaksi'	=>	'DELETE DATA Presensi & edit presensi tanggal '.$mulai.' sampai '.$selesai.' noind '.$pekerja,
+		// 	'keterangan'	=>	json_encode($dataPrez),
+		// 	'program'	=>	'TIM-COVID19->MonitoringCovid',
+		// 	'tgl_proses'	=>	date('Y-m-d H:i:s'),
+		// 	);
+		// $this->M_isolasimandiri->instoLog2($arl);
+		// $del = $this->M_isolasimandiri->delEditPres($pekerja, $mulai, $selesai, 'PKJ');
+		// $del2 = $this->M_isolasimandiri->delTdataPres($pekerja, $mulai, $selesai, 'PKJ');
 		//insert ke tdatapresensi dan tinput_edit_presensi
 		$begin = new DateTime($mulai);
 		$akh = $selesai;
@@ -644,17 +657,28 @@ class C_IsolasiMandiri extends CI_Controller
 				$awal_lama = $batas;
 			}
 			if (strtotime($akhir_lama) > strtotime($batas)) {
-				$del = $this->M_isolasimandiri->delEditPres($pkj, $awal_lama, $akhir_lama, $data['status']);
-				$del2 = $this->M_isolasimandiri->delTdataPres($pkj, $awal_lama, $akhir_lama, $data['status']);
+				//log presensi
+				$dataPrez = $this->M_isolasimandiri->getDataPresensiIs2($pkj, $awal_lama, $akhir_lama);
+				$arl = array(
+					'wkt'	=>	date('Y-m-d H:i:s'),
+					'transaksi'	=>	'DELETE DATA Presensi & edit presensi tanggal '.$mulai.' sampai '.$selesai.' noind '.$pekerja,
+					'keterangan'	=>	json_encode($dataPrez),
+					'program'	=>	'TIM-COVID19->MonitoringCovid',
+					'tgl_proses'	=>	date('Y-m-d H:i:s'),
+					);
+				$this->M_isolasimandiri->instoLog2($arl);
+				$del = $this->M_isolasimandiri->delEditPres2($pkj, $awal_lama, $akhir_lama, $data['status']);
+				$del2 = $this->M_isolasimandiri->delTdataPres2($pkj, $awal_lama, $akhir_lama, $data['status']);
 				$ard = array(
 					'wkt'	=>	date('Y-m-d H:i:s'),
 					'menu'	=>	'TIM-COVID19->MonitoringCovid',
 					'ket'	=>	$awal_lama.' - '.$akhir_lama.' noind '.$pkj,
 					'noind'	=>	$this->session->user,
-					'jenis'	=>	'Delet Absensi Status '.$data['status'].' ke tdatapresensi & tinput_edit_presensi',
+					'jenis'	=>	'Delet Absensi Status != PKJ ke tdatapresensi & tinput_edit_presensi',
 					'program'	=>	'ERP - Tim Covid 19',
 					);
 				$this->M_isolasimandiri->instoLog($ard);
+
 			}
 			//lalu insert kembali :)
 			$tglPer = $this->input->post('tgl_perperiode');
