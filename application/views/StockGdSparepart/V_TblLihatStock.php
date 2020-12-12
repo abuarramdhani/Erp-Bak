@@ -15,6 +15,7 @@
                 <th>Lokasi Simpan</th>
                 <th>SubInventory</th>
                 <th>Action</th>
+                <th style="display:none">Gambar Item</th>
             </tr>
         </thead>
         <tbody class="text-nowrap">
@@ -36,9 +37,11 @@
             
 		$filename = './assets/upload/wipp/setelah/'.$val['ITEM'].'.png';
 		if (file_exists($filename)) {
-			$ket_img = 'bg-teal';
+            $ket_img = 'bg-teal';
+            $gambar = 'Ada gambar';
 		}else {
 			$ket_img = 'btn-default';
+            $gambar = 'Belum ada gambar';
 		}
         ?>
             <tr>
@@ -61,6 +64,7 @@
                 <td class="<?= $td?>"><button type="button" class="btn btn-md btn-info" onclick="modalHistory(<?= $i?>)"><i class="fa fa-search"></i></button>
                    <button type="button" class="btn btn-md <?= $ket_img?>" onclick="modalGambarItem(<?= $i?>)"><i class="fa fa-photo"></i></button>
                 </td>
+                <td class="<?= $td?>" style="display:none"><input type="hidden" id="gambar<?= $i?>" value="<?= $gambar?>"><?= $gambar?></td>
             </tr>
         <?php $i++; } ?>
         </tbody>
