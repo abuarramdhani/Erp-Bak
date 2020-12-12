@@ -1948,7 +1948,9 @@ $(function () {
   $(".MasterPekerja-SuratRotasi-txaPreview").redactor();
   $(".MasterPekerja-SuratUsiaLanjut-txaPreview").redactor();
   $(".MasterPekerja-SuratPromosi-txaPreview").redactor();
-  $("#MasterPekerja-Surat-txaFormatSurat").redactor();
+  $("#MasterPekerja-Surat-txaFormatSurat").redactor({
+    linebreaks: true
+  });
   $("#MasterPekerja-SuratDemosi-txaPreview").redactor();
   $("#MasterPekerja-SuratPengangkatanStaf-txaPreview").redactor();
   $(".MasterPekerja-SuratPengalaman-txaPreview").redactor();
