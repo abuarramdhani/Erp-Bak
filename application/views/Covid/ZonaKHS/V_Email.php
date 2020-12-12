@@ -73,10 +73,21 @@
 														<tbody>
 															<tr>
 																<td>
-																	<input type="text" class="form-control txt-CVD-ZonaKHS-Email-Alamat">
+																	<input type="text" class="form-control txt-CVD-ZonaKHS-Email-Alamat" value="semuapekerja@quick.com">
 																</td>
 																<td>
-																	<input type="text" class="form-control txt-CVD-ZonaKHS-Email-Nama">
+																	<input type="text" class="form-control txt-CVD-ZonaKHS-Email-Nama" value="Semua Pekerja">
+																</td>
+																<td>
+																	<button type="button" class="btn btn-danger btn-sm btn-CVD-ZonaKHS-Penerima-Delete" title="Hapus"><span class="fa fa-trash"></span></button>
+																</td>
+															</tr>
+															<tr>
+																<td>
+																	<input type="text" class="form-control txt-CVD-ZonaKHS-Email-Alamat" value="semuaseksi@quick.com">
+																</td>
+																<td>
+																	<input type="text" class="form-control txt-CVD-ZonaKHS-Email-Nama" value="Semua Seksi">
 																</td>
 																<td>
 																	<button type="button" class="btn btn-danger btn-sm btn-CVD-ZonaKHS-Penerima-Delete" title="Hapus"><span class="fa fa-trash"></span></button>
