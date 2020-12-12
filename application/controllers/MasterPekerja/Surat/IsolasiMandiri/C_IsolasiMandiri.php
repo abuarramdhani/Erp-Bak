@@ -152,15 +152,15 @@ class C_IsolasiMandiri extends CI_Controller
 			$akh = date('d M Y', strtotime($tgl[$li]));
 			$jml = date_diff(date_create($akh), date_create($awl))->format('%d')+1;
 			$arr2[] = array(
-				'awal' => date('d M Y', strtotime($tgl[$fi])),
-				'akhir' => date('d M Y', strtotime($tgl[$li])),
-				'jml'	=> $jml,
+				'awal' => $awl,
+				'akhir' => $akh,
+				'jml'	=> date_diff(date_create($akh), date_create($awl))->format('%d')+1,
 				'st' => $status[$fi],
 				);
 		}
 		//table
 		$data['arr2'] = $arr2;
-		$data['qq'] = date_diff(date_create($lama2), date_create($lama1))->format('%d')+1;;
+		$data['qq'] = date_diff(date_create($lama2), date_create($lama1))->format('%d')+1;
 		$tabl = $this->load->view('MasterPekerja/Surat/IsolasiMandiri/V_Tabel',$data, true);
 		// echo $tabl;exit();
 
@@ -343,6 +343,10 @@ class C_IsolasiMandiri extends CI_Controller
 			$d = $dt.' 00:00:00';
 			if (!in_array($d, $sh) || $arStatus[$zx] == 'PKJ') {
 				$zx++;
+				continue;
+			}
+			$day = date('D', strtotime($d));
+			if ($day == 'Sun') {
 				continue;
 			}
 			if (strtotime($dt) < strtotime($batas)) {
@@ -705,6 +709,10 @@ class C_IsolasiMandiri extends CI_Controller
 					$zx++;
 					continue;
 				}
+				$day = date('D', strtotime($d));
+				if ($day == 'Sun') {
+					continue;
+				}
 				$tgl = $dt;
 				if (strtotime($tgl) < strtotime($batas)) {
 					$zx++;
@@ -955,6 +963,7 @@ class C_IsolasiMandiri extends CI_Controller
 		$period = new DatePeriod(new DateTime($mulai), $interval, new DateTime($selesai.'+1 day'));
 		$txt = '';
 		$shift = $this->M_isolasimandiri->getShiftIs($pkj, $mulai, $selesai);
+		// print_r($shift);exit();
 		$llibur = $this->M_isolasimandiri->getTliburIs($mulai, $selesai);
 		$sh = array_column($shift, 'tanggal');
 		$sl = array_column($llibur, 'tanggal');
@@ -976,7 +985,7 @@ class C_IsolasiMandiri extends CI_Controller
 		foreach ($period as $k) {
 			$d = $k->format("Y-m-d").' 00:00:00';
 			if (!in_array($d, $sh)) {
-				continue;
+				// continue;
 			}
 			$tgl = $k->format("Y-m-d");
 
