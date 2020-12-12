@@ -302,8 +302,17 @@ class C_MonitoringCovid extends CI_Controller
 		$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $encrypted_id);
 		$plaintext_string = $this->encrypt->decode($plaintext_string);
 		$status = $this->input->get('status');
-
 		$pkj = $this->M_monitoringcovid->getDetailcvdPekerja($plaintext_string);
+		$dataPrez = $this->M_isolasimandiri->getDataPresensiIs2($pkj['noind'], $surat['tgl_mulai'], $surat['tgl_selesai']);
+		$arl = array(
+			'wkt'	=>	date('Y-m-d H:i:s'),
+			'transaksi'	=>	'DELETE DATA Presensi & edit presensi tanggal '.$mulai.' sampai '.$selesai.' noind '.$pekerja,
+			'keterangan'	=>	json_encode($dataPrez),
+			'program'	=>	'TIM-COVID19->MonitoringCovid',
+			'tgl_proses'	=>	date('Y-m-d H:i:s'),
+			);
+		$this->M_isolasimandiri->instoLog2($arl);
+
 		if (!empty($pkj['isolasi_id'])) {
 			$surat = $this->M_monitoringcovid->getSuratIs($pkj['isolasi_id']);
 			$del = $this->M_monitoringcovid->delSuratIs($pkj['noind'], $surat['status'], $surat['tgl_mulai'], $surat['tgl_selesai']);
@@ -311,6 +320,7 @@ class C_MonitoringCovid extends CI_Controller
 			$del = $this->M_monitoringcovid->delwktIs($pkj['isolasi_id']);
 		}
 		$this->M_monitoringcovid->deletePekerjaById($plaintext_string);
+
 
 		$result = array(
 			'status' => 'sukses'
@@ -373,6 +383,10 @@ class C_MonitoringCovid extends CI_Controller
 					<td style='width: 14%;border: 1px solid black;padding-left: 3px;'>{PAGENO} / {nb}</td>
 				</tr>
 			</table>");
+	    $pdf->WriteHTML('
+		.pnomargin p{
+			margin: 0px;
+		}', 1);
 	    $pdf->WriteHTML($html, 2);
 	    $pdf->Output($filename, 'I');
 	}
@@ -668,7 +682,7 @@ class C_MonitoringCovid extends CI_Controller
 	public function DiriSendiri(){
 		$user_id = $this->session->userid;
 		$user = $this->session->user;
-		$data['Title']			=	'Tim Covid 19';
+		$data['Title']			=	'Diri Sendiri';
 		$data['Header']			=	'Tim Covid 19';
 		$data['Menu'] 			= 	'';
 		$data['SubMenuOne'] 	= 	'';
@@ -680,7 +694,8 @@ class C_MonitoringCovid extends CI_Controller
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('Covid/MonitoringCovid/V_Inputdirisendiri',$data);
+		$this->load->view('Covid/MonitoringCovid/V_List_Diri_Sendiri',$data);
+		// $this->load->view('Covid/MonitoringCovid/V_Inputdirisendiri',$data);
 		$this->load->view('V_Footer',$data);
 	}
 
@@ -790,6 +805,15 @@ class C_MonitoringCovid extends CI_Controller
 			$covid_sakit_kembali = 'Tidak';
 		}
 
+		$covid_sakit = $this->input->post('covid_sakit');
+		if($covid_sakit == 1)
+		{
+			$covid_sakit = 'Ya';
+		}
+		else {
+			$covid_sakit = 'Tidak';
+		}
+
 		$covid_interaksi = $this->input->post('covid_interaksi');
 
 		if($covid_interaksi == 1)
@@ -799,6 +823,8 @@ class C_MonitoringCovid extends CI_Controller
 		else {
 			$covid_interaksi = 'Tidak';
 		}
+		$range = $this->input->post('txtPeriodeKejadian');
+		$exrange = explode(' - ', $range);
 
 		$user = $this->session->user;
 		$data = [
@@ -807,6 +833,7 @@ class C_MonitoringCovid extends CI_Controller
 		'seksi' => $this->input->post('slc-CVD-MonitoringCovid-Tambah-Seksi'),
 		'dept' => $this->input->post('slc-CVD-MonitoringCovid-Tambah-Departemen'),
 		'tgl_kejadian' => $this->input->post('txtPeriodeKejadian'),
+		'tgl_interaksi' => $exrange[0],
 		'keterangan' => $this->input->post('txt-CVD-MonitoringCovid-Tambah-Keterangan'),
 		'wilayah' => $this->input->post('Wilayah'),
 		'transportasi' => $this->input->post('Transportasi'),
@@ -816,7 +843,7 @@ class C_MonitoringCovid extends CI_Controller
 		'prokes' => $this->input->post('txt-CVD-Prokes'),
 		'covid_menginap' => $covid_menginap,
 		'nbr_jumlah_hari' => $this->input->post('nbr-jumlah-hari'),
-		'covid_sakit' => $this->input->post('covid_sakit'),
+		'covid_sakit' => $covid_sakit,
 		'penyakit' => $this->input->post('txt-CVD-Penyakit'),
 		'covid_sakit_kembali' => $covid_sakit_kembali,
 		'penyakit_kembali' => $this->input->post('txt-CVD-Penyakit_kembali'),
@@ -868,6 +895,8 @@ class C_MonitoringCovid extends CI_Controller
 		else {
 			$covid_interaksi = 'Tidak';
 		}
+		$range = $this->input->post('txtPeriodeKejadian');
+		$exrange = explode(' - ', $range);
 
 		$user = $this->session->user;
 		$data = [
@@ -877,6 +906,7 @@ class C_MonitoringCovid extends CI_Controller
 		'dept' => $this->input->post('txt-CVD-MonitoringCovid-Tambah-Departemen'),
 		'status_anggota' => $this->input->post('Status_anggota'),
 		'tgl_kejadian' => $this->input->post('txtPeriodeKejadian'),
+		'tgl_interaksi' => $exrange[0],
 		'keterangan' => $this->input->post('txt-CVD-MonitoringCovid-Tambah-Keterangan'),
 		'wilayah' => $this->input->post('Wilayah'),
 		'transportasi' => $this->input->post('Transportasi'),
@@ -937,6 +967,8 @@ class C_MonitoringCovid extends CI_Controller
 		else {
 			$covid_interaksi = 'Tidak';
 		}
+		$range = $this->input->post('txtPeriodeKejadian');
+		$exrange = explode(' - ', $range);
 
 		$user = $this->session->user;
 		$data = [
@@ -945,6 +977,7 @@ class C_MonitoringCovid extends CI_Controller
 		'seksi' => $this->input->post('txt-CVD-MonitoringCovid-Tambah-Seksi'),
 		'dept' => $this->input->post('txt-CVD-MonitoringCovid-Tambah-Departemen'),
 		'tgl_kejadian' => $this->input->post('txtPeriodeKejadian'),
+		'tgl_interaksi' => $exrange[0],
 		'keterangan' => $this->input->post('txt-CVD-MonitoringCovid-Tambah-Keterangan'),
 		'wilayah' => $this->input->post('Wilayah'),
 		'transportasi' => $this->input->post('Transportasi'),
@@ -992,6 +1025,8 @@ class C_MonitoringCovid extends CI_Controller
 		else {
 			$covid_lokasi_acara = 'Outdoor';
 		}
+		$range = $this->input->post('txtPeriodeKejadian');
+		$exrange = explode(' - ', $range);
 
 		$user = $this->session->user;
 		$data = [
@@ -1000,6 +1035,7 @@ class C_MonitoringCovid extends CI_Controller
 		'seksi' => $this->input->post('txt-CVD-MonitoringCovid-Tambah-Seksi'),
 		'dept' => $this->input->post('txt-CVD-MonitoringCovid-Tambah-Departemen'),
 		'tgl_kejadian' => $this->input->post('txtPeriodeKejadian'),
+		'tgl_interaksi' => $exrange[0],
 		'keterangan' => $this->input->post('txt-CVD-MonitoringCovid-Tambah-Keterangan'),
 		'jenis_acara' => $this->input->post('Jenis_acara'),
 		'jumlah_tamu' => $this->input->post('Jumlah_tamu'),
@@ -1041,6 +1077,8 @@ class C_MonitoringCovid extends CI_Controller
 		else {
 			$covid_lokasi_acara = 'Outdoor';
 		}
+		$range = $this->input->post('txtPeriodeKejadian');
+		$exrange = explode(' - ', $range);
 
 		$user = $this->session->user;
 		$data = [
@@ -1049,6 +1087,7 @@ class C_MonitoringCovid extends CI_Controller
 		'seksi' => $this->input->post('txt-CVD-MonitoringCovid-Tambah-Seksi'),
 		'dept' => $this->input->post('txt-CVD-MonitoringCovid-Tambah-Departemen'),
 		'tgl_kejadian' => $this->input->post('txtPeriodeKejadian'),
+		'tgl_interaksi' => $exrange[0],
 		'keterangan' => $this->input->post('txt-CVD-MonitoringCovid-Tambah-Keterangan'),
 		'jenis_acara' => $this->input->post('Jenis_acara'),
 		'jumlah_tamu' => $this->input->post('Jumlah_tamu'),
@@ -1072,19 +1111,18 @@ class C_MonitoringCovid extends CI_Controller
 		}
 	}
 
-	public function insertProblaby()
+	public function insertSatuRumah()
 	{
+		// echo "<pre>";
+
 		$hubungan = $this->input->post('hubungan');
-		$arahan = $this->input->post('hubungan');
 		if ($hubungan == 'lainnya') {
-			$hubungan = $this->input->post('lainnya');
+			$hubungan = $this->input->post('hubungan_lainnya');
 		}
 
-		if ($arahan == '1') {
-			$arahan = $this->input->post('arahan_deskripsi');
-		}else{
-			$arahan = 'Tidak Ada';
-		}
+		$range = $this->input->post('txtPeriodeKejadian');
+		$exrange = explode(' - ', $range);
+
 		$user = $this->session->user;
 		$data = [
 		'no_induk' => $this->input->post('slc-CVD-MonitoringCovid-Tambah-Pekerja'),
@@ -1092,6 +1130,137 @@ class C_MonitoringCovid extends CI_Controller
 		'seksi' => $this->input->post('txt-CVD-MonitoringCovid-Tambah-Seksi'),
 		'dept' => $this->input->post('txt-CVD-MonitoringCovid-Tambah-Departemen'),
 		'tgl_kejadian' => $this->input->post('txtPeriodeKejadian'),
+		'tgl_interaksi' => $exrange[0],
+		'keterangan' => $this->input->post('txt-CVD-MonitoringCovid-Tambah-Keterangan'),
+		'yang_kontak'	=> $this->input->post('yang_kontak'),
+		'hubungan'	=> $hubungan,
+		'riwayat'	=> $this->input->post('riwayat'),
+		'gejala'	=> implode(', ', $this->input->post('gejala')),
+		'tgl_gejala'	=> $this->input->post('tgl_gejala'),
+		'lapor_puskesmas'	=> $this->input->post('lapor_puskesmas'),
+		'hasil_uji'	=> $this->input->post('hasil_uji'),
+		'fasilitas'	=> implode(', ', $this->input->post('fasilitas')),
+		'dekontaminasi'	=> $this->input->post('dekontaminasi'),
+		'atasan' => $this->input->post('slc-CVD-MonitoringCovid-Atasan'),
+		];
+
+		$antibody = $this->input->post('fantibody');
+		$data['antibody'] = $antibody;
+		$antigen = $this->input->post('fantigen');
+		$data['antigen'] = $antigen;
+		$pcr = $this->input->post('fpcr');
+		$data['pcr'] = $pcr;
+		if ($antibody == '1') {
+			$data['tgl_tes_antibody'] = $this->input->post('tgl_tes_antibody');
+			$data['tgl_keluar_tes_antibody'] = $this->input->post('tgl_keluar_tes_antibody');
+			$data['hasil_antibody'] = $this->input->post('hasil_antibody');
+		}
+		if ($antigen == '1') {
+			$data['tgl_tes_antigen'] = $this->input->post('tgl_tes_antigen');
+			$data['tgl_keluar_tes_antigen'] = $this->input->post('tgl_keluar_tes_antigen');
+			$data['hasil_antigen'] = $this->input->post('hasil_antigen');
+		}
+		if ($pcr == '1') {
+			$data['tgl_tes_pcr'] = $this->input->post('tgl_tes_pcr');
+			$data['tgl_keluar_tes_pcr'] = $this->input->post('tgl_keluar_tes_pcr');
+			$data['hasil_pcr'] = $this->input->post('hasil_pcr');
+		}
+
+		$data['jml_orangtua'] = $this->input->post('jml_orangtua');
+		$data['jml_mertua'] = $this->input->post('jml_mertua');
+		$data['jml_bojo'] = $this->input->post('jml_bojo');
+		$data['jml_anak'] = $this->input->post('jml_anak');
+		$data['jml_saudara_kandung'] = $this->input->post('jml_saudara_kandung');
+		$data['jml_saudara_tidak_kandung'] = $this->input->post('jml_saudara_tidak_kandung');
+		$data['anggota_lainnya'] = $this->input->post('anggota_lainnya');
+
+		$lapusk = $this->input->post('lapor_puskesmas');
+		if ($lapusk == 'Sudah') {
+			$data['arahan_terduga'] = $this->input->post('arahan_terduga');
+			$data['arahan_serumah'] = $this->input->post('arahan_serumah');
+		}
+		// print_r($data);exit();
+		
+		$id_wawancara = $this->M_monitoringcovid->kontakSatuRumah($data, $user);
+		$this->uploadLampiranCvd($id_wawancara);
+		$this->session->set_userdata('result', 'berhasil');
+		$src = $this->input->post('source');
+		if ($src == 'satu_rumah') {
+			redirect('Covid/PelaporanPekerja/Kontak/satu_rumah');
+		}else{
+
+		}
+	}
+
+	public function insertBedaRumah()
+	{
+		$hubungan = $this->input->post('hubungan');
+		$arahan = $this->input->post('hubungan');
+		if ($hubungan == 'lainnya') {
+			$hubungan = $this->input->post('lainnya');
+		}
+		if ($arahan == '1') {
+			$arahan = $this->input->post('arahan_deskripsi');
+		}else{
+			$arahan = 'Tidak Ada';
+		}
+		$range = $this->input->post('txtPeriodeKejadian');
+		$exrange = explode(' - ', $range);
+
+		$user = $this->session->user;
+		$data = [
+		'no_induk' => $this->input->post('slc-CVD-MonitoringCovid-Tambah-Pekerja'),
+		'id_pekerja' => $this->input->post('slc-CVD-MonitoringCovid-Tambah-PekerjaId'),
+		'seksi' => $this->input->post('txt-CVD-MonitoringCovid-Tambah-Seksi'),
+		'dept' => $this->input->post('txt-CVD-MonitoringCovid-Tambah-Departemen'),
+		'tgl_kejadian' => $this->input->post('txtPeriodeKejadian'),
+		'tgl_interaksi' => $exrange[0],
+		'keterangan' => $this->input->post('txt-CVD-MonitoringCovid-Tambah-Keterangan'),
+		'yang_kontak'	=> $this->input->post('yang_kontak'),
+		'hubungan'	=> $hubungan,
+		'jenis_interaksi'	=> $this->input->post('jenis_interaksi'),
+		'jarak_rumah'	=> $this->input->post('jarak_rumah'),
+		'intensitas'	=> $this->input->post('intensitas'),
+		'durasi'	=> $this->input->post('durasi'),
+		'protokol'	=> $this->input->post('protokol'),
+		'arahan'	=> $arahan,
+		'atasan' => $this->input->post('slc-CVD-MonitoringCovid-Atasan'),
+		];
+		
+		$id_wawancara = $this->M_monitoringcovid->kontakBedaRumah($data, $user);
+		$this->uploadLampiranCvd($id_wawancara);
+		$this->session->set_userdata('result', 'berhasil');
+		$src = $this->input->post('source');
+		if ($src == 'beda_rumah') {
+			redirect('Covid/PelaporanPekerja/Kontak/beda_rumah');
+		}else{
+			//nope
+		}
+	}
+
+	public function insertProblaby()
+	{
+		$hubungan = $this->input->post('hubungan');
+		$arahan = $this->input->post('hubungan');
+		if ($hubungan == 'lainnya') {
+			$hubungan = $this->input->post('lainnya');
+		}
+		if ($arahan == '1') {
+			$arahan = $this->input->post('arahan_deskripsi');
+		}else{
+			$arahan = 'Tidak Ada';
+		}
+		$range = $this->input->post('txtPeriodeKejadian');
+		$exrange = explode(' - ', $range);
+
+		$user = $this->session->user;
+		$data = [
+		'no_induk' => $this->input->post('slc-CVD-MonitoringCovid-Tambah-Pekerja'),
+		'id_pekerja' => $this->input->post('slc-CVD-MonitoringCovid-Tambah-PekerjaId'),
+		'seksi' => $this->input->post('txt-CVD-MonitoringCovid-Tambah-Seksi'),
+		'dept' => $this->input->post('txt-CVD-MonitoringCovid-Tambah-Departemen'),
+		'tgl_kejadian' => $this->input->post('txtPeriodeKejadian'),
+		'tgl_interaksi' => $exrange[0],
 		'keterangan' => $this->input->post('txt-CVD-MonitoringCovid-Tambah-Keterangan'),
 		'yang_kontak'	=> $this->input->post('yang_kontak'),
 		'hubungan'	=> $hubungan,
@@ -1108,9 +1277,9 @@ class C_MonitoringCovid extends CI_Controller
 		$this->session->set_userdata('result', 'berhasil');
 		$src = $this->input->post('source');
 		if ($src == 'problaby') {
-			redirect('Covid/PelaporanPekerja/Interaksi');
+			redirect('Covid/PelaporanPekerja/Kontak/interaksi');
 		}else{
-
+			//nope
 		}
 	}
 

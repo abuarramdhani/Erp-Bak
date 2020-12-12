@@ -232,7 +232,7 @@ class M_isolasimandiri extends CI_Model
 
 	public function delEditPres($noind, $awal, $akhir, $status)
 	{
-		$sql = "DELETE from \"Presensi\".tinput_edit_presensi where noind = '$noind' and tanggal1 >= '$awal' and tanggal1 <= '$akhir' and kd_ket = 'PRM'";
+		$sql = "DELETE from \"Presensi\".tinput_edit_presensi where noind = '$noind' and tanggal1 >= '$awal' and tanggal1 <= '$akhir' and kd_ket = '$status'";
 		// echo $sql;exit();
 		$query = $this->personalia->query($sql);
 		return $this->personalia->affected_rows();
@@ -240,7 +240,23 @@ class M_isolasimandiri extends CI_Model
 
 	public function delTdataPres($noind, $awal, $akhir, $status)
 	{
-		$sql = "DELETE from \"Presensi\".tdatapresensi where noind = '$noind' and tanggal >= '$awal' and tanggal <= '$akhir' and kd_ket = 'PRM'";
+		$sql = "DELETE from \"Presensi\".tdatapresensi where noind = '$noind' and tanggal >= '$awal' and tanggal <= '$akhir' and kd_ket = '$status'";
+		// echo $sql;exit();
+		$query = $this->personalia->query($sql);
+		return $this->personalia->affected_rows();
+	}
+
+	public function delEditPres2($noind, $awal, $akhir, $status)
+	{
+		$sql = "DELETE from \"Presensi\".tinput_edit_presensi where noind = '$noind' and tanggal1 >= '$awal' and tanggal1 <= '$akhir' and kd_ket != 'PKJ'";
+		// echo $sql;exit();
+		$query = $this->personalia->query($sql);
+		return $this->personalia->affected_rows();
+	}
+
+	public function delTdataPres2($noind, $awal, $akhir, $status)
+	{
+		$sql = "DELETE from \"Presensi\".tdatapresensi where noind = '$noind' and tanggal >= '$awal' and tanggal <= '$akhir' and kd_ket != 'PKJ'";
 		// echo $sql;exit();
 		$query = $this->personalia->query($sql);
 		return $this->personalia->affected_rows();
@@ -275,12 +291,17 @@ class M_isolasimandiri extends CI_Model
 
 	public function getAtasanIS2($ks)
 	{
-		$sql = "SELECT * from
-					hrd_khs.tpribadi t
+		$sql = "SELECT
+					*
+				from
+					hrd_khs.trefjabatan t
+				inner join hrd_khs.tpribadi t2 on
+					t2.noind = t.noind
 				where
-					kodesie like '$ks%'
-					and keluar = false
-					and left(noind, 1) in ('B', 'J', 'D')";
+					t.kodesie like '$ks%'
+					and left(t.noind, 1) in ('B', 'J', 'D')
+					and t2.keluar = false";
+		// echo $sql;exit();
 		return $this->personalia->query($sql)->result_array();
 	}
 
@@ -325,6 +346,10 @@ class M_isolasimandiri extends CI_Model
 	{
 		$this->personalia->insert('hrd_khs.tlog', $data);
 	}
+	public function instoLog2($data)
+	{
+		$this->personalia->insert('"Presensi".tlog', $data);
+	}
 
 	public function getPresensiIs($noind, $mulai, $selesai)
 	{
@@ -344,7 +369,7 @@ class M_isolasimandiri extends CI_Model
 		return $this->db->get('cvd.cvd_waktu_isolasi')->result_array();
 	}
 
-	public function getDataPresensiIs($pkj, $awal, $akhir)
+	public function getDataPresensiIs($pkj, $awal, $akhir, $status = 'PKJ')
 	{
 		$sql = "select
 					*
@@ -353,7 +378,19 @@ class M_isolasimandiri extends CI_Model
 				where
 					noind = '$pkj'
 					and tanggal between '$awal' and '$akhir'
-					and kd_ket = 'PKJ'";
+					and kd_ket = '$status'";
+		return $this->personalia->query($sql)->result_array();
+	}
+	public function getDataPresensiIs2($pkj, $awal, $akhir, $status = 'PKJ')
+	{
+		$sql = "select
+					*
+				from
+					\"Presensi\".tdatapresensi
+				where
+					noind = '$pkj'
+					and tanggal between '$awal' and '$akhir'
+					and kd_ket != '$status'";
 		return $this->personalia->query($sql)->result_array();
 	}
 
