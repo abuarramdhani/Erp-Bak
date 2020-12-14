@@ -88,6 +88,13 @@ class M_presensibulanan extends Ci_Model
 					 or a.kodesie like trim(TRAILING '0' FROM '$kd') || '%'
 					 and a.keluar = false
 				 order by a.kodesie,a.noind;";
+		} elseif ($noind == 'B0834') { // Astiati #681867 -> gudang ppic tks, CPP tks, finishing tks, otomasi & pengembangan alat tks, quality tks, pola/pattern tks, maintenance up2l tks
+			$sql = "select a.noind,a.nama, b.seksi
+					 from hrd_khs.tpribadi a
+					 left join hrd_khs.tseksi b on a.kodesie=b.kodesie
+						 where left(a.kodesie,7) in (left('$kd', 7), '3280102', '3280101', '3280105', '3280107', '3280104', '3280106', ' 3280103')
+						 and a.keluar = false
+					 order by a.kodesie,a.noind;";
 		} else {
 			if ('306030' == substr($kd, 0, 6)) //ada diticket
 			{
