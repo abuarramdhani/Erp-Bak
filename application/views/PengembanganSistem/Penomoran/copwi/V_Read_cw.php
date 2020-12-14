@@ -23,7 +23,12 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="box box-primary box-solid">
-                                <div class="box-header with-border">Edit Data</div>
+                                <div class="box-header with-border"><div class="col-sm-6">Edit Data </div>
+                                    <div class="col-sm-6 text-right">
+                                        <p class="btn btn-info" style="margin-right:25px;" data-toggle="tooltip" title="Icon Untuk Input Data Seksi/Departemen" id="tmbh_data"><i class="fa fa-plus"></i></p>
+                                        <p class="btn btn-info" data-toggle="tooltip" title="Icon Untuk Melihat Data Seksi/Departemen" id="view_seunt"><i class="fa fa-table"></i></p>
+                                    </div>
+                                </div>
                                 <div class="box-body">
                                     <div class="panel-body">
                                         <div class="row">

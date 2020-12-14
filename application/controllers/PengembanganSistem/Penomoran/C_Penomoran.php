@@ -266,12 +266,12 @@ class C_Penomoran extends CI_Controller
 			$nmfile = $data_file;
 				$l = explode('.',$nmfile);
 					$s = $l[1];
-			$judul_baru = $id_data.'-'.$judul.'.'.$s;
+				$fls = preg_replace("![^a-z0-9]+!i", "_", $judul);
+			$judul_baru = $id_data.'-'.$fls.'.'.$s;
 			$nama_baru = preg_replace("/[\/\&%#\$]/", "_", $judul_baru);
-			$nama_baru_post = preg_replace("/\s+/", "_", $judul_baru);
 			
 			$config['upload_path'] 			= 'assets/upload/PengembanganSistem/fp/';
-			$config['allowed_types']		= 'gif|jpg|png|jpeg|bmp|pdf|doc|wps|odt';
+			$config['allowed_types']		= '*';
 			$config['max_size']             = 0;
 			// $config['max_width']            = 1000;
 			// $config['max_height']           = 7680;
@@ -291,7 +291,7 @@ class C_Penomoran extends CI_Controller
 				//end upload file area
 		
 				$data = array(
-					'file' =>$nama_baru_post,
+					'file' =>$judul_baru,
 					'status_doc' =>$status
 					
 				);
@@ -516,12 +516,12 @@ class C_Penomoran extends CI_Controller
 			$nmfile = $data_file;
 				$l = explode('.',$nmfile);
 					$s = $l[1];
+					$fls = preg_replace("![^a-z0-9]+!i", "_", $judul);
 			$judul_baru = $id_data.'-'.$judul.'.'.$s;
 			$nama_baru = preg_replace("/[\/\&%#\$]/", "_", $judul_baru);
-			$nama_baru_post = preg_replace("/\s+/", "_", $judul_baru);
 			
 			$config['upload_path'] 			= 'assets/upload/PengembanganSistem/copwi/';
-			$config['allowed_types']		= 'gif|jpg|png|jpeg|bmp|pdf|doc|wps|odt';
+			$config['allowed_types']		= '*';
 			$config['max_size']             = 0;
 			// $config['max_width']            = 1000;
 			// $config['max_height']           = 7680;
@@ -541,7 +541,7 @@ class C_Penomoran extends CI_Controller
 				//end upload file area
 		
 				$data = array(
-					'file' =>$nama_baru_post,
+					'file' =>$judul_baru,
 					'status_doc' =>$status
 					
 				);
@@ -785,12 +785,12 @@ class C_Penomoran extends CI_Controller
 			$nmfile = $data_file;
 				$l = explode('.',$nmfile);
 					$s = $l[1];
-			$judul_baru = $number_file.'-'.$judul.'.'.$s;
+				$fls = preg_replace("![^a-z0-9]+!i", "_", $judul);
+			$judul_baru = $number_file.'-'.$fls.'.'.$s;
 			$nama_baru = preg_replace("/[\/\&%#\$]/", "_", $judul_baru);
-			$nama_baru_post = preg_replace("/\s+/", "_", $judul_baru);
 			
 			$config['upload_path'] 			= 'assets/upload/PengembanganSistem/um/';
-			$config['allowed_types']		= 'gif|jpg|png|jpeg|bmp|pdf|doc|wps|odt';
+			$config['allowed_types']		= '*';
 			$config['max_size']             = 0;
 			// $config['max_width']            = 1000;
 			// $config['max_height']           = 7680;
@@ -810,7 +810,7 @@ class C_Penomoran extends CI_Controller
 				//end upload file area
 		
 				$data = array(
-					'file' =>$nama_baru_post,
+					'file' =>$judul_baru,
 					'status_doc' =>$status
 					
 				);
@@ -999,15 +999,15 @@ class C_Penomoran extends CI_Controller
 			$nmfile = $data_file;
 				$l = explode('.',$nmfile);
 					$s = $l[1];
-			$judul_baru = $number_file.'-'.$judul.'.'.$s;
-			$nama_baru = preg_replace("/[\/\&%#\$]/", "_", $judul_baru);
+				$fls = preg_replace("![^a-z0-9]+!i", "_", $judul);
+			$judul_baru = $number_file.'-'.$fls.'.'.$s;
 			
 			$config['upload_path'] 			= 'assets/upload/PengembanganSistem/memo/';
-			$config['allowed_types']		= 'gif|jpg|png|jpeg|bmp|pdf|doc|wps|odt';
+			$config['allowed_types']		= '*';
 			$config['max_size']             = 0;
 			// $config['max_width']            = 1000;
 			// $config['max_height']           = 7680;
-			$config['file_name'] = $nama_baru;
+			$config['file_name'] = $judul_baru;
 
 			$this->load->library('upload', $config);
 
@@ -1023,7 +1023,7 @@ class C_Penomoran extends CI_Controller
 				//end upload file area
 		
 				$data = array(
-					'file' =>$nama_baru,
+					'file' =>$judul_baru,
 					
 				);
 
@@ -1392,5 +1392,41 @@ class C_Penomoran extends CI_Controller
 		$data = $this->M_pengsistem->cek_data_lkh($data_number, $data_user);
 
 		echo json_encode($data);
+	}
+
+	public function input_dataseksi() {
+		$singkat =$_POST['singkat'];
+		$seksi =$_POST['lengkap'];
+
+		$data = array('seksi' => $seksi,
+					'singkat' => $singkat ,
+					 );
+					//  print_r($data);exit();
+		$this->M_pengsistem->get_seksi_input($data);
+		echo 1;
+	}
+
+	public function viewdataalert()
+	{
+		
+		$data = $this->M_pengsistem->view_alret();
+		
+		$jsonResult = '{"data" : [ ';
+			$i=0;
+			   if($i != 0){
+				   
+				   $jsonResult =',';
+			   }
+			   $jsonResult =json_encode($data);
+			   $i++;
+			print_r($jsonResult);exit();
+			$jsonResult = ']}';
+			echo $jsonResult;
+	}
+
+	public function delete_alert($id)
+	{
+		$this->M_pengsistem->delete_alert_get($id);
+		echo 1 ;
 	}
 }

@@ -277,7 +277,7 @@
                                 </div>
                                 <div class="box-body">
                                     <div class="table-responsive">
-                                        <table class="table table-striped table-bordered table-hover text-left " id="dataTables-PengSistem" style="font-size:12px; ">
+                                        <table class="table table-striped table-bordered table-hover text-left " id="dataTables-PengSistem" style="font-size:12px; width:max-content;">
                                             <thead style="background: darkgray; color: white;">
                                                 <tr>
                                                     <th hidden="" rowspan="2">No</th>

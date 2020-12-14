@@ -1,15 +1,16 @@
 	$(document).change(function(){
 		var seksiflow = $("#seksi_fp").val();
         var doc = "FP";
-        
-		$.ajax({
-                type: "POST",
-                url: baseurl+"PengembanganSistem/cek_nomor_flow",
-                data: {
+        if (seksiflow != 0) {
+			
+			$.ajax({
+				type: "POST",
+				url: baseurl+"PengembanganSistem/cek_nomor_flow",
+				data: {
 					seksi : seksiflow,
-                },
-                dataType: "JSON",
-                success: function (data) {
+				},
+				dataType: "JSON",
+				success: function (data) {
 					if (data > 0) {
 						var plus = parseInt(data) + 1;
 						var y = (plus>9)?(plus<99)?plus:'0'+plus:'00'+plus;
@@ -18,7 +19,10 @@
 						$("#number_flow_ps").val(doc+"-"+seksiflow+"-"+"001");
 					}
 				}
-		  });
+		});
+		} else {
+			
+		}
     });
 
 	$("#seksi_flow_ps").change(function(){
@@ -26,23 +30,28 @@
 		var sekum = $("#seksi_flow_ps").val();
 		var c = nodoc.split("-");
 
-		$.ajax({
-			type: "POST",
-			url: baseurl+"PengembanganSistem/cek_nomor_flow",
-			data: {
-				seksi : sekum,
-			},
-			dataType: "JSON",
-			success: function (data) {
-				if (data > 0) {
-					var plus = parseInt(data) + 1;
-					var y = (plus>9)?(plus<99)?plus:'0'+plus:'00'+plus;
-					$("#number_flow_ps").val(c[0]+"-"+sekum+"-"+y);
-				}else if (data == null) {
-					$("#number_flow_ps").val(c[0]+"-"+sekum+"-"+"001");
+		if (sekum != 0) {
+			
+			$.ajax({
+				type: "POST",
+				url: baseurl+"PengembanganSistem/cek_nomor_flow",
+				data: {
+					seksi : sekum,
+				},
+				dataType: "JSON",
+				success: function (data) {
+					if (data > 0) {
+						var plus = parseInt(data) + 1;
+						var y = (plus>9)?(plus<99)?plus:'0'+plus:'00'+plus;
+						$("#number_flow_ps").val(c[0]+"-"+sekum+"-"+y);
+					}else if (data == null) {
+						$("#number_flow_ps").val(c[0]+"-"+sekum+"-"+"001");
+					}
 				}
-			}
-		});
+			});
+		} else {
+			
+		}
 		
 	})
 	
@@ -140,11 +149,7 @@
 					}
 				});
 			} else {
-				Swal.fire({
-					type: 'error',
-					title: 'Cencel',
-					text: 'Data tidak jadi di hapus ',
-				});
+				
 			}
 		  })
 	}
@@ -199,11 +204,7 @@
 					}
 				});
 			} else {
-				Swal.fire({
-					type: 'error',
-					title: 'Cencel',
-					text: 'Data tidak jadi di hapus ',
-				});
+				
 			}
 		  })
 	}
@@ -226,25 +227,30 @@
 		var doc_sop = $("#nomor_sop_cw").val();
 
 		$("#doc_sop_cw").val(seksicop);
-		$.ajax({
-                type: "POST",
-                url: baseurl+"PengembanganSistem/cek_nomor_cop_wi",
-                data: {
-					cop_wi :doc_copwi,
-					seksi_doc : seksicop,
-					number_sop : doc_sop,
-                },
-                dataType: "JSON",
-                success: function (data) {
-					if (data > 0) {
-						var plus = parseInt(data) + 1;
-						var y = (plus>9)?(plus<99)?plus:'0'+plus:'00'+plus;
-						$("#number_copwi_ps").val(doc_copwi+"-"+seksicop+"-"+doc_sop+"-"+y);
-					}else{
-						$("#number_copwi_ps").val(doc_copwi+"-"+seksicop+"-"+doc_sop+"-001");
+		if (seksicop != 0) {
+			$.ajax({
+					type: "POST",
+					url: baseurl+"PengembanganSistem/cek_nomor_cop_wi",
+					data: {
+						cop_wi :doc_copwi,
+						seksi_doc : seksicop,
+						number_sop : doc_sop,
+					},
+					dataType: "JSON",
+					success: function (data) {
+						if (data > 0) {
+							var plus = parseInt(data) + 1;
+							var y = (plus>9)?(plus<99)?plus:'0'+plus:'00'+plus;
+							$("#number_copwi_ps").val(doc_copwi+"-"+seksicop+"-"+doc_sop+"-"+y);
+						}else{
+							$("#number_copwi_ps").val(doc_copwi+"-"+seksicop+"-"+doc_sop+"-001");
+						}
 					}
-				}
-		  });
+			  });
+			
+		} else {
+			
+		}
 	});
 
 	$("#number_copwi_ps").change(function() {
@@ -281,21 +287,26 @@
 			var seksi_wi_cop = nomor_doc.substr(3,3);
 		}
 
-		$.ajax({
-			type: "POST",
-			url: baseurl+"PengembanganSistem/select_seksi",
-			data: {
-				seksi : seksi_wi_cop,
-			},
-			dataType: "JSON",
-			success: function (data) {
-				// console.log(data);
-				$("#select_seksi").val(data[0].singkat);
-				$("#select_seksi").text(data[0].seksi);
-				$("#sop_cw").val(data[0].singkat);
-				$("#select2-seksi_cw-container").text(data[0].seksi);
-			}
-		});
+		if (seksi_wi_cop != 0) {
+
+			$.ajax({
+				type: "POST",
+				url: baseurl+"PengembanganSistem/select_seksi",
+				data: {
+					seksi : seksi_wi_cop,
+				},
+				dataType: "JSON",
+				success: function (data) {
+					// console.log(data);
+					$("#select_seksi").val(data[0].singkat);
+					$("#select_seksi").text(data[0].seksi);
+					$("#sop_cw").val(data[0].singkat);
+					$("#select2-seksi_cw-container").text(data[0].seksi);
+				}
+			});
+		} else {
+			
+		}
 	})
 
 	$(document).on('change','#number_copwi_ps', function() {
@@ -550,7 +561,7 @@
 		$("#number_flow_ps").ready(function(){
 			var a = $("#number_flow_ps").val();
 			var b = $("#judul_fp").val();
-			var c = $("#seksi_fp").val();
+			var c = $("#seksi_fp option:selected").text();
 			var d = $("#date_rev_fp").val();
 			var e = $("#number_rev-fp").val();
 			var f = $("#pic-fp").val();
@@ -576,7 +587,7 @@
 		$("#number_flow_ps").ready(function(){
 			var a = $("#number_flow_ps").val();
 			var b = $("#judulfp").val();
-			var c = $("#seksi_flow_ps").val();
+			var c = $("#seksi_flow_ps option:selected").text();
 			var d = $("#date_rev_fp").val();
 			var e = $("#number_rev-fp").val();
 			var f = $("#pic-fp").val();
@@ -610,7 +621,7 @@
 			var h = $("#nomor_sop_cw").val();
 			var x = 'SOP-'+g+'-'+h;
 			var i = $("#pic-cw").val();
-			var j = $("#seksi_copwi_ps").val();
+			var j = $("#seksi_copwi_ps option:selected").text();
 			var k = $("#status-cw").val();
 			$(".ac").text(a);
 			$(".ac").attr("style","text-align: center ; font: bold;");
@@ -647,7 +658,7 @@
 			var h = $("#nomor_sop_cw").val();
 			var x = 'SOP-'+g+'-'+h;
 			var i = $("#pic-cw").val();
-			var j = $("#seksi_cw").val();
+			var j = $("#seksi_cw option:selected").text();
 			var k = $("#status-cw").val();
 			$(".ac").text(a);
 			$(".ac").attr("style","text-align: center ; font: bold;");
@@ -708,20 +719,12 @@
 								location.reload();
 							});
 						} else {
-							Swal.fire({
-								type: 'error',
-								title: 'Gagal',
-								text: 'Format file tidak sesuai / Kolom belum diisi!',
-							});
+							
 						}
 					}
 				});
 			} else {
-				Swal.fire({
-					type: 'error',
-					title: 'Cencel',
-					text: 'Data tidak jadi di hapus ',
-				});
+
 			}
 		  })
 	}
@@ -896,7 +899,7 @@
 			var g = $("#nomor_sop_um").val();
 			var x = 'SOP-'+f+'-'+g;
 			var h = $("#pic-um").val();
-			var i = $("#seksi_um").val();
+			var i = $("#seksi_um option:selected").text();
 			var j = $("#status-um").val();
 			$(".am").text(a);
 			$(".am").attr("style","text-align: center ; font: bold;");
@@ -930,7 +933,7 @@
 			var g = $("#nomor_sop_um").val();
 			var x = 'SOP-'+f+'-'+g;
 			var h = $("#pic-um").val();
-			var i = $("#seksi_um").val();
+			var i = $("#seksi_um option:selected").text();
 			var j = $("#status-um").val();
 			$(".am").text(a);
 			$(".am").attr("style","text-align: center ; font: bold;");
@@ -954,26 +957,69 @@
 	};
 
 	//Memo
-	$('select[class=notif_mss]').ready(function(index) {
-		var a = $("#ditujukan_ms1").select2().val();
-		console.log(a);
-		$.ajax({
-			type: "POST",
-			url: baseurl+"PengembanganSistem/select_seksi",
-			data: {
-				seksi : a,
-			},
-			dataType: "JSON",
-			success: function (data) {
-				console.log(data);
-				$("#check").val(data[0].singkat);
-				$("#check").text(data[0].seksi);
-				$("#select2-ditujukan_ms1-container").text(data[0].seksi);
-			}
-		});
-	})
+	
+	$("#ditujukan_ms1").each(function( index ) {
+		var id = $(this).attr('data-id');
+		// console.log(id);
+		if (id != 0) {
+			$.ajax({
+				type: "GET",
+				url: baseurl+"PengembanganSistem/select_all_seksi",
+				data: {
+					seksi : id,
+				},
+				dataType: "JSON",
+				success: function (response) {
+					console.log(response);
+					var len = response.length;
+					for (let i = 0; i < len; i++) {
+						const seksi = response[i].seksi;
+						
+					$('#select2-ditujukan_ms1-container').text(seksi);
+					$('#check').text(seksi);
+					}
+				}
+			});
+			
+		} else {
+			
+		}
+	});
+	
+	$(".for_doc").each(function( index ) {
+		var id = $(this).attr('data-id');
+		var scr = $("#for_doc"+id).text();
+		// console.log(scr);
+		if (scr != 0) {
+			$.ajax({
+				type: "GET",
+				url: baseurl+"PengembanganSistem/select_all_seksi",
+				data: {
+					seksi : scr,
+				},
+				dataType: "JSON",
+				success: function (response) {
+					var len = response.length;
+					for (let i = 0; i < len; i++) {
+						const seksi = response[i].seksi;
+						
+					$('#for_doc'+id).text(seksi);
+					}
+				}
+			});
+			
+		} else {
+			
+		}
+	});
 
-		$("#ditujukan_ms1").ready(function(){
+	function link_memo(id) {
+		var a = $("#memo_lilola"+id).attr('href');
+		var str = a.replace(/\&/g, "_");
+		$("#memo_lilola"+id).attr('href',str);
+	};
+
+	$("#ditujukan_ms1").ready(function(){
 		
 		$('input[type=radio]').iCheck({
 			checkboxClass: 'icheckbox_flat-blue',
@@ -981,7 +1027,7 @@
 		});
 
 				if ($('input[name="r2sys"]:checked').val() == "user") {
-					console.log("user");
+					// console.log("user");
 					$('#ditujukan_ms1').select2({
 					ajax: {
 						url: baseurl + 'PengembanganSistem/ambilSemuaPekerja',
@@ -1010,7 +1056,7 @@
 					placeholder: 'Pilih data',
 				})
 			}else if ($('input[name="r2sys"]:checked').val() == "siedept") {
-				console.log("seksi");
+				// console.log("seksi");
 					$('#ditujukan_ms1').select2({
 					ajax: {
 						url: baseurl + 'PengembanganSistem/select_all_seksi',
@@ -1040,7 +1086,8 @@
 
 		$('input[name="r2sys"]').on('ifChanged', function () {
 				if ($('input[name="r2sys"]:checked').val() == "user") {
-					console.log("user");
+					
+					$(".orang").html('<select name="ditujukan_ms" id="ditujukan_ms1" class="form-control notif_ms select2" data-placeholder="Pilih Data"><option></option></select>');
 					$('#ditujukan_ms1').select2({
 					ajax: {
 						url: baseurl + 'PengembanganSistem/ambilSemuaPekerja',
@@ -1069,7 +1116,9 @@
 					placeholder: 'Pilih data',
 				})
 			}else if ($('input[name="r2sys"]:checked').val() == "siedept") {
-				console.log("seksi");
+				// console.log("seksi");
+				$(".orang").html('<select name="ditujukan_ms" id="ditujukan_ms1" class="form-control notif_ms select2" data-placeholder="-->Pilih Data<--"><option></option></select>');
+
 					$('#ditujukan_ms1').select2({
 					ajax: {
 						url: baseurl + 'PengembanganSistem/select_all_seksi',
@@ -1084,7 +1133,7 @@
 							return {
 								results: $.map(data, function(item) {
 									return {
-										id: item.singkat,
+										id: item.seksi,
 										text: item.seksi,
 									}
 								})
@@ -1095,15 +1144,55 @@
 					minimumInputLength: 3,
 					placeholder: 'Pilih data',
 				})
+			}else if ($('input[name="r2sys"]:checked').val() == "manual") {
+				$(".orang").html('<input type="text" name="ditujukan_ms" autocomplete="off" id="ditujukan_ms1" class="form-control notif_ms" placeholder="Input Data">');
+
 			}
 		})
+
+	
+	})
+
+	$("#input_auto").click(function(){
+		if ($("#input_auto").val() == "clik!") {
+			$(".siepenerima_ms").html('<input type="text" name="siepenerima_ms" autocomplete="off" id="siepenerima_ms" class="form-control notif_ms" placeholder="Input Data">');
+			$("#input_auto").val("clik!!");
+		} else {
+			$(".siepenerima_ms").html('<select required="" name="siepenerima_ms" id="siepenerima_ms" class="form-control select2" data-placeholder="-->Pilih Data<--"><option></option></select>');
+			$("#input_auto").val("clik!");
+			$('#siepenerima_ms').select2({
+				ajax: {
+					url: baseurl + 'PengembanganSistem/select_all_seksi',
+					dataType: 'json',
+					delay: 250,
+					data: function(params) {
+						return {
+							seksi: params.term.toUpperCase(),
+						};
+					},
+					processResults: function(data) {
+						return {
+							results: $.map(data, function(item) {
+								return {
+									id: item.seksi,
+									text: item.seksi,
+								}
+							})
+						};
+					},
+					cache: true,
+				},
+				minimumInputLength: 3,
+				placeholder: 'Pilih data',
+			})
+		}
 	})
 
 	function notif_input_memo() {
 		$("#date_ms").ready(function(){
 			var a = $("#a_number").val();
 			var b = $("#date_ms").val();
-			var c = $('select[name="ditujukan_ms"]').val(); //ditujukan
+			var c = $('#ditujukan_ms1').val(); //ditujukan
 			var d = $("#siepenerima_ms").val();
 			var e = $("#perihal_ms").val();
 			var f = $("#makeby_ms").val();
@@ -1129,7 +1218,7 @@
 		$("#date_ms").ready(function(){
 			var a = $("#a_number").val();
 			var b = $("#date_ms").val();
-			var c = $('select[name="ditujukan_ms"]').val(); //ditujukan
+			var c = $('#ditujukan_ms1').val(); //ditujukan
 			var d = $("#siepenerima_ms").val();
 			var e = $("#perihal_ms").val();
 			var f = $("#makeby_ms").val();
@@ -1541,17 +1630,13 @@
 								Swal.fire({
 									type: 'error',
 									title: 'Gagal',
-									text: 'Format file tidak sesuai / Kolom belum diisi!',
+									text: 'Gagal Hapus data!',
 								});
 							}
 						}
 					});
 				} else {
-					Swal.fire({
-						type: 'error',
-						title: 'Cencel',
-						text: 'Data tidak jadi di hapus ',
-					});
+					
 				}
 			  })
 	}
@@ -1616,3 +1701,170 @@
 		})
 	})
 	
+	$("#tmbh_data").click(function() {
+		(async () => {
+	  
+		Swal.fire({
+		  title: 'Tambah Data Seksi',
+		  html:
+			'<input id="singkat" style="text-transform:uppercase" required="" class="swal2-input" autocomplete="off" placeholder="input nama singkat seksi">' +
+			'<input id="lengkap" style="text-transform:uppercase" required="" class="swal2-input" autocomplete="off" placeholder="input nama lengkap seksi">',
+			showCancelButton: true,
+			confirmButtonText: 'Submit',
+			cancelButtonText: 'Cancel',
+			reverseButtons: false
+			}).then(function(isConfirm) {
+				if (isConfirm.value === true) {
+					if ($("#singkat").val() != 0 && $("#lengkap").val() != 0) {
+						$.ajax({
+							type: "POST",
+							url: baseurl+"PengembanganSistem/input_dataseksi",
+							data: {
+								singkat :$("#singkat").val(),
+								lengkap	:$("#lengkap").val()
+							},
+							dataType: "JSON",
+							success: function(response) {
+								if (response == 1) {
+									Swal.fire({
+										type: 'success',
+										title: 'Berhasil',
+										text: 'Data berhasil ditambahkan !'
+									})
+								} else {
+									Swal.fire({
+										type: 'error',
+										title: 'Gagal',
+										text: 'Data Gagal Ditambahkan',
+									});
+								}
+							}
+						});
+					} else {
+						Swal.fire({
+							type: 'warning',
+							title: 'Perhatian!!!',
+							text: 'Pastikan Kolom Terisi Semua!'
+						})
+					}
+				} else {
+					
+				}
+
+		  })
+	  
+		})()
+	})
+
+	$("#view_seunt").click(function(){
+		$.ajax({
+			url         : baseurl+"PengembanganSistem/viewdataalert",
+			type        : "GET",
+			dataType    : "json",
+			success     : function(parameters){
+
+					$('#tableviewsweet').DataTable({
+						data: parameters,
+						columns: [
+							{ 'data': 'seksi' },
+							{ 'data': 'singkat' },
+							{
+								'data': 'singkat',
+								'render': function (data, type, row) {
+								// console.log(data)
+								return "<a class='delete' data-obj='"+JSON.stringify(data)+"' href='#'>Delete</a>";
+								}
+						}]
+					});
+					$(document).on("click", ".delete", function(e) {
+						e.preventDefault()
+						let data = $(this).data("obj").replace(/['"]+/g, '')
+						console.log(data);
+						$.ajax({
+							type: 'POST',
+							url: baseurl + "PengembanganSistem/delete_dataseksi/"+data,
+							contentType: false,
+							processData: false,
+							dataType: 'JSON',
+							beforeSend: function() {
+							Swal.showLoading()
+							},
+							success: function(response) {
+								if (response == 1) {
+									Swal.fire({
+										type: 'success',
+										title: 'Berhasil',
+										text: 'Data berhasil dihapus!'
+									})
+								} else {
+									Swal.fire({
+										type: 'error',
+										title: 'Gagal',
+										text: 'Gagal Hapus Data!',
+									});
+								}
+							}
+						});
+					})
+			}
+		})
+			Swal.fire({
+				html:'<table border="1" class="table table-striped table-bordered table-hover text-left " id="tableviewsweet" style="width: 100%; font-size:12px; border-color: #000;">'
+				+'<thead>'
+					+'<tr>'
+						+'<th>Seksi</th>'
+						+'<th>Singkat</th>'
+						+'<th>Action</th>'
+					+'</tr>'
+				+'</thead>'
+					+'<tbody>'
+					+'</tbody>'
+				+'</table>'
+			})
+		});
+	
+		function delete_datamemo(id) {
+				console.log(id); 
+				Swal.fire({
+					title: 'Are you sure?',
+					text: "Data akan di hapus !",
+					type: 'warning',
+					showCancelButton: true,
+					confirmButtonText: 'Delete',
+					cancelButtonText: 'Cancel',
+					reverseButtons: true
+				}).then(function(isConfirm) {
+					console.log(isConfirm);
+						if (isConfirm.value === true) {
+						$.ajax({
+							type: 'POST',
+							url: baseurl + "PengembanganSistem/delete_code/"+id,
+							contentType: false,
+							processData: false,
+							dataType: 'JSON',
+							beforeSend: function() {
+							Swal.showLoading()
+							},
+							success: function(response) {
+								if (response == 1) {
+									Swal.fire({
+										type: 'success',
+										title: 'Berhasil',
+										text: 'Data berhasil dihapus!'
+									}).then(function() {
+										location.reload();
+									});
+								} else {
+									Swal.fire({
+										type: 'error',
+										title: 'Gagal',
+										text: 'Gagal Hapus Data!',
+									});
+								}
+							}
+						});
+					} else {
+
+					}
+				  })
+		}

@@ -18,12 +18,17 @@
                         </div>
                     </div>
                     <br />
-                
+
                     <div class="row">
                         <div class="col-lg-12">
                           <form onkeydown="return event.key != 'Enter';" method="post" action="<?= base_url('PengembanganSistem/input_data_ms') ?>" class="form-horizontal" enctype="multipart/form-data">
                             <div class="box box-primary box-solid">
-                                <div class="box-header with-border">Input Data</div>
+                                <div class="box-header with-border"><div class="col-sm-6">Input Data </div>
+                                    <div class="col-sm-6 text-right">
+                                        <p class="btn btn-info" style="margin-right:25px;" data-toggle="tooltip" title="Icon Untuk Input Data Seksi/Departemen" id="tmbh_data"><i class="fa fa-plus"></i></p>
+                                        <p class="btn btn-info" data-toggle="tooltip" title="Icon Untuk Melihat Data Seksi/Departemen" id="view_seunt"><i class="fa fa-table"></i></p>
+                                    </div>
+                                </div>
                                 <div class="box-body">
                                     <div class="panel-body">
                                         <div class="row">
@@ -47,7 +52,7 @@
                                                 </div>
                                                 <div class="form-group row">
                                                     <label class="control-label col-lg-4">Ditujukan :</label>
-                                                    <div class="col-sm-8">
+                                                    <div class="col-sm-8 ">
                                                         <!-- radio -->
                                                         <div class="col-sm-6">
                                                             <input type="radio" name="r2sys" value="user">
@@ -56,6 +61,10 @@
                                                         <div class="col-sm-6">
                                                             <input type="radio" name="r2sys" value="siedept">
                                                             Seksi/Unit/Deprt
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <input type="radio" name="r2sys" value="manual">
+                                                            Input Manual
                                                         </div>
                                                         <div class="orang">
                                                             <select name="ditujukan_ms" id="ditujukan_ms1" class="form-control notif_ms select2" data-placeholder="-->Pilih Data<--">
@@ -67,14 +76,21 @@
                                                 <div class="form-group row">
                                                     <label for="siepenerima_ms" class="control-label col-lg-4">Departemen Penerima</label>
                                                     <div class="col-lg-8">
-                                                        <select required="" name="siepenerima_ms" id="siepenerima_ms" class="form-control select2" data-placeholder="-->Pilih Data<--">
-                                                            <option></option>
-                                                                            <?php foreach ($listseksi as $seksi) 
-                                                                            {
-                                                                                echo '  <option value="'.$seksi['seksi'].'">'.$seksi['seksi'].'</option>';
-                                                                            }
-                                                                            ?>
-                                                        </select>
+                                                        <!-- radio -->
+                                                        <div class="col-sm-6">
+                                                            <input type="button" class="btn btn-info btn-xs" id="input_auto" value="clik!">Input Manual
+                                                            
+                                                        </div>
+                                                        <div class="siepenerima_ms">
+                                                            <select required="" name="siepenerima_ms" id="siepenerima_ms" class="form-control select2" data-placeholder="-->Pilih Data<--">
+                                                                <option></option>
+                                                                                <?php foreach ($listseksi as $seksi) 
+                                                                                {
+                                                                                    echo "<option value='".$seksi['seksi']."'>".$seksi['seksi']."</option>";
+                                                                                }
+                                                                                ?>
+                                                            </select>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -170,19 +186,19 @@
                             </div>
                             <div class="box-body">
                               <div class="table-responsive">
-                                <table class="table table-striped table-bordered table-hover text-left " id="dataTables-PengSistem" style="font-size:12px;">
+                                <table class="table table-striped table-bordered table-hover text-left " id="dataTables-PengSistem" style="font-size:12px; width:max-content;">
                                   <thead>
                                     <tr class="bg-info">
-                                        <th style="max-width:1px;">No.</th>
-                                        <th style="max-width:10px;">Tanggal Dibuat</th>
-                                        <th style="max-width:15px;">No. Surat / Memo</th>
-                                        <th style="max-width:10px;">Ditujukan</th>
-                                        <th style="max-width:20px;">Seksi / Departemen</th>
-                                        <th style="max-width:10px;">Dibuat</th>
-                                        <th style="max-width:10px;">Tgl. Distribusi</th>
-                                        <th style="max-width:30px; width: 80px">Perihal</th>
-                                        <th style="max-width:10px;">File</th>
-                                        <th style="max-width:30px; width:70px;">Action</th>
+                                        <th>No.</th>
+                                        <th>Tanggal Dibuat</th>
+                                        <th>No. Surat / Memo</th>
+                                        <th>Ditujukan</th>
+                                        <th>Seksi / Departemen</th>
+                                        <th>Dibuat</th>
+                                        <th>Tgl. Distribusi</th>
+                                        <th>Perihal</th>
+                                        <th>File</th>
+                                        <th>Action</th>
                                     </tr>
                                   </thead>
                                       <tbody>
@@ -191,19 +207,19 @@
                                         <td><b><?php echo $no++; ?></b></td>
                                         <td><?php echo $row["date_doc"];?></td>
                                         <td style="font-weight: bold;"><?php echo $row["number_memo"];?></td>
-                                        <td><?php echo $row["for_doc"];?></td>
+                                        <td data-id="<?= $row['id']?>" class="for_doc" id="for_doc<?= $row['id']?>"><?php echo $row["for_doc"];?></td>
                                         <td><?php echo $row["seksi_depart"];?></td>
                                         <td><?php echo $row["pic_doc"];?></td>
                                         <td><?php echo $row["date_distribusion"];?></td>
                                         <td><?php echo $row["perihal_doc"];?></td>
-                                        <td><a data-toggle="tooltip" title="<?= $row['file'];?>" href="<?php echo base_url('assets/upload/PengembanganSistem/memo').'/'.$row['file'];?>" target="_blank"><?php if ($row['file'] != "" ) {echo '<i class="far fa-file-pdf"> View</i>'; } ?></a>
+                                        <td><a onmouseover="link_memo(<?php echo $row['id']?>)" id="memo_lilola<?php echo $row['id']?>" data-toggle="tooltip" title="<?= $row['file'];?>" href="<?php echo base_url('assets/upload/PengembanganSistem/memo').'/'.$row['file'];?>" target="_blank"><?php if ($row['file'] != "" ) {echo '<i class="far fa-file-pdf"> View</i>'; } ?></a>
                                         </td>
                                         <td>
                                         <div <?php if(strlen($row['file']) !== 0){echo 'hidden=""';} ?> >
                                             <div class="btn-group">
-                                            <a class="btn btn-success" style="padding: 6px;" href="<?php echo base_url('PengembanganSistem/edit_memo/'.$row['id'])?>" title="Edit"><i class="fa fa-pencil"></i></a>
-                                            <a class="btn btn-warning" style="padding: 6px;" data-toggle="modal" data-toggle="tooltip" data-target="<?php echo "#modal_edit".$row['id'];?>" title="Upload"><i class="fa fa-cloud-upload"></i></a>
-                                            <a class="btn btn-danger" style="padding: 6px;" href="<?php echo base_url('PengembanganSistem/delete_code/'.$row['id'])?>" title="Delete" onclick="return confirm('Anda Yakin Dengan Langkah Pilihan Anda ?')"><i class="fa fa-close"></i></a>
+                                            <a class="icon-action btn btn-success" style="padding: 6px;" href="<?php echo base_url('PengembanganSistem/edit_memo/'.$row['id'])?>" title="Edit"><i class="fa fa-pencil"></i></a>
+                                            <a class="icon-action btn btn-warning" style="padding: 6px;" data-toggle="modal" data-toggle="tooltip" data-target="<?php echo "#modal_edit".$row['id'];?>" title="Upload"><i class="fa fa-cloud-upload"></i></a>
+                                            <a style="padding: 6px" class="icon-action btn btn-danger" title="Delete" onclick="delete_datamemo(<?=$row['id']?>)"><i class="fa fa-close"></i></a>
                                             </div>
                                         </div>
                                         </td>

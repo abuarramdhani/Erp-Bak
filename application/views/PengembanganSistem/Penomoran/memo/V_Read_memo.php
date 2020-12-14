@@ -23,7 +23,12 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="box box-primary box-solid">
-                                <div class="box-header with-border">Edit Data</div>
+                                <div class="box-header with-border"><div class="col-sm-6">Edit Data </div>
+                                    <div class="col-sm-6 text-right">
+                                        <p class="btn btn-info" style="margin-right:25px;" data-toggle="tooltip" title="Icon Untuk Input Data Seksi/Departemen" id="tmbh_data"><i class="fa fa-plus"></i></p>
+                                        <p class="btn btn-info" data-toggle="tooltip" title="Icon Untuk Melihat Data Seksi/Departemen" id="view_seunt"><i class="fa fa-table"></i></p>
+                                    </div>
+                                </div>
                                 <div class="box-body">
                                     <div class="panel-body">
                                         <div class="row">
@@ -75,24 +80,44 @@
                                                             ?>>
                                                             Seksi/Unit/Deprt
                                                         </div>
-                                                        <div class="orang">
-                                                            <select onload="ditujukan_ms1_(<?=$listdata_memo[0]['for_doc'];?>)" data-id="<?=$listdata_memo[0]['for_doc'];?>" name="ditujukan_ms" id="ditujukan_ms1" class="form-control notif_mss select2" data-placeholder="-->Pilih Data<--" >
-                                                                <option id="check" value="<?= $listdata_memo[0]['for_doc'];?>"></option>
-                                                            </select>
+                                                        <div class="col-sm-6" style="padding-bottom: 10px;">
+                                                            <input type="radio" name="r2sys" value="manual"<?php if ($listdata_memo[0]['conect'] == 'manual') {
+                                                                echo'checked=""';
+                                                            } else {
+                                                                false;
+                                                            }
+                                                            ?>>
+                                                            Input Manual
+                                                        </div>
+                                                        <div class="orang" >
+                                                            <?php if ($listdata_memo[0]['conect'] != 'manual') {
+                                                               echo ' <select data-id="',$listdata_memo[0]['for_doc'],'" name="ditujukan_ms" id="ditujukan_ms1" class="form-control notif_ms select2" data-placeholder="-->Pilih Data<--" >
+                                                                    <option id="check" value="',$listdata_memo[0]['for_doc'],'">',$listdata_memo[0]['for_doc'],'</option>
+                                                                </select>';
+                                                            } else {
+                                                                echo '<input type="text" name="ditujukan_ms" id="ditujukan_ms1" class="form-control" placeholder="Input Data" value="'.$listdata_memo[0]['for_doc'],'">';
+                                                            }
+                                                            ?>
                                                         </div>
                                                     </div>
-                                                </div></br>
+                                                </div>
                                                 <div class="form-group row">
                                                     <label for="siepenerima_ms" class="control-label col-lg-4">Penerima Surat/Memo</label>
                                                     <div class="col-lg-8">
-                                                        <select name="siepenerima_ms" id="siepenerima_ms" class="form-control select2">
-                                                            <option value="<?= $listdata_memo[0]['seksi_depart'];?>"><?= $listdata_memo[0]['seksi_depart'];?></option>
-                                                                            <?php foreach ($listseksi as $seksi) 
-                                                                            {
-                                                                                echo '  <option value="'.$seksi['seksi'].'">'.$seksi['seksi'].'</option>';
-                                                                            }
-                                                                            ?>
-                                                        </select>
+                                                        <div class="col-sm-6">
+                                                            <input type="button" class="btn btn-info btn-xs" id="input_auto" value="clik!">Input Manual
+                                                            
+                                                        </div>
+                                                        <div class="siepenerima_ms">
+                                                            <select required="" name="siepenerima_ms" id="siepenerima_ms" class="form-control select2" data-placeholder="-->Pilih Data<--">
+                                                                <option value="<?= $listdata_memo[0]['seksi_depart'];?>"><?= $listdata_memo[0]['seksi_depart'];?></option>
+                                                                                <?php foreach ($listseksi as $seksi) 
+                                                                                {
+                                                                                    echo '  <option value="'.$seksi['seksi'].'">'.$seksi['seksi'].'</option>';
+                                                                                }
+                                                                                ?>
+                                                            </select>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -149,7 +174,7 @@
                                 </div>
                                     <!--/.modal -->
                                     <div class="modal fade" id="modal-default">
-                                    <div class="modal-dialog">
+                                    <div class="modal-dialog" style="width:80%;">
                                         <div class="modal-content">
                                         <div class="modal-header">
                                             <h4 class="modal-title">Perhatian !!!</h4>

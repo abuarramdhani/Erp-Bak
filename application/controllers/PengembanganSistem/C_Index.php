@@ -15,10 +15,16 @@ class C_Index extends CI_Controller
 		$this->load->library('session');
 		$this->load->library('General');
 		$this->load->model('M_Index');
-		// $this->load->model('MonitoringKomponen/MainMenu/M_monitoring_seksi');
+		
 		$this->load->model('SystemAdministration/MainMenu/M_user');
-		// $this->load->model('PengembalianApd/M_papd');
+		
 		// $this->load->library('excel');
+		if($this->session->userdata('logged_in')!=TRUE) {
+			$this->load->helper('url');
+			$this->session->set_userdata('last_page', current_url());
+				  //redirect('');
+			$this->session->set_userdata('Responsbility', 'some_value');
+		}
 		$this->checkSession();
 	}
 

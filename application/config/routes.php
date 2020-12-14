@@ -4868,6 +4868,9 @@ $route['Report/TrackingInvoice/(:any)/(:any)'] = 'TrackingInvoice/C_Reportti/$1/
 $route['PengembanganSistem'] = 'PengembanganSistem/C_Index';
 $route['PengembanganSistem/Dashboard'] = 'PengembanganSistem/C_Index';
 $route['PengembanganSistem/PenomoranDokumen'] = 'PengembanganSistem/Penomoran/C_Penomoran';
+$route['PengembanganSistem/input_dataseksi'] = 'PengembanganSistem/Penomoran/C_Penomoran/input_dataseksi';
+$route['PengembanganSistem/delete_dataseksi/(:any)'] = 'PengembanganSistem/Penomoran/C_Penomoran/delete_alert/$1';
+$route['PengembanganSistem/viewdataalert'] = 'PengembanganSistem/Penomoran/C_Penomoran/viewdataalert';
 $route['PengembanganSistem/select_all_seksi'] = 'PengembanganSistem/Penomoran/C_Penomoran/select_all_seksi';
 $route['PengembanganSistem/ambilSemuaPekerja'] = 'PengembanganSistem/Penomoran/C_Penomoran/ambilSemuaPekerja';
 //FLOW_PROSES
