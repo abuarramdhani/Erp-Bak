@@ -62,6 +62,7 @@
 												<a title="Tolak" type="sumbit" data-id="<?= $u['INVOICE_ID'] ?>" onclick="prosesInvMI(this)" class="btn btn-danger btn-sm" value="3" name="proses"> <i class="glyphicon glyphicon-remove"></i>
 												</a>
 												<button type="button" class="btn btn-primary btn-sm btnReceiptMIA" value="<?php echo $u['INVOICE_NUMBER']?>" title="receipt"><i class="fa fa-sticky-note"></i></button>
+												<button type="button" class="btn btn-info btn-sm" onclick="window.open('http://produksi.quick.com/cetak-lpba-qrcode-prod/?akun=AA%20AKUN%20TSR%2010&org=124&rcpt1=<?php echo $u['RECEIPT_NUM']?>&rcpt2=<?php echo $u['RECEIPT_NUM']?>')" value="<?php echo $u['RECEIPT_NUM']?>" title="load pdf"><i class="fa fa-file-pdf-o"></i></button> 
 											</td>
 											<td data-order="<?php echo date('Y-m-d', strtotime($u['INVOICE_DATE']))?>"><?php echo date('d-M-Y',strtotime($u['INVOICE_DATE']))?></td>
 											<td><?php echo $u['PPN'] ?></td>
