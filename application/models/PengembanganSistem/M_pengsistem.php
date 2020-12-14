@@ -376,5 +376,24 @@ class M_pengsistem extends CI_Model
 		return $query->result_array();
 	}
 
+	public function get_seksi_input($data)
+	{
+		$this->load->database();
+		$this->db->insert('saps.sie_departemen', $data);
+	}
+
+	public function view_alret()
+	{
+		$query = $this->db->query("select * from saps.sie_departemen order by seksi asc ");
+		
+		return $query->result_array();
+	}
+
+	public function delete_alert_get($data)
+	{
+		$this->db->where('singkat',$data);
+		$this->db->delete('saps.sie_departemen');
+	}
+
 
 }

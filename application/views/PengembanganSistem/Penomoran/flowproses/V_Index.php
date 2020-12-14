@@ -23,7 +23,12 @@
                         <div class="col-lg-12">
                             <form onkeydown="return event.key != 'Enter';" method="post" action="<?php echo base_url('PengembanganSistem/Input_fp') ?>" class="form-horizontal">
                               <div class="box box-primary box-solid">
-                                  <div class="box-header with-border" style="font-weight:bold;"><i class="fa fa-file-o"></i> Input Data</div>
+                                <div class="box-header with-border"><div class="col-sm-6">Input Data </div>
+                                    <div class="col-sm-6 text-right">
+                                        <p class="btn btn-info" style="margin-right:25px;" data-toggle="tooltip" title="Icon Untuk Input Data Seksi/Departemen" id="tmbh_data"><i class="fa fa-plus"></i></p>
+                                        <p class="btn btn-info" data-toggle="tooltip" title="Icon Untuk Melihat Data Seksi/Departemen" id="view_seunt"><i class="fa fa-table"></i></p>
+                                    </div>
+                                </div>
                                   <div class="box-body">
                                       <div class="panel-body">
                                           <div class="row">
@@ -189,9 +194,9 @@
                                         <td>
                                         <div <?php if(strlen($row['file']) !== 0){echo 'hidden=""';} ?> >
                                             <div class="btn-group">
-                                            <a class="btn btn-success" style="padding: 6px;" href="<?php echo base_url('PengembanganSistem/edit_flow/'.$row['id'])?>" title="Edit"><i class="fa fa-pencil"></i></a>
-                                            <a class="btn btn-warning" style="padding: 6px;" data-toggle="modal" data-toggle="tooltip" data-target="<?php echo "#modal_edit".$row['id'];?>" title="Upload"><i class="fa fa-cloud-upload"></i></a>
-                                            <a class="btn btn-danger" style="padding: 6px;" title="Delete" onclick="delete_flow(<?= $row['id']?>)"><i class="fa fa-close"></i></a>
+                                            <a class="icon-action btn btn-success" style="padding: 6px;" href="<?php echo base_url('PengembanganSistem/edit_flow/'.$row['id'])?>" title="Edit"><i class="fa fa-pencil"></i></a>
+                                            <a class="icon-action btn btn-warning" style="padding: 6px;" data-toggle="modal" data-toggle="tooltip" data-target="<?php echo "#modal_edit".$row['id'];?>" title="Upload"><i class="fa fa-cloud-upload"></i></a>
+                                            <a class="icon-action btn btn-danger" style="padding: 6px;" title="Delete" onclick="delete_flow(<?= $row['id']?>)"><i class="fa fa-close"></i></a>
                                             </div>
                                         </div>
                                         </td>
