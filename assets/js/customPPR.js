@@ -41,7 +41,8 @@ $(document).ready( function () {
             cache:true,
         },
         minimumInputLength : 4,
-        placeholder : 'Search Item'
+        placeholder : 'Search Item',
+        allowClear : true
     })
 
     $('.slcRequesterPPR').select2({
