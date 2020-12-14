@@ -344,6 +344,19 @@ class C_PekerjaMakanKhusus extends CI_Controller
 		    $rowData = $sheet->rangeToArray('A'.$row.':'.$highestColumn.$row,NULL,TRUE,FALSE);
 		    $text = $rowData[0][1].$rowData[0][2].$rowData[0][3].$rowData[0][4].$rowData[0][5].$rowData[0][6].$rowData[0][7].$rowData[0][8].$rowData[0][9].$rowData[0][10].$rowData[0][11];
 		    if (strlen($text) > 0) {
+		        $dateFormated = PHPExcel_Style_NumberFormat::toFormattedString($rowData[0][10], 'YYYY-MM-DD');
+		    	$mulai = "";
+		    	if (strtotime($dateFormated) < strtotime("2020-01-01")) {
+		    		$mulai = $rowData[0][10];
+		    	}else{
+		    		$mulai = $dateFormated;
+		    	}
+		    	$selesai = "";
+		    	if (strtotime($dateFormated) < strtotime("2020-01-01")) {
+		    		$selesai = $rowData[0][11];
+		    	}else{
+		    		$selesai = $dateFormated;
+		    	}
 			    if (empty($rowData[0][0])) {
 				    $insert = array(
 				    	'noind'						=> $rowData[0][1],
@@ -357,8 +370,8 @@ class C_PekerjaMakanKhusus extends CI_Controller
 						'pengganti_buah'			=> $rowData[0][9],
 						'created_by' 				=> $this->session->user,
 						'created_date' 				=> date('Y-m-d H:i:s'),
-						'tanggal_mulai'				=> date('Y-m-d', PHPExcel_Shared_Date::ExcelToPHP($rowData[0][10])),
-						'tanggal_selesai'			=> date('Y-m-d', PHPExcel_Shared_Date::ExcelToPHP($rowData[0][11]))
+						'tanggal_mulai'				=> date('Y-m-d', strtotime($mulai)),
+						'tanggal_selesai'			=> date('Y-m-d', strtotime($selesai))
 				    );
 				    $this->M_pekerjamakankhusus->insertPekerjaMakanKhusus($insert);
 			    }else{
@@ -376,8 +389,8 @@ class C_PekerjaMakanKhusus extends CI_Controller
 						'pengganti_buah'			=> $rowData[0][9],
 						'updated_by' 				=> $this->session->user,
 						'updated_date' 				=> date('Y-m-d H:i:s'),
-						'tanggal_mulai'				=> date('Y-m-d', PHPExcel_Shared_Date::ExcelToPHP($rowData[0][10])),
-						'tanggal_selesai'			=> date('Y-m-d', PHPExcel_Shared_Date::ExcelToPHP($rowData[0][11]))
+						'tanggal_mulai'				=> date('Y-m-d', strtotime($mulai)),
+						'tanggal_selesai'			=> date('Y-m-d', strtotime($selesai))
 				    );
 			    	$this->M_pekerjamakankhusus->updatePekerjaMakanKhususByPekerjaMenuKhususId($update,$decrypted_id);
 			    }
