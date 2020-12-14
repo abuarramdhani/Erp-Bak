@@ -148,8 +148,8 @@ class M_blankoevaluasi extends CI_Model
          * Perhitungan tanggal awal penarikan
          */
 
-        // setelah tgl 09-12-2020, tolong hapus kondisi ini in_array($noind, ['K2177', 'K2178'])
-        if (!$result->periode_awal || (in_array($noind, ['K2177', 'K2178']) && date('Y-m-d') <= '2020-12-09')) {
+        // setelah tgl 22-12-2020, (in_array($noind, ['K2421', 'K2422', 'K2104']) && date('Y-m-d') <= '2020-12-22') -> dihapus
+        if (!$result->periode_awal || (in_array($noind, ['K2421', 'K2422', 'K2104']) && date('Y-m-d') <= '2020-12-22')) {
             if ($result->jenis_kode == 'nonstaff') {
                 // $result->periode_awal = date('d-m-Y', strtotime($result->akhir_kontrak . "-20 month -$perhitungan->nonstaff day"));
             } elseif ($result->jenis_kode == 'os') {
