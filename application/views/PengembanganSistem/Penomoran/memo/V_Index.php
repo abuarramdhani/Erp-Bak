@@ -186,19 +186,19 @@
                             </div>
                             <div class="box-body">
                               <div class="table-responsive">
-                                <table class="table table-striped table-bordered table-hover text-left " id="dataTables-PengSistem" style="font-size:12px;">
+                                <table class="table table-striped table-bordered table-hover text-left " id="dataTables-PengSistem" style="font-size:12px; width:max-content;">
                                   <thead>
                                     <tr class="bg-info">
-                                        <th style="max-width:1px;">No.</th>
-                                        <th style="max-width:10px;">Tanggal Dibuat</th>
-                                        <th style="max-width:15px;">No. Surat / Memo</th>
-                                        <th style="max-width:10px;">Ditujukan</th>
-                                        <th style="max-width:20px;">Seksi / Departemen</th>
-                                        <th style="max-width:10px;">Dibuat</th>
-                                        <th style="max-width:10px;">Tgl. Distribusi</th>
-                                        <th style="max-width:30px; width: 80px">Perihal</th>
-                                        <th style="max-width:10px;">File</th>
-                                        <th style="max-width:30px; width:70px;">Action</th>
+                                        <th>No.</th>
+                                        <th>Tanggal Dibuat</th>
+                                        <th>No. Surat / Memo</th>
+                                        <th>Ditujukan</th>
+                                        <th>Seksi / Departemen</th>
+                                        <th>Dibuat</th>
+                                        <th>Tgl. Distribusi</th>
+                                        <th>Perihal</th>
+                                        <th>File</th>
+                                        <th>Action</th>
                                     </tr>
                                   </thead>
                                       <tbody>

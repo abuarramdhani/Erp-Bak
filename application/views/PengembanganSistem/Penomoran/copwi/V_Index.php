@@ -201,21 +201,21 @@
                                 </div>
                               <div class="box-body">
                                 <div class="table-responsive">
-                                  <table class="table table-striped table-bordered table-hover text-left " id="dataTables-PengSistem" style="font-size:12px;">
+                                  <table class="table table-striped table-bordered table-hover text-left " id="dataTables-PengSistem" style="font-size:12px; width:max-content;">
                                         <thead>
                                             <tr class="bg-info">
-                                                <th class="vel_ps" style="vertical-align: middle; width: 1%">No.</th>
-                                                <th class="vel_ps" style="vertical-align: middle; width: 5%">COP / WI</th>
-                                                <th class="vel_ps" style="vertical-align: middle; width: 10%">No. Dokumen</th>
-                                                <th class="vel_ps" style="vertical-align: middle; width: 25%">Judul Dokumen</th>
-                                                <th class="vel_ps" style="width: 80px; vertical-align: middle">Oracle / Android / Web Base / Form</th>
-                                                <th class="vel_ps" style="vertical-align: middle; width: 60px">Rev.Date</th>
-                                                <th class="vel_ps" style="vertical-align: middle; width: 60px">No.Rev.</th>
-                                                <th class="vel_ps" style="vertical-align: middle; width: 10%">SOP</th>
-                                                <th class="vel_ps" style="vertical-align: middle; width: 10%">PIC</th>
-                                                <th class="vel_ps" style="vertical-align: middle; width: 5%">File</th>
-                                                <th class="vel_ps" style="vertical-align: middle; width: 10%">Status</th>
-                                                <th class="vel_ps" style="vertical-align: middle; width: 15%">Action</th>
+                                                <th class="vel_ps" style="vertical-align: middle;">No.</th>
+                                                <th class="vel_ps" style="vertical-align: middle;">COP / WI</th>
+                                                <th class="vel_ps" style="vertical-align: middle;">No. Dokumen</th>
+                                                <th class="vel_ps" style="vertical-align: middle;">Judul Dokumen</th>
+                                                <th class="vel_ps" style="vertical-align: middle;">Oracle / Android / Web Base / Form</th>
+                                                <th class="vel_ps" style="vertical-align: middle;">Rev.Date</th>
+                                                <th class="vel_ps" style="vertical-align: middle;">No.Rev.</th>
+                                                <th class="vel_ps" style="vertical-align: middle;">SOP</th>
+                                                <th class="vel_ps" style="vertical-align: middle;">PIC</th>
+                                                <th class="vel_ps" style="vertical-align: middle;">File</th>
+                                                <th class="vel_ps" style="vertical-align: middle;">Status</th>
+                                                <th class="vel_ps" style="vertical-align: middle;">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>

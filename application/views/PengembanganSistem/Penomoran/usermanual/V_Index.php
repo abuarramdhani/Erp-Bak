@@ -183,20 +183,20 @@
                             </div>
                             <div class="box-body">
                               <div class="table-responsive">
-                                <table class="table table-striped table-bordered table-hover text-left " id="dataTables-PengSistem" style="font-size:12px;">
+                                <table class="table table-striped table-bordered table-hover text-left " id="dataTables-PengSistem" style="font-size:12px; width:max-content;">
                                     <thead>
                                         <tr class="bg-info">
-                                            <th style="vertical-align: middle; width: 1%">No.</th>
-                                            <th style="vertical-align: middle; width: 10%">No. Dokumen</th>
-                                            <th style="vertical-align: middle; width: 25%">Judul Dokumen</th>
-                                            <th style="vertical-align: middle; width: 80px">Oracle / Android / Web Base / Form</th>
-                                            <th style="vertical-align: middle; width: 60px">Rev. Date</th>
-                                            <th style="vertical-align: middle; width: 60px">No. Rev.</th>
-                                            <th style="vertical-align: middle; width: 10%">SOP</th>
-                                            <th style="vertical-align: middle; width: 10%">PIC</th>
-                                            <th style="vertical-align: middle; width: 5%">File</th>
-                                            <th style="vertical-align: middle; width: 10%">Status</th>
-                                            <th style="vertical-align: middle; width: 15%">Action</th>
+                                            <th style="vertical-align: middle;">No.</th>
+                                            <th style="vertical-align: middle;">No. Dokumen</th>
+                                            <th style="vertical-align: middle;">Judul Dokumen</th>
+                                            <th style="vertical-align: middle;">Oracle / Android / Web Base / Form</th>
+                                            <th style="vertical-align: middle;">Rev. Date</th>
+                                            <th style="vertical-align: middle;">No. Rev.</th>
+                                            <th style="vertical-align: middle;">SOP</th>
+                                            <th style="vertical-align: middle;">PIC</th>
+                                            <th style="vertical-align: middle;">File</th>
+                                            <th style="vertical-align: middle;">Status</th>
+                                            <th style="vertical-align: middle;">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>

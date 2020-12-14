@@ -156,18 +156,18 @@
                                 </div>
                                 <div class="box-body">
                                   <div class="table-responsive">
-                                    <table class="table table-striped table-bordered table-hover text-left " id="dataTables-PengSistem" style="font-size:12px;">
+                                    <table class="table table-striped table-bordered table-hover text-left " id="dataTables-PengSistem" style="font-size:12px; width:max-content;">
                                       <thead>
                                         <tr class="bg-info">
-                                            <th style="width: 1%;"><center>No.</center></th>
-                                            <th style="width: 10%;"><center>No. Dokumen</center></th>
-                                            <th style="width: 25%;"><center>Judul Dokumen</center></th>
-                                            <th style="width: 60px;"><center>Date.Rev.</center></th>
-                                            <th style="width: 60px;"><center>No.Rev.</center></th>
-                                            <th style="width: 5%;"><center>File</center></th>
-                                            <th style="width: 15%;"><center>PIC</center></th>
-                                            <th style="width: 10%;"><center>Status</center></th>
-                                            <th style="width: 15%;"><center>Action</center></th>
+                                            <th><center>No.</center></th>
+                                            <th><center>No. Dokumen</center></th>
+                                            <th><center>Judul Dokumen</center></th>
+                                            <th><center>Date.Rev.</center></th>
+                                            <th><center>No.Rev.</center></th>
+                                            <th><center>File</center></th>
+                                            <th><center>PIC</center></th>
+                                            <th><center>Status</center></th>
+                                            <th><center>Action</center></th>
                                         </tr>
                                       </thead>
                                       <tbody>
