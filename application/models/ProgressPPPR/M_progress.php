@@ -108,14 +108,14 @@ class M_progress extends CI_Model
             and ppf.current_employee_flag = 'Y'
             and pnbd.PO_LINE_ID(+) = pda.PO_LINE_ID
             --PARAMETER
-            and ppf.PERSON_ID = NVL('$person_id', PPF.PERSON_ID)
-            and PRLA.ITEM_ID = NVL('$item_id', PRLA.ITEM_ID)
-            and prha.SEGMENT1 = NVL('$no_pr', prha.SEGMENT1)
+            and ppf.PERSON_ID = NVL($person_id, PPF.PERSON_ID)
+            and PRLA.ITEM_ID = NVL($item_id, PRLA.ITEM_ID)
+            and prha.SEGMENT1 = NVL($no_pr, prha.SEGMENT1)
             and trunc(to_date(substr(prha.attribute1,1,10),'YYYY/MM/DD')) between 
                 nvl(to_date('$tanggal1','YYYY/MM/DD'),trunc(to_date(substr(prha.attribute1,1,10),'YYYY/MM/DD'))) 
                 and
                 nvl(to_date('$tanggal2','YYYY/MM/DD'),trunc(to_date(substr(prha.attribute1,1,10),'YYYY/MM/DD')))
-            and nvl(pha.SEGMENT1,1) = nvl('$no_po', NVL(pha.SEGMENT1,1))
+            and nvl(pha.SEGMENT1,1) = nvl($no_po, NVL(pha.SEGMENT1,1))
         order by 1,3");
 
         return $query->result_array();
