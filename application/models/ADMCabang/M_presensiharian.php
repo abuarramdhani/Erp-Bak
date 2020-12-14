@@ -98,7 +98,7 @@ class M_presensiharian extends Ci_Model
 			$sql = "select a.noind,a.nama, b.seksi
 			 from hrd_khs.tpribadi a
 			 left join hrd_khs.tseksi b on a.kodesie=b.kodesie
-				 where left(a.kodesie,7) in (left('$kd', 7), '3280102', '3280101', '3280105', '3280107', '3280104', '3280106', ' 3280103')
+				 where left(a.kodesie,7) in (left('$kd', 7), '3280102', '3280101', '3280105', '3280107', '3280104', '3280106', '3280103')
 				 and a.keluar = false
 			 order by a.kodesie,a.noind;";
 		} else {
