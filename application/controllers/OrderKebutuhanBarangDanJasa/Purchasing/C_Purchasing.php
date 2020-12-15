@@ -175,14 +175,15 @@ class C_Purchasing extends CI_Controller {
                         'PREPARER_ID' => $puller[0]['CREATED_BY'],
                         'SOURCE_TYPE_CODE' => 'VENDOR',
                         'AUTHORIZATION_STATUS' => 'APPROVED',
-                        'HEADER_ATTRIBUTE1' => date("Y-M-d", strtotime($data['ORDER_DATE'])),
-                        'HEADER_ATTRIBUTE2' => date("Y-M-d"),
                         'LINE_ATTRIBUTE9' => $data['ORDER_ID'],
                         'HEADER_ATTRIBUTE4' => $data['PRE_REQ_ID'],
                         'REFERENCE_NUM' => $data['ORDER_ID'],
                      );
 
-                    $this->M_approver->insertPo_Requisitions_Interface_all($orderPR);
+                    $headerAtribut1 = date("Y/m/d H:i:s", strtotime($data['ORDER_DATE']));
+                    $headerAtribut2 = date("Y/m/d H:i:s");
+
+                    $this->M_approver->insertPo_Requisitions_Interface_all($orderPR, $headerAtribut1, $headerAtribut2);
                 }
                 $orderHead = array(
                     'ORDER_STATUS_ID' => '7', 

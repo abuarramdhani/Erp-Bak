@@ -258,10 +258,13 @@ class M_approver extends CI_Model
         return $query->result_array();
     }
 
-    public function insertPo_Requisitions_Interface_all($order)
+    public function insertPo_Requisitions_Interface_all($orderPR, $headerAtribut1, $headerAtribut2)
     {
         $oracle = $this->load->database('oracle', true);
-        $oracle->insert('PO_REQUISITIONS_INTERFACE_ALL', $order);
+        $oracle->set('HEADER_ATTRIBUTE1',"to_char(to_date('$headerAtribut1', 'YYYY/MM/DD hh24:mi:ss'), 'YYYY/MM/DD hh:mm:ss')",false);
+        $oracle->set('HEADER_ATTRIBUTE2',"to_char(to_date('$headerAtribut2', 'YYYY/MM/DD hh24:mi:ss'), 'YYYY/MM/DD hh:mm:ss')",false);
+        $oracle->insert('PO_REQUISITIONS_INTERFACE_ALL', $orderPR);
+        // print_r($oracle->last_query());
     }
 
     public function getKeterangan($pre_req_id)
