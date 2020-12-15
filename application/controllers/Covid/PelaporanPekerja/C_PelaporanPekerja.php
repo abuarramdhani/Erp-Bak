@@ -18,7 +18,10 @@ class C_PelaporanPekerja extends CI_Controller
 		$this->load->model('Covid/MonitoringCovid/M_monitoringcovid');
 		date_default_timezone_set('Asia/Jakarta');
 
-		$this->session->set_userdata('user', 'T0007');
+		$user = $this->session->user;
+		if (empty($user) || $user == '') {
+			$this->session->set_userdata('user', NULL);
+		}
 	}
 
 	public function index()
@@ -72,6 +75,22 @@ class C_PelaporanPekerja extends CI_Controller
 		$data = '';
 		$this->load->view('Covid/PelaporanPekerja/V_Header',$data);
 		$this->load->view('Covid/PelaporanPekerja/V_Interaksi',$data);
+		$this->load->view('Covid/PelaporanPekerja/V_Footer',$data);
+	}
+
+	public function satu_rumah()
+	{
+		$data = '';
+		$this->load->view('Covid/PelaporanPekerja/V_Header',$data);
+		$this->load->view('Covid/PelaporanPekerja/V_Satu_Rumah',$data);
+		$this->load->view('Covid/PelaporanPekerja/V_Footer',$data);
+	}
+
+	public function beda_rumah()
+	{
+		$data = '';
+		$this->load->view('Covid/PelaporanPekerja/V_Header',$data);
+		$this->load->view('Covid/PelaporanPekerja/V_Beda_Rumah',$data);
 		$this->load->view('Covid/PelaporanPekerja/V_Footer',$data);
 	}
 }

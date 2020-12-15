@@ -29,7 +29,7 @@
 													<select class="slcMPSuratIsolasiMandiriPekerjax slcMPSuratIsolasiMandiriTo" data-placeholder="Ditujukan Kepada" name="slcMPSuratIsolasiMandiriTo" id="slcMPSuratIsolasiMandiriTo" style="width: 100%" required>
 														<option></option>
 														<?php foreach ($atasan as $k): ?>
-															<option value="<?= $k['noind'] ?>" ><?= $k['noind'].' - '.$k['nama'] ?></option>
+															<option <?= ($k['noind'] == $kepada) ? 'selected':'' ?> value="<?= $k['noind'] ?>" ><?= $k['noind'].' - '.$k['nama'] ?></option>
 														<?php endforeach ?>
 													</select>
 												</div>
@@ -85,14 +85,14 @@
 													<input type="text" name="txtMPSuratIsolasiMandiriJumlahHari" id="txtMPSuratIsolasiMandiriJumlahHari" class="form-control" placeholder="Jumlah Hari" readonly required>
 												</div>
 											</div>
-											<div class="col-md-3"></div>
-											<div class="col-md-6">
+											<div class="col-md-2"></div>
+											<div class="col-md-8">
 												<table class="table table-bordered" id="cvd_tbladdAS">
 													<thead>
 														<tr class="bg-primary">
 															<th style="text-align: center;">Tanggal</th>
 															<th style="text-align: center;">Status</th>
-															<th style="text-align: center;">Alasan</th>
+															<th style="text-align: center; min-width: 120px;">Alasan</th>
 															<th style="text-align: center;"></th>
 														</tr>
 													</thead>

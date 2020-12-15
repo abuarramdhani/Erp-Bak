@@ -331,6 +331,7 @@ class C_MonitoringCovid extends CI_Controller
 	public function WawancaraIsolasi($encrypted_id){
 		$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $encrypted_id);
 		$plaintext_string = $this->encrypt->decode($plaintext_string);
+		// echo $plaintext_string;
 
 		$user_id = $this->session->userid;
 		$user = $this->session->user;
@@ -351,6 +352,7 @@ class C_MonitoringCovid extends CI_Controller
 	    $filename = 'WAWANCARA_ISOLASI_'.$data['data']->noind.'_'.$data['data']->kasus.'_'.$tanggal.'.pdf';
 	    // $this->load->view('Covid/MonitoringCovid/V_wawancaraisolasi', $data);
 	    $html = $this->load->view('Covid/MonitoringCovid/V_wawancaraisolasi', $data, true);
+	    // print_r($html);exit();
 	    $pdf->SetHTMLFooter("<table  style='width: 100%;border-collapse: collapse'>
 			<tr>
 				<td style='width: 10%;padding-left: 3px;'>
@@ -848,15 +850,29 @@ class C_MonitoringCovid extends CI_Controller
 		'covid_sakit_kembali' => $covid_sakit_kembali,
 		'penyakit_kembali' => $this->input->post('txt-CVD-Penyakit_kembali'),
 		'covid_interaksi' => $covid_interaksi,
+		'kasusinsertmeng' => 'DIRI SENDIRI KE LUAR KOTA',
 		'jenis_interaksi' => $this->input->post('txt-CVD-Jenis_interaksi'),
 		'atasan' => $this->input->post('slc-CVD-MonitoringCovid-Atasan'),
 		];
+
+		$wawancara = "<p>Wilayah : ".$data['wilayah'].'<br>'.
+		"Transportasi : ".$data['transportasi'].'<br>'.
+		"Yang ikut : ".$data['anggota'].'<br>'.
+		"Tujuan alasan : ".$data['tujuan_alasan'].'<br>'.
+		"Aktifitas : ".$data['aktivitas'].'<br>'.
+		"Protokol : ".$data['prokes'].'<br>'.
+		"Menginap : ".$data['covid_menginap'].','.$data['nbr_jumlah_hari'].'<br>'.
+		"Yang dikunjungi sakit : ".$data['covid_sakit'].','.$data['penyakit'].'<br>'.
+		"Sakit Setelah kembali : ".$data['covid_sakit_kembali'].','.$data['penyakit_kembali'].'<br>'.
+		"Interaksi probable covid : ".$data['covid_interaksi'].','.$data['jenis_interaksi']."</p>";
+		$data['wawancara'] = $wawancara;
 
 		$id_wawancara = $this->M_monitoringcovid->insertDiriSendiri($data, $user);
 		// $id_wawancara = 233;
 		$this->uploadLampiranCvd($id_wawancara);
 		$this->session->set_userdata('result', 'berhasil');
 		$src = $this->input->post('source');
+		$this->kirimEmailcvd($data);
 		if ($src == 'diri_sendiri') {
 			redirect('Covid/PelaporanPekerja/LuarKota/diri_sendiri');
 		}else{
@@ -921,15 +937,29 @@ class C_MonitoringCovid extends CI_Controller
 		'covid_sakit_kembali' => $covid_sakit_kembali,
 		'penyakit_kembali' => $this->input->post('txt-CVD-Penyakit_kembali'),
 		'covid_interaksi' => $covid_interaksi,
+		'kasus' => 'ANGGOTA KELUARGA KE LUAR KOTA',
 		'jenis_interaksi' => $this->input->post('txt-CVD-Jenis_interaksi'),
 		'atasan' => $this->input->post('slc-CVD-MonitoringCovid-Atasan'),
 		];
+
+		$wawancara = "<p>Wilayah : ".$data['wilayah'].'<br>'.
+		"Transportasi : ".$data['transportasi'].'<br>'.
+		"Yang ikut : ".$data['anggota'].'<br>'.
+		"Tujuan alasan : ".$data['tujuan<br>alasan'].'<br>'.
+		"Aktifitas : ".$data['aktivitas'].'<br>'.
+		"Protokol : ".$data['prokes'].'<br>'.
+		"Menginap : ".$data['covid_menginap'].','.$data['nbr_jumlah_hari'].'<br>'.
+		"Yang dikunjungi sakit : ".$data['covid_sakit'].','.$data['penyakit'].'<br>'.
+		"Sakit Setelah kembali : ".$data['covid_sakit_kembali'].','.$data['penyakit_kembali'].'<br>'.
+		"Interaksi probable covid : ".$data['covid_interaksi'].','.$data['jenis_interaksi']."</p>";
+		$data['wawancara'] = $wawancara;
 
 		$id_wawancara = $this->M_monitoringcovid->insertAnggotaKeluarga($data, $user);
 		// $id_wawancara = 198;
 		$this->uploadLampiranCvd($id_wawancara);
 		$this->session->set_userdata('result', 'berhasil');
 		$src = $this->input->post('source');
+		$this->kirimEmailcvd($data);
 		if ($src == 'anggota_keluarga') {
 			redirect('Covid/PelaporanPekerja/LuarKota/anggota_keluarga');
 		}else{
@@ -947,6 +977,15 @@ class C_MonitoringCovid extends CI_Controller
 		}
 		else {
 			$covid_menginap = 'Tidak';
+		}
+
+		$covid_sakit = $this->input->post('covid_sakit');
+		if($covid_menginap == 1)
+		{
+			$covid_sakit = 'Ya';
+		}
+		else {
+			$covid_sakit = 'Tidak';
 		}
 
 		$covid_sakit_kembali = $this->input->post('covid_sakit_kembali');
@@ -987,20 +1026,33 @@ class C_MonitoringCovid extends CI_Controller
 		'prokes' => $this->input->post('txt-CVD-Prokes'),
 		'covid_menginap' => $covid_menginap,
 		'nbr_jumlah_hari' => $this->input->post('nbr-jumlah-hari'),
-		'covid_sakit' => $this->input->post('covid_sakit'),
+		'covid_sakit' => $covid_sakit,
 		'penyakit' => $this->input->post('txt-CVD-Penyakit'),
 		'covid_interaksi' => $covid_interaksi,
+		'kasus' => 'KEDATANGAN TAMU DARI LUAR KOTA',
 		'jenis_interaksi' => $this->input->post('txt-CVD-Jenis_interaksi'),
 		'atasan' => $this->input->post('slc-CVD-MonitoringCovid-Atasan'),
 		];
 
+		$wawancara = "<p>Wilayah : ".$data['wilayah'].'<br>'.
+		"Transportasi : ".$data['transportasi'].'<br>'.
+		"Jumlah tamu : ".$data['jumlah_tamu'].'<br>'.
+		"Tujuan alasan : ".$data['tujuan_alasan'].'<br>'.
+		"Aktifitas : ".$data['aktivitas'].'<br>'.
+		"Protokol : ".$data['prokes'].'<br>'.
+		"Menginap : ".$data['covid_menginap'].','.$data['nbr_jumlah_hari'].'<br>'.
+		"Tamu yang datang sakit : ".$data['covid_sakit'].','.$data['penyakit'].'<br>'.
+		"Interaksi probable covid : ".$data['covid_interaksi'].','.$data['jenis_interaksi']."</p>";
+		$data['wawancara'] = $wawancara;
+		// print_r($data);exit();
 		$id_wawancara = $this->M_monitoringcovid->insertKedatanganTamu($data, $user);
 		// $id_wawancara = 237;
 		$this->uploadLampiranCvd($id_wawancara);
 		$this->session->set_userdata('result', 'berhasil');
 		$src = $this->input->post('source');
+		$this->kirimEmailcvd($data);
 		if ($src == 'kedatangan_tamu') {
-			redirect('Covid/PelaporanPekerja/LuarKota/kedatangan_tamu');
+			// redirect('Covid/PelaporanPekerja/LuarKota/kedatangan_tamu');
 		}else{
 
 		}
@@ -1044,13 +1096,25 @@ class C_MonitoringCovid extends CI_Controller
 		'waktu_run_down' => $this->input->post('txt-CVD-MonitoringCovid-Run-Down'),
 		'prokes' => $this->input->post('txt-CVD-Prokes'),
 		'lokasi_acara' => $covid_lokasi_acara,
+		'kasus' => 'MELAKSANAKAN ACARA',
 		'kapasitas_tempat' => $this->input->post('Kapasitas_tempat'),
 		'atasan' => $this->input->post('slc-CVD-MonitoringCovid-Atasan'),
 		];
+
+		$wawancara = "<p>Jenis acara : ".$data['jenis_acara'].'<br>'.
+		"Jumlah tamu : ".$data['jumlah_tamu'].'<br>'.
+		"Ada tamu luar : ".$data['covid_tamu_luar'].','.$data['asal_tamu'].'<br>'.
+		"Waktu dan Run Down : ".$data['waktu_run_down'].'<br>'.
+		"Protokol : ".$data['prokes'].'<br>'.
+		"Lokasi acara : ".$data['lokasi_acara'].'<br>'.
+		"Kapasitas tempat : ".$data['kapasitas_tempat']."</p>";
+		$data['wawancara'] = $wawancara;
+
 		$id_wawancara = $this->M_monitoringcovid->insertMelaksanakanAcara($data, $user);
 		$this->uploadLampiranCvd($id_wawancara);
 		$this->session->set_userdata('result', 'berhasil');
 		$src = $this->input->post('source');
+		$this->kirimEmailcvd($data);
 		if ($src == 'melaksanakan_acara') {
 			redirect('Covid/PelaporanPekerja/AcaraMelibatkanBanyakOrang/melaksanakan_acara');
 		}else{
@@ -1060,6 +1124,7 @@ class C_MonitoringCovid extends CI_Controller
 
 	public function insertMenghadiriAcara($value='')
 	{
+		// print_r($_POST);exit();
 		$covid_tamu_luar = $this->input->post('covid_tamu_luar');
 		if($covid_tamu_luar == 1)
 		{
@@ -1094,16 +1159,29 @@ class C_MonitoringCovid extends CI_Controller
 		'covid_tamu_luar' => $covid_tamu_luar,
 		'asal_tamu' => $this->input->post('txt-CVD-Tamu-Luar'),
 		'waktu_run_down' => $this->input->post('txt-CVD-MonitoringCovid-Run-Down'),
-		'prokes' => $this->input->post('txt-CVD-Prokes'),
+		'prokes_penyelenggara' => $this->input->post('txt-CVD-Prokes-Penyelenggara'),
+		'prokes_pekerja' => $this->input->post('txt-CVD-Prokes-Pekerja'),
 		'lokasi_acara' => $covid_lokasi_acara,
+		'kasus' => 'MENGHADIRI ACARA',
 		'kapasitas_tempat' => $this->input->post('Kapasitas_tempat'),
 		'atasan' => $this->input->post('slc-CVD-MonitoringCovid-Atasan'),
 		];
+
+		$wawancara = "<p>Jenis acara : ".$data['jenis_acara'].'<br>'.
+		"Jumlah tamu : ".$data['jumlah_tamu'].'<br>'.
+		"Ada tamu luar : ".$data['covid_tamu_luar'].','.$data['asal_tamu'].'<br>'.
+		"Protokol penyelenggara: ".$data['prokes_penyelenggara'].'<br>'.
+		"Protokol Diri Sendiri: ".$data['prokes_pekerja'].'<br>'.
+		"Lokasi acara : ".$data['lokasi_acara'].'<br>'.
+		"Kapasitas tempat : ".$data['kapasitas_tempat']."</p>";
+
+		$data['wawancara'] = $wawancara;
 		
-		$id_wawancara = $this->M_monitoringcovid->insertMelaksanakanAcara($data, $user);
+		$id_wawancara = $this->M_monitoringcovid->insertmenghadiriAcara($data, $user);
 		$this->uploadLampiranCvd($id_wawancara);
 		$this->session->set_userdata('result', 'berhasil');
 		$src = $this->input->post('source');
+		$this->kirimEmailcvd($data);
 		if ($src == 'menghadiri_acara') {
 			redirect('Covid/PelaporanPekerja/AcaraMelibatkanBanyakOrang/menghadiri_acara');
 		}else{
@@ -1139,6 +1217,7 @@ class C_MonitoringCovid extends CI_Controller
 		'tgl_gejala'	=> $this->input->post('tgl_gejala'),
 		'lapor_puskesmas'	=> $this->input->post('lapor_puskesmas'),
 		'hasil_uji'	=> $this->input->post('hasil_uji'),
+		'kasus'	=> 'Kontak dengan Probable/Konfirmasi Covid 19 dalam Satu Rumah',
 		'fasilitas'	=> implode(', ', $this->input->post('fasilitas')),
 		'dekontaminasi'	=> $this->input->post('dekontaminasi'),
 		'atasan' => $this->input->post('slc-CVD-MonitoringCovid-Atasan'),
@@ -1179,12 +1258,70 @@ class C_MonitoringCovid extends CI_Controller
 			$data['arahan_terduga'] = $this->input->post('arahan_terduga');
 			$data['arahan_serumah'] = $this->input->post('arahan_serumah');
 		}
-		// print_r($data);exit();
+
+		//start wawancara
+		$hasilTest = '';
+		if ($data['antibody'] == '1') {
+			$hasilTest .= "Tanggal mulai tes Antibody : ".$data['tgl_tes_antibody'].', '.
+			"Tanggal Keluar test Antibody : ".$data['tgl_keluar_tes_antibody'].', '.
+			"Hasil test Antibody : ".$data['hasil_antibody'].'<br>';
+		}
+		if ($data['antigen'] == '1') {
+			$hasilTest .= "Tanggal mulai tes Antigen : ".$data['tgl_tes_antigen'].', '.
+			"Tanggal Keluar test Antigen : ".$data['tgl_keluar_tes_antigen'].', '.
+			"Hasil test Antigen : ".$data['hasil_antigen'].'<br>';
+		}
+		if ($data['pcr'] == '1') {
+			$hasilTest .= "Tanggal mulai tes PCR/Swab : ".$data['tgl_tes_pcr'].', '.
+			"Tanggal Keluar test PCR/Swab : ".$data['tgl_keluar_tes_pcr'].', '.
+			"Hasil test PCR/Swab : ".$data['hasil_pcr'].'<br>';
+		}
+		$anggotaK = '';
+		if ($data['jml_orangtua'] > 0) {
+			$anggotaK .= "Jumlah Orang Tua : ".$data['jml_orangtua'].', ';
+		}
+		if ($data['jml_mertua'] > 0) {
+			$anggotaK .= "Jumlah Mertua : ".$data['jml_mertua'].', ';
+		}
+		if ($data['jml_bojo'] > 0) {
+			$anggotaK .= "Jumlah Istri/Suami : ".$data['jml_bojo'].', ';
+		}
+		if ($data['jml_anak'] > 0) {
+			$anggotaK .= "Jumlah Anak : ".$data['jml_anak'].', ';
+		}
+		if ($data['jml_saudara_kandung'] > 0) {
+			$anggotaK .= "Jumlah Saudara Kandung : ".$data['jml_saudara_kandung'].', ';
+		}
+		if ($data['jml_saudara_tidak_kandung'] > 0) {
+			$anggotaK .= "Jumlah Saudara tidak Kandung : ".$data['jml_saudara_tidak_kandung'].', ';
+		}
+		if ($data['anggota_lainnya'] != '') {
+			$anggotaK .= "Anggota keluarga Lainnya : ".$data['anggota_lainnya'].'. ';
+		}
+
+		$laporPuskesmas = '';
+		if ($data['lapor_puskesmas'] == 'Sudah') {
+			$laporPuskesmas .= "Arahan untuk Orang yang terduga/terkonfirmasi Covid 19 : ".$data['arahan_terduga'].'<br>';
+			$laporPuskesmas .= "Arahan untuk Orang yang tinggal serumah : ".$data['arahan_serumah'].'<br>';
+		}
+
+		$wawancara = "<p>Kontak Dengan : ".$data['yang_kontak'].'<br>'.
+		"Hubungan : ".$data['hubungan'].'<br>'.
+		"Riwayat Orang Tersebut : ".$data['riwayat'].'<br>'.
+		"Gejala Awal : ".$data['gejala'].'<br>'.
+		"Tanggal mulai Gejala : ".$data['tgl_gejala'].'<br>'.
+		$hasilTest.
+		$anggotaK.
+		$laporPuskesmas.
+		"Fasilitas : ".$data['fasilitas'].'<br>'.
+		"Dekontaminasi : ".$data['dekontaminasi']."</p>";
+		$data['wawancara'] = $wawancara;
 		
 		$id_wawancara = $this->M_monitoringcovid->kontakSatuRumah($data, $user);
 		$this->uploadLampiranCvd($id_wawancara);
 		$this->session->set_userdata('result', 'berhasil');
 		$src = $this->input->post('source');
+		$this->kirimEmailcvd($data);
 		if ($src == 'satu_rumah') {
 			redirect('Covid/PelaporanPekerja/Kontak/satu_rumah');
 		}else{
@@ -1223,14 +1360,26 @@ class C_MonitoringCovid extends CI_Controller
 		'intensitas'	=> $this->input->post('intensitas'),
 		'durasi'	=> $this->input->post('durasi'),
 		'protokol'	=> $this->input->post('protokol'),
+		'kasus'	=> 'Kontak dengan Probable/Konfirmasi Covid 19 - Beda Rumah',
 		'arahan'	=> $arahan,
 		'atasan' => $this->input->post('slc-CVD-MonitoringCovid-Atasan'),
 		];
+
+		$wawancara = "<p>Yang kontak : ".$data['yang_kontak'].'<br>'.
+		"Hubungan : ".$data['hubungan'].'<br>'.
+		"Jarak Rumah : ".$data['jarak_rumah'].'<br>'.
+		"Jenis Interaksi : ".$data['jenis_interaksi'].'<br>'.
+		"Intensitas : ".$data['intensitas'].'<br>'.
+		"Durasi : ".$data['durasi'].'<br>'.
+		"Protokol : ".$data['protokol'].'<br>'.
+		"Arahan : ".$data['arahan']."</p>";
+		$data['wawancara'] = $wawancara;
 		
 		$id_wawancara = $this->M_monitoringcovid->kontakBedaRumah($data, $user);
 		$this->uploadLampiranCvd($id_wawancara);
 		$this->session->set_userdata('result', 'berhasil');
 		$src = $this->input->post('source');
+		$this->kirimEmailcvd($data);
 		if ($src == 'beda_rumah') {
 			redirect('Covid/PelaporanPekerja/Kontak/beda_rumah');
 		}else{
@@ -1269,13 +1418,24 @@ class C_MonitoringCovid extends CI_Controller
 		'durasi'	=> $this->input->post('durasi'),
 		'protokol'	=> $this->input->post('protokol'),
 		'arahan'	=> $arahan,
+		'kasus'		=> 'Kontak dengan Probable/Konfirmasi Covid 19 - Beda Rumah',
 		'atasan' => $this->input->post('slc-CVD-MonitoringCovid-Atasan'),
 		];
+
+		$wawancara = "<p>Yang kontak : ".$data['yang_kontak'].'<br>'.
+		"Hubungan : ".$data['hubungan'].'<br>'.
+		"Jenis Interaksi : ".$data['jenis_interaksi'].'<br>'.
+		"Intensitas : ".$data['intensitas'].'<br>'.
+		"Durasi : ".$data['durasi'].'<br>'.
+		"Protokol : ".$data['protokol'].'<br>'.
+		"Arahan : ".$data['arahan']."</p>";
+		$data['wawancara'] = $wawancara;
 		
 		$id_wawancara = $this->M_monitoringcovid->kontakProblaby($data, $user);
 		$this->uploadLampiranCvd($id_wawancara);
 		$this->session->set_userdata('result', 'berhasil');
 		$src = $this->input->post('source');
+		$this->kirimEmailcvd($data);
 		if ($src == 'problaby') {
 			redirect('Covid/PelaporanPekerja/Kontak/interaksi');
 		}else{
@@ -1341,6 +1501,51 @@ class C_MonitoringCovid extends CI_Controller
 			'wawancara_id' => $id_wawancara
 			];
 			$res2 = $this->M_monitoringcovid->insertLampiran21($data2, $user);
+		}
+	}
+
+	public function kirimEmailcvd($data)
+	{
+		$this->load->library('PHPMailerAutoload');
+
+		$noind = $data['no_induk'];
+		$pkj = $this->M_monitoringcovid->getDetailPekerja($noind);
+
+		$message = '<p>Kasus : '.$data['kasus'].'</p>';
+		$message .= '<p>Tanggal Interaksi : '.$data['tgl_interaksi'].'</p>';
+		$message .= '<p>Data :</p>';
+		$message .= $data['wawancara'];
+
+		$mail = new PHPMailer();
+		$mail->SMTPDebug = 0;
+		$mail->Debugoutput = 'html';
+
+		$mail->isSMTP();
+		$mail->Host = 'mail.quick.com';
+		$mail->Port = 465;
+		$mail->SMTPAuth = true;
+		$mail->SMTPSecure = 'ssl';
+		$mail->SMTPOptions = array(
+			'ssl' => array(
+				'verify_peer' => false,
+				'verify_peer_name' => false,
+				'allow_self_signed' => true
+			)
+		);
+		$mail->Username = 'no-reply';
+		$mail->Password = '123456';
+		$mail->WordWrap = 50;
+		$mail->setFrom('noreply@quick.com', 'TIM COVID 19');
+		$mail->addAddress('emanuel_dakris@quick.com');
+		$mail->addAddress('enggal_aldiansyah@quick.com');
+		$mail->Subject = 'Laporan Covid Baru dari '.trim($pkj['nama']).' ('.$noind.')';
+		$mail->msgHTML($message);
+
+		if (!$mail->send()) {
+			echo "Mailer Error: " . $mail->ErrorInfo;
+			show_error($this->email->print_debugger());
+		} else {
+			// okey
 		}
 	}
 }

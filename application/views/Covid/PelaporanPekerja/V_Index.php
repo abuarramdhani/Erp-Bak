@@ -39,12 +39,20 @@
                                             Menghadiri Acara
                                         </a>
                                     </div>
-                                    <div class="col-md-12 text-center" style="margin-top: 50px;" hidden="">
-                                        <h1 style="font-weight: bold;">Kontak dengan Probable/Konfirmasi Covid 19</h1>
+                                    <div class="col-md-12 text-center" style="margin-top: 50px;">
+                                        <h1 style="font-weight: bold;">Kontak dengan Probable / Konfirmasi Covid 19</h1>
                                     </div>
-                                    <div class="col-md-12 text-center" hidden="">
-                                        <a href="<?= base_url('Covid/PelaporanPekerja/Interaksi') ?>" class="btn btn-primary" style="font-weight: bold; margin-top: 10px;" >
-                                            Interaksi dengan Terduga/Terkonfirmasi Covid 19
+                                    <div class="col-md-12 text-center">
+                                        <a href="<?= base_url('Covid/PelaporanPekerja/Kontak/satu_rumah') ?>" class="btn btn-primary" style="font-weight: bold; margin-top: 10px;" >
+                                            Satu Rumah
+                                        </a>
+                                        &nbsp;&nbsp;
+                                        <a href="<?= base_url('Covid/PelaporanPekerja/Kontak/beda_rumah') ?>" class="btn btn-primary" style="font-weight: bold; margin-top: 10px;" >
+                                            Beda Rumah
+                                        </a>
+                                        &nbsp;&nbsp;
+                                        <a href="<?= base_url('Covid/PelaporanPekerja/Kontak/interaksi') ?>" class="btn btn-primary" style="font-weight: bold; margin-top: 10px; white-space: normal;" >
+                                            Interaksi dengan Orang Yang Habis Berinteraksi dengan Terduga / Terkonfirmasi Covid 19
                                         </a>
                                     </div>
                                 </div>

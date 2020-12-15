@@ -81,8 +81,8 @@
 													<input type="text" name="txtMPSuratIsolasiMandiriJumlahHari" id="txtMPSuratIsolasiMandiriJumlahHari" value="<?php echo $dt['jml_hari'] ?>" class="form-control" placeholder="Jumlah Hari" readonly required>
 												</div>
 											</div>
-											<div class="col-md-3"></div>
-											<div class="col-md-6">
+											<div class="col-md-2"></div>
+											<div class="col-md-8">
 												<table class="table table-bordered" id="cvd_tbladdAS">
 													<thead>
 														<tr class="bg-primary">
@@ -93,38 +93,7 @@
 														</tr>
 													</thead>
 													<tbody>
-														<?php $zz = 0; foreach ($pres as $y): ?>
-															<tr>
-															<td style="text-align: center; white-space: nowrap;"><?= $y['tanggal'] ?>
-																	<input hidden name="tgl_perperiode[]" value="<?= $y['tanggal'] ?>">
-																</td>
-																<td>
-																	<select class="select2 cvd_status_table" data-placeholder="Status Isolasi Mandiri" name="slcMPSuratIsolasiMandiriStatus2[]" id="slcMPSuratIsolasiMandiriStatus" style="width: 100%" required>
-																		<option <?= $y['status'] == 'PRM' ? 'selected':'' ?>>PRM</option>
-																		<option <?= $y['status'] == 'PSK' ? 'selected':'' ?>>PSK</option>
-																		<option <?= $y['status'] == 'PKJ' ? 'selected':'' ?>>PKJ</option>
-																	</select>
-																</td>
-																<td>
-																	<select class="select2 cvd_alasan_table" data-placeholder="Alasan" name="slcMPSuratIsolasiMandiriAlasan2[]" id="slcMPSuratIsolasiMandiriAlasan" style="width: 100%" required>
-																		<option></option>
-																		<option <?= $y['alasan'] == 'ISOLASI DIRI - DL - WFH' ? 'selected':'' ?> >ISOLASI DIRI - DL - WFH</option>
-																		<option <?= $y['alasan'] == 'ISOLASI DIRI - DL - NON WFH' ? 'selected':'' ?> >ISOLASI DIRI - DL - NON WFH</option>
-																		<option <?= $y['alasan'] == 'ISOLASI DIRI - NON DL -WFH' ? 'selected':'' ?> >ISOLASI DIRI - NON DL -WFH</option>
-																		<option <?= $y['alasan'] == 'ISOLASI DIRI - NON DL - NON WFH' ? 'selected':'' ?> >ISOLASI DIRI - NON DL - NON WFH</option>
-																	</select>
-																</td>
-																<?php if ($zz == 0): ?>
-																	<td>
-																		<label style="white-space: nowrap;"><input type="checkbox" id="cvd_samastatus"/> Samakan Status</label>
-																		<br>
-																		<label style="white-space: nowrap;"><input type="checkbox" id="cvd_samaalasan"/> Samakan Alasan</label>
-																	</td>
-																<?php else: ?>
-																	<td></td>
-																<?php endif ?>
-															</tr>
-														<?php $zz++; endforeach ?>
+														
 													</tbody>
 												</table>
 											</div>
@@ -184,4 +153,7 @@
 	var akhir = "<?= $data[0]['tgl_selesai'] ?>";
 	var pkj = "<?= $data[0]['pekerja'] ?>";
 	var isolasi_id = "<?= $isolasi_id ?>";
+	window.addEventListener('load', function () {
+		$('#txtMPSuratIsolasiMandiriSelesaiIsolasiTanggal').trigger('change');
+	});
 </script>

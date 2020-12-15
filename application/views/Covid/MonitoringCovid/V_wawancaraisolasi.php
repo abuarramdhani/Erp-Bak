@@ -23,10 +23,23 @@
 		<tr>
 			<td>Tanggal Interaksi</td>
 			<td>:</td>
-			<td><?php echo (isset($data) && !empty($data)) ? strftime('%d %B %Y', strtotime($data->tgl_interaksi)) : ''; ?></td>
+			<?php
+				if (isset($data->range_tgl_interaksi) && !empty($data->range_tgl_interaksi)) {
+					$tgl = $data->range_tgl_interaksi;
+					$tgl = explode(' - ', $tgl);
+					$tgl1 = date('Y-m-d', strtotime($tgl[0]));
+					$tgl2 = date('Y-m-d', strtotime($tgl[1]));
+					$show = strftime('%d %b %Y', strtotime($tgl1)).' - '.strftime('%d %b %Y', strtotime($tgl2));
+					$tgl = $tgl[0];
+				}else{
+					$tgl = $data->tgl_interaksi;
+					$show = strftime('%d %B %Y', strtotime($tgl));
+				}
+			?>
+			<td><?php echo (isset($data) && !empty($data)) ? $show : ''; ?></td>
 			<td colspan="3" style="width: 25%">Lama Interaksi s/d hari ini</td>
 			<td style="width: 2%">:</td>
-			<td style="width: 9%"><?php echo (isset($data) && !empty($data)) ? ((strtotime(date('Y-m-d'))-strtotime($data->tgl_interaksi))/(60*60*24)) : ''; ?></td>
+			<td style="width: 9%"><?php echo (isset($data) && !empty($data)) ? ((strtotime(date('Y-m-d'))-strtotime($tgl))/(60*60*24)) : ''; ?></td>
 			<td style="width: 4%">hari</td>
 		</tr>
 		<tr>
@@ -38,10 +51,13 @@
 	<div style="width: 100%;border: 1px solid black;border-top: 0px solid white;">
 		<b>Data tambahan hasil wawancara :</b>
 	</div>
-	<div style="width: 100%;border: 1px solid black;border-top: 0px solid white;height: 250px;">
+	<div class="pnomargin" style="width: 100%;border: 1px solid black;border-top: 0px solid white;height: 250px;">
 		<?php 
+			if (isset($data->keterangan)) {
+				echo $data->keterangan;
+			}
 			if (isset($wawancara) && !empty($wawancara)) {
-				echo $wawancara->hasil_wawancara;
+				echo str_replace('_', '<br>', $wawancara->hasil_wawancara);
 			} 
 		?>
 	</div>
@@ -53,7 +69,7 @@
 			if (isset($lampiran) && !empty($lampiran)) {
 				foreach ($lampiran as $key_lamp => $val_lamp) {
 					?>
-					<img src="<?php echo base_url($val_lamp['lampiran_path']) ?>" style="width: 290px;float: left;height: auto;">
+					<img src="<?php echo base_url($val_lamp['lampiran_path']) ?>" style="max-height: 150px;max-width: 290px;float: left;height: auto; width: auto">
 					<?php 
 				}
 			}

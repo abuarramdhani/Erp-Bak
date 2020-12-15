@@ -1,4 +1,4 @@
-<section class="content">
+<section class="content" id="wadawdawadqawd">
 	<div class="inner">
 		<div class="row">
 			<div class="col-lg-12">
@@ -41,7 +41,7 @@
 													</select>
 												</div>
 												<div class="col-lg-3">
-													<button type="submit" class="btn btn-primary"><span class="fa fa-search"></span> Search</button>
+													<button type="submit" class="btn btn-primary" id="asdasdasd"><span class="fa fa-search"></span> Search</button>
 												</div>
 												<div class="col-lg-4 text-right">
 													<a href="<?php echo base_url('Covid/MonitoringCovid/tambah') ?>" class="btn btn-primary"><span class="fa fa-plus"></span> Tambah</a>
@@ -104,8 +104,8 @@
 														if (isset($status) && !empty($status)) {
 															foreach ($status as $st) {
 																if ($st['status_kondisi_id'] == $value['status_kondisi_id']) {
-																		$stat = "<button class='btn btn-CVD-MonitoringCovid-Status' data-id='".$encrypted_string."' style='background-color: ".$st['background_color'].";color: ".$st['text_color']."'>".$st['status_kondisi']."</button>";
-																		$status_kondisi_pekerja = $st['status_kondisi'];
+																	$stat = "<button class='btn btn-CVD-MonitoringCovid-Status' data-id='".$encrypted_string."' style='background-color: ".$st['background_color'].";color: ".$st['text_color']."'>".$st['status_kondisi']."</button>";
+																	$status_kondisi_pekerja = $st['status_kondisi'];
 																}
 															}
 															
@@ -123,20 +123,20 @@
 																			<a href="<?php echo base_url('Covid/MonitoringCovid/edit/'.$encrypted_string) ?>" style="cursor: pointer;">edit</a>
 																		</li>
 																		<li>
-																			<a data-href="<?php echo $encrypted_string ?>" data-status="<?php echo isset($status_kondisi) ? $status_kondisi : '0'; ?>" class="btn-CVD-MonitoringCovid-Hapus" style="cursor: pointer;">Hapus</a>
+																			<a data-href="<?php echo $encrypted_string ?>" data-status="<?php echo isset($status_kondisi) ? $status_kondisi : '0'; ?>" class="btn-CVD-MonitoringCovid-Hapus wadawd" style="cursor: pointer;">Hapus</a>
 																		</li>
 																		<?php 
 																		if (isset($encrypted_isolasi_id) && !empty($encrypted_isolasi_id)) {
 																			?>
-																		<li>
-																			<a href="<?php echo base_url('MasterPekerja/Surat/SuratIsolasiMandiri/Ubah/'.$encrypted_isolasi_id.'/'.$encrypted_string) ?>" style="cursor: pointer;">Ubah Memo Isolasi Mandiri</a>
-																		</li>
+																			<li>
+																				<a href="<?php echo base_url('MasterPekerja/Surat/SuratIsolasiMandiri/Ubah/'.$encrypted_isolasi_id.'/'.$encrypted_string) ?>" style="cursor: pointer;">Ubah Memo Isolasi Mandiri</a>
+																			</li>
 																			<?php
 																		}else{
 																			?>
-																		<li>
-																			<a href="<?php echo base_url('MasterPekerja/Surat/SuratIsolasiMandiri/Tambah/'.$encrypted_string) ?>" style="cursor: pointer;">Buat Memo Isolasi Mandiri</a>
-																		</li>
+																			<li>
+																				<a href="<?php echo base_url('MasterPekerja/Surat/SuratIsolasiMandiri/Tambah/'.$encrypted_string) ?>" style="cursor: pointer;">Buat Memo Isolasi Mandiri</a>
+																			</li>
 																			<?php
 																		}
 																		?>

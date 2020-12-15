@@ -100,7 +100,7 @@
                                                             <input type="number" name="nbr-jumlah-hari" value=""class="form-control">
                                                         </div>
                                                         <div class="form-group">
-                                                            <label for="usr">Lampiran Foto Pelaksanaan Acara :</label>
+                                                            <label for="usr">Lampiran Foto :</label>
                                                             <div class="area-upload">
                                                                 <table class="table table-bordered table-add-image-cvd" style="width:100%">
                                                                     <thead>
@@ -165,10 +165,9 @@
                                             </div>
                                             <div class="col-md-12">
                                                 <div class="panel panel-default">
-                                                    <div class="panel-heading">Approver</div>
+                                                    <div class="panel-heading">Atasan</div>
                                                     <div class="panel-body">
                                                         <div class="form-group">
-                                                            <label for="usr">Atasan</label>
                                                             <select id="slc-CVD-MonitoringCovid-Tambah-Pekerja" name="slc-CVD-MonitoringCovid-Atasan" class="select2 select2Covid" style="width: 100%" data-placeholder="Pilih Atasan">
                                                                 <option value=""></option>
                                                             </select>

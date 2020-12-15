@@ -9,11 +9,11 @@
                         <div class="col-lg-12">
                             <div class="box box-primary box-solid">
                                 <div class="box-header with-border text-center" style="font-weight: bold; font-size: 20px;">
-                                    Acara Melibatkan Banyak Orang - Melaksanakan Acara
+                                    Kontak dengan Probable/Konfirmasi Covid 19 - Beda Rumah
                                 </div>
                                 <div class="panel-body">
                                   <div class="row">
-                                        <form method="post" action="<?php echo base_url('Covid/MonitoringCovid/insertMelaksanakanAcara')?>"  enctype="multipart/form-data">
+                                      <form method="post" action="<?php echo base_url('Covid/MonitoringCovid/insertBedaRumah')?>" enctype="multipart/form-data">
                                             <div class="col-md-12">
                                                 <?php echo $this->session->flashdata('status_insert_cvd'); ?>
                                                 <div class="panel panel-default">
@@ -56,58 +56,89 @@
                                                     <div class="panel-heading">Keterangan</div>
                                                     <div class="panel-body">
                                                         <div class="form-group">
-                                                            <label for="usr">Jenis acara yang diselenggarakan :</label>
-                                                            <input type="text" class="form-control" name="Jenis_acara" placeholder="Jenis Acara" required>
+                                                            <label for="usr">Yang kontak dengan Anda</label>
+                                                            <br>
+                                                            <input type="radio" name="yang_kontak" required value="Konfirmasi Covid 19" style="clear: none;width: auto;">
+                                                            <label style="margin-left: 10px;clear: none;width: auto;">
+                                                                Konfirmasi Covid 19 (Sudah melakukan PCR-Swab Dan Hasilnya Positif)
+                                                            </label>
+                                                            <br>
+                                                            <input type="radio" name="yang_kontak" value="Probable Covid">
+                                                            <label style="margin-left: 10px;">
+                                                                Probable Covid (Dugaan terpapar Covid 19, tetapi tidak/belum ada hasil PCR-Swab)
+                                                            </label>
                                                         </div>
                                                         <div class="form-group">
-                                                            <label for="usr">Jumlah Tamu yang Datang :</label>
-                                                            <input type="number" class="form-control" name="Jumlah_tamu" placeholder="Jumlah Tamu" required>
+                                                            <label for="usr">Hubungan Orang Tersebut Dengan Anda</label>
+                                                            <br>
+                                                            <input type="radio" name="hubungan_bedaRumah" required value="Saudara" style="clear: none;width: auto;">                                                            
+                                                            <label style="margin-left: 10px;clear: none;width: auto;">
+                                                                Saudara
+                                                            </label>
+                                                            <br>
+                                                            <input type="radio" name="hubungan_bedaRumah" value="Tetangga Dalam 1 RT">
+                                                            <label style="margin-left: 10px;">
+                                                                Tetangga Dalam 1 RT
+                                                            </label>
+                                                            <br>
+                                                            <input type="radio" name="hubungan_bedaRumah" value="Tetangga Dalam 1 Dusun / Desa">
+                                                            <label style="margin-left: 10px;">
+                                                                Tetangga Dalam 1 Dusun / Desa
+                                                            </label>
+                                                            <br>
+                                                            <input type="radio" name="hubungan_bedaRumah" value="Teman / Relasi">
+                                                            <label style="margin-left: 10px;">
+                                                                Teman / Relasi
+                                                            </label>
+                                                            <br>
+                                                            <input type="radio" name="hubungan_bedaRumah" value="lainnya">
+                                                            <label style="margin-left: 10px;">
+                                                                Lainnya
+                                                            </label>
+                                                            <br>
+                                                            <input style="display: none;" class="form-control" name="lainnya" placeholder="Siapa?" required="" disabled="" />
                                                         </div>
                                                         <div class="form-group">
-                                                            <label for="usr">Apakah ada tamu yang datang dari luar kota ? </label>
-                                                            &nbsp; &nbsp;&nbsp;
-                                                            <input type="radio" name="covid_tamu_luar" value="1"> <label for="" class="control-label">&nbsp;&nbsp;Ya </label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                            <input type="radio" name="covid_tamu_luar" value="0"><label for="" class="control-label">&nbsp;&nbsp; Tidak </label>
-                                                        </div>
-                                                        <div class="form-group covid_show_tamu_luar" style="display:none">
-                                                            <label for="">Tamu Berasal Dari Mana Saja : </label>
-                                                            <textarea
-                                                            class="form-control"
-                                                            id="txt-CVD-Tamu-Luar"
-                                                            name="txt-CVD-Tamu-Luar"
-                                                            placeholder="Asal Tamu Dari Luar Kota"
-                                                            ></textarea>
+                                                            <label for="usr">Jarak rumah anda dengan rumah orang yang terduga/terkonfirmasi Covid 19 :</label>
+                                                            <input type="text" class="form-control" name="jarak_rumah" placeholder="Masukan Jarak" required>                                                        
                                                         </div>
                                                         <div class="form-group">
-                                                            <label for="usr">Waktu dan Run Down Acara :</label>
-                                                            <textarea
-                                                            class="form-control"
-                                                            id="txt-CVD-MonitoringCovid-Run-Down"
-                                                            name="txt-CVD-MonitoringCovid-Run-Down"
-                                                            placeholder="Waktu & Run Down Acara"
-                                                            ></textarea>
+                                                            <label for="usr">Jenis interaksi dengan orang yang berinteraksi dengan orang terduga/terkonfirmasi Covid 19 :</label>
+                                                            <input type="text" class="form-control" name="jenis_interaksi" placeholder="Jenis Interaksi" required>                                                        
                                                         </div>
                                                         <div class="form-group">
-                                                            <label for="usr">Protokol Kesehatan Selama Acara :</label>
+                                                            <label for="usr">Intensitas interaksi dengan orang yang berinteraksi dengan orang terduga/terkonfirmasi Covid 19 tersebut :</label>
+                                                            <input type="text" class="form-control" name="intensitas" placeholder="(Contoh : Sehari 2 kali ketemu dan ngobrol)" required>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="usr">Durasi interaksi dengan orang yang berinteraksi dengan orang terduga/terkonfirmasi Covid 19 tersebut :</label>
+                                                            <input type="text" class="form-control" name="durasi" placeholder="Durasi Interaksi" required>                                                        
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="usr">Protokol kesehatan yang diterapkan saat interaksi dengan terduga/terkonfirmasi Covid 19 tersebut :</label>
                                                             <textarea
                                                             class="form-control"
                                                             id="txt-CVD-Prokes"
-                                                            name="txt-CVD-Prokes"
+                                                            name="protokol"
                                                             placeholder="Protokol Kesehatan"
-                                                            ></textarea>
+                                                            ></textarea>                                                      
                                                         </div>
                                                         <div class="form-group">
-                                                            <label for="usr">Lokasi Pelaksanaan Acara :</label>
+                                                            <label for="usr">Ada arahan dari lingkungan sekitar (RT/RW/Dukuh)?</label>
                                                             &nbsp; &nbsp;&nbsp;
-                                                            <input type="radio" name="covid_lokasi_acara" value="1"> <label for="" class="control-label">&nbsp;&nbsp;Indoor </label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                            <input type="radio" name="covid_lokasi_acara" value="0"><label for="" class="control-label">&nbsp;&nbsp; Outdoor </label>
+                                                            <input type="radio" class="cvd_arahanprob" name="arahan" value="1"> <label for="" class="control-label" required>&nbsp;&nbsp;Ya </label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                            <input type="radio" class="cvd_arahanprob" name="arahan" value="0"><label for="" class="control-label">&nbsp;&nbsp; Tidak </label>
+                                                            <div id="cvd_arahan123" style="display: none;">
+                                                                <textarea 
+                                                                class="form-control txt-CVD-Prokes"
+                                                                id=""
+                                                                name="arahan_deskripsi"
+                                                                placeholder="Masukan Arahan"
+                                                                ></textarea>   
+                                                            </div>
                                                         </div>
                                                         <div class="form-group">
-                                                            <label for="usr">Kapasitas Tempat Acara :</label>
-                                                            <input type="number" class="form-control" name="Kapasitas_tempat" placeholder="Kapasitas Tempat" required>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label for="usr">Lampiran Foto :</label>
+                                                            <label for="usr">Lampiran Gambar (Jika ada) :</label>
                                                             <div class="area-upload">
                                                                 <table class="table table-bordered table-add-image-cvd" style="width:100%">
                                                                     <thead>
@@ -119,7 +150,7 @@
                                                                     <tbody>
                                                                         <tr row="1">
                                                                             <td>
-                                                                                <input type="file" class="form-control" name="filesCVDLampiran[]" onchange="readFilePdf(this, 1)" multiple="multiple" style="margin-bottom:12px;">
+                                                                                <input type="file" class="form-control" name="filesCVDLampiran[]" onchange="readFilePdf(this, 1)" style="margin-bottom:12px;">
                                                                                 <center><img preview_cvd="1" src="" alt=""></center>
                                                                             </td>
                                                                             <td style="text-align:center">
@@ -149,7 +180,7 @@
                                             </div>
                                             <div class="col-md-12 text-center">
                                                 <a href="<?= base_url('Covid/PelaporanPekerja/index') ?>" class="btn btn-warning">Kembali</a>
-                                                <button type="submit" name="source" value="melaksanakan_acara" class="btn btn-success">Submit</button>
+                                                <button name="source" value="beda_rumah" type="submit" class="btn btn-success">Submit</button>
                                             </div>
                                         </form>
                                     </div>
