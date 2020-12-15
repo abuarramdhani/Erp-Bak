@@ -20,6 +20,8 @@ $(document).ready(function(){
         }
 	});
 
+	$('.cvd_tabledatatable').DataTable();
+
 	$('#slc-CVD-MonitoringCovid-Tambah-Pekerja').select2({
 		minimumInputLength: 0,
 		allowClear: true,
@@ -91,9 +93,10 @@ $(document).ready(function(){
         imageUploadErrorCallback: function(json) {
             alert(json.error);
         }
-    })
+    });
 
-	$('#tbl-CVD-MonitoringCovid').on('click', '.btn-CVD-MonitoringCovid-Hapus', function(){
+	$('#tbl-CVD-MonitoringCovid').on('click', 'a.btn-CVD-MonitoringCovid-Hapus', function(e){
+		e.preventDefault();
 		var params = {
 		  				id		: $(this).attr('data-href'),
 		  				status 	: $(this).attr('data-status'),
@@ -113,7 +116,7 @@ $(document).ready(function(){
 		  		showAjaxGetPRM(params);
 		  	}
 		});
-	})
+	});
 
 	$('.btn-CVD-MonitoringCovid-Tambah-Lampiran').on('click', function(){
 		$('.file-CVD-MonitoringCovid-Tambah-Lampiran').last().click();
@@ -482,7 +485,31 @@ $(document).ready(function(){
 	});
 
 	$('[name="hubungan"]').change(function(){
-		var id = $('input:radio[name="hubungan"]:checked').val();
+		var id = $(this).val();
+		// alert(id);
+		if (id == 'lainnya') {
+			$('[name="hubungan_lainnya"]').show();
+			$('[name="hubungan_lainnya"]').attr('disabled', false);
+		}else{
+			$('[name="hubungan_lainnya"]').hide();
+			$('[name="hubungan_lainnya"]').attr('disabled', true);
+		}
+	});
+	$('[name="hubungan_bedaRumah"]').change(function(){
+		var id = $(this).val();
+		// alert(id);
+		if (id == 'lainnya') {
+			$('[name="lainnya"]').show();
+			$('[name="lainnya"]').attr('disabled', false);
+		}else{
+			$('[name="lainnya"]').hide();
+			$('[name="lainnya"]').attr('disabled', true);
+		}
+	});
+
+	$('[name="hubungan_relasi"]').change(function(){
+		var id = $(this).val();
+		// alert(id);
 		if (id == 'lainnya') {
 			$('[name="lainnya"]').show();
 			$('[name="lainnya"]').attr('disabled', false);
@@ -508,6 +535,11 @@ $(document).ready(function(){
 			$('#cvd_divtest').show();
 		}else{
 			$('#cvd_divtest').hide();
+			$('#cvd_divtest inputa').each(function(){
+				// alert('');
+				$(this).prop('checked', false);
+				$(this).trigger('change');
+			});
 		}
 	});
 
@@ -562,7 +594,15 @@ $(document).ready(function(){
 		}else{
 			$(this).parents('div').eq(1).find('input').not($(this)).attr('disabled', true).val('');
 		}
-	})
+	});
+	$('#cvd_inboxjmllainya').change(function(){
+		var id = $(this).is(':checked');
+		if (id) {
+			$('#cvd_taanggotalainnya').show();
+		}else{
+			$('#cvd_taanggotalainnya').hide();
+		}
+	});
 });
 
 function cvd_deleteAttachment(id)
@@ -708,8 +748,8 @@ function readFilePdf(input, n) {
         reader.onload = function (e) {
             $(`img[preview_cvd="${n}"]`)
                 .attr('src', e.target.result)
-                .width(400)
-                .height(300);
+                .width(300)
+                .height(200);
         };
     reader.readAsDataURL(input.files[0]);
     }

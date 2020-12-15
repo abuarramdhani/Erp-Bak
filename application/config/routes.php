@@ -4810,7 +4810,7 @@ $route['Covid/PelaporanPekerja/AcaraMelibatkanBanyakOrang/Menghadiri'] = 'Covid/
 $route['Covid/PelaporanPekerja/index'] = 'Covid/PelaporanPekerja/C_PelaporanPekerja/index';
 $route['Covid/PelaporanPekerja/LuarKota/(:any)'] = 'Covid/PelaporanPekerja/C_PelaporanPekerja/$1';
 $route['Covid/PelaporanPekerja/AcaraMelibatkanBanyakOrang/(:any)'] = 'Covid/PelaporanPekerja/C_PelaporanPekerja/$1';
-$route['Covid/PelaporanPekerja/Interaksi'] = 'Covid/PelaporanPekerja/C_PelaporanPekerja/interaksi';
+$route['Covid/PelaporanPekerja/Kontak/(:any)'] = 'Covid/PelaporanPekerja/C_PelaporanPekerja/$1';
 
 $route['Covid/ZonaKHS'] = 'Covid/ZonaKHS/C_ZonaCovidKhs';
 $route['Covid/ZonaKHS/(:any)'] = 'Covid/ZonaKHS/C_ZonaCovidKhs/$1';
