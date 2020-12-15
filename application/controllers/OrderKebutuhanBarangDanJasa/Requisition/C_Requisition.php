@@ -674,39 +674,42 @@ class C_Requisition extends CI_Controller {
 
 		//send Email
 
-		$this->load->library('PHPMailerAutoload');
-		$mail = new PHPMailer();
-        $mail->SMTPDebug = 0;
-        $mail->Debugoutput = 'html';
-
-        // set smtp
-        $mail->isSMTP();
-        $mail->Host = 'm.quick.com';
-        $mail->Port = 465;
-        $mail->SMTPAuth = true;
-		$mail->SMTPSecure = 'ssl';
-		$mail->SMTPOptions = array(
-				'ssl' => array(
-				'verify_peer' => false,
-				'verify_peer_name' => false,
-				'allow_self_signed' => true)
-				);
-        $mail->Username = 'no-reply';
-        $mail->Password = '123456';
-        $mail->WordWrap = 50;
-
-        // set email content
-        $mail->setFrom('no-reply@quick.com', 'ERP OKEBAJA');
-        $mail->addAddress($emailUser);
-        $mail->Subject = $subject;
-		$mail->msgHTML($body);
-
-		if (!$mail->send()) {
-			echo "Mailer Error: " . $mail->ErrorInfo;
-			exit();
-		} else {
-			// echo "Message sent!";
+		if ($emailUser) {
+			$this->load->library('PHPMailerAutoload');
+			$mail = new PHPMailer();
+			$mail->SMTPDebug = 0;
+			$mail->Debugoutput = 'html';
+	
+			// set smtp
+			$mail->isSMTP();
+			$mail->Host = 'm.quick.com';
+			$mail->Port = 465;
+			$mail->SMTPAuth = true;
+			$mail->SMTPSecure = 'ssl';
+			$mail->SMTPOptions = array(
+					'ssl' => array(
+					'verify_peer' => false,
+					'verify_peer_name' => false,
+					'allow_self_signed' => true)
+					);
+			$mail->Username = 'no-reply';
+			$mail->Password = '123456';
+			$mail->WordWrap = 50;
+	
+			// set email content
+			$mail->setFrom('no-reply@quick.com', 'ERP OKEBAJA');
+			$mail->addAddress($emailUser);
+			$mail->Subject = $subject;
+			$mail->msgHTML($body);
+	
+			if (!$mail->send()) {
+				echo "Mailer Error: " . $mail->ErrorInfo;
+				exit();
+			} else {
+				// echo "Message sent!";
+			}
 		}
+
 	}
 
 	public function InputExcel()

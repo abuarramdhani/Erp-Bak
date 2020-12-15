@@ -660,42 +660,45 @@ class C_Pengelola extends CI_Controller {
 		// echo 
 		// $emailUser = 'bondan_surya_n@quick.com';
 		
-		//send Email
+        //send Email
+        
+        if ($emailUser) {
+            $this->load->library('PHPMailerAutoload');
+            $mail = new PHPMailer();
+            $mail->SMTPDebug = 0;
+            $mail->Debugoutput = 'html';
+            
+            // set smtp
+            $mail->isSMTP();
+            $mail->Host = 'm.quick.com';
+            $mail->Port = 465;
+            $mail->SMTPAuth = true;
+            $mail->SMTPSecure = 'ssl';
+            $mail->SMTPOptions = array(
+                    'ssl' => array(
+                    'verify_peer' => false,
+                    'verify_peer_name' => false,
+                    'allow_self_signed' => true)
+                    );
+            $mail->Username = 'no-reply';
+            $mail->Password = '123456';
+            $mail->WordWrap = 50;
+            
+            // set email content
+            $mail->setFrom('no-reply@quick.com', 'ERP OKEBAJA');
+            $mail->addAddress($emailUser);
+            $mail->Subject = $subject;
+            $mail->msgHTML($body);
+    
+            
+            if (!$mail->send()) {
+                // echo "Mailer Error: " . $mail->ErrorInfo;
+                exit();
+            } else {
+                // echo "Message sent!";
+            }
+        }
 
-		$this->load->library('PHPMailerAutoload');
-		$mail = new PHPMailer();
-        $mail->SMTPDebug = 0;
-        $mail->Debugoutput = 'html';
-		
-        // set smtp
-        $mail->isSMTP();
-        $mail->Host = 'm.quick.com';
-        $mail->Port = 465;
-        $mail->SMTPAuth = true;
-		$mail->SMTPSecure = 'ssl';
-		$mail->SMTPOptions = array(
-				'ssl' => array(
-				'verify_peer' => false,
-				'verify_peer_name' => false,
-				'allow_self_signed' => true)
-				);
-        $mail->Username = 'no-reply';
-        $mail->Password = '123456';
-        $mail->WordWrap = 50;
-		
-        // set email content
-        $mail->setFrom('no-reply@quick.com', 'ERP OKEBAJA');
-        $mail->addAddress($emailUser);
-        $mail->Subject = $subject;
-		$mail->msgHTML($body);
-
-		
-		if (!$mail->send()) {
-			// echo "Mailer Error: " . $mail->ErrorInfo;
-			exit();
-		} else {
-			// echo "Message sent!";
-		}
     }
     
     public function RejectedOrder()
