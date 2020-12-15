@@ -517,7 +517,7 @@ class C_Penomoran extends CI_Controller
 				$l = explode('.',$nmfile);
 					$s = $l[1];
 					$fls = preg_replace("![^a-z0-9]+!i", "_", $judul);
-			$judul_baru = $id_data.'-'.$judul.'.'.$s;
+			$judul_baru = $id_data.'-'.$fls.'.'.$s;
 			$nama_baru = preg_replace("/[\/\&%#\$]/", "_", $judul_baru);
 			
 			$config['upload_path'] 			= 'assets/upload/PengembanganSistem/copwi/';
