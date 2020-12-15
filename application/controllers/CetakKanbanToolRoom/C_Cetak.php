@@ -560,7 +560,7 @@ class C_Cetak extends CI_Controller {
 						$this->M_cetak->insert($idunix,$data['kode_barang'][$i],$data['cost_center'][$i],$data['nama_barang'][$i],$data['no_bppbgt'][$i]);
 						array_push($data['idunix'], $idunix);
 					}else{
-					    array_push($data['idunix'], $cek[0][' IDUNIX']);
+					    array_push($data['idunix'], $cek[0]['IDUNIX']);
 					}
 				}
     		
