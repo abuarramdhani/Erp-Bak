@@ -156,7 +156,7 @@
 
 	function link_ps(id) {
 		var a = $("#fp_lilola"+id).attr('href');
-		var str = a.replace(/\&/g, "_");
+		var str = a.replace(/[\s\&]/g, "_");
 		$("#fp_lilola"+id).attr('href',str);
 	};
 
@@ -497,7 +497,7 @@
 
 	function link_cop(id) {
 		var a = $("#cop_lilola"+id).attr('href');
-		var str = a.replace(/\&/g, "_");
+		var str = a.replace(/[\s\&]/g, "_");
 		$("#cop_lilola"+id).attr('href',str);
 	};
 
@@ -884,7 +884,7 @@
 
 	function link_um(id) {
 		var a = $("#um_lilola"+id).attr('href');
-		var str = a.replace(/\&/g, "_");
+		var str = a.replace(/[\s\&]/g, "_");
 		$("#um_lilola"+id).attr('href',str);
 	};
 
@@ -1015,7 +1015,7 @@
 
 	function link_memo(id) {
 		var a = $("#memo_lilola"+id).attr('href');
-		var str = a.replace(/\&/g, "_");
+		var str = a.replace(/[\s\&]/g, "_");
 		$("#memo_lilola"+id).attr('href',str);
 	};
 
