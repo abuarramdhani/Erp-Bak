@@ -188,7 +188,9 @@ class M_monitoringcovid extends CI_Model {
 					a.selesai_isolasi,
 					a.keterangan,
 					a.created_by,
-					a.isolasi_id
+					a.isolasi_id,
+					a.pic_followup,
+					a.range_tgl_interaksi
 				from cvd.cvd_pekerja a
 				inner join er.er_employee_all b 
 				on a.noind = b.employee_code
@@ -276,17 +278,8 @@ class M_monitoringcovid extends CI_Model {
 
 	public function insertDiriSendiri($paramnya, $yanglogin)
 	{
-		$wawancara = "<p>Wilayah : ".$paramnya['wilayah'].'<br>'.
-		"Transportasi : ".$paramnya['transportasi'].'<br>'.
-		"Yang ikut : ".$paramnya['anggota'].'<br>'.
-		"Tujuan alasan : ".$paramnya['tujuan<br>alasan'].'<br>'.
-		"Aktifitas : ".$paramnya['aktivitas'].'<br>'.
-		"Protokol : ".$paramnya['prokes'].'<br>'.
-		"Menginap : ".$paramnya['covid_menginap'].','.$paramnya['nbr_jumlah_hari'].'<br>'.
-		"Yang dikunjungi sakit : ".$paramnya['covid_sakit'].','.$paramnya['penyakit'].'<br>'.
-		"Sakit Setelah kembali : ".$paramnya['covid_sakit_kembali'].','.$paramnya['penyakit_kembali'].'<br>'.
-		"Interaksi probable covid : ".$paramnya['covid_interaksi'].','.$paramnya['jenis_interaksi']."</p>";
-		$this->db->query("INSERT into cvd.cvd_pekerja
+		
+		$sql = "INSERT into cvd.cvd_pekerja
 			(noind,
 			status_kondisi_id,
 			tgl_interaksi,
@@ -305,7 +298,7 @@ class M_monitoringcovid extends CI_Model {
 			'1',
 			'$paramnya[tgl_interaksi]',
 			'$paramnya[tgl_kejadian]',
-			'DIRI SENDIRI KE LUAR KOTA',
+			'$paramnya[kasus]',
 			'$paramnya[keterangan]',
 			current_timestamp,
 			'$yanglogin',
@@ -313,7 +306,8 @@ class M_monitoringcovid extends CI_Model {
 			'$yanglogin',
 			'$paramnya[atasan]',
 			1
-			)");
+			)";
+		$this->db->query($sql);
 		if ($this->db->affected_rows() == 1) {
 			$id_before = $this->db->insert_id();
 			$this->db->query("INSERT into cvd.cvd_wawancara
@@ -327,7 +321,7 @@ class M_monitoringcovid extends CI_Model {
 				)
 				values
 				('$id_before',
-				'$wawancara',
+				'$paramnya[wawancara]',
 				current_timestamp,
 				'$yanglogin',
 				current_timestamp,
@@ -336,7 +330,7 @@ class M_monitoringcovid extends CI_Model {
 				)");
 
 			if ($this->db->affected_rows() == 1) {
-				return $id_before;
+				return $this->db->insert_id();
 			}else {
 				die('Gagal Insert :(');
 			}
@@ -349,16 +343,7 @@ class M_monitoringcovid extends CI_Model {
 	public function insertAnggotaKeluarga($paramnya, $yanglogin)
 	{
 		$statusnya_anggota = $paramnya['status_anggota']."<br>".$paramnya['keterangan'];
-		$wawancara = "<p>Wilayah : ".$paramnya['wilayah'].'<br>'.
-		"Transportasi : ".$paramnya['transportasi'].'<br>'.
-		"Yang ikut : ".$paramnya['anggota'].'<br>'.
-		"Tujuan alasan : ".$paramnya['tujuan<br>alasan'].'<br>'.
-		"Aktifitas : ".$paramnya['aktivitas'].'<br>'.
-		"Protokol : ".$paramnya['prokes'].'<br>'.
-		"Menginap : ".$paramnya['covid_menginap'].','.$paramnya['nbr_jumlah_hari'].'<br>'.
-		"Yang dikunjungi sakit : ".$paramnya['covid_sakit'].','.$paramnya['penyakit'].'<br>'.
-		"Sakit Setelah kembali : ".$paramnya['covid_sakit_kembali'].','.$paramnya['penyakit_kembali'].'<br>'.
-		"Interaksi probable covid : ".$paramnya['covid_interaksi'].','.$paramnya['jenis_interaksi']."</p>";
+		
 		$this->db->query("insert into cvd.cvd_pekerja
 			(noind,
 			status_kondisi_id,
@@ -378,7 +363,7 @@ class M_monitoringcovid extends CI_Model {
 			'1',
 			'$paramnya[tgl_kejadian]',
 			'$paramnya[tgl_interaksi]',
-			'ANGGOTA KELUARGA KE LUAR KOTA',
+			'$paramnya[kasus]',
 			'$statusnya_anggota',
 			current_timestamp,
 			'$yanglogin',
@@ -401,7 +386,7 @@ class M_monitoringcovid extends CI_Model {
 				)
 				values
 				('$id_before',
-				'$wawancara',
+				'$paramnya[wawancara]',
 				current_timestamp,
 				'$yanglogin',
 				current_timestamp,
@@ -410,7 +395,7 @@ class M_monitoringcovid extends CI_Model {
 				)");
 
 			if ($this->db->affected_rows() == 1) {
-				return $id_before;
+				return $this->db->insert_id();
 			}else {
 				die('Gagal Insert :(');
 			}
@@ -421,16 +406,6 @@ class M_monitoringcovid extends CI_Model {
 
 	public function insertKedatanganTamu($paramnya, $yanglogin)
 	{
-		$wawancara = "<p>Wilayah : ".$paramnya['wilayah'].'<br>'.
-		"Transportasi : ".$paramnya['transportasi'].'<br>'.
-		"Jumlah tamu : ".$paramnya['jumlah_tamu'].'<br>'.
-		"Tujuan alasan : ".$paramnya['tujuan_alasan'].'<br>'.
-		"Aktifitas : ".$paramnya['aktivitas'].'<br>'.
-		"Protokol : ".$paramnya['prokes'].'<br>'.
-		"Menginap : ".$paramnya['covid_menginap'].','.$paramnya['nbr_jumlah_hari'].'<br>'.
-		"Tamu yang datang sakit : ".$paramnya['covid_sakit'].','.$paramnya['penyakit'].'<br>'.
-		"Interaksi probable covid : ".$paramnya['covid_interaksi'].','.$paramnya['jenis_interaksi']."</p>";
-
 		$this->db->query("INSERT into cvd.cvd_pekerja
 			(noind,
 			status_kondisi_id,
@@ -450,7 +425,7 @@ class M_monitoringcovid extends CI_Model {
 			'1',
 			'$paramnya[tgl_kejadian]',
 			'$paramnya[tgl_interaksi]',
-			'KEDATANGAN TAMU DARI LUAR KOTA',
+			'$paramnya[kasus]',
 			'$paramnya[keterangan]',
 			current_timestamp,
 			'$yanglogin',
@@ -472,7 +447,7 @@ class M_monitoringcovid extends CI_Model {
 				)
 				values
 				('$id_before',
-				'$wawancara',
+				'$paramnya[wawancara]',
 				current_timestamp,
 				'$yanglogin',
 				current_timestamp,
@@ -481,7 +456,7 @@ class M_monitoringcovid extends CI_Model {
 				)");
 
 			if ($this->db->affected_rows() == 1) {
-				return $id_before;
+				return $this->db->insert_id();
 			}else {
 				die('Gagal Insert :(');
 			}
@@ -492,14 +467,7 @@ class M_monitoringcovid extends CI_Model {
 
 	public function insertMelaksanakanAcara($paramnya, $yanglogin)
 	{
-		$wawancara = "<p>Jenis acara : ".$paramnya['jenis_acara'].'<br>'.
-		"Jumlah tamu : ".$paramnya['jumlah_tamu'].'<br>'.
-		"Ada tamu luar : ".$paramnya['covid_tamu_luar'].','.$paramnya['asal_tamu'].'<br>'.
-		"Waktu dan Run Down : ".$paramnya['waktu_run_down'].'<br>'.
-		"Protokol : ".$paramnya['prokes'].'<br>'.
-		"Lokasi acara : ".$paramnya['lokasi_acara'].'<br>'.
-		"Kapasitas tempat : ".$paramnya['kapasitas_tempat']."</p>";
-		$this->db->query("INSERT into cvd.cvd_pekerja
+		$sql = "INSERT into cvd.cvd_pekerja
 			(noind,
 			status_kondisi_id,
 			range_tgl_interaksi,
@@ -518,7 +486,7 @@ class M_monitoringcovid extends CI_Model {
 			'1',
 			'$paramnya[tgl_kejadian]',
 			'$paramnya[tgl_interaksi]',
-			'MELAKSANAKAN ACARA',
+			'$paramnya[kasus]',
 			'$paramnya[keterangan]',
 			current_timestamp,
 			'$yanglogin',
@@ -526,7 +494,9 @@ class M_monitoringcovid extends CI_Model {
 			'$yanglogin',
 			'$paramnya[atasan]',
 			1
-			)");
+			)";
+			// echo $sql;exit();
+		$this->db->query($sql);
 
 		if ($this->db->affected_rows() == 1) {
 			$id_before = $this->db->insert_id();
@@ -541,7 +511,71 @@ class M_monitoringcovid extends CI_Model {
 				)
 				values
 				($id_before,
-				'$wawancara',
+				'$paramnya[wawancara]',
+				current_timestamp,
+				'$yanglogin',
+				current_timestamp,
+				'$yanglogin',
+				'1'
+				)");
+			if ($this->db->affected_rows() == 1) {
+				$id_before2 = $this->db->insert_id();
+				return $this->db->insert_id();
+			}else {
+				return 0;
+			}
+		}else {
+			return 0;
+		}
+	}
+
+	public function insertmenghadiriAcara($paramnya, $yanglogin)
+	{
+		$sql = "INSERT into cvd.cvd_pekerja
+			(noind,
+			status_kondisi_id,
+			range_tgl_interaksi,
+			tgl_interaksi,
+			kasus,
+			keterangan,
+			created_date,
+			created_by,
+			updated_date,
+			updated_by,
+			pic_followup,
+			status_approval)
+			values
+			(
+			'$paramnya[no_induk]',
+			'1',
+			'$paramnya[tgl_kejadian]',
+			'$paramnya[tgl_interaksi]',
+			'$paramnya[kasus]',
+			'$paramnya[keterangan]',
+			current_timestamp,
+			'$yanglogin',
+			current_timestamp,
+			'$yanglogin',
+			'$paramnya[atasan]',
+			1
+			)";
+			// echo $sql;exit();
+		$this->db->query($sql);
+
+		if ($this->db->affected_rows() == 1) {
+			$id_before = $this->db->insert_id();
+			$this->db->query("INSERT into cvd.cvd_wawancara
+				(cvd_pekerja_id,
+				hasil_wawancara,
+				created_date,
+				created_by,
+				updated_date,
+				updated_by,
+				jenis
+				)
+				values
+				($id_before,
+				'$paramnya[wawancara]',
 				current_timestamp,
 				'$yanglogin',
 				current_timestamp,
@@ -561,62 +595,6 @@ class M_monitoringcovid extends CI_Model {
 
 	public function kontakSatuRumah($paramnya, $yanglogin)
 	{
-		$hasilTest = '';
-		if ($paramnya['antibody'] == '1') {
-			$hasilTest .= "Tanggal mulai tes Antibody : ".$paramnya['tgl_tes_antibody'].', '.
-			"Tanggal Keluar test Antibody : ".$paramnya['tgl_keluar_tes_antibody'].', '.
-			"Hasil test Antibody : ".$paramnya['hasil_antibody'].'<br>';
-		}
-		if ($paramnya['antigen'] == '1') {
-			$hasilTest .= "Tanggal mulai tes Antigen : ".$paramnya['tgl_tes_antigen'].', '.
-			"Tanggal Keluar test Antigen : ".$paramnya['tgl_keluar_tes_antigen'].', '.
-			"Hasil test Antigen : ".$paramnya['hasil_antigen'].'<br>';
-		}
-		if ($paramnya['pcr'] == '1') {
-			$hasilTest .= "Tanggal mulai tes PCR/Swab : ".$paramnya['tgl_tes_pcr'].', '.
-			"Tanggal Keluar test PCR/Swab : ".$paramnya['tgl_keluar_tes_pcr'].', '.
-			"Hasil test PCR/Swab : ".$paramnya['hasil_pcr'].'<br>';
-		}
-
-		$anggotaK = '';
-		if ($paramnya['jml_orangtua'] > 0) {
-			$anggotaK .= "Jumlah Orang Tua : ".$paramnya['jml_orangtua'].', ';
-		}
-		if ($paramnya['jml_mertua'] > 0) {
-			$anggotaK .= "Jumlah Mertua : ".$paramnya['jml_mertua'].', ';
-		}
-		if ($paramnya['jml_bojo'] > 0) {
-			$anggotaK .= "Jumlah Istri/Suami : ".$paramnya['jml_bojo'].', ';
-		}
-		if ($paramnya['jml_anak'] > 0) {
-			$anggotaK .= "Jumlah Anak : ".$paramnya['jml_anak'].', ';
-		}
-		if ($paramnya['jml_saudara_kandung'] > 0) {
-			$anggotaK .= "Jumlah Saudara Kandung : ".$paramnya['jml_saudara_kandung'].', ';
-		}
-		if ($paramnya['jml_saudara_tidak_kandung'] > 0) {
-			$anggotaK .= "Jumlah Saudara tidak Kandung : ".$paramnya['jml_saudara_tidak_kandung'].', ';
-		}
-		if ($paramnya['anggota_lainnya'] != '') {
-			$anggotaK .= "Anggota keluarga Lainnya : ".$paramnya['anggota_lainnya'].'. ';
-		}
-
-		$laporPuskesmas = '';
-		if ($paramnya['lapor_puskesmas'] == 'Sudah') {
-			$laporPuskesmas .= "Arahan untuk Orang yang terduga/terkonfirmasi Covid 19 : ".$paramnya['arahan_terduga'].'<br>';
-			$laporPuskesmas .= "Arahan untuk Orang yang tinggal serumah : ".$paramnya['arahan_serumah'].'<br>';
-		}
-
-		$wawancara = "<p>Kontak Dengan : ".$paramnya['yang_kontak'].'<br>'.
-		"Hubungan : ".$paramnya['hubungan'].'<br>'.
-		"Riwayat Orang Tersebut : ".$paramnya['riwayat'].'<br>'.
-		"Gejala Awal : ".$paramnya['gejala'].'<br>'.
-		"Tanggal mulai Gejala : ".$paramnya['tgl_gejala'].'<br>'.
-		$hasilTest.
-		$anggotaK.
-		$laporPuskesmas.
-		"Fasilitas : ".$paramnya['fasilitas'].'<br>'.
-		"Dekontaminasi : ".$paramnya['dekontaminasi']."</p>";
 		// echo $wawancara;exit();
 		$this->db->query("INSERT into cvd.cvd_pekerja
 			(noind,
@@ -637,7 +615,7 @@ class M_monitoringcovid extends CI_Model {
 			'1',
 			'$paramnya[tgl_kejadian]',
 			'$paramnya[tgl_interaksi]',
-			'Kontak dengan Probable/Konfirmasi Covid 19 dalam Satu Rumah',
+			'$paramnya[kasus]',
 			'$paramnya[keterangan]',
 			current_timestamp,
 			'$yanglogin',
@@ -660,7 +638,7 @@ class M_monitoringcovid extends CI_Model {
 				)
 				values
 				($id_before,
-				'$wawancara',
+				'$paramnya[wawancara]',
 				current_timestamp,
 				'$yanglogin',
 				current_timestamp,
@@ -680,14 +658,6 @@ class M_monitoringcovid extends CI_Model {
 
 	public function kontakBedaRumah($paramnya, $yanglogin)
 	{
-		$wawancara = "<p>Yang kontak : ".$paramnya['yang_kontak'].'<br>'.
-		"Hubungan : ".$paramnya['hubungan'].'<br>'.
-		"Jarak Rumah : ".$paramnya['jarak_rumah'].'<br>'.
-		"Jenis Interaksi : ".$paramnya['jenis_interaksi'].'<br>'.
-		"Intensitas : ".$paramnya['intensitas'].'<br>'.
-		"Durasi : ".$paramnya['durasi'].'<br>'.
-		"Protokol : ".$paramnya['protokol'].'<br>'.
-		"Arahan : ".$paramnya['arahan']."</p>";
 		$this->db->query("INSERT into cvd.cvd_pekerja
 			(noind,
 			status_kondisi_id,
@@ -707,7 +677,7 @@ class M_monitoringcovid extends CI_Model {
 			'1',
 			'$paramnya[tgl_kejadian]',
 			'$paramnya[tgl_interaksi]',
-			'Kontak dengan Probable/Konfirmasi Covid 19 - Beda Rumah',
+			'$paramnya[kasus]',
 			'$paramnya[keterangan]',
 			current_timestamp,
 			'$yanglogin',
@@ -730,7 +700,7 @@ class M_monitoringcovid extends CI_Model {
 				)
 				values
 				($id_before,
-				'$wawancara',
+				'$paramnya[wawancara]',
 				current_timestamp,
 				'$yanglogin',
 				current_timestamp,
@@ -750,13 +720,6 @@ class M_monitoringcovid extends CI_Model {
 
 	public function kontakProblaby($paramnya, $yanglogin)
 	{
-		$wawancara = "<p>Yang kontak : ".$paramnya['yang_kontak'].'<br>'.
-		"Hubungan : ".$paramnya['hubungan'].'<br>'.
-		"Jenis Interaksi : ".$paramnya['jenis_interaksi'].'<br>'.
-		"Intensitas : ".$paramnya['intensitas'].'<br>'.
-		"Durasi : ".$paramnya['durasi'].'<br>'.
-		"Protokol : ".$paramnya['protokol'].'<br>'.
-		"Arahan : ".$paramnya['arahan']."</p>";
 		$this->db->query("INSERT into cvd.cvd_pekerja
 			(noind,
 			status_kondisi_id,
@@ -776,7 +739,7 @@ class M_monitoringcovid extends CI_Model {
 			'1',
 			'$paramnya[tgl_kejadian]',
 			'$paramnya[tgl_interaksi]',
-			'Kontak dengan Probable/Konfirmasi Covid 19 - Beda Rumah',
+			'$paramnya[kasus]',
 			'$paramnya[keterangan]',
 			current_timestamp,
 			'$yanglogin',
@@ -799,7 +762,7 @@ class M_monitoringcovid extends CI_Model {
 				)
 				values
 				($id_before,
-				'$wawancara',
+				'$paramnya[wawancara]',
 				current_timestamp,
 				'$yanglogin',
 				current_timestamp,
@@ -819,7 +782,7 @@ class M_monitoringcovid extends CI_Model {
 
 	public function insertLampiran21($paramnya, $yanglogin)
 	{
-		$this->db->query("INSERT into cvd.cvd_wawancara_lampiran
+		$sql = "INSERT into cvd.cvd_wawancara_lampiran
 			(wawancara_id,
 			lampiran_nama,
 			created_date,
@@ -835,7 +798,9 @@ class M_monitoringcovid extends CI_Model {
 			'$yanglogin',
 			current_timestamp,
 			'$yanglogin',
-			'$paramnya[lampiran_path]')");
+			'$paramnya[lampiran_path]')";
+			// echo $sql;
+		$this->db->query($sql);
 
 		if ($this->db->affected_rows() == 1) {
 			return 1;
@@ -871,5 +836,11 @@ class M_monitoringcovid extends CI_Model {
 					tp.kd_jabatan desc,
 					tp.noind";
 		return $this->personalia->query($sql)->result_array();
+	}
+
+	public function getDetailPekerja($noind)
+	{
+		$this->personalia->where('noind', $noind);
+		return $this->personalia->get('hrd_khs.tpribadi')->row_array();
 	}
 }

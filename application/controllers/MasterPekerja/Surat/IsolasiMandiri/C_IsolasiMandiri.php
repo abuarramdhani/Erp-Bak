@@ -63,6 +63,7 @@ class C_IsolasiMandiri extends CI_Controller
 			$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $encrypted_id);
 			$plaintext_string = $this->encrypt->decode($plaintext_string);
 			$data['data'] = $this->M_monitoringcovid->getPekerjaById($plaintext_string);
+			$data['kepada'] = $data['data']->pic_followup;
 			$pkj = $this->M_consumable->getDetailPekerja($data['data']->noind)->row_array();
 			$ks = substr($pkj['kodesie'], 0,7);
 			$kst = substr($ks, 0,1);
@@ -1000,7 +1001,7 @@ class C_IsolasiMandiri extends CI_Controller
 			}
 			if (in_array($tgl, $arTgl)) {
 				$idi = array_search($tgl, $arTgl);
-				$a = ''; $b = ''; $c = ''; $d = ''; $e = ''; $f = ''; $g = '';
+				$a = ''; $b = ''; $c = ''; $d = ''; $e = ''; $f = ''; $g = ''; $h = ''; $i = ''; $j = ''; $k = ''; $l = ''; $m = ''; $n = ''; $o = ''; $p = ''; $q = ''; $r = ''; $s = ''; $t = ''; $u = ''; $v = ''; $w = ''; $x = '';
 				$status = $cvdWktIs[$idi]['status'];
 				$alasan = $cvdWktIs[$idi]['alasan'];
 				if ($status == 'PMR') {
@@ -1011,14 +1012,42 @@ class C_IsolasiMandiri extends CI_Controller
 					$c = 'selected';
 				}
 
-				if ($alasan == 'ISOLASI DIRI - DL - WFH') {
+				if ($alasan == 'ISOLASI DIRI - DL - WFO') {
 					$d = 'selected';
-				}elseif ($alasan == 'ISOLASI DIRI - DL - NON WFH') {
+				}elseif ($alasan == 'ISOLASI DIRI - DL - WFH') {
 					$e = 'selected';
-				}elseif ($alasan == 'ISOLASI DIRI - NON DL -WFH') {
+				}elseif ($alasan == 'ISOLASI DIRI - DL - NON WFH') {
 					$f = 'selected';
-				}elseif ($alasan == 'ISOLASI DIRI - NON DL - NON WFH') {
+				}elseif ($alasan == 'TERHITUNG PKJ') {
 					$g = 'selected';
+				}elseif ($alasan == 'ISOLASI DIRI - TERDAMPAK - WFO') {
+					$h = 'selected';
+				}elseif ($alasan == 'ISOLASI DIRI - TERDAMPAK - WFH') {
+					$i = 'selected';
+				}elseif ($alasan == 'ISOLASI DIRI - TERDAMPAK - NON WFH') {
+					$j = 'selected';
+				}elseif ($alasan == 'ISOLASI DIRI - NON DL - WFO') {
+					$k = 'selected';
+				}elseif ($alasan == 'ISOLASI DIRI - NON DL - WFH') {
+					$l = 'selected';
+				}elseif ($alasan == 'ISOLASI DIRI - NON DL - NON WFH') {
+					$m = 'selected';
+				}elseif ($alasan == 'ISOLASI DIRI - SENGAJA - WFO') {
+					$n = 'selected';
+				}elseif ($alasan == 'ISOLASI DIRI - SENGAJA - WFH') {
+					$o = 'selected';
+				}elseif ($alasan == 'ISOLASI DIRI - SENGAJA - NON WFH') {
+					$p = 'selected';
+				}elseif ($alasan == 'ISOLASI DIRI - PENYEBAB - WFO') {
+					$q = 'selected';
+				}elseif ($alasan == 'ISOLASI DIRI - PENYEBAB - WFH') {
+					$r = 'selected';
+				}elseif ($alasan == 'ISOLASI DIRI - PENYEBAB - WFH') {
+					$s = 'selected';
+				}elseif ($alasan == 'NON ISOLASI DIRI - NON DL -WFH') {
+					$t = 'selected';
+				}elseif ($alasan == 'NON ISOLASI DIRI - NON DL - NON WFH') {
+					$u = 'selected';
 				}
 				$txt .= '<tr>
 							<td style="text-align: center;">'.$tgl.'
@@ -1034,10 +1063,24 @@ class C_IsolasiMandiri extends CI_Controller
 							<td>
 								<select class="select2 cvd_alasan_table" data-placeholder="Alasan" name="slcMPSuratIsolasiMandiriAlasan2[]" id="slcMPSuratIsolasiMandiriAlasan" style="width: 100%" required>
 									<option></option>
-									<option '.$d.'>ISOLASI DIRI - DL - WFH</option>
-									<option '.$e.'>ISOLASI DIRI - DL - NON WFH</option>
-									<option '.$f.'>ISOLASI DIRI - NON DL -WFH</option>
-									<option '.$g.'>ISOLASI DIRI - NON DL - NON WFH</option>
+									<option '.$d.'>ISOLASI DIRI - DL - WFO</option>
+									<option '.$e.'>ISOLASI DIRI - DL - WFH</option>
+									<option '.$f.'>ISOLASI DIRI - DL - NON WFH</option>
+									<option '.$g.'>TERHITUNG PKJ</option>
+									<option '.$h.'>ISOLASI DIRI - TERDAMPAK - WFO</option>
+									<option '.$i.'>ISOLASI DIRI - TERDAMPAK - WFH</option>
+									<option '.$j.'>ISOLASI DIRI - TERDAMPAK - NON WFH</option>
+									<option '.$k.'>ISOLASI DIRI - NON DL - WFO</option>
+									<option '.$l.'>ISOLASI DIRI - NON DL - WFH</option>
+									<option '.$m.'>ISOLASI DIRI - NON DL - NON WFH</option>
+									<option '.$n.'>ISOLASI DIRI - SENGAJA - WFO</option>
+									<option '.$o.'>ISOLASI DIRI - SENGAJA - WFH</option>
+									<option '.$p.'>ISOLASI DIRI - SENGAJA - NON WFH</option>
+									<option '.$q.'>ISOLASI DIRI - PENYEBAB - WFO</option>
+									<option '.$r.'>ISOLASI DIRI - PENYEBAB - WFH</option>
+									<option '.$s.'>ISOLASI DIRI - PENYEBAB - NON WFH</option>
+									<option '.$t.'>NON ISOLASI DIRI - NON DL - WFH</option>
+									<option '.$u.'>NON ISOLASI DIRI - NON DL - NON WFH</option>
 								</select>
 							</td>
 							'.$sama.'
@@ -1057,10 +1100,24 @@ class C_IsolasiMandiri extends CI_Controller
 							<td>
 								<select class="select2 cvd_alasan_table" data-placeholder="Alasan" name="slcMPSuratIsolasiMandiriAlasan2[]" id="slcMPSuratIsolasiMandiriAlasan" style="width: 100%" required>
 									<option></option>
+									<option>ISOLASI DIRI - DL - WFO</option>
 									<option>ISOLASI DIRI - DL - WFH</option>
 									<option>ISOLASI DIRI - DL - NON WFH</option>
-									<option>ISOLASI DIRI - NON DL -WFH</option>
+									<option>TERHITUNG PKJ</option>
+									<option>ISOLASI DIRI - TERDAMPAK - WFO</option>
+									<option>ISOLASI DIRI - TERDAMPAK - WFH</option>
+									<option>ISOLASI DIRI - TERDAMPAK - NON WFH</option>
+									<option>ISOLASI DIRI - NON DL - WFO</option>
+									<option>ISOLASI DIRI - NON DL - WFH</option>
 									<option>ISOLASI DIRI - NON DL - NON WFH</option>
+									<option>ISOLASI DIRI - SENGAJA - WFO</option>
+									<option>ISOLASI DIRI - SENGAJA - WFH</option>
+									<option>ISOLASI DIRI - SENGAJA - NON WFH</option>
+									<option>ISOLASI DIRI - PENYEBAB - WFO</option>
+									<option>ISOLASI DIRI - PENYEBAB - WFH</option>
+									<option>ISOLASI DIRI - PENYEBAB - NON WFH</option>
+									<option>NON ISOLASI DIRI - NON DL - WFH</option>
+									<option>NON ISOLASI DIRI - NON DL - NON WFH</option>
 								</select>
 							</td>
 							'.$sama.'

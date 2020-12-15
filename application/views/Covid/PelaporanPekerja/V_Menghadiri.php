@@ -55,11 +55,11 @@
                                                     <div class="panel-body">
                                                         <div class="form-group">
                                                             <label for="usr">Jenis acara yang dihadiri :</label>
-                                                            <input type="text" class="form-control" name="Jenis Acara" placeholder="Jenis Acara" required>
+                                                            <input type="text" class="form-control" name="Jenis_acara" placeholder="Jenis Acara" required>
                                                         </div>
                                                         <div class="form-group">
                                                             <label for="usr">Jumlah Tamu yang Datang :</label>
-                                                            <input type="number" class="form-control" name="Jumlah Tamu" placeholder="Jumlah Tamu" required>
+                                                            <input type="number" class="form-control" name="Jumlah_tamu" placeholder="Jumlah Tamu" required>
                                                         </div>
                                                         <div class="form-group">
                                                             <label for="usr">Apakah ada interaksi dengan orang dari luar kota ? </label>
@@ -111,10 +111,10 @@
                                                         </div>
                                                         <div class="form-group">
                                                             <label for="usr">Kapasitas Tempat Acara :</label>
-                                                            <input type="number" class="form-control" name="Kapasitas Tempat" placeholder="Kapasitas Tempat" required>
+                                                            <input type="number" class="form-control" name="Kapasitas_tempat" placeholder="Kapasitas Tempat" required>
                                                         </div>
                                                         <div class="form-group">
-                                                            <label for="usr">Lampiran Foto Pelaksanaan Acara :</label>
+                                                            <label for="usr">Lampiran Foto :</label>
                                                             <div class="area-upload">
                                                                 <table class="table table-bordered table-add-image-cvd" style="width:100%">
                                                                     <thead>
@@ -142,11 +142,10 @@
                                             </div>
                                             <div class="col-md-12">
                                                 <div class="panel panel-default">
-                                                    <div class="panel-heading">Approver</div>
+                                                    <div class="panel-heading">Atasan</div>
                                                     <div class="panel-body">
                                                         <div class="form-group">
-                                                            <label for="usr">Atasan : </label>
-                                                            <select id="slc-CVD-MonitoringCovid-Tambah-Pekerja" name="slc-CVD-MonitoringCovid-Tambah-Pekerja" class="select2 select2Covid" style="width: 100%" data-placeholder="Pilih Atasan">
+                                                            <select id="slc-CVD-MonitoringCovid-Tambah-Pekerja" name="slc-CVD-MonitoringCovid-Atasan" class="select2 select2Covid" style="width: 100%" data-placeholder="Pilih Atasan">
                                                                 <option value=""></option>
                                                             </select>
                                                             <input type="hidden" id="txt-CVD-MonitoringCovid-Tambah-PekerjaId" name="txt-CVD-MonitoringCovid-AtasanId" value="<?php echo (isset($data) && !empty($data)) ? $data->cvd_pekerja_id : ''; ?>">
