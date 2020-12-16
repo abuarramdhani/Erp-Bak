@@ -611,6 +611,18 @@ $(document).ready(function(){
 			$('#cvd_taanggotalainnya').hide();
 		}
 	});
+
+	$('#cvd_tidakgejala').change(function(){
+		var c = $(this).is(':checked');
+		if (c) {
+			$('[name="gejala[]"]').not('#cvd_tidakgejala').prop('checked', false);
+			$('[name="gejala[]"]').not('#cvd_tidakgejala').attr('disabled', true);
+			$('[name="tgl_gejala"]').val('').attr('disabled', true);
+		}else{
+			$('[name="tgl_gejala"]').attr('disabled', false);
+			$('[name="gejala[]"]').not('#cvd_tidakgejala').attr('disabled', false);
+		}
+	});
 });
 
 function cvd_deleteAttachment(id)

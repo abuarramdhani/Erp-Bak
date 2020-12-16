@@ -1206,7 +1206,10 @@ class C_MonitoringCovid extends CI_Controller
 
 		$range = $this->input->post('txtPeriodeKejadian');
 		$exrange = explode(' - ', $range);
-
+		$tgl_gejala = $this->input->post('tgl_gejala');
+		if (empty($tgl_gejala)) {
+			$tgl_gejala = '-';
+		}
 		$user = $this->session->user;
 		$data = [
 		'no_induk' => $this->input->post('slc-CVD-MonitoringCovid-Tambah-Pekerja'),
@@ -1220,7 +1223,7 @@ class C_MonitoringCovid extends CI_Controller
 		'hubungan'	=> $hubungan,
 		'riwayat'	=> $this->input->post('riwayat'),
 		'gejala'	=> implode(', ', $this->input->post('gejala')),
-		'tgl_gejala'	=> $this->input->post('tgl_gejala'),
+		'tgl_gejala'	=> $tgl_gejala,
 		'lapor_puskesmas'	=> $this->input->post('lapor_puskesmas'),
 		'hasil_uji'	=> $this->input->post('hasil_uji'),
 		'kasus'	=> 'Kontak dengan Probable/Konfirmasi Covid 19 dalam Satu Rumah',

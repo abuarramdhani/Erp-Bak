@@ -146,7 +146,7 @@
                                                                 Sesak Nafas
                                                             </label>
                                                             <br>
-                                                            <input type="checkbox" name="gejala[]" value="Tidak Bergejala">
+                                                            <input type="checkbox" name="gejala[]" id="cvd_tidakgejala" value="Tidak Bergejala">
                                                             <label style="margin-left: 10px;">
                                                                 Tidak Bergejala
                                                             </label>
