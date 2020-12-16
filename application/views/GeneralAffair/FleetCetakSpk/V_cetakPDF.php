@@ -76,10 +76,10 @@
 				<td style="padding: 30px 7px"> </td>
 			</tr>
 			<tr>
-				<td style="padding: 7px;text-align: center;">BAMBANG YUDHOSUSENO</td>
+				<td style="padding: 7px;text-align: center;">Bambang YS</td>
 			</tr>
 			<tr>
-				<td style="padding: 7px;text-align: center;">(Asisten Kepala Dept. Personalia)</td>
+				<td style="padding: 7px;text-align: center;">(Ass. Ka. Dep. Personalia)</td>
 			</tr>
 		</table>
 	</div>
