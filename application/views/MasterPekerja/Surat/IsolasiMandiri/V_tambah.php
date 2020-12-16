@@ -145,4 +145,7 @@
 </section>
 <script>
 	var isolasi_id = '';
+	window.addEventListener('load', function () {
+		$('#txtMPSuratIsolasiMandiriCetakTanggal').val('');
+	});
 </script>

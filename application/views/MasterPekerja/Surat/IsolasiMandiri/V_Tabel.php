@@ -20,10 +20,10 @@
 				<?= $key['jml'] ?> Hari
 			</td>
 			<td>
-			<?php if ($key['st'] == 'PRM' || $key['st'] == 'PSK'): ?>
-				Rumah
-			<?php else: ?>
+			<?php if (strpos($key['st'], 'WFO') !== false || $key['st'] == 'TERHITUNG PKJ'): ?>
 				Perusahaan
+			<?php else: ?>
+				Rumah
 			<?php endif ?>
 			</td>
 		</tr>
