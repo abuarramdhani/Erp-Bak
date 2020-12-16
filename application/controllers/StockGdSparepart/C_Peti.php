@@ -58,17 +58,16 @@ class C_Peti extends CI_Controller
 		$tglAw 			= date('d/m/Y');
 		$tglAk 			= date('d/m/Y');
 		$subinv 		= 'SP-YSP';
-		$kode_awal 		= array('AAB300A051AY-1', 'AAG1B00021AZ-1');
+		$kode_awal	= $this->M_lihatstock->getdataPeti('');
 		$data['tglAw'] 	= $tglAw;
 		$data['tglAk'] 	= $tglAk;
 		$data['subinv'] = $subinv;
 		$data['siapa']  = $this->session->user;
 		$datanya = array();
-        for ($i=0; $i < count($kode_awal); $i++) { 
-			$kode = "and msib.segment1 = '".$kode_awal[$i]."'";
+    for ($i=0; $i < count($kode_awal); $i++) { 
+			$kode = "and msib.segment1 = '".$kode_awal[$i]['kode']."'";
 			$getdata = $this->M_lihatstock->getData($tglAw, $tglAk, $subinv, $kode, '','');
-			$getpeti = $this->M_lihatstock->getdataPeti("where kode = '".$kode_awal[$i]."'");
-			$getdata[0]['JML_PETI'] = !empty($getpeti) ? $getpeti[0]['peti'] : '';
+			$getdata[0]['JML_PETI'] = $kode_awal[$i]['peti'];
 			array_push($datanya, $getdata[0]);
 		}
         $data['data'] = $datanya;
@@ -79,16 +78,9 @@ class C_Peti extends CI_Controller
 
     public function savepeti(){
         $item = $this->input->post('item');
-        $jml = $this->input->post('jml');
-
-        $cek = $this->M_lihatstock->getdataPeti("where kode = '".$item."'");
-        if (empty($cek) && !empty($jml)) {
-            $this->M_lihatstock->saveJmlPeti($item, $jml);
-        }elseif (!empty($cek) && !empty($jml)) {
-            $this->M_lihatstock->updatePeti($item, $jml);
-        }else {
-            $this->M_lihatstock->deletePeti($item);
-        }
+				$jml 	= $this->input->post('jml');
+				$jml 	= empty($jml) ? 'NULL' : $jml;
+				$this->M_lihatstock->updatePeti($item, $jml);
     }
     
 }
