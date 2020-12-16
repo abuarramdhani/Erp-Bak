@@ -112,6 +112,12 @@ $( () => {
                                 title: 'Gagal',
                                 text: 'Stok gudang tidak mencukupi!',
                             });
+                        }else if(resp == 'error ada do/spb yang sudah dilayani'){
+                            Swal.fire({
+                                type: 'error',
+                                title: 'Gagal',
+                                text: 'Ada DO/SPB line yang sudah dilayani, hanya DO/SPB baru yang bisa dimasukan!',
+                            });
                         }else{
                             swalADOMixinToast('success', success)
                             response(resp)
@@ -651,41 +657,15 @@ $( () => {
             let question = 'Simpan Data Ini?'
             let success  = 'Berhasil Menyimpan Data'
             let fail     = 'Gagal Menyimpan Data'
-            swalADOQuestionAjax(question, success, fail, url, data).then( (resp) => {
-                if ( resp !== 'Cancelled' && resp !== 'Fail' ) {
-                    Swal.fire({
-                        customClass : 'swal-font-small',
-                        type        : 'success',
-                        title       : 'Berhasil!',
-                        text        : `Sukses menambahkan data dengan Nomor PR ${resp} !`,
-                        footer      : `<form action="${baseurl}ApprovalDO/DPBKHS/Detail" method="post">
-                                            <input type="hidden" name="data-pr" value="${resp}">
-                                            <button class="btn-link">Untuk memperbarui data ini silahkan klik disini.</button>
-                                       </form>`
-                    })
-                }
-            })
+            swalADOQuestionAjax1(question, success, fail, url, data)
         }else if (pakaiAlamatBongkar == 1) {
             if (alamatBongkar) {
                 let url      = `${baseurl}ApprovalDO/DPBKHS/saveNew`
                 let question = 'Simpan Data Ini?'
                 let success  = 'Berhasil Menyimpan Data'
                 let fail     = 'Gagal Menyimpan Data'
-                swalADOQuestionAjax(question, success, fail, url, data).then( (resp) => {
-                    if ( resp !== 'Cancelled' && resp !== 'Fail' ) {
-                        Swal.fire({
-                            customClass : 'swal-font-small',
-                            type        : 'success',
-                            title       : 'Berhasil!',
-                            text        : `Sukses menambahkan data dengan Nomor PR ${resp} !`,
-                            footer      : `<form action="${baseurl}ApprovalDO/DPBKHS/Detail" method="post">
-                                                <input type="hidden" name="data-pr" value="${resp}">
-                                                <button class="btn-link">Untuk memperbarui data ini silahkan klik disini.</button>
-                                        </form>`
-                        })
-                    }
-                })
-                }
+                swalADOQuestionAjax1(question, success, fail, url, data)
+            }
         }
     })
 

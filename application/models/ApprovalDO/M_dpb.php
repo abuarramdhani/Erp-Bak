@@ -733,6 +733,13 @@ class M_dpb extends CI_Model
         return $query->result_array();
     }
 
+    public function checkLineStatus($no_do, $kode_gudang)
+    {
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query("SELECT APPS.KHS_CEK_LINE_STATUS_DOSPB('$no_do', 102, '$kode_gudang') as linestatus FROM dual");
+        return $query->result_array();
+    }
+
     public function procedureLockStock($no_do, $kode_gudang, $user)
     {
         $conn = oci_connect('APPS', 'APPS', '192.168.7.1:1521/PROD');
