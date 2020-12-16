@@ -61,7 +61,7 @@
 		</tbody>
 	</table>
 	<br></br>
-	<p style="font-size: 14px;">Estimasi biaya service mohon dapat dikirimkan ke email purchasing.sec11@gmail.com dan WhatsApp ke 0811 2575 216 up/ Pak Fikri dengan <b>Subject : Estimasi Biaya Service Mobil <?php echo $FleetHeaderCetakSpk['merk_kendaraan']." Plat No ".$FleetHeaderCetakSpk['no_pol'];?></b>. Estimasi terhadap biaya service tersebut akan kami berikan persetujuan terlebih dahulu, sebelum service dikerjakan.<br></br>
+	<p style="font-size: 14px;">Estimasi biaya service mohon dapat dikirimkan ke email purchasing.sec11@gmail.com dan WhatsApp ke 0811 2575 216 up/ Bu Ninda dengan <b>Subject : Estimasi Biaya Service Mobil <?php echo $FleetHeaderCetakSpk['merk_kendaraan']." Plat No ".$FleetHeaderCetakSpk['no_pol'];?></b>. Estimasi terhadap biaya service tersebut akan kami berikan persetujuan terlebih dahulu, sebelum service dikerjakan.<br></br>
 		Demikian surat ini kami sampaikan. Atas perhatian dan kerjasamanya, kami ucapkan terima kasih.
 	</p>
 	<div style="position: absolute;bottom: 100px;left: 100px">
