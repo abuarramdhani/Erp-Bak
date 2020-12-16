@@ -960,7 +960,7 @@ class C_MonitoringCovid extends CI_Controller
 		$wawancara = "<p>Wilayah : ".$data['wilayah'].'<br>'.
 		"Transportasi : ".$data['transportasi'].'<br>'.
 		"Yang ikut : ".$data['anggota'].'<br>'.
-		"Tujuan alasan : ".$data['tujuan<br>alasan'].'<br>'.
+		"Tujuan alasan : ".$data['tujuan_alasan'].'<br>'.
 		"Aktifitas : ".$data['aktivitas'].'<br>'.
 		"Protokol : ".$data['prokes'].'<br>'.
 		"Menginap : ".$data['covid_menginap'].','.$data['nbr_jumlah_hari'].'<br>'.
