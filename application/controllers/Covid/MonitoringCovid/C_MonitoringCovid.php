@@ -1549,7 +1549,7 @@ class C_MonitoringCovid extends CI_Controller
 		$mail->addAddress('enggal_aldiansyah@quick.com');
 		$mail->addAddress('rheza_egha@quick.com@quick.com');
 		$mail->addAddress('nurul_wachidah@quick.com@quick.com');
-		$mail->addAddress('hbk@quick.com@quick.com');
+		$mail->addAddress('tim_pencegahan_covid19@quick.com');
 		$mail->Subject = 'Laporan Covid Baru dari '.trim($pkj['nama']).' ('.$noind.')';
 		$mail->msgHTML($message);
 
