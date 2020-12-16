@@ -200,7 +200,7 @@
                             <select class="select2 form-control slcOKBTindakanPengelola slcTindakanOKB" style="width:300px;">
                                 <option></option>
                                 <option value="1">Approve Beli</option>
-                                <option value="2">Approve Ambil Stok</option>
+                                <!-- <option value="2">Approve Ambil Stok</option> -->
                                 <option value="R">Reject Order</option>
                             </select>
                             <button type="button" class="btn btn-success btnOKBPengelolaAct"> Terapkan</button>
