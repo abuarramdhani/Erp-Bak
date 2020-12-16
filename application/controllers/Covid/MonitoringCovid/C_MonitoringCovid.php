@@ -1052,7 +1052,7 @@ class C_MonitoringCovid extends CI_Controller
 		$src = $this->input->post('source');
 		$this->kirimEmailcvd($data);
 		if ($src == 'kedatangan_tamu') {
-			// redirect('Covid/PelaporanPekerja/LuarKota/kedatangan_tamu');
+			redirect('Covid/PelaporanPekerja/LuarKota/kedatangan_tamu');
 		}else{
 
 		}
