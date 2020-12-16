@@ -1556,8 +1556,8 @@ class C_MonitoringCovid extends CI_Controller
 		$mail->setFrom('noreply@quick.com', 'TIM COVID 19');
 		$mail->addAddress('emanuel_dakris@quick.com');
 		$mail->addAddress('enggal_aldiansyah@quick.com');
-		$mail->addAddress('rheza_egha@quick.com@quick.com');
-		$mail->addAddress('nurul_wachidah@quick.com@quick.com');
+		$mail->addAddress('rheza_egha@quick.com');
+		$mail->addAddress('nurul_wachidah@quick.com');
 		$mail->addAddress('tim_pencegahan_covid19@quick.com');
 		$mail->Subject = 'Laporan Covid Baru dari '.trim($pkj['nama']).' ('.$noind.')';
 		$mail->msgHTML($message);
