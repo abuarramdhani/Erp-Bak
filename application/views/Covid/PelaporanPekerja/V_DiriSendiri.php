@@ -74,7 +74,7 @@
                                                         </div>
                                                         <div class="form-group">
                                                             <label for="usr">Tujuan / Alasan Keluar Kota :</label>
-                                                            <input type="text" class="form-control" name="Tujuan Alasan" placeholder="Tujuan / Alasan" required>
+                                                            <input type="text" class="form-control" name="Tujuan_Alasan" placeholder="Tujuan / Alasan" required>
                                                         </div>
                                                         <div class="form-group">
                                                             <label for="usr">Aktifitas selama di luar kota :</label>
