@@ -192,6 +192,7 @@ class M_monitoringcovid extends CI_Model {
 					a.selesai_isolasi,
 					a.keterangan,
 					a.created_by,
+					a.atasan,
 					a.isolasi_id,
 					a.pic_followup,
 					a.range_tgl_interaksi
