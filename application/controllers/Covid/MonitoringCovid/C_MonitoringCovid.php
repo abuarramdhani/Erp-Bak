@@ -900,6 +900,15 @@ class C_MonitoringCovid extends CI_Controller
 			$covid_menginap = 'Tidak';
 		}
 
+		$covid_sakit = $this->input->post('covid_sakit');
+		if($covid_sakit == 1)
+		{
+			$covid_sakit = 'Ya';
+		}
+		else {
+			$covid_sakit = 'Tidak';
+		}
+
 		$covid_sakit_kembali = $this->input->post('covid_sakit_kembali');
 		if($covid_sakit_kembali == 1)
 		{
@@ -938,7 +947,7 @@ class C_MonitoringCovid extends CI_Controller
 		'prokes' => $this->input->post('txt-CVD-Prokes'),
 		'covid_menginap' => $covid_menginap,
 		'nbr_jumlah_hari' => $this->input->post('nbr-jumlah-hari'),
-		'covid_sakit' => $this->input->post('covid_sakit'),
+		'covid_sakit' => $covid_sakit,
 		'penyakit' => $this->input->post('txt-CVD-Penyakit'),
 		'covid_sakit_kembali' => $covid_sakit_kembali,
 		'penyakit_kembali' => $this->input->post('txt-CVD-Penyakit_kembali'),
