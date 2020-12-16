@@ -155,5 +155,6 @@
 	var isolasi_id = "<?= $isolasi_id ?>";
 	window.addEventListener('load', function () {
 		$('#txtMPSuratIsolasiMandiriSelesaiIsolasiTanggal').trigger('change');
+		$('#txtMPSuratIsolasiMandiriCetakTanggal').trigger('change');
 	});
 </script>
