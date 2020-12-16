@@ -856,7 +856,7 @@ class C_MonitoringCovid extends CI_Controller
 		'covid_sakit_kembali' => $covid_sakit_kembali,
 		'penyakit_kembali' => $this->input->post('txt-CVD-Penyakit_kembali'),
 		'covid_interaksi' => $covid_interaksi,
-		'kasusinsertmeng' => 'DIRI SENDIRI KE LUAR KOTA',
+		'kasus' => 'DIRI SENDIRI KE LUAR KOTA',
 		'jenis_interaksi' => $this->input->post('txt-CVD-Jenis_interaksi'),
 		'atasan' => $this->input->post('slc-CVD-MonitoringCovid-Atasan'),
 		];
