@@ -192,7 +192,7 @@ class C_IsolasiMandiri extends CI_Controller
 		$surat_text = str_replace("surat_isolasi_mandiri_hari_kalimat", $this->readNumber($hari), $surat_text);
 		$surat_text = str_replace("surat_isolasi_mandiri_tanggal_mulai", strftime('%d %B %Y',strtotime($mulai)), $surat_text);
 		$surat_text = str_replace("surat_isolasi_mandiri_tanggal_selesai", strftime('%d %B %Y',strtotime($selesai)), $surat_text);
-		$surat_text = str_replace("surat_isolasi_mandiri_status", $status, $surat_text);
+		// $surat_text = str_replace("surat_isolasi_mandiri_status", $status, $surat_text);
 		$surat_text = str_replace("surat_isolasi_mandiri_tanggal_dibuat", strftime('%d %B %Y',strtotime($cetak)), $surat_text);
 		// $surat_text = str_replace("surat_isolasi_mandiri_mengetahui_nama", ucwords(strtolower($mengetahui_arr[0]['nama'])), $surat_text);
 		// $surat_text = str_replace("surat_isolasi_mandiri_menyetujui_nama", ucwords(strtolower($menyetujui_arr[0]['nama'])), $surat_text);

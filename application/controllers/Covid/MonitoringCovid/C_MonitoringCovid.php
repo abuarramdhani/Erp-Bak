@@ -900,6 +900,15 @@ class C_MonitoringCovid extends CI_Controller
 			$covid_menginap = 'Tidak';
 		}
 
+		$covid_sakit = $this->input->post('covid_sakit');
+		if($covid_sakit == 1)
+		{
+			$covid_sakit = 'Ya';
+		}
+		else {
+			$covid_sakit = 'Tidak';
+		}
+
 		$covid_sakit_kembali = $this->input->post('covid_sakit_kembali');
 		if($covid_sakit_kembali == 1)
 		{
@@ -938,7 +947,7 @@ class C_MonitoringCovid extends CI_Controller
 		'prokes' => $this->input->post('txt-CVD-Prokes'),
 		'covid_menginap' => $covid_menginap,
 		'nbr_jumlah_hari' => $this->input->post('nbr-jumlah-hari'),
-		'covid_sakit' => $this->input->post('covid_sakit'),
+		'covid_sakit' => $covid_sakit,
 		'penyakit' => $this->input->post('txt-CVD-Penyakit'),
 		'covid_sakit_kembali' => $covid_sakit_kembali,
 		'penyakit_kembali' => $this->input->post('txt-CVD-Penyakit_kembali'),
@@ -1206,7 +1215,10 @@ class C_MonitoringCovid extends CI_Controller
 
 		$range = $this->input->post('txtPeriodeKejadian');
 		$exrange = explode(' - ', $range);
-
+		$tgl_gejala = $this->input->post('tgl_gejala');
+		if (empty($tgl_gejala)) {
+			$tgl_gejala = '-';
+		}
 		$user = $this->session->user;
 		$data = [
 		'no_induk' => $this->input->post('slc-CVD-MonitoringCovid-Tambah-Pekerja'),
@@ -1220,7 +1232,7 @@ class C_MonitoringCovid extends CI_Controller
 		'hubungan'	=> $hubungan,
 		'riwayat'	=> $this->input->post('riwayat'),
 		'gejala'	=> implode(', ', $this->input->post('gejala')),
-		'tgl_gejala'	=> $this->input->post('tgl_gejala'),
+		'tgl_gejala'	=> $tgl_gejala,
 		'lapor_puskesmas'	=> $this->input->post('lapor_puskesmas'),
 		'hasil_uji'	=> $this->input->post('hasil_uji'),
 		'kasus'	=> 'Kontak dengan Probable/Konfirmasi Covid 19 dalam Satu Rumah',
@@ -1546,7 +1558,7 @@ class C_MonitoringCovid extends CI_Controller
 		$mail->addAddress('enggal_aldiansyah@quick.com');
 		$mail->addAddress('rheza_egha@quick.com@quick.com');
 		$mail->addAddress('nurul_wachidah@quick.com@quick.com');
-		$mail->addAddress('hbk@quick.com@quick.com');
+		$mail->addAddress('tim_pencegahan_covid19@quick.com');
 		$mail->Subject = 'Laporan Covid Baru dari '.trim($pkj['nama']).' ('.$noind.')';
 		$mail->msgHTML($message);
 
