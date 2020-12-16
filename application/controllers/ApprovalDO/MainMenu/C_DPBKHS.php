@@ -214,30 +214,38 @@ class C_DPBKHS extends CI_Controller {
 
         if ($returnOnhand[0]['STOCKONHAND'] == 0) {
 
-            foreach ($data['line'] as $key => $val) {
+        $returnLineStatus = $this->M_dpb->checkLineStatus($nomor_do,$kode_gudang);
 
-                $this->M_dpb->procedureLockStock($val['doNumber'], $kode_gudang, $noind);
+            if ($returnLineStatus[0]['LINESTATUS'] == 0) {
+                foreach ($data['line'] as $key => $val) {
+    
+                    $this->M_dpb->procedureLockStock($val['doNumber'], $kode_gudang, $noind);
+    
+                    $this->M_dpb->insertNewDetailKHS([
+                        'NO_PR'            => $new_pr_number,
+                        'JENIS_KENDARAAN'  => $data['header']['vehicleCategory'],
+                        'NO_KENDARAAN'     => $data['header']['vehicleId'],
+                        'NAMA_SUPIR'       => $data['header']['driverName'],
+                        'VENDOR_EKSPEDISI' => $data['header']['driverPhone'],
+                        'GUDANG_PENGIRIM'  => $data['header']['gudangPengirim'],
+                        'ALAMAT_BONGKAR'   => $data['header']['alamatBongkar'],
+                        'CATATAN'          => $data['header']['catatan'],
+                        'LINE_NUM'         => $val['line'],
+                        'DO_NUM'           => $val['doNumber'],
+                        'ITEM_NAME'        => $val['itemName'],
+                        'UOM'              => $val['uom'],
+                        'QTY'              => $val['qty'],
+                        'NAMA_TOKO'        => $val['shopName'],
+                        'KOTA'             => $val['city'],
+                        'APPROVED_FLAG'    => 'P'
+                    ]);
+                }
+                echo json_encode($new_pr_number);
+            }else{
+            echo json_encode('error ada do/spb yang sudah dilayani');
 
-                $this->M_dpb->insertNewDetailKHS([
-                    'NO_PR'            => $new_pr_number,
-                    'JENIS_KENDARAAN'  => $data['header']['vehicleCategory'],
-                    'NO_KENDARAAN'     => $data['header']['vehicleId'],
-                    'NAMA_SUPIR'       => $data['header']['driverName'],
-                    'VENDOR_EKSPEDISI' => $data['header']['driverPhone'],
-                    'GUDANG_PENGIRIM'  => $data['header']['gudangPengirim'],
-                    'ALAMAT_BONGKAR'   => $data['header']['alamatBongkar'],
-                    'CATATAN'          => $data['header']['catatan'],
-                    'LINE_NUM'         => $val['line'],
-                    'DO_NUM'           => $val['doNumber'],
-                    'ITEM_NAME'        => $val['itemName'],
-                    'UOM'              => $val['uom'],
-                    'QTY'              => $val['qty'],
-                    'NAMA_TOKO'        => $val['shopName'],
-                    'KOTA'             => $val['city'],
-                    'APPROVED_FLAG'    => 'P'
-                ]);
             }
-            echo json_encode($new_pr_number);
+
         }else{
             echo json_encode('error stok gudang tidak mencukupi');
         }
