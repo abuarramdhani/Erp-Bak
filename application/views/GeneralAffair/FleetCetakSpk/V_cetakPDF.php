@@ -76,7 +76,7 @@
 				<td style="padding: 30px 7px"> </td>
 			</tr>
 			<tr>
-				<td style="padding: 7px;text-align: center;">Rajiwan</td>
+				<td style="padding: 7px;text-align: center;">BAMBANG YUDHOSUSENO</td>
 			</tr>
 			<tr>
 				<td style="padding: 7px;text-align: center;">(Kepala Seksi Utama GA & Hubungan Kerja)</td>
