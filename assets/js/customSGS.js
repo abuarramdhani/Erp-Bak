@@ -78,12 +78,12 @@ function getLihatStock(no, ket) {
 		var tglAk 		= $('#tglAkhir').val();
 		var subinv 		= $('#subinv').val();
 		var kode_brg 	= $('#kodestockgdsp').val();
-		var kode_awal = $('#kode_awal').val();
+		var kode_awal 	= $('#kode_awal').val();
 		var qty_atas 	= $('#qty_atas').val();
-		var qty_bawah = $('#qty_bawah').val();
+		var qty_bawah 	= $('#qty_bawah').val();
 		var lokasi		= $('#lokasi_simpan').val();
-		var unit 			= no != '' ? $('#unit'+no).val() : '';
-
+		var unit 		= ket == 123 ? $('#unit'+no).val() : '';
+		// console.log(unit, no, ket)
 		var request = $.ajax({
 			url: baseurl+'StockGdSparepart/LihatStock/searchData',
 			data: {
