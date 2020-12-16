@@ -79,7 +79,7 @@
 				<td style="padding: 7px;text-align: center;">BAMBANG YUDHOSUSENO</td>
 			</tr>
 			<tr>
-				<td style="padding: 7px;text-align: center;">(Kepala Seksi Utama GA & Hubungan Kerja)</td>
+				<td style="padding: 7px;text-align: center;">(Asisten Kepala Dept. Personalia)</td>
 			</tr>
 		</table>
 	</div>
