@@ -63,7 +63,7 @@ class C_IsolasiMandiri extends CI_Controller
 			$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $encrypted_id);
 			$plaintext_string = $this->encrypt->decode($plaintext_string);
 			$data['data'] = $this->M_monitoringcovid->getPekerjaById($plaintext_string);
-			$data['kepada'] = $data['data']->pic_followup;
+			$data['kepada'] = $data['data']->atasan;
 			$pkj = $this->M_consumable->getDetailPekerja($data['data']->noind)->row_array();
 			$ks = substr($pkj['kodesie'], 0,7);
 			$kst = substr($ks, 0,1);
@@ -128,7 +128,7 @@ class C_IsolasiMandiri extends CI_Controller
 		$q = 0;
 		$arr = array();
 		for ($i=0; $i < (count($tgl)-1); $i++) { 
-			if ($status[$i] != $status[$i+1]) {
+			if ($alasan[$i] != $alasan[$i+1] && (strpos($alasan[$i+1], 'WFO') !== false || strpos($alasan[$i], 'WFO') !== false || $alasan[$i+1] == 'TERHITUNG PKJ')) {
 				$arr[$q][] = $i;
 				$q++;
 				$lastx = '1';
@@ -137,8 +137,8 @@ class C_IsolasiMandiri extends CI_Controller
 				$lastx = '2';
 			}
 		}
-		$qq = count($status);
-		if (isset($status[$qq-2]) && $status[$qq-1] == $status[$qq-2]) {
+		$qq = count($alasan);
+		if (isset($alasan[$qq-2]) && $alasan[$qq-1] == $alasan[$qq-2]) {
 			$arr[$q][] = $qq-1;
 		}else{
 			if ($lastx == '2') {
@@ -156,9 +156,10 @@ class C_IsolasiMandiri extends CI_Controller
 				'awal' => $awl,
 				'akhir' => $akh,
 				'jml'	=> date_diff(date_create($akh), date_create($awl))->format('%d')+1,
-				'st' => $status[$fi],
+				'st' => $alasan[$fi],
 				);
 		}
+		// print_r($arr2);exit();
 		//table
 		$data['arr2'] = $arr2;
 		$data['qq'] = date_diff(date_create($lama2), date_create($lama1))->format('%d')+1;
