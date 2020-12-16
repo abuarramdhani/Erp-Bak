@@ -303,15 +303,21 @@ class C_MonitoringCovid extends CI_Controller
 		$plaintext_string = $this->encrypt->decode($plaintext_string);
 		$status = $this->input->get('status');
 		$pkj = $this->M_monitoringcovid->getDetailcvdPekerja($plaintext_string);
-		$dataPrez = $this->M_isolasimandiri->getDataPresensiIs2($pkj['noind'], $surat['tgl_mulai'], $surat['tgl_selesai']);
-		$arl = array(
-			'wkt'	=>	date('Y-m-d H:i:s'),
-			'transaksi'	=>	'DELETE DATA Presensi & edit presensi tanggal '.$mulai.' sampai '.$selesai.' noind '.$pekerja,
-			'keterangan'	=>	json_encode($dataPrez),
-			'program'	=>	'TIM-COVID19->MonitoringCovid',
-			'tgl_proses'	=>	date('Y-m-d H:i:s'),
-			);
-		$this->M_isolasimandiri->instoLog2($arl);
+		if (!empty($pkj['mulai_isolasi']) || !empty($pkj['selesai_isolasi'])) {
+			$dataPrez = $this->M_isolasimandiri->getDataPresensiIs2($pkj['noind'], $pkj['mulai_isolasi'], $pkj['selesai_isolasi']);
+			// exit();
+			$mulai =  $pkj['mulai_isolasi'];
+			$selesai =  $pkj['selesai_isolasi'];
+			$pekerja =  $pkj['noind'];
+			$arl = array(
+				'wkt'	=>	date('Y-m-d H:i:s'),
+				'transaksi'	=>	'DELETE DATA Presensi & edit presensi tanggal '.$mulai.' sampai '.$selesai.' noind '.$pekerja,
+				'keterangan'	=>	json_encode($dataPrez),
+				'program'	=>	'TIM-COVID19->MonitoringCovid',
+				'tgl_proses'	=>	date('Y-m-d H:i:s'),
+				);
+			$this->M_isolasimandiri->instoLog2($arl);
+		}
 
 		if (!empty($pkj['isolasi_id'])) {
 			$surat = $this->M_monitoringcovid->getSuratIs($pkj['isolasi_id']);

@@ -87,9 +87,9 @@
                                                                 Mertua
                                                             </label>
                                                             <br>
-                                                            <input type="radio" name="hubungan" value="Istri">
+                                                            <input type="radio" name="hubungan" value="Istri/Suami">
                                                             <label style="margin-left: 10px;">
-                                                                Istri
+                                                                Istri/Suami
                                                             </label>
                                                             <br>
                                                             <input type="radio" name="hubungan" value="Anak">

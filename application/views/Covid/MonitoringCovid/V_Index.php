@@ -115,7 +115,7 @@
 															<td><?php echo $nomor ?></td>
 															<td>
 																<div class="btn-group">
-																	<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+																	<button type="button" class="btn btn-primary dropdown-toggle cvd_btntriggerdrop" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 																		Action <span class="caret"></span>
 																	</button>
 																	<ul class="dropdown-menu">
@@ -123,7 +123,7 @@
 																			<a href="<?php echo base_url('Covid/MonitoringCovid/edit/'.$encrypted_string) ?>" style="cursor: pointer;">edit</a>
 																		</li>
 																		<li>
-																			<a data-href="<?php echo $encrypted_string ?>" data-status="<?php echo isset($status_kondisi) ? $status_kondisi : '0'; ?>" class="btn-CVD-MonitoringCovid-Hapus wadawd" style="cursor: pointer;">Hapus</a>
+																			<a data-href="<?php echo $encrypted_string ?>" data-status="<?php echo isset($status_kondisi) ? $status_kondisi : '0'; ?>" class="btn-CVD-MonitoringCovid-Hapus" style="cursor: pointer;">Hapus</a>
 																		</li>
 																		<?php 
 																		if (isset($encrypted_isolasi_id) && !empty($encrypted_isolasi_id)) {
@@ -177,7 +177,11 @@
 															<td><?php echo !empty($value['mulai_isolasi']) ? strftime('%d %h %Y',strtotime($value['mulai_isolasi'])) : '-' ?></td>
 															<td><?php echo !empty($value['mulai_isolasi']) ? strftime('%d %h %Y',strtotime($value['selesai_isolasi'])) : '' ?></td>
 															<td><?php echo !empty($value['lama_isolasi']) ? $value['lama_isolasi'].' hari' : '-' ?></td>
-															<td><?php echo $value['created_by'] ?></td>
+															<?php if ($value['created_by'] == '' || empty(trim($value['created_by']))): ?>
+																<td><?php echo $value['pic_followup'].' - '.$value['nama_pic'] ?></td>
+															<?php else: ?>
+																<td><?php echo $value['created_by'] ?></td>
+															<?php endif ?>
 														</tr>
 														<?php
 														$nomor++;

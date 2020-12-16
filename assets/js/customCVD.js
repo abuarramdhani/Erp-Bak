@@ -95,28 +95,32 @@ $(document).ready(function(){
         }
     });
 
-	$('#tbl-CVD-MonitoringCovid').on('click', 'a.btn-CVD-MonitoringCovid-Hapus', function(e){
-		e.preventDefault();
-		var params = {
-		  				id		: $(this).attr('data-href'),
-		  				status 	: $(this).attr('data-status'),
-		  			}
-		console.log('trigger hapus');
-		Swal.fire({
-			title: 'Hapus Data',
-			text: "Apakah Anda Yakin Akan Menghapus Data Ini ?",
-			type: 'question',
-			showCancelButton: true,
-			confirmButtonColor: '#3085d6',
-			cancelButtonColor: '#d33',
-			confirmButtonText: 'Ya',
-			cancelButtonText: 'Tidak'
-		}).then((result) => {
-		  	if (result.value) {
-		  		showAjaxGetPRM(params);
-		  	}
-		});
-	});
+    $(document).on('click', '.cvd_btntriggerdrop',function(){
+    	var elm = $(this).next().find('.btn-CVD-MonitoringCovid-Hapus');
+    	elm.off('click');
+    	elm.click(function(){
+    		var params = {
+    			id		: $(this).attr('data-href'),
+    			status 	: $(this).attr('data-status'),
+    		}
+    		console.log(params);
+    		Swal.fire({
+    			title: 'Hapus Data',
+    			text: "Apakah Anda Yakin Akan Menghapus Data Ini ?",
+    			type: 'question',
+    			showCancelButton: true,
+    			confirmButtonColor: '#3085d6',
+    			cancelButtonColor: '#d33',
+    			confirmButtonText: 'Ya',
+    			cancelButtonText: 'Tidak'
+    		}).then((result) => {
+    			if (result.value) {
+    				showAjaxGetPRM(params);
+    			}
+    		});
+    	});
+
+    });
 
 	$('.btn-CVD-MonitoringCovid-Tambah-Lampiran').on('click', function(){
 		$('.file-CVD-MonitoringCovid-Tambah-Lampiran').last().click();
@@ -132,41 +136,45 @@ $(document).ready(function(){
 		$(this).closest('div').remove();
 	});
 
-	$('#tbl-CVD-MonitoringCovid').on('click', '.btn-CVD-MonitoringCovid-FollowUp', function(){
-		var status = $(this).attr('data-status');
-		var link = $(this).attr('data-href');
-		console.log('trigger follow up');
-		if (status.toLowerCase() == "Follow Up Pekerja Masuk".toLowerCase()) {
-			Swal.fire({
-				title: "Apakah Anda sudah Melakukan Follow Up Pekerja?",
-				text: 'Follow Up Pekerja Question 1',
-				type: 'question',
-				showCancelButton: true,
-				confirmButtonColor: '#3085d6',
-				cancelButtonColor: '#d33',
-				confirmButtonText: 'Ya',
-				cancelButtonText: 'Tidak'
-			}).then((result1) => {
-			  	if (result1.value) {
-			  		Swal.fire({
-						title: "Apakah Anda akan membuat laporan hasil wawancara pekerja selesai isolasi?",
-						text: 'Follow Up Pekerja Question 2',
-						type: 'question',
-						showCancelButton: true,
-						confirmButtonColor: '#3085d6',
-						cancelButtonColor: '#d33',
-						confirmButtonText: 'Ya',
-						cancelButtonText: 'Tidak'
-					}).then((result2) => {
-					  	if (result2.value) {
-					  		window.location.href = link;
-					  	}
-					});
-			  	}
-			});
-		}else{
-			console.log('bukan follow up');
-		}
+	$(document).on('click', '.cvd_btntriggerdrop', function(){
+		var elm = $(this).next().find('.btn-CVD-MonitoringCovid-FollowUp');
+    	elm.off('click');
+    	elm.click(function(){
+    		var status = $(this).attr('data-status');
+    		var link = $(this).attr('data-href');
+    		console.log('trigger follow up');
+    		if (status.toLowerCase() == "Follow Up Pekerja Masuk".toLowerCase()) {
+    			Swal.fire({
+    				title: "Apakah Anda sudah Melakukan Follow Up Pekerja?",
+    				text: 'Follow Up Pekerja Question 1',
+    				type: 'question',
+    				showCancelButton: true,
+    				confirmButtonColor: '#3085d6',
+    				cancelButtonColor: '#d33',
+    				confirmButtonText: 'Ya',
+    				cancelButtonText: 'Tidak'
+    			}).then((result1) => {
+    				if (result1.value) {
+    					Swal.fire({
+    						title: "Apakah Anda akan membuat laporan hasil wawancara pekerja selesai isolasi?",
+    						text: 'Follow Up Pekerja Question 2',
+    						type: 'question',
+    						showCancelButton: true,
+    						confirmButtonColor: '#3085d6',
+    						cancelButtonColor: '#d33',
+    						confirmButtonText: 'Ya',
+    						cancelButtonText: 'Tidak'
+    					}).then((result2) => {
+    						if (result2.value) {
+    							window.location.href = link;
+    						}
+    					});
+    				}
+    			});
+    		}else{
+    			console.log('bukan follow up');
+    		}
+    	});
 	});
 
 	$('.cekAbsens').click(function(){

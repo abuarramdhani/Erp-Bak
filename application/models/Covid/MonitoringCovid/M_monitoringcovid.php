@@ -59,6 +59,8 @@ class M_monitoringcovid extends CI_Model {
 					a.keterangan, 
 					a.mulai_isolasi, 
 					a.selesai_isolasi,
+					a.pic_followup,
+					(select employee_name from er.er_employee_all eea where eea.employee_code = a.pic_followup) nama_pic,
 					jml_hari as lama_isolasi,
 					(
 						select concat(employee_code,' - ',employee_name)
@@ -85,6 +87,8 @@ class M_monitoringcovid extends CI_Model {
 					a.status_kondisi_id, 
 					a.tgl_interaksi, 
 					a.kasus, 
+					a.pic_followup,
+					(select employee_name from er.er_employee_all eea where eea.employee_code = a.pic_followup) nama_pic,
 					a.keterangan, 
 					a.mulai_isolasi, 
 					a.selesai_isolasi,
@@ -278,7 +282,6 @@ class M_monitoringcovid extends CI_Model {
 
 	public function insertDiriSendiri($paramnya, $yanglogin)
 	{
-		
 		$sql = "INSERT into cvd.cvd_pekerja
 			(noind,
 			status_kondisi_id,
@@ -287,10 +290,8 @@ class M_monitoringcovid extends CI_Model {
 			kasus,
 			keterangan,
 			created_date,
-			created_by,
 			updated_date,
-			updated_by,
-			pic_followup,
+			atasan,
 			status_approval)
 			values
 			(
@@ -301,9 +302,7 @@ class M_monitoringcovid extends CI_Model {
 			'$paramnya[kasus]',
 			'$paramnya[keterangan]',
 			current_timestamp,
-			'$yanglogin',
 			current_timestamp,
-			'$yanglogin',
 			'$paramnya[atasan]',
 			1
 			)";
@@ -314,18 +313,14 @@ class M_monitoringcovid extends CI_Model {
 				(cvd_pekerja_id,
 				hasil_wawancara,
 				created_date,
-				created_by,
 				updated_date,
-				updated_by,
 				jenis
 				)
 				values
 				('$id_before',
 				'$paramnya[wawancara]',
 				current_timestamp,
-				'$yanglogin',
 				current_timestamp,
-				'$yanglogin',
 				'1'
 				)");
 
@@ -352,10 +347,8 @@ class M_monitoringcovid extends CI_Model {
 			kasus,
 			keterangan,
 			created_date,
-			created_by,
 			updated_date,
-			updated_by,
-			pic_followup,
+			atasan,
 			status_approval)
 			values
 			(
@@ -366,9 +359,7 @@ class M_monitoringcovid extends CI_Model {
 			'$paramnya[kasus]',
 			'$statusnya_anggota',
 			current_timestamp,
-			'$yanglogin',
 			current_timestamp,
-			'$yanglogin',
 			'$paramnya[atasan]',
 			1
 			)");
@@ -379,18 +370,14 @@ class M_monitoringcovid extends CI_Model {
 				(cvd_pekerja_id,
 				hasil_wawancara,
 				created_date,
-				created_by,
 				updated_date,
-				updated_by,
 				jenis
 				)
 				values
 				('$id_before',
 				'$paramnya[wawancara]',
 				current_timestamp,
-				'$yanglogin',
 				current_timestamp,
-				'$yanglogin',
 				'1'
 				)");
 
@@ -414,10 +401,8 @@ class M_monitoringcovid extends CI_Model {
 			kasus,
 			keterangan,
 			created_date,
-			created_by,
 			updated_date,
-			updated_by,
-			pic_followup,
+			atasan,
 			status_approval)
 			values
 			(
@@ -428,9 +413,7 @@ class M_monitoringcovid extends CI_Model {
 			'$paramnya[kasus]',
 			'$paramnya[keterangan]',
 			current_timestamp,
-			'$yanglogin',
 			current_timestamp,
-			'$yanglogin',
 			'$paramnya[atasan]',
 			1
 			)");
@@ -440,18 +423,14 @@ class M_monitoringcovid extends CI_Model {
 				(cvd_pekerja_id,
 				hasil_wawancara,
 				created_date,
-				created_by,
 				updated_date,
-				updated_by,
 				jenis
 				)
 				values
 				('$id_before',
 				'$paramnya[wawancara]',
 				current_timestamp,
-				'$yanglogin',
 				current_timestamp,
-				'$yanglogin',
 				'1'
 				)");
 
@@ -475,10 +454,8 @@ class M_monitoringcovid extends CI_Model {
 			kasus,
 			keterangan,
 			created_date,
-			created_by,
 			updated_date,
-			updated_by,
-			pic_followup,
+			atasan,
 			status_approval)
 			values
 			(
@@ -489,9 +466,7 @@ class M_monitoringcovid extends CI_Model {
 			'$paramnya[kasus]',
 			'$paramnya[keterangan]',
 			current_timestamp,
-			'$yanglogin',
 			current_timestamp,
-			'$yanglogin',
 			'$paramnya[atasan]',
 			1
 			)";
@@ -504,18 +479,14 @@ class M_monitoringcovid extends CI_Model {
 				(cvd_pekerja_id,
 				hasil_wawancara,
 				created_date,
-				created_by,
 				updated_date,
-				updated_by,
 				jenis
 				)
 				values
 				($id_before,
 				'$paramnya[wawancara]',
 				current_timestamp,
-				'$yanglogin',
 				current_timestamp,
-				'$yanglogin',
 				'1'
 				)");
 			if ($this->db->affected_rows() == 1) {
@@ -539,10 +510,8 @@ class M_monitoringcovid extends CI_Model {
 			kasus,
 			keterangan,
 			created_date,
-			created_by,
 			updated_date,
-			updated_by,
-			pic_followup,
+			atasan,
 			status_approval)
 			values
 			(
@@ -553,9 +522,7 @@ class M_monitoringcovid extends CI_Model {
 			'$paramnya[kasus]',
 			'$paramnya[keterangan]',
 			current_timestamp,
-			'$yanglogin',
 			current_timestamp,
-			'$yanglogin',
 			'$paramnya[atasan]',
 			1
 			)";
@@ -568,18 +535,14 @@ class M_monitoringcovid extends CI_Model {
 				(cvd_pekerja_id,
 				hasil_wawancara,
 				created_date,
-				created_by,
 				updated_date,
-				updated_by,
 				jenis
 				)
 				values
 				($id_before,
 				'$paramnya[wawancara]',
 				current_timestamp,
-				'$yanglogin',
 				current_timestamp,
-				'$yanglogin',
 				'1'
 				)");
 			if ($this->db->affected_rows() == 1) {
@@ -604,10 +567,8 @@ class M_monitoringcovid extends CI_Model {
 			kasus,
 			keterangan,
 			created_date,
-			created_by,
 			updated_date,
-			updated_by,
-			pic_followup,
+			atasan,
 			status_approval)
 			values
 			(
@@ -618,9 +579,7 @@ class M_monitoringcovid extends CI_Model {
 			'$paramnya[kasus]',
 			'$paramnya[keterangan]',
 			current_timestamp,
-			'$yanglogin',
 			current_timestamp,
-			'$yanglogin',
 			'$paramnya[atasan]',
 			1
 			)");
@@ -631,18 +590,14 @@ class M_monitoringcovid extends CI_Model {
 				(cvd_pekerja_id,
 				hasil_wawancara,
 				created_date,
-				created_by,
 				updated_date,
-				updated_by,
 				jenis
 				)
 				values
 				($id_before,
 				'$paramnya[wawancara]',
 				current_timestamp,
-				'$yanglogin',
 				current_timestamp,
-				'$yanglogin',
 				'1'
 				)");
 			if ($this->db->affected_rows() == 1) {
@@ -666,10 +621,8 @@ class M_monitoringcovid extends CI_Model {
 			kasus,
 			keterangan,
 			created_date,
-			created_by,
 			updated_date,
-			updated_by,
-			pic_followup,
+			atasan,
 			status_approval)
 			values
 			(
@@ -680,9 +633,7 @@ class M_monitoringcovid extends CI_Model {
 			'$paramnya[kasus]',
 			'$paramnya[keterangan]',
 			current_timestamp,
-			'$yanglogin',
 			current_timestamp,
-			'$yanglogin',
 			'$paramnya[atasan]',
 			1
 			)");
@@ -693,18 +644,14 @@ class M_monitoringcovid extends CI_Model {
 				(cvd_pekerja_id,
 				hasil_wawancara,
 				created_date,
-				created_by,
 				updated_date,
-				updated_by,
 				jenis
 				)
 				values
 				($id_before,
 				'$paramnya[wawancara]',
 				current_timestamp,
-				'$yanglogin',
 				current_timestamp,
-				'$yanglogin',
 				'1'
 				)");
 			if ($this->db->affected_rows() == 1) {
@@ -728,10 +675,8 @@ class M_monitoringcovid extends CI_Model {
 			kasus,
 			keterangan,
 			created_date,
-			created_by,
 			updated_date,
-			updated_by,
-			pic_followup,
+			atasan,
 			status_approval)
 			values
 			(
@@ -742,9 +687,7 @@ class M_monitoringcovid extends CI_Model {
 			'$paramnya[kasus]',
 			'$paramnya[keterangan]',
 			current_timestamp,
-			'$yanglogin',
 			current_timestamp,
-			'$yanglogin',
 			'$paramnya[atasan]',
 			1
 			)");
@@ -755,18 +698,14 @@ class M_monitoringcovid extends CI_Model {
 				(cvd_pekerja_id,
 				hasil_wawancara,
 				created_date,
-				created_by,
 				updated_date,
-				updated_by,
 				jenis
 				)
 				values
 				($id_before,
 				'$paramnya[wawancara]',
 				current_timestamp,
-				'$yanglogin',
 				current_timestamp,
-				'$yanglogin',
 				'1'
 				)");
 			if ($this->db->affected_rows() == 1) {
@@ -786,18 +725,14 @@ class M_monitoringcovid extends CI_Model {
 			(wawancara_id,
 			lampiran_nama,
 			created_date,
-			created_by,
 			updated_date,
-			updated_by,
 			lampiran_path
 			)
 			values
 			('$paramnya[wawancara_id]',
 			'$paramnya[lampiran_nama]',
 			current_timestamp,
-			'$yanglogin',
 			current_timestamp,
-			'$yanglogin',
 			'$paramnya[lampiran_path]')";
 			// echo $sql;
 		$this->db->query($sql);
