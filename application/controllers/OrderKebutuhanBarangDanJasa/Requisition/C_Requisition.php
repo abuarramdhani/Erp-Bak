@@ -668,13 +668,13 @@ class C_Requisition extends CI_Controller {
 		//email
 		// echo $noind;exit;
 		$getEmail = $this->M_approver->getEmail($noind);
-		$emailUser = $getEmail[0]['EMAIL_INTERNAL'];
 		// echo 
 		// $emailUser = 'bondan_surya_n@quick.com';
-
+		
 		//send Email
 
-		if ($emailUser) {
+		if ($getEmail) {
+			$emailUser = $getEmail[0]['EMAIL_INTERNAL'];
 			$this->load->library('PHPMailerAutoload');
 			$mail = new PHPMailer();
 			$mail->SMTPDebug = 0;

@@ -109,7 +109,7 @@ class C_Approver extends CI_Controller {
         foreach ($allOrder as $key => $order) {
             $checkOrder = $this->M_approver->checkOrder($order['ORDER_ID']);
             if (isset($checkOrder[0])) {
-                if ($checkOrder[0]['APPROVER_ID'] == $data['approver'][0]['PERSON_ID']) {
+                if ($checkOrder[0]['APPROVER_ID'] == $data['approver'][0]['PERSON_ID'] && $checkOrder[0]['APPROVER_TYPE'] != 7) {
                     $orderSiapTampil = $this->M_approver->getOrderToApprove($order['ORDER_ID']);
                     if ($orderSiapTampil[0]['ORDER_CLASS'] != '2' && $orderSiapTampil[0]['ORDER_STATUS_ID'] != '4' || $orderSiapTampil[0]['ORDER_STATUS_ID'] != '5') {
                         array_push($data['listOrder'], $orderSiapTampil[0]);
@@ -155,7 +155,7 @@ class C_Approver extends CI_Controller {
             // echo'<pre>';
             // print_r($checkOrder);
             if (isset($checkOrder[0])) {
-                if ($checkOrder[0]['APPROVER_ID'] == $data['approver'][0]['PERSON_ID']) {
+                if ($checkOrder[0]['APPROVER_ID'] == $data['approver'][0]['PERSON_ID'] && $checkOrder[0]['APPROVER_TYPE'] != 7) {
                     $orderSiapTampil = $this->M_approver->getOrderToApprove($order['ORDER_ID']);
                     if ($orderSiapTampil[0]['ORDER_CLASS'] != '2' && $orderSiapTampil[0]['ORDER_STATUS_ID'] != '4' || $orderSiapTampil[0]['ORDER_STATUS_ID'] != '5') {
                         array_push($data['listOrder'], $orderSiapTampil[0]);
@@ -202,7 +202,7 @@ class C_Approver extends CI_Controller {
             // echo'<pre>';
             // print_r($checkOrder);
             if (isset($checkOrder[0])) {
-                if ($checkOrder[0]['APPROVER_ID'] == $data['approver'][0]['PERSON_ID']) {
+                if ($checkOrder[0]['APPROVER_ID'] == $data['approver'][0]['PERSON_ID'] && $checkOrder[0]['APPROVER_TYPE'] != 7) {
                     $orderSiapTampil = $this->M_approver->getOrderToApprove($order['ORDER_ID']);
                     if ($orderSiapTampil[0]['ORDER_CLASS'] != '2' && $orderSiapTampil[0]['ORDER_STATUS_ID'] != '4' || $orderSiapTampil[0]['ORDER_STATUS_ID'] != '5') {
                         array_push($data['listOrder'], $orderSiapTampil[0]);
@@ -829,13 +829,13 @@ class C_Approver extends CI_Controller {
 	{
 		//email
 		$getEmail = $this->M_approver->getEmail($noind);
-		$emailUser = $getEmail[0]['EMAIL_INTERNAL'];
 		// echo 
 		// $emailUser = 'bondan_surya_n@quick.com';
 		
         //send Email
         
-        if ($emailUser) {
+        if ($getEmail) {
+            $emailUser = $getEmail[0]['EMAIL_INTERNAL'];
             $this->load->library('PHPMailerAutoload');
             $mail = new PHPMailer();
             $mail->SMTPDebug = 0;
