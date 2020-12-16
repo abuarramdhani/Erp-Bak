@@ -432,6 +432,7 @@ class C_IsolasiMandiri extends CI_Controller
 				'status_kondisi_id' => '1',
 				'mulai_isolasi' 	=> $this->input->post('txtMPSuratIsolasiMandiriMulaiIsolasiTanggal'),
 				'selesai_isolasi' 	=> $this->input->post('txtMPSuratIsolasiMandiriSelesaiIsolasiTanggal'),
+				'pic_followup'		=>	$this->input->post('slcMPSuratIsolasiMandiriTo'),
 				'isolasi_id' 		=> $insert_id
 			);
 			$this->M_monitoringcovid->updatePekerjaById($data_pekerja,$plaintext_string);
@@ -649,6 +650,7 @@ class C_IsolasiMandiri extends CI_Controller
 			$data_pekerja = array(
 				'jml_hari' 			=> $this->input->post('txtMPSuratIsolasiMandiriJumlahHari'),
 				'status_kondisi_id' => '1',
+				'pic_followup'		=> $this->input->post('slcMPSuratIsolasiMandiriTo'),
 				'mulai_isolasi' 	=> $this->input->post('txtMPSuratIsolasiMandiriMulaiIsolasiTanggal'),
 				'selesai_isolasi' 	=> $selesai
 			);
