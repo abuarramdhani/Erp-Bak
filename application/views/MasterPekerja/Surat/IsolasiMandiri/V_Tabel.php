@@ -3,7 +3,7 @@
 	<tr>
 		<td>Tanggal</td>
 		<td>Jumlah hari</td>
-		<td>Isolasi di</td>
+		<td>Status</td>
 	</tr>
 	<?php foreach ($arr2 as $key): ?>
 		<tr>
@@ -20,11 +20,17 @@
 				<?= $key['jml'] ?> Hari
 			</td>
 			<td>
-			<?php if (strpos($key['st'], 'WFO') !== false || $key['st'] == 'TERHITUNG PKJ'): ?>
-				Perusahaan
-			<?php else: ?>
-				Rumah
-			<?php endif ?>
+			<?php
+				if ($key['sta'] == 'PSK') {
+					echo 'Isolasi Rumah';
+				}elseif ($key['sta'] == 'PKJ') {
+					echo "Tidak Isolasi";
+				}elseif (strpos($key['st'], 'WFO') !== false || $key['st'] == 'TERHITUNG PKJ'){
+					echo 'Isolasi Perusahaan';
+				}else{
+					echo 'Isolasi Rumah';
+				}
+			?>
 			</td>
 		</tr>
 	<?php endforeach ?>

@@ -120,6 +120,14 @@ class C_IsolasiMandiri extends CI_Controller
 		$tgl = $this->input->get('tgl');
 		$status = $this->input->get('st');
 		$alasan = $this->input->get('al');
+		// for ($i=0; $i < count($alasan); $i++) { 
+		// 	if ($alasan[$i] == '') {
+		// 		$alasan[$i] = 'WFO';
+		// 	}
+		// 	if (strpos($alasan[$i], 'WFO') || strpos($alasan[$i], 'PKJ')) {
+		// 		$alasan[$i] = 'WFO';
+		// 	}
+		// }
 		$lama1 = $tgl[0];
 		$c = count($tgl);
 		$lama2 = $tgl[$c-1];
@@ -156,6 +164,7 @@ class C_IsolasiMandiri extends CI_Controller
 				'awal' => $awl,
 				'akhir' => $akh,
 				'jml'	=> date_diff(date_create($akh), date_create($awl))->format('%d')+1,
+				'sta'	=> $status[$fi],
 				'st' => $alasan[$fi],
 				);
 		}
@@ -339,6 +348,14 @@ class C_IsolasiMandiri extends CI_Controller
 		$tglPer = $this->input->post('tgl_perperiode');
 		$arStatus = $this->input->post('slcMPSuratIsolasiMandiriStatus2');
 		$arAlasan = $this->input->post('slcMPSuratIsolasiMandiriAlasan2');
+		for ($i=0; $i < count($arStatus); $i++) { 
+			if ($arStatus[$i] == 'PKJ' || $arStatus[$i] == 'PSK') {
+				array_splice($arAlasan, $i, 0, '');
+			}
+		}
+		// echo "<pre>";
+		// print_r($arStatus);
+		// print_r($arAlasan);exit();
 		$zx = 0;
 		$batas = '2020-12-03';
 		foreach ($tglPer as $dt) {
@@ -349,6 +366,7 @@ class C_IsolasiMandiri extends CI_Controller
 			}
 			$day = date('D', strtotime($d));
 			if ($day == 'Sun') {
+				$zx++;
 				continue;
 			}
 			if (strtotime($dt) < strtotime($batas)) {
@@ -1082,8 +1100,6 @@ class C_IsolasiMandiri extends CI_Controller
 									<option '.$q.'>ISOLASI DIRI - PENYEBAB - WFO</option>
 									<option '.$r.'>ISOLASI DIRI - PENYEBAB - WFH</option>
 									<option '.$s.'>ISOLASI DIRI - PENYEBAB - NON WFH</option>
-									<option '.$t.'>NON ISOLASI DIRI - NON DL - WFH</option>
-									<option '.$u.'>NON ISOLASI DIRI - NON DL - NON WFH</option>
 								</select>
 							</td>
 							'.$sama.'
@@ -1119,8 +1135,6 @@ class C_IsolasiMandiri extends CI_Controller
 									<option>ISOLASI DIRI - PENYEBAB - WFO</option>
 									<option>ISOLASI DIRI - PENYEBAB - WFH</option>
 									<option>ISOLASI DIRI - PENYEBAB - NON WFH</option>
-									<option>NON ISOLASI DIRI - NON DL - WFH</option>
-									<option>NON ISOLASI DIRI - NON DL - NON WFH</option>
 								</select>
 							</td>
 							'.$sama.'
