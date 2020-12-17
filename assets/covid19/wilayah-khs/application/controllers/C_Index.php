@@ -14,18 +14,39 @@ class C_Index extends CI_Controller {
 	}
 
 	public function index(){
-		$zona = $this->M_index->getZonaKHSAll();
-		// if (!empty($zona)) {
-		// 	foreach ($zona as $key => $value) {
-		// 		if ($value['isolasi'] == "Ya") {
-		// 			if (strtotime($value['tgl_awal_isolasi']) > strtotime(date('Y-m-d')) || strtotime($value['tgl_akhir_isolasi']) < strtotime(date('Y-m-d'))) {
-		// 				$zona[$key]['isolasi'] = "Tidak";
-		// 			}
-		// 		}
-		// 	}
-		// }
-		$data['zona'] = $zona;
-		
+		$data['zona'] = $this->M_index->getZonaKHSAll();
+		$koordinat = array();
+		$tmp = array();
+		foreach ($data['zona'] as $k) {
+			$kasus = array();
+			if (in_array($k['koordinat'], $tmp)) {
+				foreach ($koordinat as $key => $value) {
+					if ($value['koordinat'] == $k['koordinat']) {
+						$koordinat[$key]['detail'][] = array(
+							'tgl_awal_isolasi' 	=> $k['tgl_awal_isolasi'],
+							'tgl_akhir_isolasi' => $k['tgl_akhir_isolasi'],
+							'kasus' 			=> $k['kasus']
+						);
+					}
+				}
+			}else{
+				$kasus[] = array(
+					'tgl_awal_isolasi' 	=> $k['tgl_awal_isolasi'],
+					'tgl_akhir_isolasi' => $k['tgl_akhir_isolasi'],
+					'kasus' 			=> $k['kasus']
+				);
+				$koordinat[] = array(
+					'koordinat' 	=> $k['koordinat'],
+					'nama_seksi' 	=> $k['nama_seksi'],
+					'lokasi' 		=> $k['lokasi'],
+					'isolasi' 		=> $k['isolasi'],
+					'detail' 		=> $kasus
+				);
+				$tmp[] = $k['koordinat'];
+			}
+		}
+		$data['koordinat_zona'] = $koordinat;
+		// echo "<pre>";print_r($data['koordinat_zona']);exit();
 		$this->load->view('V_Index', $data);
 	}
 }

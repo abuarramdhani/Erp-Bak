@@ -23,7 +23,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'http://erp.quick.com/assets/covid19/wilayah-khs/';
+if ($_SERVER['SERVER_ADDR'] == "192.168.168.127") {
+	$config['base_url'] = 'http://erp.quick.com/assets/covid19/wilayah-khs/';
+}else{
+	$config['base_url'] = '';
+}
 
 /*
 |--------------------------------------------------------------------------
