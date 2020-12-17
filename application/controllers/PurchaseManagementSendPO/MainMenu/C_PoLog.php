@@ -237,6 +237,58 @@ class C_PoLog extends CI_Controller {
             $excel_writer->save('php://output');
     }
 
+    public function listFolderFiles($dir = 'assets/upload/PurchaseManagementSendPO/LampiranPO/'){
+        $ffs = scandir($dir);
+    
+        unset($ffs[array_search('.', $ffs, true)]);
+        unset($ffs[array_search('..', $ffs, true)]);
+    
+        // prevent empty ordered elements
+        if (count($ffs) < 1)
+            return;
+    
+        echo '<ol>';
+        foreach($ffs as $ff){
+            echo '<li>'.$ff;
+            if(is_dir($dir.'/'.$ff)) $this->listFolderFiles($dir.'/'.$ff);
+            echo '</li>';
+        }
+        echo '</ol>';
+    }
+  
+    public function moveToFolder()
+    {
+        $data = $this->M_polog->getAllPO();
+        $files = scandir('assets/upload/PurchaseManagementSendPO/LampiranPO');
+        echo '<pre>';
+        print_r($files);
+        print_r($data);
+        foreach ($data as $key => $value) {
+            $directory = 'assets/upload/PurchaseManagementSendPO/LampiranPO' . '/' . $value['PHA_SEGMENT_1'] . '-' . $value['REVISION_NUM'] . '/';
+            if (!is_dir($directory)) {
+                mkdir($directory);
+            }
+          
+            $attachment = $value['ATTACHMENT'];
+          
+            $match_files = array_filter($files, function($file) use ($attachment) {
+                return strpos($file, $attachment) !== false;
+            });
+          
+            $match_file = reset($match_files);
+          
+            if (file_exists('assets/upload/PurchaseManagementSendPO/LampiranPO/'. $match_file) && $match_file) {
+              print_r($value['PHA_SEGMENT_1']);
+              // query update
+              $this->M_polog->updatePOAttachmentName($value['LOGBOOK_ID'], $match_file);
+              echo $value['LOGBOOK_ID'];
+              echo 'assets/upload/PurchaseManagementSendPO/LampiranPO/'. $match_file;
+              echo '<br>';
+              rename('assets/upload/PurchaseManagementSendPO/LampiranPO/'. $match_file, $directory . $match_file);
+            }
+        }
+    }
+  
     public function downloadFileAttachment($po_number, $file)
     {
         force_download('assets/upload/PurchaseManagementSendPO/LampiranPO/' . $po_number . '/' . $file, NULL);
