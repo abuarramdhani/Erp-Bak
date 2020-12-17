@@ -350,8 +350,17 @@ class C_PoLogbook extends CI_Controller
             $excel_writer->save('php://output');
     }
 
-    public function downloadFileAttachment($po_number, $file)
+    public function downloadFileAttachment()
     {
-      force_download('assets/upload/PurchaseManagementSendPO/LampiranPO/' . $po_number . '/' . $file, NULL);
+        $noPo = explode("-", $this->input->get('noPo'));
+        $po_number  = $noPo[0];
+        $no_rev     = $noPo[1];
+        $file_name   = $this->M_pologbook->getDataByPoNumb($po_number, $no_rev)->row_array();
+        $this->_downloadAttachment($po_number, $no_rev, $file_name['ATTACHMENT']);
+    }
+    
+    private function _downloadAttachment($po_number, $no_rev, $file_name ){
+        echo "File tidak ada";
+        force_download('assets/upload/PurchaseManagementSendPO/LampiranPO/' . $po_number . '-' . $no_rev . '/' . $file_name, NULL);
     }
 }
