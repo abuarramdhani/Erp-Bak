@@ -568,17 +568,20 @@
 														</div>
 														<div class="row" style="margin-top: 10px;">
 															<div class="col-lg-4">
-																<label for="PK_txt_ukuranbaju">Ukuran Baju </label>
+																<label for="PK_txt_ukuranbaju">Jenis Baju </label>
 															</div>
 															<div class="col-lg-8">
 																<div class="row">
-																	<div class="col-lg-8">
+																	<div class="col-lg-5">
 																		<select name="jenis_baju" id="jenis_baju" data-placeholder="Jenis baju" class="form-control select2">
 																			<option value="-">-</option>
 																			<option value="MAN" <?= $data['jenis_baju'] === 'MAN' ? 'selected' : '' ?>>MAN</option>
 																			<option value="LADIES" <?= $data['jenis_baju'] === 'LADIES' ? 'selected' : '' ?>>LADIES</option>
 																		</select>
 																	</div>
+																	<div class="col-lg-3 text-right" style="padding: 0;">
+                                                                        <label class="label-control">Ukuran Baju</label>
+                                                                    </div>
 																	<div class="col-lg-4">
 																		<?php
 																		$cloth_size = ['S', 'M', 'L', 'XL', 'XXL']
