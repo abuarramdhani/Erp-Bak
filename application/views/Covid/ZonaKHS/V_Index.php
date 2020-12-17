@@ -70,17 +70,21 @@
 											.dataTables_info {
 												float: left
 											}
+											table td:nth-child(2),table td:nth-child(3),table td:nth-child(4),table td:nth-child(8){
+												vertical-align: middle !important;
+												text-align: center !important;
+											}
 										</style>
 										<table id="tbl-CVD-ZonaKHS" class="table table-bordered table-hover table-striped">
 											<thead>
-												<th class="bg-primary" style="text-align: center;vertical-align: middle;">No.</th>
-												<th class="bg-primary" style="text-align: center;vertical-align: middle;">Lokasi</th>
-												<th class="bg-primary" style="text-align: center;vertical-align: middle;">Nama Seksi</th>
-												<th class="bg-primary" style="text-align: center;vertical-align: middle;">Isolasi</th>
-												<th class="bg-primary" style="text-align: center;vertical-align: middle;">Tanggal Awal Isolasi</th>
-												<th class="bg-primary" style="text-align: center;vertical-align: middle;">Tanggal Akhir Isolasi</th>
-												<th class="bg-primary" style="text-align: center;vertical-align: middle;">Kasus</th>
-												<th class="bg-primary" style="text-align: center;vertical-align: middle;">Action</th>
+												<th class="bg-primary" style="text-align: center;vertical-align: middle;width: 5%">No.</th>
+												<th class="bg-primary" style="text-align: center;vertical-align: middle;width: 10%">Lokasi</th>
+												<th class="bg-primary" style="text-align: center;vertical-align: middle;width: 15%">Nama Area / Ruangan</th>
+												<th class="bg-primary" style="text-align: center;vertical-align: middle;width: 5%">Isolasi</th>
+												<th class="bg-primary" style="text-align: center;vertical-align: middle;width: 10%">Tanggal Awal Isolasi</th>
+												<th class="bg-primary" style="text-align: center;vertical-align: middle;width: 10%">Tanggal Akhir Isolasi</th>
+												<th class="bg-primary" style="text-align: center;vertical-align: middle;width: 35%">Kasus</th>
+												<th class="bg-primary" style="text-align: center;vertical-align: middle;width: 10%">Action</th>
 											</thead>
 											<tbody>
 												<?php 
@@ -98,8 +102,8 @@
 															<td><?php echo $z['lokasi'] ?></td>
 															<td><?php echo $z['nama_seksi'] ?></td>
 															<td><?php echo $z['isolasi'] ?></td>
-															<td><?php echo $z['tgl_awal_isolasi'] ?></td>
-															<td><?php echo $z['tgl_akhir_isolasi'] ?></td>
+															<td><?php echo date('d/m/Y',strtotime($z['tgl_awal_isolasi'])) ?></td>
+															<td><?php echo date('d/m/Y',strtotime($z['tgl_akhir_isolasi'])) ?></td>
 															<td><?php echo $z['kasus'] ?></td>
 															<td>
 																<button class="btn btn-info btn-CVD-ZonaKHS-Edit" title="Edit"><span class="fa fa-edit"></span></button>

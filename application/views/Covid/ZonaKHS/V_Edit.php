@@ -50,54 +50,77 @@
 												</div>
 											</div>
 											<div class="form-group">
-												<label class="control-label col-md-4">Isolasi</label>
-												<div class="col-md-4">
-													<label for="txt-CVD-ZonaKHS-Isolasi-Ya" class="col-md-6">
-														<input type="radio" 
-															value="1" 
-															name="txt-CVD-ZonaKHS-Isolasi" 
-															id="txt-CVD-ZonaKHS-Isolasi-Ya"
-															<?php echo isset($zona) && !empty($zona) && $zona->isolasi == "1" ? 'checked' : '' ?>>
-														Ya
-													</label>
-													<label for="txt-CVD-ZonaKHS-Isolasi-Tidak" class="col-md-6">
-														<input type="radio" 
-															value="0" 
-															name="txt-CVD-ZonaKHS-Isolasi" 
-															id="txt-CVD-ZonaKHS-Isolasi-Tidak"
-															<?php echo isset($zona) && !empty($zona) && $zona->isolasi == "0" ? 'checked' : '' ?>>
-														Tidak
-													</label>
+												<label class="control-label col-sm-2">Detail Kasus</label>
+												<div class="col-sm-8">
+													<table class="table table-striped table-bordered table-hover" id="tbl-CVD-ZonaKHS-Kasus">
+														<thead class="bg-primary">
+															<tr>
+																<th style="text-align: center;vertical-align: middle;width: 20%">Mulai Isolasi</th>
+																<th style="text-align: center;vertical-align: middle;width: 20%">Selesai Isolasi</th>
+																<th style="text-align: center;vertical-align: middle;width: 50%">Detail Kasus</th>
+																<th style="text-align: center;vertical-align: middle;width: 10%">Action</th>
+															</tr>
+														</thead>
+														<tbody>
+															<?php 
+															if (isset($kasus) && !empty($kasus)) {
+																foreach ($kasus as $k) {
+																	?>
+																	<tr>
+																		<td>
+																			<input 
+																				type="text" 
+																				class="form-control txt-CVD-ZonaKHS-PeriodeAwal" 
+																				placeholder="Tanggal Mulai" 
+																				autocomplete="off"
+																				value="<?php echo $k['tgl_awal_isolasi'] ?>">
+																		</td>
+																		<td>
+																			<input 
+																				type="text" 
+																				class="form-control txt-CVD-ZonaKHS-PeriodeAkhir" 
+																				placeholder="Tanggal Selesai" 
+																				autocomplete="off"
+																				value="<?php echo $k['tgl_akhir_isolasi'] ?>">
+																		</td>
+																		<td>
+																			<textarea 
+																				class="form-control txa-CVD-ZonaKHS-Kasus" 
+																				placeholder="Masukkan Kasus" 
+																				autocomplete="off"><?php 
+																				echo $k['kasus'];
+																				?></textarea>
+																		</td>
+																		<td>
+																			<button type="button" class="btn btn-danger btn-CVD-ZonaKHS-RemoveKasus" title="Hapus Kasus"><span class="fa fa-trash"></span></button>
+																		</td>
+																	</tr>
+																	<?php
+																}
+															}else{
+																?>
+																<tr>
+																	<td>
+																		<input type="text" class="form-control txt-CVD-ZonaKHS-PeriodeAwal" placeholder="Tanggal Mulai" autocomplete="off">
+																	</td>
+																	<td>
+																		<input type="text" class="form-control txt-CVD-ZonaKHS-PeriodeAkhir" placeholder="Tanggal Selesai" autocomplete="off">
+																	</td>
+																	<td>
+																		<textarea class="form-control txa-CVD-ZonaKHS-Kasus" placeholder="Masukkan Kasus" autocomplete="off"></textarea>
+																	</td>
+																	<td>
+																		<button type="button" class="btn btn-danger btn-CVD-ZonaKHS-RemoveKasus" title="Hapus Kasus"><span class="fa fa-trash"></span></button>
+																	</td>
+																</tr>
+																<?php
+															}
+															?>
+														</tbody>
+													</table>
 												</div>
-											</div>
-											<div class="form-group">
-												<label class="control-label col-md-4">Periode Isolasi</label>
-												<div class="col-md-2">
-													<input type="text" 
-														class="form-control" 
-														placeholder="Tanggal Mulai" 
-														id="txt-CVD-ZonaKHS-PeriodeAwal"
-														value="<?php echo isset($zona) && !empty($zona) ? $zona->tgl_awal_isolasi : '' ?>" 
-														autocomplete="off">
-												</div>
-												<div class="col-md-2">
-													<input type="text" 
-														class="form-control" 
-														placeholder="Tanggal Selesai" 
-														id="txt-CVD-ZonaKHS-PeriodeAkhir"
-														value="<?php echo isset($zona) && !empty($zona) ? $zona->tgl_akhir_isolasi : '' ?>" 
-														autocomplete="off">
-												</div>
-											</div>
-											<div class="form-group">
-												<label class="control-label col-md-4">Kasus</label>
-												<div class="col-md-4">
-													<textarea class="form-control" 
-														placeholder="Masukkan Kasus" 
-														id="txa-CVD-ZonaKHS-Kasus" 
-														autocomplete="off"><?php 
-														echo isset($zona) && !empty($zona) ? $zona->kasus : '' 
-													?></textarea>
+												<div class="col-sm-2">
+													<button type="button" class="btn btn-primary" title="Tambah Kasus" id="btn-CVD-ZonaKHS-AddKasus"><span class="fa fa-plus"></span></button>
 												</div>
 											</div>
 											<div class="form-group">

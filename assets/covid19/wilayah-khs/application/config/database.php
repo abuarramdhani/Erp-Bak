@@ -75,7 +75,7 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'database.quick.com',
+	'hostname' => 'dev.quick.com',
 	'username' => 'postgres',
 	'password' => 'password',
 	'database' => 'erp',

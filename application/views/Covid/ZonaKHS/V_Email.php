@@ -33,7 +33,7 @@
 																	<select class="slc-CVD-ZonaKHS-Email-Area" style="width: 100%;"></select>
 																</td>
 																<td>
-																	<input type="text" class="form-control txt-CVD-ZonaKHS-Email-Kasus" disabled>
+																	<select class="slc-CVD-ZonaKHS-Email-Kasus" style="width: 100%;" disabled></select>
 																</td>
 																<td>
 																	<input type="text" class="form-control txt-CVD-ZonaKHS-Email-Isolasi" disabled>

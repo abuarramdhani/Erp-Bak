@@ -17,11 +17,22 @@
 		.pagination>li>a:focus, .pagination>li>a:hover, .pagination>li>span:focus, .pagination>li>span:hover,.pagination>li>a, .pagination>li>span {
 			color: #ffeaa7;
 		}
+		table td:nth-child(2),table td:nth-child(3),table td:nth-child(4),table td:nth-child(8){
+			vertical-align: middle !important;
+			text-align: center !important;
+		}
+		.box-popup{
+			border: 1px solid red;
+			border-radius: 10px;
+			padding: 3px;
+			margin-bottom: 5px; 
+		}
 	</style>
 
 	<script type="text/javascript" src="<?php echo base_url('assets/plugins/jQuery/jquery-1.12.4.min.js') ?>"></script>
 	<script type="text/javascript" src="<?php echo base_url('assets/plugins/Bootstrap/3.3.7/js/bootstrap.min.js') ?>"></script>
 	<script type="text/javascript" src="<?php echo base_url('assets/plugins/datatables/datatables.min.js') ?>"></script>
+	<script type="text/javascript" src="<?php echo base_url('assets/plugins/datatables/RowsGroup/dataTables.rowsGroup.js') ?>"></script>
 	<script type="text/javascript" src="<?php echo base_url('assets/plugins/leaflet/leaflet-src.js') ?>"></script>
 	<script type="text/javascript" src="<?php echo base_url('assets/plugins/leaflet-draw/src/Leaflet.draw.js') ?>"></script>
 	<script type="text/javascript" src="<?php echo base_url('assets/plugins/leaflet-draw/src/Leaflet.Draw.Event.js') ?>"></script>
@@ -80,7 +91,7 @@
 									<tr>
 										<th style="width: 3%;background-color: #ffeaa7;text-align: center;vertical-align: middle;">No.</th>
 										<th style="width: 7%;background-color: #ffeaa7;text-align: center;vertical-align: middle;">Lokasi</th>
-										<th style="width: 10%;background-color: #ffeaa7;text-align: center;vertical-align: middle;">Nama Seksi</th>
+										<th style="width: 10%;background-color: #ffeaa7;text-align: center;vertical-align: middle;">Nama Area / Ruangan</th>
 										<th style="width: 5%;background-color: #ffeaa7;text-align: center;vertical-align: middle;">Isolasi</th>
 										<th style="width: 10%;background-color: #ffeaa7;text-align: center;vertical-align: middle;">Tanggal Awal Isolasi</th>
 										<th style="width: 10%;background-color: #ffeaa7;text-align: center;vertical-align: middle;">Tanggal Akhir Isolasi</th>
@@ -132,6 +143,11 @@
 					</div>
 				</div>
 			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12" style="color: red;font-size: 14px;">
+			*Untuk mengetahui detail pada denah/map, Anda dapat meng-klik pada area yang ditandai warna merah.
 		</div>
 	</div>
 	<div class="row">
@@ -188,8 +204,8 @@
 			var drawnItemsTks = new L.FeatureGroup();
 			mapTks.addLayer(drawnItemsTks);
 
-		    <?php if(isset($zona) && !empty($zona)){
-		    	foreach ($zona as $key => $z) {
+		    <?php if(isset($koordinat_zona) && !empty($koordinat_zona)){
+		    	foreach ($koordinat_zona as $key => $z) {
 		    		$js = $z['koordinat'];
 		    		if (!empty($z['koordinat'])) {
 		    			if ($z['lokasi'] == "JOGJA") {
@@ -200,9 +216,15 @@
 					    $arr = json_decode($js);
 					    $arr->properties->nama_seksi = $z['nama_seksi'];
 					    $arr->properties->isolasi = $z['isolasi'];
-					    $arr->properties->tgl_awal_isolasi = date('d/m/Y',strtotime($z['tgl_awal_isolasi']));
-					    $arr->properties->tgl_akhir_isolasi = date('d/m/Y',strtotime($z['tgl_akhir_isolasi']));
-					    $arr->properties->kasus = $z['kasus'];
+				    	$popup_text = "Kasus Kosong";
+					    if (!empty($z['detail'])) {
+					    	$popup_text = "";
+					    	foreach ($z['detail'] as $pt) {
+					    		$popup_text .= "<div class='box-popup'>Kasus : ".$pt['kasus']."<br>";
+					    		$popup_text .= "Periode Isolasi : ".date('d/m/Y',strtotime($pt['tgl_awal_isolasi']))." s/d ".date('d/m/Y',strtotime($pt['tgl_akhir_isolasi']))."<br></div>";
+					    	}
+					    }
+					    $arr->properties->kasus = $popup_text;
 					    $json = json_encode($arr);
 					    if ($z['isolasi'] == "Ya") {
 							?>
@@ -222,8 +244,7 @@
 								var text = layer.feature.properties.nama_seksi;
 								text += "<br>Isolasi : " + layer.feature.properties.isolasi; 
 								if (layer.feature.properties.isolasi == "Ya") {
-									text += "<br>Periode Isolasi : " + layer.feature.properties.tgl_awal_isolasi + " s/d " + layer.feature.properties.tgl_akhir_isolasi;
-									text += "<br>Kasus : " + layer.feature.properties.kasus; 
+									text += "<br>Detail Kasus : <br>" + layer.feature.properties.kasus; 
 								}
 								return text;
 							}).addTo(<?php echo $map ?>);
@@ -246,8 +267,7 @@
 								var text = layer.feature.properties.nama_seksi;
 								text += "<br>Isolasi : " + layer.feature.properties.isolasi; 
 								if (layer.feature.properties.isolasi == "Ya") {
-									text += "<br>Periode Isolasi : " + layer.feature.properties.tgl_awal_isolasi + " s/d " + layer.feature.properties.tgl_akhir_isolasi;
-									text += "<br>Kasus : " + layer.feature.properties.kasus; 
+									text += "<br>Detail Kasus : <br>" + layer.feature.properties.kasus; 
 								}
 								return text;
 							}).addTo(<?php echo $map ?>);
