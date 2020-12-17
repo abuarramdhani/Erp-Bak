@@ -9,6 +9,24 @@ class M_polog extends CI_Model
         $this->load->database();
         $this->oracle = $this->load->database('oracle', TRUE);
     }
+    public function getAllPO()
+    {
+        return $this->oracle->query(
+            "SELECT LOGBOOK_ID, PHA_SEGMENT_1, REVISION_NUM, ATTACHMENT FROM khs_psup_po_logbook WHERE ATTACHMENT IS NOT NULL ORDER BY LOGBOOK_ID DESC"
+        )->result_array();
+    }
+
+    public function updatePOAttachmentName($id, $attachment)
+    {
+        $this->oracle->query("UPDATE
+            khs_psup_po_logbook
+        SET
+            attachment = '$attachment'
+        WHERE
+            LOGBOOK_ID = $id
+        ");
+    }
+
     public function getDataPO()
     {
         $sql = "select

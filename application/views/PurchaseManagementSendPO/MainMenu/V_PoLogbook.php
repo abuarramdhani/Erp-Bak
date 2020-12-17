@@ -166,7 +166,7 @@
                                                     <center><?= $value['VENDOR_CONFIRM_NOTE']; ?></center>
                                                 </td>
                                                 <td>
-                                                    <center><a href="<?= base_url('PurchaseManagementSendPO/PoLog/download') . '/' . $value['PO_NUMBER'] . '-' . $value['PO_REVISION'] . '/' . $value['ATTACHMENT']; ?>" style="text-decoration: none;"><?= $value['ATTACHMENT']; ?></a></center>
+                                                    <center><a href="<?= base_url('PurchaseManagementSendPO/PoLogbook/download') . '/' . $value['PO_NUMBER'] . '-' . $value['PO_REVISION'] . '/' . $value['ATTACHMENT']; ?>" style="text-decoration: none;"><?= $value['ATTACHMENT']; ?></a></center>
                                                 </td>
                                                 <td style="min-width: 60px; max-width: 60px; text-align: center;">
                                                     <a class="btn btn-success btn-edit" href="<?= base_url("PurchaseManagementSendPO/POLogbook/edit") . '?po_numb=' . $value['PO_NUMBER'] . '-' . $value['PO_REVISION']; ?>" title="Edit"><i class="fa fa-edit"></i></a>

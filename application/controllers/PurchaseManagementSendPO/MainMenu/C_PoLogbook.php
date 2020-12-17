@@ -131,7 +131,7 @@ class C_PoLogbook extends CI_Controller
                     ->set_content_type('application/json')
                     ->set_output(json_encode("File yang anda masukkan salah"));
             } else {
-                $config['upload_path']          = './assets/upload/PurchaseManagementSendPO/LampiranPO'. $this->input->post('po_number');
+                $config['upload_path']          = './assets/upload/PurchaseManagementSendPO/LampiranPO/'. $this->input->post('po_number');
                 $config['allowed_types']        = 'pdf|jpeg|jpg|png|xls|xlsx|ods|odt|txt|doc|docx';
         
                 $this->load->library('upload', $config);
