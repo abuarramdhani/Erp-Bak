@@ -712,7 +712,7 @@ class C_Cetak extends CI_Controller {
 						array_push($data['idunix'], $cek[0]['IDUNIX']);
 					}
 				}
-				array_push($data['idunix'], $idunix);
+				// array_push($data['idunix'], $idunix);
 			}
 
 			ob_start();
