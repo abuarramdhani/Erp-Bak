@@ -83,14 +83,17 @@ class C_Monitoring extends CI_Controller
 		$cancel = $this->M_monitoring->getcancel($date, $date);
 		$data['cancel'] = count($cancel);
 		
-		$jumlah = array();
+		$jumlah = array(); $jmlitem = 0;
 		for ($i=0; $i < $data['jml_packing'] ; $i++) { 
 			$cari = $this->M_monitoring->getTransact($packing[$i]['NO_DOKUMEN']);
 			for ($a=0; $a < count($cari) ; $a++) { 
 				array_push($jumlah, $cari[$a]['TRANSACTION_QUANTITY']);
 			}
+			$jmlitem += count($cari);
 		}
-		$data['jml_selesai'] = array_sum($jumlah);
+		$data['jml_selesai'] 		= $data['jml_packing'];
+		$data['jml_item_selesai'] 	= $jmlitem;
+		$data['jml_pcs_selesai'] 	= array_sum($jumlah);
 		$krg = $this->M_monitoring->dataKurangselesai($date, $date);
 		$kkrg = 0;
 		for ($i=0; $i < count($krg); $i++) { 
@@ -219,14 +222,17 @@ class C_Monitoring extends CI_Controller
 			$cancel = $this->M_monitoring->getcancel($date, $date);
 			$hasil[$a]['cancel'] = count($cancel);
 
-			$jumlah = array();
+			$jumlah = array(); $jmlitem = 0;
 			for ($i=0; $i < $hasil[$a]['jml_packing'] ; $i++) { 
 				$cari = $this->M_monitoring->getTransact($packing[$i]['NO_DOKUMEN']);
 				for ($b=0; $b < count($cari) ; $b++) { 
 					array_push($jumlah, $cari[$b]['TRANSACTION_QUANTITY']);
 				}
+				$jmlitem += count($cari);
 			}
-			$hasil[$a]['jml_selesai'] = array_sum($jumlah);
+			$hasil[$a]['jml_selesai'] 		= $hasil[$a]['jml_packing'];
+			$hasil[$a]['jml_item_selesai'] 	= $jmlitem;
+			$hasil[$a]['jml_pcs_selesai'] 	= array_sum($jumlah);
 			$krg = $this->M_monitoring->dataKurangselesai($date, $date);
 			$kkrg = 0;
 			for ($i=0; $i < count($krg); $i++) { 
@@ -1986,7 +1992,7 @@ class C_Monitoring extends CI_Controller
 		$tglAwal 		= $this->input->post('tglAwal[]');
 		$tglAkhir 		= $this->input->post('tglAkhir[]');
 		$tanggal 		= $this->input->post('tanggalnya[]');
-		$jml_selesai 	= $this->input->post('jml_selesai[]');
+		$jml_selesai 	= $this->input->post('jml_pcs_selesai[]');
 		$krg_selesai 	= $this->input->post('krg_selesai[]');
 
 		$ketdata = array();

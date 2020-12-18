@@ -303,11 +303,19 @@
             <table style="width: 50%;table-layout:fixed">
                 <tbody>
                     <tr>
-                        <th width="53.5%" style="padding-left:15px">Jumlah DOSP/SPB selesai</th>
-                        <th><input type="hidden" name="jml_selesai[]" value="<?= $val['jml_selesai']?>">: <?= $val['jml_selesai'] ?> pcs</th>
+                        <th width="53.5%" style="padding-left:15px">Jumlah lembar selesai</th>
+                        <th><input type="hidden" name="jml_selesai[]" value="<?= $val['jml_selesai']?>">: <?= $val['jml_selesai'] ?> lembar</th>
                     </tr>
                     <tr>
-                        <th style="padding-left:15px">Kekurangan DOSP/SPB selesai</th>
+                        <th style="padding-left:15px">Jumlah item selesai</th>
+                        <th><input type="hidden" name="jml_item_selesai[]" value="<?= $val['jml_item_selesai']?>">: <?= $val['jml_item_selesai'] ?> item</th>
+                    </tr>
+                    <tr>
+                        <th style="padding-left:15px">Jumlah pcs selesai</th>
+                        <th><input type="hidden" name="jml_pcs_selesai[]" value="<?= $val['jml_pcs_selesai']?>">: <?= $val['jml_pcs_selesai'] ?> pcs</th>
+                    </tr>
+                    <tr>
+                        <th style="padding-left:15px">Kekurangan selesai</th>
                         <th><input type="hidden" name="krg_selesai[]" value="<?= $val['krg_selesai']?>">: <?= $val['krg_selesai'] ?> pcs</th>
                     </tr>
                     <tr>
