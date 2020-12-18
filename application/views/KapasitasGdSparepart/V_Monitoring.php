@@ -361,11 +361,19 @@
                                             <table style="width: 50%;table-layout:fixed">
                                                 <tbody>
                                                     <tr>
-                                                       <th width="53.5%" style="padding-left:15px">Jumlah DOSP/SPB selesai</th>
-                                                       <th>: <?= $jml_selesai ?> pcs</th>
+                                                       <th width="53.5%" style="padding-left:15px">Jumlah lembar selesai</th>
+                                                       <th>: <?= $jml_selesai ?> lembar</th>
                                                     </tr>
                                                     <tr>
-                                                       <th style="padding-left:15px">Kekurangan DOSP/SPB selesai</th>
+                                                       <th width="53.5%" style="padding-left:15px">Jumlah item selesai</th>
+                                                       <th>: <?= $jml_item_selesai ?> item</th>
+                                                    </tr>
+                                                    <tr>
+                                                       <th width="53.5%" style="padding-left:15px">Jumlah pcs selesai</th>
+                                                       <th>: <?= $jml_pcs_selesai ?> pcs</th>
+                                                    </tr>
+                                                    <tr>
+                                                       <th style="padding-left:15px">Kekurangan selesai</th>
                                                        <th>: <?= $krg_selesai ?> pcs</th>
                                                     </tr>
                                                     <tr>
