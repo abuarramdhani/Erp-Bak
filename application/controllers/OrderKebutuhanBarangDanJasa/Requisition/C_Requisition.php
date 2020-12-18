@@ -192,7 +192,7 @@ class C_Requisition extends CI_Controller {
 			}
 
 			if ($creator != $requster) {
-				if($urgentFlag[$i] == 'Y'){
+				if($urgentFlag[$i] == 'Y' || $statusOrder == 'Y'){
 
 					$setApproverRequester = $this->M_requisition->setApproverItemUrgent($requster, $itemCode[$i]);
 				}else {
@@ -602,7 +602,7 @@ class C_Requisition extends CI_Controller {
 			$atasanUrgent = array(
 				'PERSON_ID' => $kasie[$i],
 				'APPROVER_LEVEL' => 9,
-				'APPROVER' => $department[$i],
+				'APPROVER' => 1513,
 			);
 			$this->M_requisition->setAtasan($atasanUrgent);
 
