@@ -9,7 +9,7 @@
                         <div class="col-lg-12">
                             <div class="box box-primary box-solid">
                                 <div class="box-header with-border text-center" style="font-weight: bold; font-size: 20px;">
-                                     Interaksi dengan Terduga / Terkonfirmasi Covid 19
+                                     Interaksi dengan Orang Yang Habis Berinteraksi dengan Terduga / Terkonfirmasi Covid 19
                                 </div>
                                 <div class="panel-body">
                                   <div class="row">
