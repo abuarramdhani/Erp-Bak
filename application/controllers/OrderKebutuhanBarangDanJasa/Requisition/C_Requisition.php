@@ -602,7 +602,7 @@ class C_Requisition extends CI_Controller {
 			$atasanUrgent = array(
 				'PERSON_ID' => $kasie[$i],
 				'APPROVER_LEVEL' => 9,
-				'APPROVER' => $department[$i],
+				'APPROVER' => 1513,
 			);
 			$this->M_requisition->setAtasan($atasanUrgent);
 
