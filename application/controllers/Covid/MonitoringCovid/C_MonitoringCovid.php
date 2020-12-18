@@ -699,6 +699,7 @@ class C_MonitoringCovid extends CI_Controller
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		$data['list'] = $this->M_monitoringcovid->getIsDirisendiri();
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -1436,7 +1437,7 @@ class C_MonitoringCovid extends CI_Controller
 		'durasi'	=> $this->input->post('durasi'),
 		'protokol'	=> $this->input->post('protokol'),
 		'arahan'	=> $arahan,
-		'kasus'		=> 'Kontak dengan Probable/Konfirmasi Covid 19 - Beda Rumah',
+		'kasus'		=> 'Interaksi dengan Orang Yang Habis Berinteraksi dengan Terduga / Terkonfirmasi Covid 19',
 		'atasan' => $this->input->post('slc-CVD-MonitoringCovid-Atasan'),
 		];
 
