@@ -192,7 +192,7 @@ class C_Requisition extends CI_Controller {
 			}
 
 			if ($creator != $requster) {
-				if($urgentFlag[$i] == 'Y'){
+				if($urgentFlag[$i] == 'Y' || $statusOrder == 'Y'){
 
 					$setApproverRequester = $this->M_requisition->setApproverItemUrgent($requster, $itemCode[$i]);
 				}else {
