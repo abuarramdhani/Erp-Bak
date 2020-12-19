@@ -229,7 +229,8 @@ class C_Requisition extends CI_Controller {
 			// print_r($files);exit;
 
 			for ($j=0; $j < $number_of_files; $j++) { 
-				$_FILES['fileOKBAttachment'.$x]['name']		= $files['name'][$j];
+				$new_filename = $order_id[0]['ORDER_ID'].'-'.$files['name'][$j];
+				$_FILES['fileOKBAttachment'.$x]['name']		= $new_filename;
 				$_FILES['fileOKBAttachment'.$x]['type']		= $files['type'][$j];
 				$_FILES['fileOKBAttachment'.$x]['tmp_name']	= $files['tmp_name'][$j];
 				$_FILES['fileOKBAttachment'.$x]['error']	= $files['error'][$j];

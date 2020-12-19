@@ -67,6 +67,27 @@ class M_purchasing extends CI_Model
         return $query->result_array();
     }
 
+    public function getActOrderForBuyer($cond)
+    {
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query("SELECT
+                    oprh.* ,
+                    ppf.NATIONAL_IDENTIFIER noind ,
+                    ppf.full_name creator ,
+                    ppf2.FULL_NAME approver
+                FROM
+                    KHS.KHS_OKBJ_PRE_REQ_HEADER oprh,
+                    PER_PEOPLE_F ppf,
+                    PER_PEOPLE_F ppf2
+                WHERE
+                    oprh.CREATED_BY = ppf.person_id
+                    AND oprh.APPROVED_BY = ppf2.PERSON_ID(+)
+                    $cond
+                    ORDER BY oprh.PRE_REQ_ID DESC");
+
+        return $query->result_array();
+    }
+
     public function DetailApprovedOrder()
     {
         $oracle = $this->load->database('oracle', true);
