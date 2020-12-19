@@ -96,7 +96,9 @@ class M_purchasing extends CI_Model
         koh.ORDER_ID ,
         koh.ORDER_DATE ,
         prha.SEGMENT1 no_pr ,
-        prla.LINE_NUM pr_line_num
+        prla.LINE_NUM pr_line_num,
+        (SELECT count(FILE_NAME) FROM KHS.KHS_OKBJ_ORDER_ATTACHMENTS 
+        WHERE ORDER_ID = koh.ORDER_ID) attachment
         --,kprh.CREATED_BY
     ,
         ppf_puller.FULL_NAME creation_by ,

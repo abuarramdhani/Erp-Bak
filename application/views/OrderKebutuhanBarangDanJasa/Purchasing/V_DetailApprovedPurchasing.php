@@ -14,6 +14,10 @@
                             <p class="bold">Order list</p>
                         </div>
                         <div class="panel-body">
+                            <div>
+                                <span class="col-sm-1" style="background-color :#f39c12;">&nbsp;</span>
+                                <span>&nbsp;*Terdapat Attachment/Lampiran</span>
+                            </div><br><br>
                             <table class="table table-hover table-bordered table-striped tblDetailApprovedPurchasingOKB">
                                 <thead>
                                     <tr class="bg-primary">
@@ -27,8 +31,14 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                <?php foreach ($list_detail as $key => $list) { ?>
-                                    <tr>
+                                <?php foreach ($list_detail as $key => $list) { 
+                                    if ($list['ATTACHMENT'] > 0) {
+                                        $bg = "style='background-color :#f39c12;'";
+                                     }else{
+                                         $bg = '';
+                                     }
+                                ?>
+                                    <tr <?= $bg;?> >
                                         <td><?= $list['PRE_REQ_ID'];?></td>
                                         <td><button type="button" class="btn btn-sm btn-info btnOKBDetailApprovedOrderPurchasing"><?= $list['ORDER_ID'];?></button></td>
                                         <td><?= $list['ORDER_DATE'];?></td>
