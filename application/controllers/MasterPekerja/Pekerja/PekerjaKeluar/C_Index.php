@@ -130,6 +130,9 @@ class C_Index extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$noind 					= $this->input->get('noind');
+		$keluar = $this->input->get('keluar');
+		$data['edit'] = $this->input->get('edit');
+		$data['link'] = 'viewEdit?keluar='.$keluar.'&noind='.$noind;
 
 		if (empty($noind)) return redirect($menu_url);
 
@@ -305,6 +308,23 @@ class C_Index extends CI_Controller
 			'keluar' => $pekerja->keluar,
 			'text' => $noind . ' - ' . $pekerja->nama
 		);
+
+		$kode = substr($noind, 0,1);
+		$ar = array('J', 'H', 'K', 'P', 'T', 'C');
+		$ar2 = array('B', 'A');
+		if (in_array($kode, $ar)) {
+			$st = 'PKWT';
+		}else{
+			$st = 'Kontrak';
+		}
+		$data['st'] = $st;
+		$data['st2'] = (in_array($kode, $ar2)) ? 'tetap':'kontrak';
+
+		//pkwt
+		$data['lpkwt'] = $this->M_pekerjakeluar->getLpkwt($noind);
+
+		$lama = $this->getLamaperpanjangan($noind);
+		$data['lama'] = $lama;
 
 		// debug($data);
 
@@ -510,6 +530,10 @@ class C_Index extends CI_Controller
 	public function update()
 	{
 		try {
+			//jika akh kontrak di ganti tgl keluar +1 day :D
+			if (isset($_POST['akhkontrak'])) {
+				$_POST['tglkeluar'] = '-';
+			}
 			$user_logged = $this->session->user;
 			$noind = $this->input->post('noind');
 			if (empty($noind)) throw new Exception("Noind param is empty");
@@ -575,7 +599,7 @@ class C_Index extends CI_Controller
 				'nospsi'						=> $this->input->post('nospsi'),
 				'tglkop'						=> $this->input->post('tglkop') ? date('Y-m-d', strtotime($this->input->post('tglkop'))) : '',
 				'nokoperasi'				=> $this->input->post('nokoperasi'),
-				'tglkeluar'         => $this->input->post('tglkeluar') ? date('Y-m-d', strtotime($this->input->post('tglkeluar'))) : '',
+				'tglkeluar'         => $this->input->post('akhkontrak') ? date('Y-m-d', strtotime($this->input->post('akhkontrak').'+1 day')) : '',
 				'sebabklr'          => $this->input->post('sebabklr'),
 				'statnikah'					=> $this->input->post('statnikah'),
 				'tglnikah'					=> $this->input->post('tglnikah') ? date('Y-m-d', strtotime($this->input->post('tglnikah'))) : '',
@@ -1253,5 +1277,195 @@ class C_Index extends CI_Controller
 				)
 			), 400);
 		}
+	}
+
+	public function add_perpanjangan()
+	{
+		$user = $this->session->user;
+		// print_r($_POST);
+		$mulair = $this->input->post('mulai');
+		$mulai = date('Y-m-d', strtotime($mulair));
+		$lama = $this->input->post('lama');
+		$berakhirr = $this->input->post('berakhir');
+		$berakhir = date('Y-m-d', strtotime($berakhirr));
+		$tgl_keluar = date('d-m-Y', strtotime($berakhir. '+1 day'));
+		$tgl_keluar_ins = date('Y-m-d', strtotime($berakhir. '+1 day'));
+		$noind = $this->input->post('noind');
+		$kode = substr($noind, 0,1);
+
+		$dataPpj = $this->M_pekerjakeluar->getLpkwt($noind);
+		$ppj_ke = count($dataPpj)+1;
+		$now = date('Y-m-d H:i:s');
+
+		$arr = array(
+			'noind' => $noind,
+			'perpanjangan_ke' => $ppj_ke,
+			'lama_perpanjangan' => $lama,
+			'berakhirnya_perpanjangan' => $berakhir,
+			'create_date' => $now,
+			'create_by' => $user,
+			'last_update_date' => $now,
+			'last_update_by' => $user,
+			'mulai_perpanjangan' => $mulai,
+			);
+		$ins = $this->M_pekerjakeluar->insPPJ($arr);
+		$arr2 = array(
+			'akhkontrak'	=>	$berakhir,
+			'tglkeluar'	=>	$tgl_keluar_ins,
+			);
+		$up = $this->M_pekerjakeluar->upktkklr($arr2, $noind);
+
+		//uncomment lama ini jika ambil dari default
+		// $lama = $this->getLamaperpanjangan($noind);
+
+		// print_r($arr);
+		$bck_mulai = date('d-m-Y', strtotime($berakhir.'+1 day'));
+		$bck_akhir = date('d-m-Y', strtotime($berakhir. '+ '.$lama.' month'));
+		$bck_tr = 	'<tr idnya ="'.$ins.'">
+						<td>'.$ppj_ke.'</td>
+						<td>'.$mulair.'</td>
+						<td>'.$lama.'</td>
+						<td>'.$berakhirr.'</td>
+					</tr>';
+		$back = array(
+			'ppj'	=>	'Tambah Data Perpanjangan Ke '.($ppj_ke+1),
+			'mulai'	=>	$bck_mulai,
+			'berakhir'	=>	$bck_akhir,
+			'keluar'	=>	$tgl_keluar,
+			'tr'	=>	$bck_tr
+			);
+
+		echo json_encode($back);
+	}
+
+	public function edit_perpanjangan()
+	{
+		$user = $this->session->user;
+		// print_r($_POST);
+		$mulair = $this->input->post('mulai');
+		$mulai = date('Y-m-d', strtotime($mulair));
+		$lama = $this->input->post('lama');
+		$berakhirr = $this->input->post('berakhir');
+		$berakhir = date('Y-m-d', strtotime($berakhirr));
+		$tgl_keluar = date('d-m-Y', strtotime($berakhir. '+1 day'));
+		$tgl_keluar_ins = date('Y-m-d', strtotime($berakhir. '+1 day'));
+		$id = $this->input->post('id');
+		$now = date('Y-m-d H:i:s');
+		$arr = array(
+			'lama_perpanjangan' => $lama,
+			'berakhirnya_perpanjangan' => $berakhir,
+			'last_update_date' => $now,
+			'last_update_by' => $user,
+			'mulai_perpanjangan' => $mulai,
+			);
+		$up = $this->M_pekerjakeluar->upPPJ($arr, $id);
+		$noind = $this->M_pekerjakeluar->getNoindPPJ($id);
+		$max = $this->M_pekerjakeluar->getMaxtpkwt($noind);
+		$arr2 = array(
+			'akhkontrak'	=>	$berakhir,
+			'tglkeluar'	=>	$tgl_keluar_ins,
+			);
+		if ($max == $id)
+		$up = $this->M_pekerjakeluar->upktkklr($arr2, $noind);
+
+		$bck_mulai = date('d-m-Y', strtotime($berakhir));
+		$bck_akhir = date('d-m-Y', strtotime($berakhir));
+		$back = array(
+			'mulai'	=>	$bck_mulai,
+			'lama'	=>	$lama,
+			'berakhir'	=>	$bck_akhir,
+			'keluar'	=>	$tgl_keluar,
+			'ganti'	=>	$max==$id
+			);
+		echo json_encode($back);
+	}
+
+	public function delete_perpanjangan()
+	{
+		$back['change'] = 'false';
+		// return json_encode($back);
+		// exit();
+		$id = $this->input->post('id');
+		$noind = $this->M_pekerjakeluar->getNoindPPJ($id);
+		$kode = substr($noind, 0,1);
+		$lama = $this->getLamaperpanjangan($noind);
+		//cek tingal 1 atau tidak, kalau iya update
+		$ppj_all = $this->M_pekerjakeluar->getLpkwt($noind);
+		$ttl = count($ppj_all);
+		if ($ttl == 1) {
+			$ppj = $this->M_pekerjakeluar->getLpkwt2($noind);
+			$akhir = date('d-m-Y', strtotime($ppj['mulai_perpanjangan'].'-1 day'));
+			$akhirk = date('d-m-Y', strtotime($ppj['mulai_perpanjangan']));
+			$kontrak = date('Y-m-d', strtotime($akhir));
+			$keluar = date('Y-m-d', strtotime($akhirk));
+			$arr = array(
+				'akhkontrak'	=>	$kontrak,
+				'tglkeluar'	=>	$keluar,
+				);
+			$up = $this->M_pekerjakeluar->upktkklr($arr, $noind);
+
+			$back['change'] = 'true';
+			$back['akhir'] = $akhir;
+			$back['akhirk'] = $akhirk;
+			$back['m_awal'] = $akhirk;
+			$back['m_akhir'] = date('d-m-Y', strtotime($akhirk.'+ '.$lama.' month -1 day'));
+		}
+
+		$delete = $this->M_pekerjakeluar->delPPJ($id);
+		$ppj = $this->M_pekerjakeluar->getLpkwt2($noind);
+		// jika lebih dari 1
+		if (count($ppj) > 0 && $ppj_all > 1) {
+			$akhir = date('d-m-Y', strtotime($ppj['berakhirnya_perpanjangan']));
+			$akhirk = date('d-m-Y', strtotime($ppj['berakhirnya_perpanjangan']. '+ 1 day'));
+			$kontrak = date('Y-m-d', strtotime($akhir));
+			$keluar = date('Y-m-d', strtotime($akhirk));
+			$arr = array(
+				'akhkontrak'	=>	$kontrak,
+				'tglkeluar'	=>	$keluar,
+				);
+			$up = $this->M_pekerjakeluar->upktkklr($arr, $noind);
+
+			$back['change'] = 'true';
+			$back['akhir'] = $akhir;
+			$back['akhirk'] = $akhirk;
+			$back['m_awal'] = $akhirk;
+			$back['m_akhir'] = date('d-m-Y', strtotime($akhirk.'+ '.$lama.' month -1 day'));
+		}
+		echo json_encode($back);
+	}
+
+	public function get_tbl_perpanjangan()
+	{
+		$noind = $this->input->get('noind');
+		$data['lpkwt'] = $this->M_pekerjakeluar->getLpkwt($noind);
+		$html = $this->load->view('MasterPekerja/Pekerja/PekerjaKeluar/V_Table_');
+	}
+
+	public function getLamaperpanjangan($noind)
+	{
+		//param $kode important
+		//return lama
+		$pkj = $this->M_pekerjakeluar->dataPekerja($noind);
+		$kd_jab = $pkj->kd_jabatan;
+
+		$kode = substr($noind, 0,1);
+		$ar3bln = array('K', 'P');
+		$ar6bln = array('G');
+		$ar12bln = array('H', 'T', 'J');
+		if (in_array($kode, $ar3bln)) {
+			$lama = '3';
+		}elseif (in_array($kode, $ar12bln)) {
+			$lama = '12';
+		}elseif (in_array($kode, $ar6bln)) {
+			$lama = '6';
+		}elseif($kode == 'C' && $kd_jab == '18'){
+			$lama = '3';
+		}elseif ($kode == 'C' && $kd_jab != '18') {
+			$lama = '12';
+		}else{
+			$lama = '0';
+		}
+
+		return $lama;
 	}
 }

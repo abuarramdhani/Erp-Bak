@@ -28,6 +28,8 @@ function update_param_url(ObjUrl) {
 
 $(function () {
 	console.info("zzz... headache");
+	console.info("same bro :(");
+	console.info("fill tired, please take a bit of rest");
 
 	const SELECTED_NOIND = $("input[name=noind]").val();
 	let TGL_DIANGKAT = moment($("input[name=diangkat]").val(), ["DD-MM-YYYY"]).format("YYYY-MM-DD");
@@ -1415,6 +1417,7 @@ $(function () {
 							title = "Sukses Memperbaharui Data Pekerja";
 							TGL_DIANGKAT = temp_changed["tgl_diangkat"];
 							temp_changed = {};
+							window.location.replace(linkeditData);
 						} else {
 							title = "Gagal Memperbaharui Data Pekerja";
 						}
@@ -1504,7 +1507,233 @@ $(function () {
 			});
 	});
 
+	$(".mpk_dpatgl").daterangepicker({
+        "singleDatePicker": true,
+        "timePicker": false,
+        "timePicker24Hour": true,
+        "showDropdowns": true,
+        locale: {
+            format: 'DD-MM-YYYY'
+        },
+    });
+
+    $('#mpkedksvppj').click(function(){
+    	var mulai = $('#mpepkmlppj').val();
+    	var lama = $('#mpepklpppj').val();
+    	var berakhir = $('#mpepkbpppj').val();
+    	var pkj = $(this).val();
+
+    	$.ajax({
+            type: 'post',
+            data: {
+                mulai: mulai,
+                lama: lama,
+                berakhir: berakhir,
+                'noind': pkj
+            },
+            url: baseurl + "MasterPekerja/DataPekerjaKeluar/add_perpanjangan",
+            success: function (result) {
+                $('#mpkepkbrkt').val(berakhir);
+                MPKmcc_showAlert('success', 'Berhasil Menambah Data Perpanjangan');
+                $('#mpekmdladdppj').modal('hide');
+                var data = JSON.parse(result);
+                $('#mpkepktglklr').val(data['keluar']);
+                $('#exampleModalLabelPPJ').text(data['ppj']);
+                $('#mpepkmlppj').val(data['mulai']);
+                $('#mpepkbpppj').val(data['berakhir']);
+                $('#mpkedpktblppj tbody').append(data['tr']);
+
+                $(".mpk_dpatgl").daterangepicker({
+                	"singleDatePicker": true,
+                	"timePicker": false,
+                	"timePicker24Hour": true,
+                	"showDropdowns": true,
+                	locale: {
+                		format: 'DD-MM-YYYY'
+                	},
+                });
+            },
+            error: function (jqXHR,error, errorThrown) {
+            	alert(jqXHR.responseText);
+            },
+            complete: function (result) {
+                fakeLoading(1);
+            }
+        });
+    });
+
+     $('#mpkedpktblppj tbody').on('click', 'tr', function(){
+     	$(this).closest('tbody').find('tr').each(function(){
+     		$(this).removeClass('activex');
+     	});
+     	$(this).addClass('activex');
+     	$('.mpkepkdisoutclk').attr('disabled', false);
+     	let id = $(this).attr('idnya');
+     	$('.mpkepkdisoutclk').eq(0).val(id);
+     	$('.mpkepkdisoutclk').eq(1).val(id);
+     	event.stopPropagation();
+     });
+
+     $(document).click(function() {
+     	$('#mpkedpktblppj tbody tr').each(function(){
+     		$(this).removeClass('activex');
+     	});
+     	$('.mpkepkdisoutclk').attr('disabled', true);
+     });
+     //edit perpanjangan
+     $('.mpkepkdisoutclk').eq(0).click(function(){
+     	var id = $(this).val();
+     	var row = $("[idnya="+id+"]");
+     	var mulai = row.find('td').eq(1).text();
+    	var lama = row.find('td').eq(2).text();
+    	var berakhir = row.find('td').eq(3).text();
+    	var pkj = $("#mpkedksvppj").val();
+    	$('#mpkedksvppj1').val(id);
+    	$('#mpepkmlppj1').val(mulai).trigger('change');
+    	$('#mpepklpppj1').val(lama).trigger('change');
+    	$('#mpepkbpppj1').val(berakhir).trigger('change');
+
+    	$(".mpk_dpatgl").daterangepicker({
+    		"singleDatePicker": true,
+    		"timePicker": false,
+    		"timePicker24Hour": true,
+    		"showDropdowns": true,
+    		locale: {
+    			format: 'DD-MM-YYYY'
+    		},
+    	});
+     });
+
+     $('.mpkepkdisoutclk').eq(1).click(function(){
+     	var arrm = [];
+     	$('#mpkedpktblppj tbody tr').each(function(){
+     		var vall = $(this).attr('idnya');
+     		arrm.push(vall);
+     	});
+     	var max = Math.max(...arrm);
+     	var id = $(this).val();
+     	console.log(max, id);
+     	var row = $("[idnya="+id+"]");
+     	if (max == id) {
+     		swal
+     		.fire({
+     			title: "Apakah yakin akan menghapus Data perpanjangan ini?",
+     			text: "note: jabatan akan langsung terubah",
+     			type: "warning",
+     			showCancelButton: true,
+     		})
+     		.then(({ value }) => {
+     			if (!value) return;
+     			$.ajax({
+     				type: 'post',
+     				data: {
+     					'id': id
+     				},
+     				url: baseurl + "MasterPekerja/DataPekerjaKeluar/delete_perpanjangan",
+     				success: function (result) {
+     					MPKmcc_showAlert('success', 'Berhasil Menghapus Data Perpanjangan');
+     					row.remove();
+     					var data = JSON.parse(result);
+     					if (data['change'] == 'true') {
+     						$('#mpkepkbrkt').val(data['akhir']);
+							$('#mpkepktglklr').val(data['akhirk']);
+							$('#mpepkmlppj').val(data['m_awal']);
+							$('#mpepkbpppj').val(data['m_akhir']);
+     					}
+
+     					$(".mpk_dpatgl").daterangepicker({
+     						"singleDatePicker": true,
+     						"timePicker": false,
+     						"timePicker24Hour": true,
+     						"showDropdowns": true,
+     						locale: {
+     							format: 'DD-MM-YYYY'
+     						},
+     					});
+     				},
+     				error: function (jqXHR,error, errorThrown) {
+     					alert(jqXHR.responseText);
+     				},
+     				complete: function (result) {
+     					fakeLoading(1);
+     				}
+     			});
+     		});
+     	}else{
+     		alert('Data Perpanjangan ini tidak dapat di Hapus!');
+     	}
+     });
+
+     $('#mpkedksvppj1').click(function(){
+     	var id = $(this).val();
+     	var mulai = $('#mpepkmlppj1').val();
+    	var lama = $('#mpepklpppj1').val();
+    	var berakhir = $('#mpepkbpppj1').val();
+    	$.ajax({
+            type: 'post',
+            data: {
+                mulai: mulai,
+                lama: lama,
+                berakhir: berakhir,
+                'id': id
+            },
+            url: baseurl + "MasterPekerja/DataPekerjaKeluar/edit_perpanjangan",
+            success: function (result) {
+                MPKmcc_showAlert('success', 'Berhasil Mengedit Data Perpanjangan');
+                $('#mpekmdledppj').modal('hide');
+                var data = JSON.parse(result);
+                var row = $("[idnya="+id+"]");
+                // row.find('td').eq(0).text();
+                row.find('td').eq(1).text(data['mulai']);
+                row.find('td').eq(2).text(data['lama']);
+                row.find('td').eq(3).text(data['berakhir']);
+                if (data['ganti'] == true) {
+                	$('#mpkepkbrkt').val(berakhir);
+					$('#mpkepktglklr').val(data['keluar']);
+                }
+                $(".mpk_dpatgl").daterangepicker({
+                	"singleDatePicker": true,
+                	"timePicker": false,
+                	"timePicker24Hour": true,
+                	"showDropdowns": true,
+                	locale: {
+                		format: 'DD-MM-YYYY'
+                	},
+                });
+            },
+            error: function (jqXHR,error, errorThrown) {
+            	alert(jqXHR.responseText);
+            },
+            complete: function (result) {
+                fakeLoading(1);
+            }
+        });
+     });
+
 	// $('#select-kd_jbt_dl').select2({
 	// 	dropdownCssClass: 'bigdrop'
 	// })
 }); // end document on ready
+
+function MPKmcc_showAlert(icon, title)
+{
+	const Toast = Swal.mixin({
+		toast: true,
+		width: '500px',
+		background: '#ebfff0',
+		position: 'top-end',
+		showConfirmButton: true,
+		// timer: 5000,
+		// timerProgressBar: true,
+		onOpen: (toast) => {
+			toast.addEventListener('mouseenter', Swal.stopTimer)
+			toast.addEventListener('mouseleave', Swal.resumeTimer)
+		}
+	});
+
+	Toast.fire({
+		type: icon,
+		// title: title,
+		html: '<h2 style="color:black;font-weight: bold;padding-top:0px;padding-bottom:0px;">'+title+'</h2>'
+	});
+}

@@ -1049,4 +1049,53 @@ class M_pekerjakeluar extends CI_Model
 			->where('noind', $from)
 			->update('hrd_khs.tbpjstk', $data_dest);
 	}
+
+	public function getLpkwt($noind)
+	{
+		$this->personalia->where('noind', $noind);
+		return $this->personalia->get('hrd_khs.tperpanjangan_pkwt')->result_array();
+	}
+
+	public function getLpkwt2($noind)
+	{
+		$sql = "SELECT * from hrd_khs.tperpanjangan_pkwt where noind = '$noind' order by id_perpanjangan desc limit 1";
+		return $this->personalia->query($sql)->row_array();
+	}
+
+	public function insPPJ($data)
+	{
+		$this->personalia->insert('hrd_khs.tperpanjangan_pkwt', $data);
+		return $this->personalia->insert_id();
+	}
+
+	public function upktkklr($data, $noind)
+	{
+		$this->personalia->where('noind', $noind);
+		$this->personalia->update('hrd_khs.tpribadi', $data);
+	}
+
+	public function upPPJ($data, $id)
+	{
+		$this->personalia->where('id_perpanjangan', $id);
+		$this->personalia->update('hrd_khs.tperpanjangan_pkwt', $data);
+	}
+
+	public function getMaxtpkwt($noind)
+	{
+		$sql = "SELECT max(id_perpanjangan) from hrd_khs.tperpanjangan_pkwt tp
+				where noind = 'T0007'";
+		return $this->personalia->query($sql)->row()->max;
+	}
+
+	public function getNoindPPJ($id)
+	{
+		$sql = "SELECT noind from hrd_khs.tperpanjangan_pkwt where id_perpanjangan = $id";
+		return $this->personalia->query($sql)->row()->noind;
+	}
+
+	public function delPPJ($id)
+	{
+		$this->personalia->where('id_perpanjangan', $id);
+		$this->personalia->delete('hrd_khs.tperpanjangan_pkwt');
+	}
 }
