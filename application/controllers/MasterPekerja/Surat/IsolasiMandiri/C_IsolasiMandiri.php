@@ -687,7 +687,7 @@ class C_IsolasiMandiri extends CI_Controller
 				$dataPrez = $this->M_isolasimandiri->getDataPresensiIs2($pkj, $awal_lama, $akhir_lama);
 				$arl = array(
 					'wkt'	=>	date('Y-m-d H:i:s'),
-					'transaksi'	=>	'DELETE DATA Presensi & edit presensi tanggal '.$mulai.' sampai '.$selesai.' noind '.$pekerja,
+					'transaksi'	=>	'DELETE DATA Presensi & edit presensi tanggal '.$mulai.' sampai '.$selesai.' noind '.$pkj,
 					'keterangan'	=>	json_encode($dataPrez),
 					'program'	=>	'TIM-COVID19->MonitoringCovid',
 					'tgl_proses'	=>	date('Y-m-d H:i:s'),
@@ -836,11 +836,16 @@ class C_IsolasiMandiri extends CI_Controller
 			//reinsert cvd_waktu_isolasi
 			$zx = 0;
 			foreach ($tglPer as $dt) {
+				if ($arStatus[$zx] == 'PKJ' || $arStatus[$zx] == 'PSK') {
+					$als = '';
+				}else{
+					$als = $arAlasan[$zx];
+				}
 				$arrz[] = array(
 					'isolasi_id'=> $id,
 					'tanggal'	=> $dt,
 					'status'	=> $arStatus[$zx],
-					'alasan'	=> $arAlasan[$zx],
+					'alasan'	=> $als,
 					);
 				$zx++;
 			}
