@@ -127,6 +127,13 @@
 		color: white;
 	}
 
+	#mpkedpktblppj>tbody>tr.activex,
+	#mpkedpktblppj>tbody>tr.activex:active,
+	#mpkedpktblppj>tbody>tr.activex:focus {
+		background-color: #3c8dbc !important;
+		color: white;
+	}
+
 	.bigdrop {
 		width: 200px !important;
 	}
@@ -137,6 +144,11 @@
 
 	#table-anggota-keluarga tbody tr:hover,
 	#table-jabatan tbody tr:hover {
+		background-color: #7fa9ce;
+		cursor: pointer;
+		color: white;
+	}
+	#mpkedpktblppj tbody tr:hover {
 		background-color: #7fa9ce;
 		cursor: pointer;
 		color: white;
@@ -152,7 +164,7 @@
 				</div>
 				<div class="panel-body">
 					<div class="row" id="search-container">
-						<form method="GET" action="<?= base_url('MasterPekerja/DataPekerjaKeluar/viewEdit'); ?>">
+						<form method="GET" action="<?= base_url('MasterPekerja/DataPekerjaKeluar/viewEdit'); ?>" id="frmmpkedp">
 							<div class="col-lg-4">
 								<div class="form-group">
 									<label>Cari Pekerja</label>
@@ -667,12 +679,66 @@
 																	</label>
 																</div>
 															</div>
+															<?php if ($st2 == 'kontrak'): ?>
+															<div class="row mt-10">
+																<div class="col-md-6">
+																	<div class="col-md-6">
+																		<label for="">Lama <?= $st ?></label>
+																	</div>
+																	<div class="col-md-6">
+																		<input type="text" name="lmkontrak" class="form-control" value="<?= $data['lmkontrak'] ?>">
+																	</div>
+																</div>
+																<div class="col-md-6">
+																	<div class="col-md-5">
+																		<label for="">Berakhirnya <?= $st ?></label>
+																	</div>
+																	<div class="col-md-6">
+																		<input type="text" name="akhkontrak" class="form-control mpk_dpatgl" value="<?= $data['akhkontrak'] ?>" id="mpkepkbrkt">
+																	</div>
+																</div>
+															</div>
+															<div class="row mt-20">
+																<div class="col-md-12">
+																	<fieldset class="bordered p-2" id="penempatan-perpanjangan">
+																		<legend>Perpanjangan</legend>
+																		<div class="table-responsive" id="mpkepkdivtblppj">
+																			<table class="table" id="<?= ($edit == 1 ? 'mpkedpktblppj':'') ?>">
+																				<thead>
+																					<tr>
+																						<th>Perpanjangan Ke</th>
+																						<th>Mulai Perpanjangan</th>
+																						<th>Lama Perpanjangan</th>
+																						<th>Berakhirnya Perpanjangan</th>
+																					</tr>
+																				</thead>
+																				<tbody>
+																					<?php foreach ($lpkwt as $lp): ?>
+																						<tr idnya="<?= $lp['id_perpanjangan'] ?>">
+																							<td><?= $lp['perpanjangan_ke'] ?></td>
+																							<td><?= date('d-m-Y', strtotime($lp['mulai_perpanjangan']))  ?></td>
+																							<td><?= $lp['lama_perpanjangan'] ?></td>
+																							<td><?= date('d-m-Y', strtotime($lp['berakhirnya_perpanjangan']))  ?></td>
+																						</tr>
+																					<?php endforeach ?>
+																				</tbody>
+																			</table>
+																		</div>
+																		<div>
+																			<button class="btn btn-primary" id="add" data-toggle="modal" data-target="#mpekmdladdppj">Tambah Perpanjangan</button>
+																			<button class="btn btn-primary mpkepkdisoutclk" data-toggle="modal" data-target="#mpekmdledppj" disabled>Edit Perpanjangan</button>
+																			<button class="btn btn-primary mpkepkdisoutclk" disabled>Hapus Perpanjangan</button>
+																		</div>
+																	</fieldset>
+																</div>
+															</div>
+															<?php endif ?>
 															<div class="row mt-20">
 																<div class="col-md-12">
 																	<fieldset class="bordered p-2" id="penempatan-jabatan">
 																		<legend>Penempatan Jabatan Pekerja</legend>
 																		<div class="table-responsive">
-																			<table class="table" id="table-jabatan">
+																			<table class="table" id="<?= ($edit == 1) ? 'table-jabatan':'' ?>">
 																				<thead>
 																					<tr>
 																						<th>Kodesie</th>
@@ -774,22 +840,6 @@
 																	</div>
 																	<div class="col-md-4">
 																		<input type="text" name="npwp" class="form-control" value="<?= $data['npwp'] ?>">
-																	</div>
-																</div>
-															</div>
-															<div class="row mt-10">
-																<div class="col-md-12">
-																	<div class="col-md-3">
-																		<label for="">Lama Kontrak</label>
-																	</div>
-																	<div class="col-md-2">
-																		<input type="text" name="lmkontrak" class="form-control" value="<?= $data['lmkontrak'] ?>">
-																	</div>
-																	<div class="col-md-3">
-																		<label for="">Berakhirnya Kontrak</label>
-																	</div>
-																	<div class="col-md-3">
-																		<input type="text" name="akhkontrak" class="form-control date" value="<?= $data['akhkontrak'] ?>">
 																	</div>
 																</div>
 															</div>
@@ -901,6 +951,16 @@
 														<div class="inner-box min bordered">
 															<h3>Putus Hubungan Kerja</h3>
 															<div class="form-group">
+																<?php if ($st2 == 'tetap'): ?>
+																<div class="row mt-10">
+																	<div class="col-md-4">
+																		<label for="">Berakhirnya Masa Kerja</label>
+																	</div>
+																	<div class="col-md-6">
+																		<input type="text" name="tglkeluar" id="mpkepktglklr" class="form-control mpk_dpatgl" value="<?= $data['tglkeluar'] ?>">
+																	</div>
+																</div>
+																<?php endif ?>
 																<div class="row mt-10">
 																	<div class="col-md-4">
 																		<label for="">Tgl. Keluar</label>
@@ -1125,7 +1185,12 @@
 									</div>
 								</div>
 								<div class="col-md-12 mt-20 submit-container">
-									<button class="btn btn-success" id="submit_update">Update Data</button>
+									<?php if ($edit): ?>
+										<a class="btn btn-warning" id="" href="<?=$link?>">Kembali</a>
+										<button class="btn btn-success" id="submit_update">Simpan & Update Data</button>
+									<?php else: ?>
+										<a class="btn btn-warning" id="" href="<?=$link?>&edit=1">Edit Data</a>
+									<?php endif ?>
 								</div>
 							</div>
 							<!-- NAV -->
@@ -1690,6 +1755,58 @@
 		</div>
 	</div>
 
+	<div class="modal fade" id="mpekmdladdppj" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<label class="modal-title" id="exampleModalLabelPPJ">Tambah Data Perpanjangan Ke <?= count($lpkwt)+1 ?></label>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<label>Mulai Perpanjangan</label>
+					<input id="mpepkmlppj" class="form-control mpk_dpatgl" value="<?= $xx = date('d-m-Y', strtotime($data['akhkontrak'].'+1 day')) ?>">
+					<label>Lama Perpanjangan (bulan)</label>
+					<input id="mpepklpppj" class="form-control" value="<?= $lama ?>" type="number" max="24">
+					<label>Berakhirnya Perpanjangan</label>
+					<input id="mpepkbpppj" class="form-control mpk_dpatgl" value="<?= date('d-m-Y', strtotime($xx.'+ '.$lama.' month -1 day')) ?>">
+				</div>
+				<div class="modal-footer">
+					<label class="pull-left" style="color: red">*Pastikan Data sudah Sesuai sebelum Klik Simpan!</label>
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					<button type="button" id="mpkedksvppj" class="btn btn-primary" value="<?= $data['noind'] ?>">Simpan</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="mpekmdledppj" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<label class="modal-title" id="exampleModalLabelPPJ1">Edit Data Perpanjangan Ke <?= count($lpkwt)+1 ?></label>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<label>Mulai Perpanjangan</label>
+					<input id="mpepkmlppj1" class="form-control mpk_dpatgl">
+					<label>Lama Perpanjangan (bulan)</label>
+					<input id="mpepklpppj1" class="form-control" type="number" max="24">
+					<label>Berakhirnya Perpanjangan</label>
+					<input id="mpepkbpppj1" class="form-control mpk_dpatgl">
+				</div>
+				<div class="modal-footer">
+					<label class="pull-left" style="color: red">*Pastikan Data sudah Sesuai sebelum Klik Simpan!</label>
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					<button type="button" id="mpkedksvppj1" class="btn btn-primary" value="<?= $data['noind'] ?>">Simpan</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<!-- MODAL AREA -->
 
 	<!-- LOADING -->
@@ -1780,5 +1897,21 @@
 			},
 		})
 	})
+
+	var linkeditData = "<?=$link?>";
+	<?php if ($edit == 0 || !$edit): ?>
+		$('input').attr('disabled', true);
+		$('select').attr('disabled', true);
+		$('textarea').attr('disabled', true);
+		$('button').attr('disabled', true);
+
+		$('#frmmpkedp input').attr('disabled', false);
+		$('#frmmpkedp button').attr('disabled', false);
+		$('#frmmpkedp select').attr('disabled', false);
+	<?php endif ?>
+	window.addEventListener('load', function () {
+		// getTblPerpanjangan("<?=$data['noind']?>");
+		// action_for_perpanjangan();
+	})
 </script>
-<!-- Go go go reach 3000 line  -->
+<!-- Go go go reach 3000 line go brrrrrrbrbrbrbrrrrrrrrr  -->

@@ -130,6 +130,9 @@ class C_Index extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$noind 					= $this->input->get('noind');
+		$keluar = $this->input->get('keluar');
+		$data['edit'] = $this->input->get('edit');
+		$data['link'] = 'viewEdit?keluar='.$keluar.'&noind='.$noind;
 
 		if (empty($noind)) return redirect($menu_url);
 
@@ -305,6 +308,23 @@ class C_Index extends CI_Controller
 			'keluar' => $pekerja->keluar,
 			'text' => $noind . ' - ' . $pekerja->nama
 		);
+
+		$kode = substr($noind, 0,1);
+		$ar = array('J', 'H', 'K', 'P', 'T', 'C');
+		$ar2 = array('B', 'A');
+		if (in_array($kode, $ar)) {
+			$st = 'PKWT';
+		}else{
+			$st = 'Kontrak';
+		}
+		$data['st'] = $st;
+		$data['st2'] = (in_array($kode, $ar2)) ? 'tetap':'kontrak';
+
+		//pkwt
+		$data['lpkwt'] = $this->M_pekerjakeluar->getLpkwt($noind);
+
+		$lama = $this->getLamaperpanjangan($noind);
+		$data['lama'] = $lama;
 
 		// debug($data);
 
@@ -510,6 +530,10 @@ class C_Index extends CI_Controller
 	public function update()
 	{
 		try {
+			//jika akh kontrak di ganti tgl keluar +1 day :D
+			if (isset($_POST['akhkontrak'])) {
+				$_POST['tglkeluar'] = '-';
+			}
 			$user_logged = $this->session->user;
 			$noind = $this->input->post('noind');
 			if (empty($noind)) throw new Exception("Noind param is empty");
@@ -575,7 +599,7 @@ class C_Index extends CI_Controller
 				'nospsi'						=> $this->input->post('nospsi'),
 				'tglkop'						=> $this->input->post('tglkop') ? date('Y-m-d', strtotime($this->input->post('tglkop'))) : '',
 				'nokoperasi'				=> $this->input->post('nokoperasi'),
-				'tglkeluar'         => $this->input->post('tglkeluar') ? date('Y-m-d', strtotime($this->input->post('tglkeluar'))) : '',
+				'tglkeluar'         => $this->input->post('akhkontrak') ? date('Y-m-d', strtotime($this->input->post('akhkontrak').'+1 day')) : '',
 				'sebabklr'          => $this->input->post('sebabklr'),
 				'statnikah'					=> $this->input->post('statnikah'),
 				'tglnikah'					=> $this->input->post('tglnikah') ? date('Y-m-d', strtotime($this->input->post('tglnikah'))) : '',
