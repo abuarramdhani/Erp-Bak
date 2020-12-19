@@ -1414,10 +1414,8 @@ $(document).ready(function () {
     });
 
     $(document).on('click','.btnOKBReleaseOrderPulling', function () {
-        $(this).attr('disabled','disabled');
         var checkbox = $('.checkApproveOKB').filter(':checked');
-        $('.imgOKBLoading').fadeIn();
-
+        
         if (checkbox.length == 0) {
             Swal.fire({
                 type: 'error',
@@ -1425,6 +1423,8 @@ $(document).ready(function () {
                 text: 'Anda belum memilih order !',
             });
         }else{
+            $(this).attr('disabled','disabled');
+            $('.imgOKBLoading').fadeIn();
             var orderid = new Array();
             if (checkbox) {
                 $(checkbox).each(function () {
@@ -1463,10 +1463,8 @@ $(document).ready(function () {
     })
 
     $(document).on('click','.btnOKBReleaseOrderPullingBatch', function () {
-        $(this).attr('disabled','disabled');
         var checkbox = $('.checkApproveOKB').filter(':checked');
-        $('.imgOKBLoading').fadeIn();
-
+        
         if (checkbox.length == 0) {
             Swal.fire({
                 type: 'error',
@@ -1474,6 +1472,8 @@ $(document).ready(function () {
                 text: 'Anda belum memilih order !',
             });
         }else{
+            $(this).attr('disabled','disabled');
+            $('.imgOKBLoading').fadeIn();
             var itemcode = new Array();
             if (checkbox) {
                 $(checkbox).each(function () {
@@ -1504,7 +1504,7 @@ $(document).ready(function () {
                             text: 'Order gagal direlease !',
                         });
                     }
-                    $('.btnOKBReleaseOrderPulling').removeAttr('disabled');
+                    $('.btnOKBReleaseOrderPullingBatch').removeAttr('disabled');
                     $('.imgOKBLoading').hide();
                 }
             });
