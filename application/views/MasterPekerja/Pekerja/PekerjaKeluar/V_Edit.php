@@ -966,7 +966,7 @@
 																		<label for="">Tgl. Keluar</label>
 																	</div>
 																	<div class="col-md-6">
-																		<input type="text" name="tglkeluar" class="form-control date" value="<?= $data['tglkeluar'] ?>">
+																		<input type="text" name="tglkeluar" id="mpkepktglklr" class="form-control date" value="<?= $data['tglkeluar'] ?>">
 																	</div>
 																</div>
 																<div class="row mt-10">
