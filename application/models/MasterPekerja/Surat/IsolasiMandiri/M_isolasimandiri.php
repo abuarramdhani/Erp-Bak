@@ -248,7 +248,7 @@ class M_isolasimandiri extends CI_Model
 
 	public function delEditPres2($noind, $awal, $akhir, $status)
 	{
-		$sql = "DELETE from \"Presensi\".tinput_edit_presensi where noind = '$noind' and tanggal1 >= '$awal' and tanggal1 <= '$akhir' and kd_ket != 'PKJ'";
+		$sql = "DELETE from \"Presensi\".tinput_edit_presensi where noind = '$noind' and tanggal1 >= '$awal' and tanggal1 <= '$akhir' and kd_ket in ('PRM','PSK')";
 		// echo $sql;exit();
 		$query = $this->personalia->query($sql);
 		return $this->personalia->affected_rows();
@@ -256,7 +256,7 @@ class M_isolasimandiri extends CI_Model
 
 	public function delTdataPres2($noind, $awal, $akhir, $status)
 	{
-		$sql = "DELETE from \"Presensi\".tdatapresensi where noind = '$noind' and tanggal >= '$awal' and tanggal <= '$akhir' and kd_ket != 'PKJ'";
+		$sql = "DELETE from \"Presensi\".tdatapresensi where noind = '$noind' and tanggal >= '$awal' and tanggal <= '$akhir' and kd_ket in ('PRM','PSK')";
 		// echo $sql;exit();
 		$query = $this->personalia->query($sql);
 		return $this->personalia->affected_rows();

@@ -254,7 +254,7 @@ class M_monitoringcovid extends CI_Model {
 
 	function delSuratIs($noind, $status, $awal, $akhir)
 	{
-		$sql = "DELETE from \"Presensi\".tinput_edit_presensi where noind = '$noind' and kd_ket != 'PKJ'
+		$sql = "DELETE from \"Presensi\".tinput_edit_presensi where noind = '$noind' and kd_ket in ('PRM','PSK')
 				and tanggal1 >= '$awal' and tanggal1 <= '$akhir'";
 		$this->personalia->query($sql);
 		return $this->personalia->affected_rows();
@@ -262,7 +262,7 @@ class M_monitoringcovid extends CI_Model {
 
 	function delSuratIs2($noind, $status, $awal, $akhir)
 	{
-		$sql = "DELETE from \"Presensi\".tdatapresensi where noind = '$noind' and kd_ket != 'PKJ'
+		$sql = "DELETE from \"Presensi\".tdatapresensi where noind = '$noind' and kd_ket in ('PRM','PSK')
 				and tanggal >= '$awal' and tanggal <= '$akhir'";
 		$this->personalia->query($sql);
 		return $this->personalia->affected_rows();
@@ -778,5 +778,16 @@ class M_monitoringcovid extends CI_Model {
 	{
 		$this->personalia->where('noind', $noind);
 		return $this->personalia->get('hrd_khs.tpribadi')->row_array();
+	}
+
+	public function getHasilTest($id)
+	{
+		$this->db->where('cvd_pekerja_id', $id);
+		return $this->db->get('cvd.cvd_hasil_tes')->result_array();
+	}
+
+	public function addHasilTest($data)
+	{
+		$this->db->insert('cvd.cvd_hasil_tes', $data);
 	}
 }
