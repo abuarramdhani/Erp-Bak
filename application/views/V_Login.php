@@ -348,7 +348,7 @@
             if((browser == 'Chrome' && browserVersion < 49 && OSName != 'Android') || (browser == 'Chrome' && browserVersion < 42 && OSName == 'Android')) document.getElementById("body").innerHTML = error;
             if(browser == 'Mozila Firefox' && browserVersion < 45) document.getElementById("body").innerHTML = error;
             if(browser == 'chromium' && browserVersion < 50) document.getElementById("body").innerHTML = error;
-            if(browser == 'Safari' && browserVersion !== 604 && browserVersion !== 13) document.getElementById("body").innerHTML = error;
+            if(browser == 'Safari' && browserVersion < 604 && browserVersion < 13) document.getElementById("body").innerHTML = error;
     } else {
         document.getElementById("body").innerHTML = error;
     }
