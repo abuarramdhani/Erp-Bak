@@ -40,7 +40,7 @@
 											<div class="form-group">
 												<label class="control-label col-lg-4">Tembusan</label>
 												<div class="col-lg-4">
-													<select class="slcMPSuratIsolasiMandiriPekerjax slcMPSuratIsolasiMandiriTo" data-placeholder="Ditujukan Kepada" name="slcMPSuratIsolasiMandiriTembusan" id="slcMPSuratIsolasiMandiriTembusan" style="width: 100%" required>
+													<select class="slcMPSuratIsolasiMandiriPekerjax slcMPSuratIsolasiMandiriTo" data-placeholder="Ditujukan Kepada" name="slcMPSuratIsolasiMandiriTembusan" id="slcMPSuratIsolasiMandiriTembusan" style="width: 100%">
 														<option selected="" value="<?php echo $dt['tembusan'] ?>"><?php echo $dt['tembusan'].' - '.$dt['tembusan_nama'] ?></option>
 														<?php foreach ($tembusan as $k): ?>
 															<option value="<?= $k['noind'] ?>" ><?= $k['noind'].' - '.$k['nama'] ?></option>
