@@ -203,7 +203,9 @@ $(document).ready(function(){
 		});
 	});
 
-	$('.slcMPSuratIsolasiMandiriTo').select2();
+	$('.slcMPSuratIsolasiMandiriTo').select2({
+		allowClear: true
+	});
 
 	$('.cvd_btncektim').click(function(){
 		$.ajax({
@@ -1441,3 +1443,63 @@ $(document).on('ready', function(){
     })
 })
 // end Zona KHS
+
+function getTabelhasiltest(id)
+{
+	$.ajax({
+		data: {
+			id:id
+		},
+		method: 'GET',
+		url: baseurl + 'Covid/MonitoringCovid/getHasilTestc',
+		error: function(xhr,status,error){
+			swal.fire({
+				title: xhr['status'] + "(" + xhr['statusText'] + ")",
+				html: xhr['responseText'],
+				type: "error",
+				confirmButtonText: 'OK',
+				confirmButtonColor: '#d63031',
+			})
+		},
+		success: function(data){
+			$('#cvd_tbhltes').html(data);
+			$('#cvd_tblhsltest').DataTable();
+		}
+	});
+}
+
+$(document).ready(function(){
+	$('#cvd_savehsltes').click(function(){
+		var jns = $('[name="jns_test"]').val();
+		var tgl = $('[name="tgl_test"]').val();
+		var hsl = $('[name="hsl_test"]').val();
+		if (jns == '' || tgl == '' || hsl == '') {
+			alert('Harap Isi Semua Kolom');
+			return false;
+		}
+
+		$.ajax({
+			data: $('#cvd_frmaddtes').serialize(),
+			method: 'POST',
+			url: baseurl + 'Covid/MonitoringCovid/addHsilTestc',
+			error: function(xhr,status,error){
+				swal.fire({
+					title: xhr['status'] + "(" + xhr['statusText'] + ")",
+					html: xhr['responseText'],
+					type: "error",
+					confirmButtonText: 'OK',
+					confirmButtonColor: '#d63031',
+				})
+			},
+			success: function(data){
+				$('#cvd_mdladdtest').modal('hide');
+				mpk_showAlert("success", "Berhasil Menambah Data !");
+				getTabelhasiltest(idenc);
+			}
+		});
+	});
+
+	$('.cvd_select2').select2({
+		placeholder: "Pilih Salah Satu"
+	});
+});

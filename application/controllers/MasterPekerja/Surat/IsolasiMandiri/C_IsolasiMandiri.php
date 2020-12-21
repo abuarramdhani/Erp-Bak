@@ -212,7 +212,11 @@ class C_IsolasiMandiri extends CI_Controller
 		// $surat_text = str_replace("surat_isolasi_mandiri_mengetahui_nama", ucwords(strtolower($mengetahui_arr[0]['nama'])), $surat_text);
 		// $surat_text = str_replace("surat_isolasi_mandiri_menyetujui_nama", ucwords(strtolower($menyetujui_arr[0]['nama'])), $surat_text);
 		$surat_text = str_replace("surat_isolasi_mandiri_dibuat_nama", ucwords(strtolower($dibuat_arr[0]['nama'])), $surat_text);
-		$surat_text = str_replace("nama_tembusan", ucwords(strtolower($tembusanarr[0]['nama'])), $surat_text);
+		if (isset($tembusanarr[0]['nama'])) {
+		$surat_text = str_replace("- nama_tembusan", ucwords(strtolower($tembusanarr[0]['nama'])), $surat_text);
+		}else{
+		$surat_text = str_replace("- nama_tembusan", '', $surat_text);
+		}
 		$surat_text = str_replace("surat_isolasi_mandiri_dibuat_table", $tabl, $surat_text);
 
 		$data = array(
