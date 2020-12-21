@@ -957,7 +957,7 @@
 																		<label for="">Berakhirnya Masa Kerja</label>
 																	</div>
 																	<div class="col-md-6">
-																		<input type="text" name="tglkeluar" id="mpkepktglklr" class="form-control mpk_dpatgl" value="<?= $data['akhkontrak'] ?>">
+																		<input type="text" name="akhkontrak" id="mpkepktglklr" class="form-control mpk_dpatgl" value="<?= $data['akhkontrak'] ?>">
 																	</div>
 																</div>
 																<?php endif ?>
