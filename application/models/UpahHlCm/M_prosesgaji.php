@@ -486,6 +486,14 @@ class M_prosesgaji extends CI_Model {
 				end
 			)
 			-
+			(
+			    select count(*)
+			    from \"Presensi\".tdatapresensi tdpx
+			    where tdpx.noind = tp.noind 
+			    and tdpx.tanggal between '$tanggalawal' and '$tanggalakhir'
+			    and tdpx.kd_ket = 'PRM'
+			)
+			-
 			sum(
 						coalesce((
 							select 
@@ -2707,6 +2715,14 @@ return $data->result_array();
 				else 
 					0
 				end
+			)
+			-
+			(
+			    select count(*)
+			    from \"Presensi\".tdatapresensi tdpx
+			    where tdpx.noind = tp.noind 
+			    and tdpx.tanggal between '$tanggalawal' and '$tanggalakhir'
+			    and tdpx.kd_ket = 'PRM'
 			)
 			-
 			sum(
