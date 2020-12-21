@@ -67,12 +67,17 @@ class C_IsolasiMandiri extends CI_Controller
 			$pkj = $this->M_consumable->getDetailPekerja($data['data']->noind)->row_array();
 			$ks = substr($pkj['kodesie'], 0,7);
 			$kst = substr($ks, 0,1);
+			// print_r($pkj);exit();
 			if ($pkj['kd_jabatan'] <= 14) {
 				//spv ke atas
 				$atasan = $this->M_isolasimandiri->getAtasanIS($pkj['kd_jabatan'], $kst);
 			}else{
 				//operator
 				$atasan = $this->M_isolasimandiri->getAtasanIS2($ks);
+				if (empty($atasan)) {
+					$ks = substr($ks, 0,4);
+					$atasan = $this->M_isolasimandiri->getAtasanIS2($ks);
+				}
 			}
 			$data['atasan'] = $atasan;
 			$data['encrypted_id'] = $encrypted_id;
