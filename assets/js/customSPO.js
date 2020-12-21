@@ -704,4 +704,46 @@ $(document).ready(function () {
         }
       });
   });
+
+  // View file attachment PO
+  $('#tbl-PoLog tbody').on('click', '.view-attachment-polog', function () {
+    let fileName = $(this).attr('file-name');
+    if (fileName !== '') {
+      let poNumber = $(this).attr('data-po');
+      let extensionFile = fileName.split(".")[1];
+      let extensionToLower = extensionFile.toLowerCase();
+
+      if (extensionToLower == "pdf") {
+        window.open(baseurl + 'assets/upload/PurchaseManagementSendPO/LampiranPO/' + poNumber + '/' + fileName, '_blank')
+      } else if (extensionToLower == 'jpg' || extensionToLower == 'jpeg' || extensionToLower == 'png') {
+        window.open(baseurl + "PurchaseManagementSendPO/PoLog/viewImageAttachmentPO?noPo=" + poNumber, '_blank');
+      } else {
+        window.open(baseurl + "PurchaseManagementSendPO/PoLog/downloadFileAttachment?noPo=" + poNumber, '_blank')
+      }
+    }
+  })
+
+  $('#tbl-PoLogbook tbody').on('click', '.view-attachment-pologbook', function () {
+    let fileName = $(this).attr('file-name');
+    if (fileName !== '') {
+      let poNumber = $(this).attr('data-po');
+      let extensionFile = fileName.split(".")[1];
+      let extensionToLower = extensionFile.toLowerCase();
+
+      if (extensionToLower == "pdf") {
+        window.open(baseurl + 'assets/upload/PurchaseManagementSendPO/LampiranPO/' + poNumber + '/' + fileName, '_blank')
+      } else if (extensionToLower == 'jpg' || extensionToLower == 'jpeg' || extensionToLower == 'png') {
+        window.open(baseurl + "PurchaseManagementSendPO/POLogbook/viewImageAttachmentPO?noPo=" + poNumber, '_blank');
+      } else {
+        window.open(baseurl + "PurchaseManagementSendPO/POLogbook/downloadFileAttachment?noPo=" + poNumber, '_blank')
+      }
+    }
+  })
+
+  $('#tbl-PoLog tbody').hover(function () {
+    $('.name-attachment').css({ 'cursor': 'pointer', 'color': '#0000ff' });
+  })
+  $('#tbl-PoLogbook tbody').hover(function () {
+    $('.name-attachment').css({ 'cursor': 'pointer', 'color': '#0000ff' });
+  })
 });
