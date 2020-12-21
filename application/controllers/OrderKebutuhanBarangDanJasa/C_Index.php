@@ -66,15 +66,30 @@ class C_Index extends CI_Controller {
 				// echo'<pre>';
 				// print_r($checkOrder);
 				if (isset($checkOrder[0])) {
-					if ($checkOrder[0]['APPROVER_ID'] == $data['approver'][0]['PERSON_ID']) {
-						$orderSiapTampil = $this->M_approver->getOrderToApprove($order['ORDER_ID']);
-						if ($orderSiapTampil[0]['ORDER_CLASS'] != '2') {
-							if ($orderSiapTampil[0]['URGENT_FLAG'] == 'N' && $orderSiapTampil[0]['IS_SUSULAN'] =='N') {
-								array_push($data['normal'], $orderSiapTampil[0]);
-							}elseif ($orderSiapTampil[0]['URGENT_FLAG'] == 'Y' && $orderSiapTampil[0]['IS_SUSULAN'] =='N') {
-								array_push($data['urgent'], $orderSiapTampil[0]);
-							}elseif ($orderSiapTampil[0]['IS_SUSULAN'] =='Y') {
-								array_push($data['susulan'], $orderSiapTampil[0]);
+					if ($this->session->responsibility_id == 2681) {
+						if ($checkOrder[0]['APPROVER_ID'] == $data['approver'][0]['PERSON_ID'] && $checkOrder[0]['APPROVER_TYPE'] == 7) {
+							$orderSiapTampil = $this->M_approver->getOrderToApprove($order['ORDER_ID']);
+							if ($orderSiapTampil[0]['ORDER_CLASS'] != '2') {
+								if ($orderSiapTampil[0]['URGENT_FLAG'] == 'N' && $orderSiapTampil[0]['IS_SUSULAN'] =='N') {
+									array_push($data['normal'], $orderSiapTampil[0]);
+								}elseif ($orderSiapTampil[0]['URGENT_FLAG'] == 'Y' && $orderSiapTampil[0]['IS_SUSULAN'] =='N') {
+									array_push($data['urgent'], $orderSiapTampil[0]);
+								}elseif ($orderSiapTampil[0]['IS_SUSULAN'] =='Y') {
+									array_push($data['susulan'], $orderSiapTampil[0]);
+								}
+							}
+						}
+					}else{
+						if ($checkOrder[0]['APPROVER_ID'] == $data['approver'][0]['PERSON_ID'] && $checkOrder[0]['APPROVER_TYPE'] != 7) {
+							$orderSiapTampil = $this->M_approver->getOrderToApprove($order['ORDER_ID']);
+							if ($orderSiapTampil[0]['ORDER_CLASS'] != '2') {
+								if ($orderSiapTampil[0]['URGENT_FLAG'] == 'N' && $orderSiapTampil[0]['IS_SUSULAN'] =='N') {
+									array_push($data['normal'], $orderSiapTampil[0]);
+								}elseif ($orderSiapTampil[0]['URGENT_FLAG'] == 'Y' && $orderSiapTampil[0]['IS_SUSULAN'] =='N') {
+									array_push($data['urgent'], $orderSiapTampil[0]);
+								}elseif ($orderSiapTampil[0]['IS_SUSULAN'] =='Y') {
+									array_push($data['susulan'], $orderSiapTampil[0]);
+								}
 							}
 						}
 					}
@@ -197,15 +212,30 @@ class C_Index extends CI_Controller {
 				// echo'<pre>';
 				// print_r($checkOrder);
 				if (isset($checkOrder[0])) {
-					if ($checkOrder[0]['APPROVER_ID'] == $data['approver'][0]['PERSON_ID']) {
-						$orderSiapTampil = $this->M_approver->getOrderToApprove($order['ORDER_ID']);
-						if ($orderSiapTampil[0]['ORDER_CLASS'] != '2') {
-							if ($orderSiapTampil[0]['URGENT_FLAG'] == 'N' && $orderSiapTampil[0]['IS_SUSULAN'] =='N') {
-								array_push($data['normal'], $orderSiapTampil[0]);
-							}elseif ($orderSiapTampil[0]['URGENT_FLAG'] == 'Y' && $orderSiapTampil[0]['IS_SUSULAN'] =='N') {
-								array_push($data['urgent'], $orderSiapTampil[0]);
-							}elseif ($orderSiapTampil[0]['IS_SUSULAN'] =='Y') {
-								array_push($data['susulan'], $orderSiapTampil[0]);
+					if ($this->session->responsibility_id == 2681) {
+						if ($checkOrder[0]['APPROVER_ID'] == $data['approver'][0]['PERSON_ID'] && $checkOrder[0]['APPROVER_TYPE'] == 7 ) {
+							$orderSiapTampil = $this->M_approver->getOrderToApprove($order['ORDER_ID']);
+							if ($orderSiapTampil[0]['ORDER_CLASS'] != '2') {
+								if ($orderSiapTampil[0]['URGENT_FLAG'] == 'N' && $orderSiapTampil[0]['IS_SUSULAN'] =='N') {
+									array_push($data['normal'], $orderSiapTampil[0]);
+								}elseif ($orderSiapTampil[0]['URGENT_FLAG'] == 'Y' && $orderSiapTampil[0]['IS_SUSULAN'] =='N') {
+									array_push($data['urgent'], $orderSiapTampil[0]);
+								}elseif ($orderSiapTampil[0]['IS_SUSULAN'] =='Y') {
+									array_push($data['susulan'], $orderSiapTampil[0]);
+								}
+							}
+						}
+					}else{
+						if ($checkOrder[0]['APPROVER_ID'] == $data['approver'][0]['PERSON_ID'] && $checkOrder[0]['APPROVER_TYPE'] != 7 ) {
+							$orderSiapTampil = $this->M_approver->getOrderToApprove($order['ORDER_ID']);
+							if ($orderSiapTampil[0]['ORDER_CLASS'] != '2') {
+								if ($orderSiapTampil[0]['URGENT_FLAG'] == 'N' && $orderSiapTampil[0]['IS_SUSULAN'] =='N') {
+									array_push($data['normal'], $orderSiapTampil[0]);
+								}elseif ($orderSiapTampil[0]['URGENT_FLAG'] == 'Y' && $orderSiapTampil[0]['IS_SUSULAN'] =='N') {
+									array_push($data['urgent'], $orderSiapTampil[0]);
+								}elseif ($orderSiapTampil[0]['IS_SUSULAN'] =='Y') {
+									array_push($data['susulan'], $orderSiapTampil[0]);
+								}
 							}
 						}
 					}
