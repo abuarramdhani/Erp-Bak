@@ -165,8 +165,10 @@
                                                 <td>
                                                     <center><?= $value['VENDOR_CONFIRM_NOTE']; ?></center>
                                                 </td>
-                                                <td>
-                                                    <center><a href="<?= base_url('PurchaseManagementSendPO/POLogbook/downloadFileAttachment') . '?noPo=' . $value['PO_NUMBER'] . '-' . $value['PO_REVISION'] ?>"><?= $value['ATTACHMENT']; ?></a></center>
+                                                <td class="view-attachment-pologbook" data-po="<?= $value['PO_NUMBER'] . '-' . $value['PO_REVISION'] ?>" file-name="<?= $value['ATTACHMENT']; ?>">
+                                                    <center>
+                                                        <p class="name-attachment"><?= $value['ATTACHMENT']; ?></p>
+                                                    </center>
                                                 </td>
                                                 <td style="min-width: 60px; max-width: 60px; text-align: center;">
                                                     <a class="btn btn-success btn-edit" href="<?= base_url("PurchaseManagementSendPO/POLogbook/edit") . '?po_numb=' . $value['PO_NUMBER'] . '-' . $value['PO_REVISION']; ?>" title="Edit"><i class="fa fa-edit"></i></a>

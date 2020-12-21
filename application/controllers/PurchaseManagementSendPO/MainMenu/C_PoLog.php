@@ -303,4 +303,49 @@ class C_PoLog extends CI_Controller {
         force_download('assets/upload/PurchaseManagementSendPO/LampiranPO/' . $po_number . '-' . $no_rev . '/' . $file_name, NULL);
     }
 
+    public function viewImageAttachmentPO()
+    {
+      $noPo = explode("-", $this->input->get('noPo'));
+      $po_number  = $noPo[0];
+      $no_rev     = $noPo[1];
+      $file_name   = $this->M_polog->getDataByPoNumb($po_number, $no_rev)->row_array();
+        
+      echo '<style>
+              * {
+                margin: 0;
+                padding: 0;
+              }
+              body {
+                  background-color: #525252;
+              }
+              .img-box {
+                width: 100vw;
+                height: 93vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              }
+              img {
+                height: 98%;
+              }
+              .box {
+                width: 100vw;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              }
+              .btn-download {
+                box-shadow: 3px 3px 0px black;
+                text-decoration: none;
+                background-color: #ffffff;
+                color: black;
+                font-weight: bold;
+                border: 3px solid black;
+                border-radius: 10px;
+                padding: 8px 16px;
+              }
+            </style>';
+      echo '<div class="img-box"><img src="' . base_url('assets/upload/PurchaseManagementSendPO/LampiranPO/' . $po_number . '-' . $no_rev . '/' . $file_name['ATTACHMENT']) . '" /></div>';
+      echo '<div class="box"><a href="' . base_url('PurchaseManagementSendPO/PoLog/downloadFileAttachment?noPo=') . $this->input->get(('noPo')) .'" class="btn-download">Download</a></div>';
+    }
 }
