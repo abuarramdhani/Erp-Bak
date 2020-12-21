@@ -1073,7 +1073,7 @@ class C_IsolasiMandiri extends CI_Controller
 					$q = 'selected';
 				}elseif ($alasan == 'ISOLASI DIRI - PENYEBAB - WFH') {
 					$r = 'selected';
-				}elseif ($alasan == 'ISOLASI DIRI - PENYEBAB - WFH') {
+				}elseif ($alasan == 'ISOLASI DIRI - PENYEBAB - NON WFH') {
 					$s = 'selected';
 				}elseif ($alasan == 'NON ISOLASI DIRI - NON DL -WFH') {
 					$t = 'selected';
