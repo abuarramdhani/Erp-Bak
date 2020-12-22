@@ -205,8 +205,8 @@
                     <label for="" class="col-md-2">Tahun</label>
                     <div class="col-md-3">
                       <select v-model="selectedYear" name="" id="" class="form-control" data-placeholder="Tahun">
-                        <?php for ($x = date('Y'); $x >= 2010; $x--) : ?>
-                          <option value="<?= $x ?>"><?= $x ?></option>
+                        <?php for ($x = (date('Y') + 5); $x >= 2007; $x--) : ?>
+                          <option value="<?= $x ?>" <?= $x === date('Y') ? 'selected' : '' ?> ><?= $x ?></option>
                         <?php endfor ?>
                       </select>
                     </div>
