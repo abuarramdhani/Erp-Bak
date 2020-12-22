@@ -93,4 +93,12 @@ class C_PelaporanPekerja extends CI_Controller
 		$this->load->view('Covid/PelaporanPekerja/V_Beda_Rumah',$data);
 		$this->load->view('Covid/PelaporanPekerja/V_Footer',$data);
 	}
+
+	public function dalam_perusahaan()
+	{
+		$data = '';
+		$this->load->view('Covid/PelaporanPekerja/V_Header',$data);
+		$this->load->view('Covid/PelaporanPekerja/V_Dalam_Perusahaan',$data);
+		$this->load->view('Covid/PelaporanPekerja/V_Footer',$data);
+	}
 }

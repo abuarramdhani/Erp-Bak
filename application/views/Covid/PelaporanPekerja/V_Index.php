@@ -51,6 +51,10 @@
                                             Beda Rumah
                                         </a>
                                         &nbsp;&nbsp;
+                                        <a href="<?= base_url('Covid/PelaporanPekerja/Kontak/dalam_perusahaan') ?>" class="btn btn-primary" style="font-weight: bold; margin-top: 10px; white-space: normal;" >
+                                            Dalam Perusahaan
+                                        </a>
+                                        &nbsp;&nbsp;
                                         <a href="<?= base_url('Covid/PelaporanPekerja/Kontak/interaksi') ?>" class="btn btn-primary" style="font-weight: bold; margin-top: 10px; white-space: normal;" >
                                             Interaksi dengan Orang Yang Habis Berinteraksi dengan Terduga / Terkonfirmasi Covid 19
                                         </a>
