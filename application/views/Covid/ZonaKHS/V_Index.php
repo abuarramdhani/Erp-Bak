@@ -102,8 +102,8 @@
 															<td><?php echo $z['lokasi'] ?></td>
 															<td><?php echo $z['nama_seksi'] ?></td>
 															<td><?php echo $z['isolasi'] ?></td>
-															<td><?php echo date('d/m/Y',strtotime($z['tgl_awal_isolasi'])) ?></td>
-															<td><?php echo date('d/m/Y',strtotime($z['tgl_akhir_isolasi'])) ?></td>
+															<td><?php echo !empty($z['tgl_awal_isolasi']) ? date('d/m/Y',strtotime($z['tgl_awal_isolasi'])) : '-' ?></td>
+															<td><?php echo !empty($z['tgl_akhir_isolasi']) ? date('d/m/Y',strtotime($z['tgl_akhir_isolasi'])) : '-' ?></td>
 															<td><?php echo $z['kasus'] ?></td>
 															<td>
 																<button class="btn btn-info btn-CVD-ZonaKHS-Edit" title="Edit"><span class="fa fa-edit"></span></button>
