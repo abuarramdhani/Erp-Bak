@@ -227,10 +227,11 @@
                                                       <td class="tdCaseNonC"><?php $no = 1; foreach($PoOracleNonConformityLines as $man): ?>
                                                               <span><?= $no++.'. '.$man['case_name'];?></span><br>
                                                           <?php endforeach; ?>
-                                                          <button type="button" class="btn btn-primary btn-xs btnEditCaseNonC">Edit</button>
+                                                          <!-- <button type="button" class="btn btn-primary btn-xs btnEditCaseNonC">Edit</button> -->
                                                       </td>
                                                       <td><span class="deskripsiNonC"><?php echo $PoOracleNonConformityLines[0]['description']; ?></span><br>
-                                                      <button type="button" class="btn btn-xs btn-primary btnEditDeskripsiNonC">Edit</button></td>
+                                                      <!-- <button type="button" class="btn btn-xs btn-primary btnEditDeskripsiNonC">Edit</button> -->
+                                                      </td>
                                                       <!-- <td><?php if ($PoOracleNonConformityLines[0]['judgement'] == NULL || $PoOracleNonConformityLines[0]['judgement'] == ''|| $PoOracleNonConformityLines[0]['status'] == NULL) {
                                                            echo "OPEN";}else{ echo strtoupper($PoOracleNonConformityLines[0]['status']);} ?>
                                                       </td> -->

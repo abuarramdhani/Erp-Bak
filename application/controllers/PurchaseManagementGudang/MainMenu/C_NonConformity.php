@@ -376,28 +376,28 @@ class C_NonConformity extends CI_Controller
 					$lppb = 'AND rsh.receipt_num ='.$linesItem[$i]['no_lppb'];
 				}
 
-				$checkUpdate = $this->M_nonconformity->updateLineOracle($nomorPO,$line,$lppb);
+				// $checkUpdate = $this->M_nonconformity->updateLineOracle($nomorPO,$line,$lppb);
 				// echo '<pre>';
 				// print_r($checkUpdate);
 
-				if($checkUpdate[0]['QTY_RECEIPT']=='' || $checkUpdate[0]['QTY_RECEIPT']== null){
-					$checkUpdate[0]['QTY_RECEIPT'] = 0;
-				}
+				// if($checkUpdate[0]['QTY_RECEIPT']=='' || $checkUpdate[0]['QTY_RECEIPT']== null){
+				// 	$checkUpdate[0]['QTY_RECEIPT'] = 0;
+				// }
 
-				$update = array(
-								'quantity_amount' => $checkUpdate[0]['QTY_RECEIPT'],
-								// 'quantity_billed' => $checkUpdate[0]['QUANTITY_BILLED'],
-								// 'quantity_reject' => $checkUpdate[0]['REJECTED'],
-								// 'currency' => $checkUpdate[0]['CURRENCY'],
-								// 'unit_price' => $checkUpdate[0]['UNIT_PRICE'],
-								'quantity_po' => $checkUpdate[0]['QUANTITY'],
-								// 'quantity_problem' => $checkUpdate[0][''],
-								'closure_status' => $checkUpdate[0]['CLOSED_CODE'],
-								'buyer' => $checkUpdate[0]['BUYER'].','.$checkUpdate[0]['NATIONAL_IDENTIFIER'],
-								'no_lppb' => $checkUpdate[0]['NO_LPPB'],
-							);
+				// $update = array(
+				// 				'quantity_amount' => $checkUpdate[0]['QTY_RECEIPT'],
+				// 				// 'quantity_billed' => $checkUpdate[0]['QUANTITY_BILLED'],
+				// 				// 'quantity_reject' => $checkUpdate[0]['REJECTED'],
+				// 				// 'currency' => $checkUpdate[0]['CURRENCY'],
+				// 				// 'unit_price' => $checkUpdate[0]['UNIT_PRICE'],
+				// 				'quantity_po' => $checkUpdate[0]['QUANTITY'],
+				// 				// 'quantity_problem' => $checkUpdate[0][''],
+				// 				'closure_status' => $checkUpdate[0]['CLOSED_CODE'],
+				// 				'buyer' => $checkUpdate[0]['BUYER'].','.$checkUpdate[0]['NATIONAL_IDENTIFIER'],
+				// 				'no_lppb' => $checkUpdate[0]['NO_LPPB'],
+				// 			);
 
-				$this->M_nonconformity->updateLineFromOracle($update, $lineItemId);
+				// $this->M_nonconformity->updateLineFromOracle($update, $lineItemId);
 				// echo '<pre>';
 				// print_r($lineItemId);
 			}
