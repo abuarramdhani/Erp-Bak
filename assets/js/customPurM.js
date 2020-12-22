@@ -171,7 +171,50 @@ $(document).ready(function() {
         })
     })
     
-
+    $('.btnForwardSubkonNC').click(function () {
+        var header_id = $('.hdnHeadId').val();
+        Swal.fire({
+            customClass       : 'swal-font-small',
+            type              : 'question',
+            title             : 'Apakah anda yakin NC ini diteruskan ke SUBKON ?',
+            confirmButtonText : 'Ya',
+            cancelButtonText  : 'Tidak',
+            cancelButtonColor : '#d33',
+            showCancelButton  : true
+        }).then( (result) => {
+            if ( result.value ) {
+                Swal.fire({
+                    customClass       : 'swal-font-small',
+                    title             : 'Mohon menunggu',
+                    text              : 'Sedang memproses ...',
+                    onBeforeOpen      : () => {
+                        Swal.showLoading()
+                    },
+                    allowOutsideClick : false
+                })
+                $.ajax({
+                    type     : 'POST',
+                    url      : baseurl+"PurchaseManagementGudang/NonConformity/submitAssign",
+                    data     : {
+                        hdnHeadId : header_id,
+                        slcAssign : 2,
+                        txtReasonReturn : ''
+                    },
+                }).done( (resp) => {
+                    // swalADOMixinToast('success', success)
+                    // response(resp)
+                    setTimeout(function() {
+                        window.location.href = baseurl+'PurchaseManagementGudang/NonConformity/listSupplier';
+                    }, 2000);
+                }).fail( () => {
+                    swalADOMixinToast('error', fail)
+                    response('Fail')
+                })
+            } else {
+                response('Cancelled')
+            }
+        })
+    })
 
     $('#tblMonitoringNonC').DataTable({
         dom :  `<'row' <'col-sm-12 col-md-4'l> <'col-sm-12 col-md-4 text-center'B> <'col-sm-12 col-md-4'f> >
