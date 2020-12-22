@@ -8,6 +8,7 @@ class M_Dtmasuk extends CI_Model
         $this->load->database();
         $this->personalia   =   $this->load->database('personalia', TRUE);
         $this->erp          =   $this->load->database('erp_db', TRUE);
+        $this->personaliaProd          =   $this->load->database('personaliaProd', TRUE);
         $this->oracle          =   $this->load->database('oracle', TRUE);
     }
 
@@ -1035,7 +1036,7 @@ class M_Dtmasuk extends CI_Model
                     FROM mtl_system_items_b msib
                    WHERE msib.organization_id = 102
                      AND msib.inventory_item_status_code = 'Active'
-                     AND msib.segment1 LIKE 'PP1%'
+                     AND msib.segment1 LIKE '%'
                 ORDER BY 1";
         $query = $this->oracle->query($sql);
 
@@ -1216,5 +1217,620 @@ class M_Dtmasuk extends CI_Model
     {
         $sql = "SELECT * from k3.k3_master_item";
         return $this->db->query($sql)->result_array();
+    }
+
+    public function getdetail_pkj_mkk($noind)
+    {
+        $sql = "select
+                    *,
+                    now()::date - t.masukkerja::date
+                from
+                    hrd_khs.tpribadi t
+                left join hrd_khs.tseksi t2 on
+                    t2.kodesie = t.kodesie
+                where
+                    t.noind = '$noind'";
+        return $this->personalia->query($sql)->row_array();
+    }
+
+    public function getMasaKerja($noinduk, $tgl) {
+        $noinduk = "'$noinduk'";
+        $sql = "select      masa_kerja.nik,
+                                masa_kerja.tgllahir,
+                                (
+                                    masa_kerja.total_tahun
+                                    +
+                                    (
+                                        case    when    masa_kerja.total_bulan>11
+                                                        then    floor(masa_kerja.total_bulan/12)
+                                                else    0
+                                        end
+                                    )
+                                    +
+                                    (
+                                        case    when    masa_kerja.total_hari>364
+                                                        then    floor(masa_kerja.total_hari/365)
+                                                else    0
+                                        end
+                                    )
+                                ) as tahun,
+                                (
+                                    (
+                                        case    when    masa_kerja.total_bulan>11
+                                                        then    masa_kerja.total_bulan-(floor(masa_kerja.total_bulan/12)*12)
+                                                else    masa_kerja.total_bulan
+                                        end
+                                    )
+                                    +
+                                    (
+                                        case    when    masa_kerja.total_hari>29
+                                                        then    floor(masa_kerja.total_hari/30)
+                                                else    0
+                                        end
+                                    )
+                                ) as bulan,
+                                (
+                                    (
+                                        case    when    masa_kerja.total_hari>29
+                                                        then    masa_kerja.total_hari-(floor(masa_kerja.total_hari/30)*30)
+                                                else    masa_kerja.total_hari
+                                        end
+                                    )
+                                ) as hari
+                    from        (
+                                    select      master_masa_kerja.nik,
+                                                master_masa_kerja.tgllahir,
+                                                sum(extract(year from master_masa_kerja.masa_kerja)) as total_tahun,
+                                                sum(extract(month from master_masa_kerja.masa_kerja)) as total_bulan,
+                                                sum(extract(day from master_masa_kerja.masa_kerja)) as total_hari
+                                    from        (
+                                                    select      pri.*,
+                                                                (
+                                                                    case    when    pri.keluar=false
+                                                                                    then    (
+                                                                                                age('$tgl', pri.masukkerja)
+                                                                                            )
+
+                                                                                    else    (
+                                                                                                age(pri.tglkeluar, pri.masukkerja)
+                                                                                            )
+
+                                                                    end
+                                                                ) as masa_kerja
+                                                    from        (
+                                                                    select      pri.noind,
+                                                                                pri.nik,
+                                                                                pri.tgllahir,
+                                                                                pri.kode_status_kerja,
+                                                                                pri.keluar,
+                                                                                pri.masukkerja,
+                                                                                pri.diangkat,
+                                                                                pri.tglkeluar,
+                                                                                pri.akhkontrak
+                                                                    from        hrd_khs.v_hrd_khs_tpribadi as pri
+                                                                    where       pri.noind in($noinduk)
+
+                                                                ) as pri
+                                                ) master_masa_kerja
+                                    group by    master_masa_kerja.nik,
+                                                master_masa_kerja.tgllahir
+                                ) as masa_kerja";
+        $query = $this->personalia->query($sql);
+        return $query->row_array();
+    }
+
+    public function getMasaKerja2($noinduk, $tgl) {
+        $noinduk = "'$noinduk'";
+        $sql2 = "select         masa_kerja.nik,
+                                masa_kerja.tgllahir,
+                                (
+                                    masa_kerja.total_tahun
+                                    +
+                                    (
+                                        case    when    masa_kerja.total_bulan>11
+                                                        then    floor(masa_kerja.total_bulan/12)
+                                                else    0
+                                        end
+                                    )
+                                    +
+                                    (
+                                        case    when    masa_kerja.total_hari>364
+                                                        then    floor(masa_kerja.total_hari/365)
+                                                else    0
+                                        end
+                                    )
+                                ) as tahun,
+                                (
+                                    (
+                                        case    when    masa_kerja.total_bulan>11
+                                                        then    masa_kerja.total_bulan-(floor(masa_kerja.total_bulan/12)*12)
+                                                else    masa_kerja.total_bulan
+                                        end
+                                    )
+                                    +
+                                    (
+                                        case    when    masa_kerja.total_hari>29
+                                                        then    floor(masa_kerja.total_hari/30)
+                                                else    0
+                                        end
+                                    )
+                                ) as bulan,
+                                (
+                                    (
+                                        case    when    masa_kerja.total_hari>29
+                                                        then    masa_kerja.total_hari-(floor(masa_kerja.total_hari/30)*30)
+                                                else    masa_kerja.total_hari
+                                        end
+                                    )
+                                ) as hari
+                    from        (
+                                    select      master_masa_kerja.nik,
+                                                master_masa_kerja.tgllahir,
+                                                sum(extract(year from master_masa_kerja.masa_kerja)) as total_tahun,
+                                                sum(extract(month from master_masa_kerja.masa_kerja)) as total_bulan,
+                                                sum(extract(day from master_masa_kerja.masa_kerja)) as total_hari
+                                    from        (
+                                                    select      pri.*,
+                                                                (
+                                                                    case    when    pri.keluar=false
+                                                                                    then    (
+                                                                                                case    when (select count(*) from hrd_khs.tpribadi A
+                                                                                                left join hrd_khs.tb_status_jabatan B on A.noind=B.noind
+                                                                                                where B.status_data='01' and B.kd_jabatan='14' and ( A.keluar='0') and A.noind = pri.noind) > 0
+                                                                                                    then
+                                                                                                        (
+                                                                                                            select age('$tgl',A.diangkat)
+                                                                                                            from hrd_khs.tpribadi A
+                                                                                                            left join hrd_khs.tb_status_jabatan B
+                                                                                                            on A.noind = B.noind
+                                                                                                            where A.nik = pri.nik
+                                                                                                            and A.kode_status_kerja = 'A'
+                                                                                                            limit 1
+                                                                                                        )
+                                                                                                    else    (
+                                                                                                                age('$tgl','$tgl')
+                                                                                                            )
+                                                                                                    end
+                                                                                            )
+
+                                                                            else    (
+                                                                                        case    when    pri.kode_status_kerja in ('A', 'B','J', 'H')
+                                                                                                        then    (
+                                                                                                                    age(pri.tglkeluar, pri.diangkat)
+                                                                                                                )
+                                                                                                else    (
+                                                                                                            age(pri.tglkeluar, pri.masukkerja)
+                                                                                                        )
+                                                                                        end
+                                                                                    )
+                                                                    end
+                                                                ) as masa_kerja
+                                                    from        (
+                                                                    select      pri.noind,
+                                                                                pri.nik,
+                                                                                pri.tgllahir,
+                                                                                pri.kode_status_kerja,
+                                                                                pri.keluar,
+                                                                                pri.masukkerja,
+                                                                                pri.diangkat,
+                                                                                pri.tglkeluar,
+                                                                                pri.akhkontrak
+                                                                    from        hrd_khs.v_hrd_khs_tpribadi as pri
+                                                                    where       pri.noind = $noinduk
+                                                                ) as pri
+                                                ) master_masa_kerja
+                                    group by    master_masa_kerja.nik,
+                                                master_masa_kerja.tgllahir
+                                ) as masa_kerja";
+        $query2 = $this->personalia->query($sql2);
+        return $query2->row_array();
+    }
+
+    public function getMasaKerja3($noinduk, $tgl) {
+        $noinduk = "'$noinduk'";
+        $sql3 = "select         masa_kerja.nik,
+                                masa_kerja.tgllahir,
+                                (
+                                    masa_kerja.total_tahun
+                                    +
+                                    (
+                                        case    when    masa_kerja.total_bulan>11
+                                                        then    floor(masa_kerja.total_bulan/12)
+                                                else    0
+                                        end
+                                    )
+                                    +
+                                    (
+                                        case    when    masa_kerja.total_hari>364
+                                                        then    floor(masa_kerja.total_hari/365)
+                                                else    0
+                                        end
+                                    )
+                                ) as tahun,
+                                (
+                                    (
+                                        case    when    masa_kerja.total_bulan>11
+                                                        then    masa_kerja.total_bulan-(floor(masa_kerja.total_bulan/12)*12)
+                                                else    masa_kerja.total_bulan
+                                        end
+                                    )
+                                    +
+                                    (
+                                        case    when    masa_kerja.total_hari>29
+                                                        then    floor(masa_kerja.total_hari/30)
+                                                else    0
+                                        end
+                                    )
+                                ) as bulan,
+                                (
+                                    (
+                                        case    when    masa_kerja.total_hari>29
+                                                        then    masa_kerja.total_hari-(floor(masa_kerja.total_hari/30)*30)
+                                                else    masa_kerja.total_hari
+                                        end
+                                    )
+                                ) as hari
+                    from        (
+                                    select      master_masa_kerja.nik,
+                                                master_masa_kerja.tgllahir,
+                                                sum(extract(year from master_masa_kerja.masa_kerja)) as total_tahun,
+                                                sum(extract(month from master_masa_kerja.masa_kerja)) as total_bulan,
+                                                sum(extract(day from master_masa_kerja.masa_kerja)) as total_hari
+                                    from        (
+                                                    select      pri.*,
+                                                                (
+                                                                    case    when    pri.keluar=false
+                                                                                    then    (
+                                                                                                age('$tgl', pri.diangkat)
+                                                                                            )
+
+                                                                                    else    (
+                                                                                                age(pri.tglkeluar, pri.diangkat)
+                                                                                            )
+
+                                                                    end
+                                                                ) as masa_kerja
+                                                    from        (
+                                                                    select      pri.noind,
+                                                                                pri.nik,
+                                                                                pri.tgllahir,
+                                                                                pri.kode_status_kerja,
+                                                                                pri.keluar,
+                                                                                pri.masukkerja,
+                                                                                pri.diangkat,
+                                                                                pri.tglkeluar,
+                                                                                pri.akhkontrak
+                                                                    from        hrd_khs.v_hrd_khs_tpribadi as pri
+                                                                    where       pri.noind in($noinduk)
+
+                                                                ) as pri
+                                                ) master_masa_kerja
+                                    group by    master_masa_kerja.nik,
+                                                master_masa_kerja.tgllahir
+                                ) as masa_kerja";
+        // echo $sql3;exit();
+        $query3 = $this->personalia->query($sql3);
+        return $query3->row_array();
+    }
+
+    public function getShiftByPKJ($noind, $tgl)
+    {
+        $sql = "select
+                    *
+                from
+                    \"Presensi\".tshiftpekerja t
+                where
+                    noind = '$noind'
+                    and tanggal = '$tgl'";
+        return $this->personaliaProd->query($sql)->row_array();
+    }
+
+    public function insk3k_kecelakaan($data)
+    {
+        $this->db->insert('k3.k3k_kecelakaan', $data);
+        return $this->db->insert_id();
+    }
+
+    public function insk3k_kecelakaan_lain($data, $table)
+    {
+        $this->db->insert_batch($table, $data);
+        return $this->db->affected_rows() > 0;
+    }
+
+    public function upk3k_kecelakaan($data, $id)
+    {
+        $this->db->where('id_kecelakaan', $id);
+        $this->db->update('k3.k3k_kecelakaan', $data);
+        return $this->db->affected_rows() > 0;
+    }
+
+    public function getK3K($year)
+    {
+        $sql = "SELECT
+                    kk.id_kecelakaan,
+                    kk.noind,
+                    eea.employee_name nama,
+                    kk.waktu_kecelakaan,
+                    kk.lokasi_kerja,
+                    kk.lokasi_kerja_kecelakaan,
+                    kk.tkp,
+                    es.section_name seksi,
+                    es.unit_name unit,
+                    es.department_name dept
+                from
+                    k3.k3k_kecelakaan kk
+                left join er.er_employee_all eea on eea.employee_code = kk.noind
+                left join er.er_section es on
+                    es.section_code = kk.kodesie::text
+                where kk.waktu_kecelakaan::text like '$year%'";
+        return $this->db->query($sql)->result_array();
+    }
+
+    public function delK3K($table, $id)
+    {
+        $this->db->where('id_kecelakaan', $id);
+        echo $this->db->get_compiled_delete($table);
+        echo "<br>";
+    }
+
+    public function getAllk3k($table, $id)
+    {
+        $this->db->where('id_kecelakaan', $id);
+        // echo $this->db->get_compiled_select($table);
+        return $this->db->get($table)->result_array();
+    }
+
+    public function getlistTKP($txt)
+    {
+        $sql = "SELECT distinct tkp FROM k3.k3k_kecelakaan
+                where tkp like '%$txt%'";
+        return $this->db->query($sql)->result_array();
+    }
+
+    public function getKKLain($table, $order, $id)
+    {
+        $this->db->where('id_kecelakaan', $id);
+        $this->db->order_by($order, 'ASC');
+        return $this->db->get($table)->result_array();
+    }
+
+    public function delK3K_lain($table, $id)
+    {
+        $this->db->where('id_kecelakaan', $id);
+        $this->db->delete($table);
+        return $this->db->affected_rows()>0;
+    }
+
+    public function getDatak3k($ym)
+    {
+        $sql = "SELECT kkk.*,es.*,
+                (select eea.employee_name from er.er_employee_all eea where eea.employee_code = kkk.noind) nama,
+                (select eea.employee_name from er.er_employee_all eea where eea.employee_code = kkk.pic) nama_pic,
+                (select string_agg(kkbt.bagian_tubuh::text, ',') from k3.k3k_bagian_tubuh kkbt where kkbt.id_kecelakaan = kkk.id_kecelakaan) bagian_tubuh,
+                (select string_agg(kkkk.kategori::text, ',') from k3.k3k_kategori_kecelakaan kkkk where kkkk.id_kecelakaan = kkk.id_kecelakaan) kategori,
+                (select string_agg(kkfk.faktor::text, ',') from k3.k3k_faktor_kecelakaan kkfk where kkfk.id_kecelakaan = kkk.id_kecelakaan) faktor,
+                (select string_agg(kkpa.penggunaan_apd::text, ',') from k3.k3k_penggunaan_apd kkpa where kkpa.id_kecelakaan = kkk.id_kecelakaan) apd
+                FROM k3.k3k_kecelakaan kkk
+                left join er.er_section es on es.section_code = kkk.kodesie::text
+                where kkk.waktu_kecelakaan::text like '$ym%'
+                order by kkk.waktu_kecelakaan";
+        return $this->db->query($sql)->result_array();
+    }
+
+    public function getAllk3k2($tabel)
+    {
+        // $sql = "SELECT * from $table";
+        return $this->db->get($tabel)->result_array();
+    }
+
+    public function getTtlBagian($id_bagian, $year)
+    {
+        $sql = "SELECT
+                    count(*) ttl
+                from
+                    k3.k3k_kecelakaan kk
+                left join k3.k3k_bagian_tubuh kkbt on
+                    kkbt.id_kecelakaan = kk.id_kecelakaan
+                where
+                    kkbt.bagian_tubuh = $id_bagian
+                    and kk.waktu_kecelakaan::text like '$year%'";
+        return $this->db->query($sql)->row()->ttl;
+    }
+
+    public function getTtlBagianLok($id_bagian, $year, $lokasi)
+    {
+        $sql = "SELECT
+                    count(*) ttl
+                from
+                    k3.k3k_kecelakaan kk
+                left join k3.k3k_bagian_tubuh kkbt on
+                    kkbt.id_kecelakaan = kk.id_kecelakaan
+                where
+                    kkbt.bagian_tubuh = $id_bagian
+                    and kk.lokasi_kerja_kecelakaan like '$lokasi%'
+                    and kk.waktu_kecelakaan::text like '$year%'";
+        return $this->db->query($sql)->row()->ttl;
+    }
+
+    public function getTtlKategori($id_kategori, $year)
+    {
+        $sql = "SELECT
+                    count(*) ttl
+                from
+                    k3.k3k_kecelakaan kk
+                left join k3.k3k_kategori_kecelakaan kkbt on
+                    kkbt.id_kecelakaan = kk.id_kecelakaan
+                where
+                    kkbt.kategori = $id_kategori
+                    and kk.waktu_kecelakaan::text like '$year%'";
+        return $this->db->query($sql)->row()->ttl;
+    }
+
+    public function getTtlFaktor($id_kategori, $year)
+    {
+        $sql = "SELECT
+                    count(*) ttl
+                from
+                    k3.k3k_kecelakaan kk
+                left join k3.k3k_faktor_kecelakaan kkbt on
+                    kkbt.id_kecelakaan = kk.id_kecelakaan
+                where
+                    kkbt.faktor = $id_kategori
+                    and kk.waktu_kecelakaan::text like '$year%'";
+        return $this->db->query($sql)->row()->ttl;
+    }
+
+    public function getTtlLoker($id_loker, $year)//lokasikerja
+    {
+        $sql = "SELECT count(*) ttl from k3.k3k_kecelakaan kkk where lokasi_kerja_kecelakaan like '$id_loker%'
+                and kkk.waktu_kecelakaan::text like '$year%'";
+                // echo $sql;exit();
+        return $this->db->query($sql)->row()->ttl;;
+    }
+
+    public function getTtlStopsix($id, $year)
+    {
+        $sql = "SELECT count(*) ttl from k3.k3k_kecelakaan kkk where kriteria_stop_six = '$id'
+                and kkk.waktu_kecelakaan::text like '$year%'";
+        return $this->db->query($sql)->row()->ttl;
+    }
+
+    public function getTtlrange2($id, $year)
+    {
+       $sql = "SELECT count(*) ttl from k3.k3k_kecelakaan kkk where range_waktu2 = '$id'
+                and kkk.waktu_kecelakaan::text like '$year%'";
+       return $this->db->query($sql)->row()->ttl;
+    }
+
+    public function getTtlunsafe($id, $year)
+    {
+       $sql = "SELECT count(*) ttl from k3.k3k_kecelakaan kkk where unsafe = '$id'
+                and kkk.waktu_kecelakaan::text like '$year%'";
+       return $this->db->query($sql)->row()->ttl;
+    }
+
+    public function getTtldept($id, $year)
+    {
+        if($id) $t = 'not';
+        else $t = '';
+       $sql = "SELECT count(*) ttl from k3.k3k_kecelakaan kkk where kodesie::text $t like '$id%'
+                and kkk.waktu_kecelakaan::text like '$year%'";
+       return $this->db->query($sql)->row()->ttl;
+    }
+
+    public function getTtljp($id, $year)
+    {
+       $sql = "SELECT count(*) ttl from k3.k3k_kecelakaan kkk where jenis_pekerjaan::text like '$id%'
+                and kkk.waktu_kecelakaan::text like '$year%'";
+       return $this->db->query($sql)->row()->ttl;
+    }
+
+    public function getTtlkolom($id, $year, $kolom)
+    {
+       $sql = "SELECT count(*) ttl from k3.k3k_kecelakaan kkk where $kolom::text like '$id%'
+                and kkk.waktu_kecelakaan::text like '$year%'";
+       return $this->db->query($sql)->row()->ttl;
+    }
+
+    public function getTtlkolomLok($id, $year, $kolom, $lokasi = '')
+    {
+       $sql = "SELECT count(*) ttl from k3.k3k_kecelakaan kkk where $kolom::text like '$id%'
+                and kkk.waktu_kecelakaan::text like '$year%' and kkk.lokasi_kerja_kecelakaan like '$lokasi%'";
+       return $this->db->query($sql)->row()->ttl;
+    }
+
+    public function getTtlapd($id, $year)
+    {
+        $sql = "SELECT
+                    count(*) ttl
+                from
+                    k3.k3k_kecelakaan kk
+                left join k3.k3k_penggunaan_apd kkbt on
+                    kkbt.id_kecelakaan = kk.id_kecelakaan
+                where
+                    kkbt.penggunaan_apd = $id
+                    and kk.waktu_kecelakaan::text like '$year%'";
+        return $this->db->query($sql)->row()->ttl;
+    }
+
+    public function getKecelakaanUnit($year)
+    {
+        $sql = "select
+                    es.unit_name,
+                    count(*) jml
+                from
+                    k3.k3k_kecelakaan kkk
+                left join er.er_section es on
+                    es.section_code = kkk.kodesie::text
+                where
+                    kkk.waktu_kecelakaan::text like '$year%'
+                group by
+                    es.unit_name
+                order by
+                    jml desc
+                limit 5";
+        return $this->db->query($sql)->result_array();
+    }
+
+    public function getKecelakaanSeksi($year, $lokasi)
+    {
+        $sql = "select
+                    es.section_name,
+                    count(*) jml
+                from
+                    k3.k3k_kecelakaan kkk
+                left join er.er_section es on
+                    es.section_code = kkk.kodesie::text
+                where
+                    kkk.waktu_kecelakaan::text like '$year%'
+                    and kkk.lokasi_kerja_kecelakaan = '$lokasi'
+                group by
+                    es.section_name
+                order by
+                    jml desc
+                limit 5";
+                // echo $sql;exit();
+        return $this->db->query($sql)->result_array();
+    }
+
+    public function getTglKecelakaan($year)
+    {
+        $sql = "select
+                    distinct left(waktu_kecelakaan::text, 10) tgl
+                from
+                    k3.k3k_kecelakaan kkk
+                where
+                    waktu_kecelakaan::text like '$year%'
+                order by
+                    tgl asc";
+        return $this->db->query($sql)->result_array();
+    }
+
+    public function getRekapLaka($tgl, $lokasi)
+    {
+        $sql = "select
+                    count(*) ttl
+                from
+                    hrd_khs.tpribadi t
+                where
+                    left(noind, 1) not in ('Z', 'L', 'M')
+                    and tglkeluar > '$tgl'
+                    and masukkerja <= '$tgl'
+                    and lokasi_kerja = '$lokasi'
+                    and (masukkerja >= '1945-01-01')";
+        return $this->personalia->query($sql)->row()->ttl;
+    }
+
+    public function getLaka($tgl, $lokasi)
+    {
+        $sql = "SELECT
+                    count(*) ttl
+                from
+                    k3.k3k_kecelakaan kkk
+                where
+                    kkk.lokasi_kerja_kecelakaan::text like '999'
+                    and kkk.lokasi_kerja = '$lokasi'
+                    and kkk.waktu_kecelakaan::text like '$tgl%'";
+        return $this->db->query($sql)->row()->ttl;
     }
 }

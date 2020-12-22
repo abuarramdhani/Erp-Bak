@@ -1163,3 +1163,330 @@ function erp_checkPopUp() {
 function pad(d) {
 	return d < 10 ? "0" + d.toString() : d.toString();
 }
+
+//Kecelakaan Kerja
+$(document).ready(function(){
+	$('#apdtblmkk').DataTable({
+		"scrollX": true,
+		fixedColumns:   {
+            leftColumns: 3,
+        }
+	});
+	getPekerjaTpribadi('#apdslcpic');
+
+	$('#apdslcpkj').change(function(){
+		var noind = $(this).val();
+		$("#surat-loading").attr('hidden', false);
+		$.ajax({
+			type: "get",
+			url: baseurl + "p2k3adm_V2/Admin/detail_pkj_mkk",
+			data: {
+				noind: noind,
+			},
+			success: function (response) {
+				var d = JSON.parse(response);
+				$('[name="seksi"]').val(d['seksi'].trim());
+				$('[name="unit"]').val(d['unit'].trim());
+				$('[name="bidang"]').val(d['bidang'].trim());
+				$('[name="dept"]').val(d['dept'].trim());
+			},
+			complete: function (response) {
+				$("#surat-loading").attr('hidden', true);
+			}
+		});
+	});
+
+	$('#apdslcpic').change(function(){
+		var noind = $(this).val();
+		if (noind == null || noind == '') {
+			$('[name="seksi_car"]').val('');
+			$('[attr-name="seksi_car"]').val('');
+			return false
+		}
+		$("#surat-loading").attr('hidden', false);
+		$.ajax({
+			type: "get",
+			url: baseurl + "p2k3adm_V2/Admin/detail_pkj_mkk",
+			data: {
+				noind: noind,
+			},
+			success: function (response) {
+				var d = JSON.parse(response);
+				$('[name="seksi_car"]').val(d['seksi'].trim());
+				$('[attr-name="seksi_car"]').val(d['seksi'].trim());
+			},
+			complete: function (response) {
+				$("#surat-loading").attr('hidden', true);
+			}
+		});
+	});
+
+	$(".daterangepickerYMDhis").daterangepicker({
+        "singleDatePicker": true,
+         "drops": "up",
+        "timePicker": true,
+        "timePicker24Hour": true,
+        "showDropdowns": true,
+        locale: {
+            format: 'YYYY-MM-DD HH:mm:ss'
+        },
+    });
+
+    $(".daterangepickerYMD").daterangepicker({
+    	"singleDatePicker": true,
+    	"drops": "up",
+    	"timePicker": false,
+    	"showDropdowns": true,
+    	autoApply: true,
+    	autoUpdateInput: false,
+    	locale: {
+    		cancelLabel: 'Clear',
+    		format: 'YYYY-MM-DD'
+    	},
+    });
+
+    $('.daterangepickerYMD').on('apply.daterangepicker', function(ev, picker) {
+    	$(this).val(picker.startDate.format('YYYY-MM-DD'));
+    	$(this).change();
+    });
+    $('.daterangepickerYMD').on('cancel.daterangepicker', function(ev, picker) {
+    	$(this).val('');
+    	$(this).change();
+    });
+
+    $('#apdinptglkc').change(function(){
+    	var tgl = $(this).val();
+    	var noind = $('#apdslcpkj').val();
+    	if (noind == '' || noind == null) {
+    		alert('Pilih Pekerja terlebih dahulu!');
+    		return false;
+    	}
+    	$("#surat-loading").attr('hidden', false);
+    	$.ajax({
+			type: "get",
+			url: baseurl + "p2k3adm_V2/Admin/ket_mkk",
+			data: {
+				tgl: tgl,
+				noind: noind
+			},
+			success: function (response) {
+				var data = JSON.parse(response);
+				console.log(data['success']);
+				if (data['success'] == '1') {
+					// $('[name="range1"]').val(data['ket1']);
+					// $('[name="range2"]').val(data['ket2']);
+					$('.apdinprngwkt1mkk, .apdinprngwkt2mkk').each(function(){
+						$(this).iCheck('uncheck');
+					});
+					$('.apdinprngwkt1mkk').eq(data['rng1']-1).iCheck('check');
+					$('.apdinprngwkt2mkk').eq(data['rng2']-1).iCheck('check');
+					$('[name="masa_kerja"]').val(data['masa_kerja']);
+					$('[attr-name="masa_kerja"]').val(data['masa_kerja']).trigger('change');
+				}
+			},
+			complete: function (response) {
+				$("#surat-loading").attr('hidden', true);
+			}
+		});
+    });
+
+    $('.apdSlcTags').select2({
+    	placeholder: 'Masukan TKP',
+    	tags: true
+    });
+
+    $('.apd_select2').select2({
+    	placeholder: "Pilih Salah Satu!"
+    });
+
+    $('#apdslcmkkloker').change(function(){
+    	var id = $(this).val();
+    	return true;
+    	// alert(id);
+    	if (id == '999') {
+    		$('input[type="radio"], input[type="checkbox"]').each(function(){
+    			// $(this).attr('checked', false);
+    			$(this).iCheck('uncheck');
+    			$(this).iCheck('disable');
+    			$(this).closest('label').css('color', 'grey');
+    			// $(this).closest('div').attr('disabled', true);
+    		});
+    	}else{
+    		// alert('a');
+    		$('input[type="radio"], input[type="checkbox"]').each(function(){
+	    		// alert('n');
+    			$(this).closest('label').css('color', 'black');
+	    		$(this).iCheck('enable');
+	    		// return false;
+    		});
+    	}
+    });
+
+    $('#apddivaddmkk').on('click', '.iradio_square-green', function(event){
+    	if($(this).hasClass('checked')){
+    		event.stopImmediatePropagation();
+    		$(this).removeClass('checked');
+    		$(this).find('input').attr('checked', false);
+    	}
+    });
+
+    $(document).on('ifClicked', '.apdinpjpmkk', function(){
+    	$('.apdinpjpmkk').each(function(){
+    		$(this).iCheck('uncheck');
+    	});
+    });
+    $(document).on('ifClicked', '.apdinpprosmkk', function(){
+    	$('.apdinpprosmkk').each(function(){
+    		$(this).iCheck('uncheck');
+    	});
+    });
+    $(document).on('ifClicked', '.apdinpunsmkk', function(){
+    	$('.apdinpunsmkk').each(function(){
+    		$(this).iCheck('uncheck');
+    	});
+    });
+    $(document).on('ifClicked', '.apdinpkssmkk', function(){
+    	$('.apdinpkssmkk').each(function(){
+    		$(this).iCheck('uncheck');
+    	});
+    });
+    $(document).on('ifClicked', '.apdinprngwkt1mkk', function(){
+    	$('.apdinprngwkt1mkk').each(function(){
+    		$(this).iCheck('uncheck');
+    	});
+    });
+    $(document).on('ifClicked', '.apdinprngwkt2mkk', function(){
+    	$('.apdinprngwkt2mkk').each(function(){
+    		$(this).iCheck('uncheck');
+    	});
+    });
+
+    $('.apdbtndelmkk').click(function(){
+    	var id = $(this).val();
+    	var pkj = $(this).attr('pkj');
+    	Swal.fire({
+    		title: "Anda Yakin?",
+    		text: "Hapus Data "+pkj+"?",
+    		type: 'warning',
+    		showCancelButton: true,
+    	}).then(function (result) {
+    		if (result.value) {
+    			$.ajax({
+    				type: "post",
+    				url: baseurl + "p2k3adm_V2/Admin/del_k3k",
+    				data: {
+    					id: id
+    				},
+    				success: function (response) {
+    					location.reload();
+    				},
+    				complete: function (response) {
+    					$("#surat-loading").attr('hidden', true);
+    				}
+    			});
+    		}
+    	});
+    });
+
+    $('#apdslclstkp').select2({
+    	ajax: {
+    		url: baseurl + "p2k3adm_V2/Admin/get_tkp",
+    		dataType: "json",
+    		type: "get",
+    		data: function (params) {
+    			return { s: params.term };
+    		},
+    		processResults: function (data) {
+    			return {
+    				results: $.map(data, function (item) {
+    					return {
+    						id: item.tkp,
+    						text: item.tkp,
+    					};
+    				}),
+    			};
+    		},
+    		cache: false,
+    	},
+    	minimumInputLength: -1,
+    	tags:true,
+    	placeholder: "Select Item",
+    	allowClear: true,
+    });
+
+    $('#apd_yearonly').datepicker({
+            autoclose: true,
+            todayHighlight: true,
+            format: 'yyyy',
+            viewMode: 'years',
+            minViewMode: 'years'
+    });
+
+    $('#apdmkkbyyear').click(function(){
+    	var y = $('#apd_yearonly').val();
+    	window.location.replace(baseurl + "p2k3adm_V2/Admin/monitoringKK?y="+y);
+    });
+});
+
+function InitK3kForm()
+{
+	// $('input').iCheck({
+	// 	labelHover: false,
+	// 	cursor: true,
+	// 	checkboxClass: 'icheckbox_square-green',
+	// 	radioClass: 'iradio_square-green',
+	// 	increaseArea: '20%'
+	// });
+	var changed = false;
+	$('textarea, select, input').change(function(){
+		changed = true;
+	});
+	$(document).on('ifChanged', 'input', function(){
+		changed = true;
+
+	});
+	$('#apdbtnupdatemkk').click(function(){
+		changed = false;
+	});
+	$(window).bind('beforeunload', function(){
+		if (changed) {
+			return 'Are you sure you want to leave?';
+		}
+	});
+}
+
+function InitK3kFormEdit()
+{
+	$('textarea, select, input').change(function(){
+		var nm = $(this).attr('attr-name');
+		$(this).attr('name', nm);
+		$('#apdbtnupdatemkk').attr('disabled', false);
+	});
+	$(document).on('ifChanged', 'input', function(){
+		var nm = $(this).attr('attr-name');
+		$(this).attr('name', nm);
+		$('#apdbtnupdatemkk').attr('disabled', false);
+	});
+}
+
+function apd_alert_mixin(icon, title)
+{
+	const Toast = Swal.mixin({
+		toast: true,
+		background: '#ebfff0',
+		position: 'center',
+		showConfirmButton: false,
+		timer: 5000,
+		width:500,
+		timerProgressBar: true,
+		onOpen: (toast) => {
+			toast.addEventListener('mouseenter', Swal.stopTimer)
+			toast.addEventListener('mouseleave', Swal.resumeTimer)
+		}
+	});
+
+	Toast.fire({
+		type: icon,
+		title: title
+	});
+}
