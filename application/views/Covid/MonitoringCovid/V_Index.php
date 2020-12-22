@@ -141,6 +141,9 @@
 																		}
 																		?>
 																		<li>
+																			<a href="<?php echo base_url('Covid/MonitoringCovid/InputHasilTest/'.$encrypted_string) ?>" style="cursor: pointer;">Input Hasil Test</a>
+																		</li>
+																		<li>
 																			<a href="<?php echo base_url('Covid/MonitoringCovid/TidakIsolasi/'.$encrypted_string) ?>" style="cursor: pointer;">Tidak Isolasi</a>
 																		</li>
 																		<li>

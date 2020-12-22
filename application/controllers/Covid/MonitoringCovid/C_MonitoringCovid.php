@@ -699,7 +699,7 @@ class C_MonitoringCovid extends CI_Controller
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		$data['list'] = $this->M_monitoringcovid->getIsDirisendiri();
+		// $data['list'] = $this->M_monitoringcovid->getIsDirisendiri();
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -1350,8 +1350,8 @@ class C_MonitoringCovid extends CI_Controller
 
 	public function insertBedaRumah()
 	{
-		$hubungan = $this->input->post('hubungan');
-		$arahan = $this->input->post('hubungan');
+		$hubungan = $this->input->post('hubungan_bedaRumah');
+		$arahan = $this->input->post('arahan');
 		if ($hubungan == 'lainnya') {
 			$hubungan = $this->input->post('lainnya');
 		}
@@ -1408,8 +1408,8 @@ class C_MonitoringCovid extends CI_Controller
 
 	public function insertProblaby()
 	{
-		$hubungan = $this->input->post('hubungan');
-		$arahan = $this->input->post('hubungan');
+		$hubungan = $this->input->post('hubungan_relasi');
+		$arahan = $this->input->post('arahan');
 		if ($hubungan == 'lainnya') {
 			$hubungan = $this->input->post('lainnya');
 		}
@@ -1457,6 +1457,57 @@ class C_MonitoringCovid extends CI_Controller
 		$this->kirimEmailcvd($data);
 		if ($src == 'problaby') {
 			redirect('Covid/PelaporanPekerja/Kontak/interaksi');
+		}else{
+			//nope
+		}
+	}
+
+	public function insertDalamPerusahaan()
+	{
+		// echo "<pre>";
+		// print_r($_POST);exit();
+		$hubungan = $this->input->post('hubungan_dp');
+		$arahan = $this->input->post('arahan');
+		if ($hubungan == 'lainnya') {
+			$hubungan = $this->input->post('lainnya');
+		}
+		$range = $this->input->post('txtPeriodeKejadian');
+		$exrange = explode(' - ', $range);
+
+		$user = $this->session->user;
+		$data = [
+		'no_induk' => $this->input->post('slc-CVD-MonitoringCovid-Tambah-Pekerja'),
+		'id_pekerja' => $this->input->post('slc-CVD-MonitoringCovid-Tambah-PekerjaId'),
+		'seksi' => $this->input->post('txt-CVD-MonitoringCovid-Tambah-Seksi'),
+		'dept' => $this->input->post('txt-CVD-MonitoringCovid-Tambah-Departemen'),
+		'tgl_kejadian' => $this->input->post('txtPeriodeKejadian'),
+		'tgl_interaksi' => $exrange[0],
+		'keterangan' => $this->input->post('txt-CVD-MonitoringCovid-Tambah-Keterangan'),
+		'yang_kontak'	=> $this->input->post('yang_kontak'),
+		'hubungan'	=> $hubungan,
+		'jenis_interaksi'	=> $this->input->post('jenis_interaksi'),
+		'intensitas'	=> $this->input->post('intensitas'),
+		'durasi'	=> $this->input->post('durasi'),
+		'protokol'	=> $this->input->post('protokol'),
+		'kasus'	=> 'Kontak dengan Probable/Konfirmasi Covid 19 - Dalam Perusahaan',
+		'atasan' => $this->input->post('slc-CVD-MonitoringCovid-Atasan'),
+		];
+
+		$wawancara = "<p>Yang kontak : ".$data['yang_kontak'].'<br>'.
+		"Hubungan : ".$data['hubungan'].'<br>'.
+		"Jenis Interaksi : ".$data['jenis_interaksi'].'<br>'.
+		"Intensitas : ".$data['intensitas'].'<br>'.
+		"Durasi : ".$data['durasi'].'<br>'.
+		"Protokol : ".$data['protokol']."</p>";
+		$data['wawancara'] = $wawancara;
+		
+		$id_wawancara = $this->M_monitoringcovid->kontakBedaRumah($data, $user);
+		$this->uploadLampiranCvd($id_wawancara);
+		$this->session->set_userdata('result', 'berhasil');
+		$src = $this->input->post('source');
+		$this->kirimEmailcvd($data);
+		if ($src == 'dalam_perusahaan') {
+			redirect('Covid/PelaporanPekerja/Kontak/dalam_perusahaan');
 		}else{
 			//nope
 		}
@@ -1555,11 +1606,11 @@ class C_MonitoringCovid extends CI_Controller
 		$mail->Password = '123456';
 		$mail->WordWrap = 50;
 		$mail->setFrom('noreply@quick.com', 'TIM COVID 19');
-		$mail->addAddress('emanuel_dakris@quick.com');
+		// $mail->addAddress('emanuel_dakris@quick.com');
 		$mail->addAddress('enggal_aldiansyah@quick.com');
-		$mail->addAddress('rheza_egha@quick.com');
-		$mail->addAddress('nurul_wachidah@quick.com');
-		$mail->addAddress('tim_pencegahan_covid19@quick.com');
+		// $mail->addAddress('rheza_egha@quick.com');
+		// $mail->addAddress('nurul_wachidah@quick.com');
+		// $mail->addAddress('tim_pencegahan_covid19@quick.com');
 		$mail->Subject = 'Laporan Covid Baru dari '.trim($pkj['nama']).' ('.$noind.')';
 		$mail->msgHTML($message);
 
@@ -1569,5 +1620,51 @@ class C_MonitoringCovid extends CI_Controller
 		} else {
 			// okey
 		}
+	}
+
+	public function InputHasilTest($id)
+	{
+		if (empty($id) || !isset($id)) {
+			die('Halaman Tidak di Temukan ((´д｀))');
+		}
+		$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
+		$plaintext_string = $this->encrypt->decode($plaintext_string);
+		$user = $this->session->user;
+
+		$data  = $this->general->loadHeaderandSidemenu('Monitoring Covid', 'Input Hasil Test', 'Monitoring Covid', '', '');
+		$data['cvd'] = $this->M_monitoringcovid->getPekerjaById($plaintext_string);
+		// print_r($data['cvd']);exit();
+		$data['id'] = $id;
+
+		$this->load->view('V_Header', $data);
+		$this->load->view('V_Sidemenu', $data);
+		$this->load->view('Covid/MonitoringCovid/V_Input_Tes',$data);
+		$this->load->view('V_Footer', $data);
+	}
+
+	public function getHasilTestc()
+	{
+		$id = $this->input->get('id');
+		$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
+		$plaintext_string = $this->encrypt->decode($plaintext_string);
+		$data['test'] = $this->M_monitoringcovid->getHasilTest($plaintext_string);
+		$html = $this->load->view('Covid/MonitoringCovid/V_Input_Tes_Table',$data, true);
+		echo $html;
+	}
+
+	public function addHsilTestc()
+	{
+		$id = $this->input->post('id');
+		$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
+		$plaintext_string = $this->encrypt->decode($plaintext_string);
+		$arr = [
+		'tgl_tes'			=> $this->input->post('tgl_test'),
+		'jenis_tes'			=> $this->input->post('jns_test'),
+		'hasil_tes'			=> $this->input->post('hsl_test'),
+		'cvd_pekerja_id'	=> $plaintext_string,
+		];
+
+		$ins = $this->M_monitoringcovid->addHasilTest($arr);
+		echo json_encode(true);
 	}
 }
