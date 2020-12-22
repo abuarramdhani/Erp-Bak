@@ -40,6 +40,7 @@ class C_Index extends CI_Controller {
 					'nama_seksi' 	=> $k['nama_seksi'],
 					'lokasi' 		=> $k['lokasi'],
 					'isolasi' 		=> $k['isolasi'],
+					'last_tgl_akhir_isolasi' => $k['last_tgl_akhir_isolasi'],
 					'detail' 		=> $kasus
 				);
 				$tmp[] = $k['koordinat'];

@@ -117,7 +117,7 @@
 													<td style="background-color: #d63031;color: white;font-weight: bold;text-align: center;">Tidak Boleh Dikunjungi</td>
 												</tr>
 												<?php
-											}elseif ($z['isolasi'] == "Tidak" && !empty($z['last_tgl_akhir_isolasi']) && strtotime($z['last_tgl_akhir_isolasi']) > strtotime(date('Y-m-d')." - 2 day")) {
+											}elseif ($z['isolasi'] == "Tidak" && !empty($z['last_tgl_akhir_isolasi']) && strtotime($z['last_tgl_akhir_isolasi']) >= strtotime(date('Y-m-d')." - 2 day")) {
 												?>
 												<tr>
 													<td style="text-align: center;"><?php echo $nomor ?></td>
@@ -249,7 +249,7 @@
 								return text;
 							}).addTo(<?php echo $map ?>);
 							<?php
-					    }elseif ($z['isolasi'] == "Tidak" && !empty($z['last_tgl_akhir_isolasi']) && strtotime($z['last_tgl_akhir_isolasi']) > strtotime(date('Y-m-d')." - 2 day")) {
+					    }elseif ($z['isolasi'] == "Tidak" && !empty($z['last_tgl_akhir_isolasi']) && strtotime($z['last_tgl_akhir_isolasi']) >= strtotime(date('Y-m-d')." - 2 day")) {
 					    	?>
 					    	var area<?php echo $key ?> = <?php echo $json ?>;
 					    	L.geoJSON(area<?php echo $key ?>, {
