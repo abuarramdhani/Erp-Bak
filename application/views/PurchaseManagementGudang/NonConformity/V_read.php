@@ -314,6 +314,9 @@
                                         </div>
                                         <div class="panel-footer">
                                             <button type="button" class="btn btn-success btnReturnPBBNC">RETURN TO PPB</button>
+                                            <?php if ($this->session->responsibility_id == 2569) { ?>
+                                                <button type="button" class="btn btn-success btnForwardSubkonNC">FORWARD TO SUBKON</button>
+                                            <?php } ?>
                                         </div>
                                     </div>
                                 </div>
