@@ -110,9 +110,9 @@
                                     <td style="color: black;padding: 3px;border: 1px solid black;text-align: center;font-size: 14pt"><?=number_format($key['um_dl']) ?></td>
                                     <td style="color: black;padding: 3px;border: 1px solid black;text-align: center;font-size: 14pt"><?=$key['htm'] ?></td>
                                     <td style="color: black;padding: 3px;border: 1px solid black;text-align: center;font-size: 14pt"><?=number_format($key['pot_lain']) ?></td>
-                                    <td style="color: black;padding: 3px;border: 1px solid black;text-align: center;font-size: 14pt"><?=$key['jml_jkn'] ?></td>
-                                    <td style="color: black;padding: 3px;border: 1px solid black;text-align: center;font-size: 14pt"><?=$key['jml_jht'] ?></td>
-                                    <td style="color: black;padding: 3px;border: 1px solid black;text-align: center;font-size: 14pt"><?=$key['jml_jp'] ?></td>
+                                    <td style="color: black;padding: 3px;border: 1px solid black;text-align: center;font-size: 14pt"><?=$key['jkn'] ?></td>
+                                    <td style="color: black;padding: 3px;border: 1px solid black;text-align: center;font-size: 14pt"><?=$key['jht'] ?></td>
+                                    <td style="color: black;padding: 3px;border: 1px solid black;text-align: center;font-size: 14pt"><?=$key['jp'] ?></td>
                                     <td style="color: black;padding: 3px;border: 1px solid black;text-align: center;font-size: 14pt"><?=$key['jml_duka'] ?></td>
                                     <td style="color: black;padding: 3px;border: 1px solid black;text-align: center;font-size: 14pt"><?=number_format($key['nom_duka']) ?></td>
                                 </tr>
@@ -142,9 +142,9 @@
                                     <?php  } ?>
                                     <td style="color: black;padding: 3px;border: 1px solid black;text-align: center;font-size: 14pt"><?=$key['tam_susulan'] ?></td>
                                     <td style="color: black;padding: 3px;border: 1px solid black;text-align: center;font-size: 14pt"><?=$key['pot_susulan'] ?></td>
-                                    <td style="color: black;padding: 3px;border: 1px solid black;text-align: center;font-size: 14pt"><?=$key['jml_jkn'] ?></td>
-                                    <td style="color: black;padding: 3px;border: 1px solid black;text-align: center;font-size: 14pt"><?=$key['jml_jht'] ?></td>
-                                    <td style="color: black;padding: 3px;border: 1px solid black;text-align: center;font-size: 14pt"><?=$key['jml_jp'] ?></td>
+                                    <td style="color: black;padding: 3px;border: 1px solid black;text-align: center;font-size: 14pt"><?=$key['jkn'] ?></td>
+                                    <td style="color: black;padding: 3px;border: 1px solid black;text-align: center;font-size: 14pt"><?=$key['jht'] ?></td>
+                                    <td style="color: black;padding: 3px;border: 1px solid black;text-align: center;font-size: 14pt"><?=$key['jp'] ?></td>
                                     <td style="color: black;padding: 3px;border: 1px solid black;text-align: center;font-size: 14pt"><?=$key['jml_duka'] ?></td>
                                     <td style="color: black;padding: 3px;border: 1px solid black;text-align: center;font-size: 14pt"><?=number_format($key['nom_duka']) ?></td>
                                 </tr>

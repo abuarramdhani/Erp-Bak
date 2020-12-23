@@ -38,6 +38,9 @@
                     <th style="border: 1px solid grey;text-align: center;width: 40px;">Pot. Lain</th>
                     <th style="border: 1px solid grey;text-align: center;width: 40px;">Tamb.</th>
                     <th style="border: 1px solid grey;text-align: center;width: 40px;">Pot.</th>
+                    <th style="border: 1px solid grey;text-align: center;width: 10px;">JKN</th>
+                    <th style="border: 1px solid grey;text-align: center;width: 10px;">JHT</th>
+                    <th style="border: 1px solid grey;text-align: center;width: 10px;">JP</th>
                     <th style="border: 1px solid grey;text-align: center;width: 10px;">Jml JKN</th>
                     <th style="border: 1px solid grey;text-align: center;width: 10px;">Jml JHT</th>
                     <th style="border: 1px solid grey;text-align: center;width: 10px;">Jml JP</th>
@@ -114,6 +117,9 @@
                     <th style="border: 1px solid grey;text-align: center;width: 40px;">Pot. Lain</th>
                     <th style="border: 1px solid grey;text-align: center;width: 40px;">Tamb.</th>
                     <th style="border: 1px solid grey;text-align: center;width: 40px;">Pot.</th>
+                    <th style="border: 1px solid grey;text-align: center;width: 10px;">JKN</th>
+                    <th style="border: 1px solid grey;text-align: center;width: 10px;">JHT</th>
+                    <th style="border: 1px solid grey;text-align: center;width: 10px;">JP</th>
                     <th style="border: 1px solid grey;text-align: center;width: 10px;">Jml JKN</th>
                     <th style="border: 1px solid grey;text-align: center;width: 10px;">Jml JHT</th>
                     <th style="border: 1px solid grey;text-align: center;width: 10px;">Jml JP</th>
@@ -148,6 +154,9 @@
                                 <td style="border: 1px solid grey;text-align: right;"><?php echo $value['plain'] ?></td>
                                 <td style="border: 1px solid grey;text-align: right;"><?php echo $value['tambahan_str'] ?></td>
                                 <td style="border: 1px solid grey;text-align: right;"><?php echo $value['potongan_str'] ?></td>
+                                <td style="border: 1px solid grey;text-align: right;"><?php echo intval($value['jml_jkn']) > 0 ? 'Ya' : 'Tidak'; ?></td>
+                                <td style="border: 1px solid grey;text-align: right;"><?php echo intval($value['jml_jht']) > 0 ? 'Ya' : 'Tidak'; ?></td>
+                                <td style="border: 1px solid grey;text-align: right;"><?php echo intval($value['jml_jp']) > 0 ? 'Ya' : 'Tidak'; ?></td>
                                 <td style="border: 1px solid grey;text-align: right;"><?php echo $value['jml_jkn'] ?></td>
                                 <td style="border: 1px solid grey;text-align: right;"><?php echo $value['jml_jht'] ?></td>
                                 <td style="border: 1px solid grey;text-align: right;"><?php echo $value['jml_jp'] ?></td>
