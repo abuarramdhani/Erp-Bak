@@ -1446,6 +1446,7 @@ $(document).on('ready', function(){
 
 function getTabelhasiltest(id)
 {
+	$('#surat-loading').attr('hidden', false);
 	$.ajax({
 		data: {
 			id:id
@@ -1459,9 +1460,11 @@ function getTabelhasiltest(id)
 				type: "error",
 				confirmButtonText: 'OK',
 				confirmButtonColor: '#d63031',
-			})
+			});
+			$('#surat-loading').attr('hidden', true);
 		},
 		success: function(data){
+			$('#surat-loading').attr('hidden', true);
 			$('#cvd_tbhltes').html(data);
 			$('#cvd_tblhsltest').DataTable();
 		}
@@ -1470,9 +1473,9 @@ function getTabelhasiltest(id)
 
 $(document).ready(function(){
 	$('#cvd_savehsltes').click(function(){
-		var jns = $('[name="jns_test"]').val();
-		var tgl = $('[name="tgl_test"]').val();
-		var hsl = $('[name="hsl_test"]').val();
+		var jns = $(this).closest('div#cvd_mdladdtest').find('[name="jns_test"]').val();
+		var tgl = $(this).closest('div#cvd_mdladdtest').find('[name="tgl_test"]').val();
+		var hsl = $(this).closest('div#cvd_mdladdtest').find('[name="hsl_test"]').val();
 		if (jns == '' || tgl == '' || hsl == '') {
 			alert('Harap Isi Semua Kolom');
 			return false;
@@ -1499,7 +1502,90 @@ $(document).ready(function(){
 		});
 	});
 
-	$('.cvd_select2').select2({
-		placeholder: "Pilih Salah Satu"
+	$('#cvd_uphsltes').click(function(){
+		var jns = $(this).closest('div#cvd_mdledtest').find('[name="jns_test"]').val();
+		var tgl = $(this).closest('div#cvd_mdledtest').find('[name="tgl_test"]').val();
+		var hsl = $(this).closest('div#cvd_mdledtest').find('[name="hsl_test"]').val();
+		if (jns == '' || tgl == '' || hsl == '') {
+			alert('Harap Isi Semua Kolom');
+			return false;
+		}
+
+		$.ajax({
+			data: $('#cvd_frmedtes').serialize(),
+			method: 'POST',
+			url: baseurl + 'Covid/MonitoringCovid/updHsilTestc',
+			error: function(xhr,status,error){
+				swal.fire({
+					title: xhr['status'] + "(" + xhr['statusText'] + ")",
+					html: xhr['responseText'],
+					type: "error",
+					confirmButtonText: 'OK',
+					confirmButtonColor: '#d63031',
+				})
+			},
+			success: function(data){
+				$('#cvd_mdledtest').modal('hide');
+				mpk_showAlert("success", "Berhasil Mengupdate Data !");
+				getTabelhasiltest(idenc);
+			}
+		});
 	});
+
+	$('.cvd_select2').select2({
+		placeholder: "Pilih Salah Satu",
+		allowClear: true
+	});
+});
+
+$(document).on('click', '.cvd_btndelhsltes', function(){
+	var a = $(this).closest('tr').find('td').eq(1).text();
+	var b = $(this).closest('tr').find('td').eq(2).text();
+	var c = $(this).closest('tr').find('td').eq(3).text();
+	var val = $(this).val();
+	Swal.fire({
+		title: 'Hapus Data ini ?',
+		text: "("+a+" | "+b+" | "+c+")",
+		type: 'question',
+		showCancelButton: true,
+		confirmButtonColor: '#3085d6',
+		cancelButtonColor: '#d33',
+		confirmButtonText: 'Ya',
+		cancelButtonText: 'Tidak'
+	}).then((result) => {
+		if (result.value) {
+			$.ajax({
+				data: {
+					id:val
+				},
+				method: 'POST',
+				url: baseurl + 'Covid/MonitoringCovid/delHsilTestc',
+				error: function(xhr,status,error){
+					swal.fire({
+						title: xhr['status'] + "(" + xhr['statusText'] + ")",
+						html: xhr['responseText'],
+						type: "error",
+						confirmButtonText: 'OK',
+						confirmButtonColor: '#d63031',
+					});
+				},
+				success: function(data){
+					mpk_showAlert("success", "Berhasil Menghapus Data !");
+					getTabelhasiltest(idenc);
+				}
+			});
+		}
+	});
+});
+
+$(document).on('click','.cvd_btnedhsltes', function(){
+	var a = $(this).attr('jns');
+	var b = $(this).attr('tgl');
+	var c = $(this).attr('hsl');
+	var val = $(this).val();
+	$('#cvd_mdledtest').modal('show');
+	$('div#cvd_mdledtest').find('select[name="jns_test"]').val(a).trigger('change');
+	$('div#cvd_mdledtest').find('input[name="tgl_test"]').val(b).trigger('change');
+	$('div#cvd_mdledtest').find('select[name="hsl_test"]').val(c).trigger('change');
+	$('div#cvd_mdledtest').find('input[name="id"]').val(val).trigger('change');
 });

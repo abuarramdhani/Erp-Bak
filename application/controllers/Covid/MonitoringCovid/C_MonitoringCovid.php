@@ -1606,11 +1606,11 @@ class C_MonitoringCovid extends CI_Controller
 		$mail->Password = '123456';
 		$mail->WordWrap = 50;
 		$mail->setFrom('noreply@quick.com', 'TIM COVID 19');
-		// $mail->addAddress('emanuel_dakris@quick.com');
+		$mail->addAddress('emanuel_dakris@quick.com');
 		$mail->addAddress('enggal_aldiansyah@quick.com');
-		// $mail->addAddress('rheza_egha@quick.com');
-		// $mail->addAddress('nurul_wachidah@quick.com');
-		// $mail->addAddress('tim_pencegahan_covid19@quick.com');
+		$mail->addAddress('rheza_egha@quick.com');
+		$mail->addAddress('nurul_wachidah@quick.com');
+		$mail->addAddress('tim_pencegahan_covid19@quick.com');
 		$mail->Subject = 'Laporan Covid Baru dari '.trim($pkj['nama']).' ('.$noind.')';
 		$mail->msgHTML($message);
 
@@ -1666,5 +1666,24 @@ class C_MonitoringCovid extends CI_Controller
 
 		$ins = $this->M_monitoringcovid->addHasilTest($arr);
 		echo json_encode(true);
+	}
+	public function updHsilTestc()
+	{
+		$id = $this->input->post('id');
+		$arr = [
+		'tgl_tes'			=> $this->input->post('tgl_test'),
+		'jenis_tes'			=> $this->input->post('jns_test'),
+		'hasil_tes'			=> $this->input->post('hsl_test'),
+		];
+
+		$ins = $this->M_monitoringcovid->updHasilTest($arr, $id);
+		echo json_encode(true);
+	}
+
+	public function delHsilTestc()
+	{
+		$id = $this->input->post('id');
+		$del = $this->M_monitoringcovid->delHasilTest($id);
+		return json_encode(true);
 	}
 }

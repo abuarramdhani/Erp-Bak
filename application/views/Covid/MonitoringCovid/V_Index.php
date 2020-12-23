@@ -86,6 +86,7 @@
 												<th class="bg-primary" style="text-align: center;vertical-align: middle;">Selesai Isolasi</th>
 												<th class="bg-primary" style="text-align: center;vertical-align: middle;">Lama Isolasi</th>
 												<th class="bg-primary" style="text-align: center;vertical-align: middle;">PIC</th>
+												<th class="bg-primary" style="text-align: center;vertical-align: middle; width: 180px;">Hasil Tes</th>
 											</thead>
 											<tbody>
 												<?php 
@@ -185,6 +186,21 @@
 															<?php else: ?>
 																<td><?php echo $value['created_by'] ?></td>
 															<?php endif ?>
+															<td>
+																<?php
+																$arrjns = $value['jns'];
+																$arrhsl = $value['hsl'];
+																if (!empty($arrjns)) {
+																	$st = ['','Negatif', 'Non Reaktif', 'Reaktif', 'Positif'];
+																	$arrjns = explode(',', $arrjns);
+																	$arrhsl = explode(',', $arrhsl);
+																	for ($i=0; $i < count($arrjns); $i++) { 
+																		echo ($i+1).'. '.$arrjns[$i].' ('.$st[$arrhsl[$i]].')';
+																		echo "<br>";
+																	}
+																}
+																?>
+															</td>
 														</tr>
 														<?php
 														$nomor++;
