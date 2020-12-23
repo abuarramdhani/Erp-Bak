@@ -8,7 +8,6 @@ class M_Dtmasuk extends CI_Model
         $this->load->database();
         $this->personalia   =   $this->load->database('personalia', TRUE);
         $this->erp          =   $this->load->database('erp_db', TRUE);
-        $this->personaliaProd          =   $this->load->database('personaliaProd', TRUE);
         $this->oracle          =   $this->load->database('oracle', TRUE);
     }
 
@@ -1522,7 +1521,7 @@ class M_Dtmasuk extends CI_Model
                 where
                     noind = '$noind'
                     and tanggal = '$tgl'";
-        return $this->personaliaProd->query($sql)->row_array();
+        return $this->personalia->query($sql)->row_array();
     }
 
     public function insk3k_kecelakaan($data)
