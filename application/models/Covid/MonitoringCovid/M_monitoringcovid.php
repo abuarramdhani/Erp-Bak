@@ -48,7 +48,10 @@ class M_monitoringcovid extends CI_Model {
 	}
 
 	function getPekerjaAll(){
-		$sql = "select a.cvd_pekerja_id,
+		$sql = "select
+					tes.jns,
+					tes.hsl,
+					a.cvd_pekerja_id,
 					a.noind,
 					b.employee_name as nama,
 					c.section_name as seksi, 
@@ -73,6 +76,8 @@ class M_monitoringcovid extends CI_Model {
 				on a.noind = b.employee_code
 				inner join er.er_section c 
 				on b.section_code = c.section_code
+				left join (select cvd_pekerja_id, string_agg(jenis_tes,',') jns, string_agg(hasil_tes::text,',') hsl from cvd.cvd_hasil_tes cht group by cht.cvd_pekerja_id) tes
+				on a.cvd_pekerja_id = tes.cvd_pekerja_id
 				order by a.status_kondisi_id ";
 				// echo $sql;exit();
 		return $this->erp->query($sql)->result_array();
@@ -80,6 +85,8 @@ class M_monitoringcovid extends CI_Model {
 
 	function getPekerjaByStatus($status){
 		$sql = "select a.cvd_pekerja_id,
+					tes.jns,
+					tes.hsl,
 					a.noind,
 					b.employee_name as nama,
 					c.section_name as seksi, 
@@ -104,6 +111,7 @@ class M_monitoringcovid extends CI_Model {
 				on a.noind = b.employee_code
 				inner join er.er_section c 
 				on b.section_code = c.section_code
+				left join (select cvd_pekerja_id, string_agg(jenis_tes,',') jns, string_agg(hasil_tes::text,',') hsl from cvd.cvd_hasil_tes cht group by cht.cvd_pekerja_id) tes on a.cvd_pekerja_id = tes.cvd_pekerja_id
 				where a.status_kondisi_id = ?
 				order by a.status_kondisi_id ";
 		return $this->erp->query($sql,array($status))->result_array();
@@ -783,11 +791,27 @@ class M_monitoringcovid extends CI_Model {
 	public function getHasilTest($id)
 	{
 		$this->db->where('cvd_pekerja_id', $id);
+		$this->db->order_by('tgl_tes', 'ASC');
 		return $this->db->get('cvd.cvd_hasil_tes')->result_array();
 	}
 
 	public function addHasilTest($data)
 	{
 		$this->db->insert('cvd.cvd_hasil_tes', $data);
+		return $this->db->affected_rows();
+	}
+
+	public function delHasilTest($id)
+	{
+		$this->db->where('id_hasil_tes', $id);
+		$this->db->delete('cvd.cvd_hasil_tes');
+		return $this->db->affected_rows();
+	}
+
+	public function updHasilTest($data, $id)
+	{
+		$this->db->where('id_hasil_tes', $id);
+		$this->db->update('cvd.cvd_hasil_tes', $data);
+		return $this->db->affected_rows();
 	}
 }
