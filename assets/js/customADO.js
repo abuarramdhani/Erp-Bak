@@ -112,11 +112,23 @@ $( () => {
                                 title: 'Gagal',
                                 text: 'Stok gudang tidak mencukupi!',
                             });
-                        }else if(resp == 'error ada do/spb yang sudah dilayani'){
+                        }else if(resp == 'error ada do/spb yang transact'){
                             Swal.fire({
                                 type: 'error',
                                 title: 'Gagal',
-                                text: 'Ada DO/SPB line yang sudah dilayani, hanya DO/SPB baru yang bisa dimasukan!',
+                                text: 'Ada DO/SPB yang sudah transact silahkan cek kembali!',
+                            });
+                        }else if(resp == 'error ada do/spb bukan ODM'){
+                            Swal.fire({
+                                type: 'error',
+                                title: 'Gagal',
+                                text: 'Ada DO/SPB bukan ODM silahkan cek kembali!',
+                            });
+                        }else if(resp == 'error alamat belum lengkap'){
+                            Swal.fire({
+                                type: 'error',
+                                title: 'Gagal',
+                                text: 'Alamat belum lengkap silahkan cek kembali!',
                             });
                         }else{
                             swalADOMixinToast('success', success)

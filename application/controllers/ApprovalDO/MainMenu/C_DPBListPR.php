@@ -193,8 +193,12 @@ class C_DPBListPR extends CI_Controller {
                     $this->M_dpb->updateDetailListPR1($id, $data, $tgl_kirim);
                 }
                 echo json_encode('Success!');
+            }else if($returnLineStatus[0]['LINESTATUS'] == 77777){
+                echo json_encode('error ada do/spb bukan ODM');
+            }else if ($returnLineStatus[0]['LINESTATUS'] == 99999) {
+                echo json_encode('error alamat belum lengkap');
             }else{
-                echo json_encode('error ada do/spb yang sudah dilayani');
+                echo json_encode('error ada do/spb yang transact');
             }
 
         }else{
