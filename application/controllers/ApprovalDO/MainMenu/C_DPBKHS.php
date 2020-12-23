@@ -241,9 +241,12 @@ class C_DPBKHS extends CI_Controller {
                     ]);
                 }
                 echo json_encode($new_pr_number);
+            }else if($returnLineStatus[0]['LINESTATUS'] == 77777){
+                echo json_encode('error ada do/spb bukan ODM');
+            }else if ($returnLineStatus[0]['LINESTATUS'] == 99999) {
+                echo json_encode('error alamat belum lengkap');
             }else{
-            echo json_encode('error ada do/spb yang sudah dilayani');
-
+                echo json_encode('error ada do/spb yang transact');
             }
 
         }else{
