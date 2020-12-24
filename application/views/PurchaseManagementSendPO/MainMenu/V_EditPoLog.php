@@ -93,7 +93,7 @@
                                             <div class="row">
                                                 <div class="col-lg-12 text-center">
                                                     <button type="button" class="btn btn-primary btnVendorConfirm" style="margin-right: 8px;">Simpan</button>
-                                                    <a href="<?= base_url('PurchaseManagementSendPO/PoLog/edit'); ?>" class="btn btn-primary">Kembali</a>
+                                                    <a href="<?= base_url('PurchaseManagementSendPO/PoLog'); ?>" class="btn btn-primary">Kembali</a>
                                                 </div>
                                             </div>
                                         </form>

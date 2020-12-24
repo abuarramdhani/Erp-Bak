@@ -61,6 +61,32 @@ class C_PoLog extends CI_Controller {
         $this->load->view('V_Footer', $data);
     }
 
+    public function editSpecial()
+    {
+        $user_id = $this->session->userid;
+        
+        $data['Menu'] = 'Edit PO Not Confirmed';
+        $data['SubMenuOne'] = '';
+
+        $data['UserMenu']       = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
+
+        if (!isset($_GET['po_numb'])) {
+            redirect('PurchaseManagementSendPO/PoLog');
+        }
+        $po_number = explode("-", $_GET['po_numb'])[0];
+        $po_revision = explode("-", $_GET['po_numb'])[1];
+        $data['po_number'] = $po_number;
+        $data['po_revision'] = $po_revision;
+        $data['edit_Special'] = $this->M_polog->getDataByPoNumb($po_number, $po_revision)->row_array();
+
+        $this->load->view('V_Header', $data);
+        $this->load->view('V_Sidemenu', $data);
+        $this->load->view('PurchaseManagementSendPO/MainMenu/V_EditSpecial', $data);
+        $this->load->view('V_Footer', $data);
+    }
+
     public function save()
     {
         $po_number = explode('-', $this->input->post('po_number'))[0];
@@ -108,6 +134,69 @@ class C_PoLog extends CI_Controller {
                 ->set_output(json_encode("File yang anda masukkan sudah benar"));
         }
         
+    }
+
+    public function saveEditSpecial()
+    {
+        $po_number = explode('-', $this->input->post('po_number'))[0];
+        $po_rev = explode('-', $this->input->post('po_number'))[1];
+        $vendor_confirm_date = $this->input->post('vendor_confirm_date');
+        $distribution_method = $this->input->post('distribution_method');
+        $send_date_1 = $this->input->post('send_date_1');
+        $send_date_2 = $this->input->post('send_date_2');
+        $vendor_confirm_method = $this->input->post('vendor_confirm_method');
+        $vendor_confirm_pic = htmlspecialchars($this->input->post('vendor_confirm_pic'));
+        $vendor_confirm_note = htmlspecialchars($this->input->post('vendor_confirm_note'));
+        $attachment_flag = $this->input->post('attachment_flag');
+
+        if ($distribution_method !== "none" && isset($_FILES['lampiran_po'])) {
+            $name = $_FILES["lampiran_po"]["name"];
+            $ext = strtolower(end((explode(".", $name))));
+            if (!($ext == 'pdf' OR $ext == 'jpeg' OR $ext == 'jpg' OR $ext == 'png' OR $ext == 'xls' OR $ext == 'xlsx' OR $ext == 'ods' OR $ext == 'odt' OR $ext == 'txt' OR $ext == 'doc' OR $ext == 'docx')) {
+                $this->output
+                    ->set_status_header(400)
+                    ->set_content_type('application/json')
+                    ->set_output(json_encode("File yang anda masukkan salah"));
+            } else {
+                $config['upload_path']          = './assets/upload/PurchaseManagementSendPO/LampiranPO/'. $this->input->post('po_number');
+                $config['allowed_types']        = 'pdf|jpeg|jpg|png|xls|xlsx|ods|odt|txt|doc|docx';
+        
+                $this->load->library('upload', $config);
+        
+                $dir_exist = true;
+                if (!is_dir('assets/upload/PurchaseManagementSendPO/LampiranPO/' . $this->input->post('po_number')))
+                {
+                    mkdir('./assets/upload/PurchaseManagementSendPO/LampiranPO/' . $this->input->post('po_number'), 0777, true);
+                    $dir_exist = false;
+                }
+
+                if (!$this->upload->do_upload('lampiran_po')) {
+                  if(!$dir_exist)
+                    rmdir('./assets/upload/PurchaseManagementSendPO/LampiranPO/' . $this->input->post('po_number'));
+                    $error = array('error' => $this->upload->display_errors());
+        
+                    print_r($error);
+                } else {
+                    $file = array('upload_data' => $this->upload->data());
+                    $nama_lampiran = $file['upload_data']['file_name'];
+                }
+                if ($distribution_method == "email") {
+                    $this->M_polog->updateVendorDisMetEmail($po_number, $po_rev, $vendor_confirm_date, $distribution_method, $vendor_confirm_method, $vendor_confirm_pic, $vendor_confirm_note, $attachment_flag, $nama_lampiran);
+                } else if($distribution_method !== "email" && $distribution_method !== "none") {
+                    $this->M_polog->updateVendorData2($po_number, $po_rev, $vendor_confirm_date, $distribution_method, $send_date_1, $send_date_2, $vendor_confirm_method, $vendor_confirm_pic, $vendor_confirm_note, $attachment_flag, $nama_lampiran);
+                }
+                $this->output
+                        ->set_status_header(200)
+                        ->set_content_type('application/json')
+                        ->set_output(json_encode("Data berhasil diupdate"));
+            }
+        } else {
+            $this->M_polog->updateVendorDisMetNone($po_number, $po_rev, $distribution_method);
+            $this->output
+                    ->set_status_header(200)
+                    ->set_content_type('application/json')
+                    ->set_output(json_encode("Data berhasil diupdate"));
+        }
     }
 
     public function exportExcel()
