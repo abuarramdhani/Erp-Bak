@@ -142,4 +142,22 @@ class M_polog extends CI_Model
         $query = "UPDATE khs_psup_po_logbook SET VENDOR_CONFIRM_DATE = TO_DATE('$date', 'DD/MM/YYYY'), VENDOR_CONFIRM_METHOD = '$con_method', VENDOR_CONFIRM_PIC = '$pic', VENDOR_CONFIRM_NOTE = '$note', ATTACHMENT = '$lampiran' WHERE PHA_SEGMENT_1 = '$noPO' AND REVISION_NUM = '$po_rev'";
         $this->oracle->query($query);
     }
+
+    public function updateVendorData2($noPO, $po_rev, $date, $dis_method, $send_date_1, $send_date_2, $con_method, $pic, $note, $attachment_flag, $lampiran)
+    {
+        $query = "UPDATE khs_psup_po_logbook SET VENDOR_CONFIRM_DATE = TO_DATE('$date', 'DD/MM/YYYY'), DISTRIBUTION_METHOD = '$dis_method', SEND_DATE_1 = TO_DATE('$send_date_1', 'DD/MM/YYYY'), SEND_DATE_2 = TO_DATE('$send_date_2', 'DD/MM/YYYY'), VENDOR_CONFIRM_METHOD = '$con_method', VENDOR_CONFIRM_PIC = '$pic', VENDOR_CONFIRM_NOTE = '$note', ATTACHMENT_FLAG = '$attachment_flag', ATTACHMENT = '$lampiran' WHERE PHA_SEGMENT_1 = '$noPO' AND REVISION_NUM = '$po_rev'";
+        $this->oracle->query($query);
+    }
+
+    public function updateVendorDisMetEmail($noPO, $po_rev, $date, $dis_method, $con_method, $pic, $note, $attachment_flag, $lampiran)
+    {
+        $query = "UPDATE khs_psup_po_logbook SET VENDOR_CONFIRM_DATE = TO_DATE('$date', 'DD/MM/YYYY'), DISTRIBUTION_METHOD = '$dis_method', VENDOR_CONFIRM_METHOD = '$con_method', VENDOR_CONFIRM_PIC = '$pic', VENDOR_CONFIRM_NOTE = '$note', ATTACHMENT_FLAG = '$attachment_flag', ATTACHMENT = '$lampiran' WHERE PHA_SEGMENT_1 = '$noPO' AND REVISION_NUM = '$po_rev'";
+        $this->oracle->query($query);
+    }
+
+    public function updateVendorDisMetNone($noPO, $po_rev, $dis_method)
+    {
+        $query = "UPDATE khs_psup_po_logbook SET DISTRIBUTION_METHOD = '$dis_method' WHERE PHA_SEGMENT_1 = '$noPO' AND REVISION_NUM = '$po_rev'";
+        $this->oracle->query($query);
+    }
 }

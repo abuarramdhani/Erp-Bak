@@ -705,6 +705,100 @@ $(document).ready(function () {
       });
   });
 
+  $("#editPoSpecial").on("click", ".btnEditPoSpecial", function () {
+    // Ajax edit Data Special Account
+    let epls_form_data = new FormData(),
+      po_number = $('[name="po_number"]').val(),
+      vendor_confirm_date = $('[name="vendor_confirm_date"]').val(),
+      distribution_method = $('[name="distribution_method"]').val(),
+      vendor_confirm_method = $('[name="vendor_confirm_method"]').val(),
+      send_date_1 = $('[name="send_date_1"]').val(),
+      send_date_2 = $('[name="send_date_2"]').val(),
+      vendor_confirm_pic = $('[name="vendor_confirm_pic"]').val(),
+      vendor_confirm_note = $('[name="vendor_confirm_note"]').val(),
+      attachment_flag = $('[name="attachment_flag"]').val(),
+      lampiran_po = $('[name="lampiranPO"]').prop("files")[0];
+    epls_form_data.append("po_number", po_number);
+    epls_form_data.append("distribution_method", distribution_method);
+    if (distribution_method == "email") {
+      epls_form_data.append("attachment_flag", attachment_flag);
+    }
+    if (distribution_method !== "email" && distribution_method !== "none") {
+      epls_form_data.append("attachment_flag", attachment_flag);
+      epls_form_data.append("send_date_1", send_date_1);
+      epls_form_data.append("send_date_2", send_date_2);
+    }
+
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton: "btn btn-success",
+        cancelButton: "btn btn-danger",
+      },
+      buttonsStyling: false,
+    });
+    swalWithBootstrapButtons
+      .fire({
+        title: "Apakah anda yakin?",
+        text: "Data akan di Update!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Ya, update!",
+        cancelButtonText: "Tidak, batalkan!",
+        reverseButtons: true,
+      })
+      .then((result) => {
+        console.log(result);
+        if (result.value) {
+          if (
+            $("#editPoSpecial")
+              .find('[required=""]')
+              .map((i, v) => $(v).val())
+              .toArray()
+              .includes("")
+          ) {
+            alert("Silahkan lengkapi data");
+          } else {
+            if (distribution_method !== "none") {
+              epls_form_data.append("vendor_confirm_date", vendor_confirm_date);
+              epls_form_data.append("vendor_confirm_method", vendor_confirm_method);
+              epls_form_data.append("vendor_confirm_pic", vendor_confirm_pic);
+              epls_form_data.append("vendor_confirm_note", vendor_confirm_note);
+              epls_form_data.append("lampiran_po", lampiran_po);
+            }
+            $.ajax({
+              type: "POST",
+              url: baseurl + "PurchaseManagementSendPO/PoLog/saveEditSpecial",
+              processData: false,
+              contentType: false,
+              data: epls_form_data,
+              dataType: "JSON",
+            })
+              .done(() => {
+                swalWithBootstrapButtons
+                  .fire("Updated!", "Data berhasi diupdate.", "success")
+                  .then(() => {
+                    window.location.href =
+                      baseurl + "PurchaseManagementSendPO/PoLog";
+                  });
+              })
+              .fail(() => [
+                swalWithBootstrapButtons.fire(
+                  "Error!",
+                  "Data gagal diupdate.",
+                  "warning"
+                ),
+              ]);
+          }
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          swalWithBootstrapButtons.fire(
+            "Cancelled",
+            "Data tidak diupdate :)",
+            "error"
+          );
+        }
+      });
+  });
+
   // View file attachment PO
   $('#tbl-PoLog tbody').on('click', '.view-attachment-polog', function () {
     let fileName = $(this).attr('file-name');
