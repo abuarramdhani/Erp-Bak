@@ -64,6 +64,11 @@ $route['translate_uri_dashes'] = FALSE;
 //----------------------------------------------Notification API-----------------------------------------------------
 $route['api/services/notification']['post'] = 'Api/Services/Notifications/C_Index/index';
 $route['api/services/notification/check']['post'] = 'Api/Services/Notifications/C_Index/check';
+
+$route['api/services/notification/send']['post'] = 'Api/Services/Notifications/C_Send/send'; // to send with http request
+$route['api/services/notification/send/section']['post'] = 'Api/Services/Notifications/C_Send/section'; // to send with http request
+
+
 $route['api/services/notification/new']['post'] = 'Api/Services/Notifications/C_Index/newNotification';
 $route['api/services/notification/read']['post'] = 'Api/Services/Notifications/C_Index/setRead';
 $route['api/services/notification/read/all']['post'] = 'Api/Services/Notifications/C_Index/setReadAll';
