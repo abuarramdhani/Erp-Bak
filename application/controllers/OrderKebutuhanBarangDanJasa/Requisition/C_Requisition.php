@@ -339,10 +339,13 @@ class C_Requisition extends CI_Controller {
 						for ($i=0; $i < count($pesan); $i++) { 
 							if ($pesan[$i]['URGENT_FLAG']=='Y' && $pesan[$i]['IS_SUSULAN'] =='N') {
 								$statusOrder = 'Urgent';
+								$bgColor = '#d73925';
 							}else if($pesan[$i]['URGENT_FLAG']=='N' && $pesan[$i]['IS_SUSULAN'] =='N'){
 								$statusOrder = 'Reguler';
+								$bgColor = '#009551';
 							}elseif ($pesan[$i]['IS_SUSULAN'] =='Y') {
 								$statusOrder = 'Emergency';
+								$bgColor = '#da8c10';
                             }
 
 							if ($pesan[$i]['URGENT_REASON']=='') {
@@ -365,7 +368,7 @@ class C_Requisition extends CI_Controller {
 										<td>$deskripsi</td>
 										<td>$qty</td>
 										<td>$uom</td>
-										<td>$statusOrder</td>
+										<td style='background-color:$bgColor;'>$statusOrder</td>
 										<td>$alasanPengadaan</td>
 										<td>$urgentReason</td>
 									</tr>";
