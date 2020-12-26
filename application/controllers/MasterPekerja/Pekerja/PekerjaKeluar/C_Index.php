@@ -258,11 +258,11 @@ class C_Index extends CI_Controller
 			'tglnikah'					=> (new DateTime($pekerja->tglnikah))->format('d-m-Y'),
 			/**BPJS */
 			'bpjs_kes'					=> $pekerja->bpjs_kes === 't', // t meaning true
-			'tglberlaku_kes'		=> (new DateTime($pekerja->tglberlaku_kes))->format('d-m-Y'),
+			'tglberlaku_kes'		=> $pekerja->tglberlaku_kes ? (new DateTime($pekerja->tglberlaku_kes))->format('d-m-Y') : '',
 			'bpjs_ket'					=> $pekerja->bpjs_ket === 't', // t meaning true
-			'tglberlaku_ket'		=> (new DateTime($pekerja->tglberlaku_ket))->format('d-m-Y'),
+			'tglberlaku_ket'		=> $pekerja->tglberlaku_ket ? (new DateTime($pekerja->tglberlaku_ket))->format('d-m-Y') : '',
 			'bpjs_jht'					=> $pekerja->bpjs_jht === 't',
-			'tglberlaku_jht'		=> (new DateTime($pekerja->tglberlaku_jht))->format('d-m-Y'),
+			'tglberlaku_jht'		=> $pekerja->tglberlaku_jht ? (new DateTime($pekerja->tglberlaku_jht))->format('d-m-Y') : '',
 			/**Pajak */
 			'statpajak'					=> $pekerja->statpajak,
 			'jtanak'						=> $pekerja->jtanak,
