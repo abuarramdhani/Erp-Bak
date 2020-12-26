@@ -96,9 +96,9 @@ class C_Send extends CI_Controller
 
       return $this->output
         ->set_content_type('application/json')
-        ->set_status_header(400)
+        ->set_status_header(200)
         ->set_output(json_encode([
-          'code' => 400,
+          'code' => 200,
           'success' => false,
           'message' => 'success'
         ]));
