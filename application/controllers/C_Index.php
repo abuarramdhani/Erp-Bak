@@ -26,6 +26,7 @@ class C_Index extends CI_Controller
 		$this->load->helper('form');
 		$this->load->helper('url');
 		$this->load->helper('html');
+		$this->load->library('user_agent');
 		$this->load->library('Log_Activity');
 		$this->load->library('form_validation');
 		//load the login model
