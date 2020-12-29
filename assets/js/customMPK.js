@@ -1946,16 +1946,30 @@ $(function () {
   $(".MasterPekerja-Surat-txaPreview").redactor({
     linebreaks: true
   });
-  $("#MasterPekerja-SuratPerbantuan-txaPreview").redactor();
-  $(".MasterPekerja-SuratRotasi-txaPreview").redactor();
-  $(".MasterPekerja-SuratUsiaLanjut-txaPreview").redactor();
-  $(".MasterPekerja-SuratPromosi-txaPreview").redactor();
+  $("#MasterPekerja-SuratPerbantuan-txaPreview").redactor({
+    linebreaks: true
+  });
+  $(".MasterPekerja-SuratRotasi-txaPreview").redactor({
+    linebreaks: true
+  });
+  $(".MasterPekerja-SuratUsiaLanjut-txaPreview").redactor({
+    linebreaks: true
+  });
+  $(".MasterPekerja-SuratPromosi-txaPreview").redactor({
+    linebreaks: true
+  });
   $("#MasterPekerja-Surat-txaFormatSurat").redactor({
     linebreaks: true
   });
-  $("#MasterPekerja-SuratDemosi-txaPreview").redactor();
-  $("#MasterPekerja-SuratPengangkatanStaf-txaPreview").redactor();
-  $(".MasterPekerja-SuratPengalaman-txaPreview").redactor();
+  $("#MasterPekerja-SuratDemosi-txaPreview").redactor({
+    linebreaks: true
+  });
+  $("#MasterPekerja-SuratPengangkatanStaf-txaPreview").redactor({
+    linebreaks: true
+  });
+  $(".MasterPekerja-SuratPengalaman-txaPreview").redactor({
+    linebreaks: true
+  });
   $(".preview-Lapkun").redactor();
 
   //  }
