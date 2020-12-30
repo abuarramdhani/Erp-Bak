@@ -1,5 +1,3 @@
-<!-- <a href="<?php echo base_url('MasterPekerja/Jumlahpekerja/excel_pendidikan/' . $export) ?>" class="btn btn-lg btn-success" target="blank_"><i class="fa fa-file-excel-o"></i> Export Excel</a> <br> <br> -->
-
 <table id="table_viewdata" class="table table-striped table-bordered table-hover">
 
   <thead class="bg-primary">
