@@ -413,7 +413,7 @@ class M_pesangon extends CI_Model {
 							and date_part('year', age(tglkeluar::date,  diangkat::date )) >= pesangon.batas_tahun_kerja_awal
 							and date_part('year', age(tglkeluar::date,  diangkat::date )) < pesangon.batas_tahun_kerja_akhir
 							join 	hrd_khs.tlokasi_kerja as lokker on 	lokker.id_=pri.lokasi_kerja
-							where 		tpes.id_pesangon='$id' and cuti.periode=extract(year from pri.tglkeluar)::varchar";
+							where 		tpes.id_pesangon='$id' and cuti.periode=extract(year from pri.tglkeluar - interval '1 day')::varchar";
 	 		$query 	=	$this->personalia->query($editHitungPesangon);
 			return $query->result_array();
         }
@@ -541,7 +541,7 @@ class M_pesangon extends CI_Model {
 			and date_part('year', age(tglkeluar::date,  diangkat::date )) >= pesangon.batas_tahun_kerja_awal
 			and date_part('year', age(tglkeluar::date,  diangkat::date )) < pesangon.batas_tahun_kerja_akhir
 			join 	hrd_khs.tlokasi_kerja as lokker on 	lokker.id_=pri.lokasi_kerja
-			where 		tpes.id_pesangon='$id' and cuti.periode=extract(year from pri.tglkeluar)::varchar";
+			where 		tpes.id_pesangon='$id' and cuti.periode=extract(year from pri.tglkeluar - interval '1 day')::varchar";
 	 		
 	 		$query 	=	$this->personalia->query($cetak);
 			return $query->result_array();
