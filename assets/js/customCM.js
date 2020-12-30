@@ -7082,3 +7082,55 @@ $(document).ready(function(){
 $(document).ready(function () {
   $("#dataTables-listCatering").DataTable();
 });
+
+//start export rencana lembur
+$(document).ready(function () {
+	$("#btn_viewlembur").on("click", function () {
+		var loading = baseurl + "assets/img/gif/loadingquick.gif";
+
+		$.ajax({
+			type: "POST",
+			data: {
+				txtTanggalLembur: $("input[name=txtTanggalLembur]").val(),
+				txtTempatMakan: $("[name=txtTempatMakan]").val(),
+				txtStatusMakan: $("[name=txtStatusMakan]").val(),
+				txtStatusApprov: $("[name=txtStatusApprov]").val(),
+			},
+			url: baseurl + "CateringManagement/Extra/ExportRencanaLembur/viewdata",
+			beforeSend: function () {
+				swal.fire({
+					html: "<div><img style='width: 320px; height: auto;'src='" +
+						loading +    
+						"'><br><p>Sedang Proses....</p></div>",
+					customClass: "swal-wide",
+					showConfirmButton: false,
+					allowOutsideClick: false
+				});
+			},
+			success: function (result) {
+				swal.close();
+				console.log(result);
+				$("#div_viewdata").html(result);
+				$("#table_viewdata").DataTable({});
+			}
+		});
+	});
+
+	$('#btn_excellembur').on('click', function () {
+		$('#frm_lembur').attr('action', baseurl + "CateringManagement/Extra/ExportRencanaLembur/export_excel");
+		$('#frm_lembur').submit();
+	});
+
+	$('#btn_pdflembur').on('click', function () {
+		var tgllembur = $("[name=txtTanggalLembur]").val();
+		var tmpmakan = $("[name=txtTempatMakan]").val();
+		var statmakan = $("[name=txtStatusMakan]").val();
+		var statapprov = $("[name=txtStatusApprov]").val();
+		if (tgllembur) {
+			window.open(baseurl + 'CateringManagement/Extra/ExportRencanaLembur/export_pdf?tgllembur=' + tgllembur + '&tmpmakan=' + tmpmakan + '&statmakan=' + statmakan + '&statapprov=' + statapprov);
+		}
+		
+	});
+});
+
+//end export rencana lembur
