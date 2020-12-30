@@ -9,7 +9,7 @@ class M_location extends CI_Model
     }
 
     public function getlocation($userid){
-        // User B0825 -> Ibnu -> Sedang dimutasi ke GA Pusat
+        // 626 adalah userid dr B0825 -> Ibnu -> Sedang dimutasi ke GA Pusat
         // kondisi khusus
         // setelah mutasi selesai, line 15 dapat dihapus
         if ($userid == '626') return '01';
