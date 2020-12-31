@@ -233,7 +233,7 @@
                                                                 <?php $no = 1; foreach($PoOracleNonConformityLines as $man): ?>
                                                                     <span><?= $no++.'. '.$man['case_name'];?></span><br>
                                                                 <?php endforeach; ?>
-                                                                <!-- <button type="button" class="btn btn-primary btn-xs btnEditCaseNonC">Edit</button> -->
+                                                                <button type="button" class="btn btn-primary btn-xs btnEditCaseNonC">Edit</button>
                                                             </td>
                                                             <td><span class="deskripsiNonC"><?php echo              $PoOracleNonConformityLines[0]['description']; ?></span><br>
                                                             <!-- <button type="button" class="btn btn-xs btn-primary btnEditDeskripsiNonC">Edit</button> -->
