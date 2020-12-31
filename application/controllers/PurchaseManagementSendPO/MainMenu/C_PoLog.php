@@ -142,6 +142,8 @@ class C_PoLog extends CI_Controller {
         $po_rev = explode('-', $this->input->post('po_number'))[1];
         $vendor_confirm_date = $this->input->post('vendor_confirm_date');
         $distribution_method = $this->input->post('distribution_method');
+        $purchasing_approve_date = $this->input->post('purchasing_approve_date');
+        $management_approve_date = $this->input->post('management_approve_date');
         $send_date_1 = $this->input->post('send_date_1');
         $send_date_2 = $this->input->post('send_date_2');
         $vendor_confirm_method = $this->input->post('vendor_confirm_method');
@@ -181,9 +183,9 @@ class C_PoLog extends CI_Controller {
                     $nama_lampiran = $file['upload_data']['file_name'];
                 }
                 if ($distribution_method == "email") {
-                    $this->M_polog->updateVendorDisMetEmail($po_number, $po_rev, $vendor_confirm_date, $distribution_method, $vendor_confirm_method, $vendor_confirm_pic, $vendor_confirm_note, $attachment_flag, $nama_lampiran);
+                    $this->M_polog->updateVendorDisMetEmail($po_number, $po_rev, $vendor_confirm_date, $distribution_method, $purchasing_approve_date, $management_approve_date, $vendor_confirm_method, $vendor_confirm_pic, $vendor_confirm_note, $attachment_flag, $nama_lampiran);
                 } else if($distribution_method !== "email" && $distribution_method !== "none") {
-                    $this->M_polog->updateVendorData2($po_number, $po_rev, $vendor_confirm_date, $distribution_method, $send_date_1, $send_date_2, $vendor_confirm_method, $vendor_confirm_pic, $vendor_confirm_note, $attachment_flag, $nama_lampiran);
+                    $this->M_polog->updateVendorData2($po_number, $po_rev, $vendor_confirm_date, $distribution_method, $purchasing_approve_date, $management_approve_date, $send_date_1, $send_date_2, $vendor_confirm_method, $vendor_confirm_pic, $vendor_confirm_note, $attachment_flag, $nama_lampiran);
                 }
                 $this->output
                         ->set_status_header(200)
@@ -191,7 +193,7 @@ class C_PoLog extends CI_Controller {
                         ->set_output(json_encode("Data berhasil diupdate"));
             }
         } else {
-            $this->M_polog->updateVendorDisMetNone($po_number, $po_rev, $distribution_method);
+            $this->M_polog->updateVendorDisMetNone($po_number, $po_rev, $distribution_method, $purchasing_approve_date, $management_approve_date);
             $this->output
                     ->set_status_header(200)
                     ->set_content_type('application/json')

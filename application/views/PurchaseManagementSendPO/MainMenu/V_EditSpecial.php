@@ -40,6 +40,32 @@
                                                     </select>
                                                 </div>
                                             </div>
+                                            <div class="row approve_date_row">
+                                                <br>
+                                                <div class="col-lg-12">
+                                                    <div class="col-lg-5 text-right">
+                                                        <label>Purchasing Approve Date</label>
+                                                    </div>
+                                                    <label class="col-lg-1" style="width:10px">:</label>
+                                                    <div class="col-lg-4 text-left">
+                                                        <?php $date = date_create($edit_Special['PURCHASING_APPROVE_DATE']); ?>
+                                                        <input type="text" class="form-control input_approve_date" id="purchasing_approve_date" name="purchasing_approve_date" autocomplete="off" value="<?= ($edit_Special['PURCHASING_APPROVE_DATE'] !== NULL) ? date_format($date, 'd/m/Y') : '';?>" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row approve_date_row">
+                                                <br>
+                                                <div class="col-lg-12">
+                                                    <div class="col-lg-5 text-right">
+                                                        <label>Management Approve Date</label>
+                                                    </div>
+                                                    <label class="col-lg-1" style="width:10px">:</label>
+                                                    <div class="col-lg-4 text-left">
+                                                        <?php $date = date_create($edit_Special['MANAGEMENT_APPROVE_DATE']) ?>
+                                                        <input type="text" class="form-control input_approve_date" id="management_approve_date" name="management_approve_date" autocomplete="off" value="<?= ($edit_Special['MANAGEMENT_APPROVE_DATE'] !== NULL) ? date_format($date, 'd/m/Y') : '';?>" required>
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <div class="row send_date_row">
                                                 <br>
                                                 <div class="col-lg-12">
@@ -75,8 +101,7 @@
                                                     <label class="col-lg-1" style="width:10px">:</label>
                                                     <div class="col-lg-4 text-left">
                                                         <?php $date = date_create($edit_Special['VENDOR_CONFIRM_DATE']) ?>
-                                                        <input type="text" class="form-control input_vendor_confirm" id="vendor_confirm_date" name="vendor_confirm_date" autocomplete="off"
-                                                            value="<?= ($edit_Special['VENDOR_CONFIRM_DATE'] !== NULL) ? date_format($date, 'd/m/Y') : '' ?>">
+                                                        <input type="text" class="form-control input_vendor_confirm" id="vendor_confirm_date" name="vendor_confirm_date" autocomplete="off" value="<?= ($edit_Special['VENDOR_CONFIRM_DATE'] !== NULL) ? date_format($date, 'd/m/Y') : '' ?>">
                                                     </div>
                                                 </div>
                                             </div>
