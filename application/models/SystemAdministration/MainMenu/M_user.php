@@ -8,8 +8,6 @@
 class M_user extends CI_Model
 {
 	protected $current_slug = '';
-	// @deprecated
-	protected $current_responsbility_id = null;
 
 	// array of user menu
 	protected $arrayOfUserMenu = [];
@@ -113,7 +111,6 @@ class M_user extends CI_Model
 	}
 
 	/**
-	 * @deprecated
 	 * Cari id responsbility berdasaran slug url
 	 * @example /NamaAplikasi
 	 * 
@@ -128,16 +125,19 @@ class M_user extends CI_Model
 	 */
 	public function getResponsbilityIdBySlug($slug)
 	{
-		$user = $this->user;
-		$sql = "SELECT sugm.user_group_menu_id, sugm.user_group_menu_name, sm.menu_link
+		$sql = "SELECT 
+							count(sugm.user_group_menu_id) count, 
+							sugm.user_group_menu_id
 						FROM sys.sys_user_group_menu sugm
 							inner join sys.sys_menu_group_list smgl on smgl.group_menu_id = sugm.group_menu_id
 							inner join sys.sys_menu sm on sm.menu_id = smgl.menu_id
 							inner join sys.sys_user_application sua on sua.user_group_menu_id = sugm.user_group_menu_id
 							inner join sys.sys_user su on su.user_id = sua.user_id
 						-- where sugm.user_group_menu_id = '2745' -> example of id
-						WHERE sm.menu_link like '$slug%' and su.user_name = '$user'
-						limit 1;";
+						WHERE sm.menu_link like '$slug%' and su.user_name = '$this->user' 
+						GROUP BY sugm.user_group_menu_id 
+						ORDER BY 1 desc 
+						LIMIT 1;";
 		$objectOfSlug = $this->db->query($sql)->row();
 
 		// slug is found
@@ -160,22 +160,32 @@ class M_user extends CI_Model
 			$and1 = "AND sua.user_application_id = $user_application_id";
 		}
 
-		$sql = "SELECT su.user_id,sugm.user_group_menu_id, sugm.user_group_menu_name, 
-					smod.module_name,smod.module_link,sua.active,sua.user_application_id,sugm.org_id, smod.module_image,sua.lokal,sua.internet,
-					sugm.required_javascript
-					FROM sys.sys_user su,
-					sys.sys_user_application sua,
-					sys.sys_user_group_menu sugm,
-					sys.sys_module smod
-					WHERE 
-					1 = 1
-					AND su.user_id = sua.user_id
-					AND sua.user_group_menu_id = sugm.user_group_menu_id
-					AND smod.module_id= sugm.module_id
-					AND su.user_id=$user_id
-					$and $and1
-					order by sugm.user_group_menu_name;
-					";
+		$sql = "SELECT 
+							su.user_id, 
+							sugm.user_group_menu_id, 
+							sugm.user_group_menu_name, 
+							smod.module_name, 
+							smod.module_link, 
+							sua.active, 
+							sua.user_application_id, 
+							sugm.org_id, 
+							smod.module_image, 
+							sua.lokal, 
+							sua.internet,
+							sugm.required_javascript
+						FROM 
+							sys.sys_user su,
+							sys.sys_user_application sua,
+							sys.sys_user_group_menu sugm,
+							sys.sys_module smod
+						WHERE 
+							su.user_id = sua.user_id AND 
+							sua.user_group_menu_id = sugm.user_group_menu_id AND 
+							smod.module_id= sugm.module_id AND 
+							su.user_id = $user_id
+							$and $and1
+						ORDER BY sugm.user_group_menu_name;
+						";
 
 		$query = $this->db->query($sql);
 		return $query->result_array();
@@ -250,6 +260,9 @@ class M_user extends CI_Model
 	public function getUserMenu($user_id = FALSE, $user_group_menu_id = "")
 	{
 		$and = '';
+		// menu id by slug
+		$user_group_menu_id = $this->getResponsbilityIdBySlug($this->current_slug) ?: $user_group_menu_id;
+
 		if ($user_group_menu_id) {
 			$and = "AND sugm.user_group_menu_id = $user_group_menu_id";
 		}
