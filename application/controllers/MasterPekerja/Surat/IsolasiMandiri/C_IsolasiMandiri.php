@@ -826,14 +826,14 @@ class C_IsolasiMandiri extends CI_Controller
 					$wkt1 = $ex[1];
 					$wkt2 = $ex[2];
 
-					$deltim = $this->M_isolasimandiri->delTim($tglt, $wkt1, $wkt2, $pekerja);
+					$deltim = $this->M_isolasimandiri->delTim($tglt, $wkt1, $wkt2, $pkj);
 
 					$arl = array(
 						'wkt'	=>	date('Y-m-d H:i:s'),
 						'menu'	=>	'TIM-COVID19->MonitoringCovid',
-						'ket'	=>	'DELETE DATA TIM tanggal '.$tglt.' noind '.$pekerja,
+						'ket'	=>	'DELETE DATA TIM tanggal '.$tglt.' noind '.$pkj,
 						'noind'	=>	$this->session->user,
-						'jenis'	=>	'DELETE DATA TIM tanggal '.$tglt.' noind '.$pekerja,
+						'jenis'	=>	'DELETE DATA TIM tanggal '.$tglt.' noind '.$pkj,
 						'program'	=>	'ERP - Tim Covid 19',
 						);
 					$this->M_isolasimandiri->instoLog($arl);
