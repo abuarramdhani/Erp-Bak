@@ -440,6 +440,16 @@ $(document).ready(function () {
     todayHighlight: true,
     autoclose: true,
   });
+  $("#purchasing_approve_date").datepicker({
+    format: 'dd/mm/yyyy',
+    todayHighlight: true,
+    autoclose: true,
+  });
+  $("#management_approve_date").datepicker({
+    format: 'dd/mm/yyyy',
+    todayHighlight: true,
+    autoclose: true,
+  });
   $("#send_date_1").datepicker({
     format: 'dd/mm/yyyy',
     todayHighlight: true,
@@ -712,6 +722,8 @@ $(document).ready(function () {
       vendor_confirm_date = $('[name="vendor_confirm_date"]').val(),
       distribution_method = $('[name="distribution_method"]').val(),
       vendor_confirm_method = $('[name="vendor_confirm_method"]').val(),
+      purchasing_approve_date = $('[name="purchasing_approve_date"]').val(),
+      management_approve_date = $('[name="management_approve_date"]').val(),
       send_date_1 = $('[name="send_date_1"]').val(),
       send_date_2 = $('[name="send_date_2"]').val(),
       vendor_confirm_pic = $('[name="vendor_confirm_pic"]').val(),
@@ -720,6 +732,8 @@ $(document).ready(function () {
       lampiran_po = $('[name="lampiranPO"]').prop("files")[0];
     epls_form_data.append("po_number", po_number);
     epls_form_data.append("distribution_method", distribution_method);
+    epls_form_data.append("purchasing_approve_date", purchasing_approve_date);
+    epls_form_data.append("management_approve_date", management_approve_date);
     if (distribution_method == "email") {
       epls_form_data.append("attachment_flag", attachment_flag);
     }
