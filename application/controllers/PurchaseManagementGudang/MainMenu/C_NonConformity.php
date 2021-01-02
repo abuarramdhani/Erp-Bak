@@ -1527,6 +1527,12 @@ class C_NonConformity extends CI_Controller
 		echo json_encode($data);
 	}
 
+	public function saran()
+	{
+		$this->load->view('PurchaseManagementGudang/NonConformity/V_temporary');
+
+	}
+
 	public function temporary()
 	{
 		$sikil = $_POST['sikil'];
