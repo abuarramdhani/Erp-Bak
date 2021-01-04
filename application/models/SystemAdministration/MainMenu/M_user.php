@@ -261,7 +261,8 @@ class M_user extends CI_Model
 	{
 		$and = '';
 		// menu id by slug
-		$user_group_menu_id = $this->getResponsbilityIdBySlug($this->current_slug) ?: $user_group_menu_id;
+		// : TODO -> fix this, butuh eksperimen lebih mendalam agar tidak menyebabkan aplikasi lain tidak sesuai
+		// $user_group_menu_id = $this->getResponsbilityIdBySlug($this->current_slug) ?: $user_group_menu_id;
 
 		if ($user_group_menu_id) {
 			$and = "AND sugm.user_group_menu_id = $user_group_menu_id";
