@@ -191,10 +191,13 @@
 																$arrjns = $value['jns'];
 																$arrhsl = $value['hsl'];
 																if (!empty($arrjns)) {
-																	$st = ['','Negatif', 'Non Reaktif', 'Reaktif', 'Positif'];
+																	$st = ['-','Negatif', 'Non Reaktif', 'Reaktif', 'Positif'];
 																	$arrjns = explode(',', $arrjns);
 																	$arrhsl = explode(',', $arrhsl);
-																	for ($i=0; $i < count($arrjns); $i++) { 
+																	for ($i=0; $i < count($arrjns); $i++) {
+																		if ($arrhsl[$i] == '') {
+																			$arrhsl[$i] = 0;
+																		}
 																		echo ($i+1).'. '.$arrjns[$i].' ('.$st[$arrhsl[$i]].')';
 																		echo "<br>";
 																	}

@@ -538,6 +538,15 @@ $(document).ready(function(){
 			format: "YYYY-MM-DD",
 		},
 	});
+	$(".cvd_drangem").daterangepicker({
+		singleDatePicker: false,
+		timePicker: false,
+		timePicker24Hour: true,
+		showDropdowns: true,
+		locale: {
+			format: "YYYY-MM-DD",
+		},
+	});
 
 	$('[name="hasil_uji"]').change(function(){
 		var id = $(this).val();
@@ -1476,7 +1485,7 @@ $(document).ready(function(){
 		var jns = $(this).closest('div#cvd_mdladdtest').find('[name="jns_test"]').val();
 		var tgl = $(this).closest('div#cvd_mdladdtest').find('[name="tgl_test"]').val();
 		var hsl = $(this).closest('div#cvd_mdladdtest').find('[name="hsl_test"]').val();
-		if (jns == '' || tgl == '' || hsl == '') {
+		if (jns == '' || tgl == '') {
 			alert('Harap Isi Semua Kolom');
 			return false;
 		}
@@ -1506,7 +1515,7 @@ $(document).ready(function(){
 		var jns = $(this).closest('div#cvd_mdledtest').find('[name="jns_test"]').val();
 		var tgl = $(this).closest('div#cvd_mdledtest').find('[name="tgl_test"]').val();
 		var hsl = $(this).closest('div#cvd_mdledtest').find('[name="hsl_test"]').val();
-		if (jns == '' || tgl == '' || hsl == '') {
+		if (jns == '' || tgl == '') {
 			alert('Harap Isi Semua Kolom');
 			return false;
 		}
@@ -1535,6 +1544,24 @@ $(document).ready(function(){
 	$('.cvd_select2').select2({
 		placeholder: "Pilih Salah Satu",
 		allowClear: true
+	});
+
+	$('#cvd_chcktglkeluar').change(function(){
+		var a = $(this).is(':checked');
+		if (a) {
+			$('[name="tgl_keluar_test"]').attr('disabled', false);
+			$('[name="hsl_test"]').attr('disabled', false);
+		}else{
+			$('[name="tgl_keluar_test"]').attr('disabled', true);
+			$('[name="hsl_test"]').attr('disabled', true);
+		}
+	});
+
+	$('.cvd_dpick').datepicker({
+		"autoclose": true,
+		"todayHighlight": true,
+		"todayBtn": "linked",
+		"format":'yyyy-mm-dd'
 	});
 });
 
@@ -1581,11 +1608,201 @@ $(document).on('click', '.cvd_btndelhsltes', function(){
 $(document).on('click','.cvd_btnedhsltes', function(){
 	var a = $(this).attr('jns');
 	var b = $(this).attr('tgl');
+	var d = $(this).attr('tglkeluar');
 	var c = $(this).attr('hsl');
 	var val = $(this).val();
+	// alert(d);
 	$('#cvd_mdledtest').modal('show');
 	$('div#cvd_mdledtest').find('select[name="jns_test"]').val(a).trigger('change');
 	$('div#cvd_mdledtest').find('input[name="tgl_test"]').val(b).trigger('change');
 	$('div#cvd_mdledtest').find('select[name="hsl_test"]').val(c).trigger('change');
+	$('div#cvd_mdledtest').find('input[name="tgl_keluar_test"]').val(d).trigger('change');
 	$('div#cvd_mdledtest').find('input[name="id"]').val(val).trigger('change');
 });
+
+function getDataMonitoringCovid()
+{
+	fakeLoading(0);
+	var l = $('.cvd_pekerjaid').length;
+	if (l == 0) {
+		cvd_bindPopover();
+		fakeLoading(1);
+	}
+	var x = 0;
+	$('.cvd_pekerjaid').each(function(){
+		var ini = $(this);
+		var id = $(this).attr('data-id');
+		// if (id != '258') { return true; }
+		// console.log(id);
+		$.ajax({
+				data: {
+					id:id
+				},
+				method: 'get',
+				url: baseurl + 'Covid/PelaporanPekerja/getInfoIsolasi',
+				error: function(xhr,status,error){
+					swal.fire({
+						title: xhr['status'] + "(" + xhr['statusText'] + ")",
+						html: xhr['responseText'],
+						type: "error",
+						confirmButtonText: 'OK',
+						confirmButtonColor: '#d63031',
+					});
+				},
+				success: function(data){
+					try {
+						var d = JSON.parse(data);
+						// console.log(d);
+						for (var i in d.data) {
+							// console.log(d.data[i][0]);
+							$(ini).closest('tr').find('.'+i).html(d.data[i]);
+						}
+					} catch (e) {
+						console.log('JSON Invalid for id '+id);
+					}
+					x++;
+					if (x == l) {
+						cvd_bindPopover();
+						fakeLoading(1);
+					}
+				}
+			});
+		// return false;
+	});
+}
+
+function cvd_bindPopover()
+{
+	console.log('init Popover');
+	$('.cvd_warna1').popover({
+		content :  function() {
+            return $('#cvd_warna1').html();
+        },
+        container: 'body',
+		html: true,
+		trigger: 'hover'
+	});
+	$('.cvd_warna2').popover({
+		content :  function() {
+            return $('#cvd_warna2').html();
+        },
+        container: 'body',
+		html: true,
+		trigger: 'hover'
+	});
+	$('.cvd_warna3').popover({
+		content :  function() {
+            return $('#cvd_warna3').html();
+        },
+        container: 'body',
+		html: true,
+		trigger: 'hover'
+	});
+	$('.cvd_warna4').popover({
+		content :  function() {
+            return $('#cvd_warna4').html();
+        },
+        container: 'body',
+		html: true,
+		trigger: 'hover'
+	});
+	$('.cvd_warna5').popover({
+		content :  function() {
+            return $('#cvd_warna5').html();
+        },
+        container: 'body',
+		html: true,
+		trigger: 'hover'
+	});
+	$('.cvd_warna6').popover({
+		content :  function() {
+            return $('#cvd_warna6').html();
+        },
+        container: 'body',
+		html: true,
+		trigger: 'hover'
+	});
+	$('.cvd_warna7').popover({
+		content :  function() {
+            return $('#cvd_warna7').html();
+        },
+        container: 'body',
+		html: true,
+		trigger: 'hover'
+	});
+	$('.cvd_warna8').popover({
+		content :  function() {
+            return $('#cvd_warna8').html();
+        },
+        container: 'body',
+		html: true,
+		trigger: 'hover'
+	});
+	$('.cvd_warna9').popover({
+		content :  function() {
+            return $('#cvd_warna9').html();
+        },
+        container: 'body',
+		html: true,
+		trigger: 'hover'
+	});
+	$('.cvd_warna10').popover({
+		content :  function() {
+            return $('#cvd_warna10').html();
+        },
+        container: 'body',
+		html: true,
+		trigger: 'hover'
+	});
+	$('.cvd_warna11').popover({
+		content :  function() {
+            return $('#cvd_warna11').html();
+        },
+        container: 'body',
+		html: true,
+		trigger: 'hover'
+	});
+	$('.cvd_warna12').popover({
+		content :  function() {
+            return $('#cvd_warna12').html();
+        },
+        container: 'body',
+		html: true,
+		trigger: 'hover'
+	});
+	$('.cvd_warna13').popover({
+		content :  function() {
+            return $('#cvd_warna13').html();
+        },
+        container: 'body',
+		html: true,
+		trigger: 'hover'
+	});
+	$('.cvd_warna14').popover({
+		content :  function() {
+            return $('#cvd_warna14').html();
+        },
+        container: 'body',
+		html: true,
+		trigger: 'hover'
+	});
+	$('.cvd_warna15').popover({
+		content :  function() {
+            return $('#cvd_warna15').html();
+        },
+        container: 'body',
+		html: true,
+		trigger: 'hover'
+	});
+
+	$('#cvd_tblmntrpel').DataTable({
+		scrollX:true,
+		"scrollY": "450px",
+		"scrollCollapse": true,
+		"paging": false,
+		fixedColumns:   {
+            leftColumns: 5,
+        },
+		"ordering": false
+	});
+}

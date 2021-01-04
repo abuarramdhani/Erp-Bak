@@ -14,6 +14,7 @@
 			<th class="text-center">No</th>
 			<th class="text-center">Jenis Test</th>
 			<th class="text-center">Tanggal Test</th>
+			<th class="text-center">Tanggal Keluar Test</th>
 			<th class="text-center">Hasil Test</th>
 			<th class="text-center">Action</th>
 		</tr>
@@ -23,11 +24,16 @@
 		<tr>
 			<td><?= $x++; ?></td>
 			<td><?= $key['jenis_tes'] ?></td>
-			<td data-order="" ><?= date('d M Y', strtotime($key['tgl_tes'])) ?></td>
+			<td data-order="<?= $key['tgl_tes']; ?>" ><?= date('d M Y', strtotime($key['tgl_tes'])) ?></td>
+			<?php if ($key['tgl_keluar_tes'] == ''): ?>
+				<td>-</td>
+			<?php else: ?>
+				<td data-order="<?= $key['tgl_keluar_tes'] ?>" ><?= date('d M Y', strtotime($key['tgl_keluar_tes'])) ?></td>
+			<?php endif ?>
 			<?php $st = ['','Negatif', 'Non Reaktif', 'Reaktif', 'Positif']; ?>
-			<td><?= $st[$key['hasil_tes']] ?></td>
+			<td><?= (empty($key['hasil_tes'])) ? '-':$st[$key['hasil_tes']] ?></td>
 			<td>
-				<button class="btn btn-sm btn-primary cvd_btnedhsltes" title="edit" value="<?= $key['id_hasil_tes'] ?>" jns="<?= $key['jenis_tes'] ?>" tgl="<?= $key['tgl_tes'] ?>" hsl="<?= $key['hasil_tes'] ?>">
+				<button class="btn btn-sm btn-primary cvd_btnedhsltes" title="edit" value="<?= $key['id_hasil_tes'] ?>" jns="<?= $key['jenis_tes'] ?>" tgl="<?= $key['tgl_tes'] ?>" tglkeluar="<?= $key['tgl_keluar_tes'] ?>"  hsl="<?= $key['hasil_tes'] ?>">
 					<i class="fa fa-edit"></i>
 				</button>
 				<button class="btn btn-sm btn-danger cvd_btndelhsltes" title="hapus" value="<?= $key['id_hasil_tes'] ?>">
