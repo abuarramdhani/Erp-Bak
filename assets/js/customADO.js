@@ -565,7 +565,7 @@ $( () => {
         let rownum = dataTableADODetailList.rows().count() + 1
         dataTableADODetailList.row.add([
             rownum,
-            '<select class="form-control-auto form-control txtADODONumber no_do" style="width:200px;"></select>',
+            '<select class="form-control-auto form-control nodoADO txtADODONumber no_do" style="width:200px;"></select>',
             '<input type="text" class="form-control-auto form-control txtADOItemName">',
             '<input type="number" class="form-control-auto form-control txtADOQty">',
             '<input type="text" class="form-control-auto form-control txtADOUOM">',
