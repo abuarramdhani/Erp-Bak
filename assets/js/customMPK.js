@@ -166,7 +166,7 @@ $(document).ready(function () {
         html +=
           '<td><input type="text" style="text-transform:uppercase" data-noind="' +
           data["worker"][i][0]["noind"] +
-          '" class="form-control" name="nick[]" id="nickname" maxlength="10"></td>';
+          '" class="form-control" name="nick[]" id="nickname" maxlength="20"></td>';
         html += "</tr>";
       }
       $("tbody#dataIDcard").append(html);
