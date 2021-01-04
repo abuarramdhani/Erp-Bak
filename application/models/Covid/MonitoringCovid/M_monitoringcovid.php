@@ -830,14 +830,15 @@ class M_monitoringcovid extends CI_Model {
 	public function monitoringlist2($min, $max)
 	{
 		$sql = "select
-					cp.*, trim(eea.employee_name) nama 
+					cp.*, trim(eea.employee_name) nama , csk.status_kondisi_id, csk.status_kondisi, csk.background_color, csk.text_color
 				from
 					cvd.cvd_pekerja cp
 				left join er.er_employee_all eea on eea.employee_code = cp.noind
+				left join cvd.cvd_status_kondisi csk on csk.status_kondisi_id = cp.status_kondisi_id
 				where
 					isolasi_id is not null
 				and (cp.mulai_isolasi between '$min' and '$max' or cp.selesai_isolasi between '$min' and '$max')
-				order by created_date";
+				order by cp.created_date";
 		return $this->db->query($sql)->result_array();
 	}
 
@@ -876,5 +877,70 @@ class M_monitoringcovid extends CI_Model {
 					kasus like '%Kontak dengan Probable/Konfirmasi Covid 19%'
 					and cp.cvd_pekerja_id = $id";
 		return $this->db->query($sql)->row_array();			
+	}
+
+	public function getTotalIsolasiWFO($lokasi_kerja, $tgl = null)
+	{
+		if ($tgl == null) {
+			$tgl = date('Y-m-d');
+		}
+		$sql = "select
+					*
+				from
+					\"Presensi\".tdatapresensi t
+					left join hrd_khs.tpribadi t2 on t2.noind = t.noind 
+				where
+					alasan like '%WFO%'
+					and kd_ket = 'PRM'
+					and tanggal = '$tgl'
+					and t2.lokasi_kerja = '$lokasi_kerja'";
+		return $this->personalia->query($sql)->result_array();;
+	}
+
+	public function getTotalIsolasiWFH($lokasi_kerja, $tgl = null)
+	{
+		if ($tgl == null) {
+			$tgl = date('Y-m-d');
+		}
+		$sql = "select
+					*
+				from
+					\"Presensi\".tdatapresensi t
+					left join hrd_khs.tpribadi t2 on t2.noind = t.noind 
+				where
+					alasan not like '%WFO%'
+					and kd_ket = 'PRM'
+					and tanggal = '$tgl'
+					and t2.lokasi_kerja = '$lokasi_kerja'";
+					// echo $sql;exit();
+		return $this->personalia->query($sql)->result_array();;
+	}
+
+	public function pekerjaAkanSelesaiIS($tgl = null)
+	{
+		if ($tgl == null) {
+			$tgl = date('Y-m-d');
+		}
+		$sql = "select
+					*
+				from
+					cvd.cvd_pekerja cp
+					left join er.er_employee_all es on es.employee_code = cp.noind
+				where
+					selesai_isolasi > '$tgl'
+					and selesai_isolasi <= '$tgl'::date + interval '2 days'";
+		return $this->db->query($sql)->result_array();
+	}
+
+	public function getLiburKhs($min, $max)
+	{
+		$sql = "select
+					distinct(substring(tanggal::text,0,11)) tanggal
+				from
+					\"Dinas_Luar\".tlibur t
+				where
+					tanggal >= '$min'
+					and tanggal <= '$max'";
+		return $this->personalia->query($sql)->result_array();
 	}
 }

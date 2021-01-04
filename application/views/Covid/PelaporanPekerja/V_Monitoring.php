@@ -1,17 +1,74 @@
 <style>
 	.table-bordered > tbody > tr > td, .table-bordered > tbody > tr > th, .table-bordered > tfoot > tr > td, .table-bordered > tfoot > tr > th, .table-bordered > thead > tr > td, .table-bordered > thead > tr > th {
-    border: 1px solid black;
-}
+		border: 1px solid black;
+	}
 	.table-bordered{
 		border:  1px solid black;
 	}
 	.bg-dangerr{
 		background-color: red;
 	}
+	.bg-sukses{
+		background-color: #28a745;
+	}
 </style>
 <section class="content" style="display: none">
 <div class="col-md-12 text-center">
 	<h1 style="font-weight: bold;">Monitoring Pekerja Isolasi KHS</h1>
+</div>
+<div class="col-md-12">
+	<div class="col-md-1"></div>
+	<div class="col-lg-2">
+		<div class="box box-solid box-danger text-center" data-toggle="modal" data-target="#cvd_wfhpst">
+			<div class="box-header with-border">
+				Isolasi di Rumah (Pusat) Hari Ini
+			</div>
+			<div class="box-body" style="font-size: 30pt;">
+				<?= count($wfhPst) ?>
+			</div>
+		</div>
+	</div>
+	<div class="col-lg-2">
+		<div class="box box-solid box-danger text-center" data-toggle="modal" data-target="#cvd_wfhtks">
+			<div class="box-header with-border">
+				Isolasi di Rumah (Tuksono) Hari Ini
+			</div>
+			<div class="box-body" style="font-size: 30pt;">
+				<?= count($wfhTks) ?>
+			</div>
+		</div>
+	</div>
+	<div class="col-lg-2">
+		<div class="box box-solid box-danger text-center" data-toggle="modal" data-target="#cvd_wfopst">
+			<div class="box-header with-border">
+				Isolasi di Perusahaan (Pusat) Hari Ini
+			</div>
+			<div class="box-body" style="font-size: 30pt;">
+				<?= count($wfoPst) ?>
+			</div>
+		</div>
+	</div>
+	<div class="col-lg-2">
+		<div class="box box-solid box-danger text-center" data-toggle="modal" data-target="#cvd_wfotks">
+			<div class="box-header with-border">
+				Isolasi di Perusahaan (Tuksono) Hari Ini
+			</div>
+			<div class="box-body" style="font-size: 30pt;">
+				<?= count($wfoTks) ?>
+			</div>
+		</div>
+	</div>
+	<div class="col-lg-2">
+		<div class="box box-solid box-danger text-center" data-toggle="modal" data-target="#cvd_aknselesai">
+			<div class="box-header with-border">
+				Isolasi Hampir Selesai<br>
+				<span style="color: #dd4b39">-</span>
+			</div>
+			<div class="box-body" style="font-size: 30pt;">
+				<?= count($akanSelesai) ?>
+			</div>
+		</div>
+	</div>
 </div>
 <form method="get" action="">
 	<div class="col-md-1">
@@ -29,9 +86,10 @@
 		<thead class="bg-primary">
 			<tr>
 				<th class="bg-primary" rowspan="2" style="text-align: center;">No</th>
+				<th class="bg-primary" rowspan="2" style="text-align: center;">Status</th>
 				<th class="bg-primary" rowspan="2" style="text-align: center;">Noind</th>
 				<th class="bg-primary" rowspan="2" style="text-align: center;">Nama</th>
-				<th class="bg-primary" rowspan="2" style="text-align: center;">Tgl Laporan</th>
+				<th class="bg-primary" rowspan="2" style="text-align: center; width: 100px;">Tgl Laporan</th>
 				<th class="bg-primary" rowspan="2" style="text-align: center; min-width: 200px;">Keterangan</th>
 				<?php foreach ($bulan as $b):  $widt = $b['jumlah']*50; ?>
 					<th style="text-align: center;" colspan="<?= $b['jumlah'] ?>"><?= date('M Y', strtotime($b['bulan'])) ?></th>	
@@ -39,11 +97,19 @@
 			</tr>
 			<tr>
 				<?php foreach ($bulan as $b):
-					$m = date('m', strtotime($b['bulan']));
+					$Ym = date('Y-m', strtotime($b['bulan']));
 				?>
 					<?php 
-					for ($i=1; $i <= $b['jumlah']; $i++) { 
-						if ($m == date('m') && $i/10 == date('d')/10) {
+					for ($i=1; $i <= $b['jumlah']; $i++) {
+						if ($i<10) {
+							$n = '0'.$i;
+						}else{
+							$n = $i;
+						}
+
+						if ($Ym == date('Y-m') && $i/10 == date('d')/10) {
+							$bg = 'bg-sukses';
+						}elseif(date('D', strtotime($Ym.'-'.$n)) == 'Sun' || in_array($Ym.'-'.$n, $libur)){
 							$bg = 'bg-dangerr';
 						}else{
 							$bg = 'bg-primary';
@@ -58,12 +124,17 @@
 			<?php $x=1; foreach ($list as $k): ?>
 				<tr style="height: 80px;">
 					<td class="cvd_pekerjaid" data-id="<?= $k['cvd_pekerja_id'] ?>" ><?= $x++; ?></td>
+					<td>
+						<button class="btn" style="color: #fff; background-color: <?= $k['background_color'] ?>">
+							<?= $k['status_kondisi'] ?>
+						</button>
+					</td>
 					<td><?= $k['noind']; ?></td>
 					<td><?= $k['nama']; ?></td>
-					<td><?= $k['created_date']; ?></td>
+					<td><?= date('Y-m-d', strtotime($k['created_date'])); ?></td>
 					<td><?= $k['keterangan']; ?></td>
 					<?php foreach ($bulan as $b):
-						$m = date('m', strtotime($b['bulan']));
+						$Ym = date('Y-m', strtotime($b['bulan']));
 					?>
 						<?php 
 							for ($i=1; $i <= $b['jumlah']; $i++) { 
@@ -73,8 +144,8 @@
 									$nu = $i;
 								}
 
-								if ($m == date('m') && $i/10 == date('d')/10) {
-									$bi = 'background-image: linear-gradient(to right, red , yellow);';
+								if ($Ym == date('Y-m') && $i/10 == date('d')/10) {
+									$bi = 'background-image: linear-gradient(to right, green , yellow);';
 								}else{
 									$bi = '';
 								}
@@ -180,6 +251,175 @@
 		</div>
 	</div>
 </div>
+
+<div class="modal fade" id="cvd_wfhpst" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<label class="modal-title" id="exampleModalLabel">Isolasi di Rumah (Pusat) Hari Ini</label>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+							<th>No</th>
+							<th>Pekerja</th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php $x=1; foreach ($wfhPst as $key): ?>
+							<tr>
+								<td><?=$x++;?></td>
+								<td><?= $key['noind'].' - '.$key['nama'] ?></td>
+							</tr>
+						<?php endforeach ?>
+					</tbody>
+				</table>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal fade" id="cvd_wfhtks" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<label class="modal-title" id="exampleModalLabel">Isolasi di Rumah (Tuksono) Hari Ini</label>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+							<th>No</th>
+							<th>Pekerja</th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php $x=1; foreach ($wfhTks as $key): ?>
+							<tr>
+								<td><?=$x++;?></td>
+								<td><?= $key['noind'].' - '.$key['nama'] ?></td>
+							</tr>
+						<?php endforeach ?>
+					</tbody>
+				</table>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="cvd_wfopst" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<label class="modal-title" id="exampleModalLabel">Isolasi di Perusahaan (Pusat) Hari Ini</label>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+							<th>No</th>
+							<th>Pekerja</th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php $x=1; foreach ($wfoPst as $key): ?>
+							<tr>
+								<td><?=$x++;?></td>
+								<td><?= $key['noind'].' - '.$key['nama'] ?></td>
+							</tr>
+						<?php endforeach ?>
+					</tbody>
+				</table>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal fade" id="cvd_wfotks" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<label class="modal-title" id="exampleModalLabel">Isolasi di Perusahaan (Tuksono) Hari Ini</label>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+							<th>No</th>
+							<th>Pekerja</th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php $x=1; foreach ($wfoTks as $key): ?>
+							<tr>
+								<td><?=$x++;?></td>
+								<td><?= $key['noind'].' - '.$key['nama'] ?></td>
+							</tr>
+						<?php endforeach ?>
+					</tbody>
+				</table>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="cvd_aknselesai" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<label class="modal-title" id="exampleModalLabel">Isolasi Hampir Selesai</label>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+							<th>No</th>
+							<th>Pekerja</th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php $x=1; foreach ($akanSelesai as $key): ?>
+							<tr>
+								<td><?=$x++;?></td>
+								<td><?= $key['employee_code'].' - '.$key['employee_name'] ?></td>
+							</tr>
+						<?php endforeach ?>
+					</tbody>
+				</table>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+
 <script>
 	window.addEventListener('load', function () {
 		$('.content').show();

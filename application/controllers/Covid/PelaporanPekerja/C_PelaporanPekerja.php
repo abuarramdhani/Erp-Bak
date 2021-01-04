@@ -134,8 +134,15 @@ class C_PelaporanPekerja extends CI_Controller
 			$month = strtotime("+1 month", $month);
 			$x++;
 		}
+		$libur = $this->M_monitoringcovid->getLiburKhs($min, $max);
+		$data['libur'] = array_column($libur, 'tanggal');
 		// echo "<pre>";
-		// print_r($lmonth);exit();
+		// print_r($data);exit();
+		$data['wfhPst'] = $this->M_monitoringcovid->getTotalIsolasiWFH('01');
+		$data['wfhTks'] = $this->M_monitoringcovid->getTotalIsolasiWFH('02');
+		$data['wfoPst'] = $this->M_monitoringcovid->getTotalIsolasiWFO('01');
+		$data['wfoTks'] = $this->M_monitoringcovid->getTotalIsolasiWFO('02');
+		$data['akanSelesai'] = $this->M_monitoringcovid->pekerjaAkanSelesaiIS();
 		$data['bulan'] = $lmonth;
 		$this->load->view('Covid/PelaporanPekerja/V_Header',$data);
 		$this->load->view('Covid/PelaporanPekerja/V_Monitoring',$data);
