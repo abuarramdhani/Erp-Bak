@@ -76,7 +76,7 @@ class M_monitoringcovid extends CI_Model {
 				on a.noind = b.employee_code
 				inner join er.er_section c 
 				on b.section_code = c.section_code
-				left join (select cvd_pekerja_id, string_agg(jenis_tes,',') jns, string_agg(hasil_tes::text,',') hsl from cvd.cvd_hasil_tes cht group by cht.cvd_pekerja_id) tes
+				left join (select cvd_pekerja_id, string_agg(jenis_tes,',') jns, string_agg(coalesce(hasil_tes::text, '0'),',') hsl from cvd.cvd_hasil_tes cht group by cht.cvd_pekerja_id) tes
 				on a.cvd_pekerja_id = tes.cvd_pekerja_id
 				order by a.status_kondisi_id ";
 				// echo $sql;exit();
@@ -111,7 +111,7 @@ class M_monitoringcovid extends CI_Model {
 				on a.noind = b.employee_code
 				inner join er.er_section c 
 				on b.section_code = c.section_code
-				left join (select cvd_pekerja_id, string_agg(jenis_tes,',') jns, string_agg(hasil_tes::text,',') hsl from cvd.cvd_hasil_tes cht group by cht.cvd_pekerja_id) tes on a.cvd_pekerja_id = tes.cvd_pekerja_id
+				left join (select cvd_pekerja_id, string_agg(jenis_tes,',') jns, string_agg(coalesce(hasil_tes::text, '0'),',') hsl from cvd.cvd_hasil_tes cht group by cht.cvd_pekerja_id) tes on a.cvd_pekerja_id = tes.cvd_pekerja_id
 				where a.status_kondisi_id = ?
 				order by a.status_kondisi_id ";
 		return $this->erp->query($sql,array($status))->result_array();
@@ -813,5 +813,68 @@ class M_monitoringcovid extends CI_Model {
 		$this->db->where('id_hasil_tes', $id);
 		$this->db->update('cvd.cvd_hasil_tes', $data);
 		return $this->db->affected_rows();
+	}
+
+	public function monitoringlist()
+	{
+		$sql = "select
+					cp.*, trim(eea.employee_name) nama 
+				from
+					cvd.cvd_pekerja cp
+				left join er.er_employee_all eea on eea.employee_code = cp.noind
+				where
+					isolasi_id is not null
+				order by created_date";
+		return $this->db->query($sql)->result_array();
+	}
+	public function monitoringlist2($min, $max)
+	{
+		$sql = "select
+					cp.*, trim(eea.employee_name) nama 
+				from
+					cvd.cvd_pekerja cp
+				left join er.er_employee_all eea on eea.employee_code = cp.noind
+				where
+					isolasi_id is not null
+				and (cp.mulai_isolasi between '$min' and '$max' or cp.selesai_isolasi between '$min' and '$max')
+				order by created_date";
+		return $this->db->query($sql)->result_array();
+	}
+
+	public function getDataPres($noind, $mulai, $selesai)
+	{
+		// $noind = 'H8891';
+		$sql = "select
+					tanggal,
+					string_agg(kd_ket, '/') kd_ket,
+					string_agg(alasan, '/') alasan
+				from
+					\"Presensi\".tdatapresensi t
+				where
+					noind = '$noind'
+					and tanggal between '$mulai' and '$selesai'
+				group by
+					tanggal
+				order by
+					tanggal";
+					// echo $sql;exit();
+		return $this->personalia->query($sql)->result_array();
+	}
+	
+	public function getMulaiInteraksi($id)
+	{
+		$sql = "select
+					range_tgl_interaksi,
+					tgl_interaksi,
+					kasus,
+					cw.hasil_wawancara
+				from
+					cvd.cvd_pekerja cp
+				left join cvd.cvd_wawancara cw on
+					cw.cvd_pekerja_id = cp.cvd_pekerja_id
+				where
+					kasus like '%Kontak dengan Probable/Konfirmasi Covid 19%'
+					and cp.cvd_pekerja_id = $id";
+		return $this->db->query($sql)->row_array();			
 	}
 }

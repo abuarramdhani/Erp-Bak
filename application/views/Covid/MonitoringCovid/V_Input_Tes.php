@@ -77,6 +77,8 @@
 					<br>
 					<label>Tanggal Test</label>
 					<input class="form-control cvd_drange" name="tgl_test" placeholder="Masukan Tanggal Test" />
+					<label>Tanggal Keluar Hasil Test</label>
+					<input class="form-control cvd_dpick" name="tgl_keluar_test" placeholder="Masukan Tanggal Keluar Hasil Test" />
 					<label>Hasil Test</label>
 					<select class="cvd_select2 form-control" name="hsl_test" placeholder="Hasil Test" style="width: 100%">
 						<option></option>
@@ -116,6 +118,8 @@
 					<br>
 					<label>Tanggal Test</label>
 					<input class="form-control cvd_drange" name="tgl_test" placeholder="Masukan Tanggal Test" />
+					<label>Tanggal Keluar hasil Test</label>
+					<input class="form-control cvd_dpick" name="tgl_keluar_test" placeholder="Masukan Tanggal keluar Hasil Test" />
 					<label>Hasil Test</label>
 					<select class="cvd_select2 form-control" name="hsl_test" placeholder="Hasil Test" style="width: 100%">
 						<option></option>
@@ -138,5 +142,6 @@
 	var idenc = '<?= $id ?>';
 	window.addEventListener('load', function () {
 		getTabelhasiltest(idenc);
+		$('[name="tgl_keluar_test"]').val('');
 	})
 </script>

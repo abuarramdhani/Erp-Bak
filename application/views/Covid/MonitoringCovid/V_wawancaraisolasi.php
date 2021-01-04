@@ -51,7 +51,7 @@
 	<div style="width: 100%;border: 1px solid black;border-top: 0px solid white;">
 		<b>Data tambahan hasil wawancara :</b>
 	</div>
-	<div class="pnomargin" style="width: 100%;border: 1px solid black;border-top: 0px solid white;height: 250px;">
+	<div class="pnomargin" style="width: 100%;border: 1px solid black;border-top: 0px solid white;max-height: 250px;">
 		<?php 
 			if (isset($data->keterangan)) {
 				echo $data->keterangan;
@@ -102,7 +102,7 @@
 	<div style="width: 100%;border: 1px solid black;border-top: 0px solid white;height: 80px;">
 		 <?php echo (isset($keputusan) && !empty($keputusan)) ? $keputusan->keterangan : '' ?>
 	</div>
-	<table style="width: 100%">
+	<table style="width: 100%; page-break-inside: avoid" autosize="1">
 		<tr>
 			<td colspan="5">Yogyakarta, <?php echo $tanggal ?></td>
 		</tr>

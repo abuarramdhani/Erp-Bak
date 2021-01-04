@@ -359,6 +359,7 @@ class C_MonitoringCovid extends CI_Controller
 	    // $this->load->view('Covid/MonitoringCovid/V_wawancaraisolasi', $data);
 	    $html = $this->load->view('Covid/MonitoringCovid/V_wawancaraisolasi', $data, true);
 	    // print_r($html);exit();
+	    $pdf->shrink_tables_to_fit=1;
 	    $pdf->SetHTMLFooter("<table  style='width: 100%;border-collapse: collapse'>
 			<tr>
 				<td style='width: 10%;padding-left: 3px;'>
@@ -1657,10 +1658,21 @@ class C_MonitoringCovid extends CI_Controller
 		$id = $this->input->post('id');
 		$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
 		$plaintext_string = $this->encrypt->decode($plaintext_string);
+
+		$tkeluar = $this->input->post('tgl_keluar_test');
+		if (empty($tkeluar)) {
+			$tkeluar = null;
+		}
+		$hasil = $this->input->post('hsl_test');
+		if (empty($hasil)) {
+			$hasil = null;
+		}
+
 		$arr = [
 		'tgl_tes'			=> $this->input->post('tgl_test'),
+		'tgl_keluar_tes'	=> $tkeluar,
 		'jenis_tes'			=> $this->input->post('jns_test'),
-		'hasil_tes'			=> $this->input->post('hsl_test'),
+		'hasil_tes'			=> $hasil,
 		'cvd_pekerja_id'	=> $plaintext_string,
 		];
 
@@ -1670,10 +1682,19 @@ class C_MonitoringCovid extends CI_Controller
 	public function updHsilTestc()
 	{
 		$id = $this->input->post('id');
+		$tkeluar = $this->input->post('tgl_keluar_test');
+		if (empty($tkeluar)) {
+			$tkeluar = null;
+		}
+		$hasil = $this->input->post('hsl_test');
+		if (empty($hasil)) {
+			$hasil = null;
+		}
 		$arr = [
 		'tgl_tes'			=> $this->input->post('tgl_test'),
+		'tgl_keluar_tes'	=> $tkeluar,
 		'jenis_tes'			=> $this->input->post('jns_test'),
-		'hasil_tes'			=> $this->input->post('hsl_test'),
+		'hasil_tes'			=> $hasil,
 		];
 
 		$ins = $this->M_monitoringcovid->updHasilTest($arr, $id);
