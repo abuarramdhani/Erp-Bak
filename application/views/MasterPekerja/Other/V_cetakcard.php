@@ -16,7 +16,17 @@ for($i = 0; $i < count($worker); $i++): ?>
 			<img src="<?php echo $worker[$i-1][0]['photo'];?>" width="75px" height="100px" style="border: 1px solid black;border-radius: 35px"/>
 		</td>
 		<td style="width: 245px;height: 100px;text-align: center; border-right: 3px solid black; border-bottom: 3px solid black;line-height: 1.6">
-			<h3 style="font-size: 24px;font-family: Times New Roman;" width="245px" height="60px"><b><?php echo $worker[$i-1][0]['nama_panggilan'];?></b></h3>
+			<?php 
+			if (strlen($worker[(count($worker)-1)][0]['nama_panggilan']) > 10) {
+				?>
+				<h3 style="font-size: 15px;font-family: Times New Roman;" width="245px" height="60px"><b><?php echo $worker[$i-1][0]['nama_panggilan'];?></b></h3>
+				<?php
+			}else{
+				?>
+				<h3 style="font-size: 24px;font-family: Times New Roman;" width="245px" height="60px"><b><?php echo $worker[$i-1][0]['nama_panggilan'];?></b></h3>
+				<?php
+			}
+			?>
 			<p style="font-size: 10px;color: red;font-family: Times New Roman" width="245px"><b><?php echo $worker[$i-1][0]['jabatan'];?></b></p>
 			<p style="font-size: 10px;color: red;font-family: Times New Roman" width="245px"><b><?php echo $worker[$i-1][0]['seksi'];?></b></p>
 			<br>
@@ -28,7 +38,17 @@ for($i = 0; $i < count($worker); $i++): ?>
 			<img src="<?php echo $worker[$i][0]['photo'];?>" width="75px" height="100px" style="border: 1px solid black;border-radius: 35px"/>
 		</td>
 		<td style="width: 245px;height: 100px;text-align: center; border-right: 3px solid black; border-bottom: 3px solid black;line-height: 1.6">
-			<h3 style="font-size: 24px;font-family: Times New Roman" width="245px" height="60px"><b><?php echo $worker[$i][0]['nama_panggilan'];?></b></h3>
+			<?php 
+			if (strlen($worker[(count($worker)-1)][0]['nama_panggilan']) > 10) {
+				?>
+				<h3 style="font-size: 15px;font-family: Times New Roman" width="245px" height="60px"><b><?php echo $worker[$i][0]['nama_panggilan'];?></b></h3>
+				<?php
+			}else{
+				?>
+				<h3 style="font-size: 24px;font-family: Times New Roman" width="245px" height="60px"><b><?php echo $worker[$i][0]['nama_panggilan'];?></b></h3>
+				<?php
+			}
+			?>
 			<p style="font-size: 11px;color: red;font-family: Times New Roman" width="245px"><b><?php echo $worker[$i][0]['jabatan'];?></b></p>
 			<p style="font-size: 11px;color: red;font-family: Times New Roman" width="245px"><b><?php echo $worker[$i][0]['seksi'];?></b></p>
 			<br>
@@ -53,7 +73,17 @@ for($i = 0; $i < count($worker); $i++): ?>
 			<img src="<?php echo $worker[(count($worker)-1)][0]['photo'];?>" width="75px" height="100px" style="border: 1px solid black;border-radius: 35px"/>
 		</td>
 		<td style="width: 245px;height: 100px;text-align: center; border-right: 3px solid black; border-bottom: 3px solid black;line-height: 1.6">
-			<h3 style="font-size: 24px;font-family: Times New Roman" width="245px" height="60px"><b><?php echo $worker[(count($worker)-1)][0]['nama_panggilan'];?></b></h3>
+			<?php 
+			if (strlen($worker[(count($worker)-1)][0]['nama_panggilan']) > 10) {
+				?>
+				<h3 style="font-size: 15px;font-family: Times New Roman" width="245px" height="60px"><b><?php echo $worker[(count($worker)-1)][0]['nama_panggilan'];?></b></h3>
+				<?php
+			}else{
+				?>
+				<h3 style="font-size: 24px;font-family: Times New Roman" width="245px" height="60px"><b><?php echo $worker[(count($worker)-1)][0]['nama_panggilan'];?></b></h3>
+				<?php
+			}
+			?>
 			<p style="font-size: 10px;color: red;font-family: Times New Roman" width="245px"><b><?php echo $worker[(count($worker)-1)][0]['jabatan'];?></b></p>
 			<p style="font-size: 10px;color: red;font-family: Times New Roman" width="245px"><b><?php echo $worker[(count($worker)-1)][0]['seksi'];?></b></p>
 			<br>
