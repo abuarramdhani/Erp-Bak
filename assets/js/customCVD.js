@@ -1803,6 +1803,15 @@ function cvd_bindPopover()
 		fixedColumns:   {
             leftColumns: 5,
         },
-		"ordering": false
+		// "ordering": false,
+		"columnDefs": [
+			{ "orderable": true, "targets": 0 },
+			{ "orderable": true, "targets": 1 },
+			{ "orderable": true, "targets": 2 },
+			{ "orderable": true, "targets": 3 },
+			{ "orderable": true, "targets": 4 },
+			{ "orderable": true, "targets": 5 },
+			{ "orderable": false, "targets": '_all' }
+		]
 	});
 }

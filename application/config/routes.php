@@ -4815,6 +4815,7 @@ $route['Covid/PelaporanPekerja/AcaraMelibatkanBanyakOrang/Melaksanakan'] = 'Covi
 $route['Covid/PelaporanPekerja/AcaraMelibatkanBanyakOrang/Menghadiri'] = 'Covid/MonitoringCovid/C_MonitoringCovid/Menghadiri';
 
 $route['Covid/PelaporanPekerja/index'] = 'Covid/PelaporanPekerja/C_PelaporanPekerja/index';
+$route['Covid/PelaporanPekerja/(:any)'] = 'Covid/PelaporanPekerja/C_PelaporanPekerja/$1';
 $route['Covid/PelaporanPekerja/LuarKota/(:any)'] = 'Covid/PelaporanPekerja/C_PelaporanPekerja/$1';
 $route['Covid/PelaporanPekerja/AcaraMelibatkanBanyakOrang/(:any)'] = 'Covid/PelaporanPekerja/C_PelaporanPekerja/$1';
 $route['Covid/PelaporanPekerja/Kontak/(:any)'] = 'Covid/PelaporanPekerja/C_PelaporanPekerja/$1';
