@@ -861,6 +861,7 @@ class C_MonitoringCovid extends CI_Controller
 		'kasus' => 'DIRI SENDIRI KE LUAR KOTA',
 		'jenis_interaksi' => $this->input->post('txt-CVD-Jenis_interaksi'),
 		'atasan' => $this->input->post('slc-CVD-MonitoringCovid-Atasan'),
+		'keterangan_tambahan' => $this->input->post('Keterangan_Tambahan'),
 		];
 
 		$wawancara = "<p>Wilayah : ".$data['wilayah'].'<br>'.
@@ -872,7 +873,8 @@ class C_MonitoringCovid extends CI_Controller
 		"Menginap : ".$data['covid_menginap'].','.$data['nbr_jumlah_hari'].'<br>'.
 		"Yang dikunjungi sakit : ".$data['covid_sakit'].','.$data['penyakit'].'<br>'.
 		"Sakit Setelah kembali : ".$data['covid_sakit_kembali'].','.$data['penyakit_kembali'].'<br>'.
-		"Interaksi probable covid : ".$data['covid_interaksi'].','.$data['jenis_interaksi']."</p>";
+		"Interaksi probable covid : ".$data['covid_interaksi'].','.$data['jenis_interaksi']."<br>".
+		"Keterangan Tambahan : ".$data['keterangan_tambahan']."</p>";
 		$data['wawancara'] = $wawancara;
 
 		$id_wawancara = $this->M_monitoringcovid->insertDiriSendiri($data, $user);
@@ -957,6 +959,7 @@ class C_MonitoringCovid extends CI_Controller
 		'kasus' => 'ANGGOTA KELUARGA KE LUAR KOTA',
 		'jenis_interaksi' => $this->input->post('txt-CVD-Jenis_interaksi'),
 		'atasan' => $this->input->post('slc-CVD-MonitoringCovid-Atasan'),
+		'keterangan_tambahan' => $this->input->post('Keterangan_Tambahan'),
 		];
 
 		$wawancara = "<p>Wilayah : ".$data['wilayah'].'<br>'.
@@ -968,7 +971,8 @@ class C_MonitoringCovid extends CI_Controller
 		"Menginap : ".$data['covid_menginap'].','.$data['nbr_jumlah_hari'].'<br>'.
 		"Yang dikunjungi sakit : ".$data['covid_sakit'].','.$data['penyakit'].'<br>'.
 		"Sakit Setelah kembali : ".$data['covid_sakit_kembali'].','.$data['penyakit_kembali'].'<br>'.
-		"Interaksi probable covid : ".$data['covid_interaksi'].','.$data['jenis_interaksi']."</p>";
+		"Interaksi probable covid : ".$data['covid_interaksi'].','.$data['jenis_interaksi']."<br>".
+		"Keterangan Tambahan : ".$data['keterangan_tambahan']."</p>";
 		$data['wawancara'] = $wawancara;
 
 		$id_wawancara = $this->M_monitoringcovid->insertAnggotaKeluarga($data, $user);
@@ -1049,6 +1053,7 @@ class C_MonitoringCovid extends CI_Controller
 		'kasus' => 'KEDATANGAN TAMU DARI LUAR KOTA',
 		'jenis_interaksi' => $this->input->post('txt-CVD-Jenis_interaksi'),
 		'atasan' => $this->input->post('slc-CVD-MonitoringCovid-Atasan'),
+		'keterangan_tambahan' => $this->input->post('Keterangan_Tambahan'),
 		];
 
 		$wawancara = "<p>Wilayah : ".$data['wilayah'].'<br>'.
@@ -1059,7 +1064,8 @@ class C_MonitoringCovid extends CI_Controller
 		"Protokol : ".$data['prokes'].'<br>'.
 		"Menginap : ".$data['covid_menginap'].','.$data['nbr_jumlah_hari'].'<br>'.
 		"Tamu yang datang sakit : ".$data['covid_sakit'].','.$data['penyakit'].'<br>'.
-		"Interaksi probable covid : ".$data['covid_interaksi'].','.$data['jenis_interaksi']."</p>";
+		"Interaksi probable covid : ".$data['covid_interaksi'].','.$data['jenis_interaksi']."<br>".
+		"Keterangan Tambahan : ".$data['keterangan_tambahan']."</p>";
 		$data['wawancara'] = $wawancara;
 		// print_r($data);exit();
 		$id_wawancara = $this->M_monitoringcovid->insertKedatanganTamu($data, $user);
@@ -1116,6 +1122,7 @@ class C_MonitoringCovid extends CI_Controller
 		'kasus' => 'MELAKSANAKAN ACARA',
 		'kapasitas_tempat' => $this->input->post('Kapasitas_tempat'),
 		'atasan' => $this->input->post('slc-CVD-MonitoringCovid-Atasan'),
+		'keterangan_tambahan' => $this->input->post('Keterangan_Tambahan'),
 		];
 
 		$wawancara = "<p>Jenis acara : ".$data['jenis_acara'].'<br>'.
@@ -1124,7 +1131,8 @@ class C_MonitoringCovid extends CI_Controller
 		"Waktu dan Run Down : ".$data['waktu_run_down'].'<br>'.
 		"Protokol : ".$data['prokes'].'<br>'.
 		"Lokasi acara : ".$data['lokasi_acara'].'<br>'.
-		"Kapasitas tempat : ".$data['kapasitas_tempat']."</p>";
+		"Kapasitas tempat : ".$data['kapasitas_tempat']."<br>".
+		"Keterangan Tambahan : ".$data['keterangan_tambahan']."</p>";
 		$data['wawancara'] = $wawancara;
 
 		$id_wawancara = $this->M_monitoringcovid->insertMelaksanakanAcara($data, $user);
@@ -1182,6 +1190,7 @@ class C_MonitoringCovid extends CI_Controller
 		'kasus' => 'MENGHADIRI ACARA',
 		'kapasitas_tempat' => $this->input->post('Kapasitas_tempat'),
 		'atasan' => $this->input->post('slc-CVD-MonitoringCovid-Atasan'),
+		'keterangan_tambahan' => $this->input->post('Keterangan_Tambahan'),
 		];
 
 		$wawancara = "<p>Jenis acara : ".$data['jenis_acara'].'<br>'.
@@ -1190,7 +1199,8 @@ class C_MonitoringCovid extends CI_Controller
 		"Protokol penyelenggara: ".$data['prokes_penyelenggara'].'<br>'.
 		"Protokol Diri Sendiri: ".$data['prokes_pekerja'].'<br>'.
 		"Lokasi acara : ".$data['lokasi_acara'].'<br>'.
-		"Kapasitas tempat : ".$data['kapasitas_tempat']."</p>";
+		"Kapasitas tempat : ".$data['kapasitas_tempat']."<br>".
+		"Keterangan Tambahan : ".$data['keterangan_tambahan']."</p>";
 
 		$data['wawancara'] = $wawancara;
 		
@@ -1241,6 +1251,7 @@ class C_MonitoringCovid extends CI_Controller
 		'fasilitas'	=> implode(', ', $this->input->post('fasilitas')),
 		'dekontaminasi'	=> $this->input->post('dekontaminasi'),
 		'atasan' => $this->input->post('slc-CVD-MonitoringCovid-Atasan'),
+		'keterangan_tambahan' => $this->input->post('Keterangan_Tambahan'),
 		];
 
 		$antibody = $this->input->post('fantibody');
@@ -1334,7 +1345,8 @@ class C_MonitoringCovid extends CI_Controller
 		$anggotaK.
 		$laporPuskesmas.
 		"Fasilitas : ".$data['fasilitas'].'<br>'.
-		"Dekontaminasi : ".$data['dekontaminasi']."</p>";
+		"Dekontaminasi : ".$data['dekontaminasi']."<br>".
+		"Keterangan Tambahan : ".$data['keterangan_tambahan']."</p>";
 		$data['wawancara'] = $wawancara;
 		
 		$id_wawancara = $this->M_monitoringcovid->kontakSatuRumah($data, $user);
@@ -1383,6 +1395,7 @@ class C_MonitoringCovid extends CI_Controller
 		'kasus'	=> 'Kontak dengan Probable/Konfirmasi Covid 19 - Beda Rumah',
 		'arahan'	=> $arahan,
 		'atasan' => $this->input->post('slc-CVD-MonitoringCovid-Atasan'),
+		'keterangan_tambahan' => $this->input->post('Keterangan_Tambahan'),
 		];
 
 		$wawancara = "<p>Yang kontak : ".$data['yang_kontak'].'<br>'.
@@ -1392,7 +1405,8 @@ class C_MonitoringCovid extends CI_Controller
 		"Intensitas : ".$data['intensitas'].'<br>'.
 		"Durasi : ".$data['durasi'].'<br>'.
 		"Protokol : ".$data['protokol'].'<br>'.
-		"Arahan : ".$data['arahan']."</p>";
+		"Arahan : ".$data['arahan']."<br>".
+		"Keterangan Tambahan : ".$data['keterangan_tambahan']."</p>";
 		$data['wawancara'] = $wawancara;
 		
 		$id_wawancara = $this->M_monitoringcovid->kontakBedaRumah($data, $user);
@@ -1440,6 +1454,7 @@ class C_MonitoringCovid extends CI_Controller
 		'arahan'	=> $arahan,
 		'kasus'		=> 'Interaksi dengan Orang Yang Habis Berinteraksi dengan Terduga / Terkonfirmasi Covid 19',
 		'atasan' => $this->input->post('slc-CVD-MonitoringCovid-Atasan'),
+		'keterangan_tambahan' => $this->input->post('Keterangan_Tambahan'),
 		];
 
 		$wawancara = "<p>Yang kontak : ".$data['yang_kontak'].'<br>'.
@@ -1448,7 +1463,8 @@ class C_MonitoringCovid extends CI_Controller
 		"Intensitas : ".$data['intensitas'].'<br>'.
 		"Durasi : ".$data['durasi'].'<br>'.
 		"Protokol : ".$data['protokol'].'<br>'.
-		"Arahan : ".$data['arahan']."</p>";
+		"Arahan : ".$data['arahan']."<br>".
+		"Keterangan Tambahan : ".$data['keterangan_tambahan']."</p>";
 		$data['wawancara'] = $wawancara;
 		
 		$id_wawancara = $this->M_monitoringcovid->kontakProblaby($data, $user);
@@ -1492,6 +1508,7 @@ class C_MonitoringCovid extends CI_Controller
 		'protokol'	=> $this->input->post('protokol'),
 		'kasus'	=> 'Kontak dengan Probable/Konfirmasi Covid 19 - Dalam Perusahaan',
 		'atasan' => $this->input->post('slc-CVD-MonitoringCovid-Atasan'),
+		'keterangan_tambahan' => $this->input->post('Keterangan_Tambahan'),
 		];
 
 		$wawancara = "<p>Yang kontak : ".$data['yang_kontak'].'<br>'.
@@ -1499,7 +1516,8 @@ class C_MonitoringCovid extends CI_Controller
 		"Jenis Interaksi : ".$data['jenis_interaksi'].'<br>'.
 		"Intensitas : ".$data['intensitas'].'<br>'.
 		"Durasi : ".$data['durasi'].'<br>'.
-		"Protokol : ".$data['protokol']."</p>";
+		"Protokol : ".$data['protokol']."<br>".
+		"Keterangan Tambahan : ".$data['keterangan_tambahan']."</p>";
 		$data['wawancara'] = $wawancara;
 		
 		$id_wawancara = $this->M_monitoringcovid->kontakBedaRumah($data, $user);
@@ -1585,6 +1603,7 @@ class C_MonitoringCovid extends CI_Controller
 		$message = '<p>Kasus : '.$data['kasus'].'</p>';
 		$message .= '<p>Tanggal Interaksi : '.$data['tgl_interaksi'].'</p>';
 		$message .= '<p>Data :</p>';
+		$message .= '<p>Keterangan : '.$data['keterangan'].'</p>';
 		$message .= $data['wawancara'];
 
 		$mail = new PHPMailer();

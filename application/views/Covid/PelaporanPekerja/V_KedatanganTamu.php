@@ -40,13 +40,12 @@
                                                             <input type="text" class="date form-control" name="txtPeriodeKejadian" id="txtPeriodeKejadian" autocomplete="off" required>
                                                         </div>
                                                         <div class="form-group">
-                                                            <label for="usr">Keterangan Tambahan :</label>
-                                                            <textarea
+                                                            <label for="usr">Keterangan :</label>
+                                                            <input
                                                             class="form-control"
-                                                            id="txt-CVD-MonitoringCovid-Tambah-Keterangan"
                                                             name="txt-CVD-MonitoringCovid-Tambah-Keterangan"
                                                             placeholder="Keterangan"
-                                                            ></textarea>
+                                                            />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -122,6 +121,14 @@
                                                                     </tbody>
                                                                 </table>
                                                             </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="usr">Keterangan Tambahan:</label>
+                                                            <textarea
+                                                            class="form-control txt-CVD-Prokes"
+                                                            name="Keterangan_Tambahan"
+                                                            placeholder="Keterangan Tambahan"
+                                                            ></textarea>
                                                         </div>
                                                     </div>
                                                 </div>
