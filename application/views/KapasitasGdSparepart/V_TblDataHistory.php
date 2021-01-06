@@ -490,7 +490,11 @@ var myChart5 = new Chart(ctx, {
                     <th>Pengecekan</th>
                     <th>Packing</th>
                     <th>Coly</th>
+                    <th>Lembar Pelayanan</th>
+                    <th>Lembar Pengecekan</th>
                     <th>Lembar Packing</th>
+                    <th>Item Pelayanan</th>
+                    <th>Item Pengecekan</th>
                     <th>Item Packing</th>
                     <th>Pcs Packing</th>
                     <th>Jenis Item</th>
@@ -508,7 +512,11 @@ var myChart5 = new Chart(ctx, {
                         <td><input type="hidden" id="pglr<?= $no?>" value="<?= $val['PENGELUARAN']?>"><?= $val['PENGELUARAN']?> detik</td>
                         <td><input type="hidden" id="pck<?= $no?>" value="<?= $val['PACKING']?>"><?= $val['PACKING']?> detik</td>
                         <td><input type="hidden" id="coly<?= $no?>" value="<?= $val['COLY']?>"><?= $val['COLY']?></td>
+                        <td><input type="hidden" id="lembar_plyn<?= $no?>" value="<?= $val['LEMBAR_PLYN']?>"><?= $val['LEMBAR_PLYN']?></td>
+                        <td><input type="hidden" id="lembar_pglr<?= $no?>" value="<?= $val['LEMBAR_PGLR']?>"><?= $val['LEMBAR_PGLR']?></td>
                         <td><input type="hidden" id="lembar_pack<?= $no?>" value="<?= $val['LEMBAR_PACK']?>"><?= $val['LEMBAR_PACK']?></td>
+                        <td><input type="hidden" id="item_plyn<?= $no?>" value="<?= $val['ITEM_PLYN']?>"><?= $val['ITEM_PLYN']?></td>
+                        <td><input type="hidden" id="item_pglr<?= $no?>" value="<?= $val['ITEM_PGLR']?>"><?= $val['ITEM_PGLR']?></td>
                         <td><input type="hidden" id="item_out<?= $no?>" value="<?= $val['ITEM_KELUAR']?>"><?= $val['ITEM_KELUAR']?></td>
                         <td><input type="hidden" id="pcs_pack<?= $no?>" value="<?= $val['PCS_PACK']?>"><?= $val['PCS_PACK']?></td>
                         <td><button class="btn btn-info" onclick="detailJenisItem(<?= $no?>)">Detail</button></td>

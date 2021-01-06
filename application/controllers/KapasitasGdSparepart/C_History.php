@@ -92,10 +92,12 @@ class C_History extends CI_Controller
                     $plyn = $this->caripelayanan($val, $value['SELESAI_PELAYANAN'], $datapelayanan);
                     $tampung[$a]['PELAYANAN']   = $plyn['waktu'];
                     $tampung[$a]['ITEM_PLYN']   = $plyn['item'];
+                    $tampung[$a]['LEMBAR_PLYN'] = $plyn['lembar'];
     
                     $pglr = $this->caripengeluaran($val, $value['SELESAI_PELAYANAN'], $datapengeluaran);
                     $tampung[$a]['PENGELUARAN'] = $pglr['waktu'];
                     $tampung[$a]['ITEM_PGLR']   = $pglr['item'];
+                    $tampung[$a]['LEMBAR_PGLR'] = $pglr['lembar'];
     
                     $packing     = $this->caripacking($val, $value['SELESAI_PELAYANAN'], $datapacking);
                     $tampung[$a]['PACKING']     = $packing['waktu'];
@@ -121,10 +123,12 @@ class C_History extends CI_Controller
                     $plyn = $this->caripelayanan($val, $value['SELESAI_PENGELUARAN'], $datapelayanan);
                     $tampung[$a]['PELAYANAN']   = $plyn['waktu'];
                     $tampung[$a]['ITEM_PLYN']   = $plyn['item'];
+                    $tampung[$a]['LEMBAR_PLYN'] = $plyn['lembar'];
     
                     $pglr = $this->caripengeluaran($val, $value['SELESAI_PENGELUARAN'], $datapengeluaran);
                     $tampung[$a]['PENGELUARAN'] = $pglr['waktu'];
                     $tampung[$a]['ITEM_PGLR']   = $pglr['item'];
+                    $tampung[$a]['LEMBAR_PGLR'] = $pglr['lembar'];
     
                     $packing     = $this->caripacking($val, $value['SELESAI_PENGELUARAN'], $datapacking);
                     $tampung[$a]['PACKING']     = $packing['waktu'];
@@ -150,10 +154,12 @@ class C_History extends CI_Controller
                     $plyn = $this->caripelayanan($val, $value['SELESAI_PACKING'], $datapelayanan);
                     $tampung[$a]['PELAYANAN']   = $plyn['waktu'];
                     $tampung[$a]['ITEM_PLYN']   = $plyn['item'];
+                    $tampung[$a]['LEMBAR_PLYN'] = $plyn['lembar'];
     
                     $pglr = $this->caripengeluaran($val, $value['SELESAI_PACKING'], $datapengeluaran);
                     $tampung[$a]['PENGELUARAN'] = $pglr['waktu'];
                     $tampung[$a]['ITEM_PGLR']   = $pglr['item'];
+                    $tampung[$a]['LEMBAR_PGLR'] = $pglr['lembar'];
     
                     $packing     = $this->caripacking($val, $value['SELESAI_PACKING'], $datapacking);
                     $tampung[$a]['PACKING']     = $packing['waktu'];
@@ -199,7 +205,8 @@ class C_History extends CI_Controller
         }
         $iniwaktu = round($waktu / $bagi);
         $hasil = array('waktu' => $iniwaktu,
-                        'item' => $item_plyn);
+                        'item' => $item_plyn,
+                        'lembar' => $inijml);
         // echo "<pre>";print_r($hasil);exit();
         return $hasil;
     }
@@ -231,7 +238,8 @@ class C_History extends CI_Controller
         }
         $iniwaktu = round($waktu / $bagi);
         $hasil = array('waktu' => $iniwaktu,
-                        'item' => $item_pglr);
+                        'item' => $item_pglr,
+                        'lembar' => $inijml);
         // echo "<pre>";print_r($hasil);exit();
         return $hasil;
     }
