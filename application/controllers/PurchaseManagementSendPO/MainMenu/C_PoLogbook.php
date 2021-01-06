@@ -31,7 +31,7 @@ class C_PoLogbook extends CI_Controller
         // Array Koordinator Po
         $koordinatorPo = ['B0537', 'B0729', 'B0580'];
         // Array Admin Po
-        $adminPo = ['H6634', 'P0384', 'K2298', 'P0603', 'P0391', 'P0389', 'P0608', 'P0629', 'A2412', 'A2275', 'A2375'];
+        $adminPo = ['H8409', 'H6634', 'P0384', 'K2298', 'P0603', 'P0391', 'P0389', 'P0608', 'P0629', 'A2412', 'A2275', 'A2375'];
         // Array team Koordinasi
         $teamAlbert = ['B0537', 'B0726', 'B0794', 'B0931', 'B0935', 'B0868'];
         $teamRahayu = ['B0729', 'B0918', 'B0932'];
@@ -52,10 +52,10 @@ class C_PoLogbook extends CI_Controller
             }
         // Jika user adalah admin Po
         } else if (in_array($id_user, $adminPo)) {
-            if($id_user == 'H6634' || $id_user == 'P0384'){
+            if($id_user == 'H6634' || $id_user == 'P0384' || $id_user == 'H8409'){
               $data['PoLogbook'] = $this->M_pologbook->getDataPObyNik('B0726');
             } else if($id_user == 'K2298' || $id_user == 'P0603'){
-              $data['PoLogbook'] = $this->M_pologbook->getDataPObyNik('B0868');
+              $data['PoLogbook'] = $this->M_pologbook->getDataPoTeam(['B0794', 'B0868']);
             } else if($id_user == 'P0391') {
               $data['PoLogbook'] = $this->M_pologbook->getDataPoTeam(['B0794', 'B0537']);
             } else if($id_user == 'P0389') {
@@ -188,7 +188,7 @@ class C_PoLogbook extends CI_Controller
         // Array Koordinator Po
         $koordinatorPo = ['B0537', 'B0729', 'B0580'];
         // Array Admin Po
-        $adminPo = ['H6634', 'P0384', 'K2298', 'P0603', 'P0391', 'P0389', 'P0608', 'P0629', 'A2412', 'A2275', 'A2375'];
+        $adminPo = ['H8409', 'H6634', 'P0384', 'K2298', 'P0603', 'P0391', 'P0389', 'P0608', 'P0629', 'A2412', 'A2275', 'A2375'];
         // Array team Koordinasi
         $teamAlbert = ['B0537', 'B0726', 'B0794', 'B0931', 'B0935', 'B0868'];
         $teamRahayu = ['B0729', 'B0918', 'B0932'];
@@ -205,10 +205,10 @@ class C_PoLogbook extends CI_Controller
           }
         // Jika user adalah admin Po
         } else if (in_array($BuyerNik, $adminPo)) {
-            if($BuyerNik == 'H6634' || $BuyerNik == 'P0384'){
+            if($BuyerNik == 'H6634' || $BuyerNik == 'P0384' || $BuyerNik == 'H8409'){
               $data = $this->M_pologbook->getDataPObyNik('B0726');
             } else if($BuyerNik == 'K2298' || $BuyerNik == 'P0603'){
-              $data = $this->M_pologbook->getDataPObyNik('B0868');
+              $data = $this->M_pologbook->getDataPoTeam(['B0794', 'B0868']);
             } else if($BuyerNik == 'P0391') {
               $data = $this->M_pologbook->getDataPoTeam(['B0794', 'B0537']);
             } else if($BuyerNik == 'P0389') {
