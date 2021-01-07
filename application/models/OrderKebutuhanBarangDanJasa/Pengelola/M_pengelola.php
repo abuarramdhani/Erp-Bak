@@ -13,8 +13,7 @@ class M_pengelola extends CI_Model
     {
         $oracle = $this->load->database('oracle', true);
         $oracle->where('APPROVER_ID', $person_id);
-        $oracle->select('ORDER_ID');
-        $oracle->distinct();
+        $oracle->where('APPROVER_TYPE', 7);
         $query = $oracle->get('KHS.KHS_OKBJ_ORDER_APPROVAL');
 
         return $query->result_array();
