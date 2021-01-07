@@ -2459,6 +2459,11 @@ $route['MasterPekerja/TanTerKesepakatan'] 		= 'MasterPekerja/Other/TanTerKesepak
 $route['MasterPekerja/TanTerKesepakatan/(:any)'] = 'MasterPekerja/Other/TanTerKesepakatan/C_Index/$1';
 $route['MasterPekerja/TanTerKesepakatan/(:any)/(:any)'] = 'MasterPekerja/Other/TanTerKesepakatan/C_Index/$1/$2';
 
+//--------------------------------------------------- Ceatak Tanda Terima Kesepakatan Orientasi Kerja -----------------------------------//
+$route['MasterPekerja/TanTerKesOrientasiKerja'] 		= 'MasterPekerja/Other/TanTerKesOrientasiKerja/C_Index';
+$route['MasterPekerja/TanTerKesOrientasiKerja/(:any)'] = 'MasterPekerja/Other/TanTerKesOrientasiKerja/C_Index/$1';
+$route['MasterPekerja/TanTerKesOrientasiKerja/(:any)/(:any)'] = 'MasterPekerja/Other/TanTerKesOrientasiKerja/C_Index/$1/$2';
+
 //---------------------------------------------------------- P2K3adm -----------------------------------------------------------//
 $route['p2k3adm'] = 'P2K3/P2K3Admin/C_P2K3Admin';
 $route['p2k3adm/datamasuk'] = 'P2K3/P2K3Admin/MainMenu/C_DataMasuk';
