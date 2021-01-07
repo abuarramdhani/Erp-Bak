@@ -108,6 +108,21 @@ class C_PelaporanPekerja extends CI_Controller
 		if (strlen($periode) < 23 && !empty($periode)) {
 			die('Periode Invalid (๑◕︵◕๑)');
 		}
+
+		// print_r($_GET);exit();
+		$status = $this->input->get('status');
+		if (!is_array($status) && strlen($status) != 0) {
+			die('Status Invalid /(๑◕_◕๑)\'');
+		}
+		$data['status'] = array();
+		if (!empty($status)) {
+			$data['status'] = $status;
+			$status = implode(',', $status);
+		}else{
+			$status = '';
+		}
+		// print_r($data);exit();
+
 		if (!empty($periode)) {
 			$exp = explode(' - ', $periode);
 			$min = $exp[0];
@@ -122,7 +137,7 @@ class C_PelaporanPekerja extends CI_Controller
 		$end = strtotime($max);
 		$min = date('Y-m-01', strtotime($min));
 		$max = date('Y-m-t', strtotime($max));
-		$data['list'] = $this->M_monitoringcovid->monitoringlist2($min, $max);
+		$data['list'] = $this->M_monitoringcovid->monitoringlist2($min, $max, $status);
 		$data['periode'] = $min.' - '.$max;
 		$month = $start;
 		$lmonth = array();

@@ -538,6 +538,15 @@ $(document).ready(function(){
 			format: "YYYY-MM-DD",
 		},
 	});
+	$(".cvd_drange2").daterangepicker({
+		singleDatePicker: true,
+		timePicker: false,
+		timePicker24Hour: true,
+		showDropdowns: true,
+		locale: {
+			format: "DD MMMM YYYY",
+		},
+	});
 	$(".cvd_drangem").daterangepicker({
 		singleDatePicker: false,
 		timePicker: false,
@@ -1543,6 +1552,10 @@ $(document).ready(function(){
 
 	$('.cvd_select2').select2({
 		placeholder: "Pilih Salah Satu",
+		allowClear: true
+	});
+	$('.cvd_select3').select2({
+		placeholder: "Kosongkan untuk Melihat Semua Status",
 		allowClear: true
 	});
 

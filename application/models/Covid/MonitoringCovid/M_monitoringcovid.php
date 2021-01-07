@@ -827,8 +827,13 @@ class M_monitoringcovid extends CI_Model {
 				order by created_date";
 		return $this->db->query($sql)->result_array();
 	}
-	public function monitoringlist2($min, $max)
+	public function monitoringlist2($min, $max, $status = '')
 	{
+		if ($status == '') {
+			$tambahan = '';
+		}else{
+			$tambahan = 'and cp.status_kondisi_id in ('.$status.')';
+		}
 		$sql = "select
 					cp.*, trim(eea.employee_name) nama , csk.status_kondisi_id, csk.status_kondisi, csk.background_color, csk.text_color
 				from
@@ -838,7 +843,9 @@ class M_monitoringcovid extends CI_Model {
 				where
 					isolasi_id is not null
 				and (cp.mulai_isolasi between '$min' and '$max' or cp.selesai_isolasi between '$min' and '$max')
+				$tambahan
 				order by cp.created_date";
+				// echo $sql;exit();
 		return $this->db->query($sql)->result_array();
 	}
 
