@@ -74,8 +74,20 @@
 	<div class="col-md-1">
 		<label style="margin-top: 5px;">Periode</label>
 	</div>
-	<div class="col-md-2">	
+	<div class="col-md-2">
 		<input class="form-control cvd_drangem" name="periode" value="<?=$periode?>">
+	</div>
+	<div class="col-md-1 text-center">
+		<label style="margin-top: 5px;">Status</label>
+	</div>
+	<div class="col-md-3">
+		<select class="form-control cvd_select3" name="status[]" style="width: 100%" multiple="multiple">
+			<option value="1" <?= (in_array(1, $status)) ? 'selected':'' ?>>Baru</option>
+			<option value="2" <?= (in_array(2, $status)) ? 'selected':'' ?>>Isolasi Pemantauan</option>
+			<option value="3" <?= (in_array(3, $status)) ? 'selected':'' ?>>Follow Up Pekerja Masuk</option>
+			<option value="4" <?= (in_array(4, $status)) ? 'selected':'' ?>>Done</option>
+			<option value="5" <?= (in_array(5, $status)) ? 'selected':'' ?>>Tidak Perlu Isolasi</option>
+		</select>
 	</div>
 	<div class="col-md-1">
 		<button class="btn btn-primary">Lihat</button>
@@ -124,7 +136,7 @@
 			<?php $x=1; foreach ($list as $k): ?>
 				<tr style="height: 80px;">
 					<td class="cvd_pekerjaid" data-id="<?= $k['cvd_pekerja_id'] ?>" ><?= $x++; ?></td>
-					<td>
+					<td style="text-align: center;">
 						<button class="btn" style="color: #fff; background-color: <?= $k['background_color'] ?>">
 							<?= $k['status_kondisi'] ?>
 						</button>
@@ -424,5 +436,10 @@
 	window.addEventListener('load', function () {
 		$('.content').show();
 		getDataMonitoringCovid();
+		<?php if (empty($status)): ?>
+			$('.cvd_select3').val(null).trigger('change');
+		<?php else: ?>
+			$('.cvd_select3').trigger('change');
+		<?php endif ?>
 	});
 </script>
