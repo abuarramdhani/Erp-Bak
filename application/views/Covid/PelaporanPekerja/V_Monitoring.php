@@ -19,7 +19,7 @@
 <div class="col-md-12">
 	<div class="col-md-1"></div>
 	<div class="col-lg-2">
-		<div class="box box-solid box-danger text-center" data-toggle="modal" data-target="#cvd_wfhpst">
+		<div class="box box-solid box-warning text-center" data-toggle="modal" data-target="#cvd_wfhpst">
 			<div class="box-header with-border">
 				Isolasi di Rumah (Pusat) Hari Ini
 			</div>
@@ -29,7 +29,7 @@
 		</div>
 	</div>
 	<div class="col-lg-2">
-		<div class="box box-solid box-danger text-center" data-toggle="modal" data-target="#cvd_wfhtks">
+		<div class="box box-solid box-warning text-center" data-toggle="modal" data-target="#cvd_wfhtks">
 			<div class="box-header with-border">
 				Isolasi di Rumah (Tuksono) Hari Ini
 			</div>
@@ -39,7 +39,7 @@
 		</div>
 	</div>
 	<div class="col-lg-2">
-		<div class="box box-solid box-danger text-center" data-toggle="modal" data-target="#cvd_wfopst">
+		<div class="box box-solid box-warning text-center" data-toggle="modal" data-target="#cvd_wfopst">
 			<div class="box-header with-border">
 				Isolasi di Perusahaan (Pusat) Hari Ini
 			</div>
@@ -49,7 +49,7 @@
 		</div>
 	</div>
 	<div class="col-lg-2">
-		<div class="box box-solid box-danger text-center" data-toggle="modal" data-target="#cvd_wfotks">
+		<div class="box box-solid box-warning text-center" data-toggle="modal" data-target="#cvd_wfotks">
 			<div class="box-header with-border">
 				Isolasi di Perusahaan (Tuksono) Hari Ini
 			</div>
