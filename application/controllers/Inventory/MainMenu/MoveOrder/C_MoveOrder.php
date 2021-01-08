@@ -355,9 +355,9 @@ class C_MoveOrder extends CI_Controller
 			$pdf 				= $this->pdf->load();
 			if (in_array('SUBKT', $kodeDepartement[0])) {
 				// $pdf 				= new mPDF('utf-8',array(215,140), 0, '', 2, 2, 2,0);
-				$pdf 				= new mPDF('utf-8',array(215, 140), 0, '', 2, 2, 48, 35, 2, 4); //2, 2, 51, 35, 2, 4
+				$pdf 				= new mPDF('utf-8',array(215, 140), 0, '', 2, 2, 50, 35, 2, 4); //2, 2, 51, 35, 2, 4
 			} else {
-				$pdf 				= new mPDF('utf-8',array(215, 140), 0, '', 2, 2, 49.5, 25, 2, 4);	
+				$pdf 				= new mPDF('utf-8',array(215, 140), 0, '', 2, 2, 52, 25, 2, 4);	
 			}
 			
 			// $pdf 				= new mPDF('utf-8','A5-L', 0, '', 2, 2, 18.5, 21, 2, 2);
