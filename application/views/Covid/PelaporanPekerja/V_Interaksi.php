@@ -70,6 +70,11 @@
                                                         <div class="form-group">
                                                             <label for="usr">Hubungan Orang Tersebut Dengan Anda</label>
                                                             <br>
+                                                            <input type="radio" name="hubungan_relasi" required value="Keluarga Inti dalam 1 Rumah (Orang Tua, Istri/Suami, Anak, dan lain-lain)" style="clear: none;width: auto;">                                                            
+                                                            <label style="margin-left: 10px;clear: none;width: auto;">
+                                                                Keluarga Inti dalam 1 Rumah (Orang Tua, Istri/Suami, Anak, dan lain-lain)
+                                                            </label>
+                                                            <br>
                                                             <input type="radio" name="hubungan_relasi" required value="Saudara" style="clear: none;width: auto;">                                                            
                                                             <label style="margin-left: 10px;clear: none;width: auto;">
                                                                 Saudara
@@ -98,8 +103,12 @@
                                                             <input style="display: none;" class="form-control" name="lainnya" placeholder="Siapa?" required="" />
                                                         </div>
                                                         <div class="form-group">
+                                                            <label for="usr">Tanggal Interaksi Orang Tersebut dengan Orang Terduga / Terkonfirmasi Covid 19 :</label>
+                                                            <input type="text" class="form-control cvd_drange2" name="Tgl_interaksi" placeholder="Tangggal Interaksi" required>
+                                                        </div>
+                                                        <div class="form-group">
                                                             <label for="usr">Jenis interaksi dengan orang yang berinteraksi dengan orang terduga/terkonfirmasi Covid 19 :</label>
-                                                            <input type="text" class="form-control" name="jenis_interaksi" placeholder="Jenis Interaksi" required>                                                        
+                                                            <input type="text" class="form-control" name="jenis_interaksi" placeholder="Jenis Interaksi" required>
                                                         </div>
                                                         <div class="form-group">
                                                             <label for="usr">Intensitas interaksi dengan orang yang berinteraksi dengan orang terduga/terkonfirmasi Covid 19 tersebut :</label>
