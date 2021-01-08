@@ -106,7 +106,7 @@ $(document).ready(function () {
             title: 'Peringatan',
             text: 'Alasan Urgensi wajib diisi!',
         });
-        $('#txtOKBStatusOrder').val('EMERGENCY');
+        $('#txtOKBStatusOrder').val('EMERGENCY (SUSULAN)');
         $('.nbdOKB').attr('style', 'background-color : #fbfb5966; width:150px;');
         $('.slcAlasanUrgensiOKB').removeAttr('disabled');
         $('.slcAlasanUrgensiOKB').attr('required','required');

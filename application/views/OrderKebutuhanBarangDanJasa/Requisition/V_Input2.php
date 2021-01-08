@@ -364,7 +364,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-success pull-left btnOKBStatusOrderNormal" data-dismiss="modal"><i class="fa fa-fw fa-check"></i> Reguler</button>
-                <button type="button" class="btn btn-warning btnOKBStatusOrderFollowUp" data-dismiss="modal"><i class="fa fa-warning"></i> Emergency</button>
+                <button type="button" class="btn btn-warning btnOKBStatusOrderFollowUp" data-dismiss="modal"><i class="fa fa-warning"></i> Emergency (Susulan)</button>
             </div>
         </div>
     </div>
