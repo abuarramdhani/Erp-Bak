@@ -52,6 +52,13 @@ class M_presensibulanan extends Ci_Model
 	    		where left(a.kodesie,7) in (select left(kodesie,7) from hrd_khs.trefjabatan where noind = 'B0717')
 	    		and a.keluar = false
 				order by a.kodesie,a.noind;";
+		}elseif ($noind == 'B0901') { // Order #524240 (Pembukaan hak akses)
+			$sql = "select a.noind,a.nama, b.seksi
+				from hrd_khs.tpribadi a
+				left join hrd_khs.tseksi b on a.kodesie=b.kodesie
+	    		where left(a.kodesie,4) = '3070'
+	    		and a.keluar = false
+				order by a.kodesie,a.noind;";
 		} elseif ($noind == 'J1378') { //Order #112817 (Pembuatan Login ERP)
 			$sql = "select a.noind,a.nama, b.seksi
 				from hrd_khs.tpribadi a
@@ -182,6 +189,8 @@ class M_presensibulanan extends Ci_Model
 			$param = "(left(pri.kodesie,7) = left('$kd',7) or pri.noind in ('D1535','P0426'))";
 		} elseif ($noind == 'H7726') { //Order #972784 (PENAMBAHAN AKSES BUKA PRESENSI DI PROGRAM ERP)
 			$param = "left(pri.kodesie,5) = left('$kd',5)";
+		}elseif ($noind == 'B0901') { // Order #524240 (Pembukaan hak akses)
+			$param = "left(pri.kodesie,4) = '3070' ";
 		} elseif ($noind == 'B0717') { //Order ##954281 (PERMOHONAN HAK AKSES DI PROGRAM ERP)
 			$param = "left(pri.kodesie,7) in ('3070103','3070104','3070102','3070201','3070301')";
 		} elseif ($noind == 'J1378') { //Order #112817 (Pembuatan Login ERP)
