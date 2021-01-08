@@ -1455,16 +1455,18 @@ class C_MonitoringCovid extends CI_Controller
 		'kasus'		=> 'Interaksi dengan Orang Yang Habis Berinteraksi dengan Terduga / Terkonfirmasi Covid 19',
 		'atasan' => $this->input->post('slc-CVD-MonitoringCovid-Atasan'),
 		'keterangan_tambahan' => $this->input->post('Keterangan_Tambahan'),
+		'Tgl_interaksi_prob' => $this->input->post('Tgl_interaksi'),
 		];
 
-		$wawancara = "<p>Yang kontak : ".$data['yang_kontak'].'<br>'.
-		"Hubungan : ".$data['hubungan'].'<br>'.
-		"Jenis Interaksi : ".$data['jenis_interaksi'].'<br>'.
-		"Intensitas : ".$data['intensitas'].'<br>'.
-		"Durasi : ".$data['durasi'].'<br>'.
-		"Protokol : ".$data['protokol'].'<br>'.
-		"Arahan : ".$data['arahan']."<br>".
-		"Keterangan Tambahan : ".$data['keterangan_tambahan']."</p>";
+		$wawancara = "<p><b>Yang kontak dengan orang tersebut :</b> ".$data['yang_kontak'].'<br>'.
+		"<b>Hubungan dengan orang yang kontak erat dengan Orang terduga/terkonfirmasi Covid 19 :</b> ".$data['hubungan'].'<br>'.
+		"<b>Tanggal Interaksi Orang Tersebut dengan Orang Terduga / Terkonfirmasi Covid 19 :</b> ".$data['Tgl_interaksi_prob'].'<br>'.
+		"<b>Jenis Interaksi dengan orang yang kontak erat dengan Orang terduga/terkonfirmasi Covid 19 :</b> ".$data['jenis_interaksi'].'<br>'.
+		"<b>Intensitas dengan orang yang kontak erat dengan Orang terduga/terkonfirmasi Covid 19 :</b> ".$data['intensitas'].'<br>'.
+		"<b>Durasi dengan orang yang kontak erat dengan Orang terduga/terkonfirmasi Covid 19 :</b> ".$data['durasi'].'<br>'.
+		"<b>Protokol :</b> ".$data['protokol'].'<br>'.
+		"<b>Arahan :</b> ".$data['arahan']."<br>".
+		"<b>Keterangan Tambahan :</b> ".$data['keterangan_tambahan']."</p>";
 		$data['wawancara'] = $wawancara;
 		
 		$id_wawancara = $this->M_monitoringcovid->kontakProblaby($data, $user);
@@ -1637,6 +1639,52 @@ class C_MonitoringCovid extends CI_Controller
 		if (!$mail->send()) {
 			echo "Mailer Error: " . $mail->ErrorInfo;
 			show_error($this->email->print_debugger());
+			exit();
+		} else {
+			// okey
+		}
+
+		$this->kirimEmailcvdOnline($data, $noind, $pkj);
+	}
+
+	function kirimEmailcvdOnline($data, $noind, $pkj)
+	{
+
+		$message = '<p>Kasus : '.$data['kasus'].'</p>';
+		$message .= '<p>Tanggal Interaksi : '.$data['tgl_interaksi'].'</p>';
+		$message .= '<p>Data :</p>';
+		$message .= '<p>Keterangan : '.$data['keterangan'].'</p>';
+		$message .= $data['wawancara'];
+
+		$mail = new PHPMailer(); 
+		$mail->SMTPDebug = 0;
+		$mail->Debugoutput = 'html';
+		$mail->isSMTP();
+		$mail->Host = 'mail.quick.co.id';
+		$mail->Port = 465;
+		$mail->SMTPAuth = true;
+		$mail->SMTPSecure = 'ssl';
+		$mail->SMTPOptions = array(
+			'ssl' => array(
+				'verify_peer' => false,
+				'verify_peer_name' => false,
+				'allow_self_signed' => true)
+			);
+		$mail->Username = 'noreply@quick.co.id';
+		$mail->Password = 'FH6vzD9vq';
+		$mail->WordWrap = 50;
+		
+		$mail->setFrom('noreply@quick.co.id', 'KHS TIM-COVID19');
+		$mail->addAddress('enggalaldian@gmail.com');
+		$mail->addAddress('emanueldakris.ditya25@gmail.com');
+		$mail->addAddress('timcovid19.khs@quick.co.id');
+		$mail->Subject = 'Laporan Covid Baru dari '.trim($pkj['nama']).' ('.$noind.')';
+		$mail->msgHTML($message);
+		
+		if (!$mail->send()) {
+			echo "Mailer Error: " . $mail->ErrorInfo;
+			show_error($this->email->print_debugger());
+			exit();
 		} else {
 			// okey
 		}
