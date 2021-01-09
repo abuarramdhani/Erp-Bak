@@ -54,7 +54,7 @@
 					<td>Tanggal Dipakai</td>
 					<td>: <?php echo $value['DATE_REQUIRED'] ?></td>
 					<td>Nama Assembly</td>
-					<td>: <?php  echo $value['PRODUK_DESC']?><br></td>
+					<td style="font-size:10px">: <?php  echo $value['PRODUK_DESC']?><br></td>
 				</tr>
 				<tr>
 					<td colspan="2"><?php echo $value['SCHEDULE'] ?></td>
