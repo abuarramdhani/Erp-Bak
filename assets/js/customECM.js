@@ -78,10 +78,16 @@ $(document).ready(function () {
 	});
 
     $('#dataWaktuOrder').DataTable( {
+    	scrollX: true,
         "pagingType": "full_numbers"
     } );
 
     $('#btn-search').click(function(){
 		$('#searchResultTableItemByDate').html('<img src="'+baseurl+'/assets/img/gif/loading12.gif">');
+	});
+
+	$("#tanggalan").datepicker({    
+		format: "dd/mm/yyyy",    
+		autoclose: true,  
 	});
 });

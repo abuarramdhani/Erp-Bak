@@ -30,7 +30,7 @@
 											</td>
 											<td>
 												<div class="input-group date" data-provide="datepicker">
-							    					<input size="30" type="text" class="form-control" name="dateBegin" value="<?php echo $dateFrom; ?>">
+							    					<input size="30" type="text" class="form-control" id="tanggalan" name="dateBegin" value="<?php echo $dateFrom; ?>">
 							    					<div class="input-group-addon">
 							        					<span class="glyphicon glyphicon-calendar"></span>
 							    					</div>
@@ -41,7 +41,7 @@
 											</td>
 											<td>
 												<div class="input-group date" data-provide="datepicker">
-							    					<input size="30" type="text" class="form-control" name="dateEnd" value="<?php echo $dateTo; ?>">
+							    					<input size="30" type="text" class="form-control" id="tanggalan" name="dateEnd" value="<?php echo $dateTo; ?>">
 							    					<div class="input-group-addon">
 							        					<span class="glyphicon glyphicon-calendar"></span>
 							    					</div>
@@ -62,6 +62,8 @@
 										<thead>
 											<tr class="bg-primary">
 												<th class="text-center">No</th>
+												<th class="text-center">Shipping Instructions</th>
+												<th class="text-center">Order Diterima</th>
 												<th class="text-center">Nomor Receipt</th>
 												<th class="text-center">Tanggal Receipt</th>
 												<th class="text-center">Nomor SO</th>
@@ -70,7 +72,8 @@
 												<th class="text-center">Nomor Invoice</th>
 												<th class="text-center">Tanggal Invoice</th>
 												<th class="text-center">Gudang Transact</th>
-												<th class="text-center">Shipping Instructions</th>
+												<th class="text-center">Pengiriman</th>
+												<th class="text-center">Lama Proses Penanganan Order</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -79,6 +82,8 @@
 										foreach($search_date as $row){?>
 											<tr>
 												<td><?php echo $i?></td>
+												<td style="text-align: left"><?php echo $row['SHIPPING_INSTRUCTIONS']?></td>
+												<td><?php echo $row['date_proccess']?></td>
 												<td><?php echo $row['NO_RECEIPT']?></td>
 												<td><?php echo $row['TGL_RECEIPT']?></td>
 												<td><?php echo $row['NOMOR_SO']?></td>
@@ -87,7 +92,8 @@
 												<td><?php echo $row['NOMOR_INVOICE']?></td>
 												<td><?php echo $row['TGL_RECEIPT']?></td>
 												<td><?php echo $row['GUDANG_TRANSACT']?></td>
-												<td style="text-align: left"><?php echo $row['SHIPPING_INSTRUCTIONS']?></td>
+												<td><?php echo $row['comment_content2']?></td>
+												<td><?php echo $row['RANGE']?></td>
 											</tr>
 										<?php $i++;}?>
 										</tbody>
@@ -101,6 +107,3 @@
 		</div>
 	</div>
 </section>
-
-
-		
