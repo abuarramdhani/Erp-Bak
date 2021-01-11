@@ -90,67 +90,74 @@ class C_Monitoring extends CI_Controller
 		$tglAkhir		= $this->input->post('tglAkhir');
 		$pic			= $this->input->post('pic');
 		$item			= $this->input->post('item');
+		$data['searchby'] = $search;
 
-		if ($search == 'export') {		// jika search by export excel
-			$dataGET = $this->M_monitoring->getExport($jenis_dokumen, $tglAwal, $tglAkhir);
-			
-			// pengelompokan data export
-			$a= 0;
-			$array_sudah = array();
-			$array_terkelompok = array();
-			foreach ($dataGET as $key => $value) {
-				if (!in_array($value['NO_DOCUMENT'], $array_sudah)) {
-					array_push($array_sudah, $value['NO_DOCUMENT']);
-						$cari = $this->pencarian($value);
-						$getBody = $cari['getbody'];
-						$gdAsal = $cari['asal'];
-						$status = $cari['status'];
-					$a++;
-				$array_terkelompok[$value['NO_DOCUMENT']]['header'] = $value; 
-				$array_terkelompok[$value['NO_DOCUMENT']]['header']['statusket'] = $status; 
-				$array_terkelompok[$value['NO_DOCUMENT']]['header']['gd_asal'] = $gdAsal; 
-				$array_terkelompok[$value['NO_DOCUMENT']]['body'] = $getBody; 
-				}
-			}	
-			$data['value'] = $array_terkelompok;
-
-		}else{
-			$dataGET = $this->M_monitoring->getSearch($no_document, $jenis_dokumen, $tglAwal, $tglAkhir, $pic, $item);				
-			// echo "<pre>"; 
-			// print_r($dataGET); exit();
-			// pengelompokan data
-			$array_sudah = array();
-			$array_terkelompok = array();
-			foreach ($dataGET as $key => $value) {
-				if (!in_array($value['NO_DOCUMENT'], $array_sudah)) {
-					array_push($array_sudah, $value['NO_DOCUMENT']);
-					if ($no_document == $value['NO_DOCUMENT']) {
-						$getBody = $dataGET;
-						$cari = $this->pencarian($value);
-						$gdAsal = $cari['asal'];
-						$status = $cari['status'];
-					}else {
-						$getBody = $this->M_monitoring->getSearch($value['NO_DOCUMENT'], $jenis_dokumen,  $tglAwal, $tglAkhir, $pic, $item);
-						$cari = $this->pencarian($value);
-						$gdAsal = $cari['asal'];
-						$status = $cari['status'];
-					}
-					if ($status == 'Sudah terlayani' && $search == 'belumterlayani') {
-						
-					}else {
+		if ($search == 'tanpa_surat') {
+			$data['value'] = $this->M_monitoring->getData_Tanpa_Surat();
+			// echo "<pre>";print_r($data);exit();s
+			$this->load->view('MonitoringGdSparepart/V_Result3', $data);
+		}else {
+			if ($search == 'export') {		// jika search by export excel
+				$dataGET = $this->M_monitoring->getExport($jenis_dokumen, $tglAwal, $tglAkhir);
+				
+				// pengelompokan data export
+				$a= 0;
+				$array_sudah = array();
+				$array_terkelompok = array();
+				foreach ($dataGET as $key => $value) {
+					if (!in_array($value['NO_DOCUMENT'], $array_sudah)) {
+						array_push($array_sudah, $value['NO_DOCUMENT']);
+							$cari = $this->pencarian($value);
+							$getBody = $cari['getbody'];
+							$gdAsal = $cari['asal'];
+							$status = $cari['status'];
+						$a++;
 						$array_terkelompok[$value['NO_DOCUMENT']]['header'] = $value; 
 						$array_terkelompok[$value['NO_DOCUMENT']]['header']['statusket'] = $status; 
 						$array_terkelompok[$value['NO_DOCUMENT']]['header']['gd_asal'] = $gdAsal; 
 						$array_terkelompok[$value['NO_DOCUMENT']]['body'] = $getBody; 
 					}
+				}	
+				$data['value'] = $array_terkelompok;
+	
+			}else{
+				$dataGET = $this->M_monitoring->getSearch($no_document, $jenis_dokumen, $tglAwal, $tglAkhir, $pic, $item);				
+				// echo "<pre>"; 
+				// print_r($dataGET); exit();
+				// pengelompokan data
+				$array_sudah = array();
+				$array_terkelompok = array();
+				foreach ($dataGET as $key => $value) {
+					if (!in_array($value['NO_DOCUMENT'], $array_sudah)) {
+						array_push($array_sudah, $value['NO_DOCUMENT']);
+						if ($no_document == $value['NO_DOCUMENT']) {
+							$getBody = $dataGET;
+							$cari = $this->pencarian($value);
+							$gdAsal = $cari['asal'];
+							$status = $cari['status'];
+						}else {
+							$getBody = $this->M_monitoring->getSearch($value['NO_DOCUMENT'], $jenis_dokumen,  $tglAwal, $tglAkhir, $pic, $item);
+							$cari = $this->pencarian($value);
+							$gdAsal = $cari['asal'];
+							$status = $cari['status'];
+						}
+						if ($status == 'Sudah terlayani' && $search == 'belumterlayani') {
+							
+						}else {
+							$array_terkelompok[$value['NO_DOCUMENT']]['header'] = $value; 
+							$array_terkelompok[$value['NO_DOCUMENT']]['header']['statusket'] = $status; 
+							$array_terkelompok[$value['NO_DOCUMENT']]['header']['gd_asal'] = $gdAsal; 
+							$array_terkelompok[$value['NO_DOCUMENT']]['body'] = $getBody; 
+						}
+					}
 				}
+				$data['value'] = $array_terkelompok;
 			}
-			$data['value'] = $array_terkelompok;
-		}
-		if ($search == "belumterlayani") {
-			$this->load->view('MonitoringGdSparepart/V_Result2', $data);
-		}else{
-			$this->load->view('MonitoringGdSparepart/V_Result', $data);
+			if ($search == "belumterlayani") {
+				$this->load->view('MonitoringGdSparepart/V_Result2', $data);
+			}else{
+				$this->load->view('MonitoringGdSparepart/V_Result', $data);
+			}
 		}
 	}
 
@@ -188,12 +195,25 @@ class C_Monitoring extends CI_Controller
 				$cari['status'] = '';
 			}else {
 				$cari['asal'] = $gudang[0]['SEKSI_KIRIM'];
-				$cari['status'] = $gudang[0]['STATUS'] == 5 ? 'Belum terlayani' : 
-									($gudang[0]['STATUS'] == 6 ? 'Sudah terlayani' : 'Sedang dibuat')
-				;
+				$cari['status'] = 'Sudah terlayani';
+				for ($i=0; $i < count($gudang) ; $i++) { 
+					$cari['status'] = $gudang[$i]['STATUS'] == 6 ? $cari['status'] : 'Belum terlayani';
+				}
+			}
+		}elseif ($value['JENIS_DOKUMEN'] == 'SPBSPI') {
+			$gudang = $this->M_monitoring->getDataSPBSPI($value['NO_DOCUMENT']);
+			if (empty($gudang)) {
+				$cari['asal'] = '';
+				$cari['status'] = '';
+			}else {
+				$cari['asal'] = $gudang[0]['SUBINVENTORY_CODE'];
+				$cari['status'] = 'Sudah terlayani';
+				for ($i=0; $i < count($gudang) ; $i++) { 
+					$cari['status'] = !empty($gudang[$i]['TRANSACT_BY']) ? $cari['status'] : 'Belum terlayani';
+				}
 			}
 		}
-		if ($value['JENIS_DOKUMEN'] != 'FPB') {
+		if ($value['JENIS_DOKUMEN'] != 'FPB' && $value['JENIS_DOKUMEN'] != 'SPBSPI') {
 			$hitung_bd = count($cari['getbody']);
 			$hitung_ket = count($getKet);
 			if ($hitung_bd <= $hitung_ket) {
@@ -204,6 +224,60 @@ class C_Monitoring extends CI_Controller
 		}
 		
 		return $cari;
+	}
+	
+	public function tambah_tanpa_surat(){
+		$x = $this->input->post('x');
+		echo '<tr class="tr_tanpa_surat">
+				<td><select id="kode_barang'.$x.'" name="kode_barang[]" class="form-control select2 getkodebrgsurat" style="width:200px" data-placeholder="kode barang" onchange="getDescBarang('.$x.')"></select></td>
+				<td><input id="nama_barang'.$x.'" name="nama_barang[]" class="form-control" style="width:300px" placeholder="nama barang" readonly></td>
+				<td><input id="uom'.$x.'" name="uom[]" class="form-control" style="width:100px" placeholder="uom" readonly></td>
+				<td><input type="number" id="qty'.$x.'" name="qty[]" class="form-control" style="width:100px" placeholder="quantity" autocomplete="off"></td>
+				<td><input type="number" id="jml_ok'.$x.'" name="jml_ok[]" class="form-control" style="width:100px" placeholder="jumlah ok" autocomplete="off"></td>
+				<td><input type="number" id="jml_not'.$x.'" name="jml_not[]" class="form-control" style="width:100px" placeholder="jumlah not ok" autocomplete="off"></td>
+				<td><input id="keterangan'.$x.'" name="keterangan[]" class="form-control" style="width:200px" placeholder="keterangan" autocomplete="off"></td>
+				<td><input id="action'.$x.'" name="action[]" class="form-control" style="width:200px" placeholder="action" autocomplete="off"></td>
+				<td><select id="pic'.$x.'" name="pic[]" class="form-control select2 picGDSP" style="width:200px" data-placeholder="pic"></select></td>
+				<td><button type="button" id="btn_tambah" class="btn tombolhapus'.$x.'"><i class="fa fa-minus"></i></button>
+					<input type="hidden" class="nomor" value="'.$x.'">
+				</td>
+			</tr>';
+	}
+	
+	public function getKodeBarang(){
+		$term = $this->input->get('term',TRUE);
+		$term = strtoupper($term);
+		$data = $this->M_monitoring->getNamaBarang("and msib.segment1 like '%$term%' or msib.description like '%$term%'");
+		// echo "<pre>";print_r($data);exit();
+		echo json_encode($data);
+	}
+	
+	public function getDesc(){
+		$item = $this->input->post('item');
+		$data = $this->M_monitoring->getNamaBarang("and msib.segment1 = '$item'");
+		// echo "<pre>";print_r($data);exit();
+		echo json_encode(array($data[0]['DESCRIPTION'], $data[0]['PRIMARY_UOM_CODE']));
+	}
+
+	public function saveTanpaSurat(){
+		$kode_barang 	= $this->input->post('kode_barang[]');
+		$nama_barang 	= $this->input->post('nama_barang[]');
+		$uom 			= $this->input->post('uom[]');
+		$qty 			= $this->input->post('qty[]');
+		$jml_ok 		= $this->input->post('jml_ok[]');
+		$jml_not 		= $this->input->post('jml_not[]');
+		$keterangan 	= $this->input->post('keterangan[]');
+		$action 		= $this->input->post('action[]');
+		$pic 			= $this->input->post('pic[]');
+
+		for ($i=0; $i < count($kode_barang) ; $i++) { 
+			$ok = $jml_ok[$i] != '' ? $jml_ok[$i] : 'null';
+			$not = $jml_not[$i] != '' ? $jml_not[$i] : 'null';
+			// echo "<pre>";print_r($ok);exit();
+			$this->M_monitoring->save_tanpa_surat($kode_barang[$i], $nama_barang[$i], $uom[$i], $qty[$i], $ok, $not, $keterangan[$i], $action[$i], $pic[$i]);
+		}
+
+		redirect(base_url('MonitoringGdSparepart/Monitoring'));
 	}
 
 

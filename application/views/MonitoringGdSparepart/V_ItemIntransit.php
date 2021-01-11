@@ -7,7 +7,7 @@
                         <div class="box box-solid">
                             <div class="box-body">
                                 <div class="col-md-12">
-                                    <h2><i class="fa fa-car" style="font-size:35px"></i> Monitoring Item Intarnsit</h2>
+                                    <h2><i class="fa fa-car" style="font-size:35px"></i> Monitoring Item Intransit</h2>
                                 </div>
                                 <br><br><br>
                                 <div class="panel-body box box-warning">

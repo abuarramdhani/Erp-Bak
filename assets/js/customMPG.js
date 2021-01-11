@@ -15,7 +15,7 @@ function getMPG(th) {
     });
     
     $('#tb_GudangSparepart').html('');
-	$('#tb_GudangSparepart').html('<center><img style="width:130px; height:auto" src="'+baseurl+'assets/img/gif/loading10.gif"></center>' );
+	$('#tb_GudangSparepart').html('<tr><td colspan="6"><center><img style="width:130px; height:auto" src="'+baseurl+'assets/img/gif/loading10.gif"></center></td></tr>' );
     
     request.done(function(result){
         $('#tb_GudangSparepart').html('');
@@ -61,7 +61,12 @@ function getAutoFillDocument(){
     }else if(length == 9) {
         $('#jenis_dokumen').val('KIB').trigger('change')
     }else{
-        $('#jenis_dokumen').val('').trigger('change')
+        var awl = no_document.substring(0, 5);
+        if (awl) {
+            $('#jenis_dokumen').val('SPBSPI').trigger('change')
+        }else{
+            $('#jenis_dokumen').val('').trigger('change')
+        }
     }
 }
 
@@ -74,12 +79,12 @@ function getMGS(th) {
     var tglAkhir        = $('input[name="tglAkhir"]').val();
     var pic             = $('#pic').val();
     var item            = $('input[name="item"]').val();
-    console.log(search_by,jenis_dokumen,no_document,tglAwal,tglAkhir,pic,item);
-if( search_by == 'export'){
-    $('#btnExMGS').css('display', '')
-}else{
-    $('#btnExMGS').css('display', 'none')
-}
+    // console.log(search_by,jenis_dokumen,no_document,tglAwal,tglAkhir,pic,item);
+// if( search_by == 'export'){
+//     $('#btnExMGS').css('display', '')
+// }else{
+//     $('#btnExMGS').css('display', 'none')
+// }
     var request = $.ajax({
         url: baseurl+'MonitoringGdSparepart/Monitoring/search',
         data: {
@@ -101,13 +106,53 @@ if( search_by == 'export'){
     request.done(function(result){
         $('#tblMGS').html('');
         $('#tblMGS').html(result);
-        // $('#myTable').dataTable({
-        //     "paging": false,
-        //     "scrollX": true,
-        //     "scrollCollapse": true,
-        //     "fixedHeader":true,
-        //     "ordering": false,
-        //     });
+        
+        $(".getkodebrgsurat").select2({
+            allowClear: true,
+            minimumInputLength: 3,
+            ajax: {
+                url: baseurl + "MonitoringGdSparepart/Monitoring/getKodeBarang",
+                dataType: 'json',
+                type: "GET",
+                data: function (params) {
+                        var queryParameters = {
+                                term: params.term,
+                        }
+                        return queryParameters;
+                },
+                processResults: function (data) {
+                    return {
+                        results: $.map(data, function (obj) {
+                            return {id:obj.SEGMENT1, text:obj.SEGMENT1+' - '+obj.DESCRIPTION};
+                        })
+                    };
+                }
+            }
+        });	
+        $(".picGDSP").select2({
+            allowClear: false,
+            placeholder: "",
+            minimumInputLength: 3,
+            ajax: {
+                url: baseurl + "MonitoringGdSparepart/Monitoring/getPIC",
+                dataType: 'json',
+                type: "GET",
+                data: function (params) {
+                    var queryParameters = {
+                            term: params.term,
+                    }
+                    return queryParameters;
+                },
+                processResults: function (data) {
+                    return {
+                        results: $.map(data, function (obj) {
+                            return {id:obj.PIC, text:obj.PIC};
+                        })
+                    };
+                }
+            }
+        });
+
         });
     // });
 }
@@ -182,7 +227,7 @@ $('#search_by').change(function(){
         $('#jenis_dokumen').select2('val','');
         $('input[name="item"]').val('');
         $('#pic').select2('val','');
-    }else if(value == "belumterlayani"){
+    }else if(value == "belumterlayani" || value == 'tanpa_surat'){
         $('#slcjenis').css('display', 'none')
         $('#slcTgl').css('display', 'none');
         $('#slcDokumen').css('display', 'none');
@@ -345,6 +390,269 @@ function getItemIntransit(th) {
         success : function (result) {
             $('#tb_itemintransit').html(result);
             
+        }
+    })
+}
+
+
+function tmb_tanpa_surat(th) {
+    var x = $('.nomor:last').val();
+    var x = parseInt(x)+1;
+    $.ajax({
+        url : baseurl + "MonitoringGdSparepart/Monitoring/tambah_tanpa_surat",
+        data : {x : x},
+        dataType : 'html',
+        type : 'POST',
+        success : function (result) {
+            $('#body_tanpa_surat').append(result);
+
+            $(".getkodebrgsurat").select2({
+                allowClear: true,
+                minimumInputLength: 3,
+                ajax: {
+                    url: baseurl + "MonitoringGdSparepart/Monitoring/getKodeBarang",
+                    dataType: 'json',
+                    type: "GET",
+                    data: function (params) {
+                            var queryParameters = {
+                                    term: params.term,
+                            }
+                            return queryParameters;
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: $.map(data, function (obj) {
+                                return {id:obj.SEGMENT1, text:obj.SEGMENT1+' - '+obj.DESCRIPTION};
+                            })
+                        };
+                    }
+                }
+            });		
+
+            
+            $(".picGDSP").select2({
+                allowClear: false,
+                placeholder: "",
+                minimumInputLength: 3,
+                ajax: {
+                    url: baseurl + "MonitoringGdSparepart/Monitoring/getPIC",
+                    dataType: 'json',
+                    type: "GET",
+                    data: function (params) {
+                        var queryParameters = {
+                                term: params.term,
+                        }
+                        return queryParameters;
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: $.map(data, function (obj) {
+                                return {id:obj.PIC, text:obj.PIC};
+                            })
+                        };
+                    }
+                }
+            });
+
+        }
+    })
+	
+	$(document).on('click', '.tombolhapus'+x,  function() {
+		$(this).parents('.tr_tanpa_surat').remove()
+	});
+}
+
+function tmb_peminjam(th) {
+    var x = $('.nomor:last').val();
+    var x = parseInt(x)+1;
+    $.ajax({
+        url : baseurl + "MonitoringGdSparepart/PeminjamanBarang/tambah_peminjam",
+        data : {x : x},
+        dataType : 'html',
+        type : 'POST',
+        success : function (result) {
+            $('#body_peminjam').append(result);
+            $(".getpeminjam").select2({
+                allowClear: true,
+                minimumInputLength: 3,
+                ajax: {
+                    url: baseurl + "MonitoringGdSparepart/PeminjamanBarang/getPeminjam",
+                    dataType: 'json',
+                    type: "GET",
+                    data: function (params) {
+                            var queryParameters = {
+                                    term: params.term,
+                            }
+                            return queryParameters;
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: $.map(data, function (obj) {
+                                return {id:obj.noind, text:obj.noind+' - '+obj.nama};
+                            })
+                        };
+                    }
+                }
+            });		
+
+            $(".getkodebrgpeminjaman").select2({
+                allowClear: true,
+                minimumInputLength: 3,
+                ajax: {
+                    url: baseurl + "MonitoringGdSparepart/Monitoring/getKodeBarang",
+                    dataType: 'json',
+                    type: "GET",
+                    data: function (params) {
+                            var queryParameters = {
+                                    term: params.term,
+                            }
+                            return queryParameters;
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: $.map(data, function (obj) {
+                                return {id:obj.SEGMENT1, text:obj.SEGMENT1+' - '+obj.DESCRIPTION};
+                            })
+                        };
+                    }
+                }
+            });		
+
+            
+            $(".picGDSP").select2({
+                allowClear: false,
+                placeholder: "",
+                minimumInputLength: 3,
+                ajax: {
+                    url: baseurl + "MonitoringGdSparepart/Monitoring/getPIC",
+                    dataType: 'json',
+                    type: "GET",
+                    data: function (params) {
+                        var queryParameters = {
+                                term: params.term,
+                        }
+                        return queryParameters;
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: $.map(data, function (obj) {
+                                return {id:obj.PIC, text:obj.PIC};
+                            })
+                        };
+                    }
+                }
+            });
+
+        }
+    })
+	
+	$(document).on('click', '.tombolhapus'+x,  function() {
+		$(this).parents('.tr_peminjam').remove()
+	});
+}
+
+$(document).ready(function(){
+    var peminjaman = document.getElementById('tbl_peminjaman');
+    if (peminjaman) {
+        $.ajax({
+            url : baseurl + "MonitoringGdSparepart/PeminjamanBarang/tbl_peminjaman",
+            dataType : 'html',
+            type : 'POST',
+            beforeSend: function() {
+            $('#tbl_peminjaman' ).html('<center><img style="width:130px; height:auto" src="'+baseurl+'assets/img/gif/loadingtwo.gif"></center>' );
+            },
+            success : function (result) {
+                $('#tbl_peminjaman').html(result);
+                $('#myTable').dataTable({
+                    "scrollX": true,
+                });
+            }
+        })
+    }
+
+    $(".getpeminjam").select2({
+        allowClear: true,
+        minimumInputLength: 3,
+        ajax: {
+            url: baseurl + "MonitoringGdSparepart/PeminjamanBarang/getPeminjam",
+            dataType: 'json',
+            type: "GET",
+            data: function (params) {
+                    var queryParameters = {
+                            term: params.term,
+                    }
+                    return queryParameters;
+            },
+            processResults: function (data) {
+                return {
+                    results: $.map(data, function (obj) {
+                        return {id:obj.noind, text:obj.noind+' - '+obj.nama};
+                    })
+                };
+            }
+        }
+    });	
+    
+    $(".getkodebrgpeminjaman").select2({
+        allowClear: true,
+        minimumInputLength: 3,
+        ajax: {
+            url: baseurl + "MonitoringGdSparepart/Monitoring/getKodeBarang",
+            dataType: 'json',
+            type: "GET",
+            data: function (params) {
+                    var queryParameters = {
+                            term: params.term,
+                    }
+                    return queryParameters;
+            },
+            processResults: function (data) {
+                return {
+                    results: $.map(data, function (obj) {
+                        return {id:obj.SEGMENT1, text:obj.SEGMENT1+' - '+obj.DESCRIPTION};
+                    })
+                };
+            }
+        }
+    });		
+})
+
+function terima_pinjaman(no) {
+    var id = $('#id_peminjam'+no).val();
+    $.ajax({
+        url : baseurl + "MonitoringGdSparepart/PeminjamanBarang/updatePeminjaman",
+        data : {id : id},
+        dataType: 'html',
+        type: "POST",
+        success : function (result) {
+            window.location.reload();
+        }
+    })
+}
+
+function getSeksi(no) {
+    var noind = $('#nama_peminjam'+no).val();
+    $.ajax({
+        url : baseurl + "MonitoringGdSparepart/PeminjamanBarang/getSeksi",
+        data : {noind : noind},
+        dataType: 'json',
+        type: "POST",
+        success : function (result) {
+            $('#seksi_peminjam'+no).val(result);
+        }
+    })
+}
+
+function getDescBarang(no) {
+    var item = $('#kode_barang'+no).val();
+    $.ajax({
+        url : baseurl + "MonitoringGdSparepart/Monitoring/getDesc",
+        data : {item : item},
+        dataType: 'json',
+        type: "POST",
+        success : function (result) {
+            $('#nama_barang'+no).val(result[0]);
+            $('#uom'+no).val(result[1]);
         }
     })
 }

@@ -286,6 +286,21 @@ class M_input extends CI_Model
         return $query->result_array();
         // return $sql;
     }
+    
+    public function getInputSPBSPI($atr) {
+        $oracle = $this->load->database('oracle', true);
+        $sql = "SELECT distinct ks.SPBSPI_NUM no_interorg, 
+                        msib.SEGMENT1 item, msib.DESCRIPTION, 
+                        ks.SEND_QUANTITY qty, 
+                        ks.TRANSACTION_UOM uom, 
+                        ks.TRANSACT_BY status
+                FROM KHS_SPBSPI ks, mtl_system_items_b msib
+                WHERE ks.SPBSPI_NUM = '$atr'
+                AND ks.INVENTORY_ITEM_ID = msib.INVENTORY_ITEM_ID";
+        $query = $oracle->query($sql);
+        return $query->result_array();
+        // return $sql;
+    }
 
     public function save($NO_INTERORG,$JENIS_DOKUMEN,$ITEM,$DESCRIPTION,$UOM,$QTY,$CREATION_DATE,$STATUS,$PIC)
     {

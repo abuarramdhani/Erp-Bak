@@ -14,6 +14,21 @@ class M_monitoring extends CI_Model {
                 STATUS, JML_OK, JML_NOT_OK, PIC, KETERANGAN, ACTION 
                 from KHS_MONITORING_GD_SP 
                 where TRUNC(creation_date) BETWEEN TO_DATE('$date', 'DD/MM/YYYY') AND TO_DATE('$date2', 'DD/MM/YYYY')
+                and no_document != '-'
+                order by CREATION_DATE DESC";
+        $query = $oracle->query($sql);
+        return $query->result_array();
+        // echo $sql;
+    }
+    
+    public function getData_Tanpa_Surat() {
+        $oracle = $this->load->database('oracle', true);
+        $sql ="
+                SELECT ITEM, DESCRIPTION, 
+                UOM, QTY, to_char(CREATION_DATE, 'dd/mm/yyyy hh24:mi:ss') as TANGGAL, 
+                STATUS, JML_OK, JML_NOT_OK, PIC, KETERANGAN, ACTION 
+                from KHS_MONITORING_GD_SP 
+                where jenis_dokumen = 'TANPA SURAT'
                 order by CREATION_DATE DESC";
         $query = $oracle->query($sql);
         return $query->result_array();
@@ -39,6 +54,7 @@ class M_monitoring extends CI_Model {
                 from KHS_MONITORING_GD_SP
                 WHERE CREATION_DATE IS NOT NULL
                 $dokudoku $nodoku $tanggal $pic2 $item2
+                and no_document != '-'
                 order by CREATION_DATE DESC";
         $query = $oracle->query($sql);
         return $query->result_array();
@@ -53,6 +69,7 @@ class M_monitoring extends CI_Model {
         from KHS_MONITORING_GD_SP
         WHERE jenis_dokumen = '$jenis_dokumen'
         AND TRUNC(creation_date) BETWEEN TO_DATE('$tglAwal', 'DD/MM/YYYY') AND TO_DATE('$tglAkhir', 'DD/MM/YYYY')
+        and no_document != '-'
         order by CREATION_DATE DESC";
         $query = $oracle->query($sql);
         return $query->result_array();
@@ -275,6 +292,40 @@ class M_monitoring extends CI_Model {
         return $query->result_array();
         // return $sql;
     }
+    
+    public function getDataSPBSPI($nomor) {
+        $oracle = $this->load->database('oracle', true);
+        $sql = "SELECT *
+                FROM KHS_SPBSPI ks
+                WHERE ks.SPBSPI_NUM = '$nomor'";
+        $query = $oracle->query($sql);
+        return $query->result_array();
+        // return $sql;
+    }
+  
+    public function getNamaBarang($term) {
+        $oracle = $this->load->database('oracle', true);
+        $sql = "select distinct msib.inventory_item_id, msib.segment1, msib.description, msib.primary_uom_code
+                from mtl_system_items_b msib
+                where msib.INVENTORY_ITEM_STATUS_CODE = 'Active'
+                and msib.organization_id = 81
+                $term
+                order by msib.segment1";
+        $query = $oracle->query($sql);
+        return $query->result_array();
+        // return $sql;
+    }
+
+    public function save_tanpa_surat($kode_barang, $nama_barang, $uom, $qty, $jml_ok, $jml_not, $keterangan, $action, $pic){
+        $oracle = $this->load->database('oracle', true);
+        $sql = "INSERT INTO KHS_MONITORING_GD_SP (no_document, jenis_dokumen, item ,description, uom, qty, creation_date, status, 
+                jml_ok, jml_not_ok, pic, keterangan, action)
+            VALUES ('-','TANPA SURAT','$kode_barang','$nama_barang','$uom','$qty',sysdate,'OK', $jml_ok,
+                    $jml_not, '$pic', '$keterangan', '$action')";
+        $query = $oracle->query($sql);
+        $query2 = $oracle->query("commit");
+    }
+
 
 
 }

@@ -178,6 +178,15 @@ class M_rekap extends CI_Model {
           $query = $oracle->query($sql);
           return $query->result_array();
     }
+    public function getDataSPBSPI($atr) {
+        $oracle = $this->load->database('oracle', true);
+        $sql = "SELECT *
+                FROM KHS_SPBSPI ks
+                WHERE ks.SPBSPI_NUM = '$atr'";
+        $query = $oracle->query($sql);
+        return $query->result_array();
+        // return $sql;
+    }
 
     public function cariKIB($atr) {
         $oracle = $this->load->database('oracle', true);
