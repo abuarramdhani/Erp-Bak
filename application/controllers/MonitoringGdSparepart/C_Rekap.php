@@ -202,13 +202,29 @@ class C_Rekap extends CI_Controller
 				$hasil['status'] = '';
 			}else {
 				$hasil['asal'] = $gudang[0]['SEKSI_KIRIM'];
-				$hasil['status'] = $gudang[0]['STATUS'] == 5 ? 'Belum terlayani' : 
-									($gudang[0]['STATUS'] == 6 ? 'Sudah terlayani' : 'Sedang dibuat');
+				$hasil['status'] = 'Sudah terlayani';
+				for ($i=0; $i < count($gudang) ; $i++) { 
+					$hasil['status'] = $gudang[$i]['STATUS'] == 6 ? $hasil['status'] : 'Belum terlayani';
+				}
             }
-            $hasil['hitung_bd'] = $gudang[0]['STATUS'] == 6 ? 1 : 1;
-            $hasil['hitung_ket'] = $gudang[0]['STATUS'] == 6 ? 1 : 0;
+            $hasil['hitung_bd'] = 1;
+            $hasil['hitung_ket'] = $hasil['status'] == 'Sudah terlayani' ? 1 : 0;
+		}elseif ($val['JENIS_DOKUMEN'] == 'SPBSPI') {
+            $gudang = $this->M_rekap->getDataSPBSPI($val['NO_DOCUMENT']);
+			if (empty($gudang)) {
+				$hasil['asal'] = '';
+				$hasil['status'] = '';
+			}else {
+				$hasil['asal'] = $gudang[0]['SUBINVENTORY_CODE'];
+				$hasil['status'] = 'Sudah terlayani';
+				for ($i=0; $i < count($gudang) ; $i++) { 
+					$hasil['status'] = !empty($gudang[$i]['TRANSACT_BY']) ? $hasil['status'] : 'Belum terlayani';
+				}
+			}
+            $hasil['hitung_bd'] = 1;
+            $hasil['hitung_ket'] = $hasil['status'] == 'Sudah terlayani' ? 1 : 0;
 		}
-		if ($val['JENIS_DOKUMEN'] != 'FPB') {
+		if ($val['JENIS_DOKUMEN'] != 'FPB' && $val['JENIS_DOKUMEN'] != 'SPBSPI') {
 			$hasil['hitung_bd'] = count($item);
             $hasil['hitung_ket'] = count($getKet);
             if ($hasil['hitung_bd'] <= $hasil['hitung_ket']) {

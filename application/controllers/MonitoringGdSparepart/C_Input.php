@@ -73,7 +73,9 @@ class C_Input extends CI_Controller
 				$data['input'] = $this->M_input->getInputLPPB($atr);
 			} else if ($jenis_dokumen == 'FPB') {
 				$data['input'] = $this->M_input->getInputFPB($noDokumen);
-			}else {
+			}else if ($jenis_dokumen == 'SPBSPI') {
+				$data['input'] = $this->M_input->getInputSPBSPI($noDokumen);
+			}else{
 				$atr = '';
 			}
 		}

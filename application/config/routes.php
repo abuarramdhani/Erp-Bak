@@ -3631,6 +3631,10 @@ $route['MonitoringGdSparepart/Rekap/(:any)/(:any)']	= 'MonitoringGdSparepart/C_R
 $route['MonitoringGdSparepart/ItemIntransit']					= 'MonitoringGdSparepart/C_ItemIntransit';
 $route['MonitoringGdSparepart/ItemIntransit/(:any)']			= 'MonitoringGdSparepart/C_ItemIntransit/$1';
 $route['MonitoringGdSparepart/ItemIntransit/(:any)/(:any)']		= 'MonitoringGdSparepart/C_ItemIntransit/$1/$2';
+
+$route['MonitoringGdSparepart/PeminjamanBarang']					= 'MonitoringGdSparepart/C_Peminjaman';
+$route['MonitoringGdSparepart/PeminjamanBarang/(:any)']			= 'MonitoringGdSparepart/C_Peminjaman/$1';
+$route['MonitoringGdSparepart/PeminjamanBarang/(:any)/(:any)']	= 'MonitoringGdSparepart/C_Peminjaman/$1/$2';
 //-------------------------------------------------Stok Gudang Alat-----------------------------------------------------//
 $route['StockGudangAlat'] 										= 'StockGudangAlat/C_StockGudangAlat';
 $route['StockGudangAlat/Stock/(:any)'] 							= 'StockGudangAlat/C_StockGudangAlat/$1';

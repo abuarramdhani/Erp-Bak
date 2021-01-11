@@ -49,6 +49,7 @@
                                             <option value="item">Item</option>
                                             <option value="belumterlayani">Belum Terlayani</option>
                                             <option value="export" id="slcExMGS">Export Excel</option>
+                                            <option value="tanpa_surat" id="tanpa_surat">Tanpa Surat</option>
                                             </select>
                                     </div>
                                 </div>
@@ -65,6 +66,7 @@
                                             <option value="KIB">KIB</option>
                                             <option value="LPPB">LPPB</option>
                                             <!-- <option value="FPB">FPB</option> -->
+                                            <option value="SPBSPI">SPBSPI</option>
                                             </select>
                                     </div>
                                 </div>
@@ -110,11 +112,11 @@
                                 <div class="col-md-12" ></div>
                                     <div class="box box-primary box-solid">
                                         <div class="box-header with-border"><b>Hasil</b></div>
-                                        <div class="box-body">
-                                        <form method="post" id="frmMGS" action="<?= base_url('MonitoringGdSparepart/Monitoring/getUpdate'); ?>">
-                                            <div class="panel-body">
+                                        <div class="box-body" id="tblMGS">
+                                        <!-- <form method="post" id="frmMGS" action="<?= base_url('MonitoringGdSparepart/Monitoring/getUpdate'); ?>">
+                                            <div class="panel-body"> -->
                                                 <div class="table-responsive">
-                                                    <table class="table table-bordered table-hover table-striped text-center" id="tblMGS" style="width: 100%; table-layout:fixed;">
+                                                    <table class="table table-bordered table-hover table-striped text-center" style="width: 100%; table-layout:fixed;">
                                                         <thead class="bg-primary">
                                                             <tr class="text-center">
                                                                 <th width="5%">No</th>
@@ -159,7 +161,9 @@
                                                                                 </tr>
                                                                             </thead>
                                                                             <tbody>
-                                                                            <?php $nomor=1; foreach ($row['body'] as $v) { ?>
+                                                                            <?php $nomor=1; foreach ($row['body'] as $v) { 
+                                                                                $edit = $row['header']['statusket']== 'Sudah terlayani' ? 'readonly' : ''; 
+                                                                            ?>
                                                                                 <tr>
                                                                                     <td><?= $nomor++ ?>
                                                                                         <input type="hidden" name="doc[]" id="doc<?=$no?><?= $nomor ?>" value="<?= $v['NO_DOCUMENT'] ?>"/>
@@ -171,38 +175,10 @@
                                                                                     <td style="text-align:left"><input type="hidden" name="item[]" id="item<?=$no?><?= $nomor ?>" value="<?= $v['ITEM'] ?>"/><?= $v['ITEM'] ?></td>
                                                                                     <td style="text-align:left"><input type="hidden" name="nama_brg[]" value="<?= $v['DESCRIPTION'] ?>"/><?= $v['DESCRIPTION'] ?></td>
                                                                                     <td><input type="hidden" name="qty[]" value="<?= $v['QTY'] ?>"/><?= $v['QTY'] ?></td>
-                                                                                    <td><input type="text" style="width:100%; text-align:center" name="qty_ok[]" id="jml_ok<?=$no?><?= $nomor ?>" onchange="saveJmlOk(<?=$no?>,<?= $nomor ?>)" value="<?= $v['JML_OK'] ?>"
-                                                                                    <?php if($row['header']['statusket']== 'Sudah terlayani') 
-                                                                                            { ?>
-                                                                                            readonly
-                                                                                            <?php }else{
-                                                                                                echo '';
-                                                                                            } ?>
-                                                                                    /></td>
-                                                                                    <td><input type="text" style="width:100%; text-align:center" name="qty_not[]" id="jml_not_ok<?=$no?><?= $nomor ?>" onchange="saveNotOk(<?=$no?>,<?= $nomor ?>)" value="<?= $v['JML_NOT_OK'] ?>"
-                                                                                    <?php if($row['header']['statusket']== 'Sudah terlayani') 
-                                                                                            { ?>
-                                                                                            readonly
-                                                                                            <?php }else{
-                                                                                                echo '';
-                                                                                            } ?>
-                                                                                    /></td>
-                                                                                    <td style="text-align:left"><input type="text" style="width:100%" name="ketr[]" id="keterangan<?=$no?><?= $nomor ?>" onchange="saveKetr(<?=$no?>,<?= $nomor ?>)" value="<?= $v['KETERANGAN'] ?>"
-                                                                                    <?php if($row['header']['statusket']== 'Sudah terlayani') 
-                                                                                            { ?>
-                                                                                           readonly
-                                                                                            <?php }else{
-                                                                                                echo '';
-                                                                                            } ?>
-                                                                                    /></td>
-                                                                                    <td style="text-align:left"><input type="text" style="width:100%" name="action[]" id="action<?=$no?><?= $nomor ?>" onchange="saveAction(<?=$no?>,<?= $nomor ?>)" value="<?= $v['ACTION'] ?>"
-                                                                                    <?php if($row['header']['statusket']== 'Sudah terlayani') 
-                                                                                            { ?>
-                                                                                           readonly
-                                                                                            <?php }else{
-                                                                                                echo '';
-                                                                                            } ?>
-                                                                                    /></td>
+                                                                                    <td><input type="text" style="width:100%; text-align:center" name="qty_ok[]" id="jml_ok<?=$no?><?= $nomor ?>" onchange="saveJmlOk(<?=$no?>,<?= $nomor ?>)" value="<?= $v['JML_OK'] ?>" <?= $edit?> /></td>
+                                                                                    <td><input type="text" style="width:100%; text-align:center" name="qty_not[]" id="jml_not_ok<?=$no?><?= $nomor ?>" onchange="saveNotOk(<?=$no?>,<?= $nomor ?>)" value="<?= $v['JML_NOT_OK'] ?>" <?= $edit?> /></td>
+                                                                                    <td style="text-align:left"><input type="text" style="width:100%" name="ketr[]" id="keterangan<?=$no?><?= $nomor ?>" onchange="saveKetr(<?=$no?>,<?= $nomor ?>)" value="<?= $v['KETERANGAN'] ?>" <?= $edit?> /></td>
+                                                                                    <td style="text-align:left"><input type="text" style="width:100%" name="action[]" id="action<?=$no?><?= $nomor ?>" onchange="saveAction(<?=$no?>,<?= $nomor ?>)" value="<?= $v['ACTION'] ?>" <?= $edit?> /></td>
                                                                                 <?php } ?>
                                                                             </tbody>                                     
                                                                         </table>
@@ -212,12 +188,12 @@
                                                             <?php $no++;} ?>
                                                         </tbody>
                                                     </table>
-                                                    <div class="panel-heading text-right">
+                                                    <!-- <div class="panel-heading text-right">
                                                         <input type="submit" class="btn btn-lg btn-success" name="action" style="display:none" id="btnExMGS" value="Export">
-                                                    </div>
+                                                    </div> -->
                                                 </div>
-                                            </div>
-                                        </form>
+                                            <!-- </div>
+                                        </form> -->
                                         </div>
                                     </div>
                             </div>

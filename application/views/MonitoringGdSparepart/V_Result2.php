@@ -1,3 +1,4 @@
+<div class="panel-body">
 <div class="table-responsive">
     <table class="table table-bordered table-hover table-striped text-center" id="tblMGS" style="width: 100%; table-layout:fixed;">
         <thead class="bg-primary">
@@ -60,38 +61,10 @@
                                     <td style="text-align:left"><input type="hidden" name="item[]" id="item<?=$no?><?= $nomor ?>" value="<?= $v['ITEM'] ?>"/><?= $v['ITEM'] ?></td>
                                     <td style="text-align:left"><input type="hidden" name="nama_brg[]" value="<?= $v['DESCRIPTION'] ?>"/><?= $v['DESCRIPTION'] ?></td>
                                     <td><input type="hidden" name="qty[]" value="<?= $v['QTY'] ?>"/><?= $v['QTY'] ?></td>
-                                    <td><input type="text" style="width:100%; text-align:center" name="qty_ok[]" id="jml_ok<?=$no?><?= $nomor ?>" onchange="saveJmlOk(<?=$no?>,<?= $nomor ?>)" value="<?= $v['JML_OK'] ?>"
-                                    <?php if($row['header']['statusket']== 'Sudah terlayani') 
-                                            { ?>
-                                            readonly
-                                            <?php }else{
-                                                echo '';
-                                            } ?>
-                                    /></td>
-                                    <td><input type="text" style="width:100%; text-align:center" name="qty_not[]" id="jml_not_ok<?=$no?><?= $nomor ?>" onchange="saveNotOk(<?=$no?>,<?= $nomor ?>)" value="<?= $v['JML_NOT_OK'] ?>"
-                                    <?php if($row['header']['statusket']== 'Sudah terlayani') 
-                                            { ?>
-                                            readonly
-                                            <?php }else{
-                                                echo '';
-                                            } ?>
-                                    /></td>
-                                    <td style="text-align:left"><input type="text" style="width:100%" name="ketr[]" id="keterangan<?=$no?><?= $nomor ?>" onchange="saveKetr(<?=$no?>,<?= $nomor ?>)" value="<?= $v['KETERANGAN'] ?>"
-                                    <?php if($row['header']['statusket']== 'Sudah terlayani') 
-                                            { ?>
-                                            readonly
-                                            <?php }else{
-                                                echo '';
-                                            } ?>
-                                    /></td>
-                                    <td style="text-align:left"><input type="text" style="width:100%" name="action[]" id="action<?=$no?><?= $nomor ?>" onchange="saveAction(<?=$no?>,<?= $nomor ?>)" value="<?= $v['ACTION'] ?>"
-                                    <?php if($row['header']['statusket']== 'Sudah terlayani') 
-                                            { ?>
-                                            readonly
-                                            <?php }else{
-                                                echo '';
-                                            } ?>
-                                    /></td>
+                                    <td><input type="text" style="width:100%; text-align:center" name="qty_ok[]" id="jml_ok<?=$no?><?= $nomor ?>" onchange="saveJmlOk(<?=$no?>,<?= $nomor ?>)" value="<?= $v['JML_OK'] ?>" readonly /></td>
+                                    <td><input type="text" style="width:100%; text-align:center" name="qty_not[]" id="jml_not_ok<?=$no?><?= $nomor ?>" onchange="saveNotOk(<?=$no?>,<?= $nomor ?>)" value="<?= $v['JML_NOT_OK'] ?>" readonly /></td>
+                                    <td style="text-align:left"><input type="text" style="width:100%" name="ketr[]" id="keterangan<?=$no?><?= $nomor ?>" onchange="saveKetr(<?=$no?>,<?= $nomor ?>)" value="<?= $v['KETERANGAN'] ?>" readonly /></td>
+                                    <td style="text-align:left"><input type="text" style="width:100%" name="action[]" id="action<?=$no?><?= $nomor ?>" onchange="saveAction(<?=$no?>,<?= $nomor ?>)" value="<?= $v['ACTION'] ?>" readonly /></td>
                                 <?php } ?>
                             </tbody>                                        
                         </table>
@@ -101,6 +74,7 @@
             <?php $no++;} }?>
         </tbody>
     </table>
+</div>
 </div>
 
 

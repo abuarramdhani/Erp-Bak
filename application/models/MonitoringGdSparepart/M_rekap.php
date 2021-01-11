@@ -10,6 +10,7 @@ class M_rekap extends CI_Model {
         $oracle = $this->load->database('oracle', true);
         $sql ="select distinct to_date(creation_date, 'DD-MON-YYYY') creation_date 
                 from khs_monitoring_gd_sp 
+                where no_document != '-'
                 order by creation_date desc";
         $query = $oracle->query($sql);
         return $query->result_array();
@@ -21,6 +22,7 @@ class M_rekap extends CI_Model {
         $sql ="select *
                 from khs_monitoring_gd_sp 
                 where creation_date like to_date('$date','DD/MM/YYYY')
+                and no_document != '-'
                 order by no_document";
         $query = $oracle->query($sql);
         return $query->result_array();
@@ -31,7 +33,8 @@ class M_rekap extends CI_Model {
         $oracle = $this->load->database('oracle', true);
         $sql ="select sum(qty) pcs
                 from khs_monitoring_gd_sp 
-                where creation_date like to_date('$date','DD/MM/YYYY')";
+                where creation_date like to_date('$date','DD/MM/YYYY')
+                and no_document != '-'";
         $query = $oracle->query($sql);
         return $query->result_array();
         // echo $sql;
@@ -177,6 +180,15 @@ class M_rekap extends CI_Model {
                 WHERE DOC_NUMBER = '$no_document'";
           $query = $oracle->query($sql);
           return $query->result_array();
+    }
+    public function getDataSPBSPI($atr) {
+        $oracle = $this->load->database('oracle', true);
+        $sql = "SELECT *
+                FROM KHS_SPBSPI ks
+                WHERE ks.SPBSPI_NUM = '$atr'";
+        $query = $oracle->query($sql);
+        return $query->result_array();
+        // return $sql;
     }
 
     public function cariKIB($atr) {

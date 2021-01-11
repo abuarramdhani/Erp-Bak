@@ -14,6 +14,7 @@
                 <th>Kode Barang</th>
                 <th>Nama Barang</th>
                 <th>Tanggal Transaksi</th>
+                <th>Quantity Intransit</th>
                 <th>Jumlah Hari</th>
                 <th>IO Asal</th>
                 <th>SubInventory Asal</th>
@@ -21,7 +22,6 @@
                 <th>SubInventory Tujuan</th>
                 <th>Quantity Kirim</th>
                 <th>Quantity Terima</th>
-                <th>Quantity Intransit</th>
                 <th>Receipt Num</th>
                 <th>Serial Number</th>
                 <th>Lokasi Asal</th>
@@ -37,6 +37,7 @@
                     <td><?= $val['KODE_BRG']?></td>
                     <td><?= $val['NAMA_BRG']?></td>
                     <td><?= $val['TGL_TRANSAKSI']?></td>
+                    <td><?= $val['QTY_INTRANSIT']?></td>
                     <td><?= $val['JUMLAH_HARI']?></td>
                     <td><?= $val['FROM_IO']?></td>
                     <td><?= $val['FROM_SUBINVENTORY']?></td>
@@ -44,7 +45,6 @@
                     <td><?= $val['TO_SUBINVENTORY']?></td>
                     <td><?= $val['QTY_KIRIM']?></td>
                     <td><?= $val['QTY_TERIMA']?></td>
-                    <td><?= $val['QTY_INTRANSIT']?></td>
                     <td><?= $val['RECEIPT_NUM']?></td>
                     <td><?= $val['SERIAL_NUMBER']?></td>
                     <td><?= $val['FROM_LOC']?></td>
