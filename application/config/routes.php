@@ -4936,3 +4936,10 @@ $route['PengembanganSistem/delete_lkh/(:any)'] = 'PengembanganSistem/Penomoran/C
 //------------------------------- Cetak Jumlah Pekerja ------------------------------------------------------------------
 $route['MasterPekerja/Jumlahpekerja/(:any)'] = 'MasterPekerja/CetakJumlahPekerja/C_JumlahPekerja/$1';
 $route['MasterPekerja/Jumlahpekerja/(:any)/(:any)'] = 'MasterPekerja/CetakJumlahPekerja/C_JumlahPekerja/$1/$2';
+
+
+//------------------------------------ DPB SPAREPART -------------------------------------------//
+$route['DPBSparepart'] = 'DPBSparepart/C_Index';
+$route['DPBSparepart/Approver/(:any)'] = 'DPBSparepart/Approver/C_Approver/$1';
+$route['DPBSparepart/Admin/(:any)'] = 'DPBSparepart/Admin/C_Admin/$1';
+$route['DPBSparepart/Admin/(:any)/(:any)'] = 'DPBSparepart/Admin/C_Admin/$1/$2';
