@@ -1062,11 +1062,61 @@ class C_HitungPesanan extends CI_Controller
     return "done";
   }
 
+  function setTandaPesanan($tanggal,$shift,$lokasi,$detailPesananBelumDitandai,$jumlahPesanan,$jumlahKatering){
+    $bagi = ceil($jumlahPesanan/$jumlahKatering);
+    $pembagian = array();
+    $index = 0;
+    $index2 = 0;
+    $jumlahSementara = 0;
+
+    if (!empty($detailPesananBelumDitandai)) {
+      foreach ($detailPesananBelumDitandai as $dp) {
+        if ($jumlahSementara > $bagi or $jumlahSementara == 0) {
+          if ($jumlahSementara !== 0) {
+            $index++;
+            $index2 = 0;
+          }
+
+          $urutankatering = $this->M_hitungpesanan->geturutankateringByTanggalShiftLokasiUrutan($tanggal,$shift,$lokasi,($index+1));
+          if(!empty($urutankatering)){
+            $katering = $urutankatering['0']['fs_nama_katering'];
+          }else{
+            $katering = $urutanJadwal[$index]['fs_nama_katering'];
+             $insertUrutanKatering = array(
+              'fd_tanggal' => $tanggal,
+              'fs_kd_shift' => $shift,
+              'fs_nama_katering' => $katering,
+              'fn_urutan' => $index + 1,
+              'lokasi' => $lokasi
+            );
+            $this->M_hitungpesanan->insertUrutanKatering($insertUrutanKatering);
+          }
+
+          $pembagian[$index]['fs_nama_katering'] = $katering;
+          $pembagian[$index]['jumlah_total'] = $dp['fn_jumlah_pesan'];
+          $pembagian[$index]['urutan'] = $index + 1;
+
+          $jumlahSementara = $dp['fn_jumlah_pesan'];
+          $this->M_hitungpesanan->updatePesananTandaByTanggalShiftLokasiTempatMakan($pembagian[$index]['urutan'],$tanggal,$shift,$lokasi,$dp['fs_tempat_makan']);
+          $index2++;
+        }else{
+
+          $pembagian[$index]['jumlah_total'] += $dp['fn_jumlah_pesan'];
+
+          $jumlahSementara += $dp['fn_jumlah_pesan'];
+          $this->M_hitungpesanan->updatePesananTandaByTanggalShiftLokasiTempatMakan($pembagian[$index]['urutan'],$tanggal,$shift,$lokasi,$dp['fs_tempat_makan']);
+          $index2++;
+        }
+      }      
+    }
+  }
+
   function getpesananList($tanggal,$shift,$lokasi){
     $bagi = 0;
     $jumlahKatering = 0;
     $arrayJumlahPesanan = $this->M_hitungpesanan->getJumlahPesananByTanggalShiftLokasi($tanggal,$shift,$lokasi);
     $detailPesananBelumDitandai = $this->M_hitungpesanan->getPesananBelumDitandaiPerTempatMakanByTanggalShiftLokasi($tanggal,$shift,$lokasi);
+    
     $jumlahPesanan = $arrayJumlahPesanan['0']['total'];
     
     if($shift == '1'){
@@ -1091,36 +1141,36 @@ class C_HitungPesanan extends CI_Controller
           $jumlahKatering++;
         }
       }
-    }
+    }    
 
-    $bagi = ceil($jumlahPesanan/$jumlahKatering);
-    $pembagian = array();
-    $index = 0;
-    $index2 = 0;
-    $jumlahSementara = 0;
-    if (!empty($detailPesananBelumDitandai)) {
-      foreach ($detailPesananBelumDitandai as $dp) {
-        if ($jumlahSementara > $bagi or $jumlahSementara == 0) {
-          if ($jumlahSementara !== 0) {
-            $index++;
-            $index2 = 0;
-          }
+    $this->setTandaPesanan($tanggal,$shift,$lokasi,$detailPesananBelumDitandai,$jumlahPesanan,$jumlahKatering);
 
-          $urutankatering = $this->M_hitungpesanan->geturutankateringByTanggalShiftLokasiUrutan($tanggal,$shift,$lokasi,($index+1));
-          if(!empty($urutankatering)){
-            $katering = $urutankatering['0']['fs_nama_katering'];
-          }else{
-            $katering = $urutanJadwal[$index]['fs_nama_katering'];
-             $insertUrutanKatering = array(
-              'fd_tanggal' => $tanggal,
-              'fs_kd_shift' => $shift,
-              'fs_nama_katering' => $katering,
-              'fn_urutan' => $index + 1,
-              'lokasi' => $lokasi
-            );
-            $this->M_hitungpesanan->insertUrutanKatering($insertUrutanKatering);
-          }
+    $this->M_hitungpesanan->updatePesananTandaBiggerThanByTanggalShiftLokasi($jumlahKatering,$tanggal,$shift,$lokasi);
 
+    for ($i=0; $i < $jumlahKatering; $i++) { 
+      $urutankatering = $this->M_hitungpesanan->geturutankateringByTanggalShiftLokasiUrutan($tanggal,$shift,$lokasi,($i + 1));
+      if(!empty($urutankatering)){
+        $katering = $urutankatering['0']['fs_nama_katering'];
+      }else{
+        $katering = $urutanJadwal[$i]['fs_nama_katering'];
+        $insertUrutanKatering = array(
+          'fd_tanggal' => $tanggal,
+          'fs_kd_shift' => $shift,
+          'fs_nama_katering' => $katering,
+          'fn_urutan' => $i + 1,
+          'lokasi' => $lokasi
+        );
+        $this->M_hitungpesanan->insertUrutanKatering($insertUrutanKatering);
+      }
+
+      $pembagian[$i]['fs_nama_katering'] = $katering;
+      $pembagian[$i]['urutan'] = $i + 1;
+      $pembagian[$i]['data'] = array();
+      $pembagian[$i]['jumlah_total'] = 0;
+
+      $dataPesananSudahDitandai = $this->M_hitungpesanan->getPesananSudahDitandaiPerTempatMakanByTanggalShiftLokasiTanda($tanggal,$shift,$lokasi,($i + 1));
+      if (!empty($dataPesananSudahDitandai)) {
+        foreach ($dataPesananSudahDitandai as $dp) {
 
           $pengurangan = $this->M_hitungpesanan->getPesananPenguranganByTanggalShiftTempatMakan($tanggal,$shift,$dp['fs_tempat_makan']);
           if (!empty($pengurangan)) {
@@ -1136,11 +1186,7 @@ class C_HitungPesanan extends CI_Controller
             }
           }
 
-          $pembagian[$index]['fs_nama_katering'] = $katering;
-          $pembagian[$index]['jumlah_total'] = $dp['fn_jumlah_pesan'];
-          $pembagian[$index]['urutan'] = $index + 1;
-          $pembagian[$index]['data'] = array();
-          $pembagian[$index]['data'][] = array(
+          $pembagian[$i]['data'][] = array(
             'tanggal' => $dp['fd_tanggal'],
             'tempat_makan' => $dp['fs_tempat_makan'],
             'nonstaff' => $dp['fn_jumlah_nonstaff'],
@@ -1149,96 +1195,10 @@ class C_HitungPesanan extends CI_Controller
             'pengurangan' => $dp['fn_jumlah_pengurangan'],
             'jumlah_pesan' => $dp['fn_jumlah_pesan']
           );
-
-          $jumlahSementara = $dp['fn_jumlah_pesan'];
-          $this->M_hitungpesanan->updatePesananTandaByTanggalShiftLokasiTempatMakan($pembagian[$index]['urutan'],$tanggal,$shift,$lokasi,$dp['fs_tempat_makan']);
-          $index2++;
-        }else{
-          $pengurangan = $this->M_hitungpesanan->getPesananPenguranganByTanggalShiftTempatMakan($tanggal,$shift,$dp['fs_tempat_makan']);
-          if (!empty($pengurangan)) {
-            if ($pengurangan['0']['jumlah'] != $dp['fn_jumlah_pengurangan']) {
-              $dp['fn_jumlah_pengurangan'] = $dp['fn_jumlah_pengurangan']." (".$pengurangan['0']['jumlah'].")";
-            }
-          }
-
-          $tambahan = $this->M_hitungpesanan->getPesananTambahanByTanggalShiftTempatMakan($tanggal,$shift,$dp['fs_tempat_makan']);
-          if (!empty($tambahan)) {
-            if ($tambahan['0']['jumlah'] != $dp['fn_jumlah_tambahan']) {
-              $dp['fn_jumlah_tambahan'] = $dp['fn_jumlah_tambahan']." (".$tambahan['0']['jumlah'].")";
-            }
-          }
-
-          $pembagian[$index]['jumlah_total'] += $dp['fn_jumlah_pesan'];
-          $pembagian[$index]['data'][] = array(
-            'tanggal' => $dp['fd_tanggal'],
-            'tempat_makan' => $dp['fs_tempat_makan'],
-            'nonstaff' => $dp['fn_jumlah_nonstaff'],
-            'staff' => $dp['fn_jumlah_staff'],
-            'tambahan' => $dp['fn_jumlah_tambahan'],
-            'pengurangan' => $dp['fn_jumlah_pengurangan'],
-            'jumlah_pesan' => $dp['fn_jumlah_pesan']
-          );
-
-          $jumlahSementara += $dp['fn_jumlah_pesan'];
-          $this->M_hitungpesanan->updatePesananTandaByTanggalShiftLokasiTempatMakan($pembagian[$index]['urutan'],$tanggal,$shift,$lokasi,$dp['fs_tempat_makan']);
-          $index2++;
+          $pembagian[$i]['jumlah_total'] += $dp['fn_jumlah_pesan'];
         }
-      }      
-    }else{
-      for ($i=0; $i < $jumlahKatering; $i++) { 
-        $urutankatering = $this->M_hitungpesanan->geturutankateringByTanggalShiftLokasiUrutan($tanggal,$shift,$lokasi,($i + 1));
-          if(!empty($urutankatering)){
-            $katering = $urutankatering['0']['fs_nama_katering'];
-          }else{
-            $katering = $urutanJadwal[$i]['fs_nama_katering'];
-            $insertUrutanKatering = array(
-              'fd_tanggal' => $tanggal,
-              'fs_kd_shift' => $shift,
-              'fs_nama_katering' => $katering,
-              'fn_urutan' => $i + 1,
-              'lokasi' => $lokasi
-            );
-            $this->M_hitungpesanan->insertUrutanKatering($insertUrutanKatering);
-          }
-
-          $pembagian[$i]['fs_nama_katering'] = $katering;
-          $pembagian[$i]['urutan'] = $i + 1;
-          $pembagian[$i]['data'] = array();
-          $pembagian[$i]['jumlah_total'] = 0;
-
-          $dataPesananSudahDitandai = $this->M_hitungpesanan->getPesananSudahDitandaiPerTempatMakanByTanggalShiftLokasiTanda($tanggal,$shift,$lokasi,($i + 1));
-          if (!empty($dataPesananSudahDitandai)) {
-            foreach ($dataPesananSudahDitandai as $dp) {
-
-              $pengurangan = $this->M_hitungpesanan->getPesananPenguranganByTanggalShiftTempatMakan($tanggal,$shift,$dp['fs_tempat_makan']);
-              if (!empty($pengurangan)) {
-                if ($pengurangan['0']['jumlah'] != $dp['fn_jumlah_pengurangan']) {
-                  $dp['fn_jumlah_pengurangan'] = $dp['fn_jumlah_pengurangan']." (".$pengurangan['0']['jumlah'].")";
-                }
-              }
-
-              $tambahan = $this->M_hitungpesanan->getPesananTambahanByTanggalShiftTempatMakan($tanggal,$shift,$dp['fs_tempat_makan']);
-              if (!empty($tambahan)) {
-                if ($tambahan['0']['jumlah'] != $dp['fn_jumlah_tambahan']) {
-                  $dp['fn_jumlah_tambahan'] = $dp['fn_jumlah_tambahan']." (".$tambahan['0']['jumlah'].")";
-                }
-              }
-
-              $pembagian[$i]['data'][] = array(
-                'tanggal' => $dp['fd_tanggal'],
-                'tempat_makan' => $dp['fs_tempat_makan'],
-                'nonstaff' => $dp['fn_jumlah_nonstaff'],
-                'staff' => $dp['fn_jumlah_staff'],
-                'tambahan' => $dp['fn_jumlah_tambahan'],
-                'pengurangan' => $dp['fn_jumlah_pengurangan'],
-                'jumlah_pesan' => $dp['fn_jumlah_pesan']
-              );
-              $pembagian[$i]['jumlah_total'] += $dp['fn_jumlah_pesan'];
-            }
-          }
       }
     }
-
     return $pembagian;
   }
 
