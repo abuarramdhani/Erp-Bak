@@ -460,17 +460,17 @@ class C_Master extends CI_Controller
             $filename   = 'Cetak_DO_'.date('d-M-Y').'.pdf';
             $aku        = $this->load->view('MonitoringDO/pdf/V_Pdf', $data, true);
             if (ceil(strlen($data['get_footer'][0]['DESCRIPTION'])/27) == 1) {
-              $a = '<br>'.$data['get_footer'][0]['DESCRIPTION'].'<br><br><br><br><br>';
+              $desc_ = '<br>'.$data['get_footer'][0]['DESCRIPTION'].'<br><br><br><br><br>';
             }elseif (ceil(strlen($data['get_footer'][0]['DESCRIPTION'])/27) == 2) {
-              $a = '<br>'.$data['get_footer'][0]['DESCRIPTION'].'<br><br><br><br>';
+              $desc_ = '<br>'.$data['get_footer'][0]['DESCRIPTION'].'<br><br><br><br>';
             }elseif (ceil(strlen($data['get_footer'][0]['DESCRIPTION'])/27) == 3) {
-              $a = '<br>'.$data['get_footer'][0]['DESCRIPTION'].'<br><br><br>';
+              $desc_ = '<br>'.$data['get_footer'][0]['DESCRIPTION'].'<br><br><br>';
             }elseif (ceil(strlen($data['get_footer'][0]['DESCRIPTION'])/27) == 4) {
-              $a = '<br>'.$data['get_footer'][0]['DESCRIPTION'].'<br><br>';
-            }elseif (ceil(strlen($data['get_footer'][0]['DESCRIPTION'])/27) == 5) {
-              $a = $data['get_footer'][0]['DESCRIPTION'];
+              $desc_ = '<br>'.$data['get_footer'][0]['DESCRIPTION'].'<br><br>';
+            }elseif (ceil(strlen($data['get_footer'][0]['DESCRIPTION'])/27) >= 5) {
+              $desc_ = $data['get_footer'][0]['DESCRIPTION'];
             }elseif (ceil(strlen($data['get_footer'][0]['DESCRIPTION'])/27) == 0) {
-              $a = '<br><br><br><br><br><br>';
+              $desc_ = '<br><br><br><br><br><br>';
             }
             if (!empty($data['get_footer'][0]['APPROVED_BY'])) {
               $appr = '<center>Approved by <br>'.$data['get_footer'][0]['APPROVED_BY'].'<br><br><br>'.$data['get_footer'][0]['APPROVER_NAME'].'</center>';
@@ -483,10 +483,15 @@ class C_Master extends CI_Controller
               $appr2 = '';
             }
             // $newDate = date("m-d-Y", strtotime($orgDate));
+            if (ceil(strlen($data['get_footer'][0]['DESCRIPTION'])/27) >= 5) {
+              $desc__ = '<span style="font-size:9.8px">'.strtoupper($desc_).'</span>';
+            }else {
+              $desc__ = strtoupper($desc_);
+            }
             $pdf->SetHTMLFooter('<table style="width:100%; border-collapse: collapse !important; margin-top:2px;overflow: wrap;">
                 <tr style="width:100%">
                     <td rowspan="2" style="white-space:pre-line;vertical-align:top;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Catatan :
-                '.strtoupper($a).'
+                '.$desc__.'
                      </td>
                     <td rowspan="3" style="vertical-align:top;width:98px;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px;">Penerima Barang :
                         <br><br>
@@ -603,17 +608,17 @@ class C_Master extends CI_Controller
             $filename   = 'Cetak_DO_'.date('d-M-Y').'.pdf';
             $aku                = $this->load->view('MonitoringDO/pdf/V_Pdf', $data, true);
             if (ceil(strlen($data['get_footer'][0]['DESCRIPTION'])/27) == 1) {
-              $a = '<br>'.$data['get_footer'][0]['DESCRIPTION'].'<br><br><br><br><br>';
+              $desc_ = '<br>'.$data['get_footer'][0]['DESCRIPTION'].'<br><br><br><br><br>';
             }elseif (ceil(strlen($data['get_footer'][0]['DESCRIPTION'])/27) == 2) {
-              $a = '<br>'.$data['get_footer'][0]['DESCRIPTION'].'<br><br><br><br>';
+              $desc_ = '<br>'.$data['get_footer'][0]['DESCRIPTION'].'<br><br><br><br>';
             }elseif (ceil(strlen($data['get_footer'][0]['DESCRIPTION'])/27) == 3) {
-              $a = '<br>'.$data['get_footer'][0]['DESCRIPTION'].'<br><br><br>';
+              $desc_ = '<br>'.$data['get_footer'][0]['DESCRIPTION'].'<br><br><br>';
             }elseif (ceil(strlen($data['get_footer'][0]['DESCRIPTION'])/27) == 4) {
-              $a = '<br>'.$data['get_footer'][0]['DESCRIPTION'].'<br><br>';
-            }elseif (ceil(strlen($data['get_footer'][0]['DESCRIPTION'])/27) == 5) {
-              $a = $data['get_footer'][0]['DESCRIPTION'];
+              $desc_ = '<br>'.$data['get_footer'][0]['DESCRIPTION'].'<br><br>';
+            }elseif (ceil(strlen($data['get_footer'][0]['DESCRIPTION'])/27) >= 5) {
+              $desc_ = $data['get_footer'][0]['DESCRIPTION'];
             }elseif (ceil(strlen($data['get_footer'][0]['DESCRIPTION'])/27) == 0) {
-              $a = '<br><br><br><br><br><br>';
+              $desc_ = '<br><br><br><br><br><br>';
             }
             if (!empty($data['get_footer'][0]['APPROVED_BY'])) {
               $appr = '<center>Approved by <br>'.$data['get_footer'][0]['APPROVED_BY'].'<br><br><br>'.$data['get_footer'][0]['APPROVER_NAME'].'</center>';
@@ -626,10 +631,15 @@ class C_Master extends CI_Controller
               $appr2 = '';
             }
             // $newDate = date("m-d-Y", strtotime($orgDate));
+            if (ceil(strlen($data['get_footer'][0]['DESCRIPTION'])/27) >= 5) {
+              $desc__ = '<span style="font-size:9.8px">'.strtoupper($desc_).'</span>';
+            }else {
+              $desc__ = strtoupper($desc_);
+            }
             $pdf->SetHTMLFooter('<table style="width:100%; border-collapse: collapse !important; margin-top:2px;overflow: wrap;">
                 <tr style="width:100%">
                     <td rowspan="2" style="height:300px;white-space:pre-line;vertical-align:top;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Catatan :
-                '.strtoupper($a).'
+                '.$desc__.'
                      </td>
                     <td rowspan="3" style="vertical-align:top;width:98px;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px;">Penerima Barang :
                         <br><br>
