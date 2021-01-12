@@ -207,6 +207,14 @@ class M_dpb extends CI_Model
         return $query->result_array();
     }
 
+    public function cekStatusLine($noDPB)
+    {
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query("SELECT APPS.KHS_CEK_LINE_STATUS_DOSPB('$noDPB', 225, 'SP-YSP') hasil_line from dual");
+
+        return $query->result_array();
+    }
+
     public function createDPB($noDPB, $jenis, $creator, $forward, $keterangan)
     {
         $oracle = $this->load->database('oracle', true);

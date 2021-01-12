@@ -203,9 +203,14 @@ class C_Admin extends  CI_Controller
 	public function cekStok()
 	{
 		$noDPB = $_POST['noDPB'];
-
 		$data = $this->M_dpb->cekStok($noDPB);
+		echo json_encode($data);
+	}
 
+	public function cekStatusLine()
+	{
+		$noDPB = $_POST['noDPB'];
+		$data = $this->M_dpb->cekStatusLine($noDPB);
 		echo json_encode($data);
 	}
 
