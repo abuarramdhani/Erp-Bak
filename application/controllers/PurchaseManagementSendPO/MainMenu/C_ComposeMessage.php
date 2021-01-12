@@ -453,8 +453,6 @@ class C_ComposeMessage extends CI_Controller
 				// echo "Mailer Error: " . $mail->ErrorInfo;
 			}
 
-			die;
-
 			// Query Update Ketika Berhasil Kirim PO
 			if($this->input->post('type') == 'send'){
 				$this->M_polog->update1($poQuery, $poArray[1], 'SUCCESS');
