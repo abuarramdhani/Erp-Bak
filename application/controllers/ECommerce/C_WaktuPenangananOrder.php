@@ -113,10 +113,16 @@ class C_WaktuPenangananOrder extends CI_Controller
           }
 
           if($value['date_proccess'] != null && $value['date_resi'] != null){
-            $date1=date_create($value['date_proccess']);
-            $date2=date_create($value['date_resi']);
-            $diff=date_diff($date1,$date2);
-            $search_date[$i]['RANGE'] = $diff->format("%a Hari %h Jam %i Menit %s Detik");
+            // echo "<pre>";
+            // print_r($value['date_proccess']);
+            // print_r($value['date_resi']);
+            // exit();
+            $coba = str_replace(';', ':', $value['date_resi']);
+            $date1 = date_create($value['date_proccess']);
+            $date2 = date_create($coba);
+            $diff  = date_diff($date1, $date2);
+            // echo $diff->format("%d Hari %h Jam %i Menit %s Detik");
+            $search_date[$i]['RANGE'] = $diff->format("%d Hari %h Jam %i Menit %s Detik");
           } else {
             $search_date[$i]['RANGE'] = " ";
           }
@@ -243,10 +249,16 @@ class C_WaktuPenangananOrder extends CI_Controller
           }
 
           if($value['date_proccess'] != null && $value['date_resi'] != null){
-            $date1=date_create($value['date_proccess']);
-            $date2=date_create($value['date_resi']);
-            $diff=date_diff($date1,$date2);
-            $search_date[$i]['RANGE'] = $diff->format("%a Hari %h Jam %i Menit %s Detik");
+            // echo "<pre>";
+            // print_r($value['date_proccess']);
+            // print_r($value['date_resi']);
+            // exit();
+            $coba = str_replace(';', ':', $value['date_resi']);
+            $date1 = date_create($value['date_proccess']);
+            $date2 = date_create($coba);
+            $diff  = date_diff($date1, $date2);
+            // echo $diff->format("%d Hari %h Jam %i Menit %s Detik");
+            $search_date[$i]['RANGE'] = $diff->format("%d Hari %h Jam %i Menit %s Detik");
           } else {
             $search_date[$i]['RANGE'] = " ";
           }
