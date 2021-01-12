@@ -125,6 +125,8 @@ $(document).ready(function () {
   });
 
   $(document).on("change", ".noDODSP", function () {
+    $(".alamatDSP").val("");
+    $(".tempatTabelDPS").html("");
     var noDPB = $(this).val();
 
     if (noDPB) {
@@ -142,6 +144,9 @@ $(document).ready(function () {
               type: "warning",
               title: "DO/SPB tidak ada atau sudah pernah diinput",
             });
+
+            $(".alamatDSP").val("");
+            $(".tempatTabelDPS").html("");
             $(".noDODSP").removeAttr("readonly");
             $(".loadingSearchDODSP").css("display", "none");
           } else {
@@ -151,7 +156,7 @@ $(document).ready(function () {
               data: { noDPB },
               dataType: "JSON",
               success: function (resp) {
-                console.log(resp[0]["ALAMAT"]);
+                // console.log(resp[0]["ALAMAT"]);
                 if (resp[0]["ALAMAT"].indexOf("#") != -1) {
                   var alamat = resp[0]["ALAMAT"].replace(/#/gi, "\n");
                   $(".alamatDSP").val(alamat);
@@ -177,56 +182,83 @@ $(document).ready(function () {
           }
         },
       });
-
-      $(document).on("click", ".btnCrateDPBDPS", function () {
-        var jenis = $(".jenisDPS").val();
-        var forward = $(".forwardDPS").val();
-        var keterangan = $(".keteranganDPS").val();
-
-        $.ajax({
-          type: "POST",
-          url: baseurl + "DPBSparepart/Admin/cekStok",
-          data: { noDPB },
-          dataType: "JSON",
-          success: function (response) {
-            if (response[0]["HASIL"] == 0) {
-              $.ajax({
-                beforeSend: () => {
-                  Swal.fire({
-                    customClass: "swal-font-small",
-                    title: "Loading",
-                    onBeforeOpen: () => {
-                      Swal.showLoading();
-                    },
-                    allowOutsideClick: false,
-                  });
-                },
-                type: "POST",
-                url: baseurl + "DPBSparepart/Admin/createDPB",
-                data: { noDPB, jenis, forward, keterangan },
-                success: function (response) {
-                  swal.close();
-                  swal.fire({
-                    type: "success",
-                    title: "Berhasil!",
-                  });
-                  $(".tempatTabelDPS").html("");
-                  $(".jenisDPS").val("").trigger("change.select2");
-                  $(".forwardDPS").val("").trigger("change.select2");
-                  $(".keteranganDPS").val("");
-                  $(".noDODSP").val("");
-                  $(".alamatDSP").val("");
-                },
-              });
-            } else {
-              swal.fire({
-                type: "error",
-                title: "Stok tidak mencukupi!",
-              });
-            }
-          },
-        });
-      });
     }
+  });
+
+  $(document).on("click", ".btnCrateDPBDPS", function () {
+    var noDPB = $(".noDODSP").val();
+    var jenis = $(".jenisDPS").val();
+    var forward = $(".forwardDPS").val();
+    var keterangan = $(".keteranganDPS").val();
+
+    $.ajax({
+      type: "POST",
+      url: baseurl + "DPBSparepart/Admin/cekStok",
+      data: { noDPB },
+      dataType: "JSON",
+      success: function (response) {
+        if (response[0]["HASIL"] == 0) {
+          $.ajax({
+            type: "POST",
+            url: baseurl + "DPBSparepart/Admin/cekStatusLine",
+            data: { noDPB },
+            dataType: "JSON",
+            success: function (response) {
+              if ((response[0]["HASIL_LINE"] = 0)) {
+                $.ajax({
+                  beforeSend: () => {
+                    Swal.fire({
+                      customClass: "swal-font-small",
+                      title: "Loading",
+                      onBeforeOpen: () => {
+                        Swal.showLoading();
+                      },
+                      allowOutsideClick: false,
+                    });
+                  },
+                  type: "POST",
+                  url: baseurl + "DPBSparepart/Admin/createDPB",
+                  data: { noDPB, jenis, forward, keterangan },
+                  success: function (response) {
+                    swal.close();
+                    swal.fire({
+                      type: "success",
+                      title: "Berhasil!",
+                    });
+                    $(".tempatTabelDPS").html("");
+                    $(".jenisDPS").val("").trigger("change.select2");
+                    $(".forwardDPS").val("").trigger("change.select2");
+                    $(".keteranganDPS").val("");
+                    $(".noDODSP").val("");
+                    $(".alamatDSP").val("");
+                  },
+                });
+              } else if ((response[0]["HASIL_LINE"] = 99999)) {
+                swal.fire({
+                  type: "error",
+                  title: "Alamat belum lengkap!",
+                });
+              } else if ((response[0]["HASIL_LINE"] = 77777)) {
+                swal.fire({
+                  type: "error",
+                  title: "DO/SPB line bukan SP/YSP!",
+                });
+              } else {
+                swal.fire({
+                  type: "error",
+                  title:
+                    "DO/SPB sudah transact sebagian silahkan masukan nomor lain!",
+                });
+              }
+            },
+          });
+        } else {
+          swal.fire({
+            type: "error",
+            title: "Stok tidak mencukupi!",
+          });
+        }
+      },
+    });
   });
 });
