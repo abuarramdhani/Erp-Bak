@@ -282,7 +282,7 @@ class C_ComposeMessage extends CI_Controller
 			if ($data['UserMenu'][0]['user_group_menu_name'] == 'WEB SEND PO BDL') {
 				$ftp_server_dir	 = './1.PEMBELIAN_SEKSI/03. PURCHASE RECORD/04. PO (Scan)/12. PO DAN KONFIRMASI 2020/5. PO BDL/';
 			} else {
-				$ftp_server_dir	 = './1.PEMBELIAN_SEKSI/03. PURCHASE RECORD/04. PO (Scan)/12. PO DAN KONFIRMASI 2020/1. Dokumen PO 2020/';
+				$ftp_server_dir	 = './1.PEMBELIAN_SEKSI/03. PURCHASE RECORD/04. PO (Scan)/13. PO DAN KONFIRMASI 2021/1. Dokumen PO 2021/';
 			}
 			$ftp_file_format = '.pdf';
 
@@ -452,6 +452,8 @@ class C_ComposeMessage extends CI_Controller
 				throw new Exception('Terjadi kesalahan saat mengkonfigurasi email');
 				// echo "Mailer Error: " . $mail->ErrorInfo;
 			}
+
+			die;
 
 			// Query Update Ketika Berhasil Kirim PO
 			if($this->input->post('type') == 'send'){
