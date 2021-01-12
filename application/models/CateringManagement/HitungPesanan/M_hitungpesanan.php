@@ -1538,6 +1538,16 @@ class M_hitungpesanan extends Ci_Model
 		$this->personalia->query($sql,array($urutan,$tanggal,$shift,$lokasi,$tempat_makan));
 	}
 
+	public function updatePesananTandaBiggerThanByTanggalShiftLokasi($jumlah_katering,$tanggal,$shift,$lokasi){
+		$sql = "update \"Catering\".tpesanan 
+				set fs_tanda = ? 
+				where fd_tanggal = ?
+				and fs_kd_shift = ? 
+				and lokasi = ?
+				and coalesce(fs_tanda,'0')::int > ?";
+		$this->personalia->query($sql,array($jumlah_katering,$tanggal,$shift,$lokasi,$jumlah_katering));
+	}
+
 	public function getPembagianByTanggalShiftLokasiTanggalCopy($tanggal,$shift,$lokasi,$tanggal_copy){
 		$sql = "select a.fd_tanggal,a.fs_kd_shift,a.fs_tempat_makan,a.fs_tanda as tanda_sekarang, 
 				b.fs_nama_katering as katering_sekarang, 
