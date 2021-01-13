@@ -214,6 +214,7 @@ class C_FleetKendaraan extends CI_Controller
 			$lokasikerja			=	$this->input->post('lokasi_kerja_k', TRUE);
 			$pic	        		=	$this->input->post('pic_kendaraan', TRUE);
 			$tag_number			    =	$this->input->post('TagNumber', TRUE);
+			$seksi_pemakai = $this->input->post('txtSeksiPemakaiHeader', TRUE);
 
 			// $start_date 			= 	date('Y-m-d H:i:s', strtotime($this->input->post('txtStartDateHeader')));
 			// $end_date 				=	date('Y-m-d H:i:s', strtotime($this->input->post('txtEndDateHeader')));
@@ -329,6 +330,7 @@ class C_FleetKendaraan extends CI_Controller
 					'hak_milik'				=> $pemilik_kendaraan,
 					'pic_kendaraan'				=> $pic,
 					'tag_number'				=> $tag_number,
+					'seksi_pemakai'	=> $seksi_pemakai,
     			);
         	}else{
         		$data = array(
@@ -350,6 +352,7 @@ class C_FleetKendaraan extends CI_Controller
 					'hak_milik'				=> $pemilik_kendaraan,
 					'pic_kendaraan'				=> $pic,
 					'tag_number'				=> $tag_number,
+					'seksi_pemakai'	=> $seksi_pemakai,
     			);
         	}
 
@@ -484,6 +487,7 @@ class C_FleetKendaraan extends CI_Controller
 			$hak_milik 			=	$this->input->post('kepemilikan_kendaraan');
 			$pic_kendaraan 			=	$this->input->post('pic_kendaraan');
 			$tag_number		=	$this->input->post('TagNumber', TRUE);
+			$seksi_pemakai = $this->input->post('txtSeksiPemakaiHeader');
 
 			// $tanggalNonaktif		=	$this->input->post('txtTanggalNonaktif');
 
@@ -613,6 +617,7 @@ class C_FleetKendaraan extends CI_Controller
 					'hak_milik' 			=> $hak_milik,
 					'pic_kendaraan' 		=> $pic_kendaraan,
 					'tag_number' 		    => $tag_number,
+					'seksi_pemakai'	=> $seksi_pemakai,
 	    		);
 			}else{
 	    		$data = array(
@@ -630,6 +635,7 @@ class C_FleetKendaraan extends CI_Controller
 					'hak_milik' 			=> $hak_milik,
 					'pic_kendaraan' 		=> $pic_kendaraan,
 					'tag_number' 		    => $tag_number,
+					'seksi_pemakai'	=> $seksi_pemakai,
 	    		);
 			}
 
@@ -777,7 +783,16 @@ class C_FleetKendaraan extends CI_Controller
     	$data = $this->M_fleetkendaraan->pic_kendaraan($p);
 
     	echo json_encode($data);
-    }
+		}
+		
+		public function seksi_pemakai()
+		{
+			$p = strtoupper($this->input->get('term'));
+	
+			$data = $this->M_fleetkendaraan->seksi_pemakai($p);
+	
+			echo json_encode($data);
+		}
 
 }
 

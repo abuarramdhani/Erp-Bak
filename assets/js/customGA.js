@@ -1113,6 +1113,33 @@ $(document).ready(function(){
     });
   });
 
+  $(document).ready(function () {
+    $('#slc_seksi_pemakai').select2({
+      minimumInputLength: 1,
+      allowClear: true,
+      placeholder: 'Pilih Seksi Pemakai',
+      ajax: {
+        url: baseurl + "GeneralAffair/FleetKendaraan/seksi_pemakai",
+        dataType: 'json',
+        type: "GET",
+        data: function (params) {
+          return { term: params.term };
+        },
+        processResults: function (data) {
+          return {
+            results: $.map(data, function (item) {
+              return {
+                id: item.seksi,
+                text: item.seksi
+              };
+            })
+  
+          };
+        },
+      },
+    });
+  });
+
   // Pesanan Shutle Dinas
   $(document).ready(function () {
       $('#GA_shutle').datepicker({

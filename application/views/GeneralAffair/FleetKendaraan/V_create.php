@@ -128,6 +128,14 @@
                                                 </div>
                                             </div>
 
+                                            <div class="form-group">
+                                                <label for="txtSeksiPemakaiHeader" class="control-label col-lg-4">Seksi Pemakai</label>
+                                                <div class="col-lg-4">
+                                                    <select id="slc_seksi_pemakai" name="txtSeksiPemakaiHeader" class="form-control">
+                                                    </select>
+                                                </div>
+                                            </div>
+
 
                                             <div class="form-group">
                                                 <label for="txtNomorPolisiHeader" class="control-label col-lg-4">Nomor Rangka</label>

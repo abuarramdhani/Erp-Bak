@@ -161,6 +161,19 @@
                                             </div>
 
                                             <div class="form-group">
+                                                <label for="txtSeksiPemakaiHeader" class="control-label col-lg-4">Seksi Pemakai</label>
+                                                <div class="col-lg-4">
+                                                    <select id="slc_seksi_pemakai" name="txtSeksiPemakaiHeader" class="form-control">
+                                                        <?php
+
+                                                        echo '<option value="' . $kendaraanEdit['seksi_pemakai'] . '" selected="selected">' . $kendaraanEdit['seksi_pemakai'] . '</option>';
+                                                        ?>
+
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
                                                 <label for="txtNomorPolisiHeader" class="control-label col-lg-4">Nomor Rangka</label>
                                                 <div class="col-lg-4">
                                                     <input type="text" placeholder="Nomor Rangka (contoh : NHKP3CA1JFK089113)" name="txtNomorRangkaHeader" id="txtNomorRangkaHeader" value="<?php echo $kendaraanEdit['nomor_rangka']; ?>" class="form-control" maxlength="30" />
