@@ -1062,7 +1062,7 @@ class C_HitungPesanan extends CI_Controller
     return "done";
   }
 
-  function setTandaPesanan($tanggal,$shift,$lokasi,$detailPesananBelumDitandai,$jumlahPesanan,$jumlahKatering){
+  function setTandaPesanan($tanggal,$shift,$lokasi,$detailPesananBelumDitandai,$jumlahPesanan,$jumlahKatering,$urutanJadwal){
     $bagi = ceil($jumlahPesanan/$jumlahKatering);
     $pembagian = array();
     $index = 0;
@@ -1143,7 +1143,7 @@ class C_HitungPesanan extends CI_Controller
       }
     }    
 
-    $this->setTandaPesanan($tanggal,$shift,$lokasi,$detailPesananBelumDitandai,$jumlahPesanan,$jumlahKatering);
+    $this->setTandaPesanan($tanggal,$shift,$lokasi,$detailPesananBelumDitandai,$jumlahPesanan,$jumlahKatering,$urutanJadwal);
 
     $this->M_hitungpesanan->updatePesananTandaBiggerThanByTanggalShiftLokasi($jumlahKatering,$tanggal,$shift,$lokasi);
 
