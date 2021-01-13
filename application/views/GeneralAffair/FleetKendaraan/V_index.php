@@ -54,6 +54,7 @@
                                                         <th>Merk Kendaraan</th>
                                                         <th>Kapasitas Bahan Bakar</th>
                                                         <th>PIC</th>
+                                                        <th>Seksi Pemakai</th>
                                                         <th>Lokasi Kerja</th>
                                                         <th>Warna Kendaraan</th>
                                                         <th>Tahun Pembuatan</th>
@@ -87,6 +88,7 @@
                                                         <td><?php echo $Kendaraan['merk_kendaraan'] ?></td>
                                                         <td><?php echo $Kendaraan['kapasitas_bahanbakar']." liter"; ?></td>
                                                         <td><?php echo $Kendaraan['pic_kendaraan'] ?></td>
+                                                        <td><?php echo $Kendaraan['seksi_pemakai'] ?></td>
                                                         <td><?php echo $Kendaraan['lokasi'] ?></td>
                                                         <td><?php echo $Kendaraan['warna_kendaraan'] ?></td>
                                                         <td><?php echo $Kendaraan['tahun_pembuatan'] ?></td>
@@ -152,6 +154,7 @@
                                                         <th>Merk Kendaraan</th>
                                                         <th>Kapasitas Bahan Bakar</th>
                                                         <th>PIC</th>
+                                                        <th>Seksi Pemakai</th>
                                                         <th>Warna Kendaraan</th>
                                                         <th>Tahun Pembuatan</th>
                                                         <th>Status Kepemilikan</th>
@@ -182,6 +185,7 @@
                                                         <td><?php echo $KendaraanDeleted['merk_kendaraan'] ?></td>
                                                         <td><?php echo $KendaraanDeleted['kapasitas_bahanbakar']." liter"; ?></td>
                                                         <td><?php echo $KendaraanDeleted['pic_kendaraan'] ?></td>
+                                                        <td><?php echo $KendaraanDeleted['seksi_pemakai'] ?></td>
                                                         <td><?php echo $KendaraanDeleted['warna_kendaraan'] ?></td>
                                                         <td><?php echo $KendaraanDeleted['tahun_pembuatan'] ?></td>
                                                         <td><?php if ($Kendaraan['hak_milik'] == "1") {

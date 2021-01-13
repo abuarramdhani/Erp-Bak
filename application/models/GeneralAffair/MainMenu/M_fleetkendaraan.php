@@ -15,6 +15,12 @@ class M_fleetkendaraan extends CI_Model
         return $this->p->query($query)->result_array();
     }
 
+    public function seksi_pemakai($p)
+    {
+        $query = "select distinct left(kodesie,7) kode, trim(seksi) seksi from hrd_khs.tseksi where trim(seksi) != '-' and seksi like '$p%'";
+        return $this->p->query($query)->result_array();
+    }
+
     public function FleetLokasiKerja()
     {
         $query = "select * from er.er_location";
@@ -36,13 +42,18 @@ class M_fleetkendaraan extends CI_Model
                                                 warnakdrn.warna_kendaraan as warna_kendaraan,
                                                 kdrn.tahun_pembuatan as tahun_pembuatan,
                                                 kdrn.pic_kendaraan,
+                                                case when kdrn.pic_kendaraan IS NULL then null
+                                                when kdrn.seksi_pemakai IS NOT NULL then kdrn.seksi_pemakai
+                                                when kdrn.seksi_pemakai IS NULL then 
+                                                (select section_name from er.er_employee_all as a left join er.er_section as b on
+                                                a.section_code = b.section_code where a.employee_code = left(pic_kendaraan, 5)) end as seksi_pemakai,
                                                 kdrn.foto_stnk as foto_stnk,
                                                 kdrn.foto_bpkb as foto_bpkb,
                                                 kdrn.usable,
                                                 kdrn.hak_milik,
                                                 kdrn.foto_kendaraan as foto_kendaraan,
                                                 to_char(kdrn.start_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dibuat,
-                                                to_char(kdrn.end_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dihapus
+                                                to_char(kdrn.end_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dihapus                                                
                                     from        ga.ga_fleet_kendaraan as kdrn
                                                 join    ga.ga_fleet_jenis_kendaraan as jeniskdrn
                                                     on  jeniskdrn.jenis_kendaraan_id=kdrn.jenis_kendaraan_id
@@ -69,13 +80,18 @@ class M_fleetkendaraan extends CI_Model
                                                 warnakdrn.warna_kendaraan as warna_kendaraan,
                                                 kdrn.tahun_pembuatan as tahun_pembuatan,
                                                 kdrn.pic_kendaraan,
+                                                case when kdrn.pic_kendaraan IS NULL then null
+                                                when kdrn.seksi_pemakai IS NOT NULL then kdrn.seksi_pemakai
+                                                when kdrn.seksi_pemakai IS NULL then 
+                                                (select section_name from er.er_employee_all as a left join er.er_section as b on
+                                                a.section_code = b.section_code where a.employee_code = left(pic_kendaraan, 5)) end as seksi_pemakai,
                                                 kdrn.foto_stnk as foto_stnk,
                                                 kdrn.foto_bpkb as foto_bpkb,
                                                 kdrn.usable,
                                                 kdrn.hak_milik,
                                                 kdrn.foto_kendaraan as foto_kendaraan,
                                                 to_char(kdrn.start_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dibuat,
-                                                to_char(kdrn.end_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dihapus
+                                                to_char(kdrn.end_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dihapus                                                
                                     from        ga.ga_fleet_kendaraan as kdrn
                                                 join    ga.ga_fleet_jenis_kendaraan as jeniskdrn
                                                     on  jeniskdrn.jenis_kendaraan_id=kdrn.jenis_kendaraan_id
@@ -108,6 +124,11 @@ class M_fleetkendaraan extends CI_Model
                                                 warnakdrn.warna_kendaraan as warna_kendaraan,
                                                 kdrn.tahun_pembuatan as tahun_pembuatan,
                                                 kdrn.pic_kendaraan,
+                                                case when kdrn.pic_kendaraan IS NULL then null
+                                                when kdrn.seksi_pemakai IS NOT NULL then kdrn.seksi_pemakai
+                                                when kdrn.seksi_pemakai IS NULL then 
+                                                (select section_name from er.er_employee_all as a left join er.er_section as b on
+                                                a.section_code = b.section_code where a.employee_code = left(pic_kendaraan, 5)) end as seksi_pemakai,
                                                 kdrn.foto_stnk as foto_stnk,
                                                 kdrn.foto_bpkb as foto_bpkb,
                                                 kdrn.usable,
@@ -115,7 +136,7 @@ class M_fleetkendaraan extends CI_Model
                                                 kdrn.foto_kendaraan as foto_kendaraan,
                                                 to_char(kdrn.start_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dibuat,
                                                 to_char(kdrn.end_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dihapus,
-                                                concat_ws('<br/>sampai dengan<br/>', to_char(kdrn.start_date, 'DD-MM-YYYY HH24:MI:SS'), to_char(kdrn.end_date, 'DD-MM-YYYY HH24:MI:SS')) as masa
+                                                concat_ws('<br/>sampai dengan<br/>', to_char(kdrn.start_date, 'DD-MM-YYYY HH24:MI:SS'), to_char(kdrn.end_date, 'DD-MM-YYYY HH24:MI:SS')) as masa                                    
                                     from        ga.ga_fleet_kendaraan as kdrn
                                                 join    ga.ga_fleet_jenis_kendaraan as jeniskdrn
                                                     on  jeniskdrn.jenis_kendaraan_id=kdrn.jenis_kendaraan_id
@@ -145,12 +166,17 @@ class M_fleetkendaraan extends CI_Model
                                                 warnakdrn.warna_kendaraan as warna_kendaraan,
                                                 kdrn.tahun_pembuatan as tahun_pembuatan,
                                                 kdrn.pic_kendaraan,
+                                                case when kdrn.pic_kendaraan IS NULL then null
+                                                when kdrn.seksi_pemakai IS NOT NULL then kdrn.seksi_pemakai
+                                                when kdrn.seksi_pemakai IS NULL then 
+                                                (select section_name from er.er_employee_all as a left join er.er_section as b on
+                                                a.section_code = b.section_code where a.employee_code = left(pic_kendaraan, 5)) end as seksi_pemakai,
                                                 kdrn.foto_stnk as foto_stnk,
                                                 kdrn.foto_bpkb as foto_bpkb,
                                                 kdrn.foto_kendaraan as foto_kendaraan,
                                                 to_char(kdrn.start_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dibuat,
                                                 to_char(kdrn.end_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dihapus
-                                                -- concat_ws('<br/>sampai dengan<br/>', to_char(kdrn.start_date, 'DD-MM-YYYY HH24:MI:SS'), to_char(kdrn.end_date, 'DD-MM-YYYY HH24:MI:SS')) as masa
+                                                -- concat_ws('<br/>sampai dengan<br/>', to_char(kdrn.start_date, 'DD-MM-YYYY HH24:MI:SS'), to_char(kdrn.end_date, 'DD-MM-YYYY HH24:MI:SS')) as masa                                                
                                     from        ga.ga_fleet_kendaraan as kdrn
                                                 join    ga.ga_fleet_jenis_kendaraan as jeniskdrn
                                                     on  jeniskdrn.jenis_kendaraan_id=kdrn.jenis_kendaraan_id
