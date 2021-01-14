@@ -5,7 +5,7 @@
 			<th>ITEM</th>
 			<th>DESCRIPTION</th>
 			<!-- <th>ID TOKO QUICK</th> -->
-			<th>QTY AVAILABLE TO TRANSACT</th>
+			<th>QTY AVAILABLE TO RESERVE</th>
 			<th>QTY TOKO QUICK</th>
 		</tr>
 	</thead>
