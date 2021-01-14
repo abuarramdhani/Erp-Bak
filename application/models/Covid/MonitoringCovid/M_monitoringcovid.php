@@ -950,4 +950,21 @@ class M_monitoringcovid extends CI_Model {
 					and tanggal <= '$max'";
 		return $this->personalia->query($sql)->result_array();
 	}
+
+	public function getIsolasiMangkir()
+	{
+		$sql = "SELECT
+					t.*, t2.nama, tim.id_isolasi_mandiri, tim.cvd_pekerja_id
+				from
+					\"Surat\".tsurat_isolasi_mandiri tim
+				left join \"Presensi\".tdatatim t on
+					t.noind = tim.pekerja
+				left join hrd_khs.tpribadi t2 on t.noind = t2.noind 
+				where
+					t.point > 0
+					and t.tanggal between tim.tgl_mulai and tim.tgl_selesai
+				order by
+					tanggal";
+		return $this->personalia->query($sql)->result_array();
+	}
 }
