@@ -86,6 +86,7 @@ class C_MonitoringCovid extends CI_Controller
 			}
 		}
 		$data['tim'] = $this->M_monitoringcovid->getIsolasiMangkir();
+		$data['status'] = $this->M_monitoringcovid->getStatusKondisi();
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
