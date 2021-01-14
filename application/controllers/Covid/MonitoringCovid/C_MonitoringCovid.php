@@ -85,8 +85,7 @@ class C_MonitoringCovid extends CI_Controller
 				}
 			}
 		}
-
-		$data['status'] = $this->M_monitoringcovid->getStatusKondisi();
+		$data['tim'] = $this->M_monitoringcovid->getIsolasiMangkir();
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -864,13 +863,19 @@ class C_MonitoringCovid extends CI_Controller
 		'keterangan_tambahan' => $this->input->post('Keterangan_Tambahan'),
 		];
 
+		if ($data['nbr_jumlah_hari'] > 0) {
+			$hari = 'Hari';
+		}else{
+			$hari = '';
+		}
+
 		$wawancara = "<p>Wilayah : ".$data['wilayah'].'<br>'.
 		"Transportasi : ".$data['transportasi'].'<br>'.
 		"Yang ikut : ".$data['anggota'].'<br>'.
 		"Tujuan alasan : ".$data['tujuan_alasan'].'<br>'.
 		"Aktifitas : ".$data['aktivitas'].'<br>'.
 		"Protokol : ".$data['prokes'].'<br>'.
-		"Menginap : ".$data['covid_menginap'].','.$data['nbr_jumlah_hari'].'<br>'.
+		"Menginap : ".$data['covid_menginap'].', '.$data['nbr_jumlah_hari'].' '.$hari.'<br>'.
 		"Yang dikunjungi sakit : ".$data['covid_sakit'].','.$data['penyakit'].'<br>'.
 		"Sakit Setelah kembali : ".$data['covid_sakit_kembali'].','.$data['penyakit_kembali'].'<br>'.
 		"Interaksi probable covid : ".$data['covid_interaksi'].','.$data['jenis_interaksi']."<br>".
@@ -962,13 +967,19 @@ class C_MonitoringCovid extends CI_Controller
 		'keterangan_tambahan' => $this->input->post('Keterangan_Tambahan'),
 		];
 
+		if ($data['nbr_jumlah_hari'] > 0) {
+			$hari = 'Hari';
+		}else{
+			$hari = '';
+		}
+
 		$wawancara = "<p>Wilayah : ".$data['wilayah'].'<br>'.
 		"Transportasi : ".$data['transportasi'].'<br>'.
 		"Yang ikut : ".$data['anggota'].'<br>'.
 		"Tujuan alasan : ".$data['tujuan_alasan'].'<br>'.
 		"Aktifitas : ".$data['aktivitas'].'<br>'.
 		"Protokol : ".$data['prokes'].'<br>'.
-		"Menginap : ".$data['covid_menginap'].','.$data['nbr_jumlah_hari'].'<br>'.
+		"Menginap : ".$data['covid_menginap'].','.$data['nbr_jumlah_hari'].' '.$hari.'<br>'.
 		"Yang dikunjungi sakit : ".$data['covid_sakit'].','.$data['penyakit'].'<br>'.
 		"Sakit Setelah kembali : ".$data['covid_sakit_kembali'].','.$data['penyakit_kembali'].'<br>'.
 		"Interaksi probable covid : ".$data['covid_interaksi'].','.$data['jenis_interaksi']."<br>".
@@ -1056,13 +1067,19 @@ class C_MonitoringCovid extends CI_Controller
 		'keterangan_tambahan' => $this->input->post('Keterangan_Tambahan'),
 		];
 
+		if ($data['nbr_jumlah_hari'] > 0) {
+			$hari = 'Hari';
+		}else{
+			$hari = '';
+		}
+
 		$wawancara = "<p>Wilayah : ".$data['wilayah'].'<br>'.
 		"Transportasi : ".$data['transportasi'].'<br>'.
 		"Jumlah tamu : ".$data['jumlah_tamu'].'<br>'.
 		"Tujuan alasan : ".$data['tujuan_alasan'].'<br>'.
 		"Aktifitas : ".$data['aktivitas'].'<br>'.
 		"Protokol : ".$data['prokes'].'<br>'.
-		"Menginap : ".$data['covid_menginap'].','.$data['nbr_jumlah_hari'].'<br>'.
+		"Menginap : ".$data['covid_menginap'].','.$data['nbr_jumlah_hari'].' '.$hari.'<br>'.
 		"Tamu yang datang sakit : ".$data['covid_sakit'].','.$data['penyakit'].'<br>'.
 		"Interaksi probable covid : ".$data['covid_interaksi'].','.$data['jenis_interaksi']."<br>".
 		"Keterangan Tambahan : ".$data['keterangan_tambahan']."</p>";
@@ -1601,12 +1618,23 @@ class C_MonitoringCovid extends CI_Controller
 
 		$noind = $data['no_induk'];
 		$pkj = $this->M_monitoringcovid->getDetailPekerja($noind);
+		$nohp = trim($pkj['nohp']);
+		$telepon = trim($pkj['telepon']);
+		if (strlen($nohp>5)) {
+			$nomor = $nohp;
+		}else{
+			$nomor = $telepon;
+		}
+		$aemail = trim($pkj['email']);
+		if(empty($aemail)) $aemail = '-';
 
 		$message = '<p>Kasus : '.$data['kasus'].'</p>';
 		$message .= '<p>Tanggal Interaksi : '.$data['tgl_interaksi'].'</p>';
 		$message .= '<p>Data :</p>';
 		$message .= '<p>Keterangan : '.$data['keterangan'].'</p>';
 		$message .= $data['wawancara'];
+		$message .= 'Nomor HP : '.$nomor;
+		$message .= '<br>Alamat Email : '.$aemail;
 
 		$mail = new PHPMailer();
 		$mail->SMTPDebug = 0;
@@ -1644,17 +1672,11 @@ class C_MonitoringCovid extends CI_Controller
 			// okey
 		}
 
-		$this->kirimEmailcvdOnline($data, $noind, $pkj);
+		$this->kirimEmailcvdOnline($data, $noind, $pkj, $message);
 	}
 
-	function kirimEmailcvdOnline($data, $noind, $pkj)
+	function kirimEmailcvdOnline($data, $noind, $pkj, $message)
 	{
-
-		$message = '<p>Kasus : '.$data['kasus'].'</p>';
-		$message .= '<p>Tanggal Interaksi : '.$data['tgl_interaksi'].'</p>';
-		$message .= '<p>Data :</p>';
-		$message .= '<p>Keterangan : '.$data['keterangan'].'</p>';
-		$message .= $data['wawancara'];
 
 		$mail = new PHPMailer(); 
 		$mail->SMTPDebug = 0;

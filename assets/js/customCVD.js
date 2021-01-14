@@ -1825,6 +1825,105 @@ function cvd_bindPopover()
 			{ "orderable": true, "targets": 4 },
 			{ "orderable": true, "targets": 5 },
 			{ "orderable": false, "targets": '_all' }
+		],
+		initComplete: function () {
+			var tableBody = document.querySelector ('.dataTables_scrollBody');
+			var headerTable = document.querySelector ('.dataTables_scrollHead');
+			var fixbody = $('.DTFC_LeftBodyLiner');
+			var curDown = false;
+			var oldScrollLeft = 0;
+			var oldScrollTop = 0;
+			var curXPos = 0;
+			var curYPos = 0;
+
+			if (tableBody) {
+				document.addEventListener ("mousemove", function (e) {
+					if (curDown === true) {
+						tableBody.scrollLeft = oldScrollLeft + (curXPos - e.pageX);
+						headerTable.scrollLeft = oldScrollLeft + (curXPos - e.pageX);
+						tableBody.scrollTop = oldScrollTop + (curYPos - e.pageY);
+					}
+				});
+
+				tableBody.addEventListener ("mousedown", function (e) {
+					curDown = true;
+					curYPos = e.pageY;
+					curXPos = e.pageX;
+					oldScrollLeft = tableBody.scrollLeft;
+					oldScrollTop = tableBody.scrollTop;
+				});
+
+				//untuk drag di bagian fixed kolom tapi ada bug, hadeh
+				// $('table').on("mousedown", fixbody,function (e) {
+				// 	curDown = true;
+				// 	curYPos = e.pageY;
+				// 	curXPos = e.pageX;
+				// 	oldScrollLeft = tableBody.scrollLeft;
+				// 	oldScrollTop = tableBody.scrollTop;
+				// });
+
+				document.addEventListener ("mouseup", function (e) {
+					curDown = false;
+				});
+
+				tableBody.addEventListener ("scroll", function (e) {
+					headerTable.scrollLeft = tableBody.scrollLeft;
+				});
+			}
+		}
+	});
+
+	$('#cvd_tblmntrpelm').DataTable({
+		scrollX:true,
+		"scrollY": "450px",
+		"scrollCollapse": true,
+		"paging": false,
+		// "ordering": false,
+		"columnDefs": [
+			{ "orderable": true, "targets": 0 },
+			{ "orderable": true, "targets": 1 },
+			{ "orderable": true, "targets": 2 },
+			{ "orderable": true, "targets": 3 },
+			{ "orderable": true, "targets": 4 },
+			{ "orderable": true, "targets": 5 },
+			{ "orderable": false, "targets": '_all' }
 		]
+	});
+}
+
+
+function initNoSelect()
+{
+	console.log('initNoSelect on');
+	var stateHover = false;
+	$(document).on('mousedown', '.dataTables_scrollBody', function(){
+		stateHover = true;
+	});
+
+	$(document).on('mouseup', function(){
+		stateHover = false;
+		$('body').attr('unselectable','off')
+		.css({'-moz-user-select':'auto',
+		'-moz-user-select':'auto',
+		'-o-user-select':'auto',
+		'-khtml-user-select':'auto', /* you could also put this in a class */
+		'-webkit-user-select':'auto',/* and add the CSS class here instead */
+		'-ms-user-select':'auto',
+		'user-select':'auto'
+		}).unbind('selectstart');
+	});
+
+	$(document).on('mousemove', '.dataTables_scrollBody', function(){
+		if (stateHover) {
+			$('body').attr('unselectable','on')
+				.css({'-moz-user-select':'-moz-none',
+				'-moz-user-select':'none',
+				'-o-user-select':'none',
+				'-khtml-user-select':'none', /* you could also put this in a class */
+				'-webkit-user-select':'none',/* and add the CSS class here instead */
+				'-ms-user-select':'none',
+				'user-select':'none'
+				}).bind('selectstart', function(){ return false; });
+			}
 	});
 }

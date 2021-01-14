@@ -234,16 +234,16 @@ class M_isolasimandiri extends CI_Model
 	{
 		$sql = "DELETE from \"Presensi\".tinput_edit_presensi where noind = '$noind' and tanggal1 >= '$awal' and tanggal1 <= '$akhir' and kd_ket = '$status'";
 		// echo $sql;exit();
-		$query = $this->personalia->query($sql);
-		return $this->personalia->affected_rows();
+		// $query = $this->personalia->query($sql);
+		// return $this->personalia->affected_rows();
 	}
 
 	public function delTdataPres($noind, $awal, $akhir, $status)
 	{
 		$sql = "DELETE from \"Presensi\".tdatapresensi where noind = '$noind' and tanggal >= '$awal' and tanggal <= '$akhir' and kd_ket = '$status'";
 		// echo $sql;exit();
-		$query = $this->personalia->query($sql);
-		return $this->personalia->affected_rows();
+		// $query = $this->personalia->query($sql);
+		// return $this->personalia->affected_rows();
 	}
 
 	public function delEditPres2($noind, $awal, $akhir, $status)
@@ -411,6 +411,19 @@ class M_isolasimandiri extends CI_Model
 					and kd_jabatan < '10'
 					and keluar = false
 					order by kd_jabatan desc";
+		return $this->personalia->query($sql)->result_array();
+	}
+
+	public function getabscuti($pekerja, $mulai, $selesai)
+	{
+		$sql = "SELECT
+					*
+				from
+					\"Presensi\".tdatapresensi t
+				where
+					noind = '$pekerja'
+					and tanggal between '$mulai' and '$selesai'
+					and kd_ket like '%CT%'";
 		return $this->personalia->query($sql)->result_array();
 	}
 }

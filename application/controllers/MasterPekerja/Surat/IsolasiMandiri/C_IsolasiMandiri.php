@@ -362,6 +362,9 @@ class C_IsolasiMandiri extends CI_Controller
 				array_splice($arAlasan, $i, 0, '');
 			}
 		}
+
+		$lcuti = $this->M_isolasimandiri->getabscuti($pekerja, $mulai, $selesai);
+		$larct = array_column($lcuti, 'tanggal');
 		// echo "<pre>";
 		// print_r($arStatus);
 		// print_r($arAlasan);exit();
@@ -379,6 +382,11 @@ class C_IsolasiMandiri extends CI_Controller
 				continue;
 			}
 			if (strtotime($dt) < strtotime($batas)) {
+				$zx++;
+				continue;
+			}
+			if (in_array($d, $larct)) {
+				//untuk mengecek data cuti.. jika ada maka skip
 				$zx++;
 				continue;
 			}
@@ -611,7 +619,11 @@ class C_IsolasiMandiri extends CI_Controller
 			}
 			$data['tembusan'] = $this->M_isolasimandiri->getTembusanD($kst);
 		}
-		$data['atasan'] = $atasan;
+		if (isset($atasan)) {
+			$data['atasan'] = $atasan;
+		}else{
+			$data['atasan'] = '-';
+		}
 		// print_r($data['atasan']);exit();
 		$data['id_encoded'] = $id_encoded;
 		$data['isolasi_id'] = $id;
@@ -719,6 +731,12 @@ class C_IsolasiMandiri extends CI_Controller
 			$tglPer = $this->input->post('tgl_perperiode');
 			$arStatus = $this->input->post('slcMPSuratIsolasiMandiriStatus2');
 			$arAlasan = $this->input->post('slcMPSuratIsolasiMandiriAlasan2');
+			for ($i=0; $i < count($arStatus); $i++) { 
+				if ($arStatus[$i] == 'PKJ' || $arStatus[$i] == 'PSK') {
+					array_splice($arAlasan, $i, 0, '');
+				}
+			}
+
 			$begin = new DateTime($this->input->post('txtMPSuratIsolasiMandiriMulaiIsolasiTanggal'));
 			$akh = $selesai;
 			$end = new DateTime(date('Y-m-d', strtotime($akh.'+1 day')));
@@ -731,6 +749,10 @@ class C_IsolasiMandiri extends CI_Controller
 			$shift = $this->M_isolasimandiri->getShiftIs($pkj, $mulai, $selesai);
 			$sh = array_column($shift, 'tanggal');
 			$detailpkj = $this->M_consumable->getDetailPekerja($pkj)->row_array();
+
+			$lcuti = $this->M_isolasimandiri->getabscuti($pkj, $mulai, $selesai);
+			$larct = array_column($lcuti, 'tanggal');
+
 			$arr = array();
 			$arr2 = array();
 			$zx = 0;
@@ -749,6 +771,12 @@ class C_IsolasiMandiri extends CI_Controller
 					$zx++;
 					continue;
 				}
+				if (in_array($d, $larct)) {
+					//untuk mengecek data cuti.. jika ada maka skip
+					$zx++;
+					continue;
+				}
+
 				$arrx = array(
 					'tanggal1'	=>	$tgl,
 					'tanggal2'	=>	$now,
@@ -1034,6 +1062,7 @@ class C_IsolasiMandiri extends CI_Controller
 			}else{
 				$sama = '<td></td>';
 			}
+			$disable = '';
 			if (in_array($tgl, $arTgl)) {
 				$idi = array_search($tgl, $arTgl);
 				$a = ''; $b = ''; $c = ''; $d = ''; $e = ''; $f = ''; $g = ''; $h = ''; $i = ''; $j = ''; $k = ''; $l = ''; $m = ''; $n = ''; $o = ''; $p = ''; $q = ''; $r = ''; $s = ''; $t = ''; $u = ''; $v = ''; $w = ''; $x = '';
@@ -1043,8 +1072,10 @@ class C_IsolasiMandiri extends CI_Controller
 					$a = 'selected';
 				}elseif ($status == 'PSK') {
 					$b = 'selected';
+					$disable = 'disabled';
 				}elseif ($status == 'PKJ') {
 					$c = 'selected';
+					$disable = 'disabled';
 				}
 
 				if ($alasan == 'ISOLASI DIRI - DL - WFO') {
@@ -1096,7 +1127,7 @@ class C_IsolasiMandiri extends CI_Controller
 								</select>
 							</td>
 							<td>
-								<select class="select2 cvd_alasan_table" data-placeholder="Alasan" name="slcMPSuratIsolasiMandiriAlasan2[]" id="slcMPSuratIsolasiMandiriAlasan" style="width: 100%" required>
+								<select '.$disable.' class="select2 cvd_alasan_table" data-placeholder="Alasan" name="slcMPSuratIsolasiMandiriAlasan2[]" id="slcMPSuratIsolasiMandiriAlasan" style="width: 100%" required>
 									<option></option>
 									<option '.$d.'>ISOLASI DIRI - DL - WFO</option>
 									<option '.$e.'>ISOLASI DIRI - DL - WFH</option>
