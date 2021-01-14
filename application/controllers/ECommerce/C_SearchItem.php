@@ -103,7 +103,7 @@ class C_SearchItem extends CI_Controller {
 			// $ItemToko = $this->M_searchitem->getItemFromToko($itm['SEGMENT1']);
 
 			if ($key) {
-				$itmOriginalQty = ($itemCombine[$key]['qty'])+$itm['ATT'];
+				$itmOriginalQty = ($itemCombine[$key]['qty'])+$itm['ATR'];
 				$qty_available = ceil($itmOriginalQty/5);
 
 				$itemCombine[$key] = array(
@@ -113,14 +113,14 @@ class C_SearchItem extends CI_Controller {
 					'qty_available' 	=> $qty_available
 				);
 			}else{
-				$qty_available = ceil(($itm['ATT'])/5);
+				$qty_available = ceil(($itm['ATR'])/5);
 
 				$itemCodeArray[$numNone] = $itm['SEGMENT1'];
 
 				$itemCombine[$numNone] = array(
 					'item' 				=> $itm['SEGMENT1'], 
 					'description' 		=> $itm['DESCRIPTION'],
-					'qty' 				=> $itm['ATT'], 
+					'qty' 				=> $itm['ATR'], 
 					'qty_available' 	=> $qty_available
 				);
 				$numNone++;
