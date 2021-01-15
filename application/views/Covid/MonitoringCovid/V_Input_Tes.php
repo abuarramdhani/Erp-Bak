@@ -42,7 +42,7 @@
 								</div>
 								<div class="col-md-12 text-left">
 									<a href="<?= base_url('Covid/MonitoringCovid') ?>" class="btn btn-warning">
-										< Kembali
+										Kembali
 									</a>
 								</div>
 							</div>

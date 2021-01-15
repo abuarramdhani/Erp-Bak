@@ -327,7 +327,8 @@ class M_isolasimandiri extends CI_Model
 					noind = '$pkj'
 					and point > 0
 					and tanggal >= '$awal'
-					and tanggal <= '$akhir'";
+					and tanggal <= '$akhir'
+					and kd_ket not like '%TT%'";
 		return $this->personalia->query($sql)->result_array();
 	}
 
