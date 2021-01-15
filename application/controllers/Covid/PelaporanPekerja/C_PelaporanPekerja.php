@@ -176,6 +176,8 @@ class C_PelaporanPekerja extends CI_Controller
 		$selesai = $detail->selesai_isolasi;
 		$noind = $detail->noind;
 		$presensi = $this->M_monitoringcovid->getDataPres($noind, $mulai, $selesai);
+		$ket = $this->M_monitoringcovid->getketeranganAbsen();
+		$aket = array_column($ket, 'keterangan', 'kd_ket');
 		// print_r($presensi);exit();
 		$tglPres = array_column($presensi, 'tanggal');
 		$kdPres = array_column($presensi, 'kd_ket');
@@ -214,18 +216,18 @@ class C_PelaporanPekerja extends CI_Controller
 				$jnstes = $t['jenis_tes'];
 				$hsltes = $t['hasil_tes'];
 				if (strpos($jnstes, 'PCR') !== false) {
-					if ($hsltes == '1') {
+					if ($hsltes == '1' || $hsltes == '2') {
 						$arr['r'.$tgltes][] = '#0084d1';
-					}elseif ($hsltes == '4') {
+					}elseif ($hsltes == '4' || $hsltes == '3') {
 						$arr['r'.$tgltes][] = '#000000';
 					}else{
 						$arr['r'.$tgltes][] = '#cccccc';
 					}
 				}
 				if (strpos($jnstes, 'Serology') !== false) {
-					if ($hsltes == '2') {
+					if ($hsltes == '2' || $hsltes == '1') {
 						$arr['r'.$tgltes][] = '#ff00ff';
-					}elseif ($hsltes == '3') {
+					}elseif ($hsltes == '3' || $hsltes == '4') {
 						$arr['r'.$tgltes][] = '#7e0021';
 					}else{
 						$arr['r'.$tgltes][] = '#aecf00';
@@ -236,6 +238,10 @@ class C_PelaporanPekerja extends CI_Controller
 						$arr['r'.$tgltes][] = '#ff8080';
 					}elseif ($hsltes == '3') {
 						$arr['r'.$tgltes][] = '#ff950e';
+					}elseif ($hsltes == '1') {
+						$arr['r'.$tgltes][] = '#ff8081';
+					}elseif ($hsltes == '4') {
+						$arr['r'.$tgltes][] = '#ff950f';
 					}else{
 						$arr['r'.$tgltes][] = '#83caff';
 					}
@@ -290,7 +296,7 @@ class C_PelaporanPekerja extends CI_Controller
 			}
 			
 			if(!$found){
-				$arr[$d][] = '#FBE7C6';
+				$arr[$d][] = '#FBE7C6|'.$kdPres[$index];
 				// $lastwarna = '#00ff00';
 			}
 			$x++;
@@ -298,7 +304,7 @@ class C_PelaporanPekerja extends CI_Controller
 		ksort($arr,2);
 		// print_r($arr);exit();
 
-		$arrWarna = ['#ff0000', '#4b1f6f','#00ff00','#ffff00','#996633','#0084d1','#000000','#cccccc','#ff00ff','#7e0021','#aecf00','#ff8080','#ff950e','#83caff', '#FBE7C6'];
+		$arrWarna = ['#ff0000', '#4b1f6f','#00ff00','#ffff00','#996633','#0084d1','#000000','#cccccc','#ff00ff','#7e0021','#aecf00','#ff8080','#ff950e','#83caff', '#FBE7C6','#ff8081','#ff950f'];
 		$arrNwarna = [
 		'Kontak dengan Positif',
 		'Kontak dengan Probable Positif',
@@ -314,7 +320,9 @@ class C_PelaporanPekerja extends CI_Controller
 		'Tes Antigen (Non Reaktif)',
 		'Tes Antigen (Reaktif)',
 		'Tes Antigen (Belum ada Hasil)',
-		'???'
+		'???',
+		'Tes Antigen (Negatif)',
+		'Tes Antigen (Positif)'
 		];
 
 		$arrClass = [
@@ -333,6 +341,8 @@ class C_PelaporanPekerja extends CI_Controller
 		'cvd_warna13',
 		'cvd_warna14',
 		'cvd_warna15',
+		'cvd_warna16',
+		'cvd_warna17',
 		];
 		$num = 0;
 		foreach ($arr as $key => $value) {
@@ -340,8 +350,18 @@ class C_PelaporanPekerja extends CI_Controller
 			$div = '';
 			foreach ($arr[$key] as $k) {
 				$ind = array_search($k, $arrWarna);
+				$grad = ''; $clas = ''; $txt = '';
 				if ($ind === false) {
+					$ex = explode('|',$k);
+					if (isset($aket[$ex[1]])) {
+						$txt = $aket[$ex[1]];
+					}else{
+						$txt = 'Tidak Ada Data';
+					}
+					// $txt = $ex[1];
+					$clas = 'cvd_dynamicPopover';
 					$ind = 14;
+					$grad = 'background-image: linear-gradient(to right, #c27c61 , grey);';
 				}
 				$warna = $arrWarna[$ind];
 				$desc = $arrNwarna[$ind];
@@ -352,9 +372,9 @@ class C_PelaporanPekerja extends CI_Controller
 					$tex = '';
 				}
 				$div .= '<div data-toggle="popover"
-    data-placement="left" class="'.$arrClass[$ind].'" style=" margin: 0 auto; text-align:center; vertical-align: middle; line-height: '.$jum.'px; width:31px; height:'.$jum.'px; background-color:'.$k.'">
-    	'.$tex.'
-    </div>';
+					    data-placement="left" class="'.$arrClass[$ind].' '.$clas.'" txt="'.$txt.'"  style=" margin: 0 auto; text-align:center; vertical-align: middle; line-height: '.$jum.'px; width:31px; height:'.$jum.'px; background-color:'.$k.';'.$grad.'">
+					    	'.$tex.'
+					    </div>';
 			}
 			$arr[$key] = $div;
 		}

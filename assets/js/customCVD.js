@@ -1801,7 +1801,25 @@ function cvd_bindPopover()
 	});
 	$('.cvd_warna15').popover({
 		content :  function() {
+			var t = $(this).attr('txt');
+			$('#cvd_warna15 label').text(t);
             return $('#cvd_warna15').html();
+        },
+        container: 'body',
+		html: true,
+		trigger: 'hover'
+	});
+	$('.cvd_warna16').popover({
+		content :  function() {
+            return $('#cvd_warna16').html();
+        },
+        container: 'body',
+		html: true,
+		trigger: 'hover'
+	});
+	$('.cvd_warna17').popover({
+		content :  function() {
+            return $('#cvd_warna17').html();
         },
         container: 'body',
 		html: true,

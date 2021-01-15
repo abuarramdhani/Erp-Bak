@@ -164,11 +164,11 @@ class C_IsolasiMandiri extends CI_Controller
 			$li = $arr[$i][count($arr[$i])-1];
 			$awl = date('d M Y', strtotime($tgl[$fi]));
 			$akh = date('d M Y', strtotime($tgl[$li]));
-			$jml = date_diff(date_create($akh), date_create($awl))->format('%d')+1;
+			$jml = date_diff(date_create($akh), date_create($awl))->format('%a')+1;
 			$arr2[] = array(
 				'awal' => $awl,
 				'akhir' => $akh,
-				'jml'	=> date_diff(date_create($akh), date_create($awl))->format('%d')+1,
+				'jml'	=> $jml,
 				'sta'	=> $status[$fi],
 				'st' => $alasan[$fi],
 				);

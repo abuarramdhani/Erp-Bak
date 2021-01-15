@@ -21,6 +21,9 @@
 											<li class="nav-item">
 												<a class="nav-link" id="profile-tab" data-toggle="tab" href="#cvd_montas" role="tab" aria-controls="cvd_montas" aria-selected="false">Terdapat Point (<?= count($tim) ?>)</a>
 											</li>
+											<li class="nav-item">
+												<a class="nav-link" id="profile-tab" data-toggle="tab" href="#cvd_montl" role="tab" aria-controls="cvd_montas" aria-selected="false">Timeline Isolasi</a>
+											</li>
 										</ul>
 									</div>
 									<div class="tab-content" id="myTabContent">
@@ -264,6 +267,16 @@
 														<?php endforeach ?>
 													</tbody>
 												</table>
+											</div>
+										</div>
+										<div class="tab-pane fade" id="cvd_montl" role="tabpanel">
+											<div class="col-md-12">
+												<h3>Untuk melihat Timeline Isolasi Klik Tombol di bawah!</h3>
+												<br>
+												<a class="btn btn-primary" href="<?= base_url('Covid/PelaporanPekerja/Monitoring') ?>" target="_blank">
+													Timeline Isolasi
+												</a>
+												<br><br>
 											</div>
 										</div>
 									</div>

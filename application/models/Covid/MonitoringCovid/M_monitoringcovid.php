@@ -967,4 +967,10 @@ class M_monitoringcovid extends CI_Model {
 					tanggal";
 		return $this->personalia->query($sql)->result_array();
 	}
+
+	public function getketeranganAbsen()
+	{
+		$sql = "select trim(kd_ket) kd_ket, trim(keterangan) keterangan from \"Presensi\".tketerangan";
+		return $this->personalia->query($sql)->result_array();
+	}
 }
