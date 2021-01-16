@@ -934,7 +934,7 @@ class M_monitoringcovid extends CI_Model {
 					cvd.cvd_pekerja cp
 					left join er.er_employee_all es on es.employee_code = cp.noind
 				where
-					selesai_isolasi > '$tgl'
+					selesai_isolasi >= '$tgl'
 					and selesai_isolasi <= '$tgl'::date + interval '2 days'";
 		return $this->db->query($sql)->result_array();
 	}
