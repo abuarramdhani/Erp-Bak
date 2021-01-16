@@ -196,7 +196,7 @@ class C_PelaporanPekerja extends CI_Controller
 				$tgl_interaksi = $tglinteraksi;
 			}else{
 				$exrange = explode(' - ', $range);
-				$tgl_interaksi = date('Y-m-d', strtotime($exrange[0]));
+				$tgl_interaksi = date('Y-m-d', strtotime($exrange[1]));
 			}
 			// if($mulai > $tglinteraksi){
 			// 	$mulai = $tglinteraksi;
