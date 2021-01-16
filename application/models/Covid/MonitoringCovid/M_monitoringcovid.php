@@ -881,8 +881,7 @@ class M_monitoringcovid extends CI_Model {
 				left join cvd.cvd_wawancara cw on
 					cw.cvd_pekerja_id = cp.cvd_pekerja_id
 				where
-					kasus like '%Kontak dengan Probable/Konfirmasi Covid 19%'
-					and cp.cvd_pekerja_id = $id";
+					cp.cvd_pekerja_id = $id";
 		return $this->db->query($sql)->row_array();			
 	}
 
