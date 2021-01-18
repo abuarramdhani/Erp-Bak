@@ -233,6 +233,9 @@ $(document).ready(function () {
               }
             }, 500);
           }
+          if (result.status != null) {
+            $("#txtPMSPOStatusPo").val(result.status);
+          }
           if (result.cc_address != null) {
             $("#txtPMSPOCCEmailAddr").val(result.cc_address);
           } else {
@@ -344,6 +347,13 @@ $(document).ready(function () {
       $(".divPMSPOcalloutWarning").fadeIn();
       $(".divPMSPOcalloutWarning").fadeOut(10000);
       $("#txtPMSPONoPO").attr("style", "background-color:#ffa8a8");
+    } else if ($("#txtPMSPOStatusPo").val() !== 'APPROVED') {
+      Swal.fire({
+        type: "error",
+        title: "Oops...",
+        text: "Pesan gagal terkirim :(",
+        footer: '<span style="color:#3c8dbc">' + 'PO TIDAK DAPAT DIKIRIM, MOHON CEK STATUS APPROVAL PO' + "</span>",
+      })
     } else {
       // Disable form from user interaction
       Swal.fire({
