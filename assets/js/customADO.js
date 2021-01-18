@@ -16,7 +16,7 @@ $( () => {
             targets     : 'no-orderable'
         }],
         scrollY 	  : '350px',
-        // scrollX: true,
+        scrollX: true,
         // scrollCollapse: true,
     })
 
@@ -443,7 +443,7 @@ $( () => {
                                         '<td>'+elm['DESCRIPTION']+'</td>'+
                                         '<td>'+elm['ITEM_CODE']+'</td>'+
                                         '<td>'+elm['REQ_QTY']+'</td>'+
-                                        '<td>'+elm['SUBINVENTORY_CODE']+'</td>'+
+                                        '<td></td>'+
                                     '</tr>';
                         }
                         html += '</tbody>'+
@@ -464,6 +464,14 @@ $( () => {
                             text: 'Tidak ada data',
                         });
                     }
+                },
+                error: function() {
+                    Swal.fire({
+                        customClass: 'swal-font-large',
+                        type: 'error',
+                        title: 'INFO',
+                        text: 'Tidak ada data',
+                    });
                 }
             });
 
