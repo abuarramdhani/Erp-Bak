@@ -277,8 +277,8 @@ class C_Rekap extends CI_Controller {
 
 		//insert to sys.log_activity
 		$aksi = 'REKAP TIMS';
-		$detail = "Export Excel perarea kerje tanggal=".$periode1." - ".$periode2;
-		$this->log_activity->activity_log($aksi, $detail);
+		$detailLOG = "Export Excel perarea kerje tanggal=".$periode1." - ".$periode2;
+		$this->log_activity->activity_log($aksi, $detailLOG);
 		//
 
 		$this->load->library('Excel');
