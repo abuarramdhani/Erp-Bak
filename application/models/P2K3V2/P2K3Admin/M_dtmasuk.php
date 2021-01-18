@@ -1035,7 +1035,7 @@ class M_Dtmasuk extends CI_Model
                     FROM mtl_system_items_b msib
                    WHERE msib.organization_id = 102
                      AND msib.inventory_item_status_code = 'Active'
-                     AND msib.segment1 LIKE '%'
+                     AND msib.segment1 LIKE 'PP1%'
                 ORDER BY 1";
         $query = $this->oracle->query($sql);
 
@@ -1831,5 +1831,14 @@ class M_Dtmasuk extends CI_Model
                     and kkk.lokasi_kerja = '$lokasi'
                     and kkk.waktu_kecelakaan::text like '$tgl%'";
         return $this->db->query($sql)->row()->ttl;
+    }
+
+    public function getTranscT($id_oracle, $nobon)
+    {
+        $sql = "SELECT   *
+                FROM im_master_bon mb
+                where NO_BON = '$nobon'
+                and NO_ID in ($id_oracle)";
+         return $this->oracle->query($sql)->result_array();
     }
 }

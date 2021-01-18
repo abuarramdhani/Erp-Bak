@@ -1032,8 +1032,8 @@ class C_Index extends CI_Controller
 
 		$data['Item'] = $this->M_dtmasuk->GetMasterItem();
 		$data['Oracle'] = $this->M_dtmasuk->getItemOracle();
-		echo "<pre>";
-		print_r($data['Oracle']);exit();
+		// echo "<pre>";
+		// print_r($data['Oracle']);exit();
 
 		$this->load->view('V_Header', $data);
 		$this->load->view('V_Sidemenu', $data);
