@@ -890,7 +890,7 @@ class M_Order extends CI_Model
      */
     public function getLatestBonSafetyShoes($noind)
     {
-        $sql = "SELECT noind, seksi, create_timestamp::date as date FROM k3.tbon_sepatu WHERE noind = '$noind' ORDER BY create_timestamp DESC LIMIT 1";
+        $sql = "SELECT noind, seksi, create_timestamp::date as date, no_bon FROM k3.tbon_sepatu WHERE noind = '$noind' ORDER BY create_timestamp DESC LIMIT 1";
         return $this->db->query($sql)->row();
         // abaikan
         $this->db
@@ -1064,4 +1064,9 @@ class M_Order extends CI_Model
     //     $tbon_sepatu = $this->db->query($sql)->result_array();
     // }
 
+    public function getNobondtl($nobon)
+    {
+        $sql = "SELECT * from k3.tbon_sepatu where no_bon = '$nobon'";
+        return $this->db->query($sql)->result_array();
+    }
 }

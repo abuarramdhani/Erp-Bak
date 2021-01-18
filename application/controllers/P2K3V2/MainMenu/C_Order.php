@@ -1035,6 +1035,8 @@ class C_Order extends CI_Controller
 
 		$data['seksi'] 		= $this->M_order->getSeksi($noind);
 		$data['daftar_pekerjaan']	= $this->M_order->daftar_pekerjaan($kodesie);
+		$data['listKD'] = array_column($data['daftar_pekerjaan'], 'kdpekerjaan');
+		// echo "<pre>";
 		// print_r($data['daftar_pekerjaan']);exit();
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
@@ -1060,7 +1062,7 @@ class C_Order extends CI_Controller
 			}
 		}
 		$data['listKs'] = $refjabatan;
-		// print_r($data['inputStandar']);exit();
+		// print_r($data['daftar_pekerjaan']);exit();
 
 		$this->load->view('V_Header', $data);
 		$this->load->view('V_Sidemenu', $data);
@@ -2625,22 +2627,37 @@ class C_Order extends CI_Controller
 		|	Check bon terakhir noind di database bon sepatu? |
 		|--------------------------------------------------|
 		*/
-
 		if (!empty($latestBon)) {
-			$today = date_create(date('Y-m-d'));
-			$latest = date_create($latestBon->date);
-			if ($latestBon->seksi == 'UP2L') {
-				// Rentang waktu sekarang dengan waktu bon sebelumnya
-				$moreThan9Month = date_diff($today, $latest)->m > 9;
-				if (!$moreThan9Month) return $this->response(true, [
-					'bon_terakhir' => isset($latestBon->date) ? $latestBon->date : '-'
-				], "Pekerja sudah pernah bon sepatu kerja dalam waktu dekat");
-			} else {
-				// Rentang waktu sekarang dengan waktu bon sebelumnya
-				$moreThan1Year = date_diff($today, $latest)->y > 0;
-				if (!$moreThan1Year) return $this->response(true, [
-					'bon_terakhir' => isset($latestBon->date) ? $latestBon->date : '-'
-				], "Pekerja sudah pernah bon sepatu kerja dalam waktu dekat");
+			$nobon = $latestBon->no_bon;
+			$cekRombongannya = $this->M_order->getNobondtl($nobon);
+			$id_orc = array_column($cekRombongannya, 'id_oracle');
+			$id_orc = implode(',', $id_orc);
+			$transcT = $this->M_dtmasuk->getTranscT($id_orc, $nobon);
+			$x = 0;
+			foreach ($transcT as $key) {
+				$transcT[$x]['noind'] = explode(' - ', $key['KETERANGAN'])[0];
+				$x++;
+			}
+			$arrF = array_column($transcT, 'FLAG');
+			$arrN = array_column($transcT, 'FLAG', 'noind');
+			if (in_array('Y', $arrF) && $arrN[$noind] == 'N' && 1==2) {
+				//skip
+			}else{
+				$today = date_create(date('Y-m-d'));
+				$latest = date_create($latestBon->date);
+				if ($latestBon->seksi == 'UP2L') {
+					// Rentang waktu sekarang dengan waktu bon sebelumnya
+					$moreThan9Month = date_diff($today, $latest)->m > 9;
+					if (!$moreThan9Month) return $this->response(true, [
+						'bon_terakhir' => isset($latestBon->date) ? $latestBon->date : '-'
+					], "Pekerja sudah pernah bon sepatu kerja dalam waktu dekat");
+				} else {
+					// Rentang waktu sekarang dengan waktu bon sebelumnya
+					$moreThan1Year = date_diff($today, $latest)->y > 0;
+					if (!$moreThan1Year) return $this->response(true, [
+						'bon_terakhir' => isset($latestBon->date) ? $latestBon->date : '-'
+					], "Pekerja sudah pernah bon sepatu kerja dalam waktu dekat");
+				}
 			}
 		}
 

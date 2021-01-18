@@ -106,11 +106,18 @@
                                                 </td>
                                                 <td><?php echo $key['jml_kebutuhan_umum']; ?></td>
                                                 <td><?php echo $key['jml_kebutuhan_staff']; ?></td>
-                                                <?php $jml = explode(',', $key['jml_item']);
-                                                foreach ($jml as $row) { 
-                                                    if($row == '') continue;
-                                                    ?>
-                                                <td><?php echo $row; ?></td>
+                                                <?php
+                                                $jml = explode(',', $key['jml_item']);
+                                                $kd = explode(',', $key['kd_pekerjaan']);
+                                                $arrAPD = array_combine($kd, $jml);
+                                                foreach ($listKD as $kdpkj) {
+                                                    if (isset($arrAPD[$kdpkj])) {
+                                                        $jm = $arrAPD[$kdpkj];
+                                                    }else{
+                                                        $jm = '0';
+                                                    }
+                                                ?>
+                                                <td><?php echo $jm; ?></td>
                                                 <?php  } ?>
                                                 <td><?php echo $key['tgl_input']; ?></td>
                                                 <td><?php echo $status; ?></td>
