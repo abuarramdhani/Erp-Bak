@@ -242,7 +242,7 @@ class M_absenatasan extends CI_Model
 		}
 
 		foreach ($result2 as $key => $value) {
-			if (in_array($value['employee_code'], $arrayUser) === true) {
+			if (in_array($value['employee_code'], $arrayUser) === true && $value['employee_code'] != $noind) {
 				$data[] = $value;
 			}
 		}
