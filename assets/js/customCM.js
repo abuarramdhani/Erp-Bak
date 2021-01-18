@@ -7134,3 +7134,47 @@ $(document).ready(function () {
 });
 
 //end export rencana lembur
+
+// Start Export Jumlah Pesanan
+$(document).ready(function () {
+	$("#btn_viewjumlahpesanan").on("click", function () {
+		var loading = baseurl + "assets/img/gif/loadingquick.gif";
+
+		$.ajax({
+			type: "POST",
+			data: {
+				txtPeriodeJmlPesan: $("[name=txtPeriodeJmlPesan]").val(),
+				txtLokasiJmlPesan: $("[name=txtLokasiJmlPesan]").val(),
+				txtShiftJmlPesan: $("[name=txtShiftJmlPesan]").val(),
+			},
+			url: baseurl + "CateringManagement/Extra/ExportJumlahPesanan/viewdata",
+			beforeSend: function () {
+				swal.fire({
+					html: "<div><img style='width: 320px; height: auto;'src='" +
+						loading +
+						"'><br><p>Sedang Proses....</p></div>",
+					customClass: "swal-wide",
+					showConfirmButton: false,
+					allowOutsideClick: false
+				});
+			},
+			success: function (result) {
+				swal.close();
+				console.log(result);
+				$("#div_viewjumlahpesanan").html(result);
+				$("#tbl_viewjumlahpesanan").DataTable({
+
+				});
+			}
+		});
+
+	});
+
+});
+// End Export Jumlah Pesanan
+
+// Start Tukar Shift dan Absen Manual Hari ini
+$(document).ready(function () {
+	$("#TblTukarShiftdanAbsen").DataTable();
+});
+// End Tukar Shift dan Absen Manual Hari ini
