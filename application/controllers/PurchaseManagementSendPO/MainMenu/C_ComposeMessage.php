@@ -492,6 +492,8 @@ class C_ComposeMessage extends CI_Controller
 		$menu_name  = $user_menu[0]['user_group_menu_name'];
 		$po_explode = explode('-', $id);
 		$po_number  = $po_explode[0];
+		$po_rev		= $po_explode[1];
+		$statusPo	= $this->M_composemessage->get_status_po($po_number, $po_rev);
 
 		if ($menu_name === 'WEB SEND PO BDL' && substr($po_number, 2, 3) === '999') {
 			$email       = $this->M_composemessage->getEmailAddressGabungan($po_number);
@@ -527,11 +529,13 @@ class C_ComposeMessage extends CI_Controller
 		}
 
 		if (!empty($email) && $email[0]['EMAIL'] != '') {
+			$data['status']		= $statusPo['AUTHORIZATION_STATUS'];
 			$data['email']      = str_replace(' /', ', ', $email[0]['EMAIL']);
 			$data['site']       = $site[0]['SITE'];
 			$data['cc_address'] = $cc_address;
 			echo json_encode($data);
 		} else {
+			$data['status']		= NULL;
 			$data['email']      = NULL;
 			$data['site']       = NULL;
 			$data['cc_address'] = NULL;

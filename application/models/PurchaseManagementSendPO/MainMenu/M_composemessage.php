@@ -460,5 +460,11 @@ class M_composemessage extends CI_Model
       $query = $this->oracle->query($sql);
       return $query->result_array();
     }
+
+    public function get_status_po($po_numb, $po_rev){
+      $sql   = "SELECT authorization_status FROM po_headers_all WHERE segment1 = '$po_numb' AND revision_num = '$po_rev'";
+      $query = $this->oracle->query($sql);
+      return $query->row_array(); 
+    }
 }
 ?>

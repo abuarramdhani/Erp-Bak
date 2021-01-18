@@ -23,8 +23,7 @@
                                     <input class="form-control" id="txtPMSPONoPO" name="txtPMSPONoPO"
                                         placeholder="Purchase Order Number" value="<?= $po_Lnumber; ?>">
                                 </div>
-                                <div class="col-sm-6 divPMSPOWarnAddrNotFound"
-                                    style="height: 30px; float:left;display:none">
+                                <input type="hidden" id="txtPMSPOStatusPo" name="txtPMSPOStatusPo">
                                     <!-- timeline time label -->
                                     <ul class="timeline" style="margin:0px">
                                         <li class="time-label" style="margin:0px">
