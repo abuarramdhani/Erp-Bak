@@ -209,7 +209,13 @@ class M_absenatasan extends CI_Model
 					ORDER BY a.noind,a.nama";
 			$query4 = $personalia->query($sql4);
 			$result4 = $query4->result_array();
-			$result2 = $result4;
+
+			$sql3 = "SELECT su.user_name employee_code, su.employee_name FROM si.si_approver_khusus ak 
+					LEFT JOIN sys.vi_sys_user su ON su.user_name =  ak.no_induk
+					WHERE ak.kodesie like '$kodesie_subs%'";
+			$result3 = $this->db->query($sql3)->result_array();
+
+			$result2 = array_merge(array_values($result4),array_values($result3));
 		} elseif ($jabatan == '4') {
 			$sql5 = "SELECT
 						a.noind employee_code, a.nama employee_name

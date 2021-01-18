@@ -87,8 +87,8 @@ class C_Index extends CI_Controller
 			$isLaju = $this->M_absenatasan->getPekerjaLaju($noinduk);
 			if ($isLaju) {
 				$data['atasan1'] = array(
-					array('employee_code'	=>	'B0307',
-						'employee_name'	=>	'RAJIWAN')
+					array('employee_code'	=>	'J1269',
+						'employee_name'	=>	'BAMBANG YUDHOSUSENO')
 					);
 				$data['atasan2'] = array(
 					// array('employee_code'	=>	'B0307',
