@@ -705,6 +705,14 @@ $route['CateringManagement/Extra/ExportRencanaLembur'] = 'CateringManagement/Ext
 $route['CateringManagement/Extra/ExportRencanaLembur/(:any)'] = 'CateringManagement/Extra/C_ExportRencanaLembur/$1';
 $route['CateringManagement/Extra/ExportRencanaLembur/(:any)/(:any)'] = 'CateringManagement/Extra/C_ExportRencanaLembur/$1/$2';
 
+$route['CateringManagement/Extra/ExportJumlahPesanan'] = 'CateringManagement/Extra/C_ExportJumlahPesanan';
+$route['CateringManagement/Extra/ExportJumlahPesanan/(:any)'] = 'CateringManagement/Extra/C_ExportJumlahPesanan/$1';
+$route['CateringManagement/Extra/ExportJumlahPesanan/(:any)/(:any)'] = 'CateringManagement/Extra/C_ExportJumlahPesanan/$1/$2';
+
+$route['CateringManagement/Extra/TukarShiftDanAbsenHariIni'] = 'CateringManagement/Extra/C_TukarShiftDanAbsenHariIni';
+$route['CateringManagement/Extra/TukarShiftDanAbsenHariIni/(:any)'] = 'CateringManagement/Extra/C_TukarShiftDanAbsenHariIni/$1';
+$route['CateringManagement/Extra/TukarShiftDanAbsenHariIni/(:any)/(:any)'] = 'CateringManagement/Extra/C_TukarShiftDanAbsenHariIni/$1/$2';
+
 //------------------------------------CateringManagement - Pesanan----------------------------------------------------------//
 $route['CateringManagement/DataPesanan'] = 'CateringManagement/Pesanan/C_Pesanan';
 $route['CateringManagement/DataPesanan/(:any)'] = 'CateringManagement/Pesanan/C_Pesanan/$1';
