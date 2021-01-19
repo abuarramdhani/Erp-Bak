@@ -87,7 +87,7 @@ class C_Master extends CI_Controller
 
     public function getMaster($value='')
     {
-      $post = $this->input->post();
+      $post =  $this->input->post();
       foreach ($post['columns'] as $val) {
           $post['search'][$val['data']]['value'] = $val['search']['value'];
       }
@@ -107,9 +107,13 @@ class C_Master extends CI_Controller
           $sub_array[] = $row['PALET'];
           $sub_array[] = $row['KODE_BARANG'];
           $sub_array[] = $row['DESKRIPSI'];
+          $sub_array[] = '-';
+          $sub_array[] = '-';
+          $sub_array[] = '-';
+          $sub_array[] = '-';
           $sub_array[] = $row['TYPE'];
           $sub_array[] = $row['SERIAL'];
-          $sub_array[] = '-';
+          // $sub_array[] = '-';
           // $sub_array[] = '<a class="btn btn-success btn-sm" target="_blank" href="'.base_url('CetakKIBMotorBensin/CKMB/pdf/'.$row['SERIAL']).'" title="Export"><i class="fa fa-file-pdf-o"></i> Cetak</a>';
 
           $data[] = $sub_array;

@@ -71,7 +71,7 @@
                     <button type="button" onclick="filter_ckmb()" style="font-size:15px" class="btn btn-primary btn-sm btn-block"> <i class="fa fa-search"></i> <strong>Filter</strong> </button>
                   </div>
                 </div>
-                <div class="row" style="padding-top:30px;">
+                <div class="row" style="padding-top:10px;">
                   <div class="col-md-12">
                     <div class="area_ckmb">
 
