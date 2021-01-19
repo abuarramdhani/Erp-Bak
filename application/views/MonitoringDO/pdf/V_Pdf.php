@@ -40,9 +40,9 @@
 			<td style="border-bottom: 1px solid black;border-right: 1px solid black;width:15%;font-size:10px;padding:5px;text-align:center">Tgl. Cetak : <br> <?php echo date('d-M-Y') ?> </td>
 			<td style="border-bottom: 1px solid black;border-right: 1px solid black;width:15%;font-size:11px;padding:5px;text-align:center">
 				<center>
-					<img style="width: 20mm; height: auto;" src="<?php echo base_url('assets/img/monitoringDOQRCODE/'.$get_header[0]['REQUEST_NUMBER'].'.png') ?>">
+					<img style="width: 19.5mm; height: auto;" src="<?php echo base_url('assets/img/monitoringDOQRCODE/'.$get_header[0]['REQUEST_NUMBER'].'.png') ?>">
 				</center>
-		  	<span style="font-size:11.5px"><?php echo $get_header[0]['REQUEST_NUMBER'] ?></span>
+		  	<span style="font-size:13.5px"><?php echo $get_header[0]['REQUEST_NUMBER'] ?></span>
 			</td>
 		</tr>
 	</table>
