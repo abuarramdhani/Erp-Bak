@@ -42,9 +42,8 @@ if(!empty($noinduk) && !empty($longitude) && !empty($latitude) && !empty($lokasi
 
 			if (empty(pg_result_error($result))) {
 		        $sql2 	= "INSERT INTO at.at_absen_approval (approver,absen_id) VALUES('".$atasan."',(SELECT currval('at.at_absen_absen_id_seq')))";
-		    	$gas2	= pg_query($conn,$sql2);
 
-		    	pg_send_query($conn, $sql);
+		    	pg_send_query($conn, $sql2);
 				$result2 = pg_get_result($conn);
 				
 				if (empty(pg_result_error($result2))) {
@@ -52,7 +51,7 @@ if(!empty($noinduk) && !empty($longitude) && !empty($latitude) && !empty($lokasi
 			        $data['result'][] = "Berhasil Menambah Data";
 				}else{
 					$data['status'] = false;
-		       		$data['result'][] = "API Error : ".pg_result_error($result);
+		       		$data['result'][] = "API Error : ".pg_result_error($result2);
 				}
 					
 			}else{
