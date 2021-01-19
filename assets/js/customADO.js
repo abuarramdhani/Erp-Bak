@@ -443,7 +443,7 @@ $( () => {
                                         '<td>'+elm['DESCRIPTION']+'</td>'+
                                         '<td>'+elm['ITEM_CODE']+'</td>'+
                                         '<td>'+elm['REQ_QTY']+'</td>'+
-                                        '<td></td>'+
+                                        '<td>'+elm['SUBINVENTORY_CODE']+'</td>'
                                     '</tr>';
                         }
                         html += '</tbody>'+
