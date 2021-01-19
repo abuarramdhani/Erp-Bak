@@ -36,15 +36,31 @@ if(!empty($noinduk) && !empty($longitude) && !empty($latitude) && !empty($lokasi
 			
 			$sql="INSERT INTO at.at_absen 
 	        (noind, longitude, latitude, lokasi,tgl,waktu,jenis_absen_id,gambar,status,tgl_status,nama)
-
 	        VALUES ('".$noinduk."', '".$longitude."', '".$latitude."', '".trim($lokasi)."','".$tanggal."','".$wktAPI."','".$jenis_absen_id."','".$gambar."','".$status."','".$tanggal_status."','".$nama."')";
-	        $gas = pg_query($conn,$sql);
+	        pg_send_query($conn, $sql);
+			$result = pg_get_result($conn);
 
-	        $sql2 	= "INSERT INTO at.at_absen_approval (approver,absen_id) VALUES('".$atasan."',(SELECT currval('at.at_absen_absen_id_seq')))";
-	    	$gas2	= pg_query($conn,$sql2);
+			if (empty(pg_result_error($result))) {
+		        $sql2 	= "INSERT INTO at.at_absen_approval (approver,absen_id) VALUES('".$atasan."',(SELECT currval('at.at_absen_absen_id_seq')))";
+		    	$gas2	= pg_query($conn,$sql2);
 
-	        $data['status'] = true;
-	        $data['result'][] = "Berhasil Menambah Data";
+		    	pg_send_query($conn, $sql);
+				$result2 = pg_get_result($conn);
+				
+				if (empty(pg_result_error($result2))) {
+			        $data['status'] = true;
+			        $data['result'][] = "Berhasil Menambah Data";
+				}else{
+					$data['status'] = false;
+		       		$data['result'][] = "API Error : ".pg_result_error($result);
+				}
+					
+			}else{
+				$data['status'] = false;
+	       		$data['result'][] = "API Error : ".pg_result_error($result);
+			}
+
+
 		}else{
 			$data['status'] = false;
 	        $data['result'][] = "Data sudah ada";
