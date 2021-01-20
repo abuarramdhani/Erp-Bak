@@ -1,7 +1,7 @@
 <html>
 
 <head>
-    
+
   <style>
     body {
       text-align: justify !important;
@@ -66,118 +66,116 @@
   ini_set("memory_limit", "2048M");
 
   ?>
-  <?php foreach ($data as $dt) { ?>
-    <div style="width: 100%;padding-right: 20px;padding-left: 20px; ">
-      <p style="text-align: center; line-height: 1.14;">
-        <span style="text-align: center;font-size: 16pt;margin-bottom: 1px; font-family: verdana-bold;">
-          <u style="text-decoration: underline;text-decoration-color: black;"><strong>SURAT KETERANGAN</strong></u>
-        </span>
-        <br>
-        <span style="text-align: center; margin-top: 1px; ">
-          <strong>No. : <?php echo $dt['nomor'] ?>/PS/KE-A/<?php echo $dt['bulan'] ?>/<?php echo $dt['tahun'] ?></strong>
-        </span>
-      </p>
-      <p style="text-align: justify; margin-top: 36px;">
-        Dengan ini Departemen Personalia CV. Karya Hidup Sentosa, Jln. Magelang 144, Yogyakarta, menerangkan dengan sesungguhnya bahwa :
-      </p>
-      <table>
-        <tbody>
+  <div style="width: 100%;padding-right: 20px;padding-left: 20px; ">
+    <p style="text-align: center; line-height: 1.14;">
+      <span style="text-align: center;font-size: 16pt;margin-bottom: 1px; font-family: verdana-bold;">
+        <u style="text-decoration: underline;text-decoration-color: black;"><strong>SURAT KETERANGAN</strong></u>
+      </span>
+      <br>
+      <span style="text-align: center; margin-top: 1px; ">
+        <strong>No. : <?php echo $data['nomor'] ?>/PS/KE-A/<?php echo $data['bulan'] ?>/<?php echo $data['tahun'] ?></strong>
+      </span>
+    </p>
+    <p style="text-align: justify; margin-top: 36px;">
+      Dengan ini Departemen Personalia CV. Karya Hidup Sentosa, Jln. Magelang 144, Yogyakarta, menerangkan dengan sesungguhnya bahwa :
+    </p>
+    <table>
+      <tbody>
+        <tr>
+          <td style="width: 25%;"><strong>Nama</strong></td>
+          <td style="width: 1.5%;"> <strong>:<strong></td>
+          <td style="width: 70%;"><strong><?php echo $data['nama'] ?><strong></td>
+        </tr>
+        <tr>
+          <td><strong>Tempat/Tgl Lahir <strong></td>
+          <td><strong>:<strong></td>
+          <td><strong><?php echo $data['templahir'] . ', ' . $data['lahir'] ?> <strong></td>
+        </tr>
+        <tr>
+          <td><strong>No.Induk Pekerja <strong></td>
+          <td><strong>:<strong></td>
+          <td><strong><?php echo $data['noind'] ?><strong></td>
+        </tr>
+        <tr>
+          <td valign="top"> <strong>Alamat <strong></td>
+          <td valign="top"><strong>:<strong></td>
+          <td style="line-height: 1.17;">
+            <strong><?= trim($data['alamat']) . ', ' . trim($data['kec']) . ', ' . trim($data['kab']) . ', ' . trim($data['prop']) . ', ' . trim($data['kodepos']) ?><strong>
+          </td>
+        </tr>
+        <?php if (!empty($checkbox_nik)) : ?>
           <tr>
-            <td style="width: 25%;"><strong>Nama</strong></td>
-            <td style="width: 1.5%;"> <strong>:<strong></td>
-            <td style="width: 70%;"><strong><?php echo $dt['nama'] ?><strong></td>
+            <td> <strong> NIK <strong></td>
+            <td> <strong>: <strong></td>
+            <td> <strong><?php echo $nik_pengalaman ?> <strong></td>
           </tr>
-          <tr>
-            <td><strong>Tempat/Tgl Lahir <strong></td>
-            <td><strong>:<strong></td>
-            <td><strong><?php echo $dt['templahir'] . ', ' . $dt['lahir'] ?> <strong></td>
-          </tr>
-          <tr>
-            <td><strong>No.Induk Pekerja <strong></td>
-            <td><strong>:<strong></td>
-            <td><strong><?php echo $dt['noind'] ?><strong></td>
-          </tr>
-          <tr>
-            <td valign="top"> <strong>Alamat <strong></td>
-            <td valign="top"><strong>:<strong></td>
-            <td style="line-height: 1.17;">
-              <strong><?= trim($dt['alamat']) . ', ' . trim($dt['kec']) . ', ' . trim($dt['kab']) . ', ' . trim($dt['prop']) . ', ' . trim($dt['kodepos']) ?><strong>
-            </td>
-          </tr>
-          <?php if (!empty($nik)) : ?>
-            <tr>
-              <td> <strong> NIK <strong></td>
-              <td> <strong>: <strong></td>
-              <td> <strong><?php echo $nik_pengalaman ?> <strong></td>
-            </tr>
-          <?php endif ?>
-        </tbody>
-      </table>
-      <p>
-        Adalah benar-benar pekerja dengan status <?php echo $stat ?> di Perusahaan kami, pada :
-      </p>
-      <table>
-        <tbody>
-          <tr>
-            <td style="width: 25%;"> Mulai bekerja </td>
-            <td style="width: 1.5%"> :</td>
-            <td style="width: 70%;"><?php echo $dt['masuk'] ?></td>
-          </tr>
-          <tr>
-            <td>Sampai </td>
-            <td>:</td>
-            <td><?php echo $sampai ?> </td>
-          </tr>
-          <tr>
-            <td valign="top">Seksi</td>
-            <td valign="top">:</td>
-            <td style=" line-height: 1.17;">Seksi <?php echo $dt['seksi'] . ', Unit ' . $dt['unit'] . ', Departemen ' . $dt['dept'] ?></td>
-          </tr>
-          <tr>
-            <td valign="top"> Jabatan </td>
-            <td valign="top">:</td>
-            <td><?php echo trim($jabatan_pengalaman) ?></td>
-          </tr>
-        </tbody>
-      </table>
-      <?php $str = trim($dt['isi_surat']);
-      $a = 1;
-      $splited = explode('><', $str);
-      $firstParagraph = $splited[0];
-      $splited[0] =  str_ireplace('<p>', "<p class='class_$a'>", $firstParagraph);
+        <?php endif ?>
+      </tbody>
+    </table>
+    <p>
+      Adalah benar-benar pekerja dengan status <?php echo $stat ?> di Perusahaan kami, pada :
+    </p>
+    <table>
+      <tbody>
+        <tr>
+          <td style="width: 25%;"> Mulai bekerja </td>
+          <td style="width: 1.5%"> :</td>
+          <td style="width: 70%;"><?= $checkbox_tgl_masuk ? $tgl_masuk : $data['tgl_masuk'] ?></td>
+        </tr>
+        <tr>
+          <td>Sampai </td>
+          <td>:</td>
+          <td><?php echo $sampai ?> </td>
+        </tr>
+        <tr>
+          <td valign="top">Seksi</td>
+          <td valign="top">:</td>
+          <td style=" line-height: 1.17;">Seksi <?php echo $data['seksi'] . ', Unit ' . $data['unit'] . ', Departemen ' . $data['dept'] ?></td>
+        </tr>
+        <tr>
+          <td valign="top"> Jabatan </td>
+          <td valign="top">:</td>
+          <td><?php echo trim($jabatan_pengalaman) ?></td>
+        </tr>
+      </tbody>
+    </table>
+    <?php $str = trim($data['isi_surat']);
+    $a = 1;
+    $splited = explode('><', $str);
+    $firstParagraph = $splited[0];
+    $splited[0] =  str_ireplace('<p>', "<p class='class_$a'>", $firstParagraph);
 
-      $joined = implode('><', $splited);
+    $joined = implode('><', $splited);
 
-      // var_dump($joined);
-      // $str = str_ireplace('<p>', "<p class='class_$a'>", $str);
-      // $str = str_ireplace('</p>', '</p>', $str);
-      echo "<pre>$joined</pre>";
-      ?>
-      <p>
-        Demikian surat keterangan ini dibuat untuk dapat digunakan sebagaimana mestinya.
-      </p>
-      <p> </p>
-      <p>
-        <strong> Yogyakarta, <?php echo $pengalaman_tglCetak ?> </strong>
-        <br>
-        CV. Karya Hidup Sentosa
-        <br>
-        Departemen Personalia
-      </p>
-      <p>
-        &nbsp;
-      </p>
-      <p></p>
-      <p>
-        <u><strong>Rajiwan</strong></u><br>
-        Kepala Seksi Utama
-      </p>
-      <p><strong>Tembusan :</strong><br>
-        -Arsip <br>
-        <i>rs / af</i>
-      </p>
-    </div>
+    // var_dump($joined);
+    // $str = str_ireplace('<p>', "<p class='class_$a'>", $str);
+    // $str = str_ireplace('</p>', '</p>', $str);
+    echo "<pre>$joined</pre>";
+    ?>
+    <p>
+      Demikian surat keterangan ini dibuat untuk dapat digunakan sebagaimana mestinya.
+    </p>
+    <p> </p>
+    <p>
+      <strong> Yogyakarta, <?php echo $pengalaman_tglCetak ?> </strong>
+      <br>
+      CV. Karya Hidup Sentosa
+      <br>
+      Departemen Personalia
+    </p>
+    <p>
+      &nbsp;
+    </p>
+    <p></p>
+    <p>
+      <u><strong><?= ucwords(strtolower($approver['nama'])) ?></strong></u><br>
+      <?= $approver['jabatan_organisasi'] ?>
+    </p>
+    <p><strong>Tembusan :</strong><br>
+      -Arsip <br>
+      <i>rs / af</i>
+    </p>
+  </div>
 </body>
 
 </html>
-<?php } ?>
