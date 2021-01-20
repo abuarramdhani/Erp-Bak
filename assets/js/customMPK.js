@@ -1193,6 +1193,9 @@ $(function () {
       type: "get",
       dataType: "json",
       url: baseurl + "MasterPekerja/Surat/PengalamanKerja/ModalPDF/" + a,
+      beforeSend() {
+        $('#surat-loading').removeClass('hidden')
+      },
       success: function (result) {
         var jbtn = result.data.jabatan;
         // alert(result.data[0].noind.indexOf("H"));
@@ -1220,6 +1223,9 @@ $(function () {
         $("#sampai_pengalaman").val(c);
         $("#Modal_pdf_pengalaman").modal("show");
       },
+      complete() {
+        $('#surat-loading').addClass('hidden')
+      }
     });
   });
 

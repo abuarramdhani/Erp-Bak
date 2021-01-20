@@ -96,6 +96,10 @@
 	</div>
 </section>
 
+<div id="surat-loading" class="hidden" style="top: 0;left: 0;right: 0;bottom: 0; margin: auto; position: fixed; background: rgba(0,0,0,.5); z-index: 11;">
+	<img src="<?php echo site_url('assets/img/gif/loadingtwo.gif'); ?>" style="position: fixed; top: 0;left: 0;right: 0;bottom: 0; margin: auto; width: 40%;">
+</div>
+
 <div class="modal fade" id="Modal_pdf_pengalaman" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document" style="width: 450px">
 		<div class="modal-content">
