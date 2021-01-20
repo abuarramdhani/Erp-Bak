@@ -37,7 +37,7 @@
   </table>
 </div>
 
-<center id="ckmb_pdf">
+<center id="ckmb_pdf" onmouseover="cek_param_ckmb()">
   <button type="button" name="button" class="btn btn-danger" onclick="cetakCKMB()" style="font-weight:bold"> <i class="fa fa-file-pdf-o"></i> Cetak QR </button>
   <button type="button" name="button" class="btn btn-success" onclick="checklistCKMB()" style="margin-left:10px;font-weight:bold"> <i class="fa fa-file-pdf-o"></i> Cetak Checklist </button>
 </center>
@@ -77,6 +77,12 @@ function checklistCKMB() {
   let range = range_tanggal.split(' - ');
   const tipe = $('.select2_ckmb').val();
   window.open(`${baseurl}CetakKIBMotorBensin/Checklist/${range[0]}/${range[1]}/${tipe}`);
+}
+
+function cek_param_ckmb() {
+  if ($('.select2_ckmb').val() == '') {
+    swalLoadingCKMB('Sebelum Cetak, Pilih Type Engine Terlebih Dahulu');
+  }
 }
 
 </script>

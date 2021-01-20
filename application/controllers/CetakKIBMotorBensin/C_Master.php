@@ -139,7 +139,7 @@ class C_Master extends CI_Controller
       $get = $this->M_master->getItem($range, $tipe);
       $data['get'] = $get;
 
-      if (!empty($range1)) {
+      if (!empty($range1) && !empty($tipe)) {
         ob_start();
           $this->load->library('ciqrcode');
           if (!is_dir('./assets/img/PBIQRCode')) {
@@ -171,7 +171,7 @@ class C_Master extends CI_Controller
       } else {
           echo json_encode(array(
             'success' => false,
-            'message' => 'Range date is null'
+            'message' => 'Range date Or Type Engine Can\'t empty'
           ));
       }
 

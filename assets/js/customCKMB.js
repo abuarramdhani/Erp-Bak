@@ -28,11 +28,12 @@ const swalLoadingCKMB = (a) =>{
   Swal.fire({
     allowOutsideClick: true,
     title: 'Loading',
-    // cancelButtonText: 'No, cancel!',
+    type: 'warning',
+    cancelButtonText: 'Ok!',
     html: a,
-    onBeforeOpen: () => {
-    Swal.showLoading()
-    }
+    // onBeforeOpen: () => {
+    // Swal.showLoading()
+    // }
   })
 }
 
