@@ -28,11 +28,12 @@ const swalLoadingCKMB = (a) =>{
   Swal.fire({
     allowOutsideClick: true,
     title: 'Loading',
-    // cancelButtonText: 'No, cancel!',
+    type: 'warning',
+    cancelButtonText: 'Ok!',
     html: a,
-    onBeforeOpen: () => {
-    Swal.showLoading()
-    }
+    // onBeforeOpen: () => {
+    // Swal.showLoading()
+    // }
   })
 }
 
@@ -110,3 +111,9 @@ const filter_ckmb = () => {
     }
   })
 }
+
+$('.ckmb_pdf_cek').on('change', function () {
+  $('#ckmb_pdf').hide();
+  $('.ckmb_data').hide();
+  $('.ckmb_if_change').show()
+})

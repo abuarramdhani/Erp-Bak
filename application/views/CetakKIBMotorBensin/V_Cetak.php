@@ -55,11 +55,11 @@
                   <!-- <form id="formSPB" onsubmit="getDataSPB()"> -->
                   <div class="col-md-7">
                     <label for="">Select Date Range</label>
-                    <input type="text" name="" class="form-control tanggal_ckmb" placeholder="Select Yout Current Date" required="" >
+                    <input type="text" name="" class="form-control tanggal_ckmb ckmb_pdf_cek" placeholder="Select Yout Current Date" required="" >
                   </div>
                   <div class="col-md-3">
                     <label for="">Type Engine</label>
-                    <select class="form-control select2_ckmb" name="" style="width:100%">
+                    <select class="form-control select2_ckmb ckmb_pdf_cek" name="" style="width:100%">
                       <option value=""></option>
                       <?php foreach ($get_type as $key => $value): ?>
                         <option value="<?php echo $value['TYPE'] ?>"><?php echo $value['TYPE'] ?></option>
@@ -71,7 +71,7 @@
                     <button type="button" onclick="filter_ckmb()" style="font-size:15px" class="btn btn-primary btn-sm btn-block"> <i class="fa fa-search"></i> <strong>Filter</strong> </button>
                   </div>
                 </div>
-                <div class="row" style="padding-top:30px;">
+                <div class="row" style="padding-top:10px;">
                   <div class="col-md-12">
                     <div class="area_ckmb">
 

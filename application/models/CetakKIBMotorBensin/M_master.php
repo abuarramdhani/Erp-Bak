@@ -11,7 +11,15 @@ class M_master extends CI_Model
     public function getItem($range_, $tipe)
     {
       $range =  explode(' - ', $range_);
-      return $this->oracle->query("SELECT * FROM khs_kib_motor_bensin
+      return $this->oracle->query("SELECT kmb.*,
+                                          deh.kode_sebelum,
+                                          deh.type_sebelum,
+                                          deh.kode_setelah,
+                                          deh.type_setelah,
+                                          deh.produk,
+                                          deh.warna_kib
+                                   FROM khs_kib_motor_bensin kmb
+                                   LEFT JOIN khs_daftar_engine_honda deh ON deh.KODE_SEBELUM = kmb.KODE_BARANG
                                    WHERE TO_CHAR(created_date, 'YYYY-MM-DD') between '{$range[0]}' and '{$range[1]}'
                                    AND TYPE = '$tipe'")->result_array();
     }
@@ -41,13 +49,15 @@ class M_master extends CI_Model
                             ROW_NUMBER () OVER (ORDER BY CREATED_DATE) as pagination
                         FROM
                             (
-                              SELECT * FROM khs_kib_motor_bensin
+                              SELECT kmb.*, deh.kode_sebelum, deh.type_sebelum, deh.kode_setelah, deh.type_setelah, deh.produk, deh.warna_kib
+                              FROM khs_kib_motor_bensin kmb
+                              LEFT JOIN khs_daftar_engine_honda deh ON deh.KODE_SEBELUM = kmb.KODE_BARANG
                               WHERE
                               (
-                                 palet LIKE '%{$explode}%'
-                                 OR kode_barang LIKE '%{$explode}%'
-                                 OR deskripsi LIKE '%{$explode}%'
-                                 OR type LIKE '%{$explode}%'
+                                 kmb.palet LIKE '%{$explode}%'
+                                 OR kmb.kode_barang LIKE '%{$explode}%'
+                                 OR kmb.deskripsi LIKE '%{$explode}%'
+                                 OR kmb.type LIKE '%{$explode}%'
                                  OR serial LIKE '%{$explode}%'
                               )
                               AND TO_CHAR(created_date, 'YYYY-MM-DD') between '{$range[0]}' and '$range[1]'

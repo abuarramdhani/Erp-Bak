@@ -87,7 +87,7 @@ class C_Master extends CI_Controller
 
     public function getMaster($value='')
     {
-      $post = $this->input->post();
+      $post =  $this->input->post();
       foreach ($post['columns'] as $val) {
           $post['search'][$val['data']]['value'] = $val['search']['value'];
       }
@@ -105,11 +105,15 @@ class C_Master extends CI_Controller
           $sub_array   = [];
           $sub_array[] = '<center>'.$row['PAGINATION'].'</center>';
           $sub_array[] = $row['PALET'];
-          $sub_array[] = $row['KODE_BARANG'];
-          $sub_array[] = $row['DESKRIPSI'];
+          $sub_array[] = $row['KODE_SEBELUM'];
+          $sub_array[] = $row['TYPE_SEBELUM'];
+          $sub_array[] = $row['KODE_SETELAH'];
+          $sub_array[] = $row['TYPE_SETELAH'];
+          $sub_array[] = $row['PRODUK'];
+          $sub_array[] = $row['WARNA_KIB'];
           $sub_array[] = $row['TYPE'];
           $sub_array[] = $row['SERIAL'];
-          $sub_array[] = '-';
+          // $sub_array[] = '-';
           // $sub_array[] = '<a class="btn btn-success btn-sm" target="_blank" href="'.base_url('CetakKIBMotorBensin/CKMB/pdf/'.$row['SERIAL']).'" title="Export"><i class="fa fa-file-pdf-o"></i> Cetak</a>';
 
           $data[] = $sub_array;
@@ -135,7 +139,7 @@ class C_Master extends CI_Controller
       $get = $this->M_master->getItem($range, $tipe);
       $data['get'] = $get;
 
-      if (!empty($range1)) {
+      if (!empty($range1) && !empty($tipe)) {
         ob_start();
           $this->load->library('ciqrcode');
           if (!is_dir('./assets/img/PBIQRCode')) {
@@ -167,7 +171,7 @@ class C_Master extends CI_Controller
       } else {
           echo json_encode(array(
             'success' => false,
-            'message' => 'Range date is null'
+            'message' => 'Range date Or Type Engine Can\'t empty'
           ));
       }
 
