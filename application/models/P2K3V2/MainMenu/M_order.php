@@ -1069,4 +1069,35 @@ class M_Order extends CI_Model
         $sql = "SELECT * from k3.tbon_sepatu where no_bon = '$nobon'";
         return $this->db->query($sql)->result_array();
     }
+
+    public function getBonSpt($id)
+    {
+        $sql = "SELECT * from k3.tbon_sepatu where id_oracle = '$id'";
+        $row = $this->db->query($sql)->num_rows();
+        if ($row == 1) {
+            return $this->db->query($sql)->row_array();
+        }else{
+            echo "Terdapat Anomali Data";exit();
+        }
+    }
+
+    public function insertHpsBonSpt($data)
+    {
+        $this->db->insert('k3.tbon_sepatu_hapus', $data);
+        return $this->db->affected_rows();
+    }
+
+    public function delSptPost($id)
+    {
+        $this->db->where('id_oracle', $id);
+        $this->db->delete('k3.tbon_sepatu');
+        return $this->db->affected_rows();
+    }
+
+    public function delSptOrc($id)
+    {
+        $this->oracle->where('NO_ID', $id);
+        $this->oracle->delete('APPS.IM_MASTER_BON');
+        return $this->oracle->affected_rows();
+    }
 }

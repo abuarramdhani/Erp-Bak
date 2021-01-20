@@ -108,7 +108,7 @@ class M_Dtmasuk extends CI_Model
 
     public function cekseksi($ks)
     {
-        $sql = "select section_name from er.er_section where section_code like '$ks%' limit 1";
+        $sql = "select section_code, section_name from er.er_section where section_code like '$ks%' limit 1";
         $query = $this->erp->query($sql);
         // echo $sql;exit();
         return $query->result_array();
@@ -934,10 +934,10 @@ class M_Dtmasuk extends CI_Model
 
         // jika ada isinya
         if ($bonOracle) {
-            $nama = $this->erp->select('nama')->where_in('id_oracle', $arr_id)->get('k3.tbon_sepatu')->result_array();
-
+            $nama = $this->erp->select('*')->where_in('id_oracle', $arr_id)->get('k3.tbon_sepatu')->result_array();
+            $nama = array_column($nama, 'nama', 'id_oracle');
             for ($i = 0; $i < count($bonOracle); $i++) {
-                $bonOracle[$i]['NAMA'] = $nama[$i]['nama'];
+                $bonOracle[$i]['NAMA'] = $nama[$bonOracle[$i]['NO_ID']];
             }
         }
 
@@ -1840,5 +1840,15 @@ class M_Dtmasuk extends CI_Model
                 where NO_BON = '$nobon'
                 and NO_ID in ($id_oracle)";
          return $this->oracle->query($sql)->result_array();
+    }
+
+    public function getTbonSpatu($id_oracle)
+    {
+        if(empty($id_oracle)) return false;
+        if (is_array($id_oracle)) {
+            $id_oracle = implode(',', $id_oracle);
+        }
+        $sql = "SELECT * FROM k3.tbon_sepatu where id_oracle in ($id_oracle)";
+        return $this->db->query($sql)->result_array();
     }
 }

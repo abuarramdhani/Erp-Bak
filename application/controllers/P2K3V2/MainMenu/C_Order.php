@@ -2361,6 +2361,16 @@ class C_Order extends CI_Controller
 		$ks = $seksi[0]['section_name'];
 		$monitorbon = $this->M_dtmasuk->monitorbonOracle($ks, $pr);
 		$monitorbonSafetyShoes = $this->M_dtmasuk->getBonSafetyShoes($ks, $pr);
+		$arrBs = array_column($monitorbonSafetyShoes, 'NO_ID');
+		$monitorShoesPostgres = $this->M_dtmasuk->getTbonSpatu($arrBs);
+		if ($monitorShoesPostgres && !empty($monitorShoesPostgres)) {
+			$narrSS = array();
+			foreach ($monitorShoesPostgres as $k) {
+				$key = $k['id_oracle'];
+				$narrSS[$key] = $k;
+			}
+			$data['ShoesP'] = $narrSS;
+		}
 
 		$count = count($monitorbon);
 		$bon_apd = array();
@@ -2829,5 +2839,28 @@ class C_Order extends CI_Controller
 		$pdf->WriteHTML($stylesheet, 1);
 		$pdf->WriteHTML($html);
 		$pdf->Output($filename, 'I'); // dicomment maybe tidak diperlukan
+	}
+
+	public function HapusBon()
+	{
+		$id = $this->input->post('id');
+		$alasan = $this->input->post('alasan');
+		$seksi = $this->input->post('seksi');
+		$periode = $this->input->post('periode');
+		$ks = str_replace(' ', '+', $seksi);
+		$pr = str_replace(' ', '+', $periode);
+		$get = 'k3_adm_ks='.$ks.'&k3_periode='.$pr;
+
+		$data = $this->M_order->getBonSpt($id);
+		$data['delete_by'] = $this->session->user;
+		$data['delete_date'] = date('Y-m-d H:i:s');
+		$data['alasan_hapus'] = $alasan;
+
+		$ins = $this->M_order->insertHpsBonSpt($data);
+
+		$del = $this->M_order->delSptPost($id);
+		$del = $this->M_order->delSptOrc($id);
+
+		redirect('p2k3adm_V2/Admin/monitoringBon?'.$get);
 	}
 }
