@@ -18,13 +18,13 @@
 					<?= ": " ,$this->session->user;?>
 					</th>
 					<th style="text-align: left" >
-                    <?php if ($a = $date) {
-                        $bulanIndo = ['','Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September' , 'Oktober', 'November', 'Desember'];
+                    <?php if ($a = date('Y-m-d')) {
+                        $bulanIndo = ['', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September' , 'Oktober', 'November', 'Desember'];
                     }   $s = explode('-',$a);
-							$mounth = $bulanIndo[abs($s[0])];
-							$y = $year;
-							
-                            echo('BULAN : ' .$mounth. ' ' .$s[1]);
+                            $day = $s[2];
+                            $mon = $s[1];
+                            $year = $s[0];
+                            echo('BULAN : ' .$bulanIndo[abs($mon - 1)]. ' ' .$year);
                      ?>
 					</th>
 				</tr>
