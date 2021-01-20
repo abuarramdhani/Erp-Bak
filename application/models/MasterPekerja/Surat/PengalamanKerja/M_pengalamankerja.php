@@ -209,7 +209,6 @@ class M_pengalamankerja extends CI_Model
 				    	concat(tp.noind,' - ',trim(tp.nama)) as pekerja,
 				    	ts.isi_surat,
 				    	ts.tgl_kena::date,
-				    	ts.tgl_masuk::date,
 				      ts.kodesie,
 				    	ts.tgl_cetak::date,
 				    	ts.tgl_surat::date,

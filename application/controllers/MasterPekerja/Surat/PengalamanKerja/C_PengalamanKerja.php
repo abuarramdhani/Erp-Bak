@@ -70,14 +70,6 @@ class C_PengalamanKerja extends CI_Controller
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 		$data['isisuratpengalaman'] = $this->M_pengalamankerja->isiSuratPengalaman();
 		$data['nomor'] = $this->M_pengalamankerja->nomorSuratPengalaman();
-		// $data['data']	=	$this->M_pengalamankerja->detailPekerja($noind);
-		// kalau pakai ini nggak bisa ji tadi aku coba error
-		// awalnya $data ini
-		// berarti di view diilangi aja, nanti ngisi nya pas ganti noind
-		// echo "<pre>";
-		// print_r($data['nomor']);
-		// echo "</pre>";
-		// exit();
 
 		$this->load->view('V_Header', $data);
 		$this->load->view('V_Sidemenu', $data);
@@ -94,7 +86,6 @@ class C_PengalamanKerja extends CI_Controller
 
 	public function DetailisiSuratPengalaman()
 	{
-		//aji aku masih belum tahu dapat kd_isi nya TxtIsiSuratPengalaman
 		$kd =	$this->input->post('kd'); // ini ngambil dari ajax data 
 		$data = $this->M_pengalamankerja->DetailisiSuratPengalaman($kd); // ini isisuratpengalaman
 		echo json_encode($data);
@@ -102,7 +93,6 @@ class C_PengalamanKerja extends CI_Controller
 
 	public function TemplateisiSuratPengalaman()
 	{
-		//aji aku masih belum tahu dapat kd_isi nya TxtIsiSuratPengalaman
 		$kd =	$this->input->post('kd'); // ini ngambil dari ajax data 
 		$data = $this->M_pengalamankerja->DetailisiSuratPengalaman($kd); // ini isisuratpengalaman
 		echo json_encode($data);
@@ -138,7 +128,7 @@ class C_PengalamanKerja extends CI_Controller
 	}
 
 	public function detailPekerja()
-	{ //-> $noind ini masih dipakai ? kalo tidak, bisa dihapus, kalau masih, bisa diganti $noind=false maksude piye ji?
+	{
 		$noind 				=	$this->input->post('noind');
 		$data 		=	$this->M_pengalamankerja->detailPekerja($noind);
 		echo json_encode($data);
@@ -153,7 +143,6 @@ class C_PengalamanKerja extends CI_Controller
 		$data_insert = array(
 			'kd_surat' 	=> $this->input->post('txtMPSuratPengalamanKerjaKodeSurat'),
 			'no_surat' 	=> $this->input->post('txtMPSuratPengalamanKerjaNoSurat'),
-			'tgl_masuk'	=> $this->input->post('txtMPSuratPengalamanKerjaMasuk'),
 			'tgl_kena' 	=> $this->input->post('txtMPSuratPengalamanKerjaSampai'),
 			'noind' 		=> $this->input->post('slcMPSuratPengalamanKerjaPekerja'),
 			'kodesie' 	=> $this->input->post('txtMPSuratPengalamanKerjaKodesie'),
@@ -241,7 +230,6 @@ class C_PengalamanKerja extends CI_Controller
 		$data_update = array(
 			'kd_surat' 	=> $this->input->post('txtMPSuratPengalamanKerjaKodeSurat'),
 			'no_surat' 	=> $this->input->post('txtMPSuratPengalamanKerjaNoSurat'),
-			'tgl_masuk'	=> $this->input->post('txtMPSuratPengalamanKerjaMasuk'),
 			'tgl_kena' 	=> $this->input->post('txtMPSuratPengalamanKerjaSampai'),
 			'noind' 		=> $this->input->post('slcMPSuratPengalamanKerjaPekerja'),
 			'kodesie' 	=> $this->input->post('txtMPSuratPengalamanKerjaKodesie'),
