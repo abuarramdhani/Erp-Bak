@@ -24,6 +24,7 @@
                                         placeholder="Purchase Order Number" value="<?= $po_Lnumber; ?>">
                                 </div>
                                 <input type="hidden" id="txtPMSPOStatusPo" name="txtPMSPOStatusPo">
+                                <div class="col-sm-6 divPMSPOWarnAddrNotFound" style="height: 30px; float:left;display:none">
                                     <!-- timeline time label -->
                                     <ul class="timeline" style="margin:0px">
                                         <li class="time-label" style="margin:0px">
