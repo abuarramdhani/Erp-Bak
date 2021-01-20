@@ -2411,6 +2411,15 @@ $route['MasterPekerja/SettingKecelakaanKerja'] = 'MasterPekerja/Laporan/C_Index/
 $route['MasterPekerja/SettingKecelakaanKerja/(:any)'] = 'MasterPekerja/Laporan/C_Index/$1';
 $route['MasterPekerja/SettingKecelakaanKerja/(:any)/(:any)'] = 'MasterPekerja/Laporan/C_Index/$1/$2';
 
+//-------------------------------------------------- Resume Medis -----------------------------------------------//
+$route['MasterPekerja/ResumeMedis']	= 'MasterPekerja/Other/ResumeMedis/C_Index';
+$route['MasterPekerja/ResumeMedis/(:any)']			=	'MasterPekerja/Other/ResumeMedis/C_Index/$1';
+$route['MasterPekerja/ResumeMedis/(:any)/(:any)']	=	'MasterPekerja/Other/ResumeMedis/C_Index/$1/$2';
+$route['MasterPekerja/SettingResumeMedis'] = 'MasterPekerja/Other/ResumeMedis/C_Index/dataPerusahaan';
+$route['MasterPekerja/SettingResumeMedis/(:any)'] = 'MasterPekerja/Other/ResumeMedis/C_Index/$1';
+$route['MasterPekerja/SettingResumeMedis/(:any)/(:any)'] = 'MasterPekerja/Other/ResumeMedis/C_Index/$1/$2';
+
+
 //--------------------------------------------------- Warehouse --------------------------------------------------//
 
 $route['WarehouseSPB'] 								= 'WarehouseSPB/C_Index';
