@@ -7,7 +7,7 @@
 						NAMA
 					</th>
 					<th style="text-align: left">
-					<?= ": ",$this->session->employee;?>
+					<?= ": ",$this->session->employee; ?>
 					</th>
 				</tr>
 				<tr>

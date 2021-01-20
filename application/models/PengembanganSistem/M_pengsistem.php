@@ -49,7 +49,7 @@ class M_pengsistem extends CI_Model
 
 	public function seksiunit($search)
 	{
-		$query = $this->db->query("select * from saps.sie_departemen where singkat = '".$search."' ");
+		$query = $this->db->query("SELECT * from saps.sie_departemen where singkat = '".$search."' ");
 		return $query->result_array();
 	}
 	public function input_select_seksi($data)
@@ -60,27 +60,27 @@ class M_pengsistem extends CI_Model
 
 	public function select_seksi()
 	{
-		$query = $this->db->query("select * from saps.sie_departemen order by seksi asc");
+		$query = $this->db->query("SELECT * from saps.sie_departemen order by seksi asc");
 		return $query->result_array();
 	}
 
 	public function set_total_fp($data,$a)
 	{
 	
-		$query = $this->db->query("select max (*) from saps.doc_flowproses where seksi_pengguna = '".$data."' and doc = '".$a."' ");
+		$query = $this->db->query("SELECT max (*) from saps.doc_flowproses where seksi_pengguna = '".$data."' and doc = '".$a."' ");
 		return $query->result_array();
 	}
 
 	public function hitung_data_seksi_fp($data,$a)
 	{
 	
-		$query = $this->db->query("select * from saps.doc_flowproses where seksi_pengguna = '".$data."' and doc = '".$a."' ");
+		$query = $this->db->query("SELECT * from saps.doc_flowproses where seksi_pengguna = '".$data."' and doc = '".$a."' ");
 		return $query->result_array();
 	}
 
 	public function cek_data_nomor_fp($data)
 	{
-		$query = $this->db->query("select max (nomor_flow) from saps.doc_flowproses where seksi_pengguna = '$data'");
+		$query = $this->db->query("SELECT max (nomor_flow) from saps.doc_flowproses where seksi_pengguna = '$data'");
 		return $query->result_array();
 	}
 
@@ -92,14 +92,14 @@ class M_pengsistem extends CI_Model
 
 	public function list_edit_fp($data)
 	{
-		$query = $this->db->query("select * from saps.doc_flowproses where id = '".$data."' ");
+		$query = $this->db->query("SELECT * from saps.doc_flowproses where id = '".$data."' ");
 
 		return $query->result_array();
 	}
 
 	public function list_data_fp()
 	{
-		$query = $this->db->query("select * from saps.doc_flowproses order by nomor_doc asc ");
+		$query = $this->db->query("SELECT * from saps.doc_flowproses order by nomor_doc asc ");
 
 		return $query->result_array();
 	}
@@ -133,26 +133,26 @@ class M_pengsistem extends CI_Model
 
 	public function list_data_copwi()
 	{
-		$query = $this->db->query("select * from saps.doc_cop_wi order by nomor_doc asc ");
+		$query = $this->db->query("SELECT * from saps.doc_cop_wi order by nomor_doc asc ");
 
 		return $query->result_array();
 	}
 
 	public function set_total_copwi($seksi,$number,$doc)
 	{
-		$query = $this->db->query("select count (*) from saps.doc_cop_wi where seksi_sop = '".$seksi."' and number_sop = '".$number."' and doc = '".$doc."' ");
+		$query = $this->db->query("SELECT count (*) from saps.doc_cop_wi where seksi_sop = '".$seksi."' and number_sop = '".$number."' and doc = '".$doc."' ");
 		return $query->result_array();
 	}
 
 	public function set_number_copwi($seksi,$number,$doc)
 	{
-		$query = $this->db->query("select max (nomor_copwi) from saps.doc_cop_wi where seksi_sop = '".$seksi."' and number_sop = '".$number."' and doc = '".$doc."' ");
+		$query = $this->db->query("SELECT max (nomor_copwi) from saps.doc_cop_wi where seksi_sop = '".$seksi."' and number_sop = '".$number."' and doc = '".$doc."' ");
 		return $query->result_array();
 	}
 
 	public function cek_data_nomor_copwi($doc,$seksi,$number_sop)
 	{
-		$query = $this->db->query("select max (nomor_copwi) from saps.doc_cop_wi where doc = '".$doc."' and seksi_sop = '".$seksi."' and number_sop = '".$number_sop."'");
+		$query = $this->db->query("SELECT max (nomor_copwi) from saps.doc_cop_wi where doc = '".$doc."' and seksi_sop = '".$seksi."' and number_sop = '".$number_sop."'");
 		return $query->result_array();
 	}
 
@@ -164,7 +164,7 @@ class M_pengsistem extends CI_Model
 
 	public function list_edit_copwi($data)
 	{
-		$query = $this->db->query("select * from saps.doc_cop_wi where id = '".$data."' ");
+		$query = $this->db->query("SELECT * from saps.doc_cop_wi where id = '".$data."' ");
 
 		return $query->result_array();
 	}
@@ -198,20 +198,20 @@ class M_pengsistem extends CI_Model
 
 	public function list_data_um()
 	{
-		$query = $this->db->query("select * from saps.doc_usermanual order by nomor_doc asc ");
+		$query = $this->db->query("SELECT * from saps.doc_usermanual order by nomor_doc asc ");
 
 		return $query->result_array();
 	}
 
 	public function set_total_um($seksi,$number,$doc)
 	{
-		$query = $this->db->query("select count (*) from saps.doc_usermanual where seksi_sop = '".$seksi."' and number_sop = '".$number."' and doc = '".$doc."' ");
+		$query = $this->db->query("SELECT count (*) from saps.doc_usermanual where seksi_sop = '".$seksi."' and number_sop = '".$number."' and doc = '".$doc."' ");
 		return $query->result_array();
 	}
 
 	public function set_number_um($seksi,$number,$doc)
 	{
-		$query = $this->db->query("select max (nomor_um) from saps.doc_usermanual where seksi_sop = '".$seksi."' and number_sop = '".$number."' and doc = '".$doc."' ");
+		$query = $this->db->query("SELECT max (nomor_um) from saps.doc_usermanual where seksi_sop = '".$seksi."' and number_sop = '".$number."' and doc = '".$doc."' ");
 		return $query->result_array();
 	}
 
@@ -223,7 +223,7 @@ class M_pengsistem extends CI_Model
 
 	public function list_edit_um($data)
 	{
-		$query = $this->db->query("select * from saps.doc_usermanual where id = '".$data."' ");
+		$query = $this->db->query("SELECT * from saps.doc_usermanual where id = '".$data."' ");
 
 		return $query->result_array();
 	}
@@ -236,7 +236,7 @@ class M_pengsistem extends CI_Model
 
 	public function cek_data_nomor_um($data)
 	{
-		$query = $this->db->query("select * from saps.doc_usermanual where id = '$data' ");
+		$query = $this->db->query("SELECT * from saps.doc_usermanual where id = '$data' ");
 		return $query->result_array();
 	}
 
@@ -263,14 +263,14 @@ class M_pengsistem extends CI_Model
 
 	public function list_data_memo()
 	{
-		$query = $this->db->query("select * from saps.doc_penomoran_memo order by date_doc desc ");
+		$query = $this->db->query("SELECT * from saps.doc_penomoran_memo order by date_doc desc ");
 		
 		return $query->result_array();
 	}
 
 	public function list_edit_memo($data)
 	{
-		$query = $this->db->query("select * from saps.doc_penomoran_memo where id = '".$data."' ");
+		$query = $this->db->query("SELECT * from saps.doc_penomoran_memo where id = '$data'");
 
 		return $query->result_array();
 	}
@@ -278,7 +278,7 @@ class M_pengsistem extends CI_Model
 	public function getCountData($date,$kode)
 	{
 	
-		$query = $this->db->query("select count (*) from saps.doc_penomoran_memo where date_doc between '".$date."-01' and '".$date."-".date('t')."' and kode_doc = '".$kode."' ");
+		$query = $this->db->query("SELECT count (*) from saps.doc_penomoran_memo where date_doc between '".$date."-01' and '".$date."-".date('t')."' and kode_doc = '".$kode."' ");
 		return $query->result_array();
 	}
 
@@ -291,7 +291,7 @@ class M_pengsistem extends CI_Model
 	public function total_data($date,$kode)
 	{
 	
-		$query = $this->db->query("select count (*) from saps.doc_penomoran_memo where date_doc between '".$date."-01' and '".$date."-".date('t')."' and kode_doc ='".$kode."' ");
+		$query = $this->db->query("SELECT count (*) from saps.doc_penomoran_memo where date_doc between '".$date."-01' and '".$date."-".date('t')."' and kode_doc ='".$kode."' ");
 		return $query->result_array();
 	}
 
@@ -327,21 +327,21 @@ class M_pengsistem extends CI_Model
 
 	public function list_data_lkh()
 	{
-		$query = $this->db->query("select * from saps.lkh_operator_ps order by tglmasuk desc ");
+		$query = $this->db->query("SELECT * from saps.lkh_operator_ps order by tglmasuk desc ");
 		
 		return $query->result_array();
 	}
 
 	public function set_lkh($param,$user)
 	{
-		$query = $this->db->query("select * from saps.lkh_operator_ps where bulan = '".$param."' and pic = '".$user."' order by tglmasuk asc ");
+		$query = $this->db->query("SELECT * from saps.lkh_operator_ps where bulan = '".$param."' and pic = '".$user."' order by tglmasuk asc ");
 
 		return $query->result_array();
 	}
 
 	public function set_lkh1($user)
 	{
-		$query = $this->db->query("select * from saps.lkh_operator_ps where bulan = '".date('m-Y')."' and pic = '".$user."' order by tglmasuk asc ");
+		$query = $this->db->query("SELECT * from saps.lkh_operator_ps where bulan = '".date('m-Y')."' and pic = '".$user."' order by tglmasuk asc ");
 
 		return $query->result_array();
 	}
@@ -372,7 +372,7 @@ class M_pengsistem extends CI_Model
 
 	public function cek_data_lkh($data,$data_user)
 	{
-		$query = $this->db->query("select * from saps.lkh_operator_ps where tglmasuk = '$data' and pic = '$data_user'");
+		$query = $this->db->query("SELECT * from saps.lkh_operator_ps where tglmasuk = '$data' and pic = '$data_user'");
 		return $query->result_array();
 	}
 
@@ -384,7 +384,7 @@ class M_pengsistem extends CI_Model
 
 	public function view_alret()
 	{
-		$query = $this->db->query("select * from saps.sie_departemen order by seksi asc ");
+		$query = $this->db->query("SELECT * from saps.sie_departemen order by seksi asc ");
 		
 		return $query->result_array();
 	}
@@ -395,5 +395,79 @@ class M_pengsistem extends CI_Model
 		$this->db->delete('saps.sie_departemen');
 	}
 
+	public function setmasterlist($post)
+	{
+		$a = array('saps.doc_usermanual' => 'UM','saps.doc_flowproses'=> 'FP', 'saps.doc_cop_wi'=>'WI', 'saps.doc_cop_wi'=>'COP');
+		$b = array_search($post,$a);
+			$this->db->select('*');
+			$this->db->from($b);
+		$query = $this->db->get();
+		
+		return $query->result_array();
+	}
+
+	public function list_data1()
+	{
+		$query = $this->db->query("SELECT * from saps.akses_penomoran");
+
+		return $query->result_array();
+	}
+
+	public function countsm($data)
+	{
+		$query = $this->db->query("SELECT count (id_data) from saps.akses_penomoran where id_data = '$data'");
+		return $query->result_array();
+	}
+
+	public function data_cetakmemo1($data,$ke)
+	{
+		$query = $this->db->query("SELECT * from saps.akses_penomoran where id_data = '$data' and ke = '$ke'");
+		
+		return $query->result_array();
+	}
+
+	public function data_cetakmemo($data)
+	{
+		$query = $this->db->query("SELECT * from saps.akses_penomoran where id_data = '$data'");
+		
+		return $query->result_array();
+	}
+
+	public function getdatamemo($data)
+	{
+		$this->load->database();
+		$this->db->insert('saps.akses_penomoran', $data);
+	}
+
+	public function delete_code1($data)
+	{
+		$_id = $this->db->get_where('saps.akses_penomoran',['id' => $data])->row();
+		$query = $this->db->delete('saps.akses_penomoran',['id'=>$data]);
+		$nama_baru = preg_replace("/[\/\&%#\$]/", "_", $_id->id_data);
+		if($_id->id_data == null){
+			echo null;
+		}else {
+			$files = array();
+				foreach (new FilesystemIterator('assets/upload/PengembanganSistem/memo/') as $file) {
+					switch (strtolower($file->getExtension())) {
+						case 'gif':
+						case 'jpg':
+						case 'jpeg':
+						case 'png':
+							// print_r($files[] = $file);
+							$explode = explode('.', $file->getBasename());
+							$files[$explode[0]][] = $file;
+					}
+				}
+				if (!empty($files[$nama_baru])) {
+					foreach ($files[$nama_baru] as $doc) {
+						unlink($doc->getPathname());
+					}
+				}else {
+					echo null;
+				}
+		}
+		
+	}
 
 }

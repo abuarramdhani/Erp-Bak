@@ -1,4 +1,12 @@
 <section class="content">
+    <style>
+        th,td{
+            white-space: nowrap;
+        }
+        th{
+            background-color: #d9edf7;
+        }
+    </style>
     <div class="inner" >
         <div class="row">
                 <div class="col-lg-12">
@@ -152,22 +160,37 @@
                             </form>
                               <div class="box box-primary">
                                 <div class="box-header with-border">
-                                  <h4 style="font-weight:bold;"><i class="fa fa-files-o"></i> Monitoring Flow Proses</h4>
+                                    <div class="col-lg-6"><h4 style="font-weight:bold;"><i class="fa fa-files-o"></i> Monitoring Flow Proses</h4></div>
+                                        <form  onkeydown="return event.key != 'Enter';" method="post" action="<?php echo base_url('PengembanganSistem/excel_masterlist') ?>" class="form-horizontal">
+                                            <div class="col-sm-12 row">
+                                                <h5 class="col-sm-2" style="margin-top: 25px;"><b> Cetak Masterlist &nbsp;:</b></h5>
+                                                <div class="col-sm-3"><b>Judul Masterlist</b>
+                                                    <input type="text" style="display:none;" name="data" value="FP">
+                                                    <input type="text" name="judulmasterlist" placeholder="Judul Masterlist" class="form-control" style="text-transform:uppercase">
+                                                </div>
+                                                <div class="col-sm-3"><b>Document Controller</b>
+                                                    <select class="form-control select2 input_selectpic" name="picmasterlist" id="master" required="">
+                                                        <option value=""></option>
+                                                    </select>
+                                                </div>
+                                                <button class="btn btn-sm btn-warning" style="bottom: 0.5em; position: relative; top: 20px;"><span style="font-size: 16px;" class="fa fa-file-excel-o"></span> - Excel </button>
+                                            </div>
+                                        </form>
                                 </div>
                                 <div class="box-body">
                                   <div class="table-responsive">
                                     <table class="table table-striped table-bordered table-hover text-left " id="dataTables-PengSistem" style="font-size:12px; width:max-content;">
                                       <thead>
-                                        <tr class="bg-info">
-                                            <th><center>No.</center></th>
-                                            <th><center>No. Dokumen</center></th>
-                                            <th><center>Judul Dokumen</center></th>
-                                            <th><center>Date.Rev.</center></th>
-                                            <th><center>No.Rev.</center></th>
-                                            <th><center>File</center></th>
-                                            <th><center>PIC</center></th>
-                                            <th><center>Status</center></th>
-                                            <th><center>Action</center></th>
+                                        <tr>
+                                            <th>No.</th>
+                                            <th>No. Dokumen</th>
+                                            <th>Judul Dokumen</th>
+                                            <th>Date.Rev.</th>
+                                            <th>No.Rev.</th>
+                                            <th>File</th>
+                                            <th>PIC</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
                                         </tr>
                                       </thead>
                                       <tbody>
@@ -187,16 +210,16 @@
                                                 echo $hasil;
                                         }?></td>
                                         <td><?php echo $row["number_rev"];?></td>
-                                        <td><a onmouseover="link_ps(<?php echo $row['id']?>)" id="fp_lilola<?php echo $row['id']?>" data-toggle="tooltip" title="<?= $row['file'];?>" href="<?php echo base_url('assets/upload/PengembanganSistem/fp').'/'.$row['file'];?>" target="_blank"><?php if ($row['file'] != "" ) {echo '<i class="far fa-file-pdf"> View</i>'; } ?></a>
+                                        <td><a onmouseover="link_ps(<?php echo $row['id']?>)" id="fp_lilola<?php echo $row['id']?>" data-toggle="tooltip" title="<?= $row['nomor_doc'];?>" href="<?php echo base_url('assets/upload/PengembanganSistem/fp').'/'.$row['file'];?>" target="_blank"><?php if ($row['file'] != "" ) {echo '<i class="far fa-file-pdf"> View</i>'; } ?></a>
                                         </td>
                                         <td><?php echo $row["pic_doc"];?></td>
                                         <td><?php echo $row["status_doc"];?></td>
                                         <td>
-                                        <div <?php if(strlen($row['file']) !== 0){echo 'hidden=""';} ?> >
-                                            <div class="btn-group">
-                                            <a class="icon-action btn btn-success" style="padding: 6px;" href="<?php echo base_url('PengembanganSistem/edit_flow/'.$row['id'])?>" title="Edit"><i class="fa fa-pencil"></i></a>
-                                            <a class="icon-action btn btn-warning" style="padding: 6px;" data-toggle="modal" data-toggle="tooltip" data-target="<?php echo "#modal_edit".$row['id'];?>" title="Upload"><i class="fa fa-cloud-upload"></i></a>
-                                            <a class="icon-action btn btn-danger" style="padding: 6px;" title="Delete" onclick="delete_flow(<?= $row['id']?>)"><i class="fa fa-close"></i></a>
+                                        <div  >
+                                            <div class="btn-group" style="width: max-content;<?php if(strlen($row['file']) !== 0){echo 'display:none';} ?>">
+                                            <a class="btn-xs btn btn-success" href="<?php echo base_url('PengembanganSistem/edit_flow/'.$row['id'])?>" title="Edit"><i class="fa fa-pencil"></i></a>
+                                            <a class="btn-xs btn btn-warning" data-toggle="modal" data-toggle="tooltip" data-target="<?php echo "#modal_edit".$row['id'];?>" title="Upload"><i class="fa fa-cloud-upload"></i></a>
+                                            <a class="btn-xs btn btn-danger" title="Delete" onclick="delete_flow(<?= $row['id']?>)"><i class="fa fa-close"></i></a>
                                             </div>
                                         </div>
                                         </td>

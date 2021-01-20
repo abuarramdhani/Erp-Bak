@@ -4,6 +4,9 @@
         vertical-align : middle;
         text-align : center;
     }
+    th{
+        background: darkgray; color: white;
+    }
 </style>
 <section class="content">
     <div class="inner" >
@@ -270,15 +273,15 @@
                                                 </div>
                                                 <input type="text" name="data" value="<?php if(strlen($bulan)>1){echo $bulan.'-'.$tahun;} ?>" required="required" hidden="hidden">
                                                 <div class="col-sm-4 center" style="float: right">
-                                                        <button onclick="exspotexcel()" style="position: absolute;right: 7em;bottom: 0.5em;" class="btn btn-success" formtarget="_blank" ><span style="font-size: 16px;" class="fa fa-file-excel-o"></span> - Excel </button>
-                                                        <button onclick="exspotpdf()" style="position: absolute;right: 1em;bottom: 0.5em;" class="btn btn-warning" formtarget="_blank" ><span style="font-size: 16px;" class="fa fa-file-pdf-o"></span> - Print </button>
+                                                        <button onclick="exspotexcel()" style="position: absolute;right: 7em;bottom: 0.5em;" class="btn btn-sm btn-success" formtarget="_blank" ><span style="font-size: 16px;" class="fa fa-file-excel-o"></span> - Excel </button>
+                                                        <button onclick="exspotpdf()" style="position: absolute;right: 1em;bottom: 0.5em;" class="btn btn-sm btn-warning" formtarget="_blank" ><span style="font-size: 16px;" class="fa fa-file-pdf-o"></span> - Print </button>
                                                 </div>
                                             </form>
                                 </div>
                                 <div class="box-body">
                                     <div class="table-responsive">
                                         <table class="table table-striped table-bordered table-hover text-left " id="dataTables-PengSistem" style="font-size:12px; width:max-content;">
-                                            <thead style="background: darkgray; color: white;">
+                                            <thead>
                                                 <tr>
                                                     <th hidden="" rowspan="2">No</th>
                                                     <th rowspan="2">Hari</th>
@@ -331,7 +334,7 @@
                                             <td><?php if ($row["ct"]=='V') {echo "✓"; } ;?></td>
                                             <td><?php if ($row["ip"]=='V') {echo "✓"; } ;?></td>
                                             <td>
-                                                <a class="btn btn-danger" style="padding: 6px;" title="Delete" onclick="delete_lkh(<?= $row['id']?>)"><i class="fa fa-close"></i></a>
+                                                <a class="btn btn-xs btn-danger" style="padding: 6px;" title="Delete" onclick="delete_lkh(<?= $row['id']?>)"><i class="fa fa-close"></i></a>
                                             </td>
                                             </tr>
                                             <?php } ?>
