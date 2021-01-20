@@ -47,7 +47,7 @@
 							Kode Brg
 						</td>
 						<td colspan="2" style="padding:5px;font-size:12px;border-right: 1px solid black;">
-							<?php echo $var['KODE_BARANG'] ?>
+							<?php echo $var['KODE_SETELAH'] ?>
 						</td>
 						<!-- <td rowspan="3" style="border-right: 1px solid black;padding:5px;font-size:9px;">
 							Lengkap dengan...
@@ -58,20 +58,36 @@
 							Nama Brg
 						</td>
 						<td colspan="2" style="padding:5px;font-size:12px;border-right: 1px solid black;border-top: 1px solid black;">
-							<?php echo $var['DESKRIPSI'] ?>
+							<?php echo $var['TYPE_SETELAH'] ?>
 						</td>
 					</tr>
 					<tr>
 						<td style="padding:5px;border-left: 1px solid black;border-bottom: 1px solid black;border-right: 1px solid black;">
 							Tipe
 						</td>
-						<td colspan="2" style="padding:5px;font-size:12px;border-right: 1px solid black;border-top: 1px solid black;background:#ffcd61">
+						<?php
+							switch ($var['WARNA_KIB']) {
+								case 'KUNING':
+									$warna = '#edd537';
+									break;
+								case 'PUTIH':
+									$warna = '#ffffff';
+									break;
+								case 'BIRU':
+									$warna = '#46acff';
+									break;
+								default:
+									$warna = '#47ffa1';
+									break;
+							}
+						 ?>
+						<td colspan="2" style="padding:5px;font-size:12px;border-right: 1px solid black;border-top: 1px solid black;background:<?php echo $warna ?>">
 							<center><h3 style="text-transform:uppercase"><?php echo $var['TYPE'] ?><h3></center>
 						</td>
 					</tr>
 					<tr>
 						<td colspan="3" style="padding:5px;border-left: 1px solid black;border-bottom: 1px solid black;border-right: 1px solid black;border-top: 1px solid black;">
-							<center> Untuk Produk<strong> bla bla</strong> </center>
+							<center> Untuk Produk<strong> <?php echo $var['PRODUK'] ?></strong> </center>
 						</td>
 						<!-- <td style="padding:5px;font-size:12px;border-right: 1px solid black;border-top: 1px solid black;border-bottom: 1px solid black;">
 							Opr. bla bla
@@ -115,7 +131,7 @@
 						Kode Brg
 					</td>
 					<td colspan="2" style="width:57%;padding:5px;font-size:12px;border-right: 1px solid black;">
-						<?php echo $var['KODE_BARANG'] ?>
+						<?php echo $var['KODE_SEBELUM'] ?>
 					</td>
 				</tr>
 				<tr>
@@ -123,7 +139,7 @@
 						Nama Brg
 					</td>
 					<td style="padding:5px;font-size:12px;border-right: 1px solid black;border-top: 1px solid black;">
-						<?php echo $var['DESKRIPSI'] ?>
+						<?php echo $var['TYPE_SEBELUM'] ?>
 					</td>
 					<td rowspan="3" style="width: 21%;padding:5px;border-left: 1px solid black;border-bottom: 1px solid black;border-right: 1px solid black;border-top: 1px solid black;">
 						 <center>
@@ -135,7 +151,7 @@
 					<td style="padding:5px;border-left: 1px solid black;border-bottom: 1px solid black;border-right: 1px solid black;">
 						Tipe
 					</td>
-					<td style="padding:5px;font-size:12px;border-right: 1px solid black;border-top: 1px solid black;background:#ffcd61">
+					<td style="padding:5px;font-size:12px;border-right: 1px solid black;border-top: 1px solid black;background:<?php echo $warna ?>">
 						<center><h3 style="text-transform:uppercase"><?php echo $var['TYPE'] ?><h3></center>
 					</td>
 				</tr>

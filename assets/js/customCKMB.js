@@ -110,3 +110,9 @@ const filter_ckmb = () => {
     }
   })
 }
+
+$('.ckmb_pdf_cek').on('change', function () {
+  $('#ckmb_pdf').hide();
+  $('.ckmb_data').hide();
+  $('.ckmb_if_change').show()
+})

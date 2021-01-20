@@ -1,8 +1,9 @@
 <hr>
-<p class="label label-success" style="font-size:13px;">Showing Data With Range Date <strong style="color:#ffe492"><?php echo $range_date ?></strong> and Type Engine <strong style="color:#ffe492"><?php echo $tipe ?></strong></p>
+<p class="label label-secondary ckmb_if_change" style="font-size:13px;display:none; color:black">Klik <strong style="color:#2bb476">Filter</strong> kembali untuk menampilkan data yang anda pilih</p>
+<p class="label label-success ckmb_data" style="font-size:13px;">Menampilkan Data Dengan Rentang Tanggal <strong style="color:#ffe492"><?php echo $range_date ?></strong> dan Type Engine <strong style="color:#ffe492"><?php echo $tipe ?></strong></p>
 <br>
 <br>
-<div class="table-responsive">
+<div class="table-responsive ckmb_data">
   <table class="table table-striped table-bordered table-hover text-left tbl_mon_ckmb" style="font-size:12px;text-align:center">
     <thead>
       <tr class="bg-success">
@@ -36,7 +37,7 @@
   </table>
 </div>
 
-<center>
+<center id="ckmb_pdf">
   <button type="button" name="button" class="btn btn-danger" onclick="cetakCKMB()" style="font-weight:bold"> <i class="fa fa-file-pdf-o"></i> Cetak QR </button>
   <button type="button" name="button" class="btn btn-success" onclick="checklistCKMB()" style="margin-left:10px;font-weight:bold"> <i class="fa fa-file-pdf-o"></i> Cetak Checklist </button>
 </center>
