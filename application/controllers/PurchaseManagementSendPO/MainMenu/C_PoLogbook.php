@@ -54,7 +54,7 @@ class C_PoLogbook extends CI_Controller
         } else if (in_array($id_user, $adminPo)) {
             if($id_user == 'H6634' || $id_user == 'P0384' || $id_user == 'H8409'){
               $data['PoLogbook'] = $this->M_pologbook->getDataPObyNik('B0726');
-            } else if($id_user == 'K2298' || $id_user == 'P0603'){
+            } else if($id_user == 'P0603'){
               $data['PoLogbook'] = $this->M_pologbook->getDataPoTeam(['B0794', 'B0868']);
             } else if($id_user == 'P0391') {
               $data['PoLogbook'] = $this->M_pologbook->getDataPoTeam(['B0794', 'B0537']);
@@ -66,7 +66,7 @@ class C_PoLogbook extends CI_Controller
               $data['PoLogbook'] = $this->M_pologbook->getDataPObyNik('B0931');
             } else if($id_user == 'A2412') {
               $data['PoLogbook'] = $this->M_pologbook->getDataPObyNik('B0918');
-            }else if($id_user == 'A2275') {
+            }else if($id_user == 'A2275' || $id_user == 'K2298') {
               $data['PoLogbook'] = $this->M_pologbook->getDataPObyNik('B0932');
             }else if($id_user == 'A2375') {
               $data['PoLogbook'] = $this->M_pologbook->getDataPObyNik('B0668');
@@ -207,7 +207,7 @@ class C_PoLogbook extends CI_Controller
         } else if (in_array($BuyerNik, $adminPo)) {
             if($BuyerNik == 'H6634' || $BuyerNik == 'P0384' || $BuyerNik == 'H8409'){
               $data = $this->M_pologbook->getDataPObyNik('B0726');
-            } else if($BuyerNik == 'K2298' || $BuyerNik == 'P0603'){
+            } else if($BuyerNik == 'P0603'){
               $data = $this->M_pologbook->getDataPoTeam(['B0794', 'B0868']);
             } else if($BuyerNik == 'P0391') {
               $data = $this->M_pologbook->getDataPoTeam(['B0794', 'B0537']);
@@ -219,7 +219,7 @@ class C_PoLogbook extends CI_Controller
               $data = $this->M_pologbook->getDataPObyNik('B0931');
             } else if($BuyerNik == 'A2412') {
               $data = $this->M_pologbook->getDataPObyNik('B0918');
-            }else if($BuyerNik == 'A2275') {
+            }else if($BuyerNik == 'A2275' || $BuyerNik == 'K2298') {
               $data = $this->M_pologbook->getDataPObyNik('B0932');
             }else if($BuyerNik == 'A2375') {
               $data = $this->M_pologbook->getDataPObyNik('B0668');
