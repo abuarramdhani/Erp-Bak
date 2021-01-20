@@ -1082,7 +1082,7 @@ $(function () {
           $("#txtMPSuratPengalamanKerjaUnit").val(result[0]["unit"]);
           $("#txtMPSuratPengalamanKerjaDept").val(result[0]["dept"]);
           $("#txtMPSuratPengalamanKerjaMasuk").val(result[0]["masukkerja"]);
-          $("#txtMPSuratPengalamanKerjaMasuk").datepicker('update', result[0]["masukkerja"]);
+          // $("#txtMPSuratPengalamanKerjaMasuk").datepicker('update', result[0]["masukkerja"]);
           //var sampaiHtml = '<option value=""></option>';
           //sampaiHtml = sampaiHtml + '<option value="' + result[0]['akhkontrak'] + '">' + result[0]['akhkontrak'] + '</option>';
           //sampaiHtml = sampaiHtml + '<option value="1900-01-01">Tanggal dibuatnya surat keterangan ini dan masih bekerja</option>';
@@ -1188,24 +1188,27 @@ $(function () {
     console.log(a);
     console.log(b);
     console.log(c);
+    
     $.ajax({
       type: "get",
       dataType: "json",
       url: baseurl + "MasterPekerja/Surat/PengalamanKerja/ModalPDF/" + a,
       success: function (result) {
-        var jbtn = result.data[0].jabatan;
+        var jbtn = result.data.jabatan;
         // alert(result.data[0].noind.indexOf("H"));
-        if (result.data[0].noind.indexOf("H") == "0") {
+        if (result.data.noind.indexOf("H") == "0") {
           jbtn = "Operator";
         }
+        $('#pengalaman_tgl_masuk').datepicker('setDate', result.data.masukkerja)
         $("#jabatan_pengalaman").val(jbtn).trigger("change");
-        $("#nik_pengalaman").val(result.data[0].nik).trigger("change");
-        const parsedDate = moment(result.data[0].pengalaman_tglcetak, [
+        $("#status_jabatan").val(result.data.status_jabatan).trigger("change");
+        $("#nik_pengalaman").val(result.data.nik).trigger("change");
+        const parsedDate = moment(result.data.pengalaman_tglcetak, [
           "YYYY/MM/DD",
         ]).format("YYYY-MM-DD");
         $("#pengalaman_tglCetak")
           .val(
-            result.data[0].pengalaman_tglcetak
+            result.data.pengalaman_tglcetak
               ? parsedDate
               : moment().format("YYYY-MM-DD")
           ) // YYYY-MM-DD
@@ -1219,6 +1222,30 @@ $(function () {
       },
     });
   });
+
+  // select2 noind
+  $('#MP_pengalamankerja_approver').select2({
+    allowClear: false,
+    placeholder: "Pilih Penanda Tangan",
+    minimumInputLength: 1,
+    ajax: {
+      url: baseurl + "MasterPekerja/PerhitunganPesangon/daftar_pekerja_aktif",
+      dataType: "json",
+      delay: 500,
+      data: function (params) {
+        return {
+          term: params.term,
+        };
+      },
+      processResults: function (data) {
+        return {
+          results: $.map(data, function (obj) {
+            return { id: obj.noind, text: obj.pekerja };
+          }),
+        };
+      },
+    },
+  })
 
   $(document).on('click', '#prev_Pengalaman', function () {
     let id = $('#link_pengalaman').val()
@@ -3877,6 +3904,10 @@ $(document).ready(function () {
     format: "yyyy-mm-dd",
     todayHighlight: true,
   });
+  $('#pengalaman_tgl_masuk').datepicker({
+    autoclose: true,
+    format: 'yyyy-mm-dd'
+  })
   $("#pengalaman_tglCetak")
     .datepicker({
       autoclose: true,

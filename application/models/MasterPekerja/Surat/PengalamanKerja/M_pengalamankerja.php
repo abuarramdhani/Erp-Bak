@@ -27,12 +27,13 @@ class M_pengalamankerja extends CI_Model
 	public function detailPekerja($noind)
 	{
 		$getDetailPekerja 		= "select a.noind, nama, a.kd_jabatan, masukkerja::date,akhkontrak::date, alamat,desa,kec,kab,nik,
-	 		                           dept, bidang, unit, seksi, c.jabatan, a.kodesie,
+	 		                           dept, bidang, unit, seksi, c.jabatan, tor.jabatan as jabatan_organisasi, a.kodesie,
 	 		                           (case when d.status=1 then concat('Sudah Diapprove Hubker') else concat('Belum Diapprove Hubker') end) as apd
 					                    from hrd_khs.tpribadi a
-					                    inner join hrd_khs.tseksi b on a.kodesie=b.kodesie
-					                    inner join hrd_khs.trefjabatan c on a.noind=c.noind
-					                    left join \"Surat\".tpengembalian_apd d on a.noind=d.noind
+																inner join hrd_khs.tseksi b on a.kodesie=b.kodesie
+																inner join hrd_khs.trefjabatan c on a.noind=c.noind
+																left join \"Surat\".tpengembalian_apd d on a.noind=d.noind
+																left join hrd_khs.torganisasi tor on tor.kd_jabatan = a.kd_jabatan
 					                   where a.noind = '$noind'";
 
 		$query 	=	$this->personalia->query($getDetailPekerja);
@@ -143,78 +144,87 @@ class M_pengalamankerja extends CI_Model
 				    	tp.kab,
 				    	tp.prop,
 				    	tp.kodepos,
-				    	 to_char(current_date,'yyyy/mm/dd')as pengalaman_tglCetak,
+				    	to_char(current_date,'yyyy/mm/dd') as pengalaman_tglCetak,
 				    	left(kd_surat,4) as tahun,
 				    	right(kd_surat,2) as bulan,
-				    	case when extract(month from tp.tgllahir) = 1 then
-						concat(lpad(extract(day from tp.tgllahir)::text, 2, '0'),' Januari ',extract(year from tp.tgllahir))
-					 when extract(month from tp.tgllahir) = 2 then
-						concat(lpad(extract(day from tp.tgllahir)::text, 2, '0'),' Februari ',extract(year from tp.tgllahir))
-					 when extract(month from tp.tgllahir) = 3 then
-						concat(lpad(extract(day from tp.tgllahir)::text, 2, '0'),' Maret ',extract(year from tp.tgllahir))
-					 when extract(month from tp.tgllahir) = 4 then
-						concat(lpad(extract(day from tp.tgllahir)::text, 2, '0'),' April ',extract(year from tp.tgllahir))
-					 when extract(month from tp.tgllahir) = 5 then
-						concat(lpad(extract(day from tp.tgllahir)::text, 2, '0'),' Mei ',extract(year from tp.tgllahir))
-					 when extract(month from tp.tgllahir) = 6 then
-						concat(lpad(extract(day from tp.tgllahir)::text, 2, '0'),' Juni ',extract(year from tp.tgllahir))
-					 when extract(month from tp.tgllahir) = 7 then
-						concat(lpad(extract(day from tp.tgllahir)::text, 2, '0'),' Juli ',extract(year from tp.tgllahir))
-					 when extract(month from tp.tgllahir) = 8 then
-						concat(lpad(extract(day from tp.tgllahir)::text, 2, '0'),' Agustus ',extract(year from tp.tgllahir))
-					 when extract(month from tp.tgllahir) = 9 then
-						concat(lpad(extract(day from tp.tgllahir)::text, 2, '0'),' September ',extract(year from tp.tgllahir))
-					 when extract(month from tp.tgllahir) = 10 then
-						concat(lpad(extract(day from tp.tgllahir)::text, 2, '0'),' Oktober ',extract(year from tp.tgllahir))
-					when extract(month from tp.tgllahir) = 11 then
-						concat(lpad(extract(day from tp.tgllahir)::text, 2, '0'),' November ',extract(year from tp.tgllahir))
-					else
-						concat(lpad(extract(day from tp.tgllahir)::text, 2, '0'),' Desember ',extract(year from tp.tgllahir))
-					end lahir,
-					case when extract(month from tp.masukkerja) = 1 then
-						concat(lpad(extract(day from tp.masukkerja)::text, 2,'0'),' Januari ',extract(year from tp.masukkerja))
-					 when extract(month from tp.masukkerja) = 2 then
-						concat(lpad(extract(day from tp.masukkerja)::text, 2,'0'),' Februari ',extract(year from tp.masukkerja))
-					 when extract(month from tp.masukkerja) = 3 then
-						concat(lpad(extract(day from tp.masukkerja)::text, 2,'0'),' Maret ',extract(year from tp.masukkerja))
-					 when extract(month from tp.masukkerja) = 4 then
-						concat(lpad(extract(day from tp.masukkerja)::text, 2,'0'),' April ',extract(year from tp.masukkerja))
-					 when extract(month from tp.tgllahir) = 5 then
-						concat(lpad(extract(day from tp.masukkerja)::text, 2,'0'),' Mei ',extract(year from tp.masukkerja))
-					 when extract(month from tp.masukkerja) = 6 then
-						concat(lpad(extract(day from tp.masukkerja)::text, 2,'0'),' Juni ',extract(year from tp.masukkerja))
-					 when extract(month from tp.masukkerja) = 7 then
-						concat(lpad(extract(day from tp.masukkerja)::text, 2,'0'),' Juli ',extract(year from tp.masukkerja))
-					 when extract(month from tp.masukkerja) = 8 then
-						concat(lpad(extract(day from tp.masukkerja)::text, 2,'0'),' Agustus ',extract(year from tp.masukkerja))
-					 when extract(month from tp.masukkerja) = 9 then
-						concat(lpad(extract(day from tp.masukkerja)::text, 2,'0'),' September ',extract(year from tp.masukkerja))
-					 when extract(month from tp.masukkerja) = 10 then
-						concat(lpad(extract(day from tp.masukkerja)::text, 2,'0'),' Oktober ',extract(year from tp.masukkerja))
-					when extract(month from tp.masukkerja) = 11 then
-						concat(lpad(extract(day from tp.masukkerja)::text, 2,'0'),' November ',extract(year from tp.masukkerja))
-					else
-						concat(lpad(extract(day from tp.masukkerja)::text, 2,'0'),' Desember ',extract(year from tp.masukkerja))
-					end masuk,
+				    	(case when extract(month from tp.tgllahir) = 1 then
+								concat(lpad(extract(day from tp.tgllahir)::text, 2, '0'),' Januari ',extract(year from tp.tgllahir))
+							when extract(month from tp.tgllahir) = 2 then
+								concat(lpad(extract(day from tp.tgllahir)::text, 2, '0'),' Februari ',extract(year from tp.tgllahir))
+							when extract(month from tp.tgllahir) = 3 then
+								concat(lpad(extract(day from tp.tgllahir)::text, 2, '0'),' Maret ',extract(year from tp.tgllahir))
+							when extract(month from tp.tgllahir) = 4 then
+								concat(lpad(extract(day from tp.tgllahir)::text, 2, '0'),' April ',extract(year from tp.tgllahir))
+							when extract(month from tp.tgllahir) = 5 then
+								concat(lpad(extract(day from tp.tgllahir)::text, 2, '0'),' Mei ',extract(year from tp.tgllahir))
+							when extract(month from tp.tgllahir) = 6 then
+								concat(lpad(extract(day from tp.tgllahir)::text, 2, '0'),' Juni ',extract(year from tp.tgllahir))
+							when extract(month from tp.tgllahir) = 7 then
+								concat(lpad(extract(day from tp.tgllahir)::text, 2, '0'),' Juli ',extract(year from tp.tgllahir))
+							when extract(month from tp.tgllahir) = 8 then
+								concat(lpad(extract(day from tp.tgllahir)::text, 2, '0'),' Agustus ',extract(year from tp.tgllahir))
+							when extract(month from tp.tgllahir) = 9 then
+								concat(lpad(extract(day from tp.tgllahir)::text, 2, '0'),' September ',extract(year from tp.tgllahir))
+							when extract(month from tp.tgllahir) = 10 then
+								concat(lpad(extract(day from tp.tgllahir)::text, 2, '0'),' Oktober ',extract(year from tp.tgllahir))
+							when extract(month from tp.tgllahir) = 11 then
+								concat(lpad(extract(day from tp.tgllahir)::text, 2, '0'),' November ',extract(year from tp.tgllahir))
+							else
+								concat(lpad(extract(day from tp.tgllahir)::text, 2, '0'),' Desember ',extract(year from tp.tgllahir))
+							end) lahir,
+							(case when extract(month from tp.masukkerja) = 1 then
+								concat(lpad(extract(day from tp.masukkerja)::text, 2,'0'),' Januari ',extract(year from tp.masukkerja))
+							when extract(month from tp.masukkerja) = 2 then
+								concat(lpad(extract(day from tp.masukkerja)::text, 2,'0'),' Februari ',extract(year from tp.masukkerja))
+							when extract(month from tp.masukkerja) = 3 then
+								concat(lpad(extract(day from tp.masukkerja)::text, 2,'0'),' Maret ',extract(year from tp.masukkerja))
+							when extract(month from tp.masukkerja) = 4 then
+								concat(lpad(extract(day from tp.masukkerja)::text, 2,'0'),' April ',extract(year from tp.masukkerja))
+							when extract(month from tp.tgllahir) = 5 then
+								concat(lpad(extract(day from tp.masukkerja)::text, 2,'0'),' Mei ',extract(year from tp.masukkerja))
+							when extract(month from tp.masukkerja) = 6 then
+								concat(lpad(extract(day from tp.masukkerja)::text, 2,'0'),' Juni ',extract(year from tp.masukkerja))
+							when extract(month from tp.masukkerja) = 7 then
+								concat(lpad(extract(day from tp.masukkerja)::text, 2,'0'),' Juli ',extract(year from tp.masukkerja))
+							when extract(month from tp.masukkerja) = 8 then
+								concat(lpad(extract(day from tp.masukkerja)::text, 2,'0'),' Agustus ',extract(year from tp.masukkerja))
+							when extract(month from tp.masukkerja) = 9 then
+								concat(lpad(extract(day from tp.masukkerja)::text, 2,'0'),' September ',extract(year from tp.masukkerja))
+							when extract(month from tp.masukkerja) = 10 then
+								concat(lpad(extract(day from tp.masukkerja)::text, 2,'0'),' Oktober ',extract(year from tp.masukkerja))
+							when extract(month from tp.masukkerja) = 11 then
+								concat(lpad(extract(day from tp.masukkerja)::text, 2,'0'),' November ',extract(year from tp.masukkerja))
+							else
+								concat(lpad(extract(day from tp.masukkerja)::text, 2,'0'),' Desember ',extract(year from tp.masukkerja))
+							end) masuk,
 				    	te.unit,
-				    	te.dept,masukkerja::date,akhkontrak::date, ts.alamat,desa,kec,kab,nik,
+							te.dept,
+							masukkerja::date,
+							akhkontrak::date, 
+							ts.alamat,
+							desa,
+							kec,
+							kab,
+							nik,
 				    	concat(tp.noind,' - ',trim(tp.nama)) as pekerja,
 				    	ts.isi_surat,
 				    	ts.tgl_kena::date,
-				        ts.kodesie,
+				    	ts.tgl_masuk::date,
+				      ts.kodesie,
 				    	ts.tgl_cetak::date,
 				    	ts.tgl_surat::date,
 				    	(case when d.status=1 then concat('Sudah Diapprove Hubker') else concat('Belum Diapprove Hubker') end) as apd,
 				    	ts.cetak,
 				    	tp.jabatan,
 				    	ts.alamat
-					from \"Surat\".tsurat_pengalaman ts
-					left join hrd_khs.tpribadi tp on ts.noind = tp.noind
-					left join hrd_khs.tseksi te on ts.kodesie = te.kodesie
-					left join \"Surat\".tpengembalian_apd d on ts.noind=d.noind
-					where trim(kd_surat)='$kode' and trim(no_surat)='$nomor'
-					order by ts.tgl_surat desc ";
-		return $this->personalia->query($sql)->result_array();
+						from \"Surat\".tsurat_pengalaman ts
+							left join hrd_khs.tpribadi tp on ts.noind = tp.noind
+							left join hrd_khs.tseksi te on ts.kodesie = te.kodesie
+							left join \"Surat\".tpengembalian_apd d on ts.noind=d.noind
+						where trim(kd_surat)='$kode' and trim(no_surat)='$nomor'
+						order by ts.tgl_surat desc
+						limit 1";
+		return $this->personalia->query($sql)->row_array();
 	}
 
 	public function updateSuratPengalamanKerja($data, $kode, $nomor)

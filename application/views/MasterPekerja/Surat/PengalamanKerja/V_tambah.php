@@ -70,7 +70,7 @@
 										<div class="form-group">
 											<label class="control-label col-lg-4">Masuk</label>
 											<div class="col-lg-4">
-												<input type="text" name="txtMPSuratPengalamanKerjaMasuk" autocomplete="off" id="txtMPSuratPengalamanKerjaMasuk" class="form-control " placeholder="Masuk Kerja" required>
+												<input type="text" name="txtMPSuratPengalamanKerjaMasuk" autocomplete="off" id="txtMPSuratPengalamanKerjaMasuk" class="form-control " placeholder="Masuk Kerja" readonly required>
 											</div>
 										</div>
 										<div class="form-group">
@@ -227,9 +227,9 @@
 		const $inputSampai = $('#txtMPSuratPengalamanKerjaSampaiDatepicker')
 
 		// datepicker init
-		$('#txtMPSuratPengalamanKerjaMasuk').datepicker({
-			format: 'yyyy-mm-dd'
-		})
+		// $('#txtMPSuratPengalamanKerjaMasuk').datepicker({
+		// 	format: 'yyyy-mm-dd'
+		// })
 		$inputSampai.datepicker({
 			format: 'yyyy-mm-dd'
 		})
