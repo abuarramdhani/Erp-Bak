@@ -50,8 +50,6 @@ class M_monitoringpresensi extends Ci_Model
 			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('D1535','P0426'))";
 		} elseif ($noind == 'H7726') {
 			$whrKodesie = "left(a.kodesie,5) = left('$kd',5)";
-		} elseif ($noind == 'B0717') {
-			$whrKodesie = "left(a.kodesie,7) in ('3070103','3070104','3070102','3070201','3070301')";
 		} elseif ($noind == 'B0901') {
 			$whrKodesie = "left(a.kodesie,4) = '3070' ";
 		} elseif ($noind == 'J1378') {
@@ -89,8 +87,6 @@ class M_monitoringpresensi extends Ci_Model
 			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('D1535','P0426'))";
 		} elseif ($noind == 'H7726') {
 			$whrKodesie = "left(a.kodesie,5) = left('$kd',5)";
-		} elseif ($noind == 'B0717') {
-			$whrKodesie = "left(a.kodesie,7) in ('3070103','3070104','3070102','3070201','3070301')";
 		} elseif ($noind == 'B0901') {
 			$whrKodesie = "left(a.kodesie,4) = '3070' ";
 		} elseif ($noind == 'J1378') {
@@ -128,8 +124,6 @@ class M_monitoringpresensi extends Ci_Model
 			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('D1535','P0426'))";
 		} elseif ($noind == 'H7726') {
 			$whrKodesie = "left(a.kodesie,5) = left('$kd',5)";
-		} elseif ($noind == 'B0717') {
-			$whrKodesie = "left(a.kodesie,7) in ('3070103','3070104','3070102','3070201','3070301')";
 		} elseif ($noind == 'B0901') {
 			$whrKodesie = "left(a.kodesie,4) = '3070' ";
 		} elseif ($noind == 'J1378') {
@@ -186,8 +180,6 @@ class M_monitoringpresensi extends Ci_Model
 			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('D1535','P0426'))";
 		} elseif ($noind == 'H7726') {
 			$whrKodesie = "left(a.kodesie,5) = left('$kd',5)";
-		} elseif ($noind == 'B0717') {
-			$whrKodesie = "left(a.kodesie,7) in ('3070103','3070104','3070102','3070201','3070301')";
 		} elseif ($noind == 'B0901') {
 			$whrKodesie = "left(a.kodesie,4) = '3070' ";
 		} elseif ($noind == 'J1378') {
@@ -235,8 +227,6 @@ class M_monitoringpresensi extends Ci_Model
 			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('D1535','P0426'))";
 		} elseif ($noind == 'H7726') {
 			$whrKodesie = "left(a.kodesie,5) = left('$kd',5)";
-		} elseif ($noind == 'B0717') {
-			$whrKodesie = "left(a.kodesie,7) in ('3070103','3070104','3070102','3070201','3070301')";
 		} elseif ($noind == 'B0901') {
 			$whrKodesie = "left(a.kodesie,4) = '3070' ";
 		} elseif ($noind == 'J1378') {
@@ -306,8 +296,6 @@ class M_monitoringpresensi extends Ci_Model
 			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('D1535','P0426'))";
 		} elseif ($noind == 'H7726') {
 			$whrKodesie = "left(a.kodesie,5) = left('$kd',5)";
-		} elseif ($noind == 'B0717') {
-			$whrKodesie = "left(a.kodesie,7) in ('3070103','3070104','3070102','3070201','3070301')";
 		} elseif ($noind == 'B0901') {
 			$whrKodesie = "left(a.kodesie,4) = '3070' ";
 		} elseif ($noind == 'J1378') {
@@ -348,8 +336,6 @@ class M_monitoringpresensi extends Ci_Model
 			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('D1535','P0426'))";
 		} elseif ($noind == 'H7726') {
 			$whrKodesie = "left(a.kodesie,5) = left('$kd',5)";
-		} elseif ($noind == 'B0717') {
-			$whrKodesie = "left(a.kodesie,7) in ('3070103','3070104','3070102','3070201','3070301')";
 		} elseif ($noind == 'B0901') {
 			$whrKodesie = "left(a.kodesie,4) = '3070' ";
 		} elseif ($noind == 'J1378') {
@@ -391,8 +377,6 @@ class M_monitoringpresensi extends Ci_Model
 			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('D1535','P0426'))";
 		} elseif ($noind == 'H7726') {
 			$whrKodesie = "left(a.kodesie,5) = left('$kd',5)";
-		} elseif ($noind == 'B0717') {
-			$whrKodesie = "left(a.kodesie,7) in ('3070103','3070104','3070102','3070201','3070301')";
 		} elseif ($noind == 'B0901') {
 			$whrKodesie = "left(a.kodesie,4) = '3070' ";
 		} elseif ($noind == 'J1378') {
@@ -436,8 +420,6 @@ class M_monitoringpresensi extends Ci_Model
 			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('D1535','P0426'))";
 		} elseif ($noind == 'H7726') {
 			$whrKodesie = "left(a.kodesie,5) = left('$kd',5)";
-		} elseif ($noind == 'B0717') {
-			$whrKodesie = "left(a.kodesie,7) in ('3070103','3070104','3070102','3070201','3070301')";
 		} elseif ($noind == 'B0901') {
 			$whrKodesie = "left(a.kodesie,4) = '3070' ";
 		} elseif ($noind == 'J1378') {
@@ -482,8 +464,6 @@ class M_monitoringpresensi extends Ci_Model
 			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('D1535','P0426'))";
 		} elseif ($noind == 'H7726') {
 			$whrKodesie = "left(a.kodesie,5) = left('$kd',5)";
-		} elseif ($noind == 'B0717') {
-			$whrKodesie = "left(a.kodesie,7) in ('3070103','3070104','3070102','3070201','3070301')";
 		} elseif ($noind == 'B0901') {
 			$whrKodesie = "left(a.kodesie,4) = '3070' ";
 		} elseif ($noind == 'J1378') {
@@ -529,9 +509,7 @@ class M_monitoringpresensi extends Ci_Model
 			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('D1535','P0426'))";
 		} elseif ($noind == 'H7726') {
 			$whrKodesie = "left(a.kodesie,5) = left('$kd',5)";
-		} elseif ($noind == 'B0717') {
-			$whrKodesie = "left(a.kodesie,7) in ('3070103','3070104','3070102','3070201','3070301')";
-		} elseif ($noind == 'B0901') {
+		}elseif ($noind == 'B0901') {
 			$whrKodesie = "left(a.kodesie,4) = '3070' ";
 		} elseif ($noind == 'J1378') {
 			$whrKodesie = "left(a.kodesie,5) in ('10101','10102')";
@@ -572,8 +550,6 @@ class M_monitoringpresensi extends Ci_Model
 			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('D1535','P0426'))";
 		} elseif ($noind == 'H7726') {
 			$whrKodesie = "left(a.kodesie,5) = left('$kd',5)";
-		} elseif ($noind == 'B0717') {
-			$whrKodesie = "left(a.kodesie,7) in ('3070103','3070104','3070102','3070201','3070301')";
 		} elseif ($noind == 'B0901') {
 			$whrKodesie = "left(a.kodesie,4) = '3070' ";
 		} elseif ($noind == 'J1378') {
@@ -619,9 +595,7 @@ class M_monitoringpresensi extends Ci_Model
 			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('D1535','P0426'))";
 		} elseif ($noind == 'H7726') {
 			$whrKodesie = "left(a.kodesie,5) = left('$kd',5)";
-		} elseif ($noind == 'B0717') {
-			$whrKodesie = "left(a.kodesie,7) in ('3070103','3070104','3070102','3070201','3070301')";
-		} elseif ($noind == 'B0901') {
+		}elseif ($noind == 'B0901') {
 			$whrKodesie = "left(a.kodesie,4) = '3070' ";
 		} elseif ($noind == 'J1378') {
 			$whrKodesie = "left(a.kodesie,5) in ('10101','10102')";
@@ -667,8 +641,6 @@ class M_monitoringpresensi extends Ci_Model
 			$whrKodesie = "(left(a.kodesie,7) = left('$kd',7) or a.noind in ('D1535','P0426'))";
 		} elseif ($noind == 'H7726') {
 			$whrKodesie = "left(a.kodesie,5) = left('$kd',5)";
-		} elseif ($noind == 'B0717') {
-			$whrKodesie = "left(a.kodesie,7) in ('3070103','3070104','3070102','3070201','3070301')";
 		} elseif ($noind == 'B0901') {
 			$whrKodesie = "left(a.kodesie,4) = '3070' ";
 		} elseif ($noind == 'J1378') {
