@@ -1,8 +1,14 @@
 <?php echo $this->session->flashdata('notifikasi');?>
 <style>
+    th, td{
+        white-space: nowrap;
+    }
     .vel_ps{
         vertical-align : middle;
         text-align : center;
+    }
+    th{
+        background-color: #d9edf7;
     }
 </style>
 <section class="content">
@@ -155,7 +161,6 @@
                                           <table id="table" border="1" class="dataTable" style="width:100%">
                                                                      <thead>
                                                                         <tr>
-                                                                            <th><center>COP / WI<center></th>
                                                                             <th><center>No. Dokumen<center></th>
                                                                             <th><center>Judul Dokumen<center></th>
                                                                             <th style="width: 80px; font-size:smaller;"><center>Oracle / Android / Web Base / Form<center></th>
@@ -188,44 +193,53 @@
                                               <button type="submit" class="btn btn-primary">Save </button>
                                           </div>
                                           </div>
-                                          <!-- /.modal-content -->
                                       </div>
-                                      <!-- /.modal-dialog -->
                                       </div>
-                                      <!-- /.modal -->
                               </div>
                            </form>
                             <div class="box box-primary">
                                 <div class="box-header with-border">
-                                    <h4 style="font-weight:bold;"><i class="fa fa-files-o"></i> Monitoring Code Of Practice and Work Instruction</h4>
+                                    <div class="col-lg-3"><h4 style="font-weight:bold;"><i class="fa fa-files-o"></i> Monitoring COP & WI</h4></div>
+                                        <form  onkeydown="return event.key != 'Enter';" method="post" action="<?php echo base_url('PengembanganSistem/excel_masterlist') ?>" class="form-horizontal">
+                                            <div class="col-sm-12 row">
+                                                <h5 class="col-sm-2" style="margin-top: 25px;"><b> Cetak Masterlist &nbsp;:</b></h5>
+                                                <div class="col-sm-3"><b>Judul Masterlist</b>
+                                                    <input type="text" class="form-control" name="data" max="3" placeholder="COP/WI">
+                                                </div>
+                                                <div class="col-sm-3"><b>Judul Masterlist</b>
+                                                    <input type="text" name="judulmasterlist" placeholder="Judul Masterlist" class="form-control" style="text-transform:uppercase">
+                                                </div>
+                                                <div class="col-sm-3"><b>Document Controller</b>
+                                                    <select class="form-control select2 input_selectpic" name="picmasterlist" id="master" required="">
+                                                        <option value=""></option>
+                                                    </select>
+                                                </div>
+                                                <button class="btn btn-sm btn-warning" style="bottom: 0.5em; position: relative; top: 20px;"><span style="font-size: 16px;" class="fa fa-file-excel-o"></span> - Excel </button>
+                                            </div>
+                                        </form>
                                 </div>
                               <div class="box-body">
                                 <div class="table-responsive">
-                                  <table class="table table-striped table-bordered table-hover text-left " id="dataTables-PengSistem" style="font-size:12px; width:max-content;">
+                                  <table class="table table-striped table-bordered table-hover text-left " id="dataTables-PengSistem" style="font-size:12px; width:100%;">
                                         <thead>
-                                            <tr class="bg-info">
-                                                <th class="vel_ps" style="vertical-align: middle;">No.</th>
-                                                <th class="vel_ps" style="vertical-align: middle;">COP / WI</th>
-                                                <th class="vel_ps" style="vertical-align: middle;">No. Dokumen</th>
-                                                <th class="vel_ps" style="vertical-align: middle;">Judul Dokumen</th>
-                                                <th class="vel_ps" style="vertical-align: middle;">Oracle / Android / Web Base / Form</th>
-                                                <th class="vel_ps" style="vertical-align: middle;">Rev.Date</th>
-                                                <th class="vel_ps" style="vertical-align: middle;">No.Rev.</th>
-                                                <th class="vel_ps" style="vertical-align: middle;">SOP</th>
-                                                <th class="vel_ps" style="vertical-align: middle;">PIC</th>
-                                                <th class="vel_ps" style="vertical-align: middle;">File</th>
-                                                <th class="vel_ps" style="vertical-align: middle;">Status</th>
-                                                <th class="vel_ps" style="vertical-align: middle;">Action</th>
+                                            <tr>
+                                                <th class="vel_ps">No.</th>
+                                                <th class="vel_ps">No. Dokumen</th>
+                                                <th class="vel_ps">Judul Dokumen</th>
+                                                <th class="vel_ps">Oracle / Android / Web Base / Form</th>
+                                                <th class="vel_ps">Rev.Date</th>
+                                                <th class="vel_ps">No.Rev.</th>
+                                                <th class="vel_ps">SOP</th>
+                                                <th class="vel_ps">PIC</th>
+                                                <th class="vel_ps">File</th>
+                                                <th class="vel_ps">Status</th>
+                                                <th class="vel_ps">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <?php $no= 1; foreach ($listdatacopwi as $row) { ?>
                                             <tr row-id="<?php echo $row['id']?>">
                                                 <td><b><?php echo $no++; ?></b></td>
-                                                <td><?php if($row["doc"] =='COP'){echo "Code Of Practice";}
-                                                elseif ($row["doc"] =='WI') {
-                                                    echo "Work Instruction";
-                                                };?></td>
                                                 <td><?php echo $row["nomor_doc"];?></td>
                                                 <td><?php echo $row["judul_doc"];?></td>
                                                 <td><?php echo $row["jenis_doc_cw"];?></td>
@@ -233,16 +247,14 @@
                                                 <td><?php echo $row["number_rev"];?></td>
                                                 <td><?php echo 'SOP-'.$row["seksi_sop"].'-'.$row["number_sop"];?></td>
                                                 <td><?php echo $row["pic_doc"];?></td>
-                                                <td><a onmouseover="link_cop(<?php echo $row['id']?>)" id="cop_lilola<?php echo $row['id']?>" data-toggle="tooltip" title="<?= $row['file']; ?>" href="<?php echo base_url('assets/upload/PengembanganSistem/copwi').'/'.$row['file'];?>" target="_blank"><?php if ($row['file'] != "" ) {echo '<i class="far fa-file-pdf"> View</i>'; } ?></a>
+                                                <td><a onmouseover="link_cop(<?php echo $row['id']?>)" id="cop_lilola<?php echo $row['id']?>" data-toggle="tooltip" title="<?= $row['nomor_doc']; ?>" href="<?php echo base_url('assets/upload/PengembanganSistem/copwi').'/'.$row['file'];?>" target="_blank"><?php if ($row['file'] != "" ) {echo '<i class="far fa-file-pdf"> View</i>'; } ?></a>
                                                 </td>
                                                 <td><?php echo $row["status_doc"];?></td>
                                                 <td>
-                                                    <div <?php if(strlen($row['file']) !== 0){echo 'hidden=""';} ?>>
-                                                        <div class="btn-group">
-                                                            <a style="padding: 6px" class="icon-action btn btn-success" href="<?php echo base_url('PengembanganSistem/edit_cop_wi/'.$row['id'])?>" title="Edit"><i class="fa fa-pencil"></i></a>
-                                                            <a style="padding: 6px" class="icon-action btn btn-warning" data-toggle="modal" data-toggle="tooltip" data-target="<?php echo "#modal_edit".$row['id'];?>" title="Upload"><i class="fa fa-cloud-upload"></i></a>
-                                                            <a style="padding: 6px" class="icon-action btn btn-danger" title="Delete" onclick="delete_cop_wi(<?= $row['id'];?>)"><i class="fa fa-close"></i></a>
-                                                        </div>
+                                                    <div class="btn-group" style="width: max-content;<?php if(strlen($row['file']) !== 0){echo 'display: none';} ?>">
+                                                        <a class="btn btn-xs btn-success" href="<?php echo base_url('PengembanganSistem/edit_cop_wi/'.$row['id'])?>" title="Edit"><i class="fa fa-pencil"></i></a>
+                                                        <a class="btn btn-xs btn-warning" data-toggle="modal" data-toggle="tooltip" data-target="<?php echo "#modal_edit".$row['id'];?>" title="Upload"><i class="fa fa-cloud-upload"></i></a>
+                                                        <a class="btn btn-xs btn-danger" title="Delete" onclick="delete_cop_wi(<?= $row['id'];?>)"><i class="fa fa-close"></i></a>
                                                     </div>
                                                 </td>
                                                 <div class="modal fade" id="<?php echo "modal_edit".$row['id'];?>" role="dialog" aria-labelledby="largeModal" aria-hidden="true" align="center">

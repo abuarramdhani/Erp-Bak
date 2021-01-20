@@ -243,7 +243,6 @@ class C_Penomoran extends CI_Controller
 
 	public function upload_data_flow($id)
 	{
-		// print_r($_POST);exit();
 		$status = strtoupper($this->input->post('doc_status'));
 		$judul = strtoupper($this->input->post('nama_file'));
 		$id_data = strtoupper($this->input->post('id'));
@@ -276,7 +275,6 @@ class C_Penomoran extends CI_Controller
 			// $config['max_width']            = 1000;
 			// $config['max_height']           = 7680;
 			$config['file_name'] = $nama_baru;
-// print_r($nama_baru);exit();
 			$this->load->library('upload', $config);
 
 			$this->upload->initialize($config);
@@ -493,7 +491,6 @@ class C_Penomoran extends CI_Controller
 
 	public function upload_data_copwi($id)
 	{
-		// print_r($_POST);exit();
 		$status = strtoupper($this->input->post('doc_status'));
 		$judul = strtoupper($this->input->post('nama_file'));
 		$id_data = strtoupper($this->input->post('id'));
@@ -532,7 +529,6 @@ class C_Penomoran extends CI_Controller
 			$this->upload->initialize($config);
 			if (!$this->upload->do_upload('fileupload')) {
 			$error = array('error' => $this->upload->display_errors());
-			// aktifkan kode di bawah ini untuk melihat pesan error saat upload file
 			  echo "error";
 			  print_r($error);
 				} else {
@@ -580,10 +576,6 @@ class C_Penomoran extends CI_Controller
         $data['listdataum'] = $this->M_pengsistem->list_data_um();
         $data['listseksi'] = $this->M_pengsistem->select_seksi();
         $data['listorg'] = $this->M_pengsistem->ambilSemuaPekerja();
-
-		// $data['show'] = $this->M_outpart->getAllIn();
-		// print_r($data['Penomoran']);
-		// exit();
 
         $this->load->view('V_Header', $data);
         $this->load->view('V_Sidemenu', $data);
@@ -701,10 +693,6 @@ class C_Penomoran extends CI_Controller
         $data['listseksi'] = $this->M_pengsistem->select_seksi();
         $data['listorg'] = $this->M_pengsistem->ambilSemuaPekerja();
 
-		// $data['show'] = $this->M_outpart->getAllIn();
-		// print_r($data['listdatafp']);
-		// exit();
-
         $this->load->view('V_Header', $data);
         $this->load->view('V_Sidemenu', $data);
         $this->load->view('PengembanganSistem/Penomoran/usermanual/V_Read_um', $data);
@@ -754,14 +742,12 @@ class C_Penomoran extends CI_Controller
 						'nomor_um'			=> $number_kode_doc,
 						'a'					=> $pic_id,
 					);
-					// print_r($data);exit();
 		$this->M_pengsistem->update_data_um($data,$id);
 		redirect('PengembanganSistem/Usermanual');
 	}
 
 	public function upload_data_um($id)
 	{
-		// print_r($_POST);exit();
 		$status = strtoupper($this->input->post('doc_status'));
 		$judul = strtoupper($this->input->post('nama_file'));
 		$number_file = strtoupper($this->input->post('id'));
@@ -801,7 +787,6 @@ class C_Penomoran extends CI_Controller
 			$this->upload->initialize($config);
 			if (!$this->upload->do_upload('fileupload')) {
 			$error = array('error' => $this->upload->display_errors());
-			// aktifkan kode di bawah ini untuk melihat pesan error saat upload file
 			echo "error";
 			  print_r($error);
 				} else {
@@ -832,16 +817,6 @@ class C_Penomoran extends CI_Controller
 	//DOKUMEN MEMO
 
 
-	public function hitung_data()
-	{
-		$kode = $_POST['kode_doc'];
-		$param_date = $_POST['param_date'];
-
-		$data = $this->M_pengsistem->total_data($param_date,$kode)[0]['count'];
-		
-		echo json_encode($data);
-	}
-
 	public function memo_surat()
 	{
         $this->checkSession();
@@ -859,17 +834,12 @@ class C_Penomoran extends CI_Controller
         $data['listseksi'] = $this->M_pengsistem->select_seksi();
         $data['listorg'] = $this->M_pengsistem->ambilSemuaPekerja();
 
-		// $data['show'] = $this->M_outpart->getAllIn();
-		// print_r($data['Penomoran']);
-		// exit();
-
         $this->load->view('V_Header', $data);
         $this->load->view('V_Sidemenu', $data);
         $this->load->view('PengembanganSistem/Penomoran/memo/V_Index', $data);
         $this->load->view('V_Footer', $data);
-		
 	}
-	
+
 	public function input_data_ms()
 	{
 		$date      = date('Y-m-d',strtotime($this->input->post('date_ms')));
@@ -926,6 +896,16 @@ class C_Penomoran extends CI_Controller
 		redirect('PengembanganSistem/surat_memo');
 	}
 
+	public function hitung_data_memo()
+	{
+		$kode = $_POST['kode_doc'];
+		$param_date = $_POST['param_date'];
+
+		$data = $this->M_pengsistem->total_data($param_date,$kode)[0]['count'];
+		
+		echo json_encode($data);
+	}
+
 	public function edit_memo($setdata)
 	{
         $this->checkSession();
@@ -942,8 +922,6 @@ class C_Penomoran extends CI_Controller
         $data['listdata_memo'] = $this->M_pengsistem->list_edit_memo($setdata);
         $data['listseksi'] = $this->M_pengsistem->select_seksi();
         $data['listorg'] = $this->M_pengsistem->ambilSemuaPekerja();
-
-		// $data['show'] = $this->M_outpart->getAllIn();
 
         $this->load->view('V_Header', $data);
         $this->load->view('V_Sidemenu', $data);
@@ -975,7 +953,7 @@ class C_Penomoran extends CI_Controller
 		redirect('PengembanganSistem/surat_memo');
 	}
 
-	public function upload_data_ms($id_data)
+	public function upload_file_ms($id_data)
 	{
 		$judul = strtoupper($this->input->post('nama_file'));
 		$number_file = "Memo";
@@ -1014,7 +992,6 @@ class C_Penomoran extends CI_Controller
 			$this->upload->initialize($config);
 			if (!$this->upload->do_upload('fileupload')) {
 			$error = array('error' => $this->upload->display_errors());
-			// aktifkan kode di bawah ini untuk melihat pesan error saat upload file
 			echo "error";
 			  print_r($error);
 				} else {
@@ -1035,11 +1012,152 @@ class C_Penomoran extends CI_Controller
 	
 	}
 
+	public function create_memo($id_a)
+	{
+        $this->checkSession();
+        $user_id = $this->session->userid;
+
+        $data['Menu'] = 'Dashboard';
+        $data['SubMenuOne'] = '';
+        $data['SubMenuTwo'] = '';
+
+        $data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
+		//Pengembangan Sistem
+		$a = explode('ke',$id_a);
+        $data['listdata'] = $this->M_pengsistem->data_cetakmemo($a[0]);
+		$data['list'] = $this->M_pengsistem->list_edit_memo($a[0]);
+		if ($a[1] == false) {
+			$k = $this->M_pengsistem->data_cetakmemo($a[0]);
+		}else {
+			$k = $this->M_pengsistem->data_cetakmemo1($a[0],$a[1]);
+		};
+		if ($k == null) {
+			$data['lists'] = null;
+		} else {
+			$data['lists'] = $k;
+		}
+		
+        $this->load->view('V_Header', $data);
+        $this->load->view('V_Sidemenu', $data);
+        $this->load->view('PengembanganSistem/Penomoran/memo/V_Create',$data);
+        $this->load->view('V_Footer', $data);
+	}
+	
+	public function creat_data_ms($id)
+	{
+		$nomor_surat = $this->input->post('number_surat');
+		$perihal_doc = $this->input->post('perihal');
+		$lampiran = $this->input->post('lampiran');
+		$yth    	 = $this->input->post('yth');
+		$body_surat  = $this->input->post('body_surat');
+		$count = $this->M_pengsistem->countsm($id)[0]['count'];
+		if ($count > 0) {
+			$ke = $count + 1;
+		
+		$date_input = date('Y-m-d h:i:sa');
+			$data		  = array(
+						'id_data' => $id,
+						'number_surat' => $nomor_surat,
+						'perihal'     => $perihal_doc ,
+						'lamp'     => $lampiran ,
+						'yth'     => $yth, 
+						'body_surat'     => $body_surat,
+						'ke'	=> $ke
+						);
+		}else {
+			$data		  = array(
+						'id_data' => $id,
+						'number_surat' => $nomor_surat,
+						'perihal'     => $perihal_doc ,
+						'lamp'     => $lampiran ,
+						'yth'     => $yth, 
+						'body_surat'     => $body_surat,
+						'ke'	=> 1
+						);
+		}
+		
+		$this->M_pengsistem->getdatamemo($data);
+		redirect('PengembanganSistem/sm/create_memo/'.$id.'ke'.$ke);
+	}
+
+	public function upload_file($id)
+	{
+		$file = $_FILES['upload']['tmp_name'];
+		$file_name = $_FILES['upload']['name'];
+		$file_name_array = explode(".", $file_name);
+		$extension = end($file_name_array);
+		$new_image_name = $id . '.' . $extension;
+		
+		if ($_FILES == false) {
+			echo 0;
+		}else{
+
+			if(!is_dir('.assets/upload/PengembanganSistem/memo'))
+			{
+				mkdir('.assets/upload/PengembanganSistem/memo', 0777, true);
+				chmod('.assets/upload/PengembanganSistem/memo', 0777);
+			}else {
+				chmod('.assets/upload/PengembanganSistem/memo', 0777); 
+			}
+			$allowed_extension = array("jpg", "jpeg", "png","PNG","JPEG","JPG");
+			if(in_array($extension, $allowed_extension))
+			{
+				move_uploaded_file($file, 'assets/upload/PengembanganSistem/memo/' . $new_image_name);
+				$function_number = $_GET['CKEditorFuncNum'];
+				$url = base_url().'assets/upload/PengembanganSistem/memo/' . $new_image_name;
+				$message = '';
+				echo"<script type='text/javascript'>window.parent.CKEDITOR.tools.callFunction($function_number, '$url', '$message');</script>";
+	
+			}
+		}
+	}
+
+	public function cetak_memo($id)
+	{
+		$e = explode('ke',$id);
+		$data['record'] = $this->M_pengsistem->data_cetakmemo1($e[0],$e[1]);
+
+		$this->load->library('pdf');
+
+		$pdf = $this->pdf->load();
+		$pdf = new mPDF('utf-8','F4-P', 0, '', 10, 5, 40, 40,1);
+		$pdf->defaultheaderline=0;
+		$pdf->defaultfooterline=0;
+		$filename = date('d-M-Y')."_memo.pdf";
+		
+		$html = $this->load->view('PengembanganSistem/Penomoran/memo/V_Cetakmemo',$data,true);
+		$header = '<div style="padding-top: 0;">
+			<img src="assets/img/kopsurat.png">
+		</div>';
+		$footer = '<div style="text-align: left; color: #0010aa"; font-family: unset; >
+		<p style="font-style: unset;"><u>Cabang</u></p>
+		<p style="font-weight: unset; font-style: unset; font-size: 8.7px;">Surabaya &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: Jl. Kebonrojo 6BB Telp. (031)35256587, 3525688, 35250706 Fax. (031)3540454 E-mail : sby@quick.co.id</p>
+		<p style="font-weight: unset; font-style: unset; font-size: 8.7px;">Jakarta &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: Jl. Gajah Mada 154 Telp. (021)6292044, 6293428, 6490020 Fax. (021)6490013 E-mail : jkt@quick.co.id</p>
+		<p style="font-weight: unset; font-style: unset; font-size: 8.7px;">Tanjungkarang : Jl. Raden Intan 159 Telp. (0720) 268498, 268495 Fax. (0721) 268498 E-mail : tkj@quick.co.id</p>
+		<p style="font-weight: unset; font-style: unset; font-size: 8.7px;">Makasar &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: Jl. Kima 4 No. M4 Daya, Kec. Biringkanaya Telp. (0411) 514573, Fax. (0711) 514573 E-mail : mks@quick.co.id</p>
+		<p style="font-weight: unset; font-style: unset; font-size: 8.7px;">Medan &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: Jl. Letda Sujono Komplek Pergudangan Tembung Intan No. 13 Medan, Indonesia Telp. (061) 7384680, Fax. (061) 7384680 E-mail : mdn@quick.co.id</p>
+		<p style="font-style: unset;"><u>Cabang Pembantu</u></p>
+		<p style="font-weight: unset; font-style: unset; font-size: 11px;">Sidrap &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: Jl. Poros Parepare-Sidenreng Rappang, Kel. Batu Lamppa, Kec. Watang Pulu, Kab. Sidenreng Rappang, SULSEL <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Telp. +62-82192906262, +62-88804250543 E-mail : sidrap@quick.co.id</p>
+		</div>';
+
+		$pdf->SetHeader($header);
+		$pdf->SetFooter($footer);
+		$pdf->WriteHTML($html);
+		$pdf->Output($filename,'I');
+	}
+
 	public function delete_data_code($id)
 	{
-
 		$this->M_pengsistem->delete_code($id);
-		redirect('PengembanganSistem/surat_memo');
+		echo 1 ;
+	}
+
+	public function delete_data_code1($id)
+	{
+		$this->M_pengsistem->delete_code1($id);
+		echo 1 ;
 	}
 
 	//OPERATOR LKH
@@ -1057,7 +1175,6 @@ class C_Penomoran extends CI_Controller
         $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 		//Pengembangan Sistem
-        // $data['listdata_lkh'] = $this->M_pengsistem->list_data_lkh();
         $data['listseksi'] = $this->M_pengsistem->select_seksi();
         $data['listorg'] = $this->M_pengsistem->ambilSemuaPekerja();
 
@@ -1071,7 +1188,6 @@ class C_Penomoran extends CI_Controller
 			if ($bulan == '') {
 		$data['listdata_lkh'] = $this->M_pengsistem->set_lkh1($user);
 			}
-// print_r($data['listdata_lkh']);exit();
         $this->load->view('V_Header', $data);
         $this->load->view('V_Sidemenu', $data);
         $this->load->view('PengembanganSistem/operator/V_Index', $data);
@@ -1095,7 +1211,6 @@ class C_Penomoran extends CI_Controller
 		$total_waktu = $this->input->post('total_waktu');
 		$user = $this->session->user;
 		$persen = $this->input->post('persen');
-		// $persetujuan_kualitas = $this->input->post('persetujuan_kualitas');
 		$t = $this->input->post('t');
 		$i = $this->input->post('i');
 		$m = $this->input->post('m');
@@ -1118,7 +1233,6 @@ class C_Penomoran extends CI_Controller
 					'total_waktu' => $total_waktu,
 					'pic' => $user,
 					'persen' => $persen,
-					// 'persetujuan_kualitas' => $persetujuan_kualitas,
 					't' => $t,
 					'i' => $i,
 					'm' => $m,
@@ -1127,7 +1241,6 @@ class C_Penomoran extends CI_Controller
 					'ip' => $ip,
 					'bulan' => $bulan.'-'.$tahun
 					 );
-					//  print_r($data);exit();
 		$this->M_pengsistem->get_lkh_input($data);
 		redirect('PengembanganSistem/lkh_ps');
 	}
@@ -1135,10 +1248,13 @@ class C_Penomoran extends CI_Controller
 	public function cetak_lkh()
 	{
 		$user = $this->session->user;
+		$mounth = $this->input->post('bulan');
+		$year = $this->input->post('tahun');
 		$param = $this->input->post('data');
 		$pic = $this->input->post('kasie');
 		$data['record'] = $this->M_pengsistem->setdata($param,$user);
 		$data['pic']	= $this->input->post('kasie');
+		$data['date']	= $param;
 
 		$this->load->library('pdf');
 
@@ -1159,7 +1275,8 @@ class C_Penomoran extends CI_Controller
 
         $objPHPExcel = new PHPExcel();
         $user = $this->session->employee;
-        $kasie_pic = trim($this->input->post('kasie'));
+		$kasie_pic = trim($this->input->post('kasie'));
+		$param	= $this->input->post('data');
 
 		if ($a = date('Y-m-d')) {
 				$bulanIndo = ['', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September' , 'Oktober', 'November', 'Desember'];
@@ -1167,7 +1284,9 @@ class C_Penomoran extends CI_Controller
 					$day = $s[2];
 					$mon = $s[1];
 					$year = $s[0];
-			$date_cetak = $bulanIndo[abs($mon - 1)]. ' ' .$year;
+
+					$f = explode('-',$param);
+			$date_cetak = $bulanIndo[abs($f[0])]. ' ' .$f[1];
         $user_id = $this->session->user;
         $date_now = 'Yogyakarta, '.$day.' '.$bulanIndo[abs($mon)]. ' ' .$year ;
         $param = $this->input->post('data');
@@ -1334,8 +1453,6 @@ class C_Penomoran extends CI_Controller
 			$objPHPExcel->getActiveSheet()->getStyle('A'.$rowCount.':J'.$rowCount)->applyFromArray($styleTitle2);
 			$objPHPExcel->getActiveSheet()->getStyle('L'.$rowCount.':Q'.$rowCount)->applyFromArray($styleTitle2);
 			$objPHPExcel->getActiveSheet()->getStyle('C5:C'.$objPHPExcel->getActiveSheet()->getHighestRow())->applyFromArray($styleTitle2)->getAlignment()->setWrapText(true);
-            // $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$rowCount, $no);
-			// $objPHPExcel->getActiveSheet()->getStyle('B'.$rowCount)->applyFromArray($styledate);
             $objPHPExcel->setActiveSheetIndex()->SetCellValue('A'.$rowCount, $list['harimasuk']);
             $objPHPExcel->setActiveSheetIndex()->SetCellValue('B'.$rowCount, $list['tglmasuk']);
             $objPHPExcel->setActiveSheetIndex()->SetCellValue('C'.$rowCount, $list['uraian_pekerjaan']);
@@ -1401,7 +1518,6 @@ class C_Penomoran extends CI_Controller
 		$data = array('seksi' => $seksi,
 					'singkat' => $singkat ,
 					 );
-					//  print_r($data);exit();
 		$this->M_pengsistem->get_seksi_input($data);
 		echo 1;
 	}
@@ -1429,4 +1545,602 @@ class C_Penomoran extends CI_Controller
 		$this->M_pengsistem->delete_alert_get($id);
 		echo 1 ;
 	}
+
+	public function excel_masterlist() 
+	{
+        $this->checkSession();
+		$this->load->library('excel');
+		
+        $objPHPExcel = new PHPExcel();
+        $formseksi = strtoupper($this->input->post('judulmasterlist'));
+		$pic = explode("-", trim($this->input->post('picmasterlist')));
+			$pic_masterlist = $pic[1];
+		$post = $this->input->post('data');
+		
+		if ($a = date('Y-m-d')) {
+				$bulanIndo = ['', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September' , 'Oktober', 'November', 'Desember'];
+			}   $s = explode('-',$a);
+					$day = $s[2];
+					$mon = $s[1];
+					$year = $s[0];
+			$date_cetak = $bulanIndo[abs($mon - 1)]. ' ' .$year;
+        $user_id = $this->session->user;
+        $date_now = $day.' '.$bulanIndo[abs($mon)]. ' ' .$year ;
+        // create file name
+		$fileName = 'data-'.time().'.xlsx';
+		if ($post == "UM") {
+			$listdata = $this->M_pengsistem->setmasterlist($post);
+				foreach ($listdata as $key ) {
+					if ($key['doc'] = 'UM') {
+						$list_data = 'User Manual';
+						$list_cop = 'Working Instructions (WI /COP)';
+						$list_date = 'V';
+						$list_cope = null;
+					} else {
+						$list_data = null;
+					}
+				}
+		} elseif ($post == "FP") {
+			$listdata = $this->M_pengsistem->setmasterlist($post);
+				foreach ($listdata as $key ) {
+					if ($key['doc'] = 'FP') {
+						$list_data = 'Flow Proses';
+						$list_cop = 'Working Instructions (WI /COP)';
+						$list_date = 'V';
+						$list_cope = null;
+					} else {
+						$list_data = null;
+					}
+				}
+		}elseif ($post == "COP") {
+			$listdata = $this->M_pengsistem->setmasterlist($post);
+				foreach ($listdata as $key ) {
+					if ($key['doc'] = 'COP') {
+						$list_data = 'User Manual';
+						$list_cop = 'Working Instructions (WI /COP)';
+						$list_cope = 'V';
+						$list_date = null;
+					} else {
+						$list_data = null;
+					}
+				}
+		}else {
+			null;
+		}
+
+        $objPHPExcel = new PHPExcel();
+        $objget = $objPHPExcel->setActiveSheetIndex(0);
+		$objget = $objPHPExcel->getActiveSheet();
+        $objget->getPageSetup()->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE);
+        $objget->getPageSetup()->setPaperSize(PHPExcel_Worksheet_PageSetup::PAPERSIZE_FOLIO);
+		
+		$objPHPExcel->getActiveSheet()->getPageSetup()->setFitToPage(true);
+		$objPHPExcel->getActiveSheet()->getPageSetup()->setFitToWidth(1);
+		$objPHPExcel->getActiveSheet()->getPageSetup()->setFitToHeight(0);
+        $objPHPExcel->getActiveSheet()
+            ->getPageMargins()->setTop(0.4);
+        $objPHPExcel->getActiveSheet()
+            ->getPageMargins()->setRight(0.5);
+        $objPHPExcel->getActiveSheet()
+            ->getPageMargins()->setLeft(0.5);
+        $objPHPExcel->getActiveSheet()
+            ->getPageMargins()->setBottom(0.4);
+
+		$titlejudul = array(
+			'font'  => array(
+				'bold'  => true,
+                'size'	=> 16,
+			),
+			'borders' => array(
+				'allborders' => array(
+					'style' => PHPExcel_Style_Border::BORDER_THIN
+				)
+                ),
+                'alignment' => array(
+                    'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                    'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+                )
+		);
+
+		$titleseksi = array(
+			'font'  => array(
+				'bold'  => true,
+                'size'	=> 16,
+			),
+			'borders' => array(
+				'outline' => array(
+					'style' => PHPExcel_Style_Border::BORDER_THIN
+				)
+                ),
+                'alignment' => array(
+                    'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                    'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+                )
+		);
+
+		$styleleft = array(
+			'font'  => array(
+				'bold'  => true,
+                'size'	=> 10,
+			),
+                'alignment' => array(
+                    'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+                    'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+                )
+		);
+		$styleotorisasi = array(
+			'font'  => array(
+				'bold'  => false,
+                'size'	=> 10,
+			),
+                'alignment' => array(
+                    'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                    'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+                )
+		);
+		$stylecenter = array(
+			'font'  => array(
+				'bold'  => true,
+                'size'	=> 10,
+			),
+                'alignment' => array(
+                    'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                    'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+                )
+		);
+		
+		$stylecenter1 = array(
+			'font'  => array(
+				'bold'  => true,
+                'size'	=> 10,
+			),
+			'borders' => array(
+				'outline' => array(
+					'style' => PHPExcel_Style_Border::BORDER_THIN
+				)
+                ),
+                'alignment' => array(
+                    'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                    'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+                )
+		);
+
+		$border = array(
+			
+			'borders' => array(
+				'outline' => array(
+					'style' => PHPExcel_Style_Border::BORDER_THIN
+				)
+			)
+		);
+
+		$stylecenterborderall = array(
+			'font'  => array(
+				'bold'  => true,
+                'size'	=> 10,
+			),
+		
+				'borders' => array(
+					'allborders' => array(
+						'style' => PHPExcel_Style_Border::BORDER_THIN
+					)
+				),
+                'alignment' => array(
+                    'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                    'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+				),
+					'fill' => array(
+						'type' => PHPExcel_Style_Fill::FILL_SOLID,
+						'color' => array('rgb' => 'DCDCDC')
+					)
+		);
+
+		$styleTitle2 = array(
+			'font'  => array(
+				'bold'  => false,
+                'size'	=> 10,
+			),
+			'borders' => array(
+				'allborders' => array(
+					'style' => PHPExcel_Style_Border::BORDER_THIN
+				)
+                ),
+                'alignment' => array(
+                    'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                    'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+                )
+		);
+		
+
+		$objDrawing = new PHPExcel_Worksheet_Drawing();
+		$objDrawing->setWorksheet($objPHPExcel->getActiveSheet());
+		$objDrawing->setPath('./assets/img/logo.png');
+		$objDrawing->setOffsetX(7);
+		$objDrawing->setOffsetY(12);
+		$objDrawing->setCoordinates('A1');
+		$objDrawing->setHeight(100);
+
+		$objDrawing = new PHPExcel_Worksheet_Drawing();
+		$objDrawing->setWorksheet($objPHPExcel->getActiveSheet());
+		$objDrawing->setPath('./assets/img/rectengle.png');
+		$objDrawing->setOffsetX(7);
+		$objDrawing->setOffsetY(2);
+		$objDrawing->setResizeProportional(false);
+		$objDrawing->setCoordinates('S2');
+		$objDrawing->setHeight(15);
+		$objDrawing->setWidth(18);
+
+		$objDrawing = new PHPExcel_Worksheet_Drawing();
+		$objDrawing->setWorksheet($objPHPExcel->getActiveSheet());
+		$objDrawing->setPath('./assets/img/rectengle.png');
+		$objDrawing->setOffsetX(7);
+		$objDrawing->setOffsetY(2);
+		$objDrawing->setResizeProportional(false);
+		$objDrawing->setCoordinates('S3');
+		$objDrawing->setHeight(15);
+		$objDrawing->setWidth(18);
+
+		$objDrawing = new PHPExcel_Worksheet_Drawing();
+		$objDrawing->setWorksheet($objPHPExcel->getActiveSheet());
+		$objDrawing->setPath('./assets/img/rectengle.png');
+		$objDrawing->setOffsetX(7);
+		$objDrawing->setOffsetY(2);
+		$objDrawing->setResizeProportional(false);
+		$objDrawing->setCoordinates('S4');
+		$objDrawing->setHeight(15);
+		$objDrawing->setWidth(18);
+
+		$objDrawing = new PHPExcel_Worksheet_Drawing();
+		$objDrawing->setWorksheet($objPHPExcel->getActiveSheet());
+		$objDrawing->setPath('./assets/img/rectengle.png');
+		$objDrawing->setOffsetX(7);
+		$objDrawing->setOffsetY(2);
+		$objDrawing->setResizeProportional(false);
+		$objDrawing->setCoordinates('S5');
+		$objDrawing->setHeight(15);
+		$objDrawing->setWidth(18);
+
+		$objDrawing = new PHPExcel_Worksheet_Drawing();
+		$objDrawing->setWorksheet($objPHPExcel->getActiveSheet());
+		$objDrawing->setPath('./assets/img/rectengle.png');
+		$objDrawing->setOffsetX(7);
+		$objDrawing->setOffsetY(2);
+		$objDrawing->setResizeProportional(false);
+		$objDrawing->setCoordinates('S6');
+		$objDrawing->setHeight(15);
+		$objDrawing->setWidth(18);
+
+        $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(3.87);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(9.43);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(9);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(43);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(6);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(10.14);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(4.10);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setWidth(4.10);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('I')->setWidth(4.10);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('J')->setWidth(4.10);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('K')->setWidth(4.10);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('L')->setWidth(4.10);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('M')->setWidth(4.10);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('N')->setWidth(4.10);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('O')->setWidth(4.10);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('P')->setWidth(4.10);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('Q')->setWidth(4.10);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('R')->setWidth(4.10);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('S')->setWidth(4.10);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('T')->setWidth(4.10);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('U')->setWidth(4.10);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('V')->setWidth(4.10);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('W')->setWidth(4.10);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('X')->setWidth(4.10);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('Y')->setWidth(8.57);
+		
+        // ----------------- KOP Dokumen -----------------
+        
+        $objPHPExcel->getActiveSheet()->mergeCells('A1:B6');
+        $objPHPExcel->getActiveSheet()->getStyle('A1:B6')->applyFromArray($titlejudul);
+        $objPHPExcel->getActiveSheet()->mergeCells('C1:L3');
+        $objPHPExcel->getActiveSheet()->getStyle('C1:L3')->applyFromArray($titlejudul);
+        $objPHPExcel->getActiveSheet()->mergeCells('C4:L6');
+        $objPHPExcel->getActiveSheet()->getStyle('C4:L6')->applyFromArray($titleseksi);
+        $objPHPExcel->getActiveSheet()->mergeCells('M1:R1');
+        $objPHPExcel->getActiveSheet()->mergeCells('M5:R5');
+        $objPHPExcel->getActiveSheet()->mergeCells('M6:R6');
+        $objPHPExcel->getActiveSheet()->getStyle('M1:R6')->applyFromArray($stylecenter1);
+        $objPHPExcel->getActiveSheet()->mergeCells('S1:Y1');
+        $objPHPExcel->getActiveSheet()->getStyle('S1:Y1')->getAlignment()->setWrapText(true);
+        $objPHPExcel->getActiveSheet()->getStyle('S1:Y1')->applyFromArray($stylecenter);
+        $objPHPExcel->getActiveSheet()->getStyle('S1:S6')->applyFromArray($stylecenter);
+        $objPHPExcel->getActiveSheet()->mergeCells('T2:Y2');
+        $objPHPExcel->getActiveSheet()->mergeCells('T3:Y3');
+        $objPHPExcel->getActiveSheet()->mergeCells('T4:Y4');
+        $objPHPExcel->getActiveSheet()->mergeCells('T5:Y5');
+        $objPHPExcel->getActiveSheet()->mergeCells('T6:Y6');
+        $objPHPExcel->getActiveSheet()->getStyle('T6:Y6')->getAlignment()->setWrapText(true);
+		$objPHPExcel->getActiveSheet()->getStyle('T1:Y6')->applyFromArray($styleleft);
+		$objPHPExcel->getActiveSheet()->getStyle('S1:Y6')->applyFromArray($border);
+        
+        $objPHPExcel->getActiveSheet()->SetCellValue('C1','MASTERLIST OF DOCUMENT');
+        $objPHPExcel->getActiveSheet()->SetCellValue('C4','UNIT '.$formseksi);
+        $objPHPExcel->getActiveSheet()->SetCellValue('M1','Document Controller');
+        $objPHPExcel->getActiveSheet()->SetCellValue('M5','('.$pic_masterlist.')');
+        $objPHPExcel->getActiveSheet()->SetCellValue('M6',$date_now);
+        $objPHPExcel->getActiveSheet()->getStyle('M1:R1')->applyFromArray($stylecenter);
+        $objPHPExcel->getActiveSheet()->SetCellValue('S1','Kategori Dokumen');
+        $objPHPExcel->getActiveSheet()->SetCellValue('T2','Standard Operating Procedure (SOP)');
+        $objPHPExcel->getActiveSheet()->SetCellValue('T3', $list_cop);
+        $objPHPExcel->getActiveSheet()->SetCellValue('S3', $list_cope);
+        $objPHPExcel->getActiveSheet()->SetCellValue('T4', $list_data);
+        $objPHPExcel->getActiveSheet()->SetCellValue('S4', $list_date);
+        $objPHPExcel->getActiveSheet()->SetCellValue('T5','Eksternal Dokumen');
+        $objPHPExcel->getActiveSheet()->SetCellValue('T6','Lain-lain : . . . . . . .');
+		$objPHPExcel->getActiveSheet()->getStyle('T1:Y1')->applyFromArray($styleleft);
+		
+		// ----------------- Body Dokumen -----------------
+
+        $objPHPExcel->getActiveSheet()->mergeCells('A8:A9');
+        $objPHPExcel->getActiveSheet()->mergeCells('B8:C9');
+        $objPHPExcel->getActiveSheet()->mergeCells('D8:D9');
+        $objPHPExcel->getActiveSheet()->mergeCells('E8:E9');
+        $objPHPExcel->getActiveSheet()->getStyle('E8:E9')->getAlignment()->setWrapText(true);
+        $objPHPExcel->getActiveSheet()->mergeCells('F8:F9');
+        $objPHPExcel->getActiveSheet()->mergeCells('G8:X8');
+        $objPHPExcel->getActiveSheet()->mergeCells('Y8:Y9');
+        $objPHPExcel->getActiveSheet()->getStyle('A8:Y9')->applyFromArray($stylecenterborderall);
+        
+        $objPHPExcel->getActiveSheet()->SetCellValue('A8','No.');
+        $objPHPExcel->getActiveSheet()->SetCellValue('B8','No. Dokumen');
+        $objPHPExcel->getActiveSheet()->SetCellValue('D8','Nama Dokumen');
+        $objPHPExcel->getActiveSheet()->SetCellValue('E8','No. Revisi');
+        $objPHPExcel->getActiveSheet()->SetCellValue('F8','Tgl Revisi');
+        $objPHPExcel->getActiveSheet()->SetCellValue('G8','Distribusi terkendali');
+        $objPHPExcel->getActiveSheet()->SetCellValue('G9','KKK');
+        $objPHPExcel->getActiveSheet()->SetCellValue('H9','HRM');
+        $objPHPExcel->getActiveSheet()->SetCellValue('I9','MKT');
+        $objPHPExcel->getActiveSheet()->SetCellValue('J9','D&R');
+        $objPHPExcel->getActiveSheet()->SetCellValue('K9','F&A');
+        $objPHPExcel->getActiveSheet()->SetCellValue('L9','ITT');
+        $objPHPExcel->getActiveSheet()->SetCellValue('M9','MTN');
+        $objPHPExcel->getActiveSheet()->SetCellValue('N9','QAS');
+        $objPHPExcel->getActiveSheet()->SetCellValue('O9','PUR');
+        $objPHPExcel->getActiveSheet()->SetCellValue('P9','WHS');
+        $objPHPExcel->getActiveSheet()->SetCellValue('Q9','PPIC');
+        $objPHPExcel->getActiveSheet()->SetCellValue('R9','FAB');
+        $objPHPExcel->getActiveSheet()->SetCellValue('S9','PDE');
+        $objPHPExcel->getActiveSheet()->SetCellValue('T9','TMK');
+        $objPHPExcel->getActiveSheet()->SetCellValue('U9','QCT');
+        $objPHPExcel->getActiveSheet()->SetCellValue('V9','RNI');
+        $objPHPExcel->getActiveSheet()->SetCellValue('W9','PPB');
+        $objPHPExcel->getActiveSheet()->SetCellValue('X9','RRM');
+		$objPHPExcel->getActiveSheet()->SetCellValue('Y8','Ket.');
+		
+		// ----------------- PAGE BREAK -----------------
+		$objPHPExcel->getActiveSheet()->getPageSetup()->setRowsToRepeatAtTopByStartAndEnd(1, 9);
+		// ----------------- DATA -----------------
+		$no = 1;
+		$rowCount = 10;
+		if ($post !== 'COP') {
+			foreach ($listdata as $list) {
+					$objPHPExcel->getActiveSheet()->getStyle('A'.$rowCount.':Y'.$rowCount)->applyFromArray($styleTitle2);
+					$objPHPExcel->getActiveSheet()->mergeCells('B'.$rowCount.':C'.$rowCount);
+					$objPHPExcel->getActiveSheet()->getStyle('D10:D'.$objPHPExcel->getActiveSheet()->getHighestRow())->applyFromArray($styleTitle2)->getAlignment()->setWrapText(true);
+					$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$rowCount, $no);
+					$objPHPExcel->setActiveSheetIndex()->SetCellValue('B'.$rowCount, $list['nomor_doc']);
+					$objPHPExcel->setActiveSheetIndex()->SetCellValue('D'.$rowCount, $list['judul_doc']);
+					$objPHPExcel->setActiveSheetIndex()->SetCellValue('E'.$rowCount, $list['number_rev']);
+					$objPHPExcel->setActiveSheetIndex()->SetCellValue('F'.$rowCount, date('d-m-Y',strtotime($list['date_rev'])));
+					if ($list['seksi_pengguna'] == "KKK") {
+						$objPHPExcel->setActiveSheetIndex()->SetCellValue('G'.$rowCount, 'V');
+					} else {
+						null;
+					}
+					if ($list['seksi_pengguna'] == "HRM") {
+						$objPHPExcel->setActiveSheetIndex()->SetCellValue('H'.$rowCount, 'V');
+					} else {
+						null;
+					}
+					if ($list['seksi_pengguna'] == "MKT") {
+						$objPHPExcel->setActiveSheetIndex()->SetCellValue('I'.$rowCount, 'V');
+					} else {
+						null;
+					}
+					if ($list['seksi_pengguna'] == "D&R") {
+						$objPHPExcel->setActiveSheetIndex()->SetCellValue('J'.$rowCount, 'V');
+					} else {
+						null;
+					}
+					if (($list['seksi_pengguna'] == "F&A") or ($list['seksi_pengguna'] == "AKT")) {
+						$objPHPExcel->setActiveSheetIndex()->SetCellValue('K'.$rowCount, 'V');
+					} else {
+						null;
+					}
+					if ($list['seksi_pengguna'] == "ITT") {
+						$objPHPExcel->setActiveSheetIndex()->SetCellValue('L'.$rowCount, 'V');
+					} else {
+						null;
+					}
+					if ($list['seksi_pengguna'] == "MTN") {
+						$objPHPExcel->setActiveSheetIndex()->SetCellValue('M'.$rowCount, 'V');
+					} else {
+						null;
+					}
+					if ($list['seksi_pengguna'] == "QAS") {
+						$objPHPExcel->setActiveSheetIndex()->SetCellValue('N'.$rowCount, 'V');
+					} else {
+						null;
+					}
+					if ($list['seksi_pengguna'] == "PUR") {
+						$objPHPExcel->setActiveSheetIndex()->SetCellValue('O'.$rowCount, 'V');
+					} else {
+						null;
+					}
+					if ($list['seksi_pengguna'] == "WHS") {
+						$objPHPExcel->setActiveSheetIndex()->SetCellValue('P'.$rowCount, 'V');
+					} else {
+						null;
+					}
+					if ($list['seksi_pengguna'] == "PPIC") {
+						$objPHPExcel->setActiveSheetIndex()->SetCellValue('Q'.$rowCount, 'V');
+					} else {
+						null;
+					}
+					if ($list['seksi_pengguna'] == "FAB") {
+						$objPHPExcel->setActiveSheetIndex()->SetCellValue('R'.$rowCount, 'V');
+					} else {
+						null;
+					}
+					if ($list['seksi_pengguna'] == "PDE") {
+						$objPHPExcel->setActiveSheetIndex()->SetCellValue('S'.$rowCount, 'V');
+					} else {
+						null;
+					}
+					if ($list['seksi_pengguna'] == "TMK") {
+						$objPHPExcel->setActiveSheetIndex()->SetCellValue('T'.$rowCount, 'V');
+					} else {
+						null;
+					}
+					if ($list['seksi_pengguna'] == "QCT") {
+						$objPHPExcel->setActiveSheetIndex()->SetCellValue('U'.$rowCount, 'V');
+					} else {
+						null;
+					}
+					if ($list['seksi_pengguna'] == "RNI") {
+						$objPHPExcel->setActiveSheetIndex()->SetCellValue('V'.$rowCount, 'V');
+					} else {
+						null;
+					}
+					if ($list['seksi_pengguna'] == "PPB") {
+						$objPHPExcel->setActiveSheetIndex()->SetCellValue('W'.$rowCount, 'V');
+					} else {
+						null;
+					}
+					if ($list['seksi_pengguna'] == "RRM") {
+						$objPHPExcel->setActiveSheetIndex()->SetCellValue('X'.$rowCount, 'V');
+					} else {
+						null;
+					}
+			$no++;
+			$rowCount++;
+			}
+		} else {
+			foreach ($listdata as $list) {
+					$objPHPExcel->getActiveSheet()->getStyle('A'.$rowCount.':Y'.$rowCount)->applyFromArray($styleTitle2);
+					$objPHPExcel->getActiveSheet()->mergeCells('B'.$rowCount.':C'.$rowCount);
+					$objPHPExcel->getActiveSheet()->getStyle('D10:C'.$objPHPExcel->getActiveSheet()->getHighestRow())->applyFromArray($styleTitle2)->getAlignment()->setWrapText(true);
+					$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$rowCount, $no);
+					$objPHPExcel->setActiveSheetIndex()->SetCellValue('B'.$rowCount, $list['nomor_doc']);
+					$objPHPExcel->setActiveSheetIndex()->SetCellValue('D'.$rowCount, $list['judul_doc']);
+					$objPHPExcel->setActiveSheetIndex()->SetCellValue('E'.$rowCount, $list['number_rev']);
+					$objPHPExcel->setActiveSheetIndex()->SetCellValue('F'.$rowCount, date('d-m-Y',strtotime($list['date_rev'])));
+					if ($list['seksi_sop'] == "KKK") {
+						$objPHPExcel->setActiveSheetIndex()->SetCellValue('G'.$rowCount, 'V');
+					} else {
+						null;
+					}
+					if ($list['seksi_sop'] == "HRM") {
+						$objPHPExcel->setActiveSheetIndex()->SetCellValue('H'.$rowCount, 'V');
+					} else {
+						null;
+					}
+					if ($list['seksi_sop'] == "MKT") {
+						$objPHPExcel->setActiveSheetIndex()->SetCellValue('I'.$rowCount, 'V');
+					} else {
+						null;
+					}
+					if ($list['seksi_sop'] == "D&R") {
+						$objPHPExcel->setActiveSheetIndex()->SetCellValue('J'.$rowCount, 'V');
+					} else {
+						null;
+					}
+					if (($list['seksi_sop'] == "F&A") or ($list['seksi_sop'] == "AKT")) {
+						$objPHPExcel->setActiveSheetIndex()->SetCellValue('K'.$rowCount, 'V');
+					} else {
+						null;
+					}
+					if ($list['seksi_sop'] == "ITT") {
+						$objPHPExcel->setActiveSheetIndex()->SetCellValue('L'.$rowCount, 'V');
+					} else {
+						null;
+					}
+					if ($list['seksi_sop'] == "MTN") {
+						$objPHPExcel->setActiveSheetIndex()->SetCellValue('M'.$rowCount, 'V');
+					} else {
+						null;
+					}
+					if ($list['seksi_sop'] == "QAS") {
+						$objPHPExcel->setActiveSheetIndex()->SetCellValue('N'.$rowCount, 'V');
+					} else {
+						null;
+					}
+					if ($list['seksi_sop'] == "PUR") {
+						$objPHPExcel->setActiveSheetIndex()->SetCellValue('O'.$rowCount, 'V');
+					} else {
+						null;
+					}
+					if ($list['seksi_sop'] == "WHS") {
+						$objPHPExcel->setActiveSheetIndex()->SetCellValue('P'.$rowCount, 'V');
+					} else {
+						null;
+					}
+					if ($list['seksi_sop'] == "PPIC") {
+						$objPHPExcel->setActiveSheetIndex()->SetCellValue('Q'.$rowCount, 'V');
+					} else {
+						null;
+					}
+					if ($list['seksi_sop'] == "FAB") {
+						$objPHPExcel->setActiveSheetIndex()->SetCellValue('R'.$rowCount, 'V');
+					} else {
+						null;
+					}
+					if ($list['seksi_sop'] == "PDE") {
+						$objPHPExcel->setActiveSheetIndex()->SetCellValue('S'.$rowCount, 'V');
+					} else {
+						null;
+					}
+					if ($list['seksi_sop'] == "TMK") {
+						$objPHPExcel->setActiveSheetIndex()->SetCellValue('T'.$rowCount, 'V');
+					} else {
+						null;
+					}
+					if ($list['seksi_sop'] == "QCT") {
+						$objPHPExcel->setActiveSheetIndex()->SetCellValue('U'.$rowCount, 'V');
+					} else {
+						null;
+					}
+					if ($list['seksi_sop'] == "RNI") {
+						$objPHPExcel->setActiveSheetIndex()->SetCellValue('V'.$rowCount, 'V');
+					} else {
+						null;
+					}
+					if ($list['seksi_sop'] == "PPB") {
+						$objPHPExcel->setActiveSheetIndex()->SetCellValue('W'.$rowCount, 'V');
+					} else {
+						null;
+					}
+					if ($list['seksi_sop'] == "RRM") {
+						$objPHPExcel->setActiveSheetIndex()->SetCellValue('X'.$rowCount, 'V');
+					} else {
+						null;
+					}
+			$no++;
+			$rowCount++;
+			}
+		}
+		
+
+		// ----------------- Final Process -----------------
+		$objPHPExcel->setActiveSheetIndex(0);
+		$objPHPExcel->getActiveSheet()->setTitle('LKH');
+        $filename = "Masterlist". date("Y-m-d-H-i-s").".xlsx";
+		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+		$objWriter->setPreCalculateFormulas(true);
+		header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+		header("Cache-Control: no-store, no-cache, must-revalidate");
+		header("Cache-Control: post-check=0, pre-check=0", false);
+		header("Pragma: no-cache");
+		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="' . $filename . '"');
+		$objWriter->save("php://output");
+    }
 }

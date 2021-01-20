@@ -1,11 +1,19 @@
 <section class="content">
+    <style>
+        th, td {
+            white-space: nowrap; 
+        }
+        th{
+            background-color: #d9edf7;
+        }
+    </style>
     <div class="inner" >
         <div class="row">
                 <div class="col-lg-12">
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="col-lg-11">
-                                <div class="text-right"><h1><b>Surat/Memo Sie Peng. Sistem</b></h1></div>
+                                <div class="text-right mychart"><h1><b>Surat/Memo Sie Peng. Sistem</b></h1></div>
                             </div>
                             <div class="col-lg-1 ">
                                 <div class="text-right hidden-md hidden-sm hidden-xs">
@@ -21,7 +29,7 @@
 
                     <div class="row">
                         <div class="col-lg-12">
-                          <form onkeydown="return event.key != 'Enter';" method="post" action="<?= base_url('PengembanganSistem/input_data_ms') ?>" class="form-horizontal" enctype="multipart/form-data">
+                          <form onkeydown="return event.key != 'Enter';" method="post" action="<?= base_url('PengembanganSistem/sm/input_data_ms') ?>" class="form-horizontal" enctype="multipart/form-data">
                             <div class="box box-primary box-solid">
                                 <div class="box-header with-border"><div class="col-sm-6">Input Data </div>
                                     <div class="col-sm-6 text-right">
@@ -54,15 +62,15 @@
                                                     <label class="control-label col-lg-4">Ditujukan :</label>
                                                     <div class="col-sm-8 ">
                                                         <!-- radio -->
-                                                        <div class="col-sm-6">
+                                                        <div class="col-sm-6" style="padding:unset">
                                                             <input type="radio" name="r2sys" value="user">
                                                             Orang/Penerima
                                                         </div>
-                                                        <div class="col-sm-6">
+                                                        <div class="col-sm-6" style="padding:unset">
                                                             <input type="radio" name="r2sys" value="siedept">
                                                             Seksi/Unit/Deprt
                                                         </div>
-                                                        <div class="col-sm-6">
+                                                        <div class="col-sm-6" style="padding:unset">
                                                             <input type="radio" name="r2sys" value="manual">
                                                             Input Manual
                                                         </div>
@@ -77,7 +85,7 @@
                                                     <label for="siepenerima_ms" class="control-label col-lg-4">Departemen Penerima</label>
                                                     <div class="col-lg-8">
                                                         <!-- radio -->
-                                                        <div class="col-sm-6">
+                                                        <div class="col-sm-12" style="padding:unset">
                                                             <input type="button" class="btn btn-info btn-xs" id="input_auto" value="clik!">Input Manual
                                                             
                                                         </div>
@@ -186,12 +194,12 @@
                             </div>
                             <div class="box-body">
                               <div class="table-responsive">
-                                <table class="table table-striped table-bordered table-hover text-left " id="dataTables-PengSistem" style="font-size:12px; width:max-content;">
+                                <table class="table table-striped table-bordered table-hover text-left " id="dataTables-PengSistem" style="font-size:12px; width:100%;">
                                   <thead>
-                                    <tr class="bg-info">
+                                    <tr>
                                         <th>No.</th>
-                                        <th>Tanggal Dibuat</th>
                                         <th>No. Surat / Memo</th>
+                                        <th>Tanggal Dibuat</th>
                                         <th>Ditujukan</th>
                                         <th>Seksi / Departemen</th>
                                         <th>Dibuat</th>
@@ -205,8 +213,8 @@
                                     <?php $no= 1; foreach ($listdata_memo as $row) { ?>
                                         <tr row-id="<?php echo $row['id']?>">
                                         <td><b><?php echo $no++; ?></b></td>
+                                        <td style="font-weight: bold;"><a href="<?php echo base_url('PengembanganSistem/sm/create_memo/'.$row['id'].'ke')?>" ><?php echo $row["number_memo"];?></a></td>
                                         <td><?php echo $row["date_doc"];?></td>
-                                        <td style="font-weight: bold;"><?php echo $row["number_memo"];?></td>
                                         <td data-id="<?= $row['id']?>" class="for_doc" id="for_doc<?= $row['id']?>"><?php echo $row["for_doc"];?></td>
                                         <td><?php echo $row["seksi_depart"];?></td>
                                         <td><?php echo $row["pic_doc"];?></td>
@@ -215,13 +223,11 @@
                                         <td><a onmouseover="link_memo(<?php echo $row['id']?>)" id="memo_lilola<?php echo $row['id']?>" data-toggle="tooltip" title="<?= $row['file'];?>" href="<?php echo base_url('assets/upload/PengembanganSistem/memo').'/'.$row['file'];?>" target="_blank"><?php if ($row['file'] != "" ) {echo '<i class="far fa-file-pdf"> View</i>'; } ?></a>
                                         </td>
                                         <td>
-                                        <div <?php if(strlen($row['file']) !== 0){echo 'hidden=""';} ?> >
-                                            <div class="btn-group">
-                                            <a class="icon-action btn btn-success" style="padding: 6px;" href="<?php echo base_url('PengembanganSistem/edit_memo/'.$row['id'])?>" title="Edit"><i class="fa fa-pencil"></i></a>
-                                            <a class="icon-action btn btn-warning" style="padding: 6px;" data-toggle="modal" data-toggle="tooltip" data-target="<?php echo "#modal_edit".$row['id'];?>" title="Upload"><i class="fa fa-cloud-upload"></i></a>
-                                            <a style="padding: 6px" class="icon-action btn btn-danger" title="Delete" onclick="delete_datamemo(<?=$row['id']?>)"><i class="fa fa-close"></i></a>
+                                            <div class="btn-group" style="width: max-content" <?php if(strlen($row['file']) !== 0){echo 'hidden=""';} ?> >
+                                                 <a class="btn btn-xs btn-success" href="<?php echo base_url('PengembanganSistem/sm/edit_memo/'.$row['id'])?>" title="Edit"><i class="fa fa-pencil"></i></a>
+                                                 <a class="btn btn-xs btn-warning" data-toggle="modal" data-toggle="tooltip" data-target="<?php echo "#modal_edit".$row['id'];?>" title="Upload"><i class="fa fa-cloud-upload"></i></a>
+                                                 <a class="btn btn-xs btn-danger" title="Delete" onclick="delete_datamemo(<?=$row['id']?>)"><i class="fa fa-close"></i></a>
                                             </div>
-                                        </div>
                                         </td>
                                             <div class="modal fade" id="<?php echo "modal_edit".$row['id'];?>" role="dialog" aria-labelledby="largeModal" aria-hidden="true" align="center">
                                             <div class="modal-dialog">
