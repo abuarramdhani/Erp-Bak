@@ -10,6 +10,8 @@
             <th>Cut Off</th>
             <th>NBD</th>
             <th>Flag</th>
+            <th>Alasan Order</th>
+            <th>Alasan Urgensi</th>
             <th>Buyer</th>
             <th>Note to Buyer</th>
         </tr>
@@ -37,6 +39,8 @@
                     <label class="label label-warning"><i>emergency</i></label>
                 <?php } ?>
             </td>
+            <td><?php echo $list['ORDER_PURPOSE'] ?>
+            <td><?php echo $list['URGENT_REASON'] ?></td>
             <td><?php echo $list['BUYER_NAME']; ?></td>
             <td><?php echo $list['NOTE_TO_BUYER']; ?></td>
         </tr>
