@@ -1426,6 +1426,12 @@ $(document).ready(function(){
     	var y = $('#apd_yearonly').val();
     	window.location.replace(baseurl + "p2k3adm_V2/Admin/monitoringKK?y="+y);
     });
+
+    $('.apd_delbonspt').click(function(){
+    	var id = $(this).val();
+    	$('#apd_mdldelspt').find('#apd_btnsubdelspt').val(id);
+    	$('#apd_mdldelspt').modal('show');
+    });
 });
 
 function InitK3kForm()

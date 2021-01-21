@@ -743,8 +743,8 @@ class C_Index extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
-		$pr = $this->input->post('k3_periode');
-		$ks = $this->input->post('k3_adm_ks');
+		$pr = $this->input->get('k3_periode');
+		$ks = $this->input->get('k3_adm_ks');
 		$m = substr($pr, 0, 2);
 		$y = substr($pr, 5, 5);
 		$periode = $pr;
@@ -757,9 +757,6 @@ class C_Index extends CI_Controller
 		}
 		$seksi = $this->M_dtmasuk->cekseksi($ks);
 		$data['kodesie'] = $ks;
-		if (empty($data['seksi'])) {
-			$seksi = array(array('section_name' => ''));
-		}
 		if ($ks == 'semua') {
 			$seksi = array(array('section_name' => 'SEMUA SEKSI'));
 		}
