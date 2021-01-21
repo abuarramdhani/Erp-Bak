@@ -352,7 +352,7 @@ $(document).ready(function () {
         type: "error",
         title: "Oops...",
         text: "Pesan gagal terkirim :(",
-        footer: '<span style="color:#3c8dbc">' + 'PO TIDAK DAPAT DIKIRIM, MOHON CEK STATUS APPROVAL PO' + "</span>",
+        footer: '<span class="text-center" style="color:#3c8dbc">' + 'PO TIDAK DAPAT DIKIRIM, MOHON CEK STATUS APPROVAL PO/ALAMAT EMAIL' + "</span>",
       })
     } else {
       // Disable form from user interaction
