@@ -21,25 +21,31 @@ class M_exportjumlahpesanan extends CI_Model
     }
 
     if ($shift == '1') {
-      $shift = "and fs_kd_shift = '1'";
+      $shift = "sum(case when fs_kd_shift = '1' then (select fn_jumlah_pesan) end) as shift_satu_umum,
+                null as shift_dua,
+                null as shift_tiga";
     } elseif ($shift == '2') {
-      $shift = "and fs_kd_shift = '2'";
+      $shift = "null as shift_satu_umum,
+                sum(case when fs_kd_shift = '2' then (select fn_jumlah_pesan) else null end) as shift_dua,
+                null as shift_tiga";
     } elseif ($shift == '3') {
-      $shift = "and fs_kd_shift = '3'";
+      $shift = "null as shift_satu_umum,
+                null as shift_dua,
+                sum(case when fs_kd_shift = '3' then (select fn_jumlah_pesan) end) as shift_tiga";
     } else {
-      $shift = '';
+      $shift = "sum(case when fs_kd_shift = '1' then (select fn_jumlah_pesan) end) as shift_satu_umum,
+                sum(case when fs_kd_shift = '2' then (select fn_jumlah_pesan) end) as shift_dua,
+                sum(case when fs_kd_shift = '3' then (select fn_jumlah_pesan) end) as shift_tiga";
     }
 
     $sql = "SELECT case when lokasi = '1' then 'Pusat + Mlati' when lokasi = '2' then 'Tuksono' end as lokasi,
     to_char(fd_tanggal, 'DD-MM-YYYY') AS fd_tanggal,
-    case when fs_kd_shift = '1' then 'Shift 1 Umum Tanggung' when fs_kd_shift = '2' then 'Shift 2' when fs_kd_shift = '3' then 'Shift 3' end as shift,	
-    sum(fn_jumlah_pesan) as jumlah
+    $shift
     from \"Catering\".tpesanan
     where fd_tanggal between '$periode1' and '$periode2'
-    $shift
     $lokasi
-    group by fd_tanggal,lokasi,fs_kd_shift
-    order by lokasi,fd_tanggal,fs_kd_shift";
+    group by fd_tanggal,lokasi
+    order by lokasi,fd_tanggal";
 
     return $this->personalia->query($sql)->result_array();
   }

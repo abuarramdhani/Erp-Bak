@@ -21,8 +21,9 @@
           <th width="5%" style=" font-family: times; border-collapse: collapse; border: 0.5px solid black; font-size: 9pt;">No</th>
           <th width="25%" style="font-family: times; border-collapse: collapse; border: 0.5px solid black; font-size: 9pt;">Lokasi</th>
           <th width="25%" style="font-family: times; border-collapse: collapse; border: 0.5px solid black; font-size: 9pt;">Tanggal</th>
-          <th width="30%" style="font-family: times; border-collapse: collapse; border: 0.5px solid black; font-size: 9pt;">Shift</th>
-          <th width="15%" style="font-family: times; border-collapse: collapse; border: 0.5px solid black; font-size: 9pt;">Jumlah</th>
+          <th width="15%" style="font-family: times; border-collapse: collapse; border: 0.5px solid black; font-size: 9pt;">Shift 1 Umum Tanggung</th>
+          <th width="15%" style="font-family: times; border-collapse: collapse; border: 0.5px solid black; font-size: 9pt;">Shift 2</th>
+          <th width="15%" style="font-family: times; border-collapse: collapse; border: 0.5px solid black; font-size: 9pt;">Shift 3</th>
         </tr>
       </thead>
 
@@ -33,8 +34,9 @@
             <td align="center" width="5%" style="width : 25%; font-family: times; border-collapse: collapse; border: 0.5px solid black; font-size: 9pt;"><?= $key + 1 ?></td>
             <td width="25%" style="font-family: times; border-collapse: collapse; border: 0.5px solid black; font-size: 9pt;"><?= $val['lokasi'] ?></td>
             <td align="center" width="25%" style="font-family: times; border-collapse: collapse; border: 0.5px solid black; font-size: 9pt;"><?= $val['fd_tanggal']; ?></td>
-            <td width="30%" style="font-family: times; border-collapse: collapse; border: 0.5px solid black; font-size: 9pt;"><?= $val['shift']; ?></td>
-            <td align="center" width="15%" style="font-family: times; border-collapse: collapse; border: 0.5px solid black; font-size: 9pt;"><?= $val['jumlah']; ?></td>
+            <td align="center" width="15%" style="font-family: times; border-collapse: collapse; border: 0.5px solid black; font-size: 9pt;"><?= $val['shift_satu_umum']; ?></td>
+            <td align="center" width="15%" style="font-family: times; border-collapse: collapse; border: 0.5px solid black; font-size: 9pt;"><?= $val['shift_dua']; ?></td>
+            <td align="center" width="15%" style="font-family: times; border-collapse: collapse; border: 0.5px solid black; font-size: 9pt;"><?= $val['shift_tiga']; ?></td>
           </tr>
         <?php endforeach; ?>
       </tbody>

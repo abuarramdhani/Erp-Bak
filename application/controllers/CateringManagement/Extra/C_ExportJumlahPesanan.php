@@ -90,7 +90,7 @@ class C_ExportJumlahPesanan extends CI_Controller
     }
 
     if ($shift == '1') {
-      $ketshift = "Shift 1";
+      $ketshift = "Shift 1 dan Umum";
     } elseif ($shift == '2') {
       $ketshift = "Shift 2";
     } elseif ($shift == '3') {
@@ -130,8 +130,8 @@ class C_ExportJumlahPesanan extends CI_Controller
     $worksheet->getCell('C4')
       ->setValue(': ' . $ketshift);
 
-    $worksheet->getStyle("A5:E5")->applyFromArray(array("font" => array("bold" => true)))->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-    $worksheet->getStyle("A5:E5")->applyFromArray(array(
+    $worksheet->getStyle("A5:F5")->applyFromArray(array("font" => array("bold" => true)))->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+    $worksheet->getStyle("A5:F5")->applyFromArray(array(
       'borders' => array(
         'allborders' => array(
           'style' => PHPExcel_Style_Border::BORDER_THIN
@@ -151,8 +151,9 @@ class C_ExportJumlahPesanan extends CI_Controller
     $worksheet->setCellValue('A5', 'No');
     $worksheet->setCellValue('B5', 'Lokasi');
     $worksheet->setCellValue('C5', 'Tanggal');
-    $worksheet->setCellValue('D5', 'Shift');
-    $worksheet->setCellValue('E5', 'Jumlah');
+    $worksheet->setCellValue('D5', 'Shift 1 Umum Tanggung');
+    $worksheet->setCellValue('E5', 'Shift 2');
+    $worksheet->setCellValue('F5', 'Shift 3');
 
     $angka = 1;
     $row = 6;
@@ -160,19 +161,21 @@ class C_ExportJumlahPesanan extends CI_Controller
       $worksheet->setCellValue('A' . $row, $angka);
       $worksheet->setCellValue('B' . $row, $key['lokasi']);
       $worksheet->setCellValue('C' . $row, $key['fd_tanggal']);
-      $worksheet->setCellValue('D' . $row, $key['shift']);
-      $worksheet->setCellValue('E' . $row, $key['jumlah']);
+      $worksheet->setCellValue('D' . $row, $key['shift_satu_umum']);
+      $worksheet->setCellValue('E' . $row, $key['shift_dua']);
+      $worksheet->setCellValue('F' . $row, $key['shift_tiga']);
       $worksheet->getStyle('A' . $row)->applyFromArray($border)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
       $worksheet->getStyle('B' . $row)->applyFromArray($border);
       $worksheet->getStyle('C' . $row)->applyFromArray($border)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-      $worksheet->getStyle('D' . $row)->applyFromArray($border);
+      $worksheet->getStyle('D' . $row)->applyFromArray($border)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
       $worksheet->getStyle('E' . $row)->applyFromArray($border)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+      $worksheet->getStyle('F' . $row)->applyFromArray($border)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
       $row++;
       $angka++;
     }
 
     $worksheet->getColumnDimension('A')->setWidth('5');
-    foreach (range('B', 'E') as $columnID) {
+    foreach (range('B', 'F') as $columnID) {
       $worksheet->getColumnDimension($columnID)
         ->setWidth('15');
     }
