@@ -391,8 +391,8 @@ class C_Request extends CI_Controller
 			$mail->Subject = 'Request Pendaftaran Master Item';
 			$mail->msgHTML($isi);
 			if (!$mail->send()) {
-				echo "Mailer Error: " . $mail->ErrorInfo;
-				exit();
+				// echo "Mailer Error: " . $mail->ErrorInfo;
+				// exit();
 			} else {
 				// echo "Message sent!..<br>";
 			}
