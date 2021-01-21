@@ -3897,6 +3897,8 @@ $route['OrderKebutuhanBarangDanJasa/Pengelola/(:any)'] = 'OrderKebutuhanBarangDa
 $route['OrderKebutuhanBarangDanJasa/Puller/(:any)'] = 'OrderKebutuhanBarangDanJasa/Puller/C_Puller/$1';
 $route['OrderKebutuhanBarangDanJasa/Purchasing/(:any)'] = 'OrderKebutuhanBarangDanJasa/Purchasing/C_Purchasing/$1';
 $route['OrderKebutuhanBarangDanJasa/Purchasing/(:any)/(:any)'] = 'OrderKebutuhanBarangDanJasa/Purchasing/C_Purchasing/$1/$2';
+$route['OrderKebutuhanBarangDanJasa/Buyer/(:any)'] = 'OrderKebutuhanBarangDanJasa/Buyer/C_Buyer/$1';
+$route['OrderKebutuhanBarangDanJasa/Buyer/(:any)/(:any)'] = 'OrderKebutuhanBarangDanJasa/Buyer/C_Buyer/$1/$2';
 $route['OrderKebutuhanBarangDanJasa/Import/(:any)'] = 'OrderKebutuhanBarangDanJasa/Import/C_Import/$1';
 
 //--------------------------------------------------Monitoring Pengiriman Pesanan Luar-------------------------------//
