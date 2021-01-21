@@ -1918,7 +1918,7 @@ $("#view_seunt").click(function(){
 			console.log(id); 
 			Swal.fire({
 				title: 'Are you sure?',
-				text: "Data akan di hapus !",
+				text: "Data akan di hapus !!",
 				type: 'warning',
 				showCancelButton: true,
 				confirmButtonText: 'Delete',
