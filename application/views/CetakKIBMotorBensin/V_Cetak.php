@@ -49,23 +49,23 @@
                           <i class="fa fa-close"></i>
                         </span>
                       </button>
-                      <strong>Type Engine</strong> dapat dikosongi jika hanya keperluan monitoring. Sedangkan untuk keperluan cetak <strong>Type Engine</strong> perlu di isi.</strong>
+                      <strong>Sekilas Info! </strong> Klik 2 kali jika hanya memilih 1 tanggal</strong>
                     </div>
                   </div>
                   <!-- <form id="formSPB" onsubmit="getDataSPB()"> -->
-                  <div class="col-md-7">
+                  <div class="col-md-10">
                     <label for="">Select Date Range</label>
                     <input type="text" name="" class="form-control tanggal_ckmb ckmb_pdf_cek" placeholder="Select Yout Current Date" required="" >
                   </div>
-                  <div class="col-md-3">
+                  <!-- <div class="col-md-3">
                     <label for="">Type Engine</label>
                     <select class="form-control select2_ckmb ckmb_pdf_cek" name="" style="width:100%">
                       <option value=""></option>
-                      <?php foreach ($get_type as $key => $value): ?>
-                        <option value="<?php echo $value['TYPE'] ?>"><?php echo $value['TYPE'] ?></option>
-                      <?php endforeach; ?>
+                      <?php //foreach ($get_type as $key => $value): ?>
+                        <option value="<?php //echo $value['TYPE'] ?>"><?php //echo $value['TYPE'] ?></option>
+                      <?php //endforeach; ?>
                     </select>
-                  </div>
+                  </div> -->
                   <div class="col-md-2">
                     <label for="" style="color:transparent">Ini Filter</label>
                     <button type="button" onclick="filter_ckmb()" style="font-size:15px" class="btn btn-primary btn-sm btn-block"> <i class="fa fa-search"></i> <strong>Filter</strong> </button>

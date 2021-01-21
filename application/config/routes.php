@@ -4963,8 +4963,8 @@ $route['DPBSparepart/Admin/(:any)/(:any)'] = 'DPBSparepart/Admin/C_Admin/$1/$2';
 //------------------------------- Cetak KIB Motor Bensin --------------------------------------------------------
 $route['CetakKIBMotorBensin'] = 'CetakKIBMotorBensin/C_Master';
 $route['CetakKIBMotorBensin/Cetak'] = 'CetakKIBMotorBensin/C_Master/Cetak';
-$route['CetakKIBMotorBensin/pdf/(:any)/(:any)/(:any)'] = 'CetakKIBMotorBensin/C_Master/pdf/$1/$2/$3';
-$route['CetakKIBMotorBensin/Checklist/(:any)/(:any)/(:any)'] = 'CetakKIBMotorBensin/C_Master/Checklist/$1/$2/$3';
+$route['CetakKIBMotorBensin/pdf/(:any)/(:any)/(:any)/(:any)'] = 'CetakKIBMotorBensin/C_Master/pdf/$1/$2/$3/$4';
+$route['CetakKIBMotorBensin/Checklist/(:any)/(:any)/(:any)/(:any)'] = 'CetakKIBMotorBensin/C_Master/Checklist/$1/$2/$3/$4';
 
 $route['CetakKIBMotorBensin/CKMB/(:any)'] = 'CetakKIBMotorBensin/C_Master/$1';
 $route['CetakKIBMotorBensin/CKMB/(:any)/(:any)'] = 'CetakKIBMotorBensin/C_Master/$1/$2';
