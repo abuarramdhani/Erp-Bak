@@ -4968,3 +4968,44 @@ $route['CetakKIBMotorBensin/Checklist/(:any)/(:any)/(:any)'] = 'CetakKIBMotorBen
 
 $route['CetakKIBMotorBensin/CKMB/(:any)'] = 'CetakKIBMotorBensin/C_Master/$1';
 $route['CetakKIBMotorBensin/CKMB/(:any)/(:any)'] = 'CetakKIBMotorBensin/C_Master/$1/$2';
+
+//-------------------------------------------Pendaftaran Master Item--------------------------------------------------//
+$route['PendaftaranMasterItem'] 						= 'PendaftaranMasterItem/C_Index';
+$route['PendaftaranMasterItem/Request']					= 'PendaftaranMasterItem/Seksi/C_Request';
+$route['PendaftaranMasterItem/Request/(:any)']			= 'PendaftaranMasterItem/Seksi/C_Request/$1';
+$route['PendaftaranMasterItem/Request/(:any)/(:any)']	= 'PendaftaranMasterItem/Seksi/C_Request/$1/$2';
+$route['PendaftaranMasterItem/SettingEmail']				= 'PendaftaranMasterItem/Seksi/C_SettingEmail';
+$route['PendaftaranMasterItem/SettingEmail/(:any)']			= 'PendaftaranMasterItem/Seksi/C_SettingEmail/$1';
+$route['PendaftaranMasterItem/SettingEmail/(:any)/(:any)']	= 'PendaftaranMasterItem/Seksi/C_SettingEmail/$1/$2';
+
+$route['MasterItemTimKode'] 						= 'PendaftaranMasterItem/C_Index';
+$route['MasterItemTimKode/Request']					= 'PendaftaranMasterItem/TimKodeBarang/C_TimKode';
+$route['MasterItemTimKode/Request/(:any)']			= 'PendaftaranMasterItem/TimKodeBarang/C_TimKode/$1';
+$route['MasterItemTimKode/Request/(:any)/(:any)']	= 'PendaftaranMasterItem/TimKodeBarang/C_TimKode/$1/$2';
+$route['MasterItemTimKode/SettingEmail']				= 'PendaftaranMasterItem/TimKodeBarang/C_SettingEmail';
+$route['MasterItemTimKode/SettingEmail/(:any)']			= 'PendaftaranMasterItem/TimKodeBarang/C_SettingEmail/$1';
+$route['MasterItemTimKode/SettingEmail/(:any)/(:any)']	= 'PendaftaranMasterItem/TimKodeBarang/C_SettingEmail/$1/$2';
+
+$route['MasterItemAkuntansi'] 						= 'PendaftaranMasterItem/C_Index';
+$route['MasterItemAkuntansi/Request']				= 'PendaftaranMasterItem/Akuntansi/C_Akuntansi';
+$route['MasterItemAkuntansi/Request/(:any)']		= 'PendaftaranMasterItem/Akuntansi/C_Akuntansi/$1';
+$route['MasterItemAkuntansi/Request/(:any)/(:any)']	= 'PendaftaranMasterItem/Akuntansi/C_Akuntansi/$1/$2';
+$route['MasterItemAkuntansi/SettingEmail']				= 'PendaftaranMasterItem/Akuntansi/C_SettingEmail';
+$route['MasterItemAkuntansi/SettingEmail/(:any)']		= 'PendaftaranMasterItem/Akuntansi/C_SettingEmail/$1';
+$route['MasterItemAkuntansi/SettingEmail/(:any)/(:any)']= 'PendaftaranMasterItem/Akuntansi/C_SettingEmail/$1/$2';
+
+$route['MasterItemPembelian'] 						= 'PendaftaranMasterItem/C_Index';
+$route['MasterItemPembelian/Request']				= 'PendaftaranMasterItem/Pembelian/C_Pembelian';
+$route['MasterItemPembelian/Request/(:any)']		= 'PendaftaranMasterItem/Pembelian/C_Pembelian/$1';
+$route['MasterItemPembelian/Request/(:any)/(:any)']	= 'PendaftaranMasterItem/Pembelian/C_Pembelian/$1/$2';
+$route['MasterItemPembelian/SettingEmail']				= 'PendaftaranMasterItem/Pembelian/C_SettingEmail';
+$route['MasterItemPembelian/SettingEmail/(:any)']		= 'PendaftaranMasterItem/Pembelian/C_SettingEmail/$1';
+$route['MasterItemPembelian/SettingEmail/(:any)/(:any)']= 'PendaftaranMasterItem/Pembelian/C_SettingEmail/$1/$2';
+
+$route['MasterItemPIEA'] 						= 'PendaftaranMasterItem/C_Index';
+$route['MasterItemPIEA/Request']				= 'PendaftaranMasterItem/Piea/C_Piea';
+$route['MasterItemPIEA/Request/(:any)']			= 'PendaftaranMasterItem/Piea/C_Piea/$1';
+$route['MasterItemPIEA/Request/(:any)/(:any)']	= 'PendaftaranMasterItem/Piea/C_Piea/$1/$2';
+$route['MasterItemPIEA/SettingData']				= 'PendaftaranMasterItem/Piea/C_Setting';
+$route['MasterItemPIEA/SettingData/(:any)']			= 'PendaftaranMasterItem/Piea/C_Setting/$1';
+$route['MasterItemPIEA/SettingData/(:any)/(:any)']	= 'PendaftaranMasterItem/Piea/C_Setting/$1/$2';
