@@ -174,26 +174,39 @@ class M_requisition extends CI_Model
     public function getListDataOrder2($noind)
     {
         $oracle = $this->load->database('oracle', true);
-        $query = $oracle->query("SELECT DISTINCT
-        ooh.*,
-        msib.SEGMENT1,
-        msib.DESCRIPTION,
-        ppf.NATIONAL_IDENTIFIER,
-        ppf.FULL_NAME,
-        ppf.ATTRIBUTE3,
-        (SELECT count(FILE_NAME) FROM KHS.KHS_OKBJ_ORDER_ATTACHMENTS 
-        WHERE ORDER_ID = ooh.ORDER_ID) attachment
-    FROM
-        KHS.KHS_OKBJ_ORDER_HEADER ooh,
-        PER_PEOPLE_F ppf,
-        mtl_system_items_b msib
-    WHERE
-        ooh.CREATE_BY = ppf.PERSON_ID
-        AND ooh.INVENTORY_ITEM_ID = msib.INVENTORY_ITEM_ID
-        AND ooh.ORDER_STATUS_ID <> 5
-        AND ppf.NATIONAL_IDENTIFIER = '$noind'
-        ORDER BY ooh.ORDER_ID DESC
-        ");
+        $query = $oracle->query("SELECT
+                                    DISTINCT ooh.*,
+                                    msib.segment1,
+                                    msib.description,
+                                    ppf.national_identifier,
+                                    ppf.full_name,
+                                    ppf.attribute3,
+                                    (
+                                    SELECT
+                                        COUNT(file_name)
+                                    FROM
+                                        khs.khs_okbj_order_attachments
+                                    WHERE
+                                        order_id = ooh.order_id 
+                                    ) attachment ,
+                                    ppfa.full_name last_judgement_by,
+                                    kooa.judgement last_judgement
+                                FROM
+                                    khs.khs_okbj_order_header ooh,
+                                    per_people_f ppf,
+                                    mtl_system_items_b msib,
+                                    khs.khs_okbj_order_approval kooa,
+                                    per_people_f ppfa
+                                WHERE
+                                    ooh.create_by = ppf.person_id
+                                    AND ooh.inventory_item_id = msib.inventory_item_id
+                                    AND ooh.order_status_id <> 5
+                                    AND ooh.order_id = kooa.order_id (+) 
+                                    AND ooh.approve_level_pos = kooa.approver_type (+) 
+                                    AND kooa.approver_id = ppfa.person_id (+)
+                                    AND ppf.national_identifier = '$noind'	
+                                ORDER BY
+                                    ooh.order_id DESC");
 
         return $query->result_array();
     }
