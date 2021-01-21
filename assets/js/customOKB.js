@@ -1749,7 +1749,10 @@ $(document).ready(function () {
         scrollCollapse: true,
         fixedColumns:   {
             leftColumns: 5
-        }
+        },
+        columnDefs: [
+            { width: 160, targets: 8 }
+        ]
     });
 
     $(document).on('click','.btnAttachmentOKB', function () {
