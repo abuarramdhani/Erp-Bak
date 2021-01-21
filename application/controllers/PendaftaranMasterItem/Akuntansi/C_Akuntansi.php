@@ -94,7 +94,7 @@ class C_Akuntansi extends CI_Controller
 		for ($i=0; $i < count($id_item); $i++) { 
 			$cek= $this->M_request->dataAkuntansi($id_item[$i]); // cek data sudah disave / belum
 			if (empty($cek)) { // data belum disave
-				if ($make_buy[$i] != 'MAKE' || $status[$i] != 'R') {
+				if ($make_buy[$i] != 'MAKE' && $status[$i] != 'R') {
 					$kirim = 'Pembelian'; // jika ada make_buy = MAKE tujuan kirim jadi Pembelian
 				}else {
 					$kirim = $kirim; // tujuan kirim tetap
@@ -145,7 +145,7 @@ class C_Akuntansi extends CI_Controller
 			}
 			
 			if ($kirim == 'Pembelian') { // tujuan kirim ke pembelian
-				if ($make_buy[$i] != 'MAKE' || $status[$i] != 'R') {
+				if ($make_buy[$i] != 'MAKE' && $status[$i] != 'R') {
 					$isi .= '<b>Status : </b>'.$sts.'<br>';
 					$isi .= '<b>Kode Item : </b>'.$item[$i].'<br>';
 					$isi .= '<b>Deskripsi : </b>'.$desc[$i].'<br><br>';
