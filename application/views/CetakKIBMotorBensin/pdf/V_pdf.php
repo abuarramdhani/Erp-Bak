@@ -35,8 +35,8 @@
 							</center>
 						</td>
 						<td style="border-bottom: 1px solid black;border-right: 1px solid black;padding:5px">
-							<div style="font-size:13px;text-align:left !important">
-								<?php echo $var['CREATED_DATE'] ?>
+							<div style="font-size:13px;">
+								<center><?php echo $var['RECEIPT_DATE'] ?></center>
 							</div>
 						</td>
 					</tr>
@@ -99,7 +99,7 @@
 						</td>
 						<td rowspan="2" style="padding:5px;border-left: 1px solid black;border-bottom: 1px solid black;border-right: 1px solid black;">
 							 <center>
-								<img style="width: 17mm; height: auto;" src="<?php echo base_url('assets/img/PBIQRCode/'.$var['SERIAL'].'.png') ?>">
+								<img style="width: 17mm; height: auto;" src="<?php echo base_url('assets/img/PBIQRCode/'.$var['SERIAL_NUMBER'].'.png') ?>">
 							</center>
 						</td>
 					</tr>
@@ -108,7 +108,7 @@
 							No. Seri :
 						</td>
 						<td style="padding:5px;border-left: 1px solid black;border-bottom: 1px solid black;border-right: 1px solid black;">
-							<center> <h3><?php echo $var['SERIAL'] ?></h3> </center>
+							<center> <h3><?php echo $var['SERIAL_NUMBER'] ?></h3> </center>
 						</td>
 					</tr>
 				</tbody>
@@ -143,7 +143,7 @@
 					</td>
 					<td rowspan="3" style="width: 21%;padding:5px;border-left: 1px solid black;border-bottom: 1px solid black;border-right: 1px solid black;border-top: 1px solid black;">
 						 <center>
-							<img style="width: 17mm; height: auto;" src="<?php echo base_url('assets/img/PBIQRCode/'.$var['SERIAL'].'.png') ?>">
+							<img style="width: 17mm; height: auto;" src="<?php echo base_url('assets/img/PBIQRCode/'.$var['SERIAL_NUMBER'].'.png') ?>">
 						</center>
 					</td>
 				</tr>
@@ -159,8 +159,8 @@
 					<td style="padding:5px;border-left: 1px solid black;border-bottom: 1px solid black;border-right: 1px solid black;">
 						No. Seri :
 					</td>
-					<td style="padding:5px;border-left: 1px solid black;border-bottom: 1px solid black;border-right: 1px solid black;">
-						<center> <h3><?php echo $var['SERIAL'] ?></h3> </center>
+					<td style="padding:5px;border-left: 1px solid black;border-bottom: 1px solid black;border-right: 1px solid black;border-top: 1px solid black;">
+						<center> <h3><?php echo $var['SERIAL_NUMBER'] ?></h3> </center>
 					</td>
 				</tr>
 			</table>

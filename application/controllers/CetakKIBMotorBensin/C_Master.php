@@ -66,7 +66,7 @@ class C_Master extends CI_Controller
         $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
-        $data['get_type'] = $this->M_master->getType();
+        // $data['get_type'] = $this->M_master->getType();
 
         $this->load->view('V_Header', $data);
         $this->load->view('V_Sidemenu', $data);
@@ -77,69 +77,100 @@ class C_Master extends CI_Controller
     public function getFilterByDate($value='')
     {
       $data['range_date'] = $this->input->post('range_date');
-      $data['tipe'] = $this->input->post('tipe');
+      $data['get_po'] = $this->M_master->getPO($data['range_date']);
       if (empty($data['range_date'])) {
         echo 0;
       }else {
-        $this->load->view('CetakKIBMotorBensin/ajax/V_filter', $data);
+        if (!empty($data['get_po'])) {
+          $this->load->view('CetakKIBMotorBensin/ajax/V_filter', $data);
+        }else {
+          echo 10;
+        }
       }
     }
 
-    public function getMaster($value='')
+    public function getTableEngine()
     {
-      $post =  $this->input->post();
-      foreach ($post['columns'] as $val) {
-          $post['search'][$val['data']]['value'] = $val['search']['value'];
+      $data['no_po'] = $this->input->post('no_po');
+      $data['surat_jalan'] = $this->input->post('surat_jalan');
+      $data['get_engine'] = $this->M_master->getEngine($data['no_po'], $data['surat_jalan']);
+      if (!empty($data['get_engine'])) {
+        $this->load->view('CetakKIBMotorBensin/ajax/V_table_engine', $data);
+      }else {
+        echo 0;
       }
-
-      $countall = $this->M_master->countAll($post)['count'];
-      $countfilter = $this->M_master->countFiltered($post)['count'];
-
-      $post['pagination']['from'] = $post['start'] + 1;
-      $post['pagination']['to'] = $post['start'] + $post['length'];
-
-      $protodata = $this->M_master->selectMaster($post);
-
-      $data = [];
-      foreach ($protodata as $row) {
-          $sub_array   = [];
-          $sub_array[] = '<center>'.$row['PAGINATION'].'</center>';
-          $sub_array[] = $row['PALET'];
-          $sub_array[] = $row['KODE_SEBELUM'];
-          $sub_array[] = $row['TYPE_SEBELUM'];
-          $sub_array[] = $row['KODE_SETELAH'];
-          $sub_array[] = $row['TYPE_SETELAH'];
-          $sub_array[] = $row['PRODUK'];
-          $sub_array[] = $row['WARNA_KIB'];
-          $sub_array[] = $row['TYPE'];
-          $sub_array[] = $row['SERIAL'];
-          // $sub_array[] = '-';
-          // $sub_array[] = '<a class="btn btn-success btn-sm" target="_blank" href="'.base_url('CetakKIBMotorBensin/CKMB/pdf/'.$row['SERIAL']).'" title="Export"><i class="fa fa-file-pdf-o"></i> Cetak</a>';
-
-          $data[] = $sub_array;
-      }
-
-      $output = [
-          'draw' => $post['draw'],
-          'recordsTotal' => $countall,
-          'recordsFiltered' => $countfilter,
-          'data' => $data,
-      ];
-
-      die($this->output
-              ->set_status_header(200)
-              ->set_content_type('application/json')
-              ->set_output(json_encode($output))
-              ->_display());
     }
 
-    public function pdf($range1, $range2, $tipe)
+    public function getSerial($value='')
     {
-      $range =  $range1.' - '.$range2;
-      $get = $this->M_master->getItem($range, $tipe);
+      $data['no_po'] = $this->input->post('no_po');
+      $data['surat_jalan'] = $this->input->post('surat_jalan');
+      $data['segment1'] = $this->input->post('segment1');
+      $data['receipt_date'] = $this->input->post('receipt_date');
+
+      $data['get_serial'] = $this->M_master->getSerial($data['no_po'], $data['surat_jalan'], $data['segment1']);
+      if (!empty($data['get_serial'])) {
+        $this->load->view('CetakKIBMotorBensin/ajax/V_serial', $data);
+      }else {
+        echo 0;
+      }
+    }
+
+    // public function getMaster($value='')
+    // {
+    //   $post =  $this->input->post();
+    //   foreach ($post['columns'] as $val) {
+    //       $post['search'][$val['data']]['value'] = $val['search']['value'];
+    //   }
+    //
+    //   $countall = $this->M_master->countAll($post)['count'];
+    //   $countfilter = $this->M_master->countFiltered($post)['count'];
+    //
+    //   $post['pagination']['from'] = $post['start'] + 1;
+    //   $post['pagination']['to'] = $post['start'] + $post['length'];
+    //
+    //   $protodata = $this->M_master->selectMaster($post);
+    //
+    //   $data = [];
+    //   foreach ($protodata as $row) {
+    //       $sub_array   = [];
+    //       $sub_array[] = '<center>'.$row['PAGINATION'].'</center>';
+    //       $sub_array[] = $row['PALET'];
+    //       $sub_array[] = $row['KODE_SEBELUM'];
+    //       $sub_array[] = $row['TYPE_SEBELUM'];
+    //       $sub_array[] = $row['KODE_SETELAH'];
+    //       $sub_array[] = $row['TYPE_SETELAH'];
+    //       $sub_array[] = $row['PRODUK'];
+    //       $sub_array[] = $row['WARNA_KIB'];
+    //       $sub_array[] = $row['TYPE'];
+    //       $sub_array[] = $row['SERIAL'];
+    //       // $sub_array[] = '-';
+    //       // $sub_array[] = '<a class="btn btn-success btn-sm" target="_blank" href="'.base_url('CetakKIBMotorBensin/CKMB/pdf/'.$row['SERIAL']).'" title="Export"><i class="fa fa-file-pdf-o"></i> Cetak</a>';
+    //
+    //       $data[] = $sub_array;
+    //   }
+    //
+    //   $output = [
+    //       'draw' => $post['draw'],
+    //       'recordsTotal' => $countall,
+    //       'recordsFiltered' => $countfilter,
+    //       'data' => $data,
+    //   ];
+    //
+    //   die($this->output
+    //           ->set_status_header(200)
+    //           ->set_content_type('application/json')
+    //           ->set_output(json_encode($output))
+    //           ->_display());
+    // }
+
+    public function pdf($no_po, $surat_jalan, $segment1, $receipt_date)
+    {
+      // $range =  $range1.' - '.$range2;
+      $get = $this->M_master->getItem($no_po, $surat_jalan, $segment1, $receipt_date);
       $data['get'] = $get;
 
-      if (!empty($range1) && !empty($tipe)) {
+      // if (!empty($range1) && !empty($tipe)) {
         ob_start();
           $this->load->library('ciqrcode');
           if (!is_dir('./assets/img/PBIQRCode')) {
@@ -148,12 +179,12 @@ class C_Master extends CI_Controller
           }
           foreach ($get as $key => $value) {
             // ------ GENERATE QRCODE ------
-            $params['data']		= $value['SERIAL'];
+            $params['data']		= $value['SERIAL_NUMBER'];
             $params['level']	= 'H';
             $params['size']		= 5;
             $params['black']	= array(255,255,255);
             $params['white']	= array(0,0,0);
-            $params['savename'] = './assets/img/PBIQRCode/'.($value['SERIAL']).'.png';
+            $params['savename'] = './assets/img/PBIQRCode/'.($value['SERIAL_NUMBER']).'.png';
             $this->ciqrcode->generate($params);
           }
           // ====================== do something =========================
@@ -168,12 +199,12 @@ class C_Master extends CI_Controller
           ob_end_clean() ;
           $pdf->WriteHTML($isi);
           $pdf->Output($filename, 'I');
-      } else {
-          echo json_encode(array(
-            'success' => false,
-            'message' => 'Range date Or Type Engine Can\'t empty'
-          ));
-      }
+      // } else {
+      //     echo json_encode(array(
+      //       'success' => false,
+      //       'message' => 'Range date Or Type Engine Can\'t empty'
+      //     ));
+      // }
 
       foreach ($get as $key => $value) {
         if (!unlink('./assets/img/PBIQRCode/'.$value['SERIAL'].'.png')) {
@@ -183,13 +214,13 @@ class C_Master extends CI_Controller
 
     }
 
-    public function Checklist($range1, $range2, $tipe)
+    public function Checklist($no_po, $surat_jalan, $segment1, $receipt_date)
     {
-      $range =  $range1.' - '.$range2;
-      $get_ = $this->M_master->getItem($range, $tipe);
+      // $range =  $range1.' - '.$range2;
+      $get_ = $this->M_master->getItem($no_po, $surat_jalan, $segment1, $receipt_date);
       foreach ($get_ as $key => $value) {
-        $get_[$key]['KODE_1'] = substr($value['SERIAL'], 0, 3);
-        $get_[$key]['KODE_2'] = substr($value['SERIAL'], 3);
+        $get_[$key]['KODE_1'] = substr($value['SERIAL_NUMBER'], 0, 3);
+        $get_[$key]['KODE_2'] = substr($value['SERIAL_NUMBER'], 3);
       }
       // for ($i=1; $i <= 220; $i++) {
       //   $get_[$i]['TYPE'] = 'GCMX';
@@ -198,7 +229,7 @@ class C_Master extends CI_Controller
       //   $get_[$i]['PALET'] = ceil($i/30);
       // }
 
-      //uda dinamis
+      //suda dinamis
       $this->load->library('Pdf');
       foreach ($get_ as $key => $value) $count_palet[$value['PALET']] = $value['PALET'];
       foreach ($get_ as $key => $value) $palet[$value['PALET']][] = $value;
