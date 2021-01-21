@@ -11,11 +11,12 @@
 
   <thead class="bg-primary">
     <tr>
-      <th width="3%" style="text-align : center;">No</th>
-      <th style="text-align : center;">Lokasi</th>
-      <th style="text-align : center;">Tanggal</th>
-      <th style="text-align : center;">Shift</th>
-      <th style="text-align : center;">Jumlah</th>
+      <th width="5%" style="text-align : center;">No</th>
+      <th width="25%" style="text-align : center;">Lokasi</th>
+      <th width="25%" style="text-align : center;">Tanggal</th>
+      <th width="15%" style="text-align : center;">Shift 1 Umum Tanggung</th>
+      <th width="15%" style="text-align : center;">Shift 2</th>
+      <th width="15%" style="text-align : center;">Shift 3</th>
     </tr>
   </thead>
 
@@ -26,8 +27,9 @@
         <td style="text-align : center;"><?= $key + 1 ?></td>
         <td><?= $val['lokasi'] ?></td>
         <td style="text-align : center;"><?= $val['fd_tanggal']; ?></td>
-        <td><?= $val['shift']; ?></td>
-        <td style="text-align : center;"><?= $val['jumlah']; ?></td>
+        <td style="text-align : center;"><?= $val['shift_satu_umum']; ?></td>
+        <td style="text-align : center;"><?= $val['shift_dua']; ?></td>
+        <td style="text-align : center;"><?= $val['shift_tiga']; ?></td>
       </tr>
     <?php endforeach; ?>
   </tbody>
