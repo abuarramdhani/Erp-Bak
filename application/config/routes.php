@@ -2154,6 +2154,13 @@ $route['MasterPekerja/Pemutihan/Verification']['post'] = 'MasterPekerja/Pekerja/
 $route['MasterPekerja/Pemutihan/api/list/pending/datatable'] = 'MasterPekerja/Pekerja/Pemutihan/C_Api/list_pending_datatable';
 $route['MasterPekerja/Pemutihan/api/list/detail/leavepage'] = 'MasterPekerja/Pekerja/Pemutihan/C_Api/delete_request_session';
 
+//---------------------------------------- Cetak Masa Kerja ---------------------------------------
+
+$route['MasterPekerja/MasaKerja/(:any)'] = 'MasterPekerja/MasaKerja/C_Index/$1';
+
+//---------------------------------------- Cetak Pekerja Puasa ---------------------------------------
+$route['MasterPekerja/PekerjaPuasa/(:any)'] = 'MasterPekerja/PekerjaPuasa/C_Index/$1';
+
 //------------------------------------ Penerimaan PO ----------------------------------------
 $route['PenerimaanPO']						   = 'PenerimaanPO/C_Penerimaan';
 
