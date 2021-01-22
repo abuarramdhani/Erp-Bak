@@ -957,49 +957,8 @@ class C_Approver extends CI_Controller {
 
     public function getUnapprovedOrderCount()
     {
-        $data['normal'] = array();
-		$data['urgent'] = array();
-		$data['susulan'] = array();
-
-        $allOrder = $this->M_approver->getListDataOrder();
         $noind = $this->session->user;
-
-        $data['approver'] = $this->M_requisition->getPersonId($noind);
-
-        foreach ($allOrder as $key => $order) {
-            $checkOrder = $this->M_approver->checkOrder($order['ORDER_ID']);
-            if (isset($checkOrder[0])) {
-                if ($this->session->responsibility_id == 2681) {
-                    if ($checkOrder[0]['APPROVER_ID'] == $data['approver'][0]['PERSON_ID'] && $checkOrder[0]['APPROVER_TYPE'] == 7) {
-                        $orderSiapTampil = $this->M_approver->getOrderToApprove($order['ORDER_ID']);
-                        if ($orderSiapTampil[0]['ORDER_CLASS'] != '2') {
-                            if ($orderSiapTampil[0]['URGENT_FLAG'] == 'N' && $orderSiapTampil[0]['IS_SUSULAN'] =='N') {
-                                array_push($data['normal'], $orderSiapTampil[0]);
-                            }elseif ($orderSiapTampil[0]['URGENT_FLAG'] == 'Y' && $orderSiapTampil[0]['IS_SUSULAN'] =='N') {
-                                array_push($data['urgent'], $orderSiapTampil[0]);
-                            }elseif ($orderSiapTampil[0]['IS_SUSULAN'] =='Y') {
-                                array_push($data['susulan'], $orderSiapTampil[0]);
-                            }
-                        }
-                    }
-                }else{
-                    if ($checkOrder[0]['APPROVER_ID'] == $data['approver'][0]['PERSON_ID'] && $checkOrder[0]['APPROVER_TYPE'] != 7) {
-                        $orderSiapTampil = $this->M_approver->getOrderToApprove($order['ORDER_ID']);
-                        if ($orderSiapTampil[0]['ORDER_CLASS'] != '2') {
-                            if ($orderSiapTampil[0]['URGENT_FLAG'] == 'N' && $orderSiapTampil[0]['IS_SUSULAN'] =='N') {
-                                array_push($data['normal'], $orderSiapTampil[0]);
-                            }elseif ($orderSiapTampil[0]['URGENT_FLAG'] == 'Y' && $orderSiapTampil[0]['IS_SUSULAN'] =='N') {
-                                array_push($data['urgent'], $orderSiapTampil[0]);
-                            }elseif ($orderSiapTampil[0]['IS_SUSULAN'] =='Y') {
-                                array_push($data['susulan'], $orderSiapTampil[0]);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        $total_unapproved_order = count($data['normal']) + count($data['urgent']) + count($data['susulan']);
+        $total_unapproved_order = $this->M_approver->getUnapprovedOrderCount($noind)['TOTAL'];
 
         $this->output
             ->set_status_header(200)
