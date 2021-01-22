@@ -6103,6 +6103,61 @@ $(document).ready(function () {
   });
 
 });
-
-
 //End Cetak Jumlah Pekerja
+
+//Start Masa Pekrja
+$(document).ready(function () {
+  $("#CMP_tgl").daterangepicker({
+    singleDatePicker: true,
+    showDropdowns: true,
+    locale: {
+      format: "YYYY-MM-DD"
+    }
+  });
+
+  $("#CMP_CETAK").on("click", function () {
+    let tanggal = $("#CMP_tgl").val();
+    let kodeind = $("#CMP_kodeind").val();
+
+    var loading = baseurl + "assets/img/gif/loadingquick.gif";
+
+    $.ajax({
+      type: "POST",
+      data: {
+        tgl: tanggal,
+        kodeind: kodeind
+      },
+      url: baseurl + "MasterPekerja/MasaKerja/GetFilter",
+      beforeSend: function () {
+        swal.fire({
+          html: "<div><img style='width: 320px; height: auto;'src='" +
+            loading +
+            "'><br><p>Sedang Proses....</p></div>",
+          customClass: "swal-wide",
+          showConfirmButton: false,
+          allowOutsideClick: false
+        });
+      },
+      success: function (result) {
+        swal.close();
+        console.log(tanggal)
+        console.log(kodeind)
+        $("#Div_cmktable").html(result);
+        $("#cmktable").DataTable({
+          dom: "Bfrtip",
+          buttons: [{
+            extend: "excelHtml5",
+            title: "Masa Kerja",
+          }],
+
+          initComplete: function (settings, json) {
+            $("#cmktable").wrap(
+              "<div style='overflow:auto; width:100%;position:relative;'></div>"
+            );
+          },
+        });
+      }
+    });
+  });
+});
+//End Masa Pekrja
