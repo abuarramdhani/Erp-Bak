@@ -2147,6 +2147,13 @@ $route['MasterPekerja/SimForklift/(:any)/(:any)/(:any)'] = 'MasterPekerja/Other/
 $route['MasterPekerja/surat_pernyataan'] = 'MasterPekerja/Other/SuratPernyataan/C_SuratPernyataan/index';
 $route['MasterPekerja/surat_pernyataan/(:any)'] = 'MasterPekerja/Other/SuratPernyataan/C_SuratPernyataan/$1';
 
+//----------------------------------------Pemutihan Data Pekerja ---------------------------------------
+$route['MasterPekerja/Pemutihan'] = 'MasterPekerja/Pekerja/Pemutihan/C_Index/index';
+$route['MasterPekerja/Pemutihan/Request'] = 'MasterPekerja/Pekerja/Pemutihan/C_Index/request';
+$route['MasterPekerja/Pemutihan/Verification']['post'] = 'MasterPekerja/Pekerja/Pemutihan/C_Index/verification';
+$route['MasterPekerja/Pemutihan/api/list/pending/datatable'] = 'MasterPekerja/Pekerja/Pemutihan/C_Api/list_pending_datatable';
+$route['MasterPekerja/Pemutihan/api/list/detail/leavepage'] = 'MasterPekerja/Pekerja/Pemutihan/C_Api/delete_request_session';
+
 //------------------------------------ Penerimaan PO ----------------------------------------
 $route['PenerimaanPO']						   = 'PenerimaanPO/C_Penerimaan';
 
