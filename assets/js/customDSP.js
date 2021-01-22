@@ -197,14 +197,14 @@ $(document).ready(function () {
       data: { noDPB },
       dataType: "JSON",
       success: function (response) {
-        if (response[0]["HASIL"] == "0" {
+        if (response[0]["HASIL"] == "0") {
           $.ajax({
             type: "POST",
             url: baseurl + "DPBSparepart/Admin/cekStatusLine",
             data: { noDPB },
             dataType: "JSON",
             success: function (response) {
-              if ((response[0]["HASIL_LINE"] == "0") {
+              if (response[0]["HASIL_LINE"] == "0") {
                 $.ajax({
                   beforeSend: () => {
                     Swal.fire({
@@ -233,12 +233,12 @@ $(document).ready(function () {
                     $(".alamatDSP").val("");
                   },
                 });
-              } else if ((response[0]["HASIL_LINE"] == "99999") {
+              } else if (response[0]["HASIL_LINE"] == "99999") {
                 swal.fire({
                   type: "error",
                   title: "Alamat belum lengkap!",
                 });
-              } else if ((response[0]["HASIL_LINE"] == "77777") {
+              } else if (response[0]["HASIL_LINE"] == "77777") {
                 swal.fire({
                   type: "error",
                   title: "DO/SPB line bukan SP/YSP!",
