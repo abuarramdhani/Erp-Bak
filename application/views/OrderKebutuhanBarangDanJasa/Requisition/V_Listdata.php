@@ -149,8 +149,16 @@
                                                 <td></td>
                                                 <!-- <td><button type="button" class="btn btn-danger btnCancelOKB"><i class="fa fa-close"></i> Cancel</button></td> -->
                                             </tr>
-                                                </tr>                                                                                                
-                                            </tr>
+                                                <div class="modal fade mdlOKBListOrderHistory-<?php echo $list['ORDER_ID']; ?>" role="dialog" aria-labelledby="modalDelete" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                            <h4><i style="vertical-align: middle;" class="fa fa-check-circle-o"> </i> Status <b>Order</b></h4>
+                                                        </div>
+                                                        <div class="modal-body" style="height: 400px;">
+                                                            <center>
+                                                                <div class="row text-primary divOKBListOrderHistoryLoading-<?php echo $list['ORDER_ID']; ?>" style="width: 400px; margin-top: 25px; display: none;">
                                                                         <label class="control-label"> <h4><img src="<?php echo base_url('assets/img/gif/loading5.gif') ?>" style="width:30px"> <b>Sedang Mengambil Data ...</b></h4> </label>
                                                                     </div>
                                                                 </center>
