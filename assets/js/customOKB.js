@@ -2289,7 +2289,30 @@ $(document).ready(function () {
         minimumInputLength: 4,
         placeholder: 'Search Name',
     })
-    
 
-    
+    let max = 3;
+    let current = 1;
+    $(document).on('click', '.btnOKBAddInputAttachment', function () {
+        if (current < max) {
+            let field = $('.tdOKBInputFileAttachment');
+            let html = /* html */
+                `
+                        <li style="list-style: none; width: 100%; margin-top: 10px">
+                            <input type="file" name="fileOKBAttachment1[]" multiple style="display: inline-block;">
+                            <button type="button" class="btn btn-primary ml-3 btnOKBRemoveInputAttachment" style="display: inline-block;"><i class="fa fa-minus"></i></button>
+                        </li>
+                        `;
+            field.append(html);
+            current++;
+        }
+        if (current == max) {
+            $(this).prop('disabled', true);
+        }
+    })
+    $(document).on('click', '.btnOKBRemoveInputAttachment', function () {
+        $(this).parent('li').remove();
+        $('.btnOKBAddInputAttachment').prop('disabled', false);
+        current--;
+    })
+
 })
