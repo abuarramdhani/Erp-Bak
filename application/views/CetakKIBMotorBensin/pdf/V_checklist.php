@@ -24,7 +24,7 @@
   						<?php if ($k <= 30){ ?>
   							<tr>
   								<td style="border-left:1px solid black;border-bottom:1px solid black;padding:5px;text-align:center"><?php echo $k+1 ?></td>
-  								<td style="width:35%;border-left:1px solid black;border-bottom:1px solid black;padding:5px;"><?php echo $v['TYPE'] ?></td>
+  								<td style="width:35%;border-left:1px solid black;border-bottom:1px solid black;padding:5px;"><?php echo $v['FRONT_CODE'] ?></td>
   								<td style="width:20%;border-left:1px solid black;border-bottom:1px solid black;padding:5px;"><?php echo $v['KODE_1'] ?></td>
   								<td style="width:30%;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;padding:5px;"><?php echo $v['KODE_2'] ?></td>
   							</tr>

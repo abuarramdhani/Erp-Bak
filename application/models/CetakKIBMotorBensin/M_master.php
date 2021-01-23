@@ -15,6 +15,7 @@ class M_master extends CI_Model
                                           rse.type,
                                           rse.palet,
                                           rse.serial_number,
+                                          rse.front_code,
                                           deh.kode_sebelum,
                                           deh.type_sebelum,
                                           deh.kode_setelah,

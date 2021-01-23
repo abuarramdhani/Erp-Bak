@@ -10,7 +10,7 @@
 		<?php foreach ($get as $key => $var):?>
 
 		<div style="width:49.5%;float:left;<?php echo ($key+1)%2 == 0 ? 'margin-left:10px' : '' ?>">
-		 <span style="font-size:12px;">STANDAR KERTAS WARNA HIJAU</span>
+		 <!-- <span style="font-size:12px;">STANDAR KERTAS WARNA HIJAU</span> -->
 			<table style="width:100%; border-collapse: collapse !important;page-break-inside:avoid;">
 				<thead>
 					<tr>
@@ -168,7 +168,7 @@
 		<?php
 
 		if (($key+1)%2 == 0) {
-			echo "<div style='width=100%;'><hr style='color:red;padding:0;margin:10px 0 7px 0'></div>";
+			echo "<div style='width=100%;'><hr style='color:red;padding:0;margin:10px 0 10px 0'></div>";
 		}
 
 	 ?>
