@@ -1751,7 +1751,8 @@ $(document).ready(function () {
             leftColumns: 5
         },
         columnDefs: [
-            { width: 160, targets: 8 }
+            { width: 196, targets: 8 },
+            { width: 150, targets: 10 }
         ]
     });
 
