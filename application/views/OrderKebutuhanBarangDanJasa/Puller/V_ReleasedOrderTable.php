@@ -25,8 +25,10 @@
             <td><?php echo $list['SEGMENT1'].'-'.$list['DESCRIPTION']; ?></td>
             <td><?php echo $list['ITEM_DESCRIPTION']; ?><br>
             <?php if ($list['ATTACHMENT'] != 0) {?>
-                <a class="btn btn-info" href="<?= base_url('OrderKebutuhanBarangDanJasa/Purchasing/ShowAttachment/'.$list['ORDER_ID']); ?>" target="_blank" rel="noopener noreferrer">View Attachment</a>
-            <?php } ?></td>
+                <button type="button" class="btn btn-info btn-xs btnAttachmentOKB">view attachment</button>
+                <!-- <a class="btn btn-info" href="<?= base_url('OrderKebutuhanBarangDanJasa/Purchasing/ShowAttachment/'.$list['ORDER_ID']); ?>" target="_blank" rel="noopener noreferrer">View Attachment</a> -->
+                <?php } ?>
+            </td>
             <td><?php echo $list['QUANTITY'].' '.$list['UOM']; ?></td>
             <td><?php echo $list['CUT_OFF_DATE'];?></td>
             <td><?php echo $list['NEED_BY_DATE']; ?></td>
