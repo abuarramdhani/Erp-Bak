@@ -106,7 +106,7 @@ function truncate($string, $length)
         <div class="tab-content">
           <div id="pending" class="tab-pane fade in active" style="border: 4px solid orange">
             <div class="table-responsive">
-              <table class="table table-striped" id="table-pemutihan-pekerja">
+              <table class="table table-striped" id="table-pemutihan-pekerja-pending">
                 <thead class="bg-primary">
                   <tr>
                     <td>Order</td>
@@ -148,7 +148,7 @@ function truncate($string, $length)
           </div>
           <div id="revision" class="tab-pane fade" style="border: 4px solid #72b8ff">
             <div class="table-responsive">
-              <table class="table table-striped" id="table-pemutihan-pekerja">
+              <table class="table table-striped" id="table-pemutihan-pekerja-revision">
                 <thead class="bg-primary">
                   <tr>
                     <td>Order</td>
@@ -189,7 +189,7 @@ function truncate($string, $length)
           </div>
           <div id="approved" class="tab-pane fade" style="border: 4px solid #65c952">
             <div class="table-responsive">
-              <table class="table table-striped" id="table-pemutihan-pekerja">
+              <table class="table table-striped" id="table-pemutihan-pekerja-approved">
                 <thead class="bg-primary">
                   <tr>
                     <td>Order</td>
@@ -232,7 +232,7 @@ function truncate($string, $length)
           </div>
           <div id="rejected" class="tab-pane fade" style="border: 4px solid tomato">
             <div class="table-responsive">
-              <table class="table table-striped" id="table-pemutihan-pekerja">
+              <table class="table table-striped" id="table-pemutihan-pekerja-rejected">
                 <thead class="bg-primary">
                   <tr>
                     <td>Order</td>
@@ -299,7 +299,16 @@ function truncate($string, $length)
     })
 
     // datatable initialize
-    $('table#table-pemutihan-pekerja').dataTable({
+    $('table#table-pemutihan-pekerja-pending').dataTable({
+      order: []
+    });
+    $('table#table-pemutihan-pekerja-approved').dataTable({
+      order: []
+    });
+    $('table#table-pemutihan-pekerja-revision').dataTable({
+      order: []
+    });
+    $('table#table-pemutihan-pekerja-rejected').dataTable({
       order: []
     });
 
