@@ -53,7 +53,7 @@
                         <button type="button" class="close clsOKBModalAttachment" aria-hidden="true">&times;</button>
                         <h4><i style="vertical-align: middle;" class="fa fa-check-circle-o"></i><b> Attachment</b></h4>
                     </div>
-                    <div class="modal-body" style="height: 400px;">
+                    <div class="modal-body" style="min-height: 400px;">
                         <center>
                             <div class="row text-primary divOKBListOrderAttachmentLoading-<?php echo $list['ORDER_ID']; ?>" style="width: 400px; margin-top: 25px; display: none;">
                                 <label class="control-label"> <h4><img src="<?php echo base_url('assets/img/gif/loading5.gif') ?>" style="width:30px"> <b>Sedang Mengambil Data ...</b></h4> </label>

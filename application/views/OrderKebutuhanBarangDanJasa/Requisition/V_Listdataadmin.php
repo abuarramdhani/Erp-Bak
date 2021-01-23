@@ -211,7 +211,7 @@
                                                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                                                             <h4><i style="vertical-align: middle;" class="fa fa-check-circle-o"></i><b> Attachment</b></h4>
                                                         </div>
-                                                        <div class="modal-body" style="height: 400px;">
+                                                        <div class="modal-body" style="min-height: 400px;">
                                                             <center>
                                                                 <div class="row text-primary divOKBListOrderAttachmentLoading-<?php echo $list['ORDER_ID']; ?>" style="width: 400px; margin-top: 25px; display: none;">
                                                                     <label class="control-label">
