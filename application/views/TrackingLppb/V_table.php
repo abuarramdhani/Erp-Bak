@@ -34,7 +34,7 @@
 			<td><?php echo $i['VENDOR_NAME']?></td>
 			<td><?php echo $i['CREATE_DATE']?></td>
 			<td><?php echo $i['PO_NUMBER']?></td>
-			<td><?php echo $i['SOURCE']?></td>
+			<td><?php echo $i['BATCH_NUMBER']?></td>
 			<td><?php echo $i['CREATE_DATE']?></td>
 			<td><?php echo $i['GUDANG_KIRIM']?></td>
 			<td><?php echo $i['AKUNTANSI_TERIMA']?></td>
