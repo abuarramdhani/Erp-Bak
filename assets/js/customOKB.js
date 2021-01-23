@@ -1,32 +1,32 @@
-$(document).on('hasApproverResponsibility', (e, $approverResponsibilityBoxContent) => {
-    const $infoBadge = $(/* html */`
-        <span class="label bg-aqua"></span>
-    `);
+// $(document).on('hasApproverResponsibility', (e, $approverResponsibilityBoxContent) => {
+//     const $infoBadge = $(/* html */`
+//         <span class="label bg-aqua"></span>
+//     `);
 
-    $infoBadge.html(/* html */`
-        <i class="fa fa-spinner fa-spin"></i> Sedang Menghitung Total Order Anda
-    `);
-    $approverResponsibilityBoxContent.append($infoBadge);
+//     $infoBadge.html(/* html */`
+//         <i class="fa fa-spinner fa-spin"></i> Sedang Menghitung Total Order Anda
+//     `);
+//     $approverResponsibilityBoxContent.append($infoBadge);
 
-    $.get(`${baseurl}OrderKebutuhanBarangDanJasa/Approver/getUnapprovedOrderCount`)
-        .done((response) => {
-            $infoBadge.html(/* html */`
-                <i class="fa fa-clock-o"></i> Terdapat ${response} Order yang Belum Anda Approve
-            `);
-        }).fail(() => {
-            $infoBadge.html(/* html */`
-                <i class="fa fa-times"></i> Gagal Menghitung Total Order Anda
-            `);
-        });
-});
+//     $.get(`${baseurl}OrderKebutuhanBarangDanJasa/Approver/getUnapprovedOrderCount`)
+//         .done((response) => {
+//             $infoBadge.html(/* html */`
+//                 <i class="fa fa-clock-o"></i> Terdapat ${response} Order yang Belum Anda Approve
+//             `);
+//         }).fail(() => {
+//             $infoBadge.html(/* html */`
+//                 <i class="fa fa-times"></i> Gagal Menghitung Total Order Anda
+//             `);
+//         });
+// });
 
-$(document).on('mainDashboardMenuOpened', () => {
-    const approverResponsibilityName = '(Approver)Order Kebutuhan Barang dan Jasa';
-    const $approverResponsibilityBoxContent = $(`.info-box .info-box-content:contains(${approverResponsibilityName})`);
-    const hasApproverResponsibility = $approverResponsibilityBoxContent.length > 0;
+// $(document).on('mainDashboardMenuOpened', () => {
+//     const approverResponsibilityName = '(Approver)Order Kebutuhan Barang dan Jasa';
+//     const $approverResponsibilityBoxContent = $(`.info-box .info-box-content:contains(${approverResponsibilityName})`);
+//     const hasApproverResponsibility = $approverResponsibilityBoxContent.length > 0;
 
-    if (hasApproverResponsibility) $(document).trigger('hasApproverResponsibility', [$approverResponsibilityBoxContent]);
-});
+//     if (hasApproverResponsibility) $(document).trigger('hasApproverResponsibility', [$approverResponsibilityBoxContent]);
+// });
 
 $(document).ready(function () {
     $.fn.dataTable.moment('DD-MMM-YY');
