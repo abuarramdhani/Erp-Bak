@@ -7178,3 +7178,40 @@ $(document).ready(function () {
 	$("#TblTukarShiftdanAbsen").DataTable();
 });
 // End Tukar Shift dan Absen Manual Hari ini
+
+//Start Prediksi Catering
+$(document).ready(function () {
+	$("#btn_viewprediksicatering").on("click", function () {
+		var loading = baseurl + "assets/img/gif/loadingquick.gif";
+
+		$.ajax({
+			type: "POST",
+			data: {
+				txtTglPredCat: $("[name=txtTglPredCat]").val(),
+				txtLokasiPredCat: $("[name=txtLokasiPredCat]").val(),
+				txtShiftPredCat: $("[name=txtShiftPredCat]").val(),
+			},
+			url: baseurl + "CateringManagement/Pesanan/PrediksiCatering/viewdata",
+			beforeSend: function () {
+				swal.fire({
+					html: "<div><img style='width: 320px; height: auto;'src='" +
+						loading +
+						"'><br><p>Sedang Proses....</p></div>",
+					customClass: "swal-wide",
+					showConfirmButton: false,
+					allowOutsideClick: false
+				});
+			},
+			success: function (result) {
+				swal.close();
+				console.log(result);
+				$("#div_viewprediksicatering").html(result);
+				$("#tbl_viewprediksicatering").DataTable({
+					paging: false,
+				});
+			}
+		});
+
+	});
+});
+//End Prediksi Catering
