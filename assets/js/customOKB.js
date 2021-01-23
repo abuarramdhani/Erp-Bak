@@ -31,9 +31,9 @@
 $(document).ready(function () {
     $.fn.dataTable.moment('DD-MMM-YY');
 
-    (() => {
-        if (window.location.href === baseurl) $(document).trigger('mainDashboardMenuOpened');
-    })();
+    // (() => {
+    //     if (window.location.href === baseurl) $(document).trigger('mainDashboardMenuOpened');
+    // })();
     //modal status order
     $('.mdlOKBStatusOrder').modal('show');
 
