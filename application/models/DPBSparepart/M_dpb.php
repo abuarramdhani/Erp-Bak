@@ -115,7 +115,7 @@ class M_dpb extends CI_Model
     {
         $oracle = $this->load->database('oracle', true);
         $query = $oracle->query("SELECT
-        msib.segment1 item_code ,
+        msib.segment1 segment1 ,
         msib.DESCRIPTION ,
         tbl1.req_qty
         --,NVL(SUM(moqd.transaction_quantity),0) QTY_ONHAND
