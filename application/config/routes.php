@@ -5006,7 +5006,7 @@ $route['MasterItemAkuntansi/Request/(:any)']		= 'PendaftaranMasterItem/Akuntansi
 $route['MasterItemAkuntansi/Request/(:any)/(:any)']	= 'PendaftaranMasterItem/Akuntansi/C_Akuntansi/$1/$2';
 $route['MasterItemAkuntansi/SettingEmail']				= 'PendaftaranMasterItem/Akuntansi/C_SettingEmail';
 $route['MasterItemAkuntansi/SettingEmail/(:any)']		= 'PendaftaranMasterItem/Akuntansi/C_SettingEmail/$1';
-$route['MasterItemAkuntansi/SettingEmail/(:any)/(:any)']= 'PendaftaranMasterItem/Akuntansi/C_SettingEmail/$1/$2';
+$route['MasterItemAkuntansi/SettingEmail/(:any)/(:any)'] = 'PendaftaranMasterItem/Akuntansi/C_SettingEmail/$1/$2';
 
 $route['MasterItemPembelian'] 						= 'PendaftaranMasterItem/C_Index';
 $route['MasterItemPembelian/Request']				= 'PendaftaranMasterItem/Pembelian/C_Pembelian';
@@ -5014,7 +5014,7 @@ $route['MasterItemPembelian/Request/(:any)']		= 'PendaftaranMasterItem/Pembelian
 $route['MasterItemPembelian/Request/(:any)/(:any)']	= 'PendaftaranMasterItem/Pembelian/C_Pembelian/$1/$2';
 $route['MasterItemPembelian/SettingEmail']				= 'PendaftaranMasterItem/Pembelian/C_SettingEmail';
 $route['MasterItemPembelian/SettingEmail/(:any)']		= 'PendaftaranMasterItem/Pembelian/C_SettingEmail/$1';
-$route['MasterItemPembelian/SettingEmail/(:any)/(:any)']= 'PendaftaranMasterItem/Pembelian/C_SettingEmail/$1/$2';
+$route['MasterItemPembelian/SettingEmail/(:any)/(:any)'] = 'PendaftaranMasterItem/Pembelian/C_SettingEmail/$1/$2';
 
 $route['MasterItemPIEA'] 						= 'PendaftaranMasterItem/C_Index';
 $route['MasterItemPIEA/Request']				= 'PendaftaranMasterItem/Piea/C_Piea';
@@ -5023,3 +5023,13 @@ $route['MasterItemPIEA/Request/(:any)/(:any)']	= 'PendaftaranMasterItem/Piea/C_P
 $route['MasterItemPIEA/SettingData']				= 'PendaftaranMasterItem/Piea/C_Setting';
 $route['MasterItemPIEA/SettingData/(:any)']			= 'PendaftaranMasterItem/Piea/C_Setting/$1';
 $route['MasterItemPIEA/SettingData/(:any)/(:any)']	= 'PendaftaranMasterItem/Piea/C_Setting/$1/$2';
+
+// KHS SLIDE SHOW
+
+$route['Slideshow'] = 'UpdateCov/C_Index';
+$route['Slideshow/UploadFile'] = 'UpdateCov/C_Upload';
+$route['Slideshow/UploadFile/(:any)'] = 'UpdateCov/C_Upload/$1';
+$route['Slideshow/EditData'] = 'UpdateCov/C_Edit';
+$route['Slideshow/EditData/(:any)'] = 'UpdateCov/C_Edit/$1';
+$route['Slideshow/EditData/(:any)/(:any)'] = 'UpdateCov/C_Edit/$1/$2';
+$route['Slide/Show/(:any)/(:any)'] = 'UpdateCov/C_Slide/$1/$2';
