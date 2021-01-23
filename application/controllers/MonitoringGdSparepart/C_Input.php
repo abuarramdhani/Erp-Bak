@@ -56,7 +56,7 @@ class C_Input extends CI_Controller
 		if ($jenis_dokumen == 'KIB') {
 			$ceknomor = $this->M_input->ceknoKIB($noDokumen);
 		}else{
-			$ceknomor = $this->M_input->ceknodoc($noDokumen);
+			$ceknomor = $this->M_input->ceknodoc($noDokumen, $jenis_dokumen);
 		}
 
 		if ($ceknomor != null) {

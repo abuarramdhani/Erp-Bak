@@ -295,7 +295,7 @@ class M_input extends CI_Model
                         ks.TRANSACTION_UOM uom, 
                         ks.TRANSACT_BY status
                 FROM KHS_SPBSPI ks, mtl_system_items_b msib
-                WHERE ks.SPBSPI_NUM = '$atr'
+                WHERE ks.SPBSPI_NUM like '%$atr%'
                 AND ks.INVENTORY_ITEM_ID = msib.INVENTORY_ITEM_ID";
         $query = $oracle->query($sql);
         return $query->result_array();
@@ -315,10 +315,12 @@ class M_input extends CI_Model
     // echo $sql;
     }
 
-    public function ceknodoc($no_document){
+    public function ceknodoc($no_document, $jenis){
         $oracle = $this->load->database('oracle', true);
-      $sql = "SELECT NO_DOCUMENT FROM KHS_MONITORING_GD_SP WHERE NO_DOCUMENT = '$no_document'";
-
+      $sql = "SELECT NO_DOCUMENT 
+            FROM KHS_MONITORING_GD_SP 
+            WHERE NO_DOCUMENT like '%$no_document%'
+            AND JENIS_DOKUMEN = '$jenis'";
       $query = $oracle->query($sql);
       return $query->result_array();
     }
