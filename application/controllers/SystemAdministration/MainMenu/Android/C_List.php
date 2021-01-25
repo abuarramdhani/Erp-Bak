@@ -373,5 +373,24 @@ class C_List extends CI_Controller {
 		print_r(json_encode($data[0]));
 	}
 
+	public function SettingApps(){
+		$user_id = $this->session->userid;
+		$data['Menu'] = '';
+		$data['SubMenuOne'] = '';
+		$data['SubMenuTwo'] = '';
+		$data['Title']		= 'Mobile Approval';
+		
+		$data['UserMenu']		= $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		
+		$data['versi'] = $this->M_list->getLatestVersion();
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('SystemAdministration/MainMenu/Android/List/V_Apps',$data);
+		$this->load->view('V_Footer',$data);
+	}
+
 	
 }
