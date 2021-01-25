@@ -15,7 +15,7 @@ function hpshps(i) {
     .remove();
 }
 $(".carousel").carousel({
-  interval: 10000,
+  interval: 15000,
   pause: "false",
 });
 function InactiveSlide(i) {
