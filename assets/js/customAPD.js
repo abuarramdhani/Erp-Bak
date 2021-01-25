@@ -1361,7 +1361,7 @@ $(document).ready(function(){
     	});
     });
 
-    $('.apdbtndelmkk').click(function(){
+    $(document).('click', '.apdbtndelmkk',function(){
     	var id = $(this).val();
     	var pkj = $(this).attr('pkj');
     	Swal.fire({
