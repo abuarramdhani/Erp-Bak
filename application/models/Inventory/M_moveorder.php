@@ -1181,29 +1181,36 @@ class M_moveorder extends CI_Model
 		return $query->result_array();
 	}
 	
-	function getPerbedaan($no_mo)
+	function getPerbedaan($no_mo, $subinv)
 	{		
 		$oracle = $this->load->database('oracle',TRUE);
 		$sql = "with kqem as
 				(
 				select distinct 
 					kqem.*
-					,case when nvl (kqem.job_from_subinv,'N') <> nvl (kqem.bom_from_subinv,'N')
-							then 'Job Subinventory : ' || kqem.job_from_subinv || ' - BOM Subinventory : ' || kqem.bom_from_subinv
-							when nvl (kqem.job_from_loc,'N') <> nvl (kqem.bom_from_loc,'N')
-							then 'Job Locator : ' || kqem.job_from_loc || ' - BOM Locator : ' || kqem.bom_from_loc
+					,case when kqem.job_from_subinv is null 
+							and kqem.bom_from_subinv is not null
+							and kqem.code is null
+							then 'KOMPONEN DI MO GUDANG'
 							when nvl (kqem.job_comp_qty,0) <> nvl (kqem.bom_comp_qty,0)
-							then 'Job Quantity : ' || kqem.job_comp_qty || ' - BOM Quantity : ' || kqem.bom_comp_qty
+							and kqem.code is null
+							then 'LAYANI QTY SESUAI JOB : ' || kqem.required_quantity || ' PCS'
+							when kqem.code = 'ITEM JOB'
+							then 'TAMBAHAN KOMPONEN : ' || kqem.required_quantity || ' PCS'
+							when kqem.code = 'ITEM BOM'
+							then 'TIDAK PERLU DILAYANI'
 					else null
 					end perbedaan
 				from khs_qweb_ect_jobom_mo kqem
-				where kqem.NO_MO = '$no_mo'
-				--  and kqej.bom_from_subinv = kqej.job_from_subinv
-				--  and nvl (kqej.bom_loc_id,0) = nvl (kqej.job_loc_id,0)
+					,mtl_txn_request_headers mtrh
+				where mtrh.REQUEST_NUMBER = '$no_mo'
+				and (kqem.BOM_FROM_SUBINV = '$subinv' or kqem.JOB_FROM_SUBINV = '$subinv')
+				and kqem.JOB_ID = mtrh.ATTRIBUTE1
 				)
 				select *
 				from kqem
-				where kqem.perbedaan is not null";
+				where kqem.perbedaan is not null
+				order by kqem.COMPONENT";
 		$query = $oracle->query($sql);
 		return $query->result_array();
 	}

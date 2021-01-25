@@ -62,9 +62,9 @@
             <td><input type="hidden" class="picklist<?= $del?>" name="picklist[]" id="picklist<?= $no?>" value="<?= $val['PICKLIST']?>"><?= $val['PICKLIST']?></td>
             <td style="text-align:left"><input type="hidden" id="item<?= $no?>" value="<?= $val['PRODUK']?>"><?= $val['PRODUK']?> - <?= $val['PRODUK_DESC']?></td>
             <td><input type="hidden" id="qty<?= $no?>" value="<?= $val['START_QUANTITY']?>"><?= $val['START_QUANTITY']?></td>
-            <td><input type="hidden" id="from<?= $no?>" value="<?= $val['FROM_SUBINV']?>"><?= $val['FROM_SUBINV']?></td>
+            <td><input type="hidden" id="from<?= $no?>" name="subinv[]" value="<?= $val['FROM_SUBINV']?>"><?= $val['FROM_SUBINV']?></td>
             <td><button type="button" class="btn btn-success <?= $btn?>" id="btnapp<?= $no?>" onclick="modalapproveFab(<?= $no?>)" <?= $del?>>Approve</button>
-            <button formaction="<?php echo base_url('MonitoringPicklistFabrikasi/BelumApprove/printBelumFabrikasi/'.$val['PICKLIST'].''); ?>" id="iniprint<?= $no?>" class="btn btn-danger <?= $ctk?>" disabled>Print</button></td>
+            <button formaction="<?php echo base_url('MonitoringPicklistFabrikasi/BelumApprove/printBelumFabrikasi/'.$val['PICKLIST'].'_'.$val['FROM_SUBINV'].''); ?>" id="iniprint<?= $no?>" class="btn btn-danger <?= $ctk?>" disabled>Print</button></td>
         </tr>
     <?php $no++; }
     }?>
