@@ -140,9 +140,14 @@
                         </tr>
                         <?php if ($request->distributed_at) : ?>
                           <tr>
-                            <td>Teridistribusi</td>
+                            <td>Terdistribusi</td>
                             <td>
-                              <i class="fa fa-calendar"></i> <?= date('d F Y H:i:s', strtotime($request->distributed_at)) ?>
+                              <span style="display: block;">
+                                <i class="fa fa-calendar"></i> <?= date('d F Y', strtotime($request->distributed_at)) ?>
+                              </span>
+                              <span style="display: block;">
+                                <i class="fa fa-clock-o"></i> <?= date('H:i:s', strtotime($request->distributed_at)) ?>
+                              </span>
                             </td>
                           </tr>
                         <?php endif ?>
@@ -801,7 +806,7 @@
                           <option value="accept" selected>Approve</option>
                           <option value="reject">Reject</option>
                         </select>
-                        <button type="submit" class="btn btn-success btn-block mt-4 mx-auto px-3" style="width: 50%; border-radius: 20px;">
+                        <button type="submit" id="verification-submit" class="btn btn-success btn-block mt-4 mx-auto px-3" style="width: 50%; border-radius: 20px;">
                           <h3 class="m-0" style="font-weight: bold;">Verifikasi</h3>
                         </button>
                       </div>
@@ -871,20 +876,11 @@
                 });
                 ?>
                 <?php if (count($attached)) : ?>
-                  <?php
-                  /**
-                   * :todo
-                   * -----------------------------
-                   *  CHANGE MY END POINT
-                   * -----------------------------
-                   */
-                  $endpoint = "http://192.168.168.189/erp/update-pekerja/assets/uploads/attachment/";
-                  ?>
                   <div id="lightgallery">
                     <?php foreach ($attached as $item) : ?>
                       <h4><?= $item['attachment_name'] ?></h4>
-                      <a href=<?= $endpoint . trim($item['attachment_filename']) ?>">
-                        <img src="<?= $endpoint . trim($item['attachment_filename']) ?>" alt="Kartu keluarga" class="img-fluid img-rounded attachment" style="background-color: #e8e8e8; width: 100%; border: 1px solid #e8e8e8;">
+                      <a href=<?= $attachment_path . trim($item['attachment_filename']) ?>">
+                        <img src="<?= $attachment_path . trim($item['attachment_filename']) ?>" alt="Kartu keluarga" class="img-fluid img-rounded attachment" style="background-color: #e8e8e8; width: 100%; border: 1px solid #e8e8e8;">
                       </a>
                     <?php endforeach ?>
                   </div>
@@ -971,7 +967,7 @@
 </script>
 <script>
   !(function() {
-    const attachment_base_link = 'http://localhost/erp/update-pekerja/assets/uploads/attachment/'
+    const attachment_base_link = '{{ $attachment_path }}'
 
     $('img.attachment').click(function() {
       return
@@ -998,8 +994,9 @@
 
     // checking radio when submit
     $('form').submit(function(e) {
-      // cek apakah ^read atas
+      $('#verification-submit').prop('disabled', true)
       const decide = $('select[name=decide]').val()
+      // cek apakah ^read atas
       if (checkIsHasNotValidRadio() && decide === 'accept') {
         Swal.fire({
           title: 'Tidak dapat mengapprove',
