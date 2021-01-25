@@ -34,6 +34,14 @@ class C_Send extends CI_Controller
       ->set_rules('title', 'title', 'required')
       ->set_rules('message', 'message', 'required')
       ->set_error_delimiters('', '');
+      
+     if (is_array($to)) {
+      $validation
+        ->set_rules('to[]', 'to', 'required');
+    } else {
+      $validation
+        ->set_rules('to', 'to', 'required');
+    }
 
     try {
       if ($this->form_validation->run() === false) throw new Exception($this->form_validation->error_string());
