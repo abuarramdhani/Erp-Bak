@@ -377,10 +377,13 @@ function truncate($string, $length)
 
               // add animation fade in
               const firstRow = $('table#table-pemutihan-pekerja-pending').find('tbody > tr:first-child')
-              firstRow.addClass('hidden')
-              firstRow.fadeIn(5000, () => {
-                console.log("Success")
+              // give color to row
+              firstRow.css({
+                display: 'none',
+                'background-color': '#ffde94'
               })
+              // after show, remove that color
+              firstRow.fadeIn(3000, () => firstRow.css('background-color', ''))
 
               // update pending tab counter
               const rowCount = table.rows().count()
