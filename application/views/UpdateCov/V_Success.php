@@ -16,8 +16,8 @@
             cancelButtonText: "Tidak",
         }).then((result) => {
             if (result.value) {
-                location.href = baseurl + "Slideshow/UploadFile";
                 window.open(baseurl + "Slide/Show/Name/" + n, "_blank");
+                location.href = baseurl + "Slideshow/UploadFile";
             } else {
                 location.href = baseurl + "Slideshow/UploadFile";
             }
