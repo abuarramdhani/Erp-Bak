@@ -390,7 +390,7 @@ function truncate($string, $length)
               console.error("Failed to fetch new data")
             }
           })
-        }, 1000 * 5)
+        }, 1000 * 5) // 5 seconds
       }
     })
 
