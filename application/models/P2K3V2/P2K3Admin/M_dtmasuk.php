@@ -1568,8 +1568,10 @@ class M_Dtmasuk extends CI_Model
     public function delK3K($table, $id)
     {
         $this->db->where('id_kecelakaan', $id);
-        echo $this->db->get_compiled_delete($table);
-        echo "<br>";
+        $this->db->delete($table);
+        return $this->db->affected_rows();
+        // echo $this->db->get_compiled_delete($table);
+        // echo "<br>";
     }
 
     public function getAllk3k($table, $id)
