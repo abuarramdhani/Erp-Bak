@@ -441,7 +441,7 @@ class C_Requisition extends CI_Controller {
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-        $this->load->view('OrderKebutuhanBarangDanJasa/Requisition/V_Listdata',$data);
+        $this->load->view('OrderKebutuhanBarangDanJasa/Requisition/V_Listdataadmin',$data);
         $this->load->view('V_Footer',$data);
 	}
 
