@@ -10,6 +10,8 @@
             <th>Cut Off</th>
             <th>NBD</th>
             <th>Flag</th>
+            <th>Alasan Order</th>
+            <th>Alasan Urgensi</th>
             <th>Buyer</th>
             <th>Note to Buyer</th>
         </tr>
@@ -23,8 +25,10 @@
             <td><?php echo $list['SEGMENT1'].'-'.$list['DESCRIPTION']; ?></td>
             <td><?php echo $list['ITEM_DESCRIPTION']; ?><br>
             <?php if ($list['ATTACHMENT'] != 0) {?>
-                <a class="btn btn-info" href="<?= base_url('OrderKebutuhanBarangDanJasa/Purchasing/ShowAttachment/'.$list['ORDER_ID']); ?>" target="_blank" rel="noopener noreferrer">View Attachment</a>
-            <?php } ?></td>
+                <button type="button" class="btn btn-info btn-xs btnAttachmentOKB">view attachment</button>
+                <!-- <a class="btn btn-info" href="<?= base_url('OrderKebutuhanBarangDanJasa/Purchasing/ShowAttachment/'.$list['ORDER_ID']); ?>" target="_blank" rel="noopener noreferrer">View Attachment</a> -->
+                <?php } ?>
+            </td>
             <td><?php echo $list['QUANTITY'].' '.$list['UOM']; ?></td>
             <td><?php echo $list['CUT_OFF_DATE'];?></td>
             <td><?php echo $list['NEED_BY_DATE']; ?></td>
@@ -37,6 +41,8 @@
                     <label class="label label-warning"><i>emergency</i></label>
                 <?php } ?>
             </td>
+            <td><?php echo $list['ORDER_PURPOSE'] ?>
+            <td><?php echo $list['URGENT_REASON'] ?></td>
             <td><?php echo $list['BUYER_NAME']; ?></td>
             <td><?php echo $list['NOTE_TO_BUYER']; ?></td>
         </tr>
@@ -47,7 +53,7 @@
                         <button type="button" class="close clsOKBModalAttachment" aria-hidden="true">&times;</button>
                         <h4><i style="vertical-align: middle;" class="fa fa-check-circle-o"></i><b> Attachment</b></h4>
                     </div>
-                    <div class="modal-body" style="height: 400px;">
+                    <div class="modal-body" style="min-height: 400px;">
                         <center>
                             <div class="row text-primary divOKBListOrderAttachmentLoading-<?php echo $list['ORDER_ID']; ?>" style="width: 400px; margin-top: 25px; display: none;">
                                 <label class="control-label"> <h4><img src="<?php echo base_url('assets/img/gif/loading5.gif') ?>" style="width:30px"> <b>Sedang Mengambil Data ...</b></h4> </label>

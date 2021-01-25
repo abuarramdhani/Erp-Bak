@@ -1,4 +1,39 @@
+// $(document).on('hasApproverResponsibility', (e, $approverResponsibilityBoxContent) => {
+//     const $infoBadge = $(/* html */`
+//         <span class="label bg-aqua"></span>
+//     `);
+
+//     $infoBadge.html(/* html */`
+//         <i class="fa fa-spinner fa-spin"></i> Sedang Menghitung Total Order Anda
+//     `);
+//     $approverResponsibilityBoxContent.append($infoBadge);
+
+//     $.get(`${baseurl}OrderKebutuhanBarangDanJasa/Approver/getUnapprovedOrderCount`)
+//         .done((response) => {
+//             $infoBadge.html(/* html */`
+//                 <i class="fa fa-clock-o"></i> Terdapat ${response} Order yang Belum Anda Approve
+//             `);
+//         }).fail(() => {
+//             $infoBadge.html(/* html */`
+//                 <i class="fa fa-times"></i> Gagal Menghitung Total Order Anda
+//             `);
+//         });
+// });
+
+// $(document).on('mainDashboardMenuOpened', () => {
+//     const approverResponsibilityName = '(Approver)Order Kebutuhan Barang dan Jasa';
+//     const $approverResponsibilityBoxContent = $(`.info-box .info-box-content:contains(${approverResponsibilityName})`);
+//     const hasApproverResponsibility = $approverResponsibilityBoxContent.length > 0;
+
+//     if (hasApproverResponsibility) $(document).trigger('hasApproverResponsibility', [$approverResponsibilityBoxContent]);
+// });
+
 $(document).ready(function () {
+    $.fn.dataTable.moment('DD-MMM-YY');
+
+    // (() => {
+    //     if (window.location.href === baseurl) $(document).trigger('mainDashboardMenuOpened');
+    // })();
     //modal status order
     $('.mdlOKBStatusOrder').modal('show');
 
@@ -1714,7 +1749,11 @@ $(document).ready(function () {
         scrollCollapse: true,
         fixedColumns:   {
             leftColumns: 5
-        }
+        },
+        columnDefs: [
+            { width: 196, targets: 8 },
+            { width: 150, targets: 10 }
+        ]
     });
 
     $(document).on('click','.btnAttachmentOKB', function () {
@@ -1736,23 +1775,30 @@ $(document).ready(function () {
                     $('.divOKBListOrderAttachmentLoading-'+orderid).hide();
                     console.log(response);
                     var html = '';
-                        html += '<center>';
-                        for (let i = 0; i < response.length; i++) {
-                            const elm = response[i];
-                            if (elm['FILE_NAME'] == null) {
-                                html+='<span><i class="fa fa-warning"></i>Tidak ada attachment</span><br>';
-                            }else{
+                    html += '<center>';
+                    for (let i = 0; i < response.length; i++) {
+                        const elm = response[i];
+                        if (elm['FILE_NAME'] == null) {
+                            html += '<span><i class="fa fa-warning"></i>Tidak ada attachment</span><br>';
+                        } else {
+                            let ext = elm['FILE_NAME'].split('.')[1];
+                            if (ext == 'pdf') {
+                                html += '<div style="width: 100%; margin: 10px; padding: 10px;">';
+                                html += '<h4>Tipe File ini adalah PDF. <br>Untuk melihat isinya silahkan klik tombol berikut ini.</h4><br>'
+                                html += '<a href="' + baseurl + elm['ADDRESS'] + elm['FILE_NAME'] + '" target="_blank" class="btn btn-primary">Lihat file</a>';
+                                html += '</div>';
+                            } else {
                                 if (response.length == 1) {
-                                    html += '<a href="'+baseurl+elm['ADDRESS']+elm['FILE_NAME']+'" target="_blank" rel="noopener noreferrer"><img style="max-width:500px; max-height:500px;" src="'+baseurl+elm['ADDRESS']+elm['FILE_NAME']+'" alt="'+elm['FILE_NAME']+'"></a><br>';
-                                }else{
-
-                                    html += '<a href="'+baseurl+elm['ADDRESS']+elm['FILE_NAME']+'" target="_blank" rel="noopener noreferrer"><img style="max-width:200px; max-height:200px;" src="'+baseurl+elm['ADDRESS']+elm['FILE_NAME']+'" alt="'+elm['FILE_NAME']+'"></a><br>';
+                                    html += '<a href="' + baseurl + elm['ADDRESS'] + elm['FILE_NAME'] + '" target="_blank" rel="noopener noreferrer"><img style="max-width:500px; max-height:500px;" src="' + baseurl + elm['ADDRESS'] + elm['FILE_NAME'] + '" alt="' + elm['FILE_NAME'] + '"></a><br>';
+                                } else {
+                                    html += '<a href="' + baseurl + elm['ADDRESS'] + elm['FILE_NAME'] + '" target="_blank" rel="noopener noreferrer"><img style="max-width:200px; max-height:200px;" src="' + baseurl + elm['ADDRESS'] + elm['FILE_NAME'] + '" alt="' + elm['FILE_NAME'] + '"></a><br>';
                                 }
                             }
-                            
                         }
-                        html += '</center>';
-                    
+
+                    }
+                    html += '</center>';
+
 
                     $('.divAttachmentOKB-'+orderid).html(html);
                 }
@@ -2243,7 +2289,30 @@ $(document).ready(function () {
         minimumInputLength: 4,
         placeholder: 'Search Name',
     })
-    
 
-    
+    let max = 3;
+    let current = 1;
+    $(document).on('click', '.btnOKBAddInputAttachment', function () {
+        if (current < max) {
+            let field = $('.tdOKBInputFileAttachment');
+            let html = /* html */
+                `
+                        <li style="list-style: none; width: 100%; margin-top: 10px">
+                            <input type="file" name="fileOKBAttachment1[]" multiple style="display: inline-block;">
+                            <button type="button" class="btn btn-primary ml-3 btnOKBRemoveInputAttachment" style="display: inline-block;"><i class="fa fa-minus"></i></button>
+                        </li>
+                        `;
+            field.append(html);
+            current++;
+        }
+        if (current == max) {
+            $(this).prop('disabled', true);
+        }
+    })
+    $(document).on('click', '.btnOKBRemoveInputAttachment', function () {
+        $(this).parent('li').remove();
+        $('.btnOKBAddInputAttachment').prop('disabled', false);
+        current--;
+    })
+
 })

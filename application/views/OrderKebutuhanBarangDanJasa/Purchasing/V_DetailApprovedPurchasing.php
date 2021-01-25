@@ -48,7 +48,7 @@
                                         <td><?= $list['APPROVED_DATE'];?></td>
                                     </tr>
                                     <div class="modal fade" id="mdlOKBDetailApprovedPurchasing-<?= $list['ORDER_ID'];?>" role="dialog">
-                                        <div class="modal-dialog modal-lg">
+                                        <div class="modal-dialog modal-lg" style="width:90%!important">
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>

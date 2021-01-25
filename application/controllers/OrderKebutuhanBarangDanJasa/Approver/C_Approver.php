@@ -954,5 +954,16 @@ class C_Approver extends CI_Controller {
 
         echo json_encode($data);
     }
+
+    public function getUnapprovedOrderCount()
+    {
+        $noind = $this->session->user;
+        $total_unapproved_order = $this->M_approver->getUnapprovedOrderCount($noind)['TOTAL'];
+
+        $this->output
+            ->set_status_header(200)
+            ->set_content_type('application/json')
+            ->set_output(json_encode($total_unapproved_order));
+    }
 	
 }

@@ -395,7 +395,7 @@ class C_Requisition extends CI_Controller {
 		}
 	}
 
-	public function listData()
+	public function listDataAdmin()
 	{
 		$user_id = $this->session->userid;
 
@@ -411,18 +411,37 @@ class C_Requisition extends CI_Controller {
 		
 		$data['pengorder'] = $this->M_requisition->getPengorder($noind);
 
-		if ($this->session->responsibility == '(Admin)Order Kebutuhan Barang dan Jasa') {
-			$data['listOrder'] = $this->M_requisition->getListDataOrderAdmin($noind);
-		}elseif ($this->session->responsibility == 'Order Kebutuhan Barang dan Jasa') {
-			$data['listOrder'] = $this->M_requisition->getListDataOrder2($noind);
-		}
+		$data['listOrder'] = $this->M_requisition->getListDataOrderAdmin($noind);
 
 		// echo '<pre>';
 		// print_r($data['listOrder']);exit;
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-        $this->load->view('OrderKebutuhanBarangDanJasa/Requisition/V_Listdata',$data);
+        $this->load->view('OrderKebutuhanBarangDanJasa/Requisition/V_Listdataadmin',$data);
+        $this->load->view('V_Footer',$data);
+	}
+
+	public function listData(){
+		$user_id = $this->session->userid;
+
+		$noind = $this->session->user;
+		
+		$data['Menu'] = 'Order';
+		$data['SubMenuOne'] = 'List Order';
+		$data['SubMenuTwo'] = '';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		
+		$data['pengorder'] = $this->M_requisition->getPengorder($noind);
+
+		$data['listOrder'] = $this->M_requisition->getListDataOrder2($noind);
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+        $this->load->view('OrderKebutuhanBarangDanJasa/Requisition/V_Listdataadmin',$data);
         $this->load->view('V_Footer',$data);
 	}
 

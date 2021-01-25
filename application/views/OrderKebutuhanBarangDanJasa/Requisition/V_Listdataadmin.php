@@ -139,26 +139,20 @@
                                                 <td><?php echo date("d-M-Y", strtotime($list['NEED_BY_DATE'])); ?></td>
                                                 <td>Alasan Order :<?php echo $list['ORDER_PURPOSE']; ?><br>Alasan Urgensi : <?php echo $list['URGENT_REASON']; ?></td>
                                                 <td><?php echo $list['NOTE_TO_PENGELOLA']; ?></td>
-                                                <?php if($list['LAST_JUDGEMENT'] == 'A'){
-                                                    $order_class = 'approved';
-                                                    $status      = 'Order Approved';
-                                                    $icon_class  = 'fa fa-check';
-                                                    $explain     = $list['LAST_JUDGEMENT_BY'] . ' telah memberi keputusan Approved pada order ini';
-                                                } else if ($list['LAST_JUDGEMENT'] == 'R') {
-                                                    $order_class = 'rejected';
-                                                    $status      = 'Order Rejected';
-                                                    $icon_class  = 'fa fa-times-circle-o';
-                                                    $explain     = $list['LAST_JUDGEMENT_BY'] . ' telah memberi keputusan Rejected pada order in';
-                                                } else {
-                                                    $order_class = 'waiting';
-                                                    $status      = 'Sedang Menunggu Keputusan';
-                                                    $icon_class  = 'fa fa-clock-o';
-                                                    $explain     = '';
-                                                }
-                                                ?>
-                                                <td class="btnOKBListOrderHistory">
-                                                    <span class="<?php echo $order_class ?>"><label class="control-label"><i class="<?php echo $icon_class ?>"></i><b><?php echo $status ?> </b></label><br> <?php echo $explain  ?> </span>
-                                                </td>
+                                                <?php if ($list['ORDER_STATUS_ID'] == '2') { 
+                                                        $status = "WIP APPROVE ORDER";
+                                                    }else if ($list['ORDER_STATUS_ID'] == '3') {
+                                                        $status = "ORDER APPROVED";
+                                                    }else if ($list['ORDER_STATUS_ID'] == '4') {
+                                                        $status = "REJECTED ORDER";
+                                                    }else if ($list['ORDER_STATUS_ID'] == '6') {
+                                                        $status = "WIP APPROVE PEMBELIAN";
+                                                    }else if ($list['ORDER_STATUS_ID'] == '7') {
+                                                        $status = "APPROVED PEMBELIAN";
+                                                    }else if ($list['ORDER_STATUS_ID'] == '8') {
+                                                        $status = "REJECTED PEMBELIAN";
+                                                    } ?>
+                                                <td><button type="button" class="btn btn-info btnOKBListOrderHistory"><?php echo $status; ?></button></td>
                                                 <td></td>
                                                 <!-- <td><button type="button" class="btn btn-danger btnCancelOKB"><i class="fa fa-close"></i> Cancel</button></td> -->
                                             </tr>

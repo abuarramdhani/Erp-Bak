@@ -262,7 +262,12 @@
                                         <tr>
                                             <th>Attachment</th>
                                             <th>:</th>
-                                            <td><input type="file" name="fileOKBAttachment1[]" multiple></td>
+                                            <td class="tdOKBInputFileAttachment">
+                                                <li style="list-style: none; width: 100%;">
+                                                    <input type="file" name="fileOKBAttachment1[]" style="display: inline-block;">
+                                                    <button type="button" class="btn btn-primary ml-3 btnOKBAddInputAttachment" style="display: inline-block;"><i class="fa fa-plus"></i></button>
+                                                </li>
+                                            </td>
                                         </tr>
                                         <tr style="display:none">
                                             <th><input type="hidden" class="hdUrgentFlagOKB" name="hdnUrgentFlagOKB[]"></th>
