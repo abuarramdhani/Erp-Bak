@@ -368,7 +368,8 @@ class C_MoveOrder extends CI_Controller
 				$dataall[$a]['head']	= $this->M_MoveOrder->getHeader($moveOrderAwal, $moveOrderAkhir);
 				$dataall[$a]['head'][0]['piklis'] = $piklis;
 				$dataall[$a]['line']	= $this->M_MoveOrder->getDetail($moveOrderAwal, $moveOrderAkhir);
-				$dataall[$a]['beda']	= $this->M_MoveOrder->getPerbedaan($moveOrderAwal);
+				$subinv = $dataall[$a]['head'][0]['LOKASI'];
+				$dataall[$a]['beda']	= $this->M_MoveOrder->getPerbedaan($moveOrderAwal, $subinv);
 				$a++;
 			}
 

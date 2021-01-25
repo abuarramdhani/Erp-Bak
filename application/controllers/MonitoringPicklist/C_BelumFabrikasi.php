@@ -229,8 +229,11 @@ class C_BelumFabrikasi extends CI_Controller
 
 	}
 
-	function printBelumFabrikasi($picklist){
+	function printBelumFabrikasi($dokumen){
 		$date = date('dMY');
+		$pisah 		= explode('_', $dokumen);
+		$picklist 	= $pisah[0];
+		$subinv 	= $pisah[1];
 		$getdata = $this->M_pickfabrikasi->getdataBelum2($picklist);
 		// echo "<pre>";print_r($getdata);exit();
 
@@ -259,7 +262,7 @@ class C_BelumFabrikasi extends CI_Controller
 		}
 
 		$data['data'] = $getdata;
-		$data['beda'] = $this->M_pickfabrikasi->getPerbedaan($picklist);
+		$data['beda'] = $this->M_pickfabrikasi->getPerbedaan($picklist, $subinv);
     	$html = $this->load->view('MonitoringPicklist/FABRIKASI/V_PdfBelumFabrikasi', $data,true);
     	ob_end_clean();
     	$pdf->WriteHTML($html);												
@@ -270,6 +273,7 @@ class C_BelumFabrikasi extends CI_Controller
 	public function cetaksemua(){
 		$date = date('dMY');
 		$picklist = $this->input->post('picklist[]');
+		$subinv = $this->input->post('subinv[]');
 		$cek = $this->input->post('printsemua[]');
 
 		ob_start();
@@ -301,7 +305,7 @@ class C_BelumFabrikasi extends CI_Controller
 				}
 		
 				$data['data'] = $getdata;
-				$data['beda'] = $this->M_pickfabrikasi->getPerbedaan($picklist[$i]);
+				$data['beda'] = $this->M_pickfabrikasi->getPerbedaan($picklist[$i], $subinv[$i]);
 				$html = $this->load->view('MonitoringPicklist/FABRIKASI/V_PdfBelumFabrikasi', $data,true);
 				ob_end_clean();
 				$pdf->WriteHTML($html);	

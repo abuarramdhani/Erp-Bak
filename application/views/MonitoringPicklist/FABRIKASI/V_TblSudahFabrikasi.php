@@ -46,7 +46,7 @@
             <td><input type="hidden" id="tgl_minta<?= $no?>" value="<?= $val['TGL_PELAYANAN']?>"><?= $val['TGL_PELAYANAN']?></td>
             <td class="text-nowrap"><input type="hidden" id="shift_minta<?= $no?>" value="<?= $val['SHIFT']?>"><?= $val['SHIFT']?></td>
             <td><button type="button" class="btn btn-success" id="refab<?= $no?>" onclick="recallFabrikasi(<?= $no?>)" <?= $del?>>Recall</button></td>
-            <td><a href="<?php echo base_url('MonitoringPicklistFabrikasi/BelumApprove/printBelumFabrikasi/'.$val['PICKLIST'].''); ?>" target="_blank" type="button" class="btn btn-danger">Print</a>
+            <td><a href="<?php echo base_url('MonitoringPicklistFabrikasi/BelumApprove/printBelumFabrikasi/'.$val['PICKLIST'].'_'.$val['FROM_SUBINV'].''); ?>" target="_blank" type="button" class="btn btn-danger">Print</a>
             <!-- <a href="<?php echo base_url('MonitoringPicklistFabrikasi/SudahApprove/printFabrikasi/'.$val['PICKLIST'].'/'.$val['DEPARTMENT'].'/'.$val['CREATION_DATE'].''); ?>" target="_blank" type="button" class="btn btn-danger">Print</a>-->
             </td> 
         </tr>
