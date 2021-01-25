@@ -5,7 +5,7 @@ class M_master extends CI_Model
     {
         parent::__construct();
         $this->load->database();
-        $this->oracle = $this->load->database('oracle_dev', true);
+        $this->oracle = $this->load->database('oracle', true);
     }
 
     public function getItem($no_po, $surat_jalan, $segment1, $receipt_date)
@@ -60,7 +60,24 @@ class M_master extends CI_Model
                                    WHERE rse.po_number = '$no_po'
                                    AND rse.shipment_number = '$surat_jalan'
                                    AND rse.SEGMENT1 = '$segment1'
-                                   ORDER BY rse.palet asc")->result_array();
+                                   ORDER BY rse.palet asc, rse.serial_number asc")->result_array();
+    }
+
+    public function getNoLppb($no_po, $surat_jalan)
+    {
+      return $this->oracle->query("SELECT DISTINCT rsh.RECEIPT_NUM no_lppb
+                                  from rcv_shipment_lines rsl
+                                      ,rcv_shipment_headers rsh
+                                      ,po_headers_all pha
+                                  where pha.SEGMENT1 = '$no_po'
+                                    and rsh.SHIPMENT_NUM = nvl('$surat_jalan',rsh.SHIPMENT_NUM)
+                                    and rsl.PO_HEADER_ID = pha.PO_HEADER_ID
+                                    and rsl.SHIPMENT_HEADER_ID = rsh.SHIPMENT_HEADER_ID
+                                    and rsh.CREATION_DATE IN (select rsh.CREATION_DATE
+                                                               from rcv_shipment_headers rsh
+                                                                   ,rcv_shipment_lines rsl
+                                                              where rsh.SHIPMENT_HEADER_ID = rsl.SHIPMENT_HEADER_ID
+                                                                and rsl.PO_HEADER_ID = pha.PO_HEADER_ID)")->row_array();
     }
 
     // // start server side on model

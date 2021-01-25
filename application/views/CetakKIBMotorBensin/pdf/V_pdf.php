@@ -138,13 +138,8 @@
 					<td style="padding:5px;border-left: 1px solid black;border-bottom: 1px solid black;border-right: 1px solid black;">
 						Nama Brg
 					</td>
-					<td style="padding:5px;font-size:12px;border-right: 1px solid black;border-top: 1px solid black;">
+					<td colspan="2" style="padding:5px;font-size:12px;border-right: 1px solid black;border-top: 1px solid black;">
 						<?php echo $var['TYPE_SEBELUM'] ?>
-					</td>
-					<td rowspan="3" style="width: 21%;padding:5px;border-left: 1px solid black;border-bottom: 1px solid black;border-right: 1px solid black;border-top: 1px solid black;">
-						 <center>
-							<img style="width: 17mm; height: auto;" src="<?php echo base_url('assets/img/PBIQRCode/'.$var['SERIAL_NUMBER'].'.png') ?>">
-						</center>
 					</td>
 				</tr>
 				<tr>
@@ -153,6 +148,11 @@
 					</td>
 					<td style="padding:5px;font-size:12px;border-right: 1px solid black;border-top: 1px solid black;background:<?php echo $warna ?>">
 						<center><h3 style="text-transform:uppercase"><?php echo $var['TYPE'] ?><h3></center>
+					</td>
+					<td rowspan="2" style="width: 21%;padding:5px;border-left: 1px solid black;border-bottom: 1px solid black;border-right: 1px solid black;border-top: 1px solid black;">
+						 <center>
+							<img style="width: 17mm; height: auto;" src="<?php echo base_url('assets/img/PBIQRCode/'.$var['SERIAL_NUMBER'].'.png') ?>">
+						</center>
 					</td>
 				</tr>
 				<tr>

@@ -93,6 +93,8 @@ class C_Master extends CI_Controller
     {
       $data['no_po'] = $this->input->post('no_po');
       $data['surat_jalan'] = $this->input->post('surat_jalan');
+      $no_lppb = $this->M_master->getNoLppb($data['no_po'], $data['surat_jalan']);
+      $data['no_lppb'] = !empty($no_lppb['NO_LPPB']) ? $no_lppb['NO_LPPB'] : '-';
       $data['get_engine'] = $this->M_master->getEngine($data['no_po'], $data['surat_jalan']);
       if (!empty($data['get_engine'])) {
         $this->load->view('CetakKIBMotorBensin/ajax/V_table_engine', $data);
