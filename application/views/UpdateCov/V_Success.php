@@ -12,12 +12,11 @@
             showCancelButton: true,
             confirmButtonColor: "#00a65a",
             cancelButtonColor: "#b0bec5",
-            confirmButtonText: "Ya",
-            cancelButtonText: "Tidak",
+            confirmButtonText: "Lihat Slide Show",
+            cancelButtonText: "Close",
         }).then((result) => {
             if (result.value) {
                 window.open(baseurl + "Slide/Show/Name/" + n, "_blank");
-                location.href = baseurl + "Slideshow/UploadFile";
             } else {
                 location.href = baseurl + "Slideshow/UploadFile";
             }
