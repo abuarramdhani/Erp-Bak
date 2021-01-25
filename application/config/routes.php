@@ -5039,3 +5039,4 @@ $route['Slideshow/EditData'] = 'UpdateCov/C_Edit';
 $route['Slideshow/EditData/(:any)'] = 'UpdateCov/C_Edit/$1';
 $route['Slideshow/EditData/(:any)/(:any)'] = 'UpdateCov/C_Edit/$1/$2';
 $route['Slide/Show/(:any)/(:any)'] = 'UpdateCov/C_Slide/$1/$2';
+$route['Slideshow/DownloadManual'] = 'UpdateCov/C_Manual';
