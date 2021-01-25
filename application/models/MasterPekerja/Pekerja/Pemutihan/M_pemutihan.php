@@ -46,6 +46,42 @@ class M_pemutihan extends CI_Model
   }
 
   /**
+   * Get all request with param or nota
+   * 
+   * @param String $status
+   * @return Array<Object>
+   */
+  public function getPendingAboveTime($defaultTime = false)
+  {
+    $getAll = $this->personalia
+      ->select('
+        trp.created_at,
+        trp.id_req,
+        trp.noind,
+        tp.nama,
+        ts.seksi,
+        tlk.lokasi_kerja,
+        trp.status_update_by,
+        trp.status_req,
+        trp.status_update_at,
+        trp.feedback,
+        trp.distributed_at
+      ')
+      ->from('hrd_khs.trequest_tpribadi trp')
+      ->join('hrd_khs.tpribadi tp', 'tp.noind = trp.noind', 'inner')
+      ->join('hrd_khs.tlokasi_kerja tlk', 'tlk.id_ = tp.lokasi_kerja', 'inner')
+      ->join('hrd_khs.tseksi ts', 'ts.kodesie = tp.kodesie', 'inner')
+      ->order_by('created_at', 'desc');
+
+    if ($defaultTime) {
+      $getAll->where('created_at >=', $defaultTime);
+    }
+
+    return $getAll->get()
+      ->result_object();
+  }
+
+  /**
    * Get data by id 
    * 
    * @param Integer $id

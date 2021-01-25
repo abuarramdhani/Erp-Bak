@@ -15,12 +15,16 @@ class C_Index extends CI_Controller
   const ACCEPT = 'accept';
   const CANCEL = 'cancel';
 
+  protected $attachment_path;
+
   public function __construct()
   {
     parent::__construct();
     $this->sessionCheck();
     $this->load->model('SystemAdministration/MainMenu/M_user');
     $this->load->model('MasterPekerja/Pekerja/Pemutihan/M_pemutihan', 'ModelPemutihan');
+
+    $this->attachment_path = base_url("/assets/uploads/attachment") . '/';
 
     $this->user = $this->session->user;
     $this->user_id = $this->session->userid;
@@ -108,6 +112,7 @@ class C_Index extends CI_Controller
     $data['session'] = $request->current_session ?: $this->user;
     $data['user'] = $this->user;
     $data['verifier'] = $verifier ? $request->status_update_by . ' - ' . $verifier->nama : '';
+    $data['attachment_path'] = $this->attachment_path;
 
     $this->load->view('V_Header', $data);
     $this->load->view('V_Sidemenu', $data);
@@ -194,7 +199,5 @@ class C_Index extends CI_Controller
 
       redirect($_SERVER['HTTP_REFERED']);
     }
-
-    debug($request_post);
   }
 }

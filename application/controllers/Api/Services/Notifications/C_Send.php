@@ -28,9 +28,8 @@ class C_Send extends CI_Controller
     $message = $this->input->post('message');
     $url_referer = $this->input->post('referer');
 
-    $this->form_validation
+    $validation = $this->form_validation
       ->set_data($this->input->post())
-      ->set_rules('to', 'to', 'required')
       ->set_rules('title', 'title', 'required')
       ->set_rules('message', 'message', 'required')
       ->set_error_delimiters('', '');
@@ -41,6 +40,12 @@ class C_Send extends CI_Controller
     } else {
       $validation
         ->set_rules('to', 'to', 'required');
+    }
+
+    if (is_array($to)) {
+      $validation->set_rules('to[]', 'to', 'required');
+    } else {
+      $validation->set_rules('to', 'to', 'required');
     }
 
     try {

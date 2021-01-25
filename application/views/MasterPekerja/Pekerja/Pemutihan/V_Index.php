@@ -90,7 +90,7 @@ function truncate($string, $length)
         ?>
         <ul class="nav nav-tabs">
           <li class="active">
-            <a class="nav-pending" data-toggle="tab" href="#pending">Pending (<?= $countPending ?>)</a>
+            <a class="nav-pending" data-toggle="tab" href="#pending">Pending (<span id="pending-count"><?= $countPending ?></span>)</a>
           </li>
           <li>
             <a class="nav-revision" data-toggle="tab" href="#revision">Revisi (<?= $countRevision ?>)</a>
@@ -143,7 +143,7 @@ function truncate($string, $length)
                   <?php endforeach ?>
                 </tbody>
               </table>
-              <span>*Data pada tabel terupdate otomatis dalam 5 detik</span>
+              <span class="text-error">*Data pada tabel terupdate otomatis dalam 5 detik</span>
             </div>
           </div>
           <div id="revision" class="tab-pane fade" style="border: 4px solid #72b8ff">
@@ -299,16 +299,112 @@ function truncate($string, $length)
     })
 
     // datatable initialize
-    $('table#table-pemutihan-pekerja-pending').dataTable({
+    $.ajax({
+      url: baseurl + 'MasterPekerja/Pemutihan/api/list/pending/datatable',
+      success(response) {
+        let datatablePendingData = response.data;
+        let lastFetchTime = moment().format('YYYY-MM-DD HH:mm:ss')
+        const table = $('table#table-pemutihan-pekerja-pending').DataTable({
+          data: datatablePendingData,
+          columns: [{
+              data: 'id_req'
+            },
+            {
+              data: 'noind'
+            },
+            {
+              data: 'noind'
+            },
+            {
+              data: 'nama'
+            },
+            {
+              data: 'seksi'
+            },
+            {
+              data: 'lokasi_kerja'
+            },
+            {
+              data: 'created_at'
+            },
+            {
+              data: 'status_update_by'
+            },
+            {
+              data: 'status_update_at'
+            },
+            {
+              data: 'feedback'
+            },
+            // {
+            //   data: 'distributed_at'
+            // },
+          ],
+          columnDefs: [{
+              targets: 0, // first column is 0
+              data: 'id_req',
+              render(data, type, row, meta) {
+                return '#' + data
+              }
+            },
+            {
+              targets: 1, // first column is 0
+              render(data, type, row, meta) {
+                return `<a href="${baseurl}/MasterPekerja/Pemutihan/Request?id=${row.id_req}&redirect=approved" class="btn btn-primary btn-sm">Check</a>`
+              }
+            }
+          ],
+          order: []
+        });
+
+        // fetch new every 1 minutes
+        setInterval(() => {
+          $.ajax({
+            url: baseurl + 'MasterPekerja/Pemutihan/api/list/pending/datatable/new',
+            data: {
+              timestamp: lastFetchTime
+            },
+            dataType: 'json',
+            success(response) {
+              if (!response.data.length) return;
+
+              lastFetchTime = moment().format('YYYY-MM-DD HH:mm:ss');
+
+              // add to first
+              datatablePendingData = response.data.concat(datatablePendingData)
+              table.clear()
+              table.rows.add(datatablePendingData).draw()
+
+              // add animation fade in
+              const firstRow = $('table#table-pemutihan-pekerja-pending').find('tbody > tr:first-child')
+              // give color to row
+              firstRow.css({
+                display: 'none',
+                'background-color': '#ffde94'
+              })
+              // after show, remove that color
+              firstRow.fadeIn(3000, () => firstRow.css('background-color', ''))
+
+              // update pending tab counter
+              const rowCount = table.rows().count()
+              $('#pending-count').text(rowCount)
+            },
+            error() {
+              console.error("Failed to fetch new data")
+            }
+          })
+        }, 1000 * 5) // 5 seconds
+      }
+    })
+
+    $('table#table-pemutihan-pekerja-approve').DataTable({
       order: []
     });
-    $('table#table-pemutihan-pekerja-approved').dataTable({
+
+    $('table#table-pemutihan-pekerja-revision').DataTable({
       order: []
     });
-    $('table#table-pemutihan-pekerja-revision').dataTable({
-      order: []
-    });
-    $('table#table-pemutihan-pekerja-rejected').dataTable({
+    $('table#table-pemutihan-pekerja-rejected').DataTable({
       order: []
     });
 
