@@ -2059,4 +2059,17 @@ $(document).ready(function () {
 			}
 		});
 	});
+
+	$('#tbListSubmit_filter').prepend('<button id="btnOrclReportMI" class="btn btn-sm btn-success" data-toggle="modal" data-target="#mdlOrclReportMI" style="margin-right: 10px" type="button">Monitoring Receipt PO</button>');
+
+	$(document)
+	
+	.on('click', '#btnOrclReportMI', function () {
+		$('#mdlOrclReportMI').modal('show')
+	})
+
+	.on('click', '#btnSubmitReportMI', function () {
+		$('#mdlOrclReportMI').modal('hide')
+	})
+
 })
