@@ -62,7 +62,7 @@ class M_inputdata extends CI_Model
                          ts.seksi 
                         FROM hrd_khs.tpribadi tp 
                             inner join hrd_khs.tseksi ts on tp.kodesie = ts.kodesie 
-                        WHERE tp.noind like '$params%' AND tp.keluar='0' limit 20";
+                        WHERE tp.noind like '$params%' limit 20";
         $result     = $this->personalia->query($queryNoind)->result_array();
         return $result;
     }
