@@ -16,7 +16,7 @@ if (!function_exists('debug')) {
  * global function of response
  * laravel style
  */
-if (!function_exists('response')) {
+if (!class_exists('Response')) {
   /**
    * Helper Class
    * Http Response
