@@ -1,10 +1,13 @@
 <?php
 require_once("koneksi.php");
 
+$curLocale = setlocale(LC_ALL, 0);
+setlocale(LC_ALL, "en_US.utf8");
+
 $noinduk 		= $_POST['noinduk'];
 $longitude 		= $_POST['longitude'];
 $latitude	    = $_POST['latitude'];
-$lokasi 		= iconv('utf-8','ASCII//IGNORE//TRANSLIT',$_POST['lokasi']);
+$lokasi 		= iconv('utf-8','ASCII//TRANSLIT',$_POST['lokasi']);
 $tanggal 		= $_POST['tanggal'];
 $waktu 			= $_POST['waktu'];
 $jenis_absen_id = $_POST['jenis_absen_id'];
