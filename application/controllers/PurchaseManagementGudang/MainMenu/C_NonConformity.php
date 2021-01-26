@@ -30,6 +30,16 @@ class C_NonConformity extends CI_Controller
 		}
 	}
 
+	public function check_last_update()
+	{
+		echo date('d-M-y', filemtime('application/controllers/PurchaseManagementGudang/MainMenu/C_NonConformity.php'));
+	}
+
+	public function insertNewCase()
+	{
+		$this->M_nonconformity->insertNewCase();
+	}
+
 	/* LIST DATA */
 	public function index()
 	{

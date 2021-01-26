@@ -1148,4 +1148,13 @@ class M_nonconformity extends CI_Model
         return $query->result_array();
     }
 
+    public function insertNewCase()
+    {
+        $this->db->query(
+            "INSERT INTO
+                pm.pm_po_oracle_non_conformity_case(case_name)
+            VALUES
+                ('Lokasi kirim tidak sesuai dengan gudang tujuan')"
+        );
+    }
 }
