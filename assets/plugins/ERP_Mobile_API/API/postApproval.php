@@ -81,7 +81,7 @@ if(!empty($noinduk) && !empty($longitude) && !empty($latitude) && !empty($lokasi
 }
 
 function getWaktu($lat,$long){
-	$url = "https://api.ipgeolocation.io/timezone?apiKey=21e06ea3c44d4fa1870b2a20db4f07a5&lat=".$lat."&long=".$long."";
+	$url = "https://api.ipgeolocation.io/timezone?apiKey=zaf5a18596b654244816c78e33229c006&lat=".$lat."&long=".$long."";
 	$curl = curl_init();
 	set_time_limit(0);
 	curl_setopt($curl, CURLOPT_URL,$url);
