@@ -1,4 +1,18 @@
 $(document).ready(function () {
+    
+    $(document).on('change', '.inpBeaMasukPBI', function () {
+        var totalBeaMasuk = $(this).val()
+        var biayaPembagian = $('.pembagianBiayaPBI')
+        var beaMasukPBI = $('.pembagianBiayaPBI').parentsUntil('tbody').find('.beaMasukPBI')
+
+        for (let index = 0; index < biayaPembagian.length; index++) {
+            var f = biayaPembagian[index].innerHTML
+            f = f.slice(0, -1)
+            var newBeaMasukPBI = Number(f) / 100 * totalBeaMasuk
+            beaMasukPBI[index].innerHTML = formatMoney(Math.round((newBeaMasukPBI + Number.EPSILON) * 100) / 100)
+        }
+
+    })
 
     $(document).on('click','.tambahAdditionalInfoPBI', function () {
         $('.btndeleteAddCostTambahanPBI:first').removeAttr('disabled');
