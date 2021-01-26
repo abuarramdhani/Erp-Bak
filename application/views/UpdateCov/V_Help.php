@@ -33,7 +33,7 @@
                             <div class="box-body">
                                 <div class="panel-body">
                                     <div class="col-md-12" style="text-align: center;">
-                                        <a class="btn btn-default" target="_blank" href="<?php echo base_url('application/views/UpdateCov/KHS_SLIDE_SHOW_MANUAL.pdf') ?>">Kik Here</a>
+                                        <a class="btn btn-default" target="_blank" href="<?php echo base_url('application/views/UpdateCov/KHS_SLIDE_SHOW_MANUAL.pdf') ?>">Klik Here</a>
                                     </div>
                                 </div>
                             </div>
