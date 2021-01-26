@@ -4,7 +4,7 @@ require_once("koneksi.php");
 $noinduk 		= $_POST['noinduk'];
 $longitude 		= $_POST['longitude'];
 $latitude	    = $_POST['latitude'];
-$lokasi 		= $_POST['lokasi'];
+$lokasi 		= iconv('utf-8','ASCII//IGNORE//TRANSLIT',$_POST['lokasi']);
 $tanggal 		= $_POST['tanggal'];
 $waktu 			= $_POST['waktu'];
 $jenis_absen_id = $_POST['jenis_absen_id'];
@@ -73,7 +73,7 @@ if(!empty($noinduk) && !empty($longitude) && !empty($latitude) && !empty($lokasi
 						
 				}else{
 					$data['status'] = false;
-		       		$data['result'][] = "API Error #1: ".pg_result_error($result).' || '.$lokasi;
+		       		$data['result'][] = "API Error #1: ".pg_result_error($result);
 
 		       		$errLog[] = "API Error #1: ".pg_result_error($result);
 					$errLog[] = $sql;
