@@ -7,6 +7,7 @@ $noinduk 		= $_POST['noinduk'];
 $longitude 		= $_POST['longitude'];
 $latitude	    = $_POST['latitude'];
 $lokasi 		= str_replace(array_keys($spesial), $spesial, $_POST['lokasi']);
+$lokasi 		= str_replace('è', 'e', $lokasi);
 $tanggal 		= $_POST['tanggal'];
 $waktu 			= $_POST['waktu'];
 $jenis_absen_id = $_POST['jenis_absen_id'];
