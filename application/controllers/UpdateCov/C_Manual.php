@@ -46,7 +46,7 @@ class C_Manual extends CI_Controller
 
         $this->load->view('V_Header', $data);
         $this->load->view('V_Sidemenu', $data);
-        // $this->load->view('UpdateCov/V_Upload');
+        $this->load->view('UpdateCov/V_Help');
         $this->load->view('V_Footer', $data);
 
         echo '<script type="text/javascript">
