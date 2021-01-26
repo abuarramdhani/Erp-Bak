@@ -6,7 +6,7 @@ class M_update extends CI_Model
     {
         parent::__construct();
         $this->load->database();
-        $this->oracle = $this->load->database('oracle_dev', true);
+        $this->oracle = $this->load->database('oracle', true);
     }
     function get_header_id()
     {
