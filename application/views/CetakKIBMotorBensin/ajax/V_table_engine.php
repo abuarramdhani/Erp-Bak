@@ -2,6 +2,9 @@
   <label class="label label-secondary ckmb_data" style="color:black;font-size:13px;box-shadow: 0 1px 1px 0 rgba(0,0,0,0.14), 0 2px 1px -1px rgba(0,0,0,0.12), 0 1px 3px 0 rgba(0,0,0,0.20);">
     Nomor PO : <strong class="text-primary"><?php echo $no_po ?></strong>
   </label>
+  <label class="label label-secondary ckmb_data" style="color:black;margin-left: 7px;font-size:13px;box-shadow: 0 1px 1px 0 rgba(0,0,0,0.14), 0 2px 1px -1px rgba(0,0,0,0.12), 0 1px 3px 0 rgba(0,0,0,0.20);">
+    No LPPB : <strong class="text-primary"><?php echo $no_lppb ?></strong>
+  </label>
 </div>
 <div style="margin-top:12px">
   <label class="label label-secondary ckmb_data" style="color:black;font-size:13px;box-shadow: 0 1px 1px 0 rgba(0,0,0,0.14), 0 2px 1px -1px rgba(0,0,0,0.12), 0 1px 3px 0 rgba(0,0,0,0.20);">
