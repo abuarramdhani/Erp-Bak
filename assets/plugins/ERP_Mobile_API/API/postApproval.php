@@ -13,6 +13,7 @@ $status			= $_POST['status'];
 $tanggal_status	= $_POST['tanggal_status'];
 $nama			= $_POST['nama'];
 $atasan 		= $_POST['atasan'];
+
 if(!empty($noinduk) && !empty($longitude) && !empty($latitude) && !empty($lokasi) && !empty($tanggal) && !empty($waktu) && !empty($jenis_absen_id) && !empty($gambar) && !empty($tanggal_status) && !empty($atasan)){
 		$sql="SELECT COUNT(*) FROM at.at_absen WHERE noind='".$noinduk."' AND longitude='".$longitude."' AND latitude='".$latitude."' AND tgl='".$tanggal."' AND jenis_absen_id='".$jenis_absen_id."' AND gambar='".$gambar."' AND status='".$status."' AND tgl_status='".$tanggal_status."' AND nama='".$nama."' ";
 
@@ -57,11 +58,22 @@ if(!empty($noinduk) && !empty($longitude) && !empty($latitude) && !empty($lokasi
 					}else{
 						$data['status'] = false;
 			       		$data['result'][] = "API Error #2: ".pg_result_error($result2);
+
+			       		$errLog[] = "API Error #2: ".pg_result_error($result2);
+			       		$errLog[] = $sql;
+			       		$errLog[] = $sql2;
+						$errLog[] = json_encode($_POST);
+						insert_log_error($errLog, $conn);
 					}
 						
 				}else{
 					$data['status'] = false;
 		       		$data['result'][] = "API Error #1: ".pg_result_error($result);
+
+		       		$errLog[] = "API Error #1: ".pg_result_error($result);
+					$errLog[] = $sql;
+					$errLog[] = json_encode($_POST);
+					insert_log_error($errLog, $conn);
 				}
 
 			}else{
@@ -78,6 +90,8 @@ if(!empty($noinduk) && !empty($longitude) && !empty($latitude) && !empty($lokasi
 }else{
     $data['status'] = false;
     $data['result'][] = "Attribute Harus terisi semua";
+    $errLog[] = json_encode($_POST);
+    insert_log_error($errLog, $conn);
 }
 
 function getWaktu($lat,$long){
@@ -102,6 +116,16 @@ function getWaktu($lat,$long){
 		$response;
 	}
 	return $response;
+}
+
+function insert_log_error($data, $conn)
+{
+	$time 		= date('Y-m-d H:i:s');
+	$noinduk 	= $_POST['noinduk'];
+	foreach ($data as $key ) {
+		$sql = "INSERT INTO sys.sys_log_activity (log_time, log_user, log_aksi, log_detail) VALUES('$time', '$noinduk', 'Error Absen Online', '$key');";
+		@@$d = pg_query($conn,$sql);
+	}
 }
 
 print_r(json_encode($data));
