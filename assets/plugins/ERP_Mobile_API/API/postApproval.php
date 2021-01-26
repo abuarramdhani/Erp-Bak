@@ -73,7 +73,7 @@ if(!empty($noinduk) && !empty($longitude) && !empty($latitude) && !empty($lokasi
 						
 				}else{
 					$data['status'] = false;
-		       		$data['result'][] = "API Error #1: ".pg_result_error($result);
+		       		$data['result'][] = "API Error #1: ".pg_result_error($result).' || '.$lokasi;
 
 		       		$errLog[] = "API Error #1: ".pg_result_error($result);
 					$errLog[] = $sql;
