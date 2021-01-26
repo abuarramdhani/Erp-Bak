@@ -24,10 +24,15 @@ if(!empty($noinduk) && !empty($longitude) && !empty($latitude) && !empty($lokasi
 
 		if ($total==0) {
 			$ambilWaktu = json_decode(getWaktu($latitude,$longitude),true);
-			if(!empty($ambilWaktu['date_time'])){
+			if(isset($ambilWaktu['date_time']) && !empty($ambilWaktu['date_time'])){
     			$wktAPI = $ambilWaktu['date_time'];
 			}else{
-				$wktAPI = $waktu;
+				$ambilWaktu = json_decode(getWaktu2($latitude,$longitude),true);
+				if(isset($ambilWaktu['time']) && !empty($ambilWaktu['time'])){
+    				$wktAPI = $ambilWaktu['time'].':'.date('s');
+				}else{
+					$wktAPI = $waktu;
+				}
 			}			
 			
 			try {
@@ -82,6 +87,30 @@ if(!empty($noinduk) && !empty($longitude) && !empty($latitude) && !empty($lokasi
 
 function getWaktu($lat,$long){
 	$url = "https://api.ipgeolocation.io/timezone?apiKey=21e06ea3c44d4fa1870b2a20db4f07a5&lat=".$lat."&long=".$long."";
+	$curl = curl_init();
+	set_time_limit(0);
+	curl_setopt($curl, CURLOPT_URL,$url);
+	curl_setopt($curl, CURLOPT_HTTPGET, true);
+	curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+            'Content-Type: application/json',
+            'Accept: application/json'
+        ));
+	$response = curl_exec($curl);
+	$err = curl_error($curl);
+	curl_close($curl);
+	if ($err) {
+		$response = ("Error #:" . $err);
+	}
+	else
+	{
+		$response;
+	}
+	return $response;
+}
+
+function getWaktu2($lat,$long){
+	$url = "http://api.geonames.org/timezoneJSON?lat=".$lat."&lng=".$long."&username=it.sec1";
 	$curl = curl_init();
 	set_time_limit(0);
 	curl_setopt($curl, CURLOPT_URL,$url);
