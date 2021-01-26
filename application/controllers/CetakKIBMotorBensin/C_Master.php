@@ -250,7 +250,9 @@ class C_Master extends CI_Controller
       }else {
         $isi 	= 'Data is empty';
       }
-      $pdf->SetHTMLHeader("<h3 style='padding-top:20px;text-align:center;'>DAFTAR NOMOR MOTOR BENSIN (HONDA) GX <span style='olor:#016f87'>". $get_[0]['TYPE']."</span></h3>");
+      $type_ = explode(' ',$get_[0]['TYPE_SEBELUM']);
+      $type_title = $type_[1].' '.$type_[2].' '.$type_[3].' '.$get_[0]['TYPE'];
+      $pdf->SetHTMLHeader("<h3 style='padding-top:20px;text-align:center;'>DAFTAR NOMOR MOTOR BENSIN (HONDA) <span style='olor:#016f87'>".$type_title." </span></h3>");
       $pdf->WriteHTML($isi);
       $pdf->Output($filename, 'I');
     }
