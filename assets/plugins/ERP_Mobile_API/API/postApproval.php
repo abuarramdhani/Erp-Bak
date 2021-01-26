@@ -56,12 +56,12 @@ if(!empty($noinduk) && !empty($longitude) && !empty($latitude) && !empty($lokasi
 				        $data['result'][] = "Berhasil Menambah Data";
 					}else{
 						$data['status'] = false;
-			       		$data['result'][] = "API Error : ".pg_result_error($result2);
+			       		$data['result'][] = "API Error #2: ".pg_result_error($result2);
 					}
 						
 				}else{
 					$data['status'] = false;
-		       		$data['result'][] = "API Error : ".pg_result_error($result);
+		       		$data['result'][] = "API Error #1: ".pg_result_error($result);
 				}
 
 			}else{
