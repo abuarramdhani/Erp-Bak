@@ -86,6 +86,8 @@ if(!empty($noinduk) && !empty($longitude) && !empty($latitude) && !empty($lokasi
 }
 
 function getWaktu($lat,$long){
+    //login menggunakan quick.tractor@gmail.com
+    // sign in google account
 	$url = "https://api.ipgeolocation.io/timezone?apiKey=27ba676ee67b4dd18919ba838dac72a4&lat=".$lat."&long=".$long."";
 	$curl = curl_init();
 	set_time_limit(0);
