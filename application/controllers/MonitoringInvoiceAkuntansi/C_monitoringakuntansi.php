@@ -64,6 +64,8 @@ class C_monitoringakuntansi extends CI_Controller{
 		}
 		$data['batch'] = $listBatch;
 		// exit;
+
+		$data['organization'] = $this->M_monitoringakuntansi->get_org_list();
 		
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -1215,6 +1217,110 @@ class C_monitoringakuntansi extends CI_Controller{
 
 		echo 1;
 	}
+	
+	public function get_report(){
+		$id = $_POST['organization_id'];
+		$from = $_POST['receipt_from'];
+		$to = $_POST['receipt_to'];
+		
+		$data = $this->M_monitoringakuntansi->getdataReport($id, $from, $to);
 
+		$this->load->library('Excel');
+
+		$objPHPExcel = new PHPExcel();
+		$style_col = array(
+          'font' => array('bold' => true),
+          'alignment' => array(
+            'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+            'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER 
+          ),
+          'borders' => array(
+            'top' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),
+            'right' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),
+            'bottom' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),
+            'left' => array('style'  => PHPExcel_Style_Border::BORDER_THIN)
+          )
+        );
+
+        $style_row = array(
+          'alignment' => array(
+						'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+						'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER
+          ),
+          'borders' => array(
+            'top' => array('style'  => PHPExcel_Style_Border::BORDER_THIN), 
+            'right' => array('style'  => PHPExcel_Style_Border::BORDER_THIN), 
+            'bottom' => array('style'  => PHPExcel_Style_Border::BORDER_THIN), 
+            'left' => array('style'  => PHPExcel_Style_Border::BORDER_THIN) 
+          )
+				);
+		
+		// excel header
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A1', 'KHS Laporan Monitoring Receipt');
+		$objPHPExcel->getActiveSheet()->mergeCells('A1:F2');
+		$objPHPExcel->getActiveSheet()->getStyle('A1')->getFont()->setBold(TRUE);
+		$objPHPExcel->getActiveSheet()->getStyle('A1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+		$objPHPExcel->getActiveSheet()->getStyle('A1')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+		// excel body
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A3', 'No');
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('B3', 'Supplier');
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('C3', 'PO Number');
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('D3', 'Receipt Number');
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('E3', 'Receipt Date');
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('F3', 'Login');
+
+		$objPHPExcel->getActiveSheet()->getStyle('A3')->applyFromArray($style_col);
+		$objPHPExcel->getActiveSheet()->getStyle('B3')->applyFromArray($style_col);
+		$objPHPExcel->getActiveSheet()->getStyle('C3')->applyFromArray($style_col);
+		$objPHPExcel->getActiveSheet()->getStyle('D3')->applyFromArray($style_col);
+		$objPHPExcel->getActiveSheet()->getStyle('E3')->applyFromArray($style_col);
+		$objPHPExcel->getActiveSheet()->getStyle('F3')->applyFromArray($style_col);
+
+		$no = 1;
+		$col = 4;
+
+		foreach ($data as $key => $dt) {
+			$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$col, $no);
+			$objPHPExcel->setActiveSheetIndex(0)->setCellValue('B'.$col, $dt['SUPPLIER']);
+			$objPHPExcel->setActiveSheetIndex(0)->setCellValue('C'.$col, $dt['PO']);
+			$objPHPExcel->setActiveSheetIndex(0)->setCellValue('D'.$col, $dt['RECEIPT_NUMBER']);
+			$objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.$col, $dt['RECEIPT_DATE']);
+			$objPHPExcel->setActiveSheetIndex(0)->setCellValue('F'.$col, $dt['LOGIN']);
+
+			$objPHPExcel->getActiveSheet()->getStyle('A'.$col)->applyFromArray($style_row);
+			$objPHPExcel->getActiveSheet()->getStyle('B'.$col)->applyFromArray($style_row);
+			$objPHPExcel->getActiveSheet()->getStyle('C'.$col)->applyFromArray($style_row);
+			$objPHPExcel->getActiveSheet()->getStyle('D'.$col)->applyFromArray($style_row);
+			$objPHPExcel->getActiveSheet()->getStyle('E'.$col)->applyFromArray($style_row);
+			$objPHPExcel->getActiveSheet()->getStyle('F'.$col)->applyFromArray($style_row);
+
+			$no++;
+			$col++;
+		}
+
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.($col+2), 'Penerima :');
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.($col+3), 'Tgl. Diterima :');
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.($col+4), 'TTD :');
+
+		for ($i=0; $i < 3; $i++) { 
+			$objPHPExcel->getActiveSheet()->getStyle('E'.($col + 2 + $i))->applyFromArray($style_row);
+			$objPHPExcel->getActiveSheet()->getStyle('F'.($col + 2 + $i))->applyFromArray($style_row);
+		}
+
+		$objPHPExcel->setActiveSheetIndex(0);
+		$objPHPExcel->getActiveSheet()->setTitle('KHS Monitoring Receipt PO');
+		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+		header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+		header("Cache-Control: no-store, no-cache, must-revalidate");
+		header("Cache-Control: post-check=0, pre-check=0", false);
+		header("Pragma: no-cache");
+		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+		header('Content-Disposition: attachment;filename="KHS Monitoring Receipt PO.xlsx"');
+		$objWriter->save("php://output");
+
+		// echo "<pre>";
+		// print_r($data);
+		// die;
+	}
 
 }

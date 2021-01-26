@@ -1501,4 +1501,53 @@ class M_monitoringakuntansi extends CI_Model
         oci_bind_by_name($stmt, ':tetap', $tetap, 100);
         oci_execute($stmt);
     }
+
+    public function get_org_list()
+    {
+        $oracle = $this->load->database('oracle', TRUE);
+        $query = $oracle->query("SELECT organization_id id, organization_code code FROM mtl_parameters");
+
+        return $query->result_array();
+    }
+
+    public function getDataReport($id, $from, $to)
+    {
+        $oracle = $this->load->database('oracle', TRUE);
+        $query = $oracle->query("
+            select to_char(sysdate,'DD-MON-RRRR HH24:MI:SS')                                today
+                ,pav.VENDOR_NAME                                                          supplier
+                ,pha.SEGMENT1                                                             po
+                ,rsh.RECEIPT_NUM                                                          receipt_number
+                ,to_char(rsh.CREATION_DATE,'DD Month RRRR')                               receipt_date
+                ,mp.ORGANIZATION_CODE                                                     io
+                ,pav.segment1
+                ,rsh.LAST_UPDATE_DATE
+                , pla.po_line_id
+                ,rsh.CREATED_BY
+                ,fu.USER_NAME                                                             login
+            from po_headers_all pha
+                ,po_lines_all pla
+                ,ap_suppliers pav
+                ,rcv_transactions rt
+                ,rcv_shipment_headers rsh
+                ,rcv_shipment_lines rsl
+                ,mtl_parameters mp
+                ,fnd_user fu
+            where pha.PO_HEADER_ID = rt.PO_HEADER_ID 
+            and pha.PO_HEADER_ID = pla.PO_HEADER_ID
+            and pha.VENDOR_ID = pav.VENDOR_ID
+            and pla.PO_LINE_ID = rt.PO_LINE_ID
+            and rsh.SHIPMENT_HEADER_ID = rt.SHIPMENT_HEADER_ID
+            and rsh.SHIP_TO_ORG_ID = rt.ORGANIZATION_ID
+            and rsl.SHIPMENT_HEADER_ID = rt.SHIPMENT_HEADER_ID
+            and rsl.SHIPMENT_LINE_ID = rt.SHIPMENT_LINE_ID
+            and mp.ORGANIZATION_ID = rt.ORGANIZATION_ID
+            and rsh.CREATED_BY = fu.USER_ID(+)
+            and rt.TRANSACTION_TYPE = 'RECEIVE'
+            and mp.ORGANIZATION_ID = nvl($id,mp.organization_id)
+            and to_number(rsh.RECEIPT_NUM) between $from and $to
+            order by receipt_num
+        ");
+        return $query->result_array();
+    }
 }

@@ -110,7 +110,7 @@
                                         <th class="text-center">k=b*d</th>
                                         <th class="text-center">l=j/a</th>
                                         <th class="text-center">m=k+l</th>
-                                        <th class="text-center">n=k/l</th>
+                                        <th class="text-center">n=l/k</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -159,9 +159,11 @@
                                         <td align="right"><b class="totalNilaiBarangPBI"><?= number_format($totalNilaiBarang,2); ?></b></td>
                                         <td></td>
                                         <td align="right"><b class="totalBeaMasukPBI"><?php if (!$bea_masuk) {
-                                            echo '0';
+                                            // echo '0';
+                                            echo '<input type="text" class="form-contro inpBeaMasukPBI" style="width:100px; text-align:right;" value="0">';
                                         }else {
-                                            echo number_format($bea_masuk[0]['HARGA'],2);
+                                            // echo number_format($bea_masuk[0]['HARGA'],2);
+                                            echo '<input type="text" class="form-control inpBeaMasukPBI" style="width:100px; text-align:right;" value='.number_format($bea_masuk[0]['HARGA'],2).'>';
                                         } ?></b></td>
                                         <td align="right"><b class="totalAdditionalAtasCostPBI"></b></td>
                                         <td align="right"><b class="totalbiayaPBI"></b></td>

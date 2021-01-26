@@ -57,3 +57,38 @@
 		</div>
 	</div>
 </section>
+
+<div class="modal fade" id="mdlOrclReportMI">
+	<div class="modal-dialog">
+	<div class="modal-content">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span></button>
+			<h4 class="modal-title">KHS Monitoring Receipt PO</h4>
+		</div>
+		<form action="<?php echo base_url('AccountPayables/MonitoringInvoice/Unprocess/get_report') ?>" method="post">
+			<div class="modal-body">
+				<label for="org_id">Organization</label>
+				<select name="organization_id" class="form-control select2" id="inpOrganizationMI" style="width: 570px;" placehoder="Select Organization">
+					<!-- <option value="-" disabled>Select Organization</option> -->
+					<?php
+						foreach ($organization as $key => $org) {
+							$code = $org['CODE'];
+							$id = $org['ID'];
+							echo "<option value='$id'>$code</option>";
+						}
+					?>
+				</select>
+				<label for="receipt_from">Receipt From</label>
+				<input type="text" name="receipt_from" class="form-control" id="inpRcptFromMI" width="570px">
+				<label for="receipt_to">Receipt To</label>
+				<input type="text" name="receipt_to" class="form-control" id="inpRcptToMI" width="570px">
+			</div>
+			<div class="modal-footer mt-10">
+				<button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+				<button type="submit" class="btn btn-primary" id="btnSubmitReportMI">Run</button>
+			</div>
+		</form>
+	</div>
+	</div>
+</div>
