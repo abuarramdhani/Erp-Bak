@@ -6,7 +6,7 @@ class M_update extends CI_Model
     {
         parent::__construct();
         $this->load->database();
-        $this->oracle = $this->load->database('oracle', true);
+        $this->oracle = $this->load->database('oracle_dev', true);
     }
     function get_header_id()
     {
@@ -15,17 +15,19 @@ class M_update extends CI_Model
         $query = $this->oracle->query($sql);
         return $query->result_array();
     }
-    public function InsertIdSlideShow($id, $nama, $by)
+    public function InsertIdSlideShow($id, $nama, $by, $time)
     {
         $sql = "insert into khs_slide_show_headers kssh (
             kssh.HEADER_ID
             ,kssh.SLIDE_SHOW_NAME
             ,kssh.CREATED_BY
+            ,kssh.SLIDE_TRANSITION_TIME
             )
             values(
             $id
             ,'$nama'
             ,'$by'
+            ,$time
             )";
         $query = $this->oracle->query($sql);
         return $sql;
@@ -47,6 +49,7 @@ class M_update extends CI_Model
         $sql = "select
         kssh.HEADER_ID
         ,kssh.SLIDE_SHOW_NAME
+        ,kssh.SLIDE_TRANSITION_TIME
         ,kssl.FILE_DIR_ADDRESS
         ,kssl.LINE_ID
         from

@@ -73,6 +73,7 @@ class C_Upload extends CI_Controller
         $head_id = $this->M_update->get_header_id();
         $created_by = $this->session->user;
         $nama = $_POST['nm_slide_show'];
+        $time = $_POST['time_slide_show'];
         $cek = explode(" ", $nama);
         $c = count($cek);
 
@@ -83,7 +84,7 @@ class C_Upload extends CI_Controller
             $this->load->view('UpdateCov/V_Error', $data);
             $this->load->view('V_Footer', $data);
         } else {
-            $this->M_update->InsertIdSlideShow($head_id[0]['NEXTVAL'], $created_by . '_' . $nama, $created_by);
+            $this->M_update->InsertIdSlideShow($head_id[0]['NEXTVAL'], $created_by . '_' . $nama, $created_by, $time);
             $temp_name = $_FILES['gambarCov']['tmp_name'];
             $j = 1;
             for ($i = 0; $i < sizeof($temp_name); $i++) {
