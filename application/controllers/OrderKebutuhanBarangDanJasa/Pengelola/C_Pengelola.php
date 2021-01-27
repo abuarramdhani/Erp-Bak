@@ -319,6 +319,7 @@ class C_Pengelola extends CI_Controller {
 
         for ($i=0; $i < count($orderid); $i++) { 
             $ordid = explode("-", $orderid[$i]);
+            $approval_position = $this->M_approver->checkPositionApprover($ordid[0],$person_id);
 
             if ($orderClass != 'R') {
                 $judgement = 'A';
@@ -331,7 +332,8 @@ class C_Pengelola extends CI_Controller {
             // if ($ordid[1] != '' || $ordid[1]!= null) {
                 $classOrder = array(
                     'ORDER_CLASS' => $orderClass, 
-                    'NOTE_TO_BUYER' => $ordid[1], 
+                    'NOTE_TO_BUYER' => $ordid[1],
+                    'APPROVE_LEVEL_POS' => $approval_position[0]['APPROVER_TYPE'],
                 );
             // } else {
             //     $classOrder = array(
