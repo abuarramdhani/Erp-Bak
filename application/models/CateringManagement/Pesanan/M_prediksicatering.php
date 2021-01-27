@@ -15,7 +15,7 @@ class M_prediksicatering extends CI_Model
         if ($shift == 1) {
             $shift = "and tsp.kd_shift in ('1','4','7','8','9','10')";
         } else if ($shift == 2) {
-            $shift = "and tsp.kd_shift in ('11','2')";
+            $shift = "and tsp.kd_shift in ('11','2','34')";
         } else if ($shift == 3) {
             $shift = "and tsp.kd_shift in ('3','12')";
         } else {
