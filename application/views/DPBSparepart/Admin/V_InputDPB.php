@@ -49,6 +49,8 @@
                                 <select name="" id="" class="form-control select2 forwardDPS" style="width:250px;">
                                     <option></option>
                                     <option value="J1365">J1365 - MUHAMMAD REZA SHALAHUDDIN NOOR</option>
+                                    <option value="B0892">B0892 - NANDA ILHAM</option>
+                                    <option value="B0658">B0658 - NASHRUL HAKIM</option>
                                 </select>
                             </div>
                         </div>
