@@ -76,12 +76,68 @@ if(!empty($noinduk) && !empty($longitude) && !empty($latitude) && !empty($lokasi
 						
 				}else{
 					$data['status'] = false;
-		       		$data['result'][] = "API Error #1: ".pg_result_error($result);
+		       		$error_at_absen = pg_result_error($result);
 
-		       		$errLog[] = "API Error #1: ".pg_result_error($result);
-					$errLog[] = $sql;
-					$errLog[] = json_encode($_POST);
-					insert_log_error($errLog, $conn);
+					if (strpos($error_at_absen,'invalid byte sequence') !== false) {
+
+		       			$sql3="set client_encoding to 'LATIN1'";
+				        pg_send_query($conn, $sql3);
+						$result3 = pg_get_result($conn);
+						if (empty(pg_result_error($result3))) {
+
+							pg_send_query($conn, $sql);
+							$result4 = pg_get_result($conn);
+							if (empty(pg_result_error($result4))) {
+								$sql2 	= "INSERT INTO at.at_absen_approval (approver,absen_id) VALUES('".$atasan."',(SELECT currval('at.at_absen_absen_id_seq')))";
+
+						    	pg_send_query($conn, $sql2);
+								$result2 = pg_get_result($conn);
+								
+								if (empty(pg_result_error($result2))) {
+							        $data['status'] = true;
+							        $data['result'][] = "Berhasil Menambah Data";
+								}else{
+									$data['status'] = false;
+						       		$data['result'][] = "API Error #2: ".pg_result_error($result2);
+
+						       		$errLog[] = "API Error #2: ".pg_result_error($result2);
+						       		$errLog[] = $sql;
+						       		$errLog[] = $sql2;
+									$errLog[] = json_encode($_POST);
+									insert_log_error($errLog, $conn);
+								}
+
+							}else{
+								$data['status'] = false;
+					       		$data['result'][] = "API Error #4: ".pg_result_error($result4);
+
+					       		$errLog[] = "API Error #4: ".pg_result_error($result4);
+					       		$errLog[] = $sql;
+					       		$errLog[] = $sql4;
+								$errLog[] = json_encode($_POST);
+								insert_log_error($errLog, $conn);
+							}
+
+						}else{
+							$data['status'] = false;
+				       		$data['result'][] = "API Error #3: ".pg_result_error($result3);
+
+				       		$errLog[] = "API Error #3: ".pg_result_error($result3);
+				       		$errLog[] = $sql;
+				       		$errLog[] = $sql3;
+							$errLog[] = json_encode($_POST);
+							insert_log_error($errLog, $conn);
+						}
+
+		       		}else{
+			       		$data['result'][] = "API Error #1: ".$error_at_absen;
+			       		$errLog[] = "API Error #1: ".$error_at_absen;
+						$errLog[] = $sql;
+						$errLog[] = json_encode($_POST);
+						insert_log_error($errLog, $conn);
+
+		       		}
+
 				}
 
 			}else{
