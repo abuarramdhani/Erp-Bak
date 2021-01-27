@@ -174,7 +174,7 @@
 									<a href="#tab_2" data-toggle="tab">Hubungan Kerja</a>
 								</li>
 								<li class="">
-									<a href="#tab_3" data-toggle="tab">Jamsostek</a>
+									<a href="#tab_3" data-toggle="tab">BPJS</a>
 								</li>
 							</ul>
 							<div class="tab-content" style="opacity: 0.5; pointer-events: none;">
@@ -925,6 +925,30 @@
 														<div class="row mt-10">
 															<div class="col-lg-4 text-right">
 																<label for="PK_txt_alamatPekerja">Per Tanggal </label>
+															</div>
+															<div class="col-lg-8">
+																<input type="text" name="tglberlaku_jht" class="form-control date">
+															</div>
+														</div>
+														<div class="row mt-10">
+															<div class="col-lg-4 text-right">
+																<label for="PK_txt_alamatPekerja">No BPJS Kesehatan </label>
+															</div>
+															<div class="col-lg-8">
+																<input type="text" name="tglberlaku_jht" class="form-control date">
+															</div>
+														</div>
+														<div class="row mt-10">
+															<div class="col-lg-4 text-right">
+																<label for="PK_txt_alamatPekerja">No BPJS Ketenagakerjaan</label>
+															</div>
+															<div class="col-lg-8">
+																<input type="text" name="tglberlaku_jht" class="form-control date">
+															</div>
+														</div>
+														<div class="row mt-10">
+															<div class="col-lg-4 text-right">
+																<label for="PK_txt_alamatPekerja">Faskes BPJS </label>
 															</div>
 															<div class="col-lg-8">
 																<input type="text" name="tglberlaku_jht" class="form-control date">

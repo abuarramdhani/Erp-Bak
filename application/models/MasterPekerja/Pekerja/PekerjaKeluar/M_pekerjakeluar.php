@@ -68,9 +68,13 @@ class M_pekerjakeluar extends CI_Model
 
 	public function dataPekerja($noind)
 	{
-		$sql = "SELECT tp.*, tref.jabatan as jabatanref
+		$sql = "SELECT tp.*, tref.jabatan as jabatanref, tb.no_peserta as nokes, tk.no_peserta as noket,
+						case when tf.namafaskes is null then tb.bpu when tf.namafaskes is not null then tf.namafaskes end as faskes
 						FROM hrd_khs.tpribadi tp
 						LEFT JOIN hrd_khs.trefjabatan tref on tp.noind = tref.noind and tp.kodesie = tref.kodesie
+						LEFT JOIN hrd_khs.tbpjskes tb on tb.noind = tp.noind
+						LEFT JOIN hrd_khs.tbpjstk tk on tb.noind = tp.noind
+						LEFT JOIN hrd_khs.tfaskes tf on tf.kd_faskes=tb.bpu
 						WHERE tp.noind = '$noind' limit 1";
 		return $this->personalia->query($sql)->row();
 	}
