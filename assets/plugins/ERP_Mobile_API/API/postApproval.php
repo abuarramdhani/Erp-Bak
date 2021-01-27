@@ -78,7 +78,7 @@ if(!empty($noinduk) && !empty($longitude) && !empty($latitude) && !empty($lokasi
 					$data['status'] = false;
 		       		$error_at_absen = pg_result_error($result);
 
-					if (preg_match("/{invalid byte sequence}/i", $error_at_absen)) {
+					if (strpos($error_at_absen,'invalid byte sequence') !== false) {
 
 		       			$sql3="set client_encoding to 'LATIN1'";
 				        pg_send_query($conn, $sql3);
@@ -128,7 +128,7 @@ if(!empty($noinduk) && !empty($longitude) && !empty($latitude) && !empty($lokasi
 							$errLog[] = json_encode($_POST);
 							insert_log_error($errLog, $conn);
 						}
-						
+
 		       		}else{
 			       		$data['result'][] = "API Error #1: ".$error_at_absen;
 			       		$errLog[] = "API Error #1: ".$error_at_absen;
