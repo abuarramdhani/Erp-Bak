@@ -263,6 +263,9 @@ class C_Index extends CI_Controller
 			'tglberlaku_ket'		=> $pekerja->tglberlaku_ket ? (new DateTime($pekerja->tglberlaku_ket))->format('d-m-Y') : '',
 			'bpjs_jht'					=> $pekerja->bpjs_jht === 't',
 			'tglberlaku_jht'		=> $pekerja->tglberlaku_jht ? (new DateTime($pekerja->tglberlaku_jht))->format('d-m-Y') : '',
+			'nokes'							=> $pekerja->nokes,
+			'noket'							=> $pekerja->noket,
+			'faskes'						=> $pekerja->faskes,
 			/**Pajak */
 			'statpajak'					=> $pekerja->statpajak,
 			'jtanak'						=> $pekerja->jtanak,
