@@ -879,7 +879,7 @@
                   <div id="lightgallery">
                     <?php foreach ($attached as $item) : ?>
                       <h4><?= $item['attachment_name'] ?></h4>
-                      <a href=<?= $attachment_path . trim($item['attachment_filename']) ?>">
+                      <a href="<?= $attachment_path . trim($item['attachment_filename']) ?>">
                         <img src="<?= $attachment_path . trim($item['attachment_filename']) ?>" alt="Kartu keluarga" class="img-fluid img-rounded attachment" style="background-color: #e8e8e8; width: 100%; border: 1px solid #e8e8e8;">
                       </a>
                     <?php endforeach ?>
