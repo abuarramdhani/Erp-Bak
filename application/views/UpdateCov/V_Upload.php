@@ -36,6 +36,15 @@
                                         <div class="col-md-4" style="text-align: right;"><label>Nama Slide Show</label></div>
                                         <div class="col-md-4"><input required placeholder="NAMA_SLIDE_SHOW" autocomplete="off" name="nm_slide_show" type="text" class="form-control"><span style="color: red;">*Gunakan tanda <b> " _ " (Underscore) </b> untuk memisahkan kata </span></div>
                                     </div>
+                                    <div class="panel-body">
+                                        <div class="col-md-4" style="text-align: right;"><label>Time / Slide</label></div>
+                                        <div class="col-md-4">
+                                            <div class="input-group">
+                                                <input required placeholder="Timer" autocomplete="off" name="time_slide_show" type="text" class="form-control">
+                                                <div class="input-group-addon">Second</div>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div id="tambahfile">
                                         <div class="panel-body">
                                             <div class="col-md-4" style="text-align: right;"><label>Gambar</label></div>

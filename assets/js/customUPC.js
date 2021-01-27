@@ -14,10 +14,15 @@ function hpshps(i) {
     .parents(".panel-body")
     .remove();
 }
-$(".carousel").carousel({
-  interval: 15000,
-  pause: "false",
+$(document).ready(function () {
+  var time = $("#time_slide").val();
+  var timer = time * 1000;
+  $(".carousel").carousel({
+    interval: timer,
+    pause: "false",
+  });
 });
+
 function InactiveSlide(i) {
   Swal.fire({
     title: "Apa Anda Yakin?",
