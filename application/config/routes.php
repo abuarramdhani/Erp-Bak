@@ -5040,3 +5040,53 @@ $route['Slideshow/EditData/(:any)'] = 'UpdateCov/C_Edit/$1';
 $route['Slideshow/EditData/(:any)/(:any)'] = 'UpdateCov/C_Edit/$1/$2';
 $route['Slide/Show/(:any)/(:any)'] = 'UpdateCov/C_Slide/$1/$2';
 $route['Slideshow/DownloadManual'] = 'UpdateCov/C_Manual';
+
+// -------------------------------Pendaftaran BOM Routing-----------------------------------------------//
+$route['PendaftaranBomRouting'] = 'BOMRouting/C_Index';
+$route['PendaftaranBomRouting/InputBOMRouting'] = 'BOMRouting/C_Index/InputBOMRouting';
+$route['PendaftaranBomRouting/ListBOMRouting'] = 'BOMRouting/C_Index/ListBOMRouting';
+$route['PendaftaranBomRouting/UserManagement'] = 'BOMRouting/C_Index/UserManagement';
+
+$route['PendaftaranBomRouting/InputBOMRouting/(:any)'] = 'BOMRouting/C_Index/$1';
+$route['PendaftaranBomRouting/InputBOMRouting/(:any)/(:any)'] = 'BOMRouting/C_Index/$1/$2';
+$route['PendaftaranBomRouting/InputBOMRouting/(:any)/(:any)/(:any)'] 	= 'BOMRouting/C_Index/$1/$2/$3';
+
+$route['PendaftaranBomRouting/ListBOMRouting/(:any)'] = 'BOMRouting/C_Index/$1';
+$route['PendaftaranBomRouting/ListBOMRouting/(:any)/(:any)'] = 'BOMRouting/C_Index/$1/$2';
+$route['PendaftaranBomRouting/ListBOMRouting/(:any)/(:any)/(:any)'] 	= 'BOMRouting/C_Index/$1/$2/$3';
+
+$route['PendaftaranBomRouting/UserManagement/(:any)'] = 'BOMRouting/C_Index/$1';
+$route['PendaftaranBomRouting/UserManagement/(:any)/(:any)'] = 'BOMRouting/C_Index/$1/$2';
+$route['PendaftaranBomRouting/UserManagement/(:any)/(:any)/(:any)'] = 'BOMRouting/C_Index/$1/$2/$3';
+
+//-------------------------------------------Flow Proses untuk PE Versi Baru---------------------------------------//
+$route['FlowProses'] = 'FlowProses/C_Master';
+
+$route['FlowProses/Product'] = 'FlowProses/C_Master/Product';
+$route['FlowProses/Product/(:any)'] = 'FlowProses/C_Master/$1';
+
+$route['FlowProses/Memo'] = 'FlowProses/C_Master/Memo';
+$route['FlowProses/Memo/(:any)'] = 'FlowProses/C_Master/$1';
+
+$route['FlowProses/Component'] = 'FlowProses/C_Master/Component';
+$route['FlowProses/Component/(:any)'] = 'FlowProses/C_Master/$1';
+$route['FlowProses/Component/(:any)/(:any)'] = 'FlowProses/C_Master/$1/$2';
+
+$route['FlowProses/Operation'] = 'FlowProses/C_Master/Operation';
+$route['FlowProses/Operation/(:any)'] = 'FlowProses/C_Master/$1';
+$route['FlowProses/Operation/(:any)/(:any)'] = 'FlowProses/C_Master/$1/$2';
+$route['FlowProses/Operation/(:any)/(:any)/(:any)'] = 'FlowProses/C_Master/$1/$2/$3';
+
+$route['FlowProses/ManagementAccount'] = 'FlowProses/C_Master/ManagementAccount';
+$route['FlowProses/ManagementAccount/(:any)'] = 'FlowProses/C_Master/$1';
+$route['FlowProses/ManagementAccount/(:any)/(:any)'] = 'FlowProses/C_Master/$1/$2';
+
+$route['FlowProses/OperationProcessStandard'] = 'FlowProses/C_Master/ops';
+$route['FlowProses/OperationProcessStandard/(:any)'] = 'FlowProses/C_Master/$1';
+$route['FlowProses/OperationProcessStandard/(:any)/(:any)'] = 'FlowProses/C_Master/$1/$2';
+
+$route['FlowProses/SetOracleItem'] = 'FlowProses/C_Master/SetOracleItem';
+$route['FlowProses/SetOracleItem/(:any)'] = 'FlowProses/C_Master/$1';
+$route['FlowProses/SetOracleItem/(:any)/(:any)'] = 'FlowProses/C_Master/$1/$2';
+
+$route['FlowProses/cekapi'] = 'FlowProses/C_Master/cekapi';

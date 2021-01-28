@@ -183,7 +183,7 @@ $(document).ready(function() {
         console.error();
       }
     })
-    setInterval(reloadAjaxJTI, 3500);
+    setInterval(reloadAjaxJTI, 10000);
     function reloadAjaxJTI() {
       $.ajax({
         url: baseurl+'jtipembelian/History/getHistoryJTI',
