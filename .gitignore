@@ -39,6 +39,7 @@ application/logs/*
 /cronjob/
 /ekatalog-13032019/
 /pendataan/
+/test_orientasi/
 /perizinan/
 /rencana-lembur/
 /testfile.txt
