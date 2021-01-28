@@ -73,7 +73,7 @@ class M_pekerjakeluar extends CI_Model
 						FROM hrd_khs.tpribadi tp
 						LEFT JOIN hrd_khs.trefjabatan tref on tp.noind = tref.noind and tp.kodesie = tref.kodesie
 						LEFT JOIN hrd_khs.tbpjskes tb on tb.noind = tp.noind
-						LEFT JOIN hrd_khs.tbpjstk tk on tb.noind = tp.noind
+						LEFT JOIN hrd_khs.tbpjstk tk on tk.noind = tp.noind
 						LEFT JOIN hrd_khs.tfaskes tf on tf.kd_faskes=tb.bpu
 						WHERE tp.noind = '$noind' limit 1";
 		return $this->personalia->query($sql)->row();
