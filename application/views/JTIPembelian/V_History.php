@@ -27,6 +27,14 @@ vertical-align: middle;
           <h4 style="font-weight:bold;">JTI History Pembelian</h4>
         </div>
         <div class="box-body">
+          <div class="alert alert-success" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">
+                <i class="fa fa-close"></i>
+              </span>
+            </button>
+            <strong>Pembaruan data otomatis</strong> <span>dilakukan setiap 10 detik.</span>
+          </div>
           <div class="table-responsive">
             <p> <b>*NB:</b> Klik kolom nama driver untuk melakukan update.
             </p>
