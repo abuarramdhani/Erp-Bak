@@ -25,30 +25,53 @@
         <div class="row">
             <div class="box box-danger box-solid">
                 <div class="box-header with-border">
-                    <div class="col-lg-6">
+                    <div class="col-lg-12">
                         <h2><b>Data Rejected - Hubungan Kerja <?=$lv?></b></h2>
                     </div>
-                    <div class="col-lg-6 pull-right">
+                    <div class="col-lg-12">
                         <form action="">
-                            <label class="label-control col-lg-6 text-right" for="all-seksi-document">Lokasi</label>
-                            <label class="label-control col-lg-6 text-right" for="all-seksi-document">Seksi</label>
-                            <div class="col-lg-6 pull-right">
-                                <select name="seksi" id="all-seksi-document" class="select2 form-control">
-                                    <option value="">---pilih semua---</option>
-                                    <?php foreach($seksi as $item): ?>
-                                        <option <?php echo ($is_get && substr($item->kodesie,0,7) == $selected) ? 'selected'  : '' ?> value="<?= substr($item->kodesie,0,7) ?>"><?=$item->kodesie." - ".$item->nama ?></option>
-                                    <?php endforeach ?>
-                                </select>
+                            <div class="col-lg-2">
+                                <div class="col-lg-12">
+                                    <label class="label-control" for="all-seksi-document">Lokasi</label>
+                                </div>
+                                <div class="col-lg-12">
+                                    <select name="lokasi" id="all-seksi-document" class="select2 form-control">
+                                        <option value="">Semua Lokasi</option>
+                                        <?php foreach ($l_lokasi as $l): ?>
+                                             <option <?= ($l['id_'] == $c_lok) ? 'selected':'' ?> value="<?= $l['id_'] ?>"><?= $l['lokasi_kerja'] ?></option>
+                                        <?php endforeach ?>
+                                    </select>
+                                </div>
                             </div>
-                            <div class="col-lg-4 pull-right">
-                                <select name="lokasi" id="all-seksi-document" class="select2 form-control">
-                                    <option value="">Semua Lokasi</option>
-                                    <?php foreach ($l_lokasi as $l): ?>
-                                         <option <?= ($l['id_'] == $c_lok) ? 'selected':'' ?> value="<?= $l['id_'] ?>"><?= $l['lokasi_kerja'] ?></option>
-                                    <?php endforeach ?>
-                                </select>
+                            <div class="col-lg-4">
+                                <div class="col-lg-12">
+                                    <label class="label-control col-lg-6 text-right" for="all-seksi-document">Seksi</label>
+                                </div>
+                                <div class="col-lg-12">
+                                    <select name="seksi" id="all-seksi-document" class="select2 form-control">
+                                        <option value="">---pilih semua---</option>
+                                        <?php foreach($seksi as $item): ?>
+                                            <option <?php echo ($is_get && substr($item->kodesie,0,7) == $selected) ? 'selected'  : '' ?> value="<?= substr($item->kodesie,0,7) ?>"><?=$item->kodesie." - ".$item->nama ?></option>
+                                        <?php endforeach ?>
+                                    </select>
+                                </div>
                             </div>
-                            <div class="col-lg-2 pull-right">
+                            <div class="col-lg-4">
+                                <div class="col-lg-12">
+                                    <label class="label-control" for="all-seksi-document">Tanggal</label>
+                                </div>
+                                <div class="col-lg-12">
+                                    <?php 
+                                        if (isset($start) && !empty($start) && isset($end) && !empty($end)) {
+                                            $tanggal = $start." - ".$end;
+                                        }else{
+                                            $tanggal = false;
+                                        }
+                                    ?>
+                                    <input class="form-control" type="text" name="tanggal" placeholder="" id="tanggalFilter" <?php echo $tanggal !== false ? 'value="'.$tanggal.'"' : '' ?>>
+                                </div>
+                            </div>
+                            <div class="col-lg-2">
                                 <button type="submit" class="btn outline">filter <i class="fa fa-filter"></i></button>
                             </div>
                         </form>
@@ -170,10 +193,11 @@ baseurl = '<?= base_url()?>'
             appDocument(id,!0)
         })
 
-        // $('.rej').click(function(){
-        //     let id = $(this).data('id')
-        //     appDocument(id,false, 'textarea')
-        // })
+        $('#tanggalFilter').daterangepicker({
+            locale: {
+                format: 'YYYY-MM-DD'
+            }
+        })
 
     })
 
