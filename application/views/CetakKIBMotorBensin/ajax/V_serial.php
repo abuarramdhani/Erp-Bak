@@ -1,7 +1,7 @@
-<p style="margin-left:7px;margin-bottom:18px;font-size:15px;">Detail serial dengan kode barang <strong><?php echo $segment1 ?></strong></p>
+<p style="margin-left:7px;margin-bottom:18px;font-size:15px;">Detail serial dengan kode barang <strong><?php echo $segment1 ?></strong> Total (<?php echo sizeof($get_serial) ?> Serial)</p>
 <div style="margin-bottom:12px">
   <?php foreach ($get_serial as $key => $value): ?>
-        <label class="label label-secondary" style="color:black;font-size:14px;box-shadow: 0 1px 1px 0 rgba(0,0,0,0.14), 0 2px 1px -1px rgba(0,0,0,0.12), 0 1px 3px 0 rgba(0,0,0,0.20);padding:7px;margin-left:5px">
+        <label class="btn label-secondary" style="color:black;font-size:14px;box-shadow: 0 1px 1px 0 rgba(0,0,0,0.14), 0 2px 1px -1px rgba(0,0,0,0.12), 0 1px 3px 0 rgba(0,0,0,0.20);padding:7px;margin-left:6px;margin-top:7px;font-weight:bold">
           <?php echo $value['SERIAL_NUMBER'] ?>
         </label>
   <?php endforeach; ?>
@@ -13,12 +13,16 @@
 </div>
 
 <script type="text/javascript">
+<?php
+$sj_convert = str_replace("/","__", $surat_jalan)
+?>
 function cetakCKMB (){
   // const range_tanggal = $('.tanggal_ckmb').val();
   // let range = range_tanggal.split(' - ');
   // const tipe = $('.select2_ckmb').val();
   // window.open(`${baseurl}CetakKIBMotorBensin/pdf/${range[0]}/${range[1]}/${tipe}`);
-  window.open(`${baseurl}CetakKIBMotorBensin/pdf/<?php echo $no_po ?>/<?php echo $surat_jalan ?>/<?php echo $segment1 ?>/<?php echo $receipt_date ?>`);
+
+  window.open(`${baseurl}CetakKIBMotorBensin/pdf/<?php echo $no_po ?>/<?php echo $sj_convert ?>/<?php echo $segment1 ?>/<?php echo $receipt_date ?>`);
 }
 
 function checklistCKMB() {
@@ -26,6 +30,6 @@ function checklistCKMB() {
   // let range = range_tanggal.split(' - ');
   // const tipe = $('.select2_ckmb').val();
   // window.open(`${baseurl}CetakKIBMotorBensin/Checklist/${range[0]}/${range[1]}/${tipe}`);
-  window.open(`${baseurl}CetakKIBMotorBensin/Checklist/<?php echo $no_po ?>/<?php echo $surat_jalan ?>/<?php echo $segment1 ?>/<?php echo $receipt_date ?>`);
+  window.open(`${baseurl}CetakKIBMotorBensin/Checklist/<?php echo $no_po ?>/<?php echo $sj_convert ?>/<?php echo $segment1 ?>/<?php echo $receipt_date ?>`);
 }
 </script>

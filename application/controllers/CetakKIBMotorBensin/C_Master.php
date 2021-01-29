@@ -168,8 +168,9 @@ class C_Master extends CI_Controller
 
     public function pdf($no_po, $surat_jalan, $segment1, $receipt_date)
     {
+      $sj_convert =  str_replace("__","/", $surat_jalan);
       // $range =  $range1.' - '.$range2;
-      $get = $this->M_master->getItem($no_po, $surat_jalan, $segment1, $receipt_date);
+      $get = $this->M_master->getItem($no_po, $sj_convert, $segment1, $receipt_date);
       $data['get'] = $get;
 
       // if (!empty($range1) && !empty($tipe)) {
@@ -218,8 +219,9 @@ class C_Master extends CI_Controller
 
     public function Checklist($no_po, $surat_jalan, $segment1, $receipt_date)
     {
+      $sj_convert =  str_replace("__","/", $surat_jalan);
       // $range =  $range1.' - '.$range2;
-      $get_ = $this->M_master->getItem($no_po, $surat_jalan, $segment1, $receipt_date);
+      $get_ = $this->M_master->getItem($no_po, $sj_convert, $segment1, $receipt_date);
       foreach ($get_ as $key => $value) {
         $get_[$key]['KODE_1'] = substr($value['SERIAL_NUMBER'], 0, 3);
         $get_[$key]['KODE_2'] = substr($value['SERIAL_NUMBER'], 3);
@@ -234,10 +236,13 @@ class C_Master extends CI_Controller
       //suda dinamis
       $this->load->library('Pdf');
       foreach ($get_ as $key => $value) $count_palet[$value['PALET']] = $value['PALET'];
+
+      sort($count_palet);
+      // echo "<pre>";print_r($count_palet);die;
+
       foreach ($get_ as $key => $value) $palet[$value['PALET']][] = $value;
       $data['get'] = $palet;
       $data['count'] = $count_palet;
-      // echo "<pre>";print_r($count_palet);die;
 
       $pdf 		= $this->pdf->load();
       $pdf 		= new mPDF('utf-8', array(210 , 267), 0, 'calibri', 3, 3, 15, 0, 0, 0);

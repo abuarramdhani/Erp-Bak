@@ -122,7 +122,7 @@
 
 			<table style="width:100%; border-collapse: collapse !important;page-break-inside:avoid;">
 				<tr>
-					<td style="padding:5px;border-left: 1px solid black;border-bottom: 1px solid black;border-right: 1px solid black;border-top: 1px solid black;" colspan="3">
+					<td style="padding:12px;border-left: 1px solid black;border-bottom: 1px solid black;border-right: 1px solid black;border-top: 1px solid black;" colspan="3">
 						<center><h3>UNTUK WOLC</h3></center>
 					</td>
 				</tr>
@@ -167,9 +167,10 @@
 		</div>
 		<?php
 
-		if (($key+1)%2 == 0) {
-			echo "<div style='width=100%;'><hr style='color:red;padding:0;margin:10px 0 10px 0'></div>";
-		}
+			if (($key+1)%2 == 0) {
+				echo "<div style='width=100%;'><hr style='color:red;padding:0;margin:10px 0 10px 0'></div>";
+			}
+
 
 	 ?>
 		<?php endforeach; ?>
