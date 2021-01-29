@@ -263,6 +263,7 @@
                                             <th>Attachment</th>
                                             <th>:</th>
                                             <td class="tdOKBInputFileAttachment">
+                                                <small>*Tipe file selain jpg, jpeg, png, pdf juga dapat diupload, tetapi tidak dapat dipreview (Bisa didownload).</small>
                                                 <li style="list-style: none; width: 100%;">
                                                     <input type="file" name="fileOKBAttachment1[]" style="display: inline-block;">
                                                     <button type="button" class="btn btn-primary ml-3 btnOKBAddInputAttachment" style="display: inline-block;"><i class="fa fa-plus"></i></button>

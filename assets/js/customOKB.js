@@ -1781,18 +1781,21 @@ $(document).ready(function () {
                         if (elm['FILE_NAME'] == null) {
                             html += '<span><i class="fa fa-warning"></i>Tidak ada attachment</span><br>';
                         } else {
-                            let ext = elm['FILE_NAME'].split('.')[1];
+                            let ext = elm['FILE_NAME'].split('.')[1].toLowerCase();
                             if (ext == 'pdf') {
                                 html += '<div style="width: 100%; margin: 10px; padding: 10px;">';
-                                html += '<h4>Tipe File ini adalah PDF. <br>Untuk melihat isinya silahkan klik tombol berikut ini.</h4><br>'
-                                html += '<a href="' + baseurl + elm['ADDRESS'] + elm['FILE_NAME'] + '" target="_blank" class="btn btn-primary">Lihat file</a>';
+                                html += '<a href="' + baseurl + elm['ADDRESS'] + elm['FILE_NAME'] + '" target="_blank" data-toggle="tooltip" title="Tipe File ini adalah PDF. Klik untuk melihat isinya." style="font-size: 18px;">' + elm['FILE_NAME'] + '</a>';
                                 html += '</div>';
-                            } else {
+                            } else if (ext == 'png' || ext == 'jpg' || ext == 'jpeg') {
                                 if (response.length == 1) {
                                     html += '<a href="' + baseurl + elm['ADDRESS'] + elm['FILE_NAME'] + '" target="_blank" rel="noopener noreferrer"><img style="max-width:500px; max-height:500px;" src="' + baseurl + elm['ADDRESS'] + elm['FILE_NAME'] + '" alt="' + elm['FILE_NAME'] + '"></a><br>';
                                 } else {
                                     html += '<a href="' + baseurl + elm['ADDRESS'] + elm['FILE_NAME'] + '" target="_blank" rel="noopener noreferrer"><img style="max-width:200px; max-height:200px;" src="' + baseurl + elm['ADDRESS'] + elm['FILE_NAME'] + '" alt="' + elm['FILE_NAME'] + '"></a><br>';
                                 }
+                            } else {
+                                html += '<div style="width: 100%; margin: 10px; padding: 10px;">';
+                                html += '<a href="' + baseurl + 'OrderKebutuhanBarangDanJasa/Requisition/downloadAttachment?id-attachment=' + elm['ATTACHMENT_ID'] + '" target="_blank" title="Mohon maaf file ini tidak bisa dibuka karena bukan file gambar atau pdf. Klik untuk download" data-toggle="tooltip" filename="' + elm['FILE_NAME'] + '" style="font-size: 18px;">' + elm['FILE_NAME'] + '</a>'
+                                html += '</div>';
                             }
                         }
 

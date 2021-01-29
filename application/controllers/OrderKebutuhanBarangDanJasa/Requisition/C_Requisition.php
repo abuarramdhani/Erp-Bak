@@ -221,7 +221,7 @@ class C_Requisition extends CI_Controller {
 
    			$config = array(
 				   				'upload_path' => './assets/upload/Okebaja/',
-								'allowed_types' => 'jpg|jpeg|png|zip|rar|doc|docx|xls|xlsx|pdf',
+								'allowed_types' => '*',
 								'overwrite' => false,         
     			);
 
@@ -761,5 +761,15 @@ class C_Requisition extends CI_Controller {
 		$this->load->view('V_Sidemenu',$data);
         $this->load->view('OrderKebutuhanBarangDanJasa/Requisition/V_ImportOrder',$data);
         $this->load->view('V_Footer',$data);
+	}
+
+	public function downloadAttachment(){
+		$this->load->helper('download');
+
+		$attachment_id = $this->input->get('id-attachment');
+		$path	  = './assets/upload/Okebaja/';
+		$filename = $this->M_requisition->getAttachment($attachment_id)['FILE_NAME'];
+
+		force_download($path.$filename, NULL);
 	}
 }
