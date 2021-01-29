@@ -1803,6 +1803,10 @@ $(document).ready(function () {
                     $('.divAttachmentOKB-'+orderid).html(html);
                 }
             });
+
+            $('body').on('click', '.clsOKBModalAttachment', function () {
+                $('.mdlOKBattach').modal('hide');
+            })
         }
 
     })
