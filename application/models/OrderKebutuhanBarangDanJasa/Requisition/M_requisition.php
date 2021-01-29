@@ -700,4 +700,12 @@ class M_requisition extends CI_Model
         $oracle->where('ORDER_ID',$order_id);
         $oracle->update('KHS.KHS_OKBJ_ORDER_HEADER',array('ORDER_STATUS_ID' => 5,));
     }
+
+    public function getAttachment($attachment_id)
+    {
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->get_where('KHS.KHS_OKBJ_ORDER_ATTACHMENTS', array('ATTACHMENT_ID' => $attachment_id, ));
+
+        return $query->row_array();
+    }
 }

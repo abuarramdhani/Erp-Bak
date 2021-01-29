@@ -12,44 +12,41 @@ class M_buyer extends CI_Model
     public function DetailApprovedOrder($noind){
         $oracle = $this->load->database('oracle', true);
         $query  = $oracle->query("SELECT
-                                    kprh.pre_req_id ,
-                                    koh.order_id ,
-                                    koh.order_date ,
-                                    prha.segment1 no_pr ,
-                                    prla.line_num pr_line_num,
-                                    (
-                                    SELECT
-                                        COUNT( file_name )
-                                    FROM
-                                        khs.khs_okbj_order_attachments
-                                    WHERE
-                                        order_id = koh.order_id ) attachment,
-                                    ppf_puller.full_name creation_by ,
-                                    kprh.approved_flag,
-                                    ppf_purchasing.full_name approved_by ,
-                                    kprh.approved_date,
-                                    ppf_buyer.national_identifier,
-                                    ppf_buyer.full_name buyer
-                                  FROM
-                                      khs.khs_okbj_order_header koh ,
-                                      khs.khs_okbj_pre_req_header kprh ,
-                                      po_requisition_lines_all prla ,
-                                      po_requisition_headers_all prha ,
-                                      per_people_f ppf_puller ,
-                                      per_people_f ppf_purchasing,
-                                      per_people_f ppf_buyer,
-                                      mtl_system_items_b msib
-                                  WHERE
-                                      koh.pre_req_id = kprh.pre_req_id
-                                      AND TO_CHAR( koh.order_id ) = prla.attribute9
-                                      AND prla.requisition_header_id = prha.requisition_header_id
-                                      AND kprh.approved_flag = 'Y'
-                                      AND kprh.created_by = ppf_puller.person_id
-                                      AND kprh.approved_by = ppf_purchasing.person_id
-                                      AND koh.inventory_item_id = msib.inventory_item_id
-                                      AND msib.organization_id = koh.destination_organization_id
-                                      AND msib.buyer_id = ppf_buyer.person_id
-                                      AND ppf_buyer.national_identifier = '$noind'
+                                     kprh.PRE_REQ_ID ,
+                                     koh.ORDER_ID ,
+                                     koh.ORDER_DATE ,
+                                     prha.SEGMENT1 no_pr ,
+                                     prla.LINE_NUM pr_line_num,
+                                     (SELECT count(FILE_NAME) FROM KHS.KHS_OKBJ_ORDER_ATTACHMENTS 
+                                     WHERE ORDER_ID = koh.ORDER_ID) attachment
+                                     --,kprh.CREATED_BY
+                                 ,
+                                     ppf_puller.FULL_NAME creation_by ,
+                                     kprh.APPROVED_FLAG
+                                     --,kprh.APPROVED_BY
+                                 ,
+                                     ppf_purchasing.FULL_NAME approved_by ,
+                                     kprh.APPROVED_DATE,
+                                     ppf_buyer.FULL_NAME buyer
+                                 FROM
+                                     khs.khs_okbj_order_header koh ,
+                                     khs.khs_okbj_pre_req_header kprh ,
+                                     po_requisition_lines_all prla ,
+                                     po_requisition_headers_all prha ,
+                                     per_people_f ppf_puller ,
+                                     per_people_f ppf_purchasing,
+                                     per_people_f ppf_buyer,
+                                     mtl_system_items_b msib
+                                 WHERE
+                                     koh.PRE_REQ_ID = kprh.PRE_REQ_ID
+                                     AND TO_CHAR(koh.ORDER_ID) = prla.ATTRIBUTE9
+                                     AND prla.REQUISITION_HEADER_ID = prha.REQUISITION_HEADER_ID
+                                     AND kprh.APPROVED_FLAG = 'Y'
+                                     AND kprh.CREATED_BY = ppf_puller.PERSON_ID
+                                     AND kprh.APPROVED_BY = ppf_purchasing.PERSON_ID
+                                     AND koh.INVENTORY_ITEM_ID = msib.INVENTORY_ITEM_ID
+                                     AND msib.ORGANIZATION_ID = koh.DESTINATION_ORGANIZATION_ID
+                                     AND msib.BUYER_ID = ppf_buyer.PERSON_ID
                                      ");
         return $query->result_array();
     }

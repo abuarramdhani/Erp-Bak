@@ -54,7 +54,7 @@
                                                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                                                     <h4 class="modal-title"><i class="fa fa-search"></i>Detail Order - <?= $list['ORDER_ID'];?></h4>
                                                 </div>
-                                                <div class="modal-body">
+                                                <div class="modal-body" style="min-height: 600px;">
                                                     <div class="text-center newtableDetailApprovedOKB-<?php echo $list['ORDER_ID']; ?>">
                                                         <img src="<?= base_url('assets/img/gif/loading5.gif') ?>" class="imgOKBLoading" style="width:35px; height:35px;">
                                                     </div>
