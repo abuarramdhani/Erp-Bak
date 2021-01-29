@@ -2322,4 +2322,6 @@ $(document).ready(function () {
         current--;
     })
 
+    $('[data-toggle="tooltip"]').tooltip();
+
 })
