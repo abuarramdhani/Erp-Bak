@@ -5,7 +5,7 @@ class M_master extends CI_Model
     {
         parent::__construct();
         $this->load->database();
-        $this->oracle = $this->load->database('oracle_dev', true);
+        $this->oracle = $this->load->database('oracle', true);
     }
 
     public function getItem($no_po, $surat_jalan, $segment1, $receipt_date)
@@ -29,7 +29,7 @@ class M_master extends CI_Model
                                    AND rse.shipment_number = '$surat_jalan'
                                    AND rse.segment1 = '$segment1'
                                    -- and rownum<=20
-                                   ORDER BY rse.palet asc")->result_array();
+                                   ORDER BY rse.serial_number asc")->result_array();
     }
 
     // public function getType($value='')
@@ -61,7 +61,7 @@ class M_master extends CI_Model
                                    WHERE rse.po_number = '$no_po'
                                    AND rse.shipment_number = '$surat_jalan'
                                    AND rse.SEGMENT1 = '$segment1'
-                                   ORDER BY rse.palet asc, rse.serial_number asc")->result_array();
+                                   ORDER BY rse.serial_number asc")->result_array();
     }
 
     public function getNoLppb($no_po, $surat_jalan)
