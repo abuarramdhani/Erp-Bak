@@ -266,7 +266,7 @@
                                                 <small>*Tipe file selain jpg, jpeg, png, pdf juga dapat diupload, tetapi tidak dapat dipreview (Bisa didownload).</small>
                                                 <li style="list-style: none; width: 100%;">
                                                     <input type="file" name="fileOKBAttachment1[]" style="display: inline-block;">
-                                                    <button type="button" class="btn btn-primary ml-3 btnOKBAddInputAttachment" style="display: inline-block;"><i class="fa fa-plus"></i></button>
+                                                    <button type="button" class="btn btn-primary ml-3 btnOKBAddInputAttachment" data-row="1" style="display: inline-block;"><i class="fa fa-plus"></i></button>
                                                 </li>
                                             </td>
                                         </tr>
@@ -284,7 +284,9 @@
                                                     <div class="modal-body" style="height: 300px;">
                                                         <center>
                                                             <div class="row text-primary divOKBListOrderStockLoading" style="width: 400px; margin-top: 25px; display: none;">
-                                                                <label class="control-label"> <h4><img src="<? echo base_url('assets/img/gif/loading5.gif') ?>" style="width:30px"> <b>Sedang Mengambil Data ...</b></h4> </label>
+                                                                <label class="control-label">
+                                                                    <h4><img src="<?php echo base_url('assets/img/gif/loading5.gif') ?>" style="width:30px"> <b>Sedang Mengambil Data ...</b></h4>
+                                                                </label>
                                                             </div>
                                                         </center>
                                                         <div class="row divStockOKB"></div>
