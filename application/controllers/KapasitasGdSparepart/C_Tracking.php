@@ -28,7 +28,7 @@ class C_Tracking extends CI_Controller
 	}
 
 	public function index(){
-		$user = $this->session->username;
+		$user = $this->session->user;
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Tracking SPB/DO';
@@ -36,12 +36,16 @@ class C_Tracking extends CI_Controller
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
 
-		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$UserMenu = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-
+		if ($user == 'B0892' || $user == 'J1365' || $user == 'K1778') {
+			$data['UserMenu'][] = $UserMenu[6]; // menu Tracking SPB
+		}else {
+			$data['UserMenu'] = $UserMenu;
+		}
 		$data['data'] = $this->M_tracking->getDataSPB();
-		// echo "<pre>"; print_r($track); exit();
+		// echo "<pre>"; print_r($data['UserMenu']); exit();
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
