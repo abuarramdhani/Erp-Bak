@@ -47,8 +47,10 @@ class C_Index extends CI_Controller {
 		// echo "<pre>";print_r($UserMenu);exit();
 		
 		if ($user == 'B0597' || $user == 'B0892') {
-			$data['UserMenu'][] = $UserMenu[0];
-			$data['UserMenu'][] = $UserMenu[1];
+			$data['UserMenu'][] = $UserMenu[0]; // menu lihat stock
+			$data['UserMenu'][] = $UserMenu[1]; // menu monitoring peti
+		}elseif ($user == 'B0809' || $user == 'K1778') {
+			$data['UserMenu'][] = $UserMenu[1]; // menu monitoring peti
 		}else {
 			$data['UserMenu'] = $UserMenu;
 		}
