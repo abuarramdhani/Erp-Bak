@@ -574,182 +574,188 @@ $(document).ready(function () {
 
         var LastDataRow = Number($('.formOKB:last').attr('id-form'));
 
-        var html = '<div class="col-md-12 formOKB" id-form="'+(LastDataRow+1)+'">'+
-        '<div class="box box-primary">'+
-            '<div class="box-header">'+
-                '<div class="box-title with-border">'+
-                    'Order No : '+(LastDataRow+1)+
-                    ' <button type="button" class="btn btn-success btnOKBNewOrderListCancel" title="clear line" data-row="'+(LastDataRow+1)+'"><i class="fa fa-refresh"></i></button>&nbsp;'+
-                    '<button type="button" class="btn btn-danger btnOKBNewOrderListDelete" disabled><i class="fa fa-trash"></i></button>&nbsp;'+
-                    '<span class="OKBOrderNameMinimize"></span>'+
-                '</div>'+
-                '<div class="pull-right">'+
-                    '<button type="button" class="btn btn-box-tool OKBMinimize" data-widget="collapse"><i class="fa fa-minus"></i></button>'+
-                '</div>'+
-            '</div>'+
-            '<div class="box-body" id="parentsItemOKB">'+
-                '<table class="table tblOKBOrderNew"'+
-                    '<tr>'+
-                        '<th>Kode Barang</th>'+
-                        '<th>:</th>'+
-                        '<td><select class="select2 slcOKBNewOrderList slcOKBOrder" name="slcOKBinputCode[]" required style="width:360px"></select> <button type="button" class="btn btn-default btnOKBStokNew" style="display:none">INFO</button></td>'+
-                    '</tr>'+
-                    '<tr>'+
-                        '<th>Nama Barang</th>'+
-                        '<th>:</th>'+
-                        '<td><select class="select2 slcOKBNewOrderListNamaBarang slcOKBOrder" name="" required style="width:360px"></td>'+
-                    '</tr>'+
-                    '<tr>'+
-                        '<th>Deskripsi</th>'+
-                        '<th>:</th>'+
-                        '<td><textarea style="height: 34px; width:360px;" class="form-control txaOKBNewOrderDescription" name="txtOKBinputDescription[]" readonly></textarea></td>'+
-                    '</tr>'+
-                    '<tr>'+
-                        '<th>Quantity</th>'+
-                        '<th>:</th>'+
-                        '<td><input type="text" class="form-control txtOKBNewOrderListQty" name="txtOKBinputQty[]" required style="background-color: #fbfb5966; width:250px;"></td>'+
-                    '</tr>'+
-                    '<tr>'+
-                        '<th>UOM</th>'+
-                        '<th>:</th>'+
-                        '<td><select class="form-control select2 slcOKBNewUomList slcOKBOrder" name="slcOKBuom[]" required style="width:250px"></select></td>'+
-                    '</tr>'+
-                    '<tr>'+
-                        '<th>Kategori Item</th>'+
-                        '<th>:</th>'+
-                        '<td><input type="text" class="form-control kategoriItemOKB" name="" id="" style="width:360px" readonly></td>'+
-                    '</tr>'+
-                    
-                    '<tr>'+
-                        '<th>Estimasi Kedatangan Barang</th>'+
-                        '<th>:</th>'+
-                        '<td class="hdnEstArrivalOKB"></td>'+
-                    '</tr>'+
-                    '<tr>'+
-                        '<th>Cut Off Terdekat</th>'+
-                        '<th>:</th>'+
-                        '<td class="hdnECutOffOKB"></td>'+
-                    '</tr>'+
-                    '<tr>'+
-                        '<th>Tanggal Kebutuhan (Need By Date/NBD)</th>'+
-                        '<th>:</th>'+
-                        '<td><input type="text" class="form-control nbdOKB" name="txtOKBnbd[]" id="" required style="background-color: #fbfb5966; width:250px;" autocomplete="off"></td>'+
-                    '</tr>'+
-                    '<tr>'+
-                        '<th>Destination Type</th>'+
-                        '<th>:</th>'+
-                        '<td>'+
-                            '<div class="loadingDestinationOKB" style="display:none; width:100%;margin-top: 0px;margin-bottom: 20px" data-row="1">'+
-                                '<img style="width:50px" src="' + baseurl + 'assets/img/gif/loading5.gif"/>'+
-                                '</div>'+
-                            '<div class="dest_typeOKB" style="display: block;">'+
-                                '<input type="text" class="form-control text-center destinationOKB" id="txtModalDestination" style="width: 250px;" name="hdnDestinationOKB[]" title="Destination Type" readonly>'+
-                            '</div>'+
-                        '</td>'+
-                    '</tr>'+
-                    '<tr>'+
-                        '<th>Organization</th>'+
-                        '<th>:</th>'+
-                        '<td>'+
-                            '<div class="loadingOrganizationOKB" style="display: none; width:100%;margin-top: 0px;margin-bottom: 20px">'+
-                                '<img style="width:50px" src="' + baseurl + 'assets/img/gif/loading5.gif"/>'+
-                            '</div>'+
-                            '<div class="viewOrganizationOKB" style="display: block;">'+
-                                '<select class="select2 organizationOKB" id="slcModalOrganization" style="width: 250px; text-align:center" name="organizationOKB[]" title="Organization">'+
-                                    '<option></option>'+
-                                '</select>'+
-                            '</div>'+
-                        '</td>'+
-                    '</tr>'+
-                    '<tr>'+
-                        '<th>Location</th>'+
-                        '<th>:</th>'+
-                        '<td>'+
-                            '<div class="loadingLocationOKB" style="display: none; width:100%;margin-top: 0px;margin-bottom: 20px">'+
-                                '<img style="width:50px" src="' + baseurl + 'assets/img/gif/loading5.gif"/>'+
-                            '</div>'+
-                            '<div class="viewLocationOKB">'+
-                                '<select class="select2 locationOKB" id="slcLocation" style="width: 250px; text-align:center" name="locationOKB[]" title="Location">'+
-                                    '<option></option>'+
-                                '</select>'+
-                            '</div>'+
-                        '</td>'+
-                    '</tr>'+
-                    '<tr>'+
-                        '<th>Subinventory</th>'+
-                        '<th>:</th>'+
-                        '<td>'+
-                            '<div class="loadingSubinventoryOKB" style="display: none; width:100%;margin-top: 0px;margin-bottom: 20px">'+
-                                '<img style="width:50px" src="' + baseurl + 'assets/img/gif/loading5.gif"/>'+
-                            '</div>'+
-                            '<div class="viewSubinventoryOKB">'+
-                                '<select class="select2 subinventoryOKB" id="slcSubinventory" style="width: 250px; text-align:center">'+
-                                    '<option></option>'+
-                                '</select>'+
-                                '<input type="hidden" class="hdnSubinvOKB" name="subinventoyOKB[]">'+
-                            '</div>'+
-                        '</td>'+
-                    '</tr>'+
-                    '<tr>'+
-                        '<th>Alasan Order</th>'+
-                        '<th>:</th>'+
-                        '<td><textarea style="height: 34px; width:360px; background-color: #fbfb5966;" class="form-control txaOKBNewOrderListReason" name="txtOKBinputReason[]" required></textarea></td>'+
-                    '</tr>'+
-                    '<tr>'+
-                        '<th>Alasan Urgensi</th>'+
-                    '<th>:</th>'+
-                    '<td>'+
-                        '<select class="select2 slcAlasanUrgensiOKB" style="width: 250px;"'+disab+'>'+
-                            '<option></option>'+
-                            '<option value="Perubahan Rencana Penjualan">Perubahan Rencana Penjualan</option>'+
-                            '<option value="Kesalahan Perencanaan Seksi">Kesalahan Perencanaan Seksi</option>' +
-                            '<option value="Manajemen Stok Gudang">Manajemen Stok Gudang</option>'+
-                            '<option value="Kebutuhan Proses Beli">Kebutuhan Proses Beli</option>'+
-                            '<option value="Barang Reject / Proses Produksi Reject">Barang Reject / Proses Produksi Reject</option>'+
-                            '<option value="0">Lain-Lain</option>'+
-                        '</select><br><br>'+
-                        '<textarea style="height: 34px; width:360px; display:none;" class="form-control txaOKBNewOrderListUrgentReason" name="txtOKBinputUrgentReason[]"></textarea>'+
-                    '</tr>'+
-                    '<tr>'+
-                        '<th>Note to Pengelola</th>'+
-                        '<th>:</th>'+
-                        '<td><textarea style="height: 34px; width:360px; " class="form-control txaOKBNewOrderListNote" name="txtOKBinputNote[]"></textarea></td>'+
-                    '</tr>'+
-                    '<tr>'+
-                        '<th>Attachment</th>'+
-                        '<th>:</th>'+
-                        '<td><input type="file" name="fileOKBAttachment'+(LastDataRow+1)+'[]" multiple></td>'+
-                    '</tr>'+
-                    '<tr style="display:none">'+
-                        '<th><input type="hidden" class="hdUrgentFlagOKB" name="hdnUrgentFlagOKB[]"></th>'+
-                        '<th><input type="hidden" class="hdnItemCodeOKB" name="hdnItemCodeOKB[]"></th>'+
-                    '</tr>'+
-                    '<div class="modal fade mdlOKBListOrderStock" role="dialog" aria-labelledby="modalDelete" aria-hidden="true">'+
-                        '<div class="modal-dialog" style="width:750px;">'+
-                            '<div class="modal-content">'+
-                            '<div class="modal-header">'+
-                                '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>'+
-                                '<h4><i style="vertical-align: middle;" class="fa fa-check-circle-o"> </i> Stock <b>Item</b></h4>'+
-                            '</div>'+
-                                '<div class="modal-body" style="height: 300px;">'+
-                                    '<center>'+
-                                    ' <div class="row text-primary divOKBListOrderStockLoading" style="width: 400px; margin-top: 25px; display: none;">'+
-                                            '<label class="control-label"+ <h4> <img style="width:30px" src="' + baseurl + 'assets/img/gif/loading5.gif"> <b>Sedang Mengambil Data ...</b></h4> </label>'+
-                                        '</div>'+
-                                    '</center>'+
-                                    '<div class="row divStockOKB"></div>'+
-                                '</div>'+
-                                '<div class="modal-footer">'+
-                                    '<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>'+
-                                '</div>'+
-                            '</div>'+
-                        '</div>'+
-                    '</div>'+
-                '</table>'+
-            '</div>'+
-         '</div>'+
-    '</div>';
-    
+        var html = '<div class="col-md-12 formOKB" id-form="' + (LastDataRow + 1) + '">' +
+            '<div class="box box-primary">' +
+            '<div class="box-header">' +
+            '<div class="box-title with-border">' +
+            'Order No : ' + (LastDataRow + 1) +
+            ' <button type="button" class="btn btn-success btnOKBNewOrderListCancel" title="clear line" data-row="' + (LastDataRow + 1) + '"><i class="fa fa-refresh"></i></button>&nbsp;' +
+            '<button type="button" class="btn btn-danger btnOKBNewOrderListDelete" disabled><i class="fa fa-trash"></i></button>&nbsp;' +
+            '<span class="OKBOrderNameMinimize"></span>' +
+            '</div>' +
+            '<div class="pull-right">' +
+            '<button type="button" class="btn btn-box-tool OKBMinimize" data-widget="collapse"><i class="fa fa-minus"></i></button>' +
+            '</div>' +
+            '</div>' +
+            '<div class="box-body" id="parentsItemOKB">' +
+            '<table class="table tblOKBOrderNew"' +
+            '<tr>' +
+            '<th>Kode Barang</th>' +
+            '<th>:</th>' +
+            '<td><select class="select2 slcOKBNewOrderList slcOKBOrder" name="slcOKBinputCode[]" required style="width:360px"></select> <button type="button" class="btn btn-default btnOKBStokNew" style="display:none">INFO</button></td>' +
+            '</tr>' +
+            '<tr>' +
+            '<th>Nama Barang</th>' +
+            '<th>:</th>' +
+            '<td><select class="select2 slcOKBNewOrderListNamaBarang slcOKBOrder" name="" required style="width:360px"></td>' +
+            '</tr>' +
+            '<tr>' +
+            '<th>Deskripsi</th>' +
+            '<th>:</th>' +
+            '<td><textarea style="height: 34px; width:360px;" class="form-control txaOKBNewOrderDescription" name="txtOKBinputDescription[]" readonly></textarea></td>' +
+            '</tr>' +
+            '<tr>' +
+            '<th>Quantity</th>' +
+            '<th>:</th>' +
+            '<td><input type="text" class="form-control txtOKBNewOrderListQty" name="txtOKBinputQty[]" required style="background-color: #fbfb5966; width:250px;"></td>' +
+            '</tr>' +
+            '<tr>' +
+            '<th>UOM</th>' +
+            '<th>:</th>' +
+            '<td><select class="form-control select2 slcOKBNewUomList slcOKBOrder" name="slcOKBuom[]" required style="width:250px"></select></td>' +
+            '</tr>' +
+            '<tr>' +
+            '<th>Kategori Item</th>' +
+            '<th>:</th>' +
+            '<td><input type="text" class="form-control kategoriItemOKB" name="" id="" style="width:360px" readonly></td>' +
+            '</tr>' +
+
+            '<tr>' +
+            '<th>Estimasi Kedatangan Barang</th>' +
+            '<th>:</th>' +
+            '<td class="hdnEstArrivalOKB"></td>' +
+            '</tr>' +
+            '<tr>' +
+            '<th>Cut Off Terdekat</th>' +
+            '<th>:</th>' +
+            '<td class="hdnECutOffOKB"></td>' +
+            '</tr>' +
+            '<tr>' +
+            '<th>Tanggal Kebutuhan (Need By Date/NBD)</th>' +
+            '<th>:</th>' +
+            '<td><input type="text" class="form-control nbdOKB" name="txtOKBnbd[]" id="" required style="background-color: #fbfb5966; width:250px;" autocomplete="off"></td>' +
+            '</tr>' +
+            '<tr>' +
+            '<th>Destination Type</th>' +
+            '<th>:</th>' +
+            '<td>' +
+            '<div class="loadingDestinationOKB" style="display:none; width:100%;margin-top: 0px;margin-bottom: 20px" data-row="1">' +
+            '<img style="width:50px" src="' + baseurl + 'assets/img/gif/loading5.gif"/>' +
+            '</div>' +
+            '<div class="dest_typeOKB" style="display: block;">' +
+            '<input type="text" class="form-control text-center destinationOKB" id="txtModalDestination" style="width: 250px;" name="hdnDestinationOKB[]" title="Destination Type" readonly>' +
+            '</div>' +
+            '</td>' +
+            '</tr>' +
+            '<tr>' +
+            '<th>Organization</th>' +
+            '<th>:</th>' +
+            '<td>' +
+            '<div class="loadingOrganizationOKB" style="display: none; width:100%;margin-top: 0px;margin-bottom: 20px">' +
+            '<img style="width:50px" src="' + baseurl + 'assets/img/gif/loading5.gif"/>' +
+            '</div>' +
+            '<div class="viewOrganizationOKB" style="display: block;">' +
+            '<select class="select2 organizationOKB" id="slcModalOrganization" style="width: 250px; text-align:center" name="organizationOKB[]" title="Organization">' +
+            '<option></option>' +
+            '</select>' +
+            '</div>' +
+            '</td>' +
+            '</tr>' +
+            '<tr>' +
+            '<th>Location</th>' +
+            '<th>:</th>' +
+            '<td>' +
+            '<div class="loadingLocationOKB" style="display: none; width:100%;margin-top: 0px;margin-bottom: 20px">' +
+            '<img style="width:50px" src="' + baseurl + 'assets/img/gif/loading5.gif"/>' +
+            '</div>' +
+            '<div class="viewLocationOKB">' +
+            '<select class="select2 locationOKB" id="slcLocation" style="width: 250px; text-align:center" name="locationOKB[]" title="Location">' +
+            '<option></option>' +
+            '</select>' +
+            '</div>' +
+            '</td>' +
+            '</tr>' +
+            '<tr>' +
+            '<th>Subinventory</th>' +
+            '<th>:</th>' +
+            '<td>' +
+            '<div class="loadingSubinventoryOKB" style="display: none; width:100%;margin-top: 0px;margin-bottom: 20px">' +
+            '<img style="width:50px" src="' + baseurl + 'assets/img/gif/loading5.gif"/>' +
+            '</div>' +
+            '<div class="viewSubinventoryOKB">' +
+            '<select class="select2 subinventoryOKB" id="slcSubinventory" style="width: 250px; text-align:center">' +
+            '<option></option>' +
+            '</select>' +
+            '<input type="hidden" class="hdnSubinvOKB" name="subinventoyOKB[]">' +
+            '</div>' +
+            '</td>' +
+            '</tr>' +
+            '<tr>' +
+            '<th>Alasan Order</th>' +
+            '<th>:</th>' +
+            '<td><textarea style="height: 34px; width:360px; background-color: #fbfb5966;" class="form-control txaOKBNewOrderListReason" name="txtOKBinputReason[]" required></textarea></td>' +
+            '</tr>' +
+            '<tr>' +
+            '<th>Alasan Urgensi</th>' +
+            '<th>:</th>' +
+            '<td>' +
+            '<select class="select2 slcAlasanUrgensiOKB" style="width: 250px;"' + disab + '>' +
+            '<option></option>' +
+            '<option value="Perubahan Rencana Penjualan">Perubahan Rencana Penjualan</option>' +
+            '<option value="Kesalahan Perencanaan Seksi">Kesalahan Perencanaan Seksi</option>' +
+            '<option value="Manajemen Stok Gudang">Manajemen Stok Gudang</option>' +
+            '<option value="Kebutuhan Proses Beli">Kebutuhan Proses Beli</option>' +
+            '<option value="Barang Reject / Proses Produksi Reject">Barang Reject / Proses Produksi Reject</option>' +
+            '<option value="0">Lain-Lain</option>' +
+            '</select><br><br>' +
+            '<textarea style="height: 34px; width:360px; display:none;" class="form-control txaOKBNewOrderListUrgentReason" name="txtOKBinputUrgentReason[]"></textarea>' +
+            '</tr>' +
+            '<tr>' +
+            '<th>Note to Pengelola</th>' +
+            '<th>:</th>' +
+            '<td><textarea style="height: 34px; width:360px; " class="form-control txaOKBNewOrderListNote" name="txtOKBinputNote[]"></textarea></td>' +
+            '</tr>' +
+            '<tr>' +
+            '<th>Attachment</th>' +
+            '<th>:</th>' +
+            '<td class="tdOKBInputFileAttachment">' +
+            '<small>*Tipe file selain jpg, jpeg, png, pdf juga dapat diupload, tetapi tidak dapat dipreview (Bisa didownload).</small>' +
+            '<li style="list-style: none; width: 100%;">' +
+            '<input type="file" name="fileOKBAttachment' + (LastDataRow + 1) + '[]" style="display: inline-block;">' +
+            '<button type="button" class="btn btn-primary ml-3 btnOKBAddInputAttachment" data-row="' + (LastDataRow + 1) + '" style="display: inline-block;"><i class="fa fa-plus"></i></button>' +
+            '</li>' +
+            '</td>' +
+            '</tr>' +
+            '<tr style="display:none">' +
+            '<th><input type="hidden" class="hdUrgentFlagOKB" name="hdnUrgentFlagOKB[]"></th>' +
+            '<th><input type="hidden" class="hdnItemCodeOKB" name="hdnItemCodeOKB[]"></th>' +
+            '</tr>' +
+            '<div class="modal fade mdlOKBListOrderStock" role="dialog" aria-labelledby="modalDelete" aria-hidden="true">' +
+            '<div class="modal-dialog" style="width:750px;">' +
+            '<div class="modal-content">' +
+            '<div class="modal-header">' +
+            '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>' +
+            '<h4><i style="vertical-align: middle;" class="fa fa-check-circle-o"> </i> Stock <b>Item</b></h4>' +
+            '</div>' +
+            '<div class="modal-body" style="height: 300px;">' +
+            '<center>' +
+            ' <div class="row text-primary divOKBListOrderStockLoading" style="width: 400px; margin-top: 25px; display: none;">' +
+            '<label class="control-label"+ <h4> <img style="width:30px" src="' + baseurl + 'assets/img/gif/loading5.gif"> <b>Sedang Mengambil Data ...</b></h4> </label>' +
+            '</div>' +
+            '</center>' +
+            '<div class="row divStockOKB"></div>' +
+            '</div>' +
+            '<div class="modal-footer">' +
+            '<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>' +
+            '</div>' +
+            '</div>' +
+            '</div>' +
+            '</div>' +
+            '</table>' +
+            '</div>' +
+            '</div>' +
+            '</div>';
+
         $('.formOKB').parent().append(html);
         $('.btnOKBNewOrderListDelete:last').removeAttr('disabled');
 
@@ -2297,30 +2303,31 @@ $(document).ready(function () {
         placeholder: 'Search Name',
     })
 
-    let max = 3;
-    let current = 1;
     $(document).on('click', '.btnOKBAddInputAttachment', function () {
+        let dataRow = $(this).attr('data-row');
+        let $currentField = $(this).parents('.tdOKBInputFileAttachment')
+        let max = 3;
+        let current = $currentField.find('input[type="file"]').length;
         if (current < max) {
-            let field = $('.tdOKBInputFileAttachment');
             let html = /* html */
                 `
                         <li style="list-style: none; width: 100%; margin-top: 10px">
-                            <input type="file" name="fileOKBAttachment1[]" multiple style="display: inline-block;">
+                            <input type="file" name="fileOKBAttachment${dataRow}[]" style="display: inline-block;">
                             <button type="button" class="btn btn-primary ml-3 btnOKBRemoveInputAttachment" style="display: inline-block;"><i class="fa fa-minus"></i></button>
                         </li>
                         `;
-            field.append(html);
-            current++;
+            $currentField.append(html);
         }
-        if (current == max) {
+        if (current + 1 == max) {
             $(this).prop('disabled', true);
         }
-    })
+    });
+
     $(document).on('click', '.btnOKBRemoveInputAttachment', function () {
+        let $currentField = $(this).parents('.tdOKBInputFileAttachment');
         $(this).parent('li').remove();
-        $('.btnOKBAddInputAttachment').prop('disabled', false);
-        current--;
-    })
+        $currentField.find('.btnOKBAddInputAttachment').prop('disabled', false);
+    });
 
     $('[data-toggle="tooltip"]').tooltip();
 
