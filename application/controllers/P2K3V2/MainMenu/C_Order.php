@@ -2863,4 +2863,161 @@ class C_Order extends CI_Controller
 
 		redirect('p2k3adm_V2/Admin/monitoringBon?'.$get);
 	}
+
+	public function SafetyShoesManual()
+	{
+		$user_id = $this->session->userid;
+		$kodesie = $this->session->kodesie;
+		$logged_noind = $this->session->user;
+		$lokasi_kerja = $this->session->kode_lokasi_kerja;
+
+		$data['Title'] = 'Monitoring Bon';
+		$data['Menu'] = 'Input Bon SafetyShoes';
+		$data['SubMenuOne'] = 'Input Manual Safety Shoes';
+		$data['SubMenuTwo'] = '';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
+
+		// kode gudang
+		if ((int) $lokasi_kerja == 1) {
+			$gudang = 'PNL-DM';
+		} else {
+			$gudang = 'PNL-TKS';
+		}
+
+		$data['safetyShoes'] = $this->M_order->getSafetyShoes($gudang);
+		$data['gudang'] = $gudang;
+		$data['seksi'] = $this->M_dtmasuk->cekseksi($kodesie);
+		if (empty($data['seksi'])) {
+			$data['seksi'] = array('section_name' 	=>	'');
+		}
+
+		$this->load->view('V_Header', $data);
+		$this->load->view('V_Sidemenu', $data);
+		$this->load->view('P2K3V2/Order/V_Input_Sepatu_Manual', $data);
+		$this->load->view('V_Footer', $data);
+	}
+
+	public function checkNobon()
+	{
+		$nobon = $this->input->get('nobon');
+		$cek = $this->M_order->getNobondtl($nobon);
+
+		if (!empty($cek)) {
+			$data['error'] = 1;
+			$data['type'] = 'error';
+			$data['pesan'] = 'Nomor Bon Sudah ada di Database erp!';
+			echo json_encode($data);exit();
+		}
+
+		$data = $this->M_order->getBonOrc($nobon);
+		if (empty($data)) {
+			$data['error'] = 1;
+			$data['type'] = 'error';
+			$data['pesan'] = 'Nomor Bon Tidak di Temukan!';
+			echo json_encode($data);exit();
+		}
+
+		$e = false;
+		$x = 1;
+		$tr = '';
+		foreach ($data as $key) {
+			$nama = $key['NAMA_APD'];
+			$pkj = explode('(', $key['KETERANGAN']);
+			if (!isset($pkj[0])) {
+				$pkj = '';
+			}
+			preg_match_all('/\(([A-Za-z0-9 ]+?)\)/', $key['KETERANGAN'], $matches);
+			if (empty($matches)) {
+				$matches = '';
+			}
+			$matches = implode(',', $matches[0]);
+			$matches = str_replace('(',"\n",$matches);
+			$matches = str_replace(')',"\n",$matches);
+			if (strpos($nama, 'SEPATU') === false) {
+				$e = true; break;
+			}
+
+			$tr .= '<tr>
+				<td>'.$x.'</td>
+				<td>'.$key['NAMA_APD'].'</td>
+				<td>'.$key['KODE_BARANG'].'</td>
+				<td>'.$pkj[0].'</td>
+				<td>'.$matches.'</td>
+			</tr>';
+			$x++;
+		}
+
+		if ($e) {
+			$data['error'] = 1;
+			$data['type'] = 'error';
+			$data['pesan'] = 'Bukan Nomor Bon Sepatu!';
+			echo json_encode($data);exit();
+		}
+
+		$data['error'] = 0;
+		$data['tr'] = $tr;
+		echo json_encode($data);
+	}
+
+	public function insertBonManual()
+	{
+		$nobon = $this->input->post('nobon');
+		$dat = $this->M_order->getBonOrc($nobon);
+		$data['error'] = 0;
+		foreach ($dat as $key) {
+			$pkj = explode('(', $key['KETERANGAN']);
+			if (!isset($pkj[0])) {
+				$data['error'] = 1;
+				$data['pesan'] = 'KETERANGAN INVALID FORMAT';
+				break;
+			}
+			$pkj = $pkj[0];
+			if (strpos($pkj, '-') === false) {
+				$data['error'] = 1;
+				$data['pesan'] = 'PEKERJA INVALID FORMAT -> '.$pkj;
+				break;
+			}
+			$pkj = explode('-', $pkj);
+
+			$noind = trim($pkj[0]);
+			$nama = trim($pkj[1]);
+			$detail = $this->M_order->getDetailPekerja2($noind)->row_array();
+
+			preg_match_all('/\(([A-Za-z0-9 ]+?)\)/', $key['KETERANGAN'], $matches);
+			if (empty($matches)) {
+				$matches = '';
+			}
+			$matches = implode(',', $matches[0]);
+			$matches = str_replace('(',"\n",$matches);
+			$matches = str_replace(')',"\n",$matches);
+
+			$uk = explode(' ', $key['NAMA_BARANG']);
+			$cuk = count($uk)-1;
+			$uks = $uk[$cuk];
+			array_pop($uk);
+			$jnss = implode(' ', $uk);
+
+			$arr = array(
+				'noind'				=> $noind,
+				'nama'				=> $nama,
+				'seksi'				=> trim($detail['seksi']),
+				'pekerjaan'			=> trim($detail['pekerjaan']),
+				'uk_sepatu'			=> $uks,
+				'item_code'			=> $key['KODE_BARANG'],
+				'jenis_sepatu'		=> $jnss,
+				'create_timestamp'	=> date('Y-m-d H:i:s'),
+				'user_'				=> $this->session->user,
+				'no_bon'			=> $nobon,
+				'id_oracle'			=> $key['NO_ID'],
+				'alasan'			=> trim($matches),
+				);
+			$ins = $this->M_order->insertBonSpatu($arr);
+			$data['error'] = 0;
+		}
+
+		echo json_encode($data);
+	}
 }

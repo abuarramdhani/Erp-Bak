@@ -689,6 +689,15 @@ class M_Order extends CI_Model
         return $this->personalia->query($sql);
     }
 
+    public function getDetailPekerja2($noind)
+    {
+        $sql = "SELECT * from hrd_khs.tpribadi tp
+            left join hrd_khs.tseksi ts on ts.kodesie = tp.kodesie
+            left join hrd_khs.tpekerjaan tpk on tpk.kdpekerjaan = tp.kd_pkj
+            where noind = '$noind' limit 1";
+        return $this->personalia->query($sql);
+    }
+
     public function getTrefjabatan($noind)
     {
         $sql = "select
@@ -1099,5 +1108,41 @@ class M_Order extends CI_Model
         $this->oracle->where('NO_ID', $id);
         $this->oracle->delete('APPS.IM_MASTER_BON');
         return $this->oracle->affected_rows();
+    }
+
+    public function getBonOrc($nobon)
+    {
+        $sql = "SELECT   mb.no_bon,
+                         mb.no_id,
+                         mb.nama_barang,
+                         RTRIM (XMLAGG (XMLELEMENT (e, mb.kode_barang || ';') ORDER by mb.nama_barang).EXTRACT ('//text()'),';') kode_barang,
+                         RTRIM (XMLAGG (XMLELEMENT (e, mb.nama_barang || ';') ORDER by mb.nama_barang).EXTRACT ('//text()'),';') nama_apd,
+                         RTRIM (XMLAGG (XMLELEMENT (e, mb.permintaan || ';') ORDER by mb.nama_barang).EXTRACT ('//text()'),';') jml_bon,
+                         RTRIM (XMLAGG (XMLELEMENT (e, mb.satuan || ';') ORDER by mb.nama_barang).EXTRACT ('//text()'),';') satuan,
+                         mb.tanggal tgl_bon, mb.seksi_bon seksi_pengebon,
+                         mb.pemakai seksi_pemakai, mb.penggunaan, mb.keterangan,
+                         mb.tujuan_gudang,
+                         RTRIM (XMLAGG (XMLELEMENT (e, mb.penyerahan || ';') ORDER by mb.nama_barang).EXTRACT ('//text()'),';') qty_transact,
+                         RTRIM (XMLAGG (XMLELEMENT (e, mb.flag || ';') ORDER by mb.nama_barang).EXTRACT ('//text()'),';') transact
+                    FROM im_master_bon mb
+                   WHERE mb.no_bon = '$nobon'
+                GROUP BY mb.no_bon,
+                         mb.no_id,
+                         mb.tanggal,
+                         mb.seksi_bon,
+                         mb.nama_barang,
+                         mb.pemakai,
+                         mb.penggunaan,
+                         mb.keterangan,
+                         mb.tujuan_gudang
+                ORDER BY 1, 3";
+
+        return $this->oracle->query($sql)->result_array();
+    }
+
+    public function insertBonSpatu($data)
+    {
+        $this->db->insert('k3.tbon_sepatu', $data);
+        return $this->db->affected_rows();
     }
 }
