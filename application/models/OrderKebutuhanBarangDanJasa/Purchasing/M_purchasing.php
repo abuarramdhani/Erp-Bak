@@ -229,6 +229,7 @@ class M_purchasing extends CI_Model
             when kooh.IS_SUSULAN = 'Y' then 'SUSULAN - '||kooh.NOTE_TO_BUYER
             else kooh.NOTE_TO_BUYER
         end NOTE_TO_BUYER
+        ,kooh.CUT_OFF_DATE
         from
         khs.khs_okbj_pre_req_header koprh
         ,khs.khs_okbj_order_header kooh
