@@ -1496,3 +1496,66 @@ function apd_alert_mixin(icon, title)
 		title: title
 	});
 }
+
+$(document).ready(function(){
+	$('#apd_btnceknoBon').click(function(){
+		$("#surat-loading").attr('hidden', false);
+		var id = $('#apd_inpnobon').val();
+		$.ajax({
+			type: "get",
+			url: baseurl + "P2K3_V2/Order/checkNobon",
+			data: {
+				nobon: id,
+			},
+			success: function (response) {
+				var d = JSON.parse(response);
+				if(d.error == '1'){
+					showSwal(d);
+				}else{
+					$('#apd_table-shoes tbody').html(d.tr);
+					$('#apd_inpnobon').attr('disabled', true);
+					$('#apd_submit_bonM').attr('disabled', false);
+					$('#apd_submit_bonM').val(id);
+					$('#apd_btnceknoBon').off('click');
+					$('#apd_btnceknoBon').attr('disabled', true);
+				}
+				
+			},
+			complete: function (response) {
+				$("#surat-loading").attr('hidden', true);
+			}
+		});
+	});
+
+	$('#apd_submit_bonM').click(function(){
+		var id = $(this).val();
+		Swal.fire({
+			type: 'question',
+			title: "Insert Data Nomor Bon "+id+" ?",
+			showCancelButton: true,
+		}).then(function (result) {
+			if (result.value) {
+				$("#surat-loading").attr("hidden", false);
+				$.ajax({
+					type: "POST",
+					url: baseurl + "P2K3_V2/Order/insertBonManual",
+					data: { nobon: id },
+					success: function (response) {
+						location.reload();
+					},
+				});
+			}
+		});
+	});
+});
+
+function showSwal(d){
+	Swal.fire({
+		type: d.type,
+		title: d.pesan,
+		animation: false,
+		customClass: {
+			popup: "animated tada",
+		},
+	});
+}
