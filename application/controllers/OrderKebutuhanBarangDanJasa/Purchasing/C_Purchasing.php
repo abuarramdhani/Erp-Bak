@@ -306,12 +306,30 @@ class C_Purchasing extends CI_Controller {
                     echo '<span><i class="fa fa-warning"></i>Tidak ada attachment</span><br>';
                 }else {
                     $file = explode('.',$att['FILE_NAME']);
-                    if ($file[1] == 'pdf' || $file[1] == 'doc' || $file[1] == 'xls' || $file[1] == 'ppt' || $file[1] == 'docx' || $file[1] == 'xlsx' || $file[1] == 'pptx' || $file[1] == 'ods'){
-
-                        redirect(base_url('assets/upload/Okebaja/'.$att['FILE_NAME']));
-                    }else {
-                        echo '<img src="'.base_url('assets/upload/Okebaja/'.$att['FILE_NAME']).'">';
+                    $ext  = strtolower($file[1]);
+                    echo '<center>';
+                    if ($ext == 'pdf') {
+                        echo '<div style="width: 100%; margin: 10px; padding: 10px;">';
+                        echo '<a href="' . base_url() . $att['ADDRESS'] . $att['FILE_NAME'] . '" target="_blank" data-toggle="tooltip" title="Tipe File ini adalah PDF. Klik untuk melihat isinya." style="font-size: 18px;">' . $att['FILE_NAME'] . '</a>';
+                        echo '</div>';
+                    } else if ($ext == 'png' || $ext == 'jpg' || $ext == 'jpeg') {
+                        if (count($data) == 1) {
+                            echo '<a href="' . base_url() . $att['ADDRESS'] . $att['FILE_NAME'] . '" target="_blank" rel="noopener noreferrer"><img style="max-width:500px; max-height:500px;" src="' . base_url() . $att['ADDRESS'] . $att['FILE_NAME'] . '" alt="' . $att['FILE_NAME'] . '"></a><br>';
+                        } else {
+                            echo '<a href="' . base_url() . $att['ADDRESS'] . $att['FILE_NAME'] . '" target="_blank" rel="noopener noreferrer"><img style="max-width:200px; max-height:200px;" src="' . base_url() . $att['ADDRESS'] . $att['FILE_NAME'] . '" alt="' . $att['FILE_NAME'] . '"></a><br>';
+                        }
+                    } else {
+                        echo '<div style="width: 100%; margin: 10px; padding: 10px;">';
+                        echo '<a href="' . base_url() . 'OrderKebutuhanBarangDanJasa/Requisition/downloadAttachment?id-attachment=' . $att['ATTACHMENT_ID'] . '" target="_blank" title="Mohon maaf file ini tidak bisa dibuka karena bukan file gambar atau pdf. Klik untuk download" data-toggle="tooltip" filename="' . $att['FILE_NAME'] . '" style="font-size: 18px;">' . $att['FILE_NAME'] . '</a>';
+                        echo '</div>';
                     }
+                    echo '</center>';
+                    // if ($file[1] == 'pdf' || $file[1] == 'doc' || $file[1] == 'xls' || $file[1] == 'ppt' || $file[1] == 'docx' || $file[1] == 'xlsx' || $file[1] == 'pptx' || $file[1] == 'ods'){
+
+                    //     redirect(base_url('assets/upload/Okebaja/'.$att['FILE_NAME']));
+                    // }else {
+                    //     echo '<img src="'.base_url('assets/upload/Okebaja/'.$att['FILE_NAME']).'">';
+                    // }
                 }
             }            
         }
