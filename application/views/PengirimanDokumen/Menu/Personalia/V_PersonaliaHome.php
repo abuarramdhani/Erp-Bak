@@ -77,7 +77,7 @@
                         <div class="small-box bg-yellow">
                         <div class="inner">
                             <p>Data baru</p>
-                            <h8 class="<?php echo ($pending > 0)? 'blinkanim':'' ?>"><?=$pending?> Data</h8>
+                            <h8 class="<?php echo ($pending > 0)? 'blinkanim':'' ?>"><?=number_format($pending,0,',','.') ?> Data</h8>
                         </div>
                         <div class="icon">
                             <i class="fa fa-clock-o"></i>
@@ -89,7 +89,7 @@
                     <div class="small-box bg-green">
                         <div class="inner">
                             <p>Disetujui</p>
-                            <h8><?=$approved?> Data</h8>
+                            <h8><?=number_format($approved,0,',','.') ?> Data</h8>
                         </div>
                         <div class="icon">
                             <i class="fa fa-check"></i>
@@ -101,7 +101,7 @@
                     <div class="small-box bg-red">
                         <div class="inner">
                             <p>Ditolak</p>
-                            <h8><?=$rejected?> Data</h8>
+                            <h8><?=number_format($rejected,0,',','.') ?> Data</h8>
                         </div>
                         <div class="icon">
                             <i class="fa fa-close"></i>
