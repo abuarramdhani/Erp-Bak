@@ -66,9 +66,11 @@ class C_PoLogbook extends CI_Controller
               $data['PoLogbook'] = $this->M_pologbook->getDataPObyNik('B0931');
             } else if($id_user == 'A2412') {
               $data['PoLogbook'] = $this->M_pologbook->getDataPObyNik('B0918');
-            }else if($id_user == 'A2275' || $id_user == 'K2298') {
+            } else if($id_user == 'K2298') {
+              $data['PoLogbook'] = $this->M_pologbook->getDataPoTeam(['B0918' ,'B0932']);
+            } else if($id_user == 'A2275') {
               $data['PoLogbook'] = $this->M_pologbook->getDataPObyNik('B0932');
-            }else if($id_user == 'A2375') {
+            } else if($id_user == 'A2375') {
               $data['PoLogbook'] = $this->M_pologbook->getDataPObyNik('B0668');
             }
         // User adalah Buyer
@@ -219,9 +221,11 @@ class C_PoLogbook extends CI_Controller
               $data = $this->M_pologbook->getDataPObyNik('B0931');
             } else if($BuyerNik == 'A2412') {
               $data = $this->M_pologbook->getDataPObyNik('B0918');
-            }else if($BuyerNik == 'A2275' || $BuyerNik == 'K2298') {
+            } else if($BuyerNik == 'K2298') {
+              $data = $this->M_pologbook->getDataPoTeam(['B0918', 'B0932']);
+            } else if($BuyerNik == 'A2275') {
               $data = $this->M_pologbook->getDataPObyNik('B0932');
-            }else if($BuyerNik == 'A2375') {
+            } else if($BuyerNik == 'A2375') {
               $data = $this->M_pologbook->getDataPObyNik('B0668');
             }
         // User adalah Buyer
