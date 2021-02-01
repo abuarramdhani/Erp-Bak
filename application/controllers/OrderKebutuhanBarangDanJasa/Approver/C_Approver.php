@@ -250,6 +250,7 @@ class C_Approver extends CI_Controller {
 
 
             if ($person_id == '1513') {
+                $approval_position = array_reverse($approval_position);
                 $this->M_approver->ApproveOrderKaDep($orderid[$i], $person_id, $approve);
             }else{
                 $this->M_approver->ApproveOrder($orderid[$i], $person_id, $approve, $approval_position[0]['APPROVER_TYPE']);
