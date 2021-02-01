@@ -292,53 +292,7 @@ class C_Index extends CI_Controller
         foreach ($fetch_data as $row) {
             $sub_array   = array();
             $sub_array[] = $no++;
-            // $sub_array[] = '
-            // <input class="form-control" type="text" placeholder="Type" value="'.$row->kode_komponen_penyusun.'">
-            // ';
-            //  $sub_array[] = '
-            //  <textarea rows="2" title="" class="form-control" id="" placeholder="Deskripsi Komponen Penyusun">'.$row->deskripsi_penyusun.'</textarea>
-            //  ';
-            //  $sub_array[] = '
-            //  <input class="form-control" type="number" placeholder="Quantity" value="'.$row->id_header.'">
-            //  ';
-            //  $sub_array[] = '
-            //  <select class="form-control select2" data-placeholder="" value="'.$row->quantity.'">
-            // 	 <option>lorem 2</option>
-            // 	 <option value="">lorem</option>
-            //  </select>
-            //  ';
-            //  if ($row->supply_type == 'Operation Pull (Picklist)') {
-            // 	 $a = "selected";
-            //  }elseif ($row->supply_type == "Operation Pull") {
-            // 	 $b = "selected";
-            // }elseif ($row->supply_type == "Push") {
-            // 	 $c = "selected";
-            // }else {
-            // }
-            // 	 // <option '.if ($row->supply_type == "Operation Pull (Picklist)"){ echo "selected"}.' value="Operation Pull (Picklist)">Operation Pull (Picklist)</option>
-            // 	 // <option '.if ($row->supply_type == "Operation Pull"){ echo "selected"}.' value="Operation Pull" >Operation Pull</option>
-            // 	 // <option '.if ($row->supply_type == "Push"){ echo "selected"}.' value="Push">Push</option>
-            // 	 $sub_array[] = '
-            // 	 <select class="form-control" id="txtSupplytype" data-placeholder="Supply Type">
-            // 		 <option value=""></option>
-            // 		 <option value="Operation Pull (Picklist)">Operation Pull (Picklist)</option>
-            // 		 <option value="Operation Pull" >Operation Pull</option>
-            // 		 <option value="Push">Push</option>
-            // 	 </select>
-            // 		 ';
-            //  	  $sub_array[] = '
-            //  	  <input class="form-control" type="text" placeholder="" value="'.$row->supply_subinventory.'">
-            //  	  ';
-            //  	  $sub_array[] = '
-            //  	  <input class="form-control" type="text" placeholder="" value="'.$row->supply_locator.'">
-            //  	  ';
-            //  	  $sub_array[] = '
-            //  	  <input class="form-control" type="text" placeholder="" value="'.$row->subinventory_picklist.'">
-            //  	  ';
-            //  	  $sub_array[] = '
-            //  	  <input class="form-control" type="text" placeholder="" value="'.$row->locator_picklist.'">
-            //  	  ';
-            //versi2
+
             $sub_array[] = $row->kode_komponen_penyusun;
             $sub_array[] = $row->deskripsi_penyusun;
             $sub_array[] = $row->quantity;
@@ -365,8 +319,8 @@ class C_Index extends CI_Controller
         }
         $output = array(
                  "draw"                  =>     intval($_POST["draw"]),
-                 "recordsTotal"          =>     $this->M_index->get_all_data2(),
-                 "recordsFiltered"       =>     $this->M_index->get_filtered_data2(),
+                 "recordsTotal"          =>     $this->M_index->get_all_data2($id_header),
+                 "recordsFiltered"       =>     $this->M_index->get_filtered_data2($id_header),
                  "data"                  =>     $data
         );
         echo json_encode($output);

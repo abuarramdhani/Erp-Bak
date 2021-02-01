@@ -100,21 +100,6 @@ class M_index extends CI_Model
     public $select_column2 = array("id", "kode_komponen_penyusun", "deskripsi_penyusun", "quantity", "uom", "supply_type", "supply_subinventory", "supply_locator", "subinventory_picklist", "locator_picklist", "id_header");
     public $order_column2 = array(null, "kode_komponen_penyusun", "deskripsi_penyusun", null, "uom", null, null, null, null, null, null);
 
-    public function make_query2()
-    {
-        $this->db->select('*');
-        $this->db->from($this->table2);
-        if (isset($_POST["search"]["value"])) {
-            $this->db->or_like("deskripsi_penyusun", $_POST["search"]["value"]);
-            $this->db->or_like("quantity", $_POST["search"]["value"]);
-            $this->db->or_like("uom", $_POST["search"]["value"]);
-        }
-        if (isset($_POST["order"])) {
-            $this->db->order_by($this->order_column2[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
-        } else {
-            $this->db->order_by('id', 'DESC');
-        }
-    }
 
     public function make_datatables2($var)
     {
@@ -133,16 +118,29 @@ class M_index extends CI_Model
         return $query->result();
     }
 
-    public function get_filtered_data2()
+    public function get_filtered_data2($id_header)
     {
-        $this->make_query2();
+        $this->db->select('*');
+        $this->db->from($this->table2);
+        $this->db->where('id_header', $id_header);
+        // if (isset($_POST["search"]["value"])) {
+        //     $this->db->or_like("deskripsi_penyusun", $_POST["search"]["value"]);
+        //     $this->db->or_like("quantity", $_POST["search"]["value"]);
+        //     $this->db->or_like("uom", $_POST["search"]["value"]);
+        // }
+        // if (isset($_POST["order"])) {
+        //     $this->db->order_by($this->order_column2[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
+        // } else {
+        //     $this->db->order_by('id', 'DESC');
+        // }
         $query = $this->db->get();
         return $query->num_rows();
     }
 
-    public function get_all_data2()
+    public function get_all_data2($id_header)
     {
         $this->db->select("*");
+        $this->db->where('id_header', $id_header);
         $this->db->from($this->table2);
         return $this->db->count_all_results();
     }
