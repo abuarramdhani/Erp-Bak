@@ -27,14 +27,14 @@ class M_fp extends CI_Model
       }else {
         $type = 'md.md_product_component_prototype';
       }
-      return $this->design->select('component_code, component_name, product_component_id, memo_number, product_id')->where('memo_number', $memo)->get($type)->result_array();
+      return $this->design->select('component_code, component_name, product_component_id, memo_number, product_id, revision, revision_date')->where('memo_number', $memo)->get($type)->result_array();
     }
 
     public function getMemo($type)
     {
       if ($type == 'Product') {
         // code...
-        $res = $this->design->select('mm.memo_number, mp.product_name, mm.memo_id')->join('md.md_product as mp', 'mp.product_id = mm.product_id')->where('mm.jenis_memo', $type)->order_by('mm.memo_id', 'desc')->get('md.md_memo as mm')->result_array();
+        $res = $this->design->select('mm.memo_number, mp.product_name, mm.memo_id, mm.tanggal_distribusi')->join('md.md_product as mp', 'mp.product_id = mm.product_id')->where('mm.jenis_memo', $type)->where('mm.tanggal_distribusi !=', null)->order_by('mm.memo_id', 'desc')->get('md.md_memo as mm')->result_array();
         foreach ($res as $key => $value) {
           $res[$key]['status'] = $this->db->where('memo_number', $value['memo_number'])->get('md.md_component_approved')->num_rows();
         }
@@ -472,9 +472,9 @@ class M_fp extends CI_Model
          // if (!empty($res)) {
          //   return $res;
          // }else {
-         //   return $this->db->like('DEPARTMENT_CLASS_CODE', $param, 'both')->or_like('DESCRIPTION', $param, 'both')->get('md.md_destination_optional')->result_array();
+         //   return $this->oracle->like('DEPARTMENT_CLASS_CODE', $param, 'both')->or_like('DESCRIPTION', $param, 'both')->get('flow_proses_destinasi_tambahan')->result_array();
          // }
-           $res2 = $this->db->get('md.md_destination_optional')->result_array();
+         $res2 = $this->oracle->query("SELECT * FROM flow_proses_destinasi_tambahan")->result_array();
 
            $done = array_merge($res, $res2);
            usort($done, function ($a, $b) {
@@ -504,7 +504,11 @@ class M_fp extends CI_Model
          if (!empty($res)) {
            return $res;
          }else {
-           return $this->db->like('DEPARTMENT_CLASS_CODE', $param, 'both')->or_like('DESCRIPTION', $param, 'both')->get('md.md_destination_optional')->result_array();
+           // return $this->oracle->like('DEPARTMENT_CLASS_CODE', $param, 'both')->or_like('DESCRIPTION', $param, 'both')->get('flow_proses_destinasi_tambahan')->result_array();
+           return $this->oracle->query("SELECT * FROM flow_proses_destinasi_tambahan WHERE (
+                                         DEPARTMENT_CLASS_CODE LIKE '%$param%'
+                                         OR DESCRIPTION LIKE '%$param%'
+                                       )")->result_array();
          }
       }
 

@@ -46,8 +46,8 @@
   //     });
   //   }
   // }
-  $('.fp0012').scroll(fixDiv);
-  fixDiv()
+  // $('.fp0012').scroll(fixDiv);
+  // fixDiv()
 // })
 //
 // var wrap = $("#modalfp1");
