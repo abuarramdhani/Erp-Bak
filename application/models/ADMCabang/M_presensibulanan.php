@@ -95,6 +95,13 @@ class M_presensibulanan extends Ci_Model
 						 where left(a.kodesie,7) in (left('$kd', 7), '3280102', '3280101', '3280105', '3280107', '3280104', '3280106', '3280103')
 						 and a.keluar = false
 					 order by a.kodesie,a.noind;";
+		}elseif ($noind == 'B0865') { //Order #399407
+			$sql = "select a.noind,a.nama, b.seksi
+				 from hrd_khs.tpribadi a
+				 left join hrd_khs.tseksi b on a.kodesie=b.kodesie
+					 where left(a.kodesie,7) in ('3301007','3301008')
+					 and a.keluar = false
+				 order by a.kodesie,a.noind;";
 		} else {
 			if ('306030' == substr($kd, 0, 6)) //ada diticket
 			{
@@ -188,6 +195,8 @@ class M_presensibulanan extends Ci_Model
 			$param = "left(pri.kodesie,5) in ('10101','10102')";
 		} elseif ($noind == 'J1338') { //Order #456799 (Pembuatan Login ERP)
 			$param = "left(pri.kodesie,3) in ('302','324','325')";
+		}elseif ($noind == 'B0865') { //Order #112817 (Pembuatan Login ERP)
+			$param = "left(pri.kodesie,7) in ('3301007','3301008')";
 		} else if ($noind == 'B0267') { // Nugroho Budi Utomo | #854719 akses seksi toolware house-tks(3240101) dan seksi assembling gear transmission-tks(3250201)
 			$param = "left(pri.kodesie, 7) in (left('$kd', 7), '3240101', '3250201') or pri.kodesie like trim(TRAILING '0' FROM '$kd') || '%'";
 		} else {

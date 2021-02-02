@@ -45,10 +45,10 @@
 											<div class="form-group">
 												<div class="col-lg-10 text-right">
 												<?php if(base_url('')=="http://erp.quick.com/") : else: endif; ?>
-													<button id="showData" class="btn btn-primary"><span style="font-size: 16px;"></span>Show Data</button>
-													<button id="presensiH-btnExcel_v1" class="btn btn-success"><span style="font-size: 16px;" class="fa fa-file-excel-o"></span> - Template 1 </button>
-													<button id="presensiH-btnExcel_v2" class="btn btn-success"><span style="font-size: 16px;" class="fa fa-file-excel-o"></span> - Template 2</button>
-													<button id="presensiH-btnPDF_v1" class="btn btn-info"><span style="font-size: 16px;" class="fa fa-file-pdf-o"></span> - Template 1 </button>
+													<button type="button" id="showData" class="btn btn-primary"><span style="font-size: 16px;"></span>Show Data</button>
+													<button type="button" id="presensiH-btnExcel_v1" class="btn btn-success"><span style="font-size: 16px;" class="fa fa-file-excel-o"></span> - Template 1 </button>
+													<button type="button" id="presensiH-btnExcel_v2" class="btn btn-success"><span style="font-size: 16px;" class="fa fa-file-excel-o"></span> - Template 2</button>
+													<button type="button" id="presensiH-btnPDF_v1" class="btn btn-info"><span style="font-size: 16px;" class="fa fa-file-pdf-o"></span> - Template 1 </button>
 													<button id="presensiH-btnPDF_v2" class="btn btn-info"><span style="font-size: 16px;" class="fa fa-file-pdf-o"></span> - Template 2</button>
 												</div>
 											</div>
