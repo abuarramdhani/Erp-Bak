@@ -136,7 +136,7 @@
                                                     <div class="form-group">
                                                         <label class="form-check-label">Kode Induk :</label>
                                                         <br>
-                                                        <select class="form-control pull-right" id="TDP_Tariknoind" multiple>         
+                                                        <select class="form-control pull-right" id="TDP_Tariknoind" multiple>
                                                             <?php foreach ($Tariknoind as $key) { ?>
                                                                 <option value="<?= $key['fs_noind'] ?>"><?= $key['fs_noind'], ' - ', $key['fs_ket'] ?></option>
                                                             <?php
@@ -367,6 +367,8 @@
                                                 <label> Tanggal Keluar</label><br>
                                                 <input name="sebabklr" type="checkbox" class="chk_FilterTarikData" value="tp.sebabklr">
                                                 <label> Sebab Keluar</label><br>
+                                                <input name="status_diangkat" type="checkbox" class="chk_FilterTarikData" value="tp.status_diangkat">
+                                                <label> Status Diangkat</label><br>
                                             </div>
 
                                             <div class="col-sm-3">
