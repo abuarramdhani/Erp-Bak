@@ -168,7 +168,9 @@
 		<?php
 
 			if (($key+1)%2 == 0) {
-				echo "<div style='width=100%;'><hr style='color:red;padding:0;margin:10px 0 10px 0'></div>";
+				// if ((($key+1)/2)%2 != 0) {
+					echo "<div style='width=100%;'><hr style='color:red;padding:0;margin:10px 0 10px 0'></div>";
+				// }
 			}
 
 

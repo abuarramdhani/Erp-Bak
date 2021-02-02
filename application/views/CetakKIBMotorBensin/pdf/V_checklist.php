@@ -5,7 +5,7 @@
 		<title></title>
 	</head>
 	<body>
-  <div style="width:100%">
+  <div style="width:100%;">
   	<?php foreach ($count as $key => $value): ?>
   		<div style="width:29%;float: left;margin-left:23.5px;">
   			<table style="border-collapse: collapse;width: 100%;page-break-inside:avoid;margin-top:15px;" >
@@ -33,11 +33,14 @@
   				</tbody>
   			</table>
   		</div>
-      <?php if (($value) % 3 == 0): ?>
-        <?php echo "<pagebreak>" ?>
-      <?php endif; ?>
-  	<?php endforeach; ?>
-  </div>
 
+			<?php if (sizeof($count) != ($key + 1)): ?>
+				<?php if (($value) % 3 == 0): ?>
+					<?php echo "<pagebreak>" ?>
+				<?php endif; ?>
+			<?php endif; ?>
+
+		<?php endforeach; ?>
+  </div>
 	</body>
 </html>
