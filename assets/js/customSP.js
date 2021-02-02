@@ -88,8 +88,8 @@ $(document).ready(function () {
     placeholder: "00.000.000.0-000.000",
   });
 
-  $(".txt_noHP_SP, .txt_noTlp_SP").mask("0000 0000 0000", {
-    placeholder: "0000 0000 0000",
+  $(".txt_noHP_SP, .txt_noTlp_SP").mask("0000 0000 0000 0000", {
+    placeholder: "0000 0000 0000 0000",
   });
 
   $(".SuratPenyerahan").dataTable();
@@ -1379,7 +1379,7 @@ $(document).ready(function () {
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <div class="form-group">
-                                                            <label for="txtSkul_SP" class="col-lg-4 control-label">Sekolah </label>
+                                                            <label for="txtSkul_SP" class="col-lg-4 control-label">Sekolah / Institusi </label>
                                                             <div class="col-lg-8">
                                                                 ${sekul}
                                                             </div>
@@ -1530,13 +1530,13 @@ $(document).ready(function () {
                                                                             <input type="checkbox" class="cekSameNoHP">
                                             </div>
                                                                             <div class="col-lg-9">
-                                                                                <p style="color: red;"><i>*) Beri tanda centang apabila No. Telp sama dengan No. HP</i></p>
+                                                                                <p style="color: red;"><i>*) Beri tanda centang apabila No. WatsApp sama dengan No. HP</i></p>
                                                                             </div>
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-lg-12">
                                                                         <div class="form-group">
-                                                                            <label for="txt_noTlp_SP" class="col-lg-4 control-label">Telephone</label>
+                                                                            <label for="txt_noTlp_SP" class="col-lg-4 control-label">Nomor WhatsApp</label>
                                                                             <div class="col-lg-8">
                                                                                 <input type="text" name="txt_noTlp_SP" class="form-control txt_noTlp_SP" value="${
                                                                                   result
@@ -1571,8 +1571,8 @@ $(document).ready(function () {
             placeholder: "00.000.000.0-000.000",
           });
 
-          $(".txt_noHP_SP, .txt_noTlp_SP").mask("0000 0000 0000", {
-            placeholder: "0000 0000 0000",
+          $(".txt_noHP_SP, .txt_noTlp_SP").mask("0000 0000 0000 0000", {
+            placeholder: "0000 0000 0000 0000",
           });
 
           $(".slc_loker_SP").select2({
@@ -1792,6 +1792,10 @@ $(document).ready(function () {
           });
 
           $(".btn_Save_SP").on("click", function () {
+            let noHPa = $(".txt_noHP_SP").val();
+            let noHP = noHPa.replace(/\s/g, "");
+            let noTelpa = $(".txt_noTlp_SP").val();
+            let noTelp = noTelpa.replace(/\s/g, "");
             const DataNew = {
               jenis_pkj: pengganti,
               //Data Diri
@@ -1813,8 +1817,8 @@ $(document).ready(function () {
               kec: $(".Kecamatan_SP").select2("data")[0].text,
               desa: $(".Desa_SP").select2("data")[0].text,
               kd_pos: $(".inp_kodepos_SP").val(),
-              no_tlp: $(".txt_noTlp_SP").val(),
-              no_hp: $(".txt_noHP_SP").val(),
+              no_tlp: noTelp,
+              no_hp: noHP,
               nikah: $(".txt_status_pri").val(),
               //Data perusahaan
               sls_magang: $("#inp_tgl_Keluar_SP").val(),
