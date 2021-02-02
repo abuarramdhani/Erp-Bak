@@ -101,6 +101,13 @@ class M_presensiharian extends Ci_Model
 				 where left(a.kodesie,7) in (left('$kd', 7), '3280102', '3280101', '3280105', '3280107', '3280104', '3280106', '3280103')
 				 and a.keluar = false
 			 order by a.kodesie,a.noind;";
+		}elseif ($noind == 'B0865') { //Order #399407
+			$sql = "select a.noind,a.nama, b.seksi
+				from hrd_khs.tpribadi a
+				left join hrd_khs.tseksi b on a.kodesie=b.kodesie
+	    		where left(a.kodesie,7) in ('3301007','3301008')
+	    		and a.keluar = false
+				order by a.kodesie,a.noind;";
 		} else {
 			if ('306030' == substr($kd, 0, 6)) { //ada diticket
 				$sql = "select a.noind,a.nama, b.seksi
