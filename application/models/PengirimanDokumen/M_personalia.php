@@ -204,7 +204,7 @@ class M_personalia extends CI_Model
     	$this->db->update('ps.tdata', $data);
     }
 
-    function insertRiwayat(){
+    function insertRiwayat($triwayat){
     	$this->db->insert('ps.triwayat', $triwayat);
     }
 
