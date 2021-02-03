@@ -292,7 +292,11 @@
                             echo "<td>" . $val['sebabklr'] . "</td>";
                         }
                         if (in_array("tp.status_diangkat", $select)) {
-                            echo "<td>" . $val['status_diangkat'] . "</td>";
+                            if ($val['status_diangkat'] == 't') {
+                                echo "<td>sudah diangkat</td>";
+                            } else {
+                                echo "<td>belum diangkat</td>";
+                            }
                         }
 
                         if (in_array("tp.statpajak", $select)) {
