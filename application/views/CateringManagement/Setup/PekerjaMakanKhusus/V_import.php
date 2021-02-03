@@ -46,10 +46,10 @@
 											<div class="form-group">
 												<label class="control-label col-lg-4">Isi File</label>
 												<div class="col-lg-3">
-													<input type="radio" class="form-control" value="Kosong" name="txt-CM-PekerjaMakanKhusus-Export-Isi" checked>&nbsp;File Kosong
+													<input type="radio" value="Kosong" name="txt-CM-PekerjaMakanKhusus-Export-Isi" checked>&nbsp;File Kosong
 												</div>
 												<div class="col-lg-3">
-													<input type="radio" class="form-control" value="Isi" name="txt-CM-PekerjaMakanKhusus-Export-Isi">&nbsp;File Isi
+													<input type="radio" value="Isi" name="txt-CM-PekerjaMakanKhusus-Export-Isi">&nbsp;File Isi
 												</div>
 											</div>
 											<div class="form-group">
