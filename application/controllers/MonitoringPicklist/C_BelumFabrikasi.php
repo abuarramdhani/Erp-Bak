@@ -192,11 +192,17 @@ class C_BelumFabrikasi extends CI_Controller
 		$tgl_minta 	= $this->input->post('tgl_minta');
 		$shift_minta = $this->input->post('shift_minta');
 		// echo "<pre>";print_r($nojob);exit();
-		$cek2 = $this->M_pickfabrikasi->cekapprove2($nojob);
-		$cek3 = $this->M_pickfabrikasi->cekpermintaanPelayanan($nojob);
-		if (empty($cek2) && empty($cek3)) {
+		$cek2 = $this->M_pickfabrikasi->cekapprove2($picklist);
+		$cek3 = $this->M_pickfabrikasi->cariReqPelayanan2($nojob);
+		if (empty($cek2)) {
 			$this->M_pickfabrikasi->approveData($picklist, $nojob, $user);
-			$this->M_pickfabrikasi->permintaanApprove($nojob, $tgl_minta, $shift_minta);
+			if (!empty($cek3)) {
+				foreach ($cek3 as $key => $value) {
+					if ($value['JOB_NUMBER'] != $picklist) {
+						$this->M_pickfabrikasi->permintaanApprove($picklist, $tgl_minta, $shift_minta);
+					}
+				}
+			}
 		}
 	}
 
@@ -213,15 +219,21 @@ class C_BelumFabrikasi extends CI_Controller
 		$x = 0;
 		for ($i=0; $i < count($nojob); $i++) { 
 			if ($cek[$i] == 'uncek') {
-				$cek2 = $this->M_pickfabrikasi->cekapprove2($nojob[$i]);
-				$cek3 = $this->M_pickfabrikasi->cekpermintaanPelayanan($nojob[$i]);
-				if (empty($cek2) && empty($cek3)) {
+				$cek2 = $this->M_pickfabrikasi->cekapprove2($picklist[$i]);
+				$cek3 = $this->M_pickfabrikasi->cariReqPelayanan2($nojob[$i]);
+				if (empty($cek2)) {
 					$this->M_pickfabrikasi->approveData($picklist[$i], $nojob[$i], $user);
-					if ($ket == 'bersama') {
-						$this->M_pickfabrikasi->permintaanApprove($nojob[$i], $tgl_minta, $shift_minta);
-					}else {
-						$this->M_pickfabrikasi->permintaanApprove($nojob[$i], $tgl_minta[$x], $shift_minta[$x]);
-						$x++;
+					if (!empty($cek3)) {
+						foreach ($cek3 as $key => $value) {
+							if ($value['JOB_NUMBER'] != $picklist[$i]) {
+								if ($ket == 'bersama') {
+									$this->M_pickfabrikasi->permintaanApprove($picklist[$i], $tgl_minta, $shift_minta);
+								}else {
+									$this->M_pickfabrikasi->permintaanApprove($picklist[$i], $tgl_minta[$x], $shift_minta[$x]);
+									$x++;
+								}
+							}
+						}
 					}
 				}
 			}
@@ -234,8 +246,22 @@ class C_BelumFabrikasi extends CI_Controller
 		$pisah 		= explode('_', $dokumen);
 		$picklist 	= $pisah[0];
 		$subinv 	= $pisah[1];
-		$getdata = $this->M_pickfabrikasi->getdataBelum2($picklist);
-		// echo "<pre>";print_r($getdata);exit();
+		$getdata 	= $this->M_pickfabrikasi->getdataBelum2($picklist);
+		$nojob 		= substr($picklist,0, -2);
+		$plyn 		= $this->M_pickfabrikasi->cariReqPelayanan2($nojob);
+		$pick2		= array();
+		if (!empty($plyn)) {
+			foreach ($plyn as $key => $value) {
+				if ($value['JOB_NUMBER'] == $picklist || ($value['JOB_NUMBER'] == $nojob && !in_array($picklist, $pick2))) {
+					$shift 	= $this->M_pickfabrikasi->getShift2($value['SHIFT']);
+					$data['pelayanan'] = strtoupper($value['TANGGAL_PELAYANAN']).' '.$shift[0]['DESCRIPTION'];
+					array_push($pick2, $picklist);
+				}
+			}
+		}else {
+			$data['pelayanan'] = '';
+		}
+		// echo "<pre>";print_r($data);exit();
 
 		ob_start();
 		$this->load->library('pdf');
@@ -290,9 +316,23 @@ class C_BelumFabrikasi extends CI_Controller
 			chmod('./img', 0777);
 		}
 
+		$pick2		= array();
 		for ($i=0; $i < count($picklist) ; $i++) { 
 			if ($cek[$i] == 'uncek') {
 				$getdata = $this->M_pickfabrikasi->getdataBelum2($picklist[$i]);
+				$nojob 	= substr($picklist[$i],0, -2);
+				$plyn 	= $this->M_pickfabrikasi->cariReqPelayanan2($nojob);
+				if (!empty($plyn)) {
+					foreach ($plyn as $key => $value) {
+						if ($value['JOB_NUMBER'] == $picklist[$i] || ($value['JOB_NUMBER'] == $nojob && !in_array($picklist[$i], $pick2))) {
+							$shift 	= $this->M_pickfabrikasi->getShift2($value['SHIFT']);
+							$data['pelayanan'] = strtoupper($value['TANGGAL_PELAYANAN']).' '.$shift[0]['DESCRIPTION'];
+							array_push($pick2, $picklist[$i]);
+						}
+					}
+				}else {
+					$data['pelayanan'] = '';
+				}
 				// echo "<pre>";print_r($getdata);exit();
 				foreach ($getdata as  $get) {
 					$params['data']		= $get['NO_PICKLIST'];

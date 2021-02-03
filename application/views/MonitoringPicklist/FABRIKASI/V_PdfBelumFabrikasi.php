@@ -13,13 +13,17 @@ td {
 </style>
 <div class="row" id="page-border" style="padding-top:0px;padding-left:0px;padding-right:0px">
 <table style="width: 100%; border-bottom :0px; border-collapse: collapse;font-size: 9px" >
-    <tr>
+    <!-- <tr>
         <td>Tgl Cetak</td>
         <td>: <?= $val['TGL_CETAK']?></td>
-    </tr>
+    </tr> -->
     <tr>
         <td>Tgl Job</td>
         <td>: <?= $val['TGL_JOB']?></td>
+    </tr>
+    <tr>
+        <td>Permintaan Pelayanan</td>
+        <td>: <?= $pelayanan?></td>
     </tr>
 </table>
 <table style="width: 100%; border-bottom :0px; border-collapse: collapse; text-align:center;font-size: 10px" >

@@ -76,9 +76,7 @@ class C_BelumPPIC extends CI_Controller
 		$nojob = $this->input->post('nojob');
 		$picklist = $this->input->post('picklist');
 		$user = $this->session->user;
-		// echo "<pre>";print_r($user);exit();
-
-		$cek2 = $this->M_picklistppic->cekapprove2($nojob[$i]);
+		$cek2 = $this->M_picklistppic->cekapprove2($picklist);
 		if (empty($cek2)) {
 			$this->M_picklistppic->approvePPIC($picklist, $nojob, $user);
 		}
@@ -92,7 +90,7 @@ class C_BelumPPIC extends CI_Controller
 		// echo "<pre>";print_r($cek);exit();
 		for ($i=0; $i < count($nojob); $i++) { 
 			if ($cek[$i] == 'uncek') {
-				$cek2 = $this->M_picklistppic->cekapprove2($nojob[$i]);
+				$cek2 = $this->M_picklistppic->cekapprove2($picklist[$i]);
 				if (empty($cek2)) {
 					$this->M_picklistppic->approvePPIC($picklist[$i], $nojob[$i], $user);
 				}

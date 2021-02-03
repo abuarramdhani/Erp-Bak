@@ -92,17 +92,35 @@ class C_BelumGudang extends CI_Controller
 	}
 
 	public function sortbyTanggalPelayanan($getdata){
-		$pelayanan = $this->M_pickgudang->cariReqPelayanan();
-		$datanya = $nojob = $datanya2 = array();
-		foreach ($pelayanan as $key => $value) {
-			foreach ($getdata as $key2 => $get) {
-				if ($get['JOB_NO'] == $value['JOB_NUMBER']) {
-					$getdata[$key2]['TGL_PELAYANAN'] = $value['TANGGAL_PELAYANAN'];
-					$shift = $this->M_pickgudang->getShift($value['SHIFT']);
-					$getdata[$key2]['SHIFT'] = $shift[0]['DESCRIPTION'];
-					$getdata[$key2]['OVERDUE'] = $this->getdataOverdue($value['TANGGAL_PELAYANAN'], $shift[0]['DESCRIPTION']);
-					array_push($datanya, $getdata[$key2]);
-					array_push($nojob, $get['JOB_NO']);
+		// $pelayanan = $this->M_pickgudang->cariReqPelayanan();
+		// $datanya = $nojob = $datanya2 = array();
+		// foreach ($pelayanan as $key => $value) {
+		// 	foreach ($getdata as $key2 => $get) {
+		// 		if ($get['JOB_NO'] == $value['JOB_NUMBER']) {
+		// 			$getdata[$key2]['TGL_PELAYANAN'] = $value['TANGGAL_PELAYANAN'];
+		// 			$shift = $this->M_pickgudang->getShift($value['SHIFT']);
+		// 			$getdata[$key2]['SHIFT'] = $shift[0]['DESCRIPTION'];
+		// 			$getdata[$key2]['OVERDUE'] = $this->getdataOverdue($value['TANGGAL_PELAYANAN'], $shift[0]['DESCRIPTION']);
+		// 			array_push($datanya, $getdata[$key2]);
+		// 			array_push($nojob, $get['JOB_NO']);
+		// 		}
+		// 	}
+		// }
+		
+		$datanya = $nojob = $datanya2 = $picklist = array();
+		foreach ($getdata as $key2 => $get) {
+			$cari_plyn = $this->M_pickgudang->cekpermintaanPelayanan($get['JOB_NO']);
+			if (!empty($cari_plyn)) {
+				foreach ($cari_plyn as $key3 => $value) {
+					if ($value['JOB_NUMBER'] == $get['PICKLIST'] || ($value['JOB_NUMBER'] == $get['JOB_NO'] && !in_array($get['PICKLIST'], $picklist))) {
+						$getdata[$key2]['TGL_PELAYANAN'] = $value['TANGGAL_PELAYANAN'];
+						$shift = $this->M_pickgudang->getShift($value['SHIFT']);
+						$getdata[$key2]['SHIFT'] = $shift[0]['DESCRIPTION'];
+						$getdata[$key2]['OVERDUE'] = $this->getdataOverdue($value['TANGGAL_PELAYANAN'], $shift[0]['DESCRIPTION']);
+						array_push($datanya, $getdata[$key2]);
+						array_push($nojob, $get['JOB_NO']);
+						array_push($picklist, $get['PICKLIST']);
+					}
 				}
 			}
 		}
@@ -246,7 +264,7 @@ class C_BelumGudang extends CI_Controller
 		$picklist = $this->input->post('picklist');
 		$nojob = $this->input->post('nojob');
 		$user = $this->session->user;
-		$cek2 = $this->M_pickgudang->cekapprove2($nojob);
+		$cek2 = $this->M_pickgudang->cekapprove2($picklist);
 		if (empty($cek2)) {
 			$this->M_pickgudang->approveData($picklist, $nojob, $user);
 		}
@@ -261,7 +279,7 @@ class C_BelumGudang extends CI_Controller
 
 		for ($i=0; $i < count($nojob); $i++) { 
 			if ($cek[$i] == 'uncek') {
-				$cek2 = $this->M_pickgudang->cekapprove2($nojob[$i]);
+				$cek2 = $this->M_pickgudang->cekapprove2($picklist[$i]);
 				if (empty($cek2)) {
 					$this->M_pickgudang->approveData($picklist[$i], $nojob[$i], $user);
 				}
