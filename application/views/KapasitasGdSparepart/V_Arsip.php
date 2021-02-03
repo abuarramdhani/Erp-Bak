@@ -117,7 +117,9 @@
                                                     <th>Keterangan</th>
                                                     <th>Tanggal Cancel</th>
                                                     <th>Jumlah Coly</th>
+                                                    <?php if ($user != 'K1778') { ?>
                                                     <th>Edit Coly</th>
+                                                    <?php }?>
                                                 </tr>
                                             </thead>
                                         </table>

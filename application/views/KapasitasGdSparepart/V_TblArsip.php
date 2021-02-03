@@ -24,7 +24,9 @@
                 <th>Keterangan</th>
                 <th>Tanggal Cancel</th>
                 <th>Jumlah Coly</th>
+                <?php if ($user != 'K1778') { ?>
                 <th>Edit Coly</th>
+                <?php }?>
             </tr>
         </thead>
         <tbody>
@@ -55,7 +57,9 @@
                 <td><?= $val['URGENT'].' '.$val['BON']?></td>
                 <td><?= $val['CANCEL']?></td>
                 <td><?= $val['COLY']?></td>
+                <?php if ($user != 'K1778') { ?>
                 <td><button type="button" class="btn btn-md bg-teal" onclick="editColy(<?= $no?>)">Edit Coly</button></td>
+                <?php }?>
             </tr>
             <?php $no++; }?>
         <tbody>

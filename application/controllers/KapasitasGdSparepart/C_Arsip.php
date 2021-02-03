@@ -29,7 +29,7 @@ class C_Arsip extends CI_Controller
 	}
 
 	public function index(){
-		$user = $this->session->username;
+		$user = $this->session->user;
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Arsip SPB/DO';
@@ -37,10 +37,18 @@ class C_Arsip extends CI_Controller
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
 
-		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$UserMenu = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-
+		if ($user == 'B0892' || $user == 'J1365') {
+			$data['UserMenu'][] = $UserMenu[6]; // menu Tracking SPB
+		}elseif ($user == 'K1778') {
+			$data['UserMenu'][] = $UserMenu[6]; // menu Tracking SPB
+			$data['UserMenu'][] = $UserMenu[7]; // menu Arsip SPB
+		}else {
+			$data['UserMenu'] = $UserMenu;
+		}
+		$data['user'] = $user;
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('KapasitasGdSparepart/V_Arsip', $data);
@@ -49,6 +57,7 @@ class C_Arsip extends CI_Controller
 
 	public function cari_data(){
 		// echo "<pre>";print_r($_POST);exit();
+		$user = $this->session->user;
 		if ($_POST['search']['value'] != '') {
 			$sch = strtoupper($_POST['search']['value']);
 			$val = $this->M_arsip->getDataSPB2($sch);
@@ -101,8 +110,10 @@ class C_Arsip extends CI_Controller
             $row[] = $val['PIC_PACKING'];
             $row[] = $val['URGENT'].' '.$val['BON'];
             $row[] = $val['CANCEL'];
-            $row[] = $val['COLY'];
-            $row[] = '<button type="button" class="btn btn-md bg-teal" onclick="editColy('.$no.')">Edit Coly</button>';
+			$row[] = $val['COLY'];
+			if ($user != 'K1778') {
+			$row[] = '<button type="button" class="btn btn-md bg-teal" onclick="editColy('.$no.')">Edit Coly</button>';
+			}
  
             $data[] = $row;
         }
@@ -133,6 +144,8 @@ class C_Arsip extends CI_Controller
 	public function searchDataArsip(){
 		$tgl_awal = $this->input->post('tgl_awal');
 		$tgl_akhir = $this->input->post('tgl_akhir');
+		$user = $this->session->user;
+		$data['user'] = $user;
 		
 		$val = $this->M_arsip->getDataSPB3($tgl_awal, $tgl_akhir);
 		$getdata = array();
