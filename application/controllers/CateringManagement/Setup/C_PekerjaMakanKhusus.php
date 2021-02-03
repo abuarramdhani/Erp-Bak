@@ -352,6 +352,7 @@ class C_PekerjaMakanKhusus extends CI_Controller
 		    		$mulai = $dateFormated;
 		    	}
 		    	$selesai = "";
+		        $dateFormated = PHPExcel_Style_NumberFormat::toFormattedString($rowData[0][11], 'YYYY-MM-DD');
 		    	if (strtotime($dateFormated) < strtotime("2020-01-01")) {
 		    		$selesai = $rowData[0][11];
 		    	}else{
