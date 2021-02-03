@@ -157,9 +157,9 @@ class M_picklistppic extends CI_Model
 		return $query->result_array();
 	}
 	
-	public function cekapprove2($nojob){
+	public function cekapprove2($picklist){
 		$oracle = $this->load->database('oracle', true);
-		$sql = "select * from khs_picklist_approved where job_number = '$nojob' and process = 1";
+		$sql = "select * from khs_picklist_approved where picklist = '$picklist' and process = 1";
 		$query = $oracle->query($sql);
 		return $query->result_array();
 	}

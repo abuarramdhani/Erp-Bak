@@ -307,9 +307,9 @@ class M_pickfabrikasi extends CI_Model
 		return $query->result_array();
 	}
 
-	public function cekapprove2($nojob){
+	public function cekapprove2($picklist){
 		$oracle = $this->load->database('oracle', true);
-		$sql = "select * from khs_picklist_approved where job_number = '$nojob' and process = 2";
+		$sql = "select * from khs_picklist_approved where picklist = '$picklist' and process = 2";
 		$query = $oracle->query($sql);
 		return $query->result_array();
 	}
@@ -324,13 +324,6 @@ class M_pickfabrikasi extends CI_Model
 		$query = $oracle->query($sql);
 		return $query->result_array();
 	}
-
-	public function cekpermintaanPelayanan($nojob){
-		$oracle = $this->load->database('oracle', true);
-		$sql = "select * from khs_pelayanan_picklist where job_number = '$nojob'";
-		$query = $oracle->query($sql);
-		return $query->result_array();
-	}
 	
 	public function permintaanApprove($nojob, $date, $shift){
 		$oracle = $this->load->database('oracle', true);
@@ -340,9 +333,9 @@ class M_pickfabrikasi extends CI_Model
 		$query = $oracle->query('commit');
 	}
 
-	public function recallpermintaan($nojob){
+	public function recallpermintaan($no){
 		$oracle = $this->load->database('oracle', true);
-		$sql = "delete from khs_pelayanan_picklist where job_number = '$nojob'";
+		$sql = "delete from khs_pelayanan_picklist where job_number = '$no'";
 		$query = $oracle->query($sql);
 		$query = $oracle->query('commit');
 	}
@@ -350,6 +343,24 @@ class M_pickfabrikasi extends CI_Model
 	public function cariReqPelayanan(){
 		$oracle = $this->load->database('oracle', true);
 		$sql = "select * from khs_pelayanan_picklist order by 2, 3";
+		$query = $oracle->query($sql);
+		return $query->result_array();
+	}
+
+	public function cariReqPelayanan2($nojob){
+		$oracle = $this->load->database('oracle', true);
+		$sql = "select job_number, 
+					to_char(tanggal_pelayanan, 'dd-Mon-yyyy') tanggal_pelayanan,
+					shift 
+				from khs_pelayanan_picklist 
+				where job_number like '$nojob%'";
+		$query = $oracle->query($sql);
+		return $query->result_array();
+	}
+	
+	public function cariReqPelayanan3($no){
+		$oracle = $this->load->database('oracle', true);
+		$sql = "select * from khs_pelayanan_picklist where job_number = '$nojob'";
 		$query = $oracle->query($sql);
 		return $query->result_array();
 	}
