@@ -37,10 +37,10 @@
 							<span class="info-box-number"><?php echo count($normal); ?></span>
 							<span class="info-box-text">Order Reguler</span>
 
-							<div class="progress">
+							<div class="progress hide">
 								<div class="progress-bar" style="width: <?php echo round($persenNormal) ?>%"></div>
 							</div>
-							<span class="progress-description">
+							<span class="progress-description hide">
 							<?php echo round($persenNormal).'% dari  '.$totalNormal;?> Order telah diapprove</span>
 						</div>
 						<!-- /.info-box-content -->
@@ -73,10 +73,10 @@
 							<span class="info-box-number"><?php echo count($susulan); ?></span>
 							<span class="info-box-text">Order Emergency</span>
 
-							<div class="progress">
+							<div class="progress hide">
 								<div class="progress-bar" style="width: <?php echo round($persenSusulan) ?>%"></div>
 							</div>
-							<span class="progress-description">
+							<span class="progress-description hide">
 							<?php echo round($persenSusulan).'% dari  '.$totalSusulan;?> Order telah diapprove</span>
 						</div>
 						<!-- /.info-box-content -->
@@ -109,10 +109,10 @@
 							<span class="info-box-number"><?php echo count($urgent); ?></span>
 							<span class="info-box-text">Order Urgent</span>
 
-							<div class="progress">
+							<div class="progress hide">
 								<div class="progress-bar" style="width: <?php echo round($persenUrgent) ?>%"></div>
 							</div>
-							<span class="progress-description">
+							<span class="progress-description hide">
 							<?php echo round($persenUrgent).'% dari  '.$totalUrgent;?> Order telah diapprove</span>
 						</div>
 						<!-- /.info-box-content -->
