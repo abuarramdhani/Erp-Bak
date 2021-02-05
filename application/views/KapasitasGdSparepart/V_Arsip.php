@@ -117,7 +117,7 @@
                                                     <th>Keterangan</th>
                                                     <th>Tanggal Cancel</th>
                                                     <th>Jumlah Coly</th>
-                                                    <?php if ($user != 'K1778') { ?>
+                                                    <?php if ($user_arsip != 'user_arsip') { ?>
                                                     <th>Edit Coly</th>
                                                     <?php }?>
                                                 </tr>

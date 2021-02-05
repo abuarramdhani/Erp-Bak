@@ -8,34 +8,58 @@ class M_tracking extends CI_Model {
 
     public function getDataSPB() {
         $oracle = $this->load->database('oracle', true);
-        $sql ="select to_char(jam_input, 'DD/MM/YYYY HH24:MI:SS') as jam_input, 
-                tgl_dibuat, 
-                to_char(jam_input, 'DD/MM/YYYY') as tgl_input, 
-                to_char(jam_input, 'HH24:MI:SS') as jam_input2,
-                jenis_dokumen, no_dokumen, jumlah_item, jumlah_pcs,
-                to_char(mulai_pelayanan, 'DD/MM/YYYY HH24:MI:SS') as mulai_pelayanan, 
-                to_char(mulai_pelayanan, 'DD/MM/YYYY') as tgl_mulai_pelayanan, 
-                to_char(mulai_pelayanan, 'HH24:MI:SS') as jam_mulai_pelayanan, 
-                to_char(selesai_pelayanan, 'DD/MM/YYYY HH24:MI:SS') as selesai_pelayanan,waktu_pelayanan,
-                to_char(selesai_pelayanan, 'DD/MM/YYYY') as tgl_selesai_pelayanan,
-                to_char(selesai_pelayanan, 'HH24:MI:SS') as jam_selesai_pelayanan,
-                to_char(mulai_pengeluaran, 'DD/MM/YYYY HH24:MI:SS') as mulai_pengeluaran, 
-                to_char(mulai_pengeluaran, 'DD/MM/YYYY') as tgl_mulai_pengeluaran, 
-                to_char(mulai_pengeluaran, 'HH24:MI:SS') as jam_mulai_pengeluaran, 
-                to_char(selesai_pengeluaran, 'DD/MM/YYYY HH24:MI:SS') as selesai_pengeluaran, waktu_pengeluaran,
-                to_char(selesai_pengeluaran, 'DD/MM/YYYY') as tgl_selesai_pengeluaran, 
-                to_char(selesai_pengeluaran, 'HH24:MI:SS') as jam_selesai_pengeluaran, 
-                to_char(mulai_packing, 'DD/MM/YYYY HH24:MI:SS') as mulai_packing, 
-                to_char(selesai_packing, 'DD/MM/YYYY HH24:MI:SS') as selesai_packing, waktu_packing,
-                to_char(mulai_packing, 'DD/MM/YYYY') as tgl_mulai_packing, 
-                to_char(mulai_packing, 'HH24:MI:SS') as jam_mulai_packing, 
-                to_char(selesai_packing, 'DD/MM/YYYY') as tgl_selesai_packing,
-                to_char(selesai_packing, 'HH24:MI:SS') as jam_selesai_packing,
-                urgent, pic_pelayan, pic_pengeluaran, pic_packing, bon
-                from khs_tampung_spb
-                where selesai_packing is null
-                and cancel is null
-                order by urgent, tgl_dibuat";
+        $sql ="SELECT DISTINCT TO_CHAR (kts.jam_input, 'DD/MM/YYYY HH24:MI:SS') AS jam_input,
+                        kts.tgl_dibuat,
+                        TO_CHAR (kts.jam_input, 'DD/MM/YYYY') AS tgl_input,
+                        TO_CHAR (kts.jam_input, 'HH24:MI:SS') AS jam_input2,
+                        jenis_dokumen, kts.no_dokumen, kts.jumlah_item,
+                        kts.jumlah_pcs,
+                        TO_CHAR (kts.mulai_pelayanan, 'DD/MM/YYYY HH24:MI:SS') AS mulai_pelayanan,
+                        TO_CHAR (kts.mulai_pelayanan, 'DD/MM/YYYY') AS tgl_mulai_pelayanan,
+                        TO_CHAR (kts.mulai_pelayanan, 'HH24:MI:SS') AS jam_mulai_pelayanan,
+                        TO_CHAR (kts.selesai_pelayanan, 'DD/MM/YYYY HH24:MI:SS') AS selesai_pelayanan,
+                        kts.waktu_pelayanan,
+                        TO_CHAR (kts.selesai_pelayanan, 'DD/MM/YYYY') AS tgl_selesai_pelayanan,
+                        TO_CHAR (kts.selesai_pelayanan, 'HH24:MI:SS') AS jam_selesai_pelayanan,
+                        TO_CHAR (kts.mulai_pengeluaran, 'DD/MM/YYYY HH24:MI:SS') AS mulai_pengeluaran,
+                        TO_CHAR (kts.mulai_pengeluaran, 'DD/MM/YYYY') AS tgl_mulai_pengeluaran,
+                        TO_CHAR (kts.mulai_pengeluaran, 'HH24:MI:SS') AS jam_mulai_pengeluaran,
+                        TO_CHAR (kts.selesai_pengeluaran, 'DD/MM/YYYY HH24:MI:SS') AS selesai_pengeluaran,
+                        kts.waktu_pengeluaran,
+                        TO_CHAR (kts.selesai_pengeluaran, 'DD/MM/YYYY') AS tgl_selesai_pengeluaran,
+                        TO_CHAR (kts.selesai_pengeluaran, 'HH24:MI:SS') AS jam_selesai_pengeluaran,
+                        TO_CHAR (kts.mulai_packing, 'DD/MM/YYYY HH24:MI:SS') AS mulai_packing,
+                        TO_CHAR (kts.selesai_packing, 'DD/MM/YYYY HH24:MI:SS') AS selesai_packing,
+                        waktu_packing,
+                        TO_CHAR (kts.mulai_packing, 'DD/MM/YYYY') AS tgl_mulai_packing,
+                        TO_CHAR (kts.mulai_packing, 'HH24:MI:SS') AS jam_mulai_packing,
+                        TO_CHAR (kts.selesai_packing, 'DD/MM/YYYY') AS tgl_selesai_packing,
+                        TO_CHAR (kts.selesai_packing, 'HH24:MI:SS') AS jam_selesai_packing,
+                        kts.urgent, kts.pic_pelayan, kts.pic_pengeluaran,
+                        kts.pic_packing, kts.bon, mtrh.attribute15 ekspedisi,
+                        CASE
+                        WHEN mtrl.REFERENCE IS NULL
+                            THEN (SELECT DISTINCT houv3.town_or_city
+                                            FROM mtl_txn_request_lines mtrl1,
+                                                    mtl_txn_request_headers mtrh1,
+                                                    hr_organization_units_v houv3
+                                            WHERE mtrh1.header_id = mtrl1.header_id
+                                                AND mtrh1.request_number = mtrh.request_number
+                                                AND TO_CHAR (houv3.organization_id) = SUBSTR (TRIM (LTRIM (mtrl1.REFERENCE, ' ')), 6)
+                                                AND mtrl1.REFERENCE IS NOT NULL)
+                        ELSE NVL(houv2.town_or_city, houv2.location_code)
+                        END kota_kirim
+                FROM khs_tampung_spb kts,
+                        mtl_txn_request_headers mtrh,
+                        mtl_txn_request_lines mtrl,
+                        hr_organization_units_v houv2
+                WHERE kts.selesai_packing IS NULL
+                    AND CANCEL IS NULL
+                    AND kts.no_dokumen = mtrh.request_number
+                --     AND kts.no_dokumen IN (3717021, 4073844)
+                    AND mtrh.header_id = mtrl.header_id
+                    AND TO_CHAR (houv2.organization_id(+)) = SUBSTR (TRIM (LTRIM (mtrl.REFERENCE, ' ')), 6)
+                ORDER BY kts.urgent, kts.tgl_dibuat";
         $query = $oracle->query($sql);
         return $query->result_array();
         // echo $sql;
