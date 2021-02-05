@@ -46,18 +46,29 @@ class C_Index extends CI_Controller {
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		
-		$data['normal'] = array();
-		$data['urgent'] = array();
-		$data['susulan'] = array();
 
 		$noind = $this->session->user;
 		// $noind = '6355';
 		$data['approver'] = $this->M_requisition->getPersonId($noind);
-     
+
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		if ($this->session->responsibility_id == 2679 || $this->session->responsibility_id == 2681) {
+
+		if ($this->session->responsibility === '(Approver)Order Kebutuhan Barang dan Jasa') {
+			$data['normalUnapproved'] = $this->M_approver->getUnapprovedOrderCount($noind, 'NORMAL');
+			$data['urgentUnapproved'] = $this->M_approver->getUnapprovedOrderCount($noind, 'URGENT');
+			$data['susulanUnapproved'] = $this->M_approver->getUnapprovedOrderCount($noind, 'SUSULAN');
+
+			$data['normalJudged'] = $this->M_approver->getJudgedOrderCount($noind, 'NORMAL');
+			$data['urgentJudged'] = $this->M_approver->getJudgedOrderCount($noind, 'URGENT');
+			$data['susulanJudged'] = $this->M_approver->getJudgedOrderCount($noind, 'SUSULAN');
+			
+			$this->load->view('OrderKebutuhanBarangDanJasa/V_Index',$data);
+		} else if ($this->session->responsibility === '(Pengelola)Order Kebutuhan Barang dan Jasa') {
+			$data['normalUnapproved'] = [];
+			$data['urgentUnapproved'] = [];
+			$data['susulanUnapproved'] = [];
+
 			$allOrder = $this->M_approver->getListDataOrder();
 			//  echo'<pre>';
             // print_r($allOrder);
@@ -71,11 +82,11 @@ class C_Index extends CI_Controller {
 							$orderSiapTampil = $this->M_approver->getOrderToApprove($order['ORDER_ID']);
 							if ($orderSiapTampil[0]['ORDER_CLASS'] != '2') {
 								if ($orderSiapTampil[0]['URGENT_FLAG'] == 'N' && $orderSiapTampil[0]['IS_SUSULAN'] =='N') {
-									array_push($data['normal'], $orderSiapTampil[0]);
+									array_push($data['normalUnapproved'], $orderSiapTampil[0]);
 								}elseif ($orderSiapTampil[0]['URGENT_FLAG'] == 'Y' && $orderSiapTampil[0]['IS_SUSULAN'] =='N') {
-									array_push($data['urgent'], $orderSiapTampil[0]);
+									array_push($data['urgentUnapproved'], $orderSiapTampil[0]);
 								}elseif ($orderSiapTampil[0]['IS_SUSULAN'] =='Y') {
-									array_push($data['susulan'], $orderSiapTampil[0]);
+									array_push($data['susulanUnapproved'], $orderSiapTampil[0]);
 								}
 							}
 						}
@@ -84,11 +95,11 @@ class C_Index extends CI_Controller {
 							$orderSiapTampil = $this->M_approver->getOrderToApprove($order['ORDER_ID']);
 							if ($orderSiapTampil[0]['ORDER_CLASS'] != '2') {
 								if ($orderSiapTampil[0]['URGENT_FLAG'] == 'N' && $orderSiapTampil[0]['IS_SUSULAN'] =='N') {
-									array_push($data['normal'], $orderSiapTampil[0]);
+									array_push($data['normalUnapproved'], $orderSiapTampil[0]);
 								}elseif ($orderSiapTampil[0]['URGENT_FLAG'] == 'Y' && $orderSiapTampil[0]['IS_SUSULAN'] =='N') {
-									array_push($data['urgent'], $orderSiapTampil[0]);
+									array_push($data['urgentUnapproved'], $orderSiapTampil[0]);
 								}elseif ($orderSiapTampil[0]['IS_SUSULAN'] =='Y') {
-									array_push($data['susulan'], $orderSiapTampil[0]);
+									array_push($data['susulanUnapproved'], $orderSiapTampil[0]);
 								}
 							}
 						}
@@ -97,34 +108,24 @@ class C_Index extends CI_Controller {
 
 
 			}
-			// exit;
 
-			// $data['normalBelum'] = array();
-			// $data['urgentBelum'] = array();
-			// $data['susulanBelum'] = array();
-			// $data['normalSelesai'] = array();
-			// $data['urgentSelesai'] = array();
-			// $data['susulanSelesai'] = array();
+			$totalNormalOrder = $this->M_approver->getDetailOrderNormalTotal($data['approver'][0]['PERSON_ID']);
+			$totalUrgentOrder = $this->M_approver->getDetailOrderUrgentTotal($data['approver'][0]['PERSON_ID']);			
+			$totalSusulanOrder = $this->M_approver->getDetailOrderSusulanTotal($data['approver'][0]['PERSON_ID']);
+			
+			$data['normalUnapproved'] = count($data['normalUnapproved']);
+			$data['urgentUnapproved'] = count($data['urgentUnapproved']);
+			$data['susulanUnapproved'] = count($data['susulanUnapproved']);
+			$data['normalJudged'] = count($totalNormalOrder) - $data['normalUnapproved'];
+			$data['urgentJudged'] = count($totalUrgentOrder) - $data['urgentUnapproved'];
+			$data['susulanJudged'] = count($totalSusulanOrder) - $data['susulanUnapproved'];
 
-			$data['normalOrder'] = $this->M_approver->getDetailOrderNormalTotal($data['approver'][0]['PERSON_ID']);
-			// foreach ($normalOrder as $key => $normal) {
-			// 	if ($normal['JUDGEMENT'] == null) {
-			// 		array_push($data['normalBelum'], $normalOrder[$key]);
-			// 	}elseif ($normal['JUDGEMENT'] != null) {
-			// 		array_push($data['normalSelesai'], $normalOrder[$key]);
-			// 	}
-			// }
-			$data['urgentOrder'] = $this->M_approver->getDetailOrderUrgentTotal($data['approver'][0]['PERSON_ID']);
-			
-			$data['susulanOrder'] = $this->M_approver->getDetailOrderSusulanTotal($data['approver'][0]['PERSON_ID']);
-			
-			
 			$this->load->view('OrderKebutuhanBarangDanJasa/V_Index',$data);
 		}else {
 			$this->load->view('OrderKebutuhanBarangDanJasa/V_Index2',$data);
 		}
-        $this->load->view('V_Footer',$data);
-    }
+		$this->load->view('V_Footer',$data);
+	}
 
 	public function checkSession()
 	{

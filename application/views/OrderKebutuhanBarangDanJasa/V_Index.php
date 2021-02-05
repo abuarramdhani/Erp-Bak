@@ -15,32 +15,30 @@
 
 				<div class="col-md-4 col-sm-6 col-xs-12">
 					<?php 
-						if ($this->session->responsibility_id == 2681) {
+						if ($this->session->responsibility === '(Pengelola)Order Kebutuhan Barang dan Jasa') {
 							$classNormal = 'btnNormalOrderOKBPengelola';
 						}else {
 							$classNormal = 'btnNormalOrderOKB';
 						}
 
-						$normalBelum = count($normal);
-						$totalNormal = count($normalOrder);
-						$normalSelesai = $totalNormal - $normalBelum;
-						if ($normalSelesai == 0 && $totalNormal == 0) {
+						$totalNormal = $normalJudged + $normalUnapproved;
+						if ($normalJudged == 0 && $totalNormal == 0) {
 							$persenNormal = '100';
 						}else {
-							$persenNormal = $normalSelesai / $totalNormal * 100;
+							$persenNormal = $normalJudged / $totalNormal * 100;
 						}
 					?>
 					<div class="info-box bg-green <?= $classNormal;?>">
 						<span class="info-box-icon"><i class="fa fa-thumbs-o-up"></i></span>
 
 						<div class="info-box-content">
-							<span class="info-box-number"><?php echo count($normal); ?></span>
+							<span class="info-box-number"><?php echo $normalUnapproved; ?></span>
 							<span class="info-box-text">Order Reguler</span>
 
-							<div class="progress hide">
+							<div class="progress">
 								<div class="progress-bar" style="width: <?php echo round($persenNormal) ?>%"></div>
 							</div>
-							<span class="progress-description hide">
+							<span class="progress-description">
 							<?php echo round($persenNormal).'% dari  '.$totalNormal;?> Order telah diapprove</span>
 						</div>
 						<!-- /.info-box-content -->
@@ -51,32 +49,30 @@
 
 				<div class="col-md-4 col-sm-6 col-xs-12">
 					<?php 
-						if ($this->session->responsibility_id == 2681) {
+						if ($this->session->responsibility === '(Pengelola)Order Kebutuhan Barang dan Jasa') {
 							$classSusulan = 'btnSusulanOrderOKBPengelola';
 						}else {
 							$classSusulan = 'btnSusulanOrderOKB';
 						}
 
-						$susulanBelum = count($susulan);
-						$totalSusulan = count($susulanOrder);
-						$susulanSelesai = $totalSusulan - $susulanBelum;
-						if ($susulanSelesai == 0 && $totalSusulan == 0) {
+						$totalSusulan = $susulanJudged + $susulanUnapproved;
+						if ($susulanJudged == 0 && $totalSusulan == 0) {
 							$persenSusulan = '100';
 						}else {
-							$persenSusulan = $susulanSelesai / $totalSusulan * 100;
+							$persenSusulan = $susulanJudged / $totalSusulan * 100;
 						}
 					?>
 					<div class="info-box bg-yellow <?= $classSusulan;?>">
 						<span class="info-box-icon"><i style="transform: rotate(270deg) scaleX(-1);" class="fa fa-mail-reply-all  fa-flip-horizontal"></i></span>
 
 						<div class="info-box-content">
-							<span class="info-box-number"><?php echo count($susulan); ?></span>
+							<span class="info-box-number"><?php echo $susulanUnapproved; ?></span>
 							<span class="info-box-text">Order Emergency</span>
 
-							<div class="progress hide">
+							<div class="progress">
 								<div class="progress-bar" style="width: <?php echo round($persenSusulan) ?>%"></div>
 							</div>
-							<span class="progress-description hide">
+							<span class="progress-description">
 							<?php echo round($persenSusulan).'% dari  '.$totalSusulan;?> Order telah diapprove</span>
 						</div>
 						<!-- /.info-box-content -->
@@ -87,32 +83,30 @@
 
 				<div class="col-md-4 col-sm-6 col-xs-12">
 					<?php 
-						if ($this->session->responsibility_id == 2681) {
+						if ($this->session->responsibility === '(Pengelola)Order Kebutuhan Barang dan Jasa') {
 							$classUrgent = 'btnUrgentOrderOKBPengelola';
 						}else {
 							$classUrgent = 'btnUrgentOrderOKB';
 						}
 
-						$urgentBelum = count($urgent);
-						$totalUrgent = count($urgentOrder);
-						$urgentSelesai = $totalUrgent - $urgentBelum;
-						if ($urgentSelesai == 0 && $totalUrgent == 0) {
+						$totalUrgent = $urgentJudged + $urgentUnapproved;
+						if ($urgentJudged == 0 && $totalUrgent == 0) {
 							$persenUrgent = '100';
 						}else {
-							$persenUrgent = $urgentSelesai / $totalUrgent * 100;
+							$persenUrgent = $urgentJudged / $totalUrgent * 100;
 						}
 					?>
 					<div class="info-box bg-red <?= $classUrgent;?>">
 						<span class="info-box-icon"><i class="fa fa-warning"></i></span>
 
 						<div class="info-box-content">
-							<span class="info-box-number"><?php echo count($urgent); ?></span>
+							<span class="info-box-number"><?php echo $urgentUnapproved; ?></span>
 							<span class="info-box-text">Order Urgent</span>
 
-							<div class="progress hide">
+							<div class="progress">
 								<div class="progress-bar" style="width: <?php echo round($persenUrgent) ?>%"></div>
 							</div>
-							<span class="progress-description hide">
+							<span class="progress-description">
 							<?php echo round($persenUrgent).'% dari  '.$totalUrgent;?> Order telah diapprove</span>
 						</div>
 						<!-- /.info-box-content -->
