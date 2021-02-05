@@ -178,34 +178,29 @@ $(document).ready(function () {
                 $(".tempatTabelDPS").html(response);
                 $(".tblListBarangDPS").DataTable();
 
-                // Cek sisa ATR & input kosong
                 function cekSisaQty() {
                   // Cek jika ada sisa yang minus
                   let allocate = $(".tempatTabelDPS tbody tr")
                     .toArray()
-                    .map((e) => parseInt($(e).find(".allocateQty").html()));
+                    .map((e) => $(e).find(".allocateQty").html());
 
                   let sisa = allocate.filter((a) => a < 0);
-
-                  if (sisa.length) {
-                    $(".btnCrateDPBDPS").attr("disabled", true);
-                  } else {
-                    $(".btnCrateDPBDPS").attr("disabled", false);
-                  }
 
                   // Cek jika ada input yang masih kosong
                   let kosong = $(".tempatTabelDPS tbody tr")
                     .toArray()
-                    .map((e) => $(e).find(".noReqQty").value);
+                    .map((e) => $(e).find(".noReqQty").val());
 
-                  let inpKosong = kosong.filter((a) => a == null);
+                  // console.log(`sisa yang minus : ${sisa.length}`);
+                  // console.log(`input kosong : ${kosong.includes("")}`);
 
-                  if (inpKosong.length) {
-                    $(".btnCrateDPBDPS").attr("disabled", true);
+                  if (kosong.includes("") || sisa.length > 0) {
+                    $(".btnCrateDPBDPS").prop("disabled", true);
                   } else {
-                    $(".btnCrateDPBDPS").attr("disabled", false);
+                    $(".btnCrateDPBDPS").prop("disabled", false);
                   }
                 }
+                cekSisaQty();
 
                 // Jika input kosong tampil spbQty
                 $(".noReqQty").focus(function () {
@@ -230,10 +225,8 @@ $(document).ready(function () {
 
                   if (this.value == 0) {
                     sisaQty.html("");
-                    $(".btnCrateDPBDPS").attr("disabled", true);
                   } else {
                     sisaQty.html(parseInt(atrQty) - parseInt(this.value));
-                    $(".btnCrateDPBDPS").attr("disabled", false);
                   }
 
                   if (this.value > spbQty) {
