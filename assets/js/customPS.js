@@ -75,8 +75,6 @@ function upload_file_flow(id) {
 		formData.append('nama_file', file_name);
 		formData.append('doc_status', doc_status);
 
-		console.log(formData); 
-
 		$.ajax({
 			type: 'POST',
 			url: baseurl + "PengembanganSistem/upload_data_flow/"+id,
@@ -108,7 +106,6 @@ function upload_file_flow(id) {
 }
 
 function delete_flow(id) {
-	console.log(id); 
 	Swal.fire({
 		title: 'Are you sure?',
 		text: "Data akan di hapus !",
@@ -118,7 +115,6 @@ function delete_flow(id) {
 		cancelButtonText: 'Cancel',
 		reverseButtons: true
 	}).then(function(isConfirm) {
-		console.log(id);
 			if (isConfirm.value === true) {
 			$.ajax({
 				type: 'POST',
@@ -130,7 +126,6 @@ function delete_flow(id) {
 				Swal.showLoading()
 				},
 				success: function(response) {
-					console.log(response);
 					if (response == 1) {
 						Swal.fire({
 							type: 'success',
@@ -163,7 +158,6 @@ function link_ps(id) {
 //COPWI
 
 function delete_cop_wi(id) {
-	console.log(id); 
 	Swal.fire({
 		title: 'Are you sure?',
 		text: "Data akan di hapus !",
@@ -173,7 +167,6 @@ function delete_cop_wi(id) {
 		cancelButtonText: 'Cancel',
 		reverseButtons: true
 	}).then(function(isConfirm) {
-		console.log(id);
 			if (isConfirm.value === true) {
 			$.ajax({
 				type: 'POST',
@@ -185,7 +178,6 @@ function delete_cop_wi(id) {
 				Swal.showLoading()
 				},
 				success: function(response) {
-					console.log(response);
 					if (response == 1) {
 						Swal.fire({
 							type: 'success',
@@ -297,7 +289,6 @@ $("#number_copwi_ps").change(function() {
 			},
 			dataType: "JSON",
 			success: function (data) {
-				// console.log(data);
 				$("#select_seksi").val(data[0].singkat);
 				$("#select_seksi").text(data[0].seksi);
 				$("#sop_cw").val(data[0].singkat);
@@ -351,7 +342,6 @@ $("#seksi_cw").change(function(){
 			if (data > 0) {
 				var plus = parseInt(data) + 1;
 				var y = (plus>9)?(plus<99)?plus:'0'+plus:'00'+plus;
-				console.log(plus);
 				$("#number_copwi_ps").val(c1+"-"+seksi_copwi+"-"+c3+"-"+y);
 			}else{
 				$("#number_copwi_ps").val(c1+"-"+seksi_copwi+"-"+c3+"-001");
@@ -382,7 +372,6 @@ $("#cop_wi_cw").change(function(){
 			if (data > 0) {
 				var plus = parseInt(data) + 1;
 				var y = (plus>9)?(plus<99)?plus:'0'+plus:'00'+plus;
-				console.log(plus);
 				$("#number_copwi_ps").val(cop_wi+"-"+seksi_copwi+"-"+c3+"-"+y);
 			}else{
 				$("#number_copwi_ps").val(cop_wi+"-"+seksi_copwi+"-"+c3+"-001");
@@ -400,7 +389,6 @@ function input_nomor_cop_wi_ps() {
 	a[2] = number;
 	var b = a.join('-')
 	$("#number_copwi_ps").val(b);
-	console.log(a[2])
 }
 
 $("#nomor_sop_cw").change(function() {
@@ -411,7 +399,6 @@ $("#nomor_sop_cw").change(function() {
 	var a	= b[0];
 	var a1	= b[1];
 	var a2	= b[2];
-	console.log(yy);
 
 	$.ajax({
 		type: "POST",
@@ -447,7 +434,6 @@ function nomor_cop_wi_ps() {
 	a[2] = number;
 	var b = a.join('-')
 	$("#number_copwi_ps").val(b);
-	console.log(a[2])
 }
 
 function upload_file_cop(id) {
@@ -462,8 +448,6 @@ function upload_file_cop(id) {
 		formData.append('fileupload', file_cop); 
 		formData.append('nama_file', file_name);
 		formData.append('doc_status', doc_status);
-
-		// console.log(formData); 
 
 		$.ajax({
 			type: 'POST',
@@ -787,7 +771,6 @@ function notif_edit_cop_wi() {
 //User Manual
 
 function delete_usermanual(id) {
-	console.log(id); 
 	Swal.fire({
 		title: 'Are you sure?',
 		text: "Data akan di hapus !",
@@ -797,7 +780,6 @@ function delete_usermanual(id) {
 		cancelButtonText: 'Cancel',
 		reverseButtons: true
 	}).then(function(isConfirm) {
-		console.log(id);
 			if (isConfirm.value === true) {
 			$.ajax({
 				type: 'POST',
@@ -809,7 +791,6 @@ function delete_usermanual(id) {
 				Swal.showLoading()
 				},
 				success: function(response) {
-					console.log(response);
 					if (response == 1) {
 						Swal.fire({
 							type: 'success',
@@ -878,7 +859,6 @@ function nomor_um_ps() {
 	a[2] = number;
 	var b = a.join('-')
 	$("#number_um").val(b);
-	console.log(a[2])
 }
 
 $("#nomor_sop_um").change(function(){
@@ -949,8 +929,6 @@ function upload_file_um(id) {
 		formData.append('fileupload', file_ps); 
 		formData.append('nama_file', file_name);
 		formData.append('doc_status', doc_status);
-
-		// console.log(formData); 
 
 		$.ajax({
 			type: 'POST',
@@ -1069,7 +1047,6 @@ $("#ditujukan_ms1").each(function( index ) {
 			},
 			dataType: "JSON",
 			success: function (response) {
-				console.log(response);
 				var len = response.length;
 				for (let i = 0; i < len; i++) {
 					const seksi = response[i].seksi;
@@ -1451,9 +1428,12 @@ $("#waktu_selesai").change(function() {
 		if ($("#waktu_mulai").val() != 0 && $("#total_target").val() !=0 ) {
 			var mulai = $("#waktu_mulai").val()+":00";
 			var selesai = $("#waktu_selesai").val()+":00";
-	
-			var total = hmsToSeconds(selesai) - hmsToSeconds(mulai);
-			var perbedaan = Math.floor(total/60)-75;
+			var o = mulai.split(":");
+				if (o[0] == 14) {
+					z = 15;
+				}else{z = null};
+					var total = hmsToSeconds(selesai) - hmsToSeconds(mulai);
+			var perbedaan = Math.floor(total/60)-75+z;
 			$("#total_waktu").val(perbedaan);
 
 
@@ -1687,7 +1667,6 @@ function exspotpdf(){
 }
 
 function delete_lkh(id) {
-		console.log(id); 
 		Swal.fire({
 			title: 'Are you sure?',
 			text: "Data akan di hapus !",
@@ -1697,7 +1676,6 @@ function delete_lkh(id) {
 			cancelButtonText: 'Cancel',
 			reverseButtons: true
 		}).then(function(isConfirm) {
-			console.log(isConfirm);
 				if (isConfirm.value === true) {
 				$.ajax({
 					type: 'POST',
@@ -1862,7 +1840,6 @@ $("#view_seunt").click(function(){
 						{
 							'data': 'singkat',
 							'render': function (data, type, row) {
-							// console.log(data)
 							return "<a class='delete' data-obj='"+JSON.stringify(data)+"' href='#'>Delete</a>";
 							}
 					}]
@@ -1870,7 +1847,6 @@ $("#view_seunt").click(function(){
 				$(document).on("click", ".delete", function(e) {
 					e.preventDefault()
 					let data = $(this).data("obj").replace(/['"]+/g, '')
-					console.log(data);
 					$.ajax({
 						type: 'POST',
 						url: baseurl + "PengembanganSistem/delete_dataseksi/"+data,
@@ -1915,7 +1891,6 @@ $("#view_seunt").click(function(){
 	});
 
 	function deletedata(id) {
-			console.log(id); 
 			Swal.fire({
 				title: 'Are you sure?',
 				text: "Data akan di hapus !!",
@@ -1925,7 +1900,6 @@ $("#view_seunt").click(function(){
 				cancelButtonText: 'Cancel',
 				reverseButtons: true
 			}).then(function(isConfirm) {
-				console.log(isConfirm);
 					if (isConfirm.value === true) {
 					$.ajax({
 						type: 'POST',
@@ -1961,7 +1935,6 @@ $("#view_seunt").click(function(){
 	}
 
 	function delete_datamemo(id) {
-			console.log(id); 
 			Swal.fire({
 				title: 'Are you sure?',
 				text: "Data akan di hapus !",
@@ -1971,7 +1944,6 @@ $("#view_seunt").click(function(){
 				cancelButtonText: 'Cancel',
 				reverseButtons: true
 			}).then(function(isConfirm) {
-				console.log(isConfirm);
 					if (isConfirm.value === true) {
 					$.ajax({
 						type: 'POST',
