@@ -192,8 +192,6 @@ class C_Admin extends  CI_Controller
 		$noDPB = $_POST['noDPB'];
 
 		$data['list_barang'] = $this->M_dpb->listBarang($noDPB);
-		// echo '<pre>';
-		// print_r($data['list_barang']); exit;
 
 		$returnTable = $this->load->view('DPBSparepart/Admin/V_Table', $data, TRUE);
 
@@ -221,6 +219,15 @@ class C_Admin extends  CI_Controller
 		$creator = $this->session->user;
 		$forward = $_POST['forward'];
 		$keterangan = $_POST['keterangan'];
+		$lines = $_POST['lines'];
+
+		foreach ($lines as $line) {
+			if ($line['reqQty'] != null) {
+				echo '<pre>';
+				print_r($line);
+				$this->M_dpb->createDPBRequest($noDPB, $line['lineId'], $line['reqQty'], $creator);
+			}
+		}
 
 		$this->M_dpb->createDPB($noDPB, $jenis, $creator, $forward, $keterangan);
 

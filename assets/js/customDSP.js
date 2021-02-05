@@ -177,6 +177,71 @@ $(document).ready(function () {
 
                 $(".tempatTabelDPS").html(response);
                 $(".tblListBarangDPS").DataTable();
+
+                // Cek sisa ATR & input kosong
+                function cekSisaQty() {
+                  // Cek jika ada sisa yang minus
+                  let allocate = $(".tempatTabelDPS tbody tr")
+                    .toArray()
+                    .map((e) => parseInt($(e).find(".allocateQty").html()));
+
+                  let sisa = allocate.filter((a) => a < 0);
+
+                  if (sisa.length) {
+                    $(".btnCrateDPBDPS").attr("disabled", true);
+                  } else {
+                    $(".btnCrateDPBDPS").attr("disabled", false);
+                  }
+
+                  // Cek jika ada input yang masih kosong
+                  let kosong = $(".tempatTabelDPS tbody tr")
+                    .toArray()
+                    .map((e) => $(e).find(".noReqQty").value);
+
+                  let inpKosong = kosong.filter((a) => a == null);
+
+                  if (inpKosong.length) {
+                    $(".btnCrateDPBDPS").attr("disabled", true);
+                  } else {
+                    $(".btnCrateDPBDPS").attr("disabled", false);
+                  }
+                }
+
+                // Jika input kosong tampil spbQty
+                $(".noReqQty").focus(function () {
+                  let spbQty = parseInt($(this).parent().prev().html());
+                  let atrQty = parseInt($(this).parent().next().html());
+                  let sisaQty = $(this).parent().next().next();
+
+                  if (this.value == 0) {
+                    this.value = spbQty;
+                    sisaQty.html(parseInt(atrQty) - parseInt(this.value));
+                  } else {
+                    sisaQty.html(parseInt(atrQty) - parseInt(this.value));
+                  }
+                  cekSisaQty();
+                });
+
+                // Jika mengubah nilai reqQty
+                $(".noReqQty").keyup(function () {
+                  let spbQty = parseInt($(this).parent().prev().html());
+                  let atrQty = parseInt($(this).parent().next().html());
+                  let sisaQty = $(this).parent().next().next();
+
+                  if (this.value == 0) {
+                    sisaQty.html("");
+                    $(".btnCrateDPBDPS").attr("disabled", true);
+                  } else {
+                    sisaQty.html(parseInt(atrQty) - parseInt(this.value));
+                    $(".btnCrateDPBDPS").attr("disabled", false);
+                  }
+
+                  if (this.value > spbQty) {
+                    this.value = spbQty;
+                    sisaQty.html(parseInt(atrQty) - parseInt(this.value));
+                  }
+                  cekSisaQty();
+                });
               },
             });
           }
@@ -185,80 +250,90 @@ $(document).ready(function () {
     }
   });
 
-  $(document).on("click", ".btnCrateDPBDPS", function () {
+  $(".form-horizontal").on("click", ".btnCrateDPBDPS", function () {
     var noDPB = $(".noDODSP").val();
     var jenis = $(".jenisDPS").val();
     var forward = $(".forwardDPS").val();
     var keterangan = $(".keteranganDPS").val();
 
+    let lines = $(".tempatTabelDPS tbody tr")
+      .toArray()
+      .map((e) => ({
+        lineId: $(e).find(".lineid").html(),
+        reqQty: $(e).find(".noReqQty").val(),
+        allocateQty:
+          parseInt($(e).find(".atrQty").html()) -
+          parseInt($(e).find(".noReqQty").val()),
+      }));
+
+    // $.ajax({
+    //   type: "POST",
+    //   url: baseurl + "DPBSparepart/Admin/cekStok",
+    //   data: { noDPB },
+    //   dataType: "JSON",
+    //   success: function (response) {
+    //     if (response[0]["HASIL"] == "0") {
     $.ajax({
       type: "POST",
-      url: baseurl + "DPBSparepart/Admin/cekStok",
+      url: baseurl + "DPBSparepart/Admin/cekStatusLine",
       data: { noDPB },
       dataType: "JSON",
       success: function (response) {
-        if (response[0]["HASIL"] == "0") {
+        if (response[0]["HASIL_LINE"] == "0") {
           $.ajax({
-            type: "POST",
-            url: baseurl + "DPBSparepart/Admin/cekStatusLine",
-            data: { noDPB },
-            dataType: "JSON",
-            success: function (response) {
-              if (response[0]["HASIL_LINE"] == "0") {
-                $.ajax({
-                  beforeSend: () => {
-                    Swal.fire({
-                      customClass: "swal-font-small",
-                      title: "Loading",
-                      onBeforeOpen: () => {
-                        Swal.showLoading();
-                      },
-                      allowOutsideClick: false,
-                    });
-                  },
-                  type: "POST",
-                  url: baseurl + "DPBSparepart/Admin/createDPB",
-                  data: { noDPB, jenis, forward, keterangan },
-                  success: function (response) {
-                    swal.close();
-                    swal.fire({
-                      type: "success",
-                      title: "Berhasil!",
-                    });
-                    $(".tempatTabelDPS").html("");
-                    $(".jenisDPS").val("").trigger("change.select2");
-                    $(".forwardDPS").val("").trigger("change.select2");
-                    $(".keteranganDPS").val("");
-                    $(".noDODSP").val("");
-                    $(".alamatDSP").val("");
-                  },
-                });
-              } else if (response[0]["HASIL_LINE"] == "99999") {
-                swal.fire({
-                  type: "error",
-                  title: "Alamat belum lengkap!",
-                });
-              } else if (response[0]["HASIL_LINE"] == "77777") {
-                swal.fire({
-                  type: "error",
-                  title: "DO/SPB line bukan SP/YSP!",
-                });
-              } else {
-                swal.fire({
-                  type: "error",
-                  title:
-                    "DO/SPB sudah transact sebagian silahkan masukan nomor lain!",
-                });
-              }
+            beforeSend: () => {
+              Swal.fire({
+                customClass: "swal-font-small",
+                title: "Loading",
+                onBeforeOpen: () => {
+                  Swal.showLoading();
+                },
+                allowOutsideClick: false,
+              });
             },
+            type: "POST",
+            url: baseurl + "DPBSparepart/Admin/createDPB",
+            data: { noDPB, jenis, forward, keterangan, lines },
+            success: function (response) {
+              swal.close();
+              swal.fire({
+                type: "success",
+                title: "Berhasil!",
+              });
+              $(".tempatTabelDPS").html("");
+              $(".jenisDPS").val("").trigger("change.select2");
+              $(".forwardDPS").val("").trigger("change.select2");
+              $(".keteranganDPS").val("");
+              $(".noDODSP").val("");
+              $(".alamatDSP").val("");
+            },
+          });
+        } else if (response[0]["HASIL_LINE"] == "99999") {
+          swal.fire({
+            type: "error",
+            title: "Alamat belum lengkap!",
+          });
+        } else if (response[0]["HASIL_LINE"] == "77777") {
+          swal.fire({
+            type: "error",
+            title: "DO/SPB line bukan SP/YSP!",
           });
         } else {
           swal.fire({
             type: "error",
-            title: "Stok tidak mencukupi!",
+            title:
+              "DO/SPB sudah transact sebagian silahkan masukan nomor lain!",
           });
         }
       },
     });
+    //     } else {
+    //       swal.fire({
+    //         type: "error",
+    //         title: "Stok tidak mencukupi!",
+    //       });
+    //     }
+    //   },
+    // });
   });
 });
