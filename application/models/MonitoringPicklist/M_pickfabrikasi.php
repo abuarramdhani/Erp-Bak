@@ -394,7 +394,7 @@ class M_pickfabrikasi extends CI_Model
 					,case when kqem.job_from_subinv is null 
 							and kqem.bom_from_subinv is not null
 							and kqem.code is null
-							then 'KOMPONEN DI MO GUDANG'
+							then 'KOMPONEN DI MO GUDANG : ' || kqem.required_quantity || ' PCS'
 							when nvl (kqem.job_comp_qty,0) <> nvl (kqem.bom_comp_qty,0)
 							and kqem.code is null
 							then 'LAYANI QTY SESUAI JOB : ' || kqem.required_quantity || ' PCS'
