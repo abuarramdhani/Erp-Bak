@@ -1,39 +1,98 @@
-// $(document).on('hasApproverResponsibility', (e, $approverResponsibilityBoxContent) => {
-//     const $infoBadge = $(/* html */`
-//         <span class="label bg-aqua"></span>
-//     `);
+$(document).on('hasApproverResponsibility', (e, $approverResponsibilityBoxContent) => {
+    const $infoBadge = $(/* html */`
+        <span class="label bg-aqua"></span>
+    `);
 
-//     $infoBadge.html(/* html */`
-//         <i class="fa fa-spinner fa-spin"></i> Sedang Menghitung Total Order Anda
-//     `);
-//     $approverResponsibilityBoxContent.append($infoBadge);
+    $infoBadge.html(/* html */`
+        <i class="fa fa-spinner fa-spin"></i> Sedang Menghitung Total Order Anda
+    `);
+    $approverResponsibilityBoxContent.append($infoBadge);
 
-//     $.get(`${baseurl}OrderKebutuhanBarangDanJasa/Approver/getUnapprovedOrderCount`)
-//         .done((response) => {
-//             $infoBadge.html(/* html */`
-//                 <i class="fa fa-clock-o"></i> Terdapat ${response} Order yang Belum Anda Approve
-//             `);
-//         }).fail(() => {
-//             $infoBadge.html(/* html */`
-//                 <i class="fa fa-times"></i> Gagal Menghitung Total Order Anda
-//             `);
-//         });
-// });
+    $.get(`${baseurl}OrderKebutuhanBarangDanJasa/Approver/getUnapprovedOrderCount`)
+        .done((response) => {
+            $infoBadge.html(/* html */`
+                <i class="fa fa-clock-o"></i> Terdapat ${response} Order yang Belum Anda Approve
+            `);
+        }).fail(() => {
+            $infoBadge.html(/* html */`
+                <i class="fa fa-times"></i> Gagal Menghitung Total Order Anda
+            `);
+        });
+});
 
-// $(document).on('mainDashboardMenuOpened', () => {
-//     const approverResponsibilityName = '(Approver)Order Kebutuhan Barang dan Jasa';
-//     const $approverResponsibilityBoxContent = $(`.info-box .info-box-content:contains(${approverResponsibilityName})`);
-//     const hasApproverResponsibility = $approverResponsibilityBoxContent.length > 0;
+$(document).on('hasPengelolaResponsibility', (e, $pengelolaResponsibilityBoxContent) => {
+    const $infoBadge = $(/* html */`
+        <span class="label bg-aqua"></span>
+    `);
 
-//     if (hasApproverResponsibility) $(document).trigger('hasApproverResponsibility', [$approverResponsibilityBoxContent]);
-// });
+    $infoBadge.html(/* html */`
+        <i class="fa fa-spinner fa-spin"></i> Sedang Menghitung Total Order Anda
+    `);
+    $pengelolaResponsibilityBoxContent.append($infoBadge);
+
+    $.get(`${baseurl}OrderKebutuhanBarangDanJasa/Pengelola/getUnapprovedOrderCount`)
+        .done((response) => {
+            $infoBadge.html(/* html */`
+                <i class="fa fa-clock-o"></i> Terdapat ${response} Order yang Belum Anda Approve
+            `);
+        }).fail(() => {
+            $infoBadge.html(/* html */`
+                <i class="fa fa-times"></i> Gagal Menghitung Total Order Anda
+            `);
+        });
+});
+
+$(document).on('hasPullerResponsibility', (e, $pullerResponsibilityBoxContent) => {
+    const $infoBadge = $(/* html */`
+        <span class="label bg-aqua"></span>
+    `);
+
+    $infoBadge.html(/* html */`
+        <i class="fa fa-spinner fa-spin"></i> Sedang Menghitung Total Order Anda
+    `);
+    $pullerResponsibilityBoxContent.append($infoBadge);
+
+    $.get(`${baseurl}OrderKebutuhanBarangDanJasa/Puller/getUnapprovedOrderCount`)
+        .done((response) => {
+            $infoBadge.html(/* html */`
+                <i class="fa fa-clock-o"></i> Terdapat ${response} Order yang Belum Anda Approve
+            `);
+        }).fail(() => {
+            $infoBadge.html(/* html */`
+                <i class="fa fa-times"></i> Gagal Menghitung Total Order Anda
+            `);
+        });
+});
+
+$(document).on('mainDashboardMenuOpened', () => {
+    // Outstanding order Approver
+    const approverResponsibilityName = '(Approver)Order Kebutuhan Barang dan Jasa';
+    const $approverResponsibilityBoxContent = $(`.info-box .info-box-content:contains(${approverResponsibilityName})`);
+    const hasApproverResponsibility = $approverResponsibilityBoxContent.length > 0;
+
+    if (hasApproverResponsibility) $(document).trigger('hasApproverResponsibility', [$approverResponsibilityBoxContent]);
+
+    // Outstanding order Pengelola
+    const pengelolaResponsibilityName = '(Pengelola)Order Kebutuhan Barang dan Jasa';
+    const $pengelolaResponsibilityBoxContent = $(`.info-box .info-box-content:contains(${pengelolaResponsibilityName})`);
+    const hasPengelolaResponsibility = $pengelolaResponsibilityBoxContent.length > 0;
+
+    if (hasPengelolaResponsibility) $(document).trigger('hasPengelolaResponsibility', [$pengelolaResponsibilityBoxContent]);
+
+    // Outstanding order Puller
+    const pullerResponsibilityName = '(Puller)Order Kebutuhan Barang dan Jasa';
+    const $pullerResponsibilityBoxContent = $(`.info-box .info-box-content:contains(${pullerResponsibilityName})`);
+    const hasPullerResponsibility = $pullerResponsibilityBoxContent.length > 0;
+
+    if (hasPullerResponsibility) $(document).trigger('hasPullerResponsibility', [$pullerResponsibilityBoxContent]);
+});
 
 $(document).ready(function () {
     $.fn.dataTable.moment('DD-MMM-YY');
 
-    // (() => {
-    //     if (window.location.href === baseurl) $(document).trigger('mainDashboardMenuOpened');
-    // })();
+    (() => {
+        if (window.location.href === baseurl) $(document).trigger('mainDashboardMenuOpened');
+    })();
     //modal status order
     $('.mdlOKBStatusOrder').modal('show');
 

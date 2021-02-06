@@ -270,4 +270,26 @@ class M_pengelola extends CI_Model
         $oracle = $this->load->database('oracle', true);
         $query = $oracle->insert('PO_REQUISITIONS_INTERFACE_ALL',$order);
     }
+
+    public function getUnapprovedOrderCount($noind, $status /* SUSULAN / URGENT / NORMAL / ALL */)
+    {
+        $oracle = $this->load->database('oracle', true);
+        $query  = $oracle->query(
+            "SELECT
+                APPS.KHS_OUTSTAND_OKBJ_PENGELOL_TOT ('$noind', '$status') AS \"count\"
+            FROM
+                DUAL");
+        return $query->row()->count;
+    }
+
+    public function getJudgedOrderCount($noind, $status /* SUSULAN / URGENT / NORMAL / ALL */)
+    {
+        $oracle = $this->load->database('oracle', true);
+        $query  = $oracle->query(
+            "SELECT
+                APPS.KHS_JUDGED_OKBJ_PENGELOL_TOT ('$noind', '$status') AS \"count\"
+            FROM
+                DUAL");
+        return $query->row()->count;
+    }
 }

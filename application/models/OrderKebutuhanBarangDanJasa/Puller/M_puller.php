@@ -170,4 +170,22 @@ class M_puller extends CI_Model
         return $query->result_array();
     }
 
+    public function getUnapprovedOrderCount($noind){
+        $oracle = $this->load->database('oracle', true);
+        $query  = $oracle->query("SELECT
+                                    COUNT (kooh.ORDER_ID) jumlah_order
+                                 FROM
+                                    khs.khs_okbj_order_header kooh
+                                    ,mtl_system_items_b msib
+                                    ,per_people_f ppfp
+                                 WHERE
+                                    kooh.ORDER_STATUS_ID = 3 
+                                    AND kooh.INVENTORY_ITEM_ID = msib.INVENTORY_ITEM_ID
+                                    AND msib.ORGANIZATION_ID = 81
+                                    AND msib.ATTRIBUTE27 = ppfp.PERSON_ID
+                                    AND ppfp.NATIONAL_IDENTIFIER = '$noind'
+                                ");
+        return $query->row_array();
+    }
+
 }

@@ -577,23 +577,25 @@ class M_approver extends CI_Model
         return $query->result_array();
     }
 
-    public function getUnapprovedOrderCount($noind){
+    public function getUnapprovedOrderCount($noind, $status /* SUSULAN / URGENT / NORMAL / ALL */)
+    {
         $oracle = $this->load->database('oracle', true);
-        $query  = $oracle->query("SELECT
-                                    COUNT(kooh.ORDER_ID) total
-                                 FROM
-                                    khs.khs_okbj_order_header kooh,
-                                    khs.khs_okbj_order_approval kooa,
-                                    per_people_f ppfa
-                                 WHERE 
-                                    kooh.ORDER_ID = kooa.ORDER_ID
-                                    AND kooh.APPROVE_LEVEL_POS < kooa.APPROVER_TYPE
-                                    AND kooa.APPROVER_TYPE <> 7
-                                    AND kooa.APPROVER_ID = ppfa.PERSON_ID
-                                    AND kooh.ORDER_STATUS_ID <> 4
-                                    AND ppfa.NATIONAL_IDENTIFIER = '$noind'
-                                ");
-        return $query->row_array();
+        $query  = $oracle->query(
+            "SELECT
+                APPS.KHS_OUTSTAND_OKBJ_APPROVER_TOT ('$noind', '$status') AS \"count\"
+            FROM
+                DUAL");
+        return $query->row()->count;
     }
 
+    public function getJudgedOrderCount($noind, $status /* SUSULAN / URGENT / NORMAL / ALL */)
+    {
+        $oracle = $this->load->database('oracle', true);
+        $query  = $oracle->query(
+            "SELECT
+                APPS.KHS_JUDGED_OKBJ_APPROVER_TOT ('$noind', '$status') AS \"count\"
+            FROM
+                DUAL");
+        return $query->row()->count;
+    }
 }

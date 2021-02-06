@@ -16,6 +16,7 @@ class C_Index extends CI_Controller {
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('OrderKebutuhanBarangDanJasa/Approver/M_approver');
 		$this->load->model('OrderKebutuhanBarangDanJasa/Requisition/M_requisition');
+		$this->load->model('OrderKebutuhanBarangDanJasa/Pengelola/M_pengelola');
         	  
 		 if($this->session->userdata('logged_in')!=TRUE) {
 			$this->load->helper('url');
@@ -46,85 +47,39 @@ class C_Index extends CI_Controller {
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		
-		$data['normal'] = array();
-		$data['urgent'] = array();
-		$data['susulan'] = array();
 
 		$noind = $this->session->user;
 		// $noind = '6355';
 		$data['approver'] = $this->M_requisition->getPersonId($noind);
-     
+
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		if ($this->session->responsibility_id == 2679 || $this->session->responsibility_id == 2681) {
-			$allOrder = $this->M_approver->getListDataOrder();
-			//  echo'<pre>';
-            // print_r($allOrder);
-			foreach ($allOrder as $key => $order) {
-				$checkOrder = $this->M_approver->checkOrder($order['ORDER_ID']);
-				// echo'<pre>';
-				// print_r($checkOrder);
-				if (isset($checkOrder[0])) {
-					if ($this->session->responsibility_id == 2681) {
-						if ($checkOrder[0]['APPROVER_ID'] == $data['approver'][0]['PERSON_ID'] && $checkOrder[0]['APPROVER_TYPE'] == 7) {
-							$orderSiapTampil = $this->M_approver->getOrderToApprove($order['ORDER_ID']);
-							if ($orderSiapTampil[0]['ORDER_CLASS'] != '2') {
-								if ($orderSiapTampil[0]['URGENT_FLAG'] == 'N' && $orderSiapTampil[0]['IS_SUSULAN'] =='N') {
-									array_push($data['normal'], $orderSiapTampil[0]);
-								}elseif ($orderSiapTampil[0]['URGENT_FLAG'] == 'Y' && $orderSiapTampil[0]['IS_SUSULAN'] =='N') {
-									array_push($data['urgent'], $orderSiapTampil[0]);
-								}elseif ($orderSiapTampil[0]['IS_SUSULAN'] =='Y') {
-									array_push($data['susulan'], $orderSiapTampil[0]);
-								}
-							}
-						}
-					}else{
-						if ($checkOrder[0]['APPROVER_ID'] == $data['approver'][0]['PERSON_ID'] && $checkOrder[0]['APPROVER_TYPE'] != 7) {
-							$orderSiapTampil = $this->M_approver->getOrderToApprove($order['ORDER_ID']);
-							if ($orderSiapTampil[0]['ORDER_CLASS'] != '2') {
-								if ($orderSiapTampil[0]['URGENT_FLAG'] == 'N' && $orderSiapTampil[0]['IS_SUSULAN'] =='N') {
-									array_push($data['normal'], $orderSiapTampil[0]);
-								}elseif ($orderSiapTampil[0]['URGENT_FLAG'] == 'Y' && $orderSiapTampil[0]['IS_SUSULAN'] =='N') {
-									array_push($data['urgent'], $orderSiapTampil[0]);
-								}elseif ($orderSiapTampil[0]['IS_SUSULAN'] =='Y') {
-									array_push($data['susulan'], $orderSiapTampil[0]);
-								}
-							}
-						}
-					}
-				}
 
+		if ($this->session->responsibility === '(Approver)Order Kebutuhan Barang dan Jasa') {
+			$data['normalUnapproved'] = $this->M_approver->getUnapprovedOrderCount($noind, 'NORMAL');
+			$data['urgentUnapproved'] = $this->M_approver->getUnapprovedOrderCount($noind, 'URGENT');
+			$data['susulanUnapproved'] = $this->M_approver->getUnapprovedOrderCount($noind, 'SUSULAN');
 
-			}
-			// exit;
-
-			// $data['normalBelum'] = array();
-			// $data['urgentBelum'] = array();
-			// $data['susulanBelum'] = array();
-			// $data['normalSelesai'] = array();
-			// $data['urgentSelesai'] = array();
-			// $data['susulanSelesai'] = array();
-
-			$data['normalOrder'] = $this->M_approver->getDetailOrderNormalTotal($data['approver'][0]['PERSON_ID']);
-			// foreach ($normalOrder as $key => $normal) {
-			// 	if ($normal['JUDGEMENT'] == null) {
-			// 		array_push($data['normalBelum'], $normalOrder[$key]);
-			// 	}elseif ($normal['JUDGEMENT'] != null) {
-			// 		array_push($data['normalSelesai'], $normalOrder[$key]);
-			// 	}
-			// }
-			$data['urgentOrder'] = $this->M_approver->getDetailOrderUrgentTotal($data['approver'][0]['PERSON_ID']);
+			$data['normalJudged'] = $this->M_approver->getJudgedOrderCount($noind, 'NORMAL');
+			$data['urgentJudged'] = $this->M_approver->getJudgedOrderCount($noind, 'URGENT');
+			$data['susulanJudged'] = $this->M_approver->getJudgedOrderCount($noind, 'SUSULAN');
 			
-			$data['susulanOrder'] = $this->M_approver->getDetailOrderSusulanTotal($data['approver'][0]['PERSON_ID']);
-			
-			
+			$this->load->view('OrderKebutuhanBarangDanJasa/V_Index',$data);
+		} else if ($this->session->responsibility === '(Pengelola)Order Kebutuhan Barang dan Jasa') {
+			$data['normalUnapproved'] = $this->M_pengelola->getUnapprovedOrderCount($noind, 'NORMAL');
+			$data['urgentUnapproved'] = $this->M_pengelola->getUnapprovedOrderCount($noind, 'URGENT');
+			$data['susulanUnapproved'] = $this->M_pengelola->getUnapprovedOrderCount($noind, 'SUSULAN');
+
+			$data['normalJudged'] = $this->M_pengelola->getJudgedOrderCount($noind, 'NORMAL');
+			$data['urgentJudged'] = $this->M_pengelola->getJudgedOrderCount($noind, 'URGENT');
+			$data['susulanJudged'] = $this->M_pengelola->getJudgedOrderCount($noind, 'SUSULAN');
+
 			$this->load->view('OrderKebutuhanBarangDanJasa/V_Index',$data);
 		}else {
 			$this->load->view('OrderKebutuhanBarangDanJasa/V_Index2',$data);
 		}
-        $this->load->view('V_Footer',$data);
-    }
+		$this->load->view('V_Footer',$data);
+	}
 
 	public function checkSession()
 	{

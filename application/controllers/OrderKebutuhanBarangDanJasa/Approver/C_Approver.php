@@ -959,7 +959,7 @@ class C_Approver extends CI_Controller {
     public function getUnapprovedOrderCount()
     {
         $noind = $this->session->user;
-        $total_unapproved_order = $this->M_approver->getUnapprovedOrderCount($noind)['TOTAL'];
+        $total_unapproved_order = $this->M_approver->getUnapprovedOrderCount($noind, 'ALL');
 
         $this->output
             ->set_status_header(200)
