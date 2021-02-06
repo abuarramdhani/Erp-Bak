@@ -59,5 +59,53 @@ function show_table_engine(no_po, surat_jalan) {
 //     swalAppLarge('warning', 'Sebelum Cetak, Pilih Type Engine Terlebih Dahulu');
 //   }
 // }
+// karena tidak ada id unik;
+function ckmb_update_serial(no_po, sj, segment1, receipt_date) {
+  let key = $(`.ckmb_serial_key_${segment1}`).val();
+  let serial_baru = $(`.ckmb_serial_${segment1}`).val();
+  let s_lama = $(`#ckmd_txt_serial_old_${segment1}`).text();
+  $.ajax({
+    url: baseurl + 'CetakKIBMotorBensin/CKMB/updateSerial',
+    type: 'POST',
+    dataType: 'JSON',
+    data: {
+      no_po : no_po,
+      surat_jalan : sj,
+      segment1 : segment1,
+      receipt_date : receipt_date,
+      serial_lama : s_lama,
+      serial_baru : serial_baru
+    },
+    cache:false,
+    beforeSend: function() {
+      toastCKMBLoading('Sedang mengupdate serial..')
+    },
+    success: function(result) {
+      if (result == 1) {
+        toastCKMBExc('success', 'Berhasil mengupdate serial!');
+        $(`.ckmb_update_serial_terbaru_${segment1}_${s_lama}`).text(serial_baru);
+        $(`.ckmb_update_serial_terbaru_${segment1}_${s_lama}`).css('color', '#006bc2');
+        $(`.ckmb_update_serial_terbaru_${segment1}_${s_lama}`).attr('onclick', `ckmb_set_param('${serial_baru}', ${key}, '${segment1}')`);
+        $(`button[punya="serial_${segment1}_${key}"]`).removeClass(`ckmb_update_serial_terbaru_${segment1}_${s_lama}`).addClass(`ckmb_update_serial_terbaru_${segment1}_${serial_baru}`);
+
+        $('#modal-kib-motor-bensin-'+segment1).modal('toggle');
+      }else if (result == 2) {
+        toastCKMBExc('warning', `Kode Serial ${serial_baru} telah ada di Kode Barang ${segment1} - PO ${no_po} - SJ ${sj.replace("__", "/")}`);
+      }else {
+        toastCKMBExc('warning', 'Tidak berhasil mengupdate serial, coba lagi..');
+      }
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+    swalAppLarge('error', textStatus)
+     console.error();
+    }
+  })
+}
+
+function ckmb_set_param(serial, key, segment1) {
+  $('.ckmb_serial_'+segment1).val(serial);
+  $('.ckmb_serial_key_'+segment1).val(key);
+  $('#ckmd_txt_serial_old_'+segment1).text(serial);
+}
 
 </script>

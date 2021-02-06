@@ -36,17 +36,29 @@ class M_master extends CI_Model
     public function updateSerial($data)
     {
       $sj_convert =  str_replace("__","/", $data['surat_jalan']);
-      $this->oracle->query("UPDATE KHS_RECEIPT_SERIAL_ENGINE SET serial_number = '{$data['serial_baru']}'
-                            WHERE TO_CHAR(receipt_date, 'YYYY-MM-DD') = '{$data['receipt_date']}'
-                            AND po_number = '{$data['no_po']}'
-                            AND shipment_number = '$sj_convert'
-                            AND segment1 = '{$data['segment1']}'
-                            AND serial_number = '{$data['serial_lama']}'");
-      if ($this->oracle->affected_rows() == 1) {
-        return 1;
+      $cek = $this->oracle->query("SELECT serial_number FROM KHS_RECEIPT_SERIAL_ENGINE
+                                   WHERE TO_CHAR(receipt_date, 'YYYY-MM-DD') = '{$data['receipt_date']}'
+                                   AND po_number = '{$data['no_po']}'
+                                   AND shipment_number = '$sj_convert'
+                                   AND segment1 = '{$data['segment1']}'
+                                   AND serial_number = '{$data['serial_baru']}'")->row_array();
+
+      if (!empty($cek['SERIAL_NUMBER'])) {
+        return 2;
       }else {
-        return 0;
+        $this->oracle->query("UPDATE KHS_RECEIPT_SERIAL_ENGINE SET serial_number = '{$data['serial_baru']}'
+                              WHERE TO_CHAR(receipt_date, 'YYYY-MM-DD') = '{$data['receipt_date']}'
+                              AND po_number = '{$data['no_po']}'
+                              AND shipment_number = '$sj_convert'
+                              AND segment1 = '{$data['segment1']}'
+                              AND serial_number = '{$data['serial_lama']}'");
+        if ($this->oracle->affected_rows() == 1) {
+          return 1;
+        }else {
+          return 0;
+        }
       }
+
     }
 
     public function getPO($range_date)
