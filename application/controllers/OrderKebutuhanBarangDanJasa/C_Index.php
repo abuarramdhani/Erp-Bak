@@ -16,6 +16,7 @@ class C_Index extends CI_Controller {
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('OrderKebutuhanBarangDanJasa/Approver/M_approver');
 		$this->load->model('OrderKebutuhanBarangDanJasa/Requisition/M_requisition');
+		$this->load->model('OrderKebutuhanBarangDanJasa/Pengelola/M_pengelola');
         	  
 		 if($this->session->userdata('logged_in')!=TRUE) {
 			$this->load->helper('url');
@@ -65,60 +66,13 @@ class C_Index extends CI_Controller {
 			
 			$this->load->view('OrderKebutuhanBarangDanJasa/V_Index',$data);
 		} else if ($this->session->responsibility === '(Pengelola)Order Kebutuhan Barang dan Jasa') {
-			$data['normalUnapproved'] = [];
-			$data['urgentUnapproved'] = [];
-			$data['susulanUnapproved'] = [];
+			$data['normalUnapproved'] = $this->M_pengelola->getUnapprovedOrderCount($noind, 'NORMAL');
+			$data['urgentUnapproved'] = $this->M_pengelola->getUnapprovedOrderCount($noind, 'URGENT');
+			$data['susulanUnapproved'] = $this->M_pengelola->getUnapprovedOrderCount($noind, 'SUSULAN');
 
-			$allOrder = $this->M_approver->getListDataOrder();
-			//  echo'<pre>';
-            // print_r($allOrder);
-			foreach ($allOrder as $key => $order) {
-				$checkOrder = $this->M_approver->checkOrder($order['ORDER_ID']);
-				// echo'<pre>';
-				// print_r($checkOrder);
-				if (isset($checkOrder[0])) {
-					if ($this->session->responsibility_id == 2681) {
-						if ($checkOrder[0]['APPROVER_ID'] == $data['approver'][0]['PERSON_ID'] && $checkOrder[0]['APPROVER_TYPE'] == 7) {
-							$orderSiapTampil = $this->M_approver->getOrderToApprove($order['ORDER_ID']);
-							if ($orderSiapTampil[0]['ORDER_CLASS'] != '2') {
-								if ($orderSiapTampil[0]['URGENT_FLAG'] == 'N' && $orderSiapTampil[0]['IS_SUSULAN'] =='N') {
-									array_push($data['normalUnapproved'], $orderSiapTampil[0]);
-								}elseif ($orderSiapTampil[0]['URGENT_FLAG'] == 'Y' && $orderSiapTampil[0]['IS_SUSULAN'] =='N') {
-									array_push($data['urgentUnapproved'], $orderSiapTampil[0]);
-								}elseif ($orderSiapTampil[0]['IS_SUSULAN'] =='Y') {
-									array_push($data['susulanUnapproved'], $orderSiapTampil[0]);
-								}
-							}
-						}
-					}else{
-						if ($checkOrder[0]['APPROVER_ID'] == $data['approver'][0]['PERSON_ID'] && $checkOrder[0]['APPROVER_TYPE'] != 7) {
-							$orderSiapTampil = $this->M_approver->getOrderToApprove($order['ORDER_ID']);
-							if ($orderSiapTampil[0]['ORDER_CLASS'] != '2') {
-								if ($orderSiapTampil[0]['URGENT_FLAG'] == 'N' && $orderSiapTampil[0]['IS_SUSULAN'] =='N') {
-									array_push($data['normalUnapproved'], $orderSiapTampil[0]);
-								}elseif ($orderSiapTampil[0]['URGENT_FLAG'] == 'Y' && $orderSiapTampil[0]['IS_SUSULAN'] =='N') {
-									array_push($data['urgentUnapproved'], $orderSiapTampil[0]);
-								}elseif ($orderSiapTampil[0]['IS_SUSULAN'] =='Y') {
-									array_push($data['susulanUnapproved'], $orderSiapTampil[0]);
-								}
-							}
-						}
-					}
-				}
-
-
-			}
-
-			$totalNormalOrder = $this->M_approver->getDetailOrderNormalTotal($data['approver'][0]['PERSON_ID']);
-			$totalUrgentOrder = $this->M_approver->getDetailOrderUrgentTotal($data['approver'][0]['PERSON_ID']);			
-			$totalSusulanOrder = $this->M_approver->getDetailOrderSusulanTotal($data['approver'][0]['PERSON_ID']);
-			
-			$data['normalUnapproved'] = count($data['normalUnapproved']);
-			$data['urgentUnapproved'] = count($data['urgentUnapproved']);
-			$data['susulanUnapproved'] = count($data['susulanUnapproved']);
-			$data['normalJudged'] = count($totalNormalOrder) - $data['normalUnapproved'];
-			$data['urgentJudged'] = count($totalUrgentOrder) - $data['urgentUnapproved'];
-			$data['susulanJudged'] = count($totalSusulanOrder) - $data['susulanUnapproved'];
+			$data['normalJudged'] = $this->M_pengelola->getJudgedOrderCount($noind, 'NORMAL');
+			$data['urgentJudged'] = $this->M_pengelola->getJudgedOrderCount($noind, 'URGENT');
+			$data['susulanJudged'] = $this->M_pengelola->getJudgedOrderCount($noind, 'SUSULAN');
 
 			$this->load->view('OrderKebutuhanBarangDanJasa/V_Index',$data);
 		}else {

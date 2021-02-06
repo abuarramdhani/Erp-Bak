@@ -751,7 +751,7 @@ class C_Pengelola extends CI_Controller {
     public function getUnapprovedOrderCount()
     {
         $noind = $this->session->user;
-        $total_unapproved_order = $this->M_pengelola->getUnapprovedOrderCount($noind)['JUMLAH_ORDER'];
+        $total_unapproved_order = $this->M_pengelola->getUnapprovedOrderCount($noind, 'ALL');
 
         $this->output
             ->set_status_header(200)
