@@ -30,7 +30,7 @@ class M_master extends CI_Model
                                    AND rse.segment1 = '$segment1'
                                    -- and rownum<=20
                                    --ORDER BY rse.serial_number asc
-                                   ORDER BY CAST (rse.palet AS INTEGER), rse.serial_number")->result_array();
+                                   ORDER BY CAST (rse.palet AS INTEGER)")->result_array();
     }
 
     public function updateSerial($data)
