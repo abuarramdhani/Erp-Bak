@@ -368,6 +368,12 @@ class C_MoveOrder extends CI_Controller
 				$dataall[$a]['head']	= $this->M_MoveOrder->getHeader($moveOrderAwal, $moveOrderAkhir);
 				$dataall[$a]['head'][0]['piklis'] = $piklis;
 				$dataall[$a]['line']	= $this->M_MoveOrder->getDetail($moveOrderAwal, $moveOrderAkhir);
+				$sub_assy = substr($dataall[$a]['head'][0]['PRODUK'], 0, 3);
+				if ($sub_assy == 'AGF') {
+					usort($dataall[$a]['line'], function($a, $b) {
+						return $a['KODE_DESC'] - $b['KODE_DESC'];
+					});
+				}
 				$subinv = $dataall[$a]['head'][0]['LOKASI'];
 				$dataall[$a]['beda']	= $this->M_MoveOrder->getPerbedaan($moveOrderAwal, $subinv);
 				$a++;

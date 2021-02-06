@@ -62,7 +62,7 @@ class M_picklistppic extends CI_Model
 			and wro.WIP_ENTITY_ID = wo.WIP_ENTITY_ID
 			and wro.OPERATION_SEQ_NUM = wo.OPERATION_SEQ_NUM
 			and wo.DEPARTMENT_ID = bd.DEPARTMENT_ID
-			and wdj.STATUS_TYPE not in (4, 5, 6, 12)
+			and wdj.STATUS_TYPE not in (4, 5, 6, 7, 12)
 			--
 			and mtrh.REQUEST_NUMBER not in (select distinct kpa.PICKLIST 
 												from khs_picklist_approved kpa
@@ -119,7 +119,7 @@ class M_picklistppic extends CI_Model
    and wro.WIP_ENTITY_ID = wo.WIP_ENTITY_ID
    and wro.OPERATION_SEQ_NUM = wo.OPERATION_SEQ_NUM
    and wo.DEPARTMENT_ID = bd.DEPARTMENT_ID
-	 and wdj.STATUS_TYPE not in (4, 5, 6, 12)
+	 and wdj.STATUS_TYPE not in (4, 5, 6, 7, 12)
    --
    and mtrh.REQUEST_NUMBER = kpa.PICKLIST 
    -- 
