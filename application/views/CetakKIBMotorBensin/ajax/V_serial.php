@@ -1,3 +1,6 @@
+<?php
+$sj_convert = str_replace("/","__", $surat_jalan);
+?>
 <div class="alert bg-primary alert-dismissible" role="alert">
   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
     <span aria-hidden="true">
@@ -16,8 +19,11 @@
 </div>
 <hr style="margin: 20px 8px 11px;">
 <div style="margin-left:7px;margin-top:10px;">
-  <button type="button" name="button" class="btn btn-sm btn-danger" onclick="cetakCKMB()" style="font-weight:bold"> <i class="fa fa-file-pdf-o"></i> Cetak QR </button>
-  <button type="button" name="button" class="btn btn-sm btn-success" onclick="checklistCKMB()" style="margin-left:4px;font-weight:bold"> <i class="fa fa-file-pdf-o"></i> Cetak Checklist </button>
+  <!-- <button type="button" name="button" class="btn btn-sm btn-danger" onclick="cetakCKMB()" style="font-weight:bold"> <i class="fa fa-file-pdf-o"></i> Cetak QR </button> -->
+  <!-- <button type="button" name="button" class="btn btn-sm btn-success" onclick="checklistCKMB()" style="margin-left:4px;font-weight:bold"> <i class="fa fa-file-pdf-o"></i> Cetak Checklist </button> -->
+  <a href="<?php echo base_url('CetakKIBMotorBensin/pdf/'.$no_po.'/'.$sj_convert.'/'.$segment1.'/'.$receipt_date) ?>" target="_blank" class="btn btn-sm btn-danger" style="font-weight:bold"> <i class="fa fa-file-pdf-o"></i> Cetak QR </a>
+  <a href="<?php echo base_url('CetakKIBMotorBensin/Checklist/'.$no_po.'/'.$sj_convert.'/'.$segment1.'/'.$receipt_date) ?>" target="_blank" class="btn btn-sm btn-success" style="margin-left:4px;font-weight:bold"> <i class="fa fa-file-pdf-o"></i> Cetak Checklist </a>
+</div>
 </div>
 
 <div class="modal fade bd-example-modal-sm" id="modal-kib-motor-bensin" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -57,9 +63,6 @@
 </div>
 
 <script type="text/javascript">
-<?php
-$sj_convert = str_replace("/","__", $surat_jalan)
-?>
 
 function ckmb_update_serial() {
   let key = $('.ckmb_serial_key').val();
@@ -107,20 +110,4 @@ function ckmb_set_param(serial, key) {
   $('#ckmd_txt_serial_old').text(serial);
 }
 
-function cetakCKMB (){
-  // const range_tanggal = $('.tanggal_ckmb').val();
-  // let range = range_tanggal.split(' - ');
-  // const tipe = $('.select2_ckmb').val();
-  // window.open(`${baseurl}CetakKIBMotorBensin/pdf/${range[0]}/${range[1]}/${tipe}`);
-
-  window.open(`${baseurl}CetakKIBMotorBensin/pdf/<?php echo $no_po ?>/<?php echo $sj_convert ?>/<?php echo $segment1 ?>/<?php echo $receipt_date ?>`);
-}
-
-function checklistCKMB() {
-  // const range_tanggal = $('.tanggal_ckmb').val();
-  // let range = range_tanggal.split(' - ');
-  // const tipe = $('.select2_ckmb').val();
-  // window.open(`${baseurl}CetakKIBMotorBensin/Checklist/${range[0]}/${range[1]}/${tipe}`);
-  window.open(`${baseurl}CetakKIBMotorBensin/Checklist/<?php echo $no_po ?>/<?php echo $sj_convert ?>/<?php echo $segment1 ?>/<?php echo $receipt_date ?>`);
-}
 </script>
