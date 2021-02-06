@@ -270,4 +270,34 @@ class M_pengelola extends CI_Model
         $oracle = $this->load->database('oracle', true);
         $query = $oracle->insert('PO_REQUISITIONS_INTERFACE_ALL',$order);
     }
+
+    public function getUnapprovedOrderCount($noind){
+        $oracle = $this->load->database('oracle', true);
+        $query  = $oracle->query("SELECT
+                                     COUNT(kooh.ORDER_ID) jumlah_order
+                                  FROM
+                                     khs.khs_okbj_order_header kooh
+                                     ,per_people_f ppfa
+                                     ,(SELECT 
+                                         kooa.ORDER_ID
+                                         , MIN (kooa.APPROVER_TYPE) a_level
+                                         , kooa.APPROVER_ID 
+                                         , kooa.APPROVER_TYPE
+                                       FROM 
+                                         khs.khs_okbj_order_approval kooa 
+                                       WHERE 
+                                         kooa.JUDGEMENT is null 
+                                       GROUP BY 
+                                         kooa.ORDER_ID
+                                         , kooa.APPROVER_ID
+                                         , kooa.APPROVER_TYPE ) tbl1
+                                   WHERE 
+                                     kooh.ORDER_ID = tbl1.ORDER_ID
+                                     AND tbl1.APPROVER_TYPE = 7 -- baris ini hanya dijalankan pada responsibility pengelola
+                                     AND tbl1.APPROVER_ID = ppfa.PERSON_ID
+                                     AND kooh.ORDER_STATUS_ID <> 4
+                                     AND ppfa.NATIONAL_IDENTIFIER = '$noind' -- parameter no. ind
+                                ");
+        return $query->row_array();
+    }
 }
