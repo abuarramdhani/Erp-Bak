@@ -85,6 +85,21 @@ class C_Monhandseksi extends CI_Controller
         $data['handling'] = $handling;
         $this->load->view('DbHandling/SEKSI/V_TblReqRev', $data);
     }
+    public function loadviewrejhand()
+    {
+        $handling = $this->M_dbhandling->getrejdatahandbystat();
+        for ($i = 0; $i < sizeof($handling); $i++) {
+            $sarana_handling = $this->M_dbhandling->selectdatatoedit($handling[$i]['id_master_handling']);
+
+            if ($sarana_handling == null) {
+                $handling[$i]['sarana'] = 'Invalid';
+            } else {
+                $handling[$i]['sarana'] = $sarana_handling[0]['nama_handling'];
+            }
+        }
+        $data['handling'] = $handling;
+        $this->load->view('DbHandling/SEKSI/V_TblReject', $data);
+    }
     public function loadviewdatahand()
     {
         $datahandling = $this->M_dbhandling->selectdatahandling();

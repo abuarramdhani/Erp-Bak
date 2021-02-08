@@ -296,39 +296,42 @@ function acc(id) {
   });
 }
 function reject(id) {
-  Swal.fire({
-    title: "Apa Anda Yakin?",
-    text: "Akan Menolak Request Ini ?",
+  const { value: alasan } = Swal.fire({
+    title: "Masukan Alasan",
+    input: "text",
     type: "question",
     showCancelButton: true,
     confirmButtonColor: "#d73925",
     cancelButtonColor: "#b0bec5",
-    confirmButtonText: "Ya",
-    cancelButtonText: "Tidak",
-  }).then((result) => {
-    console.log("okay");
-    if (result.value) {
-      var request = $.ajax({
-        url: baseurl + "DbHandling/MonitoringHandling/updatereject",
-        data: {
-          id: id,
-        },
-        type: "POST",
-        datatype: "html",
-      });
-      request.done(function (result) {
-        Swal.fire({
-          position: "top",
-          type: "error",
-          title: "Request Ditolak",
-          showConfirmButton: false,
-          timer: 1500,
-        }).then(() => {
-          window.location.href = baseurl + "DbHandling/MonitoringHandling";
-          // window.location.replace("DbHandling/MonitoringHandling");
+    confirmButtonText: "Ok",
+    cancelButtonText: "Cancel",
+    inputValidator: (value) => {
+      if (!value) {
+        return "Masukan Alasan!";
+      }
+      if (value) {
+        var request = $.ajax({
+          url: baseurl + "DbHandling/MonitoringHandling/updatereject",
+          data: {
+            id: id,
+            alasan: value,
+          },
+          type: "POST",
+          datatype: "html",
         });
-      });
-    }
+        request.done(function (result) {
+          Swal.fire({
+            position: "top",
+            type: "success",
+            title: "Request Ditolak",
+            showConfirmButton: false,
+            timer: 1500,
+          }).then(() => {
+            window.location.href = baseurl + "DbHandling/MonitoringHandling";
+          });
+        });
+      }
+    },
   });
 }
 $(document).ready(function () {
@@ -2263,6 +2266,23 @@ $(document).ready(function () {
   request.done(function (result) {
     // console.log(result);
     $("div#tabel_reqhandseksi2").html(result);
+  });
+});
+$(document).ready(function () {
+  var request = $.ajax({
+    url: baseurl + "DbHandlingSeksi/MonitoringHandling/loadviewrejhand",
+    type: "POST",
+    beforeSend: function () {
+      $("div#tabel_rejecthandseksi").html(
+        '<center><img style="width:100px; height:auto" src="' +
+          baseurl +
+          'assets/img/gif/loading11.gif"></center>'
+      );
+    },
+  });
+  request.done(function (result) {
+    // console.log(result);
+    $("div#tabel_rejecthandseksi").html(result);
   });
 });
 $(document).ready(function () {
