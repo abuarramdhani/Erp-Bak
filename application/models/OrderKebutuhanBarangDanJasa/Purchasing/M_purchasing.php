@@ -1,5 +1,5 @@
 <?php
-Defined('BASEPATH') or exit('No Direct Script Access Allowed');
+defined('BASEPATH') or exit('No Direct Script Access Allowed');
 
 class M_purchasing extends CI_Model
 {
@@ -7,6 +7,7 @@ class M_purchasing extends CI_Model
     {
         parent::__construct();
         $this->load->database();
+        $this->oracle = $this->load->database('oracle', true);
     }
 
     public function getReleasedOrder()
@@ -282,5 +283,45 @@ class M_purchasing extends CI_Model
         order by kooa.APPROVER_TYPE");
 
         return $query->result_array();
+    }
+
+    /**
+     * @param   string  ENUM $status 'SUSULAN', 'URGENT', 'NORMAL' or 'ALL'
+     * @return  int     Outstand order count
+     */
+    public function getUnapprovedOrderCount($status)
+    {
+        return $this->oracle
+            ->query(
+                "SELECT
+                    APPS.KHS_OUTSTAND_OKBJ_PEMBEL_TOT (?) AS \"count\"
+                FROM
+                    DUAL",
+                [
+                    $status,
+                ]
+            )
+            ->row()
+            ->count;
+    }
+
+    /**
+     * @param   string  ENUM $status 'SUSULAN', 'URGENT', 'NORMAL' or 'ALL'
+     * @return  int     Judged order count
+     */
+    public function getJudgedOrderCount($status)
+    {
+        return $this->oracle
+            ->query(
+                "SELECT
+                    APPS.KHS_JUDGED_OKBJ_PEMBEL_TOT (?) AS \"count\"
+                FROM
+                    DUAL",
+                [
+                    $status,
+                ]
+            )
+            ->row()
+            ->count;
     }
 }

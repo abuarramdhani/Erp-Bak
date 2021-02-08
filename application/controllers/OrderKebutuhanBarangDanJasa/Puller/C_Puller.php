@@ -277,7 +277,7 @@ class C_Puller extends CI_Controller {
     public function getUnapprovedOrderCount()
     {
         $noind = $this->session->user;
-        $total_unapproved_order = $this->M_puller->getUnapprovedOrderCount($noind)['JUMLAH_ORDER'];
+        $total_unapproved_order = $this->M_puller->getUnapprovedOrderCount($noind, 'ALL');
 
         $this->output
             ->set_status_header(200)
