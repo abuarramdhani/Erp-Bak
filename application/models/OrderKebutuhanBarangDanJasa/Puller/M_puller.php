@@ -176,7 +176,7 @@ class M_puller extends CI_Model
      */
     public function getUnapprovedOrderCount($no_induk, $status)
     {
-        return $this->oracle
+        return (int) $this->oracle
             ->query(
                 "SELECT
                     APPS.KHS_OUTSTAND_OKBJ_PULLER_TOT (?, ?) AS \"count\"
@@ -197,7 +197,7 @@ class M_puller extends CI_Model
      */
     public function getJudgedOrderCount($no_induk, $status)
     {
-        return $this->oracle
+        return (int) $this->oracle
             ->query(
                 "SELECT
                     APPS.KHS_JUDGED_OKBJ_PULLER_TOT (?, ?) AS \"count\"

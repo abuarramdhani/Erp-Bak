@@ -69,6 +69,9 @@ class C_Index extends CI_Controller {
 	{
 		$view_data = $this->getUserMenu();
 		
+    $view_data->Menu = 'Dashboard';
+		$view_data->SubMenuOne = '';
+
     $this->load->view('V_Header', $view_data);
     $this->load->view('V_Sidemenu', $view_data);
     $this->load->view('OrderKebutuhanBarangDanJasa/V_IndexDefault', $view_data);
@@ -130,7 +133,7 @@ class C_Index extends CI_Controller {
     $view_data->UrgentOrder = $this->getOrderInformation(
       $this->pengelola->getUnapprovedOrderCount($nomor_induk, 'URGENT'),
       $this->pengelola->getJudgedOrderCount($nomor_induk, 'URGENT'),
-      base_url('OrderKebutuhanBarangDanJasa/Pengelola/OpenedOrderSusulan')
+      base_url('OrderKebutuhanBarangDanJasa/Pengelola/OpenedOrderUrgent')
     );
 
     $this->load->view('V_Header', $view_data);
@@ -199,7 +202,7 @@ class C_Index extends CI_Controller {
     $this->load->view('V_Header', $view_data);
     $this->load->view('V_Sidemenu', $view_data);
     $this->load->view('OrderKebutuhanBarangDanJasa/V_Index', $view_data);
-    $this->load->view('V_Footer', $data);
+    $this->load->view('V_Footer', $view_data);
   }
 
   public function directEmail($key)

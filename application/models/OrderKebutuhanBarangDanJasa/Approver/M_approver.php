@@ -7,6 +7,7 @@ class M_approver extends CI_Model
     {
         parent::__construct();
         $this->load->database();
+        $this->oracle = $this->load->database('oracle', true);
     }
 
     public function getListDataOrder()
@@ -576,26 +577,46 @@ class M_approver extends CI_Model
 
         return $query->result_array();
     }
-
-    public function getUnapprovedOrderCount($noind, $status /* SUSULAN / URGENT / NORMAL / ALL */)
+    
+    /**
+     * @param   string  ENUM $status 'SUSULAN', 'URGENT', 'NORMAL' or 'ALL'
+     * @return  int     Outstand order count
+     */
+    public function getUnapprovedOrderCount($no_induk, $status)
     {
-        $oracle = $this->load->database('oracle', true);
-        $query  = $oracle->query(
-            "SELECT
-                APPS.KHS_OUTSTAND_OKBJ_APPROVER_TOT ('$noind', '$status') AS \"count\"
-            FROM
-                DUAL");
-        return $query->row()->count;
+        return (int) $this->oracle
+            ->query(
+                "SELECT
+                    APPS.KHS_OUTSTAND_OKBJ_APPROVER_TOT (?, ?) AS \"count\"
+                FROM
+                    DUAL",
+                [
+                    $no_induk,
+                    $status,
+                ]
+            )
+            ->row()
+            ->count;
     }
 
-    public function getJudgedOrderCount($noind, $status /* SUSULAN / URGENT / NORMAL / ALL */)
+    /**
+     * @param   string  ENUM $status 'SUSULAN', 'URGENT', 'NORMAL' or 'ALL'
+     * @return  int     Judged order count
+     */
+    public function getJudgedOrderCount($no_induk, $status)
     {
-        $oracle = $this->load->database('oracle', true);
-        $query  = $oracle->query(
-            "SELECT
-                APPS.KHS_JUDGED_OKBJ_APPROVER_TOT ('$noind', '$status') AS \"count\"
-            FROM
-                DUAL");
-        return $query->row()->count;
+        return (int) $this->oracle
+            ->query(
+                "SELECT
+                    APPS.KHS_JUDGED_OKBJ_APPROVER_TOT (?, ?) AS \"count\"
+                FROM
+                    DUAL",
+                [
+                    $no_induk,
+                    $status,
+                ]
+            )
+            ->row()
+            ->count;
     }
 }

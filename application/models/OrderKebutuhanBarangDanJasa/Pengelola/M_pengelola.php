@@ -7,6 +7,7 @@ class M_pengelola extends CI_Model
     {
         parent::__construct();
         $this->load->database();
+        $this->oracle = $this->load->database('oracle', true);
     }
 
     public function checkOrder($person_id)
@@ -271,25 +272,45 @@ class M_pengelola extends CI_Model
         $query = $oracle->insert('PO_REQUISITIONS_INTERFACE_ALL',$order);
     }
 
-    public function getUnapprovedOrderCount($noind, $status /* SUSULAN / URGENT / NORMAL / ALL */)
+    /**
+     * @param   string  ENUM $status 'SUSULAN', 'URGENT', 'NORMAL' or 'ALL'
+     * @return  int     Outstand order count
+     */
+    public function getUnapprovedOrderCount($no_induk, $status)
     {
-        $oracle = $this->load->database('oracle', true);
-        $query  = $oracle->query(
-            "SELECT
-                APPS.KHS_OUTSTAND_OKBJ_PENGELOL_TOT ('$noind', '$status') AS \"count\"
-            FROM
-                DUAL");
-        return $query->row()->count;
+        return (int) $this->oracle
+            ->query(
+                "SELECT
+                    APPS.KHS_OUTSTAND_OKBJ_PENGELOL_TOT (?, ?) AS \"count\"
+                FROM
+                    DUAL",
+                [
+                    $no_induk,
+                    $status,
+                ]
+            )
+            ->row()
+            ->count;
     }
 
-    public function getJudgedOrderCount($noind, $status /* SUSULAN / URGENT / NORMAL / ALL */)
+    /**
+     * @param   string  ENUM $status 'SUSULAN', 'URGENT', 'NORMAL' or 'ALL'
+     * @return  int     Judged order count
+     */
+    public function getJudgedOrderCount($no_induk, $status)
     {
-        $oracle = $this->load->database('oracle', true);
-        $query  = $oracle->query(
-            "SELECT
-                APPS.KHS_JUDGED_OKBJ_PENGELOL_TOT ('$noind', '$status') AS \"count\"
-            FROM
-                DUAL");
-        return $query->row()->count;
+        return (int) $this->oracle
+            ->query(
+                "SELECT
+                    APPS.KHS_JUDGED_OKBJ_PENGELOL_TOT (?, ?) AS \"count\"
+                FROM
+                    DUAL",
+                [
+                    $no_induk,
+                    $status,
+                ]
+            )
+            ->row()
+            ->count;
     }
 }
