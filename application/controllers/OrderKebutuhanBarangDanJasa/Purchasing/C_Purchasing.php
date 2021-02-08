@@ -403,4 +403,13 @@ class C_Purchasing extends CI_Controller {
 		$pdf->Output($filename, 'I');
     }
     
+    public function getUnapprovedOrderCount()
+    {
+        $total_unapproved_order = $this->M_purchasing->getUnapprovedOrderCount('ALL');
+
+        $this->output
+            ->set_status_header(200)
+            ->set_content_type('application/json')
+            ->set_output(json_encode($total_unapproved_order));
+    }
 }
