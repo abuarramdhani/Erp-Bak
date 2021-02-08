@@ -53,6 +53,7 @@ class C_IzinDinasPTM extends CI_Controller
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 		$data['data'] = $this->M_izindinasptm->getPekerjaDinasHariIni();
+		$data['data_cant_proses'] = $this->M_izindinasptm->getPekerjaDinasHariIniTidakBisaDiproses();
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);

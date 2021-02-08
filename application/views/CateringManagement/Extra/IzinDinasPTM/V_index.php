@@ -13,7 +13,8 @@
 							<div class="box-header with-border">
 								<div class="row">
 									<div class="col-sm-11">
-										<h3 style="text-align: center;vertical-align: middle;">Pekerja Yang Izin Dinas Pusat / Tuksono / Mlati dan Makan Ditempat Tujuan Hari Ini</h3>
+										<h3 style="text-align: center;vertical-align: middle;">Pekerja Yang Izin Dinas Pusat / Tuksono / Mlati dan Makan Ditempat Tujuan Hari Ini yang Bisa Diproses</h3>
+										<h5 style="text-align: center;vertical-align: middle;">pekerja yang bisa diproses adalah pekerja yang ijin dinasnya di approve kurang atau sama dengan jam 09:00 WIB.</h5>
 									</div>
 									<div class="col-sm-1">
 										<button class="btn btn-primary" style="text-align: right;vertical-align: middle;" id="btn-CM-IzinDinasPTM-Proses">Proses</button>
@@ -66,6 +67,73 @@
 															<td><?php echo $dt['jenis_dinas'] ?></td>
 															<td><?php echo $dt['diproses_tambah'] ?></td>
 															<td><?php echo $dt['diproses_kurang'] ?></td>
+														</tr>
+														<?php
+													}
+												}
+												?>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="box box-danger box-solid">
+							<div class="box-header with-border">
+								<div class="row">
+									<div class="col-sm-12">
+										<h3 style="text-align: center;vertical-align: middle;">Pekerja Yang Izin Dinas Pusat / Tuksono / Mlati Hari Ini yang Tidak bisa diproses</h3>
+									</div>
+								</div>
+							</div>
+							<div class="box-body">
+								<div class="row">
+									<div class="col-lg-12">
+										<style type="text/css">
+											.dt-buttons {
+												float: left;
+											}
+											.dataTables_filter {
+												float: right;
+											}
+
+											.dataTables_info {
+												float: left
+											}
+										</style>
+										<table class="table table-striped table-hover table-bordered" id="tbl-CM-IzinDinasPTM-table2">
+											<thead>
+												<tr>
+													<th class="bg-danger">Tanggal</th>
+													<th class="bg-danger">ID Dinas</th>
+													<th class="bg-danger">No. Induk</th>
+													<th class="bg-danger">Nama</th>
+													<th class="bg-danger">Tempat Makan Asal</th>
+													<th class="bg-danger">Tempat Makan Tujuan</th>
+													<th class="bg-danger">Keterangan</th>
+													<th class="bg-danger">Jenis Dinas</th>
+													<th class="bg-danger">Alasan Tidak Bisa Diproses</th>
+												</tr>
+											</thead>
+											<tbody>
+												<?php 
+												if (isset($data_cant_proses) && !empty($data_cant_proses)) {
+													foreach ($data_cant_proses as $dt) {
+														?>
+														<tr>
+															<td><?php echo $dt['tanggal'] ?></td>
+															<td><?php echo $dt['izin_id'] ?></td>
+															<td><?php echo $dt['noind'] ?></td>
+															<td><?php echo $dt['nama'] ?></td>
+															<td><?php echo $dt['tempat_makan'] ?></td>
+															<td><?php echo $dt['tujuan'] ?></td>
+															<td><?php echo $dt['keterangan'] ?></td>
+															<td><?php echo $dt['jenis_dinas'] ?></td>
+															<td><?php echo $dt['alasan'] ?></td>
 														</tr>
 														<?php
 													}
