@@ -291,7 +291,7 @@ class M_purchasing extends CI_Model
      */
     public function getUnapprovedOrderCount($status)
     {
-        return $this->oracle
+        return (int) $this->oracle
             ->query(
                 "SELECT
                     APPS.KHS_OUTSTAND_OKBJ_PEMBEL_TOT (?) AS \"count\"
@@ -311,7 +311,7 @@ class M_purchasing extends CI_Model
      */
     public function getJudgedOrderCount($status)
     {
-        return $this->oracle
+        return (int) $this->oracle
             ->query(
                 "SELECT
                     APPS.KHS_JUDGED_OKBJ_PEMBEL_TOT (?) AS \"count\"
