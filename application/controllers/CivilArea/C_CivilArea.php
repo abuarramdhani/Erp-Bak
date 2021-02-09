@@ -174,8 +174,7 @@ class C_CivilArea extends CI_Controller
 
 		# special role for nomor induk
 		$role_admin_user = [
-			'B0802', // RR. DESY ANUGRAH PUTRANTI
-			'T0013' // DICKA ISMAJI
+			# example: B0555
 		];
 
 		# this to disable/enable button that user can do CRUD
