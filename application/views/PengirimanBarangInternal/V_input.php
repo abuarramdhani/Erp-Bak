@@ -39,7 +39,8 @@
                       <label for="seksi_pengirim">Tujuan</label>
                       <div class="row">
                         <div class="col-md-12">
-                          <select class="form-control select2" name="tujuan" required style="width:100%">
+                          <select class="form-control select2 desc_1" name="tujuan" required style="width:100%">
+                            <option value="">Select...</option>
                             <option value="PUSAT">PUSAT</option>
                             <option value="MLATI">MLATI</option>
                             <option value="TUKSONO">TUKSONO</option>
@@ -128,7 +129,7 @@
                             </tbody>
                           </table>
                         </div>
-                        <div class="panel-body">
+                        <div class="panel-body pbi_check_desc_1">
                           <input type="hidden" name="type" value="1">
                           <button type="submit" style="float:right !important;font-weight:bold" onclick="summitpbiarea()" class="btn btn-success" name="button"><i class="fa fa-file"></i> Save</button>
                         </div>
@@ -146,7 +147,8 @@
                       <label for="seksi_pengirim">Tujuan</label>
                       <div class="row">
                         <div class="col-md-12">
-                          <select class="form-control select2" name="tujuan" style="width:100%" required>
+                          <select class="form-control select2 desc_2" name="tujuan" style="width:100%" required>
+                            <option value="">Select...</option>
                             <option value="PUSAT">PUSAT</option>
                             <option value="MLATI">MLATI</option>
                             <option value="TUKSONO">TUKSONO</option>
@@ -224,7 +226,7 @@
                             </tbody>
                           </table>
                         </div>
-                        <div class="panel-body">
+                        <div class="panel-body pbi_check_desc_2">
                           <input type="hidden" name="type" value="2">
                           <button type="submit" style="float:right !important;font-weight:bold" onclick="summitpbiarea1()" class="btn btn-success" name="button"><i class="fa fa-file"></i> Save</button>
                         </div>
@@ -243,7 +245,8 @@
                       <label for="seksi_pengirim">Tujuan</label>
                       <div class="row">
                         <div class="col-md-12">
-                          <select class="form-control select2" id="pbi_tujuan" name="tujuan" style="width:100%" required>
+                          <select class="form-control select2 desc_3" id="pbi_tujuan" name="tujuan" style="width:100%" required>
+                            <option value="">Select...</option>
                             <option value="PUSAT">PUSAT</option>
                             <option value="MLATI">MLATI</option>
                             <option value="TUKSONO">TUKSONO</option>
@@ -339,7 +342,7 @@
                             </tbody>
                           </table>
                         </div>
-                        <div class="panel-body">
+                        <div class="panel-body pbi_check_desc_3">
                           <input type="hidden" name="type" id="pbi_type" value="3">
                           <button type="button" style="float:right !important;font-weight:bold" onclick="insert_asset()" class="btn btn-success" name="button"><i class="fa fa-file"></i> Save</button>
                         </div>
