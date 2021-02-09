@@ -82,6 +82,19 @@
                 <div class="row">
                   <div class="col-md-12">
                     <div class="form-group b01dqd" hidden>
+                      <label for="tujuan">Tujuan</label>
+                      <div class="form-group">
+                        <div class="row">
+                          <div class="col-md-12">
+                            <select class="form-control select2" id="pbi_update_tujuan" name="tujuan" style="width:100%" required>
+                              <option value="">Select...</option>
+                              <option value="PUSAT">PUSAT</option>
+                              <option value="MLATI">MLATI</option>
+                              <option value="TUKSONO">TUKSONO</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
                       <label for="tujuan">Seksi Tujuan</label>
                       <div class="form-group">
                         <div class="row">
