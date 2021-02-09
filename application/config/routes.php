@@ -4663,6 +4663,22 @@ $route['civil-maintenance-order/order/(:any)/(:any)'] = 'CivilMaintenanceOrder/C
 $route['civil-maintenance-order/setting/(:any)'] = 'CivilMaintenanceOrder/C_Civil_setting/$1';
 $route['civil-maintenance-order/setting/(:any)/(:any)'] = 'CivilMaintenanceOrder/C_Civil_setting/$1/$2';
 
+//------------------------------------ Civil Luas Area --------------------------------------------------
+$route['CivilLuasArea'] = 'CivilArea/C_CivilArea/index';
+$route['CivilLuasArea/api/'] = 'CivilArea/C_Api/index';
+
+$route['CivilLuasArea/api/excel'] = 'CivilArea/C_CivilArea/excel';
+
+$route['CivilLuasArea/api/master/area']['post'] = 'CivilArea/C_ApiMaster/addArea';
+$route['CivilLuasArea/api/master/lantai']['post'] = 'CivilArea/C_ApiMaster/addFloor';
+$route['CivilLuasArea/api/master/lokasi']['post'] = 'CivilArea/C_ApiMaster/addLocation';
+
+$route['CivilLuasArea/api/area'] = 'CivilArea/C_Api/getAreaDetail';
+$route['CivilLuasArea/api/area/remove']['post'] = 'CivilArea/C_Api/removeAreaDetail';
+$route['CivilLuasArea/api/area/add']['post'] = 'CivilArea/C_Api/addAreaDetail';
+$route['CivilLuasArea/api/area/update']['post'] = 'CivilArea/C_Api/updateAreaDetail';
+
+
 //------------------------------------------ pengembalian APD-----------------------
 $route['pengembalian-apd']								= 'PengembalianAPD/C_PekerjaApd/menu';
 $route['pengembalian-apd/pekerja']						= 'PengembalianAPD/C_PekerjaApd/pekerja';
