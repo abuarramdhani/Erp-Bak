@@ -4643,7 +4643,7 @@ $(document).ready(function(){
 
 // start izin dinas pusat tuksono mlati
 $(document).ready(function(){
-	var tblCMIzinDinasPTM = $('#tbl-CM-IzinDinasPTM-table').DataTable({
+	var tblCMIzinDinasPTM = $('#tbl-CM-IzinDinasPTM-table,#tbl-CM-IzinDinasPTM-table2').DataTable({
         "lengthMenu": [
             [  -1, 5, 10, 25, 50 ],
             [ 'Show all', '5 rows', '10 rows', '25 rows', '50 rows' ]

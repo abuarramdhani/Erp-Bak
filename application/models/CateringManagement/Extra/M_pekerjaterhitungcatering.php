@@ -380,13 +380,13 @@ class M_pekerjaterhitungcatering extends CI_Model
 				INNER JOIN \"Catering\".tpresensi tpres 
 				ON tpres.noind = tp.noind 
 			   	AND LEFT(tpres.waktu, 5) >= (
-				   			select fs_jam_awal
+				   			select left(fs_jam_awal,5)
 							from \"Catering\".tbatas_datang_shift
 							where fs_kd_shift = '2'
 							and fs_hari = (extract(dow from tpres.tanggal)+1)::varchar
 					) 
 			   	AND LEFT(tpres.waktu, 5) <= (
-				   			select fs_jam_akhir
+				   			select left(fs_jam_akhir,5)
 							from \"Catering\".tbatas_datang_shift
 							where fs_kd_shift = '2'
 							and fs_hari = (extract(dow from tpres.tanggal)+1)::varchar
@@ -399,13 +399,13 @@ class M_pekerjaterhitungcatering extends CI_Model
 					SELECT noind 
 					FROM \"Catering\".tpresensi 
 				   	WHERE LEFT(waktu, 5) >= (
-				   			select fs_jam_awal
+				   			select left(fs_jam_awal,5)
 							from \"Catering\".tbatas_datang_shift
 							where fs_kd_shift = '1'
 							and fs_hari = (extract(dow from tpres.tanggal)+1)::varchar
 					) 
 				   	AND LEFT(waktu, 5) <= (
-				   			select fs_jam_akhir
+				   			select left(fs_jam_akhir,5)
 							from \"Catering\".tbatas_datang_shift
 							where fs_kd_shift = '1'
 							and fs_hari = (extract(dow from tpres.tanggal)+1)::varchar
