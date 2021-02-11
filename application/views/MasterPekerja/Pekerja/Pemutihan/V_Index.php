@@ -350,7 +350,7 @@ function truncate($string, $length)
             {
               targets: 1, // first column is 0
               render(data, type, row, meta) {
-                return `<a href="${baseurl}/MasterPekerja/Pemutihan/Request?id=${row.id_req}&redirect=approved" class="btn btn-primary btn-sm">Check</a>`
+                return `<a href="${baseurl}/MasterPekerja/Pemutihan/Request?id=${row.id_req}&redirect=pending" class="btn btn-primary btn-sm">Check</a>`
               }
             }
           ],
@@ -436,7 +436,7 @@ function truncate($string, $length)
     })();
 
     /**
-     * Rejected environtment 
+     * Rejected environment 
      */
     !(function() {
 
