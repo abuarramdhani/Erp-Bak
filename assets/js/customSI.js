@@ -78,12 +78,12 @@ $(function() {
         $('.komponenKaizenSI').val(null).trigger('change')
     })
 
-    $('input#checkNextApprover').on('ifChecked', function() {
+    $(document).on('ifChecked','#checkNextApprover', function(event) {
         $('input#checkNextApprover').attr("checked", "checked")
         $('select#slcApprover').removeAttr("disabled")
     })
 
-    $('input#checkNextApprover').on('ifUnchecked', function() {
+    $(document).on('ifUnchecked','#checkNextApprover', function(event) {
         $('input#checkNextApprover').removeAttr("checked")
         $('select#slcApprover').attr("disabled", "disabled")
         $('select#slcApprover').val(null).trigger('change')
