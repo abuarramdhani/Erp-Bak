@@ -57,8 +57,6 @@ class C_Arsip extends CI_Controller
 
 	public function cari_data(){
 		// echo "<pre>";print_r($_POST);exit();
-		$user = $this->session->user;
-		$user_arsip = array('P0256', 'K1778', 'B0892', 'J1365');
 		if ($_POST['search']['value'] != '') {
 			$sch = strtoupper($_POST['search']['value']);
 			$val = $this->M_arsip->getDataSPB2($sch);
@@ -112,9 +110,7 @@ class C_Arsip extends CI_Controller
             $row[] = $val['URGENT'].' '.$val['BON'];
             $row[] = $val['CANCEL'];
 			$row[] = $val['COLY'];
-			if (!in_array($user, $user_arsip)) {
 			$row[] = '<button type="button" class="btn btn-md bg-teal" onclick="editColy('.$no.')">Edit Coly</button>';
-			}
  
             $data[] = $row;
         }
@@ -135,6 +131,13 @@ class C_Arsip extends CI_Controller
 		$data['nospb'] 	= $this->input->post('no_spb');
 		$data['nomor'] 	= $this->input->post('no');
 		$data['ket']	= 'arsip';
+		$user = $this->session->user;
+		$user_arsip = array('P0256', 'K1778', 'B0892', 'J1365');
+		if (in_array($user, $user_arsip)) {
+			$data['user_arsip'] = 'user_arsip';
+		}else {
+			$data['user_arsip'] = 'user_lain';
+		}
 
 		$data['data'] = $this->M_packing->cekPacking($data['nospb']);
 		
@@ -145,14 +148,6 @@ class C_Arsip extends CI_Controller
 	public function searchDataArsip(){
 		$tgl_awal = $this->input->post('tgl_awal');
 		$tgl_akhir = $this->input->post('tgl_akhir');
-		$user = $this->session->user;
-		$data['user'] = $user;
-		$user_arsip = array('P0256', 'K1778', 'B0892', 'J1365');
-		if (in_array($user, $user_arsip)) {
-			$data['user_arsip'] = 'user_arsip';
-		}else {
-			$data['user_arsip'] = 'user_lain';
-		}
 		
 		$val = $this->M_arsip->getDataSPB3($tgl_awal, $tgl_akhir);
 		$getdata = array();

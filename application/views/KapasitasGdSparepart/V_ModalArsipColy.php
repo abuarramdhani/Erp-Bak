@@ -1,3 +1,6 @@
+<?php 
+$edit = $user_arsip == 'user_arsip' ? 'disabled' : '';
+?>
 <div class="table-responsive">
         <table class="table table-stripped table-hovered text-center" style="width:100%">
             <thead>
@@ -24,7 +27,7 @@
 							<td><?= $no?>
 								<input type="hidden" id="no_spb<?= $no?>" value="<?= $nospb?>">
 							</td>
-							<td><select class="form-control select2" id="jenis_kemasan<?= $no?>" name="jenis_kemasan" style="width:100%" data-placeholder="pilih kemasan" onchange="gantikemasan(<?= $no?>)">
+							<td><select class="form-control select2" id="jenis_kemasan<?= $no?>" name="jenis_kemasan" style="width:100%" data-placeholder="pilih kemasan" onchange="gantikemasan(<?= $no?>)" <?= $edit?>>
 								<option value="<?= $val['kode_packing']?>"><?= $kemasan?></option>
 								<option value="1">KARDUS KECIL</option>
 								<option value="2">KARDUS SEDANG</option>
@@ -33,14 +36,14 @@
 								<option value="5">PETI</option>
 								</select>
 							</td>
-							<td><input type="text" class="form-control" id="berat<?= $no?>" name="berat" value="<?= $val['berat']?>" onchange="gantikemasan(<?= $no?>)"></td>
+							<td><input type="text" class="form-control" id="berat<?= $no?>" name="berat" value="<?= $val['berat']?>" onchange="gantikemasan(<?= $no?>)" <?= $edit?>></td>
 						</tr>
                 <?php $no++; }?>
                 <tr>
 					<td><?= $no?>
 						<input type="hidden" id="no_spb<?= $no?>" value="<?= $nospb?>">
 					</td>
-					<td><select class="form-control select2" id="jenis_kemasan<?= $no?>" name="jenis_kemasan" style="width:100%" data-placeholder="pilih kemasan">
+					<td><select class="form-control select2" id="jenis_kemasan<?= $no?>" name="jenis_kemasan" style="width:100%" data-placeholder="pilih kemasan" <?= $edit?>>
 						<option></option>
 						<option value="1">KARDUS KECIL</option>
 						<option value="2">KARDUS SEDANG</option>
@@ -49,7 +52,7 @@
 						<option value="5">PETI</option>
 						</select>
 					</td>
-					<td><input type="text" class="form-control" id="berat<?= $no?>" name="berat" placeholder="masukkan berat (KG)" onchange="saveBeratPack(<?= $no?>)"></td>
+					<td><input type="text" class="form-control" id="berat<?= $no?>" name="berat" placeholder="masukkan berat (KG)" onchange="saveBeratPack(<?= $no?>)" <?= $edit?>></td>
 				</tr>
             </tbody>
         </table>
