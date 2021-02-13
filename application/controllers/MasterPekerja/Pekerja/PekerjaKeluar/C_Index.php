@@ -226,6 +226,7 @@ class C_Index extends CI_Controller
 			'diangkat' 	        => (new DateTime($pekerja->diangkat))->format('d-m-Y'),
 			'masukkerja'        => (new DateTime($pekerja->masukkerja))->format('d-m-Y'),
 			'status_diangkat'   => $pekerja->status_diangkat === 't',
+			'asal_outsourcing'   => @$pekerja->asal_outsourcing,
 			/**Penempatan Jabatan skip */
 			/** */
 			'kd_jbt_dl'					=> $pekerja->kd_jbt_dl,
@@ -586,6 +587,7 @@ class C_Index extends CI_Controller
 				'diangkat' 	        => $this->input->post('diangkat') ? date('Y-m-d', strtotime($this->input->post('diangkat'))) : '',
 				'masukkerja'        => $this->input->post('masukkerja') ? date('Y-m-d', strtotime($this->input->post('masukkerja'))) : '',
 				'status_diangkat'   => $this->input->post('status_diangkat'),
+				'asal_outsourcing'   => $this->input->post('asal_outsourcing'),
 				'kd_jbt_dl'					=> $this->input->post('kd_jbt_dl'),
 				// 'jabatan' 	        => $this->input->post('jabatan'),
 				'kd_pkj'						=> $this->input->post('kd_pkj'),
