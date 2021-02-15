@@ -125,7 +125,7 @@
                         <td colspan="6" class="p-0">
                           <table class="table table-bordered table-hovered mb-0">
                             <tr class="click-inside-target">
-                              <td width="5%" data-cost_center="<?= $item->COST_CENTER ?>" data-toggled="0" class="text-center hover-gray toggle-table-child" style="cursor: pointer;">
+                              <td width="5%" data-cost_center="<?= $item->COST_CENTER ?>" data-toggled="0" data-toggle="tooltip" title="View detail" class="text-center hover-gray toggle-table-child" style="cursor: pointer;">
                                 <img src="<?= base_url('assets/img/icon/details_open.png') ?>">
                               </td>
                               <td width="5%" class="text-center">
@@ -199,8 +199,10 @@
                                           <td>
                                             <input type="number" min="1" name="luas_area" value="<?= $child->luas_area ?>" class="form-control" disabled>
                                           </td>
-                                          <td class="timestamp" title="Oleh <?= $child->created_by . " - " . $child->created_by_name ?>">
-                                            <?= $child->updated_at ?: $child->created_at ?>
+                                          <td class="timestamp">
+                                            <span data-toggle="tooltip" title="Oleh <?= $child->created_by . " - " . $child->created_by_name ?>">
+                                              <?= $child->updated_at ?: $child->created_at ?>
+                                            </span>
                                           </td>
                                           <td>
                                             <?php if ($is_admin) : ?>
@@ -283,7 +285,6 @@
       $tr.find('.area_detail__edit, .area_detail__remove').addClass('hidden')
       $tr.find('.area_detail__save, .area_detail__cancel').removeClass('hidden')
 
-      // :TODO
       // set to editable
       $tr.find('input, select').prop('disabled', false)
 
@@ -363,7 +364,7 @@
       const $tr = $(this).closest('tr');
       const $tbody = $tr.parents('tbody');
       const cost_center = $tr.parents('tr.tr-parent').data('cost_center');
-      const id = $tr.data('id');
+      const id = $tr.attr('data-id');
 
       const data = {
         cost_center,
