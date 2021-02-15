@@ -69,7 +69,7 @@
                               <tr row-id="1">
                                 <td class="text-center">1</td>
                                 <td class="text-center check_pbbns_param">
-                                  <select class="form-control slc_pbb_item" name="item_code[]" style="text-transform:uppercase !important;width:600px;" required>
+                                  <select class="form-control slc_pbbns_item" name="item_code[]" style="text-transform:uppercase !important;width:600px;" required>
                                     <option selected="selected"></option>
                                   </select>
                                 </td>

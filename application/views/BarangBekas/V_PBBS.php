@@ -52,7 +52,7 @@
                             <select class="slc_pbb pbb_subinv" name="subinv" style="width:100%">
                               <option value="">Select..</option>
                               <?php foreach ($subinv as $key => $value): ?>
-                                <option value="<?php echo $value['SUBINV'] ?>"><?php echo $value['SUBINV'] ?> - <?php echo strtoupper($value['DESCRIPTION']) ?></option>
+                                <option value="<?php echo $value['SUBINV'] ?> - <?php echo $value['ORGANIZATION_ID'] ?>"><?php echo $value['SUBINV'] ?> - <?php echo strtoupper($value['DESCRIPTION']) ?></option>
                               <?php endforeach; ?>
                             </select>
                           </td>
@@ -76,32 +76,34 @@
                   <div class="col-md-12">
                     <div class="table-responsive">
                         <div class="panel-body">
-                          <table class="table table-bordered" style="width:100%">
+                          <table class="table table-bordered pbbs_table" style="width:100%">
                             <thead class="bg-primary">
                               <tr>
-                                <!-- <th class="text-center" style="width:5%; !important">No</th> -->
+                                <th class="text-center" style="width:5%; !important">No</th>
                                 <th class="text-center">Item Code</th>
                                 <th class="text-center" style="width:10%">Onhand</th>
                                 <th class="text-center" style="width:10%;">Jumlah</th>
-                                <th class="text-center" style="width:10%;">UOM</th>
+                                <th class="text-center" style="width:7%;">UOM</th>
+                                <th class="text-center" style="width:10%;">Plus/Min</th>
                               </tr>
                             </thead>
-                            <tbody>
-                              <tr >
-                                <!-- <td class="text-center">1</td> -->
+                            <tbody id="pbbs_set_row">
+                              <tr row-id="1">
+                                <td class="text-center">1</td>
                                 <td class="text-center check_pbb_param"style="vertical-align:middle">
-                                  <select class="form-control slc_pbb_item" id="item_code_1" name="item_code" style="text-transform:uppercase !important;width:650px;" required>
+                                  <select class="form-control slc_pbb_item" id="item_code_1" name="item_code[]" style="text-transform:uppercase !important;width:582px;" required>
                                     <option selected="selected"></option>
                                   </select>
                                 </td>
-                                <td class="text-center"><input type="text" class="form-control" id="onhand" name="onhand" readonly autocomplete="off"></td>
-                                <td class="text-center"><input type="number" class="form-control" id="jumlah" name="jumlah" required></td>
-                                <td class="text-center"><input type="text" class="form-control" id="pbb_uom" name="uom" readonly></td>
+                                <td class="text-center"><input type="text" class="form-control" id="onhand" name="onhand[]" readonly autocomplete="off"></td>
+                                <td class="text-center"><input type="number" class="form-control" id="jumlah" name="jumlah[]" required></td>
+                                <td class="text-center"><input type="text" class="form-control" id="pbb_uom" name="uom[]" readonly></td>
+                                <td class="text-center"><button type="button" class="btn btn-default btn-sm" onclick="btnPBBS()"><i class="fa fa-plus"></i></button></td>
                               </tr>
                             </tbody>
                           </table>
                         </div>
-                        <div class="panel-body">
+                        <div class="panel-body check_locator__">
                           <button type="submit" style="float:right !important;font-weight:bold" class="btn btn-success btn_pbbs_submit" name=""><i class="fa fa-file"></i> Submit</button>
                         </div>
                     </div>

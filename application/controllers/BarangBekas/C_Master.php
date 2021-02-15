@@ -82,6 +82,9 @@ class C_Master extends CI_Controller
           $this->load->view('V_Footer', $data);
 
       }else {
+        // echo "<pre>";
+        // print_r($_POST);
+        // die;
         $res = $this->M_master->insertPBBS($this->input->post());
         if (!empty($res)) {
           $this->session->set_flashdata('message_pbbs', '<div class="alert alert-success alert-dismissible" role="alert">
@@ -107,7 +110,13 @@ class C_Master extends CI_Controller
     public function item()
     {
       $term = strtoupper($this->input->post('term'));
-      echo json_encode($this->M_master->item($term));
+      echo json_encode($this->M_master->item($term, $this->input->post('subinv'), $this->input->post('locator'), $this->input->post('org_id')));
+    }
+
+    public function item_pbbns($value='')
+    {
+      $term = strtoupper($this->input->post('term'));
+      echo json_encode($this->M_master->item_pbbns($term));
     }
 
     public function locator($value='')
