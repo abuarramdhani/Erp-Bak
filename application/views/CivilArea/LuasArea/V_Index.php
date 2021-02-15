@@ -285,7 +285,6 @@
       $tr.find('.area_detail__edit, .area_detail__remove').addClass('hidden')
       $tr.find('.area_detail__save, .area_detail__cancel').removeClass('hidden')
 
-      // :TODO
       // set to editable
       $tr.find('input, select').prop('disabled', false)
 
@@ -365,7 +364,7 @@
       const $tr = $(this).closest('tr');
       const $tbody = $tr.parents('tbody');
       const cost_center = $tr.parents('tr.tr-parent').data('cost_center');
-      const id = $tr.data('id');
+      const id = $tr.attr('data-id');
 
       const data = {
         cost_center,
