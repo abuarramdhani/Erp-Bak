@@ -705,7 +705,7 @@ $(document).ready(function () {
             '<img style="width:50px" src="' + baseurl + 'assets/img/gif/loading5.gif"/>' +
             '</div>' +
             '<div class="viewOrganizationOKB" style="display: block;">' +
-            '<select class="select2 organizationOKB" id="slcModalOrganization" style="width: 250px; text-align:center" name="organizationOKB[]" title="Organization">' +
+            '<select class="select2 organizationOKB slcModalOrganization" id="slcModalOrganization" style="width: 250px; text-align:center" name="organizationOKB[]" required title="Organization">' +
             '<option></option>' +
             '</select>' +
             '</div>' +
@@ -719,7 +719,7 @@ $(document).ready(function () {
             '<img style="width:50px" src="' + baseurl + 'assets/img/gif/loading5.gif"/>' +
             '</div>' +
             '<div class="viewLocationOKB">' +
-            '<select class="select2 locationOKB" id="slcLocation" style="width: 250px; text-align:center" name="locationOKB[]" title="Location">' +
+            '<select class="select2 locationOKB slcLocation" id="slcLocation" style="width: 250px; text-align:center" name="locationOKB[]" required title="Location>' +
             '<option></option>' +
             '</select>' +
             '</div>' +
