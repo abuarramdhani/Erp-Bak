@@ -1,6 +1,6 @@
-<?php if (!defined('BASEPATH')) exit ('No direct script access allowed');
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class M_progress extends CI_Model 
+class M_progress extends CI_Model
 {
     public function __construct()
     {
@@ -10,7 +10,7 @@ class M_progress extends CI_Model
 
     public function searchItem($q)
     {
-        $oracle = $this->load->database('oracle',true);
+        $oracle = $this->load->database('oracle', true);
         $query = $oracle->query("SELECT distinct 
             msib.SEGMENT1 KODE_ITEM
             ,msib.DESCRIPTION DESKRIPSI_ITEM
@@ -26,7 +26,7 @@ class M_progress extends CI_Model
 
     public function searchRequester($r)
     {
-        $oracle = $this->load->database('oracle',true);
+        $oracle = $this->load->database('oracle', true);
         $query = $oracle->query("SELECT ppf.person_id, ppf.full_name, ppf.national_identifier
         FROM per_all_people_f ppf,
              per_all_assignments_f paaf,
@@ -53,12 +53,11 @@ class M_progress extends CI_Model
              AND (ppf.full_name LIKE '$r%' OR ppf.national_identifier LIKE '$r%')");
 
         return $query->result_array();
-
     }
 
-    public function getReport($person_id,$item_id,$no_pr,$no_po,$tanggal1,$tanggal2)
+    public function getReport($person_id, $item_id, $no_pr, $no_po, $tanggal1, $tanggal2)
     {
-        $oracle = $this->load->database('oracle',true);
+        $oracle = $this->load->database('oracle', true);
         $query = $oracle->query("SELECT distinct
             trunc(to_date(substr(prha.attribute1,1,10),'YYYY/MM/DD')) tanggal_pp_dibuat
                 ,prla.reference_num nomor_pp
@@ -116,11 +115,10 @@ class M_progress extends CI_Model
                 and
                 nvl(to_date('$tanggal2','YYYY/MM/DD'),trunc(to_date(substr(prha.attribute1,1,10),'YYYY/MM/DD')))
             and nvl(pha.SEGMENT1,1) = nvl($no_po, NVL(pha.SEGMENT1,1))
+            and prla.CANCEL_FLAG is null
+            and prla.MODIFIED_BY_AGENT_FLAG is null
         order by 1,3");
 
         return $query->result_array();
-
     }
-
 }
-
