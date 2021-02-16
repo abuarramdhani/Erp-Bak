@@ -359,7 +359,7 @@ const getgambarkerja = (product_id, id, jenis, component_code) => {
   // }
   $('#fp_code_component').html(component_code)
   $.ajax({
-    url: baseurl + 'FlowProses/Component/gambarkerja',
+    url: baseurl + 'FlowProses/Operation/gambarkerja',
     type: 'POST',
     data: {
       product_id : product_id,
@@ -390,7 +390,7 @@ const getgambarkerja_beda_tempat = () => {
   $('#fp_code_component').html(component_code)
   if (fp_ajax_gmb == null) {
     fp_ajax_gmb = $.ajax({
-      url: baseurl + 'FlowProses/Component/gambarkerjaBachAdd',
+      url: baseurl + 'FlowProses/Operation/gambarkerjaBachAdd',
       type: 'POST',
       data: {
         product_id : product_id,
@@ -425,7 +425,7 @@ const getgambarkerja_beda_tempat_ = () => {
   $('#fp_code_component').html(component_code)
   if (fp_ajax_gmb_ == null) {
     fp_ajax_gmb_ = $.ajax({
-      url: baseurl + 'FlowProses/Component/gambarkerjaBachAdd',
+      url: baseurl + 'FlowProses/Operation/gambarkerjaBachAdd',
       type: 'POST',
       data: {
         product_id : product_id,
@@ -1116,7 +1116,7 @@ const tableflowproses = $('.dt-fp-comp').DataTable({
   serverSide: true,
   "order": [],
   "ajax": {
-    url: baseurl + 'FlowProses/Component/fpssc',
+    url: baseurl + 'FlowProses/Operation/fpssc',
     type: "POST",
   },
   "bSort": false,
@@ -1294,4 +1294,70 @@ const saveOperation_fp = () =>{
       swalFP('error', 'Isi Form Input Dengan Lengkap!!!')
     }
   })
+}
+
+
+//grafik AREA
+function getFamilykuis(e) {
+	var range = e.dataPoint.range;
+	var ke = e.dataPoint.key;
+	$('#chartFPDKomp2,.tbl-comp').html('<center><img style="width:100px; height:auto" src="'+baseurl+'assets/img/gif/loading12.gif"></center>' );
+	$.ajax({
+		url: baseurl+"FlowProses/Grafik/getGrafik",
+		type: "POST",
+		data:{
+			range:range,
+			ke : ke
+		},
+		success:function (result) {
+			var array2 = [];
+			var htmls = '';
+			var data = JSON.parse(result);
+	        var array = $.map(data['recapDay'], function(value) {
+	            return [value];
+	        });
+	        var arrayke = $.map(data['ke'], function(value) {
+	            return [value];
+	        });
+
+		        for (var i = 0; i < array.length; i++) {
+		        	array2.push({ x:new Date(array[i]['tgl']),y : Number(array[i]['su']) })
+	            	}
+	        var arrayComp = $.map(data['recapComp'], function(value) {
+	            return [value];
+	        });
+			setTimeout(function () {
+				var chart3 = new CanvasJS.Chart("chartFPDKomp2", {
+
+                animationEnabled: true,
+                theme: "light2",
+                title:{
+                  text: "Detail Minggu "+arrayke[0]['ke']
+                },
+                axisY:{
+                  includeZero: false
+                },
+                data : [{
+                    type: "area",
+                    dataPoints:array2
+                }]
+              });
+              chart3.render();
+			},1500);
+			setTimeout(function () {
+				if (arrayComp.length > 0 ) {
+					for (var i = 0; i < arrayComp.length; i++) {
+			        	htmls += '<tr>';
+			        	htmls += '<td style="width:27%"><center>'+arrayComp[i]['tgl']+'</center></td>';
+			        	htmls += '<td style="padding:5px;">'+arrayComp[i]['cd_comp']+' di Produk '+arrayComp[i]['desc_prod']+'</td>';
+			        	htmls += '</tr>'
+		            	}
+		            $('.tbl-comp').html(htmls);
+				}else{
+					htmls += 'Tidak ada input data komponen di minggu ke '+arrayke[0]['ke'];
+		            $('.tbl-comp').html(htmls);
+				}
+			},1500);
+		}
+	})
 }

@@ -5084,7 +5084,7 @@ $route['FlowProses/Product/(:any)'] = 'FlowProses/C_Master/$1';
 $route['FlowProses/Memo'] = 'FlowProses/C_Master/Memo';
 $route['FlowProses/Memo/(:any)'] = 'FlowProses/C_Master/$1';
 
-$route['FlowProses/Component'] = 'FlowProses/C_Master/Component';
+$route['FlowProses/Component'] = 'FlowProses/C_Master/Operation';
 $route['FlowProses/Component/(:any)'] = 'FlowProses/C_Master/$1';
 $route['FlowProses/Component/(:any)/(:any)'] = 'FlowProses/C_Master/$1/$2';
 
@@ -5104,5 +5104,9 @@ $route['FlowProses/OperationProcessStandard/(:any)/(:any)'] = 'FlowProses/C_Mast
 $route['FlowProses/SetOracleItem'] = 'FlowProses/C_Master/SetOracleItem';
 $route['FlowProses/SetOracleItem/(:any)'] = 'FlowProses/C_Master/$1';
 $route['FlowProses/SetOracleItem/(:any)/(:any)'] = 'FlowProses/C_Master/$1/$2';
+
+$route['FlowProses/Grafik'] = 'FlowProses/C_Grafik';
+$route['FlowProses/Grafik/(:any)'] = 'FlowProses/C_Grafik/$1';
+$route['FlowProses/Grafik/(:any)/(:any)'] = 'FlowProses/C_Grafik/$1/$2';
 
 $route['FlowProses/cekapi'] = 'FlowProses/C_Master/cekapi';

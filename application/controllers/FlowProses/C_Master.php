@@ -62,11 +62,10 @@ class C_Master extends CI_Controller
         if ($access == 'Super User') {
           // code...
         }elseif ($access == 'Admin (Serah Terima)') {
-          unset($data['UserMenu'][3]);
+          unset($data['UserMenu'][1]);
           unset($data['UserMenu'][4]);
           unset($data['UserMenu'][5]);
         }elseif ($access == 'Admin (Operation)') {
-          unset($data['UserMenu'][1]);
           unset($data['UserMenu'][2]);
           unset($data['UserMenu'][5]);
         }elseif (empty($access)){
@@ -145,11 +144,10 @@ class C_Master extends CI_Controller
       if ($access == 'Super User') {
         // code...
       }elseif ($access == 'Admin (Serah Terima)') {
-        unset($data['UserMenu'][3]);
+        unset($data['UserMenu'][1]);
         unset($data['UserMenu'][4]);
         unset($data['UserMenu'][5]);
       }elseif ($access == 'Admin (Operation)') {
-        unset($data['UserMenu'][1]);
         unset($data['UserMenu'][2]);
         unset($data['UserMenu'][5]);
       }elseif (empty($access)){
@@ -185,11 +183,10 @@ class C_Master extends CI_Controller
       if ($access == 'Super User') {
         // code...
       }elseif ($access == 'Admin (Serah Terima)') {
-        unset($data['UserMenu'][3]);
+        unset($data['UserMenu'][1]);
         unset($data['UserMenu'][4]);
         unset($data['UserMenu'][5]);
       }elseif ($access == 'Admin (Operation)') {
-        unset($data['UserMenu'][1]);
         unset($data['UserMenu'][2]);
         unset($data['UserMenu'][5]);
       }elseif (empty($access)){
@@ -508,11 +505,10 @@ class C_Master extends CI_Controller
       if ($access == 'Super User') {
         // code...
       }elseif ($access == 'Admin (Serah Terima)') {
-        unset($data['UserMenu'][3]);
+        unset($data['UserMenu'][1]);
         unset($data['UserMenu'][4]);
         unset($data['UserMenu'][5]);
       }elseif ($access == 'Admin (Operation)') {
-        unset($data['UserMenu'][1]);
         unset($data['UserMenu'][2]);
         unset($data['UserMenu'][5]);
       }elseif (empty($access)){
@@ -619,11 +615,10 @@ class C_Master extends CI_Controller
       if ($access == 'Super User') {
         // code...
       }elseif ($access == 'Admin (Serah Terima)') {
-        unset($data['UserMenu'][3]);
+        unset($data['UserMenu'][1]);
         unset($data['UserMenu'][4]);
         unset($data['UserMenu'][5]);
       }elseif ($access == 'Admin (Operation)') {
-        unset($data['UserMenu'][1]);
         unset($data['UserMenu'][2]);
         unset($data['UserMenu'][5]);
       }elseif (empty($access)){
@@ -703,11 +698,10 @@ class C_Master extends CI_Controller
       if ($access == 'Super User') {
         // code...
       }elseif ($access == 'Admin (Serah Terima)') {
-        unset($data['UserMenu'][3]);
+        unset($data['UserMenu'][1]);
         unset($data['UserMenu'][4]);
         unset($data['UserMenu'][5]);
       }elseif ($access == 'Admin (Operation)') {
-        unset($data['UserMenu'][1]);
         unset($data['UserMenu'][2]);
         unset($data['UserMenu'][5]);
       }elseif (empty($access)){
@@ -1042,11 +1036,10 @@ class C_Master extends CI_Controller
       if ($access == 'Super User') {
         // code...
       }elseif ($access == 'Admin (Serah Terima)') {
-        unset($data['UserMenu'][3]);
+        unset($data['UserMenu'][1]);
         unset($data['UserMenu'][4]);
         unset($data['UserMenu'][5]);
       }elseif ($access == 'Admin (Operation)') {
-        unset($data['UserMenu'][1]);
         unset($data['UserMenu'][2]);
         unset($data['UserMenu'][5]);
       }elseif (empty($access)){
@@ -1132,11 +1125,10 @@ class C_Master extends CI_Controller
       if ($access == 'Super User') {
         // code...
       }elseif ($access == 'Admin (Serah Terima)') {
-        unset($data['UserMenu'][3]);
+        unset($data['UserMenu'][1]);
         unset($data['UserMenu'][4]);
         unset($data['UserMenu'][5]);
       }elseif ($access == 'Admin (Operation)') {
-        unset($data['UserMenu'][1]);
         unset($data['UserMenu'][2]);
         unset($data['UserMenu'][5]);
       }elseif (empty($access)){
