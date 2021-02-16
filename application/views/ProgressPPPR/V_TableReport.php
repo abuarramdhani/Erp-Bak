@@ -22,32 +22,34 @@
             <th>Requestor</th>
             <th>Seksi</th>
             <th>Receipt Date</th>
+            <th>PO Status</th>
         </tr>
     </thead>
     <tbody>
         <?php foreach ($report as $key => $rep) { ?>
             <tr>
-                <td><?= $rep['TANGGAL_PP_DIBUAT'];?></td>
-                <td><?= $rep['NOMOR_PP'];?></td>
-                <td><?= $rep['NO_PO'];?></td>
-                <td><?= $rep['TANGGAL_PO'];?></td>
-                <td><?= $rep['NO_PR'];?></td>
-                <td><?= $rep['TANGGAL_PR'];?></td>
-                <td><?= $rep['TANGGAL_PP_DITERIMA'];?></td>
-                <td><?= $rep['PP_APPROVE'];?></td>
-                <td><?= $rep['NBD_SEKSI'];?></td>
-                <td><?= $rep['NBD_PEMBELIAN'];?></td>
-                <td><?= $rep['PROMISED_DATE'];?></td>
-                <td><?= $rep['KODE_ITEM'];?></td>
-                <td><?= $rep['ITEM_DESCRIPTION_PR'];?></td>
-                <td><?= $rep['ITEM_DESCRIPTION'];?></td>
-                <td><?= $rep['QUANTITY'];?></td>
-                <td><?= $rep['SATUAN'];?></td>
-                <td><?= $rep['KETERANGAN'];?></td>
-                <td><?= $rep['NO_INDUK'];?></td>
-                <td><?= $rep['REQUESTOR'];?></td>
-                <td><?= $rep['SEKSI'];?></td>
-                <td><?= $rep['RECEIPT_DATE'];?></td>
+                <td><?= $rep['TANGGAL_PP_DIBUAT']; ?></td>
+                <td><?= $rep['NOMOR_PP']; ?></td>
+                <td><?= $rep['NO_PO']; ?></td>
+                <td><?= $rep['TANGGAL_PO']; ?></td>
+                <td><?= $rep['NO_PR']; ?></td>
+                <td><?= $rep['TANGGAL_PR']; ?></td>
+                <td><?= $rep['TANGGAL_PP_DITERIMA']; ?></td>
+                <td><?= $rep['PP_APPROVE']; ?></td>
+                <td><?= $rep['NBD_SEKSI']; ?></td>
+                <td><?= $rep['NBD_PEMBELIAN']; ?></td>
+                <td><?= $rep['PROMISED_DATE']; ?></td>
+                <td><?= $rep['KODE_ITEM']; ?></td>
+                <td><?= $rep['ITEM_DESCRIPTION_PR']; ?></td>
+                <td><?= $rep['ITEM_DESCRIPTION']; ?></td>
+                <td><?= $rep['QUANTITY']; ?></td>
+                <td><?= $rep['SATUAN']; ?></td>
+                <td><?= $rep['KETERANGAN']; ?></td>
+                <td><?= $rep['NO_INDUK']; ?></td>
+                <td><?= $rep['REQUESTOR']; ?></td>
+                <td><?= $rep['SEKSI']; ?></td>
+                <td><?= $rep['RECEIPT_DATE']; ?></td>
+                <td><?= $rep['PO_STATUS']; ?></td>
             </tr>
         <?php } ?>
     </tbody>
