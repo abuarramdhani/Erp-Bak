@@ -86,6 +86,7 @@ class M_progress extends CI_Model
                 ,ppf.national_identifier no_induk
                 ,ppf.full_name requestor
                 ,prha.DESCRIPTION seksi
+                ,pha.CLOSED_CODE PO_STATUS
                 ,(SELECT MIN(rt1.transaction_date) 
                     FROM rcv_transactions rt1
                     WHERE rt1.PO_LINE_ID = pda.PO_LINE_ID ) receipt_date
