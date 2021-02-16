@@ -10,10 +10,6 @@ class M_fp extends CI_Model
         $this->personalia = $this->load->database('personalia', true);
         $this->lantuma = $this->load->database('lantuma',TRUE);
     }
-    public function agag($value='')
-    {
-      return $this->oracle->query("select * from khs_ascp_ek_temp")->result_array();
-    }
 
     public function update_adjuvant($value)
     {
