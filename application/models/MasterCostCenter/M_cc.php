@@ -19,7 +19,7 @@ class M_cc extends CI_Model
 		}
 		$sql = "select distinct CONCAT('[',trim(unit),']  ',trim(seksi)) seksi, SUBSTRING(kodesie,1,7) kodesie
 				from hrd_khs.tseksi
-				where seksi not like '-%'
+				where trim(seksi) != '-'
 				and seksi not like '%**%'
 				$sql2
 				order by 1";
