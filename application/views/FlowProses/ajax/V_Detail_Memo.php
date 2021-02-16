@@ -1,4 +1,6 @@
-<div class="table-responsive">
+<i>*Warna<b style="color:#c1cb00"> Kuning</b> = File Gambar Kerja tidak terbaca</i>
+<br>
+<div class="table-responsive mt-4">
   <table class="table table-striped table-bordered table-hover text-left datatable-memo-fp-2021" style="font-size:11px;">
     <thead class="bg-primary">
       <tr>
@@ -11,14 +13,23 @@
       </tr>
     </thead>
     <tbody>
-      <?php foreach ($get as $key => $value): ?>
-        <tr row-fp-memo="<?php echo $value['product_component_id'] ?>">
+      <?php foreach ($get as $key => $value):
+        $url = 'http://192.168.168.221/gambar-kerja'.$value['file_location'].$value['file_name'].'.pdf';
+        $array = @get_headers($url);
+        $string = $array[0];
+        if(strpos($string, "200")) {
+        $img = 'y';
+        }else {
+        $img = 'n';
+        }
+      ?>
+        <tr row-fp-memo="<?php echo $value['product_component_id'] ?>" <?php echo $img == 'n' ? 'style="background:#c1cb00"' : '' ?>>
           <td style="text-align:center"><?php echo $key+1 ?></td>
-          <td style="text-align:left"><?php echo $value['component_code'] ?></td>
-          <td style="text-align:left"><?php echo $value['component_name'] ?></td>
-          <td style="text-align:center"><?php echo $value['revision'] ?></td>
+          <td style="text-align:left"><?php echo $value['kodebaru'] ?></td>
+          <td style="text-align:left"><?php echo $value['nama_komponen'] ?></td>
+          <td style="text-align:center"><?php echo $value['norevisi'] ?></td>
           <td style="text-align:left"><?php echo substr($value['revision_date'], 0, 10) ?></td>
-          <td style="text-align:center"><button type="button" onclick="fp_detail_memo_img(<?php echo $value['product_component_id'] ?>, <?php echo $value['product_id'] ?>, '<?php echo $value['component_code'] ?>')" class="btn btn-primary" name="button" data-toggle="modal" data-target="#modalfpgambar"> <b class="fa fa-image"></b> </button></td>
+          <td style="text-align:center"><button type="button" onclick="fp_detail_memo_img(<?php echo $value['product_component_id'] ?>, <?php echo $value['product_id'] ?>, '<?php echo $value['kodebaru'] ?>')" class="btn btn-primary" name="button" data-toggle="modal" data-target="#modalfpgambar"> <b class="fa fa-image"></b> </button></td>
         </tr>
       <?php endforeach; ?>
     </tbody>

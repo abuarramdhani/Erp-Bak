@@ -266,8 +266,8 @@ function fp_bp_minus_proses_edit(no) {
     ],
     select: {
       style: 'multi',
-      // style: 'single',
-        selector: 'tr'
+      // style: 'single', selector: 'tr'
+      selector: 'td:nth-child(2)'
     },
     order: [[0, 'asc']],
   })
