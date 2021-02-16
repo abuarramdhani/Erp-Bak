@@ -231,8 +231,102 @@ class C_Master extends CI_Controller
         $data['memo'] = $this->input->post('memo');
         $data['memo_id'] = $this->input->post('memo_id');
         $data['type'] =  $this->input->post('type');
-        $data['get'] = $this->M_fp->getComponentMemo($this->input->post('memo'), $this->input->post('type'));
+
         $data['cek'] = $this->db->where('memo_number', $this->input->post('memo'))->get('md.md_component_approved')->num_rows();
+
+        $id = $data['memo_id'];
+        $lineHisto 	= $this->M_fp->getMemoLine($id, $data['memo'], $data['type']);
+        $lineNew 		= $this->M_fp->getMemoLineNew($id, $data['memo'], $data['type']);
+
+        $dtTemp = array();
+        $kpsr = $this->M_fp->kpsrMemoProduct($data['memo'], $data['type']);
+        if (!empty($kpsr)) {
+          foreach ($kpsr as $key => $value) {
+            $cek_kom_in_histo = $this->M_fp->cek_kom_in_histo($value['product_component_id'], $data['type']);
+            if (!empty($cek_kom_in_histo)) {
+              $tampung_new_comp_in_histo[] = $cek_kom_in_histo;
+            }
+          }
+        }
+
+        if (empty($tampung_new_comp_in_histo)) {
+          $tampung_new_comp_in_histo = [];
+        }else {
+          foreach ($tampung_new_comp_in_histo as $key => $value) {
+            $lnnew_in_histo = array(
+                    'history_id' => 0,
+                    'historyparent' => 0,
+                    'product_component_id' => $value['product_component_id'],
+                    'product_id' => $value['product_id'],
+                    'nama_komponen' => $value['component_name'],
+                    'component_code_old' => '-',
+                    'kodebaru' => $value['component_code'],
+                    'revision_date' => $value['revision_date'],
+                    'norevisi' => '0',
+                    'detailperubahan' => empty($value['change_detail']) ? $value['information'] : $value['change_detail'],
+                    'sifatperubahan' => $value['change_type'],
+                    'gambarkerjalama' => $value['status_design'],
+                    'statuskomponen' => $value['status_component'],
+                    'status' => $value['status']
+                );
+            array_push($dtTemp, $lnnew_in_histo);
+          }
+        }
+        //end
+
+        if (!empty($lineHisto[0]['product_component_id'])) {
+          $getdataoldupdate = $this->M_fp->getMemoLineNewUniqueUpdate($id, $data['memo'], $lineHisto[0]['product_component_id'], $data['type']);
+        }
+        // if (empty($lineNew)) {
+        //     $lineNew 	= $this->M_fp->getMemoLineNewProt($id, $data['memo']);
+        // }
+
+        foreach ($lineNew as  $lnw) {
+            $strip = '0';
+            if ($lnw['revision'] != 0) {
+              $strip = $lnw['revision'];
+            }
+            $lnwray = array(
+                'history_id' 					 => 0,
+                'historyparent' 			 => 0,
+                'product_component_id' => $lnw['product_component_id'],
+                'product_id'           => $lnw['product_id'],
+                'nama_komponen' 			 => $lnw['component_name'],
+                'component_code_old' 	 => '-',
+                'kodebaru' 						 => $lnw['component_code'],
+                'norevisi' 						 => $strip,
+                'revision_date'				 => $lnw['revision_date'],
+                'detailperubahan' 		 => $lnw['change_detail'],
+                'sifatperubahan' 			 => $lnw['change_type'],
+                'status'							 => $lnw['status'],
+                'gambarkerjalama' 		 => $lnw['status_design'],
+                'statuskomponen' 			 => $lnw['status_component']
+            );
+            array_push($dtTemp, $lnwray);
+        }
+
+        if (!empty($lineHisto)) {
+          if ($lineHisto[0]['jenis'] == 'Prototype') {
+              foreach ($getdataoldupdate as $lhray) {
+                  array_push($dtTemp, $lhray);
+              }
+          } else {
+              foreach ($lineHisto as $lhray) {
+                  array_push($dtTemp, $lhray);
+              }
+          }
+        }
+
+        foreach ($dtTemp as $key => $value) {
+          $design = $this->M_fp->getimgCek($value['product_component_id'], $data['type']);
+          $dtTemp[$key]['file_location'] = $design['file_location'];
+          $dtTemp[$key]['file_name'] = $design['file_name'];
+        }
+
+        $data['get'] = $dtTemp;
+
+        // echo "<pre>";print_r($dtTemp);
+
         if (!empty($data['get'])) {
           $this->load->view('FlowProses/ajax/V_Detail_Memo', $data);
         }else {
