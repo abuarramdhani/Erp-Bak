@@ -110,7 +110,7 @@ class M_cc extends CI_Model
 					hrd_khs.tseksi
 				where
 					kodesie not like '%-%'
-					and seksi not like '%-%'
+					and trim(seksi) != '-'
 					$id
 				group by
 					substring(kodesie, 1, 7),dept,bidang,unit,
