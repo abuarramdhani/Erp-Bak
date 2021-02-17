@@ -414,6 +414,42 @@ $('.pbb_transact').on('change', function () {
 
 })
 
+$('.submit-pbb-transact').on('click', function() {
+  const doc_num = $('select[name="no_document"]').val();
+  const cek_blm_selesai_timbang = $('button[data-target="#modal-pbb-transact-ambil-berat"]').text();
+  if (cek_blm_selesai_timbang == '') {
+    $.ajax({
+      url: baseurl + 'BarangBekas/transact/transact_beneran',
+      type: 'POST',
+      dataType: 'JSON',
+      data: {
+        doc_num: doc_num,
+      },
+      cache:false,
+      beforeSend: function() {
+        toastPBBLoading('Sedang melakukan transact..')
+      },
+      success: function(result) {
+        if (result == 1) {
+          toastPBB('success', 'Sukses melakukan transact .. ')
+        }else if (result == 76) {
+          toastPBB('warning', `Dokumen ${doc_num} telah di-transact sebelumnya.`)
+        }else {
+          toastPBB('warning', 'Gagal melakukan transact, hubungi pihak yang berwajib!')
+        }
+      },
+      error: function(XMLHttpRequest, textStatus, errorThrown) {
+      swalPBB('error', 'Koneksi Terputus...')
+       console.error();
+      }
+    })
+  }else {
+    toastPBB('warning', 'Masih terdapat item yang belum selesai timbang, selesaikan dulu!');
+  }
+  console.log(cek_blm_selesai_timbang);
+
+})
+
 // const pbb_seksi = () => {
 //   $.ajax({
 //     url: baseurl + 'BarangBekas/pbbs/getSeksi',

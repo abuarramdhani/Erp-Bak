@@ -146,6 +146,27 @@ class M_master extends CI_Model
         AND msib.organization_id = 102")->row_array();
     }
 
+    public function cek_apakah_sudah_trasact($doc_no)
+    {
+      return $this->oracle->query("SELECT document_number from KHS_PENGIRIMAN_BARANG_BEKAS where DOCUMENT_NUMBER = '$doc_no' AND STATUS = 'SUDAH TRANSACT'")->row_array();
+    }
+
+    /*
+    | -------------------------------------------------------------------------
+    | TRANSACT AREA
+    | -------------------------------------------------------------------------
+    */
+
+    public function pbb_transact($doc_no)
+    {
+      $this->oracle->where('DOCUMENT_NUMBER', $doc_no)->update('KHS_PENGIRIMAN_BARANG_BEKAS', ['STATUS' => 'SUDAH TRANSACT']);
+      // if ($this->oracle->affected_rows() == 1) {
+        return 1;
+      // }else {
+      //   return 0;
+      // }
+    }
+
     /*
     | -------------------------------------------------------------------------
     | UPDATE BERAT TIMBANG

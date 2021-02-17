@@ -113,7 +113,7 @@
                       </div>
                     </div>
                     <div class="panel-body">
-                      <button type="submit" style="float:right !important;font-weight:bold"  class="btn btn-success submit-pbb-transact" name=""><i class="fa fa-file"></i> Transact</button>
+                      <button type="button" style="float:right !important;font-weight:bold"  class="btn btn-success submit-pbb-transact" name=""><i class="fa fa-file"></i> Transact</button>
                     </div>
                   </div>
                 </div>

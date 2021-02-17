@@ -232,6 +232,18 @@ class C_Master extends CI_Controller
       }
     }
 
+    public function transact_beneran($value='')
+    {
+      $doc_num = $this->input->post('doc_num');
+      $cek = $this->M_master->cek_apakah_sudah_trasact($doc_num);
+      if (empty($cek['DOCUMENT_NUMBER'])) {
+        $res = $this->M_master->pbb_transact($doc_num);
+      }else {
+        $res = 76;
+      }
+      echo json_encode($res);
+    }
+
     public function ambilItem()
     {
       echo json_encode($this->M_master->ambilItem($this->input->post('id')));
