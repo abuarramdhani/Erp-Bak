@@ -5106,3 +5106,21 @@ $route['FlowProses/SetOracleItem/(:any)'] = 'FlowProses/C_Master/$1';
 $route['FlowProses/SetOracleItem/(:any)/(:any)'] = 'FlowProses/C_Master/$1/$2';
 
 $route['FlowProses/cekapi'] = 'FlowProses/C_Master/cekapi';
+
+// -------------------------------Pengiriman Barang Bekas-----------------------------------------------//
+$route['BarangBekas'] = 'BarangBekas/C_Master';
+$route['BarangBekas/pbbs'] = 'BarangBekas/C_Master/pbbs';
+$route['BarangBekas/pbbns'] = 'BarangBekas/C_Master/pbbns';
+$route['BarangBekas/Transact'] = 'BarangBekas/C_Master/transact';
+
+$route['BarangBekas/pbbs/(:any)'] = 'BarangBekas/C_Master/$1';
+$route['BarangBekas/pbbs/(:any)/(:any)'] = 'BarangBekas/C_Master/$1/$2';
+$route['BarangBekas/pbbs/(:any)/(:any)/(:any)'] 	= 'BarangBekas/C_Master/$1/$2/$3';
+
+$route['BarangBekas/pbbns/(:any)'] = 'BarangBekas/C_Master/$1';
+$route['BarangBekas/pbbns/(:any)/(:any)'] = 'BarangBekas/C_Master/$1/$2';
+$route['BarangBekas/pbbns/(:any)/(:any)/(:any)'] 	= 'BarangBekas/C_Master/$1/$2/$3';
+
+$route['BarangBekas/transact/(:any)'] = 'BarangBekas/C_Master/$1';
+$route['BarangBekas/transact/(:any)/(:any)'] = 'BarangBekas/C_Master/$1/$2';
+$route['BarangBekas/transact/(:any)/(:any)/(:any)'] = 'BarangBekas/C_Master/$1/$2/$3';
