@@ -96,7 +96,7 @@ const getOnhand = () => {
   // }
 }
 
-$('.check_pbb_param').on('mouseover', function () {
+$('.check_pbb_param').on('click', function () {
   if ($('.slc_pbb_seksi').val() === '' || $('.pbb_subinv').val() === '') {
     swalPBB('warning', 'Seksi dan SubInv Wajib Diisi Terlebih Dahulu!');
   }
@@ -105,13 +105,13 @@ $('.check_pbb_param').on('mouseover', function () {
   }
 })
 
-$('.check_locator__').on('mouseover', function () {
+$('.check_locator__').on('click', function () {
   if ($('.pbbs_loc').val() != undefined && $('.pbbs_loc').val() == '') {
     swalPBB('warning', 'Pilih Locator Terlebih Dahulu!');
   }
 })
 
-$('.check_pbbns_param').on('mouseover', function () {
+$('.check_pbbns_param').on('click', function () {
   if ($('.slc_pbb_seksi').val() === '') {
     swalPBB('warning', 'Seksi Wajib Diisi Terlebih Dahulu!')
   }
