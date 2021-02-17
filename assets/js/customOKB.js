@@ -1150,7 +1150,8 @@ $(document).ready(function () {
     });
 
     $('.slcTindakanOKB').select2({
-        placeholder: '--tindakan untuk semua yang ditandai--'
+        placeholder: '--tindakan untuk semua yang ditandai--',
+        minimumResultsForSearch: -1,
     });
 
     $(document).on('click','.btnOKBApproverAct', function () {
