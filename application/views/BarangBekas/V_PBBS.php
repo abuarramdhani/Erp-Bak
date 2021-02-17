@@ -20,7 +20,7 @@
                     <?php echo $this->session->flashdata('message_pbbs') ?>
                   </div>
                 </div>
-                <form class="" action="" method="post">
+                <form class="form_submit_pbbs" action="" method="post">
                 <div class="row">
                   <div class="col-md-2"></div>
                   <div class="col-md-8">

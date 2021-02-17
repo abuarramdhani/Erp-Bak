@@ -68,7 +68,7 @@ class M_master extends CI_Model
 
     public function item_pbbns($d)
     {
-      $sql = "SELECT msib.INVENTORY_ITEM_ID, msib.segment1, msib.description, msib.primary_uom_code
+      $sql = "SELECT msib.INVENTORY_ITEM_ID, msib.segment1, msib.description, msib.primary_uom_code, msib.organization_id
               FROM mtl_system_items_b msib
              WHERE msib.organization_id IN (101, 102)
                AND msib.inventory_item_status_code = 'Active'
@@ -132,7 +132,7 @@ class M_master extends CI_Model
                                       	 ,mtl_system_items_b msib
                                       WHERE pbb.DOCUMENT_NUMBER = '$doc_no'
                                       AND msib.INVENTORY_ITEM_ID = pbb.INVENTORY_ITEM_ID
-                                      AND msib.organization_id = 102
+                                      AND msib.organization_id = pbb.org_id
                               		AND msib.inventory_item_status_code = 'Active'
                               	 	AND SUBSTR (msib.segment1, 1, 1) <> 'J'")->result_array();
     }
@@ -267,7 +267,6 @@ class M_master extends CI_Model
 
     public function insertPBBNS($data)
     {
-
       if (!empty($data)) {
         $uhuk = explode(' ~ ', $data['seksi_n_cc']);
         $seksi = $uhuk[0];
@@ -275,12 +274,13 @@ class M_master extends CI_Model
 
         $doc_no = $this->generate_doc_num();
 
-        foreach ($data['item_code'] as $key => $item_code) {
+        foreach ($data['item_code'] as $key => $value) {
 
-          $item = explode(' - ', $item_code);
+          $item = explode(' - ', $value);
           $item_code = $item[0];
           $uom = $item[1];
           $inv_item_id = $item[2];
+          $org_id = $item[3];
 
           $this->oracle->query("INSERT INTO KHS_PENGIRIMAN_BARANG_BEKAS (DOCUMENT_NUMBER
                                  ,TYPE_DOCUMENT
@@ -295,6 +295,7 @@ class M_master extends CI_Model
                                  ,UOM
                                  ,CREATED_DATE
                                  ,BERAT_TIMBANG
+                                 ,ORG_ID
                                  )
                                 VALUES ('$doc_no'
                                        ,'PBB-NS'
@@ -309,6 +310,7 @@ class M_master extends CI_Model
                                        ,'$uom'
                                        ,SYSDATE
                                        ,NULL
+                                       ,$org_id
                                       )
                                   ");
         }

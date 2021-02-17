@@ -56,7 +56,7 @@ $(document).ready(function () {
         return {
           results: $.map(data, function(obj) {
             return {
-              id: obj.SEGMENT1==''?params.term:`${obj.SEGMENT1} - ${obj.PRIMARY_UOM_CODE} - ${obj.INVENTORY_ITEM_ID}`,
+              id: obj.SEGMENT1==''?params.term:`${obj.SEGMENT1} - ${obj.PRIMARY_UOM_CODE} - ${obj.INVENTORY_ITEM_ID} - ${obj.ORGANIZATION_ID}`,
               text: obj.SEGMENT1==''?params.term:`${obj.SEGMENT1} - ${obj.DESCRIPTION}`
             }
           })
@@ -66,34 +66,93 @@ $(document).ready(function () {
   })
 })
 
+$('.form_submit_pbbs').on('submit', function (e) {
+  e.preventDefault();
+  $.ajax({
+    url: baseurl + 'BarangBekas/pbbs/submit_pbbs',
+    type: 'POST',
+    // dataType: 'JSON',
+    data: new FormData(this),
+    contentType: false,
+    cache: false,
+    processData:false,
+    beforeSend: function() {
+      toastPBBLoading('Sedang memproses data..')
+    },
+    success: function(result) {
+      if (result != 11) {
+        toastPBB('success', `Data berhasil disimpan dengan no dokumen ${result}`);
+        $('.form_submit_pbbs')[0].reset();
+        $('.pbbs_table tbody tr').each((i,v)=>{
+          if (i != 0) {
+            $(v).remove();
+          }else {
+            $('.slc_pbb_item').val('').trigger('change');
+            $('#pbb_uom').val('');
+            $('#onhand').val('');
+            $('#jumlah').val('');
+          }
+        });
+        $('.slc_pbb_seksi').trigger('change');
+        $('.pbb_subinv').trigger('change');
+        $('.slc_pbb_locator').trigger('change');
+        setTimeout(function () {
+          window.open(`${baseurl}BarangBekas/pbbs/pdf/${result}`);
+        }, 1500);
+      }else {
+        toastPBB('warning', 'Gagal melakukan insert data, hubungi pihak yang berwajib!');
+      }
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+    swalPBB('error', 'Koneksi Terputus...')
+     console.error();
+    }
+  })
+})
+
+$('.form_submit_pbbns').on('submit', function (e) {
+  e.preventDefault();
+  $.ajax({
+    url: baseurl + 'BarangBekas/pbbns/submit_pbbns',
+    type: 'POST',
+    // dataType: 'JSON',
+    data: new FormData(this),
+    contentType: false,
+    cache: false,
+    processData:false,
+    beforeSend: function() {
+      toastPBBLoading('Sedang memproses data..')
+    },
+    success: function(result) {
+      if (result != 11) {
+        toastPBB('success', `Data berhasil disimpan dengan no dokumen ${result}`);
+        $('.form_submit_pbbns')[0].reset();
+        $('.pbbns_table tbody tr').each((i,v)=>{
+          if (i != 0) {
+            $(v).remove();
+          }else {
+            $('.slc_pbbns_item').val('').trigger('change');
+            $('#jumlah').val('');
+            $('#pbb_uom_1').val('');
+          }
+        });
+        $('.slc_pbb_seksi').trigger('change');
+        setTimeout(function () {
+          window.open(`${baseurl}BarangBekas/pbbns/pdf/${result}`);
+        }, 1500);
+      }else {
+        toastPBB('warning', 'Gagal melakukan insert data, hubungi pihak yang berwajib!');
+      }
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+    swalPBB('error', 'Koneksi Terputus...')
+     console.error();
+    }
+  })
+})
+
 const getOnhand = () => {
-  // let item = $('.slc_pbb_item').val().split(' - ');
-  // if (item[2] != undefined) {
-  //   $.ajax({
-  //     url: baseurl + 'BarangBekas/pbbs/onhand',
-  //     type: 'POST',
-  //     dataType: 'JSON',
-  //     data: {
-  //       org_id: 102,
-  //       inv_item_id: item[2],
-  //       subinv: $('.pbb_subinv').val(),
-  //       locator_id: $('.slc_pbb_locator').val() === '' ? null : $('.slc_pbb_locator').val(),
-  //     },
-  //     cache:false,
-  //     beforeSend: function() {
-  //       $('#onhand').val('....');
-  //       $('.btn_pbbs_submit').attr('disabled', 'disabled');
-  //     },
-  //     success: function(result) {
-  //       $('#onhand').val(result[0].ONHAND);
-  //       $('.btn_pbbs_submit').removeAttr('disabled');
-  //     },
-  //     error: function(XMLHttpRequest, textStatus, errorThrown) {
-  //     swalPBB('error', 'Koneksi Terputus...')
-  //      console.error();
-  //     }
-  //   })
-  // }
+
 }
 
 $('.check_pbb_param').on('click', function () {
@@ -347,7 +406,7 @@ const btnPBBNS = () => {
           return {
             results: $.map(data, function(obj) {
               return {
-                id: obj.SEGMENT1==''?params.term:`${obj.SEGMENT1} - ${obj.PRIMARY_UOM_CODE} - ${obj.INVENTORY_ITEM_ID}`,
+                id: obj.SEGMENT1==''?params.term:`${obj.SEGMENT1} - ${obj.PRIMARY_UOM_CODE} - ${obj.INVENTORY_ITEM_ID} - ${obj.ORGANIZATION_ID}`,
                 text: obj.SEGMENT1==''?params.term:`${obj.SEGMENT1} - ${obj.DESCRIPTION}`
               }
             })

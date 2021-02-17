@@ -69,9 +69,9 @@ class C_Master extends CI_Controller
       $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
       $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
-      $this->form_validation->set_rules('seksi_n_cc', 'Seksi & Cost Center', 'required');
+      // $this->form_validation->set_rules('seksi_n_cc', 'Seksi & Cost Center', 'required');
 
-      if ($this->form_validation->run() === FALSE) {
+      // if ($this->form_validation->run() === FALSE) {
 
           $data['seksi'] = $this->M_master->getSeksi();
           $data['subinv'] = $this->M_master->SubInv();
@@ -81,30 +81,20 @@ class C_Master extends CI_Controller
           $this->load->view('BarangBekas/V_PBBS', $data);
           $this->load->view('V_Footer', $data);
 
-      }else {
-        // echo "<pre>";
-        // print_r($_POST);
-        // die;
-        $res = $this->M_master->insertPBBS($this->input->post());
-        if (!empty($res)) {
-          $this->session->set_flashdata('message_pbbs', '<div class="alert alert-success alert-dismissible" role="alert">
-                                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                              <span aria-hidden="true">
-                                                                <i class="fa fa-close"></i>
-                                                              </span>
-                                                            </button>
-                                                            <span>Data berhasil disimpan dengan no dokumen <strong>'.$res.' </strong></span>
-                                                          </div>');
-          echo '<script type="text/javascript">
-                function openWindows(){
-                    window.open("'.base_url('BarangBekas/pbbs/pdf/'.$res).'");
-                    window.location.replace("'.base_url('BarangBekas/pbbs').'");
-                }
-                openWindows();
-              </script>';
-        }
-      }
+      // }else {
+      //
+      // }
 
+    }
+
+    public function submit_pbbs($value='')
+    {
+      $res = $this->M_master->insertPBBS($this->input->post());
+      if (!empty($res)) {
+        echo $res;
+      }else {
+        echo 11;
+      }
     }
 
     public function item()
@@ -152,9 +142,9 @@ class C_Master extends CI_Controller
       $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
       $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
-      $this->form_validation->set_rules('seksi_n_cc', 'Seksi & Cost Center', 'required');
+      // $this->form_validation->set_rules('seksi_n_cc', 'Seksi & Cost Center', 'required');
 
-      if ($this->form_validation->run() === FALSE) {
+      // if ($this->form_validation->run() === FALSE) {
 
           $data['seksi'] = $this->M_master->getSeksi();
 
@@ -163,31 +153,40 @@ class C_Master extends CI_Controller
           $this->load->view('BarangBekas/V_PBBNS', $data);
           $this->load->view('V_Footer', $data);
 
-      }else {
-        $res = $this->M_master->insertPBBNS($this->input->post());
-        if (!empty($res)) {
-          $this->session->set_flashdata('message_pbbns', '<div class="alert alert-success alert-dismissible" role="alert">
-                                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                              <span aria-hidden="true">
-                                                                <i class="fa fa-close"></i>
-                                                              </span>
-                                                            </button>
-                                                            <span>Data berhasil disimpan dengan no dokumen <strong>'.$res.' </strong></span>
-                                                          </div>');
-
-          echo '<script type="text/javascript">
-                function openWindows(){
-                    window.open("'.base_url('BarangBekas/pbbns/pdf/'.$res).'");
-                    window.location.replace("'.base_url('BarangBekas/pbbns').'");
-                }
-                openWindows();
-              </script>';
-
-        }
-      }
+      // }else {
+      //   $res = $this->M_master->insertPBBNS($this->input->post());
+      //   if (!empty($res)) {
+      //     $this->session->set_flashdata('message_pbbns', '<div class="alert alert-success alert-dismissible" role="alert">
+      //                                                       <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      //                                                         <span aria-hidden="true">
+      //                                                           <i class="fa fa-close"></i>
+      //                                                         </span>
+      //                                                       </button>
+      //                                                       <span>Data berhasil disimpan dengan no dokumen <strong>'.$res.' </strong></span>
+      //                                                     </div>');
+      //
+      //     echo '<script type="text/javascript">
+      //           function openWindows(){
+      //               window.open("'.base_url('BarangBekas/pbbns/pdf/'.$res).'");
+      //               window.location.replace("'.base_url('BarangBekas/pbbns').'");
+      //           }
+      //           openWindows();
+      //         </script>';
+      //
+      //   }
+      // }
 
     }
 
+    public function submit_pbbns($value='')
+    {
+      $res = $this->M_master->insertPBBNS($this->input->post());
+      if (!empty($res)) {
+        echo $res;
+      }else {
+        echo 11;
+      }
+    }
 
     public function transact($value='')
     {

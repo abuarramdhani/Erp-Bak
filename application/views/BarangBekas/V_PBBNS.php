@@ -19,7 +19,7 @@
                     <?php echo $this->session->flashdata('message_pbbns') ?>
                   </div>
                 </div>
-                <form class="" action="" method="post">
+                <form class="form_submit_pbbns" action="" method="post">
                 <div class="row">
                   <div class="col-md-2"></div>
                   <div class="col-md-8">
@@ -73,7 +73,7 @@
                                     <option selected="selected"></option>
                                   </select>
                                 </td>
-                                <td class="text-center"><input type="number" class="form-control" name="jumlah[]" required></td>
+                                <td class="text-center"><input type="number" class="form-control" id="jumlah" name="jumlah[]" required></td>
                                 <td class="text-center"><input type="text" class="form-control" id="pbb_uom_1" name="uom[]" readonly></td>
                                 <td class="text-center"><button type="button" class="btn btn-default btn-sm" onclick="btnPBBNS()"><i class="fa fa-plus"></i></button></td>
                               </tr>
