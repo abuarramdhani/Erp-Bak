@@ -1,19 +1,19 @@
 <?php
 class M_waktupenangananorder extends CI_Model {
 
-	public function __construct()
-	{
-		$this->load->database();
-		$this->load->library('encrypt');
-	}
+    public function __construct()
+    {
+        $this->load->database();
+        $this->load->library('encrypt');
+    }
 
-	public function getDataOracle($no_order){
-		$oracle = $this->load->database('oracle',TRUE);
-		$sql1="SELECT DISTINCT so_inv.org_id, so_inv.nomor_invoice, TO_CHAR(tgl_invoice, 'DD-MM-YYYY HH24:Mi:SS') tgl_invoice, so_inv.no_receipt,
+    public function getDataOracle($no_order){
+        $oracle = $this->load->database('oracle',TRUE);
+        $sql1="SELECT DISTINCT so_inv.org_id, so_inv.nomor_invoice, TO_CHAR(tgl_invoice, 'DD-MM-YYYY HH24:Mi:SS') tgl_invoice, so_inv.no_receipt,
         TO_CHAR(so_inv.tgl_receipt, 'DD-MM-YYYY HH24:Mi:SS') tgl_receipt, so_inv.nomor_so,TO_CHAR(so_inv.tgl_so, 'DD-MM-YYYY HH24:Mi:SS') tgl_so,
         do_transact.nomor_mo nomor_do, TO_CHAR(do_transact.creation_date, 'DD-MM-YYYY HH24:Mi:SS') tgl_do,
         TO_CHAR(hmm.transaction_date , 'DD-MM-YYYY HH24:Mi:SS') gudang_transact,
-         so_inv.shipping_instructions, so_inv.order_id
+         so_inv.shipping_instructions, so_inv.order_id, substr(so_inv.shipping_instructions,-5,5) order_id_web
     FROM (SELECT ooha.org_id, ooha.order_number nomor_so, ooha.ordered_date tgl_so, oola.line_id oola_line_id,
                  wnd.delivery_id,
                  wdd.delivery_detail_id, rcta.trx_number nomor_invoice,
@@ -94,32 +94,57 @@ class M_waktupenangananorder extends CI_Model {
 ORDER BY org_id,    
          nomor_so,
          nomor_mo";
-		$query = $oracle->query($sql1);
-		return $query->result_array();
-		// return $sql1;
-	}
+        $query = $oracle->query($sql1);
+        // echo $sql1;
+        // exit();
+        return $query->result_array();
+        return $sql1;
+    }
 
-	public function getRange($newDateFrom,$newDateTo){
-		$web = $this->load->database('tokoquick',TRUE);
-		$sql3="select distinct tqc.comment_post_id, proses.comment_date date_proccess, proses.comment_content comment_content1, kirim.comment_date date_resi, kirim.comment_content comment_content2
-				from tq_comments tqc
-				left join (select distinct tqc1.comment_post_id, tqc1.comment_date, tqc1.comment_content 
-				from tq_comments tqc1
-				where 
-				tqc1.comment_content 
-				like '%Awaiting payment  to Sedang diproses%') proses on tqc.comment_post_id = proses.comment_post_id
-				left join (select distinct tqc2.comment_post_id, right(tqc2.comment_content,19) comment_date , tqc2.comment_content 
-				from tq_comments tqc2
-				where 
-				tqc2.comment_content 
-				like '%No resi pengiriman%') kirim on tqc.comment_post_id = kirim.comment_post_id
-				where 
-				proses.comment_date is not null
-				and tqc.comment_date between '$newDateFrom' and '$newDateTo'";
-		$query = $web->query($sql3);
-		return $query->result_array();
-		// return $sql3;
-	}
+    public function getRange($newDateFrom,$newDateTo){
+        $web = $this->load->database('tokoquick',TRUE);
+        $sql3="select distinct tqp.id, tqp.post_date,
+       case when proses.comment_date is null 
+            then (select replace(bca.payment_date,'/','-') 
+                 from tq_posts tp, tq_virtual_account_bca bca
+                 where
+                 tp.post_status = 'wc-processing'
+                 and tp.id = tqp.id 
+                 and tqp.id = bca.order_number
+                 ) 
+            else proses.comment_date end 
+                 date_proses, 
+       case when proses.comment_content is null 
+            then (select concat(tp.post_status, ' - Sedang diproses - ','Virtual Account BCA') from tq_posts tp, tq_virtual_account_bca bca
+                 where
+                 tp.post_status = 'wc-processing'
+                 and tp.id = tqp.id 
+                 and tqp.id = bca.order_number
+                 )
+            else proses.comment_content  end 
+                 comment_proses,
+       kirim.comment_date tanggal_kirim, kirim.comment_content comment_kirim
+from tq_posts tqp
+left join (select tqc1.comment_post_id, tqc1.comment_date , tqc1.comment_content 
+                from tq_comments tqc1
+                where 
+                tqc1.comment_content like '%to Sedang diproses.%') proses on tqp.id = proses.comment_post_id
+left join (select tqc2.comment_post_id, right(tqc2.comment_content,19) comment_date , tqc2.comment_content 
+                from tq_comments tqc2
+                where 
+                tqc2.comment_content like '%No resi pengiriman%') kirim on tqp.id = kirim.comment_post_id
+where 
+tqp.post_status <> 'wc-cancelled'
+and tqp.post_status <> 'wc-pending'
+and tqp.post_status <> 'auto-draft'
+and tqp.post_type = 'shop_order'
+and date(tqp.post_date) between '$newDateFrom' and '$newDateTo'
+order by tqp.post_date";
+        $query = $web->query($sql3);
+        // echo $sql3; exit();
+        return $query->result_array();
+        return $sql3;
+    }
 
 }
 ?>
