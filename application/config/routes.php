@@ -3900,6 +3900,7 @@ $route['OrderKebutuhanBarangDanJasa/Purchasing/(:any)/(:any)'] = 'OrderKebutuhan
 $route['OrderKebutuhanBarangDanJasa/Buyer/(:any)'] = 'OrderKebutuhanBarangDanJasa/Buyer/C_Buyer/$1';
 $route['OrderKebutuhanBarangDanJasa/Buyer/(:any)/(:any)'] = 'OrderKebutuhanBarangDanJasa/Buyer/C_Buyer/$1/$2';
 $route['OrderKebutuhanBarangDanJasa/Import/(:any)'] = 'OrderKebutuhanBarangDanJasa/Import/C_Import/$1';
+$route['OrderKebutuhanBarangDanJasa/KirimSMS'] = 'OrderKebutuhanBarangDanJasa/C_SendSMS';
 
 //--------------------------------------------------Monitoring Pengiriman Pesanan Luar-------------------------------//
 $route['MonitoringPengirimanPesananLuar'] 	= 'MonitoringPengPesananLuar/C_MonitoringPengPesananLuar/rekapPO';
