@@ -54,7 +54,7 @@
 									</table>
 									<hr size="30">
 							 	<div class="col-lg-12">
-									<button formaction="<?php echo base_url('ECommerce/WaktuPenangananOrder/exportExcel') ?>" class="btn btn-md btn-success pull-right" type="submit" ><i class="glyphicon glyphicon-export"></i> EXPORT</button>
+									<button formaction="<?php echo base_url('ECommerce/WaktuPenangananOrder/exportExcel') ?>" class="btn btn-md btn-success pull-right" type="submit" ><i class="glyphicon glyphicon-export"></i>EXPORT</button>
 								</div>
 								</form>
 								<div id="searchResultTableItemByDate" class="col-lg-12" style="margin-top:20px">
@@ -63,6 +63,7 @@
 											<tr class="bg-primary">
 												<th class="text-center">No</th>
 												<th class="text-center">Shipping Instructions</th>
+												<th class="text-center">Order Dibuat</th>
 												<th class="text-center">Order Diterima</th>
 												<th class="text-center">Nomor Receipt</th>
 												<th class="text-center">Tanggal Receipt</th>
@@ -82,8 +83,22 @@
 										foreach($search_date as $row){?>
 											<tr>
 												<td><?php echo $i?></td>
-												<td style="text-align: left"><?php echo $row['SHIPPING_INSTRUCTIONS']?></td>
-												<td><?php echo $row['date_proccess']?></td>
+												<!-- <td style="text-align: left"><?php echo $row['SHIPPING_INSTRUCTIONS']?></td> -->
+												<td style="text-align: left">NO ORDER : <?php echo substr($row['SHIPPING_INSTRUCTIONS'], 11);?></td>
+												<td style="width:15%"><?php 
+												if($row['post_date'] == null){
+													echo " ";
+												} else {
+													echo date("d-m-Y H:i:s", strtotime($row['post_date']));
+												}
+												?></td>
+												<td><?php 
+												if($row['date_proses'] == null){
+													echo " ";
+												} else {
+													echo date("d-m-Y H:i:s", strtotime($row['date_proses']));
+												}
+												?></td>
 												<td><?php echo $row['NO_RECEIPT']?></td>
 												<td><?php echo $row['TGL_RECEIPT']?></td>
 												<td><?php echo $row['NOMOR_SO']?></td>
@@ -92,7 +107,7 @@
 												<td><?php echo $row['NOMOR_INVOICE']?></td>
 												<td><?php echo $row['TGL_RECEIPT']?></td>
 												<td><?php echo $row['GUDANG_TRANSACT']?></td>
-												<td><?php echo $row['comment_content2']?></td>
+												<td><?php echo $row['comment_kirim']?></td>
 												<td><?php echo $row['RANGE']?></td>
 											</tr>
 										<?php $i++;}?>
