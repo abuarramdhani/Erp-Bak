@@ -233,4 +233,11 @@ class C_Admin extends  CI_Controller
 
 		echo 1;
 	}
+
+	public function reSubmitDPB()
+	{
+		$noDPB = $_POST['id'];
+		print_r($noDPB);
+		$this->M_dpb->reSubmitDPB($noDPB);
+	}
 }

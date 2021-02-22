@@ -4,6 +4,11 @@ $(document).ready(function () {
     scrollX: true,
     scrollCollapse: true,
   });
+  var tableDSP = $("#tblRejectedListApproverDSP").DataTable({
+    scrollY: "300px",
+    scrollX: true,
+    scrollCollapse: true,
+  });
 
   $("#tblMonitoringDSP").DataTable({
     scrollY: "300px",
@@ -258,14 +263,7 @@ $(document).ready(function () {
           parseInt($(e).find(".atrQty").html()) -
           parseInt($(e).find(".noReqQty").val()),
       }));
-
-    // $.ajax({
-    //   type: "POST",
-    //   url: baseurl + "DPBSparepart/Admin/cekStok",
-    //   data: { noDPB },
-    //   dataType: "JSON",
-    //   success: function (response) {
-    //     if (response[0]["HASIL"] == "0") {
+      
     $.ajax({
       type: "POST",
       url: baseurl + "DPBSparepart/Admin/cekStatusLine",
@@ -320,13 +318,40 @@ $(document).ready(function () {
         }
       },
     });
-    //     } else {
-    //       swal.fire({
-    //         type: "error",
-    //         title: "Stok tidak mencukupi!",
-    //       });
-    //     }
-    //   },
-    // });
   });
+
+  $('#tblRejectedListApproverDSP').on('click', '.btnResubmit', function () {
+    let id = $(this).attr("data-id");
+    let tr = $(this).parent().parent();
+
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "Anda yakin akan Re-submit SPB/DO ini?",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Ya',
+      cancelButtonText: 'Tidak'
+    }).then((result) => {
+      if (result.value == true) {
+        $.ajax({
+          type: 'POST',
+          url: baseurl + "DPBSparepart/Admin/reSubmitDPB",
+          data: { id },
+          success: function() {
+            Swal.fire(
+              'Re-submit!',
+              'Request SPB/DO berhasil di submit ulang',
+              'success'
+            )
+            tr.hide();
+          }
+        })
+      } else if(result.dismiss == 'cancel') {
+        console.log('Batal reSubmit')
+      }
+    })
+  });
+
 });

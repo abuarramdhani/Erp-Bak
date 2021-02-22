@@ -284,4 +284,10 @@ class M_dpb extends CI_Model
 
         return $query->result_array();
     }
+
+    public function reSubmitDPB($noDPB)
+    {
+        $oracle = $this->load->database('oracle', true);
+        $oracle->query("UPDATE khs_tampung_spb kts SET kts.APPROVAL_FLAG = null where kts.NO_DOKUMEN = '$noDPB'");
+    }
 }
