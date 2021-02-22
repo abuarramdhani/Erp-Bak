@@ -41,22 +41,35 @@ class C_SendSMS extends CI_Controller
         if(count($newData) < 1){
             echo "Semua Approver telah approve order pada Aplikasi APPROVER-OKEBAJA.";
         } else {
+            $jumlahSukses = 0;
             foreach ($newData as $approver) {
                 $pesan = "Selamat Pagi ". $approver['SAPAAN'] ." ".$approver['FULL_NAME'].",\rAnda masih memiliki ".$approver['UNAPPROVED_ORDER']." order yang belum di approve pada aplikasi APPROVER-OKEBAJA. Silahkan buka http://erp.quick.com/ melalui jaringan CV.KHS untuk approve order.\r-- Dikirim oleh ERP Okebaja (No-Reply) --";
                 $pesan = rawurlencode($pesan);
                 $url   = 'http://192.168.168.122:80/sendsms?username=ict&password=quick1953&phonenumber='.$approver['NOMOR_MYGROUP'].'&message='.$pesan.'&[port=gsm-1.2&][report=1&][timeout=20]';
-                // print_r($url);
+
                 $ch = curl_init();
                 curl_setopt($ch, CURLOPT_URL, $url);
                 curl_setopt($ch, CURLOPT_HEADER, 0);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                 
-                // grab URL and pass it to the browser
-                curl_exec($ch);
-                sleep(20);
-            }
-                // die;
-                // close cURL resource, and free up system resources
+                $response[] = str_replace('', '', curl_exec($ch));
                 curl_close($ch);
+                if(json_decode($response[0])->report[0]->{'1'}[0]->result == 'success'){
+                    $jumlahSukses++;
+                }
+                sleep(10);
+            }
+            $jumlahPesan = count($newData);
+            $message     = "Selesai SMS Approver. ".$jumlahSukses." SMS Sukses dari ".$jumlahPesan." SMS dikirim";
+            $message = rawurlencode($message);
+            $url = 'http://192.168.168.122:80/sendsms?username=ict&password=quick1953&phonenumber=08112669449&message='.$message.'&[port=gsm-1.2&][report=1&][timeout=20]';
+
+            $cui = curl_init();
+            curl_setopt($cui, CURLOPT_URL, $url);
+            curl_setopt($cui, CURLOPT_HEADER, 0);
+
+            curl_exec($cui);
+            curl_close($cui);
         }
     }
 
@@ -88,6 +101,7 @@ class C_SendSMS extends CI_Controller
         if(count($newData) < 1){
             echo "Semua Pengelola telah approve order pada Aplikasi PENGELOLA-OKEBAJA.";
         } else {
+            $jumlahSukses = 0;
             foreach ($newData as $pengelola) {
                 $pesan = "Selamat Pagi ". $pengelola['SAPAAN'] ." ".$pengelola['FULL_NAME'].",\rAnda masih memiliki ".$pengelola['UNAPPROVED_ORDER']." order yang belum di approve pada aplikasi PENGELOLA-OKEBAJA. Silahkan buka http://erp.quick.com/ melalui jaringan CV.KHS untuk approve order.\r-- Dikirim oleh ERP Okebaja (No-Reply) --";
                 $pesan = rawurlencode($pesan);
@@ -96,14 +110,26 @@ class C_SendSMS extends CI_Controller
                 $ch = curl_init();
                 curl_setopt($ch, CURLOPT_URL, $url);
                 curl_setopt($ch, CURLOPT_HEADER, 0);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                 
-                // grab URL and pass it to the browser
-                curl_exec($ch);
-                sleep(20);
-            }
-                // die;
-                // close cURL resource, and free up system resources
+                $response[] = str_replace('', '', curl_exec($ch));
                 curl_close($ch);
+                if(json_decode($response[0])->report[0]->{'1'}[0]->result == 'success'){
+                    $jumlahSukses++;
+                }
+                sleep(10);
+            }
+            $jumlahPesan = count($newData);
+            $message     = "Selesai SMS Pengelola. ".$jumlahSukses." SMS Sukses dari ".$jumlahPesan." SMS dikirim";
+            $message = rawurlencode($message);
+            $url = 'http://192.168.168.122:80/sendsms?username=ict&password=quick1953&phonenumber=08112669449&message='.$message.'&[port=gsm-1.2&][report=1&][timeout=20]';
+
+            $cui = curl_init();
+            curl_setopt($cui, CURLOPT_URL, $url);
+            curl_setopt($cui, CURLOPT_HEADER, 0);
+
+            curl_exec($cui);
+            curl_close($cui);
         }
     }
 
@@ -113,6 +139,7 @@ class C_SendSMS extends CI_Controller
         $puller = $this->M_sendsms->getDataPuller();
         
         $newData = [];
+        $jumlahSukses = 0;
         foreach ($puller as $key => $value) {
             $unapproved_order = $this->M_puller->getUnapprovedOrderCount($value['NATIONAL_IDENTIFIER'], 'ALL');
             $sub_data = [];
@@ -143,14 +170,26 @@ class C_SendSMS extends CI_Controller
                 $ch = curl_init();
                 curl_setopt($ch, CURLOPT_URL, $url);
                 curl_setopt($ch, CURLOPT_HEADER, 0);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                 
-                // grab URL and pass it to the browser
-                curl_exec($ch);
-                sleep(20);
-            }
-                // die;
-                // close cURL resource, and free up system resources
+                $response[] = str_replace('', '', curl_exec($ch));
                 curl_close($ch);
+                if(json_decode($response[0])->report[0]->{'1'}[0]->result == 'success'){
+                    $jumlahSukses++;
+                }
+                sleep(10);
+            }
+            $jumlahPesan = count($newData);
+            $message     = "Selesai SMS Puller. ".$jumlahSukses." SMS Sukses dari ".$jumlahPesan." SMS dikirim";
+            $message = rawurlencode($message);
+            $url = 'http://192.168.168.122:80/sendsms?username=ict&password=quick1953&phonenumber=08112669449&message='.$message.'&[port=gsm-1.2&][report=1&][timeout=20]';
+
+            $cui = curl_init();
+            curl_setopt($cui, CURLOPT_URL, $url);
+            curl_setopt($cui, CURLOPT_HEADER, 0);
+
+            curl_exec($cui);
+            curl_close($cui);
         }
     }
 }
