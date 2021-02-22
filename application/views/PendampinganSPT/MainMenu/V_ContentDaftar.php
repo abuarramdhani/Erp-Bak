@@ -91,10 +91,10 @@
                     <button type="reset" class="btn btn-default btnPSPTRefresh"><i class="fa fa-refresh"></i> Refresh</button>
                 </div>
                 <!-- /.box-footer -->
-                <div id="divPSPTDetailSchedule" class="text-center box-footer" style="padding: 3rem;">
+                <!-- <div id="divPSPTDetailSchedule" class="text-center box-footer" style="padding: 3rem;">
                     <p>Untuk melihat jadwal pendampingan silahkan klik link dibawah ini</p>
                     <a href="{BaseUrl}PendampinganSPT/Jadwal" class="btn btn-primary"><i class="fa fa-calendar"></i> &nbsp;Jadwal Pendampingan</a>
-                </div>
+                </div> -->
 
             </div>
             <!-- /. box -->
