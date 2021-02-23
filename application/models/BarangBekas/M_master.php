@@ -159,7 +159,7 @@ class M_master extends CI_Model
         FROM KHS_PENGIRIMAN_BARANG_BEKAS pbb, mtl_system_items_b msib
         WHERE ID_PBB = $id
         AND msib.INVENTORY_ITEM_ID = pbb.INVENTORY_ITEM_ID
-        AND msib.organization_id = 102")->row_array();
+        AND msib.organization_id = pbb.org_id")->row_array();
     }
 
     public function cek_apakah_sudah_trasact($doc_no)
