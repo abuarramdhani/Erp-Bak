@@ -14,6 +14,9 @@
     </thead>
     <tbody>
       <?php foreach ($get as $key => $value):
+        if (substr($value['file_location'], 0, 1) == '.') {
+          $value['file_location'] = substr($value['file_location'], 1);
+        }
         $url = 'http://192.168.168.221/gambar-kerja'.$value['file_location'].$value['file_name'].'.pdf';
         $array = @get_headers($url);
         $string = $array[0];
