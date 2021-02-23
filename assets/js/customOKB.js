@@ -439,7 +439,8 @@ $(document).ready(function () {
             //nbd
             // prn.find('.nbdOKB').val(nbd);
             prn.find('.hdnEstArrivalOKB').html(nbd);
-            prn.find('.hdnECutOffOKB').html(cutoff_terdekat);
+            var html = '<input type="hidden" class="form-control" name="cutoff[]" id="" value="'+cutoff_terdekat+'"></input>';
+            prn.find('.hdnECutOffOKB').html(cutoff_terdekat+html);
             prn.find('.hdnTemporaryNbd').val(nbd);
             // prn.find('.nbdOKB').attr('style', 'background-color : #00bf024d; width:150px;');
                 
