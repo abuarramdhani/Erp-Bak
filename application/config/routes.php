@@ -4661,6 +4661,16 @@ $route['PatroliSatpam/api/(:any)']					= 'PatroliSatpam/C_ApiPatroli/$1';
 
 //----------------------------------- Civil maintenance Order -------------------------------------------
 $route['civil-maintenance-order'] = 'CivilMaintenanceOrder/C_Civil';
+
+$route['civil-maintenance-order/order/monitoring'] = 'CivilMaintenanceOrder/C_Civil_Monitoring';
+$route['civil-maintenance-order/order/monitoring/schedule/(:num)'] = 'CivilMaintenanceOrder/C_Civil_Monitoring/schedule/$1';
+// api
+$route['civil-maintenance-order/api/update_order_status']['post'] = 'CivilMaintenanceOrder/C_Civil_Monitoring/update_order_status';
+$route['civil-maintenance-order/api/update_acc_date']['post'] = 'CivilMaintenanceOrder/C_Civil_Monitoring/update_acc_date';
+$route['civil-maintenance-order/api/get_schedule']['get'] = 'CivilMaintenanceOrder/C_Civil_Monitoring/get_schedule';
+$route['civil-maintenance-order/api/update_schedule']['post'] = 'CivilMaintenanceOrder/C_Civil_Monitoring/update_schedule';
+$route['civil-maintenance-order/api/remove_schedule']['post'] = 'CivilMaintenanceOrder/C_Civil_Monitoring/remove_schedule';
+
 $route['civil-maintenance-order/order/(:any)'] = 'CivilMaintenanceOrder/C_Civil/$1';
 $route['civil-maintenance-order/order/(:any)/(:any)'] = 'CivilMaintenanceOrder/C_Civil/$1/$2';
 $route['civil-maintenance-order/setting/(:any)'] = 'CivilMaintenanceOrder/C_Civil_setting/$1';
