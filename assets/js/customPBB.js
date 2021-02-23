@@ -35,7 +35,9 @@ const swalPBB = (type, title) => {
 
 $(document).ready(function () {
   $(".slc_pbb_seksi").select2();
-  $(".slc_pbb").select2();
+  $(".slc_pbb").select2({
+    allowClear:true,
+  });
 
   $('.slc_pbbns_item').select2({
     tags: true,
@@ -64,6 +66,74 @@ $(document).ready(function () {
       }
     }
   })
+
+  $('input[name="pbb_tujuan"]').on('change', function () {
+    let val = '';
+    if ($('input[name=pbb_tujuan]:checked').val() == "BARKAS-DM") {
+      val = "BARKAS-DM";
+    } else if ($('input[name=pbb_tujuan]:checked').val() == "BARKAST-DM") {
+      val = "BARKAST-DM";
+    }
+    $.ajax({
+      url: baseurl + 'BarangBekas/pbbs/locator',
+      type: 'POST',
+      dataType: 'JSON',
+      data: {
+        subinv: val
+      },
+      cache:false,
+      beforeSend: function() {
+        $('.pbb_locator_tujuan').html('<b>Sedang Mengambil Locator...</b>');
+      },
+      success: function(result) {
+        if (result != 0) {
+          $('.pbb_locator_tujuan').html(`<select class="slc_pbb_locator pbbs_loc" id="pbbtt_locator" name="locator" style="width:100%" required >
+                                  <option selected value="">Select..</option>
+                                  ${result}
+                                  </select>`);
+          $('.slc_pbb_locator').select2({
+            allowClear:true,
+          });
+        }else {
+          $('.pbb_locator_tujuan').html('-')
+        }
+      },
+      error: function(XMLHttpRequest, textStatus, errorThrown) {
+      swalPBB('error', 'Koneksi Terputus...')
+       console.error();
+      }
+    })
+  });
+})
+
+$('.pbb_io').on('change', function() {
+  let val = $(this).val();
+  $.ajax({
+    url: baseurl + 'BarangBekas/pbbs/SubInv',
+    type: 'POST',
+    dataType: 'JSON',
+    data: {
+      io : val
+    },
+    cache: false,
+    beforeSend: function() {
+      toastPBBLoading('Sedang Mengambil SubInv..');
+    },
+    success: function(result) {
+      toastPBB('success', 'Selesai..');
+      $('.pbb_subinv').html(result);
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+    swalPBB('error', 'Koneksi Terputus...')
+     console.error();
+    }
+  })
+})
+
+$('.pbb_sudah_pilih_io').on('click', function() {
+  if ($('.pbb_io').val() == '') {
+    swalPBB('Pilih IO Dulu!');
+  }
 })
 
 $('.form_submit_pbbs').on('submit', function (e) {
@@ -476,38 +546,64 @@ $('.pbb_transact').on('change', function () {
 $('.submit-pbb-transact').on('click', function() {
   const doc_num = $('select[name="no_document"]').val();
   const cek_blm_selesai_timbang = $('button[data-target="#modal-pbb-transact-ambil-berat"]').text();
-  if (cek_blm_selesai_timbang == '') {
-    $.ajax({
-      url: baseurl + 'BarangBekas/transact/transact_beneran',
-      type: 'POST',
-      dataType: 'JSON',
-      data: {
-        doc_num: doc_num,
-      },
-      cache:false,
-      beforeSend: function() {
-        toastPBBLoading('Sedang melakukan transact..')
-      },
-      success: function(result) {
-        if (result == 1) {
-          toastPBB('success', 'Sukses melakukan transact .. ')
-        }else if (result == 76) {
-          toastPBB('warning', `Dokumen ${doc_num} telah di-transact sebelumnya.`)
-        }else {
-          toastPBB('warning', 'Gagal melakukan transact, hubungi pihak yang berwajib!')
-        }
-      },
-      error: function(XMLHttpRequest, textStatus, errorThrown) {
-      swalPBB('error', 'Koneksi Terputus...')
-       console.error();
+  const subinv_tujuan = $('input[name=pbb_tujuan]:checked').val();
+  const locator_tujuan = $('#pbbtt_locator').val();
+  const item_id_tujuan = $('#pbbtt_item').val();
+
+  if (doc_num != '') {
+    if (subinv_tujuan != undefined && locator_tujuan != '' && item_id_tujuan != '') {
+      if (cek_blm_selesai_timbang == '') {
+        let tampung_berat_timbang = [];
+        $('.t_berat_timbang').each((i,v) =>{
+          let l = $(v).text().trim();
+          let b = l.split(' ');
+          tampung_berat_timbang.push(b[0]);
+        })
+        $.ajax({
+          url: baseurl + 'BarangBekas/transact/transact_beneran',
+          type: 'POST',
+          dataType: 'JSON',
+          data: {
+            doc_num: doc_num,
+            subinv_tujuan: subinv_tujuan,
+            locator_tujuan: locator_tujuan,
+            item_id_tujuan: item_id_tujuan,
+            berat_timbang: tampung_berat_timbang
+          },
+          cache:false,
+          beforeSend: function() {
+            toastPBBLoading('Sedang melakukan transact..')
+          },
+          success: function(result) {
+            if (result == 1) {
+              toastPBB('success', 'Sukses melakukan transact .. ');
+              $('.pbb_transact').val('').trigger('change');
+            }else if (result == 76) {
+              toastPBB('warning', `Dokumen ${doc_num} telah di-transact sebelumnya.`)
+            }else if (result == 86) {
+              toastPBB('warning', `Terjadi kesalahan saat melakukan insert di misc_issue_receipt`)
+            }else {
+              toastPBB('warning', 'Gagal melakukan transact, hubungi pihak yang berwajib!')
+            }
+          },
+          error: function(XMLHttpRequest, textStatus, errorThrown) {
+          swalPBB('error', 'Koneksi Terputus...')
+           console.error();
+          }
+        })
+      }else {
+        toastPBB('warning', 'Masih terdapat item yang belum selesai timbang, selesaikan dulu!');
       }
-    })
+    }else {
+      toastPBB('warning', 'Sebelum melakukan transact, lengkapi form input tujuan dulu!');
+    }
   }else {
-    toastPBB('warning', 'Masih terdapat item yang belum selesai timbang, selesaikan dulu!');
+    toastPBB('warning', 'Sebelum melakukan transact, pilih no dokumen dulu!');
   }
-  console.log(cek_blm_selesai_timbang);
+
 
 })
+
 
 // const pbb_seksi = () => {
 //   $.ajax({

@@ -14,7 +14,6 @@
               <div class="box-header with-border">
                  <h4 style="font-weight:bold"><i aria-hidden="true" class="fa fa-file-pdf-o"></i> Pengiriman Barang Bekas Stok</h4>
               </div>
-              <div class="panel-body">
                 <div class="row">
                   <div class="col-md-12">
                     <?php echo $this->session->flashdata('message_pbbs') ?>
@@ -46,14 +45,23 @@
                           </td>
                         </tr>
                         <tr>
-                          <td><b>SubInv</b> </td>
+                          <td><b>IO</b> </td>
                           <td>:</td>
                           <td>
+                            <select class="slc_pbb pbb_io" name="io" style="width:100%">
+                              <option value="">Select..</option>
+                              <?php foreach ($io as $key => $value): ?>
+                                <option value="<?php echo $value['ORGANIZATION_ID'] ?>"><?php echo strtoupper($value['ORGANIZATION_CODE']) ?></option>
+                              <?php endforeach; ?>
+                            </select>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><b>SubInv</b> </td>
+                          <td>:</td>
+                          <td class="pbb_sudah_pilih_io">
                             <select class="slc_pbb pbb_subinv" name="subinv" style="width:100%">
                               <option value="">Select..</option>
-                              <?php foreach ($subinv as $key => $value): ?>
-                                <option value="<?php echo $value['SUBINV'] ?> - <?php echo $value['ORGANIZATION_ID'] ?>"><?php echo $value['SUBINV'] ?> - <?php echo strtoupper($value['DESCRIPTION']) ?></option>
-                              <?php endforeach; ?>
                             </select>
                           </td>
                         </tr>
@@ -110,7 +118,6 @@
                   </div>
                 </div>
               </form>
-              </div>
             </div>
           </div>
         </div>
