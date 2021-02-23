@@ -1,6 +1,7 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 setlocale(LC_ALL, 'id_ID.utf8');
+date_default_timezone_set('Asia/Jakarta');
 /**
  * 
  */
@@ -20,15 +21,12 @@ class C_Civil extends CI_Controller
 		$this->load->library('upload');
 		$this->load->library('General');
 		$this->load->library('KonversiBulan');
+		$this->load->library('upload');
 
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('CivilMaintenanceOrder/M_civil');
 
-		$this->load->library('upload');
-
-		date_default_timezone_set('Asia/Jakarta');
-
-		if ($this->session->is_logged === false) redirect('');
+		if ((bool)$this->session->is_logged === false) redirect('');
 	}
 
 	public function index()
@@ -46,16 +44,57 @@ class C_Civil extends CI_Controller
 	public function list_order()
 	{
 		$user = $this->session->user;
+		$orderid = $this->session->orderid;
 
 		$data  = $this->general->loadHeaderandSidemenu('Civil Maintenance', 'List Order', 'Order', 'List Order', '');
 
-		$data['list'] = $this->M_civil->getListOrder();
-		$data['approve'] = $this->M_civil->getApprover();
-		$orderid = $this->session->orderid;
+		$jenis_order = $this->M_civil->getTableJenisOrder();
+
+		// $data['list'] = $this->M_civil->getListOrder();
+		$order_list = $this->M_civil->getListOrder();
+
+		// $data['approve'] = $this->M_civil->getApprover();
+		$approver = $this->M_civil->getApprover();
+
+		// reindex approver based on order id
+		$approverIndex = [];
+		foreach ($approver as $item) {
+			$approverIndex[$item['order_id']][] = $item;
+		}
+
+		// append approver to their order id
+		$orderListWithApprover = [];
+		foreach ($order_list as $item) {
+			$order_id = $item['order_id'];
+			$item['approver'] = [];
+
+			if (isset($approverIndex[$order_id])) {
+				$item['approver'] = $approverIndex[$order_id];
+			}
+
+			$orderListWithApprover[] = $item;
+		}
+
+		$data['jenis_order'] = $jenis_order;
+		$data['all_order'] = $orderListWithApprover;
+		$data['sub_order'] = array_map(function ($item) use ($orderListWithApprover) {
+			$jenis_order_id = $item['jenis_order_id'];
+
+			$data['jenis_order'] = $item['jenis_order'];
+			$data['list_order'] = array_filter($orderListWithApprover, function ($item) use ($jenis_order_id) {
+				return $item['jenis_order_id'] == $jenis_order_id;
+			});
+
+			return $data;
+		}, $jenis_order);
+
+		// what is this ????
+		// to show modal with print order button
 		if (isset($orderid) && !empty($orderid)) {
 			$data['order_id'] = $orderid;
 			$this->session->orderid = "";
 		}
+
 		$this->load->view('V_Header', $data);
 		$this->load->view('V_Sidemenu', $data);
 		$this->load->view('CivilMaintenanceOrder/Order/V_List_Order', $data);
@@ -110,7 +149,6 @@ class C_Civil extends CI_Controller
 
 	public function getJnsPkj()
 	{
-
 		$data = $this->M_civil->listJnsPkj();
 		echo json_encode($data);
 	}
@@ -155,7 +193,7 @@ class C_Civil extends CI_Controller
 			'kodesie_pengorder'	=>	$kodesie,
 			'lokasi_pengorder'	=>	$lokasi,
 			'tgl_order'			=>	$tglorder,
-			'penerima_order'	=>	'B0560', //Eko Prasetyo
+			'penerima_order'	=>	'B0560', //Eko Prasetyo ????????????????????????????????????
 			'tgl_terima'		=>	$tglterima,
 			'jenis_pekerjaan_id' =>	$jnsPekerjaan,
 			'jenis_order_id'	=>	$jnsOrder,
@@ -233,7 +271,7 @@ class C_Civil extends CI_Controller
 		$data['lampiran'] = $this->M_civil->getListlampiran($id);
 		$data['ket'] = $this->M_civil->getKetByid($id);
 		$data['approve'] = $this->M_civil->getApproverbyId($id);
-		$data['status_order'] = $this->M_civil->listSto();
+		$data['status_order'] = $this->M_civil->getStatusOrder();
 		// echo "<pre>";
 		// print_r($data['lapiran']);exit();
 
@@ -340,7 +378,10 @@ class C_Civil extends CI_Controller
 			}
 		}
 
-
+		/**
+		 * ??????????
+		 * never declarated
+		 */
 		if (isset($redirek)) {
 			redirect('civil-maintenance-order/order/view_order/' . $id);
 		}
@@ -366,6 +407,7 @@ class C_Civil extends CI_Controller
 		$cpt = count($_FILES['lampiran']['name']) - 1;
 		echo $cpt;
 		exit();
+
 		for ($i = 0; $i < $cpt; $i++) {
 			$filename = $files['lampiran']['name'][$i];
 			if (empty($filename)) continue;
@@ -437,7 +479,7 @@ class C_Civil extends CI_Controller
 
 		$data['order'] = $this->M_civil->getListOrderid($id)->row_array();
 		$data['lampiran'] = $this->M_civil->getListlampiran($id);
-		$data['status_order'] = $this->M_civil->listSto();
+		$data['status_order'] = $this->M_civil->getStatusOrder();
 		$data['ket'] = $this->M_civil->getKetByid($id);
 		$data['approve'] = $this->M_civil->getApproverbyId($id);
 		$data['id'] = $id;
@@ -554,6 +596,7 @@ class C_Civil extends CI_Controller
 		$aprover = $this->input->post('tbl_approver');
 		$stat = $this->input->post('tbl_status');
 		$id = $this->input->post('id');
+
 		for ($i = 0; $i < count($aprover); $i++) {
 			$arr = array(
 				'order_id'			=>	$id,
@@ -563,12 +606,14 @@ class C_Civil extends CI_Controller
 			);
 			$this->M_civil->insCOA($arr);
 		}
+
 		$thread = array(
 			'order_id'		=>	$id,
 			'thread_detail'	=>	'Add Approver ' . $id,
 			'thread_date'	=>	date('Y-m-d H:i:s'),
 			'thread_by'		=>	$this->session->user
 		);
+
 		$this->M_civil->saveThread($thread);
 		redirect('civil-maintenance-order/order/edit_approval/' . $id);
 	}
@@ -603,6 +648,7 @@ class C_Civil extends CI_Controller
 			'thread_date'	=>	date('Y-m-d H:i:s'),
 			'thread_by'		=>	$this->session->user
 		);
+
 		$this->M_civil->saveThread($thread);
 
 		$arr = array(
@@ -635,6 +681,7 @@ class C_Civil extends CI_Controller
 		$satuan = $this->input->post('tbl_satuan');
 		$keter = $this->input->post('tbl_ket');
 		$id = $this->input->post('id');
+
 		for ($i = 0; $i < count($qty); $i++) {
 			$arr = array(
 				'order_id'		=>	$id,
@@ -752,7 +799,7 @@ class C_Civil extends CI_Controller
 	{
 		$data['order'] = $this->M_civil->getListOrderid($id)->row_array();
 		$data['lampiran'] = $this->M_civil->getListlampiran($id);
-		$data['status_order'] = $this->M_civil->listSto();
+		$data['status_order'] = $this->M_civil->getStatusOrder();
 		$data['ket'] = $this->M_civil->getKetByid($id);
 		$data['approve'] = $this->M_civil->getApproverbyId($id);
 		$data['id'] = $id;

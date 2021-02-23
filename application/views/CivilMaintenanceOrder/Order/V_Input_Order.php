@@ -38,7 +38,7 @@
             <div class="box box-primary box-solid">
               <div class="box-header with-border"></div>
               <div class="box-body lblmt">
-                <form method="post" action="<?= base_url('civil-maintenance-order/order/save_order') ?>" enctype="multipart/form-data">
+                <form method="post" action="<?= base_url('civil-maintenance-order/order/save_order') ?>" enctype="multipart/form-data" novalidate>
                   <div class="col-md-12 cmo_pengorderCivil">
                     <div class="col-md-6">
                       <div class="col-md-4">
@@ -128,7 +128,7 @@
                         <label>Jenis Order</label>
                       </div>
                       <div class="col-md-8">
-                        <select required class="form-control <?= $claz ?>" name="jnsOrder">
+                        <select required class="form-control" id="jenis_order" name="jnsOrder">
                           <!-- <option value="1" selected="">Pekerjaan Eksternal Dengan Order</option> -->
                           <?php foreach ($jenisOrder as $order) : ?>
                             <option value="<?= $order['jenis_order_id'] ?>" selected=""><?= $order['jenis_order'] ?></option>
@@ -289,5 +289,27 @@
         })
       })
     }
+
+    // set jenis order by localstorage
+    const jenis_order_key = 'jenis_order';
+    $('select#jenis_order').change(function() {
+      const value = $(this).val()
+
+      localStorage.setItem(jenis_order_key, value)
+    });
+
+    // when load
+    (() => {
+      const storage = {
+        jenis_order: localStorage.getItem(jenis_order_key)
+      }
+
+      if (storage.jenis_order) {
+        $('select#jenis_order').val(storage.jenis_order)
+      }
+
+      console.log(storage)
+    })();
+
   })();
 </script>

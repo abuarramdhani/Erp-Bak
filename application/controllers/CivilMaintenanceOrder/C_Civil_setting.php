@@ -1,10 +1,12 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+
+date_default_timezone_set('Asia/Jakarta');
 /**
-* 
-*/
+ * 
+ */
 class C_Civil_setting extends CI_Controller
 {
-	
+
 	function __construct()
 	{
 		parent::__construct();
@@ -17,15 +19,12 @@ class C_Civil_setting extends CI_Controller
 		$this->load->library('encrypt');
 		$this->load->library('upload');
 		$this->load->library('General');
+		$this->load->library('upload');
 
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('CivilMaintenanceOrder/M_civil');
 
-		$this->load->library('upload');
-
-		date_default_timezone_set('Asia/Jakarta');
-
-		if($this->session->is_logged === false) redirect('');
+		if ((bool)$this->session->is_logged === false) redirect('');
 	}
 
 	public function jenis_order()
@@ -34,10 +33,10 @@ class C_Civil_setting extends CI_Controller
 
 		$data  = $this->general->loadHeaderandSidemenu('Civil Maintenance', 'Jenis Order', 'Setting', 'jenis Order', '');
 
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('CivilMaintenanceOrder/Setting/V_Jenis_Order',$data);
-		$this->load->view('V_Footer',$data);
+		$this->load->view('V_Header', $data);
+		$this->load->view('V_Sidemenu', $data);
+		$this->load->view('CivilMaintenanceOrder/Setting/V_Jenis_Order', $data);
+		$this->load->view('V_Footer', $data);
 	}
 
 	public function getlist_jenis_order()
@@ -54,12 +53,12 @@ class C_Civil_setting extends CI_Controller
 		$data = array('jenis_order'	=>	$jnsOrder);
 		$ins = $this->M_civil->addJnsOrder($data);
 		$thread = array(
-			'thread_detail'	=>	'Add Jenis Order '.$ins.' ('.$jnsOrder.')',
+			'thread_detail'	=>	'Add Jenis Order ' . $ins . ' (' . $jnsOrder . ')',
 			'thread_date'	=>	date('Y-m-d H:i:s'),
 			'thread_by'		=>	$user
-			);
+		);
 		$this->M_civil->saveThread($thread);
-		return $ins ? 'success':'gagal';
+		return $ins ? 'success' : 'gagal';
 	}
 
 	public function del_jnsOrder()
@@ -67,14 +66,13 @@ class C_Civil_setting extends CI_Controller
 		$id = $this->input->post('id');
 		$nama = $this->M_civil->getSettingbyId($id, 'cvl.cvl_jenis_order', 'jenis_order_id')->row()->jenis_order;
 		$thread = array(
-			'thread_detail'	=>	'Delete Jenis Order '.$id.' ('.$nama.')',
+			'thread_detail'	=>	'Delete Jenis Order ' . $id . ' (' . $nama . ')',
 			'thread_date'	=>	date('Y-m-d H:i:s'),
 			'thread_by'		=>	$this->session->user
-			);
+		);
 		$this->M_civil->saveThread($thread);
 
 		$this->M_civil->delJnsOrder($id);
-				
 	}
 
 	public function up_jnsOrder()
@@ -82,17 +80,15 @@ class C_Civil_setting extends CI_Controller
 		$txt = $this->input->post('upjenisOrder');
 		$id = $this->input->post('idJnsOrder');
 		$thread = array(
-			'thread_detail'	=>	'Update Jenis Order '.$id.' ('.$txt.')',
+			'thread_detail'	=>	'Update Jenis Order ' . $id . ' (' . $txt . ')',
 			'thread_date'	=>	date('Y-m-d H:i:s'),
 			'thread_by'		=>	$this->session->user
-			);
+		);
 		$this->M_civil->saveThread($thread);
 
 		$data = array('jenis_order'	=>	$txt);
 		$this->M_civil->upJnsOrder($data, $id);
 	}
-
-
 
 	public function jenis_pekerjaan()
 	{
@@ -103,10 +99,10 @@ class C_Civil_setting extends CI_Controller
 		$data['list'] = $this->M_civil->listJnsPkj();
 		$data['detail'] = $this->M_civil->listJnsPkjDetail();
 
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('CivilMaintenanceOrder/Setting/V_Jenis_Pekerjaan',$data);
-		$this->load->view('V_Footer',$data);
+		$this->load->view('V_Header', $data);
+		$this->load->view('V_Sidemenu', $data);
+		$this->load->view('CivilMaintenanceOrder/Setting/V_Jenis_Pekerjaan', $data);
+		$this->load->view('V_Footer', $data);
 	}
 
 	public function add_jns_pkj()
@@ -116,14 +112,14 @@ class C_Civil_setting extends CI_Controller
 		$data = array(
 			'jenis_pekerjaan'	=>	$pkj,
 			'keterangan'	=>	$ket
-			);
+		);
 		$add = $this->M_civil->addJnsOrder($data, 'cvl.cvl_jenis_pekerjaan');
 
 		$thread = array(
-			'thread_detail'	=>	'Add Jenis Pekerjaan '.$add.' ('.$pkj.')',
+			'thread_detail'	=>	'Add Jenis Pekerjaan ' . $add . ' (' . $pkj . ')',
 			'thread_date'	=>	date('Y-m-d H:i:s'),
 			'thread_by'		=>	$this->session->user
-			);
+		);
 		$this->M_civil->saveThread($thread);
 
 		redirect('civil-maintenance-order/setting/jenis_pekerjaan');
@@ -138,14 +134,14 @@ class C_Civil_setting extends CI_Controller
 			'jenis_pekerjaan_id'	=>	$pkj,
 			'detail_pekerjaan'	=> $detail,
 			'keterangan'	=>	$ket
-			);
+		);
 		$add = $this->M_civil->addJnsOrder($data, 'cvl.cvl_jenis_pekerjaan_detail');
 
 		$thread = array(
-			'thread_detail'	=>	'Add Jenis Pekerjaan Detail '.$add.' ('.$pkj.')',
+			'thread_detail'	=>	'Add Jenis Pekerjaan Detail ' . $add . ' (' . $pkj . ')',
 			'thread_date'	=>	date('Y-m-d H:i:s'),
 			'thread_by'		=>	$this->session->user
-			);
+		);
 		$this->M_civil->saveThread($thread);
 
 		redirect('civil-maintenance-order/setting/jenis_pekerjaan');
@@ -158,10 +154,10 @@ class C_Civil_setting extends CI_Controller
 		$this->M_civil->delJnsPkj($id);
 
 		$thread = array(
-			'thread_detail'	=>	'Delete Jenis Pekerjaan '.$id.' ('.$nama.')',
+			'thread_detail'	=>	'Delete Jenis Pekerjaan ' . $id . ' (' . $nama . ')',
 			'thread_date'	=>	date('Y-m-d H:i:s'),
 			'thread_by'		=>	$this->session->user
-			);
+		);
 		$this->M_civil->saveThread($thread);
 
 		redirect('civil-maintenance-order/setting/jenis_pekerjaan');
@@ -177,10 +173,10 @@ class C_Civil_setting extends CI_Controller
 		$this->M_civil->upJnsPkj($data, $id);
 
 		$thread = array(
-			'thread_detail'	=>	'Update Jenis Pekerjaan '.$id.' ('.$txt.')',
+			'thread_detail'	=>	'Update Jenis Pekerjaan ' . $id . ' (' . $txt . ')',
 			'thread_date'	=>	date('Y-m-d H:i:s'),
 			'thread_by'		=>	$this->session->user
-			);
+		);
 		$this->M_civil->saveThread($thread);
 		redirect('civil-maintenance-order/setting/jenis_pekerjaan');
 	}
@@ -193,23 +189,20 @@ class C_Civil_setting extends CI_Controller
 		$detail_id = $this->input->post('idJnsPekerjaanDetail');
 
 		$data = array(
-			'jenis_pekerjaan_id'	=>	$pekerjaan_id, 
-			'detail_pekerjaan'	=>	$detail, 
+			'jenis_pekerjaan_id'	=>	$pekerjaan_id,
+			'detail_pekerjaan'	=>	$detail,
 			'keterangan'	=>	$ket
 		);
 		$this->M_civil->upJnsPkjDetail($data, $detail_id);
 
 		$thread = array(
-			'thread_detail'	=>	'Update Jenis Pekerjaan Detail '.$detail_id.' ('.$detail.')',
+			'thread_detail'	=>	'Update Jenis Pekerjaan Detail ' . $detail_id . ' (' . $detail . ')',
 			'thread_date'	=>	date('Y-m-d H:i:s'),
 			'thread_by'		=>	$this->session->user
-			);
+		);
 		$this->M_civil->saveThread($thread);
 		redirect('civil-maintenance-order/setting/jenis_pekerjaan');
 	}
-
-
-
 
 	public function status_order()
 	{
@@ -217,30 +210,42 @@ class C_Civil_setting extends CI_Controller
 
 		$data  = $this->general->loadHeaderandSidemenu('Civil Maintenance', 'Status Order', 'Setting', 'Status Order', '');
 
-		$data['list'] = $this->M_civil->listSto();
+		$data['list'] = $this->M_civil->getStatusOrder();
 
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('CivilMaintenanceOrder/Setting/V_Status_Order',$data);
-		$this->load->view('V_Footer',$data);
+		$this->load->view('V_Header', $data);
+		$this->load->view('V_Sidemenu', $data);
+		$this->load->view('CivilMaintenanceOrder/Setting/V_Status_Order', $data);
+		$this->load->view('V_Footer', $data);
 	}
 
+	/**
+	 * TAMBAH STATUS ORDER
+	 */
 	public function add_sto()
 	{
 		$st = $this->input->post('status');
-		$data = array('status'	=>	$st);
+		$color = $this->input->post('color') ?: NULL;
+
+		$data = array(
+			'status'	=>	$st,
+			'status_color' => $color
+		);
+
 		$add = $this->M_civil->addJnsOrder($data, 'cvl.cvl_order_status');
 
 		$thread = array(
-			'thread_detail'	=>	'Add Status Order '.$add.' ('.$st.')',
+			'thread_detail'	=>	'Add Status Order ' . $add . ' (' . $st . ')',
 			'thread_date'	=>	date('Y-m-d H:i:s'),
 			'thread_by'		=>	$this->session->user
-			);
+		);
 		$this->M_civil->saveThread($thread);
 
 		redirect('civil-maintenance-order/setting/status_order');
 	}
 
+	/**
+	 * HAPUS STATUS ORDER
+	 */
 	public function del_sto()
 	{
 		$id = $this->input->get('id');
@@ -248,27 +253,32 @@ class C_Civil_setting extends CI_Controller
 		$this->M_civil->delsto($id);
 
 		$thread = array(
-			'thread_detail'	=>	'Delete Status Order '.$id.' ('.$nama.')',
+			'thread_detail'	=>	'Delete Status Order ' . $id . ' (' . $nama . ')',
 			'thread_date'	=>	date('Y-m-d H:i:s'),
 			'thread_by'		=>	$this->session->user
-			);
+		);
 		$this->M_civil->saveThread($thread);
 		redirect('civil-maintenance-order/setting/status_order');
 	}
 
+	/**
+	 * UPDATE STATUS ORDER
+	 */
 	public function up_sto()
 	{
-		$txt = $this->input->post('upjenisOrder');
 		$id = $this->input->post('idJnsOrder');
+		$txt = $this->input->post('upjenisOrder');
+		$color = $this->input->post('color') ?: NULL;
 
-		$data = array('status'	=>	$txt);
+		$data = array('status'	=>	$txt, 'status_color' => $color);
+
 		$this->M_civil->upsto($data, $id);
 
 		$thread = array(
-			'thread_detail'	=>	'Update Status Order '.$id.' ('.$txt.')',
+			'thread_detail'	=>	'Update Status Order ' . $id . ' (' . $txt . ')',
 			'thread_date'	=>	date('Y-m-d H:i:s'),
 			'thread_by'		=>	$this->session->user
-			);
+		);
 		$this->M_civil->saveThread($thread);
 
 		redirect('civil-maintenance-order/setting/status_order');

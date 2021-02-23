@@ -80,7 +80,7 @@ class M_civil extends CI_Model
 		return true;
 	}
 
-	public function listSto()
+	public function getStatusOrder()
 	{
 		$sql = "SELECT * from cvl.cvl_order_status order by status";
 		return $this->db->query($sql)->result_array();
@@ -100,17 +100,18 @@ class M_civil extends CI_Model
 		return true;
 	}
 
-
 	public function getListOrder()
 	{
 		$sql = "select
 					co.*,
 					cp.jenis_pekerjaan ,
+					(select string_agg(pekerjaan, ',<br>') from cvl.cvl_order_pekerjaan where order_id = co.order_id) as pekerjaan,
 					cjo.jenis_order,
 					es.section_name,
 					el.location_name,
 					(select count(*) from cvl.cvl_order_pekerjaan cop where cop.order_id = co.order_id) total_order,
 					cos.status,
+					cos.status_color,
 					(select employee_name from er.er_employee_all eea where employee_code = co.pengorder) dari,
 					(select employee_name from er.er_employee_all eea where employee_code = co.penerima_order ) ke
 				from
