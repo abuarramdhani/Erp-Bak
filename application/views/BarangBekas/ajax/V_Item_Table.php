@@ -1,43 +1,41 @@
 <div class="table-responsive">
-    <div class="panel-body">
-      <strong style="font-size:20px;" class="pbbt_type">Type : <?php echo $get[0]['TYPE_DOCUMENT'] ?></strong>
-      <table class="table table-bordered table_pbbt mt-3" style="width:100%">
-        <thead class="bg-primary">
-          <tr>
-            <th class="text-center" style="width:5%; !important">No</th>
-            <th class="text-center">Item Code</th>
+    <strong style="font-size:20px;" class="pbbt_type">Type : <?php echo $get[0]['TYPE_DOCUMENT'] ?></strong>
+    <table class="table table-bordered table_pbbt mt-3" style="width:100%">
+      <thead class="bg-primary">
+        <tr>
+          <th class="text-center" style="width:5%; !important">No</th>
+          <th class="text-center">Item Code</th>
+          <?php if ($get[0]['TYPE_DOCUMENT'] == 'PBB-S'){ ?>
+            <th class="text-center" style="width:10%">Onhand</th>
+          <?php } ?>
+          <th class="text-center" style="width:10%;">Jumlah</th>
+          <th class="text-center" style="width:10%;">UOM</th>
+          <th class="text-center" style="width:10%;">Terima</th>
+        </tr>
+      </thead>
+      <tbody>
+        <?php foreach ($get as $key => $value): ?>
+          <tr >
+            <td class="text-center"><?php echo $key+1 ?></td>
+            <td class="text-center">
+              <?php echo $value['ITEM'] ?> - <?php echo $value['DESCRIPTION'] ?>
+            </td>
             <?php if ($get[0]['TYPE_DOCUMENT'] == 'PBB-S'){ ?>
-              <th class="text-center" style="width:10%">Onhand</th>
+              <td class="text-center"><?php echo $value['ONHAND'] ?></td>
             <?php } ?>
-            <th class="text-center" style="width:10%;">Jumlah</th>
-            <th class="text-center" style="width:10%;">UOM</th>
-            <th class="text-center" style="width:10%;">Terima</th>
+            <td class="text-center"><?php echo $value['JUMLAH'] ?></td>
+            <td class="text-center"><?php echo $value['UOM'] ?></td>
+            <td class="text-center t_berat_timbang kolom_selesai_timbang_<?php echo $value['ID_PBB'] ?>">
+               <?php if ($value['NO_URUT_TIMBANG'] != 999){ ?>
+                 <button type="button" class="btn btn-success btn-sm" onclick="pbbTimbang(<?php echo $value['ID_PBB'] ?>)" name="button" data-toggle="modal" data-target="#modal-pbb-transact-ambil-berat"> <i class="fa fa-download"></i> <b>Timbang</b></button>
+               <?php }else{ ?>
+                 <b><?php echo $value['BERAT_TIMBANG'] ?> KG</b>
+               <?php } ?>
+            </td>
           </tr>
-        </thead>
-        <tbody>
-          <?php foreach ($get as $key => $value): ?>
-            <tr >
-              <td class="text-center"><?php echo $key+1 ?></td>
-              <td class="text-center">
-                <?php echo $value['ITEM'] ?> - <?php echo $value['DESCRIPTION'] ?>
-              </td>
-              <?php if ($get[0]['TYPE_DOCUMENT'] == 'PBB-S'){ ?>
-                <td class="text-center"><?php echo $value['ONHAND'] ?></td>
-              <?php } ?>
-              <td class="text-center"><?php echo $value['JUMLAH'] ?></td>
-              <td class="text-center"><?php echo $value['UOM'] ?></td>
-              <td class="text-center kolom_selesai_timbang_<?php echo $value['ID_PBB'] ?>">
-                 <?php if ($value['NO_URUT_TIMBANG'] != 999){ ?>
-                   <button type="button" class="btn btn-success btn-sm" onclick="pbbTimbang(<?php echo $value['ID_PBB'] ?>)" name="button" data-toggle="modal" data-target="#modal-pbb-transact-ambil-berat"> <i class="fa fa-download"></i> <b>Timbang</b></button>
-                 <?php }else{ ?>
-                   <b><?php echo $value['BERAT_TIMBANG'] ?> KG</b>
-                 <?php } ?>
-              </td>
-            </tr>
-          <?php endforeach; ?>
-        </tbody>
-      </table>
-    </div>
+        <?php endforeach; ?>
+      </tbody>
+    </table>
 </div>
 
 <div class="modal fade bd-example-modal-md" id="modal-pbb-transact-ambil-berat" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

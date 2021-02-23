@@ -39,9 +39,12 @@
               <div class="panel-body">
                 <form class="form-pbb-transact" action="" method="post">
                 <div class="row">
-                  <div class="col-md-2"></div>
-                  <div class="col-md-8">
-                    <br>
+                  <div class="col-md-7">
+                    <div class="row mb-4">
+                      <div class="col-md-12">
+                        <b style="font-size:20px;color:#3c8dbc">Asal</b>
+                      </div>
+                    </div>
                     <table style="width:100%">
                       <tr>
                         <td><b>No Document</b> </td>
@@ -85,7 +88,42 @@
                       </tr>
                     </table>
                   </div>
-                  <div class="col-md-2"></div>
+                  <div class="col-md-5">
+                    <div class="row mb-4">
+                      <div class="col-md-12">
+                        <b style="font-size:20px;color:#3c8dbc">Tujuan</b>
+                      </div>
+                    </div>
+                    <table style="width:100%">
+                      <tr>
+                        <td style="width:15%"><b>Tujuan</b> </td>
+                        <td style="width:5%;">:</td>
+                        <td style="width:80%">
+                          <input type="radio" name="pbb_tujuan" style="width:20px;height:20px" value="BARKAS-DM"> <label for="norm" class="control-label" >&nbsp;&nbsp;Pusat </label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          <input type="radio" name="pbb_tujuan" style="width:20px;height:20px" value="BARKAST-DM"><label for="norm" class="control-label" >&nbsp;&nbsp; Tuksono </label>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><b>Locator</b> </td>
+                        <td>:</td>
+                        <td class="pbb_locator_tujuan">
+                          -
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><b>Item</b> </td>
+                        <td>:</td>
+                        <td>
+                          <select class="form-control slc_pbb" id="pbbtt_item" name="" style="width:350px">
+                            <option value="">Select..</option>
+                            <?php foreach ($item as $key => $value): ?>
+                              <option value="<?php echo $value['INVENTORY_ITEM_ID'] ?>"><?php echo $value['SEGMENT1'] ?> -  <?php echo $value['DESCRIPTION'] ?></option>
+                            <?php endforeach; ?>
+                          </select>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
                   <div class="col-md-12">
                     <hr>
                   </div>
@@ -94,27 +132,23 @@
                   <div class="col-md-12">
                     <div class="pbbt_area_item">
                       <div class="table-responsive">
-                          <div class="panel-body">
-                            <table class="table table-bordered table_pbbt" style="width:100%">
-                              <thead class="bg-primary">
-                                <tr>
-                                  <th class="text-center" style="width:5%; !important">No</th>
-                                  <th class="text-center">Item Code</th>
-                                  <th class="text-center" style="width:10%">Onhand</th>
-                                  <th class="text-center" style="width:10%;">Jumlah</th>
-                                  <th class="text-center" style="width:10%;">UOM</th>
-                                  <th class="text-center" style="width:10%;">Terima</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                              </tbody>
-                            </table>
-                          </div>
+                        <table class="table table-bordered table_pbbt" style="width:100%">
+                          <thead class="bg-primary">
+                            <tr>
+                              <th class="text-center" style="width:5%; !important">No</th>
+                              <th class="text-center">Item Code</th>
+                              <th class="text-center" style="width:10%">Onhand</th>
+                              <th class="text-center" style="width:10%;">Jumlah</th>
+                              <th class="text-center" style="width:10%;">UOM</th>
+                              <th class="text-center" style="width:10%;">Terima</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                          </tbody>
+                        </table>
                       </div>
                     </div>
-                    <div class="panel-body">
-                      <button type="button" style="float:right !important;font-weight:bold"  class="btn btn-success submit-pbb-transact" name=""><i class="fa fa-file"></i> Transact</button>
-                    </div>
+                    <button type="button" style="float:right !important;font-weight:bold"  class="btn btn-success submit-pbb-transact" name=""><i class="fa fa-file"></i> Transact</button>
                   </div>
                 </div>
               </form>

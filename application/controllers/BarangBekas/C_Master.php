@@ -74,7 +74,7 @@ class C_Master extends CI_Controller
       // if ($this->form_validation->run() === FALSE) {
 
           $data['seksi'] = $this->M_master->getSeksi();
-          $data['subinv'] = $this->M_master->SubInv();
+          $data['io'] = $this->M_master->get_io();
 
           $this->load->view('V_Header', $data);
           $this->load->view('V_Sidemenu', $data);
@@ -85,6 +85,17 @@ class C_Master extends CI_Controller
       //
       // }
 
+    }
+
+    public function SubInv($value='')
+    {
+      $data = $this->M_master->SubInv($this->input->post('io'));
+      $tampung[] = '<option value="">Select..</option>';
+      foreach ($data as $key => $value) {
+        $tampung[] = '<option value="'.$value['SUBINV'].' - '.$value['ORGANIZATION_ID'].'">'.$value['SUBINV'].' - '.$value['DESCRIPTION'].'</option>';
+      }
+      if (empty($tampung)) $tampung = [];
+      echo json_encode(implode('', $tampung));
     }
 
     public function submit_pbbs($value='')
@@ -201,10 +212,10 @@ class C_Master extends CI_Controller
       $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
       $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
-      $this->form_validation->set_rules('seksi_n_cc', 'Seksi & Cost Center', 'required');
+      // $this->form_validation->set_rules('seksi_n_cc', 'Seksi & Cost Center', 'required');
 
-      if ($this->form_validation->run() === FALSE) {
-
+      // if ($this->form_validation->run() === FALSE) {
+          $data['item'] = $this->M_master->getItemTujuan();
           $data['document_number'] = $this->M_master->no_document();
 
           $this->load->view('V_Header', $data);
@@ -212,11 +223,11 @@ class C_Master extends CI_Controller
           $this->load->view('BarangBekas/V_Transact', $data);
           $this->load->view('V_Footer', $data);
 
-      }else {
-        echo "<pre>";
-        print_r($_POST);
-        die;
-      }
+      // }else {
+      //   echo "<pre>";
+      //   print_r($_POST);
+      //   die;
+      // }
 
     }
 
@@ -235,11 +246,18 @@ class C_Master extends CI_Controller
     {
       $doc_num = $this->input->post('doc_num');
       $cek = $this->M_master->cek_apakah_sudah_trasact($doc_num);
+
       if (empty($cek['DOCUMENT_NUMBER'])) {
-        $res = $this->M_master->pbb_transact($doc_num);
+        $imir = $this->M_master->insert_misc_issue_receipt($this->input->post());
+        if ($imir) {
+          $res = $this->M_master->pbb_transact($doc_num);
+        }else {
+          $res = 86;
+        }
       }else {
         $res = 76;
       }
+
       echo json_encode($res);
     }
 

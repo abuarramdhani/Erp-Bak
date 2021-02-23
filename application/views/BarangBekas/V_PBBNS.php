@@ -54,32 +54,30 @@
                 <div class="row">
                   <div class="col-md-12">
                     <div class="table-responsive">
-                        <div class="panel-body">
-                          <table class="table table-bordered pbbns_table" style="width:100%">
-                            <thead class="bg-primary">
-                              <tr>
-                                <th class="text-center" style="width:5%;">No</th>
-                                <th class="text-center">Item Code</th>
-                                <th class="text-center" style="width:15%">Jumlah</th>
-                                <th class="text-center" style="width:15%;">UOM</th>
-                                <th class="text-center" style="width:10%;">Plus/Min</th>
-                              </tr>
-                            </thead>
-                            <tbody id="pbbns_set_row">
-                              <tr row-id="1">
-                                <td class="text-center">1</td>
-                                <td class="text-center check_pbbns_param">
-                                  <select class="form-control slc_pbbns_item" name="item_code[]" style="text-transform:uppercase !important;width:600px;" required>
-                                    <option selected="selected"></option>
-                                  </select>
-                                </td>
-                                <td class="text-center"><input type="number" class="form-control" id="jumlah" name="jumlah[]" required></td>
-                                <td class="text-center"><input type="text" class="form-control" id="pbb_uom_1" name="uom[]" readonly></td>
-                                <td class="text-center"><button type="button" class="btn btn-default btn-sm" onclick="btnPBBNS()"><i class="fa fa-plus"></i></button></td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </div>
+                      <table class="table table-bordered pbbns_table" style="width:100%">
+                        <thead class="bg-primary">
+                          <tr>
+                            <th class="text-center" style="width:5%;">No</th>
+                            <th class="text-center">Item Code</th>
+                            <th class="text-center" style="width:15%">Jumlah</th>
+                            <th class="text-center" style="width:15%;">UOM</th>
+                            <th class="text-center" style="width:10%;">Plus/Min</th>
+                          </tr>
+                        </thead>
+                        <tbody id="pbbns_set_row">
+                          <tr row-id="1">
+                            <td class="text-center">1</td>
+                            <td class="text-center check_pbbns_param">
+                              <select class="form-control slc_pbbns_item" name="item_code[]" style="text-transform:uppercase !important;width:600px;" required>
+                                <option selected="selected"></option>
+                              </select>
+                            </td>
+                            <td class="text-center"><input type="number" class="form-control" id="jumlah" name="jumlah[]" required></td>
+                            <td class="text-center"><input type="text" class="form-control" id="pbb_uom_1" name="uom[]" readonly></td>
+                            <td class="text-center"><button type="button" class="btn btn-default btn-sm" onclick="btnPBBNS()"><i class="fa fa-plus"></i></button></td>
+                          </tr>
+                        </tbody>
+                      </table>
                         <div class="panel-body">
                           <button type="submit" style="float:right !important;font-weight:bold" class="btn btn-success" name=""><i class="fa fa-file"></i> Submit</button>
                         </div>
