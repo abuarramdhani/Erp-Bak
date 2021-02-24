@@ -68,7 +68,7 @@
       <div class="box-footer">
         <div class="pull-right">
           <button type="submit" class="btn btn-success">Save</button>
-          <a href="<?php echo base_url('SystemIntegration/KaizenGenerator/Submit/create') ?>";" class="btn btn-warning">Cancel</a>
+          <button type="button" id="SI_btncanclecrtkaizen" class="btn btn-warning">Cancel</button>
         </div>
       </div>
     </form>
