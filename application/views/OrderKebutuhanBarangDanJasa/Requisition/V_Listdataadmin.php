@@ -86,6 +86,24 @@
                                     <input class="form-control" id="txtOKBSectionOrderRequestor" name="txtOKBSectionOrderRequestor" value="<?php echo $pengorder[0]['section_name']?>" readonly>
                                 </div>
                             </div>
+                        </div> <br>
+
+                        <div class="form-group">
+                            <label for="selectOKBLOVListData" class="col-sm-2 control-label" style="font-weight:normal">Filter List Data</label>
+                            <div class="col-sm-3">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i style="width:15px;" class="fa fa-filter"></i></span>
+                                    <select class="form-control select2 selectOKBLOVListData" id="selectOKBLOVListData" name="selectOKBLOVListData">
+                                        <option value=""></option>
+                                        <option value="wipapprove">WIP Approve</option>
+                                        <option value="wipreleasepuller">WIP Release Puller</option>
+                                        <option value="fullapprove">Full Approve</option>
+                                        <option value="rejectbypembelian">Reject by Pembelian</option>
+                                        <option value="rejectbyatasan">Reject by Atasan/Pengelola</option>
+                                        <option value="showall">Show All</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div> <br> <br>
 
                         <div class="box-body table-responsive no-padding">
@@ -94,7 +112,7 @@
                                     <p class="bold">Order List</p>
                                 </div>
                                 <div class="panel-body">
-                                    <table class="table table-bordered table-hover table-striped tblOKBOrderListPengorder" width="125%">
+                                    <table class="table table-bordered table-hover table-striped tblOKBOrderListPengorderAdmin" width="125%">
                                         <thead class="bg-primary">
                                             <tr>
                                                 <th class="bg-primary">No</th>
@@ -114,9 +132,7 @@
                                         </thead>
                                         <tbody>
                                             <?php $no=0; foreach ($listOrder as $key => $list) { $no++; ?>
-                                            <tr>
-                                                <td><?php echo $no; ?></td>
-                                                <?php if ($list['URGENT_FLAG']=='Y' && $list['IS_SUSULAN'] != 'Y') {
+                                            <?php if ($list['URGENT_FLAG']=='Y' && $list['IS_SUSULAN'] != 'Y') {
                                                         $flag = 'label-danger';
                                                         $tag = 'urgent';
                                                     }else if ($list['URGENT_FLAG']=='N' && $list['IS_SUSULAN'] != 'Y'){
@@ -127,6 +143,8 @@
                                                         $tag = 'emergency';
                                                     }
                                                     ?>
+                                            <tr>
+                                                <td><?php echo $no; ?></td>
                                                 <td><span class="tdOKBListOrderId" style="display: none;"><?php echo $list['ORDER_ID']; ?></span><button type="button" class="btn btn-sm btn-default btnOKBInfoPR"><?php echo $list['ORDER_ID']; ?></button></td>
                                                 <td><?= $list['NATIONAL_IDENTIFIER'].', '.$list['FULL_NAME']; ?></td>
                                                 <td><?php echo date("d-M-Y",strtotime($list['ORDER_DATE'])); ?><br><label class="label <?= $flag; ?>"><?= $tag; ?></label></td>

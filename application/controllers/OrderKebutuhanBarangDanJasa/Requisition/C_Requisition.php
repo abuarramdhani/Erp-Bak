@@ -410,16 +410,37 @@ class C_Requisition extends CI_Controller {
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		
 		$data['pengorder'] = $this->M_requisition->getPengorder($noind);
+		
+		$where = 'AND ooh.order_status_id = ooh.order_status_id';
+		
+		if(isset($_POST['filter'])){
+			$filter = $this->input->post('filter');
+			if($filter == 'wipapprove'){
+				$where = 'AND ooh.order_status_id = 2';
+			} else if($filter == 'wipreleasepuller'){
+				$where = 'AND ooh.order_status_id = 3';
+			} else if($filter == 'fullapprove'){
+				$where = 'AND ooh.order_status_id = 7';
+			} else if($filter == 'rejectbypembelian'){
+				$where = 'AND ooh.order_status_id = 8';
+			} else if($filter == 'rejectbyatasan'){
+				$where = 'AND ooh.order_status_id = 4';
+			} else {
+				$where = 'AND ooh.order_status_id = ooh.order_status_id';
+			}
 
-		$data['listOrder'] = $this->M_requisition->getListDataOrderAdmin($noind);
+			$data['listOrder'] = $this->M_requisition->getListDataOrderAdmin($noind, $where);
+			
+			$this->load->view('OrderKebutuhanBarangDanJasa/Requisition/V_TableListDataAdmin',$data);
+		} else {
 
-		// echo '<pre>';
-		// print_r($data['listOrder']);exit;
-
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
-        $this->load->view('OrderKebutuhanBarangDanJasa/Requisition/V_Listdataadmin',$data);
-        $this->load->view('V_Footer',$data);
+			$data['listOrder'] = $this->M_requisition->getListDataOrderAdmin($noind, $where);
+			
+			$this->load->view('V_Header',$data);
+			$this->load->view('V_Sidemenu',$data);
+        	$this->load->view('OrderKebutuhanBarangDanJasa/Requisition/V_Listdataadmin',$data);
+        	$this->load->view('V_Footer',$data);
+		}
 	}
 
 	public function listData(){
@@ -441,7 +462,7 @@ class C_Requisition extends CI_Controller {
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-        $this->load->view('OrderKebutuhanBarangDanJasa/Requisition/V_Listdataadmin',$data);
+        $this->load->view('OrderKebutuhanBarangDanJasa/Requisition/V_Listdata',$data);
         $this->load->view('V_Footer',$data);
 	}
 

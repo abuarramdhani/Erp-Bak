@@ -1805,7 +1805,20 @@ $(document).ready(function () {
         scrollY: "370px",
         scrollX: true,
         scrollCollapse: true,
-        fixedColumns:   {
+        fixedColumns: {
+            leftColumns: 5
+        },
+        columnDefs: [
+            { width: 196, targets: 8 },
+            { width: 150, targets: 10 }
+        ]
+    });
+
+    var tableOKBPengorderAdmin = $('.tblOKBOrderListPengorderAdmin').DataTable({
+        scrollY: "370px",
+        scrollX: true,
+        scrollCollapse: true,
+        fixedColumns: {
             leftColumns: 5
         },
         columnDefs: [
@@ -2385,4 +2398,34 @@ $(document).ready(function () {
 
     $('[data-toggle="tooltip"]').tooltip();
 
+
+    $('.selectOKBLOVListData').select2({
+        placeholder: "Filter List Data",
+    }).on('select2:select', () => {
+        let filter = $('.selectOKBLOVListData').val();
+        console.log(filter);
+        $.ajax({
+            type: 'POST',
+            dataType: 'HTML',
+            url: baseurl + 'OrderKebutuhanBarangDanJasa/Requisition/ListDataAdmin',
+            data: {
+                'filter': filter
+            }
+        }).done(response => {
+            tableOKBPengorderAdmin.destroy();
+            $('.tblOKBOrderListPengorderAdmin').find('tbody').html(response);
+            tableOKBPengorderAdmin = $('.tblOKBOrderListPengorderAdmin').DataTable({
+                scrollY: "370px",
+                scrollX: true,
+                scrollCollapse: true,
+                fixedColumns: {
+                    leftColumns: 5
+                },
+                columnDefs: [
+                    { width: 196, targets: 8 },
+                    { width: 150, targets: 10 }
+                ]
+            });
+        })
+    })
 })
