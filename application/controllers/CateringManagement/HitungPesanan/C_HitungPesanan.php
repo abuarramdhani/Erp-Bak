@@ -1723,6 +1723,11 @@ class C_HitungPesanan extends CI_Controller
               </tr>
             </table>";
             $supplier = "Katering";
+            if ($lokasi == "1") {
+              $seksiPenerima = "Seksi GA";
+            }else{
+              $seksiPenerima = "Seksi Penerima";
+            }
           }else{
             $isi .= "<table style=\"width: 100%\">
               <tr>
@@ -1731,6 +1736,7 @@ class C_HitungPesanan extends CI_Controller
               </tr>
             </table>";
             $supplier = "Supplier";
+            $seksiPenerima = "Seksi GA";
           }
           $isi .= "<table border=\"1\" style=\"width: 100%;border-collapse: collapse;\">
           <thead>
@@ -1748,7 +1754,7 @@ class C_HitungPesanan extends CI_Controller
             </tr>
             <tr>
               <th style=\"text-align: center;font-weight: bold;border-right: 1px solid black;border-left: 1px solid black;border-top: 2px solid black;border-bottom: 2px solid black;width: 10%\">".$supplier."</th>
-              <th style=\"text-align: center;font-weight: bold;border-right: 1px solid black;border-left: 1px solid black;border-top: 2px solid black;border-bottom: 2px solid black;width: 10%\">Seksi GA</th>
+              <th style=\"text-align: center;font-weight: bold;border-right: 1px solid black;border-left: 1px solid black;border-top: 2px solid black;border-bottom: 2px solid black;width: 10%\">".$seksiPenerima."</th>
             </tr>
           </thead>";
 
