@@ -179,7 +179,7 @@ class C_MoveOrder extends CI_Controller
 
 		if (count($checkPicklist) > 0) {
 			foreach ($checkPicklist as $key => $value) {
-				$no_mo = $value['REQUEST_NUMBER'];
+				$no_mo = $value;
 				array_push($array_mo, $no_mo);
 				//tinggal cetak jika sudah ada mo
 			}
@@ -271,7 +271,8 @@ class C_MoveOrder extends CI_Controller
 
 					$checkPicklist = $this->M_MoveOrder->checkPicklist($job);
 					foreach ($checkPicklist as $key => $value) {
-						$no_mo = $value['REQUEST_NUMBER'];
+						// $no_mo = $value['REQUEST_NUMBER'];
+						$no_mo = $value;
 						array_push($array_mo, $no_mo);
 					}
 			}
@@ -290,8 +291,20 @@ class C_MoveOrder extends CI_Controller
 		}
 	}
 
-	public function pdf($array_mo,$nama_satu, $nama_dua, $piklis){
+	public function pdf($array_mo2,$nama_satu, $nama_dua, $piklis){
 		// ------ GET DATA ------
+		foreach ($array_mo2 as $key => $row) {
+			$return_fare[$key]  = $row['FROM_SUBINVENTORY_CODE'];
+			$one_way_fare[$key] = $row['LOCATOR'];
+		}
+		// Sort the data with volume descending, edition ascending
+		array_multisort($return_fare, SORT_ASC, $one_way_fare, SORT_ASC, $array_mo2);
+
+		$array_mo = array();
+		foreach ($array_mo2 as $key => $val) {
+			$no_mo = $val['REQUEST_NUMBER'];
+			array_push($array_mo, $no_mo);
+		}
 		// echo "<pre>";
 		// print_r($array_mo);
 		// exit();
@@ -368,14 +381,15 @@ class C_MoveOrder extends CI_Controller
 				$dataall[$a]['head']	= $this->M_MoveOrder->getHeader($moveOrderAwal, $moveOrderAkhir);
 				$dataall[$a]['head'][0]['piklis'] = $piklis;
 				$dataall[$a]['line']	= $this->M_MoveOrder->getDetail($moveOrderAwal, $moveOrderAkhir);
-				$sub_assy = substr($dataall[$a]['head'][0]['PRODUK'], 0, 3);
-				if ($sub_assy == 'AGF') {
-					usort($dataall[$a]['line'], function($a, $b) {
-						return $a['KODE_DESC'] - $b['KODE_DESC'];
+				$sub_assy = $dataall[$a]['head'][0]['PRODUK'];
+				if ($sub_assy == 'AGF0000AA1AZ-0' || $sub_assy == 'AGF0000AA2AZ-0') {
+					usort($dataall[$a]['line'], function($y, $z) {
+						return strcasecmp($y['KODE_DESC'], $z['KODE_DESC']);
 					});
 				}
 				$subinv = $dataall[$a]['head'][0]['LOKASI'];
-				$dataall[$a]['beda']	= $this->M_MoveOrder->getPerbedaan($moveOrderAwal, $subinv);
+				$lokator = $dataall[$a]['line'][0]['LOKATOR'];
+				$dataall[$a]['beda']	= $this->M_MoveOrder->getPerbedaan($moveOrderAwal, $subinv, $lokator);
 				$a++;
 			}
 
@@ -495,7 +509,7 @@ class C_MoveOrder extends CI_Controller
 					// echo "checkPicklist";print_r($checkPicklist);echo"<br>";print_r($no_job2);echo "<br>";
 					if (count($checkPicklist) > 0) {
 						foreach ($checkPicklist as $keymo => $valuemo) {
-							$no_mo = $valuemo['REQUEST_NUMBER'];
+							$no_mo = $valuemo;
 							array_push($array_mo, $no_mo);
 							// ECHO "tinggal cetak jika sudah ada mo";
 						}
@@ -562,7 +576,7 @@ class C_MoveOrder extends CI_Controller
 								$checkPicklist = $this->M_MoveOrder->checkPicklist($no_job2[0]);
 								// print_r($checkPicklist);
 								foreach ($checkPicklist as $keymo => $valuemo) {
-									$no_mo = $valuemo['REQUEST_NUMBER'];
+									$no_mo = $valuemo;
 									array_push($array_mo, $no_mo);
 								}
 							}
@@ -574,7 +588,7 @@ class C_MoveOrder extends CI_Controller
 					$checkPicklist = $this->M_MoveOrder->checkPicklist($value);
 					if (count($checkPicklist) > 0) {
 						foreach ($checkPicklist as $keymo => $valuemo) {
-							$no_mo = $valuemo['REQUEST_NUMBER'];
+							$no_mo = $valuemo;
 							array_push($array_mo, $no_mo);
 						}
 					} else {
@@ -618,7 +632,7 @@ class C_MoveOrder extends CI_Controller
 							$checkPicklist = $this->M_MoveOrder->checkPicklist($value);
 
 							foreach ($checkPicklist as $keymo => $valuemo) {
-								$no_mo = $valuemo['REQUEST_NUMBER'];
+								$no_mo = $valuemo;
 								array_push($array_mo, $no_mo);
 							}
 						}
