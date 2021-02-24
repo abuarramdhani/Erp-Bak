@@ -371,6 +371,24 @@ $(function() {
     })
 
     if (typeof(realisasiSIpage) != "undefined" && realisasiSIpage !== null) $('.select2').prepend('<div class="disabled-select"></div>')
+
+
+    $('#SI_btncanclecrtkaizen').click(function(){
+         Swal.fire({
+                title: 'Peringatan !!!',
+                text: "Apa anda yakin Ingin membatalkan Pembuatan Kaizen ?",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya',
+                cancelButtonText: 'Tidak'
+            }).then((result) => {
+                if (result.value) {
+                    window.location.href = baseurl+"SystemIntegration/KaizenGenerator/MyKaizen/index";
+                }
+            });
+    });
 })
 
 function openTabSI(th, tab) {
