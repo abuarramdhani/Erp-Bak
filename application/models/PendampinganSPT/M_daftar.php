@@ -27,6 +27,7 @@ class M_daftar extends CI_Model {
         return $this->db
             ->select('nomor_pendaftaran')
             ->where('nomor_induk', $id)
+            ->where('extract(year from tanggal_daftar) = ', 2021)
             ->get('ap.ap_spt')
             ->result_array();
     }
