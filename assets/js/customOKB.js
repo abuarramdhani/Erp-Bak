@@ -2139,8 +2139,8 @@ $(document).ready(function () {
         $('.mdlUbahDeskripsiApproverOKB').modal('show');
         $('.txtEditDescBeforeOKB').val(desc);
         $('.txtEditDescOKB').val(desc);
-
-        $(document).on('click','.btnActUbahDescOKB',function () {
+        $(document).on('click', '.btnActUbahDescOKB', function () {
+            $(document).off('click', '.btnActUbahDescOKB')
             var desc2 = $('.txtEditDescOKB').val();
 
             if (desc2 != desc) {
@@ -2182,7 +2182,8 @@ $(document).ready(function () {
         $('.txtEditOrderPurpBeforeOKB').val(order_purpose);
         $('.txtEditOrderPurpOKB').val(order_purpose);
 
-        $(document).on('click','.btnActUbahOrderPurpOKB', function () {
+        $(document).on('click', '.btnActUbahOrderPurpOKB', function () {
+            $(document).off('click', '.btnActUbahOrderPurpOKB');
             var order_purpose2 = $('.txtEditOrderPurpOKB').val();
 
             if (order_purpose2 != order_purpose) {
@@ -2232,7 +2233,8 @@ $(document).ready(function () {
         $('.txtEditQtyOrderOKB').val(qty);
         $('.OKBafterUOM').html(uom);
 
-        $(document).on('click','.btnActUbahQtyOrderOKB', function () {
+        $(document).on('click', '.btnActUbahQtyOrderOKB', function () {
+            $(document).off('click', '.btnActUbahQtyOrderOKB');
             var qty2 = $('.txtEditQtyOrderOKB').val();
 
             if (qty2 != qty) {
