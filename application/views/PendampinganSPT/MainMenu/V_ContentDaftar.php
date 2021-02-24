@@ -6,37 +6,62 @@
         <div class="col-md-10">
             <div class="box box-primary container-fluid">
                 <div class="box-header with-border text-center">
-                    <h4><b>PENDAFTARAN PELAPORAN SPT TAHUNAN 2019 ORANG PRIBADI</b></h3>
-                        <h5>- KHUSUS UNTUK PEKERJA CV. KARYA HIDUP SENTOSA YANG MEMILIKI NPWP -
+                    <h4><b>PENDAFTARAN PELAPORAN SPT TAHUNAN 2020 ORANG PRIBADI</b></h3>
+                        <h5>- KHUSUS UNTUK PEKERJA NONSTAFF CV KARYA HIDUP SENTOSA NOMOR INDUK "A" YG MEMILIKI NPWP -
                     </h4>
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
                     <div class="text-justify">
-                        <h4 class="text-center"><span class="bd-content-title text-red"><b>PERHATIAN !</b></span></h4>
-                        <dl>
-                            <dt>Mohon membaca informasi berikut sebelum Anda melakukan pendaftaran pendampingan pengisian SPT Tahunan 2019.</dt>
-                            <dd>1. Pendaftaran pendampingan pengisian SPT Tahunan Orang Pribadi Tahun 2019 ini hanya di peruntukan kepada Pekerja CV Karya Hidup Sentosa (bukan OS) yang memiliki NPWP.</dd>
-                            <dd>2. Pendaftaran pendampingan SPT akan dibuka mulai tanggal <b>31 Januari 2020 - 8 Februari 2020 (lebih dari tanggal tersebut maka tidak dibuatkan jadwal susulan).</b></dd>
-                            <dd>3. Untuk jadwal dan tempat pendampingan ditentukan oleh Kasie Perpajakan dengan mempertimbangkan kapasitas tempat pendampingan dan jumlah pendaftar. Jadwal dapat dilihat di <a href="http://quick.com">Quick.com</a> - <a href="{BaseUrl}PendampinganSPT/Daftar">Menu Pendampingan SPT</a> - <a href="#divPSPTDetailSchedule">Jadwal Pendampingan</a> <b>mulai tanggal 10 Februari 2020.</b></dd>
-                            <dd>4. Pendampingan akan diberikan selama jam kerja dengan perkiraan tanggal sebagai berikut:
-                                <ol type="a" style="margin-bottom: 0px;">
-                                    <li>Tuksono &nbsp;=&nbsp; Rabu - Kamis, 12-13 Februari 2020 (Pk 09.30 - 15.20 WIB)</li>
-                                    <li>Pusat &emsp;&nbsp; =&nbsp; Senin - Rabu, 17-19 Februari 2020 (Pk 08.00 - 15.20 WIB)</li>
+                        <p>Bersamaan dengan pemberitahuan ini, kami menginformasikan mengenai Kegiatan Pendampingan Pengisian SPT PPh Orang Pribadi Tahun 2020. Dengan mempertimbangkan hal-hal dibawah ini:</p>
+                        <ol>
+                            <li>Seperti yang kita semua ketahui, saat ini kita semua masih berada di masa Pandemi Covid-19, sehingga sebisa mungkin menghindari kerumunan.</li>
+                            <li>Adanya pembatasan interaksi antar pekerja (jarak minimal 2 meter) untuk mencegah penularan Covid-19.</li>
+                            <li>Pekerja CV KHS yang memiliki NPWP harus tetap melakukan pelaporan SPT Tahunan Orang Pribadi, namun masih ada pekerja yang belum dapat melakukan pelaporan secara mandiri.</li>
+                            <li>Harapan Unit Akuntansi setiap tahunnya memberikan pendampingan adalah mendorong pekerja usia muda untuk mandiri melakukan pelaporan SPT Tahunan Pribadi pada tahun berikutnya berbekal dari pengalaman pendampingan yang pernah diikuti.</li>
+                        </ol>
+                        <p>Berdasarkan pertimbangan tersebut diatas, maka Bagian Perpajakan akan <b>tetap mengadakan pendampingan</b> pelaporan SPT Tahunan Orang pribadi <b>dengan pembatasan peserta dan tetap menjalankan protokol pencegahan</b> berdasarkan arahan dari Tim Covid CV KHS.</p>
+                        <p>Oleh karena itu, mohon membaca informasi dan persyaratan berikut sebelum Bpk/Ibu melakukan pendaftaran pendampingan pengisian SPT Tahunan 2020.</p>
+                        <ol>
+                            <li>
+                                Pendaftaran pendampingan pengisian SPT Tahunan Orang Pribadi Tahun 2020 ini hanya diperuntukan kepada: 
+                                <ol type="a">
+                                    <li>Pekerja <b>Non Staff CV Karya Hidup Sentosa</b> (bukan OS) yang memiliki NPWP. </li>
+                                    <li>Pekerja CV Karya Hidup Sentosa Nonstaff yang memiliki nomor induk "A" dan berusia <b>diatas atau sama dengan 40 tahun</b>.</li>
                                 </ol>
-                            </dd>
-                            <dd>5. <b>Mohon Bpk/Ibu menyiapkan dokumen berikut ketika pendampingan:</b>
-                                <ol type="a" style="margin-bottom: 0px;">
-                                    <li>Bukti Potong A1 Th 2019 (Bukti Potong dari CV KHS)</li>
-                                    <li>Alamat email, password email, password djp online yang pernah di daftarkan</li>
-                                    <li>EFIN (bagi Bpk/Ibu yang lupa password djp online-nya)</li>
-                                    <li>Handphone</li>
-                                    <li>FC KK (untuk menginput data tanggungan)</li>
-                                    <li>Menyiapkan data harta dan hutang tahun 2019</li>
+                            </li>
+                            <li>Pendaftaran pendampingan SPT akan dibuka mulai hari <b>Rabu, 24 Februari 2021 sampai Rabu, 3 Maret 2021</b>.</li>
+                            <li>Untuk jadwal dan tempat pendampingan ditentukan oleh Kasie Perpajakan dengan mempertimbangkan kapasitas tempat pendampingan dan jumlah pendaftar. Jadwal dapat dilihat di <b><a class="btnPSPTSchedule" href="#">quick.com - menu Pendampingan SPT - Jadwal Pendampingan</a> mulai tanggal 4 Maret 2021</b>.</li>
+                            <li>
+                                Pendampingan akan diberikan selama jam kerja dengan perkiraan tanggal sebagai berikut:
+                                <ol type="a">
+                                    <li>Tuksono	&nbsp; : Selasa - Rabu, 9 - 10 Maret 2021 (Pk 09.30 - 15.20 WIB).</li>
+                                    <li>Pusat &nbsp; &nbsp; &nbsp; &nbsp; : Selasa - Rabu, 16 - 17 Maret 2021 (Pk 08.00 - 15.20 WIB).</li>
                                 </ol>
-                            </dd>
-                        </dl>
+                                Per Sesi diisi 6 orang peserta pendampingan.
+                            </li>
+                            <li>
+                                Dokumen yang harus disiapkan dan dibawa Bpk/Ibu ketika pendampingan :
+                                <ol type="a">
+                                    <li>Bukti Potong A1 Th 2020 (Bukti Potong dari CV KHS).</li>
+                                    <li>Form Pendampingan yang telah diisi (<b><a download href="{BaseUrl}/assets/upload/PendampinganSPT/FORM UNTUK PENDAMPINGAN.pdf">download di sini</a></b>).</li>
+                                    <li>Handphone pribadi.</li>
+                                    <li>Membawa alat tulis sendiri (bolpoin), tim pendamping tidak menyediakan alat tulis.</li>
+                                </ol>
+                            </li>
+                            <li>
+                                Protokol yang harus dijalani Bpk/Ibu saat melakukan pendampingan :
+                                <ol type="a">
+                                    <li>Memakai masker saat berada di area pendampingan.</li>
+                                    <li>Mencuci tangan atau menggunakan handsanitizer saat memasuki dan keluar area pendampingan.</li>
+                                    <li>Menempati tempat duduk yang telah di sediakan, tidak boleh digeser atau dipindah.</li>
+                                    <li>Apabila kursi tunggu sudah penuh, tidak diperkenankan untuk menunggu di area pendampingan (Bpk/Ibu wajib hadir sesuai jam yang telah di berikan).</li>
+                                    <li>Langsung kembali ke lokasi kerja apabila sudah selesai proses pendampingannya.</li>
+                                </ol>
+                            </li>
+                        </ol>
                     </div>
+                    <hr>
                     <div class="divPSPTRegisterFormField">
                         <div class="form-group">
                             <label for="txtPSPTIdentityNumber" class="col-sm-2 control-label">No. Induk</label>

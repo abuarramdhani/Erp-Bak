@@ -587,9 +587,10 @@ $((_) => {
       });
     });
 
-  /*
-    | DRY *
-    */
+  $('.btnPSPTSchedule').click((e) => {
+    e.preventDefault();
+    swalPSPTToastrAlert('warning', 'Jadwal belum dapat diakses');
+  });
 });
 $("#txtPSPTIdentityNumber").on("keyup", function () {
   var val = $(this).val().split("");
