@@ -51,8 +51,21 @@ class C_Daftar extends CI_Controller
                 'status' => 'already available',
                 'registered_number' => $data[0]['nomor_pendaftaran']
             ]));
-        } else {
-            echo json_encode($this->M_daftar->insertRegisteredUser($user_data));
+        } else {    
+            $location = $user_data['lokasi_kerja'] === 'PUSAT' ? 'PST' : 'TKS';
+            $unique_number = sprintf('%03d', $this->M_daftar->selectNextRegisterNumberSeq());
+            $registered_number = "$location-21-$unique_number";
+
+            $insert_data = array_merge($user_data, [
+                'nomor_pendaftaran' => $registered_number,
+            ]);
+
+            $this->M_daftar->insertRegisteredUser($insert_data);
+
+            echo json_encode([
+                'status'            => 'Success',
+                'registered_number' => $registered_number
+            ]);
         }
     }
 }
