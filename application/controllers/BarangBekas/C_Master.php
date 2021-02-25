@@ -89,13 +89,25 @@ class C_Master extends CI_Controller
 
     public function SubInv($value='')
     {
-      $data = $this->M_master->SubInv($this->input->post('io'));
-      $tampung[] = '<option value="">Select..</option>';
-      foreach ($data as $key => $value) {
-        $tampung[] = '<option value="'.$value['SUBINV'].' - '.$value['ORGANIZATION_ID'].'">'.$value['SUBINV'].' - '.$value['DESCRIPTION'].'</option>';
+      $check_io = $this->M_master->checkSubInv($this->input->post('io'));
+      // echo "<pre>";print_r($check_io);die;
+      if (!empty($check_io[0]['OPEN_FLAG'])) {
+        if ($check_io[0]['OPEN_FLAG'] === 'Y') {
+          $data = $this->M_master->SubInv($this->input->post('io'));
+          $tampung[] = '<option value="">Select..</option>';
+          foreach ($data as $key => $value) {
+            $tampung[] = '<option value="'.$value['SUBINV'].' - '.$value['ORGANIZATION_ID'].'">'.$value['SUBINV'].' - '.$value['DESCRIPTION'].'</option>';
+          }
+          if (empty($tampung)) $tampung = [];
+          echo json_encode(implode('', $tampung));
+        }else {
+          echo json_encode(0);
+        }
+      }else {
+        echo json_encode(0);
       }
-      if (empty($tampung)) $tampung = [];
-      echo json_encode(implode('', $tampung));
+
+
     }
 
     public function submit_pbbs($value='')

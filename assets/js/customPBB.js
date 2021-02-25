@@ -120,8 +120,13 @@ $('.pbb_io').on('change', function() {
       toastPBBLoading('Sedang Mengambil SubInv..');
     },
     success: function(result) {
-      toastPBB('success', 'Selesai..');
-      $('.pbb_subinv').html(result);
+      if (result != 0) {
+        toastPBB('success', 'Selesai..');
+        $('.pbb_subinv').html(result);
+      }else {
+        swalPBB('warning', 'IO belum Open Period');
+        $('.pbb_subinv').html('');
+      }
     },
     error: function(XMLHttpRequest, textStatus, errorThrown) {
     swalPBB('error', 'Koneksi Terputus...')

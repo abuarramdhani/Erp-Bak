@@ -76,6 +76,7 @@ class M_master extends CI_Model
 
     public function item_pbbns($d)
     {
+      // ga perlu chek period karna di default 102 101
       $sql = "SELECT msib.INVENTORY_ITEM_ID, msib.segment1, msib.description, msib.primary_uom_code, msib.organization_id
               FROM mtl_system_items_b msib
              WHERE msib.organization_id IN (101, 102)
@@ -92,6 +93,14 @@ class M_master extends CI_Model
       return $this->oracle->query("SELECT mp.ORGANIZATION_ID, mp.ORGANIZATION_CODE
                                    FROM mtl_parameters mp
                                    order by 1")->result_array();
+    }
+
+    public function checkSubInv($io)
+    {
+      return $this->oracle->query("SELECT oap.OPEN_FLAG
+                                   from org_acct_periods oap
+                                   where oap.organization_id = $io
+                                   and oap.period_name = to_char (sysdate,'Mon-YY')")->result_array();
     }
 
     public function SubInv($io)
