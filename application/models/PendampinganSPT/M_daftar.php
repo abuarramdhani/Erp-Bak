@@ -13,7 +13,8 @@ class M_daftar extends CI_Model {
     public function selectUserInformation($id)
     {
         return $this->personalia
-            ->select('tpribadi.noind, tpribadi.nama, tpribadi.npwp, tseksi.seksi, tnoind.fs_ket')            
+            ->select('tpribadi.noind, tpribadi.nama, tpribadi.npwp, tseksi.seksi, tnoind.fs_ket')
+            ->select("EXTRACT(YEAR FROM AGE('2021/01/01'::DATE, tpribadi.tgllahir)) AS umur", false)
             ->where('tpribadi.noind', $id)
             ->from('hrd_khs.tpribadi')
             ->join('hrd_khs.tseksi', 'tseksi.kodesie = tpribadi.kodesie')
