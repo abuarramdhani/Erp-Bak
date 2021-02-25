@@ -188,14 +188,23 @@ $((_) => {
         })
           .done((resp) => {
             if (resp.length != 0) {
-              swalPSPTToastrAlert("success", "Berhasil mendapatkan data.");
-              setPSPTRegisterFieldValue(
-                null,
-                resp[0].nama.trim(),
-                resp[0].fs_ket.trim(),
-                resp[0].seksi.trim(),
-                resp[0].npwp.trim()
-              );
+              if (resp[0].umur >= 40) {
+                swalPSPTToastrAlert("success", "Berhasil mendapatkan data.");
+                setPSPTRegisterFieldValue(
+                  null,
+                  resp[0].nama.trim(),
+                  resp[0].fs_ket.trim(),
+                  resp[0].seksi.trim(),
+                  resp[0].npwp.trim()
+                );
+              } else {
+                Swal.fire({
+                  type: "error",
+                  title: "Hanya usia 40 tahun atau lebih (per 1 Januari 2021) yang bisa mendaftar!",
+                  customClass: "swal-font-small",
+                });
+                setPSPTRegisterFieldValue();
+              }
             } else {
               tooltipPSPTValidation(
                 "#txtPSPTIdentityNumber",
@@ -598,6 +607,7 @@ $("#txtPSPTIdentityNumber").on("keyup", function () {
     Swal.fire({
       type: "error",
       title: "Hanya nomor induk dengan huruf depan A yang bisa mendaftar !",
+      customClass: "swal-font-small",
     }).then(() => {
       $("#txtPSPTIdentityNumber").val("");
     });
@@ -610,6 +620,7 @@ $("#txtPSPTIdentityNumber").on("change", function () {
     Swal.fire({
       type: "error",
       title: "Hanya nomor induk dengan huruf depan A yang bisa mendaftar !",
+      customClass: "swal-font-small",
     }).then(() => {
       $("#txtPSPTIdentityNumber").val("");
     });
