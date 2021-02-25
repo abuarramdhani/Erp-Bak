@@ -546,4 +546,11 @@ class M_pesangon extends CI_Model {
 	 		$query 	=	$this->personalia->query($cetak);
 			return $query->result_array();
         }
+
+        function getTemplateSurat($jenis){
+        	$sql = "select *
+        		from \"Surat\".tisi_surat
+        		where jenis_surat = ?";
+        	return $this->personalia->query($sql,array($jenis))->row()->isi_surat;
+        }
 };

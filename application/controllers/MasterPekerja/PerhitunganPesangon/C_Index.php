@@ -431,19 +431,37 @@ class C_Index extends CI_Controller {
 
  			 $pdf = $this->pdf->load();
  			 $pdf = new mPDF('P','A4',0,'',10,10,10,10,0,0);
+ 			 $date = date('Y-m-d H:i:s');
 			 if($alasan == "PUTUS HUBUNGAN KERJA KARENA USIA LANJUT"){
-				 $filename = 'Perjanjian Bersama Usia Lanjut.pdf'.$date;
-				 $html = $this->load->view('MasterPekerja/PerhitunganPesangon/Perjanjian/V_lansia', $data, true);
+				 $filename = 'Perjanjian Bersama Usia Lanjut '.$date.'.pdf';
+				 $html = $this->M_pesangon->getTemplateSurat('PESANGON - PERJANJIAN BERSAMA USIA LANJUT');
 			 }elseif($alasan == 'PUTUS HUBUNGAN KERJA KARENA PENSIUN DIPERCEPAT'){
-				 $filename = 'Perjanjian Bersama Usia Lanjut Dipercepat.pdf'.$date;
-				 $html = $this->load->view('MasterPekerja/PerhitunganPesangon/Perjanjian/V_lansia_express', $data, true);
+				 $filename = 'Perjanjian Bersama Usia Lanjut Dipercepat '.$date.'.pdf';
+				 $html = $this->M_pesangon->getTemplateSurat('PESANGON - PERJANJIAN BERSAMA USIA LANJUT DIPERCEPAT');
 			 }elseif($alasan == 'PUTUS HUBUNGAN KERJA KARENA NON USIA LANJUT'){
-				 $filename = 'Perjanjian Bersama Non Usia Lanjut.pdf'.$date;
-				 $html = $this->load->view('MasterPekerja/PerhitunganPesangon/Perjanjian/V_non_lansia', $data, true);
+				 $filename = 'Perjanjian Bersama Non Usia Lanjut '.$date.'.pdf';
+				 $html = $this->M_pesangon->getTemplateSurat('PESANGON - PERJANJIAN BERSAMA NON USIA LANJUT');
 			 }else{
-			 	$filename = 'Perjanjian Bersama meninggal dunia.pdf'.$date;
-				 $html = $this->load->view('MasterPekerja/PerhitunganPesangon/Perjanjian/V_meninggal_dunia', $data, true);
+			 	$filename = 'Perjanjian Bersama meninggal dunia '.$date.'.pdf';
+				 $html = $this->M_pesangon->getTemplateSurat('PESANGON - PERJANJIAN BERSAMA MENINGGAL DUNIA');
 			 }
+			 $alamat = ucwords(strtolower($data['pekerjaPHK'][0]['alamat'])).', '.ucwords(strtolower($data['pekerjaPHK'][0]['desa'])).', '.ucwords(strtolower($data['pekerjaPHK'][0]['kec'])).', '.ucwords(strtolower($data['pekerjaPHK'][0]['kab'])).', '.$data['provinsi'];
+			 $html = str_replace("[nama_pekerja]", ucwords(strtolower($data['pekerjaPHK'][0]['nama'])), $html);
+			 $html = str_replace("[noind_pekerja]", $data['pekerjaPHK'][0]['noind'], $html);
+			 $html = str_replace("[seksi_pekerja]", ucwords(strtolower($data['pekerjaPHK'][0]['seksi'])), $html);
+			 $html = str_replace("[unit_pekerja]", ucwords(strtolower($data['pekerjaPHK'][0]['unit'])), $html);
+			 $html = str_replace("[dept_pekerja]", ucwords(strtolower($data['pekerjaPHK'][0]['dept'])), $html);
+			 $html = str_replace("[hari]", $data['hari'], $html);
+			 $html = str_replace("[tanggal]", date('d'), $html);
+			 $html = str_replace("[bulan]", $data['month'], $html);
+			 $html = str_replace("[tahun]", date('Y'), $html);
+			 $html = str_replace("[nama_wakilperusahaan]", ucwords(strtolower($data['personalia'])), $html);
+			 $html = str_replace("[nama_wakilserikatkerja]", ucwords(strtolower($data['spsi'])), $html);
+			 $html = str_replace("[nama_wakilseksi1]", ucwords(strtolower($data['saksi1'])), $html);
+			 $html = str_replace("[nama_wakilseksi2]", ucwords(strtolower($data['saksi2'])), $html);
+			 $html = str_replace("[panggilan_pekerja]", $data['jenis'], $html);
+			 $html = str_replace("[alamat_pekerja]", $alamat, $html);
+			 $html = str_replace("[tanggal_akhir_hubungan_kerja]", $data['tgl_keluar']." ".$data['bln_keluar']." ".$data['thn_keluar'], $html);
 
  			 $stylesheet1 = file_get_contents(base_url('assets/plugins/bootstrap/3.3.7/css/bootstrap.css'));
  			 $pdf->WriteHTML($stylesheet1,1);
