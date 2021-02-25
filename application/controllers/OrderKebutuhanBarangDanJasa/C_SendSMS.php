@@ -203,7 +203,7 @@ class C_SendSMS extends CI_Controller
         } else {
             $pesan = "Selamat Pagi,\rAnda masih memiliki ".$judgedOrder." order Urgent yang belum di approve pada aplikasi PURCHASING-OKEBAJA. Silahkan buka erp.quick.com melalui jaringan CV.KHS untuk approve order.\r-- Dikirim oleh ERP Okebaja (No-Reply) --";
             $pesan = rawurlencode($pesan);
-            $url   = 'http://192.168.168.122:80/sendsms?username=ict&password=quick1953&phonenumber=08112669449&message='.$pesan.'&[port=gsm-1.2&][report=1&][timeout=20]';
+            $url   = 'http://192.168.168.122:80/sendsms?username=ict&password=quick1953&phonenumber=08112856996&message='.$pesan.'&[port=gsm-1.2&][report=1&][timeout=20]';
             // print_r($url);
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);

@@ -2407,6 +2407,36 @@ $(document).ready(function () {
         $.ajax({
             type: 'POST',
             dataType: 'HTML',
+            url: baseurl + 'OrderKebutuhanBarangDanJasa/Requisition/ListData',
+            data: {
+                'filter': filter
+            }
+        }).done(response => {
+            tableOKBPengorder.destroy();
+            $('.tblOKBOrderListPengorder').find('tbody').html(response);
+            tableOKBPengorder = $('.tblOKBOrderListPengorder').DataTable({
+                scrollY: "370px",
+                scrollX: true,
+                scrollCollapse: true,
+                fixedColumns: {
+                    leftColumns: 5
+                },
+                columnDefs: [
+                    { width: 196, targets: 8 },
+                    { width: 150, targets: 10 }
+                ]
+            });
+        })
+    })
+
+    $('.selectOKBLOVListDataAdmin').select2({
+        placeholder: "Filter List Data",
+    }).on('select2:select', () => {
+        let filter = $('.selectOKBLOVListDataAdmin').val();
+        console.log(filter);
+        $.ajax({
+            type: 'POST',
+            dataType: 'HTML',
             url: baseurl + 'OrderKebutuhanBarangDanJasa/Requisition/ListDataAdmin',
             data: {
                 'filter': filter
