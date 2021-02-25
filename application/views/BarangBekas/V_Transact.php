@@ -114,8 +114,10 @@
                         <td><b>Item</b> </td>
                         <td>:</td>
                         <td>
+                          <!-- untuk trial aja -->
                           <select class="form-control slc_pbb" id="pbbtt_item" name="" style="width:350px">
                             <option value="">Select..</option>
+                            <option value="15758">LBL1AA0100XX - AFVAL SPHC 10 MM</option>
                             <?php foreach ($item as $key => $value): ?>
                               <option value="<?php echo $value['INVENTORY_ITEM_ID'] ?>"><?php echo $value['SEGMENT1'] ?> -  <?php echo $value['DESCRIPTION'] ?></option>
                             <?php endforeach; ?>
