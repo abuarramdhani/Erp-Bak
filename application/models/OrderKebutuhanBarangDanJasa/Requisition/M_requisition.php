@@ -171,7 +171,7 @@ class M_requisition extends CI_Model
     }
 
     //kasie
-    public function getListDataOrder2($noind)
+    public function getListDataOrder2($noind, $where)
     {
         $oracle = $this->load->database('oracle', true);
         $query = $oracle->query("SELECT DISTINCT
@@ -192,6 +192,7 @@ class M_requisition extends CI_Model
             AND ooh.INVENTORY_ITEM_ID = msib.INVENTORY_ITEM_ID
             AND ooh.ORDER_STATUS_ID <> 5
             AND ppf.NATIONAL_IDENTIFIER = '$noind'
+            $where
             ORDER BY ooh.ORDER_ID DESC
             ");
         // $query = $oracle->query("SELECT

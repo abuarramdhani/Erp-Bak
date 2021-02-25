@@ -86,6 +86,24 @@
                                     <input class="form-control" id="txtOKBSectionOrderRequestor" name="txtOKBSectionOrderRequestor" value="<?php echo $pengorder[0]['section_name']?>" readonly>
                                 </div>
                             </div>
+                        </div> <br>
+
+                        <div class="form-group">
+                            <label for="selectOKBLOVListData" class="col-sm-2 control-label" style="font-weight:normal">Filter List Data</label>
+                            <div class="col-sm-3">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i style="width:15px;" class="fa fa-filter"></i></span>
+                                    <select class="form-control select2 selectOKBLOVListData" id="selectOKBLOVListData" name="selectOKBLOVListData">
+                                        <option value=""></option>
+                                        <option value="wipapprove">WIP Approve</option>
+                                        <option value="wipreleasepuller">WIP Release Puller</option>
+                                        <option value="fullapprove">Full Approve</option>
+                                        <option value="rejectbypembelian">Reject by Pembelian</option>
+                                        <option value="rejectbyatasan">Reject by Atasan/Pengelola</option>
+                                        <option value="showall">Show All</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div> <br> <br>
 
                         <div class="box-body table-responsive no-padding">

@@ -458,12 +458,35 @@ class C_Requisition extends CI_Controller {
 		
 		$data['pengorder'] = $this->M_requisition->getPengorder($noind);
 
-		$data['listOrder'] = $this->M_requisition->getListDataOrder2($noind);
+		$where = 'AND ooh.order_status_id = ooh.order_status_id';
+		
+		if(isset($_POST['filter'])){
+			$filter = $this->input->post('filter');
+			if($filter == 'wipapprove'){
+				$where = 'AND ooh.order_status_id = 2';
+			} else if($filter == 'wipreleasepuller'){
+				$where = 'AND ooh.order_status_id = 3';
+			} else if($filter == 'fullapprove'){
+				$where = 'AND ooh.order_status_id = 7';
+			} else if($filter == 'rejectbypembelian'){
+				$where = 'AND ooh.order_status_id = 8';
+			} else if($filter == 'rejectbyatasan'){
+				$where = 'AND ooh.order_status_id = 4';
+			} else {
+				$where = 'AND ooh.order_status_id = ooh.order_status_id';
+			}
 
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
-        $this->load->view('OrderKebutuhanBarangDanJasa/Requisition/V_Listdata',$data);
-        $this->load->view('V_Footer',$data);
+			$data['listOrder'] = $this->M_requisition->getListDataOrder2($noind, $where);
+			
+			$this->load->view('OrderKebutuhanBarangDanJasa/Requisition/V_TableListDataAdmin',$data);
+		} else {
+			$data['listOrder'] = $this->M_requisition->getListDataOrder2($noind, $where);
+
+			$this->load->view('V_Header',$data);
+			$this->load->view('V_Sidemenu',$data);
+        	$this->load->view('OrderKebutuhanBarangDanJasa/Requisition/V_Listdata',$data);
+        	$this->load->view('V_Footer',$data);
+		}
 	}
 
 	public function getDestination()
