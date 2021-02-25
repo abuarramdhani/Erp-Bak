@@ -5142,3 +5142,7 @@ $route['BarangBekas/pbbns/(:any)/(:any)/(:any)'] 	= 'BarangBekas/C_Master/$1/$2/
 $route['BarangBekas/transact/(:any)'] = 'BarangBekas/C_Master/$1';
 $route['BarangBekas/transact/(:any)/(:any)'] = 'BarangBekas/C_Master/$1/$2';
 $route['BarangBekas/transact/(:any)/(:any)/(:any)'] = 'BarangBekas/C_Master/$1/$2/$3';
+
+$route['MonitoringSPB'] = 'MonitoringSPB/C_Index';
+$route['MonitoringSPB/List'] = 'MonitoringSPB/C_Monspb';
+$route['MonitoringSPB/List/(:any)'] = 'MonitoringSPB/C_Monspb/$1';
