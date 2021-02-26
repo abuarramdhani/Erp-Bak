@@ -1,5 +1,10 @@
+<div class="alert bg-success alert-dismissible pbb_hide_001">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+    <p><i class="icon fa fa-warning"></i>Sekilas Info! Klik berat timbang di kolom <b>Terima</b> untuk <b>me-reset</b> berat timbang.</p>
+</div>
+
 <div class="table-responsive">
-    <strong style="font-size:20px;" class="pbbt_type">Type : <?php echo $get[0]['TYPE_DOCUMENT'] ?></strong>
+    <strong style="font-size:20px;color:#3c8dbc" class="pbbt_type">Tipe Dokumen : <?php echo $get[0]['TYPE_DOCUMENT'] ?></strong>
     <table class="table table-bordered table_pbbt mt-3" style="width:100%">
       <thead class="bg-primary">
         <tr>
@@ -29,7 +34,7 @@
                <?php if ($value['NO_URUT_TIMBANG'] != 999){ ?>
                  <button type="button" class="btn btn-success btn-sm" onclick="pbbTimbang(<?php echo $value['ID_PBB'] ?>)" name="button" data-toggle="modal" data-target="#modal-pbb-transact-ambil-berat"> <i class="fa fa-download"></i> <b>Timbang</b></button>
                <?php }else{ ?>
-                 <b><?php echo $value['BERAT_TIMBANG'] ?> KG</b>
+                 <b onclick="pbbResetTimbang(<?php echo $value['ID_PBB'] ?>)"><?php echo $value['BERAT_TIMBANG'] ?> KG</b>
                <?php } ?>
             </td>
           </tr>
@@ -94,6 +99,9 @@
       $('#pbbt_locator').val('');
     }
 
+    // setTimeout(function () {
+    //   $('.pbb_hide_001').hide();
+    // }, 5500);
   })
 
   function pbbTimbang(id_primary) {
@@ -119,7 +127,7 @@
                                         <label for="">Berat dari Timbangan</label>
                                         <div class="row">
                                           <div class="col-md-11">
-                                            <input type="number" class="form-control" name="berat_timbang" value="">
+                                            <input type="text" class="form-control" name="berat_timbang" required value="">
                                           </div>
                                           <div class="col-md-1" style="padding-top:6px;padding-left:1px">
                                             <b>KG</b>
@@ -130,7 +138,7 @@
           $('.pbb-status-timbang').html(`<i><b>*Belum ada data timbangan sebelumnya</b></i>`);
         }else {
           $('.btn_selesai_timbang').removeAttr('disabled');
-          $('.pbb-status-timbang').html(`<i><b>*Total berat dari timbang ke ${result.NO_URUT_TIMBANG} = <span class="text-success"> ${result.BERAT_TIMBANG} KG</span> </b></i>`);
+          $('.pbb-status-timbang').html(`<i><b>*Total berat dari hasil timbang ke ${result.NO_URUT_TIMBANG} = <span class="text-success"> ${result.BERAT_TIMBANG} KG</span> </b></i>`);
         }
       },
       error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -171,6 +179,47 @@
     });
   }));
 
+  function pbbResetTimbang(id) {
+    Swal.fire({
+      title: 'Yakin ingin me-reset berat timbang?',
+      text: "Anda tidak akan dapat mengembalikan ini!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Ya, saya yakin!'
+    }).then((result) => {
+      if (result.value) {
+        $.ajax({
+          url: baseurl + 'BarangBekas/transact/updateBeratTimbang',
+          type: 'POST',
+          dataType: 'JSON',
+          cache:false,
+          data: {
+            ID_PBB : id,
+            NO_URUT_TIMBANG : '',
+            BERAT_TIMBANG : ''
+          },
+          beforeSend: function() {
+            toastPBBLoading('Sedang mengupdate data...');
+          },
+          success: function(result) {
+            if (result == 1) {
+              toastPBB('success', 'Berat timbang berhasil di-reset.');
+              $(`.kolom_selesai_timbang_${id}`).html(`<button type="button" class="btn btn-success btn-sm" onclick="pbbTimbang(${id})" name="button" data-toggle="modal" data-target="#modal-pbb-transact-ambil-berat"> <i class="fa fa-download"></i> <b>Timbang</b></button>`);
+            }else {
+              toastPBB('warning', 'Gagal Melakukan Update Data, Coba lagi..');
+            }
+          },
+          error: function(XMLHttpRequest, textStatus, errorThrown) {
+            swalPBB('error', 'Koneksi Terputus...');
+            console.error();
+          }
+        })
+      }
+    })
+  }
+
   function pbb_selesai_timbang(id) {
     Swal.fire({
       title: 'Apakah anda yakin?',
@@ -196,8 +245,8 @@
           },
           success: function(result) {
             if (result == 1) {
-              toastPBB('success', 'Data Berhasil Dihapus.');
-              $(`.kolom_selesai_timbang_${id}`).html(`<b>${$('input[name="berat_timbang_before"]').val()} KG</b>`);
+              toastPBB('success', 'Berat timbang berhasil disimpan.');
+              $(`.kolom_selesai_timbang_${id}`).html(`<b onclick="pbbResetTimbang(${id})">${$('input[name="berat_timbang_before"]').val()} KG</b>`);
               $('#modal-pbb-transact-ambil-berat').modal('toggle');
             }else {
               toastPBB('warning', 'Gagal Melakukan Update Data, Coba lagi..');
