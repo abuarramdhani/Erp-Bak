@@ -877,7 +877,7 @@ class C_Master extends CI_Controller
       foreach ($this->input->post('fp_id_proses') as $key => $value) {
         if (!empty($value)) {
          $data = [
-           'opr_code' => $this->input->post('opetation_code')[$key],
+           'opr_code' => strtoupper($this->input->post('opetation_code')[$key]),
            'opr_desc' => $this->input->post('operation_desc')[$key],
            'inv_item_flag' => $this->input->post('flag')[$key],
            'make_buy' => $this->input->post('make_buy')[$key],
@@ -901,7 +901,7 @@ class C_Master extends CI_Controller
          $this->db->where('id', $value)->update('md.md_operation', $data);
        }else {
          $data = [
-           'opr_code' => $this->input->post('opetation_code')[$key],
+           'opr_code' => strtoupper($this->input->post('opetation_code')[$key]),
            'opr_desc' => $this->input->post('operation_desc')[$key],
            'inv_item_flag' => $this->input->post('flag')[$key],
            'make_buy' => $this->input->post('make_buy')[$key],
@@ -928,7 +928,7 @@ class C_Master extends CI_Controller
          $this->db->insert('md.md_operation', $data);
        }
       }
-      
+
       if ($this->db->affected_rows()) {
          echo 1;
       }else {
