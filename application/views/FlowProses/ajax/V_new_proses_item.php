@@ -1,7 +1,7 @@
 <tr onclick="fp_check_click()" row-num="<?php echo $next_row ?>" row-fp-pb="" draggable="true">
   <td style="width:5%" class="drag_flow_proses"><center><b class="fa fa-sort"></b> <span class="fp_seq"><?php echo $next_row ?></span></center></td>
   <td style="width:5%"><button type="button" class="btn btn-danger btn-sm" onclick="fp_minus_proses(<?php echo $next_row ?>)" name="button"> <i class="fa fa-minus"></i> </button></td>
-  <td style=""><input required type="text" name="opetation_code[]" style="width:165px;" value="" class="form-control" placeholder="Operation Code"></td>
+  <td style=""><input required type="text" name="opetation_code[]" style="width:165px;text-transform:uppercase" value="" class="form-control" placeholder="Operation Code"></td>
   <td style=""><input required type="text" name="operation_desc[]" value="" class="form-control" placeholder="Operation Description"></td>
   <td style="background:#1bc482;height:auto">
     Active
@@ -290,7 +290,7 @@
        async: true,
        dataType: 'JSON',
        data: {
-         code: $(this).val(),
+         code: $(this).val().toUpperCase(),
        },
        beforeSend: function () {
          toastFPLoading('Sedang mengecek item operation code..')
