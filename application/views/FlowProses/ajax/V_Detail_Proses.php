@@ -12,7 +12,7 @@
   </div>
 </div>
 
-<div class="alert alert-success alert-dismissible">
+<div class="alert alert-success alert-dismissible fp_hide_001">
     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
     <h4><i class="icon fa fa-warning"></i> Info!</h4>
     Klik kolom Status untuk setting Active/Inactive <b>proses</b>.
@@ -290,6 +290,9 @@
 // end newest 2021
 $(document).ready(function() {
   $('.select2FP1').select2();
+  setTimeout(function () {
+    $('.fp_hide_001').hide();
+  }, 2500);
   // $('input').on('drag', function(event) {
   //   event.preventDefault();
   // });
@@ -384,7 +387,7 @@ $(document).ready(function() {
       let val = $(this).val();
       // console.log(val);
       if (val == 1) {
-        $(v).find('.tool_measurement_check').html(`<select class="form-control name="tool_measurement[]" select2FP_Tool_2" required  id="tool_measurement" style="width:200px;"></select>`);
+        $(v).find('.tool_measurement_check').html(`<select class="form-control select2FP_Tool_2" name="tool_measurement[]" required  id="tool_measurement" style="width:200px;"></select>`);
       }else {
         $(v).find('.tool_measurement_check').html(`<input type="" class="form-control" name="tool_measurement[]" readonly id="tool_measurement" style="width:200px;" value="">`);
       }
