@@ -1,4 +1,4 @@
-<i>*Warna<b style="color:#c1cb00"> Kuning</b> = File Gambar Kerja tidak terbaca</i>
+<i>*Warna<b style="color:#c1cb00"> Kuning</b> = File Gambar Kerja blm di upload</i>
 <br>
 <div class="table-responsive mt-4">
   <table class="table table-striped table-bordered table-hover text-left datatable-memo-fp-2021" style="font-size:11px;">

@@ -715,7 +715,7 @@ class C_Master extends CI_Controller
 
         $data['get'] = $this->db->get('md.md_operation')->result_array();
         $data['product'] = $this->M_fp->getProduct();
-        $data['proses'] = $this->db->order_by('operation_std', 'asc')->get('md.md_operation_std')->result_array();
+        // $data['proses'] = $this->db->order_by('operation_std', 'asc')->get('md.md_operation_std')->result_array();
 
         $this->load->view('V_Header', $data);
         $this->load->view('V_Sidemenu', $data);
@@ -764,6 +764,18 @@ class C_Master extends CI_Controller
       // echo "<pre>";print_r($data_filter);die;
     }
 
+    public function addrow($value='')
+    {
+      $data['destination'] = $this->input->post('destination');
+      $data['proses'] = $this->input->post('proses');
+      $data['machine_req'] = $this->input->post('machine_req');
+      $data['next_row'] = $this->input->post('next_row');
+      // echo "<pre>";
+      // print_r($data);
+      // die;
+      $this->load->view('FlowProses/ajax/V_new_proses_item', $data);
+    }
+
     public function add_adjuvant()
     {
       $data = $this->input->post('master');
@@ -809,7 +821,6 @@ class C_Master extends CI_Controller
     {
       // $type = $this->input->post('type');
       $product_id = $this->input->post('product_id');
-      // $data['get'] = $this->M_fp->getComp($type, $product_id);
       $data['get'] = $this->M_fp->getComp($product_id);
       $data['status'] = $this->db->get('md.md_status')->result_array();
       $data['warning'] = $this->M_fp->getUnsetProses($product_id);
@@ -849,6 +860,79 @@ class C_Master extends CI_Controller
         $res['success'] = 0;
         $res['id'] = null;
         echo json_encode($res);
+      }
+    }
+
+    public function UpdateOperationComp($value='')
+    {
+      $id_siap_hapus = explode(' ', $this->input->post('fp_id_deteted'));
+      if (!empty($id_siap_hapus)) {
+        foreach ($id_siap_hapus as $key => $id) {
+          if (!empty($id)) {
+            $this->db->where('id', $id)->delete('md.md_operation');
+          }
+        }
+      }
+
+      foreach ($this->input->post('fp_id_proses') as $key => $value) {
+        if (!empty($value)) {
+         $data = [
+           'opr_code' => $this->input->post('opetation_code')[$key],
+           'opr_desc' => $this->input->post('operation_desc')[$key],
+           'inv_item_flag' => $this->input->post('flag')[$key],
+           'make_buy' => $this->input->post('make_buy')[$key],
+           'operation_process' => $this->input->post('operation_proses')[$key],
+           'dtl_process' => $this->input->post('detail_proses')[$key],
+           'jenis_proses' => $this->input->post('jenis_proses')[$key],
+           'nomor_jenis_proses' => $this->input->post('nomor_jenis_proses')[$key],
+           'machine_req' => $this->input->post('machine_req')[$key],
+           'destination' => $this->input->post('destination')[$key],
+           'resource' => $this->input->post('resource')[$key],
+           'machine_num' => $this->input->post('machine_num')[$key],
+           'qty_machine' => $this->input->post('qty_machine')[$key],
+           'inspectool_id' => $this->input->post('inspectool')[$key],
+           'tool_measurement' => $this->input->post('tool_measurement')[$key],
+           'tool_id' => $this->input->post('tool')[$key],
+           'tool_exiting' => $this->input->post('tool_exiting')[$key],
+           'product_id' => $this->input->post('product_id'),
+           'sequence' => $key + 1,
+           'created_by' => $this->session->employee
+         ];
+         $this->db->where('id', $value)->update('md.md_operation', $data);
+       }else {
+         $data = [
+           'opr_code' => $this->input->post('opetation_code')[$key],
+           'opr_desc' => $this->input->post('operation_desc')[$key],
+           'inv_item_flag' => $this->input->post('flag')[$key],
+           'make_buy' => $this->input->post('make_buy')[$key],
+           'operation_process' => $this->input->post('operation_proses')[$key],
+           'dtl_process' => $this->input->post('detail_proses')[$key],
+           'jenis_proses' => $this->input->post('jenis_proses')[$key],
+           'nomor_jenis_proses' => $this->input->post('nomor_jenis_proses')[$key],
+           'machine_req' => $this->input->post('machine_req')[$key],
+           'destination' => $this->input->post('destination')[$key],
+           'resource' => $this->input->post('resource')[$key],
+           'machine_num' => $this->input->post('machine_num')[$key],
+           'qty_machine' => $this->input->post('qty_machine')[$key],
+           'inspectool_id' => $this->input->post('inspectool')[$key],
+           'tool_measurement' => $this->input->post('tool_measurement')[$key],
+           'tool_id' => $this->input->post('tool')[$key],
+           'tool_exiting' => $this->input->post('tool_exiting')[$key],
+           'product_id' => $this->input->post('product_id'),
+           'sequence' => $key + 1,
+           'product_component_id' => $this->input->post('product_component_id'),
+           'status' => 'Y',
+           'product_type' => $this->input->post('product_type'),
+           'created_by' => $this->session->employee
+         ];
+         $this->db->insert('md.md_operation', $data);
+       }
+      }
+      
+      if ($this->db->affected_rows()) {
+         echo 1;
+      }else {
+         echo 0;
       }
     }
 
@@ -922,6 +1006,9 @@ class C_Master extends CI_Controller
                               ->order_by('mo.sequence', 'asc')
                               ->get('md.md_operation mo')
                               ->result_array();
+      $data['destination'] = $this->M_fp->getDestinasi('1');
+      $data['proses'] = $this->db->order_by('operation_std', 'asc')->get('md.md_operation_std')->result_array();
+      $data['machine_req'] = $this->M_fp->getFFVT('1');
       $this->load->view('FlowProses/ajax/V_Detail_Proses', $data);
 
     }

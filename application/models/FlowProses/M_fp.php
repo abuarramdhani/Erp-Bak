@@ -337,7 +337,7 @@ class M_fp extends CI_Model
                                   'J',
                                   'M',
                                   'P')
-                                  and UPPER(ffvt.DESCRIPTION) like '%$param%'")->result_array();
+                                  --and UPPER(ffvt.DESCRIPTION) like '%$param%'")->result_array();
     }
 
 
