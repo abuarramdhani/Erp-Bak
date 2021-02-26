@@ -152,6 +152,7 @@
                                                         }
                                                      ?>
                                             <td><button type="button" class="btn btn-info btn-sm btnOKBListOrderHistory"><?php echo $status; ?></button></td>
+                                            <td><button type="button" class="btn btn-danger btn-sm btnOKBRejectOrder" <?= $list['ORDER_STATUS_ID'] == '4' || $list['ORDER_STATUS_ID'] == '8' || $list['ORDER_STATUS_ID'] == '7' ? 'disabled' : '' ?>>Reject Order</button></td>
                                         </tr>
                                         <div class="modal fade mdlOKBListOrderHistory-<?php echo $list['ORDER_ID']; ?>" role="dialog" aria-labelledby="modalDelete" aria-hidden="true">
                                             <div class="modal-dialog">
