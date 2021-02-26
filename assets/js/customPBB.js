@@ -79,7 +79,8 @@ $(document).ready(function () {
       type: 'POST',
       dataType: 'JSON',
       data: {
-        subinv: val
+        subinv: val,
+        org_id: 102
       },
       cache:false,
       beforeSend: function() {
@@ -123,6 +124,8 @@ $('.pbb_io').on('change', function() {
       if (result != 0) {
         toastPBB('success', 'Selesai..');
         $('.pbb_subinv').html(result);
+        $('.pbb_subinv').val('').trigger('change');
+        $('.pbb_locator').html('-')
       }else {
         swalPBB('warning', 'IO belum Open Period');
         $('.pbb_subinv').html('');
@@ -278,6 +281,8 @@ $('#jumlah').on('input', function () {
 
 $('.pbb_subinv').on('change', function() {
 
+  if ($(this).val() != '') {
+
   $('.pbbs_table tbody tr').each((i,v)=>{
     console.log(v);
     if (i != 0) {
@@ -298,7 +303,8 @@ $('.pbb_subinv').on('change', function() {
       type: 'POST',
       dataType: 'JSON',
       data: {
-        subinv: val
+        subinv: val,
+        org_id: val_[1]
       },
       cache:false,
       beforeSend: function() {
@@ -356,6 +362,9 @@ $('.pbb_subinv').on('change', function() {
         }
       })
     })
+
+  }
+
 })
 
 const btnPBBS = () => {

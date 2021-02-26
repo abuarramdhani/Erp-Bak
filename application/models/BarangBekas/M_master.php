@@ -79,7 +79,8 @@ class M_master extends CI_Model
       // ga perlu chek period karna di default 102 101
       $sql = "SELECT msib.INVENTORY_ITEM_ID, msib.segment1, msib.description, msib.primary_uom_code, msib.organization_id
               FROM mtl_system_items_b msib
-             WHERE msib.organization_id IN (101, 102)
+              -- WHERE msib.organization_id IN (101, 102)
+              WHERE msib.organization_id = 81
                AND msib.inventory_item_status_code = 'Active'
                AND (msib.segment1 LIKE '%$d%'
                     OR msib.description LIKE '%$d%')
@@ -112,12 +113,12 @@ class M_master extends CI_Model
                                   ORDER BY msi.secondary_inventory_name")->result_array();
     }
 
-    public function locator($subinv)
+    public function locator($subinv, $org_id)
     {
       return $this->oracle->query("SELECT mil.inventory_location_id, mil.segment1 LOCATOR
                                    FROM mtl_item_locations mil
                                    WHERE mil.subinventory_code = '$subinv'
-                                   AND mil.organization_id IN (101, 102)
+                                   AND mil.organization_id = $org_id
                                    AND mil.disable_date IS NULL
                                    ORDER BY 1")->result_array();
     }

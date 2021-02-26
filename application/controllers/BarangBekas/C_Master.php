@@ -134,7 +134,7 @@ class C_Master extends CI_Controller
 
     public function locator($value='')
     {
-      $data = $this->M_master->locator($this->input->post('subinv'));
+      $data = $this->M_master->locator($this->input->post('subinv'), $this->input->post('org_id'));
       foreach ($data as $key => $value) {
         if (!empty($value['LOCATOR'])) {
           $s[] = '<option value="'.$value['INVENTORY_LOCATION_ID'].'">'.$value['LOCATOR'].'</option>';
