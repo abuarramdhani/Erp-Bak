@@ -80,7 +80,7 @@
     </thead>
     <tbody class="fp_sort" id="fp_comp_detail_proses" >
       <?php foreach ($get as $key => $value): ?>
-        <tr onclick="fp_check_click()" row-num="<?php echo $key+1 ?>" row-fp-pb="<?php echo $value['id'] ?>" draggable="true">
+        <tr onclick="fp_check_click()" row-num="<?php echo $key+1 ?>" row-fp-pb="<?php echo $value['id'] ?>">
           <td style="width:5%" class="drag_flow_proses"><center><b class="fa fa-sort"></b> <span class="fp_seq"><?php echo $key+1 ?></span></center></td>
           <td style="width:5%"> <button type="button" class="btn btn-danger btn-sm" onclick="fp_minus_proses(<?php echo $key+1 ?>)" name="button"> <i class="fa fa-minus"></i> </button> </td>
           <td style=""><input required type="text" name="opetation_code[]" style="width:165px;text-transform:uppercase" value="<?php echo $value['opr_code'] ?>" class="form-control" placeholder="Operation Code"></td>
@@ -222,7 +222,7 @@
 <br>
 <input type="hidden" id="txt_count_tr_proses_fp" value="<?php echo !empty($get) ? $key+1 : 0 ?>">
 
-<button type="submit" class="btn btn-success" style="border-radius:7px;" name="button"> <i class="fa fa-files"></i> <b>Update Operation</b> </button>
+<button type="submit" class="btn btn-success" style="border-radius:7px;" name="button"> <i class="fa fa-save"></i> &nbsp;<b>Update Operation</b> </button>
 <!-- <button type="button" class="btn btn-success fp_update_proses_component" data-toggle="modal" data-target="#modalfp1" onclick="fp_update_proses_component()" style="border-radius:7px;display:none;" name="button"> <i class="fa fa-pencil"></i> <b>Update Process</b> </button> -->
 <button type="button" class="btn btn-danger fp_del_proses" onclick="del_prosess_per_component()" style="border-radius:7px;display:none" name="button"> <i class="fa fa-trash"></i> <b>Delete</b> </button>
 <button type="button" class="btn btn-success fp_set_active_proses" onclick="fp_set_inactive_proses()" style="border-radius:7px;float:right;display:none" name="button"> <i class="fa fa-times"></i> <b id="txt_fp_stat">Set Inactive</b> </button>
@@ -650,10 +650,10 @@ function fp_pe_add_row() {
       let no = Number(n);
     $('.fp_tbl_penolong_edit tbody').append(`<tr row-id-edit="${no}">
                                   <td style="text-align:center;vertical-align:middle;width:5%">${no}</td>
-                                  <td style="width:70%">
-                                    <select class="form-control select2FP_Oracle_Second fp_bp_component_code_edit fp_get_uom_${no}" onchange="fp_isi_uom(${no})" style="width:100%" required>
+                                  <td><center>
+                                    <select class="form-control select2FP_Oracle_Second fp_bp_component_code_edit fp_get_uom_${no}" onchange="fp_isi_uom(${no})" style="width:550px" required>
                                       <option value="" selected>Component Code ...</option>
-                                    </select>
+                                    </select></center>
                                   </td>
                                   <td style="width:15%">
                                     <input type="number" placeholder="QTY" class="form-control fp_bp_qty_edit" value="">
@@ -792,10 +792,10 @@ function fp_pe_add_row() {
             result.forEach((v,i)=>{
               $('#edit_fp_pb').append(`<tr row-id-edit="${Number(i)+1}">
                                         <td style="text-align:center;vertical-align:middle;width:5%">${Number(i)+1}</td>
-                                        <td style="width:70%">
-                                          <select class="form-control select2FP_Oracle_Second fp_bp_component_code_edit fp_get_uom_${Number(i)+1}" onchange="fp_isi_uom(${Number(i)+1})" style="width:100%" required>
+                                        <td style="width:70%"><center>
+                                          <select class="form-control select2FP_Oracle_Second fp_bp_component_code_edit fp_get_uom_${Number(i)+1}" onchange="fp_isi_uom(${Number(i)+1})" style="width:550px" required>
                                             <option value="${v.component_code} - ${v.component_desc} - ${v.uom}" selected>${v.component_code} - ${v.component_desc}</option>
-                                          </select>
+                                          </select></center>
                                         </td>
                                         <td style="width:15%">
                                           <input type="hidden" class="fp_bp_id" value="${v.id}">
