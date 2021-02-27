@@ -3357,4 +3357,91 @@ class C_Index extends CI_Controller
 
 		return $data;
 	}
+	
+	public function getDetailSeksi()
+	{
+		$ks = $this->input->post('ks');
+		if (isset($ks) and !empty($ks)) {
+			$baru = '1999-01-01 01:10:10';
+			$cek_terbaru = $this->M_dtmasuk->cek_terbaru($ks);
+			if (!isset($cek_terbaru) || !empty($cek_terbaru)) {
+				$baru = $cek_terbaru[0]['tgl_approve_tim'];
+			}
+			$data = $this->M_dtmasuk->getListAprove($ks, $baru);
+			$getPekerja = $this->M_order->getPekerja($ks);
+			if (empty($getPekerja)) {
+				echo '<center><ul class="list-group"><li class="list-group-item">' . 'Kosong' . '</li></ul></center>';
+			} else {
+				echo '
+				<div class="table-responsive">
+				<table id="tbl_detailHitungOrderSeksi" class="table table-bordered table-hover table-striped">
+				<thead>
+					<tr>
+						<th>No</th>
+						<th>Noind</th>
+						<th>Nama</th>
+						<th>Pekerjaan</th>';
+				foreach ($data as $key => $value) {
+					echo '<th>' . $value['item'] . '</th>';
+				}
+
+				echo '</tr></thead>';
+				$i = 1;
+				foreach ($getPekerja as $key) {
+					echo '
+					<tbody>
+					<tr>
+						<td width="3%">' . $i . '</td>
+						<td width="5%">' . $key["noind"] . '</td>
+						<td width="10%">' . $key["nama"] . '</td>
+						<td width="10%">' . $key["pekerjaan"] . '</td>';
+					foreach ($data as $key2 => $val) {
+						$explode = explode(",", $val['kd_pekerjaan']);
+						$explode2 = explode(",", $val['jml_item']);
+						foreach ($explode as $key3 => $valkode) {
+							foreach ($explode2 as $key4 => $valjml) {
+								if ($valkode == $key['kdpekerjaan'] && $key3 == $key4) {
+									echo '<td>' . $valjml . '</td>';
+								}
+							}
+						}
+						if ($key['pekerjaan'] == 'STAFF') {
+							echo '<td>' . $val['jml_kebutuhan_staff'] . '</td>';
+						}
+					}
+					echo '</tr></tbody>';
+					$i++;
+				}
+				echo '<tfoot><tr>
+				<td> </td>			
+				<td> </td>			
+				<td> </td>			
+				<td>Jumlah</td>';
+				foreach ($data as $key => $val) {
+					$total = 0;
+					$b = 0;
+					$explode = explode(",", $val['kd_pekerjaan']);
+					$explode2 = explode(",", $val['jml_item']);
+					foreach ($getPekerja as $key) {
+						foreach ($explode as $key3 => $valkode) {
+							foreach ($explode2 as $key4 => $valjml) {
+								if ($valkode == $key['kdpekerjaan'] && $key3 == $key4) {
+									$total += $valjml;
+								}
+							}
+						}
+						if ($key['pekerjaan'] == 'STAFF') {
+							$b += $val['jml_kebutuhan_staff'];
+						}
+					}
+					$sum = $total + $b;
+					echo '<td>' . $sum . '</td>';
+				}
+				echo '</tr></tfoot></table>
+				</div>';
+			}
+		} else {
+			echo '<center><ul class="list-group"><li class="list-group-item">' . 'Kodesie tidak ditemukan' . '</li></ul></center>';
+		}
+	}
 }

@@ -7,6 +7,7 @@ class M_approver extends CI_Model
     {
         parent::__construct();
         $this->load->database();
+        $this->oracle = $this->load->database('oracle', true);
     }
 
     public function getListDataOrder()
@@ -576,24 +577,64 @@ class M_approver extends CI_Model
 
         return $query->result_array();
     }
-
-    public function getUnapprovedOrderCount($noind){
-        $oracle = $this->load->database('oracle', true);
-        $query  = $oracle->query("SELECT
-                                    COUNT(kooh.ORDER_ID) total
-                                 FROM
-                                    khs.khs_okbj_order_header kooh,
-                                    khs.khs_okbj_order_approval kooa,
-                                    per_people_f ppfa
-                                 WHERE 
-                                    kooh.ORDER_ID = kooa.ORDER_ID
-                                    AND kooh.APPROVE_LEVEL_POS < kooa.APPROVER_TYPE
-                                    AND kooa.APPROVER_TYPE <> 7
-                                    AND kooa.APPROVER_ID = ppfa.PERSON_ID
-                                    AND kooh.ORDER_STATUS_ID <> 4
-                                    AND ppfa.NATIONAL_IDENTIFIER = '$noind'
-                                ");
-        return $query->row_array();
+    
+    /**
+     * @param   string  ENUM $status 'SUSULAN', 'URGENT', 'NORMAL' or 'ALL'
+     * @return  int     Outstand order count
+     */
+    public function getUnapprovedOrderCount($no_induk, $status)
+    {
+        return (int) $this->oracle
+            ->query(
+                "SELECT
+                    APPS.KHS_OUTSTAND_OKBJ_APPROVER_TOT (?, ?) AS \"count\"
+                FROM
+                    DUAL",
+                [
+                    $no_induk,
+                    $status,
+                ]
+            )
+            ->row()
+            ->count;
     }
 
+    /**
+     * @param   string  ENUM $status 'SUSULAN', 'URGENT', 'NORMAL' or 'ALL'
+     * @return  int     Judged order count
+     */
+    public function getJudgedOrderCount($no_induk, $status)
+    {
+        return (int) $this->oracle
+            ->query(
+                "SELECT
+                    APPS.KHS_JUDGED_OKBJ_APPROVER_TOT (?, ?) AS \"count\"
+                FROM
+                    DUAL",
+                [
+                    $no_induk,
+                    $status,
+                ]
+            )
+            ->row()
+            ->count;
+    }
+
+    public function rejectOrderAfterApproved($note, $order_id, $approver_id)
+    {
+        $query = $this->oracle->query(
+            "UPDATE KHS.KHS_OKBJ_ORDER_APPROVAL SET NOTE = '$note', JUDGEMENT = 'R', JUDGEMENT_DATE = SYSDATE WHERE ORDER_ID = $order_id AND APPROVER_ID = $approver_id"
+        );
+        return $this->oracle->affected_rows();
+    }
+
+    public function updateOrderStatusID($order_id)
+    {
+        $query = $this->oracle->query(
+            "UPDATE KHS.KHS_OKBJ_ORDER_HEADER SET ORDER_STATUS_ID = 4 WHERE ORDER_ID = $order_id"
+        );
+        return $this->oracle->affected_rows();
+    }
+
+    
 }

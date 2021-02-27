@@ -122,13 +122,16 @@ class C_List extends CI_Controller {
 		$gsf 				= $this->input->post('gsf');
 
 		$status="";
+		$approver 			= trim($this->session->employee);
+		$noindukApprover	= $this->session->user;
+
 		if($validation==1){
 			$status = "Disetujui";
+			$data['approved_timestamp'] = date('Y-m-d H:i:s');
+			$data['approved_user'] = $noindukApprover." - ".$approver;
 		}else{
 			$status = "Tidak Disetujui";
 		}
-		$approver 			= trim($this->session->employee);
-		$noindukApprover	= $this->session->user;	
 
 
 		$this->kirim_email($internalMail,$eksternalMail,$namaPekerja,$status,$approver,$noindukApprover,$android_id,$imei,$hardware_serial,$gsf);

@@ -33,6 +33,10 @@ class M_blankoevaluasi extends CI_Model
                 //Order #399407
                 $refJabatan = array('330100700', '330100800');
             }
+            if ($userLogged == 'B0697') {
+                //Order #896394
+                $refJabatan = array('401010100', '401010200');
+            }
 
             function trimSie($arrSie)
             {

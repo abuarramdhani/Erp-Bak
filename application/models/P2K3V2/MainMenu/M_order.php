@@ -637,7 +637,8 @@ class M_Order extends CI_Model
         $sql = "select
                     tp.noind,
                     tp.nama,
-                    coalesce(tk.pekerjaan, 'STAFF') pekerjaan
+                    coalesce(tk.pekerjaan, 'STAFF') pekerjaan,
+                    tk.kdpekerjaan
                 from
                     hrd_khs.tpribadi tp
                 left join hrd_khs.tpekerjaan tk on

@@ -17,6 +17,17 @@ const swalFP = (type, title) => {
     text: ''
   })
 }
+const toastFPLoading = (pesan) => {
+  Swal.fire({
+    toast: true,
+    position: 'top-end',
+    onBeforeOpen: () => {
+       Swal.showLoading();
+       $('.swal2-loading').children('button').css({'width': '20px', 'height': '20px'})
+     },
+    text: pesan
+  })
+}
 
 let fp_ajax1 = null
 let fp_ajax2 = null
@@ -81,22 +92,22 @@ const fp_bp_minus_proses = (no) => {
   $(`.fp_tbl_penolong tr[row-id="${no}"]`).remove();
 }
 
-$('#jenis_proses').on('change', function () {
-  let val = $(this).val();
-  console.log(val);
-  $('#nomor_jenis_proses').val(null)
-  if (val == 'PCR' || val == 'ECR') {
-    $('#fp_1').removeClass("col-md-12");
-    $('#fp_1').addClass("col-md-6");
-    $('#fp_njpnya').html(val)
-    // $('#fp_1').toggleClass('col-md-6')
-    $('.fp_2').fadeIn()
-  }else {
-    $('#fp_1').removeClass("col-md-6");
-    $('#fp_1').addClass("col-md-12");
-    $('.fp_2').hide()
-  }
-})
+// $('#jenis_proses').on('change', function () {
+//   let val = $(this).val();
+//   console.log(val);
+//   $('#nomor_jenis_proses').val(null)
+//   if (val == 'PCR' || val == 'ECR') {
+//     $('#fp_1').removeClass("col-md-12");
+//     $('#fp_1').addClass("col-md-6");
+//     $('#fp_njpnya').html(val)
+//     // $('#fp_1').toggleClass('col-md-6')
+//     $('.fp_2').fadeIn()
+//   }else {
+//     $('#fp_1').removeClass("col-md-6");
+//     $('#fp_1').addClass("col-md-12");
+//     $('.fp_2').hide()
+//   }
+// })
 
 $('#fp_tipe_produk_memo').on('change', function () {
   $('#product_fp_memo').val(null).trigger('change')
@@ -163,125 +174,125 @@ const cek_memo_component = (memo, id, type) => {
   })
 }
 
-const fp_isi_machine_num = () => {
-  let code = $('#resource').val();
-  // let spl = code.split(' - ');
-  // $('#machine_num').val(spl[1])
-  if (code != null) {
-    fp_ajax1 = $.ajax({
-      url: baseurl + "FlowProses/Operation/getMachineNum",
-      type: 'POST',
-      dataType: 'JSON',
-      data: {
-        code: code,
-        destination: $('#destination').val(),
-      },
-      beforeSend: function() {
-        $('#machine_num').val('...')
+// const fp_isi_machine_num = () => {
+//   let code = $('#resource').val();
+//   // let spl = code.split(' - ');
+//   // $('#machine_num').val(spl[1])
+//   if (code != null) {
+//     fp_ajax1 = $.ajax({
+//       url: baseurl + "FlowProses/Operation/getMachineNum",
+//       type: 'POST',
+//       dataType: 'JSON',
+//       data: {
+//         code: code,
+//         destination: $('#destination').val(),
+//       },
+//       beforeSend: function() {
+//         $('#machine_num').val('...')
+//
+//       },
+//       success: function(result) {
+//
+//         if (result !== null) {
+//           let tampong = [];
+//           $.each(result, function(index, elem) {
+//             let spl = elem.ATTRIBUTE1.split(' - ');
+//             tampong.push(spl[1])
+//           });
+//           $('#machine_num').val(tampong.join(', '))
+//         }else {
+//           $('#machine_num').val('')
+//         }
+//
+//       },
+//       error: function(XMLHttpRequest, textStatus, errorThrown) {
+//         // swalFP('error', 'Something was wrong when fetching data...')
+//         $('#machine_num').val('')
+//        console.error();
+//       }
+//     })
+//   }
+//
+// }
 
-      },
-      success: function(result) {
+// const fp_cek_destinasi = () => {
+//   let fp_cek = $('#machine_req :selected').text();
+//   let fp_flag_value = fp_cek.split(' - ');
+//   // console.log(fp_cek);console.log($('#destination').val());
+//
+//   if (fp_cek != 'Select...' && $('#destination').val() != '') {
+//   $('#resource').val(null).trigger('change')
+//   //
+//   if (fp_ajax2 !=  null) {
+//     fp_ajax2.abort()
+//     $('.resource_loading_area').html('')
+//     $('#foresource').show()
+//   }
+//
+//   fp_ajax2 = $.ajax({
+//     url: baseurl + "FlowProses/Operation/getResource",
+//     type: 'POST',
+//     dataType: 'JSON',
+//     data: {
+//       term: '',
+//       destination: $('#destination').val(),
+//       mechine_req: fp_flag_value[1],
+//     },
+//     beforeSend: function() {
+//       $('#resource').html('')
+//       $('#foresource').hide()
+//       $('.resource_loading_area').html(`<div id="loadingArea0">
+//                                           <center><img style="width: 5%;margin-bottom:13px" src="${baseurl}assets/img/gif/loading5.gif"><br>Filtering resource data</center>
+//                                         </div>`);
+//     },
+//     success: function(result) {
+//       // console.log(result)
+//       $('.resource_loading_area').html(``);
+//       $('#foresource').show();
+//       if (result !== null) {
+//         // $('#resource').append(`<option value="" selected>Select...</option>`);
+//         $.each(result, function(index, elem) {
+//           let split_aja = elem.ATTRIBUTE1.split(' - ');
+//           $('#resource').append(`<option value="${elem.RESOURCE_CODE}">${elem.RESOURCE_CODE} - ${elem.DESCRIPTION}</option>`)
+//         });
+//       }else {
+//         $('#resource').html('')
+//       }
+//
+//     },
+//     error: function(XMLHttpRequest, textStatus, errorThrown) {
+//       // swalFP('error', 'Something was wrong when fetching data...')
+//      console.error();
+//     }
+//   }).done(function () {
+//     let cek_ram_resource = $('#fp_tampung_resource_sementara').val();
+//     if (cek_ram_resource != '') $('#resource').val(cek_ram_resource).trigger('change');
+//   })
+//  }
+//
+// }
 
-        if (result !== null) {
-          let tampong = [];
-          $.each(result, function(index, elem) {
-            let spl = elem.ATTRIBUTE1.split(' - ');
-            tampong.push(spl[1])
-          });
-          $('#machine_num').val(tampong.join(', '))
-        }else {
-          $('#machine_num').val('')
-        }
+// $('.fp_check_inspectool').on('change', function () {
+//   let val = $(this).val();
+//   // console.log(val);
+//   if (val == 1) {
+//     $('.fp_ilang_2').show()
+//   }else {
+//     $('.select2FP_Tool_2').val(null).trigger('change');
+//     $('.fp_ilang_2').hide()
+//   }
+// })
 
-      },
-      error: function(XMLHttpRequest, textStatus, errorThrown) {
-        // swalFP('error', 'Something was wrong when fetching data...')
-        $('#machine_num').val('')
-       console.error();
-      }
-    })
-  }
-
-}
-
-const fp_cek_destinasi = () => {
-  let fp_cek = $('#machine_req :selected').text();
-  let fp_flag_value = fp_cek.split(' - ');
-  // console.log(fp_cek);console.log($('#destination').val());
-
-  if (fp_cek != 'Select...' && $('#destination').val() != '') {
-  $('#resource').val(null).trigger('change')
-  //
-  if (fp_ajax2 !=  null) {
-    fp_ajax2.abort()
-    $('.resource_loading_area').html('')
-    $('#foresource').show()
-  }
-
-  fp_ajax2 = $.ajax({
-    url: baseurl + "FlowProses/Operation/getResource",
-    type: 'POST',
-    dataType: 'JSON',
-    data: {
-      term: '',
-      destination: $('#destination').val(),
-      mechine_req: fp_flag_value[1],
-    },
-    beforeSend: function() {
-      $('#resource').html('')
-      $('#foresource').hide()
-      $('.resource_loading_area').html(`<div id="loadingArea0">
-                                          <center><img style="width: 5%;margin-bottom:13px" src="${baseurl}assets/img/gif/loading5.gif"><br>Filtering resource data</center>
-                                        </div>`);
-    },
-    success: function(result) {
-      // console.log(result)
-      $('.resource_loading_area').html(``);
-      $('#foresource').show();
-      if (result !== null) {
-        $('#resource').append(`<option value="" selected>Select...</option>`);
-        $.each(result, function(index, elem) {
-          let split_aja = elem.ATTRIBUTE1.split(' - ');
-          $('#resource').append(`<option value="${elem.RESOURCE_CODE}">${elem.RESOURCE_CODE} - ${elem.DESCRIPTION}</option>`)
-        });
-      }else {
-        $('#resource').html('')
-      }
-
-    },
-    error: function(XMLHttpRequest, textStatus, errorThrown) {
-      // swalFP('error', 'Something was wrong when fetching data...')
-     console.error();
-    }
-  }).done(function () {
-    let cek_ram_resource = $('#fp_tampung_resource_sementara').val();
-    if (cek_ram_resource != '') $('#resource').val(cek_ram_resource).trigger('change');
-  })
- }
-
-}
-
-$('.fp_check_inspectool').on('change', function () {
-  let val = $(this).val();
-  // console.log(val);
-  if (val == 1) {
-    $('.fp_ilang_2').show()
-  }else {
-    $('.select2FP_Tool_2').val(null).trigger('change');
-    $('.fp_ilang_2').hide()
-  }
-})
-
-$('.fp_check_tool').on('change', function () {
-  let val = $(this).val();
-  // console.log(val);
-  if (val == 2) {
-    $('.fp_ilang').show()
-  }else {
-    $('.select2FP_Tool').val(null).trigger('change');
-    $('.fp_ilang').hide()
-  }
-})
+// $('.fp_check_tool').on('change', function () {
+//   let val = $(this).val();
+//   // console.log(val);
+//   if (val == 2) {
+//     $('.fp_ilang').show()
+//   }else {
+//     $('.select2FP_Tool').val(null).trigger('change');
+//     $('.fp_ilang').hide()
+//   }
+// })
 
 const fp_add_operation_std = () =>{
   $('#id_fp_std').val('')
@@ -290,37 +301,37 @@ const fp_add_operation_std = () =>{
   $('#operation_std_desc').val('')
 }
 
-$('#opetation_code').on('change', function () {
-  $.ajax({
-    url: baseurl + 'FlowProses/Operation/cekOracleProses',
-    type: 'POST',
-    async: true,
-    dataType: 'JSON',
-    data: {
-      code: $(this).val(),
-    },
-    beforeSend: function () {
-      Swal.mixin({
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 3000
-      }).showLoading()
-    },
-    success: function (result) {
-      if (result !== 0) {
-        toastFP('success', 'Data Founded!')
-        $('#opetaion_desc').val(result[0].DESCRIPTION)
-        // console.log(result);
-      }else {
-        Swal.fire({
-          type: 'warning',
-          html: `<b>Data not Found! Please Visit</b> <a style="font-weight:bold" href="http://192.168.168.135/khs-PendaftaranMasterItem" class="text-primary"> <u>Pendaftaran Master Item</u></a>`
-        })
-      }
-    }
-  })
-})
+// $('#opetation_code').on('change', function () {
+//   $.ajax({
+//     url: baseurl + 'FlowProses/Operation/cekOracleProses',
+//     type: 'POST',
+//     async: true,
+//     dataType: 'JSON',
+//     data: {
+//       code: $(this).val(),
+//     },
+//     beforeSend: function () {
+//       Swal.mixin({
+//         toast: true,
+//         position: 'top-end',
+//         showConfirmButton: false,
+//         timer: 3000
+//       }).showLoading()
+//     },
+//     success: function (result) {
+//       if (result !== 0) {
+//         toastFP('success', 'Data Founded!')
+//         $('#opetaion_desc').val(result[0].DESCRIPTION)
+//         // console.log(result);
+//       }else {
+//         Swal.fire({
+//           type: 'warning',
+//           html: `<b>Data not Found! Please Visit</b> <a style="font-weight:bold" href="http://192.168.168.135/khs-PendaftaranMasterItem" class="text-primary"> <u>Pendaftaran Master Item</u></a>`
+//         })
+//       }
+//     }
+//   })
+// })
 
 const fp_update_opration_std = (id, operation_std, operation_desc, operation_std_group) => {
   // console.log(operation_std_group);
@@ -359,7 +370,7 @@ const getgambarkerja = (product_id, id, jenis, component_code) => {
   // }
   $('#fp_code_component').html(component_code)
   $.ajax({
-    url: baseurl + 'FlowProses/Component/gambarkerja',
+    url: baseurl + 'FlowProses/Operation/gambarkerja',
     type: 'POST',
     data: {
       product_id : product_id,
@@ -390,7 +401,7 @@ const getgambarkerja_beda_tempat = () => {
   $('#fp_code_component').html(component_code)
   if (fp_ajax_gmb == null) {
     fp_ajax_gmb = $.ajax({
-      url: baseurl + 'FlowProses/Component/gambarkerjaBachAdd',
+      url: baseurl + 'FlowProses/Operation/gambarkerjaBachAdd',
       type: 'POST',
       data: {
         product_id : product_id,
@@ -425,7 +436,7 @@ const getgambarkerja_beda_tempat_ = () => {
   $('#fp_code_component').html(component_code)
   if (fp_ajax_gmb_ == null) {
     fp_ajax_gmb_ = $.ajax({
-      url: baseurl + 'FlowProses/Component/gambarkerjaBachAdd',
+      url: baseurl + 'FlowProses/Operation/gambarkerjaBachAdd',
       type: 'POST',
       data: {
         product_id : product_id,
@@ -661,30 +672,30 @@ $('.select2_fp_machine_req').select2({
     }
   }
 })
-  $('.select2FP_Tool').select2({
-    minimumInputLength: 3,
-    placeholder: "Select Tool Exiting",
-    ajax: {
-      url: baseurl + "FlowProses/SetOracleItem/getTool",
-      dataType: "JSON",
-      type: "POST",
-      data: function(params) {
-        return {
-          term: params.term
-        };
-      },
-      processResults: function(data) {
-        return {
-          results: $.map(data, function(obj) {
-	           return {
-                id:`${obj.fs_no_order} _ (${obj.fs_nm_tool}) - ${obj.fs_kd_komp} ${obj.fs_nm_komp}`,
-                text: `(${obj.fs_nm_tool}) - ${obj.fs_kd_komp} ${obj.fs_nm_komp}`
-            };
-          })
-        }
-      }
-    }
-  })
+  // $('.select2FP_Tool').select2({
+  //   minimumInputLength: 3,
+  //   placeholder: "Select Tool Exiting",
+  //   ajax: {
+  //     url: baseurl + "FlowProses/SetOracleItem/getTool",
+  //     dataType: "JSON",
+  //     type: "POST",
+  //     data: function(params) {
+  //       return {
+  //         term: params.term
+  //       };
+  //     },
+  //     processResults: function(data) {
+  //       return {
+  //         results: $.map(data, function(obj) {
+	//            return {
+  //               id:`${obj.fs_no_order} _ (${obj.fs_nm_tool}) - ${obj.fs_kd_komp} ${obj.fs_nm_komp}`,
+  //               text: `(${obj.fs_nm_tool}) - ${obj.fs_kd_komp} ${obj.fs_nm_komp}`
+  //           };
+  //         })
+  //       }
+  //     }
+  //   }
+  // })
 
   $('.select2FP_Tool_2').select2({
     minimumInputLength: 3,
@@ -738,14 +749,14 @@ $('.select2_fp_machine_req').select2({
 
 })
 
-const fp_cek_resource = () => {
-  if ($('#machine_req').val() == '' || $('#destination').val() == '') {
-    swalFP('warning', 'Harap memilih mechine_req dan destination terlebih dahulu!');
-  }
-  // console.log('cekk');
-  // console.log($('#destination').val());
-  // console.log($('#machine_req').val());
-}
+// const fp_cek_resource = () => {
+//   if ($('#machine_req').val() == '' || $('#destination').val() == '') {
+//     swalFP('warning', 'Harap memilih mechine_req dan destination terlebih dahulu!');
+//   }
+//   // console.log('cekk');
+//   // console.log($('#destination').val());
+//   // console.log($('#machine_req').val());
+// }
 
 const report = () => {
   let product = $('#fp_selected_product').val();
@@ -1116,7 +1127,7 @@ const tableflowproses = $('.dt-fp-comp').DataTable({
   serverSide: true,
   "order": [],
   "ajax": {
-    url: baseurl + 'FlowProses/Component/fpssc',
+    url: baseurl + 'FlowProses/Operation/fpssc',
     type: "POST",
   },
   "bSort": false,
@@ -1294,4 +1305,70 @@ const saveOperation_fp = () =>{
       swalFP('error', 'Isi Form Input Dengan Lengkap!!!')
     }
   })
+}
+
+
+//grafik AREA
+function getFamilykuis(e) {
+	var range = e.dataPoint.range;
+	var ke = e.dataPoint.key;
+	$('#chartFPDKomp2,.tbl-comp').html('<center><img style="width:100px; height:auto" src="'+baseurl+'assets/img/gif/loading12.gif"></center>' );
+	$.ajax({
+		url: baseurl+"FlowProses/Grafik/getGrafik",
+		type: "POST",
+		data:{
+			range:range,
+			ke : ke
+		},
+		success:function (result) {
+			var array2 = [];
+			var htmls = '';
+			var data = JSON.parse(result);
+	        var array = $.map(data['recapDay'], function(value) {
+	            return [value];
+	        });
+	        var arrayke = $.map(data['ke'], function(value) {
+	            return [value];
+	        });
+
+		        for (var i = 0; i < array.length; i++) {
+		        	array2.push({ x:new Date(array[i]['tgl']),y : Number(array[i]['su']) })
+	            	}
+	        var arrayComp = $.map(data['recapComp'], function(value) {
+	            return [value];
+	        });
+			setTimeout(function () {
+				var chart3 = new CanvasJS.Chart("chartFPDKomp2", {
+
+                animationEnabled: true,
+                theme: "light2",
+                title:{
+                  text: "Detail Minggu "+arrayke[0]['ke']
+                },
+                axisY:{
+                  includeZero: false
+                },
+                data : [{
+                    type: "area",
+                    dataPoints:array2
+                }]
+              });
+              chart3.render();
+			},1500);
+			setTimeout(function () {
+				if (arrayComp.length > 0 ) {
+					for (var i = 0; i < arrayComp.length; i++) {
+			        	htmls += '<tr>';
+			        	htmls += '<td style="width:27%"><center>'+arrayComp[i]['tgl']+'</center></td>';
+			        	htmls += '<td style="padding:5px;">'+arrayComp[i]['cd_comp']+' di Produk '+arrayComp[i]['desc_prod']+'</td>';
+			        	htmls += '</tr>'
+		            	}
+		            $('.tbl-comp').html(htmls);
+				}else{
+					htmls += 'Tidak ada input data komponen di minggu ke '+arrayke[0]['ke'];
+		            $('.tbl-comp').html(htmls);
+				}
+			},1500);
+		}
+	})
 }

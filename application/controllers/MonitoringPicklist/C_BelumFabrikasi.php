@@ -202,6 +202,8 @@ class C_BelumFabrikasi extends CI_Controller
 						$this->M_pickfabrikasi->permintaanApprove($picklist, $tgl_minta, $shift_minta);
 					}
 				}
+			}else {
+				$this->M_pickfabrikasi->permintaanApprove($picklist, $tgl_minta, $shift_minta);
 			}
 		}
 	}
@@ -233,6 +235,13 @@ class C_BelumFabrikasi extends CI_Controller
 									$x++;
 								}
 							}
+						}
+					}else {
+						if ($ket == 'bersama') {
+							$this->M_pickfabrikasi->permintaanApprove($picklist[$i], $tgl_minta, $shift_minta);
+						}else {
+							$this->M_pickfabrikasi->permintaanApprove($picklist[$i], $tgl_minta[$x], $shift_minta[$x]);
+							$x++;
 						}
 					}
 				}

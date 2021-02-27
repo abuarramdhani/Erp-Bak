@@ -439,9 +439,23 @@ class M_moveorder extends CI_Model
 	function checkPicklist($no)
 	{
 		$oracle = $this->load->database('oracle',TRUE);
-		$sql = "SELECT mtrh.REQUEST_NUMBER from mtl_txn_request_headers mtrh, wip_entities we
-				    where mtrh.ATTRIBUTE1 = we.WIP_ENTITY_ID
-				    and mtrh.ORGANIZATION_ID = we.ORGANIZATION_ID
+		// $sql = "SELECT mtrh.REQUEST_NUMBER from mtl_txn_request_headers mtrh, wip_entities we
+		// 		    where mtrh.ATTRIBUTE1 = we.WIP_ENTITY_ID
+		// 		    and mtrh.ORGANIZATION_ID = we.ORGANIZATION_ID
+		// 		and we.WIP_ENTITY_NAME = '$no'
+		// 		order by 1";
+		$sql = "SELECT distinct
+						mtrh.REQUEST_NUMBER
+					,mtrl.FROM_SUBINVENTORY_CODE
+					,mil.SEGMENT1 locator 
+				from mtl_txn_request_headers mtrh
+					,wip_entities we
+					,mtl_txn_request_lines mtrl
+					,mtl_item_locations mil
+				where mtrh.ATTRIBUTE1 = we.WIP_ENTITY_ID
+				and mtrh.ORGANIZATION_ID = we.ORGANIZATION_ID
+				and mtrl.HEADER_ID = mtrh.HEADER_ID
+				and mtrl.FROM_LOCATOR_ID = mil.INVENTORY_LOCATION_ID (+)
 				and we.WIP_ENTITY_NAME = '$no'
 				order by 1";
 		
@@ -1181,9 +1195,14 @@ class M_moveorder extends CI_Model
 		return $query->result_array();
 	}
 	
-	function getPerbedaan($no_mo, $subinv)
+	function getPerbedaan($no_mo, $subinv, $lokator)
 	{		
 		$oracle = $this->load->database('oracle',TRUE);
+		if ($lokator != '') {
+			$lokator = "and (kqem.BOM_FROM_LOC = '$lokator' or kqem.JOB_FROM_LOC = '$lokator')";
+		}else {
+			$lokator = "and (kqem.BOM_FROM_LOC is null and kqem.JOB_FROM_LOC is null)";
+		}
 		$sql = "with kqem as
 				(
 				select distinct 
@@ -1191,7 +1210,7 @@ class M_moveorder extends CI_Model
 					,case when kqem.job_from_subinv is null 
 							and kqem.bom_from_subinv is not null
 							and kqem.code is null
-							then 'KOMPONEN DI MO GUDANG'
+							then 'KOMPONEN DI MO GUDANG : ' || kqem.required_quantity || ' PCS'
 							when nvl (kqem.job_comp_qty,0) <> nvl (kqem.bom_comp_qty,0)
 							and kqem.code is null
 							then 'LAYANI QTY SESUAI JOB : ' || kqem.required_quantity || ' PCS'
@@ -1205,6 +1224,7 @@ class M_moveorder extends CI_Model
 					,mtl_txn_request_headers mtrh
 				where mtrh.REQUEST_NUMBER = '$no_mo'
 				and (kqem.BOM_FROM_SUBINV = '$subinv' or kqem.JOB_FROM_SUBINV = '$subinv')
+                $lokator
 				and kqem.JOB_ID = mtrh.ATTRIBUTE1
 				)
 				select *

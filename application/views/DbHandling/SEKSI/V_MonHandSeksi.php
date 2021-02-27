@@ -43,7 +43,10 @@
                                     <h4>REVISI</h4>
                                 </div>
                                 <div class="col-md-12" id="tabel_reqhandseksi2"></div>
-
+                                <div class="col-md-12" style="font-weight: bold;text-align:center">
+                                    <h4>REJECT</h4>
+                                </div>
+                                <div class="col-md-12" id="tabel_rejecthandseksi"></div>
                             </div>
                         </div>
                     </div>

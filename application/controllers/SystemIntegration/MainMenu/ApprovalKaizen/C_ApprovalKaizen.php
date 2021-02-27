@@ -309,7 +309,7 @@ class C_ApprovalKaizen extends CI_Controller {
 			$getEmail = $this->M_submit->getEmail($getKaizen[0]['noinduk']);
 			$emailUser = $getEmail[0]['internal_mail'];
 		}
-		if($emailUser) {
+		if(trim($emailUser) != "" && trim($emailUser) != "-") {
 			//get approver name
 			$approverName = trim($this->M_submit->getEmployeeName($this->session->user));
 			//get template
@@ -373,7 +373,7 @@ class C_ApprovalKaizen extends CI_Controller {
 			$getEmail = $this->M_submit->getEmail($getApprover[1]['approver']);
 			$emailUser = $getEmail[0]['internal_mail'];
 		}
-		if($emailUser) {
+		if(trim($emailUser) != "" && trim($emailUser) != "-") {
 			//get approver name
 			$getKaizen = $this->M_submit->getKaizen($kaizen_id, FALSE);
 			$approverName = trim($this->M_submit->getEmployeeName($this->session->user));
@@ -499,10 +499,10 @@ class C_ApprovalKaizen extends CI_Controller {
 		if($getKaizen) {
 			//get pencetus email
 			$getEmail = $this->M_submit->getEmail($getKaizen[0]['noinduk']);
-		}
-		if ($getEmail) {
-			$this->load->library('Sendmessage');
 			$userAccount = $getEmail[0]['pidgin_account'];
+		}
+		if (trim($userAccount) != "" && trim($userAccount) != "-") {
+			$this->load->library('Sendmessage');
 
 			//get approver name
 			$approverName = trim($this->M_submit->getEmployeeName($this->session->user));
@@ -540,11 +540,10 @@ class C_ApprovalKaizen extends CI_Controller {
 		if($getApprover) {
 			//get aprover email
 			$getEmail = $this->M_submit->getEmail($getApprover[1]['approver']);
-			$emailUser = $getEmail[0]['internal_mail'];
-		}
-		if($emailUser) {
-			$this->load->library('Sendmessage');
 			$userAccount = $getEmail[0]['pidgin_account'];
+		}
+		if(trim($userAccount) != "" && trim($userAccount) != "-") {
+			$this->load->library('Sendmessage');
 			$getKaizen = $this->M_submit->getKaizen($kaizen_id, FALSE);
 
 			//get approver name

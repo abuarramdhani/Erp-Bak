@@ -62,56 +62,56 @@ class C_Index extends CI_Controller
 		$data['dashboard'][] = array(
 			'ket' 		=> 'Rencana Lembur',
 			'link'		=> 'RencanaLembur/ListRencanaLembur',
-			'jumlah' 	=> $this->M_personaliaapprovekasie->getRencanaLemburByNoindAtasan($user)
+			'jumlah' 	=> $this->M_personaliaapproveasska->getRencanaLemburByNoindAtasan($user)
 		); 
 
 		// Perizinan Dinas 
 		$data['dashboard'][] = array(
 			'ket' 		=> 'Perizinan Dinas Pusat Tuksono Mlati',
 			'link'		=> 'PerizinanDinas/AtasanApproval',
-			'jumlah' 	=> $this->M_personaliaapprovekasie->getPerizinanDInasByNoindAtasan($user)
+			'jumlah' 	=> $this->M_personaliaapproveasska->getPerizinanDInasByNoindAtasan($user)
 		); 
 
 		// Kaizen
 		$data['dashboard'][] = array(
 			'ket' 		=> 'Kaizen',
 			'link'		=> 'SystemIntegration/KaizenGenerator/ApprovalKaizen/index',
-			'jumlah' 	=> $this->M_personaliaapprovekasie->getKaizenByNoindAtasan($user)
+			'jumlah' 	=> $this->M_personaliaapproveasska->getKaizenByNoindAtasan($user)
 		); 
 
 		// Absen Online
 		$data['dashboard'][] = array(
 			'ket' 		=> 'Absen Online',
 			'link'		=> 'AbsenAtasan/List',
-			'jumlah' 	=> $this->M_personaliaapprovekasie->getAbsenOnlineByApprover($user)
+			'jumlah' 	=> $this->M_personaliaapproveasska->getAbsenOnlineByApprover($user)
 		); 
 
 		// Perizinan Pribadi
 		$data['dashboard'][] = array(
 			'ket' 		=> 'Perizinan',
 			'link'		=> 'IKP/ApprovalAtasan',
-			'jumlah' 	=> $this->M_personaliaapprovekasie->getPerizinanPribadi($user)
+			'jumlah' 	=> $this->M_personaliaapproveasska->getPerizinanPribadi($user)
 		); 
 
 		// Tukar Shift
 		$data['dashboard'][] = array(
 			'ket' 		=> 'Tukar Shift',
 			'link'		=> 'PolaShiftSeksi/Approval/ApprovalTukarShift',
-			'jumlah' 	=> $this->M_personaliaapprovekasie->getTukarShiftByApprover($user)
+			'jumlah' 	=> $this->M_personaliaapproveasska->getTukarShiftByApprover($user)
 		); 
 
 		// Import Shift
 		$data['dashboard'][] = array(
 			'ket' 		=> 'Import Shift',
 			'link'		=> 'PolaShiftSeksi/Approval/ApprovalShift',
-			'jumlah' 	=> $this->M_personaliaapprovekasie->getImportShiftByAtasan($user)
+			'jumlah' 	=> $this->M_personaliaapproveasska->getImportShiftByAtasan($user)
 		); 
 
 		// Pengajuan Cuti
 		$data['dashboard'][] = array(
 			'ket' 		=> 'Pengajuan Cuti',
 			'link'		=> 'PermohonanCuti',
-			'jumlah' 	=> $this->M_personaliaapprovekasie->getCutiByApprover($user)
+			'jumlah' 	=> $this->M_personaliaapproveasska->getCutiByApprover($user)
 		); 
 
 		usort($data['dashboard'], function($a, $b){

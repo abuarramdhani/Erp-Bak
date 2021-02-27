@@ -130,7 +130,8 @@ class M_dpb extends CI_Model
             AND moqd.SUBINVENTORY_CODE = 'SP-YSP' ) ,
         0 ) - (
         SELECT
-            NVL( SUM( mr.RESERVATION_QUANTITY ), 0 )
+            NVL( SUM( mr.RESERVATION_QUANTITY ),
+            0 )
         FROM
             MTL_RESERVATIONS MR ,
             mtl_system_items_b msib2
@@ -140,7 +141,8 @@ class M_dpb extends CI_Model
             AND msib2.segment1 = msib.segment1
             AND mr.subinventory_code = 'SP-YSP' ) - (
         SELECT
-            NVL( SUM( mmtt.transaction_quantity ), 0 )
+            NVL( SUM( mmtt.transaction_quantity ),
+            0 )
         FROM
             MTL_MATERIAL_TRANSACTIONS_TEMP mmtt ,
             mtl_system_items_b msib3
@@ -159,7 +161,8 @@ class M_dpb extends CI_Model
             AND moqd.SUBINVENTORY_CODE = 'SP-YSP' ) ,
         0 ) - (
         SELECT
-            NVL( SUM( mr.RESERVATION_QUANTITY ), 0 )
+            NVL( SUM( mr.RESERVATION_QUANTITY ),
+            0 )
         FROM
             MTL_RESERVATIONS MR ,
             mtl_system_items_b msib2
@@ -169,7 +172,8 @@ class M_dpb extends CI_Model
             AND msib2.segment1 = msib.segment1
             AND mr.subinventory_code = 'SP-YSP' ) - (
         SELECT
-            NVL( SUM( mmtt.transaction_quantity ), 0 )
+            NVL( SUM( mmtt.transaction_quantity ),
+            0 )
         FROM
             MTL_MATERIAL_TRANSACTIONS_TEMP mmtt ,
             mtl_system_items_b msib3
@@ -177,13 +181,15 @@ class M_dpb extends CI_Model
             msib3.inventory_item_id = mmtt.inventory_item_id
             AND msib3.organization_id = mmtt.organization_id
             AND msib3.segment1 = msib.segment1
-            AND mmtt.subinventory_code = 'SP-YSP' ) ) - tbl1.req_qty ATR_sisa
+            AND mmtt.subinventory_code = 'SP-YSP' ) ) - tbl1.req_qty ATR_sisa ,
+        tbl1.LINE_ID
     FROM
         mtl_system_items_b msib ,
         (
         SELECT
             mtrl.INVENTORY_ITEM_ID ,
-            SUM( mtrl.QUANTITY ) req_qty
+            mtrl.QUANTITY req_qty ,
+            mtrl.LINE_ID
         FROM
             mtl_txn_request_headers mtrh ,
             mtl_txn_request_lines mtrl
@@ -192,15 +198,16 @@ class M_dpb extends CI_Model
             AND mtrh.ORGANIZATION_ID = 225
             AND mtrh.REQUEST_NUMBER IN ( '$noDPB' )
             --(select * from param) --('3916224', '3916226') --(SELECT * FROM param)
-        GROUP BY
-            mtrl.INVENTORY_ITEM_ID ) tbl1
+            --group by mtrl.INVENTORY_ITEM_ID
+    ) tbl1
     WHERE
         msib.INVENTORY_ITEM_ID = tbl1.INVENTORY_ITEM_ID
     GROUP BY
         msib.inventory_item_id ,
         msib.segment1 ,
         tbl1.req_qty ,
-        msib.DESCRIPTION");
+        msib.DESCRIPTION ,
+        tbl1.LINE_ID");
 
         return $query->result_array();
     }
@@ -225,6 +232,21 @@ class M_dpb extends CI_Model
     {
         $oracle = $this->load->database('oracle', true);
         $query = $oracle->query("CALL APPS.KHS_ALLOCATE_DOSPB_SP('$noDPB', 225, 'SP-YSP', '$jenis', '$creator', '$forward','$keterangan')");
+    }
+
+    public function createDPBRequest($reqNumber, $lineId, $allocateQty, $creator)
+    {
+        $oracle = $this->load->database('oracle', true);
+        $oracle->query("INSERT INTO
+            KHS_MO_ALLOCATE_TEMP KMAT ( KMAT.REQUEST_NUMBER ,
+            KMAT.LINE_ID ,
+            KMAT.ALLOCATE_QUANTITY ,
+            KMAT.CREATED_BY )
+        VALUES ( '$reqNumber' ,
+        $lineId ,
+        $allocateQty ,
+        '$creator' )
+        ");
     }
 
 
@@ -261,5 +283,11 @@ class M_dpb extends CI_Model
         from DUAL");
 
         return $query->result_array();
+    }
+
+    public function reSubmitDPB($noDPB)
+    {
+        $oracle = $this->load->database('oracle', true);
+        $oracle->query("UPDATE khs_tampung_spb kts SET kts.APPROVAL_FLAG = null where kts.NO_DOKUMEN = '$noDPB'");
     }
 }

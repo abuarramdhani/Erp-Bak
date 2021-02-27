@@ -100,7 +100,6 @@ class M_dbhandling extends CI_Model
     }
     public function selectproduk($term)
     {
-        $oracle = $this->load->database('oracle', true);
         $sql = "select ffv.FLEX_VALUE ,ffvt.DESCRIPTION from fnd_flex_values ffv ,fnd_flex_values_tl ffvt 
         where ffv.FLEX_VALUE_ID = ffvt.FLEX_VALUE_ID 
         and ffv.FLEX_VALUE_SET_ID = 1013710 
@@ -108,7 +107,7 @@ class M_dbhandling extends CI_Model
         and ffv.ENABLED_FLAG = 'Y' 
         and (upper(ffv.FLEX_VALUE) like upper('%$term%') or upper(ffvt.DESCRIPTION) like upper('%$term%'))";
         // return $sql;
-        $query = $oracle->query($sql);
+        $query = $this->oracle->query($sql);
         return $query->result_array();
     }
     public function selectsarana($term)
@@ -334,8 +333,17 @@ and handling.rev_no = max.rev_no order by handling.last_update_date DESC";
     public function getnewdatahandbystat()
     {
         $sql = "select * from dbh.data_handling 
-        where status != 'active'
+        where status = 'request'
         and rev_no = -1
+        order by last_update_date desc";
+
+        $query = $this->db->query($sql);
+        return $query->result_array();
+    }
+    public function getrejdatahandbystat()
+    {
+        $sql = "select * from dbh.data_handling 
+        where status = 'reject'
         order by last_update_date desc";
 
         $query = $this->db->query($sql);
@@ -374,9 +382,9 @@ and handling.rev_no = max.rev_no order by handling.last_update_date DESC";
         $query = $this->db->query($sql);
         return $query;
     }
-    public function updatereject($id)
+    public function updatereject($id, $alasan)
     {
-        $sql = "update dbh.data_handling set status = 'reject' where id_handling = '$id'";
+        $sql = "update dbh.data_handling set status = 'reject', alasan_reject ='$alasan' where id_handling = '$id'";
 
         $query = $this->db->query($sql);
         return $query;

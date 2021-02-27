@@ -3927,6 +3927,10 @@ $route['OrderKebutuhanBarangDanJasa/Purchasing/(:any)/(:any)'] = 'OrderKebutuhan
 $route['OrderKebutuhanBarangDanJasa/Buyer/(:any)'] = 'OrderKebutuhanBarangDanJasa/Buyer/C_Buyer/$1';
 $route['OrderKebutuhanBarangDanJasa/Buyer/(:any)/(:any)'] = 'OrderKebutuhanBarangDanJasa/Buyer/C_Buyer/$1/$2';
 $route['OrderKebutuhanBarangDanJasa/Import/(:any)'] = 'OrderKebutuhanBarangDanJasa/Import/C_Import/$1';
+$route['OrderKebutuhanBarangDanJasa/SMSApprover'] = 'OrderKebutuhanBarangDanJasa/C_SendSMS';
+$route['OrderKebutuhanBarangDanJasa/SMSPengelola'] = 'OrderKebutuhanBarangDanJasa/C_SendSMS/pengelola';
+$route['OrderKebutuhanBarangDanJasa/SMSPuller'] = 'OrderKebutuhanBarangDanJasa/C_SendSMS/puller';
+$route['OrderKebutuhanBarangDanJasa/SMSPurchasing'] = 'OrderKebutuhanBarangDanJasa/C_SendSMS/purchasing';
 
 //--------------------------------------------------Monitoring Pengiriman Pesanan Luar-------------------------------//
 $route['MonitoringPengirimanPesananLuar'] 	= 'MonitoringPengPesananLuar/C_MonitoringPengPesananLuar/rekapPO';
@@ -4658,10 +4662,36 @@ $route['PatroliSatpam/api/(:any)']					= 'PatroliSatpam/C_ApiPatroli/$1';
 
 //----------------------------------- Civil maintenance Order -------------------------------------------
 $route['civil-maintenance-order'] = 'CivilMaintenanceOrder/C_Civil';
+
+$route['civil-maintenance-order/order/monitoring'] = 'CivilMaintenanceOrder/C_Civil_Monitoring';
+$route['civil-maintenance-order/order/monitoring/schedule/(:num)'] = 'CivilMaintenanceOrder/C_Civil_Monitoring/schedule/$1';
+// api
+$route['civil-maintenance-order/api/update_order_status']['post'] = 'CivilMaintenanceOrder/C_Civil_Monitoring/update_order_status';
+$route['civil-maintenance-order/api/update_acc_date']['post'] = 'CivilMaintenanceOrder/C_Civil_Monitoring/update_acc_date';
+$route['civil-maintenance-order/api/get_schedule']['get'] = 'CivilMaintenanceOrder/C_Civil_Monitoring/get_schedule';
+$route['civil-maintenance-order/api/update_schedule']['post'] = 'CivilMaintenanceOrder/C_Civil_Monitoring/update_schedule';
+$route['civil-maintenance-order/api/remove_schedule']['post'] = 'CivilMaintenanceOrder/C_Civil_Monitoring/remove_schedule';
+
 $route['civil-maintenance-order/order/(:any)'] = 'CivilMaintenanceOrder/C_Civil/$1';
 $route['civil-maintenance-order/order/(:any)/(:any)'] = 'CivilMaintenanceOrder/C_Civil/$1/$2';
 $route['civil-maintenance-order/setting/(:any)'] = 'CivilMaintenanceOrder/C_Civil_setting/$1';
 $route['civil-maintenance-order/setting/(:any)/(:any)'] = 'CivilMaintenanceOrder/C_Civil_setting/$1/$2';
+
+//------------------------------------ Civil Luas Area --------------------------------------------------
+$route['CivilLuasArea'] = 'CivilArea/C_CivilArea/index';
+$route['CivilLuasArea/api/'] = 'CivilArea/C_Api/index';
+
+$route['CivilLuasArea/api/excel'] = 'CivilArea/C_CivilArea/excel';
+
+$route['CivilLuasArea/api/master/area']['post'] = 'CivilArea/C_ApiMaster/addArea';
+$route['CivilLuasArea/api/master/lantai']['post'] = 'CivilArea/C_ApiMaster/addFloor';
+$route['CivilLuasArea/api/master/lokasi']['post'] = 'CivilArea/C_ApiMaster/addLocation';
+
+$route['CivilLuasArea/api/area'] = 'CivilArea/C_Api/getAreaDetail';
+$route['CivilLuasArea/api/area/remove']['post'] = 'CivilArea/C_Api/removeAreaDetail';
+$route['CivilLuasArea/api/area/add']['post'] = 'CivilArea/C_Api/addAreaDetail';
+$route['CivilLuasArea/api/area/update']['post'] = 'CivilArea/C_Api/updateAreaDetail';
+
 
 //------------------------------------------ pengembalian APD-----------------------
 $route['pengembalian-apd']								= 'PengembalianAPD/C_PekerjaApd/menu';
@@ -5068,7 +5098,7 @@ $route['FlowProses/Product/(:any)'] = 'FlowProses/C_Master/$1';
 $route['FlowProses/Memo'] = 'FlowProses/C_Master/Memo';
 $route['FlowProses/Memo/(:any)'] = 'FlowProses/C_Master/$1';
 
-$route['FlowProses/Component'] = 'FlowProses/C_Master/Component';
+$route['FlowProses/Component'] = 'FlowProses/C_Master/Operation';
 $route['FlowProses/Component/(:any)'] = 'FlowProses/C_Master/$1';
 $route['FlowProses/Component/(:any)/(:any)'] = 'FlowProses/C_Master/$1/$2';
 
@@ -5089,4 +5119,30 @@ $route['FlowProses/SetOracleItem'] = 'FlowProses/C_Master/SetOracleItem';
 $route['FlowProses/SetOracleItem/(:any)'] = 'FlowProses/C_Master/$1';
 $route['FlowProses/SetOracleItem/(:any)/(:any)'] = 'FlowProses/C_Master/$1/$2';
 
+$route['FlowProses/Grafik'] = 'FlowProses/C_Grafik';
+$route['FlowProses/Grafik/(:any)'] = 'FlowProses/C_Grafik/$1';
+$route['FlowProses/Grafik/(:any)/(:any)'] = 'FlowProses/C_Grafik/$1/$2';
+
 $route['FlowProses/cekapi'] = 'FlowProses/C_Master/cekapi';
+
+// -------------------------------Pengiriman Barang Bekas-----------------------------------------------//
+$route['BarangBekas'] = 'BarangBekas/C_Master';
+$route['BarangBekas/pbbs'] = 'BarangBekas/C_Master/pbbs';
+$route['BarangBekas/pbbns'] = 'BarangBekas/C_Master/pbbns';
+$route['BarangBekas/Transact'] = 'BarangBekas/C_Master/transact';
+
+$route['BarangBekas/pbbs/(:any)'] = 'BarangBekas/C_Master/$1';
+$route['BarangBekas/pbbs/(:any)/(:any)'] = 'BarangBekas/C_Master/$1/$2';
+$route['BarangBekas/pbbs/(:any)/(:any)/(:any)'] 	= 'BarangBekas/C_Master/$1/$2/$3';
+
+$route['BarangBekas/pbbns/(:any)'] = 'BarangBekas/C_Master/$1';
+$route['BarangBekas/pbbns/(:any)/(:any)'] = 'BarangBekas/C_Master/$1/$2';
+$route['BarangBekas/pbbns/(:any)/(:any)/(:any)'] 	= 'BarangBekas/C_Master/$1/$2/$3';
+
+$route['BarangBekas/transact/(:any)'] = 'BarangBekas/C_Master/$1';
+$route['BarangBekas/transact/(:any)/(:any)'] = 'BarangBekas/C_Master/$1/$2';
+$route['BarangBekas/transact/(:any)/(:any)/(:any)'] = 'BarangBekas/C_Master/$1/$2/$3';
+
+$route['MonitoringSPB'] = 'MonitoringSPB/C_Index';
+$route['MonitoringSPB/List'] = 'MonitoringSPB/C_Monspb';
+$route['MonitoringSPB/List/(:any)'] = 'MonitoringSPB/C_Monspb/$1';

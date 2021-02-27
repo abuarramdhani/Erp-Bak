@@ -77,7 +77,8 @@ class C_Master extends CI_Controller
           'NO_TRANSFER_ASET' => $this->input->post('no_transfer_asset'),
           'KETERANGAN' => $this->input->post('keterangan'),
           'USER_TUJUAN' => $this->input->post('user_tujuan'),
-          'SEKSI_TUJUAN' => $this->input->post('seksi_tujuan')
+          'SEKSI_TUJUAN' => $this->input->post('seksi_tujuan'),
+          'TUJUAN' => $this->input->post('tujuan')
         ];
         $final = $this->M_pbi->edit_pbi($this->input->post('no_doc'), $data);
         echo json_encode($final);

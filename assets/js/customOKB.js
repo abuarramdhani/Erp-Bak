@@ -1,39 +1,89 @@
-// $(document).on('hasApproverResponsibility', (e, $approverResponsibilityBoxContent) => {
-//     const $infoBadge = $(/* html */`
-//         <span class="label bg-aqua"></span>
-//     `);
+$(document).on('mainDashboardMenuOpened', () => {
+    // Outstanding order Approver
+    const approverResponsibilityName = '(Approver)Order Kebutuhan Barang dan Jasa';
+    const $approverResponsibilityBoxContent = $(`.info-box .info-box-content:contains(${approverResponsibilityName})`);
+    const hasApproverResponsibility = $approverResponsibilityBoxContent.length > 0;
 
-//     $infoBadge.html(/* html */`
-//         <i class="fa fa-spinner fa-spin"></i> Sedang Menghitung Total Order Anda
-//     `);
-//     $approverResponsibilityBoxContent.append($infoBadge);
+    if (hasApproverResponsibility) {
+        $(document).trigger('hasOkebajaResponsibility', [{
+            responsibilityName: 'Approver',
+            $responsibilityBoxContent: $approverResponsibilityBoxContent,
+        }]);
+    }
 
-//     $.get(`${baseurl}OrderKebutuhanBarangDanJasa/Approver/getUnapprovedOrderCount`)
-//         .done((response) => {
-//             $infoBadge.html(/* html */`
-//                 <i class="fa fa-clock-o"></i> Terdapat ${response} Order yang Belum Anda Approve
-//             `);
-//         }).fail(() => {
-//             $infoBadge.html(/* html */`
-//                 <i class="fa fa-times"></i> Gagal Menghitung Total Order Anda
-//             `);
-//         });
-// });
+    // Outstanding order Pengelola
+    const pengelolaResponsibilityName = '(Pengelola)Order Kebutuhan Barang dan Jasa';
+    const $pengelolaResponsibilityBoxContent = $(`.info-box .info-box-content:contains(${pengelolaResponsibilityName})`);
+    const hasPengelolaResponsibility = $pengelolaResponsibilityBoxContent.length > 0;
 
-// $(document).on('mainDashboardMenuOpened', () => {
-//     const approverResponsibilityName = '(Approver)Order Kebutuhan Barang dan Jasa';
-//     const $approverResponsibilityBoxContent = $(`.info-box .info-box-content:contains(${approverResponsibilityName})`);
-//     const hasApproverResponsibility = $approverResponsibilityBoxContent.length > 0;
+    if (hasPengelolaResponsibility) {
+        $(document).trigger('hasOkebajaResponsibility', [{
+            responsibilityName: 'Pengelola',
+            $responsibilityBoxContent: $pengelolaResponsibilityBoxContent,
+        }]);
+    }
 
-//     if (hasApproverResponsibility) $(document).trigger('hasApproverResponsibility', [$approverResponsibilityBoxContent]);
-// });
+    // Outstanding order Puller
+    const pullerResponsibilityName = '(Puller)Order Kebutuhan Barang dan Jasa';
+    const $pullerResponsibilityBoxContent = $(`.info-box .info-box-content:contains(${pullerResponsibilityName})`);
+    const hasPullerResponsibility = $pullerResponsibilityBoxContent.length > 0;
+
+    if (hasPullerResponsibility) {
+        $(document).trigger('hasOkebajaResponsibility', [{
+            responsibilityName: 'Puller',
+            $responsibilityBoxContent: $pullerResponsibilityBoxContent,
+        }]);
+    }
+
+    // Outstanding order Purchasing
+    const purchasingResponsibilityName = '(Purchasing)Order Kebutuhan Barang dan Jasa';
+    const $purchasingResponsibilityBoxContent = $(`.info-box .info-box-content:contains(${purchasingResponsibilityName})`);
+    const hasPurchasingResponsibility = $purchasingResponsibilityBoxContent.length > 0;
+
+    if (hasPurchasingResponsibility) {
+        $(document).trigger('hasOkebajaResponsibility', [{
+            responsibilityName: 'Purchasing',
+            $responsibilityBoxContent: $purchasingResponsibilityBoxContent,
+        }]);
+    }
+});
+
+$(document).on('hasOkebajaResponsibility', (e, { responsibilityName, $responsibilityBoxContent }) => {
+    const $badge = $(/* html */`
+        <span class="label"></span>
+    `);
+
+    $badge.addClass('bg-aqua').html(/* html */`
+        <i class="fa fa-spinner fa-spin"></i> Sedang Menghitung Total Order Anda
+    `);
+
+    $responsibilityBoxContent.append($badge);
+
+    $.get(`${baseurl}OrderKebutuhanBarangDanJasa/${responsibilityName}/getUnapprovedOrderCount`)
+        .done((orderCount) => {
+            if (orderCount > 0) {
+                $badge.removeClass('bg-aqua').addClass('bg-red').html(/* html */`
+                    <i class="fa fa-clock-o"></i> Terdapat ${orderCount} Order yang Belum Anda Approve
+                `);
+            } else {
+                $badge.html(/* html */`
+                    <i class="fa fa-check"></i> Terdapat ${orderCount} Order yang Belum Anda Approve
+                `);
+            }
+        }).fail(() => {
+            $badge.html(/* html */`
+                <i class="fa fa-times"></i> Gagal Menghitung Total Order Anda
+            `);
+        });
+});
+
+(() => {
+    if (window.location.href === baseurl) $(document).trigger('mainDashboardMenuOpened');
+})();
 
 $(document).ready(function () {
     $.fn.dataTable.moment('DD-MMM-YY');
 
-    // (() => {
-    //     if (window.location.href === baseurl) $(document).trigger('mainDashboardMenuOpened');
-    // })();
     //modal status order
     $('.mdlOKBStatusOrder').modal('show');
 
@@ -389,7 +439,8 @@ $(document).ready(function () {
             //nbd
             // prn.find('.nbdOKB').val(nbd);
             prn.find('.hdnEstArrivalOKB').html(nbd);
-            prn.find('.hdnECutOffOKB').html(cutoff_terdekat);
+            var html = '<input type="hidden" class="form-control" name="cutoff[]" id="" value="'+cutoff_terdekat+'"></input>';
+            prn.find('.hdnECutOffOKB').html(cutoff_terdekat+html);
             prn.find('.hdnTemporaryNbd').val(nbd);
             // prn.find('.nbdOKB').attr('style', 'background-color : #00bf024d; width:150px;');
                 
@@ -655,7 +706,7 @@ $(document).ready(function () {
             '<img style="width:50px" src="' + baseurl + 'assets/img/gif/loading5.gif"/>' +
             '</div>' +
             '<div class="viewOrganizationOKB" style="display: block;">' +
-            '<select class="select2 organizationOKB" id="slcModalOrganization" style="width: 250px; text-align:center" name="organizationOKB[]" title="Organization">' +
+            '<select class="select2 organizationOKB slcModalOrganization" id="slcModalOrganization" style="width: 250px; text-align:center" name="organizationOKB[]" required title="Organization">' +
             '<option></option>' +
             '</select>' +
             '</div>' +
@@ -669,7 +720,7 @@ $(document).ready(function () {
             '<img style="width:50px" src="' + baseurl + 'assets/img/gif/loading5.gif"/>' +
             '</div>' +
             '<div class="viewLocationOKB">' +
-            '<select class="select2 locationOKB" id="slcLocation" style="width: 250px; text-align:center" name="locationOKB[]" title="Location">' +
+            '<select class="select2 locationOKB slcLocation" id="slcLocation" style="width: 250px; text-align:center" name="locationOKB[]" required title="Location>' +
             '<option></option>' +
             '</select>' +
             '</div>' +
@@ -1100,7 +1151,8 @@ $(document).ready(function () {
     });
 
     $('.slcTindakanOKB').select2({
-        placeholder: '--tindakan untuk semua yang ditandai--'
+        placeholder: '--tindakan untuk semua yang ditandai--',
+        minimumResultsForSearch: -1,
     });
 
     $(document).on('click','.btnOKBApproverAct', function () {
@@ -1229,6 +1281,89 @@ $(document).ready(function () {
                 }
             });
         }
+    })
+
+    $(document).on('click', '.btnOKBRejectOrder', function () {
+        let person_id = $('.txtOKBPerson_id').val();
+        let order_id = $(this).parentsUntil('tbody').find('.tdOKBListOrderId').text();
+        Swal.fire({
+            title: 'Apakah anda yakin?',
+            text: "Order ini akan di reject!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, Reject!'
+        }).then((result) => {
+            if (result.value) {
+                (async function () {
+                    let { value: reason, dismiss } = await Swal.fire({
+                        text: 'Silahkan berikan alasan anda .',
+                        input: 'textarea',
+                        inputPlaceholder: 'Alasan anda...',
+                        inputAttributes: {
+                            'aria-label': 'Alasan anda...'
+                        },
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Ok',
+                        showCloseButton: true
+                    });
+
+                    if (dismiss != 'close') {
+                        if (reason == null || reason == '') {
+                            Swal.fire({
+                                customClass: 'swal-font-large',
+                                type: 'error',
+                                title: 'Gagal',
+                                text: 'Alasan tidak boleh kosong!',
+                            });
+                        } else {
+                            Swal.fire({
+                                allowOutsideClick: false,
+                                title: "Mohon menunggu",
+                                html: "Sedang proses reject order...",
+                                onBeforeOpen: () => {
+                                    Swal.showLoading();
+                                },
+                            });
+                            console.log(person_id);
+                            console.log(order_id);
+                            console.log(reason);
+                            $.ajax({
+                                type: "POST",
+                                url: baseurl + 'OrderKebutuhanBarangDanJasa/Approver/rejectOrderAfterApproved',
+                                data: {
+                                    order_id: order_id,
+                                    person_id: person_id,
+                                    note: reason
+                                },
+                                success: function (response) {
+                                    console.log(response)
+                                    if (response == 1) {
+                                        Swal.fire({
+                                            type: 'success',
+                                            title: 'Berhasil',
+                                            text: 'Order berhasil di reject',
+                                        }).then(() => {
+                                            location.reload();
+                                        })
+                                        $('#modalReasonRejectOrderOKB').modal('hide');
+                                    } else {
+                                        Swal.fire({
+                                            type: 'error',
+                                            title: 'Gagal',
+                                            text: 'Order gagal di reject',
+                                        })
+                                    };
+                                    $('.tblOKBOrderList').DataTable().draw();
+                                }
+                            });
+                        };
+                    };
+                })()
+            }
+        })
     })
 
     $('.tblOKBOrderListApprover').DataTable({
@@ -1753,7 +1888,20 @@ $(document).ready(function () {
         scrollY: "370px",
         scrollX: true,
         scrollCollapse: true,
-        fixedColumns:   {
+        fixedColumns: {
+            leftColumns: 5
+        },
+        columnDefs: [
+            { width: 196, targets: 8 },
+            { width: 150, targets: 10 }
+        ]
+    });
+
+    var tableOKBPengorderAdmin = $('.tblOKBOrderListPengorderAdmin').DataTable({
+        scrollY: "370px",
+        scrollX: true,
+        scrollCollapse: true,
+        fixedColumns: {
             leftColumns: 5
         },
         columnDefs: [
@@ -2087,8 +2235,8 @@ $(document).ready(function () {
         $('.mdlUbahDeskripsiApproverOKB').modal('show');
         $('.txtEditDescBeforeOKB').val(desc);
         $('.txtEditDescOKB').val(desc);
-
-        $(document).on('click','.btnActUbahDescOKB',function () {
+        $(document).on('click', '.btnActUbahDescOKB', function () {
+            $(document).off('click', '.btnActUbahDescOKB')
             var desc2 = $('.txtEditDescOKB').val();
 
             if (desc2 != desc) {
@@ -2130,7 +2278,8 @@ $(document).ready(function () {
         $('.txtEditOrderPurpBeforeOKB').val(order_purpose);
         $('.txtEditOrderPurpOKB').val(order_purpose);
 
-        $(document).on('click','.btnActUbahOrderPurpOKB', function () {
+        $(document).on('click', '.btnActUbahOrderPurpOKB', function () {
+            $(document).off('click', '.btnActUbahOrderPurpOKB');
             var order_purpose2 = $('.txtEditOrderPurpOKB').val();
 
             if (order_purpose2 != order_purpose) {
@@ -2180,7 +2329,8 @@ $(document).ready(function () {
         $('.txtEditQtyOrderOKB').val(qty);
         $('.OKBafterUOM').html(uom);
 
-        $(document).on('click','.btnActUbahQtyOrderOKB', function () {
+        $(document).on('click', '.btnActUbahQtyOrderOKB', function () {
+            $(document).off('click', '.btnActUbahQtyOrderOKB');
             var qty2 = $('.txtEditQtyOrderOKB').val();
 
             if (qty2 != qty) {
@@ -2331,4 +2481,64 @@ $(document).ready(function () {
 
     $('[data-toggle="tooltip"]').tooltip();
 
+
+    $('.selectOKBLOVListData').select2({
+        placeholder: "Filter List Data",
+    }).on('select2:select', () => {
+        let filter = $('.selectOKBLOVListData').val();
+        console.log(filter);
+        $.ajax({
+            type: 'POST',
+            dataType: 'HTML',
+            url: baseurl + 'OrderKebutuhanBarangDanJasa/Requisition/ListData',
+            data: {
+                'filter': filter
+            }
+        }).done(response => {
+            tableOKBPengorder.destroy();
+            $('.tblOKBOrderListPengorder').find('tbody').html(response);
+            tableOKBPengorder = $('.tblOKBOrderListPengorder').DataTable({
+                scrollY: "370px",
+                scrollX: true,
+                scrollCollapse: true,
+                fixedColumns: {
+                    leftColumns: 5
+                },
+                columnDefs: [
+                    { width: 196, targets: 8 },
+                    { width: 150, targets: 10 }
+                ]
+            });
+        })
+    })
+
+    $('.selectOKBLOVListDataAdmin').select2({
+        placeholder: "Filter List Data",
+    }).on('select2:select', () => {
+        let filter = $('.selectOKBLOVListDataAdmin').val();
+        console.log(filter);
+        $.ajax({
+            type: 'POST',
+            dataType: 'HTML',
+            url: baseurl + 'OrderKebutuhanBarangDanJasa/Requisition/ListDataAdmin',
+            data: {
+                'filter': filter
+            }
+        }).done(response => {
+            tableOKBPengorderAdmin.destroy();
+            $('.tblOKBOrderListPengorderAdmin').find('tbody').html(response);
+            tableOKBPengorderAdmin = $('.tblOKBOrderListPengorderAdmin').DataTable({
+                scrollY: "370px",
+                scrollX: true,
+                scrollCollapse: true,
+                fixedColumns: {
+                    leftColumns: 5
+                },
+                columnDefs: [
+                    { width: 196, targets: 8 },
+                    { width: 150, targets: 10 }
+                ]
+            });
+        })
+    })
 })

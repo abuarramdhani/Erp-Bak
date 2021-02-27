@@ -4,8 +4,8 @@
 		text-decoration: underline;
 	}
 </style>
-<label><?= $jumlah['sudah'] ?> Seksi Tersetting COA /</label>
-<label id="mcconhover" style="color: red; cursor: pointer;"><?= $jumlah['semua'] ?> Seksi Belum Tersetting</label>
+<label><?= $sudah ?> Seksi Tersetting COA /</label>
+<label id="mcconhover" style="color: red; cursor: pointer;"><?= $belum ?> Seksi Belum Tersetting</label>
 <table class="table table-bordered table-striped" id="mcc_tbl_list">
 	<thead class="bg-primary">
 		<th width="5%">No</th>

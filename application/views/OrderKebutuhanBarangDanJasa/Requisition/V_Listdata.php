@@ -86,6 +86,25 @@
                                     <input class="form-control" id="txtOKBSectionOrderRequestor" name="txtOKBSectionOrderRequestor" value="<?php echo $pengorder[0]['section_name']?>" readonly>
                                 </div>
                             </div>
+                        </div> <br>
+
+                        <div class="form-group">
+                            <label for="selectOKBLOVListData" class="col-sm-2 control-label" style="font-weight:normal">Filter List Data</label>
+                            <div class="col-sm-3">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i style="width:15px;" class="fa fa-filter"></i></span>
+                                    <select class="form-control select2 selectOKBLOVListData" id="selectOKBLOVListData" name="selectOKBLOVListData">
+                                        <option value=""></option>
+                                        <option value="wipapproveatasan">WIP Approve Atasan</option>
+                                        <option value="wipreleasepuller">WIP Release Puller</option>
+                                        <option value="wipapprovepembelian">WIP Approve Pembelian</option>
+                                        <option value="fullapprove">Full Approve</option>
+                                        <option value="rejectbypembelian">Reject by Pembelian</option>
+                                        <option value="rejectbyatasan">Reject by Atasan/Pengelola</option>
+                                        <option value="showall">Show All</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div> <br> <br>
 
                         <div class="box-body table-responsive no-padding">
@@ -114,9 +133,7 @@
                                         </thead>
                                         <tbody>
                                             <?php $no=0; foreach ($listOrder as $key => $list) { $no++; ?>
-                                            <tr>
-                                                <td><?php echo $no; ?></td>
-                                                <?php if ($list['URGENT_FLAG']=='Y' && $list['IS_SUSULAN'] != 'Y') {
+                                            <?php if ($list['URGENT_FLAG']=='Y' && $list['IS_SUSULAN'] != 'Y') {
                                                         $flag = 'label-danger';
                                                         $tag = 'urgent';
                                                     }else if ($list['URGENT_FLAG']=='N' && $list['IS_SUSULAN'] != 'Y'){
@@ -127,6 +144,8 @@
                                                         $tag = 'emergency';
                                                     }
                                                     ?>
+                                            <tr>
+                                                <td><?php echo $no; ?></td>
                                                 <td><span class="tdOKBListOrderId" style="display: none;"><?php echo $list['ORDER_ID']; ?></span><button type="button" class="btn btn-sm btn-default btnOKBInfoPR"><?php echo $list['ORDER_ID']; ?></button></td>
                                                 <td><?= $list['NATIONAL_IDENTIFIER'].', '.$list['FULL_NAME']; ?></td>
                                                 <td><?php echo date("d-M-Y",strtotime($list['ORDER_DATE'])); ?><br><label class="label <?= $flag; ?>"><?= $tag; ?></label></td>
@@ -139,26 +158,20 @@
                                                 <td><?php echo date("d-M-Y", strtotime($list['NEED_BY_DATE'])); ?></td>
                                                 <td>Alasan Order :<?php echo $list['ORDER_PURPOSE']; ?><br>Alasan Urgensi : <?php echo $list['URGENT_REASON']; ?></td>
                                                 <td><?php echo $list['NOTE_TO_PENGELOLA']; ?></td>
-                                                <?php if($list['LAST_JUDGEMENT'] == 'A'){
-                                                    $order_class = 'approved';
-                                                    $status      = 'Order Approved';
-                                                    $icon_class  = 'fa fa-check';
-                                                    $explain     = $list['LAST_JUDGEMENT_BY'] . ' telah memberi keputusan Approved pada order ini';
-                                                } else if ($list['LAST_JUDGEMENT'] == 'R') {
-                                                    $order_class = 'rejected';
-                                                    $status      = 'Order Rejected';
-                                                    $icon_class  = 'fa fa-times-circle-o';
-                                                    $explain     = $list['LAST_JUDGEMENT_BY'] . ' telah memberi keputusan Rejected pada order in';
-                                                } else {
-                                                    $order_class = 'waiting';
-                                                    $status      = 'Sedang Menunggu Keputusan';
-                                                    $icon_class  = 'fa fa-clock-o';
-                                                    $explain     = '';
-                                                }
-                                                ?>
-                                                <td class="btnOKBListOrderHistory">
-                                                    <span class="<?php echo $order_class ?>"><label class="control-label"><i class="<?php echo $icon_class ?>"></i><b><?php echo $status ?> </b></label><br> <?php echo $explain  ?> </span>
-                                                </td>
+                                                <?php if ($list['ORDER_STATUS_ID'] == '2') { 
+                                                        $status = "WIP APPROVE ORDER";
+                                                    }else if ($list['ORDER_STATUS_ID'] == '3') {
+                                                        $status = "ORDER APPROVED";
+                                                    }else if ($list['ORDER_STATUS_ID'] == '4') {
+                                                        $status = "REJECTED ORDER";
+                                                    }else if ($list['ORDER_STATUS_ID'] == '6') {
+                                                        $status = "WIP APPROVE PEMBELIAN";
+                                                    }else if ($list['ORDER_STATUS_ID'] == '7') {
+                                                        $status = "APPROVED PEMBELIAN";
+                                                    }else if ($list['ORDER_STATUS_ID'] == '8') {
+                                                        $status = "REJECTED PEMBELIAN";
+                                                    } ?>
+                                                <td><button type="button" class="btn btn-info btnOKBListOrderHistory"><?php echo $status; ?></button></td>
                                                 <td></td>
                                                 <!-- <td><button type="button" class="btn btn-danger btnCancelOKB"><i class="fa fa-close"></i> Cancel</button></td> -->
                                             </tr>

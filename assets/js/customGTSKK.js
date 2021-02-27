@@ -1833,6 +1833,9 @@ function attachRowObservation() {
 		<input type="checkbox" name="checkBoxParalel[${indx}]" value="PARALEL" class="checkBoxParalel" onchange="//chckParalel(this)">
 		</td>
 		<td>
+			<input type="number" class="form-control" style="width: 70px;" name="start_time_together[]" value="">
+		</td>
+		<td>
 		<select id="slcJenis_'+nomor+'" onchange="myFunctionTSKK(this)" name="slcJenisProses[]" class="form-control select4" id="" style="width:100%;" title="Jenis Proses" >';
 		<option value=""> </option>';
 		<option value="MANUAL" id="manual"> MANUAL </option>';

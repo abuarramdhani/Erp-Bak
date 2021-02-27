@@ -53,7 +53,7 @@ class M_tukarshiftdanabsenhariini extends CI_Model
       on b.kodesie = c.kodesie
       where a.status = '02'
       and a.tanggal = current_date  
-      and a.approve_timestamp = current_date 
+      and a.approve_timestamp::date = current_date 
       order by approve_timestamp desc  ";
     return $this->personalia->query($sql)->result_array();
   }

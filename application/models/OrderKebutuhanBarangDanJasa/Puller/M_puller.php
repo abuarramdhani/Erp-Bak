@@ -1,5 +1,5 @@
 <?php
-Defined('BASEPATH') or exit('No Direct Script Access Allowed');
+defined('BASEPATH') or exit('No Direct Script Access Allowed');
 
 class M_puller extends CI_Model
 {
@@ -168,6 +168,48 @@ class M_puller extends CI_Model
         AND msib.BUYER_ID = ppfbuyer.PERSON_ID
         AND ooh.pre_req_id = '$pre_req_id'");
         return $query->result_array();
+    }
+
+    /**
+     * @param   string  ENUM $status 'SUSULAN', 'URGENT', 'NORMAL' or 'ALL'
+     * @return  int     Outstand order count
+     */
+    public function getUnapprovedOrderCount($no_induk, $status)
+    {
+        return (int) $this->oracle
+            ->query(
+                "SELECT
+                    APPS.KHS_OUTSTAND_OKBJ_PULLER_TOT (?, ?) AS \"count\"
+                FROM
+                    DUAL",
+                [
+                    $no_induk,
+                    $status,
+                ]
+            )
+            ->row()
+            ->count;
+    }
+
+    /**
+     * @param   string  ENUM $status 'SUSULAN', 'URGENT', 'NORMAL' or 'ALL'
+     * @return  int     Judged order count
+     */
+    public function getJudgedOrderCount($no_induk, $status)
+    {
+        return (int) $this->oracle
+            ->query(
+                "SELECT
+                    APPS.KHS_JUDGED_OKBJ_PULLER_TOT (?, ?) AS \"count\"
+                FROM
+                    DUAL",
+                [
+                    $no_induk,
+                    $status,
+                ]
+            )
+            ->row()
+            ->count;
     }
 
 }

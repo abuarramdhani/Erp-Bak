@@ -117,9 +117,7 @@
                                                     <th>Keterangan</th>
                                                     <th>Tanggal Cancel</th>
                                                     <th>Jumlah Coly</th>
-                                                    <?php if ($user != 'K1778') { ?>
                                                     <th>Edit Coly</th>
-                                                    <?php }?>
                                                 </tr>
                                             </thead>
                                         </table>
@@ -145,11 +143,13 @@
 			</div>
 			<div class="modal-body">
             <div id="datacoly2"></div>
+            <?php if ($user_arsip != 'user_arsip') { ?>
             <div class="panel-body">
                 <div class="col-md-12 text-center">
                     <button type="button" class="btn btn-danger" data-dismiss="modal" aria-label="Close">SAVE</button>
                 </div>
             </div>
+            <?php } ?>
 		    </div>
             <div class="modal-footer">
 		</div>

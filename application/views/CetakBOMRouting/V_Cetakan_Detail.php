@@ -1,15 +1,15 @@
-<?php 
+<?php
 	// echo "<pre>";
 	// print_r($datapdf);
 	// exit();
 ?>
-<style>           
-	 #page-border{                
-		 width: 100%;                
-		 height: 100%;                
-		 border:2px solid black;   
-		 padding: 5px;         
-		}       
+<style>
+	 #page-border{
+		 width: 100%;
+		 height: 100%;
+		 border:2px solid black;
+		 padding: 5px;
+		}
 </style>
 <div style="padding-bottom: 46px;">
 <table  style="border: 2px solid black; border-collapse: collapse; width: 100%; margin:7px"  >
@@ -27,7 +27,7 @@
 	<tr>
 		<td style="border: 1px solid black;border-collapse: collapse; text-align: left;padding-left: 7px;font-size: 12px">COMPONENT NAME</td>
 		<td style="border: 1px solid black;border-collapse: collapse; text-align: left;padding-left: 7px;font-size: 12px"><?= $desckomp?></td>
-		
+
 	</tr>
 	<tr>
 		<td style="border: 1px solid black;border-collapse: collapse; text-align: left;padding-left: 7px;font-size: 12px">ORGANIZATION</td>
@@ -48,7 +48,7 @@
 
 			<th rowspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;width: 7%">Machine Qty</th>
 			<th rowspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;width: 7%">Operator Qty</th>
-			
+
 			<th rowspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;width: 10%">Usage Rate<br>(Hours)</th>
 			<th rowspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;width: 10%">Cycle Time<br>(Seconds)</th>
 			<th colspan="3" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;width: 10%">Target</th>
@@ -61,7 +61,7 @@
 			<th style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;width: 5%">Status</th>
 			<th style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;width: 7%">Last<br> Update</th>
 		</tr>
-		<?php $b=1;  $no=1; 
+		<?php $b=1;  $no=1;
 		$alter = '#$%';
         $opr_no = '#$%';
         $kode_pros = '#$%';
@@ -75,29 +75,29 @@
 		$routing_seq = '#$%';
 		$detail = '#$%';
 		$opr_seq = '#$%';
-		$opr_seq1 = '#$%'; 
-		$opr_seq2 = '#$%'; 
-		$opr_seq3 = '#$%'; 
-		$opr_seq4 = '#$%'; 
-		$opr_seq5 = '#$%'; 
-		$opr_seq6 = '#$%'; 
-		$opr_seq7 = '#$%'; 
-		$opr_seq8 = '#$%'; 
-		$opr_seq9 = '#$%';  
-		$opr_seq10 = '#$%';  
+		$opr_seq1 = '#$%';
+		$opr_seq2 = '#$%';
+		$opr_seq3 = '#$%';
+		$opr_seq4 = '#$%';
+		$opr_seq5 = '#$%';
+		$opr_seq6 = '#$%';
+		$opr_seq7 = '#$%';
+		$opr_seq8 = '#$%';
+		$opr_seq9 = '#$%';
+		$opr_seq10 = '#$%';
 		for ($i=0; $i < sizeof($datapdf); $i++) {
-			//  if ($i != 0 && $datapdf[$i]['RESOURCE_CODE'] == $datapdf[$i-1]['RESOURCE_CODE']) {  
+			//  if ($i != 0 && $datapdf[$i]['RESOURCE_CODE'] == $datapdf[$i-1]['RESOURCE_CODE']) {
 			 		// $b+1;
-			 	?>      
-			<?php 	
+			 	?>
+			<?php
 				// DETAIL
 					//P1
                     if ($datapdf[$i]['P1'] != null) {
                         $p1 = '<br>P1: '.$datapdf[$i]['P1'];
                     } else {
                         $p1 = '';
-                    }	
-                    //P2	
+                    }
+                    //P2
                     if ($datapdf[$i]['P2'] != null) {
                         $p2 = '<br>P2: '.$datapdf[$i]['P2'];
                     } else {
@@ -124,7 +124,7 @@
 
                     $detailproses[$i] = $p1.$p2.$p3.$p4.$p5;
 		    ?>
-			  <!-- <tr> 
+			  <!-- <tr>
 			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"></td>
 			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['NO_MESIN']?></td>
 			  </tr>    -->
@@ -135,7 +135,7 @@
 					Primary
 				<?php } else { ?>
 					<?=$datapdf[$i]['ALTERNATE_ROUTING']?>
-				<?php }?>	
+				<?php }?>
 			</td>
 			<td  style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['OPR_NO']?></td>
 			<td  style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['KODE_PROSES']?></td>
@@ -147,14 +147,14 @@
 			<td  style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['USAGE_RATE_OR_AMOUNT']?></td>
 			<td  style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['CYCLE_TIME']?></td>
 			<td  style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['TARGET']?></td>
-			<td  style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"></td>   
+			<td  style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"></td>
 			<td  style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['LAST_UPDATE_DATE']?></td> -->
 				<!----ALT------>
-					<?php 
+					<?php
 						if (sizeof($arrayR['ALT'][$datapdf[$i]['ALTERNATE_ROUTING']]) <= sizeof($arrayR['ROUTING_SEQUENCE_ID'][$datapdf[$i]['ROUTING_SEQUENCE_ID']])) {
 							$mergeALT = sizeof($arrayR['ALT'][$datapdf[$i]['ALTERNATE_ROUTING']]);
 							if ($alter != $datapdf[$i]['ALTERNATE_ROUTING']) {
-					?> 
+					?>
 								<td rowspan="<?php echo $mergeALT;?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$no?></td>
 								<td rowspan="<?php echo $mergeALT;?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['ALTERNATE_ROUTING']?></td>
 					<?php
@@ -163,7 +163,7 @@
 						}else{
 							$mergeALT = sizeof($arrayR['ROUTING_SEQUENCE_ID'][$datapdf[$i]['ROUTING_SEQUENCE_ID']]);
 							if ($routing_seq != $datapdf[$i]['ROUTING_SEQUENCE_ID']) {
-					?> 
+					?>
 								<td rowspan="<?php echo $mergeALT;?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$no?></td>
 								<td rowspan="<?php echo $mergeALT;?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['ALTERNATE_ROUTING']?></td>
 					<?php
@@ -231,7 +231,7 @@
 							}
 						}
 				  	?>
-			
+
 			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"></td>
 			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf[$i]['NO_MESIN']?></td>
 				<!----Machine QT------>
@@ -299,7 +299,7 @@
 							if ($opr_seq6 != $datapdf[$i]['OPERATION_SEQUENCE_ID']) {
 					?>
 							<td rowspan="<?php echo $mergeUR;?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px">
-							<?php 
+							<?php
 								echo $datapdf[$i]['USAGE_RATE_OR_AMOUNT']
 								// $ruMinutes = $datapdf[$i]['USAGE_RATE_OR_AMOUNT']*60;
 								// if (strpos($ruMinutes,'.') == null) {
@@ -341,7 +341,7 @@
 							if ($tgt != $datapdf[$i]['TARGET']) {
 					?>
 							<td rowspan="<?php echo $mergeTGT;?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=floor($datapdf[$i]['TARGET'])?></td>
-							<td rowspan="<?php echo $mergeTGT;?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"></td>
+							<td rowspan="<?php echo $mergeTGT;?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?= $datapdf[$i]['STATUS_TARGET'] ?></td>
 					<?php
 								$tgt = $datapdf[$i]['TARGET'];
 							}
@@ -350,7 +350,7 @@
 							if ($opr_seq8 != $datapdf[$i]['OPERATION_SEQUENCE_ID']) {
 					?>
 							<td rowspan="<?php echo $mergeTGT;?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=floor($datapdf[$i]['TARGET'])?></td>
-							<td rowspan="<?php echo $mergeTGT;?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"></td>
+							<td rowspan="<?php echo $mergeTGT;?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?= $datapdf[$i]['STATUS_TARGET'] ?></td>
 					<?php
 								$opr_seq8 = $datapdf[$i]['OPERATION_SEQUENCE_ID'];
 							}
@@ -381,7 +381,7 @@
 					$dtl = str_replace("#$%","",$datapdf[$i]['DETAIL']);
 					$k = 1;
 					while (strpos($dtl, '#') !== false)
-					{	
+					{
 						if ($k === 1) {
 							$strt = 'P';
 						} else {
@@ -413,17 +413,17 @@
 						}
 				  	?>
 			<?php
-				
+
 			?>
 			<!-- <td  style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$detailproses[$i]?></td> -->
-			
+
 		</tr>
 		<?php $no++; } ?>
-	
-		
+
+
 </table>
 
-<?php 
+<?php
 	if (sizeof($datapdf) > 50 || sizeof($datapdf2) > 50 || (sizeof($datapdf)+sizeof($datapdf2)) > 50) {
 		echo "<pagebreak>";
 	}
@@ -472,8 +472,8 @@
 			</tr>
 			<?php } ?>
 		<?php } ?>
-			
-			
+
+
 
 		</table>
 		<?php if ($i != (sizeof($tabel)-1)) {
@@ -499,12 +499,12 @@
 			<th style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;width: 10%">SubInv Picklist</th>
 			<th style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;width: 10%">Locator Picklist</th>
 		</tr>
-		<?php $nom=1; 
+		<?php $nom=1;
 		$alter2 = '#$%';
 		$bsi = '#$%';
 		$count = 0;
 		$step = 0;
-		for ($i=0; $i < sizeof($datapdf2); $i++) { 
+		for ($i=0; $i < sizeof($datapdf2); $i++) {
 			?>
 		<!-- <tr>
 			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf2[$i]['NUM']?></td>
@@ -523,14 +523,14 @@
 
 			<tr>
 		<!----ALT------>
-			<?php 
+			<?php
 			if ($datapdf2[$i]['ALT'] == null) {
 				$datapdf2[$i]['ALT'] = 'Primary';
 			}
 						if (sizeof($arrayR2['ALT'][$datapdf2[$i]['ALT']]) <= sizeof($arrayR2['BILL_SEQUENCE_ID'][$datapdf2[$i]['BILL_SEQUENCE_ID']])) {
 							$mergeALT2 = sizeof($arrayR2['ALT'][$datapdf2[$i]['ALT']]);
 							if ($alter2 != $datapdf2[$i]['ALT']) {
-					?> 
+					?>
 								<td rowspan="<?=$mergeALT2 ?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$nom?></td>
 								<td rowspan="<?=$mergeALT2 ?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf2[$i]['ALT']?></td>
 					<?php
@@ -539,7 +539,7 @@
 						}else{
 							$mergeALT2 = sizeof($arrayR2['BILL_SEQUENCE_ID'][$datapdf2[$i]['BILL_SEQUENCE_ID']]);
 							if ($bsi != $datapdf2[$i]['BILL_SEQUENCE_ID']) {
-					?> 
+					?>
 								<td rowspan="<?=$mergeALT2 ?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$nom?></td>
 								<td rowspan="<?=$mergeALT2 ?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf2[$i]['ALT']?></td>
 					<?php
@@ -548,7 +548,7 @@
 						}
 					?>
 		<!----ALT------>
-		
+
 
 			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf2[$i]['NUM']?></td>
 			<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?=$datapdf2[$i]['OPR_NUM']?></td>

@@ -4,6 +4,11 @@ $(document).ready(function () {
     scrollX: true,
     scrollCollapse: true,
   });
+  var tableDSP = $("#tblRejectedListApproverDSP").DataTable({
+    scrollY: "300px",
+    scrollX: true,
+    scrollCollapse: true,
+  });
 
   $("#tblMonitoringDSP").DataTable({
     scrollY: "300px",
@@ -177,6 +182,64 @@ $(document).ready(function () {
 
                 $(".tempatTabelDPS").html(response);
                 $(".tblListBarangDPS").DataTable();
+
+                function cekSisaQty() {
+                  // Cek jika ada sisa yang minus
+                  let allocate = $(".tempatTabelDPS tbody tr")
+                    .toArray()
+                    .map((e) => $(e).find(".allocateQty").html());
+
+                  let sisa = allocate.filter((a) => a < 0);
+
+                  // Cek jika ada input yang masih kosong
+                  let kosong = $(".tempatTabelDPS tbody tr")
+                    .toArray()
+                    .map((e) => $(e).find(".noReqQty").val());
+
+                  // console.log(`sisa yang minus : ${sisa.length}`);
+                  // console.log(`input kosong : ${kosong.includes("")}`);
+
+                  if (kosong.includes("") || sisa.length > 0) {
+                    $(".btnCrateDPBDPS").prop("disabled", true);
+                  } else {
+                    $(".btnCrateDPBDPS").prop("disabled", false);
+                  }
+                }
+                cekSisaQty();
+
+                // Jika input kosong tampil spbQty
+                $(".noReqQty").focus(function () {
+                  let spbQty = parseInt($(this).parent().prev().html());
+                  let atrQty = parseInt($(this).parent().next().html());
+                  let sisaQty = $(this).parent().next().next();
+
+                  if (this.value == 0) {
+                    this.value = spbQty;
+                    sisaQty.html(parseInt(atrQty) - parseInt(this.value));
+                  } else {
+                    sisaQty.html(parseInt(atrQty) - parseInt(this.value));
+                  }
+                  cekSisaQty();
+                });
+
+                // Jika mengubah nilai reqQty
+                $(".noReqQty").keyup(function () {
+                  let spbQty = parseInt($(this).parent().prev().html());
+                  let atrQty = parseInt($(this).parent().next().html());
+                  let sisaQty = $(this).parent().next().next();
+
+                  if (this.value == 0) {
+                    sisaQty.html("");
+                  } else {
+                    sisaQty.html(parseInt(atrQty) - parseInt(this.value));
+                  }
+
+                  if (this.value > spbQty) {
+                    this.value = spbQty;
+                    sisaQty.html(parseInt(atrQty) - parseInt(this.value));
+                  }
+                  cekSisaQty();
+                });
               },
             });
           }
@@ -185,80 +248,110 @@ $(document).ready(function () {
     }
   });
 
-  $(document).on("click", ".btnCrateDPBDPS", function () {
+  $(".form-horizontal").on("click", ".btnCrateDPBDPS", function () {
     var noDPB = $(".noDODSP").val();
     var jenis = $(".jenisDPS").val();
     var forward = $(".forwardDPS").val();
     var keterangan = $(".keteranganDPS").val();
 
+    let lines = $(".tempatTabelDPS tbody tr")
+      .toArray()
+      .map((e) => ({
+        lineId: $(e).find(".lineid").html(),
+        reqQty: $(e).find(".noReqQty").val(),
+        allocateQty:
+          parseInt($(e).find(".atrQty").html()) -
+          parseInt($(e).find(".noReqQty").val()),
+      }));
+      
     $.ajax({
       type: "POST",
-      url: baseurl + "DPBSparepart/Admin/cekStok",
+      url: baseurl + "DPBSparepart/Admin/cekStatusLine",
       data: { noDPB },
       dataType: "JSON",
       success: function (response) {
-        if (response[0]["HASIL"] == "0") {
+        if (response[0]["HASIL_LINE"] == "0") {
           $.ajax({
-            type: "POST",
-            url: baseurl + "DPBSparepart/Admin/cekStatusLine",
-            data: { noDPB },
-            dataType: "JSON",
-            success: function (response) {
-              if (response[0]["HASIL_LINE"] == "0") {
-                $.ajax({
-                  beforeSend: () => {
-                    Swal.fire({
-                      customClass: "swal-font-small",
-                      title: "Loading",
-                      onBeforeOpen: () => {
-                        Swal.showLoading();
-                      },
-                      allowOutsideClick: false,
-                    });
-                  },
-                  type: "POST",
-                  url: baseurl + "DPBSparepart/Admin/createDPB",
-                  data: { noDPB, jenis, forward, keterangan },
-                  success: function (response) {
-                    swal.close();
-                    swal.fire({
-                      type: "success",
-                      title: "Berhasil!",
-                    });
-                    $(".tempatTabelDPS").html("");
-                    $(".jenisDPS").val("").trigger("change.select2");
-                    $(".forwardDPS").val("").trigger("change.select2");
-                    $(".keteranganDPS").val("");
-                    $(".noDODSP").val("");
-                    $(".alamatDSP").val("");
-                  },
-                });
-              } else if (response[0]["HASIL_LINE"] == "99999") {
-                swal.fire({
-                  type: "error",
-                  title: "Alamat belum lengkap!",
-                });
-              } else if (response[0]["HASIL_LINE"] == "77777") {
-                swal.fire({
-                  type: "error",
-                  title: "DO/SPB line bukan SP/YSP!",
-                });
-              } else {
-                swal.fire({
-                  type: "error",
-                  title:
-                    "DO/SPB sudah transact sebagian silahkan masukan nomor lain!",
-                });
-              }
+            beforeSend: () => {
+              Swal.fire({
+                customClass: "swal-font-small",
+                title: "Loading",
+                onBeforeOpen: () => {
+                  Swal.showLoading();
+                },
+                allowOutsideClick: false,
+              });
             },
+            type: "POST",
+            url: baseurl + "DPBSparepart/Admin/createDPB",
+            data: { noDPB, jenis, forward, keterangan, lines },
+            success: function (response) {
+              swal.close();
+              swal.fire({
+                type: "success",
+                title: "Berhasil!",
+              });
+              $(".tempatTabelDPS").html("");
+              $(".jenisDPS").val("").trigger("change.select2");
+              $(".forwardDPS").val("").trigger("change.select2");
+              $(".keteranganDPS").val("");
+              $(".noDODSP").val("");
+              $(".alamatDSP").val("");
+            },
+          });
+        } else if (response[0]["HASIL_LINE"] == "99999") {
+          swal.fire({
+            type: "error",
+            title: "Alamat belum lengkap!",
+          });
+        } else if (response[0]["HASIL_LINE"] == "77777") {
+          swal.fire({
+            type: "error",
+            title: "DO/SPB line bukan SP/YSP!",
           });
         } else {
           swal.fire({
             type: "error",
-            title: "Stok tidak mencukupi!",
+            title:
+              "DO/SPB sudah transact sebagian silahkan masukan nomor lain!",
           });
         }
       },
     });
   });
+
+  $('#tblRejectedListApproverDSP').on('click', '.btnResubmit', function () {
+    let id = $(this).attr("data-id");
+    let tr = $(this).parent().parent();
+
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "Anda yakin akan Re-submit SPB/DO ini?",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Ya',
+      cancelButtonText: 'Tidak'
+    }).then((result) => {
+      if (result.value == true) {
+        $.ajax({
+          type: 'POST',
+          url: baseurl + "DPBSparepart/Admin/reSubmitDPB",
+          data: { id },
+          success: function() {
+            Swal.fire(
+              'Re-submit!',
+              'Request SPB/DO berhasil di submit ulang',
+              'success'
+            )
+            tr.hide();
+          }
+        })
+      } else if(result.dismiss == 'cancel') {
+        console.log('Batal reSubmit')
+      }
+    })
+  });
+
 });

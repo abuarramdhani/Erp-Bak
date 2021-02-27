@@ -52,13 +52,14 @@ class C_PoLogbook extends CI_Controller
             }
         // Jika user adalah admin Po
         } else if (in_array($id_user, $adminPo)) {
-            if($id_user == 'H6634' || $id_user == 'P0384' || $id_user == 'H8409'){
+            // if($id_user == 'H6634' || $id_user == 'P0384' || $id_user == 'H8409'){
+            if($id_user == 'H6634' || $id_user == 'H8409'){
               $data['PoLogbook'] = $this->M_pologbook->getDataPObyNik('B0726');
             } else if($id_user == 'P0603'){
               $data['PoLogbook'] = $this->M_pologbook->getDataPoTeam(['B0794', 'B0868']);
             } else if($id_user == 'P0391') {
               $data['PoLogbook'] = $this->M_pologbook->getDataPoTeam(['B0794', 'B0537']);
-            } else if($id_user == 'P0389') {
+            } else if($id_user == 'P0384') { //P0389
               $data['PoLogbook'] = $this->M_pologbook->getDataPObyNik('B0935');
             } else if($id_user == 'P0608') {
               $data['PoLogbook'] = $this->M_pologbook->getDataPObyNik('B0729');
@@ -207,13 +208,14 @@ class C_PoLogbook extends CI_Controller
           }
         // Jika user adalah admin Po
         } else if (in_array($BuyerNik, $adminPo)) {
-            if($BuyerNik == 'H6634' || $BuyerNik == 'P0384' || $BuyerNik == 'H8409'){
+            // if($BuyerNik == 'H6634' || $BuyerNik == 'P0384' || $BuyerNik == 'H8409'){
+            if($BuyerNik == 'H6634' || $BuyerNik == 'H8409'){
               $data = $this->M_pologbook->getDataPObyNik('B0726');
             } else if($BuyerNik == 'P0603'){
               $data = $this->M_pologbook->getDataPoTeam(['B0794', 'B0868']);
             } else if($BuyerNik == 'P0391') {
               $data = $this->M_pologbook->getDataPoTeam(['B0794', 'B0537']);
-            } else if($BuyerNik == 'P0389') {
+            } else if($BuyerNik == 'P0384') { //P0389
               $data = $this->M_pologbook->getDataPObyNik('B0935');
             } else if($BuyerNik == 'P0608') {
               $data = $this->M_pologbook->getDataPObyNik('B0729');

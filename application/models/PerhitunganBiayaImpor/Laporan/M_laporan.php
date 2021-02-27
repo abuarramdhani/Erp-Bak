@@ -9,10 +9,31 @@ class M_laporan extends CI_Model
         $this->load->database();
     }
     
-    public function getAdditionalCost($reqId)
+    public function getAdditionalCost($reqId, $data_item=null)
     {
         $oracle = $this->load->database('oracle',true);
-        $query = $oracle->query("select * from KHS_BIAYA_IMPOR where REQUEST_ID='$reqId'");
+        if($data_item)
+        {
+            $query = $oracle->query("
+            select
+                data_item.sort_num,
+                kbi.*
+            from
+                khs_biaya_impor kbi,
+                (select
+                    rownum sort_num, 
+                    trim(regexp_substr('$data_item','[^,]+', 1, level) ) item 
+                from dual 
+                connect by regexp_substr('$data_item', '[^,]+', 1, level) is not null
+                order by level) data_item
+            where
+                replace(kbi.deskripsi, '  ', ' ') = replace(data_item.item, '  ', ' ')
+                and kbi.request_id = '$reqId'
+            order by 1
+            ");
+        } else {
+            $query = $oracle->query("select * from KHS_BIAYA_IMPOR where REQUEST_ID='$reqId'");
+        }
         return $query->result_array();
     }
 

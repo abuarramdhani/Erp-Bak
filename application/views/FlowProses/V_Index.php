@@ -7,7 +7,7 @@
 					<div class="row">
 						<div class="col-lg-12">
 							<br />
-							<h2 style="text-align: center;"><b >Flow Proses</b></h2>
+							<h2 style="text-align: center;"><b >Flow Proses v.2.1</b></h2>
 							<h3 style="text-align: center;"><b ><?= date('d M Y')?></b></h3>
 						</div>
 					</div>

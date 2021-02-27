@@ -687,6 +687,16 @@
 														<div class="row mt-10">
 															<div class="col-md-12">
 																<div class="col-md-3">
+																	<label for="">Asal OS</label>
+																</div>
+																<div class="col-md-9">
+																	<input type="text" name="asal_outsourcing" class="form-control">
+																</div>
+															</div>
+														</div>
+														<div class="row mt-10">
+															<div class="col-md-12">
+																<div class="col-md-3">
 																	<button class="btn btn-primary" data-toggle="modal" id="btn-pengaturan" data-target="#modal-work-location">
 																		<i class="ion-android-settings"></i>
 																		<span>Pengaturan</span>
@@ -696,7 +706,7 @@
 																	<p>
 																		<!-- ini nanti pakai alur sendiri -->
 																		Kantor Asal : <span id="kantor_asal_text"></span> <br>
-																		Lokasi Kerja : <span id="lokasi_kerja_text"></span>
+																		Lokasi Kerja : <span id="lokasi_kerja_text"></span> <br>
 																	</p>
 																</div>
 															</div>

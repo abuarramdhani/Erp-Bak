@@ -203,7 +203,7 @@
 				<script src="<?= base_url('assets/js/customFPD.js'); ?>"></script>
 				<script src="<?= base_url('assets/js/customBD.js'); ?>"></script>
 				<script src="<?= base_url('assets/js/customMSB.js'); ?>"></script>
-				<script src="<?= base_url('assets/js/customOKB.js'); ?>"></script>
+				<script src="<?= base_url('assets/js/customOKB.js?version=' . filemtime('assets/js/customOKB.js')) ?>"></script>
 				<script src="<?= base_url('assets/js/customMPL.js'); ?>"></script>
 				<script src="<?= base_url('assets/js/customSMS.js'); ?>"></script>
 				<script src="<?= base_url('assets/js/customPDP.js'); ?>"></script>

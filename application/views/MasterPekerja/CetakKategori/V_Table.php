@@ -68,6 +68,9 @@
             <th class="tglkeluar">Tgl. Keluar</th>
             <th class="sebabklr">Sebab Keluar</th>
             <th class="status_diangkat">Status Diangkat</th>
+            <?php if ($masakerja != ",") {
+                echo '<th>Masa Kerja</th>';
+            } ?>
 
             <th class="statpajak">Status Pajak</th>
             <th class="npwp">NPWP</th>
@@ -369,6 +372,16 @@
                         }
                         if (in_array("ttk.kartu_jaminan_pensiun", $select)) {
                             echo "<td>" . $val['kartu_jaminan_pensiun'] . "</td>";
+                        }
+                        if ($masakerja != ",") {
+                            if (substr($val['noind'], 0, 1) == 'P' or substr($val['noind'], 0, 1) == 'K') {
+                                $s = new DateTime($val['masukkerja']);
+                            } else {
+                                $s = new DateTime($val['diangkat']);
+                            }
+                            $b = new DateTime(date('d-m-Y'));
+                            $interval = date_diff($s, $b)->format('%y Tahun %m Bulan %d Hari');
+                            echo "<td>" . $interval . "</td>";
                         }
 
 

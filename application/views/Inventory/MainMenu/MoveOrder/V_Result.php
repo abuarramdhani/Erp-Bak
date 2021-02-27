@@ -274,7 +274,7 @@
 							<td class="<?= ($vulue['REQUIRED_QUANTITY'] > $vulue['ATR']) ? "bg-danger " : "" ?>"><?= $vulue['REQUIRED_QUANTITY'] ?></td>
 							<td class="<?= ($vulue['REQUIRED_QUANTITY'] > $vulue['ATR']) ? "text-danger text-bold-cuk" : "" ?>"><?= $vulue['ATR'] ?></td>
 							<td ><?= $vulue['MO']?></td>
-							<td class="<?= ($vulue['REQUIRED_QUANTITY'] > $vulue['KURANG']) ? "text-danger text-bold-cuk" : "" ?>"><?= $vulue['KURANG'] ?></td>
+							<td class="<?= ($vulue['REQUIRED_QUANTITY'] > $vulue['KURANG']) ? "bg-danger text-danger text-bold-cuk" : "" ?>"><?= $vulue['KURANG'] ?></td>
 						</tr>
 						<?php 
 							$allNojob[$no][] =  $vulue['WIP_ENTITY_NAME'];

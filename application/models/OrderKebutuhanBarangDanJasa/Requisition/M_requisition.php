@@ -171,7 +171,7 @@ class M_requisition extends CI_Model
     }
 
     //kasie
-    public function getListDataOrder2($noind)
+    public function getListDataOrder2($noind, $where)
     {
         $oracle = $this->load->database('oracle', true);
         $query = $oracle->query("SELECT DISTINCT
@@ -192,6 +192,7 @@ class M_requisition extends CI_Model
             AND ooh.INVENTORY_ITEM_ID = msib.INVENTORY_ITEM_ID
             AND ooh.ORDER_STATUS_ID <> 5
             AND ppf.NATIONAL_IDENTIFIER = '$noind'
+            $where
             ORDER BY ooh.ORDER_ID DESC
             ");
         // $query = $oracle->query("SELECT
@@ -231,39 +232,41 @@ class M_requisition extends CI_Model
         return $query->result_array();
     }
 
-    public function getListDataOrderAdmin($noind)
+    public function getListDataOrderAdmin($noind, $where)
     {
         $oracle = $this->load->database('oracle', true);
         $query = $oracle->query("SELECT
-            ooh.*
-            ,msib.segment1, msib.description
-            ,ppf.national_identifier, ppf.full_name, ppf.attribute3
-            ,(SELECT COUNT (file_name)
-            FROM khs.khs_okbj_order_attachments
-            WHERE order_id = ooh.order_id
-            ) attachment
-            from
-            khs.khs_okbj_order_header ooh
-            ,khs.khs_okbj_approve_hir koah
-            ,per_people_f ppf
-            ,mtl_system_items_b msib
-            ,(select
-            koah1.APPROVER
-            from
-            khs.khs_okbj_approve_hir koah1
-            ,per_people_f ppf1
-            where
-            koah1.PERSON_ID = ppf1.PERSON_ID
-            and koah1.APPROVER_LEVEL = 3
-            and ppf1.NATIONAL_IDENTIFIER = '$noind'
-            ) kasie  
-            where
-            ooh.CREATE_BY = koah.PERSON_ID
-            and koah.APPROVER = kasie.APPROVER
-            and ooh.inventory_item_id = msib.inventory_item_id
-            and ooh.DESTINATION_ORGANIZATION_ID = msib.ORGANIZATION_ID
-            and ooh.order_status_id <> 5
-            and ooh.CREATE_BY = ppf.PERSON_ID");
+                                    ooh.*,
+                                    msib.segment1, msib.description,
+                                    ppf.national_identifier, ppf.full_name, ppf.attribute3,
+                                    (SELECT COUNT (file_name)
+                                    FROM khs.khs_okbj_order_attachments
+                                    WHERE order_id = ooh.order_id
+                                    ) attachment
+                                FROM
+                                    khs.khs_okbj_order_header ooh,
+                                    khs.khs_okbj_approve_hir koah,
+                                    per_people_f ppf,
+                                    mtl_system_items_b msib,
+                                    (SELECT
+                                        koah1.APPROVER
+                                    FROM
+                                        khs.khs_okbj_approve_hir koah1,
+                                        per_people_f ppf1
+                                    WHERE
+                                        koah1.PERSON_ID = ppf1.PERSON_ID
+                                        AND koah1.APPROVER_LEVEL = 3
+                                        AND ppf1.NATIONAL_IDENTIFIER = '$noind'
+                                    ) kasie  
+                                WHERE
+                                    ooh.CREATE_BY = koah.PERSON_ID
+                                    AND koah.APPROVER = kasie.APPROVER
+                                    AND ooh.inventory_item_id = msib.inventory_item_id
+                                    AND ooh.DESTINATION_ORGANIZATION_ID = msib.ORGANIZATION_ID
+                                    AND ooh.order_status_id <> 5
+                                    AND ooh.CREATE_BY = ppf.PERSON_ID
+                                    $where
+        ");
 
         return $query->result_array();
     }

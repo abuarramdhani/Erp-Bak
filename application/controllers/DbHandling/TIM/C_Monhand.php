@@ -1468,7 +1468,8 @@ class C_Monhand extends CI_Controller
     public function updatereject()
     {
         $id = $this->input->post('id');
-        $this->M_dbhandling->updatereject($id);
+        $alasan = $this->input->post('alasan');
+        $this->M_dbhandling->updatereject($id, $alasan);
     }
     public function suggestseksi()
     {

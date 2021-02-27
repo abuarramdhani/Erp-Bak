@@ -841,6 +841,37 @@ $(document).ready(function () {
 		});
 	});
 
+	$(".p2k3_detail_seksi_hitung").click(function () {
+		var ks = $(this).val();
+		$("#surat-loading").attr("hidden", false);
+		$.ajax({
+			url: baseurl + "p2k3adm_V2/Admin/getDetailSeksi",
+			method: "POST",
+			data: { ks: ks },
+			success: function (data) {
+				$("#phone_result_seksi_hitung").html(data);
+				$("#surat-loading").attr("hidden", true);
+				$("#p2k3_detail_seksi_hitung").modal("show");
+				const table = $("#tbl_detailHitungOrderSeksi").DataTable({
+					dom: 'frtp',
+					scrollX: true,
+					scrollY: 400,
+					paging: false,
+					ordering: false,
+					initComplete() {
+						setTimeout(() => {
+							$($.fn.dataTable.tables(true)).DataTable().columns.adjust();
+						}, 800);
+					}
+				})
+			},
+			error: function (xhr, ajaxOptions, thrownError) {
+				$.toaster(xhr + "," + ajaxOptions + "," + thrownError);
+			},
+
+		});
+	});
+
 	$(".p2k3_cek_hitung").click(function () {
 		var pr = $(".p2k3_tanggal_periode").val();
 		var ks = $(".k3_admin_monitorbon").val();

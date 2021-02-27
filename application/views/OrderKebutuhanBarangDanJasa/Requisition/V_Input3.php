@@ -1,8 +1,12 @@
 <style>
-    .slcOKBNewOrderList+.select2-container>.selection>.select2-selection, .slcOKBNewUomList+.select2-container>.selection>.select2-selection{
-        background: #fbfb5966;
-        text-align: left;
-    }
+.slcOKBNewOrderList+.select2-container>.selection>.select2-selection,
+.slcOKBNewUomList+.select2-container>.selection>.select2-selection,
+.slcModalOrganization+.select2-container>.selection>.select2-selection,
+.slcLocation+.select2-container>.selection>.select2-selection {
+    background: #fbfb5966;
+    text-align: left;
+}
+
     .bright-success {
         background-color: #62d19f !important;
     }
@@ -192,7 +196,7 @@
                                                     <img style="width:50px" src="<?php echo base_url().'assets/img/gif/loading5.gif' ?>" />
                                                 </div>
                                                 <div class="viewOrganizationOKB" style="display: block;">
-                                                    <select class="select2 organizationOKB" id="slcModalOrganization" style="width: 250px; text-align:center" name="organizationOKB[]" title="Organization">
+                                                    <select class="select2 organizationOKB slcModalOrganization" id="slcModalOrganization" style="width: 250px; text-align:center;" name="organizationOKB[]" required title="Organization">
                                                         <option></option>
                                                     </select>
                                                 </div>
@@ -206,7 +210,7 @@
                                                     <img style="width:50px" src="<?php echo base_url().'assets/img/gif/loading5.gif' ?>" />
                                                 </div>
                                                 <div class="viewLocationOKB">
-                                                    <select class="select2 locationOKB" id="slcLocation" style="width: 250px; text-align:center" name="locationOKB[]" title="Location">
+                                                    <select class="select2 locationOKB slcLocation" id="slcLocation" style="width: 250px; text-align:center;" name="locationOKB[]" required title="Location">
                                                         <option></option>
                                                     </select>
                                                 </div>
