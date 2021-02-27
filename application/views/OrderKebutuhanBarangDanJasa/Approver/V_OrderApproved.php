@@ -100,7 +100,7 @@
                                             <th style="width:100px;">Alasan Urgensi</th>
                                             <!-- <th style="width:120px;">Note To Pengelola</th> -->
                                             <th style="width:100px;">Status</th>
-                                            <!-- <th>Action</th> -->
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
