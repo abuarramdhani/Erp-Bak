@@ -415,10 +415,12 @@ class C_Requisition extends CI_Controller {
 		
 		if(isset($_POST['filter'])){
 			$filter = $this->input->post('filter');
-			if($filter == 'wipapprove'){
+			if($filter == 'wipapproveatasan'){
 				$where = 'AND ooh.order_status_id = 2';
 			} else if($filter == 'wipreleasepuller'){
 				$where = 'AND ooh.order_status_id = 3';
+			} else if($filter == 'wipapprovepembelian'){
+				$where = 'AND ooh.order_status_id = 6';
 			} else if($filter == 'fullapprove'){
 				$where = 'AND ooh.order_status_id = 7';
 			} else if($filter == 'rejectbypembelian'){
@@ -462,10 +464,12 @@ class C_Requisition extends CI_Controller {
 		
 		if(isset($_POST['filter'])){
 			$filter = $this->input->post('filter');
-			if($filter == 'wipapprove'){
+			if($filter == 'wipapproveatasan'){
 				$where = 'AND ooh.order_status_id = 2';
 			} else if($filter == 'wipreleasepuller'){
 				$where = 'AND ooh.order_status_id = 3';
+			} else if($filter == 'wipapprovepembelian'){
+				$where = 'AND ooh.order_status_id = 6';
 			} else if($filter == 'fullapprove'){
 				$where = 'AND ooh.order_status_id = 7';
 			} else if($filter == 'rejectbypembelian'){
