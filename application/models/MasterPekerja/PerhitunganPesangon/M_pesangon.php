@@ -407,13 +407,14 @@ class M_pesangon extends CI_Model {
 							left join hrd_khs.trefjabatan tref on tref.noind = pri.noind
 							left join    hrd_khs.t_alasan_pesangon alasan on alasan.alasan_master_pekerja=pri.sebabklr
 							left join    \"Presensi\".tdatacuti as cuti on pri.noind=cuti.noind
+							and cuti.periode=extract(year from pri.tglkeluar - interval '1 day')::varchar
 							left join hrd_khs.t_pesangon as tpson on tpson.noinduk = pri.noind
 							left join 	hrd_khs.tpekerjaan as tpekerjaan on tpekerjaan.kdpekerjaan=pri.kd_pkj
 							join hrd_khs.t_master_pesangon as pesangon on pesangon.alasan_keluar=pri.sebabklr
 							and date_part('year', age(tglkeluar::date,  diangkat::date )) >= pesangon.batas_tahun_kerja_awal
 							and date_part('year', age(tglkeluar::date,  diangkat::date )) < pesangon.batas_tahun_kerja_akhir
 							join 	hrd_khs.tlokasi_kerja as lokker on 	lokker.id_=pri.lokasi_kerja
-							where 		tpes.id_pesangon='$id' and cuti.periode=extract(year from pri.tglkeluar - interval '1 day')::varchar";
+							where 		tpes.id_pesangon='$id' ";
 	 		$query 	=	$this->personalia->query($editHitungPesangon);
 			return $query->result_array();
         }
