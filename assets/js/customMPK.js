@@ -5791,6 +5791,8 @@ $(document).ready(function () {
       })
       .get()
       .join(", ");
+    
+    var masakerja = $(".chk_FilterTarikData_masakerja:checked").val();
 
     var loading = baseurl + "assets/img/gif/loadingquick.gif";
 
@@ -5816,7 +5818,8 @@ $(document).ready(function () {
           rangemasukstart: startmasuk,
           rangemasukend: endmasuk,
           arrselect: arrselect,
-          status: status
+          status: status,
+          masakerja : masakerja
         },
         url: baseurl + "MasterPekerja/cetakkategori/GetFilter",
         beforeSend: function () {
