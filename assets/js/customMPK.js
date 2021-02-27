@@ -6161,3 +6161,91 @@ $(document).ready(function () {
   });
 });
 //End Masa Pekrja
+
+//cetak amplop 2
+$(document).ready(function(){
+  $('#mpk_crpkjamp2').click(function(){
+    var val = $('#mpk_slcnmamp2').val();
+    console.log(val);
+    $.ajax({
+      type: "get",
+      data: {
+        noind: val,
+      },
+      url: baseurl + "MasterPekerja/CetakAmplop/tableAmplop2",
+      beforeSend: (a) => {
+
+      },
+      success: function (data) {
+        $('#mpk_tblamp2').html(data);
+        $('#mpk_print_amplop').attr('disabled', false);
+      },
+    });
+  });
+
+  $('.mpk_slcamplop').select2();
+
+  $()
+});
+$(document).on('change','#mpk_slcnmamp2',function(){
+  var val = $(this).val();
+  if (val == '') {
+    $('#mpk_crpkjamp2').attr('disabled', true);
+  }else{
+    $('#mpk_crpkjamp2').attr('disabled', false);
+  }
+});
+
+$(document).on('change', '#mpk_slcukrkts', function(){
+  var val = $(this).val();
+  if (val == 'Custom') { return true; }
+  var x = ukuran_kertaz(val);
+  $('#mpk_lbr').val(x.hor);
+  $('#mpk_pjng').val(x.ver);
+  $('[name="mkanan"]').val(x.mr);
+  $('[name="mkiri"]').val(x.ml);
+  $('[name="matas"]').val(x.ma);
+  $('[name="mbawah"]').val(x.mb);
+});
+
+function ukuran_kertaz(type)
+{
+  var x = { ver: 148, ver: 210, mr: 10, ml: 10, ma: 48, mb: 10};
+  if (type == 'DL')
+    var x = { ver: 110, hor: 220, mr: 10, ml: 10, ma: 48, mb: 10};
+
+  if (type == 'C7')
+    var x = { ver: 87, hor: 114, mr: 10, ml: 10, ma: 10, mb: 10};
+
+  if (type == 'C7/C6')
+    var x = { ver: 81, hor: 162, mr: 10, ml: 10, ma: 10, mb: 10};
+
+  if (type == 'C6')
+    var x = { ver: 114, hor: 162, mr: 10, ml: 10, ma: 48, mb: 10};
+
+  if (type == 'C6/C5')
+    var x = { ver: 114, hor: 229, mr: 10, ml: 10, ma: 48, mb: 10};
+
+  if (type == 'C5')//amplop coklat
+    var x = { ver: 118, hor: 229, mr: 10, ml: 12, ma: 30, mb: 15};
+
+  if (type == 'C4')//amplop putih
+    var x = { ver: 188, hor: 279, mr: 15, ml: 20, ma: 60, mb: 20};
+
+  if (type == 'C3')
+    var x = { ver: 324, hor: 458, mr: 10, ml: 10, ma: 48, mb: 10};
+
+  if (type == 'B6')
+    var x = {ver: 125, hor: 176, mr: 10, ml: 10, ma: 48, mb: 10};
+
+  if (type == 'B5')
+    var x = {ver: 176, hor: 250, mr: 10, ml: 10, ma: 48, mb: 10};
+
+  if (type == 'B4')
+    var x = {ver: 250, hor: 353, mr: 10, ml: 10, ma: 48, mb: 10};
+
+  if (type == 'E4')
+    var x = {ver: 280, hor: 400, mr: 10, ml: 10, ma: 48, mb: 10};
+
+  return x;
+}
