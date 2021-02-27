@@ -122,4 +122,104 @@ class C_CetakAmplop extends CI_Controller
 
 	}
 
+	public function cetakAmplop2(){
+		
+		$data['nama'] = $this->input->post('nama_pkj');
+		$data['alamat'] = $this->input->post('alamat_pkj');
+		$data['pengirim'] = $this->input->post('pengirim');
+		$panjang = $this->input->post('panjang');
+		$lebar = $this->input->post('lebar');
+		$mkanan = $this->input->post('mkanan');
+		$mkiri = $this->input->post('mkiri');
+		$matas = $this->input->post('matas');
+		$mbawah = $this->input->post('mbawah');
+		$orientasi = $this->input->post('orientasi');
+		$format = $this->input->post('format');
+		$uf = 13;
+		$data['wid'] = 400;
+		$data['br'] = ['<br>'];
+		if ($format == 'C6') {
+			$uf = 10;
+		}elseif ($format == 'C5') {
+			$uf = 10;
+			$data['wid'] = 300;
+			$data['br'] = [];
+		}
+		$data['border'] = true;
+		if ($format == 'C7/C6' || $format == 'C7') {
+			$uf = 10;
+			$matas = 10;
+		}
+
+		//alamat
+		if ($format == 'C5'){
+			if (strlen($data['alamat']) > 90) {
+				$data['wid2'] = 75;
+			}else{
+				$data['wid2'] = 60;
+			}
+		}
+		if ($format == 'C4'){
+			if (strlen($data['alamat']) > 70) {
+				$data['wid2'] = 75;
+			}else{
+				$data['wid2'] = 60;
+			}
+		}
+		$data['format'] = $format;
+
+		$this->load->library('pdf');
+		$data['atas'] = $matas;
+
+		$pdf = $this->pdf->load();
+		$pdf = new mPDF('utf-8', array($lebar,$panjang), $uf, '', $mkiri, $mkanan, $matas, $mbawah, 0, 0, $orientasi);
+		$filename = 'CetakAmplop.pdf';
+
+		$html = $this->load->view('MasterPekerja/CetakAmplop/V_cetakamplop2rev', $data, true);
+		$css = '@media print {  
+				  @page {
+				    size: 118mm 229mm potrait;
+				    font-size: 12; 
+				  }
+				}';
+		// $pdf->WriteHTML($css,1);
+		$pdf->WriteHTML($html, 2);
+		$pdf->setTitle($filename);
+		$pdf->Output($filename, 'I');
+
+	}
+
+	public function Amplop2()
+	{
+		$user = $this->session->username;
+
+		$user_id = $this->session->userid;
+
+
+		$data['Title'] = 'Cetak Amplop';
+		$data['Menu'] = 'Lain-lain';
+		$data['SubMenuOne'] = 'Cetak Amplop';
+		$data['SubMenuTwo'] = '';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$data['DataPekerja'] = $this->M_cetakamplop->getDataWorker();
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('MasterPekerja/CetakAmplop/V_Index2', $data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function tableAmplop2()
+	{
+		$noind = $this->input->get('noind');
+		$noind = implode("','", $noind);
+		$pkj = $this->M_cetakamplop->getDetailPkj($noind);
+		$data['pkj'] = $pkj;
+		$view = $this->load->view('MasterPekerja/CetakAmplop/V_Table_Amplop2', $data, true);
+		echo $view;
+	}
 }
