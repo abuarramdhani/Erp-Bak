@@ -72,8 +72,10 @@ class C_Cetakkategori extends CI_Controller
         $rangemasukstart = $this->input->POST('rangemasukstart');
         $rangemasukend = $this->input->POST('rangemasukend');
         $status = $this->input->POST('status');
+        $data['masakerja'] = "," . $this->input->POST('masakerja');
+        $masakerja = $this->input->POST('masakerja');
 
-        $data['FilterAktif'] = $this->M_cetakkategori->GetFilter($kodeind, $pend, $jenkel,  $lokasi, $kategori, $select, $rangekeluarstart, $rangekeluarend,  $rangemasukstart, $rangemasukend, $status);
+        $data['FilterAktif'] = $this->M_cetakkategori->GetFilter($kodeind, $pend, $jenkel,  $lokasi, $kategori, $select, $rangekeluarstart, $rangekeluarend,  $rangemasukstart, $rangemasukend, $status, $masakerja);
         $html = $this->load->view('MasterPekerja/CetakKategori/V_Table', $data);
         echo json_encode($html);
     }

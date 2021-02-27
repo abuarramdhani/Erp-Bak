@@ -369,6 +369,8 @@
                                                 <label> Sebab Keluar</label><br>
                                                 <input name="status_diangkat" type="checkbox" class="chk_FilterTarikData" value="tp.status_diangkat">
                                                 <label> Status Diangkat</label><br>
+                                                <input name="masa_kerja" type="checkbox" class="chk_FilterTarikData_masakerja" value=",to_char(diangkat, 'DD-MM-YYYY') AS diangkat,to_char(masukkerja, 'DD-MM-YYYY') AS masukkerja">
+                                                <label> Masa Kerja</label><br>
                                             </div>
 
                                             <div class="col-sm-3">
