@@ -216,9 +216,25 @@ class C_CetakAmplop extends CI_Controller
 	public function tableAmplop2()
 	{
 		$noind = $this->input->get('noind');
-		$noind = implode("','", $noind);
-		$pkj = $this->M_cetakamplop->getDetailPkj($noind);
-		$data['pkj'] = $pkj;
+		$arr = array();
+		foreach ($noind as $key) {
+			$nd = explode(' - ', $key)[0];
+			$pkj = $this->M_cetakamplop->getDetailPkj($nd);
+			if (empty($pkj)) {
+				$arr[] = array(
+					'noind' 	=>	'-',
+					'nama' 		=>	$nd,
+					'alamat' 	=>	'',
+					);
+			}else{
+				$arr[] = array(
+					'noind' 	=>	$pkj[0]['noind'],
+					'nama' 		=>	$pkj[0]['nama'],
+					'alamat' 	=>	$pkj[0]['alamat'],
+					);
+			}
+		}
+		$data['pkj'] = $arr;
 		$view = $this->load->view('MasterPekerja/CetakAmplop/V_Table_Amplop2', $data, true);
 		echo $view;
 	}

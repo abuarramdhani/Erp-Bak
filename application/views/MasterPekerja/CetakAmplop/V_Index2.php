@@ -34,7 +34,7 @@
                                             <div class="col-lg-12">
                                                 <label for="nama" class="col-sm-2 control-label">Pekerja :</label>
                                                 <div class="col-sm-8">
-                                                    <select class="form-control select-nama-amplop" id="mpk_slcnmamp2" style="width: 100%" multiple="multiple"></select>
+                                                    <select class="form-control select-nama-amplop2" id="mpk_slcnmamp2" style="width: 100%" multiple="multiple"></select>
                                                 </div>
                                                 <div class="col-sm-2">
                                                     <button type="button" href="" class="btn btn-primary" disabled="" id="mpk_crpkjamp2">SEARCH</button>

@@ -72,6 +72,32 @@ $(document).ready(function () {
     allowClear: false,
   });
 
+  $(".select-nama-amplop2").select2({
+    ajax: {
+      url: baseurl + "MasterPekerja/CetakAmplop/pekerja",
+      dataType: "json",
+      type: "get",
+      data: function (params) {
+        return { p: params.term };
+      },
+      processResults: function (data) {
+        return {
+          results: $.map(data, function (item) {
+            return {
+              id: item.noind + " - " + item.nama,
+              text: item.noind + " - " + item.nama,
+            };
+          }),
+        };
+      },
+      cache: true,
+    },
+    tags: true,
+    minimumInputLength: 2,
+    placeholder: "Select Nama Pekerja ",
+    allowClear: false,
+  });
+
   $(function () {
     $("#tabel-idcard").DataTable({
       dom: "frt",
