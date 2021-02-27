@@ -1,0 +1,14 @@
+{
+    "name": "khs/erp",
+    "description": "Enterprise Resource Planning",
+    "license": "ISC",
+    "config": {
+        "platform": {
+            "php": "5.6.1"
+        }
+    },
+    "require": {
+        "gnello/php-openfire-restapi": "^3.0",
+        "zimbra-api/soap-api": "^1.1"
+    }
+}
