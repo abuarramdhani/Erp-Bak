@@ -177,7 +177,7 @@
                   <label style="margin-left:4%;" for="norm">Judul: </label>
                   <input type="text" style="width:50%; height:34px;  margin-left:2%; text-align:center;" placeholder="Input Judul TSKK" name="txtTitle" id="judul" class="lockscreen-credentials judul" required />
                   <label for="norm" style="margin-left:5%; margin-right:-4%;">Tanggal Observasi:</label>
-                  <input type="text" style="width:17%; height:34px; text-align:center;" placeholder="Input Tanggal" name="txtTanggal" id="txtTanggal" class="lockscreen-credentials txtTanggal" required />
+                  <input type="text" style="width:17%; height:34px; text-align:center;" placeholder="Input Tanggal" name="txtTanggal" id="txtTanggal" class="lockscreen-credentials txtTanggal" required  autocomplete="off" />
                 </div>
                 <div class="panel-body">
                   <div class="row">
@@ -486,38 +486,45 @@
                     <div class="col-lg-12">
                       <div class="panel panel-default">
                         <div class="panel-heading">
-                          <label style="margin-left:3%;" class="tskk_tt" for="norm">Takt Time : </label>
-                          <input type="number" style="width:35%; height:34px; margin-right:2%;  margin-left:3%;text-align:center" placeholder="Hasil Takt Time" name="taktTime" id="inputInsert" class="lockscreen-credentials" readonly />
+                          <label style="" class="tskk_tt" for="norm">Takt Time : </label>
+                          <input type="number" style="width:15%; height:34px; margin-right:2%;  margin-left:3%;text-align:center" placeholder="Hasil Takt Time" name="taktTime" id="inputInsert" class="lockscreen-credentials" readonly />
                           <label for="norm">Nilai Distribusi : </label>
-                          <input type="number" style="width:35%; height:34px; margin-right:1%;  margin-left:2%; text-align:center" name="inputInsert" id="dst" class="lockscreen-credentials dst" readonly />
+                          <input type="number" style="width:15%; height:34px; margin-right:1%;  margin-left:2%; text-align:center" name="inputInsert" id="dst" class="lockscreen-credentials dst" readonly />
+                          <label for="norm" style="margin-left:1.5%;">Posisi Elemen Tambahan : </label>
+                          <input type="number" style="width:17%; height:34px;  margin-left:2%; margin-right:2%;border-radius:25px;" placeholder="Input Posisi untuk Menyisipkan Elemen" name="inputInsert" id="inputInsertPosiition" class="lockscreen-credentials"  />
+                          <button type="button" class=" btn btn-primary btn-md" style="height:34px;float:right" onclick="attachRowObservation_new(this)" id="btnInsert">Add</button>
                         </div>
                         <div class="panel-body">
                           <div class="table-responsive" id="tableGenerate">
                             <table class="table table-striped table-bordered table-hover text-center tblObservasi" style="width:2300px; padding-bottom: 0;" name="tblObservasi" id="tblObservasi">
                               <thead>
                                 <tr class="bg-primary">
-                                  <th style="width: 50 px;  text-align:center;">NO</th>
-                                  <th style="width: 50 px;  text-align:center;">PARALEL</th>
-                                  <th style="text-align:center;">FOLLOW START</th>
-                                  <th style="width: 200px;  text-align:center;">JENIS PROSES</th>
-                                  <th style="width: 400px;  text-align:center;">ELEMEN KERJA</th>
-                                  <th style="width: 100px;  text-align:center;">1</th>
-                                  <th style="width: 100px;  text-align:center;">2</th>
-                                  <th style="width: 100px;  text-align:center;">3</th>
-                                  <th style="width: 100px;  text-align:center;">4</th>
-                                  <th style="width: 100px;  text-align:center;">5</th>
-                                  <th style="width: 100px;  text-align:center;">6</th>
-                                  <th style="width: 100px;  text-align:center;">7</th>
-                                  <th style="width: 100px;  text-align:center;">8</th>
-                                  <th style="width: 100px;  text-align:center;">9</th>
-                                  <th style="width: 100px;  text-align:center;">10</th>
-                                  <th style="width: 100px;  text-align:center;">X MIN</th>
-                                  <th style="width: 100px;  text-align:center;">R</th>
-                                  <th style="width: 100px;  text-align:center;">WAKTU DISTRIBUSI <i class="fa fa-copy fa-md" onclick="copyAutoWaktuDistribusi(this)" style="color:red" id="copy" title="Copy Waktu Distribusi"></i></th>
-                                  <th style="width: 100px;  text-align:center;">AUTO WAKTU DISTRIBUSI</th>
-                                  <th style="width: 100px;  text-align:center;">WAKTU KERJA</th>
-                                  <th style="width: 150px;  text-align:center;">KETERANGAN</th>
-                                  <th style="width: 50 px;  text-align:center;">HAPUS</th>
+                                  <th rowspan="2" style="width: 50px;  text-align:center;">NO</th>
+                                  <th rowspan="2" style="width: 50px;   text-align:center;">PARALEL</th>
+                                  <th style="text-align:center;" colspan="2">FOLLOW</th>
+                                  <th rowspan="2" style="width: 200px;  text-align:center;">JENIS PROSES</th>
+                                  <th rowspan="2" style="width: 400px;  text-align:center;">ELEMEN KERJA</th>
+                                  <th rowspan="2" style="width: 100px;  text-align:center;">1</th>
+                                  <th rowspan="2" style="width: 100px;  text-align:center;">2</th>
+                                  <th rowspan="2" style="width: 100px;  text-align:center;">3</th>
+                                  <th rowspan="2" style="width: 100px;  text-align:center;">4</th>
+                                  <th rowspan="2" style="width: 100px;  text-align:center;">5</th>
+                                  <th rowspan="2" style="width: 100px;  text-align:center;">6</th>
+                                  <th rowspan="2" style="width: 100px;  text-align:center;">7</th>
+                                  <th rowspan="2" style="width: 100px;  text-align:center;">8</th>
+                                  <th rowspan="2" style="width: 100px;  text-align:center;">9</th>
+                                  <th rowspan="2" style="width: 100px;  text-align:center;">10</th>
+                                  <th rowspan="2" style="width: 100px;  text-align:center;">X MIN</th>
+                                  <th rowspan="2" style="width: 100px;  text-align:center;">R</th>
+                                  <th rowspan="2" style="width: 100px;  text-align:center;">WAKTU DISTRIBUSI <i class="fa fa-copy fa-md" onclick="copyAutoWaktuDistribusi(this)" style="color:red" id="copy" title="Copy Waktu Distribusi"></i></th>
+                                  <th rowspan="2" style="width: 100px;  text-align:center;">AUTO WAKTU DISTRIBUSI</th>
+                                  <th rowspan="2" style="width: 100px;  text-align:center;">WAKTU KERJA</th>
+                                  <th rowspan="2" style="width: 150px;  text-align:center;">KETERANGAN</th>
+                                  <th rowspan="2" style="width: 50px;  text-align:center;">HAPUS</th>
+                                </tr>
+                                <tr class="bg-primary">
+                                  <th>START</th>
+                                  <th>END</th>
                                 </tr>
                               </thead>
                               <tbody id="tbodyLembarObservasi">
@@ -531,12 +538,16 @@
                                   <td style="text-align: center;">
                                     <input type="checkbox" name="checkBoxParalel[<?php echo $no-1;?>]" value="PARALEL" class="checkBoxParalel">
                                   </td>
+                                  <!-- FOLLOW START END -->
                                   <td>
                                     <input type="number" class="form-control" style="width: 70px;" name="start_time_together[]" value="">
                                   </td>
+                                  <td>
+                                    <input type="number" class="form-control" style="width: 70px;" name="end_time_together[]" value="">
+                                  </td>
                                   <!--JENIS PROSES-->
                                   <td>
-                                    <select class="form-control select4" onchange="myFunctionTSKK(this)" style="text-align:left" data-placeholder="Jenis Proses" name="slcJenisProses[]" id="slcJenis_<?= $no ?>">
+                                    <select class="form-control select4" onchange="myFunctionTSKK(this)" style="text-align:left;width:100%" data-placeholder="Jenis Proses" name="slcJenisProses[]" id="slcJenis_<?= $no ?>">
                                       <option value=""></option>
                                       <option value="MANUAL">MANUAL</option>
                                       <option value="AUTO">AUTO</option>
@@ -625,9 +636,9 @@
         <tbody id="tbodyIrregularJob">
           <tr class="nmbr_1">
             <td style="width: 5%; text-align:center;" class="position">1</td>
-            <td style="text-align: center;"> <input type="text" class="form-control irregularJob" name="txtIrregularJob[]" id="irregularJob" placeholder="Input Irregular Job"></td>
-            <td style="text-align: center;"> <input type="number" onchange="countIrregularJobs(this)" style="text-align: center;" class="form-control ratio" name="txtRatioIrregular[]" id="ratio" placeholder="Input Ratio"></td>
-            <td style="text-align: center;"> <input type="number" onchange="countIrregularJobs(this)" style="text-align: center;" class="form-control waktu" name="txtWaktuIrregular[]" id="waktu" placeholder="Input Waktu"></td>
+            <td style="text-align: center;"> <input type="text" required class="form-control irregularJob" name="txtIrregularJob[]" id="irregularJob" placeholder="Input Irregular Job"></td>
+            <td style="text-align: center;"> <input type="number" required onchange="countIrregularJobs(this)" style="text-align: center;" class="form-control ratio" name="txtRatioIrregular[]" id="ratio" placeholder="Input Ratio"></td>
+            <td style="text-align: center;"> <input type="number" required onchange="countIrregularJobs(this)" style="text-align: center;" class="form-control waktu" name="txtWaktuIrregular[]" id="waktu" placeholder="Input Waktu"></td>
             <td style="text-align: center;" class="hasilIrregularJob" id="hasilIrregularJob"><input type="text" style="text-align: center;" class="form-control hasilIrregularJob" name="txtHasilWaktuIrregular[]" placeholder="Hasil" readonly></td>
             <td style="text-align: center;">
               <i class="fa fa-times fa-2x deleteIrregularJob" id="deleteIrregularJob" onclick="deleteIrregularJobs(this)" style="color:red" title="Hapus Irregular Job"></i>&nbsp;&nbsp;

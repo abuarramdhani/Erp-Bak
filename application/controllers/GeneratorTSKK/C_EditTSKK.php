@@ -157,6 +157,7 @@ class C_EditTSKK extends CI_Controller {
 		$keterangan_elemen= $this->input->post('elemen[]');
 		$tipe_urutan 	  = $this->input->post('checkBoxParalel[]');
 		$startTimeTogether =  $this->input->post('start_time_together[]');
+		$endTimeTogether =  $this->input->post('end_time_together[]');
 
 		for ($i=0; $i < count($elemen); $i++) {
 
@@ -287,6 +288,11 @@ class C_EditTSKK extends CI_Controller {
 					$startTimeTogether[$i] = null;
 			}
 
+			if ($endTimeTogether[$i] == ''){
+					$endTimeTogether[$i] = null;
+			}
+
+
 				$data = array(
 				'id_tskk'  	        => $id,
 				'waktu_1' 	        => $w1,
@@ -309,7 +315,8 @@ class C_EditTSKK extends CI_Controller {
 				'elemen'        	=> $elm,
 				'keterangan_elemen' => $ktr_elm,
 				'tipe_urutan'       => $tu,
-				'start_together'		=> $startTimeTogether[$i]
+				'start_together'		=> $startTimeTogether[$i],
+				'end_together'		=> $endTimeTogether[$i]
 				);
 				// echo"<pre>";print_r($data);
 			if ($data['jenis_proses'] != null) {

@@ -574,6 +574,7 @@ public function saveObservation(){
     $tipe_urutan 	  = $this->input->post('checkBoxParalel[]');
 		// Waktu Mulai Bersamaan
 		$startTimeTogether =  $this->input->post('start_time_together[]');
+		$endTimeTogether =  $this->input->post('end_time_together[]');
 
     // echo "<pre>"; print_r($jenis_proses);exit;
 
@@ -691,6 +692,10 @@ public function saveObservation(){
 						$startTimeTogether[$i] = null;
 				}
 
+				if ($endTimeTogether[$i] == ''){
+						$endTimeTogether[$i] = null;
+				}
+
         if (!empty($tipe_urutan)) {
             if (array_key_exists($i,$tipe_urutan)){
                 $tu            = $tipe_urutan[$i];
@@ -723,7 +728,8 @@ public function saveObservation(){
             'elemen'        	=> $elm,
             'keterangan_elemen' => $ktr_elm,
             'tipe_urutan'       => $tu,
-						'start_together'		=> $startTimeTogether[$i]
+						'start_together'		=> $startTimeTogether[$i],
+						'end_together'		=> $endTimeTogether[$i]
             );
         // echo "<pre>";print_r($data);
         $insert = $this->M_gentskk->saveObservation($data);

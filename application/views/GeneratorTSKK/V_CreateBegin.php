@@ -591,7 +591,6 @@
                     </div>
                   </div>
                   <br>
-                  <div class="row">
                     <div class="row">
                       <div class="col-lg-12">
                         <?php if ($dst != null) {
@@ -610,19 +609,23 @@
                               class="lockscreen-credentials taktTime" readonly />
                           </div>
                           <div class="panel-body">
-                            <!--SECOND TABLE-->
-                            <div class="table-responsive tableGenerate" id="tableGenerate" style="padding-left: 17px; padding-right: 17px;">
-                              <table class="table table-striped table-bordered table-hover text-center tblGenerate" style="table-layout: fixed;" name="tblUserResponsbility" id="tblGenerate">
+                            <!--SECOND TABLE style="padding-left: 17px; padding-right: 17px;"-->
+                            <div class="table-responsive tableGenerate" id="tableGenerate" >
+                              <table class="table table-striped table-bordered table-hover text-center tblGenerate" style="table-layout: fixed;width:100%" name="tblUserResponsbility" id="tblGenerate">
                                 <thead style="position: sticky; top: 0;">
                                   <tr class="bg-primary">
-                                    <th style="position:sticky;top:0;" width="5%">SEQ</th>
-                                    <th style="position:sticky;top:0;" width="8%">FOLLOW START</th>
-                                    <th style="position:sticky;top:0;" width="20%">JENIS PROSES</th>
-                                    <th style="position:sticky;top:0;" width="25%">ELEMEN KERJA</th>
-                                    <th style="position:sticky;top:0;" width="20%">TIPE URUTAN</th>
-                                    <th style="position:sticky;top:0;" width="10%">WAKTU</th>
-                                    <th style="position:sticky;top:0;" width="10%">START</th>
-                                    <th style="position:sticky;top:0;" width="10%">FINISH</th>
+                                    <th rowspan="2" style="position:sticky;top:0;" width="5%">SEQ</th>
+                                    <th colspan="2" style="position:sticky;top:0;" width="13%">FOLLOW</th>
+                                    <th rowspan="2" style="position:sticky;top:0;" width="15%">JENIS PROSES</th>
+                                    <th rowspan="2" style="position:sticky;top:0;" width="25%">ELEMEN KERJA</th>
+                                    <th rowspan="2" style="position:sticky;top:0;" width="20%">TIPE URUTAN</th>
+                                    <th rowspan="2" style="position:sticky;top:0;" width="10%">WAKTU</th>
+                                    <th rowspan="2" style="position:sticky;top:0;" width="10%">START</th>
+                                    <th rowspan="2" style="position:sticky;top:0;" width="10%">FINISH</th>
+                                  </tr>
+                                  <tr class="bg-primary">
+                                    <th>START</th>
+                                    <th>END</th>
                                   </tr>
                                 </thead>
                                 <tbody id="tbodyGeneratorTSKK">
@@ -672,8 +675,11 @@
                                             // echo $finish;
                                           }
                                           if (!empty($value['start_together'])) {
-                                            $start = $tampung_start_finish[$value['start_together'] - 1]['start'];
-
+                                            if (!empty($tampung_start_finish[$value['start_together'] - 1])) {
+                                              $start = $tampung_start_finish[$value['start_together'] - 1]['start'];
+                                            }else {
+                                              $start = '';
+                                            }
                                             for ($i=0; $i < count($waktu) ; $i++) {
                                               $finish1 = ($waktu + $start) - 1;
                                               if ($finish1 > $takt_time2) {
@@ -682,7 +688,13 @@
                                                 $finish = $finish1;
                                               }
                                             }
-
+                                          }
+                                          if (!empty($value['end_together'])) {
+                                            if (!empty($tampung_start_finish[$value['end_together'] - 1])) {
+                                              $finish = $tampung_start_finish[$value['end_together'] - 1]['finish'];
+                                            }else {
+                                              $finish = '';
+                                            }
                                           }
                                           array_push($tampung_start_finish, ['start' => $start, 'finish' => $finish]);
                                         }else{
@@ -707,8 +719,11 @@
                                             // echo ' '.$stat;
                                           }
                                           if (!empty($value['start_together'])) {
-                                            $start = $tampung_start_finish[$value['start_together'] - 1]['start'];
-
+                                            if (!empty($tampung_start_finish[$value['start_together'] - 1])) {
+                                              $start = $tampung_start_finish[$value['start_together'] - 1]['start'];
+                                            }else {
+                                              $start = '';
+                                            }
                                             for ($i=0; $i < count($waktu) ; $i++) {
                                               $finish1 = ($waktu + $start) - 1;
                                               if ($finish1 > $takt_time2) {
@@ -717,7 +732,13 @@
                                                 $finish = $finish1;
                                               }
                                             }
-
+                                          }
+                                          if (!empty($value['end_together'])) {
+                                            if (!empty($tampung_start_finish[$value['end_together'] - 1])) {
+                                              $finish = $tampung_start_finish[$value['end_together'] - 1]['finish'];
+                                            }else {
+                                              $finish = '';
+                                            }
                                           }
                                           array_push($tampung_start_finish, ['start' => $start, 'finish' => $finish]);
                                         }
@@ -742,9 +763,12 @@
                                       }
 
                                   ?>
-                                  <tr class='<?php echo "number_".$no ?>' check-waktu-serentak="<?php echo !empty($key['start_together']) ? 'Y' : 'N'; ?>">
+                                  <tr class='<?php echo "number_".$no ?>' check-waktu-serentak="<?php echo !empty($key['start_together']) ? 'Y' : 'N'; ?>" check-waktu-serentak-end="<?php echo !empty($key['end_together']) ? 'Y' : 'N'; ?>">
                                     <td class="<?php if ( $tipe_urutan == 'PARALEL') { echo "wrapper"; }; ?> position"><?php echo $no?></td>
+
                                     <td class="<?php if ( $tipe_urutan == 'PARALEL') { echo "wrapper"; }; ?>"><?php echo $key['start_together']?></td>
+                                    <td class="<?php if ( $tipe_urutan == 'PARALEL') { echo "wrapper"; }; ?>"><?php echo $key['end_together'] ?></td>
+
                                     <td class="<?php if ( $tipe_urutan == 'PARALEL') { echo "wrapper"; }; ?>">
                                       <input type="text" style="<?php if ( $tipe_urutan == 'PARALEL') { echo "background-color: #d55d71;color:white;"; }; ?>;" value="<?php echo $jenis_proses; ?>"
                                         name="jenisProsesElemen[]" class="form-control jnsProses" placeholder="Jenis Proses" readonly></td>
@@ -761,8 +785,14 @@
                                     </td>
                                     <td class="<?php if ( $tipe_urutan == 'PARALEL') { echo "wrapper"; }; ?>"><input type="number" style="<?php if ( $tipe_urutan == 'PARALEL') { echo "background-color: #d55d71;color:white;"; }; ?>;"
                                         value="<?php echo $waktu; ?>" id="waktu" name="waktuKerja[]" class="form-control waktu" placeholder="Detik" readonly></td>
-                                    <td class="<?php if ( $tipe_urutan == 'PARALEL') { echo "wrapper"; }; ?>"><input type="number" style="<?php if ( $tipe_urutan == 'PARALEL') { echo "background-color: #006bb3;color:white;"; }; ?>;"
-                                        value="<?php echo $start; ?>" oninput="finishTableElement(this)" name="mulai[]" class="form-control mulai" baris="<?php echo $no ?>" check-start-no="<?php echo $key['start_together'] ?>" placeholder="Detik" <?php if ( $tipe_urutan == 'SERIAL') { echo "readonly"; }; ?>></td>
+                                    <td class="<?php if ( $tipe_urutan == 'PARALEL') { echo "wrapper"; }; ?>">
+                                      <input type="number" style="<?php if ( $tipe_urutan == 'PARALEL') { echo "background-color: #006bb3;color:white;"; }; ?>;"
+                                      value="<?php echo $start; ?>" oninput="finishTableElement(this)"
+                                      name="mulai[]" class="form-control mulai" baris="<?php echo $no ?>" 
+                                      check-start-no="<?php echo $key['start_together'] ?>"
+                                      check-end-no="<?php echo $key['end_together'] ?>"
+                                      placeholder="Detik" <?php if ( $tipe_urutan == 'SERIAL') { echo "readonly"; }; ?>>
+                                    </td>
                                     <td class="<?php if ( $tipe_urutan == 'PARALEL') { echo "wrapper"; }; ?>"><input type="number" style="<?php if ( $tipe_urutan == 'PARALEL') { echo "background-color: #d55d71;color:white;"; }; ?>;"
                                         value="<?php echo $finish; ?>" id="finish" name="finish[]" class="form-control finish" placeholder="Detik" <?php if ( $tipe_urutan == 'SERIAL') { echo "readonly"; }; ?> readonly></td>
                                   </tr>
@@ -772,57 +802,56 @@
                                 </tbody>
                               </table>
                               <br>
-                              <div class="panel panel-default">
-                                <div class="panel-heading text-left">
-                                  <label style="margin-left: 2%;">Irregular Job</label>
-                                </div>
-                                <div class="panel-body">
-                                  <table class="datatable table table-striped table-bordered table-hover tabel_irregular_job" style="width: 100%">
-                                    <thead class="bg-primary">
-                                      <tr>
-                                        <th width="5%" class="text-center">NO</th>
-                                        <th width="40%" class="text-center">IRREGULAR JOB</th>
-                                        <th width="15%" class="text-center">RATIO <br> (KALI)</th>
-                                        <th width="15%" class="text-center">WAKTU <br> (DETIK)</th>
-                                        <th width="15%" class="text-center">WAKTU/RATIO <br> (DETIK)</th>
-                                      </tr>
-                                    </thead>
-                                    <tbody id="tbodyIrregularJob">
-                                      <?php $no=1;
-                      									foreach ($lihat_irregular_jobs as $ij) {
-                      										$irregular_job = $ij['irregular_job'];
-                      										$ratio_irregular = $ij['ratio'];
-                      										$waktu_irregular = $ij['waktu'];
-                      										$hasil_irregular_job = $ij['hasil_irregular_job'];
-                      								?>
-                                      <tr class="nmbr_1">
-                                        <td style="width: 5%; text-align:center;" class="position"><?php echo $no;?></td>
-                                        <td style="text-align: center;"> <input type="text" value="<?php echo $irregular_job;?>" class="form-control irregularJob" name="txtIrregularJob[]" id="irregularJob" readonly></td>
-                                        <td style="text-align: center;"> <input type="number" value="<?php echo $ratio_irregular;?>" onchange="countIrregularJobs(this)" style="text-align: center;" class="form-control ratio" name="txtRatioIrregular[]"
-                                            id="ratio" readonly></td>
-                                        <td style="text-align: center;"> <input type="number" value="<?php echo $waktu_irregular;?>" onchange="countIrregularJobs(this)" style="text-align: center;" class="form-control waktu" name="txtWaktuIrregular[]"
-                                            id="waktu" readonly></td>
-                                        <td style="text-align: center;" class="hasilIrregularJob" id="hasilIrregularJob"><input type="text" value="<?php echo $hasil_irregular_job;?>" style="text-align: center;" class="form-control hasilIrregularJob"
-                                            name="txtHasilWaktuIrregular[]" readonly></td>
-                                      </tr>
-                                      <?php $no++; } ?>
-                                    </tbody>
-                                  </table>
-                                </div>
-                              </div>
-                              <br>
-                              <div class="col-lg-12" style="padding-top: 8px; padding-bottom: 15px;">
-                                <div style="text-align: center;">
-                                  <button type="button" onclick="generateTSKK(this)" style="float: center; margin-right: 3%; margin-top: -0.5%;" class="btn btn-primary" id="generate" target="_blank"></i>GENERATE TSKK</button>
-                                </div>
-                              </div>
-                              <br>
                             </div>
                           </div>
                         </div>
                       </div>
+                      <div class="col-md-12">
+                        <div class="panel panel-default">
+                          <div class="panel-heading text-left">
+                            <label style="margin-left: 2%;">Irregular Job</label>
+                          </div>
+                          <div class="panel-body">
+                            <table class="datatable table table-striped table-bordered table-hover tabel_irregular_job" style="width: 100%">
+                              <thead class="bg-primary">
+                                <tr>
+                                  <th width="5%" class="text-center">NO</th>
+                                  <th width="40%" class="text-center">IRREGULAR JOB</th>
+                                  <th width="15%" class="text-center">RATIO <br> (KALI)</th>
+                                  <th width="15%" class="text-center">WAKTU <br> (DETIK)</th>
+                                  <th width="15%" class="text-center">WAKTU/RATIO <br> (DETIK)</th>
+                                </tr>
+                              </thead>
+                              <tbody id="tbodyIrregularJob">
+                                <?php $no=1;
+                                  foreach ($lihat_irregular_jobs as $ij) {
+                                    $irregular_job = $ij['irregular_job'];
+                                    $ratio_irregular = $ij['ratio'];
+                                    $waktu_irregular = $ij['waktu'];
+                                    $hasil_irregular_job = $ij['hasil_irregular_job'];
+                                ?>
+                                <tr class="nmbr_1">
+                                  <td style="width: 5%; text-align:center;" class="position"><?php echo $no;?></td>
+                                  <td style="text-align: center;"> <input type="text" value="<?php echo $irregular_job;?>" class="form-control irregularJob" name="txtIrregularJob[]" id="irregularJob" readonly></td>
+                                  <td style="text-align: center;"> <input type="number" value="<?php echo $ratio_irregular;?>" onchange="countIrregularJobs(this)" style="text-align: center;" class="form-control ratio" name="txtRatioIrregular[]"
+                                      id="ratio" readonly></td>
+                                  <td style="text-align: center;"> <input type="number" value="<?php echo $waktu_irregular;?>" onchange="countIrregularJobs(this)" style="text-align: center;" class="form-control waktu" name="txtWaktuIrregular[]"
+                                      id="waktu" readonly></td>
+                                  <td style="text-align: center;" class="hasilIrregularJob" id="hasilIrregularJob"><input type="text" value="<?php echo $hasil_irregular_job;?>" style="text-align: center;" class="form-control hasilIrregularJob"
+                                      name="txtHasilWaktuIrregular[]" readonly></td>
+                                </tr>
+                                <?php $no++; } ?>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                        <div class="col-lg-12" style="padding-top: 8px; padding-bottom: 15px;">
+                          <div style="text-align: center;">
+                            <button type="button" onclick="generateTSKK(this)" style="float: center; margin-right: 3%; margin-top: -0.5%;" class="btn btn-primary" id="generate" target="_blank"></i>GENERATE TSKK</button>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                  </div>
                 </div>
               </div>
             </div>
