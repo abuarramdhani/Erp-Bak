@@ -2622,13 +2622,13 @@ function generateTSKK(a) {
 
 //ENABLE READONLY AND DISABLED FROM HEADER AND OBSERVATION SHEET
 $(document).ready(function() {
-	if ($('#gtskk_app').val() == 1) {
-		Swal.fire({
-			type: 'info',
-			title: 'Agar pembaruan aplikasi berjalan sepenuhnya',
-			html: 'Reload halaman ini dengan menekan <b> ctrl+shift+r </b> secara berurutan. <br> Abaikan pesan ini jika telah melakukannya sebelumnya'
-		})
-	}
+	// if ($('#gtskk_app').val() == 1) {
+	// 	Swal.fire({
+	// 		type: 'info',
+	// 		title: 'Agar pembaruan aplikasi berjalan sepenuhnya',
+	// 		html: 'Reload halaman ini dengan menekan <b> ctrl+shift+r </b> secara berurutan. <br> Abaikan pesan ini jika telah melakukannya sebelumnya'
+	// 	})
+	// }
   $('#btnEdit').click(function() {
     $('.judul').prop('readonly', false);
     $('.taktTime').prop('readonly', false);
