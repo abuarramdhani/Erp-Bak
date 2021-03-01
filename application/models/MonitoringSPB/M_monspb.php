@@ -10,12 +10,13 @@ class M_monspb extends CI_Model
     }
 
 
-    public function ListSpb()
+    public function ListSpb($where)
     {
-        $sql = "select distinct
+        $sql = "SELECT * FROM (select distinct
         mtrh.REQUEST_NUMBER NO_SPB
         ,mtrh.CREATION_DATE
-        ,mofo.OOHA_ORDER_NUMBER NO_SO
+        ,nvl(mofo.OOHA_ORDER_NUMBER, mtrl.ATTRIBUTE7) NO_SO
+        ,mtrh.DESCRIPTION KETERANGAN
         ,case 
             when (mtrl.LINE_STATUS in (5)) then 'LINE CLOSE/SUDAH TRANSACT'
             when (mtrl.LINE_STATUS in (6)) then 'LINE CANCEL'
@@ -35,13 +36,15 @@ class M_monspb extends CI_Model
         and mtrh.REQUEST_NUMBER = mofo.MTRH_REQUEST_NUMBER(+)
         and mtrh.CREATION_DATE > to_date('01-01-20', 'DD-MM-YY')
         and mtrh.REQUEST_NUMBER = rsh.SHIPMENT_NUM(+)
-        order by mtrh.CREATION_DATE desc";
+        order by mtrh.CREATION_DATE DESC)
+        $where";
+
         $query = $this->oracle->query($sql);
         return $query->result_array();
     }
     public function DetailSpb($spb)
     {
-        $sql = "select
+        $query = $this->oracle->query("select
         mtrh.REQUEST_NUMBER NO_SPB
         ,mtrl.LINE_NUMBER LINE_SPB
         ,msib.SEGMENT1 KODE_ITEM
@@ -64,9 +67,16 @@ class M_monspb extends CI_Model
         and mtrh.REQUEST_NUMBER = mofo.MTRH_REQUEST_NUMBER(+)
         and mtrl.INVENTORY_ITEM_ID = msib.INVENTORY_ITEM_ID
         and msib.ORGANIZATION_ID = 81
-        and mtrh.REQUEST_NUMBER = '$spb'";
-
-        $query = $this->oracle->query($sql);
+        and mtrh.REQUEST_NUMBER = '$spb'");
+        return $query->result_array();
+    }
+    public function selectIO($term)
+    {
+        $query = $this->oracle->query("select
+        mp.ORGANIZATION_CODE
+        from
+        mtl_parameters mp
+        $term");
         return $query->result_array();
     }
 }

@@ -31,50 +31,55 @@
                     <div class="col-md-12">
                         <div class="box box-info">
                             <div class="box-header with-border"></div>
-                            <!-- <form name="Orderform" enctype="multipart/form-data" onsubmit="return validasi();window.location.reload();" method="post"> -->
                             <div class="box-body">
-                                <!-- <div class="panel-body">
-                                        <div class="col-md-12" style="text-align: right;"><a onclick="deleteAlldata()" class="btn btn-danger">Delete All Data</a></div>
-                                    </div> -->
                                 <div class="panel-body">
-                                    <div class="col-md-12">
-                                        <table class="table table-bordered" id="list_SPB" style="width: 100%;">
-                                            <thead class="bg-teal">
-                                                <tr>
-                                                    <th class="text-center">No</th>
-                                                    <th class="text-center">Nomor SPB</th>
-                                                    <th class="text-center">Creation Date</th>
-                                                    <th class="text-center">Nomor SO</th>
-                                                    <th class="text-center">Transact Status</th>
-                                                    <th class="text-center">Interorg Status</th>
-                                                    <th class="text-center">IO Tujuan</th>
-                                                    <th class="text-center">Receipt Date</th>
-                                                    <th class="text-center">Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <?php $i = 1;
-                                                foreach ($header as $v) { ?>
-                                                    <tr>
-                                                        <td class="text-center"><?= $i ?></td>
-                                                        <td class="text-center"><?= $v['NO_SPB'] ?></td>
-                                                        <input type="hidden" id="no_spb<?= $i ?>" value="<?= $v['NO_SPB'] ?>">
-                                                        <td class="text-center"><?= $v['CREATION_DATE'] ?></td>
-                                                        <td class="text-center"><?= $v['NO_SO'] ?></td>
-                                                        <td class="text-center"><?= $v['TRANSACT_STATUS'] ?></td>
-                                                        <td class="text-center"><?= $v['INTERORG_STATUS'] ?></td>
-                                                        <td class="text-center"><?= $v['IO_TUJUAN'] ?></td>
-                                                        <td class="text-center"><?= $v['TANGGAL_RECEIPT'] ?></td>
-                                                        <td class="text-center"><button class="btn btn-sm btn-default" onclick="DetailSPB(<?= $i ?>)">Detail</button></td>
-                                                    </tr>
-                                                <?php $i++;
-                                                } ?>
-                                            </tbody>
-                                        </table>
+                                    <div class="col-md-2" style="text-align: center;">
+                                        <label>Status Transact</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <select id="stat_trans" class="form-control status_spb" data-placeholder="Status Transact">
+                                            <option></option>
+                                            <option value="LINE CLOSE/SUDAH TRANSACT">LINE CLOSE/SUDAH TRANSACT</option>
+                                            <option value="LINE CANCEL">LINE CANCEL</option>
+                                            <option value="BELUM TRANSACT">BELUM TRANSACT</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-2" style="text-align: center;">
+                                        <label>Status Interorg</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <select id="stat_int" class="form-control status_spb" data-placeholder="Status Interorg">
+                                            <option></option>
+                                            <option value="INTERORG">INTERORG</option>
+                                            <option value="SUDAH INTERORG">SUDAH INTERORG</option>
+                                            <option value="BELUM INTERORG">BELUM INTERORG</option>
+                                        </select>
                                     </div>
                                 </div>
+                                <div class="panel-body">
+                                    <div class="col-md-2" style="text-align: center;">
+                                        <label>IO Tujuan</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <select class="form-control io_tjn" id="io_tjn" data-placeholder="IO Tujuan">
+                                            <option></option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-2" style="text-align: center;">
+                                        <label>Receipt Date</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="text" class="form-control rcpt_date" placeholder="Receipt Date" id="rcpt_date">
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="col-md-12" style="text-align: center;"><button class="btn btn-info search_spbeh">Search</button></div>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="col-md-12" id="tbl_spb"></div>
+                                </div>
                             </div>
-                            <!-- </form> -->
                         </div>
                     </div>
                 </div>
