@@ -112,10 +112,18 @@ class C_Monspb extends CI_Controller
             }
         }
         if ($recipt_date != null || $recipt_date != "") {
-            if ($where != null) {
-                $where = $where . "AND TRUNC(TANGGAL_RECEIPT) = to_date ('$recipt_date', 'DD/MM/YYYY') ";
+            if ($recipt_date = 1) {
+                if ($where != null) {
+                    $where = $where . "AND TANGGAL_RECEIPT is NULL ";
+                } else {
+                    $where = "WHERE TANGGAL_RECEIPT is NULL";
+                }
             } else {
-                $where = "WHERE TRUNC(TANGGAL_RECEIPT) = to_date ('$recipt_date', 'DD/MM/YYYY')";
+                if ($where != null) {
+                    $where = $where . "AND TANGGAL_RECEIPT is NOT NULL ";
+                } else {
+                    $where = "WHERE TANGGAL_RECEIPT is NOT NULL";
+                }
             }
         }
 
