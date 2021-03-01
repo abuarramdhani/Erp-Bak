@@ -163,6 +163,16 @@ class M_penyerahan extends CI_Model
 			->get()->row();
 	}
 
+	public function getTpribadi($noind, $field)
+	{
+		return $this->personalia
+			->select($field)
+			->from('hrd_khs.tpribadi')
+			->where('noind', $noind)
+			->get()
+			->row();
+	}
+
 	public function ambilDataAll($kodesie, $tanggal, $jenis, $ruangLingkup)
 	{
 		$sql = "SELECT trim(b.noind) as noind,
@@ -256,6 +266,8 @@ class M_penyerahan extends CI_Model
 						trim(a.nik) as nik,
 						trim(a.no_kk) as no_kk,
 						trim(a.nokeb) as nokeb,
+						nullif(trim(a.pidgin_account), '-') pidgin_account,
+						nullif(trim(a.email_internal), '-') email_internal,
 						b.kodelamaran,
 						(SELECT trim(kd_shift) from \"Presensi\".tshiftpekerja d where d.noind = a.noind and d.kodesie = a.kodesie limit 1) as pola_shift 
 				FROM hrd_khs.tpribadi a
