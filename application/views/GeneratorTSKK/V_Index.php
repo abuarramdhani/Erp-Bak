@@ -34,3 +34,7 @@
 			</div>
 		</div>
 </section>
+
+<script type="text/javascript">
+	alert('Agar pembaruan aplikasi berjalan sepenuhnya, Reload halaman ini dengan menekan ctrl+shift+r secara berurutan. Abaikan pesan ini jika telah melakukannya sebelumnya')
+</script>
