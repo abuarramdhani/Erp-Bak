@@ -51,7 +51,6 @@
                                         <select id="stat_int" class="form-control status_spb" data-placeholder="Status Interorg">
                                             <option></option>
                                             <option value="BELUM INTERORG">BELUM INTERORG</option>
-                                            <option value="INTERORG">INTERORG</option>
                                             <option value="SUDAH INTERORG">SUDAH INTERORG</option>
                                         </select>
                                     </div>
@@ -81,7 +80,7 @@
                                     <div class="col-md-12" style="text-align: center;"><button class="btn btn-info search_spbeh">Search</button></div>
                                 </div>
                                 <div class="panel-body">
-                                    <div class="col-md-12" id="tbl_spb"></div>
+                                    <div class="col-md-12" id="tbl_spbeh"></div>
                                 </div>
                             </div>
                         </div>
