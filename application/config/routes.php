@@ -3382,7 +3382,8 @@ $route['ADMSeleksi/Menu/Cetak/update_cetak'] = 'ADMSeleksi/Menu/Cetak/C_CetakMem
 $route['ADMSeleksi/Menu/Cetak/search_daftar_memo'] = 'ADMSeleksi/Menu/Cetak/C_CetakMemoHasilOrientasi/search_daftar_memo';
 $route['ADMSeleksi/Menu/Cetak/get_refresh_data_memo'] = 'ADMSeleksi/Menu/Cetak/C_CetakMemoHasilOrientasi/get_refresh_data_memo';
 
-
+$route['ADMSeleksi/api/zimbra/check'] = 'ADMSeleksi/Api/C_Api/checkZimbra';
+$route['ADMSeleksi/api/pidgin/check'] = 'ADMSeleksi/Api/C_Api/checkPidgin';
 
 // ------------------------------------------------- Monitoring LPPB Penerimaan ---------------------------------------------//
 $route['MonitoringLppbPenerimaan'] 								= 'MonitoringLppbPenerimaan/C_Index';
