@@ -67,7 +67,7 @@ $(".search_spbeh").on("click", function () {
     type: "POST",
     datatype: "html",
     beforeSend: function () {
-      $("div#tbl_spb").html(
+      $("div#tbl_spbeh").html(
         '<center><img style="width:100px; height:auto" src="' +
           baseurl +
           'assets/img/gif/loading11.gif"></center>'
@@ -77,7 +77,7 @@ $(".search_spbeh").on("click", function () {
 
   request.done(function (result) {
     // console.log(result);
-    $("div#tbl_spb").html(result);
+    $("div#tbl_spbeh").html(result);
 
     $("#list_SPB").DataTable({
       dom: "Bfrtip",
