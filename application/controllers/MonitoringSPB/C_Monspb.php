@@ -112,7 +112,7 @@ class C_Monspb extends CI_Controller
             }
         }
         if ($recipt_date != null || $recipt_date != "") {
-            if ($recipt_date = 1) {
+            if ($recipt_date == 1) {
                 if ($where != null) {
                     $where = $where . "AND TANGGAL_RECEIPT is NULL ";
                 } else {
