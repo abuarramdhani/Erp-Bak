@@ -39,9 +39,9 @@
                                     <div class="col-md-3">
                                         <select id="stat_trans" class="form-control status_spb" data-placeholder="Status Transact">
                                             <option></option>
+                                            <option value="BELUM TRANSACT">BELUM TRANSACT</option>
                                             <option value="LINE CLOSE/SUDAH TRANSACT">LINE CLOSE/SUDAH TRANSACT</option>
                                             <option value="LINE CANCEL">LINE CANCEL</option>
-                                            <option value="BELUM TRANSACT">BELUM TRANSACT</option>
                                         </select>
                                     </div>
                                     <div class="col-md-2" style="text-align: center;">
@@ -50,9 +50,9 @@
                                     <div class="col-md-3">
                                         <select id="stat_int" class="form-control status_spb" data-placeholder="Status Interorg">
                                             <option></option>
+                                            <option value="BELUM INTERORG">BELUM INTERORG</option>
                                             <option value="INTERORG">INTERORG</option>
                                             <option value="SUDAH INTERORG">SUDAH INTERORG</option>
-                                            <option value="BELUM INTERORG">BELUM INTERORG</option>
                                         </select>
                                     </div>
                                 </div>
@@ -67,10 +67,14 @@
                                     </div>
 
                                     <div class="col-md-2" style="text-align: center;">
-                                        <label>Receipt Date</label>
+                                        <label>Status Receipt</label>
                                     </div>
                                     <div class="col-md-3">
-                                        <input type="text" class="form-control rcpt_date" placeholder="Receipt Date" id="rcpt_date">
+                                        <select id="rcpt_date" class="form-control status_spb" data-placeholder="Status Receipt">
+                                            <option></option>
+                                            <option value="1">BELUM RECEIPT</option>
+                                            <option value="2">SUDAH RECEIPT</option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="panel-body">

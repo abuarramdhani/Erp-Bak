@@ -21,10 +21,6 @@ $(document).ready(function () {
     allowClear: true,
     minimumResultsForSearch: Infinity,
   });
-  $(".rcpt_date").datepicker({
-    format: "dd/mm/yyyy",
-    autoclose: true,
-  });
 });
 $(document).ready(function () {
   $("#io_tjn").select2({
@@ -55,7 +51,7 @@ $(document).ready(function () {
   });
 });
 $(".search_spbeh").on("click", function () {
-  var recipt_date = $(".rcpt_date").val();
+  var recipt_date = $("#rcpt_date").val();
   var io = $(".io_tjn").val();
   var status_transact = $("#stat_trans").val();
   var status_interorg = $("#stat_int").val();
