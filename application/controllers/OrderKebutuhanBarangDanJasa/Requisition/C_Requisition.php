@@ -431,12 +431,12 @@ class C_Requisition extends CI_Controller {
 				$where = 'AND ooh.order_status_id = ooh.order_status_id';
 			}
 
-			$data['listOrder'] = $this->M_requisition->getListDataOrderAdmin($noind, $where);
+			$data['listOrder'] = $this->M_requisition->getListDataOrder2($noind, $where);
 			
 			$this->load->view('OrderKebutuhanBarangDanJasa/Requisition/V_TableListDataAdmin',$data);
 		} else {
 
-			$data['listOrder'] = $this->M_requisition->getListDataOrderAdmin($noind, $where);
+			$data['listOrder'] = $this->M_requisition->getListDataOrder2($noind, $where);
 			
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
