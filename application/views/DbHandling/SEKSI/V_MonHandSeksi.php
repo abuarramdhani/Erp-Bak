@@ -15,7 +15,7 @@
                         </div>
                         <div class="col-lg-1 ">
                             <div class="text-right hidden-md hidden-sm hidden-xs">
-                                <a class="btn btn-default btn-lg" href="<?php echo site_url('DbHandling/MonitoringHandling'); ?>">
+                                <a class="btn btn-default btn-lg" href="<?php echo site_url('DbHandlingSeksi/MonitoringHandling'); ?>">
                                     <i class="fa fa-list fa-2x">
                                     </i>
                                     <span>
