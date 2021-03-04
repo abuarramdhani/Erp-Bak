@@ -259,7 +259,7 @@ class C_Data extends CI_Controller
             if ($sheet_validation !== '*')
                 throw new Exception('wrong data');
 
-            if ($excel_amount !== $this->M_data->countAllRegisteredUser($filter_json, $filter_json_2))
+            if ($excel_amount !== $this->M_data->countAllRegisteredUser($filter_json, $filter_json_2, date("y")))
                 throw new Exception('data not equal');
 
             for ($i = 4; $i <= $last_row; $i++) {
