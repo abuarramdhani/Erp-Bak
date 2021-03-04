@@ -192,4 +192,44 @@ class C_SendSMS extends CI_Controller
             curl_close($cui);
         }
     }
+
+    public function purchasing()
+    {
+        set_time_limit(3600);
+        $judgedOrder = $this->M_sendsms->getJudgedUrgentOrderCount()['TOTAL_BELUM_JUDGE'];
+        $jumlahSukses = 0;
+        if($judgedOrder < 1){
+            echo "Tidak ada Order Urgent di Purchasing";
+        } else {
+            $pesan = "Selamat Pagi,\rAnda masih memiliki ".$judgedOrder." order Urgent yang belum di approve pada aplikasi PURCHASING-OKEBAJA. Silahkan buka erp.quick.com melalui jaringan CV.KHS untuk approve order.\r-- Dikirim oleh ERP Okebaja (No-Reply) --";
+            $pesan = rawurlencode($pesan);
+            $url   = 'http://192.168.168.122:80/sendsms?username=ict&password=quick1953&phonenumber=08112856996&message='.$pesan.'&[port=gsm-1.2&][report=1&][timeout=20]';
+            // print_r($url);
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_HEADER, 0);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            
+            $response = str_replace('', '', curl_exec($ch));
+            curl_close($ch);
+            if(json_decode($response)->report[0]->{'1'}[0]->result == 'success'){
+                $jumlahSukses++;
+            }
+            sleep(10);
+
+
+            // Sms Laporan
+            $jumlahPesan = 1;
+            $message = "Selesai SMS Purchasing. ".$jumlahSukses." SMS Sukses dari ".$jumlahPesan." SMS dikirim";
+            $message = rawurlencode($message);
+            $url     = 'http://192.168.168.122:80/sendsms?username=ict&password=quick1953&phonenumber=08112669449&message='.$message.'&[port=gsm-1.2&][report=1&][timeout=20]';
+            // print_r($url);
+            $cui = curl_init();
+            curl_setopt($cui, CURLOPT_URL, $url);
+            curl_setopt($cui, CURLOPT_HEADER, 0);
+
+            curl_exec($cui);
+            curl_close($cui);
+        }
+    }
 }

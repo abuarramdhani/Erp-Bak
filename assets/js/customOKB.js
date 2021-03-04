@@ -1283,6 +1283,89 @@ $(document).ready(function () {
         }
     })
 
+    $(document).on('click', '.btnOKBRejectOrder', function () {
+        let person_id = $('.txtOKBPerson_id').val();
+        let order_id = $(this).parentsUntil('tbody').find('.tdOKBListOrderId').text();
+        Swal.fire({
+            title: 'Apakah anda yakin?',
+            text: "Order ini akan di reject!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, Reject!'
+        }).then((result) => {
+            if (result.value) {
+                (async function () {
+                    let { value: reason, dismiss } = await Swal.fire({
+                        text: 'Silahkan berikan alasan anda .',
+                        input: 'textarea',
+                        inputPlaceholder: 'Alasan anda...',
+                        inputAttributes: {
+                            'aria-label': 'Alasan anda...'
+                        },
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Ok',
+                        showCloseButton: true
+                    });
+
+                    if (dismiss != 'close') {
+                        if (reason == null || reason == '') {
+                            Swal.fire({
+                                customClass: 'swal-font-large',
+                                type: 'error',
+                                title: 'Gagal',
+                                text: 'Alasan tidak boleh kosong!',
+                            });
+                        } else {
+                            Swal.fire({
+                                allowOutsideClick: false,
+                                title: "Mohon menunggu",
+                                html: "Sedang proses reject order...",
+                                onBeforeOpen: () => {
+                                    Swal.showLoading();
+                                },
+                            });
+                            console.log(person_id);
+                            console.log(order_id);
+                            console.log(reason);
+                            $.ajax({
+                                type: "POST",
+                                url: baseurl + 'OrderKebutuhanBarangDanJasa/Approver/rejectOrderAfterApproved',
+                                data: {
+                                    order_id: order_id,
+                                    person_id: person_id,
+                                    note: reason
+                                },
+                                success: function (response) {
+                                    console.log(response)
+                                    if (response == 1) {
+                                        Swal.fire({
+                                            type: 'success',
+                                            title: 'Berhasil',
+                                            text: 'Order berhasil di reject',
+                                        }).then(() => {
+                                            location.reload();
+                                        })
+                                        $('#modalReasonRejectOrderOKB').modal('hide');
+                                    } else {
+                                        Swal.fire({
+                                            type: 'error',
+                                            title: 'Gagal',
+                                            text: 'Order gagal di reject',
+                                        })
+                                    };
+                                    $('.tblOKBOrderList').DataTable().draw();
+                                }
+                            });
+                        };
+                    };
+                })()
+            }
+        })
+    })
+
     $('.tblOKBOrderListApprover').DataTable({
         scrollY: "370px",
         // fixedColumns:   {
@@ -2403,6 +2486,36 @@ $(document).ready(function () {
         placeholder: "Filter List Data",
     }).on('select2:select', () => {
         let filter = $('.selectOKBLOVListData').val();
+        console.log(filter);
+        $.ajax({
+            type: 'POST',
+            dataType: 'HTML',
+            url: baseurl + 'OrderKebutuhanBarangDanJasa/Requisition/ListData',
+            data: {
+                'filter': filter
+            }
+        }).done(response => {
+            tableOKBPengorder.destroy();
+            $('.tblOKBOrderListPengorder').find('tbody').html(response);
+            tableOKBPengorder = $('.tblOKBOrderListPengorder').DataTable({
+                scrollY: "370px",
+                scrollX: true,
+                scrollCollapse: true,
+                fixedColumns: {
+                    leftColumns: 5
+                },
+                columnDefs: [
+                    { width: 196, targets: 8 },
+                    { width: 150, targets: 10 }
+                ]
+            });
+        })
+    })
+
+    $('.selectOKBLOVListDataAdmin').select2({
+        placeholder: "Filter List Data",
+    }).on('select2:select', () => {
+        let filter = $('.selectOKBLOVListDataAdmin').val();
         console.log(filter);
         $.ajax({
             type: 'POST',

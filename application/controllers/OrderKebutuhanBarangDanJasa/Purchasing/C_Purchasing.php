@@ -70,6 +70,78 @@ class C_Purchasing extends CI_Controller {
         $this->load->view('V_Footer',$data);
     }
 
+    public function PermintaanApproveNormal()
+	{   
+        $user_id = $this->session->userid;
+        $noind = $this->session->user;
+		
+		$data['Menu'] = 'Approve Order';
+		$data['SubMenuOne'] = 'Permintaan Approve Order Normal';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+        $data['approver'] = $this->M_requisition->getPersonId($noind);
+        $person_id = $data['approver'][0]['PERSON_ID'];
+
+        $data['listOrder'] = $this->M_purchasing->getReleasedOrderReguler();
+
+     
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+        $this->load->view('OrderKebutuhanBarangDanJasa/Purchasing/V_PermintaanApprove',$data);
+        $this->load->view('V_Footer',$data);
+    }
+
+    public function PermintaanApproveSusulan()
+	{   
+        $user_id = $this->session->userid;
+        $noind = $this->session->user;
+		
+		$data['Menu'] = 'Approve Order';
+		$data['SubMenuOne'] = 'Permintaan Approve Order Susulan';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+        $data['approver'] = $this->M_requisition->getPersonId($noind);
+        $person_id = $data['approver'][0]['PERSON_ID'];
+
+        $data['listOrder'] = $this->M_purchasing->getReleasedOrderEmergency();
+
+     
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+        $this->load->view('OrderKebutuhanBarangDanJasa/Purchasing/V_PermintaanApprove',$data);
+        $this->load->view('V_Footer',$data);
+    }
+
+    public function PermintaanApproveUrgent()
+	{   
+        $user_id = $this->session->userid;
+        $noind = $this->session->user;
+		
+		$data['Menu'] = 'Approve Order';
+		$data['SubMenuOne'] = 'Permintaan Approve Order Urgent';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+        $data['approver'] = $this->M_requisition->getPersonId($noind);
+        $person_id = $data['approver'][0]['PERSON_ID'];
+
+        $data['listOrder'] = $this->M_purchasing->getReleasedOrderUrgent();
+
+     
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+        $this->load->view('OrderKebutuhanBarangDanJasa/Purchasing/V_PermintaanApprove',$data);
+        $this->load->view('V_Footer',$data);
+    }
+
     public function ReleaseOrder()
     {
         $noind = $this->session->user;

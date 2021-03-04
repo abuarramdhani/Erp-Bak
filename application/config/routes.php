@@ -3931,6 +3931,7 @@ $route['OrderKebutuhanBarangDanJasa/Import/(:any)'] = 'OrderKebutuhanBarangDanJa
 $route['OrderKebutuhanBarangDanJasa/SMSApprover'] = 'OrderKebutuhanBarangDanJasa/C_SendSMS';
 $route['OrderKebutuhanBarangDanJasa/SMSPengelola'] = 'OrderKebutuhanBarangDanJasa/C_SendSMS/pengelola';
 $route['OrderKebutuhanBarangDanJasa/SMSPuller'] = 'OrderKebutuhanBarangDanJasa/C_SendSMS/puller';
+$route['OrderKebutuhanBarangDanJasa/SMSPurchasing'] = 'OrderKebutuhanBarangDanJasa/C_SendSMS/purchasing';
 
 //--------------------------------------------------Monitoring Pengiriman Pesanan Luar-------------------------------//
 $route['MonitoringPengirimanPesananLuar'] 	= 'MonitoringPengPesananLuar/C_MonitoringPengPesananLuar/rekapPO';
