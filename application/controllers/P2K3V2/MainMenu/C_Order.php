@@ -2523,6 +2523,15 @@ class C_Order extends CI_Controller
 			$data['seksi'] = array('section_name' 	=>	'');
 		}
 
+		$costc = $this->M_order->getCostCenter($kodesie);
+		$listcc = $this->M_order->getOr('');
+		$listcc2 = array_column($listcc, 'COST_CENTER');
+		if (!in_array($costc, $listcc2)) {
+			$costc = '';
+		}
+		$data['costc'] = $costc;
+		$data['listcc'] = $listcc;
+
 		$this->load->view('V_Header', $data);
 		$this->load->view('V_Sidemenu', $data);
 		$this->load->view('P2K3V2/Order/V_Input_Sepatu', $data);
