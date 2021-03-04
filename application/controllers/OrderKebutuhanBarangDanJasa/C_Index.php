@@ -218,19 +218,19 @@ class C_Index extends CI_Controller {
     $view_data->RegulerOrder = $this->getOrderInformation(
       $this->purchasing->getUnapprovedOrderCount('NORMAL'),
       $this->purchasing->getJudgedOrderCount('NORMAL'),
-      base_url('OrderKebutuhanBarangDanJasa/Purchasing/PermintaanApproveNormal')
+      base_url('OrderKebutuhanBarangDanJasa/Purchasing/PermintaanApprove')
     );
 
     $view_data->EmergencyOrder = $this->getOrderInformation(
       $this->purchasing->getUnapprovedOrderCount('SUSULAN'),
       $this->purchasing->getJudgedOrderCount('SUSULAN'),
-			base_url('OrderKebutuhanBarangDanJasa/Purchasing/PermintaanApproveSusulan')
+			base_url('OrderKebutuhanBarangDanJasa/Purchasing/PermintaanApprove')
     );
 
     $view_data->UrgentOrder = $this->getOrderInformation(
       $this->purchasing->getUnapprovedOrderCount('URGENT'),
       $this->purchasing->getJudgedOrderCount('URGENT'),
-			base_url('OrderKebutuhanBarangDanJasa/Purchasing/PermintaanApproveUrgent')
+			base_url('OrderKebutuhanBarangDanJasa/Purchasing/PermintaanApprove')
     );
 
     $this->load->view('V_Header', $view_data);

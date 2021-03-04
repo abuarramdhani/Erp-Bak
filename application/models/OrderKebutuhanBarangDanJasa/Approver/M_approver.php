@@ -619,22 +619,4 @@ class M_approver extends CI_Model
             ->row()
             ->count;
     }
-
-    public function rejectOrderAfterApproved($note, $order_id, $approver_id)
-    {
-        $query = $this->oracle->query(
-            "UPDATE KHS.KHS_OKBJ_ORDER_APPROVAL SET NOTE = '$note', JUDGEMENT = 'R', JUDGEMENT_DATE = SYSDATE WHERE ORDER_ID = $order_id AND APPROVER_ID = $approver_id"
-        );
-        return $this->oracle->affected_rows();
-    }
-
-    public function updateOrderStatusID($order_id)
-    {
-        $query = $this->oracle->query(
-            "UPDATE KHS.KHS_OKBJ_ORDER_HEADER SET ORDER_STATUS_ID = 4 WHERE ORDER_ID = $order_id"
-        );
-        return $this->oracle->affected_rows();
-    }
-
-    
 }

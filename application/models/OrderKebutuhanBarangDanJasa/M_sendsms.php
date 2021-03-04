@@ -88,14 +88,4 @@ class M_sendsms extends CI_Model{
                                     ");
         return $query->result_array();
     }
-
-    public function getJudgedUrgentOrderCount()
-    {
-        $query = $this->oracle->query("SELECT 
-                                            APPS.KHS_OUTSTAND_OKBJ_PEMBEL_TOT ('URGENT') TOTAL_BELUM_JUDGE 
-                                        FROM 
-                                            DUAL
-                                    ");
-        return $query->row_array();
-    }
 }
