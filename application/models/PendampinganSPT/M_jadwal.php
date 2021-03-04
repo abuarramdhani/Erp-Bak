@@ -17,7 +17,7 @@ class M_jadwal extends CI_Model
         //     ->from('ap.ap_spt')
         //     ->get()
         //     ->result_array();
-        $sql = "SELECT * FROM ap.ap_spt WHERE nomor_pendaftaran like '%-$years-%'";
+        $sql = "SELECT row_number() OVER () AS no, * FROM ap.ap_spt WHERE nomor_pendaftaran like '%-$years-%'";
         $query = $this->db->query($sql);
         return $query->result_array();
     }
