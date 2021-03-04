@@ -36,8 +36,7 @@ class M_purchasing extends CI_Model
                 "SELECT DISTINCT
                     oprh.* ,
                     ppf.national_identifier noind ,
-                    ppf.full_name creator,
-                    kooh.CUT_OFF_DATE
+                    ppf.full_name creator
                 FROM
                     khs.khs_okbj_pre_req_header oprh,
                     per_people_f ppf,
@@ -60,8 +59,7 @@ class M_purchasing extends CI_Model
                 "SELECT DISTINCT
                     oprh.* ,
                     ppf.national_identifier noind ,
-                    ppf.full_name creator,
-                    kooh.CUT_OFF_DATE
+                    ppf.full_name creator
                 FROM
                     khs.khs_okbj_pre_req_header oprh,
                     per_people_f ppf,
@@ -85,8 +83,7 @@ class M_purchasing extends CI_Model
                 "SELECT DISTINCT
                     oprh.* ,
                     ppf.national_identifier noind ,
-                    ppf.full_name creator,
-                    kooh.CUT_OFF_DATE
+                    ppf.full_name creator
                 FROM
                     khs.khs_okbj_pre_req_header oprh,
                     per_people_f ppf,

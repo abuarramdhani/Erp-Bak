@@ -84,7 +84,6 @@
                                                     <th style="width:10px;">No</th>
                                                     <th>Pre_req_id</th>
                                                     <th>Creation Date</th>
-                                                    <th>Cut Off Date</th>
                                                     <th>Created By</th>
                                                     <!-- <th>Flag</th>
                                                     <th>Approved By</th>
@@ -99,7 +98,6 @@
                                                     <td><?php echo $no; ?></td>
                                                     <td class="tdOKBListOrderId"><?php echo $list['PRE_REQ_ID']; ?></td>
                                                     <td><?php echo date("d-M-Y",strtotime($list['CREATION_DATE'])); ?></td>
-                                                    <td><?php echo $list['CUT_OFF_DATE'] ? date("d-M-Y",strtotime($list['CUT_OFF_DATE'])) : null; ?></td>
                                                     <td><?php echo $list['NOIND'].'-'.$list['CREATOR'];?></td>
                                                     <!-- <td>
                                                         <?php if ($list['APPROVED_BY']==null) { ?>
