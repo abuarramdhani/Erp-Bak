@@ -24,7 +24,7 @@
                         <p>Oleh karena itu, mohon membaca informasi dan persyaratan berikut sebelum Bpk/Ibu melakukan pendaftaran pendampingan pengisian SPT Tahunan 2020.</p>
                         <ol>
                             <li>
-                                Pendaftaran pendampingan pengisian SPT Tahunan Orang Pribadi Tahun 2020 ini hanya diperuntukan kepada: 
+                                Pendaftaran pendampingan pengisian SPT Tahunan Orang Pribadi Tahun 2020 ini hanya diperuntukan kepada:
                                 <ol type="a">
                                     <li>Pekerja <b>Non Staff CV Karya Hidup Sentosa</b> (bukan OS) yang memiliki NPWP. </li>
                                     <li>Pekerja CV Karya Hidup Sentosa Nonstaff yang memiliki nomor induk "A" dan berusia <b>diatas atau sama dengan 40 tahun</b>.</li>
@@ -35,7 +35,7 @@
                             <li>
                                 Pendampingan akan diberikan selama jam kerja dengan perkiraan tanggal sebagai berikut:
                                 <ol type="a">
-                                    <li>Tuksono	&nbsp; : Selasa - Rabu, 9 - 10 Maret 2021 (Pk 09.30 - 15.20 WIB).</li>
+                                    <li>Tuksono &nbsp; : Selasa - Rabu, 9 - 10 Maret 2021 (Pk 09.30 - 15.20 WIB).</li>
                                     <li>Pusat &nbsp; &nbsp; &nbsp; &nbsp; : Selasa - Rabu, 16 - 17 Maret 2021 (Pk 08.00 - 15.20 WIB).</li>
                                 </ol>
                                 Per Sesi diisi 6 orang peserta pendampingan.
@@ -62,7 +62,7 @@
                         </ol>
                     </div>
                     <hr>
-                    <div class="divPSPTRegisterFormField">
+                    <div class="divPSPTRegisterFormField" style="display: none;">
                         <div class="form-group">
                             <label for="txtPSPTIdentityNumber" class="col-sm-2 control-label">No. Induk</label>
                             <div class="input-group col-sm-5">
