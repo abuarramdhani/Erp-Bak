@@ -98,7 +98,6 @@
                                             <!-- <th style="width:100px;">NAMA Barang</th> -->
                                             <th style="width:100px;">Qty + UOM</th>
                                             <!-- <th style="width:100px;">UOM</th> -->
-                                            <th style="width:100px;">Cut Off Date</th>
                                             <th style="width:100px;">Need By Date</th>
                                             <th style="width:100px;">Alasan Order</th>
                                             <th style="width:120px;">Note To Pengelola</th>
@@ -124,7 +123,6 @@
                                             <!-- <td><?php echo $list['DESCRIPTION']; ?></td> -->
                                             <td><?php echo $list['QUANTITY'].' '.$list['UOM']; ?></td>
                                             <!-- <td><?php echo $list['UOM']; ?></td> -->
-                                            <td><span class="spnOKBCutOffDate"><?php echo $list['CUT_OFF_DATE'] ? date("d-M-Y", strtotime($list['CUT_OFF_DATE'])) : null; ?></span></td>
                                             <td><?php echo date("d-M-Y", strtotime($list['NEED_BY_DATE'])); ?></td>
                                             <td><?php echo $list['ORDER_PURPOSE']; ?></td>
                                             <td><?php echo $list['NOTE_TO_PENGELOLA']; ?></td>

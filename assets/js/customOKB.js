@@ -1591,24 +1591,12 @@ $(document).ready(function () {
 
     $(document).on('click','.btnOKBReleaseOrderPulling', function () {
         var checkbox = $('.checkApproveOKB').filter(':checked');
-        var checkedRows = tableOKB.rows(checkbox.parents('tr'));
-        var cutOffDateNodes = checkedRows.nodes().to$().find('.spnOKBCutOffDate');
-        var cutOffDateValues = cutOffDateNodes.map(function (i, e) {
-            return $(e).html();
-        }).toArray();
-        var uniqueCutOffDateCount = new Set(cutOffDateValues).size;
         
         if (checkbox.length == 0) {
             Swal.fire({
                 type: 'error',
                 title: 'Gagal',
                 text: 'Anda belum memilih order !',
-            });
-        } else if (uniqueCutOffDateCount > 1){
-            Swal.fire({
-                type: 'error',
-                title: 'Gagal',
-                text: 'Silahkan hanya memilih order yang memiliki cut off date sama!',
             });
         }else{
             $(this).attr('disabled','disabled');
