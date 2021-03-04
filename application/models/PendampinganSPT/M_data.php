@@ -48,11 +48,11 @@ class M_data extends CI_Model
             ->result_array();
     }
 
-    public function countAllRegisteredUser($filter, $filter_2)
+    public function countAllRegisteredUser($filter, $filter_2, $years)
     {
         return $this->db
             ->like($filter)
-            ->like('nomor_pendaftaran', '-21-')
+            ->like('nomor_pendaftaran', '-' . $years . '-')
             ->not_like($filter_2)
             ->from('ap.ap_spt')
             ->count_all_results();
