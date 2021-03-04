@@ -547,4 +547,13 @@ and handling.rev_no = max.rev_no order by handling.last_update_date DESC";
         $query = $this->db->query($sql);
         return $sql;
     }
+
+    public function getnamaseksi($user){
+        $sql = "select tp.nama, tp.noind, ts.seksi, ts.unit
+                from hrd_khs.tseksi ts, hrd_khs.tpribadi tp
+                where tp.kodesie = ts.kodesie
+                and tp.noind = '$user'";
+        $query = $this->personalia->query($sql);
+        return $query->result_array();
+    }
 }
