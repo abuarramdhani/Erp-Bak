@@ -111,6 +111,9 @@ class C_Monhandseksi extends CI_Controller
             } else {
                 $datahandling[$i]['sarana'] = $sarana_handling[0]['nama_handling'];
             }
+            $pic = $this->M_dbhandling->getnamaseksi($datahandling[$i]['last_update_by']);
+            $datahandling[$i]['nama_pic'] = !empty($datahandling[$i]['last_update_by']) ? $pic[0]['nama'] : '';
+            $datahandling[$i]['seksi_pic'] = !empty($datahandling[$i]['last_update_by']) ? $pic[0]['seksi'] : '';
         }
 
         $data['datahandling'] = $datahandling;
