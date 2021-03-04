@@ -104,22 +104,22 @@
                             </div>
                         </div><br>
                     </div>
-                    <div class="text-justify">
+                    <!-- <div class="text-justify">
                         <p>Mohon dicek kembali data di atas, jika belum sesuai silahkan diperbaiki sesuai data yang benar dan jika sudah sesuai klik "<b>Kirim</b>".</p>
-                    </div>
+                    </div> -->
                 </div>
                 <!-- /.box-body -->
-                <div class="box-footer">
+                <!-- <div class="box-footer">
                     <div class="pull-right">
                         <button type="button" class="btn btn-primary btnPSPTRegister"><i class="fa fa-send"></i> Kirim</button>
                     </div>
                     <button type="reset" class="btn btn-default btnPSPTRefresh"><i class="fa fa-refresh"></i> Refresh</button>
-                </div>
+                </div> -->
                 <!-- /.box-footer -->
-                <!-- <div id="divPSPTDetailSchedule" class="text-center box-footer" style="padding: 3rem;">
+                <div id="divPSPTDetailSchedule" class="text-center box-footer" style="padding: 3rem;">
                     <p>Untuk melihat jadwal pendampingan silahkan klik link dibawah ini</p>
                     <a href="{BaseUrl}PendampinganSPT/Jadwal" class="btn btn-primary"><i class="fa fa-calendar"></i> &nbsp;Jadwal Pendampingan</a>
-                </div> -->
+                </div>
 
             </div>
             <!-- /. box -->

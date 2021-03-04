@@ -1,7 +1,8 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class M_jadwal extends CI_Model {
+class M_jadwal extends CI_Model
+{
 
     public function __construct()
     {
@@ -9,13 +10,16 @@ class M_jadwal extends CI_Model {
         $this->load->database();
     }
 
-    public function selectAllUserSchedule()
+    public function selectAllUserSchedule($years)
     {
-        return $this->db
-            ->select('row_number() OVER () AS no, status_pekerja, nomor_induk, nama, seksi, lokasi_kerja, nomor_pendaftaran, jadwal, lokasi')
-            ->from('ap.ap_spt')
-            ->get()
-            ->result_array();
+        // return $this->db
+        //     ->select('row_number() OVER () AS no, status_pekerja, nomor_induk, nama, seksi, lokasi_kerja, nomor_pendaftaran, jadwal, lokasi')
+        //     ->from('ap.ap_spt')
+        //     ->get()
+        //     ->result_array();
+        $sql = "SELECT * FROM ap.ap_spt WHERE nomor_pendaftaran like '%-$years-%'";
+        $query = $this->db->query($sql);
+        return $query->result_array();
     }
 
     public function updateTableColumn()
