@@ -85,6 +85,19 @@
                     </table>
                   </div>
                   <div class="col-md-12">
+                    <label>Seksi Pemakai</label>
+                  </div>
+                  <div class="col-md-12">
+                    <select class="form-control apd_slccostc" name="cost_center" placeholder="Pilih Seksi Pemakai" id="apd_seksi_pemakai_ss">
+                      <option></option>
+                      <?php foreach ($listcc as $key): ?>
+                        <option <?= ($key['COST_CENTER']==$costc) ? 'selected':''; ?> value="<?= $key['COST_CENTER']; ?>">
+                          <?= $key['COST_CENTER'].' - '.$key['PEMAKAI']; ?>
+                        </option>
+                      <?php endforeach ?>
+                    </select>
+                  </div>
+                  <div class="col-md-12">
                     <hr>
                     <div style="display: flex; justify-content: space-between;">
                       <div class="text-left">
@@ -223,10 +236,12 @@
             let apd = $(this).find('.select-shoes').val()
             let noind = $(this).find('.select-pekerja').val()
             let reason = $(this).find('.reason').val()
+            let cost_center = $('#apd_seksi_pemakai_ss').val();
             data.push({
               item_code: apd,
               noind,
-              reason
+              reason,
+              cost_center: cost_center
             })
           })
           return data
@@ -350,10 +365,13 @@
       if ($(this).attr('valid') == 0) {
         invalid.push(false)
       }
-    })
+    });
+
 
     // disable or enable submit button
     $('#submit_bon').prop('disabled', invalid.length)
+    let cost_center = $('#apd_seksi_pemakai_ss').val();
+    if(cost_center == '') return false;
     return (invalid.length == 0)
   }
 

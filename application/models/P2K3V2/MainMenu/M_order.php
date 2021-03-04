@@ -957,7 +957,8 @@ class M_Order extends CI_Model
 
                 // oracle
                 $generate_new_id = $this->M_dtmasuk->getIdOr();
-                $cost_center = $this->getCostCenter($item_data['kodesie']);
+                $cost_center = $item['cost_center'];
+                // $cost_center = $this->getCostCenter($item_data['kodesie']);
                 $account = $this->account('APD', $cost_center);
                 $kode_cabang = $this->pemakai_2($cost_center);
 

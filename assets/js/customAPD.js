@@ -1578,6 +1578,10 @@ $(document).ready(function(){
 			}
 		});
 	});
+
+	$('.apd_slccostc').select2({
+		placeholder: 'Pilih Seksi Pemakai'
+	});
 });
 
 function showSwal(d){
