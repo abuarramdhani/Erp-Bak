@@ -3,12 +3,11 @@
 		scroll-behavior: smooth;
 	}
 
-	#example11_paginate {
-		float: right;
-	}
-
-	#example11_info {
+	.dataTables_info {
 		float: left;
+	}
+	.dataTables_paginate {
+		float: right;
 	}
 
 	span.select2-container {

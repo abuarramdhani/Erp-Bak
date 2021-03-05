@@ -11,14 +11,12 @@
 		color: white !important;
 	}
 
-	#example11_paginate {
-		float: right;
-	}
-
-	#example11_info {
+	.dataTables_info {
 		float: left;
 	}
-
+	.dataTables_paginate {
+		float: right;
+	}
 	span.select2-container {
 		width: 100% !important;
 	}
