@@ -640,6 +640,8 @@
                                   	$prev = null;
 
                                     $tampung_start_finish = [];
+                                    // echo "<pre>";
+                                    // print_r($lihat_hasilObservasi_elemen);die;
                                     foreach ($lihat_hasilObservasi_elemen as $key => $value) {
                                       $takt_time2 = $value['takt_time'];
                                       $waktu = $value['waktu_kerja'];
@@ -656,7 +658,8 @@
                                           $stat = 'eksekusi =';
                                         }
 
-                                        array_push($tampung_start_finish, ['start' => $start, 'finish' => $finish]);
+                                        array_push($tampung_start_finish, ['start' => $start, 'finish' => $finish, 'status' => '', 'waktu_kerja' => $waktu]);
+
                                         // echo "<pre>";
                                         // echo $finish;
                                       }else{
@@ -674,29 +677,35 @@
                                             // echo "<pre>";
                                             // echo $finish;
                                           }
+
                                           if (!empty($value['start_together'])) {
                                             if (!empty($tampung_start_finish[$value['start_together'] - 1])) {
                                               $start = $tampung_start_finish[$value['start_together'] - 1]['start'];
                                             }else {
-                                              $start = '';
+                                              $start = 0;
                                             }
-                                            for ($i=0; $i < count($waktu) ; $i++) {
-                                              $finish1 = ($waktu + $start) - 1;
-                                              if ($finish1 > $takt_time2) {
-                                                $finish = $finish1;
-                                              } else {
-                                                $finish = $finish1;
-                                              }
-                                            }
+                                            $status = 'start_'.$value['start_together'];
                                           }
+
                                           if (!empty($value['end_together'])) {
                                             if (!empty($tampung_start_finish[$value['end_together'] - 1])) {
-                                              $finish = $tampung_start_finish[$value['end_together'] - 1]['finish'];
+                                              $start = $tampung_start_finish[$value['end_together'] - 1]['finish'] + 1;
                                             }else {
-                                              $finish = '';
+                                              $start = 1;
+                                            }
+                                            $status = 'end_'.$value['end_together'];
+                                          }
+
+                                          for ($i=0; $i < count($waktu) ; $i++) {
+                                            $finish1 = ($waktu + $start) - 1;
+                                            if ($finish1 > $takt_time2) {
+                                              $finish = $finish1;
+                                            } else {
+                                              $finish = $finish1;
                                             }
                                           }
-                                          array_push($tampung_start_finish, ['start' => $start, 'finish' => $finish]);
+                                          array_push($tampung_start_finish, ['start' => $start, 'finish' => $finish, 'status' => $status, 'waktu_kerja' => $waktu]);
+
                                         }else{
                                           for ($i=0; $i < count($waktu) ; $i++) {
                                             $start = $finish + 1;
@@ -718,33 +727,60 @@
                                             // echo $finish;
                                             // echo ' '.$stat;
                                           }
+                                          $status = '';
                                           if (!empty($value['start_together'])) {
                                             if (!empty($tampung_start_finish[$value['start_together'] - 1])) {
                                               $start = $tampung_start_finish[$value['start_together'] - 1]['start'];
                                             }else {
-                                              $start = '';
+                                              $start = 0;
                                             }
-                                            for ($i=0; $i < count($waktu) ; $i++) {
-                                              $finish1 = ($waktu + $start) - 1;
-                                              if ($finish1 > $takt_time2) {
-                                                $finish = $finish1;
-                                              } else {
-                                                $finish = $finish1;
-                                              }
-                                            }
+                                            $status = 'start_'.$value['start_together'];
                                           }
+
                                           if (!empty($value['end_together'])) {
                                             if (!empty($tampung_start_finish[$value['end_together'] - 1])) {
-                                              $finish = $tampung_start_finish[$value['end_together'] - 1]['finish'];
+                                              $start = $tampung_start_finish[$value['end_together'] - 1]['finish'] + 1;
                                             }else {
-                                              $finish = '';
+                                              $start = 1;
+                                            }
+                                            $status = 'end_'.$value['end_together'];
+                                          }
+
+                                          for ($i=0; $i < count($waktu) ; $i++) {
+                                            $finish1 = ($waktu + $start) - 1;
+                                            if ($finish1 > $takt_time2) {
+                                              $finish = $finish1;
+                                            } else {
+                                              $finish = $finish1;
                                             }
                                           }
-                                          array_push($tampung_start_finish, ['start' => $start, 'finish' => $finish]);
+
+                                          array_push($tampung_start_finish, ['start' => $start, 'finish' => $finish, 'status' => $status, 'waktu_kerja' => $waktu]);
                                         }
                                         $prev = $key['jenis_proses'];
                                       }
-                                    $n++;}
+                                    $n++;
+                                  }
+
+                                  foreach ($tampung_start_finish as $key => $v) {
+                                    if (!empty($v['status'])) {
+                                      $cek = explode('_', $v['status']);
+                                      if ($cek[0] == 'start') {
+                                        $tampung_start_finish[$key]['start'] = $tampung_start_finish[$cek[1] - 1]['start'];
+                                        $tampung_start_finish[$key]['finish'] = ($v['waktu_kerja'] + $tampung_start_finish[$cek[1] - 1]['start']) - 1;
+                                      }else {
+                                        $tampung_start_finish[$key]['start'] = $tampung_start_finish[$cek[1] - 1]['finish'] + 1;
+                                        $tampung_start_finish[$key]['finish'] = ($v['waktu_kerja'] + $tampung_start_finish[$cek[1] - 1]['finish']);
+                                      }
+                                    }else {
+                                      if ($key != 0) {
+                                        $tampung_start_finish[$key]['start'] = $tampung_start_finish[$key - 1]['finish'] + 1;
+                                        $tampung_start_finish[$key]['finish'] = ($v['waktu_kerja'] + $tampung_start_finish[$key - 1]['finish'] + 1) - 1;
+                                      }
+                                    }
+                                  }
+
+                                  // echo "<pre>";print_r($tampung_start_finish);die;
 
                                   	foreach ($lihat_hasilObservasi_elemen as $i => $key) {
 
@@ -788,7 +824,7 @@
                                     <td class="<?php if ( $tipe_urutan == 'PARALEL') { echo "wrapper"; }; ?>">
                                       <input type="number" style="<?php if ( $tipe_urutan == 'PARALEL') { echo "background-color: #006bb3;color:white;"; }; ?>;"
                                       value="<?php echo $start; ?>" oninput="finishTableElement(this)"
-                                      name="mulai[]" class="form-control mulai" baris="<?php echo $no ?>" 
+                                      name="mulai[]" class="form-control mulai" baris="<?php echo $no ?>"
                                       check-start-no="<?php echo $key['start_together'] ?>"
                                       check-end-no="<?php echo $key['end_together'] ?>"
                                       placeholder="Detik" <?php if ( $tipe_urutan == 'SERIAL') { echo "readonly"; }; ?>>
