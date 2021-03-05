@@ -1580,12 +1580,7 @@ function finishTableElement(th) {
   let finishNow = curr_row.children('td').children('.finish');
   let finishRN = Number(w_now) + Number(s_now) - 1;
 
-  if (curr_row.attr('check-waktu-serentak-end') === 'Y' && $(`input[baris="${my_number}"]`).attr('check-end-no') !== my_number) {
-    let another_index_end = $(`input[baris="${my_number}"]`).attr('check-end-no');
-    finishNow.val($(`tr[class="number_${another_index_end}"]`).find('.finish').val());
-  } else {
-    finishNow.val(Number(finishRN));
-  }
+  finishNow.val(Number(finishRN));
 
   //ngitung finish kena takt time = finish now - takt time
   // 	if (finishRN > takt_time) {
@@ -1635,14 +1630,23 @@ function finishTableElement(th) {
     let finish1 = Number(currWaktu) + Number(prevStart) - 1;
     let finishAI = Number(currWaktu) + Number(currMulai) - 1;
     let startRN = (Number(prevFinish) + 1);
-
     //follow start syst
     if ($(`tr[class="number_${index}"]`).attr('check-waktu-serentak') === 'Y' && $(`input[baris="${index}"]`).attr('check-start-no') === my_number) {
       startRN = $(th).val();
+
     } else if ($(`tr[class="number_${index}"]`).attr('check-waktu-serentak') === 'Y' && $(`input[baris="${index}"]`).attr('check-start-no') !== my_number) {
       let another_index = $(`input[baris="${index}"]`).attr('check-start-no');
       startRN = $(`input[baris="${another_index}"]`).val();
+
+    } else if ($(`tr[class="number_${index}"]`).attr('check-waktu-serentak-end') === 'Y' && $(`input[baris="${index}"]`).attr('check-end-no') === my_number) {
+      startRN = Number(finishNow.val()) + 1;
+
+    } else if ($(`tr[class="number_${index}"]`).attr('check-waktu-serentak-end') === 'Y' && $(`input[baris="${index}"]`).attr('check-end-no') !== my_number) {
+      let another_index_end = $(`input[baris="${index}"]`).attr('check-end-no');
+      finish = $(`tr[class="number_${another_index_end}"]`).find('.finish').val();
+      startRN = Number(finish) + 1;
     }
+
 
     let finish2 = Number(currWaktu) + Number(startRN) - 1;
 
@@ -1655,16 +1659,16 @@ function finishTableElement(th) {
       if (finish < 0) {
         finish = Number(currWaktu) + Number(prevStart) - 1;
       }
-			currStart.val(startRN);
-			currFinish.val(finish);
+      currStart.val(startRN);
+      currFinish.val(finish);
 
       console.log("AI > TAKT TIME");
     } else if (jp == "AUTO (Inheritance)" && finish1 < takt_time) {
       let finish = Number(finsih1)
       console.log("ini finish kurang dari takt time: ", finish);
       console.log("AI < TAKT TIME");
-			currStart.val(startRN);
-			currFinish.val(finish);
+      currStart.val(startRN);
+      currFinish.val(finish);
 
     } else if (jp != "AUTO (Inheritance)" && finish1 > takt_time) {
       // let finish = Number(finish2)
@@ -1679,31 +1683,58 @@ function finishTableElement(th) {
       if (finish < 0) {
         finish = Number(currWaktu) + Number(startRN) - 1;
       }
-			currStart.val(startRN);
-			currFinish.val(finish);
+      currStart.val(startRN);
+      currFinish.val(finish);
 
       console.log("BUKAN AI > TAKT TIME");
     } else {
       let finish = Number(finish2)
       console.log("ini finish kurang dari takt time: ", finish);
       console.log("BUKAN AI < TAKT TIME");
-			currStart.val(startRN);
-			currFinish.val(finish);
+      currStart.val(startRN);
+      currFinish.val(finish);
 
     }
 
-	if ($(`tr[class="number_${index}"]`).attr('check-waktu-serentak-end') === 'Y' && $(`input[baris="${index}"]`).attr('check-end-no') === my_number) {
-		finish = finishNow.val();console.log('disininii iiii 1');
-		currFinish.val(finish);
-	} else if ($(`tr[class="number_${index}"]`).attr('check-waktu-serentak-end') === 'Y' && $(`input[baris="${index}"]`).attr('check-end-no') !== my_number) {
-		let another_index_end = $(`input[baris="${index}"]`).attr('check-end-no');
-		finish = $(`tr[class="number_${another_index_end}"]`).find('.finish').val();
-		currFinish.val(finish);
-	}
-  console.log($(`input[baris="${index}"]`).val(), "ini value tiap baris mulai");
+    // if ($(`tr[class="number_${index}"]`).attr('check-waktu-serentak-end') === 'Y' && $(`input[baris="${index}"]`).attr('check-end-no') === my_number) {
+    // finish = finishNow.val();console.log('disininii iiii 1');
+    // currFinish.val(finish);
+    // } else if ($(`tr[class="number_${index}"]`).attr('check-waktu-serentak-end') === 'Y' && $(`input[baris="${index}"]`).attr('check-end-no') !== my_number) {
+    // 	let another_index_end = $(`input[baris="${index}"]`).attr('check-end-no');
+    // 	finish = $(`tr[class="number_${another_index_end}"]`).find('.finish').val();
+    // 	currFinish.val(finish);
+    // }
+    console.log($(`input[baris="${index}"]`).val(), "ini value tiap baris mulai");
 
-  nextRow = nextRow.next()
+    nextRow = nextRow.next()
   }
+
+  $('#tbodyGeneratorTSKK tr').each((i, v) => {
+    let index = i + 1;
+    let startPL = $(v).prev().find('.finish').val() + 1;
+    let currWaktuPL = $(v).find('.waktu').val();
+    if ($(`tr[class="number_${index}"]`).attr('check-waktu-serentak-end') === 'Y' && $(`input[baris="${index}"]`).attr('check-end-no') === my_number) {
+      $(`input[baris="${index}"]`).attr('check-end-no', my_number).val(finishRN + 1);
+      $(v).find('.finish').val(Number(finishRN)+Number(currWaktuPL));
+      startPL = finishRN + 1;
+    }else if ($(`tr[class="number_${index}"]`).attr('check-waktu-serentak') === 'Y' && $(`input[baris="${index}"]`).attr('check-start-no') === my_number) {
+      $(`input[baris="${index}"]`).attr('check-start-no', my_number).val(s_now);
+      startPL = s_now;
+      $(v).find('.finish').val((Number(startPL)+Number(currWaktuPL))-1);
+    }else {
+      // if (index != 1) {
+      //   console.log(startPL);
+      //   $(v).find('.mulai').val(startPL);
+      //   $(v).find('.finish').val((Number(startPL) + Number(currWaktuPL)) - 1);
+      // }
+    }
+
+    console.log(currWaktuPL);
+
+
+
+  })
+
 }
 
 //DELETE THE ELEMENT FROM EDIT MENU
@@ -2622,13 +2653,13 @@ function generateTSKK(a) {
 
 //ENABLE READONLY AND DISABLED FROM HEADER AND OBSERVATION SHEET
 $(document).ready(function() {
-	// if ($('#gtskk_app').val() == 1) {
-	// 	Swal.fire({
-	// 		type: 'info',
-	// 		title: 'Agar pembaruan aplikasi berjalan sepenuhnya',
-	// 		html: 'Reload halaman ini dengan menekan <b> ctrl+shift+r </b> secara berurutan. <br> Abaikan pesan ini jika telah melakukannya sebelumnya'
-	// 	})
-	// }
+  // if ($('#gtskk_app').val() == 1) {
+  // 	Swal.fire({
+  // 		type: 'info',
+  // 		title: 'Agar pembaruan aplikasi berjalan sepenuhnya',
+  // 		html: 'Reload halaman ini dengan menekan <b> ctrl+shift+r </b> secara berurutan. <br> Abaikan pesan ini jika telah melakukannya sebelumnya'
+  // 	})
+  // }
   $('#btnEdit').click(function() {
     $('.judul').prop('readonly', false);
     $('.taktTime').prop('readonly', false);
