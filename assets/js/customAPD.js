@@ -843,11 +843,15 @@ $(document).ready(function () {
 
 	$(".p2k3_detail_seksi_hitung").click(function () {
 		var ks = $(this).val();
+		var periodehitung = $(".p2k3_tanggal_periode").val();
 		$("#surat-loading").attr("hidden", false);
 		$.ajax({
 			url: baseurl + "p2k3adm_V2/Admin/getDetailSeksi",
 			method: "POST",
-			data: { ks: ks },
+			data: {
+				ks: ks,
+				pr: periodehitung
+			},
 			success: function (data) {
 				$("#phone_result_seksi_hitung").html(data);
 				$("#surat-loading").attr("hidden", true);
