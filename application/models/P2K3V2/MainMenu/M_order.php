@@ -652,6 +652,37 @@ class M_Order extends CI_Model
         return $query->result_array();
     }
 
+    public function getPekerjaforDetail($ks, $tglinput)
+    {
+        $ks = substr($ks, 0, 7);
+        $sql = "select
+                    tp.noind,
+                    tp.nama,
+                    coalesce(tk.pekerjaan, 'STAFF') pekerjaan,
+                    tk.kdpekerjaan,
+                    (case when (tp.tglkeluar > '$tglinput' and keluar = '1') then 'red'
+                    when (tp.masukkerja > '$tglinput') then 'blue'
+                    else 'black' end) color                
+                from
+                    hrd_khs.tpribadi tp
+                left join hrd_khs.tpekerjaan tk on
+                    tp.kd_pkj = tk.kdpekerjaan
+                where
+                    (keluar = '0'
+                    or tglkeluar > '$tglinput')
+                    and kodesie like '$ks%'
+                order by
+                    1";
+        $query = $this->personalia->query($sql);
+        return $query->result_array();
+    }
+
+    public function getTglInputOrder($ks, $pr)
+    {
+        $sql = "select ko.tgl_input from k3.k3n_order ko where status = 1 and kodesie like '$ks%' and periode = '$pr'";
+        return $this->erp->query($sql)->row();
+    }
+
     public function getEmail($kodesie)
     {
         $ks = substr($kodesie, 0, 7);
@@ -766,7 +797,7 @@ class M_Order extends CI_Model
                         and substring(t.kodesie,1,5) = substring(ts.kodesie,1,5)
                         and substring(noind, 1, 1) in ('B','D','J')
                         and t.kd_jabatan <= '08') = 0";
-                        // echo $sql;exit();
+        // echo $sql;exit();
         return $this->personalia->query($sql)->result_array();
     }
 
@@ -792,7 +823,7 @@ class M_Order extends CI_Model
                     where
                         kodesie like '$ks%'
                         and keluar = false)";
-         return $this->personalia->query($sql)->row()->noind;
+        return $this->personalia->query($sql)->row()->noind;
     }
 
     /**
@@ -1087,8 +1118,9 @@ class M_Order extends CI_Model
         $row = $this->db->query($sql)->num_rows();
         if ($row == 1) {
             return $this->db->query($sql)->row_array();
-        }else{
-            echo "Terdapat Anomali Data";exit();
+        } else {
+            echo "Terdapat Anomali Data";
+            exit();
         }
     }
 

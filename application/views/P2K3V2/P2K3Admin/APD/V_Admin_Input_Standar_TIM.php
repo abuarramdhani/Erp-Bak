@@ -68,6 +68,8 @@
                                                                                         <?php foreach ($daftar_pekerjaan as $key) { ?>
                                                                                         <th><?php echo $key['pekerjaan'];?></th>
                                                                                         <?php } ?>
+                                                                                        <th>Keterangan</th>
+                                                                                        <th>Lampiran <b style="color: yellow">(*PDF)</b></th>
                                                                                         <th>Action</th>
                                                                                     </tr>
                                                                                 </thead>
@@ -93,6 +95,12 @@
                                                                                             <input required="" type="number" class="form-control" name="p2k3_isk_standar[]" min="0">
                                                                                         </td>
                                                                                         <?php } ?>
+                                                                                        <td>
+                                                                                            <input required="" class="form-control" name="keterangan[]" placeholder="Keterangan" />
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <input class="form-control" name="lampiran[]" type="file" accept="application/pdf" placeholder="Keterangan" />
+                                                                                        </td>
                                                                                         <td>
                                                                                             <button class="btn btn-default group_rem">
                                                                                                 <a href="javascript:void(0);"  title="Hapus Baris">

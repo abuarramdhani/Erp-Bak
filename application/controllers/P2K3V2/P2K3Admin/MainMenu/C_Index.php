@@ -28,8 +28,7 @@ class C_Index extends CI_Controller
 	/* CHECK SESSION */
 	public function checkSession()
 	{
-		if ($this->session->is_logged) {
-		} else {
+		if ($this->session->is_logged) { } else {
 			redirect('');
 		}
 	}
@@ -611,8 +610,9 @@ class C_Index extends CI_Controller
 		$umum = $this->input->post('txtkebUmum');
 		$staff = $this->input->post('txtkebStaff');
 		$jumlah = $this->input->post('p2k3_isk_standar');
+		$keterangan = $this->input->post('keterangan');
+		$lampiran = $this->input->post('lampiran');
 		$tgl_input = date('Y-m-d H:i:s');
-
 		// implode kdpekerjaan
 		foreach ($daftar_pekerjaan as $key) {
 			$kd[] = $key['kdpekerjaan'];
@@ -642,6 +642,8 @@ class C_Index extends CI_Controller
 				'approve_tim_by'	=>	$noind,
 				'jml_kebutuhan_umum'	=>	$itemUmum,
 				'jml_kebutuhan_staff'	=>	$itemStaf,
+				'keterangan' => $keterangan[$i],
+				'lampiran'	=> str_replace(' ', '_', $_FILES['lampiran']['name'][$i])
 			);
 			$a += count($daftar_pekerjaan);
 			//insert to sys.t_log_activity
@@ -651,7 +653,48 @@ class C_Index extends CI_Controller
 			//
 			$input = $this->M_order->save_standar($data);
 		}
+
+		$this->load->library('upload');
+		if (!is_dir('./assets/upload/P2K3DocumentApproval')) {
+			mkdir('./assets/upload/P2K3DocumentApproval', 0777, true);
+			chmod('./assets/upload/P2K3DocumentApproval', 0777);
+		}
+
+		$cpt = count($_FILES['lampiran']['name']);
+		// echo $cpt;
+		$arrayName = array();
+		$files = $_FILES;
+		for ($i = 0; $i < $cpt; $i++) {
+			$filename = $files['lampiran']['name'][$i];
+			if (empty($filename)) continue;
+
+			$_FILES['lampiran']['name'] = str_replace(' ', '_', $files['lampiran']['name'][$i]);
+			$arrayName[] = $_FILES['lampiran']['name'];
+			$_FILES['lampiran']['type'] = $files['lampiran']['type'][$i];
+			$_FILES['lampiran']['tmp_name'] = $files['lampiran']['tmp_name'][$i];
+			$_FILES['lampiran']['error'] = $files['lampiran']['error'][$i];
+			$_FILES['lampiran']['size'] = $files['lampiran']['size'][$i];
+
+			$this->upload->initialize($this->init_config());
+			if ($this->upload->do_upload('lampiran')) {
+				$this->upload->data();
+			} else {
+				$errorinfo = $this->upload->display_errors();
+				echo $errorinfo;
+				exit();
+			}
+		}
 		redirect('p2k3adm_V2/Admin/inputStandarTIM');
+	}
+
+	function init_config()
+	{
+		$config = array();
+		$config['upload_path'] = 'assets/upload/P2K3DocumentApproval';
+		$config['allowed_types'] = 'pdf';
+		$config['overwrite']     = 1;
+
+		return $config;
 	}
 
 	public function saveInputOrder()
@@ -1441,7 +1484,7 @@ class C_Index extends CI_Controller
 	{
 		$data  = $this->general->loadHeaderandSidemenu('P2K2 - Monitoring Kecelakaan Kerja', 'Monitoring Kecelakaan Kerja', 'Monitoring Kecelakaan Kerja', '', '');
 		$data['year'] = $this->input->get('y');
-		if(empty($data['year'])) redirect('p2k3adm_V2/Admin/monitoringKK?y='.date('Y'));
+		if (empty($data['year'])) redirect('p2k3adm_V2/Admin/monitoringKK?y=' . date('Y'));
 		$data['list'] = $this->M_dtmasuk->getK3K($data['year']);
 		$data['lokasi'] = array_column($this->M_pekerjakeluar->getLokasiKerja(), 'lokasi_kerja', 'id_');
 		$data['lokasi'][999] = 'LAKA';
@@ -1498,24 +1541,24 @@ class C_Index extends CI_Controller
 			if ($time >= strtotime('10:00:00') && $time <= $brk) {
 				$ket1 = 'Awal - Break';
 				$rng1 = 1;
-			}elseif ($time >= $brk && $time <= $ist) {
+			} elseif ($time >= $brk && $time <= $ist) {
 				$ket1 = 'Break - Istirahat';
 				$rng1 = 2;
-			}elseif ($time >= $ist && $time <= $plg) {
+			} elseif ($time >= $ist && $time <= $plg) {
 				$ket1 = 'Istirahat - Pulang';
 				$rng1 = 3;
-			}else {
+			} else {
 				$ket1 = 'Istirahat - Pulang';
 				$rng1 = 3;
 			}
-		}else {
+		} else {
 			if ($time <= $brk) {
 				$ket1 = 'Awal - Break';
 				$rng1 = 1;
-			}elseif ($time >= $brk && $time <= $ist) {
+			} elseif ($time >= $brk && $time <= $ist) {
 				$ket1 = 'Break - Istirahat';
 				$rng1 = 2;
-			}elseif ($time >= $ist) {
+			} elseif ($time >= $ist) {
 				$ket1 = 'Istirahat - Pulang';
 				$rng1 = 3;
 			}
@@ -1534,7 +1577,7 @@ class C_Index extends CI_Controller
 		$ket2 = 'Tidak Ada';
 		foreach ($rng as $k) {
 			if ($time >= strtotime($k[0]) && $time <= strtotime($k[1])) {
-				$ket2 = $k[2].' - '.$k[3];
+				$ket2 = $k[2] . ' - ' . $k[3];
 				$rng2 = $k[4];
 				break;
 			}
@@ -1542,28 +1585,28 @@ class C_Index extends CI_Controller
 
 		if ($ket2 == 'Tidak Ada') {
 			foreach ($rngs as $k) {
-			if ($time >= strtotime($k[0]) && $time <= strtotime($k[1])) {
-				$ket2 = '22:00:00 - 01:00:00';
-				$rng2 = 7;
-				break;
+				if ($time >= strtotime($k[0]) && $time <= strtotime($k[1])) {
+					$ket2 = '22:00:00 - 01:00:00';
+					$rng2 = 7;
+					break;
+				}
 			}
 		}
-		}
 
-		$kode = substr($noind, 0,1);
+		$kode = substr($noind, 0, 1);
 		$dat = $this->M_dtmasuk->getdetail_pkj_mkk($noind);
 		$kd_jabatan = $dat['kd_jabatan'];
 		if ($kode == 'K' || $kode == 'P'  || $kode == 'R') {
 			$masakrj = $this->M_dtmasuk->getMasaKerja($noind, $tgl);
-		}elseif ($kode == 'A' || $kode == 'B' || $kode == 'C' || $kode == 'H' || $kode == 'J'|| $kode == 'T') {
+		} elseif ($kode == 'A' || $kode == 'B' || $kode == 'C' || $kode == 'H' || $kode == 'J' || $kode == 'T') {
 			$masakrj = $this->M_dtmasuk->getMasaKerja3($noind, $tgl);
-		}elseif ($kd_jabatan == '13' || $kd_jabatan == '19') {
+		} elseif ($kd_jabatan == '13' || $kd_jabatan == '19') {
 			$masakrj = $this->M_dtmasuk->getMasaKerja2($noind, $tgl);
-		}else{
+		} else {
 			$masakrj = '-';
 		}
 		if ($masakrj != '-') {
-			$masa = $masakrj['tahun']." tahun ".$masakrj['bulan']." bulan ".$masakrj['hari']." hari";
+			$masa = $masakrj['tahun'] . " tahun " . $masakrj['bulan'] . " bulan " . $masakrj['hari'] . " hari";
 			// if ($masakrj['tahun'] > 0) {
 			// 	$msa = 
 			// }elseif ($masakrj['bulan'] >= 3 ) {
@@ -1571,7 +1614,7 @@ class C_Index extends CI_Controller
 			// }else{
 
 			// }
-		}else{
+		} else {
 			$masa = '-';
 		}
 		$data['masa_kerja'] = $masa;
@@ -1604,13 +1647,13 @@ class C_Index extends CI_Controller
 		$kriteria = $this->input->post('kriteria');
 
 		$tgl_car = $this->input->post('tgl_car');
-		if(empty($tgl_car)) $tgl_car = null;
+		if (empty($tgl_car)) $tgl_car = null;
 		$pic = $this->input->post('pic');
-		if(empty($pic)) $pic = null;
+		if (empty($pic)) $pic = null;
 		$target_car = $this->input->post('target_car');
-		if(empty($target_car)) $target_car = null;
+		if (empty($target_car)) $target_car = null;
 		$close_car = $this->input->post('close_car');
-		if(empty($close_car)) $close_car = null;
+		if (empty($close_car)) $close_car = null;
 
 		$kategori = $this->input->post('kategori');
 		$bagian_tubuh = $this->input->post('bagian_tubuh');
@@ -1642,7 +1685,7 @@ class C_Index extends CI_Controller
 			'bsrl' => $bsrl,
 			'kodesie' => $kodesie,
 			'lokasi_kerja'	=>	$lokasi
-			);
+		);
 		// $ins = 1;
 		$ins = $this->M_dtmasuk->insk3k_kecelakaan($arr);
 
@@ -1652,9 +1695,9 @@ class C_Index extends CI_Controller
 				$arrB[] = array(
 					'id_kecelakaan' => $ins,
 					'bagian_tubuh' => $k,
-					);
+				);
 			}
-			if(!empty($arrB))
+			if (!empty($arrB))
 				$ins2 = $this->M_dtmasuk->insk3k_kecelakaan_lain($arrB, 'k3.k3k_bagian_tubuh');
 		}
 
@@ -1664,33 +1707,33 @@ class C_Index extends CI_Controller
 				$arrF[] = array(
 					'id_kecelakaan' => $ins,
 					'faktor' => $k,
-					);
+				);
 			}
-			if(!empty($arrF))
+			if (!empty($arrF))
 				$ins2 = $this->M_dtmasuk->insk3k_kecelakaan_lain($arrF, 'k3.k3k_faktor_kecelakaan');
 		}
 
 		if (!empty($kategori)) {
-			$arrK= array();
+			$arrK = array();
 			foreach ($kategori as $k) {
 				$arrK[] = array(
 					'id_kecelakaan' => $ins,
 					'kategori' => $k,
-					);
+				);
 			}
-			if(!empty($arrK))
+			if (!empty($arrK))
 				$ins2 = $this->M_dtmasuk->insk3k_kecelakaan_lain($arrK, 'k3.k3k_kategori_kecelakaan');
 		}
 
 		if (!empty($apd)) {
-			$arrP= array();
+			$arrP = array();
 			foreach ($apd as $k) {
 				$arrP[] = array(
 					'id_kecelakaan' => $ins,
 					'penggunaan_apd' => $k,
-					);
+				);
 			}
-			if(!empty($arrP))
+			if (!empty($arrP))
 				$ins2 = $this->M_dtmasuk->insk3k_kecelakaan_lain($arrP, 'k3.k3k_penggunaan_apd');
 		}
 		redirect('p2k3adm_V2/Admin/monitoringKK');
@@ -1700,11 +1743,11 @@ class C_Index extends CI_Controller
 	{
 		$id = $this->input->post('id');
 
-		$this->M_dtmasuk->delK3K('k3.k3k_kecelakaan',$id);
-		$this->M_dtmasuk->delK3K('k3.k3k_bagian_tubuh',$id);
-		$this->M_dtmasuk->delK3K('k3.k3k_faktor_kecelakaan',$id);
-		$this->M_dtmasuk->delK3K('k3.k3k_kategori_kecelakaan',$id);
-		$this->M_dtmasuk->delK3K('k3.k3k_penggunaan_apd',$id);
+		$this->M_dtmasuk->delK3K('k3.k3k_kecelakaan', $id);
+		$this->M_dtmasuk->delK3K('k3.k3k_bagian_tubuh', $id);
+		$this->M_dtmasuk->delK3K('k3.k3k_faktor_kecelakaan', $id);
+		$this->M_dtmasuk->delK3K('k3.k3k_kategori_kecelakaan', $id);
+		$this->M_dtmasuk->delK3K('k3.k3k_penggunaan_apd', $id);
 	}
 
 	public function edit_monitoringKK()
@@ -1712,7 +1755,7 @@ class C_Index extends CI_Controller
 		$data  = $this->general->loadHeaderandSidemenu('P2K2 - Monitoring Kecelakaan Kerja', 'Edit Data', 'Monitoring Kecelakaan Kerja', '', '');
 		$id = $this->input->get('id');
 
-		$data['kecelakaan'] = $this->M_dtmasuk->getAllk3k('k3.k3k_kecelakaan',$id)[0];
+		$data['kecelakaan'] = $this->M_dtmasuk->getAllk3k('k3.k3k_kecelakaan', $id)[0];
 		if (isset($data['kecelakaan']['noind'])) {
 			$noind = $data['kecelakaan']['noind'];
 			$data['pkj'] = $this->M_dtmasuk->getdetail_pkj_mkk($noind);
@@ -1722,13 +1765,13 @@ class C_Index extends CI_Controller
 			$data['pic'] = $this->M_dtmasuk->getdetail_pkj_mkk($noind);
 		}
 
-		$data['bagian'] = $this->M_dtmasuk->getAllk3k('k3.k3k_bagian_tubuh',$id);
+		$data['bagian'] = $this->M_dtmasuk->getAllk3k('k3.k3k_bagian_tubuh', $id);
 		$data['bagianc'] = array_column($data['bagian'], 'bagian_tubuh');
-		$data['faktor'] = $this->M_dtmasuk->getAllk3k('k3.k3k_faktor_kecelakaan',$id);
+		$data['faktor'] = $this->M_dtmasuk->getAllk3k('k3.k3k_faktor_kecelakaan', $id);
 		$data['faktorc'] = array_column($data['faktor'], 'faktor');
-		$data['kategori'] = $this->M_dtmasuk->getAllk3k('k3.k3k_kategori_kecelakaan',$id);
+		$data['kategori'] = $this->M_dtmasuk->getAllk3k('k3.k3k_kategori_kecelakaan', $id);
 		$data['kategoric'] = array_column($data['kategori'], 'kategori');
-		$data['apd'] = $this->M_dtmasuk->getAllk3k('k3.k3k_penggunaan_apd',$id);
+		$data['apd'] = $this->M_dtmasuk->getAllk3k('k3.k3k_penggunaan_apd', $id);
 		$data['apdc'] = array_column($data['apd'], 'penggunaan_apd');
 		// print_r($data['pic']);exit();
 
@@ -1751,32 +1794,32 @@ class C_Index extends CI_Controller
 		$tgl_kecelakaan = $this->input->post('tgl_kecelakaan');
 		$tkp = $this->input->post('tkp');
 		$range1 = $this->input->post('range1');
-		if(empty($range1)) $range1 = null;
+		if (empty($range1)) $range1 = null;
 		$range2 = $this->input->post('range2');
-		if(empty($range2)) $range2 = null;
+		if (empty($range2)) $range2 = null;
 		$masa_kerja = $this->input->post('masa_kerja');
 		$lokasi_kerja = $this->input->post('lokasi_kerja');
 		$jenis_pekerjaan = $this->input->post('jenis_pekerjaan');
-		if(empty($jenis_pekerjaan)) $jenis_pekerjaan = null;
+		if (empty($jenis_pekerjaan)) $jenis_pekerjaan = null;
 		$kondisi = $this->input->post('kondisi');
 		$penyebab = $this->input->post('penyebab');
 		$tindakan = $this->input->post('tindakan');
 		$bsrl = $this->input->post('bsrl');
 		$prosedur = $this->input->post('prosedur');
-		if(empty($prosedur)) $prosedur = null;
+		if (empty($prosedur)) $prosedur = null;
 		$unsafe = $this->input->post('unsafe');
-		if(empty($unsafe)) $unsafe = null;
+		if (empty($unsafe)) $unsafe = null;
 		$kriteria = $this->input->post('kriteria');
-		if(empty($kriteria)) $kriteria = null;
+		if (empty($kriteria)) $kriteria = null;
 
 		$tgl_car = $this->input->post('tgl_car');
-		if(empty($tgl_car)) $tgl_car = null;
+		if (empty($tgl_car)) $tgl_car = null;
 		$pic = $this->input->post('pic');
-		if(empty($pic)) $pic = null;
+		if (empty($pic)) $pic = null;
 		$target_car = $this->input->post('target_car');
-		if(empty($target_car)) $target_car = null;
+		if (empty($target_car)) $target_car = null;
 		$close_car = $this->input->post('close_car');
-		if(empty($close_car)) $close_car = null;
+		if (empty($close_car)) $close_car = null;
 
 		$kategori = $this->input->post('kategori');
 		$bagian_tubuh = $this->input->post('bagian_tubuh');
@@ -1787,19 +1830,19 @@ class C_Index extends CI_Controller
 
 		$detail = $this->M_dtmasuk->getAllk3k('k3.k3k_kecelakaan', $id)[0];
 
-		if(!empty($masa_kerja)) $arr['masa_kerja'] = $masa_kerja;
-		if(!empty($tgl_kecelakaan)) $arr['waktu_kecelakaan'] = $tgl_kecelakaan;
-		if(!empty($tkp)) $arr['tkp'] = $tkp;
-		if(!empty($lokasi_kerja)) $arr['lokasi_kerja_kecelakaan'] = $lokasi_kerja;
-		if(!empty($kondisi)) $arr['kondisi'] = $kondisi;
-		if(!empty($penyebab)) $arr['penyebab'] = $penyebab;
-		if(!empty($tindakan)) $arr['tindakan'] = $tindakan;
-		if(!empty($tgl_car)) $arr['tgl_car'] = $tgl_car;
-		if(!empty($pic)) $arr['pic'] = $pic;
-		if(!empty($target_car)) $arr['tgl_selesai_car'] = $target_car;
-		if(!empty($close_car)) $arr['tgl_close_car'] = $close_car;
-		if(!empty($kodesie)) $arr['kodesie'] = $kodesie;
-		
+		if (!empty($masa_kerja)) $arr['masa_kerja'] = $masa_kerja;
+		if (!empty($tgl_kecelakaan)) $arr['waktu_kecelakaan'] = $tgl_kecelakaan;
+		if (!empty($tkp)) $arr['tkp'] = $tkp;
+		if (!empty($lokasi_kerja)) $arr['lokasi_kerja_kecelakaan'] = $lokasi_kerja;
+		if (!empty($kondisi)) $arr['kondisi'] = $kondisi;
+		if (!empty($penyebab)) $arr['penyebab'] = $penyebab;
+		if (!empty($tindakan)) $arr['tindakan'] = $tindakan;
+		if (!empty($tgl_car)) $arr['tgl_car'] = $tgl_car;
+		if (!empty($pic)) $arr['pic'] = $pic;
+		if (!empty($target_car)) $arr['tgl_selesai_car'] = $target_car;
+		if (!empty($close_car)) $arr['tgl_close_car'] = $close_car;
+		if (!empty($kodesie)) $arr['kodesie'] = $kodesie;
+
 		if ($detail['range_waktu1'] != $range1) $arr['range_waktu1'] = $range1;
 		if ($detail['range_waktu2'] != $range2) $arr['range_waktu2'] = $range2;
 		if ($detail['bsrl'] != $bsrl) $arr['bsrl'] = $bsrl;
@@ -1813,9 +1856,9 @@ class C_Index extends CI_Controller
 			$upd = $this->M_dtmasuk->upk3k_kecelakaan($arr, $id);
 		}
 
-		$getArB = $this->M_dtmasuk->getKKLain('k3.k3k_bagian_tubuh', 'bagian_tubuh',$id);
+		$getArB = $this->M_dtmasuk->getKKLain('k3.k3k_bagian_tubuh', 'bagian_tubuh', $id);
 		$getArB = array_column($getArB, 'bagian_tubuh');
-		if ($getArB != $kategori){
+		if ($getArB != $kategori) {
 			$delK3K = $this->M_dtmasuk->delK3K_lain('k3.k3k_bagian_tubuh', $id);
 			$arrB = array();
 			if (!empty($bagian_tubuh)) {
@@ -1823,16 +1866,16 @@ class C_Index extends CI_Controller
 					$arrB[] = array(
 						'id_kecelakaan' => $id,
 						'bagian_tubuh' => $k,
-						);
+					);
 				}
-				if(!empty($arrB))
+				if (!empty($arrB))
 					$ins2 = $this->M_dtmasuk->insk3k_kecelakaan_lain($arrB, 'k3.k3k_bagian_tubuh');
 			}
 		}
 
-		$getArF = $this->M_dtmasuk->getKKLain('k3.k3k_faktor_kecelakaan', 'faktor',$id);
+		$getArF = $this->M_dtmasuk->getKKLain('k3.k3k_faktor_kecelakaan', 'faktor', $id);
 		$getArF = array_column($getArF, 'faktor');
-		if ($getArF != $kategori){
+		if ($getArF != $kategori) {
 			$delK3K = $this->M_dtmasuk->delK3K_lain('k3.k3k_faktor_kecelakaan', $id);
 			$arrF = array();
 			if (!empty($faktor)) {
@@ -1840,49 +1883,49 @@ class C_Index extends CI_Controller
 					$arrF[] = array(
 						'id_kecelakaan' => $id,
 						'faktor' => $k,
-						);
+					);
 				}
-				if(!empty($arrF))
+				if (!empty($arrF))
 					$ins2 = $this->M_dtmasuk->insk3k_kecelakaan_lain($arrF, 'k3.k3k_faktor_kecelakaan');
 			}
 		}
 
 
-		$getArK = $this->M_dtmasuk->getKKLain('k3.k3k_kategori_kecelakaan', 'kategori',$id);
+		$getArK = $this->M_dtmasuk->getKKLain('k3.k3k_kategori_kecelakaan', 'kategori', $id);
 		$getArK = array_column($getArK, 'kategori');
-		if ($getArK != $kategori){
+		if ($getArK != $kategori) {
 			$delK3K = $this->M_dtmasuk->delK3K_lain('k3.k3k_kategori_kecelakaan', $id);
 			if (!empty($kategori)) {
-				$arrK= array();
+				$arrK = array();
 				foreach ($kategori as $k) {
 					$arrK[] = array(
 						'id_kecelakaan' => $id,
 						'kategori' => $k,
-						);
+					);
 				}
-				if(!empty($arrK))
-				$ins2 = $this->M_dtmasuk->insk3k_kecelakaan_lain($arrK, 'k3.k3k_kategori_kecelakaan');
+				if (!empty($arrK))
+					$ins2 = $this->M_dtmasuk->insk3k_kecelakaan_lain($arrK, 'k3.k3k_kategori_kecelakaan');
 			}
 		}
 
-		$getArP = $this->M_dtmasuk->getKKLain('k3.k3k_penggunaan_apd', 'penggunaan_apd',$id);
+		$getArP = $this->M_dtmasuk->getKKLain('k3.k3k_penggunaan_apd', 'penggunaan_apd', $id);
 		$getArP = array_column($getArP, 'penggunaan_apd');
-		if ($getArP != $kategori){
+		if ($getArP != $kategori) {
 			$delK3K = $this->M_dtmasuk->delK3K_lain('k3.k3k_penggunaan_apd', $id);
 			if (!empty($apd)) {
-				$arrP= array();
+				$arrP = array();
 				foreach ($apd as $k) {
 					$arrP[] = array(
 						'id_kecelakaan' => $id,
 						'penggunaan_apd' => $k,
-						);
+					);
 				}
-				if(!empty($arrP))
+				if (!empty($arrP))
 					$ins2 = $this->M_dtmasuk->insk3k_kecelakaan_lain($arrP, 'k3.k3k_penggunaan_apd');
 			}
 		}
 		$this->session->set_userdata('update_mkk', 'true');
-		redirect('p2k3adm_V2/Admin/edit_monitoringKK?id='.$id);
+		redirect('p2k3adm_V2/Admin/edit_monitoringKK?id=' . $id);
 	}
 
 	public function get_tkp()
@@ -1894,941 +1937,960 @@ class C_Index extends CI_Controller
 
 	public function excel_monitoringKK()
 	{
-        $year = $this->input->get('y');
-        if (strlen($year) != 4) {
-        	echo "Tahun Tidak di Temukan :(";
-        	exit();
-        }
+		$year = $this->input->get('y');
+		if (strlen($year) != 4) {
+			echo "Tahun Tidak di Temukan :(";
+			exit();
+		}
 		// $bagian = $this->M_dtmasuk->getAllk3k2('k3.k3k_bagian_tubuh');
 		// print_r($bagian);exit();
 
 		$this->load->library(array('Excel', 'Excel/PHPExcel/IOFactory'));
-        $objPHPExcel = new PHPExcel();
-        $objPHPExcel->getProperties()->setCreator('KHS ERP')
-            ->setTitle("DATA KECELAKAAN KERJA")
-            ->setSubject("DATA KECELAKAAN KERJA")
-            ->setDescription("P2K3 TIM - DATA KECELAKAAN KERJA")
-            ->setKeywords("P2K3 TIM - DATA TENAGA KERJA");
-        $style_header = array(
-            'font' => array('bold' => false),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-                'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER
-            ),
-            'borders' => array(
-                'top' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),
-                'right' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),
-                'bottom' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),
-                'left' => array('style'  => PHPExcel_Style_Border::BORDER_THIN)
-            ),
-            'fill' => array(
-                'type' => PHPExcel_Style_Fill::FILL_SOLID,
-                'color' => array('rgb' => 'bababa')
-            )
-        );
-        $style_title = array(
-        	'font' => array('bold' => false),
-        	'alignment' => array(
-        		'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-        		'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER
-        		)
-        	);
+		$objPHPExcel = new PHPExcel();
+		$objPHPExcel->getProperties()->setCreator('KHS ERP')
+			->setTitle("DATA KECELAKAAN KERJA")
+			->setSubject("DATA KECELAKAAN KERJA")
+			->setDescription("P2K3 TIM - DATA KECELAKAAN KERJA")
+			->setKeywords("P2K3 TIM - DATA TENAGA KERJA");
+		$style_header = array(
+			'font' => array('bold' => false),
+			'alignment' => array(
+				'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+				'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER
+			),
+			'borders' => array(
+				'top' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),
+				'right' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),
+				'bottom' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),
+				'left' => array('style'  => PHPExcel_Style_Border::BORDER_THIN)
+			),
+			'fill' => array(
+				'type' => PHPExcel_Style_Fill::FILL_SOLID,
+				'color' => array('rgb' => 'bababa')
+			)
+		);
+		$style_title = array(
+			'font' => array('bold' => false),
+			'alignment' => array(
+				'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+				'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER
+			)
+		);
 
-        $right = array(
-        	'alignment' => array(
-        		'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_RIGHT,
-        		)
-        	);
-        $merah = array(
-        	'fill' => array(
-        		'type' => PHPExcel_Style_Fill::FILL_SOLID,
-        		'color' => array('rgb' => 'f54040')
-        		)
-        	);
-        $primary = array(
-        	'fill' => array(
-        		'type' => PHPExcel_Style_Fill::FILL_SOLID,
-        		'color' => array('rgb' => '67c1f5')
-        		)
-        	);
-        $info = array(
-        	'fill' => array(
-        		'type' => PHPExcel_Style_Fill::FILL_SOLID,
-        		'color' => array('rgb' => '82e6ff')
-        		)
-        	);
-        $border = array(
-        	'alignment' => array(
-        		'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-        		'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER
-        		),
-        	'borders' => array(
-        		'top' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),
-        		'right' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),
-        		'bottom' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),
-        		'left' => array('style'  => PHPExcel_Style_Border::BORDER_THIN)
-        		)
-        	);
+		$right = array(
+			'alignment' => array(
+				'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_RIGHT,
+			)
+		);
+		$merah = array(
+			'fill' => array(
+				'type' => PHPExcel_Style_Fill::FILL_SOLID,
+				'color' => array('rgb' => 'f54040')
+			)
+		);
+		$primary = array(
+			'fill' => array(
+				'type' => PHPExcel_Style_Fill::FILL_SOLID,
+				'color' => array('rgb' => '67c1f5')
+			)
+		);
+		$info = array(
+			'fill' => array(
+				'type' => PHPExcel_Style_Fill::FILL_SOLID,
+				'color' => array('rgb' => '82e6ff')
+			)
+		);
+		$border = array(
+			'alignment' => array(
+				'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+				'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER
+			),
+			'borders' => array(
+				'top' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),
+				'right' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),
+				'bottom' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),
+				'left' => array('style'  => PHPExcel_Style_Border::BORDER_THIN)
+			)
+		);
 
-        $head1 = array('NO', 'NAMA', 'NO INDUK', 'TKP', 'MASA KERJA', 'UNIT', 'SEKSI', 'TGL KEJADIAN', 'JAM KECELAKAAN');
-        for ($i=0; $i < count($head1); $i++) { 
-            $kolom= PHPExcel_Cell::stringFromColumnIndex($i);
-	        $objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom.'1', $head1[$i]);
-	        $objPHPExcel->setActiveSheetIndex(0)->mergeCells($kolom.'1:'.$kolom.'3');
-	        $objPHPExcel->getActiveSheet()->getStyle($kolom.'1')->applyFromArray($style_header);
-	        $objPHPExcel->getActiveSheet()->getStyle($kolom.'2')->applyFromArray($style_header);
-	        $objPHPExcel->getActiveSheet()->getStyle($kolom.'3')->applyFromArray($style_header);
-        }
-        //bulan tahun
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('J1', 'Bulan (Th. 2020)');
-        $objPHPExcel->setActiveSheetIndex(0)->mergeCells('J1:BE1');
-        for ($i=0; $i < 48; $i++) {
-        	$kolom= PHPExcel_Cell::stringFromColumnIndex($i+9);
-        	$objPHPExcel->getActiveSheet()->getStyle($kolom.'1')->applyFromArray($style_header);
-        }
-        $x = 1;
-        $arrBSRL = array('B','S','R','L');
-        for ($i=9; $i < 57; $i+=4) { 
-        	$kolom= PHPExcel_Cell::stringFromColumnIndex($i);
-        	$kolom2= PHPExcel_Cell::stringFromColumnIndex($i+3);
-        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom.'2', date("M", strtotime("$x/12/10")));
-        	$objPHPExcel->setActiveSheetIndex(0)->mergeCells($kolom.'2:'.($kolom2).'2');
-        	for ($j=0; $j < 4; $j++) {
-        		$kolom_k = PHPExcel_Cell::stringFromColumnIndex($j+$i);
-	        	$objPHPExcel->getActiveSheet()->getStyle($kolom_k.'2')->applyFromArray($style_header);
-	        	$objPHPExcel->getActiveSheet()->getStyle($kolom_k.'3')->applyFromArray($style_header);
-	        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom_k.'3', $arrBSRL[$j]);
-        	}
-        	$x++;
-        }
-        //kondisi
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('BF1', 'Kondisi');
-        $objPHPExcel->getActiveSheet()->getStyle('BF1:BF3')->applyFromArray($style_header);
-        $objPHPExcel->setActiveSheetIndex(0)->mergeCells('BF1:BF3');
-        //bagian tubuh
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('BG1', 'Bagian Tubuh');
-        $objPHPExcel->getActiveSheet()->getStyle('BG1:BK2')->applyFromArray($style_header);
-        $objPHPExcel->setActiveSheetIndex(0)->mergeCells('BG1:BK2');
-        $bagian = array('Kepala / Wajah', 'Mata', 'Tangan', 'Kaki', 'Lainya');
-        $x = 0;
-        for ($i=58; $i < (58+count($bagian)) ; $i++) { 
-        	$kolom= PHPExcel_Cell::stringFromColumnIndex($i);
-        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom.'3', $bagian[$x]);
-        	$objPHPExcel->getActiveSheet()->getStyle($kolom.'3')->applyFromArray($style_header);
-        	$x++;
-        }
-        //bulan
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('BL1', 'Bulan');
-        $objPHPExcel->getActiveSheet()->getStyle('BL1:BL3')->applyFromArray($style_header);
-        $objPHPExcel->setActiveSheetIndex(0)->mergeCells('BL1:BL3');
-        //penyebab
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('BM1', 'Penyebab');
-        $objPHPExcel->getActiveSheet()->getStyle('BM1:BM3')->applyFromArray($style_header);
-        $objPHPExcel->setActiveSheetIndex(0)->mergeCells('BM1:BM3');
-        //Tindakan
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('BN1', 'Tindakan');
-        $objPHPExcel->getActiveSheet()->getStyle('BN1:BN3')->applyFromArray($style_header);
-        $objPHPExcel->setActiveSheetIndex(0)->mergeCells('BN1:BN3');
-        //kategori
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('BO1', 'Kategori');
-        $objPHPExcel->getActiveSheet()->getStyle('BO1:BW2')->applyFromArray($style_header);
-        $objPHPExcel->setActiveSheetIndex(0)->mergeCells('BO1:BW2');
-        $kategori = array('Tertusuk', 'Terjepit', 'Jatuhan/Jatuh', 'Terbentur', 'Terbakar', 'Kelilipan', 'Tersangkut', 'Tergores', 'Lain-lain');
-        $x = 0;
-        for ($i=66; $i < (66+count($kategori)) ; $i++) { 
-        	$kolom= PHPExcel_Cell::stringFromColumnIndex($i);
-        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom.'3', $kategori[$x]);
-        	$objPHPExcel->getActiveSheet()->getStyle($kolom.'3')->applyFromArray($style_header);
-        	$x++;
-        }
-        //ket
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('BX1', 'Ket');
-        $objPHPExcel->getActiveSheet()->getStyle('BX1:BX3')->applyFromArray($style_header);
-        $objPHPExcel->setActiveSheetIndex(0)->mergeCells('BX1:BX3');
-        //faktor
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('BY1', 'Faktor Kecelakaan');
-        $objPHPExcel->getActiveSheet()->getStyle('BY1:CD2')->applyFromArray($style_header);
-        $objPHPExcel->setActiveSheetIndex(0)->mergeCells('BY1:CD2');
-        $faktor = array('Man', 'Machine', 'Method', 'Material','Working Area', 'Other');
-        $x = 0;
-        for ($i=76; $i < (76+count($faktor)) ; $i++) { 
-        	$kolom= PHPExcel_Cell::stringFromColumnIndex($i);
-        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom.'3', $faktor[$x]);
-        	$objPHPExcel->getActiveSheet()->getStyle($kolom.'3')->applyFromArray($style_header);
-        	$x++;
-        }
-        //Tgl. CAR DITERIMA
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('CE1', 'Tgl. CAR DITERIMA');
-        $objPHPExcel->getActiveSheet()->getStyle('CE1:CE3')->applyFromArray($style_header);
-        $objPHPExcel->setActiveSheetIndex(0)->mergeCells('CE1:CE3');
-        //Corrective Action
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('CF1', 'Corrective Action');
-        $objPHPExcel->getActiveSheet()->getStyle('CF1:CG1')->applyFromArray($style_header);
-        $objPHPExcel->setActiveSheetIndex(0)->mergeCells('CF1:CG1');
-        $CA = array('PIC', 'Target Selesai');
-        $x = 0;
-        for ($i=83; $i < (83+count($CA)) ; $i++) { 
-        	$kolom= PHPExcel_Cell::stringFromColumnIndex($i);
-        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom.'2', $CA[$x]);
-        	$objPHPExcel->getActiveSheet()->getStyle($kolom.'2:'.$kolom.'3')->applyFromArray($style_header);
-        	$objPHPExcel->setActiveSheetIndex(0)->mergeCells($kolom.'2:'.$kolom.'3');
-        	$x++;
-        }
-        //verifikasi
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('CH1', 'Verifikasi');
-        $objPHPExcel->getActiveSheet()->getStyle('CH1:CX1')->applyFromArray($style_header);
-        $objPHPExcel->setActiveSheetIndex(0)->mergeCells('CH1:CX1');
-        $ver = array('TGL CLOSED', 'Status');
-        for ($i=1; $i <= 5; $i++) { 
-        	$ver[] = 'Verifikasi '.$i;
-        	$ver[] = 'Status';
-        	$ver[] = 'Due Date';
-        }
-        $x = 0;
-        for ($i=85; $i < (85+count($ver)) ; $i++) { 
-        	$kolom= PHPExcel_Cell::stringFromColumnIndex($i);
-        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom.'2', $ver[$x]);
-        	$objPHPExcel->getActiveSheet()->getStyle($kolom.'2:'.$kolom.'3')->applyFromArray($style_header);
-        	$objPHPExcel->setActiveSheetIndex(0)->mergeCells($kolom.'2:'.$kolom.'3');
-        	$x++;
-        }
-        //kehilangan waktu
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('CY1', 'Kehilangan Waktu Kerja, Dalam Jam');
-        $objPHPExcel->getActiveSheet()->getStyle('CY1:CY3')->applyFromArray($style_header);
-        $objPHPExcel->setActiveSheetIndex(0)->mergeCells('CY1:CY3');
-        //tkp
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('CZ1', 'Tempat Terjadinya Kecelakaan');
-        $objPHPExcel->getActiveSheet()->getStyle('CZ1:CZ3')->applyFromArray($style_header);
-        $objPHPExcel->setActiveSheetIndex(0)->mergeCells('CZ1:CZ3');
-        //kriteria
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('DA1', 'KRITERIA STOP SIX');
-        $objPHPExcel->getActiveSheet()->getStyle('DA1:DF2')->applyFromArray($style_header);
-        $objPHPExcel->setActiveSheetIndex(0)->mergeCells('DA1:DF2');
-        $six = array('A', 'B', 'C', 'D', 'E', 'F');
-        $x = 0;
-        for ($i=104; $i < (104+count($six)) ; $i++) { 
-        	$kolom= PHPExcel_Cell::stringFromColumnIndex($i);
-        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom.'3', $six[$x]);
-        	$objPHPExcel->getActiveSheet()->getStyle($kolom.'3')->applyFromArray($style_header);
-        	$x++;
-        }
-        //bebas mkk
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('DG1', 'Hari bebas kecelakaan');
-        $objPHPExcel->getActiveSheet()->getStyle('DG1:DG3')->applyFromArray($style_header);
-        $objPHPExcel->setActiveSheetIndex(0)->mergeCells('DG1:DG3');
-        //range
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('DH1', 'RANGE WAKTU KECELAKAN');
-        $objPHPExcel->getActiveSheet()->getStyle('DH1:DO2')->applyFromArray($style_header);
-        $objPHPExcel->setActiveSheetIndex(0)->mergeCells('DH1:DO2');
-        $six = array('06:00:00 - 09:00:00','09:15:00 - 11:45:00','12:30:00 - 14:00:00', '14:00:00 - 16:00:00','16:15:00 - 18:00:00', '18:45:00 - 22:00:00', '22:00:00 - 01:00:00','01:00:00 - 05:00:00');
-        $x = 0;
-        for ($i=111; $i < (111+count($six)) ; $i++) { 
-        	$kolom= PHPExcel_Cell::stringFromColumnIndex($i);
-        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom.'3', $six[$x]);
-        	$objPHPExcel->getActiveSheet()->getStyle($kolom.'3')->applyFromArray($style_header);
-        	$x++;
-        }
-        //unsave
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('DP1', 'UNSAFE');
-        $objPHPExcel->getActiveSheet()->getStyle('DP1:DQ2')->applyFromArray($style_header);
-        $objPHPExcel->setActiveSheetIndex(0)->mergeCells('DP1:DQ2');
-        $uns = array('Action', 'Condition');
-        $x = 0;
-        for ($i=119; $i < (119+count($uns)) ; $i++) { 
-        	$kolom= PHPExcel_Cell::stringFromColumnIndex($i);
-        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom.'3', $uns[$x]);
-        	$objPHPExcel->getActiveSheet()->getStyle($kolom.'3')->applyFromArray($style_header);
-        	$x++;
-        }
-        //dept
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('DR1', 'DEPARTEMENT');
-        $objPHPExcel->getActiveSheet()->getStyle('DR1:DS2')->applyFromArray($style_header);
-        $objPHPExcel->setActiveSheetIndex(0)->mergeCells('DR1:DS2');
-        $dept = array('FAB', 'NON FAB');
-        $x = 0;
-        for ($i=121; $i < (121+count($dept)) ; $i++) { 
-        	$kolom= PHPExcel_Cell::stringFromColumnIndex($i);
-        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom.'3', $dept[$x]);
-        	$objPHPExcel->getActiveSheet()->getStyle($kolom.'3')->applyFromArray($style_header);
-        	$x++;
-        }
-        //jenis pekerjaan
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('DT1', 'Jenis Pekerjaan');
-        $objPHPExcel->getActiveSheet()->getStyle('DT1:DV2')->applyFromArray($style_header);
-        $objPHPExcel->setActiveSheetIndex(0)->mergeCells('DT1:DV2');
-        $jp = array('REGULAR', 'NON REGULAR', 'LAIN-LAIN');
-        $x = 0;
-        for ($i=123; $i < (123+count($jp)) ; $i++) { 
-        	$kolom= PHPExcel_Cell::stringFromColumnIndex($i);
-        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom.'3', $jp[$x]);
-        	$objPHPExcel->getActiveSheet()->getStyle($kolom.'3')->applyFromArray($style_header);
-        	$x++;
-        }
-        //Prosedure
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('DW1', 'Prosedure');
-        $objPHPExcel->getActiveSheet()->getStyle('DW1:DY2')->applyFromArray($style_header);
-        $objPHPExcel->setActiveSheetIndex(0)->mergeCells('DW1:DY2');
-        $pros = array('SESUAI', 'TDK SESUAI', 'TDK TRDPT STD');
-        $x = 0;
-        for ($i=126; $i < (126+count($pros)) ; $i++) { 
-        	$kolom= PHPExcel_Cell::stringFromColumnIndex($i);
-        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom.'3', $pros[$x]);
-        	$objPHPExcel->getActiveSheet()->getStyle($kolom.'3')->applyFromArray($style_header);
-        	$x++;
-        }
-        //apd
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('DZ1', 'Penggunaan APD');
-        $objPHPExcel->getActiveSheet()->getStyle('DZ1:EB2')->applyFromArray($style_header);
-        $objPHPExcel->setActiveSheetIndex(0)->mergeCells('DZ1:EB2');
-        $apd = array('PAKAI', 'TDK PAKAI', 'TDK TRDPT STD');
-        $x = 0;
-        for ($i=129; $i < (129+count($apd)) ; $i++) { 
-        	$kolom= PHPExcel_Cell::stringFromColumnIndex($i);
-        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom.'3', $apd[$x]);
-        	$objPHPExcel->getActiveSheet()->getStyle($kolom.'3')->applyFromArray($style_header);
-        	$x++;
-        }
-        //masa kerja
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('EC1', 'MASA KERJA');
-        $objPHPExcel->getActiveSheet()->getStyle('EC1:EE2')->applyFromArray($style_header);
-        $objPHPExcel->setActiveSheetIndex(0)->mergeCells('EC1:EE2');
-        $masa = array('< 3 BULAN', '3 – 12 BULAN', '> 12 BULAN');
-        $x = 0;
-        for ($i=132; $i < (132+count($masa)) ; $i++) { 
-        	$kolom= PHPExcel_Cell::stringFromColumnIndex($i);
-        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom.'3', $masa[$x]);
-        	$objPHPExcel->getActiveSheet()->getStyle($kolom.'3')->applyFromArray($style_header);
-        	$x++;
-        }
-        //RANGE WAKTU KECELAKAAN
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('EF1', 'RANGE WAKTU KECELAKAAN');
-        $objPHPExcel->getActiveSheet()->getStyle('EF1:EH2')->applyFromArray($style_header);
-        $objPHPExcel->setActiveSheetIndex(0)->mergeCells('EF1:EH2');
-        $range = array('Awal – Break', 'Break – Istirahat', 'Istirahat – Pulang');
-        $x = 0;
-        for ($i=135; $i < (135+count($range)) ; $i++) { 
-        	$kolom= PHPExcel_Cell::stringFromColumnIndex($i);
-        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom.'3', $range[$x]);
-        	$objPHPExcel->getActiveSheet()->getStyle($kolom.'3')->applyFromArray($style_header);
-        	$x++;
-        }
-        //info
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('EI1', 'INFO');
-        $objPHPExcel->getActiveSheet()->getStyle('EI1:EI3')->applyFromArray($style_header);
-        $objPHPExcel->setActiveSheetIndex(0)->mergeCells('EI1:EI3');
-        //ilu
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('EJ1', 'ILU / KON');
-        $objPHPExcel->getActiveSheet()->getStyle('EJ1:EJ3')->applyFromArray($style_header);
-        $objPHPExcel->setActiveSheetIndex(0)->mergeCells('EJ1:EJ3');
+		$head1 = array('NO', 'NAMA', 'NO INDUK', 'TKP', 'MASA KERJA', 'UNIT', 'SEKSI', 'TGL KEJADIAN', 'JAM KECELAKAAN');
+		for ($i = 0; $i < count($head1); $i++) {
+			$kolom = PHPExcel_Cell::stringFromColumnIndex($i);
+			$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom . '1', $head1[$i]);
+			$objPHPExcel->setActiveSheetIndex(0)->mergeCells($kolom . '1:' . $kolom . '3');
+			$objPHPExcel->getActiveSheet()->getStyle($kolom . '1')->applyFromArray($style_header);
+			$objPHPExcel->getActiveSheet()->getStyle($kolom . '2')->applyFromArray($style_header);
+			$objPHPExcel->getActiveSheet()->getStyle($kolom . '3')->applyFromArray($style_header);
+		}
+		//bulan tahun
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('J1', 'Bulan (Th. 2020)');
+		$objPHPExcel->setActiveSheetIndex(0)->mergeCells('J1:BE1');
+		for ($i = 0; $i < 48; $i++) {
+			$kolom = PHPExcel_Cell::stringFromColumnIndex($i + 9);
+			$objPHPExcel->getActiveSheet()->getStyle($kolom . '1')->applyFromArray($style_header);
+		}
+		$x = 1;
+		$arrBSRL = array('B', 'S', 'R', 'L');
+		for ($i = 9; $i < 57; $i += 4) {
+			$kolom = PHPExcel_Cell::stringFromColumnIndex($i);
+			$kolom2 = PHPExcel_Cell::stringFromColumnIndex($i + 3);
+			$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom . '2', date("M", strtotime("$x/12/10")));
+			$objPHPExcel->setActiveSheetIndex(0)->mergeCells($kolom . '2:' . ($kolom2) . '2');
+			for ($j = 0; $j < 4; $j++) {
+				$kolom_k = PHPExcel_Cell::stringFromColumnIndex($j + $i);
+				$objPHPExcel->getActiveSheet()->getStyle($kolom_k . '2')->applyFromArray($style_header);
+				$objPHPExcel->getActiveSheet()->getStyle($kolom_k . '3')->applyFromArray($style_header);
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom_k . '3', $arrBSRL[$j]);
+			}
+			$x++;
+		}
+		//kondisi
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('BF1', 'Kondisi');
+		$objPHPExcel->getActiveSheet()->getStyle('BF1:BF3')->applyFromArray($style_header);
+		$objPHPExcel->setActiveSheetIndex(0)->mergeCells('BF1:BF3');
+		//bagian tubuh
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('BG1', 'Bagian Tubuh');
+		$objPHPExcel->getActiveSheet()->getStyle('BG1:BK2')->applyFromArray($style_header);
+		$objPHPExcel->setActiveSheetIndex(0)->mergeCells('BG1:BK2');
+		$bagian = array('Kepala / Wajah', 'Mata', 'Tangan', 'Kaki', 'Lainya');
+		$x = 0;
+		for ($i = 58; $i < (58 + count($bagian)); $i++) {
+			$kolom = PHPExcel_Cell::stringFromColumnIndex($i);
+			$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom . '3', $bagian[$x]);
+			$objPHPExcel->getActiveSheet()->getStyle($kolom . '3')->applyFromArray($style_header);
+			$x++;
+		}
+		//bulan
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('BL1', 'Bulan');
+		$objPHPExcel->getActiveSheet()->getStyle('BL1:BL3')->applyFromArray($style_header);
+		$objPHPExcel->setActiveSheetIndex(0)->mergeCells('BL1:BL3');
+		//penyebab
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('BM1', 'Penyebab');
+		$objPHPExcel->getActiveSheet()->getStyle('BM1:BM3')->applyFromArray($style_header);
+		$objPHPExcel->setActiveSheetIndex(0)->mergeCells('BM1:BM3');
+		//Tindakan
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('BN1', 'Tindakan');
+		$objPHPExcel->getActiveSheet()->getStyle('BN1:BN3')->applyFromArray($style_header);
+		$objPHPExcel->setActiveSheetIndex(0)->mergeCells('BN1:BN3');
+		//kategori
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('BO1', 'Kategori');
+		$objPHPExcel->getActiveSheet()->getStyle('BO1:BW2')->applyFromArray($style_header);
+		$objPHPExcel->setActiveSheetIndex(0)->mergeCells('BO1:BW2');
+		$kategori = array('Tertusuk', 'Terjepit', 'Jatuhan/Jatuh', 'Terbentur', 'Terbakar', 'Kelilipan', 'Tersangkut', 'Tergores', 'Lain-lain');
+		$x = 0;
+		for ($i = 66; $i < (66 + count($kategori)); $i++) {
+			$kolom = PHPExcel_Cell::stringFromColumnIndex($i);
+			$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom . '3', $kategori[$x]);
+			$objPHPExcel->getActiveSheet()->getStyle($kolom . '3')->applyFromArray($style_header);
+			$x++;
+		}
+		//ket
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('BX1', 'Ket');
+		$objPHPExcel->getActiveSheet()->getStyle('BX1:BX3')->applyFromArray($style_header);
+		$objPHPExcel->setActiveSheetIndex(0)->mergeCells('BX1:BX3');
+		//faktor
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('BY1', 'Faktor Kecelakaan');
+		$objPHPExcel->getActiveSheet()->getStyle('BY1:CD2')->applyFromArray($style_header);
+		$objPHPExcel->setActiveSheetIndex(0)->mergeCells('BY1:CD2');
+		$faktor = array('Man', 'Machine', 'Method', 'Material', 'Working Area', 'Other');
+		$x = 0;
+		for ($i = 76; $i < (76 + count($faktor)); $i++) {
+			$kolom = PHPExcel_Cell::stringFromColumnIndex($i);
+			$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom . '3', $faktor[$x]);
+			$objPHPExcel->getActiveSheet()->getStyle($kolom . '3')->applyFromArray($style_header);
+			$x++;
+		}
+		//Tgl. CAR DITERIMA
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('CE1', 'Tgl. CAR DITERIMA');
+		$objPHPExcel->getActiveSheet()->getStyle('CE1:CE3')->applyFromArray($style_header);
+		$objPHPExcel->setActiveSheetIndex(0)->mergeCells('CE1:CE3');
+		//Corrective Action
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('CF1', 'Corrective Action');
+		$objPHPExcel->getActiveSheet()->getStyle('CF1:CG1')->applyFromArray($style_header);
+		$objPHPExcel->setActiveSheetIndex(0)->mergeCells('CF1:CG1');
+		$CA = array('PIC', 'Target Selesai');
+		$x = 0;
+		for ($i = 83; $i < (83 + count($CA)); $i++) {
+			$kolom = PHPExcel_Cell::stringFromColumnIndex($i);
+			$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom . '2', $CA[$x]);
+			$objPHPExcel->getActiveSheet()->getStyle($kolom . '2:' . $kolom . '3')->applyFromArray($style_header);
+			$objPHPExcel->setActiveSheetIndex(0)->mergeCells($kolom . '2:' . $kolom . '3');
+			$x++;
+		}
+		//verifikasi
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('CH1', 'Verifikasi');
+		$objPHPExcel->getActiveSheet()->getStyle('CH1:CX1')->applyFromArray($style_header);
+		$objPHPExcel->setActiveSheetIndex(0)->mergeCells('CH1:CX1');
+		$ver = array('TGL CLOSED', 'Status');
+		for ($i = 1; $i <= 5; $i++) {
+			$ver[] = 'Verifikasi ' . $i;
+			$ver[] = 'Status';
+			$ver[] = 'Due Date';
+		}
+		$x = 0;
+		for ($i = 85; $i < (85 + count($ver)); $i++) {
+			$kolom = PHPExcel_Cell::stringFromColumnIndex($i);
+			$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom . '2', $ver[$x]);
+			$objPHPExcel->getActiveSheet()->getStyle($kolom . '2:' . $kolom . '3')->applyFromArray($style_header);
+			$objPHPExcel->setActiveSheetIndex(0)->mergeCells($kolom . '2:' . $kolom . '3');
+			$x++;
+		}
+		//kehilangan waktu
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('CY1', 'Kehilangan Waktu Kerja, Dalam Jam');
+		$objPHPExcel->getActiveSheet()->getStyle('CY1:CY3')->applyFromArray($style_header);
+		$objPHPExcel->setActiveSheetIndex(0)->mergeCells('CY1:CY3');
+		//tkp
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('CZ1', 'Tempat Terjadinya Kecelakaan');
+		$objPHPExcel->getActiveSheet()->getStyle('CZ1:CZ3')->applyFromArray($style_header);
+		$objPHPExcel->setActiveSheetIndex(0)->mergeCells('CZ1:CZ3');
+		//kriteria
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('DA1', 'KRITERIA STOP SIX');
+		$objPHPExcel->getActiveSheet()->getStyle('DA1:DF2')->applyFromArray($style_header);
+		$objPHPExcel->setActiveSheetIndex(0)->mergeCells('DA1:DF2');
+		$six = array('A', 'B', 'C', 'D', 'E', 'F');
+		$x = 0;
+		for ($i = 104; $i < (104 + count($six)); $i++) {
+			$kolom = PHPExcel_Cell::stringFromColumnIndex($i);
+			$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom . '3', $six[$x]);
+			$objPHPExcel->getActiveSheet()->getStyle($kolom . '3')->applyFromArray($style_header);
+			$x++;
+		}
+		//bebas mkk
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('DG1', 'Hari bebas kecelakaan');
+		$objPHPExcel->getActiveSheet()->getStyle('DG1:DG3')->applyFromArray($style_header);
+		$objPHPExcel->setActiveSheetIndex(0)->mergeCells('DG1:DG3');
+		//range
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('DH1', 'RANGE WAKTU KECELAKAN');
+		$objPHPExcel->getActiveSheet()->getStyle('DH1:DO2')->applyFromArray($style_header);
+		$objPHPExcel->setActiveSheetIndex(0)->mergeCells('DH1:DO2');
+		$six = array('06:00:00 - 09:00:00', '09:15:00 - 11:45:00', '12:30:00 - 14:00:00', '14:00:00 - 16:00:00', '16:15:00 - 18:00:00', '18:45:00 - 22:00:00', '22:00:00 - 01:00:00', '01:00:00 - 05:00:00');
+		$x = 0;
+		for ($i = 111; $i < (111 + count($six)); $i++) {
+			$kolom = PHPExcel_Cell::stringFromColumnIndex($i);
+			$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom . '3', $six[$x]);
+			$objPHPExcel->getActiveSheet()->getStyle($kolom . '3')->applyFromArray($style_header);
+			$x++;
+		}
+		//unsave
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('DP1', 'UNSAFE');
+		$objPHPExcel->getActiveSheet()->getStyle('DP1:DQ2')->applyFromArray($style_header);
+		$objPHPExcel->setActiveSheetIndex(0)->mergeCells('DP1:DQ2');
+		$uns = array('Action', 'Condition');
+		$x = 0;
+		for ($i = 119; $i < (119 + count($uns)); $i++) {
+			$kolom = PHPExcel_Cell::stringFromColumnIndex($i);
+			$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom . '3', $uns[$x]);
+			$objPHPExcel->getActiveSheet()->getStyle($kolom . '3')->applyFromArray($style_header);
+			$x++;
+		}
+		//dept
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('DR1', 'DEPARTEMENT');
+		$objPHPExcel->getActiveSheet()->getStyle('DR1:DS2')->applyFromArray($style_header);
+		$objPHPExcel->setActiveSheetIndex(0)->mergeCells('DR1:DS2');
+		$dept = array('FAB', 'NON FAB');
+		$x = 0;
+		for ($i = 121; $i < (121 + count($dept)); $i++) {
+			$kolom = PHPExcel_Cell::stringFromColumnIndex($i);
+			$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom . '3', $dept[$x]);
+			$objPHPExcel->getActiveSheet()->getStyle($kolom . '3')->applyFromArray($style_header);
+			$x++;
+		}
+		//jenis pekerjaan
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('DT1', 'Jenis Pekerjaan');
+		$objPHPExcel->getActiveSheet()->getStyle('DT1:DV2')->applyFromArray($style_header);
+		$objPHPExcel->setActiveSheetIndex(0)->mergeCells('DT1:DV2');
+		$jp = array('REGULAR', 'NON REGULAR', 'LAIN-LAIN');
+		$x = 0;
+		for ($i = 123; $i < (123 + count($jp)); $i++) {
+			$kolom = PHPExcel_Cell::stringFromColumnIndex($i);
+			$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom . '3', $jp[$x]);
+			$objPHPExcel->getActiveSheet()->getStyle($kolom . '3')->applyFromArray($style_header);
+			$x++;
+		}
+		//Prosedure
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('DW1', 'Prosedure');
+		$objPHPExcel->getActiveSheet()->getStyle('DW1:DY2')->applyFromArray($style_header);
+		$objPHPExcel->setActiveSheetIndex(0)->mergeCells('DW1:DY2');
+		$pros = array('SESUAI', 'TDK SESUAI', 'TDK TRDPT STD');
+		$x = 0;
+		for ($i = 126; $i < (126 + count($pros)); $i++) {
+			$kolom = PHPExcel_Cell::stringFromColumnIndex($i);
+			$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom . '3', $pros[$x]);
+			$objPHPExcel->getActiveSheet()->getStyle($kolom . '3')->applyFromArray($style_header);
+			$x++;
+		}
+		//apd
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('DZ1', 'Penggunaan APD');
+		$objPHPExcel->getActiveSheet()->getStyle('DZ1:EB2')->applyFromArray($style_header);
+		$objPHPExcel->setActiveSheetIndex(0)->mergeCells('DZ1:EB2');
+		$apd = array('PAKAI', 'TDK PAKAI', 'TDK TRDPT STD');
+		$x = 0;
+		for ($i = 129; $i < (129 + count($apd)); $i++) {
+			$kolom = PHPExcel_Cell::stringFromColumnIndex($i);
+			$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom . '3', $apd[$x]);
+			$objPHPExcel->getActiveSheet()->getStyle($kolom . '3')->applyFromArray($style_header);
+			$x++;
+		}
+		//masa kerja
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('EC1', 'MASA KERJA');
+		$objPHPExcel->getActiveSheet()->getStyle('EC1:EE2')->applyFromArray($style_header);
+		$objPHPExcel->setActiveSheetIndex(0)->mergeCells('EC1:EE2');
+		$masa = array('< 3 BULAN', '3 – 12 BULAN', '> 12 BULAN');
+		$x = 0;
+		for ($i = 132; $i < (132 + count($masa)); $i++) {
+			$kolom = PHPExcel_Cell::stringFromColumnIndex($i);
+			$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom . '3', $masa[$x]);
+			$objPHPExcel->getActiveSheet()->getStyle($kolom . '3')->applyFromArray($style_header);
+			$x++;
+		}
+		//RANGE WAKTU KECELAKAAN
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('EF1', 'RANGE WAKTU KECELAKAAN');
+		$objPHPExcel->getActiveSheet()->getStyle('EF1:EH2')->applyFromArray($style_header);
+		$objPHPExcel->setActiveSheetIndex(0)->mergeCells('EF1:EH2');
+		$range = array('Awal – Break', 'Break – Istirahat', 'Istirahat – Pulang');
+		$x = 0;
+		for ($i = 135; $i < (135 + count($range)); $i++) {
+			$kolom = PHPExcel_Cell::stringFromColumnIndex($i);
+			$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom . '3', $range[$x]);
+			$objPHPExcel->getActiveSheet()->getStyle($kolom . '3')->applyFromArray($style_header);
+			$x++;
+		}
+		//info
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('EI1', 'INFO');
+		$objPHPExcel->getActiveSheet()->getStyle('EI1:EI3')->applyFromArray($style_header);
+		$objPHPExcel->setActiveSheetIndex(0)->mergeCells('EI1:EI3');
+		//ilu
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('EJ1', 'ILU / KON');
+		$objPHPExcel->getActiveSheet()->getStyle('EJ1:EJ3')->applyFromArray($style_header);
+		$objPHPExcel->setActiveSheetIndex(0)->mergeCells('EJ1:EJ3');
 
-        //fetch data
-        //init variabel untuk total tkp
-        $laka = array(); $kerja = array();
-        $mass1 = 0; $mass2 = 0; $mass3 = 0;
+		//fetch data
+		//init variabel untuk total tkp
+		$laka = array();
+		$kerja = array();
+		$mass1 = 0;
+		$mass2 = 0;
+		$mass3 = 0;
 
-        $this->load->library('KonversiBulan');
+		$this->load->library('KonversiBulan');
 		$lokasi = array_column($this->M_pekerjakeluar->getLokasiKerja(), 'lokasi_kerja', 'id_');
 		$lokasi[999] = 'LAKA';
-        $row = 5;
-        for ($z=1; $z <= 12; $z++) {
-        	$mo = $z;
-        	if($mo < 10) $mo = '0'.$mo;
-        	$ym = $year.'-'.$mo;
-        	$data = $this->M_dtmasuk->getDatak3k($ym);
-        	$bln = $this->konversibulan->KonversiKeBulanIndonesia(date('F', strtotime('2020-'.$mo.'-01')));
-        	//set bulan
-        	for ($i=0; $i <= 139; $i++) { 
-        		$kolom= PHPExcel_Cell::stringFromColumnIndex($i);
-        		if($i == '1') $objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom.$row, $bln);
-        		if($i < 3) $objPHPExcel->getActiveSheet()->getStyle($kolom.$row)->applyFromArray($border);
-        		$objPHPExcel->getActiveSheet()->getStyle($kolom.$row)->applyFromArray($info);
-        		$objPHPExcel->getActiveSheet()->getColumnDimension($kolom)->setAutoSize(true);
-        	}
-        	if (empty($data)) {
-        		for ($r=0; $r < 2; $r++) { 
-        		$row++;
-        			for ($i=0; $i <= 139; $i++) { 
-        				$kolom= PHPExcel_Cell::stringFromColumnIndex($i);
-        				$objPHPExcel->getActiveSheet()->getStyle($kolom.$row)->applyFromArray($border);
-        			}
-        		}
-        	}
-        	$row++;
-        	$x = 1;
-        	foreach ($data as $key) {
-        		$wkt = explode(' ', $key['waktu_kecelakaan']);
-        		$m = explode('-', $wkt[0])[1];
-        		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$row, $x++);
-        		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('B'.$row, trim($key['nama']));
-        		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('C'.$row, $key['noind']);
-        		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('D'.$row, $key['tkp']);
-        		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.$row, $key['masa_kerja']);
-        		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('F'.$row, trim($key['unit_name']));
-        		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('G'.$row, trim($key['section_name']));
-        		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('H'.$row, date('d M Y', strtotime($wkt[0])));
-        		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('I'.$row, $wkt[1]);
-        		//bsrl
-        		$sbsrl = 9;
-        		for ($i=1; $i <= 12; $i++) { 
-        			for ($j=1; $j <= 4; $j++) { 
-        				$kolom= PHPExcel_Cell::stringFromColumnIndex($sbsrl);
-        				if($key['bsrl'] == $j && intval($m) == $i && $key['lokasi_kerja_kecelakaan'] != '999'){
-        					$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom.$row, '✓');
-        					if(isset($kerja[$i][$j])) $kerja[$i][$j]++;
-        					else $kerja[$i][$j] = 1;
-        				}elseif ($key['bsrl'] == $j && intval($m) == $i) {
-        					$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom.$row, 'O');
-        					if(isset($laka[$i][$j])) $laka[$i][$j]++;
-        					else $laka[$i][$j] = 1;
-        				}else{
-        					$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom.$row, '');
-        				}
-        				$sbsrl++;
-        			}
-        		}
-        		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('BF'.$row, $key['kondisi']);
-        		//bagian tubuh
-        		$sbagian = 58;
-        		$ttal = 0;
-        		$ttal_bagian = array();
-        		$arrB = explode(',', $key['bagian_tubuh']);
-        		for ($i=1; $i <= 5; $i++) { 
-        			$kolom= PHPExcel_Cell::stringFromColumnIndex($sbagian);
-        			if(in_array($i, $arrB)){
-        				// $ttal_bagian[$i] +=
-        				$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom.$row, '✓');
-        			}else{
-        				$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom.$row, '');
-        			}
-        			$sbagian++;
-        		}
-        		$bln = $this->konversibulan->KonversiKeBulanIndonesia(date('F', strtotime($wkt[0])));
-        		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('BL'.$row, $bln);
-        		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('BM'.$row, $key['penyebab']);
-        		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('BN'.$row, $key['tindakan']);
-        		//kategori
-        		$skategori = 66;
-        		$arrK = explode(',', $key['kategori']);
-        		for ($i=1; $i <= 9; $i++) { 
-        			$kolom= PHPExcel_Cell::stringFromColumnIndex($skategori);
-        			if(in_array($i, $arrK)){
-        				$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom.$row, '✓');
-        			}else{
-        				$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom.$row, '');
-        			}
-        			$skategori++;
-        		}
-        		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('BX'.$row, $lokasi[$key['lokasi_kerja_kecelakaan']]);
-        		if($key['lokasi_kerja_kecelakaan'] == '999'){
-        			for ($i=0; $i <= 139; $i++) { 
-        				$kolom= PHPExcel_Cell::stringFromColumnIndex($i);
-        				$objPHPExcel->getActiveSheet()->getStyle($kolom.$row)->applyFromArray($primary);
-        				$objPHPExcel->getActiveSheet()->getColumnDimension($kolom)->setAutoSize(true);
-        			}
-        		}
+		$row = 5;
+		for ($z = 1; $z <= 12; $z++) {
+			$mo = $z;
+			if ($mo < 10) $mo = '0' . $mo;
+			$ym = $year . '-' . $mo;
+			$data = $this->M_dtmasuk->getDatak3k($ym);
+			$bln = $this->konversibulan->KonversiKeBulanIndonesia(date('F', strtotime('2020-' . $mo . '-01')));
+			//set bulan
+			for ($i = 0; $i <= 139; $i++) {
+				$kolom = PHPExcel_Cell::stringFromColumnIndex($i);
+				if ($i == '1') $objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom . $row, $bln);
+				if ($i < 3) $objPHPExcel->getActiveSheet()->getStyle($kolom . $row)->applyFromArray($border);
+				$objPHPExcel->getActiveSheet()->getStyle($kolom . $row)->applyFromArray($info);
+				$objPHPExcel->getActiveSheet()->getColumnDimension($kolom)->setAutoSize(true);
+			}
+			if (empty($data)) {
+				for ($r = 0; $r < 2; $r++) {
+					$row++;
+					for ($i = 0; $i <= 139; $i++) {
+						$kolom = PHPExcel_Cell::stringFromColumnIndex($i);
+						$objPHPExcel->getActiveSheet()->getStyle($kolom . $row)->applyFromArray($border);
+					}
+				}
+			}
+			$row++;
+			$x = 1;
+			foreach ($data as $key) {
+				$wkt = explode(' ', $key['waktu_kecelakaan']);
+				$m = explode('-', $wkt[0])[1];
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A' . $row, $x++);
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue('B' . $row, trim($key['nama']));
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue('C' . $row, $key['noind']);
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue('D' . $row, $key['tkp']);
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue('E' . $row, $key['masa_kerja']);
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue('F' . $row, trim($key['unit_name']));
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue('G' . $row, trim($key['section_name']));
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue('H' . $row, date('d M Y', strtotime($wkt[0])));
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue('I' . $row, $wkt[1]);
+				//bsrl
+				$sbsrl = 9;
+				for ($i = 1; $i <= 12; $i++) {
+					for ($j = 1; $j <= 4; $j++) {
+						$kolom = PHPExcel_Cell::stringFromColumnIndex($sbsrl);
+						if ($key['bsrl'] == $j && intval($m) == $i && $key['lokasi_kerja_kecelakaan'] != '999') {
+							$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom . $row, '✓');
+							if (isset($kerja[$i][$j])) $kerja[$i][$j]++;
+							else $kerja[$i][$j] = 1;
+						} elseif ($key['bsrl'] == $j && intval($m) == $i) {
+							$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom . $row, 'O');
+							if (isset($laka[$i][$j])) $laka[$i][$j]++;
+							else $laka[$i][$j] = 1;
+						} else {
+							$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom . $row, '');
+						}
+						$sbsrl++;
+					}
+				}
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue('BF' . $row, $key['kondisi']);
+				//bagian tubuh
+				$sbagian = 58;
+				$ttal = 0;
+				$ttal_bagian = array();
+				$arrB = explode(',', $key['bagian_tubuh']);
+				for ($i = 1; $i <= 5; $i++) {
+					$kolom = PHPExcel_Cell::stringFromColumnIndex($sbagian);
+					if (in_array($i, $arrB)) {
+						// $ttal_bagian[$i] +=
+						$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom . $row, '✓');
+					} else {
+						$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom . $row, '');
+					}
+					$sbagian++;
+				}
+				$bln = $this->konversibulan->KonversiKeBulanIndonesia(date('F', strtotime($wkt[0])));
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue('BL' . $row, $bln);
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue('BM' . $row, $key['penyebab']);
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue('BN' . $row, $key['tindakan']);
+				//kategori
+				$skategori = 66;
+				$arrK = explode(',', $key['kategori']);
+				for ($i = 1; $i <= 9; $i++) {
+					$kolom = PHPExcel_Cell::stringFromColumnIndex($skategori);
+					if (in_array($i, $arrK)) {
+						$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom . $row, '✓');
+					} else {
+						$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom . $row, '');
+					}
+					$skategori++;
+				}
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue('BX' . $row, $lokasi[$key['lokasi_kerja_kecelakaan']]);
+				if ($key['lokasi_kerja_kecelakaan'] == '999') {
+					for ($i = 0; $i <= 139; $i++) {
+						$kolom = PHPExcel_Cell::stringFromColumnIndex($i);
+						$objPHPExcel->getActiveSheet()->getStyle($kolom . $row)->applyFromArray($primary);
+						$objPHPExcel->getActiveSheet()->getColumnDimension($kolom)->setAutoSize(true);
+					}
+				}
 
-        		//faktor
-        		$sfaktor = 76;
-        		$arrK = explode(',', $key['faktor']);
-        		for ($i=1; $i <= 6; $i++) { 
-        			$kolom= PHPExcel_Cell::stringFromColumnIndex($sfaktor);
-        			if(in_array($i, $arrK)){
-        				$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom.$row, '✓');
-        			}else{
-        				$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom.$row, '');
-        			}
-        			$sfaktor++;
-        		}
-        		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('CE'.$row, $key['tgl_car']);
-        		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('CF'.$row, $key['nama_pic']);
-        		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('CG'.$row, $key['tgl_selesai_car']);
-        		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('CH'.$row, $key['tgl_close_car']);
-        		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('CZ'.$row, $lokasi[$key['lokasi_kerja_kecelakaan']]);
-        		//kriteria
-        		$skriteria = 104;
-        		$arrK = explode(',', $key['kriteria_stop_six']);
-        		for ($i=1; $i <= 6; $i++) { 
-        			$kolom= PHPExcel_Cell::stringFromColumnIndex($skriteria);
-        			if(in_array($i, $arrK)){
-        				$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom.$row, '✓');
-        			}else{
-        				$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom.$row, '');
-        			}
-        			$skriteria++;
-        		}
-        		//range2
-        		$srange1 = 111;
-        		$arrK = explode(',', $key['range_waktu2']);
-        		for ($i=1; $i <= 6; $i++) { 
-        			$kolom= PHPExcel_Cell::stringFromColumnIndex($srange1);
-        			if(in_array($i, $arrK)){
-        				$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom.$row, '✓');
-        			}else{
-        				$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom.$row, '');
-        			}
-        			$srange1++;
-        		}
-        		//unsafe
-        		$sunsafe = 119;
-        		$arrK = explode(',', $key['unsafe']);
-        		for ($i=1; $i <= 2; $i++) { 
-        			$kolom= PHPExcel_Cell::stringFromColumnIndex($sunsafe);
-        			if(in_array($i, $arrK)){
-        				$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom.$row, '✓');
-        			}else{
-        				$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom.$row, '');
-        			}
-        			$sunsafe++;
-        		}
-        		//dept
-        		if(substr($key['kodesie'], 0,1) == '3'){
-        			$objPHPExcel->setActiveSheetIndex(0)->setCellValue('DR'.$row, '✓');
-        		}else{
-        			$objPHPExcel->setActiveSheetIndex(0)->setCellValue('DS'.$row, '✓');
-        		}
-        		//jenis pekerjaan
-        		$sjp = 123;
-        		$arrK = explode(',', $key['jenis_pekerjaan']);
-        		for ($i=1; $i <= 3; $i++) { 
-        			$kolom= PHPExcel_Cell::stringFromColumnIndex($sjp);
-        			if(in_array($i, $arrK)){
-        				$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom.$row, '✓');
-        			}else{
-        				$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom.$row, '');
-        			}
-        			$sjp++;
-        		}
-        		//prosedur
-        		$sprosedure = 126;
-        		$arrK = explode(',', $key['prosedur']);
-        		for ($i=1; $i <= 3; $i++) { 
-        			$kolom= PHPExcel_Cell::stringFromColumnIndex($sprosedure);
-        			if(in_array($i, $arrK)){
-        				$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom.$row, '✓');
-        			}else{
-        				$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom.$row, '');
-        			}
-        			$sprosedure++;
-        		}
-        		//apd
-        		$sapd = 129;
-        		$arrK = explode(',', $key['apd']);
-        		for ($i=1; $i <= 3; $i++) { 
-        			$kolom= PHPExcel_Cell::stringFromColumnIndex($sapd);
-        			if(in_array($i, $arrK)){
-        				$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom.$row, '✓');
-        			}else{
-        				$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom.$row, '');
-        			}
-        			$sapd++;
-        		}
-        		//masa kerja
-        		$mass = explode(' ', $key['masa_kerja']);
-        		if (!empty($mass)) {
-        			$tahun = $mass[0];
-        			$bulan = $mass[2];
-        			if($tahun > 0){
-        				$objPHPExcel->setActiveSheetIndex(0)->setCellValue('EE'.$row, '✓');
-        				$mass1++;
-        			}elseif($bulan > 2){
-        				$objPHPExcel->setActiveSheetIndex(0)->setCellValue('ED'.$row, '✓');
-        				$mass2++;
-        			}else{
-        				$objPHPExcel->setActiveSheetIndex(0)->setCellValue('EC'.$row, '✓');
-        				$mass3++;
-        			}
-        		}
-        		//range1
-        		$srange2 = 135;
-        		$arrK = explode(',', $key['range_waktu1']);
-        		for ($i=1; $i <= 3; $i++) { 
-        			$kolom= PHPExcel_Cell::stringFromColumnIndex($srange2);
-        			if(in_array($i, $arrK)){
-        				$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom.$row, '✓');
-        			}else{
-        				$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom.$row, '');
-        			}
-        			$srange2++;
-        		}
-        		//set border
-        		for ($i=0; $i <= 139; $i++) { 
-        			$kolom= PHPExcel_Cell::stringFromColumnIndex($i);
-        			$objPHPExcel->getActiveSheet()->getStyle($kolom.$row)->applyFromArray($border);
-        			$objPHPExcel->getActiveSheet()->getStyle($kolom.$row)->getAlignment()->setWrapText(true);
-        		// $objPHPExcel->getActiveSheet()->getStyle($kolom.$row)->getAlignment()->setIndent(5);
-        			$objPHPExcel->getActiveSheet()->getRowDimension($row)->setRowHeight(40);
-        			if ($key['lokasi_kerja'] == '999') {
-        				$objPHPExcel->getActiveSheet()->getStyle($kolom.$row)->applyFromArray($primary);
-        			}
-        		}
-        		$row++;
-        	}
-        }
-        //set warna merah
-        for ($i=0; $i <= 139; $i++) { 
-        	$kolom= PHPExcel_Cell::stringFromColumnIndex($i);
-        	$objPHPExcel->getActiveSheet()->getStyle($kolom.'4')->applyFromArray($merah);
-        	$objPHPExcel->getActiveSheet()->getColumnDimension($kolom)->setAutoSize(true);
-        }
-        //bagian bawah
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('CY'.$row, 'Pusat');
-        $objPHPExcel->getActiveSheet()->getStyle('CY'.$row)->applyFromArray($style_header);
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('CZ'.$row, 
-        	$this->M_dtmasuk->getTtlLoker('01', $year)
-        	);
-        $objPHPExcel->getActiveSheet()->getStyle('CZ'.$row)->applyFromArray($style_header);
+				//faktor
+				$sfaktor = 76;
+				$arrK = explode(',', $key['faktor']);
+				for ($i = 1; $i <= 6; $i++) {
+					$kolom = PHPExcel_Cell::stringFromColumnIndex($sfaktor);
+					if (in_array($i, $arrK)) {
+						$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom . $row, '✓');
+					} else {
+						$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom . $row, '');
+					}
+					$sfaktor++;
+				}
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue('CE' . $row, $key['tgl_car']);
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue('CF' . $row, $key['nama_pic']);
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue('CG' . $row, $key['tgl_selesai_car']);
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue('CH' . $row, $key['tgl_close_car']);
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue('CZ' . $row, $lokasi[$key['lokasi_kerja_kecelakaan']]);
+				//kriteria
+				$skriteria = 104;
+				$arrK = explode(',', $key['kriteria_stop_six']);
+				for ($i = 1; $i <= 6; $i++) {
+					$kolom = PHPExcel_Cell::stringFromColumnIndex($skriteria);
+					if (in_array($i, $arrK)) {
+						$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom . $row, '✓');
+					} else {
+						$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom . $row, '');
+					}
+					$skriteria++;
+				}
+				//range2
+				$srange1 = 111;
+				$arrK = explode(',', $key['range_waktu2']);
+				for ($i = 1; $i <= 6; $i++) {
+					$kolom = PHPExcel_Cell::stringFromColumnIndex($srange1);
+					if (in_array($i, $arrK)) {
+						$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom . $row, '✓');
+					} else {
+						$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom . $row, '');
+					}
+					$srange1++;
+				}
+				//unsafe
+				$sunsafe = 119;
+				$arrK = explode(',', $key['unsafe']);
+				for ($i = 1; $i <= 2; $i++) {
+					$kolom = PHPExcel_Cell::stringFromColumnIndex($sunsafe);
+					if (in_array($i, $arrK)) {
+						$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom . $row, '✓');
+					} else {
+						$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom . $row, '');
+					}
+					$sunsafe++;
+				}
+				//dept
+				if (substr($key['kodesie'], 0, 1) == '3') {
+					$objPHPExcel->setActiveSheetIndex(0)->setCellValue('DR' . $row, '✓');
+				} else {
+					$objPHPExcel->setActiveSheetIndex(0)->setCellValue('DS' . $row, '✓');
+				}
+				//jenis pekerjaan
+				$sjp = 123;
+				$arrK = explode(',', $key['jenis_pekerjaan']);
+				for ($i = 1; $i <= 3; $i++) {
+					$kolom = PHPExcel_Cell::stringFromColumnIndex($sjp);
+					if (in_array($i, $arrK)) {
+						$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom . $row, '✓');
+					} else {
+						$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom . $row, '');
+					}
+					$sjp++;
+				}
+				//prosedur
+				$sprosedure = 126;
+				$arrK = explode(',', $key['prosedur']);
+				for ($i = 1; $i <= 3; $i++) {
+					$kolom = PHPExcel_Cell::stringFromColumnIndex($sprosedure);
+					if (in_array($i, $arrK)) {
+						$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom . $row, '✓');
+					} else {
+						$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom . $row, '');
+					}
+					$sprosedure++;
+				}
+				//apd
+				$sapd = 129;
+				$arrK = explode(',', $key['apd']);
+				for ($i = 1; $i <= 3; $i++) {
+					$kolom = PHPExcel_Cell::stringFromColumnIndex($sapd);
+					if (in_array($i, $arrK)) {
+						$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom . $row, '✓');
+					} else {
+						$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom . $row, '');
+					}
+					$sapd++;
+				}
+				//masa kerja
+				$mass = explode(' ', $key['masa_kerja']);
+				if (!empty($mass)) {
+					$tahun = $mass[0];
+					$bulan = $mass[2];
+					if ($tahun > 0) {
+						$objPHPExcel->setActiveSheetIndex(0)->setCellValue('EE' . $row, '✓');
+						$mass1++;
+					} elseif ($bulan > 2) {
+						$objPHPExcel->setActiveSheetIndex(0)->setCellValue('ED' . $row, '✓');
+						$mass2++;
+					} else {
+						$objPHPExcel->setActiveSheetIndex(0)->setCellValue('EC' . $row, '✓');
+						$mass3++;
+					}
+				}
+				//range1
+				$srange2 = 135;
+				$arrK = explode(',', $key['range_waktu1']);
+				for ($i = 1; $i <= 3; $i++) {
+					$kolom = PHPExcel_Cell::stringFromColumnIndex($srange2);
+					if (in_array($i, $arrK)) {
+						$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom . $row, '✓');
+					} else {
+						$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom . $row, '');
+					}
+					$srange2++;
+				}
+				//set border
+				for ($i = 0; $i <= 139; $i++) {
+					$kolom = PHPExcel_Cell::stringFromColumnIndex($i);
+					$objPHPExcel->getActiveSheet()->getStyle($kolom . $row)->applyFromArray($border);
+					$objPHPExcel->getActiveSheet()->getStyle($kolom . $row)->getAlignment()->setWrapText(true);
+					// $objPHPExcel->getActiveSheet()->getStyle($kolom.$row)->getAlignment()->setIndent(5);
+					$objPHPExcel->getActiveSheet()->getRowDimension($row)->setRowHeight(40);
+					if ($key['lokasi_kerja'] == '999') {
+						$objPHPExcel->getActiveSheet()->getStyle($kolom . $row)->applyFromArray($primary);
+					}
+				}
+				$row++;
+			}
+		}
+		//set warna merah
+		for ($i = 0; $i <= 139; $i++) {
+			$kolom = PHPExcel_Cell::stringFromColumnIndex($i);
+			$objPHPExcel->getActiveSheet()->getStyle($kolom . '4')->applyFromArray($merah);
+			$objPHPExcel->getActiveSheet()->getColumnDimension($kolom)->setAutoSize(true);
+		}
+		//bagian bawah
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('CY' . $row, 'Pusat');
+		$objPHPExcel->getActiveSheet()->getStyle('CY' . $row)->applyFromArray($style_header);
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue(
+			'CZ' . $row,
+			$this->M_dtmasuk->getTtlLoker('01', $year)
+		);
+		$objPHPExcel->getActiveSheet()->getStyle('CZ' . $row)->applyFromArray($style_header);
 
-        $row++;
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('CY'.$row, 'Tuksono');
-        $objPHPExcel->getActiveSheet()->getStyle('CY'.$row)->applyFromArray($style_header);
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('CZ'.$row, 
-        	$this->M_dtmasuk->getTtlLoker('02', $year)
-        	);
-        $objPHPExcel->getActiveSheet()->getStyle('CZ'.$row)->applyFromArray($style_header);
+		$row++;
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('CY' . $row, 'Tuksono');
+		$objPHPExcel->getActiveSheet()->getStyle('CY' . $row)->applyFromArray($style_header);
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue(
+			'CZ' . $row,
+			$this->M_dtmasuk->getTtlLoker('02', $year)
+		);
+		$objPHPExcel->getActiveSheet()->getStyle('CZ' . $row)->applyFromArray($style_header);
 
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B'.$row, 'Kecelakaan di lingkungan Kerja');
-        $objPHPExcel->setActiveSheetIndex(0)->mergeCells('B'.$row.':H'.$row);
-        $objPHPExcel->getActiveSheet()->getStyle('B'.$row.':H'.$row)->applyFromArray($style_title);
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('I'.$row, 'Kerja');
-        $sbsrl = 9;
-        $ttal = 0;
-        for ($i=1; $i <= 12; $i++) { 
-        	for ($j=1; $j <= 4; $j++) { 
-        		$kolom= PHPExcel_Cell::stringFromColumnIndex($sbsrl);
-        		$objPHPExcel->getActiveSheet()->getStyle($kolom.$row)->applyFromArray($border);
-        		if (isset($kerja[$i][$j])) {
-        			$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom.$row, $kerja[$i][$j]);
-        			$ttal += $kerja[$i][$j];
-        		}else{
-        			$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom.$row, '-');
-        		}
-        		$sbsrl++;
-        	}
-        }
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('BF'.$row, $ttal);
-        //total bagian tubuh
-        $sbagian = 58;
-        for ($i=1; $i <= 5; $i++) { 
-        	$kolom= PHPExcel_Cell::stringFromColumnIndex($sbagian);
-        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom.$row,
-        		$this->M_dtmasuk->getTtlBagian($i, $year)
-        		);
-        	$objPHPExcel->getActiveSheet()->getStyle($kolom.$row)->applyFromArray($style_header);
-        	$sbagian++;
-        }
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('B' . $row, 'Kecelakaan di lingkungan Kerja');
+		$objPHPExcel->setActiveSheetIndex(0)->mergeCells('B' . $row . ':H' . $row);
+		$objPHPExcel->getActiveSheet()->getStyle('B' . $row . ':H' . $row)->applyFromArray($style_title);
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('I' . $row, 'Kerja');
+		$sbsrl = 9;
+		$ttal = 0;
+		for ($i = 1; $i <= 12; $i++) {
+			for ($j = 1; $j <= 4; $j++) {
+				$kolom = PHPExcel_Cell::stringFromColumnIndex($sbsrl);
+				$objPHPExcel->getActiveSheet()->getStyle($kolom . $row)->applyFromArray($border);
+				if (isset($kerja[$i][$j])) {
+					$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom . $row, $kerja[$i][$j]);
+					$ttal += $kerja[$i][$j];
+				} else {
+					$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom . $row, '-');
+				}
+				$sbsrl++;
+			}
+		}
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('BF' . $row, $ttal);
+		//total bagian tubuh
+		$sbagian = 58;
+		for ($i = 1; $i <= 5; $i++) {
+			$kolom = PHPExcel_Cell::stringFromColumnIndex($sbagian);
+			$objPHPExcel->setActiveSheetIndex(0)->setCellValue(
+				$kolom . $row,
+				$this->M_dtmasuk->getTtlBagian($i, $year)
+			);
+			$objPHPExcel->getActiveSheet()->getStyle($kolom . $row)->applyFromArray($style_header);
+			$sbagian++;
+		}
 
-        // total kategori
-        $skategori = 66;
-        for ($i=1; $i <= 9; $i++) { 
-        	$kolom= PHPExcel_Cell::stringFromColumnIndex($skategori);
-        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom.$row,
-        		$this->M_dtmasuk->getTtlKategori($i, $year)
-        		);
-        	$objPHPExcel->getActiveSheet()->getStyle($kolom.$row)->applyFromArray($style_header);
-        	$skategori++;
-        }
-        // total faktor
-        $sfaktor = 76;
-        for ($i=1; $i <= 6; $i++) { 
-        	$kolom= PHPExcel_Cell::stringFromColumnIndex($sfaktor);
-        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom.$row,
-        		$this->M_dtmasuk->getTtlFaktor($i, $year)
-        		);
-        	$objPHPExcel->getActiveSheet()->getStyle($kolom.$row)->applyFromArray($style_header);
-        	$sfaktor++;
-        }
-        //total stop six
-        $ssix = 104;
-        for ($i=1; $i <= 6; $i++) { 
-        	$kolom= PHPExcel_Cell::stringFromColumnIndex($ssix);
-        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom.$row,
-        		$this->M_dtmasuk->getTtlStopsix($i, $year)
-        		);
-        	$objPHPExcel->getActiveSheet()->getStyle($kolom.$row)->applyFromArray($style_header);
-        	$ssix++;
-        }
-        //range2
-        $srange2 = 111;
-        for ($i=1; $i <= 8; $i++) { 
-        	$kolom= PHPExcel_Cell::stringFromColumnIndex($srange2);
-        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom.$row,
-        		$this->M_dtmasuk->getTtlrange2($i, $year)
-        		);
-        	$objPHPExcel->getActiveSheet()->getStyle($kolom.$row)->applyFromArray($style_header);
-        	$srange2++;
-        }
-        //unsafe
-        $sunsafe = 119;
-        for ($i=1; $i <= 2; $i++) { 
-        	$kolom= PHPExcel_Cell::stringFromColumnIndex($sunsafe);
-        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom.$row,
-        		$this->M_dtmasuk->getTtlunsafe($i, $year)
-        		);
-        	$objPHPExcel->getActiveSheet()->getStyle($kolom.$row)->applyFromArray($style_header);
-        	$sunsafe++;
-        }
-        //dept
-        $sdept = 121;
-        for ($i=1; $i <= 2; $i++) {
-        	$kolom= PHPExcel_Cell::stringFromColumnIndex($sdept);
-        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom.$row,
-        		$this->M_dtmasuk->getTtldept($i, $year)
-        		);
-        	$objPHPExcel->getActiveSheet()->getStyle($kolom.$row)->applyFromArray($style_header);
-        	$sdept++;
-        }
-        //jp
-        $sjp = 123;
-        for ($i=1; $i <= 3; $i++) {
-        	$kolom= PHPExcel_Cell::stringFromColumnIndex($sjp);
-        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom.$row,
-        		$this->M_dtmasuk->getTtljp($i, $year)
-        		);
-        	$objPHPExcel->getActiveSheet()->getStyle($kolom.$row)->applyFromArray($style_header);
-        	$sjp++;
-        }
-        //prosedure
-        $sprosedure = 126;
-        for ($i=1; $i <= 3; $i++) {
-        	$kolom= PHPExcel_Cell::stringFromColumnIndex($sprosedure);
-        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom.$row,
-        		$this->M_dtmasuk->getTtlkolom($i, $year, 'prosedur')
-        		);
-        	$objPHPExcel->getActiveSheet()->getStyle($kolom.$row)->applyFromArray($style_header);
-        	$sprosedure++;
-        }
-        //penggunaan apd
-        $sapd = 129;
-        for ($i=1; $i <= 3; $i++) {
-        	$kolom= PHPExcel_Cell::stringFromColumnIndex($sapd);
-        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom.$row,
-        		$this->M_dtmasuk->getTtlapd($i, $year)
-        		);
-        	$objPHPExcel->getActiveSheet()->getStyle($kolom.$row)->applyFromArray($style_header);
-        	$sapd++;
-        }
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('EC'.$row, $mass3);
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('ED'.$row, $mass2);
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('EE'.$row, $mass1);
-        $objPHPExcel->getActiveSheet()->getStyle('EC'.$row)->applyFromArray($style_header);
-        $objPHPExcel->getActiveSheet()->getStyle('ED'.$row)->applyFromArray($style_header);
-        $objPHPExcel->getActiveSheet()->getStyle('EE'.$row)->applyFromArray($style_header);
+		// total kategori
+		$skategori = 66;
+		for ($i = 1; $i <= 9; $i++) {
+			$kolom = PHPExcel_Cell::stringFromColumnIndex($skategori);
+			$objPHPExcel->setActiveSheetIndex(0)->setCellValue(
+				$kolom . $row,
+				$this->M_dtmasuk->getTtlKategori($i, $year)
+			);
+			$objPHPExcel->getActiveSheet()->getStyle($kolom . $row)->applyFromArray($style_header);
+			$skategori++;
+		}
+		// total faktor
+		$sfaktor = 76;
+		for ($i = 1; $i <= 6; $i++) {
+			$kolom = PHPExcel_Cell::stringFromColumnIndex($sfaktor);
+			$objPHPExcel->setActiveSheetIndex(0)->setCellValue(
+				$kolom . $row,
+				$this->M_dtmasuk->getTtlFaktor($i, $year)
+			);
+			$objPHPExcel->getActiveSheet()->getStyle($kolom . $row)->applyFromArray($style_header);
+			$sfaktor++;
+		}
+		//total stop six
+		$ssix = 104;
+		for ($i = 1; $i <= 6; $i++) {
+			$kolom = PHPExcel_Cell::stringFromColumnIndex($ssix);
+			$objPHPExcel->setActiveSheetIndex(0)->setCellValue(
+				$kolom . $row,
+				$this->M_dtmasuk->getTtlStopsix($i, $year)
+			);
+			$objPHPExcel->getActiveSheet()->getStyle($kolom . $row)->applyFromArray($style_header);
+			$ssix++;
+		}
+		//range2
+		$srange2 = 111;
+		for ($i = 1; $i <= 8; $i++) {
+			$kolom = PHPExcel_Cell::stringFromColumnIndex($srange2);
+			$objPHPExcel->setActiveSheetIndex(0)->setCellValue(
+				$kolom . $row,
+				$this->M_dtmasuk->getTtlrange2($i, $year)
+			);
+			$objPHPExcel->getActiveSheet()->getStyle($kolom . $row)->applyFromArray($style_header);
+			$srange2++;
+		}
+		//unsafe
+		$sunsafe = 119;
+		for ($i = 1; $i <= 2; $i++) {
+			$kolom = PHPExcel_Cell::stringFromColumnIndex($sunsafe);
+			$objPHPExcel->setActiveSheetIndex(0)->setCellValue(
+				$kolom . $row,
+				$this->M_dtmasuk->getTtlunsafe($i, $year)
+			);
+			$objPHPExcel->getActiveSheet()->getStyle($kolom . $row)->applyFromArray($style_header);
+			$sunsafe++;
+		}
+		//dept
+		$sdept = 121;
+		for ($i = 1; $i <= 2; $i++) {
+			$kolom = PHPExcel_Cell::stringFromColumnIndex($sdept);
+			$objPHPExcel->setActiveSheetIndex(0)->setCellValue(
+				$kolom . $row,
+				$this->M_dtmasuk->getTtldept($i, $year)
+			);
+			$objPHPExcel->getActiveSheet()->getStyle($kolom . $row)->applyFromArray($style_header);
+			$sdept++;
+		}
+		//jp
+		$sjp = 123;
+		for ($i = 1; $i <= 3; $i++) {
+			$kolom = PHPExcel_Cell::stringFromColumnIndex($sjp);
+			$objPHPExcel->setActiveSheetIndex(0)->setCellValue(
+				$kolom . $row,
+				$this->M_dtmasuk->getTtljp($i, $year)
+			);
+			$objPHPExcel->getActiveSheet()->getStyle($kolom . $row)->applyFromArray($style_header);
+			$sjp++;
+		}
+		//prosedure
+		$sprosedure = 126;
+		for ($i = 1; $i <= 3; $i++) {
+			$kolom = PHPExcel_Cell::stringFromColumnIndex($sprosedure);
+			$objPHPExcel->setActiveSheetIndex(0)->setCellValue(
+				$kolom . $row,
+				$this->M_dtmasuk->getTtlkolom($i, $year, 'prosedur')
+			);
+			$objPHPExcel->getActiveSheet()->getStyle($kolom . $row)->applyFromArray($style_header);
+			$sprosedure++;
+		}
+		//penggunaan apd
+		$sapd = 129;
+		for ($i = 1; $i <= 3; $i++) {
+			$kolom = PHPExcel_Cell::stringFromColumnIndex($sapd);
+			$objPHPExcel->setActiveSheetIndex(0)->setCellValue(
+				$kolom . $row,
+				$this->M_dtmasuk->getTtlapd($i, $year)
+			);
+			$objPHPExcel->getActiveSheet()->getStyle($kolom . $row)->applyFromArray($style_header);
+			$sapd++;
+		}
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('EC' . $row, $mass3);
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('ED' . $row, $mass2);
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('EE' . $row, $mass1);
+		$objPHPExcel->getActiveSheet()->getStyle('EC' . $row)->applyFromArray($style_header);
+		$objPHPExcel->getActiveSheet()->getStyle('ED' . $row)->applyFromArray($style_header);
+		$objPHPExcel->getActiveSheet()->getStyle('EE' . $row)->applyFromArray($style_header);
 
-        //range1
-        $srange1 = 135;
-        for ($i=1; $i <= 3; $i++) {
-        	$kolom= PHPExcel_Cell::stringFromColumnIndex($srange1);
-        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom.$row,
-        		$this->M_dtmasuk->getTtlkolom($i, $year, 'range_waktu1')
-        		);
-        	$objPHPExcel->getActiveSheet()->getStyle($kolom.$row)->applyFromArray($style_header);
-        	$srange1++;
-        }
-
-
-        $row++;
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B'.$row, 'Kecelakaan Lalu Lintas');
-        $objPHPExcel->setActiveSheetIndex(0)->mergeCells('B'.$row.':H'.$row);
-        $objPHPExcel->getActiveSheet()->getStyle('B'.$row.':H'.$row)->applyFromArray($style_title);
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('I'.$row, 'Laka');
-        $sbsrl = 9;
-        $ttal = 0;
-        for ($i=1; $i <= 12; $i++) { 
-        	for ($j=1; $j <= 4; $j++) { 
-        		$kolom= PHPExcel_Cell::stringFromColumnIndex($sbsrl);
-        		$objPHPExcel->getActiveSheet()->getStyle($kolom.$row)->applyFromArray($style_header);
-        		if (isset($laka[$i][$j])) {
-        			$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom.$row, $laka[$i][$j]);
-        			$ttal += $laka[$i][$j];
-        		}else{
-        			$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom.$row, '-');
-        		}
-        		$sbsrl++;
-        	}
-        }
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('BF'.$row, $ttal);
-        
+		//range1
+		$srange1 = 135;
+		for ($i = 1; $i <= 3; $i++) {
+			$kolom = PHPExcel_Cell::stringFromColumnIndex($srange1);
+			$objPHPExcel->setActiveSheetIndex(0)->setCellValue(
+				$kolom . $row,
+				$this->M_dtmasuk->getTtlkolom($i, $year, 'range_waktu1')
+			);
+			$objPHPExcel->getActiveSheet()->getStyle($kolom . $row)->applyFromArray($style_header);
+			$srange1++;
+		}
 
 
-        //kebawah
-        // echo "<pre>";
-        // print_r($kerja);exit();
-        $b = 0; $s = 0; $r = 0; $l = 0;
-        foreach ($kerja as $key => $value) {
-        	foreach ($value as $k => $v) {
-        		if ($k == '1') {
-        			$b+=$v;
-        		}
-        		if ($k == '2') {
-        			$s+=$v;
-        		}
-        		if ($k == '3') {
-        			$r+=$v;
-        		}
-        		if ($k == '4') {
-        			$l+=$v;
-        		}
-        	}
-        }
-        foreach ($laka as $key => $value) {
-        	foreach ($value as $k => $v) {
-        		if ($k == '1') {
-        			$b+=$v;
-        		}
-        		if ($k == '2') {
-        			$s+=$v;
-        		}
-        		if ($k == '3') {
-        			$r+=$v;
-        		}
-        		if ($k == '4') {
-        			$l+=$v;
-        		}
-        	}
-        }
-        // exit();
-        $row++;
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('J'.$row, 'R');
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('K'.$row, $r);
-        $objPHPExcel->getActiveSheet()->getStyle('J'.$row)->applyFromArray($border);
-        $objPHPExcel->getActiveSheet()->getStyle('K'.$row)->applyFromArray($border);
-        $sbsrl = 8;
-        // print_r($kerja);exit();
-        for ($i=1; $i <= 12; $i++) { 
-        	$ttl = 0;
-        	for ($j=1; $j <= 4; $j++) { 
-        		if (isset($kerja[$i][$j])) {
-        			$ttl += $kerja[$i][$j];
-        		}
-        		$sbsrl++;
-        	}
-        	$kolom= PHPExcel_Cell::stringFromColumnIndex($sbsrl);
-        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom.$row, $ttl);
-        }
+		$row++;
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('B' . $row, 'Kecelakaan Lalu Lintas');
+		$objPHPExcel->setActiveSheetIndex(0)->mergeCells('B' . $row . ':H' . $row);
+		$objPHPExcel->getActiveSheet()->getStyle('B' . $row . ':H' . $row)->applyFromArray($style_title);
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('I' . $row, 'Laka');
+		$sbsrl = 9;
+		$ttal = 0;
+		for ($i = 1; $i <= 12; $i++) {
+			for ($j = 1; $j <= 4; $j++) {
+				$kolom = PHPExcel_Cell::stringFromColumnIndex($sbsrl);
+				$objPHPExcel->getActiveSheet()->getStyle($kolom . $row)->applyFromArray($style_header);
+				if (isset($laka[$i][$j])) {
+					$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom . $row, $laka[$i][$j]);
+					$ttal += $laka[$i][$j];
+				} else {
+					$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom . $row, '-');
+				}
+				$sbsrl++;
+			}
+		}
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('BF' . $row, $ttal);
 
-        $row++;
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('J'.$row, 'S');
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('K'.$row, $s);
-        $objPHPExcel->getActiveSheet()->getStyle('J'.$row)->applyFromArray($border);
-        $objPHPExcel->getActiveSheet()->getStyle('K'.$row)->applyFromArray($border);
-        $sbsrl = 8;
-        for ($i=1; $i <= 12; $i++) { 
-        	$ttl = 0;
-        	for ($j=1; $j <= 4; $j++) { 
-        		if (isset($laka[$i][$j])) {
-        			$ttl+=$laka[$i][$j];
-        		}
-        		$sbsrl++;
-        	}
-        	$kolom= PHPExcel_Cell::stringFromColumnIndex($sbsrl);
-        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom.$row, $ttl);
-        }
 
-        $row++;
-        $startChart = $row;
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('J'.$row, 'B');
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('K'.$row, $b);
-        $objPHPExcel->getActiveSheet()->getStyle('J'.$row)->applyFromArray($border);
-        $objPHPExcel->getActiveSheet()->getStyle('K'.$row)->applyFromArray($border);
 
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('CW'.$row, 'Aparatus');
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('CX'.$row, 'Kecelakaan Karena Mesin dan Peralatan');
-        $objPHPExcel->getActiveSheet()->getStyle('CW'.$row)->applyFromArray($border);
-        $objPHPExcel->getActiveSheet()->getStyle('CX'.$row)->applyFromArray($border);
+		//kebawah
+		// echo "<pre>";
+		// print_r($kerja);exit();
+		$b = 0;
+		$s = 0;
+		$r = 0;
+		$l = 0;
+		foreach ($kerja as $key => $value) {
+			foreach ($value as $k => $v) {
+				if ($k == '1') {
+					$b += $v;
+				}
+				if ($k == '2') {
+					$s += $v;
+				}
+				if ($k == '3') {
+					$r += $v;
+				}
+				if ($k == '4') {
+					$l += $v;
+				}
+			}
+		}
+		foreach ($laka as $key => $value) {
+			foreach ($value as $k => $v) {
+				if ($k == '1') {
+					$b += $v;
+				}
+				if ($k == '2') {
+					$s += $v;
+				}
+				if ($k == '3') {
+					$r += $v;
+				}
+				if ($k == '4') {
+					$l += $v;
+				}
+			}
+		}
+		// exit();
+		$row++;
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('J' . $row, 'R');
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('K' . $row, $r);
+		$objPHPExcel->getActiveSheet()->getStyle('J' . $row)->applyFromArray($border);
+		$objPHPExcel->getActiveSheet()->getStyle('K' . $row)->applyFromArray($border);
+		$sbsrl = 8;
+		// print_r($kerja);exit();
+		for ($i = 1; $i <= 12; $i++) {
+			$ttl = 0;
+			for ($j = 1; $j <= 4; $j++) {
+				if (isset($kerja[$i][$j])) {
+					$ttl += $kerja[$i][$j];
+				}
+				$sbsrl++;
+			}
+			$kolom = PHPExcel_Cell::stringFromColumnIndex($sbsrl);
+			$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom . $row, $ttl);
+		}
 
-        $row++;
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('J'.$row, 'L');
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('K'.$row, $l);
-        $objPHPExcel->getActiveSheet()->getStyle('J'.$row)->applyFromArray($border);
-        $objPHPExcel->getActiveSheet()->getStyle('K'.$row)->applyFromArray($border);
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('CW'.$row, 'Big Heavy');
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('CX'.$row, 'Tertimpa dan terbentur benda berat');
-        $objPHPExcel->getActiveSheet()->getStyle('CW'.$row)->applyFromArray($border);
-        $objPHPExcel->getActiveSheet()->getStyle('CX'.$row)->applyFromArray($border);
+		$row++;
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('J' . $row, 'S');
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('K' . $row, $s);
+		$objPHPExcel->getActiveSheet()->getStyle('J' . $row)->applyFromArray($border);
+		$objPHPExcel->getActiveSheet()->getStyle('K' . $row)->applyFromArray($border);
+		$sbsrl = 8;
+		for ($i = 1; $i <= 12; $i++) {
+			$ttl = 0;
+			for ($j = 1; $j <= 4; $j++) {
+				if (isset($laka[$i][$j])) {
+					$ttl += $laka[$i][$j];
+				}
+				$sbsrl++;
+			}
+			$kolom = PHPExcel_Cell::stringFromColumnIndex($sbsrl);
+			$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom . $row, $ttl);
+		}
 
-        $row++;
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('CW'.$row, 'Car');
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('CX'.$row, 'Tertabrak kendaraan');
-        $objPHPExcel->getActiveSheet()->getStyle('CW'.$row)->applyFromArray($border);
-        $objPHPExcel->getActiveSheet()->getStyle('CX'.$row)->applyFromArray($border);
+		$row++;
+		$startChart = $row;
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('J' . $row, 'B');
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('K' . $row, $b);
+		$objPHPExcel->getActiveSheet()->getStyle('J' . $row)->applyFromArray($border);
+		$objPHPExcel->getActiveSheet()->getStyle('K' . $row)->applyFromArray($border);
 
-        $row++;
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('CW'.$row, 'Drop');
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('CX'.$row, 'Jatuh Dari Ketinggia');
-        $objPHPExcel->getActiveSheet()->getStyle('CW'.$row)->applyFromArray($border);
-        $objPHPExcel->getActiveSheet()->getStyle('CX'.$row)->applyFromArray($border);
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('CW' . $row, 'Aparatus');
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('CX' . $row, 'Kecelakaan Karena Mesin dan Peralatan');
+		$objPHPExcel->getActiveSheet()->getStyle('CW' . $row)->applyFromArray($border);
+		$objPHPExcel->getActiveSheet()->getStyle('CX' . $row)->applyFromArray($border);
 
-        $row++;
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('CW'.$row, 'Electrical');
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('CX'.$row, 'Terkena Sengatan Listrik');
-        $objPHPExcel->getActiveSheet()->getStyle('CW'.$row)->applyFromArray($border);
-        $objPHPExcel->getActiveSheet()->getStyle('CX'.$row)->applyFromArray($border);
+		$row++;
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('J' . $row, 'L');
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('K' . $row, $l);
+		$objPHPExcel->getActiveSheet()->getStyle('J' . $row)->applyFromArray($border);
+		$objPHPExcel->getActiveSheet()->getStyle('K' . $row)->applyFromArray($border);
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('CW' . $row, 'Big Heavy');
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('CX' . $row, 'Tertimpa dan terbentur benda berat');
+		$objPHPExcel->getActiveSheet()->getStyle('CW' . $row)->applyFromArray($border);
+		$objPHPExcel->getActiveSheet()->getStyle('CX' . $row)->applyFromArray($border);
 
-        $row++;
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('CW'.$row, 'Fire');
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('CX'.$row, 'Menyentuh Sumber panass');
-        $objPHPExcel->getActiveSheet()->getStyle('CW'.$row)->applyFromArray($border);
-        $objPHPExcel->getActiveSheet()->getStyle('CX'.$row)->applyFromArray($border);
+		$row++;
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('CW' . $row, 'Car');
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('CX' . $row, 'Tertabrak kendaraan');
+		$objPHPExcel->getActiveSheet()->getStyle('CW' . $row)->applyFromArray($border);
+		$objPHPExcel->getActiveSheet()->getStyle('CX' . $row)->applyFromArray($border);
 
-        $ttlmkk = 0;
-        $arrch1x = array();
-        $arrch1y = array();
-        $startChart2 = $startChart;
-        for ($i=1; $i <= 12; $i++) { 
-        	if($i < 10) $m = '0'.$i;
-        	else $m = $i;
-        	$ym = $year.'-'.$m;
-        	$ttlmkk = count($this->M_dtmasuk->getDatak3k($ym));
-        	$bln = $this->konversibulan->KonversiKeBulanIndonesia(date('F', strtotime('2020-'.$m.'-01')));
-        	// print_r($bln);exit();
-        	$arrch1x[$i-1] = $bln;
-        	$arrch1y[$i-1] = $ttlmkk;
+		$row++;
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('CW' . $row, 'Drop');
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('CX' . $row, 'Jatuh Dari Ketinggia');
+		$objPHPExcel->getActiveSheet()->getStyle('CW' . $row)->applyFromArray($border);
+		$objPHPExcel->getActiveSheet()->getStyle('CX' . $row)->applyFromArray($border);
 
-        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('CZ'.$startChart, $bln);
-        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('DA'.$startChart, $ttlmkk);
-        	$startChart++;
-        }
-        $values = new PHPExcel_Chart_DataSeriesValues('Number', 'Worksheet!$DA$45:$DA$56');
-  		$categories = new PHPExcel_Chart_DataSeriesValues('String', 'Worksheet!$CZ$45:$CZ$56');
-  		// print_r(array($values));exit();
-        //chart pertama
-        $series = new PHPExcel_Chart_DataSeries(
-        	PHPExcel_Chart_DataSeries::TYPE_BARCHART,
-        	PHPExcel_Chart_DataSeries::GROUPING_STACKED,
-        	array(0),
-        	array(),
-        	array($categories),
-        	array($values)
-        	);
-        $series->setPlotDirection(PHPExcel_Chart_DataSeries::DIRECTION_VERTICAL);
-        $layout = new PHPExcel_Chart_Layout();
-        $plotarea = new PHPExcel_Chart_PlotArea($layout, array($series));
-        $xTitle = new PHPExcel_Chart_Title('');
-        $yTitle = new PHPExcel_Chart_Title('');
-        $axis =  new PHPExcel_Chart_Axis();
-		$axis->setAxisOptionsProperties('low', null, null, null, 1, null, null, 1,1);
+		$row++;
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('CW' . $row, 'Electrical');
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('CX' . $row, 'Terkena Sengatan Listrik');
+		$objPHPExcel->getActiveSheet()->getStyle('CW' . $row)->applyFromArray($border);
+		$objPHPExcel->getActiveSheet()->getStyle('CX' . $row)->applyFromArray($border);
 
-        $chart = new PHPExcel_Chart('sample', null, null, $plotarea, true,0,$xTitle,$yTitle, $axis);
-	    $chart->setTopLeftPosition('DC'.$startChart2);
-	    $chart->setBottomRightPosition('DJ'.($startChart2+11));
-        $objPHPExcel->setActiveSheetIndex(0);
-        $objPHPExcel->getActiveSheet()->addChart($chart);
+		$row++;
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('CW' . $row, 'Fire');
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('CX' . $row, 'Menyentuh Sumber panass');
+		$objPHPExcel->getActiveSheet()->getStyle('CW' . $row)->applyFromArray($border);
+		$objPHPExcel->getActiveSheet()->getStyle('CX' . $row)->applyFromArray($border);
 
-        //frezee
-        $objPHPExcel->getActiveSheet()->freezePane('A5');
-        $objPHPExcel->getActiveSheet()->setTitle('Data Kecelakaan Kerja');
-        $filename = rawurlencode("Data Kecelakaan Kerja ".$year.".xlsx");
-        header('Content-Type: application/vnd.ms-excel'); // mime type
-        header('Content-Disposition: attachment;filename="' . $filename . '"'); // tell browser what's the file name
-        header('Cache-Control: max-age=0'); //no cache
+		$ttlmkk = 0;
+		$arrch1x = array();
+		$arrch1y = array();
+		$startChart2 = $startChart;
+		for ($i = 1; $i <= 12; $i++) {
+			if ($i < 10) $m = '0' . $i;
+			else $m = $i;
+			$ym = $year . '-' . $m;
+			$ttlmkk = count($this->M_dtmasuk->getDatak3k($ym));
+			$bln = $this->konversibulan->KonversiKeBulanIndonesia(date('F', strtotime('2020-' . $m . '-01')));
+			// print_r($bln);exit();
+			$arrch1x[$i - 1] = $bln;
+			$arrch1y[$i - 1] = $ttlmkk;
 
-        $objWriter = IOFactory::createWriter($objPHPExcel, 'Excel2007');
-        // $objWriter->writeAttribute('val', "low");
-        $objWriter->setIncludeCharts(TRUE);
-        $objWriter->save('php://output');
+			$objPHPExcel->setActiveSheetIndex(0)->setCellValue('CZ' . $startChart, $bln);
+			$objPHPExcel->setActiveSheetIndex(0)->setCellValue('DA' . $startChart, $ttlmkk);
+			$startChart++;
+		}
+		$values = new PHPExcel_Chart_DataSeriesValues('Number', 'Worksheet!$DA$45:$DA$56');
+		$categories = new PHPExcel_Chart_DataSeriesValues('String', 'Worksheet!$CZ$45:$CZ$56');
+		// print_r(array($values));exit();
+		//chart pertama
+		$series = new PHPExcel_Chart_DataSeries(
+			PHPExcel_Chart_DataSeries::TYPE_BARCHART,
+			PHPExcel_Chart_DataSeries::GROUPING_STACKED,
+			array(0),
+			array(),
+			array($categories),
+			array($values)
+		);
+		$series->setPlotDirection(PHPExcel_Chart_DataSeries::DIRECTION_VERTICAL);
+		$layout = new PHPExcel_Chart_Layout();
+		$plotarea = new PHPExcel_Chart_PlotArea($layout, array($series));
+		$xTitle = new PHPExcel_Chart_Title('');
+		$yTitle = new PHPExcel_Chart_Title('');
+		$axis =  new PHPExcel_Chart_Axis();
+		$axis->setAxisOptionsProperties('low', null, null, null, 1, null, null, 1, 1);
 
-   		//help im lost my mind :( this export is insane
-   		//dont forget to drink :) love ya
+		$chart = new PHPExcel_Chart('sample', null, null, $plotarea, true, 0, $xTitle, $yTitle, $axis);
+		$chart->setTopLeftPosition('DC' . $startChart2);
+		$chart->setBottomRightPosition('DJ' . ($startChart2 + 11));
+		$objPHPExcel->setActiveSheetIndex(0);
+		$objPHPExcel->getActiveSheet()->addChart($chart);
+
+		//frezee
+		$objPHPExcel->getActiveSheet()->freezePane('A5');
+		$objPHPExcel->getActiveSheet()->setTitle('Data Kecelakaan Kerja');
+		$filename = rawurlencode("Data Kecelakaan Kerja " . $year . ".xlsx");
+		header('Content-Type: application/vnd.ms-excel'); // mime type
+		header('Content-Disposition: attachment;filename="' . $filename . '"'); // tell browser what's the file name
+		header('Cache-Control: max-age=0'); //no cache
+
+		$objWriter = IOFactory::createWriter($objPHPExcel, 'Excel2007');
+		// $objWriter->writeAttribute('val', "low");
+		$objWriter->setIncludeCharts(TRUE);
+		$objWriter->save('php://output');
+
+		//help im lost my mind :( this export is insane
+		//dont forget to drink :) love ya
 	}
 
 	public function pdf_monitoringKK()
@@ -2836,7 +2898,7 @@ class C_Index extends CI_Controller
 		$year = $this->input->get('y');
 		$data['tahun'] = $year;
 
-		require_once(APPPATH.'libraries/SVGGraph/autoloader.php');
+		require_once(APPPATH . 'libraries/SVGGraph/autoloader.php');
 
 		$data['perbandingan1'] = $this->grapPerbandingan1($year);
 		$data['perbandingan2'] = $this->grapPerbandingan2($year);
@@ -2876,18 +2938,18 @@ class C_Index extends CI_Controller
 
 	function grapPerbandingan1($tahun)
 	{
-		for ($i=1; $i <= 12; $i++) {
-			if($i < 10) $m = '0'.$i;
-        	else $m = $i;
-			$d[] = $this->M_dtmasuk->getTtlLoker('', $tahun.'-'.$m);
+		for ($i = 1; $i <= 12; $i++) {
+			if ($i < 10) $m = '0' . $i;
+			else $m = $i;
+			$d[] = $this->M_dtmasuk->getTtlLoker('', $tahun . '-' . $m);
 		}
-		for ($i=1; $i <= 12; $i++) {
-			if($i < 10) $m = '0'.$i;
-        	else $m = $i;
-			$e[] = $this->M_dtmasuk->getTtlLoker('', ($tahun-1).'-'.$m);
+		for ($i = 1; $i <= 12; $i++) {
+			if ($i < 10) $m = '0' . $i;
+			else $m = $i;
+			$e[] = $this->M_dtmasuk->getTtlLoker('', ($tahun - 1) . '-' . $m);
 		}
 		$shortMonth = array('Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Ags', 'Sep', 'Okt', 'Nov', 'Des');
-		$dataValue = [array_combine($shortMonth, $e),array_combine($shortMonth, $d)];
+		$dataValue = [array_combine($shortMonth, $e), array_combine($shortMonth, $d)];
 		// print_r($values);
 		// print_r($dataValue);
 		// exit();
@@ -2904,23 +2966,23 @@ class C_Index extends CI_Controller
 		$data['tahunlalu'] = array_sum($e);
 		$data['arrini'] = array_combine($shortMonth, $d);
 		$data['arrlalu'] = array_combine($shortMonth, $e);
-		return $data; 
+		return $data;
 	}
 
 	function grapPerbandingan2($tahun)
 	{
-		for ($i=1; $i <= 12; $i++) {
-			if($i < 10) $m = '0'.$i;
-        	else $m = $i;
-			$d[] = $this->M_dtmasuk->getTtlLoker('01', $tahun.'-'.$m);
+		for ($i = 1; $i <= 12; $i++) {
+			if ($i < 10) $m = '0' . $i;
+			else $m = $i;
+			$d[] = $this->M_dtmasuk->getTtlLoker('01', $tahun . '-' . $m);
 		}
-		for ($i=1; $i <= 12; $i++) {
-			if($i < 10) $m = '0'.$i;
-        	else $m = $i;
-			$e[] = $this->M_dtmasuk->getTtlLoker('02', $tahun.'-'.$m);
+		for ($i = 1; $i <= 12; $i++) {
+			if ($i < 10) $m = '0' . $i;
+			else $m = $i;
+			$e[] = $this->M_dtmasuk->getTtlLoker('02', $tahun . '-' . $m);
 		}
 		$shortMonth = array('Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Ags', 'Sep', 'Okt', 'Nov', 'Des');
-		$dataValue = [array_combine($shortMonth, $d),array_combine($shortMonth, $e)];
+		$dataValue = [array_combine($shortMonth, $d), array_combine($shortMonth, $e)];
 		// print_r($values);
 		// print_r($dataValue);
 		// exit();
@@ -2935,7 +2997,7 @@ class C_Index extends CI_Controller
 		$data['chart'] = $this->clearXMLTag($graph->fetch($type));
 		$data['pst'] = array_sum($d);
 		$data['tks'] = array_sum($e);
-		$data['arrP'] =array_combine($shortMonth, $d);
+		$data['arrP'] = array_combine($shortMonth, $d);
 		$data['arrT'] = array_combine($shortMonth, $e);
 		return $data;
 	}
@@ -2948,34 +3010,34 @@ class C_Index extends CI_Controller
 	function settingChart($arr = null)
 	{
 		$data = [
-		'minimum_units_y'=>1,
-		'auto_fit' => true,
-		'back_colour' => '#eee',
-		'back_stroke_width' => 0,
-		'back_stroke_colour' => '#eee',
-		'stroke_colour' => '#000',
-		'axis_colour' => '#333',
-		'axis_overlap' => 2,
-		'grid_colour' => '#666',
-		'label_colour' => '#000',
-		'axis_font' => 'Arial',
-		'axis_font_size' => 10,
-		'pad_right' => 20,
-		'pad_left' => 20,
-		'link_base' => '/',
-		'link_target' => '_top',
-		'minimum_grid_spacing' => 20,
-		'grid_subdivision_colour' => '#ccc',
-		'show_data_labels' => true,
-		'data_label_position' => 'top',
-		'data_label_font_size' => 7,
-		'data_label_colour' => '#000',
-		'data_label_type' => 'circle',
-		'data_label_filter' => 'nonzero',
-		'graph_title' => "",
-		'label_font_size' => 15
+			'minimum_units_y' => 1,
+			'auto_fit' => true,
+			'back_colour' => '#eee',
+			'back_stroke_width' => 0,
+			'back_stroke_colour' => '#eee',
+			'stroke_colour' => '#000',
+			'axis_colour' => '#333',
+			'axis_overlap' => 2,
+			'grid_colour' => '#666',
+			'label_colour' => '#000',
+			'axis_font' => 'Arial',
+			'axis_font_size' => 10,
+			'pad_right' => 20,
+			'pad_left' => 20,
+			'link_base' => '/',
+			'link_target' => '_top',
+			'minimum_grid_spacing' => 20,
+			'grid_subdivision_colour' => '#ccc',
+			'show_data_labels' => true,
+			'data_label_position' => 'top',
+			'data_label_font_size' => 7,
+			'data_label_colour' => '#000',
+			'data_label_type' => 'circle',
+			'data_label_filter' => 'nonzero',
+			'graph_title' => "",
+			'label_font_size' => 15
 		];
-		if(is_array($arr)){
+		if (is_array($arr)) {
 			foreach ($arr as $k => $v) {
 				$data[$k] = $v;
 			}
@@ -2986,7 +3048,7 @@ class C_Index extends CI_Controller
 
 	public function grapBagian1($tahun)
 	{
-		for ($i=1; $i <= 5; $i++) {
+		for ($i = 1; $i <= 5; $i++) {
 			$d[] = $this->M_dtmasuk->getTtlBagian($i, $tahun);
 		}
 
@@ -3009,10 +3071,10 @@ class C_Index extends CI_Controller
 
 	public function grapBagian2($tahun)
 	{
-		for ($i=1; $i <= 5; $i++) {
+		for ($i = 1; $i <= 5; $i++) {
 			$d[] = $this->M_dtmasuk->getTtlBagianLok($i, $tahun, '01');
 		}
-		for ($i=1; $i <= 5; $i++) {
+		for ($i = 1; $i <= 5; $i++) {
 			$e[] = $this->M_dtmasuk->getTtlBagianLok($i, $tahun, '02');
 		}
 
@@ -3037,7 +3099,7 @@ class C_Index extends CI_Controller
 
 	public function grapbsrl1($tahun)
 	{
-		for ($i=1; $i <= 4; $i++) {
+		for ($i = 1; $i <= 4; $i++) {
 			$d[] = $this->M_dtmasuk->getTtlkolom($i, $tahun, 'bsrl');
 		}
 
@@ -3060,10 +3122,10 @@ class C_Index extends CI_Controller
 
 	public function grapbsrl2($tahun)
 	{
-		for ($i=1; $i <= 4; $i++) {
+		for ($i = 1; $i <= 4; $i++) {
 			$d[] = $this->M_dtmasuk->getTtlkolomLok($i, $tahun, 'bsrl', '01');
 		}
-		for ($i=1; $i <= 4; $i++) {
+		for ($i = 1; $i <= 4; $i++) {
 			$e[] = $this->M_dtmasuk->getTtlkolomLok($i, $tahun, 'bsrl', '02');
 		}
 
@@ -3089,7 +3151,7 @@ class C_Index extends CI_Controller
 
 	public function grapsix1($tahun)
 	{
-		for ($i=1; $i <= 6; $i++) {
+		for ($i = 1; $i <= 6; $i++) {
 			$d[] = $this->M_dtmasuk->getTtlkolom($i, $tahun, 'kriteria_stop_six');
 		}
 		// print_r($d);exit();
@@ -3112,10 +3174,10 @@ class C_Index extends CI_Controller
 
 	public function grapsix2($tahun)
 	{
-		for ($i=1; $i <= 6; $i++) {
+		for ($i = 1; $i <= 6; $i++) {
 			$d[] = $this->M_dtmasuk->getTtlkolomLok($i, $tahun, 'kriteria_stop_six', '01');
 		}
-		for ($i=1; $i <= 6; $i++) {
+		for ($i = 1; $i <= 6; $i++) {
 			$e[] = $this->M_dtmasuk->getTtlkolomLok($i, $tahun, 'kriteria_stop_six', '02');
 		}
 		// print_r($d);exit();
@@ -3126,7 +3188,7 @@ class C_Index extends CI_Controller
 		$width = 450;
 		$height = 135;
 		$type = 'GroupedBarGraph';
-		$colours = [['purple'],['orange']];
+		$colours = [['purple'], ['orange']];
 		$graph = new Goat1000\SVGGraph\SVGGraph($width, $height, $settings);
 		$graph->colours($colours);
 		$graph->values($dataValue);
@@ -3140,7 +3202,7 @@ class C_Index extends CI_Controller
 
 	public function grapjp($tahun)
 	{
-		for ($i=1; $i <= 3; $i++) {
+		for ($i = 1; $i <= 3; $i++) {
 			$d[] = $this->M_dtmasuk->getTtlkolom($i, $tahun, 'jenis_pekerjaan');
 		}
 
@@ -3164,7 +3226,7 @@ class C_Index extends CI_Controller
 
 	public function grapwicop($tahun)
 	{
-		for ($i=1; $i <= 3; $i++) {
+		for ($i = 1; $i <= 3; $i++) {
 			$d[] = $this->M_dtmasuk->getTtlkolom($i, $tahun, 'prosedur');
 		}
 
@@ -3188,7 +3250,7 @@ class C_Index extends CI_Controller
 
 	public function grapapd($tahun)
 	{
-		for ($i=1; $i <= 3; $i++) {
+		for ($i = 1; $i <= 3; $i++) {
 			$d[] = $this->M_dtmasuk->getTtlapd($i, $tahun);
 		}
 
@@ -3218,7 +3280,7 @@ class C_Index extends CI_Controller
 		$dataValue = [$unit];
 		// print_r($dataValue);exit();
 
-		$arr = array('bar_width' => 40, 'axis_text_angle_h'=>10);
+		$arr = array('bar_width' => 40, 'axis_text_angle_h' => 10);
 		$settings = $this->settingChart($arr);
 		$width = 550;
 		$height = 135;
@@ -3237,7 +3299,7 @@ class C_Index extends CI_Controller
 		$seksi = array_column($seksi, 'jml', 'section_name');
 		$dataValue = [$seksi];
 
-		$arr = array('bar_width' => 40, 'axis_text_angle_h'=>10);
+		$arr = array('bar_width' => 40, 'axis_text_angle_h' => 10);
 		$settings = $this->settingChart($arr);
 		$width = 550;
 		$height = 135;
@@ -3254,13 +3316,13 @@ class C_Index extends CI_Controller
 	{
 		$seksi = $this->M_dtmasuk->getKecelakaanSeksi($year, '02');
 		$seksi = array_column($seksi, 'jml', 'section_name');
-		if(empty($seksi))
-			$dataValue = [array('No Data'=>'0')];
+		if (empty($seksi))
+			$dataValue = [array('No Data' => '0')];
 		else
 			$dataValue = [$seksi];
 
 
-		$arr = array('bar_width' => 40, 'axis_text_angle_h'=>10);
+		$arr = array('bar_width' => 40, 'axis_text_angle_h' => 10);
 		$settings = $this->settingChart($arr);
 		$width = 550;
 		$height = 135;
@@ -3276,23 +3338,23 @@ class C_Index extends CI_Controller
 	public function grapbebas($year)
 	{
 		$bebas = $this->M_dtmasuk->getTglKecelakaan($year);
-		$bebas = array_column($bebas,'tgl');
-		array_unshift($bebas, $year.'-01-01');
+		$bebas = array_column($bebas, 'tgl');
+		array_unshift($bebas, $year . '-01-01');
 		$d = array();
-		for ($i=0; $i < count($bebas)-1; $i++) { 
-			$date1=date_create($bebas[$i]);
-			$date2=date_create($bebas[$i+1]);
-			$diff=date_diff($date1,$date2);
-			$mon = date('M d, Y', strtotime($bebas[$i+1]));
+		for ($i = 0; $i < count($bebas) - 1; $i++) {
+			$date1 = date_create($bebas[$i]);
+			$date2 = date_create($bebas[$i + 1]);
+			$diff = date_diff($date1, $date2);
+			$mon = date('M d, Y', strtotime($bebas[$i + 1]));
 			$d[$mon] = $diff->format("%a");
 			// echo  $diff->format("%a").'|';
 		}
-		if (count($d) < 1) 
-			$dataValue = [array('No Data'=>'0')];
+		if (count($d) < 1)
+			$dataValue = [array('No Data' => '0')];
 		else
 			$dataValue = [$d];
 
-		$arr = array('bar_width' => 40, 'axis_text_angle_h'=>40, 'grid_division_h' => 1);
+		$arr = array('bar_width' => 40, 'axis_text_angle_h' => 40, 'grid_division_h' => 1);
 		$settings = $this->settingChart($arr);
 		$width = 850;
 		$height = 135;
@@ -3309,13 +3371,13 @@ class C_Index extends CI_Controller
 	public function getlaka($tahun)
 	{
 		$x = 0;
-		if($tahun == date('Y'))
+		if ($tahun == date('Y'))
 			$x = date('m');
-		for ($i=1; $i <= 12; $i++) {
-			if($i < 10) $m = '0'.$i;
-        	else $m = $i;
-			$tm = $tahun.'-'.$m.'-01';
-			$tm2 = $tahun.'-'.$m;
+		for ($i = 1; $i <= 12; $i++) {
+			if ($i < 10) $m = '0' . $i;
+			else $m = $i;
+			$tm = $tahun . '-' . $m . '-01';
+			$tm2 = $tahun . '-' . $m;
 			$tgl = date('Y-m-t', strtotime($tm));
 			$t1[] = $this->M_dtmasuk->getRekapLaka($tgl, '01');
 			$t2[] = $this->M_dtmasuk->getRekapLaka($tgl, '02');
@@ -3337,19 +3399,19 @@ class C_Index extends CI_Controller
 		$data['lakat'] = $k2;
 		$data['bulan'] = $month;
 
-		for ($i=0; $i < count($k1); $i++) { 
-			$persenP[] = round($k1[$i]/$t1[$i]*100,1);
-			$persenT[] = round($k2[$i]/$t2[$i]*100,1);
+		for ($i = 0; $i < count($k1); $i++) {
+			$persenP[] = round($k1[$i] / $t1[$i] * 100, 1);
+			$persenT[] = round($k2[$i] / $t2[$i] * 100, 1);
 			$bulan[] = $month[$i];
 		}
 
 		$dataValue = [array_combine($bulan, $persenP), array_combine($bulan, $persenT)];
-		$arr = array('minimum_units_y'=>0.1, 'axis_max_v'=>1);
+		$arr = array('minimum_units_y' => 0.1, 'axis_max_v' => 1);
 		$settings = $this->settingChart($arr);
 		$width = 450;
 		$height = 335;
 		$type = 'GroupedBarGraph';
-		$colours = [['blue'],['red']];
+		$colours = [['blue'], ['red']];
 		$graph = new Goat1000\SVGGraph\SVGGraph($width, $height, $settings);
 		$graph->colours($colours);
 		$graph->values($dataValue);
@@ -3357,10 +3419,15 @@ class C_Index extends CI_Controller
 
 		return $data;
 	}
-	
+
 	public function getDetailSeksi()
 	{
 		$ks = $this->input->post('ks');
+		$pr = $this->input->post('pr');
+		$m = substr($pr, 0, 2);
+		$y = substr($pr, 5, 5);
+		$pr = $y . '-' . $m;
+
 		if (isset($ks) and !empty($ks)) {
 			$baru = '1999-01-01 01:10:10';
 			$cek_terbaru = $this->M_dtmasuk->cek_terbaru($ks);
@@ -3368,50 +3435,69 @@ class C_Index extends CI_Controller
 				$baru = $cek_terbaru[0]['tgl_approve_tim'];
 			}
 			$data = $this->M_dtmasuk->getListAprove($ks, $baru);
-			$getPekerja = $this->M_order->getPekerja($ks);
+			$getorder = $this->M_order->getTglInputOrder($ks, $pr);
+			$tglinput = $getorder->tgl_input;
+			echo '<p>Tanggal Order : ' . $tglinput . '</p>';
+			echo '<p style = "color : red;">Merah : Pekerja keluar setelah tanggal order</p>';
+			echo '<p style = "color : blue;">Biru   : Pekerja masuk setelah tanggal order</p>';
+			$getPekerja = $this->M_order->getPekerjaforDetail($ks, $tglinput);
 			if (empty($getPekerja)) {
 				echo '<center><ul class="list-group"><li class="list-group-item">' . 'Kosong' . '</li></ul></center>';
 			} else {
 				echo '
 				<div class="table-responsive">
-				<table id="tbl_detailHitungOrderSeksi" class="table table-bordered table-hover table-striped">
+				<table id="tbl_detailHitungOrderSeksi" class="table table-bordered table-striped">
 				<thead>
 					<tr>
-						<th>No</th>
-						<th>Noind</th>
-						<th>Nama</th>
-						<th>Pekerjaan</th>';
+						<th width="3%">No</th>
+						<th width="5%">Noind</th>
+						<th width="10%">Nama</th>
+						<th width="10%">Pekerjaan</th>';
 				foreach ($data as $key => $value) {
 					echo '<th>' . $value['item'] . '</th>';
 				}
 
 				echo '</tr></thead>';
-				$i = 1;
+				$i = 2;
+				echo '
+				<tbody>
+				<tr>
+				<td>1</td>
+				<td>-</td>
+				<td>-</td>
+				<td>KEBUTUHAN UMUM</td>
+				';
+				foreach ($data as $key => $value) {
+					echo '<td>' . $value['jml_kebutuhan_umum'] . '</td>';
+				}
+				echo '</tr>';
 				foreach ($getPekerja as $key) {
 					echo '
-					<tbody>
 					<tr>
-						<td width="3%">' . $i . '</td>
-						<td width="5%">' . $key["noind"] . '</td>
-						<td width="10%">' . $key["nama"] . '</td>
-						<td width="10%">' . $key["pekerjaan"] . '</td>';
+						<td style="color : ' . $key["color"] . ';">' . $i . '</td>
+						<td style="color : ' . $key["color"] . ';">' . $key["noind"] . '</td>
+						<td style="color : ' . $key["color"] . ';">' . $key["nama"] . '</td>
+						<td style="color : ' . $key["color"] . ';">' . $key["pekerjaan"] . '</td>';
 					foreach ($data as $key2 => $val) {
 						$explode = explode(",", $val['kd_pekerjaan']);
 						$explode2 = explode(",", $val['jml_item']);
 						foreach ($explode as $key3 => $valkode) {
 							foreach ($explode2 as $key4 => $valjml) {
-								if ($valkode == $key['kdpekerjaan'] && $key3 == $key4) {
-									echo '<td>' . $valjml . '</td>';
+								if ($valkode == $key['kdpekerjaan'] && $key3 == $key4 && $valkode != null) {
+									echo '<td style="color : ' . $key['color'] . ';">';
+									echo $key['color'] != 'blue' ? $valjml : '0' . '</td>';
 								}
 							}
 						}
 						if ($key['pekerjaan'] == 'STAFF') {
-							echo '<td>' . $val['jml_kebutuhan_staff'] . '</td>';
+							echo '<td style="color : ' . $key['color'] . ';">';
+							echo  $key['color'] != 'blue' ? $val['jml_kebutuhan_staff'] : '0' . '</td>';
 						}
 					}
-					echo '</tr></tbody>';
 					$i++;
+					echo '</tr>';
 				}
+				echo '</tbody>';
 				echo '<tfoot><tr>
 				<td> </td>			
 				<td> </td>			
@@ -3426,16 +3512,16 @@ class C_Index extends CI_Controller
 						foreach ($explode as $key3 => $valkode) {
 							foreach ($explode2 as $key4 => $valjml) {
 								if ($valkode == $key['kdpekerjaan'] && $key3 == $key4) {
-									$total += $valjml;
+									$key['color'] == 'blue' ? $total - $valjml : $total += $valjml;
 								}
 							}
 						}
 						if ($key['pekerjaan'] == 'STAFF') {
-							$b += $val['jml_kebutuhan_staff'];
+							$key['color'] == 'blue' ? $b - $val['jml_kebutuhan_staff'] : $b += $val['jml_kebutuhan_staff'];
 						}
 					}
-					$sum = $total + $b;
-					echo '<td>' . $sum . '</td>';
+					$sum = $total + $b + $val['jml_kebutuhan_umum'];
+					echo '<td>' . round($sum) . '</td>';
 				}
 				echo '</tr></tfoot></table>
 				</div>';
