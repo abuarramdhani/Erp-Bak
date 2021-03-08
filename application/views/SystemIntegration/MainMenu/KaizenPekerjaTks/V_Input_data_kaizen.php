@@ -74,7 +74,7 @@
           <div class="form-group col-md-12">
             <div class="col-md-6">
               <label for="inputFile">Lampiran Kaizen (jpg/pdf) yang sudah diotorisasi atasan</label>
-              <input name="inputFile" type="file" id="inputFile" class="form-control-file " required>
+              <input name="file" type="file" id="inputFile" class="form-control-file " required>
             </div>
           </div>
         </div>

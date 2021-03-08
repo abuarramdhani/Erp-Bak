@@ -3,12 +3,12 @@
     margin-bottom: 5px;
   }
 
-  #tableTotalPekerjaPeriodeSatuTahun_length {
+  #tableTotalKaizenPeriodeSatuTahun_length {
     float: left;
     width: 200px;
   }
 
-  #tableTotalPekerjaPeriodeSatuTahun_filter {
+  #tableTotalKaizenPeriodeSatuTahun_filter {
     float: right;
     width: 500px;
   }
@@ -17,7 +17,7 @@
   <div class="panel panel-primary">
     <div class="panel-heading">
       <div style="display: flex; justify-content: flex-end;">
-        <h1>Rekap Data Kaizen - Total Pekerja - Periode 1 Tahun</h1>
+        <h1>Rekap Data Kaizen - Total Kaizen - Periode 1 Tahun</h1>
       </div>
     </div>
     <div class="panel-body col-12">
@@ -34,7 +34,7 @@
       <div>
         <button class="btn btn-success btn-md" id="excelButton">EXCEL</button>
       </div>
-      <table id="tableTotalPekerjaPeriodeSatuTahun" class="table table-bordered table-striped" cellspacing="0" width="100%">
+      <table id="tableTotalKaizenPeriodeSatuTahun" class="table table-bordered table-striped" cellspacing="0" width="100%">
         <thead class="bg-primary">
           <tr>
             <th style="width: 5%;" class="bg-primary" rowspan="2">No</th>
@@ -112,7 +112,7 @@
   let mytable = null;
   $(document).ready(() => {
     const loading = baseurl + "assets/img/gif/loadingquick.gif";
-    let tabelku = $("#tableTotalPekerjaPeriodeSatuTahun").DataTable({
+    let tabelku = $("#tableTotalKaizenPeriodeSatuTahun").DataTable({
       dom: 'lfrtip',
       scrollCollapse: true,
       scrollX: true,
@@ -120,7 +120,7 @@
         leftColumns: 3
       },
       ajax: {
-        url: baseurl + "SystemIntegration/KaizenPekerjaTks/TeamKaizen/get_data_kaizen_total_pekerja_satu_tahun",
+        url: baseurl + "SystemIntegration/KaizenPekerjaTks/TeamKaizen/get_data_kaizen_total_kaizen_satu_tahun",
         type: "GET",
         dataType: "JSON",
       },
@@ -265,7 +265,7 @@
       } else {
         $.ajax({
           method: 'GET',
-          url: baseurl + 'SystemIntegration/KaizenPekerjaTks/TeamKaizen/get_data_kaizen_total_pekerja_satu_tahun',
+          url: baseurl + 'SystemIntegration/KaizenPekerjaTks/TeamKaizen/get_data_kaizen_total_kaizen_satu_tahun',
           beforeSend: function() {
             swal.fire({
               html: "<div><img style='width: 220px; height:auto;'src='" + loading + "'><br> <p>Sedang Mencari....</p></div>",
@@ -292,15 +292,15 @@
       let gal = tag.getFullYear() + "-" + (tag.getMonth() + 1) + "-" + tag.getDate();
       $('<table>')
         .append(
-          $("#tableTotalPekerjaPeriodeSatuTahun thead").html()
+          $("#tableTotalKaizenPeriodeSatuTahun thead").html()
         )
         .append(
-          $("#tableTotalPekerjaPeriodeSatuTahun").DataTable().$('tr').clone()
+          $("#tableTotalKaizenPeriodeSatuTahun").DataTable().$('tr').clone()
         )
         .table2excel({
           exclude: "",
           name: "casting",
-          filename: `Rekap Data Kaizen Total Pekerja periode 1 Tahun ${gal}.xls`
+          filename: `Rekap Data Kaizen Total Kaizen periode 1 Tahun ${gal}.xls`
         });
     });
   })

@@ -2620,6 +2620,10 @@ $route['SystemIntegration/KaizenAkt/(:any)'] = 'SystemIntegration/MainMenu/Akunt
 $route['SystemIntegration/KaizenAkt/(:any)/(:any)'] = 'SystemIntegration/MainMenu/Akuntansi/C_KaizenAkuntansi/$1/$2';
 
 //kaizen tuksono
+$route['SystemIntegration/KaizenPekerjaTks/TeamKaizen'] = 'SystemIntegration/MainMenu/KaizenTeamTks/C_KaizenTimTks';
+$route['SystemIntegration/KaizenPekerjaTks/TeamKaizen/(:any)'] = 'SystemIntegration/MainMenu/KaizenTeamTks/C_KaizenTimTks/$1';
+$route['SystemIntegration/KaizenPekerjaTks/TeamKaizen/(:any)/(:any)'] = 'SystemIntegration/MainMenu/KaizenTeamTks/C_KaizenTimTks/$1/$2';
+
 $route['SystemIntegration/KaizenPekerjaTks/input'] = 'SystemIntegration/MainMenu/KaizenPekerjaTks/C_KaizenPekerjaTks';
 $route['SystemIntegration/KaizenPekerjaTks/rekap'] = 'SystemIntegration/MainMenu/KaizenPekerjaTks/C_KaizenPekerjaTks/rekapDataKaizen';
 $route['SystemIntegration/KaizenPekerjaTks/input/(:any)'] = 'SystemIntegration/MainMenu/KaizenPekerjaTks/C_KaizenPekerjaTks/$1';
@@ -2627,7 +2631,6 @@ $route['SystemIntegration/KaizenPekerjaTks/input/(:any)/(:any)'] = 'SystemIntegr
 $route['SystemIntegration/KaizenPekerjaTks/rekap/(:any)'] = 'SystemIntegration/MainMenu/KaizenPekerjaTks/C_KaizenPekerjaTks/$1';
 $route['SystemIntegration/KaizenPekerjaTks/rekap/(:any)/(:any)'] = 'SystemIntegration/MainMenu/KaizenPekerjaTks/C_KaizenPekerjaTks/$1/$2';
 $route['assets/upload/uploadKaizenTks/(:any)'] = 'assets/upload/uploadKaizenTks/$1';
-
 
 //---------------------------------------------------- Upah Pekerja Harian Lepas----------------------------------//
 $route['UpahHlCm'] 		= 'UpahHlCm/C_UpahPHL';

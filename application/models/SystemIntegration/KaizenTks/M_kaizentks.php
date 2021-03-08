@@ -47,19 +47,32 @@ class M_kaizentks extends CI_Model
   function getEmployees($search)
   {
     $searchUp = strtoupper($search);
-    $query = $this->erp->select("
-    trim(eea.employee_code) as noind, 
+
+    $query = $this->erp->query("select trim(eea.employee_code) as noind, 
     trim(employee_name) as name, 
     trim(ees.section_code) as section_code, 
     trim(ees.unit_name) as unit_name, 
     trim(ees.section_name) as section_name
-    ")
-      ->from("er.er_employee_all eea ")
-      ->join("er.er_section ees", "ees.section_code = eea.section_code");
-    if ($search != "") {
-      $query->like("eea.employee_code", "$searchUp");
-    }
-    return $query->get()->result_array();
+    from er.er_employee_all eea 
+    	inner join er.er_section ees on ees.section_code = eea.section_code
+   where eea.section_code in ('325020100',
+	'320010100',
+	'329010103',
+	'329030100',
+	'330100701',
+	'330101103',
+	'325010805',
+	'322010101',
+	'321010300',
+	'328010305',
+	'323020101',
+	'323010100',
+	'323030102',
+	'331010103',
+	'326010100',
+	'324010101') and to_char(eea.resign_date, 'YYYY-MM') >= to_char(current_date,'YYYY-MM')  and eea.employee_code like '%$searchUp%'");
+
+    return $query->result_array();
   }
 
   // function getAllKaizen()
@@ -112,7 +125,7 @@ class M_kaizentks extends CI_Model
     $this->name = $post["employeeName"];
     $this->kaizen_title = $post["kaizenTitle"];
     $this->kaizen_category = $post["slcKaizenCategory"];
-    $this->kaizen_file = $this->uploadImage();
+    $this->kaizen_file = $this->uploadImage($post["slcNoind"], $randomId);
     $this->created_by = $user;
     $this->section = $post["employeeSection"];
     $this->section_code = $post["sectionCode"];
@@ -140,67 +153,94 @@ class M_kaizentks extends CI_Model
     return $this->personalia->insert($this->_tableLog, $dataLog);
   }
 
-  // function updateKaizen()
-  // {
-  //   $post = $this->input->post();
-  //   $this->kaizen_id = $post["id"];
-  //   $this->no_ind = $post["no_ind"];
-  //   $this->name = $post["name"];
-  //   $this->kaizen_title = $post["title"];
-  //   $this->kaizen_category = $post["category"];
-
-  //   if (!empty($_FILES['inputFile']["kaizen_file"])) {
-  //     $this->kaizen_file = $this->uploadImage();
-  //   } else {
-  //     $this->kaizen_file = $post['old_image'];
-  //   }
-
-  //   $this->created_by = $post["user"];
-  //   $this->section = $post["section"];
-  //   $this->unit = $post["unit"];
-
-  //   return $this->erp->update($this->_tableKaizen, $this, array('kaizen_id' => $post['id']));
-  // }
-
-  //gae update i ngene uduk ? ntah aku ra apal syntax e
-  function updateKaizen($data, $id)
+  function updateKaizen($user)
   {
-    $this->erp->where('kaizen_id', $id);
-    $this->erp->update($this->_tableKaizen, $data);
+    $post = $this->input->post();
+    $id = $post['id'];
+    $kaizenTitle = $post['title'];
+    $kaizenCategory = $post['kategori'];
+    $old_file = $post['old_file'];
+
+    if (!empty($_FILES['file'])) {
+      unlink(FCPATH . "assets/upload/uploadKaizenTks/" . $old_file);
+      $kaizenFile = $this->uploadImage($user, $id);
+    } else {
+      $kaizenFile = $post['old_file'];
+    }
+    if (!empty($id)) {
+      $data = array(
+        'updated_at' => date('Y-m-d H:i:s'),
+        'updated_by' => $user,
+        'kaizen_title' => $kaizenTitle,
+        'kaizen_category' => $kaizenCategory,
+        'kaizen_file' => $kaizenFile
+      );
+
+      $this->erp->where('kaizen_id', $id);
+      $this->erp->update($this->_tableKaizen, $data);
+
+      echo json_encode(array(
+        "statusCode" => 200
+      ));
+    } else {
+      echo json_encode(array(
+        "statusCode" => 201
+      ));
+    }
   }
 
   function deleteKaizen($id, $file)
   {
-    // print("<pre>");
-    // print_r($file);
-    // die;
     $this->load->helper('file');
     if (base_url("assets/upload/uploadKaizenTks/" . $file)) {
       unlink(FCPATH . "assets/upload/uploadKaizenTks/" . $file);
-      echo FCPATH . "assets/upload/uploadKaizenTks/" . $file;
-      // die;
+      echo json_encode(array(
+        "statusCode" => 200
+      ));
     } else {
-      echo "hemmm";
-      // die;
+      echo "gagal menghapus";
     }
     $this->erp->delete($this->_tableKaizen, array("kaizen_id" => $id));
   }
 
-  function uploadImage()
+  function uploadImage($user, $id)
   {
-
     $config['upload_path'] = './assets/upload/uploadKaizenTks/';
-    $config['allowed_types'] = 'jpg|png|pdf';
-    $config['file_name']  = $this->kaizen_id;
+    $config['allowed_types'] = 'jpg|png|pdf|jpeg';
+    $config['file_name']  = $user . "_" . $id;
     $config['overwrite'] = true;
     $config['max_size'] = 3048;
-
     $this->load->library('upload', $config);
 
-    if ($config['allowed_types'] && $this->upload->do_upload('inputFile')) {
+    if ($config['allowed_types'] && $this->upload->do_upload('file')) {
       return $this->upload->data("file_name");
     } else {
       return "gagal";
     }
+  }
+
+  function tgl_indo($tanggal)
+  {
+    $bulan = array(
+      1 =>   'Januari',
+      'Februari',
+      'Maret',
+      'April',
+      'Mei',
+      'Juni',
+      'Juli',
+      'Agustus',
+      'September',
+      'Oktober',
+      'November',
+      'Desember'
+    );
+    $pecahkan = explode('-', $tanggal);
+
+    // variabel pecahkan 0 = tanggal
+    // variabel pecahkan 1 = bulan
+    // variabel pecahkan 2 = tahun
+
+    return $pecahkan[2] . ' ' . $bulan[(int)$pecahkan[1]] . ' ' . $pecahkan[0];
   }
 }

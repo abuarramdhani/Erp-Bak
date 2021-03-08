@@ -159,23 +159,7 @@ class C_KaizenPekerjaTks extends CI_Controller
   function updateKaizenKu()
   {
     $user = $this->session->user;
-    $get = $this->input->get();
-    $id = $get['id'];
-    $data = array(
-      'updated_at' => date('Y-m-d H:i:s'),
-      'updated_by' => $user,
-      'kaizen_title' => $get['judul'],
-      'kaizen_category' => $get['kategori'],
-    );
-    // if (!empty($_FILES["inputFile"]["name"])) {
-    //   $this->image = $this->_uploadImage();
-    // } else {
-    //   $this->image = $post["old_image"];
-    // }
-    // print("<pre>");
-    // print_r($id);
-    // die;
-    $this->M_kaizentks->updateKaizen($data, $id);
+    $this->M_kaizentks->updateKaizen($user);
   }
 
   /**
@@ -211,22 +195,25 @@ class C_KaizenPekerjaTks extends CI_Controller
   {
     $noind = $this->input->get('noind');
     $data = $this->M_kaizentks->getKaizenByNoind($noind);
+    $newArr = array();
+    foreach ($data as $v) {
+      $v['created_at'] =  $this->M_kaizentks->tgl_indo(date('Y-m-d', strtotime($v['created_at'])));
+      (!empty($v['updated_at'])) ? $v['updated_at'] =  $this->M_kaizentks->tgl_indo(date('Y-m-d', strtotime($v['updated_at'])))
+        : "";
+      $newArr[] = $v;
+    }
 
     echo json_encode(array(
       'success' => true,
-      'data' => $data
+      'data' => $newArr
     ));
   }
 
   public function deleteKaizenKu()
   {
-    $get = $this->input->get();
+    $get = $this->input->post();
     $id = $get['id'];
     $file = $get['kaizen_file'];
-    // $url = base_url('assets/upload/uploadKaizenTks/');
-    // print("<pre>");
-    // print_r($url);
-    // die;
     $this->M_kaizentks->deleteKaizen($id, $file);
   }
 }
