@@ -314,6 +314,7 @@ public function EditObservasi($id)
     $data['lihat_tabelElemen_Edit'] = $this->M_gentskk->getAllElementsWhenEdit($id);
     $data['lihat_hasilObservasi_elemen'] = $this->M_gentskk->getAllObservation($id);
     $data['lihat_hasilObservasi'] = $this->M_gentskk->getAllObservation($id);
+		$data['product'] = $this->M_gentskk->getTipeProduk('');
 
     $hitungData = count($data['lihat_hasilObservasi']);
     if (count($data['lihat_hasilObservasi']) < 5){
@@ -477,17 +478,31 @@ public function saveObservation(){
         $nama_part 	          = $this->input->post('txtNamaPartT');
     }
     //EQUIPMENT
-    $jenis_inputEquipment  = $this->input->post('equipmenTerdaftar');
+		$jenis_inputEquipment  = $this->input->post('equipmenTerdaftar');
+		$jenis_inputEquipmentMesin  = $this->input->post('equipmenTerdaftarMesin');
 		// echo $jenis_inputEquipment; die;
     $no_mesin	      = $this->input->post('txtNoMesin[]');
-    $no_mesin         = implode("; ", $no_mesin);
+		if ($no_mesin == null) {
+				$no_mesin	      = $this->input->post('txtNoMesinT');
+		}else{
+				$no_mesin = implode("; ", $no_mesin);
+		}
     // echo "<pre>";echo $no_mesin;
     $jenis_mesin      = $this->input->post('txtJenisMesin[]');
-    $jm = implode("; ", $jenis_mesin);
-    $jenis_mesin = trim(preg_replace('/\s\s+/', ' ', $jm));
+		if (empty($jenis_mesin[0])) {
+				$jenis_mesin = $this->input->post('txtJenisMesinT');
+		}else{
+				$jenis_mesin = implode("; ", $jenis_mesin);
+		}
+
+    // $jenis_mesin = trim(preg_replace('/\s\s+/', ' ', $jm));
     $resource         = $this->input->post('txtResource[]');
-    $rsc = implode("; ", $resource);
-    $resource = trim(preg_replace('/\s\s+/', ' ', $rsc));
+		if (empty($resource[0])) {
+				$resource = $this->input->post('txtResourceT');
+		}else{
+				$resource = implode("; ", $resource);
+		}
+    // $resource = trim(preg_replace('/\s\s+/', ' ', $rsc));
     $line             = $this->input->post('txtLine');
     $alat_bantu	      = $this->input->post('txtAlatBantu[]');
     if ($alat_bantu == null) {
@@ -545,7 +560,7 @@ public function saveObservation(){
                   $proses,$kode_proses,$jenis_mesin,$proses_ke,$dari,$tanggal,$qty,$nm,
                   $nilai_distribusi,$takt_time,$no_mesin,$resource,$line,$alat_bantu,$tools,
                   $jml_operator,$dr_operator,$seksi_pembuat,$jenis_inputPart,$jenis_inputEquipment,
-                  $sang_pembuat,$creationDate);
+                  $sang_pembuat,$creationDate, $jenis_inputEquipmentMesin);
 
     // echo"<pre>";print_r($saveHeader);
     // die;
@@ -1625,10 +1640,10 @@ public function exportExcel($idnya){
                         if ($i == 0) {
                             $border = 'left,top';
                             $borderstyle = 'thick';
-                        }elseif ($i == 8 || $i == 185 || $i == 229 || $i == 254 || $i == 279 || $i == 229 || $i == 306 || $i == 363) {
+                        }elseif ($i == 8 || $i == 185 || $i == 319 || $i == 400 || $i == 449 || $i == 490 || $i == 306 || $i == 600) {
                             $border = 'right,top';
                             $borderstyle = 'thick';
-                        } elseif ($i < 363) {
+                        } elseif ($i < 600) {
                             $border = 'top';
                             $borderstyle = 'thick';
                         } else {
@@ -1638,10 +1653,10 @@ public function exportExcel($idnya){
                         if ($i == 0) {
                             $border='left';
                             $borderstyle='thick';
-                        } elseif ($i == 8 || $i == 185 || $i == 229 || $i == 254 || $i == 279 || $i == 229 || $i == 306 || $i == 363) {
+                        } elseif ($i == 8 || $i == 185 || $i == 319 || $i == 400 || $i == 449 || $i == 490 || $i == 306 || $i == 600) {
                             $border='right';
                             $borderstyle='thick';
-                        } elseif ($i >= 186 && $i < 306) {
+                        } elseif ($i >= 186 && $i < 490) {
                             $border='top';
                             $borderstyle='thin';
                         } else {
@@ -1651,10 +1666,10 @@ public function exportExcel($idnya){
                         if ($i == 0) {
                             $border = 'left';
                             $borderstyle = 'thick';
-                        } elseif ($i == 8 || $i == 185 || $i == 229 || $i == 254 || $i == 279 || $i == 229 || $i == 306 || $i == 363) {
+                        } elseif ($i == 8 || $i == 185 || $i == 319 || $i == 400 || $i == 449 || $i == 490 || $i == 306 || $i == 600) {
                             $border='right';
                             $borderstyle='thick';
-                        } elseif ($i >= 307 && $i < 363) {
+                        } elseif ($i >= 307 && $i < 490) {
                                 $border='top';
                                 $borderstyle='thin';
                         } else {
@@ -1664,13 +1679,13 @@ public function exportExcel($idnya){
                         if ($i == 0) {
                             $border='left';
                             $borderstyle='thick';
-                        } elseif ($i == 8 || $i == 185 || $i == 229 || $i == 254 || $i == 279 || $i == 229 || $i == 306 || $i == 363) {
+                        } elseif ($i == 8 || $i == 185 || $i == 319 || $i == 400 || $i == 449 || $i == 490 || $i == 306 || $i == 600) {
                             $border='right';
                             $borderstyle='thick';
                         } elseif ($i >= 9 && $i < 185) {
                             $border='top';
                             $borderstyle='thin';
-                        } elseif ($i >= 186 && $i < 306) {
+                        } elseif ($i >= 186 && $i < 490) {
                             $border='top,bottom';
                             $borderstyle='thin';
                         } else {
@@ -1680,10 +1695,10 @@ public function exportExcel($idnya){
                         if ($i == 0) {
                             $border='left';
                             $borderstyle='thick';
-                        } elseif ($i == 8 || $i == 185 || $i == 229 || $i == 254 || $i == 279 || $i == 229 || $i == 306 || $i == 363) {
+                        } elseif ($i == 8 || $i == 185 || $i == 319 || $i == 400 || $i == 449 || $i == 490 || $i == 306 || $i == 600) {
                             $border='right';
                             $borderstyle='thick';
-                        } elseif ($i >= 307 && $i < 363) {
+                        } elseif ($i >= 307 && $i < 490) {
                             $border='top';
                             $borderstyle='thin';
                         } else {
@@ -1693,7 +1708,7 @@ public function exportExcel($idnya){
                         if ($i == 0) {
                             $border='left';
                             $borderstyle='thick';
-                        } elseif ($i == 8 || $i == 185 || $i == 229 || $i == 254 || $i == 279 || $i == 229 || $i == 306 || $i == 363) {
+                        } elseif ($i == 8 || $i == 185 || $i == 319 || $i == 400 || $i == 449 || $i == 490 || $i == 306 || $i == 600) {
                             $border='right';
                             $borderstyle='thick';
                         } else {
@@ -1703,13 +1718,13 @@ public function exportExcel($idnya){
                         if ($i == 0) {
                             $border='left';
                             $borderstyle='thick';
-                        } elseif ($i == 8 || $i == 185 || $i == 229 || $i == 254 || $i == 279 || $i == 229 || $i == 306 || $i == 363) {
+                        } elseif ($i == 8 || $i == 185 || $i == 319 || $i == 400 || $i == 449 || $i == 490 || $i == 306 || $i == 600) {
                             $border='right';
                             $borderstyle='thick';
-                        } elseif ($i >= 186 && $i < 306) {
+                        } elseif ($i >= 186 && $i < 490) {
                             $border='top,bottom';
                             $borderstyle='thin';
-                        } elseif ($i >= 307 && $i < 363) {
+                        } elseif ($i >= 307 && $i < 490) {
                             $border='top';
                             $borderstyle='thin';
                         } else {
@@ -1719,7 +1734,7 @@ public function exportExcel($idnya){
                         if ($i == 0) {
                             $border='left';
                             $borderstyle='thick';
-                        } elseif ($i == 8 || $i == 185 || $i == 229 || $i == 254 || $i == 279 || $i == 229 || $i == 306 || $i == 363) {
+                        } elseif ($i == 8 || $i == 185 || $i == 319 || $i == 400 || $i == 449 || $i == 490 || $i == 306 || $i == 600) {
                             $border='right';
                             $borderstyle='thick';
                         } else {
@@ -1729,14 +1744,14 @@ public function exportExcel($idnya){
                         if ($i == 0) {
                             $border='left';
                             $borderstyle='thick';
-                        } elseif ($i == 8 || $i == 185 || $i == 229 || $i == 254 || $i == 279 || $i == 229 || $i == 306 || $i == 363) {
+                        } elseif ($i == 8 || $i == 185 || $i == 319 || $i == 400 || $i == 449 || $i == 490 || $i == 306 || $i == 600) {
                             $border='right';
                             $borderstyle='thick';
                         } else {
 
                         }
                     } elseif ($j == 9) {
-                        if ($i > 363) {
+                        if ($i > 600) {
                             $border='bottom';
                             $borderstyle='thick';
                         } elseif ($i == 12 || $i == 13) {
@@ -1824,7 +1839,7 @@ public function exportExcel($idnya){
                             $valign = 'center';
                             $halign = 'center';
                             $fill = '#fcba03';
-                        }elseif ($i == 186 || $i == 230 || $i == 255 || $i == 280 || $i == 307) {
+                        }elseif ($i == 186 || $i == 320 || $i == 401 || $i == 450 || $i == 491) {
                             $fontsize = 7;
                             // $fontstyle = '';
                             $valign = 'center';
@@ -1848,7 +1863,7 @@ public function exportExcel($idnya){
                             $fontstyle = 'bold';
                             $valign = 'center';
                             $halign = 'left';
-                        }elseif ($i == 186 || $i == 230 || $i == 255 || $i == 280) {
+                        }elseif ($i == 186 || $i == 320 || $i == 401 || $i == 450) {
                             $fontsize = 8;
                             $fontstyle = 'bold';
                             $valign = 'center';
@@ -1886,7 +1901,7 @@ public function exportExcel($idnya){
                             $fontstyle = 'bold';
                             $valign = 'center';
                             $halign = 'center';
-                        } elseif ($i == 186 || $i == 230 || $i == 255 || $i == 280) {
+                        } elseif ($i == 186 || $i == 320 || $i == 401 || $i == 450) {
                             $fontsize = 7;
                             // $fontstyle = '';
                             $valign = 'center';
@@ -1900,7 +1915,7 @@ public function exportExcel($idnya){
                             // $fontstyle = '';
                             $valign = 'center';
                             $halign = 'left';
-                        }elseif ($i == 186 || $i == 230 || $i == 255 || $i == 280) {
+                        }elseif ($i == 186 || $i == 320 || $i == 401 || $i == 450) {
                             $fontsize = 8;
                             $fontstyle = 'bold';
                             $valign = 'center';
@@ -1930,7 +1945,7 @@ public function exportExcel($idnya){
                             // $fontstyle = '';
                             $valign = 'center';
                             $halign = 'left';
-                        } elseif ($i == 186 || $i == 230 || $i == 255 || $i == 280) {
+                        } elseif ($i == 186 || $i == 320 || $i == 401 || $i == 450) {
                             $fontsize = 7;
                             // $fontstyle = '';
                             $valign = 'center';
@@ -1954,7 +1969,7 @@ public function exportExcel($idnya){
 
                         }
                     } elseif ($j == 7) {
-                        if ($i == 186 || $i == 230 || $i == 255 || $i == 280) {
+                        if ($i == 186 || $i == 320 || $i == 401 || $i == 450) {
                             $fontsize = 8;
                             $fontstyle = 'bold';
                             $valign = 'center';
@@ -2778,58 +2793,58 @@ public function exportExcel($idnya){
         // DATA ROW 1
             $rows[0][9] = $seksi_pembuat; // DATA SEKSI PEMBUAT
             $rows[0][186] = 'Tipe';
-            $rows[0][230] = 'Seksi';
-            $rows[0][255] = 'Jml. Mesin';
-            $rows[0][280] = 'Proses ke .. dari ..';
-            $rows[0][307] = 'Doc. No.';
-            $rows[0][322] = ' : ';
+            $rows[0][320] = 'Seksi';
+            $rows[0][401] = 'Jml. Mesin';
+            $rows[0][450] = 'Proses ke .. dari ..';
+            $rows[0][491] = 'Doc. No.';
+            $rows[0][522] = ' : ';
             $rows[0][324] = ''; //DATA DOC NO
         // DATA ROW 2
             $rows[1][2] = 'CV. KARYA HIDUP SENTOSA';
             $rows[1][186] = $type; //DATA TIPE
-            $rows[1][230] = $seksi; //DATA SEKSI
-            $rows[1][255] = sizeof($no_mesin); //DATA JML MESIN
-            $rows[1][280] = $jml_operator." dari ".$dr_operator; //DATA Proses ke .. dari ..
+            $rows[1][320] = $seksi; //DATA SEKSI
+            $rows[1][401] = sizeof($no_mesin); //DATA JML MESIN
+            $rows[1][450] = $jml_operator." dari ".$dr_operator; //DATA Proses ke .. dari ..
 
         // DATA ROW 3
             $rows[2][2] = 'Jl. Magelang No. 144 Yogyakarta 55241';
-            $rows[2][307] = 'Rev. No.';
-            $rows[2][322] = ' : ';
+            $rows[2][491] = 'Rev. No.';
+            $rows[2][522] = ' : ';
             $rows[2][324] = ''; //DATA Rev NO
 
         // DATA ROW 4
             $rows[3][9] = 'TABEL STANDAR KERJA KOMBINASI';
             $rows[3][186] = 'Nama Part';
-            $rows[3][230] = 'Line';
-            $rows[3][255] = 'No. Mesin';
-            $rows[3][280] = 'Qty/Proses';
+            $rows[3][320] = 'Line';
+            $rows[3][401] = 'No. Mesin';
+            $rows[3][450] = 'Qty/Proses';
 
         // DATA ROW 5
             $rows[4][2] = 'Yogyakarta';
             $rows[4][186] = $nama_part; //DATA Nama Part
-            $rows[4][230] = $line; //DATA Line
-            $rows[4][255] = $nm; //DATA No. Mesin
-            $rows[4][280] = $qty; //DATA Qty/Proses
-            $rows[4][307] = 'Rev. Date';
-            $rows[4][322] = ' : ';
+            $rows[4][320] = $line; //DATA Line
+            $rows[4][401] = $nm; //DATA No. Mesin
+            $rows[4][450] = $qty; //DATA Qty/Proses
+            $rows[4][491] = 'Rev. Date';
+            $rows[4][522] = ' : ';
             $rows[4][324] = ''; //DATA Rev Date
 
         // DATA ROW 6
         // DATA ROW 7
             $rows[6][2] = 'DEPARTEMEN '.$dept_pembuat; //DATA DEPARTEMEN PEMBUAT
             $rows[6][186] = 'Kode Part';
-            $rows[6][230] = 'Takt Time';
-            $rows[6][255] = 'Alat Bantu';
-            $rows[6][280] = 'Tgl Observasi';
-            $rows[6][307] = 'Page';
-            $rows[6][322] = ' : ';
+            $rows[6][320] = 'Takt Time';
+            $rows[6][401] = 'Alat Bantu';
+            $rows[6][450] = 'Tgl Observasi';
+            $rows[6][491] = 'Page';
+            $rows[6][522] = ' : ';
             $rows[6][324] = ''; //DATA Page
         // DATA ROW 8
             $rows[7][2] = '';
             $rows[7][186] = $kode_part; //DATA Kode Part
-            $rows[7][230] = $takt_time.' Detik'; //DATA Takt Time
-            $rows[7][255] = $alat_bantu; //DATA Alat Bantu
-            $rows[7][280] = $tanggal; //DATA Tgl Observasi
+            $rows[7][320] = $takt_time.' Detik'; //DATA Takt Time
+            $rows[7][401] = $alat_bantu; //DATA Alat Bantu
+            $rows[7][450] = $tanggal; //DATA Tgl Observasi
 
         // DATA ROW 9
         // DATA ROW 10
@@ -3007,7 +3022,7 @@ public function exportExcel($idnya){
             $rows[$rowJumlahElemen+5][183] = ')';
             $rows[$rowJumlahElemen+5][206] = ' = ';
             $rows[$rowJumlahElemen+5][211] = $jumlah_hasil_irregular; //DATA HASIL 3
-            $rows[$rowJumlahElemen+5][230] = 'Detik'; //rev3
+            $rows[$rowJumlahElemen+5][320] = 'Detik'; //rev3
             $rows[$rowJumlahElemen+5][294] = ' = ';
             $rows[$rowJumlahElemen+5][299] = ($waktu_satu_shift*$qty)/$cycle_time; //DATA HASIL 4
             $rows[$rowJumlahElemen+5][319] = 'Pcs';
@@ -3428,63 +3443,63 @@ public function exportExcel($idnya){
             $writer->markMergedCell($sheet1, $start_row=1, $start_col=0, $end_row=9, $end_col=1); //LOGO QUICK
             $writer->markMergedCell($sheet1, $start_row=1, $start_col=2, $end_row=1, $end_col=8); //BLANK
             $writer->markMergedCell($sheet1, $start_row=1, $start_col=9, $end_row=3, $end_col=185); //SEKSI GEDE
-            $writer->markMergedCell($sheet1, $start_row=1, $start_col=186, $end_row=1, $end_col=229); //TIPE
-            $writer->markMergedCell($sheet1, $start_row=1, $start_col=230, $end_row=1, $end_col=254); //SEKSI
-            $writer->markMergedCell($sheet1, $start_row=1, $start_col=255, $end_row=1, $end_col=279); //JML MESIN
-            $writer->markMergedCell($sheet1, $start_row=1, $start_col=280, $end_row=1, $end_col=306); //PROSES KE
-            $writer->markMergedCell($sheet1, $start_row=1, $start_col=307, $end_row=2, $end_col=321); //DOC NO
-            $writer->markMergedCell($sheet1, $start_row=1, $start_col=322, $end_row=2, $end_col=323); //TITIK 2
-            $writer->markMergedCell($sheet1, $start_row=1, $start_col=324, $end_row=2, $end_col=363); //BLANK
+            $writer->markMergedCell($sheet1, $start_row=1, $start_col=186, $end_row=1, $end_col=319); //TIPE
+            $writer->markMergedCell($sheet1, $start_row=1, $start_col=320, $end_row=1, $end_col=400); //SEKSI
+            $writer->markMergedCell($sheet1, $start_row=1, $start_col=401, $end_row=1, $end_col=449); //JML MESIN
+            $writer->markMergedCell($sheet1, $start_row=1, $start_col=450, $end_row=1, $end_col=490); //PROSES KE
+            $writer->markMergedCell($sheet1, $start_row=1, $start_col=491, $end_row=2, $end_col=521); //DOC NO
+            $writer->markMergedCell($sheet1, $start_row=1, $start_col=522, $end_row=2, $end_col=523); //TITIK 2
+            $writer->markMergedCell($sheet1, $start_row=1, $start_col=524, $end_row=2, $end_col=600); //BLANK
 
         //ROW 2
             $writer->markMergedCell($sheet1, $start_row=2, $start_col=2, $end_row=2, $end_col=8); //CV KHS
-            $writer->markMergedCell($sheet1, $start_row=2, $start_col=186, $end_row=3, $end_col=229); //DATA TIPE
-            $writer->markMergedCell($sheet1, $start_row=2, $start_col=230, $end_row=3, $end_col=254); //DATA SEKSI
-            $writer->markMergedCell($sheet1, $start_row=2, $start_col=255, $end_row=3, $end_col=279); //DATA JML MESIN
-            $writer->markMergedCell($sheet1, $start_row=2, $start_col=280, $end_row=3, $end_col=306); //DATA PROSES KE
+            $writer->markMergedCell($sheet1, $start_row=2, $start_col=186, $end_row=3, $end_col=319); //DATA TIPE
+            $writer->markMergedCell($sheet1, $start_row=2, $start_col=320, $end_row=3, $end_col=400); //DATA SEKSI
+            $writer->markMergedCell($sheet1, $start_row=2, $start_col=401, $end_row=3, $end_col=449); //DATA JML MESIN
+            $writer->markMergedCell($sheet1, $start_row=2, $start_col=450, $end_row=3, $end_col=490); //DATA PROSES KE
 
         //ROW 3
             $writer->markMergedCell($sheet1, $start_row=3, $start_col=2, $end_row=4, $end_col=8); //ALAMAT
-            $writer->markMergedCell($sheet1, $start_row=3, $start_col=307, $end_row=4, $end_col=321); //REV NO
-            $writer->markMergedCell($sheet1, $start_row=3, $start_col=322, $end_row=4, $end_col=323); //TITIK 2
-            $writer->markMergedCell($sheet1, $start_row=3, $start_col=324, $end_row=4, $end_col=363); //BLANK
+            $writer->markMergedCell($sheet1, $start_row=3, $start_col=491, $end_row=4, $end_col=521); //REV NO
+            $writer->markMergedCell($sheet1, $start_row=3, $start_col=522, $end_row=4, $end_col=523); //TITIK 2
+            $writer->markMergedCell($sheet1, $start_row=3, $start_col=524, $end_row=4, $end_col=600); //BLANK
 
         //ROW 4
             $writer->markMergedCell($sheet1, $start_row=4, $start_col=9, $end_row=9, $end_col=185); //TABEL STANDAR KERJA KOMBINASI
-            $writer->markMergedCell($sheet1, $start_row=4, $start_col=186, $end_row=4, $end_col=229); //NAMA PART
-            $writer->markMergedCell($sheet1, $start_row=4, $start_col=230, $end_row=4, $end_col=254); //LINE
-            $writer->markMergedCell($sheet1, $start_row=4, $start_col=255, $end_row=4, $end_col=279); //NO MESIN
-            $writer->markMergedCell($sheet1, $start_row=4, $start_col=280, $end_row=4, $end_col=306); //QTY/PROSES
+            $writer->markMergedCell($sheet1, $start_row=4, $start_col=186, $end_row=4, $end_col=319); //NAMA PART
+            $writer->markMergedCell($sheet1, $start_row=4, $start_col=320, $end_row=4, $end_col=400); //LINE
+            $writer->markMergedCell($sheet1, $start_row=4, $start_col=401, $end_row=4, $end_col=449); //NO MESIN
+            $writer->markMergedCell($sheet1, $start_row=4, $start_col=450, $end_row=4, $end_col=490); //QTY/PROSES
 
         //ROW 5
             $writer->markMergedCell($sheet1, $start_row=5, $start_col=2, $end_row=5, $end_col=8); //YOGYAKARTA
-            $writer->markMergedCell($sheet1, $start_row=5, $start_col=186, $end_row=6, $end_col=229); //DATA NAMA PART
-            $writer->markMergedCell($sheet1, $start_row=5, $start_col=230, $end_row=6, $end_col=254); //DATA LINE
-            $writer->markMergedCell($sheet1, $start_row=5, $start_col=255, $end_row=6, $end_col=279); //DATA NO MESIN
-            $writer->markMergedCell($sheet1, $start_row=5, $start_col=280, $end_row=6, $end_col=306); //DATA QTY/PROSES
-            $writer->markMergedCell($sheet1, $start_row=5, $start_col=307, $end_row=6, $end_col=321); //REV DATE
-            $writer->markMergedCell($sheet1, $start_row=5, $start_col=322, $end_row=6, $end_col=323); //TITIK 2
-            $writer->markMergedCell($sheet1, $start_row=5, $start_col=324, $end_row=6, $end_col=363); //BLANK
+            $writer->markMergedCell($sheet1, $start_row=5, $start_col=186, $end_row=6, $end_col=319); //DATA NAMA PART
+            $writer->markMergedCell($sheet1, $start_row=5, $start_col=320, $end_row=6, $end_col=400); //DATA LINE
+            $writer->markMergedCell($sheet1, $start_row=5, $start_col=401, $end_row=6, $end_col=449); //DATA NO MESIN
+            $writer->markMergedCell($sheet1, $start_row=5, $start_col=450, $end_row=6, $end_col=490); //DATA QTY/PROSES
+            $writer->markMergedCell($sheet1, $start_row=5, $start_col=491, $end_row=6, $end_col=521); //REV DATE
+            $writer->markMergedCell($sheet1, $start_row=5, $start_col=522, $end_row=6, $end_col=523); //TITIK 2
+            $writer->markMergedCell($sheet1, $start_row=5, $start_col=524, $end_row=6, $end_col=600); //BLANK
 
         //ROW 6
             $writer->markMergedCell($sheet1, $start_row=6, $start_col=2, $end_row=6, $end_col=8); //BLANK
 
         //ROW 7
             $writer->markMergedCell($sheet1, $start_row=7, $start_col=2, $end_row=7, $end_col=8); //DEPARTEMEN
-            $writer->markMergedCell($sheet1, $start_row=7, $start_col=186, $end_row=7, $end_col=229); //KODE PART
-            $writer->markMergedCell($sheet1, $start_row=7, $start_col=230, $end_row=7, $end_col=254); //TAKT TIME
-            $writer->markMergedCell($sheet1, $start_row=7, $start_col=255, $end_row=7, $end_col=279); //ALAT BANTU
-            $writer->markMergedCell($sheet1, $start_row=7, $start_col=280, $end_row=7, $end_col=306); //TGL OBSERVASI
-            $writer->markMergedCell($sheet1, $start_row=7, $start_col=307, $end_row=9, $end_col=321); //PAGE
-            $writer->markMergedCell($sheet1, $start_row=7, $start_col=322, $end_row=9, $end_col=323); //TITIK 2
-            $writer->markMergedCell($sheet1, $start_row=7, $start_col=324, $end_row=9, $end_col=363); //BLANK
+            $writer->markMergedCell($sheet1, $start_row=7, $start_col=186, $end_row=7, $end_col=319); //KODE PART
+            $writer->markMergedCell($sheet1, $start_row=7, $start_col=320, $end_row=7, $end_col=400); //TAKT TIME
+            $writer->markMergedCell($sheet1, $start_row=7, $start_col=401, $end_row=7, $end_col=449); //ALAT BANTU
+            $writer->markMergedCell($sheet1, $start_row=7, $start_col=450, $end_row=7, $end_col=490); //TGL OBSERVASI
+            $writer->markMergedCell($sheet1, $start_row=7, $start_col=491, $end_row=9, $end_col=521); //PAGE
+            $writer->markMergedCell($sheet1, $start_row=7, $start_col=522, $end_row=9, $end_col=523); //TITIK 2
+            $writer->markMergedCell($sheet1, $start_row=7, $start_col=524, $end_row=9, $end_col=600); //BLANK
 
         //ROW 8
             $writer->markMergedCell($sheet1, $start_row=8, $start_col=2, $end_row=9, $end_col=8); //BLANK
-            $writer->markMergedCell($sheet1, $start_row=8, $start_col=186, $end_row=9, $end_col=229); //DATA KODE PART
-            $writer->markMergedCell($sheet1, $start_row=8, $start_col=230, $end_row=9, $end_col=254); //DATA TAKT TIME
-            $writer->markMergedCell($sheet1, $start_row=8, $start_col=255, $end_row=9, $end_col=279); //DATA ALAT BANTU
-            $writer->markMergedCell($sheet1, $start_row=8, $start_col=280, $end_row=9, $end_col=306); //DATA TGL OBSERVASI
+            $writer->markMergedCell($sheet1, $start_row=8, $start_col=186, $end_row=9, $end_col=319); //DATA KODE PART
+            $writer->markMergedCell($sheet1, $start_row=8, $start_col=320, $end_row=9, $end_col=400); //DATA TAKT TIME
+            $writer->markMergedCell($sheet1, $start_row=8, $start_col=401, $end_row=9, $end_col=449); //DATA ALAT BANTU
+            $writer->markMergedCell($sheet1, $start_row=8, $start_col=450, $end_row=9, $end_col=490); //DATA TGL OBSERVASI
 
         //ROW 9
         //ROW 10

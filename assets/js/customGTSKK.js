@@ -51,6 +51,11 @@ function addRowObservation() {
   // 2-10-2020
   let no_gaes = $(`#tblObservasi tbody tr`).length;
   nomor = Number(no_gaes) + 1;
+
+  if (nomor >= 8) {
+    $('#tableGenerate').addClass('table-responsive-custom');
+  }
+
   // KOLOM 1
   var html = '<tr class="nomor_' + nomor + '"><td class="posisi">' + nomor + '</td>';
   console.log(nomor);
@@ -999,35 +1004,47 @@ $(document).ready(function() {
       $('.equipmenTdkTerdaftar').css("display", "none");
     }
   });
+
+  $('input[name="equipmenTerdaftarMesin"]').on('ifChanged', function() {
+    if ($('input[name=equipmenTerdaftarMesin]:checked').val() == "TidakTerdaftar") {
+      console.log("tdk");
+      $('.equipmenTerdaftarMesin').css("display", "none");
+      $('.equipmenTdkTerdaftarMesin').show("display", "");
+    } else if ($('input[name=equipmenTerdaftarMesin]:checked').val() == "Terdaftar") {
+      console.log("ya");
+      $('.equipmenTerdaftarMesin').css("display", "");
+      $('.equipmenTdkTerdaftarMesin').css("display", "none");
+    }
+  });
 });
 
 //SELECT TIPE PRODUK//
 $(document).ready(function() {
   $("#typeProduct").select2({
     // minimumInputLength: 3,
-    ajax: {
-      url: baseurl + 'GeneratorTSKK/C_GenTSKK/tipeProduk/',
-      dataType: 'json',
-      type: "GET",
-      data: function(params) {
-        var queryParameters = {
-          tp: params.term,
-          tipeProduk: $('#typeProduct').val()
-        }
-        return queryParameters;
-      },
-      processResults: function(tipeProduk) {
-        return {
-          results: $.map(tipeProduk, function(obj) {
-            return {
-              id: obj.DESCRIPTION,
-              text: obj.DESCRIPTION
-            };
-            // id:obj.KODE_DIGIT,
-          })
-        };
-      }
-    }
+    // ajax: {
+    //   url: baseurl + 'GeneratorTSKK/C_GenTSKK/tipeProduk/',
+    //   dataType: 'json',
+    //   type: "GET",
+    //   data: function(params) {
+    //     var queryParameters = {
+    //       tp: params.term,
+    //       tipeProduk: $('#typeProduct').val()
+    //     }
+    //     return queryParameters;
+    //   },
+    //   processResults: function(tipeProduk) {
+    //     return {
+    //       results: $.map(tipeProduk, function(obj) {
+    //         return {
+    //           id: obj.DESCRIPTION,
+    //           text: obj.DESCRIPTION
+    //         };
+    //         // id:obj.KODE_DIGIT,
+    //       })
+    //     };
+    //   }
+    // }
   });
 });
 
@@ -1053,7 +1070,7 @@ $(document).ready(function() {
             if (kode !== null) {
               return {
                 id: obj.SEGMENT1,
-                text: obj.SEGMENT1
+                text: obj.SEGMENT1 + ' ~ ' + obj.DESCRIPTION
               };
             } else {
               $('.namaPart').val('');
@@ -1079,44 +1096,49 @@ $(document).ready(function() {
 
 //AUTOFILL NAMA PART//
 $('#kodepart').change(function() {
-  var isiKodePart = $('.kodepart').val();
-
+  var isiKodePart = $('#kodepart').val();
+  console.log('hei');
   if (isiKodePart !== null) {
-    $.ajax({
-      type: "POST",
-      url: baseurl + 'GeneratorTSKK/C_GenTSKK/namaPart/',
-      // data: {kode :kode},
-      data: {
-        params: $(this).val()
-      },
-      dataType: "json",
-      beforeSend: function(e) {
-        if (e && e.overrideMimeType) {
-          e.overrideMimeType("application/json;charset=UTF-8");
-        }
-      },
-      success: function(response) {
-
-        if (response != null) {
-          // alert("Data Masuk")
-          var sblm = $('#namaPart').val();
-          console.log(sblm);
-          if (sblm == '') {
-            $("#namaPart").val(response[0].DESCRIPTION);
-          } else {
-            $("#namaPart").val(sblm + ' , ' + response[0].DESCRIPTION);
-          }
-          // console.log(response[0].DESCRIPTION);
-        } else {
-          alert("Data Tidak Ditemukan");
-        }
-      },
-      error: function(xhr) {
-        alert(xhr.responseText);
-      }
-    });
+    var isi = $('#kodepart').text().split(' ~ ');
+    let desc = isi[1];
+    $("#namaPart").val(desc);
+    // $('#namaPart').val();
+    // $.ajax({
+    //   type: "POST",
+    //   url: baseurl + 'GeneratorTSKK/C_GenTSKK/namaPart/',
+    //   // data: {kode :kode},
+    //   data: {
+    //     params: $(this).val()
+    //   },
+    //   dataType: "json",
+    //   beforeSend: function(e) {
+    //     if (e && e.overrideMimeType) {
+    //       e.overrideMimeType("application/json;charset=UTF-8");
+    //     }
+    //   },
+    //   success: function(response) {
+    //
+    //     if (response != null) {
+    //       // alert("Data Masuk")
+    //       var sblm = $('#namaPart').val();
+    //       console.log(sblm);
+    //       if (sblm == '') {
+    //         $("#namaPart").val(response[0].DESCRIPTION);
+    //       } else {
+    //         $("#namaPart").val(sblm + ' , ' + response[0].DESCRIPTION);
+    //       }
+    //       // console.log(response[0].DESCRIPTION);
+    //     } else {
+    //       alert("Data Tidak Ditemukan");
+    //     }
+    //   },
+    //   error: function(xhr) {
+    //     alert(xhr.responseText);
+    //   }
+    // });
   } else {
-    $('.namaPart').val('');
+    $('#namaPart').val('');
+    $('#kodepart').text('');
   }
 });
 
@@ -1141,7 +1163,7 @@ $(document).ready(function() {
           results: $.map(noMesin, function(obj) {
             return {
               id: obj.NO_MESIN,
-              text: obj.NO_MESIN
+              text: obj.NO_MESIN + ' ~ ' + obj.SPEC_MESIN
             };
           })
         };
@@ -1722,15 +1744,19 @@ function finishTableElement(th) {
       startPL = s_now;
       $(v).find('.finish').val((Number(startPL)+Number(currWaktuPL))-1);
     }else {
+      startPL = 0;
       // if (index != 1) {
       //   console.log(startPL);
+      //   $(v).find('.mulai').val(startPL);
+      //   $(v).find('.finish').val((Number(startPL) + Number(currWaktuPL)) - 1);
+      // }
+      // if (($(`tr[class="number_${index}"]`).attr('check-waktu-serentak-end') == 'N' && $(`input[baris="${index}"]`).attr('check-end-no') != my_number) || ($(`tr[class="number_${index}"]`).attr('check-waktu-serentak') == 'N' && $(`input[baris="${index}"]`).attr('check-start-no') != my_number)) {
       //   $(v).find('.mulai').val(startPL);
       //   $(v).find('.finish').val((Number(startPL) + Number(currWaktuPL)) - 1);
       // }
     }
 
     console.log(currWaktuPL);
-
 
 
   })

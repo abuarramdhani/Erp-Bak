@@ -162,6 +162,19 @@
     top: auto;
   }
 
+  .table-responsive-custom{
+    height:500px;
+    overflow:scroll;
+  }
+
+  .tblGenerate thead tr th{
+    position: sticky;
+    background: #337ab7;
+    top: 0;
+    flex: 0 0 auto;
+    z-index: 10;
+  }
+
   }
 </style>
 
@@ -610,22 +623,19 @@
                           </div>
                           <div class="panel-body">
                             <!--SECOND TABLE style="padding-left: 17px; padding-right: 17px;"-->
-                            <div class="table-responsive tableGenerate" id="tableGenerate" >
-                              <table class="table table-striped table-bordered table-hover text-center tblGenerate" style="table-layout: fixed;width:100%" name="tblUserResponsbility" id="tblGenerate">
+                            <div class="table-responsive table-responsive-custom tableGenerate" id="tableGenerate" >
+                              <table class="table table-striped table-bordered table-hover text-center tblGenerate " style="table-layout: fixed;width:100%" name="tblUserResponsbility" id="tblGenerate">
                                 <thead style="position: sticky; top: 0;">
                                   <tr class="bg-primary">
-                                    <th rowspan="2" style="position:sticky;top:0;" width="5%">SEQ</th>
-                                    <th colspan="2" style="position:sticky;top:0;" width="13%">FOLLOW</th>
-                                    <th rowspan="2" style="position:sticky;top:0;" width="15%">JENIS PROSES</th>
-                                    <th rowspan="2" style="position:sticky;top:0;" width="25%">ELEMEN KERJA</th>
-                                    <th rowspan="2" style="position:sticky;top:0;" width="20%">TIPE URUTAN</th>
-                                    <th rowspan="2" style="position:sticky;top:0;" width="10%">WAKTU</th>
-                                    <th rowspan="2" style="position:sticky;top:0;" width="10%">START</th>
-                                    <th rowspan="2" style="position:sticky;top:0;" width="10%">FINISH</th>
-                                  </tr>
-                                  <tr class="bg-primary">
-                                    <th>START</th>
-                                    <th>END</th>
+                                    <th style="position:sticky;top:0;" width="5%">SEQ</th>
+                                    <th style="position:sticky;top:0;" width="10%">FOLLOW START</th>
+                                    <th style="position:sticky;top:0;" width="10%">FOLLOW END</th>
+                                    <th style="position:sticky;top:0;" width="15%">JENIS PROSES</th>
+                                    <th style="position:sticky;top:0;" width="25%">ELEMEN KERJA</th>
+                                    <th style="position:sticky;top:0;" width="20%">TIPE URUTAN</th>
+                                    <th style="position:sticky;top:0;" width="10%">WAKTU</th>
+                                    <th style="position:sticky;top:0;" width="10%">START</th>
+                                    <th style="position:sticky;top:0;" width="10%">FINISH</th>
                                   </tr>
                                 </thead>
                                 <tbody id="tbodyGeneratorTSKK">
