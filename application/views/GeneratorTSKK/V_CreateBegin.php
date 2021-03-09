@@ -263,14 +263,14 @@
 								$waktu = $key['waktu_kerja'];
 								$jenisInputPart = $key['jenis_input_part'];
 								$jenisInputElement = $key['jenis_input_element'];
+                $jenisInputMesin = $key['jenis_input_mesin'];
 						?>
                   <?php } } ?>
                   <!--Judul TSKK :-->
                   <label style="margin-left:4%;" for="norm">Judul: </label>
                   <input type="text" style="width:50%; height:34px;  margin-left:2%; text-align:center;" value="<?php echo $judul ?>" placeholder="Input Judul TSKK" name="txtTitle" id="judul" class="lockscreen-credentials judul" readonly required />
                   <label for="norm" style="margin-left:5%; margin-right:-4%;">Tanggal Observasi:</label>
-                  <input type="text" style="width:17%; height:34px; text-align:center;" value="<?php echo $tanggal ?>" placeholder="Input Tanggal" name="txtTanggal" id="txtTanggalGenerate" class="lockscreen-credentials txtTanggal" readonly
-                    required />
+                  <input type="text" style="width:17%; height:34px; text-align:center;" value="<?php echo $tanggal ?>" placeholder="Input Tanggal" name="txtTanggal" id="txtTanggalGenerate" class="lockscreen-credentials txtTanggal" readonly required />
                 </div>
                 <div class="panel-body">
                   <div class="row">
@@ -349,16 +349,19 @@
                         <label for="norm" class="control-label" style="color:#428bca;font-size:18px;">EQUIPMENT</label><br />
                         <!-- <br/><br/> -->
                         <div class="col-lg-6">
+                          <input type="radio" name="equipmenTerdaftarMesin" value="Terdaftar" <?php if($jenisInputMesin == "Terdaftar") { echo "checked";}?>> <label for="norm" class="control-label">&nbsp;&nbsp;Terdaftar </label>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          <input type="radio" name="equipmenTerdaftarMesin" value="TidakTerdaftar" <?php if($jenisInputMesin == "TidakTerdaftar") { echo "checked";}?>><label for="norm" class="control-label">&nbsp;&nbsp; Tidak Terdaftar </label>
                           <div class="row">
-                            <br /><br />
+                            <br>
                             <label for="norm" class="control-label col-lg-4">No. Mesin :</label>
                             <div class="col-lg-8">
                               <?php $listNoMesin = explode(";", $no_mesin) ?>
                               <select style="height: 35px;" class="form-control select2 noMesin" id="txtNoMesinTSKK" name="txtNoMesin[]" data-placeholder="Input Nomor Mesin" tabindex="-1" aria-hidden="true" multiple>
-                                <?php foreach ($listNoMesin as $nm) {
-                            echo '<option value="'.$nm.'" selected>'.$nm.'</option>';
-                          }
-                          ?>
+                                      <?php foreach ($listNoMesin as $nm) {
+                                  echo '<option value="'.$nm.'" selected>'.$nm.'</option>';
+                                }
+                                ?>
                               </select>
                               <!-- <input type="text" value="<?= $no_mesin; ?>" placeholder="Input Nomor Mesin" name="txtNoMesin" value="" id="txtNoMesinTSKK" class="form-control noMesin" readonly required/> -->
                             </div>
