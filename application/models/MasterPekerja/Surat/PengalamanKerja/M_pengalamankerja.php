@@ -312,7 +312,6 @@ class M_pengalamankerja extends CI_Model
 				];
 			}, $mutasi);
 
-
 			// last array
 			$lastMutasi = end($mutasi);
 
@@ -326,8 +325,6 @@ class M_pengalamankerja extends CI_Model
 				'unit' => $lastMutasi['unit_br'],
 				'seksi' => $lastMutasi['seksi_br']
 			]);
-
-
 
 			return $mappedMutasi;
 		} else {
