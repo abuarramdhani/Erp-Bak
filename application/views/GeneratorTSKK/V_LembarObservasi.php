@@ -143,6 +143,20 @@
     position: absolute;
     top: auto;
   }
+
+  .table-responsive-custom{
+    height:500px;
+    overflow:scroll;
+  }
+
+  .tblObservasi thead tr th{
+    position: sticky;
+    background: #337ab7;
+    top: 0;
+    flex: 0 0 auto;
+    z-index: 10;
+  }
+
 </style>
 
 <section class="content">
@@ -193,6 +207,10 @@
                           <label for="norm" class="control-label col-lg-4">Type Product:</label>
                           <div class="col-lg-8">
                             <select style="height: 35px;" class="form-control select2 type" id="typeProduct" name="txtType" data-placeholder="Input Product Type" tabindex="-1" aria-hidden="true">
+                              <option value=""></option>
+                              <?php foreach ($product as $key => $value): ?>
+                                <option value="<?php echo $value['DESCRIPTION'] ?>"><?php echo $value['DESCRIPTION'] ?></option>
+                              <?php endforeach; ?>
                             </select>
                             <!-- <input type="text" placeholder="Input Type" name="txtType" value="" id="typeProduct" class="form-control type" required/> -->
                           </div>
@@ -211,7 +229,7 @@
                           <label for="norm" class="control-label col-lg-4">Kode Part :</label>
                           <div class="col-lg-8">
                             <!-- <input type="text" data-placeholder="Input Kode Part" value="" id="kodepart" name="txtKodepart" class="form-control kodepart" /> -->
-                            <select style="height: 35px;" class="form-control select2 kodepart" id="kodepart" name="txtKodepart[]" data-placeholder="Input Kode Part" tabindex="-1" aria-hidden="true" multiple>
+                            <select style="height: 35px;" class="form-control select2 kodepart" id="kodepart" name="txtKodepart[]" data-placeholder="Input Kode Part/ Nama Part" tabindex="-1" aria-hidden="true" multiple>
                             </select>
                           </div>
                         </div>
@@ -227,7 +245,7 @@
                         <div class="row terdaftar">
                           <label for="norm" class="control-label col-lg-4">Nama Part :</label>
                           <div id="divPassCheck" class="col-lg-8">
-                            <input type="text" style="height: 35px;" placeholder="Input Nama Part" name="txtNamaPart" value="" id="namaPart" class="form-control namaPart" />
+                            <input type="text" style="height: 35px;" placeholder="Input Nama Part" name="txtNamaPart" value="" id="namaPart" class="form-control namaPart" readonly />
                             <!-- <textarea type="text" style="height: 35px;" placeholder="Input Resource" name="txtResource[]" value="" id="txtResource" class="form-control resource" required></textarea> -->
                           </div>
                         </div>
@@ -246,18 +264,27 @@
                         <label for="norm" class="control-label" style="color:#428bca;font-size:18px;">EQUIPMENT</label><br />
                         <!-- <br/><br/> -->
                         <div class="col-lg-6">
-                          <br /><br />
-                          <div class="row">
+                          <input type="radio" name="equipmenTerdaftarMesin" value="Terdaftar" checked> <label for="norm" class="control-label">&nbsp;&nbsp;Terdaftar </label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          <input type="radio" name="equipmenTerdaftarMesin" value="TidakTerdaftar"><label for="norm" class="control-label">&nbsp;&nbsp; Tidak Terdaftar </label>
+                          <div class="row equipmenTerdaftarMesin">
+                            <br>
                             <label for="norm" class="control-label col-lg-4">No. Mesin :</label>
                             <div class="col-lg-8">
-                              <select style="height: 35px;" class="form-control select2 noMesin" id="txtNoMesinTSKK" name="txtNoMesin[]" data-placeholder="Input Nomor Mesin" multiple>
+                              <select style="height: 35px;" class="form-control select2 noMesin" id="txtNoMesinTSKK" name="txtNoMesin[]" data-placeholder="Search By No / Jenis Mesin" multiple>
                               </select>
                               <!-- <input type="text" placeholder="Input Nomor Mesin" name="txtNoMesin" value="" id="txtNoMesin" class="form-control noMesin" required/> -->
                             </div>
                           </div>
+                          <div class="row equipmenTdkTerdaftarMesin" style="display:none">
+                            <br>
+                            <label for="norm" class="control-label col-lg-4">No. Mesin :</label>
+                            <div class="col-lg-8">
+                              <input type="text" placeholder="Input No Mesin" name="txtNoMesinT" value="" class="form-control noMesin" />
+                            </div>
+                          </div>
                           <br>
                           <!-- <input hidden class="form-control getID" value="<?php echo $id ?>"> -->
-                          <div class="row">
+                          <div class="row equipmenTerdaftarMesin">
                             <label for="norm" class="control-label col-lg-4">Jenis Mesin :</label>
                             <div class="col-lg-8">
                               <!-- <texarea type="text" placeholder="Input Jenis Mesin" value="" id="jenisMesin" name="txtJenisMesin" class="form-control jenisMesin"></textarea> -->
@@ -266,14 +293,26 @@
 													</select> -->
                             </div>
                           </div>
+                          <div class="row equipmenTdkTerdaftarMesin" style="display:none">
+                            <label for="norm" class="control-label col-lg-4">Jenis Mesin :</label>
+                            <div class="col-lg-8">
+                              <textarea type="text" style="height: 35px;" placeholder="Input Jenis Mesin" name="txtJenisMesinT" value="" class="form-control jenisMesin"></textarea>
+                            </div>
+                          </div>
                           <br>
-                          <div class="row">
+                          <div class="row equipmenTerdaftarMesin">
                             <label for="norm" class="control-label col-lg-4">Resource :</label>
                             <div id="divPassCheck" class="col-lg-8">
                               <textarea type="text" style="height: 35px;" placeholder="Input Resource" name="txtResource[]" value="" id="txtResource" class="form-control resource"></textarea>
                               <!-- <select style="height: 35px;" data-placeholder="Input Resource" name="txtResource" value="" id="txtResource" class="form-control select2 resource" multiple>
 													</select> -->
                               <!-- <input type="text" style="height: 35px;" placeholder="Input Resource" name="txtResource" value="" id="txtResource" class="form-control resource"/> -->
+                            </div>
+                          </div>
+                          <div class="row equipmenTdkTerdaftarMesin" style="display:none">
+                            <label for="norm" class="control-label col-lg-4">Resource :</label>
+                            <div class="col-lg-8">
+                              <textarea type="text" style="height: 35px;" placeholder="Input Resource" name="txtResourceT" value="" class="form-control resource"></textarea>
                             </div>
                           </div>
                           <br>
@@ -499,32 +538,29 @@
                             <table class="table table-striped table-bordered table-hover text-center tblObservasi" style="width:2300px; padding-bottom: 0;" name="tblObservasi" id="tblObservasi">
                               <thead>
                                 <tr class="bg-primary">
-                                  <th rowspan="2" style="width: 50px;  text-align:center;">NO</th>
-                                  <th rowspan="2" style="width: 50px;   text-align:center;">PARALEL</th>
-                                  <th style="text-align:center;" colspan="2">FOLLOW</th>
-                                  <th rowspan="2" style="width: 200px;  text-align:center;">JENIS PROSES</th>
-                                  <th rowspan="2" style="width: 400px;  text-align:center;">ELEMEN KERJA</th>
-                                  <th rowspan="2" style="width: 100px;  text-align:center;">1</th>
-                                  <th rowspan="2" style="width: 100px;  text-align:center;">2</th>
-                                  <th rowspan="2" style="width: 100px;  text-align:center;">3</th>
-                                  <th rowspan="2" style="width: 100px;  text-align:center;">4</th>
-                                  <th rowspan="2" style="width: 100px;  text-align:center;">5</th>
-                                  <th rowspan="2" style="width: 100px;  text-align:center;">6</th>
-                                  <th rowspan="2" style="width: 100px;  text-align:center;">7</th>
-                                  <th rowspan="2" style="width: 100px;  text-align:center;">8</th>
-                                  <th rowspan="2" style="width: 100px;  text-align:center;">9</th>
-                                  <th rowspan="2" style="width: 100px;  text-align:center;">10</th>
-                                  <th rowspan="2" style="width: 100px;  text-align:center;">X MIN</th>
-                                  <th rowspan="2" style="width: 100px;  text-align:center;">R</th>
-                                  <th rowspan="2" style="width: 100px;  text-align:center;">WAKTU DISTRIBUSI <i class="fa fa-copy fa-md" onclick="copyAutoWaktuDistribusi(this)" style="color:red" id="copy" title="Copy Waktu Distribusi"></i></th>
-                                  <th rowspan="2" style="width: 100px;  text-align:center;">AUTO WAKTU DISTRIBUSI</th>
-                                  <th rowspan="2" style="width: 100px;  text-align:center;">WAKTU KERJA</th>
-                                  <th rowspan="2" style="width: 150px;  text-align:center;">KETERANGAN</th>
-                                  <th rowspan="2" style="width: 50px;  text-align:center;">HAPUS</th>
-                                </tr>
-                                <tr class="bg-primary">
-                                  <th>START</th>
-                                  <th>END</th>
+                                  <th style="width: 50px;  text-align:center;">NO</th>
+                                  <th style="width: 50px;   text-align:center;">PARALEL</th>
+                                  <th style="text-align:center;">FOLLOW START</th>
+                                  <th style="text-align:center;">FOLLOW END</th>
+                                  <th style="width: 200px;  text-align:center;">JENIS PROSES</th>
+                                  <th style="width: 400px;  text-align:center;">ELEMEN KERJA</th>
+                                  <th style="width: 100px;  text-align:center;">1</th>
+                                  <th style="width: 100px;  text-align:center;">2</th>
+                                  <th style="width: 100px;  text-align:center;">3</th>
+                                  <th style="width: 100px;  text-align:center;">4</th>
+                                  <th style="width: 100px;  text-align:center;">5</th>
+                                  <th style="width: 100px;  text-align:center;">6</th>
+                                  <th style="width: 100px;  text-align:center;">7</th>
+                                  <th style="width: 100px;  text-align:center;">8</th>
+                                  <th style="width: 100px;  text-align:center;">9</th>
+                                  <th style="width: 100px;  text-align:center;">10</th>
+                                  <th style="width: 100px;  text-align:center;">X MIN</th>
+                                  <th style="width: 100px;  text-align:center;">R</th>
+                                  <th style="width: 100px;  text-align:center;">WAKTU DISTRIBUSI <i class="fa fa-copy fa-md" onclick="copyAutoWaktuDistribusi(this)" style="color:red" id="copy" title="Copy Waktu Distribusi"></i></th>
+                                  <th style="width: 100px;  text-align:center;">AUTO WAKTU DISTRIBUSI</th>
+                                  <th style="width: 100px;  text-align:center;">WAKTU KERJA</th>
+                                  <th style="width: 150px;  text-align:center;">KETERANGAN</th>
+                                  <th style="width: 50px;  text-align:center;">HAPUS</th>
                                 </tr>
                               </thead>
                               <tbody id="tbodyLembarObservasi">

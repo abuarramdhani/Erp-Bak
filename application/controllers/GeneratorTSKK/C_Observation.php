@@ -6,7 +6,7 @@ class C_Observation extends CI_Controller {
 	public function __construct()
     {
         parent::__construct();
-		  
+
         $this->load->helper('form');
         $this->load->helper('url');
         $this->load->helper('html');
@@ -18,9 +18,9 @@ class C_Observation extends CI_Controller {
         $this->load->model('M_Index');
         $this->load->model('SystemAdministration/MainMenu/M_user');
         $this->load->model('GeneratorTSKK/M_gentskk');
-        
+
         date_default_timezone_set('Asia/Jakarta');
-		  
+
 		if($this->session->userdata('logged_in')!=TRUE) {
 			$this->load->helper('url');
 			$this->session->set_userdata('last_page', current_url());
@@ -30,7 +30,7 @@ class C_Observation extends CI_Controller {
 
 	public function checkSession()
 	{
-		if($this->session->is_logged){		
+		if($this->session->is_logged){
 		}else{
 			redirect();
 		}
@@ -42,14 +42,14 @@ public function DisplayLO()
 {
     $this->checkSession();
     $user_id = $this->session->userid;
-    
+
     $data['Menu'] = 'Dashboard';
     $data['SubMenuOne'] = '';
-    
+
     $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
     $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
     $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
- 
+ 		$data['product'] = $this->M_gentskk->getTipeProduk('');
     $this->load->view('V_Header',$data);
     $this->load->view('V_Sidemenu',$data);
     $this->load->view('GeneratorTSKK/V_LembarObservasi');
@@ -162,7 +162,7 @@ public function Kolom($jumlah){
         }
         if($digitkedua == 0){
             $digitkedua = 26;
-        }   
+        }
         $huruf1 = $this->AngkaToChar($digitpertama);
         $huruf2 = $this->AngkaToChar($digitkedua);
         return $huruf1.$huruf2;
@@ -170,9 +170,9 @@ public function Kolom($jumlah){
 }
 
 public function exportObservation($id){
-    
-  $this->load->library(array('Excel','Excel/PHPExcel/IOFactory'));       
-  $newID = $this->M_gentskk->getAllObservation($id); 
+
+  $this->load->library(array('Excel','Excel/PHPExcel/IOFactory'));
+  $newID = $this->M_gentskk->getAllObservation($id);
   // echo "<pre>";print_r($newID);
     //  exit();
 
@@ -190,14 +190,14 @@ public function exportObservation($id){
    $line              = $newID[0]['line_process'];
    $nama_part         = $newID[0]['nama_part'];
    $kode_part         = $newID[0]['kode_part'];
-   //kepala seksi  
-   //dibuat oleh  
+   //kepala seksi
+   //dibuat oleh
    $proses	          = $newID[0]['proses'];
    $tanggal           = $newID[0]['tanggal'];
    $operator 	        = $newID[0]['operator'];
-   
+
    //TABLE//
-   $waktu_1           = array_column($newID, 'waktu_1'); 
+   $waktu_1           = array_column($newID, 'waktu_1');
    $waktu_2           = array_column($newID, 'waktu_2');
    $waktu_3           = array_column($newID, 'waktu_3');
    $waktu_4           = array_column($newID, 'waktu_4');
@@ -242,10 +242,10 @@ public function exportObservation($id){
 
 //Make "elemen kerja" from combining "elemen & keterangan"//
   $elemen_kerja =  array();
-  for ($i=0; $i < count($elemen) ; $i++) { 
+  for ($i=0; $i < count($elemen) ; $i++) {
       $elemen_kerja[$i] = $elemen[$i]." ".$keterangan_elemen[$i];
   }
-  
+
 //COUNT THE TOTAL TIMES :
    $indexArr      = 0;
    $jumlah        = 0;
@@ -266,7 +266,7 @@ public function exportObservation($id){
    $elemenWaktu   = $elemen_kerja[0];
 
    for($i=0; $i < count($elemen); $i++){
-    
+
       $jumlah_1      = array_sum($waktu_1);
       $jumlah_2      = array_sum($waktu_2);
       $jumlah_3      = array_sum($waktu_3);
@@ -280,7 +280,7 @@ public function exportObservation($id){
       $jumlah_Xmin   = array_sum($x_min);
       $jumlah_R      = array_sum($range);
       $jumlah_wKerja = array_sum($waktu_kerja);
-       
+
       // echo "<pre>"; echo "JUMLAH WAKTU 1: ";echo $jumlah_1;
       // echo "<pre>"; echo "JUMLAH WAKTU 2: ";echo $jumlah_2;
       // echo "<pre>"; echo "JUMLAH WAKTU 3: ";echo $jumlah_3;
@@ -296,7 +296,7 @@ public function exportObservation($id){
       // echo "<pre>"; echo "WAKTU KERJA: ";echo $jumlah_wKerja;
       // exit();
   }
-  
+
 $objPHPExcel = new PHPExcel();
 $objPHPExcel->getProperties()->setCreator("ICT_Production")->setTitle("ICT");
 
@@ -326,10 +326,10 @@ $objPHPExcel->getActiveSheet()->mergeCells('B4:C4');
 $objPHPExcel->getActiveSheet()->mergeCells('B5:C5');
 
 $objPHPExcel->getActiveSheet()->mergeCells('E1:J1'); //ISIANNYA
-$objPHPExcel->getActiveSheet()->mergeCells('E2:J2'); 
-$objPHPExcel->getActiveSheet()->mergeCells('E3:J3'); 
-$objPHPExcel->getActiveSheet()->mergeCells('E4:J4'); 
-$objPHPExcel->getActiveSheet()->mergeCells('E5:J5'); 
+$objPHPExcel->getActiveSheet()->mergeCells('E2:J2');
+$objPHPExcel->getActiveSheet()->mergeCells('E3:J3');
+$objPHPExcel->getActiveSheet()->mergeCells('E4:J4');
+$objPHPExcel->getActiveSheet()->mergeCells('E5:J5');
 
 $objPHPExcel->getActiveSheet()->mergeCells('K1:T5'); //JUDUL LEMBAR OBSERVASI ELEMEN KERJA
 $objPHPExcel->getActiveSheet()->mergeCells('U1:W1'); //KEPALA SEKSI
@@ -341,7 +341,7 @@ $objPHPExcel->getActiveSheet()->mergeCells('X2:Y3'); //ISI DIBUAT OLEH
 $objget->getStyle('X2:Y3')->getAlignment()->setWrapText(true);
 $objPHPExcel->getActiveSheet()->mergeCells('X4:Y4'); //TANGGAL
 $objPHPExcel->getActiveSheet()->mergeCells('X5:Y5'); //ISI TANGGAL
- 
+
 $objPHPExcel->getActiveSheet()->mergeCells('A6:A7'); //TABLE HEADER : NO
 $objPHPExcel->getActiveSheet()->mergeCells('B6:J7'); //TABLE HEADER : ELEMEN KERJA
 $objPHPExcel->getActiveSheet()->mergeCells('K6:K7'); //TABLE HEADER : 1
@@ -371,9 +371,9 @@ $objDrawing->setRenderingFunction(PHPExcel_Worksheet_MemoryDrawing::RENDERING_JP
 $objDrawing->setMimeType(PHPExcel_Worksheet_MemoryDrawing::MIMETYPE_DEFAULT);
 $objDrawing->setCoordinates('A2');
 //set width, height
-$objDrawing->setWidth(50); 
-$objDrawing->setHeight(75); 
-$objDrawing->setWorksheet($objPHPExcel->getActiveSheet()); 
+$objDrawing->setWidth(50);
+$objDrawing->setHeight(75);
+$objDrawing->setWorksheet($objPHPExcel->getActiveSheet());
 
 //SET CELL VALUE FOR THE HEADER
 $objPHPExcel->setActiveSheetIndex(0)
@@ -423,7 +423,7 @@ $objPHPExcel->setActiveSheetIndex(0)
         ->setCellValue('V6', 'R')
         ->setCellValue('W6', 'Waktu Kerja')
         ->setCellValue('X6', 'Keterangan')
-        
+
         ;;
 
 //STYLING HEADER//
@@ -437,7 +437,7 @@ $objget->getStyle('A1:A5')->applyFromArray(
               )
           )
       )
-  ); 
+  );
 
 //GARIS DI BAGIAN SEKSI - PROSES
 $objget->getStyle('B1:D1')->applyFromArray(
@@ -488,8 +488,8 @@ $objget->getStyle('B5:D5')->applyFromArray(
               )
           )
       )
-  ); 
-  
+  );
+
   $objget->getStyle('B1:J5')->applyFromArray(
     array(
             'font' => array(
@@ -507,7 +507,7 @@ $objget->getStyle('E1:J5')->applyFromArray(
               )
           )
       )
-  );  
+  );
 
 $objget->getStyle('I1:R5')->applyFromArray(
   array(
@@ -525,7 +525,7 @@ $objget->getStyle('I1:R5')->applyFromArray(
             'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
           ),
       )
-  );  
+  );
 
 //SET FONT SIZE LOEL
 $objPHPExcel->getActiveSheet()->getStyle("I1:R5")->getFont()->setSize(22);
@@ -639,9 +639,9 @@ $objget->getStyle('X5:Y5')->applyFromArray(
                     'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
                     ),
                 )
-            );  
+            );
 
-//WRAP TEXT ON WAKTU KERJA COLUMN    
+//WRAP TEXT ON WAKTU KERJA COLUMN
   $objget->getStyle('W6:W7')->getAlignment()->setWrapText(true);
 
 //SET THE TABLE VALUES//
@@ -651,9 +651,9 @@ $no = 1;
 foreach ($newID as $isi) {
 
   $objset->setCellValue("A".$baris, $no);
-  $objPHPExcel->getActiveSheet()->mergeCells('B'.$baris.':J'.$baris); 
+  $objPHPExcel->getActiveSheet()->mergeCells('B'.$baris.':J'.$baris);
   $objset->setCellValue("B".$baris, $isi['elemen']." ".$isi['keterangan_elemen']);
-  $objPHPExcel->getActiveSheet()->mergeCells('K'.$baris.':K'.$baris); 
+  $objPHPExcel->getActiveSheet()->mergeCells('K'.$baris.':K'.$baris);
   $objget->getStyle('B'.$baris.':J'.$baris)->getAlignment()->setWrapText(true);
   $objset->setCellValue("K".$baris, $isi['waktu_1']);
   $objset->setCellValue("L".$baris, $isi['waktu_2']);
@@ -668,7 +668,7 @@ foreach ($newID as $isi) {
   $objset->setCellValue("U".$baris, $isi['x_min']);
   $objset->setCellValue("V".$baris, $isi['r']);
   $objset->setCellValue("W".$baris, $isi['waktu_kerja']);
-  $objPHPExcel->getActiveSheet()->mergeCells('X'.$baris.':Y'.$baris); 
+  $objPHPExcel->getActiveSheet()->mergeCells('X'.$baris.':Y'.$baris);
   $objset->setCellValue("X".$baris, $isi['keterangan']);
 
   $objget->getStyle('A'.$baris.':Y'.$baris)->applyFromArray(
@@ -679,7 +679,7 @@ foreach ($newID as $isi) {
                 )
             )
         )
-    ); 
+    );
 
   $objget->getStyle('A'.$baris.':A'.$baris)->applyFromArray(
     array(
@@ -688,7 +688,7 @@ foreach ($newID as $isi) {
         'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER
       )
         )
-    ); 
+    );
 
   $objget->getStyle('K'.$baris.':W'.$baris)->applyFromArray(
     array(
@@ -697,42 +697,42 @@ foreach ($newID as $isi) {
         'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER
       )
         )
-    ); 
-                
+    );
+
   $no++;
   $baris++;
 }
   //SET TOTAL TIMES//
   $indexJml = $baris;
-  $objPHPExcel->getActiveSheet()->mergeCells('A'.$indexJml.':J'.($indexJml + 1)); 
+  $objPHPExcel->getActiveSheet()->mergeCells('A'.$indexJml.':J'.($indexJml + 1));
   $objset->setCellValue("A".$indexJml, "1 Cycle Time (satuan Detik)");
-  $objPHPExcel->getActiveSheet()->mergeCells('K'.$indexJml.':K'.($indexJml + 1)); 
+  $objPHPExcel->getActiveSheet()->mergeCells('K'.$indexJml.':K'.($indexJml + 1));
   $objset->setCellValue("K".$indexJml, $jumlah_1);
-  $objPHPExcel->getActiveSheet()->mergeCells('L'.$indexJml.':L'.($indexJml + 1)); 
+  $objPHPExcel->getActiveSheet()->mergeCells('L'.$indexJml.':L'.($indexJml + 1));
   $objset->setCellValue("L".$indexJml, $jumlah_2);
-  $objPHPExcel->getActiveSheet()->mergeCells('M'.$indexJml.':M'.($indexJml + 1)); 
+  $objPHPExcel->getActiveSheet()->mergeCells('M'.$indexJml.':M'.($indexJml + 1));
   $objset->setCellValue("M".$indexJml, $jumlah_3);
-  $objPHPExcel->getActiveSheet()->mergeCells('N'.$indexJml.':N'.($indexJml + 1)); 
+  $objPHPExcel->getActiveSheet()->mergeCells('N'.$indexJml.':N'.($indexJml + 1));
   $objset->setCellValue("N".$indexJml, $jumlah_4);
-  $objPHPExcel->getActiveSheet()->mergeCells('O'.$indexJml.':O'.($indexJml + 1)); 
+  $objPHPExcel->getActiveSheet()->mergeCells('O'.$indexJml.':O'.($indexJml + 1));
   $objset->setCellValue("O".$indexJml, $jumlah_5);
-  $objPHPExcel->getActiveSheet()->mergeCells('P'.$indexJml.':P'.($indexJml + 1)); 
+  $objPHPExcel->getActiveSheet()->mergeCells('P'.$indexJml.':P'.($indexJml + 1));
   $objset->setCellValue("P".$indexJml, $jumlah_6);
-  $objPHPExcel->getActiveSheet()->mergeCells('Q'.$indexJml.':Q'.($indexJml + 1)); 
+  $objPHPExcel->getActiveSheet()->mergeCells('Q'.$indexJml.':Q'.($indexJml + 1));
   $objset->setCellValue("Q".$indexJml, $jumlah_7);
-  $objPHPExcel->getActiveSheet()->mergeCells('R'.$indexJml.':R'.($indexJml + 1)); 
+  $objPHPExcel->getActiveSheet()->mergeCells('R'.$indexJml.':R'.($indexJml + 1));
   $objset->setCellValue("R".$indexJml, $jumlah_8);
-  $objPHPExcel->getActiveSheet()->mergeCells('S'.$indexJml.':S'.($indexJml + 1)); 
+  $objPHPExcel->getActiveSheet()->mergeCells('S'.$indexJml.':S'.($indexJml + 1));
   $objset->setCellValue("S".$indexJml, $jumlah_9);
-  $objPHPExcel->getActiveSheet()->mergeCells('T'.$indexJml.':T'.($indexJml + 1)); 
+  $objPHPExcel->getActiveSheet()->mergeCells('T'.$indexJml.':T'.($indexJml + 1));
   $objset->setCellValue("T".$indexJml, $jumlah_10);
-  $objPHPExcel->getActiveSheet()->mergeCells('U'.$indexJml.':U'.($indexJml + 1)); 
+  $objPHPExcel->getActiveSheet()->mergeCells('U'.$indexJml.':U'.($indexJml + 1));
   $objset->setCellValue("U".$indexJml, $jumlah_Xmin);
-  $objPHPExcel->getActiveSheet()->mergeCells('V'.$indexJml.':V'.($indexJml + 1)); 
+  $objPHPExcel->getActiveSheet()->mergeCells('V'.$indexJml.':V'.($indexJml + 1));
   $objset->setCellValue("V".$indexJml, $jumlah_R);
-  $objPHPExcel->getActiveSheet()->mergeCells('W'.$indexJml.':W'.($indexJml + 1)); 
+  $objPHPExcel->getActiveSheet()->mergeCells('W'.$indexJml.':W'.($indexJml + 1));
   $objset->setCellValue("W".$indexJml, $jumlah_wKerja);
-  $objPHPExcel->getActiveSheet()->mergeCells('X'.$indexJml.':Y'.($indexJml + 1)); 
+  $objPHPExcel->getActiveSheet()->mergeCells('X'.$indexJml.':Y'.($indexJml + 1));
 
     //STYLING OF TOTAL TIMES//
     $objget->getStyle('A'.$indexJml.':Y'.($indexJml + 1))->applyFromArray(
@@ -747,9 +747,9 @@ foreach ($newID as $isi) {
                   'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER
               )
           )
-      );  
+      );
 
-$objPHPExcel->getActiveSheet()->setTitle('Lembar Observasi'); 
+$objPHPExcel->getActiveSheet()->setTitle('Lembar Observasi');
 $objPHPExcel->setActiveSheetIndex(0);
 $filename = urlencode("Lembar Observasi_".$judul."_".$tanggal.".xlsx"); //FILE NAME//
 $filename = str_replace("+", " ", $filename);

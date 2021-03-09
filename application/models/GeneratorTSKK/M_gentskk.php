@@ -18,7 +18,7 @@ class M_gentskk extends CI_Model
 	{
 	// $sql = "SELECT distinct
 	// 		kjb.KODE_DIGIT
-	// 		,kjb.JENIS_BARANG 
+	// 		,kjb.JENIS_BARANG
 	// 		,kjb.DESCRIPTION
 	// 		from khs_jenis_barang kjb
 	// 		,mtl_system_items_b msib
@@ -45,7 +45,7 @@ class M_gentskk extends CI_Model
 			$ucwords = ucwords($tp);
 			$sql="SELECT distinct
 			kjb.KODE_DIGIT
-			,kjb.JENIS_BARANG 
+			,kjb.JENIS_BARANG
 			,kjb.DESCRIPTION
 			from khs_jenis_barang kjb
 			,mtl_system_items_b msib
@@ -74,17 +74,17 @@ class M_gentskk extends CI_Model
 		$query = $this->oracle->query($sql);
 		return $query->result_array();
 	}
-	
+
 	function kodePart($variable)
 	{
-	$sql="SELECT msib.segment1 
+	$sql="SELECT msib.segment1
        ,msib.description
        from mtl_system_items_b msib
        where msib.INVENTORY_ITEM_STATUS_CODE = 'Active'
        and msib.organization_id = 81
        AND (msib.DESCRIPTION LIKE '%$variable%'
 	   OR msib.SEGMENT1 LIKE '%$variable%')";
-		
+
 	   $query = $this->oracle->query($sql);
 	   return $query->result_array();
 	//    return $sql;
@@ -97,7 +97,7 @@ class M_gentskk extends CI_Model
        where msib.INVENTORY_ITEM_STATUS_CODE = 'Active'
        and msib.organization_id = 81
 	   AND msib.SEGMENT1 = '$kode_part'";
-	   
+
 	   $query = $this->oracle->query($sql);
 	//    echo "<pre>"; print_r($query->result_array());
 	//    exit();
@@ -115,14 +115,14 @@ class M_gentskk extends CI_Model
 	// 		and substr(ffvv.FLEX_VALUE,0,1) in ('4','5','7','8')
 	// 		and ffvv.DESCRIPTION like '%$term%'
 	// 		order by ffvv.DESCRIPTION";
-	   
+
 	// $query = $this->oracle->query($sql);
 	// return $query->result_array();
 	// }
 
 	function Seksi($term)
 	{
-		// $sql = "SELECT DISTINCT seksi_pengebon 
+		// $sql = "SELECT DISTINCT seksi_pengebon
 		// 		FROM im.im_master_bon_bppct
 		// 		WHERE seksi_pengebon <> ''
 		// 		AND seksi_pengebon LIKE '%$term%'
@@ -139,19 +139,20 @@ class M_gentskk extends CI_Model
 		  FROM fa_additions_b fab
 		  WHERE fab.attribute1 IS NOT NULL
 		  AND fab.attribute1 like '%$mach%'";
-	   
+
 	$query = $this->oracle->query($sql);
 	return $query->result_array();
 	}
 
 	function SelectNoMesin($nm)
-	{	
+	{
 		$sql = "SELECT 'ODM' ket, kdmr.no_mesin, kdmr.spec_mesin, br.resource_code,
 				 br.description, br.disable_date, br.organization_id,
 				 br.creation_date
 			FROM khs_daftar_mesin_resource kdmr, bom_resources br
 		   WHERE br.resource_id = kdmr.resource_id
-			 AND kdmr.no_mesin LIKE '%$nm%'
+			 AND (UPPER(kdmr.no_mesin) LIKE '%$nm%'
+						OR UPPER(kdmr.spec_mesin) LIKE '%$nm%')
 			 AND br.disable_date IS NULL         -- masih aktif
 			 AND br.organization_id = 102        --odm
 		UNION
@@ -168,7 +169,8 @@ class M_gentskk extends CI_Model
 			 AND gor.resources = kdmro.resources
 			 AND kdmro.oprn_line_id = gor.oprn_line_id
 			 AND gos.oprn_vers = 1
-			 AND kdmro.no_mesin LIKE '%$nm%'
+			 AND (UPPER(kdmro.no_mesin) LIKE '%$nm%'
+				    OR UPPER(kdmro.spec_mesin) LIKE '%$nm%')
 		ORDER BY no_mesin ASC, creation_date DESC";
 
 	$query = $this->oracle->query($sql);
@@ -176,11 +178,11 @@ class M_gentskk extends CI_Model
 	}
 
 	function jenisMesin($no_mesin)
-	{	
+	{
 		$result = '';
 		foreach($no_mesin as $no) {
 			//odm
-			$sql="SELECT kdmr.spec_mesin 
+			$sql="SELECT kdmr.spec_mesin
 					FROM khs_daftar_mesin_resource kdmr, bom_resources br
 				WHERE br.resource_id = kdmr.resource_id
 					AND kdmr.no_mesin = '$no'
@@ -200,7 +202,7 @@ class M_gentskk extends CI_Model
 					AND kdmro.oprn_line_id = gor.oprn_line_id
 					AND gos.oprn_vers = 1
 					AND kdmro.no_mesin = '$no' ";
-		
+
 			$query = $this->oracle->query($sql);
 			$result .= $query->row()->SPEC_MESIN."; \n";
 		}
@@ -208,7 +210,7 @@ class M_gentskk extends CI_Model
 	}
 
 	function Resource($no_mesin)
-	{	
+	{
 		$result = '';
 		foreach ($no_mesin as $mesin) {
 			//odm
@@ -235,7 +237,7 @@ class M_gentskk extends CI_Model
 			AND gos.oprn_vers = 1
 			AND kdmro.no_mesin = '$mesin'
 			ORDER BY creation_date DESC";
-		
+
 		$query = $this->oracle->query($sql);
 		$result .= $query->row()->RESOURCE_CODE."; \n";
 		}
@@ -245,17 +247,17 @@ class M_gentskk extends CI_Model
 
 	function Operator($opr)
 	{
-	$sql = "SELECT noind, trim(nama) as nama from hrd_khs.tpribadi 
-			where nama LIKE '%$opr%' 
+	$sql = "SELECT noind, trim(nama) as nama from hrd_khs.tpribadi
+			where nama LIKE '%$opr%'
 			or noind like '%$opr%'";
-		
+
 	$query = $this->personalia->query($sql);
 	return $query->result_array();
 	}
 
-	function insertData($inputan_elemen) 
+	function insertData($inputan_elemen)
 	{
-	   $sql ="INSERT into gtskk.gtskk_standar_elemen_kerja (elemen_kerja) 
+	   $sql ="INSERT into gtskk.gtskk_standar_elemen_kerja (elemen_kerja)
 		 	  VALUES ('$inputan_elemen')";
 
 	   $query = $this->db->query($sql);
@@ -264,7 +266,7 @@ class M_gentskk extends CI_Model
 	   // return $sql;
 	}
 
-	function selectData() 
+	function selectData()
 	{
 		$sql = "SELECT * FROM gtskk.gtskk_standar_elemen_kerja
 				ORDER BY id";
@@ -272,75 +274,75 @@ class M_gentskk extends CI_Model
 		return $query->result_array();
 	}
 
-	function deleteElemen($id) 
+	function deleteElemen($id)
 	{
 		$sql = "DELETE FROM gtskk.gtskk_elemen_tskk
 				WHERE id_tskk='$id'";
 		// echo $sql;exit();
-  
+
 		$query = $this->db->query($sql);
 	}
 
-	function deleteElemenObservasi($seq,$id) 
+	function deleteElemenObservasi($seq,$id)
 	{
 		$sql = "DELETE FROM gtskk.gtskk_observasi_elemen_kerja
-				WHERE seq='$seq' 
+				WHERE seq='$seq'
 				AND id_tskk='$id'";
 
 		$query = $this->db->query($sql);
 	}
 
 	function ElemenKerja($elk)
-	{ 
+	{
 		$Low = strtolower($elk);
 		$lcfirst = lcfirst($elk);
 		$ucfirst = ucfirst($elk);
 		$ucwords = ucwords($elk);
 		$sql = "SELECT elemen_kerja FROM gtskk.gtskk_standar_elemen_kerja
-				WHERE elemen_kerja LIKE '%$elk%' OR elemen_kerja LIKE '%$Low%' OR elemen_kerja LIKE '%$lcfirst%' 
+				WHERE elemen_kerja LIKE '%$elk%' OR elemen_kerja LIKE '%$Low%' OR elemen_kerja LIKE '%$lcfirst%'
 				OR elemen_kerja LIKE '%$ucfirst%' OR elemen_kerja LIKE '%$ucwords%'";
-				
+
 		$query = $this->db->query($sql);
 		return $query->result_array();
 		// return $sql;
-	}	
+	}
 
 	// $saveHeader = $this->M_gentskk->InsertHeaderTSKK($judul,$type,$kode,$nama_part,$seksi,
 	// $proses,$kode_proses,$jenis_mesin,$proses_ke,$dari,$tanggal,$qty,$nm,
 	// $nilai_distribusi,$takt_time,$no_mesin,$resource,$line,$alat_bantu,$tools,
 	// $jml_operator,$dr_operator,$seksi_pembuat,$jenis_inputPart);
-	
+
 	public function InsertHeaderTSKK($judul,$type,$kode,$nama_part,$seksi,$proses,
 									 $kode_proses,$mach,$proses_ke,$dari,$tanggal,$qty,$operator,
 									 $nilai_distribusi,$takt_time,$no_mesin,$resource,$line,$alat_bantu,
 									 $tools,$jml_operator,$dr_operator,$seksi_pembuat,$jenis_inputPart,$jenis_inputEquipment,
-									 $nama_pekerja,$creationDate)
+									 $nama_pekerja,$creationDate,$jenis_inputEquipmentMesin)
 	{
-		$sql = "INSERT INTO gtskk.gtskk_header_tskk(judul_tskk, tipe, kode_part, nama_part, 
-				seksi, proses, kode_proses, mesin, proses_ke, proses_dari, tanggal, 
-				qty, operator, nilai_distribusi, takt_time, no_mesin, resource_mesin, line_process, 
+		$sql = "INSERT INTO gtskk.gtskk_header_tskk(judul_tskk, tipe, kode_part, nama_part,
+				seksi, proses, kode_proses, mesin, proses_ke, proses_dari, tanggal,
+				qty, operator, nilai_distribusi, takt_time, no_mesin, resource_mesin, line_process,
 				alat_bantu, tools, jumlah_operator, jumlah_operator_dari, seksi_pembuat,jenis_input_part,jenis_input_element,
-				nama_pembuat, tanggal_pembuatan) 
+				nama_pembuat, tanggal_pembuatan, jenis_input_mesin)
 				values('$judul','$type','$kode','$nama_part','$seksi','$proses',
-				'$kode_proses','$mach','$proses_ke','$dari','$tanggal','$qty','$operator', 
+				'$kode_proses','$mach','$proses_ke','$dari','$tanggal','$qty','$operator',
 				'$nilai_distribusi','$takt_time','$no_mesin','$resource','$line','$alat_bantu','$tools',
                 '$jml_operator','$dr_operator','$seksi_pembuat','$jenis_inputPart','$jenis_inputEquipment',
-				'$nama_pekerja','$creationDate')";
+				'$nama_pekerja','$creationDate','$jenis_inputEquipmentMesin')";
 		// echo $sql;
 		// exit();
 		$query = $this->db->query($sql);
-	}	
+	}
 
-	function selectIdHeader() 
+	function selectIdHeader()
 	{
-		$sql = "SELECT MAX (id_tskk) id 
+		$sql = "SELECT MAX (id_tskk) id
 				FROM gtskk.gtskk_header_tskk";
-				
+
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
 
-	function selectIdElemen($id) 
+	function selectIdElemen($id)
 	{
 		$sql = "SELECT id_tskk
 				FROM gtskk.gtskk_elemen_tskk
@@ -350,26 +352,26 @@ class M_gentskk extends CI_Model
 		return $query->result_array();
 	}
 
-	function selectHeader() 
+	function selectHeader()
 	{
 		$sql = "SELECT * FROM  gtskk.gtskk_header_tskk
 				ORDER BY id_tskk DESC";
-				
+
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
 
-	function selectHeaderMonTSKK() 
+	function selectHeaderMonTSKK()
 	{
-		$sql = "SELECT distinct head.* from gtskk.gtskk_header_tskk head where id_tskk in (select distinct elem.id_tskk from gtskk.gtskk_elemen_tskk  elem where id_tskk = head.id_tskk) 
+		$sql = "SELECT distinct head.* from gtskk.gtskk_header_tskk head where id_tskk in (select distinct elem.id_tskk from gtskk.gtskk_elemen_tskk  elem where id_tskk = head.id_tskk)
 				order by id_tskk DESC
 				";
-				
+
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
 
-	function cariId($id) 
+	function cariId($id)
 	{   $sql = "SELECT id_tskk FROM  gtskk.gtskk_header_tskk where id_tskk = '$id'";
 		$query = $this->db->query($sql);
 		return $query->result_array();
@@ -377,10 +379,10 @@ class M_gentskk extends CI_Model
 
 	public function InsertTableTSKK($jenis_proses,$elemen,$keterangan,$tipe_urutan,$waktu,$start,$finish,$id)
 	{
-		$sql = "INSERT INTO gtskk.gtskk_elemen_tskk(jenis_proses, elemen, keterangan_elemen, tipe_urutan, waktu, mulai, finish, id_tskk) 
+		$sql = "INSERT INTO gtskk.gtskk_elemen_tskk(jenis_proses, elemen, keterangan_elemen, tipe_urutan, waktu, mulai, finish, id_tskk)
 				values('$jenis_proses','$elemen','$keterangan', '$tipe_urutan', '$waktu','$start','$finish', '$id')";
 		$query = $this->db->query($sql);
-	}	
+	}
 
 	public function saveObservation($waktu_kerja)
     {
@@ -393,9 +395,9 @@ class M_gentskk extends CI_Model
 		$this->db->insert('gtskk.gtskk_irregular_job',$irregular_jobs);
         return;
 	}
-	// function insertObservation($inputan_elemen) 
+	// function insertObservation($inputan_elemen)
 	// {
-	// 	$sql = "INSERT INTO gtskk.gtskk_observasi_elemen_kerja(judul_tskk, tipe, kode_part, nama_part, no_alat_bantu, seksi, proses, kode_proses, mesin, proses_ke, proses_dari, tanggal, qty, operator, nilai_distribusi) 
+	// 	$sql = "INSERT INTO gtskk.gtskk_observasi_elemen_kerja(judul_tskk, tipe, kode_part, nama_part, no_alat_bantu, seksi, proses, kode_proses, mesin, proses_ke, proses_dari, tanggal, qty, operator, nilai_distribusi)
 	// 	values('$judul','$type','$kode','$nama_part', '$no_alat', '$seksi','$proses','$kode_proses','$mach','$proses_ke','$dari','$tanggal','$qty','$operator', '$nilai_distribusi')";
 
 	//    $query = $this->db->query($sql);
@@ -403,15 +405,15 @@ class M_gentskk extends CI_Model
 	//    // exit();
 	//    // return $sql;
 	// }
-	
+
 	public function selectObservation($id)
 	{
 		$sql = "SELECT jenis_proses, elemen, keterangan_elemen, tipe_urutan, waktu_kerja
 				FROM gtskk.gtskk_observasi_elemen_kerja
-				WHERE id_tskk = '$id' 
+				WHERE id_tskk = '$id'
 				AND waktu_kerja IS NOT NULL
 				ORDER BY seq";
-				
+
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
@@ -419,10 +421,10 @@ class M_gentskk extends CI_Model
 	public function selectAllObservation($id)
 	{
 		$sql = "SELECT * FROM gtskk.gtskk_observasi_elemen_kerja
-				WHERE id_tskk = '$id' 
+				WHERE id_tskk = '$id'
 				AND waktu_kerja IS NOT NULL
 				ORDER BY seq";
-				
+
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
@@ -430,7 +432,7 @@ class M_gentskk extends CI_Model
 	public function getAllObservation($id)
 	{
 		// $sql = "SELECT * FROM gtskk.gtskk_observasi_elemen_kerja
-		// WHERE id_tskk = '$id' 
+		// WHERE id_tskk = '$id'
 		// ORDER BY seq";
 
 		$sql = "SELECT * FROM gtskk.gtskk_header_tskk header, gtskk.gtskk_observasi_elemen_kerja observasi
@@ -457,7 +459,7 @@ class M_gentskk extends CI_Model
 
 	public function tabelelemen($jenis)
     {
-		
+
     	$this->db->insert('gtskk.gtskk_elemen_tskk',$jenis);
         return;
     }
@@ -468,7 +470,7 @@ class M_gentskk extends CI_Model
 				WHERE header.id_tskk = elemen.id_tskk
 				AND header.id_tskk = '$id'
 				ORDER BY seq";
-				
+
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
@@ -477,39 +479,39 @@ class M_gentskk extends CI_Model
 	{
 		$sql = "SELECT takt_time FROM gtskk.gtskk_observasi_elemen_kerja
 				WHERE id_tskk = '$id'";
-				
+
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
 
-	function deleteHeader($id) 
+	function deleteHeader($id)
 	{
 		$sql = "DELETE FROM gtskk.gtskk_header_tskk
 				WHERE id_tskk='$id'";
-  
+
 		$query = $this->db->query($sql);
 	}
 
-	function deleteTable($id) 
+	function deleteTable($id)
 	{
 		$sql = "DELETE FROM gtskk.gtskk_elemen_tskk
 				WHERE id_tskk='$id'";
-  
+
 		$query = $this->db->query($sql);
 	}
 
-	// function deleteObservation($id) 
+	// function deleteObservation($id)
 	// {
 	// 	$sql = "DELETE FROM gtskk.gtskk_elemen_tskk
 	// 			WHERE id_tskk='$id'";
-  
+
 	// 	$query = $this->db->query($sql);
 	// }
 
-	function deleteEdit($seq,$id) 
+	function deleteEdit($seq,$id)
 	{
 		$sql = "DELETE FROM gtskk.gtskk_elemen_tskk
-				WHERE seq='$seq' 
+				WHERE seq='$seq'
 				AND id_tskk='$id'";
 		// echo $sql;exit();
 		$query = $this->db->query($sql);
@@ -518,7 +520,7 @@ class M_gentskk extends CI_Model
 	function UpdateHeaderTSKK($id,$judul,$type,$kode,$nama_part,$seksi,$proses,$kode_proses,
 							  $jenis_mesin,$proses_ke,$dari,$tanggal,$qty,$nm,$nilai_distribusi,$takt_time,
 							  $no_mesin,$resource,$line,$alat_bantu,$tools,$jml_operator,$dr_operator,$seksi_pembuat,
-							  $jenis_inputPart,$jenis_inputEquipment,$nama_pekerja,$creationDate){
+							  $jenis_inputPart,$jenis_inputEquipment,$nama_pekerja,$creationDate,$jenis_inputEquipmentMesin){
 		$sql = "UPDATE gtskk.gtskk_header_tskk
 				SET judul_tskk ='$judul'
 					,tipe='$type'
@@ -528,11 +530,11 @@ class M_gentskk extends CI_Model
 					,proses = '$proses'
 					,kode_proses = '$kode_proses'
 					,mesin = '$jenis_mesin'
-					,proses_ke = '$proses_ke' 
-					,proses_dari = '$dari' 
-					,tanggal = '$tanggal' 
-					,qty = '$qty' 
-					,operator = '$nm' 
+					,proses_ke = '$proses_ke'
+					,proses_dari = '$dari'
+					,tanggal = '$tanggal'
+					,qty = '$qty'
+					,operator = '$nm'
 					,nilai_distribusi = '$nilai_distribusi'
 					,takt_time = '$takt_time'
 					,no_mesin = '$no_mesin'
@@ -547,19 +549,20 @@ class M_gentskk extends CI_Model
 					,jenis_input_element = '$jenis_inputEquipment'
 					,nama_pembuat = '$nama_pekerja'
 					,tanggal_pembuatan = '$creationDate'
+					,jenis_input_mesin = '$jenis_inputEquipmentMesin'
 				WHERE id_tskk='$id'";
 		// echo $sql;exit();
   		$query = $this->db->query($sql);
 	}
 
-	function deleteElement($id) 
+	function deleteElement($id)
 	{
 		$sql = "DELETE FROM gtskk.gtskk_elemen_tskk
 				WHERE id_tskk='$id'";
 		$query = $this->db->query($sql);
 	}
 
-	function deleteStandardElement($id) 
+	function deleteStandardElement($id)
 	{
 		$sql = "DELETE FROM gtskk.gtskk_standar_elemen_kerja
 				WHERE id='$id'";
@@ -567,7 +570,7 @@ class M_gentskk extends CI_Model
 		$query = $this->db->query($sql);
 	}
 
-	function deleteObservation($id) 
+	function deleteObservation($id)
 	{
 		$sql = "DELETE FROM gtskk.gtskk_observasi_elemen_kerja
 				WHERE id_tskk='$id'";
@@ -604,18 +607,18 @@ class M_gentskk extends CI_Model
 
         return $this->personalia->query($sql)->result_array();
 	}
-	
+
 	//SEARCH ALAT BANTU
 	public function selectAlatBantu($ab){ //ganti db
-        $sql = "SELECT distinct tto.fs_nm_tool 
+        $sql = "SELECT distinct tto.fs_nm_tool
 		from ttool tto WHERE tto.fs_nm_tool like '%$ab%'";
 
         return $this->lantuma->query($sql)->result_array();
 	}
-	
-	//SEARCH TOOLS NAME 
+
+	//SEARCH TOOLS NAME
 	public function selectTools($tl){
-        $sql = "SELECT msib.SEGMENT1, msib.DESCRIPTION from mtl_system_items_b msib 
+        $sql = "SELECT msib.SEGMENT1, msib.DESCRIPTION from mtl_system_items_b msib
 		where msib.SEGMENT1 LIKE 'MJ%'
 		AND upper(msib.DESCRIPTION) LIKE upper('%$tl%')
 		OR upper(msib.SEGMENT1) LIKE upper('%$tl%')
@@ -635,22 +638,22 @@ class M_gentskk extends CI_Model
 
 	public function saveTaktTime($id,$waktu_satu_shift,$jumlah_shift,$forecast,$qty_unit,$rencana_produksi,$jumlah_hari_kerja)
 	{
-		$sql = "INSERT INTO gtskk.gtskk_takt_time(id_takt_time, waktu_satu_shift, jumlah_shift, forecast, qty_unit, rencana_produksi, jumlah_hari_kerja) 
+		$sql = "INSERT INTO gtskk.gtskk_takt_time(id_takt_time, waktu_satu_shift, jumlah_shift, forecast, qty_unit, rencana_produksi, jumlah_hari_kerja)
 				values('$id', '$waktu_satu_shift', '$jumlah_shift', '$forecast', '$qty_unit', '$rencana_produksi', '$jumlah_hari_kerja')";
 		$query = $this->db->query($sql);
 	}
 
 	public function selectTaktTimeCalculation($id)
 	{
-			$sql = "SELECT * FROM gtskk.gtskk_takt_time 
+			$sql = "SELECT * FROM gtskk.gtskk_takt_time
 					WHERE id_takt_time = '$id'";
 		$query = $this->db->query($sql);
-		return $query->result_array();		
+		return $query->result_array();
 	}
 
 	function updateTaktTime($id,$waktu_satu_shift,$jumlah_shift,$forecast,$qty_unit,$rencana_produksi,$jumlah_hari_kerja)
-	{	
-		$sql = "UPDATE gtskk.gtskk_takt_time 
+	{
+		$sql = "UPDATE gtskk.gtskk_takt_time
 				SET waktu_satu_shift ='$waktu_satu_shift'
 				,jumlah_shift='$jumlah_shift'
 				,forecast='$forecast'
@@ -664,7 +667,7 @@ class M_gentskk extends CI_Model
 
 	function selectNamaPekerja($noind)
 	{
-		$sql = "SELECT trim(nama) as nama from hrd_khs.tpribadi 
+		$sql = "SELECT trim(nama) as nama from hrd_khs.tpribadi
 				where noind = '$noind'";
 
 		$query = $this->personalia->query($sql);

@@ -162,6 +162,19 @@
     top: auto;
   }
 
+  .table-responsive-custom{
+    height:500px;
+    overflow:scroll;
+  }
+
+  .tblGenerate thead tr th{
+    position: sticky;
+    background: #337ab7;
+    top: 0;
+    flex: 0 0 auto;
+    z-index: 10;
+  }
+
   }
 </style>
 
@@ -250,14 +263,14 @@
 								$waktu = $key['waktu_kerja'];
 								$jenisInputPart = $key['jenis_input_part'];
 								$jenisInputElement = $key['jenis_input_element'];
+                $jenisInputMesin = $key['jenis_input_mesin'];
 						?>
                   <?php } } ?>
                   <!--Judul TSKK :-->
                   <label style="margin-left:4%;" for="norm">Judul: </label>
                   <input type="text" style="width:50%; height:34px;  margin-left:2%; text-align:center;" value="<?php echo $judul ?>" placeholder="Input Judul TSKK" name="txtTitle" id="judul" class="lockscreen-credentials judul" readonly required />
                   <label for="norm" style="margin-left:5%; margin-right:-4%;">Tanggal Observasi:</label>
-                  <input type="text" style="width:17%; height:34px; text-align:center;" value="<?php echo $tanggal ?>" placeholder="Input Tanggal" name="txtTanggal" id="txtTanggalGenerate" class="lockscreen-credentials txtTanggal" readonly
-                    required />
+                  <input type="text" style="width:17%; height:34px; text-align:center;" value="<?php echo $tanggal ?>" placeholder="Input Tanggal" name="txtTanggal" id="txtTanggalGenerate" class="lockscreen-credentials txtTanggal" readonly required />
                 </div>
                 <div class="panel-body">
                   <div class="row">
@@ -336,16 +349,19 @@
                         <label for="norm" class="control-label" style="color:#428bca;font-size:18px;">EQUIPMENT</label><br />
                         <!-- <br/><br/> -->
                         <div class="col-lg-6">
+                          <input type="radio" name="equipmenTerdaftarMesin" value="Terdaftar" <?php if($jenisInputMesin == "Terdaftar") { echo "checked";}?>> <label for="norm" class="control-label">&nbsp;&nbsp;Terdaftar </label>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          <input type="radio" name="equipmenTerdaftarMesin" value="TidakTerdaftar" <?php if($jenisInputMesin == "TidakTerdaftar") { echo "checked";}?>><label for="norm" class="control-label">&nbsp;&nbsp; Tidak Terdaftar </label>
                           <div class="row">
-                            <br /><br />
+                            <br>
                             <label for="norm" class="control-label col-lg-4">No. Mesin :</label>
                             <div class="col-lg-8">
                               <?php $listNoMesin = explode(";", $no_mesin) ?>
                               <select style="height: 35px;" class="form-control select2 noMesin" id="txtNoMesinTSKK" name="txtNoMesin[]" data-placeholder="Input Nomor Mesin" tabindex="-1" aria-hidden="true" multiple>
-                                <?php foreach ($listNoMesin as $nm) {
-                            echo '<option value="'.$nm.'" selected>'.$nm.'</option>';
-                          }
-                          ?>
+                                      <?php foreach ($listNoMesin as $nm) {
+                                  echo '<option value="'.$nm.'" selected>'.$nm.'</option>';
+                                }
+                                ?>
                               </select>
                               <!-- <input type="text" value="<?= $no_mesin; ?>" placeholder="Input Nomor Mesin" name="txtNoMesin" value="" id="txtNoMesinTSKK" class="form-control noMesin" readonly required/> -->
                             </div>
@@ -610,22 +626,19 @@
                           </div>
                           <div class="panel-body">
                             <!--SECOND TABLE style="padding-left: 17px; padding-right: 17px;"-->
-                            <div class="table-responsive tableGenerate" id="tableGenerate" >
-                              <table class="table table-striped table-bordered table-hover text-center tblGenerate" style="table-layout: fixed;width:100%" name="tblUserResponsbility" id="tblGenerate">
+                            <div class="table-responsive table-responsive-custom tableGenerate" id="tableGenerate" >
+                              <table class="table table-striped table-bordered table-hover text-center tblGenerate " style="table-layout: fixed;width:100%" name="tblUserResponsbility" id="tblGenerate">
                                 <thead style="position: sticky; top: 0;">
                                   <tr class="bg-primary">
-                                    <th rowspan="2" style="position:sticky;top:0;" width="5%">SEQ</th>
-                                    <th colspan="2" style="position:sticky;top:0;" width="13%">FOLLOW</th>
-                                    <th rowspan="2" style="position:sticky;top:0;" width="15%">JENIS PROSES</th>
-                                    <th rowspan="2" style="position:sticky;top:0;" width="25%">ELEMEN KERJA</th>
-                                    <th rowspan="2" style="position:sticky;top:0;" width="20%">TIPE URUTAN</th>
-                                    <th rowspan="2" style="position:sticky;top:0;" width="10%">WAKTU</th>
-                                    <th rowspan="2" style="position:sticky;top:0;" width="10%">START</th>
-                                    <th rowspan="2" style="position:sticky;top:0;" width="10%">FINISH</th>
-                                  </tr>
-                                  <tr class="bg-primary">
-                                    <th>START</th>
-                                    <th>END</th>
+                                    <th style="position:sticky;top:0;" width="5%">SEQ</th>
+                                    <th style="position:sticky;top:0;" width="10%">FOLLOW START</th>
+                                    <th style="position:sticky;top:0;" width="10%">FOLLOW END</th>
+                                    <th style="position:sticky;top:0;" width="15%">JENIS PROSES</th>
+                                    <th style="position:sticky;top:0;" width="25%">ELEMEN KERJA</th>
+                                    <th style="position:sticky;top:0;" width="20%">TIPE URUTAN</th>
+                                    <th style="position:sticky;top:0;" width="10%">WAKTU</th>
+                                    <th style="position:sticky;top:0;" width="10%">START</th>
+                                    <th style="position:sticky;top:0;" width="10%">FINISH</th>
                                   </tr>
                                 </thead>
                                 <tbody id="tbodyGeneratorTSKK">

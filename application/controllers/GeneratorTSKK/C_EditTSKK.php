@@ -70,15 +70,29 @@ class C_EditTSKK extends CI_Controller {
 
 		//EQUIPMENT
 		$jenis_inputEquipment  = $this->input->post('equipmenTerdaftar');
-		$no_mesin	      	   = $this->input->post('txtNoMesin[]');
-		$no_mesin 		  	   = implode("; ", $no_mesin);
+		$jenis_inputEquipmentMesin  = $this->input->post('equipmenTerdaftarMesin');
+		$no_mesin	      = $this->input->post('txtNoMesin[]');
+		if ($no_mesin == null) {
+				$no_mesin	      = $this->input->post('txtNoMesinT');
+		}else{
+				$no_mesin = implode("; ", $no_mesin);
+		}
+		// echo "<pre>";echo $no_mesin;
 		$jenis_mesin      = $this->input->post('txtJenisMesin[]');
-		$jm = implode("; ", $jenis_mesin);
-		$jenis_mesin = trim(preg_replace('/\s\s+/', ' ', $jm));
+		if (empty($jenis_mesin[0])) {
+				$jenis_mesin = $this->input->post('txtJenisMesinT');
+		}else{
+				$jenis_mesin = implode("; ", $jenis_mesin);
+		}
 
+		// $jenis_mesin = trim(preg_replace('/\s\s+/', ' ', $jm));
 		$resource         = $this->input->post('txtResource[]');
-		$rsc = implode("; ", $resource);
-		$resource = trim(preg_replace('/\s\s+/', '; ', $rsc));
+		if (empty($resource[0])) {
+				$resource = $this->input->post('txtResourceT');
+		}else{
+				$resource = implode("; ", $resource);
+		}
+
 		$line             = $this->input->post('txtLine');
 		$alat_bantu	      = $this->input->post('txtAlatBantu[]');
 		if ($alat_bantu == null) {
@@ -131,7 +145,7 @@ class C_EditTSKK extends CI_Controller {
 					  $proses,$kode_proses,$jenis_mesin,$proses_ke,$dari,$tanggal,$qty,$nm,
 					  $nilai_distribusi,$takt_time,$no_mesin,$resource,$line,$alat_bantu,$tools,
 					  $jml_operator,$dr_operator,$seksi_pembuat,$jenis_inputPart,$jenis_inputEquipment,
-					  $sang_pembuat,$creationDate);
+					  $sang_pembuat,$creationDate, $jenis_inputEquipmentMesin);
 
 		//LEMBAR OBSERVASI ELEMEN KERJA
 		$deleteElement 	  = $this->M_gentskk->deleteObservation($id);
@@ -376,7 +390,6 @@ class C_EditTSKK extends CI_Controller {
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-
 		// $dataId = $this->M_gentskk->selectIdHeader();
 		// $id = $dataId[0]['id'];
 		$data['status'] = 1;
