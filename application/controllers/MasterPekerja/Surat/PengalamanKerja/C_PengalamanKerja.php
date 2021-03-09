@@ -296,6 +296,9 @@ class C_PengalamanKerja extends CI_Controller
 
 		$data['tgl_masuk'] = $data['masuk'] ? $data['masuk'] : $this->_indonesianDate($data['masukkerja']);
 
+		// get history of jabatan pekerja
+		$data['history_jabatan'] = $this->M_pengalamankerja->getHistoryJabatan($data['noind']);
+
 		// update to cetak with now date
 		$data['update'] = $this->M_pengalamankerja->updateSuratPengalamanKerjaBy($kd_surat, $no_surat, $pengalaman_tglCetak);
 
@@ -330,6 +333,8 @@ class C_PengalamanKerja extends CI_Controller
 
 
 		// comment by dk 30 dec 2020
+		// alasan: tulisan jabatan diganti dengan user memilih option di UI/view
+		// --
 		// hope your day is good :)
 		// like woody stand alone above the wood
 		// don't forget to get a food
