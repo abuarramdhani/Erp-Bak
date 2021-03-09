@@ -249,6 +249,7 @@ public function savePlan(){
 		$plan 		= $this->input->post('plan[]');
 		$kode_item 	= $this->input->post('kode_item[]');
 		$desc 		= $this->input->post('desc[]');
+		$subcategory= $this->input->post('subcategory[]');
 		$bulan 		= $this->input->post('bulan2');
 		$bulan2		= explode("/", $bulan);
 		// $bulan2		= $bulan2[0];
@@ -259,18 +260,14 @@ public function savePlan(){
 		$ktgr 		= $this->M_setplan->getCategory("where id_category = $kategori");
 		$kategori	= $ktgr[0]['CATEGORY_NAME'];
 		
-		$subcategory 	= $this->input->post('subcategory');
-		if (!empty($subcategory)) {
-			$subktgr 		= $this->M_setplan->getSubCategory("where id_subcategory = $subcategory");
-			$subcategory	= $subktgr[0]['SUBCATEGORY_NAME'];
-		}
-
 		$x = 0; $bts = 0;
 		for ($i=0; $i < (count($item)/2) ; $i++) { 
 			$bts = $bts + $hari;
 			$datanya[$i]['inv'] = $item[$i];
 			$datanya[$i]['kode_item'] = $kode_item[$i];
 			$datanya[$i]['desc'] = $desc[$i];
+			$subktgr 		= $this->M_setplan->getSubCategory("where id_subcategory = ".$subcategory[$i]."");
+			$datanya[$i]['subcategory']	= $subktgr[0]['SUBCATEGORY_NAME'];
 			$z = 0;
 			for ($x=$x; $x < $bts ; $x++) { 
 				$datanya[$i]['plan'.$z.''] = $plan[$x];
@@ -422,7 +419,7 @@ public function savePlan(){
 			// echo "<pre>";print_r($d);exit();
 			$excel->setActiveSheetIndex(0)->setCellValue('A'.$numrow, $no);
 			$excel->setActiveSheetIndex(0)->setCellValue('B'.$numrow, $kategori);
-			$excel->setActiveSheetIndex(0)->setCellValue('C'.$numrow, $subcategory);
+			$excel->setActiveSheetIndex(0)->setCellValue('C'.$numrow, $d['subcategory']);
 			$excel->setActiveSheetIndex(0)->setCellValue('D'.$numrow, $bulan);
 			$excel->setActiveSheetIndex(0)->setCellValue('E'.$numrow, $d['kode_item']);
 			$excel->setActiveSheetIndex(0)->setCellValue('F'.$numrow, $d['desc']);

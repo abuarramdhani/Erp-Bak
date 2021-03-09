@@ -27,7 +27,7 @@
                 <input type="hidden" id="bulan<?= $no?>" name="bulan" value="<?= $bulan?>">
                 <input type="hidden" id="bulan2<?= $no?>" name="bulan2" value="<?= $bulan2?>">
                 <input type="hidden" id="kategori2<?= $no?>" name="kategori2" value="<?= $kategori2?>">
-                <input type="hidden" id="subcategory<?= $no?>" name="subcategory" value="<?= $value['ID_SUBCATEGORY']?>">
+                <input type="hidden" id="subcategory<?= $no?>" name="subcategory[]" value="<?= $value['ID_SUBCATEGORY']?>">
                 <input type="hidden" id="id_plan<?= $no?>" name="id_plan[]" value="<?= $value['PLAN_ID']?>">
                 <input type="hidden" id="item<?= $no?>" name="item[]" value="<?= $value['INVENTORY_ITEM_ID']?>">
                 <input type="hidden" id="kode_item<?= $no?>" name="kode_item[]" value="<?= $value['ITEM']?>">
