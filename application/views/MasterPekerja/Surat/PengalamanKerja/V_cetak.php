@@ -127,16 +127,18 @@
           <td>:</td>
           <td><?php echo $sampai ?> </td>
         </tr>
-        <tr>
-          <td valign="top">Seksi</td>
-          <td valign="top">:</td>
-          <td style=" line-height: 1.17;">Seksi <?php echo $data['seksi'] . ', Unit ' . $data['unit'] . ', Departemen ' . $data['dept'] ?></td>
-        </tr>
-        <tr>
-          <td valign="top"> Jabatan </td>
-          <td valign="top">:</td>
-          <td><?php echo trim($jabatan_pengalaman) ?></td>
-        </tr>
+        <?php foreach ($history_jabatan as $jabatan) : ?>
+          <tr>
+            <td valign="top">Seksi</td>
+            <td valign="top">:</td>
+            <td style=" line-height: 1.17;">Seksi <?= $jabatan['seksi'] . ', Unit ' . $jabatan['unit'] . ', Departemen ' . $jabatan['dept'] ?></td>
+          </tr>
+          <tr>
+            <td valign="top"> Jabatan </td>
+            <td valign="top">:</td>
+            <td><?= trim($jabatan['jabatan']) ?></td>
+          </tr>
+        <?php endforeach ?>
       </tbody>
     </table>
     <?php $str = trim($data['isi_surat']);

@@ -259,4 +259,90 @@ class M_pengalamankerja extends CI_Model
 	{
 		$this->personalia->insert("hrd_khs.tlog", $data);
 	}
+
+	/**
+	 * Cari history jabatan
+	 * dari tmutasi dan tpribadi
+	 * 
+	 * @param String $noind
+	 * @return Array<Array>
+	 * 
+	 * @since 0.1
+	 */
+	public function getHistoryJabatan($noind)
+	{
+		// check on tmutasi first
+		// raw sql
+		$sql = "
+			SELECT 
+				tm.noind, 
+				tm.tglberlaku, 
+				tm.kodesielm, 
+				tm.kodesiebr, 
+				INITCAP(LOWER(tm.jabatanlm)) jabatanlm, 
+				INITCAP(LOWER(ts.seksi)) seksi_lm, 
+				INITCAP(LOWER(ts.unit)) unit_lm, 
+				INITCAP(LOWER(ts.dept)) dept_lm, 
+				INITCAP(LOWER(tm.jabatanbr)) jabatanbr, 
+				INITCAP(LOWER(ts1.seksi)) seksi_br, 
+				INITCAP(LOWER(ts1.unit)) unit_br, 
+				INITCAP(LOWER(ts1.dept)) dept_br
+			FROM
+				hrd_khs.tmutasi tm inner join hrd_khs.tseksi ts on ts.kodesie = tm.kodesielm
+				inner join hrd_khs.tseksi ts1 on ts1.kodesie = tm.kodesiebr
+			WHERE 
+				noind = '$noind'
+			ORDER BY 
+				tm.tglberlaku ASC
+		";
+
+		$mutasi = $this->personalia->query($sql)->result_array();
+		$mutasiCount = count($mutasi);
+
+		// if has mutasi
+		if ($mutasiCount > 0) {
+			$mappedMutasi = array_map(function ($item) {
+				return [
+					'noind' => $item['noind'],
+					'kodesie' => $item['kodesielm'],
+					'jabatan' => $item['jabatanlm'],
+					'dept' => $item['dept_lm'],
+					'unit' => $item['unit_lm'],
+					'seksi' => $item['seksi_lm']
+				];
+			}, $mutasi);
+
+			// last array
+			$lastMutasi = end($mutasi);
+
+			// seksi terbaru / latest section
+			// append to $mappedMutasi
+			array_push($mappedMutasi, [
+				'noind' => $lastMutasi['noind'],
+				'kodesie' => $lastMutasi['kodesiebr'],
+				'jabatan' => $lastMutasi['jabatanbr'],
+				'dept' => $lastMutasi['dept_br'],
+				'unit' => $lastMutasi['unit_br'],
+				'seksi' => $lastMutasi['seksi_br']
+			]);
+
+			return $mappedMutasi;
+		} else {
+			// if not exist on tmutasi, then find on tpribadi
+			return $this->personalia
+				->select('
+					tp.noind,
+					tp.kodesie,
+					INITCAP(LOWER(tp.jabatan)) jabatan,
+					INITCAP(LOWER(ts.dept)) dept,
+					INITCAP(LOWER(ts.unit)) unit,
+					INITCAP(LOWER(ts.seksi)) seksi
+				')
+				->from('hrd_khs.tpribadi tp')
+				->join('hrd_khs.tseksi ts', 'ts.kodesie = tp.kodesie')
+				->where('noind', $noind)
+				->get()
+				->result_array();
+		}
+	}
 }
