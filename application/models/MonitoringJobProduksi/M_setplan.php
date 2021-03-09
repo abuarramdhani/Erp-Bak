@@ -15,6 +15,12 @@ class M_setplan extends CI_Model
         $query = $this->oracle->query($sql);
         return $query->result_array();
     }
+
+    public function getSubCategory($term){
+        $sql = "select * from khs_subcategory_item $term";
+        $query = $this->oracle->query($sql);
+        return $query->result_array();
+    }
     
     public function getdataMonitoring($kategori){
         $sql = "select * from khs_category_item_monitoring where category_name = '$kategori'";
@@ -52,9 +58,9 @@ class M_setplan extends CI_Model
         return $query->result_array();
     }
   
-    public function savePlan($id, $inv_id, $bulan){
-        $sql = "insert into khs_plan_item_monitoring (plan_id, inventory_item_id, month)
-                values($id, $inv_id, $bulan)";
+    public function savePlan($id, $inv_id, $bulan, $category, $subcategory){
+        $sql = "insert into khs_plan_item_monitoring (plan_id, inventory_item_id, month, id_category, id_subcategory)
+                values($id, $inv_id, $bulan, $category, $subcategory)";
         $query = $this->oracle->query($sql);
         $query = $this->oracle->query('commit');
     // echo $sql;

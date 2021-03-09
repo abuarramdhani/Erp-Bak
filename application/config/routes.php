@@ -4854,6 +4854,13 @@ $route['MonitoringJobProduksi/UserManagement']					= 'MonitoringJobProduksi/C_Us
 $route['MonitoringJobProduksi/UserManagement/(:any)']			= 'MonitoringJobProduksi/C_UserManagement/$1';
 $route['MonitoringJobProduksi/UserManagement/(:any)/(:any)']	= 'MonitoringJobProduksi/C_UserManagement/$1/$2';
 
+$route['MonitoringJobProduksi/LaporanProduksi']					= 'MonitoringJobProduksi/C_LaporanProduksi';
+$route['MonitoringJobProduksi/LaporanProduksi/(:any)']			= 'MonitoringJobProduksi/C_LaporanProduksi/$1';
+$route['MonitoringJobProduksi/LaporanProduksi/(:any)/(:any)']	= 'MonitoringJobProduksi/C_LaporanProduksi/$1/$2';
+
+$route['MonitoringJobProduksi/Import']					= 'MonitoringJobProduksi/C_Import';
+$route['MonitoringJobProduksi/Import/(:any)']			= 'MonitoringJobProduksi/C_Import/$1';
+$route['MonitoringJobProduksi/Import/(:any)/(:any)']	= 'MonitoringJobProduksi/C_Import/$1/$2';
 // -------------------------------------- Consumable ------------------------------------------ //
 // PPIC
 $route['ConsumablePPIC'] = 'Consumable/C_Index';

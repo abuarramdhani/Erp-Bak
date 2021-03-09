@@ -6,12 +6,18 @@ class M_itemlist extends CI_Model
     {
         parent::__construct();
         $this->load->database();    
-        $this->oracle_dev = $this->load->database('oracle_dev', true);
+        // $this->oracle_dev = $this->load->database('oracle_dev', true);
         $this->oracle = $this->load->database('oracle', true);
     }
     
     public function getCategory(){
       $sql = "select * from khs_kategori_item_monitoring";
+      $query = $this->oracle->query($sql);
+      return $query->result_array();
+    }
+
+    public function getSubCategory($term){
+      $sql = "select * from khs_subcategory_item $term";
       $query = $this->oracle->query($sql);
       return $query->result_array();
     }
@@ -46,19 +52,31 @@ class M_itemlist extends CI_Model
         return $query->result_array();
     }
 
-    public function saveitem($kategori, $inv_id, $org_id){
-        $sql = "insert into khs_category_item_monitoring (category_name, organization_id, inventory_item_id)
-                values('$kategori', $org_id, $inv_id)";
+    public function saveitem($kategori, $inv_id, $org_id, $sub){
+        $sql = "insert into khs_category_item_monitoring (category_name, organization_id, inventory_item_id, id_subcategory)
+                values('$kategori', $org_id, $inv_id, $sub)";
         $query = $this->oracle->query($sql);
         $query = $this->oracle->query("commit");
       // echo $sql;
   }
   
-  public function deleteitem($kategori, $inv_id){
-    $sql = "delete khs_category_item_monitoring where category_name = '$kategori' and inventory_item_id = $inv_id";
+  public function deleteitem($kategori, $inv_id, $sub){
+    $sql = "delete khs_category_item_monitoring where category_name = '$kategori' and inventory_item_id = $inv_id and $sub";
+    // echo "<pre>";print_r($sql);exit();
     $query = $this->oracle->query($sql);
     $query = $this->oracle->query("commit");
   // echo $sql;
+}
+
+public function updateflag($inv_id, $kategori, $sub, $flag){
+  $sql = "update khs_category_item_monitoring 
+          set flag = '$flag'
+          where category_name = '$kategori' 
+          and inventory_item_id = $inv_id 
+          and $sub";
+  // echo "<pre>";print_r($sql);exit();
+  $query = $this->oracle->query($sql);
+  $query = $this->oracle->query("commit");
 }
 
 

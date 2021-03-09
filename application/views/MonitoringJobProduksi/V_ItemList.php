@@ -10,7 +10,7 @@
                         </div>
                             <div class="box-body">
                                 <div class="panel-body">
-                                    <div class="col-md-1">
+                                    <div class="col-md-4 text-right">
                                         <label>Kategori:</label>
                                     </div>
                                     <div class="col-md-4">
@@ -21,7 +21,17 @@
                                             <?php }?>
                                         </select>
                                     </div>
-                                    <div class="col-md-1">
+                                </div>
+                                <div class="panel-body" id="subcategory" style="display:none">
+                                    <div class="col-md-4 text-right">
+                                        <label>SubKategori:</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <select id="sub_kategori" class="form-control select2" style="width:100%" data-placeholder="SubKategori"></select>
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="col-md-12 text-center">
                                         <button type="button" class="btn btn-info" style="margin-left:15px" onclick="schItemList(this)"><i class="fa fa-search"></i> View</button>
                                     </div>
                                 </div>
