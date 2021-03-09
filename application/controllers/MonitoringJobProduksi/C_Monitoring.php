@@ -69,7 +69,7 @@ class C_Monitoring extends CI_Controller
 		$getdata = $this->M_monitoring->getdataMonitoring($kategori);
 		$cariakt = $this->M_monitoring->getAktual2($kategori, $inibulan);
 		// $cariakt = $this->M_monitoring->getAktual($kategori, $data['bulan']);
-		$getplandate = $this->M_monitoring->getPlanDate();
+		$getplandate = $this->M_monitoring->getPlanDate('');
 		$datanya = array();
 		$total['item'] = $total['ttl_jml_plan'] = $total['ttl_jml_akt'] = $total['ttl_jml_min'] = 0;
 		$total['ttl_jml_com'] = $total['ttl_jml_pl'] = $total['ttl_jml_plmin'] = $total['ttl_jml_cmin'] = 0;
@@ -123,6 +123,11 @@ class C_Monitoring extends CI_Controller
 					}
 					
 				}
+				// if ($getdata[$key]['jml_plan'] == 0) {
+				// 	$plandate = $this->M_monitoring->getPlanDate("where plan_id = ".$plan[0]['PLAN_ID']."");
+				// 	$getdata[$key]['jml_plan'] += $plandate[0]['VALUE_PLAN_MONTH'];
+				// 	$ket = 'oke';
+				// }
 				if ($ket == 'oke') {
 					array_push($datanya,$getdata[$key]);
 					// $total['item'] += 1;

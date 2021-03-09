@@ -79,8 +79,8 @@ class M_monitoring extends CI_Model
         return $query->result_array();
     }
     
-    public function getPlanDate(){
-        $sql = "select * from khs_plan_item_monitoring_date";
+    public function getPlanDate($term){
+        $sql = "select * from khs_plan_item_monitoring_date $term";
         $query = $this->oracle->query($sql);
         return $query->result_array();
     }

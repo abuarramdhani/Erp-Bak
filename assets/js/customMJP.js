@@ -395,11 +395,36 @@ function sumSetplan(no, tgl) {
 }
 
 //------------------------------------------------------ITEM LIST-----------------------------------------------------------------
+
+$(document).on("change", "#kategori", function(){
+    var kategori = $('#kategori').val();
+    if (kategori) {
+        $.ajax({
+            data: { kategori : kategori},
+            url: baseurl + "MonitoringJobProduksi/ItemList/cekSubCategory",
+            dataType : 'html',
+            type: "POST",
+            success: function (result) {
+                if (result != '<option></option>') {
+                    $('#sub_kategori').select2('val','');
+                    $('#sub_kategori').html(result);
+                    $('#subcategory').css('display','');
+                }else{
+                    $('#sub_kategori').select2('val','');
+                    $('#sub_kategori').html(result);
+                    $('#subcategory').css('display','none');
+                }
+            },
+        });
+    }
+})
+
 function schItemList(th) {
     var  kategori   = $('#kategori').val();
+    var  subkategori   = $('#sub_kategori').val();
     $.ajax({
         url : baseurl + "MonitoringJobProduksi/ItemList/search",
-        data : {kategori : kategori},
+        data : {kategori : kategori, subkategori : subkategori},
         dataType : 'html',
         type : 'POST',
         beforeSend: function() {
@@ -440,10 +465,11 @@ function schItemList(th) {
 
 function tambahItemList(th) {
     var item        = $('#kode_item').val();
-    var kategori    = $('#kategori').val();
+    var kategori    = $('#kategori_item').val();
+    var subkategori    = $('#sub_kategori_item').val();
     $.ajax({
         url : baseurl + "MonitoringJobProduksi/ItemList/saveitem",
-        data: { item : item, kategori : kategori},
+        data: { item : item, kategori : kategori, subkategori : subkategori},
         type : "POST",
         dataType: "html",
         success: function(data) {
@@ -474,6 +500,7 @@ function deleteitemList(no) {
     var item        = $('#item'+no).val();
     var inv_id      = $('#inv_id'+no).val();
     var kategori    = $('#kategori'+no).val();
+    var subkategori    = $('#subkategori'+no).val();
     // console.log(item)
     Swal.fire({
         title: 'Apakah Anda Yakin ?',
@@ -485,7 +512,7 @@ function deleteitemList(no) {
         if (result.value) {  
             $.ajax({
                 url : baseurl + "MonitoringJobProduksi/ItemList/deleteitem",
-                data: {inv_id : inv_id, kategori : kategori},
+                data: {inv_id : inv_id, kategori : kategori, subkategori : subkategori},
                 type : "POST",
                 dataType: "html",
                 success: function(data) {
@@ -500,6 +527,26 @@ function deleteitemList(no) {
                 }
             })
     }})  
+}
+
+function updateflag(no) {
+    var inv_id      = $('#inv_id'+no).val();
+    var kategori    = $('#kategori'+no).val();
+    var subkategori = $('#subkategori'+no).val();
+    var flag        = $('#flag'+no).val();
+    if (flag == 'Y') {
+        $('#btn_check'+no).removeClass('fa-check-square-o').addClass('fa-square-o');
+        $('#flag'+no).val('');
+    }else{
+        $('#btn_check'+no).removeClass('fa-square-o').addClass('fa-check-square-o');
+        $('#flag'+no).val('Y');
+    }
+    $.ajax({
+        url : baseurl + "MonitoringJobProduksi/ItemList/updateflag",
+        data: {inv_id : inv_id, kategori : kategori, subkategori : subkategori, flag : flag},
+        type : "POST",
+        dataType: "html"
+    })
 }
 
 //-------------------------------------------------------MASTER KATEGORI--------------------------------------------------------------
@@ -552,73 +599,119 @@ function deletecategory(no) {
 function editcategory(no) {
     var id          = $('#id_kategori'+no).val();
     var kategori    = $('#kategori'+no).val();
-    Swal.fire({
-		title: 'Edit Category',
-		html : '<p style="text-align:left"><b>Category Name : </b>'+kategori+'</p>',
-		// type: 'success',
-		input: 'text',
-		inputAttributes: {
-			autocapitalize: 'off'
-		},
-		showCancelButton: true,
-		confirmButtonText: 'OK',
-		showLoaderOnConfirm: true,
-	}).then(result => {
-		if (result.value) {
-            var val = result.value;
-            $.ajax({
-                url : baseurl + "MonitoringJobProduksi/MasterKategori/editCategory",
-                data: {id : id, kategori : kategori, val : val},
-                type : "POST",
-                dataType: "html",
-                success: function(data) {
-                    if (data == 'not oke') {
-                        Swal.fire({
-                            title: 'Kategori Sudah Ada!',
-                            type: 'error',
-                            allowOutsideClick: false
-                        }).then(result => {
-                            if (result.value) {
-                                getMasterCategory(this);
-                        }}) 
-                    }else{
-                        getMasterCategory(this);
-                    }
-                }
-            })
-    }})
+    
+    $.ajax({
+        url : baseurl + "MonitoringJobProduksi/MasterKategori/editCategory",
+        data: {id : id, kategori : kategori},
+        type : "POST",
+        dataType: "html",
+        success: function(data) {
+            $('#mdl_masterctgr').modal('show');
+            $('#data_masterctgr').html(data);
+        }
+    })
+    // Swal.fire({
+	// 	title: 'Edit Category',
+	// 	html : '<p style="text-align:left"><b>Category Name : </b>'+kategori+'</p>',
+	// 	// type: 'success',
+	// 	input: 'text',
+	// 	inputAttributes: {
+	// 		autocapitalize: 'off'
+	// 	},
+	// 	showCancelButton: true,
+	// 	confirmButtonText: 'OK',
+	// 	showLoaderOnConfirm: true,
+	// }).then(result => {
+	// 	if (result.value) {
+    //         var val = result.value;
+    //         $.ajax({
+    //             url : baseurl + "MonitoringJobProduksi/MasterKategori/editCategory",
+    //             data: {id : id, kategori : kategori, val : val},
+    //             type : "POST",
+    //             dataType: "html",
+    //             success: function(data) {
+    //                 if (data == 'not oke') {
+    //                     Swal.fire({
+    //                         title: 'Kategori Sudah Ada!',
+    //                         type: 'error',
+    //                         allowOutsideClick: false
+    //                     }).then(result => {
+    //                         if (result.value) {
+    //                             getMasterCategory(this);
+    //                     }}) 
+    //                 }else{
+    //                     getMasterCategory(this);
+    //                 }
+    //             }
+    //         })
+    // }})
 }
 
 function saveCategory(th) {
     var kategori = $('#kategori').val();
+    var sub_kategori = $('[name="sub_kategori[]"]').map(function(){return $(this).val();}).get();
     $.ajax({
         url : baseurl + "MonitoringJobProduksi/MasterKategori/saveCategory",
-        data: {kategori : kategori},
+        data: {kategori : kategori, sub_kategori : sub_kategori},
         type : "POST",
         dataType: "html",
         success: function(data) {
-            $('#kategori').val('');
-            if (data == 'oke') {
-                Swal.fire({
-                    title: 'Kategori Berhasil Ditambahkan!',
-                    type: 'success',
-                    allowOutsideClick: false
-                }).then(result => {
-                    if (result.value) {
-                        getMasterCategory(this);
-                }}) 
-            }else{
-                Swal.fire({
-                    title: 'Kategori Sudah Ada!',
-                    type: 'error',
-                    allowOutsideClick: false
-                }).then(result => {
-                    if (result.value) {
-                        getMasterCategory(this);
-                }}) 
-            }
+            window.location.reload();
+            // $('#kategori').val('');
+            // if (data == 'oke') {
+            //     Swal.fire({
+            //         title: 'Kategori Berhasil Ditambahkan!',
+            //         type: 'success',
+            //         allowOutsideClick: false
+            //     }).then(result => {
+            //         if (result.value) {
+            //             getMasterCategory(this);
+            //     }}) 
+            // }else{
+            //     Swal.fire({
+            //         title: 'Kategori Sudah Ada!',
+            //         type: 'error',
+            //         allowOutsideClick: false
+            //     }).then(result => {
+            //         if (result.value) {
+            //             getMasterCategory(this);
+            //     }}) 
+            // }
         }
     }) 
+}
+
+function updateCategory() {
+    var id          = $('#id_kategori').val();
+    var kategori    = $('#kategori').val();
+    var sub_kategori = $('[name="sub_kategori2[]"]').map(function(){return $(this).val();}).get();
+    $.ajax({
+        url : baseurl + "MonitoringJobProduksi/MasterKategori/updateCategory",
+        data: {id : id,kategori : kategori, sub_kategori : sub_kategori},
+        type : "POST",
+        dataType: "html",
+        success: function(data) {
+            $('#mdl_masterctgr').modal('hide');
+        }
+    })
+}
+
+var i = 2;
+function tmb_subkategori() {
+    $('#tambah_subkategori').append('<div class="tambah_subkategori"><br><br><div class="col-md-4 text-right"></div><div class="col-md-4"><input id="sub_kategori'+i+'" name="sub_kategori[]" class="form-control" style="text-transform:uppercase" placeholder="Masukkan SubKategori"></div><div class="col-md-1"><button type="button" class="btn bg-default tombolhapus'+i+'" style="margin-left:15px"><i class="fa fa-minus"></i></button></div></div>');
+
+    $(document).on('click', '.tombolhapus'+i,  function() {
+		$(this).parents('.tambah_subkategori').remove()
+	});
+}
+
+var j = 2;
+function tmb_subkategori2() {
+    $('#tambah_subkategori2').append('<div class="tambah_subkategori2"><div class="col-md-3 text-right"></div><div class="col-md-6"><input name="sub_kategori2[]" class="form-control" style="text-transform:uppercase" placeholder="Masukkan SubKategori"></div><div class="col-md-1"><button type="button" class="btn bg-default tombolhapus'+j+'" style="margin-left:15px"><i class="fa fa-minus"></i></button></div><br><br></div>');
+
+    $(document).on('click', '.tombolhapus'+i,  function() {
+		$(this).parents('.tambah_subkategori2').remove()
+	});
 }
 
 //------------------------------------------------- USER MANAGEMENT ------------------------------------------------------------------
@@ -733,4 +826,76 @@ function deleteUser(no) {
                 }
             })
     }}) 
+}
+
+//----------------------------------------------------LAPORAN PRODUKSI------------------------------------------------
+
+$(document).on("change", "#asal", function(){
+    var asal = $('#asal').val();
+    if (asal == 'TRANSAKSI') {
+        $('.asal_transaksi').css('display', '');
+        
+        $(".getsubinv").select2({
+            allowClear: true,
+            placeholder: "pilih Subinv",
+            minimumInputLength: 3,
+            ajax: {
+                url: baseurl + "MonitoringJobProduksi/LaporanProduksi/getSubinv",
+                dataType: 'json',
+                type: "GET",
+                data: function (params) {
+                        var queryParameters = {
+                                term: params.term,
+                        }
+                        return queryParameters;
+                },
+                processResults: function (data) {
+                    return {
+                        results: $.map(data, function (obj) {
+                            return {id:obj.SECONDARY_INVENTORY_NAME, text:obj.SECONDARY_INVENTORY_NAME};
+                        })
+                    };
+                }
+            }
+        });	
+    }else{
+        $('.asal_transaksi').css('display', 'none');
+        $(".getsubinv").select2('val', '');
+    }
+})
+
+function schLaporanProd(th) {
+    var  kategori   = $('#kategori').val();
+    var  bulan      = $('#periode_bulan').val();
+    var  asal      = $('#asal').val();
+    var  subinv_from      = $('#subinv_from').val();
+    var  subinv_to      = $('#subinv_to').val();
+    $.ajax({
+        url : baseurl + "MonitoringJobProduksi/LaporanProduksi/search",
+        data : {bulan : bulan, kategori : kategori, asal : asal, subinv_from : subinv_from, subinv_to : subinv_to},
+        dataType : 'html',
+        type : 'POST',
+        beforeSend: function() {
+        $('div#tbl_laporan' ).html('<center><img style="width:90px; height:auto" src="'+baseurl+'assets/img/gif/loading11.gif"></center>' );
+        },
+        success : function(data) {
+            $('div#tbl_laporan' ).html(data);
+            $('#tb_laporan').dataTable({
+                scrollX: true,
+                paging : false,
+                scrollY : 500,
+                ordering : false,
+                fixedColumns:   {
+                    leftColumns: 2,
+                }
+            });
+            $('#tb_laporan2').dataTable({
+                scrollX: true,
+                ordering : false,
+                fixedColumns:   {
+                    leftColumns: 2,
+                }
+            });
+        }
+    })
 }
