@@ -1509,16 +1509,16 @@ public function exportExcel($idnya){
     $indexSatu=18;
       $indexDua=18;
 
-      //set pembulatan dengan mengisi angka
-    if ($jumlah < 450) {
-        $end = 450;
-    } else {
-        // echo $jumlah; exit();
-        $g = (int)($jumlah / 10);
-        $g += 1;
-        $end = $g * 10;
-        // echo "g = $g <br>jml = $jumlah <br>".$end;
-    }
+      //set pembulatan dengan mengisi angka, x_X
+    // if ($jumlah < 610) {
+    //     $end = 610;
+    // } else {
+    //     // echo $jumlah; exit();
+    //     $g = (int)($jumlah / 10);
+    //     $g += 1;
+    //     $end = $g * 10;
+    //     // echo "g = $g <br>jml = $jumlah <br>".$end;
+    // }
 
     //IRREGULAR JOBS
 
@@ -1554,8 +1554,9 @@ public function exportExcel($idnya){
     }
 
     // if ($cycle_time < 450) {
-    if ($akhir < 450) {
-        $end = 450;
+
+    if ($akhir <= 600) {
+        $end = 610;
     } else {
         // echo $jumlah; exit();
         // $g = (int)($cycle_time / 10);
@@ -1640,10 +1641,10 @@ public function exportExcel($idnya){
                         if ($i == 0) {
                             $border = 'left,top';
                             $borderstyle = 'thick';
-                        }elseif ($i == 8 || $i == 185 || $i == 319 || $i == 400 || $i == 449 || $i == 490 || $i == 306 || $i == 600) {
+                        }elseif ($i == 8 || $i == 185 || $i == 319 || $i == 400 || $i == 449 || $i == 490  || $i == 623) {
                             $border = 'right,top';
                             $borderstyle = 'thick';
-                        } elseif ($i < 600) {
+                        } elseif ($i < 623) {
                             $border = 'top';
                             $borderstyle = 'thick';
                         } else {
@@ -1653,7 +1654,7 @@ public function exportExcel($idnya){
                         if ($i == 0) {
                             $border='left';
                             $borderstyle='thick';
-                        } elseif ($i == 8 || $i == 185 || $i == 319 || $i == 400 || $i == 449 || $i == 490 || $i == 306 || $i == 600) {
+                        } elseif ($i == 8 || $i == 185 || $i == 319 || $i == 400 || $i == 449 || $i == 490  || $i == 623) {
                             $border='right';
                             $borderstyle='thick';
                         } elseif ($i >= 186 && $i < 490) {
@@ -1666,10 +1667,10 @@ public function exportExcel($idnya){
                         if ($i == 0) {
                             $border = 'left';
                             $borderstyle = 'thick';
-                        } elseif ($i == 8 || $i == 185 || $i == 319 || $i == 400 || $i == 449 || $i == 490 || $i == 306 || $i == 600) {
+                        } elseif ($i == 8 || $i == 185 || $i == 319 || $i == 400 || $i == 449 || $i == 490  || $i == 623) {
                             $border='right';
                             $borderstyle='thick';
-                        } elseif ($i >= 307 && $i < 490) {
+                        } elseif ($i >= 491 && $i < 623) {
                                 $border='top';
                                 $borderstyle='thin';
                         } else {
@@ -1679,7 +1680,7 @@ public function exportExcel($idnya){
                         if ($i == 0) {
                             $border='left';
                             $borderstyle='thick';
-                        } elseif ($i == 8 || $i == 185 || $i == 319 || $i == 400 || $i == 449 || $i == 490 || $i == 306 || $i == 600) {
+                        } elseif ($i == 8 || $i == 185 || $i == 319 || $i == 400 || $i == 449 || $i == 490  || $i == 623) {
                             $border='right';
                             $borderstyle='thick';
                         } elseif ($i >= 9 && $i < 185) {
@@ -1695,10 +1696,10 @@ public function exportExcel($idnya){
                         if ($i == 0) {
                             $border='left';
                             $borderstyle='thick';
-                        } elseif ($i == 8 || $i == 185 || $i == 319 || $i == 400 || $i == 449 || $i == 490 || $i == 306 || $i == 600) {
+                        } elseif ($i == 8 || $i == 185 || $i == 319 || $i == 400 || $i == 449 || $i == 490  || $i == 623) {
                             $border='right';
                             $borderstyle='thick';
-                        } elseif ($i >= 307 && $i < 490) {
+                        } elseif ($i >= 491 && $i < 623) {
                             $border='top';
                             $borderstyle='thin';
                         } else {
@@ -1708,7 +1709,7 @@ public function exportExcel($idnya){
                         if ($i == 0) {
                             $border='left';
                             $borderstyle='thick';
-                        } elseif ($i == 8 || $i == 185 || $i == 319 || $i == 400 || $i == 449 || $i == 490 || $i == 306 || $i == 600) {
+                        } elseif ($i == 8 || $i == 185 || $i == 319 || $i == 400 || $i == 449 || $i == 490  || $i == 623) {
                             $border='right';
                             $borderstyle='thick';
                         } else {
@@ -1718,13 +1719,13 @@ public function exportExcel($idnya){
                         if ($i == 0) {
                             $border='left';
                             $borderstyle='thick';
-                        } elseif ($i == 8 || $i == 185 || $i == 319 || $i == 400 || $i == 449 || $i == 490 || $i == 306 || $i == 600) {
+                        } elseif ($i == 8 || $i == 185 || $i == 319 || $i == 400 || $i == 449 || $i == 490  || $i == 623) {
                             $border='right';
                             $borderstyle='thick';
                         } elseif ($i >= 186 && $i < 490) {
                             $border='top,bottom';
                             $borderstyle='thin';
-                        } elseif ($i >= 307 && $i < 490) {
+                        } elseif ($i >= 491 && $i < 623) {
                             $border='top';
                             $borderstyle='thin';
                         } else {
@@ -1734,7 +1735,7 @@ public function exportExcel($idnya){
                         if ($i == 0) {
                             $border='left';
                             $borderstyle='thick';
-                        } elseif ($i == 8 || $i == 185 || $i == 319 || $i == 400 || $i == 449 || $i == 490 || $i == 306 || $i == 600) {
+                        } elseif ($i == 8 || $i == 185 || $i == 319 || $i == 400 || $i == 449 || $i == 490  || $i == 623) {
                             $border='right';
                             $borderstyle='thick';
                         } else {
@@ -1744,14 +1745,14 @@ public function exportExcel($idnya){
                         if ($i == 0) {
                             $border='left';
                             $borderstyle='thick';
-                        } elseif ($i == 8 || $i == 185 || $i == 319 || $i == 400 || $i == 449 || $i == 490 || $i == 306 || $i == 600) {
+                        } elseif ($i == 8 || $i == 185 || $i == 319 || $i == 400 || $i == 449 || $i == 490  || $i == 623) {
                             $border='right';
                             $borderstyle='thick';
                         } else {
 
                         }
                     } elseif ($j == 9) {
-                        if ($i > 600) {
+                        if ($i > 623) {
                             $border='bottom';
                             $borderstyle='thick';
                         } elseif ($i == 12 || $i == 13) {
@@ -1840,12 +1841,12 @@ public function exportExcel($idnya){
                             $halign = 'center';
                             $fill = '#fcba03';
                         }elseif ($i == 186 || $i == 320 || $i == 401 || $i == 450 || $i == 491) {
-                            $fontsize = 7;
+                            $fontsize = 9;
                             // $fontstyle = '';
                             $valign = 'center';
                             $halign = 'left';
-                        } elseif ($i == 322) {
-                            $fontsize = 7;
+                        } elseif ($i == 522) {
+                            $fontsize = 9;
                             // $fontstyle = '';
                             $valign = 'center';
                             $halign = 'center';
@@ -1862,7 +1863,7 @@ public function exportExcel($idnya){
                             $fontsize = 14;
                             $fontstyle = 'bold';
                             $valign = 'center';
-                            $halign = 'left';
+                            $halign = 'center';
                         }elseif ($i == 186 || $i == 320 || $i == 401 || $i == 450) {
                             $fontsize = 8;
                             $fontstyle = 'bold';
@@ -1876,14 +1877,14 @@ public function exportExcel($idnya){
                             $fontsize = 12;
                             $fontstyle = 'bold';
                             $valign = 'bottom';
-                            $halign = 'left';
-                        } elseif ($i == 307) {
-                            $fontsize = 7;
+                            $halign = 'center';
+                        } elseif ($i == 491) {
+                            $fontsize = 9;
                             // $fontstyle = '';
                             $valign = 'center';
                             $halign = 'left';
-                        } elseif ($i == 322) {
-                            $fontsize = 7;
+                        } elseif ($i == 522) {
+                            $fontsize = 9;
                             // $fontstyle = '';
                             $valign = 'center';
                             $halign = 'center';
@@ -1902,7 +1903,7 @@ public function exportExcel($idnya){
                             $valign = 'center';
                             $halign = 'center';
                         } elseif ($i == 186 || $i == 320 || $i == 401 || $i == 450) {
-                            $fontsize = 7;
+                            $fontsize = 9;
                             // $fontstyle = '';
                             $valign = 'center';
                             $halign = 'left';
@@ -1914,19 +1915,19 @@ public function exportExcel($idnya){
                             $fontsize = 13;
                             // $fontstyle = '';
                             $valign = 'center';
-                            $halign = 'left';
+                            $halign = 'center';
                         }elseif ($i == 186 || $i == 320 || $i == 401 || $i == 450) {
                             $fontsize = 8;
                             $fontstyle = 'bold';
                             $valign = 'center';
                             $halign = 'center';
-                        } elseif ($i == 307) {
-                            $fontsize = 7;
+                        } elseif ($i == 491) {
+                            $fontsize = 9;
                             // $fontstyle = '';
                             $valign = 'center';
                             $halign = 'left';
-                        } elseif ($i == 322) {
-                            $fontsize = 7;
+                        } elseif ($i == 522) {
+                            $fontsize = 9;
                             // $fontstyle = '';
                             $valign = 'center';
                             $halign = 'center';
@@ -1944,19 +1945,19 @@ public function exportExcel($idnya){
                             $fontsize = 13;
                             // $fontstyle = '';
                             $valign = 'center';
-                            $halign = 'left';
-                        } elseif ($i == 186 || $i == 320 || $i == 401 || $i == 450) {
-                            $fontsize = 7;
+                            $halign = 'center';
+                        } elseif ($i == 186 || $i == 320 || $i == 401 || $i == 450 || $i == 491) {
+                            $fontsize = 9;
                             // $fontstyle = '';
                             $valign = 'center';
                             $halign = 'left';
-                        } elseif ($i == 307) {
-                            $fontsize = 7;
+                        } elseif ($i == 491) {
+                            $fontsize = 9;
                             // $fontstyle = '';
                             $valign = 'center';
                             $halign = 'left';
-                        } elseif ($i == 322) {
-                            $fontsize = 7;
+                        } elseif ($i == 522) {
+                            $fontsize = 9;
                             // $fontstyle = '';
                             $valign = 'center';
                             $halign = 'center';
@@ -3368,7 +3369,7 @@ public function exportExcel($idnya){
             $styles[$pakeRowIrregular + (($rowIrregular*2) - $min001)][11]['halign'] = 'center';
 
 
-    // TIME FLOW
+    // TIME FLOW (MASTER)
         for ($j=0; $j < sizeof($elemen_kerja); $j++) {
             $rowflow = $rownya + ($j * 3);
             if ($muda[$j] > 1) {
@@ -3379,6 +3380,7 @@ public function exportExcel($idnya){
                 $finishmuda[$j] = -1;
             }
             for ($i=0; $i < $cycle_time; $i++) {
+							// ng kene !
                 if ($i >= $start[$j] && $i <= $finish[$j]) {
                     if ($jenis_proses[$j] === 'MANUAL') {
                         $warna = '#000000';
@@ -3414,6 +3416,7 @@ public function exportExcel($idnya){
                 }
             }
         }
+
         //Irregular Job
             for ($i=0; $i < $jumlah_hasil_irregular; $i++) {
                 $styles[$rownya][$last_finish + 14 + $i]['fill'] = '#2a61ad';
@@ -3430,381 +3433,387 @@ public function exportExcel($idnya){
         // $rows[$rownya + 13][$cycle_time + 14] = 'Cycle Time = '.$cycle_time.' Detik';
 
 
+		if ($cycle_time > $takt_time) {
+			$paling_lama = $cycle_time;
+		}else {
+			$paling_lama = $takt_time;
+		}
+
+		$loop_ = ceil($paling_lama/610);
+		for ($x=1; $x <= $loop_; $x++) {
+			$writer->writeSheetHeader($sheet1.'_'.$x, $header, $col_options);      //WRITE HEADER
+			for ($i=0; $i < sizeof($rows); $i++) {
+			    $writer->writeSheetRow($sheet1.'_'.$x, $rows[$i], $styles[$i]);    //WRITE ROWS
+			}
+
+			//LAYOUT HEADER, FORMATTING MERGE CELL
+			    $writer->markMergedCell($sheet1.'_'.$x, $start_row=0, $start_col=0, $end_row=0, $end_col=($indexAngka + $end)-1); // TEXT IDENTITAS TSKK
+			    //ROW 1
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row=1, $start_col=0, $end_row=9, $end_col=1); //LOGO QUICK
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row=1, $start_col=2, $end_row=1, $end_col=8); //BLANK
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row=1, $start_col=9, $end_row=3, $end_col=185); //SEKSI GEDE
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row=1, $start_col=186, $end_row=1, $end_col=319); //TIPE
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row=1, $start_col=320, $end_row=1, $end_col=400); //SEKSI
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row=1, $start_col=401, $end_row=1, $end_col=449); //JML MESIN
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row=1, $start_col=450, $end_row=1, $end_col=490); //PROSES KE
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row=1, $start_col=491, $end_row=2, $end_col=521); //DOC NO
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row=1, $start_col=522, $end_row=2, $end_col=523); //TITIK 2
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row=1, $start_col=524, $end_row=2, $end_col=623); //BLANK
+
+			    //ROW 2
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row=2, $start_col=2, $end_row=2, $end_col=8); //CV KHS
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row=2, $start_col=186, $end_row=3, $end_col=319); //DATA TIPE
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row=2, $start_col=320, $end_row=3, $end_col=400); //DATA SEKSI
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row=2, $start_col=401, $end_row=3, $end_col=449); //DATA JML MESIN
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row=2, $start_col=450, $end_row=3, $end_col=490); //DATA PROSES KE
+
+			    //ROW 3
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row=3, $start_col=2, $end_row=4, $end_col=8); //ALAMAT
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row=3, $start_col=491, $end_row=4, $end_col=521); //REV NO
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row=3, $start_col=522, $end_row=4, $end_col=523); //TITIK 2
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row=3, $start_col=524, $end_row=4, $end_col=623); //BLANK
+
+			    //ROW 4
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row=4, $start_col=9, $end_row=9, $end_col=185); //TABEL STANDAR KERJA KOMBINASI
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row=4, $start_col=186, $end_row=4, $end_col=319); //NAMA PART
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row=4, $start_col=320, $end_row=4, $end_col=400); //LINE
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row=4, $start_col=401, $end_row=4, $end_col=449); //NO MESIN
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row=4, $start_col=450, $end_row=4, $end_col=490); //QTY/PROSES
+
+			    //ROW 5
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row=5, $start_col=2, $end_row=5, $end_col=8); //YOGYAKARTA
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row=5, $start_col=186, $end_row=6, $end_col=319); //DATA NAMA PART
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row=5, $start_col=320, $end_row=6, $end_col=400); //DATA LINE
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row=5, $start_col=401, $end_row=6, $end_col=449); //DATA NO MESIN
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row=5, $start_col=450, $end_row=6, $end_col=490); //DATA QTY/PROSES
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row=5, $start_col=491, $end_row=6, $end_col=521); //REV DATE
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row=5, $start_col=522, $end_row=6, $end_col=523); //TITIK 2
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row=5, $start_col=524, $end_row=6, $end_col=623); //BLANK
+
+			    //ROW 6
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row=6, $start_col=2, $end_row=6, $end_col=8); //BLANK
+
+			    //ROW 7
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row=7, $start_col=2, $end_row=7, $end_col=8); //DEPARTEMEN
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row=7, $start_col=186, $end_row=7, $end_col=319); //KODE PART
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row=7, $start_col=320, $end_row=7, $end_col=400); //TAKT TIME
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row=7, $start_col=401, $end_row=7, $end_col=449); //ALAT BANTU
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row=7, $start_col=450, $end_row=7, $end_col=490); //TGL OBSERVASI
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row=7, $start_col=491, $end_row=9, $end_col=521); //PAGE
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row=7, $start_col=522, $end_row=9, $end_col=523); //TITIK 2
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row=7, $start_col=524, $end_row=9, $end_col=623); //BLANK
+
+			    //ROW 8
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row=8, $start_col=2, $end_row=9, $end_col=8); //BLANK
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row=8, $start_col=186, $end_row=9, $end_col=319); //DATA KODE PART
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row=8, $start_col=320, $end_row=9, $end_col=400); //DATA TAKT TIME
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row=8, $start_col=401, $end_row=9, $end_col=449); //DATA ALAT BANTU
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row=8, $start_col=450, $end_row=9, $end_col=490); //DATA TGL OBSERVASI
+
+			    //ROW 9
+			    //ROW 10
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row=11, $start_col=0, $end_row=13, $end_col=0); //HEAD NO
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row=11, $start_col=1, $end_row=13, $end_col=8); //HEAD ELEMEN KERJA
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row=11, $start_col=9, $end_row=13, $end_col=9); //HEAD MANUAL
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row=11, $start_col=10, $end_row=13, $end_col=10); //HEAD AUTO
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row=11, $start_col=11, $end_row=13, $end_col=11); //HEAD WALK
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row=11, $start_col=14, $end_row=11, $end_col=($indexAngka + $end)-1); //HEAD DETIK
+
+			    //ROW 11
+			        for ($i= $indexAngka; $i < ($indexAngka + $end); $i+=10) {
+			            $fin = $i + 9;
+			            $writer->markMergedCell($sheet1.'_'.$x, $start_row=12, $start_col= $i, $end_row=12, $end_col= $fin);
+			        }
+
+			    //ROW ELEMEN KERJA
+			        for ($i=0; $i < sizeof($elemen_kerja); $i++) {
+			            $rowstart = 15 + ($i * 3);
+			            $rowend = $rowstart + 2;
+			            $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowstart, $start_col= 0, $end_row=$rowend, $end_col= 0);
+			            $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowstart, $start_col= 1, $end_row=$rowend, $end_col= 8);
+			            $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowstart, $start_col= 9, $end_row=$rowend, $end_col= 9);
+			            $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowstart, $start_col= 10, $end_row=$rowend, $end_col= 10);
+			            $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowstart, $start_col= 11, $end_row=$rowend, $end_col= 11);
+			        }
+
+			    //ROW JUMLAH & KETERANGAN
+			        $rowjum = 15 + (sizeof($elemen_kerja) * 3) + 1;
+			        //JUMLAH
+			            $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum, $start_col= 0, $end_row=$rowjum+4, $end_col= 8);
+			            $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum, $start_col= 9, $end_row=$rowjum+3, $end_col= 9);
+			            $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum, $start_col= 10, $end_row=$rowjum+3, $end_col= 10);
+			            $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum, $start_col= 11, $end_row=$rowjum+3, $end_col= 11);
+			            $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+4, $start_col= 9, $end_row=$rowjum+4, $end_col= 11);
+			        //KETERANGAN
+			            // 1
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum, $start_col= 18, $end_row=$rowjum, $end_col= 107);
+
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+1, $start_col= 20, $end_row=$rowjum+1, $end_col= 72);
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+1, $start_col= 73, $end_row=$rowjum+1, $end_col= 77);
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+1, $start_col= 78, $end_row=$rowjum+1, $end_col= 93);
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+1, $start_col= 94, $end_row=$rowjum+1, $end_col= 107);
+
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+2, $start_col= 20, $end_row=$rowjum+2, $end_col= 72);
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+2, $start_col= 73, $end_row=$rowjum+2, $end_col= 77);
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+2, $start_col= 78, $end_row=$rowjum+2, $end_col= 93);
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+2, $start_col= 94, $end_row=$rowjum+2, $end_col= 107);
+
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+3, $start_col= 20, $end_row=$rowjum+3, $end_col= 72);
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+3, $start_col= 73, $end_row=$rowjum+3, $end_col= 77);
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+3, $start_col= 78, $end_row=$rowjum+3, $end_col= 93);
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+3, $start_col= 94, $end_row=$rowjum+3, $end_col= 107);
+
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+4, $start_col= 20, $end_row=$rowjum+4, $end_col= 72);
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+4, $start_col= 73, $end_row=$rowjum+4, $end_col= 77);
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+4, $start_col= 78, $end_row=$rowjum+4, $end_col= 93);
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+4, $start_col= 94, $end_row=$rowjum+4, $end_col= 107);
+
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+5, $start_col= 20, $end_row=$rowjum+5, $end_col= 72);
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+5, $start_col= 73, $end_row=$rowjum+5, $end_col= 77);
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+5, $start_col= 78, $end_row=$rowjum+5, $end_col= 93);
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+5, $start_col= 94, $end_row=$rowjum+5, $end_col= 107);
+
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+6, $start_col= 20, $end_row=$rowjum+6, $end_col= 72);
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+6, $start_col= 73, $end_row=$rowjum+6, $end_col= 77);
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+6, $start_col= 78, $end_row=$rowjum+6, $end_col= 93);
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+6, $start_col= 94, $end_row=$rowjum+6, $end_col= 107);
+
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+7, $start_col= 20, $end_row=$rowjum+7, $end_col= 72);
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+7, $start_col= 73, $end_row=$rowjum+7, $end_col= 77);
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+7, $start_col= 78, $end_row=$rowjum+7, $end_col= 93);
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+7, $start_col= 94, $end_row=$rowjum+7, $end_col= 107);
+
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+8, $start_col= 20, $end_row=$rowjum+8, $end_col= 72);
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+8, $start_col= 73, $end_row=$rowjum+8, $end_col= 77);
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+8, $start_col= 78, $end_row=$rowjum+8, $end_col= 93);
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+8, $start_col= 94, $end_row=$rowjum+8, $end_col= 107);
+
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+9, $start_col= 20, $end_row=$rowjum+9, $end_col= 72);
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+9, $start_col= 73, $end_row=$rowjum+9, $end_col= 77);
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+9, $start_col= 78, $end_row=$rowjum+9, $end_col= 93);
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+9, $start_col= 94, $end_row=$rowjum+9, $end_col= 107);
+			                 //al e01821
+
+			            // 2
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum, $start_col= 114, $end_row=$rowjum, $end_col= 184);
+
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+1, $start_col= 112, $end_row=$rowjum+3, $end_col= 126);
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+1, $start_col= 127, $end_row=$rowjum+3, $end_col= 131);
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+1, $start_col= 132, $end_row=$rowjum+1, $end_col= 184);
+
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+2, $start_col= 132, $end_row=$rowjum+3, $end_col= 133);
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+2, $start_col= 134, $end_row=$rowjum+2, $end_col= 182);
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+2, $start_col= 183, $end_row=$rowjum+3, $end_col= 184);
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+3, $start_col= 134, $end_row=$rowjum+3, $end_col= 182);
+
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+4, $start_col= 127, $end_row=$rowjum+6, $end_col= 131);
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+4, $start_col= 132, $end_row=$rowjum+4, $end_col= 184);
+
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+5, $start_col= 132, $end_row=$rowjum+6, $end_col= 133);
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+5, $start_col= 134, $end_row=$rowjum+5, $end_col= 182);
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+5, $start_col= 183, $end_row=$rowjum+6, $end_col= 184);
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+6, $start_col= 134, $end_row=$rowjum+6, $end_col= 182);
+
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+7, $start_col= 127, $end_row=$rowjum+8, $end_col= 131);
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+7, $start_col= 132, $end_row=$rowjum+8, $end_col= 146);
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+7, $start_col= 147, $end_row=$rowjum+8, $end_col= 161);
+
+			            // REV 20-10-2020
+			            // 3
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum, $start_col= 191, $end_row=$rowjum, $end_col= 272);
+
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+1, $start_col= 191, $end_row=$rowjum+2, $end_col= 205);
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+1, $start_col= 206, $end_row=$rowjum+2, $end_col= 210);
+
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+1, $start_col= 211, $end_row=$rowjum+1, $end_col= 227);
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+1, $start_col= 232, $end_row=$rowjum+1, $end_col= 248);
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+1, $start_col= 260, $end_row=$rowjum+1, $end_col= 272);
+
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+1, $start_col= 228, $end_row=$rowjum+2, $end_col= 231);
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+1, $start_col= 249, $end_row=$rowjum+2, $end_col= 259);
+
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+2, $start_col= 211, $end_row=$rowjum+2, $end_col= 227);
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+2, $start_col= 232, $end_row=$rowjum+2, $end_col= 248);
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+2, $start_col= 260, $end_row=$rowjum+2, $end_col= 272);
+
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+3, $start_col= 206, $end_row=$rowjum+4, $end_col= 210);
+
+			                // $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+3, $start_col= 211, $end_row=$rowjum+3, $end_col= 221);
+			                // $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+4, $start_col= 211, $end_row=$rowjum+4, $end_col= 221);
+			                if (sizeof($waktu_irregular) <= 4) {
+			                  foreach ($waktu_irregular as $key => $val) {
+			                    if ($key == 0) {
+			                      $kolom_end = 221;
+			                      $kolom_start = $key;
+			                    }else {
+			                      if ($key == 2) {
+			                        $plus_kolom = 5;
+			                      }elseif ($key == 3) {
+			                        $plus_kolom = 10;
+			                      }else {
+			                        $plus_kolom = 0;
+			                      }
+			                      $kolom_end = 226 + ((10* $key) + $plus_kolom);
+			                      $kolom_start = 15 * $key;
+			                    }
+			                    $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+3, $start_col= 211 + $kolom_start, $end_row=$rowjum+3, $end_col=$kolom_end);
+			                    $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+4, $start_col= 211 + $kolom_start, $end_row=$rowjum+4, $end_col=$kolom_end);
+
+			                    $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+3, $start_col= $kolom_end+1, $end_row=$rowjum+4, $end_col=$kolom_end+4);
+			                  }
+			                }else {
+			                  $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+3, $start_col= 211, $end_row=$rowjum+4, $end_col= 272);
+			                }
+
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+5, $start_col= 206, $end_row=$rowjum+5, $end_col= 210);
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+5, $start_col= 211, $end_row=$rowjum+5, $end_col= 229);
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+5, $start_col= 230, $end_row=$rowjum+5, $end_col= 259);
 
 
-    $writer->writeSheetHeader($sheet1, $header, $col_options);      //WRITE HEADER
-    for ($i=0; $i < sizeof($rows); $i++) {
-        $writer->writeSheetRow($sheet1, $rows[$i], $styles[$i]);    //WRITE ROWS
-    }
+			            // 4
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum, $start_col= 279, $end_row=$rowjum, $end_col= 361);
 
-    //LAYOUT HEADER, FORMATTING MERGE CELL
-        $writer->markMergedCell($sheet1, $start_row=0, $start_col=0, $end_row=0, $end_col=($indexAngka + $end)-1); // TEXT IDENTITAS TSKK
-        //ROW 1
-            $writer->markMergedCell($sheet1, $start_row=1, $start_col=0, $end_row=9, $end_col=1); //LOGO QUICK
-            $writer->markMergedCell($sheet1, $start_row=1, $start_col=2, $end_row=1, $end_col=8); //BLANK
-            $writer->markMergedCell($sheet1, $start_row=1, $start_col=9, $end_row=3, $end_col=185); //SEKSI GEDE
-            $writer->markMergedCell($sheet1, $start_row=1, $start_col=186, $end_row=1, $end_col=319); //TIPE
-            $writer->markMergedCell($sheet1, $start_row=1, $start_col=320, $end_row=1, $end_col=400); //SEKSI
-            $writer->markMergedCell($sheet1, $start_row=1, $start_col=401, $end_row=1, $end_col=449); //JML MESIN
-            $writer->markMergedCell($sheet1, $start_row=1, $start_col=450, $end_row=1, $end_col=490); //PROSES KE
-            $writer->markMergedCell($sheet1, $start_row=1, $start_col=491, $end_row=2, $end_col=521); //DOC NO
-            $writer->markMergedCell($sheet1, $start_row=1, $start_col=522, $end_row=2, $end_col=523); //TITIK 2
-            $writer->markMergedCell($sheet1, $start_row=1, $start_col=524, $end_row=2, $end_col=600); //BLANK
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+1, $start_col= 279, $end_row=$rowjum+2, $end_col= 293);
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+1, $start_col= 294, $end_row=$rowjum+2, $end_col= 298);
 
-        //ROW 2
-            $writer->markMergedCell($sheet1, $start_row=2, $start_col=2, $end_row=2, $end_col=8); //CV KHS
-            $writer->markMergedCell($sheet1, $start_row=2, $start_col=186, $end_row=3, $end_col=319); //DATA TIPE
-            $writer->markMergedCell($sheet1, $start_row=2, $start_col=320, $end_row=3, $end_col=400); //DATA SEKSI
-            $writer->markMergedCell($sheet1, $start_row=2, $start_col=401, $end_row=3, $end_col=449); //DATA JML MESIN
-            $writer->markMergedCell($sheet1, $start_row=2, $start_col=450, $end_row=3, $end_col=490); //DATA PROSES KE
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+1, $start_col= 299, $end_row=$rowjum+1, $end_col= 361);
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+2, $start_col= 299, $end_row=$rowjum+2, $end_col= 361);
 
-        //ROW 3
-            $writer->markMergedCell($sheet1, $start_row=3, $start_col=2, $end_row=4, $end_col=8); //ALAMAT
-            $writer->markMergedCell($sheet1, $start_row=3, $start_col=491, $end_row=4, $end_col=521); //REV NO
-            $writer->markMergedCell($sheet1, $start_row=3, $start_col=522, $end_row=4, $end_col=523); //TITIK 2
-            $writer->markMergedCell($sheet1, $start_row=3, $start_col=524, $end_row=4, $end_col=600); //BLANK
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+3, $start_col= 294, $end_row=$rowjum+4, $end_col= 298);
 
-        //ROW 4
-            $writer->markMergedCell($sheet1, $start_row=4, $start_col=9, $end_row=9, $end_col=185); //TABEL STANDAR KERJA KOMBINASI
-            $writer->markMergedCell($sheet1, $start_row=4, $start_col=186, $end_row=4, $end_col=319); //NAMA PART
-            $writer->markMergedCell($sheet1, $start_row=4, $start_col=320, $end_row=4, $end_col=400); //LINE
-            $writer->markMergedCell($sheet1, $start_row=4, $start_col=401, $end_row=4, $end_col=449); //NO MESIN
-            $writer->markMergedCell($sheet1, $start_row=4, $start_col=450, $end_row=4, $end_col=490); //QTY/PROSES
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+3, $start_col= 299, $end_row=$rowjum+3, $end_col= 361);
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+4, $start_col= 299, $end_row=$rowjum+4, $end_col= 361);
 
-        //ROW 5
-            $writer->markMergedCell($sheet1, $start_row=5, $start_col=2, $end_row=5, $end_col=8); //YOGYAKARTA
-            $writer->markMergedCell($sheet1, $start_row=5, $start_col=186, $end_row=6, $end_col=319); //DATA NAMA PART
-            $writer->markMergedCell($sheet1, $start_row=5, $start_col=320, $end_row=6, $end_col=400); //DATA LINE
-            $writer->markMergedCell($sheet1, $start_row=5, $start_col=401, $end_row=6, $end_col=449); //DATA NO MESIN
-            $writer->markMergedCell($sheet1, $start_row=5, $start_col=450, $end_row=6, $end_col=490); //DATA QTY/PROSES
-            $writer->markMergedCell($sheet1, $start_row=5, $start_col=491, $end_row=6, $end_col=521); //REV DATE
-            $writer->markMergedCell($sheet1, $start_row=5, $start_col=522, $end_row=6, $end_col=523); //TITIK 2
-            $writer->markMergedCell($sheet1, $start_row=5, $start_col=524, $end_row=6, $end_col=600); //BLANK
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+5, $start_col= 294, $end_row=$rowjum+5, $end_col= 298);
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+5, $start_col= 299, $end_row=$rowjum+5, $end_col= 318);
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+5, $start_col= 319, $end_row=$rowjum+5, $end_col= 333);
 
-        //ROW 6
-            $writer->markMergedCell($sheet1, $start_row=6, $start_col=2, $end_row=6, $end_col=8); //BLANK
-
-        //ROW 7
-            $writer->markMergedCell($sheet1, $start_row=7, $start_col=2, $end_row=7, $end_col=8); //DEPARTEMEN
-            $writer->markMergedCell($sheet1, $start_row=7, $start_col=186, $end_row=7, $end_col=319); //KODE PART
-            $writer->markMergedCell($sheet1, $start_row=7, $start_col=320, $end_row=7, $end_col=400); //TAKT TIME
-            $writer->markMergedCell($sheet1, $start_row=7, $start_col=401, $end_row=7, $end_col=449); //ALAT BANTU
-            $writer->markMergedCell($sheet1, $start_row=7, $start_col=450, $end_row=7, $end_col=490); //TGL OBSERVASI
-            $writer->markMergedCell($sheet1, $start_row=7, $start_col=491, $end_row=9, $end_col=521); //PAGE
-            $writer->markMergedCell($sheet1, $start_row=7, $start_col=522, $end_row=9, $end_col=523); //TITIK 2
-            $writer->markMergedCell($sheet1, $start_row=7, $start_col=524, $end_row=9, $end_col=600); //BLANK
-
-        //ROW 8
-            $writer->markMergedCell($sheet1, $start_row=8, $start_col=2, $end_row=9, $end_col=8); //BLANK
-            $writer->markMergedCell($sheet1, $start_row=8, $start_col=186, $end_row=9, $end_col=319); //DATA KODE PART
-            $writer->markMergedCell($sheet1, $start_row=8, $start_col=320, $end_row=9, $end_col=400); //DATA TAKT TIME
-            $writer->markMergedCell($sheet1, $start_row=8, $start_col=401, $end_row=9, $end_col=449); //DATA ALAT BANTU
-            $writer->markMergedCell($sheet1, $start_row=8, $start_col=450, $end_row=9, $end_col=490); //DATA TGL OBSERVASI
-
-        //ROW 9
-        //ROW 10
-            $writer->markMergedCell($sheet1, $start_row=11, $start_col=0, $end_row=13, $end_col=0); //HEAD NO
-            $writer->markMergedCell($sheet1, $start_row=11, $start_col=1, $end_row=13, $end_col=8); //HEAD ELEMEN KERJA
-            $writer->markMergedCell($sheet1, $start_row=11, $start_col=9, $end_row=13, $end_col=9); //HEAD MANUAL
-            $writer->markMergedCell($sheet1, $start_row=11, $start_col=10, $end_row=13, $end_col=10); //HEAD AUTO
-            $writer->markMergedCell($sheet1, $start_row=11, $start_col=11, $end_row=13, $end_col=11); //HEAD WALK
-            $writer->markMergedCell($sheet1, $start_row=11, $start_col=14, $end_row=11, $end_col=($indexAngka + $end)-1); //HEAD DETIK
-
-        //ROW 11
-            for ($i= $indexAngka; $i < ($indexAngka + $end); $i+=10) {
-                $fin = $i + 9;
-                $writer->markMergedCell($sheet1, $start_row=12, $start_col= $i, $end_row=12, $end_col= $fin);
-            }
-
-        //ROW ELEMEN KERJA
-            for ($i=0; $i < sizeof($elemen_kerja); $i++) {
-                $rowstart = 15 + ($i * 3);
-                $rowend = $rowstart + 2;
-                $writer->markMergedCell($sheet1, $start_row= $rowstart, $start_col= 0, $end_row=$rowend, $end_col= 0);
-                $writer->markMergedCell($sheet1, $start_row= $rowstart, $start_col= 1, $end_row=$rowend, $end_col= 8);
-                $writer->markMergedCell($sheet1, $start_row= $rowstart, $start_col= 9, $end_row=$rowend, $end_col= 9);
-                $writer->markMergedCell($sheet1, $start_row= $rowstart, $start_col= 10, $end_row=$rowend, $end_col= 10);
-                $writer->markMergedCell($sheet1, $start_row= $rowstart, $start_col= 11, $end_row=$rowend, $end_col= 11);
-            }
-
-        //ROW JUMLAH & KETERANGAN
-            $rowjum = 15 + (sizeof($elemen_kerja) * 3) + 1;
-            //JUMLAH
-                $writer->markMergedCell($sheet1, $start_row= $rowjum, $start_col= 0, $end_row=$rowjum+4, $end_col= 8);
-                $writer->markMergedCell($sheet1, $start_row= $rowjum, $start_col= 9, $end_row=$rowjum+3, $end_col= 9);
-                $writer->markMergedCell($sheet1, $start_row= $rowjum, $start_col= 10, $end_row=$rowjum+3, $end_col= 10);
-	              $writer->markMergedCell($sheet1, $start_row= $rowjum, $start_col= 11, $end_row=$rowjum+3, $end_col= 11);
-                $writer->markMergedCell($sheet1, $start_row= $rowjum+4, $start_col= 9, $end_row=$rowjum+4, $end_col= 11);
-            //KETERANGAN
-                // 1
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum, $start_col= 18, $end_row=$rowjum, $end_col= 107);
-
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum+1, $start_col= 20, $end_row=$rowjum+1, $end_col= 72);
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum+1, $start_col= 73, $end_row=$rowjum+1, $end_col= 77);
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum+1, $start_col= 78, $end_row=$rowjum+1, $end_col= 93);
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum+1, $start_col= 94, $end_row=$rowjum+1, $end_col= 107);
-
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum+2, $start_col= 20, $end_row=$rowjum+2, $end_col= 72);
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum+2, $start_col= 73, $end_row=$rowjum+2, $end_col= 77);
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum+2, $start_col= 78, $end_row=$rowjum+2, $end_col= 93);
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum+2, $start_col= 94, $end_row=$rowjum+2, $end_col= 107);
-
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum+3, $start_col= 20, $end_row=$rowjum+3, $end_col= 72);
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum+3, $start_col= 73, $end_row=$rowjum+3, $end_col= 77);
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum+3, $start_col= 78, $end_row=$rowjum+3, $end_col= 93);
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum+3, $start_col= 94, $end_row=$rowjum+3, $end_col= 107);
-
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum+4, $start_col= 20, $end_row=$rowjum+4, $end_col= 72);
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum+4, $start_col= 73, $end_row=$rowjum+4, $end_col= 77);
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum+4, $start_col= 78, $end_row=$rowjum+4, $end_col= 93);
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum+4, $start_col= 94, $end_row=$rowjum+4, $end_col= 107);
-
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum+5, $start_col= 20, $end_row=$rowjum+5, $end_col= 72);
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum+5, $start_col= 73, $end_row=$rowjum+5, $end_col= 77);
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum+5, $start_col= 78, $end_row=$rowjum+5, $end_col= 93);
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum+5, $start_col= 94, $end_row=$rowjum+5, $end_col= 107);
-
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum+6, $start_col= 20, $end_row=$rowjum+6, $end_col= 72);
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum+6, $start_col= 73, $end_row=$rowjum+6, $end_col= 77);
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum+6, $start_col= 78, $end_row=$rowjum+6, $end_col= 93);
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum+6, $start_col= 94, $end_row=$rowjum+6, $end_col= 107);
-
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum+7, $start_col= 20, $end_row=$rowjum+7, $end_col= 72);
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum+7, $start_col= 73, $end_row=$rowjum+7, $end_col= 77);
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum+7, $start_col= 78, $end_row=$rowjum+7, $end_col= 93);
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum+7, $start_col= 94, $end_row=$rowjum+7, $end_col= 107);
-
-										$writer->markMergedCell($sheet1, $start_row= $rowjum+8, $start_col= 20, $end_row=$rowjum+8, $end_col= 72);
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum+8, $start_col= 73, $end_row=$rowjum+8, $end_col= 77);
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum+8, $start_col= 78, $end_row=$rowjum+8, $end_col= 93);
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum+8, $start_col= 94, $end_row=$rowjum+8, $end_col= 107);
-
-										$writer->markMergedCell($sheet1, $start_row= $rowjum+9, $start_col= 20, $end_row=$rowjum+9, $end_col= 72);
-										$writer->markMergedCell($sheet1, $start_row= $rowjum+9, $start_col= 73, $end_row=$rowjum+9, $end_col= 77);
-										$writer->markMergedCell($sheet1, $start_row= $rowjum+9, $start_col= 78, $end_row=$rowjum+9, $end_col= 93);
-										$writer->markMergedCell($sheet1, $start_row= $rowjum+9, $start_col= 94, $end_row=$rowjum+9, $end_col= 107);
-										 //al e01821
-
-                // 2
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum, $start_col= 114, $end_row=$rowjum, $end_col= 184);
-
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum+1, $start_col= 112, $end_row=$rowjum+3, $end_col= 126);
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum+1, $start_col= 127, $end_row=$rowjum+3, $end_col= 131);
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum+1, $start_col= 132, $end_row=$rowjum+1, $end_col= 184);
-
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum+2, $start_col= 132, $end_row=$rowjum+3, $end_col= 133);
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum+2, $start_col= 134, $end_row=$rowjum+2, $end_col= 182);
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum+2, $start_col= 183, $end_row=$rowjum+3, $end_col= 184);
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum+3, $start_col= 134, $end_row=$rowjum+3, $end_col= 182);
-
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum+4, $start_col= 127, $end_row=$rowjum+6, $end_col= 131);
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum+4, $start_col= 132, $end_row=$rowjum+4, $end_col= 184);
-
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum+5, $start_col= 132, $end_row=$rowjum+6, $end_col= 133);
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum+5, $start_col= 134, $end_row=$rowjum+5, $end_col= 182);
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum+5, $start_col= 183, $end_row=$rowjum+6, $end_col= 184);
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum+6, $start_col= 134, $end_row=$rowjum+6, $end_col= 182);
-
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum+7, $start_col= 127, $end_row=$rowjum+8, $end_col= 131);
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum+7, $start_col= 132, $end_row=$rowjum+8, $end_col= 146);
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum+7, $start_col= 147, $end_row=$rowjum+8, $end_col= 161);
-
-								// REV 20-10-2020
-                // 3
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum, $start_col= 191, $end_row=$rowjum, $end_col= 272);
-
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum+1, $start_col= 191, $end_row=$rowjum+2, $end_col= 205);
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum+1, $start_col= 206, $end_row=$rowjum+2, $end_col= 210);
-
-										$writer->markMergedCell($sheet1, $start_row= $rowjum+1, $start_col= 211, $end_row=$rowjum+1, $end_col= 227);
-										$writer->markMergedCell($sheet1, $start_row= $rowjum+1, $start_col= 232, $end_row=$rowjum+1, $end_col= 248);
-										$writer->markMergedCell($sheet1, $start_row= $rowjum+1, $start_col= 260, $end_row=$rowjum+1, $end_col= 272);
-
-										$writer->markMergedCell($sheet1, $start_row= $rowjum+1, $start_col= 228, $end_row=$rowjum+2, $end_col= 231);
-										$writer->markMergedCell($sheet1, $start_row= $rowjum+1, $start_col= 249, $end_row=$rowjum+2, $end_col= 259);
-
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum+2, $start_col= 211, $end_row=$rowjum+2, $end_col= 227);
-										$writer->markMergedCell($sheet1, $start_row= $rowjum+2, $start_col= 232, $end_row=$rowjum+2, $end_col= 248);
-										$writer->markMergedCell($sheet1, $start_row= $rowjum+2, $start_col= 260, $end_row=$rowjum+2, $end_col= 272);
-
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum+3, $start_col= 206, $end_row=$rowjum+4, $end_col= 210);
-
-                    // $writer->markMergedCell($sheet1, $start_row= $rowjum+3, $start_col= 211, $end_row=$rowjum+3, $end_col= 221);
-                    // $writer->markMergedCell($sheet1, $start_row= $rowjum+4, $start_col= 211, $end_row=$rowjum+4, $end_col= 221);
-										if (sizeof($waktu_irregular) <= 4) {
-											foreach ($waktu_irregular as $key => $val) {
-												if ($key == 0) {
-													$kolom_end = 221;
-													$kolom_start = $key;
-												}else {
-													if ($key == 2) {
-														$plus_kolom = 5;
-													}elseif ($key == 3) {
-														$plus_kolom = 10;
-													}else {
-														$plus_kolom = 0;
-													}
-													$kolom_end = 226 + ((10* $key) + $plus_kolom);
-													$kolom_start = 15 * $key;
-												}
-												$writer->markMergedCell($sheet1, $start_row= $rowjum+3, $start_col= 211 + $kolom_start, $end_row=$rowjum+3, $end_col=$kolom_end);
-		                    $writer->markMergedCell($sheet1, $start_row= $rowjum+4, $start_col= 211 + $kolom_start, $end_row=$rowjum+4, $end_col=$kolom_end);
-
-												$writer->markMergedCell($sheet1, $start_row= $rowjum+3, $start_col= $kolom_end+1, $end_row=$rowjum+4, $end_col=$kolom_end+4);
-											}
-										}else {
-											$writer->markMergedCell($sheet1, $start_row= $rowjum+3, $start_col= 211, $end_row=$rowjum+4, $end_col= 272);
-										}
-
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum+5, $start_col= 206, $end_row=$rowjum+5, $end_col= 210);
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum+5, $start_col= 211, $end_row=$rowjum+5, $end_col= 229);
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum+5, $start_col= 230, $end_row=$rowjum+5, $end_col= 259);
+			            // USULAN
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+11, $start_col= 18, $end_row=$rowjum+11, $end_col= 107);
+			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+12, $start_col= 20, $end_row=$rowjum+13, $end_col= 360);
 
 
-                // 4
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum, $start_col= 279, $end_row=$rowjum, $end_col= 361);
+			    //ROW HEADER IRREGULAR JOB & Footer kanan
+			        $rowheadirreg = $rowjum+6;
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg, $start_col= 0, $end_row=$rowheadirreg+2, $end_col= 0);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg, $start_col= 1, $end_row=$rowheadirreg+2, $end_col= 8);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg, $start_col= 9, $end_row=$rowheadirreg+1, $end_col= 9);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg, $start_col= 10, $end_row=$rowheadirreg+1, $end_col= 10);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg, $start_col= 11, $end_row=$rowheadirreg+1, $end_col= 11);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+2, $start_col= 10, $end_row=$rowheadirreg+2, $end_col= 11);
 
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum+1, $start_col= 279, $end_row=$rowjum+2, $end_col= 293);
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum+1, $start_col= 294, $end_row=$rowjum+2, $end_col= 298);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+9, $start_col= 14, $end_row=$rowheadirreg+9, $end_col= 32);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+9, $start_col= 33, $end_row=$rowheadirreg+11, $end_col= 51);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+9, $start_col= 52, $end_row=$rowheadirreg+9, $end_col= 70);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+9, $start_col= 71, $end_row=$rowheadirreg+11, $end_col= 89);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+9, $start_col= 90, $end_row=$rowheadirreg+9, $end_col= 189);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+9, $start_col= 190, $end_row=$rowheadirreg+10, $end_col= 215);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+9, $start_col= 216, $end_row=$rowheadirreg+10, $end_col= 242);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+9, $start_col= 243, $end_row=$rowheadirreg+9, $end_col= 272);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+9, $start_col= 273, $end_row=$rowheadirreg+9, $end_col= 302);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+9, $start_col= 303, $end_row=$rowheadirreg+9, $end_col= 332);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+9, $start_col= 333, $end_row=$rowheadirreg+9, $end_col= 363);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+10, $start_col= 14, $end_row=$rowheadirreg+10, $end_col= 18);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+10, $start_col= 19, $end_row=$rowheadirreg+10, $end_col= 27);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+10, $start_col= 28, $end_row=$rowheadirreg+10, $end_col= 32);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+10, $start_col= 52, $end_row=$rowheadirreg+10, $end_col= 56);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+10, $start_col= 57, $end_row=$rowheadirreg+10, $end_col= 65);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+10, $start_col= 66, $end_row=$rowheadirreg+10, $end_col= 70);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+10, $start_col= 90, $end_row=$rowheadirreg+10, $end_col= 98);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+10, $start_col= 99, $end_row=$rowheadirreg+10, $end_col= 189);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+10, $start_col= 243, $end_row=$rowheadirreg+10, $end_col= 272);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+10, $start_col= 273, $end_row=$rowheadirreg+10, $end_col= 302);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+10, $start_col= 303, $end_row=$rowheadirreg+10, $end_col= 332);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+10, $start_col= 333, $end_row=$rowheadirreg+10, $end_col= 363);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+11, $start_col= 14, $end_row=$rowheadirreg+11, $end_col= 32);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+11, $start_col= 52, $end_row=$rowheadirreg+11, $end_col= 70);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+11, $start_col= 90, $end_row=$rowheadirreg+11, $end_col= 98);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+11, $start_col= 99, $end_row=$rowheadirreg+11, $end_col= 189);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+11, $start_col= 190, $end_row=$rowheadirreg+11, $end_col= 215);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+11, $start_col= 216, $end_row=$rowheadirreg+11, $end_col= 242);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+11, $start_col= 243, $end_row=$rowheadirreg+14, $end_col= 272);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+11, $start_col= 273, $end_row=$rowheadirreg+14, $end_col= 302);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+11, $start_col= 303, $end_row=$rowheadirreg+14, $end_col= 332);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+11, $start_col= 333, $end_row=$rowheadirreg+14, $end_col= 363);
 
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum+1, $start_col= 299, $end_row=$rowjum+1, $end_col= 361);
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum+2, $start_col= 299, $end_row=$rowjum+2, $end_col= 361);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+12, $start_col= 14, $end_row=$rowheadirreg+12, $end_col= 32);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+12, $start_col= 33, $end_row=$rowheadirreg+14, $end_col= 51);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+12, $start_col= 52, $end_row=$rowheadirreg+12, $end_col= 58);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+12, $start_col= 59, $end_row=$rowheadirreg+12, $end_col= 63);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+12, $start_col= 64, $end_row=$rowheadirreg+12, $end_col= 70);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+12, $start_col= 71, $end_row=$rowheadirreg+14, $end_col= 89);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+12, $start_col= 90, $end_row=$rowheadirreg+12, $end_col= 98);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+12, $start_col= 99, $end_row=$rowheadirreg+12, $end_col= 189);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+12, $start_col= 190, $end_row=$rowheadirreg+12, $end_col= 215);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+12, $start_col= 216, $end_row=$rowheadirreg+12, $end_col= 242);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+13, $start_col= 14, $end_row=$rowheadirreg+13, $end_col= 18);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+13, $start_col= 19, $end_row=$rowheadirreg+13, $end_col= 27);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+13, $start_col= 28, $end_row=$rowheadirreg+13, $end_col= 32);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+13, $start_col= 52, $end_row=$rowheadirreg+13, $end_col= 58);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+13, $start_col= 59, $end_row=$rowheadirreg+13, $end_col= 63);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+13, $start_col= 64, $end_row=$rowheadirreg+13, $end_col= 70);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+13, $start_col= 90, $end_row=$rowheadirreg+13, $end_col= 98);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+13, $start_col= 99, $end_row=$rowheadirreg+13, $end_col= 189);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+13, $start_col= 190, $end_row=$rowheadirreg+13, $end_col= 215);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+13, $start_col= 216, $end_row=$rowheadirreg+13, $end_col= 242);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+14, $start_col= 14, $end_row=$rowheadirreg+14, $end_col= 32);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+14, $start_col= 52, $end_row=$rowheadirreg+14, $end_col= 58);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+14, $start_col= 59, $end_row=$rowheadirreg+14, $end_col= 63);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+14, $start_col= 64, $end_row=$rowheadirreg+14, $end_col= 70);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+14, $start_col= 90, $end_row=$rowheadirreg+14, $end_col= 98);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+14, $start_col= 99, $end_row=$rowheadirreg+14, $end_col= 189);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+14, $start_col= 190, $end_row=$rowheadirreg+14, $end_col= 215);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+14, $start_col= 216, $end_row=$rowheadirreg+14, $end_col= 242);
 
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum+3, $start_col= 294, $end_row=$rowjum+4, $end_col= 298);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+15, $start_col= 14, $end_row=$rowheadirreg+15, $end_col= 32);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+15, $start_col= 33, $end_row=$rowheadirreg+17, $end_col= 51);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+15, $start_col= 52, $end_row=$rowheadirreg+15, $end_col= 70);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+15, $start_col= 71, $end_row=$rowheadirreg+17, $end_col= 89);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+15, $start_col= 90, $end_row=$rowheadirreg+15, $end_col= 98);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+15, $start_col= 99, $end_row=$rowheadirreg+15, $end_col= 189);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+15, $start_col= 190, $end_row=$rowheadirreg+15, $end_col= 215);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+15, $start_col= 216, $end_row=$rowheadirreg+15, $end_col= 242);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+15, $start_col= 243, $end_row=$rowheadirreg+16, $end_col= 272);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+15, $start_col= 273, $end_row=$rowheadirreg+16, $end_col= 302);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+15, $start_col= 303, $end_row=$rowheadirreg+16, $end_col= 332);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+15, $start_col= 333, $end_row=$rowheadirreg+16, $end_col= 363);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+16, $start_col= 14, $end_row=$rowheadirreg+16, $end_col= 18);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+16, $start_col= 19, $end_row=$rowheadirreg+16, $end_col= 27);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+16, $start_col= 28, $end_row=$rowheadirreg+16, $end_col= 32);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+16, $start_col= 52, $end_row=$rowheadirreg+16, $end_col= 56);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+16, $start_col= 57, $end_row=$rowheadirreg+16, $end_col= 65);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+16, $start_col= 66, $end_row=$rowheadirreg+16, $end_col= 70);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+16, $start_col= 90, $end_row=$rowheadirreg+16, $end_col= 98);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+16, $start_col= 99, $end_row=$rowheadirreg+16, $end_col= 189);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+16, $start_col= 190, $end_row=$rowheadirreg+16, $end_col= 215);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+16, $start_col= 216, $end_row=$rowheadirreg+16, $end_col= 242);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+17, $start_col= 14, $end_row=$rowheadirreg+17, $end_col= 32);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+17, $start_col= 52, $end_row=$rowheadirreg+17, $end_col= 70);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+17, $start_col= 90, $end_row=$rowheadirreg+17, $end_col= 98);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+17, $start_colForm= 99, $end_row=$rowheadirreg+17, $end_col= 189);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+17, $start_col= 190, $end_row=$rowheadirreg+17, $end_col= 215);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+17, $start_col= 216, $end_row=$rowheadirreg+17, $end_col= 242);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+17, $start_col= 243, $end_row=$rowheadirreg+17, $end_col= 272);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+17, $start_col= 273, $end_row=$rowheadirreg+17, $end_col= 302);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+17, $start_col= 303, $end_row=$rowheadirreg+17, $end_col= 332);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+17, $start_col= 333, $end_row=$rowheadirreg+17, $end_col= 363);
 
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum+3, $start_col= 299, $end_row=$rowjum+3, $end_col= 361);
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum+4, $start_col= 299, $end_row=$rowjum+4, $end_col= 361);
+			    //ROW LIST IRREGULAR JOB
+			        $irreg = $rowheadirreg+3;
+			        for ($j=0; $j < $irg; $j++) {
+			            $brs = $irreg + ($j*2);
+			            $writer->markMergedCell($sheet1.'_'.$x, $start_row= $brs, $start_col= 0, $end_row=$brs+1, $end_col= 0);
+			            $writer->markMergedCell($sheet1.'_'.$x, $start_row= $brs, $start_col= 1, $end_row=$brs+1, $end_col= 8);
+			            $writer->markMergedCell($sheet1.'_'.$x, $start_row= $brs, $start_col= 9, $end_row=$brs+1, $end_col= 9);
+			            $writer->markMergedCell($sheet1.'_'.$x, $start_row= $brs, $start_col= 10, $end_row=$brs+1, $end_col= 10);
+			            $writer->markMergedCell($sheet1.'_'.$x, $start_row= $brs, $start_col= 11, $end_row=$brs+1, $end_col= 11);
+			        }
+			    //ROW JUMLAH IRREGULAR
+			        $jmlRowIrreg = $irreg + ($irg * 2);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $jmlRowIrreg, $start_col= 0, $end_row=$jmlRowIrreg+4, $end_col= 10);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $jmlRowIrreg, $start_col= 11, $end_row=$jmlRowIrreg+4, $end_col= 11);
 
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum+5, $start_col= 294, $end_row=$rowjum+5, $end_col= 298);
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum+5, $start_col= 299, $end_row=$rowjum+5, $end_col= 318);
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum+5, $start_col= 319, $end_row=$rowjum+5, $end_col= 333);
-
-                // USULAN
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum+11, $start_col= 18, $end_row=$rowjum+11, $end_col= 107);
-                    $writer->markMergedCell($sheet1, $start_row= $rowjum+12, $start_col= 20, $end_row=$rowjum+13, $end_col= 360);
-
-
-        //ROW HEADER IRREGULAR JOB & Footer kanan
-            $rowheadirreg = $rowjum+6;
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg, $start_col= 0, $end_row=$rowheadirreg+2, $end_col= 0);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg, $start_col= 1, $end_row=$rowheadirreg+2, $end_col= 8);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg, $start_col= 9, $end_row=$rowheadirreg+1, $end_col= 9);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg, $start_col= 10, $end_row=$rowheadirreg+1, $end_col= 10);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg, $start_col= 11, $end_row=$rowheadirreg+1, $end_col= 11);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+2, $start_col= 10, $end_row=$rowheadirreg+2, $end_col= 11);
-
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+9, $start_col= 14, $end_row=$rowheadirreg+9, $end_col= 32);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+9, $start_col= 33, $end_row=$rowheadirreg+11, $end_col= 51);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+9, $start_col= 52, $end_row=$rowheadirreg+9, $end_col= 70);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+9, $start_col= 71, $end_row=$rowheadirreg+11, $end_col= 89);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+9, $start_col= 90, $end_row=$rowheadirreg+9, $end_col= 189);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+9, $start_col= 190, $end_row=$rowheadirreg+10, $end_col= 215);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+9, $start_col= 216, $end_row=$rowheadirreg+10, $end_col= 242);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+9, $start_col= 243, $end_row=$rowheadirreg+9, $end_col= 272);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+9, $start_col= 273, $end_row=$rowheadirreg+9, $end_col= 302);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+9, $start_col= 303, $end_row=$rowheadirreg+9, $end_col= 332);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+9, $start_col= 333, $end_row=$rowheadirreg+9, $end_col= 363);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+10, $start_col= 14, $end_row=$rowheadirreg+10, $end_col= 18);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+10, $start_col= 19, $end_row=$rowheadirreg+10, $end_col= 27);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+10, $start_col= 28, $end_row=$rowheadirreg+10, $end_col= 32);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+10, $start_col= 52, $end_row=$rowheadirreg+10, $end_col= 56);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+10, $start_col= 57, $end_row=$rowheadirreg+10, $end_col= 65);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+10, $start_col= 66, $end_row=$rowheadirreg+10, $end_col= 70);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+10, $start_col= 90, $end_row=$rowheadirreg+10, $end_col= 98);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+10, $start_col= 99, $end_row=$rowheadirreg+10, $end_col= 189);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+10, $start_col= 243, $end_row=$rowheadirreg+10, $end_col= 272);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+10, $start_col= 273, $end_row=$rowheadirreg+10, $end_col= 302);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+10, $start_col= 303, $end_row=$rowheadirreg+10, $end_col= 332);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+10, $start_col= 333, $end_row=$rowheadirreg+10, $end_col= 363);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+11, $start_col= 14, $end_row=$rowheadirreg+11, $end_col= 32);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+11, $start_col= 52, $end_row=$rowheadirreg+11, $end_col= 70);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+11, $start_col= 90, $end_row=$rowheadirreg+11, $end_col= 98);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+11, $start_col= 99, $end_row=$rowheadirreg+11, $end_col= 189);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+11, $start_col= 190, $end_row=$rowheadirreg+11, $end_col= 215);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+11, $start_col= 216, $end_row=$rowheadirreg+11, $end_col= 242);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+11, $start_col= 243, $end_row=$rowheadirreg+14, $end_col= 272);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+11, $start_col= 273, $end_row=$rowheadirreg+14, $end_col= 302);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+11, $start_col= 303, $end_row=$rowheadirreg+14, $end_col= 332);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+11, $start_col= 333, $end_row=$rowheadirreg+14, $end_col= 363);
-
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+12, $start_col= 14, $end_row=$rowheadirreg+12, $end_col= 32);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+12, $start_col= 33, $end_row=$rowheadirreg+14, $end_col= 51);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+12, $start_col= 52, $end_row=$rowheadirreg+12, $end_col= 58);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+12, $start_col= 59, $end_row=$rowheadirreg+12, $end_col= 63);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+12, $start_col= 64, $end_row=$rowheadirreg+12, $end_col= 70);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+12, $start_col= 71, $end_row=$rowheadirreg+14, $end_col= 89);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+12, $start_col= 90, $end_row=$rowheadirreg+12, $end_col= 98);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+12, $start_col= 99, $end_row=$rowheadirreg+12, $end_col= 189);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+12, $start_col= 190, $end_row=$rowheadirreg+12, $end_col= 215);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+12, $start_col= 216, $end_row=$rowheadirreg+12, $end_col= 242);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+13, $start_col= 14, $end_row=$rowheadirreg+13, $end_col= 18);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+13, $start_col= 19, $end_row=$rowheadirreg+13, $end_col= 27);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+13, $start_col= 28, $end_row=$rowheadirreg+13, $end_col= 32);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+13, $start_col= 52, $end_row=$rowheadirreg+13, $end_col= 58);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+13, $start_col= 59, $end_row=$rowheadirreg+13, $end_col= 63);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+13, $start_col= 64, $end_row=$rowheadirreg+13, $end_col= 70);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+13, $start_col= 90, $end_row=$rowheadirreg+13, $end_col= 98);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+13, $start_col= 99, $end_row=$rowheadirreg+13, $end_col= 189);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+13, $start_col= 190, $end_row=$rowheadirreg+13, $end_col= 215);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+13, $start_col= 216, $end_row=$rowheadirreg+13, $end_col= 242);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+14, $start_col= 14, $end_row=$rowheadirreg+14, $end_col= 32);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+14, $start_col= 52, $end_row=$rowheadirreg+14, $end_col= 58);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+14, $start_col= 59, $end_row=$rowheadirreg+14, $end_col= 63);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+14, $start_col= 64, $end_row=$rowheadirreg+14, $end_col= 70);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+14, $start_col= 90, $end_row=$rowheadirreg+14, $end_col= 98);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+14, $start_col= 99, $end_row=$rowheadirreg+14, $end_col= 189);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+14, $start_col= 190, $end_row=$rowheadirreg+14, $end_col= 215);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+14, $start_col= 216, $end_row=$rowheadirreg+14, $end_col= 242);
-
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+15, $start_col= 14, $end_row=$rowheadirreg+15, $end_col= 32);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+15, $start_col= 33, $end_row=$rowheadirreg+17, $end_col= 51);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+15, $start_col= 52, $end_row=$rowheadirreg+15, $end_col= 70);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+15, $start_col= 71, $end_row=$rowheadirreg+17, $end_col= 89);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+15, $start_col= 90, $end_row=$rowheadirreg+15, $end_col= 98);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+15, $start_col= 99, $end_row=$rowheadirreg+15, $end_col= 189);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+15, $start_col= 190, $end_row=$rowheadirreg+15, $end_col= 215);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+15, $start_col= 216, $end_row=$rowheadirreg+15, $end_col= 242);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+15, $start_col= 243, $end_row=$rowheadirreg+16, $end_col= 272);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+15, $start_col= 273, $end_row=$rowheadirreg+16, $end_col= 302);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+15, $start_col= 303, $end_row=$rowheadirreg+16, $end_col= 332);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+15, $start_col= 333, $end_row=$rowheadirreg+16, $end_col= 363);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+16, $start_col= 14, $end_row=$rowheadirreg+16, $end_col= 18);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+16, $start_col= 19, $end_row=$rowheadirreg+16, $end_col= 27);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+16, $start_col= 28, $end_row=$rowheadirreg+16, $end_col= 32);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+16, $start_col= 52, $end_row=$rowheadirreg+16, $end_col= 56);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+16, $start_col= 57, $end_row=$rowheadirreg+16, $end_col= 65);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+16, $start_col= 66, $end_row=$rowheadirreg+16, $end_col= 70);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+16, $start_col= 90, $end_row=$rowheadirreg+16, $end_col= 98);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+16, $start_col= 99, $end_row=$rowheadirreg+16, $end_col= 189);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+16, $start_col= 190, $end_row=$rowheadirreg+16, $end_col= 215);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+16, $start_col= 216, $end_row=$rowheadirreg+16, $end_col= 242);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+17, $start_col= 14, $end_row=$rowheadirreg+17, $end_col= 32);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+17, $start_col= 52, $end_row=$rowheadirreg+17, $end_col= 70);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+17, $start_col= 90, $end_row=$rowheadirreg+17, $end_col= 98);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+17, $start_colForm= 99, $end_row=$rowheadirreg+17, $end_col= 189);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+17, $start_col= 190, $end_row=$rowheadirreg+17, $end_col= 215);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+17, $start_col= 216, $end_row=$rowheadirreg+17, $end_col= 242);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+17, $start_col= 243, $end_row=$rowheadirreg+17, $end_col= 272);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+17, $start_col= 273, $end_row=$rowheadirreg+17, $end_col= 302);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+17, $start_col= 303, $end_row=$rowheadirreg+17, $end_col= 332);
-            $writer->markMergedCell($sheet1, $start_row= $rowheadirreg+17, $start_col= 333, $end_row=$rowheadirreg+17, $end_col= 363);
-
-        //ROW LIST IRREGULAR JOB
-            $irreg = $rowheadirreg+3;
-            for ($j=0; $j < $irg; $j++) {
-                $brs = $irreg + ($j*2);
-                $writer->markMergedCell($sheet1, $start_row= $brs, $start_col= 0, $end_row=$brs+1, $end_col= 0);
-                $writer->markMergedCell($sheet1, $start_row= $brs, $start_col= 1, $end_row=$brs+1, $end_col= 8);
-                $writer->markMergedCell($sheet1, $start_row= $brs, $start_col= 9, $end_row=$brs+1, $end_col= 9);
-                $writer->markMergedCell($sheet1, $start_row= $brs, $start_col= 10, $end_row=$brs+1, $end_col= 10);
-                $writer->markMergedCell($sheet1, $start_row= $brs, $start_col= 11, $end_row=$brs+1, $end_col= 11);
-            }
-        //ROW JUMLAH IRREGULAR
-            $jmlRowIrreg = $irreg + ($irg * 2);
-            $writer->markMergedCell($sheet1, $start_row= $jmlRowIrreg, $start_col= 0, $end_row=$jmlRowIrreg+4, $end_col= 10);
-            $writer->markMergedCell($sheet1, $start_row= $jmlRowIrreg, $start_col= 11, $end_row=$jmlRowIrreg+4, $end_col= 11);
-
-
+		}
     $filename = 'New_TSKK_'.$judul.'_'.$tanggal.'.xlsx';
     $writer->writeToFile('./assets/upload/GeneratorTSKK/'.$filename);
 

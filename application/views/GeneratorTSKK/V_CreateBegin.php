@@ -626,7 +626,7 @@
                           </div>
                           <div class="panel-body">
                             <!--SECOND TABLE style="padding-left: 17px; padding-right: 17px;"-->
-                            <div class="table-responsive table-responsive-custom tableGenerate" id="tableGenerate" >
+                            <div class="table-responsive <?php echo sizeof($lihat_hasilObservasi_elemen) > 8 ? 'table-responsive-custom' : '' ?> tableGenerate" id="tableGenerate" >
                               <table class="table table-striped table-bordered table-hover text-center tblGenerate " style="table-layout: fixed;width:100%" name="tblUserResponsbility" id="tblGenerate">
                                 <thead style="position: sticky; top: 0;">
                                   <tr class="bg-primary">
