@@ -22,6 +22,7 @@ class C_PresensiBulanan extends CI_Controller
 
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('ADMCabang/M_presensibulanan');
+		$this->load->model('ADMCabang/M_presensiharian');
 		$this->load->model('ADMCabang/M_monitoringpresensi');
 		$this->checkSession();
 	}
@@ -66,7 +67,7 @@ class C_PresensiBulanan extends CI_Controller
 		$this->load->library('excel');
 
 		$kodesie = $this->session->kodesie;
-		$pekerja = $this->M_presensibulanan->getPekerjaByKodesie($kodesie);
+		$pekerja = $this->M_presensiharian->getPekerjaByKodesie($kodesie);
 		$seksi = $this->M_presensibulanan->getSeksiByKodesie($kodesie);
 		$tanggal = $this->input->post('txtPeriodePresensiHarian');
 		$tgl = $this->M_presensibulanan->getTanggal($tanggal);
@@ -78,19 +79,25 @@ class C_PresensiBulanan extends CI_Controller
 		//
 		$this->excel->getActiveSheet()->setCellValueByColumnAndRow(0, 1, 'Data Pegawai Periode ' . $tanggal);
 
-
 		$this->excel->getActiveSheet()->setCellValueByColumnAndRow(0, 3, 'No Induk');
 		$this->excel->getActiveSheet()->setCellValueByColumnAndRow(1, 3, 'Nama');
 		$this->excel->getActiveSheet()->mergeCells('A3:A4');
 		$this->excel->getActiveSheet()->mergeCells('B3:B4');
 		$this->excel->getActiveSheet()->getColumnDimension('B')->setWidth('35');
+
 		$h = 2;
 		$simpanBulan = "";
+
+		$coorCellBulan1 = null;
+		$coorCellBulan2 = null;
+		$coorCellSimpanBulan1 = null;
+		$coorCellSimpanBulan2 = null;
+
 		foreach ($tgl as $value) {
 			if ($simpanBulan !== $value['bulan']) {
 				$this->excel->getActiveSheet()->setCellValueByColumnAndRow($h, 3, $value['bulan']);
 
-				if (isset($coorCellBulan2) and isset($coorCellBulan1)) {
+				if ($coorCellBulan2 && $coorCellBulan1) {
 					$this->excel->getActiveSheet()->mergeCells($coorCellSimpanBulan2 . ':' . $coorCellSimpanBulan1);
 				}
 
@@ -105,9 +112,11 @@ class C_PresensiBulanan extends CI_Controller
 			$coorCellSimpanTanggal1 = $coorCellTanggal1->getCoordinate();
 			$h++;
 		}
-		if (isset($coorCellBulan2) and isset($coorCellBulan1)) {
+
+		if ($coorCellBulan2 && $coorCellBulan1) {
 			$this->excel->getActiveSheet()->mergeCells($coorCellSimpanBulan2 . ':' . $coorCellSimpanBulan1);
 		}
+
 		$this->excel->getActiveSheet()->setCellValueByColumnAndRow($h, 3, 'Hari Kerja');
 
 		$h += 1;
