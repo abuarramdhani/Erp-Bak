@@ -5170,3 +5170,24 @@ $route['PeriodicalMaintenance/Management/(:any)/(:any)']	= 'PeriodicalMaintenanc
 $route['PeriodicalMaintenance/Monitoring']					= 'PeriodicalMaintenance/C_Monitoring';
 $route['PeriodicalMaintenance/Monitoring/(:any)']			= 'PeriodicalMaintenance/C_Monitoring/$1';
 $route['PeriodicalMaintenance/Monitoring/(:any)/(:any)']	= 'PeriodicalMaintenance/C_Monitoring/$1/$2';
+
+//-------------------------------------------Order Seksi Rekayasa--------------------------------------------------//
+$route['OrderSeksiRekayasa'] 						= 'OrderSeksiRekayasa/C_Index';
+
+$route['OrderSeksiRekayasa/Submit']					= 'OrderSeksiRekayasa/User/C_SubmitOrder';
+$route['OrderSeksiRekayasa/Submit/(:any)']			= 'OrderSeksiRekayasa/User/C_SubmitOrder/$1';
+$route['OrderSeksiRekayasa/Submit/(:any)/(:any)']	= 'OrderSeksiRekayasa/User/C_SubmitOrder/$1/$2';
+$route['OrderSeksiRekayasa/View']					= 'OrderSeksiRekayasa/User/C_SubmitOrder/View';
+$route['OrderSeksiRekayasa/View/(:any)']			= 'OrderSeksiRekayasa/User/C_SubmitOrder/View/$1';
+$route['OrderSeksiRekayasa/Pdf']					= 'OrderSeksiRekayasa/User/C_SubmitOrder/Pdf';
+$route['OrderSeksiRekayasa/Pdf/(:any)']				= 'OrderSeksiRekayasa/User/C_SubmitOrder/Pdf/$1';
+
+$route['OrderSeksiRekayasa/MyOrder']				= 'OrderSeksiRekayasa/User/C_MyOrder';
+$route['OrderSeksiRekayasa/MyOrder/(:any)']			= 'OrderSeksiRekayasa/User/C_MyOrder/$1';
+$route['OrderSeksiRekayasa/MyOrder/(:any)/(:any)']	= 'OrderSeksiRekayasa/User/C_MyOrder/$1/$2';
+
+$route['AgentOrderSeksiRekayasa'] 						= 'OrderSeksiRekayasa/C_Index';
+
+$route['AgentOrderSeksiRekayasa/MonOrder']				= 'OrderSeksiRekayasa/Agent/C_MonOrder';
+$route['AgentOrderSeksiRekayasa/MonOrder/(:any)']		= 'OrderSeksiRekayasa/Agent/C_MonOrder/$1';
+$route['AgentOrderSeksiRekayasa/MonOrder/(:any)/(:any)']= 'OrderSeksiRekayasa/Agent/C_MonOrder/$1/$2';
