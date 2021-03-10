@@ -523,15 +523,25 @@
                   <br>
                   <div class="row">
                     <div class="col-lg-12">
+
+                      <div class="alert bg-success alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                          <span aria-hidden="true">
+                            <i class="fa fa-close"></i>
+                          </span>
+                        </button>
+                        <strong>Sekilas Info! </strong> Klik pada kolom <b>NO</b> Untuk Menambah Elemen</strong>
+                      </div>
+
                       <div class="panel panel-default">
                         <div class="panel-heading">
                           <label style="" class="tskk_tt" for="norm">Takt Time : </label>
                           <input type="number" style="width:15%; height:34px; margin-right:2%;  margin-left:3%;text-align:center" placeholder="Hasil Takt Time" name="taktTime" id="inputInsert" class="lockscreen-credentials" readonly />
                           <label for="norm">Nilai Distribusi : </label>
                           <input type="number" style="width:15%; height:34px; margin-right:1%;  margin-left:2%; text-align:center" name="inputInsert" id="dst" class="lockscreen-credentials dst" readonly />
-                          <label for="norm" style="margin-left:1.5%;">Posisi Elemen Tambahan : </label>
+                          <!-- <label for="norm" style="margin-left:1.5%;">Posisi Elemen Tambahan : </label>
                           <input type="number" style="width:17%; height:34px;  margin-left:2%; margin-right:2%;border-radius:25px;" placeholder="Input Posisi untuk Menyisipkan Elemen" name="inputInsert" id="inputInsertPosiition" class="lockscreen-credentials"  />
-                          <button type="button" class=" btn btn-primary btn-md" style="height:34px;float:right" onclick="attachRowObservation_new(this)" id="btnInsert">Add</button>
+                          <button type="button" class=" btn btn-primary btn-md" style="height:34px;float:right" onclick="attachRowObservation_new(this)" id="btnInsert">Add</button> -->
                         </div>
                         <div class="panel-body">
                           <div class="table-responsive" id="tableGenerate">
@@ -569,7 +579,7 @@
 																		?>
                                 <tr class="nomor_<?= $no ?>">
                                   <!--NO-->
-                                  <td class="posisi"><?php echo $no; ?></td>
+                                  <td class="posisi bg-success" title="Klik Untuk Menambah Elemen Disini" onclick="attachRowObservation_new(<?php echo $no; ?>)"><?php echo $no; ?></td>
                                   <!--TIPE URUTAN-->
                                   <td style="text-align: center;">
                                     <input type="checkbox" name="checkBoxParalel[<?php echo $no-1;?>]" value="PARALEL" class="checkBoxParalel">
