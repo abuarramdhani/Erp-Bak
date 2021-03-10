@@ -57,7 +57,7 @@ function addRowObservation() {
   }
 
   // KOLOM 1
-  var html = '<tr class="nomor_' + nomor + '"><td class="posisi">' + nomor + '</td>';
+  var html = '<tr class="nomor_' + nomor + '"><td class="posisi bg-success" title="Klik Untuk Menambah Elemen Disini" onclick="attachRowObservation_new('+ nomor +')">' + nomor + '</td>';
   console.log(nomor);
   // KOLOM 2
   html += '<td><input type="checkbox" name="checkBoxParalel[' + (nomor - 1) + ']" value="PARALEL" class="checkBoxParalel" onchange="//chckParalel(this)"></td>'
@@ -306,7 +306,7 @@ function addRowObservationEdit() {
   let no_gaes = $(`#tblObservasiEdit tbody tr`).length;
   nomor = Number(no_gaes) + 1;
   // KOLOM 1
-  var html = '<tr class="nomor_' + nomor + '"><td class="posisi">' + nomor + '</td>';
+  var html = '<tr class="nomor_' + nomor + '"><td class="posisi  bg-success" title="Klik Untuk Menambah Elemen Disini" onclick="attachRowObservation_new('+ nomor +')">' + nomor + '</td>';
   html += '<td><input type="checkbox" name="checkBoxParalel[' + (nomor - 1) + ']" value="PARALEL" class="checkBoxParalel"></td>'
   // KOLOM 2.5
   html += '<td><input type="number" class="form-control" style="width: 70px;" name="start_time_together[]" value=""></td>'
