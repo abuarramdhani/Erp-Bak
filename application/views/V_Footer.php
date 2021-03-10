@@ -253,6 +253,7 @@
 				<script src="<?= base_url('assets/js/customCOPS.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customOVP.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customDSP.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customPME.js') ?>"></script>
 
 
 
