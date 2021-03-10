@@ -5154,3 +5154,19 @@ $route['BarangBekas/transact/(:any)/(:any)/(:any)'] = 'BarangBekas/C_Master/$1/$
 $route['MonitoringSPB'] = 'MonitoringSPB/C_Index';
 $route['MonitoringSPB/List'] = 'MonitoringSPB/C_Monspb';
 $route['MonitoringSPB/List/(:any)'] = 'MonitoringSPB/C_Monspb/$1';
+
+
+// ------------------------------------------------- Periodical Maintenance  ---------------------------------------------//
+$route['PeriodicalMaintenance'] 					= 'PeriodicalMaintenance/C_Index';
+$route['PeriodicalMaintenance/Input'] 				= 'PeriodicalMaintenance/C_Input';
+$route['PeriodicalMaintenance/Input/(:any)'] 		= 'PeriodicalMaintenance/C_Input/$1';
+$route['PeriodicalMaintenance/Input/(:any)/(:any)'] = 'PeriodicalMaintenance/C_Input/$1/$2';
+$route['PeriodicalMaintenance/Input/Insert'] 		= 'PeriodicalMaintenance/C_Input/Insert';
+
+$route['PeriodicalMaintenance/Management']					= 'PeriodicalMaintenance/C_Management';
+$route['PeriodicalMaintenance/Management/(:any)']			= 'PeriodicalMaintenance/C_Management/$1';
+$route['PeriodicalMaintenance/Management/(:any)/(:any)']	= 'PeriodicalMaintenance/C_Management/$1/$2';
+
+$route['PeriodicalMaintenance/Monitoring']					= 'PeriodicalMaintenance/C_Monitoring';
+$route['PeriodicalMaintenance/Monitoring/(:any)']			= 'PeriodicalMaintenance/C_Monitoring/$1';
+$route['PeriodicalMaintenance/Monitoring/(:any)/(:any)']	= 'PeriodicalMaintenance/C_Monitoring/$1/$2';
