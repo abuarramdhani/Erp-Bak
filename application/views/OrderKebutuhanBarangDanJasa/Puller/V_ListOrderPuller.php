@@ -117,9 +117,10 @@
                                             <td><?php echo $list['NATIONAL_IDENTIFIER'].'-'.$list['FULL_NAME'].'<br>'.$list['ATTRIBUTE3'];?></td>
                                             <!-- <td><?php echo $list['ATTRIBUTE3'];?></td> -->
                                             <td><button type="button" class="btn btn-xs btn-default checkStokOKB"><?php echo $list['SEGMENT1'].'-'.$list['DESCRIPTION']; ?></button></td>
-                                            <td><?php echo $list['ITEM_DESCRIPTION']; ?><br><?php if ($list['ATTACHMENT'] != 0) { ?>
-                                                <button type="button" class="btn btn-info btn-xs btnAttachmentOKB">view attachment</button>
+                                            <td><span class="okbDesc"><?php echo $list['ITEM_DESCRIPTION']; ?></span><br><?php if ($list['ATTACHMENT'] != 0) { ?>
+                                                <button type="button" class="btn btn-info btn-xs btnAttachmentOKB">view attachment</button><br>
                                                 <?php }?>
+                                                <button type="button" class="btn btn-xs btn-primary btnUbahDescOKB">Edit Desc</button>
                                             </td>
                                             <!-- <td><?php echo $list['DESCRIPTION']; ?></td> -->
                                             <td><?php echo $list['QUANTITY'].' '.$list['UOM']; ?></td>
@@ -243,4 +244,23 @@
             </div>
         </div>
     </div>
+</div>
+
+<div class="modal fade mdlUbahDeskripsiApproverOKB" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Ubah Deskripsi</h4>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" class="form-control txtEditDescBeforeOKB"> <textArea class="form-control txtEditDescOKB"></textArea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary btnActUbahDescOKB">Save changes</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
 </div>
