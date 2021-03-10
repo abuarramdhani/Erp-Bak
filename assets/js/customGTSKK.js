@@ -8,9 +8,9 @@ $('.tabel_elemen').DataTable({
 
 //TABEL DAFTAR TSKK//
 $('#tabel_daftarTSKK').DataTable({
-  "lengthMenu": [10],
-  "ordering": false,
-  "lengthChange": false
+  // "lengthMenu": [10],
+  // "ordering": false,
+  // "lengthChange": false
 });
 
 $(document).ready(function() {
@@ -1961,15 +1961,15 @@ function attachRow() {
   console.log(newRow)
 }
 //INSERT ROW TO TABLE OBSERVATION
-function attachRowObservation_new() {
-  var posisi = $('#inputInsertPosiition').val();
+function attachRowObservation_new(no_s) {
+  var posisi = no_s;
   var maxRow = $('#tblObservasi tbody tr').length;
   var indx = posisi - 1;
   var index = posisi + 1;
   // name="checkBoxParalel['+(nomor-1)+']"
   var newRow = $(`
 	<tr class = "number_${num}">
-		<td class="posisi"> ${posisi} </td>
+		<td class="posisi bg-success" title="Klik Untuk Menambah Elemen Disini" onclick="attachRowObservation_new(${posisi})"> ${posisi} </td>
 		<td>
 		<input type="checkbox" name="checkBoxParalel[${indx}]" value="PARALEL" class="checkBoxParalel" onchange="//chckParalel(this)">
 		</td>
@@ -2163,15 +2163,15 @@ function attachRowObservation_new() {
 }
 
 //INSERT ROW TO TABLE OBSERVATION
-function attachRowObservation() {
-  var posisi = $('#inputInsertPosiition').val();
+function attachRowObservation(no_s) {
+  var posisi = no_s;
   var maxRow = $('#tblObservasiEdit tbody tr').length;
   var indx = posisi - 1;
   var index = posisi + 1;
   // name="checkBoxParalel['+(nomor-1)+']"
   var newRow = $(`
 	<tr class = "number_${num}">
-		<td class="posisi"> ${posisi} </td>
+		<td class="posisi bg-success" title="Klik Untuk Menambah Elemen Disini" onclick="attachRowObservation(${posisi})"> ${posisi} </td>
 		<td>
 		<input type="checkbox" name="checkBoxParalel[${indx}]" value="PARALEL" class="checkBoxParalel" onchange="//chckParalel(this)">
 		</td>

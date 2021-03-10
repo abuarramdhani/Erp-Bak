@@ -186,6 +186,9 @@
 <section class="content">
   <?php foreach ($lihat_hasilObservasi_elemen as $key) {
 	$id = $key['id_tskk'];
+  $sang_pembuat = $key['nama_pembuat'];
+  $sang_pembuat = explode(' - ', $sang_pembuat);
+  $sang_pembuat = $sang_pembuat[0];
 } ?>
   <form id='Observasi' method="POST" action="<?php echo base_url('GeneratorTSKK/resaveEditObservation/'.$id); ?>">
     <div class="inner">
@@ -674,6 +677,16 @@
 													$nDistribusi = null;
 												}
 												?>
+
+                        <div class="alert bg-success" role="alert">
+                          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">
+                              <i class="fa fa-close"></i>
+                            </span>
+                          </button>
+                          <strong>Sekilas Info! </strong> Klik pada kolom <b>NO</b> Untuk Menambah Elemen</strong>
+                        </div>
+
                         <div class="panel panel-default">
                           <div class="panel-heading">
                             <label for="norm" class="tskk_tt" style="<?php echo $takt_time == '99999' ? 'display:none;' : ''?>margin-left:1%;">Takt Time : </label>
@@ -681,9 +694,9 @@
                               name="taktTime" id="inputInsert" class="lockscreen-credentials taktTime" />
                             <label for="norm" style="margin-left:3% ;">Nilai Distribusi : </label>
                             <input type="number" style="width:13%; height:34px;  margin-left:3%; text-align:center" name="inputInsert" id="dst" value="<?php echo $nDistribusi ?>" class="lockscreen-credentials" readonly />
-                            <label for="norm" style="margin-left:2%;">Posisi Elemen Tambahan : </label>
+                            <!-- <label for="norm" style="margin-left:2%;">Posisi Elemen Tambahan : </label>
                             <input type="number" style="width:20%; height:34px;  margin-left:2%; margin-right:2%;" placeholder="Input Posisi untuk Menyisipkan Elemen" name="inputInsert" id="inputInsertPosiition" class="lockscreen-credentials" />
-                            <button type="button" class=" btn btn-primary btn-md" style="height:34px;float:right" onclick="attachRowObservation(this)" id="btnInsert">Add</button>
+                            <button type="button" class=" btn btn-primary btn-md" style="height:34px;float:right" onclick="attachRowObservation(this)" id="btnInsert">Add</button> -->
                           </div>
                           <div class="panel-body">
                             <div class="table-responsive <?php echo sizeof($lihat_hasilObservasi) >= 8 ? 'table-responsive-custom': '' ?>" id="tableGenerate">
@@ -761,7 +774,7 @@
 																	?>
                                   <tr class="nomor_" .$no>
                                     <!--NO-->
-                                    <td class="posisi"><?php echo $no; ?></td>
+                                    <td class="posisi bg-success" title="Klik Untuk Menambah Elemen Disini" onclick="attachRowObservation(<?php echo $no ?>)"><?php echo $no; ?></td>
                                     <!--TIPE URUTAN-->
                                     <td style="text-align: center;">
                                       <input type="checkbox" <?php if ($tipe_urutan == 'PARALEL') { echo 'checked'; }?> name="checkBoxParalel[<?php echo $no-1;?>]" value="PARALEL" class="checkBoxParalel" id="checkBoxParalel"
@@ -899,15 +912,17 @@
     </div>
 
   <br>
-  <div class="col-lg-12" style="padding-top: 8px;">
-    <div style="text-align: center;">
-      <button type="submit" style="float: center; margin-right: 3%; margin-top: -0.5%; display: none" class="btn btn-primary" id="btnHidden"><i class="fa fa-floppy-o"></i> SIMPAN LEMBAR OBSERVASI</button>
-      <button type="button" onclick="checkNilaiDistribusiObservasi(this)" style="float: center; margin-left: 3%; margin-right: 5%; margin-top: -0.5%;" class="btn btn-primary" id="btnShow"><i class="fa fa-floppy-o"></i>
-        SIMPAN LEMBAR OBSERVASI</button>
-      <!-- <a style="float: center; margin-right: 4%; margin-top: -0.5%;" class="btn btn-success" id="btnExportOBS" href="<?=base_url('GeneratorTSKK/C_Observation/exportObservation/'.$id)?>"><i class="fa fa-download"></i> EXPORT OBSERVATION</a>
-<button type="button" style="float: center; margin-right: 3%; margin-top: -0.5%;" class="btn btn-warning" data-toggle="modal" data-target="#Modalku<?php echo $id; ?>" id="btnImportOBS"><i class="fa fa-upload"></i> IMPORT OBSERVATION</button>										 -->
+  <?php if ($sang_pembuat == $this->session->user): ?>
+    <div class="col-lg-12" style="padding-top: 8px;">
+      <div style="text-align: center;">
+        <button type="submit" style="float: center; margin-right: 3%; margin-top: -0.5%; display: none" class="btn btn-primary" id="btnHidden"><i class="fa fa-floppy-o"></i> SIMPAN LEMBAR OBSERVASI</button>
+        <button type="button" onclick="checkNilaiDistribusiObservasi(this)" style="float: center; margin-left: 3%; margin-right: 5%; margin-top: -0.5%;" class="btn btn-primary" id="btnShow"><i class="fa fa-floppy-o"></i>
+          SIMPAN LEMBAR OBSERVASI</button>
+        <!-- <a style="float: center; margin-right: 4%; margin-top: -0.5%;" class="btn btn-success" id="btnExportOBS" href="<?=base_url('GeneratorTSKK/C_Observation/exportObservation/'.$id)?>"><i class="fa fa-download"></i> EXPORT OBSERVATION</a>
+  <button type="button" style="float: center; margin-right: 3%; margin-top: -0.5%;" class="btn btn-warning" data-toggle="modal" data-target="#Modalku<?php echo $id; ?>" id="btnImportOBS"><i class="fa fa-upload"></i> IMPORT OBSERVATION</button>										 -->
+      </div>
     </div>
-  </div>
+  <?php endif; ?>
 </form>
 
   </div>
