@@ -677,6 +677,16 @@
 													$nDistribusi = null;
 												}
 												?>
+
+                        <div class="alert bg-success" role="alert">
+                          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">
+                              <i class="fa fa-close"></i>
+                            </span>
+                          </button>
+                          <strong>Sekilas Info! </strong> Klik pada kolom <b>NO</b> Untuk Menambah Elemen</strong>
+                        </div>
+
                         <div class="panel panel-default">
                           <div class="panel-heading">
                             <label for="norm" class="tskk_tt" style="<?php echo $takt_time == '99999' ? 'display:none;' : ''?>margin-left:1%;">Takt Time : </label>
