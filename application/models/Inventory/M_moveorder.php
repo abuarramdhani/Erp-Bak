@@ -396,7 +396,7 @@ class M_moveorder extends CI_Model
                 -- INT THE TRUTH ABOVE IT WILL USED --
                 and we.WIP_ENTITY_NAME = '$job_no'--'D191103750'
                 and bd.DEPARTMENT_CLASS_CODE = '$dept'  
-                order by 3 asc";
+                order by 11 asc";
                 // return $sql;
 		$query = $oracle->query($sql);
 		return $query->result_array();
