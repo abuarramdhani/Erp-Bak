@@ -1,3 +1,4 @@
+<input type="hidden" value="ok" id="order_seksi_rekayasa">
 <section class="content">
     <div class="box box-default color-palette-box">
         <div class="box-header with-border">
