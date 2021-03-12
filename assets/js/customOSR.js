@@ -64,17 +64,22 @@ $('#JenisOrder').on('change', function (){
 });
 
 // -------------------------------------------------
-var checkbox_required = $('input[type="checkbox"]');
+$(document).ready(function(){
+  if($('#order_seksi_rekayasa').val() == "ok"){
+    console.log("cek_rekayasa")
+  var checkbox_required = $('input[type="checkbox"]');
 
-checkbox_required.prop('required', true);
-
-checkbox_required.on('click', function(){
-  if (checkbox_required.is(':checked')) {
-    checkbox_required.prop('required', false);
-  } else {
-    checkbox_required.prop('required', true);
-  }
-});
+  checkbox_required.prop('required', true);
+  
+  checkbox_required.on('click', function(){
+    if (checkbox_required.is(':checked')) {
+      checkbox_required.prop('required', false);
+    } else {
+      checkbox_required.prop('required', true);
+    }
+  });
+}
+})
 
 // -------------------------------------------------
 $('.tblOSROrder').DataTable({
