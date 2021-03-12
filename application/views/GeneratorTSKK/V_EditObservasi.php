@@ -774,7 +774,7 @@
 																	?>
                                   <tr class="nomor_" .$no>
                                     <!--NO-->
-                                    <td class="posisi bg-success" title="Klik Untuk Menambah Elemen Disini" onclick="attachRowObservation(<?php echo $no ?>)"><?php echo $no; ?></td>
+                                    <td class="posisi bg-success" title="Klik Untuk Menambah Elemen Disini" onclick="attachRowObservation(this)"><?php echo $no; ?></td>
                                     <!--TIPE URUTAN-->
                                     <td style="text-align: center;">
                                       <input type="checkbox" <?php if ($tipe_urutan == 'PARALEL') { echo 'checked'; }?> name="checkBoxParalel[<?php echo $no-1;?>]" value="PARALEL" class="checkBoxParalel" id="checkBoxParalel"

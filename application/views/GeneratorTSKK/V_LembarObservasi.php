@@ -579,7 +579,7 @@
 																		?>
                                 <tr class="nomor_<?= $no ?>">
                                   <!--NO-->
-                                  <td class="posisi bg-success" title="Klik Untuk Menambah Elemen Disini" onclick="attachRowObservation_new(<?php echo $no; ?>)"><?php echo $no; ?></td>
+                                  <td class="posisi bg-success" title="Klik Untuk Menambah Elemen Disini" onclick="attachRowObservation_new(this)"><?php echo $no; ?></td>
                                   <!--TIPE URUTAN-->
                                   <td style="text-align: center;">
                                     <input type="checkbox" name="checkBoxParalel[<?php echo $no-1;?>]" value="PARALEL" class="checkBoxParalel">
