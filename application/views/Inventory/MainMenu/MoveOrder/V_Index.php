@@ -60,7 +60,7 @@
 						</tr>
 	<?php } ?>
 	</table>
-	<?= count($dataall['beda']) > 3 ? '<pagebreak resetpagenum="1" />' : '<br>' ?>
+	<pagebreak resetpagenum="1" />
     <!-- view perbedaan item -->
 
 	<table class="table table-bordered hor-center ver-top" >
