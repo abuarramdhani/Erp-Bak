@@ -115,9 +115,9 @@ class C_MoveOrder extends CI_Controller
 					$getBody[$i]['BAGI'] = $bagi;
 				}
 
-				usort($getBody, function($a, $b) {
-					return $a['BAGI'] - $b['BAGI'];
-				});
+				// usort($getBody, function($a, $b) {
+				// 	return $a['BAGI'] - $b['BAGI'];
+				// });
 
 				$array_terkelompok[$value['WIP_ENTITY_NAME']]['header'] = $value; 
 				$array_terkelompok[$value['WIP_ENTITY_NAME']]['body'] = $getBody; 

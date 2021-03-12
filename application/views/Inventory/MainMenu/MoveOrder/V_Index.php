@@ -40,6 +40,7 @@
 <body>
 <?= $urut != '0' ? '<pagebreak resetpagenum="1" />' : '' ?>
 	<!-- view perbedaan item -->
+	<?php if (count($dataall['beda']) > 0) { ?>
 	<span>List Item Berbeda :</span>
 	<table class="table table-bordered hor-center ver-top" style="font-size:11px">
 	<tr style="background-color: #f0f0f0;vertical-align: middle;" class="table-head">
@@ -61,6 +62,7 @@
 	<?php } ?>
 	</table>
 	<pagebreak resetpagenum="1" />
+	<?php }?>
     <!-- view perbedaan item -->
 
 	<table class="table table-bordered hor-center ver-top" >
