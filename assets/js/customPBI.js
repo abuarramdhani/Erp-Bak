@@ -238,7 +238,9 @@ $(document).ready(function () {
 
             var bulat = Math.round((pembagianBiaya + Number.EPSILON) * 100) / 100;
             // beamasuk
-            var totalBeaMasuk = $('.totalBeaMasukPBI').html();
+            // var totalBeaMasuk = $('.totalBeaMasukPBI').html();
+            var totalBeaMasuk = $('.inpBeaMasukPBI').val()
+            totalBeaMasuk = totalBeaMasuk.replace(/,/g, '')
 
             var rincianBeaMasuk = pembagianBiaya * Number(purify(totalBeaMasuk)) / 100;
             $(this).parentsUntil('tbody').find('.beaMasukPBI').html(formatMoney(Math.round((rincianBeaMasuk + Number.EPSILON) * 100) / 100));
