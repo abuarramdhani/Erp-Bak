@@ -1590,7 +1590,7 @@ public function exportExcel($idnya){
     }
 
     $loop_ = ceil($paling_lama/610);
-    for ($x=1; $x <= $loop_; $x++) {
+    for ($x=1; $x <=$loop_; $x++) {
 
     $end = 610;
 
@@ -3405,7 +3405,7 @@ public function exportExcel($idnya){
 						if ($nn < $cycle_time) {
 							for ($i=$nn; $i < $cycle_time; $i++) {
 								// ng kene ! bagian row detik
-									if (($i >= $start[$j] && $i <= $finish[$j]) && ($start[$j] <= 610*$x && $finish[$j] <= 610*$x) ) {
+									if (($i >= $start[$j] && $i <= $finish[$j])) {
 											if ($jenis_proses[$j] === 'MANUAL') {
 													$warna = '#000000';
 											} elseif ($jenis_proses[$j] === 'AUTO') {
@@ -3414,21 +3414,25 @@ public function exportExcel($idnya){
 													$warna = '#00dbc5';
 											}
 
-											$styles[$x][$rowflow + 1][$i+13]['fill'] = $warna;
-											$rows[$x][$rowflow + 1][$i+13] = $i-$start[$j]+1;
+											if ($i > 1*$nn && $i < 610*$x) {
+												$styles[$x][$rowflow + 1][($i+13) - $nn]['fill'] = $warna;
+												$rows[$x][$rowflow + 1][($i+13) - $nn] = $i-$start[$j]+1;
+											}
 
 									}
 									if (($i >= $startmuda[$j] && $i <= $finishmuda[$j]) && ($startmuda[$j] <= 610*$x && $finishmuda[$j] <= 610*$x)) {
 											$styles[$x][$rowflow][$i+13]['fill'] = '#fa3eef';
 											$styles[$x][$rowflow-1][$i+13]['fill'] = '#fa3eef';
 											if ($i === $finishmuda[$j]) {
+												if ($i > 1*$nn && $i < 610*$x) {
 													$rows[$x][$rowflow-1][$i+13] = 'Muda: '.$muda[$j].' Detik';
+												}
 											}
 									}
 							}
 						}
 
-						//Garis Takttime
+						// //Garis Takttime
 						if ($takt_time == '-') {
 							$styles[$x][$rowflow][($takt_time + 13) - $nn]['fill'] = '#ffffff';
 							$styles[$x][$rowflow+1][($takt_time + 13) - $nn]['fill'] = '#ffffff';
@@ -3440,8 +3444,7 @@ public function exportExcel($idnya){
 								$styles[$x][$rowflow+2][($takt_time + 13) - $nn]['fill'] = '#fc0303';
 							}
 						}
-
-						//Garis Cycletime
+						// //Garis Cycletime
 						if ($cycle_time > 1*$nn && $cycle_time < 610*$x) {
 							$styles[$x][$rowflow][($cycle_time + 13) - $nn]['fill'] = '#fcf403';
 							$styles[$x][$rowflow+1][($cycle_time + 13) - $nn]['fill'] = '#fcf403';
@@ -3450,24 +3453,28 @@ public function exportExcel($idnya){
         }
 
         //Irregular Job
-        for ($i=$nn; $i < $jumlah_hasil_irregular; $i++) {
-            $styles[$x][$rownya][$last_finish + 14 + $i]['fill'] = '#2a61ad';
-            $rows[$x][$rownya][$last_finish + 14 + $i] = $i +1;
-        }
+				if ($last_finish > 1*$nn && $last_finish < 610*$x) {
+					for ($i=$nn; $i < $jumlah_hasil_irregular; $i++) {
+							$styles[$x][$rownya][$last_finish + 14 + $i]['fill'] = '#2a61ad';
+							$rows[$x][$rownya][$last_finish + 14 + $i] = $i +1;
+					}
+				}
 
-        $styles[$x][$rownya + 13][$takt_time + 14]['font-size'] = 10;
 				if ($takt_time == '-') {
 					$rows[$x][$rownya + 13][$takt_time + 14] = '';
 				}else {
 					if ($takt_time > 1*$nn && $takt_time < 610*$x) {
+						$styles[$x][$rownya + 13][$takt_time + 14]['font-size'] = 10;
 						$rows[$x][$rownya + 13][($takt_time + 14) - $nn] = 'Takt Time = '.$takt_time.' Detik';
 					}
 				}
+
         //CycleTime
 				if ($cycle_time > 1*$nn && $cycle_time < 610*$x ) {
 					$rows[$x][$rownya][($cycle_time + 14) - $nn] = 'Cycle Time = '.$cycle_time.' Detik';
 				}
         // $rows[$x][$rownya + 13][$cycle_time + 14] = 'Cycle Time = '.$cycle_time.' Detik';
+			// echo sizeof($rows[$x]);
 
 			$writer->writeSheetHeader($sheet1.'_'.$x, $header, $col_options);      //WRITE HEADER
 			for ($i=0; $i < sizeof($rows[$x]); $i++) {
