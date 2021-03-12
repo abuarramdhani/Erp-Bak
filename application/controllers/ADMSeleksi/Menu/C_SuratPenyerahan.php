@@ -409,7 +409,8 @@ class C_SuratPenyerahan extends CI_Controller
     }
     $tembusan = $this->personalia->tembusan($kd_jabatan, $kodesie, $data['cekData'][0]['lokasi_kerja']);
     $data['tembusan'] = $tembusan;
-    $bulanan = date('Ym', strtotime($no_tgl));
+    // $bulanan = date('Ym', strtotime($no_tgl));
+    $bulanan = date('Ym');
 
     $a = array();
     $noind = array();
