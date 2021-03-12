@@ -117,6 +117,10 @@ class C_SetPlan extends CI_Controller
 			}
 			array_push($datanya, $getdata[$key]);
 		}
+		
+		usort($datanya, function($y, $z) {
+			return strcasecmp($y['ITEM'], $z['ITEM']);
+		});
 		$data['data'] = $datanya;
 
         $this->load->view('MonitoringJobProduksi/V_TblSetplan', $data);
@@ -266,8 +270,12 @@ public function savePlan(){
 			$datanya[$i]['inv'] = $item[$i];
 			$datanya[$i]['kode_item'] = $kode_item[$i];
 			$datanya[$i]['desc'] = $desc[$i];
-			$subktgr 		= $this->M_setplan->getSubCategory("where id_subcategory = ".$subcategory[$i]."");
-			$datanya[$i]['subcategory']	= $subktgr[0]['SUBCATEGORY_NAME'];
+			if (!empty($subcategory[$i])) {
+				$subktgr = $this->M_setplan->getSubCategory("where id_subcategory = ".$subcategory[$i]."");
+				$datanya[$i]['subcategory']	= $subktgr[0]['SUBCATEGORY_NAME'];
+			}else {
+				$datanya[$i]['subcategory']	= '';
+			}
 			$z = 0;
 			for ($x=$x; $x < $bts ; $x++) { 
 				$datanya[$i]['plan'.$z.''] = $plan[$x];
