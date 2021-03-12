@@ -27,6 +27,9 @@ class M_presensiharian extends Ci_Model
 		return $result->result_array();
 	}
 
+	/**
+	 * 
+	 */
 	public function getPekerjaByKodesie($kd)
 	{
 		$noind = $this->session->user;
@@ -101,15 +104,22 @@ class M_presensiharian extends Ci_Model
 				 where left(a.kodesie,7) in (left('$kd', 7), '3280102', '3280101', '3280105', '3280107', '3280104', '3280106', '3280103')
 				 and a.keluar = false
 			 order by a.kodesie,a.noind;";
-		}elseif ($noind == 'B0865') { //Order #399407
+		} elseif ($noind == 'B0865') { // Order #399407
 			$sql = "select a.noind,a.nama, b.seksi
 				from hrd_khs.tpribadi a
 				left join hrd_khs.tseksi b on a.kodesie=b.kodesie
 	    		where left(a.kodesie,7) in ('3301007','3301008')
 	    		and a.keluar = false
 				order by a.kodesie,a.noind;";
+		} elseif ($noind == 'B0344') { // Enaryono Order #741867 akses semua seksi di bidang ENGINEERING
+			$sql = "select a.noind,a.nama, b.seksi
+					from hrd_khs.tpribadi a
+					left join hrd_khs.tseksi b on a.kodesie=b.kodesie
+						where left(a.kodesie, 4) in ('3060')
+						and a.keluar = false
+					order by a.kodesie,a.noind;";
 		} else {
-			if ('306030' == substr($kd, 0, 6)) { //ada diticket
+			if ('306030' == substr($kd, 0, 6)) { // ada diticket
 				$sql = "select a.noind,a.nama, b.seksi
 				from hrd_khs.tpribadi a
 				left join hrd_khs.tseksi b on a.kodesie=b.kodesie
@@ -132,6 +142,7 @@ class M_presensiharian extends Ci_Model
 
 	public function getPresensiByNoind($noind, $tgl)
 	{
+		// RIA CAHYANI HARTONO
 		if ($noind == 'L8001') {
 			$sql = "select waktu
 					from \"Presensi\".tprs_shift2 tp
