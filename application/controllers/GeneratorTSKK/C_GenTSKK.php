@@ -2836,6 +2836,7 @@ public function exportExcel($idnya){
         // DATA ROW 5
             $rows[$x][4][2] = 'Yogyakarta';
             $rows[$x][4][186] = $nama_part; //DATA Nama Part
+						$styles[$x][4][186]['wrap_text']='true';
             $rows[$x][4][320] = $line; //DATA Line
             $rows[$x][4][401] = $nm; //DATA No. Mesin
             $rows[$x][4][450] = $qty; //DATA Qty/Proses
@@ -3454,9 +3455,9 @@ public function exportExcel($idnya){
 
         //Irregular Job
 				if ($last_finish > 1*$nn && $last_finish < 610*$x) {
-					for ($i=$nn; $i < $jumlah_hasil_irregular; $i++) {
-							$styles[$x][$rownya][$last_finish + 14 + $i]['fill'] = '#2a61ad';
-							$rows[$x][$rownya][$last_finish + 14 + $i] = $i +1;
+					for ($i=0; $i < $jumlah_hasil_irregular; $i++) {
+							$styles[$x][$rownya][(($last_finish + 14) - $nn) + $i]['fill'] = '#2a61ad';
+							$rows[$x][$rownya][(($last_finish + 14) - $nn) + $i] = $i +1;
 					}
 				}
 
@@ -3464,7 +3465,7 @@ public function exportExcel($idnya){
 					$rows[$x][$rownya + 13][$takt_time + 14] = '';
 				}else {
 					if ($takt_time > 1*$nn && $takt_time < 610*$x) {
-						$styles[$x][$rownya + 13][$takt_time + 14]['font-size'] = 10;
+						$styles[$x][$rownya + 13][($takt_time + 14) - $nn]['font-size'] = 10;
 						$rows[$x][$rownya + 13][($takt_time + 14) - $nn] = 'Takt Time = '.$takt_time.' Detik';
 					}
 				}

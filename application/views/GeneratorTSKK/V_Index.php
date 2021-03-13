@@ -6,7 +6,7 @@
 					<div class="row">
 						<div class="box-header">
 							<br/>
-							<h1><b><center>Dashboard Generator TSKK Versi 2.1</center></b></h1>
+							<h1><b><center>Dashboard Generator TSKK Versi 2.2</center></b></h1>
 						</div>
 					</div>
 			</section>
