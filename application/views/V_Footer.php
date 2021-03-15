@@ -255,6 +255,7 @@
 				<script src="<?= base_url('assets/js/customDSP.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customPME.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customOSR.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customMLQ.js') ?>"></script>
 
 
 
