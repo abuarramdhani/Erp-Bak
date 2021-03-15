@@ -17,13 +17,12 @@ $('.proposalForm').hide();
 
 // -------------------------------------------------
 $('#JenisOrder').on('change', function (){
-  var jenisorder = $('select[name="JenisOrder"]').val();
+  var jenisorder = $('select[name="JenisOrder"]').last().val();
 
 	if (jenisorder == 'MEMBUAT ALAT/MESIN' || jenisorder == 'OTOMASI') {
     $('.namaForm').show();
     $('.jmlForm').show();
     $('.spekForm').show();
-    $('.proposalForm').show();
     $('.nomorForm').hide();
     $('#NomorAlatMesin').removeAttr('required');
     $('.tipeForm').hide();
@@ -32,6 +31,7 @@ $('#JenisOrder').on('change', function (){
     $('#FungsiAlatMesin').removeAttr('required');
     $('.docForm').hide();
     $('#LayoutAlatMesin').removeAttr('required');
+    $('.proposalForm').show();
   }else if (jenisorder == 'MODIFIKASI ALAT/MESIN' || jenisorder == 'REBUILDING MESIN') {
     $('.namaForm').show();
     $('.nomorForm').show();
@@ -43,6 +43,7 @@ $('#JenisOrder').on('change', function (){
     $('.docForm').hide();
     $('#LayoutAlatMesin').removeAttr('required');
     $('#DokumenKetPelengkap').removeAttr('required');
+    $('.proposalForm').hide();
   }else if (jenisorder == 'HANDLING MESIN') {
     $('.namaForm').show();
     $('.jmlForm').show();
@@ -56,6 +57,7 @@ $('#JenisOrder').on('change', function (){
     $('.fungsiForm').hide();
     $('#FungsiAlatMesin').removeAttr('required');
     $('#DokumenKetPelengkap').removeAttr('required');
+    $('.proposalForm').hide();
 	}else {
     $('.namaForm').hide();
     $('.nomorForm').hide();
