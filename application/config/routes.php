@@ -5191,3 +5191,16 @@ $route['AgentOrderSeksiRekayasa'] 						= 'OrderSeksiRekayasa/C_Index';
 $route['AgentOrderSeksiRekayasa/MonOrder']				= 'OrderSeksiRekayasa/Agent/C_MonOrder';
 $route['AgentOrderSeksiRekayasa/MonOrder/(:any)']		= 'OrderSeksiRekayasa/Agent/C_MonOrder/$1';
 $route['AgentOrderSeksiRekayasa/MonOrder/(:any)/(:any)']= 'OrderSeksiRekayasa/Agent/C_MonOrder/$1/$2';
+
+//-------------------------------------------Monitoring LPPB QC--------------------------------------------------//
+$route['MonitoringLppbQC'] 							= 'MonitoringLppbQC/C_Index';
+
+$route['MonitoringLppbQC/MonLppb']					= 'MonitoringLppbQC/Menu/C_MonLppb';
+$route['MonitoringLppbQC/MonLppb/(:any)']			= 'MonitoringLppbQC/Menu/C_MonLppb/$1';
+$route['MonitoringLppbQC/MonLppb/(:any)/(:any)']	= 'MonitoringLppbQC/Menu/C_MonLppb/$1/$2';
+$route['MonitoringLppbQC/KirimLppb']				= 'MonitoringLppbQC/Menu/C_KirimLppb';
+$route['MonitoringLppbQC/KirimLppb/(:any)']			= 'MonitoringLppbQC/Menu/C_KirimLppb/$1';
+$route['MonitoringLppbQC/KirimLppb/(:any)/(:any)']	= 'MonitoringLppbQC/Menu/C_KirimLppb/$1/$2';
+$route['MonitoringLppbQC/TerimaLppb']				= 'MonitoringLppbQC/Menu/C_TerimaLppb';
+$route['MonitoringLppbQC/TerimaLppb/(:any)']		= 'MonitoringLppbQC/Menu/C_TerimaLppb/$1';
+$route['MonitoringLppbQC/TerimaLppb/(:any)/(:any)']	= 'MonitoringLppbQC/Menu/C_TerimaLppb/$1/$2';
