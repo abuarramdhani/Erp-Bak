@@ -141,20 +141,18 @@
                                 <?php } ?>
                             </td>
                         </tr>
+                        <?php if ($order[0]['dokumen_ket_pelengkap'] != null) { ?>
                         <tr>
-                            <td style="border-top: 1px solid #000" width="13%"><b>Keterangan Pelengkap</b></td>
+                            <td style="border-top: 1px solid #000" width="13%"><b>Proposal Pengadaan Asset</b></td>
                             <td style="border-top: 1px solid #000" width="2%">:</td>
                             <td colspan="4" style="border-top: 1px solid #000; border-right: 1px solid #000" width="70%">
-                                <?= $order[0]['ket_pelengkap'] ?>
-                                <?php if ($order[0]['dokumen_ket_pelengkap'] != null) { ?>
-                                <div><br/></div>
                                 <div class="text-left">
-                                <!-- <img style="width: 70%" src="<?= base_url($order[0]['dokumen_ket_pelengkap']) ?>"> -->
                                     <iframe frameborder="0" class="mt-1" style="width:100%;height:250px" src="<?= base_url($order[0]['dokumen_ket_pelengkap']) ?>"></iframe>
                                 </div>
-                                <?php } ?>
+                                
                             </td>
                         </tr>
+                        <?php } ?>
                         <?php if ($order[0]['dokumen_otorisasi'] != null){ ?>
                             <tr>
                             <td style="border-top: 1px solid #000" width="13%"><b>Dokumen Otorisasi</b></td>

@@ -13,10 +13,11 @@ $('.spekForm').hide();
 $('.tipeForm').hide();
 $('.fungsiForm').hide();
 $('.docForm').hide();
+$('.proposalForm').hide();
 
 // -------------------------------------------------
 $('#JenisOrder').on('change', function (){
-  var jenisorder = $('select[name="JenisOrder"]').val();
+  var jenisorder = $('select[name="JenisOrder"]').last().val();
 
 	if (jenisorder == 'MEMBUAT ALAT/MESIN' || jenisorder == 'OTOMASI') {
     $('.namaForm').show();
@@ -30,6 +31,7 @@ $('#JenisOrder').on('change', function (){
     $('#FungsiAlatMesin').removeAttr('required');
     $('.docForm').hide();
     $('#LayoutAlatMesin').removeAttr('required');
+    $('.proposalForm').show();
   }else if (jenisorder == 'MODIFIKASI ALAT/MESIN' || jenisorder == 'REBUILDING MESIN') {
     $('.namaForm').show();
     $('.nomorForm').show();
@@ -40,6 +42,8 @@ $('#JenisOrder').on('change', function (){
     $('#SpesifikasiAlatMesin').removeAttr('required');
     $('.docForm').hide();
     $('#LayoutAlatMesin').removeAttr('required');
+    $('#DokumenKetPelengkap').removeAttr('required');
+    $('.proposalForm').hide();
   }else if (jenisorder == 'HANDLING MESIN') {
     $('.namaForm').show();
     $('.jmlForm').show();
@@ -52,6 +56,8 @@ $('#JenisOrder').on('change', function (){
     $('#TipeAlatMesin').removeAttr('required');
     $('.fungsiForm').hide();
     $('#FungsiAlatMesin').removeAttr('required');
+    $('#DokumenKetPelengkap').removeAttr('required');
+    $('.proposalForm').hide();
 	}else {
     $('.namaForm').hide();
     $('.nomorForm').hide();
@@ -60,6 +66,7 @@ $('#JenisOrder').on('change', function (){
     $('.tipeForm').hide();
     $('.fungsiForm').hide();
     $('.docForm').hide();
+    $('.proposalForm').hide();
 	}
 });
 
@@ -67,19 +74,20 @@ $('#JenisOrder').on('change', function (){
 $(document).ready(function(){
   if($('#order_seksi_rekayasa').val() == "ok"){
     console.log("cek_rekayasa")
-  var checkbox_required = $('input[type="checkbox"]');
+    var checkbox_required = $('input[type="checkbox"]');
 
-  checkbox_required.prop('required', true);
-  
-  checkbox_required.on('click', function(){
-    if (checkbox_required.is(':checked')) {
-      checkbox_required.prop('required', false);
-    } else {
-      checkbox_required.prop('required', true);
-    }
-  });
-}
+    checkbox_required.prop('required', true);
+    
+    checkbox_required.on('click', function(){
+      if (checkbox_required.is(':checked')) {
+        checkbox_required.prop('required', false);
+      } else {
+        checkbox_required.prop('required', true);
+      }
+    });
+  }
 })
+
 
 // -------------------------------------------------
 $('.tblOSROrder').DataTable({

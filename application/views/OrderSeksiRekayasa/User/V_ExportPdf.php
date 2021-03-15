@@ -88,8 +88,6 @@
                     <td style="border-top: 1px solid #000" width="2%">:</td>
                     <td colspan="4" style="border-top: 1px solid #000; border-right: 1px solid #000" width="70%">
                         <?= $order[0]['target'] ?>
-                        <!-- <div><br/></div>
-                        <div class="text-left"><img style="width: 70%" src="<?= base_url($order[0]['dokumen_target']) ?>"></div> -->
                     </td>
                 </tr>
                 <tr>
@@ -97,8 +95,6 @@
                     <td style="border-top: 1px solid #000" width="2%">:</td>
                     <td colspan="4" style="border-top: 1px solid #000; border-right: 1px solid #000" width="70%">
                         <?= $order[0]['kondisi_sebelum'] ?>
-                        <!-- <div><br/></div>
-                        <div class="text-left"><img style="width: 70%" src="<?= base_url($order[0]['dokumen_kondisi_sebelum']) ?>"></div> -->
                     </td>
                 </tr>
                 <tr>
@@ -106,17 +102,6 @@
                     <td style="border-top: 1px solid #000" width="2%">:</td>
                     <td colspan="4" style="border-top: 1px solid #000; border-right: 1px solid #000" width="70%">
                         <?= $order[0]['kondisi_sesudah'] ?>
-                        <!-- <div><br/></div>
-                        <div class="text-left"><img style="width: 70%" src="<?= base_url($order[0]['dokumen_kondisi_sesudah']) ?>"></div> -->
-                    </td>
-                </tr>
-                <tr>
-                    <td style="border-top: 1px solid #000; font-weight: bold;" width="13%">Keterangan Pelengkap</td>
-                    <td style="border-top: 1px solid #000" width="2%">:</td>
-                    <td colspan="4" style="border-top: 1px solid #000; border-right: 1px solid #000" width="70%">
-                        <?= $order[0]['ket_pelengkap'] ?>
-                        <!-- <div><br/></div>
-                        <div class="text-left"><img style="width: 70%" src="<?= base_url($order[0]['dokumen_ket_pelengkap']) ?>"></div> -->
                     </td>
                 </tr>
             </tbody>
