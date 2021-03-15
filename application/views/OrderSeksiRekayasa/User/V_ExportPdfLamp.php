@@ -16,13 +16,11 @@
                             <img style="width: 70%" src="<?= base_url($order[0]['layout_alat_mesin']) ?>">
                         <?php }
                         ?>
-                        <!-- <iframe frameborder="0" class="mt-1" style="width:100%;height:350px" src="<?= base_url($order[0]['layout_alat_mesin']) ?>"></iframe> -->
                         </td>
                     </tr>
                 </tbody>
             </table>
         <?php } ?>
-        <!-- <br/> -->
         <?php if ($order[0]['dokumen_target'] != null){ ?>
             <table class="table" style="padding-bottom: 0; margin-bottom: 0;">
                 <tbody>
@@ -37,13 +35,11 @@
                             <img style="width: 70%" src="<?= base_url($order[0]['dokumen_target']) ?>">
                         <?php }
                         ?>
-                        <!-- <iframe frameborder="0" class="mt-1" style="width:100%;height:350px" src="<?= base_url($order[0]['dokumen_target']) ?>"></iframe> -->
                         </td>
                     </tr>
                 </tbody>
             </table>
         <?php } ?>
-        <!-- <br/> -->
         <?php if ($order[0]['dokumen_kondisi_sebelum'] != null){ ?>
             <table class="table" style="padding-bottom: 0; margin-bottom: 0;">
                 <tbody>
@@ -58,13 +54,11 @@
                             <img style="width: 70%" src="<?= base_url($order[0]['dokumen_kondisi_sebelum']) ?>">
                         <?php }
                         ?>
-                        <!-- <iframe frameborder="0" class="mt-1" style="width:100%;height:350px" src="<?= base_url($order[0]['dokumen_kondisi_sebelum']) ?>"></iframe> -->
                         </td>
                     </tr>
                 </tbody>
             </table>
         <?php } ?>
-        <!-- <br/> -->
         <?php if ($order[0]['dokumen_kondisi_sesudah'] != null){ ?>
             <table class="table" style="padding-bottom: 0; margin-bottom: 0;">
                 <tbody>
@@ -79,18 +73,16 @@
                             <img style="width: 70%" src="<?= base_url($order[0]['dokumen_kondisi_sesudah']) ?>">
                         <?php }
                         ?>
-                        <!-- <iframe frameborder="0" class="mt-1" style="width:100%;height:350px" src="<?= base_url($order[0]['dokumen_kondisi_sesudah']) ?>"></iframe> -->
                         </td>
                     </tr>
                 </tbody>
             </table>
         <?php } ?>
-        <!-- <br/> -->
         <?php if ($order[0]['dokumen_ket_pelengkap'] != null){ ?>
             <table class="table" style="padding-bottom: 0; margin-bottom: 0;">
                 <tbody>
                     <tr>
-                        <td style="font-weight: bold;">Keterangan Pelengkap :</td>
+                        <td style="font-weight: bold;">Proposal Pengadaan Asset :</td>
                     </tr>
                     <tr>
                         <td style="font-weight: bold;">
@@ -105,7 +97,6 @@
                 </tbody>
             </table>
         <?php } ?>
-        <!-- <br/> -->
         <?php if ($order[0]['dokumen_otorisasi'] != null){ ?>
             <table class="table" style="padding-bottom: 0; margin-bottom: 0;">
                 <tbody>

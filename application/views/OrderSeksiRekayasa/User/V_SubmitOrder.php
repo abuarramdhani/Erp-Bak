@@ -138,11 +138,11 @@
                     <input type="file" name="DokumenKondisiSesudah" id="DokumenKondisiSesudah"  class="form-control" accept=".bmp, .jpg, .png, .pdf" />
                     </div>
                 </div>
-                <div class="col-lg-12">
+                <div class="col-lg-12 proposalForm">
                     <div class="form-group">
-                    <label>Keterangan Pelengkap</label>
-                    <textarea type="textarea" name="KetPelengkap" id="KetPelengkap" placeholder="Masukkan keterangan pelengkap dari target dan perbandingan kondisi..." style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;" required></textarea>
-                    <input type="file" name="DokumenKetPelengkap" id="DokumenKetPelengkap" class="form-control" accept=".bmp, .jpg, .png, .pdf" />
+                    <label>Proposal Pengadaan Asset</label>
+                    <!-- <textarea type="textarea" name="KetPelengkap" id="KetPelengkap" placeholder="Masukkan keterangan pelengkap dari target dan perbandingan kondisi..." style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;" required></textarea> -->
+                    <input type="file" name="DokumenKetPelengkap" id="DokumenKetPelengkap" class="form-control" accept=".bmp, .jpg, .png, .pdf" required/>
                     </div>
                 </div>
             </div>
