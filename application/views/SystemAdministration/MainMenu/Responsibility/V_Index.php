@@ -32,7 +32,15 @@
 							</div>
 							<div class="box-body">
 								<div class="table-responsive">
-									<table class="table table-striped table-bordered table-hover text-left" id="tblUser" style="font-size:12px;">
+									<style type="text/css">
+										.dataTables_filter, .dataTables_paginate {
+											float: right;
+										}
+										.dataTables_info {
+											float: left;
+										}
+									</style>
+									<table class="table table-striped table-bordered table-hover text-left" id="tbl-Sys-Responsibility-index" style="font-size:12px;">
 										<thead>
 											<tr class="bg-primary">
 												<th width="5%">
