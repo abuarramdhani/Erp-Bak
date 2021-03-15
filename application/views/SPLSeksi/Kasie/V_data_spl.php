@@ -125,7 +125,7 @@
 								<div class="form-group">
 									<div class="col-sm-12">
 										<input type="text" id="txt_ses" value="<?php echo $this->session->userid; ?>" hidden>
-										<button type="button" class="btn btn-primary hidden" style="margin-left: 1em;" data-toggle="modal" data-target="#ProsesDialog" id="btn-ProsesSPL"><i class="fa fa-save"></i> Proses</button>
+										<button type="button" class="btn btn-primary hidden" style="margin-left: 1em;" id="btn-ProsesSPL"><i class="fa fa-save"></i> Proses</button>
 										<button data-step="7" data-intro="Tombol untuk melakukan pencarian" type="button" id="spl-approval-0" style="margin-right:3px" class="btn btn-primary pull-right"> <i class="fa fa-search"></i> Cari</button>
 										<button data-step="8" data-intro="Tombol untuk mereload halaman" type="reset" style="margin-right:3px" class="btn btn-primary pull-right" onclick="location.reload()"> <i class="fa fa-refresh"></i> Reset</button>
 										<img src="<?php echo base_url('assets/img/gif/loading6.gif') ?>" class="pull-right spl-loading hidden" width="33px" height="33px" style="margin-right:3px">

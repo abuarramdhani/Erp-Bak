@@ -16,14 +16,15 @@ function spl_load_data() {
 		tmp = "finspot:FingerspotVer;" + btoa(baseurl + "ALA/Approve/fp_proces?userid=" + usr);
 	}
 
-	chk = "";
-	$(".spl-chk-data").each(function () {
-		if (this.checked) {
-			chk += "." + $(this).val();
+	var client_table = $('.spl-table').DataTable();
+	var chk = 0;
+	var rows = $( client_table.$('input[type="checkbox"]').each(function () {
+		if ($(this).is(':checked')) {
+			chk++;
 		}
-	});
+	}));
 
-	if (chk == "") {
+	if (chk == 0) {
 		$("#example11_wrapper").find("a.btn-primary").addClass("disabled");
 		$("#example11_wrapper").find("button.btn-primary").addClass("disabled");
 		console.log("tidak ada");
@@ -869,12 +870,13 @@ $(function () {
 			tmp = "finspot:FingerspotVer;";
 		}
 
-		chk = "";
-		$(".spl-chk-data").each(function () {
-			if (this.checked) {
+		var client_table = $('.spl-table').DataTable();
+		var chk = '';
+		var rows = $( client_table.$('input[type="checkbox"]').each(function () {
+			if ($(this).is(':checked')) {
 				chk += "." + $(this).val();
 			}
-		});
+		}));
 
 		if (chk == "") {
 			$("#example11_wrapper").find("a.btn-primary").addClass("disabled");
@@ -1907,6 +1909,27 @@ $(document).ready(function () {
 		window.location.href = fingerspot_sdk_url;
 		console.log(fingerspot_sdk_url);
 		auth_finger.init();
+	});
+
+	$('#btn-ProsesSPL').click(function(){
+		var l = $('.spl-chk-data:checked').length;
+		var client_table = $('.spl-table').DataTable();
+		var x = 0;
+		var rows = $( client_table.$('input[type="checkbox"]').each(function () {
+			if ($(this).is(':checked')) {
+				x++;
+			}
+		}));
+		console.log('jumlah checkbox',l, x);
+		if (x > 100) {
+			Swal.fire(
+				'Tidak Bisa Memilih Pekerja lebih dari 100',
+				'Mohon Kurangi jumlah pilihan Pekerja!',
+				'error'
+				);
+		}else{
+			$('#ProsesDialog').modal('show');
+		}
 	});
 });
 
