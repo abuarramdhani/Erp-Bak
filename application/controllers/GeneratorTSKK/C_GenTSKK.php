@@ -1380,16 +1380,18 @@ public function exportExcel($idnya){
 			}
 
 		}
+		// inisiasi elemen kembali karna elemen memiliki nilai max
+		$elemen = $elemen_;
+		$keterangan_elemen = $keterangan_elemen_;
+		$jenis_proses = $jenis_proses_;
+		$tipe_urutan = $tipe_urutan_;
+		$start = $start_;
+		$finish = $finish_;
+		$waktu = $waktu_;
+		
 	}
 
-	// inisiasi elemen kembali karna elemen memiliki nilai max
-	$elemen = $elemen_;
-	$keterangan_elemen = $keterangan_elemen_;
-	$jenis_proses = $jenis_proses_;
-	$tipe_urutan = $tipe_urutan_;
-	$start = $start_;
-	$finish = $finish_;
-	$waktu = $waktu_;
+
 
 	if ($takt_time == 99999) {
 		$takt_time = '-';
