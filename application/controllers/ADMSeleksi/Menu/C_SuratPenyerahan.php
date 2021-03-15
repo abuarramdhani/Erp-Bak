@@ -409,8 +409,7 @@ class C_SuratPenyerahan extends CI_Controller
     }
     $tembusan = $this->personalia->tembusan($kd_jabatan, $kodesie, $data['cekData'][0]['lokasi_kerja']);
     $data['tembusan'] = $tembusan;
-    // $bulanan = date('Ym', strtotime($no_tgl));
-    $bulanan = date('Ym');
+    $bulanan = date('Ym', strtotime($no_tgl));
 
     $a = array();
     $noind = array();
@@ -444,7 +443,7 @@ class C_SuratPenyerahan extends CI_Controller
         $this->M_penyerahan->insertNomorSurat($set_noSurat);
         $this->M_penyerahan->updateNoSurat($no_surat, $implode, $bulanan);
       }
-      $data['no_surat'] = $no_surat . '/PS/KI-C/' . date('m/y');
+      $data['no_surat'] = $no_surat . '/PS/KI-C/' . date('m/y', strtotime($no_tgl));
     } else {
       if ($no_surat == '000' || $no_surat == null || $no_surat == '' || empty($no_surat)) {
         $no_surat = '001';
@@ -943,7 +942,7 @@ class C_SuratPenyerahan extends CI_Controller
         // untuk membuat array yg berisi tanggal dari tgl penyerahan sampai tanggal akhir bulan tgl penyerahan
         $hasil = false;
         while (!$hasil) {
-          array_push($tanggal, date('Y-m-') . $now);
+          array_push($tanggal, date('Y-m-', strtotime($tgl_pyrhn)) . $now);
 
           if ($now == $akhir_bulan) {
             $hasil = true;
