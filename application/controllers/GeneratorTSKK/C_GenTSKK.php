@@ -1268,7 +1268,9 @@ public function exportExcel($idnya){
 		 $id_tskk          = $this->input->post('id');
 
 		 $takt_time        = $this->input->post('takt_time');
-
+		 if ($takt_time != '-') {
+			 $takt_time = $takt_time * $qty;
+		 }
 		 $jenis_proses     = $this->input->post('jenis_proses_elemen');
 		 $elemen           = $this->input->post('elemen_kerja');
 		 $keterangan_elemen= $this->input->post('keterangan_elemen_kerja');
@@ -1349,6 +1351,47 @@ public function exportExcel($idnya){
 		$creationDate = date('d-M-Y');
 		$generateDate = str_replace("-", " ", $creationDate);
 	}
+// echo "-------------";
+// echo "<pre>";
+// print_r($waktu);
+// echo "-------------";
+// echo "<pre>";
+// print_r($last_finish);die;
+
+	if (count($elemen) < 53) {
+		for ($i= 0; $i < 53; $i++) {
+
+			if (!empty($elemen[$i])) {
+				$elemen_[$i] = $elemen[$i];
+				$keterangan_elemen_[$i] = $keterangan_elemen[$i];
+				$jenis_proses_[$i] = $jenis_proses[$i];
+				$tipe_urutan_[$i] = $tipe_urutan[$i];
+				$start_[$i] = $start[$i];
+				$finish_[$i] = $finish[$i];
+				$waktu_[$i] = $waktu[$i];
+			}else {
+				$elemen_[$i] = '';
+				$keterangan_elemen_[$i] = '';
+				$jenis_proses_[$i] = '';
+				$tipe_urutan_[$i] = '';
+				$start_[$i] = '';
+				$finish_[$i] = '';
+				$waktu_[$i] = '';
+			}
+
+		}
+		// inisiasi elemen kembali karna elemen memiliki nilai max
+		$elemen = $elemen_;
+		$keterangan_elemen = $keterangan_elemen_;
+		$jenis_proses = $jenis_proses_;
+		$tipe_urutan = $tipe_urutan_;
+		$start = $start_;
+		$finish = $finish_;
+		$waktu = $waktu_;
+		
+	}
+
+
 
 	if ($takt_time == 99999) {
 		$takt_time = '-';
@@ -1642,7 +1685,7 @@ public function exportExcel($idnya){
                     $fontsize = null;
                     $fontstyle = null; //bold, italic, underline, strikethrough or multiple ie: 'bold,italic'
                     $border = null; //left, right, top, bottom, or multiple ie: 'top,left'
-                    $borderstyle = null; //thin, medium, thick, dashDot, dashDotDot, dashed, dotted, double, hair, mediumDashDot, mediumDashDotDot, mediumDashed, slantDashDot
+                    $borderstyle = null; //thin, medium, thin, dashDot, dashDotDot, dashed, dotted, double, hair, mediumDashDot, mediumDashDotDot, mediumDashed, slantDashDot
                     $bordercolor = null;
                     $color = null;
                     $fill = null;
@@ -1653,23 +1696,23 @@ public function exportExcel($idnya){
                     if ($j == 0) {
                         if ($i == 0) {
                             $border = 'left,top';
-                            $borderstyle = 'thick';
+                            $borderstyle = 'thin';
                         }elseif ($i == 8 || $i == 185 || $i == 319 || $i == 400 || $i == 449 || $i == 490  || $i == 623) {
                             $border = 'right,top';
-                            $borderstyle = 'thick';
+                            $borderstyle = 'thin';
                         } elseif ($i < 623) {
                             $border = 'top';
-                            $borderstyle = 'thick';
+                            $borderstyle = 'thin';
                         } else {
 
                         }
                     } elseif ($j == 1) {
                         if ($i == 0) {
                             $border='left';
-                            $borderstyle='thick';
+                            $borderstyle='thin';
                         } elseif ($i == 8 || $i == 185 || $i == 319 || $i == 400 || $i == 449 || $i == 490  || $i == 623) {
                             $border='right';
-                            $borderstyle='thick';
+                            $borderstyle='thin';
                         } elseif ($i >= 186 && $i < 490) {
                             $border='top';
                             $borderstyle='thin';
@@ -1679,10 +1722,10 @@ public function exportExcel($idnya){
                     } elseif ($j == 2) {
                         if ($i == 0) {
                             $border = 'left';
-                            $borderstyle = 'thick';
+                            $borderstyle = 'thin';
                         } elseif ($i == 8 || $i == 185 || $i == 319 || $i == 400 || $i == 449 || $i == 490  || $i == 623) {
                             $border='right';
-                            $borderstyle='thick';
+                            $borderstyle='thin';
                         } elseif ($i >= 491 && $i < 623) {
                                 $border='top';
                                 $borderstyle='thin';
@@ -1692,10 +1735,10 @@ public function exportExcel($idnya){
                     } elseif ($j == 3) {
                         if ($i == 0) {
                             $border='left';
-                            $borderstyle='thick';
+                            $borderstyle='thin';
                         } elseif ($i == 8 || $i == 185 || $i == 319 || $i == 400 || $i == 449 || $i == 490  || $i == 623) {
                             $border='right';
-                            $borderstyle='thick';
+                            $borderstyle='thin';
                         } elseif ($i >= 9 && $i < 185) {
                             $border='top';
                             $borderstyle='thin';
@@ -1708,10 +1751,10 @@ public function exportExcel($idnya){
                     } elseif ($j == 4) {
                         if ($i == 0) {
                             $border='left';
-                            $borderstyle='thick';
+                            $borderstyle='thin';
                         } elseif ($i == 8 || $i == 185 || $i == 319 || $i == 400 || $i == 449 || $i == 490  || $i == 623) {
                             $border='right';
-                            $borderstyle='thick';
+                            $borderstyle='thin';
                         } elseif ($i >= 491 && $i < 623) {
                             $border='top';
                             $borderstyle='thin';
@@ -1721,20 +1764,20 @@ public function exportExcel($idnya){
                     } elseif ($j == 5) {
                         if ($i == 0) {
                             $border='left';
-                            $borderstyle='thick';
+                            $borderstyle='thin';
                         } elseif ($i == 8 || $i == 185 || $i == 319 || $i == 400 || $i == 449 || $i == 490  || $i == 623) {
                             $border='right';
-                            $borderstyle='thick';
+                            $borderstyle='thin';
                         } else {
 
                         }
                     } elseif ($j == 6) {
                         if ($i == 0) {
                             $border='left';
-                            $borderstyle='thick';
+                            $borderstyle='thin';
                         } elseif ($i == 8 || $i == 185 || $i == 319 || $i == 400 || $i == 449 || $i == 490  || $i == 623) {
                             $border='right';
-                            $borderstyle='thick';
+                            $borderstyle='thin';
                         } elseif ($i >= 186 && $i < 490) {
                             $border='top,bottom';
                             $borderstyle='thin';
@@ -1747,47 +1790,47 @@ public function exportExcel($idnya){
                     } elseif ($j == 7) {
                         if ($i == 0) {
                             $border='left';
-                            $borderstyle='thick';
+                            $borderstyle='thin';
                         } elseif ($i == 8 || $i == 185 || $i == 319 || $i == 400 || $i == 449 || $i == 490  || $i == 623) {
                             $border='right';
-                            $borderstyle='thick';
+                            $borderstyle='thin';
                         } else {
 
                         }
                     } elseif ($j == 8) {
                         if ($i == 0) {
                             $border='left';
-                            $borderstyle='thick';
+                            $borderstyle='thin';
                         } elseif ($i == 8 || $i == 185 || $i == 319 || $i == 400 || $i == 449 || $i == 490  || $i == 623) {
                             $border='right';
-                            $borderstyle='thick';
+                            $borderstyle='thin';
                         } else {
 
                         }
                     } elseif ($j == 9) {
                         if ($i > 623) {
                             $border='bottom';
-                            $borderstyle='thick';
+                            $borderstyle='thin';
                         } elseif ($i == 12 || $i == 13) {
                             $border='top';
-                            $borderstyle='thick';
+                            $borderstyle='thin';
                         } else {
                             $border='top,bottom';
-                            $borderstyle='thick';
+                            $borderstyle='thin';
                         }
                     } elseif ($j == 10) {
                         if ($i == 0) {
                             $border='left';
-                            $borderstyle='thick';
+                            $borderstyle='thin';
                         } elseif ($i == 1 || $i == 9 || $i == 10 || $i == 11) {
                             $border='left';
                             $borderstyle='thin';
                         } elseif ($i == 12) {
                             $border='left';
-                            $borderstyle='thick';
+                            $borderstyle='thin';
                         } elseif ($i == 13 || $i == ($indexAngka + $end - 1)) {
                             $border='right';
-                            $borderstyle='thick';
+                            $borderstyle='thin';
                         } elseif ($i < ($indexAngka + $end)) {
                             $border='bottom';
                             $borderstyle='thin';
@@ -1797,16 +1840,16 @@ public function exportExcel($idnya){
                     } elseif ($j == 11) {
                         if ($i == 0) {
                             $border='left';
-                            $borderstyle='thick';
+                            $borderstyle='thin';
                         } elseif ($i == 1 || $i == 9 || $i == 10 || $i == 11) {
                             $border='left';
                             $borderstyle='thin';
                         } elseif ($i == 12) {
                             $border='left';
-                            $borderstyle='thick';
+                            $borderstyle='thin';
                         } elseif ($i == 13 || $i == ($indexAngka + $end - 1)) {
                             $border='right';
-                            $borderstyle='thick';
+                            $borderstyle='thin';
                         } elseif ($i < ($indexAngka + $end) && $i >= 14) {
                             if (($i-14)%10 == 0) {
                                 $border='left,bottom';
@@ -1821,16 +1864,16 @@ public function exportExcel($idnya){
                     } elseif ($j == 12) {
                         if ($i == 0) {
                             $border='left';
-                            $borderstyle='thick';
+                            $borderstyle='thin';
                         } elseif ($i == 1 || $i == 9 || $i == 10 || $i == 11) {
                             $border='left';
                             $borderstyle='thin';
                         } elseif ($i == 12) {
                             $border='left';
-                            $borderstyle='thick';
+                            $borderstyle='thin';
                         } elseif ($i == 13 || $i == ($indexAngka + $end - 1)) {
                             $border='right';
-                            $borderstyle='thick';
+                            $borderstyle='thin';
                         } elseif ($i < ($indexAngka + $end) && $i >= 14) {
                                 $border='right';
                                 $borderstyle='thin';
@@ -1842,7 +1885,7 @@ public function exportExcel($idnya){
 
                         } else {
                             $border='top,bottom';
-                            $borderstyle='thick';
+                            $borderstyle='thin';
                         }
                     }
             //FONT, FONT-SIZE, FONT-STYLE, VALIGN, HALIGN
@@ -2061,10 +2104,10 @@ public function exportExcel($idnya){
                             $styles[$x][$rowelemen][$i]['border-style']='thin';
                         } elseif ($i === 12) {
                             $styles[$x][$rowelemen][$i]['border']='left';
-                            $styles[$x][$rowelemen][$i]['border-style']='thick';
+                            $styles[$x][$rowelemen][$i]['border-style']='thin';
                         } elseif ($i === 13 || $i == ($indexAngka + $end - 1)) {
                             $styles[$x][$rowelemen][$i]['border']='right';
-                            $styles[$x][$rowelemen][$i]['border-style']='thick';
+                            $styles[$x][$rowelemen][$i]['border-style']='thin';
                         } elseif ($i > 13) {
                             if (($i-14)%10 == 0) {
                                 $styles[$x][$rowelemen][$i]['border']='left';
@@ -2078,10 +2121,10 @@ public function exportExcel($idnya){
                             $styles[$x][$rowelemen][$i]['border-style']='thin';
                         } elseif ($i === 12) {
                             $styles[$x][$rowelemen][$i]['border']='left';
-                            $styles[$x][$rowelemen][$i]['border-style']='thick';
+                            $styles[$x][$rowelemen][$i]['border-style']='thin';
                         } elseif ($i === 13 || $i == ($indexAngka + $end - 1)) {
                             $styles[$x][$rowelemen][$i]['border']='right';
-                            $styles[$x][$rowelemen][$i]['border-style']='thick';
+                            $styles[$x][$rowelemen][$i]['border-style']='thin';
                         } elseif ($i > 13) {
                             if (($i-14)%10 == 0) {
                                 $styles[$x][$rowelemen][$i]['border']='left';
@@ -2095,13 +2138,13 @@ public function exportExcel($idnya){
                             $styles[$x][$rowelemen][$i]['border-style']='thin';
                         } elseif ($i === 12) {
                             $styles[$x][$rowelemen][$i]['border']='left';
-                            $styles[$x][$rowelemen][$i]['border-style']='thick';
+                            $styles[$x][$rowelemen][$i]['border-style']='thin';
                         } elseif ($i < 13) {
                             $styles[$x][$rowelemen][$i]['border']='bottom';
                             $styles[$x][$rowelemen][$i]['border-style']='thin';
                         } elseif ($i === 13 || $i == ($indexAngka + $end - 1)) {
                             $styles[$x][$rowelemen][$i]['border']='right';
-                            $styles[$x][$rowelemen][$i]['border-style']='thick';
+                            $styles[$x][$rowelemen][$i]['border-style']='thin';
                         } elseif ($i > 13) {
                             if (($i-14)%10 == 0) {
                                 $styles[$x][$rowelemen][$i]['border']='left,bottom';
@@ -2129,10 +2172,10 @@ public function exportExcel($idnya){
                     # code...
                 } elseif ($i <= 363) {
                     $styles[$x][$jumlahrow + $rowmulai][$i]['border']='top,bottom';
-                    $styles[$x][$jumlahrow + $rowmulai][$i]['border-style']='thick';
+                    $styles[$x][$jumlahrow + $rowmulai][$i]['border-style']='thin';
                 } else {
                     $styles[$x][$jumlahrow + $rowmulai][$i]['border']='top';
-                    $styles[$x][$jumlahrow + $rowmulai][$i]['border-style']='thick';
+                    $styles[$x][$jumlahrow + $rowmulai][$i]['border-style']='thin';
                 }
             }
 
@@ -2151,11 +2194,11 @@ public function exportExcel($idnya){
                         case 0:
                             if ($i === 0 || $i === 12 || $i === 364) {
                                 $styles[$x][$baris][$i]['border']='left';
-                                $styles[$x][$baris][$i]['border-style']='thick';
+                                $styles[$x][$baris][$i]['border-style']='thin';
 																$styles[$x][$baris-1][$i]['border']='left';
-																$styles[$x][$baris-1][$i]['border-style']='thick';
+																$styles[$x][$baris-1][$i]['border-style']='thin';
 																$styles[$x][$baris-2][$i]['border']='left';
-																$styles[$x][$baris-2][$i]['border-style']='thick';
+																$styles[$x][$baris-2][$i]['border-style']='thin';
                             } elseif ($i === 10 ||$i === 9) {
 															$styles[$x][$baris][$i]['border']='left,right';
 															$styles[$x][$baris][$i]['border-style']='thin';
@@ -2172,22 +2215,22 @@ public function exportExcel($idnya){
 																$styles[$x][$baris-2][$i]['border-style']='thin';
                             }elseif ($i === 11) {
 																$styles[$x][$baris-1][$i]['border']='right';
-																$styles[$x][$baris-1][$i]['border-style']='thick';
+																$styles[$x][$baris-1][$i]['border-style']='thin';
 																$styles[$x][$baris-2][$i]['border']='right';
-																$styles[$x][$baris-2][$i]['border-style']='thick';
+																$styles[$x][$baris-2][$i]['border-style']='thin';
                             } elseif ($i === 13) {
                                 $styles[$x][$baris][$i]['border']='right';
-                                $styles[$x][$baris][$i]['border-style']='thick';
+                                $styles[$x][$baris][$i]['border-style']='thin';
 																$styles[$x][$baris-1][$i]['border']='right';
-																$styles[$x][$baris-1][$i]['border-style']='thick';
+																$styles[$x][$baris-1][$i]['border-style']='thin';
 																$styles[$x][$baris-2][$i]['border']='right';
-																$styles[$x][$baris-2][$i]['border-style']='thick';
+																$styles[$x][$baris-2][$i]['border-style']='thin';
                             }
                             break;
                         case 1:
                             if ($i === 0 || $i === 12 || $i === 364) {
                                 $styles[$x][$baris][$i]['border']='left';
-                                $styles[$x][$baris][$i]['border-style']='thick';
+                                $styles[$x][$baris][$i]['border-style']='thin';
                             } elseif ($i === 9) {
                                 $styles[$x][$baris][$i]['border']='left,bottom,right';
                                 $styles[$x][$baris][$i]['border-style']='thin';
@@ -2199,7 +2242,7 @@ public function exportExcel($idnya){
                                 $styles[$x][$baris][$i]['border-style']='thin';
                             } elseif ($i === 13) {
                                 $styles[$x][$baris][$i]['border']='right';
-                                $styles[$x][$baris][$i]['border-style']='thick';
+                                $styles[$x][$baris][$i]['border-style']='thin';
                             } elseif ($i === 109 || $i === 186 || $i === 274) {
                                 $styles[$x][$baris][$i]['border']='right';
                                 $styles[$x][$baris][$i]['border-style']='thin';
@@ -2211,7 +2254,7 @@ public function exportExcel($idnya){
                         case 2:
                             if ($i === 0 || $i === 12 || $i === 364) {
                                 $styles[$x][$baris][$i]['border']='left';
-                                $styles[$x][$baris][$i]['border-style']='thick';
+                                $styles[$x][$baris][$i]['border-style']='thin';
                             } elseif ($i >= 134 && $i <= 182) {
                                 $styles[$x][$baris-2][$i]['border']='bottom';
                                 $styles[$x][$baris-2][$i]['border-style']='thin';
@@ -2220,7 +2263,7 @@ public function exportExcel($idnya){
                                 $styles[$x][$baris][$i]['border-style']='thin';
                             } elseif ($i === 13) {
                                 $styles[$x][$baris][$i]['border']='right';
-                                $styles[$x][$baris][$i]['border-style']='thick';
+                                $styles[$x][$baris][$i]['border-style']='thin';
                             } elseif ($i === 109 || $i === 186 || $i === 274) {
                                 $styles[$x][$baris][$i]['border']='right';
                                 $styles[$x][$baris][$i]['border-style']='thin';
@@ -2229,10 +2272,10 @@ public function exportExcel($idnya){
                         case 3:
                             if ($i < 12) {
                                 $styles[$x][$baris][$i]['border']='top,bottom';
-                                $styles[$x][$baris][$i]['border-style']='thick';
+                                $styles[$x][$baris][$i]['border-style']='thin';
                             } elseif ($i === 13) {
                                 $styles[$x][$baris][$i]['border']='right';
-                                $styles[$x][$baris][$i]['border-style']='thick';
+                                $styles[$x][$baris][$i]['border-style']='thin';
                             } elseif ($i >= 299 && $i <= 361  ) {
                                 $styles[$x][$baris-2][$i]['border']='bottom';
                                 $styles[$x][$baris-2][$i]['border-style']='thin';
@@ -2244,7 +2287,7 @@ public function exportExcel($idnya){
                                 $styles[$x][$baris][$i]['border-style']='thin';
                             } elseif ($i === 364) {
                                 $styles[$x][$baris][$i]['border']='left';
-                                $styles[$x][$baris][$i]['border-style']='thick';
+                                $styles[$x][$baris][$i]['border-style']='thin';
                             }
 
 														 if (sizeof($waktu_irregular) <= 4) {
@@ -2274,7 +2317,7 @@ public function exportExcel($idnya){
                         case 4:
                             if ($i === 0 || $i === 12 || $i === 364) {
                                 $styles[$x][$baris][$i]['border']='left';
-                                $styles[$x][$baris][$i]['border-style']='thick';
+                                $styles[$x][$baris][$i]['border-style']='thin';
                             } elseif ($i === 1) {
                                 $styles[$x][$baris][$i]['border']='left';
                                 $styles[$x][$baris][$i]['border-style']='thin';
@@ -2289,13 +2332,13 @@ public function exportExcel($idnya){
                                 $styles[$x][$baris][$i]['border-style']='thin';
                             } elseif ($i === 13) {
                                 $styles[$x][$baris][$i]['border']='right';
-                                $styles[$x][$baris][$i]['border-style']='thick';
+                                $styles[$x][$baris][$i]['border-style']='thin';
                             }
                             break;
                         case 5:
 														if ($i === 0 || $i === 12 || $i === 14 || $i === 364) {
 														    $styles[$x][$baris][$i]['border']='left';
-														    $styles[$x][$baris][$i]['border-style']='thick';
+														    $styles[$x][$baris][$i]['border-style']='thin';
 														}elseif ($i === 9 || $i === 10 || $i === 11) {
 														    $styles[$x][$baris][$i]['border']='top';
 														    $styles[$x][$baris][$i]['border-style']='thin';
@@ -2307,7 +2350,7 @@ public function exportExcel($idnya){
                         case 6:
                             if ($i === 0 || $i === 12 || $i === 364) {
                                 $styles[$x][$baris][$i]['border']='left';
-                                $styles[$x][$baris][$i]['border-style']='thick';
+                                $styles[$x][$baris][$i]['border-style']='thin';
                             } elseif ($i === 1) {
                                 $styles[$x][$baris][$i]['border']='left';
                                 $styles[$x][$baris][$i]['border-style']='thin';
@@ -2319,7 +2362,7 @@ public function exportExcel($idnya){
                                 $styles[$x][$baris][$i]['border-style']='thin';
                             } elseif ($i === 13) {
                                 $styles[$x][$baris][$i]['border']='right';
-                                $styles[$x][$baris][$i]['border-style']='thick';
+                                $styles[$x][$baris][$i]['border-style']='thin';
                             } elseif ($i === 109 || $i === 186 || $i === 274) {
                                 $styles[$x][$baris][$i]['border']='right';
                                 $styles[$x][$baris][$i]['border-style']='thin';
@@ -2328,10 +2371,10 @@ public function exportExcel($idnya){
                         case 7:
                             if ($i === 12 || $i === 364) {
                                 $styles[$x][$baris][$i]['border']='left';
-                                $styles[$x][$baris][$i]['border-style']='thick';
+                                $styles[$x][$baris][$i]['border-style']='thin';
                             } elseif ($i === 13) {
                                 $styles[$x][$baris][$i]['border']='right';
-                                $styles[$x][$baris][$i]['border-style']='thick';
+                                $styles[$x][$baris][$i]['border-style']='thin';
                             } elseif ($i === 109 || $i === 186 || $i === 274) {
                                 $styles[$x][$baris][$i]['border']='right';
                                 $styles[$x][$baris][$i]['border-style']='thin';
@@ -2340,10 +2383,10 @@ public function exportExcel($idnya){
                         case 8:
                             if ($i === 12 || $i === 364) {
                                 $styles[$x][$baris][$i]['border']='left';
-                                $styles[$x][$baris][$i]['border-style']='thick';
+                                $styles[$x][$baris][$i]['border-style']='thin';
                             } elseif ($i === 13) {
                                 $styles[$x][$baris][$i]['border']='right';
-                                $styles[$x][$baris][$i]['border-style']='thick';
+                                $styles[$x][$baris][$i]['border-style']='thin';
                             } elseif ($i === 109 || $i === 186 || $i === 274) {
                                 $styles[$x][$baris][$i]['border']='right,bottom';
                                 $styles[$x][$baris][$i]['border-style']='thin';
@@ -2355,46 +2398,46 @@ public function exportExcel($idnya){
                         case 9:
                             if ($i === 12 || $i === 364) {
                                 $styles[$x][$baris][$i]['border']='left';
-                                $styles[$x][$baris][$i]['border-style']='thick';
+                                $styles[$x][$baris][$i]['border-style']='thin';
                             } elseif ($i === 13) {
                                 $styles[$x][$baris][$i]['border']='right';
-                                $styles[$x][$baris][$i]['border-style']='thick';
+                                $styles[$x][$baris][$i]['border-style']='thin';
                             }
                             break;
                         case 10:
                             if ($i === 12 || $i === 364) {
                                 $styles[$x][$baris][$i]['border']='left';
-                                $styles[$x][$baris][$i]['border-style']='thick';
+                                $styles[$x][$baris][$i]['border-style']='thin';
                             } elseif ($i === 13) {
                                 $styles[$x][$baris][$i]['border']='right';
-                                $styles[$x][$baris][$i]['border-style']='thick';
+                                $styles[$x][$baris][$i]['border-style']='thin';
                             }
                             break;
                         case 11:
                             if ($i === 12 || $i === 364) {
                                 $styles[$x][$baris][$i]['border']='left';
-                                $styles[$x][$baris][$i]['border-style']='thick';
+                                $styles[$x][$baris][$i]['border-style']='thin';
                             } elseif ($i === 13) {
                                 $styles[$x][$baris][$i]['border']='right';
-                                $styles[$x][$baris][$i]['border-style']='thick';
+                                $styles[$x][$baris][$i]['border-style']='thin';
                             }
                             break;
                         case 12:
                             if ($i === 12 || $i === 364) {
                                 $styles[$x][$baris][$i]['border']='left';
-                                $styles[$x][$baris][$i]['border-style']='thick';
+                                $styles[$x][$baris][$i]['border-style']='thin';
                             } elseif ($i > 13 && $i < 364) {
                                 $styles[$x][$baris][$i]['border']='top,bottom';
-                                $styles[$x][$baris][$i]['border-style']='thick';
+                                $styles[$x][$baris][$i]['border-style']='thin';
                             }
                             break;
                         case 13:
                             if ($i === 13 || $i === 89 || $i === 242) {
                                 $styles[$x][$baris][$i]['border']='right';
-                                $styles[$x][$baris][$i]['border-style']='thick';
+                                $styles[$x][$baris][$i]['border-style']='thin';
                             } elseif ($i === 12 || $i === 364) {
                                 $styles[$x][$baris][$i]['border']='left';
-                                $styles[$x][$baris][$i]['border-style']='thick';
+                                $styles[$x][$baris][$i]['border-style']='thin';
                             } elseif ($i === 32 || $i === 51 || $i === 70 || $i === 215) {
                                 $styles[$x][$baris][$i]['border']='right';
                                 $styles[$x][$baris][$i]['border-style']='thin';
@@ -2409,10 +2452,10 @@ public function exportExcel($idnya){
                         case 14:
                             if ($i === 13 || $i === 89 || $i === 242) {
                                 $styles[$x][$baris][$i]['border']='right';
-                                $styles[$x][$baris][$i]['border-style']='thick';
+                                $styles[$x][$baris][$i]['border-style']='thin';
                             } elseif ($i === 12 || $i === 364) {
                                 $styles[$x][$baris][$i]['border']='left';
-                                $styles[$x][$baris][$i]['border-style']='thick';
+                                $styles[$x][$baris][$i]['border-style']='thin';
                             } elseif ($i === 32 || $i === 51 || $i === 70 || $i === 272 || $i === 302 || $i === 332) {
                                 $styles[$x][$baris][$i]['border']='right';
                                 $styles[$x][$baris][$i]['border-style']='thin';
@@ -2427,10 +2470,10 @@ public function exportExcel($idnya){
                         case 15:
                             if ($i === 13 || $i === 89 || $i === 242) {
                                 $styles[$x][$baris][$i]['border']='right';
-                                $styles[$x][$baris][$i]['border-style']='thick';
+                                $styles[$x][$baris][$i]['border-style']='thin';
                             } elseif ($i === 12 || $i === 364) {
                                 $styles[$x][$baris][$i]['border']='left';
-                                $styles[$x][$baris][$i]['border-style']='thick';
+                                $styles[$x][$baris][$i]['border-style']='thin';
                             } elseif ($i === 272 || $i === 302 || $i === 332) {
                                 $styles[$x][$baris][$i]['border']='right';
                                 $styles[$x][$baris][$i]['border-style']='thin';
@@ -2445,10 +2488,10 @@ public function exportExcel($idnya){
                         case 16:
                             if ($i === 13 || $i === 89 || $i === 242) {
                                 $styles[$x][$baris][$i]['border']='right';
-                                $styles[$x][$baris][$i]['border-style']='thick';
+                                $styles[$x][$baris][$i]['border-style']='thin';
                             } elseif ($i === 12 || $i === 364) {
                                 $styles[$x][$baris][$i]['border']='left';
-                                $styles[$x][$baris][$i]['border-style']='thick';
+                                $styles[$x][$baris][$i]['border-style']='thin';
                             } elseif ($i === 32 || $i === 51 || $i === 70 || $i === 272 || $i === 302 || $i === 332) {
                                 $styles[$x][$baris][$i]['border']='right';
                                 $styles[$x][$baris][$i]['border-style']='thin';
@@ -2463,10 +2506,10 @@ public function exportExcel($idnya){
                         case 17:
                             if ($i === 13 || $i === 89 || $i === 242) {
                                 $styles[$x][$baris][$i]['border']='right';
-                                $styles[$x][$baris][$i]['border-style']='thick';
+                                $styles[$x][$baris][$i]['border-style']='thin';
                             } elseif ($i === 12 || $i === 364) {
                                 $styles[$x][$baris][$i]['border']='left';
-                                $styles[$x][$baris][$i]['border-style']='thick';
+                                $styles[$x][$baris][$i]['border-style']='thin';
                             } elseif ($i === 32 || $i === 51 || $i === 70 || $i === 272 || $i === 302 || $i === 332) {
                                 $styles[$x][$baris][$i]['border']='right';
                                 $styles[$x][$baris][$i]['border-style']='thin';
@@ -2481,10 +2524,10 @@ public function exportExcel($idnya){
                         case 18:
                             if ($i === 13 || $i === 89 || $i === 242) {
                                 $styles[$x][$baris][$i]['border']='right';
-                                $styles[$x][$baris][$i]['border-style']='thick';
+                                $styles[$x][$baris][$i]['border-style']='thin';
                             } elseif ($i === 12 || $i === 364) {
                                 $styles[$x][$baris][$i]['border']='left';
-                                $styles[$x][$baris][$i]['border-style']='thick';
+                                $styles[$x][$baris][$i]['border-style']='thin';
                             } elseif ($i === 272 || $i === 302 || $i === 332) {
                                 $styles[$x][$baris][$i]['border']='right';
                                 $styles[$x][$baris][$i]['border-style']='thin';
@@ -2499,10 +2542,10 @@ public function exportExcel($idnya){
                         case 19:
                             if ($i === 13 || $i === 89 || $i === 242) {
                                 $styles[$x][$baris][$i]['border']='right';
-                                $styles[$x][$baris][$i]['border-style']='thick';
+                                $styles[$x][$baris][$i]['border-style']='thin';
                             } elseif ($i === 12 || $i === 364) {
                                 $styles[$x][$baris][$i]['border']='left';
-                                $styles[$x][$baris][$i]['border-style']='thick';
+                                $styles[$x][$baris][$i]['border-style']='thin';
                             } elseif ($i === 32 || $i === 51 || $i === 70 || $i === 272 || $i === 302 || $i === 332) {
                                 $styles[$x][$baris][$i]['border']='right';
                                 $styles[$x][$baris][$i]['border-style']='thin';
@@ -2517,10 +2560,10 @@ public function exportExcel($idnya){
                         case 20:
                             if ($i === 13 || $i === 89 || $i === 242) {
                                 $styles[$x][$baris][$i]['border']='right';
-                                $styles[$x][$baris][$i]['border-style']='thick';
+                                $styles[$x][$baris][$i]['border-style']='thin';
                             } elseif ($i === 12 || $i === 364) {
                                 $styles[$x][$baris][$i]['border']='left';
-                                $styles[$x][$baris][$i]['border-style']='thick';
+                                $styles[$x][$baris][$i]['border-style']='thin';
                             } elseif ($i === 32 || $i === 51 || $i === 70) {
                                 $styles[$x][$baris][$i]['border']='right';
                                 $styles[$x][$baris][$i]['border-style']='thin';
@@ -2535,20 +2578,20 @@ public function exportExcel($idnya){
                         case 21:
 														if ($i === 0) {
 															$styles[$x][$baris][$i]['border']='left';
-															$styles[$x][$baris][$i]['border-style']='thick';
+															$styles[$x][$baris][$i]['border-style']='thin';
 														}elseif ($i === 13 ||$i === 11 || $i === 363 || $i === 89 || $i === 242) {
 															$styles[$x][$baris][$i]['border']='right';
-															$styles[$x][$baris][$i]['border-style']='thick';
+															$styles[$x][$baris][$i]['border-style']='thin';
 														}elseif ($i === 32 ||$i === 10 ||$i === 32 || $i === 51 || $i === 70 || $i === 272 || $i === 302 || $i === 332 || $i === 98 || $i === 189 || $i === 215) {
 															$styles[$x][$baris][$i]['border']='right';
 															$styles[$x][$baris][$i]['border-style']='thin';
 														}
                             // if ( $i === 13 || $i === 89 || $i === 242) {
                             //     $styles[$x][$baris][$i]['border']='right';
-                            //     $styles[$x][$baris][$i]['border-style']='thick';
+                            //     $styles[$x][$baris][$i]['border-style']='thin';
                             // } elseif ($i === 12 || $i === 364) {
                             //     $styles[$x][$baris][$i]['border']='left';
-                            //     $styles[$x][$baris][$i]['border-style']='thick';
+                            //     $styles[$x][$baris][$i]['border-style']='thin';
                             // } elseif ($i === 32 || $i === 51 || $i === 70 || $i === 272 || $i === 302 || $i === 332) {
                             //     $styles[$x][$baris][$i]['border']='right';
                             //     $styles[$x][$baris][$i]['border-style']='thin';
@@ -2557,16 +2600,16 @@ public function exportExcel($idnya){
                             //     $styles[$x][$baris][$i]['border-style']='thin';
                             // } elseif  ($i > 11 && $i < 364) {
 											      //     $styles[$x][$baris][$i]['border']='bottom';
-											      //     $styles[$x][$baris][$i]['border-style']='thick';
+											      //     $styles[$x][$baris][$i]['border-style']='thin';
 					                  // }elseif ($i > 0 && $i <= 13) {
 														// 		$styles[$x][$baris][$i]['border']='bottom';
-														// 		$styles[$x][$baris][$i]['border-style']='thick';
+														// 		$styles[$x][$baris][$i]['border-style']='thin';
 					                  // }elseif ($i === 0 ) {
 														// 	$styles[$x][$baris][$i]['border']='bottom,left';
-														// 	$styles[$x][$baris][$i]['border-style']='thick';
+														// 	$styles[$x][$baris][$i]['border-style']='thin';
 					                  // }elseif ($i === 10) {
 														// 	$styles[$x][$baris][$i]['border']='bottom';
-														// 	$styles[$x][$baris][$i]['border-style']='thick';
+														// 	$styles[$x][$baris][$i]['border-style']='thin';
 					                  // }elseif ($i === 10) {
 														// 	$styles[$x][$baris][$i]['border']='right';
 														// 	$styles[$x][$baris][$i]['border-style']='thin';
@@ -2576,7 +2619,7 @@ public function exportExcel($idnya){
 
 												if ($i >= 0 && $i < 364) {
 															$styles[$x][$baris][$i]['border']='top';
-															$styles[$x][$baris][$i]['border-style']='thick';
+															$styles[$x][$baris][$i]['border-style']='thin';
 												}
                             break;
                         default:
@@ -2596,7 +2639,7 @@ public function exportExcel($idnya){
                     switch ($i) {
                         case 0:
 														$styles[$x][$brsPake][$i]['border']='left';
-														$styles[$x][$brsPake][$i]['border-style']='thick';
+														$styles[$x][$brsPake][$i]['border-style']='thin';
                             if ($penanda === 1 && $j === (($irg*2)-1)) {
                                 $styles[$x][$brsPake][$i]['border']='top,bottom';
                                 $styles[$x][$brsPake][$i]['border-style']='thin';
@@ -2643,7 +2686,7 @@ public function exportExcel($idnya){
 														$styles[$x][$barisnya+1][$i]['border-style']='thin';
                             if ($i === 0) {
                                 // $styles[$x][$barisnya][$i]['border']='left';
-                                // $styles[$x][$barisnya][$i]['border-style']='thick';
+                                // $styles[$x][$barisnya][$i]['border-style']='thin';
                             }elseif ($i === 1) {
 															$styles[$x][$barisnya][$i]['border']='left,top';
 															$styles[$x][$barisnya][$i]['border-style']='thin';
@@ -2667,16 +2710,16 @@ public function exportExcel($idnya){
 													break;
 												// case 5:
 												// 		$styles[$x][$barisnya][$i]['border']='bottom';
-												// 		$styles[$x][$barisnya][$i]['border-style']='thick';
+												// 		$styles[$x][$barisnya][$i]['border-style']='thin';
 												// 		break;
                         case 6:
                             $styles[$x][$barisnya][$i]['border']='bottom';
-                            $styles[$x][$barisnya][$i]['border-style']='thick';
+                            $styles[$x][$barisnya][$i]['border-style']='thin';
                             break;
                         default:
                             if ($i === 0) {
                                 $styles[$x][$barisnya][$i]['border']='left';
-                                $styles[$x][$barisnya][$i]['border-style']='thick';
+                                $styles[$x][$barisnya][$i]['border-style']='thin';
                             } elseif ($i === 11) {
                                 $styles[$x][$barisnya][$i]['border']='left';
                                 $styles[$x][$barisnya][$i]['border-style']='thin';
@@ -2690,19 +2733,19 @@ public function exportExcel($idnya){
         // //STYLE ROW 1
             //     for ($i=0; $i <= 363; $i++) {
             //         if ($i == 0) {
-            //             $style1[$i] = array('border'=>'left,top', 'border-style'=>'thick');
+            //             $style1[$i] = array('border'=>'left,top', 'border-style'=>'thin');
             //         } elseif ($i == 8 || $i == 185 || $i == 229 || $i == 254 || $i == 279 || $i == 229 || $i == 306 || $i == 363) {
-            //             $style1[$i] = array('border'=>'right,top', 'border-style'=>'thick');
+            //             $style1[$i] = array('border'=>'right,top', 'border-style'=>'thin');
             //         } else {
-            //             $style1[$i] = array('border'=>'top', 'border-style'=>'thick');
+            //             $style1[$i] = array('border'=>'top', 'border-style'=>'thin');
             //         }
             //     }
         // //STYLE ROW 2
             //     for ($i=0; $i <= 363; $i++) {
             //         if ($i == 0) {
-            //             $style2[$i] = array('border'=>'left', 'border-style'=>'thick');
+            //             $style2[$i] = array('border'=>'left', 'border-style'=>'thin');
             //         } elseif ($i == 8 || $i == 185 || $i == 229 || $i == 254 || $i == 279 || $i == 229 || $i == 306 || $i == 363) {
-            //             $style2[$i] = array('border'=>'right', 'border-style'=>'thick');
+            //             $style2[$i] = array('border'=>'right', 'border-style'=>'thin');
             //         } elseif ($i >= 186 && $i < 306) {
             //             $style2[$i] = array('border'=>'top', 'border-style'=>'thin');
             //         } else {
@@ -2712,9 +2755,9 @@ public function exportExcel($idnya){
         // //STYLE ROW 3
             //     for ($i=0; $i <= 363; $i++) {
             //         if ($i == 0) {
-            //             $style3[$i] = array('border'=>'left', 'border-style'=>'thick');
+            //             $style3[$i] = array('border'=>'left', 'border-style'=>'thin');
             //         } elseif ($i == 8 || $i == 185 || $i == 229 || $i == 254 || $i == 279 || $i == 229 || $i == 306 || $i == 363) {
-            //             $style3[$i] = array('border'=>'right', 'border-style'=>'thick');
+            //             $style3[$i] = array('border'=>'right', 'border-style'=>'thin');
             //         } elseif ($i >= 307 && $i < 363) {
             //             if ($i == 307 || $i == 322) {
             //                 $style3[$i] = array('font-size'=>9, 'valign'=>'center','border'=>'top', 'border-style'=>'thin');
@@ -2730,9 +2773,9 @@ public function exportExcel($idnya){
         // //STYLE ROW 4
             //     for ($i=0; $i <= 363; $i++) {
             //         if ($i == 0) {
-            //             $style4[$i] = array('border'=>'left', 'border-style'=>'thick');
+            //             $style4[$i] = array('border'=>'left', 'border-style'=>'thin');
             //         } elseif ($i == 8 || $i == 185 || $i == 229 || $i == 254 || $i == 279 || $i == 229 || $i == 306 || $i == 363) {
-            //             $style4[$i] = array('border'=>'right', 'border-style'=>'thick');
+            //             $style4[$i] = array('border'=>'right', 'border-style'=>'thin');
             //         } elseif ($i >= 9 && $i < 185) {
             //             $style4[$i] = array('border'=>'top', 'border-style'=>'thin');
             //         } elseif ($i >= 186 && $i < 306) {
@@ -2744,9 +2787,9 @@ public function exportExcel($idnya){
         // //STYLE ROW 5
             //     for ($i=0; $i <= 363; $i++) {
             //         if ($i == 0) {
-            //             $style5[$i] = array('border'=>'left', 'border-style'=>'thick');
+            //             $style5[$i] = array('border'=>'left', 'border-style'=>'thin');
             //         } elseif ($i == 8 || $i == 185 || $i == 229 || $i == 254 || $i == 279 || $i == 229 || $i == 306 || $i == 363) {
-            //             $style5[$i] = array('border'=>'right', 'border-style'=>'thick');
+            //             $style5[$i] = array('border'=>'right', 'border-style'=>'thin');
             //         } elseif ($i >= 307 && $i < 363) {
             //             $style5[$i] = array('border'=>'top', 'border-style'=>'thin');
             //         } else {
@@ -2756,9 +2799,9 @@ public function exportExcel($idnya){
         // //STYLE ROW 6
             //     for ($i=0; $i <= 363; $i++) {
             //         if ($i == 0) {
-            //             $style6[$i] = array('border'=>'left', 'border-style'=>'thick');
+            //             $style6[$i] = array('border'=>'left', 'border-style'=>'thin');
             //         } elseif ($i == 8 || $i == 185 || $i == 229 || $i == 254 || $i == 279 || $i == 229 || $i == 306 || $i == 363) {
-            //             $style6[$i] = array('border'=>'right', 'border-style'=>'thick');
+            //             $style6[$i] = array('border'=>'right', 'border-style'=>'thin');
             //         } else {
             //             $style6[$i] = array();
             //         }
@@ -2766,9 +2809,9 @@ public function exportExcel($idnya){
         // //STYLE ROW 7
             //     for ($i=0; $i <= 363; $i++) {
             //         if ($i == 0) {
-            //             $style7[$i] = array('border'=>'left', 'border-style'=>'thick');
+            //             $style7[$i] = array('border'=>'left', 'border-style'=>'thin');
             //         } elseif ($i == 8 || $i == 185 || $i == 229 || $i == 254 || $i == 279 || $i == 229 || $i == 306 || $i == 363) {
-            //             $style7[$i] = array('border'=>'right', 'border-style'=>'thick');
+            //             $style7[$i] = array('border'=>'right', 'border-style'=>'thin');
             //         } elseif ($i >= 186 && $i < 306) {
             //             $style7[$i] = array('border'=>'top,bottom', 'border-style'=>'thin');
             //         } elseif ($i >= 307 && $i < 363) {
@@ -2780,9 +2823,9 @@ public function exportExcel($idnya){
         // //STYLE ROW 8
             //     for ($i=0; $i <= 363; $i++) {
             //         if ($i == 0) {
-            //             $style8[$i] = array('border'=>'left', 'border-style'=>'thick');
+            //             $style8[$i] = array('border'=>'left', 'border-style'=>'thin');
             //         } elseif ($i == 8 || $i == 185 || $i == 229 || $i == 254 || $i == 279 || $i == 229 || $i == 306 || $i == 363) {
-            //             $style8[$i] = array('border'=>'right', 'border-style'=>'thick');
+            //             $style8[$i] = array('border'=>'right', 'border-style'=>'thin');
             //         } else {
             //             $style8[$i] = array();
             //         }
@@ -2790,9 +2833,9 @@ public function exportExcel($idnya){
         // //STYLE ROW 9
             //     for ($i=0; $i <= 363; $i++) {
             //         if ($i == 0) {
-            //             $style9[$i] = array('border'=>'left', 'border-style'=>'thick');
+            //             $style9[$i] = array('border'=>'left', 'border-style'=>'thin');
             //         } elseif ($i == 8 || $i == 185 || $i == 229 || $i == 254 || $i == 279 || $i == 229 || $i == 306 || $i == 363) {
-            //             $style9[$i] = array('border'=>'right', 'border-style'=>'thick');
+            //             $style9[$i] = array('border'=>'right', 'border-style'=>'thin');
             //         } else {
             //             $style9[$i] = array();
             //         }
