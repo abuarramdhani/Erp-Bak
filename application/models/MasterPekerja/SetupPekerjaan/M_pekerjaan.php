@@ -12,7 +12,7 @@ class M_pekerjaan extends CI_Model {
 	public function lihat(){
 		$sql = "select *,case when satuan='H' then 'Hari' when satuan='M' then'Minggu'else 'Bulan'end as waktu, 
 		(select case when b.seksi != '-' then concat('Seksi;',b.seksi) when b.unit != '-' then concat('Unit;',b.unit)
-         when b.bidang != '-' then concat('Bidang;',b.bidang) when b.dept != '-' then concat('Dept;',b.dept) end as seksi from hrd_khs.tseksi b where left(b.kodesie,7) = left(a.kdpekerjaan,7) order by b.kodesie limit 1),case when jenispekerjaan='0' then'Direct Labour' else'Indirect Labour'end as jenis,case when status='0' then'Aktif' else'Tidak Aktif'end as status
+         when b.bidang != '-' then concat('Bidang;',b.bidang) when b.dept != '-' then concat('Dept;',b.dept) end as seksi from hrd_khs.tseksi b where left(b.kodesie,7) = left(a.kdpekerjaan,7) order by b.kodesie limit 1) as seksi,case when jenispekerjaan='0' then'Direct Labour' else'Indirect Labour'end as jenis,case when status='0' then'Aktif' else'Tidak Aktif'end as status
 		from hrd_khs.tpekerjaan a 
 		order by kdpekerjaan asc";
 		$result = $this->personalia->query($sql);
@@ -75,7 +75,8 @@ class M_pekerjaan extends CI_Model {
 
 	    }
 	    public function urut($kodesie){
-	    	 $sql = "select max(cast(kdPekerjaan as integer))+1 as kodeselanjutnya from hrd_khs.tpekerjaan where kdPekerjaan like '$kodesie%'";
+	    	 $sql = "select coalesce((max(cast(kdPekerjaan as integer))+1)::varchar,concat('$kodesie','01')) as kodeselanjutnya 
+	    	 	from hrd_khs.tpekerjaan where kdPekerjaan like '$kodesie%'";
 	     $result = $this->personalia->query($sql);
 		return $result;
 	    }
