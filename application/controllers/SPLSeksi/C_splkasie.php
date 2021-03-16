@@ -16,7 +16,7 @@ class C_splkasie extends CI_Controller
 		$this->load->model('SPLSeksi/M_splkasie');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		// FOR DEVELOPMENT
-		$this->is_production = true; // change it to true before push
+		$this->is_production = false; // change it to true before push
 		$this->developer_email = 'dicka_ismaji@quick.com';
 	}
 
@@ -774,6 +774,7 @@ class C_splkasie extends CI_Controller
 		$status = $_GET['status'];
 		$spl_id = $_GET['spl_id'];
 		$ket = $_GET['ket'];
+		return true; exit();
 
 		$time_start = time();
 		if ($status == '25' or $status == '21') {

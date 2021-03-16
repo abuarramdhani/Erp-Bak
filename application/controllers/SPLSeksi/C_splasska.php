@@ -561,7 +561,8 @@ class C_splasska extends CI_Controller
 		$status = $_GET['status'];
 		$spl_id = $_GET['spl_id'];
 		$ket = $_GET['ket'];
-
+		return true; exit();
+		
 		$time_start = time();
 		$this->send_email_2($status, $spl_id, $ket);
 		echo "send email 2 -> " . (time() - $time_start) . "<br>";
