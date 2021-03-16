@@ -1380,17 +1380,16 @@ public function exportExcel($idnya){
 			}
 
 		}
-		// inisiasi elemen kembali karna elemen memiliki nilai max
-		$elemen = $elemen_;
-		$keterangan_elemen = $keterangan_elemen_;
-		$jenis_proses = $jenis_proses_;
-		$tipe_urutan = $tipe_urutan_;
-		$start = $start_;
-		$finish = $finish_;
-		$waktu = $waktu_;
-		
-	}
 
+			// inisiasi elemen kembali karna elemen memiliki nilai max
+			$elemen = $elemen_;
+			$keterangan_elemen = $keterangan_elemen_;
+			$jenis_proses = $jenis_proses_;
+			$tipe_urutan = $tipe_urutan_;
+			$start = $start_;
+			$finish = $finish_;
+			$waktu = $waktu_;
+	}
 
 
 	if ($takt_time == 99999) {
@@ -2950,7 +2949,7 @@ public function exportExcel($idnya){
                 switch ($jenis_proses[$j]) {
                     case 'MANUAL':
                         $rows[$x][$rowkerja][9] = $waktu[$j];
-                        $styles[$x][$rowkerja][9]['font-size'] = 10;
+												$styles[$x][$rowkerja][9]['font-size'] = 10;
                         $styles[$x][$rowkerja][9]['valign'] = 'center';
                         $styles[$x][$rowkerja][9]['halign'] = 'center';
                         break;
@@ -2977,6 +2976,7 @@ public function exportExcel($idnya){
                 $styles[$x][$rowkerja][1]['font-size'] = 10;
                 $styles[$x][$rowkerja][1]['valign'] = 'center';
                 $styles[$x][$rowkerja][1]['halign'] = 'left';
+
             }
 
         // DATA & STYLE JUMLAH
@@ -3464,14 +3464,16 @@ public function exportExcel($idnya){
 											}
 
 									}
-									if (($i >= $startmuda[$j] && $i <= $finishmuda[$j]) && ($startmuda[$j] <= 610*$x && $finishmuda[$j] <= 610*$x)) {
-											$styles[$x][$rowflow][$i+13]['fill'] = '#fa3eef';
-											$styles[$x][$rowflow-1][$i+13]['fill'] = '#fa3eef';
-											if ($i === $finishmuda[$j]) {
-												if ($i > 1*$nn && $i < 610*$x) {
-													$rows[$x][$rowflow-1][$i+13] = 'Muda: '.$muda[$j].' Detik';
+									if ($jenis_proses[$j] != 'AUTO') {
+										if (($i >= $startmuda[$j] && $i <= $finishmuda[$j]) && ($startmuda[$j] <= 610*$x && $finishmuda[$j] <= 610*$x)) {
+												$styles[$x][$rowflow][$i+13]['fill'] = '#fa3eef';
+												$styles[$x][$rowflow-1][$i+13]['fill'] = '#fa3eef';
+												if ($i === $finishmuda[$j]) {
+													if ($i > 1*$nn && $i < 610*$x) {
+														$rows[$x][$rowflow-1][$i+13] = 'Muda: '.$muda[$j].' Detik ';
+													}
 												}
-											}
+										}
 									}
 							}
 						}
