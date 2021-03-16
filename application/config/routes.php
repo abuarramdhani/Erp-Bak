@@ -2421,6 +2421,10 @@ $route['ECommerce/SearchItem/(:any)/(:any)'] 	= 'ECommerce/C_SearchItem/$1/$2';
 $route['ECommerce/WaktuPenangananOrder']		= 'ECommerce/C_WaktuPenangananOrder';
 $route['ECommerce/WaktuPenangananOrder/(:any)']		= 'ECommerce/C_WaktuPenangananOrder/$1';
 
+$route['ECommerce/ExportPelanggan']				= 'ECommerce/C_ExportReport';
+$route['ECommerce/ExportPelanggan/(:any)']				= 'ECommerce/C_ExportReport/$1';
+$route['ECommerce/ExportPelanggan/(:any)/(:any)']			= 'ECommerce/C_ExportReport/$1/$2';
+
 //-------------------------------------------------- Kecelakaan Kerja -----------------------------------------------//
 $route['MasterPekerja/KecelakaanKerja']	= 'MasterPekerja/Laporan/C_Index';
 $route['MasterPekerja/KecelakaanKerja/(:any)']			=	'MasterPekerja/Laporan/C_Index/$1';
@@ -5190,7 +5194,7 @@ $route['AgentOrderSeksiRekayasa'] 						= 'OrderSeksiRekayasa/C_Index';
 
 $route['AgentOrderSeksiRekayasa/MonOrder']				= 'OrderSeksiRekayasa/Agent/C_MonOrder';
 $route['AgentOrderSeksiRekayasa/MonOrder/(:any)']		= 'OrderSeksiRekayasa/Agent/C_MonOrder/$1';
-$route['AgentOrderSeksiRekayasa/MonOrder/(:any)/(:any)']= 'OrderSeksiRekayasa/Agent/C_MonOrder/$1/$2';
+$route['AgentOrderSeksiRekayasa/MonOrder/(:any)/(:any)'] = 'OrderSeksiRekayasa/Agent/C_MonOrder/$1/$2';
 
 //-------------------------------------------Monitoring LPPB QC--------------------------------------------------//
 $route['MonitoringLppbQC'] 							= 'MonitoringLppbQC/C_Index';
