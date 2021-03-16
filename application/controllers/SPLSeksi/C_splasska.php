@@ -18,8 +18,8 @@ class C_splasska extends CI_Controller
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 
 		// FOR DEVELOPMENT
-		$this->is_production = true; // change it to true before push
-		$this->developer_email = 'dicka_ismaji@quick.com';
+		$this->is_production = false; // change it to true before push
+		$this->developer_email = 'enggal_aldiansyah@quick.com';
 	}
 
 	public function checkSession()
@@ -306,7 +306,7 @@ class C_splasska extends CI_Controller
 
 	public function send_email_2($status, $spl_id, $ket)
 	{
-		$this->checkSession();
+		// $this->checkSession();
 		$this->session->spl_validasi_waktu_asska = time();
 		$user = $this->session->user;
 		$spl_id = explode('.', $spl_id);
@@ -558,14 +558,35 @@ class C_splasska extends CI_Controller
 
 	function sendSPLEmail()
 	{
+		//kirim email ada di fungsi sendSPLEmailSchedule yg di jalankan cronjob
 		$status = $_GET['status'];
 		$spl_id = $_GET['spl_id'];
 		$ket = $_GET['ket'];
-		return true; exit();
-		
+
+		$arr = array(
+			'status'	=>	$status,
+			'spl_id'	=>	$spl_id,
+			'ket'		=>	$ket,
+			'path'		=>	'ALA',
+			'nama'		=>	trim($this->session->employee)
+			);
+		$this->M_splkasie->insertMailCronjob($arr);
+		echo "sukses";
+	}
+
+	function sendSPLEmailSchedule()
+	{
+		$status = $_POST['status'];
+		$spl_id = $_POST['spl_id'];
+		$ket = $_POST['ket'];
+		$nama = $_POST['nama'];
+		$this->session->set_userdata('employee', $nama);
+		print_r($_POST);
+
 		$time_start = time();
 		$this->send_email_2($status, $spl_id, $ket);
 		echo "send email 2 -> " . (time() - $time_start) . "<br>";
+
 	}
 
 	function result_reject_UNUSED($spl_id = FALSE)
