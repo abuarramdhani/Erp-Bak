@@ -461,8 +461,8 @@ class C_Index extends CI_Controller
 				}
 
 		}
-
-		if(!empty($eksternalMail) and $eksternalMail != null and trim($eksternalMail) != '' and trim($eksternalMail) != '-'){
+		//hapus 'and 1==2' unuk mengaktifkan kirim email external
+		if(!empty($eksternalMail) and $eksternalMail != null and trim($eksternalMail) != '' and trim($eksternalMail) != '-' and 1==2){
 				$this->load->library('PHPMailerAutoload');
 				$mail = new PHPMailer;
 				$mail->isSMTP();
@@ -565,7 +565,8 @@ class C_Index extends CI_Controller
 
 				}
 
-			if(!empty($externalMailPersonalia) and $externalMailPersonalia != null and trim($externalMailPersonalia) != '' and trim($externalMailPersonalia) != '-'){
+			//hapus 'and 1==2' untuk mengaktifkan fitur kirim email external
+			if(!empty($externalMailPersonalia) and $externalMailPersonalia != null and trim($externalMailPersonalia) != '' and trim($externalMailPersonalia) != '-' and 1==2){
 				$this->load->library('PHPMailerAutoload');
 				$mail = new PHPMailer;
 				$mail->SMTPDebug = 0;
