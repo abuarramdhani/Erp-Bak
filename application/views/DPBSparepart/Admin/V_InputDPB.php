@@ -16,17 +16,26 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="" class="col-sm-2 control-label">Alamat</label>
+                            <label for="" class="col-sm-2 control-label">Alamat SO</label>
 
                             <div class="col-sm-10">
-                                <textarea class="form-control alamatDSP" placeholder="Alamat" style="width:550px; height:120px;" readonly></textarea>
+                                <textarea class="form-control alamatDSP" placeholder="Alamat" style="width:550px; height:90px;" readonly></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="" class="col-sm-2 control-label">Alamat Kirim</label>
+
+                            <div class="col-sm-10">
+                                <textarea class="form-control alamatkirimDSP" placeholder="Alamat Kirim" style="width:550px; height:90px;"></textarea>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="" class="col-sm-2 control-label">Deskripsi</label>
 
                             <div class="col-sm-10">
-                                <textarea class="form-control deskripsiDSP" placeholder="Deskripsi" style="width:550px; height:120px;" readonly></textarea>
+                                <!-- <textarea class="form-control deskripsiDSP" placeholder="Deskripsi" style="width:550px; height:10px;" readonly></textarea> -->
+                                <input type="text" class="form-control deskripsiDSP" style="width:550px;" placeholder="Deskripsi" readonly></input>
+
                             </div>
                         </div>
                         <div class="form-group">
@@ -40,7 +49,8 @@
                             <label for="" class="col-sm-2 control-label">Ekspedisi</label>
 
                             <div class="col-sm-10">
-                                <input type="text" class="form-control ekspedisiDSP" style="width:550px;" placeholder="Ekspedisi" readonly></input>
+                                <!-- <input type="text" class="form-control ekspedisiDSP" style="width:550px;" placeholder="Ekspedisi" readonly></input> -->
+                                <select class="ekspedisiDSP form-control select2" data-placeholder="Select" style="width:550px;"></select>
                             </div>
                         </div>
                         <div class="form-group">
@@ -86,6 +96,8 @@
                                     <option value="J1365">J1365 - MUHAMMAD REZA SHALAHUDDIN NOOR</option>
                                     <option value="B0892">B0892 - NANDA ILHAM</option>
                                     <option value="B0658">B0658 - NASHRUL HAKIM</option>
+                                    <option value="B0701">B0701 - ADKHA JIHAD SETYAWAN</option>
+
                                 </select>
                             </div>
                         </div>

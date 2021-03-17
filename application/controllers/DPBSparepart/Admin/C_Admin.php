@@ -220,6 +220,9 @@ class C_Admin extends  CI_Controller
 		$forward = $_POST['forward'];
 		$keterangan = $_POST['keterangan'];
 		$lines = $_POST['lines'];
+		$ekspedisi = $_POST['ekspedisi'];
+		$alamat_kirim = $_POST['alamat_kirim'];
+
 
 		foreach ($lines as $line) {
 			if ($line['reqQty'] != null) {
@@ -229,7 +232,7 @@ class C_Admin extends  CI_Controller
 			}
 		}
 
-		$this->M_dpb->createDPB($noDPB, $jenis, $creator, $forward, $keterangan);
+		$this->M_dpb->createDPB($noDPB, $jenis, $creator, $forward, $keterangan, $alamat_kirim, $ekspedisi);
 
 		echo 1;
 	}

@@ -228,11 +228,11 @@ class M_dpb extends CI_Model
         return $query->result_array();
     }
 
-    public function createDPB($noDPB, $jenis, $creator, $forward, $keterangan)
+    public function createDPB($noDPB, $jenis, $creator, $forward, $keterangan, $almat, $eks)
     {
         // return print_r("createDPB call");
         $oracle = $this->load->database('oracle', true);
-        $query = $oracle->query("CALL APPS.KHS_ALLOCATE_DOSPB_SP('$noDPB', 225, 'SP-YSP', '$jenis', '$creator', '$forward','$keterangan')");
+        $query = $oracle->query("CALL APPS.KHS_ALLOCATE_DOSPB_SP('$noDPB', 225, 'SP-YSP', '$jenis', '$creator', '$forward','$keterangan','$almat','$eks')");
     }
 
     public function createDPBRequest($reqNumber, $lineId, $allocateQty, $creator)
@@ -269,14 +269,15 @@ class M_dpb extends CI_Model
                     FROM wsh_delivery_details wdd, hz_locations hl
                     WHERE wdd.ship_to_location_id = hl.location_id
                     AND wdd.batch_id = '$noDPB') -- parameter
-                ELSE (SELECT mtrh.attribute4
-                    FROM mtl_txn_request_headers mtrh
-                    WHERE mtrh.request_number = '$noDPB')  -- parameter
+                ELSE 
+                    null
                 END
-        ELSE (SELECT mtrh.attribute4
+        ELSE 
+            null
+        END alamat_so,     
+        (SELECT mtrh.attribute4
                 FROM mtl_txn_request_headers mtrh
-                WHERE mtrh.request_number = '$noDPB')            -- parameter
-        END alamat,
+                WHERE mtrh.request_number = '$noDPB')  alamat_kirim,
             h1.description,
             h1.tgl_kirim,
             h1.so,
