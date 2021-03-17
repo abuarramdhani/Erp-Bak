@@ -175,10 +175,11 @@ class C_SubmitOrder extends CI_Controller {
             $this->upload->initialize($config);
             if (! $this->upload->do_upload('DokumenKondisiSebelum')) {
                 $error = array('error' => $this->upload->display_errors());
-                print_r($error);
+				echo $error;exit();
             } else {
                 $data = array('upload_data' => $this->upload->data());
             }
+			
 			$path_kondisi_sebelum = $config['upload_path'].'/'.$config['file_name'];
 			$ext_kondisi_sebelum = $ext;
 			$filename_kondisi_sebelum = $config['file_name'];
