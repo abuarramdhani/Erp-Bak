@@ -141,9 +141,7 @@ class C_SetPlan extends CI_Controller
 public function savePlan(){
  		$bulan 		= $this->input->post('bulan');
  		$kategori 	= $this->input->post('kategori');
- 		$subkategori 	= $this->input->post('subcategory');
-		$sub = empty($subkategori) ? 'id_subcategory is null' : "id_subcategory = ".$subkategori."";
-		$subkategori = empty($subkategori) ? 'null' : $subkategori;
+ 		$subkategori = $this->input->post('subcategory');
  		$item 		= $this->input->post('item[]');
  		$plan 		= $this->input->post('plan[]');
  		$plan2 = count($plan)/(count($item)/2);
@@ -157,12 +155,14 @@ public function savePlan(){
 			 }
  			$p = $plan2;
  			$plan2 = $plan2 + $plann;
+			$sub = empty($subkategori[$i]) ? 'id_subcategory is null' : "id_subcategory = ".$subkategori[$i]."";
+			$subcategory = empty($subkategori[$i]) ? 'null' : $subkategori[$i];
  			$cekdata = $this->M_setplan->getPlan("where inventory_item_id = ".$item[$i]." and month = $bulan and id_category = $kategori and $sub");
  			if (empty($cekdata)) {
 				// echo "<pre>";print_r($plan3);exit();
  				$cekid = $this->M_setplan->getPlan('order by plan_id desc');
  				$id = !empty($cekid) ? $cekid[0]['PLAN_ID'] + 1 : 1;
- 				$savePlan = $this->M_setplan->savePlan($id, $item[$i], $bulan, $kategori, $subkategori);
+ 				$savePlan = $this->M_setplan->savePlan($id, $item[$i], $bulan, $kategori, $subcategory);
  				for ($a=0; $a < count($plan3) ; $a++) { 
  					if (!empty($plan3[$a])) {
  						$this->M_setplan->savePlanDate($id, ($a+1), $plan3[$a]);
