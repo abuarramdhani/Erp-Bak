@@ -162,18 +162,27 @@ $(document).ready(function () {
               dataType: "JSON",
               success: function (resp) {
                 // console.log(resp[0]);
-                if(resp[0]["ALAMAT"] == null) {
+                if (resp[0]["ALAMAT_SO"] == null) {
                   $(".alamatDSP").val(" - ");
                 } else {
-                  if (resp[0]["ALAMAT"].indexOf("#") != -1) {
-                    var alamat = resp[0]["ALAMAT"].replace(/#/gi, "\n");
+                  if (resp[0]["ALAMAT_SO"].indexOf("#") != -1) {
+                    var alamat = resp[0]["ALAMAT_SO"].replace(/#/gi, "\n");
                     $(".alamatDSP").val(alamat);
                   } else {
-                    $(".alamatDSP").val(resp[0]["ALAMAT"]);
+                    $(".alamatDSP").val(resp[0]["ALAMAT_SO"]);
                   }
                 }
-
-                if(resp[0]["DESCRIPTION"] == null) {
+                if (resp[0]["ALAMAT_KIRIM"] == null) {
+                  // $(".alamatkirimDSP").val(" - ");
+                } else {
+                  if (resp[0]["ALAMAT_KIRIM"].indexOf("#") != -1) {
+                    var alamat = resp[0]["ALAMAT_KIRIM"].replace(/#/gi, "\n");
+                    $(".alamatkirimDSP").val(alamat);
+                  } else {
+                    $(".alamatkirimDSP").val(resp[0]["ALAMAT_KIRIM"]);
+                  }
+                }
+                if (resp[0]["DESCRIPTION"] == null) {
                   $(".deskripsiDSP").val(" - ");
                 } else {
                   if (resp[0]["DESCRIPTION"].indexOf("#") != -1) {
@@ -184,7 +193,7 @@ $(document).ready(function () {
                   }
                 }
 
-                if(resp[0]["TGL_KIRIM"] == null) {
+                if (resp[0]["TGL_KIRIM"] == null) {
                   $(".tanggalDSP").val(" - ");
                 } else {
                   if (resp[0]["TGL_KIRIM"].indexOf("#") != -1) {
@@ -195,18 +204,35 @@ $(document).ready(function () {
                   }
                 }
 
-                if(resp[0]["EKSPEDISI"] == null) {
-                  $(".ekspedisiDSP").val(" - ");
+                if (resp[0]["EKSPEDISI"] == null) {
+                  // $(".ekspedisiDSP").val(" - ");
+                  $(".ekspedisiDSP").html(
+                    '<option></option><option value="ADEX">ADEX</option><option value="BARANG TRUK">BARANG TRUK</option><option value="INDIE">INDIE</option><option value="JNE">JNE</option><option value="JNT">JNT</option><option value="KGP">KGP</option><option value="POS">POS</option><option value="QDS 1">QDS 1</option><option value="QDS 2">QDS 2</option><option value="SADANA">SADANA</option><option value="TAM">TAM</option><option value="TIKI">TIKI</option>'
+                  );
                 } else {
                   if (resp[0]["EKSPEDISI"].indexOf("#") != -1) {
                     var ekspedisi = resp[0]["EKSPEDISI"].replace(/#/gi, "\n");
-                    $(".ekspedisiDSP").val(ekspedisi);
+                    $(".ekspedisiDSP").html(
+                      '<option value="' +
+                        resp[0]["EKSPEDISI"].replace(/#/gi, "\n") +
+                        '">' +
+                        resp[0]["EKSPEDISI"].replace(/#/gi, "\n") +
+                        '</option><option value="ADEX">ADEX</option><option value="BARANG TRUK">BARANG TRUK</option><option value="INDIE">INDIE</option><option value="JNE">JNE</option><option value="JNT">JNT</option><option value="KGP">KGP</option><option value="POS">POS</option><option value="QDS 1">QDS 1</option><option value="QDS 2">QDS 2</option><option value="SADANA">SADANA</option><option value="TAM">TAM</option><option value="TIKI">TIKI</option>'
+                    );
+                    // $(".ekspedisiDSP").val(ekspedisi);
                   } else {
-                    $(".ekspedisiDSP").val(resp[0]["EKSPEDISI"]);
+                    // $(".ekspedisiDSP").val(resp[0]["EKSPEDISI"]);
+                    $(".ekspedisiDSP").html(
+                      '<option value="' +
+                        resp[0]["EKSPEDISI"] +
+                        '">' +
+                        resp[0]["EKSPEDISI"] +
+                        '</option><option value="ADEX">ADEX</option><option value="BARANG TRUK">BARANG TRUK</option><option value="INDIE">INDIE</option><option value="JNE">JNE</option><option value="JNT">JNT</option><option value="KGP">KGP</option><option value="POS">POS</option><option value="QDS 1">QDS 1</option><option value="QDS 2">QDS 2</option><option value="SADANA">SADANA</option><option value="TAM">TAM</option><option value="TIKI">TIKI</option>'
+                    );
                   }
                 }
 
-                if(resp[0]["SO"] == null) {
+                if (resp[0]["SO"] == null) {
                   $(".inputSODSP").val(" - ");
                 } else {
                   if (resp[0]["SO"].indexOf("#") != -1) {
@@ -217,7 +243,7 @@ $(document).ready(function () {
                   }
                 }
 
-                if(resp[0]["OPK"] == null) {
+                if (resp[0]["OPK"] == null) {
                   $(".inputOPKDSP").val(" - ");
                 } else {
                   if (resp[0]["OPK"].indexOf("#") != -1) {
@@ -312,6 +338,10 @@ $(document).ready(function () {
     var jenis = $(".jenisDPS").val();
     var forward = $(".forwardDPS").val();
     var keterangan = $(".keteranganDPS").val();
+    var ekspedisi = $(".ekspedisiDSP").val();
+    var alamat_kir = $(".alamatkirimDSP").val();
+
+    var alamat_kirim = alamat_kir.replaceAll("\n", "#");
 
     let lines = $(".tempatTabelDPS tbody tr")
       .toArray()
@@ -322,7 +352,7 @@ $(document).ready(function () {
           parseInt($(e).find(".atrQty").html()) -
           parseInt($(e).find(".noReqQty").val()),
       }));
-      
+
     $.ajax({
       type: "POST",
       url: baseurl + "DPBSparepart/Admin/cekStatusLine",
@@ -343,19 +373,28 @@ $(document).ready(function () {
             },
             type: "POST",
             url: baseurl + "DPBSparepart/Admin/createDPB",
-            data: { noDPB, jenis, forward, keterangan, lines },
+            data: {
+              noDPB,
+              jenis,
+              forward,
+              keterangan,
+              lines,
+              ekspedisi,
+              alamat_kirim,
+            },
             success: function (response) {
               swal.close();
               swal.fire({
                 type: "success",
                 title: "Berhasil!",
               });
-              $(".tempatTabelDPS").html("");
-              $(".jenisDPS").val("").trigger("change.select2");
-              $(".forwardDPS").val("").trigger("change.select2");
-              $(".keteranganDPS").val("");
-              $(".noDODSP").val("");
-              $(".alamatDSP").val("");
+              // $(".tempatTabelDPS").html("");
+              // $(".jenisDPS").val("").trigger("change.select2");
+              // $(".forwardDPS").val("").trigger("change.select2");
+              // $(".keteranganDPS").val("");
+              // $(".noDODSP").val("");
+              // $(".alamatDSP").val("");
+              window.location.reload();
             },
           });
         } else if (response[0]["HASIL_LINE"] == "99999") {
@@ -379,38 +418,37 @@ $(document).ready(function () {
     });
   });
 
-  $('#tblRejectedListApproverDSP').on('click', '.btnResubmit', function () {
+  $("#tblRejectedListApproverDSP").on("click", ".btnResubmit", function () {
     let id = $(this).attr("data-id");
     let tr = $(this).parent().parent();
 
     Swal.fire({
-      title: 'Are you sure?',
+      title: "Are you sure?",
       text: "Anda yakin akan Re-submit SPB/DO ini?",
-      type: 'warning',
+      type: "warning",
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Ya',
-      cancelButtonText: 'Tidak'
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Ya",
+      cancelButtonText: "Tidak",
     }).then((result) => {
       if (result.value == true) {
         $.ajax({
-          type: 'POST',
+          type: "POST",
           url: baseurl + "DPBSparepart/Admin/reSubmitDPB",
           data: { id },
-          success: function() {
+          success: function () {
             Swal.fire(
-              'Re-submit!',
-              'Request SPB/DO berhasil di submit ulang',
-              'success'
-            )
+              "Re-submit!",
+              "Request SPB/DO berhasil di submit ulang",
+              "success"
+            );
             tr.hide();
-          }
-        })
-      } else if(result.dismiss == 'cancel') {
-        console.log('Batal reSubmit')
+          },
+        });
+      } else if (result.dismiss == "cancel") {
+        console.log("Batal reSubmit");
       }
-    })
+    });
   });
-
 });
