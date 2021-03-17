@@ -84,8 +84,8 @@ class C_SubmitOrder extends CI_Controller {
 		if (!empty($_FILES['LayoutAlatMesin']['name'])) {
             // upload area
             if (!is_dir('./assets/upload/OrderSeksiRekayasa')) {
-                mkdir('./assets/upload/OrderSeksiRekayasa', 0777, true);
-                chmod('./assets/upload/OrderSeksiRekayasa', 0777);
+                mkdir('./assets/upload/OrderSeksiRekayasa/Layout', 0777, true);
+                chmod('./assets/upload/OrderSeksiRekayasa/Layout', 0777);
 			}
 			
 			$config['upload_path'] = './assets/upload/OrderSeksiRekayasa/Layout';
@@ -121,8 +121,8 @@ class C_SubmitOrder extends CI_Controller {
 		if (!empty($_FILES['DokumenTarget']['name'])) {
             // upload area
             if (!is_dir('./assets/upload/OrderSeksiRekayasa')) {
-                mkdir('./assets/upload/OrderSeksiRekayasa', 0777, true);
-                chmod('./assets/upload/OrderSeksiRekayasa', 0777);
+                mkdir('./assets/upload/OrderSeksiRekayasa/Target', 0777, true);
+                chmod('./assets/upload/OrderSeksiRekayasa/Target', 0777);
 			}
 
 			$config['upload_path'] = './assets/upload/OrderSeksiRekayasa/Target';
@@ -156,8 +156,8 @@ class C_SubmitOrder extends CI_Controller {
 		if (!empty($_FILES['DokumenKondisiSebelum']['name'])) {
             // upload area
             if (!is_dir('./assets/upload/OrderSeksiRekayasa')) {
-                mkdir('./assets/upload/OrderSeksiRekayasa', 0777, true);
-                chmod('./assets/upload/OrderSeksiRekayasa', 0777);
+                mkdir('./assets/upload/OrderSeksiRekayasa/KondisiSebelum', 0777, true);
+                chmod('./assets/upload/OrderSeksiRekayasa/KondisiSebelum', 0777);
             }
 			$config['upload_path'] = './assets/upload/OrderSeksiRekayasa/KondisiSebelum';
             $config['allowed_types'] = '*';
@@ -192,8 +192,8 @@ class C_SubmitOrder extends CI_Controller {
 		if (!empty($_FILES['DokumenKondisiSesudah']['name'])) {
             // upload area
             if (!is_dir('./assets/upload/OrderSeksiRekayasa')) {
-                mkdir('./assets/upload/OrderSeksiRekayasa', 0777, true);
-                chmod('./assets/upload/OrderSeksiRekayasa', 0777);
+                mkdir('./assets/upload/OrderSeksiRekayasa/KondisiSesudah', 0777, true);
+                chmod('./assets/upload/OrderSeksiRekayasa/KondisiSesudah', 0777);
             }
 			$config['upload_path'] = './assets/upload/OrderSeksiRekayasa/KondisiSesudah';
             $config['allowed_types'] = '*';
@@ -228,8 +228,8 @@ class C_SubmitOrder extends CI_Controller {
 		if (!empty($_FILES['DokumenKetPelengkap']['name'])) {
             // upload area
             if (!is_dir('./assets/upload/OrderSeksiRekayasa')) {
-                mkdir('./assets/upload/OrderSeksiRekayasa', 0777, true);
-                chmod('./assets/upload/OrderSeksiRekayasa', 0777);
+                mkdir('./assets/upload/OrderSeksiRekayasa/KetPelengkap', 0777, true);
+                chmod('./assets/upload/OrderSeksiRekayasa/KetPelengkap', 0777);
             }
 			$config['upload_path'] = './assets/upload/OrderSeksiRekayasa/KetPelengkap';
             $config['allowed_types'] = '*';

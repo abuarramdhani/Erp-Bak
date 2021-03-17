@@ -80,8 +80,8 @@ class C_MyOrder extends CI_Controller {
 		if (!empty($_FILES['FileOtorisasi']['name'])) {
             // upload area
             if (!is_dir('./assets/upload/OrderSeksiRekayasa')) {
-                mkdir('./assets/upload/OrderSeksiRekayasa', 0777, true);
-                chmod('./assets/upload/OrderSeksiRekayasa', 0777);
+                mkdir('./assets/upload/OrderSeksiRekayasa/Otorisasi', 0777, true);
+                chmod('./assets/upload/OrderSeksiRekayasa/Otorisasi', 0777);
 			}
 			
 			$config['upload_path'] = './assets/upload/OrderSeksiRekayasa/Otorisasi';
