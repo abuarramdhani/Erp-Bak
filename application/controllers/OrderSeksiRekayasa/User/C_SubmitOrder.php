@@ -83,12 +83,12 @@ class C_SubmitOrder extends CI_Controller {
 
 		if (!empty($_FILES['LayoutAlatMesin']['name'])) {
             // upload area
-            if (!is_dir('./assets/upload/OrderSeksiRekayasa/Layout')) {
-                mkdir('./assets/upload/OrderSeksiRekayasa/Layout', 0777, true);
-                chmod('./assets/upload/OrderSeksiRekayasa/Layout', 0777);
+            if (!is_dir('./assets/img/OrderSeksiRekayasa/Layout')) {
+                mkdir('./assets/img/OrderSeksiRekayasa/Layout', 0777, true);
+                chmod('./assets/img/OrderSeksiRekayasa/Layout', 0777);
 			}
 			
-			$config['upload_path'] = './assets/upload/OrderSeksiRekayasa/Layout';
+			$config['upload_path'] = './assets/img/OrderSeksiRekayasa/Layout';
             $config['allowed_types'] = '*';
 			$config['overwrite'] 	= true;
 			$name = str_replace(' ', '_', $nama_alat_mesin);
@@ -120,12 +120,12 @@ class C_SubmitOrder extends CI_Controller {
 
 		if (!empty($_FILES['DokumenTarget']['name'])) {
             // upload area
-            if (!is_dir('./assets/upload/OrderSeksiRekayasa/Target')) {
-                mkdir('./assets/upload/OrderSeksiRekayasa/Target', 0777, true);
-                chmod('./assets/upload/OrderSeksiRekayasa/Target', 0777);
+            if (!is_dir('./assets/img/OrderSeksiRekayasa/Target')) {
+                mkdir('./assets/img/OrderSeksiRekayasa/Target', 0777, true);
+                chmod('./assets/img/OrderSeksiRekayasa/Target', 0777);
 			}
 
-			$config['upload_path'] = './assets/upload/OrderSeksiRekayasa/Target';
+			$config['upload_path'] = './assets/img/OrderSeksiRekayasa/Target';
             $config['allowed_types'] = '*';
 			$config['overwrite'] 	= true;
 			$name = str_replace(' ', '_', $nama_alat_mesin);
@@ -155,11 +155,11 @@ class C_SubmitOrder extends CI_Controller {
 
 		if (!empty($_FILES['DokumenKondisiSebelum']['name'])) {
             // upload area
-            if (!is_dir('./assets/upload/OrderSeksiRekayasa/KondisiSebelum')) {
-                mkdir('./assets/upload/OrderSeksiRekayasa/KondisiSebelum', 0777, true);
-                chmod('./assets/upload/OrderSeksiRekayasa/KondisiSebelum', 0777);
+            if (!is_dir('./assets/img/OrderSeksiRekayasa/KondisiSebelum')) {
+                mkdir('./assets/img/OrderSeksiRekayasa/KondisiSebelum', 0777, true);
+                chmod('./assets/img/OrderSeksiRekayasa/KondisiSebelum', 0777);
             }
-			$config['upload_path'] = './assets/upload/OrderSeksiRekayasa/KondisiSebelum';
+			$config['upload_path'] = './assets/img/OrderSeksiRekayasa/KondisiSebelum';
             $config['allowed_types'] = '*';
 			$config['overwrite'] 	= true;
 			$name = str_replace(' ', '_', $nama_alat_mesin);
@@ -192,11 +192,11 @@ class C_SubmitOrder extends CI_Controller {
 
 		if (!empty($_FILES['DokumenKondisiSesudah']['name'])) {
             // upload area
-            if (!is_dir('./assets/upload/OrderSeksiRekayasa/KondisiSesudah')) {
-                mkdir('./assets/upload/OrderSeksiRekayasa/KondisiSesudah', 0777, true);
-                chmod('./assets/upload/OrderSeksiRekayasa/KondisiSesudah', 0777);
+            if (!is_dir('./assets/img/OrderSeksiRekayasa/KondisiSesudah')) {
+                mkdir('./assets/img/OrderSeksiRekayasa/KondisiSesudah', 0777, true);
+                chmod('./assets/img/OrderSeksiRekayasa/KondisiSesudah', 0777);
             }
-			$config['upload_path'] = './assets/upload/OrderSeksiRekayasa/KondisiSesudah';
+			$config['upload_path'] = './assets/img/OrderSeksiRekayasa/KondisiSesudah';
             $config['allowed_types'] = '*';
 			$config['overwrite'] 	= true;
 			$name = str_replace(' ', '_', $nama_alat_mesin);
@@ -228,11 +228,11 @@ class C_SubmitOrder extends CI_Controller {
 
 		if (!empty($_FILES['DokumenKetPelengkap']['name'])) {
             // upload area
-            if (!is_dir('./assets/upload/OrderSeksiRekayasa/KetPelengkap')) {
-                mkdir('./assets/upload/OrderSeksiRekayasa/KetPelengkap', 0777, true);
-                chmod('./assets/upload/OrderSeksiRekayasa/KetPelengkap', 0777);
+            if (!is_dir('./assets/img/OrderSeksiRekayasa/KetPelengkap')) {
+                mkdir('./assets/img/OrderSeksiRekayasa/KetPelengkap', 0777, true);
+                chmod('./assets/img/OrderSeksiRekayasa/KetPelengkap', 0777);
             }
-			$config['upload_path'] = './assets/upload/OrderSeksiRekayasa/KetPelengkap';
+			$config['upload_path'] = './assets/img/OrderSeksiRekayasa/KetPelengkap';
             $config['allowed_types'] = '*';
 			$config['overwrite'] 	= true;
 			$name = str_replace(' ', '_', $nama_alat_mesin);

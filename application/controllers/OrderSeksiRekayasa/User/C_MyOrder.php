@@ -79,12 +79,12 @@ class C_MyOrder extends CI_Controller {
 		// echo "<pre>";print_r($status);die;
 		if (!empty($_FILES['FileOtorisasi']['name'])) {
             // upload area
-            if (!is_dir('./assets/upload/OrderSeksiRekayasa/Otorisasi')) {
-                mkdir('./assets/upload/OrderSeksiRekayasa/Otorisasi', 0777, true);
-                chmod('./assets/upload/OrderSeksiRekayasa/Otorisasi', 0777);
+            if (!is_dir('./assets/img/OrderSeksiRekayasa/Otorisasi')) {
+                mkdir('./assets/img/OrderSeksiRekayasa/Otorisasi', 0777, true);
+                chmod('./assets/img/OrderSeksiRekayasa/Otorisasi', 0777);
 			}
 			
-			$config['upload_path'] = './assets/upload/OrderSeksiRekayasa/Otorisasi';
+			$config['upload_path'] = './assets/img/OrderSeksiRekayasa/Otorisasi';
             $config['allowed_types'] = '*';
 			$config['overwrite'] 	= true;
 			$name = str_replace(' ', '_', $nama_alat_mesin);
