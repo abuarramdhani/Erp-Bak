@@ -230,12 +230,14 @@ class M_dpb extends CI_Model
 
     public function createDPB($noDPB, $jenis, $creator, $forward, $keterangan)
     {
+        // return print_r("createDPB call");
         $oracle = $this->load->database('oracle', true);
         $query = $oracle->query("CALL APPS.KHS_ALLOCATE_DOSPB_SP('$noDPB', 225, 'SP-YSP', '$jenis', '$creator', '$forward','$keterangan')");
     }
 
     public function createDPBRequest($reqNumber, $lineId, $allocateQty, $creator)
     {
+        // return print_r("createDPB");
         $oracle = $this->load->database('oracle', true);
         $oracle->query("INSERT INTO
             KHS_MO_ALLOCATE_TEMP KMAT ( KMAT.REQUEST_NUMBER ,
@@ -253,34 +255,41 @@ class M_dpb extends CI_Model
     public function getAlamat($noDPB)
     {
         $oracle = $this->load->database('oracle', true);
-        $query = $oracle->query("SELECT
-        case when REGEXP_LIKE('$noDPB', '^[[:digit:]]+$') then
-            case when (select distinct wdd.BATCH_ID from wsh_delivery_details wdd where wdd.BATCH_ID= '$noDPB') is not null then -- parameter
-                (select distinct
-                hl.address1 || ', ' || hl.city || ', ' || hl.province city
-                from
-                wsh_delivery_details wdd
-                ,hz_locations hl
-                where
-                wdd.SHIP_TO_LOCATION_ID = hl.LOCATION_ID
-                and wdd.BATCH_ID = '$noDPB')  -- parameter
-            else
-                (select
-                mtrh.ATTRIBUTE4
-                from
-                mtl_txn_request_headers mtrh
-                where
-                mtrh.REQUEST_NUMBER = '$noDPB')  -- parameter
-            end    
-        else        
-        (select
-                mtrh.ATTRIBUTE4
-                from
-                mtl_txn_request_headers mtrh
-                where
-                mtrh.REQUEST_NUMBER = '$noDPB')  -- parameter
-        end ALAMAT    
-        from DUAL");
+        $query = $oracle->query("SELECT CASE
+        WHEN REGEXP_LIKE ('$noDPB', '^[[:digit:]]+$')
+            THEN CASE
+                WHEN (SELECT DISTINCT wdd.batch_id
+                    FROM wsh_delivery_details wdd
+                    WHERE wdd.batch_id = '$noDPB') IS NOT NULL THEN -- parameter
+                (SELECT DISTINCT    hl.address1
+                        || ', '
+                        || hl.city
+                        || ', '
+                        || hl.province city
+                    FROM wsh_delivery_details wdd, hz_locations hl
+                    WHERE wdd.ship_to_location_id = hl.location_id
+                    AND wdd.batch_id = '$noDPB') -- parameter
+                ELSE (SELECT mtrh.attribute4
+                    FROM mtl_txn_request_headers mtrh
+                    WHERE mtrh.request_number = '$noDPB')  -- parameter
+                END
+        ELSE (SELECT mtrh.attribute4
+                FROM mtl_txn_request_headers mtrh
+                WHERE mtrh.request_number = '$noDPB')            -- parameter
+        END alamat,
+            h1.description,
+            h1.tgl_kirim,
+            h1.so,
+            h1.ekspedisi,
+            h1.opk
+        FROM 
+        (
+            select mtrh.description, mtrh.attribute15 ekspedisi,
+                    mtrh.attribute6 tgl_kirim, mtrh.attribute7 so,
+                    mtrh.attribute8 opk, mtrh.request_number
+            from mtl_txn_request_headers mtrh
+            where request_number = '$noDPB'
+        ) h1");
 
         return $query->result_array();
     }

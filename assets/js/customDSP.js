@@ -161,12 +161,71 @@ $(document).ready(function () {
               data: { noDPB },
               dataType: "JSON",
               success: function (resp) {
-                // console.log(resp[0]["ALAMAT"]);
-                if (resp[0]["ALAMAT"].indexOf("#") != -1) {
-                  var alamat = resp[0]["ALAMAT"].replace(/#/gi, "\n");
-                  $(".alamatDSP").val(alamat);
+                // console.log(resp[0]);
+                if(resp[0]["ALAMAT"] == null) {
+                  $(".alamatDSP").val(" - ");
                 } else {
-                  $(".alamatDSP").val(resp[0]["ALAMAT"]);
+                  if (resp[0]["ALAMAT"].indexOf("#") != -1) {
+                    var alamat = resp[0]["ALAMAT"].replace(/#/gi, "\n");
+                    $(".alamatDSP").val(alamat);
+                  } else {
+                    $(".alamatDSP").val(resp[0]["ALAMAT"]);
+                  }
+                }
+
+                if(resp[0]["DESCRIPTION"] == null) {
+                  $(".deskripsiDSP").val(" - ");
+                } else {
+                  if (resp[0]["DESCRIPTION"].indexOf("#") != -1) {
+                    var deskripsi = resp[0]["DESCRIPTION"].replace(/#/gi, "\n");
+                    $(".deskripsiDSP").val(deskripsi);
+                  } else {
+                    $(".deskripsiDSP").val(resp[0]["DESCRIPTION"]);
+                  }
+                }
+
+                if(resp[0]["TGL_KIRIM"] == null) {
+                  $(".tanggalDSP").val(" - ");
+                } else {
+                  if (resp[0]["TGL_KIRIM"].indexOf("#") != -1) {
+                    var tanggal = resp[0]["TGL_KIRIM"].replace(/#/gi, "\n");
+                    $(".tanggalDSP").val(tanggal);
+                  } else {
+                    $(".tanggalDSP").val(resp[0]["TGL_KIRIM"]);
+                  }
+                }
+
+                if(resp[0]["EKSPEDISI"] == null) {
+                  $(".ekspedisiDSP").val(" - ");
+                } else {
+                  if (resp[0]["EKSPEDISI"].indexOf("#") != -1) {
+                    var ekspedisi = resp[0]["EKSPEDISI"].replace(/#/gi, "\n");
+                    $(".ekspedisiDSP").val(ekspedisi);
+                  } else {
+                    $(".ekspedisiDSP").val(resp[0]["EKSPEDISI"]);
+                  }
+                }
+
+                if(resp[0]["SO"] == null) {
+                  $(".inputSODSP").val(" - ");
+                } else {
+                  if (resp[0]["SO"].indexOf("#") != -1) {
+                    var so = resp[0]["SO"].replace(/#/gi, "\n");
+                    $(".inputSODSP").val(so);
+                  } else {
+                    $(".inputSODSP").val(resp[0]["SO"]);
+                  }
+                }
+
+                if(resp[0]["OPK"] == null) {
+                  $(".inputOPKDSP").val(" - ");
+                } else {
+                  if (resp[0]["OPK"].indexOf("#") != -1) {
+                    var opk = resp[0]["OPK"].replace(/#/gi, "\n");
+                    $(".inputOPKDSP").val(opk);
+                  } else {
+                    $(".inputOPKDSP").val(resp[0]["OPK"]);
+                  }
                 }
               },
             });
