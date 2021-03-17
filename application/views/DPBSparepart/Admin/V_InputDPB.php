@@ -23,6 +23,41 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label for="" class="col-sm-2 control-label">Deskripsi</label>
+
+                            <div class="col-sm-10">
+                                <textarea class="form-control deskripsiDSP" placeholder="Deskripsi" style="width:550px; height:120px;" readonly></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="" class="col-sm-2 control-label">Tanggal Kirim</label>
+
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control tanggalDSP" style="width:550px;" placeholder="Tanggal kirim" readonly></input>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="" class="col-sm-2 control-label">Ekspedisi</label>
+
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control ekspedisiDSP" style="width:550px;" placeholder="Ekspedisi" readonly></input>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="" class="col-sm-2 control-label">SO</label>
+
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control inputSODSP" style="width:550px;" placeholder="SO" readonly></input>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="" class="col-sm-2 control-label">OPK</label>
+
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control inputOPKDSP" style="width:550px;" placeholder="OPK" readonly></input>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label for="" class="col-sm-2 control-label">Jenis DPB</label>
 
                             <div class="col-sm-10">
@@ -49,8 +84,6 @@
                                 <select name="" id="" class="form-control select2 forwardDPS" style="width:250px;">
                                     <option></option>
                                     <option value="J1365">J1365 - MUHAMMAD REZA SHALAHUDDIN NOOR</option>
-                                    <option value="B0892">B0892 - NANDA ILHAM</option>
-                                    <option value="B0658">B0658 - NASHRUL HAKIM</option>
                                 </select>
                             </div>
                         </div>
