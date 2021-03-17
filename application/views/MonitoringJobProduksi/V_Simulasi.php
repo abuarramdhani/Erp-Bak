@@ -15,7 +15,7 @@
                                         <div class="col-md-1">
                                             <label>Kategori </label>
                                         </div>
-                                        <div class="col-md-3">
+                                        <div class="col-md-11">
                                             : <?= $kategori?>
                                             <input type="hidden" name="kategori" value="<?= $kategori?>">
                                             <input type="hidden" name="tanggal" value="<?= $tanggal?>">
@@ -28,7 +28,7 @@
                                         <div class="col-md-1">
                                             <label>Tanggal </label>
                                         </div>
-                                        <div class="col-md-3">
+                                        <div class="col-md-11">
                                             : <?= sprintf("%02d", $tanggal);?>/<?= $bulan?>
                                         </div>
                                     </div>
@@ -57,6 +57,15 @@
                                             </span>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="panel-body text-right">
+                                    <span>
+                                        <button type="button" class="btn btn-danger" id="btn_tmb_level" style="margin-left:15px" onclick="gettambahlevel(1)"><i class="fa fa-plus"></i> 1</button>
+                                    </span>
+                                    <span>
+                                        <button type="button" class="btn btn-danger" style="margin-left:15px" onclick="gettambahlevel('All')"><i class="fa fa-plus"></i> All</button>
+                                        <input type="hidden" id="btn_simulasi_all">
+                                    </span>
                                 </div>
                                 <div class="panel-body" id="tbl_simulasi_produksi">
                                 </div>

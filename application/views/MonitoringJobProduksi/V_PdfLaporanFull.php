@@ -43,7 +43,14 @@
 	</style>
 
 <body>
-<?php $jml_baris = $jml_kategori = 0; foreach ($data as $key => $value) { 
+<?php $jml_baris = $jml_kategori = 0; 
+foreach ($data as $key => $value) {
+if (($jml_baris + count($value)+1 > 6 && $jml_kategori > 1) || $jml_kategori > 3 || ($jml_kategori >= 1 && $jml_baris + count($value)+1 > 8)) {
+	$jml_baris = $jml_kategori = 0;
+	echo '<pagebreak resetpagenum="1" />';
+}else {
+	echo "<br>";
+} 
 $jml_kategori++; ?>
 <div class="row" style="padding-left:0px;padding-right:0px">
 <table style="width: 100%; border-bottom :0px; border-collapse: collapse;" >
@@ -108,12 +115,6 @@ $jml_kategori++; ?>
 </table>
 <p>Prosentase Pencapaian Produksi : <?= round($total[$value[0]['CATEGORY_NAME']]['KECAPAIAN_TARGET'], 2) ?>%</p>
 <?php
-if (($jml_baris > 4 && $jml_kategori > 1) || $jml_kategori > 3 || ($jml_kategori == 1 && $jml_baris > 10)) {
-	$jml_baris = $jml_kategori = 0;
-	echo '<pagebreak resetpagenum="1" />';
-}else {
-	echo "<br>";
-}
 }
 ?>
 </body>

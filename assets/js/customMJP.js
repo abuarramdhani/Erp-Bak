@@ -197,6 +197,8 @@ function saveCommentmin(ket) {
 function getSimulasiProduksi(ket) {
     var item    = $('#item').val();
     var qty     = $('#qty').val();
+    document.getElementById('btn_tmb_level').setAttribute('onclick','gettambahlevel(1)')
+    $('#btn_simulasi_all').val('');
     // console.log(item, qty)
     $.ajax({
         url : baseurl + "MonitoringJobProduksi/Monitoring/searchSimulasi",
@@ -213,6 +215,32 @@ function getSimulasiProduksi(ket) {
             // });
         }
     })
+}
+
+function gettambahlevel(level) {
+    // console.log(level)
+    if (level == 'All') {
+        //langsung semua
+        $('.button1').click();
+        $('#btn_simulasi_all').val('all');
+        document.getElementById('btn_tmb_level').setAttribute('onclick','gettambahlevel(1)')
+    }else{
+        //satu-satu
+        $('#btn_simulasi_all').val('');
+        var batas = $('#btn_level_'+level).val();
+        if (batas) {
+            $('.button'+level).click();
+            document.getElementById('btn_tmb_level').setAttribute('onclick','gettambahlevel('+(level+1)+')');
+        }else{
+            Swal.fire({
+                type: 'error',
+                title: 'Level Sudah Mencapai Batas...',
+                text: '',
+                showConfirmButton: false,
+                showCloseButton: true,
+            })
+        }
+    }
 }
 
 function tambahsimulasi(level, no, num) {
@@ -238,11 +266,16 @@ function tambahsimulasi(level, no, num) {
             success : function(data) {
                 // console.log(level);
                 $('#tr_simulasi'+nomor).html(data);
+                var all = $('#btn_simulasi_all').val();
+                if (data != '<center><b>Data Kosong</b></center>' && all == 'all') {
+                    $('.button'+nomor).click();
+                }
             }
         })
     }else{
+        document.getElementById('btn_tmb_level').setAttribute('onclick','gettambahlevel(1)')
         $('#tr_simulasi'+nomor).css('display','none');   
-        $('#tr_simulasi'+nomor).html('');
+        $('#tr_simulasi'+nomor).html('<p>tutup</p>');
         $('#penanda'+nomor).val('off');
     }
 }
