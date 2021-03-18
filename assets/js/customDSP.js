@@ -166,7 +166,7 @@ $(document).ready(function () {
                   $(".alamatDSP").val(" - ");
                 } else {
                   if (resp[0]["ALAMAT_SO"].indexOf("#") != -1) {
-                    var alamat = resp[0]["ALAMAT_SO"].replace(/#/gi, "\n");
+                    var alamat = resp[0]["ALAMAT_SO"].replaceAll(/#/gi, "\n");
                     $(".alamatDSP").val(alamat);
                   } else {
                     $(".alamatDSP").val(resp[0]["ALAMAT_SO"]);
@@ -176,7 +176,10 @@ $(document).ready(function () {
                   // $(".alamatkirimDSP").val(" - ");
                 } else {
                   if (resp[0]["ALAMAT_KIRIM"].indexOf("#") != -1) {
-                    var alamat = resp[0]["ALAMAT_KIRIM"].replace(/#/gi, "\n");
+                    var alamat = resp[0]["ALAMAT_KIRIM"].replaceAll(
+                      /#/gi,
+                      "\n"
+                    );
                     $(".alamatkirimDSP").val(alamat);
                   } else {
                     $(".alamatkirimDSP").val(resp[0]["ALAMAT_KIRIM"]);
@@ -186,7 +189,10 @@ $(document).ready(function () {
                   $(".deskripsiDSP").val(" - ");
                 } else {
                   if (resp[0]["DESCRIPTION"].indexOf("#") != -1) {
-                    var deskripsi = resp[0]["DESCRIPTION"].replace(/#/gi, "\n");
+                    var deskripsi = resp[0]["DESCRIPTION"].replaceAll(
+                      /#/gi,
+                      "\n"
+                    );
                     $(".deskripsiDSP").val(deskripsi);
                   } else {
                     $(".deskripsiDSP").val(resp[0]["DESCRIPTION"]);
@@ -197,7 +203,7 @@ $(document).ready(function () {
                   $(".tanggalDSP").val(" - ");
                 } else {
                   if (resp[0]["TGL_KIRIM"].indexOf("#") != -1) {
-                    var tanggal = resp[0]["TGL_KIRIM"].replace(/#/gi, "\n");
+                    var tanggal = resp[0]["TGL_KIRIM"].replaceAll(/#/gi, "\n");
                     $(".tanggalDSP").val(tanggal);
                   } else {
                     $(".tanggalDSP").val(resp[0]["TGL_KIRIM"]);
@@ -211,24 +217,48 @@ $(document).ready(function () {
                   );
                 } else {
                   if (resp[0]["EKSPEDISI"].indexOf("#") != -1) {
-                    var ekspedisi = resp[0]["EKSPEDISI"].replace(/#/gi, "\n");
-                    $(".ekspedisiDSP").html(
-                      '<option value="' +
-                        resp[0]["EKSPEDISI"].replace(/#/gi, "\n") +
-                        '">' +
-                        resp[0]["EKSPEDISI"].replace(/#/gi, "\n") +
-                        '</option><option value="ADEX">ADEX</option><option value="BARANG TRUK">BARANG TRUK</option><option value="INDIE">INDIE</option><option value="JNE">JNE</option><option value="JNT">JNT</option><option value="KGP">KGP</option><option value="POS">POS</option><option value="QDS 1">QDS 1</option><option value="QDS 2">QDS 2</option><option value="SADANA">SADANA</option><option value="TAM">TAM</option><option value="TIKI">TIKI</option>'
+                    var ekspedisi = resp[0]["EKSPEDISI"].replaceAll(
+                      /#/gi,
+                      "\n"
                     );
-                    // $(".ekspedisiDSP").val(ekspedisi);
+                    var data = {
+                      id: ekspedisi,
+                      text: ekspedisi,
+                    };
+
+                    var newOption = new Option(
+                      data.text,
+                      data.id,
+                      false,
+                      false
+                    );
+                    $(".ekspedisiDSP").append(newOption).trigger("change");
+                    $(".ekspedisiDSP").append(newOption).trigger("change");
+                    $(".ekspedisiDSP")
+                      .append(
+                        '<option value="ADEX">ADEX</option><option value="BARANG TRUK">BARANG TRUK</option><option value="INDIE">INDIE</option><option value="JNE">JNE</option><option value="JNT">JNT</option><option value="KGP">KGP</option><option value="POS">POS</option><option value="QDS 1">QDS 1</option><option value="QDS 2">QDS 2</option><option value="SADANA">SADANA</option><option value="TAM">TAM</option><option value="TIKI">TIKI</option>'
+                      )
+                      .trigger("change");
                   } else {
                     // $(".ekspedisiDSP").val(resp[0]["EKSPEDISI"]);
-                    $(".ekspedisiDSP").html(
-                      '<option value="' +
-                        resp[0]["EKSPEDISI"] +
-                        '">' +
-                        resp[0]["EKSPEDISI"] +
-                        '</option><option value="ADEX">ADEX</option><option value="BARANG TRUK">BARANG TRUK</option><option value="INDIE">INDIE</option><option value="JNE">JNE</option><option value="JNT">JNT</option><option value="KGP">KGP</option><option value="POS">POS</option><option value="QDS 1">QDS 1</option><option value="QDS 2">QDS 2</option><option value="SADANA">SADANA</option><option value="TAM">TAM</option><option value="TIKI">TIKI</option>'
+                    var data = {
+                      id: resp[0]["EKSPEDISI"],
+                      text: resp[0]["EKSPEDISI"],
+                    };
+
+                    var newOption = new Option(
+                      data.text,
+                      data.id,
+                      false,
+                      false
                     );
+                    $(".ekspedisiDSP").append(newOption).trigger("change");
+                    $(".ekspedisiDSP").append(newOption).trigger("change");
+                    $(".ekspedisiDSP")
+                      .append(
+                        '<option value="ADEX">ADEX</option><option value="BARANG TRUK">BARANG TRUK</option><option value="INDIE">INDIE</option><option value="JNE">JNE</option><option value="JNT">JNT</option><option value="KGP">KGP</option><option value="POS">POS</option><option value="QDS 1">QDS 1</option><option value="QDS 2">QDS 2</option><option value="SADANA">SADANA</option><option value="TAM">TAM</option><option value="TIKI">TIKI</option>'
+                      )
+                      .trigger("change");
                   }
                 }
 
@@ -340,6 +370,8 @@ $(document).ready(function () {
     var keterangan = $(".keteranganDPS").val();
     var ekspedisi = $(".ekspedisiDSP").val();
     var alamat_kir = $(".alamatkirimDSP").val();
+
+    console.log(ekspedisi);
 
     var alamat_kirim = alamat_kir.replaceAll("\n", "#");
 
