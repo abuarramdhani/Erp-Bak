@@ -32,7 +32,7 @@
 			</tr>
 			<tr >
 				<td style="height: 10mm; padding-left: 5mm;padding-right: 5mm;">
-				<table style="width: 100% ; font-size: 32px">
+				<table style="width: 100% ; font-size: 30px">
 					<tr>
 						<td>
 							<b>Tanggal Cetak</b>
@@ -77,7 +77,17 @@
 							<b><?php echo $value['TO_LOCATOR'] ?></b>
 						</td>
 					</tr>
-						
+					<tr>
+						<td>
+							<b>LOKASI SIMPAN</b>
+						</td>
+						<td>
+							<b>:</b>
+						</td>
+						<td>
+							<b><?php echo $value['LOKASI_SIMPAN'] ?></b>
+						</td>
+					</tr>	
 				</table>
 				<hr style="border-top: dotted 1px;" />
 				</td>
