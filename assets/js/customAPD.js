@@ -52,6 +52,9 @@ $("#group_add").click(function (e) {
 			allowClear: true,
 		});
 	}
+
+	// initialize tippy again
+	tippyInit();
 });
 
 $(document).on("click", ".group_rem", function (e) {
