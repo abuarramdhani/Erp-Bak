@@ -15,11 +15,10 @@ class XLSXWriter
 	protected $title;
 	protected $subject;
 	protected $author;
-	protected $isRightToLeft;
 	protected $company;
 	protected $description;
 	protected $keywords = array();
-	
+
 	protected $current_sheet;
 	protected $sheets = array();
 	protected $temp_files = array();
@@ -28,10 +27,14 @@ class XLSXWriter
 
 	public function __construct()
 	{
-		defined('ENT_XML1') or define('ENT_XML1',16);//for php 5.3, avoid fatal error
-		date_default_timezone_get() or date_default_timezone_set('UTC');//php.ini missing tz, avoid warning
-		is_writeable($this->tempFilename()) or self::log("Warning: tempdir ".sys_get_temp_dir()." not writeable, use ->setTempDir()");
-		class_exists('ZipArchive') or self::log("Error: ZipArchive class does not exist");
+		if(!ini_get('date.timezone'))
+		{
+			//using date functions can kick out warning if this isn't set
+			date_default_timezone_set('UTC');
+		}
+		$this->addCellStyle($number_format='GENERAL', $style_string=null);
+		$this->addCellStyle($number_format='GENERAL', $style_string=null);
+		$this->addCellStyle($number_format='GENERAL', $style_string=null);
 		$this->addCellStyle($number_format='GENERAL', $style_string=null);
 	}
 
@@ -42,7 +45,6 @@ class XLSXWriter
 	public function setKeywords($keywords='') { $this->keywords=$keywords; }
 	public function setDescription($description='') { $this->description=$description; }
 	public function setTempDir($tempdir='') { $this->tempdir=$tempdir; }
-	public function setRightToLeft($isRightToLeft=false){ $this->isRightToLeft=$isRightToLeft; }
 
 	public function __destruct()
 	{
@@ -114,7 +116,7 @@ class XLSXWriter
 		$zip->close();
 	}
 
-	protected function initializeSheet($sheet_name, $col_widths=array(), $auto_filter=false, $freeze_rows=false, $freeze_columns=false )
+	protected function initializeSheet($sheet_name, $col_widths=array(), $auto_filter=false, $freeze_rows=false, $freeze_columns=false, $page_setup=array())
 	{
 		//if already initialized
 		if ($this->current_sheet==$sheet_name || isset($this->sheets[$sheet_name]))
@@ -135,22 +137,22 @@ class XLSXWriter
 			'auto_filter' => $auto_filter,
 			'freeze_rows' => $freeze_rows,
 			'freeze_columns' => $freeze_columns,
+			'page_setup' => $page_setup,
 			'finalized' => false,
 		);
-		$rightToLeftValue = $this->isRightToLeft ? 'true' : 'false';
 		$sheet = &$this->sheets[$sheet_name];
 		$tabselected = count($this->sheets) == 1 ? 'true' : 'false';//only first sheet is selected
 		$max_cell=XLSXWriter::xlsCell(self::EXCEL_2007_MAX_ROW, self::EXCEL_2007_MAX_COL);//XFE1048577
 		$sheet->file_writer->write('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' . "\n");
 		$sheet->file_writer->write('<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">');
 		$sheet->file_writer->write(  '<sheetPr filterMode="false">');
-		$sheet->file_writer->write(    '<pageSetUpPr fitToPage="false"/>');
+		$sheet->file_writer->write(    '<pageSetUpPr fitToPage="' . (string)(!empty($page_setup['fit_to_width']) || !empty($page_setup['fit_to_height'])) . '"/>');
 		$sheet->file_writer->write(  '</sheetPr>');
 		$sheet->max_cell_tag_start = $sheet->file_writer->ftell();
 		$sheet->file_writer->write('<dimension ref="A1:' . $max_cell . '"/>');
 		$sheet->max_cell_tag_end = $sheet->file_writer->ftell();
 		$sheet->file_writer->write(  '<sheetViews>');
-		$sheet->file_writer->write(    '<sheetView colorId="64" defaultGridColor="true" rightToLeft="'.$rightToLeftValue.'" showFormulas="false" showGridLines="true" showOutlineSymbols="true" showRowColHeaders="true" showZeros="true" tabSelected="' . $tabselected . '" topLeftCell="A1" view="normal" windowProtection="false" workbookViewId="0" zoomScale="100" zoomScaleNormal="100" zoomScalePageLayoutView="100">');
+		$sheet->file_writer->write(    '<sheetView colorId="64" defaultGridColor="true" rightToLeft="false" showFormulas="false" showGridLines="true" showOutlineSymbols="true" showRowColHeaders="true" showZeros="true" tabSelected="' . $tabselected . '" topLeftCell="A1" view="normal" windowProtection="false" workbookViewId="0" zoomScale="100" zoomScaleNormal="100" zoomScalePageLayoutView="100">');
 		if ($sheet->freeze_rows && $sheet->freeze_columns) {
 			$sheet->file_writer->write(      '<pane ySplit="'.$sheet->freeze_rows.'" xSplit="'.$sheet->freeze_columns.'" topLeftCell="'.self::xlsCell($sheet->freeze_rows, $sheet->freeze_columns).'" activePane="bottomRight" state="frozen"/>');
 			$sheet->file_writer->write(      '<selection activeCell="'.self::xlsCell($sheet->freeze_rows, 0).'" activeCellId="0" pane="topRight" sqref="'.self::xlsCell($sheet->freeze_rows, 0).'"/>');
@@ -218,18 +220,19 @@ class XLSXWriter
 			self::log( "Warning! passing $suppress_row=false|true to writeSheetHeader() is deprecated, this will be removed in a future version." );
 			$suppress_row = intval($col_options);
 		}
-		$style = &$col_options;
+    $style = &$col_options;
 
 		$col_widths = isset($col_options['widths']) ? (array)$col_options['widths'] : array();
 		$auto_filter = isset($col_options['auto_filter']) ? intval($col_options['auto_filter']) : false;
 		$freeze_rows = isset($col_options['freeze_rows']) ? intval($col_options['freeze_rows']) : false;
 		$freeze_columns = isset($col_options['freeze_columns']) ? intval($col_options['freeze_columns']) : false;
-		self::initializeSheet($sheet_name, $col_widths, $auto_filter, $freeze_rows, $freeze_columns);
+		$page_setup = isset($col_options['page_setup']) ? (array)$col_options['page_setup'] : array();
+		self::initializeSheet($sheet_name, $col_widths, $auto_filter, $freeze_rows, $freeze_columns, $page_setup);
 		$sheet = &$this->sheets[$sheet_name];
 		$sheet->columns = $this->initializeColumnTypes($header_types);
 		if (!$suppress_row)
 		{
-			$header_row = array_keys($header_types);      
+			$header_row = array_keys($header_types);
 
 			$sheet->file_writer->write('<row collapsed="false" customFormat="false" customHeight="false" hidden="false" ht="12.1" outlineLevel="0" r="' . (1) . '">');
 			foreach ($header_row as $c => $v) {
@@ -247,13 +250,13 @@ class XLSXWriter
 		if (empty($sheet_name))
 			return;
 
-		$this->initializeSheet($sheet_name);
+		self::initializeSheet($sheet_name);
 		$sheet = &$this->sheets[$sheet_name];
 		if (count($sheet->columns) < count($row)) {
 			$default_column_types = $this->initializeColumnTypes( array_fill($from=0, $until=count($row), 'GENERAL') );//will map to n_auto
 			$sheet->columns = array_merge((array)$sheet->columns, $default_column_types);
 		}
-		
+
 		if (!empty($row_options))
 		{
 			$ht = isset($row_options['height']) ? floatval($row_options['height']) : 12.1;
@@ -307,15 +310,55 @@ class XLSXWriter
 		$max_cell = self::xlsCell($sheet->row_count - 1, count($sheet->columns) - 1);
 
 		if ($sheet->auto_filter) {
-			$sheet->file_writer->write(    '<autoFilter ref="A1:' . $max_cell . '"/>');			
+			$sheet->file_writer->write(    '<autoFilter ref="A1:' . $max_cell . '"/>');
 		}
 
-		$sheet->file_writer->write(    '<printOptions headings="false" gridLines="false" gridLinesSet="true" horizontalCentered="false" verticalCentered="false"/>');
-		$sheet->file_writer->write(    '<pageMargins left="0.5" right="0.5" top="1.0" bottom="1.0" header="0.5" footer="0.5"/>');
-		$sheet->file_writer->write(    '<pageSetup blackAndWhite="false" cellComments="none" copies="1" draft="false" firstPageNumber="1" fitToHeight="1" fitToWidth="1" horizontalDpi="300" orientation="portrait" pageOrder="downThenOver" paperSize="1" scale="100" useFirstPageNumber="true" usePrinterDefaults="false" verticalDpi="300"/>');
+		$page_setup = $sheet->page_setup;
+		$set_allowed_value_func = function($key, $alloweed_array, $default) use ($page_setup) {
+			return (isset($page_setup[$key]) && in_array($page_setup[$key], $alloweed_array)) ? $page_setup[$key] : $default;
+		};
+		$set_boolean_value_func = function($key, $default) use ($page_setup) {
+			$boolval = filter_var((isset($page_setup[$key]) ? $page_setup[$key] : $default), FILTER_VALIDATE_BOOLEAN);
+			return ($boolval) ? 'true' : 'false';
+		};
+
+		$sheet->file_writer->write(    '<printOptions');
+		$sheet->file_writer->write(      ' headings="'           . $set_boolean_value_func('headings',            false) . '"');
+		$sheet->file_writer->write(      ' gridLines="'          . $set_boolean_value_func('grid_lines',          false) . '"');
+		$sheet->file_writer->write(      ' gridLinesSet="'       . $set_boolean_value_func('grid_lines_set',      true) . '"');
+		$sheet->file_writer->write(      ' horizontalCentered="' . $set_boolean_value_func('horizontal_centered', false) . '"');
+		$sheet->file_writer->write(      ' verticalCentered="'   . $set_boolean_value_func('vertical_centered',   false) . '"');
+		$sheet->file_writer->write(      '/>');
+		$sheet->file_writer->write(    '<pageMargins'); // in inches
+		$sheet->file_writer->write(      ' left="'   . (string)(isset($page_setup['margin_left'])   ? floatval($page_setup['margin_left'])   : 0.5) . '"');
+		$sheet->file_writer->write(      ' right="'  . (string)(isset($page_setup['margin_right'])  ? floatval($page_setup['margin_right'])  : 0.5) . '"');
+		$sheet->file_writer->write(      ' top="'    . (string)(isset($page_setup['margin_top'])    ? floatval($page_setup['margin_top'])    : 1.0) . '"');
+		$sheet->file_writer->write(      ' bottom="' . (string)(isset($page_setup['margin_bottom']) ? floatval($page_setup['margin_bottom']) : 1.0) . '"');
+		$sheet->file_writer->write(      ' header="' . (string)(isset($page_setup['margin_header']) ? floatval($page_setup['margin_header']) : 0.5) . '"');
+		$sheet->file_writer->write(      ' footer="' . (string)(isset($page_setup['margin_footer']) ? floatval($page_setup['margin_footer']) : 0.5) . '"');
+		$sheet->file_writer->write(      '/>');
+		$sheet->file_writer->write(    '<pageSetup');
+		$sheet->file_writer->write(      ' paperSize="'       . (string)(isset($page_setup['paper_size'])        ? intval($page_setup['paper_size'])        : 1) . '"'); // specify XlPaperSize value (1-68)
+		$sheet->file_writer->write(      ' scale="'           . (string)(isset($page_setup['scale'])             ? intval($page_setup['scale'])           : 100) . '"');
+		$sheet->file_writer->write(      ' firstPageNumber="' . (string)(isset($page_setup['first_page_number']) ? intval($page_setup['first_page_number']) : 1) . '"');
+		$sheet->file_writer->write(      ' fitToWidth="'      . (string)(isset($page_setup['fit_to_width'])      ? intval($page_setup['fit_to_width'])      : 0) . '"'); // if set, enables fitToPage
+		$sheet->file_writer->write(      ' fitToHeight="'     . (string)(isset($page_setup['fit_to_height'])     ? intval($page_setup['fit_to_height'])     : 0) . '"'); // if set, enables fitToPage
+		$sheet->file_writer->write(      ' pageOrder="'          . $set_allowed_value_func('page_order', array('overThenDown', 'downThenOver'),  'downThenOver') . '"');
+		$sheet->file_writer->write(      ' orientation="'        . $set_allowed_value_func('orientation', array('landscape', 'portrait', 'default'),  'default') . '"');
+		$sheet->file_writer->write(      ' usePrinterDefaults="' . $set_boolean_value_func('use_printer_defaults',                                         true) . '"');
+		$sheet->file_writer->write(      ' blackAndWhite="'      . $set_boolean_value_func('black_and_white',                                             false) . '"');
+		$sheet->file_writer->write(      ' draft="'              . $set_boolean_value_func('draft',                                                       false) . '"');
+		$sheet->file_writer->write(      ' cellComments="'       . $set_allowed_value_func('cell_comments', array('asDisplayed', 'atEnd', 'none'),       'none') . '"');
+		$sheet->file_writer->write(      ' useFirstPageNumber="' . $set_boolean_value_func('use_first_page_number',                                       false) . '"');
+		$sheet->file_writer->write(      ' errors="'             . $set_allowed_value_func('errors', array('blank', 'dash', 'displayed', 'NA'),     'displayed') . '"');
+		$sheet->file_writer->write(      ' horizontalDpi="'   . (string)(isset($page_setup['horizontal_dpi'])    ? intval($page_setup['horizontal_dpi'])  : 600) . '"');
+		$sheet->file_writer->write(      ' verticalDpi="'     . (string)(isset($page_setup['vertical_dpi'])      ? intval($page_setup['vertical_dpi'])    : 600) . '"');
+		$sheet->file_writer->write(      ' copies="'          . (string)(isset($page_setup['copies'])            ? intval($page_setup['copies'])            : 1) . '"');
+		$sheet->file_writer->write(      '/>');
+
 		$sheet->file_writer->write(    '<headerFooter differentFirst="false" differentOddEven="false">');
-		$sheet->file_writer->write(        '<oddHeader>&amp;C&amp;&quot;Times New Roman,Regular&quot;&amp;12&amp;A</oddHeader>');
-		$sheet->file_writer->write(        '<oddFooter>&amp;C&amp;&quot;Times New Roman,Regular&quot;&amp;12Page &amp;P</oddFooter>');
+		$sheet->file_writer->write(        '<oddHeader>' . (string)(isset($page_setup['header']) ? $page_setup['header'] : '&amp;C&amp;&quot;Times New Roman,Regular&quot;&amp;12&amp;A') . '</oddHeader>');
+		$sheet->file_writer->write(        '<oddFooter>' . (string)(isset($page_setup['footer']) ? $page_setup['footer'] : '&amp;C&amp;&quot;Times New Roman,Regular&quot;&amp;12Page &amp;P') . '</oddFooter>');
 		$sheet->file_writer->write(    '</headerFooter>');
 		$sheet->file_writer->write('</worksheet>');
 
@@ -361,7 +404,7 @@ class XLSXWriter
 
 		if (!is_scalar($value) || $value==='') { //objects, array, empty
 			$file->write('<c r="'.$cell_name.'" s="'.$cell_style_idx.'"/>');
-		} elseif (is_string($value) && $value[0]=='='){
+		} elseif (is_string($value) && $value{0}=='='){
 			$file->write('<c r="'.$cell_name.'" s="'.$cell_style_idx.'" t="s"><f>'.self::xmlspecialchars($value).'</f></c>');
 		} elseif ($num_format_type=='n_date') {
 			$file->write('<c r="'.$cell_name.'" s="'.$cell_style_idx.'" t="n"><v>'.intval(self::convert_date_time($value)).'</v></c>');
@@ -626,8 +669,8 @@ class XLSXWriter
 		$core_xml.='<dc:creator>'.self::xmlspecialchars($this->author).'</dc:creator>';
 		if (!empty($this->keywords)) {
 			$core_xml.='<cp:keywords>'.self::xmlspecialchars(implode (", ", (array)$this->keywords)).'</cp:keywords>';
-		}		
-		$core_xml.='<dc:description>'.self::xmlspecialchars($this->description).'</dc:description>';		
+		}
+		$core_xml.='<dc:description>'.self::xmlspecialchars($this->description).'</dc:description>';
 		$core_xml.='<cp:revision>0</cp:revision>';
 		$core_xml.='</cp:coreProperties>';
 		return $core_xml;
@@ -662,12 +705,39 @@ class XLSXWriter
 		}
 		$workbook_xml.='</sheets>';
 		$workbook_xml.='<definedNames>';
+		$i=0;
 		foreach($this->sheets as $sheet_name=>$sheet) {
 			if ($sheet->auto_filter) {
 				$sheetname = self::sanitize_sheetname($sheet->sheetname);
-				$workbook_xml.='<definedName name="_xlnm._FilterDatabase" localSheetId="0" hidden="1">\''.self::xmlspecialchars($sheetname).'\'!$A$1:' . self::xlsCell($sheet->row_count - 1, count($sheet->columns) - 1, true) . '</definedName>';
-				$i++;	
+				$workbook_xml.='<definedName name="_xlnm._FilterDatabase" localSheetId="'.$i.'" hidden="1">\''.self::xmlspecialchars($sheetname).'\'!$A$1:' . self::xlsCell($sheet->row_count - 1, count($sheet->columns) - 1, true) . '</definedName>';
 			}
+			$i++;
+		}
+		$i=0;
+		foreach($this->sheets as $sheet_name=>$sheet) {
+			if (!empty($sheet->page_setup['print_area'])) {
+				$sheetname = self::sanitize_sheetname($sheet->sheetname);
+				$workbook_xml.='<definedName name="_xlnm.Print_Area" localSheetId="'.$i.'">';
+				$print_area = (array)$sheet->page_setup['print_area'];
+				foreach($print_area as $index => $range) {
+					$workbook_xml.=($index==0 ? '' : ',') . '\''.self::xmlspecialchars($sheetname).'\'!' . $range;
+				}
+				$workbook_xml.='</definedName>';
+			}
+			$i++;
+		}
+		$i=0;
+		foreach($this->sheets as $sheet_name=>$sheet) {
+			if (!empty($sheet->page_setup['print_titles'])) {
+				$sheetname = self::sanitize_sheetname($sheet->sheetname);
+				$workbook_xml.='<definedName name="_xlnm.Print_Titles" localSheetId="'.$i.'">';
+				$print_titles = (array)$sheet->page_setup['print_titles'];
+				foreach($print_titles as $index => $range) {
+					$workbook_xml.=($index==0 ? '' : ',') . '\''.self::xmlspecialchars($sheetname).'\'!' . $range;
+				}
+				$workbook_xml.='</definedName>';
+			}
+			$i++;
 		}
 		$workbook_xml.='</definedNames>';
 		$workbook_xml.='<calcPr iterateCount="100" refMode="A1" iterate="false" iterateDelta="0.001"/></workbook>';
@@ -730,8 +800,7 @@ class XLSXWriter
 	//------------------------------------------------------------------
 	public static function log($string)
 	{
-		//file_put_contents("php://stderr", date("Y-m-d H:i:s:").rtrim(is_array($string) ? json_encode($string) : $string)."\n");
-		error_log(date("Y-m-d H:i:s:").rtrim(is_array($string) ? json_encode($string) : $string)."\n");
+		file_put_contents("php://stderr", date("Y-m-d H:i:s:").rtrim(is_array($string) ? json_encode($string) : $string)."\n");
 	}
 	//------------------------------------------------------------------
 	public static function sanitize_filename($filename) //http://msdn.microsoft.com/en-us/library/aa365247%28VS.85%29.aspx
@@ -742,12 +811,12 @@ class XLSXWriter
 		return str_replace($all_invalids, "", $filename);
 	}
 	//------------------------------------------------------------------
-	public static function sanitize_sheetname($sheetname) 
+	public static function sanitize_sheetname($sheetname)
 	{
 		static $badchars  = '\\/?*:[]';
 		static $goodchars = '        ';
 		$sheetname = strtr($sheetname, $badchars, $goodchars);
-		$sheetname = function_exists('mb_substr') ? mb_substr($sheetname, 0, 31) : substr($sheetname, 0, 31);
+		$sheetname = substr($sheetname, 0, 31);
 		$sheetname = trim(trim(trim($sheetname),"'"));//trim before and after trimming single quotes
 		return !empty($sheetname) ? $sheetname : 'Sheet'.((rand()%900)+100);
 	}
@@ -773,14 +842,14 @@ class XLSXWriter
 		if ($num_format=='GENERAL') return 'n_auto';
 		if ($num_format=='@') return 'n_string';
 		if ($num_format=='0') return 'n_numeric';
-		if (preg_match('/[H]{1,2}:[M]{1,2}(?![^"]*+")/i', $num_format)) return 'n_datetime';
-		if (preg_match('/[M]{1,2}:[S]{1,2}(?![^"]*+")/i', $num_format)) return 'n_datetime';
-		if (preg_match('/[Y]{2,4}(?![^"]*+")/i', $num_format)) return 'n_date';
-		if (preg_match('/[D]{1,2}(?![^"]*+")/i', $num_format)) return 'n_date';
-		if (preg_match('/[M]{1,2}(?![^"]*+")/i', $num_format)) return 'n_date';
-		if (preg_match('/$(?![^"]*+")/', $num_format)) return 'n_numeric';
-		if (preg_match('/%(?![^"]*+")/', $num_format)) return 'n_numeric';
-		if (preg_match('/0(?![^"]*+")/', $num_format)) return 'n_numeric';
+		if (preg_match("/[H]{1,2}:[M]{1,2}/i", $num_format)) return 'n_datetime';
+		if (preg_match("/[M]{1,2}:[S]{1,2}/i", $num_format)) return 'n_datetime';
+		if (preg_match("/[Y]{2,4}/i", $num_format)) return 'n_date';
+		if (preg_match("/[D]{1,2}/i", $num_format)) return 'n_date';
+		if (preg_match("/[M]{1,2}/i", $num_format)) return 'n_date';
+		if (preg_match("/$/", $num_format)) return 'n_numeric';
+		if (preg_match("/%/", $num_format)) return 'n_numeric';
+		if (preg_match("/0/", $num_format)) return 'n_numeric';
 		return 'n_auto';
 	}
 	//------------------------------------------------------------------
@@ -793,7 +862,6 @@ class XLSXWriter
 		else if ($num_format=='integer')  $num_format='0';
 		else if ($num_format=='date')     $num_format='YYYY-MM-DD';
 		else if ($num_format=='datetime') $num_format='YYYY-MM-DD HH:MM:SS';
-        else if ($num_format=='time')     $num_format='HH:MM:SS';
 		else if ($num_format=='price')    $num_format='#,##0.00';
 		else if ($num_format=='dollar')   $num_format='[$$-1009]#,##0.00;[RED]-[$$-1009]#,##0.00';
 		else if ($num_format=='euro')     $num_format='#,##0.00 [$€-407];[RED]-#,##0.00 [$€-407]';
@@ -866,12 +934,9 @@ class XLSXWriter
 		$mdays = array( 31, ($leap ? 29 : 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 );
 
 		# Some boundary checks
-		if ($year!=0 || $month !=0 || $day!=0)
-		{
-			if($year < $epoch || $year > 9999) return 0;
-			if($month < 1     || $month > 12)  return 0;
-			if($day < 1       || $day > $mdays[ $month - 1 ]) return 0;
-		}
+		if($year < $epoch || $year > 9999) return 0;
+		if($month < 1     || $month > 12)  return 0;
+		if($day < 1       || $day > $mdays[ $month - 1 ]) return 0;
 
 		# Accumulate the number of days since the epoch.
 		$days = $day;    # Add days for current month
@@ -966,7 +1031,5 @@ class XLSXWriter_BuffererWriter
 		return preg_match("//u", $string) ? true : false;
 	}
 }
-
-
 
 // vim: set filetype=php expandtab tabstop=4 shiftwidth=4 autoindent smartindent:
