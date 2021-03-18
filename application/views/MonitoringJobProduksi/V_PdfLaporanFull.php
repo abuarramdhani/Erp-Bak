@@ -45,12 +45,12 @@
 <body>
 <?php $jml_baris = $jml_kategori = 0; 
 foreach ($data as $key => $value) {
-if (($jml_baris + count($value)+1 > 6 && $jml_kategori > 1) || $jml_kategori > 3 || ($jml_kategori >= 1 && $jml_baris + count($value)+1 > 8)) {
-	$jml_baris = $jml_kategori = 0;
-	echo '<pagebreak resetpagenum="1" />';
-}else {
-	echo "<br>";
-} 
+// if (($jml_baris + count($value)+1 > 6 && $jml_kategori > 1) || $jml_kategori > 3 || ($jml_kategori >= 1 && $jml_baris + count($value)+1 > 8)) {
+// 	$jml_baris = $jml_kategori = 0;
+// 	echo '<pagebreak resetpagenum="1" />';
+// }else {
+// 	echo "<br>";
+// } 
 $jml_kategori++; ?>
 <div class="row" style="padding-left:0px;padding-right:0px">
 <table style="width: 100%; border-bottom :0px; border-collapse: collapse;" >
@@ -88,7 +88,7 @@ $jml_kategori++; ?>
 	?>
             <tr class=" table-line">
                 <!-- <td style="border:1px solid black;"><?= $no?></td> -->
-                <td style="border:1px solid black;"><?= $val['SUBCATEGORY_NAME'] ?></td>
+                <td style="border:1px solid black;"><?= $val['DESCRIPTION'] ?></td>
 				<?php for ($i=0; $i < $hari; $i++) { 
 					$tgl = sprintf("%02d", $i+1); ?>
                 <td style="border:1px solid black;"><?= $val['TANGGAL'.($tgl).''] == 0 ? '' : $val['TANGGAL'.($tgl).'']; ?></td>
@@ -114,6 +114,7 @@ $jml_kategori++; ?>
 </tfoot>
 </table>
 <p>Prosentase Pencapaian Produksi : <?= round($total[$value[0]['CATEGORY_NAME']]['KECAPAIAN_TARGET'], 2) ?>%</p>
+<pagebreak resetpagenum="1" />
 <?php
 }
 ?>

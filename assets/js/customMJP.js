@@ -916,7 +916,7 @@ function schLaporanProd(th) {
             $('#tb_laporan').dataTable({
                 scrollX: true,
                 paging : false,
-                scrollY : 500,
+                scrollY : 400,
                 ordering : false,
                 fixedColumns:   {
                     leftColumns: 2,

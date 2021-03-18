@@ -49,13 +49,13 @@ $(document).ready(function () {
                                         </select>
                                     </div>
                                     <div class="col-md-2 asal_transaksi" style="display:none">
-                                        <label>Subinv from :</label>
-                                        <select id="subinv_from" name="subinv_from" class="form-control select2 getsubinv" style="width:100%" data-placeholder="subinv from">
+                                        <label>Gudang asal :</label>
+                                        <select id="subinv_from" name="subinv_from" class="form-control select2 getsubinv" multiple style="width:100%" data-placeholder="subinv from">
                                             <option></option>
                                         </select>
                                     </div>
                                     <div class="col-md-2 asal_transaksi" style="display:none">
-                                        <label>Subinv to :</label>
+                                        <label>Gudang tujuan :</label>
                                         <select id="subinv_to" name="subinv_to" class="form-control select2 getsubinv" style="width:100%" data-placeholder="subinv to">
                                             <option></option>
                                         </select>

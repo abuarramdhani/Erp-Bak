@@ -58,7 +58,7 @@ class M_laporan extends CI_Model
                 where fin.BULAN = '$month'
                 and fin.ID_CATEGORY = '$kategori'
                 and fin.kode = $kode $subinv
-                order by fin.CATEGORY_NAME, fin.SUBCATEGORY_NAME, fin.TANGGAL";
+                order by fin.description, fin.CATEGORY_NAME, fin.SUBCATEGORY_NAME, fin.TANGGAL";
         // echo "<pre>";print_r($sql);exit();
         $query = $this->oracle->query($sql);
         return $query->result_array();
