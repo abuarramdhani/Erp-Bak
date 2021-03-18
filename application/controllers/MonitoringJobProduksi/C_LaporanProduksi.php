@@ -65,23 +65,35 @@ class C_LaporanProduksi extends CI_Controller
 		$asal 		= $this->input->post('asal');
 		$subinv_from = $this->input->post('subinv_from');
 		$subinv_to 	= $this->input->post('subinv_to');
-		$subinv		= $asal == 'TRANSAKSI' ? "and fin.SUBINV = '$subinv_from' and fin.TRF_SUBINV = '$subinv_to'" : '';
-		$kode		= $asal == 'TRANSAKSI' ? 1 : 2;
+		if ($asal == 'TRANSAKSI') {
+			$subfrom = '';
+			for ($s=0; $s < count($subinv_from) ; $s++) { 
+				$subfrom = $s == 0 ? "'".$subinv_from[$s]."'" : $subfrom.", '".$subinv_from[$s]."'";
+			}
+			$subinv		= "and fin.SUBINV in ($subfrom) and fin.TRF_SUBINV = '$subinv_to'";
+			$kode		= 1;
+		}else {
+			$subinv		= "";
+			$kode		= 2;
+		}
 		$getdata 	= $this->M_laporan->getdataLaporan($kategori, $bulan, $subinv, $kode);
 		$hari 		= $this->jumlahHari($bln);
 		// echo "<pre>";print_r($getdata);exit();
 
 		$no = 0;
-		$datanya = $subcategory = array();
+		$datanya = $subcategory = $itemnya = array();
 		$total['REAL_PROD'] = $total['TARGET'] = $total['KECAPAIAN_TARGET'] = 0;
 		for ($h=1; $h < $hari+1 ; $h++) { 
 			$h2 = sprintf("%02d", $h);
 			$total['TANGGAL'.$h2.''] = 0;
 		}
         foreach ($getdata as $key => $val) {
-			if (!in_array($val['SUBCATEGORY_NAME'], $subcategory)) {
-				array_push($subcategory, $val['SUBCATEGORY_NAME']);
-				$datanya[$no] = array('ID_CATEGORY' 	=> $val['ID_CATEGORY'],
+			if (!in_array($val['DESCRIPTION'], $itemnya)) {
+				array_push($itemnya, $val['DESCRIPTION']);
+				$datanya[$no] = array(
+									'ITEM' 				=> $val['ITEM'],
+									'DESKRIPSI' 		=> $val['DESCRIPTION'],
+									'ID_CATEGORY' 		=> $val['ID_CATEGORY'],
 									'CATEGORY_NAME' 	=> $val['CATEGORY_NAME'],
 									'ID_SUBCATEGORY' 	=> $val['ID_SUBCATEGORY'],
 									'SUBCATEGORY_NAME' 	=> $val['SUBCATEGORY_NAME'],
@@ -91,11 +103,11 @@ class C_LaporanProduksi extends CI_Controller
 									'QTY' 				=> $val['QTY'],
 									'REAL_PROD' 		=> $val['REAL_PROD'],
 									'TARGET' 			=> $val['TARGET'],
-									'KECAPAIAN_TARGET' 	=> $val['KECAPAIAN_TARGET']
+									'KECAPAIAN_TARGET' 	=> round($val['KECAPAIAN_TARGET'],3)
 				);
 				$total['REAL_PROD'] += $val['REAL_PROD'];
 				$total['TARGET'] += $val['TARGET'];
-				$total['KECAPAIAN_TARGET'] += $val['KECAPAIAN_TARGET'];
+				$total['KECAPAIAN_TARGET'] += round($val['KECAPAIAN_TARGET'],3);
 				for ($h=1; $h < $hari+1 ; $h++) { 
 					$h2 = sprintf("%02d", $h);
 					$datanya[$no]['TANGGAL'.$h2.''] = 0;
@@ -108,15 +120,18 @@ class C_LaporanProduksi extends CI_Controller
 				$tgl = explode('-', $val['TANGGAL']);
 				$datanya[$no-1]['REAL_PROD'] += $val['REAL_PROD'];
 				$datanya[$no-1]['TARGET'] += $val['TARGET'];
-				$datanya[$no-1]['KECAPAIAN_TARGET'] += $val['KECAPAIAN_TARGET'];
+				$datanya[$no-1]['KECAPAIAN_TARGET'] += round($val['KECAPAIAN_TARGET'],3);
 				$datanya[$no-1]['TANGGAL'.$tgl[0].''] += $val['QTY'];
 				$total['REAL_PROD'] += $val['REAL_PROD'];
 				$total['TARGET'] += $val['TARGET'];
-				$total['KECAPAIAN_TARGET'] += $val['KECAPAIAN_TARGET'];
+				$total['KECAPAIAN_TARGET'] += round($val['KECAPAIAN_TARGET'],3);
 				$total['TANGGAL'.$tgl[0].''] += $val['QTY'];
 			}
 		}
 		// echo "<pre>";print_r($datanya);exit();
+		usort($datanya, function($y, $z) {
+			return strcasecmp($y['DESKRIPSI'], $z['DESKRIPSI']);
+		});
 
         $data['data'] = $datanya;
         $data['total'] = $total;
@@ -160,18 +175,21 @@ class C_LaporanProduksi extends CI_Controller
 				$getdata = $this->M_laporan->getdataLaporanTransaksi($kat['ID_CATEGORY']);
 			}
 			foreach ($getdata as $key => $val) {
-				if (!in_array($val['SUBCATEGORY_NAME'], $subcategory) || (empty($val['SUBCATEGORY_NAME']) && !in_array($val['CATEGORY_NAME'], $category))) {
-					if (!in_array($val['CATEGORY_NAME'], $category)) {
-						array_push($category, $val['CATEGORY_NAME']);
-						$no = 0;
-						$total[$val['CATEGORY_NAME']]['REAL_PROD'] = $total[$val['CATEGORY_NAME']]['TARGET'] = $total[$val['CATEGORY_NAME']]['KECAPAIAN_TARGET'] = 0;
-						for ($h=1; $h < $hari+1 ; $h++) { 
-							$h2 = sprintf("%02d", $h);
-							$total[$val['CATEGORY_NAME']]['TANGGAL'.$h2.''] = 0;
-						}
+				if (!in_array($val['CATEGORY_NAME'], $category)) {
+					array_push($category, $val['CATEGORY_NAME']);
+					$itemnya = array();
+					$no = 0;
+					$total[$val['CATEGORY_NAME']]['REAL_PROD'] = $total[$val['CATEGORY_NAME']]['TARGET'] = $total[$val['CATEGORY_NAME']]['KECAPAIAN_TARGET'] = 0;
+					for ($h=1; $h < $hari+1 ; $h++) { 
+						$h2 = sprintf("%02d", $h);
+						$total[$val['CATEGORY_NAME']]['TANGGAL'.$h2.''] = 0;
 					}
-					array_push($subcategory, $val['SUBCATEGORY_NAME']);
+				}
+				if (!in_array($val['DESCRIPTION'], $itemnya)) {
+					array_push($itemnya, $val['DESCRIPTION']);
 					$datanya[$val['CATEGORY_NAME']][$no] = array(
+						'ITEM' 		=> $val['ITEM'],
+						'DESCRIPTION' 		=> $val['DESCRIPTION'],
 						'ID_CATEGORY' 		=> $val['ID_CATEGORY'],
 						'CATEGORY_NAME' 	=> $val['CATEGORY_NAME'],
 						'ID_SUBCATEGORY' 	=> $val['ID_SUBCATEGORY'],
@@ -181,12 +199,12 @@ class C_LaporanProduksi extends CI_Controller
 						'BULAN' 			=> $val['BULAN'],
 						'REAL_PROD' 		=> $val['REAL_PROD'],
 						'TARGET' 			=> $val['TARGET'],
-						'KECAPAIAN_TARGET' 	=> $val['KECAPAIAN_TARGET']
+						'KECAPAIAN_TARGET' 	=> round($val['KECAPAIAN_TARGET'],3)
 					);
 					
 					$total[$val['CATEGORY_NAME']]['REAL_PROD'] += $val['REAL_PROD'];
 					$total[$val['CATEGORY_NAME']]['TARGET'] += $val['TARGET'];
-					$total[$val['CATEGORY_NAME']]['KECAPAIAN_TARGET'] += $val['KECAPAIAN_TARGET'];
+					$total[$val['CATEGORY_NAME']]['KECAPAIAN_TARGET'] += round($val['KECAPAIAN_TARGET'],3);
 					for ($h=1; $h < $hari+1 ; $h++) { 
 						$h2 = sprintf("%02d", $h);
 						$datanya[$val['CATEGORY_NAME']][$no]['TANGGAL'.$h2.''] = 0;
@@ -200,14 +218,20 @@ class C_LaporanProduksi extends CI_Controller
 					$tgl = explode('-', $val['TANGGAL']);
 					$datanya[$val['CATEGORY_NAME']][$no2]['REAL_PROD'] += $val['REAL_PROD'];
 					$datanya[$val['CATEGORY_NAME']][$no2]['TARGET'] += $val['TARGET'];
-					$datanya[$val['CATEGORY_NAME']][$no2]['KECAPAIAN_TARGET'] += $val['KECAPAIAN_TARGET'];
+					$datanya[$val['CATEGORY_NAME']][$no2]['KECAPAIAN_TARGET'] += round($val['KECAPAIAN_TARGET'],3);
 					$datanya[$val['CATEGORY_NAME']][$no2]['TANGGAL'.$tgl[0].''] += $val['QTY'];
 					$total[$val['CATEGORY_NAME']]['REAL_PROD'] += $val['REAL_PROD'];
 					$total[$val['CATEGORY_NAME']]['TARGET'] += $val['TARGET'];
-					$total[$val['CATEGORY_NAME']]['KECAPAIAN_TARGET'] += $val['KECAPAIAN_TARGET'];
+					$total[$val['CATEGORY_NAME']]['KECAPAIAN_TARGET'] += round($val['KECAPAIAN_TARGET'],3);
 					$total[$val['CATEGORY_NAME']]['TANGGAL'.$tgl[0].''] += $val['QTY'];
 				}
 
+			}
+			
+			if (!empty($datanya[$kat['CATEGORY_NAME']])) {
+				usort($datanya[$kat['CATEGORY_NAME']], function($y, $z) {
+					return strcasecmp($y['DESCRIPTION'], $z['DESCRIPTION']);
+				});
 			}
 		}
 		// echo "<pre>";print_r($datanya);exit();
@@ -401,8 +425,7 @@ class C_LaporanProduksi extends CI_Controller
 		foreach ($data['value'] as $key => $val) {
 			// echo "<pre>";print_r($val);exit();
 			$excel->setActiveSheetIndex(0)->setCellValue('A'.$numrow, $no);
-			$excel->setActiveSheetIndex(0)->setCellValue('B'.$numrow, $val['item'].'
-																		'.$val['desc']);
+			$excel->setActiveSheetIndex(0)->setCellValue('B'.$numrow, $val['desc']);
 			$col = 2;
 			for ($i=0; $i < $data['hari'] ; $i++) { //tanggal 1 - akhir
 				$excel->getActiveSheet()->setCellValueByColumnAndRow($col, $numrow, $val['tanggal'.($i+1).'']);
