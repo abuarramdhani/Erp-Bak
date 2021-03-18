@@ -99,7 +99,7 @@
                                             <td tippy-title="Kolom keterangan wajib diisi dengan alasan yang tepat">
                                               <input required="" class="form-control" name="keterangan[]" placeholder="Keterangan" />
                                             </td>
-                                            <td tippy-title="Diisi dengan lampiran atau file tambahakn bila ada seperti: foto, analisa, kebutuhan, analisa potensi bahaya">
+                                            <td tippy-title="Diisi dengan lampiran atau file tambahkan bila ada seperti: foto, analisa, kebutuhan, analisa potensi bahaya">
                                               <input class="form-control" name="lampiran[]" type="file" accept="application/pdf" placeholder="Keterangan" />
                                             </td>
                                             <td tippy-title="Kolom action digunakan untuk menghapus data APD yang sudah diinput bila terjadi kesalahan dalam penginputan data">
