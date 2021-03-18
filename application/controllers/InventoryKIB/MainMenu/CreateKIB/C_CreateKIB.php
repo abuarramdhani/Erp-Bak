@@ -502,9 +502,9 @@ public function printpdf99(){
 	}
 
 	public function printpdf($org,$status,$no_batch,$kib,$n){
-		$length = 370;
+		$length = 380;
 		if ($status == 1 || $n == 1) {
-			$length = 310;
+			$length = 320;
 		}
 		$this->load->library('ciqrcode');
 		$this->load->library('Pdf');
@@ -570,6 +570,8 @@ public function printpdf99(){
 				$dataKIBKelompok[$indexnya]['REQUEST_NUMBER'] = $value['REQUEST_NUMBER'];
 				$dataKIBKelompok[$indexnya]['BATCH_NUMBER'] = $value['BATCH_NUMBER'];
 				$dataKIBKelompok[$indexnya]['ALIAS_KODE'] = $value['ALIAS_KODE'];
+				$dataKIBKelompok[$indexnya]['LOKASI_SIMPAN'] = $value['LOKASI_SIMPAN'];
+
 				// $a++;
 			}
 			

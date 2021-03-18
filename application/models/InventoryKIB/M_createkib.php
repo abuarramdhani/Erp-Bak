@@ -543,6 +543,13 @@ class M_createkib extends CI_Model
 			      ,gbs.BATCHSTEP_NO opr_seq
 			      ,gbsa.ACTIVITY
 			      -- status
+				  ,(select kls.LOKASI
+									from khsinvlokasisimpan kls
+									where kls.SUBINV = kkk.TO_SUBINVENTORY_CODE
+									and kls.INVENTORY_ITEM_ID = msib.INVENTORY_ITEM_ID
+									and kls.KELOMPOK is null
+									and rownum = 1
+									) lokasi_simpan
 			from khs_kib_kanban kkk
 			    ,gme_material_details gmd
 			    ,gme_batch_header gbh
@@ -614,6 +621,13 @@ class M_createkib extends CI_Model
                   ,kkk.QTY_KIB QUANTITY
                   ,kkk.KIBCODE request_number
                   -- status
+				  ,(select kls.LOKASI
+								from khsinvlokasisimpan kls
+								where kls.SUBINV = kkk.TO_SUBINVENTORY_CODE
+								and kls.INVENTORY_ITEM_ID = msib.INVENTORY_ITEM_ID
+								and kls.KELOMPOK is null
+								and rownum = 1
+								) lokasi_simpan
             from khs_kib_kanban kkk
                 ,mtl_system_items_b msib 
                 ,fnd_lookup_values flv
@@ -670,6 +684,13 @@ class M_createkib extends CI_Model
 				      ,we.WIP_ENTITY_NAME batch_number
 				      ,bos.OPERATION_SEQ_NUM opr_seq
 				      ,bd.DEPARTMENT_CODE ACTIVITY
+					  ,(select kls.LOKASI
+								from khsinvlokasisimpan kls
+								where kls.SUBINV = kkk.TO_SUBINVENTORY_CODE
+								and kls.INVENTORY_ITEM_ID = msib.INVENTORY_ITEM_ID
+								and kls.KELOMPOK is null
+								and rownum = 1
+								) lokasi_simpan
 				FROM wip_discrete_jobs wdj,
 					wip_entities we,
 					khs_kib_kanban kkk,
