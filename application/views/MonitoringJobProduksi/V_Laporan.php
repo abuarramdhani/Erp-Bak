@@ -44,19 +44,19 @@ $(document).ready(function () {
                                         <label>Asal data :</label>
                                         <select id="asal" name="asal" class="form-control select2" style="width:100%" data-placeholder="asal data">
                                             <option></option>
-                                            <option value="IMPLEMEN">COMPLETION</option>
+                                            <option value="COMPLETION">COMPLETION</option>
                                             <option value="TRANSAKSI">TRANSAKSI</option>
                                         </select>
                                     </div>
                                     <div class="col-md-2 asal_transaksi" style="display:none">
-                                        <label>Gudang asal :</label>
+                                        <label>Subinv :</label>
                                         <select id="subinv_from" name="subinv_from" class="form-control select2 getsubinv" multiple style="width:100%" data-placeholder="subinv from">
                                             <option></option>
                                         </select>
                                     </div>
                                     <div class="col-md-2 asal_transaksi" style="display:none">
-                                        <label>Gudang tujuan :</label>
-                                        <select id="subinv_to" name="subinv_to" class="form-control select2 getsubinv" style="width:100%" data-placeholder="subinv to">
+                                        <label>Transfer Subinv :</label>
+                                        <select id="subinv_to" name="subinv_to" class="form-control select2 getsubinv" multiple style="width:100%" data-placeholder="subinv to">
                                             <option></option>
                                         </select>
                                     </div>
