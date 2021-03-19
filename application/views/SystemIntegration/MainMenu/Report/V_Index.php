@@ -102,7 +102,7 @@
                   </div>
                   </div>                
                   </form>
-                  <?php if (!$connected = @fsockopen("www.example.com", 80)): fclose($connected); ?>
+                  <?php if (!$connected = @fsockopen("www.google.com", 80)): fclose($connected); ?>
                   <script src="<?= base_url('assets/plugins/chartjs/Chart.js') ?>"></script>
                   <div class="col-md-12">
                     <canvas id="myChart"  height="100"></canvas>
