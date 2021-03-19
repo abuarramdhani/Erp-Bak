@@ -63,6 +63,8 @@ class C_MoveOrder extends CI_Controller
 		$date = $this->input->post('date');
 		$dept = $this->input->post('dept');
 		$shift1 = $this->input->post('shift');
+		$ket	= $this->input->post('ket');
+		$ket	= $ket == 1 ? 'SUDAH PICKLIST' : 'BELUM PICKLIST';
 		if ($dept == 'SUBKT') {
 			$shift = '';
 			$atr = ",khs_inv_qty_att(wdj.ORGANIZATION_ID,wro.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'') atr";
@@ -76,7 +78,7 @@ class C_MoveOrder extends CI_Controller
 		$datenew = $date ? $date2[1].'/'.$date2[0].'/'.$date2[2] : '';
 		$date = strtoupper(date('d-M-y', strtotime($datenew)));
 
-		$dataGET = $this->M_MoveOrder->search($date,$dept,$shift,$atr);
+		$dataGET = $this->M_MoveOrder->search($date,$dept,$shift,$atr, $ket);
 		
 		// echo "<pre>";
 		// // print_r($date);
@@ -109,12 +111,16 @@ class C_MoveOrder extends CI_Controller
 					$atr = ",khs_inv_qty_att(wdj.ORGANIZATION_ID,wro.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'') atr";	
 					$getBody = $this->M_MoveOrder->getBody($value['WIP_ENTITY_NAME'],$atr,$dept);
 				}
-
+				$sorting_1 = $sorting_2 = array();
 				for ($i=0; $i < count($getBody); $i++) { 
 					$bagi = $getBody[$i]['ATR'] / $getBody[$i]['QUANTITY_PER_ASSEMBLY'];
 					$getBody[$i]['BAGI'] = $bagi;
+					$sorting_1[$i] = $getBody[$i]['LOCATOR_ASAL'];
+					$sorting_2[$i] = $getBody[$i]['BAGI'];
 				}
 
+				array_multisort($sorting_1, SORT_ASC, $sorting_2, SORT_ASC, $getBody);
+				
 				// usort($getBody, function($a, $b) {
 				// 	return $a['BAGI'] - $b['BAGI'];
 				// });

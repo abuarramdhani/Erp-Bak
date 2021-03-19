@@ -47,7 +47,8 @@
               </div>
                <div class="form-group">
                 <div class="col-md-12" style="padding-top: 5px">
-                  <button class="btn btn-primary" onclick="getRequirementMO(this)" ><i class="fa fa-search"></i> FIND </button>
+                  <button class="btn btn-success" onclick="getRequirementMO(1)" ><i class="fa fa-search"></i> Sudah Picklist </button>
+                  <button class="btn btn-primary" onclick="getRequirementMO(0)" ><i class="fa fa-search"></i> Belum Picklist </button>
                 </div>
               </div>
             </div>

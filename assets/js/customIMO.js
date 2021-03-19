@@ -64,7 +64,7 @@ function getRequirementMO(th){
 	var request = $.ajax({
 		url: baseurl+'InventoryManagement/CreateMoveOrder/search/',
 		data: {
-			dept : dept, date : date, shift : shift
+			dept : dept, date : date, shift : shift, ket : th
 		},
 		type: "POST",
 		datatype: 'html', 
