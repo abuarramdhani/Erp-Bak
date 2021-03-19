@@ -131,15 +131,18 @@ class C_LaporanProduksi extends CI_Controller
 				$tgl = explode('-', $val['TANGGAL']);
 				$datanya[$no-1]['TANGGAL'.$tgl[0].''] += $val['QTY'];
 				$total['TANGGAL'.$tgl[0].''] += $val['QTY'];
-				// $datanya[$no-1]['REAL_PROD'] += $val['REAL_PROD'];
-				// $datanya[$no-1]['TARGET'] += $val['TARGET'];
-				// $datanya[$no-1]['KECAPAIAN_TARGET'] += round($val['KECAPAIAN_TARGET'],3);
-				// $total['REAL_PROD'] += $val['REAL_PROD'];
-				// $total['TARGET'] += $val['TARGET'];
-				// $total['KECAPAIAN_TARGET'] += round($val['KECAPAIAN_TARGET'],3);
+				if ($asal == 'COMPLETION' && !in_array($val['ITEM'], $itemnya)) {
+					array_push($itemnya, $val['ITEM']);
+					$datanya[$no-1]['REAL_PROD'] += $val['REAL_PROD'];
+					$datanya[$no-1]['TARGET'] += $val['TARGET'];
+					$datanya[$no-1]['KECAPAIAN_TARGET'] += round($val['KECAPAIAN_TARGET'],3);
+					$total['REAL_PROD'] += $val['REAL_PROD'];
+					$total['TARGET'] += $val['TARGET'];
+					$total['KECAPAIAN_TARGET'] += round($val['KECAPAIAN_TARGET'],3);
+				}
 			}
 		}
-		// echo "<pre>";print_r($datanya);exit();
+		// echo "<pre>";print_r($itemnya);exit();
 		usort($datanya, function($y, $z) {
 			return strcasecmp($y['DESKRIPSI'], $z['DESKRIPSI']);
 		});
@@ -243,12 +246,15 @@ class C_LaporanProduksi extends CI_Controller
 					$tgl = explode('-', $val['TANGGAL']);
 					$datanya[$val['CATEGORY_NAME']][$no2]['TANGGAL'.$tgl[0].''] += $val['QTY'];
 					$total[$val['CATEGORY_NAME']]['TANGGAL'.$tgl[0].''] += $val['QTY'];
-					// $datanya[$val['CATEGORY_NAME']][$no2]['REAL_PROD'] += $val['REAL_PROD'];
-					// $datanya[$val['CATEGORY_NAME']][$no2]['TARGET'] += $val['TARGET'];
-					// $datanya[$val['CATEGORY_NAME']][$no2]['KECAPAIAN_TARGET'] += round($val['KECAPAIAN_TARGET'],3);
-					// $total[$val['CATEGORY_NAME']]['REAL_PROD'] += $val['REAL_PROD'];
-					// $total[$val['CATEGORY_NAME']]['TARGET'] += $val['TARGET'];
-					// $total[$val['CATEGORY_NAME']]['KECAPAIAN_TARGET'] += round($val['KECAPAIAN_TARGET'],3);
+					if ($asal == 'COMPLETION' && !in_array($val['ITEM'], $itemnya)) {
+						array_push($itemnya, $val['ITEM']);
+						$datanya[$val['CATEGORY_NAME']][$no2]['REAL_PROD'] += $val['REAL_PROD'];
+						$datanya[$val['CATEGORY_NAME']][$no2]['TARGET'] += $val['TARGET'];
+						$datanya[$val['CATEGORY_NAME']][$no2]['KECAPAIAN_TARGET'] += round($val['KECAPAIAN_TARGET'],3);
+						$total[$val['CATEGORY_NAME']]['REAL_PROD'] += $val['REAL_PROD'];
+						$total[$val['CATEGORY_NAME']]['TARGET'] += $val['TARGET'];
+						$total[$val['CATEGORY_NAME']]['KECAPAIAN_TARGET'] += round($val['KECAPAIAN_TARGET'],3);
+					}
 				}
 
 			}
