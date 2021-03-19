@@ -28,7 +28,7 @@ class M_laporan extends CI_Model
     }
 
     public function getSubinv($term){
-        $sql = "select msi.SECONDARY_INVENTORY_NAME
+        $sql = "select distinct msi.SECONDARY_INVENTORY_NAME
                 from mtl_secondary_inventories msi
                 where msi.DISABLE_DATE is null
                 and msi.SECONDARY_INVENTORY_NAME like '%$term%'
@@ -57,8 +57,7 @@ class M_laporan extends CI_Model
                 from khs_qweb_penc_prod fin
                 where fin.BULAN = '$month'
                 and fin.ID_CATEGORY = '$kategori'
-                and fin.kode = $kode $subinv
-                order by fin.description, fin.CATEGORY_NAME, fin.SUBCATEGORY_NAME, fin.TANGGAL";
+                and fin.kode = $kode $subinv";
         // echo "<pre>";print_r($sql);exit();
         $query = $this->oracle->query($sql);
         return $query->result_array();
@@ -130,7 +129,7 @@ class M_laporan extends CI_Model
                 and fin.kode = 1
                 and fin.subinv in ('INT-ASSY', 'INT-PAINT', 'FG-TKS', 'INT-WELD')
                 and fin.trf_subinv in ('INT-ASSY', 'INT-PAINT', 'FG-TKS', 'INT-WELD')
-                order by fin.CATEGORY_NAME, fin.SUBCATEGORY_NAME, fin.TANGGAL";
+                order by fin.DESCRIPTION, fin.CATEGORY_NAME, fin.SUBCATEGORY_NAME, fin.TANGGAL";
         $query = $this->oracle->query($sql);
         return $query->result_array();
     }
