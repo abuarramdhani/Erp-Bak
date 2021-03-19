@@ -247,6 +247,7 @@ class C_LaporanProduksi extends CI_Controller
 					$datanya[$val['CATEGORY_NAME']][$no2]['TANGGAL'.$tgl[0].''] += $val['QTY'];
 					$total[$val['CATEGORY_NAME']]['TANGGAL'.$tgl[0].''] += $val['QTY'];
 					if ($asal == 'COMPLETION' && !in_array($val['ITEM'], $itemnya)) {
+						array_push($itemnya, $val['ITEM']);
 						$datanya[$val['CATEGORY_NAME']][$no2]['REAL_PROD'] += $val['REAL_PROD'];
 						$datanya[$val['CATEGORY_NAME']][$no2]['TARGET'] += $val['TARGET'];
 						$datanya[$val['CATEGORY_NAME']][$no2]['KECAPAIAN_TARGET'] += round($val['KECAPAIAN_TARGET'],3);
