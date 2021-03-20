@@ -70,11 +70,11 @@
                                           <td tippy-title="Jumlah kebutuhan umum ditunjukkan sebagai candangan internal seksi tidak untuk cadangan semua pekerja di seksi terkait">
                                             <input required="" type="number" class="form-control apd-isk-kode" name="txtkebUmum[]">
                                           </td>
-                                          <td tippy-title="Pcs/Bulan">
+                                          <td tippy-title="Pcs/Bln/Org">
                                             <input required="" type="number" class="form-control apd-isk-kode" name="txtkebStaff[]">
                                           </td>
                                           <?php foreach ($daftar_pekerjaan as $key) { ?>
-                                            <td tippy-title="Pcs/Bulan">
+                                            <td tippy-title="Pcs/Bln/Org">
                                               <input required="" type="number" class="form-control" name="p2k3_isk_standar[]" min="0">
                                             </td>
                                           <?php } ?>
