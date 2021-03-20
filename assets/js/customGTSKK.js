@@ -74,7 +74,7 @@ function addRowObservation() {
   html += '<option value="WALK" id="walk"> WALK </option>';
   // html += '<option value="WALK (Inheritance)" id="walk"> WALK (Inheritance) </option>';
   html += "</select></td>";
-  html += '<td><div class="col-lg-12"><div class="col-lg-6"><select class="form-control select2 slcElemen" id="slcElemen_' + nomor + '" name="txtSlcElemen[]" data-placeholder="Elemen" tabindex="-1" aria-hidden="true" ></select></div><div class="col-lg-6"><input type="text" class="form-control elemen" style="width: 100%" type="text" id="elemen_' + nomor + '" name="elemen[]" placeholder="Keterangan Elemen"></div></div></td>';
+  html += '<td class="second-col"><div class="col-lg-12"><div class="col-lg-6"><select class="form-control select2 slcElemen" id="slcElemen_' + nomor + '" name="txtSlcElemen[]" data-placeholder="Elemen" tabindex="-1" aria-hidden="true" ></select></div><div class="col-lg-6"><input type="text" class="form-control elemen" style="width: 100%" type="text" id="elemen_' + nomor + '" name="elemen[]" placeholder="Keterangan Elemen"></div></div></td>';
   // KOLOM 4
   html += '<td><input type="number" onchange="minMaxId(this)" name="waktu1[]" class="form-control waktuObs inputWaktuKolom1" placeholder="Detik" ></td>';
   // KOLOM 6
@@ -322,7 +322,7 @@ function addRowObservationEdit() {
   html += "</select></td>";
 
   // KOLOM 3
-  html += '<td><div class="col-lg-12"><div class="col-lg-6"><select class="form-control select2 slcElemen" id="slcElemen_' + nomor + '" name="txtSlcElemen[]" data-placeholder="Elemen" tabindex="-1" aria-hidden="true" ></select></div><div class="col-lg-6"><input type="text" class="form-control elemen" style="width: 100%" type="text" id="elemen_' + nomor + '" name="elemen[]" placeholder="Keterangan Elemen"></div></div></td>';
+  html += '<td class="second-col"><div class="col-lg-12"><div class="col-lg-6"><select class="form-control select2 slcElemen" id="slcElemen_' + nomor + '" name="txtSlcElemen[]" data-placeholder="Elemen" tabindex="-1" aria-hidden="true" ></select></div><div class="col-lg-6"><input type="text" class="form-control elemen" style="width: 100%" type="text" id="elemen_' + nomor + '" name="elemen[]" placeholder="Keterangan Elemen"></div></div></td>';
   // KOLOM 4
   // KOLOM 5
   html += '<td><input type="number" onchange="minMaxId(this)" name="waktu1[]" class="form-control waktuObs inputWaktuKolom1" placeholder="Detik" ></td>';
@@ -1053,7 +1053,7 @@ $(document).ready(function() {
 $(document).ready(function() {
   $("#kodepart").select2({
     minimumInputLength: 3,
-    maximumSelectionLength: 1,
+    // maximumSelectionLength: 1,
     ajax: {
       url: baseurl + 'GeneratorTSKK/C_GenTSKK/kodePart/',
       dataType: 'json',
@@ -1097,50 +1097,51 @@ $(document).ready(function() {
 
 //AUTOFILL NAMA PART//
 $('#kodepart').change(function() {
-  var isiKodePart = $('#kodepart').val();
-  console.log('hei');
-  if (isiKodePart !== null) {
-    var isi = $('#kodepart').text().split(' ~ ');
-    let desc = isi[1];
-    $("#namaPart").val(desc);
+  // var isiKodePart = $('#kodepart').val();
+  // console.log('hei');
+  // if (isiKodePart !== null) {
+  //   console.log($('#kodepart').text(), 'aldi nih...');
+  //   var isi = $('#kodepart').text().split(' ~ ');
+  //   let desc = isi[1];
+  //   $("#namaPart").val(desc);
     // $('#namaPart').val();
-    // $.ajax({
-    //   type: "POST",
-    //   url: baseurl + 'GeneratorTSKK/C_GenTSKK/namaPart/',
-    //   // data: {kode :kode},
-    //   data: {
-    //     params: $(this).val()
-    //   },
-    //   dataType: "json",
-    //   beforeSend: function(e) {
-    //     if (e && e.overrideMimeType) {
-    //       e.overrideMimeType("application/json;charset=UTF-8");
-    //     }
-    //   },
-    //   success: function(response) {
-    //
-    //     if (response != null) {
-    //       // alert("Data Masuk")
-    //       var sblm = $('#namaPart').val();
-    //       console.log(sblm);
-    //       if (sblm == '') {
-    //         $("#namaPart").val(response[0].DESCRIPTION);
-    //       } else {
-    //         $("#namaPart").val(sblm + ' , ' + response[0].DESCRIPTION);
-    //       }
-    //       // console.log(response[0].DESCRIPTION);
-    //     } else {
-    //       alert("Data Tidak Ditemukan");
-    //     }
-    //   },
-    //   error: function(xhr) {
-    //     alert(xhr.responseText);
-    //   }
-    // });
-  } else {
-    $('#namaPart').val('');
-    $('#kodepart').text('');
-  }
+    $.ajax({
+      type: "POST",
+      url: baseurl + 'GeneratorTSKK/C_GenTSKK/namaPart/',
+      // data: {kode :kode},
+      data: {
+        params: $(this).val()
+      },
+      dataType: "json",
+      beforeSend: function(e) {
+        if (e && e.overrideMimeType) {
+          e.overrideMimeType("application/json;charset=UTF-8");
+        }
+      },
+      success: function(response) {
+
+        if (response != null) {
+          // alert("Data Masuk")
+          // var sblm = $('#namaPart').val();
+          // console.log(sblm);
+          // if (sblm == '') {
+            $("#namaPart").val(response);
+          // } else {
+          //   $("#namaPart").val(sblm + ' , ' + response[0].DESCRIPTION);
+          // }
+          // console.log(response[0].DESCRIPTION);
+        } else {
+          alert("Data Tidak Ditemukan");
+        }
+      },
+      error: function(xhr) {
+        alert(xhr.responseText);
+      }
+    });
+  // } else {
+  //   $('#namaPart').val('');
+  //   $('#kodepart').text('');
+  // }
 });
 
 //SELECT NO MESIN//
@@ -1988,7 +1989,7 @@ function attachRowObservation_new(th) {
 		<option value="WALK" id="walk"> WALK </option>';
 		</select>
 		</td>
-		<td>
+		<td class="second-col">
 		<div class="col-lg-12"><div class="col-lg-6"><select class="form-control select2 slcElemen" id="slcElemen_'+nomor+'" name="txtSlcElemen[]" data-placeholder="Elemen" tabindex="-1" aria-hidden="true"></select></div><div class="col-lg-6"><input type="text" class="form-control elemen" style="width: 100%" type="text" id="elemen_'+nomor+'" name="elemen[]" placeholder="Keterangan Elemen"></div></div>
 		</td>
 		<td>
@@ -2190,7 +2191,7 @@ function attachRowObservation(th) {
 		<option value="WALK" id="walk"> WALK </option>';
 		</select>
 		</td>
-		<td>
+		<td class="second-col">
 		<div class="col-lg-12"><div class="col-lg-6"><select class="form-control select2 slcElemen" id="slcElemen_'+nomor+'" name="txtSlcElemen[]" data-placeholder="Elemen" tabindex="-1" aria-hidden="true"></select></div><div class="col-lg-6"><input type="text" class="form-control elemen" style="width: 100%" type="text" id="elemen_'+nomor+'" name="elemen[]" placeholder="Keterangan Elemen"></div></div>
 		</td>
 		<td>

@@ -999,12 +999,12 @@ public function kodePart()
 public function namaPart()
 {
     $param = $this->input->post('params');
-    if ($param !== '') {
-        $last = $param[0];
-    }
+    // if ($param !== '') {
+    //     $last = $param[0];
+    // }
 
     if ($param != '') {
-        $name = $this->M_gentskk->namaPart($last); //jalankan query
+        $name = $this->M_gentskk->namaPart($param); //jalankan query
         echo json_encode($name);
     }else {
         $name = '';

@@ -196,6 +196,21 @@
     z-index: 8;
     left: 0px;
   }
+
+  .second-col-h {
+    position: sticky;
+    background: #dff0d8;
+    z-index: 12 !important;
+    left: 50px;
+  }
+
+  .second-col {
+    background: #fff;
+    position: sticky;
+    z-index: 8;
+    left: 50px;
+  }
+
   }
 </style>
 
@@ -725,7 +740,7 @@
                                     <th style="text-align:center;">FOLLOW START</th>
                                     <th style="text-align:center;">FOLLOW END</th>
                                     <th style="width: 200px;  text-align:center;">JENIS PROSES</th>
-                                    <th style="width: 400px;  text-align:center;">ELEMEN KERJA</th>
+                                    <th style="width: 400px;  text-align:center;" class="second-col-h ">ELEMEN KERJA</th>
                                     <th style="width: 100px;  text-align:center;">1</th>
                                     <th style="width: 100px;  text-align:center;">2</th>
                                     <th style="width: 100px;  text-align:center;">3</th>
@@ -818,7 +833,7 @@
                                       </select>
                                     </td>
                                     <!--ELEMEN KERJA-->
-                                    <td>
+                                    <td class="second-col">
                                       <div class="col-lg-12">
                                         <div class="col-lg-6">
                                           <select class="form-control select2 slcElemen" id="slcElemen" name="txtSlcElemen[]" data-placeholder="Elemen">
