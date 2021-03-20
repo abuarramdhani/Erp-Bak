@@ -498,7 +498,7 @@ function schItemList(th) {
 
 function tambahItemList(th) {
     var item        = $('#kode_item').val();
-    var kategori    = $('#kategori_item').val();
+    var kategori    = $('#kategori').val();
     var subkategori    = $('#sub_kategori_item').val();
     $.ajax({
         url : baseurl + "MonitoringJobProduksi/ItemList/saveitem",
