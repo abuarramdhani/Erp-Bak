@@ -179,13 +179,13 @@ class C_splasska extends CI_Controller
 
 		foreach ($data_spl as $ds) {
 			// Generate ID Riwayat
-			$maxid = $this->M_splseksi->show_maxid("splseksi.tspl_riwayat", "ID_Riwayat");
-			if (empty($maxid)) {
-				$splr_id = "0000000001";
-			} else {
-				$splr_id = $maxid->id;
-				$splr_id = substr("0000000000", 0, 10 - strlen($splr_id)) . $splr_id;
-			}
+			// $maxid = $this->M_splseksi->show_maxid("splseksi.tspl_riwayat", "ID_Riwayat");
+			// if (empty($maxid)) {
+			// 	$splr_id = "0000000001";
+			// } else {
+			// 	$splr_id = $maxid->id;
+			// 	$splr_id = substr("0000000000", 0, 10 - strlen($splr_id)) . $splr_id;
+			// }
 
 			// Approv or Cancel
 			if ($stat == "25") {
@@ -218,8 +218,8 @@ class C_splasska extends CI_Controller
 			$to_spl = $this->M_splseksi->update_spl($data_spl, $id);
 			$noind_baru = $this->M_splseksi->getNoindBaru($ds['Noind']);
 
+			// "ID_Riwayat" => $splr_id,
 			$data_splr = array(
-				"ID_Riwayat" => $splr_id,
 				"ID_SPL" => $id,
 				"Tgl_Berlaku" => date('Y-m-d H:i:s'),
 				"Tgl_Tdk_Berlaku" => date('Y-m-d H:i:s'),
@@ -535,33 +535,25 @@ class C_splasska extends CI_Controller
 
 	function fp_succes()
 	{
-		$status = $_GET['status'];
-		$spl_id = $_GET['spl_id'];
-		$ket = $_GET['ket'];
-		foreach (explode('.', $spl_id) as $si) {
-			if (empty(trim($si))) {
-				continue;
-			}
-
-			// reject / approve oleh asska
-			if ($status == '35' || $status == '25') {
-				$this->data_spl_approv($si, $status, $ket);
-			}
-		}
-
-		// issue slow saat approve
-		// $this->send_email_2($status, $spl_id, $ket); // pindah ke sendSPLEmail
-		$this->session->spl_validasi_waktu_asska = time();
-
 		echo "<script>localStorage.setItem('resultApproveSPL', true);window.close();</script>";
 	}
 
 	function sendSPLEmail()
 	{
 		//kirim email ada di fungsi sendSPLEmailSchedule yg di jalankan cronjob
-		$status = $_GET['status'];
-		$spl_id = $_GET['spl_id'];
-		$ket = $_GET['ket'];
+		$status = $_POST['status'];
+		$spl_id = $_POST['spl_id'];
+		$ket = $_POST['ket'];
+
+		foreach (explode('.', $spl_id) as $si) {
+			if (empty(trim($si))) {
+				continue;
+			}
+			// reject / approve oleh asska
+			if ($status == '35' || $status == '25') {
+				$this->data_spl_approv($si, $status, $ket);
+			}
+		}
 
 		$arr = array(
 			'status'	=>	$status,

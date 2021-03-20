@@ -145,7 +145,7 @@
 				<div class="box box-primary">
 					<div class="box-body">
 						<div class="col-md-12 text-center">
-							<label style="color: red;">* Maksimal 1 x proses approve 100 data lembur.</label>
+							<!-- <label style="color: red;">* Maksimal 1 x proses approve 100 data lembur.</label> -->
 						</div>
 						<div data-step="9" data-intro="Tabel untuk melihat pekerja lembur dan untuk memilih pekerja yang akan di approve lemburnya" class="table-responsive col-md-12">
 							<table id="example11" class="table table-bordered table-striped spl-table kasie">

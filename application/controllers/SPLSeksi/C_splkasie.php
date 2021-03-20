@@ -219,8 +219,8 @@ class C_splkasie extends CI_Controller
 			);
 
 			// item spl riwayat
+			// "ID_Riwayat" => str_pad($maxid->id++, 10, '0', STR_PAD_BOTH),
 			$insert_splriwayat = array(
-				"ID_Riwayat" => str_pad($maxid->id++, 10, '0', STR_PAD_BOTH),
 				"ID_SPL" => $item['ID_SPL'],
 				"Tgl_Berlaku" => date('Y-m-d H:i:s'),
 				"Tgl_Tdk_Berlaku" => date('Y-m-d H:i:s'),
@@ -727,54 +727,18 @@ class C_splkasie extends CI_Controller
 	// alur approve / reject paling akhir
 	function fp_succes()
 	{
-		$status = $_GET['status'];
-		$spl_id = $_GET['spl_id'];
-		$ket = $_GET['ket'];
-
-		$all_spl = explode('.', $spl_id);
-		$time_start = time();
-		$this->spl_approval($all_spl, $status, $ket);
-		// foreach ($all_spl as $no_spl) {
-		// 	$this->data_spl_approv($no_spl, $status, $ket);
-		// }
-		// echo "update database -> " . (time() - $time_start) . "<br>";
-
-		if (!empty($status) && !empty($spl_id)) {
-			echo "<script>localStorage.setItem('resultApproveSPL', true);window.close();</script>";
-		} else {
-			echo "<script>localStorage.setItem('resultApproveSPL', 3);window.close();</script>"; //result error
-		}
-
-		// die;
-		// @ DEPRECATED PERFOMANCE (SLOW)
-		// foreach ($all_spl as $no_spl) {
-		// 	$this->data_spl_approv($no_spl, $status, $ket);
-		// }
-
-		// $this->session->spl_validasi_waktu_kasie = time();
-
-		// dipanggil terakhir biar displaynya cepet
-		// $this->sendSPLEmail($status, $spl_id, $ket);
-
-		// redirect(base_url("ALK/Approve/sendSPLEmail?status=$status&spl_id=$spl_id&ket=$ket"));
-
-		// $time_start = time();
-		// if ($status == '25' or $status == '21') {
-		// 	// $this->send_email($status, $spl_id, $ket);
-		// }
-		// echo "send email 1 -> " . (time() - $time_start) . "<br>";
-
-		// $time_start = time();
-		// $this->send_email_2($status, $spl_id, $ket);
-		// echo "send email 2 -> " . (time() - $time_start) . "<br>";
+		echo "<script>localStorage.setItem('resultApproveSPL', true);window.close();</script>";
 	}
 
 	function sendSPLEmail()
 	{
 		//kirim email ada di fungsi sendSPLEmailSchedule yg di jalankan cronjob
-		$status = $_GET['status'];
-		$spl_id = $_GET['spl_id'];
-		$ket = $_GET['ket'];
+		$status = $_POST['status'];
+		$spl_id = $_POST['spl_id'];
+		$ket = $_POST['ket'];
+
+		$all_spl = explode('.', $spl_id);
+		$this->spl_approval($all_spl, $status, $ket);
 
 		$arr = array(
 			'status'	=>	$status,

@@ -164,7 +164,7 @@
 				<div class="box box-primary">
 					<div class="box-body">
 						<div class="col-md-12 text-center">
-							<label style="color: red;">* Maksimal 1 x proses approve 100 data lembur.</label>
+							<!-- <label style="color: red;">* Maksimal 1 x proses approve 100 data lembur.</label> -->
 						</div>
 						<link rel="stylesheet" href="<?= base_url('assets/plugins/bootstrap/3.3.7/css/bootstrap.css'); ?>" />
 						<div data-step="9" data-intro="Tabel untuk melihat pekerja lembur dan untuk memilih pekerja yang akan di approve lemburnya" class="table-responsive col-md-12">
