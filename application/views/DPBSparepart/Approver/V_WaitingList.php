@@ -15,6 +15,7 @@
                                 <th max-width="150px">Alamat Tujuan</th>
                                 <th>Tipe</th>
                                 <th>Ekspedisi</th>
+                                <th>Estimasi Berat</th>
                                 <th width="180px">Action</th>
                             </tr>
                         </thead>
@@ -49,6 +50,7 @@
                                     <td><?= $list['ALAMAT_TUJUAN']; ?></td>
                                     <td><?= $list['TIPE']; ?></td>
                                     <td><?= $list['EKSPEDISI'] ?></td>
+                                    <td><?= $list['ESTIMASI_BERAT'] ?></td>
                                     <input type="hidden" id="EksToEdit<?= $list['REQUEST_NUMBER'] ?>" value="<?= $list['EKSPEDISI'] ?>" />
                                     <td>
                                         <button type="button" class="btn btn-danger btn-sm btnRejectDSP" title="reject" value="<?= $list['REQUEST_NUMBER']; ?>"><i class="fa fa-remove"></i> Reject</button>
