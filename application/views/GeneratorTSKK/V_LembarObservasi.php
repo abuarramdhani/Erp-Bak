@@ -157,6 +157,23 @@
     z-index: 10;
   }
 
+  .first-col-h {
+    position: sticky;
+    background: #dff0d8;
+    z-index: 12 !important;
+    width: 50px;
+    min-width: 50px;
+    max-width: 50px;
+    left: 0px;
+  }
+
+  .first-col {
+    position: sticky;
+    background: #dff0d8;
+    z-index: 8;
+    left: 0px;
+  }
+
 </style>
 
 <section class="content">
@@ -548,7 +565,7 @@
                             <table class="table table-striped table-bordered table-hover text-center tblObservasi" style="width:2300px; padding-bottom: 0;" name="tblObservasi" id="tblObservasi">
                               <thead>
                                 <tr class="bg-primary">
-                                  <th style="width: 50px;  text-align:center;">NO</th>
+                                  <th style="width: 50px;  text-align:center;" class="first-col-h">NO</th>
                                   <th style="width: 50px;   text-align:center;">PARALEL</th>
                                   <th style="text-align:center;">FOLLOW START</th>
                                   <th style="text-align:center;">FOLLOW END</th>
@@ -579,7 +596,7 @@
 																		?>
                                 <tr class="nomor_<?= $no ?>">
                                   <!--NO-->
-                                  <td class="posisi bg-success" title="Klik Untuk Menambah Elemen Disini" onclick="attachRowObservation_new(this)"><?php echo $no; ?></td>
+                                  <td class="posisi bg-success first-col" title="Klik Untuk Menambah Elemen Disini" onclick="attachRowObservation_new(this)"><?php echo $no; ?></td>
                                   <!--TIPE URUTAN-->
                                   <td style="text-align: center;">
                                     <input type="checkbox" name="checkBoxParalel[<?php echo $no-1;?>]" value="PARALEL" class="checkBoxParalel">

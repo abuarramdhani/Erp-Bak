@@ -13,6 +13,7 @@ $('#tabel_daftarTSKK').DataTable({
   // "lengthChange": false
 });
 
+
 $(document).ready(function() {
 
   $('input[name="perhitunganTakt"]').on('ifChanged', function() {
@@ -57,7 +58,7 @@ function addRowObservation() {
   }
 
   // KOLOM 1
-  var html = '<tr class="nomor_' + nomor + '"><td class="posisi bg-success" title="Klik Untuk Menambah Elemen Disini" onclick="attachRowObservation_new(this)">' + nomor + '</td>';
+  var html = '<tr class="nomor_' + nomor + '"><td class="posisi bg-success first-col" title="Klik Untuk Menambah Elemen Disini" onclick="attachRowObservation_new(this)">' + nomor + '</td>';
   console.log(nomor);
   // KOLOM 2
   html += '<td><input type="checkbox" name="checkBoxParalel[' + (nomor - 1) + ']" value="PARALEL" class="checkBoxParalel" onchange="//chckParalel(this)"></td>'
@@ -306,7 +307,7 @@ function addRowObservationEdit() {
   let no_gaes = $(`#tblObservasiEdit tbody tr`).length;
   nomor = Number(no_gaes) + 1;
   // KOLOM 1
-  var html = '<tr class="nomor_' + nomor + '"><td class="posisi  bg-success" title="Klik Untuk Menambah Elemen Disini" onclick="attachRowObservation(this)">' + nomor + '</td>';
+  var html = '<tr class="nomor_' + nomor + '"><td class="posisi  bg-success first-col" title="Klik Untuk Menambah Elemen Disini" onclick="attachRowObservation(this)">' + nomor + '</td>';
   html += '<td><input type="checkbox" name="checkBoxParalel[' + (nomor - 1) + ']" value="PARALEL" class="checkBoxParalel"></td>'
   // KOLOM 2.5
   html += '<td><input type="number" class="form-control" style="width: 70px;" name="start_time_together[]" value=""></td>'
@@ -1969,7 +1970,7 @@ function attachRowObservation_new(th) {
   // name="checkBoxParalel['+(nomor-1)+']"
   var newRow = $(`
 	<tr class = "number_${num}">
-		<td class="posisi bg-success" title="Klik Untuk Menambah Elemen Disini" onclick="attachRowObservation_new(this)"> ${posisi} </td>
+		<td class="posisi bg-success first-col" title="Klik Untuk Menambah Elemen Disini" onclick="attachRowObservation_new(this)"> ${posisi} </td>
 		<td>
 		<input type="checkbox" name="checkBoxParalel[${indx}]" value="PARALEL" class="checkBoxParalel" onchange="//chckParalel(this)">
 		</td>
@@ -2171,7 +2172,7 @@ function attachRowObservation(th) {
   // name="checkBoxParalel['+(nomor-1)+']"
   var newRow = $(`
 	<tr class = "number_${num}">
-		<td class="posisi bg-success" title="Klik Untuk Menambah Elemen Disini" onclick="attachRowObservation(this)"> ${posisi} </td>
+		<td class="posisi bg-success first-col" title="Klik Untuk Menambah Elemen Disini" onclick="attachRowObservation(this)"> ${posisi} </td>
 		<td>
 		<input type="checkbox" name="checkBoxParalel[${indx}]" value="PARALEL" class="checkBoxParalel" onchange="//chckParalel(this)">
 		</td>
