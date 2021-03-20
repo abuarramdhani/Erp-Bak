@@ -53,10 +53,31 @@
 				<?php echo $get_header[0]['NAMA_ASAL'] ?> <br>
 				<?php echo $get_header[0]['ALAMAT_ASAL'] ?>, <?php echo $get_header[0]['KOTA_ASAL'] ?><br>
 				NPWP : <?php echo $get_header[0]['NPWP'] ?><br>
-				<?php echo $get_header[0]['ALAMAT_BONGKAR'] ?>
+
+				<?php if (!empty($get_header[0]['ALAMAT_BONGKAR'])){ ?>
+					Kepada Yth : <br>
+					<?php echo $get_header[0]['NAMA_KIRIM'] ?> <br>
+					<?php echo $get_header[0]['ALAMAT_KIRIM'] ?>, <?php echo $get_header[0]['KOTA_KIRIM'] ?><br>
+					<?php
+						if (strlen($get_header[0]['ALAMAT_KIRIM']) < 60) {
+							echo "<br>";
+						}
+					 ?>
+				<?php }else{?>
+					<?php echo $get_header[0]['ALAMAT_BONGKAR'] ?> <br>
+				<?php } ?>
+
 			</td>
 			<td colspan="2" style="height: 116.3px;vertical-align:top; border-bottom: 1px solid black;border-right: 1px solid black;border-top: 1px solid black;border-left: 1px solid black;font-size:10px;padding:5px">
-				<?php echo !empty($cek_spb_do[0]['DELIVERY_TYPE'])?'Kepada Yth : <br>':'Dikirim Kepada : <br>' ?>
+				<?php
+					if (!empty($cek_spb_do[0]['DELIVERY_TYPE'])) {
+						if (empty($get_header[0]['ALAMAT_BONGKAR'])) {
+							echo 'Kepada Yth : <br>';
+						}
+					}else{
+						echo 'Dikirim Kepada : <br>';
+					}
+				?>
 				<?php if (!empty($get_header[0]['NOTES'])){ ?>
 					<br><br><br>
 					<?php
@@ -66,13 +87,19 @@
 						}
 					?>
 				<?php }else {?>
-					<?php echo $get_header[0]['NAMA_KIRIM'] ?> <br>
-					<?php echo $get_header[0]['ALAMAT_KIRIM'] ?>, <?php echo $get_header[0]['KOTA_KIRIM'] ?><br>
-					<?php
-						if (strlen($get_header[0]['ALAMAT_KIRIM']) < 60) {
-							echo "<br>";
-						}
-					 ?>
+
+					<?php if (!empty($get_header[0]['ALAMAT_BONGKAR'])){ ?>
+						<?php echo $get_header[0]['ALAMAT_BONGKAR'] ?> <br><br>
+					<?php }else{?>
+						<?php echo $get_header[0]['NAMA_KIRIM'] ?> <br>
+						<?php echo $get_header[0]['ALAMAT_KIRIM'] ?>, <?php echo $get_header[0]['KOTA_KIRIM'] ?><br>
+						<?php
+							if (strlen($get_header[0]['ALAMAT_KIRIM']) < 60) {
+								echo "<br>";
+							}
+						 ?>
+					<?php } ?>
+
 					<?php echo !empty($cek_spb_do[0]['DELIVERY_TYPE'])?'Dikirim Kepada :  <br>':'<br> ' ?>
 					<?php
 						$arr = explode("#", $get_header[0]['LAIN']); //jika mau ganti baris gunakan tanda # (pagar)
