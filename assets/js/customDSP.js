@@ -235,7 +235,7 @@ $(document).ready(function () {
                     $(".ekspedisiDSP").append(newOption).trigger("change");
                     $(".ekspedisiDSP")
                       .append(
-                        '<option value="ADEX">ADEX</option><option value="BARANG TRUK">BARANG TRUK</option><option value="INDIE">INDIE</option><option value="JNE">JNE</option><option value="JNT">JNT</option><option value="KGP">KGP</option><option value="POS">POS</option><option value="QDS 1">QDS 1</option><option value="QDS 2">QDS 2</option><option value="SADANA">SADANA</option><option value="TAM">TAM</option><option value="TIKI">TIKI</option>'
+                        '<option value="ADEX">ADEX</option><option value="BARANG TRUK">BARANG TRUK</option><option value="INDIE">INDIE</option><option value="JNE">JNE</option><option value="JNT">JNT</option><option value="KGP">KGP</option><option value="POS">POS</option><option value="QDS 1">QDS 1</option><option value="QDS 2">QDS 2</option><option value="SADANA">SADANA</option><option value="TAM">TAM</option><option value="TIKI">TIKI</option><option value="JPM">JPM</option>'
                       )
                       .trigger("change");
                   } else {
@@ -254,7 +254,7 @@ $(document).ready(function () {
                     $(".ekspedisiDSP").append(newOption).trigger("change");
                     $(".ekspedisiDSP")
                       .append(
-                        '<option value="ADEX">ADEX</option><option value="BARANG TRUK">BARANG TRUK</option><option value="INDIE">INDIE</option><option value="JNE">JNE</option><option value="JNT">JNT</option><option value="KGP">KGP</option><option value="POS">POS</option><option value="QDS 1">QDS 1</option><option value="QDS 2">QDS 2</option><option value="SADANA">SADANA</option><option value="TAM">TAM</option><option value="TIKI">TIKI</option>'
+                        '<option value="ADEX">ADEX</option><option value="BARANG TRUK">BARANG TRUK</option><option value="INDIE">INDIE</option><option value="JNE">JNE</option><option value="JNT">JNT</option><option value="KGP">KGP</option><option value="POS">POS</option><option value="QDS 1">QDS 1</option><option value="QDS 2">QDS 2</option><option value="SADANA">SADANA</option><option value="TAM">TAM</option><option value="TIKI">TIKI</option><option value="JPM">JPM</option>'
                       )
                       .trigger("change");
                   }
@@ -482,3 +482,47 @@ $(document).ready(function () {
     });
   });
 });
+$(".btnEditDSP").on("click", function () {
+  var value = $(this).val();
+  var eks = $("#EksToEdit" + value).val();
+  // console.log(value);
+  $.ajax({
+    type: "POST",
+    url: baseurl + "DPBSparepart/Approver/MdlEditEkspedisi",
+    data: {
+      req: value,
+      eks: eks,
+    },
+    success: function (response) {
+      $("#Mdl_Ed_Eks").modal("show");
+      $("#Ed_Eks").html(response);
+      $("#EkspedisiEdit").select2({
+        allowClear: true,
+      });
+    },
+  });
+});
+function updateEkspedisi() {
+  var eks = $("#EkspedisiEdit").val();
+  var req = $("#reqNuMber").val();
+  // console.log(eks, req);
+  $.ajax({
+    type: "POST",
+    url: baseurl + "DPBSparepart/Approver/UpdateEkspedisi",
+    data: {
+      req: req,
+      eks: eks,
+    },
+    success: function (response) {
+      Swal.fire({
+        position: "top",
+        type: "success",
+        title: "Berhasil Update Ekspedisi",
+        showConfirmButton: false,
+        timer: 1500,
+      }).then(() => {
+        window.location.reload();
+      });
+    },
+  });
+}

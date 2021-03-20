@@ -300,4 +300,14 @@ class M_dpb extends CI_Model
         $oracle = $this->load->database('oracle', true);
         $oracle->query("UPDATE khs_tampung_spb kts SET kts.APPROVAL_FLAG = null where kts.NO_DOKUMEN = '$noDPB'");
     }
+    public function updateEkspedisi($req, $eks)
+    {
+        $oracle = $this->load->database('oracle', true);
+        $oracle->query("update
+        mtl_txn_request_headers mtrh
+        set
+        mtrh.ATTRIBUTE15 = '$eks' -- ekspedisi
+        where
+        mtrh.REQUEST_NUMBER = '$req' -- no_do/spb");
+    }
 }
