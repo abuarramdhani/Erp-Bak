@@ -92,16 +92,21 @@ class M_gentskk extends CI_Model
 
 	function namaPart($kode_part)
 	{
-	$sql="SELECT DISTINCT msib.description
-       from mtl_system_items_b msib
-       where msib.INVENTORY_ITEM_STATUS_CODE = 'Active'
-       and msib.organization_id = 81
-	   AND msib.SEGMENT1 = '$kode_part'";
+		$result = '';
+		foreach ($kode_part as $key => $value) {
+			$sql="SELECT DISTINCT msib.description
+					 from mtl_system_items_b msib
+					 where msib.INVENTORY_ITEM_STATUS_CODE = 'Active'
+					 and msib.organization_id = 81
+				 AND msib.SEGMENT1 = '$value'";
 
-	   $query = $this->oracle->query($sql);
-	//    echo "<pre>"; print_r($query->result_array());
-	//    exit();
-	   return $query->result_array();
+			$query = $this->oracle->query($sql);
+			$result .= $query->row()->DESCRIPTION."; ";
+		}
+
+	   // echo "<pre>"; print_r($result);
+	   // exit();
+	   return $result;
 	}
 
 
