@@ -838,7 +838,7 @@ class C_Order extends CI_Controller
 
 	public function getItem()
 	{
-		$item = $_GET['s'];
+		$item = $this->input->get('s');
 		$data = $this->M_order->getItem($item);
 		echo json_encode($data);
 	}
@@ -1408,7 +1408,7 @@ class C_Order extends CI_Controller
 				'jml_kebutuhan_staff'	=> (round($staff[$i] / $getbulan, 2)),
 				'tgl_input'	=>	$tgl_input,
 				'status'	=>	'0',
-				'keterangan'=> $keterangan[$i],
+				'keterangan' => $keterangan[$i],
 				'lampiran'	=> str_replace(' ', '_', $_FILES['lampiran']['name'][$i])
 			);
 			$a += count($daftar_pekerjaan);
@@ -1422,8 +1422,7 @@ class C_Order extends CI_Controller
 		}
 
 		$this->load->library('upload');
-		if(!is_dir('./assets/upload/P2K3DocumentApproval'))
-		{
+		if (!is_dir('./assets/upload/P2K3DocumentApproval')) {
 			mkdir('./assets/upload/P2K3DocumentApproval', 0777, true);
 			chmod('./assets/upload/P2K3DocumentApproval', 0777);
 		}
@@ -1432,23 +1431,24 @@ class C_Order extends CI_Controller
 		// echo $cpt;
 		$arrayName = array();
 		$files = $_FILES;
-		for($i=0; $i<$cpt; $i++){
+		for ($i = 0; $i < $cpt; $i++) {
 			$filename = $files['lampiran']['name'][$i];
-			if(empty($filename)) continue;
+			if (empty($filename)) continue;
 
-			$_FILES['lampiran']['name']= str_replace(' ', '_', $files['lampiran']['name'][$i]);
+			$_FILES['lampiran']['name'] = str_replace(' ', '_', $files['lampiran']['name'][$i]);
 			$arrayName[] = $_FILES['lampiran']['name'];
-			$_FILES['lampiran']['type']= $files['lampiran']['type'][$i];
-			$_FILES['lampiran']['tmp_name']= $files['lampiran']['tmp_name'][$i];
-			$_FILES['lampiran']['error']= $files['lampiran']['error'][$i];
-			$_FILES['lampiran']['size']= $files['lampiran']['size'][$i];    
+			$_FILES['lampiran']['type'] = $files['lampiran']['type'][$i];
+			$_FILES['lampiran']['tmp_name'] = $files['lampiran']['tmp_name'][$i];
+			$_FILES['lampiran']['error'] = $files['lampiran']['error'][$i];
+			$_FILES['lampiran']['size'] = $files['lampiran']['size'][$i];
 
 			$this->upload->initialize($this->init_config());
-			if ($this->upload->do_upload('lampiran')){
+			if ($this->upload->do_upload('lampiran')) {
 				$this->upload->data();
-			}else{
+			} else {
 				$errorinfo = $this->upload->display_errors();
-				echo $errorinfo;exit();
+				echo $errorinfo;
+				exit();
 			}
 		}
 		redirect('P2K3_V2/Order/inputStandarKebutuhan');
@@ -1631,8 +1631,8 @@ class C_Order extends CI_Controller
 			$data['notrans'] = $endDataTrans['NO_BON'];
 			$a = explode(';', $endDataTrans['KODE_BARANG']);
 			$b = explode(';', $endDataTrans['TRANSACT']);
-			for ($i=0; $i < count($b); $i++) { 
-				if($b[$i] == 'N')
+			for ($i = 0; $i < count($b); $i++) {
+				if ($b[$i] == 'N')
 					$data['nyTrans'][] = $a[$i];
 			}
 		}
@@ -2659,9 +2659,9 @@ class C_Order extends CI_Controller
 			}
 			$arrF = array_column($transcT, 'FLAG');
 			$arrN = array_column($transcT, 'FLAG', 'noind');
-			if (in_array('Y', $arrF) && $arrN[$noind] == 'N' && 1==2) {
+			if (in_array('Y', $arrF) && $arrN[$noind] == 'N' && 1 == 2) {
 				//skip
-			}else{
+			} else {
 				$today = date_create(date('Y-m-d'));
 				$latest = date_create($latestBon->date);
 				if ($latestBon->seksi == 'UP2L') {
@@ -2858,7 +2858,7 @@ class C_Order extends CI_Controller
 		$periode = $this->input->post('periode');
 		$ks = str_replace(' ', '+', $seksi);
 		$pr = str_replace(' ', '+', $periode);
-		$get = 'k3_adm_ks='.$ks.'&k3_periode='.$pr;
+		$get = 'k3_adm_ks=' . $ks . '&k3_periode=' . $pr;
 
 		$data = $this->M_order->getBonSpt($id);
 		$data['delete_by'] = $this->session->user;
@@ -2870,7 +2870,7 @@ class C_Order extends CI_Controller
 		$del = $this->M_order->delSptPost($id);
 		$del = $this->M_order->delSptOrc($id);
 
-		redirect('p2k3adm_V2/Admin/monitoringBon?'.$get);
+		redirect('p2k3adm_V2/Admin/monitoringBon?' . $get);
 	}
 
 	public function SafetyShoesManual()
@@ -2918,7 +2918,8 @@ class C_Order extends CI_Controller
 			$data['error'] = 1;
 			$data['type'] = 'error';
 			$data['pesan'] = 'Nomor Bon Sudah ada di Database erp!';
-			echo json_encode($data);exit();
+			echo json_encode($data);
+			exit();
 		}
 
 		$data = $this->M_order->getBonOrc($nobon);
@@ -2926,7 +2927,8 @@ class C_Order extends CI_Controller
 			$data['error'] = 1;
 			$data['type'] = 'error';
 			$data['pesan'] = 'Nomor Bon Tidak di Temukan!';
-			echo json_encode($data);exit();
+			echo json_encode($data);
+			exit();
 		}
 
 		$e = false;
@@ -2943,18 +2945,19 @@ class C_Order extends CI_Controller
 				$matches = '';
 			}
 			$matches = implode(',', $matches[0]);
-			$matches = str_replace('(',"\n",$matches);
-			$matches = str_replace(')',"\n",$matches);
+			$matches = str_replace('(', "\n", $matches);
+			$matches = str_replace(')', "\n", $matches);
 			if (strpos($nama, 'SEPATU') === false) {
-				$e = true; break;
+				$e = true;
+				break;
 			}
 
 			$tr .= '<tr>
-				<td>'.$x.'</td>
-				<td>'.$key['NAMA_APD'].'</td>
-				<td>'.$key['KODE_BARANG'].'</td>
-				<td>'.$pkj[0].'</td>
-				<td>'.$matches.'</td>
+				<td>' . $x . '</td>
+				<td>' . $key['NAMA_APD'] . '</td>
+				<td>' . $key['KODE_BARANG'] . '</td>
+				<td>' . $pkj[0] . '</td>
+				<td>' . $matches . '</td>
 			</tr>';
 			$x++;
 		}
@@ -2963,7 +2966,8 @@ class C_Order extends CI_Controller
 			$data['error'] = 1;
 			$data['type'] = 'error';
 			$data['pesan'] = 'Bukan Nomor Bon Sepatu!';
-			echo json_encode($data);exit();
+			echo json_encode($data);
+			exit();
 		}
 
 		$data['error'] = 0;
@@ -2986,7 +2990,7 @@ class C_Order extends CI_Controller
 			$pkj = $pkj[0];
 			if (strpos($pkj, '-') === false) {
 				$data['error'] = 1;
-				$data['pesan'] = 'PEKERJA INVALID FORMAT -> '.$pkj;
+				$data['pesan'] = 'PEKERJA INVALID FORMAT -> ' . $pkj;
 				break;
 			}
 			$pkj = explode('-', $pkj);
@@ -3000,11 +3004,11 @@ class C_Order extends CI_Controller
 				$matches = '';
 			}
 			$matches = implode(',', $matches[0]);
-			$matches = str_replace('(',"\n",$matches);
-			$matches = str_replace(')',"\n",$matches);
+			$matches = str_replace('(', "\n", $matches);
+			$matches = str_replace(')', "\n", $matches);
 
 			$uk = explode(' ', $key['NAMA_BARANG']);
-			$cuk = count($uk)-1;
+			$cuk = count($uk) - 1;
 			$uks = $uk[$cuk];
 			array_pop($uk);
 			$jnss = implode(' ', $uk);
@@ -3022,7 +3026,7 @@ class C_Order extends CI_Controller
 				'no_bon'			=> $nobon,
 				'id_oracle'			=> $key['NO_ID'],
 				'alasan'			=> trim($matches),
-				);
+			);
 			$ins = $this->M_order->insertBonSpatu($arr);
 			$data['error'] = 0;
 		}
