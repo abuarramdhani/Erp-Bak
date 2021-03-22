@@ -526,3 +526,40 @@ function updateEkspedisi() {
     },
   });
 }
+$(document).ready(function () {
+  $.ajax({
+    beforeSend: function () {
+      $("div#arsipDepebeh").html(
+        '<center><img style="width:100px; height:auto" src="' +
+          baseurl +
+          'assets/img/gif/loading11.gif"><br><label>Loading, Please Wait .....</label></center>'
+      );
+    },
+    url: baseurl + "DPBSparepart/Admin/getArsipDPB",
+    success: function (response) {
+      $("#arsipDepebeh").html(response);
+      var date = new Date();
+      date.setDate(date.getDate() - 30);
+
+      var datenow = new Date();
+      datenow.setDate(datenow.getDate());
+
+      var dateago = date.toISOString().split("T")[0];
+      var datetoday = datenow.toISOString().split("T")[0];
+
+      $(".tblarsipdpb").dataTable({
+        paging: false,
+        scrollX: true,
+        scrollY: 500,
+        searching: true,
+        dom: "Bfrtip",
+        buttons: [
+          {
+            extend: "excelHtml5",
+            title: "Arsip SPB / DO Tanggal " + dateago + " s/d " + datetoday,
+          },
+        ],
+      });
+    },
+  });
+});
