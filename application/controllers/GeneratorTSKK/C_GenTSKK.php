@@ -759,10 +759,10 @@ public function saveObservation(){
     for ($i=0; $i < count($ratio_irregular); $i++) {
             $data = array(
             'id_irregular_job'      => $id,
-            'irregular_job' 	    => $irregular_jobs[$i],
-            'ratio'                 => $ratio_irregular[$i],
-            'waktu'   	            => $waktu_irregular[$i],
-            'hasil_irregular_job'   => $hasil_irregular[$i],
+            'irregular_job' 	    => empty($irregular_jobs[$i]) ? NULL : $irregular_jobs[$i],
+            'ratio'                 => empty($ratio_irregular[$i]) ? NULL : $ratio_irregular[$i],
+            'waktu'   	            => empty($waktu_irregular[$i]) ? NULL : $waktu_irregular[$i],
+            'hasil_irregular_job'   => empty($hasil_irregular[$i]) ? NULL : $hasil_irregular[$i],
             );
         // echo "<pre>";print_r($data);
         $insertIrregularJobs = $this->M_gentskk->saveIrregularJobs($data);
@@ -999,12 +999,12 @@ public function kodePart()
 public function namaPart()
 {
     $param = $this->input->post('params');
-    // if ($param !== '') {
-    //     $last = $param[0];
-    // }
+    if ($param !== '') {
+        $last = $param[0];
+    }
 
     if ($param != '') {
-        $name = $this->M_gentskk->namaPart($param); //jalankan query
+        $name = $this->M_gentskk->namaPart($last); //jalankan query
         echo json_encode($name);
     }else {
         $name = '';
@@ -1568,7 +1568,7 @@ public function exportExcel($idnya){
 			$irregular_jobs         = $this->input->post('irregular_job');
 			$ratio_irregular        = $this->input->post('ratio_ij');
 			$waktu_irregular        = $this->input->post('waktu_ij');
-			$hasil_irregular        = $this->input->post('hasil_ij');
+			$hasil_irregular        = !empty($this->input->post('hasil_ij')) ? $this->input->post('hasil_ij') : [];
 			$jumlah_hasil_irregular = array_sum($hasil_irregular);
 		}else {
 			//IRREGULAR JOBS
@@ -2348,29 +2348,31 @@ public function exportExcel($idnya){
 																$styles[$x][$baris][$i]['border-style']='thin';
                             }
 
-														 if (sizeof($waktu_irregular) <= 4) {
-																 foreach ($waktu_irregular as $key => $val) {
-																	 if ($key == 0) {
-																		 $kolom_end = 431;
-																		 $kolom_start = $key;
-																	 }else {
-								 										if ($key == 2) {
-								 											$plus_kolom = 5;
-								 										}elseif ($key == 3) {
-								 											$plus_kolom = 10;
-								 										}else {
-								 											$plus_kolom = 0;
-								 										}
-								 										$kolom_end = 436 + ((10* $key) + $plus_kolom);
-								 										$kolom_start = 15 * $key;
-								 									}
-																	 if ($i >= 421 + $kolom_start && $i <= $kolom_end ) { // thiss
-																	 $styles[$x][$baris-2][$i]['border']='bottom';
-																	 $styles[$x][$baris-2][$i]['border-style']='thin';
+														if (!empty($waktu_irregular)) {
+															if (sizeof($waktu_irregular) <= 4) {
+																	foreach ($waktu_irregular as $key => $val) {
+																		if ($key == 0) {
+																			$kolom_end = 431;
+																			$kolom_start = $key;
+																		}else {
+																		 if ($key == 2) {
+																			 $plus_kolom = 5;
+																		 }elseif ($key == 3) {
+																			 $plus_kolom = 10;
+																		 }else {
+																			 $plus_kolom = 0;
+																		 }
+																		 $kolom_end = 436 + ((10* $key) + $plus_kolom);
+																		 $kolom_start = 15 * $key;
+																	 }
+																		if ($i >= 421 + $kolom_start && $i <= $kolom_end ) { // thiss
+																		$styles[$x][$baris-2][$i]['border']='bottom';
+																		$styles[$x][$baris-2][$i]['border-style']='thin';
 
-																 }
-															 }
-														 }
+																	}
+																}
+															}
+														}
 
                             break;
                         case 4:
@@ -3001,38 +3003,41 @@ public function exportExcel($idnya){
 						// }
 						// $rows[$x][$rowJumlahElemen+3][211] = $waktu_irregular[0].'/'.$ratio_irregular[0]; //DATA Cycle Time tanpa Irregular
 						//AREA WAKTU IRREGULAR
-						if (sizeof($waktu_irregular) <= 4) {
-								foreach ($waktu_irregular as $key => $val) {
-									if ($key == 0) {
-										$kolom_end = 431;
-										$kolom_start = $key;
-									}else {
-										if ($key == 2) {
-											$plus_kolom = 5;
-										}elseif ($key == 3) {
-											$plus_kolom = 10;
+						if (!empty($waktu_irregular)) {
+							if (sizeof($waktu_irregular) <= 4) {
+									foreach ($waktu_irregular as $key => $val) {
+										if ($key == 0) {
+											$kolom_end = 431;
+											$kolom_start = $key;
 										}else {
-											$plus_kolom = 0;
+											if ($key == 2) {
+												$plus_kolom = 5;
+											}elseif ($key == 3) {
+												$plus_kolom = 10;
+											}else {
+												$plus_kolom = 0;
+											}
+											$kolom_end = 436 + ((10* $key) + $plus_kolom);
+											$kolom_start = 15 * $key;
 										}
-										$kolom_end = 436 + ((10* $key) + $plus_kolom);
-										$kolom_start = 15 * $key;
-									}
 
-									$rows[$x][$rowJumlahElemen+3][421 + $kolom_start] = $val; //DATA Waktu Irregular Job
-									$rows[$x][$rowJumlahElemen+4][421 + $kolom_start] = $ratio_irregular[$key]; //DATA Ratio Irregular Job
-									$styles[$x][$rowJumlahElemen+3][421 + $kolom_start]['valign']='center';
-									$styles[$x][$rowJumlahElemen+4][421 + $kolom_start]['valign'] = 'center';
+										$rows[$x][$rowJumlahElemen+3][421 + $kolom_start] = $val; //DATA Waktu Irregular Job
+										$rows[$x][$rowJumlahElemen+4][421 + $kolom_start] = $ratio_irregular[$key]; //DATA Ratio Irregular Job
+										$styles[$x][$rowJumlahElemen+3][421 + $kolom_start]['valign']='center';
+										$styles[$x][$rowJumlahElemen+4][421 + $kolom_start]['valign'] = 'center';
 
-									if ($key != (sizeof($waktu_irregular)-1)) {
-										$rows[$x][$rowJumlahElemen+3][$kolom_end+1] = '+'; //DATA Waktu Irregular Job
-									}
+										if ($key != (sizeof($waktu_irregular)-1)) {
+											$rows[$x][$rowJumlahElemen+3][$kolom_end+1] = '+'; //DATA Waktu Irregular Job
+										}
+								}
+							}else {
+								foreach ($waktu_irregular as $key => $val) {
+								  $tampung_hasil_irregular[] = $val/$ratio_irregular[$key];
+								}
+								$rows[$x][$rowJumlahElemen+3][421] = implode(' + ', $tampung_hasil_irregular); //DATA Cycle Time tanpa Irregular
 							}
-						}else {
-							foreach ($waktu_irregular as $key => $val) {
-							  $tampung_hasil_irregular[] = $val/$ratio_irregular[$key];
-							}
-							$rows[$x][$rowJumlahElemen+3][421] = implode(' + ', $tampung_hasil_irregular); //DATA Cycle Time tanpa Irregular
 						}
+
 						//END
 						// $rows[$x][$rowJumlahElemen+3][211] = $waktu_irregular[0]; //DATA Cycle Time tanpa Irregular
             $rows[$x][$rowJumlahElemen+3][516] = ' = ';
@@ -3360,8 +3365,9 @@ public function exportExcel($idnya){
                 }
             }
 
-        // DATA IRREGULAR JOB
-            $rowDataIrregular = $rowJumlahElemen+7;
+					// DATA IRREGULAR JOB
+					if (!empty($irregular_jobs)) {
+						$rowDataIrregular = $rowJumlahElemen+7;
             for ($i=1; $i <= sizeof($irregular_jobs); $i++) {
                 $pakeRowIrregular = $rowDataIrregular + ($i * 2);
                 $rows[$x][$pakeRowIrregular][0] = $i;
@@ -3402,6 +3408,7 @@ public function exportExcel($idnya){
             $styles[$x][$pakeRowIrregular + (($rowIrregular*2) - $min001)][11]['font-size'] = 10;
             $styles[$x][$pakeRowIrregular + (($rowIrregular*2) - $min001)][11]['valign'] = 'center';
             $styles[$x][$pakeRowIrregular + (($rowIrregular*2) - $min001)][11]['halign'] = 'center';
+					}
 
 
     // TIME FLOW (MASTER)
@@ -3693,30 +3700,33 @@ public function exportExcel($idnya){
 
 			                // $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+3, $start_col= 211, $end_row=$rowjum+3, $end_col= 221);
 			                // $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+4, $start_col= 211, $end_row=$rowjum+4, $end_col= 221);
-			                if (sizeof($waktu_irregular) <= 4) {
-			                  foreach ($waktu_irregular as $key => $val) {
-			                    if ($key == 0) {
-			                      $kolom_end = 431;
-			                      $kolom_start = $key;
-			                    }else {
-			                      if ($key == 2) {
-			                        $plus_kolom = 5;
-			                      }elseif ($key == 3) {
-			                        $plus_kolom = 10;
-			                      }else {
-			                        $plus_kolom = 0;
-			                      }
-			                      $kolom_end = 436 + ((10* $key) + $plus_kolom);
-			                      $kolom_start = 15 * $key;
-			                    }
-			                    $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+3, $start_col= 421 + $kolom_start, $end_row=$rowjum+3, $end_col=$kolom_end);
-			                    $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+4, $start_col= 421 + $kolom_start, $end_row=$rowjum+4, $end_col=$kolom_end);
 
-			                    $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+3, $start_col= $kolom_end+1, $end_row=$rowjum+4, $end_col=$kolom_end+4);
-			                  }
-			                }else {
-			                  $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+3, $start_col= 421, $end_row=$rowjum+4, $end_col= 482);
-			                }
+											if (!empty($waktu_irregular)) {
+												if (sizeof($waktu_irregular) <= 4) {
+				                  foreach ($waktu_irregular as $key => $val) {
+				                    if ($key == 0) {
+				                      $kolom_end = 431;
+				                      $kolom_start = $key;
+				                    }else {
+				                      if ($key == 2) {
+				                        $plus_kolom = 5;
+				                      }elseif ($key == 3) {
+				                        $plus_kolom = 10;
+				                      }else {
+				                        $plus_kolom = 0;
+				                      }
+				                      $kolom_end = 436 + ((10* $key) + $plus_kolom);
+				                      $kolom_start = 15 * $key;
+				                    }
+				                    $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+3, $start_col= 421 + $kolom_start, $end_row=$rowjum+3, $end_col=$kolom_end);
+				                    $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+4, $start_col= 421 + $kolom_start, $end_row=$rowjum+4, $end_col=$kolom_end);
+
+				                    $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+3, $start_col= $kolom_end+1, $end_row=$rowjum+4, $end_col=$kolom_end+4);
+				                  }
+				                }else {
+				                  $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+3, $start_col= 421, $end_row=$rowjum+4, $end_col= 482);
+				                }
+											}
 
 			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+5, $start_col= 416, $end_row=$rowjum+5, $end_col= 420);
 			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+5, $start_col= 421, $end_row=$rowjum+5, $end_col= 439);
