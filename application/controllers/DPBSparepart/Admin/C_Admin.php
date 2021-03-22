@@ -13,6 +13,8 @@ class C_Admin extends  CI_Controller
 		$this->load->library('session');
 		$this->load->library('encryption');
 		$this->load->model('DPBSparepart/M_dpb');
+		$this->load->model('KapasitasGdSparepart/M_arsip');
+		$this->load->model('KapasitasGdSparepart/M_packing');
 		$this->load->model('M_Index');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 
@@ -242,5 +244,48 @@ class C_Admin extends  CI_Controller
 		$noDPB = $_POST['id'];
 		print_r($noDPB);
 		$this->M_dpb->reSubmitDPB($noDPB);
+	}
+	public function ArsipSPBDO()
+	{
+		$user = $this->session->user;
+
+		$user_id = $this->session->userid;
+
+		$data['Title'] = '';
+		$data['Menu'] = 'Input DPB';
+		$data['SubMenuOne'] = '';
+		$data['SubMenuTwo'] = '';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
+		// echo $this->session->responsibility_id; exit;
+
+
+
+		$this->load->view('V_Header', $data);
+		$this->load->view('V_Sidemenu', $data);
+		$this->load->view('DPBSparepart/Admin/V_ArsipDpb', $data);
+		$this->load->view('V_Footer', $data);
+	}
+	public function getArsipDPB()
+	{
+		$datenow = date('d/m/Y');
+		$datebefore = date('d/m/Y', strtotime('- 30 days'));
+
+		// echo "<pre>";
+		// print_r($date);
+		// exit();
+
+		$getdata = $this->M_arsip->getDataSPB3($datebefore, $datenow);
+
+		for ($i = 0; $i < sizeof($getdata); $i++) {
+			$coly = $this->M_packing->cekPacking($getdata[$i]['NO_DOKUMEN']);
+			$getdata[$i]['COLY'] = count($coly);
+		}
+
+		$data['getdata'] = $getdata;
+
+		$this->load->view('DPBSparepart/Admin/V_ListArsip', $data);
 	}
 }
