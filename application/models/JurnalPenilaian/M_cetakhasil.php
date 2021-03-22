@@ -56,17 +56,18 @@ class M_cetakhasil extends Ci_Model
 	}
 
 	public function getPekerjaan($noind){
-		// $sql = "select pekerjaan 
-		// 		from hrd_khs.tpribadi tpri
-		// 		inner join hrd_khs.tpekerjaan tpkj
-		// 		on tpri.kd_pkj = tpkj.kdpekerjaan
-		// 		where tpri.noind = '$noind'";
-		$sql = "select sec.job_name pekerjaan 
-				from er.er_employee_all emp
-				left join er.er_section sec 
-				on sec.section_code = emp.section_code
-				where emp.employee_code = '$noind'";
-		$result = $this->db->query($sql);
+		$sql = "select pekerjaan 
+				from hrd_khs.tpribadi tpri
+				inner join hrd_khs.tpekerjaan tpkj
+				on tpri.kd_pkj = tpkj.kdpekerjaan
+				where tpri.noind = '$noind'";
+		$result = $this->personalia->query($sql);
+		// $sql = "select sec.job_name pekerjaan 
+		// 		from er.er_employee_all emp
+		// 		left join er.er_section sec 
+		// 		on sec.section_code = emp.section_code
+		// 		where emp.employee_code = '$noind'";
+		// $result = $this->db->query($sql);
 		return $result->result_array();
 	}
 
