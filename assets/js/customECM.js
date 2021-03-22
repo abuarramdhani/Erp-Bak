@@ -94,10 +94,10 @@ $(document).ready(function () {
 		$('#searchResultTableItemByDate').html('<img src="' + baseurl + '/assets/img/gif/loading12.gif">');
 	});
 
-	$("#tanggalan").datepicker({
-		format: "dd/mm/yyyy",
-		autoclose: true,
-	});
+	// $("#tanggalan").datepicker({
+	// 	format: "dd/mm/yyyy",
+	// 	autoclose: true,
+	// });
 
 });
 
@@ -206,6 +206,16 @@ $(document).ready(function () {
 			}
 		}
 	})
+	$(document).ready(function () {
+		$("#dateBegin").datepicker({
+			format: "yyyy-mm-dd",
+			autoclose: true,
+		});
+		$("#dateEnd").datepicker({
+			format: "yyyy-mm-dd",
+			autoclose: true,
+		});
+	})
 	$('#btn-item').on('click', function () {
 		var item_name = $('#item_name').val();
 		console.log('tes')
@@ -249,8 +259,9 @@ $(document).ready(function () {
 	dataExport();
 
 	function dataExport() {
+		// function dataExport() {
 		$('#dataTableExport').DataTable({
-			dom: '<lf<t>ip>',
+			// dom: '<fl<t>ip>',
 			scrollX: true,
 			ajax: {
 				url: baseurl + "ECommerce/ExportPelanggan/tableExportAll/",
@@ -263,6 +274,8 @@ $(document).ready(function () {
 			serverSide: false
 		});
 	}
+
+	// }
 
 	$('#dataTableExportTable').DataTable({
 		scrollX: true,

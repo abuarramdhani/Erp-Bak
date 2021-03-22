@@ -31,41 +31,47 @@
                                                 <span class="align-middle"><label>Periode Tanggal Receipt</label></span>
                                             </td>
                                             <td>
-                                                <div class="input-group date" data-provide="datepicker">
-                                                    <input size="30" type="text" class="form-control" name="dateBegin" id="dateBegin" placeholder="From">
-                                                    <div class="input-group-addon">
-                                                        <span class="glyphicon glyphicon-calendar"></span>
+                                                <!-- <div class="input-group date" data-provide="datepicker"> -->
+                                                <input size="30" type="text" class="form-control" name="dateBegin" id="dateBegin" placeholder="From" autocomplete="off">
+                                                <!-- <div class="input-group-addon"> -->
+                                                <!-- <span class="glyphicon glyphicon-calendar"></span>
                                                     </div>
-                                                </div>
+                                                </div> -->
                                             </td>
                                             <td>
                                                 <span class="align-middle">s/d</span>
                                             </td>
                                             <td>
-                                                <div class="input-group date" data-provide="datepicker">
-                                                    <input size="30" type="text" class="form-control" name="dateEnd" id="dateEnd" placeholder="To">
-                                                    <div class="input-group-addon">
+                                                <!-- <div class="input-group date" data-provide="datepicker"> -->
+                                                <input size="30" type="text" class="form-control" name="dateEnd" id="dateEnd" placeholder="To" autocomplete="off">
+                                                <!-- <div class="input-group-addon">
                                                         <span class="glyphicon glyphicon-calendar"></span>
                                                     </div>
-                                                </div>
+                                                </div> -->
                                             </td>
                                             <td>
                                                 <input type="submit" id="btn-search-export2" class="btn btn-primary" value="Search" />
                                             </td>
+                                            <td>
+                                                <a href="<?php echo base_url('ECommerce/ExportPelanggan/exportexcelAll'); ?>" id="btn-export-all" class="btn btn-md btn-success pull-right" type="button" style="margin-left:10px; margin-right:20px;"><i class="glyphicon glyphicon-export"></i>&emsp;Export All</a>
+                                                <!-- <a id="btn-search-export-all" class="btn btn-md btn-primary pull-right" type="button" style="margin-right:10px;">Search All</a> -->
+                                                <button formaction="<?php echo base_url('ECommerce/ExportPelanggan/exportexcel'); ?>" target="_blank" id="btn-export" class="btn btn-md btn-success pull-right" type="submit" style="margin-left:10px; margin-right:20px;" disabled><i class="glyphicon glyphicon-export"></i>&emsp;Export</button>
+                                                <!-- <input type="submit" id="btn-search-export" class="btn btn-primary pull-right" style="margin-right:10px;" value="Search" disabled /> -->
+                                            </td>
                                         </tr>
                                     </table>
-                                    <div class="col-lg-12">
+                                    <!-- <div class="col-lg-12">
                                         <button class="btn btn-md btn-success pull-right" style="margin-right:20px;" type="submit" disabled><i class="glyphicon glyphicon-export"></i>EXPORT</button>
 
-                                    </div>
+                                    </div> -->
                                 </form>
-                                <div class="col-lg-12">
+                                <!-- <div class="col-lg-12">
                                     <hr size="30">
-                                </div>
-                                <br>
-                                <div class="col-lg-12" style="margin-top:30px">
+                                </div> -->
+                                <!-- <br> -->
+                                <div class="col-lg-12" style="margin-top:0px">
                                     <form method="post" action="<?php echo base_url('ECommerce/ExportPelanggan/tableExport/'); ?>">
-                                        <div style="display:flex;align-items:center;justify-content:space-between;width:100%;padding-right:10px;">
+                                        <!-- <div style="display:flex;align-items:center;justify-content:space-between;width:100%;padding-right:10px;">
                                             <label class="col-md-3 pull-right" style="margin-bottom:0px;">&emsp;&emsp;Name&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;:</label>
                                             <select class="form-control" id="user_id" name="user_id" disabled>
                                                 <option></option>
@@ -105,36 +111,35 @@
                                             <button id="btn-item" type="button" class="btn btn-md btn-success pull-right enable" style="margin-left:10px;">Enable</button>
 
                                             <aside style="width:10px;"></aside>
-                                        </div>
-                                        <br>
-
-                                        <a href="<?php echo base_url('ECommerce/ExportPelanggan/exportexcelAll'); ?>" target="_blank" id="btn-export-all" class="btn btn-md btn-success pull-right" type="button" style="margin-right:20px;"><i class="glyphicon glyphicon-export"></i>&emsp;Export All</a>
-                                        <!-- <a id="btn-search-export-all" class="btn btn-md btn-primary pull-right" type="button" style="margin-right:10px;">Search All</a> -->
-                                        <button formaction="<?php echo base_url('ECommerce/ExportPelanggan/exportexcel'); ?>" target="_blank" id="btn-export" class="btn btn-md btn-success pull-right" type="submit" style="margin-right:10px;" disabled><i class="glyphicon glyphicon-export"></i>&emsp;Export</button>
-                                        <input type="submit" id="btn-search-export" class="btn btn-primary pull-right" style="margin-right:10px;" value="Search" disabled />
+                                        </div> -->
                                     </form>
-                                    <br>
-                                    <br>
                                     <div id="divdataTableExport" class="col-lg-12" style="margin-top:20px">
                                         <table id="dataTableExport" class="table table-striped table-bordered table-hover text-center rowTable">
                                             <thead>
                                                 <tr class="bg-primary">
                                                     <th class="text-center">No</th>
-                                                    <th class="text-center">Nomor Order</th>
+                                                    <th class="text-center" width="100px">Nomor Order</th>
+                                                    <th class="text-center">Tgl Pemesanan</th>
+                                                    <th class="text-center">Status Order</th>
                                                     <th class="text-center" width="150px">Nama Pelanggan</th>
                                                     <th class="text-center">Email</th>
+                                                    <th class="text-center">Customer Category</th>
                                                     <th class="text-center">Registration Date</th>
-                                                    <th class="text-center">No.Telp</th>
+                                                    <th class="text-center" width="150px">No.Telp</th>
                                                     <th class="text-center" width="300px">Alamat</th>
                                                     <th class="text-center" width="100px">Kecamatan</th>
-                                                    <!-- <th class="text-center" width="150px">Shipping Name</th> -->
-                                                    <!-- <th class="text-center" width="200px">Shipping Address</th> -->
                                                     <th class="text-center" width="120px">Kota/Kabupaten</th>
                                                     <th class="text-center">Provinsi</th>
-                                                    <th class="text-center">Kode Pos</th>
+                                                    <th class="text-center" width="80px">Kode Pos</th>
                                                     <th class="text-center">Order Item Code</th>
                                                     <th class="text-center" width="150px">Order Item Name</th>
                                                     <th class="text-center" width="200px">Category</th>
+                                                    <th class="text-center" width="100px">Harga Per Pcs</th>
+                                                    <th class="text-center">Qty Beli</th>
+                                                    <th class="text-center" width="100px">Berat Per Item</th>
+                                                    <th class="text-center">Ekspedisi Pengiriman</th>
+                                                    <th class="text-center" width="100px">Biaya Kirim</th>
+                                                    <th class="text-center">Metode Pembayaran</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -142,6 +147,7 @@
                                             </tbody>
                                         </table>
                                     </div>
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -149,4 +155,5 @@
                 </div>
             </div>
         </div>
+    </div>
 </section>
