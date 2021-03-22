@@ -123,11 +123,11 @@
 			<tr>
 				<td style="height: 10mm; padding-left: 5mm;padding-right: 5mm; font-size: 11px">
 				<table style=" width: 100%; font-size: 32px">
-					<tr>
+					<!-- <tr>
 						<td style="width: 30%" >Tipe Produk</td>
 						<td style="width: 40%" ><?php echo $value['TIPE_PRODUCT'] ?></td>
 						<td style="width: 30%" rowspan="4" style="color: <?=$color;?>">Status <?php echo $value['STATUS'] ?></td>
-					</tr>
+					</tr> -->
 					<tr>
 						<td style="width: 30%" >Qty Aktual</td>
 						<td style="width: 40%" ><?php echo $value['QUANTITY'] ?></td>

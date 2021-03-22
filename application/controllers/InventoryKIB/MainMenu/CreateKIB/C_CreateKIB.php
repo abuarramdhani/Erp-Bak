@@ -502,9 +502,9 @@ public function printpdf99(){
 	}
 
 	public function printpdf($org,$status,$no_batch,$kib,$n){
-		$length = 380;
+		$length = 370;
 		if ($status == 1 || $n == 1) {
-			$length = 320;
+			$length = 310;
 		}
 		$this->load->library('ciqrcode');
 		$this->load->library('Pdf');
