@@ -1,6 +1,9 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+set_time_limit(0);
+ini_set("memory_limit","-1");
+
 class C_ExportReport extends CI_Controller {
 
 	/**
