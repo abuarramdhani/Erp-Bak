@@ -69,7 +69,7 @@
                                             <?php foreach ($daftar_pekerjaan as $key) { ?>
                                               <th><?php echo $key['pekerjaan']; ?></th>
                                             <?php } ?>
-                                            <th>Keterangan</th>
+                                            <th>Alasan Perubahan APD</th>
                                             <th>Lampiran <b style="color: yellow">(*PDF)</b></th>
                                             <th>Action</th>
                                           </tr>

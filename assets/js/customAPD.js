@@ -47,7 +47,7 @@ $("#group_add").click(function (e) {
 				},
 				cache: true,
 			},
-			minimumInputLength: 2,
+			minimumInputLength: 0,
 			placeholder: "Select Item",
 			allowClear: true,
 		});
@@ -124,7 +124,7 @@ $("#group_add2").click(function (e) {
 				},
 				cache: true,
 			},
-			minimumInputLength: 2,
+			// minimumInputLength: 0,
 			placeholder: "Select Item",
 			allowClear: true,
 		});
@@ -175,7 +175,7 @@ $(function () {
 			},
 			cache: true,
 		},
-		minimumInputLength: 2,
+		// minimumInputLength: 0,
 		placeholder: "Select Item",
 		allowClear: true,
 	});
