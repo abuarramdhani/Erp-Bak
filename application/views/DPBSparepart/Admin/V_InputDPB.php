@@ -97,6 +97,7 @@
                                     <option value="B0892">B0892 - NANDA ILHAM</option>
                                     <option value="B0658">B0658 - NASHRUL HAKIM</option>
                                     <option value="B0701">B0701 - ADKHA JIHAD SETYAWAN</option>
+                                    <option value="B0809">B0809 - YUSRINA KARTIKA RISTANTI</option>
 
                                 </select>
                             </div>
