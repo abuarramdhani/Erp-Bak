@@ -20,7 +20,7 @@
 				<div class="col-md-2">
 				</div>
 				<div class="col-md-8">
-						<a target="_blank" href="<?php
+						<a href="<?php
 						if (base_url()=='http://erp.quick.com/')
 							{
 								echo str_replace('182.23.18.195','erp.quick.com',$dataEmployee[0]['gambar']);

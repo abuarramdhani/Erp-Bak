@@ -75,7 +75,7 @@
 			</table>
 		</div>
 		<div class="col-md-12 text-center">
-			<?php if (count($listData) > 20): ?>
+			<?php if (count($listData2) > 20): ?>
 				<button class="btn btn-info" id="aba_btnshowall">
 					Tampilkan Semua Data
 				</button>

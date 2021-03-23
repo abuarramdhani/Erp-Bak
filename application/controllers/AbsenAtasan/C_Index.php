@@ -65,6 +65,7 @@ class C_Index extends CI_Controller
 		$nama = trim($employee);
 		$noind = trim($this->session->user);
 		$data['listData'] = $this->M_absenatasan->getList($noind,$nama, 'limit 20');
+		$data['listData2'] = $this->M_absenatasan->getList($noind,$nama);
 		
 		$this->load->view('AbsenAtasan/V_CHeader',$data);
 		$this->load->view('V_Sidemenu',$data);
