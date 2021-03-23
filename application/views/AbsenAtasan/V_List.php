@@ -76,7 +76,7 @@
 		</div>
 		<div class="col-md-12 text-center">
 			<?php if (count($listData2) > 20): ?>
-				<button class="btn btn-info" id="aba_btnshowall">
+				<button class="btn btn-info" id="aba_btnshowall" onclick="this.remove()">
 					Tampilkan Semua Data
 				</button>
 			<?php endif ?>
