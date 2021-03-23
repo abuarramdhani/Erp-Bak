@@ -79,6 +79,7 @@ text-align: center;
                                         $newDate = date("d-M-Y", strtotime($tanggal));
                                         $qty = $key['qty'];
                                         $operator = $key['operator'];
+                                        $status_observasi = $key['status_observasi'];
                                   ?>
 
                                     <tr>
@@ -86,7 +87,9 @@ text-align: center;
                                       <td style="display: none;"></td>
                                       <td style="text-align:center; width:10%">
                                       <a class="btn btn-warning btn-md" title="Edit TSKK" href="<?=base_url('GeneratorTSKK/C_GenTSKK/EditTSKK/'.$id)?>"><span class="fa fa-pencil-square-o"></span></a>
-                                      <a class="btn btn-success btn-md" title="Export TSKK" href="<?=base_url('GeneratorTSKK/C_GenTSKK/exportExcel/'.$id)?>"><span class="fa fa-print"></span></a>                                       
+                                      <?php if ($status_observasi == 'publish'){ ?>
+                                        <a class="btn btn-success btn-md" title="Export TSKK" href="<?=base_url('GeneratorTSKK/C_GenTSKK/exportExcel/'.$id)?>"><span class="fa fa-print"></span></a>
+                                      <?php } ?>
                                       <!-- <a class="btn btn-danger btn-md" title="Delete TSKK" href="<?=base_url('GeneratorTSKK/C_GenTSKK/deleteData/'.$id)?>"><span class="fa fa-user-times"></span></a>  -->
                                       </td>
                                       <td><?php echo $judul_tskk; ?></td>

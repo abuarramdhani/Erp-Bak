@@ -306,6 +306,10 @@ function addRowObservationEdit() {
   // 2-10-2020 hia
   let no_gaes = $(`#tblObservasiEdit tbody tr`).length;
   nomor = Number(no_gaes) + 1;
+
+  if (nomor >= 8) {
+    $('#tableGenerate').addClass('table-responsive-custom');
+  }
   // KOLOM 1
   var html = '<tr class="nomor_' + nomor + '"><td class="posisi  bg-success first-col" title="Klik Untuk Menambah Elemen Disini" onclick="attachRowObservation(this)">' + nomor + '</td>';
   html += '<td><input type="checkbox" name="checkBoxParalel[' + (nomor - 1) + ']" value="PARALEL" class="checkBoxParalel"></td>'
@@ -2735,8 +2739,7 @@ function checkNilaiDistribusi() {
     })
     // $('#btnShow').click();
   } else {
-    $('#btnHidden').click();
-    return true;
+    $('#btnHidden').trigger('click');
   }
 }
 
@@ -2753,8 +2756,9 @@ function checkNilaiDistribusiObservasi() {
     })
     // $('#btnSaveObservation').click();
   } else {
-    $('#Observasi').submit();
-    return true;
+    $('#btnSaveObservationHidden').trigger('click');
+    // $('#Observasi').submit();
+    // return true;
   }
 }
 
@@ -2834,13 +2838,13 @@ function addRowIrregularJob() {
   var html = '<tr class="nmbr_' + nmbr + '"><td class="position" style="text-align:center;">' + nmbr + '</td>';
   console.log(nmbr);
   // KOLOM 2
-  html += '<td style="text-align: center;"><input type="text" class="form-control irregularJob" name="txtIrregularJob[]" id="irregularJob" placeholder="Input Irregular Job"></td>'
+  html += '<td style="text-align: center;"><input type="text" required class="form-control irregularJob" name="txtIrregularJob[]" id="irregularJob" placeholder="Input Irregular Job"></td>'
   // KOLOM 3
-  html += '<td style="text-align: center;"> <input type="number" onchange="countIrregularJobs(this)" style="text-align: center;" class="form-control ratio" name="txtRatioIrregular[]" id="ratio" placeholder="Input Ratio"></td>';
+  html += '<td style="text-align: center;"> <input type="number" required onchange="countIrregularJobs(this)" style="text-align: center;" class="form-control ratio" name="txtRatioIrregular[]" id="ratio" placeholder="Input Ratio"></td>';
   // KOLOM 4
-  html += '<td style="text-align: center;"> <input type="number" onchange="countIrregularJobs(this)" style="text-align: center;" class="form-control waktu" name="txtWaktuIrregular[]" id="waktu" placeholder="Input Waktu"></td>';
+  html += '<td style="text-align: center;"> <input type="number" required onchange="countIrregularJobs(this)" style="text-align: center;" class="form-control waktu" name="txtWaktuIrregular[]" id="waktu" placeholder="Input Waktu"></td>';
   // KOLOM 5
-  html += '<td style="text-align: center;" class="hasilIrregularJob" id="hasilIrregularJob"><input type="text" style="text-align: center;" class="form-control hasilIrregularJob" name="txtHasilWaktuIrregular[]" placeholder="Hasil" readonly></td>';
+  html += '<td style="text-align: center;" class="hasilIrregularJob" id="hasilIrregularJob"><input required type="text" style="text-align: center;" class="form-control hasilIrregularJob" name="txtHasilWaktuIrregular[]" placeholder="Hasil" readonly></td>';
   // KOLOM 6
   html += '<td style="text-align: center;"><i class="fa fa-times fa-2x deleteIrregularJob" id="deleteIrregularJob" onclick="deleteIrregularJobs(this)" style="color:red" title="Hapus Irregular Job"></i>&nbsp;&nbsp;<a class="fa fa-plus fa-2x fa-primary" onclick="addRowIrregularJob($(this))" title="Tambah Irregular Job"></td>';
   html += "</tr>";

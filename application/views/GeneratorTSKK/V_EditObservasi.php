@@ -303,6 +303,7 @@
 								$jenisInputPart = $key['jenis_input_part'];
                 $jenisInputElement = $key['jenis_input_element'];
                 $jenisInputMesin = $key['jenis_input_mesin'];
+                $status_observasi = $key['status_observasi'];
 						?>
                   <?php } } ?>
                   <!--Judul TSKK :-->
@@ -924,12 +925,12 @@
   ?>
             <tr class="nmbr_1">
               <td style="width: 5%; text-align:center;" class="position"><?php echo $no;?></td>
-              <td style="text-align: center;"> <input type="text" value="<?php echo $irregular_job;?>" class="form-control irregularJob" name="txtIrregularJob[]" id="irregularJob"></td>
-              <td style="text-align: center;"> <input type="number" value="<?php echo $ratio_irregular;?>" onchange="countIrregularJobs(this)" style="text-align: center;" class="form-control ratio" name="txtRatioIrregular[]"
+              <td style="text-align: center;"> <input type="text" value="<?php echo $irregular_job;?>" class="form-control irregularJob" name="txtIrregularJob[]" required id="irregularJob"></td>
+              <td style="text-align: center;"> <input type="number" required value="<?php echo $ratio_irregular;?>" onchange="countIrregularJobs(this)" style="text-align: center;" class="form-control ratio" name="txtRatioIrregular[]"
                   id="ratio"></td>
-              <td style="text-align: center;"> <input type="number" value="<?php echo $waktu_irregular;?>" onchange="countIrregularJobs(this)" style="text-align: center;" class="form-control waktu" name="txtWaktuIrregular[]"
+              <td style="text-align: center;"> <input type="number" required value="<?php echo $waktu_irregular;?>" onchange="countIrregularJobs(this)" style="text-align: center;" class="form-control waktu" name="txtWaktuIrregular[]"
                   id="waktu"></td>
-              <td style="text-align: center;" class="hasilIrregularJob" id="hasilIrregularJob"><input type="text" value="<?php echo $hasil_irregular_job;?>" style="text-align: center;" class="form-control hasilIrregularJob"
+              <td style="text-align: center;" class="hasilIrregularJob" id="hasilIrregularJob"><input type="text" required value="<?php echo $hasil_irregular_job;?>" style="text-align: center;" class="form-control hasilIrregularJob"
                   name="txtHasilWaktuIrregular[]" readonly></td>
               <td style="text-align: center;">
                 <i class="fa fa-times fa-2x deleteIrregularJob" id="deleteIrregularJob" onclick="deleteIrregularJobs(this)" style="color:red" title="Hapus Irregular Job"></i>&nbsp;&nbsp;
@@ -943,11 +944,23 @@
     </div>
 
   <br>
+   <div class="panel panel-default">
+     <div class="panel-heading text-left">
+       <label style="">Status Observasi</label>
+     </div>
+     <div class="panel-body">
+       <select class="select2" name="status_observasi" style="width:100%">
+         <option value="draft" <?php echo $status_observasi == 'draft' ? 'selected' : '' ?>>Belum Siap Cetak</option>
+         <option value="publish" <?php echo $status_observasi == 'publish' ? 'selected' : '' ?>>Siap Dicetak</option>
+       </select>
+     </div>
+   </div>
+
   <?php if ($sang_pembuat == $this->session->user): ?>
     <div class="col-lg-12" style="padding-top: 8px;">
       <div style="text-align: center;">
         <button type="submit" style="float: center; margin-right: 3%; margin-top: -0.5%; display: none" class="btn btn-primary" id="btnHidden"><i class="fa fa-floppy-o"></i> SIMPAN LEMBAR OBSERVASI</button>
-        <button type="button" onclick="checkNilaiDistribusiObservasi(this)" style="float: center; margin-left: 3%; margin-right: 5%; margin-top: -0.5%;" class="btn btn-primary" id="btnShow"><i class="fa fa-floppy-o"></i>
+        <button type="button" onclick="checkNilaiDistribusi(this)" style="float: center; margin-left: 3%; margin-right: 5%; margin-top: -0.5%;" class="btn btn-primary" id="btnShow"><i class="fa fa-floppy-o"></i>
           SIMPAN LEMBAR OBSERVASI</button>
         <!-- <a style="float: center; margin-right: 4%; margin-top: -0.5%;" class="btn btn-success" id="btnExportOBS" href="<?=base_url('GeneratorTSKK/C_Observation/exportObservation/'.$id)?>"><i class="fa fa-download"></i> EXPORT OBSERVATION</a>
   <button type="button" style="float: center; margin-right: 3%; margin-top: -0.5%;" class="btn btn-warning" data-toggle="modal" data-target="#Modalku<?php echo $id; ?>" id="btnImportOBS"><i class="fa fa-upload"></i> IMPORT OBSERVATION</button>										 -->
