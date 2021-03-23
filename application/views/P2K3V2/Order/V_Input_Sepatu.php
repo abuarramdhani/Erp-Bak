@@ -411,7 +411,14 @@
           pekerjaColumn.css({
             backgroundColor: '',
             color: ''
-          })
+          });
+          if(response.message.indexOf('Pekerja sudah pernah mengebon') != '-1'){
+            pekerjaColumn.css({
+              backgroundColor: '#f2f1a7',
+              color: '#000'
+            });
+            pekerjaColumn.append(`<p class="text-center"><b><i class="fa fa-lg fa-info-circle"></i> Peringatan : </b>${response.message}</p>`)
+          }
           $(element).closest('tr').attr('valid', 1)
         }
         latest_bon.html(`<span>${response.data.bon_terakhir}</span>`)

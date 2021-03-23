@@ -931,16 +931,10 @@ class M_Order extends CI_Model
      */
     public function getLatestBonSafetyShoes($noind)
     {
-        $sql = "SELECT noind, seksi, create_timestamp::date as date, no_bon FROM k3.tbon_sepatu WHERE noind = '$noind' ORDER BY create_timestamp DESC LIMIT 1";
-        return $this->db->query($sql)->row();
-        // abaikan
-        $this->db
-            ->select(['noind', 'seksi', 'create_timestamp as "date"'])
-            ->where('noind', $noind)
-            ->limit(1)
-            ->order_by('create_timestamp', 'DESC')
-            ->get_compiled_select('k3.tbon_sepatu', FALSE);
-        return $this->db->get()->row();
+        $sql = "SELECT tgl_transact from k3.tbon_sepatu where no_bon = '$nobon' order by tgl_transact desc limit 1";
+
+        $query = $this->erp->query($sql);
+        return $query->row()->tgl_transact;
     }
 
     /**
@@ -976,7 +970,7 @@ class M_Order extends CI_Model
                 $terakhir_bon = $terakhir_bon ? date('d-m-Y', strtotime($terakhir_bon->date)) : '';
 
                 $sql = "SELECT 
-                        tp.noind, tp.nama, tp.kodesie, ts.seksi, tpk.pekerjaan, '$ukuran' uk_sepatu, '{$item['item_code']}' item_code, '$sepatu' jenis_sepatu, now() create_timestamp, '$logged_user' user_, '$nobon' no_bon
+                        tp.noind, trim(tp.nama) nama, tp.kodesie, ts.seksi, tpk.pekerjaan, '$ukuran' uk_sepatu, '{$item['item_code']}' item_code, '$sepatu' jenis_sepatu, now() create_timestamp, '$logged_user' user_, '$nobon' no_bon
                     FROM 
                         hrd_khs.tpribadi tp 
                         inner join hrd_khs.tseksi ts on tp.kodesie = ts.kodesie
@@ -1178,5 +1172,28 @@ class M_Order extends CI_Model
     {
         $this->db->insert('k3.tbon_sepatu', $data);
         return $this->db->affected_rows();
+    }
+
+    public function getLatestTransactSafetyShoes($nobon, $bon_date, $gudang)
+    {
+        $sql = "SELECT DISTINCT to_char(TRANSACTION_DATE, 'DD-MM-YYYY')TGL  FROM MTL_MATERIAL_TRANSACTIONS mmt WHERE TRANSACTION_SOURCE_NAME = 'BPPBG $nobon'
+        AND TRANSACTION_UOM = 'SET' AND SUBINVENTORY_CODE = '$gudang' AND TRANSACTION_MODE = 8 AND MVT_STAT_STATUS = 'NEW'
+        AND INVOICED_FLAG = 'N'
+        AND CREATION_DATE >= DATE '$bon_date'
+        AND PROGRAM_ID = 36119
+        AND PROGRAM_APPLICATION_ID = 702
+        AND ORGANIZATION_ID = 102
+        AND TRANSACTION_TYPE_ID = 125
+        AND TRANSACTION_ACTION_ID = 1
+        AND TRANSACTION_SOURCE_TYPE_ID = 13";
+
+        $query = $this->oracle->query($sql);
+        return $query->row();
+    }
+
+    public function getPeriodeSafetyShoes($kodesie)
+    {
+        $kodesie = substr($kodesie, 0, 7);
+        return $this->db->query("select trim(periode)periode from \"k3\".tbon_sepatu_periode where left(kodesie,7) = '$kodesie'")->row();
     }
 }
