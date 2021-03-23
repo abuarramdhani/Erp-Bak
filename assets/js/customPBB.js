@@ -140,7 +140,7 @@ $('.pbb_io').on('change', function() {
 
 $('.pbb_sudah_pilih_io').on('click', function() {
   if ($('.pbb_io').val() == '') {
-    swalPBB('Pilih IO Dulu!');
+    swalPBB('warning','Pilih IO Dulu!');
   }
 })
 
