@@ -213,7 +213,7 @@ $(document).ready(function () {
                 if (resp[0]["EKSPEDISI"] == null) {
                   // $(".ekspedisiDSP").val(" - ");
                   $(".ekspedisiDSP").html(
-                    '<option></option><option value="ADEX">ADEX</option><option value="BARANG TRUK">BARANG TRUK</option><option value="INDIE">INDIE</option><option value="JNE">JNE</option><option value="JNT">JNT</option><option value="KGP">KGP</option><option value="POS">POS</option><option value="QDS 1">QDS 1</option><option value="QDS 2">QDS 2</option><option value="SADANA">SADANA</option><option value="TAM">TAM</option><option value="TIKI">TIKI</option>'
+                    '<option></option><option value="ADEX">ADEX</option><option value="BARANG TRUK">BARANG TRUK</option><option value="INDIE">INDIE</option><option value="KGP">KGP</option><option value="POS KILAT KHUSUS">POS KILAT KHUSUS</option><option value="QDS 1">QDS 1</option><option value="QDS 2">QDS 2</option><option value="SADANA">SADANA</option><option value="TAM">TAM</option><option value="JPM">JPM</option><option value="JNE OKE">JNE OKE</option><option value="JNE REGULER">JNE REGULER</option><option value="JNE YES">JNE YES</option><option value="JNE TRUCKING">JNE TRUCKING</option><option value="J&T REGULER / EZ">J&T REGULER / EZ</option><option value="J&T DFOD">J&T DFOD</option><option value="TIKI ECO">TIKI ECO</option><option value="TIKI REGULER">TIKI REGULER</option><option value="TIKI ONS">TIKI ONS</option><option value="SICEPAT GOKIL">SICEPAT GOKIL</option><option value="SICEPAT REGULER">SICEPAT REGULER</option><option value="SICEPAT SIUNTUNG">SICEPAT SIUNTUNG</option><option value="LION PARCEL">LION PARCEL</option><option value="GRAB / GOJEK">GRAB / GOJEK</option><option value="PENGAMBILAN DI KANTOR">PENGAMBILAN DI KANTOR</option>'
                   );
                 } else {
                   if (resp[0]["EKSPEDISI"].indexOf("#") != -1) {
@@ -235,7 +235,7 @@ $(document).ready(function () {
                     $(".ekspedisiDSP").append(newOption).trigger("change");
                     $(".ekspedisiDSP")
                       .append(
-                        '<option value="ADEX">ADEX</option><option value="BARANG TRUK">BARANG TRUK</option><option value="INDIE">INDIE</option><option value="JNE">JNE</option><option value="JNT">JNT</option><option value="KGP">KGP</option><option value="POS">POS</option><option value="QDS 1">QDS 1</option><option value="QDS 2">QDS 2</option><option value="SADANA">SADANA</option><option value="TAM">TAM</option><option value="TIKI">TIKI</option><option value="JPM">JPM</option>'
+                        '<option value="ADEX">ADEX</option><option value="BARANG TRUK">BARANG TRUK</option><option value="INDIE">INDIE</option><option value="KGP">KGP</option><option value="POS KILAT KHUSUS">POS KILAT KHUSUS</option><option value="QDS 1">QDS 1</option><option value="QDS 2">QDS 2</option><option value="SADANA">SADANA</option><option value="TAM">TAM</option><option value="JPM">JPM</option><option value="JNE OKE">JNE OKE</option><option value="JNE REGULER">JNE REGULER</option><option value="JNE YES">JNE YES</option><option value="JNE TRUCKING">JNE TRUCKING</option><option value="J&T REGULER / EZ">J&T REGULER / EZ</option><option value="J&T DFOD">J&T DFOD</option><option value="TIKI ECO">TIKI ECO</option><option value="TIKI REGULER">TIKI REGULER</option><option value="TIKI ONS">TIKI ONS</option><option value="SICEPAT GOKIL">SICEPAT GOKIL</option><option value="SICEPAT REGULER">SICEPAT REGULER</option><option value="SICEPAT SIUNTUNG">SICEPAT SIUNTUNG</option><option value="LION PARCEL">LION PARCEL</option><option value="GRAB / GOJEK">GRAB / GOJEK</option><option value="PENGAMBILAN DI KANTOR">PENGAMBILAN DI KANTOR</option>'
                       )
                       .trigger("change");
                   } else {
@@ -527,39 +527,42 @@ function updateEkspedisi() {
   });
 }
 $(document).ready(function () {
-  $.ajax({
-    beforeSend: function () {
-      $("div#arsipDepebeh").html(
-        '<center><img style="width:100px; height:auto" src="' +
-          baseurl +
-          'assets/img/gif/loading11.gif"><br><label>Loading, Please Wait .....</label></center>'
-      );
-    },
-    url: baseurl + "DPBSparepart/Admin/getArsipDPB",
-    success: function (response) {
-      $("#arsipDepebeh").html(response);
-      var date = new Date();
-      date.setDate(date.getDate() - 30);
+  var view = document.getElementById("view_arsippp");
+  if (view) {
+    $.ajax({
+      beforeSend: function () {
+        $("div#arsipDepebeh").html(
+          '<center><img style="width:100px; height:auto" src="' +
+            baseurl +
+            'assets/img/gif/loading11.gif"><br><label>Loading, Please Wait .....</label></center>'
+        );
+      },
+      url: baseurl + "DPBSparepart/Admin/getArsipDPB",
+      success: function (response) {
+        $("#arsipDepebeh").html(response);
+        var date = new Date();
+        date.setDate(date.getDate() - 30);
 
-      var datenow = new Date();
-      datenow.setDate(datenow.getDate());
+        var datenow = new Date();
+        datenow.setDate(datenow.getDate());
 
-      var dateago = date.toISOString().split("T")[0];
-      var datetoday = datenow.toISOString().split("T")[0];
+        var dateago = date.toISOString().split("T")[0];
+        var datetoday = datenow.toISOString().split("T")[0];
 
-      $(".tblarsipdpb").dataTable({
-        paging: false,
-        scrollX: true,
-        scrollY: 500,
-        searching: true,
-        dom: "Bfrtip",
-        buttons: [
-          {
-            extend: "excelHtml5",
-            title: "Arsip SPB / DO Tanggal " + dateago + " s/d " + datetoday,
-          },
-        ],
-      });
-    },
-  });
+        $(".tblarsipdpb").dataTable({
+          paging: false,
+          scrollX: true,
+          scrollY: 500,
+          searching: true,
+          dom: "Bfrtip",
+          buttons: [
+            {
+              extend: "excelHtml5",
+              title: "Arsip SPB / DO Tanggal " + dateago + " s/d " + datetoday,
+            },
+          ],
+        });
+      },
+    });
+  }
 });
