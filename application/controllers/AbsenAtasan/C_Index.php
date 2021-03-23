@@ -44,10 +44,10 @@ class C_Index extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$this->load->view('V_Header',$data);
+		$this->load->view('AbsenAtasan/V_CHeader',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('AbsenAtasan/V_Index',$data);
-		$this->load->view('V_Footer',$data);
+		$this->load->view('AbsenAtasan/V_CFooter',$data);
 		}
 
 		public function listData(){
@@ -64,12 +64,12 @@ class C_Index extends CI_Controller
 		$employee = $this->session->employee;
 		$nama = trim($employee);
 		$noind = trim($this->session->user);
-		$data['listData'] = $this->M_absenatasan->getList($noind,$nama);
+		$data['listData'] = $this->M_absenatasan->getList($noind,$nama, 'limit 20');
 		
-		$this->load->view('V_Header',$data);
+		$this->load->view('AbsenAtasan/V_CHeader',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('AbsenAtasan/V_List',$data);
-		$this->load->view('V_Footer',$data);
+		$this->load->view('AbsenAtasan/V_CFooter',$data);
 		}
 
 		public function getAtasan(){
@@ -133,13 +133,22 @@ class C_Index extends CI_Controller
 		$data['dataEmployee'] = $this->M_absenatasan->getListAbsenById($id);
 
 		$noinduk = $data['dataEmployee'][0]['noind'];
+		$gambar = $data['dataEmployee'][0]['gambar'];
+		if (base_url()=='http://erp.quick.com/'){
+			$gambar = str_replace('182.23.18.195','erp.quick.com',$gambar);
+		}
+
+		$type = pathinfo($gambar, PATHINFO_EXTENSION);
+		$file = file_get_contents($gambar);
+		$base64 = 'data:image/' . $type . ';base64,' . base64_encode($file);
+		$data['gambar'] = $base64;
 
 		$data['employeeInfo'] = $this->M_absenatasan->getEmployeeInfo($noinduk);
 		// echo "<pre>";print_r($data['dataEmployee']);exit();
-		$this->load->view('V_Header',$data);
+		$this->load->view('AbsenAtasan/V_CHeader',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('AbsenAtasan/V_Approval',$data);
-		$this->load->view('V_Footer',$data);
+		$this->load->view('AbsenAtasan/V_CFooter',$data);
 		}
 
 
@@ -848,7 +857,16 @@ class C_Index extends CI_Controller
 				
 
 
-			}		
-	}
+			}
 
-?>
+		public function getListAbsenAll()
+		{
+			$employee = $this->session->employee;
+			$nama = trim($employee);
+			$noind = trim($this->session->user);
+			$data['listData'] = $this->M_absenatasan->getList($noind,$nama);
+
+			$table = $this->load->view('AbsenAtasan/V_Table',$data, true);
+			echo $table;
+		}
+	}

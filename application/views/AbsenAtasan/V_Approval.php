@@ -20,7 +20,7 @@
 				<div class="col-md-2">
 				</div>
 				<div class="col-md-8">
-						<a href="<?php
+						<a target="_blank" href="<?php
 						if (base_url()=='http://erp.quick.com/')
 							{
 								echo str_replace('182.23.18.195','erp.quick.com',$dataEmployee[0]['gambar']);
@@ -32,18 +32,7 @@
 
 
 						 ?>">
-							<img src="<?php 
-
-							if (base_url()=='http://erp.quick.com/')
-								{
-									echo str_replace('182.23.18.195','erp.quick.com',$dataEmployee[0]['gambar']);
-								}
-								else
-								{
-									echo $dataEmployee[0]['gambar'];
-								}
-
-							?>" style="width: 300px;height: 300px;margin-bottom: 15px;"/> 
+							<img src="<?= $gambar ?>" style="width: 300px;height: 300px;margin-bottom: 15px;"/> 
 						</a>
 				</div>
 			</div>
