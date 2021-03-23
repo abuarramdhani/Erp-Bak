@@ -264,6 +264,7 @@
 								$jenisInputPart = $key['jenis_input_part'];
 								$jenisInputElement = $key['jenis_input_element'];
                 $jenisInputMesin = $key['jenis_input_mesin'];
+                $status_observasi = $key['status_observasi'];
 						?>
                   <?php } } ?>
                   <!--Judul TSKK :-->
@@ -273,7 +274,17 @@
                   <input type="text" style="width:17%; height:34px; text-align:center;" value="<?php echo $tanggal ?>" placeholder="Input Tanggal" name="txtTanggal" id="txtTanggalGenerate" class="lockscreen-credentials txtTanggal" readonly required />
                 </div>
                 <div class="panel-body">
+
                   <div class="row">
+                    <?php if ($status_observasi == 'draft'){ ?>
+                      <div class="col-md-12 mb-5 mt-2">
+                        <center>
+                        <div class="badge badge-secondary" style="font-size:14px">
+                          <b>Observasi Belum Siap Cetak</b>, lengkapi data kemudian ubah status menjadi "Siap Cetak".
+                        </div>
+                      </center>
+                      </div>
+                    <?php }?>
                     <!--PART-->
                     <div class="col-lg-4">
                       <input hidden class="form-control idTSKK" style="display:none" value="<?php echo $id; ?>">
@@ -896,7 +907,11 @@
                         </div>
                         <div class="col-lg-12" style="padding-top: 8px; padding-bottom: 15px;">
                           <div style="text-align: center;">
-                            <button type="button" onclick="generateTSKK(this)" style="float: center; margin-right: 3%; margin-top: -0.5%;" class="btn btn-primary" id="generate" target="_blank"></i>GENERATE TSKK</button>
+                            <?php if ($status_observasi == 'publish'){ ?>
+                              <button type="button" onclick="generateTSKK(this)" style="float: center; margin-right: 3%; margin-top: -0.5%;" class="btn btn-primary" id="generate" target="_blank"></i>GENERATE TSKK</button>
+                            <?php }else{ ?>
+                              <button type="button" style="float: center; margin-right: 3%; margin-top: -0.5%;" class="btn btn-secondary"></i>BELUM SIAP CETAK</button>
+                            <?php } ?>
                           </div>
                         </div>
                       </div>

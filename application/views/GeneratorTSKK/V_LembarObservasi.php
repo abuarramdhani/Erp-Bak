@@ -691,12 +691,11 @@
                         </div>
                       </div>
                     </div>
-  </form>
   </div>
   <br>
   <div class="panel panel-default">
     <div class="panel-heading text-left">
-      <label style="margin-left: 2%;">Input Irregular Job</label>
+      <label>Input Irregular Job</label>
     </div>
     <div class="panel-body">
       <table class="datatable table table-striped table-bordered table-hover tabel_irregular_job" style="width: 100%">
@@ -726,19 +725,36 @@
       </table>
     </div>
   </div>
-  <div class="col-lg-12" style="padding-top: 8px;">
+  <br>
+   <div class="panel panel-default">
+     <div class="panel-heading text-left">
+       <label style="">Status Observasi</label>
+     </div>
+     <div class="panel-body">
+       <select class="select2" name="status_observasi" style="width:100%" required>
+         <option value="publish" selected>Siap Dicetak</option>
+         <option value="draft">Belum Siap Cetak</option>
+       </select>
+     </div>
+   </div>
+
+  <div class="col-md-12" style="padding-top:8px">
     <div style="text-align:center;">
       <button type="submit" style="float: center; margin-right: 3%; margin-top: -0.5%;  display: none" class="btn btn-primary btn-md" id="btnSaveObservationHidden"><i class="fa fa-floppy-o "></i> SIMPAN LEMBAR OBSERVASI</button>
       <button type="button" onclick="checkNilaiDistribusiObservasi(this)" style="float: center; margin-right: 3%; margin-top: -0.5%;" class="btn btn-primary btn-md" id="btnSaveObservation"><i class="fa fa-floppy-o "></i> SIMPAN LEMBAR
         OBSERVASI</button>
     </div>
+    <br>
   </div>
-  <br>
   </div>
+
+</form>
 
   <button type="button" onclick="addRowObservation($(this))" id="myBtn" class="fa fa-plus fa-lg"
     style=" position: fixed;  bottom: 50px;  right: 45px;  z-index: 99;  font-size: 30px  text-center;  border: none; outline: none; background-color: green; color: white; cursor: pointer; width:35px; height:35px; border-radius: 50%;"
-    title="Tambah Elemen"></button>
+    title="Tambah Elemen">
+  </button>
+
 
   <script>
     // When the user scrolls down 20px from the top of the document, show the button

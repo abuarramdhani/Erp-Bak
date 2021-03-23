@@ -532,6 +532,8 @@ public function saveObservation(){
     $dari 	          = $this->input->post('txtDariProses');
     $tanggal          = $this->input->post('txtTanggal');
     $qty 	          = $this->input->post('txtQtyProses');
+
+		$status_observasi  = $this->input->post('status_observasi');
     // die;
     //SEKSI PEMBUAT
     $noind = $this->session->user;
@@ -560,7 +562,7 @@ public function saveObservation(){
                   $proses,$kode_proses,$jenis_mesin,$proses_ke,$dari,$tanggal,$qty,$nm,
                   $nilai_distribusi,$takt_time,$no_mesin,$resource,$line,$alat_bantu,$tools,
                   $jml_operator,$dr_operator,$seksi_pembuat,$jenis_inputPart,$jenis_inputEquipment,
-                  $sang_pembuat,$creationDate, $jenis_inputEquipmentMesin);
+                  $sang_pembuat,$creationDate, $jenis_inputEquipmentMesin, $status_observasi);
 
     // echo"<pre>";print_r($saveHeader);
     // die;
@@ -1434,7 +1436,7 @@ public function exportExcel($idnya){
                     'tipe_urutan'       => $tipe_urutan[$i],
                     'mulai'             => $start[$i],
                     'finish'            => $finish[$i],
-                    'waktu'             => $waktu[$i],
+                    'waktu'             => !empty($waktu[$i]) ? $waktu[$i] : 0,
                     'muda'              => $start[$i] - $finish[$i-1],
                     'id_tskk'           => $id_tskk
                 );
@@ -1446,7 +1448,7 @@ public function exportExcel($idnya){
                     'tipe_urutan'       => $tipe_urutan[$i],
                     'mulai'             => $start[$i],
                     'finish'            => $finish[$i],
-                    'waktu'             => $waktu[$i],
+                    'waktu'             => !empty($waktu[$i]) ? $waktu[$i] : 0,
                     'muda'              => 1,
                     'id_tskk'           => $id_tskk
                 );
@@ -1467,7 +1469,7 @@ public function exportExcel($idnya){
                     'tipe_urutan'       => $tipe_urutan[$i],
                     'mulai'             => $start[$i],
                     'finish'            => $finish[$i],
-                    'waktu'             => $waktu[$i],
+                    'waktu'             => !empty($waktu[$i]) ? $waktu[$i] : 0,
                     'muda'              => $start[$i] - $finish[$i-1],
                     'id_tskk'           => $id_tskk
                 );
@@ -1479,7 +1481,7 @@ public function exportExcel($idnya){
                     'tipe_urutan'       => $tipe_urutan[$i],
                     'mulai'             => $start[$i],
                     'finish'            => $finish[$i],
-                    'waktu'             => $waktu[$i],
+                    'waktu'             => !empty($waktu[$i]) ? $waktu[$i] : 0,
                     'muda'              => 1,
                     'id_tskk'           => $id_tskk
                 );
@@ -1505,12 +1507,22 @@ public function exportExcel($idnya){
 		}else {
 			$dataTakTime        = $this->M_gentskk->selectTaktTimeCalculation($id_tskk);
 			// echo "<pre>";print_r($dataTakTime);die;
-			$waktu_satu_shift   = $dataTakTime[0]['waktu_satu_shift'];
-			$jumlah_shift       = $dataTakTime[0]['jumlah_shift'];
-			$forecast           = $dataTakTime[0]['forecast'];
-			$qty_unit           = $dataTakTime[0]['qty_unit'];
-			$rencana_produksi   = $dataTakTime[0]['forecast'] * $dataTakTime[0]['qty_unit'];
-			$jumlah_hari_kerja  = $dataTakTime[0]['jumlah_hari_kerja'];
+			if (!empty($dataTakTime)) {
+				$waktu_satu_shift   = $dataTakTime[0]['waktu_satu_shift'];
+				$jumlah_shift       = $dataTakTime[0]['jumlah_shift'];
+				$forecast           = $dataTakTime[0]['forecast'];
+				$qty_unit           = $dataTakTime[0]['qty_unit'];
+				$rencana_produksi   = $dataTakTime[0]['forecast'] * $dataTakTime[0]['qty_unit'];
+				$jumlah_hari_kerja  = $dataTakTime[0]['jumlah_hari_kerja'];
+			}else {
+				$waktu_satu_shift   = 0;
+				$jumlah_shift       = 0;
+				$forecast           = 0;
+				$qty_unit           = 0;
+				$rencana_produksi   = 0;
+				$jumlah_hari_kerja  = 0;
+			}
+
 		}
 
 
