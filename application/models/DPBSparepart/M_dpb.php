@@ -261,13 +261,17 @@ class M_dpb extends CI_Model
                 WHEN (SELECT DISTINCT wdd.batch_id
                     FROM wsh_delivery_details wdd
                     WHERE wdd.batch_id = '$noDPB') IS NOT NULL THEN -- parameter
-                (SELECT DISTINCT    hl.address1
+                (SELECT DISTINCT  hp.PARTY_NAME 
+                        ||', '
+                        || hl.address1
                         || ', '
                         || hl.city
                         || ', '
                         || hl.province city
-                    FROM wsh_delivery_details wdd, hz_locations hl
+                    FROM wsh_delivery_details wdd, hz_locations hl, HZ_CUST_ACCOUNTS hca ,HZ_PARTIES hp
                     WHERE wdd.ship_to_location_id = hl.location_id
+                    AND wdd.CUSTOMER_ID = hca.CUST_ACCOUNT_ID
+                    AND hca.PARTY_ID = hp.PARTY_ID
                     AND wdd.batch_id = '$noDPB') -- parameter
                 ELSE 
                     null
@@ -282,12 +286,13 @@ class M_dpb extends CI_Model
             h1.tgl_kirim,
             h1.so,
             h1.ekspedisi,
-            h1.opk
+            h1.opk,
+            h1.ORGANIZATION_ID
         FROM 
         (
             select mtrh.description, mtrh.attribute15 ekspedisi,
                     mtrh.attribute6 tgl_kirim, mtrh.attribute7 so,
-                    mtrh.attribute8 opk, mtrh.request_number
+                    mtrh.attribute8 opk, mtrh.request_number, mtrh.ORGANIZATION_ID
             from mtl_txn_request_headers mtrh
             where request_number = '$noDPB'
         ) h1");
