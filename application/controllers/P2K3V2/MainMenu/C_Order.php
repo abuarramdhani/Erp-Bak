@@ -2651,7 +2651,7 @@ class C_Order extends CI_Controller
 				$today = date_create(date('Y-m-d'));
 				$latest = date_create($transact);
 				$diff = date_diff($latest, $today);
-				$canBon = $diff->format('%y')*12+$diff->format('%m') <= $periode;
+				$canBon = $diff->format('%y')*12+$diff->format('%m') >= $periode;
 				if (!$canBon) return $this->response(true, [
 					'bon_terakhir' => isset($transact) ? $transact : '-'
 				], "Pekerja sudah pernah bon sepatu kerja dalam waktu dekat");
@@ -2675,9 +2675,13 @@ class C_Order extends CI_Controller
 						], "Pekerja sudah pernah mengebon dengan nomor $nobon");
 				}
 				if (isset($arrN[$noind]) && $arrN[$noind] == 'Y') {
+					$today = date_create(date('Y-m-d'));
+					$latest = date_create($transact);
+					$diff = date_diff($latest, $today);
+					$canBon = $diff->format('%y')*12+$diff->format('%m') >= $periode;
 					return $this->response(true, [
-					'bon_terakhir' => isset($transact) ? $transact : '-'
-				], "Pekerja sudah pernah bon sepatu kerja dalam waktu dekat");
+						'bon_terakhir' => isset($transact) ? $transact : '-'
+						], "Pekerja sudah pernah bon sepatu kerja dalam waktu dekat");
 				}
 			}
 		}
