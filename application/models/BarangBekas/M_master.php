@@ -5,7 +5,7 @@ class M_master extends CI_Model
     {
         parent::__construct();
         $this->load->database();
-        $this->oracle = $this->load->database('oracle_dev', true);
+        $this->oracle = $this->load->database('oracle', true);
     }
 
     public function getSeksi($value='')
@@ -184,8 +184,8 @@ class M_master extends CI_Model
     */
     function pbb_api_transact($no_doc)
     {
-        $conn = oci_connect('APPS', 'APPS', '192.168.7.3:1522/DEV');
-        // $conn = oci_connect('APPS', 'APPS', '192.168.7.1:1521/PROD');
+        // $conn = oci_connect('APPS', 'APPS', '192.168.7.3:1522/DEV');
+        $conn = oci_connect('APPS', 'APPS', '192.168.7.1:1521/PROD');
 
         if (!$conn) {
             $e = oci_error();
@@ -193,7 +193,7 @@ class M_master extends CI_Model
         }
 
         // exec khs_ascp_estimasi_kebutuhan (4, 66452, 102);
-        $sql =  "BEGIN khs_miscellaneous_trial($no_doc); END;";
+        $sql =  "BEGIN khs_miscellaneous_barkas($no_doc); END;";
 
         //Statement does not change
         $stmt = oci_parse($conn, $sql);
