@@ -31,7 +31,7 @@
                     <div class="col-md-12">
                         <div class="box box-primary box-solid">
                             <div class="box-header with-border"><b>Arsip</b></div>
-                            <div class="box-body">
+                            <div class="box-body" id="view_arsippp">
                                 <div class="col-md-12 text-right">
                                     <label class="control-label"><?php echo gmdate("l, d F Y, H:i:s", time() + 60 * 60 * 7) ?></label>
                                 </div>
