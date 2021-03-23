@@ -286,12 +286,13 @@ class M_dpb extends CI_Model
             h1.tgl_kirim,
             h1.so,
             h1.ekspedisi,
-            h1.opk
+            h1.opk,
+            h1.ORGANIZATION_ID
         FROM 
         (
             select mtrh.description, mtrh.attribute15 ekspedisi,
                     mtrh.attribute6 tgl_kirim, mtrh.attribute7 so,
-                    mtrh.attribute8 opk, mtrh.request_number
+                    mtrh.attribute8 opk, mtrh.request_number, mtrh.ORGANIZATION_ID
             from mtl_txn_request_headers mtrh
             where request_number = '$noDPB'
         ) h1");
