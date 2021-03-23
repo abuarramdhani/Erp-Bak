@@ -61,8 +61,6 @@ class C_Index extends CI_Controller
 		$data['daftar_pekerjaan']	= $this->M_order->daftar_pekerjaan($ks);
 		$data['seksi'] = '';
 		$data['seksi'] = $this->M_dtmasuk->cekseksi($ks);
-		// echo "<pre>";
-		// print_r($data['list']);exit();
 
 		$this->load->view('V_Header', $data);
 		$this->load->view('V_Sidemenu', $data);
@@ -3529,5 +3527,35 @@ class C_Index extends CI_Controller
 		} else {
 			echo '<center><ul class="list-group"><li class="list-group-item">' . 'Kodesie tidak ditemukan' . '</li></ul></center>';
 		}
+	}
+
+	public function PeriodeSafetyShoes()
+	{
+		$user1 = $this->session->user;
+		$user_id = $this->session->userid;
+		$kodesie = $this->session->kodesie;
+
+		$data['Title'] = 'Setup';
+		$data['Menu'] = 'Setup';
+		$data['SubMenuOne'] = 'Periode Safety Shoes';
+		$data['SubMenuTwo'] = '';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
+
+		$data['periode'] = $this->M_dtmasuk->GetPeriodeSepatu();
+		$this->load->view('V_Header', $data);
+		$this->load->view('V_Sidemenu', $data);
+		$this->load->view('P2K3V2/P2K3Admin/APD/V_Admin_Setup_Periode_SafetyShoes', $data);
+		$this->load->view('V_Footer', $data);
+	}
+
+	public function EditPeriodeSafetyShoes()
+	{
+		$kodesie = $this->input->post('kodesie');
+		$periode = $this->input->post('periode');
+		$this->M_dtmasuk->UpdatePeriodeSepatu($kodesie, $periode);
+		redirect('p2k3adm_V2/Admin/PeriodeSafetyShoes');
 	}
 }

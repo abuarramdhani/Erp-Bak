@@ -976,7 +976,7 @@ class M_Order extends CI_Model
                 $terakhir_bon = $terakhir_bon ? date('d-m-Y', strtotime($terakhir_bon->date)) : '';
 
                 $sql = "SELECT 
-                        tp.noind, tp.nama, tp.kodesie, ts.seksi, tpk.pekerjaan, '$ukuran' uk_sepatu, '{$item['item_code']}' item_code, '$sepatu' jenis_sepatu, now() create_timestamp, '$logged_user' user_, '$nobon' no_bon
+                        tp.noind, trim(tp.nama) nama, tp.kodesie, ts.seksi, tpk.pekerjaan, '$ukuran' uk_sepatu, '{$item['item_code']}' item_code, '$sepatu' jenis_sepatu, now() create_timestamp, '$logged_user' user_, '$nobon' no_bon
                     FROM 
                         hrd_khs.tpribadi tp 
                         inner join hrd_khs.tseksi ts on tp.kodesie = ts.kodesie
@@ -1178,5 +1178,19 @@ class M_Order extends CI_Model
     {
         $this->db->insert('k3.tbon_sepatu', $data);
         return $this->db->affected_rows();
+    }
+
+    public function getLatestTransactSafetyShoes($nobon, $bon_date, $gudang)
+    {
+        $sql = "SELECT tgl_transact from k3.tbon_sepatu where no_bon = '$nobon' order by tgl_transact desc limit 1";
+
+        $query = $this->erp->query($sql);
+        return $query->row()->tgl_transact;
+    }
+
+    public function getPeriodeSafetyShoes($kodesie)
+    {
+        $kodesie = substr($kodesie, 0, 7);
+        return $this->db->query("select trim(periode)periode from \"k3\".tbon_sepatu_periode where left(kodesie,7) = '$kodesie'")->row();
     }
 }

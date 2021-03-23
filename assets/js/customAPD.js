@@ -1511,3 +1511,19 @@ function showSwal(d) {
 		},
 	});
 }
+
+$(document).ready(function () {
+	$('.tbl_periodeSafetyShoes').DataTable();
+
+	$(".btn_editPeriodeSafetyShoes").click(function () {
+		var kodesie = $(this).closest("tr").find("td.ess_kodesie").text();
+		var seksi = $(this).closest("tr").find("td.ess_seksi").text();
+		var periode = $(this).closest("tr").find("td.ess_periode").text();
+
+		$("#editSafetyShoes_Kodesie").val(kodesie.substring(0, 7));
+		$("#editSafetyShoes_Kodesie2").val(kodesie);
+		$("#editSafetyShoes_Seksi").val(seksi);
+		$("#editSafetyShoes_Periode").val(periode);
+		$("#editSafetyShoes_Modal").modal("show");
+	});
+});

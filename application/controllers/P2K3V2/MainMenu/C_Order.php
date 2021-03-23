@@ -2616,6 +2616,7 @@ class C_Order extends CI_Controller
 		$noind = $this->input->get('noind');
 		$decrease = (int) $this->input->get('decrease');
 		$user_logged = $this->session->user;
+		$kodesie = $this->session->kodesie;
 		$pkj_lok = $this->M_order->getDetailPekerja($user_logged)->row()->lokasi_kerja;
 		if (intval($pkj_lok) == 2) {
 			$lokasi = '16103';
@@ -2624,64 +2625,68 @@ class C_Order extends CI_Controller
 			$lokasi = '142';
 			$gudang = 'PNL-DM';
 		}
-
 		$latestBon = $this->M_order->getLatestBonSafetyShoes($noind);
 		$safetyShoes = $this->M_order->getStockSafetyShoesById($no_apd, $gudang);
-
+		$periode = $this->M_order->getPeriodeSafetyShoes($kodesie);
+		$periode = $periode->periode;
 		if (!$safetyShoes) return $this->response(true, [
 			'bon_terakhir' => isset($latestBon->date) ? $latestBon->date : '-'
 		], "Sepatu tidak ada di database gudang");
-
 		// jumlah aktual stock, dikurangi sepatu yang sudah dipilih di frontend
 		$safetyShoes->stock = (int) $safetyShoes->STOCK - (int) $decrease;
-
 		// TODO : FIX THIS LOGIC
 		if ($safetyShoes->stock == 0) return $this->response(true, [
 			'bon_terakhir' => isset($latestBon->date) ? $latestBon->date : '-'
 		], "Stock {$safetyShoes->DESCRIPTION} Kosong");
 		// if ($safetyShoes->stock < $requestBon) return $this->response();
-
 		/*
 		|--------------------------------------------------|
 		|	Check bon terakhir noind di database bon sepatu? |
 		|--------------------------------------------------|
 		*/
 		if (!empty($latestBon)) {
-			$nobon = $latestBon->no_bon;
-			$cekRombongannya = $this->M_order->getNobondtl($nobon);
-			$id_orc = array_column($cekRombongannya, 'id_oracle');
-			$id_orc = implode(',', $id_orc);
-			$transcT = $this->M_dtmasuk->getTranscT($id_orc, $nobon);
-			$x = 0;
-			foreach ($transcT as $key) {
-				$transcT[$x]['noind'] = explode(' - ', $key['KETERANGAN'])[0];
-				$x++;
-			}
-			$arrF = array_column($transcT, 'FLAG');
-			$arrN = array_column($transcT, 'FLAG', 'noind');
-			if (in_array('Y', $arrF) && $arrN[$noind] == 'N' && 1 == 2) {
-				//skip
-			} else {
+			$latestTransact = $this->M_order->getLatestTransactSafetyShoes($latestBon->no_bon, $latestBon->date, $gudang);
+			if (!empty($latestTransact)) {
+				$transact = $latestTransact;
 				$today = date_create(date('Y-m-d'));
-				$latest = date_create($latestBon->date);
-				if ($latestBon->seksi == 'UP2L') {
-					// Rentang waktu sekarang dengan waktu bon sebelumnya
-					$moreThan9Month = date_diff($today, $latest)->m > 9;
-					if (!$moreThan9Month) return $this->response(true, [
-						'bon_terakhir' => isset($latestBon->date) ? $latestBon->date : '-'
-					], "Pekerja sudah pernah bon sepatu kerja dalam waktu dekat");
-				} else {
-					// Rentang waktu sekarang dengan waktu bon sebelumnya
-					$moreThan1Year = date_diff($today, $latest)->y > 0;
-					if (!$moreThan1Year) return $this->response(true, [
-						'bon_terakhir' => isset($latestBon->date) ? $latestBon->date : '-'
-					], "Pekerja sudah pernah bon sepatu kerja dalam waktu dekat");
+				$latest = date_create($transact);
+				$diff = date_diff($latest, $today);
+				$canBon = $diff->format('%y')*12+$diff->format('%m') >= $periode;
+				if (!$canBon) return $this->response(true, [
+					'bon_terakhir' => isset($transact) ? $transact : '-'
+				], "Pekerja sudah pernah bon sepatu kerja dalam waktu dekat");
+			}else{
+				$nobon = $latestBon->no_bon;
+				$last = null;
+				$cekRombongannya = $this->M_order->getNobondtl($nobon);
+				$id_orc = array_column($cekRombongannya, 'id_oracle');
+				$id_orc = implode(',', $id_orc);
+				$transcT = $this->M_dtmasuk->getTranscT($id_orc, $nobon);
+				$transact = $transcT[0]['TANGGAL'];
+				$x = 0;
+				foreach ($transcT as $key) {
+					$transcT[$x]['noind'] = explode(' - ', $key['KETERANGAN'])[0];
+					$x++;
+				}
+				$arrN = array_column($transcT, 'FLAG', 'noind');
+				if (isset($arrN[$noind]) && $arrN[$noind] == 'N') {
+					return $this->response(false, [
+						'bon_terakhir' =>  '-'
+						], "Pekerja sudah pernah mengebon dengan nomor $nobon");
+				}
+				if (isset($arrN[$noind]) && $arrN[$noind] == 'Y') {
+					$today = date_create(date('Y-m-d'));
+					$latest = date_create($transact);
+					$diff = date_diff($latest, $today);
+					$canBon = $diff->format('%y')*12+$diff->format('%m') >= $periode;
+					return $this->response(true, [
+						'bon_terakhir' => isset($transact) ? $transact : '-'
+						], "Pekerja sudah pernah bon sepatu kerja dalam waktu dekat");
 				}
 			}
 		}
-
 		return $this->response(false, [
-			'bon_terakhir' => isset($latestBon->date) ? $latestBon->date : '-'
+			'bon_terakhir' => isset($transact) ? $transact : '-'
 		], "Pekerja dapat mengebon sepatu");
 	}
 
