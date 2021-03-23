@@ -493,8 +493,9 @@ $db['design'] = array(
 	'save_queries' => TRUE,
 	'port' => '5432'
 );
+//di offkan dahulu karena absen menggunakan barcode, jika absen finger on, perlu diaktifkan kembali, data didatabasenya perlu ditambahkan lagi.
 
-$efg="";
+		/*$efg="";
 		$data = explode('.',$_SERVER['SERVER_NAME']);
 		if (!empty($data[0])) {
 			$efg = $data[0];
@@ -584,7 +585,7 @@ $efg="";
 			$db['pg_'.$row['id_lokasi'].'']['save_queries'] = TRUE;
 			$db['pg_'.$row['id_lokasi'].'']['port'] = 5432;
 			$db['pg_'.$row['id_lokasi'].'']['options'] = array(PDO::ATTR_TIMEOUT => 5);
-		}
+		}*/
 
 		$db['quickcom_orientasi'] = array(
 			'dsn'				=> '',
