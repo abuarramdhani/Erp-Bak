@@ -19,19 +19,19 @@
                                             <div class="col-md-8">
                                                 <select class="form-control select2" data-placeholder="Status Lppb" id="trx_type" name="trx_type">
                                                 <?php 
-                                                    if ($trx_type == TRANSFER){
-                                                        echo '<option value="TRANSFER">TRANSFER</option>';
-                                                    }elseif($trx_type == ACCEPT) {
+                                                    if ($trx_type == 'BELUM QC'){
+                                                        echo '<option value="RECEIVE">BELUM QC</option>';
+                                                    }elseif($trx_type == 'ACCEPT') {
                                                         echo '<option value="ACCEPT">ACCEPT</option>';
-                                                    }elseif($trx_type == REJECT) {
+                                                    }elseif($trx_type == 'REJECT') {
                                                         echo '<option value="REJECT">REJECT</option>';
                                                     }else {
                                                         echo '<option value=""></option>';
                                                     }
                                                 ?>
-                                                    <option>TRANSFER</option>
-                                                    <option>ACCEPT</option>
-                                                    <option>REJECT</option>
+                                                    <option value="RECEIVE">BELUM QC</option>
+                                                    <option value="ACCEPT">ACCEPT</option>
+                                                    <option value="REJECT">REJECT</option>
                                                 </select><br><br>
                                             </div>
                                         </div>
