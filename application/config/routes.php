@@ -5204,3 +5204,10 @@ $route['MonitoringLppbQC/KirimLppb/(:any)/(:any)']	= 'MonitoringLppbQC/Menu/C_Ki
 $route['MonitoringLppbQC/TerimaLppb']				= 'MonitoringLppbQC/Menu/C_TerimaLppb';
 $route['MonitoringLppbQC/TerimaLppb/(:any)']		= 'MonitoringLppbQC/Menu/C_TerimaLppb/$1';
 $route['MonitoringLppbQC/TerimaLppb/(:any)/(:any)']	= 'MonitoringLppbQC/Menu/C_TerimaLppb/$1/$2';
+
+//-------------------------------------------Monitoring Gudang Customable--------------------------------------------------//
+$route['MonitoringGudangCustomable'] = 'MonitoringGudangCustomable/C_Master';
+
+$route['MonitoringGudangCustomable/Monitoring'] = 'MonitoringGudangCustomable/C_Master/Monitoring';
+$route['MonitoringGudangCustomable/Monitoring/(:any)'] = 'MonitoringGudangCustomable/C_Master/$1';
+$route['MonitoringGudangCustomable/Monitoring/(:any)/(:any)'] = 'MonitoringGudangCustomable/C_Master/$1/$2';
