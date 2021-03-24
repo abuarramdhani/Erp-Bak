@@ -130,3 +130,82 @@ function insertPUM(th) {
 		}})
 	}
 }
+
+// //---------------------------------------------- OPM -------------------------------------------//
+
+// $(document).ready(function(){
+// 	$("#routclass").select2({
+// 		allowClear: true,
+// 		placeholder: "Routing Class",
+// 		minimumInputLength: 0,
+// 		ajax: {		
+// 			url:baseurl+"PerhitunganUM/HitungOPM/RoutClass",
+// 			dataType: 'json',
+// 			type: "GET",
+// 			data: function (params) {
+// 				var queryParameters = {
+// 					term: params.term
+// 				}
+// 				return queryParameters;
+// 			},
+// 			processResults: function (data) {
+// 				// console.log(data);
+// 				return {
+// 					results: $.map(data, function(obj) {
+// 						return { id:obj.ROUTING_CLASS, text:obj.ROUTING_CLASS};
+// 					})
+// 				};
+// 			}
+// 		}
+// 	});
+// });
+
+// $('.slcRoclas').change(function(){
+// 	$('#findPUMopm').removeAttr("disabled");
+// })
+
+// function getPUMopm(th) {
+// 	$(document).ready(function(){
+// 		var routclass = $('select[name="routclass"]').val();
+// 		var planopm = $('select[name="planopm"]').val();
+// 		var usernameopm = $('#usernameopm').val();
+
+// 		var request = $.ajax({
+// 			url: baseurl+'PerhitunganUM/HitungOPM/search',
+// 			data: {
+// 				routclass : routclass, 
+// 				planopm : planopm,
+// 				usernameopm : usernameopm
+// 			},
+// 			type: "POST",
+// 			datatype: 'html'
+// 		});
+// 		$('#ResultPUMopm').html('');
+// 		$('#ResultPUMopm').html('<center><img style="width:100px; height:auto" src="'+baseurl+'assets/img/gif/loading14.gif"><br/></center><center><p style="font-size:12px">Harap tunggu beberapa menit...<p></center>' );
+
+// 		request.done(function(result){
+// 			// console.log(result);
+// 			$('#ResultPUMopm').html(result);
+// 			$('#tblsatuopm').DataTable({
+// 				scrollX: true,
+// 				scrollY:  500,
+// 				scrollCollapse: true,
+// 				paging:false,
+// 				info:true,
+// 				ordering:false
+// 			});
+// 		});
+// 	});
+// }
+
+// $('#tblduaopm').DataTable({
+// 	scrollX: true,
+// 	scrollY:  500,
+// 	scrollCollapse: true,
+// 	paging:false,
+// 	info:true,
+// 	ordering:false,
+// 	fixedColumns: {
+// 		leftColumns: 1
+// 	}
+// });

@@ -116,7 +116,7 @@ $('.timeMLQ').datetimepicker({
     format: 'H:i'
 })
 
-const autofill = (n) => {
+const autofill_mlq = (n) => {
     const code = $(`#no_lppb_${n}`).val();
     if (code != '') {
     $.ajax({
