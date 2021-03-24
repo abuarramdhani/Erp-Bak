@@ -85,7 +85,7 @@
                                                                     <tr id="tr1">
                                                                         <td class="text-center"><input type="text" class="form-control no" name="no[]" id="no_1" value="1" readonly></td>
                                                                         <td class="text-center">
-                                                                            <select class="form-control slc_no_lppb" id="no_lppb_1" name="no_lppb[]" onchange="autofill(1)" required>
+                                                                            <select class="form-control slc_no_lppb" id="no_lppb_1" name="no_lppb[]" onchange="autofill_mlq(1)" required>
                                                                                 <option selected="selected"></option>
                                                                             </select>
                                                                         </td>
