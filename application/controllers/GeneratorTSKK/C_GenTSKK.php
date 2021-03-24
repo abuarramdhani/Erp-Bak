@@ -3475,22 +3475,22 @@ public function exportExcel($idnya){
 							$styles[$x][$rowflow+1][($takt_time + 13) - $nn]['fill'] = '#ffffff';
 							$styles[$x][$rowflow+2][($takt_time + 13) - $nn]['fill'] = '#ffffff';
 						}else {
-							if ($takt_time > 1*$nn && $takt_time < 600*$x) {
+							if ($takt_time > 1*$nn && $takt_time <= 600*$x) {
 								$styles[$x][$rowflow][($takt_time + 13) - $nn]['fill'] = '#fc0494';
 								$styles[$x][$rowflow+1][($takt_time + 13) - $nn]['fill'] = '#fc0494';
 								$styles[$x][$rowflow+2][($takt_time + 13) - $nn]['fill'] = '#fc0494';
 							}
 						}
 						// //Garis Cycletime
-						if ($cycle_time > 1*$nn && $cycle_time < 600*$x) {
+						if ($cycle_time > 1*$nn && $cycle_time <= 600*$x) {
 							$styles[$x][$rowflow][($cycle_time + 13) - $nn]['fill'] = '#fcf403';
 							$styles[$x][$rowflow+1][($cycle_time + 13) - $nn]['fill'] = '#fcf403';
 							$styles[$x][$rowflow+2][($cycle_time + 13) - $nn]['fill'] = '#fcf403';
 						}
         }
 
-        //Irregular Job
-				if ($last_finish > 1*$nn && $last_finish < 600*$x) {
+				//Irregular Job
+				if ($last_finish > 1*$nn && $last_finish <= 600*$x) {
 					for ($i=0; $i < $jumlah_hasil_irregular; $i++) {
 							$styles[$x][$rownya][(($last_finish + 14) - $nn) + $i]['fill'] = '#2a61ad';
 							$rows[$x][$rownya][(($last_finish + 14) - $nn) + $i] = $i +1;
@@ -3500,15 +3500,23 @@ public function exportExcel($idnya){
 				if ($takt_time == '-') {
 					$rows[$x][$rownya + 13][$takt_time + 14] = '';
 				}else {
-					if ($takt_time > 1*$nn && $takt_time < 600*$x) {
+					if ($takt_time > 1*$nn && $takt_time <= 600*$x) {
 						$styles[$x][$rownya + 13][($takt_time + 14) - $nn]['font-size'] = 10;
-						$rows[$x][$rownya + 13][($takt_time + 14) - $nn] = 'Takt Time = '.$takt_time.' Detik';
+						if ($takt_time >= (600*$x)-50) {
+							$rows[$x][$rownya + 13][($takt_time - 25) - $nn] = 'Takt Time = '.$takt_time.' Detik';
+						}else {
+							$rows[$x][$rownya + 13][($takt_time + 14) - $nn] = 'Takt Time = '.$takt_time.' Detik';
+						}
 					}
 				}
 
-        //CycleTime
-				if ($cycle_time > 1*$nn && $cycle_time < 600*$x ) {
-					$rows[$x][$rownya][($cycle_time + 14) - $nn] = 'Cycle Time = '.$cycle_time.' Detik';
+				//CycleTime
+				if ($cycle_time > 1*$nn && $cycle_time <= 600*$x ) {
+					if ($cycle_time >= (600*$x)-50) {
+						$rows[$x][$rownya][($cycle_time + 28) - $nn] = 'Cycle Time = '.$cycle_time.' Detik';
+					}else {
+						$rows[$x][$rownya][($cycle_time + 14) - $nn] = 'Cycle Time = '.$cycle_time.' Detik';
+					}
 				}
         // $rows[$x][$rownya + 13][$cycle_time + 14] = 'Cycle Time = '.$cycle_time.' Detik';
 			// echo sizeof($rows[$x]);
