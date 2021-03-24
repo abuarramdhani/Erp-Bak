@@ -227,6 +227,12 @@ class M_master extends CI_Model
       $data = $this->oracle->query("SELECT * FROM KHS_PENGIRIMAN_BARANG_BEKAS WHERE DOCUMENT_NUMBER = '$doc_num' AND STATUS IS NULL ORDER BY id_pbb ASC")->result_array();
       // echo "<pre>";print_r($data);
       // die;
+      $io_tujuan = 102;
+      $subinv_tujuan = ['a'=>'FDY-PM','b'=>'FDY-TKS'];
+      if (!empty(array_search($master['subinv_tujuan'], $subinv_tujuan))) {
+        $io_tujuan = 101;
+      }
+
       foreach ($data as $key => $value) {
         $this->oracle->query("INSERT INTO khs_misc_issue_receipt
                               (
@@ -256,7 +262,7 @@ class M_master extends CI_Model
                               '{$value['ID_LOCATOR']}', --' locator_asal
                               {$master['item_id_tujuan']}, --' item_id_tujuan
                               {$berat_timbang[$key]}, --' qty_tujuan
-                              102, --' io_tujuan
+                              $io_tujuan, --' io_tujuan
                               '{$master['subinv_tujuan']}', --' subinv_tujuan
                               '{$master['locator_tujuan']}'--' locator_tujuan
                              )");

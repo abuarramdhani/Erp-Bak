@@ -68,12 +68,7 @@ $(document).ready(function () {
   })
 
   $('input[name="pbb_tujuan"]').on('change', function () {
-    let val = '';
-    if ($('input[name=pbb_tujuan]:checked').val() == "BARKAS-DM") {
-      val = "BARKAS-DM";
-    } else if ($('input[name=pbb_tujuan]:checked').val() == "BARKAST-DM") {
-      val = "BARKAST-DM";
-    }
+    let val = $('input[name=pbb_tujuan]:checked').val();
     $.ajax({
       url: baseurl + 'BarangBekas/pbbs/locator',
       type: 'POST',
@@ -561,7 +556,7 @@ $('.submit-pbb-transact').on('click', function() {
   const doc_num = $('select[name="no_document"]').val();
   const cek_blm_selesai_timbang = $('button[data-target="#modal-pbb-transact-ambil-berat"]').text();
   const subinv_tujuan = $('input[name=pbb_tujuan]:checked').val();
-  const locator_tujuan = $('#pbbtt_locator').val();
+  const locator_tujuan = $('#pbbtt_locator').val() == undefined ? null : $('#pbbtt_locator').val();
   const item_id_tujuan = $('#pbbtt_item').val();
 
   if (doc_num != '') {

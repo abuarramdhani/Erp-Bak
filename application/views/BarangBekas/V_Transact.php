@@ -96,11 +96,13 @@
                     </div>
                     <table style="width:100%">
                       <tr>
-                        <td style="width:15%"><b>Tujuan</b> </td>
-                        <td style="width:5%;">:</td>
+                        <td style="width:15%;vertical-align:top;padding-top:3px"><b>Tujuan</b> </td>
+                        <td style="width:5%;vertical-align:top;padding-top:3px">:</td>
                         <td style="width:80%">
-                          <input type="radio" name="pbb_tujuan" style="width:20px;height:20px" value="BARKAS-DM"> <label for="norm" class="control-label" >&nbsp;&nbsp;Pusat </label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                          <input type="radio" name="pbb_tujuan" style="width:20px;height:20px" value="BARKAST-DM"><label for="norm" class="control-label" >&nbsp;&nbsp; Tuksono </label>
+                          <input type="radio" name="pbb_tujuan" style="width:20px;height:20px;" value="BARKAS-DM"> <label for="norm" class="control-label" >&nbsp;&nbsp;BARKAS PUSAT </label>
+                          <input type="radio" name="pbb_tujuan" style="width:20px;height:20px;margin-left:37px;" value="FDY-PM"> <label for="norm" class="control-label" >&nbsp;&nbsp;UP2L PUSAT </label><br>
+                          <input type="radio" name="pbb_tujuan" style="width:20px;height:20px" value="BARKAST-DM"><label for="norm" class="control-label" >&nbsp;&nbsp;BARKAS TKS </label>
+                          <input type="radio" name="pbb_tujuan" style="width:20px;height:20px;margin-left:57px;" value="FDY-TKS"><label for="norm" class="control-label" >&nbsp;&nbsp;UP2L TKS </label>
                         </td>
                       </tr>
                       <tr>
