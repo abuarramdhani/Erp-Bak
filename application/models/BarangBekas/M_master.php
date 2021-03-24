@@ -68,10 +68,14 @@ class M_master extends CI_Model
 
     public function getItemTujuan($value='')
     {
-      return $this->oracle->query("SELECT msib.INVENTORY_ITEM_ID, msib.SEGMENT1, msib.DESCRIPTION from mtl_system_items_b msib
-                                  where msib.SEGMENT1 like 'DA%'
-                                  and msib.ORGANIZATION_ID = 102
-                                  and msib.INVENTORY_ITEM_STATUS_CODE = 'Active'")->result_array();
+      return $this->oracle->query("SELECT DISTINCT msib.inventory_item_id, msib.segment1,
+                msib.description
+           FROM mtl_system_items_b msib
+          WHERE msib.segment1 LIKE 'DA%'
+            AND (msib.organization_id = 102 OR msib.organization_id = 101)
+            AND msib.inventory_item_status_code = 'Active'
+            AND msib.stock_enabled_flag = 'Y'
+            AND msib.mtl_transactions_enabled_flag = 'Y'")->result_array();
     }
 
     public function item_pbbns($d)
@@ -184,6 +188,7 @@ class M_master extends CI_Model
     */
     function pbb_api_transact($no_doc)
     {
+        $no_induk = $this->session->user;
         // $conn = oci_connect('APPS', 'APPS', '192.168.7.3:1522/DEV');
         $conn = oci_connect('APPS', 'APPS', '192.168.7.1:1521/PROD');
 
@@ -193,7 +198,8 @@ class M_master extends CI_Model
         }
 
         // exec khs_ascp_estimasi_kebutuhan (4, 66452, 102);
-        $sql =  "BEGIN khs_miscellaneous_barkas($no_doc); END;";
+
+        $sql =  "BEGIN khs_miscellaneous_barkas($no_doc, '$no_induk'); END;";
 
         //Statement does not change
         $stmt = oci_parse($conn, $sql);
@@ -241,7 +247,7 @@ class M_master extends CI_Model
                               VALUES
                               (
                               '{$value['DOCUMENT_NUMBER']}', --' no_dokumen
-                              '511101', --' account
+                              '515901', --' account
                               '{$value['COST_CENTER']}', --' cost_center
                               {$value['INVENTORY_ITEM_ID']}, --' item_id_asal
                               {$value['JUMLAH']}, --' qty_asal

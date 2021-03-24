@@ -42,11 +42,16 @@ class C_Master extends CI_Controller
         $this->checkSession();
         $user_id = $this->session->userid;
 
-        $data['Menu'] = 'Dashboard Pengiriman Barang Bekas V.1.0';
+        $data['Menu'] = 'Dashboard Pengiriman Barang Bekas V.1.3';
         $data['SubMenuOne'] = '';
         $data['SubMenuTwo'] = '';
 
         $data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+
+        if ($this->session->user != 'B0724') {
+          unset($data['UserMenu'][2]);
+        }
+
         $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
@@ -61,11 +66,16 @@ class C_Master extends CI_Controller
       $this->checkSession();
       $user_id = $this->session->userid;
 
-      $data['Menu'] = 'Pengiriman Barang Bekas V.1.0';
+      $data['Menu'] = 'Pengiriman Barang Bekas V.1.3';
       $data['SubMenuOne'] = '';
       $data['SubMenuTwo'] = '';
 
       $data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+
+      if ($this->session->user != 'B0724') {
+        unset($data['UserMenu'][2]);
+      }
+
       $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
       $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
@@ -157,11 +167,16 @@ class C_Master extends CI_Controller
       $this->checkSession();
       $user_id = $this->session->userid;
 
-      $data['Menu'] = 'Pengiriman Barang Bekas V.1.0';
+      $data['Menu'] = 'Pengiriman Barang Bekas V.1.3';
       $data['SubMenuOne'] = '';
       $data['SubMenuTwo'] = '';
 
       $data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+
+      if ($this->session->user != 'B0724') {
+        unset($data['UserMenu'][2]);
+      }
+
       $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
       $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
@@ -216,11 +231,16 @@ class C_Master extends CI_Controller
       $this->checkSession();
       $user_id = $this->session->userid;
 
-      $data['Menu'] = 'Pengiriman Barang Bekas V.1.0';
+      $data['Menu'] = 'Pengiriman Barang Bekas V.1.3';
       $data['SubMenuOne'] = '';
       $data['SubMenuTwo'] = '';
 
       $data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+
+      if ($this->session->user != 'B0724') {
+        unset($data['UserMenu'][2]);
+      }
+      
       $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
       $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
