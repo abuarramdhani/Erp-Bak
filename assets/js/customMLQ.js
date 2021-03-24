@@ -1,4 +1,6 @@
 $('#trx_type').on('change', function (){
+    // let cek = $('#trx_type').val()
+    // console.log(cek);
     $.ajax({
         url: baseurl + 'MonitoringLppbQC/MonLppb/getMon',
         type: 'POST',
@@ -133,11 +135,6 @@ const autofill = (n) => {
             console.log(result);
             // var html = '';
             if(result.length == 1){
-                // $(`#nama_vendor_${n}`).val(result[0].VENDOR_NAME);
-                // $(`#kode_komponen_${n}`).val(result[0].ITEM);
-                // $(`#nama_komponen_${n}`).val(result[0].ITEM_DESCRIPTION);
-                // $(`#jumlah_${n}`).val(result[0].QUANTITY);
-                // $(`#keterangan_${n}`).val(result[0].KETERANGAN);
                 $(`#nama_vendor_${n}`).val(result[0].VENDOR_NAME);
                 $(`#kode_komponen_${n}`).val(result[0].ITEM);
                 $(`#nama_komponen_${n}`).val(result[0].ITEM_DESCRIPTION);
@@ -155,15 +152,6 @@ const autofill = (n) => {
                         let nextrow = row + 1;
                         console.log(nextrow);
                         let html_ =
-                        // '<tr>'+
-                        // '<td class="text-center"><input type="text" class="form-control no" name="no[]" id="no_' + n + '" readonly value="' + nextrow + '"></td>'+
-                        // '<td class="text-center"><input type="text" class="form-control" id="no_lppb_' + n + '" name="no_lppb[]" readonly value="' + v.NO_LPPB + '"></td>'+
-                        // '<td class="text-center"><input type="text" class="form-control" id="nama_vendor_' + n + '" name="nama_vendor[]" readonly value="' + v.VENDOR_NAME + '"></td>'+
-                        // '<td class="text-center"><input type="text" class="form-control" id="kode_komponen_' + n + '" name="kode_komponen[]" readonly value="' + v.ITEM + '"></td>'+
-                        // '<td class="text-center"><input type="text" class="form-control" id="nama_komponen_' + n + '" name="nama_komponen[]" readonly value="' + v.ITEM_DESCRIPTION + '"></td>'+
-                        // '<td class="text-center"><input type="text" class="form-control" id="jumlah_' + n + '" name="jumlah[]" readonly value="' + v.QUANTITY + '"></td>'+
-                        // '<td class="text-center"><input type="text" class="form-control" id="keterangan_' + n + '" name="keterangan[]" readonly value="' + v.KETERANGAN + '"></td>'+
-                        // '</tr>';
                         '<tr>'+
                         '<td class="text-center"><input type="text" class="form-control no" name="no[]" id="no_' + n + '" readonly value="' + nextrow + '"></td>'+
                         '<td class="text-center"><input type="text" class="form-control" id="no_lppb_' + n + '" name="no_lppb[]" readonly value="' + v.NO_LPPB + '"></td>'+
@@ -180,11 +168,6 @@ const autofill = (n) => {
                         console.log(html_);
                         $("#body-lppb").append(html_);
                     }else{
-                        // $(`#nama_vendor_${n}`).val(v.VENDOR_NAME);
-                        // $(`#kode_komponen_${n}`).val(v.ITEM);
-                        // $(`#nama_komponen_${n}`).val(v.ITEM_DESCRIPTION);
-                        // $(`#jumlah_${n}`).val(v.QUANTITY);
-                        // $(`#keterangan_${n}`).val(v.KETERANGAN);
                         $(`#nama_vendor_${n}`).val(v.VENDOR_NAME);
                         $(`#kode_komponen_${n}`).val(v.ITEM);
                         $(`#nama_komponen_${n}`).val(v.ITEM_DESCRIPTION);
@@ -218,19 +201,6 @@ const addRowElement = () => {
         let n = $('.cektabel tbody tr').length;
         let a = n + 1;
         console.log(a);
-        // $('#body-lppb').append(`<tr class="rowbaru" id ="tr${n}">
-        // <td class="text-center"><input type="text" class="form-control" name="no[]" value="${a}" id="no_${a}" readonly></td>
-        // <td class="text-center">
-        //     <select class="form-control slc_no_lppb" id="no_lppb_${a}" name="no_lppb[]" onchange="autofill(${a})">
-        //         <option selected="selected"></option>
-        //     </select>
-        // </td>
-        // <td class="text-center"><input type="text" class="form-control" id="nama_vendor_${a}" name="nama_vendor[]" readonly></td>
-        // <td class="text-center"><input type="text" class="form-control" id="kode_komponen_${a}" name="kode_komponen[]" readonly></td>
-        // <td class="text-center"><input type="text" class="form-control" id="nama_komponen_${a}" name="nama_komponen[]" readonly></td>
-        // <td class="text-center"><input type="text" class="form-control" id="jumlah_${a}" name="jumlah[]" readonly></td>
-        // <td class="text-center"><input type="text" class="form-control" id="keterangan_${a}" name="keterangan[]" readonly></td>
-        // </tr>`);
         $('#body-lppb').append(`<tr class="rowbaru" id ="tr${n}">
         <td class="text-center"><input type="text" class="form-control" name="no[]" value="${a}" id="no_${a}" readonly></td>
         <td class="text-center">

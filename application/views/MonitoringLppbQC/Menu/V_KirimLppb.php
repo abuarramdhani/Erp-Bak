@@ -68,18 +68,11 @@
                                                             <table class="table table-bordered cektabel">
                                                                 <thead class="bg-primary">
                                                                     <tr>
-                                                                        <!-- <th class="text-center" style="width:7%;">No</th>
-                                                                        <th class="text-center" style="width:10%;">No Lppb</th>
-                                                                        <th class="text-center" style="width:20%;">Nama Vendor</th>
-                                                                        <th class="text-center" style="width:13%;">Kode Komponen</th>
-                                                                        <th class="text-center" style="width:20%;">Nama Komponen</th>
-                                                                        <th class="text-center" style="width:10%;">Jumlah</th>
-                                                                        <th class="text-center" style="width:10%;">Keterangan</th> -->
                                                                         <th class="text-center" style="width:7%;">No</th>
                                                                         <th class="text-center" style="width:9%;">No Lppb</th>
-                                                                        <th class="text-center" style="width:9%;">Nama Vendor</th>
-                                                                        <th class="text-center" style="width:10.5%;">Kode Komponen</th>
-                                                                        <th class="text-center" style="width:10.5%;">Nama Komponen</th>
+                                                                        <th class="text-center text-nowrap" style="width:9%;">Nama Vendor</th>
+                                                                        <th class="text-center text-nowrap" style="width:10.5%;">Kode Komponen</th>
+                                                                        <th class="text-center text-nowrap" style="width:10.5%;">Nama Komponen</th>
                                                                         <th class="text-center" style="width:9%;">Jumlah</th>
                                                                         <th class="text-center" style="width:9%;">OK</th>
                                                                         <th class="text-center" style="width:9%;">NOT OK</th>
@@ -90,17 +83,6 @@
                                                                 </thead>
                                                                 <tbody id="body-lppb">
                                                                     <tr id="tr1">
-                                                                        <!-- <td class="text-center"><input type="text" class="form-control no" name="no[]" id="no_1" value="1" readonly></td>
-                                                                        <td class="text-center">
-                                                                            <select class="form-control slc_no_lppb" id="no_lppb_1" name="no_lppb[]" onchange="autofill(1)" required>
-                                                                                <option selected="selected"></option>
-                                                                            </select>
-                                                                        </td>
-                                                                        <td class="text-center"><input type="text" class="form-control" id="nama_vendor_1" name="nama_vendor[]" readonly></td>
-                                                                        <td class="text-center"><input type="text" class="form-control" id="kode_komponen_1" name="kode_komponen[]" readonly></td>
-                                                                        <td class="text-center"><input type="text" class="form-control" id="nama_komponen_1" name="nama_komponen[]" readonly></td>
-                                                                        <td class="text-center"><input type="text" class="form-control" id="jumlah_1" name="jumlah[]" readonly></td>
-                                                                        <td class="text-center"><input type="text" class="form-control" id="keterangan_1" name="keterangan[]" readonly></td> -->
                                                                         <td class="text-center"><input type="text" class="form-control no" name="no[]" id="no_1" value="1" readonly></td>
                                                                         <td class="text-center">
                                                                             <select class="form-control slc_no_lppb" id="no_lppb_1" name="no_lppb[]" onchange="autofill(1)" required>
