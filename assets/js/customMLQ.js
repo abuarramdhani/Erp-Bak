@@ -204,7 +204,7 @@ const addRowElement = () => {
         $('#body-lppb').append(`<tr class="rowbaru" id ="tr${n}">
         <td class="text-center"><input type="text" class="form-control" name="no[]" value="${a}" id="no_${a}" readonly></td>
         <td class="text-center">
-            <select class="form-control slc_no_lppb" id="no_lppb_${a}" name="no_lppb[]" onchange="autofill(${a})">
+            <select class="form-control slc_no_lppb" id="no_lppb_${a}" name="no_lppb[]" onchange="autofill_mlq(${a})">
                 <option selected="selected"></option>
             </select>
         </td>
