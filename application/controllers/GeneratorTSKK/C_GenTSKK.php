@@ -3427,6 +3427,13 @@ public function exportExcel($idnya){
 				$n_ = $x - 1;
 				$nn = $n_ * 600;
 
+				// $auto_check = 0;
+				// for ($j=0; $j < sizeof($elemen_kerja); $j++) {
+				// 	if ($jenis_proses == 'AUTO') {
+				// 		$xyz_auto[] = $j;
+				// 	}
+				// }
+
         for ($j=0; $j < sizeof($elemen_kerja); $j++) {
             $rowflow = $rownya + ($j * 3);
             if ($muda[$j] > 1) {
@@ -3455,6 +3462,30 @@ public function exportExcel($idnya){
 											}
 
 									}
+
+									// baris penghubung
+									if ($j != sizeof($elemen_kerja) - 1) {
+										if ($jenis_proses[$j+1] == $jenis_proses[$j] || ($jenis_proses[$j] == 'MANUAL' && $jenis_proses[$j+1] == 'WALK') || ($jenis_proses[$j] == 'WALK' && $jenis_proses[$j+1] == 'MANUAL')) {
+											$styles[$x][$rowflow + 2][($finish[$j]+13) - $nn]['border'] = 'right';
+											$styles[$x][$rowflow + 2][($finish[$j]+13) - $nn]['border-style'] = 'thin';
+
+											$styles[$x][$rowflow + 3][($finish[$j]+13) - $nn]['border'] = 'right';
+											$styles[$x][$rowflow + 3][($finish[$j]+13) - $nn]['border-style'] = 'thin';
+										}
+										// elseif ($jenis_proses[$j] == 'AUTO') {
+										// 	$auto_check += 1;
+										// 	if (!empty($xyz_auto) && !empty($xyz_auto[$auto_check]) && sizeof($xyz_auto) > 1) {
+										// 		for ($fgh=$j; $fgh < $xyz_auto[$auto_check]; $fgh++) {
+										// 			$styles[$x][$fgh][($finish[$j]+13) - $nn]['border'] = 'right';
+										// 			$styles[$x][$fgh][($finish[$j]+13) - $nn]['border-style'] = 'thin';
+										// 		}
+										// 	}
+										// }
+
+									}
+
+
+
 									if ($jenis_proses[$j] != 'AUTO') {
 										if (($i >= $startmuda[$j] && $i <= $finishmuda[$j]) && ($startmuda[$j] <= 600*$x && $finishmuda[$j] <= 600*$x)) {
 												$styles[$x][$rowflow][$i+13]['fill'] = '#fa3eef';
