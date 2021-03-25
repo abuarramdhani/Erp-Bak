@@ -98,6 +98,8 @@
                                     <option value="B0658">B0658 - NASHRUL HAKIM</option>
                                     <option value="B0701">B0701 - ADKHA JIHAD SETYAWAN</option>
                                     <option value="B0809">B0809 - YUSRINA KARTIKA RISTANTI</option>
+                                    <option value="B0906">B0906 - FAJRI PARMI</option>
+                                    <option value="B0854">B0854 - AJI CAHYARUBIN</option>
 
                                 </select>
                             </div>
