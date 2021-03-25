@@ -107,7 +107,7 @@
                                                 <div class="col-md-12">
                                                     <div class="col-md-6">
                                                         <div class="text-left">
-                                                            <button type="button" onclick="addRowElement()">
+                                                            <button type="button" onclick="addRowElement_mlq()">
                                                                 <span style="color: #337AB7; margin-top: 2px" class='fa fa-plus fa-2x' title="Tambah Row" alt="Tambah Row"></span>
                                                             </button>
                                                         </div>

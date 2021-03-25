@@ -187,7 +187,7 @@ const autofill_mlq = (n) => {
     });
 }}
 
-const addRowElement = () => {
+const addRowElement_mlq = () => {
     let cek_no_lppb = $('.slc_no_lppb').last().val()
     // console.log(cek_no_lppb);
     if (!cek_no_lppb) {
