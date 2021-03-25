@@ -3456,7 +3456,7 @@ public function exportExcel($idnya){
 													$warna = '#00dbc5';
 											}
 
-											if ($i > 1*$nn && $i < 600*$x) {
+											if ($i > 1*$nn && $i <= 600*$x) {
 												$styles[$x][$rowflow + 1][($i+13) - $nn]['fill'] = $warna;
 												$rows[$x][$rowflow + 1][($i+13) - $nn] = $i-$start[$j]+1;
 											}
@@ -3466,11 +3466,22 @@ public function exportExcel($idnya){
 									// baris penghubung
 									if ($j != sizeof($elemen_kerja) - 1) {
 										if ($jenis_proses[$j+1] == $jenis_proses[$j] || ($jenis_proses[$j] == 'MANUAL' && $jenis_proses[$j+1] == 'WALK') || ($jenis_proses[$j] == 'WALK' && $jenis_proses[$j+1] == 'MANUAL')) {
-											$styles[$x][$rowflow + 2][($finish[$j]+13) - $nn]['border'] = 'right';
-											$styles[$x][$rowflow + 2][($finish[$j]+13) - $nn]['border-style'] = 'thin';
+											if ($finish[$j]+1 == $start[$j+1]) {
+												$styles[$x][$rowflow + 2][($finish[$j]+13) - $nn]['border'] = 'right';
+												$styles[$x][$rowflow + 2][($finish[$j]+13) - $nn]['border-style'] = 'thin';
 
-											$styles[$x][$rowflow + 3][($finish[$j]+13) - $nn]['border'] = 'right';
-											$styles[$x][$rowflow + 3][($finish[$j]+13) - $nn]['border-style'] = 'thin';
+												$styles[$x][$rowflow + 3][($finish[$j]+13) - $nn]['border'] = 'right';
+												$styles[$x][$rowflow + 3][($finish[$j]+13) - $nn]['border-style'] = 'thin';
+											}
+										}elseif (!empty($jenis_proses[$j+2])) {
+											if ($jenis_proses[$j+2] == $jenis_proses[$j] || ($jenis_proses[$j] == 'MANUAL' && $jenis_proses[$j+2] == 'WALK') || ($jenis_proses[$j] == 'WALK' && $jenis_proses[$j+2] == 'MANUAL')) {
+												if ($finish[$j]+1 == $start[$j+2]) {
+													for ($eaea=1; $eaea <= 7; $eaea++) {
+														$styles[$x][$rowflow + $eaea][($finish[$j]+13) - $nn]['border'] = 'right';
+														$styles[$x][$rowflow + $eaea][($finish[$j]+13) - $nn]['border-style'] = 'thin';
+													}
+												}
+											}
 										}
 										// elseif ($jenis_proses[$j] == 'AUTO') {
 										// 	$auto_check += 1;
