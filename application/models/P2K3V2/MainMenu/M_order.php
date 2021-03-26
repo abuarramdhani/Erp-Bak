@@ -494,21 +494,28 @@ class M_Order extends CI_Model
     public function getOr($t)
     {
         $sql = "SELECT
-                    ffv.FLEX_VALUE as COST_CENTER,
-                    ffvt.DESCRIPTION as PEMAKAI,
-                    ffv.ATTRIBUTE10
-                from fnd_flex_values ffv,
-                    fnd_flex_values_TL ffvt
-                where ffv.FLEX_VALUE_SET_ID=1013709
-                    and ffv.ATTRIBUTE10 != ' '
-                    and ffv.ATTRIBUTE10 = 'Seksi'
-                    and ffv.FLEX_VALUE_ID=ffvt.FLEX_VALUE_ID
+                    ffv.FLEX_VALUE AS COST_CENTER,
+                    ffvt.DESCRIPTION || ' - ' || kbbc.LOCATION AS PEMAKAI,
+                    kbbc.LOCATION,
+                    kbbc.BRANCH,
+                    kbbc.COST_CENTER_TYPE
+                FROM
+                    fnd_flex_values ffv,
+                    fnd_flex_values_TL ffvt,
+                    khs_bppbg_branch_cc kbbc
+                WHERE
+                    ffv.FLEX_VALUE_SET_ID = 1013709
+                    AND ffv.ATTRIBUTE10 != ' '
+                    AND ffv.ATTRIBUTE10 = 'Seksi'
+                    AND ffv.FLEX_VALUE_ID = ffvt.FLEX_VALUE_ID
                     AND ffv.END_DATE_ACTIVE IS NULL
                     AND ffv.flex_value NOT LIKE '0000'
-                    and ffv.ENABLED_FLAG = 'Y'
-                    and ffv.SUMMARY_FLAG = 'N'
-                    and ffvt.DESCRIPTION like '%$t%'
-                order by ffv.FLEX_VALUE
+                    AND ffv.ENABLED_FLAG = 'Y'
+                    AND ffv.SUMMARY_FLAG = 'N'
+                    AND ffv.FLEX_VALUE = kbbc.COST_CENTER
+                    AND ffvt.DESCRIPTION LIKE '%$t%'
+                ORDER BY
+                    ffv.FLEX_VALUE
                 ";
         // echo $sql;exit();
         $query = $this->oracle->query($sql);
@@ -991,7 +998,8 @@ class M_Order extends CI_Model
                 $cost_center = $item['cost_center'];
                 // $cost_center = $this->getCostCenter($item_data['kodesie']);
                 $account = $this->account('APD', $cost_center);
-                $kode_cabang = $this->pemakai_2($cost_center);
+                // $kode_cabang = $this->pemakai_2($cost_center);
+                $kode_cabang = $item['branch'];
 
                 $nick_name = implode(' ', array_slice(explode(' ', $item_data['nama']), 0, 2));
 
@@ -1013,7 +1021,7 @@ class M_Order extends CI_Model
                     'LOKASI'         =>    $lokasi,
                     'LOKATOR'        =>    $lokator,
                     'ACCOUNT'        =>    $account,
-                    'KODE_CABANG'    =>    $kode_cabang['0']['KODE_CABANG'],
+                    'KODE_CABANG'    =>    $kode_cabang,
                     'EXP'            =>    'N',
                 );
                 $this->insertBonIm($dataBonOracle);
