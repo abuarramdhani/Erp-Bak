@@ -167,9 +167,9 @@
   }
 
   .table-responsive-custom{
-    height:500px;
+    /* height:500px; */
     width: 100%;
-    overflow:scroll;
+    /* overflow:scroll; */
   }
 
   .tblObservasiEdit thead tr th{
@@ -621,7 +621,7 @@
                       <input type="radio" name="perhitunganTakt" value="1" <?php echo $takt_time != '99999' ? 'checked' : ''?>> <label for="" class="control-label">&nbsp;&nbsp;Ya </label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                       <input type="radio" name="perhitunganTakt" value="0" <?php echo $takt_time == '99999' ? 'checked' : ''?>><label for="norm" class="control-label">&nbsp;&nbsp; Tidak </label>
                     </div>
-                    <div class="panel-body tskk_delik_cek" <?php echo $takt_time == '99999' ? 'style="display:none"' : ''?>>
+                    <div class="panel-body tskk_delik_cek_pakai" <?php echo $takt_time == '99999' ? 'style="display:none"' : ''?>>
                       <?php
 								if (!empty($lihat_perhitungan_takt_time)) {
 									foreach ($lihat_perhitungan_takt_time as $pt) {
@@ -695,6 +695,61 @@
 											</div>
 										</div> -->
                     </div>
+                    <div class="panel-body tskk_delik_cek_tidak_pakai" style="display:none">
+
+                      <div class="col-lg-6">
+                        <div class="row">
+                          <label for="norm" class="control-label col-lg-6">Waktu 1 Shift (Detik) : </label>
+                          <div class="col-lg-6">
+                            <input type="number" style="margin-left:-35px;" placeholder="Input Waktu Satu Shift" oninput="countTaktTime(this)" name="txtWaktu1ShiftT" id="txtWaktu1Shift" class="form-control waktu1Shift" value="0" />
+                          </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                          <label for="norm" class="control-label col-lg-6">Jumlah Shift (Shift) :</label>
+                          <div class="col-lg-6">
+                            <input type="number" style="margin-left:-35px;" placeholder="Input Jumlah Shift" value="0" name="txtJumlahShiftT" class="form-control jumlahShift" />
+                          </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                          <label for="norm" class="control-label col-lg-6">Jumlah Hari Kerja (Hari) :</label>
+                          <div class="col-lg-6">
+                            <input type="number" value="0" placeholder="Input Jumlah Hari Kerja" style="margin-left:-35px;" name="txtJumlahHariKerjaT" class="form-control jumlahHariKerja" />
+                          </div>
+                        </div>
+                        <!-- <br> -->
+                      </div>
+                      <div class="col-lg-6">
+                        <div class="row">
+                          <label for="norm" class="control-label col-lg-6">Forecast (Unit) : </label>
+                          <div class="col-lg-6">
+                            <input type="number" value="0" placeholder="Input Forecast" name="txtForecastT"  class="form-control forecast" oninput="countRencanaProduksi(this)" />
+                          </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                          <label for="norm" class="control-label col-lg-6">Qty / Unit: </label>
+                          <div class="col-lg-6">
+                            <input type="number" value="0" placeholder="Input Qty / Unit" name="txtQtyUnitT"  class="form-control qtyUnit" oninput="countRencanaProduksi(this)" />
+                          </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                          <label for="norm" class="control-label col-lg-6">Rencana Produksi (Pcs) : </label>
+                          <div class="col-lg-6">
+                            <input type="number" value="0" placeholder="Rencana Produksi" name="txtRencanaProduksiT" readonly  class="form-control rencanaKerja" />
+                          </div>
+                        </div>
+                      </div>
+                      <br><br>
+                      <!-- <div class="col-lg-12" style="padding-top: 8px;">
+                    <br>
+                      <div style="text-align:center;">
+                        <button type="button" onclick="countTaktTime(this)" style="float: center; margin-right: 3%; margin-top: -0.5%;" class="btn btn-primary btn-md" id="btnSaveObservationTaktTime"><i class="fa fa-calculator "></i>  HITUNG TAKT TIME</button>
+                      </div>
+                    </div>	 -->
+                    </div>
                   </div>
                   <div class="row">
                     <label for="norm" class="control-label col-lg-4"></label>
@@ -704,7 +759,7 @@
                       <div class="col-lg-12">
                         <?php if ($dst != null) {
 													$nDistribusi = array_sum($dst);
-													$wktDistribusi = null;
+													// $wktDistribusi = null;
 												}else{
 													$nDistribusi = null;
 												}
@@ -796,7 +851,7 @@
 																			$waktu = $key['waktu_kerja'];
 																			if ($dst != null) {
 																				$nDistribusi = array_sum($dst);
-																				$wktDistribusi = null;
+																				// $wktDistribusi = null;
 																				$waktu = $x_min;
 																				// echo $nDistribusi;
 																				// exit();
@@ -878,7 +933,7 @@
                                     <!--<td><input type="number" value="<?php echo $wktDistribusi ?>" onchange="minMaxId(this)" id="wDistribusi" name="wDistribusi[]" class="form-control wDistribusi" placeholder="Detik"></td>-->
                                     <!--W DISTRIBUSI-->
                                     <td><input type="number" value="<?php echo $wktDistribusi ?>" onchange="minMaxId(this)" onclick="checkDistributionTime(this)" id="wDistribusi" name="wDistribusi[]" class="form-control wDistribusi"
-                                        placeholder="Detik"></td>
+                                        placeholder="Detik..."></td>
                                     <!--W DISTRIBUSI AUTO-->
                                     <td><input type="number" onchange="minMaxId(this)" onclick="checkDistributionTime(this)" id="wDistribusiAuto" name="wDistribusiAuto[]" class="form-control wDistribusiAuto" placeholder="Detik" readonly></td>
                                     <!--W KERJA-->
