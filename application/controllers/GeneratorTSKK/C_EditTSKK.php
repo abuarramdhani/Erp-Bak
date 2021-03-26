@@ -45,29 +45,16 @@ class C_EditTSKK extends CI_Controller {
 		$nd               = $this->input->post('inputInsert');
 		//PART
 		$jenis_inputPart  = $this->input->post('terdaftar');
-		$type 	          = $this->input->post('txtType');
-		// echo $type;die;
-		if ($type == null) {
-			$type 	          = $this->input->post('txtTypeT');
-		}else{
+		if ($jenis_inputPart == 'Terdaftar') {
 			$type 	          = $this->input->post('txtType');
-		}
-
-		$kode_part 	      = $this->input->post('txtKodepart[]');
-		if ($kode_part == null) {
-			$kode 	          = $this->input->post('txtKodepartT');
-		}else{
 			$kode_part 	      = $this->input->post('txtKodepart[]');
-			$kode = implode(", ", $kode_part);
-		}
-
-		$nama_part 	      = $this->input->post('txtNamaPart');
-		if ($nama_part == null) {
-			$nama_part 	          = $this->input->post('txtNamaPartT');
-		}else{
+			$kode = implode(",", $kode_part);
 			$nama_part 	      = $this->input->post('txtNamaPart');
+		}else {
+			$type 	      = $this->input->post('txtTypeT');
+			$kode 	      = $this->input->post('txtKodepartT');
+			$nama_part 	  = $this->input->post('txtNamaPartT');
 		}
-
 		//EQUIPMENT
 		$jenis_inputEquipment  = $this->input->post('equipmenTerdaftar');
 		$jenis_inputEquipmentMesin  = $this->input->post('equipmenTerdaftarMesin');
@@ -360,12 +347,21 @@ class C_EditTSKK extends CI_Controller {
 		}
 
 		//UPDATE TAKT TIME CALCULATION
-		$waktu_satu_shift   = $this->input->post('txtWaktu1Shift');
-		$jumlah_shift       = $this->input->post('txtJumlahShift');
-		$forecast           = $this->input->post('txtForecast');
-		$qty_unit           = $this->input->post('txtQtyUnit');
-		$rencana_produksi   = $forecast * $qty_unit;
-		$jumlah_hari_kerja  = $this->input->post('txtJumlahHariKerja');
+		if ($this->input->post('perhitunganTakt') == 1) {
+			$waktu_satu_shift   = $this->input->post('txtWaktu1Shift');
+			$jumlah_shift       = $this->input->post('txtJumlahShift');
+			$forecast           = $this->input->post('txtForecast');
+			$qty_unit           = $this->input->post('txtQtyUnit');
+			$rencana_produksi   = $forecast * $qty_unit;
+			$jumlah_hari_kerja  = $this->input->post('txtJumlahHariKerja');
+		}else {
+			$waktu_satu_shift   = $this->input->post('txtWaktu1ShiftT');
+			$jumlah_shift       = $this->input->post('txtJumlahShiftT');
+			$forecast           = $this->input->post('txtForecastT');
+			$qty_unit           = $this->input->post('txtQtyUnitT');
+			$rencana_produksi   = $forecast * $qty_unit;
+			$jumlah_hari_kerja  = $this->input->post('txtJumlahHariKerjaT');
+		}
 
 		$checkTaktTime = $this->M_gentskk->selectTaktTimeCalculation($id);
 		// echo"<pre>";print_r($checkTaktTime);die;

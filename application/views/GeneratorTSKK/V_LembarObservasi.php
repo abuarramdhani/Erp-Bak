@@ -145,8 +145,8 @@
   }
 
   .table-responsive-custom{
-    height:500px;
-    overflow:scroll;
+    /* height:500px; */
+    /* overflow:scroll; */
   }
 
   .tblObservasi thead tr th{
@@ -495,7 +495,7 @@
                       <input type="radio" name="perhitunganTakt" value="1" checked> <label for="" class="control-label">&nbsp;&nbsp;Ya </label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                       <input type="radio" name="perhitunganTakt" value="0"><label for="norm" class="control-label">&nbsp;&nbsp; Tidak </label>
                     </div>
-                    <div class="panel-body tskk_delik_cek">
+                    <div class="panel-body tskk_delik_cek_pakai">
 
                       <div class="col-lg-6">
                         <div class="row">
@@ -549,6 +549,61 @@
 												<button type="button" onclick="countTaktTime(this)" style="float: center; margin-right: 3%; margin-top: -0.5%;" class="btn btn-primary btn-md" id="btnSaveObservationTaktTime"><i class="fa fa-calculator "></i>  HITUNG TAKT TIME</button>
 											</div>
 										</div>	 -->
+                    </div>
+                    <div class="panel-body tskk_delik_cek_tidak_pakai" style="display:none">
+
+                      <div class="col-lg-6">
+                        <div class="row">
+                          <label for="norm" class="control-label col-lg-6">Waktu 1 Shift (Detik) : </label>
+                          <div class="col-lg-6">
+                            <input type="number" style="margin-left:-35px;" placeholder="Input Waktu Satu Shift" oninput="countTaktTime(this)" name="txtWaktu1ShiftT" id="txtWaktu1Shift" class="form-control waktu1Shift" value="0" />
+                          </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                          <label for="norm" class="control-label col-lg-6">Jumlah Shift (Shift) :</label>
+                          <div class="col-lg-6">
+                            <input type="number" style="margin-left:-35px;" placeholder="Input Jumlah Shift" value="0" name="txtJumlahShiftT" class="form-control jumlahShift" />
+                          </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                          <label for="norm" class="control-label col-lg-6">Jumlah Hari Kerja (Hari) :</label>
+                          <div class="col-lg-6">
+                            <input type="number" value="0" placeholder="Input Jumlah Hari Kerja" style="margin-left:-35px;" name="txtJumlahHariKerjaT" class="form-control jumlahHariKerja" />
+                          </div>
+                        </div>
+                        <!-- <br> -->
+                      </div>
+                      <div class="col-lg-6">
+                        <div class="row">
+                          <label for="norm" class="control-label col-lg-6">Forecast (Unit) : </label>
+                          <div class="col-lg-6">
+                            <input type="number" value="0" placeholder="Input Forecast" name="txtForecastT"  class="form-control forecast" oninput="countRencanaProduksi(this)" />
+                          </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                          <label for="norm" class="control-label col-lg-6">Qty / Unit: </label>
+                          <div class="col-lg-6">
+                            <input type="number" value="0" placeholder="Input Qty / Unit" name="txtQtyUnitT"  class="form-control qtyUnit" oninput="countRencanaProduksi(this)" />
+                          </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                          <label for="norm" class="control-label col-lg-6">Rencana Produksi (Pcs) : </label>
+                          <div class="col-lg-6">
+                            <input type="number" value="0" placeholder="Rencana Produksi" name="txtRencanaProduksiT" readonly  class="form-control rencanaKerja" />
+                          </div>
+                        </div>
+                      </div>
+                      <br><br>
+                      <!-- <div class="col-lg-12" style="padding-top: 8px;">
+                    <br>
+                      <div style="text-align:center;">
+                        <button type="button" onclick="countTaktTime(this)" style="float: center; margin-right: 3%; margin-top: -0.5%;" class="btn btn-primary btn-md" id="btnSaveObservationTaktTime"><i class="fa fa-calculator "></i>  HITUNG TAKT TIME</button>
+                      </div>
+                    </div>	 -->
                     </div>
                   </div>
                   <br>

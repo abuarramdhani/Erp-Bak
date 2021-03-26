@@ -18,29 +18,17 @@ $(document).ready(function() {
 
   $('input[name="perhitunganTakt"]').on('ifChanged', function() {
     if ($('input[name=perhitunganTakt]:checked').val() == "1") {
-      $('.tskk_delik_cek').show()
-      $('.tskk_tt').show()
+      $('.tskk_delik_cek_pakai').show()
       $('input[name=taktTime]').show()
       $('input[name=taktTime]').val('')
-      $('input[name=txtWaktu1Shift]').val('')
-      $('input[name=txtJumlahShift]').val('')
-      $('input[name=txtJumlahHariKerja]').val('')
-      $('input[name=txtForecast]').val('')
-      $('input[name=txtRencana]').val('')
-      $('input[name=txtQtyUnit]').val('')
+      $('.tskk_tt').show()
       // console.log("Ya");
     } else if ($('input[name=perhitunganTakt]:checked').val() == "0") {
       // console.log("Tidak");
-      $('.tskk_delik_cek').hide()
+      $('.tskk_delik_cek_pakai').hide()
       $('.tskk_tt').hide()
       $('input[name=taktTime]').hide()
       $('input[name=taktTime]').val('99999')
-      $('input[name=txtWaktu1Shift]').val('0')
-      $('input[name=txtJumlahShift]').val('0')
-      $('input[name=txtJumlahHariKerja]').val('0')
-      $('input[name=txtForecast]').val('0')
-      $('input[name=txtRencana]').val('0')
-      $('input[name=txtQtyUnit]').val('0')
     }
   });
 })
@@ -96,17 +84,17 @@ function addRowObservation() {
   //KOLOM 14
   html += '<td><input type="number" onchange="minMaxId(this)" name="waktu10[]" class="form-control waktuObs inputWaktuKolom10" placeholder="Detik" ></td>';
   //KOLOM 15
-  html += '<td><input type="number" id="xmin_".$no name="xmin[]" class="form-control xmin" placeholder="Detik" readonly></td>';
+  html += '<td><input type="number"  name="xmin[]" class="form-control xmin" placeholder="Detik" readonly></td>';
   //KOLOM 16
-  html += '<td><input type="number" id="range_".$no name="range[]" class="form-control range" placeholder="Detik" readonly></td>';
+  html += '<td><input type="number"  name="range[]" class="form-control range" placeholder="Detik" readonly></td>';
   //KOLOM 17
-  html += '<td><input type="number" onchange="minMaxId(this)" id="wDistribusi_".$no name="wDistribusi[]" class="form-control wDistribusi" placeholder="Detik" readonly></td>';
+  html += '<td><input type="number" onchange="minMaxId(this)"  name="wDistribusi[]" class="form-control wDistribusi" placeholder="Detik" readonly></td>';
   //KOLOM SELIPAN
   html += '<td><input type="number" onchange="minMaxId(this)" onclick="checkDistributionTime(this)" name="wDistribusiAuto[]" class="form-control wDistribusiAuto" placeholder="Detik" readonly></td>';
   //KOLOM 18
-  html += '<td><input type="number" id="wKerja_".$no name="wKerja[]" class="form-control wKerja" placeholder="Detik" readonly></td>';
+  html += '<td><input type="number"  name="wKerja[]" class="form-control wKerja" placeholder="Detik" readonly></td>';
   //KOLOM 19
-  html += '<td><input type="text" id="keterangan_".$no name="keterangan[]" class="form-control keterangan" placeholder="Input Keterangan" ></td>';
+  html += '<td><input type="text"  name="keterangan[]" class="form-control keterangan" placeholder="Input Keterangan" ></td>';
   //KOLOM 20
   html += '<td><i class="fa fa-times fa-2x" onclick="deleteObserve(this)" style="color:red" id="hapus" title="Hapus Elemen"></i></td>';
   html += "</tr>";
@@ -130,6 +118,18 @@ function addRowObservation() {
       console.log("ya");
       $('.terdaftar').css("display", "");
       $('.tdkTerdaftar').css("display", "none");
+    }
+  });
+
+  $('input[name="equipmenTerdaftarMesin"]').on('ifChanged', function() {
+    if ($('input[name=equipmenTerdaftarMesin]:checked').val() == "TidakTerdaftar") {
+      console.log("tdk");
+      $('.equipmenTerdaftarMesin').css("display", "none");
+      $('.equipmenTdkTerdaftarMesin').show("display", "");
+    } else if ($('input[name=equipmenTerdaftarMesin]:checked').val() == "Terdaftar") {
+      console.log("ya");
+      $('.equipmenTerdaftarMesin').css("display", "");
+      $('.equipmenTdkTerdaftarMesin').css("display", "none");
     }
   });
 
@@ -234,15 +234,15 @@ function addRowObservationAfterNext() {
   //KOLOM 14
   html += '<td><input type="number" onchange="minMaxId(this)" name="waktu10[]" class="form-control waktuObs inputWaktuKolom10" placeholder="Detik" readonly></td>';
   //KOLOM 15
-  html += '<td><input type="number" id="xmin_".$no name="xmin[]" class="form-control xmin" placeholder="Detik" readonly></td>';
+  html += '<td><input type="number"  name="xmin[]" class="form-control xmin" placeholder="Detik" readonly></td>';
   //KOLOM 16
-  html += '<td><input type="number" id="range_".$no name="range[]" class="form-control range" placeholder="Detik" readonly></td>';
+  html += '<td><input type="number"  name="range[]" class="form-control range" placeholder="Detik" readonly></td>';
   //KOLOM 17
-  html += '<td><input type="number" onchange="minMaxId(this)" id="wDistribusi_".$no name="wDistribusi[]" class="form-control wDistribusi" placeholder="Detik" readonly></td>';
+  html += '<td><input type="number" onchange="minMaxId(this)"  name="wDistribusi[]" class="form-control wDistribusi" placeholder="Detik" readonly></td>';
   //KOLOM 18
-  html += '<td><input type="number" id="wKerja_".$no name="wKerja[]" class="form-control wKerja" placeholder="Detik" readonly></td>';
+  html += '<td><input type="number"  name="wKerja[]" class="form-control wKerja" placeholder="Detik" readonly></td>';
   //KOLOM 19
-  html += '<td><input type="text" id="keterangan_".$no name="keterangan[]" class="form-control keterangan" placeholder="Input Keterangan" readonly></td>';
+  html += '<td><input type="text"  name="keterangan[]" class="form-control keterangan" placeholder="Input Keterangan" readonly></td>';
   //KOLOM 20
   html += '<td><i class="fa fa-times fa-2x" onclick="deleteObserve(this)" style="color:red" id="hapus" title="Hapus Elemen"></i></td>';
   html += "</tr>";
@@ -349,17 +349,17 @@ function addRowObservationEdit() {
   //KOLOM 14
   html += '<td><input type="number" onchange="minMaxId(this)" name="waktu10[]" class="form-control waktuObs inputWaktuKolom10" placeholder="Detik" ></td>';
   //KOLOM 15
-  html += '<td><input type="number" id="xmin_".$no name="xmin[]" class="form-control xmin" placeholder="Detik" readonly></td>';
+  html += '<td><input type="number"  name="xmin[]" class="form-control xmin" placeholder="Detik" readonly></td>';
   //KOLOM 16
-  html += '<td><input type="number" id="range_".$no name="range[]" class="form-control range" placeholder="Detik" readonly></td>';
+  html += '<td><input type="number"  name="range[]" class="form-control range" placeholder="Detik" readonly></td>';
   //KOLOM 17
   html += '<td><input type="number" onchange="minMaxId(this)" onclick="checkDistributionTime(this)" id="wDistribusi" name="wDistribusi[]" class="form-control wDistribusi" placeholder="Detik" readonly></td>';
   //KOLOM 18
   html += '<td><input type="number" onchange="minMaxId(this)" onclick="checkDistributionTime(this)" name="wDistribusiAuto[]" class="form-control wDistribusiAuto" placeholder="Detik" readonly></td>';
   //KOLOM 19
-  html += '<td><input type="number" id="wKerja_".$no name="wKerja[]" class="form-control wKerja" placeholder="Detik" readonly></td>';
+  html += '<td><input type="number"  name="wKerja[]" class="form-control wKerja" placeholder="Detik" readonly></td>';
   //KOLOM 20
-  html += '<td><input type="text" id="keterangan_".$no name="keterangan[]" class="form-control keterangan" placeholder="Input Keterangan" ></td>';
+  html += '<td><input type="text"  name="keterangan[]" class="form-control keterangan" placeholder="Input Keterangan" ></td>';
   //KOLOM 21
   html += '<td><i class="fa fa-times fa-2x" onclick="deleteObserve(this)" style="color:red" id="hapus" title="Hapus Elemen"></i></td>';
   html += "</tr>";
@@ -386,6 +386,18 @@ function addRowObservationEdit() {
     }
   });
 
+  $('input[name="equipmenTerdaftarMesin"]').on('ifChanged', function() {
+    if ($('input[name=equipmenTerdaftarMesin]:checked').val() == "TidakTerdaftar") {
+      console.log("tdk");
+      $('.equipmenTerdaftarMesin').css("display", "none");
+      $('.equipmenTdkTerdaftarMesin').show("display", "");
+    } else if ($('input[name=equipmenTerdaftarMesin]:checked').val() == "Terdaftar") {
+      console.log("ya");
+      $('.equipmenTerdaftarMesin').css("display", "");
+      $('.equipmenTdkTerdaftarMesin').css("display", "none");
+    }
+  });
+
   $('input[name="equipmenTerdaftar"]').on('ifChanged', function() {
     if ($('input[name=equipmenTerdaftar]:checked').val() == "TidakTerdaftar") {
       console.log("tdk");
@@ -395,6 +407,22 @@ function addRowObservationEdit() {
       console.log("ya");
       $('.equipmenTerdaftar').css("display", "");
       $('.equipmenTdkTerdaftar').css("display", "none");
+    }
+  });
+
+  $('input[name="perhitunganTakt"]').on('ifChanged', function() {
+    if ($('input[name=perhitunganTakt]:checked').val() == "1") {
+      $('.tskk_delik_cek_pakai').show()
+      $('input[name=taktTime]').show()
+      $('input[name=taktTime]').val('')
+      $('.tskk_tt').show()
+      // console.log("Ya");
+    } else if ($('input[name=perhitunganTakt]:checked').val() == "0") {
+      // console.log("Tidak");
+      $('.tskk_delik_cek_pakai').hide()
+      $('.tskk_tt').hide()
+      $('input[name=taktTime]').hide()
+      $('input[name=taktTime]').val('99999')
     }
   });
 
@@ -2027,22 +2055,22 @@ function attachRowObservation_new(th) {
 		<input type="number" onchange="minMaxId(this)" name="waktu10[]" class="form-control waktuObs inputWaktuKolom10" placeholder="Detik">
 		</td>
 		<td>
-		<input type="number" id="xmin_".$no name="xmin[]" class="form-control xmin" placeholder="Detik" readonly>
+		<input type="number"  name="xmin[]" class="form-control xmin" placeholder="Detik" readonly>
 		</td>
 		<td>
-		<input type="number" id="range_".$no name="range[]" class="form-control range" placeholder="Detik" readonly>
+		<input type="number"  name="range[]" class="form-control range" placeholder="Detik" readonly>
 		</td>
 		<td>
-		<input type="number" onchange="minMaxId(this)" id="wDistribusi_".$no name="wDistribusi[]" class="form-control wDistribusi" placeholder="Detik">
+		<input type="number" onchange="minMaxId(this)"  name="wDistribusi[]" class="form-control wDistribusi" placeholder="Detik">
 		</td>
 		<td>
 		<input type="number" onchange="minMaxId(this)" onclick="checkDistributionTime(this)" name="wDistribusiAuto[]" class="form-control wDistribusiAuto" placeholder="Detik" readonly>
 		</td>
 		<td>
-		<input type="number" id="wKerja_".$no name="wKerja[]" class="form-control wKerja" placeholder="Detik" readonly>
+		<input type="number"  name="wKerja[]" class="form-control wKerja" placeholder="Detik" readonly>
 		</td>
 		<td>
-		<input type="text" id="keterangan_".$no name="keterangan[]" class="form-control keterangan" placeholder="Input Keterangan">
+		<input type="text"  name="keterangan[]" class="form-control keterangan" placeholder="Input Keterangan">
 		</td>
 		<td>
 		<i class="fa fa-times fa-2x" onclick="deleteObserve(this)" style="color:red" id="hapus" title="Hapus Elemen"></i>
@@ -2159,6 +2187,43 @@ function attachRowObservation_new(th) {
     });
   }
 
+  $('input[name="terdaftar"]').on('ifChanged', function() {
+    if ($('input[name=terdaftar]:checked').val() == "TidakTerdaftar") {
+      console.log("tdk");
+      $('.terdaftar').css("display", "none");
+      $('.tdkTerdaftar').show("display", "");
+    } else if ($('input[name=terdaftar]:checked').val() == "Terdaftar") {
+      console.log("ya");
+      $('.terdaftar').css("display", "");
+      $('.tdkTerdaftar').css("display", "none");
+    }
+  });
+
+  $('input[name="equipmenTerdaftarMesin"]').on('ifChanged', function() {
+    if ($('input[name=equipmenTerdaftarMesin]:checked').val() == "TidakTerdaftar") {
+      console.log("tdk");
+      $('.equipmenTerdaftarMesin').css("display", "none");
+      $('.equipmenTdkTerdaftarMesin').show("display", "");
+    } else if ($('input[name=equipmenTerdaftarMesin]:checked').val() == "Terdaftar") {
+      console.log("ya");
+      $('.equipmenTerdaftarMesin').css("display", "");
+      $('.equipmenTdkTerdaftarMesin').css("display", "none");
+    }
+  });
+
+  $('input[name="equipmenTerdaftar"]').on('ifChanged', function() {
+    if ($('input[name=equipmenTerdaftar]:checked').val() == "TidakTerdaftar") {
+      console.log("tdk");
+      $('.equipmenTerdaftar').css("display", "none");
+      $('.equipmenTdkTerdaftar').show("display", "");
+    } else if ($('input[name=equipmenTerdaftar]:checked').val() == "Terdaftar") {
+      console.log("ya");
+      $('.equipmenTerdaftar').css("display", "");
+      $('.equipmenTdkTerdaftar').css("display", "none");
+    }
+  });
+
+
   $('.checkBoxParalel').each((i, v) => {
     $(v).attr('name', `checkBoxParalel[${i}]`)
   })
@@ -2229,22 +2294,22 @@ function attachRowObservation(th) {
 		<input type="number" onchange="minMaxId(this)" name="waktu10[]" class="form-control waktuObs inputWaktuKolom10" placeholder="Detik">
 		</td>
 		<td>
-		<input type="number" id="xmin_".$no name="xmin[]" class="form-control xmin" placeholder="Detik" readonly>
+		<input type="number"  name="xmin[]" class="form-control xmin" placeholder="Detik" readonly>
 		</td>
 		<td>
-		<input type="number" id="range_".$no name="range[]" class="form-control range" placeholder="Detik" readonly>
+		<input type="number"  name="range[]" class="form-control range" placeholder="Detik" readonly>
 		</td>
 		<td>
-		<input type="number" onchange="minMaxId(this)" id="wDistribusi_".$no name="wDistribusi[]" class="form-control wDistribusi" placeholder="Detik">
+		<input type="number" onchange="minMaxId(this)"  name="wDistribusi[]" class="form-control wDistribusi" placeholder="Detik">
 		</td>
 		<td>
 		<input type="number" onchange="minMaxId(this)" onclick="checkDistributionTime(this)" name="wDistribusiAuto[]" class="form-control wDistribusiAuto" placeholder="Detik" readonly>
 		</td>
 		<td>
-		<input type="number" id="wKerja_".$no name="wKerja[]" class="form-control wKerja" placeholder="Detik" readonly>
+		<input type="number"  name="wKerja[]" class="form-control wKerja" placeholder="Detik" readonly>
 		</td>
 		<td>
-		<input type="text" id="keterangan_".$no name="keterangan[]" class="form-control keterangan" placeholder="Input Keterangan">
+		<input type="text"  name="keterangan[]" class="form-control keterangan" placeholder="Input Keterangan">
 		</td>
 		<td>
 		<i class="fa fa-times fa-2x" onclick="deleteObserve(this)" style="color:red" id="hapus" title="Hapus Elemen"></i>
@@ -2360,6 +2425,58 @@ function attachRowObservation(th) {
       radioClass: 'iradio_flat-blue'
     });
   }
+
+  $('input[name="terdaftar"]').on('ifChanged', function() {
+    if ($('input[name=terdaftar]:checked').val() == "TidakTerdaftar") {
+      console.log("tdk");
+      $('.terdaftar').css("display", "none");
+      $('.tdkTerdaftar').show("display", "");
+    } else if ($('input[name=terdaftar]:checked').val() == "Terdaftar") {
+      console.log("ya");
+      $('.terdaftar').css("display", "");
+      $('.tdkTerdaftar').css("display", "none");
+    }
+  });
+
+  $('input[name="equipmenTerdaftarMesin"]').on('ifChanged', function() {
+    if ($('input[name=equipmenTerdaftarMesin]:checked').val() == "TidakTerdaftar") {
+      console.log("tdk");
+      $('.equipmenTerdaftarMesin').css("display", "none");
+      $('.equipmenTdkTerdaftarMesin').show("display", "");
+    } else if ($('input[name=equipmenTerdaftarMesin]:checked').val() == "Terdaftar") {
+      console.log("ya");
+      $('.equipmenTerdaftarMesin').css("display", "");
+      $('.equipmenTdkTerdaftarMesin').css("display", "none");
+    }
+  });
+
+  $('input[name="equipmenTerdaftar"]').on('ifChanged', function() {
+    if ($('input[name=equipmenTerdaftar]:checked').val() == "TidakTerdaftar") {
+      console.log("tdk");
+      $('.equipmenTerdaftar').css("display", "none");
+      $('.equipmenTdkTerdaftar').show("display", "");
+    } else if ($('input[name=equipmenTerdaftar]:checked').val() == "Terdaftar") {
+      console.log("ya");
+      $('.equipmenTerdaftar').css("display", "");
+      $('.equipmenTdkTerdaftar').css("display", "none");
+    }
+  });
+
+  $('input[name="perhitunganTakt"]').on('ifChanged', function() {
+    if ($('input[name=perhitunganTakt]:checked').val() == "1") {
+      $('.tskk_delik_cek_pakai').show()
+      $('input[name=taktTime]').show()
+      $('input[name=taktTime]').val('')
+      $('.tskk_tt').show()
+      // console.log("Ya");
+    } else if ($('input[name=perhitunganTakt]:checked').val() == "0") {
+      // console.log("Tidak");
+      $('.tskk_delik_cek_pakai').hide()
+      $('.tskk_tt').hide()
+      $('input[name=taktTime]').hide()
+      $('input[name=taktTime]').val('99999')
+    }
+  });
 
   $('.checkBoxParalel').each((i, v) => {
     $(v).attr('name', `checkBoxParalel[${i}]`)
