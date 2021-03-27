@@ -56,7 +56,7 @@ function addRowObservation() {
   // KOLOM 3
 
   //ini dulu
-  // html += '<td><select id="slcJenis_' + nomor + '" onchange="myFunctionTSKK(this)" name="slcJenisProses[]" class="form-control select4" id="" style="width:100%;" title="Jenis Proses" >';
+  // html += '<td><select id="slcJenis_' + nomor + '" onchange="myFunctionTSKK(this)" name="slcJenisProses[]" class="form-control select00004" id="" style="width:100%;" title="Jenis Proses" >';
   // html += '<option value=""> </option>';
   // html += '<option value="MANUAL" id="manual"> MANUAL </option>';
   // html += '<option value="AUTO" id="auto" onclick="setElemenGTSKK()"> AUTO </option>';
@@ -65,13 +65,13 @@ function addRowObservation() {
   // html += '<option value="WALK (Inheritance)" id="walk"> WALK (Inheritance) </option>';
   // html += "</select></td>";
   //now
-  html += '<td>  <input list="brow_jenis_proses"  class="form-control" onchange="myFunctionTSKK(this)" style="text-align:left;width:100%" data-placeholder="Jenis Proses" name="slcJenisProses[]" id="slcJenis_'+nomor+'"></td>';
+  html += '<td>  <input list="brow_jenis_proses"  class="form-control select00004" onchange="myFunctionTSKK(this)" style="text-align:left;width:100%" data-placeholder="Jenis Proses" name="slcJenisProses[]" id="slcJenis_'+nomor+'"></td>';
 
 
   //ini dulu
   // html += '<td class="second-col"><div class="col-lg-12"><div class="col-lg-6"><select class="form-control select2 slcElemen" id="slcElemen_' + nomor + '" name="txtSlcElemen[]" data-placeholder="Elemen" tabindex="-1" aria-hidden="true" ></select></div><div class="col-lg-6"><input type="text" class="form-control elemen" style="width: 100%" type="text" id="elemen_' + nomor + '" name="elemen[]" placeholder="Keterangan Elemen"></div></div></td>';
   //ini sekarang
-  html += '<td class="second-col"><div class="col-lg-12"><div class="col-lg-6"><input list="brow_slc_elemen" class="form-control" onchange="//disableOrnot(this)" name="txtSlcElemen[]" data-placeholder="Elemen"></div><div class="col-lg-6"><input type="text" class="form-control elemen" style="width: 100%" type="text" id="elemen_' + nomor + '" name="elemen[]" placeholder="Keterangan Elemen"></div></div></td>';
+  html += '<td class="second-col"><div class="row"><div class="col-lg-6"><input list="brow_slc_elemen" class="form-control slcElemen0000" onchange="//disableOrnot(this)" name="txtSlcElemen[]" data-placeholder="Elemen"></div><div class="col-lg-6"><input type="text" class="form-control elemen" style="width: 100%" type="text" id="elemen_' + nomor + '" name="elemen[]" placeholder="Keterangan Elemen"></div></div></td>';
 
   // KOLOM 4
   html += '<td><input type="number" onchange="minMaxId(this)" name="waktu1[]" class="form-control waktuObs inputWaktuKolom1" placeholder="Detik" ></td>';
@@ -155,7 +155,7 @@ function addRowObservation() {
     }
   });
 
-  // $('.select4').select2({
+  // $('.select00004').select2({
   //   placeholder: 'Jenis Proses',
   //   allowClear: true,
   // });
@@ -208,7 +208,7 @@ function addRowObservationAfterNext() {
   // KOLOM 1
   var html = '<tr class="nomor_' + nomor + '"><td class="posisi">' + nomor + '</td>';
   // KOLOM 2
-  html += '<td><select id="slcJenis_' + nomor + '" onchange="myFunctionTSKK(this)" name="slcJenisProses[]" class="form-control select4" id="" style="width:100%;" title="Jenis Proses" disabled>';
+  html += '<td><select id="slcJenis_' + nomor + '" onchange="myFunctionTSKK(this)" name="slcJenisProses[]" class="form-control select00004" id="" style="width:100%;" title="Jenis Proses" disabled>';
   html += '<option value=""> </option>';
   html += '<option value="MANUAL" id="manual"> MANUAL </option>';
   html += '<option value="AUTO" id="auto" onclick="setElemenGTSKK()"> AUTO </option>';
@@ -216,7 +216,7 @@ function addRowObservationAfterNext() {
   html += '<option value="WALK" id="walk"> WALK </option>';
   html += "</select></td>";
   // KOLOM 3
-  html += '<td><div class="col-lg-12"><div class="col-lg-6"><select class="form-control select2 slcElemen" id="slcElemen_' + nomor + '" name="txtSlcElemen[]" data-placeholder="Elemen" tabindex="-1" aria-hidden="true" disabled></select></div><div class="col-lg-6" disabled><input type="text" class="form-control elemen" style="width: 100%" type="text" id="elemen_' + nomor + '" name="elemen[]" placeholder="Keterangan Elemen" readonly></div></div></td>';
+  html += '<td><div class="col-lg-12"><div class="col-lg-6"><select class="form-control select2 slcElemen0000" id="slcElemen_' + nomor + '" name="txtSlcElemen[]" data-placeholder="Elemen" tabindex="-1" aria-hidden="true" disabled></select></div><div class="col-lg-6" disabled><input type="text" class="form-control elemen" style="width: 100%" type="text" id="elemen_' + nomor + '" name="elemen[]" placeholder="Keterangan Elemen" readonly></div></div></td>';
   // KOLOM 4
   html += '<td><select id="slcTipeUrutan_' + nomor + '" name="slcTipeUrutan[]" class="form-control tipe_urutan" style="width:100%;" title="Tipe Urutan Proses" disabled>';
   html += '<option value="" >  </option>';
@@ -262,7 +262,7 @@ function addRowObservationAfterNext() {
   $('#tbodyLembarObservasi').append(html);
   // $('#tbodyEditTSKK').append(html);
 
-  $('.select4').select2({
+  $('.select00004').select2({
     placeholder: 'Jenis Proses',
     allowClear: true,
   });
@@ -322,21 +322,29 @@ function addRowObservationEdit() {
   }
   // KOLOM 1
   var html = '<tr class="nomor_' + nomor + '"><td class="posisi  bg-success first-col" title="Klik Untuk Menambah Elemen Disini" onclick="attachRowObservation(this)">' + nomor + '</td>';
-  html += '<td><input type="checkbox" name="checkBoxParalel[' + (nomor - 1) + ']" value="PARALEL" class="checkBoxParalel"></td>'
+  html += '<td><input type="checkbox" style="width:19px;height:19px;" name="checkBoxParalel[' + (nomor - 1) + ']" value="PARALEL" class="checkBoxParalel"></td>'
   // KOLOM 2.5
   html += '<td><input type="number" class="form-control" style="width: 70px;" name="start_time_together[]" value=""></td>'
   html += '<td><input type="number" class="form-control" style="width: 70px;" name="end_time_together[]" value=""></td>'
   // KOLOM 2
-  html += '<td><select id="slcJenis_' + nomor + '" onchange="myFunctionTSKK(this)" name="slcJenisProses[]" class="form-control select4" id="" style="width:100%;" title="Jenis Proses">';
-  html += '<option value=""> </option>';
-  html += '<option value="MANUAL" id="manual"> MANUAL </option>';
-  html += '<option value="AUTO" id="auto" onclick="setElemenGTSKK()"> AUTO </option>';
-  // html += '<option value="AUTO (Inheritance)">AUTO (Inheritance)</option>';
-  html += '<option value="WALK" id="walk"> WALK </option>';
-  html += "</select></td>";
+  //ini dulu
+  // html += '<td><select id="slcJenis_' + nomor + '" onchange="myFunctionTSKK(this)" name="slcJenisProses[]" class="form-control select00004" id="" style="width:100%;" title="Jenis Proses" >';
+  // html += '<option value=""> </option>';
+  // html += '<option value="MANUAL" id="manual"> MANUAL </option>';
+  // html += '<option value="AUTO" id="auto" onclick="setElemenGTSKK()"> AUTO </option>';
+  // // html += '<option value="AUTO (Inheritance)">AUTO (Inheritance)</option>';
+  // html += '<option value="WALK" id="walk"> WALK </option>';
+  // html += '<option value="WALK (Inheritance)" id="walk"> WALK (Inheritance) </option>';
+  // html += "</select></td>";
+  //now
+  html += '<td>  <input list="brow_jenis_proses"  class="form-control select00004" onchange="myFunctionTSKK(this)" style="text-align:left;width:100%" data-placeholder="Jenis Proses" name="slcJenisProses[]" id="slcJenis_'+nomor+'"></td>';
 
   // KOLOM 3
-  html += '<td class="second-col"><div class="col-lg-12"><div class="col-lg-6"><select class="form-control select2 slcElemen" id="slcElemen_' + nomor + '" name="txtSlcElemen[]" data-placeholder="Elemen" tabindex="-1" aria-hidden="true" ></select></div><div class="col-lg-6"><input type="text" class="form-control elemen" style="width: 100%" type="text" id="elemen_' + nomor + '" name="elemen[]" placeholder="Keterangan Elemen"></div></div></td>';
+  //ini dulu
+  // html += '<td class="second-col"><div class="col-lg-12"><div class="col-lg-6"><select class="form-control select2 slcElemen" id="slcElemen_' + nomor + '" name="txtSlcElemen[]" data-placeholder="Elemen" tabindex="-1" aria-hidden="true" ></select></div><div class="col-lg-6"><input type="text" class="form-control elemen" style="width: 100%" type="text" id="elemen_' + nomor + '" name="elemen[]" placeholder="Keterangan Elemen"></div></div></td>';
+  //ini sekarang
+  html += '<td class="second-col"><div class="row"><div class="col-lg-6"><input list="brow_slc_elemen" class="form-control slcElemen0000" onchange="//disableOrnot(this)" name="txtSlcElemen[]" data-placeholder="Elemen"></div><div class="col-lg-6"><input type="text" class="form-control elemen" style="width: 100%" type="text" id="elemen_' + nomor + '" name="elemen[]" placeholder="Keterangan Elemen"></div></div></td>';
+
   // KOLOM 4
   // KOLOM 5
   html += '<td><input type="number" onchange="minMaxId(this)" name="waktu1[]" class="form-control waktuObs inputWaktuKolom1" placeholder="Detik" ></td>';
@@ -379,10 +387,10 @@ function addRowObservationEdit() {
   $('#tbodyLembarObservasiEdit').append(html);
   // $('#tbodyEditTSKK').append(html);
 
-  $('input').iCheck({
-    checkboxClass: 'icheckbox_flat-blue',
-    radioClass: 'iradio_flat-blue'
-  });
+  // $('input').iCheck({
+  //   checkboxClass: 'icheckbox_flat-blue',
+  //   radioClass: 'iradio_flat-blue'
+  // });
 
   $('input[name="terdaftar"]').on('ifChanged', function() {
     if ($('input[name=terdaftar]:checked').val() == "TidakTerdaftar") {
@@ -436,47 +444,47 @@ function addRowObservationEdit() {
     }
   });
 
-  $('.select4').select2({
-    placeholder: 'Jenis Proses',
-    allowClear: true,
-  });
-
-  $('.tipe_urutan').select2({
-    placeholder: 'Tipe Urutan',
-    allowClear: true,
-  });
-
-  $('.slcElemen').select2({
-    placeholder: 'Elemen',
-    allowClear: true,
-  });
-
-  $('.slcElemen').select2({
-    // minimumInputLength: 3,
-    ajax: {
-      url: baseurl + 'GeneratorTSKK/C_GenTSKK/ElemenKerja/',
-      dataType: 'json',
-      type: "GET",
-      data: function(params) {
-        var queryParameters = {
-          elk: params.term,
-          elm_krj: $('#slcElemen').val()
-        }
-        return queryParameters;
-      },
-      processResults: function(data) {
-        console.log(data)
-        return {
-          results: $.map(data, function(obj) {
-            return {
-              id: obj.elemen_kerja,
-              text: obj.elemen_kerja
-            };
-          })
-        };
-      }
-    }
-  });
+  // $('.select4').select2({
+  //   placeholder: 'Jenis Proses',
+  //   allowClear: true,
+  // });
+  //
+  // $('.tipe_urutan').select2({
+  //   placeholder: 'Tipe Urutan',
+  //   allowClear: true,
+  // });
+  //
+  // $('.slcElemen').select2({
+  //   placeholder: 'Elemen',
+  //   allowClear: true,
+  // });
+  //
+  // $('.slcElemen').select2({
+  //   // minimumInputLength: 3,
+  //   ajax: {
+  //     url: baseurl + 'GeneratorTSKK/C_GenTSKK/ElemenKerja/',
+  //     dataType: 'json',
+  //     type: "GET",
+  //     data: function(params) {
+  //       var queryParameters = {
+  //         elk: params.term,
+  //         elm_krj: $('#slcElemen').val()
+  //       }
+  //       return queryParameters;
+  //     },
+  //     processResults: function(data) {
+  //       console.log(data)
+  //       return {
+  //         results: $.map(data, function(obj) {
+  //           return {
+  //             id: obj.elemen_kerja,
+  //             text: obj.elemen_kerja
+  //           };
+  //         })
+  //       };
+  //     }
+  //   }
+  // });
 
   $('.posisi').each((i, item) => {
     document.getElementsByClassName('posisi')[i].innerHTML = i + 1
@@ -1528,11 +1536,11 @@ function myFunctionTSKK(th) {
 
   var row_index = $(th).parent().parent('tr').index();
   var oldRow = Number(row_index) - 1;
-  var oldJenis = $('table tbody tr:nth(' + oldRow + ') td .select4').val();
+  var oldJenis = $('table tbody tr:nth(' + oldRow + ') td .select00004').val();
   console.log(row_index, oldJenis)
 
-  var elemen = $('table tbody tr:nth(' + row_index + ') td .select4').val();
-  var elemen_kerja = $('table tbody tr:nth(' + oldRow + ') td .slcElemen').val();
+  var elemen = $('table tbody tr:nth(' + row_index + ') td .select00004').val();
+  var elemen_kerja = $('table tbody tr:nth(' + oldRow + ') td .slcElemen0000').val();
   var keterangan = $('table tbody tr:nth(' + oldRow + ') td .elemen').val();
   console.log(elemen, elemen_kerja, keterangan)
 
@@ -1543,28 +1551,28 @@ function myFunctionTSKK(th) {
 
   if (elemen == 'AUTO (Inheritance)') {
     var Element = `<option value="${elemen_kerja}">${elemen_kerja}</option>`;
-    $('table tbody tr:nth(' + row_index + ') td .slcElemen').append(Element); //auto isi elemen kerja
-    $('table tbody tr:nth(' + row_index + ') td .slcElemen').trigger('change');
+    $('table tbody tr:nth(' + row_index + ') td .slcElemen0000').append(Element); //auto isi elemen kerja
+    $('table tbody tr:nth(' + row_index + ') td .slcElemen0000').trigger('change');
     $('table tbody tr:nth(' + row_index + ') td .elemen').val(keterangan); //auto isi keterangan
     $('table tbody tr:nth(' + row_index + ') td .tipe_urutan').val('SERIAL');
     $('table tbody tr:nth(' + row_index + ') td .tipe_urutan').trigger('change');
     // console.log("ini element: ", Element, elemen, elemen_kerja, keterangan)
   } else if (elemen == 'AUTO') { //how to make it works completely?
-    $('table tbody tr:nth(' + row_index + ') td .slcElemen').val(null).trigger('change');
+    $('table tbody tr:nth(' + row_index + ') td .slcElemen0000').val(null).trigger('change');
     $('table tbody tr:nth(' + row_index + ') td .elemen').val('');
     $('table tbody tr:nth(' + row_index + ') td .tipe_urutan').val(null).trigger('change');
   } else if (elemen == 'MANUAL') { //how to make it works completely?
-    $('table tbody tr:nth(' + row_index + ') td .slcElemen').val(null).trigger('change');
+    $('table tbody tr:nth(' + row_index + ') td .slcElemen0000').val(null).trigger('change');
     $('table tbody tr:nth(' + row_index + ') td .elemen').val('');
     $('table tbody tr:nth(' + row_index + ') td .tipe_urutan').val(null).trigger('change');
   } else if (elemen == 'WALK') { //how to make it works completely?
-    $('table tbody tr:nth(' + row_index + ') td .slcElemen').val(null).trigger('change');
+    $('table tbody tr:nth(' + row_index + ') td .slcElemen0000').val(null).trigger('change');
     $('table tbody tr:nth(' + row_index + ') td .elemen').val('');
     $('table tbody tr:nth(' + row_index + ') td .tipe_urutan').val('SERIAL').trigger('change');
   } else if (elemen == 'WALK (Inheritance)') {
     var Element = `<option value="${elemen_kerja}">${elemen_kerja}</option>`;
-    $('table tbody tr:nth(' + row_index + ') td .slcElemen').append(Element); //auto isi elemen kerja
-    $('table tbody tr:nth(' + row_index + ') td .slcElemen').trigger('change');
+    $('table tbody tr:nth(' + row_index + ') td .slcElemen0000').append(Element); //auto isi elemen kerja
+    $('table tbody tr:nth(' + row_index + ') td .slcElemen0000').trigger('change');
     $('table tbody tr:nth(' + row_index + ') td .elemen').val(keterangan); //auto isi keterangan
     $('table tbody tr:nth(' + row_index + ') td .tipe_urutan').val('SERIAL');
     $('table tbody tr:nth(' + row_index + ') td .tipe_urutan').trigger('change');
@@ -1596,14 +1604,14 @@ function newFinish(th) {
 
   for (let index = row_index + 1; index < countRow; index++) {
     var urutan = $('table tbody tr:nth(' + index + ') td .tipe_urutan').val();
-    var proses = $('table tbody tr:nth(' + index + ') td .select4').val();
+    var proses = $('table tbody tr:nth(' + index + ') td .select00004').val();
 
     if (urutan == 'PARALEL') {
       break;
     }
 
     var oldFinish = $('table tbody tr:nth(' + (index - 1) + ') td .finish').val();
-    var prosesAtas = $('table tbody tr:nth(' + (index - 1) + ') td .select4').val();
+    var prosesAtas = $('table tbody tr:nth(' + (index - 1) + ') td .select00004').val();
     var startBfr = $('table tbody tr:nth(' + (index - 1) + ') td .mulai').val();
 
     //KALO GINI JADI GITU, KALO GITU JADI GINI :)
@@ -1690,7 +1698,7 @@ function finishTableElement(th) {
     let currStart = nextRow.children('td').children('.mulai');
     let currWaktu = nextRow.children('td').children('.waktu').val();
     let currMulai = nextRow.children('td').children('.mulai').val();
-    let jp = prevRow.children('td').children('.select4').val();
+    let jp = prevRow.children('td').children('.select00004').val();
     // console.log(jp);
 
     let finish1 = Number(currWaktu) + Number(prevStart) - 1;
@@ -1835,7 +1843,7 @@ function newDeletion(th) {
     let currFinish = nextRow.children('td').children('.finish');
     let currStart = nextRow.children('td').children('.mulai');
     let currWaktu = nextRow.children('td').children('.waktu').val();
-    let jp = prevRow.children('td').children('.select4').val();
+    let jp = prevRow.children('td').children('.select00004').val();
 
     let indexNow = nextRow.children('td').children('.posisi').html();
     let waktuNow = curr_row.children('td').children('.waktu').val();
@@ -1879,10 +1887,10 @@ function attachRow() {
 	<tr class = "number_${num}">
 		<td class="posisi"> ${posisi} </td>
 		<td>
-			<select id="slcJenis_${num}" name="slcJenisProses[]" onchange="myFunctionTSKK(this)" class="form-control select4 slcJenisProses_num" style="width:100%;" onFocus="onBakso()" title="Jenis Proses"><option value=""> </option><option value="MANUAL" id="manual"> MANUAL </option><option value="AUTO" id="auto" onclick="setElemenGTSKK()"> AUTO </option><option value="WALK" id="walk"> WALK </option><option value="WALK (Inheritance)" id="walk"> WALK (Inheritance) </option></select>
+			<select id="slcJenis_${num}" name="slcJenisProses[]" onchange="myFunctionTSKK(this)" class="form-control select00004 slcJenisProses_num" style="width:100%;" onFocus="onBakso()" title="Jenis Proses"><option value=""> </option><option value="MANUAL" id="manual"> MANUAL </option><option value="AUTO" id="auto" onclick="setElemenGTSKK()"> AUTO </option><option value="WALK" id="walk"> WALK </option><option value="WALK (Inheritance)" id="walk"> WALK (Inheritance) </option></select>
 		</td>
 		<td>
-			<select class="form-control select2 slcElemen" id="slcElemen_${num}" name="txtSlcElemen[]" data-placeholder="Input Elemen Kerja" tabindex="-1" aria-hidden="true"></select><input type="text" class="form-control elemen" style="width: 100%" type="text" id="elemen_${num}" name="elemen[]" placeholder="Input Keterangan">
+			<select class="form-control select2 slcElemen0000" id="slcElemen_${num}" name="txtSlcElemen[]" data-placeholder="Input Elemen Kerja" tabindex="-1" aria-hidden="true"></select><input type="text" class="form-control elemen" style="width: 100%" type="text" id="elemen_${num}" name="elemen[]" placeholder="Input Keterangan">
 		</td>
 		<td>
 			<select id="slcTipeUrutan_${num}" name="slcTipeUrutan[]" class="form-control tipe_urutan" style="width:100%;" onchange="AutomaticTime(this)" title="Tipe Urutan Proses"><option value="" >  </option><option value="SERIAL"> SERIAL  </option><option value="PARALEL"> PARALEL </option></select>
@@ -1911,7 +1919,7 @@ function attachRow() {
     })
     //set the auto increment sequence for edit page//
 
-    $('.select4').select2({
+    $('.select00004').select2({
       placeholder: 'Jenis Proses',
       allowClear: true,
     });
@@ -1958,7 +1966,7 @@ function attachRow() {
 
     console.log("ini after", newRow)
 
-    $('.select4').select2({
+    $('.select00004').select2({
       placeholder: 'Jenis Proses',
       allowClear: true,
     });
@@ -2024,11 +2032,11 @@ function attachRowObservation_new(th) {
 			<input type="number" class="form-control" style="width: 70px;" name="end_time_together[]" value="">
 		</td>
 		<td>
-      <input list="brow_jenis_proses" class="form-control" onchange="myFunctionTSKK(this)" style="text-align:left;width:100%" data-placeholder="Jenis Proses" name="slcJenisProses[]" id="slcJenis_${posisi}">
+      <input list="brow_jenis_proses" class="form-control select00004" onchange="myFunctionTSKK(this)" style="text-align:left;width:100%" data-placeholder="Jenis Proses" name="slcJenisProses[]" id="slcJenis_${posisi}">
 		</td>
 		<td class="second-col">
-		<div class="col-lg-12"><div class="col-lg-6">
-      <input list="brow_slc_elemen" class="form-control" id="slcElemen_${posisi}" onchange="//disableOrnot(this)" name="txtSlcElemen[]" data-placeholder="Elemen">
+		<div class="row"><div class="col-lg-6">
+      <input list="brow_slc_elemen" class="form-control slcElemen0000" id="slcElemen_${posisi}" onchange="//disableOrnot(this)" name="txtSlcElemen[]" data-placeholder="Elemen">
     </div>
     <div class="col-lg-6"><input type="text" class="form-control elemen" style="width: 100%" type="text" id="elemen_'+nomor+'" name="elemen[]" placeholder="Keterangan Elemen"></div></div>
 		</td>
@@ -2095,7 +2103,7 @@ function attachRowObservation_new(th) {
     })
     //set the auto increment sequence for edit page//
 
-    // $('.select4').select2({
+    // $('.select00004').select2({
     //   placeholder: 'Jenis Proses',
     //   allowClear: true,
     // });
@@ -2147,7 +2155,7 @@ function attachRowObservation_new(th) {
 
     console.log("ini after", newRow)
 
-    // $('.select4').select2({
+    // $('.select00004').select2({
     //   placeholder: 'Jenis Proses',
     //   allowClear: true,
     // });
@@ -2252,7 +2260,7 @@ function attachRowObservation(th) {
 	<tr class = "number_${num}">
 		<td class="posisi bg-success first-col" title="Klik Untuk Menambah Elemen Disini" onclick="attachRowObservation(this)"> ${posisi} </td>
 		<td>
-		<input type="checkbox" name="checkBoxParalel[${indx}]" value="PARALEL" class="checkBoxParalel" onchange="//chckParalel(this)">
+		<input type="checkbox" name="checkBoxParalel[${indx}]" style="width:19px;height:19px;" value="PARALEL" class="checkBoxParalel" onchange="//chckParalel(this)">
 		</td>
 		<td>
 			<input type="number" class="form-control" style="width: 70px;" name="start_time_together[]" value="">
@@ -2261,15 +2269,14 @@ function attachRowObservation(th) {
 			<input type="number" class="form-control" style="width: 70px;" name="end_time_together[]" value="">
 		</td>
 		<td>
-		<select id="slcJenis_'+nomor+'" onchange="myFunctionTSKK(this)" name="slcJenisProses[]" class="form-control select4" id="" style="width:100%;" title="Jenis Proses" >';
-		<option value=""> </option>';
-		<option value="MANUAL" id="manual"> MANUAL </option>';
-		<option value="AUTO" id="auto" onclick="setElemenGTSKK()"> AUTO </option>';
-		<option value="WALK" id="walk"> WALK </option>';
-		</select>
+		  <input list="brow_jenis_proses" class="form-control select00004" onchange="myFunctionTSKK(this)" style="text-align:left;width:100%" data-placeholder="Jenis Proses" name="slcJenisProses[]" id="slcJenis_${posisi}">
 		</td>
 		<td class="second-col">
-		<div class="col-lg-12"><div class="col-lg-6"><select class="form-control select2 slcElemen" id="slcElemen_'+nomor+'" name="txtSlcElemen[]" data-placeholder="Elemen" tabindex="-1" aria-hidden="true"></select></div><div class="col-lg-6"><input type="text" class="form-control elemen" style="width: 100%" type="text" id="elemen_'+nomor+'" name="elemen[]" placeholder="Keterangan Elemen"></div></div>
+		<div class="row">
+    <div class="col-lg-6">
+      <input list="brow_slc_elemen" class="form-control slcElemen0000" id="slcElemen_${posisi}" onchange="//disableOrnot(this)" name="txtSlcElemen[]" data-placeholder="Elemen">
+    </div>
+    <div class="col-lg-6"><input type="text" class="form-control elemen" style="width: 100%" type="text" id="elemen_'+nomor+'" name="elemen[]" placeholder="Keterangan Elemen"></div></div>
 		</td>
 		<td>
 		<input type="number" onchange="minMaxId(this)" name="waktu1[]" class="form-control waktuObs inputWaktuKolom1" placeholder="Detik">
@@ -2334,104 +2341,104 @@ function attachRowObservation(th) {
     })
     //set the auto increment sequence for edit page//
 
-    $('.select4').select2({
-      placeholder: 'Jenis Proses',
-      allowClear: true,
-    });
+    // $('.select4').select2({
+    //   placeholder: 'Jenis Proses',
+    //   allowClear: true,
+    // });
+    //
+    // $('.tipe_urutan').select2({
+    //   placeholder: 'Tipe Urutan',
+    //   allowClear: true,
+    // });
+    //
+    // $('.slcElemen').select2({
+    //   placeholder: 'Keterangan Elemen',
+    //   allowClear: true,
+    // });
+    //
+    // $('.slcElemen').select2({
+    //   // minimumInputLength: 3,
+    //   ajax: {
+    //     url: baseurl + 'GeneratorTSKK/C_GenTSKK/ElemenKerja/',
+    //     dataType: 'json',
+    //     type: "GET",
+    //     data: function(params) {
+    //       var queryParameters = {
+    //         elk: params.term,
+    //         elm_krj: $('#slcElemen').val()
+    //       }
+    //       return queryParameters;
+    //     },
+    //     processResults: function(data) {
+    //       console.log(data)
+    //       return {
+    //         results: $.map(data, function(obj) {
+    //           return {
+    //             id: obj.elemen_kerja,
+    //             text: obj.elemen_kerja
+    //           };
+    //         })
+    //       };
+    //     }
+    //   }
+    // });
 
-    $('.tipe_urutan').select2({
-      placeholder: 'Tipe Urutan',
-      allowClear: true,
-    });
-
-    $('.slcElemen').select2({
-      placeholder: 'Keterangan Elemen',
-      allowClear: true,
-    });
-
-    $('.slcElemen').select2({
-      // minimumInputLength: 3,
-      ajax: {
-        url: baseurl + 'GeneratorTSKK/C_GenTSKK/ElemenKerja/',
-        dataType: 'json',
-        type: "GET",
-        data: function(params) {
-          var queryParameters = {
-            elk: params.term,
-            elm_krj: $('#slcElemen').val()
-          }
-          return queryParameters;
-        },
-        processResults: function(data) {
-          console.log(data)
-          return {
-            results: $.map(data, function(obj) {
-              return {
-                id: obj.elemen_kerja,
-                text: obj.elemen_kerja
-              };
-            })
-          };
-        }
-      }
-    });
-
-    $('input').iCheck({
-      checkboxClass: 'icheckbox_flat-blue',
-      radioClass: 'iradio_flat-blue'
-    });
+    // $('input').iCheck({
+    //   checkboxClass: 'icheckbox_flat-blue',
+    //   radioClass: 'iradio_flat-blue'
+    // });
 
   } else {
     $('#tblObservasiEdit tbody').append(newRow)
 
     console.log("ini after", newRow)
 
-    $('.select4').select2({
-      placeholder: 'Jenis Proses',
-      allowClear: true,
-    });
+    // $('.select00004').select2({
+    //   placeholder: 'Jenis Proses',
+    //   allowClear: true,
+    // });
+    //
+    // $('.tipe_urutan').select2({
+    //   placeholder: 'Tipe Urutan',
+    //   allowClear: true,
+    // });
+    //
+    // $('.slcElemen').select2({
+    //   placeholder: 'Input Keterangan',
+    //   allowClear: true,
+    // });
+    //
+    // $('.slcElemen').select2({
+    //   // minimumInputLength: 3,
+    //   ajax: {
+    //     url: baseurl + 'GeneratorTSKK/C_GenTSKK/ElemenKerja/',
+    //     dataType: 'json',
+    //     type: "GET",
+    //     data: function(params) {
+    //       var queryParameters = {
+    //         elk: params.term,
+    //         elm_krj: $('#slcElemen').val()
+    //       }
+    //       return queryParameters;
+    //     },
+    //     processResults: function(data) {
+    //       console.log(data)
+    //       return {
+    //         results: $.map(data, function(obj) {
+    //           return {
+    //             id: obj.elemen_kerja,
+    //             text: obj.elemen_kerja
+    //           };
+    //         })
+    //       };
+    //     }
+    //   }
+    // });
 
-    $('.tipe_urutan').select2({
-      placeholder: 'Tipe Urutan',
-      allowClear: true,
-    });
-
-    $('.slcElemen').select2({
-      placeholder: 'Input Keterangan',
-      allowClear: true,
-    });
-
-    $('.slcElemen').select2({
-      // minimumInputLength: 3,
-      ajax: {
-        url: baseurl + 'GeneratorTSKK/C_GenTSKK/ElemenKerja/',
-        dataType: 'json',
-        type: "GET",
-        data: function(params) {
-          var queryParameters = {
-            elk: params.term,
-            elm_krj: $('#slcElemen').val()
-          }
-          return queryParameters;
-        },
-        processResults: function(data) {
-          console.log(data)
-          return {
-            results: $.map(data, function(obj) {
-              return {
-                id: obj.elemen_kerja,
-                text: obj.elemen_kerja
-              };
-            })
-          };
-        }
-      }
-    });
-
-    $('input').iCheck({
-      checkboxClass: 'icheckbox_flat-blue',
-      radioClass: 'iradio_flat-blue'
-    });
+    // $('input').iCheck({
+    //   checkboxClass: 'icheckbox_flat-blue',
+    //   radioClass: 'iradio_flat-blue'
+    // });
   }
 
   $('input[name="terdaftar"]').on('ifChanged', function() {
@@ -2503,13 +2510,13 @@ function AutomaticTime(th) {
   var endTime = $('table tbody tr:nth(' + oldRow + ') td .finish').val();
   console.log(tu, ': ini tipe urutan');
   console.log(endTime, ': ini finish sblm');
-  var jnsProses = $('table tbody tr:nth(' + row_index + ') td .select4').val();
+  var jnsProses = $('table tbody tr:nth(' + row_index + ') td .select00004').val();
   console.log(jnsProses, ': jenis prosesnya');
 
   var waktuSblm = $('table tbody tr:nth(' + oldRow + ') td .waktu').val()
   console.log("Ini waktu elemen sebelumnya : ", waktuSblm);
 
-  var jnsProsesBfr = $('table tbody tr:nth(' + oldRow + ') td .select4').val();
+  var jnsProsesBfr = $('table tbody tr:nth(' + oldRow + ') td .select00004').val();
   console.log("Ini jenis proses sebelumnya : ", jnsProsesBfr);
 
   var waktuSkrg = $('table tbody tr:nth(' + row_index + ') td .waktu').val();
@@ -2574,11 +2581,11 @@ function AutomaticTime(th) {
     console.log('masuk kondisi ini nich');
   }
 
-  var oldJenis = $('table tbody tr:nth(' + oldRow + ') td .select4').val();
+  var oldJenis = $('table tbody tr:nth(' + oldRow + ') td .select00004').val();
   console.log(row_index, oldJenis)
 
-  var elemen = $('table tbody tr:nth(' + row_index + ') td .select4').val();
-  var elemen_kerja = $('table tbody tr:nth(' + oldRow + ') td .slcElemen').val();
+  var elemen = $('table tbody tr:nth(' + row_index + ') td .select00004').val();
+  var elemen_kerja = $('table tbody tr:nth(' + oldRow + ') td .slcElemen0000').val();
   var keterangan = $('table tbody tr:nth(' + oldRow + ') td .elemen').val();
   console.log(elemen, elemen_kerja, keterangan)
 }
@@ -2845,8 +2852,8 @@ $(document).ready(function() {
       }
     });
     $('.keterangan').prop('readonly', false);
-    $('.select4').prop('disabled', false);
-    $('.slcElemen').prop('disabled', false);
+    $('.select00004').prop('disabled', false);
+    $('.slcElemen0000').prop('disabled', false);
     $('.tipe_urutan').prop('disabled', false);
   });
 });

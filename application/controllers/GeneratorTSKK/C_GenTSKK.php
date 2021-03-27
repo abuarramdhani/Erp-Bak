@@ -315,6 +315,7 @@ public function EditObservasi($id)
     $data['lihat_hasilObservasi_elemen'] = $this->M_gentskk->getAllObservation($id);
     $data['lihat_hasilObservasi'] = $this->M_gentskk->getAllObservation($id);
 		$data['product'] = $this->M_gentskk->getTipeProduk('');
+		$data['data_element_kerja'] = $this->M_gentskk->ElemenKerja('');
 
     $hitungData = count($data['lihat_hasilObservasi']);
     if (count($data['lihat_hasilObservasi']) < 5){
