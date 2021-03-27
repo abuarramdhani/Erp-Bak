@@ -100,8 +100,6 @@
             <th class="tglakhir">Tgl. Akhir</th>
             <th class="pensiun">Kartu Jaminan Pensiun</th>
 
-
-
         </tr>
     </thead>
     <tbody>
@@ -339,8 +337,8 @@
                             echo "<td>" . $val['ang_upamk'] . "</td>";
                         }
 
-                        if (in_array("tb.no_peserta", $select)) {
-                            echo "<td>" . $val['no_peserta'] . "</td>";
+                        if (in_array("tb.no_peserta as no_bpjskes", $select)) {
+                            echo "<td>" . $val['no_bpjskes'] . "</td>";
                         }
                         if (in_array("to_char(tb.tglmulai", $select)) {
                             echo "<td>" . $val['tglmulaik'] . "</td>";
@@ -361,8 +359,8 @@
                             echo "<td>" . $val['dokterjpk'] . "</td>";
                         }
 
-                        if (in_array("ttk.no_peserta", $select)) {
-                            echo "<td>" . $val['no_peserta'] . "</td>";
+                        if (in_array("ttk.no_peserta as no_bpjstk", $select)) {
+                            echo "<td>" . $val['no_bpjstk'] . "</td>";
                         }
                         if (in_array("to_char(ttk.tglmulai", $select)) {
                             echo "<td>" . $val['tglmulai'] . "</td>";
