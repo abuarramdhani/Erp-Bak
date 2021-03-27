@@ -191,6 +191,20 @@
 </style>
 
 <section class="content">
+  <datalist id="brow_jenis_proses">
+    <option value=""></option>
+    <option value="MANUAL">MANUAL</option>
+    <option value="AUTO">AUTO</option>
+    <!-- <option value="AUTO (Inheritance)">AUTO (Inheritance)</option> -->
+    <option value="WALK">WALK</option>
+  </datalist>
+
+  <datalist id="brow_slc_elemen">
+    <?php foreach ($data_element_kerja as $key => $value): ?>
+      <option value="<?php echo $value['elemen_kerja'] ?>"><?php echo $value['elemen_kerja'] ?></option>
+    <?php endforeach; ?>
+  </datalist>
+
   <form id='Observasi' method="POST" action="<?php echo base_url('GeneratorTSKK/saveObservation/'); ?>">
     <div class="inner">
       <div class="row">
@@ -501,7 +515,7 @@
                         <div class="row">
                           <label for="norm" class="control-label col-lg-6">Waktu 1 Shift (Detik) : </label>
                           <div class="col-lg-6">
-                            <input type="number" style="margin-left:-35px;" placeholder="Input Waktu Satu Shift" oninput="countTaktTime(this)" name="txtWaktu1Shift" id="txtWaktu1Shift" class="form-control waktu1Shift" required />
+                            <input type="number" style="margin-left:-35px;" placeholder="Input Waktu Satu Shift" value="0" oninput="countTaktTime(this)" name="txtWaktu1Shift" id="txtWaktu1Shift" class="form-control waktu1Shift" required />
                           </div>
                         </div>
                         <br>
@@ -679,20 +693,21 @@
                                   </td>
                                   <!--JENIS PROSES-->
                                   <td>
-                                    <select class="form-control select4" onchange="myFunctionTSKK(this)" style="text-align:left;width:100%" data-placeholder="Jenis Proses" name="slcJenisProses[]" id="slcJenis_<?= $no ?>">
+                                    <input list="brow_jenis_proses" class="form-control" onchange="myFunctionTSKK(this)" style="text-align:left;width:100%" data-placeholder="Jenis Proses" name="slcJenisProses[]" id="slcJenis_<?= $no ?>">
+                                    <!-- <select class="form-control select4" onchange="myFunctionTSKK(this)" style="text-align:left;width:100%" data-placeholder="Jenis Proses" name="slcJenisProses[]" id="slcJenis_<?= $no ?>">
                                       <option value=""></option>
                                       <option value="MANUAL">MANUAL</option>
                                       <option value="AUTO">AUTO</option>
-                                      <!-- <option value="AUTO (Inheritance)">AUTO (Inheritance)</option> -->
                                       <option value="WALK">WALK</option>
-                                    </select>
+                                    </select> -->
                                   </td>
                                   <!--ELEMEN KERJA-->
                                   <td class="second-col">
                                     <div class="col-lg-12">
                                       <div class="col-lg-6">
-                                        <select class="form-control select2 slcElemen" onchange="//disableOrnot(this)" id="slcElemen" name="txtSlcElemen[]" data-placeholder="Elemen">
-                                        </select>
+                                        <!-- <select class="form-control select2 slcElemen" onchange="//disableOrnot(this)" id="slcElemen" name="txtSlcElemen[]" data-placeholder="Elemen">
+                                        </select> -->
+                                        <input list="brow_slc_elemen" class="form-control" onchange="//disableOrnot(this)" name="txtSlcElemen[]" data-placeholder="Elemen">
                                       </div>
                                       <div class="col-lg-6">
                                         <input type="text" name="elemen[]" class="form-control elemen" placeholder="Keterangan Elemen">
