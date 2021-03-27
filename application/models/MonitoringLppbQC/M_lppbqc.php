@@ -3,59 +3,185 @@
         public function __construct(){
             $this->load->database();
             // $this->load->library('encrypt');
-            // $this->oracle = $this->load->database('oracle', true);
-            $this->oracle = $this->load->database('oracle_dev', true);
+            $this->oracle = $this->load->database('oracle', true);
+            // $this->oracle = $this->load->database('oracle_dev', true);
             $this->personalia = $this->load->database('personalia', true);
         }
 
         public function getMon($stat){
-            $sql = "SELECT DISTINCT  rt.organization_id, rt.transaction_type,
-            (SELECT MIN (TO_CHAR (rt1.transaction_date, 'DD Mon YYYY'))
-               FROM rcv_transactions rt1
-              WHERE rt.shipment_header_id = rt1.shipment_header_id
-                AND rt.shipment_line_id = rt1.shipment_line_id
-                AND rt1.transaction_type = 'TRANSFER') tgl_transfer,
-            (SELECT MIN (TO_CHAR (rt1.transaction_date, 'HH24:MI:SS'))
-               FROM rcv_transactions rt1
-              WHERE rt.shipment_header_id = rt1.shipment_header_id
-                AND rt.shipment_line_id = rt1.shipment_line_id
-                AND rt1.transaction_type = 'TRANSFER') jam_transfer,
-            rsh.receipt_num no_lppb, pov.vendor_name, msib.segment1 item,
-            msib.description item_description,
-            TO_CHAR (rsh.shipped_date, 'DD Mon YYYY') tgl_sp,
-            (SELECT rt1.quantity
-               FROM rcv_transactions rt1
-              WHERE rt.shipment_header_id = rt1.shipment_header_id
-                AND rt.shipment_line_id = rt1.shipment_line_id
-                AND rt1.transaction_type = 'RECEIVE') jumlah,
-            DECODE (rt.transaction_type, 'ACCEPT', rt.transaction_date, 'REJECT', rt.transaction_date, NULL) tgl_inspeksi,
-            DECODE (rt.transaction_type, 'ACCEPT', rt.quantity, NULL) ok,
-            DECODE (rt.transaction_type, 'REJECT', rt.quantity, NULL) not_ok,
-            DECODE (rt.transaction_type, 'ACCEPT', rt.inspection_quality_code, 'REJECT', rt.inspection_quality_code, rt.comments) keterangan,
-            NULL inspektor, TO_CHAR (klk.tanggal_kirim, 'DD Mon YYYY') tgl_kirim,
-            klk.jam jam_kirim
-       FROM rcv_transactions rt,
-            rcv_shipment_headers rsh,
-            rcv_shipment_lines rsl,
-            po_vendors pov,
-            rcv_supply rcvs,
-            mtl_system_items_b msib,
-            khs_lppbqc_kirim klk
-      WHERE rsh.shipment_header_id = rsl.shipment_header_id
-        AND rsh.shipment_header_id = rt.shipment_header_id
-        AND rsl.shipment_line_id = rt.shipment_line_id
-        AND rsh.vendor_id = pov.vendor_id
-        AND rt.organization_id = rcvs.to_organization_id
-        AND rt.shipment_header_id = rcvs.shipment_header_id
-        AND rt.shipment_line_id = rcvs.shipment_line_id
-        AND rt.transaction_id = rcvs.rcv_transaction_id
-        AND msib.inventory_item_id = rcvs.item_id
-        AND msib.organization_id = rcvs.to_organization_id
-        AND rt.shipment_header_id = klk.shipment_header_id(+)
-        AND rt.shipment_line_id = klk.shipment_line_id(+)
-        AND rt.routing_header_id = 2                        --Inspection Required
-        AND rt.transaction_type = '$stat'
-   ORDER BY 1, 5";
+//             $sql = "SELECT DISTINCT  rt.organization_id, rt.transaction_type,
+//             (SELECT MIN (TO_CHAR (rt1.transaction_date, 'DD Mon YYYY'))
+//                FROM rcv_transactions rt1
+//               WHERE rt.shipment_header_id = rt1.shipment_header_id
+//                 AND rt.shipment_line_id = rt1.shipment_line_id
+//                 AND rt1.transaction_type = 'TRANSFER') tgl_transfer,
+//             (SELECT MIN (TO_CHAR (rt1.transaction_date, 'HH24:MI:SS'))
+//                FROM rcv_transactions rt1
+//               WHERE rt.shipment_header_id = rt1.shipment_header_id
+//                 AND rt.shipment_line_id = rt1.shipment_line_id
+//                 AND rt1.transaction_type = 'TRANSFER') jam_transfer,
+//             rsh.receipt_num no_lppb, pov.vendor_name, msib.segment1 item,
+//             msib.description item_description,
+//             TO_CHAR (rsh.shipped_date, 'DD Mon YYYY') tgl_sp,
+//             (SELECT rt1.quantity
+//                FROM rcv_transactions rt1
+//               WHERE rt.shipment_header_id = rt1.shipment_header_id
+//                 AND rt.shipment_line_id = rt1.shipment_line_id
+//                 AND rt1.transaction_type = 'RECEIVE') jumlah,
+//             DECODE (rt.transaction_type, 'ACCEPT', rt.transaction_date, 'REJECT', rt.transaction_date, NULL) tgl_inspeksi,
+//             DECODE (rt.transaction_type, 'ACCEPT', rt.quantity, NULL) ok,
+//             DECODE (rt.transaction_type, 'REJECT', rt.quantity, NULL) not_ok,
+//             DECODE (rt.transaction_type, 'ACCEPT', rt.inspection_quality_code, 'REJECT', rt.inspection_quality_code, rt.comments) keterangan,
+//             NULL inspektor, TO_CHAR (klk.tanggal_kirim, 'DD Mon YYYY') tgl_kirim,
+//             klk.jam jam_kirim
+//        FROM rcv_transactions rt,
+//             rcv_shipment_headers rsh,
+//             rcv_shipment_lines rsl,
+//             po_vendors pov,
+//             rcv_supply rcvs,
+//             mtl_system_items_b msib,
+//             khs_lppbqc_kirim klk
+//       WHERE rsh.shipment_header_id = rsl.shipment_header_id
+//         AND rsh.shipment_header_id = rt.shipment_header_id
+//         AND rsl.shipment_line_id = rt.shipment_line_id
+//         AND rsh.vendor_id = pov.vendor_id
+//         AND rt.organization_id = rcvs.to_organization_id
+//         AND rt.shipment_header_id = rcvs.shipment_header_id
+//         AND rt.shipment_line_id = rcvs.shipment_line_id
+//         AND rt.transaction_id = rcvs.rcv_transaction_id
+//         AND msib.inventory_item_id = rcvs.item_id
+//         AND msib.organization_id = rcvs.to_organization_id
+//         AND rt.shipment_header_id = klk.shipment_header_id(+)
+//         AND rt.shipment_line_id = klk.shipment_line_id(+)
+//         AND rt.routing_header_id = 2                        --Inspection Required
+//         AND rt.transaction_type IN '$stat'
+//    ORDER BY 1, 5";
+            $sql = "SELECT   *
+            FROM (SELECT DISTINCT 'BELUM QC' transaction_type, rt.organization_id,
+                                  (SELECT MIN (TO_CHAR (rt1.transaction_date, 'DD Mon YYYY'))
+                                     FROM rcv_transactions rt1
+                                    WHERE rt.shipment_header_id = rt1.shipment_header_id
+                                      AND rt.shipment_line_id = rt1.shipment_line_id
+                                      AND rt1.transaction_type = 'TRANSFER') tgl_transfer,
+                                  (SELECT MIN (TO_CHAR (rt1.transaction_date, 'HH24:MI:SS'))
+                                     FROM rcv_transactions rt1
+                                    WHERE rt.shipment_header_id = rt1.shipment_header_id
+                                      AND rt.shipment_line_id = rt1.shipment_line_id
+                                      AND rt1.transaction_type = 'TRANSFER') jam_transfer,
+                                  rsh.receipt_num no_lppb, pov.vendor_name,
+                                  msib.segment1 item,
+                                  msib.description item_description,
+                                  TO_CHAR (rsh.shipped_date, 'DD Mon YYYY') tgl_sp,
+                                  (SELECT rt1.quantity
+                                     FROM rcv_transactions rt1
+                                    WHERE rt.shipment_header_id = rt1.shipment_header_id
+                                      AND rt.shipment_line_id = rt1.shipment_line_id
+                                      AND rt1.transaction_type = 'RECEIVE') jumlah,
+                                  DECODE (rt.transaction_type,
+                                          'ACCEPT', rt.transaction_date,
+                                          'REJECT', rt.transaction_date,
+                                          NULL
+                                         ) tgl_inspeksi,
+                                  DECODE (rt.transaction_type,
+                                          'ACCEPT', rt.quantity,
+                                          0
+                                         ) ok,
+                                  DECODE (rt.transaction_type,
+                                          'REJECT', rt.quantity,
+                                          0
+                                         ) not_ok,
+                                  DECODE (rt.transaction_type,
+                                          'ACCEPT', rt.inspection_quality_code,
+                                          'REJECT', rt.inspection_quality_code,
+                                          rt.comments
+                                         ) keterangan,
+                                  TO_CHAR (klk.tanggal_kirim, 'DD Mon YYYY') tgl_kirim,
+                                  klk.jam jam_kirim
+                             FROM rcv_transactions rt,
+                                  rcv_shipment_headers rsh,
+                                  rcv_shipment_lines rsl,
+                                  po_vendors pov,
+                                  rcv_supply rcvs,
+                                  mtl_system_items_b msib,
+                                  khs_lppbqc_kirim klk
+                            WHERE rsh.shipment_header_id = rsl.shipment_header_id
+                              AND rsh.shipment_header_id = rt.shipment_header_id
+                              AND rsl.shipment_line_id = rt.shipment_line_id
+                              AND rsh.vendor_id = pov.vendor_id
+                              AND rt.organization_id = rcvs.to_organization_id
+                              AND rt.shipment_header_id = rcvs.shipment_header_id
+                              AND rt.shipment_line_id = rcvs.shipment_line_id
+                              AND rt.transaction_id = rcvs.rcv_transaction_id
+                              AND msib.inventory_item_id = rcvs.item_id
+                              AND msib.organization_id = rcvs.to_organization_id
+                              AND rcvs.shipment_header_id = klk.shipment_header_id(+)
+                              AND rcvs.shipment_line_id = klk.shipment_line_id(+)
+                              AND rt.routing_header_id = 2       --Inspection Required
+                              AND rt.transaction_type IN ('RECEIVE', 'TRANSFER')
+                  UNION
+                  SELECT DISTINCT rt.transaction_type, rt.organization_id,
+                                  (SELECT MIN (TO_CHAR (rt1.transaction_date, 'DD Mon YYYY'))
+                                     FROM rcv_transactions rt1
+                                    WHERE rt.shipment_header_id = rt1.shipment_header_id
+                                      AND rt.shipment_line_id = rt1.shipment_line_id
+                                      AND rt1.transaction_type = 'TRANSFER') tgl_transfer,
+                                  (SELECT MIN (TO_CHAR (rt1.transaction_date, 'HH24:MI:SS'))
+                                     FROM rcv_transactions rt1
+                                    WHERE rt.shipment_header_id = rt1.shipment_header_id
+                                      AND rt.shipment_line_id = rt1.shipment_line_id
+                                      AND rt1.transaction_type = 'TRANSFER') jam_transfer,
+                                  rsh.receipt_num no_lppb, pov.vendor_name,
+                                  msib.segment1 item,
+                                  msib.description item_description,
+                                  TO_CHAR (rsh.shipped_date, 'DD Mon YYYY') tgl_sp,
+                                  (SELECT rt1.quantity
+                                     FROM rcv_transactions rt1
+                                    WHERE rt.shipment_header_id = rt1.shipment_header_id
+                                      AND rt.shipment_line_id = rt1.shipment_line_id
+                                      AND rt1.transaction_type = 'RECEIVE') jumlah,
+                                  DECODE (rt.transaction_type,
+                                          'ACCEPT', rt.transaction_date,
+                                          'REJECT', rt.transaction_date,
+                                          NULL
+                                         ) tgl_inspeksi,
+                                  DECODE (rt.transaction_type,
+                                          'ACCEPT', rt.quantity,
+                                          0
+                                         ) ok,
+                                  DECODE (rt.transaction_type,
+                                          'REJECT', rt.quantity,
+                                          0
+                                         ) not_ok,
+                                  DECODE (rt.transaction_type,
+                                          'ACCEPT', rt.inspection_quality_code,
+                                          'REJECT', rt.inspection_quality_code,
+                                          rt.comments
+                                         ) keterangan,
+                                  TO_CHAR (klk.tanggal_kirim, 'DD Mon YYYY') tgl_kirim,
+                                  klk.jam jam_kirim
+                             FROM rcv_transactions rt,
+                                  rcv_shipment_headers rsh,
+                                  rcv_shipment_lines rsl,
+                                  po_vendors pov,
+                                  rcv_supply rcvs,
+                                  mtl_system_items_b msib,
+                                  khs_lppbqc_kirim klk
+                            WHERE rsh.shipment_header_id = rsl.shipment_header_id
+                              AND rsh.shipment_header_id = rt.shipment_header_id
+                              AND rsl.shipment_line_id = rt.shipment_line_id
+                              AND rsh.vendor_id = pov.vendor_id
+                              AND rt.organization_id = rcvs.to_organization_id
+                              AND rt.shipment_header_id = rcvs.shipment_header_id
+                              AND rt.shipment_line_id = rcvs.shipment_line_id
+                              AND rt.transaction_id = rcvs.rcv_transaction_id
+                              AND msib.inventory_item_id = rcvs.item_id
+                              AND msib.organization_id = rcvs.to_organization_id
+                              AND rcvs.shipment_header_id = klk.shipment_header_id(+)
+                              AND rcvs.shipment_line_id = klk.shipment_line_id(+)
+                              AND rt.routing_header_id = 2       --Inspection Required
+                              AND rt.transaction_type = '$stat')
+           WHERE transaction_type = '$stat'
+        ORDER BY 1, 5";
             $query = $this->oracle->query($sql);
             return $query->result_array();
         }

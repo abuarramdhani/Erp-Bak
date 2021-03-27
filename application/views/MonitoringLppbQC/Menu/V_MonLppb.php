@@ -20,7 +20,7 @@
                                                 <select class="form-control select2" data-placeholder="Status Lppb" id="trx_type" name="trx_type">
                                                 <?php 
                                                     if ($trx_type == 'BELUM QC'){
-                                                        echo '<option value="RECEIVE">BELUM QC</option>';
+                                                        echo '<option value="BELUM QC">BELUM QC</option>';
                                                     }elseif($trx_type == 'ACCEPT') {
                                                         echo '<option value="ACCEPT">ACCEPT</option>';
                                                     }elseif($trx_type == 'REJECT') {
@@ -29,7 +29,7 @@
                                                         echo '<option value=""></option>';
                                                     }
                                                 ?>
-                                                    <option value="RECEIVE">BELUM QC</option>
+                                                    <option value="BELUM QC">BELUM QC</option>
                                                     <option value="ACCEPT">ACCEPT</option>
                                                     <option value="REJECT">REJECT</option>
                                                 </select><br><br>
