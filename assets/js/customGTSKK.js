@@ -49,20 +49,30 @@ function addRowObservation() {
   var html = '<tr class="nomor_' + nomor + '"><td class="posisi bg-success first-col" title="Klik Untuk Menambah Elemen Disini" onclick="attachRowObservation_new(this)">' + nomor + '</td>';
   console.log(nomor);
   // KOLOM 2
-  html += '<td><input type="checkbox" name="checkBoxParalel[' + (nomor - 1) + ']" value="PARALEL" class="checkBoxParalel" onchange="//chckParalel(this)"></td>'
+  html += '<td><input type="checkbox" style="width:19px;height:19px;" name="checkBoxParalel[' + (nomor - 1) + ']" value="PARALEL" class="checkBoxParalel" onchange="//chckParalel(this)"></td>'
   // KOLOM 2.5
   html += '<td><input type="number" class="form-control" style="width: 70px;" name="start_time_together[]" value=""></td>'
   html += '<td><input type="number" class="form-control" style="width: 70px;" name="end_time_together[]" value=""></td>'
   // KOLOM 3
-  html += '<td><select id="slcJenis_' + nomor + '" onchange="myFunctionTSKK(this)" name="slcJenisProses[]" class="form-control select4" id="" style="width:100%;" title="Jenis Proses" >';
-  html += '<option value=""> </option>';
-  html += '<option value="MANUAL" id="manual"> MANUAL </option>';
-  html += '<option value="AUTO" id="auto" onclick="setElemenGTSKK()"> AUTO </option>';
-  // html += '<option value="AUTO (Inheritance)">AUTO (Inheritance)</option>';
-  html += '<option value="WALK" id="walk"> WALK </option>';
+
+  //ini dulu
+  // html += '<td><select id="slcJenis_' + nomor + '" onchange="myFunctionTSKK(this)" name="slcJenisProses[]" class="form-control select4" id="" style="width:100%;" title="Jenis Proses" >';
+  // html += '<option value=""> </option>';
+  // html += '<option value="MANUAL" id="manual"> MANUAL </option>';
+  // html += '<option value="AUTO" id="auto" onclick="setElemenGTSKK()"> AUTO </option>';
+  // // html += '<option value="AUTO (Inheritance)">AUTO (Inheritance)</option>';
+  // html += '<option value="WALK" id="walk"> WALK </option>';
   // html += '<option value="WALK (Inheritance)" id="walk"> WALK (Inheritance) </option>';
-  html += "</select></td>";
-  html += '<td class="second-col"><div class="col-lg-12"><div class="col-lg-6"><select class="form-control select2 slcElemen" id="slcElemen_' + nomor + '" name="txtSlcElemen[]" data-placeholder="Elemen" tabindex="-1" aria-hidden="true" ></select></div><div class="col-lg-6"><input type="text" class="form-control elemen" style="width: 100%" type="text" id="elemen_' + nomor + '" name="elemen[]" placeholder="Keterangan Elemen"></div></div></td>';
+  // html += "</select></td>";
+  //now
+  html += '<td>  <input list="brow_jenis_proses"  class="form-control" onchange="myFunctionTSKK(this)" style="text-align:left;width:100%" data-placeholder="Jenis Proses" name="slcJenisProses[]" id="slcJenis_'+nomor+'"></td>';
+
+
+  //ini dulu
+  // html += '<td class="second-col"><div class="col-lg-12"><div class="col-lg-6"><select class="form-control select2 slcElemen" id="slcElemen_' + nomor + '" name="txtSlcElemen[]" data-placeholder="Elemen" tabindex="-1" aria-hidden="true" ></select></div><div class="col-lg-6"><input type="text" class="form-control elemen" style="width: 100%" type="text" id="elemen_' + nomor + '" name="elemen[]" placeholder="Keterangan Elemen"></div></div></td>';
+  //ini sekarang
+  html += '<td class="second-col"><div class="col-lg-12"><div class="col-lg-6"><input list="brow_slc_elemen" class="form-control" onchange="//disableOrnot(this)" name="txtSlcElemen[]" data-placeholder="Elemen"></div><div class="col-lg-6"><input type="text" class="form-control elemen" style="width: 100%" type="text" id="elemen_' + nomor + '" name="elemen[]" placeholder="Keterangan Elemen"></div></div></td>';
+
   // KOLOM 4
   html += '<td><input type="number" onchange="minMaxId(this)" name="waktu1[]" class="form-control waktuObs inputWaktuKolom1" placeholder="Detik" ></td>';
   // KOLOM 6
@@ -104,10 +114,10 @@ function addRowObservation() {
 
   $('#tbodyLembarObservasi').append(html);
 
-  $('input').iCheck({
-    checkboxClass: 'icheckbox_flat-blue',
-    radioClass: 'iradio_flat-blue'
-  });
+  // $('input').iCheck({
+  //   checkboxClass: 'icheckbox_flat-blue',
+  //   radioClass: 'iradio_flat-blue'
+  // });
 
   $('input[name="terdaftar"]').on('ifChanged', function() {
     if ($('input[name=terdaftar]:checked').val() == "TidakTerdaftar") {
@@ -145,46 +155,46 @@ function addRowObservation() {
     }
   });
 
-  $('.select4').select2({
-    placeholder: 'Jenis Proses',
-    allowClear: true,
-  });
-
-  $('.tipe_urutan').select2({
-    placeholder: 'Tipe Urutan',
-    allowClear: true,
-  });
-
-  $('.slcElemen').select2({
-    placeholder: 'Elemen',
-    allowClear: true,
-  });
-
-  $('.slcElemen').select2({
-    ajax: {
-      url: baseurl + 'GeneratorTSKK/C_GenTSKK/ElemenKerja/',
-      dataType: 'json',
-      type: "GET",
-      data: function(params) {
-        var queryParameters = {
-          elk: params.term,
-          elm_krj: $('#slcElemen').val()
-        }
-        return queryParameters;
-      },
-      processResults: function(data) {
-        console.log(data)
-        return {
-          results: $.map(data, function(obj) {
-            return {
-              id: obj.elemen_kerja,
-              text: obj.elemen_kerja
-            };
-          })
-        };
-      }
-    }
-  });
+  // $('.select4').select2({
+  //   placeholder: 'Jenis Proses',
+  //   allowClear: true,
+  // });
+  //
+  // $('.tipe_urutan').select2({
+  //   placeholder: 'Tipe Urutan',
+  //   allowClear: true,
+  // });
+  //
+  // $('.slcElemen').select2({
+  //   placeholder: 'Elemen',
+  //   allowClear: true,
+  // });
+  //
+  // $('.slcElemen').select2({
+  //   ajax: {
+  //     url: baseurl + 'GeneratorTSKK/C_GenTSKK/ElemenKerja/',
+  //     dataType: 'json',
+  //     type: "GET",
+  //     data: function(params) {
+  //       var queryParameters = {
+  //         elk: params.term,
+  //         elm_krj: $('#slcElemen').val()
+  //       }
+  //       return queryParameters;
+  //     },
+  //     processResults: function(data) {
+  //       console.log(data)
+  //       return {
+  //         results: $.map(data, function(obj) {
+  //           return {
+  //             id: obj.elemen_kerja,
+  //             text: obj.elemen_kerja
+  //           };
+  //         })
+  //       };
+  //     }
+  //   }
+  // });
 
   $('.posisi').each((i, item) => {
     document.getElementsByClassName('posisi')[i].innerHTML = i + 1
@@ -2005,7 +2015,7 @@ function attachRowObservation_new(th) {
 	<tr class = "number_${num}">
 		<td class="posisi bg-success first-col" title="Klik Untuk Menambah Elemen Disini" onclick="attachRowObservation_new(this)"> ${posisi} </td>
 		<td>
-		<input type="checkbox" name="checkBoxParalel[${indx}]" value="PARALEL" class="checkBoxParalel" onchange="//chckParalel(this)">
+		<input type="checkbox" name="checkBoxParalel[${indx}]" style="width:19px;height:19px;" value="PARALEL" class="checkBoxParalel" onchange="//chckParalel(this)">
 		</td>
 		<td>
 			<input type="number" class="form-control" style="width: 70px;" name="start_time_together[]" value="">
@@ -2014,15 +2024,13 @@ function attachRowObservation_new(th) {
 			<input type="number" class="form-control" style="width: 70px;" name="end_time_together[]" value="">
 		</td>
 		<td>
-		<select id="slcJenis_'+nomor+'" onchange="myFunctionTSKK(this)" name="slcJenisProses[]" class="form-control select4" id="" style="width:100%;" title="Jenis Proses" >';
-		<option value=""> </option>';
-		<option value="MANUAL" id="manual"> MANUAL </option>';
-		<option value="AUTO" id="auto" onclick="setElemenGTSKK()"> AUTO </option>';
-		<option value="WALK" id="walk"> WALK </option>';
-		</select>
+      <input list="brow_jenis_proses" class="form-control" onchange="myFunctionTSKK(this)" style="text-align:left;width:100%" data-placeholder="Jenis Proses" name="slcJenisProses[]" id="slcJenis_${posisi}">
 		</td>
 		<td class="second-col">
-		<div class="col-lg-12"><div class="col-lg-6"><select class="form-control select2 slcElemen" id="slcElemen_'+nomor+'" name="txtSlcElemen[]" data-placeholder="Elemen" tabindex="-1" aria-hidden="true"></select></div><div class="col-lg-6"><input type="text" class="form-control elemen" style="width: 100%" type="text" id="elemen_'+nomor+'" name="elemen[]" placeholder="Keterangan Elemen"></div></div>
+		<div class="col-lg-12"><div class="col-lg-6">
+      <input list="brow_slc_elemen" class="form-control" id="slcElemen_${posisi}" onchange="//disableOrnot(this)" name="txtSlcElemen[]" data-placeholder="Elemen">
+    </div>
+    <div class="col-lg-6"><input type="text" class="form-control elemen" style="width: 100%" type="text" id="elemen_'+nomor+'" name="elemen[]" placeholder="Keterangan Elemen"></div></div>
 		</td>
 		<td>
 		<input type="number" onchange="minMaxId(this)" name="waktu1[]" class="form-control waktuObs inputWaktuKolom1" placeholder="Detik">
@@ -2087,104 +2095,104 @@ function attachRowObservation_new(th) {
     })
     //set the auto increment sequence for edit page//
 
-    $('.select4').select2({
-      placeholder: 'Jenis Proses',
-      allowClear: true,
-    });
+    // $('.select4').select2({
+    //   placeholder: 'Jenis Proses',
+    //   allowClear: true,
+    // });
+    //
+    // $('.tipe_urutan').select2({
+    //   placeholder: 'Tipe Urutan',
+    //   allowClear: true,
+    // });
+    //
+    // $('.slcElemen').select2({
+    //   placeholder: 'Keterangan Elemen',
+    //   allowClear: true,
+    // });
+    //
+    // $('.slcElemen').select2({
+    //   // minimumInputLength: 3,
+    //   ajax: {
+    //     url: baseurl + 'GeneratorTSKK/C_GenTSKK/ElemenKerja/',
+    //     dataType: 'json',
+    //     type: "GET",
+    //     data: function(params) {
+    //       var queryParameters = {
+    //         elk: params.term,
+    //         elm_krj: $('#slcElemen').val()
+    //       }
+    //       return queryParameters;
+    //     },
+    //     processResults: function(data) {
+    //       console.log(data)
+    //       return {
+    //         results: $.map(data, function(obj) {
+    //           return {
+    //             id: obj.elemen_kerja,
+    //             text: obj.elemen_kerja
+    //           };
+    //         })
+    //       };
+    //     }
+    //   }
+    // });
 
-    $('.tipe_urutan').select2({
-      placeholder: 'Tipe Urutan',
-      allowClear: true,
-    });
-
-    $('.slcElemen').select2({
-      placeholder: 'Keterangan Elemen',
-      allowClear: true,
-    });
-
-    $('.slcElemen').select2({
-      // minimumInputLength: 3,
-      ajax: {
-        url: baseurl + 'GeneratorTSKK/C_GenTSKK/ElemenKerja/',
-        dataType: 'json',
-        type: "GET",
-        data: function(params) {
-          var queryParameters = {
-            elk: params.term,
-            elm_krj: $('#slcElemen').val()
-          }
-          return queryParameters;
-        },
-        processResults: function(data) {
-          console.log(data)
-          return {
-            results: $.map(data, function(obj) {
-              return {
-                id: obj.elemen_kerja,
-                text: obj.elemen_kerja
-              };
-            })
-          };
-        }
-      }
-    });
-
-    $('input').iCheck({
-      checkboxClass: 'icheckbox_flat-blue',
-      radioClass: 'iradio_flat-blue'
-    });
+    // $('input').iCheck({
+    //   checkboxClass: 'icheckbox_flat-blue',
+    //   radioClass: 'iradio_flat-blue'
+    // });
 
   } else {
     $('#tblObservasi tbody').append(newRow)
 
     console.log("ini after", newRow)
 
-    $('.select4').select2({
-      placeholder: 'Jenis Proses',
-      allowClear: true,
-    });
-
-    $('.tipe_urutan').select2({
-      placeholder: 'Tipe Urutan',
-      allowClear: true,
-    });
-
-    $('.slcElemen').select2({
-      placeholder: 'Input Keterangan',
-      allowClear: true,
-    });
-
-    $('.slcElemen').select2({
-      // minimumInputLength: 3,
-      ajax: {
-        url: baseurl + 'GeneratorTSKK/C_GenTSKK/ElemenKerja/',
-        dataType: 'json',
-        type: "GET",
-        data: function(params) {
-          var queryParameters = {
-            elk: params.term,
-            elm_krj: $('#slcElemen').val()
-          }
-          return queryParameters;
-        },
-        processResults: function(data) {
-          console.log(data)
-          return {
-            results: $.map(data, function(obj) {
-              return {
-                id: obj.elemen_kerja,
-                text: obj.elemen_kerja
-              };
-            })
-          };
-        }
-      }
-    });
-
-    $('input').iCheck({
-      checkboxClass: 'icheckbox_flat-blue',
-      radioClass: 'iradio_flat-blue'
-    });
+    // $('.select4').select2({
+    //   placeholder: 'Jenis Proses',
+    //   allowClear: true,
+    // });
+    //
+    // $('.tipe_urutan').select2({
+    //   placeholder: 'Tipe Urutan',
+    //   allowClear: true,
+    // });
+    //
+    // $('.slcElemen').select2({
+    //   placeholder: 'Input Keterangan',
+    //   allowClear: true,
+    // });
+    //
+    // $('.slcElemen').select2({
+    //   // minimumInputLength: 3,
+    //   ajax: {
+    //     url: baseurl + 'GeneratorTSKK/C_GenTSKK/ElemenKerja/',
+    //     dataType: 'json',
+    //     type: "GET",
+    //     data: function(params) {
+    //       var queryParameters = {
+    //         elk: params.term,
+    //         elm_krj: $('#slcElemen').val()
+    //       }
+    //       return queryParameters;
+    //     },
+    //     processResults: function(data) {
+    //       console.log(data)
+    //       return {
+    //         results: $.map(data, function(obj) {
+    //           return {
+    //             id: obj.elemen_kerja,
+    //             text: obj.elemen_kerja
+    //           };
+    //         })
+    //       };
+    //     }
+    //   }
+    // });
+    //
+    // $('input').iCheck({
+    //   checkboxClass: 'icheckbox_flat-blue',
+    //   radioClass: 'iradio_flat-blue'
+    // });
   }
 
   $('input[name="terdaftar"]').on('ifChanged', function() {

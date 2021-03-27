@@ -43,34 +43,44 @@ class M_gentskk extends CI_Model
 			$lcfirst = lcfirst($tp);
 			$ucfirst = ucfirst($tp);
 			$ucwords = ucwords($tp);
-			$sql="SELECT distinct
-			kjb.KODE_DIGIT
-			,kjb.JENIS_BARANG
-			,kjb.DESCRIPTION
-			from khs_jenis_barang kjb
-			,mtl_system_items_b msib
-			where msib.ORGANIZATION_ID = 81
-			and msib.INVENTORY_ITEM_STATUS_CODE = 'Active'
-			and kjb.JENIS_BARANG = 'KOMPONEN/IMPLEMEN'
-			and kjb.KODE_DIGIT(+) = case when substr(msib.SEGMENT1,0,2) in ('MF','RZ')
-			then substr(msib.SEGMENT1,0,4)
-			when substr(msib.SEGMENT1,0,2) = 'ME'
-			then substr(msib.SEGMENT1,0,9)
-			when substr(msib.SEGMENT1,0,3) in ('MDN','MDP')
-			then substr(msib.SEGMENT1,0,4)
-			when substr(msib.SEGMENT1,0,1) = ('L')
-			and substr(msib.SEGMENT1,0,2) not in ('LB','LK','LL','LP','L-')
-			then substr(msib.SEGMENT1,0,2)
-			when substr(msib.SEGMENT1,0,2) = 'RS'
-			then substr(msib.SEGMENT1,0,2)
-			else substr(msib.SEGMENT1,0,3)
-			end
-			-- and kjb.DESCRIPTION like '%$tp%'
-			-- OR kjb.DESCRIPTION like '%$Low%'
-			-- OR kjb.DESCRIPTION like '%$lcfirst%'
-			and kjb.DESCRIPTION like '%$ucfirst%'
-			-- OR kjb.DESCRIPTION like '%$ucwords%'
-			order by 1,2";
+			// $sql="SELECT distinct
+			// kjb.KODE_DIGIT
+			// ,kjb.JENIS_BARANG
+			// ,kjb.DESCRIPTION
+			// from khs_jenis_barang kjb
+			// ,mtl_system_items_b msib
+			// where msib.ORGANIZATION_ID = 81
+			// and msib.INVENTORY_ITEM_STATUS_CODE = 'Active'
+			// and kjb.JENIS_BARANG = 'KOMPONEN/IMPLEMEN'
+			// and kjb.KODE_DIGIT(+) = case when substr(msib.SEGMENT1,0,2) in ('MF','RZ')
+			// then substr(msib.SEGMENT1,0,4)
+			// when substr(msib.SEGMENT1,0,2) = 'ME'
+			// then substr(msib.SEGMENT1,0,9)
+			// when substr(msib.SEGMENT1,0,3) in ('MDN','MDP')
+			// then substr(msib.SEGMENT1,0,4)
+			// when substr(msib.SEGMENT1,0,1) = ('L')
+			// and substr(msib.SEGMENT1,0,2) not in ('LB','LK','LL','LP','L-')
+			// then substr(msib.SEGMENT1,0,2)
+			// when substr(msib.SEGMENT1,0,2) = 'RS'
+			// then substr(msib.SEGMENT1,0,2)
+			// else substr(msib.SEGMENT1,0,3)
+			// end
+			// -- and kjb.DESCRIPTION like '%$tp%'
+			// -- OR kjb.DESCRIPTION like '%$Low%'
+			// -- OR kjb.DESCRIPTION like '%$lcfirst%'
+			// and kjb.DESCRIPTION like '%$ucfirst%'
+			// -- OR kjb.DESCRIPTION like '%$ucwords%'
+			// order by 1,2";
+		$sql = "SELECT ffv.flex_value, NVL (ffvt.description, '000') DESCRIPTION
+						  FROM fnd_flex_values ffv, fnd_flex_values_tl ffvt
+						 WHERE ffv.flex_value_set_id = 1013710
+						   AND ffv.flex_value_id = ffvt.flex_value_id
+						   AND ffv.end_date_active IS NULL
+						   AND ffv.summary_flag = 'N'
+						   AND ffv.enabled_flag = 'Y'
+						   AND ffvt.flex_value_meaning LIKE 'A%'
+							 AND NVL (ffvt.description, '000') LIKE '%$ucfirst%'";
+
 		$query = $this->oracle->query($sql);
 		return $query->result_array();
 	}
