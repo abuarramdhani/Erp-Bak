@@ -205,9 +205,9 @@ public function savePlan(){
 						$kategori	= $ktgr[0]['ID_CATEGORY'];
 						$subcategory= $row['C'];
 						if (!empty($subcategory)) {
-							$subktgr 		= $this->M_setplan->getSubCategory("where id_subcategory = $subcategory");
-							$subcategory	= $subktgr[0]['SUBCATEGORY_ID'];
-							$sub			= "id_subcategory = ".$subktgr[0]['SUBCATEGORY_ID']."";
+							$subktgr 		= $this->M_setplan->getSubCategory("where subcategory_name = '$subcategory'");
+							$subcategory	= $subktgr[0]['ID_SUBCATEGORY'];
+							$sub			= "id_subcategory = ".$subktgr[0]['ID_SUBCATEGORY']."";
 						}else {
 							$sub			= "id_subcategory is null";
 						}
