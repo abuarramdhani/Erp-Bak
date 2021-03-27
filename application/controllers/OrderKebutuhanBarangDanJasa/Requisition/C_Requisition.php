@@ -168,7 +168,7 @@ class C_Requisition extends CI_Controller {
 
 			$order_id = $this->M_requisition->saveLine($line, date("Y-m-d", strtotime($nbd[$i])), date("Y-m-d", strtotime($cutoff[$i])));
 
-			if($urgentFlag[$i] == 'Y'){
+			if($urgentFlag[$i] == 'Y' || $statusOrder == 'Y'){
 
 				$setApprover = $this->M_requisition->setApproverItemUrgent($creator, $itemCode[$i]);
 				
