@@ -52,7 +52,7 @@ text-align: center;
                                       <th width="15%" class="text-center">ACTION</th>
                                       <th width="15%" class="text-center">JUDUL</th>
                                       <th width="10%" class="text-center">PEMBUAT</th>
-                                      <th width="10%" class="text-center">TANGGAL PEMBUATAN</th>
+                                      <th width="10%" class="text-center">TANGGAL OBSERVASI</th>
                                       <th width="10%" class="text-center">TYPE</th>
                                       <th width="15%" class="text-center">NAMA PART</th>
                                       <th width="10%" class="text-center">SEKSI</th>
