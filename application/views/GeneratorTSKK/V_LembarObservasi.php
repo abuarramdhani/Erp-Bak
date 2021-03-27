@@ -145,8 +145,8 @@
   }
 
   .table-responsive-custom{
-    /* height:500px; */
-    /* overflow:scroll; */
+    height:500px;
+    overflow:scroll;
   }
 
   .tblObservasi thead tr th{
@@ -191,6 +191,7 @@
 </style>
 
 <section class="content">
+
   <datalist id="brow_jenis_proses">
     <option value=""></option>
     <option value="MANUAL">MANUAL</option>
@@ -693,7 +694,7 @@
                                   </td>
                                   <!--JENIS PROSES-->
                                   <td>
-                                    <input list="brow_jenis_proses" class="form-control" onchange="myFunctionTSKK(this)" style="text-align:left;width:100%" data-placeholder="Jenis Proses" name="slcJenisProses[]" id="slcJenis_<?= $no ?>">
+                                    <input list="brow_jenis_proses" class="form-control select00004" onchange="myFunctionTSKK(this)" style="text-align:left;width:100%" data-placeholder="Jenis Proses" name="slcJenisProses[]" id="slcJenis_<?= $no ?>">
                                     <!-- <select class="form-control select4" onchange="myFunctionTSKK(this)" style="text-align:left;width:100%" data-placeholder="Jenis Proses" name="slcJenisProses[]" id="slcJenis_<?= $no ?>">
                                       <option value=""></option>
                                       <option value="MANUAL">MANUAL</option>
@@ -703,11 +704,11 @@
                                   </td>
                                   <!--ELEMEN KERJA-->
                                   <td class="second-col">
-                                    <div class="col-lg-12">
+                                    <div class="row">
                                       <div class="col-lg-6">
                                         <!-- <select class="form-control select2 slcElemen" onchange="//disableOrnot(this)" id="slcElemen" name="txtSlcElemen[]" data-placeholder="Elemen">
                                         </select> -->
-                                        <input list="brow_slc_elemen" class="form-control" onchange="//disableOrnot(this)" name="txtSlcElemen[]" data-placeholder="Elemen">
+                                        <input list="brow_slc_elemen" class="form-control slcElemen0000" onchange="//disableOrnot(this)" name="txtSlcElemen[]" data-placeholder="Elemen">
                                       </div>
                                       <div class="col-lg-6">
                                         <input type="text" name="elemen[]" class="form-control elemen" placeholder="Keterangan Elemen">

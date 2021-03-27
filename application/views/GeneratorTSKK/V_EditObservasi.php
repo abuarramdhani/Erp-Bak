@@ -167,9 +167,9 @@
   }
 
   .table-responsive-custom{
-    /* height:500px; */
+    height:500px;
     width: 100%;
-    /* overflow:scroll; */
+    overflow:scroll;
   }
 
   .tblObservasiEdit thead tr th{
@@ -215,6 +215,21 @@
 </style>
 
 <section class="content">
+
+  <datalist id="brow_jenis_proses">
+    <option value=""></option>
+    <option value="MANUAL">MANUAL</option>
+    <option value="AUTO" onclick="setElemenGTSKK()">AUTO</option>
+    <!-- <option value="AUTO (Inheritance)">AUTO (Inheritance)</option> -->
+    <option value="WALK">WALK</option>
+  </datalist>
+
+  <datalist id="brow_slc_elemen">
+    <?php foreach ($data_element_kerja as $key => $value): ?>
+      <option value="<?php echo $value['elemen_kerja'] ?>"><?php echo $value['elemen_kerja'] ?></option>
+    <?php endforeach; ?>
+  </datalist>
+
   <?php foreach ($lihat_hasilObservasi_elemen as $key) {
 	$id = $key['id_tskk'];
   $sang_pembuat = $key['nama_pembuat'];
@@ -877,28 +892,29 @@
                                     </td>
                                     <!--JENIS PROSES-->
                                     <td>
-                                      <select class="form-control select4" onchange="myFunctionTSKK(this)" style="text-align:left" data-placeholder="Jenis Proses" name="slcJenisProses[]" id="slcJenis">
+                                      <!-- <select class="form-control select00004" onchange="myFunctionTSKK(this)" style="text-align:left" data-placeholder="Jenis Proses" name="slcJenisProses[]" id="slcJenis">
                                         <?php
-                                                                                echo '<option value="'.$jenis_proses.'" selected>'.$jenis_proses.'</option>';
+                                                                              //  echo '<option value="'.$jenis_proses.'" selected>'.$jenis_proses.'</option>';
                                                                             ?>
                                         <option value="MANUAL">MANUAL</option>
                                         <option value="AUTO">AUTO</option>
-                                        <!-- <option value="AUTO (Inheritance)">AUTO (Inheritance)</option> -->
                                         <option value="WALK">WALK</option>
-                                        <!-- <option value="WALK (Inheritance)">WALK (Inheritance)</option> -->
-                                      </select>
+                                      </select> -->
+                                      <input list="brow_jenis_proses" class="form-control select00004" value="<?php echo $jenis_proses ?>" onchange="myFunctionTSKK(this)" style="text-align:left;width:100%" data-placeholder="Jenis Proses" name="slcJenisProses[]" id="slcJenis_<?= $no ?>">
+
                                     </td>
                                     <!--ELEMEN KERJA-->
                                     <td class="second-col">
-                                      <div class="col-lg-12">
+                                      <div class="row">
                                         <div class="col-lg-6">
-                                          <select class="form-control select2 slcElemen" id="slcElemen" name="txtSlcElemen[]" data-placeholder="Elemen">
+                                          <!-- <select class="form-control select2 slcElemen" id="slcElemen" name="txtSlcElemen[]" data-placeholder="Elemen">
                                             <?php
-																				if ($elemen != null) {
-																					echo '<option value="'.$elemen.'" selected>'.$elemen.'</option>';
-																				}
+																			//	if ($elemen != null) {
+																				//	echo '<option value="'.$elemen.'" selected>'.$elemen.'</option>';
+																				//}
                                                                             ?>
-                                          </select>
+                                          </select> -->
+                                          <input list="brow_slc_elemen" value="<?php echo !empty($elemen) ? $elemen : '' ?>" class="form-control slcElemen0000" onchange="//disableOrnot(this)" name="txtSlcElemen[]" data-placeholder="Elemen">
                                         </div>
                                         <div class="col-lg-6">
                                           <input type="text" value="<?php echo $keterangan_elemen; ?>" id="elemen" name="elemen[]" class="form-control elemen" placeholder="Keterangan Elemen">

@@ -51,6 +51,7 @@ public function DisplayLO()
     $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
  		$data['product'] = $this->M_gentskk->getTipeProduk('');
 		$data['data_element_kerja'] = $this->M_gentskk->ElemenKerja('');
+		
     $this->load->view('V_Header',$data);
     $this->load->view('V_Sidemenu',$data);
     $this->load->view('GeneratorTSKK/V_LembarObservasi');
