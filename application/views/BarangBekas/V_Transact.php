@@ -52,9 +52,6 @@
                         <td>
                           <select class="form-control slc_pbb pbb_transact" name="no_document" style="text-transform:uppercase !important;width:100%;" required>
                             <option value="">Cari Dokumen..</option>
-                            <?php foreach ($document_number as $key => $value): ?>
-                              <option value="<?php echo $value['DOCUMENT_NUMBER'] ?>"><?php echo $value['DOCUMENT_NUMBER'] ?></option>
-                            <?php endforeach; ?>
                           </select>
                         </td>
                       </tr>

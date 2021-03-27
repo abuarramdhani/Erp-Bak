@@ -100,6 +100,36 @@ $(document).ready(function () {
       }
     })
   });
+
+
+$('.pbb_transact').select2({
+  // tags: true,
+  allowClear:true,
+  // minimumInputLength: 3,
+  placeholder: "Cari No Dokumen",
+  ajax: {
+    url: baseurl + "BarangBekas/transact/geDocBy",
+    dataType: "JSON",
+    type: "POST",
+    cache: false,
+    data: function(params) {
+      return {
+        term: params.term
+      };
+    },
+    processResults: function(data) {
+      return {
+        results: $.map(data, function(obj) {
+          return {
+            id: obj.DOCUMENT_NUMBER,
+            text: obj.DOCUMENT_NUMBER
+          }
+        })
+      }
+    }
+  }
+})
+
 })
 
 $('.pbb_io').on('change', function() {
@@ -587,6 +617,8 @@ $('.submit-pbb-transact').on('click', function() {
             if (result == 1) {
               toastPBB('success', 'Sukses melakukan transact .. ');
               $('.pbb_transact').val('').trigger('change');
+              $('.slc_pbb').val('').trigger('change');
+              $('slc_pbb_locator').val('').trigger('change');
             }else if (result == 76) {
               toastPBB('warning', `Dokumen ${doc_num} telah di-transact sebelumnya.`)
             }else if (result == 86) {
