@@ -88,6 +88,7 @@ class M_master extends CI_Model
                AND msib.inventory_item_status_code = 'Active'
                AND (msib.segment1 LIKE '%$d%'
                     OR msib.description LIKE '%$d%')
+
               ORDER BY 1";
       $query = $this->oracle->query($sql);
       return $query->result_array();
@@ -148,6 +149,11 @@ class M_master extends CI_Model
     public function no_document($value='')
     {
       return $this->oracle->query("SELECT DISTINCT DOCUMENT_NUMBER FROM KHS_PENGIRIMAN_BARANG_BEKAS ORDER BY 1 DESC")->result_array();
+    }
+
+    public function geDocBy($value)
+    {
+      return $this->oracle->query("SELECT c.DOCUMENT_NUMBER FROM (SELECT DISTINCT DOCUMENT_NUMBER FROM KHS_PENGIRIMAN_BARANG_BEKAS WHERE DOCUMENT_NUMBER LIKE '%$value%' ORDER BY 1 DESC) c WHERE rownum <= 10 ")->result_array();
     }
 
     public function detail_document($doc_no)
@@ -248,12 +254,13 @@ class M_master extends CI_Model
                               qty_tujuan,
                               io_tujuan,
                               subinv_tujuan,
-                              locator_tujuan
+                              locator_tujuan,
+                              tipe_barkas
                               )
                               VALUES
                               (
                               '{$value['DOCUMENT_NUMBER']}', --' no_dokumen
-                              '515901', --' account
+                              '515901', --' account 515901 but klo dev 511101
                               '{$value['COST_CENTER']}', --' cost_center
                               {$value['INVENTORY_ITEM_ID']}, --' item_id_asal
                               {$value['JUMLAH']}, --' qty_asal
@@ -264,7 +271,8 @@ class M_master extends CI_Model
                               {$berat_timbang[$key]}, --' qty_tujuan
                               $io_tujuan, --' io_tujuan
                               '{$master['subinv_tujuan']}', --' subinv_tujuan
-                              '{$master['locator_tujuan']}'--' locator_tujuan
+                              '{$master['locator_tujuan']}',--' locator_tujuan
+                              '{$value['TYPE_DOCUMENT']}'--' tipe_barkas
                              )");
       }
       if ($this->oracle->affected_rows()) {

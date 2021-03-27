@@ -252,7 +252,7 @@ class C_Master extends CI_Controller
 
       // if ($this->form_validation->run() === FALSE) {
           $data['item'] = $this->M_master->getItemTujuan();
-          $data['document_number'] = $this->M_master->no_document();
+          // $data['document_number'] = $this->M_master->no_document();
 
           $this->load->view('V_Header', $data);
           $this->load->view('V_Sidemenu', $data);
@@ -265,6 +265,12 @@ class C_Master extends CI_Controller
       //   die;
       // }
 
+    }
+
+    public function geDocBy($value='')
+    {
+      $term = strtoupper($this->input->post('term'));
+      echo json_encode($this->M_master->geDocBy($term));
     }
 
     public function detail_document()
