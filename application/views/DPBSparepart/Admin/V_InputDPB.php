@@ -91,7 +91,7 @@
                             <label for="" class="col-sm-2 control-label">Forward To</label>
 
                             <div class="col-sm-10">
-                                <select name="" id="" class="form-control select2 forwardDPS" style="width:250px;">
+                                <select name="" id="" data-placeholder="Forward To" class="form-control select2 forwardDPS" style="width:250px;">
                                     <option></option>
                                     <option value="J1365">J1365 - MUHAMMAD REZA SHALAHUDDIN NOOR</option>
                                     <option value="B0892">B0892 - NANDA ILHAM</option>

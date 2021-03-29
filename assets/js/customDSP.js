@@ -369,83 +369,86 @@ $(document).ready(function () {
     var ekspedisi = $(".ekspedisiDSP").val();
     var alamat_kir = $(".alamatkirimDSP").val();
 
-    console.log(ekspedisi);
-
-    var alamat_kirim = alamat_kir.replaceAll("\n", "#");
-
-    let lines = $(".tempatTabelDPS tbody tr")
-      .toArray()
-      .map((e) => ({
-        lineId: $(e).find(".lineid").html(),
-        reqQty: $(e).find(".noReqQty").val(),
-        allocateQty:
-          parseInt($(e).find(".atrQty").html()) -
-          parseInt($(e).find(".noReqQty").val()),
-      }));
-
-    $.ajax({
-      type: "POST",
-      url: baseurl + "DPBSparepart/Admin/cekStatusLine",
-      data: { noDPB },
-      dataType: "JSON",
-      success: function (response) {
-        if (response[0]["HASIL_LINE"] == "0") {
-          $.ajax({
-            beforeSend: () => {
-              Swal.fire({
-                customClass: "swal-font-small",
-                title: "Loading",
-                onBeforeOpen: () => {
-                  Swal.showLoading();
-                },
-                allowOutsideClick: false,
-              });
-            },
-            type: "POST",
-            url: baseurl + "DPBSparepart/Admin/createDPB",
-            data: {
-              noDPB,
-              jenis,
-              forward,
-              keterangan,
-              lines,
-              ekspedisi,
-              alamat_kirim,
-            },
-            success: function (response) {
-              swal.close();
-              swal.fire({
-                type: "success",
-                title: "Berhasil!",
-              });
-              // $(".tempatTabelDPS").html("");
-              // $(".jenisDPS").val("").trigger("change.select2");
-              // $(".forwardDPS").val("").trigger("change.select2");
-              // $(".keteranganDPS").val("");
-              // $(".noDODSP").val("");
-              // $(".alamatDSP").val("");
-              window.location.reload();
-            },
-          });
-        } else if (response[0]["HASIL_LINE"] == "99999") {
-          swal.fire({
-            type: "error",
-            title: "Alamat belum lengkap!",
-          });
-        } else if (response[0]["HASIL_LINE"] == "77777") {
-          swal.fire({
-            type: "error",
-            title: "DO/SPB line bukan SP/YSP!",
-          });
-        } else {
-          swal.fire({
-            type: "error",
-            title:
-              "DO/SPB sudah transact sebagian silahkan masukan nomor lain!",
-          });
-        }
-      },
-    });
+    if (forward == null || forward == "") {
+      swal.fire({
+        type: "error",
+        title: "Pilih Forward To !",
+      });
+    } else {
+      var alamat_kirim = alamat_kir.replaceAll("\n", "#");
+      let lines = $(".tempatTabelDPS tbody tr")
+        .toArray()
+        .map((e) => ({
+          lineId: $(e).find(".lineid").html(),
+          reqQty: $(e).find(".noReqQty").val(),
+          allocateQty:
+            parseInt($(e).find(".atrQty").html()) -
+            parseInt($(e).find(".noReqQty").val()),
+        }));
+      $.ajax({
+        type: "POST",
+        url: baseurl + "DPBSparepart/Admin/cekStatusLine",
+        data: { noDPB },
+        dataType: "JSON",
+        success: function (response) {
+          if (response[0]["HASIL_LINE"] == "0") {
+            $.ajax({
+              beforeSend: () => {
+                Swal.fire({
+                  customClass: "swal-font-small",
+                  title: "Loading",
+                  onBeforeOpen: () => {
+                    Swal.showLoading();
+                  },
+                  allowOutsideClick: false,
+                });
+              },
+              type: "POST",
+              url: baseurl + "DPBSparepart/Admin/createDPB",
+              data: {
+                noDPB,
+                jenis,
+                forward,
+                keterangan,
+                lines,
+                ekspedisi,
+                alamat_kirim,
+              },
+              success: function (response) {
+                swal.close();
+                swal.fire({
+                  type: "success",
+                  title: "Berhasil!",
+                });
+                // $(".tempatTabelDPS").html("");
+                // $(".jenisDPS").val("").trigger("change.select2");
+                // $(".forwardDPS").val("").trigger("change.select2");
+                // $(".keteranganDPS").val("");
+                // $(".noDODSP").val("");
+                // $(".alamatDSP").val("");
+                window.location.reload();
+              },
+            });
+          } else if (response[0]["HASIL_LINE"] == "99999") {
+            swal.fire({
+              type: "error",
+              title: "Alamat belum lengkap!",
+            });
+          } else if (response[0]["HASIL_LINE"] == "77777") {
+            swal.fire({
+              type: "error",
+              title: "DO/SPB line bukan SP/YSP!",
+            });
+          } else {
+            swal.fire({
+              type: "error",
+              title:
+                "DO/SPB sudah transact sebagian silahkan masukan nomor lain!",
+            });
+          }
+        },
+      });
+    }
   });
 
   $("#tblRejectedListApproverDSP").on("click", ".btnResubmit", function () {
@@ -566,3 +569,46 @@ $(document).ready(function () {
     });
   }
 });
+$(document).ready(function () {
+  $(".datespbeh").datepicker({
+    format: "dd/mm/yyyy",
+    autoclose: true,
+  });
+});
+function SearchArsSPBDO() {
+  var date1 = $("#dtfrmsp").val();
+  var date2 = $("#dtotsp").val();
+
+  $.ajax({
+    beforeSend: function () {
+      $("div#arsipDepebeh").html(
+        '<center><img style="width:100px; height:auto" src="' +
+          baseurl +
+          'assets/img/gif/loading11.gif"><br><label>Loading, Please Wait .....</label></center>'
+      );
+    },
+    url: baseurl + "DPBSparepart/Admin/getArsipDPBbyDate",
+    data: {
+      datefrom: date1,
+      dateto: date2,
+    },
+    dataType: "html",
+    type: "post",
+    success: function (response) {
+      $("#arsipDepebeh").html(response);
+      $(".tblarsipdpb").dataTable({
+        paging: false,
+        scrollX: true,
+        scrollY: 500,
+        searching: true,
+        dom: "Bfrtip",
+        buttons: [
+          {
+            extend: "excelHtml5",
+            title: "Arsip SPB DO Tanggal " + date1 + " sampai " + date2,
+          },
+        ],
+      });
+    },
+  });
+}
