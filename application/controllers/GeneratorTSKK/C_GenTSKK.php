@@ -3876,8 +3876,8 @@ public function exportExcel($idnya){
 			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+10, $start_col= 555, $end_row=$rowheadirreg+10, $end_col= 613);
 			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+11, $start_col= 14, $end_row=$rowheadirreg+11, $end_col= 32);
 			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+11, $start_col= 52, $end_row=$rowheadirreg+11, $end_col= 70);
-			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+11, $start_col= 90, $end_row=$rowheadirreg+11, $end_col= 98);
-			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+11, $start_col= 99, $end_row=$rowheadirreg+11, $end_col= 329);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+11, $start_col= 90, $end_row=$rowheadirreg+12, $end_col= 98);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+11, $start_col= 99, $end_row=$rowheadirreg+12, $end_col= 329);
 			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+11, $start_col= 330, $end_row=$rowheadirreg+11, $end_col= 381);
 			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+11, $start_col= 382, $end_row=$rowheadirreg+11, $end_col= 431);
 			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+11, $start_col= 432, $end_row=$rowheadirreg+14, $end_col= 492);
@@ -3891,8 +3891,8 @@ public function exportExcel($idnya){
 			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+12, $start_col= 59, $end_row=$rowheadirreg+12, $end_col= 63);
 			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+12, $start_col= 64, $end_row=$rowheadirreg+12, $end_col= 70);
 			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+12, $start_col= 71, $end_row=$rowheadirreg+14, $end_col= 89);
-			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+12, $start_col= 90, $end_row=$rowheadirreg+12, $end_col= 98);
-			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+12, $start_col= 99, $end_row=$rowheadirreg+12, $end_col= 329);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+13, $start_col= 90, $end_row=$rowheadirreg+14, $end_col= 98);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+13, $start_col= 99, $end_row=$rowheadirreg+14, $end_col= 329);
 			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+12, $start_col= 330, $end_row=$rowheadirreg+12, $end_col= 381);
 			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+12, $start_col= 382, $end_row=$rowheadirreg+12, $end_col= 431);
 			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+13, $start_col= 14, $end_row=$rowheadirreg+13, $end_col= 18);
@@ -3901,16 +3901,16 @@ public function exportExcel($idnya){
 			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+13, $start_col= 52, $end_row=$rowheadirreg+13, $end_col= 58);
 			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+13, $start_col= 59, $end_row=$rowheadirreg+13, $end_col= 63);
 			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+13, $start_col= 64, $end_row=$rowheadirreg+13, $end_col= 70);
-			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+13, $start_col= 90, $end_row=$rowheadirreg+13, $end_col= 98);
-			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+13, $start_col= 99, $end_row=$rowheadirreg+13, $end_col= 329);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+15, $start_col= 90, $end_row=$rowheadirreg+16, $end_col= 98);
+			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+15, $start_col= 99, $end_row=$rowheadirreg+16, $end_col= 329);
 			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+13, $start_col= 330, $end_row=$rowheadirreg+13, $end_col= 381);
 			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+13, $start_col= 382, $end_row=$rowheadirreg+13, $end_col= 431);
 			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+14, $start_col= 14, $end_row=$rowheadirreg+14, $end_col= 32);
 			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+14, $start_col= 52, $end_row=$rowheadirreg+14, $end_col= 58);
 			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+14, $start_col= 59, $end_row=$rowheadirreg+14, $end_col= 63);
 			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+14, $start_col= 64, $end_row=$rowheadirreg+14, $end_col= 70);
-			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+14, $start_col= 90, $end_row=$rowheadirreg+14, $end_col= 98);
-			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+14, $start_col= 99, $end_row=$rowheadirreg+14, $end_col= 329);
+			        // $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+14, $start_col= 90, $end_row=$rowheadirreg+14, $end_col= 98);
+			        // $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+14, $start_col= 99, $end_row=$rowheadirreg+14, $end_col= 329);
 			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+14, $start_col= 330, $end_row=$rowheadirreg+14, $end_col= 381);
 			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+14, $start_col= 382, $end_row=$rowheadirreg+14, $end_col= 431);
 
@@ -3918,8 +3918,8 @@ public function exportExcel($idnya){
 			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+15, $start_col= 33, $end_row=$rowheadirreg+17, $end_col= 51);
 			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+15, $start_col= 52, $end_row=$rowheadirreg+15, $end_col= 70);
 			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+15, $start_col= 71, $end_row=$rowheadirreg+17, $end_col= 89);
-			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+15, $start_col= 90, $end_row=$rowheadirreg+15, $end_col= 98);
-			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+15, $start_col= 99, $end_row=$rowheadirreg+15, $end_col= 329);
+			        // $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+15, $start_col= 90, $end_row=$rowheadirreg+15, $end_col= 98);
+			        // $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+15, $start_col= 99, $end_row=$rowheadirreg+15, $end_col= 329);
 			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+15, $start_col= 330, $end_row=$rowheadirreg+15, $end_col= 381);
 			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+15, $start_col= 382, $end_row=$rowheadirreg+15, $end_col= 431);
 			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+15, $start_col= 432, $end_row=$rowheadirreg+16, $end_col= 492);
@@ -3932,8 +3932,8 @@ public function exportExcel($idnya){
 			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+16, $start_col= 52, $end_row=$rowheadirreg+16, $end_col= 56);
 			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+16, $start_col= 57, $end_row=$rowheadirreg+16, $end_col= 65);
 			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+16, $start_col= 66, $end_row=$rowheadirreg+16, $end_col= 70);
-			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+16, $start_col= 90, $end_row=$rowheadirreg+16, $end_col= 98);
-			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+16, $start_col= 99, $end_row=$rowheadirreg+16, $end_col= 329);
+			        // $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+16, $start_col= 90, $end_row=$rowheadirreg+16, $end_col= 98);
+			        // $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+16, $start_col= 99, $end_row=$rowheadirreg+16, $end_col= 329);
 			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+16, $start_col= 330, $end_row=$rowheadirreg+16, $end_col= 381);
 			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+16, $start_col= 382, $end_row=$rowheadirreg+16, $end_col= 431);
 			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg+17, $start_col= 14, $end_row=$rowheadirreg+17, $end_col= 32);
