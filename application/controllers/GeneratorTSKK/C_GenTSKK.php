@@ -465,7 +465,7 @@ public function saveObservation(){
     $jenis_inputPart  = $this->input->post('terdaftar');
 
 		if ($jenis_inputPart == 'Terdaftar') {
-			$type 	          = $this->input->post('txtType');
+			$type = implode(",", $this->input->post('txtType[]'));
 			$kode_part 	      = $this->input->post('txtKodepart[]');
 			$kode = implode(",", $kode_part);
 			$nama_part 	      = $this->input->post('txtNamaPart');
@@ -1004,6 +1004,23 @@ public function kodePart()
     $kode = $this->M_gentskk->kodePart($variable);
     echo json_encode($kode);
 }
+
+public function product_type_spec()
+{
+    $param = $this->input->post('params');
+    // if ($param !== '') {
+    //     $last = $param[0];
+    // }
+
+    if ($param != '') {
+        $type_name = $this->M_gentskk->product_type_spec($param); //jalankan query
+        echo json_encode($type_name);
+    }else {
+        $type_name = '';
+        echo json_encode($type_name);
+    }
+}
+
 
 public function namaPart()
 {

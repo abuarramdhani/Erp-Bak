@@ -1072,6 +1072,8 @@ $(document).ready(function() {
 //SELECT TIPE PRODUK//
 $(document).ready(function() {
   $("#typeProduct").select2({
+    tags: true,
+    tokenSeparators: [',']
     // minimumInputLength: 3,
     // ajax: {
     //   url: baseurl + 'GeneratorTSKK/C_GenTSKK/tipeProduk/',
@@ -1188,6 +1190,35 @@ $('#kodepart').change(function() {
         alert(xhr.responseText);
       }
     });
+
+    //product type
+    $.ajax({
+      type: "POST",
+      url: baseurl + 'GeneratorTSKK/C_GenTSKK/product_type_spec',
+      // data: {kode :kode},
+      data: {
+        params: $(this).val()
+      },
+      dataType: "json",
+      beforeSend: function(e) {
+        if (e && e.overrideMimeType) {
+          e.overrideMimeType("application/json;charset=UTF-8");
+        }
+      },
+      success: function(response) {
+        if (response != null) {
+          let tan80 = response.split(',')
+          console.log(tan80.pop());
+          $("#typeProduct").val(tan80).trigger('change');
+        } else {
+          alert("Data Tidak Ditemukan");
+        }
+      },
+      error: function(xhr) {
+        alert(xhr.responseText);
+      }
+    });
+
   // } else {
   //   $('#namaPart').val('');
   //   $('#kodepart').text('');

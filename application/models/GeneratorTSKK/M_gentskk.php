@@ -111,7 +111,9 @@ class M_gentskk extends CI_Model
 				 AND msib.SEGMENT1 = '$value'";
 
 			$query = $this->oracle->query($sql);
-			$result .= $query->row()->DESCRIPTION."; ";
+			if (!empty($query->row())) {
+				$result .= $query->row()->DESCRIPTION.";";
+			}
 		}
 
 	   // echo "<pre>"; print_r($result);
@@ -119,6 +121,32 @@ class M_gentskk extends CI_Model
 	   return $result;
 	}
 
+	public function product_type_spec($item)
+	{
+		$result = '';
+		foreach ($item as $key => $value) {
+				$sql = "SELECT msib.segment1 item, NVL (ffvt.description, '000') DESCRIPTION
+										FROM fnd_flex_values ffv, fnd_flex_values_tl ffvt,
+												 mtl_system_items_b msib
+									 WHERE ffv.flex_value_set_id = 1013710
+										 AND ffv.flex_value_id = ffvt.flex_value_id
+										 AND ffv.end_date_active IS NULL
+										 AND ffv.summary_flag = 'N'
+										 AND ffv.enabled_flag = 'Y'
+										 AND ffv.flex_value = SUBSTR (msib.segment1, 1, 3)
+										 AND msib.segment1 = '$value'
+										 AND msib.organization_id = 81
+										 AND msib.inventory_item_status_code = 'Active'
+								ORDER BY 1";
+
+				$query = $this->oracle->query($sql);
+				if (!empty($query->row())) {
+					$result .= $query->row()->DESCRIPTION.",";
+				}
+		}
+
+	   return $result;
+	}
 
 	// function Seksi($term)
 	// {

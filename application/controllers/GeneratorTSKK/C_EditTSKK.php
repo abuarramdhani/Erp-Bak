@@ -46,7 +46,7 @@ class C_EditTSKK extends CI_Controller {
 		//PART
 		$jenis_inputPart  = $this->input->post('terdaftar');
 		if ($jenis_inputPart == 'Terdaftar') {
-			$type 	          = $this->input->post('txtType');
+			$type 	          = implode(",", $this->input->post('txtType[]'));
 			$kode_part 	      = $this->input->post('txtKodepart[]');
 			$kode = implode(",", $kode_part);
 			$nama_part 	      = $this->input->post('txtNamaPart');

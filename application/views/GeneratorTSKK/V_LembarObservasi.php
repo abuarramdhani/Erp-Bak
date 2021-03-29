@@ -252,7 +252,7 @@
                           <br />
                           <label for="norm" class="control-label col-lg-4">Type Product:</label>
                           <div class="col-lg-8">
-                            <select style="height: 35px;" class="form-control select2 type" id="typeProduct" name="txtType" data-placeholder="Input Product Type" tabindex="-1" aria-hidden="true">
+                            <select style="height: 35px;" class="form-control type" id="typeProduct" name="txtType[]" data-placeholder="Input Product Type" tabindex="-1" aria-hidden="true" multiple>
                               <option value=""></option>
                               <?php foreach ($product as $key => $value): ?>
                                 <option value="<?php echo $value['DESCRIPTION'] ?>"><?php echo $value['DESCRIPTION'] ?></option>
@@ -694,7 +694,7 @@
                                   </td>
                                   <!--JENIS PROSES-->
                                   <td>
-                                    <input list="brow_jenis_proses" class="form-control select00004" onchange="myFunctionTSKK(this)" style="text-align:left;width:100%" data-placeholder="Jenis Proses" name="slcJenisProses[]" id="slcJenis_<?= $no ?>">
+                                    <input list="brow_jenis_proses" class="form-control select00004" onchange="myFunctionTSKK(this)" style="text-align:left;width:100%" data-placeholder="Jenis Proses" name="slcJenisProses[]" id="slcJenis_<?= $no ?>" required>
                                     <!-- <select class="form-control select4" onchange="myFunctionTSKK(this)" style="text-align:left;width:100%" data-placeholder="Jenis Proses" name="slcJenisProses[]" id="slcJenis_<?= $no ?>">
                                       <option value=""></option>
                                       <option value="MANUAL">MANUAL</option>
