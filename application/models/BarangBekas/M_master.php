@@ -71,7 +71,7 @@ class M_master extends CI_Model
       return $this->oracle->query("SELECT DISTINCT msib.inventory_item_id, msib.segment1,
                 msib.description
            FROM mtl_system_items_b msib
-          WHERE msib.segment1 LIKE 'DA%'
+          WHERE (msib.segment1 LIKE 'DA%' OR msib.segment1 IN ('LBAFV0006'))
             AND (msib.organization_id = 102 OR msib.organization_id = 101)
             AND msib.inventory_item_status_code = 'Active'
             AND msib.stock_enabled_flag = 'Y'
