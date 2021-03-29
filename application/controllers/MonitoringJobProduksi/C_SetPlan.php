@@ -219,7 +219,8 @@ public function savePlan(){
 						if (empty($cekplan)) {
 							$cekid = $this->M_setplan->getPlan('order by plan_id desc');
 							$id = !empty($cekid) ? $cekid[0]['PLAN_ID'] + 1 : 1;
-							$savePlan = $this->M_setplan->savePlan($id, $inv, $bulan, $kategori, $subcategory);
+							$id_sub = !empty($subcategory) ? $subcategory : 'NULL';
+							$savePlan = $this->M_setplan->savePlan($id, $inv, $bulan, $kategori, $id_sub);
 						}else {
 							$id = $cekplan[0]['PLAN_ID'];
 						}
