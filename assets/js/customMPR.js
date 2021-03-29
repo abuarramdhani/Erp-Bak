@@ -984,3 +984,18 @@ function showModalCutiBersama(dt){
     })
 }
 // end Cuti Bersama
+
+// start tarik shift pekerja
+$(document).ready(function(){
+    $('#tblMPRTarikShiftPekerja').DataTable({
+        scrollX: true,
+        fixedColumns: {
+            leftColumns: 3
+        },
+        "lengthMenu": [
+            [ 10, 5, 25, 50, -1],
+            [ '10', '5', '25', '50', 'All' ]
+        ],
+    })
+})
+// end tarik shift pekerja
