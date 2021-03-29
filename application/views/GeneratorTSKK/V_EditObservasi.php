@@ -341,12 +341,11 @@
                           <br />
                           <label for="norm" class="control-label col-lg-4">Type Product:</label>
                           <div class="col-lg-8">
-                            <select style="height: 35px; width:200px;" class="select2 type" id="typeProduct" name="txtType" data-placeholder="Input Product Type" tabindex="-1" aria-hidden="true">
+                            <select style="height: 35px; width:200px;" class="select2 type" id="typeProduct" name="txtType[]" data-placeholder="Input Product Type" tabindex="-1" aria-hidden="true" multiple>
                               <option value=""></option>
-                              <?php $listSeksi = explode(",", $type);
-                              $listSeksi = array_combine(range(1, count($listSeksi)), array_values($listSeksi));
+                              <?php $type_product = explode(",", $type);
                               foreach ($product as $key => $value): ?>
-                                <?php if (!empty(array_search($value['DESCRIPTION'], $listSeksi))){ ?>
+                                <?php if (in_array($value['DESCRIPTION'], $type_product)){ ?>
                                   <option value="<?php echo $value['DESCRIPTION'] ?>" selected><?php echo $value['DESCRIPTION'] ?></option>
                                 <?php }else { ?>
                                   <option value="<?php echo $value['DESCRIPTION'] ?>"><?php echo $value['DESCRIPTION'] ?></option>
