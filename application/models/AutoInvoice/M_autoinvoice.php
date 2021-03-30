@@ -6,7 +6,7 @@ class M_autoinvoice extends CI_Model
     {
         parent::__construct();
         $this->load->database();
-        $this->oracle = $this->load->database('oracle_dev', true);
+        $this->oracle = $this->load->database('oracle', true);
     }
     public function DoReady()
     {
