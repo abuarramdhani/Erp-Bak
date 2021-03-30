@@ -144,6 +144,7 @@ class C_Laporan extends CI_Controller {
 		$data = $this->session->userdata('data_biaya');
 
 		if($data['source'] == 'ajax'){
+		    $status = 'export';
 			$kodebarang = $data['kode_barang'];
 			$rate = $data['rate'];
 			$qtyKirim = $data['qtyKirim'];
@@ -170,6 +171,7 @@ class C_Laporan extends CI_Controller {
 			// $button = $this->input->post('btnSubPBI');
 			// $localTransport = $this->input->post('localTransport');
 			// $biayaSurvey = $this->input->post('biayaSurvey');
+			$status = 'save';
 			$kodebarang = $this->input->post('kodebarang[]');
 			$rate = $this->input->post('rate[]');
 			$qtyKirim = $this->input->post('qtyKirim[]');
@@ -205,7 +207,7 @@ class C_Laporan extends CI_Controller {
 		);
 
 		// if ($button == 0) {
-		if ($data_item) {
+		if ($status == 'export') {
 			$this->SaveData($reqid,$kodebarang,$rate,$qtyKirim,$header,$currency,$addAdditionalInfo,$addAdditionalInfoPrice);
 			$this->Export($reqid,$rate,$header,$currency,$data_item);
 		}else{
