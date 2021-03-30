@@ -75,8 +75,8 @@ class C_Finish extends CI_Controller
 
         $this->load->library('pdf');
         $pdf = $this->pdf->load();
-        $pdf = new mPDF('utf-8', array(210, 148), 0, '', 9, 3, 20, 3, 3, 3); //---r,l,t,b
-        $filename = 'CetakInvoice.pdf';
+        $pdf = new mPDF('utf-8', array(210, 148), 0, '', 5, 2, 20, 3, 3, 3); //---r,l,t,b
+        $filename = $i . '.pdf';
 
         $html = $this->load->view('AutoInvoice/V_PdfInvoice', $data, true);
         $foot = $this->load->view('AutoInvoice/V_PdfInvoiceF', $data, true);
@@ -101,7 +101,7 @@ class C_Finish extends CI_Controller
         $this->load->library('pdf');
         $pdf = $this->pdf->load();
         $pdf = new mPDF('utf-8', array(210, 297), 0, '', 3, 3, 20, 3, 3, 3); //---r,l,t,b
-        $filename = 'CetakRDO.pdf';
+        $filename = $i . '.pdf';
 
         $html = $this->load->view('AutoInvoice/V_PdfRDO', $data, true);
         $foot = $this->load->view('AutoInvoice/V_PdfRDOF', $data, true);
