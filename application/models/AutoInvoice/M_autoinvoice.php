@@ -96,7 +96,7 @@ class M_autoinvoice extends CI_Model
         WHERE 1=1
         AND wdd.SOURCE_HEADER_ID = ooha.HEADER_ID
         AND wdd.ORG_ID = hou.ORGANIZATION_ID
-        AND wdd.RELEASED_STATUS = 'Y'
+        -- AND wdd.RELEASED_STATUS = 'Y'
         AND not exists (select wdd1.BATCH_ID from wsh_delivery_details wdd1 where wdd1.BATCH_ID = wdd.BATCH_ID and wdd1.RELEASED_STATUS = 'S')
         AND wdd.BATCH_ID = ksw.WDD_BATCH_ID
         AND ksw.TRX_NUMBER is null";
