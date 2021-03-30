@@ -553,31 +553,55 @@ $('.pbb_transact').on('change', function () {
       })
     }else {
       $.ajax({
-        url: baseurl + 'BarangBekas/transact/detail_document',
+        url: baseurl + 'BarangBekas/transact/apakah_sudah_trasact',
         type: 'POST',
-        // dataType: 'JSON',
+        dataType: 'JSON',
         data: {
           doc_num: val,
         },
         cache:false,
         beforeSend: function() {
-          $('.submit-pbb-transact').attr('disabled', 'disabled');
-          $('#pbbt_seksi').val('Sedang Mengambil Data ....');
-          $('#pbbt_cost_center').val('Sedang Mengambil Data ....');
-          $('.pbbt_area_item').html(`<div style ="width: 70%;margin:auto;height: 30%;background: #fff;overflow: hidden;z-index: 9999;padding:20px 0 30px 0;border-radius:10px;text-align:center">
-                                        <img style="width: 8%;" src="${baseurl}assets/img/gif/loading5.gif"><br>
-                                        <span style="font-size:14px;font-weight:bold">Sedang memuat data...</span>
-                                    </div>`);
+          toastPBB('info', `Sedang Mengecek Status Dokumen ${val}...`)
         },
-        success: function(result) {
-          $('.submit-pbb-transact').removeAttr('disabled');
-          $('.pbbt_area_item').html(result);
+        success: function(cek_apakahhh) {
+          if (cek_apakahhh != 1) {
+            $.ajax({
+              url: baseurl + 'BarangBekas/transact/detail_document',
+              type: 'POST',
+              // dataType: 'JSON',
+              data: {
+                doc_num: val,
+              },
+              cache:false,
+              beforeSend: function() {
+                toastPBB('success', `Selesai..`)
+                $('.submit-pbb-transact').attr('disabled', 'disabled');
+                $('#pbbt_seksi').val('Sedang Mengambil Data ....');
+                $('#pbbt_cost_center').val('Sedang Mengambil Data ....');
+                $('.pbbt_area_item').html(`<div style ="width: 70%;margin:auto;height: 30%;background: #fff;overflow: hidden;z-index: 9999;padding:20px 0 30px 0;border-radius:10px;text-align:center">
+                                              <img style="width: 8%;" src="${baseurl}assets/img/gif/loading5.gif"><br>
+                                              <span style="font-size:14px;font-weight:bold">Sedang memuat data...</span>
+                                          </div>`);
+              },
+              success: function(result) {
+                $('.submit-pbb-transact').removeAttr('disabled');
+                $('.pbbt_area_item').html(result);
+              },
+              error: function(XMLHttpRequest, textStatus, errorThrown) {
+              swalPBB('error', 'Koneksi Terputus...')
+               console.error();
+              }
+            })
+          }else {
+            toastPBB('warning', `Dokumen ${val} telah di-transact sebelumnya.`)
+          }
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
-        swalPBB('error', 'Koneksi Terputus...')
+        swalPBB('error', 'Koneksi Terputus, Coba lagi...')
          console.error();
         }
       })
+
     }
 
 })

@@ -38,3 +38,7 @@
             </div>
         </div>
 </section>
+
+<script type="text/javascript">
+	alert('Agar pembaruan aplikasi pbb (30/03/2021 13:33:33) berjalan sepenuhnya, Reload halaman ini dengan menekan ctrl+shift+r secara berurutan... Abaikan jika telah melakukan sebelumnya')
+</script>

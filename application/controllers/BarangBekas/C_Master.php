@@ -267,6 +267,16 @@ class C_Master extends CI_Controller
 
     }
 
+    public function apakah_sudah_trasact($value='')
+    {
+      $data = $this->M_master->cek_apakah_sudah_trasact($this->input->post('doc_num'));
+      if (!empty($data)) {
+        echo json_encode(1);
+      }else {
+        echo json_encode(0);
+      }
+    }
+
     public function geDocBy($value='')
     {
       $term = strtoupper($this->input->post('term'));
