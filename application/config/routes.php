@@ -5215,3 +5215,15 @@ $route['MonitoringGudangCustomable'] = 'MonitoringGudangCustomable/C_Master';
 $route['MonitoringGudangCustomable/Monitoring'] = 'MonitoringGudangCustomable/C_Master/Monitoring';
 $route['MonitoringGudangCustomable/Monitoring/(:any)'] = 'MonitoringGudangCustomable/C_Master/$1';
 $route['MonitoringGudangCustomable/Monitoring/(:any)/(:any)'] = 'MonitoringGudangCustomable/C_Master/$1/$2';
+
+// -------------------------------------- KHS Auto Invoice --------------------------------------------
+$route['AutoInvoice'] 								= 'AutoInvoice/C_Index';
+$route['AutoInvoice/ReadyToShipConfirm']			= 'AutoInvoice/C_Ready';
+$route['AutoInvoice/ReadyToShipConfirm/(:any)']		= 'AutoInvoice/C_Ready/$1';
+
+$route['AutoInvoice/OnProcess']				= 'AutoInvoice/C_Process';
+$route['AutoInvoice/OnProcess/(:any)']		= 'AutoInvoice/C_Process/$1';
+
+$route['AutoInvoice/FinishInvoice']				= 'AutoInvoice/C_Finish';
+$route['AutoInvoice/FinishInvoice/(:any)']		= 'AutoInvoice/C_Finish/$1';
+$route['AutoInvoice/FinishInvoice/(:any)/(:any)']		= 'AutoInvoice/C_Finish/$1/$2';
