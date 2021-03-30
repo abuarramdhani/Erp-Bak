@@ -87,7 +87,7 @@ function ProcessShipConfirm() {
   $(chk).each(function () {
     var row_id = $(this).attr("data-row");
     var do_to_push = $('.nom_DO[data-row="' + row_id + '"]').val();
-    nomor_do.push(1);
+    nomor_do.push(do_to_push);
   });
   //   console.log(nomor_do);
   var request = $.ajax({
