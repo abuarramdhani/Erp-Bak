@@ -2,7 +2,7 @@
     <tr>
         <td style="width: 70px;">NO. PO CUST</td>
         <td>-</td>
-        <td style="text-align: right;width:200px"><?= number_format($Invoice[0]['DPP'], 2) ?></td>
+        <td style="text-align: right;width:200px"><?= number_format($Invoice[0]['CS_TOTAL_DP'], 2) ?></td>
     </tr>
     <tr>
         <td style="width: 70px;">NO. PO</td>
@@ -24,7 +24,7 @@
     </tr>
     <tr>
         <td colspan="2"></td>
-        <td style="text-align: right;"><?= number_format($Invoice[0]['CF_SUB_TOTAL'], 2) ?></td>
+        <td style="text-align: right;"><?= number_format($Invoice[0]['DPP'], 2) ?></td>
     </tr>
     <tr>
         <td></td>
