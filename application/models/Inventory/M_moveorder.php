@@ -129,6 +129,29 @@ class M_moveorder extends CI_Model
 		// return $sql;
 	}
 
+	function search2($job_no) //----------------->>
+	{
+		$oracle = $this->load->database('oracle',TRUE);
+		$sql = "select *
+				from khs_qweb_ect_listall kqel
+				where kqel.NO_JOB in ($job_no)
+				order by 1 ";
+		
+		$query = $oracle->query($sql);
+		return $query->result_array();
+	}
+
+	
+	function count_itemMGA($job_no) //----------------->>
+	{
+		$oracle = $this->load->database('oracle',TRUE);
+		$sql = "select nvl (khs_hitung_stiker ('$job_no'),0) stiker
+				from dual";
+		
+		$query = $oracle->query($sql);
+		return $query->result_array();
+	}
+
 
 	function getBody($job_no,$atr,$dept) //----------------->>
 	{
@@ -849,10 +872,11 @@ class M_moveorder extends CI_Model
 							and wro.INVENTORY_ITEM_ID = mtrl.INVENTORY_ITEM_ID
 							and mtrl.FROM_LOCATOR_ID = mil.INVENTORY_LOCATION_ID(+)
 							order by
-							mtrl.LINE_ID,
-							we.WIP_ENTITY_NAME,
-							mtrl.FROM_SUBINVENTORY_CODE,
-							msib_compnt.SEGMENT1";
+							23 -- lokasi simpan
+							--mtrl.LINE_ID,
+							--we.WIP_ENTITY_NAME,
+							--mtrl.FROM_SUBINVENTORY_CODE,
+							--msib_compnt.SEGMENT1";
 		
 		// echo "<pre>";
 		// echo "$sql";

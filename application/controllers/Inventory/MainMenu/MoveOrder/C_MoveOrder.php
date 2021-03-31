@@ -160,6 +160,100 @@ class C_MoveOrder extends CI_Controller
 		$this->load->view('Inventory/MainMenu/MoveOrder/V_Result',$data);
 	}
 
+	public function search2(){
+		$nojob 	= $this->input->post('nojob');
+		$no_job = '';
+		for ($n=0; $n < count($nojob) ; $n++) { 
+			if (!empty($nojob[$n])) {
+				$no_job = empty($no_job) ? "'".$nojob[$n]."'" : $no_job.", '".$nojob[$n]."'";
+			}
+		}
+		// echo "<pre>";
+		// print_r($no_job);
+		// exit();
+
+		$dataGET = $this->M_MoveOrder->search2($no_job);
+		
+		// echo "<pre>";
+		// // print_r($date);
+		// // echo "<br>";
+		// // print_r($dept);
+		// // echo "<br>";
+		// // print_r($shift);		
+		// // echo "<br>";
+		// print_r($dataGET);		
+		// exit();
+		
+		$array_sudah = array();
+		$array_terkelompok = array();
+		foreach ($dataGET as $key => $value) {
+			$value['WIP_ENTITY_NAME'] = $value['NO_JOB'];
+			$value['DEPT_CLASS'] = $value['DEPARTMENT_CLASS_CODE'];
+			$value['ITEM_CODE'] = $value['ASSEMBLY'];
+			$value['ITEM_DESC'] = $value['ASSY_DESC'];
+			$value['DESCRIPTION'] = $value['SHIFT_DESC'];
+			if (in_array($value['WIP_ENTITY_NAME'], $array_sudah)) {
+				// echo "sudah ada";print_r($value['WIP_ENTITY_NAME']);echo"<br>";
+			}else{
+				// echo "memasukan ";print_r($value['WIP_ENTITY_NAME']);echo "<br>";
+				array_push($array_sudah, $value['WIP_ENTITY_NAME']);
+				if ($value['DEPARTMENT_CLASS_CODE'] == 'SUBKT') {
+					$atr = ",khs_inv_qty_att(wdj.ORGANIZATION_ID,wro.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'') atr";
+					$getBody = $this->M_MoveOrder->getBody($value['WIP_ENTITY_NAME'],$atr,$value['DEPARTMENT_CLASS_CODE']);
+				}else {
+					// EDIT LUTFI
+					$atr = ",khs_inv_qty_att(wdj.ORGANIZATION_ID,wro.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'') atr";	
+					$getBody = $this->M_MoveOrder->getBody($value['WIP_ENTITY_NAME'],$atr,$value['DEPARTMENT_CLASS_CODE']);
+				}
+				$sorting_1 = $sorting_2 = array();
+				for ($i=0; $i < count($getBody); $i++) { 
+					$bagi = $getBody[$i]['ATR'] / $getBody[$i]['QUANTITY_PER_ASSEMBLY'];
+					$getBody[$i]['BAGI'] = $bagi;
+					$sorting_1[$i] = $getBody[$i]['LOCATOR_ASAL'];
+					$sorting_2[$i] = $getBody[$i]['BAGI'];
+				}
+
+				array_multisort($sorting_1, SORT_ASC, $sorting_2, SORT_ASC, $getBody);
+				
+				// usort($getBody, function($a, $b) {
+				// 	return $a['BAGI'] - $b['BAGI'];
+				// });
+
+				$array_terkelompok[$value['WIP_ENTITY_NAME']]['header'] = $value; 
+				$array_terkelompok[$value['WIP_ENTITY_NAME']]['body'] = $getBody; 
+			}
+
+		}
+
+		// echo "<pre>";
+		// // print_r($array_sudah);
+		// print_r($array_terkelompok);
+		// exit();
+
+		foreach ($array_terkelompok as $key => $value) {
+			// echo "<pre>";
+			// print_r($value);
+			// exit();
+		 	$checkPicklist = $this->M_MoveOrder->checkPicklist($key);
+		 	if ($checkPicklist) {
+				$array_terkelompok[$key]['header']['KET'] = 1 ;
+		 	}else{
+				$array_terkelompok[$key]['header']['KET'] = 0 ;
+		 	}
+		 }
+
+
+		$data['requirement'] = $array_terkelompok;
+		$data['date'] = '';
+		$data['dept'] = '';
+		$data['shift'] = '';
+		// echo "<pre>";
+		// print_r($data['requirement']);
+		// exit();
+
+		$this->load->view('Inventory/MainMenu/MoveOrder/V_Result',$data);
+	}
+
 	public function create(){
 		// echo "<pre>";
 		// print_r($_POST);
@@ -470,6 +564,12 @@ class C_MoveOrder extends CI_Controller
 					}
 				}
 			}
+	}
+
+	public function print_sticker(){
+		$job = $this->input->post('nojob');
+		$cek_item = $this->M_MoveOrder->count_itemMGA($job);
+		echo $cek_item[0]['STIKER'];
 	}
 
 	public function createall(){
