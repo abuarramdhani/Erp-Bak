@@ -28,7 +28,7 @@ class M_autoinvoice extends CI_Model
         AND oola.LINE_TYPE_ID IN (1003, 1455, 2550)
         AND not exists (select wdd1.BATCH_ID from wsh_delivery_details wdd1 where wdd1.BATCH_ID = wdd.BATCH_ID and wdd1.RELEASED_STATUS = 'S')
         AND wdd.BATCH_ID = ksw.WDD_BATCH_ID(+)
-        AND ksw.WDD_BATCH_ID is null
+        AND ksw.WDD_BATCH_ID is not null
         order by wdd.BATCH_ID desc";
 
         $query = $this->oracle->query($sql);
