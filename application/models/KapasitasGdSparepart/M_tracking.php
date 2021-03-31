@@ -57,7 +57,7 @@ class M_tracking extends CI_Model {
                     AND CANCEL IS NULL
                     AND kts.no_dokumen = mtrh.request_number
                 --     AND kts.no_dokumen IN (3717021, 4073844)
-                    AND mtrh.header_id = mtrl.header_id
+                    AND mtrh.header_id = mtrl.header_id(+)
                     AND TO_CHAR (houv2.organization_id(+)) = SUBSTR (TRIM (LTRIM (mtrl.REFERENCE, ' ')), 6)
                 ORDER BY kts.urgent, kts.tgl_dibuat";
         $query = $oracle->query($sql);
