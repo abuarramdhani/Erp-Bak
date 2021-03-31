@@ -58,7 +58,8 @@ class M_autoinvoice extends CI_Model
         ,WSH_DELIVERY_ASSIGNMENTS WDA
         WHERE 1=1
         AND wda.DELIVERY_DETAIL_ID = wdd.DELIVERY_DETAIL_ID
-        AND wdd.BATCH_ID = $do -- parameter";
+        AND wdd.BATCH_ID = $do -- parameter
+        AND wda.DELIVERY_ID is not null";
 
         $query = $this->oracle->query($sql);
         return $sql;
@@ -89,4 +90,4 @@ class M_autoinvoice extends CI_Model
         $query = $this->oracle->query($sql);
         return $query->result_array();
     }
-}
+}

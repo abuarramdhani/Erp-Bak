@@ -47,11 +47,11 @@
             <td style="width:35px"><?= $in['QTY'] ?></td>
             <td style="width:30px"><?= $in['UOM'] ?></td>
             <td style="width:100px"><?= $in['ITEM_CODE'] ?></td>
-            <td style=" width:200px"><?= $in['ITEM_DESC'] ?></td>
-            <td style="padding-left: 50px;"><?= number_format($in['UNIT_PRICE'], 2) ?></td>
-            <td style="padding-left: 40px;"><?= $in['DISKON'] ?></td>
-            <td><?= number_format($in['NETTO'], 2) ?></td>
-            <td style="padding-left: 20px;"><?= number_format($in['CS_TOTAL'], 2) ?></td>
+            <td style=" width:190px"><?= $in['ITEM_DESC'] ?></td>
+            <td style="text-align:right"><?= number_format($in['UNIT_PRICE'], 0) ?></td>
+            <td style="text-align:right"><?= $in['DISKON'] ?></td>
+            <td style="text-align:right"><?= number_format($in['NETTO'], 0) ?></td>
+            <td style="padding-left: 20px;text-align:right"><?= number_format($in['DPP'], 0) ?></td>
         </tr>
     <?php $n++;
     } ?>
