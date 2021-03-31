@@ -725,35 +725,38 @@ class M_dpb extends CI_Model
         $oracle->update('KHS_DPB_KENDARAAN', $data);
     }
 
-    public function checkOnhand($no_do, $kode_gudang)
+    public function checkOnhand($no_do, $kode_gudang, $org_id)
     {
         $oracle = $this->load->database('oracle', true);
-        $query = $oracle->query("SELECT APPS.KHS_CEK_ATR_DOSPB2('$no_do', 102, '$kode_gudang') as stockonhand FROM dual");
+        $query = $oracle->query("SELECT APPS.KHS_CEK_ATR_DOSPB2('$no_do', $org_id, '$kode_gudang') as stockonhand FROM dual");
 
         return $query->result_array();
     }
 
-    public function checkLineStatus($no_do, $kode_gudang)
+    public function checkLineStatus($no_do, $kode_gudang, $org_id)
     {
         $oracle = $this->load->database('oracle', true);
-        $query = $oracle->query("SELECT APPS.KHS_CEK_LINE_STATUS_DOSPB('$no_do', 102, '$kode_gudang') as linestatus FROM dual");
+        $query = $oracle->query("SELECT APPS.KHS_CEK_LINE_STATUS_DOSPB('$no_do', $org_id, '$kode_gudang') as linestatus FROM dual");
         return $query->result_array();
     }
 
-    public function procedureLockStock($no_do, $kode_gudang, $user)
+    public function procedureLockStock($no_do, $kode_gudang, $user, $org_id)
     {
         $conn = oci_connect('APPS', 'APPS', '192.168.7.1:1521/PROD');
+        // $conn = oci_connect('APPS', 'APPS', '192.168.7.3:1522/DEV');
+
         if (!$conn) {
             $e = oci_error();
             trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
         }
         $oracle = $this->load->database('oracle', true);
-        $sql = "BEGIN APPS.KHS_ALLOCATE_NONSERIAL_DOSPB2(:no_do, 102, :kode_gudang, :user); END;";
+        $sql = "BEGIN APPS.KHS_ALLOCATE_NONSERIAL_DOSPB2(:no_do, :org, :kode_gudang, :user); END;";
 
         $stmt = oci_parse($conn, $sql);
         oci_bind_by_name($stmt, ':no_do', $no_do, 100);
         oci_bind_by_name($stmt, ':kode_gudang', $kode_gudang, 100);
         oci_bind_by_name($stmt, ':user', $user, 100);
+        oci_bind_by_name($stmt, ':org', $org_id, 100);
 
         // But BEFORE statement, Create your cursor
         // $cursor = oci_new_cursor($conn);
@@ -767,7 +770,7 @@ class M_dpb extends CI_Model
         // print "$message\n";
     }
 
-    public function CekStok($no_do, $kode_gudang)
+    public function CekStok($no_do, $kode_gudang, $org)
     {
         $oracle = $this->load->database('oracle', true);
 
@@ -866,7 +869,7 @@ class M_dpb extends CI_Model
                     mtl_txn_request_lines mtrl
                 WHERE
                     mtrh.HEADER_ID = mtrl.HEADER_ID
-                    AND mtrh.ORGANIZATION_ID = 102
+                    AND mtrh.ORGANIZATION_ID = $org
                     AND mtrl.LINE_STATUS NOT IN (5, 6)
                     AND mtrh.REQUEST_NUMBER IN (
                       SELECT * FROM
@@ -985,6 +988,18 @@ class M_dpb extends CI_Model
         // ,tbl1.req_qty
         // ,msib.DESCRIPTION");
 
+        return $query->result_array();
+    }
+    public function cekOrgID($i)
+    {
+        $sql = "select distinct
+        mtrh.organization_id
+        from
+        mtl_txn_request_headers mtrh
+        where
+        mtrh.REQUEST_NUMBER = '$i'";
+
+        $query = $this->oracle->query($sql);
         return $query->result_array();
     }
 }
