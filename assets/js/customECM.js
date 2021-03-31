@@ -104,27 +104,23 @@ $(document).ready(function () {
 
 // export excel pelanggan
 $(document).ready(function () {
-	$('#user_id').select2({
-		placeholder: "NAMA USER"
+	dataExport();
+	$('#CustId').select2({
+		placeholder: "NAMA USER",
+		allowClear: true,
 	});
-	$('#cat_name').select2({
-		placeholder: "ITEM CATEGORY"
-	});
-	$('#item_name').select2({
-		placeholder: "ITEM NAME"
+	$('#TermId').select2({
+		placeholder: "ITEM CATEGORY",
+		allowClear: true,
 	});
 
-	$('#user_id').change(function () {
-		var org_id = $('#user_id').val();
-		console.log(org_id);
+	$('#CustId').change(function () {
+		var org_id = $('#CustId').val();
+		// console.log(org_id);
 		$('#btn-export').removeAttr('disabled');
 		$('#btn-search-export').removeAttr('disabled');
 	});
-	$('#cat_name').change(function () {
-		$('#btn-export').removeAttr('disabled');
-		$('#btn-search-export').removeAttr('disabled');
-	});
-	$('#item_name').change(function () {
+	$('#TermId').change(function () {
 		$('#btn-export').removeAttr('disabled');
 		$('#btn-search-export').removeAttr('disabled');
 	});
@@ -133,7 +129,7 @@ $(document).ready(function () {
 		var name = $('#user_id').val();
 		var cat_name = $('#cat_name').val();
 		var item_name = $('#item_name').val();
-		console.log(name, cat_name, item_name);
+		// console.log(name, cat_name, item_name);
 
 		if (!$('#cat_name').val()) {
 			console.log("cat_name tidak ada")
@@ -156,7 +152,7 @@ $(document).ready(function () {
 				$('#btn-export').removeAttr('disabled');
 				$('#btn-search-export').removeAttr('disabled');
 			} else {
-				console.log(name)
+				// console.log(name)
 			}
 		} else {
 			$('#user_id').attr('disabled', 'disabled');
@@ -187,13 +183,46 @@ $(document).ready(function () {
 				$('#btn-export').removeAttr('disabled');
 				$('#btn-search-export').removeAttr('disabled');
 			} else {
-				console.log(cat_name)
+				// console.log(cat_name)
 			}
 		} else {
 			$('#cat_name').attr('disabled', 'disabled');
 			$('#btn-cat').html('Enable');
 			$('#btn-cat').addClass('btn-success');
 			$('#btn-cat').removeClass('btn-danger');
+			if ($('#item_name').attr('disabled')) {
+				if ($('#user_id').attr('disabled')) {
+					$('#btn-export').attr('disabled', 'disabled');
+					$('#btn-search-export').attr('disabled', 'disabled');
+				} else {
+					console.log("enable")
+				}
+			} else {
+				console.log("enable")
+			}
+		}
+	})
+	$('#btn-date').on('click', function () {
+		var new_date_from = $('#dateBegin').val();
+		var new_date_to = $('#dateEnd').val();
+		if ($('#dateBegin').attr('disabled') && $('#dateEnd').attr('disabled')) {
+			$('#dateBegin').removeAttr('disabled');
+			$('#dateEnd').removeAttr('disabled');
+			$('#btn-date').html('Disable');
+			$('#btn-date').addClass('btn-danger');
+			$('#btn-date').removeClass('btn-success');
+			if (new_date_from.length > 0 && new_date_to.length > 0) {
+				$('#btn-export').removeAttr('disabled');
+				$('#btn-search-export').removeAttr('disabled');
+			} else {
+				console.log(new_date_from)
+			}
+		} else {
+			$('#dateBegin').attr('disabled', 'disabled');
+			$('#dateEnd').attr('disabled', 'disabled');
+			$('#btn-date').html('Enable');
+			$('#btn-date').addClass('btn-success');
+			$('#btn-date').removeClass('btn-danger');
 			if ($('#item_name').attr('disabled')) {
 				if ($('#user_id').attr('disabled')) {
 					$('#btn-export').attr('disabled', 'disabled');
@@ -251,17 +280,49 @@ $(document).ready(function () {
 	$('#btn-search-export2').click(function () {
 		$('#searchResultTableItemByDate').html('<img src="' + baseurl + '/assets/img/gif/loading12.gif">');
 	});
+	$('#btn-search').click(function () {
+		var CustId = $('#CustId').val();
+		var TermId = $('#TermId').val();
+		var dateFrom = $('#dateBegin').val();
+		var dateTo = $('#dateEnd').val();
+		console.log(dateFrom, dateTo, CustId, TermId);
+		$.ajax({
+			url: baseurl + "ECommerce/ExportPelanggan/tableExport",
+			data: {
+				CustId: CustId,
+				TermId: TermId,
+				dateFrom: dateFrom,
+				dateTo: dateTo,
+			},
+			type: "POST",
+			dataType: "html",
+			beforeSend: function () {
+				$("#divdataTableExport").html(
+					'<center><img style="width:100px; height:auto" src="' +
+					baseurl +
+					'assets/img/gif/loading11.gif"></center>'
+				);
+			},
+			success: function (response) {
+				$('#dataTableExport').css("display", "none")
+				$('#divdataTableExport').html(response)
+				$('#dataTableExportFilter').DataTable({
+					scrollCollapse: true,
+					scrollX: true,
+					pageLength: 10,
+					"pagingType": "full_numbers",
+				});
+			}
+		});
+	});
+
 	$(".tanggalanExport").datepicker({
 		format: "dd-mm-yyyy",
 		autoclose: true,
 	});
 
-	dataExport();
-
 	function dataExport() {
-		// function dataExport() {
 		$('#dataTableExport').DataTable({
-			// dom: '<fl<t>ip>',
 			scrollX: true,
 			ajax: {
 				url: baseurl + "ECommerce/ExportPelanggan/tableExportAll/",
@@ -274,8 +335,6 @@ $(document).ready(function () {
 			serverSide: false
 		});
 	}
-
-	// }
 
 	$('#dataTableExportTable').DataTable({
 		scrollX: true,
