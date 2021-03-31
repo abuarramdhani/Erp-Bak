@@ -204,7 +204,7 @@
 						</button>
 					<?php } else { ?>
 						<button class="btn btn-sm  <?= ($value['body']) ? 'btn-success' : 'disabled btn-default' ?>" target="_blank" 
-								 <?= ($value['body']) ? "onclick=document.getElementById('form".$value['header']['WIP_ENTITY_NAME']."').submit();" :'' ?>>
+								 <?= ($value['body']) ? "onclick=document.getElementById('form".$value['header']['WIP_ENTITY_NAME']."').submit();print_sticker('".$value['header']['ITEM_CODE']."','".$value['header']['WIP_ENTITY_NAME']."')" :'' ?>>
 								 <?= $text_button; ?> 
 						</button><br><br>
 						<button class="btn btn-sm  <?= ($value['body']) ? 'btn-success' : 'disabled btn-default' ?>" target="_blank" 
@@ -405,7 +405,7 @@
 		<input type="hidden" name="no_job[]" value="<?= implode('<>', $allNojob[$key]) ?>">
 		<input type="hidden" name="assy[]" value="<?= implode('<>', $allAssy[$key]) ?>">
 		<?php } ?>
-		<button type="submit" class="btn btn-danger" id="btnpdfMerah"><b> Export Kekurangan </b></button>
+		<button type="submit" class="btn btn-danger" id="btnpdfMerah" style="<?= empty($dept) ? 'display:none' : ''; ?>"><b> Export Kekurangan </b></button>
 	</form>
 	<?php } ?>
 </div>

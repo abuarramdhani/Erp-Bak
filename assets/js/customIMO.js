@@ -82,6 +82,36 @@ function getRequirementMO(th){
 }
 
 
+function getRequirementMO2(th){
+	var nojob = $('input[name="txtNojobIMO[]"]').map(function(){return $(this).val();}).get();
+	
+	var request = $.ajax({
+		url: baseurl+'InventoryManagement/CreateMoveOrder/search2/',
+		data: {nojob : nojob},
+		type: "POST",
+		datatype: 'html', 
+	});
+	$('#ResultJob').html('');
+	$('#ResultJob').html('<center><img style="width:130px; height:auto" src="'+baseurl+'assets/img/gif/loading10.gif"></center>' );
+	request.done(function(result){
+		$('#ResultJob').html(result);
+	})
+}
+
+function print_sticker(item, nojob){
+	var request = $.ajax({
+		url: baseurl+'InventoryManagement/CreateMoveOrder/print_sticker',
+		data: { nojob : nojob },
+		type: "POST",
+		datatype: 'html', 
+	});
+	request.done(function(result){
+		if (result != 0) {
+			window.open("http://produksi.quick.com/print-qr-sticker-packaging/khs_cetak_barcode_besar.php?org=102&segment1="+item+"&jumlah="+result+"");
+		}
+	})
+}
+
 function getDetailJobInv(th){
 	var nojob = $('#NoJob').val();
 
