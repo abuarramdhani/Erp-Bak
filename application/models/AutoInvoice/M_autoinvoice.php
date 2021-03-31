@@ -89,4 +89,4 @@ class M_autoinvoice extends CI_Model
         $query = $this->oracle->query($sql);
         return $query->result_array();
     }
-}
+}

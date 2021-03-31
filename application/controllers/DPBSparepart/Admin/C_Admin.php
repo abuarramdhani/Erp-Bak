@@ -288,4 +288,26 @@ class C_Admin extends  CI_Controller
 
 		$this->load->view('DPBSparepart/Admin/V_ListArsip', $data);
 	}
+	public function getArsipDPBbyDate()
+	{
+		$datefrom = $_POST['datefrom'];
+		$dateto = $_POST['dateto'];
+
+		$data['periode_arsip'] = $datefrom . ' - ' . $dateto;
+
+		// echo "<pre>";
+		// print_r($date);
+		// exit();
+
+		$getdata = $this->M_arsip->getDataSPB3($datefrom, $dateto);
+
+		for ($i = 0; $i < sizeof($getdata); $i++) {
+			$coly = $this->M_packing->cekPacking($getdata[$i]['NO_DOKUMEN']);
+			$getdata[$i]['COLY'] = count($coly);
+		}
+
+		$data['getdata'] = $getdata;
+
+		$this->load->view('DPBSparepart/Admin/V_ListArsip', $data);
+	}
 }
