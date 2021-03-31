@@ -163,7 +163,7 @@
   }
 
   .table-responsive-custom{
-    height:500px;
+    height:570px;
     overflow:scroll;
   }
 
