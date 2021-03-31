@@ -16,6 +16,7 @@
                     <option value="FG-TKS">FG-TKS</option>
                     <option value="MLATI-DM">MLATI-DM</option>
                     <option value="FG-DM">FG-DM</option>
+                    <option value="FG-JFG">FG-JFG</option>
                   </select>
                 </div>
                 <center><button type="submit" style="!important;font-weight:bold" class="btn btn-success" name="button">Submit</button></center>
