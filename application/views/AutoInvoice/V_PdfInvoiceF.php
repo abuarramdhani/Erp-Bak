@@ -2,7 +2,7 @@
     <tr>
         <td style="width: 70px;">NO. PO CUST</td>
         <td>-</td>
-        <td style="text-align: right;width:200px"><?= number_format($Invoice[0]['CS_TOTAL_DP'], 2) ?></td>
+        <td style="text-align: right;width:200px"><?= number_format($Invoice[0]['CS_TOTAL'], 0) ?></td>
     </tr>
     <tr>
         <td style="width: 70px;">NO. PO</td>
@@ -20,15 +20,15 @@
     </tr>
     <tr>
         <td colspan="2"></td>
-        <td style="text-align: right;"><?= number_format($Invoice[0]['CS_TOTAL'], 2) ?></td>
+        <td style="text-align: right;"><?= number_format($Invoice[0]['CS_TOTAL'], 0) ?></td>
     </tr>
     <tr>
         <td colspan="2"></td>
-        <td style="text-align: right;"><?= number_format($Invoice[0]['DPP'], 2) ?></td>
+        <td style="text-align: right;"><?= number_format($Invoice[0]['CF_SUB_TOTAL'], 0) ?></td>
     </tr>
     <tr>
         <td></td>
         <td style="text-align: right;">ELNA ROSYANANDA P</td>
-        <td style="text-align: right;"><?= number_format($Invoice[0]['CF_PPN'], 2) ?></td>
+        <td style="text-align: right;"><?= number_format($Invoice[0]['CF_PPN'], 0) ?></td>
     </tr>
 </table>
