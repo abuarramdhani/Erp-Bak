@@ -211,7 +211,7 @@ class C_DPBListPR extends CI_Controller
     public function CheckStok()
     {
         $no_do = $_POST['no_do'];
-        $org = $_POST['org'];
+        // $org = $_POST['org'];
 
         $nomor_do = '';
 
@@ -219,10 +219,13 @@ class C_DPBListPR extends CI_Controller
 
         if ($gudang == 'MLATI') {
             $kode_gudang = 'MLATI-DM';
+            $org = 102;
         } elseif ($gudang == 'TUKSONO') {
             $kode_gudang = 'FG-TKS';
+            $org = 102;
         } elseif ($gudang == 'JAKARTA') {
             $kode_gudang = 'FG-JFG';
+            $org = 207;
         }
 
         for ($i = 0; $i < count($no_do); $i++) {
