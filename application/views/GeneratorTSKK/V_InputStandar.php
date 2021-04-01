@@ -1,17 +1,17 @@
 <style type="text/css">
 
 #inputElemen {
-    border-radius: 25px; 
+    border-radius: 25px;
 }
 
 #save {
-    border-radius: 25px; 
+    border-radius: 25px;
 }
 
-input[type="text"]::placeholder {  
-/* Firefox, Chrome, Opera */ 
-text-align: center; 
-} 
+input[type="text"]::placeholder {
+/* Firefox, Chrome, Opera */
+text-align: center;
+}
 
 </style>
 
@@ -43,24 +43,28 @@ text-align: center;
                               <!--INPUT ELEMEN-->
                               <div id="input-elemen" class="tab-pane fade in active">
                               <form method="POST" class="form-horizontal" action="<?php echo base_url('GeneratorTSKK/C_GenTSKK/insertData') ?>">
-                              
+
                                <div class="box-body">
                                <div style="width: 100%">
                                <div class="row">
                                 <!-- <div class="col-md-3" style="padding-left: 20px; text-align: right;">
                                 </div> -->
-                                <div class="col-md-5" style="width: 1000px">
+                                <div class="col-md-1"></div>
+                                <div class="col-md-10">
                                   <div class="form-group">
-                                    <input type="text" style="width:100%; margin-left:35px;" name="txtInputElemen" id=inputElemen class="form-control" placeholder="Input Elemen Kerja">
-                                  </div>						
+                                    <input type="text" style="width:100%;" name="txtInputElemen" id=inputElemen class="form-control" placeholder="Input Elemen Kerja">
+                                  </div>
                                 </div>
+                                <div class="col-md-1"></div>
                               </div>
-                                    <div class="row">
-                                        <div style="text-align: center;" id="btnSaveStandar">
-                                            <button class="btn btn-primary" type="submit" name="slcData" id="save" onclick="//tour(this)">SAVE</button>
-                                            <!-- <button class="btn btn-primary" type="button" name="tour" id="tour" onclick="tour(this)">TOUR</button> -->
-                                        </div>
-                            </div>
+                              <div class="row">
+                                  <div id="btnSaveStandar">
+                                    <center>
+                                      <button class="btn btn-primary" type="submit" name="slcData" id="save" onclick="//tour(this)">SAVE</button>
+                                      <!-- <button class="btn btn-primary" type="button" name="tour" id="tour" onclick="tour(this)">TOUR</button> -->
+                                    </center>
+                                  </div>
+                              </div>
                             </div>
                             </div>
                             <br>
@@ -100,9 +104,9 @@ text-align: center;
                                       </div>
                                       </td>
 																		<!-- <td><input type="text" class="form-control idStandard" value="<?php echo $id ?>"></td> -->
-                                      
 
-                                    </tr> 
+
+                                    </tr>
                                     <?php
                                     $no++;
                                   }
@@ -124,4 +128,3 @@ text-align: center;
         </div>
     </div>
 </section>
-

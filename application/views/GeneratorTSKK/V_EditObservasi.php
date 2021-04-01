@@ -480,8 +480,7 @@
                           <div class="row equipmenTdkTerdaftar" style="<?php if ($jenisInputElement != "TidakTerdaftar") { echo "display:none";}?>">
                             <label for="norm" class="control-label col-lg-4">Alat Bantu :</label>
                             <div class="col-lg-8">
-                              <input type="text" value="<?php if ($jenisInputElement == "TidakTerdaftar") { echo $alat_bantu; } ?>" placeholder="Input Alat Bantu" name="txtAlatBantuT" value="" id="txtAlatBantu" class="form-control txtAlatBantu"
-                                required />
+                              <input type="text" value="<?php if ($jenisInputElement == "TidakTerdaftar") { echo $alat_bantu; } ?>" placeholder="Input Alat Bantu" name="txtAlatBantuT" value="" id="txtAlatBantu" class="form-control txtAlatBantu"/>
                             </div>
                           </div>
                           <br>
