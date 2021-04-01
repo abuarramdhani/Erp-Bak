@@ -151,9 +151,9 @@ $(document).ready(function () {
   request.done(function (result) {
     $("div#ListFinish").html(result);
     $("#tbl_do_finish").dataTable({
-      paging: false,
-      scrollCollapse: true,
-      scrollY: 400,
+      paging: true,
+      // scrollCollapse: true,
+      // scrollY: 400,
     });
   });
 });
