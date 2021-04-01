@@ -224,11 +224,15 @@ class C_DPBKHS extends CI_Controller
 
         if ($gudang == 'MLATI') {
             $kode_gudang = 'MLATI-DM';
+            $org_id = 102;
         } elseif ($gudang == 'TUKSONO') {
+            $org_id = 102;
             $kode_gudang = 'FG-TKS';
         } elseif ($gudang == 'PUSAT') {
+            $org_id = 102;
             $kode_gudang = 'FG-DM';
         } elseif ($gudang == 'JAKARTA') {
+            $org_id = 207;
             $kode_gudang = 'FG-JFG';
         }
 
@@ -244,7 +248,7 @@ class C_DPBKHS extends CI_Controller
             }
         }
 
-        $org_id = $data['header']['org_id'];
+        // $org_id = $data['header']['org_id'];
 
 
         $returnOnhand = $this->M_dpb->checkOnhand($nomor_do, $kode_gudang, $org_id);

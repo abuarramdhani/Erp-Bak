@@ -147,7 +147,9 @@ class C_DPBListPR extends CI_Controller
 
         if ($gudang == 'MLATI') {
             $kode_gudang = 'MLATI-DM';
+            $org_id = 102;
         } elseif ($gudang == 'TUKSONO') {
+            $org_id = 102;
             $kode_gudang = 'FG-TKS';
         }
 
@@ -163,7 +165,7 @@ class C_DPBListPR extends CI_Controller
             }
         }
 
-        $returnOnhand = $this->M_dpb->checkOnhand($nomor_do, $kode_gudang);
+        $returnOnhand = $this->M_dpb->checkOnhand($nomor_do, $kode_gudang, $org_id);
 
         if ($returnOnhand[0]['STOCKONHAND'] == 0) {
 
