@@ -9,12 +9,20 @@ class M_pengsistem extends CI_Model
 	{
 		parent::__construct();
 		$this->load->database();
+		$this->personalia = $this->load->database('personalia', true);
 	}
 
 	public function responsibility_penomoran($action)
 	{
 		$query = $this->db->query("select * from saps.akses_penomoran where kode_akses = '".$action."' ");
 		return $query->result_array();
+	}
+
+	public function find($data)
+	{
+    	$sql = "Select * from hrd_khs.tseksi where kodesie = '".$data."'";
+    	$query = $this->personalia->query($sql);
+    	return $query->result_array();
 	}
 
     public function ambilSemuaPekerja()
@@ -84,6 +92,12 @@ class M_pengsistem extends CI_Model
 		return $query->result_array();
 	}
 
+	public function cek_nomor_fp($data)
+	{
+		$query = $this->db->query("SELECT count (*) from saps.doc_flowproses where nomor_doc = '".$data."' ");
+		return $query->result_array();
+	}
+
 	public function get_inputdata_fp($data)
 	{
 		$this->load->database();
@@ -130,11 +144,23 @@ class M_pengsistem extends CI_Model
 
 	//CODE OF PRACTICE / WI
 	
+	public function list_data1_copwi($data)
+	{
+		$query = $this->db->query("SELECT * from saps.doc_cop_wi WHERE dept = '".$data."' order by nomor_doc asc ");
+
+		return $query->result_array();
+	}
 
 	public function list_data_copwi()
 	{
 		$query = $this->db->query("SELECT * from saps.doc_cop_wi order by nomor_doc asc ");
 
+		return $query->result_array();
+	}
+
+	public function set_totala_copwi($data)
+	{
+		$query = $this->db->query("SELECT count (*) from saps.doc_cop_wi where nomor_doc = '".$data."' ");
 		return $query->result_array();
 	}
 
@@ -190,6 +216,7 @@ class M_pengsistem extends CI_Model
 			echo null;
 		}else {
 			unlink("assets/upload/PengembanganSistem/copwi/".$nama_baru);
+			unlink("assets/upload/PengembanganSistem/copwi/qrcop/".$nama_baru.".png");
 		}
 	}
 
@@ -454,7 +481,6 @@ class M_pengsistem extends CI_Model
 						case 'jpg':
 						case 'jpeg':
 						case 'png':
-							// print_r($files[] = $file);
 							$explode = explode('.', $file->getBasename());
 							$files[$explode[0]][] = $file;
 					}
@@ -469,5 +495,4 @@ class M_pengsistem extends CI_Model
 		}
 		
 	}
-
 }
