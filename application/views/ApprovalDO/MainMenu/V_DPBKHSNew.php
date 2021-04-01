@@ -91,6 +91,26 @@
                                 </div>
                             </div>
                         </div>
+                        <br>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Tanggal Kirim</label>
+                            <div class="col-sm-5">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i style="width:15px;" class="fa fa-clock-o"></i></span>
+                                    <input class="form-control txttglKirimDPB">
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Estimasi Kedatangan</label>
+                            <div class="col-sm-5">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i style="width:15px;" class="fa fa-clock-o"></i></span>
+                                    <input class="form-control txtDPBEstDatang">
+                                </div>
+                            </div>
+                        </div>
                         <br />
                         <div class="form-group">
                             <label class="col-sm-2 control-label">Pakai Alamat Bongkar ?</label>
