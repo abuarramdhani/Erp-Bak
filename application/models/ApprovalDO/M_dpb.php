@@ -654,10 +654,11 @@ class M_dpb extends CI_Model
             ->insert('KHS_DPB_KENDARAAN', $data);
     }
 
-    public function insertNewDetailKHS($data)
+    public function insertNewDetailKHS($tgl_kirim, $estDatang, $data)
     {
         $this->oracle
-            ->set('TGL_KIRIM', "TO_DATE('" . date('Y-m-d h:i:s') . "' ,'yyyy-mm-dd hh24:mi:ss')", FALSE)
+            ->set('TGL_KIRIM', "TO_DATE('$tgl_kirim' ,'dd-mm-yyyy')", false)
+            ->set('ESTIMASI_DATANG', "TO_DATE('$estDatang','yyyy/mm/dd HH24:MI')", false)
             ->insert('KHS_DPB_KENDARAAN', $data);
     }
 

@@ -213,6 +213,15 @@ class C_DPBKHS extends CI_Controller
 
         $gudang = $data['header']['gudangPengirim'];
 
+        $tgl_kirim = $data['header']['tgl_kirim'];
+
+        $estDatang = $data['header']['estDatang'];
+
+        // echo "<pre>";
+        // print_r($tgl_kirim);
+        // print_r($estDatang);
+        // exit();
+
         if ($gudang == 'MLATI') {
             $kode_gudang = 'MLATI-DM';
         } elseif ($gudang == 'TUKSONO') {
@@ -251,7 +260,7 @@ class C_DPBKHS extends CI_Controller
 
                     $this->M_dpb->procedureLockStock($val['doNumber'], $kode_gudang, $noind, $org_id);
 
-                    $this->M_dpb->insertNewDetailKHS([
+                    $this->M_dpb->insertNewDetailKHS($tgl_kirim, $estDatang, [
                         'NO_PR'            => $new_pr_number,
                         'JENIS_KENDARAAN'  => $data['header']['vehicleCategory'],
                         'NO_KENDARAAN'     => $data['header']['vehicleId'],
