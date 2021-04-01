@@ -14,6 +14,7 @@ class C_Penomoran extends CI_Controller
 		$this->load->library('form_validation');
 		$this->load->library('session');
 		$this->load->library('General');
+		$this->load->library('ciqrcode');
 		$this->load->model('M_Index');
 		
 		$this->load->model('SystemAdministration/MainMenu/M_user');
@@ -314,7 +315,6 @@ class C_Penomoran extends CI_Controller
 	{
         $this->checkSession();
         $user_id = $this->session->userid;
-
         $data['Menu'] = 'Dashboard';
         $data['SubMenuOne'] = '';
         $data['SubMenuTwo'] = '';
@@ -326,7 +326,6 @@ class C_Penomoran extends CI_Controller
         $data['listdatacopwi'] = $this->M_pengsistem->list_data_copwi();
         $data['listseksi'] = $this->M_pengsistem->select_seksi();
         $data['listorg'] = $this->M_pengsistem->ambilSemuaPekerja();
-
 
         $this->load->view('V_Header', $data);
         $this->load->view('V_Sidemenu', $data);
@@ -342,12 +341,15 @@ class C_Penomoran extends CI_Controller
 		$number_sop = $_POST['number_sop'];
 
 		$data = $this->M_pengsistem->cek_data_nomor_copwi($doc,$seksi,$number_sop)[0]['max'];
-		
+
 		echo json_encode($data);
 	}
 
 	public function inputdata_copwi()
 	{
+		$kodeakses = $this->session->kodesie;
+		$parameter = $this->M_pengsistem->find($kodeakses);
+
 		$judul_cw = $this->input->post('judul_cw');
 		$item_doc_cw = $this->input->post('doc_cw');
 		$doc_cw = $this->input->post('doccopwi_cw');
@@ -393,6 +395,8 @@ class C_Penomoran extends CI_Controller
 						'seksi_sop'			=> $sop_cw,
 						'number_rev'		=> $number_rev,
 						'jenis_doc_cw'		=> $item_doc_cw,
+						'user'				=> $this->session->employee,
+						'dept'				=> $parameter[0]['dept'],
 					);
 		}else{
 			$data		 = array(
@@ -410,6 +414,8 @@ class C_Penomoran extends CI_Controller
 						'seksi_sop'			=> $sop_cw,
 						'number_rev'		=> $number_rev,
 						'jenis_doc_cw'		=> $item_doc_cw,
+						'user'				=> $this->session->employee,
+						'dept'				=> $parameter[0]['dept'],
 						);
 		}
 
@@ -434,7 +440,6 @@ class C_Penomoran extends CI_Controller
         $data['listseksi'] = $this->M_pengsistem->select_seksi();
         $data['listorg'] = $this->M_pengsistem->ambilSemuaPekerja();
 
-		
         $this->load->view('V_Header', $data);
         $this->load->view('V_Sidemenu', $data);
         $this->load->view('PengembanganSistem/Penomoran/copwi/V_Read_cw', $data);
@@ -524,6 +529,9 @@ class C_Penomoran extends CI_Controller
 			// $config['max_height']           = 7680;
 			$config['file_name'] = $nama_baru;
 
+			if (file_exists($config['upload_path'].$config['file_name'])) {
+				unlink($config['upload_path'].$config['file_name']);
+			}
 			$this->load->library('upload', $config);
 
 			$this->upload->initialize($config);
@@ -538,6 +546,7 @@ class C_Penomoran extends CI_Controller
 		
 				$data = array(
 					'file' =>$judul_baru,
+					'link_file' => 'assets/upload/PengembanganSistem/copwi/'.$judul_baru,
 					'status_doc' =>$status
 					
 				);
@@ -546,6 +555,15 @@ class C_Penomoran extends CI_Controller
 				echo 1;
 	
 			}
+
+			// qr_image
+			
+					$qr_image= $nama_baru.'.png';
+					$params['data'] = 'http://erp.quick.com/assets/upload/PengembanganSistem/copwi/'.$nama_baru;
+					$params['level'] = 'H';
+					$params['size'] = 8;
+					$params['savename'] =FCPATH."assets/upload/PengembanganSistem/copwi/qrcop/".$qr_image;
+					$this->ciqrcode->generate($params);
 		}
 	
 	}

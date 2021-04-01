@@ -4940,6 +4940,27 @@ $route['PengembanganSistem/input_lkh_ps'] = 'PengembanganSistem/Penomoran/C_Peno
 $route['PengembanganSistem/delete_lkh/(:any)'] = 'PengembanganSistem/Penomoran/C_Penomoran/delete_lkh/$1';
 $route['PengembanganSistem/excel_masterlist'] = 'PengembanganSistem/Penomoran/C_Penomoran/excel_masterlist';
 
+//------------------------------- Dokumen Seksi ------------------------------------------------------------------
+
+$route['DokumenUnit'] = 'PengembanganSistem/Penomoran/C_Seksi';
+$route['DokumenUnit/select_all_seksi'] = 'PengembanganSistem/Penomoran/C_Seksi/select_all_seksi';
+$route['DokumenUnit/ambilSemuaPekerja'] = 'PengembanganSistem/Penomoran/C_Seksi/ambilSemuaPekerja';
+//COP/WI
+$route['DokumenUnit/cop_wi'] = 'PengembanganSistem/Penomoran/C_Seksi/cop_wi';
+$route['DokumenUnit/cek_number_cop_wi'] = 'PengembanganSistem/Penomoran/C_Seksi/cek_nomora_copwi';
+$route['DokumenUnit/input_cop_wi'] = 'PengembanganSistem/Penomoran/C_Seksi/inputdata_copwi';
+$route['DokumenUnit/edit_cop_wi/(:any)'] = 'PengembanganSistem/Penomoran/C_Seksi/edit_copwi/$1';
+$route['DokumenUnit/update_cop_wi/(:any)'] = 'PengembanganSistem/Penomoran/C_Seksi/update_copwi/$1';
+
+//FLOW_PROSES
+$route['DokumenUnit/Flow_Proses'] = 'PengembanganSistem/Penomoran/C_Seksi/flow_proses';
+$route['DokumenUnit/cek_nomor_flow'] = 'PengembanganSistem/Penomoran/C_Seksi/cek_nomor_flow';
+$route['DokumenUnit/Input_fp'] = 'PengembanganSistem/Penomoran/C_Seksi/inputdata_fp';
+$route['DokumenUnit/edit_flow/(:any)'] = 'PengembanganSistem/Penomoran/C_Seksi/edit_flow/$1';
+$route['DokumenUnit/update_flow/(:any)'] = 'PengembanganSistem/Penomoran/C_Seksi/update_flow/$1';
+$route['DokumenUnit/upload_data_flow/(:any)'] = 'PengembanganSistem/Penomoran/C_Seksi/upload_data_flow/$1';
+$route['DokumenUnit/delete_flow/(:any)'] = 'PengembanganSistem/Penomoran/C_Seksi/delete_data_flow/$1';
+
 //------------------------------- Cetak Jumlah Pekerja ------------------------------------------------------------------
 $route['MasterPekerja/Jumlahpekerja/(:any)'] = 'MasterPekerja/CetakJumlahPekerja/C_JumlahPekerja/$1';
 $route['MasterPekerja/Jumlahpekerja/(:any)/(:any)'] = 'MasterPekerja/CetakJumlahPekerja/C_JumlahPekerja/$1/$2';
