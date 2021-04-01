@@ -11,7 +11,7 @@ class M_HakAksesPresensiHarian extends CI_Model
   // Select
   public function getNoind()
   {
-    $sql = "SELECT DISTINCT h.noind FROM \"Presensi\".t_hak_akses_presensi h";
+    $sql = "select distinct h.noind from \"Presensi\".t_hak_akses_presensi h";
     $result =  $this->personalia->query($sql)->result_array();
 
     $noind = [];
@@ -21,43 +21,40 @@ class M_HakAksesPresensiHarian extends CI_Model
     return $noind;
   }
 
-
-
   public function getAksesUser()
   {
-    $sql = 'SELECT DISTINCT h.noind,p.nama,s.seksi,
-        (SELECT COUNT(h.kodesie) FROM "Presensi".t_hak_akses_presensi h WHERE h.noind = p.noind) AS jumlah_akses
+    $sql = 'select distinct h.noind,p.nama,s.seksi,
+        (select count(h.kodesie) FROM "Presensi".t_hak_akses_presensi h WHERE h.noind = p.noind) as jumlah_akses
         FROM "Presensi".t_hak_akses_presensi h 
-        INNER JOIN hrd_khs.tpribadi p 
-              ON h.noind = p.noind
-        INNER JOIN hrd_khs.tseksi s
-              ON p.kodesie = s.kodesie ORDER BY h.noind';
+        inner join hrd_khs.tpribadi p 
+              on h.noind = p.noind
+        inner join hrd_khs.tseksi s
+              on p.kodesie = s.kodesie order by h.noind';
     $result = $this->personalia->query($sql)->result_array();
     return $result;
   }
 
-
   public function getDataPekerja($key)
   {
-    $sql = "SELECT p.noind,p.nama,p.keluar,p.sebabklr FROM hrd_khs.tpribadi p WHERE (p.nama LIKE '$key%' OR p.noind LIKE '$key%') AND p.keluar = '0'";
+    $sql = "select p.noind,p.nama,p.keluar,p.sebabklr from hrd_khs.tpribadi p where (p.nama like '$key%' OR p.noind like '$key%') and p.keluar = '0'";
     return $this->personalia->query($sql)->result_array();
   }
 
   public function getHakAkses($noind)
   {
-    $sql = "SELECT h.kodesie,h.id,
-            (SELECT coalesce(nullif(trim(seksi), '-'), nullif(trim(unit),'-'), nullif(trim(bidang),'-'), dept) AS nama
-                    FROM hrd_khs.tseksi s 
-                    WHERE substr(kodesie,0,8) LIKE LEFT(h.kodesie,7) ORDER BY 1 LIMIT 1) AS seksi
-                    FROM \"Presensi\".t_hak_akses_presensi h 
-            WHERE h.noind LIKE '$noind'";
+    $sql = "select h.kodesie,h.id,
+            (select coalesce(nullif(trim(seksi), '-'), nullif(trim(unit),'-'), nullif(trim(bidang),'-'), dept) as nama
+                    from hrd_khs.tseksi s 
+                    where substr(kodesie,0,8) like left(h.kodesie,7) order by 1 limit 1) as seksi
+                    from \"Presensi\".t_hak_akses_presensi h 
+            where h.noind like '$noind'";
     return $this->personalia->query($sql)->result_array();
   }
 
   public function getDataSeksi($key)
   {
-    $sql = "SELECT s.kodesie AS kodesie,s.seksi FROM hrd_khs.tseksi s  
-            WHERE (s.kodesie LIKE '$key%' OR s.seksi LIKE '$key%') AND SUBSTR(s.kodesie,8,11) = '00'";
+    $sql = "select s.kodesie AS kodesie,s.seksi from hrd_khs.tseksi s  
+            where (s.kodesie like '$key%' OR s.seksi like '$key%') and substr(s.kodesie,8,11) = '00'";
     return $this->personalia->query($sql)->result_array();
   }
 
@@ -66,14 +63,14 @@ class M_HakAksesPresensiHarian extends CI_Model
   {
     $this->personalia->delete('"Presensi".t_hak_akses_presensi', ['noind' => $noind]);
     foreach ($kodesie as $ks) {
-      $sql = "INSERT INTO \"Presensi\".t_hak_akses_presensi (noind, kodesie) VALUES('$noind','$ks')";
+      $sql = "insert into \"Presensi\".t_hak_akses_presensi (noind, kodesie) values('$noind','$ks')";
       $this->personalia->query($sql);
     }
   }
 
   public function deleteAksesPekerja($noind)
   {
-    $sql = "DELETE FROM \"Presensi\".t_hak_akses_presensi WHERE noind = '$noind'";
+    $sql = "delete from \"Presensi\".t_hak_akses_presensi where noind = '$noind'";
     $this->personalia->query($sql);
   }
 }

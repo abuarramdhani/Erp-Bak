@@ -33,7 +33,7 @@ class M_presensiharian extends Ci_Model
 	public function getAksesByUser()
 	{
 		$user = $this->session->user;
-		$sql = "SELECT LEFT(h.kodesie,7) AS kodesie FROM \"Presensi\".t_hak_akses_presensi h WHERE h.noind = '$user'";
+		$sql = "select LEFT(h.kodesie,7) as kodesie from \"Presensi\".t_hak_akses_presensi h where h.noind = '$user'";
 		$result = $this->personalia->query($sql)->result_array();
 
 		$akses = [];
@@ -51,7 +51,7 @@ class M_presensiharian extends Ci_Model
 	public function getNoindAkses()
 	{
 
-		$sql = "SELECT DISTINCT h.noind FROM \"Presensi\".t_hak_akses_presensi h";
+		$sql = "select distinct h.noind from \"Presensi\".t_hak_akses_presensi h";
 		$result = $this->personalia->query($sql)->result_array();
 
 		$noind = [];
@@ -151,7 +151,6 @@ class M_presensiharian extends Ci_Model
 		$result = $this->personalia->query($sql);
 		return $result->result_array();
 	}
-
 	public function getPresensiByNoind($noind, $tgl)
 	{
 		// RIA CAHYANI HARTONO
@@ -263,7 +262,6 @@ class M_presensiharian extends Ci_Model
 		$result = $this->personalia->query($sql);
 		return $result->result_array();
 	}
-
 	public function getShiftByNoind($noind, $tgl)
 	{
 		$tanggal = explode(" - ", $tgl);
