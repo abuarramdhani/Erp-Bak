@@ -24,8 +24,8 @@ class M_HakAksesPresensiHarian extends CI_Model
   public function getAksesUser()
   {
     $sql = 'select distinct h.noind,p.nama,s.seksi,
-        (select count(h.kodesie) FROM "Presensi".t_hak_akses_presensi h WHERE h.noind = p.noind) as jumlah_akses
-        FROM "Presensi".t_hak_akses_presensi h 
+        (select count(h.kodesie) from "Presensi".t_hak_akses_presensi h where h.noind = p.noind) as jumlah_akses
+        from "Presensi".t_hak_akses_presensi h 
         inner join hrd_khs.tpribadi p 
               on h.noind = p.noind
         inner join hrd_khs.tseksi s
@@ -36,7 +36,7 @@ class M_HakAksesPresensiHarian extends CI_Model
 
   public function getDataPekerja($key)
   {
-    $sql = "select p.noind,p.nama,p.keluar,p.sebabklr from hrd_khs.tpribadi p where (p.nama like '$key%' OR p.noind like '$key%') and p.keluar = '0'";
+    $sql = "select p.noind,p.nama,p.keluar,p.sebabklr from hrd_khs.tpribadi p where (p.nama like '$key%' or p.noind like '$key%') and p.keluar = '0'";
     return $this->personalia->query($sql)->result_array();
   }
 
@@ -53,8 +53,8 @@ class M_HakAksesPresensiHarian extends CI_Model
 
   public function getDataSeksi($key)
   {
-    $sql = "select s.kodesie AS kodesie,s.seksi from hrd_khs.tseksi s  
-            where (s.kodesie like '$key%' OR s.seksi like '$key%') and substr(s.kodesie,8,11) = '00'";
+    $sql = "select s.kodesie as kodesie,s.seksi from hrd_khs.tseksi s  
+            where (s.kodesie like '$key%' or s.seksi like '$key%') and substr(s.kodesie,8,11) = '00'";
     return $this->personalia->query($sql)->result_array();
   }
 

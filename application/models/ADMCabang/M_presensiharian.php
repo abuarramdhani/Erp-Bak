@@ -33,7 +33,7 @@ class M_presensiharian extends Ci_Model
 	public function getAksesByUser()
 	{
 		$user = $this->session->user;
-		$sql = "select LEFT(h.kodesie,7) as kodesie from \"Presensi\".t_hak_akses_presensi h where h.noind = '$user'";
+		$sql = "select left(h.kodesie,7) as kodesie from \"Presensi\".t_hak_akses_presensi h where h.noind = '$user'";
 		$result = $this->personalia->query($sql)->result_array();
 
 		$akses = [];
@@ -262,6 +262,7 @@ class M_presensiharian extends Ci_Model
 		$result = $this->personalia->query($sql);
 		return $result->result_array();
 	}
+
 	public function getShiftByNoind($noind, $tgl)
 	{
 		$tanggal = explode(" - ", $tgl);
