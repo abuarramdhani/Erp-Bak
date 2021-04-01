@@ -64,8 +64,8 @@ $(function () {
 			}
 		],
 		"lengthMenu": [
-			[10, 25, 50, 100], 
-			[10, 25, 50, 100]
+			[10, 50, 100, 200, 500, -1], 
+			[10, 50, 100, 200, 500, 'All']
 		],
 		ordering: false,
 		retrieve: true,
@@ -93,8 +93,8 @@ $(function () {
 			},
 		],
 		"lengthMenu": [
-			[10, 25, 50, 100], 
-			[10, 25, 50, 100]
+			[10, 50, 100, 200, 500, -1], 
+			[10, 50, 100, 200, 500, 'All']
 		],
 		ordering: false,
 		retrieve: true,
@@ -740,11 +740,6 @@ $(function () {
 				// call callback function
 				CALLBACK();
 
-				swal.fire({
-					title: `Sukses ${MESSAGE} lembur pekerja`,
-					text: "",
-					type: "success",
-				});
 			} else if (done === ERROR_CODE) {
 				swal
 					.fire({
@@ -791,12 +786,13 @@ $(function () {
 			tmp = "finspot:FingerspotVer;";
 		}
 
-		chk = "";
-		$(".spl-chk-data").each(function () {
-			if (this.checked) {
+		var client_table = $('.spl-table').DataTable();
+		var chk = '';
+		var rows = $( client_table.$('input[type="checkbox"]').each(function () {
+			if ($(this).is(':checked')) {
 				chk += "." + $(this).val();
 			}
-		});
+		}));
 
 		if (chk == "") {
 			$("#example11_wrapper").find("a.btn-primary").addClass("disabled");
@@ -841,6 +837,7 @@ $(function () {
 		console.log("end point email: " + baseurl + email_endpoint);
 
 		function send_email() {
+			fakeLoading(0);
 			$.ajax({
 				method: "post",
 				data: {
@@ -850,6 +847,12 @@ $(function () {
 				},
 				url: baseurl + email_endpoint,
 				success:function (e) {
+					fakeLoading(1);
+					swal.fire({
+						title: `Sukses Reject lembur pekerja`,
+						text: "",
+						type: "success",
+					});
 					$("#spl-approval-1").click();
 					$("#spl-approval-0").click();
 					$("#spl_check_all").iCheck("uncheck");
@@ -862,6 +865,14 @@ $(function () {
 		window.location.href = apiProcess;
 
 		ApprovalLemburListener.setMessage("Reject").setCallback(send_email).init();
+	});
+
+	$(document).ready(function(){
+		// swal.fire({
+		// 	title: `Sukses Approve lembur pekerja`,
+		// 	text: "",
+		// 	type: "success",
+		// });
 	});
 
 	$(document).on("click", "#FingerDialogApprove .spl_finger_proses", function (e) {
@@ -913,6 +924,7 @@ $(function () {
 		console.log("end point email: " + baseurl + email_endpoint);
 
 		function send_email() {
+			fakeLoading(0);
 			$.ajax({
 				type: "post",
 				data: {
@@ -922,6 +934,12 @@ $(function () {
 				},
 				url: baseurl + email_endpoint,
 				success:function(e) {
+					fakeLoading(1);
+					swal.fire({
+						title: `Sukses Approve lembur pekerja`,
+						text: "",
+						type: "success",
+					});
 					$("#spl-approval-1").click();
 					$("#spl-approval-0").click();
 					$("#spl_check_all").iCheck("uncheck");
