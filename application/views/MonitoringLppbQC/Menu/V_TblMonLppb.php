@@ -14,7 +14,7 @@
                 <th><center>OK</center></th>
                 <th class="text-nowrap"><center>NOT OK</center></th>
                 <th><center>Keterangan</center></th>
-                <!-- <th><center>Inspektor</center></th> -->
+                <th class="text-nowrap"><center>Current Location</center></th>
                 <th class="text-nowrap"><center>Tanggal Kirim</center></th>
                 <th class="text-nowrap"><center>Jam Kirim</center></th>
             </tr>
@@ -34,7 +34,7 @@
                 <td><center><?php echo $val['OK']?></center></td>
                 <td><center><?php echo $val['NOT_OK']?></center></td>
                 <td><?php echo $val['KETERANGAN']?></td>
-                <!-- <td><center><?php echo $val['INSPEKTOR']?></center></td> -->
+                <td><center><?php echo $val['LOCATION_CODE']?></center></td>
                 <td><center><?php echo $val['TGL_KIRIM']?></center></td>
                 <td><center><?php echo $val['JAM_KIRIM']?></center></td>
             <?php $no++; } ?>
