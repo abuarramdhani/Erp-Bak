@@ -75,7 +75,7 @@ class C_Finish extends CI_Controller
 
         $this->load->library('pdf');
         $pdf = $this->pdf->load();
-        $pdf = new mPDF('utf-8', array(210, 148), 0, '', 5, 2, 20, 3, 3, 3); //---r,l,t,b
+        $pdf = new mPDF('utf-8', array(210, 154), 0, '', 5, 2, 20, 3, 3, 3); //---r,l,t,b
         $filename = $i . '.pdf';
 
         $html = $this->load->view('AutoInvoice/V_PdfInvoice', $data, true);
