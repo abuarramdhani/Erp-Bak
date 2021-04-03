@@ -40,64 +40,65 @@ $('.select2-tct').select2({
   }
 })
 
-  // Hari Tanggal format Indonesia
-  let tanggalq = new Date();
-  if (tanggalq.getTimezoneOffset() == 0) (a=tanggalq.getTime() + ( 7 *60*60*1000))
-  else (a=tanggalq.getTime());
-  tanggalq.setTime(a);
-  let tahun= tanggalq.getFullYear ();
-  let hari= tanggalq.getDay ();
-  let bulan= tanggalq.getMonth ();
-  let tanggal= tanggalq.getDate ();
-  let hariarray=new Array("Minggu,",
-                          "Senin,",
-                          "Selasa,",
-                          "Rabu,",
-                          "Kamis,",
-                          "Jum'at,",
-                          "Sabtu,");
-  let bulanarray=new Array("Januari",
-                          "Februari",
-                          "Maret",
-                          "April",
-                          "Mei",
-                          "Juni",
-                          "Juli",
-                          "Agustus",
-                          "September",
-                          "Oktober",
-                          "November",
-                          "Desember");
-  // document.getElementById("tanggal_server").innerHTML = hariarray[hari]+" "
-  //                                                       +tanggal+" "
-  //                                                       +bulanarray[bulan]+" "
-  //                                                       +tahun;
-$('#tanggal_server').text(hariarray[hari]+" "+tanggal+" "+bulanarray[bulan]+" "+tahun);
+  if ($('#kondisi-tct').val() == "monitoring transaksi bppct") {
+    // Hari Tanggal format Indonesia    
+    let tanggalq = new Date();
+    if (tanggalq.getTimezoneOffset() == 0) (a=tanggalq.getTime() + ( 7 *60*60*1000))
+    else (a=tanggalq.getTime());
+    tanggalq.setTime(a);
+    let tahun_tct= tanggalq.getFullYear ();
+    let hari_tct= tanggalq.getDay ();
+    let bulan_tct= tanggalq.getMonth ();
+    let tanggal_tct= tanggalq.getDate ();
+    let hariarray_tct=new Array("Minggu,",
+                            "Senin,",
+                            "Selasa,",
+                            "Rabu,",
+                            "Kamis,",
+                            "Jum'at,",
+                            "Sabtu,");
+    let bulanarray_tct=new Array("Januari",
+                            "Februari",
+                            "Maret",
+                            "April",
+                            "Mei",
+                            "Juni",
+                            "Juli",
+                            "Agustus",
+                            "September",
+                            "Oktober",
+                            "November",
+                            "Desember");
+    // document.getElementById("tanggal_server").innerHTML = hariarray[hari]+" "
+    //                                                       +tanggal+" "
+    //                                                       +bulanarray[bulan]+" "
+    //                                                       +tahun;
+  $('#tanggal_server').text(hariarray_tct[hari_tct]+" "+tanggal_tct+" "+bulanarray_tct[bulan_tct]+" "+tahun_tct);
 
-  // Jam Aktif
-  let serverClock = jQuery("#jam_aktif");
-  if (serverClock.length > 0) {
-    showServerTime(serverClock, serverClock.text());
+    // Jam Aktif
+    let serverClock_tct = jQuery("#jam_aktif");
+    if (serverClock_tct.length > 0) {
+      showServerTime(serverClock_tct, serverClock_tct.text());
+    }
   }
-
   function showServerTime(obj, time) {
-    let parts = time.split(":"), newTime = new Date();
+    let parts_tct = time.split(":"), newTime = new Date();
 
-    newTime.setHours(parseInt(parts[0], 10));
-    newTime.setMinutes(parseInt(parts[1], 10));
-    newTime.setSeconds(parseInt(parts[2], 10));
+    newTime.setHours(parseInt(parts_tct[0], 10));
+    newTime.setMinutes(parseInt(parts_tct[1], 10));
+    newTime.setSeconds(parseInt(parts_tct[2], 10));
 
-    let timeDifference = new Date().getTime() - newTime.getTime();
+    let timeDifference_tct = new Date().getTime() - newTime.getTime();
 
-    let methods = {
+    let methods_tct = {
       displayTime: function () {
-        let now = new Date(new Date().getTime() - timeDifference);
+        let now_tct = new Date(new Date().getTime() - timeDifference_tct);
         obj.text([
-          methods.leadZeros(now.getHours(), 2),
-          methods.leadZeros(now.getMinutes(), 2),
-          methods.leadZeros(now.getSeconds(), 2)
+          methods_tct.leadZeros(now_tct.getHours(), 2),
+          methods_tct.leadZeros(now_tct.getMinutes(), 2),
+          methods_tct.leadZeros(now_tct.getSeconds(), 2)
         ].join(":"));
-        setTimeout(methods.displayTime, 500);
+        setTimeout(methods_tct.displayTime, 500);
       },
       leadZeros: function (time, width) {
         while (time.toString().length < width) {
@@ -106,7 +107,7 @@ $('#tanggal_server').text(hariarray[hari]+" "+tanggal+" "+bulanarray[bulan]+" "+
         return time;
       }
     }
-    methods.displayTime();
+    methods_tct.displayTime();
   }
 
   // DateRangePicker format Indonesia

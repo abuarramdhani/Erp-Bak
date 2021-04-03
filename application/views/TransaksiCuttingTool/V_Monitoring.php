@@ -10,6 +10,7 @@
 	              <div class="box-body" style="background:#ffffff !important; border-radius:7px;margin-bottom:10px;">
 									<div class="row" style="margin-top:10px">
 										<div class="col-md-12">
+											<input type="hidden" name="" id="kondisi-tct" value="monitoring transaksi bppct">
 											<div class="alert alert-info alert-dismissible fade in" role="alert">
 												<button type="button" class="close" data-dismiss="alert" aria-label="Close" name="button">
 													<span aria-hidden="true">
