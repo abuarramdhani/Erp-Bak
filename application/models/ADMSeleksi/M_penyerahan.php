@@ -630,4 +630,20 @@ class M_penyerahan extends CI_Model
 		$this->personalia->query($sql);
 		return;
 	}
+
+	public function getLamaPKL($nama, $nik)
+	{
+		$sql = "SELECT
+					*,
+					to_char(to_date(t.tglsurat, 'dd-mm-yyyy'), 'yyyy-mm-dd') as tgll
+				from
+					\"Adm_Seleksi\".tberkas t
+				where
+					nik = '$nik'
+					and nama = '$nama'
+				order by
+					tgll desc
+				limit 1";
+		return $this->personalia->query($sql)->row_array();
+	}
 }

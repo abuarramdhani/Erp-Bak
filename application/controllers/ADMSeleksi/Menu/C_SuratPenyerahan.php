@@ -180,17 +180,35 @@ class C_SuratPenyerahan extends CI_Controller
 
     //Insert into hrd_khs.tpribadi
     $jenis = $this->M_penyerahan->getNoJenisPenyerahan($jenis);
-    if ($jenis == '7' || $jenis == '13') {
-      if ($golongan == 'PKL1') {
-        $masaPKL = '6';
-      } elseif ($golongan == 'PKL2') {
-        $masaPKL = '12';
-      } elseif ($golongan == 'PKL3') {
-        $masaPKL = '36';
-      } else {
-        $masaPKL = '';
+   
+    if ($golongan == 'PKL1') {
+      $masaPKL = '6';
+    } elseif ($golongan == 'PKL2') {
+      $masaPKL = '12';
+    } elseif ($golongan == 'PKL3') {
+      $masaPKL = '36';
+    } else {
+      $masaPKL = '';
+    }
+    if ($jenis == '13') {
+        //kode Q
+      $lamaPKL = $this->M_penyerahan->getLamaPKL($nama, $nik);
+      $rlamaPKL = $lamaPKL['kontrak_os'];
+      if (!empty($rlamaPKL)) {
+        $rlamaPKL = explode(' ', $rlamaPKL)[0];
+        if (is_numeric($rlamaPKL) && $rlamaPKL != '') {
+          $masaPKL = $rlamaPKL;
+        }
       }
-
+      if (!empty($masaPKL)) {
+        $tgl_keluar     = date('Y-m-d', strtotime("+" . $masaPKL . " months", strtotime($tgl_pyrhn)));
+      } else {
+        $tgl_keluar     = date('Y-m-d', strtotime("+1 months", strtotime($tgl_pyrhn)));
+      }
+      $akhir_kontrak  = date('Y-m-d', strtotime("-1 days", strtotime($tgl_keluar)));
+      $tgl_selesai_pkl = date('Y-m-d', strtotime('1900-01-01'));
+      $lama_kontrak = '';
+    } elseif ($jenis == '7') {
       if ($masaPKL) {
         $tgl_keluar     = date('Y-m-d', strtotime("+" . $masaPKL . " months", strtotime($tgl_pyrhn)));
       } else {
@@ -706,7 +724,27 @@ class C_SuratPenyerahan extends CI_Controller
       }
 
       // Insert into hrd_khs.tpribadi
-      if ($jenis == '7' || $jenis == '13') {
+      if ($jenis == '13') {
+        //kode Q
+        $lamaPKL = $this->M_penyerahan->getLamaPKL($nama, $nik);
+        $rlamaPKL = $lamaPKL['kontrak_os'];
+        if (!empty($rlamaPKL)) {
+          $rlamaPKL = explode(' ', $rlamaPKL)[0];
+          if (is_numeric($rlamaPKL) && $rlamaPKL != '') {
+            $masaPKL = $rlamaPKL;
+          }
+        }
+
+        if (!empty($masaPKL) && $masaPKL > 0) {
+          $tgl_keluar     = date('Y-m-d', strtotime("+" . $masaPKL . " months", strtotime($tgl_pyrhn)));
+        } else {
+          $tgl_keluar     = date('Y-m-d', strtotime("+1 months", strtotime($tgl_pyrhn)));
+        }
+
+        $akhir_kontrak  = date('Y-m-d', strtotime("-1 days", strtotime($tgl_keluar)));
+        $tgl_selesai_pkl = date('Y-m-d', strtotime('1900-01-01'));
+        $lama_kontrak = '';
+      } elseif ($jenis == '7') {
         if ($masaPKL) {
           $tgl_keluar     = date('Y-m-d', strtotime("+" . $masaPKL . " months", strtotime($tgl_pyrhn)));
         } else {
