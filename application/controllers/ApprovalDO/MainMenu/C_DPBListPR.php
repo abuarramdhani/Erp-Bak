@@ -169,11 +169,11 @@ class C_DPBListPR extends CI_Controller
 
         if ($returnOnhand[0]['STOCKONHAND'] == 0) {
 
-            $returnLineStatus = $this->M_dpb->checkLineStatus($nomor_do, $kode_gudang);
+            $returnLineStatus = $this->M_dpb->checkLineStatus($nomor_do, $kode_gudang, $org_id);
 
             if ($returnLineStatus[0]['LINESTATUS'] == 0) {
                 for ($i = 0; $i < count($no_do); $i++) {
-                    $this->M_dpb->procedureLockStock($no_do[$i]['nomor_do'], $kode_gudang, $noind);
+                    $this->M_dpb->procedureLockStock($no_do[$i]['nomor_do'], $kode_gudang, $noind, $org_id);
                 }
 
                 $data = [
