@@ -5248,3 +5248,12 @@ $route['AutoInvoice/OnProcess/(:any)']		= 'AutoInvoice/C_Process/$1';
 $route['AutoInvoice/FinishInvoice']				= 'AutoInvoice/C_Finish';
 $route['AutoInvoice/FinishInvoice/(:any)']		= 'AutoInvoice/C_Finish/$1';
 $route['AutoInvoice/FinishInvoice/(:any)/(:any)']		= 'AutoInvoice/C_Finish/$1/$2';
+
+//-------------------------------------------Hak Akses Presensi Harian--------------------------------------------------//
+$route['HakAksesPresensiHarian'] = 'HakAksesPresensiHarian/C_HakAksesPresensiHarian';
+$route['HakAksesPresensiHarian/ajax/showAkses'] = 'HakAksesPresensiHarian/C_HakAksesPresensiHarian/showAkses';
+$route['HakAksesPresensiHarian/ajax/showPekerja'] = 'HakAksesPresensiHarian/C_HakAksesPresensiHarian/showPekerja';
+$route['HakAksesPresensiHarian/ajax/showSeksi'] = 'HakAksesPresensiHarian/C_HakAksesPresensiHarian/showSeksi';
+$route['HakAksesPresensiHarian/ajax/addAkses'] = 'HakAksesPresensiHarian/C_HakAksesPresensiHarian/addAkses';
+$route['HakAksesPresensiHarian/ajax/deleteAkses'] = 'HakAksesPresensiHarian/C_HakAksesPresensiHarian/deleteAkses';
+$route['HakAksesPresensiHarian/ajax/getNoind'] = 'HakAksesPresensiHarian/C_HakAksesPresensiHarian/getNoind';
