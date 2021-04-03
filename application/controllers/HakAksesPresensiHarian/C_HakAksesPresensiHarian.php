@@ -10,7 +10,7 @@ class C_HakAksesPresensiHarian extends CI_Controller
     $this->load->model('SystemAdministration/MainMenu/M_user');
     $this->checkSession();
     $this->load->library('General');
-    $this->load->model('HakAksesPresensiHarian/M_HakAksesPresensiHarian');
+    $this->load->model('HakAksesPresensiHarian/M_hakaksespresensiharian');
   }
 
   public function checkSession()
@@ -38,7 +38,7 @@ class C_HakAksesPresensiHarian extends CI_Controller
     // }
     $data  = $this->general->loadHeaderandSidemenu('Hak Akses Presensi Harian', 'Hak Akses Presensi Harian', 'Hak Akses', '', '');
 
-    $data['akses'] = $this->M_HakAksesPresensiHarian->getAksesUser();
+    $data['akses'] = $this->M_hakaksespresensiharian->getAksesUser();
 
     $this->load->view('V_Header', $data);
     $this->load->view('V_Sidemenu', $data);
@@ -48,26 +48,26 @@ class C_HakAksesPresensiHarian extends CI_Controller
   // Getting Data
   public function getNoind()
   {
-    $data = $this->M_HakAksesPresensiHarian->getNoind();
+    $data = $this->M_hakaksespresensiharian->getNoind();
     echo json_encode($data);
   }
   // Showing Data
   public function showAkses()
   {
     $noind = $_GET['noind'];
-    $data = $this->M_HakAksesPresensiHarian->getHakAkses($noind);
+    $data = $this->M_hakaksespresensiharian->getHakAkses($noind);
     echo json_encode($data);
   }
   public function showPekerja()
   {
     $key = strtoupper($_GET['key']);
-    $data = $this->M_HakAksesPresensiHarian->getDataPekerja($key);
+    $data = $this->M_hakaksespresensiharian->getDataPekerja($key);
     echo json_encode($data);
   }
   public function showSeksi()
   {
     $key = strtoupper($_GET['key']);
-    $data = $this->M_HakAksesPresensiHarian->getDataSeksi($key);
+    $data = $this->M_hakaksespresensiharian->getDataSeksi($key);
     echo json_encode($data);
   }
   // Giving Data
@@ -75,7 +75,7 @@ class C_HakAksesPresensiHarian extends CI_Controller
   {
     $noind = $_POST['noind'];
     $kodesie = json_decode($_POST['kodesie']);
-    $this->M_HakAksesPresensiHarian->addAksesPekerja($noind, $kodesie);
+    $this->M_hakaksespresensiharian->addAksesPekerja($noind, $kodesie);
     echo true;
   }
   // Remove Data
@@ -83,6 +83,6 @@ class C_HakAksesPresensiHarian extends CI_Controller
   {
     $noind = $_POST['noind'];
     var_dump($noind);
-    $this->M_HakAksesPresensiHarian->deleteAksesPekerja($noind);
+    $this->M_hakaksespresensiharian->deleteAksesPekerja($noind);
   }
 }
