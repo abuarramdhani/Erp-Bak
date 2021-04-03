@@ -10,7 +10,7 @@ class C_HakAksesPresensiHarian extends CI_Controller
     $this->load->model('SystemAdministration/MainMenu/M_user');
     $this->checkSession();
     $this->load->library('General');
-    $this->load->model('HakAksesPresensiHarian/M_hakaksespresensiharian');
+    $this->load->model('HakAksesPresensiharian/M_hakaksespresensiharian');
   }
 
   public function checkSession()
