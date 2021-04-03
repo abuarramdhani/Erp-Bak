@@ -39,10 +39,9 @@ $('.select2-tct').select2({
     }
   }
 })
-  console.log($('#kondisi-tct').val());
+
   if ($('#kondisi-tct').val() == "monitoring transaksi bppct") {
-    // Hari Tanggal format Indonesia
-    console.log("Cek");
+    // Hari Tanggal format Indonesia    
     let tanggalq = new Date();
     if (tanggalq.getTimezoneOffset() == 0) (a=tanggalq.getTime() + ( 7 *60*60*1000))
     else (a=tanggalq.getTime());
