@@ -99,12 +99,12 @@
 			if ($customJavascript) {
 				$customJavascript_ = explode(";", $customJavascript);
 				foreach ($customJavascript_ as $key => $value) :
-			?>
+					?>
 					<script src="<?= base_url('assets/js/' . trim($value)) ?>"></script>
 				<?php endforeach ?>
 			<?php
 			} else {
-			?>
+				?>
 				<script src="<?= base_url('assets/js/customFA.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customCM.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customADB.js') ?>"></script>
@@ -256,9 +256,7 @@
 				<script src="<?= base_url('assets/js/customPME.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customOSR.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customMLQ.js') ?>"></script>
-
-
-
+				<script src="<?= base_url('assets/js/customHAPH.js') ?>"></script>
 
 
 				<!-- <script src="<?= base_url('assets/js/customMO.js') ?>"></script> -->
@@ -402,6 +400,9 @@
 						});
 					})
 				})
+			</script>
+			<script>
+				<?= $this->session->flashdata('swal'); ?>
 			</script>
 			</body>
 

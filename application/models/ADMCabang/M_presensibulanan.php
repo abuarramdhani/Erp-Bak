@@ -73,9 +73,39 @@ class M_presensibulanan extends Ci_Model
 		$result = $this->personalia->query($sql);
 		return $result->result_array();
 	}
+	public function getAksesByUser()
+	{
+		$user = $this->session->user;
+		$sql = "select left(h.kodesie,7) as kodesie from \"Presensi\".t_hak_akses_presensi h where h.noind = '$user'";
+		$result = $this->personalia->query($sql)->result_array();
 
+		$akses = [];
+
+		foreach ($result as $key) {
+			array_push($akses, $key['kodesie']);
+		}
+		$akses = implode("','", $akses);
+
+		$ak = "'" . "$akses" . "'";
+
+		return $ak;
+	}
+	public function getNoindAkses()
+	{
+		$sql = "select distinct h.noind from \"Presensi\".t_hak_akses_presensi h";
+		$result = $this->personalia->query($sql)->result_array();
+
+		$noind = [];
+
+		foreach ($result as $key) {
+			array_push($noind, $key['noind']);
+		}
+		return $noind;
+	}
 	public function rekapTIMS($tgl, $kd)
 	{
+		$noind_akses = $this->getNoindAkses();
+		$akses = 		$akses = $this->getAksesByUser();
 		$tanggal = explode(" - ", $tgl);
 		$tgl1 = $tanggal[0];
 		$tgl2 = $tanggal[1];
@@ -83,7 +113,9 @@ class M_presensibulanan extends Ci_Model
 
 		$param = "";
 		// left(pri.kodesie,7) = left('$kodesie',7)
-		if ($noind == 'B0380') { // ada di ticket
+		if (in_array($noind, $noind_akses)) {
+			$param = "left(pri.kodesie,7) in (left('$kd',7),$akses)";
+		} elseif ($noind == 'B0380') { // ada di ticket
 			$param = "(left(pri.kodesie,7) = left('$kd',7) or pri.noind in ('J1171','G1041','L8001'))";
 		} elseif ($noind == 'B0370') { //ada di ticket
 			$param = "(left(pri.kodesie,7) = left('$kd',7) or pri.noind in ('D1535','P0426'))";
