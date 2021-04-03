@@ -4,7 +4,7 @@
 	    <div class="col-lg-12">
 	      <div class="box box-primary box-solid">
 	        <div class="box-header with-border">
-	          <h4 style="font-weight:bold;"><i class="fa fa-newspaper-o"> </i> Monitoring Gudang Customable</h4>
+	          <h4 style="font-weight:bold;"><i class="fa fa-newspaper-o"> </i> Monitoring Gudang Cunsomable</h4>
 	        </div>
 	        <div class="box-body" style="background:#f0f0f0 !important;">
 	              <div class="box-body" style="background:#ffffff !important; border-radius:7px;margin-bottom:15px;">

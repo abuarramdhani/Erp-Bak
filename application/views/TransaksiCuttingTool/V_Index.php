@@ -7,7 +7,7 @@
 					<div class="row">
 						<div class="col-lg-12">
 							<br />
-							<h2 style="text-align: center;"><b >Monitoring Stock Gudang Consumable</b></h2>
+							<h2 style="text-align: center;"><b >Monitoring Transaksi BPPCT</b></h2>
 							<h3 style="text-align: center;"><b ><?= date('d M Y')?></b></h3>
 						</div>
 					</div>
