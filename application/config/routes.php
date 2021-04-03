@@ -5257,3 +5257,10 @@ $route['HakAksesPresensiHarian/ajax/showSeksi'] = 'HakAksesPresensiHarian/C_HakA
 $route['HakAksesPresensiHarian/ajax/addAkses'] = 'HakAksesPresensiHarian/C_HakAksesPresensiHarian/addAkses';
 $route['HakAksesPresensiHarian/ajax/deleteAkses'] = 'HakAksesPresensiHarian/C_HakAksesPresensiHarian/deleteAkses';
 $route['HakAksesPresensiHarian/ajax/getNoind'] = 'HakAksesPresensiHarian/C_HakAksesPresensiHarian/getNoind';
+
+//-------------------------------------------Monitoring Transaksi BPPCT--------------------------------------------------//
+$route['TransaksiCuttingTool'] = 'TransaksiCuttingTool/C_Master';
+
+$route['TransaksiCuttingTool/Monitoring'] = 'TransaksiCuttingTool/C_Master/Monitoring';
+$route['TransaksiCuttingTool/Monitoring/(:any)'] = 'TransaksiCuttingTool/C_Master/$1';
+$route['TransaksiCuttingTool/Monitoring/(:any)/(:any)'] = 'TransaksiCuttingTool/C_Master/$1/$2';
