@@ -1,6 +1,6 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed');
 
-class M_HakAksesPresensiHarian extends CI_Model
+class M_hakaksespresensiharian extends CI_Model
 {
   public function __construct()
   {
