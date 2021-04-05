@@ -2952,7 +2952,9 @@ function checkSubmitEditObservasi() {
     if ($('.input_judul_pembaruan_observasi_tskk').val() == $('#cek_judul_sebelumnya').val()) {
       toastGTSKK('warning', 'Judul Observasi Revisi Tidak Boleh Sama Dengan Observasi Sebelumnya "'+$('#cek_judul_sebelumnya').val()+'"')
     }else {
-      $('#judul').val($('.input_judul_pembaruan_observasi_tskk').val());
+      if ($('.type_save_tskk').val() == 'save_as') {
+        $('#judul').val($('.input_judul_pembaruan_observasi_tskk').val());
+      }
       setTimeout(function () {
         $('#btnHidden').trigger('click');
       }, 100);
