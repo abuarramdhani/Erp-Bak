@@ -211,6 +211,24 @@
     left: 50px;
   }
 
+  .modal {
+  text-align: center;
+  padding: 0!important;
+  overflow-y: auto !important;
+  }
+
+  .modal:before {
+  content: '';
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+  margin-right: -4px;
+  }
+
+  .modal-dialog {
+  display: inline-block;
+  text-align: left;
+  vertical-align: middle;
   }
 </style>
 
@@ -236,7 +254,7 @@
   $sang_pembuat = explode(' - ', $sang_pembuat);
   $sang_pembuat = $sang_pembuat[0];
 } ?>
-  <form id='Observasi' method="POST" action="<?php echo base_url('GeneratorTSKK/resaveEditObservation/'.$id); ?>">
+  <form id='Observasi' method="POST" action="">
     <div class="inner">
       <div class="row">
         <div class="col-lg-12">
@@ -245,7 +263,8 @@
               <div class="col-lg-11">
                 <div class="text-center">
                   <h1><b>EDIT LEMBAR OBSERVASI</b></h1>
-
+                  <input type="hidden" id="replace_tskk" value="<?php echo base_url('GeneratorTSKK/resaveEditObservation/'.$id); ?>">
+                  <input type="hidden" id="save_rev" value="<?php echo base_url('GeneratorTSKK/saveObservation/'); ?>">
                 </div>
               </div>
             </div>
@@ -323,6 +342,7 @@
                   <?php } } ?>
                   <!--Judul TSKK :-->
                   <label style="margin-left:4%;" for="norm">Judul: </label>
+                  <input type="hidden" id="cek_judul_sebelumnya" value="<?php echo $judul ?>">
                   <input type="text" style="width:50%; height:34px;  margin-left:2%; text-align:center;" value="<?php echo $judul ?>" placeholder="Input Judul TSKK" name="txtTitle" id="judul" class="lockscreen-credentials judul" required />
                   <label for="norm" style="margin-left:5%; margin-right:-4%;">Tanggal Observasi:</label>
                   <input type="text" style="width:17%; height:34px; text-align:center;" value="<?php echo $tanggal ?>" placeholder="Input Tanggal" name="txtTanggal" id="txtTanggal" class="lockscreen-credentials txtTanggal" required />
@@ -966,6 +986,7 @@
                             <br><br>
                           </div>
   </div>
+    <br>
     <div class="panel panel-default">
       <div class="panel-heading text-left">
         <label style="margin-left: 2%;">Input Irregular Job</label>
@@ -1052,6 +1073,41 @@
   <button type="button" onclick="addRowObservationEdit($(this))" id="myBtn" class="fa fa-plus fa-lg"
     style="display: none;  position: fixed;  bottom: 45px;  right: 30px;  z-index: 99;  font-size: 30px  text-center;  border: none; outline: none; background-color: green; color: white; cursor: pointer; width:35px; height:35px; border-radius: 50%;"
     title="Tambah Elemen"></button>
+
+
+   <div class="modal fade" id="modalgtskk_edit_observasi" role="dialog">
+       <div class="modal-dialog modal-md" style="width:60%">
+         <!-- Modal content-->
+         <div class="modal-content" style="border-radius:9px;">
+           <div class="modal-header">
+             <button type="button" class="close" data-dismiss="modal">&times;</button>
+             <!-- <h3 class="modal-title"></h3> -->
+           </div>
+           <div class="modal-body">
+              <div class="panel">
+                <div class="panel-body">
+                  <div class="form-group">
+                    <label for="">Simpan Pembaruan Sebagai</label>
+                    <select class="select2 type_save_tskk" style="width:100%">
+                      <option value="">Pilih...</option>
+                      <option value="save_as">Observasi Revisi</option>
+                      <option value="replace">Hanya Edit</option>
+                    </select>
+                  </div>
+                  <div class="form-group judul_pembaruan_observasi_tskk" style="display:none">
+                    <label for="">Judul Observasi Setelah Revisi</label>
+                    <input type="text" class="form-control input_judul_pembaruan_observasi_tskk" name="" value="">
+                  </div>
+                  <center>
+                    <button type="button" name="button" onclick="checkSubmitEditObservasi()" class="btn btn-primary"><i class="fa fa-save"></i> SIMPAN</button>
+                  </center>
+                </div>
+              </div>
+           </div>
+         </div>
+
+       </div>
+   </div>
 
   <script>
     // When the user scrolls down 20px from the top of the document, show the button
