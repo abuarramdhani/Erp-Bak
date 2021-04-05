@@ -11,7 +11,6 @@ class C_Index extends CI_Controller {
         $this->load->helper('html');
 		$this->load->library('session');
 		$this->load->model('M_index');
-		// $this->load->model('WarehouseMPO/M_outpart');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		  
 		if($this->session->userdata('logged_in')!=TRUE) {
@@ -42,8 +41,6 @@ class C_Index extends CI_Controller {
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		// $data['show'] = $this->M_outpart->getAllIn();
-		
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('PeriodicalMaintenance/V_Index',$data);

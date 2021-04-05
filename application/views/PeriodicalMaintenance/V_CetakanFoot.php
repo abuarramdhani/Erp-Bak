@@ -103,15 +103,15 @@
 		<td colspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px; border-bottom: 1px solid black">Opt Maintenance</td>
 	</tr>
 	<tr>
-		<td colspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px">&nbsp;&nbsp;<br>&nbsp;&nbsp;<br>&nbsp;&nbsp;<br>&nbsp;&nbsp;</td>
-		<td colspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;border-right: 2px solid black"><br></td>
-		<td colspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;border-right: 2px solid black"><br></td>
+		<td colspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><br><h3><i><b> DISETUJUI </b></i></h3><br><?= $datapdf['0']['APPROVED_DATE_2'] ?></td>
+		<td colspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;border-right: 2px solid black"><br><h3><i><b> DICEK </b></i></h3><br><?= $datapdf['0']['APPROVED_DATE'] ?></td>
+		<td colspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;border-right: 2px solid black"><br><h3><i><b> DILAPORKAN </b></i></h3><br><?= $datapdf['0']['CREATION_DATE'] ?></td>
 
 	</tr>
 	<tr>
-		<td colspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><br></td>
-		<td colspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;border-right: 2px solid black"><br></td>
-		<td colspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;border-right: 2px solid black"><br></td>
+		<td colspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?= $datapdf['0']['APPROVED_BY_2'] ?></td>
+		<td colspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;border-right: 2px solid black"><?= $datapdf['0']['APPROVED_BY'] ?></td>
+		<td colspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;border-right: 2px solid black"><?= $datapdf['0']['REQUEST_BY'] ?></td>
 
 	</tr>
 </table>

@@ -1,13 +1,20 @@
 var i = 1;
 function addRowPeriodicalMaintenance() {
-  var namaMesin = $("#mesinPME").val();
+  var noDoc = $("#no_dokumen").val();
+  var noRev = $("#no_revisi").val();
+  var revDate = $("#tgl_revisi").val();
+
+  var namaMesin = $("#machineMPA").val();
   var kondisiMesin = $("#kondisi_mesin").val();
   var header = $("#header").val();
   var uraianKerja = $("#uraian_kerja").val();
   var standar = $("#standar").val();
-  var periode = $("#periode").val();
+  var periode = $("#periodeMPA").val();
 
   if (
+    noDoc === null ||
+    noRev === null ||
+    revDate === null ||
     namaMesin === null ||
     kondisiMesin === null ||
     uraianKerja === null ||
@@ -17,7 +24,10 @@ function addRowPeriodicalMaintenance() {
     swal.fire("Alert", "Isi data dengan lengkap", "error");
   } else {
     $("#tbodyPeriodicalMaintenance").append(
-      '<tr class="clone"><td><input type="text" name="nama_mesin[]" value="' +
+      '<tr class="clone"><td> <input type="hidden" name="no_dokumen[]" value="'+
+      noDoc +'"> <input type="hidden" name="no_revisi[]" value="'+
+      noRev +'"> <input type="hidden" name="tgl_revisi[]" value="'+
+      revDate +'"> <input type="text" name="nama_mesin[]" value="' +
         namaMesin +
         '" readonly class="form-control"></td><td><input type="text" name="kondisi_mesin[]" value="' +
         kondisiMesin +
@@ -47,20 +57,20 @@ $("#btnResetPME").click(function() {
   $(".select2")
     .val("")
     .trigger("change");
-  $("#lokasiPME").val("");
-  $("#lantaiPME").val("");
-  $("#areaPME").val("");
-  $("#mesinPME").val("");
+  $("#no_dokumen").val("");
+  $("#no_revisi").val("");
+  $("#tgl_revisi").val("");
+  $("#machineMPA").val("");
   $("#kondisi_mesin").val("");
   $("#header").val("");
   $("#uraian_kerja").val("");
   $("#standar").val("");
   $("#periode").val("");
 
-  $("#lokasiPME").removeAttr("disabled");
-  $("#lantaiPME").prop("disabled", true);
-  $("#areaPME").prop("disabled", true);
-  $("#mesinPME").prop("disabled", true);
+  $("#no_dokumen").removeAttr("disabled");
+  $("#no_revisi").removeAttr("disabled");
+  $("#tgl_revisi").removeAttr("disabled");
+  $("#machineMPA").removeAttr("disabled");
 
   return false; 
 });
@@ -235,119 +245,13 @@ function deleteRowPME(id) {
   });
 }
 
-//
-
-$("#lokasiPME").change(function() {
+$("#machineMPA").change(function() {
   var value = $(this).val();
   console.log(value);
-  $("#lantaiPME").select2("val", null);
-  $("#lantaiPME").prop("disabled", true);
-  // $("#loadingLokasi").show();
-  if ($("#lokasiPME").val() !== "" && $("#lokasiPME").val() !== null) {
-    $("#loadingLokasi").html(
-      '<center><img style="width:50px; height:auto" src="' +
-        baseurl +
-        'assets/img/gif/loading5.gif"></center>'
-    );
-  }
-  
-  $.ajax({
-    type: "POST",
-    data: { lokasi: value },
-    url: baseurl + "PeriodicalMaintenance/Input/getLantai",
-    success: function(result) {
-      if (result != "<option></option>") {
-        // $("#lantaiPME").removeAttr('disabled').html(result);
-        // $("#loadingLokasi").hide();
-        $("#loadingLokasi").html("");
-        $("#lantaiPME")
-          .prop("disabled", false)
-          .html(result);
-      } else {
-      }
-    }
-  });
-});
-
-$("#lantaiPME").change(function() {
-  var lokasi = $("#lokasiPME").val();
-  var value = $(this).val();
-  console.log(value);
-  $("#areaPME").select2("val", null);
-  $("#areaPME").prop("disabled", true);
-  // $("#loadingLantai").show();
-  if ($("#lantaiPME").val() !== "" && $("#lantaiPME").val() !== null) {
-    $("#loadingLantai").html(
-      '<center><img style="width:50px; height:auto" src="' +
-        baseurl +
-        'assets/img/gif/loading5.gif"></center>'
-    );
-  }
-  
-  $.ajax({
-    type: "POST",
-    data: {
-      lokasi: lokasi,
-      lantai: value
-    },
-    url: baseurl + "PeriodicalMaintenance/Input/getArea",
-    success: function(result) {
-      if (result != "<option></option>") {
-        // $("#loadingLantai").hide();
-        $("#loadingLantai").html("");
-        $("#areaPME")
-          .prop("disabled", false)
-          .html(result);
-      } else {
-      }
-    }
-  });
-});
-
-$("#areaPME").change(function() {
-  var lokasi = $("#lokasiPME").val();
-  var lantai = $("#lantaiPME").val();
-  var value = $(this).val();
-  console.log(value);
-  $("#mesinPME").select2("val", null);
-  $("#mesinPME").prop("disabled", true);
-  // $("#loadingAreaPME").show();
-  if ($("#areaPME").val() !== "" && $("#areaPME").val() !== null) {
-    $("#loadingAreaPME").html(
-      '<center><img style="width:50px; height:auto" src="' +
-        baseurl +
-        'assets/img/gif/loading5.gif"></center>'
-    );
-  }
-  $.ajax({
-    type: "POST",
-    data: {
-      lokasi: lokasi,
-      lantai: lantai,
-      area: value
-    },
-    url: baseurl + "PeriodicalMaintenance/Input/getMesin",
-    success: function(result) {
-      if (result != "<option></option>") {
-        // $("#loadingAreaPME").hide();
-        $("#loadingAreaPME").html("");
-        $("#mesinPME")
-          .prop("disabled", false)
-          .html(result);
-      } else {
-      }
-    }
-  });
-});
-
-$("#mesinPME").change(function() {
-  var value = $(this).val();
-  console.log(value);
-  if ($("#mesinPME").val() !== null) {
-    $("#lokasiPME").prop("disabled", true);
-    $("#lantaiPME").prop("disabled", true);
-    $("#areaPME").prop("disabled", true);
-    $("#mesinPME").prop("disabled", true);
+  if ($("#machineMPA").val() !== null) {
+    $("#no_dokumen").prop("disabled", true);
+    $("#no_revisi").prop("disabled", true);
+    $("#tgl_revisi").prop("disabled", true);
   }
 
   var request = $.ajax({
@@ -368,16 +272,13 @@ $("#mesinPME").change(function() {
 
 function getCetak(th) {
   $(document).ready(function() {
-    var tanggal = $("#tglCek").val();
-    var mesin = $('select[name="list_mesin"]').val();
+    var nodoc = $('select[name="nodocMPA"]').val();
 
     console.log(mesin);
-
     var request = $.ajax({
       url: baseurl + "PeriodicalMaintenance/Monitoring/printForm",
       data: {
-        tanggal: tanggal,
-        mesin: mesin
+        nodoc : nodoc
       },
       type: "POST",
       datatype: "html"
@@ -385,50 +286,16 @@ function getCetak(th) {
   });
 }
 
-$("#tglCek").change(function() {
-  var value = $(this).val();
-  console.log(value);
-  $("#mesinMon").prop("disabled", true);
-  if ($("#tglCek").val() !== "" && $("#tglCek").val() !== null) {
-    $("#loadingTanggalPME").html(
-      '<center><img style="width:100%; height:auto" src="' +
-        baseurl +
-        'assets/img/gif/loading5.gif"></center>'
-    );
-  }
-
-  $.ajax({
-    type: "POST",
-    data: { date: value },
-    url: baseurl + "PeriodicalMaintenance/Monitoring/getMesinByDate",
-    success: function(result) {
-      if (result != "<option></option>") {
-        // $("#lantaiPME").removeAttr('disabled').html(result);
-        $("#loadingTanggalPME").html("");
-        $("#mesinMon")
-          .prop("disabled", false)
-          .html(result);
-      } else {
-        $("#loadingTanggalPME").html("");
-        swal.fire("404", "Data pengecekan untuk tanggal ini tidak tersedia!", "error");
-      }
-    }
-  });
-});
-
 function getPMEMon(th) {
   $(document).ready(function() {
-    // var tanggal = $('input[name="tglCek"]').val();
-    var tanggal = $("#tglCek").val();
-    var mesin = $('select[name="mesinMon"]').val();
+    var nodoc = $('select[name="nodocMPA"]').val();
 
-    console.log(tanggal, mesin);
+    console.log(nodoc);
 
     var request = $.ajax({
       url: baseurl + "PeriodicalMaintenance/Monitoring/searchMon",
       data: {
-        tanggal: tanggal,
-        mesin: mesin
+        nodoc : nodoc
       },
       type: "POST",
       datatype: "html"
@@ -441,7 +308,6 @@ function getPMEMon(th) {
     );
 
     request.done(function(result) {
-      // console.log("sukses2");
       $("#ResultPMEMon").html(result);
 
       $("#tablePMEMon").DataTable({
@@ -463,16 +329,14 @@ function getDetailPMEMon(th, no) {
 
 function editRowPMEMon(id) {
   // console.log(id);
-  var tanggal = $("#tglCek").val();
-  var mesin = $('select[name="mesinMon"]').val();
+  var nodoc = $('select[name="nodocMPA"]').val();
 
-  console.log(tanggal, mesin, id);
+  console.log(nodoc);
 
   var request = $.ajax({
     url: baseurl + "PeriodicalMaintenance/Monitoring/editSubMonitoring",
     data: {
-      tanggal: tanggal,
-      mesin: mesin,
+      nodoc: nodoc,
       id: id
     },
     type: "POST",
@@ -493,7 +357,7 @@ function editRowPMEMon(id) {
       var catatan = $("#catatanEditMon").val();
 
       var id = $("#idRowEditMon").val();
-      console.log(subHeader, standar, periode, durasi, kondisi, catatan, id, tanggal, mesin);
+      console.log(subHeader, standar, periode, durasi, kondisi, catatan, id, nodoc);
       var request = $.ajax({
         url: baseurl + "PeriodicalMaintenance/Monitoring/updateSubMonitoring",
         data: {
@@ -504,8 +368,7 @@ function editRowPMEMon(id) {
           kondisi: kondisi,
           catatan: catatan,
           id: id,
-          tanggal :tanggal,
-          mesin : mesin
+          nodoc : nodoc
         },
         type: "POST",
         datatype: "html"
@@ -519,12 +382,10 @@ function editRowPMEMon(id) {
           showConfirmButton: false,
           timer: 1500
         }).then(() => {
-          // var mesin = $('select[name="mesinMon"]').val();
           var request = $.ajax({
             url: baseurl + "PeriodicalMaintenance/Monitoring/searchMon",
             data: {
-              mesin: mesin,
-              tanggal : tanggal
+              nodoc: nodoc
             },
             type: "POST",
             beforeSend: function() {
@@ -544,7 +405,6 @@ function editRowPMEMon(id) {
   });
 }
 
-
 function deleteRowPMEMon(id) {
   Swal.fire({
     title: "Apa Anda Yakin?",
@@ -556,15 +416,13 @@ function deleteRowPMEMon(id) {
     confirmButtonText: "Ya",
     cancelButtonText: "Tidak"
   }).then(result => {
-    var tanggal = $("#tglCek").val();
-    var mesin = $('select[name="mesinMon"]').val();
+    var nodoc = $('select[name="nodocMPA"]').val();
     if (result.value) {
       var request = $.ajax({
         url: baseurl + "PeriodicalMaintenance/Monitoring/deleteSubMonitoring",
         data: {
           id: id,
-          tanggal : tanggal, 
-          mesin : mesin
+          nodoc : nodoc
         },
         type: "POST",
         datatype: "html"
@@ -577,13 +435,12 @@ function deleteRowPMEMon(id) {
           showConfirmButton: false,
           timer: 1500
         }).then(() => {
-          var tanggal = $("#tglCek").val();
-          var mesin = $('select[name="mesinMon"]').val();
+          var nodoc = $('select[name="nodocMPA"]').val();
+
           var request = $.ajax({
             url: baseurl + "PeriodicalMaintenance/Monitoring/searchMon",
             data: {
-              mesin: mesin,
-              tanggal : tanggal
+              nodoc : nodoc
             },
             type: "POST",
             beforeSend: function() {
@@ -601,4 +458,74 @@ function deleteRowPMEMon(id) {
       });
     }
   });
+}
+
+function approveMPA(nodoc, id) {
+
+  console.log(nodoc, id);
+
+  if(id === "tblStaffMtn")
+  {
+      $("#modalApprovalMPA").modal("show");
+  
+      $(".btn-approve-mpa").on("click", function() {
+        var req2 = $("#reqSeksiysb").val();
+  
+        console.log(req2);
+        var request = $.ajax({
+          url: baseurl + "PeriodicalMaintenance/Approval/updateApproval1",
+          data: {
+            req2: req2,
+            nodoc : nodoc
+          },
+          type: "POST",
+          datatype: "html"
+        });
+        request.done(function() {
+          $("#modalApprovalMPA").modal("hide");
+          Swal.fire({
+            position: "top",
+            type: "success",
+            title: "Berhasil Approve Staff Maintenance!",
+            showConfirmButton: false,
+            timer: 1500
+          }).then(() => {
+            window.location.reload();
+          });
+        });
+      });
+  } else if(id === "tblSeksiTerkait"){
+    Swal.fire({
+      title: "Apa Anda Yakin?",
+      text: "Akan Melakukan Approve?",
+      type: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#00a65a",
+      cancelButtonColor: "#d73925",
+      confirmButtonText: "Ya",
+      cancelButtonText: "Tidak"
+    }).then(result => {
+      if (result.value) {
+        var request = $.ajax({
+          url: baseurl + "PeriodicalMaintenance/Approval/updateApproval2",
+          data: {
+            nodoc : nodoc
+          },
+          type: "POST",
+          datatype: "html"
+        });
+        request.done(function(result) {
+          Swal.fire({
+            position: "top",
+            type: "success",
+            title: "Berhasil Approve Seksi Terkait!",
+            showConfirmButton: false,
+            timer: 1500
+          }).then(() => {
+            window.location.reload();
+          });
+        });
+      }
+    });
+  }
 }

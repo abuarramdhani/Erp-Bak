@@ -42,15 +42,10 @@ class C_Input extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
-		$data['lokasi'] = $this->M_input->getLokasi();
-
-		// echo"<pre>";
-		// print_r($data['lokasi']);
-		// exit();
+		$data['mesin'] = $this->M_input->getMachine();
 
 		$this->load->view('V_Header', $data);
 		$this->load->view('V_Sidemenu', $data);
-		// $this->load->view('PeriodicalMaintenance/V_InputBackup', $data);
 		$this->load->view('PeriodicalMaintenance/V_Input', $data);
 		$this->load->view('V_Footer', $data);
 	}
@@ -76,12 +71,13 @@ class C_Input extends CI_Controller
 			}
 		} else {
 		}
-		// $this->load->view('PeriodicalMaintenance/V_Input',$data['previous']);
-
 	}
 
 	public function Insert()
 	{
+		$doc_no = $this->input->post('no_dokumen');
+		$rev_no 	= $this->input->post('no_revisi');
+		$rev_date	= $this->input->post('tgl_revisi');
 		$nama_mesin = $this->input->post('nama_mesin');
 		$kondisi_mesin 	= $this->input->post('kondisi_mesin');
 		$header	= $this->input->post('header');
@@ -95,48 +91,11 @@ class C_Input extends CI_Controller
 
 		$i = 0;
 		foreach ($uraian_kerja as $uja) {
-			$this->M_input->Insert($nama_mesin[$i], $kondisi_mesin[$i], $header[$i], $uja, $standar[$i], $periode[$i]);
+			$this->M_input->Insert($doc_no[$i], $rev_no[$i], $rev_date[$i],$nama_mesin[$i], $kondisi_mesin[$i], $header[$i], $uja, $standar[$i], $periode[$i]);
 
 			$i++;
 		}
 
 		redirect(base_url('PeriodicalMaintenance/Input/'));
-	}
-
-	public function getLantai()
-	{
-		$term	= $this->input->post('lokasi');
-		$lantai = $this->M_input->getLantai($term);
-
-		echo '<option></option>';
-		foreach ($lantai as $floor) {
-			echo '<option value="' . $floor['LANTAI'] . '">' . $floor['LANTAI'] . '</option>';
-		}
-	}
-
-	public function getArea()
-	{
-		$lokasi	= $this->input->post('lokasi');
-		$lantai	= $this->input->post('lantai');
-		$area = $this->M_input->getArea($lokasi, $lantai);
-
-		echo '<option></option>';
-		foreach ($area as $a) {
-			echo '<option value="' . $a['AREA'] . '">' . $a['AREA'] . '</option>';
-		}
-	}
-
-	public function getMesin()
-	{
-		$lokasi	= $this->input->post('lokasi');
-		$lantai	= $this->input->post('lantai');
-		$area	= $this->input->post('area');
-
-		$mesin = $this->M_input->getMesin($lokasi, $lantai, $area);
-
-		echo '<option></option>';
-		foreach ($mesin as $m) {
-			echo '<option value="' . $m['MESIN'] . '">' . $m['MESIN'] . '</option>';
-		}
 	}
 }

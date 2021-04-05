@@ -10,40 +10,38 @@ class M_monitoring extends CI_Model
     $this->oracle = $this->load->database('oracle_dev', TRUE);
   }
 
+  public function getNoDocMPA()
+  {
+
+    $sql = "SELECT DISTINCT kcm.DOCUMENT_NUMBER, KCM.NAMA_MESIN 
+    FROM KHS_CEK_MESIN kcm
+    ORDER BY 1";
+
+    $query = $this->oracle->query($sql);
+    return $query->result_array();
+  }
+
   function getMesinFromDate($tanggal)
   {
-    $oracle = $this->load->database('oracle', TRUE);
-    // $sql = " SELECT DISTINCT kcm.NAMA_MESIN 
-    // ,TO_CHAR(kcm.ACTUAL_DATE ,'YYYY-MM-DD') ACTUAL_DATE 
-    // FROM KHS_CEK_MESIN kcm
-    // WHERE TO_CHAR(kcm.ACTUAL_DATE ,'YYYY-MM-DD') =  '$tanggal'";
     $sql = " SELECT DISTINCT kcm.NAMA_MESIN 
     ,TO_CHAR(kcm.ACTUAL_DATE ,'dd-mm-yyyy') ACTUAL_DATE 
     FROM KHS_CEK_MESIN kcm
     WHERE TO_CHAR(kcm.ACTUAL_DATE ,'dd-mm-yyyy') =  '$tanggal'";
     $query = $this->oracle->query($sql);
     return $query->result_array();
-        // echo $sql;
-        // exit();
-
   }
 
-
-  public function getHeaderMon($tanggal, $mesin)
+  public function getHeaderMon($nodoc)
   {
-    // $oracle = $this->load->database('oracle', true);
     $sql = " SELECT DISTINCT kcm.NAMA_MESIN, kcm.KONDISI_MESIN, kcm.HEADER_MESIN 
     FROM KHS_CEK_MESIN kcm
-    WHERE TO_CHAR(kcm.ACTUAL_DATE ,'DD-MM-YYYY') =  '$tanggal'
-    AND kcm.NAMA_MESIN = '$mesin'";
+    WHERE kcm.DOCUMENT_NUMBER = '$nodoc'";
     $query = $this->oracle->query($sql);
     return $query->result_array();
-    // echo $sql; exit();
   }
 
-  public function getDetailMon($tanggal, $mesin, $kondisi, $header)
+  public function getDetailMon($nodoc, $mesin, $kondisi, $header)
   {
-    // $oracle = $this->load->database('oracle', true);
     if (strlen($header) == 0) {
       $coba = "AND kcm.HEADER_MESIN IS NULL";
     } else {
@@ -51,122 +49,91 @@ class M_monitoring extends CI_Model
     }
     $sql = "SELECT kcm.SUB_HEADER, kcm.STANDAR, kcm.PERIODE_CHECK, kcm.DURASI, kcm.KONDISI, kcm.CATATAN 
     FROM KHS_CEK_MESIN kcm 
-    WHERE TO_CHAR(kcm.ACTUAL_DATE ,'DD-MM-YYYY') =  '$tanggal'
+    WHERE kcm.DOCUMENT_NUMBER = '$nodoc'
     AND kcm.NAMA_MESIN = '$mesin' 
     AND kcm.KONDISI_MESIN = '$kondisi' 
     $coba";
     $query = $this->oracle->query($sql);
     return $query->result_array();
-    // echo $sql; exit();
   }
-
-  // public function selectDataToEdit($id)
-  // {
-  //   $sql = "SELECT *
-  //   FROM khs_periodical_maintenance kpm 
-  //   WHERE kpm.SUB_HEADER = '$id'";
-
-  //   $query = $this->oracle->query($sql);
-  //   return $query->result_array();
-  // }
-
-  // public function updateSubManagement($id, $subHeader, $standar, $periode)
-  // {
-  //   $sql = "UPDATE khs_periodical_maintenance
-  //   SET SUB_HEADER = '$subHeader', STANDAR = '$standar', PERIODE = '$periode'
-  //   WHERE SUB_HEADER = '$id'";
-
-  //   $query = $this->oracle->query($sql);
-  //   return $query;
-  // }
-
-  // public function deleteSubManagement($id)
-  // {
-  //   $sql = "DELETE FROM khs_periodical_maintenance WHERE SUB_HEADER = '$id'";
-
-  //   $query = $this->oracle->query($sql);
-  //   return $query;
-  // }
 
   /////////////////////////////////////////////////////////////////////////////
 
-  public function getDataMon($tanggal, $mesin)
+  public function getDataMon($nodoc)
   {
     $sql = "SELECT *
       FROM KHS_CEK_MESIN kcm 
-      WHERE TO_CHAR(kcm.ACTUAL_DATE ,'DD-MM-YYYY') =  '$tanggal'
-      AND kcm.NAMA_MESIN = '$mesin' 
-      order by kcm.KONDISI_MESIN DESC, kcm.ID_MESIN, kcm.HEADER_MESIN ";
+      WHERE kcm.DOCUMENT_NUMBER = '$nodoc'
+      order by kcm.KONDISI_MESIN DESC, kcm.ID_MESIN, kcm.HEADER_MESIN";
     $query = $this->oracle->query($sql);
     return $query->result_array();
-    // return $sql;
   }
 
-  public function getDataSparepart($tanggal, $mesin)
+  public function getDataSparepart($nodoc)
   {
     $sql = "SELECT DISTINCT kdsm.SPAREPART, kdsm.SPESIFIKASI, kdsm.JUMLAH, kdsm.SATUAN 
     FROM KHS_DAFTAR_SPAREPART_MPA kdsm, KHS_CEK_MESIN kcm
-    WHERE kdsm.NAMA_MESIN = '$mesin'
-    AND TO_CHAR(kdsm.ACTUAL_DATE ,'DD-MM-YYYY') =  '$tanggal'
+    WHERE kdsm.DOCUMENT_NUMBER = '$nodoc'
     AND kdsm.NAMA_MESIN = kcm.NAMA_MESIN 
     AND kdsm.ACTUAL_DATE = kcm.ACTUAL_DATE ";
     $query = $this->oracle->query($sql);
     return $query->result_array();
-    // return $sql;
+  }
+
+  public function getDataHeader($nodoc)
+  {
+    $sql = "SELECT DISTINCT kpm.NO_DOKUMEN, kpm.NO_REVISI, kpm.TANGGAL_REVISI
+    FROM KHS_PERIODICAL_MAINTENANCE kpm, KHS_CEK_MESIN kcm
+    WHERE kcm.DOCUMENT_NUMBER = '$nodoc'
+    AND kpm.NAMA_MESIN = kcm.NAMA_MESIN ";
+    $query = $this->oracle->query($sql);
+    return $query->result_array();
   }
 
 
-  public function getSumDurasi($tanggal, $mesin)
+  public function getSumDurasi($nodoc)
   {
     $sql = "SELECT SUM(kcm.DURASI) TOTAL_DURASI
       FROM KHS_CEK_MESIN kcm 
-      WHERE TO_CHAR(kcm.ACTUAL_DATE ,'DD-MM-YYYY') =  '$tanggal'
-      AND kcm.NAMA_MESIN = '$mesin' 
+      WHERE kcm.DOCUMENT_NUMBER = '$nodoc'
       order by kcm.KONDISI_MESIN DESC, kcm.ID_MESIN, kcm.HEADER_MESIN ";
     $query = $this->oracle->query($sql);
     return $query->result_array();
-    // return $sql;
   }
 
-  public function selectDataEditMon($tanggal, $mesin, $id)
+  public function selectDataEditMon($nodoc, $id)
   {
     $sql = "SELECT *
     FROM KHS_CEK_MESIN kcm 
-    WHERE TO_CHAR(kcm.ACTUAL_DATE ,'DD-MM-YYYY') =  '$tanggal'
-    AND kcm.NAMA_MESIN = '$mesin' 
+    WHERE kcm.DOCUMENT_NUMBER = '$nodoc'
     and kcm.SUB_HEADER = '$id'
     order by kcm.KONDISI_MESIN DESC, kcm.ID_MESIN, kcm.HEADER_MESIN";
 
     $query = $this->oracle->query($sql);
     return $query->result_array();
-    // echo $sql; exit();
-
   }
 
-  public function updateSubMonitoring($tgl, $mesin, $id, $subHeader, $standar, $periode, $durasi, $kondisi, $catatan)
+  public function updateSubMonitoring($nodoc, $id, $subHeader, $standar, $periode, $durasi, $kondisi, $catatan)
   {
     $sql = "UPDATE khs_cek_mesin
             SET DURASI = '$durasi', 
             KONDISI = '$kondisi',
             CATATAN = '$catatan'
-            WHERE NAMA_MESIN = '$mesin'
-            AND TO_CHAR(ACTUAL_DATE ,'DD-MM-YYYY') = '$tgl'
+            WHERE kcm.DOCUMENT_NUMBER = '$nodoc'
             AND SUB_HEADER = '$id'";
 
     $query = $this->oracle->query($sql);
     return $query;
   }
 
-  public function deleteSubMonitoring($id, $tanggal,$mesin)
+  public function deleteSubMonitoring($id, $nodoc)
   {
     $sql = "DELETE FROM khs_cek_mesin
-    WHERE NAMA_MESIN = '$mesin'
-    AND TO_CHAR(ACTUAL_DATE ,'DD-MM-YYYY') = '$tanggal'
+    WHERE kcm.DOCUMENT_NUMBER = '$nodoc'
     AND SUB_HEADER = '$id'";
 
     $query = $this->oracle->query($sql);
     return $query;
   }
-
 
 }
