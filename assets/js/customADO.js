@@ -715,6 +715,12 @@ $(() => {
       if (resp == 207) {
         var gudang = $(".slcADOGudangPengirim").val();
         if (gudang != "JAKARTA") {
+          Swal.fire({
+            position: "top",
+            type: "error",
+            title: "Gudang Pengirim Salah !",
+            showConfirmButton: true,
+          });
         } else {
           let data = {
             header: {
@@ -773,6 +779,63 @@ $(() => {
                 }
               );
             }
+          }
+        }
+      } else {
+        let data = {
+          header: {
+            vehicleCategory: $(".txtADOVehicleCategory").val(),
+            vehicleId: $(".txtADOVehicleIdentity").val(),
+            driverName: $(".txtADODriverName").val(),
+            driverPhone: $(".txtADOExpeditionVendor").val(),
+            alamatBongkar: $(".txtADOAlamatBongkar").val(),
+            gudangPengirim: $(".slcADOGudangPengirim").val(),
+            catatan: $(".txtADOCatatan").val(),
+            org_id: $("#org_id_nya").val(),
+            tgl_kirim: $(".txttglKirimDPB").val(),
+            estDatang: $(".txtDPBEstDatang").val(),
+
+            // additionalInformation : $('.txtADOAdditionalInformation').val()
+          },
+          line: (() => {
+            let data = [];
+            $(dataTableADODetailList.rows('[data-type="new"]').nodes()).each(
+              function (key) {
+                data.push({
+                  line: key + 1,
+                  doNumber: $(this).find(".txtADODONumber").val(),
+                  itemName: $(this).find(".txtADOItemName").val(),
+                  qty: $(this).find(".txtADOQty").val(),
+                  uom: $(this).find(".txtADOUOM").val(),
+                  shopName: $(this).find(".txtADOShopName").val(),
+                  city: $(this).find(".txtADOCity").val(),
+                });
+              }
+            );
+            return data;
+          })(),
+        };
+        var pakaiAlamatBongkar = $(".slcADOPakaiBongkar").val();
+        var alamatBongkar = $(".txtADOAlamatBongkar").val();
+        if (pakaiAlamatBongkar == 0) {
+          let url = `${baseurl}ApprovalDO/DPBKHS/saveNew`;
+          let question = "Simpan Data Ini?";
+          let success = "Berhasil Menyimpan Data";
+          let fail = "Gagal Menyimpan Data";
+          swalADOQuestionAjax1(question, success, fail, url, data).then(() => {
+            // window.location.reload();
+          });
+        } else if (pakaiAlamatBongkar == 1) {
+          if (alamatBongkar) {
+            let url = `${baseurl}ApprovalDO/DPBKHS/saveNew`;
+            let question = "Simpan Data Ini?";
+            let success = "Berhasil Menyimpan Data";
+            let fail = "Gagal Menyimpan Data";
+            swalADOQuestionAjax1(question, success, fail, url, data).then(
+              () => {
+                // window.location.reload();
+              }
+            );
           }
         }
       }
