@@ -1,3 +1,16 @@
+const toastGTSKK = (type, message) => {
+  Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000
+  }).fire({
+    customClass: 'swal-font-small',
+    type: type,
+    title: message
+  })
+}
+
 //TABLE INPUT ELEMENT'S STANDARDIZATION//
 $('.tabel_elemen').DataTable({
   "lengthMenu": [10],
@@ -11,6 +24,20 @@ $('#tabel_daftarTSKK').DataTable({
   // "lengthMenu": [10],
   // "ordering": false,
   // "lengthChange": false
+  // bSortable: true,
+   // bRetrieve: true,
+   // aoColumnDefs: [
+   //     { "aTargets": [ 0 ], "bSortable": true },
+   //     { "aTargets": [ 1 ], "bSortable": false },
+   //     { "aTargets": [ 2 ], "bSortable": false },
+   //     { "aTargets": [ 3 ], "bSortable": true },
+   //     { "aTargets": [ 4 ], "bSortable": true },
+   //     { "aTargets": [ 5 ], "bSortable": true },
+   //     { "aTargets": [ 6 ], "bSortable": true },
+   //     { "aTargets": [ 7 ], "bSortable": true },
+   //     { "aTargets": [ 8 ], "bSortable": true },
+   //     { "aTargets": [ 9 ], "bSortable": true }
+   // ]
 });
 
 
@@ -2902,7 +2929,36 @@ function checkNilaiDistribusi() {
     })
     // $('#btnShow').click();
   } else {
-    $('#btnHidden').trigger('click');
+    $('#modalgtskk_edit_observasi').modal('show');
+    // $('#btnHidden').trigger('click');
+  }
+}
+
+$('.type_save_tskk').on('change', function() {
+  $('#tskk_type_save').val($(this).val());
+  if ($(this).val() == 'save_as') {
+    $('.judul_pembaruan_observasi_tskk').show();
+    $('.input_judul_pembaruan_observasi_tskk').val($('#judul').val());
+    $('#Observasi').attr('action', $('#save_rev').val())
+  }else {
+    $('#Observasi').attr('action', $('#replace_tskk').val())
+    $('.judul_pembaruan_observasi_tskk').hide();
+  }
+})
+
+function checkSubmitEditObservasi() {
+  // $('#modalgtskk_edit_observasi').modal('toggle');
+  if ($('.type_save_tskk').val() != '') {
+    if ($('.input_judul_pembaruan_observasi_tskk').val() == $('#cek_judul_sebelumnya').val()) {
+      toastGTSKK('warning', 'Judul Observasi Revisi Tidak Boleh Sama Dengan Observasi Sebelumnya "'+$('#cek_judul_sebelumnya').val()+'"')
+    }else {
+      $('#judul').val($('.input_judul_pembaruan_observasi_tskk').val());
+      setTimeout(function () {
+        $('#btnHidden').trigger('click');
+      }, 100);
+    }
+  }else {
+    toastGTSKK('warning', 'Harap Memilih Jenis Pembaruan')
   }
 }
 
