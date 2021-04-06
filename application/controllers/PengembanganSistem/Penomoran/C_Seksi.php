@@ -179,6 +179,10 @@ class C_Seksi extends CI_Controller
 			$this->load->library('upload', $config);
 
 			$this->upload->initialize($config);
+			if ((($type == "video/mp4") || ($type == "video/mp3") || ($type == "video/AVI") || ($type == "video/x-flv")) && ($size == "50000000")) {
+				$msg="Jenis file tidak sesuai atau ukuran file terlalu besar!";
+				echo "<p align=\"center\">$msg</p>";
+			}
 
 			// qr_image
 			
@@ -262,12 +266,14 @@ class C_Seksi extends CI_Controller
 
 	public function update_flow($id)
 	{
-		$number_flow = $this->input->post('nomor_doc');
-			$kodepisah = explode('-', $number_flow);
-			$doc= $kodepisah[0];
-			$seksi = $kodepisah[1];
-			$kode = $kodepisah[2];
+		$kodeakses = $this->session->kodesie;
+		$parameter = $this->M_pengsistem->find($kodeakses);
 
+		$numberstd = $this->input->post('nomor_doc');
+			$a = explode("-",$numberstd);
+			$s = count($a);
+
+		$seksi	= $this->input->post('seksi_fp');
 		$search = $this->M_pengsistem->seksiunit($seksi);
 		foreach ($search as $key) {
 			$seksi_full = $key['seksi'];
@@ -275,27 +281,32 @@ class C_Seksi extends CI_Controller
 		$judul_fp = $this->input->post('judul_fp');
 		$pic = $this->input->post('pic_fp');
 			$pic_doc = explode(' - ', $pic);
-				$pic_id = $pic_doc[0];
-				$pic_name = $pic_doc[1];
+
 		$status = $this->input->post('status_fp');
 		$date_update = date('d-m-Y h:i:sa');
 		$date = date('Y-m-d',strtotime($this->input->post('date_rev_fp')));
 		$rev = $this->input->post('number_rev_fp');
 		$number_rev = sprintf('%02d',$rev);
+		$nomor = explode('-',$numberstd);
+			$a = count($nomor);	
+
+			$nomor1 = sprintf('%03d',$nomor[$a-1]);
 
 		$data 		= array( 
-					'nomor_doc' 		=> $number_flow,
-					'doc' 				=> $doc,
+					'nomor_doc' 		=> $numberstd,
+					'doc' 				=> $a[0],
 					'judul_doc'			=> $judul_fp,
 					'seksi_pengguna'	=> $seksi,
 					'date_rev'			=> $date,
 					'number_rev'		=> $number_rev,
-					'pic_doc'			=> $pic_name,
-					'a'					=> $pic_id,
+					'pic_doc'			=> $pic_doc[1],
+					'a'					=> $pic_doc[0],
 					'status_doc'		=> $status,
 					'seksi_full'		=> $seksi_full,
-					'nomor_flow'		=> $kode,
+					'nomor_flow'		=> $nomor1,
 					'date_input'		=> $date_update,
+					'user'				=> $this->session->employee,
+					'dept'				=> $parameter[0]['dept'],
 				);
 				
 		$this->M_pengsistem->update_flow_fp($data,$id);
@@ -336,6 +347,11 @@ class C_Seksi extends CI_Controller
 			// $config['max_width']            = 1000;
 			// $config['max_height']           = 7680;
 			$config['file_name'] = $nama_baru;
+
+			if (file_exists($config['upload_path'].$config['file_name'])) {
+				unlink($config['upload_path'].$config['file_name']);
+			}
+
 			$this->load->library('upload', $config);
 
 			$this->upload->initialize($config);
@@ -492,7 +508,9 @@ class C_Seksi extends CI_Controller
 					$s = $l[1];
 					$fls = preg_replace("![^a-z0-9]+!i", "_", $judul_cw);
 			$judul_baru = $stdnumber.'-'.$fls.'.'.$s;
-			$nama_baru = preg_replace("/[\/\&%#\$]/", "_", $judul_baru);
+			$nama_baru	= preg_replace("/[\/\&%#\$]/", "_", $judul_baru);
+			$type		= $_FILES['file']['type'];
+			$size		= $_FILES['file']['size'];
 
 			$config['upload_path'] 			= 'assets/upload/PengembanganSistem/copwi/';
 			$config['allowed_types']		= '*';
@@ -504,7 +522,10 @@ class C_Seksi extends CI_Controller
 			$this->load->library('upload', $config);
 
 			$this->upload->initialize($config);
-
+			if ((($type == "video/mp4") || ($type == "video/mp3") || ($type == "video/AVI") || ($type == "video/x-flv")) && ($size == "50000000")) {
+				$msg="Jenis file tidak sesuai atau ukuran file terlalu besar!";
+				echo "<p align=\"center\">$msg</p>";
+			}
 			// qr_image
 			
 				$qr_image= $nama_baru.'.png';
@@ -513,11 +534,11 @@ class C_Seksi extends CI_Controller
 				$params['size'] = 8;
 				$params['savename'] =FCPATH."assets/upload/PengembanganSistem/copwi/qrcop/".$qr_image;
 				$this->ciqrcode->generate($params);
-
+			//end_upload qr_image
 				if (!$this->upload->do_upload('file')) {
-			$error = array('error' => $this->upload->display_errors());
-			  echo "error";
-			  print_r($error);exit;
+				$error = array('error' => $this->upload->display_errors());
+			  	echo "error";
+			  	print_r($error);exit;
 				} else {
 				array('upload_data' => $this->upload->data());
 				$path = $config['upload_path'].$config['file_name'];

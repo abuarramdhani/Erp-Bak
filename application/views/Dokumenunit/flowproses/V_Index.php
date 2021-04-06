@@ -68,8 +68,11 @@
                                                   </div>
                                                   <div class="form-group row">
                                                       <label for="daterev_fp" class="control-label col-lg-4">Tgl. Revisi</label>
-                                                      <div class="col-lg-8">
+                                                      <div class="col-lg-7" style="padding-right: 0">
                                                           <input type="text" required="" name="date_rev_fp" id="date_rev_fp" onclick="datepsfunction()" class="form-control date_pengSistem" data-inputmask="'alias': 'dd-mm-yyyy'">
+                                                      </div>
+                                                      <div onclick="reset_date_jquery()" class="btn">
+                                                        <span class="remove-date"><i class="fa fa-close fa-fw"></i></span>
                                                       </div>
                                                   </div>
                                               </div>
@@ -108,8 +111,6 @@
                                           </div>
                                       <div class="panel-footer">
                                           <div class="row text-right">
-                                              <a href="javascript:history.back(1)" class="btn btn-primary btn-rect">Back</a>
-                                              &nbsp;&nbsp;
                                               <button type="button" onclick="notif_input_flow()" data-toggle="modal" data-target="#modal-default" class="btn btn-primary btn-rect">Save Data</button>
                                           </div>
                                       </div>
@@ -152,7 +153,7 @@
                                           </div>
                                           <div class="modal-footer justify-content-between">
                                               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                              <button type="submit" class="btn btn-primary">Save </button>
+                                              <button type="submit" onclick="savedata()" class="btn btn-primary">Save </button>
                                           </div>
                                           </div>
                                           <!-- /.modal-content -->

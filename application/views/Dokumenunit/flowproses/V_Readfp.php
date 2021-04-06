@@ -36,7 +36,7 @@
                                                 <div class="form-group row">
                                                     <label for="inputnumberfp" class="control-label col-lg-4">Nomor Dokumen</label>
                                                     <div class="col-lg-8">
-                                                        <input data-toggle="tooltip" title="Akan muncul notifikasi jika nomor pernah diinput" type="text" name="nomor_doc" value="<?php echo $listdatafp[0]['nomor_doc']?>" class="form-control" id="number_flow_ps" readonly="">
+                                                        <input autocomplete="off" type="text" name="nomor_doc" value="<?php echo $listdatafp[0]['nomor_doc']?>" class="form-control" id="numberflow" >
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
@@ -48,7 +48,7 @@
                                                 <div class="form-group row">
                                                     <label for="seksifp" class="control-label col-lg-4">Seksi Pengguna</label>
                                                     <div class="col-lg-8">
-                                                        <select name="seksi_fp" id="seksi_flow_ps" class="form-control select2" placeholder="Pilih Seksi/Unit">
+                                                        <select name="seksi_fp" id="seksi_fp" class="form-control select2" placeholder="Pilih Seksi/Unit">
                                                             <option value="<?php echo $listdatafp[0]['seksi_pengguna']?>"><?php echo $listdatafp[0]['seksi_full']?></option>
                                                             <?php foreach ($listseksi as $seksi) 
                                                             {
@@ -60,18 +60,21 @@
                                                 </div>
                                                 <div class="form-group row">
                                                     <label for="daterev_fp" class="control-label col-lg-4">Tgl. Revisi</label>
-                                                    <div class="col-lg-8">
-                                                        <input value="<?php echo $listdatafp[0]['date_rev']?>" type="date" name="date_rev_fp" id="date_rev_fp" class="form-control">
+                                                    <div class="col-lg-7" style="padding-right: 0">
+                                                        <input value="<?php echo $listdatafp[0]['date_rev']?>" type="text" onclick="datepsfunction()" name="date_rev_fp" id="date_rev_fp" class="form-control date_pengSistem" data-inputmask="'alias': 'dd-mm-yyyy'">
+                                                    </div>
+                                                    <div onclick="reset_date_jquery()" class="btn">
+                                                        <span class="remove-date"><i class="fa fa-close fa-fw"></i></span>
                                                     </div>
                                                 </div>
+                                            </div>
+                                            <div class="col-lg-6">
                                                 <div class="form-group row">
                                                     <label for="numberrev_fp" class="control-label col-lg-4">No. Revisi</label>
                                                     <div class="col-lg-8">
                                                         <input value="<?php echo $listdatafp[0]['number_rev']?>" min="00" type="number" name="number_rev_fp" id="number_rev-fp" class="form-control">
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-lg-6">
                                                 <div class="form-group row">
                                                     <label for="pic_fp" class="control-label col-lg-4">PIC Pembuat</label>
                                                     <div class="col-lg-8">

@@ -90,8 +90,11 @@
                                             <div class="col-lg-6">
                                                 <div class="form-group row">
                                                     <label for="daterev_fp" class="control-label col-lg-4">Tgl. Revisi</label>
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-7" style="padding-right: 0">
                                                         <input type="text" value="<?= $listdatacw[0]['date_rev'];?>" name="date_rev_cw" id="date_rev_cw" onclick="datepsfunction()" class="form-control date_pengSistem" data-inputmask="'alias': 'dd-mm-yyyy'">
+                                                    </div>
+                                                    <div onclick="reset_date_jquery()" class="btn">
+                                                        <span class="remove-date"><i class="fa fa-close fa-fw"></i></span>
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
