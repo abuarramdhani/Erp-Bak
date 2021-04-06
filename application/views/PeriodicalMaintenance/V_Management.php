@@ -40,7 +40,7 @@
                                 </div>
                                 <div class="panel-body">
                                     <div class="col-md-3">
-                                        <label class="control-label">Select Machine : </label>
+                                        <label class="control-label">Mesin : </label>
                                         <select class="select4 form-control" style="width: 100%" name="list_mesin" id="selectMesin" data-placeholder="Pilih Mesin">
                                             <option></option>
                                             <?php foreach ($mesin as $key => $value) { ?>

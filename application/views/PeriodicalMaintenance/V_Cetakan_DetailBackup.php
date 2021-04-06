@@ -27,26 +27,26 @@
 
         <thead>
             <tr style="background-color: white;">
-                <th rowspan="3" colspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;">URAIAN KERJA</th>
-                <th rowspan="3" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;">STANDAR</th>
-                <th colspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;">PERIODE</th>
-                <th rowspan="3" style="border: 1px solid black;border-collapse: collapse; font-size: 12px;  -webkit-transform: rotate(270deg);text-rotate:90">
+                <th rowspan="1" colspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;">URAIAN KERJA</th>
+                <th rowspan="1" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;">STANDAR</th>
+                <th style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;">PERIODE</th>
+                <th rowspan="1" style="border: 1px solid black;border-collapse: collapse; font-size: 12px;  -webkit-transform: rotate(270deg);text-rotate:90">
 
                     <p>DURASI (menit)</p>
                 </th>
-                <th rowspan="3" style="border: 1px solid black;border-collapse: collapse; font-size: 12px;  -webkit-transform: rotate(270deg);text-rotate:90">
+                <th rowspan="1" style="border: 1px solid black;border-collapse: collapse; font-size: 12px;  -webkit-transform: rotate(270deg);text-rotate:90">
 
                     <p>
                         KONDISI
                     </p>
                 </th>
-                <th rowspan="3" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;">CATATAN HASIL PREVENTIVE ATAU BILA DITEMUKAN KETIDAKNORMALAN MESIN</th>
+                <th rowspan="1" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;">CATATAN HASIL PREVENTIVE ATAU BILA DITEMUKAN KETIDAKNORMALAN MESIN</th>
             </tr>
-            <tr>
+            <!-- <tr>
                 <td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;"><b>2M</b></td>
                 <td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;"><b>TH</b></td>
-            </tr>
-            <tr>
+            </tr> -->
+            <!-- <tr>
 
                 <?php
 
@@ -66,7 +66,7 @@
 
                 }
                 ?>
-            </tr>
+            </tr> -->
         </thead>
     </thead>
     <tbody>
@@ -144,11 +144,11 @@
                 <td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?= $datapdf[$i]['SUB_HEADER'] ?></td>
                 <td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?= $datapdf[$i]['STANDAR'] ?></td>
                 
-                <?php
+                <!-- <?php
 
                 if ($datapdf[$i]['PERIODE'] == '2 Mingguan') {
                 ?>
-                    <td colspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px; color:green"><?= $datapdf[$i]['PERIODE'] ?></td>
+                    <td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px; color:green"><?= $datapdf[$i]['PERIODE'] ?></td>
 
                 <?php
 
@@ -156,11 +156,13 @@
 
                 ?>
 
-                    <td colspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px; color:blue"><?= $datapdf[$i]['PERIODE'] ?></td>
+                    <td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px; color:blue"><?= $datapdf[$i]['PERIODE'] ?></td>
                 <?php
 
                 }
-                ?>
+                ?> -->
+
+                <td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px; "><?= $datapdf[$i]['PERIODE'] ?></td>
 
                 <td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"> &nbsp; <?= $datapdf[$i]['DURASI'] ?> &nbsp;</td>
 
@@ -204,7 +206,7 @@
     </tbody>
     <tbody>
         <tr>
-            <td colspan="5" style="border: 1px solid black;border-collapse: collapse; text-align: right;font-size: 12px">Total Durasi</td>
+            <td colspan="4" style="border: 1px solid black;border-collapse: collapse; text-align: right;font-size: 12px">Total Durasi</td>
             <td colspan="3" style="border: 1px solid black;border-collapse: collapse; text-align: left;font-size: 12px"><?= $totalDurasi[0]['TOTAL_DURASI'] ?> Menit</td>
         </tr>
     </tbody>

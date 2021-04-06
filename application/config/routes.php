@@ -5182,11 +5182,11 @@ $route['MonitoringSPB/List/(:any)'] = 'MonitoringSPB/C_Monspb/$1';
 
 
 // ------------------------------------------------- Periodical Maintenance  ---------------------------------------------//
-$route['PeriodicalMaintenance'] 					= 'PeriodicalMaintenance/C_Index';
-$route['PeriodicalMaintenance/Input'] 				= 'PeriodicalMaintenance/C_Input';
-$route['PeriodicalMaintenance/Input/(:any)'] 		= 'PeriodicalMaintenance/C_Input/$1';
-$route['PeriodicalMaintenance/Input/(:any)/(:any)'] = 'PeriodicalMaintenance/C_Input/$1/$2';
-$route['PeriodicalMaintenance/Input/Insert'] 		= 'PeriodicalMaintenance/C_Input/Insert';
+$route['PeriodicalMaintenance'] 							= 'PeriodicalMaintenance/C_Index';
+$route['PeriodicalMaintenance/Input'] 						= 'PeriodicalMaintenance/C_Input';
+$route['PeriodicalMaintenance/Input/(:any)'] 				= 'PeriodicalMaintenance/C_Input/$1';
+$route['PeriodicalMaintenance/Input/(:any)/(:any)'] 		= 'PeriodicalMaintenance/C_Input/$1/$2';
+$route['PeriodicalMaintenance/Input/Insert'] 				= 'PeriodicalMaintenance/C_Input/Insert';
 
 $route['PeriodicalMaintenance/Management']					= 'PeriodicalMaintenance/C_Management';
 $route['PeriodicalMaintenance/Management/(:any)']			= 'PeriodicalMaintenance/C_Management/$1';
@@ -5195,6 +5195,10 @@ $route['PeriodicalMaintenance/Management/(:any)/(:any)']	= 'PeriodicalMaintenanc
 $route['PeriodicalMaintenance/Monitoring']					= 'PeriodicalMaintenance/C_Monitoring';
 $route['PeriodicalMaintenance/Monitoring/(:any)']			= 'PeriodicalMaintenance/C_Monitoring/$1';
 $route['PeriodicalMaintenance/Monitoring/(:any)/(:any)']	= 'PeriodicalMaintenance/C_Monitoring/$1/$2';
+
+$route['PeriodicalMaintenance/Approval']					= 'PeriodicalMaintenance/C_Approval';
+$route['PeriodicalMaintenance/Approval/(:any)']				= 'PeriodicalMaintenance/C_Approval/$1';
+$route['PeriodicalMaintenance/Approval/(:any)/(:any)']		= 'PeriodicalMaintenance/C_Approval/$1/$2';
 
 //-------------------------------------------Order Seksi Rekayasa--------------------------------------------------//
 $route['OrderSeksiRekayasa'] 						= 'OrderSeksiRekayasa/C_Index';
