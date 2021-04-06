@@ -571,7 +571,7 @@ class M_monitoringdo extends CI_Model
                        AND kdd.inventory_item_id = mtrl.inventory_item_id
                        AND kdd.line_number = mtrl.line_number
                        AND mtrh.request_number = '$data'
-                       AND kdd.status = 'C'
+                       AND kdd.status IN ('C','V')
                        AND mtrl.line_status = 5
                   ORDER BY msib.description";
 
