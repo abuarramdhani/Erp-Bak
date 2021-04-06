@@ -7,9 +7,12 @@
                 todayHighlight: true,
                 autoClose: true
             });
-            // $('.tbl_Monitoring').dataTable({
-            //     "scrollX": true,
-            // });
+            
+            $(".date_report").datetimepicker({
+                showSecond: true,
+                // format:'Y/m/d H:i:s',
+                timeFormat: 'hh:mm:ss',
+            }).datetimepicker("setDate", new Date());
          });
     </script>
 
@@ -46,12 +49,21 @@
                 <br />
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="box box-primary box-solid">
-                            <div class="box-header with-border"><b>Monitoring</b></div>
-                            <div class="box-body">
-                                <div class="col-md-12 text-right">
-                                    <label class="control-label"><?php echo gmdate("l, d F Y, H:i:s", time()+60*60*7) ?></label>
+                        <div class="box box-primary">
+                            <div class="col-md-12 text-right">
+                                <label class="control-label"><?php echo gmdate("l, d F Y, H:i:s", time()+60*60*7) ?></label>
+                            </div>
+                            <nav class="navbar" style="width:30%">
+                                <div class="container-fluid">
+                                    <ul class="nav nav-pills nav-justified">
+                                        <li class="active text-nowrap"><a data-toggle="tab" href="#monitoring1" id="ini_monitoring1">Monitoring</a></li>
+                                        <li class="text-nowrap"><a data-toggle="tab"  href="#monitoring2" id="ini_monitoring2">Report Period</a></li>
+                                    </ul>
                                 </div>
+                            </nav>
+                            <div class="box-body">
+                            <div class="tab-content">
+                                <div class="col-md-12 tab-pane fade in active" id="monitoring1">
                                 <div class="panel-body">
                                     <div class="col-md-3">
                                         <label class="text-right">Tanggal Awal</label>
@@ -416,6 +428,30 @@
                                     </div>
                                 </div>
                                 </form>
+                                </div>
+
+                                
+                                <div class="col-md-12 tab-pane fade" id="monitoring2">
+                                    <form method="POST" action="<?php echo base_url("KapasitasGdSparepart/Monitoring/report_period")?>">
+                                    <div class="panel-body">
+                                        <div class="col-md-3">
+                                            <label class="text-right">Tanggal Awal</label>
+                                            <input id="tgl_awal" name="tgl_awal" class="form-control pull-right date_report" placeholder="<?= date('Y/m/d H:i')?>" autocomplete="off">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="text-right">Tanggal Akhir</label>
+                                            <div class="input-group">
+                                            <input id="tgl_akhir" name="tgl_akhir" class="form-control pull-right date_report" placeholder="<?= date('Y/m/d H:i')?>" autocomplete="off">
+                                            <span class="input-group-btn">
+                                                <button class="btn btn-success" style="margin-left:10px"><i class="fa fa-download" ></i> Export</button>    
+                                            </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="panel-body"></div>
+                                    </form>
+                                </div>
+                            </div>
                             </div>
                         </div>
                     </div>

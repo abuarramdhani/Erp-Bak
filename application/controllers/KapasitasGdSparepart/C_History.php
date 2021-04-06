@@ -254,7 +254,7 @@ class C_History extends CI_Controller
         $nospb = '';
         for ($l=0; $l < count($val); $l++) { 
             if ($jam == $val[$l]['SELESAI_PACKING']) {
-                $nospb .= empty($nospb) ? $val[$l]['NO_DOKUMEN'] : ', '.$val[$l]['NO_DOKUMEN'];
+                $nospb .= empty($nospb) ? "'".$val[$l]['NO_DOKUMEN']."'" : ", '".$val[$l]['NO_DOKUMEN']."'";
         //         $wkt1 = explode(":", $val[$l]['WAKTU_PACKING']);
         //         $wkt2 = ($wkt1[0]*3600) + ($wkt1[1]*60) + $wkt1[2];
         //         $waktu += $wkt2;
@@ -284,8 +284,10 @@ class C_History extends CI_Controller
         }else {
             $bagi = $inijml;
             $caricoly = $this->M_history->cekPacking($nospb);
+            $caricoly2 = $this->M_history->cekPacking2($nospb);
             // echo "<pre>";print_r($caricoly);exit();
             $coly += $caricoly[0]['total'];
+            $coly += $caricoly2[0]['TOTAL'];
         }
         $iniwaktu = round($waktu / $bagi);
         $jml_pack = round($pcs_pack/50);
@@ -393,7 +395,7 @@ class C_History extends CI_Controller
             $doc_pglr = $item_pglr = $pcs_pglr = 0;
             $doc_pck = $item_pck = $pcs_pck = 0;
             foreach ($val as $key => $value) {
-                if ($p['PIC'] == $value['PIC_PELAYAN'] && $value['TGL_PELAYANAN'] >= $date1 && $value['TGL_PELAYANAN'] <= $date2) {
+                if (($p['PIC'] == $value['PIC_PELAYAN'] || $p['NO_INDUK'] == $value['PIC_PELAYAN']) && $value['TGL_PELAYANAN'] >= $date1 && $value['TGL_PELAYANAN'] <= $date2) {
                     $doc_plyn += 1;
                     $item_plyn += $value['JUMLAH_ITEM'];
                     $pcs_plyn += $value['JUMLAH_PCS'];
@@ -404,7 +406,7 @@ class C_History extends CI_Controller
                     array_push($sdh_plyn, $value['NO_DOKUMEN']);
                 }
                 
-                if ($p['PIC'] == $value['PIC_PENGELUARAN']  && $value['TGL_PENGELUARAN'] >= $date1 && $value['TGL_PENGELUARAN'] <= $date2) {
+                if (($p['PIC'] == $value['PIC_PENGELUARAN'] || $p['NO_INDUK'] == $value['PIC_PENGELUARAN'])  && $value['TGL_PENGELUARAN'] >= $date1 && $value['TGL_PENGELUARAN'] <= $date2) {
                     $doc_pglr += 1;
                     $item_pglr += $value['JUMLAH_ITEM'];
                     $pcs_pglr += $value['JUMLAH_PCS'];
@@ -415,7 +417,7 @@ class C_History extends CI_Controller
                     array_push($sdh_pglr, $value['NO_DOKUMEN']);
                 }
                 
-                if ($p['PIC'] == $value['PIC_PACKING'] && $value['TGL_PACKING'] >= $date1 && $value['TGL_PACKING'] <= $date2) {
+                if (($p['PIC'] == $value['PIC_PACKING'] || $p['NO_INDUK'] == $value['PIC_PACKING']) && $value['TGL_PACKING'] >= $date1 && $value['TGL_PACKING'] <= $date2) {
                     $doc_pck += 1;
                     $item_pck += $value['JUMLAH_ITEM'];
                     $pcs_pck += $value['JUMLAH_PCS'];
