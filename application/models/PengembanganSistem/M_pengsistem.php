@@ -230,6 +230,13 @@ class M_pengsistem extends CI_Model
 		return $query->result_array();
 	}
 
+	public function cek1_data_nomor_um($data)
+	{
+		$query = $this->db->query("SELECT count (*) from saps.doc_usermanual where nomor_doc = '".$data."'");
+
+		return $query->result_array();
+	}
+
 	public function set_total_um($seksi,$number,$doc)
 	{
 		$query = $this->db->query("SELECT count (*) from saps.doc_usermanual where seksi_sop = '".$seksi."' and number_sop = '".$number."' and doc = '".$doc."' ");

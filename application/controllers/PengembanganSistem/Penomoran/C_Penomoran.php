@@ -96,9 +96,13 @@ class C_Penomoran extends CI_Controller
         $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 		//Pengembangan Sistem
+		$kodeakses = $this->session->kodesie;
+		$parameter = $this->M_pengsistem->find($kodeakses);
         $data['listdatafp'] = $this->M_pengsistem->list_data_fp();
         $data['listseksi'] = $this->M_pengsistem->select_seksi();
         $data['listorg'] = $this->M_pengsistem->ambilSemuaPekerja();
+		$data['user'] = $this->session->employee;
+		$data['dept'] = $parameter[0]['dept'];
 
         $this->load->view('V_Header', $data);
         $this->load->view('V_Sidemenu', $data);
@@ -276,12 +280,26 @@ class C_Penomoran extends CI_Controller
 			// $config['max_width']            = 1000;
 			// $config['max_height']           = 7680;
 			$config['file_name'] = $nama_baru;
+
+			if (file_exists($config['upload_path'].$config['file_name'])) {
+				unlink($config['upload_path'].$config['file_name']);
+			}
+
+			// qr_image
+			$qr_image= $nama_baru.'.png';
+			$params['data'] = 'http://erp.quick.com/assets/upload/PengembanganSistem/fp/'.$nama_baru;
+			$params['level'] = 'H';
+			$params['size'] = 8;
+			$params['savename'] =FCPATH."assets/upload/PengembanganSistem/fp/qrcord/".$qr_image;
+			$this->ciqrcode->generate($params);
+			//end
+
 			$this->load->library('upload', $config);
 
 			$this->upload->initialize($config);
 			if (!$this->upload->do_upload('fileupload')) {
 			$error = array('error' => $this->upload->display_errors());
-			// aktifkan kode di bawah ini untuk melihat pesan error saat upload file
+			// untuk melihat pesan error saat upload file
 			echo 'error';
 			  print_r($error);
 				} else {
@@ -291,6 +309,7 @@ class C_Penomoran extends CI_Controller
 		
 				$data = array(
 					'file' =>$judul_baru,
+					'link_file' => 'assets/upload/PengembanganSistem/fp/'.$judul_baru,
 					'status_doc' =>$status
 					
 				);
@@ -323,9 +342,13 @@ class C_Penomoran extends CI_Controller
         $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 		//Pengembangan Sistem
+		$kodeakses = $this->session->kodesie;
+		$parameter = $this->M_pengsistem->find($kodeakses);
         $data['listdatacopwi'] = $this->M_pengsistem->list_data_copwi();
         $data['listseksi'] = $this->M_pengsistem->select_seksi();
         $data['listorg'] = $this->M_pengsistem->ambilSemuaPekerja();
+		$data['user'] = $this->session->employee;
+		$data['dept'] = $parameter[0]['dept'];
 
         $this->load->view('V_Header', $data);
         $this->load->view('V_Sidemenu', $data);
@@ -532,6 +555,16 @@ class C_Penomoran extends CI_Controller
 			if (file_exists($config['upload_path'].$config['file_name'])) {
 				unlink($config['upload_path'].$config['file_name']);
 			}
+
+			// qr_image
+			$qr_image= $nama_baru.'.png';
+			$params['data'] = 'http://erp.quick.com/assets/upload/PengembanganSistem/copwi/'.$nama_baru;
+			$params['level'] = 'H';
+			$params['size'] = 8;
+			$params['savename'] =FCPATH."assets/upload/PengembanganSistem/copwi/qrcop/".$qr_image;
+			$this->ciqrcode->generate($params);
+			//end
+
 			$this->load->library('upload', $config);
 
 			$this->upload->initialize($config);
@@ -555,15 +588,6 @@ class C_Penomoran extends CI_Controller
 				echo 1;
 	
 			}
-
-			// qr_image
-			
-					$qr_image= $nama_baru.'.png';
-					$params['data'] = 'http://erp.quick.com/assets/upload/PengembanganSistem/copwi/'.$nama_baru;
-					$params['level'] = 'H';
-					$params['size'] = 8;
-					$params['savename'] =FCPATH."assets/upload/PengembanganSistem/copwi/qrcop/".$qr_image;
-					$this->ciqrcode->generate($params);
 		}
 	
 	}
@@ -591,9 +615,13 @@ class C_Penomoran extends CI_Controller
         $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 		//Pengembangan Sistem
+		$kodeakses = $this->session->kodesie;
+		$parameter = $this->M_pengsistem->find($kodeakses);
         $data['listdataum'] = $this->M_pengsistem->list_data_um();
         $data['listseksi'] = $this->M_pengsistem->select_seksi();
         $data['listorg'] = $this->M_pengsistem->ambilSemuaPekerja();
+		$data['user'] = $this->session->employee;
+		$data['dept'] = $parameter[0]['dept'];
 
         $this->load->view('V_Header', $data);
         $this->load->view('V_Sidemenu', $data);
@@ -800,6 +828,19 @@ class C_Penomoran extends CI_Controller
 			// $config['max_height']           = 7680;
 			$config['file_name'] = $nama_baru;
 
+			if (file_exists($config['upload_path'].$config['file_name'])) {
+				unlink($config['upload_path'].$config['file_name']);
+			}
+
+			// qr_image
+			$qr_image= $nama_baru.'.png';
+			$params['data'] = 'http://erp.quick.com/assets/upload/PengembanganSistem/um/'.$nama_baru;
+			$params['level'] = 'H';
+			$params['size'] = 8;
+			$params['savename'] =FCPATH."assets/upload/PengembanganSistem/um/qrcode/".$qr_image;
+			$this->ciqrcode->generate($params);
+			//end
+
 			$this->load->library('upload', $config);
 
 			$this->upload->initialize($config);
@@ -814,6 +855,7 @@ class C_Penomoran extends CI_Controller
 		
 				$data = array(
 					'file' =>$judul_baru,
+					'link_file' => 'assets/upload/PengembanganSistem/um/'.$judul_baru,
 					'status_doc' =>$status
 					
 				);

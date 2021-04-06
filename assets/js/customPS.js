@@ -1051,6 +1051,29 @@ $(document).on('change','#number_um', function() {
 	});
 })
 
+$(document).on('change','#um-numberstd', function() {
+	var stdnumber = $(this).val();
+	$.ajax({
+		type: "POST",
+		url: baseurl+"DokumenUnit/user_manual/cek_nomor_um",
+		data: {
+			number_um : stdnumber,
+		},
+		dataType: "JSON",
+		success: function (response) {
+			if (response > 0) {
+				if (confirm('Data dengan nomor tersebut sudah pernah diinput.')) {
+					$("#numberflow").val()
+				} else {
+					
+				}
+			}else{
+				
+			}
+		}
+	});
+})
+
 function upload_file_um(id) {
 	var doc = $("#judul_doc_"+id).val().split('?');
 	var	 ida= doc[1];
@@ -1095,9 +1118,52 @@ function upload_file_um(id) {
 }
 
 function link_um(id) {
-	var a = $("#um_lilola"+id).attr('href');
-	var str = a.replace(/[\s\&]/g, "_");
-	$("#um_lilola"+id).attr('href',str);
+	var data2 = $("#um_lilola"+id).attr('kkk');
+	var link2 = data2.split('-');
+	var data = $("#um_lilola"+id).attr('data-id');
+	var str = data.replace(/[\s\&]/g, "_");
+	var link = str.split('=');
+	var	typelink = link[1].split('.');
+	var b	= typelink.length;
+	
+		if (typelink[b-1] === 'mp4' || typelink[b-1] === 'avi' || typelink[b-1] === 'mp3' || typelink[b-1] === 'AVI') {
+			var types = "Download Video";
+		}else{
+			var types = "View File";
+		}
+	if (link2[0]) {
+		Swal.fire({
+			title: 'QR Code ?',
+			type: 'warning',
+			showCancelButton: true,
+			confirmButtonText: 'Scan QR Code',
+			cancelButtonText: types,
+			reverseButtons: true
+		}).then(function(isConfirm) {
+			if (isConfirm.value === true && link[1] !== "") {
+				Swal.fire({
+					imageUrl: baseurl+'assets/upload/PengembanganSistem/copwi/qrcop/'+link[0]+'.png',
+					text: 'Scan QR code barcode!',
+				});
+			}else if (isConfirm.dismiss === "cancel" && link[1] !== "") {
+				window.open(baseurl+link[1], '_blank');
+			}else if (isConfirm.dismiss === "backdrop") {
+				;
+			} else {
+				Swal.fire({
+					type: 'error',
+					title: 'Data Kosong',
+					text: 'File belum di upload !',
+				});
+	
+			}
+		})
+	} else {
+		Swal.fire({
+			type: 'error',
+			title: 'ID Anda Tidak Memiliki Hak Akses !!',
+		});
+	}
 };
 
 function notif_input_um() {
@@ -1113,7 +1179,9 @@ function notif_input_um() {
 		var h = $("#pic-um").val();
 		var i = $("#seksi_um option:selected").text();
 		var j = $("#status-um").val();
+		var x = $("#um-numberstd").val();
 		$(".am").text(a);
+		$(".am").text(x);
 		$(".am").attr("style","text-align: center ; font: bold;");
 		$(".bm").text(b);
 		$(".bm").attr("style","text-align: center ; font: bold;");
@@ -1147,7 +1215,9 @@ function notif_edit_um() {
 		var h = $("#pic-um").val();
 		var i = $("#seksi_um option:selected").text();
 		var j = $("#status-um").val();
+		var x = $("#um-numberstd").val();
 		$(".am").text(a);
+		$(".am").text(x);
 		$(".am").attr("style","text-align: center ; font: bold;");
 		$(".bm").text(b);
 		$(".bm").attr("style","text-align: center ; font: bold;");

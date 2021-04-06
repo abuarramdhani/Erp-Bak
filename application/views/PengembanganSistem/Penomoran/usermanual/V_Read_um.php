@@ -86,8 +86,11 @@
                                                 </div>
                                                 <div class="form-group row">
                                                     <label for="daterev_um" class="control-label col-lg-4">Tgl. Revisi</label>
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-8" style="padding-right:0">
                                                         <input type="date" value="<?= $listdataum[0]['date_rev']?>" name="date_rev_um" id="date_rev_um" class="form-control">
+                                                    </div>
+                                                    <div onclick="reset_date_jquery()" class="btn">
+                                                    <span class="remove-date"><i class="fa fa-close fa-fw"></i></span>
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">

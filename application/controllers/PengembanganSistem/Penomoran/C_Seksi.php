@@ -313,72 +313,6 @@ class C_Seksi extends CI_Controller
 		redirect('DokumenUnit/Flow_Proses');
 	}
 
-	public function upload_data_flow($id)
-	{
-		$status = strtoupper($this->input->post('doc_status'));
-		$judul = strtoupper($this->input->post('nama_file'));
-		$id_data = strtoupper($this->input->post('id'));
-
-		if ($_FILES == false) {
-			echo 0;
-		}else{
-
-			if(!is_dir('.assets/upload/PengembanganSistem/fp'))
-			{
-				mkdir('.assets/upload/PengembanganSistem/fp', 0777, true); 
-				chmod('.assets/upload/PengembanganSistem/fp', 0777);
-			}else {
-				chmod('.assets/upload/PengembanganSistem/fp', 0777); 
-			}
-
-			$data_file = $_FILES['fileupload']['name'];
-
-			$pathh = null;
-			$nmfile = $data_file;
-				$l = explode('.',$nmfile);
-					$s = $l[1];
-				$fls = preg_replace("![^a-z0-9]+!i", "_", $judul);
-			$judul_baru = $id_data.'-'.$fls.'.'.$s;
-			$nama_baru = preg_replace("/[\/\&%#\$]/", "_", $judul_baru);
-			
-			$config['upload_path'] 			= 'assets/upload/PengembanganSistem/fp/';
-			$config['allowed_types']		= '*';
-			$config['max_size']             = 0;
-			// $config['max_width']            = 1000;
-			// $config['max_height']           = 7680;
-			$config['file_name'] = $nama_baru;
-
-			if (file_exists($config['upload_path'].$config['file_name'])) {
-				unlink($config['upload_path'].$config['file_name']);
-			}
-
-			$this->load->library('upload', $config);
-
-			$this->upload->initialize($config);
-			if (!$this->upload->do_upload('fileupload')) {
-			$error = array('error' => $this->upload->display_errors());
-			// aktifkan kode di bawah ini untuk melihat pesan error saat upload file
-			echo 'error';
-			  print_r($error);
-				} else {
-				array('upload_data' => $this->upload->data());
-				$path = $config['upload_path'].$config['file_name'];
-				//end upload file area
-		
-				$data = array(
-					'file' =>$judul_baru,
-					'status_doc' =>$status
-					
-				);
-
-				$this->M_pengsistem->upload_file_fp($data,$id);
-				echo 1;
-	
-			}
-		}
-	
-	}
-
 	public function delete_data_flow($id)
 	{
 		$this->M_pengsistem->delete_flow($id);
@@ -643,72 +577,281 @@ class C_Seksi extends CI_Controller
 		redirect('DokumenUnit/cop_wi');
 		}
 
-	public function upload_data_copwi($id)
-	{
-		$status = strtoupper($this->input->post('doc_status'));
-		$judul = strtoupper($this->input->post('nama_file'));
-		$id_data = strtoupper($this->input->post('id'));
-
-		if ($_FILES == false) {
-			echo 0;
-		}else{
-
-			if(!is_dir('.assets/upload/PengembanganSistem/copwi'))
-			{
-				mkdir('.assets/upload/PengembanganSistem/copwi', 0777, true); 
-				chmod('.assets/upload/PengembanganSistem/copwi', 0777);
-			}else {
-				chmod('.assets/upload/PengembanganSistem/copwi', 0777); 
-			}
-
-			$data_file = $_FILES['fileupload']['name'];
-
-			$pathh = null;
-			$nmfile = $data_file;
-				$l = explode('.',$nmfile);
-					$s = $l[1];
-					$fls = preg_replace("![^a-z0-9]+!i", "_", $judul);
-			$judul_baru = $id_data.'-'.$fls.'.'.$s;
-			$nama_baru = preg_replace("/[\/\&%#\$]/", "_", $judul_baru);
-			
-			$config['upload_path'] 			= 'assets/upload/PengembanganSistem/copwi/';
-			$config['allowed_types']		= '*';
-			$config['max_size']             = 0;
-			$config['file_name'] = $nama_baru;
-
-			if (file_exists($config['upload_path'].$config['file_name'])) {
-				unlink($config['upload_path'].$config['file_name']);
-			}
-
-			$this->load->library('upload', $config);
-
-			$this->upload->initialize($config);
-			if (!$this->upload->do_upload('fileupload')) {
-			$error = array('error' => $this->upload->display_errors());
-			  echo "error";
-			  print_r($error);
-			}else {
-				array('upload_data' => $this->upload->data());
-				$path = $config['upload_path'].$config['file_name'];
-				//end upload file area
-		
-				$data = array(
-					'file' =>$judul_baru,
-					'status_doc' =>$status
-					
-				);
-				$this->M_pengsistem->upload_file_copwi($data,$id);
-				echo 1;
-	
-			}
-		}
-	
-	}
-
 	public function delete_data_copwi($id)
 	{
 
 		$this->M_pengsistem->delete_copwi($id);
+		echo 1;
+	}
+	
+
+	//User Manual
+
+	public function user_manual()
+	{
+        $this->checkSession();
+        $user_id = $this->session->userid;
+
+        $data['Menu'] = 'Dashboard';
+        $data['SubMenuOne'] = '';
+        $data['SubMenuTwo'] = '';
+
+        $data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
+		//Pengembangan Sistem
+		$kodeakses = $this->session->kodesie;
+		$parameter = $this->M_pengsistem->find($kodeakses);
+        $data['listdataum'] = $this->M_pengsistem->list_data_um();
+        $data['listseksi'] = $this->M_pengsistem->select_seksi();
+        $data['listorg'] = $this->M_pengsistem->ambilSemuaPekerja();
+		$data['user'] = $this->session->employee;
+		$data['dept'] = $parameter[0]['dept'];
+
+        $this->load->view('V_Header', $data);
+        $this->load->view('V_Sidemenu', $data);
+        $this->load->view('Dokumenunit/usermanual/V_Index', $data);
+        $this->load->view('V_Footer', $data);
+
+	}
+
+	public function hitung_data_um()
+	{
+		$seksi = $_POST['seksi_um'];
+		$doc = $_POST['doc_um'];
+		$sop = $_POST['number_sop'];
+
+		$data = $this->M_pengsistem->set_number_um($seksi,$sop,$doc)[0]['max'];
+		
+		echo json_encode($data);
+	}
+
+	public function cek_nomor_um()
+	{
+		$data_number = $_POST['number_um'];
+
+		$data = $this->M_pengsistem->cek1_data_nomor_um($data_number)[0]['count'];
+
+		echo json_encode($data);
+	}
+
+	public function input_data_um()
+	{
+		$kodeakses = $this->session->kodesie;
+		$parameter = $this->M_pengsistem->find($kodeakses);
+
+		$stdnumber = $this->input->post('numberstd');
+		$judul_um = $this->input->post('judul_um');
+		$item_doc_um = $this->input->post('doc_um');
+		$doc = 'User Manual';
+		$doc_um = 'UM';
+		$seksi_um = $this->input->post('seksi_um');
+			$search = $this->M_pengsistem->seksiunit($seksi_um);
+			foreach ($search as $key) {
+				$seksifull = $key['seksi'];
+			}
+		$date_rev = date('Y-m-d', strtotime($this->input->post('date_rev_um')));
+		$number = $this->input->post('number_rev-fp');
+			$number_rev = sprintf('%02d',$number);
+		$pic_doc = $this->input->post('pic_um');
+			$pic_doc_split = explode(' - ', $pic_doc);
+				$pic_id		= $pic_doc_split[0];
+				$pic_name 	= $pic_doc_split[1];
+		$status_um = $this->input->post('status_um');
+		$number_sop = $this->input->post('number_sop_um');
+		$sop_um = $this->input->post('sop_um');
+		$date_input = date('Y-m-d h:i:sa');
+		$nomor = explode('-',$stdnumber);
+			$a = count($nomor);	
+
+		$nomor1 = sprintf('%03d',$nomor[$a-1]);
+		$j = $_FILES['file']['name'];
+		if ($j !== '') {
+			$f = false;
+		}else {
+			$f = true;
+		}
+
+	if ($_FILES == $f) {
+			
+		$data 		= array( 
+			'doc' 				=> 'User Manual',
+			'nomor_doc' 		=> $stdnumber,
+			'judul_doc' 		=> $judul_um,
+			'seksi_pengguna'	=> $seksifull,
+			'jenis_doc'			=> $item_doc_um,
+			'number_sop'		=> $number_sop,
+			'seksi_sop'			=> $sop_um,
+			'date_rev'			=> $date_rev,
+			'number_rev'		=> $number_rev,
+			'pic_doc'			=> $pic_name,
+			'status_doc'		=> $status_um,
+			'date_input'		=> $date_input,
+			'nomor_um'			=> $nomor1,
+			'a'					=> $pic_id,
+			'user'				=> $this->session->employee,
+			'dept'				=> $parameter[0]['dept'],
+		);
+	}else{
+
+		if(!is_dir('.assets/upload/PengembanganSistem/um'))
+		{
+			mkdir('.assets/upload/PengembanganSistem/um', 0777, true); 
+			chmod('.assets/upload/PengembanganSistem/um', 0777);
+		}else {
+			chmod('.assets/upload/PengembanganSistem/um', 0777); 
+		}
+
+		$data_file = $_FILES['file']['name'];
+
+		$pathh = null;
+		$nmfile = $data_file;
+			$l = explode('.',$nmfile);
+				$s = $l[1];
+				$fls = preg_replace("![^a-z0-9]+!i", "_", $judul_um);
+		$judul_baru = $stdnumber.'-'.$fls.'.'.$s;
+		$nama_baru	= preg_replace("/[\/\&%#\$]/", "_", $judul_baru);
+		$type		= $_FILES['file']['type'];
+		$size		= $_FILES['file']['size'];
+
+		$config['upload_path'] 			= 'assets/upload/PengembanganSistem/um/';
+		$config['allowed_types']		= '*';
+		$config['max_size']             = 0;
+		// $config['max_width']            = 1000;
+		// $config['max_height']           = 7680;
+		$config['file_name'] = $nama_baru;
+
+		$this->load->library('upload', $config);
+
+		$this->upload->initialize($config);
+		if ((($type == "video/mp4") || ($type == "video/mp3") || ($type == "video/AVI") || ($type == "video/x-flv")) && ($size == "50000000")) {
+			$msg="Jenis file tidak sesuai atau ukuran file terlalu besar!";
+			echo "<p align=\"center\">$msg</p>";
+		}
+		// qr_image
+		
+			$qr_image= $nama_baru.'.png';
+			$params['data'] = 'http://erp.quick.com/assets/upload/PengembanganSistem/um/'.$nama_baru;
+			$params['level'] = 'H';
+			$params['size'] = 8;
+			$params['savename'] =FCPATH."assets/upload/PengembanganSistem/um/qrcord/".$qr_image;
+			$this->ciqrcode->generate($params);
+		//end_upload qr_image
+			if (!$this->upload->do_upload('file')) {
+			$error = array('error' => $this->upload->display_errors());
+			  echo "error";
+			  print_r($error);exit;
+			} else {
+			array('upload_data' => $this->upload->data());
+			$path = $config['upload_path'].$config['file_name'];
+			//end upload file area
+			
+			$data 		= array( 
+				'doc' 				=> 'User Manual',
+				'nomor_doc' 		=> $stdnumber,
+				'judul_doc' 		=> $judul_um,
+				'seksi_pengguna'	=> $seksifull,
+				'jenis_doc'			=> $item_doc_um,
+				'number_sop'		=> $number_sop,
+				'seksi_sop'			=> $sop_um,
+				'date_rev'			=> $date_rev,
+				'number_rev'		=> $number_rev,
+				'pic_doc'			=> $pic_name,
+				'status_doc'		=> $status_um,
+				'date_input'		=> $date_input,
+				'nomor_um'			=> $nomor1,
+				'a'					=> $pic_id,
+				'link_file' 		=> 'assets/upload/PengembanganSistem/um/'.$judul_baru,
+				'file' 				=> $judul_baru,
+				'user'				=> $this->session->employee,
+				'dept'				=> $parameter[0]['dept'],
+			);
+
+		}
+	}
+			$this->M_pengsistem->get_inputdata_um($data);
+			redirect('DokumenUnit/user_manual');
+	}
+
+	public function edit_UM($data_edit)
+	{
+        $this->checkSession();
+        $user_id = $this->session->userid;
+
+        $data['Menu'] = 'Dashboard';
+        $data['SubMenuOne'] = '';
+        $data['SubMenuTwo'] = '';
+
+        $data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
+		//Pengembangan Sistem
+        $data['listdataum'] = $this->M_pengsistem->list_edit_um($data_edit);
+        $data['listseksi'] = $this->M_pengsistem->select_seksi();
+        $data['listorg'] = $this->M_pengsistem->ambilSemuaPekerja();
+
+        $this->load->view('V_Header', $data);
+        $this->load->view('V_Sidemenu', $data);
+        $this->load->view('Dokumenunit/usermanual/V_Read_um', $data);
+        $this->load->view('V_Footer', $data);
+	}
+
+	public function update_UM($id)
+  	{
+		$kodeakses = $this->session->kodesie;
+		$parameter = $this->M_pengsistem->find($kodeakses);
+
+		$number_doc_um = $this->input->post('numberstd');
+			$kode_um = explode('-', $number_doc_um);
+			$s = count($kode_um);
+
+		$judul_doc = $this->input->post('judul_um');
+		$jenis_doc = $this->input->post('cop_wi_cw');
+		$seksi_um = $this->input->post('seksi_um');
+			$search = $this->M_pengsistem->seksiunit($seksi_um);
+			foreach ($search as $key) {
+				$seksifull = $key['seksi'];
+			}
+		$doc_um = $this->input->post('doc_um');
+		$sop_um = $this->input->post('sop_um');
+		$number_sop = $this->input->post('number_sop_um');
+		$pic_doc = $this->input->post('pic_um');
+			$pic_doc_split = explode(' - ', $pic_doc);
+				$pic_id		= $pic_doc_split[0];
+				$pic_name 	= $pic_doc_split[1];
+		$status_doc = $this->input->post('status_um');
+		$date_rev_doc = date('Y-m-d',strtotime($this->input->post('date_rev_um')));
+		$date_update = date('Y-m-d h:i:sa');
+		$number_rev_doc = $this->input->post('number_rev_um');
+
+		$nomor_rev = sprintf('%02d',$number_rev_doc);
+
+		$data		 = array(
+						'doc' 				=> 'User Manual',
+						'nomor_doc' 		=> $number_doc_um,
+						'judul_doc' 		=> $judul_doc,
+						'seksi_pengguna'	=> $seksifull,
+						'jenis_doc'			=> $doc_um,
+						'number_sop'		=> $number_sop,
+						'seksi_sop'			=> $sop_um,
+						'date_rev'			=> $date_rev_doc,
+						'number_rev'		=> $number_rev_doc,
+						'pic_doc'			=> $pic_name,
+						'status_doc'		=> $status_doc,
+						'date_update'		=> $date_update,
+						'nomor_um'			=> $kode_um[$s-1],
+						'a'					=> $pic_id,
+						'user'				=> $this->session->employee,
+						'dept'				=> $parameter[0]['dept'],
+					);
+					
+		$this->M_pengsistem->update_data_um($data,$id);
+		redirect('DokumenUnit/user_manual');
+	}
+
+	public function delete_data_um($id)
+	{
+		$this->M_pengsistem->delete_um($id);
 		echo 1;
 	}
 }
