@@ -137,18 +137,18 @@
 	</table>
 <!-- coba  coba  -->
 <div style="position: absolute;">
-	<table style="width: 80%; margin-top: 49px;">
+	<table style="width: 81.5%; margin-top: 40px;">
 	        <tr>
 				<td style="font-size: 9.7px; padding: 3.5px; width: 7%; text-align: center;"></td>
-				<td style="font-size: 9.7px; padding: 3.5px; width: 11%; text-align: center;"></td>
-				<td style="font-size: 9.7px; padding: 3.5px; width: 9%; text-align: center;"></td>
-				<td style="font-size: 9.7px; padding: 3.5px 3.5px 3.5px 10px; width: 6.5%; text-align: left;">
+				<td style="font-size: 9.7px; padding: 3.5px; width: 10%; text-align: center;"></td>
+				<td style="font-size: 9.7px; padding: 3.5px; width: 8%; text-align: center;"></td>
+				<td style="font-size: 9.7px; padding: 3.5px 3.5px 3.5px 10px; width: 7%; text-align: left;">
 					<?php echo $get_header[0]['UOM'] ?>
 				</td>
-				<td style="font-size: 9.7px; padding: 3.5px 3.5px 3.5px 8px; width: 23.5%;">
+				<td style="font-size: 9.7px; padding: 3.5px 3.5px 3.5px 8px; width: 20.5%;">
 					<?php echo $get_header[0]['ITEM'] ?>
 				</td>
-				<td colspan="2" style="font-size: 9.7px; padding: 3.5px; width: 45%; white-space: pre-line;">
+				<td colspan="2" style="font-size: 9.7px; padding: 3.5px; width: 49.5%; white-space: pre-line;">
 					<?php echo $get_header[0]['DESCRIPTION'] ?>
 				</td>
 			</tr>
@@ -157,22 +157,22 @@
 				<td style="font-size: 9.7px; padding: 3.5px; width: 7%; text-align: center;">
 					<?php echo $no ?>
 				</td>
-				<td style="font-size: 9.7px; padding: 3.5px; width: 11%; text-align: center;">
+				<td style="font-size: 9.7px; padding: 3.5px; width: 10%; text-align: center;">
 					<?php echo $gb['QUANTITY'] ?>
 				</td>
-				<td style="font-size: 9.7px; padding: 3.5px; width: 9%; text-align: center;">
+				<td style="font-size: 9.7px; padding: 3.5px; width: 8%; text-align: center;">
 					<?php echo $gb['QTY_TERLAYANI'] ?>
 				</td>
-				<td style="font-size: 9.7px; padding: 3.5px 3.5px 3.5px 10px; width: 6.5%; text-align: left;">
+				<td style="font-size: 9.7px; padding: 3.5px 3.5px 3.5px 10px; width: 7%; text-align: left;">
 					<?php echo $gb['UOM_CODE'] ?>
 				</td>
-				<td style="font-size: 9.7px; padding: 3.5px 3.5px 3.5px 8px; width: 23.5%;">
+				<td style="font-size: 9.7px; padding: 3.5px 3.5px 3.5px 8px; width: 20.5%;">
 					<?php echo $gb['ITEM'] ?>
 				</td>
-				<td style="font-size: 9.7px; padding: 3.5px; width: 45%; white-space: pre-line;">
+				<td style="font-size: 9.7px; padding: 3.5px; width: 5%; border: 1px solid black;"></td>
+				<td style="font-size: 9.7px; padding: 3.5px; width: 49.5%; white-space: pre-line;">
 					<?php echo $gb['DESCRIPTION'] ?>
 				</td>
-				<td style="font-size: 9.7px; padding: 3.5px; width: 5%; border: 1px solid black;"></td>
 			</tr>
 		<?php $no++; } ?>
 	</table>
@@ -202,13 +202,13 @@
 				<td rowspan="2" style="width: 5%; border-left: 1px solid black; border-bottom: 1px solid black; border-top: 1px solid black;font-size: 10px; padding: 5px;">
 					<center>Satuan</center>
 				</td>
-				<td rowspan="2" style="width: 16%; border-left: 1px solid black; border-bottom: 1px solid black; border-top: 1px solid black;font-size: 10px; padding: 5px;">
+				<td rowspan="2" style="width: 14%; border-left: 1px solid black; border-bottom: 1px solid black; border-top: 1px solid black;font-size: 10px; padding: 5px;">
 					<center>Kode Barang</center>
 				</td>
-				<td rowspan="2" style="width: 35%; border-left: 1px solid black; border-bottom: 1px solid black; border-top: 1px solid black;font-size: 10px; padding: 5px;">
+				<td rowspan="2" style="width: 39%; border-left: 1px solid black; border-bottom: 1px solid black; border-top: 1px solid black;font-size: 10px; padding: 5px;">
 					<center>Nama Barang</center>
 				</td>
-				<td rowspan="2" style="width: 25.5%; border: 1px solid black; font-size: 10px; padding: 5px;">
+				<td rowspan="2" style="width: 23.5%; border: 1px solid black; font-size: 10px; padding: 5px;">
 					<center>Nomor Barang</center>
 				</td>
 			</tr>
