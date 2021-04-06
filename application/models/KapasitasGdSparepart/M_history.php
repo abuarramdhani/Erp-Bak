@@ -42,6 +42,19 @@ class M_history extends CI_Model {
         $query = $oracle->query($sql);
         return $query->result_array();
     }
+    
+    public function cekPacking2($nospb){
+        $oracle = $this->load->database('oracle', true);
+        $sql = "select sum(pck.jumlah) total
+                from
+                (SELECT count(spt.REQUEST_NUMBER) jumlah
+                        FROM khs_colly_dospb_sp spt
+                WHERE spt.REQUEST_NUMBER in ($nospb)
+                and spt.VERIF_FLAG = 'Y'
+                group by spt.REQUEST_NUMBER) pck";
+        $query = $oracle->query($sql);
+        return $query->result_array();
+    }
 
     public function getItemDOSPB() {
         $oracle = $this->load->database('oracle', true);
