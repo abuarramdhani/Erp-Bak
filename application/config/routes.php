@@ -5327,3 +5327,17 @@ $route['MiscellaneousAkt/Request']						= 'MiscellaneousMng/Askanit_Akt/C_Reques
 $route['MiscellaneousAkt/Request/(:any)']				= 'MiscellaneousMng/Askanit_Akt/C_RequestAkt/$1';
 $route['MiscellaneousAkt/Request/(:any)/(:any)']		= 'MiscellaneousMng/Askanit_Akt/C_RequestAkt/$1/$2';
 $route['MiscellaneousAkt/Request/(:any)/(:any)/(:any)']	= 'MiscellaneousMng/Askanit_Akt/C_RequestAkt/$1/$2/$3';
+
+
+// KHS Auto Invoice Lanjutan
+$route['AutoInvoiceKasie'] 								= 'AutoInvoice/C_Index';
+
+$route['AutoInvoiceKasie/ReadyToShipConfirm']			= 'AutoInvoice/C_Ready';
+$route['AutoInvoiceKasie/ReadyToShipConfirm/(:any)']	= 'AutoInvoice/C_Ready/$1';
+
+$route['AutoInvoiceKasie/OnProcess']				= 'AutoInvoice/C_Process';
+$route['AutoInvoiceKasie/OnProcess/(:any)']		= 'AutoInvoice/C_Process/$1';
+
+$route['AutoInvoiceKasie/FinishInvoice']				= 'AutoInvoice/C_Finish';
+$route['AutoInvoiceKasie/FinishInvoice/(:any)']		= 'AutoInvoice/C_Finish/$1';
+$route['AutoInvoiceKasie/FinishInvoice/(:any)/(:any)']		= 'AutoInvoice/C_Finish/$1/$2';
