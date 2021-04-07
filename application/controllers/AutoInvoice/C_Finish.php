@@ -45,7 +45,7 @@ class C_Finish extends CI_Controller
         $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
-        $data['path'] = $_SERVER['PATH_INFO'];
+        $data['path'] = explode('/', $_SERVER['PATH_INFO']);
 
         $this->load->view('V_Header', $data);
         $this->load->view('V_Sidemenu', $data);
