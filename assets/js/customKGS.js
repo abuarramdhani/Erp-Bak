@@ -1248,8 +1248,22 @@ function editColy(no) {
         request.done(function(result){
             $('#datacoly2').html(result);
             $('#editcoly').modal('show'); 
-            
+            $('#head_mdl_arsip').html(no_spb);
         })
+}
+
+
+function saveColly2(no) {
+    var no_spb = $('#no_spb'+no).val();
+    var no_colly = $('#no_colly'+no).val();
+    var berat = $('#berat'+no).val();
+    
+    var request = $.ajax ({
+        url : baseurl + "KapasitasGdSparepart/Arsip/saveColly2",
+        data: { no_colly : no_colly, no_spb : no_spb, berat : berat},
+        type : "POST",
+        dataType: "html",
+    });
 }
 
 //---------------------------------------HISTORY-----------------------------------------------------------------------------

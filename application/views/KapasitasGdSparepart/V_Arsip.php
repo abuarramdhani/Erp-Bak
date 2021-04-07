@@ -138,7 +138,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h3 style="text-align:center">Detail Coly</h3>
+                <h3 style="text-align:center">Detail Coly <span id="head_mdl_arsip"></span></h3>
             <!-- <div id="datahidden"></div> -->
 			</div>
 			<div class="modal-body">

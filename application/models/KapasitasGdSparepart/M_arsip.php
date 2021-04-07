@@ -117,6 +117,26 @@ class M_arsip extends CI_Model {
     }
 
     
+    public function cekColy($noSPB) {
+        $oracle = $this->load->database('oracle', true);
+        $sql = "SELECT DISTINCT kcds.request_number, kcds.colly_number, kcds.berat
+                FROM khs_colly_dospb_sp kcds
+                WHERE kcds.request_number = '$noSPB'
+                ORDER BY TO_NUMBER (SUBSTR (kcds.colly_number, 10))";
+        $query = $oracle->query($sql);
+        return $query->result_array();
+        // return $sql;
+    }
+
+    public function saveColly2($nospb, $nocolly, $berat){
+        $oracle = $this->load->database('oracle', true);
+        $sql = "update khs_colly_dospb_sp kcds
+                set kcds.berat = '$berat'
+                WHERE kcds.request_number = '$nospb'
+                and kcds.colly_number = '$nocolly'";
+        $query = $oracle->query($sql);
+    }
+    
 
 }
 
