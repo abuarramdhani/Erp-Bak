@@ -32,7 +32,9 @@
                         <div class="box box-info">
                             <div class="box-header with-border"></div>
                             <div class="box-body">
+                                <input type="hidden" id="path_inf" value="<?= $path ?>">
                                 <div id="ListFinish"></div>
+                                <div id="LoadingCheck"></div>
                             </div>
                         </div>
                     </div>

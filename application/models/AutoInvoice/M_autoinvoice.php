@@ -7,6 +7,7 @@ class M_autoinvoice extends CI_Model
         parent::__construct();
         $this->load->database();
         $this->oracle = $this->load->database('oracle', true);
+        $this->personalia = $this->load->database('personalia', true);
     }
     public function DoReady()
     {
@@ -88,6 +89,31 @@ class M_autoinvoice extends CI_Model
     {
         $sql = "SELECT * FROM khs_cetak_ulang_rdo WHERE REQUEST_ID = $i order by ADJ_NAME";
         $query = $this->oracle->query($sql);
+        return $query->result_array();
+    }
+    public function UpdateFlagFinish($wdd, $flag, $approver)
+    {
+        $sql = "UPDATE KHS_SHIPCONFIRM_WEB SET APPROVAL_FLAG = '$flag', APPROVED_BY = '$approver' WHERE WDD_BATCH_ID = $wdd";
+
+        $query = $this->oracle->query($sql);
+        return $sql;
+    }
+    public function getApprover($i)
+    {
+        $sql = "SELECT APPROVED_BY FROM KHS_SHIPCONFIRM_WEB WHERE WDD_BATCH_ID = $i";
+        $query = $this->oracle->query($sql);
+        return $query->result_array();
+    }
+    public function getApprover2($i)
+    {
+        $sql = "SELECT APPROVED_BY FROM KHS_SHIPCONFIRM_WEB WHERE CETAK_RDO_REQ_ID = $i";
+        $query = $this->oracle->query($sql);
+        return $query->result_array();
+    }
+    public function getnameApprover($i)
+    {
+        $sql = "SELECT trim(nama) as nama FROM hrd_khs.tpribadi WHERE noind = '$i'";
+        $query = $this->personalia->query($sql);
         return $query->result_array();
     }
 }

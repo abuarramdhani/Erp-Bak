@@ -45,6 +45,8 @@ class C_Finish extends CI_Controller
         $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
+        $data['path'] = $_SERVER['PATH_INFO'];
+
         $this->load->view('V_Header', $data);
         $this->load->view('V_Sidemenu', $data);
         $this->load->view('AutoInvoice/V_Finish', $data);
@@ -55,11 +57,31 @@ class C_Finish extends CI_Controller
 
         $DoFinish = $this->M_autoinvoice->DoFinish();
 
+        for ($i = 0; $i < sizeof($DoFinish); $i++) {
+            $InvoiceToCetak = $this->M_autoinvoice->InvoiceToCetak($DoFinish[$i]['CETAK_INVOICE_REQ_ID']);
+            $RDOToCetak = $this->M_autoinvoice->RDOToCetak($DoFinish[$i]['CETAK_RDO_REQ_ID']);
+            if ($InvoiceToCetak != null) {
+                $DoFinish[$i]['AMMOUNT_INVOICE'] = $InvoiceToCetak[0]['CS_TOTAL'];
+            } else {
+                $DoFinish[$i]['AMMOUNT_INVOICE'] = 0;
+            }
+            if ($RDOToCetak != null) {
+                $DoFinish[$i]['AMMOUNT_RDO'] = $RDOToCetak[0]['NETTO'];
+            } else {
+                $DoFinish[$i]['AMMOUNT_RDO'] = 0;
+            }
+        }
+
+
+        $path = explode('/', $_SERVER['PATH_INFO']);
+
         // echo "<pre>";
         // print_r($DoFinish);
         // exit();
 
         $data['DoFinish'] = $DoFinish;
+
+        $data['path'] = $path;
 
         $this->load->view('AutoInvoice/V_ListFinish', $data);
     }
@@ -67,11 +89,19 @@ class C_Finish extends CI_Controller
     {
         $InvoiceToCetak = $this->M_autoinvoice->InvoiceToCetak($i);
 
+        for ($i = 0; $i < sizeof($InvoiceToCetak); $i++) {
+            $approver = $this->M_autoinvoice->getApprover($InvoiceToCetak[0]['DO_NUM']);
+
+            $approver_name = $this->M_autoinvoice->getnameApprover($approver[0]['APPROVED_BY']);
+
+            $InvoiceToCetak[$i]['APPROVER'] = $approver_name[0]['nama'];
+        }
+
+        $data['Invoice'] = $InvoiceToCetak;
+
         // echo "<pre>";
         // print_r($InvoiceToCetak);
         // exit();
-
-        $data['Invoice'] = $InvoiceToCetak;
 
         $this->load->library('pdf');
         $pdf = $this->pdf->load();
@@ -91,6 +121,14 @@ class C_Finish extends CI_Controller
     public function CetakRDO($i)
     {
         $RDOToCetak = $this->M_autoinvoice->RDOToCetak($i);
+
+        for ($i = 0; $i < sizeof($RDOToCetak); $i++) {
+            $approver = $this->M_autoinvoice->getApprover2($RDOToCetak[0]['REQUEST_ID']);
+
+            $approver_name = $this->M_autoinvoice->getnameApprover($approver[0]['APPROVED_BY']);
+
+            $RDOToCetak[$i]['APPROVER'] = $approver_name[0]['nama'];
+        }
 
         // echo "<pre>";
         // print_r($RDOToCetak);
@@ -112,5 +150,20 @@ class C_Finish extends CI_Controller
         $pdf->WriteHTML($html);
         $pdf->SetHTMLFooter($foot);
         $pdf->Output($filename, 'I');
+    }
+    public function UpdateFlagFinish()
+    {
+        $wdd = $_POST['wdd'];
+        $flag = $_POST['flag'];
+        $approver = $this->session->user;
+
+        for ($i = 0; $i < sizeof($wdd); $i++) {
+            $this->M_autoinvoice->UpdateFlagFinish($wdd[$i], $flag, $approver);
+        }
+
+        // echo "<pre>";
+        // print_r($wdd);
+        // print_r($flag);
+        // exit();
     }
 }
