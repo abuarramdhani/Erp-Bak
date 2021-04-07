@@ -88,16 +88,19 @@
                                                       </div>
                                                       <div class="col-sm-1">-</div>
                                                       <div class="col-sm-4">
-                                                          <input autocomplete="off" type="number" oninput="input_nomor_cop_wi_ps()" min="00" value="00" required="" name="number_sop_cw" class="form-control" id="nomor_sop_cw" placeholder="00" >
+                                                          <input autocomplete="off" type="number" min="00" value="00" required="" name="number_sop_cw" class="form-control" id="number_rev-cw" placeholder="00" >
                                                       </div>
                                                   </div>
                                               </div>
                                               <div class="col-lg-6">
                                                   <div class="form-group row">
                                                       <label for="daterev_cw" class="control-label col-lg-4">Tgl. Revisi</label>
-                                                      <div class="col-lg-8">
+                                                      <div class="col-lg-7" style="padding-right: 0">
                                                           <input placeholder="dd-mm-yyyy" required="" type="text" onclick="datepsfunction()" name="date_rev_cw" id="date_rev_cw" class="form-control date_pengSistem" data-inputmask="'alias': 'dd-mm-yyyy'">
                                                       </div>
+                                                    <div onclick="reset_date_jquery()" class="btn">
+                                                        <span class="remove-date"><i class="fa fa-close fa-fw"></i></span>
+                                                    </div>
                                                   </div>
                                                   <div class="form-group row">
                                                       <label for="numberrev_cw" class="control-label col-lg-4">No. Revisi</label>
@@ -133,8 +136,6 @@
                                           </div>
                                       <div class="panel-footer">
                                           <div class="row text-right">
-                                              <a href="javascript:history.back(1)" class="btn btn-primary btn-rect">Back</a>
-                                              &nbsp;&nbsp;
                                               <button type="button" onclick="notif_input_cop_wi()" data-toggle="modal" data-target="#modal-default" class="btn btn-primary btn-rect">Save Data</button>
                                           </div>
                                       </div>
@@ -179,7 +180,7 @@
                                           </div>
                                           <div class="modal-footer justify-content-between">
                                               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                              <button type="submit" class="btn btn-primary">Save </button>
+                                              <button type="submit" onclick="savedata()" class="btn btn-primary">Save </button>
                                           </div>
                                           </div>
                                       </div>

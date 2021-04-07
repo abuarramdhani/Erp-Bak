@@ -82,7 +82,7 @@
                                                     </div>
                                                     <div class="col-sm-1">-</div>
                                                     <div class="col-sm-2">
-                                                        <input autocomplete="off" type="number" min="00" max="1000" name="number_sop_cw" value="<?= $listdatacw[0]['number_sop'];?>" class="form-control" id="nomor_sop_cw" oninput="nomor_cop_wi_ps()" placeholder="00" >
+                                                        <input autocomplete="off" type="number" min="00" max="1000" name="number_sop_cw" value="<?= $listdatacw[0]['number_sop'];?>" class="form-control" id="number_rev-cw" placeholder="00" >
                                                     </div>
                                                     <p class="cle_number" style="display: none;"><?= $listdatacw[0]['number_sop'];?></p>
                                                 </div>
@@ -90,8 +90,11 @@
                                             <div class="col-lg-6">
                                                 <div class="form-group row">
                                                     <label for="daterev_fp" class="control-label col-lg-4">Tgl. Revisi</label>
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-7" style="padding-right: 0">
                                                         <input type="text" value="<?= $listdatacw[0]['date_rev'];?>" name="date_rev_cw" id="date_rev_cw" onclick="datepsfunction()" class="form-control date_pengSistem" data-inputmask="'alias': 'dd-mm-yyyy'">
+                                                    </div>
+                                                    <div onclick="reset_date_jquery()" class="btn">
+                                                        <span class="remove-date"><i class="fa fa-close fa-fw"></i></span>
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
@@ -113,10 +116,8 @@
                                                     <div class="col-lg-8">
                                                         <select name="status_cw" id="status-cw" class="form-control select2">
                                                             <option><?= $listdatacw[0]['status_doc'];?></option>
-                                                            <option value="Baru">Baru</option>
                                                             <option value="Approval">Approval</option>
                                                             <option value="On Proses">On Proses</option>
-                                                            <option value="Cansel">Cancel</option>
                                                         </select>
                                                     </div>
                                                 </div>

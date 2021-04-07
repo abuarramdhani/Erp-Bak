@@ -1,12 +1,12 @@
 <section class="content">
     <div class="inner" >
         <div class="row">
-            <form onkeydown="return event.key != 'Enter';" method="post" action="<?php echo base_url().'PengembanganSistem/update_flow/'.$listdatafp[0]['id'] ?>" class="form-horizontal" enctype="multipart/form-data">
+            <form method="post" action="<?php echo base_url().'DokumenUnit/user_manual/update_UM/'.$listdataum[0]['id'] ?>" class="form-horizontal" enctype="multipart/form-data">
                 <div class="col-lg-12">
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="col-lg-11">
-                                <div class="text-right"><h1><b>FLOW PROSES</b></h1></div>
+                                <div class="text-right"><h1><b> User Manual</b></h1></div>
                             </div>
                             <div class="col-lg-1 ">
                                 <div class="text-right hidden-md hidden-sm hidden-xs">
@@ -34,22 +34,23 @@
                                         <div class="row">
                                             <div class="col-lg-6">
                                                 <div class="form-group row">
-                                                    <label for="inputnumberfp" class="control-label col-lg-4">Nomor Dokumen</label>
+                                                    <label for="inputnumberum" class="control-label col-lg-4">Nomor Dokumen</label>
                                                     <div class="col-lg-8">
-                                                        <input data-toggle="tooltip" title="Akan muncul notifikasi jika nomor pernah diinput" type="text" name="nomor_doc" value="<?php echo $listdatafp[0]['nomor_doc']?>" class="form-control" id="number_flow_ps" readonly="">
+                                                      <input oninput="this.value = this.value.toUpperCase()" value="<?= $listdataum[0]['nomor_doc']?>" type="text" autocomplete="off" name="numberstd" class="form-control" id="um-numberstd" placeholder="nomor dokumen">
+                                                    </div>
+                                                    <p class="check_number" style="display: none;"><?= $listdataum[0]['nomor_um']?></p>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label for="inputseksi_um" class="control-label col-lg-4">Judul Dokumen</label>
+                                                    <div class="col-lg-8">
+                                                        <textarea name="judul_um" id="judul_um" placeholder="Input Judul Dok." class="form-control"><?= $listdataum[0]['judul_doc']?></textarea>    
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <label for="inputseksifp" class="control-label col-lg-4">Judul Dokumen</label>
+                                                    <label for="seksi_um" class="control-label col-lg-4">Seksi Pengguna</label>
                                                     <div class="col-lg-8">
-                                                        <textarea name="judul_fp" id="judulfp" placeholder="Input Judul Dok." class="form-control"><?php echo $listdatafp[0]['judul_doc']?></textarea>    
-                                                    </div>
-                                                </div>
-                                                <div class="form-group row">
-                                                    <label for="seksifp" class="control-label col-lg-4">Seksi Pengguna</label>
-                                                    <div class="col-lg-8">
-                                                        <select name="seksi_fp" id="seksi_flow_ps" class="form-control select2" placeholder="Pilih Seksi/Unit">
-                                                            <option value="<?php echo $listdatafp[0]['seksi_pengguna']?>"><?php echo $listdatafp[0]['seksi_full']?></option>
+                                                        <select name="seksi_um" id="seksi_um" class="form-control select2" placeholder="Pilih Seksi/Unit">
+                                                            <option value="<?php echo $listdataum[0]['seksi_sop']?>"><?php echo $listdataum[0]['seksi_pengguna']?></option>
                                                             <?php foreach ($listseksi as $seksi) 
                                                             {
                                                                 echo '  <option value="'.$seksi['singkat'].'">'.$seksi['seksi'].'</option>';
@@ -59,39 +60,53 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <label for="daterev_fp" class="control-label col-lg-4">Tgl. Revisi</label>
-                                                    <div class="col-lg-8" style="padding-right: 0">
-                                                        <input value="<?php echo $listdatafp[0]['date_rev']?>" type="date" name="date_rev_fp" id="date_rev_fp" class="form-control">
+                                                    <label for="sop_um" class="control-label col-lg-4">No. SOP :</label>
+                                                    <div class="col-sm-2">
+                                                        <input type="text" value="<?= $listdataum[0]['seksi_sop']?>" name="sop_um" class="form-control" id="sop_um" placeholder="" readonly="">
                                                     </div>
-                                                    <div onclick="reset_date_jquery()" class="btn">
-                                                    <span class="remove-date"><i class="fa fa-close fa-fw"></i></span>
+                                                    <div class="col-sm-1">-</div>
+                                                    <div class="col-sm-4">
+                                                        <input autocomplete="off" type="number" value="<?= $listdataum[0]['number_sop']?>" min="00" name="number_sop_um" value="00" class="form-control" id="nomor_sop_um" placeholder="00" >
                                                     </div>
-                                                </div>
-                                                <div class="form-group row">
-                                                    <label for="numberrev_fp" class="control-label col-lg-4">No. Revisi</label>
-                                                    <div class="col-lg-8">
-                                                        <input value="<?php echo $listdatafp[0]['number_rev']?>" min="00" type="number" name="number_rev_fp" id="number_rev-fp" class="form-control">
-                                                    </div>
+                                                    <p class="chle_number" style="display: none"><?= $listdataum[0]['number_sop']?></p>
                                                 </div>
                                             </div>
                                             <div class="col-lg-6">
                                                 <div class="form-group row">
-                                                    <label for="pic_fp" class="control-label col-lg-4">PIC Pembuat</label>
+                                                    <label for="daterev_um" class="control-label col-lg-4">Tgl. Revisi</label>
+                                                    <div class="col-lg-7" style="padding-right: 0">
+                                                        <input value="<?= $listdataum[0]['date_rev']?>" type="text" onclick="datepsfunction()" name="date_rev_um" id="date_rev_um" class="form-control date_pengSistem" data-inputmask="'alias': 'dd-mm-yyyy'">
+                                                    </div>
+                                                    <div onclick="reset_date_jquery()" class="btn">
+                                                        <span class="remove-date"><i class="fa fa-close fa-fw"></i></span>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label for="numberrev_um" class="control-label col-lg-4">No. Revisi</label>
                                                     <div class="col-lg-8">
-                                                        <select name="pic_fp" id="pic-fp" class="form-control select2 input_selectpic">
-                                                            <option value="<?= $listdatafp[0]['a'].' - '.$listdatafp[0]['pic_doc'];?>"><?= $listdatafp[0]['a'].' - '.$listdatafp[0]['pic_doc'];?></option>
+                                                        <input type="number" min="00" max="1000" value="<?= $listdataum[0]['number_rev']?>" name="number_rev_um" id="number_rev-fp" class="form-control">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label for="pic_um" class="control-label col-lg-4">PIC Pembuat</label>
+                                                    <div class="col-lg-8">
+                                                        <select name="pic_um" id="pic-um" class="form-control select2">
+                                                            <option value="<?= $listdataum[0]['a'].' - '.$listdataum[0]['pic_doc'];?>"><?= $listdataum[0]['a'].' - '.$listdataum[0]['pic_doc'];?></option>
+                                                            <?php foreach ($listorg as $org) 
+                                                            {
+                                                                echo '  <option value="'.$org['daftar_pekerja'].'">'.$org['daftar_pekerja'].'</option>';
+                                                            }
+                                                            ?>
                                                         </select>
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <label for="status_fp" class="control-label col-lg-4">Status Dokumen</label>
+                                                    <label for="status_um" class="control-label col-lg-4">Status Dokumen</label>
                                                     <div class="col-lg-8">
-                                                        <select name="status_fp" id="status-fp" class="form-control select2">
-                                                            <option><?php echo $listdatafp[0]['status_doc']?></option>
-                                                            <option value="Baru">Baru</option>
+                                                        <select name="status_um" id="status-um" class="form-control select2">
+                                                            <option><?= $listdataum[0]['status_doc']?></option>
                                                             <option value="Approval">Approval</option>
                                                             <option value="On Proses">On Proses</option>
-                                                            <option value="Cansel">Cancel</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -115,49 +130,51 @@
                                         <div class="row text-right">
                                             <a href="javascript:history.back(1)" class="btn btn-primary btn-lg btn-rect">Back</a>
                                             &nbsp;&nbsp;
-                                            <button type="button" onclick="notif_edit_flow()" data-toggle="modal" data-target="#modal-default" class="btn btn-primary btn-lg btn-rect">Save Data</button>
+                                            <button type="button" onclick="notif_edit_um()" data-toggle="modal" data-target="#modal-default" class="btn btn-primary btn-lg btn-rect">Save Data</button>
                                         </div>
                                     </div>
                                 </div>
                                     <!--/.modal -->
                                     <div class="modal fade" id="modal-default">
-                                    <div class="modal-dialog" style="width:80%;">
-                                        <div class="modal-content">
-                                        <div class="modal-header">
+                                      <div class="modal-dialog" style="width:80%;">
+                                          <div class="modal-content">
+                                          <div class="modal-header">
                                               <h4 class="modal-title"><b> Perhatian !!! </b>, Pastikan Data Benar &hellip;</h4>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
+                                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                              <span aria-hidden="true">&times;</span>
+                                              </button>
+                                          </div>
                                           <div class="modal-body">
                                           <table id="table" border="1" class="dataTable" style="width:100%">
                                                                      <thead>
                                                                         <tr>
-                                                                            <th><center>No. Dokumen</center></th>
-                                                                            <th><center>Judul Dokumen</center></th>
-                                                                            <th><center>Seksi Pengguna</center></th>
-                                                                            <th><center>Tgl.Rev.</center></th>
-                                                                            <th><center>No.Rev.</center></th>
-                                                                            <th><center>PIC</center></th>
-                                                                            <th><center>Status</center></th>
+                                                                            <th><center>No. Dokumen<center></th>
+                                                                            <th><center>Judul Dokumen<center></th>
+                                                                            <th><center>Rev.Date<center></th>
+                                                                            <th><center>No.Rev.<center></th>
+                                                                            <th><center>SOP<center></th>
+                                                                            <th><center>PIC<center></th>
+                                                                            <th><center>Seksi Pengguna<center></th>
+                                                                            <th><center>Status<center></th>
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
                                                                         <tr>
-                                                                            <td class="as"></td>
-                                                                            <td class="bs"></td>
-                                                                            <td class="cs"></td>
-                                                                            <td class="ds"></td>
-                                                                            <td class="es"></td>
-                                                                            <td class="fs"></td>
-                                                                            <td class="gs"></td>
+                                                                            <td class="am"></td>
+                                                                            <td class="bm"></td>
+                                                                            <td class="dm"></td>
+                                                                            <td class="em"></td>
+                                                                            <td class="fm"></td>
+                                                                            <td class="gm"></td>
+                                                                            <td class="hm"></td>
+                                                                            <td class="im"></td>
                                                                         </tr>
                                                                     </tbody>
                                           </table>
                                           </div>
                                         <div class="modal-footer justify-content-between">
                                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                            <button type="submit" class="btn btn-primary">Save </button>
+                                            <button type="submit" onclick="savedata()" class="btn btn-primary">Save </button>
                                         </div>
                                         </div>
                                         <!-- /.modal-content -->

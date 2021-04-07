@@ -5010,7 +5010,6 @@ $route['PengembanganSistem/excel_lkh'] = 'PengembanganSistem/Penomoran/C_Penomor
 $route['PengembanganSistem/input_lkh_ps'] = 'PengembanganSistem/Penomoran/C_Penomoran/input_lkh_proses/';
 $route['PengembanganSistem/delete_lkh/(:any)'] = 'PengembanganSistem/Penomoran/C_Penomoran/delete_lkh/$1';
 $route['PengembanganSistem/excel_masterlist'] = 'PengembanganSistem/Penomoran/C_Penomoran/excel_masterlist';
-
 //------------------------------- Dokumen Seksi ------------------------------------------------------------------
 
 $route['DokumenUnit'] = 'PengembanganSistem/Penomoran/C_Seksi';
@@ -5031,6 +5030,11 @@ $route['DokumenUnit/edit_flow/(:any)'] = 'PengembanganSistem/Penomoran/C_Seksi/e
 $route['DokumenUnit/update_flow/(:any)'] = 'PengembanganSistem/Penomoran/C_Seksi/update_flow/$1';
 $route['DokumenUnit/upload_data_flow/(:any)'] = 'PengembanganSistem/Penomoran/C_Seksi/upload_data_flow/$1';
 $route['DokumenUnit/delete_flow/(:any)'] = 'PengembanganSistem/Penomoran/C_Seksi/delete_data_flow/$1';
+//User Manual
+$route['DokumenUnit/user_manual'] = 'PengembanganSistem/Penomoran/C_Seksi/user_manual';
+$route['DokumenUnit/user_manual/(:any)'] = 'PengembanganSistem/Penomoran/C_Seksi/$1';
+$route['DokumenUnit/user_manual/(:any)/(:any)'] = 'PengembanganSistem/Penomoran/C_Seksi/$1/$2';
+$route['DokumenUnit/delete_UM/(:any)'] = 'PengembanganSistem/Penomoran/C_Seksi/delete_data_um/$1';
 
 //------------------------------- Cetak Jumlah Pekerja ------------------------------------------------------------------
 $route['MasterPekerja/Jumlahpekerja/(:any)'] = 'MasterPekerja/CetakJumlahPekerja/C_JumlahPekerja/$1';

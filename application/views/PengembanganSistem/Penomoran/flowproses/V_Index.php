@@ -68,8 +68,11 @@
                                                   </div>
                                                   <div class="form-group row">
                                                       <label for="daterev_fp" class="control-label col-lg-4">Tgl. Revisi</label>
-                                                      <div class="col-lg-8">
+                                                      <div class="col-lg-7" style="padding-right: 0">
                                                           <input type="text" required="" name="date_rev_fp" id="date_rev_fp" onclick="datepsfunction()" class="form-control date_pengSistem" data-inputmask="'alias': 'dd-mm-yyyy'">
+                                                      </div>
+                                                      <div onclick="reset_date_jquery()" class="btn">
+                                                        <span class="remove-date"><i class="fa fa-close fa-fw"></i></span>
                                                       </div>
                                                   </div>
                                               </div>
@@ -210,7 +213,7 @@
                                                 echo $hasil;
                                         }?></td>
                                         <td><?php echo $row["number_rev"];?></td>
-                                        <td><a onmouseover="link_ps(<?php echo $row['id']?>)" id="fp_lilola<?php echo $row['id']?>" data-toggle="tooltip" title="<?= $row['nomor_doc'];?>" href="<?php echo base_url('assets/upload/PengembanganSistem/fp').'/'.$row['file'];?>" target="_blank"><?php if ($row['file'] != "" ) {echo '<i class="far fa-file-pdf"> View</i>'; } ?></a>
+                                        <td><?php if ($row['file'] != "" ) {echo '<p class="btn btn-xs btn-success" onclick="link_ps('.$row['id'].')" id="fp_lilola'.$row['id'].'" kkk="'.$row["dept"].'-'.$dept.'" data-id="'.$row["file"].'='.$row['link_file'].'"><i class="fa fa-eye"> View</i></p>'; } ?></td>
                                         </td>
                                         <td><?php echo $row["pic_doc"];?></td>
                                         <td><?php echo $row["status_doc"];?></td>
