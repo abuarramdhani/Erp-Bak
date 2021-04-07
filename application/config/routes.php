@@ -5272,3 +5272,58 @@ $route['TransaksiCuttingTool'] = 'TransaksiCuttingTool/C_Master';
 $route['TransaksiCuttingTool/Monitoring'] = 'TransaksiCuttingTool/C_Master/Monitoring';
 $route['TransaksiCuttingTool/Monitoring/(:any)'] = 'TransaksiCuttingTool/C_Master/$1';
 $route['TransaksiCuttingTool/Monitoring/(:any)/(:any)'] = 'TransaksiCuttingTool/C_Master/$1/$2';
+
+//-----------------------------------Misscellaneous Management-------------------------------------------
+$route['MiscellaneousKasie'] 						= 'MiscellaneousMng/Kasie_Pengorder/C_Index';
+$route['MiscellaneousKasie/Request']					= 'MiscellaneousMng/Kasie_Pengorder/C_RequestKasie';
+$route['MiscellaneousKasie/Request/(:any)']				= 'MiscellaneousMng/Kasie_Pengorder/C_RequestKasie/$1';
+$route['MiscellaneousKasie/Request/(:any)/(:any)']		= 'MiscellaneousMng/Kasie_Pengorder/C_RequestKasie/$1/$2';
+$route['MiscellaneousKasie/Request/(:any)/(:any)/(:any)']	= 'MiscellaneousMng/Kasie_Pengorder/C_RequestKasie/$1/$2/$3';
+$route['MiscellaneousKasie/Request/(:any)/(:any)/(:any)/(:any)']	= 'MiscellaneousMng/Kasie_Pengorder/C_RequestKasie/$1/$2/$3/$4';
+
+$route['MiscellaneousCabang'] 							= 'MiscellaneousMng/Kepala_Cabang/C_Index';
+$route['MiscellaneousCabang/Request']					= 'MiscellaneousMng/Kepala_Cabang/C_RequestCabang';
+$route['MiscellaneousCabang/Request/(:any)']			= 'MiscellaneousMng/Kepala_Cabang/C_RequestCabang/$1';
+$route['MiscellaneousCabang/Request/(:any)/(:any)']		= 'MiscellaneousMng/Kepala_Cabang/C_RequestCabang/$1/$2';
+$route['MiscellaneousCabang/Request/(:any)/(:any)/(:any)']	= 'MiscellaneousMng/Kepala_Cabang/C_RequestCabang/$1/$2/$3';
+
+$route['MiscellaneousAskanit'] 								= 'MiscellaneousMng/Askanit_Pengorder/C_Index';
+$route['MiscellaneousAskanit/Request']						= 'MiscellaneousMng/Askanit_Pengorder/C_RequestAskanit';
+$route['MiscellaneousAskanit/Request/(:any)']				= 'MiscellaneousMng/Askanit_Pengorder/C_RequestAskanit/$1';
+$route['MiscellaneousAskanit/Request/(:any)/(:any)']		= 'MiscellaneousMng/Askanit_Pengorder/C_RequestAskanit/$1/$2';
+$route['MiscellaneousAskanit/Request/(:any)/(:any)/(:any)']	= 'MiscellaneousMng/Askanit_Pengorder/C_RequestAskanit/$1/$2/$3';
+
+$route['MiscellaneousPPC'] 								= 'MiscellaneousMng/Kasie_PPC/C_Index';
+$route['MiscellaneousPPC/Request']						= 'MiscellaneousMng/Kasie_PPC/C_RequestPPC';
+$route['MiscellaneousPPC/Request/(:any)']				= 'MiscellaneousMng/Kasie_PPC/C_RequestPPC/$1';
+$route['MiscellaneousPPC/Request/(:any)/(:any)']		= 'MiscellaneousMng/Kasie_PPC/C_RequestPPC/$1/$2';
+$route['MiscellaneousPPC/Request/(:any)/(:any)/(:any)']	= 'MiscellaneousMng/Kasie_PPC/C_RequestPPC/$1/$2/$3';
+
+$route['MiscellaneousKadep'] 							= 'MiscellaneousMng/Kadepprod/C_Index';
+$route['MiscellaneousKadep/Request']					= 'MiscellaneousMng/Kadepprod/C_RequestKadep';
+$route['MiscellaneousKadep/Request/(:any)']				= 'MiscellaneousMng/Kadepprod/C_RequestKadep/$1';
+$route['MiscellaneousKadep/Request/(:any)/(:any)']		= 'MiscellaneousMng/Kadepprod/C_RequestKadep/$1/$2';
+$route['MiscellaneousKadep/Request/(:any)/(:any)/(:any)']	= 'MiscellaneousMng/Kadepprod/C_RequestKadep/$1/$2/$3';
+
+$route['MiscellaneousCosting'] 								= 'MiscellaneousMng/Costing/C_Index';
+$route['MiscellaneousCosting/Request']						= 'MiscellaneousMng/Costing/C_RequestCosting';
+$route['MiscellaneousCosting/Request/(:any)']				= 'MiscellaneousMng/Costing/C_RequestCosting/$1';
+$route['MiscellaneousCosting/Request/(:any)/(:any)']		= 'MiscellaneousMng/Costing/C_RequestCosting/$1/$2';
+$route['MiscellaneousCosting/Request/(:any)/(:any)/(:any)']	= 'MiscellaneousMng/Costing/C_RequestCosting/$1/$2/$3';
+
+
+$route['MiscellaneousCosting/Input']						= 'MiscellaneousMng/Costing/C_InputCosting';
+$route['MiscellaneousCosting/Input/(:any)']					= 'MiscellaneousMng/Costing/C_InputCosting/$1';
+$route['MiscellaneousCosting/Input/(:any)/(:any)']			= 'MiscellaneousMng/Costing/C_InputCosting/$1/$2';
+$route['MiscellaneousCosting/Input/(:any)/(:any)/(:any)']	= 'MiscellaneousMng/Costing/C_InputCosting/$1/$2/$3';
+
+$route['MiscellaneousCosting/SettingData']					= 'MiscellaneousMng/Costing/C_SettingData';
+$route['MiscellaneousCosting/SettingData/(:any)']				= 'MiscellaneousMng/Costing/C_SettingData/$1';
+$route['MiscellaneousCosting/SettingData/(:any)/(:any)']		= 'MiscellaneousMng/Costing/C_SettingData/$1/$2';
+$route['MiscellaneousCosting/SettingData/(:any)/(:any)/(:any)']	= 'MiscellaneousMng/Costing/C_SettingData/$1/$2/$3';
+
+$route['MiscellaneousAkt'] 								= 'MiscellaneousMng/Askanit_Akt/C_Index';
+$route['MiscellaneousAkt/Request']						= 'MiscellaneousMng/Askanit_Akt/C_RequestAkt';
+$route['MiscellaneousAkt/Request/(:any)']				= 'MiscellaneousMng/Askanit_Akt/C_RequestAkt/$1';
+$route['MiscellaneousAkt/Request/(:any)/(:any)']		= 'MiscellaneousMng/Askanit_Akt/C_RequestAkt/$1/$2';
+$route['MiscellaneousAkt/Request/(:any)/(:any)/(:any)']	= 'MiscellaneousMng/Askanit_Akt/C_RequestAkt/$1/$2/$3';
