@@ -77,7 +77,9 @@ class C_Arsip extends CI_Controller
 		$getdata = array();
 		for ($i= $_POST['start']; $i < $length ; $i++) { 
 			$coly = $this->M_packing->cekPacking($val[$i]['NO_DOKUMEN']);
-			$val[$i]['COLY'] = count($coly);
+			$val[$i]['COLY'] = count($coly); 
+			$coly2 = $this->M_arsip->cekColy($val[$i]['NO_DOKUMEN']);
+			$val[$i]['COLY'] += count($coly2);
 			// $tgl 	= $this->M_arsip->dataSPB($val[$i]['NO_DOKUMEN']);
 			// $val[$i]['MTRL'] = $tgl[0]['MTRL'];
 			array_push($getdata, $val[$i]);
@@ -139,9 +141,15 @@ class C_Arsip extends CI_Controller
 			$data['user_arsip'] = 'user_lain';
 		}
 
-		$data['data'] = $this->M_packing->cekPacking($data['nospb']);
+		$coly_baru = $this->M_arsip->cekColy($data['nospb']);
+		if (empty($coly_baru)) {
+			$data['data'] = $this->M_packing->cekPacking($data['nospb']);
+			$this->load->view('KapasitasGdSparepart/V_ModalArsipColy', $data);
+		}else {
+			$data['data'] = $coly_baru;
+			$this->load->view('KapasitasGdSparepart/V_ModalArsipColy2', $data);
+		}
 		
-		$this->load->view('KapasitasGdSparepart/V_ModalArsipColy', $data);
 		// echo "<pre>";print_r($cek);exit();
 	}
 
@@ -154,11 +162,20 @@ class C_Arsip extends CI_Controller
 		for ($i= 0; $i < count($val) ; $i++) { 
 			$coly = $this->M_packing->cekPacking($val[$i]['NO_DOKUMEN']);
 			$val[$i]['COLY'] = count($coly);
+			$coly2 = $this->M_arsip->cekColy($val[$i]['NO_DOKUMEN']);
+			$val[$i]['COLY'] += count($coly2);
 			array_push($getdata, $val[$i]);
 		}
 		// echo "<pre>";print_r($val);exit();
 		$data['data'] = $getdata;
 		$this->load->view('KapasitasGdSparepart/V_TblArsip', $data);
+	}
+
+	public function saveColly2(){
+		$no_spb = $this->input->post('no_spb');
+		$no_colly = $this->input->post('no_colly');
+		$berat = $this->input->post('berat');
+		$this->M_arsip->saveColly2($no_spb, $no_colly, $berat);
 	}
 
 }
