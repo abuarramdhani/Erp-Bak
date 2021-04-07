@@ -157,7 +157,7 @@ public function assign_order($term){
           AND vsu.user_id = su.user_id
           AND sua.user_group_menu_id = sugm.user_group_menu_id
           AND smod.module_id= sugm.module_id
-          AND sugm.user_group_menu_id = 2801 --id Miscellaneous Kepala Seksi Utama
+          AND sugm.user_group_menu_id = 2801 -- 2790 dev, id Miscellaneous Kepala Seksi Utama
           AND su.user_name like'%$term%'";
   $query = $this->db->query($sql);
   return $query->result_array();
@@ -174,7 +174,7 @@ public function assign_cabang($term){
           AND vsu.user_id = su.user_id
           AND sua.user_group_menu_id = sugm.user_group_menu_id
           AND smod.module_id= sugm.module_id
-          AND sugm.user_group_menu_id = 2806 --id Miscellaneous Kepala Cabang
+          AND sugm.user_group_menu_id = 2806 -- 2823 dev, id Miscellaneous Kepala Cabang
           AND su.user_name like'%$term%'";
   $query = $this->db->query($sql);
   return $query->result_array();
@@ -191,7 +191,7 @@ public function assign_ppc($term){
           AND vsu.user_id = su.user_id
           AND sua.user_group_menu_id = sugm.user_group_menu_id
           AND smod.module_id= sugm.module_id
-          AND sugm.user_group_menu_id = 2802 --id Miscellaneous Seksi PPC
+          AND sugm.user_group_menu_id = 2802 -- 2791 dev,id Miscellaneous Seksi PPC
           AND su.user_name like'%$term%'";
   $query = $this->db->query($sql);
   return $query->result_array();
@@ -292,8 +292,8 @@ public function getItemCostOPM($item){
           AND ccd.organization_id = msib.organization_id
           AND ccd.period_id = gps.period_id
           AND ccd.cost_type_id = cmm.cost_type_id
-          AND TRUNC (ADD_MONTHS (:p_tgl_input, -1)) >= gps.start_date
-          AND TRUNC (ADD_MONTHS (:p_tgl_input, -1)) <= gps.end_date
+          AND TRUNC (ADD_MONTHS (sysdate, -1)) >= gps.start_date
+          AND TRUNC (ADD_MONTHS (sysdate, -1)) <= gps.end_date
           GROUP BY msib.segment1, msib.description, ccd.cost_type_id,
             cmm.cost_mthd_code";
   $query = $this->oracle->query($sql);
