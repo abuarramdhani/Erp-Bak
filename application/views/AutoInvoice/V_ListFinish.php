@@ -18,7 +18,9 @@
                 <tbody>
                     <?php $angka = 1;
                     foreach ($DoFinish as $key => $red) {
-                        if ($red['AMMOUNT_INVOICE'] != $red['AMMOUNT_RDO']) {
+                        $inv_amm = number_format($red['AMMOUNT_INVOICE'], 0);
+                        $rdo_amm = number_format($red['AMMOUNT_RDO'], 0);
+                        if ($inv_amm != $rdo_amm) {
                             $bg = 'bg-warning';
                         } else {
                             $bg = '';
@@ -32,8 +34,8 @@
                                 <td class="text-center"><?= $red['OOH_ORDER_NUMBER'] ?></td>
                                 <td class="text-center"><?= $red['NAME'] ?></td>
                                 <td class="text-center"><?= $red['TRX_NUMBER'] ?></td>
-                                <td class="text-center"><?= number_format($red['AMMOUNT_INVOICE'], 0) ?></td>
-                                <td class="text-center"><?= number_format($red['AMMOUNT_RDO'], 0) ?></td>
+                                <td class="text-center"><?= $inv_amm ?></td>
+                                <td class="text-center"><?= $rdo_amm ?></td>
                                 <td class="text-center">
                                     <?php if ($red['APPROVAL_FLAG'] == 'Y') { ?>
                                         <a class="btn btn-danger btn-sm" target="_blank" href="<?= base_url('AutoInvoice/FinishInvoice/CetakInvoice/' . $red['CETAK_INVOICE_REQ_ID']) ?>">Cetak Invoice</a>
@@ -68,7 +70,9 @@
                 <tbody>
                     <?php $angka = 1;
                     foreach ($DoFinish as $key => $red) {
-                        if ($red['AMMOUNT_INVOICE'] != $red['AMMOUNT_RDO']) {
+                        $inv_amm = number_format($red['AMMOUNT_INVOICE'], 0);
+                        $rdo_amm = number_format($red['AMMOUNT_RDO'], 0);
+                        if ($inv_amm != $rdo_amm) {
                             $bg = 'bg-warning';
                         } else {
                             $bg = '';
@@ -80,8 +84,8 @@
                             <td class="text-center"><?= $red['OOH_ORDER_NUMBER'] ?></td>
                             <td class="text-center"><?= $red['NAME'] ?></td>
                             <td class="text-center"><?= $red['TRX_NUMBER'] ?></td>
-                            <td class="text-center"><?= number_format($red['AMMOUNT_INVOICE'], 0) ?></td>
-                            <td class="text-center"><?= number_format($red['AMMOUNT_RDO'], 0) ?></td>
+                            <td class="text-center"><?= $inv_amm ?></td>
+                            <td class="text-center"><?= $rdo_amm ?></td>
                             <td class="text-center">
                                 <?php if ($red['APPROVAL_FLAG'] == 'Y') { ?>
                                     <a class="btn btn-danger btn-sm" target="_blank" href="<?= base_url('AutoInvoice/FinishInvoice/CetakInvoice/' . $red['CETAK_INVOICE_REQ_ID']) ?>">Cetak Invoice</a>
