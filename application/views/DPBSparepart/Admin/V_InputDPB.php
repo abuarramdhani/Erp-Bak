@@ -71,12 +71,13 @@
                             <label for="" class="col-sm-2 control-label">Jenis DPB</label>
 
                             <div class="col-sm-10">
-                                <select name="" id="" class="form-control select2 jenisDPS" style="width:250px; height:120px;">
+                                <select name="" id="" class="form-control select2 jenisDPS" data-placeholder="Jenis DPB" style="width:250px; height:120px;">
                                     <option></option>
                                     <option value="URGENT">URGENT</option>
                                     <option value="BEST AGRO">BEST AGRO</option>
                                     <option value="NORMAL">NORMAL</option>
                                     <option value="ECERAN">ECERAN</option>
+                                    <option value="E-COMMERCE">E-COMMERCE</option>
                                 </select>
                             </div>
                         </div>
