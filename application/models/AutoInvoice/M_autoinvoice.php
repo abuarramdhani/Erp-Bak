@@ -54,6 +54,8 @@ class M_autoinvoice extends CI_Model
         ,wda.DELIVERY_ID
         ,null
         ,null
+        ,null
+        ,null
         FROM
         wsh_delivery_details wdd
         ,WSH_DELIVERY_ASSIGNMENTS WDA
