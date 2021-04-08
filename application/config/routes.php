@@ -3831,6 +3831,9 @@ $route['PerhitunganUM'] 						= 'PerhitunganUM/C_Index';
 $route['PerhitunganUM/Hitung'] 					= 'PerhitunganUM/C_Hitung';
 $route['PerhitunganUM/Hitung/(:any)'] 			= 'PerhitunganUM/C_Hitung/$1';
 $route['PerhitunganUM/Hitung/(:any)/(:any)'] 	= 'PerhitunganUM/C_Hitung/$1/$2';
+$route['PerhitunganUM/HitungOPM'] 					= 'PerhitunganUM/C_HitungOPM';
+$route['PerhitunganUM/HitungOPM/(:any)'] 			= 'PerhitunganUM/C_HitungOPM/$1';
+$route['PerhitunganUM/HitungOPM/(:any)/(:any)'] 	= 'PerhitunganUM/C_HitungOPM/$1/$2';
 
 //---------------------------------------------- Flow Process Destination -------------------------------------------//
 
