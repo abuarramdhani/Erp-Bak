@@ -295,33 +295,43 @@ function terima_ajx() {
 }
 
 function btn_sdhterima(id_kirim, line_num){
-    let status = 2;
-    $.ajax({
-        url: baseurl + 'MonitoringLppbQC/TerimaLppb/sdhTerima',
-        type: 'POST',
-        dataType: 'JSON',
-        data: {
-            id_kirim: id_kirim,
-            line_num: line_num,
-            status: status,
-        },
-        beforeSend: function() {
-            Swal.showLoading()
-        },
-        success: function(result) {
-            Swal.close()
-            console.log(result);
-            if (result === 1) {
-              window.location.reload();
-            }else{
-                Swal.fire({
-                    type: 'error',
-                    title: 'Terjadi Kesalahan, Coba kembali...',
-                })
+    let status = 2,
+        user = $('#user').val();
+    // console.log(status, user)
+    // if (user != 'K2077' && user != 'K1070' && user != 'T0008') {
+    if (user != 'K2077' && user != 'K1070') {
+        Swal.fire({
+            type: 'error',
+            title: 'Anda tidak memiliki hak akses',
+        })
+    }else{
+        $.ajax({
+            url: baseurl + 'MonitoringLppbQC/TerimaLppb/sdhTerima',
+            type: 'POST',
+            dataType: 'JSON',
+            data: {
+                id_kirim: id_kirim,
+                line_num: line_num,
+                status: status,
+            },
+            beforeSend: function() {
+                Swal.showLoading()
+            },
+            success: function(result) {
+                Swal.close()
+                console.log(result);
+                if (result === 1) {
+                    window.location.reload();
+                }else{
+                    Swal.fire({
+                        type: 'error',
+                        title: 'Terjadi Kesalahan, Coba kembali...',
+                    })
+                }
+            },
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                console.error();
             }
-        },
-            error: function(XMLHttpRequest, textStatus, errorThrown) {
-            console.error();
-        }
-    })
+        })
+    }
 }
