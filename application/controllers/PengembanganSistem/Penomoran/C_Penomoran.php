@@ -122,6 +122,9 @@ class C_Penomoran extends CI_Controller
 
 	public function inputdata_fp()
 	{
+		$kodeakses = $this->session->kodesie;
+		$parameter = $this->M_pengsistem->find($kodeakses);
+
 		$doc = 'FP';
 		$judul = $this->input->post('judul_fp');
 		$seksi = $this->input->post('seksi_fp');
@@ -159,6 +162,8 @@ class C_Penomoran extends CI_Controller
 						'seksi_full'		=> $seksi_full,
 						'nomor_flow'		=> $nomor,
 						'date_input'		=> $date_input,
+						'user'				=> $this->session->employee,
+						'dept'				=> $parameter[0]['dept'],
 					);
 		}else{
 			$data		 = array(
@@ -174,6 +179,8 @@ class C_Penomoran extends CI_Controller
 						'seksi_full'		=> $seksi_full,
 						'nomor_flow'		=> '001',
 						'date_input'		=> $date_input,
+						'user'				=> $this->session->employee,
+						'dept'				=> $parameter[0]['dept'],
 						);
 		}
 		
@@ -206,6 +213,9 @@ class C_Penomoran extends CI_Controller
 
 	public function update_flow($id)
 	{
+		$kodeakses = $this->session->kodesie;
+		$parameter = $this->M_pengsistem->find($kodeakses);
+
 		$number_flow = $this->input->post('nomor_doc');
 			$kodepisah = explode('-', $number_flow);
 			$doc= $kodepisah[0];
@@ -240,6 +250,8 @@ class C_Penomoran extends CI_Controller
 					'seksi_full'		=> $seksi_full,
 					'nomor_flow'		=> $kode,
 					'date_input'		=> $date_update,
+					'user'				=> $this->session->employee,
+					'dept'				=> $parameter[0]['dept'],
 				);
 				
 		$this->M_pengsistem->update_flow_fp($data,$id);
@@ -290,7 +302,7 @@ class C_Penomoran extends CI_Controller
 			$params['data'] = 'http://erp.quick.com/assets/upload/PengembanganSistem/fp/'.$nama_baru;
 			$params['level'] = 'H';
 			$params['size'] = 8;
-			$params['savename'] =FCPATH."assets/upload/PengembanganSistem/fp/qrcord/".$qr_image;
+			$params['savename'] =FCPATH."assets/upload/PengembanganSistem/fp/qrcode/".$qr_image;
 			$this->ciqrcode->generate($params);
 			//end
 
@@ -471,6 +483,9 @@ class C_Penomoran extends CI_Controller
 
 	public function update_copwi($id)
   	{
+		$kodeakses = $this->session->kodesie;
+		$parameter = $this->M_pengsistem->find($kodeakses);
+
 		$number_doc_cw = $this->input->post('nomor_doc');
 			$kode_cop_wi = explode('-', $number_doc_cw);
 			$cop_wi= $kode_cop_wi[0];
@@ -510,7 +525,9 @@ class C_Penomoran extends CI_Controller
 					'number_rev'		=> $number_rev_doc,
 					'number_sop'		=> $nomor_sop_doc,
 					'jenis_doc_cw'		=> $doc_cw,
-					'nomor_copwi'		=> $number_kode_doc
+					'nomor_copwi'		=> $number_kode_doc,
+					'user'				=> $this->session->employee,
+					'dept'				=> $parameter[0]['dept'],
 					);
 					
 		$this->M_pengsistem->update_cope($data,$id);
@@ -652,6 +669,9 @@ class C_Penomoran extends CI_Controller
 
 	public function input_data_um()
 	{
+		$kodeakses = $this->session->kodesie;
+		$parameter = $this->M_pengsistem->find($kodeakses);
+
 		$judul_um = $this->input->post('judul_um');
 		$item_doc_um = $this->input->post('doc_um');
 		$doc = 'User Manual';
@@ -697,7 +717,9 @@ class C_Penomoran extends CI_Controller
 						'status_doc'		=> $status_um,
 						'date_input'		=> $date_input,
 						'nomor_um'		=> $nomor,
-						'a'					=> $pic_id
+						'a'					=> $pic_id,
+						'user'				=> $this->session->employee,
+						'dept'				=> $parameter[0]['dept'],
 					);
 		}else{
 			$data		 = array(
@@ -714,7 +736,9 @@ class C_Penomoran extends CI_Controller
 						'status_doc'		=> $status_um,
 						'date_input'		=> $date_input,
 						'nomor_um'			=> '001',
-						'a'					=> $pic_id
+						'a'					=> $pic_id,
+						'user'				=> $this->session->employee,
+						'dept'				=> $parameter[0]['dept'],
 						);
 		}
 		
@@ -747,6 +771,9 @@ class C_Penomoran extends CI_Controller
 
 	public function update_um($id)
   	{
+		$kodeakses = $this->session->kodesie;
+		$parameter = $this->M_pengsistem->find($kodeakses);
+
 		$number_doc_um = $this->input->post('number_doc_um');
 			$kode_um = explode('-', $number_doc_um);
 			$um= $kode_um[0];
@@ -787,6 +814,8 @@ class C_Penomoran extends CI_Controller
 						'date_update'		=> $date_update,
 						'nomor_um'			=> $number_kode_doc,
 						'a'					=> $pic_id,
+						'user'				=> $this->session->employee,
+						'dept'				=> $parameter[0]['dept'],
 					);
 		$this->M_pengsistem->update_data_um($data,$id);
 		redirect('PengembanganSistem/Usermanual');
