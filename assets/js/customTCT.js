@@ -41,15 +41,15 @@ $('.select2-tct').select2({
 })
 
   if ($('#kondisi-tct').val() == "monitoring transaksi bppct") {
-    // Hari Tanggal format Indonesia    
-    let tanggalq = new Date();
-    if (tanggalq.getTimezoneOffset() == 0) (a=tanggalq.getTime() + ( 7 *60*60*1000))
-    else (a=tanggalq.getTime());
-    tanggalq.setTime(a);
-    let tahun_tct= tanggalq.getFullYear ();
-    let hari_tct= tanggalq.getDay ();
-    let bulan_tct= tanggalq.getMonth ();
-    let tanggal_tct= tanggalq.getDate ();
+    // Hari Tanggal format Indonesia
+    let tanggal_tct = new Date();
+    if (tanggal_tct.getTimezoneOffset() == 0) (a=tanggal_tct.getTime() + ( 7 *60*60*1000))
+    else (a=tanggal_tct.getTime());
+    tanggal_tct.setTime(a);
+    let tahun_tct= tanggal_tct.getFullYear ();
+    let hari_tct= tanggal_tct.getDay ();
+    let bulan_tct= tanggal_tct.getMonth ();
+    let tanggal_tctq= tanggal_tct.getDate ();
     let hariarray_tct=new Array("Minggu,",
                             "Senin,",
                             "Selasa,",
@@ -73,7 +73,7 @@ $('.select2-tct').select2({
     //                                                       +tanggal+" "
     //                                                       +bulanarray[bulan]+" "
     //                                                       +tahun;
-  $('#tanggal_server').text(hariarray_tct[hari_tct]+" "+tanggal_tct+" "+bulanarray_tct[bulan_tct]+" "+tahun_tct);
+  $('#tanggal_server').text(hariarray_tct[hari_tct]+" "+tanggal_tctq+" "+bulanarray_tct[bulan_tct]+" "+tahun_tct);
 
     // Jam Aktif
     let serverClock_tct = jQuery("#jam_aktif");
@@ -81,6 +81,7 @@ $('.select2-tct').select2({
       showServerTime(serverClock_tct, serverClock_tct.text());
     }
   }
+
   function showServerTime(obj, time) {
     let parts_tct = time.split(":"), newTime = new Date();
 
@@ -153,7 +154,7 @@ $('.select2-tct').on('change', function () {
       success: function (result) {
         $('#seksi-tct').val(result[0].SEKSI_PENGEBON);
         $('#mesin-tct').val(result[0].NO_MESIN);
-        console.log(result);
+        // console.log(result);
       },
       error: function (XMLHttpRequest, textStatus, errorThrown) {
         console.error();
@@ -172,6 +173,7 @@ $('.select2-tct').on('change', function () {
 // });
 
   // Fungsi untuk filter
+  let cari_tct = null;
   const filter_tct = () => {
     // Mengambil nilai dari daterangepicker
     // Untuk pemisah antara tanggal 1 dan tanggal 2 ada di model
@@ -181,7 +183,12 @@ $('.select2-tct').on('change', function () {
     let seksi = $('#seksi-tct').val();
     let mesin = $('#mesin-tct').val();
     let trans_type = $('#trans_type').val();
-  $.ajax({
+
+    if (cari_tct != null) {
+      cari_tct.abort();
+    }
+
+  cari_tct = $.ajax({
       url: baseurl + 'TransaksiCuttingTool/Monitoring/getFilter',
        type: 'POST',
        // dataType: 'JSON',
@@ -215,7 +222,7 @@ $('.select2-tct').on('change', function () {
         }
       },
       error: function(XMLHttpRequest, textStatus, errorThrown) {
-      swalTCTLarge('error', textStatus)
+      // swalTCTLarge('error', textStatus)
        console.error();
       }
     })
