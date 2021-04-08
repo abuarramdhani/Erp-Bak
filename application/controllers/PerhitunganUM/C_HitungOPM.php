@@ -15,7 +15,7 @@ class C_HitungOPM extends CI_Controller {
 		$this->load->helper('html');
 		$this->load->library('session');
 		$this->load->model('M_index');
-		$this->load->model('PerhitunganUM/M_hitungOPM');
+		$this->load->model('PerhitunganUM/M_hitungopm');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->library('form_validation');
 		$this->load->library('csvimport');
@@ -57,7 +57,7 @@ class C_HitungOPM extends CI_Controller {
     function RoutClass(){
 		$term = $this->input->get('term',TRUE);
 		$term = strtoupper($term);
-		$data = $this->M_hitungOPM->routclass($term);
+		$data = $this->M_hitungopm->routclass($term);
 		echo json_encode($data);
     }
 
@@ -68,8 +68,8 @@ class C_HitungOPM extends CI_Controller {
 		$data['routclass'] 	= $routclass; 
         $data['planopm'] 	= $planopm; 
         
-		$data['value'] = $this->M_hitungOPM->dataPUMopm($routclass, $planopm);
-		$stock = $this->M_hitungOPM->stockawalopm($routclass, $planopm);
+		$data['value'] = $this->M_hitungopm->dataPUMopm($routclass, $planopm);
+		$stock = $this->M_hitungopm->stockawalopm($routclass, $planopm);
 		// echo "<pre>"; print_r($data['value']);exit();
 		
 		$i=0;
