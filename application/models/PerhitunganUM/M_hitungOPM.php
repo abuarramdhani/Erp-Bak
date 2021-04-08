@@ -159,7 +159,7 @@
         AND fmd.line_type = 1
         AND fmd.inventory_item_id = msib.inventory_item_id
         AND ffm.owner_organization_id = msib.organization_id
-        AND gor.resources = 'POTAS TAKISAWA'
+        -- AND gor.resources = 'POTAS TAKISAWA'
    ORDER BY xsrd.value_constant,
             kdmro.no_mesin,
             kdmro.tag_number,
