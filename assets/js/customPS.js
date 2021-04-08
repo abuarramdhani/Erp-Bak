@@ -174,7 +174,7 @@ function link_ps(id) {
 		}).then(function(isConfirm) {
 			if (isConfirm.value === true && link[1] !== "") {
 				Swal.fire({
-					imageUrl: baseurl+'assets/upload/PengembanganSistem/fp/qrcode/'+link[0]+'.png',
+					imageUrl: baseurl+'assets/upload/PengembanganSistem/fp/'+link[0]+'.png',
 					text: 'Scan QR code barcode!',
 				});
 			}else if (isConfirm.dismiss === "cancel" && link[1] !== "") {
@@ -1148,7 +1148,7 @@ function link_um(id) {
 		}).then(function(isConfirm) {
 			if (isConfirm.value === true && link[1] !== "") {
 				Swal.fire({
-					imageUrl: baseurl+'assets/upload/PengembanganSistem/copwi/qrcop/'+link[0]+'.png',
+					imageUrl: baseurl+'assets/upload/PengembanganSistem/um/'+link[0]+'.png',
 					text: 'Scan QR code barcode!',
 				});
 			}else if (isConfirm.dismiss === "cancel" && link[1] !== "") {
