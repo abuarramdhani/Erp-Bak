@@ -172,6 +172,16 @@ $(document).ready(function () {
                     $(".alamatDSP").val(resp[0]["ALAMAT_SO"]);
                   }
                 }
+                if (resp[0]["ORG_ID"] == null) {
+                  $(".org_idd").val("");
+                } else {
+                  $(".org_idd").val(resp[0]["ORG_ID"]);
+                }
+                if (resp[0]["SUBINV"] == null) {
+                  $(".subinvv").val("");
+                } else {
+                  $(".subinvv").val(resp[0]["SUBINV"]);
+                }
                 if (resp[0]["ALAMAT_KIRIM"] == null) {
                   // $(".alamatkirimDSP").val(" - ");
                 } else {
@@ -281,77 +291,78 @@ $(document).ready(function () {
                     $(".inputOPKDSP").val(resp[0]["OPK"]);
                   }
                 }
-              },
-            });
+                var org = resp[0]["ORG_ID"];
+                var subinv = resp[0]["SUBINV"];
+                $.ajax({
+                  type: "POST",
+                  url: baseurl + "DPBSparepart/Admin/listBarang",
+                  data: { noDPB, org, subinv },
+                  success: function (response) {
+                    $(".btnCrateDPBDPS").css("display", "block");
+                    $(".noDODSP").removeAttr("readonly");
+                    $(".loadingSearchDODSP").css("display", "none");
 
-            $.ajax({
-              type: "POST",
-              url: baseurl + "DPBSparepart/Admin/listBarang",
-              data: { noDPB },
-              success: function (response) {
-                $(".btnCrateDPBDPS").css("display", "block");
-                $(".noDODSP").removeAttr("readonly");
-                $(".loadingSearchDODSP").css("display", "none");
+                    $(".tempatTabelDPS").html(response);
+                    $(".tblListBarangDPS").DataTable();
 
-                $(".tempatTabelDPS").html(response);
-                $(".tblListBarangDPS").DataTable();
+                    function cekSisaQty() {
+                      // Cek jika ada sisa yang minus
+                      let allocate = $(".tempatTabelDPS tbody tr")
+                        .toArray()
+                        .map((e) => $(e).find(".allocateQty").html());
 
-                function cekSisaQty() {
-                  // Cek jika ada sisa yang minus
-                  let allocate = $(".tempatTabelDPS tbody tr")
-                    .toArray()
-                    .map((e) => $(e).find(".allocateQty").html());
+                      let sisa = allocate.filter((a) => a < 0);
 
-                  let sisa = allocate.filter((a) => a < 0);
+                      // Cek jika ada input yang masih kosong
+                      let kosong = $(".tempatTabelDPS tbody tr")
+                        .toArray()
+                        .map((e) => $(e).find(".noReqQty").val());
 
-                  // Cek jika ada input yang masih kosong
-                  let kosong = $(".tempatTabelDPS tbody tr")
-                    .toArray()
-                    .map((e) => $(e).find(".noReqQty").val());
+                      // console.log(`sisa yang minus : ${sisa.length}`);
+                      // console.log(`input kosong : ${kosong.includes("")}`);
 
-                  // console.log(`sisa yang minus : ${sisa.length}`);
-                  // console.log(`input kosong : ${kosong.includes("")}`);
+                      if (kosong.includes("") || sisa.length > 0) {
+                        $(".btnCrateDPBDPS").prop("disabled", true);
+                      } else {
+                        $(".btnCrateDPBDPS").prop("disabled", false);
+                      }
+                    }
+                    cekSisaQty();
 
-                  if (kosong.includes("") || sisa.length > 0) {
-                    $(".btnCrateDPBDPS").prop("disabled", true);
-                  } else {
-                    $(".btnCrateDPBDPS").prop("disabled", false);
-                  }
-                }
-                cekSisaQty();
+                    // Jika input kosong tampil spbQty
+                    $(".noReqQty").focus(function () {
+                      let spbQty = parseInt($(this).parent().prev().html());
+                      let atrQty = parseInt($(this).parent().next().html());
+                      let sisaQty = $(this).parent().next().next();
 
-                // Jika input kosong tampil spbQty
-                $(".noReqQty").focus(function () {
-                  let spbQty = parseInt($(this).parent().prev().html());
-                  let atrQty = parseInt($(this).parent().next().html());
-                  let sisaQty = $(this).parent().next().next();
+                      if (this.value == 0) {
+                        this.value = spbQty;
+                        sisaQty.html(parseInt(atrQty) - parseInt(this.value));
+                      } else {
+                        sisaQty.html(parseInt(atrQty) - parseInt(this.value));
+                      }
+                      cekSisaQty();
+                    });
 
-                  if (this.value == 0) {
-                    this.value = spbQty;
-                    sisaQty.html(parseInt(atrQty) - parseInt(this.value));
-                  } else {
-                    sisaQty.html(parseInt(atrQty) - parseInt(this.value));
-                  }
-                  cekSisaQty();
-                });
+                    // Jika mengubah nilai reqQty
+                    $(".noReqQty").keyup(function () {
+                      let spbQty = parseInt($(this).parent().prev().html());
+                      let atrQty = parseInt($(this).parent().next().html());
+                      let sisaQty = $(this).parent().next().next();
 
-                // Jika mengubah nilai reqQty
-                $(".noReqQty").keyup(function () {
-                  let spbQty = parseInt($(this).parent().prev().html());
-                  let atrQty = parseInt($(this).parent().next().html());
-                  let sisaQty = $(this).parent().next().next();
+                      if (this.value == 0) {
+                        sisaQty.html("");
+                      } else {
+                        sisaQty.html(parseInt(atrQty) - parseInt(this.value));
+                      }
 
-                  if (this.value == 0) {
-                    sisaQty.html("");
-                  } else {
-                    sisaQty.html(parseInt(atrQty) - parseInt(this.value));
-                  }
-
-                  if (this.value > spbQty) {
-                    this.value = spbQty;
-                    sisaQty.html(parseInt(atrQty) - parseInt(this.value));
-                  }
-                  cekSisaQty();
+                      if (this.value > spbQty) {
+                        this.value = spbQty;
+                        sisaQty.html(parseInt(atrQty) - parseInt(this.value));
+                      }
+                      cekSisaQty();
+                    });
+                  },
                 });
               },
             });
@@ -368,6 +379,8 @@ $(document).ready(function () {
     var keterangan = $(".keteranganDPS").val();
     var ekspedisi = $(".ekspedisiDSP").val();
     var alamat_kir = $(".alamatkirimDSP").val();
+    var org = $(".org_idd").val();
+    var subinv = $(".subinvv").val();
 
     if (forward == null || forward == "") {
       swal.fire({
@@ -388,7 +401,7 @@ $(document).ready(function () {
       $.ajax({
         type: "POST",
         url: baseurl + "DPBSparepart/Admin/cekStatusLine",
-        data: { noDPB },
+        data: { noDPB, org, subinv },
         dataType: "JSON",
         success: function (response) {
           if (response[0]["HASIL_LINE"] == "0") {
@@ -413,6 +426,8 @@ $(document).ready(function () {
                 lines,
                 ekspedisi,
                 alamat_kirim,
+                org,
+                subinv,
               },
               success: function (response) {
                 swal.close();

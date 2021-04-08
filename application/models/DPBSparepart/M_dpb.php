@@ -111,7 +111,7 @@ class M_dpb extends CI_Model
         return $query->result_array();
     }
 
-    public function listBarang($noDPB)
+    public function listBarang($noDPB, $org, $subinv)
     {
         $oracle = $this->load->database('oracle', true);
         $query = $oracle->query("SELECT
@@ -127,7 +127,7 @@ class M_dpb extends CI_Model
             mtl_onhand_quantities_detail moqd
         WHERE
             moqd.inventory_item_id = msib.inventory_item_id
-            AND moqd.SUBINVENTORY_CODE = 'SP-YSP' ) ,
+            AND moqd.SUBINVENTORY_CODE = '$subinv' ) ,
         0 ) - (
         SELECT
             NVL( SUM( mr.RESERVATION_QUANTITY ),
@@ -139,7 +139,7 @@ class M_dpb extends CI_Model
             MR.inventory_item_id = msib2.INVENTORY_ITEM_ID
             AND MR.organization_id = msib2.organization_id
             AND msib2.segment1 = msib.segment1
-            AND mr.subinventory_code = 'SP-YSP' ) - (
+            AND mr.subinventory_code = '$subinv' ) - (
         SELECT
             NVL( SUM( mmtt.transaction_quantity ),
             0 )
@@ -150,7 +150,7 @@ class M_dpb extends CI_Model
             msib3.inventory_item_id = mmtt.inventory_item_id
             AND msib3.organization_id = mmtt.organization_id
             AND msib3.segment1 = msib.segment1
-            AND mmtt.subinventory_code = 'SP-YSP' ) ) QTY_ATR ,
+            AND mmtt.subinventory_code = '$subinv' ) ) QTY_ATR ,
         ( NVL ( (
         SELECT
             SUM( moqd.transaction_quantity )
@@ -158,7 +158,7 @@ class M_dpb extends CI_Model
             mtl_onhand_quantities_detail moqd
         WHERE
             moqd.inventory_item_id = msib.inventory_item_id
-            AND moqd.SUBINVENTORY_CODE = 'SP-YSP' ) ,
+            AND moqd.SUBINVENTORY_CODE = '$subinv' ) ,
         0 ) - (
         SELECT
             NVL( SUM( mr.RESERVATION_QUANTITY ),
@@ -170,7 +170,7 @@ class M_dpb extends CI_Model
             MR.inventory_item_id = msib2.INVENTORY_ITEM_ID
             AND MR.organization_id = msib2.organization_id
             AND msib2.segment1 = msib.segment1
-            AND mr.subinventory_code = 'SP-YSP' ) - (
+            AND mr.subinventory_code = '$subinv' ) - (
         SELECT
             NVL( SUM( mmtt.transaction_quantity ),
             0 )
@@ -181,7 +181,7 @@ class M_dpb extends CI_Model
             msib3.inventory_item_id = mmtt.inventory_item_id
             AND msib3.organization_id = mmtt.organization_id
             AND msib3.segment1 = msib.segment1
-            AND mmtt.subinventory_code = 'SP-YSP' ) ) - tbl1.req_qty ATR_sisa ,
+            AND mmtt.subinventory_code = '$subinv' ) ) - tbl1.req_qty ATR_sisa ,
         tbl1.LINE_ID
     FROM
         mtl_system_items_b msib ,
@@ -195,7 +195,7 @@ class M_dpb extends CI_Model
             mtl_txn_request_lines mtrl
         WHERE
             mtrh.HEADER_ID = mtrl.HEADER_ID
-            AND mtrh.ORGANIZATION_ID = 225
+            AND mtrh.ORGANIZATION_ID = $org
             AND mtrh.REQUEST_NUMBER IN ( '$noDPB' )
             --(select * from param) --('3916224', '3916226') --(SELECT * FROM param)
             --group by mtrl.INVENTORY_ITEM_ID
@@ -220,19 +220,19 @@ class M_dpb extends CI_Model
         return $query->result_array();
     }
 
-    public function cekStatusLine($noDPB)
+    public function cekStatusLine($noDPB, $org, $subinv)
     {
         $oracle = $this->load->database('oracle', true);
-        $query = $oracle->query("SELECT APPS.KHS_CEK_LINE_STATUS_DOSPB('$noDPB', 225, 'SP-YSP') hasil_line from dual");
+        $query = $oracle->query("SELECT APPS.KHS_CEK_LINE_STATUS_DOSPB('$noDPB', $org, '$subinv') hasil_line from dual");
 
         return $query->result_array();
     }
 
-    public function createDPB($noDPB, $jenis, $creator, $forward, $keterangan, $almat, $eks)
+    public function createDPB($noDPB, $jenis, $creator, $forward, $keterangan, $almat, $eks, $org, $subinv)
     {
         // return print_r("createDPB call");
         $oracle = $this->load->database('oracle', true);
-        $query = $oracle->query("CALL APPS.KHS_ALLOCATE_DOSPB_SP('$noDPB', 225, 'SP-YSP', '$jenis', '$creator', '$forward','$keterangan','$almat','$eks')");
+        $query = $oracle->query("CALL APPS.KHS_ALLOCATE_DOSPB_SP('$noDPB', $org, '$subinv', '$jenis', '$creator', '$forward','$keterangan','$almat','$eks')");
     }
 
     public function createDPBRequest($reqNumber, $lineId, $allocateQty, $creator)
@@ -314,5 +314,23 @@ class M_dpb extends CI_Model
         mtrh.ATTRIBUTE15 = '$eks' -- ekspedisi
         where
         mtrh.REQUEST_NUMBER = '$req' -- no_do/spb");
+    }
+    public function getOrgID($no)
+    {
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query("select distinct
+        mtrh.ORGANIZATION_ID
+        ,case 
+            when mtrh.ORGANIZATION_ID = 225 then 'SP-YSP'
+            when mtrh.ORGANIZATION_ID = 227 then 'TK-YTK'
+            else 'SP-YSP'
+        end SUBINV    
+        from
+        mtl_txn_request_headers mtrh
+        where
+        mtrh.REQUEST_NUMBER = '$no' -- parameter nomor DO/SPB
+        and rownum = 1");
+
+        return $query->result_array();
     }
 }

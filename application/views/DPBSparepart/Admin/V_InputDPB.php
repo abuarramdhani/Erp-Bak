@@ -104,7 +104,10 @@
 
                                 </select>
                             </div>
+
                         </div>
+                        <input type="hidden" class="org_idd">
+                        <input type="hidden" class="subinvv">
                         <br />
                         <div class="tempatTabelDPS">
 

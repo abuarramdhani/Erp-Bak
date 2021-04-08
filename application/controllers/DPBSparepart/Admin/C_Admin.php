@@ -186,14 +186,22 @@ class C_Admin extends  CI_Controller
 	{
 		$noDPB = $_POST['noDPB'];
 		$data = $this->M_dpb->getAlamat($noDPB);
+		$org_id = $this->M_dpb->getOrgID($noDPB);
+
+		$data[0]['ORG_ID'] = $org_id[0]['ORGANIZATION_ID'];
+		$data[0]['SUBINV'] = $org_id[0]['SUBINV'];
+
 		echo json_encode($data);
 	}
 
 	public function listBarang()
 	{
 		$noDPB = $_POST['noDPB'];
+		$org = $_POST['org'];
+		$subinv = $_POST['subinv'];
 
-		$data['list_barang'] = $this->M_dpb->listBarang($noDPB);
+
+		$data['list_barang'] = $this->M_dpb->listBarang($noDPB, $org, $subinv);
 
 		$returnTable = $this->load->view('DPBSparepart/Admin/V_Table', $data, TRUE);
 
@@ -210,7 +218,9 @@ class C_Admin extends  CI_Controller
 	public function cekStatusLine()
 	{
 		$noDPB = $_POST['noDPB'];
-		$data = $this->M_dpb->cekStatusLine($noDPB);
+		$org = $_POST['org'];
+		$subinv = $_POST['subinv'];
+		$data = $this->M_dpb->cekStatusLine($noDPB, $org, $subinv);
 		echo json_encode($data);
 	}
 
@@ -224,6 +234,9 @@ class C_Admin extends  CI_Controller
 		$lines = $_POST['lines'];
 		$ekspedisi = $_POST['ekspedisi'];
 		$alamat_kirim = $_POST['alamat_kirim'];
+		$org = $_POST['org'];
+		$subinv = $_POST['subinv'];
+
 
 
 		foreach ($lines as $line) {
@@ -234,7 +247,7 @@ class C_Admin extends  CI_Controller
 			}
 		}
 
-		$this->M_dpb->createDPB($noDPB, $jenis, $creator, $forward, $keterangan, $alamat_kirim, $ekspedisi);
+		$this->M_dpb->createDPB($noDPB, $jenis, $creator, $forward, $keterangan, $alamat_kirim, $ekspedisi, $org, $subinv);
 
 		echo 1;
 	}
