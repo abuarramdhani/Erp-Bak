@@ -82,7 +82,7 @@
                                                     </div>
                                                     <div class="col-sm-1">-</div>
                                                     <div class="col-sm-2">
-                                                        <input autocomplete="off" type="number" min="00" max="1000" name="number_sop_cw" value="<?= $listdatacw[0]['number_sop'];?>" class="form-control" id="number_rev-cw" placeholder="00" >
+                                                        <input autocomplete="off" type="number" min="00" max="1000" name="number_sop_cw" value="<?= $listdatacw[0]['number_sop'];?>" class="form-control" id="nomor_sop" placeholder="00" >
                                                     </div>
                                                     <p class="cle_number" style="display: none;"><?= $listdatacw[0]['number_sop'];?></p>
                                                 </div>
