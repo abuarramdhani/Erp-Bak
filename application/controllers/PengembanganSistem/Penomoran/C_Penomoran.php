@@ -302,7 +302,7 @@ class C_Penomoran extends CI_Controller
 			$params['data'] = 'http://erp.quick.com/assets/upload/PengembanganSistem/fp/'.$nama_baru;
 			$params['level'] = 'H';
 			$params['size'] = 8;
-			$params['savename'] =FCPATH."assets/upload/PengembanganSistem/fp/qrcode/".$qr_image;
+			$params['savename'] =FCPATH."assets/upload/PengembanganSistem/fp/".$qr_image;
 			$this->ciqrcode->generate($params);
 			//end
 
@@ -866,7 +866,7 @@ class C_Penomoran extends CI_Controller
 			$params['data'] = 'http://erp.quick.com/assets/upload/PengembanganSistem/um/'.$nama_baru;
 			$params['level'] = 'H';
 			$params['size'] = 8;
-			$params['savename'] =FCPATH."assets/upload/PengembanganSistem/um/qrcode/".$qr_image;
+			$params['savename'] =FCPATH."assets/upload/PengembanganSistem/um/".$qr_image;
 			$this->ciqrcode->generate($params);
 			//end
 

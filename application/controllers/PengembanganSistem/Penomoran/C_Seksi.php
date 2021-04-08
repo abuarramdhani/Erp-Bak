@@ -190,7 +190,7 @@ class C_Seksi extends CI_Controller
 				$params['data'] = 'http://erp.quick.com/assets/upload/PengembanganSistem/fp/'.$nama_baru;
 				$params['level'] = 'H';
 				$params['size'] = 8;
-				$params['savename'] =FCPATH."assets/upload/PengembanganSistem/fp/qrcode/".$qr_image;
+				$params['savename'] =FCPATH."assets/upload/PengembanganSistem/fp/".$qr_image;
 				$this->ciqrcode->generate($params);
 				
 				if (!$this->upload->do_upload('file')) {
@@ -734,7 +734,7 @@ class C_Seksi extends CI_Controller
 			$params['data'] = 'http://erp.quick.com/assets/upload/PengembanganSistem/um/'.$nama_baru;
 			$params['level'] = 'H';
 			$params['size'] = 8;
-			$params['savename'] =FCPATH."assets/upload/PengembanganSistem/um/qrcord/".$qr_image;
+			$params['savename'] =FCPATH."assets/upload/PengembanganSistem/um/".$qr_image;
 			$this->ciqrcode->generate($params);
 		//end_upload qr_image
 			if (!$this->upload->do_upload('file')) {
