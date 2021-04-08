@@ -1,5 +1,5 @@
 <?php
-    class M_hitungOPM extends CI_Model {
+    class M_hitungopm extends CI_Model {
         public function __construct(){
         parent::__construct();
         $this->load->database();
