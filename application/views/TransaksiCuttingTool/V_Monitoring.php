@@ -18,8 +18,8 @@
 													</span>
 												</button>
 												<strong>Perhatian :</strong>
-												<p style="padding-top:5px;padding-left:5px;">* Klik pada kolom tanggal untuk memilih tanggal</p>
-												<p style="padding-left:5px;">* Klik 2 kali pada tanggal yang sama jika hanya memilih 1 tanggal</p>
+												<p style="padding-top:5px;padding-left:5px;">* Klik 2 kali pada tanggal yang sama jika hanya memilih 1 tanggal</p>
+												<p style="padding-left:5px;">* Isikan angka pada kolom No BPPBGT untuk mencari No BPPBGT</p>
 												<p style="padding-left:5px;">* Kosongkan kolom No BPPBGT dan Transaction Type jika hanya mencari data berdasarkan rentang tanggal</p>
 											</div>
 										</div>

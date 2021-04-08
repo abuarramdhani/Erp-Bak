@@ -50,7 +50,7 @@
     // "pagingType": "scrolling";
     paging: false,
     scrollX: true,
-    scrollY: "550px"
+    scrollY: "500px"
     // scrollCollapse: true,
     // scroller: true,
     // deferRender: true
