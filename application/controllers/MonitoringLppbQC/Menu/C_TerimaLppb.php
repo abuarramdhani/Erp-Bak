@@ -31,7 +31,9 @@
         public function index(){
             $this->checkSession();
             $user_id = $this->session->userid;
-            $no_induk = $this->session->userdata('user');
+            // $no_induk = $this->session->userdata('user');
+            $data['user'] = $this->session->user;
+            // print_r($data['user']); exit();
             $data['Menu'] = 'Terima Lppb';
             $data['SubMenuOne'] = '';
             $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);

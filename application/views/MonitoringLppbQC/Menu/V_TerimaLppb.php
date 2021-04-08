@@ -12,6 +12,7 @@
                                     <div class="col-md-12 text-right">
                                         <label class="control-label"><?php echo date("l/d F Y H:i:s"); ?></label>
                                     </div>
+                                    <input type="hidden" name="user" id="user" value="<?= $user?>">
                                     <div class="col-md-12 mt-4 area-terima">
                                         
                                     </div>
