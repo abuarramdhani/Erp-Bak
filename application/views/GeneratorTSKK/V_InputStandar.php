@@ -21,20 +21,14 @@ text-align: center;
             <div class="col-lg-12">
                 <div class="row">
                     <div class="col-lg-12">
-                        <div class="col-lg-11">
-                            <div class="text-center"><h1><b>STANDARDISASI ELEMEN KERJA</b></h1></div>
-                        </div>
-                        <div class="col-lg-1">
-                        </div>
+                      <div class="text-center"><h1><b>STANDARDISASI ELEMEN KERJA</b></h1></div>
                     </div>
                 </div>
                 <br/>
 
                  <div class="row" style="">
                     <div class="col-lg-12">
-                        <div class="box box-primary box-solid">
-                            <div class="box-header with-border">
-                            </div>
+                        <div class="box box-primary color-palette-box">
                             <div class="box-body">
                               <ul class="nav nav-tabs pull-right">
                               </ul>

@@ -212,10 +212,8 @@
         <div class="col-lg-12">
           <div class="row">
             <div class="col-lg-12">
-              <div class="col-lg-11">
-                <div class="text-center">
-                  <h1><b>LEMBAR OBSERVASI ELEMEN KERJA</b></h1>
-                </div>
+              <div class="text-center">
+                <h1><b>LEMBAR OBSERVASI ELEMEN KERJA</b></h1>
               </div>
             </div>
           </div>

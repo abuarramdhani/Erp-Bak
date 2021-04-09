@@ -14,6 +14,21 @@ class M_gentskk extends CI_Model
 	  $this->lantuma = $this->load->database('lantuma', true);
 	}
 
+	public function getseksi($value='')
+	{
+		return $this->db->query("SELECT distinct seksi from gtskk.gtskk_header_tskk order by seksi")->result_array();
+	}
+
+	public function gettipe($value='')
+	{
+		return $this->db->query("SELECT distinct tipe from gtskk.gtskk_header_tskk where tipe != '' order by tipe")->result_array();
+	}
+
+	public function filter($seksi, $tipe)
+	{
+		return $this->db->query("SELECT * from gtskk.gtskk_header_tskk where tipe like '%$tipe%' and seksi like '%$seksi%' order by tanggal desc")->result_array();
+	}
+
 	function getTipeProduk($tp)
 	{
 	// $sql = "SELECT distinct
@@ -398,7 +413,7 @@ class M_gentskk extends CI_Model
 	function selectHeader()
 	{
 		$sql = "SELECT * FROM  gtskk.gtskk_header_tskk
-				ORDER BY id_tskk DESC";
+				ORDER BY id_tskk DESC limit 100";
 
 		$query = $this->db->query($sql);
 		return $query->result_array();
@@ -412,6 +427,21 @@ class M_gentskk extends CI_Model
 
 		$query = $this->db->query($sql);
 		return $query->result_array();
+	}
+
+	public function getseksi_montskk($value='')
+	{
+		return $this->db->query("SELECT distinct head.seksi from gtskk.gtskk_header_tskk head where id_tskk in (select distinct elem.id_tskk from gtskk.gtskk_elemen_tskk  elem where id_tskk = head.id_tskk) order by head.seksi")->result_array();
+	}
+
+	public function gettipe_montskk($value='')
+	{
+		return $this->db->query("SELECT distinct head.tipe from gtskk.gtskk_header_tskk head where head.tipe != '' and id_tskk in (select distinct elem.id_tskk from gtskk.gtskk_elemen_tskk elem where id_tskk = head.id_tskk) order by tipe")->result_array();
+	}
+
+	public function filter_montskk($seksi, $tipe)
+	{
+		return $this->db->query("SELECT head.* from gtskk.gtskk_header_tskk head where head.tipe like '%$tipe%' and head.seksi like '%$seksi%' and head.id_tskk in (select distinct elem.id_tskk from gtskk.gtskk_elemen_tskk elem where id_tskk = head.id_tskk) order by tanggal desc")->result_array();
 	}
 
 	function cariId($id)
