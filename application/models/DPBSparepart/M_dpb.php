@@ -322,7 +322,7 @@ class M_dpb extends CI_Model
         mtrh.ORGANIZATION_ID
         ,case 
             when mtrh.ORGANIZATION_ID = 225 then 'SP-YSP'
-            when mtrh.ORGANIZATION_ID = 227 then 'TK-YTK'
+            when mtrh.ORGANIZATION_ID = 1029 then 'TK-YTQ'
             else 'SP-YSP'
         end SUBINV    
         from
