@@ -8,9 +8,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 // ini_set('max_input_vars', '-1');
 
 ini_set('max_execution_time', '1000'); 
-ini_set('Maximum execution time of each script, in seconds max_input_time', '-1'); 
-ini_set('Maximum amount of time each script may spend parsing request data memory_limit', '4000M'); 
-ini_set('Maximum amount of memory a script may consume', '32MB');
+ini_set('max_input_time', '-1'); 
+ini_set('memory_limit', '4000M'); 
+// ini_set('Maximum amount of memory a script may consume', '32MB');
 ini_set('max_input_vars','10000');
 
 class C_HitungOPM extends CI_Controller {
@@ -93,7 +93,7 @@ class C_HitungOPM extends CI_Controller {
 				$i++;
 			}
 		}
-		// echo "<pre>"; print_r($data['value']);exit();
+		echo "<pre>"; print_r($data['value']);exit();
 
 		$hasil = array();
 		for ($i=0; $i < sizeof($data['value']); $i++) {
