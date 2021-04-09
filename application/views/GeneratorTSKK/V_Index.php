@@ -36,5 +36,5 @@
 </section>
 
 <script type="text/javascript">
-	alert('Agar pembaruan aplikasi pada 2021-04-09 10:50:00 berjalan sepenuhnya, Reload halaman ini dengan menekan ctrl+shift+r secara berurutan..')
+	alert('Agar pembaruan aplikasi pada 2021-04-09 13:40:00 berjalan sepenuhnya, Reload halaman ini dengan menekan ctrl+shift+r secara berurutan..')
 </script>

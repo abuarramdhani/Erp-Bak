@@ -106,6 +106,8 @@ public function ViewEdit()
     $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
     $data['lihat_header'] = $this->M_gentskk->selectHeaderMonTSKK();
+		$data['lihat_seksi']	= $this->M_gentskk->getseksi_montskk();
+		$data['lihat_tipe']		= $this->M_gentskk->gettipe_montskk();
     // $data['id_tabelElemen'] = $this->M_gentskk->selectIdElemen($id);
     // echo "<pre>"; print_r( $data['id_tabelElemen']);exit();
     // echo "<pre>";print_r($data['lihat_header']);
@@ -1124,7 +1126,12 @@ public function ElemenKerja()
 
 public function filter($value='')
 {
-	$data['lihat_header'] = $this->M_gentskk->filter($this->input->post('seksi'), $this->input->post('tipe'));
+	if ($this->input->post('fun') == 1) {
+		$data['lihat_header'] = $this->M_gentskk->filter($this->input->post('seksi'), $this->input->post('tipe'));
+	}else {
+		$data['lihat_header'] = $this->M_gentskk->filter_montskk($this->input->post('seksi'), $this->input->post('tipe'));
+	}
+	$data['fun'] = $this->input->post('fun');
 	$this->load->view('GeneratorTSKK/V_GenTSKK_Filter', $data);
 }
 

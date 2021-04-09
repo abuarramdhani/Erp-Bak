@@ -21,21 +21,15 @@ text-align: center;
             <div class="col-lg-12">
                 <div class="row">
                     <div class="col-lg-12">
-                        <div class="col-lg-11">
-                            <div class="text-center"><h1><b>DAFTAR LEMBAR OBSERVASI</b></h1></div>
-                        </div>
-                        <div class="col-lg-1">
-                        </div>
+                       <div class="text-center"><h1><b>DAFTAR LEMBAR OBSERVASI</b></h1></div>
                     </div>
                 </div>
                 <br/>
 
                  <div class="row" style="">
                     <div class="col-lg-12">
-                        <div class="box box-primary box-solid">
+                        <div class="box box-primary color-palette-box">
                             <div class="box-header with-border">
-                            </div>
-                            <div class="panel-body">
                               <div class="row">
                                 <div class="col-md-5">
                                   <label for="">Seksi</label>
@@ -60,7 +54,8 @@ text-align: center;
                                   <button type="button" class="btn btn-primary" onclick="filterGenTskk()" name="button" style="width:100%">Filter</button>
                                 </div>
                               </div>
-                              <hr>
+                            </div>
+                            <div class="panel-body">
                               <table style="width:300px">
                                 <tr>
                                   <td style="width:100px;"><div style="width:90%;height:20px;background:#ffcccc"></div> </td>

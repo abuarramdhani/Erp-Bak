@@ -429,6 +429,21 @@ class M_gentskk extends CI_Model
 		return $query->result_array();
 	}
 
+	public function getseksi_montskk($value='')
+	{
+		return $this->db->query("SELECT distinct head.seksi from gtskk.gtskk_header_tskk head where id_tskk in (select distinct elem.id_tskk from gtskk.gtskk_elemen_tskk  elem where id_tskk = head.id_tskk) order by head.seksi")->result_array();
+	}
+
+	public function gettipe_montskk($value='')
+	{
+		return $this->db->query("SELECT distinct head.tipe from gtskk.gtskk_header_tskk head where head.tipe != '' and id_tskk in (select distinct elem.id_tskk from gtskk.gtskk_elemen_tskk elem where id_tskk = head.id_tskk) order by tipe")->result_array();
+	}
+
+	public function filter_montskk($seksi, $tipe)
+	{
+		return $this->db->query("SELECT head.* from gtskk.gtskk_header_tskk head where head.tipe like '%$tipe%' and head.seksi like '%$seksi%' and head.id_tskk in (select distinct elem.id_tskk from gtskk.gtskk_elemen_tskk elem where id_tskk = head.id_tskk) order by tanggal desc")->result_array();
+	}
+
 	function cariId($id)
 	{   $sql = "SELECT id_tskk FROM  gtskk.gtskk_header_tskk where id_tskk = '$id'";
 		$query = $this->db->query($sql);
