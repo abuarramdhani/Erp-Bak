@@ -1,11 +1,17 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-set_time_limit(0);
-ini_set('date.timezone', 'Asia/Jakarta');
-setlocale(LC_TIME, "id_ID.utf8");
-ini_set('memory_limit', '-1');
-ini_set('max_input_vars', '-1');
+// set_time_limit(0);
+// ini_set('date.timezone', 'Asia/Jakarta');
+// setlocale(LC_TIME, "id_ID.utf8");
+// ini_set('memory_limit', '-1');
+// ini_set('max_input_vars', '-1');
+
+ini_set('max_execution_time', '1000'); 
+ini_set('max_input_time', '-1'); 
+ini_set('memory_limit', '4000M'); 
+// ini_set('Maximum amount of memory a script may consume', '32MB');
+ini_set('max_input_vars','10000');
 
 class C_HitungOPM extends CI_Controller {
     public function __construct(){
@@ -87,7 +93,7 @@ class C_HitungOPM extends CI_Controller {
 				$i++;
 			}
 		}
-		// echo "<pre>"; print_r($data['value']);exit();
+		echo "<pre>"; print_r($data['value']);exit();
 
 		$hasil = array();
 		for ($i=0; $i < sizeof($data['value']); $i++) {
