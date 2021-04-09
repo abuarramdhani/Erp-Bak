@@ -200,6 +200,7 @@ class C_Approver extends  CI_Controller
 					<option value="LION PARCEL">LION PARCEL</option>
 					<option value="GRAB / GOJEK">GRAB / GOJEK</option>
 					<option value="PENGAMBILAN DI KANTOR">PENGAMBILAN DI KANTOR</option>
+					<option value="JNE CTC YES">JNE CTC YES</option>
 				</select>
 			</div>
 			<div class="col-md-2">
