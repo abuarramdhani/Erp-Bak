@@ -329,7 +329,7 @@ class M_dpb extends CI_Model
         mtl_txn_request_headers mtrh
         where
         mtrh.REQUEST_NUMBER = '$no' -- parameter nomor DO/SPB
-        and rownum = 1;");
+        and rownum = 1");
 
         return $query->result_array();
     }
