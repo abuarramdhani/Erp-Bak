@@ -381,6 +381,8 @@ public function Display()
     $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
     // $data['NoInduk']        = $this->session->user;
     $data['lihat_header']   = $this->M_gentskk->selectHeader();
+		$data['lihat_seksi']		= $this->M_gentskk->getseksi();
+		$data['lihat_tipe']			= $this->M_gentskk->gettipe();
     // echo"<pre>";print_r($data['lihat_header']);die;
 
     $this->load->view('V_Header',$data);
@@ -1118,6 +1120,12 @@ public function ElemenKerja()
     // $elk = strtoupper($elk);
     $elm_krj = $this->M_gentskk->ElemenKerja($elk);
     echo json_encode($elm_krj);
+}
+
+public function filter($value='')
+{
+	$data['lihat_header'] = $this->M_gentskk->filter($this->input->post('seksi'), $this->input->post('tipe'));
+	$this->load->view('GeneratorTSKK/V_GenTSKK_Filter', $data);
 }
 
 public function CrossDelete($id)

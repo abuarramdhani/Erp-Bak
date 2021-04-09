@@ -14,7 +14,7 @@
 			<div class="row">
 				<div class="col-lg-12">
 				    <div class="col-lg-12 text-right reup">
-                        <h4><small>You are logged in as : <?php echo $this->session->user;?></small></h4>
+              <h4><small>You are logged in as : <?php echo $this->session->user;?></small></h4>
 					</div>
 
 						<center>
@@ -36,5 +36,5 @@
 </section>
 
 <script type="text/javascript">
-	alert('Agar pembaruan aplikasi pada 2021-04-05 berjalan sepenuhnya, Reload halaman ini dengan menekan ctrl+shift+r secara berurutan..')
+	alert('Agar pembaruan aplikasi pada 2021-04-09 10:50:00 berjalan sepenuhnya, Reload halaman ini dengan menekan ctrl+shift+r secara berurutan..')
 </script>

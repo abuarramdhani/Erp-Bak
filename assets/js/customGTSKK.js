@@ -41,6 +41,32 @@ $('#tabel_daftarTSKK').DataTable({
 });
 
 
+function filterGenTskk() {
+  $.ajax({
+    url: baseurl + 'GeneratorTSKK/C_GenTSKK/filter',
+    type: 'POST',
+    // dataType: 'JSON',
+    data: {
+      seksi: $('.seksi_tskk_2021').val(),
+      tipe: $('.tipe_tskk_2021').val()
+    },
+    cache:false,
+    beforeSend: function() {
+      $('.tskk_filter_area').html(`<div style ="width: 70%;margin:auto;height: 30%;background: #fff;overflow: hidden;z-index: 9999;padding:20px 0 30px 0;border-radius:10px;text-align:center">
+                                        <img style="width: 8%;" src="${baseurl}assets/img/gif/loading5.gif"><br>
+                                        <span style="font-size:14px;font-weight:bold">Sedang memuat data...</span>
+                                    </div>`);
+    },
+    success: function(result) {
+      $('.tskk_filter_area').html(result);
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+    swalPBB('error', 'Koneksi Terputus...')
+     console.error();
+    }
+  })
+}
+
 $(document).ready(function() {
 
   $('input[name="perhitunganTakt"]').on('ifChanged', function() {
