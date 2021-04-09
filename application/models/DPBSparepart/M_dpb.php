@@ -322,14 +322,14 @@ class M_dpb extends CI_Model
         mtrh.ORGANIZATION_ID
         ,case 
             when mtrh.ORGANIZATION_ID = 225 then 'SP-YSP'
-            when mtrh.ORGANIZATION_ID = 227 then 'TK-YTK'
+            when mtrh.ORGANIZATION_ID = 1029 then 'TK-YTQ'
             else 'SP-YSP'
         end SUBINV    
         from
         mtl_txn_request_headers mtrh
         where
         mtrh.REQUEST_NUMBER = '$no' -- parameter nomor DO/SPB
-        and rownum = 1");
+        and rownum = 1;");
 
         return $query->result_array();
     }
