@@ -25,19 +25,19 @@ $('#tabel_daftarTSKK').DataTable({
   // "ordering": false,
   // "lengthChange": false
   // bSortable: true,
-   // bRetrieve: true,
-   // aoColumnDefs: [
-   //     { "aTargets": [ 0 ], "bSortable": true },
-   //     { "aTargets": [ 1 ], "bSortable": false },
-   //     { "aTargets": [ 2 ], "bSortable": false },
-   //     { "aTargets": [ 3 ], "bSortable": true },
-   //     { "aTargets": [ 4 ], "bSortable": true },
-   //     { "aTargets": [ 5 ], "bSortable": true },
-   //     { "aTargets": [ 6 ], "bSortable": true },
-   //     { "aTargets": [ 7 ], "bSortable": true },
-   //     { "aTargets": [ 8 ], "bSortable": true },
-   //     { "aTargets": [ 9 ], "bSortable": true }
-   // ]
+  // bRetrieve: true,
+  // aoColumnDefs: [
+  //     { "aTargets": [ 0 ], "bSortable": true },
+  //     { "aTargets": [ 1 ], "bSortable": false },
+  //     { "aTargets": [ 2 ], "bSortable": false },
+  //     { "aTargets": [ 3 ], "bSortable": true },
+  //     { "aTargets": [ 4 ], "bSortable": true },
+  //     { "aTargets": [ 5 ], "bSortable": true },
+  //     { "aTargets": [ 6 ], "bSortable": true },
+  //     { "aTargets": [ 7 ], "bSortable": true },
+  //     { "aTargets": [ 8 ], "bSortable": true },
+  //     { "aTargets": [ 9 ], "bSortable": true }
+  // ]
 });
 
 function filterGenmMonTskk() {
@@ -50,19 +50,19 @@ function filterGenmMonTskk() {
       tipe: $('.tipe_tskk_2021').val(),
       fun: 2
     },
-    cache:false,
+    cache: false,
     beforeSend: function() {
       $('.tskk_filter_area').html(`<div style ="width: 70%;margin:auto;height: 30%;background: #fff;overflow: hidden;z-index: 9999;padding:20px 0 30px 0;border-radius:10px;text-align:center">
-                                        <img style="width: 8%;" src="${baseurl}assets/img/gif/loading5.gif"><br>
-                                        <span style="font-size:14px;font-weight:bold">Sedang memuat data...</span>
-                                    </div>`);
+                                                                      <img style="width: 8%;" src="${baseurl}assets/img/gif/loading5.gif"><br>
+                                                                      <span style="font-size:14px;font-weight:bold">Sedang memuat data...</span>
+                                                                  </div>`);
     },
     success: function(result) {
       $('.tskk_filter_area').html(result);
     },
     error: function(XMLHttpRequest, textStatus, errorThrown) {
-    swalPBB('error', 'Koneksi Terputus...')
-     console.error();
+      swalPBB('error', 'Koneksi Terputus...')
+      console.error();
     }
   })
 }
@@ -77,7 +77,7 @@ function filterGenTskk() {
       tipe: $('.tipe_tskk_2021').val(),
       fun: 1
     },
-    cache:false,
+    cache: false,
     beforeSend: function() {
       $('.tskk_filter_area').html(`<div style ="width: 70%;margin:auto;height: 30%;background: #fff;overflow: hidden;z-index: 9999;padding:20px 0 30px 0;border-radius:10px;text-align:center">
                                         <img style="width: 8%;" src="${baseurl}assets/img/gif/loading5.gif"><br>
@@ -88,8 +88,8 @@ function filterGenTskk() {
       $('.tskk_filter_area').html(result);
     },
     error: function(XMLHttpRequest, textStatus, errorThrown) {
-    swalPBB('error', 'Koneksi Terputus...')
-     console.error();
+      swalPBB('error', 'Koneksi Terputus...')
+      console.error();
     }
   })
 }
@@ -145,7 +145,7 @@ function addRowObservation() {
   // html += '<option value="WALK (Inheritance)" id="walk"> WALK (Inheritance) </option>';
   // html += "</select></td>";
   //now
-  html += '<td>  <input list="brow_jenis_proses"  class="form-control select00004" onchange="myFunctionTSKK(this)" style="text-align:left;width:100%" data-placeholder="Jenis Proses" name="slcJenisProses[]" id="slcJenis_'+nomor+'"></td>';
+  html += '<td>  <input list="brow_jenis_proses"  class="form-control select00004" onchange="myFunctionTSKK(this)" style="text-align:left;width:100%" data-placeholder="Jenis Proses" name="slcJenisProses[]" id="slcJenis_' + nomor + '"></td>';
 
 
   //ini dulu
@@ -417,7 +417,7 @@ function addRowObservationEdit() {
   // html += '<option value="WALK (Inheritance)" id="walk"> WALK (Inheritance) </option>';
   // html += "</select></td>";
   //now
-  html += '<td>  <input list="brow_jenis_proses"  class="form-control select00004" onchange="myFunctionTSKK(this)" style="text-align:left;width:100%" data-placeholder="Jenis Proses" name="slcJenisProses[]" id="slcJenis_'+nomor+'"></td>';
+  html += '<td>  <input list="brow_jenis_proses"  class="form-control select00004" onchange="myFunctionTSKK(this)" style="text-align:left;width:100%" data-placeholder="Jenis Proses" name="slcJenisProses[]" id="slcJenis_' + nomor + '"></td>';
 
   // KOLOM 3
   //ini dulu
@@ -1236,68 +1236,68 @@ $('#kodepart').change(function() {
   //   var isi = $('#kodepart').text().split(' ~ ');
   //   let desc = isi[1];
   //   $("#namaPart").val(desc);
-    // $('#namaPart').val();
-    $.ajax({
-      type: "POST",
-      url: baseurl + 'GeneratorTSKK/C_GenTSKK/namaPart/',
-      // data: {kode :kode},
-      data: {
-        params: $(this).val()
-      },
-      dataType: "json",
-      beforeSend: function(e) {
-        if (e && e.overrideMimeType) {
-          e.overrideMimeType("application/json;charset=UTF-8");
-        }
-      },
-      success: function(response) {
-
-        if (response != null) {
-          // alert("Data Masuk")
-          // var sblm = $('#namaPart').val();
-          // console.log(sblm);
-          // if (sblm == '') {
-            $("#namaPart").val(response);
-          // } else {
-          //   $("#namaPart").val(sblm + ' , ' + response[0].DESCRIPTION);
-          // }
-          // console.log(response[0].DESCRIPTION);
-        } else {
-          alert("Data Tidak Ditemukan");
-        }
-      },
-      error: function(xhr) {
-        alert(xhr.responseText);
+  // $('#namaPart').val();
+  $.ajax({
+    type: "POST",
+    url: baseurl + 'GeneratorTSKK/C_GenTSKK/namaPart/',
+    // data: {kode :kode},
+    data: {
+      params: $(this).val()
+    },
+    dataType: "json",
+    beforeSend: function(e) {
+      if (e && e.overrideMimeType) {
+        e.overrideMimeType("application/json;charset=UTF-8");
       }
-    });
+    },
+    success: function(response) {
 
-    //product type
-    $.ajax({
-      type: "POST",
-      url: baseurl + 'GeneratorTSKK/C_GenTSKK/product_type_spec',
-      // data: {kode :kode},
-      data: {
-        params: $(this).val()
-      },
-      dataType: "json",
-      beforeSend: function(e) {
-        if (e && e.overrideMimeType) {
-          e.overrideMimeType("application/json;charset=UTF-8");
-        }
-      },
-      success: function(response) {
-        if (response != null) {
-          let tan80 = response.split(',')
-          console.log(tan80.pop());
-          $("#typeProduct").val(tan80).trigger('change');
-        } else {
-          alert("Data Tidak Ditemukan");
-        }
-      },
-      error: function(xhr) {
-        alert(xhr.responseText);
+      if (response != null) {
+        // alert("Data Masuk")
+        // var sblm = $('#namaPart').val();
+        // console.log(sblm);
+        // if (sblm == '') {
+        $("#namaPart").val(response);
+        // } else {
+        //   $("#namaPart").val(sblm + ' , ' + response[0].DESCRIPTION);
+        // }
+        // console.log(response[0].DESCRIPTION);
+      } else {
+        alert("Data Tidak Ditemukan");
       }
-    });
+    },
+    error: function(xhr) {
+      alert(xhr.responseText);
+    }
+  });
+
+  //product type
+  $.ajax({
+    type: "POST",
+    url: baseurl + 'GeneratorTSKK/C_GenTSKK/product_type_spec',
+    // data: {kode :kode},
+    data: {
+      params: $(this).val()
+    },
+    dataType: "json",
+    beforeSend: function(e) {
+      if (e && e.overrideMimeType) {
+        e.overrideMimeType("application/json;charset=UTF-8");
+      }
+    },
+    success: function(response) {
+      if (response != null) {
+        let tan80 = response.split(',')
+        console.log(tan80.pop());
+        $("#typeProduct").val(tan80).trigger('change');
+      } else {
+        alert("Data Tidak Ditemukan");
+      }
+    },
+    error: function(xhr) {
+      alert(xhr.responseText);
+    }
+  });
 
   // } else {
   //   $('#namaPart').val('');
@@ -1900,13 +1900,13 @@ function finishTableElement(th) {
     let currWaktuPL = $(v).find('.waktu').val();
     if ($(`tr[class="number_${index}"]`).attr('check-waktu-serentak-end') === 'Y' && $(`input[baris="${index}"]`).attr('check-end-no') === my_number) {
       $(`input[baris="${index}"]`).attr('check-end-no', my_number).val(finishRN + 1);
-      $(v).find('.finish').val(Number(finishRN)+Number(currWaktuPL));
+      $(v).find('.finish').val(Number(finishRN) + Number(currWaktuPL));
       startPL = finishRN + 1;
-    }else if ($(`tr[class="number_${index}"]`).attr('check-waktu-serentak') === 'Y' && $(`input[baris="${index}"]`).attr('check-start-no') === my_number) {
+    } else if ($(`tr[class="number_${index}"]`).attr('check-waktu-serentak') === 'Y' && $(`input[baris="${index}"]`).attr('check-start-no') === my_number) {
       $(`input[baris="${index}"]`).attr('check-start-no', my_number).val(s_now);
       startPL = s_now;
-      $(v).find('.finish').val((Number(startPL)+Number(currWaktuPL))-1);
-    }else {
+      $(v).find('.finish').val((Number(startPL) + Number(currWaktuPL)) - 1);
+    } else {
       startPL = 0;
       // if (index != 1) {
       //   console.log(startPL);
@@ -2993,7 +2993,7 @@ $('.type_save_tskk').on('change', function() {
     $('.judul_pembaruan_observasi_tskk').show();
     $('.input_judul_pembaruan_observasi_tskk').val($('#judul').val());
     $('#Observasi').attr('action', $('#save_rev').val())
-  }else {
+  } else {
     $('#Observasi').attr('action', $('#replace_tskk').val())
     $('.judul_pembaruan_observasi_tskk').hide();
   }
@@ -3003,16 +3003,16 @@ function checkSubmitEditObservasi() {
   // $('#modalgtskk_edit_observasi').modal('toggle');
   if ($('.type_save_tskk').val() != '') {
     if ($('.input_judul_pembaruan_observasi_tskk').val() == $('#cek_judul_sebelumnya').val()) {
-      toastGTSKK('warning', 'Judul Observasi Revisi Tidak Boleh Sama Dengan Observasi Sebelumnya "'+$('#cek_judul_sebelumnya').val()+'"')
-    }else {
+      toastGTSKK('warning', 'Judul Observasi Revisi Tidak Boleh Sama Dengan Observasi Sebelumnya "' + $('#cek_judul_sebelumnya').val() + '"')
+    } else {
       if ($('.type_save_tskk').val() == 'save_as') {
         $('#judul').val($('.input_judul_pembaruan_observasi_tskk').val());
       }
-      setTimeout(function () {
+      setTimeout(function() {
         $('#btnHidden').trigger('click');
       }, 100);
     }
-  }else {
+  } else {
     toastGTSKK('warning', 'Harap Memilih Jenis Pembaruan')
   }
 }
