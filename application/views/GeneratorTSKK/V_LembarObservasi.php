@@ -514,7 +514,7 @@
                         <div class="row">
                           <label for="norm" class="control-label col-lg-6">Waktu 1 Shift (Detik) : </label>
                           <div class="col-lg-6">
-                            <input type="number" style="margin-left:-35px;" placeholder="Input Waktu Satu Shift" value="0" oninput="countTaktTime(this)" name="txtWaktu1Shift" id="txtWaktu1Shift" class="form-control waktu1Shift" required />
+                            <input type="number" style="margin-left:-35px;" placeholder="Input Waktu Satu Shift" value="0" oninput="countTaktTime(this)" name="txtWaktu1Shift" id="txtWaktu1Shift" class="form-control waktu1Shift" />
                           </div>
                         </div>
                         <br>

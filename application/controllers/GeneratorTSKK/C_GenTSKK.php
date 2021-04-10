@@ -3507,6 +3507,14 @@ public function exportExcel($idnya){
 				// 	}
 				// }
 
+				//ambil manual / walk terakhir
+				$elemen_kerja_last_manual_walk = null;
+	      for ($q=0; $q < sizeof($elemen_kerja); $q++) {
+					if ($jenis_proses[$q] == 'MANUAL' || $jenis_proses[$q] == 'WALK') {
+						$elemen_kerja_last_manual_walk = $q;
+					}
+				}
+
         for ($j=0; $j < sizeof($elemen_kerja); $j++) {
             $rowflow = $rownya + ($j * 3);
             if ($muda[$j] > 1) {
@@ -3571,15 +3579,34 @@ public function exportExcel($idnya){
 
 
 									if ($jenis_proses[$j] != 'AUTO') {
-										if (($i >= $startmuda[$j] && $i <= $finishmuda[$j]) && ($startmuda[$j] <= 600*$x && $finishmuda[$j] <= 600*$x)) {
-												$styles[$x][$rowflow][$i+13]['fill'] = '#fa3eef';
-												$styles[$x][$rowflow-1][$i+13]['fill'] = '#fa3eef';
+										// ($startmuda[$j] <= 600*$x && $finishmuda[$j] <= 600*$x)
+										if (($i >= $startmuda[$j] && $i <= $finishmuda[$j])) {
+												$styles[$x][$rowflow][($i+13) - $nn]['fill'] = '#fa3eef';
+												$styles[$x][$rowflow-1][($i+13) - $nn]['fill'] = '#fa3eef';
 												if ($i === $finishmuda[$j]) {
 													if ($i > 1*$nn && $i < 600*$x) {
-														$rows[$x][$rowflow-1][$i+13] = 'Muda: '.$muda[$j].' Detik ';
+														$rows[$x][$rowflow-1][($i+13) - $nn] = 'Muda: '.$muda[$j].' Detik ';
 													}
 												}
 										}
+
+										$cekk =  "cek aldi, ".($cycle_time_tanpa_irregular).' +++'.$i;
+										if (!empty($elemen_kerja_last_manual_walk) && $elemen_kerja_last_manual_walk == $j) {
+
+											if ($finish[$j] != $cycle_time_tanpa_irregular) {
+												if (($i >= $finish[$j]+1 && $i <= $cycle_time_tanpa_irregular)) {
+														$styles[$x][$rowflow+2][($i+13) - $nn]['fill'] = '#fa3eef';
+														if ($i == $cycle_time_tanpa_irregular) {
+															if ($i > 1*$nn && $i < 600*$x) {
+																$rows[$x][$rowflow+2][($i+13) - $nn] = 'Muda: '.($cycle_time_tanpa_irregular - $finish[$j]).' Detik ';
+															}
+														}
+												}
+
+											}
+
+										}
+
 									}
 							}
 						}
