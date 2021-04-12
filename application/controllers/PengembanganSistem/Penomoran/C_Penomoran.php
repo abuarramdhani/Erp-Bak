@@ -276,11 +276,10 @@ class C_Penomoran extends CI_Controller
 				chmod('.assets/upload/PengembanganSistem/fp', 0777); 
 			}
 
-			$data_file = $_FILES['fileupload']['name'];
-
+			$data_file = $_FILES['fileupload']['type'];
 			$pathh = null;
 			$nmfile = $data_file;
-				$l = explode('.',$nmfile);
+				$l = explode('/',$nmfile);
 					$s = $l[1];
 				$fls = preg_replace("![^a-z0-9]+!i", "_", $judul);
 			$judul_baru = $id_data.'-'.$fls.'.'.$s;
@@ -303,6 +302,9 @@ class C_Penomoran extends CI_Controller
 			$params['level'] = 'H';
 			$params['size'] = 8;
 			$params['savename'] =FCPATH."assets/upload/PengembanganSistem/fp/".$qr_image;
+			if (file_exists($params['savename'])) {
+				unlink($params['savename']);
+			}
 			$this->ciqrcode->generate($params);
 			//end
 
@@ -552,11 +554,11 @@ class C_Penomoran extends CI_Controller
 				chmod('.assets/upload/PengembanganSistem/copwi', 0777); 
 			}
 
-			$data_file = $_FILES['fileupload']['name'];
+			$data_file = $_FILES['fileupload']['type'];
 
 			$pathh = null;
 			$nmfile = $data_file;
-				$l = explode('.',$nmfile);
+				$l = explode('/',$nmfile);
 					$s = $l[1];
 					$fls = preg_replace("![^a-z0-9]+!i", "_", $judul);
 			$judul_baru = $id_data.'-'.$fls.'.'.$s;
@@ -579,6 +581,10 @@ class C_Penomoran extends CI_Controller
 			$params['level'] = 'H';
 			$params['size'] = 8;
 			$params['savename'] =FCPATH."assets/upload/PengembanganSistem/copwi/qrcop/".$qr_image;
+
+			if (file_exists($params['savename'])) {
+				unlink($params['savename']);
+			}
 			$this->ciqrcode->generate($params);
 			//end
 
@@ -840,11 +846,11 @@ class C_Penomoran extends CI_Controller
 			}
 
 
-			$data_file = $_FILES['fileupload']['name'];
+			$data_file = $_FILES['fileupload']['type'];
 
 			$pathh = null;
 			$nmfile = $data_file;
-				$l = explode('.',$nmfile);
+				$l = explode('/',$nmfile);
 					$s = $l[1];
 				$fls = preg_replace("![^a-z0-9]+!i", "_", $judul);
 			$judul_baru = $number_file.'-'.$fls.'.'.$s;
@@ -867,6 +873,10 @@ class C_Penomoran extends CI_Controller
 			$params['level'] = 'H';
 			$params['size'] = 8;
 			$params['savename'] =FCPATH."assets/upload/PengembanganSistem/um/".$qr_image;
+
+			if (file_exists($params['savename'])) {
+				unlink($params['savename']);
+			}
 			$this->ciqrcode->generate($params);
 			//end
 
