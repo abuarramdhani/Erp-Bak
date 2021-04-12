@@ -20,6 +20,7 @@
       <th width="7%" style="text-align : center;">Cuti</th>
       <th width="7%" style="text-align : center;">Sakit</th>
       <th width="7%" style="text-align : center;">Dinas Luar</th>
+      <th width="7%" style="text-align : center;">Puasa</th>
       <th width="7%" style="text-align : center;">Total</th>
     </tr>
   </thead>
@@ -37,6 +38,7 @@
         <td style="text-align : center; <?php echo $val['cuti'] != "0" ? "background-color: #ff8888" : ""; ?>"><?= $val['cuti']; ?></td>
         <td style="text-align : center; <?php echo $val['sakit'] != "0" ? "background-color: #ff8888" : ""; ?>"><?= $val['sakit']; ?></td>
         <td style="text-align : center; <?php echo $val['dinas_luar'] != "0" ? "background-color: #ff8888" : ""; ?>"><?= $val['dinas_luar']; ?></td>
+        <td style="text-align : center; <?php echo $val['puasa'] != "0" ? "background-color: #ff8888" : ""; ?>"><?= $val['puasa']; ?></td>
         <td style="text-align : center;"><?= $val['total']; ?></td>
 
       </tr>
@@ -54,6 +56,7 @@
       <td style="text-align : center;"><b><?= array_sum(array_column($PrediksiCatering, 'cuti')); ?></b></td>
       <td style="text-align : center;"><b><?= array_sum(array_column($PrediksiCatering, 'sakit')); ?></b></td>
       <td style="text-align : center;"><b><?= array_sum(array_column($PrediksiCatering, 'dinas_luar')); ?></b></td>
+      <td style="text-align : center;"><b><?= array_sum(array_column($PrediksiCatering, 'puasa')); ?></b></td>
       <td style="text-align : center;"><b><?= array_sum(array_column($PrediksiCatering, 'total')); ?></b></td>
     </tr>
   </tfoot>

@@ -38,7 +38,15 @@ class M_prediksicatering extends CI_Model
                 sum(case when tdp.kd_ket = 'PRM' and trim(tdp.alasan) like '%- WFH' then 1 else 0 end) as wfh,
                 sum(case when tdp.kd_ket = 'PRM' and trim(tdp.alasan) not like '%- WFH' then 1 else 0 end) as dirumahkan_nonwfh,
                 sum(case when tdp.kd_ket = 'PSK' then 1 else 0 end) as sakit,
-                0 as dinas_luar
+                0 as dinas_luar,
+                (select count(*) from \"Catering\".tpuasa t2 
+                inner join \"Presensi\".tshiftpekerja tsp2 on t2.fs_noind=tsp2.noind and t2.fd_tanggal=tsp2.tanggal
+                where 
+                trim(t2.fs_tempat_makan) = trim(tp.tempat_makan) and t2.fd_tanggal = tsp.tanggal
+                and tsp2.kd_shift in ('11',
+                '2',
+                '34')
+                ) puasa
                 from hrd_khs.tpribadi tp 
                 inner join \"Presensi\".tshiftpekerja tsp 
                 on tp.noind = tsp.noind
