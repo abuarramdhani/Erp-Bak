@@ -44,7 +44,7 @@
                                                   <div class="form-group row">
                                                       <label for="inputnumberfp" class="control-label col-lg-4">Nomor Dokumen</label>
                                                       <div class="col-lg-8">
-                                                          <input data-toggle="tooltip" title="Akan otomatis terisi setelah mengisi seksi pengguna" type="text" name="n" readonly="" class="form-control" id="number_flow_ps" placeholder="">
+                                                          <input data-toggle="tooltip" title="Akan otomatis terisi setelah mengisi seksi pengguna" type="text" name="stdnumber" readonly="" class="form-control" id="number_flow_ps" placeholder="">
                                                       </div>
                                                   </div>
                                                   <div class="form-group row">

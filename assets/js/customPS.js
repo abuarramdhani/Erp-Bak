@@ -1181,7 +1181,7 @@ function notif_input_um() {
 		var e = $("#number_rev-fp").val();
 		var f = $("#sop_um").val();
 		var g = $("#nomor_sop_um").val();
-		var x = 'SOP-'+f+'-'+g;
+		var y = 'SOP-'+f+'-'+g;
 		var h = $("#pic-um").val();
 		var i = $("#seksi_um option:selected").text();
 		var j = $("#status-um").val();
@@ -1197,7 +1197,7 @@ function notif_input_um() {
 		$(".dm").attr("style","text-align: center ; font: bold;");
 		$(".em").text(e);
 		$(".em").attr("style","text-align: center ; font: bold;");
-		$(".fm").text(x);
+		$(".fm").text(y);
 		$(".fm").attr("style","text-align: center ; font: bold;");
 		$(".gm").text(h);
 		$(".gm").attr("style","text-align: center ; font: bold;");
@@ -1217,7 +1217,7 @@ function notif_edit_um() {
 		var e = $("#number_rev-fp").val();
 		var f = $("#sop_um").val();
 		var g = $("#nomor_sop_um").val();
-		var x = 'SOP-'+f+'-'+g;
+		var y = 'SOP-'+f+'-'+g;
 		var h = $("#pic-um").val();
 		var i = $("#seksi_um option:selected").text();
 		var j = $("#status-um").val();
@@ -1233,7 +1233,7 @@ function notif_edit_um() {
 		$(".dm").attr("style","text-align: center ; font: bold;");
 		$(".em").text(e);
 		$(".em").attr("style","text-align: center ; font: bold;");
-		$(".fm").text(x);
+		$(".fm").text(y);
 		$(".fm").attr("style","text-align: center ; font: bold;");
 		$(".gm").text(h);
 		$(".gm").attr("style","text-align: center ; font: bold;");
