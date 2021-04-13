@@ -158,10 +158,10 @@
 					<?php echo $no ?>
 				</td>
 				<td style="font-size: 9.7px; padding: 3.5px; width: 10%; text-align: center;">
-					<?php echo $gb['QUANTITY'] ?>
+					<?php echo $gb['REQUIRED_QTY'] ?>
 				</td>
 				<td style="font-size: 9.7px; padding: 3.5px; width: 8%; text-align: center;">
-					<?php echo $gb['QTY_TERLAYANI'] ?>
+					<?php echo $gb['TRANSACT_QTY'] ?>
 				</td>
 				<td style="font-size: 9.7px; padding: 3.5px 3.5px 3.5px 10px; width: 7%; text-align: left;">
 					<?php echo $gb['UOM_CODE'] ?>
