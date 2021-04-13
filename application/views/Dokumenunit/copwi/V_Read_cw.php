@@ -141,7 +141,7 @@
                                         <div class="row text-right">
                                             <a href="javascript:history.back(1)" class="btn btn-primary btn-lg btn-rect">Back</a>
                                             &nbsp;&nbsp;
-                                            <button type="button" onclick="notif_edit_cop_wi()" data-toggle="modal" data-target="#modal-default" class="btn btn-primary btn-lg btn-rect">Save Data</button>
+                                            <button type="button" onclick="notif_edit_cop_wi()" data-toggle="modal" data-target="#modal-default" data-backdrop="static" data-keyboard="false" class="btn btn-primary btn-lg btn-rect">Save Data</button>
                                         </div>
                                     </div>
                                 </div>

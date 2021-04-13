@@ -113,6 +113,8 @@ function delete_flow(id) {
 		showCancelButton: true,
 		confirmButtonText: 'Delete',
 		cancelButtonText: 'Cancel',
+		allowOutsideClick: false,
+		allowEscapeKey: false,
 		reverseButtons: true
 	}).then(function(isConfirm) {
 			if (isConfirm.value === true) {
@@ -176,6 +178,12 @@ function link_ps(id) {
 				Swal.fire({
 					imageUrl: baseurl+'assets/upload/PengembanganSistem/fp/'+link[0]+'.png',
 					text: 'Scan QR code barcode!',
+					imageHeight: 200,
+					imageWidth: 200,
+					imageClass:'img-responsive rounded-circle',
+					allowOutsideClick: false,
+					allowEscapeKey: false,
+					animation: false  
 				});
 			}else if (isConfirm.dismiss === "cancel" && link[1] !== "") {
 				window.open(baseurl+link[1], '_blank');
@@ -186,6 +194,8 @@ function link_ps(id) {
 					type: 'error',
 					title: 'Data Kosong',
 					text: 'File belum di upload !',
+					allowOutsideClick: false,
+					allowEscapeKey: false,
 				});
 	
 			}
@@ -231,6 +241,8 @@ function delete_cop_wi(id) {
 		showCancelButton: true,
 		confirmButtonText: 'Delete',
 		cancelButtonText: 'Cancel',
+		allowOutsideClick: false,
+		allowEscapeKey: false,
 		reverseButtons: true
 	}).then(function(isConfirm) {
 			if (isConfirm.value === true) {
@@ -591,6 +603,12 @@ function link_cop(id) {
 				Swal.fire({
 					imageUrl: baseurl+'assets/upload/PengembanganSistem/copwi/qrcop/'+link[0]+'.png',
 					text: 'Scan QR code barcode!',
+					imageHeight: 200,
+					imageWidth: 200,
+					imageClass:'img-responsive rounded-circle',
+					allowOutsideClick: false,
+					allowEscapeKey: false,
+					animation: false  
 				});
 			}else if (isConfirm.dismiss === "cancel" && link[1] !== "") {
 				window.open(baseurl+link[1], '_blank');
@@ -601,6 +619,8 @@ function link_cop(id) {
 					type: 'error',
 					title: 'Data Kosong',
 					text: 'File belum di upload !',
+					allowOutsideClick: false,
+					allowEscapeKey: false,
 				});
 	
 			}
@@ -1150,9 +1170,15 @@ function link_um(id) {
 				Swal.fire({
 					imageUrl: baseurl+'assets/upload/PengembanganSistem/um/'+link[0]+'.png',
 					text: 'Scan QR code barcode!',
+					imageHeight: 200,
+					imageWidth: 200,
+					imageClass:'img-responsive rounded-circle',
+					allowOutsideClick: false,
+					allowEscapeKey: false,
+					animation: false  
 				});
 			}else if (isConfirm.dismiss === "cancel" && link[1] !== "") {
-				window.open(baseurl+link[1], '_blank');
+				window.open(baseurl+link[1]+'#toolbar=0', '_blank');
 			}else if (isConfirm.dismiss === "backdrop") {
 				;
 			} else {
@@ -1160,6 +1186,8 @@ function link_um(id) {
 					type: 'error',
 					title: 'Data Kosong',
 					text: 'File belum di upload !',
+					allowOutsideClick: false,
+					allowEscapeKey: false,
 				});
 	
 			}
@@ -1887,6 +1915,8 @@ function delete_lkh(id) {
 			showCancelButton: true,
 			confirmButtonText: 'Delete',
 			cancelButtonText: 'Cancel',
+			allowOutsideClick: false,
+			allowEscapeKey: false,
 			reverseButtons: true
 		}).then(function(isConfirm) {
 				if (isConfirm.value === true) {
@@ -1994,6 +2024,8 @@ $("#tmbh_data").click(function() {
 		showCancelButton: true,
 		confirmButtonText: 'Submit',
 		cancelButtonText: 'Cancel',
+		allowOutsideClick: false,
+		allowEscapeKey: false,
 		reverseButtons: false
 		}).then(function(isConfirm) {
 			if (isConfirm.value === true) {
@@ -2099,7 +2131,9 @@ $("#view_seunt").click(function(){
 			+'</thead>'
 				+'<tbody>'
 				+'</tbody>'
-			+'</table>'
+			+'</table>',
+			allowOutsideClick: false,
+			allowEscapeKey: false,
 		})
 	});
 
@@ -2111,6 +2145,8 @@ $("#view_seunt").click(function(){
 				showCancelButton: true,
 				confirmButtonText: 'Delete',
 				cancelButtonText: 'Cancel',
+				allowOutsideClick: false,
+				allowEscapeKey: false,
 				reverseButtons: true
 			}).then(function(isConfirm) {
 					if (isConfirm.value === true) {
@@ -2155,6 +2191,8 @@ $("#view_seunt").click(function(){
 				showCancelButton: true,
 				confirmButtonText: 'Delete',
 				cancelButtonText: 'Cancel',
+				allowOutsideClick: false,
+				allowEscapeKey: false,
 				reverseButtons: true
 			}).then(function(isConfirm) {
 					if (isConfirm.value === true) {
