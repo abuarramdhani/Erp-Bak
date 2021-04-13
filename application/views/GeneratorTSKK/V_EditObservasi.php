@@ -1090,8 +1090,8 @@
                     <label for="">Simpan Pembaruan Sebagai</label>
                     <select class="select2 type_save_tskk" style="width:100%">
                       <option value="">Pilih...</option>
-                      <option value="save_as">Observasi Revisi</option>
-                      <option value="replace">Hanya Edit</option>
+                      <option value="replace">Save</option>
+                      <option value="save_as">Save As</option>
                     </select>
                   </div>
                   <div class="form-group judul_pembaruan_observasi_tskk" style="display:none">
