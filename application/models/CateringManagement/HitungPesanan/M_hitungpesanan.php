@@ -2113,18 +2113,28 @@ class M_hitungpesanan extends Ci_Model
 				and tpd.shift = ?
 				and tpd.lokasi = ?
 				and tpd.tempat_makan = ?
+				and tpd.noind not in (
+					select tpd2.noind
+					from \"Catering\".t_pesanan_detail tpd2
+					where tpd2.tanggal = tpd.tanggal
+					and tpd2.tempat_makan = tpd.tempat_makan
+					and tpd2.shift = tpd.shift
+					and left(lower(tpd2.keterangan),11) = 'pengurangan'
+				)
 				and (
 					lower(tpd.keterangan) in ('absen', 'shift tanggung')
 					or left(lower(tpd.keterangan),8) = 'tambahan'
 				)
 				and ( 
-					( 1 = 1 $custom_condition )
+					( 
+						1 = 1 $custom_condition 
+					)
 					or 
 					(
-					(tpmk.menu_sayur = 'Semua Sayur' and tpmk.menu_sayur <> tpmk.pengganti_sayur)
-					or (tpmk.menu_lauk_utama = 'Semua Lauk Utama' and tpmk.menu_lauk_utama <> tpmk.pengganti_lauk_utama)
-					or (tpmk.menu_lauk_pendamping = 'Semua Lauk Pendamping' and tpmk.menu_lauk_pendamping <> tpmk.pengganti_lauk_pendamping)
-					or (tpmk.menu_buah = 'Semua Buah' and tpmk.menu_buah <> tpmk.pengganti_buah)
+						(tpmk.menu_sayur = 'Semua Sayur' and tpmk.menu_sayur <> tpmk.pengganti_sayur)
+						or (tpmk.menu_lauk_utama = 'Semua Lauk Utama' and tpmk.menu_lauk_utama <> tpmk.pengganti_lauk_utama)
+						or (tpmk.menu_lauk_pendamping = 'Semua Lauk Pendamping' and tpmk.menu_lauk_pendamping <> tpmk.pengganti_lauk_pendamping)
+						or (tpmk.menu_buah = 'Semua Buah' and tpmk.menu_buah <> tpmk.pengganti_buah)
 					)
 				)
 				order by trim(tpmk.noind) ";

@@ -36,19 +36,20 @@
 												float: left
 											}
 										</style>
-										<table class="table table-striped table-hover table-bordered" id="tbl-CM-IzinDinasPTM-table">
+										<table class="table table-striped table-hover table-bordered" id="tbl-CM-IzinDinasPTM-table" style="width: 100%">
 											<thead>
 												<tr>
-													<th class="bg-primary">Tanggal</th>
-													<th class="bg-primary">ID Dinas</th>
-													<th class="bg-primary">No. Induk</th>
-													<th class="bg-primary">Nama</th>
-													<th class="bg-primary">Tempat Makan Asal</th>
-													<th class="bg-primary">Tempat Makan Tujuan</th>
-													<th class="bg-primary">Keterangan</th>
-													<th class="bg-primary">Jenis Dinas</th>
-													<th class="bg-primary">Status Tambahan</th>
-													<th class="bg-primary">Status Pengurangan</th>
+													<th class="bg-primary text-center">Tanggal</th>
+													<th class="bg-primary text-center">ID Dinas</th>
+													<th class="bg-primary text-center">No. Induk</th>
+													<th class="bg-primary text-center">Nama</th>
+													<th class="bg-primary text-center">Tempat Makan Asal</th>
+													<th class="bg-primary text-center">Tempat Makan Tujuan</th>
+													<th class="bg-primary text-center">Keterangan</th>
+													<th class="bg-primary text-center">Jenis Dinas</th>
+													<th class="bg-primary text-center">Status Tambahan</th>
+													<th class="bg-primary text-center">Status Pengurangan</th>
+													<th class="bg-primary text-center">Action</th>
 												</tr>
 											</thead>
 											<tbody>
@@ -67,6 +68,35 @@
 															<td><?php echo $dt['jenis_dinas'] ?></td>
 															<td><?php echo $dt['diproses_tambah'] ?></td>
 															<td><?php echo $dt['diproses_kurang'] ?></td>
+															<td>
+																<?php 
+																if ($dt['tidak_dihitung'] == "ada") {
+																	?>
+																	<button type="button" class="btn btn-primary btn-CM-IzinDinasPTM-dihitung" 
+																		data-tanggal="<?php echo $dt['tanggal'] ?>"
+																		data-noind="<?php echo $dt['noind'] ?>"
+																		data-asal="<?php echo $dt['tempat_makan'] ?>"
+																		data-tujuan="<?php echo $dt['tujuan'] ?>"
+																		>
+																		<span class="fa fa-check"></span> 
+																		Hitung Lagi
+																	</button>
+																	<?php
+																}else{
+																	?>
+																	<button type="button" class="btn btn-danger btn-CM-IzinDinasPTM-tidakdihitung"
+																		data-tanggal="<?php echo $dt['tanggal'] ?>"
+																		data-noind="<?php echo $dt['noind'] ?>"
+																		data-asal="<?php echo $dt['tempat_makan'] ?>"
+																		data-tujuan="<?php echo $dt['tujuan'] ?>"
+																		>
+																		<span class="fa fa-times"></span> 
+																		Tidak Dihitung
+																	</button>
+																	<?php
+																}
+																?>
+															</td>
 														</tr>
 														<?php
 													}
@@ -105,18 +135,18 @@
 												float: left
 											}
 										</style>
-										<table class="table table-striped table-hover table-bordered" id="tbl-CM-IzinDinasPTM-table2">
+										<table class="table table-striped table-hover table-bordered" id="tbl-CM-IzinDinasPTM-table2" style="width: 100%">
 											<thead>
 												<tr>
-													<th class="bg-danger">Tanggal</th>
-													<th class="bg-danger">ID Dinas</th>
-													<th class="bg-danger">No. Induk</th>
-													<th class="bg-danger">Nama</th>
-													<th class="bg-danger">Tempat Makan Asal</th>
-													<th class="bg-danger">Tempat Makan Tujuan</th>
-													<th class="bg-danger">Keterangan</th>
-													<th class="bg-danger">Jenis Dinas</th>
-													<th class="bg-danger">Alasan Tidak Bisa Diproses</th>
+													<th class="bg-danger text-center">Tanggal</th>
+													<th class="bg-danger text-center">ID Dinas</th>
+													<th class="bg-danger text-center">No. Induk</th>
+													<th class="bg-danger text-center">Nama</th>
+													<th class="bg-danger text-center">Tempat Makan Asal</th>
+													<th class="bg-danger text-center">Tempat Makan Tujuan</th>
+													<th class="bg-danger text-center">Keterangan</th>
+													<th class="bg-danger text-center">Jenis Dinas</th>
+													<th class="bg-danger text-center">Alasan Tidak Bisa Diproses</th>
 												</tr>
 											</thead>
 											<tbody>
