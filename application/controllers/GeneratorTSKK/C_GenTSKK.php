@@ -1399,8 +1399,8 @@ public function exportExcel($idnya){
 // echo "<pre>";
 // print_r($last_finish);die;
 
-	if (count($elemen) < 40) {
-		for ($i= 0; $i < 40; $i++) {
+	if (count($elemen) < 42) {
+		for ($i= 0; $i < 42; $i++) {
 
 			if (!empty($elemen[$i])) {
 				$elemen_[$i] = $elemen[$i];
@@ -1689,10 +1689,10 @@ public function exportExcel($idnya){
 			//'use_first_page_number' => false,
 
 			// Specify margin in inches (not in centimeters)
-			'margin_left' => 0.2,
-			'margin_right' => 0.2,
-			'margin_top' => 0.2,
-			'margin_bottom' => 0.2,
+			'margin_left' => 0.1,
+			'margin_right' => 0.1,
+			'margin_top' => 0.1,
+			'margin_bottom' => 0.1,
 			'margin_header' => 0,
 			'margin_footer' => 0,
 			'horizontal_centered' => true,
@@ -1707,13 +1707,13 @@ public function exportExcel($idnya){
 			// 'print_titles' => '$1:$1',
 			// Note : When setting multiple ranges, specify by array. ex. 'print_titles' => ['$1:$1', '$A:$A'],
 
-			'page_order' => 'downThenOver', // choose 'overThenDown' or 'downThenOver'
+			// 'page_order' => 'downThenOver', // choose 'overThenDown' or 'downThenOver'
 			//'grid_lines' => false,
 			//'black_and_white' => false,
 			//'draft' => false,
 			'headings' => false,
 			//'cell_comments' => 'none',    // 'asDisplayed', 'atEnd', 'none' can be selected
-			//'errors' => 'displayed',      // 'blank', 'dash', 'displayed', 'NA' can be selected
+			// 'errors' => 'displayed',      // 'blank', 'dash', 'displayed', 'NA' can be selected
 
 			//'use_printer_defaults' => true,
 			//'copies' => 1,
@@ -1728,24 +1728,31 @@ public function exportExcel($idnya){
     $loop_ = ceil($paling_lama/600);
     for ($x=1; $x <=$loop_; $x++) {
 
-    $end = 600;
-
+		if ($x > 1)  $indexAngka = 0; //set jika sampai sheet2
+    $end = 600 + ($x<=1?0:180);
 		$kolomA   = $this->Kolom($indexAngka);
 		$kolomB   = $this->Kolom($indexAngka + $end);
 		$kolomJDL = $this->Kolom($indexStart);
 
     $width = array();
-    for ($i=0; $i < ($indexAngka + $end); $i++) {
-        if($i == 0) {
-            $width[$i] = 4.5;
-        } elseif ($i >= 1 && $i <=8) {
-            $width[$i] = 7.30;
-        } elseif ($i >= 9 && $i <=11) {
-            $width[$i] = 6.30;
-        } else {
-            $width[$i] = 0.34;
-        }
-    }
+		if ($x <= 1){
+			for ($i=0; $i < ($indexAngka + $end); $i++) {
+					if($i == 0) {
+							$width[$i] = 4.5;
+					} elseif ($i >= 1 && $i <=8) {
+							$width[$i] = 7.30;
+					} elseif ($i >= 9 && $i <=11) {
+							$width[$i] = 6.30;
+					} else {
+							$width[$i] = 0.56;
+					}
+			}
+		}else {
+			for ($i=0; $i < ($indexAngka + $end); $i++) {
+				$width[$i] = 0.56;
+			}
+		}
+
     // STYLING HEADER
         $col_options['widths'] = $width;
         $col_options['halign'] = 'center';
@@ -1789,7 +1796,7 @@ public function exportExcel($idnya){
                     $halign = null; //general, left, right, justify, center
 
             //BORDER, BORDER-STYLE, BORDER COLOR
-                    if ($j == 0) {
+                    if ($j == 0 && $x <= 1) {
                         if ($i == 0) {
                             $border = 'left,top';
                             $borderstyle = 'thin';
@@ -1802,7 +1809,7 @@ public function exportExcel($idnya){
                         } else {
 
                         }
-                    } elseif ($j == 1) {
+                    } elseif ($j == 1 && $x <= 1) {
                         if ($i == 0) {
                             $border='left';
                             $borderstyle='thin';
@@ -1815,7 +1822,7 @@ public function exportExcel($idnya){
                         } else {
 
                         }
-                    } elseif ($j == 2) {
+                    } elseif ($j == 2 && $x <= 1) {
                         if ($i == 0) {
                             $border = 'left';
                             $borderstyle = 'thin';
@@ -1828,7 +1835,7 @@ public function exportExcel($idnya){
                         } else {
 
                         }
-                    } elseif ($j == 3) {
+                    } elseif ($j == 3 && $x <= 1) {
                         if ($i == 0) {
                             $border='left';
                             $borderstyle='thin';
@@ -1844,7 +1851,7 @@ public function exportExcel($idnya){
                         } else {
 
                         }
-                    } elseif ($j == 4) {
+                    } elseif ($j == 4 && $x <= 1) {
                         if ($i == 0) {
                             $border='left';
                             $borderstyle='thin';
@@ -1857,7 +1864,7 @@ public function exportExcel($idnya){
                         } else {
 
                         }
-                    } elseif ($j == 5) {
+                    } elseif ($j == 5 && $x <= 1) {
                         if ($i == 0) {
                             $border='left';
                             $borderstyle='thin';
@@ -1867,7 +1874,7 @@ public function exportExcel($idnya){
                         } else {
 
                         }
-                    } elseif ($j == 6) {
+                    } elseif ($j == 6 && $x <= 1) {
                         if ($i == 0) {
                             $border='left';
                             $borderstyle='thin';
@@ -1883,7 +1890,7 @@ public function exportExcel($idnya){
                         } else {
 
                         }
-                    } elseif ($j == 7) {
+                    } elseif ($j == 7 && $x <= 1) {
                         if ($i == 0) {
                             $border='left';
                             $borderstyle='thin';
@@ -1893,7 +1900,7 @@ public function exportExcel($idnya){
                         } else {
 
                         }
-                    } elseif ($j == 8) {
+                    } elseif ($j == 8 && $x <= 1) {
                         if ($i == 0) {
                             $border='left';
                             $borderstyle='thin';
@@ -1904,10 +1911,10 @@ public function exportExcel($idnya){
 
                         }
                     } elseif ($j == 9) {
-                        if ($i > 613) {
+                        if ($i > 613 && $x <= 1) {
                             $border='bottom';
                             $borderstyle='thin';
-                        } elseif ($i == 12 || $i == 13) {
+                        } elseif (($i == 12 || $i == 13) && $x <= 1) {
                             $border='top';
                             $borderstyle='thin';
                         } else {
@@ -1915,16 +1922,16 @@ public function exportExcel($idnya){
                             $borderstyle='thin';
                         }
                     } elseif ($j == 10) {
-                        if ($i == 0) {
+                        if (($i == 0) && $x <= 1) {
                             $border='left';
                             $borderstyle='thin';
-                        } elseif ($i == 1 || $i == 9 || $i == 10 || $i == 11) {
+                        } elseif (($i == 1 || $i == 9 || $i == 10 || $i == 11) && $x <= 1) {
                             $border='left';
                             $borderstyle='thin';
-                        } elseif ($i == 12) {
+                        } elseif (($i == 12) && $x <= 1) {
                             $border='left';
                             $borderstyle='thin';
-                        } elseif ($i == 13 || $i == ($indexAngka + $end - 1)) {
+                        } elseif (($i == 13 || $i == ($indexAngka + $end - 1))) {
                             $border='right';
                             $borderstyle='thin';
                         } elseif ($i < ($indexAngka + $end)) {
@@ -1934,20 +1941,25 @@ public function exportExcel($idnya){
 
                         }
                     } elseif ($j == 11) {
-                        if ($i == 0) {
+												if ($x<=1) {
+													$border_page_ = 14;
+												}else {
+													$border_page_ = 0;
+												}
+                        if ($i == 0 && $x<=1) {
                             $border='left';
                             $borderstyle='thin';
-                        } elseif ($i == 1 || $i == 9 || $i == 10 || $i == 11) {
+                        } elseif (($i == 1 || $i == 9 || $i == 10 || $i == 11) && $x<=1) {
                             $border='left';
                             $borderstyle='thin';
-                        } elseif ($i == 12) {
+                        } elseif ($i == 12 && $x<=1) {
                             $border='left';
                             $borderstyle='thin';
-                        } elseif ($i == 13 || $i == ($indexAngka + $end - 1)) {
+                        } elseif (($i == 13 || $i == ($indexAngka + $end - 1))) {
                             $border='right';
                             $borderstyle='thin';
-                        } elseif ($i < ($indexAngka + $end) && $i >= 14) {
-                            if (($i-14)%10 == 0) {
+                        } elseif ($i < ($indexAngka + $end) && $i >= $border_page_) {
+                            if (($i-$border_page_)%10 == 0) {
                                 $border='left,bottom';
                                 $borderstyle='thin';
                             } else {
@@ -1958,35 +1970,45 @@ public function exportExcel($idnya){
 
                         }
                     } elseif ($j == 12) {
-                        if ($i == 0) {
-                            $border='left';
-                            $borderstyle='thin';
-                        } elseif ($i == 1 || $i == 9 || $i == 10 || $i == 11) {
-                            $border='left';
-                            $borderstyle='thin';
-                        } elseif ($i == 12) {
-                            $border='left';
-                            $borderstyle='thin';
-                        } elseif ($i == 13 || $i == ($indexAngka + $end - 1)) {
-                            $border='right';
-                            $borderstyle='thin';
-                        } elseif ($i < ($indexAngka + $end) && $i >= 14) {
-                                $border='right';
-                                $borderstyle='thin';
-                        } else {
+											if ($x<=1) {
+												if ($i == 0) {
+														$border='left';
+														$borderstyle='thin';
+												} elseif ($i == 1 || $i == 9 || $i == 10 || $i == 11) {
+														$border='left';
+														$borderstyle='thin';
+												} elseif ($i == 12) {
+														$border='left';
+														$borderstyle='thin';
+												} elseif (($i == 13 || $i == ($indexAngka + $end - 1))) {
+														$border='right';
+														$borderstyle='thin';
+												} elseif ($i < ($indexAngka + $end) && $i >= 14) {
+																$border='right';
+																$borderstyle='thin';
+												}
+											}else {
+												$border='right';
+												$borderstyle='thin';
+											}
 
-                        }
                     } elseif ($j == 13) {
-                        if ($i == 12 || $i == 13) {
+											if ($x <= 1) {
+												if ($i == 12 || $i == 13) {
 
-                        } else {
-                            $border='top,bottom';
-                            $borderstyle='thin';
-                        }
+												} else {
+													$border='top,bottom';
+													$borderstyle='thin';
+												}
+											}else {
+												$border='top,bottom';
+												$borderstyle='thin';
+											}
+
                     }
             //FONT, FONT-SIZE, FONT-STYLE, VALIGN, HALIGN
                     if ($j == 0) {
-                        if ($i == 9) {
+                        if ($i == 9 && $x <= 1) {
                             $fontsize = 18;
                             $fontstyle = 'bold';
                             $valign = 'center';
@@ -2134,12 +2156,12 @@ public function exportExcel($idnya){
                     } elseif ($j == 9) {
                     } elseif ($j == 10) {
                         if ($i == 0 || $i == 1 || $i == 9 || $i == 10 || $i == 11 || $i == 14) {
-                            if ($i === 9) {
+                            if ($i === 9 && $x <= 1) {
                                 $fill = '#000000';
                                 $color = '#ffffff';
-                            } elseif ($i === 10) {
+                            } elseif ($i === 10 && $x <= 1) {
                                 $fill = '#65eb00';
-                            } elseif ($i === 11) {
+                            } elseif ($i === 11 && $x <= 1) {
                                 $fill = '#00dbc5';
                             }
                             $fontsize = 8;
@@ -2187,86 +2209,139 @@ public function exportExcel($idnya){
         }
 
     //STYLING ELEMEN KERJA
-        $jumlahrow = sizeof($elemen_kerja)*3;
-        $rowmulai = 14;
-        $indexelemenrow = 0;
-        for ($j=0; $j < $jumlahrow; $j++) {
-            $rowelemen = $rowmulai + $j;
-            for ($i=0; $i <= $col; $i++) {
-                switch ($indexelemenrow) {
-                    case 0:
-                        if ($i === 0 || $i === 1 || $i === 9 || $i === 10 || $i === 11) {
-                            $styles[$x][$rowelemen][$i]['border']='left';
-                            $styles[$x][$rowelemen][$i]['border-style']='thin';
-                        } elseif ($i === 12) {
-                            $styles[$x][$rowelemen][$i]['border']='left';
-                            $styles[$x][$rowelemen][$i]['border-style']='thin';
-                        } elseif ($i === 13 || $i == ($indexAngka + $end - 1)) {
-                            $styles[$x][$rowelemen][$i]['border']='right';
-                            $styles[$x][$rowelemen][$i]['border-style']='thin';
-                        } elseif ($i > 13) {
-                            if (($i-14)%10 == 0) {
-                                $styles[$x][$rowelemen][$i]['border']='left';
-                                $styles[$x][$rowelemen][$i]['border-style']='thin';
-                            }
-                        }
-                        break;
-                    case 1:
-                        if ($i === 0 || $i === 1 || $i === 9 || $i === 10 || $i === 11) {
-                            $styles[$x][$rowelemen][$i]['border']='left';
-                            $styles[$x][$rowelemen][$i]['border-style']='thin';
-                        } elseif ($i === 12) {
-                            $styles[$x][$rowelemen][$i]['border']='left';
-                            $styles[$x][$rowelemen][$i]['border-style']='thin';
-                        } elseif ($i === 13 || $i == ($indexAngka + $end - 1)) {
-                            $styles[$x][$rowelemen][$i]['border']='right';
-                            $styles[$x][$rowelemen][$i]['border-style']='thin';
-                        } elseif ($i > 13) {
-                            if (($i-14)%10 == 0) {
-                                $styles[$x][$rowelemen][$i]['border']='left';
-                                $styles[$x][$rowelemen][$i]['border-style']='thin';
-                            }
-                        }
-                        break;
-                    case 2:
-                        if ($i === 0 || $i === 1 || $i === 9 || $i === 10 || $i === 11) {
-                            $styles[$x][$rowelemen][$i]['border']='left,bottom';
-                            $styles[$x][$rowelemen][$i]['border-style']='thin';
-                        } elseif ($i === 12) {
-                            $styles[$x][$rowelemen][$i]['border']='left';
-                            $styles[$x][$rowelemen][$i]['border-style']='thin';
-                        } elseif ($i < 13) {
-                            $styles[$x][$rowelemen][$i]['border']='bottom';
-                            $styles[$x][$rowelemen][$i]['border-style']='thin';
-                        } elseif ($i === 13 || $i == ($indexAngka + $end - 1)) {
-                            $styles[$x][$rowelemen][$i]['border']='right';
-                            $styles[$x][$rowelemen][$i]['border-style']='thin';
-                        } elseif ($i > 13) {
-                            if (($i-14)%10 == 0) {
-                                $styles[$x][$rowelemen][$i]['border']='left,bottom';
-                                $styles[$x][$rowelemen][$i]['border-style']='thin';
-                            } else {
-                                $styles[$x][$rowelemen][$i]['border']='bottom';
-                                $styles[$x][$rowelemen][$i]['border-style']='thin';
-                            }
-                        }
-                        break;
+					$jumlahrow = sizeof($elemen_kerja)*3;
+					$rowmulai = 14;
+					$indexelemenrow = 0;
 
-                    default:
-                        # code...
-                        break;
-                }
-            }
-            $indexelemenrow++;
-            if ($indexelemenrow === 3) {
-                $indexelemenrow = 0;
-            }
-        }
+					if ($x <= 1) {
+						for ($j=0; $j < $jumlahrow; $j++) {
+								$rowelemen = $rowmulai + $j;
+								for ($i=0; $i <= $col; $i++) {
+										switch ($indexelemenrow) {
+												case 0:
+														if ($i === 0 || $i === 1 || $i === 9 || $i === 10 || $i === 11) {
+																$styles[$x][$rowelemen][$i]['border']='left';
+																$styles[$x][$rowelemen][$i]['border-style']='thin';
+														} elseif ($i === 12) {
+																$styles[$x][$rowelemen][$i]['border']='left';
+																$styles[$x][$rowelemen][$i]['border-style']='thin';
+														} elseif ($i === 13 || $i == ($indexAngka + $end - 1)) {
+																$styles[$x][$rowelemen][$i]['border']='right';
+																$styles[$x][$rowelemen][$i]['border-style']='thin';
+														} elseif ($i > 13) {
+																if (($i-14)%10 == 0) {
+																		$styles[$x][$rowelemen][$i]['border']='left';
+																		$styles[$x][$rowelemen][$i]['border-style']='thin';
+																}
+														}
+														break;
+												case 1:
+														if ($i === 0 || $i === 1 || $i === 9 || $i === 10 || $i === 11) {
+																$styles[$x][$rowelemen][$i]['border']='left';
+																$styles[$x][$rowelemen][$i]['border-style']='thin';
+														} elseif ($i === 12) {
+																$styles[$x][$rowelemen][$i]['border']='left';
+																$styles[$x][$rowelemen][$i]['border-style']='thin';
+														} elseif ($i === 13 || $i == ($indexAngka + $end - 1)) {
+																$styles[$x][$rowelemen][$i]['border']='right';
+																$styles[$x][$rowelemen][$i]['border-style']='thin';
+														} elseif ($i > 13) {
+																if (($i-14)%10 == 0) {
+																		$styles[$x][$rowelemen][$i]['border']='left';
+																		$styles[$x][$rowelemen][$i]['border-style']='thin';
+																}
+														}
+														break;
+												case 2:
+														if ($i === 0 || $i === 1 || $i === 9 || $i === 10 || $i === 11) {
+																$styles[$x][$rowelemen][$i]['border']='left,bottom';
+																$styles[$x][$rowelemen][$i]['border-style']='thin';
+														} elseif ($i === 12) {
+																$styles[$x][$rowelemen][$i]['border']='left';
+																$styles[$x][$rowelemen][$i]['border-style']='thin';
+														} elseif ($i < 13) {
+																$styles[$x][$rowelemen][$i]['border']='bottom';
+																$styles[$x][$rowelemen][$i]['border-style']='thin';
+														} elseif ($i === 13 || $i == ($indexAngka + $end - 1)) {
+																$styles[$x][$rowelemen][$i]['border']='right';
+																$styles[$x][$rowelemen][$i]['border-style']='thin';
+														} elseif ($i > 13) {
+																if (($i-14)%10 == 0) {
+																		$styles[$x][$rowelemen][$i]['border']='left,bottom';
+																		$styles[$x][$rowelemen][$i]['border-style']='thin';
+																} else {
+																		$styles[$x][$rowelemen][$i]['border']='bottom';
+																		$styles[$x][$rowelemen][$i]['border-style']='thin';
+																}
+														}
+														break;
+
+												default:
+														# code...
+														break;
+										}
+								}
+								$indexelemenrow++;
+								if ($indexelemenrow === 3) {
+										$indexelemenrow = 0;
+								}
+						}
+					}else {
+						for ($j=0; $j < $jumlahrow; $j++) {
+								$rowelemen = $rowmulai + $j;
+								for ($i=0; $i <= $col; $i++) {
+										switch ($indexelemenrow) {
+												case 0:
+																if (($i)%10 == 0) {
+																		$styles[$x][$rowelemen][$i]['border']='left';
+																		$styles[$x][$rowelemen][$i]['border-style']='thin';
+																}elseif ($i == ($indexAngka + $end - 1)) {
+																	$styles[$x][$rowelemen][$i]['border']='right';
+																	$styles[$x][$rowelemen][$i]['border-style']='thin';
+																}
+														break;
+												case 1:
+																if (($i)%10 == 0) {
+																		$styles[$x][$rowelemen][$i]['border']='left';
+																		$styles[$x][$rowelemen][$i]['border-style']='thin';
+																}elseif ($i == ($indexAngka + $end - 1)) {
+																	$styles[$x][$rowelemen][$i]['border']='right';
+																	$styles[$x][$rowelemen][$i]['border-style']='thin';
+																}
+														break;
+												case 2:
+																if (($i)%10 == 0) {
+																		$styles[$x][$rowelemen][$i]['border']='left,bottom';
+																		$styles[$x][$rowelemen][$i]['border-style']='thin';
+																}elseif ($i == ($indexAngka + $end - 1)) {
+																	$styles[$x][$rowelemen][$i]['border']='right';
+																	$styles[$x][$rowelemen][$i]['border-style']='thin';
+																} else {
+																		$styles[$x][$rowelemen][$i]['border']='bottom';
+																		$styles[$x][$rowelemen][$i]['border-style']='thin';
+																}
+														break;
+
+												default:
+														break;
+										}
+								}
+
+
+								$indexelemenrow++;
+								if ($indexelemenrow === 3) {
+										$indexelemenrow = 0;
+								}
+						}
+					}
+
+
+
         //STYLING ROW TERAKHIR ELEMEN
             for ($i=0; $i < $col; $i++) {
                 if ($i == 12 || $i == 13) {
                     # code...
-                } elseif ($i <= 614) {
+                } elseif ($i <= 614 && $x <= 1) {
                     $styles[$x][$jumlahrow + $rowmulai][$i]['border']='top,bottom';
                     $styles[$x][$jumlahrow + $rowmulai][$i]['border-style']='thin';
                 } else {
@@ -2282,6 +2357,9 @@ public function exportExcel($idnya){
             } else {
                 $irg = $jmlIrregular;
             }
+
+					if ($x<= 1) {
+							// code...
             for ($j=0; $j <= (($irg*2)+13); $j++) {
                 $baris = ($rJum + $j)+2;
 								$sda[] = $baris;
@@ -2794,58 +2872,64 @@ public function exportExcel($idnya){
                     }
                 }
             }
+					}
 						// echo "<pre>";print_r($sda);die;
 
         // STYLING IRREGULAR JOB
             $brsIrreg = $rJum + 7;
             $penanda = 0;
 
-            for ($j=0; $j < ($irg*2)+2; $j++) {
-                $brsPake = $brsIrreg + $j + 2;
-                for ($i=0; $i < 12; $i++) {
-                    switch ($i) {
-                        case 0:
-														// $styles[$x][$brsPake][$i]['border']='left';
-														// $styles[$x][$brsPake][$i]['border-style']='thin';
-                            // if ($penanda === 1 && $j === (($irg*2)-1)) {
-                                // $styles[$x][$brsPake][$i]['border']='top,bottom';
-                                // $styles[$x][$brsPake][$i]['border-style']='thin';
-                            // } elseif ($penanda === 0) {
-                                // $styles[$x][$brsPake][$i]['border']='top';
-                                // $styles[$x][$brsPake][$i]['border-style']='thin';
-                            // } else {
-                                // $styles[$x][$brsPake][$i]['border']='left';
-                                // $styles[$x][$brsPake][$i]['border-style']='thin';
-                            // }
-                            break;
-                        case 1 || 9 || 10:
-                            if ($penanda === 0) {
-																$styles[$x][$brsPake][$i]['border']='top,left';
+						if ($x <= 1) {
+	            for ($j=0; $j < ($irg*2)+2; $j++) {
+	                $brsPake = $brsIrreg + $j + 2;
+	                for ($i=0; $i < 12; $i++) {
+	                    switch ($i) {
+	                        case 0:
+															// $styles[$x][$brsPake][$i]['border']='left';
+															// $styles[$x][$brsPake][$i]['border-style']='thin';
+	                            // if ($penanda === 1 && $j === (($irg*2)-1)) {
+	                                // $styles[$x][$brsPake][$i]['border']='top,bottom';
+	                                // $styles[$x][$brsPake][$i]['border-style']='thin';
+	                            // } elseif ($penanda === 0) {
+	                                // $styles[$x][$brsPake][$i]['border']='top';
+	                                // $styles[$x][$brsPake][$i]['border-style']='thin';
+	                            // } else {
+	                                // $styles[$x][$brsPake][$i]['border']='left';
+	                                // $styles[$x][$brsPake][$i]['border-style']='thin';
+	                            // }
+	                            break;
+	                        case 1 || 9 || 10:
+	                            if ($penanda === 0) {
+																	$styles[$x][$brsPake][$i]['border']='top,left';
+																	$styles[$x][$brsPake][$i]['border-style']='thin';
+	                            } else {
+																$styles[$x][$brsPake][$i]['border']='left';
 																$styles[$x][$brsPake][$i]['border-style']='thin';
-                            } else {
-															$styles[$x][$brsPake][$i]['border']='left';
-															$styles[$x][$brsPake][$i]['border-style']='thin';
-                            }
-                            break;
+	                            }
+	                            break;
 
-                        default:
-                            if ($penanda === 0) {
-                                $styles[$x][$brsPake][$i]['border']='top';
-                                $styles[$x][$brsPake][$i]['border-style']='thin';
-                            }
-                            break;
-                    }
-                }
-                $penanda++;
-                if ($penanda === 2) {
-                    $penanda = 0;
-                }
-            }
+	                        default:
+	                            if ($penanda === 0) {
+	                                $styles[$x][$brsPake][$i]['border']='top';
+	                                $styles[$x][$brsPake][$i]['border-style']='thin';
+	                            }
+	                            break;
+	                    }
+	                }
+	                $penanda++;
+	                if ($penanda === 2) {
+	                    $penanda = 0;
+	                }
+	            }
+					}
 						// echo $brsPake;
 						// echo "<br>";
 						// die;
         // STYLING JUMLAH IRREGULAR
             $jmlIrreg = $brsIrreg + ($irg*2);
+
+						if ($x <= 1) {
+							// code...
             for ($j=0; $j < 6; $j++) {
                 $barisnya = $jmlIrreg + $j;
                 for ($i=0; $i < 12; $i++) {
@@ -2898,7 +2982,11 @@ public function exportExcel($idnya){
                 }
             }
 
+					}
+
+
     // SET DATA
+			if ($x <= 1) {
         // DATA ROW 1
             $rows[$x][0][9] = $seksi_pembuat; // DATA SEKSI PEMBUAT
             $rows[$x][0][186] = 'Tipe';
@@ -2956,20 +3044,24 @@ public function exportExcel($idnya){
             $rows[$x][7][401] = $alat_bantu; //DATA Alat Bantu
             $rows[$x][7][450] = $tanggal; //DATA Tgl Observasi
 
-        // DATA ROW 9
-        // DATA ROW 10
-        // DATA ROW 11
-            $rows[$x][10][0] = 'NO';
-            $rows[$x][10][1] = 'ELEMEN KERJA';
-            $rows[$x][10][9] = 'MANUAL';
-            $rows[$x][10][10] = 'AUTO';
-            $rows[$x][10][11] = 'WALK';
-            $rows[$x][10][14] = 'Detik';
+				// DATA ROW 9
+				// DATA ROW 10
+				// DATA ROW 11
+						$rows[$x][10][0] = 'NO';
+						$rows[$x][10][1] = 'ELEMEN KERJA';
+						$rows[$x][10][9] = 'MANUAL';
+						$rows[$x][10][10] = 'AUTO';
+						$rows[$x][10][11] = 'WALK';
+					}
+						$rows[$x][10][$x<=1 ? 14 : 0] = 'Detik';
+
 
         // DATA & STYLE ROW 12 & 13
-            if ($x > 1) {
-              $xy = $x-1;
-              $headtime = 10 + (600 * $xy);
+            if ($x == 2) {
+              $headtime = 610;
+            }elseif ($x > 2) {
+							$xy = $x-2;
+            	$headtime = 10 + (1380 * $xy);
             }else {
               $headtime = 10;
             }
@@ -2992,8 +3084,9 @@ public function exportExcel($idnya){
                 $time++;
             }
 
+				$rownya = 14;
+				if ($x <= 1) {
         // DATA & STYLE ELEMEN KERJA
-            $rownya = 14;
             for ($j=0; $j < sizeof($elemen_kerja); $j++) {
                 $rowkerja = $rownya + ($j *3);
                 $rows[$x][$rowkerja][0] = $j+1;
@@ -3032,10 +3125,14 @@ public function exportExcel($idnya){
 
             }
 
+
+					}
+
 						for ($jj=0; $jj < sizeof($elemen_kerja) * 3; $jj++) {
 							$styles[$x][$jj+14]['height'] = 9;
 						}
 
+					if ($x <= 1) {
         // DATA & STYLE JUMLAH
             $rowJumlahElemen = $rownya + (sizeof($elemen_kerja)*3 +1);
             $rows[$x][$rowJumlahElemen][0] = 'JUMLAH';
@@ -3185,7 +3282,6 @@ public function exportExcel($idnya){
             $rows[$x][$rowJumlahElemen][382] = '3. Waktu Irregular Job';
             $rows[$x][$rowJumlahElemen][500] = '4. Jumlah Pcs yang dihasilkan dalam 1 shift';
             $rows[$x][$rowJumlahElemen+4][9] = $jumlah; //rev4
-
 
             for ($j=0; $j < 12; $j++) {
                 $barisnya = $rowJumlahElemen + $j;
@@ -3495,17 +3591,24 @@ public function exportExcel($idnya){
             $styles[$x][$pakeRowIrregular + (($rowIrregular*2) - $min001)][11]['halign'] = 'center';
 					}
 
+				}
 
     // TIME FLOW (MASTER)
 				$n_ = $x - 1;
-				$nn = $n_ * 600;
-
+				// $nn $n_ * 600;
+				$nn = $n_ * 600 + ($x > 2 ? 180 : 0);
 				// $auto_check = 0;
 				// for ($j=0; $j < sizeof($elemen_kerja); $j++) {
 				// 	if ($jenis_proses == 'AUTO') {
 				// 		$xyz_auto[] = $j;
 				// 	}
 				// }
+
+				if ($x <= 1) {
+					$mulai_colom_grafik = 13;
+				}else {
+					$mulai_colom_grafik = -1;
+				}
 
 				//ambil manual / walk terakhir
 				$elemen_kerja_last_manual_walk = null;
@@ -3537,9 +3640,9 @@ public function exportExcel($idnya){
 													$warna = '#00dbc5';
 											}
 
-											if ($i > 1*$nn && $i <= 600*$x) {
-												$styles[$x][$rowflow + 1][($i+13) - $nn]['fill'] = $warna;
-												$rows[$x][$rowflow + 1][($i+13) - $nn] = $i-$start[$j]+1;
+											if ($i > 1*$nn && $i <= ((600*$x) + ($x<=1?0:180))) {
+												$styles[$x][$rowflow + 1][($i+$mulai_colom_grafik) - $nn]['fill'] = $warna;
+												$rows[$x][$rowflow + 1][($i+$mulai_colom_grafik) - $nn] = $i-$start[$j]+1;
 											}
 
 									}
@@ -3548,18 +3651,18 @@ public function exportExcel($idnya){
 									if ($j != sizeof($elemen_kerja) - 1) {
 										if ($jenis_proses[$j+1] == $jenis_proses[$j] || ($jenis_proses[$j] == 'MANUAL' && $jenis_proses[$j+1] == 'WALK') || ($jenis_proses[$j] == 'WALK' && $jenis_proses[$j+1] == 'MANUAL')) {
 											if ($finish[$j]+1 == $start[$j+1]) {
-												$styles[$x][$rowflow + 2][($finish[$j]+13) - $nn]['border'] = 'right';
-												$styles[$x][$rowflow + 2][($finish[$j]+13) - $nn]['border-style'] = 'thin';
+												$styles[$x][$rowflow + 2][($finish[$j]+$mulai_colom_grafik) - $nn]['border'] = 'right';
+												$styles[$x][$rowflow + 2][($finish[$j]+$mulai_colom_grafik) - $nn]['border-style'] = 'thin';
 
-												$styles[$x][$rowflow + 3][($finish[$j]+13) - $nn]['border'] = 'right';
-												$styles[$x][$rowflow + 3][($finish[$j]+13) - $nn]['border-style'] = 'thin';
+												$styles[$x][$rowflow + 3][($finish[$j]+$mulai_colom_grafik) - $nn]['border'] = 'right';
+												$styles[$x][$rowflow + 3][($finish[$j]+$mulai_colom_grafik) - $nn]['border-style'] = 'thin';
 											}
 										}elseif (!empty($jenis_proses[$j+2])) {
 											if ($jenis_proses[$j+2] == $jenis_proses[$j] || ($jenis_proses[$j] == 'MANUAL' && $jenis_proses[$j+2] == 'WALK') || ($jenis_proses[$j] == 'WALK' && $jenis_proses[$j+2] == 'MANUAL')) {
 												if ($finish[$j]+1 == $start[$j+2]) {
 													for ($eaea=1; $eaea <= 7; $eaea++) {
-														$styles[$x][$rowflow + $eaea][($finish[$j]+13) - $nn]['border'] = 'right';
-														$styles[$x][$rowflow + $eaea][($finish[$j]+13) - $nn]['border-style'] = 'thin';
+														$styles[$x][$rowflow + $eaea][($finish[$j]+$mulai_colom_grafik) - $nn]['border'] = 'right';
+														$styles[$x][$rowflow + $eaea][($finish[$j]+$mulai_colom_grafik) - $nn]['border-style'] = 'thin';
 													}
 												}
 											}
@@ -3581,24 +3684,24 @@ public function exportExcel($idnya){
 									if ($jenis_proses[$j] != 'AUTO') {
 										// ($startmuda[$j] <= 600*$x && $finishmuda[$j] <= 600*$x)
 										if (($i >= $startmuda[$j] && $i <= $finishmuda[$j])) {
-												$styles[$x][$rowflow][($i+13) - $nn]['fill'] = '#fa3eef';
-												$styles[$x][$rowflow-1][($i+13) - $nn]['fill'] = '#fa3eef';
+												$styles[$x][$rowflow][($i+$mulai_colom_grafik) - $nn]['fill'] = '#fa3eef';
+												$styles[$x][$rowflow-1][($i+$mulai_colom_grafik) - $nn]['fill'] = '#fa3eef';
 												if ($i === $finishmuda[$j]) {
-													if ($i > 1*$nn && $i < 600*$x) {
-														$rows[$x][$rowflow-1][($i+13) - $nn] = 'Muda: '.$muda[$j].' Detik ';
+													if ($i > 1*$nn && $i < ((600*$x) + ($x<=1?0:180))) {
+														$rows[$x][$rowflow-1][($i+$mulai_colom_grafik) - $nn] = 'Muda: '.$muda[$j].' Detik ';
 													}
 												}
 										}
 
-										$cekk =  "cek aldi, ".($cycle_time_tanpa_irregular).' +++'.$i;
+										// $cekk =  "cek aldi, ".($cycle_time_tanpa_irregular).' +++'.$i;
 										if (!empty($elemen_kerja_last_manual_walk) && $elemen_kerja_last_manual_walk == $j) {
 
 											if ($finish[$j] != $cycle_time_tanpa_irregular) {
 												if (($i >= $finish[$j]+1 && $i <= $cycle_time_tanpa_irregular)) {
-														$styles[$x][$rowflow+2][($i+13) - $nn]['fill'] = '#fa3eef';
+														$styles[$x][$rowflow+2][($i+$mulai_colom_grafik) - $nn]['fill'] = '#fa3eef';
 														if ($i == $cycle_time_tanpa_irregular) {
-															if ($i > 1*$nn && $i < 600*$x) {
-																$rows[$x][$rowflow+2][($i+13) - $nn] = 'Muda: '.($cycle_time_tanpa_irregular - $finish[$j]).' Detik ';
+															if ($i > 1*$nn && $i < ((600*$x) + ($x<=1?0:180))) {
+																$rows[$x][$rowflow+2][($i+$mulai_colom_grafik) - $nn] = 'Muda: '.($cycle_time_tanpa_irregular - $finish[$j]).' Detik ';
 															}
 														}
 												}
@@ -3613,51 +3716,53 @@ public function exportExcel($idnya){
 
 						// //Garis Takttime
 						if ($takt_time == '-') {
-							$styles[$x][$rowflow][($takt_time + 13) - $nn]['fill'] = '#ffffff';
-							$styles[$x][$rowflow+1][($takt_time + 13) - $nn]['fill'] = '#ffffff';
-							$styles[$x][$rowflow+2][($takt_time + 13) - $nn]['fill'] = '#ffffff';
+							$styles[$x][$rowflow][($takt_time + $mulai_colom_grafik) - $nn]['fill'] = '#ffffff';
+							$styles[$x][$rowflow+1][($takt_time + $mulai_colom_grafik) - $nn]['fill'] = '#ffffff';
+							$styles[$x][$rowflow+2][($takt_time + $mulai_colom_grafik) - $nn]['fill'] = '#ffffff';
 						}else {
-							if ($takt_time > 1*$nn && $takt_time <= 600*$x) {
-								$styles[$x][$rowflow][($takt_time + 13) - $nn]['fill'] = '#fb0000';
-								$styles[$x][$rowflow+1][($takt_time + 13) - $nn]['fill'] = '#fb0000';
-								$styles[$x][$rowflow+2][($takt_time + 13) - $nn]['fill'] = '#fb0000';
+							if ($takt_time > 1*$nn && $takt_time <= ((600*$x) + ($x<=1?0:180))) {
+								$styles[$x][$rowflow][($takt_time + $mulai_colom_grafik) - $nn]['fill'] = '#fb0000';
+								$styles[$x][$rowflow+1][($takt_time + $mulai_colom_grafik) - $nn]['fill'] = '#fb0000';
+								$styles[$x][$rowflow+2][($takt_time + $mulai_colom_grafik) - $nn]['fill'] = '#fb0000';
 							}
 						}
 						// //Garis Cycletime
-						if ($cycle_time > 1*$nn && $cycle_time <= 600*$x) {
-							$styles[$x][$rowflow][($cycle_time + 13) - $nn]['fill'] = '#fcf403';
-							$styles[$x][$rowflow+1][($cycle_time + 13) - $nn]['fill'] = '#fcf403';
-							$styles[$x][$rowflow+2][($cycle_time + 13) - $nn]['fill'] = '#fcf403';
+						if ($cycle_time > 1*$nn && $cycle_time <= ((600*$x) + ($x<=1?0:180))) {
+							$styles[$x][$rowflow][($cycle_time + ($mulai_colom_grafik)) - $nn]['fill'] = '#fcf403';
+							$styles[$x][$rowflow+1][($cycle_time + ($mulai_colom_grafik)) - $nn]['fill'] = '#fcf403';
+							$styles[$x][$rowflow+2][($cycle_time + ($mulai_colom_grafik)) - $nn]['fill'] = '#fcf403';
 						}
         }
+				//end style element
+
 
 				//Irregular Job
-				if ($last_finish > 1*$nn && $last_finish <= 600*$x) {
+				if ($last_finish > 1*$nn && $last_finish <= ((600*$x) + ($x<=1?0:180))) {
 					for ($i=0; $i < $jumlah_hasil_irregular; $i++) {
-							$styles[$x][$rownya][(($last_finish + 14) - $nn) + $i]['fill'] = '#2a61ad';
-							$rows[$x][$rownya][(($last_finish + 14) - $nn) + $i] = $i +1;
+							$styles[$x][$rownya][(($last_finish + $mulai_colom_grafik + 1) - $nn) + $i]['fill'] = '#2a61ad';
+							$rows[$x][$rownya][(($last_finish + $mulai_colom_grafik + 1) - $nn) + $i] = $i +1;
 					}
 				}
 
 				if ($takt_time == '-') {
 					$rows[$x][$rownya + 13][$takt_time + 14] = '';
 				}else {
-					if ($takt_time > 1*$nn && $takt_time <= 600*$x) {
-						$styles[$x][$rownya + 13][($takt_time + 14) - $nn]['font-size'] = 10;
-						if ($takt_time >= (600*$x)-50) {
-							$rows[$x][$rownya + 13][($takt_time - 25) - $nn] = 'Takt Time = '.$takt_time.' Detik';
+					if ($takt_time > 1*$nn && $takt_time <= ((600*$x) + ($x<=1?0:180))) {
+						$styles[$x][$rownya + 13][($takt_time + ($mulai_colom_grafik + 1)) - $nn]['font-size'] = 10; //14
+						if ($takt_time >= ((600*$x) + ($x<=1?0:180))-50) {
+							$rows[$x][$rownya + 13][($takt_time - (($mulai_colom_grafik + 1) + 11)) - $nn] = 'Takt Time = '.$takt_time.' Detik'; //25
 						}else {
-							$rows[$x][$rownya + 13][($takt_time + 14) - $nn] = 'Takt Time = '.$takt_time.' Detik';
+							$rows[$x][$rownya + 13][($takt_time + ($mulai_colom_grafik + 1)) - $nn] = 'Takt Time = '.$takt_time.' Detik';
 						}
 					}
 				}
 
 				//CycleTime
-				if ($cycle_time > 1*$nn && $cycle_time <= 600*$x ) {
-					if ($cycle_time >= (600*$x)-50) {
-						$rows[$x][$rownya][($cycle_time + 28) - $nn] = 'Cycle Time = '.$cycle_time.' Detik';
+				if ($cycle_time > 1*$nn && $cycle_time <= ((600*$x) + ($x<=1?0:180)) ) {
+					if ($cycle_time >= ((600*$x) + ($x<=1?0:180))-50) {
+						$rows[$x][$rownya][($cycle_time + ($mulai_colom_grafik + 1) + 14) - $nn] = 'Cycle Time = '.$cycle_time.' Detik';
 					}else {
-						$rows[$x][$rownya][($cycle_time + 14) - $nn] = 'Cycle Time = '.$cycle_time.' Detik';
+						$rows[$x][$rownya][($cycle_time + ($mulai_colom_grafik + 1)) - $nn] = 'Cycle Time = '.$cycle_time.' Detik';
 					}
 				}
         // $rows[$x][$rownya + 13][$cycle_time + 14] = 'Cycle Time = '.$cycle_time.' Detik';
@@ -3670,7 +3775,8 @@ public function exportExcel($idnya){
 
 			//LAYOUT HEADER, FORMATTING MERGE CELL
 			    $writer->markMergedCell($sheet1.'_'.$x, $start_row=0, $start_col=0, $end_row=0, $end_col=($indexAngka + $end)-1); // TEXT IDENTITAS TSKK
-			    //ROW 1
+				if ($x <= 1) {
+				  //ROW 1
 			        $writer->markMergedCell($sheet1.'_'.$x, $start_row=1, $start_col=0, $end_row=9, $end_col=1); //LOGO QUICK
 			        $writer->markMergedCell($sheet1.'_'.$x, $start_row=1, $start_col=2, $end_row=1, $end_col=8); //BLANK
 			        $writer->markMergedCell($sheet1.'_'.$x, $start_row=1, $start_col=9, $end_row=3, $end_col=185); //SEKSI GEDE
@@ -3733,13 +3839,18 @@ public function exportExcel($idnya){
 			        $writer->markMergedCell($sheet1.'_'.$x, $start_row=8, $start_col=450, $end_row=9, $end_col=490); //DATA TGL OBSERVASI
 
 			    //ROW 9
+				}
+
 			    //ROW 10
+						if ($x <= 1) {
 			        $writer->markMergedCell($sheet1.'_'.$x, $start_row=11, $start_col=0, $end_row=13, $end_col=0); //HEAD NO
 			        $writer->markMergedCell($sheet1.'_'.$x, $start_row=11, $start_col=1, $end_row=13, $end_col=8); //HEAD ELEMEN KERJA
 			        $writer->markMergedCell($sheet1.'_'.$x, $start_row=11, $start_col=9, $end_row=13, $end_col=9); //HEAD MANUAL
 			        $writer->markMergedCell($sheet1.'_'.$x, $start_row=11, $start_col=10, $end_row=13, $end_col=10); //HEAD AUTO
 			        $writer->markMergedCell($sheet1.'_'.$x, $start_row=11, $start_col=11, $end_row=13, $end_col=11); //HEAD WALK
-			        $writer->markMergedCell($sheet1.'_'.$x, $start_row=11, $start_col=14, $end_row=11, $end_col=($indexAngka + $end)-1); //HEAD DETIK
+						}
+						$writer->markMergedCell($sheet1.'_'.$x, $start_row=11, $start_col= ($x<=1 ? 14 : 0), $end_row=11, $end_col=($indexAngka + $end)-1); //HEAD DETIK
+
 
 			    //ROW 11
 			        for ($i= $indexAngka; $i < ($indexAngka + $end); $i+=10) {
@@ -3747,16 +3858,17 @@ public function exportExcel($idnya){
 			            $writer->markMergedCell($sheet1.'_'.$x, $start_row=12, $start_col= $i, $end_row=12, $end_col= $fin);
 			        }
 
-			    //ROW ELEMEN KERJA
-			        for ($i=0; $i < sizeof($elemen_kerja); $i++) {
-			            $rowstart = 15 + ($i * 3);
-			            $rowend = $rowstart + 2;
-			            $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowstart, $start_col= 0, $end_row=$rowend, $end_col= 0);
-			            $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowstart, $start_col= 1, $end_row=$rowend, $end_col= 8);
-			            $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowstart, $start_col= 9, $end_row=$rowend, $end_col= 9);
-			            $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowstart, $start_col= 10, $end_row=$rowend, $end_col= 10);
-			            $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowstart, $start_col= 11, $end_row=$rowend, $end_col= 11);
-			        }
+					if ($x <= 1) {
+						//ROW ELEMEN KERJA
+						for ($i=0; $i < sizeof($elemen_kerja); $i++) {
+								$rowstart = 15 + ($i * 3);
+								$rowend = $rowstart + 2;
+								$writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowstart, $start_col= 0, $end_row=$rowend, $end_col= 0);
+								$writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowstart, $start_col= 1, $end_row=$rowend, $end_col= 8);
+								$writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowstart, $start_col= 9, $end_row=$rowend, $end_col= 9);
+								$writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowstart, $start_col= 10, $end_row=$rowend, $end_col= 10);
+								$writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowstart, $start_col= 11, $end_row=$rowend, $end_col= 11);
+						}
 
 			    //ROW JUMLAH & KETERANGAN
 			        $rowjum = 15 + (sizeof($elemen_kerja) * 3) + 1;
@@ -3918,6 +4030,7 @@ public function exportExcel($idnya){
 			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+12, $start_col= 20, $end_row=$rowjum+13, $end_col= 360);
 
 
+
 			    //ROW HEADER IRREGULAR JOB & Footer kanan
 			        $rowheadirreg = $rowjum+6;
 			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowheadirreg, $start_col= 0, $end_row=$rowheadirreg+2, $end_col= 0);
@@ -4038,6 +4151,7 @@ public function exportExcel($idnya){
 			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $jmlRowIrreg, $start_col= 0, $end_row=$jmlRowIrreg+4, $end_col= 10);
 			        $writer->markMergedCell($sheet1.'_'.$x, $start_row= $jmlRowIrreg, $start_col= 11, $end_row=$jmlRowIrreg+4, $end_col= 11);
 
+				}
 		}
     $filename = 'New_TSKK_'.$judul.'_'.$tanggal.'.xlsx';
     $writer->writeToFile('./assets/upload/GeneratorTSKK/'.$filename);

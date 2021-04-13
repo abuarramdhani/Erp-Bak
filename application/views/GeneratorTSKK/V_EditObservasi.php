@@ -903,10 +903,10 @@
                                     </td>
                                     <!-- FOLLOW START END -->
                                     <td>
-                                      <input type="number" class="form-control" style="width: 70px;" name="start_time_together[]" value="<?php echo $key['start_together'] ?>">
+                                      <input type="number" class="form-control" style="width: 70px;" name="start_time_together[]" value="<?php echo !empty($key['start_together'] ) ? $key['start_together']  : ''?>">
                                     </td>
                                     <td>
-                                      <input type="number" class="form-control" style="width: 70px;" name="end_time_together[]" value="<?php echo $key['end_together'] ?>">
+                                      <input type="number" class="form-control" style="width: 70px;" name="end_time_together[]" value="<?php echo !empty($key['end_together']) ? $key['end_together'] : '' ?>">
                                     </td>
                                     <!--JENIS PROSES-->
                                     <td>
