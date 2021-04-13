@@ -111,7 +111,7 @@
                                           </div>
                                       <div class="panel-footer">
                                           <div class="row text-right">
-                                              <button type="button" onclick="notif_input_flow()" data-toggle="modal" data-target="#modal-default" class="btn btn-primary btn-rect">Save Data</button>
+                                              <button type="button" onclick="notif_input_flow()" data-toggle="modal" data-target="#modal-default" data-backdrop="static" data-keyboard="false" class="btn btn-primary btn-rect">Save Data</button>
                                           </div>
                                       </div>
                                   </div>
@@ -210,7 +210,7 @@
                                                         echo 'display : none;';
                                                     }?>">
                                             <a class="btn-xs btn btn-success" href="<?php echo base_url('DokumenUnit/edit_flow/'.$row['id'])?>" title="Edit"><i class="fa fa-pencil"></i></a>
-                                            <a class="btn-xs btn btn-warning" data-toggle="modal" data-toggle="tooltip" data-target="<?php echo "#modal_edit".$row['id'];?>" title="Upload"><i class="fa fa-cloud-upload"></i></a>
+                                            <a class="btn-xs btn btn-warning" data-toggle="modal" data-toggle="tooltip" data-target="<?php echo "#modal_edit".$row['id'];?>" data-backdrop="static" data-keyboard="false" title="Upload"><i class="fa fa-cloud-upload"></i></a>
                                             <a class="btn-xs btn btn-danger" title="Delete" onclick="delete_flow(<?= $row['id']?>)"><i class="fa fa-close"></i></a>
                                             </div>
                                         </div>
