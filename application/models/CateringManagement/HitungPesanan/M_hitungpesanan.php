@@ -1619,6 +1619,14 @@ class M_hitungpesanan extends Ci_Model
 		return $this->personalia->query($sql,array($id_pengurangan,$noind))->result_array();
 	}
 
+	public function getPesananPenguranganByIdPenguranganNoind($id_pengurangan,$noind){
+        $sql = "select *
+                from \"Catering\".tpenguranganpesanan_detail
+                where id_pengurangan = ?
+                and fs_noind = ? ";
+        return $this->personalia->query($sql,array($id_pengurangan,$noind))->result_array();
+    }
+
 	public function insertPesananPenguranganDetail($id_pengurangan,$noind){
 		$sql = "insert into \"Catering\".tpenguranganpesanan_detail 
 				(id_pengurangan,fs_noind,fs_nama,fs_ket) 
