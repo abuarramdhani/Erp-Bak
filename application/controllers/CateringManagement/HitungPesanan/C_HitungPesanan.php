@@ -481,7 +481,7 @@ class C_HitungPesanan extends CI_Controller
             }
           }
         }
-        $this->M_hitungpesanan->updatePesananPenguranganTotalByTanggalShiftTempatMakanKategori($tanggal,$shift,$tempatMakan,'1');
+        $this->M_hitungpesanan->updatePesananPenguranganTotalByTanggalShiftTempatMakanKategori($tanggal,$shift,$tempatMakan,'8');
       }
 
       // Pesanan Tambahan
@@ -686,7 +686,7 @@ class C_HitungPesanan extends CI_Controller
             }
           }
         }
-        $this->M_hitungpesanan->updatePesananPenguranganTotalByTanggalShiftTempatMakanKategori($tanggal,$shift,$tempatMakan,'1');
+        $this->M_hitungpesanan->updatePesananPenguranganTotalByTanggalShiftTempatMakanKategori($tanggal,$shift,$tempatMakan,'8');
       }
 
       // Pesanan Tambahan
@@ -889,7 +889,7 @@ class C_HitungPesanan extends CI_Controller
             }
           }
         }
-        $this->M_hitungpesanan->updatePesananPenguranganTotalByTanggalShiftTempatMakanKategori($tanggal,$shift,$tempatMakan,'1');
+        $this->M_hitungpesanan->updatePesananPenguranganTotalByTanggalShiftTempatMakanKategori($tanggal,$shift,$tempatMakan,'8');
       }
 
       // Pesanan Tambahan
