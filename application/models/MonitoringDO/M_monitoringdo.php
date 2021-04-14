@@ -211,8 +211,8 @@ class M_monitoringdo extends CI_Model
         $subinv = $this->session->datasubinven;
         $query = "SELECT *
                     FROM khs_qweb_siap_assign1 kqsa
-                   WHERE TRUNC (SYSDATE) BETWEEN TRUNC (kqsa.tgl_kirim - 1)
-                                             AND TRUNC (kqsa.tgl_kirim + 6)
+                   WHERE TRUNC (kqsa.tgl_kirim) BETWEEN TRUNC (SYSDATE - 2)
+                                                    AND TRUNC (SYSDATE + 7)
                      AND kqsa.subinventory = '$subinv'
                 ORDER BY kqsa.no_pr, kqsa.header_id";
 
