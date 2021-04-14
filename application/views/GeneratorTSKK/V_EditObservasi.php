@@ -248,6 +248,13 @@
     <?php endforeach; ?>
   </datalist>
 
+  <textarea hidden name="name" id="gtskk_proses_get_code" rows="8" cols="80"><?php echo json_encode($proses) ?></textarea>
+  <datalist id="brow_slc_proses">
+    <?php foreach ($proses as $key => $value): ?>
+      <option><?php echo $value['PROSES'] ?></option>
+    <?php endforeach; ?>
+  </datalist>
+
   <?php foreach ($lihat_hasilObservasi_elemen as $key) {
 	$id = $key['id_tskk'];
   $sang_pembuat = $key['nama_pembuat'];
@@ -608,14 +615,14 @@
                             <br>
                             <label for="norm" class="control-label col-lg-2">Proses :</label>
                             <div id="divPassCheck" class="col-lg-10">
-                              <input type="text" value="<?= $proses; ?>" style="height: 35px;" placeholder="Input Proses" name="txtProses" id="txtProcess" class="form-control process" required />
+                              <input list="brow_slc_proses" autocomplete="off" type="text" value="<?= $proses; ?>" style="height: 35px;" placeholder="Input Proses" name="txtProses" id="txtProcess" class="form-control process" required />
                             </div>
                           </div>
                           <br>
                           <div class="row">
                             <label for="norm" class="control-label col-lg-2">Kode Proses :</label>
                             <div id="divPassCheck" class="col-lg-10">
-                              <input type="text" value="<?= $kode_proses; ?>" style="height: 35px;" placeholder="Input Kode Proses" name="txtKodeProses" id="txtKodeProses" class="form-control kodeproses" required />
+                              <input type="text" value="<?= $kode_proses; ?>" autocomplete="off" style="height: 35px;" placeholder="Input Kode Proses" name="txtKodeProses" id="txtKodeProses" class="form-control kodeproses" required />
                             </div>
                           </div>
                           <br>
@@ -1087,9 +1094,9 @@
               <div class="panel">
                 <div class="panel-body">
                   <div class="form-group">
-                    <label for="">Simpan Pembaruan Sebagai</label>
+                    <label for="">Save / Save As</label>
                     <select class="select2 type_save_tskk" style="width:100%">
-                      <option value="">Pilih...</option>
+                      <option value="">Select..</option>
                       <option value="replace">Save</option>
                       <option value="save_as">Save As</option>
                     </select>
