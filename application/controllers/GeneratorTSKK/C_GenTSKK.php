@@ -1687,7 +1687,7 @@ public function exportExcel($idnya){
 			$jumlah_hasil_irregular = array_sum($hasil_irregular);
 		}
 
-    // echo $hasil_irregular;die;
+    // echo $jumlah_hasil_irregular;die;
 
     //checking the length based on cycle time too
         $cycle_time = $last_finish + $jumlah_hasil_irregular;
@@ -3748,20 +3748,17 @@ public function exportExcel($idnya){
 													}
 												}
 										}
-
 										// $cekk =  "cek aldi, ".($cycle_time_tanpa_irregular).' +++'.$i;
 										if (!empty($elemen_kerja_last_manual_walk) && $elemen_kerja_last_manual_walk == $j) {
-
 											if ($finish[$j] != $cycle_time_tanpa_irregular) {
 												if (($i >= $finish[$j]+1 && $i <= $cycle_time_tanpa_irregular)) {
 														$styles[$x][$rowflow+2][($i+$mulai_colom_grafik) - $nn]['fill'] = '#fa3eef';
-														if ($i == $cycle_time_tanpa_irregular) {
+														if ($i == ($jumlah_hasil_irregular == 0 ? $cycle_time_tanpa_irregular-1:$cycle_time_tanpa_irregular)) {
 															if ($i > 1*$nn && $i < ((600*$x) + ($x<=1?0:180))) {
-																$rows[$x][$rowflow+2][($i+$mulai_colom_grafik) - $nn] = 'Muda: '.($cycle_time_tanpa_irregular - $finish[$j]).' Detik ';
+																$rows[$x][$rowflow+2][($i+$mulai_colom_grafik) - $nn] = 'Muda: '.(($jumlah_hasil_irregular == 0 ? $cycle_time_tanpa_irregular-1:$cycle_time_tanpa_irregular) - $finish[$j]).' Detik ';
 															}
 														}
 												}
-
 											}
 
 										}
@@ -3790,7 +3787,6 @@ public function exportExcel($idnya){
 						}
         }
 				//end style element
-
 
 				//Irregular Job
 				if ($last_finish > 1*$nn && $last_finish <= ((600*$x) + ($x<=1?0:180))) {

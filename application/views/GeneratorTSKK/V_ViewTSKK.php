@@ -41,9 +41,9 @@ text-align: center;
                                   </select>
                                 </div>
                                 <div class="col-md-3">
-                                  <label for="">Tipe</label>
+                                  <label for="">Tipe Produk</label>
                                   <select class="select2 tipe_tskk_2021" name="" style="width:100%">
-                                    <option value="">Pilih Tipe (Opsional)</option>
+                                    <option value="">Pilih Tipe Produk (Opsional)</option>
                                     <?php foreach ($lihat_tipe as $key => $value): ?>
                                       <option value="<?php echo $value['tipe'] ?>"><?php echo $value['tipe'] ?></option>
                                     <?php endforeach; ?>
