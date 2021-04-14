@@ -206,6 +206,13 @@
     <?php endforeach; ?>
   </datalist>
 
+  <textarea hidden name="name" id="gtskk_proses_get_code" rows="8" cols="80"><?php echo json_encode($proses) ?></textarea>
+  <datalist id="brow_slc_proses">
+    <?php foreach ($proses as $key => $value): ?>
+      <option><?php echo $value['PROSES'] ?></option>
+    <?php endforeach; ?>
+  </datalist>
+
   <form id='Observasi' method="POST" action="<?php echo base_url('GeneratorTSKK/saveObservation/'); ?>">
     <div class="inner">
       <div class="row">
@@ -468,14 +475,14 @@
                             <br>
                             <label for="norm" class="control-label col-lg-2">Proses :</label>
                             <div id="divPassCheck" class="col-lg-10">
-                              <input type="text" style="height: 35px;" placeholder="Input Proses" name="txtProses" id="txtProcess" class="form-control process" required />
+                              <input list="brow_slc_proses" autocomplete="off" type="text" style="height: 35px;" placeholder="Input Proses" name="txtProses" id="txtProcess" class="form-control process" required />
                             </div>
                           </div>
                           <br>
                           <div class="row">
                             <label for="norm" class="control-label col-lg-2">Kode Proses :</label>
                             <div id="divPassCheck" class="col-lg-10">
-                              <input type="text" style="height: 35px;" placeholder="Input Kode Proses" name="txtKodeProses" id="txtKodeProses" class="form-control kodeproses" required />
+                              <input type="text" style="height: 35px;" autocomplete="off" placeholder="Input Kode Proses" name="txtKodeProses" id="txtKodeProses" class="form-control kodeproses" required />
                             </div>
                           </div>
                           <br>

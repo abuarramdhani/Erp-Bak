@@ -11,6 +11,18 @@ const toastGTSKK = (type, message) => {
   })
 }
 
+const toastGTSKKLoading = (pesan) => {
+  Swal.fire({
+    toast: true,
+    position: 'top-end',
+    onBeforeOpen: () => {
+       Swal.showLoading();
+       $('.swal2-loading').children('button').css({'width': '20px', 'height': '20px'})
+     },
+    text: pesan
+  })
+}
+
 //TABLE INPUT ELEMENT'S STANDARDIZATION//
 $('.tabel_elemen').DataTable({
   "lengthMenu": [10],
@@ -40,6 +52,144 @@ $('#tabel_daftarTSKK').DataTable({
   // ]
 });
 
+$('.dt-gentskk').DataTable();
+
+$('.touppergtskk').keyup(function() {
+    this.value = this.value.toUpperCase();
+});
+
+$('#txtProcess').on('input', function (e) {
+  let data = JSON.parse($('#gtskk_proses_get_code').val());
+  let find = data.find(x => x.PROSES == $(this).val());
+  if (find != undefined) {
+    $('#txtKodeProses').val(find.KODE_PROSES);
+  }else {
+    $('#txtKodeProses').val('');
+  }
+})
+
+function updateProses() {
+  $.ajax({
+    url: baseurl + 'GeneratorTSKK/C_GenTSKK/updateProses',
+    type: 'POST',
+    dataType: 'JSON',
+    data: {
+      id: $('#id_proses').val(),
+      proses: $('#gtskk_proses_u').val(),
+      kode_proses: $('#gtskk_kode_proses_u').val()
+    },
+    cache: false,
+    beforeSend: function() {
+      toastGTSKKLoading('Sedang Meng-update Data..')
+    },
+    success: function(result) {
+      if (result == 200) {
+        toastGTSKK('success', 'Berhasil Meng-update Data');
+        getProsesTSKK();
+        $('#modalgtskk_u1').modal('toggle');
+        $('#gtskk_proses_u').val('')
+        $('#gtskk_kode_proses_u').val('')
+        $('#id_proses').val('')
+      }else {
+        toastGTSKK('warning', 'Terjadi Kesalahan Saat Meng-update Data');
+      }
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+      toastGTSKK('error', 'Koneksi Terputus...')
+      console.error();
+    }
+  })
+}
+
+function saveGtskkProses() {
+  $.ajax({
+    url: baseurl + 'GeneratorTSKK/C_GenTSKK/saveProses',
+    type: 'POST',
+    dataType: 'JSON',
+    data: {
+      proses: $('#gtskk_proses').val(),
+      kode_proses: $('#gtskk_kode_proses').val()
+    },
+    cache: false,
+    beforeSend: function() {
+      toastGTSKKLoading('Sedang Menambah Data..')
+    },
+    success: function(result) {
+      if (result == 200) {
+        toastGTSKK('success', 'Berhasil Menambahkan Data');
+        getProsesTSKK();
+        $('#modalgtskk1').modal('toggle');
+        $('#gtskk_proses').val('')
+        $('#gtskk_kode_proses').val('')
+      }else {
+        toastGTSKK('warning', 'Terjadi Kesalahan Saat Menambahkan Data');
+      }
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+      toastGTSKK('error', 'Koneksi Terputus...')
+      console.error();
+    }
+  })
+}
+
+function ambildataprosesby(id, proses, kode_proses) {
+  $('#id_proses').val(id);
+  $('#gtskk_proses_u').val(proses);
+  $('#gtskk_kode_proses_u').val(kode_proses);
+}
+
+function delprosesgtskk(id) {
+  $.ajax({
+    url: baseurl + 'GeneratorTSKK/C_GenTSKK/delProses',
+    type: 'POST',
+    dataType: 'JSON',
+    data: {
+      id: id,
+    },
+    cache: false,
+    beforeSend: function() {
+      toastGTSKKLoading('Sedang Menghapus Data..')
+    },
+    success: function(result) {
+      if (result == 200) {
+        toastGTSKK('success', 'Berhasil Menghapus Data');
+        getProsesTSKK();
+      }else {
+        toastGTSKK('warning', 'Terjadi Kesalahan Saat Menghapus Data');
+      }
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+      toastGTSKK('error', 'Koneksi Terputus...')
+      console.error();
+    }
+  })
+}
+
+function getProsesTSKK() {
+  $.ajax({
+    url: baseurl + 'GeneratorTSKK/C_GenTSKK/getProses',
+    type: 'POST',
+    // dataType: 'JSON',
+    data: {
+
+    },
+    cache: false,
+    beforeSend: function() {
+      $('.table-area-proses-gtskk').html(`<div style ="width: 70%;margin:auto;height: 30%;background: #fff;overflow: hidden;z-index: 9999;padding:20px 0 30px 0;border-radius:10px;text-align:center">
+                                                                      <img style="width: 8%;" src="${baseurl}assets/img/gif/loading5.gif"><br>
+                                                                      <span style="font-size:14px;font-weight:bold">Sedang memuat data...</span>
+                                                                  </div>`);
+    },
+    success: function(result) {
+      $('.table-area-proses-gtskk').html(result);
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+      swalPBB('error', 'Koneksi Terputus...')
+      console.error();
+    }
+  })
+}
+
 function filterGenmMonTskk() {
   $.ajax({
     url: baseurl + 'GeneratorTSKK/C_GenTSKK/filter',
@@ -48,6 +198,7 @@ function filterGenmMonTskk() {
     data: {
       seksi: $('.seksi_tskk_2021').val(),
       tipe: $('.tipe_tskk_2021').val(),
+      proses: $('.proses_tskk_2021').val(),
       fun: 2
     },
     cache: false,
@@ -75,6 +226,7 @@ function filterGenTskk() {
     data: {
       seksi: $('.seksi_tskk_2021').val(),
       tipe: $('.tipe_tskk_2021').val(),
+      proses: $('.proses_tskk_2021').val(),
       fun: 1
     },
     cache: false,
@@ -3002,7 +3154,7 @@ $('.type_save_tskk').on('change', function() {
 function checkSubmitEditObservasi() {
   // $('#modalgtskk_edit_observasi').modal('toggle');
   if ($('.type_save_tskk').val() != '') {
-    if ($('.input_judul_pembaruan_observasi_tskk').val() == $('#cek_judul_sebelumnya').val()) {
+    if ($('.input_judul_pembaruan_observasi_tskk').val() == $('#cek_judul_sebelumnya').val() && $('.type_save_tskk').val() == 'save_as') {
       toastGTSKK('warning', 'Judul Observasi Revisi Tidak Boleh Sama Dengan Observasi Sebelumnya "' + $('#cek_judul_sebelumnya').val() + '"')
     } else {
       if ($('.type_save_tskk').val() == 'save_as') {

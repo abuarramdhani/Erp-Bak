@@ -6,7 +6,7 @@
 					<div class="row">
 						<div class="box-header">
 							<br/>
-							<h1><b><center>Dashboard Generator TSKK Versi 2.3</center></b></h1>
+							<h1><b><center>Dashboard Generator TSKK Versi 2.4</center></b></h1>
 						</div>
 					</div>
 			</section>
@@ -36,5 +36,5 @@
 </section>
 
 <script type="text/javascript">
-	alert('Agar pembaruan aplikasi pada 2021-04-09 13:40:00 berjalan sepenuhnya, Reload halaman ini dengan menekan ctrl+shift+r secara berurutan..')
+	alert('Aplikasi Terakhir Diperbarui Pada 2021-04-14 13:39:23. Reload halaman ini dengan menekan ctrl+shift+r secara berurutan jika telah melewati tanggal pembaruan..')
 </script>

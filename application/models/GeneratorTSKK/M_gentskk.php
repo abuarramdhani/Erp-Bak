@@ -14,6 +14,42 @@ class M_gentskk extends CI_Model
 	  $this->lantuma = $this->load->database('lantuma', true);
 	}
 
+	public function saveProses($data)
+	{
+		$this->oracle->insert('KHS_TSKK_PROSES', $data);
+		if ($this->oracle->affected_rows()) {
+			return 200;
+		}else {
+			return 0;
+		}
+	}
+
+	public function delProses($value='')
+	{
+		$ID = $this->input->post('id');
+		$this->oracle->query("DELETE FROM KHS_TSKK_PROSES WHERE ID_PROSES = $ID");
+		if ($this->oracle->affected_rows()) {
+			return 200;
+		}else {
+			return 0;
+		}
+	}
+
+	public function updateProses($value)
+	{
+		$this->oracle->where('ID_PROSES', $value['ID_PROSES'])->update('KHS_TSKK_PROSES', $value);
+		if ($this->oracle->affected_rows()) {
+			return 200;
+		}else {
+			return 0;
+		}
+	}
+
+	public function getProses($value='')
+	{
+		return $this->oracle->order_by('ID_PROSES', 'DESC')->get('KHS_TSKK_PROSES')->result_array();
+	}
+
 	public function getseksi($value='')
 	{
 		return $this->db->query("SELECT distinct seksi from gtskk.gtskk_header_tskk order by seksi")->result_array();
@@ -24,9 +60,14 @@ class M_gentskk extends CI_Model
 		return $this->db->query("SELECT distinct tipe from gtskk.gtskk_header_tskk where tipe != '' order by tipe")->result_array();
 	}
 
-	public function filter($seksi, $tipe)
+	public function getfilterproses($value='')
 	{
-		return $this->db->query("SELECT * from gtskk.gtskk_header_tskk where tipe like '%$tipe%' and seksi like '%$seksi%' order by TO_DATE(tanggal, 'DD-Mon-YYYY') desc")->result_array();
+		return $this->db->query("SELECT distinct proses from gtskk.gtskk_header_tskk where proses != '' order by proses")->result_array();
+	}
+
+	public function filter($seksi, $tipe, $proses)
+	{
+		return $this->db->query("SELECT * from gtskk.gtskk_header_tskk where tipe like '%$tipe%' and seksi like '%$seksi%' and proses like '%$proses%' order by TO_DATE(tanggal, 'DD-Mon-YYYY') desc")->result_array();
 	}
 
 	function getTipeProduk($tp)
@@ -439,9 +480,21 @@ class M_gentskk extends CI_Model
 		return $this->db->query("SELECT distinct head.tipe from gtskk.gtskk_header_tskk head where head.tipe != '' and id_tskk in (select distinct elem.id_tskk from gtskk.gtskk_elemen_tskk elem where id_tskk = head.id_tskk) order by tipe")->result_array();
 	}
 
-	public function filter_montskk($seksi, $tipe)
+	public function getfilterproses_montskk($value='')
 	{
-		return $this->db->query("SELECT head.* from gtskk.gtskk_header_tskk head where head.tipe like '%$tipe%' and head.seksi like '%$seksi%' and head.id_tskk in (select distinct elem.id_tskk from gtskk.gtskk_elemen_tskk elem where id_tskk = head.id_tskk) order by TO_DATE(tanggal, 'DD-Mon-YYYY') desc")->result_array();
+		return $this->db->query("SELECT distinct head.proses from gtskk.gtskk_header_tskk head where head.proses != '' and id_tskk in (select distinct elem.id_tskk from gtskk.gtskk_elemen_tskk elem where id_tskk = head.id_tskk) order by proses")->result_array();
+	}
+
+	public function filter_montskk($seksi, $tipe, $proses)
+	{
+		return $this->db->query("SELECT head.* from gtskk.gtskk_header_tskk head
+																					 where head.tipe like '%$tipe%'
+																					 and head.seksi like '%$seksi%'
+																					 and head.proses like '%$proses%'
+																					 and head.id_tskk in (select distinct elem.id_tskk
+																						 										from gtskk.gtskk_elemen_tskk elem
+																																where id_tskk = head.id_tskk)
+																																order by TO_DATE(tanggal, 'DD-Mon-YYYY') desc")->result_array();
 	}
 
 	function cariId($id)

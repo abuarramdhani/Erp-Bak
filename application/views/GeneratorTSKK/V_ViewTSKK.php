@@ -31,7 +31,7 @@ text-align: center;
                         <div class="box box-primary color-palette-box">
                             <div class="box-header with-border">
                               <div class="row">
-                                <div class="col-md-5">
+                                <div class="col-md-4">
                                   <label for="">Seksi</label>
                                   <select class="select2 seksi_tskk_2021" name="" style="width:100%">
                                     <option value="">Pilih Seksi (Opsional)</option>
@@ -40,12 +40,21 @@ text-align: center;
                                     <?php endforeach; ?>
                                   </select>
                                 </div>
-                                <div class="col-md-5">
+                                <div class="col-md-3">
                                   <label for="">Tipe</label>
                                   <select class="select2 tipe_tskk_2021" name="" style="width:100%">
                                     <option value="">Pilih Tipe (Opsional)</option>
                                     <?php foreach ($lihat_tipe as $key => $value): ?>
                                       <option value="<?php echo $value['tipe'] ?>"><?php echo $value['tipe'] ?></option>
+                                    <?php endforeach; ?>
+                                  </select>
+                                </div>
+                                <div class="col-md-3">
+                                  <label for="">Proses</label>
+                                  <select class="select2 proses_tskk_2021" name="" style="width:100%">
+                                    <option value="">Pilih Proses (Opsional)</option>
+                                    <?php foreach ($lihat_proses as $key => $value): ?>
+                                      <option value="<?php echo $value['proses'] ?>"><?php echo $value['proses'] ?></option>
                                     <?php endforeach; ?>
                                   </select>
                                 </div>

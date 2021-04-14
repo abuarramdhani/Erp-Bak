@@ -58,6 +58,57 @@ public function index()
     $this->load->view('V_Footer',$data);
 }
 
+public function InputProses()
+{
+    $this->checkSession();
+    $user_id = $this->session->userid;
+
+    $data['Menu'] = 'Dashboard';
+    $data['SubMenuOne'] = '';
+
+    $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+    $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+    $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$data['get'] = $this->M_gentskk->getProses();
+    // echo "<pre>"; print_r($data['lihat_elemen']);exit();
+
+    $this->load->view('V_Header',$data);
+    $this->load->view('V_Sidemenu',$data);
+		$this->load->view('GeneratorTSKK/V_InputProses');
+    $this->load->view('V_Footer',$data);
+}
+
+public function saveProses($value='')
+{
+	$data = [
+		'PROSES' => $this->input->post('proses'),
+		'KODE_PROSES' => $this->input->post('kode_proses')
+	];
+	echo json_encode($this->M_gentskk->saveProses($data));
+}
+
+public function delProses()
+{
+	echo json_encode($this->M_gentskk->delProses());
+}
+
+public function updateProses($value='')
+{
+	$data = [
+		'ID_PROSES' => $this->input->post('id'),
+		'PROSES' => $this->input->post('proses'),
+		'KODE_PROSES' => $this->input->post('kode_proses')
+	];
+	echo json_encode($this->M_gentskk->updateProses($data));
+}
+
+public function getProses($value='')
+{
+	$data['get'] = $this->M_gentskk->getProses();
+	$this->load->view('GeneratorTSKK/ajax/V_Proses',$data);
+}
+
 public function Input()
 {
     $this->checkSession();
@@ -108,6 +159,8 @@ public function ViewEdit()
     $data['lihat_header'] = $this->M_gentskk->selectHeaderMonTSKK();
 		$data['lihat_seksi']	= $this->M_gentskk->getseksi_montskk();
 		$data['lihat_tipe']		= $this->M_gentskk->gettipe_montskk();
+		$data['lihat_proses']			= $this->M_gentskk->getfilterproses_montskk();
+
     // $data['id_tabelElemen'] = $this->M_gentskk->selectIdElemen($id);
     // echo "<pre>"; print_r( $data['id_tabelElemen']);exit();
     // echo "<pre>";print_r($data['lihat_header']);
@@ -318,6 +371,7 @@ public function EditObservasi($id)
     $data['lihat_hasilObservasi'] = $this->M_gentskk->getAllObservation($id);
 		$data['product'] = $this->M_gentskk->getTipeProduk('');
 		$data['data_element_kerja'] = $this->M_gentskk->ElemenKerja('');
+		$data['proses'] = $this->M_gentskk->getProses();
 
     $hitungData = count($data['lihat_hasilObservasi']);
     if (count($data['lihat_hasilObservasi']) < 5){
@@ -383,8 +437,10 @@ public function Display()
     $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
     // $data['NoInduk']        = $this->session->user;
     $data['lihat_header']   = $this->M_gentskk->selectHeader();
+
 		$data['lihat_seksi']		= $this->M_gentskk->getseksi();
 		$data['lihat_tipe']			= $this->M_gentskk->gettipe();
+		$data['lihat_proses']			= $this->M_gentskk->getfilterproses();
     // echo"<pre>";print_r($data['lihat_header']);die;
 
     $this->load->view('V_Header',$data);
@@ -1127,9 +1183,9 @@ public function ElemenKerja()
 public function filter($value='')
 {
 	if ($this->input->post('fun') == 1) {
-		$data['lihat_header'] = $this->M_gentskk->filter($this->input->post('seksi'), $this->input->post('tipe'));
+		$data['lihat_header'] = $this->M_gentskk->filter($this->input->post('seksi'), $this->input->post('tipe'), $this->input->post('proses'));
 	}else {
-		$data['lihat_header'] = $this->M_gentskk->filter_montskk($this->input->post('seksi'), $this->input->post('tipe'));
+		$data['lihat_header'] = $this->M_gentskk->filter_montskk($this->input->post('seksi'), $this->input->post('tipe'), $this->input->post('proses'));
 	}
 	$data['fun'] = $this->input->post('fun');
 	$this->load->view('GeneratorTSKK/V_GenTSKK_Filter', $data);
