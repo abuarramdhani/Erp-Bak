@@ -1633,7 +1633,7 @@ class M_hitungpesanan extends Ci_Model
 				select ?,trim(noind),nama,jabatan 
 				From hrd_khs.tpribadi 
 				where trim(noind) = trim(?) ";
- 		$this->personalia->query($sql,array($id_tambahan,$noind));
+ 		$this->personalia->query($sql,array($id_pengurangan,$noind));
 	}
 
 	public function insertPesananPenguranganTidakMakan($tanggal,$tempat_makan,$shift){
