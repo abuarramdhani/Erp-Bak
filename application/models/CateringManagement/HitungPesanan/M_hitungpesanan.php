@@ -1629,7 +1629,7 @@ class M_hitungpesanan extends Ci_Model
 	}
 
 	public function insertPesananPenguranganTidakMakan($tanggal,$tempat_makan,$shift){
-		$sql = "insert into \"Catering\".tpenguranganpesanan_detail 
+		$sql = "insert into \"Catering\".tpenguranganpesanan 
 				(fd_tanggal,fs_tempat_makan,fs_kd_shift,fn_jml_tdkpesan,fb_kategori) 
 				values(?,?,?,0,'8')";
 		$this->personalia->query($sql,array($tanggal,$tempat_makan,$shift));
