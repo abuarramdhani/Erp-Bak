@@ -164,7 +164,12 @@ class C_Input extends CI_Controller
         // exit();
 
         for ($u = 0; $u < sizeof($supplier); $u++) {
-
+            if ($qty_po[$u] == null || $qty_po[$u] == "") {
+                $qty_po[$u] = 0;
+            }
+            if ($qty_receipt[$u] == null || $qty_receipt[$u] == "") {
+                $qty_receipt[$u] = 0;
+            }
             $data_supplier = $this->M_car->pembandingToInsert($supplier[$u]);
             if (!empty($data_supplier)) {
                 if ($date_to_input == $data_supplier[0]['CREATED_DATE']) {
