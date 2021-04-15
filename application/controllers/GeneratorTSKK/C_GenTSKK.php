@@ -424,6 +424,364 @@ public function EditObservasi($id)
     $this->load->view('V_Footer',$data);
 }
 
+public function save_as($id)
+{
+	$hasil_observasi = $this->M_gentskk->getAllObservation($id);
+	$hasil_irregular_job = $this->M_gentskk->selectIrregularJobs($id);
+	$hasil_perhitungan_takt_time = $this->M_gentskk->selectTaktTimeCalculation($id);
+	$dst = array_column($hasil_observasi, 'waktu_distribusi');
+	if ($dst != null) {
+		$nDistribusi = array_sum($dst);
+	}else{
+		$nDistribusi = null;
+	}
+	// echo "<pre>";
+	// print_r(array_column($hasil_observasi, 'takt_time'));
+	// echo "<br>";
+	// echo "<pre>";
+	// print_r($nDistribusi);
+	// die;
+	foreach ($hasil_observasi as $key) {
+									//header
+									$id = $key['id_tskk'];
+									$judul = $key['judul_tskk'];
+									$type = $key['tipe'];
+									$kode_part = $key['kode_part'];
+									$nama_part = $key['nama_part'];
+									// $no_alat = $key['no_alat_bantu'];
+									$seksi = $key['seksi'];
+		$proses = $key['proses'];
+		$kode_proses = $key['kode_proses'];
+		$jenis_mesin = $key['mesin'];
+		// $jm = str_replace("; ","; \n", $jenis_mesin);
+		$no_mesin = $key['no_mesin'];
+		$resource_mesin = $key['resource_mesin'];
+		// $rm = str_replace("; ","; \n", $resource_mesin);
+		$line_process = $key['line_process'];
+		$alat_bantu = $key['alat_bantu'];
+		$tools = $key['tools'];
+		$jumlah_operator = $key['jumlah_operator'];
+		$jumlah_operator_dari = $key['jumlah_operator_dari'];
+										$proses_ke = $key['proses_ke'];
+										$dari =	$key['proses_dari'];
+										$tanggal = $key['tanggal'];
+		$newDate = date("d-M-Y", strtotime($tanggal));
+										$qty = $key['qty'];
+		$operator =	$key['operator'];
+		$nilai_distribusi =	$key['nilai_distribusi'];
+										//observasi
+										$waktu_1= $key['waktu_1'];
+										$waktu_2= $key['waktu_2'];
+										$waktu_3= $key['waktu_3'];
+										$waktu_4= $key['waktu_4'];
+										$waktu_5= $key['waktu_5'];
+										$waktu_6= $key['waktu_6'];
+										$waktu_7= $key['waktu_7'];
+										$waktu_8= $key['waktu_8'];
+										$waktu_9= $key['waktu_9'];
+										$waktu_10= $key['waktu_10'];
+										$x_min= $key['x_min'];
+										$range= $key['r'];
+		$wktDistribusi= $key['waktu_distribusi'];
+		// $distribution_time = array_column($wktDistribusi, 'waktu_distribusi');
+		// print_r($wktDistribusi);exit();
+										$wktKerja= $key['waktu_kerja'];
+										$keterangan= $key['keterangan'];
+										$takt_time= $key['takt_time'];
+										//elemen tskk
+		$jenis_proses = $key['jenis_proses'];
+		$elemen = $key['elemen'];
+		$keterangan_elemen = $key['keterangan_elemen'];
+		$ek = $elemen." ".$keterangan_elemen;
+		$tipe_urutan = $key['tipe_urutan'];
+		$waktu = $key['waktu_kerja'];
+		$jenisInputPart = $key['jenis_input_part'];
+		$jenisInputElement = $key['jenis_input_element'];
+		$jenisInputMesin = $key['jenis_input_mesin'];
+		$status_observasi = $key['status_observasi'];
+	}
+
+	//=========
+
+	$judul            = $judul.' Rev ('.date('h:i:s').')';
+	$takt_time        = $takt_time;
+	$nd               = $nDistribusi;
+	//PART
+	$jenis_inputPart  = $jenisInputPart;
+
+	$type							= $type;
+	$kode			 	      = $kode_part;
+	$nama_part 	      = $nama_part;
+
+	//EQUIPMENT
+	$jenis_inputEquipment  = $jenisInputElement;
+	$jenis_inputEquipmentMesin  = $jenisInputMesin;
+	// echo $jenis_inputEquipment; die;
+	$no_mesin	      = $no_mesin;
+	$jenis_mesin      = $jenis_mesin;
+	$resource         = $resource_mesin;
+	$line             = $line_process;
+	$alat_bantu	      = $alat_bantu;
+	$tools            = $tools;
+	//SDM
+	$nm = $operator;
+	$jml_operator     = $jumlah_operator;
+	$dr_operator      = $jumlah_operator_dari;
+	$seksi 	          = $seksi;
+	//PROCESS
+	$proses 	      = $proses;
+	$kode_proses    = $kode_proses;
+	$proses_ke 	    = $proses_ke;
+	$dari 	        = $dari;
+	$tanggal        = $tanggal;
+	$qty 	          = $qty;
+
+	$status_observasi  = $status_observasi;
+	// die;
+	//SEKSI PEMBUAT
+	$noind = $this->session->user;
+	$data['getSeksiUnit'] = $this->M_gentskk->detectSeksiUnit($noind);
+	$split = $data['getSeksiUnit'][0];
+	$seksi_pembuat = $split['seksi'];
+	$dept_pembuat = $split['dept'];
+	$name = $this->M_gentskk->selectNamaPekerja($noind);
+	$nama_pekerja = $name[0]['nama'];
+	$sang_pembuat = $noind." - ".$nama_pekerja;
+	$creationDate = date('Y/m/d h:i:s', time());
+
+	if ($nd == null) {
+			$nilai_distribusi = 0;
+	}else{
+			$nilai_distribusi = $nd;
+	}
+	$saveHeader = $this->M_gentskk->InsertHeaderTSKK($judul,$type,$kode,$nama_part,$seksi,
+								$proses,$kode_proses,$jenis_mesin,$proses_ke,$dari,$tanggal,$qty,$nm,
+								$nilai_distribusi,$takt_time,$no_mesin,$resource,$line,$alat_bantu,$tools,
+								$jml_operator,$dr_operator,$seksi_pembuat,$jenis_inputPart,$jenis_inputEquipment,
+								$sang_pembuat,$creationDate, $jenis_inputEquipmentMesin, $status_observasi);
+
+	// echo"<pre>";print_r($saveHeader);
+	// die;
+	$dataId = $this->M_gentskk->selectIdHeader();
+	$id = $dataId[0]['id'];
+
+	$waktu_1          = array_column($hasil_observasi, 'waktu_1');
+	$waktu_2          = array_column($hasil_observasi, 'waktu_2');
+	$waktu_3          = array_column($hasil_observasi, 'waktu_3');
+	$waktu_4          = array_column($hasil_observasi, 'waktu_4');
+	$waktu_5          = array_column($hasil_observasi, 'waktu_5');
+	$waktu_6          = array_column($hasil_observasi, 'waktu_6');
+	$waktu_7          = array_column($hasil_observasi, 'waktu_7');
+	$waktu_8          = array_column($hasil_observasi, 'waktu_8');
+	$waktu_9          = array_column($hasil_observasi, 'waktu_9');
+	$waktu_10         = array_column($hasil_observasi, 'waktu_10');
+	$x_min            = array_column($hasil_observasi, 'x_min');
+	$range            = array_column($hasil_observasi, 'r');
+	$waktu_distribusi = array_column($hasil_observasi, 'waktu_distribusi');
+	$waktu_kerja      = array_column($hasil_observasi, 'waktu_kerja');
+	$keterangan       = array_column($hasil_observasi, 'keterangan');
+	$takt_time        = array_column($hasil_observasi, 'takt_time');
+	$jenis_proses 	  = array_column($hasil_observasi, 'jenis_proses');
+	$elemen           = array_column($hasil_observasi, 'elemen');
+	$keterangan_elemen= array_column($hasil_observasi, 'keterangan_elemen');
+	$tipe_urutan 	  = array_column($hasil_observasi, 'tipe_urutan');
+	// Waktu Mulai Bersamaan
+	$startTimeTogether =  array_column($hasil_observasi, 'start_together');
+	$endTimeTogether =  array_column($hasil_observasi, 'end_together');
+
+	// echo "<pre>"; print_r($jenis_proses);exit;
+
+	for ($i=0; $i < count($elemen); $i++) {
+
+			if ($waktu_1[$i] != ''){
+					$w1             = $waktu_1[$i];
+			}else{
+					$w1 	        = null;
+			}
+
+			if ($waktu_2[$i] != ''){
+					$w2             = $waktu_2[$i];
+			}else{
+					$w2 	        = null;
+			}
+
+			if ($waktu_3[$i] != ''){
+					$w3             = $waktu_3[$i];
+			}else{
+					$w3 	        = null;
+			}
+
+			if ($waktu_4[$i] != ''){
+					$w4             = $waktu_4[$i];
+			}else{
+					$w4 	        = null;
+			}
+
+			if ($waktu_5[$i] != ''){
+					$w5             = $waktu_5[$i];
+			}else{
+					$w5 	        = null;
+			}
+
+			if ($waktu_6[$i] != ''){
+					$w6            = $waktu_6[$i];
+			}else{
+					$w6 	       = null;
+			}
+
+			if ($waktu_7[$i] != ''){
+					$w7            = $waktu_7[$i];
+			}else{
+					$w7	           = null;
+			}
+
+			if ($waktu_8[$i] != ''){
+					$w8            = $waktu_8[$i];
+			}else{
+					$w8 	       = null;
+			}
+
+			if ($waktu_9[$i] != ''){
+					$w9            = $waktu_9[$i];
+			}else{
+					$w9 	       = null;
+			}
+
+			if ($waktu_10[$i] != ''){
+					$w10           = $waktu_10[$i];
+			}else{
+					$w10 	       = null;
+			}
+
+			if ($x_min[$i] != ''){
+					$xm            = $x_min[$i];
+			}else{
+					$xm 	       = null;
+			}
+
+			if ($range[$i] != ''){
+					$r            = $range[$i];
+			}else{
+					$r 	          = null;
+			}
+
+			if ($waktu_distribusi[$i] != ''){
+					$w_dst         = $waktu_distribusi[$i];
+			}else{
+					$w_dst 	       = null;
+			}
+
+			if ($waktu_kerja[$i] != ''){
+					$wk            = $waktu_kerja[$i];
+			}else{
+					$wk 	       = null;
+			}
+
+			if ($keterangan[$i] != ''){
+					$ktr           = $keterangan[$i];
+			}else{
+					$ktr 	       = null;
+			}
+
+			if ($jenis_proses[$i] != ''){
+					$jp            = $jenis_proses[$i];
+			}else{
+					$jp 	       = null;
+			}
+
+			if ($elemen[$i] != ''){
+					$elm           = $elemen[$i];
+			}else{
+					$elm 	       = null;
+			}
+
+			if ($keterangan_elemen[$i] != ''){
+					$ktr_elm       = $keterangan_elemen[$i];
+			}else{
+					$ktr_elm 	   = null;
+			}
+
+			if ($startTimeTogether[$i] == ''){
+					$startTimeTogether[$i] = null;
+			}
+
+			if ($endTimeTogether[$i] == ''){
+					$endTimeTogether[$i] = null;
+			}
+
+			if (!empty($tipe_urutan)) {
+					if (array_key_exists($i,$tipe_urutan)){
+							$tu            = $tipe_urutan[$i];
+					}else{
+							$tu 	       = 'SERIAL';
+					}
+			}else {
+							$tu 	       = 'SERIAL';
+			}
+
+					$data = array(
+					'id_tskk'  	        => $id,
+					'waktu_1' 	        => $w1,
+					'waktu_2'           => $w2,
+					'waktu_3'   	    => $w3,
+					'waktu_4' 	        => $w4,
+					'waktu_5' 	        => $w5,
+					'waktu_6' 	        => $w6,
+					'waktu_7'       	=> $w7,
+					'waktu_8'       	=> $w8,
+					'waktu_9'       	=> $w9,
+					'waktu_10'       	=> $w10,
+					'x_min'       	    => $xm,
+					'r'       	        => $r,
+					'waktu_distribusi'  => $w_dst,
+					'waktu_kerja'       => $wk,
+					'keterangan'       	=> $ktr,
+					'takt_time'       	=> $takt_time[$i],
+					'jenis_proses'      => $jp,
+					'elemen'        	=> $elm,
+					'keterangan_elemen' => $ktr_elm,
+					'tipe_urutan'       => $tu,
+					'start_together'		=> $startTimeTogether[$i],
+					'end_together'		=> $endTimeTogether[$i]
+					);
+			// echo "<pre>";print_r($data);
+			$insert = $this->M_gentskk->saveObservation($data);
+	}
+
+	//IRREGULAR JOBS
+	$irregular_jobs         = array_column($hasil_irregular_job, 'irregular_job');
+	$ratio_irregular        = array_column($hasil_irregular_job, 'ratio');
+	$waktu_irregular        = array_column($hasil_irregular_job, 'waktu');
+	$hasil_irregular        = array_column($hasil_irregular_job, 'hasil_irregular_job');
+
+	for ($i=0; $i < count($ratio_irregular); $i++) {
+					$data = array(
+					'id_irregular_job'      => $id,
+					'irregular_job' 	  	  => empty($irregular_jobs[$i]) ? NULL : $irregular_jobs[$i],
+					'ratio'                 => empty($ratio_irregular[$i]) ? NULL : $ratio_irregular[$i],
+					'waktu'   	            => empty($waktu_irregular[$i]) ? NULL : $waktu_irregular[$i],
+					'hasil_irregular_job'   => empty($hasil_irregular[$i]) ? NULL : $hasil_irregular[$i],
+					);
+			// echo "<pre>";print_r($data);
+			$insertIrregularJobs = $this->M_gentskk->saveIrregularJobs($data);
+	}
+
+	//PERHITUNGAN TAKT TIME
+		$waktu_satu_shift   = $hasil_perhitungan_takt_time[0]['waktu_satu_shift'];
+		$jumlah_shift       = $hasil_perhitungan_takt_time[0]['jumlah_shift'];
+		$forecast           = $hasil_perhitungan_takt_time[0]['forecast'];
+		$qty_unit           = $hasil_perhitungan_takt_time[0]['qty_unit'];
+		$rencana_produksi   = $hasil_perhitungan_takt_time[0]['waktu_satu_shift'];
+		$jumlah_hari_kerja  = $hasil_perhitungan_takt_time[0]['jumlah_hari_kerja'];
+
+	$insertTaktTime = $this->M_gentskk->saveTaktTime($id,$waktu_satu_shift,$jumlah_shift,$forecast,$qty_unit,$rencana_produksi,$jumlah_hari_kerja);
+
+	// $data['lihat_hasilObservasi'] = $this->M_gentskk->getAllObservation($id);
+
+	redirect('GeneratorTSKK/Generate/');
+
+}
+
 public function Display()
 {
     $this->checkSession();

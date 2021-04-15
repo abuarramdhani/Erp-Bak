@@ -124,7 +124,7 @@ text-align: center;
                                             <?php if ($pembuat_[0] == $this->session->user): ?>
                                               <a class="btn btn-warning btn-md" title="Edit Lembar Observasi" href="<?=base_url('GeneratorTSKK/C_GenTSKK/EditObservasi/'.$id)?>"><span class="fa fa-pencil-square-o"></span></a>
                                             <?php endif; ?>
-                                          <a class="btn btn-info btn-md" title="Create TSKK" href="<?=base_url('GeneratorTSKK/C_GenTSKK/CreateBegin/'.$id)?>"><span class="fa fa-pencil-square-o"></span> </a>
+                                            <a class="btn btn-info btn-md" title="Create TSKK" href="<?=base_url('GeneratorTSKK/C_GenTSKK/CreateBegin/'.$id)?>"><span class="fa fa-pencil-square-o"></span> </a>
 
                                           <?php if ($status_observasi == 'publish'){ ?>
                                             <a class="btn btn-success btn-md" title="Export Lembar Observasi" href="<?=base_url('GeneratorTSKK/C_Observation/exportObservation/'.$id)?>"><span class="fa fa-print"> </span></a>
@@ -133,6 +133,11 @@ text-align: center;
                                           <!-- <a class="btn btn-warning btn-md" title="Export TSKK" href="<?=base_url('GeneratorTSKK/C_Regenerate/exportAgain/'.$id)?>"><span class="fa fa-print"></span></a>                                        -->
                                           <?php if ($pembuat_[0] == $this->session->user): ?>
                                             <a class="btn btn-danger btn-md idViewLembarObservasi" at="<?php echo $id;?>" title="Delete Lembar Observasi" onclick="AreYouSureWantToDelete(<?= $id ?>)"><span class="fa fa-trash"></span></a>
+                                          <?php endif; ?>
+
+                                          <?php if ($pembuat_[0] == $this->session->user): ?>
+                                            <br>
+                                            <a class="btn btn-primary btn-md mt-3" style="" title="Duplicate Lembar Observasi" href="<?=base_url('GeneratorTSKK/C_GenTSKK/save_as/'.$id)?>"><span class="fa fa-copy"></span> Duplicate</a>
                                           <?php endif; ?>
                                           <!-- href="<?=base_url('GeneratorTSKK/C_GenTSKK/deleteData/'.$id)?>" -->
                                           </td>

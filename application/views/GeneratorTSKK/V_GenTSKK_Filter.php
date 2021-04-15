@@ -62,6 +62,11 @@
               <a class="btn btn-danger btn-md idViewLembarObservasi" at="<?php echo $id;?>" title="Delete Lembar Observasi" onclick="AreYouSureWantToDelete(<?= $id ?>)"><span class="fa fa-trash"></span></a>
             <?php endif; ?>
             <!-- href="<?=base_url('GeneratorTSKK/C_GenTSKK/deleteData/'.$id)?>" -->
+
+            <?php if ($pembuat_[0] == $this->session->user): ?>
+              <br>
+              <a class="btn btn-primary btn-md mt-3" style="" title="Duplicate Lembar Observasi" href="<?=base_url('GeneratorTSKK/C_GenTSKK/save_as/'.$id)?>"><span class="fa fa-copy"></span> Duplicate</a>
+            <?php endif; ?>
             </td>
           <?php }else{ ?>
             <td style="text-align:center; width:10%">

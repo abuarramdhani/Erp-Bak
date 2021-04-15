@@ -818,7 +818,7 @@
                           <div class="panel-heading">
                             <label for="norm" class="tskk_tt" style="<?php echo $takt_time == '99999' ? 'display:none;' : ''?>margin-left:1%;">Takt Time : </label>
                             <input type="number" style="<?php echo $takt_time == '99999' ? 'display:none;' : ''?>width:13%; height:34px;  margin-left:2%; text-align:center;" value="<?php echo $takt_time; ?>" placeholder="Input Takt Time"
-                              name="taktTime" id="inputInsert" class="lockscreen-credentials taktTime" />
+                              name="taktTime" id="inputInsert" class="lockscreen-credentials taktTime" required />
                             <label for="norm" style="margin-left:3% ;">Nilai Distribusi : </label>
                             <input type="number" style="width:13%; height:34px;  margin-left:3%; text-align:center" name="inputInsert" id="dst" value="<?php echo $nDistribusi ?>" class="lockscreen-credentials" readonly />
                             <!-- <label for="norm" style="margin-left:2%;">Posisi Elemen Tambahan : </label>

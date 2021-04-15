@@ -253,6 +253,7 @@ $(document).ready(function() {
       $('.tskk_delik_cek_pakai').show()
       $('input[name=taktTime]').show()
       $('input[name=taktTime]').val('')
+      $('#txtQtyUnit').trigger('input');
       $('.tskk_tt').show()
       // console.log("Ya");
     } else if ($('input[name=perhitunganTakt]:checked').val() == "0") {
