@@ -36,5 +36,5 @@
 </section>
 
 <script type="text/javascript">
-	alert('Aplikasi Terakhir Diperbarui Pada 2021-04-14 13:39:23. Reload halaman ini dengan menekan ctrl+shift+r secara berurutan jika telah melewati tanggal pembaruan..')
+	alert('Aplikasi Terakhir Diperbarui Pada 2021-04-15 15:02:23. Reload halaman ini dengan menekan ctrl+shift+r secara berurutan jika telah melewati tanggal pembaruan..')
 </script>
