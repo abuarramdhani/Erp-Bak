@@ -859,7 +859,7 @@ $(document).ready(function () {
 						kodepos = result.pkj[0]["kodepos"],
 						no_kk = result.pkj[0]["no_kk"],
 						status_nikah = result.jenis == 1 ? result.pkj[0]["status_nikah"] : result.pkj[0]["statnikah"],
-						npwp = result.jenis == 1 ? result.pkj[0]["npwp"] : '',
+						npwp = result.pkj[0]["npwp"],
 						kota = result.jenis == 1 ? result.pkj[0].kota : result.pkj[0].kab,
 						agama = ["ISLAM", "KATHOLIK", "KRISTEN", "HINDU", "BUDHA", "KONGHUCU"],
 						jenkel = ["L", "P"],
