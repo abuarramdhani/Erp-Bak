@@ -127,18 +127,33 @@
           <td>:</td>
           <td><?php echo $sampai ?> </td>
         </tr>
-        <?php foreach ($history_jabatan as $jabatan) : ?>
+        <?php if ($jabatan_pengalaman_check) : ?>
+          <!-- Jika user checklist jabatan -->
           <tr>
             <td valign="top">Seksi</td>
             <td valign="top">:</td>
-            <td style=" line-height: 1.17;">Seksi <?= $jabatan['seksi'] . ', Unit ' . $jabatan['unit'] . ', Departemen ' . $jabatan['dept'] ?></td>
+            <td style="line-height: 1.17;">Seksi <?= $seksi . ', Unit ' . $unit . ', Departemen ' . $dept ?></td>
           </tr>
           <tr>
             <td valign="top"> Jabatan </td>
             <td valign="top">:</td>
-            <td><?= trim($jabatan['jabatan']) ?></td>
+            <td><?= trim($jabatan_pengalaman) ?></td>
           </tr>
-        <?php endforeach ?>
+        <?php else : ?>
+          <!-- Jika user tidak checklist jabatan -->
+          <?php foreach ($history_jabatan as $jabatan) : ?>
+            <tr>
+              <td valign="top">Seksi</td>
+              <td valign="top">:</td>
+              <td style=" line-height: 1.17;">Seksi <?= $jabatan['seksi'] . ', Unit ' . $jabatan['unit'] . ', Departemen ' . $jabatan['dept'] ?></td>
+            </tr>
+            <tr>
+              <td valign="top"> Jabatan </td>
+              <td valign="top">:</td>
+              <td><?= trim($jabatan['jabatan']) ?></td>
+            </tr>
+          <?php endforeach ?>
+        <?php endif ?>
       </tbody>
     </table>
     <?php $str = trim($data['isi_surat']);

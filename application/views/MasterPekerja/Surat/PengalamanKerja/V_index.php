@@ -112,28 +112,41 @@
 					<div class="row">
 						<div class="form-group">
 							<div class="col-lg-12">
-								<label class="col-lg-12 text-center">Jabatan</label><br>
-								<textarea name="jabatan_pengalaman" id="jabatan_pengalaman" autocomplete="off" class="form-control" style="resize: none;"></textarea>
-								<input type="hidden" name="link_pengalaman" id="link_pengalaman">
-								<input type="hidden" name="noind_pengalaman" id="noind_pengalaman">
-								<input type="hidden" name="sampai_pengalaman" id="sampai_pengalaman">
+								<label class="col-lg-10 text-center">Jabatan</label><br>
+								<div class="row">
+									<div class="col-lg-10">
+										<textarea name="jabatan_pengalaman" id="jabatan_pengalaman" autocomplete="off" class="form-control" style="resize: none;"></textarea>
+										<input type="hidden" name="link_pengalaman" id="link_pengalaman">
+										<input type="hidden" name="noind_pengalaman" id="noind_pengalaman">
+										<input type="hidden" name="sampai_pengalaman" id="sampai_pengalaman">
+									</div>
+									<div class="col-lg-2">
+										<span tippy-title="Centang untuk kustom jabatan">
+											<input type="checkbox" id="jabatan_pengalaman" name="jabatan_pengalaman_check" value="1">
+										</span>
+									</div>
+								</div>
 							</div>
 						</div>
 						<div class="form-group">
 							<div class="col-lg-12">
-								<label class="col-lg-12 text-center">Status</label><br>
-								<input name="status_jabatan" id="status_jabatan" autocomplete="off" class="form-control">
+								<label class="col-lg-10 text-center">Status</label>
+								<div class="row">
+									<div class="col-lg-10">
+										<input name="status_jabatan" id="status_jabatan" autocomplete="off" class="form-control">
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
 					<div class="row">
 						<div class="col-lg-12">
-							<label class="col-lg-12 text-center">NIK</label>
+							<label class="col-lg-10 text-center">NIK</label>
 							<div class="row">
 								<div class="col-lg-10">
 									<input class="form-control" name="nik_pengalaman" id="nik_pengalaman" autocomplete="off" value="">
 								</div>
-								<div class="col-lg-2">
+								<div class="col-lg-2" tippy-title="Centang untuk menampilkan NIK">
 									<input type="checkbox" id="cekNIK" name="cekNIK" value="nik">
 								</div>
 							</div>
@@ -141,12 +154,12 @@
 					</div>
 					<div class="row">
 						<div class="col-lg-12">
-							<label class="col-lg-12 text-center">Tanggal Masuk</label>
+							<label class="col-lg-10 text-center">Tanggal Masuk</label>
 							<div class="row">
 								<div class="col-lg-10">
 									<input class="form-control" name="tgl_masuk" id="pengalaman_tgl_masuk" autocomplete="off" value="">
 								</div>
-								<div class="col-lg-2">
+								<div class="col-lg-2" tippy-title="Centang untuk kustom tanggal masuk">
 									<input type="checkbox" id="cekTglMasuk" name="cekTglMasuk" value="1">
 								</div>
 							</div>
@@ -154,16 +167,24 @@
 					</div>
 					<div class="row">
 						<div class="col-lg-12">
-							<label class="col-lg-12 text-center">Tanggal Cetak</label><br>
-							<input class="form-control col-lg-8" name="pengalaman_tglCetak" id="pengalaman_tglCetak" autocomplete="off" value="">
+							<label class="col-lg-10 text-center">Tanggal Cetak</label><br>
+							<div class="row">
+								<div class="col-lg-10">
+									<input class="form-control col-lg-8" name="pengalaman_tglCetak" id="pengalaman_tglCetak" autocomplete="off" value="">
+								</div>
+							</div>
 						</div>
 					</div>
 					<div class="row">
 						<div class="col-lg-12">
-							<label for="" class="col-lg-12 text-center">Approver</label>
-							<select name="approver" id="MP_pengalamankerja_approver" class="form-control" required>
+							<label for="" class="col-lg-10 text-center">Approver</label>
+							<div class="row">
+								<div class="col-lg-10">
+									<select name="approver" id="MP_pengalamankerja_approver" class="form-control" required>
 
-							</select>
+									</select>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -174,3 +195,21 @@
 		</div>
 	</div>
 </div>
+<script src="<?= base_url('assets/plugins/@popperjs/core/popper.min.js') ?>"></script>
+<script src="<?= base_url('assets/plugins/tippy.js/dist/tippy-bundle.umd.min.js') ?>"></script>
+<script>
+	$(() => {
+		function tippyInit() {
+			return tippy("[tippy-title]", {
+				onCreate(instance) {},
+				content(ref) {
+					const title = ref.getAttribute("tippy-title");
+					return title;
+				},
+				allowHTML: true,
+			});
+		}
+
+		tippyInit()
+	})
+</script>

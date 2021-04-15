@@ -271,6 +271,7 @@ class C_PengalamanKerja extends CI_Controller
 		set_time_limit(0);
 
 		$jabatan_pengalaman = $this->input->post('jabatan_pengalaman');
+		$jabatan_pengalaman_check = $this->input->post('jabatan_pengalaman_check');
 		$status_jabatan = $this->input->post('status_jabatan');
 		$datane = $this->input->post('link_pengalaman');
 		$nik_pengalaman = $this->input->post('nik_pengalaman');
@@ -383,6 +384,7 @@ class C_PengalamanKerja extends CI_Controller
 		$data['stat'] = $status_jabatan;
 		$data['sampai'] = $sampai;
 		$data['jabatan_pengalaman'] = $jabatan_pengalaman;
+		$data['jabatan_pengalaman_check'] = $jabatan_pengalaman_check;
 
 		$pdf = $this->pdf->load();
 		$pdf = new mPDF('utf-8', 'A4', 10, "verdana", 20, 20, 50, 20, 20, 5, ['default_font' => 'verdana']);
