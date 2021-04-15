@@ -699,6 +699,19 @@ class C_SuratPenyerahan extends CI_Controller
     $noind_baru     = str_pad($maxNoindBaru + 1, 7, 0, '0');
     $kode_SP        = $this->M_penyerahan->getMaxCode();
 
+    if (intval($prov)) {
+      $prov   = $this->M_pekerjakeluar->ambilProv($prop);
+    }
+    if (intval($kab)) {
+      $kab  = $this->M_pekerjakeluar->ambilKab($kab);
+    }
+    if (intval($kec)) {
+      $kec  = $this->M_pekerjakeluar->ambilKec($kec);
+    }
+    if (intval($desa)) {
+      $desa       = $this->M_pekerjakeluar->ambilDesa($desa);
+    }
+
     //Insert tb_status_jabatan
     $nomoran = array(
       '01',
