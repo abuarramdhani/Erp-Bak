@@ -24,7 +24,7 @@ class M_autoinvoice extends CI_Model
        ,WDD.REQUESTED_QUANTITY_UOM
        ,WDD.REQUESTED_QUANTITY - NVL(WDD.CANCELLED_QUANTITY,0) REQUESTED_QUANTITY
        ,WDD.SHIPPED_QUANTITY
-       wdd.source_line_id
+       ,wdd.source_line_id
        FROM
        WSH_DELIVERY_DETAILS WDD
        ,MTL_SYSTEM_ITEMS_B MSIB
