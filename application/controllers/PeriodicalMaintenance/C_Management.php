@@ -39,6 +39,14 @@ class C_Management extends CI_Controller
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+		
+
+		$admin = ['a'=>'B0847', 'b'=>'T0015']; //, 'c'=>'B0713', 'd'=>'B0797'
+		if (empty(array_search($this->session->user, $admin))) {
+			unset($data['UserMenu'][0]);
+			unset($data['UserMenu'][1]);
+		}
+		
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
@@ -72,9 +80,69 @@ class C_Management extends CI_Controller
 			}
 		}
 		$data['value'] = $array_terkelompok;
+		$data['top'] = $this->M_management->getTop($mesin);
+
+		// echo "<pre>"; 
+		// print_r($data); exit();
 
 		$this->load->view('PeriodicalMaintenance/V_Result', $data);
 	}
+
+	// editTopManagement
+	public function editTopManagement()
+	{
+		$id = $this->input->post('id');
+		$dataa = $this->M_management->getTop($id);
+
+
+		$edittop = '
+		<div class="panel-body">                            
+			<div class="col-md-5" style="text-align: right;"><label>Doc. No :</label></div>                                        
+				<div class="col-md-5" style="text-align: left;"><input type="text" autocomplete="off" required="required" class="form-control" id="nodoc" name="nodoc" value="' . $dataa[0]['NO_DOKUMEN'] . '" /></div>
+				<input type="hidden" name="idTopEdit" id="idTopEdit" value="' . $id . '"/>
+			</div>
+			<div class="panel-body">                            
+				<div class="col-md-5" style="text-align: right;"><label>Rev. No :</label></div>                                        
+				<div class="col-md-5" style="text-align: left;"><input type="text" autocomplete="off" required="required" class="form-control" id="norev" name="norev" value="' . $dataa[0]['NO_REVISI'] . '" /></div>
+			</div>
+			<div class="panel-body">                            
+			<div class="col-md-5" style="text-align: right;"><label>Rev. Date :</label></div>                                        
+			<div class="col-md-5" style="text-align: left;">
+				<div class="input-group date">
+					<input type="text" class="form-control pull-right" id="revdate" name="revdate" placeholder="DD/MM/YYYY" autocomplete="off" value="' . $dataa[0]['TANGGAL_REVISI'] . '">
+					<div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+				</div>
+			</div>
+			</div>
+			<div class="panel-body">                            
+				<div class="col-md-5" style="text-align: right;"><label>Catatan Revisi :</label></div>                                        
+				<div class="col-md-5" style="text-align: left;">
+				<textarea style="width: 100%;text-align: left;" id="noterev" maxlength="500" name="noterev" class="form-control" >'. $dataa[0]['CATATAN_REVISI'] .'</textarea>
+				</div>
+			</div>
+			<div class="panel-body">
+				<div class="col-md-12" style="text-align:right"><button class="btn btn-success save-edit-top">Save</button></div>
+			</div>';
+
+			// <input type="text" autocomplete="off" required="required" class="form-control" id="revdate" name="revdate" value="' . $dataa[0]['TANGGAL_REVISI'] . '" />
+			// <input type="text" autocomplete="off" required="required" class="form-control" id="noterev" name="noterev" value="' . $dataa[0]['CATATAN_REVISI'] . '" />
+
+		echo $edittop;
+	}
+
+	// updateTopManagement
+	public function updateTopManagement()
+	{
+		$id = $this->input->post('id');
+		$noDoc = $this->input->post('noDoc');
+		$noRev = $this->input->post('noRev');
+		$revDate = $this->input->post('revDate');
+		$noteRev = $this->input->post('noteRev');
+
+
+		$this->M_management->updateTopManagement($id, $noDoc, $noRev, $revDate, $noteRev);
+	}
+
 
 	public function editSubManagement()
 	{
@@ -146,5 +214,29 @@ class C_Management extends CI_Controller
 		$id = $this->input->post('id');
 		$this->M_management->deleteSubManagement($id);
 	}
+
+	public function Uploadimg()
+    {
+			$mesin 	= $this->input->post('mesin');
+            $temp_name = $_FILES['gambarMPA']['tmp_name'];
+            $j = 1;
+            for ($i = 0; $i < sizeof($temp_name); $i++) {
+                $img = $_FILES['gambarMPA']['name'][$i];
+                $imge = explode(".", $img);
+                $filename = "assets/upload/PeriodicalMaintenanceMPA/" . $mesin . '_' . $j . '.' . $imge[1];
+                if (file_exists($filename)) {
+                    move_uploaded_file($temp_name[$i], $filename);
+                } else {
+                    move_uploaded_file($temp_name[$i], $filename);
+                }
+				$j++;
+				$this->M_management->insertGambarMPA($mesin, $filename);
+			}
+			
+			redirect('PeriodicalMaintenance/Management');
+
+        }
+    
+
 }
 

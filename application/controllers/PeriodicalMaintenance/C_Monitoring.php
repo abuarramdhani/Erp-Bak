@@ -39,6 +39,13 @@ class C_Monitoring extends CI_Controller
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+		
+		$admin = ['a'=>'B0847', 'b'=>'T0015']; //, 'c'=>'B0713', 'd'=>'B0797'
+		if (empty(array_search($this->session->user, $admin))) {
+			unset($data['UserMenu'][0]);
+			unset($data['UserMenu'][1]);
+		}
+
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
@@ -81,6 +88,11 @@ class C_Monitoring extends CI_Controller
 			}
 		}
 		$data['value'] = $array_terkelompok;
+		$data['top'] = $this->M_monitoring->getDataHeader($nodoc);
+		$data['footer'] = $this->M_monitoring->getDataFooter($nodoc);
+
+		// echo "<pre>"; 
+		// print_r($data); exit();
 
 		$this->load->view('PeriodicalMaintenance/V_ResultMon', $data);
 	}
@@ -93,8 +105,12 @@ class C_Monitoring extends CI_Controller
 		$data['sparepart'] = $this->M_monitoring->getDataSparepart($nodoc);
 		$data['header'] = $this->M_monitoring->getDataHeader($nodoc);
 
-
 		$datapdf = $this->M_monitoring->getDataMon($nodoc);
+
+		$data['gambar'] = $this->M_monitoring->getDataGambar($datapdf[0]['NAMA_MESIN']);
+
+		// echo "<pre>"; 
+		// print_r($data); exit();
 
 		$array_Resource = array();
 		for ($i = 0; $i < sizeof($datapdf); $i++) {
@@ -131,6 +147,8 @@ class C_Monitoring extends CI_Controller
 
 			$array_pdf[$i]['REQUEST_BY'] = $pdf['REQUEST_BY'];
 			$array_pdf[$i]['CREATION_DATE'] = $pdf['CREATION_DATE'];
+			$array_pdf[$i]['REQUEST_TO'] = $pdf['REQUEST_TO'];
+			$array_pdf[$i]['REQUEST_TO_2'] = $pdf['REQUEST_TO_2'];
 			$array_pdf[$i]['APPROVED_BY'] = $pdf['APPROVED_BY'];
 			$array_pdf[$i]['APPROVED_DATE'] = $pdf['APPROVED_DATE'];
 			$array_pdf[$i]['APPROVED_BY_2'] = $pdf['APPROVED_BY_2'];
@@ -149,7 +167,7 @@ class C_Monitoring extends CI_Controller
 		$margin_left = 3; // sizes are defines in millimetres
 		$margin_right = 3;
 		$margin_top = 35;
-		$margin_bottom = 3;
+		$margin_bottom = 80;
 		$header = 3;
 		$footer = 3;
 		$orientation = "P"; // can be P (Portrait) or L (Landscape)

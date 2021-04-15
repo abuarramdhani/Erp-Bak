@@ -1,8 +1,42 @@
+$(document).ready(function () {
+  $('#tgl_revisi').datepicker({
+      format: "dd/mm/yyyy",
+      autoclose: true
+  });
+});
+
+// var a = 2;
+// function addPMEImg() {
+// 	$('#addgambarPME').append('<div class="addgambarPME" ><br><br><br><div class="col-md-3"></div><div class="col-md-1" align="right"></div><div class="col-md-2"><input type="file" name="img_file" id="img_file" accept=".png, .jpeg" /></div><div class="col-md-2" style="text-align:right"><button class = "btn btn-default deletegambarPME'+a+'" type="button"><i class = "fa fa-minus" ></i></button></div></div></div></div>');
+// 	$(document).on('click', '.deletegambarPME'+a,  function() {
+// 		$(this).parents('.addgambarPME').remove()
+// 	});
+// 	a++; 
+// }
+
+function addgambarMPA() {
+  var a = $('input[name ="gambarMPA[]"]').length + 1;
+  $("#addgambarMPA").append(
+    '<div class="panel-body"><div class="col-md-4" style="text-align: right;"><label>Gambar</label></div><div class="col-md-4"><input required type="file" class="form-control" name="gambarMPA[]" accept=".jpg,.png,.jpeg"></div><div class="col-md-2"><a class="btn btn-danger" id="btn_hmpa' +
+      a +
+      '" onclick="deletegambarMPA(' +
+      a +
+      ')"><i class="fa fa-minus"></i></a></div></div>'
+  );
+}
+
+function deletegambarMPA(a) {
+  $("#btn_hmpa" + a)
+    .parents(".panel-body")
+    .remove();
+}
+
 var i = 1;
 function addRowPeriodicalMaintenance() {
   var noDoc = $("#no_dokumen").val();
   var noRev = $("#no_revisi").val();
   var revDate = $("#tgl_revisi").val();
+  var catatanRev = $("#catatan_revisi_mpa").val();
 
   var namaMesin = $("#machineMPA").val();
   var kondisiMesin = $("#kondisi_mesin").val();
@@ -27,7 +61,8 @@ function addRowPeriodicalMaintenance() {
       '<tr class="clone"><td> <input type="hidden" name="no_dokumen[]" value="'+
       noDoc +'"> <input type="hidden" name="no_revisi[]" value="'+
       noRev +'"> <input type="hidden" name="tgl_revisi[]" value="'+
-      revDate +'"> <input type="text" name="nama_mesin[]" value="' +
+      revDate +'"> <input type="hidden" name="catatan_revisi_mpa[]" value="'+
+      catatanRev +'"> <input type="text" name="nama_mesin[]" value="' +
         namaMesin +
         '" readonly class="form-control"></td><td><input type="text" name="kondisi_mesin[]" value="' +
         kondisiMesin +
@@ -60,6 +95,7 @@ $("#btnResetPME").click(function() {
   $("#no_dokumen").val("");
   $("#no_revisi").val("");
   $("#tgl_revisi").val("");
+  $("#catatan_revisi_mpa").val("");
   $("#machineMPA").val("");
   $("#kondisi_mesin").val("");
   $("#header").val("");
@@ -70,6 +106,7 @@ $("#btnResetPME").click(function() {
   $("#no_dokumen").removeAttr("disabled");
   $("#no_revisi").removeAttr("disabled");
   $("#tgl_revisi").removeAttr("disabled");
+  $("#catatan_revisi_mpa").removeAttr("disabled");
   $("#machineMPA").removeAttr("disabled");
 
   return false; 
@@ -124,6 +161,81 @@ function getPME(th) {
 function getDetailPME(th, no) {
   var title = $(th).text();
   $("#detail" + no).slideToggle("slow");
+}
+
+function editTopPME(id) {
+  // console.log(id);
+  var request = $.ajax({
+    url: baseurl + "PeriodicalMaintenance/Management/editTopManagement",
+    data: {
+      id: id
+    },
+    type: "POST",
+    datatype: "html"
+  });
+
+  request.done(function(result) {
+    // console.log(result);
+    $("#topManagementEdit").html(result);
+    $("#modalEditTopManagement").modal("show");
+
+    $('#revdate').datepicker({
+      format: "dd/mm/yyyy",
+      autoclose: true
+    });
+
+    $(".save-edit-top").on("click", function() {
+      var noDoc = $("#nodoc").val();
+      var noRev = $("#norev").val();
+      var revDate = $("#revdate").val();
+      var noteRev = $("#noterev").val();
+
+
+      var id = $("#idTopEdit").val();
+      console.log(noDoc, noRev, revDate);
+      var request = $.ajax({
+        url: baseurl + "PeriodicalMaintenance/Management/updateTopManagement",
+        data: {
+          noDoc: noDoc,
+          noRev: noRev,
+          revDate: revDate,
+          noteRev: noteRev,
+          id: id
+        },
+        type: "POST",
+        datatype: "html"
+      });
+      request.done(function() {
+        $("#modalEditTopManagement").modal("hide");
+        Swal.fire({
+          position: "top",
+          type: "success",
+          title: "Revisi Dokumen Berhasil",
+          showConfirmButton: false,
+          timer: 1500
+        }).then(() => {
+          var mesin = $('select[name="list_mesin"]').val();
+          var request = $.ajax({
+            url: baseurl + "PeriodicalMaintenance/Management/search",
+            data: {
+              mesin: mesin
+            },
+            type: "POST",
+            beforeSend: function() {
+              $("div#ResultPME").html(
+                '<center><img style="width:100px; height:auto" src="' +
+                  baseurl +
+                  'assets/img/gif/loading14.gif"></center>'
+              );
+            }
+          });
+          request.done(function(result) {
+            $("div#ResultPME").html(result);
+          });
+        });
+      });
+    });
+  });
 }
 
 function editRowPME(id) {
@@ -252,6 +364,7 @@ $("#machineMPA").change(function() {
     $("#no_dokumen").prop("disabled", true);
     $("#no_revisi").prop("disabled", true);
     $("#tgl_revisi").prop("disabled", true);
+    $("#catatan_revisi").prop("disabled", true);
   }
 
   var request = $.ajax({

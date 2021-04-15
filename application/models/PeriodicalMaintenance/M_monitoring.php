@@ -74,18 +74,27 @@ class M_monitoring extends CI_Model
     $sql = "SELECT DISTINCT kdsm.SPAREPART, kdsm.SPESIFIKASI, kdsm.JUMLAH, kdsm.SATUAN 
     FROM KHS_DAFTAR_SPAREPART_MPA kdsm, KHS_CEK_MESIN kcm
     WHERE kdsm.DOCUMENT_NUMBER = '$nodoc'
-    AND kdsm.NAMA_MESIN = kcm.NAMA_MESIN 
-    AND kdsm.ACTUAL_DATE = kcm.ACTUAL_DATE ";
+    AND kdsm.NAMA_MESIN = kcm.NAMA_MESIN";
     $query = $this->oracle->query($sql);
     return $query->result_array();
   }
 
   public function getDataHeader($nodoc)
   {
-    $sql = "SELECT DISTINCT kpm.NO_DOKUMEN, kpm.NO_REVISI, kpm.TANGGAL_REVISI
+    $sql = "SELECT DISTINCT kpm.NO_DOKUMEN, kpm.NO_REVISI, kpm.TANGGAL_REVISI, kpm.CATATAN_REVISI
     FROM KHS_PERIODICAL_MAINTENANCE kpm, KHS_CEK_MESIN kcm
     WHERE kcm.DOCUMENT_NUMBER = '$nodoc'
     AND kpm.NAMA_MESIN = kcm.NAMA_MESIN ";
+    $query = $this->oracle->query($sql);
+    return $query->result_array();
+  }
+
+  public function getDataFooter($nodoc)
+  {
+    $sql = "SELECT DISTINCT kcm.APPROVED_BY, kcm.APPROVED_DATE, kcm.APPROVED_BY_2, kcm.APPROVED_DATE_2
+    FROM KHS_PERIODICAL_MAINTENANCE kpm, KHS_CEK_MESIN kcm
+    WHERE kcm.DOCUMENT_NUMBER = '$nodoc'
+    AND kpm.NAMA_MESIN = kcm.NAMA_MESIN";
     $query = $this->oracle->query($sql);
     return $query->result_array();
   }
@@ -135,5 +144,14 @@ class M_monitoring extends CI_Model
     $query = $this->oracle->query($sql);
     return $query;
   }
+
+  public function getDataGambar($mesin)
+  {
+    $sql = "SELECT * FROM khs_gambar_mpa kgm
+    WHERE kgm.NAMA_MESIN = '$mesin'";
+    $query = $this->oracle->query($sql);
+    return $query->result_array();
+  }
+
 
 }
