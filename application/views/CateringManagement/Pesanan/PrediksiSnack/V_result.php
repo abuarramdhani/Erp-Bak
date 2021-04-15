@@ -61,6 +61,7 @@
 													<th>Cuti</th>
 													<th>Sakit</th>
 													<th>Dinas Luar</th>
+													<th>Puasa</th>
 													<th>Total</th>
 												</tr>
 											</thead>
@@ -71,6 +72,7 @@
 												$total_cuti = 0;
 												$total_sakit = 0;
 												$total_dinas_luar = 0;
+												$total_puasa = 0;
 												$total_total = 0;
 												if (isset($prediksi) && !empty($prediksi)) {
 													$nomor = 1;
@@ -84,6 +86,7 @@
 															<td style="<?php echo $value['cuti'] != "0" ? "background-color: #ff4d4d" : ""; ?>" ><?php echo $value['cuti'] ?></td>
 															<td style="<?php echo $value['sakit'] != "0" ? "background-color: #ff4d4d" : ""; ?>" ><?php echo $value['sakit'] ?></td>
 															<td style="<?php echo $value['dinas_luar'] != "0" ? "background-color: #ff4d4d" : ""; ?>" ><?php echo $value['dinas_luar'] ?></td>
+															<td style="<?php echo $value['puasa'] != "0" ? "background-color: #ff4d4d" : ""; ?>" ><?php echo $value['puasa'] ?></td>
 															<td><?php echo $value['total'] ?></td>
 														</tr>
 														<?php
@@ -92,7 +95,9 @@
 														$total_cuti += $value['cuti'];
 														$total_sakit += $value['sakit'];
 														$total_dinas_luar += $value['dinas_luar'];
+														$total_puasa += $value['puasa'];
 														$total_total += $value['total'];
+
 														$nomor++;
 													}
 												}
@@ -107,6 +112,7 @@
 													<th><?php echo $total_cuti; ?></th>
 													<th><?php echo $total_sakit; ?></th>
 													<th><?php echo $total_dinas_luar; ?></th>
+													<th><?php echo $total_puasa; ?></th>
 													<th><?php echo $total_total; ?></th>
 												</tr>
 											</tfoot>

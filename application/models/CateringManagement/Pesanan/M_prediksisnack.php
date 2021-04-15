@@ -17,28 +17,40 @@ class M_prediksisnack extends CI_Model
 					count(*) as jumlah_shift,
 					/*string_agg(tdp.kd_ket,',') as ket,*/
 					sum(
-						case when tdp.kd_ket = 'PCZ' or left(tdp.kd_ket,1) = 'C' then 
+						case when (tdp.kd_ket = 'PCZ' or left(tdp.kd_ket, 1) = 'C') and t.fs_noind is null then 
 							1
 						else 
 							0
 						end
 					) as cuti,
 					sum(
-						case when tdp.kd_ket = 'PRM' then 
+						case when tdp.kd_ket = 'PRM' and t.fs_noind is null then 
 							1
 						else 
 							0
 						end
 					) as dirumahkan,
 					sum(
-						case when tdp.kd_ket = 'PSK' then 
+						case when tdp.kd_ket = 'PSK' and t.fs_noind is null then 
 							1
 						else 
 							0
 						end
 					) as sakit,
 					0 as dinas_luar,
-					0 as total
+					0 as total,
+					(select
+                            count(*)
+                        from
+                            \"Catering\".tpuasa t2
+                        inner join \"Presensi\".tshiftpekerja tsp2 on
+                            t2.fs_noind = tsp2.noind
+                            and t2.fd_tanggal = tsp2.tanggal
+                        left join hrd_khs.tpribadi t3 on t3.noind = t2.fs_noind 
+                        where
+                            trim(t3.tempat_makan) = trim(tp.tempat_makan)
+                            and t2.fd_tanggal = tsp.tanggal
+                            and tsp2.kd_shift in ('1','4','10')) puasa
 				from hrd_khs.tpribadi tp 
 				inner join \"Presensi\".tshiftpekerja tsp 
 				on tp.noind = tsp.noind
@@ -47,6 +59,10 @@ class M_prediksisnack extends CI_Model
 				left join \"Presensi\".tdatapresensi tdp 
 				on tp.noind = tdp.noind
 				and tdp.tanggal = tsp.tanggal
+                left join \"Catering\".tpuasa t on
+                    t.fs_noind = tsp.noind
+                    and t.fd_tanggal = tsp.tanggal
+                    and tsp.kd_shift in ('1','4','10')
 				where tsp.tanggal = ?
 				and ttm.fs_lokasi = ?
 				and tp.keluar = '0'
@@ -82,6 +98,9 @@ class M_prediksisnack extends CI_Model
 				where tsp.tanggal = ?
 				and tp.tempat_makan = ?
 				and tsp.kd_shift in ('1','4','10')
+				and tp.noind not in (select t.fs_noind from \"Catering\".tpuasa t
+                left join \"Presensi\".tshiftpekerja t2 on t2.noind = t.fs_noind and t2.tanggal = t.fd_tanggal 
+                where t.fs_noind = tp.noind and tsp.tanggal = t.fd_tanggal and t2.kd_shift in ('1','4','10'))
 				order by 1 ";
     	return $this->personalia->query($sql,array($tanggal,$tempat_makan))->result_array();
     }

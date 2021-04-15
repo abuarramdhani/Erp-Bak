@@ -87,7 +87,7 @@ class C_PrediksiSnack extends CI_Controller
     				}
     			}
 
-    			$prediksi[$key]['total'] = $prediksi[$key]['jumlah_shift'] - ( $prediksi[$key]['dirumahkan'] + $prediksi[$key]['cuti'] + $prediksi[$key]['sakit'] + $prediksi[$key]['dinas_luar'] );
+    			$prediksi[$key]['total'] = $prediksi[$key]['jumlah_shift'] - ( $prediksi[$key]['dirumahkan'] + $prediksi[$key]['cuti'] + $prediksi[$key]['sakit'] + $prediksi[$key]['dinas_luar'] + $prediksi[$key]['puasa'] );
     			$data_insert = array(
     				'id_prediksi' 	=> $id_prediksi,
     				'tempat_makan' 	=> $prediksi[$key]['tempat_makan'],
@@ -95,7 +95,8 @@ class C_PrediksiSnack extends CI_Controller
     				'dirumahkan' 	=> $prediksi[$key]['dirumahkan'],
     				'cuti' 			=> $prediksi[$key]['cuti'],
     				'sakit' 		=> $prediksi[$key]['sakit'],
-    				'dinas_luar' 	=> $prediksi[$key]['dinas_luar'],
+                    'dinas_luar'    => $prediksi[$key]['dinas_luar'],
+    				'puasa' 	=> $prediksi[$key]['puasa'],
     				'total' 		=> $prediksi[$key]['total']
     			);
     			$this->M_prediksisnack->insertPrediksiDetail($data_insert);
