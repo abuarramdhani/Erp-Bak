@@ -860,6 +860,7 @@ $(document).ready(function () {
 						no_kk = result.pkj[0]["no_kk"],
 						status_nikah = result.jenis == 1 ? result.pkj[0]["status_nikah"] : result.pkj[0]["statnikah"],
 						npwp = result.jenis == 1 ? result.pkj[0]["npwp"] : '',
+						kota = result.jenis == 1 ? result.pkj[0].kota : result.pkj[0].kab,
 						agama = ["ISLAM", "KATHOLIK", "KRISTEN", "HINDU", "BUDHA", "KONGHUCU"],
 						jenkel = ["L", "P"],
 						nikah = [
@@ -1255,7 +1256,7 @@ $(document).ready(function () {
 											<label for="txt_Kota_SP" class="col-lg-4 control-label">Kabupaten / Kota</label>
 											<div class="col-lg-8">
 												<select class="select select2 form-control Kabupaten_SP" name="txt_Kota_SP" style="width: 100% !important" required>
-													<option value="${result.pkj[0].kota}">${result.pkj[0].kota}</option>
+													<option value="${kota}">${kota}</option>
 												</select>
 											</div>
 										</div>
