@@ -11,7 +11,7 @@ class M_itemlist extends CI_Model
     }
     
     public function getCategory(){
-      $sql = "select * from khs_kategori_item_monitoring";
+      $sql = "select * from khs_kategori_item_monitoring order by category_name";
       $query = $this->oracle->query($sql);
       return $query->result_array();
     }

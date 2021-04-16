@@ -55,7 +55,7 @@ class C_SetPlan extends CI_Controller
 		// 	$data['UserMenu'] = $UserMenu;
 		// }
 
-		$data['kategori'] = $this->M_setplan->getCategory('');
+		$data['kategori'] = $this->M_setplan->getCategory('order by category_name');
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);

@@ -57,6 +57,13 @@ class M_masterkategori extends CI_Model
       $query2 = $this->oracle->query('commit');
       // echo $sql;
     }
+    
+    public function updateBulan($id, $bulan){
+      $sql = "update khs_kategori_item_monitoring set month = '$bulan'
+              where id_category = $id";
+      $query = $this->oracle->query($sql);
+      $query2 = $this->oracle->query('commit');
+    }
 
 
 }

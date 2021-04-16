@@ -82,8 +82,30 @@ class C_MasterKategori extends CI_Controller
 			$data['id'] 			= $this->input->post('id');
 			$data['kategori'] 		= $this->input->post('kategori');
 			$data['sub_kategori']	= $this->M_masterkategori->getSubKategori("where id_category = ".$data['id']."");
+			$data['data_kategori']	= $this->M_masterkategori->getdata("where id_category = ".$data['id']."");
 			// echo "<pre>";print_r($data);exit();
 			$this->load->view('MonitoringJobProduksi/V_MdlEditMaster', $data);
+		}
+
+		public function updateBulan(){
+			$id 	= $this->input->post('id');
+			$bulan 	= sprintf("%02d", $this->input->post('bulan'));
+			$data	= $this->M_masterkategori->getdata("where id_category = ".$id."");
+			$bulan_kategori = $data[0]['MONTH'];
+			$ket 	= $this->input->post('ket');
+			if ($ket == 'N') {
+				$month = !empty($bulan_kategori) ? $bulan_kategori.', '.$bulan : $bulan;
+			}else {
+				$bln = explode(", ", $bulan_kategori);
+				$month = '';
+				for ($i=0; $i < count($bln) ; $i++) { 
+					if ($bln[$i] != $bulan) {
+						$month = !empty($month) ? $month.', '.$bln[$i] : $bln[$i];
+					}
+				}
+			}
+			
+			$this->M_masterkategori->updateBulan($id, $month);
 		}
 		
 		public function updateCategory(){

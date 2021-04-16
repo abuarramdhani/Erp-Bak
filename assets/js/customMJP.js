@@ -716,7 +716,7 @@ function saveCategory(th) {
 
 function updateCategory() {
     var id          = $('#id_kategori').val();
-    var kategori    = $('#kategori').val();
+    var kategori    = $('#kategorii').val();
     var sub_kategori = $('[name="sub_kategori2[]"]').map(function(){return $(this).val();}).get();
     $.ajax({
         url : baseurl + "MonitoringJobProduksi/MasterKategori/updateCategory",
@@ -725,6 +725,7 @@ function updateCategory() {
         dataType: "html",
         success: function(data) {
             $('#mdl_masterctgr').modal('hide');
+            window.location.reload();
         }
     })
 }
@@ -745,6 +746,23 @@ function tmb_subkategori2() {
     $(document).on('click', '.tombolhapus'+i,  function() {
 		$(this).parents('.tambah_subkategori2').remove()
 	});
+}
+
+function save_bulan(bulan, id) {
+    var ket = $('#ket_bulan'+bulan).val();
+    if (ket == 'Y') {
+        $('#ket_bulan'+bulan).val('N');
+        $('#bulan'+bulan).removeClass('fa-check-square-o').addClass('fa-square-o');
+    }else{
+        $('#ket_bulan'+bulan).val('Y');
+        $('#bulan'+bulan).removeClass('fa-square-o').addClass('fa-check-square-o');
+    }
+    $.ajax({
+        url : baseurl + "MonitoringJobProduksi/MasterKategori/updateBulan",
+        data: {id : id,bulan : bulan, ket : ket},
+        type : "POST",
+        dataType: "html"
+    })
 }
 
 //------------------------------------------------- USER MANAGEMENT ------------------------------------------------------------------
