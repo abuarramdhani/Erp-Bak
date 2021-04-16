@@ -8,8 +8,49 @@
             <label>Kategori:</label>
         </div>
         <div class="col-md-6">
-            <input id="kategori" class="form-control" style="text-transform:uppercase" value="<?= $kategori?>">
+            <input id="kategorii" class="form-control" style="text-transform:uppercase" value="<?= $kategori?>">
             <input type="hidden" id="id_kategori" value="<?= $id?>">
+        </div>
+    </div>
+    <div class="panel-body">
+        <div class="col-md-3 text-right">
+            <label>Bulan:</label>
+        </div>
+        <div class="col-md-3">
+            <?php for ($i=1; $i < 5 ; $i++) { 
+                $month = explode(",", $data_kategori[0]['MONTH']);
+                $cek = in_array(sprintf("%02d", $i), $month) ? 'fa-check-square-o' : 'fa-square-o';
+                $cek2 = in_array(sprintf("%02d", $i), $month) ? 'Y' : 'N';
+                $bulan = date('F', mktime(0, 0, 0, $i, 10))?>
+                <p onclick="save_bulan(<?= $i?>, <?= $id?>)">
+                    <i id="bulan<?= $i?>" class="fa <?= $cek?>"></i> <?= $bulan?>
+                    <input type="hidden" id="ket_bulan<?= $i?>" value="<?= $cek2?>">
+                </p>
+            <?php }?>
+        </div>
+        <div class="col-md-3">
+            <?php for ($i=5; $i < 9 ; $i++) { 
+                $month = explode(",", $data_kategori[0]['MONTH']);
+                $cek = in_array(sprintf("%02d", $i), $month) ? 'fa-check-square-o' : 'fa-square-o';
+                $cek2 = in_array(sprintf("%02d", $i), $month) ? 'Y' : 'N';
+                $bulan = date('F', mktime(0, 0, 0, $i, 10))?>
+                <p onclick="save_bulan(<?= $i?>, <?= $id?>)">
+                    <i id="bulan<?= $i?>" class="fa <?= $cek?>"></i> <?= $bulan?>
+                    <input type="hidden" id="ket_bulan<?= $i?>" value="<?= $cek2?>">
+                </p>
+            <?php }?>
+        </div>
+        <div class="col-md-3">
+            <?php for ($i=9; $i < 13 ; $i++) { 
+                $month = explode(",", $data_kategori[0]['MONTH']);
+                $cek = in_array(sprintf("%02d", $i), $month) ? 'fa-check-square-o' : 'fa-square-o';
+                $cek2 = in_array(sprintf("%02d", $i), $month) ? 'Y' : 'N';
+                $bulan = date('F', mktime(0, 0, 0, $i, 10))?>
+                <p onclick="save_bulan(<?= $i?>, <?= $id?>)">
+                    <i id="bulan<?= $i?>" class="fa <?= $cek?>"></i> <?= $bulan?>
+                    <input type="hidden" id="ket_bulan<?= $i?>" value="<?= $cek2?>">
+                </p>
+            <?php }?>
         </div>
     </div>
     <div class="panel-body" id="tambah_subkategori2">

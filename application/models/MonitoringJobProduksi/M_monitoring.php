@@ -73,8 +73,8 @@ class M_monitoring extends CI_Model
         return $query->result_array();
     }
     
-    public function getPlan($id, $bulan){
-        $sql = "select * from khs_plan_item_monitoring where inventory_item_id = $id and month = $bulan";
+    public function getPlan($id, $bulan, $kategori){
+        $sql = "select * from khs_plan_item_monitoring where inventory_item_id = $id and month = $bulan and id_category = $kategori";
         $query = $this->oracle->query($sql);
         return $query->result_array();
     }

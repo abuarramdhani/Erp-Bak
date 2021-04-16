@@ -42,7 +42,7 @@ class C_Import extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-        $data['kategori'] = $this->M_import->getCategory('');
+        $data['kategori'] = $this->M_import->getCategory('order by category_name');
         
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -114,7 +114,7 @@ class C_Import extends CI_Controller
                     ->setKeywords("MJP");
         $excel->setActiveSheetIndex(0)->setCellValue('A1', "SUBCATEGORY (isi disini, kosongi jika tidak membutuhkan subcategory)");
         $excel->setActiveSheetIndex(0)->setCellValue('A2', "ITEM (isi item mulai dari baris 2)");
-        $excel->setActiveSheetIndex(0)->setCellValue('B2', "PLAN (isi item mulai dari baris 2)");
+        $excel->setActiveSheetIndex(0)->setCellValue('B2', "PLAN (isi plan mulai dari baris 2)");
 		$excel->getActiveSheet()->getColumnDimension('A')->setWidth(30); 
         $excel->getActiveSheet()->getDefaultRowDimension()->setRowHeight(-1);
 		// Set orientasi kertas jadi LANDSCAPE

@@ -57,7 +57,7 @@ class C_Monitoring extends CI_Controller
 			$data['UserMenu'] = $UserMenu;
 		}
 
-		$data['kategori'] = $this->M_monitoring->getCategory('');
+		$data['kategori'] = $this->M_monitoring->getCategory('order by category_name');
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -75,7 +75,7 @@ class C_Monitoring extends CI_Controller
 		$total['ttl_jml_com'] = $total['ttl_jml_pl'] = $total['ttl_jml_plmin'] = $total['ttl_jml_cmin'] = 0;
 		foreach ($getdata as $key => $value) {
 			$item = $this->M_monitoring->getitem($value['INVENTORY_ITEM_ID']);
-			$plan = $this->M_monitoring->getPlan($value['INVENTORY_ITEM_ID'], $inibulan);
+			$plan = $this->M_monitoring->getPlan($value['INVENTORY_ITEM_ID'], $inibulan, $kategori);
 			$getdata[$key]['ITEM'] = $item[0]['SEGMENT1'];
 			$getdata[$key]['DESC'] = $item[0]['DESCRIPTION'];
 			$getdata[$key]['jml_plan'] = 0;
@@ -123,11 +123,13 @@ class C_Monitoring extends CI_Controller
 					}
 					
 				}
-				// if ($getdata[$key]['jml_plan'] == 0) {
-				// 	$plandate = $this->M_monitoring->getPlanDate("where plan_id = ".$plan[0]['PLAN_ID']."");
-				// 	$getdata[$key]['jml_plan'] += $plandate[0]['VALUE_PLAN_MONTH'];
-				// 	$ket = 'oke';
-				// }
+
+				$plandate = $this->M_monitoring->getPlanDate("where plan_id = ".$plan[0]['PLAN_ID']."");
+				if (!empty($plandate)) {
+					$getdata[$key]['jml_plan'] += $plandate[0]['VALUE_PLAN_MONTH'];
+					$ket = 'oke';
+				}
+					
 				if ($ket == 'oke') {
 					array_push($datanya,$getdata[$key]);
 					// $total['item'] += 1;

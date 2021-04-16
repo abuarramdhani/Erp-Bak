@@ -65,6 +65,7 @@ class C_LaporanProduksi extends CI_Controller
 		$asal 		= $this->input->post('asal');
 		$subinv_from = $this->input->post('subinv_from');
 		$subinv_to 	= $this->input->post('subinv_to');
+		$hari 		= $this->jumlahHari($bln);
 		if ($asal == 'TRANSAKSI') {
 			$subfrom = $subto ='';
 			for ($s=0; $s < count($subinv_from) ; $s++) { 
@@ -77,16 +78,34 @@ class C_LaporanProduksi extends CI_Controller
 							order by fin.description, fin.CATEGORY_NAME, fin.SUBCATEGORY_NAME, fin.TANGGAL";
 			$kode		= 1;
 		}else {
-			$subinv		= "order by fin.CATEGORY_NAME, fin.SUBCATEGORY_NAME, fin.TANGGAL";
+			$subinv		= "order by fin.CATEGORY_NAME, fin.ID_SUBCATEGORY";
 			$kode		= 2;
 		}
-		$getdata 	= $this->M_laporan->getdataLaporan($kategori, $bulan, $subinv, $kode);
-		$hari 		= $this->jumlahHari($bln);
-		// echo "<pre>";print_r($getdata);exit();
+		
+		if ($kategori == 15) { //kategori SPAREPART
+			$getdata = $this->M_laporan->getdataLaporanSP($kategori, $bulan);
+			$olah 	= $this->olah_data_sp($getdata, $asal, $hari, $bln[1].$bln[0]);
+		}else {
+			$getdata = $this->M_laporan->getdataLaporan($kategori, $bulan, $subinv, $kode);
+			$olah 	= $this->olah_data($getdata, $asal, $hari, $kategori, $bln[1].$bln[0]);
+		}
+		usort($olah[0], function($y, $z) {
+			return strcasecmp($y['DESKRIPSI'], $z['DESKRIPSI']);
+		});
+			
+		$data['data'] = $olah[0];
+		$data['total'] = $olah[1];
+		$data['hari'] = $hari;
+		$data['kategori'] = $kategori;
+		$data['bulan'] = $bulan;
+		// echo "<pre>";print_r($data);exit();
+		$this->load->view('MonitoringJobProduksi/V_TblLaporan', $data);
+	}	
 
+	public function olah_data($getdata, $asal, $hari, $kategori, $bulan){
 		$no = 0;
 		$datanya = $subcategory = $itemnya = array();
-		$total['REAL_PROD'] = $total['TARGET'] = $total['KECAPAIAN_TARGET'] = 0;
+		$total['REAL_PROD'] = $total['TARGET'] = 0;
 		for ($h=1; $h < $hari+1 ; $h++) { 
 			$h2 = sprintf("%02d", $h);
 			$total['TANGGAL'.$h2.''] = 0;
@@ -100,25 +119,20 @@ class C_LaporanProduksi extends CI_Controller
 				}else {
 					array_push($subcategory, $val['SUBCATEGORY_NAME']);
 					$item = $desc = $val['SUBCATEGORY_NAME'];
+					array_push($itemnya, $val['ITEM']);
 				}
 				$datanya[$no] = array(
 									'ITEM' 				=> $item,
 									'DESKRIPSI' 		=> $desc,
 									'ID_CATEGORY' 		=> $val['ID_CATEGORY'],
 									'CATEGORY_NAME' 	=> $val['CATEGORY_NAME'],
-									'ID_SUBCATEGORY' 	=> $val['ID_SUBCATEGORY'],
-									'SUBCATEGORY_NAME' 	=> $val['SUBCATEGORY_NAME'],
-									'SUBINV' 			=> $val['SUBINV'],
-									'TRF_SUBINV' 		=> $val['TRF_SUBINV'],
 									'BULAN' 			=> $val['BULAN'],
 									'QTY' 				=> $val['QTY'],
-									'REAL_PROD' 		=> $val['REAL_PROD'],
+									'REAL_PROD' 		=> $val['QTY'],
 									'TARGET' 			=> $val['TARGET'],
-									'KECAPAIAN_TARGET' 	=> round($val['KECAPAIAN_TARGET'],3)
 				);
-				$total['REAL_PROD'] += $val['REAL_PROD'];
+				$total['REAL_PROD'] += $val['QTY'];
 				$total['TARGET'] += $val['TARGET'];
-				$total['KECAPAIAN_TARGET'] += round($val['KECAPAIAN_TARGET'],3);
 				for ($h=1; $h < $hari+1 ; $h++) { 
 					$h2 = sprintf("%02d", $h);
 					$datanya[$no]['TANGGAL'.$h2.''] = 0;
@@ -131,30 +145,155 @@ class C_LaporanProduksi extends CI_Controller
 				$tgl = explode('-', $val['TANGGAL']);
 				$datanya[$no-1]['TANGGAL'.$tgl[0].''] += $val['QTY'];
 				$total['TANGGAL'.$tgl[0].''] += $val['QTY'];
-				if ($asal == 'COMPLETION' && !in_array($val['ITEM'], $itemnya)) {
-					array_push($itemnya, $val['ITEM']);
-					$datanya[$no-1]['REAL_PROD'] += $val['REAL_PROD'];
-					$datanya[$no-1]['TARGET'] += $val['TARGET'];
-					$datanya[$no-1]['KECAPAIAN_TARGET'] += round($val['KECAPAIAN_TARGET'],3);
-					$total['REAL_PROD'] += $val['REAL_PROD'];
-					$total['TARGET'] += $val['TARGET'];
-					$total['KECAPAIAN_TARGET'] += round($val['KECAPAIAN_TARGET'],3);
+				$datanya[$no-1]['REAL_PROD'] += $val['QTY'];
+				$total['REAL_PROD'] += $val['QTY'];
+			}
+		}
+
+		if ($asal == 'TRANSAKSI' && !empty($datanya)) {
+			$dataitem = $this->M_laporan->getItem2($kategori, $bulan);
+			foreach ($dataitem as $key2 => $value) {
+				if (!in_array($value['DESCRIPTION'], $itemnya)) {
+					array_push($itemnya, $value['DESCRIPTION']);
+					$datanya[$no] = array(
+						'ITEM' 				=> $value['ITEM'],
+						'DESKRIPSI' 		=> $value['DESCRIPTION'],
+						'ID_CATEGORY' 		=> $kategori,
+						'CATEGORY_NAME' 	=> '',
+						'BULAN' 			=> '',
+						'QTY' 				=> '',
+						'REAL_PROD' 		=> '',
+						'TARGET' 			=> $value['TARGET'],
+					);
+					$total['TARGET'] += $value['TARGET'];
+					for ($h=1; $h < $hari+1 ; $h++) { 
+						$h2 = sprintf("%02d", $h);
+						$datanya[$no]['TANGGAL'.$h2.''] = '';
+					}
+					$no++;
+				}
+			}
+		}else if($asal == 'COMPLETION' && !empty($datanya)){
+			$dataitem = $this->M_laporan->getsubcategory($kategori, $bulan);
+			foreach ($dataitem as $key3 => $value) {
+				if (!in_array($value['SUBCATEGORY_NAME'], $subcategory)) {
+					array_push($subcategory, $value['SUBCATEGORY_NAME']);
+					$datanya[$no] = array(
+						'ITEM' 				=> $value['SUBCATEGORY_NAME'],
+						'DESKRIPSI' 		=> $value['SUBCATEGORY_NAME'],
+						'ID_CATEGORY' 		=> $kategori,
+						'CATEGORY_NAME' 	=> '',
+						'BULAN' 			=> '',
+						'QTY' 				=> '',
+						'REAL_PROD' 		=> '',
+						'TARGET' 			=> $value['TARGET'],
+					);
+					for ($h=1; $h < $hari+1 ; $h++) { 
+						$h2 = sprintf("%02d", $h);
+						$datanya[$no]['TANGGAL'.$h2.''] = '';
+					}
+					$no++;
+				}
+			}
+			$total['TARGET'] = 0;
+			foreach ($datanya as $key4 => $dat) {
+				foreach ($dataitem as $key5 => $item) {
+					if ($dat['ITEM'] == $item['SUBCATEGORY_NAME']) {
+						$datanya[$key4]['TARGET'] = $item['TARGET'];
+						$key4 == 0 ? $total['TARGET'] = $item['TARGET'] : $total['TARGET'] += $item['TARGET'];
+					}
 				}
 			}
 		}
-		// echo "<pre>";print_r($itemnya);exit();
-		usort($datanya, function($y, $z) {
-			return strcasecmp($y['DESKRIPSI'], $z['DESKRIPSI']);
-		});
 
-        $data['data'] = $datanya;
-        $data['total'] = $total;
-		$data['hari'] = $hari;
-		$data['kategori'] = $kategori;
-		$data['bulan'] = $bulan;
-		// echo "<pre>";print_r($datanya);exit();
-        $this->load->view('MonitoringJobProduksi/V_TblLaporan', $data);
-	}	
+		return array($datanya, $total);
+	}
+
+	public function olah_data_sp($getdata, $asal, $hari, $bulan){
+		$no = 0;
+		$datanya = $subcategory = $itemnya = array();
+		$total['REAL_PROD'] = $total['TARGET'] = $total['WOS_JOB'] = $total['COMPLETION'] = 0;
+		for ($h=1; $h < $hari+1 ; $h++) { 
+			$h2 = sprintf("%02d", $h);
+			$total['TANGGAL'.$h2.''] = 0;
+		}
+        foreach ($getdata as $key => $val) {
+			if ((!in_array($val['DESCRIPTION'], $itemnya) && $asal == 'TRANSAKSI') || (!in_array($val['SUBCATEGORY_NAME'], $subcategory) && $asal == 'COMPLETION')) {
+				if ($asal == 'TRANSAKSI') {
+					array_push($itemnya, $val['DESCRIPTION']);
+					$item = $val['ITEM'];
+					$desc = $val['DESCRIPTION'];
+				}else {
+					array_push($subcategory, $val['SUBCATEGORY_NAME']);
+					$item = $desc = $val['SUBCATEGORY_NAME'];
+					array_push($itemnya, $val['ITEM']);
+				}
+				$datanya[$no] = array(
+									'ITEM' 				=> $item,
+									'DESKRIPSI' 		=> $desc,
+									'ID_CATEGORY' 		=> $val['ID_CATEGORY'],
+									'CATEGORY_NAME' 	=> $val['CATEGORY_NAME'],
+									'QTY' 				=> $val['QTY'],
+									'TARGET' 			=> $val['TARGET'],
+									'WOS_JOB' 			=> $val['WOS_JOB'],
+									'COMPLETION' 		=> $val['COMPLETION'],
+									'REAL_PROD' 		=> $val['QTY'],
+				);
+				$total['REAL_PROD'] += $val['QTY'];
+				$total['TARGET'] += $val['TARGET'];
+				$total['WOS_JOB'] += $val['WOS_JOB'];
+				$total['COMPLETION'] += $val['COMPLETION'];
+				for ($h=1; $h < $hari+1 ; $h++) { 
+					$h2 = sprintf("%02d", $h);
+					$datanya[$no]['TANGGAL'.$h2.''] = 0;
+				}
+				$tgl = explode('-', $val['TANGGAL']);
+				$total['TANGGAL'.$tgl[0].''] += $val['QTY'];
+				$datanya[$no]['TANGGAL'.$tgl[0].''] += $val['QTY'];
+				$no++;
+			}else {
+				$tgl = explode('-', $val['TANGGAL']);
+				$datanya[$no-1]['TANGGAL'.$tgl[0].''] += $val['QTY'];
+				$datanya[$no-1]['REAL_PROD'] += $val['QTY'];
+				$total['TANGGAL'.$tgl[0].''] += $val['QTY'];
+				$total['REAL_PROD'] += $val['QTY'];
+				if ($asal == 'COMPLETION' && !in_array($val['ITEM'], $itemnya)) {
+					array_push($itemnya, $val['ITEM']);
+					$datanya[$no-1]['WOS_JOB'] += $val['WOS_JOB'];
+					$datanya[$no-1]['COMPLETION'] += $val['COMPLETION'];
+					$total['WOS_JOB'] += $val['WOS_JOB'];
+					$total['COMPLETION'] += $val['COMPLETION'];
+				}
+			}
+		}
+
+		$dataitem = $this->M_laporan->getsubcategory(15, $bulan);
+		foreach ($dataitem as $key => $value) {
+			if (!in_array($value['SUBCATEGORY_NAME'], $subcategory)) {
+				array_push($subcategory, $value['SUBCATEGORY_NAME']);
+				$datanya[$no] = array(
+					'ITEM' 				=> $value['SUBCATEGORY_NAME'],
+					'DESKRIPSI' 		=> $value['SUBCATEGORY_NAME'],
+					'ID_CATEGORY' 		=> 15,
+					'CATEGORY_NAME' 	=> '',
+					'BULAN' 			=> '',
+					'QTY' 				=> '',
+					'TARGET' 			=> $value['TARGET'],
+					'WOS_JOB' 			=> '',
+					'COMPLETION' 		=> '',
+					'REAL_PROD' 		=> '',
+				);
+				$total['TARGET'] += $value['TARGET'];
+				for ($h=1; $h < $hari+1 ; $h++) { 
+					$h2 = sprintf("%02d", $h);
+					$datanya[$no]['TANGGAL'.$h2.''] = '';
+				}
+				$no++;
+			}
+		}
+		
+		return array($datanya, $total);
+	}
 	
 	public function jumlahHari($bulan){
         if ($bulan[0] == '01' || $bulan[0] == '03' || $bulan[0] == '05' || $bulan[0] == '07' || $bulan[0] == '08' || $bulan[0] == '10' || $bulan[0] == '12') {
@@ -170,100 +309,59 @@ class C_LaporanProduksi extends CI_Controller
 		}
 		return $hari;
 	}
-
 	
 	public function laporan_produksi_pdf2(){
-		$bln		= explode("/", date('m/Y'));
+		$tanggal = date('d');
+		if ($tanggal <= 7) {
+			$data['tanggal'] = $tanggal;
+		}elseif ($tanggal > 7 && $tanggal <= 14) {
+			$data['tanggal'] = $tanggal - 1;
+		}elseif ($tanggal > 14 && $tanggal <= 21) {
+			$data['tanggal'] = $tanggal - 2;
+		}elseif ($tanggal > 21 && $tanggal <= 28) {
+			$data['tanggal'] = $tanggal - 3;
+		}else {
+			$data['tanggal'] = $tanggal - 4;
+		}
+		// $bln		= explode("/", date('m/Y'));
+		$bulan 		= $this->input->post('bulan');
+		$bln		= explode("/", $bulan[0]);
 		$hari 		= $this->jumlahHari($bln);
 		$kategori	= $this->M_laporan->getCategory('order by category_name');
-		// $getdata 	= $this->M_laporan->getdataLaporanCompletion();
-		// $getdata 	= $this->M_laporan->getdataLaporanTransaksi();
-		// echo "<pre>";print_r($getdata);exit();
+		// echo "<pre>";print_r($bulan);exit();
 
 		$no = 0;
 		$datanya = $subcategory = $category = $itemnya = array();
 		foreach ($kategori as $key => $kat) {
-			if ($kat['CATEGORY_NAME'] == 'VERZINC' || $kat['CATEGORY_NAME'] == 'IMPLEMEN') {
-				$getdata = $this->M_laporan->getdataLaporanCompletion($kat['ID_CATEGORY']);
+			$jdw = explode(", ", $kat['MONTH']);
+			if ($kat['ID_CATEGORY'] == 13 || $kat['ID_CATEGORY'] == 14) { // kategori VERZINC dan IMPLEMEN
+				$getdata = in_array($bln[0], $jdw) ? $this->M_laporan->getdataLaporanCompletion($kat['ID_CATEGORY'], $bulan[0]) : array();
 				$asal = 'COMPLETION';
+				$olah = $this->olah_data($getdata, $asal, $hari, $kat['ID_CATEGORY'], $bln[1].$bln[0]);
+			}elseif ($kat['ID_CATEGORY'] == 15) { // kategori SPAREPART
+				$getdata = in_array($bln[0], $jdw) ? $this->M_laporan->getdataLaporanSP($kat['ID_CATEGORY'], $bulan[0]) : array();
+				$asal = 'COMPLETION';
+				$olah = $this->olah_data_sp($getdata, $asal, $hari, $bln[1].$bln[0]);
 			}else {
-				$getdata = $this->M_laporan->getdataLaporanTransaksi($kat['ID_CATEGORY']);
-				$asal = 'TRANSAKSI';
-			}
-			// if ($kat['CATEGORY_NAME'] == 'PACKAGING BODY SET') {
-			// 	echo "<pre>";print_r($asal);exit();
-			// }
-			if (!in_array($kat['CATEGORY_NAME'], $category)) {
-				array_push($category, $kat['CATEGORY_NAME']);
-				$itemnya = $subcategory = array();
-				$no = 0;
-				$total[$kat['CATEGORY_NAME']]['REAL_PROD'] = $total[$kat['CATEGORY_NAME']]['TARGET'] = $total[$kat['CATEGORY_NAME']]['KECAPAIAN_TARGET'] = 0;
-				
-				for ($h=1; $h < $hari+1 ; $h++) { 
-					$h2 = sprintf("%02d", $h);
-					$total[$kat['CATEGORY_NAME']]['TANGGAL'.$h2.''] = 0;
-				}
-			}
-			
-			foreach ($getdata as $key => $val) {
-				if ((!in_array($val['DESCRIPTION'], $itemnya) && $asal == 'TRANSAKSI') || ($asal == 'COMPLETION' && (!in_array($val['SUBCATEGORY_NAME'], $subcategory) || (empty($val['SUBCATEGORY_NAME']) && !in_array($val['CATEGORY_NAME'], $category))))) {
-					if ($asal == 'TRANSAKSI') {
-						array_push($itemnya, $val['DESCRIPTION']);
-						$item = $val['ITEM'];
-						$desc = $val['DESCRIPTION'];
-					}else {
-						array_push($subcategory, $val['SUBCATEGORY_NAME']);
-						$item = $desc = $val['SUBCATEGORY_NAME'];
-					}
-					$datanya[$val['CATEGORY_NAME']][$no] = array(
-						'ITEM' 				=> $item,
-						'DESCRIPTION' 		=> $desc,
-						'ID_CATEGORY' 		=> $val['ID_CATEGORY'],
-						'CATEGORY_NAME' 	=> $val['CATEGORY_NAME'],
-						'ID_SUBCATEGORY' 	=> $val['ID_SUBCATEGORY'],
-						'SUBCATEGORY_NAME' 	=> $val['SUBCATEGORY_NAME'],
-						'SUBINV' 			=> $val['SUBINV'],
-						'TRF_SUBINV'		=> $val['TRF_SUBINV'],
-						'BULAN' 			=> $val['BULAN'],
-						'REAL_PROD' 		=> $val['REAL_PROD'],
-						'TARGET' 			=> $val['TARGET'],
-						'KECAPAIAN_TARGET' 	=> round($val['KECAPAIAN_TARGET'],3)
-					);
-					
-					$total[$val['CATEGORY_NAME']]['REAL_PROD'] += $val['REAL_PROD'];
-					$total[$val['CATEGORY_NAME']]['TARGET'] += $val['TARGET'];
-					$total[$val['CATEGORY_NAME']]['KECAPAIAN_TARGET'] += round($val['KECAPAIAN_TARGET'],3);
-					for ($h=1; $h < $hari+1 ; $h++) { 
-						$h2 = sprintf("%02d", $h);
-						$datanya[$val['CATEGORY_NAME']][$no]['TANGGAL'.$h2.''] = 0;
-					}
-					$tgl = explode('-', $val['TANGGAL']);
-					$datanya[$val['CATEGORY_NAME']][$no]['TANGGAL'.$tgl[0].''] += $val['QTY'];
-					$total[$val['CATEGORY_NAME']]['TANGGAL'.$tgl[0].''] += $val['QTY'];
-					$no++;
+				if ($kat['ID_CATEGORY'] == 1) { // kategori PACKAGING BODY SET
+					$tujuan = "'INT-ASSY', 'INT-PAINT'";
+				}elseif ($kat['ID_CATEGORY'] == 2) { // kategori PACKAGING HANDLE BAR
+					$tujuan = "'INT-PAINT'";
 				}else {
-					$no2 = $val['SUBCATEGORY_NAME'] = '' ? $no : $no-1;
-					$tgl = explode('-', $val['TANGGAL']);
-					$datanya[$val['CATEGORY_NAME']][$no2]['TANGGAL'.$tgl[0].''] += $val['QTY'];
-					$total[$val['CATEGORY_NAME']]['TANGGAL'.$tgl[0].''] += $val['QTY'];
-					if ($asal == 'COMPLETION' && !in_array($val['ITEM'], $itemnya)) {
-						array_push($itemnya, $val['ITEM']);
-						$datanya[$val['CATEGORY_NAME']][$no2]['REAL_PROD'] += $val['REAL_PROD'];
-						$datanya[$val['CATEGORY_NAME']][$no2]['TARGET'] += $val['TARGET'];
-						$datanya[$val['CATEGORY_NAME']][$no2]['KECAPAIAN_TARGET'] += round($val['KECAPAIAN_TARGET'],3);
-						$total[$val['CATEGORY_NAME']]['REAL_PROD'] += $val['REAL_PROD'];
-						$total[$val['CATEGORY_NAME']]['TARGET'] += $val['TARGET'];
-						$total[$val['CATEGORY_NAME']]['KECAPAIAN_TARGET'] += round($val['KECAPAIAN_TARGET'],3);
-					}
+					$tujuan = "'INT-ASSY'";
 				}
-
+				$getdata = in_array($bln[0], $jdw) ? $this->M_laporan->getdataLaporanTransaksi($kat['ID_CATEGORY'], $bulan[0], $tujuan) : array();
+				$asal = 'TRANSAKSI';
+				$olah = $this->olah_data($getdata, $asal, $hari, $kat['ID_CATEGORY'], $bln[1].$bln[0]);
 			}
 			
-			if (!empty($datanya[$kat['CATEGORY_NAME']])) {
-				usort($datanya[$kat['CATEGORY_NAME']], function($y, $z) {
-					return strcasecmp($y['DESCRIPTION'], $z['DESCRIPTION']);
+			if (!empty($olah[0])) {
+				usort($olah[0], function($y, $z) {
+					return strcasecmp($y['DESKRIPSI'], $z['DESKRIPSI']);
 				});
-			}
+				$datanya[$kat['CATEGORY_NAME']] = $olah[0];
+				$total[$kat['CATEGORY_NAME']] = $olah[1];
+			}		
 		}
 		// echo "<pre>";print_r($datanya);exit();
         $data['data'] = $datanya;
@@ -272,7 +370,7 @@ class C_LaporanProduksi extends CI_Controller
 
 		$this->load->library('Pdf');
 		$pdf 		= $this->pdf->load();
-		$pdf		= new mPDF('utf-8','f4-L', 0, '', 5, 5, 10, 10, 7, 4);
+		$pdf		= new mPDF('utf-8','f4-L', 0, '', 5, 5, 5, 5, 7, 4);
 		$filename 	= 'Laporan-Produksi-'.$data['kategori'].'-'.$data['bulan'].'.pdf';
 		$x = 0;
 		
@@ -285,6 +383,18 @@ class C_LaporanProduksi extends CI_Controller
 	}
 
 	public function laporan_produksi_pdf(){
+		$tanggal = date('d');
+		if ($tanggal <= 7) {
+			$data['tanggal'] = $tanggal;
+		}elseif ($tanggal > 7 && $tanggal <= 14) {
+			$data['tanggal'] = $tanggal - 1;
+		}elseif ($tanggal > 14 && $tanggal <= 21) {
+			$data['tanggal'] = $tanggal - 2;
+		}elseif ($tanggal > 21 && $tanggal <= 28) {
+			$data['tanggal'] = $tanggal - 3;
+		}else {
+			$data['tanggal'] = $tanggal - 4;
+		}
 		$data['data'] = $this->getdataLaporan();
 		// echo "<pre>";print_r($data);exit();
 		$this->load->library('Pdf');
@@ -389,29 +499,45 @@ class C_LaporanProduksi extends CI_Controller
 		
 		if ($data['hari'] == 31) {
 			$akhir 	= 'AG';
-			$real 	= 'AH';
-			$target = 'AI';
-			$capai 	= 'AJ';
+			$plus1 	= 'AH';
+			$plus2 	= 'AI';
+			$plus3 	= 'AJ';
+			$plus4 	= 'AK';
+			$plus5 	= 'AL';
+			$plus6 	= 'AM';
+			$plus7 	= 'AN';
 		}elseif ($data['hari'] == 30) {
 			$akhir 	= 'AF';
-			$real 	= 'AG';
-			$target = 'AH';
-			$capai 	= 'AI';
+			$plus1 	= 'AG';
+			$plus2 	= 'AH';
+			$plus3 	= 'AI';
+			$plus4 	= 'AJ';
+			$plus5 	= 'AK';
+			$plus6 	= 'AL';
+			$plus7 	= 'AM';
 		}elseif ($data['hari'] == 29){
 			$akhir 	= 'AE';
-			$real 	= 'AF';
-			$target = 'AG';
-			$capai 	= 'AH';
+			$plus1 	= 'AF';
+			$plus2	= 'AG';
+			$plus3 	= 'AH';
+			$plus4 	= 'AI';
+			$plus5 	= 'AJ';
+			$plus6 	= 'AK';
+			$plus7 	= 'AL';
 		}else {
 			$akhir 	= 'AD';
-			$real 	= 'AE';
-			$target = 'AF';
-			$capai 	= 'AG';
+			$plus1 	= 'AE';
+			$plus2 	= 'AF';
+			$plus3 	= 'AG';
+			$plus4 	= 'AH';
+			$plus5 	= 'AI';
+			$plus6 	= 'AJ';
+			$plus7 	= 'AK';
 		}
 
 		//TITLE
 		$excel->setActiveSheetIndex(0)->setCellValue('A1', "LAPORAN PRODUKSI"); 
-		$excel->getActiveSheet()->mergeCells("A1:".$capai."1"); 
+		$excel->getActiveSheet()->mergeCells("A1:".$plus3."1"); 
 		$excel->getActiveSheet()->getStyle('A1')->applyFromArray($style_title);
 		
 		$excel->setActiveSheetIndex(0)->setCellValue('A2', "Kategori"); 
@@ -422,15 +548,31 @@ class C_LaporanProduksi extends CI_Controller
 		$excel->setActiveSheetIndex(0)->setCellValue('A5', "NO.");
 		$excel->setActiveSheetIndex(0)->setCellValue('B5', "PRODUK");
 		$excel->setActiveSheetIndex(0)->setCellValue('C5', "PRODUKSI");
-		$excel->setActiveSheetIndex(0)->setCellValue("".$real."5", "REAL PROD");
-		$excel->setActiveSheetIndex(0)->setCellValue("".$target."5", "TARGET");
-		$excel->setActiveSheetIndex(0)->setCellValue("".$capai."5", "PENCAPAIAN PRODUKSI(%)");
+		if ($data['id_kategori'] == 15) { // khusus kategori sparepart
+			$excel->setActiveSheetIndex(0)->setCellValue("".$plus1."5", "TARGET");
+			$excel->setActiveSheetIndex(0)->setCellValue("".$plus2."5", "WOS / JOB");
+			$excel->setActiveSheetIndex(0)->setCellValue("".$plus3."5", "% JOB PPIC");
+			$excel->setActiveSheetIndex(0)->setCellValue("".$plus4."5", "COMPLETION INT ASSY + NO PACKG");
+			$excel->setActiveSheetIndex(0)->setCellValue("".$plus5."5", "% COMPLETION ASSY");
+			$excel->setActiveSheetIndex(0)->setCellValue("".$plus6."5", "IN YSP");
+			$excel->setActiveSheetIndex(0)->setCellValue("".$plus7."5", "YSP");
+		}else {
+			$excel->setActiveSheetIndex(0)->setCellValue("".$plus1."5", "REAL PROD");
+			$excel->setActiveSheetIndex(0)->setCellValue("".$plus2."5", "TARGET");
+			$excel->setActiveSheetIndex(0)->setCellValue("".$plus3."5", "PENCAPAIAN PRODUKSI(%)");
+		}
 		$excel->getActiveSheet()->mergeCells("A5:A6"); 
 		$excel->getActiveSheet()->mergeCells("B5:B6"); 
 		$excel->getActiveSheet()->mergeCells("C5:".$akhir."5");
-		$excel->getActiveSheet()->mergeCells("".$real."5:".$real."6");
-		$excel->getActiveSheet()->mergeCells("".$target."5:".$target."6");
-		$excel->getActiveSheet()->mergeCells("".$capai."5:".$capai."6");
+		$excel->getActiveSheet()->mergeCells("".$plus1."5:".$plus1."6");
+		$excel->getActiveSheet()->mergeCells("".$plus2."5:".$plus2."6");
+		$excel->getActiveSheet()->mergeCells("".$plus3."5:".$plus3."6");
+		if ($data['id_kategori'] == 15) { // khusus kategori sparepart
+		$excel->getActiveSheet()->mergeCells("".$plus4."5:".$plus4."6");
+		$excel->getActiveSheet()->mergeCells("".$plus5."5:".$plus5."6");
+		$excel->getActiveSheet()->mergeCells("".$plus6."5:".$plus6."6");
+		$excel->getActiveSheet()->mergeCells("".$plus7."5:".$plus7."6");
+		}
 		$row = 6;
 		$col = 2;
 		for ($i=0; $i < $data['hari'] ; $i++) { //tanggal 1 - akhir
@@ -443,9 +585,15 @@ class C_LaporanProduksi extends CI_Controller
 		$excel->getActiveSheet()->getStyle('B5')->applyFromArray($style1);
 		$excel->getActiveSheet()->getStyle('B6')->applyFromArray($style1);
 		$excel->getActiveSheet()->getStyle("C5:".$akhir."6")->applyFromArray($style1);
-		$excel->getActiveSheet()->getStyle("".$real."5:".$real."6")->applyFromArray($style1);
-		$excel->getActiveSheet()->getStyle("".$target."5:".$target."6")->applyFromArray($style1);
-		$excel->getActiveSheet()->getStyle("".$capai."5:".$capai."6")->applyFromArray($style1);
+		$excel->getActiveSheet()->getStyle("".$plus1."5:".$plus1."6")->applyFromArray($style1);
+		$excel->getActiveSheet()->getStyle("".$plus2."5:".$plus2."6")->applyFromArray($style1);
+		$excel->getActiveSheet()->getStyle("".$plus3."5:".$plus3."6")->applyFromArray($style1);
+		if ($data['id_kategori'] == 15) {
+		$excel->getActiveSheet()->getStyle("".$plus4."5:".$plus4."6")->applyFromArray($style1);
+		$excel->getActiveSheet()->getStyle("".$plus5."5:".$plus5."6")->applyFromArray($style1);
+		$excel->getActiveSheet()->getStyle("".$plus6."5:".$plus6."6")->applyFromArray($style1);
+		$excel->getActiveSheet()->getStyle("".$plus7."5:".$plus7."6")->applyFromArray($style1);
+		}
 		for ($n=2; $n < ($data['hari']+5) ; $n++) { // styling tanggal col 4 - akhir
 			$a = $this->numbertoalpha($n);
 			$excel->getActiveSheet()->getStyle("".$a."6")->applyFromArray($style1);
@@ -464,15 +612,31 @@ class C_LaporanProduksi extends CI_Controller
 				$excel->getActiveSheet()->getStyle("$a$numrow")->applyFromArray($style3);
 				$col++;
 			} 
-			$excel->setActiveSheetIndex(0)->setCellValue($real.$numrow, $val['real_prod']);
-			$excel->setActiveSheetIndex(0)->setCellValue($target.$numrow, $val['target']);
-			$excel->setActiveSheetIndex(0)->setCellValue($capai.$numrow, $val['kecapaian']);
+			if ($data['id_kategori'] == 15) {
+				$excel->setActiveSheetIndex(0)->setCellValue($plus1.$numrow, $val['target']);
+				$excel->setActiveSheetIndex(0)->setCellValue($plus2.$numrow, $val['wosjob']);
+				$excel->setActiveSheetIndex(0)->setCellValue($plus3.$numrow, $val['wosjob2']);
+				$excel->setActiveSheetIndex(0)->setCellValue($plus4.$numrow, $val['completion']);
+				$excel->setActiveSheetIndex(0)->setCellValue($plus5.$numrow, $val['completion2']);
+				$excel->setActiveSheetIndex(0)->setCellValue($plus6.$numrow, $val['real_prod']);
+				$excel->setActiveSheetIndex(0)->setCellValue($plus7.$numrow, $val['kecapaian']);
+			}else {
+				$excel->setActiveSheetIndex(0)->setCellValue($plus1.$numrow, $val['real_prod']);
+				$excel->setActiveSheetIndex(0)->setCellValue($plus2.$numrow, $val['target']);
+				$excel->setActiveSheetIndex(0)->setCellValue($plus3.$numrow, $val['kecapaian']);
+			}
 
 			$excel->getActiveSheet()->getStyle("A$numrow")->applyFromArray($style3);
 			$excel->getActiveSheet()->getStyle("B$numrow")->applyFromArray($style2);
-			$excel->getActiveSheet()->getStyle("$real$numrow")->applyFromArray($style3);
-			$excel->getActiveSheet()->getStyle("$target$numrow")->applyFromArray($style3);
-			$excel->getActiveSheet()->getStyle("$capai$numrow")->applyFromArray($style3);
+			$excel->getActiveSheet()->getStyle("$plus1$numrow")->applyFromArray($style3);
+			$excel->getActiveSheet()->getStyle("$plus2$numrow")->applyFromArray($style3);
+			$excel->getActiveSheet()->getStyle("$plus3$numrow")->applyFromArray($style3);
+			if ($data['id_kategori'] == 15) {
+				$excel->getActiveSheet()->getStyle("$plus4$numrow")->applyFromArray($style3);
+				$excel->getActiveSheet()->getStyle("$plus5$numrow")->applyFromArray($style3);
+				$excel->getActiveSheet()->getStyle("$plus6$numrow")->applyFromArray($style3);
+				$excel->getActiveSheet()->getStyle("$plus7$numrow")->applyFromArray($style3);
+			}
 			$no++;$numrow++;
 		}
 
@@ -485,31 +649,53 @@ class C_LaporanProduksi extends CI_Controller
 			$excel->getActiveSheet()->getStyle("$a$numrow")->applyFromArray($style4);
 			$col++;
 		} 
-		$excel->setActiveSheetIndex(0)->setCellValue($real.$numrow, $data['ttl_real']);
-		$excel->setActiveSheetIndex(0)->setCellValue($target.$numrow, $data['ttl_target']);
-		$excel->setActiveSheetIndex(0)->setCellValue($capai.$numrow, $data['ttl_kecapaian']);
+		if ($data['id_kategori'] == 15) {
+			$excel->setActiveSheetIndex(0)->setCellValue($plus1.$numrow, $data['ttl_target']);
+			$excel->setActiveSheetIndex(0)->setCellValue($plus2.$numrow, $data['ttl_wosjob']);
+			$excel->setActiveSheetIndex(0)->setCellValue($plus3.$numrow, $data['ttl_wosjob2']);
+			$excel->setActiveSheetIndex(0)->setCellValue($plus4.$numrow, $data['ttl_completion']);
+			$excel->setActiveSheetIndex(0)->setCellValue($plus5.$numrow, $data['ttl_completion2']);
+			$excel->setActiveSheetIndex(0)->setCellValue($plus6.$numrow, $data['ttl_real']);
+			$excel->setActiveSheetIndex(0)->setCellValue($plus7.$numrow, $data['ttl_kecapaian']);
+		}else {
+			$excel->setActiveSheetIndex(0)->setCellValue($plus1.$numrow, $data['ttl_real']);
+			$excel->setActiveSheetIndex(0)->setCellValue($plus2.$numrow, $data['ttl_target']);
+			$excel->setActiveSheetIndex(0)->setCellValue($plus3.$numrow, $data['ttl_kecapaian']);
+		}
 
 		$excel->getActiveSheet()->mergeCells("A$numrow:B$numrow"); 
 		$excel->getActiveSheet()->getStyle("A$numrow")->applyFromArray($style4);
 		$excel->getActiveSheet()->getStyle("B$numrow")->applyFromArray($style4);
-		$excel->getActiveSheet()->getStyle("$real$numrow")->applyFromArray($style4);
-		$excel->getActiveSheet()->getStyle("$target$numrow")->applyFromArray($style4);
-		$excel->getActiveSheet()->getStyle("$capai$numrow")->applyFromArray($style4);
+		$excel->getActiveSheet()->getStyle("$plus1$numrow")->applyFromArray($style4);
+		$excel->getActiveSheet()->getStyle("$plus2$numrow")->applyFromArray($style4);
+		$excel->getActiveSheet()->getStyle("$plus3$numrow")->applyFromArray($style4);
+		if ($data['id_kategori'] == 15) {
+			$excel->getActiveSheet()->getStyle("$plus4$numrow")->applyFromArray($style4);
+			$excel->getActiveSheet()->getStyle("$plus5$numrow")->applyFromArray($style4);
+			$excel->getActiveSheet()->getStyle("$plus6$numrow")->applyFromArray($style4);
+			$excel->getActiveSheet()->getStyle("$plus7$numrow")->applyFromArray($style4);
+		}
 
 		$excel->getActiveSheet()->getColumnDimension('A')->setWidth(10); 
 		$excel->getActiveSheet()->getColumnDimension('B')->setWidth(30); 
-		for($col = 'C'; $col !== $real; $col++) { // autowidth
+		for($col = 'C'; $col !== $plus1; $col++) { // autowidth
 			$excel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
 		}
-		$excel->getActiveSheet()->getColumnDimension($real)->setWidth(10); 
-		$excel->getActiveSheet()->getColumnDimension($target)->setWidth(10); 
-		$excel->getActiveSheet()->getColumnDimension($capai)->setWidth(15); 
+		$excel->getActiveSheet()->getColumnDimension($plus1)->setWidth(10); 
+		$excel->getActiveSheet()->getColumnDimension($plus2)->setWidth(10); 
+		$excel->getActiveSheet()->getColumnDimension($plus3)->setWidth(15); 
+		if ($data['id_kategori'] == 15) {
+			$excel->getActiveSheet()->getColumnDimension($plus4)->setWidth(15); 
+			$excel->getActiveSheet()->getColumnDimension($plus5)->setWidth(15); 
+			$excel->getActiveSheet()->getColumnDimension($plus6)->setWidth(15); 
+			$excel->getActiveSheet()->getColumnDimension($plus7)->setWidth(15); 
+		}
 		$excel->getActiveSheet()->getDefaultRowDimension()->setRowHeight(-1);
 		
 		// Set orientasi kertas jadi LANDSCAPE
 		$excel->getActiveSheet()->getPageSetup()->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE);
 		// Set judul file excel nya
-		$excel->getActiveSheet(1)->setTitle("Comment");
+		$excel->getActiveSheet(1)->setTitle("Laporan Produksi");
 		$excel->setActiveSheetIndex();
 		// Proses file excel
 		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
@@ -529,12 +715,20 @@ class C_LaporanProduksi extends CI_Controller
 		$desc 					= $this->input->post('desc');
 		$real_prod 				= $this->input->post('real_prod');
 		$target 				= $this->input->post('target');
+		$wosjob 				= $this->input->post('wosjob');
+		$completion 				= $this->input->post('completion');
+		$wosjob2 				= $this->input->post('wosjob2');
+		$completion2 				= $this->input->post('completion2');
 		$kecapaian 				= $this->input->post('kecapaian');
 		for ($i=0; $i < count($item)/2 ; $i++) { 
 			$data['value'][$i]['item'] 		= $item[$i];
 			$data['value'][$i]['desc'] 		= $desc[$i];
 			$data['value'][$i]['real_prod'] = $real_prod[$i];
 			$data['value'][$i]['target'] 	= $target[$i];
+			$data['value'][$i]['wosjob'] 	= $wosjob[$i];
+			$data['value'][$i]['completion'] 	= $completion[$i];
+			$data['value'][$i]['wosjob2'] 	= $wosjob2[$i];
+			$data['value'][$i]['completion2'] = $completion2[$i];
 			$data['value'][$i]['kecapaian'] = $kecapaian[$i];
 			for ($t=1; $t < $data['hari']+1 ; $t++) { 
 				$tanggal = $this->input->post('tanggal'.$t.'');
@@ -543,9 +737,17 @@ class C_LaporanProduksi extends CI_Controller
 		}
 		$ttl_real = $this->input->post('ttl_real');
 		$ttl_target = $this->input->post('ttl_target');
+		$ttl_wosjob = $this->input->post('ttl_wosjob');
+		$ttl_completion = $this->input->post('ttl_completion');
+		$ttl_wosjob2 = $this->input->post('ttl_wosjob2');
+		$ttl_completion2 = $this->input->post('ttl_completion2');
 		$ttl_kecapaian = $this->input->post('ttl_kecapaian');
 		$data['ttl_real'] = $ttl_real[0];
 		$data['ttl_target'] = $ttl_target[0];
+		$data['ttl_wosjob'] = $ttl_wosjob[0];
+		$data['ttl_completion'] = $ttl_completion[0];
+		$data['ttl_wosjob2'] = $ttl_wosjob2[0];
+		$data['ttl_completion2'] = $ttl_completion2[0];
 		$data['ttl_kecapaian'] = $ttl_kecapaian[0];
 		for ($i=1; $i < $data['hari']+1 ; $i++) { 
 			$total_tanggal = $this->input->post('ttl_tgl'.$i.'');
