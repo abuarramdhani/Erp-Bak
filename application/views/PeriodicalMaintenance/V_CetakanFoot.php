@@ -37,7 +37,7 @@
 		<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px; border-bottom: 1px solid black">Jam Mulai</td>
 		<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px; border-bottom: 1px solid black">Jam Selesai</td>
 		<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px; border-bottom: 1px solid black">Pelaksana</td>
-		<td colspan="2" style="border: 2px solid black;border-collapse: collapse; text-align: left;font-size: 12px; border-bottom: 0px solid black">Instruksi Khusus K3 :</td>
+		<td colspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: left;font-size: 12px; border-bottom: 0px solid black">Instruksi Khusus K3 :</td>
 	</tr>
 	<tr>
 		<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px">&nbsp;&nbsp;<br><?= $datapdf['0']['SCHEDULE_DATE'] ?><br>&nbsp;&nbsp;</td>
@@ -75,8 +75,8 @@
 		<td colspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px; border-bottom: 1px solid black">Spesifikasi / Part Number</td>
 		<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px; border-bottom: 1px solid black">Jumlah</td>
 		<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px; border-bottom: 1px solid black">Satuan</td>
-		<td colspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px; border-bottom: 0px solid black"> Catatan Revisi Dokumen :</td>
-
+		<td colspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: left;font-size: 12px; border-bottom: 0px solid black">Catatan Revisi Dokumen :</td>
+		
 	</tr>
 	<?php
         $no = 1;
@@ -88,30 +88,58 @@
 		<td colspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?= $sparepart[$i]['SPESIFIKASI'] ?><br></td>
 		<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?= $sparepart[$i]['JUMLAH'] ?></td>
 		<td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?= $sparepart[$i]['SATUAN'] ?></td>
-		<td style="border: 0px solid black;border-collapse: collapse; text-align: left;font-size: 12px">
-		<!-- 1. Penggantian Durasi menjadi Durasi (menit), Cek Pressure Cairan Pendingin menjadi Coil dan VIP, Tgl Aktual, Tipe menjadi Spesifikasi / Part Number
-		<br/>	
-		2. Penambahan pilihan “Mesin”, Nilai Standard Cek Pressure Cairan Pendingin Coil dan VIP, Tgl Terjadwal, Status, Satuan.
-	 -->
-		</td>
-
+		<td></td>
 	</tr>
 		<?php } ?>
 	<tr>
 		<td colspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px; border-bottom: 1px solid black">Staff Seksi Terkait</td>
 		<td colspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px; border-bottom: 1px solid black">Staff Maintenance</td>
-		<td colspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px; border-bottom: 1px solid black">Opt Maintenance</td>
+		<td colspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: left;font-size: 12px; border-bottom: 1px solid black ;">Opt Maintenance</td>
+		<td colspan="2" rowspan ="3" style="border: 0px solid black;border-collapse: collapse; text-align: left;font-size: 12px;"><?= $header[0]['CATATAN_REVISI'] ?></td>
 	</tr>
 	<tr>
-		<td colspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><br><h3><i><b> DISETUJUI </b></i></h3><br><?= $datapdf['0']['APPROVED_DATE_2'] ?></td>
-		<td colspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;border-right: 2px solid black"><br><h3><i><b> DICEK </b></i></h3><br><?= $datapdf['0']['APPROVED_DATE'] ?></td>
-		<td colspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;border-right: 2px solid black"><br><h3><i><b> DILAPORKAN </b></i></h3><br><?= $datapdf['0']['CREATION_DATE'] ?></td>
+
+		<?php
+		if ($datapdf['0']['APPROVED_DATE_2'] == null) {
+		?>
+		<td colspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><br><h3><i><b>  </b></i></h3><br></td>
+		<?php } 
+		else { ?>
+			<td colspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><br><h3><i><b> DISETUJUI </b></i></h3><br><?= $datapdf['0']['APPROVED_DATE_2'] ?></td>
+		<?php } ?>
+
+		<!-- <td colspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><br><h3><i><b> DISETUJUI </b></i></h3><br><?= $datapdf['0']['APPROVED_DATE_2'] ?></td> -->
+		<?php
+		if ($datapdf['0']['APPROVED_DATE'] == null) {
+		?>
+			<td colspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;border-right: 1px solid black"><br><h3><i><b>  </b></i></h3><br></td>
+		<?php } 
+		else { ?>
+			<td colspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;border-right: 1px solid black"><br><h3><i><b> DICEK </b></i></h3><br><?= $datapdf['0']['APPROVED_DATE'] ?></td>
+		<?php } ?>
+
+		<!-- <td colspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;border-right: 1px solid black"><br><h3><i><b> DICEK </b></i></h3><br><?= $datapdf['0']['APPROVED_DATE'] ?></td> -->
+		
+		<?php
+		if ($datapdf['0']['CREATION_DATE'] == null) {
+		?>
+			<td colspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;border-right: 1px solid black"><br><h3><i><b>  </b></i></h3><br></td>
+		<?php } 
+		else { ?>
+			<td colspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;border-right: 1px solid black"><br><h3><i><b> DILAPORKAN </b></i></h3><br><?= $datapdf['0']['CREATION_DATE'] ?></td>
+		<?php } ?>
+
+		<!-- <td colspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;border-right: 1px solid black"><br><h3><i><b> DILAPORKAN </b></i></h3><br><?= $datapdf['0']['CREATION_DATE'] ?></td> -->
 
 	</tr>
 	<tr>
-		<td colspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?= $datapdf['0']['APPROVED_BY_2'] ?></td>
-		<td colspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;border-right: 2px solid black"><?= $datapdf['0']['APPROVED_BY'] ?></td>
-		<td colspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;border-right: 2px solid black"><?= $datapdf['0']['REQUEST_BY'] ?></td>
+		<!-- <td colspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?= $datapdf['0']['APPROVED_BY_2'] ?></td>
+		<td colspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;border-right: 1px solid black"><?= $datapdf['0']['APPROVED_BY'] ?></td>
+		<td colspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;border-right: 1px solid black"><?= $datapdf['0']['REQUEST_BY'] ?></td> -->
+
+		<td colspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?= $datapdf['0']['REQUEST_TO_2'] ?></td>
+		<td colspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;border-right: 1px solid black"><?= $datapdf['0']['REQUEST_TO'] ?></td>
+		<td colspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;border-right: 1px solid black"><?= $datapdf['0']['REQUEST_BY'] ?></td>
 
 	</tr>
 </table>

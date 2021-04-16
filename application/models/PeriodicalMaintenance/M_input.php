@@ -19,11 +19,11 @@ class M_input extends CI_Model
     return $query->result_array();
   }
 
-  public function Insert($doc_no, $rev_no, $rev_date, $nama_mesin, $kondisi_mesin, $header, $uraian_kerja, $standar, $periode)
+  public function Insert($doc_no, $rev_no, $rev_date,  $catatan_rev,$nama_mesin, $kondisi_mesin, $header, $uraian_kerja, $standar, $periode)
 
   {
-    $sql = "INSERT INTO khs_periodical_maintenance (NAMA_MESIN, KONDISI_MESIN, HEADER, SUB_HEADER, STANDAR, PERIODE, NO_DOKUMEN, NO_REVISI, TANGGAL_REVISI)
-    VALUES ('$nama_mesin', '$kondisi_mesin', '$header', '$uraian_kerja', '$standar', '$periode', '$doc_no', '$rev_no', '$rev_date')";
+    $sql = "INSERT INTO khs_periodical_maintenance (NAMA_MESIN, KONDISI_MESIN, HEADER, SUB_HEADER, STANDAR, PERIODE, NO_DOKUMEN, NO_REVISI, TANGGAL_REVISI, CATATAN_REVISI)
+    VALUES ('$nama_mesin', '$kondisi_mesin', '$header', '$uraian_kerja', '$standar', '$periode', '$doc_no', '$rev_no', '$rev_date', '$catatan_rev')";
     $query = $this->oracle->query($sql);
   }
 

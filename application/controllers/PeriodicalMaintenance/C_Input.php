@@ -39,6 +39,13 @@ class C_Input extends CI_Controller
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+		
+		$admin = ['a'=>'B0847', 'b'=>'T0015']; //, 'c'=>'B0713', 'd'=>'B0797'
+		if (empty(array_search($this->session->user, $admin))) {
+			unset($data['UserMenu'][0]);
+			unset($data['UserMenu'][1]);
+		}
+
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
@@ -78,6 +85,7 @@ class C_Input extends CI_Controller
 		$doc_no = $this->input->post('no_dokumen');
 		$rev_no 	= $this->input->post('no_revisi');
 		$rev_date	= $this->input->post('tgl_revisi');
+		$catatan_rev	= $this->input->post('catatan_revisi_mpa');
 		$nama_mesin = $this->input->post('nama_mesin');
 		$kondisi_mesin 	= $this->input->post('kondisi_mesin');
 		$header	= $this->input->post('header');
@@ -91,7 +99,7 @@ class C_Input extends CI_Controller
 
 		$i = 0;
 		foreach ($uraian_kerja as $uja) {
-			$this->M_input->Insert($doc_no[$i], $rev_no[$i], $rev_date[$i],$nama_mesin[$i], $kondisi_mesin[$i], $header[$i], $uja, $standar[$i], $periode[$i]);
+			$this->M_input->Insert($doc_no[$i], $rev_no[$i], $rev_date[$i], $catatan_rev[$i],$nama_mesin[$i], $kondisi_mesin[$i], $header[$i], $uja, $standar[$i], $periode[$i]);
 
 			$i++;
 		}

@@ -38,6 +38,13 @@ class C_Index extends CI_Controller {
 		$data['SubMenuTwo'] = '';
 		
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		
+		$admin = ['a'=>'B0847', 'b'=>'T0015']; //, 'c'=>'B0713', 'd'=>'B0797'
+		if (empty(array_search($this->session->user, $admin))) {
+			unset($data['UserMenu'][0]);
+			unset($data['UserMenu'][1]);
+		}
+		
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 

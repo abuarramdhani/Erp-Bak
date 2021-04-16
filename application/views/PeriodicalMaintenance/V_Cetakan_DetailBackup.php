@@ -1,7 +1,4 @@
 <?php
-// echo "<pre>";
-// print_r(sizeof($arrayR['KONDISI_MESIN'][$datapdf[$i]['KONDISI_MESIN']])+sizeof($arrayR['HEADER_MESIN']));
-// exit();
 ?>
 <style>
     #page-border {
@@ -27,46 +24,30 @@
 
         <thead>
             <tr style="background-color: white;">
-                <th rowspan="1" colspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;">URAIAN KERJA</th>
-                <th rowspan="1" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;">STANDAR</th>
-                <th style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;">PERIODE</th>
-                <th rowspan="1" style="border: 1px solid black;border-collapse: collapse; font-size: 12px;  -webkit-transform: rotate(270deg);text-rotate:90">
+                <th rowspan="1" colspan="3"
+                    style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;">
+                    URAIAN KERJA</th>
+                <th rowspan="1"
+                    style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;">
+                    STANDAR</th>
+                <th style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;">
+                    PERIODE</th>
+                <th rowspan="1"
+                    style="border: 1px solid black;border-collapse: collapse; font-size: 12px;  -webkit-transform: rotate(270deg);text-rotate:90">
 
                     <p>DURASI (menit)</p>
                 </th>
-                <th rowspan="1" style="border: 1px solid black;border-collapse: collapse; font-size: 12px;  -webkit-transform: rotate(270deg);text-rotate:90">
+                <th rowspan="1"
+                    style="border: 1px solid black;border-collapse: collapse; font-size: 12px;  -webkit-transform: rotate(270deg);text-rotate:90">
 
                     <p>
                         KONDISI
                     </p>
                 </th>
-                <th rowspan="1" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;">CATATAN HASIL PREVENTIVE ATAU BILA DITEMUKAN KETIDAKNORMALAN MESIN</th>
+                <th rowspan="1"
+                    style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;">
+                    CATATAN HASIL PREVENTIVE ATAU BILA DITEMUKAN KETIDAKNORMALAN MESIN</th>
             </tr>
-            <!-- <tr>
-                <td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;"><b>2M</b></td>
-                <td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;"><b>TH</b></td>
-            </tr> -->
-            <!-- <tr>
-
-                <?php
-
-                if ($datapdf['0']['PERIODE_CHECK'] == '2 Mingguan') {
-                ?>
-                    <td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;color:red;"><b>V</b></td>
-                    <td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;"></td>
-                <?php
-
-                } else {
-
-                ?>
-
-                    <td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;"></td>
-                    <td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;color:red;"><b>V</b></td>
-                <?php
-
-                }
-                ?>
-            </tr> -->
         </thead>
     </thead>
     <tbody>
@@ -78,11 +59,8 @@
 
         for ($i = 0; $i < sizeof($datapdf); $i++) {
         ?>
-            <tr>
-                <?php
-                // echo "<pre>";
-                // print_r(sizeof($arrayR['KONDISI_MESIN'][$datapdf[$i]['KONDISI_MESIN']])+sizeof($arrayR['HEADER_MESIN']));
-                // exit();
+        <tr>
+            <?php
                 if (sizeof($arrayR['KONDISI_MESIN'][$datapdf[$i]['KONDISI_MESIN']]) <= sizeof($arrayR['KONDISI_MESIN'][$datapdf[$i]['KONDISI_MESIN']])) {
                     $mergeALT0 = sizeof($arrayR['KONDISI_MESIN'][$datapdf[$i]['KONDISI_MESIN']]) + sizeof($arrayR['HEADER_MESIN']) + 1;
                     
@@ -96,109 +74,102 @@
                     if ($alter != $datapdf[$i]['KONDISI_MESIN']) {
                 ?>
 
-                        <?php
-                        
-                        // echo "<pre>";
-                        // print_r($mergeALT);
-                        // exit();
-
+            <?php
 
                         if ($datapdf[$i]['KONDISI_MESIN'] == 'Mati') {
                         ?>
-                            <td width="10%" rowspan="<?php echo $mergeALT; ?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;text-rotate:90 ">A. Pengecekan ketika mesin mati</td>
+            <td width="10%" rowspan="<?php echo $mergeALT; ?>"
+                style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;text-rotate:90 ">
+                A. Pengecekan ketika mesin mati</td>
 
-                        <?php
+            <?php
 
-                        } else {
+                        } else if ($datapdf[$i]['KONDISI_MESIN'] == 'Beroperasi'){
 
                         ?>
 
-                            <td width="10%" rowspan="<?php echo $mergeALT; ?>" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;text-rotate:90">B. Pengecekan ketika mesin beroperasi</td>
-                        <?php
+            <td width="10%" rowspan="<?php echo $mergeALT; ?>"
+                style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;text-rotate:90">
+                B. Pengecekan ketika mesin beroperasi</td>
+            <?php
 
                         }
                         ?>
-                    <?php
+            <?php
                         $alter = $datapdf[$i]['KONDISI_MESIN'];
                     }
                     ?>
-                <?php
+            <?php
                 }
                 ?>
-            </tr>
-            <tr>
-                <?php
+        </tr>
+        <tr>
+            <?php
                 if (sizeof($arrayR['HEADER_MESIN'][$datapdf[$i]['HEADER_MESIN']]) <= sizeof($arrayR['HEADER_MESIN'][$datapdf[$i]['HEADER_MESIN']])) {
                     if ($opr_no != $datapdf[$i]['HEADER_MESIN']) {
                 ?>
-                        <td colspan="7" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px; background-color: #fdd835"><?= $datapdf[$i]['HEADER_MESIN'] ?></td>
-                    <?php
+            <td colspan="8"
+                style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px; background-color: #fdd835">
+                <?= $datapdf[$i]['HEADER_MESIN'] ?></td>
+            <?php
                         $opr_no = $datapdf[$i]['HEADER_MESIN'];
                     }
                     ?>
-                <?php
+            <?php
                 }
                 ?>
-            </tr>
-            <tr>
-                <td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?= $datapdf[$i]['SUB_HEADER'] ?></td>
-                <td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?= $datapdf[$i]['STANDAR'] ?></td>
-                
-                <!-- <?php
+        </tr>
+        <tr>
+            <td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px">
+                &nbsp;&nbsp;<?= $i+1 ?>&nbsp;&nbsp;</td>
+            <td style="border: 1px solid black;border-collapse: collapse; text-align: left;font-size: 12px">
+                <?= $datapdf[$i]['SUB_HEADER'] ?></td>
+            <td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px">
+                <?= $datapdf[$i]['STANDAR'] ?></td>
 
-                if ($datapdf[$i]['PERIODE'] == '2 Mingguan') {
-                ?>
-                    <td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px; color:green"><?= $datapdf[$i]['PERIODE'] ?></td>
+            <td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px; ">
+                <?= $datapdf[$i]['PERIODE'] ?></td>
 
-                <?php
+            <td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"> &nbsp;
+                <?= $datapdf[$i]['DURASI'] ?> &nbsp;</td>
 
-                } else {
-
-                ?>
-
-                    <td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px; color:blue"><?= $datapdf[$i]['PERIODE'] ?></td>
-                <?php
-
-                }
-                ?> -->
-
-                <td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px; "><?= $datapdf[$i]['PERIODE'] ?></td>
-
-                <td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"> &nbsp; <?= $datapdf[$i]['DURASI'] ?> &nbsp;</td>
-
-                <?php
+            <?php
                 if ($datapdf[$i]['KONDISI'] == 'OK') {
                 ?>
-                    <td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px; color:blue"> &nbsp; <b>&#927;</b> &nbsp;</td>
+            <td
+                style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px; color:blue">
+                &nbsp; <b>&#927;</b> &nbsp;</td>
 
-                <?php
+            <?php
 
                 } else if ($datapdf[$i]['KONDISI'] == 'MULAI RUSAK') {
 
                 ?>
-                    <td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;color:orange"> &nbsp; <b>&#916;</b> &nbsp;</td>
-                <?php
+            <td
+                style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;color:orange">
+                &nbsp; <b>&#916;</b> &nbsp;</td>
+            <?php
 
                 } else if ($datapdf[$i]['KONDISI'] == 'RUSAK') {
 
                 ?>
-                    <td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;color:red"> &nbsp; <b>&#935;</b> &nbsp;</td>
-                <?php
+            <td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;color:red">
+                &nbsp; <b>&#935;</b> &nbsp;</td>
+            <?php
 
                 } else {
 
                 ?>
-                    <td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;"> &nbsp; <b>&#8210; </b> &nbsp;</td>
-                <?php
+            <td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;"> &nbsp;
+                <b>&#8210; </b> &nbsp;</td>
+            <?php
 
                 }
                 ?>
 
-
-
-                <!-- </td> -->
-                <td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?= $datapdf[$i]['CATATAN'] ?></td>
-            </tr>
+            <td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px">
+                <?= $datapdf[$i]['CATATAN'] ?></td>
+        </tr>
 
         <?php
             $no++;
@@ -206,8 +177,29 @@
     </tbody>
     <tbody>
         <tr>
-            <td colspan="4" style="border: 1px solid black;border-collapse: collapse; text-align: right;font-size: 12px">Total Durasi</td>
-            <td colspan="3" style="border: 1px solid black;border-collapse: collapse; text-align: left;font-size: 12px"><?= $totalDurasi[0]['TOTAL_DURASI'] ?> Menit</td>
+            <td colspan="4"
+                style="border: 1px solid black;border-collapse: collapse; text-align: right;font-size: 12px">Total
+                Durasi</td>
+            <td colspan="4" style="border: 1px solid black;border-collapse: collapse; text-align: left;font-size: 12px">
+                <?= $totalDurasi[0]['TOTAL_DURASI'] ?> Menit</td>
+        </tr>
+    </tbody>
+
+</table>
+<table>
+    <tbody>
+        <tr style="text-align:center; vertical-align:middle">
+            <?php
+        for ($g = 0; $g < sizeof($gambar); $g++) {
+        ?>
+
+            <td>
+                <img style="max-width: 250px;max-height: 250px"
+                    src="<?php echo base_url($gambar[$g]['FILE_DIR_ADDRESS']); ?>">
+            </td>
+            &nbsp;
+
+            <?php }?>
         </tr>
     </tbody>
 </table>

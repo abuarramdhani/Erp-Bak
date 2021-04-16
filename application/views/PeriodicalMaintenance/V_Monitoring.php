@@ -56,30 +56,6 @@
                                         </div>
                                     </div>
 
-                                    <!-- <div class="panel-body">
-                                    <div class="col-md-3">
-                                        <label class="control-label">Tanggal Pengecekan : </label>
-                                        <div class="input-group date">
-                                            <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
-                                            <input id="tglCek" name="tglCek" type="text" class="form-control pull-right" style="width:100%;" placeholder="dd/mm/yyyy" autocomplete="off">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-1" id="loadingTanggalPME"></div>
-                                    
-                                </div>
-                                <div class="panel-body">
-                                    <div class="col-md-3">
-                                        <label class="control-label">Pilih Mesin : </label>
-                                        <select disabled class="select4 form-control" style="width: 100%" name="mesinMon" id="mesinMon" data-placeholder="Pilih Mesin">
-                                            <option></option>
-                                            <?php foreach ($mesin as $key => $value) { ?>
-                                                <option value="<?= $value['NAMA_MESIN'] ?>"><?= $value['NAMA_MESIN'] ?></option>
-                                            <?php } ?>
-                                        </select>
-                                    </div>
-                                </div>
-                                 -->
-
                                     <div class="panel-body">
                                         <div class="col-md-6">
                                             <button type="button" onclick="getPMEMon(this)" class="btn btn-success" id="btnfind" title="search" style="float: right;"><i class="fa fa-search"></i> Find</button>

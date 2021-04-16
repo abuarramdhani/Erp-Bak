@@ -74,10 +74,29 @@
                                                     </div>
                                                     <div class="col-md-4" style="text-align: center;">
                                                         <div class="form-group">
-                                                            <input type="text" name="tgl_revisi" id="tgl_revisi"
-                                                                class="form-control"
-                                                                style="width: 100%;text-align: center;"
-                                                                placeholder="Tanggal Revisi" autocomplete="off">
+                                                            <div class="input-group date">
+                                                                <input type="text" class="form-control pull-right"
+                                                                    id="tgl_revisi" name="tgl_revisi"
+                                                                    placeholder="DD/MM/YYYY" autocomplete="off">
+                                                                <div class="input-group-addon"><i
+                                                                        class="fa fa-calendar"></i></div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-3"></div>
+                                                    <div class="col-md-1">
+                                                        <label>Catatan Revisi</label>
+                                                    </div>
+                                                    <div class="col-md-4" style="text-align: center;">
+                                                        <div class="form-group">
+                                                            <textarea style="width: 100%;text-align: left;"
+                                                                id="catatan_revisi_mpa" maxlength="500"
+                                                                name="catatan_revisi_mpa" class="form-control"
+                                                                placeholder="Catatan Revisi Dokumen"></textarea>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -179,7 +198,6 @@
                                                             <select id="periodeMPA" name="periodeMPA"
                                                                 class="form-control select2" style="width: 100%"
                                                                 data-placeholder="Periode">
-                                                                <!-- <option value="" disabled="" selected="">Pilih Sub Inventory</option> -->
                                                                 <option></option>
                                                                 <option>Harian</option>
                                                                 <option>Mingguan</option>
@@ -201,20 +219,16 @@
                                                         </div>
                                                     </div>
                                                 </div>
-
                                             </div>
                                     </div>
                                 </div>
                                 </form>
 
-                                <!-- <div class="panel panel-body"> -->
                                 <div class="panel-body">
                                     <div class="col-md-7 text-right">
                                         <button id="btnResetPME" class="btn btn-danger"><i class="fa fa-refresh"></i><b>
                                                 Reset</b></button>
-                                        <!-- <input type="button" id="btnreset" class="btn btn-danger" value="reset" /> -->
                                     </div>
-                                    <!-- </div> -->
                                     <div class="col-md-5">
                                         <a style="width:72px" href="javascript:void(0);"
                                             id="addRowPeriodicalMaintenance" onclick="addRowPeriodicalMaintenance()"
@@ -261,27 +275,9 @@
                                     </div>
 
                                 </form>
-                                <!-- </div> -->
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 </section>
-<!-- <script type="text/javascript">
-    
-    $(document).ready(function(){
-    $("#btnreset").click(function(){
-    /* Single line Reset function executes on click of Reset Button */
-    // $("#form")[0].reset();
-    $('.select2').val('').trigger("change");
-    document.getElementById('nama_mesin').value=''; 
-    // document.getElementById('kondisi_mesin').value=''; 
-    document.getElementById('header').value=''; 
-    document.getElementById('uraian_kerja').value=''; 
-    document.getElementById('standar').value=''; 
-    // document.getElementById('periode').value=''; 
-    });
-});
-
-</script> -->

@@ -22,10 +22,20 @@ class M_management extends CI_Model
 
   public function getAll($mesin)
   {
-    $sql = "SELECT DISTINCT kpm.ID, kpm.NAMA_MESIN , kpm.KONDISI_MESIN, kpm.HEADER 
+    $sql = "SELECT DISTINCT kpm.ID, kpm.NAMA_MESIN , kpm.KONDISI_MESIN, kpm.HEADER,
+            kpm.NO_DOKUMEN, kpm.NO_REVISI, kpm.TANGGAL_REVISI, kpm.CATATAN_REVISI 
             FROM khs_periodical_maintenance kpm
             WHERE kpm.NAMA_MESIN = '$mesin'
             order by kpm.KONDISI_MESIN DESC, kpm.ID, kpm.HEADER";
+    $query = $this->oracle->query($sql);
+    return $query->result_array();
+  }
+
+  public function getTop($mesin)
+  {
+    $sql = "SELECT DISTINCT kpm.NAMA_MESIN ,kpm.NO_DOKUMEN, kpm.NO_REVISI, kpm.TANGGAL_REVISI, kpm.CATATAN_REVISI 
+            FROM khs_periodical_maintenance kpm
+            WHERE kpm.NAMA_MESIN = '$mesin'";
     $query = $this->oracle->query($sql);
     return $query->result_array();
   }
@@ -56,6 +66,16 @@ class M_management extends CI_Model
     return $query->result_array();
   }
 
+  public function updateTopManagement($id, $nodoc, $norev, $revdate, $noterev)
+  {
+    $sql = "UPDATE khs_periodical_maintenance
+    SET NO_DOKUMEN = '$nodoc', NO_REVISI = '$norev', TANGGAL_REVISI = '$revdate', CATATAN_REVISI = '$noterev'
+    WHERE NAMA_MESIN = '$id'";
+
+    $query = $this->oracle->query($sql);
+    return $query;
+  }
+
   public function updateSubManagement($id, $subHeader, $standar, $periode)
   {
     $sql = "UPDATE khs_periodical_maintenance
@@ -84,5 +104,15 @@ class M_management extends CI_Model
     order by kondisi_mesin desc, id, header";
     $query = $this->oracle->query($sql);
     return $query->result_array();
+  }
+
+  /////////////////////////////////////////////////////////////////////////////
+
+  public function insertGambarMPA($mesin, $img)
+  {
+      $sql = "INSERT INTO khs_gambar_mpa (nama_mesin, file_dir_address)
+      VALUES ('$mesin', '$img')";
+      $query = $this->oracle->query($sql);
+      return $sql;
   }
 }
