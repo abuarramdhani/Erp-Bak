@@ -459,7 +459,7 @@ class C_HitungPesanan extends CI_Controller
       if (!empty($pekerjaTidakMakan)) {
         foreach ($pekerjaTidakMakan as $ptm) {
           $noind = $ptm['pekerja'];
-          $cekPresensi = $this->M_hitungpesanan->getAbsenShiftSatuByTanggalLokasiTempatMakanNoind($tanggal,$lokasi,$tempatMakan,$noind);
+          $cekPresensi = $this->M_hitungpesanan->getAbsenShiftSatuByTanggalLokasiTempatMakanNoind($tanggal,$lokasi,$tempatMakan,$noind,$jenis);
           if (!empty($cekPresensi)) {
             $cekPesananPenguranganTidakMakan = $this->M_hitungpesanan->getPesananPenguranganByTanggalShiftTempatMakanKategori($tanggal,$shift,$tempatMakan,'8');
             if (!empty($cekPesananPenguranganTidakMakan)) {
