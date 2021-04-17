@@ -78,7 +78,7 @@
               <h1 class="m-0">LUAS AREA</h1>
             </div>
             <div class="col-md-6">
-              <a class="btn btn-success" href="<?= base_url('/CivilLuasArea/api/excel') ?>">
+              <a class="btn btn-success" href="<?= base_url('CivilLuasArea/api/excel') ?>">
                 <i class="fa fa-file-excel-o"></i>
                 Export Excel - All
               </a>
@@ -331,7 +331,7 @@
           // ajax
           $.ajax({
             method: 'POST',
-            url: baseurl + '/CivilLuasArea/api/area/remove',
+            url: baseurl + 'CivilLuasArea/api/area/remove',
             data: {
               id
             },
@@ -393,7 +393,7 @@
 
           $.ajax({
             method: 'POST',
-            url: baseurl + '/CivilLuasArea/api/area/add',
+            url: baseurl + 'CivilLuasArea/api/area/add',
             data,
             beforeSend() {
               $tr.addClass('loading')
@@ -440,7 +440,7 @@
         }) => {
           $.ajax({
             method: 'POST',
-            url: baseurl + '/CivilLuasArea/api/area/update',
+            url: baseurl + 'CivilLuasArea/api/area/update',
             data: Object.assign(data, {
               id
             }),
@@ -512,13 +512,13 @@
 
       switch (eventType) {
         case 'area':
-          endpoint = baseurl + '/CivilLuasArea/api/master/area';
+          endpoint = baseurl + 'CivilLuasArea/api/master/area';
           break;
         case 'lokasi':
-          endpoint = baseurl + '/CivilLuasArea/api/master/lokasi';
+          endpoint = baseurl + 'CivilLuasArea/api/master/lokasi';
           break;
         case 'lantai':
-          endpoint = baseurl + '/CivilLuasArea/api/master/lantai';
+          endpoint = baseurl + 'CivilLuasArea/api/master/lantai';
           break;
         default:
           // this will stop this function
