@@ -1719,7 +1719,7 @@ class C_HitungPesanan extends CI_Controller
             $isi .= "<table style=\"width: 100%\">
               <tr>
                 <td style=\"width: 50%\">Nama Katering : ".$bagi['fs_nama_katering']."</td>
-                <td style=\"width: 50%\">Nama Petugas GA : ..................................................</td>
+                <td style=\"width: 50%\">Nama ". ($lokasi == '2' ? "Pendamping Katering" : "Petugas GA") . " : ..................................................</td>
               </tr>
             </table>";
             $supplier = "Katering";
@@ -1732,7 +1732,7 @@ class C_HitungPesanan extends CI_Controller
             $isi .= "<table style=\"width: 100%\">
               <tr>
                 <td style=\"width: 50%\">Nama Supplier : ..................................................</td>
-                <td style=\"width: 50%\">Nama Petugas GA: ..................................................</td>
+                <td style=\"width: 50%\">Nama ". ($lokasi == '2' ? "Pendamping Katering" : "Petugas GA") . " : ..................................................</td>
               </tr>
             </table>";
             $supplier = "Supplier";
