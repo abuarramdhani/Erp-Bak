@@ -655,7 +655,7 @@ class M_requisition extends CI_Model
                     and plla.LINE_LOCATION_ID = rt.PO_LINE_LOCATION_ID(+)
                     and rt.SHIPMENT_HEADER_ID = rsh.SHIPMENT_HEADER_ID(+)
                     and rt.transaction_type(+) = 'RECEIVE'
-                    and prha.INTERFACE_SOURCE_CODE IN ('IMPORT_EXP', 'IMPORT_INV')
+                    and prha.INTERFACE_SOURCE_CODE IN ('IMPORT_EXP', 'IMPORT_INV', 'OKEBAJA')
                     and prla.ATTRIBUTE9 = to_char(kooh.ORDER_ID) 
                     and prha.ATTRIBUTE4 = nvl(kooh.PRE_REQ_ID, prha.ATTRIBUTE4)
                     and kooh.ORDER_ID = '$order_id' --isi dengan order_id
