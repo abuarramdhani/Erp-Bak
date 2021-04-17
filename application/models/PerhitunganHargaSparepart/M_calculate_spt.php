@@ -96,7 +96,7 @@ where
   {
     return $this->oracle
       ->query(
-        "select
+        "select distinct
         khs.*,
         msib.description item_desc,
         msib.segment1 item_code
@@ -107,7 +107,7 @@ where
     where
         khs.item_id = msib.inventory_item_id
         and khs_appr.order_id = khs.order_id
-        and khs_appr.approval_id = 1
+        and khs.progress_id is null
         and khs_appr.approved_flag is null
         and msib.organization_id = 81"
       )->result();
@@ -273,7 +273,7 @@ where
   {
     return $this->oracle
       ->query(
-        "select
+        "select distinct
         khs.*,
         msib.description item_desc,
         msib.segment1 item_code
@@ -284,7 +284,7 @@ where
     where
         khs.item_id = msib.inventory_item_id
         and khs_appr.order_id = khs.order_id
-        and khs_appr.approval_id = 2
+        and khs.progress_id =1
         and khs_appr.approved_flag is null
         and msib.organization_id = 81"
       )->result();
@@ -334,20 +334,20 @@ where
   }
   public function SelectApprove3()
   {
-    $sql = "select
-        khs.*,
-        msib.description item_desc,
-        msib.segment1 item_code
-    from
-        khs_hitung_spt khs,
-        khs_approval_hitung_spt khs_appr,
-        mtl_system_items_b msib
-    where
-        khs.item_id = msib.inventory_item_id
-        and khs_appr.order_id = khs.order_id
-        and khs.progress_id = 2
-        and khs_appr.approved_flag is null
-        and msib.organization_id = 81";
+    $sql = "select distinct
+    khs.*,
+    msib.description item_desc,
+    msib.segment1 item_code
+from
+    khs_hitung_spt khs,
+    khs_approval_hitung_spt khs_appr,
+    mtl_system_items_b msib
+where
+    khs.item_id = msib.inventory_item_id
+    and khs_appr.order_id = khs.order_id
+    and khs.progress_id = 2
+    and khs_appr.approved_flag is null
+    and msib.organization_id = 81";
 
     $q = $this->oracle->query($sql);
     return $q->result_array();
