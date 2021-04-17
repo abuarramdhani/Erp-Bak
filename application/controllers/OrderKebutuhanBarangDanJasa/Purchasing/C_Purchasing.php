@@ -209,7 +209,8 @@ class C_Purchasing extends CI_Controller {
 
                 foreach ($dataOrder as $key => $data) {
                     // echo $data['DESTINATION_TYPE_CODE'];
-                    $interface_source_code = $this->M_pengelola->getInterfaceSourceCode($data['INVENTORY_ITEM_ID']);
+                    //$interface_source_code = $this->M_pengelola->getInterfaceSourceCode($data['INVENTORY_ITEM_ID']);
+                    $interface_source_code = 'OKEBAJA';
                     $category_id = $this->M_pengelola->getCategoryId($data['INVENTORY_ITEM_ID']);
                     $charge_account_id = $this->M_pengelola->getChargeAccountId($data['ORDER_ID']);
                     $desc = $this->M_purchasing->getDescItem($data['INVENTORY_ITEM_ID']);
@@ -227,7 +228,8 @@ class C_Purchasing extends CI_Controller {
                     }
 
                     $orderPR = array(
-                        'INTERFACE_SOURCE_CODE' => $interface_source_code[0]['INTERFACE_SOURCE_CODE'],
+                        //'INTERFACE_SOURCE_CODE' => $interface_source_code[0]['INTERFACE_SOURCE_CODE'],
+                        'INTERFACE_SOURCE_CODE' => $interface_source_code,
                         'ORG_ID' => 82,
                         'DESTINATION_TYPE_CODE' => $data['DESTINATION_TYPE_CODE'],
                         'DESTINATION_ORGANIZATION_ID' => $data['DESTINATION_ORGANIZATION_ID'],
