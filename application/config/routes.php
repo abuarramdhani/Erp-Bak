@@ -5348,3 +5348,33 @@ $route['AutoInvoiceKasie/OnProcess/(:any)']		= 'AutoInvoice/C_Process/$1';
 $route['AutoInvoiceKasie/FinishInvoice']				= 'AutoInvoice/C_Finish';
 $route['AutoInvoiceKasie/FinishInvoice/(:any)']		= 'AutoInvoice/C_Finish/$1';
 $route['AutoInvoiceKasie/FinishInvoice/(:any)/(:any)']		= 'AutoInvoice/C_Finish/$1/$2';
+
+// ------ Permintaan Perhitungan Harga Sparepart ------ //
+$route['PerhitunganHargaSparepart'] = 'PerhitunganHargaSparepart/C_Index';
+$route['PerhitunganHargaSparepart/Marketing/Input'] = 'PerhitunganHargaSparepart/Marketing/C_Input';
+$route['PerhitunganHargaSparepart/Marketing/Input/(:any)'] = 'PerhitunganHargaSparepart/Marketing/C_Input/$1';
+
+$route['PerhitunganHargaSparepart/Marketing/Pending'] = 'PerhitunganHargaSparepart/Marketing/C_Pending';
+$route['PerhitunganHargaSparepart/Marketing/Pending/(:any)'] = 'PerhitunganHargaSparepart/Marketing/C_Pending/$1';
+
+$route['PerhitunganHargaSparepart/Marketing/Finished'] = 'PerhitunganHargaSparepart/Marketing/C_Finished';
+$route['PerhitunganHargaSparepart/Marketing/Finished/(:any)'] = 'PerhitunganHargaSparepart/Marketing/C_Finished/$1';
+
+$route['PerhitunganHargaSparepart/Marketing/ReqApprove'] = 'PerhitunganHargaSparepart/Marketing/C_Approve';
+$route['PerhitunganHargaSparepart/Marketing/ReqApprove/(:any)'] = 'PerhitunganHargaSparepart/Marketing/C_Approve/$1';
+
+$route['PerhitunganHargaSparepart/Marketing/Approved'] = 'PerhitunganHargaSparepart/Marketing/C_Approve/ApprovedListMkt';
+$route['PerhitunganHargaSparepart/Marketing/Approved/(:any)'] = 'PerhitunganHargaSparepart/Marketing/C_Approve/$1';
+
+$route['PerhitunganHargaSparepart/Marketing/Rejected'] = 'PerhitunganHargaSparepart/Marketing/C_Approve/RejectedListMkt';
+$route['PerhitunganHargaSparepart/Marketing/Rejected/(:any)'] = 'PerhitunganHargaSparepart/Marketing/C_Approve/$1';
+
+$route['PerhitunganHargaSparepart/Marketing/PendingPIEA'] = 'PerhitunganHargaSparepart/Marketing/C_Approve/PendingPIEA';
+$route['PerhitunganHargaSparepart/Marketing/PendingPIEA/(:any)'] = 'PerhitunganHargaSparepart/Marketing/C_Approve/$1';
+
+$route['PerhitunganHargaSparepart/Marketing/PendingAccountancy'] = 'PerhitunganHargaSparepart/Marketing/C_Approve/PendingAccountancy';
+$route['PerhitunganHargaSparepart/Marketing/PendingAccountancy/(:any)'] = 'PerhitunganHargaSparepart/Marketing/C_Approve/$1';
+
+$route['PerhitunganHargaSparepart/PIEA/(:any)'] = 'PerhitunganHargaSparepart/PIEA/C_Piea/$1';
+$route['PerhitunganHargaSparepart/Accountancy/(:any)'] = 'PerhitunganHargaSparepart/Akuntansi/C_Accountancy/$1';
+$route['PerhitunganHargaSparepart/Accountancy/(:any)/(:any)'] = 'PerhitunganHargaSparepart/Akuntansi/C_Accountancy/$1/$2';
