@@ -5378,3 +5378,10 @@ $route['PerhitunganHargaSparepart/Marketing/PendingAccountancy/(:any)'] = 'Perhi
 $route['PerhitunganHargaSparepart/PIEA/(:any)'] = 'PerhitunganHargaSparepart/PIEA/C_Piea/$1';
 $route['PerhitunganHargaSparepart/Accountancy/(:any)'] = 'PerhitunganHargaSparepart/Akuntansi/C_Accountancy/$1';
 $route['PerhitunganHargaSparepart/Accountancy/(:any)/(:any)'] = 'PerhitunganHargaSparepart/Akuntansi/C_Accountancy/$1/$2';
+
+//-------------------------------------------Monitoring Loading Produksi--------------------------------------------------//
+$route['MonitoringLoadingProduksi'] 						= 'MonitoringLoadingProduksi/C_Master';
+
+$route['MonitoringLoadingProduksi/Monitoring'] 					= 'MonitoringLoadingProduksi/C_Master/Monitoring';
+$route['MonitoringLoadingProduksi/Monitoring/(:any)'] 			= 'MonitoringLoadingProduksi/C_Master/$1';
+$route['MonitoringLoadingProduksi/Monitoring/(:any)/(:any)'] 	= 'MonitoringLoadingProduksi/C_Master/$1/$2';
