@@ -293,8 +293,13 @@ class C_Index extends CI_Controller
 		redirect('/');
 	}
 
+    /**
+     * Render 404 page 
+     * 
+     */
 	public function page_404()
 	{
+	    $this->output->set_status_header(404);
 		return $this->load->view('V_404');
 	}
 
