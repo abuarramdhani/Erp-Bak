@@ -167,6 +167,9 @@
 							value="<?= $value['header']['WIP_ENTITY_NAME'].'+'; ?>">
 				<?php } ?>
 				</center>
+				<input type="hidden" name="wip_entity_name[]" value="<?= $value['header']['WIP_ENTITY_NAME'] ?>">
+				<input type="hidden" name="kodeitem[]" value="<?= $value['header']['ITEM_CODE'] ?>">
+				<input type="hidden" name="startqty[]" value="<?= $value['header']['START_QUANTITY'] ?>">
 			</td>
 			<td class="<?= $penanda ?>" ><b><?= $value['header']['WIP_ENTITY_NAME']; ?></b></td>
 			<td class="<?= $penanda ?>" ><?= $value['header']['ITEM_CODE'] ?></td>
@@ -359,7 +362,7 @@
 <div>
 	<?php 
 	if ($requirement) { ?>
-	<form method="post" target="_blank" action="<?php echo base_url('InventoryManagement/CreateMoveOrder/createall'); ?>">
+	<form method="post" target="_blank" id="createall_picklist" action="<?php echo base_url('InventoryManagement/CreateMoveOrder/createall'); ?>">
 		<input type="hidden" name="selectedPicklistIMO" value="">
 		<?php foreach ($allInvID as $key => $value) { ?>
 		<input type="hidden" name="no_job[]" value="<?= implode('<>', $allNojob[$key]) ?>">
@@ -375,7 +378,9 @@
 		<input type="hidden" name="departement" value="NONE">
 		<input type="hidden" name="piklis" value="1">
 		<?php } ?>
-	<button type="submit" class="btn btn-success pull-right" disabled="disabled" id="btnSelectedIMO"><b> CREATE PICKLIST SELECTED </b><b id="jmlSlcIMO"></b></button>
+	<!-- <button type="submit" class="btn btn-success pull-right" disabled="disabled" id="btnSelectedIMO"><b> CREATE PICKLIST SELECTED </b><b id="jmlSlcIMO"></b></button> -->
+	<button type="button" class="btn btn-success pull-right" disabled="disabled" id="btnSelectedIMO" onclick="document.getElementById('createall_picklist').submit();print_sticker2()"><b> CREATE PICKLIST SELECTED </b><b id="jmlSlcIMO"></b></button>
+	
 	</form>
 	<br><br>
 	<form method="post" target="_blank" action="<?php echo base_url('InventoryManagement/CreateMoveOrder/createall'); ?>">
