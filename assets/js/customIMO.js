@@ -112,7 +112,7 @@ function print_sticker(item, nojob, qty){
 		}else{
 			qty2 = result/2;
 		}
-		window.open("http://192.168.168.135/print-qr-sticker-packaging/khs_cetak_barcode.php?org=102&segment1="+item+"&jumlah="+qty2+"");
+		window.open("http://produksi.quick.com/print-qr-sticker-packaging/khs_cetak_barcode.php?org=102&segment1="+item+"&jumlah="+qty2+"");
 		// window.open("http://produksi.quick.com/print-qr-sticker-packaging/khs_cetak_barcode_besar.php?org=102&segment1="+item+"&jumlah="+qty2+"");
 	})
 }
