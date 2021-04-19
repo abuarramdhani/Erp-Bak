@@ -549,9 +549,9 @@ $(document).ready(function () {
 		} else if (a == "12") {
 			kode.val("P");
 			try_hubker.val("0");
-			try_seleksi.val("1");
+			try_seleksi.val("0");
 			// elaa = moment($('#txt_tgl_SP').val(), ["LL"]).add(1, 'month').format('YYYY-MM-DD')
-			elaa = moment($("#txt_tgl_SP").val()).add(30, "days").format("YYYY-MM-DD");
+			elaa = moment($("#txt_tgl_SP").val()).add(0, "days").format("YYYY-MM-DD");
 			$("#txt_lama_kontrak").val("3");
 			$("#hide_tgl_Selesai_SP").attr("hidden", true);
 			$(".hideAllHubker").removeClass("hide");
