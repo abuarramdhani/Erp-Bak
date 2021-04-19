@@ -431,10 +431,10 @@ class M_absenatasan extends CI_Model
 		$this->personalia->query($sqlInsertTerlambat);
 	}
 
-	function insertBekerja($noind,$tanggal,$masuk,$keluar){
+	function insertBekerja($noind,$tanggal,$masuk,$keluar, $kd_ket = 'PKJ'){
 		$sqlInsertBekerja = "insert into \"Presensi\".tdatapresensi
 				(tanggal,noind,kodesie,masuk,keluar,kd_ket,total_lembur,ket,user_,noind_baru)
-				select '$tanggal',noind,kodesie,'$masuk'::time,'$keluar'::time,'PKJ',0,'biasa','CRDIS',noind_baru
+				select '$tanggal',noind,kodesie,'$masuk'::time,'$keluar'::time,'$kd_ket',0,'biasa','CRDIS',noind_baru
 				from hrd_khs.tpribadi
 				where noind ='$noind'";
 		$this->personalia->query($sqlInsertBekerja);
@@ -547,6 +547,28 @@ class M_absenatasan extends CI_Model
 		$this->db->where('noind', $noinduk);
 		$query = $this->db->get('at.at_laju')->num_rows();
 		return $query !== 0;
+	}
+
+	function getTdataPres($noinduk, $waktu)
+	{
+		$sql = "SELECT * from \"Presensi\".tdatapresensi where
+				noind = '$noinduk' and tanggal = '$waktu'";
+		return $this->personalia->query($sql)->result_array();
+	}
+
+	function getTdataPresPRM($noinduk, $waktu)
+	{
+		$sql = "SELECT * from \"Presensi\".tdatapresensi where
+				noind = '$noinduk' and tanggal = '$waktu' and kd_ket = 'PRM' and masuk in ('0','00:00:00', '__:__:__')";
+		return $this->personalia->query($sql)->result_array();
+	}
+
+	function delPRMAA($noind, $tanggal)
+	{
+		$sql = "DELETE from \"Presensi\".tdatapresensi where
+				noind = '$noind' and tanggal = '$tanggal'";
+		$this->personalia->query($sql);
+		return $this->personalia->affected_rows() > 0;
 	}
 }
 

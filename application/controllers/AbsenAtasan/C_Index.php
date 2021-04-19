@@ -21,6 +21,7 @@ class C_Index extends CI_Controller
 			$this->load->library('email');
 			$this->load->model('M_Index');
 			$this->load->model('AbsenAtasan/M_absenatasan');
+			$this->load->model('MasterPekerja/Surat/IsolasiMandiri/M_isolasimandiri');
 			$this->load->model('SystemIntegration/M_submit');
 			$this->load->model('SystemAdministration/MainMenu/M_user');
 		}
@@ -144,6 +145,17 @@ class C_Index extends CI_Controller
 		$base64 = 'data:image/' . $type . ';base64,' . base64_encode($file);
 		$data['gambar'] = $base64;
 
+		if (isset( $data['dataEmployee'][0]['waktu'])) {
+			$waktu = $data['dataEmployee'][0]['waktu'];
+			$waktu = date('Y-m-d', strtotime($waktu));
+			$pres = $this->M_absenatasan->getTdataPres($noinduk, $waktu);
+			if (!empty($pres)) {
+				$stpres = array_column($pres, 'kd_ket');
+				$stpres = implode(', ', $stpres);
+				$data['pres'] = 'Pekerja memiliki Absen '.$stpres.' pada tanggal '.$waktu;
+			}
+		}
+
 		$data['employeeInfo'] = $this->M_absenatasan->getEmployeeInfo($noinduk);
 		// echo "<pre>";print_r($data['dataEmployee']);exit();
 		$this->load->view('AbsenAtasan/V_CHeader',$data);
@@ -202,14 +214,14 @@ class C_Index extends CI_Controller
 			$dataPersonalia = $this->M_absenatasan->getEmailPersonalia();
 			// echo "<pre>";print_r($dataPersonalia);exit();
 
-			$this->kirim_email($internalMail,$eksternalMail,$namaPekerja,$jenisAbsen,$waktu,$lokasi,$latitude,$longitude,$status,$atasan,$noindukAtasan);
+			// $this->kirim_email($internalMail,$eksternalMail,$namaPekerja,$jenisAbsen,$waktu,$lokasi,$latitude,$longitude,$status,$atasan,$noindukAtasan);
 
 			foreach ($dataPersonalia as $key => $personalia) {
 				$internalMailPersonalia = $personalia['internal_mail'];
 				$externalMailPersonalia	= $personalia['external_mail'];
 				$namaPekerjaPersonalia	= $personalia['employee_name'];
 
-			$this->kirim_emailPersonalia($namaPekerja,$jenisAbsen,$waktu,$lokasi,$latitude,$longitude,$status,$atasan,$noindukAtasan,$internalMailPersonalia,$externalMailPersonalia,$namaPekerjaPersonalia);
+			// $this->kirim_emailPersonalia($namaPekerja,$jenisAbsen,$waktu,$lokasi,$latitude,$longitude,$status,$atasan,$noindukAtasan,$internalMailPersonalia,$externalMailPersonalia,$namaPekerjaPersonalia);
 			}
 
 			// mulai transfer------------------------------------------------------------------------------ 
@@ -248,7 +260,8 @@ class C_Index extends CI_Controller
 			$pesan = "";
 			if (strtotime($tanggal) < strtotime(date('Y-m-d'))) {
 				$cekMangkir = $this->M_absenatasan->getAbsenMangkirByNoindTanggal($noind,$tanggal);
-				if (count($cekMangkir) > 0) {
+				$cekPRM		= $this->M_absenatasan->getTdataPresPRM($noind,$tanggal);
+				if (count($cekMangkir) > 0 || !empty($cekPRM)) {
 					$shift = $this->M_absenatasan->getShiftByNoindTanggal($noind,$tanggal);
 
 					if(!empty($shift)){
@@ -268,7 +281,16 @@ class C_Index extends CI_Controller
 							if (count($absen)%2 == 0) {
 								if (strtotime($absen['0']['waktu']) <= strtotime($jam_akhmsk) && strtotime($absen[count($absen) - 1]['waktu']) > strtotime($jam_msk)) {
 									$pesan .= "Bekerja ".$absen['0']['waktu']." s/d ".$absen[count($absen) - 1]['waktu'];
-									$this->M_absenatasan->insertBekerja($noind,$tanggal,$absen['0']['waktu'],$absen[count($absen) - 1]['waktu']);
+									$kd_ketz = 'PKJ';
+									$prez = $this->M_absenatasan->getTdataPres($noind, $tanggal);
+									if (!empty($prez)) {
+										if ($prez[0]['kd_ket'] == 'PRM') {
+											$kd_ketz = 'PRM';
+											$this->saveLogs($noind, $tanggal);
+											$this->M_absenatasan->delPRMAA($noind, $tanggal);
+										}
+									}
+									$this->M_absenatasan->insertBekerja($noind,$tanggal,$absen['0']['waktu'],$absen[count($absen) - 1]['waktu'], $kd_ketz);
 
 									if (strtotime($absen['0']['waktu']) > strtotime($jam_msk) && strtotime($absen['0']['waktu']) <= strtotime($jam_akhmsk)) {
 										$pesan .= "<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Terlambat, Jam Absen Pertama (".$absen['0']['waktu'].") melebihi Jam Masuk Shift (".$jam_msk.")";
@@ -869,5 +891,18 @@ class C_Index extends CI_Controller
 
 			$table = $this->load->view('AbsenAtasan/V_Table',$data, true);
 			echo $table;
+		}
+
+		function saveLogs($noind, $tanggal)
+		{
+			$dataPrez = $this->M_isolasimandiri->getTdataPresensiR($tanggal, $tanggal, $noind);
+			$arl = array(
+				'wkt'	=>	date('Y-m-d H:i:s'),
+				'transaksi'	=>	'Update Presensi PKJ -> PRM tanggal '.$tanggal.' sampai '.$tanggal.' noind '.$noind,
+				'keterangan'	=>	json_encode($dataPrez),
+				'program'	=>	'TIM-COVID19->MonitoringCovid',
+				'tgl_proses'	=>	date('Y-m-d H:i:s'),
+				);
+			$this->M_isolasimandiri->instoLog2($arl);
 		}
 	}
