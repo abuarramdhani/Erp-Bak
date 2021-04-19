@@ -33,7 +33,8 @@ class M_insert extends CI_Model
         transaction_date,
         po_unit_price,
         total_price,
-        vendor_name) values(" .
+        vendor_name,
+        transaction_id) values(" .
             $tagihan['QTY_BERSIH'] . ",'" .
             $tagihan['UOM_CODE'] . "','" .
             $tagihan['ITEM_DESCRIPTION_PO'] . "','" .
@@ -42,7 +43,8 @@ class M_insert extends CI_Model
             "TO_TIMESTAMP('" . $tagihan['TRANSACTION_DATE'] . "','DD-MON-YY ')," .
             $tagihan['PO_UNIT_PRICE'] . "," .
             $tagihan['TOTAL_PRICE'] . ",'" .
-            $tagihan['VENDOR_NAME'] . "'
+            $tagihan['VENDOR_NAME'] . "'," .
+            $tagihan['TRANSACTION_ID'] . "
         )";
         $query = $this->db->query($sql);
         return $sql;
