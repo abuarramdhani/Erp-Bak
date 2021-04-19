@@ -169,6 +169,11 @@
 				<div class="col-sm-2" align="center" style="margin: 7px">
 					<a id="btnCetak" class="btn btn-info btn-block" href="<?php echo base_url('AbsenAtasan/List/cetakApproval/'.$dataEmployee[0]['absen_id']); ?>" ><i class="fa fa-print"></i>   Cetak</a>
 				</div>
+				<div class="col-sm-12">
+					<?php if ($dataEmployee[0]['status'] !=1 && $dataEmployee[0]['status'] !=2 &&  isset($pres)): ?>
+						<label style="color: red;">* <?= $pres; ?></label>
+					<?php endif ?>
+				</div>
 			</div>
 		</div>
 
