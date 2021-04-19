@@ -5385,3 +5385,6 @@ $route['MonitoringLoadingProduksi'] 						= 'MonitoringLoadingProduksi/C_Master'
 $route['MonitoringLoadingProduksi/Monitoring'] 					= 'MonitoringLoadingProduksi/C_Master/Monitoring';
 $route['MonitoringLoadingProduksi/Monitoring/(:any)'] 			= 'MonitoringLoadingProduksi/C_Master/$1';
 $route['MonitoringLoadingProduksi/Monitoring/(:any)/(:any)'] 	= 'MonitoringLoadingProduksi/C_Master/$1/$2';
+
+// Insert Tagihan Subkont ----------------------------------------------------------------------------------------
+$route['InsertTagihanSubkont'] = 'InsertTagihanSubkont/C_Insert';
