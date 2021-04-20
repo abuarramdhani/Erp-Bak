@@ -5388,3 +5388,22 @@ $route['MonitoringLoadingProduksi/Monitoring/(:any)/(:any)'] 	= 'MonitoringLoadi
 
 // Insert Tagihan Subkont ----------------------------------------------------------------------------------------
 $route['InsertTagihanSubkont'] = 'InsertTagihanSubkont/C_Insert';
+
+//-------------------------------Kapasitas Gudang Pusat------------------------------------------------------------//
+$route['KapasitasGdPusat']	=	'KapasitasGdPusat/C_Index';
+
+$route['KapasitasGdPusat/Pengeluaran']					= 'KapasitasGdPusat/C_Pengeluaran/Pengeluaran';
+$route['KapasitasGdPusat/Pengeluaran/(:any)']			= 'KapasitasGdPusat/C_Pengeluaran/$1';
+$route['KapasitasGdPusat/Pengeluaran/(:any)/(:any)']	= 'KapasitasGdPusat/C_Pengeluaran/$1/$2';
+
+$route['KapasitasGdPusat/MonitoringPengeluaran']				= 'KapasitasGdPusat/C_Pengeluaran/MonitoringPengeluaran';
+$route['KapasitasGdPusat/MonitoringPengeluaran/(:any)']			= 'KapasitasGdPusat/C_Pengeluaran/$1';
+$route['KapasitasGdPusat/MonitoringPengeluaran/(:any)/(:any)']	= 'KapasitasGdPusat/C_Pengeluaran/$1/$2';
+
+$route['KapasitasGdPusat/PasangBan']				= 'KapasitasGdPusat/C_PasangBan';
+$route['KapasitasGdPusat/PasangBan/(:any)']			= 'KapasitasGdPusat/C_PasangBan/$1';
+$route['KapasitasGdPusat/PasangBan/(:any)/(:any)']	= 'KapasitasGdPusat/C_PasangBan/$1/$2';
+
+$route['KapasitasGdPusat/Rekap']				= 'KapasitasGdPusat/C_Rekap';
+$route['KapasitasGdPusat/Rekap/(:any)']			= 'KapasitasGdPusat/C_Rekap/$1';
+$route['KapasitasGdPusat/Rekap/(:any)/(:any)']	= 'KapasitasGdPusat/C_Rekap/$1/$2';
