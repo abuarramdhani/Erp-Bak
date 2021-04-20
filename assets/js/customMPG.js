@@ -1,14 +1,137 @@
+$(document).ready(function(){
+    if($('#inputmpg').val() == "ok"){
+        // console.log("cek")
+        Swal.fire({
+            title: 'Pilih Subinventory Terlebih Dahulu',
+            input: 'select',
+            inputOptions: {
+                'SP-YSP':'SP-YSP',
+                'KOM1-DM':'KOM1-DM',
+                'PNL-DM':'PNL-DM',
+                'FG-DM':'FG-DM'
+            },
+            inputPlaceholder: 'Pilih Subinventory',
+            allowOutsideClick: false,
+            inputValidator: (value) => {
+                return !value && 'Anda Harus Memilih Salah Satu Subinventory'
+            },
+        }).then((result) => {
+            if (result.value) {
+                // let subinv = result.value
+                // console.log(subinv);
+                $('#subinventory').val(result.value)
+            }
+        })
+    }
+
+    if($('#monmpg').val() == "ok"){
+        // console.log("cek")
+        Swal.fire({
+            title: 'Pilih Subinventory Terlebih Dahulu',
+            input: 'select',
+            inputOptions: {
+                'SP-YSP':'SP-YSP',
+                'KOM1-DM':'KOM1-DM',
+                'PNL-DM':'PNL-DM',
+                'FG-DM':'FG-DM'
+            },
+            inputPlaceholder: 'Pilih Subinventory',
+            allowOutsideClick: false,
+            inputValidator: (value) => {
+                return !value && 'Anda Harus Memilih Salah Satu Subinventory'
+            },
+        }).then((result) => {
+            if (result.value) {
+                // let subinv = result.value
+                // console.log(subinv);
+                $('#subinventory').val(result.value)
+                $.ajax({
+                    url: baseurl+'MonitoringGdSparepart/Monitoring/getMon',
+                    data: {
+                        subinv : result.value
+                    },
+                    type: "POST",
+                    datatype: 'html',
+                    beforeSend: function() {
+                        $('#TblMon').html(`<div id="loadingArea">
+                                                <center>
+                                                    <img style="width:20%;margin-bottom:13px" src="${baseurl}assets/img/gif/loadingtwo.gif">
+                                                </center>
+                                            </div>`)
+                        },
+                    success: function(result) {
+                        // console.log(result);
+                        $('#TblMon').html(result)
+                    },
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        console.error();
+                    }
+                })
+            }
+        })
+    }
+
+    if($('#rekapmpg').val() == "ok"){
+        // console.log("cek")
+        Swal.fire({
+            title: 'Pilih Subinventory Terlebih Dahulu',
+            input: 'select',
+            inputOptions: {
+                'SP-YSP':'SP-YSP',
+                'KOM1-DM':'KOM1-DM',
+                'PNL-DM':'PNL-DM',
+                'FG-DM':'FG-DM'
+            },
+            inputPlaceholder: 'Pilih Subinventory',
+            allowOutsideClick: false,
+            inputValidator: (value) => {
+                return !value && 'Anda Harus Memilih Salah Satu Subinventory'
+            },
+        }).then((result) => {
+            if (result.value) {
+                // let subinv = result.value
+                // console.log(subinv);
+                $('#subinventory').val(result.value)
+                $.ajax({
+                    url: baseurl+'MonitoringGdSparepart/Rekap/getRekap',
+                    data: {
+                        subinv : result.value
+                    },
+                    type: "POST",
+                    datatype: 'html',
+                    beforeSend: function() {
+                        $('#tb_RkpMGS').html(`<div id="loadingArea">
+                                                <center>
+                                                    <img style="width:20%;margin-bottom:13px" src="${baseurl}assets/img/gif/loadingtwo.gif">
+                                                </center>
+                                            </div>`)
+                        },
+                    success: function(result) {
+                        // console.log(result);
+                        $('#tb_RkpMGS').html(result)
+                    },
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        console.error();
+                    }
+                })
+            }
+        })
+    }
+})
+
 function getMPG(th) {
     // $(document).ready(function(){
     var noDokumen       = $('input[name="noDokumen"]').val();
     var jenis_dokumen   = $('#jenis_dokumen').val();
-    // console.log(jenis_dokumen);
+    var subinv   = $('#subinventory').val();
+    // console.log(subinv);
     
     var request = $.ajax({
         url: baseurl+'MonitoringGdSparepart/Input/input',
         data: {
             noDokumen       : noDokumen, 
-            jenis_dokumen   : jenis_dokumen
+            jenis_dokumen   : jenis_dokumen,
+            subinv   : subinv
         },
         type: "POST",
         datatype: 'html'
@@ -20,16 +143,10 @@ function getMPG(th) {
     request.done(function(result){
         $('#tb_GudangSparepart').html('');
         $('#tb_GudangSparepart').html(result);
-        // $('#tb_monitorGudang').dataTable({
-        //     "retrieve": true,
-        //     "paging" : false,
-        //     "scrollX": true,
-        //     "scrollCollapse": true,
-        //     "fixedHeader":true
-        //     });
         })
     // });
 }
+
 // no dokumen otomatis INPUT
 $('#noDokumen').change(function(){
     getAutoFillDocument()
@@ -47,6 +164,10 @@ function getAutoFillDocument(){
 
     $('input[name="no_document"]').val(no_document)
 
+    // var subinv = $('input[name="subinventory"]').val();
+
+    // $('input[name="subinv"]').val(subinv)
+
     var length = no_document.length
     // console.log(length)
     if(length == 12){
@@ -60,6 +181,8 @@ function getAutoFillDocument(){
         $('#jenis_dokumen').val('LPPB').trigger('change')
     }else if(length == 9) {
         $('#jenis_dokumen').val('KIB').trigger('change')
+    }else if(length == 7) {
+        $('#jenis_dokumen').val('MO').trigger('change')
     }else{
         var awl = no_document.substring(0, 5);
         if (awl) {
@@ -79,12 +202,8 @@ function getMGS(th) {
     var tglAkhir        = $('input[name="tglAkhir"]').val();
     var pic             = $('#pic').val();
     var item            = $('input[name="item"]').val();
+    var subinv          = $('input[name="subinventory"]').val();
     // console.log(search_by,jenis_dokumen,no_document,tglAwal,tglAkhir,pic,item);
-// if( search_by == 'export'){
-//     $('#btnExMGS').css('display', '')
-// }else{
-//     $('#btnExMGS').css('display', 'none')
-// }
     var request = $.ajax({
         url: baseurl+'MonitoringGdSparepart/Monitoring/search',
         data: {
@@ -94,7 +213,8 @@ function getMGS(th) {
             tglAwal         : tglAwal, 
             tglAkhir        : tglAkhir, 
             pic             : pic, 
-            item            : item
+            item            : item,
+            subinv            : subinv
         },
         type: "POST",
         datatype: 'html'
@@ -359,11 +479,12 @@ function adddrekap2(no){
 
 function schRekapMGS(th) {
 	var tglAkh = $('#tglAkhir').val();
-	var tglAwl = $('#tglAwal').val();
+    var tglAwl = $('#tglAwal').val();
+    var subinv = $('#subinventory').val();
 	// console.log(tglAwl);
 	var request = $.ajax({
         url: baseurl+'MonitoringGdSparepart/Rekap/searchRekap',
-        data: {	tglAkh : tglAkh, tglAwl : tglAwl },
+        data: {	tglAkh : tglAkh, tglAwl : tglAwl, subinv : subinv },
         type: "POST",
         datatype: 'html'
 	});
