@@ -8,133 +8,230 @@ class M_hitung extends CI_Model {
     $this->load->library('encrypt');
     $this->oracle = $this->load->database('oracle', true);
     //$this->oracle_dev = $this->load->database('oracle_dev',TRUE);
-    }
+	}
 	
 	public function dataPUM($plan, $deptclass){
-		$sql = "select distinct ffvv.FLEX_VALUE                                                 cost_center
-				--,ffvv.DESCRIPTION                                                         cc_desc
-				,bd.DEPARTMENT_CLASS_CODE                                                 seksi
-				,br.RESOURCE_CODE                                                         resource_code
-				,br.DESCRIPTION                                                           deskripsi
-				,SUBSTR(br.DESCRIPTION, INSTR(br.DESCRIPTION, '-')+2, 5)                  jenis_mesin
-				--,khs_ar_get_coa(br.ABSORPTION_ACCOUNT)                                    COA
-				,kdmr.TAG_NUMBER
-				,kdmr.NO_MESIN
-				--,msib.ORGANIZATION_ID
-				,msib.SEGMENT1                                                            kode_komponen
-				,msib.DESCRIPTION                                                         deskripsi_komponen
-				--,bor.ALTERNATE_ROUTING_DESIGNATOR
-				,bos.OPERATION_SEQ_NUM                                                    opr_seq
-				--,bd.DEPARTMENT_CODE
-				,bos.OPERATION_DESCRIPTION                                                kode_proses
-				--,bd.DEPARTMENT_CLASS_CODE
-				,bores.RESOURCE_SEQ_NUM                                                   res_seq
-				,bores.USAGE_RATE_OR_AMOUNT                                               usage_rate
-				--,bores.SCHEDULE_SEQ_NUM
-				,bores.ASSIGNED_UNITS                                                     assign_unit
-				,cal.PERIODE
-				,cal.URUT
-				-- yang stok 
-				--,nvl(khs_get_stock_awal1(:P_PLAN,msib.ORGANIZATION_ID,msib.INVENTORY_ITEM_ID),0)  stok_awal
-				--
-				,nvl(
-					(            
-					select sum(coalesce(md.DAILY_DEMAND_RATE, md.USING_REQUIREMENT_QUANTITY)) qty
-			--                  ,to_char(md.USING_ASSEMBLY_DEMAND_DATE,'Mon-YY') periode
-			--                  ,to_number(to_char(trunc(md.USING_ASSEMBLY_DEMAND_DATE),'YYYYMM')) urut
-			--                  ,msib.INVENTORY_ITEM_ID item_id
-			--                  ,msib.ORGANIZATION_ID org
-			--                  ,mp.PLAN_ID 
-						from msc_system_items msi
-							,mtl_system_items_b msib
-							,msc_demands md
-							,msc_plans mp
-							,mfg_lookups ml
-					where msi.SR_INVENTORY_ITEM_ID = msib.INVENTORY_ITEM_ID
-						and msi.ORGANIZATION_ID = msib.ORGANIZATION_ID
-						-- demands
-						and md.PLAN_ID = msi.PLAN_ID
-						and md.SR_INSTANCE_ID = msi.SR_INSTANCE_ID
-						and md.ORGANIZATION_ID = msi.ORGANIZATION_ID
-						and md.INVENTORY_ITEM_ID = msi.INVENTORY_ITEM_ID
-						and md.ORIGINATION_TYPE <> 52
-						and mp.PLAN_ID = md.PLAN_ID
-						-- lookup
-						and ml.LOOKUP_TYPE = ('MSC_DEMAND_ORIGINATION')
-						and ml.LOOKUP_CODE = md.ORIGINATION_TYPE
-						-- parameter
-			--               and msi.ORGANIZATION_ID =:P_IO_ID
-						and mp.PLAN_ID = '$plan'
-						and msib.INVENTORY_ITEM_ID = bor.ASSEMBLY_ITEM_ID
-						and msib.ORGANIZATION_ID = bor.ORGANIZATION_ID
-						and to_char(md.USING_ASSEMBLY_DEMAND_DATE,'Mon-YY') = cal.PERIODE
-						and trunc(md.USING_ASSEMBLY_DEMAND_DATE) >= to_date('01'||to_char(sysdate,'MON-YY'))  
-						and trunc(md.USING_ASSEMBLY_DEMAND_DATE) between to_date('01'||to_char(sysdate,'MON-YY')) 
-																	and last_day(add_months( to_date('01'||to_char(sysdate,'MON-YY')),2))
-						and khs_ascp_utilities_pkg.GET_ORDER_TYPE(mp.PLAN_ID,md.SR_INSTANCE_ID,md.DEMAND_ID) in ('Planned order demand','Forecast')
-					group by to_char(md.USING_ASSEMBLY_DEMAND_DATE,'Mon-YY')
-							,to_number(to_char(trunc(md.USING_ASSEMBLY_DEMAND_DATE),'YYYYMM'))
-							,msib.INVENTORY_ITEM_ID
-							,msib.ORGANIZATION_ID
-							,mp.PLAN_ID 
-							)
-							,0)                                                           qty
-			from bom_resources br
-			,bom_department_resources bdr
-			,bom_departments bd
-			,bom_operation_resources bores
-			,bom_operational_routings bor
-			,bom_operation_sequences bos
-			,mtl_system_items_b msib
-			--
-			,khs_daftar_mesin_resource kdmr
-			--
-			,gl_code_combinations gcc
-			,fnd_flex_values_vl ffvv
-			--
-			,( 
-				select to_char(bcd.CALENDAR_DATE,'Mon-YY') periode
-					,to_number(to_char(bcd.CALENDAR_DATE,'YYYYMM')) urut
-				from bom_calendar_dates bcd
-				where bcd.CALENDAR_CODE = 'KHS_CAL'
-				and trunc(bcd.CALENDAR_DATE) between to_date('01'||to_char(sysdate,'MON-YY')) 
-				and last_day(add_months( to_date('01'||to_char(sysdate,'MON-YY')),2))          
-			group by to_char(bcd.CALENDAR_DATE,'Mon-YY')
-					,to_number(to_char(bcd.CALENDAR_DATE,'YYYYMM'))
-						) cal 
-			where br.ABSORPTION_ACCOUNT = gcc.CODE_COMBINATION_ID
-			and br.RESOURCE_ID = bdr.RESOURCE_ID
-			and br.RESOURCE_ID = kdmr.RESOURCE_ID
-			and bdr.DEPARTMENT_ID = bd.DEPARTMENT_ID
-			--
-			and bores.RESOURCE_ID = br.RESOURCE_ID
-			and bores.OPERATION_SEQUENCE_ID = bos.OPERATION_SEQUENCE_ID
-			and bos.DEPARTMENT_ID = bd.DEPARTMENT_ID
-			and bos.ROUTING_SEQUENCE_ID = bor.ROUTING_SEQUENCE_ID
-			and bos.DISABLE_DATE is null
-			and bor.ALTERNATE_ROUTING_DESIGNATOR is null
-			--
-			and msib.ORGANIZATION_ID = bor.ORGANIZATION_ID
-			and msib.INVENTORY_ITEM_ID = bor.ASSEMBLY_ITEM_ID
-			and msib.INVENTORY_ITEM_STATUS_CODE <> 'Inactive'
-			-- 
-			--and msib.SEGMENT1 = 'ADB1BA0181CY-0'-- 'AAA1A00021AY-0' AAC1B00021AY-0  AAK1B0A001AY-0   ACA6BAA001AY-0
-			and ffvv.FLEX_VALUE_SET_ID = 1013709 
-			and ffvv.END_DATE_ACTIVE is null
-			and br.DISABLE_DATE is null
-			and substr(ffvv.FLEX_VALUE,0,1) in ('4','5','7','8') --fabrikasi
-			--and ffvv.FLEX_VALUE = '5D36'
-			and ffvv.FLEX_VALUE = gcc.SEGMENT4
-			and bor.ORGANIZATION_ID = 102 -- ODM
-			and bd.DEPARTMENT_CLASS_CODE = '$deptclass' --MACHE?  MACH1?  PRKTA  MACHB2  MACHD  PAINT.TKS  WELD  PRKTC  PRKTB  HTM  MACHA  MACHC  PAINT  MACHB
-			order by urut, cost_center, no_mesin, tag_number, kode_komponen, opr_seq";
-
+		// $sql = "select distinct ffvv.FLEX_VALUE                                                 cost_center
+		// 		--,ffvv.DESCRIPTION                                                         cc_desc
+		// 		,bd.DEPARTMENT_CLASS_CODE                                                 seksi
+		// 		,br.RESOURCE_CODE                                                         resource_code
+		// 		,br.DESCRIPTION                                                           deskripsi
+		// 		,SUBSTR(br.DESCRIPTION, INSTR(br.DESCRIPTION, '-')+2, 5)                  jenis_mesin
+		// 		--,khs_ar_get_coa(br.ABSORPTION_ACCOUNT)                                    COA
+		// 		,kdmr.TAG_NUMBER
+		// 		,kdmr.NO_MESIN
+		// 		--,msib.ORGANIZATION_ID
+		// 		,msib.SEGMENT1                                                            kode_komponen
+		// 		,msib.DESCRIPTION                                                         deskripsi_komponen
+		// 		--,bor.ALTERNATE_ROUTING_DESIGNATOR
+		// 		,bos.OPERATION_SEQ_NUM                                                    opr_seq
+		// 		--,bd.DEPARTMENT_CODE
+		// 		,bos.OPERATION_DESCRIPTION                                                kode_proses
+		// 		--,bd.DEPARTMENT_CLASS_CODE
+		// 		,bores.RESOURCE_SEQ_NUM                                                   res_seq
+		// 		,bores.USAGE_RATE_OR_AMOUNT                                               usage_rate
+		// 		--,bores.SCHEDULE_SEQ_NUM
+		// 		,bores.ASSIGNED_UNITS                                                     assign_unit
+		// 		,cal.PERIODE
+		// 		,cal.URUT
+		// 		-- yang stok 
+		// 		--,nvl(khs_get_stock_awal1(:P_PLAN,msib.ORGANIZATION_ID,msib.INVENTORY_ITEM_ID),0)  stok_awal
+		// 		--
+		// 		,nvl(
+		// 			(            
+		// 			select sum(coalesce(md.DAILY_DEMAND_RATE, md.USING_REQUIREMENT_QUANTITY)) qty
+		// 	--                  ,to_char(md.USING_ASSEMBLY_DEMAND_DATE,'Mon-YY') periode
+		// 	--                  ,to_number(to_char(trunc(md.USING_ASSEMBLY_DEMAND_DATE),'YYYYMM')) urut
+		// 	--                  ,msib.INVENTORY_ITEM_ID item_id
+		// 	--                  ,msib.ORGANIZATION_ID org
+		// 	--                  ,mp.PLAN_ID 
+		// 				from msc_system_items msi
+		// 					,mtl_system_items_b msib
+		// 					,msc_demands md
+		// 					,msc_plans mp
+		// 					,mfg_lookups ml
+		// 			where msi.SR_INVENTORY_ITEM_ID = msib.INVENTORY_ITEM_ID
+		// 				and msi.ORGANIZATION_ID = msib.ORGANIZATION_ID
+		// 				-- demands
+		// 				and md.PLAN_ID = msi.PLAN_ID
+		// 				and md.SR_INSTANCE_ID = msi.SR_INSTANCE_ID
+		// 				and md.ORGANIZATION_ID = msi.ORGANIZATION_ID
+		// 				and md.INVENTORY_ITEM_ID = msi.INVENTORY_ITEM_ID
+		// 				and md.ORIGINATION_TYPE <> 52
+		// 				and mp.PLAN_ID = md.PLAN_ID
+		// 				-- lookup
+		// 				and ml.LOOKUP_TYPE = ('MSC_DEMAND_ORIGINATION')
+		// 				and ml.LOOKUP_CODE = md.ORIGINATION_TYPE
+		// 				-- parameter
+		// 	--               and msi.ORGANIZATION_ID =:P_IO_ID
+		// 				and mp.PLAN_ID = '$plan'
+		// 				and msib.INVENTORY_ITEM_ID = bor.ASSEMBLY_ITEM_ID
+		// 				and msib.ORGANIZATION_ID = bor.ORGANIZATION_ID
+		// 				and to_char(md.USING_ASSEMBLY_DEMAND_DATE,'Mon-YY') = cal.PERIODE
+		// 				and trunc(md.USING_ASSEMBLY_DEMAND_DATE) >= to_date('01'||to_char(sysdate,'MON-YY'))  
+		// 				and trunc(md.USING_ASSEMBLY_DEMAND_DATE) between to_date('01'||to_char(sysdate,'MON-YY')) 
+		// 															and last_day(add_months( to_date('01'||to_char(sysdate,'MON-YY')),2))
+		// 				and khs_ascp_utilities_pkg.GET_ORDER_TYPE(mp.PLAN_ID,md.SR_INSTANCE_ID,md.DEMAND_ID) in ('Planned order demand','Forecast')
+		// 			group by to_char(md.USING_ASSEMBLY_DEMAND_DATE,'Mon-YY')
+		// 					,to_number(to_char(trunc(md.USING_ASSEMBLY_DEMAND_DATE),'YYYYMM'))
+		// 					,msib.INVENTORY_ITEM_ID
+		// 					,msib.ORGANIZATION_ID
+		// 					,mp.PLAN_ID 
+		// 					)
+		// 					,0)                                                           qty
+		// 	from bom_resources br
+		// 	,bom_department_resources bdr
+		// 	,bom_departments bd
+		// 	,bom_operation_resources bores
+		// 	,bom_operational_routings bor
+		// 	,bom_operation_sequences bos
+		// 	,mtl_system_items_b msib
+		// 	--
+		// 	,khs_daftar_mesin_resource kdmr
+		// 	--
+		// 	,gl_code_combinations gcc
+		// 	,fnd_flex_values_vl ffvv
+		// 	--
+		// 	,( 
+		// 		select to_char(bcd.CALENDAR_DATE,'Mon-YY') periode
+		// 			,to_number(to_char(bcd.CALENDAR_DATE,'YYYYMM')) urut
+		// 		from bom_calendar_dates bcd
+		// 		where bcd.CALENDAR_CODE = 'KHS_CAL'
+		// 		and trunc(bcd.CALENDAR_DATE) between to_date('01'||to_char(sysdate,'MON-YY')) 
+		// 		and last_day(add_months( to_date('01'||to_char(sysdate,'MON-YY')),2))          
+		// 	group by to_char(bcd.CALENDAR_DATE,'Mon-YY')
+		// 			,to_number(to_char(bcd.CALENDAR_DATE,'YYYYMM'))
+		// 				) cal 
+		// 	where br.ABSORPTION_ACCOUNT = gcc.CODE_COMBINATION_ID
+		// 	and br.RESOURCE_ID = bdr.RESOURCE_ID
+		// 	and br.RESOURCE_ID = kdmr.RESOURCE_ID
+		// 	and bdr.DEPARTMENT_ID = bd.DEPARTMENT_ID
+		// 	--
+		// 	and bores.RESOURCE_ID = br.RESOURCE_ID
+		// 	and bores.OPERATION_SEQUENCE_ID = bos.OPERATION_SEQUENCE_ID
+		// 	and bos.DEPARTMENT_ID = bd.DEPARTMENT_ID
+		// 	and bos.ROUTING_SEQUENCE_ID = bor.ROUTING_SEQUENCE_ID
+		// 	and bos.DISABLE_DATE is null
+		// 	and bor.ALTERNATE_ROUTING_DESIGNATOR is null
+		// 	--
+		// 	and msib.ORGANIZATION_ID = bor.ORGANIZATION_ID
+		// 	and msib.INVENTORY_ITEM_ID = bor.ASSEMBLY_ITEM_ID
+		// 	and msib.INVENTORY_ITEM_STATUS_CODE <> 'Inactive'
+		// 	-- 
+		// 	--and msib.SEGMENT1 = 'ADB1BA0181CY-0'-- 'AAA1A00021AY-0' AAC1B00021AY-0  AAK1B0A001AY-0   ACA6BAA001AY-0
+		// 	and ffvv.FLEX_VALUE_SET_ID = 1013709 
+		// 	and ffvv.END_DATE_ACTIVE is null
+		// 	and br.DISABLE_DATE is null
+		// 	and substr(ffvv.FLEX_VALUE,0,1) in ('4','5','7','8') --fabrikasi
+		// 	--and ffvv.FLEX_VALUE = '5D36'
+		// 	and ffvv.FLEX_VALUE = gcc.SEGMENT4
+		// 	and bor.ORGANIZATION_ID = 102 -- ODM
+		// 	and bd.DEPARTMENT_CLASS_CODE = '$deptclass' --MACHE?  MACH1?  PRKTA  MACHB2  MACHD  PAINT.TKS  WELD  PRKTC  PRKTB  HTM  MACHA  MACHC  PAINT  MACHB
+		// 	order by urut, cost_center, no_mesin, tag_number, kode_komponen, opr_seq";
+				$sql = "SELECT DISTINCT ffvv.flex_value cost_center, bd.department_class_code seksi,
+                br.resource_code resource_code, br.description deskripsi,
+                SUBSTR (br.description, INSTR (br.description, '-') + 2, 5) jenis_mesin,
+                kdmr.tag_number, kdmr.no_mesin, msib.segment1 kode_komponen,
+                msib.description deskripsi_komponen,
+                bos.operation_seq_num opr_seq,
+                bos.operation_description kode_proses,
+                bores.resource_seq_num res_seq,
+                bores.usage_rate_or_amount usage_rate, bores.assigned_units,
+                cal.periode, cal.urut,
+                NVL ((SELECT   SUM (COALESCE (md.daily_demand_rate, md.using_requirement_quantity)) qty
+                     FROM     msc_system_items msi,
+                              mtl_system_items_b msib,
+                              msc_demands md,
+                              msc_plans mp,
+                              mfg_lookups ml
+                        WHERE msi.sr_inventory_item_id = msib.inventory_item_id
+                          AND msi.organization_id = msib.organization_id
+                          -- demands
+                          AND md.plan_id = msi.plan_id
+                          AND md.sr_instance_id = msi.sr_instance_id
+                          AND md.organization_id = msi.organization_id
+                          AND md.inventory_item_id = msi.inventory_item_id
+                          AND md.origination_type <> 52
+                          AND mp.plan_id = md.plan_id
+                          -- lookup
+                          AND ml.lookup_type = ('MSC_DEMAND_ORIGINATION')
+                          AND ml.lookup_code = md.origination_type
+                          -- parameter
+                          AND mp.plan_id = '$plan'
+                          AND msib.inventory_item_id = bor.assembly_item_id
+                          AND msib.organization_id = bor.organization_id
+                          AND TO_CHAR (md.using_assembly_demand_date, 'Mon-YY') = cal.periode
+                          AND TRUNC (md.using_assembly_demand_date) >= TO_DATE ('01' || TO_CHAR (SYSDATE, 'MON-YY'))
+                          AND TRUNC (md.using_assembly_demand_date)
+                                 BETWEEN TO_DATE ('01' || TO_CHAR (SYSDATE, 'MON-YY'))
+                                     AND LAST_DAY (ADD_MONTHS (TO_DATE ('01' || TO_CHAR (SYSDATE, 'MON-YY')), 2))
+                          AND khs_ascp_utilities_pkg.get_order_type (mp.plan_id, md.sr_instance_id, md.demand_id) IN ('Planned order demand', 'Forecast')
+                     GROUP BY TO_CHAR (md.using_assembly_demand_date, 'Mon-YY'),
+                              TO_NUMBER (TO_CHAR (TRUNC (md.using_assembly_demand_date), 'YYYYMM')),
+                              msib.inventory_item_id,
+                              msib.organization_id,
+                              mp.plan_id),
+                    0
+                   ) qty
+           FROM bom_resources br,
+                bom_department_resources bdr,
+                bom_departments bd,
+                bom_operation_resources bores,
+                bom_operational_routings bor,
+                bom_operation_sequences bos,
+                mtl_system_items_b msib,
+                --
+                khs_daftar_mesin_resource kdmr,
+                --
+                gl_code_combinations gcc,
+                fnd_flex_values_vl ffvv,
+                --
+                (SELECT   TO_CHAR (bcd.calendar_date, 'Mon-YY') periode,
+                          TO_NUMBER (TO_CHAR (bcd.calendar_date, 'YYYYMM')) urut
+                     FROM bom_calendar_dates bcd
+                    WHERE bcd.calendar_code = 'KHS_CAL'
+                      AND TRUNC (bcd.calendar_date)
+                             BETWEEN TO_DATE ('01' || TO_CHAR (SYSDATE, 'MON-YY'))
+                                 AND LAST_DAY (ADD_MONTHS (TO_DATE ('01' || TO_CHAR (SYSDATE, 'MON-YY')), 2))
+                 GROUP BY TO_CHAR (bcd.calendar_date, 'Mon-YY'),
+                          TO_NUMBER (TO_CHAR (bcd.calendar_date, 'YYYYMM'))) cal
+          WHERE br.absorption_account = gcc.code_combination_id
+            AND br.resource_id = bdr.resource_id
+            AND br.resource_id = kdmr.resource_id(+)
+            AND bdr.department_id = bd.department_id
+            --
+            AND bores.resource_id = br.resource_id
+            AND bores.operation_sequence_id = bos.operation_sequence_id
+            AND bos.department_id = bd.department_id
+            AND bos.routing_sequence_id = bor.routing_sequence_id
+            AND bos.disable_date IS NULL
+            AND bor.alternate_routing_designator IS NULL
+            --
+            AND msib.organization_id = bor.organization_id
+            AND msib.inventory_item_id = bor.assembly_item_id
+            AND msib.inventory_item_status_code <> 'Inactive'
+            --
+            AND ffvv.flex_value_set_id = 1013709
+            AND ffvv.end_date_active IS NULL
+            AND br.disable_date IS NULL
+            AND br.resource_code NOT LIKE '%OPTR%'
+            AND SUBSTR (ffvv.flex_value, 0, 1) IN ('4', '5', '7', '8')
+            AND ffvv.flex_value = gcc.segment4
+            --
+            AND bor.organization_id = 102
+            AND bd.department_class_code = '$deptclass'
+			-- AND br.resource_code IN ('P1-L-MNLNE', 'P1-L-ADLTR')
+       ORDER BY urut,
+                cost_center,
+                no_mesin,
+                tag_number,
+                kode_komponen,
+                opr_seq";
 				$query = $this->oracle->query($sql);
 				return $query->result_array();
 			}
 
-			function stockawal($deptclass, $plan)
-			{
+			function stockawal($deptclass, $plan){
 			$sql = "select xx.seksi                                                                 seksi
 							,xx.kode_komponen                                                         kode_komponen
 							,xx.deskripsi_komponen                                                    deskripsi_komponen
@@ -163,7 +260,7 @@ class M_hitung extends CI_Model {
 										,msc_system_items msi 
 						where br.ABSORPTION_ACCOUNT = gcc.CODE_COMBINATION_ID
 						and br.RESOURCE_ID = bdr.RESOURCE_ID
-						and br.RESOURCE_ID = kdmr.RESOURCE_ID
+						and br.RESOURCE_ID = kdmr.RESOURCE_ID(+)
 						and bdr.DEPARTMENT_ID = bd.DEPARTMENT_ID
 						--
 						and bores.RESOURCE_ID = br.RESOURCE_ID
