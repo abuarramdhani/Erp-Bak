@@ -31,7 +31,7 @@ class M_Order extends CI_Model
 
     public function getItem($item)
     {
-        $query = $this->db->query("select * from k3.k3_master_item where item like upper('%$item%')");
+        $query = $this->db->query("select * from k3.k3_master_item where item like upper('%$item%') order by item");
         return $query->result_array();
     }
 

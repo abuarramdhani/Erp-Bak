@@ -27,8 +27,7 @@ class C_Order extends CI_Controller
 	/* CHECK SESSION */
 	public function checkSession()
 	{
-		if ($this->session->is_logged) {
-		} else {
+		if ($this->session->is_logged) { } else {
 			redirect('');
 		}
 	}
@@ -1331,12 +1330,16 @@ class C_Order extends CI_Controller
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 		$data['seksi'] 		= $this->M_order->getSeksi($noind);
 		$data['daftar_pekerjaan']	= $this->M_order->daftar_pekerjaan($kodesie);
-
+		$ks = substr($kodesie, 0, 7);
 		$pr = $this->input->post('k3_periode');
 		$m = substr($pr, 0, 2);
 		$y = substr($pr, 5, 5);
 		$periode = $pr;
+
 		$pr = $y . '-' . $m;
+		if (!empty($_POST)) {
+			$this->session->set_flashdata('button', "<button value='$ks' type='button' class='btn btn-primary details-apd p2k3_detail_seksi_hitung'>Detail</button>");
+		}
 		// echo $pr;exit();
 		if (empty($pr)) {
 			$pr = date('Y-m');
@@ -2384,8 +2387,8 @@ class C_Order extends CI_Controller
 		$costc = $this->M_order->getCostCenter($kodesie);
 		$listcc = $this->M_order->getOr('');
 		$listcc2 = array_column($listcc, 'COST_CENTER');
-		$listbr =  array_column($listcc, 'BRANCH','COST_CENTER');
-		$listbr2 =  array_column($listcc, 'BRANCH','PEMAKAI');
+		$listbr =  array_column($listcc, 'BRANCH', 'COST_CENTER');
+		$listbr2 =  array_column($listcc, 'BRANCH', 'PEMAKAI');
 		$data['listbrjs'] = json_encode($listbr2);
 		if (!in_array($costc, $listcc2)) {
 			$costc = '';
@@ -2399,7 +2402,7 @@ class C_Order extends CI_Controller
 		$pkj_lok = $this->M_order->getDetailPekerja($user)->row()->lokasi_kerja;
 		if (intval($pkj_lok) == 2) {
 			$data['lokerbr'] = 'AC';
-		}else{
+		} else {
 			$data['lokerbr'] = 'AA';
 		}
 
@@ -2424,7 +2427,7 @@ class C_Order extends CI_Controller
 		if (!$kodesie) return;
 		// if session responsibility is P2K3 TIM V2
 		// "can select all worker
-		if ((int)$this->session->responsibility_id === 2615 || $this->session->responsibility == 'P2K3 TIM V.2') {
+		if ((int) $this->session->responsibility_id === 2615 || $this->session->responsibility == 'P2K3 TIM V.2') {
 			$kodesie = '';
 		}
 
@@ -2522,11 +2525,11 @@ class C_Order extends CI_Controller
 				$today = date_create(date('Y-m-d'));
 				$latest = date_create($transact);
 				$diff = date_diff($latest, $today);
-				$canBon = $diff->format('%y')*12+$diff->format('%m') >= $periode;
+				$canBon = $diff->format('%y') * 12 + $diff->format('%m') >= $periode;
 				if (!$canBon) return $this->response(true, [
 					'bon_terakhir' => isset($transact) ? $transact : '-'
 				], "Pekerja sudah pernah bon sepatu kerja dalam waktu dekat");
-			}else{
+			} else {
 				$nobon = $latestBon->no_bon;
 				$last = null;
 				$cekRombongannya = $this->M_order->getNobondtl($nobon);
@@ -2543,16 +2546,16 @@ class C_Order extends CI_Controller
 				if (isset($arrN[$noind]) && $arrN[$noind] == 'N') {
 					return $this->response(false, [
 						'bon_terakhir' =>  '-'
-						], "Pekerja sudah pernah mengebon dengan nomor $nobon");
+					], "Pekerja sudah pernah mengebon dengan nomor $nobon");
 				}
 				if (isset($arrN[$noind]) && $arrN[$noind] == 'Y') {
 					$today = date_create(date('Y-m-d'));
 					$latest = date_create($transact);
 					$diff = date_diff($latest, $today);
-					$canBon = $diff->format('%y')*12+$diff->format('%m') >= $periode;
+					$canBon = $diff->format('%y') * 12 + $diff->format('%m') >= $periode;
 					return $this->response(true, [
 						'bon_terakhir' => isset($transact) ? $transact : '-'
-						], "Pekerja sudah pernah bon sepatu kerja dalam waktu dekat");
+					], "Pekerja sudah pernah bon sepatu kerja dalam waktu dekat");
 				}
 			}
 		}

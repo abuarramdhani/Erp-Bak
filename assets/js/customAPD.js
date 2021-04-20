@@ -792,8 +792,10 @@ $(document).ready(function () {
 					},
 				});
 			},
-			error: function (xhr, ajaxOptions, thrownError) {
-				$.toaster(xhr + "," + ajaxOptions + "," + thrownError);
+			error: function () {
+				$("#phone_result_seksi_hitung").html('Data Masih Kosong Pada Bulan Tersebut');
+				$("#surat-loading").attr("hidden", true);
+				$("#p2k3_detail_seksi_hitung").modal("show");
 			},
 		});
 	});
