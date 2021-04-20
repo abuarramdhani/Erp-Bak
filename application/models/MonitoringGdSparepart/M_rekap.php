@@ -17,23 +17,25 @@ class M_rekap extends CI_Model {
         // echo $sql;
     }
 
-    public function getMasuk($date) {
+    public function getMasuk($date, $subinv) {
         $oracle = $this->load->database('oracle', true);
         $sql ="select *
                 from khs_monitoring_gd_sp 
                 where creation_date like to_date('$date','DD/MM/YYYY')
                 and no_document != '-'
+                and subinv = '$subinv'
                 order by no_document";
         $query = $oracle->query($sql);
         return $query->result_array();
         // echo $sql;
     }
 
-    public function getpcs($date) {
+    public function getpcs($date, $subinv) {
         $oracle = $this->load->database('oracle', true);
         $sql ="select sum(qty) pcs
                 from khs_monitoring_gd_sp 
                 where creation_date like to_date('$date','DD/MM/YYYY')
+                and subinv = '$subinv'
                 and no_document != '-'";
         $query = $oracle->query($sql);
         return $query->result_array();
@@ -103,20 +105,24 @@ class M_rekap extends CI_Model {
     public function getKetMO($no_document){
         $oracle = $this->load->database('oracle', true);
         $sql = "SELECT mtrh.request_number no_do_spb, msib.segment1 item, msib.description,
-                        (mmt.transaction_quantity * -1) transaction_quantity,
-                        mtrl.quantity_delivered, mtrl.from_subinventory_code,
-                        mtrl.to_subinventory_code, mtrh.creation_date, mmt.transaction_date
-                FROM mtl_txn_request_headers mtrh,
-                        mtl_txn_request_lines mtrl,
-                        mtl_system_items_b msib,
-                        mtl_material_transactions mmt
-                WHERE mtrh.request_number = '$no_document'
-                    AND mtrl.header_id = mtrh.header_id
-                    AND mtrl.inventory_item_id = msib.inventory_item_id
-                    AND mtrl.organization_id = msib.organization_id
-                    AND mmt.move_order_line_id = mtrl.line_id
-                    AND mmt.inventory_item_id = mtrl.inventory_item_id
-                    AND mmt.transaction_quantity LIKE '-%'";
+        (mmt.transaction_quantity * -1) transaction_quantity,
+        mtrl.quantity_delivered, mtrl.from_subinventory_code,
+        mtrl.to_subinventory_code, mtrh.creation_date, mmt.transaction_date
+   FROM mtl_txn_request_headers mtrh,
+        mtl_txn_request_lines mtrl,
+        mtl_system_items_b msib,
+        mtl_material_transactions mmt
+  WHERE mtrl.header_id = mtrh.header_id
+    AND mtrl.inventory_item_id = msib.inventory_item_id
+    AND mtrl.organization_id = msib.organization_id
+    AND mmt.move_order_line_id = mtrl.line_id
+    AND mmt.inventory_item_id = mtrl.inventory_item_id
+    AND mmt.transaction_quantity LIKE '-%'
+    AND mtrh.move_order_type = 1
+    AND mtrh.header_status IN (3, 7)
+    AND mtrl.line_status IN (3, 7)
+    AND mtrl.quantity = mtrl.quantity_delivered
+    AND mtrh.request_number = '$no_document'";
           $query = $oracle->query($sql);
           return $query->result_array();
     }
@@ -171,6 +177,19 @@ class M_rekap extends CI_Model {
         $query = $oracle->query($sql);
         return $query->result_array();
         // echo $sql;
+    }
+
+    public function gdAsalMO($no_document){
+        $oracle = $this->load->database('oracle', true);
+        $sql = "SELECT DISTINCT mtrl.from_subinventory_code
+        FROM mtl_txn_request_headers mtrh, mtl_txn_request_lines mtrl
+       WHERE mtrh.header_id = mtrl.header_id
+         AND mtrh.move_order_type = 1
+         AND mtrh.header_status IN (3, 7)
+         AND mtrl.line_status IN (3, 7)
+         AND mtrh.request_number = '$no_document'";
+        $query = $oracle->query($sql);
+        return $query->result_array();
     }
 
     public function getKetFPB($no_document){
