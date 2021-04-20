@@ -6,7 +6,7 @@ class M_monitoring extends CI_Model {
         parent::__construct();
     }
 
-    public function tampilsemua($date, $date2) {
+    public function tampilsemua($date, $date2, $subinv) {
         $oracle = $this->load->database('oracle', true);
         $sql ="
                 SELECT NO_DOCUMENT, JENIS_DOKUMEN, ITEM, DESCRIPTION, 
@@ -14,6 +14,7 @@ class M_monitoring extends CI_Model {
                 STATUS, JML_OK, JML_NOT_OK, PIC, KETERANGAN, ACTION 
                 from KHS_MONITORING_GD_SP 
                 where TRUNC(creation_date) BETWEEN TO_DATE('$date', 'DD/MM/YYYY') AND TO_DATE('$date2', 'DD/MM/YYYY')
+                and subinv = '$subinv'
                 and no_document != '-'
                 order by CREATION_DATE DESC";
         $query = $oracle->query($sql);
@@ -21,7 +22,7 @@ class M_monitoring extends CI_Model {
         // echo $sql;
     }
     
-    public function getData_Tanpa_Surat() {
+    public function getData_Tanpa_Surat($subinv) {
         $oracle = $this->load->database('oracle', true);
         $sql ="
                 SELECT ITEM, DESCRIPTION, 
@@ -29,6 +30,7 @@ class M_monitoring extends CI_Model {
                 STATUS, JML_OK, JML_NOT_OK, PIC, KETERANGAN, ACTION 
                 from KHS_MONITORING_GD_SP 
                 where jenis_dokumen = 'TANPA SURAT'
+                and subinv = '$subinv'
                 order by CREATION_DATE DESC";
         $query = $oracle->query($sql);
         return $query->result_array();
@@ -36,7 +38,7 @@ class M_monitoring extends CI_Model {
     }
 
     
-    public function getSearch($no_document, $jenis_dokumen, $tglAwal, $tglAkhir, $pic, $item) {
+    public function getSearch($no_document, $jenis_dokumen, $tglAwal, $tglAkhir, $pic, $item, $subinv) {
         $oracle = $this->load->database('oracle', true);
         $no_document == null? $nodoku = '' : $nodoku = "and no_document = '$no_document'";
         $pic == null ? $pic2 = '' : $pic2 = "and pic like '%$pic%'";
@@ -55,13 +57,14 @@ class M_monitoring extends CI_Model {
                 WHERE CREATION_DATE IS NOT NULL
                 $dokudoku $nodoku $tanggal $pic2 $item2
                 and no_document != '-'
+                and subinv = '$subinv'
                 order by CREATION_DATE DESC";
         $query = $oracle->query($sql);
         return $query->result_array();
         // echo $sql;
     }
 
-    public function getExport($jenis_dokumen, $tglAwal, $tglAkhir) {
+    public function getExport($jenis_dokumen, $tglAwal, $tglAkhir, $subinv) {
         $oracle = $this->load->database('oracle', true);
         $sql ="SELECT NO_DOCUMENT, JENIS_DOKUMEN, ITEM, DESCRIPTION,
                 UOM, QTY, CREATION_DATE, to_char(CREATION_DATE, 'hh24:mi:ss') as JAM_INPUT,
@@ -70,6 +73,7 @@ class M_monitoring extends CI_Model {
         WHERE jenis_dokumen = '$jenis_dokumen'
         AND TRUNC(creation_date) BETWEEN TO_DATE('$tglAwal', 'DD/MM/YYYY') AND TO_DATE('$tglAkhir', 'DD/MM/YYYY')
         and no_document != '-'
+        and subinv = '$subinv'
         order by CREATION_DATE DESC";
         $query = $oracle->query($sql);
         return $query->result_array();
@@ -133,7 +137,31 @@ class M_monitoring extends CI_Model {
         and kk.KIBCODE = '$no_document'";
           $query = $oracle->query($sql);
           return $query->result_array();
-          
+    }
+
+    public function getKetMO($no_document){
+        $oracle = $this->load->database('oracle', true);
+        $sql = "SELECT mtrh.request_number no_do_spb, msib.segment1 item, msib.description,
+        (mmt.transaction_quantity * -1) transaction_quantity,
+        mtrl.quantity_delivered, mtrl.from_subinventory_code,
+        mtrl.to_subinventory_code, mtrh.creation_date, mmt.transaction_date
+   FROM mtl_txn_request_headers mtrh,
+        mtl_txn_request_lines mtrl,
+        mtl_system_items_b msib,
+        mtl_material_transactions mmt
+  WHERE mtrl.header_id = mtrh.header_id
+    AND mtrl.inventory_item_id = msib.inventory_item_id
+    AND mtrl.organization_id = msib.organization_id
+    AND mmt.move_order_line_id = mtrl.line_id
+    AND mmt.inventory_item_id = mtrl.inventory_item_id
+    AND mmt.transaction_quantity LIKE '-%'
+    AND mtrh.move_order_type = 1
+    AND mtrh.header_status IN (3, 7)
+    AND mtrl.line_status IN (3, 7)
+    AND mtrl.quantity = mtrl.quantity_delivered
+    AND mtrh.request_number = '$no_document'";
+        $query = $oracle->query($sql);
+        return $query->result_array();
     }
 
     public function getKetFPB($no_document){
@@ -209,6 +237,19 @@ class M_monitoring extends CI_Model {
         $query = $oracle->query($sql);
         return $query->result_array();
         // echo $sql;
+    }
+
+    public function gdAsalMo($no_document){
+        $oracle = $this->load->database('oracle', true);
+        $sql = "SELECT DISTINCT mtrl.from_subinventory_code
+        FROM mtl_txn_request_headers mtrh, mtl_txn_request_lines mtrl
+       WHERE mtrh.header_id = mtrl.header_id
+         AND mtrh.move_order_type = 1
+         AND mtrh.header_status IN (3, 7)
+         AND mtrl.line_status IN (3, 7)
+         AND mtrh.request_number = '$no_document'";
+        $query = $oracle->query($sql);
+        return $query->result_array();
     }
 
     public function getPIC($term){
