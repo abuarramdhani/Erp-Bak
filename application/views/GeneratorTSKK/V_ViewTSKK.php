@@ -127,7 +127,7 @@ text-align: center;
                                         </td>
                                         <td><?php echo $judul_tskk; ?></td>
                                         <td><?php echo $pembuat; ?></td>
-                                        <td style="text-align:center;"><?php echo $newDate; ?></td>
+                                        <td style="text-align:center;" data-order="<?php echo date("Ymd", strtotime($newDate)); ?>"><?php echo $newDate; ?></td>
                                         <td><?php echo $tipe; ?></td>
                                         <td><?php echo $nama_part; ?></td>
                                         <td><?php echo $seksi; ?></td>

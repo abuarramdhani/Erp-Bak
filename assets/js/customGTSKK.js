@@ -32,25 +32,20 @@ $('.tabel_elemen').DataTable({
 });
 
 //TABEL DAFTAR TSKK//
-$('#tabel_daftarTSKK').DataTable({
-  // "lengthMenu": [10],
-  // "ordering": false,
-  // "lengthChange": false
-  // bSortable: true,
-  // bRetrieve: true,
-  // aoColumnDefs: [
-  //     { "aTargets": [ 0 ], "bSortable": true },
-  //     { "aTargets": [ 1 ], "bSortable": false },
-  //     { "aTargets": [ 2 ], "bSortable": false },
-  //     { "aTargets": [ 3 ], "bSortable": true },
-  //     { "aTargets": [ 4 ], "bSortable": true },
-  //     { "aTargets": [ 5 ], "bSortable": true },
-  //     { "aTargets": [ 6 ], "bSortable": true },
-  //     { "aTargets": [ 7 ], "bSortable": true },
-  //     { "aTargets": [ 8 ], "bSortable": true },
-  //     { "aTargets": [ 9 ], "bSortable": true }
-  // ]
-});
+$(document).ready( function () {
+   $('#tabel_daftarTSKK').DataTable();
+
+} );
+
+function checkBoxParalel_(th) {
+  if ($(th).is(':checked')) {
+    $(th).closest('tr').find('input[name="start_time_together[]"]').removeAttr('readonly');
+    $(th).closest('tr').find('input[name="end_time_together[]"]').removeAttr('readonly');
+  } else {
+    $(th).closest('tr').find('input[name="start_time_together[]"]').attr('readonly', true);
+    $(th).closest('tr').find('input[name="end_time_together[]"]').attr('readonly', true);
+  }
+}
 
 $('.dt-gentskk').DataTable();
 
@@ -247,7 +242,9 @@ function filterGenTskk() {
 }
 
 $(document).ready(function() {
-
+  if ($('#untuk_keperluan_gtskk').val() != undefined) {
+    $('input[type=checkbox]').iCheck('destroy');
+  }
   $('input[name="perhitunganTakt"]').on('ifChanged', function() {
     if ($('input[name=perhitunganTakt]:checked').val() == "1") {
       $('.tskk_delik_cek_pakai').show()
@@ -282,10 +279,10 @@ function addRowObservation() {
   var html = '<tr class="nomor_' + nomor + '"><td class="posisi bg-success first-col" title="Klik Untuk Menambah Elemen Disini" onclick="attachRowObservation_new(this)">' + nomor + '</td>';
   console.log(nomor);
   // KOLOM 2
-  html += '<td><input type="checkbox" style="width:19px;height:19px;" name="checkBoxParalel[' + (nomor - 1) + ']" value="PARALEL" class="checkBoxParalel" onchange="//chckParalel(this)"></td>'
+  html += '<td><input type="checkbox" style="width:19px;height:19px;" name="checkBoxParalel[' + (nomor - 1) + ']" value="PARALEL" class="checkBoxParalel" onclick="checkBoxParalel_(this)"></td>'
   // KOLOM 2.5
-  html += '<td><input type="number" class="form-control" style="width: 70px;" name="start_time_together[]" value=""></td>'
-  html += '<td><input type="number" class="form-control" style="width: 70px;" name="end_time_together[]" value=""></td>'
+  html += '<td><input type="number" class="form-control" style="width: 70px;" name="start_time_together[]" value="" readonly></td>'
+  html += '<td><input type="number" class="form-control" style="width: 70px;" name="end_time_together[]" value="" readonly></td>'
   // KOLOM 3
 
   //ini dulu
@@ -555,10 +552,10 @@ function addRowObservationEdit() {
   }
   // KOLOM 1
   var html = '<tr class="nomor_' + nomor + '"><td class="posisi  bg-success first-col" title="Klik Untuk Menambah Elemen Disini" onclick="attachRowObservation(this)">' + nomor + '</td>';
-  html += '<td><input type="checkbox" style="width:19px;height:19px;" name="checkBoxParalel[' + (nomor - 1) + ']" value="PARALEL" class="checkBoxParalel"></td>'
+  html += '<td><input type="checkbox" style="width:19px;height:19px;" name="checkBoxParalel[' + (nomor - 1) + ']" value="PARALEL" class="checkBoxParalel" onclick="checkBoxParalel_(this)"></td>'
   // KOLOM 2.5
-  html += '<td><input type="number" class="form-control" style="width: 70px;" name="start_time_together[]" value=""></td>'
-  html += '<td><input type="number" class="form-control" style="width: 70px;" name="end_time_together[]" value=""></td>'
+  html += '<td><input type="number" class="form-control" style="width: 70px;" name="start_time_together[]" value="" readonly></td>'
+  html += '<td><input type="number" class="form-control" style="width: 70px;" name="end_time_together[]" value="" readonly></td>'
   // KOLOM 2
   //ini dulu
   // html += '<td><select id="slcJenis_' + nomor + '" onchange="myFunctionTSKK(this)" name="slcJenisProses[]" class="form-control select00004" id="" style="width:100%;" title="Jenis Proses" >';
@@ -1078,6 +1075,7 @@ function checkDistributionTime() {
 //DELETE CURRENT ROWS IN OBSERVATION SHEET//
 function deleteObserve(th) {
   var curr_row = $(th).parent().parent('tr');
+  let posisi = $(th).parent().parent('tr').find('.posisi').text();
   //remove row
   curr_row.remove();
 
@@ -1087,6 +1085,58 @@ function deleteObserve(th) {
   $('.checkBoxParalel').each((i, v) => {
     $(v).attr('name', `checkBoxParalel[${i}]`)
   })
+
+  // console.log(`input[name="checkBoxParalel[${posisi-1}]"]`);
+  // if (Number(value_folow_start)-1 == 0) {
+  //   $(v).parent().parent('tr').find(`input[type="checkbox"]`).attr('checked', false);
+  // }
+
+  if ($('#untuk_keperluan_gtskk_input_observasi').val() == 1) {
+    setTimeout(function () {
+      console.log('posisi_saya '+posisi);
+      $('#tblObservasi tbody tr input[name="start_time_together[]"]').each((i,v) => {
+        let value_folow_start = $(v).val();
+        if (Number(posisi) <= Number(value_folow_start)) {
+          $(v).val(Number(value_folow_start)-1 == 0 ? '' : Number(value_folow_start)-1);
+          if (Number(value_folow_start)-1 == 0) {
+            $(v).parent().parent('tr').find('input[type="checkbox"]').attr('checked', false)
+          }
+        }
+      })
+      $('#tblObservasi tbody tr input[name="end_time_together[]"]').each((i,v) => {
+        let value_folow_end = $(v).val();
+        if (Number(posisi) <= Number(value_folow_end)) {
+          $(v).val(Number(value_folow_end)-1 == 0 ? '' : Number(value_folow_end)-1);
+          if (Number(value_folow_end)-1 == 0) {
+            $(v).parent().parent('tr').find('input[type="checkbox"]').attr('checked', false)
+          }
+        }
+      })
+    }, 50);
+  }else {
+    setTimeout(function () {
+      console.log('posisi_saya '+posisi);
+      $('#tblObservasiEdit tbody tr input[name="start_time_together[]"]').each((i,v) => {
+        let value_folow_start = $(v).val();
+        if (Number(posisi) <= Number(value_folow_start)) {
+          $(v).val(Number(value_folow_start)-1 == 0 ? '' : Number(value_folow_start)-1);
+          if (Number(value_folow_start)-1 == 0) {
+            $(v).parent().parent('tr').find('input[type="checkbox"]').attr('checked', false)
+          }
+        }
+      })
+      $('#tblObservasiEdit tbody tr input[name="end_time_together[]"]').each((i,v) => {
+        let value_folow_end = $(v).val();
+        if (Number(posisi) <= Number(value_folow_end)) {
+          $(v).val(Number(value_folow_end)-1 == 0 ? '' : Number(value_folow_end)-1);
+          if (Number(value_folow_end)-1 == 0) {
+            $(v).parent().parent('tr').find('input[type="checkbox"]').attr('checked', false)
+          }
+        }
+      })
+    }, 50);
+  }
+
 
 }
 
@@ -2287,13 +2337,13 @@ function attachRowObservation_new(th) {
 	<tr class = "number_${num}">
 		<td class="posisi bg-success first-col" title="Klik Untuk Menambah Elemen Disini" onclick="attachRowObservation_new(this)"> ${posisi} </td>
 		<td>
-		<input type="checkbox" name="checkBoxParalel[${indx}]" style="width:19px;height:19px;" value="PARALEL" class="checkBoxParalel" onchange="//chckParalel(this)">
+		<input type="checkbox" name="checkBoxParalel[${indx}]" style="width:19px;height:19px;" value="PARALEL" class="checkBoxParalel" onclick="checkBoxParalel_(this)">
 		</td>
 		<td>
-			<input type="number" class="form-control" style="width: 70px;" name="start_time_together[]" value="">
+			<input type="number" class="form-control" style="width: 70px;" name="start_time_together[]" value="" readonly>
 		</td>
 		<td>
-			<input type="number" class="form-control" style="width: 70px;" name="end_time_together[]" value="">
+			<input type="number" class="form-control" style="width: 70px;" name="end_time_together[]" value="" readonly>
 		</td>
 		<td>
       <input list="brow_jenis_proses" class="form-control select00004" onchange="myFunctionTSKK(this)" style="text-align:left;width:100%" data-placeholder="Jenis Proses" name="slcJenisProses[]" id="slcJenis_${posisi}">
@@ -2467,6 +2517,22 @@ function attachRowObservation_new(th) {
     // });
   }
 
+  setTimeout(function () {
+    console.log('posisi_saya '+posisi);
+    $('#tblObservasi tbody tr input[name="start_time_together[]"]').each((i,v) => {
+      let value_folow_start = $(v).val();
+      if (Number(posisi) <= Number(value_folow_start)) {
+        $(v).val(Number(value_folow_start)+1);
+      }
+    })
+    $('#tblObservasi tbody tr input[name="end_time_together[]"]').each((i,v) => {
+      let value_folow_end = $(v).val();
+      if (Number(posisi) <= Number(value_folow_end)) {
+        $(v).val(Number(value_folow_end)+1);
+      }
+    })
+  }, 50);
+
   $('input[name="terdaftar"]').on('ifChanged', function() {
     if ($('input[name=terdaftar]:checked').val() == "TidakTerdaftar") {
       console.log("tdk");
@@ -2524,13 +2590,13 @@ function attachRowObservation(th) {
 	<tr class = "number_${num}">
 		<td class="posisi bg-success first-col" title="Klik Untuk Menambah Elemen Disini" onclick="attachRowObservation(this)"> ${posisi} </td>
 		<td>
-		<input type="checkbox" name="checkBoxParalel[${indx}]" style="width:19px;height:19px;" value="PARALEL" class="checkBoxParalel" onchange="//chckParalel(this)">
+		<input type="checkbox" name="checkBoxParalel[${indx}]" style="width:19px;height:19px;" value="PARALEL" class="checkBoxParalel" onclick="checkBoxParalel_(this)">
 		</td>
 		<td>
-			<input type="number" class="form-control" style="width: 70px;" name="start_time_together[]" value="">
+			<input type="number" class="form-control" style="width: 70px;" name="start_time_together[]" value="" readonly>
 		</td>
 		<td>
-			<input type="number" class="form-control" style="width: 70px;" name="end_time_together[]" value="">
+			<input type="number" class="form-control" style="width: 70px;" name="end_time_together[]" value="" readonly>
 		</td>
 		<td>
 		  <input list="brow_jenis_proses" class="form-control select00004" onchange="myFunctionTSKK(this)" style="text-align:left;width:100%" data-placeholder="Jenis Proses" name="slcJenisProses[]" id="slcJenis_${posisi}">
@@ -2704,6 +2770,23 @@ function attachRowObservation(th) {
     //   radioClass: 'iradio_flat-blue'
     // });
   }
+
+  setTimeout(function () {
+    console.log('posisi_saya '+posisi);
+    $('#tblObservasiEdit tbody tr input[name="start_time_together[]"]').each((i,v) => {
+      let value_folow_start = $(v).val();
+      if (Number(posisi) <= Number(value_folow_start)) {
+        $(v).val(Number(value_folow_start)+1);
+      }
+    })
+    $('#tblObservasiEdit tbody tr input[name="end_time_together[]"]').each((i,v) => {
+      let value_folow_end = $(v).val();
+      if (Number(posisi) <= Number(value_folow_end)) {
+        $(v).val(Number(value_folow_end)+1);
+      }
+    })
+  }, 50);
+
 
   $('input[name="terdaftar"]').on('ifChanged', function() {
     if ($('input[name=terdaftar]:checked').val() == "TidakTerdaftar") {

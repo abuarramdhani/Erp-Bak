@@ -1868,7 +1868,7 @@ public function exportExcel($idnya){
             $mudaAuto[$i] = 'tidakMuda';
         }
     }
-    // die;
+		// die;
 
     $selectIdElemen = $this->M_gentskk->selectIdElemen($id_tskk);
     if ($selectIdElemen == null) {
@@ -4025,13 +4025,36 @@ public function exportExcel($idnya){
 				}
 
 				//ambil manual / walk terakhir
+				$manual_walk_finish = [];
+				$alphabet = 'a';
+				for ($q=0; $q < sizeof($elemen_kerja); $q++) {
+					if ($jenis_proses[$q] == 'MANUAL' || $jenis_proses[$q] == 'WALK') {
+						$manual_walk_finish[$q] = $finish[$q];
+						$manual_walk_finish_index[$alphabet] = $q;
+						$manual_walk_finish_indx[] = $q;
+						$manual_walk_start[$q] = $start[$q];
+					}
+				$alphabet++;
+				}
+
 				$elemen_kerja_last_manual_walk = null;
 	      for ($q=0; $q < sizeof($elemen_kerja); $q++) {
 					if ($jenis_proses[$q] == 'MANUAL' || $jenis_proses[$q] == 'WALK') {
-						$elemen_kerja_last_manual_walk = $q;
+						if ($finish[$q] == max($manual_walk_finish)) {
+							$elemen_kerja_last_manual_walk = $q;
+						}
 					}
 				}
 
+				// menghapus index pertama dari 2/+ index bernilai(value) yang sama dari array manual/walk start
+				$manual_walk_start_filtered = array_unique(array_diff_assoc($manual_walk_start, array_unique( $manual_walk_start )));
+				foreach ($manual_walk_start_filtered as $key => $value) {
+					unset($manual_walk_start[array_search($value, $manual_walk_start)]);
+				}
+				// echo "<br> ^finish ============== start ";
+				// echo "<pre>";
+				// print_r($manual_walk_finish_indx);
+				// die;
         for ($j=0; $j < sizeof($elemen_kerja); $j++) {
             $rowflow = $rownya + ($j * 3);
             if ($muda[$j] > 1) {
@@ -4041,9 +4064,15 @@ public function exportExcel($idnya){
                 $startmuda[$j]= -2;
                 $finishmuda[$j] = -1;
             }
+						// echo ($finish[$j]+1).' <=finish start=> '.$start[array_search($finish[$j]+1, $manual_walk_start)]."<br>";
 
 						if ($nn < $cycle_time) {
 							for ($i=$nn; $i < $cycle_time; $i++) {
+								// if ($jenis_proses[$j] != 'AUTO') {
+								// 	if (($i >= $startmuda[$j] && $i <= $finishmuda[$j])) {
+								// 		echo $j." <=index ".($finish[$j]+1).' <=finish start=> '.$start[array_search($finish[$j]+1, $manual_walk_start)]."masok kondisi<br>";
+								// 	}
+								// }
 								// ng kene ! bagian row detik
 									if (($i >= $start[$j] && $i <= $finish[$j])) {
 											if ($jenis_proses[$j] === 'MANUAL') {
@@ -4062,22 +4091,14 @@ public function exportExcel($idnya){
 									}
 
 									// baris penghubung
-									if ($j != sizeof($elemen_kerja) - 1) {
-										if ($jenis_proses[$j+1] == $jenis_proses[$j] || ($jenis_proses[$j] == 'MANUAL' && $jenis_proses[$j+1] == 'WALK') || ($jenis_proses[$j] == 'WALK' && $jenis_proses[$j+1] == 'MANUAL')) {
-											if ($finish[$j]+1 == $start[$j+1]) {
-												$styles[$x][$rowflow + 2][($finish[$j]+$mulai_colom_grafik) - $nn]['border'] = 'right';
-												$styles[$x][$rowflow + 2][($finish[$j]+$mulai_colom_grafik) - $nn]['border-style'] = 'thin';
-
-												$styles[$x][$rowflow + 3][($finish[$j]+$mulai_colom_grafik) - $nn]['border'] = 'right';
-												$styles[$x][$rowflow + 3][($finish[$j]+$mulai_colom_grafik) - $nn]['border-style'] = 'thin';
-											}
-										}elseif (!empty($jenis_proses[$j+2])) {
-											if ($jenis_proses[$j+2] == $jenis_proses[$j] || ($jenis_proses[$j] == 'MANUAL' && $jenis_proses[$j+2] == 'WALK') || ($jenis_proses[$j] == 'WALK' && $jenis_proses[$j+2] == 'MANUAL')) {
-												if ($finish[$j]+1 == $start[$j+2]) {
-													for ($eaea=1; $eaea <= 7; $eaea++) {
-														$styles[$x][$rowflow + $eaea][($finish[$j]+$mulai_colom_grafik) - $nn]['border'] = 'right';
-														$styles[$x][$rowflow + $eaea][($finish[$j]+$mulai_colom_grafik) - $nn]['border-style'] = 'thin';
-													}
+									// if ($j != sizeof($elemen_kerja) - 1) {
+										if ($finish[$j]+1 == $start[array_search($finish[$j]+1, $start)]) {
+											if ($jenis_proses[$j] == $jenis_proses[array_search($finish[$j]+1, $manual_walk_start)]
+											|| ($jenis_proses[$j] == 'MANUAL' && $jenis_proses[array_search($finish[$j]+1, $manual_walk_start)] == 'WALK')
+											|| ($jenis_proses[$j] == 'WALK' && $jenis_proses[array_search($finish[$j]+1, $manual_walk_start)] == 'MANUAL')) {
+												for ($q=2; $q <= ((array_search($finish[$j]+1, $manual_walk_start) - $j)*3); $q++) {
+													$styles[$x][$rowflow + $q][($finish[$j]+$mulai_colom_grafik) - $nn]['border'] = 'right';
+													$styles[$x][$rowflow + $q][($finish[$j]+$mulai_colom_grafik) - $nn]['border-style'] = 'thin';
 												}
 											}
 										}
@@ -4090,14 +4111,13 @@ public function exportExcel($idnya){
 										// 		}
 										// 	}
 										// }
+									// }
 
-									}
-
-
-
-									if ($jenis_proses[$j] != 'AUTO') {
+								if ($jenis_proses[$j] != 'AUTO' && !empty(array_search($j, $manual_walk_finish_index))) {
 										// ($startmuda[$j] <= 600*$x && $finishmuda[$j] <= 600*$x)
-										if (($i >= $startmuda[$j] && $i <= $finishmuda[$j])) {
+										$manual_walk_finish_indx_now = array_search($j, $manual_walk_finish_indx);
+									if (($i >= $startmuda[$j] && $i <= $finishmuda[$j]) && $manual_walk_finish[$manual_walk_finish_indx[$manual_walk_finish_indx_now-1]]+1 != $start[array_search($finish[$manual_walk_finish_indx[$manual_walk_finish_indx_now-1]]+1, $manual_walk_start)]) {
+											// echo ($finish[$j-1]+1).' <=finish start=> '.$start[array_search($finish[$j-1]+1, $manual_walk_start)]."<br>";
 												$styles[$x][$rowflow][($i+$mulai_colom_grafik) - $nn]['fill'] = '#fa3eef';
 												$styles[$x][$rowflow-1][($i+$mulai_colom_grafik) - $nn]['fill'] = '#fa3eef';
 												if ($i === $finishmuda[$j]) {
@@ -4144,6 +4164,7 @@ public function exportExcel($idnya){
 							$styles[$x][$rowflow+2][($cycle_time + ($mulai_colom_grafik)) - $nn]['fill'] = '#fcf403';
 						}
         }
+				// die;
 				//end style element
 
 				//Irregular Job

@@ -205,7 +205,8 @@
       <option value="<?php echo $value['elemen_kerja'] ?>"><?php echo $value['elemen_kerja'] ?></option>
     <?php endforeach; ?>
   </datalist>
-
+  <input type="hidden" id="untuk_keperluan_gtskk" name="" value="1">
+  <input type="hidden" id="untuk_keperluan_gtskk_input_observasi" name="" value="1">
   <textarea hidden name="name" id="gtskk_proses_get_code" rows="8" cols="80"><?php echo json_encode($proses) ?></textarea>
   <datalist id="brow_slc_proses">
     <?php foreach ($proses as $key => $value): ?>
@@ -227,6 +228,12 @@
           <br />
           <div class="row">
             <div class="col-lg-12">
+              <div class="alert alert-success alert-dismissible fp_hide_001">
+                  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                  <h4><i class="icon fa fa-warning"></i> Info!</h4>
+                  Aplikasi Terakhir Diperbarui Pada 2021-04-21 16:30:23. <b>Reload halaman ini</b> dengan menekan <b>CTRL+SHIFT+R</b> secara berurutan jika telah melewati tanggal pembaruan..
+              </div>
+
               <div class="box box-primary box-solid">
                 <div class="box-header with-border">
                   <?php
@@ -521,7 +528,7 @@
                         <div class="row">
                           <label for="norm" class="control-label col-lg-6">Waktu 1 Shift (Detik) : </label>
                           <div class="col-lg-6">
-                            <input type="number" style="margin-left:-35px;" placeholder="Input Waktu Satu Shift" value="0" oninput="countTaktTime(this)" name="txtWaktu1Shift" id="txtWaktu1Shift" class="form-control waktu1Shift" />
+                            <input type="number" style="margin-left:-35px;" placeholder="Input Waktu Satu Shift" value="0" oninput="countTaktTime(this)" name="txtWaktu1Shift" class="form-control waktu1Shift" />
                           </div>
                         </div>
                         <br>
@@ -576,7 +583,7 @@
                         <div class="row">
                           <label for="norm" class="control-label col-lg-6">Waktu 1 Shift (Detik) : </label>
                           <div class="col-lg-6">
-                            <input type="number" style="margin-left:-35px;" placeholder="Input Waktu Satu Shift" oninput="countTaktTime(this)" name="txtWaktu1ShiftT" id="txtWaktu1Shift" class="form-control waktu1Shift" value="0" />
+                            <input type="number" style="margin-left:-35px;" placeholder="Input Waktu Satu Shift" oninput="countTaktTime(this)" name="txtWaktu1ShiftT" class="form-control waktu1Shift" value="0" />
                           </div>
                         </div>
                         <br>
@@ -688,14 +695,14 @@
                                   <td class="posisi bg-success first-col" title="Klik Untuk Menambah Elemen Disini" onclick="attachRowObservation_new(this)"><?php echo $no; ?></td>
                                   <!--TIPE URUTAN-->
                                   <td style="text-align: center;">
-                                    <input type="checkbox" name="checkBoxParalel[<?php echo $no-1;?>]" value="PARALEL" class="checkBoxParalel">
+                                    <input type="checkbox" style="width:19px;height:19px;" name="checkBoxParalel[<?php echo $no-1;?>]" value="PARALEL" class="checkBoxParalel" onclick="checkBoxParalel_(this)">
                                   </td>
                                   <!-- FOLLOW START END -->
                                   <td>
-                                    <input type="number" class="form-control" style="width: 70px;" name="start_time_together[]" value="">
+                                    <input type="number" class="form-control" style="width: 70px;" name="start_time_together[]" value="" readonly>
                                   </td>
                                   <td>
-                                    <input type="number" class="form-control" style="width: 70px;" name="end_time_together[]" value="">
+                                    <input type="number" class="form-control" style="width: 70px;" name="end_time_together[]" value="" readonly>
                                   </td>
                                   <!--JENIS PROSES-->
                                   <td>

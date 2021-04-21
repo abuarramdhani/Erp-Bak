@@ -254,6 +254,7 @@
       <option><?php echo $value['PROSES'] ?></option>
     <?php endforeach; ?>
   </datalist>
+  <input type="hidden" id="untuk_keperluan_gtskk" name="" value="1">
 
   <?php foreach ($lihat_hasilObservasi_elemen as $key) {
 	$id = $key['id_tskk'];
@@ -279,6 +280,11 @@
           <br />
           <div class="row">
             <div class="col-lg-12">
+              <div class="alert alert-success alert-dismissible fp_hide_001">
+                  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                  <h4><i class="icon fa fa-warning"></i> Info!</h4>
+                  Aplikasi Terakhir Diperbarui Pada 2021-04-21 16:30:23.<b>Reload halaman ini</b> dengan menekan <b>CTRL+SHIFT+R</b> secara berurutan jika telah melewati tanggal pembaruan..
+              </div>
               <div class="box box-primary box-solid">
                 <div class="box-header with-border">
                   <?php
@@ -811,7 +817,7 @@
                               <i class="fa fa-close"></i>
                             </span>
                           </button>
-                          <strong>Sekilas Info! </strong> Klik pada kolom <b>NO</b> Untuk Menambah Elemen</strong>
+                          <strong>Sekilas Info! </strong> Klik pada kolom <b>NO</b> Untuk Menyisipkan Elemen</strong>
                         </div>
 
                         <div class="panel panel-default">
@@ -904,16 +910,23 @@
                                     <td class="posisi bg-success first-col" title="Klik Untuk Menambah Elemen Disini" onclick="attachRowObservation(this)"><?php echo $no; ?></td>
                                     <!--TIPE URUTAN-->
                                     <td style="text-align: center;">
-                                      <input type="checkbox" <?php if ($tipe_urutan == 'PARALEL') { echo 'checked'; }?> name="checkBoxParalel[<?php echo $no-1;?>]" value="PARALEL" class="checkBoxParalel" id="checkBoxParalel"
-                                        onchange="//chckParalel(this)">
+                                      <input type="checkbox" <?php if ($tipe_urutan == 'PARALEL') { echo 'checked'; }?> name="checkBoxParalel[<?php echo $no-1;?>]" value="PARALEL" class="checkBoxParalel" style="width:19px;height:19px;" id="checkBoxParalel"
+                                        onclick="checkBoxParalel_(this)">
                                       <!-- <input type="text" id="YesOrNo" class="YesOrNo" name="chckTipeUrutan[]"> -->
                                     </td>
                                     <!-- FOLLOW START END -->
+                                    <?php
+                                      if (!empty($key['start_together'] ) || !empty($key['end_together'] )) {
+                                        $readonly = '';
+                                      }else {
+                                        $readonly = 'readonly';
+                                      }
+                                     ?>
                                     <td>
-                                      <input type="number" class="form-control" style="width: 70px;" name="start_time_together[]" value="<?php echo !empty($key['start_together'] ) ? $key['start_together']  : ''?>">
+                                      <input type="number" class="form-control" style="width: 70px;" name="start_time_together[]" value="<?php echo !empty($key['start_together'] ) ? $key['start_together']  : ''?>" <?php echo $readonly ?>>
                                     </td>
                                     <td>
-                                      <input type="number" class="form-control" style="width: 70px;" name="end_time_together[]" value="<?php echo !empty($key['end_together']) ? $key['end_together'] : '' ?>">
+                                      <input type="number" class="form-control" style="width: 70px;" name="end_time_together[]" value="<?php echo !empty($key['end_together']) ? $key['end_together'] : '' ?>" <?php echo $readonly ?>>
                                     </td>
                                     <!--JENIS PROSES-->
                                     <td>
