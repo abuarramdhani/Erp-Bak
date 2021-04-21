@@ -50,12 +50,19 @@
             // echo "<pre>";print_r($no_dokumen);exit();
 
             $cekdokumen = $this->M_pengeluaran->cekdokumen($subinv, $no_dokumen);
+            $cekdokumen2 = $this->M_pengeluaran->getCek($subinv, $no_dokumen);
 
             if ($cekdokumen != null) {
-                $data['ket'] = 'No Dokumen sudah ada';
+                $data['ket1'] = 'No Dokumen sudah ada';
+                $data['ket2'] = null;
+                $data['cek'] = $this->M_pengeluaran->getCek($subinv, $no_dokumen);
+            }else if ($cekdokumen2 == null) {
+                $data['ket1'] = null;
+                $data['ket2'] = 'Dokumen tidak ditemukan';
                 $data['cek'] = $this->M_pengeluaran->getCek($subinv, $no_dokumen);
             }else{
-                $data['ket'] = null;
+                $data['ket1'] = null;
+                $data['ket2'] = null;
                 $data['cek'] = $this->M_pengeluaran->getCek($subinv, $no_dokumen);
             }
 

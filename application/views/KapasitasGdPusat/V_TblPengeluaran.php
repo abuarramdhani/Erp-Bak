@@ -1,7 +1,13 @@
-<?php if (!empty($ket)) { ?>
+<?php if (!empty($ket1)) { ?>
     <div class="panel-body" style="margin-left:-10px">
         <div class="col-md-12 text-center">
             <label>No Dokumen sudah pernah di input !</label>
+        </div>
+    </div>
+<?php }else if (!empty($ket2)) {?>
+    <div class="panel-body" style="margin-left:-10px">
+        <div class="col-md-12 text-center">
+            <label>No Dokumen tidak ditemukan !</label>
         </div>
     </div>
 <?php }else{?>
