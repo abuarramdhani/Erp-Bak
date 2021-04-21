@@ -16,14 +16,15 @@ function spl_load_data() {
 		tmp = "finspot:FingerspotVer;" + btoa(baseurl + "ALA/Approve/fp_proces?userid=" + usr);
 	}
 
-	chk = "";
-	$(".spl-chk-data").each(function () {
-		if (this.checked) {
-			chk += "." + $(this).val();
+	var client_table = $('.spl-table').DataTable();
+	var chk = 0;
+	var rows = $( client_table.$('input[type="checkbox"]').each(function () {
+		if ($(this).is(':checked')) {
+			chk++;
 		}
-	});
+	}));
 
-	if (chk == "") {
+	if (chk == 0) {
 		$("#example11_wrapper").find("a.btn-primary").addClass("disabled");
 		$("#example11_wrapper").find("button.btn-primary").addClass("disabled");
 		console.log("tidak ada");
@@ -44,9 +45,9 @@ function spl_load_data() {
 
 //--------------------- surat perintah lembur ----------------//
 $(function () {
-	$(".spl-table.kasie, .spl-table.aska").DataTable({
+	$(".spl-table.aska, .spl-table.kasie").DataTable({
 		scrollX: true,
-		dom: '<"top"Bfpi>rt<"bottom"ip>',
+		dom: '<"top"Bflpi>rt<"bottom"ip>',
 		buttons: [
 			{
 				extend: "excelHtml5",
@@ -60,7 +61,11 @@ $(function () {
 					$("#spl_tex_proses").val("");
 					$("#btn-ProsesSPL").click();
 				},
-			},
+			}
+		],
+		"lengthMenu": [
+			[10, 50, 100, 200, 500, -1], 
+			[10, 50, 100, 200, 500, 'All']
 		],
 		ordering: false,
 		retrieve: true,
@@ -86,6 +91,10 @@ $(function () {
 				text: "Export Table",
 				className: "btn btn-success",
 			},
+		],
+		"lengthMenu": [
+			[10, 50, 100, 200, 500, -1], 
+			[10, 50, 100, 200, 500, 'All']
 		],
 		ordering: false,
 		retrieve: true,
@@ -728,18 +737,9 @@ $(function () {
 				$("#FingerDialogReject").modal("hide");
 				SET_ITEM(false);
 
-				$("#spl-approval-1").click();
-				$("#spl-approval-0").click();
-				$("#spl_check_all").iCheck("uncheck");
-
 				// call callback function
 				CALLBACK();
 
-				swal.fire({
-					title: `Sukses ${MESSAGE} lembur pekerja`,
-					text: "",
-					type: "success",
-				});
 			} else if (done === ERROR_CODE) {
 				swal
 					.fire({
@@ -781,17 +781,18 @@ $(function () {
 		ket = $("#spl_tex_proses").val();
 
 		if (url.indexOf("ALK") >= 0) {
-			tmp = "finspot:FingerspotVer;" + btoa(baseurl + "ALK/Approve/fp_proces?userid=" + usr + "&finger_id=" + finger);
+			tmp = "finspot:FingerspotVer;";
 		} else {
-			tmp = "finspot:FingerspotVer;" + btoa(baseurl + "ALA/Approve/fp_proces?userid=" + usr + "&finger_id=" + finger);
+			tmp = "finspot:FingerspotVer;";
 		}
 
-		chk = "";
-		$(".spl-chk-data").each(function () {
-			if (this.checked) {
+		var client_table = $('.spl-table').DataTable();
+		var chk = '';
+		var rows = $( client_table.$('input[type="checkbox"]').each(function () {
+			if ($(this).is(':checked')) {
 				chk += "." + $(this).val();
 			}
-		});
+		}));
 
 		if (chk == "") {
 			$("#example11_wrapper").find("a.btn-primary").addClass("disabled");
@@ -810,35 +811,52 @@ $(function () {
 		 */
 
 		let email_endpoint;
+		var p_status;
+		var p_spdlid;
+		var p_ket;
 
 		if (url.indexOf("ALK") >= 0) {
 			// KASIE
-			$("#spl_proses_reject").attr("href", tmp + btoa("&stat=31&data=" + chk + "&ket=" + ket));
+			$("#spl_proses_reject").attr("href", tmp + btoa(baseurl + "ALK/Approve/fp_proces?userid=" + usr + "&finger_id=" + finger + "&stat=31&data=" + 'chk' + "&ket=" + 'ket'));
 
-			email_endpoint = `ALK/Approve/sendSPLEmail?status=31&spl_id=${chk}&ket=${ket}`;
+			email_endpoint = 'ALK/Approve/sendSPLEmail';
 
-			// $("#spl_proses_approve").attr(
-			// 	"href",
-			// 	tmp + btoa("&stat=21&data=" + chk + "&ket=" + ket)
-			// );
+			p_status = '31';
+			p_spdlid = chk;
+			p_ket = ket;
 		} else {
 			// KEPALA UNIT
-			$("#spl_proses_reject").attr("href", tmp + btoa("&stat=35&data=" + chk + "&ket=" + ket));
+			$("#spl_proses_reject").attr("href", tmp + btoa(baseurl + "ALA/Approve/fp_proces?userid=" + usr + "&finger_id=" + finger + "&stat=35&data=" + 'chk' + "&ket=" + 'ket'));
 
-			email_endpoint = `ALA/Approve/sendSPLEmail?status=35&spl_id=${chk}&ket=${ket}`;
-			// $("#spl_proses_approve").attr(
-			// 	"href",
-			// 	tmp + btoa("&stat=25&data=" + chk + "&ket=" + ket)
-			// );
+			email_endpoint = 'ALA/Approve/sendSPLEmail';
+			
+			p_status = '35';
+			p_spdlid = chk;
+			p_ket = ket;
 		}
 		console.log("end point email: " + baseurl + email_endpoint);
 
 		function send_email() {
+			fakeLoading(0);
 			$.ajax({
-				method: "get",
+				method: "post",
+				data: {
+					status: p_status,
+					spl_id: p_spdlid,
+					ket: p_ket
+				},
 				url: baseurl + email_endpoint,
-				success(e) {
-					console.log(e + "Success");
+				success:function (e) {
+					fakeLoading(1);
+					swal.fire({
+						title: `Sukses Reject lembur pekerja`,
+						text: "",
+						type: "success",
+					});
+					$("#spl-approval-1").click();
+					$("#spl-approval-0").click();
+					$("#spl_check_all").iCheck("uncheck");
+					console.log(e + "Success email");
 				},
 			});
 		}
@@ -849,6 +867,14 @@ $(function () {
 		ApprovalLemburListener.setMessage("Reject").setCallback(send_email).init();
 	});
 
+	$(document).ready(function(){
+		// swal.fire({
+		// 	title: `Sukses Approve lembur pekerja`,
+		// 	text: "",
+		// 	type: "success",
+		// });
+	});
+
 	$(document).on("click", "#FingerDialogApprove .spl_finger_proses", function (e) {
 		finger = $(this).attr("data");
 		url = window.location.pathname;
@@ -856,17 +882,18 @@ $(function () {
 		ket = $("#spl_tex_proses").val();
 
 		if (url.indexOf("ALK") >= 0) {
-			tmp = "finspot:FingerspotVer;" + btoa(baseurl + "ALK/Approve/fp_proces?userid=" + usr + "&finger_id=" + finger);
+			tmp = "finspot:FingerspotVer;";
 		} else {
-			tmp = "finspot:FingerspotVer;" + btoa(baseurl + "ALA/Approve/fp_proces?userid=" + usr + "&finger_id=" + finger);
+			tmp = "finspot:FingerspotVer;";
 		}
 
-		chk = "";
-		$(".spl-chk-data").each(function () {
-			if (this.checked) {
+		var client_table = $('.spl-table').DataTable();
+		var chk = '';
+		var rows = $( client_table.$('input[type="checkbox"]').each(function () {
+			if ($(this).is(':checked')) {
 				chk += "." + $(this).val();
 			}
-		});
+		}));
 
 		if (chk == "") {
 			$("#example11_wrapper").find("a.btn-primary").addClass("disabled");
@@ -875,30 +902,48 @@ $(function () {
 		}
 
 		let email_endpoint;
+		var p_status;
+		var p_spdlid;
+		var p_ket;
 		if (url.indexOf("ALK") >= 0) {
-			// $("#spl_proses_reject").attr(
-			// 	"href",
-			// 	tmp + btoa("&stat=31&data=" + chk + "&ket=" + ket)
-			// );
-			$("#spl_proses_approve").attr("href", tmp + btoa("&stat=21&data=" + chk + "&ket=" + ket));
-			email_endpoint = `ALK/Approve/sendSPLEmail?status=21&spl_id=${chk}&ket=${ket}`;
+			$("#spl_proses_approve").attr("href", tmp + btoa(baseurl + "ALK/Approve/fp_proces?userid=" + usr + "&finger_id=" + finger + "&stat=21&data=" + 'chk' + "&ket=" + 'ket'));
+			email_endpoint = 'ALK/Approve/sendSPLEmail';
+
+			p_status = '21';
+			p_spdlid = chk;
+			p_ket = ket;
 		} else {
-			// $("#spl_proses_reject").attr(
-			// 	"href",
-			// 	tmp + btoa("&stat=35&data=" + chk + "&ket=" + ket)
-			// );
-			$("#spl_proses_approve").attr("href", tmp + btoa("&stat=25&data=" + chk + "&ket=" + ket));
-			email_endpoint = `ALA/Approve/sendSPLEmail?status=25&spl_id=${chk}&ket=${ket}`;
+			$("#spl_proses_approve").attr("href", tmp + btoa(baseurl + "ALA/Approve/fp_proces?userid=" + usr + "&finger_id=" + finger + "&stat=25&data=" + 'chk' + "&ket=" + 'ket'));
+			email_endpoint = 'ALA/Approve/sendSPLEmail';
+
+			p_status = '25';
+			p_spdlid = chk;
+			p_ket = ket;
 		}
 
 		console.log("end point email: " + baseurl + email_endpoint);
 
 		function send_email() {
+			fakeLoading(0);
 			$.ajax({
-				method: "get",
+				type: "post",
+				data: {
+					status: p_status,
+					spl_id: p_spdlid,
+					ket: p_ket
+				},
 				url: baseurl + email_endpoint,
-				success(e) {
-					console.log(e + "Success");
+				success:function(e) {
+					fakeLoading(1);
+					swal.fire({
+						title: `Sukses Approve lembur pekerja`,
+						text: "",
+						type: "success",
+					});
+					$("#spl-approval-1").click();
+					$("#spl-approval-0").click();
+					$("#spl_check_all").iCheck("uncheck");
+					console.log(e + "Success Email");
 				},
 			});
 		}
@@ -1900,15 +1945,42 @@ $(document).ready(function () {
 		console.log(fingerspot_sdk_url);
 		auth_finger.init();
 	});
+
+	$('#btn-ProsesSPL').click(function(){
+		var l = $('.spl-chk-data:checked').length;
+		var client_table = $('.spl-table').DataTable();
+		var x = 0;
+		var rows = $( client_table.$('input[type="checkbox"]').each(function () {
+			if ($(this).is(':checked')) {
+				x++;
+			}
+		}));
+		console.log('jumlah checkbox',l, x);
+		if (x < -1) {
+			Swal.fire(
+				'Tidak Bisa Memilih Pekerja lebih dari 100',
+				'Mohon Kurangi jumlah pilihan Pekerja!',
+				'error'
+				);
+		}else{
+			$('#ProsesDialog').modal('show');
+		}
+	});
 });
 
 $(window).load(() => {
 	$("#spl_check_all").on("ifChanged", function (e) {
 		let isChecked = $(this).is(":checked");
 		if (isChecked) {
-			$(".spl-chk-data").prop("checked", true);
+			var client_table = $('.spl-table').DataTable();
+			var rows = $( client_table.$('input[type="checkbox"]').each(function () {
+				$(this).prop("checked", true);
+			}));
 		} else {
-			$(".spl-chk-data").prop("checked", false);
+			var client_table = $('.spl-table').DataTable();
+			var rows = $( client_table.$('input[type="checkbox"]').each(function () {
+				$(this).prop("checked", false);
+			}));
 		}
 		spl_load_data();
 	});

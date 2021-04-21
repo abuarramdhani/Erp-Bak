@@ -17,7 +17,7 @@ class C_splkasie extends CI_Controller
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		// FOR DEVELOPMENT
 		$this->is_production = true; // change it to true before push
-		$this->developer_email = 'dicka_ismaji@quick.com';
+		$this->developer_email = 'enggal_aldiansyah@quick.com';
 	}
 
 	public function checkSession()
@@ -337,7 +337,7 @@ class C_splkasie extends CI_Controller
 
 	public function send_email($status, $spl_id, $ket)
 	{
-		$this->checkSession();
+		// $this->checkSession();
 		$this->session->spl_validasi_waktu_kasie = time();
 		$akses_sie = array();
 		$user = $this->session->user;
@@ -727,53 +727,39 @@ class C_splkasie extends CI_Controller
 	// alur approve / reject paling akhir
 	function fp_succes()
 	{
-		$status = $_GET['status'];
-		$spl_id = $_GET['spl_id'];
-		$ket = $_GET['ket'];
-
-		$all_spl = explode('.', $spl_id);
-		$time_start = time();
-		$this->spl_approval($all_spl, $status, $ket);
-		// foreach ($all_spl as $no_spl) {
-		// 	$this->data_spl_approv($no_spl, $status, $ket);
-		// }
-		// echo "update database -> " . (time() - $time_start) . "<br>";
-
-		if (!empty($status) && !empty($spl_id)) {
-			echo "<script>localStorage.setItem('resultApproveSPL', true);window.close();</script>";
-		} else {
-			echo "<script>localStorage.setItem('resultApproveSPL', 3);window.close();</script>"; //result error
-		}
-
-		// die;
-		// @ DEPRECATED PERFOMANCE (SLOW)
-		// foreach ($all_spl as $no_spl) {
-		// 	$this->data_spl_approv($no_spl, $status, $ket);
-		// }
-
-		// $this->session->spl_validasi_waktu_kasie = time();
-
-		// dipanggil terakhir biar displaynya cepet
-		// $this->sendSPLEmail($status, $spl_id, $ket);
-
-		// redirect(base_url("ALK/Approve/sendSPLEmail?status=$status&spl_id=$spl_id&ket=$ket"));
-
-		// $time_start = time();
-		// if ($status == '25' or $status == '21') {
-		// 	// $this->send_email($status, $spl_id, $ket);
-		// }
-		// echo "send email 1 -> " . (time() - $time_start) . "<br>";
-
-		// $time_start = time();
-		// $this->send_email_2($status, $spl_id, $ket);
-		// echo "send email 2 -> " . (time() - $time_start) . "<br>";
+		echo "<script>localStorage.setItem('resultApproveSPL', true);window.close();</script>";
 	}
 
 	function sendSPLEmail()
 	{
-		$status = $_GET['status'];
-		$spl_id = $_GET['spl_id'];
-		$ket = $_GET['ket'];
+		//kirim email ada di fungsi sendSPLEmailSchedule yg di jalankan cronjob
+		$status = $_POST['status'];
+		$spl_id = $_POST['spl_id'];
+		$ket = $_POST['ket'];
+
+		$all_spl = explode('.', $spl_id);
+		$this->spl_approval($all_spl, $status, $ket);
+
+		$arr = array(
+			'status'	=>	$status,
+			'spl_id'	=>	$spl_id,
+			'ket'		=>	$ket,
+			'path'		=>	'ALK',
+			'nama'		=>	trim($this->session->employee)
+			);
+		$this->M_splkasie->insertMailCronjob($arr);
+		echo "sukses";
+	}
+
+
+	function sendSPLEmailSchedule()
+	{
+		$status = $_POST['status'];
+		$spl_id = $_POST['spl_id'];
+		$ket = $_POST['ket'];
+		$nama = $_POST['nama'];
+		$this->session->set_userdata('employee', $nama);
+		print_r($_POST);
 
 		$time_start = time();
 		if ($status == '25' or $status == '21') {
@@ -784,6 +770,7 @@ class C_splkasie extends CI_Controller
 		$time_start = time();
 		$this->send_email_2($status, $spl_id, $ket);
 		echo "send email 2 -> " . (time() - $time_start) . "<br>";
+
 	}
 
 	//validasi user kasie & asska

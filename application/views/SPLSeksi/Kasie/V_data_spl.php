@@ -11,14 +11,12 @@
 		color: white !important;
 	}
 
-	#example11_paginate {
-		float: right;
-	}
-
-	#example11_info {
+	.dataTables_info {
 		float: left;
 	}
-
+	.dataTables_paginate {
+		float: right;
+	}
 	span.select2-container {
 		width: 100% !important;
 	}
@@ -127,7 +125,7 @@
 								<div class="form-group">
 									<div class="col-sm-12">
 										<input type="text" id="txt_ses" value="<?php echo $this->session->userid; ?>" hidden>
-										<button type="button" class="btn btn-primary hidden" style="margin-left: 1em;" data-toggle="modal" data-target="#ProsesDialog" id="btn-ProsesSPL"><i class="fa fa-save"></i> Proses</button>
+										<button type="button" class="btn btn-primary hidden" style="margin-left: 1em;" id="btn-ProsesSPL"><i class="fa fa-save"></i> Proses</button>
 										<button data-step="7" data-intro="Tombol untuk melakukan pencarian" type="button" id="spl-approval-0" style="margin-right:3px" class="btn btn-primary pull-right"> <i class="fa fa-search"></i> Cari</button>
 										<button data-step="8" data-intro="Tombol untuk mereload halaman" type="reset" style="margin-right:3px" class="btn btn-primary pull-right" onclick="location.reload()"> <i class="fa fa-refresh"></i> Reset</button>
 										<img src="<?php echo base_url('assets/img/gif/loading6.gif') ?>" class="pull-right spl-loading hidden" width="33px" height="33px" style="margin-right:3px">
@@ -146,7 +144,10 @@
 
 				<div class="box box-primary">
 					<div class="box-body">
-						<div data-step="9" data-intro="Tabel untuk melihat pekerja lembur dan untuk memilih pekerja yang akan di approve lemburnya" class="table-responsive">
+						<div class="col-md-12 text-center">
+							<!-- <label style="color: red;">* Maksimal 1 x proses approve 100 data lembur.</label> -->
+						</div>
+						<div data-step="9" data-intro="Tabel untuk melihat pekerja lembur dan untuk memilih pekerja yang akan di approve lemburnya" class="table-responsive col-md-12">
 							<table id="example11" class="table table-bordered table-striped spl-table kasie">
 								<thead style="background:#3c8dbc; color:#fff">
 									<tr>
