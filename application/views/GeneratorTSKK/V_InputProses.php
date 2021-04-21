@@ -44,7 +44,7 @@
         <div class="row">
           <div class="col-lg-12">
             <div class="text-center">
-              <h1><b>Manajemen Proses</b></h1>
+              <h1><b>Manajemen Proses</b></h1>              
             </div>
           </div>
         </div>
