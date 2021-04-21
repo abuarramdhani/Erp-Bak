@@ -219,8 +219,8 @@ class C_splkasie extends CI_Controller
 			);
 
 			// item spl riwayat
-			// "ID_Riwayat" => str_pad($maxid->id++, 10, '0', STR_PAD_BOTH),
 			$insert_splriwayat = array(
+				"ID_Riwayat" => str_pad($maxid->id++, 10, '0', STR_PAD_BOTH),
 				"ID_SPL" => $item['ID_SPL'],
 				"Tgl_Berlaku" => date('Y-m-d H:i:s'),
 				"Tgl_Tdk_Berlaku" => date('Y-m-d H:i:s'),

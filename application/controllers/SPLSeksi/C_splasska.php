@@ -179,13 +179,13 @@ class C_splasska extends CI_Controller
 
 		foreach ($data_spl as $ds) {
 			// Generate ID Riwayat
-			// $maxid = $this->M_splseksi->show_maxid("splseksi.tspl_riwayat", "ID_Riwayat");
-			// if (empty($maxid)) {
-			// 	$splr_id = "0000000001";
-			// } else {
-			// 	$splr_id = $maxid->id;
-			// 	$splr_id = substr("0000000000", 0, 10 - strlen($splr_id)) . $splr_id;
-			// }
+			$maxid = $this->M_splseksi->show_maxid("splseksi.tspl_riwayat", "ID_Riwayat");
+			if (empty($maxid)) {
+				$splr_id = "0000000001";
+			} else {
+				$splr_id = $maxid->id;
+				$splr_id = substr("0000000000", 0, 10 - strlen($splr_id)) . $splr_id;
+			}
 
 			// Approv or Cancel
 			if ($stat == "25") {
@@ -218,8 +218,8 @@ class C_splasska extends CI_Controller
 			$to_spl = $this->M_splseksi->update_spl($data_spl, $id);
 			$noind_baru = $this->M_splseksi->getNoindBaru($ds['Noind']);
 
-			// "ID_Riwayat" => $splr_id,
 			$data_splr = array(
+				"ID_Riwayat" => $splr_id,
 				"ID_SPL" => $id,
 				"Tgl_Berlaku" => date('Y-m-d H:i:s'),
 				"Tgl_Tdk_Berlaku" => date('Y-m-d H:i:s'),
