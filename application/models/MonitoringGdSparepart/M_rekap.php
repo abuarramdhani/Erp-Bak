@@ -20,7 +20,10 @@ class M_rekap extends CI_Model {
     public function getMasuk($date, $subinv) {
         $oracle = $this->load->database('oracle', true);
         $sql ="select *
-                from khs_monitoring_gd_sp 
+                from (SELECT no_document, jenis_dokumen, item, description, uom, qty,
+                creation_date, status, jml_ok, jml_not_ok, pic, keterangan,
+                action, NVL (subinv, 'SP-YSP') subinv
+           FROM khs_monitoring_gd_sp)
                 where creation_date like to_date('$date','DD/MM/YYYY')
                 and no_document != '-'
                 and subinv = '$subinv'
@@ -33,7 +36,10 @@ class M_rekap extends CI_Model {
     public function getpcs($date, $subinv) {
         $oracle = $this->load->database('oracle', true);
         $sql ="select sum(qty) pcs
-                from khs_monitoring_gd_sp 
+                from (SELECT no_document, jenis_dokumen, item, description, uom, qty,
+                creation_date, status, jml_ok, jml_not_ok, pic, keterangan,
+                action, NVL (subinv, 'SP-YSP') subinv
+           FROM khs_monitoring_gd_sp)
                 where creation_date like to_date('$date','DD/MM/YYYY')
                 and subinv = '$subinv'
                 and no_document != '-'";

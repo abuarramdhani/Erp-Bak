@@ -53,7 +53,10 @@ class M_monitoring extends CI_Model {
                 SELECT NO_DOCUMENT, JENIS_DOKUMEN, ITEM, DESCRIPTION,
                         UOM, QTY, CREATION_DATE, to_char(CREATION_DATE, 'hh24:mi:ss') as JAM_INPUT,
                         STATUS, JML_OK, JML_NOT_OK, PIC, KETERANGAN, ACTION
-                from KHS_MONITORING_GD_SP
+                from (SELECT no_document, jenis_dokumen, item, description, uom, qty,
+                creation_date, status, jml_ok, jml_not_ok, pic, keterangan,
+                action, NVL (subinv, 'SP-YSP') subinv
+           FROM khs_monitoring_gd_sp)
                 WHERE CREATION_DATE IS NOT NULL
                 $dokudoku $nodoku $tanggal $pic2 $item2
                 and no_document != '-'
@@ -69,7 +72,10 @@ class M_monitoring extends CI_Model {
         $sql ="SELECT NO_DOCUMENT, JENIS_DOKUMEN, ITEM, DESCRIPTION,
                 UOM, QTY, CREATION_DATE, to_char(CREATION_DATE, 'hh24:mi:ss') as JAM_INPUT,
                 STATUS, JML_OK, JML_NOT_OK, PIC, KETERANGAN 
-        from KHS_MONITORING_GD_SP
+        from (SELECT no_document, jenis_dokumen, item, description, uom, qty,
+                creation_date, status, jml_ok, jml_not_ok, pic, keterangan,
+                action, NVL (subinv, 'SP-YSP') subinv
+           FROM khs_monitoring_gd_sp)
         WHERE jenis_dokumen = '$jenis_dokumen'
         AND TRUNC(creation_date) BETWEEN TO_DATE('$tglAwal', 'DD/MM/YYYY') AND TO_DATE('$tglAkhir', 'DD/MM/YYYY')
         and no_document != '-'
