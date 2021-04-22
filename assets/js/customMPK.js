@@ -6278,3 +6278,33 @@ function ukuran_kertaz(type)
 
   return x;
 }
+
+//kronologis kecelakaan kerja
+$(document).ready(function(){
+  getPekerjaTpribadi('#mpk_slckkkpkj');
+  $('.mpk_slcclear').select2({
+    allowClear: true,
+    placeholder: 'Pilih salah satu!'
+  });
+
+  $('.mpk_dtables').DataTable();
+
+  $('#mpk_slckkkpkj').change(function(){
+    var noind = $(this).val();
+    $.ajax({
+      method: "get",
+      data: {
+        noind: noind
+      },
+      url: baseurl + "MasterPekerja/KronologisKecelakaanKerja/getnokpj",
+      success: a => {
+        var data = JSON.parse(a);
+        if (data.no_peserta != '') {
+          $('#mpk_innokpj').val(data.no_peserta.trim());
+        }else{
+          alert('No. KPJ tidak ditemukan!')
+        }
+      }
+    })
+  })
+});
