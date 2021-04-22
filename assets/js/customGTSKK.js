@@ -1097,7 +1097,11 @@ function deleteObserve(th) {
       $('#tblObservasi tbody tr input[name="start_time_together[]"]').each((i,v) => {
         let value_folow_start = $(v).val();
         if (Number(posisi) <= Number(value_folow_start)) {
-          $(v).val(Number(value_folow_start)-1 == 0 ? '' : Number(value_folow_start)-1);
+          if (Number(posisi) == Number(value_folow_start)) {
+            $(v).val('');
+          }else {
+            $(v).val(Number(value_folow_start)-1 == 0 ? '' : Number(value_folow_start)-1);
+          }
           if (Number(value_folow_start)-1 == 0) {
             $(v).parent().parent('tr').find('input[type="checkbox"]').attr('checked', false)
           }
@@ -1106,7 +1110,11 @@ function deleteObserve(th) {
       $('#tblObservasi tbody tr input[name="end_time_together[]"]').each((i,v) => {
         let value_folow_end = $(v).val();
         if (Number(posisi) <= Number(value_folow_end)) {
-          $(v).val(Number(value_folow_end)-1 == 0 ? '' : Number(value_folow_end)-1);
+          if (Number(posisi) == Number(value_folow_end)) {
+            $(v).val('');
+          }else {
+            $(v).val(Number(value_folow_end)-1 == 0 ? '' : Number(value_folow_end)-1);
+          }
           if (Number(value_folow_end)-1 == 0) {
             $(v).parent().parent('tr').find('input[type="checkbox"]').attr('checked', false)
           }
@@ -1119,7 +1127,11 @@ function deleteObserve(th) {
       $('#tblObservasiEdit tbody tr input[name="start_time_together[]"]').each((i,v) => {
         let value_folow_start = $(v).val();
         if (Number(posisi) <= Number(value_folow_start)) {
-          $(v).val(Number(value_folow_start)-1 == 0 ? '' : Number(value_folow_start)-1);
+          if (Number(posisi) == Number(value_folow_start)) {
+            $(v).val('');
+          }else {
+            $(v).val(Number(value_folow_start)-1 == 0 ? '' : Number(value_folow_start)-1);
+          }
           if (Number(value_folow_start)-1 == 0) {
             $(v).parent().parent('tr').find('input[type="checkbox"]').attr('checked', false)
           }
@@ -1128,7 +1140,11 @@ function deleteObserve(th) {
       $('#tblObservasiEdit tbody tr input[name="end_time_together[]"]').each((i,v) => {
         let value_folow_end = $(v).val();
         if (Number(posisi) <= Number(value_folow_end)) {
-          $(v).val(Number(value_folow_end)-1 == 0 ? '' : Number(value_folow_end)-1);
+          if (Number(posisi) == Number(value_folow_end)) {
+            $(v).val('');
+          }else {
+            $(v).val(Number(value_folow_end)-1 == 0 ? '' : Number(value_folow_end)-1);
+          }
           if (Number(value_folow_end)-1 == 0) {
             $(v).parent().parent('tr').find('input[type="checkbox"]').attr('checked', false)
           }
