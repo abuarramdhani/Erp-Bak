@@ -1,3 +1,145 @@
+//edit rozin
+// DATATABLE SERVERSIDE MOULD
+const tblmould2021 = $('#tblMoulding2021').DataTable({
+    // dom: 'rtp',
+    ajax: {
+      data: (d) => $.extend({}, d, {
+        org: null,    // optional
+        id_plan: null // optional
+      }),
+      url: baseurl + "ManufacturingOperationUP2L/Moulding/buildMDataTable",
+      type: 'POST',
+    },
+    ordering: false,
+    pageLength: 10,
+    pagingType: 'first_last_numbers',
+    processing: true,
+    serverSide: true,
+    preDrawCallback: function(settings) {
+         if ($.fn.DataTable.isDataTable('#tblMoulding2021')) {
+             var dt = $('#tblMoulding2021').DataTable();
+
+             //Abort previous ajax request if it is still in process.
+             var settings = dt.settings();
+             if (settings[0].jqXHR) {
+                 settings[0].jqXHR.abort();
+             }
+         }
+     }
+});
+// DATATABLE SERVERSIDE CORE
+const tblCore2021 = $('#tblCore2021').DataTable({
+    // dom: 'rtp',
+    ajax: {
+      data: (d) => $.extend({}, d, {
+        org: null,    // optional
+        id_plan: null // optional
+      }),
+      url: baseurl + "ManufacturingOperationUP2L/Core/buildCDataTable",
+      type: 'POST',
+    },
+    ordering: false,
+    pageLength: 10,
+    pagingType: 'first_last_numbers',
+    processing: true,
+    serverSide: true,
+    preDrawCallback: function(settings) {
+         if ($.fn.DataTable.isDataTable('#tblCore2021')) {
+             var dt = $('#tblCore2021').DataTable();
+
+             //Abort previous ajax request if it is still in process.
+             var settings = dt.settings();
+             if (settings[0].jqXHR) {
+                 settings[0].jqXHR.abort();
+             }
+         }
+     }
+});
+// DATATABLE SERVERSIDE MIXING
+const tblMix2021 = $('#tblMixing2021').DataTable({
+    // dom: 'rtp',
+    ajax: {
+      data: (d) => $.extend({}, d, {
+        org: null,    // optional
+        id_plan: null // optional
+      }),
+      url: baseurl + "ManufacturingOperationUP2L/Mixing/buildMixDataTable",
+      type: 'POST',
+    },
+    ordering: false,
+    pageLength: 10,
+    pagingType: 'first_last_numbers',
+    processing: true,
+    serverSide: true,
+    preDrawCallback: function(settings) {
+         if ($.fn.DataTable.isDataTable('#tblMixing2021')) {
+             var dt = $('#tblMixing2021').DataTable();
+
+             //Abort previous ajax request if it is still in process.
+             var settings = dt.settings();
+             if (settings[0].jqXHR) {
+                 settings[0].jqXHR.abort();
+             }
+         }
+     }
+});
+// DATATABLE SERVERSIDE OTT
+const tblOtt2021 = $('#tblMouldingOtt').DataTable({
+    // dom: 'rtp',
+    ajax: {
+      data: (d) => $.extend({}, d, {
+        org: null,    // optional
+        id_plan: null // optional
+      }),
+      url: baseurl + "ManufacturingOperationUP2L/OTT/buildOttDataTable",
+      type: 'POST',
+    },
+    ordering: false,
+    pageLength: 10,
+    pagingType: 'first_last_numbers',
+    processing: true,
+    serverSide: true,
+    preDrawCallback: function(settings) {
+         if ($.fn.DataTable.isDataTable('#tblMouldingOtt')) {
+             var dt = $('#tblMouldingOtt').DataTable();
+
+             //Abort previous ajax request if it is still in process.
+             var settings = dt.settings();
+             if (settings[0].jqXHR) {
+                 settings[0].jqXHR.abort();
+             }
+         }
+     }
+});
+// DATATABLE SERVERSIDE ABSEN
+const tblAbs2021 = $('#tblMouldingAbs').DataTable({
+    // dom: 'rtp',
+    ajax: {
+      data: (d) => $.extend({}, d, {
+        org: null,    // optional
+        id_plan: null // optional
+      }),
+      url: baseurl + "ManufacturingOperationUP2L/Absen/buildAbsDataTable",
+      type: 'POST',
+    },
+    ordering: false,
+    pageLength: 10,
+    pagingType: 'first_last_numbers',
+    processing: true,
+    serverSide: true,
+    preDrawCallback: function(settings) {
+         if ($.fn.DataTable.isDataTable('#tblMouldingAbs')) {
+             var dt = $('#tblMouldingAbs').DataTable();
+
+             //Abort previous ajax request if it is still in process.
+             var settings = dt.settings();
+             if (settings[0].jqXHR) {
+                 settings[0].jqXHR.abort();
+             }
+         }
+     }
+});
+
 $(document).ready(function () {
 
     $('.onBtn').click(function () {
@@ -848,7 +990,7 @@ function checkQuantity(th) {
             },
             success: function (results) {
                 window.location.replace(baseurl + 'ManufacturingOperationUP2L/QualityControl');
-                
+
             },
             error: function (error, status, f, s) {
                 console.log(error);
@@ -1087,7 +1229,7 @@ $(function(){
 })
 
 function ottPlusBtn(){
-    
+
     var ottPlus =
     `<br /><br /><select name="ottName[]" id="ott_Name" class="form-control ottName" required>
     <option value="">Pilih Pekerja</option>
@@ -1095,7 +1237,7 @@ function ottPlusBtn(){
     </select>`;
 
     $('#tmpNama').append(ottPlus);
-    
+
     $('.ottName').select2({
         minimumInputLength: 0,
         placeholder: 'Pilih Pekerja',
@@ -1153,24 +1295,29 @@ function ottTimesBtn() {
     })
 }
 
-function addCompMould() {
-    var addCompMould =
-    `<hr><br /><div class="form-group">
-        <label for="txtComponentCodeHeader" class="control-label col-lg-4">Component</label>
-        <div class="col-lg-6">
-            <select class="form-control jsSlcComp toupper" id="txtComponentCodeHeader" name="component_code[]" required data-placeholder="Component Code" onchange="getCompDescMO(this)">
-                <option></option>
-            </select>
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label for="txtMouldingQuantityHeader" class="control-label col-lg-4">Moulding Quantity</label>
-        <div class="col-lg-6">
-            <input type="number" placeholder="Moulding Quantity" name="txtMouldingQuantityHeader[]" id="txtMouldingQuantityHeader" class="form-control" />
-        </div>
-    </div>`;
-    $('#container-component').append(addCompMould);
+$('.addCompMould').click(function () {
+    // var garisUP2L = `<hr><br>`;
+    $('.jsSlcComp').select2('destroy').end();
+    // $('#container-component').append(garisUP2L);
+    $(this).parent().clone(true).appendTo($("#container-comp"));
+    $('.delcompMould').show();
+    // var addCompMould =
+    // `<hr><br /><div class="form-group">
+    //     <label for="txtComponentCodeHeader" class="control-label col-lg-4">Component</label>
+    //     <div class="col-lg-6">
+    //         <select class="form-control jsSlcComp toupper" id="txtComponentCodeHeader" name="component_code[]" required data-placeholder="Component Code" onchange="getCompDescMO(this)">
+    //             <option></option>
+    //         </select>
+    //     </div>
+    // </div>
+    //
+    // <div class="form-group">
+    //     <label for="txtMouldingQuantityHeader" class="control-label col-lg-4">Moulding Quantity</label>
+    //     <div class="col-lg-6">
+    //         <input type="number" placeholder="Moulding Quantity" name="txtMouldingQuantityHeader[]" id="txtMouldingQuantityHeader" class="form-control" />
+    //     </div>
+    // </div>`;
+    // $('#container-component').append(addCompMould);
     $('.jsSlcComp').select2({
         allowClear: true,
         placeholder: "Choose Component Code",
@@ -1200,57 +1347,68 @@ function addCompMould() {
             }
         }
     });
-}
+});
 
-function delcompMould() {
-    var addCompMould =
-    `<div class="form-group">
-        <label for="txtComponentCodeHeader" class="control-label col-lg-4">Component</label>
-        <div class="col-lg-6">
-            <select class="form-control jsSlcComp toupper" id="txtComponentCodeHeader" name="component_code[]" required data-placeholder="Component Code" onchange="getCompDescMO(this)">
-                <option></option>
-            </select>
-        </div>
-    </div>
+$('.delCompMould').click(function () {
+    var remove_mould = $('#container-comp').children().length;
+    console.log(remove_mould);
+    m = remove_mould - parseInt(1);
+    console.log(m);
 
-    <div class="form-group">
-        <label for="txtMouldingQuantityHeader" class="control-label col-lg-4">Moulding Quantity</label>
-        <div class="col-lg-6">
-            <input type="number" placeholder="Moulding Quantity" name="txtMouldingQuantityHeader[]" id="txtMouldingQuantityHeader" class="form-control" />
-        </div>
-    </div>`;
-    $('#container-component').html(addCompMould);
+    if (remove_mould > 1) {
+      $(this).parent().remove();
+    }
 
-    $('.jsSlcComp').select2({
-        allowClear: true,
-        placeholder: "Choose Component Code",
-        minimumInputLength: 3,
-        ajax: {
-            url: baseurl + "ManufacturingOperationUP2L/Ajax/getComponent",
-            dataType: 'json',
-            type: "post",
-            data: function (params) {
-                var queryParameters = {
-                    term: params.term
-                }
-                return queryParameters;
-            },
-            processResults: function (data) {
-                return {
-                    results: $.map(data, function (obj) {
-                        return {
-                            id: obj.kode_barang + " | " + obj.nama_barang + ' | ' + obj.kode_proses,
-                            text: obj.kode_barang + " | " + obj.nama_barang + ' | ' + obj.kode_proses
-                        };
-                    })
-                };
-            },
-            error: function (error, status) {
-                console.log(error);
-            }
-        }
-    });
-}
+    if (m == 1) {
+      $('.delCompMould').hide();
+    }
+    // var addCompMould =
+    // `<div class="form-group">
+    //     <label for="txtComponentCodeHeader" class="control-label col-lg-4">Component</label>
+    //     <div class="col-lg-6">
+    //         <select class="form-control jsSlcComp toupper" id="txtComponentCodeHeader" name="component_code[]" required data-placeholder="Component Code" onchange="getCompDescMO(this)">
+    //             <option></option>
+    //         </select>
+    //     </div>
+    // </div>
+    //
+    // <div class="form-group">
+    //     <label for="txtMouldingQuantityHeader" class="control-label col-lg-4">Moulding Quantity</label>
+    //     <div class="col-lg-6">
+    //         <input type="number" placeholder="Moulding Quantity" name="txtMouldingQuantityHeader[]" id="txtMouldingQuantityHeader" class="form-control" />
+    //     </div>
+    // </div>`;
+    // $('#container-component').html(addCompMould);
+    // $('.jsSlcComp').select2({
+    //     allowClear: true,
+    //     placeholder: "Choose Component Code",
+    //     minimumInputLength: 3,
+    //     ajax: {
+    //         url: baseurl + "ManufacturingOperationUP2L/Ajax/getComponent",
+    //         dataType: 'json',
+    //         type: "post",
+    //         data: function (params) {
+    //             var queryParameters = {
+    //                 term: params.term
+    //             }
+    //             return queryParameters;
+    //         },
+    //         processResults: function (data) {
+    //             return {
+    //                 results: $.map(data, function (obj) {
+    //                     return {
+    //                         id: obj.kode_barang + " | " + obj.nama_barang + ' | ' + obj.kode_proses,
+    //                         text: obj.kode_barang + " | " + obj.nama_barang + ' | ' + obj.kode_proses
+    //                     };
+    //                 })
+    //             };
+    //         },
+    //         error: function (error, status) {
+    //             console.log(error);
+    //         }
+    //     }
+    // });
+});
 
 function addcompSelep() {
     var addCompMould =
@@ -1444,7 +1602,7 @@ function remove_emp_selep() {
     });
 }
 
-function abs() {  
+function abs() {
     var copy = `
                 <hr><div class="form-group">
                 <label for="absName" class="control-label">Nama</label>
@@ -1480,7 +1638,7 @@ function abs() {
         }
     });
 }
-function unAbs() {  
+function unAbs() {
                 var copy = `
                 <div class="form-group"> <br />
                 <label for="absName" class="control-label">Nama</label>
