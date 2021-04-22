@@ -203,7 +203,7 @@ $(document).ready(function() {
     }
 
   }else {
-    console.log('JTI Success');
+    // console.log('JTI Success');
   }
 })
 

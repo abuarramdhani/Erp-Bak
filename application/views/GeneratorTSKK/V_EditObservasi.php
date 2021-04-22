@@ -280,11 +280,11 @@
           <br />
           <div class="row">
             <div class="col-lg-12">
-              <div class="alert alert-success alert-dismissible fp_hide_001">
+              <!-- <div class="alert alert-success alert-dismissible fp_hide_001">
                   <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                   <h4><i class="icon fa fa-warning"></i> Info!</h4>
                   Aplikasi Terakhir Diperbarui Pada 2021-04-21 16:30:23.<b>Reload halaman ini</b> dengan menekan <b>CTRL+SHIFT+R</b> secara berurutan jika telah melewati tanggal pembaruan..
-              </div>
+              </div> -->
               <div class="box box-primary box-solid">
                 <div class="box-header with-border">
                   <?php
