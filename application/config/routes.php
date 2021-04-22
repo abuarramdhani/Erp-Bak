@@ -2165,6 +2165,10 @@ $route['MasterPekerja/MasaKerja/(:any)'] = 'MasterPekerja/MasaKerja/C_Index/$1';
 //---------------------------------------- Cetak Pekerja Puasa ---------------------------------------
 $route['MasterPekerja/PekerjaPuasa/(:any)'] = 'MasterPekerja/PekerjaPuasa/C_Index/$1';
 
+//---------------------------------------- Kronologis Kecelakaan Kerja ---------------------------------------
+$route['MasterPekerja/KronologisKecelakaanKerja'] = 'MasterPekerja/Other/KronologisKecelakaanKerja/C_KronologisKK';
+$route['MasterPekerja/KronologisKecelakaanKerja/(:any)'] = 'MasterPekerja/Other/KronologisKecelakaanKerja/C_KronologisKK/$1';
+
 //------------------------------------ Penerimaan PO ----------------------------------------
 $route['PenerimaanPO']						   = 'PenerimaanPO/C_Penerimaan';
 
