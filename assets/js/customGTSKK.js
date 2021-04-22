@@ -1099,6 +1099,7 @@ function deleteObserve(th) {
         if (Number(posisi) <= Number(value_folow_start)) {
           if (Number(posisi) == Number(value_folow_start)) {
             $(v).val('');
+            $(v).parent().parent('tr').find('input[type="checkbox"]').attr('checked', false)
           }else {
             $(v).val(Number(value_folow_start)-1 == 0 ? '' : Number(value_folow_start)-1);
           }
@@ -1112,6 +1113,7 @@ function deleteObserve(th) {
         if (Number(posisi) <= Number(value_folow_end)) {
           if (Number(posisi) == Number(value_folow_end)) {
             $(v).val('');
+            $(v).parent().parent('tr').find('input[type="checkbox"]').attr('checked', false)
           }else {
             $(v).val(Number(value_folow_end)-1 == 0 ? '' : Number(value_folow_end)-1);
           }
@@ -1129,6 +1131,7 @@ function deleteObserve(th) {
         if (Number(posisi) <= Number(value_folow_start)) {
           if (Number(posisi) == Number(value_folow_start)) {
             $(v).val('');
+            $(v).parent().parent('tr').find('input[type="checkbox"]').attr('checked', false)
           }else {
             $(v).val(Number(value_folow_start)-1 == 0 ? '' : Number(value_folow_start)-1);
           }
@@ -1142,6 +1145,7 @@ function deleteObserve(th) {
         if (Number(posisi) <= Number(value_folow_end)) {
           if (Number(posisi) == Number(value_folow_end)) {
             $(v).val('');
+            $(v).parent().parent('tr').find('input[type="checkbox"]').attr('checked', false)
           }else {
             $(v).val(Number(value_folow_end)-1 == 0 ? '' : Number(value_folow_end)-1);
           }

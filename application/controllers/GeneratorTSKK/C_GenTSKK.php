@@ -1786,18 +1786,20 @@ public function exportExcel($idnya){
 		$dept_pembuat = $split['dept'];
 
 		//DATA FOR TSKK (elements table)
-		$id_tskk          = $newID[0]['id_tskk'];
-		$takt_time        = $newID[0]['takt_time'];
+		$id_tskk          	= $newID[0]['id_tskk'];
+		$takt_time        	= $newID[0]['takt_time'];
 
-		$jenis_proses 	  = array_column($newID, 'jenis_proses');
-		$elemen           = array_column($newID, 'elemen');
-		$keterangan_elemen= array_column($newID, 'keterangan_elemen');
-		$tipe_urutan 	  = array_column($newID, 'tipe_urutan');
-		$start 	          = array_column($newID, 'mulai');
-		$finish 	      = array_column($newID, 'finish');
+		$jenis_proses 	  	= array_column($newID, 'jenis_proses');
+		$elemen           	= array_column($newID, 'elemen');
+		$keterangan_elemen	= array_column($newID, 'keterangan_elemen');
+		$tipe_urutan 	  		= array_column($newID, 'tipe_urutan');
+		$start 	          	= array_column($newID, 'mulai');
+		$finish 	      		= array_column($newID, 'finish');
 
-		$last_finish      = max($finish);
-		$waktu 	          = array_column($newID, 'waktu');
+		$follow_start       = array_column($newID, 'finish');
+
+		$last_finish      	= max($finish);
+		$waktu 	          	= array_column($newID, 'waktu');
 
 		//TSKK PRINTER :v
 		$noind = $this->session->user;
@@ -4119,7 +4121,7 @@ public function exportExcel($idnya){
 
 								if ($jenis_proses[$j] != 'AUTO' && !empty(array_search($j, $manual_walk_finish_index))) {
 										// ($startmuda[$j] <= 600*$x && $finishmuda[$j] <= 600*$x)
-										$manual_walk_finish_indx_now = array_search($j, $manual_walk_finish_indx);
+									$manual_walk_finish_indx_now = array_search($j, $manual_walk_finish_indx);
 									if (($i >= $startmuda[$j] && $i <= $finishmuda[$j]) && $manual_walk_finish[$manual_walk_finish_indx[$manual_walk_finish_indx_now-1]]+1 != $start[array_search($finish[$manual_walk_finish_indx[$manual_walk_finish_indx_now-1]]+1, $manual_walk_start)]) {
 											// echo ($finish[$j-1]+1).' <=finish start=> '.$start[array_search($finish[$j-1]+1, $manual_walk_start)]."<br>";
 												$styles[$x][$rowflow][($i+$mulai_colom_grafik) - $nn]['fill'] = '#fa3eef';
@@ -4216,7 +4218,7 @@ public function exportExcel($idnya){
 					if (sizeof($total_muda) == 1) {
 						$hasil_total_muda = (array_sum($total_muda));
 					}else {
-						$hasil_total_muda = $keterangan_total_muda.' = '.(array_sum($total_muda));
+						$hasil_total_muda = $keterangan_total_muda;
 					}
 					$ttl_hsl = array_sum($total_muda);
 				}elseif (empty($total_muda) && !empty($muda_terakhir)) {
@@ -4227,7 +4229,7 @@ public function exportExcel($idnya){
 					$ttl_hsl = 0;
 				}
 				$rows[$x][$rowJumlahElemen+1][170] = $hasil_total_muda;
-				$rows[$x][$rowJumlahElemen+2][170] = $ttl_hsl;
+				$rows[$x][$rowJumlahElemen+2][170] = $ttl_hsl.' Detik';
 			}
 
 			$writer->writeSheetHeader($sheet1.'_'.$x, $header, $col_options);      //WRITE HEADER
