@@ -216,7 +216,7 @@
 				<script type="text/javascript" src="<?= base_url('assets/js/customKTR.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customHW.js'); ?>"></script>
 				<script src="<?= base_url('assets/js/customMCC.js'); ?>"></script>
-				<script src="<?= base_url('assets/js/customGTSKK.js'); ?>"></script>
+				<script src="<?= base_url('assets/js/customGTSKK.js?version='.filemtime('assets/js/customGTSKK.js')) ?>"></script>
 				<script src="<?= base_url('assets/js/customCKB.js'); ?>"></script>
 				<script src="<?= base_url('assets/js/customME.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customRPO.js'); ?>"></script>

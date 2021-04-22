@@ -7,6 +7,8 @@
 						<div class="box-header">
 							<br/>
 							<h1><b><center>Dashboard Generator TSKK Versi 2.4</center></b></h1>
+							<br>
+							<center>Terakhir Diperbarui Pada 2021-04-21 16:30:23</center>
 						</div>
 					</div>
 			</section>
@@ -35,6 +37,10 @@
 		</div>
 </section>
 
-<script type="text/javascript">
+<!-- <script type="text/javascript">
 	alert('Aplikasi Terakhir Diperbarui Pada 2021-04-21 16:30:23. Reload halaman ini dengan menekan ctrl+shift+r secara berurutan jika telah melewati tanggal pembaruan..')
+</script> -->
+
+<script type="text/javascript">
+
 </script>
