@@ -244,7 +244,7 @@
 				<script src="<?= base_url('assets/js/customCMO.js'); ?>"></script>
 				<script src="<?= base_url('assets/js/customPAD.js'); ?>"></script>
 				<script src="<?= base_url('assets/js/customJT.js'); ?>"></script>
-				<script src="<?= base_url('assets/js/customJTIP.js'); ?>"></script>
+				<script src="<?= base_url('assets/js/customJTIP.js?version='.filemtime('assets/js/customJTIP.js')) ?>"></script>
 				<script src="<?= base_url('assets/js/customMCT.js'); ?>"></script>
 				<script src="<?= base_url('assets/js/customWLP.js'); ?>"></script>
 				<script src="<?= base_url('assets/js/customDBHA.js'); ?>"></script>

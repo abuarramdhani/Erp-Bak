@@ -3555,9 +3555,13 @@ public function exportExcel($idnya){
             $rows[$x][$rowJumlahElemen][11] = $jumlah_walk;
             $rows[$x][$rowJumlahElemen][18] = '1. Keterangan';
             $rows[$x][$rowJumlahElemen+1][20] = '- Waktu 1 Shift';
-            $rows[$x][$rowJumlahElemen+1][93] = ' = ';
+						$rows[$x][$rowJumlahElemen+1][93] = ' = ';
             $rows[$x][$rowJumlahElemen+1][98] = $waktu_satu_shift; //DATA Waktu 1 Shift
-            $rows[$x][$rowJumlahElemen+1][124] = 'Detik';
+						$rows[$x][$rowJumlahElemen+1][124] = 'Detik';
+						$rows[$x][$rowJumlahElemen+1][140] = '- Total Muda';
+						$rows[$x][$rowJumlahElemen+1][164] = ' = ';
+						$rows[$x][$rowJumlahElemen+2][164] = ' = ';
+
             $rows[$x][$rowJumlahElemen+1][263] = 'Takt Time';
 
             $rows[$x][$rowJumlahElemen+1][294] = ' = ';
@@ -4121,6 +4125,7 @@ public function exportExcel($idnya){
 												$styles[$x][$rowflow][($i+$mulai_colom_grafik) - $nn]['fill'] = '#fa3eef';
 												$styles[$x][$rowflow-1][($i+$mulai_colom_grafik) - $nn]['fill'] = '#fa3eef';
 												if ($i === $finishmuda[$j]) {
+													$total_muda[] = $muda[$j];
 													if ($i > 1*$nn && $i < ((600*$x) + ($x<=1?0:180))) {
 														$rows[$x][$rowflow-1][($i+$mulai_colom_grafik) - $nn] = 'Muda: '.$muda[$j].' Detik ';
 													}
@@ -4133,6 +4138,7 @@ public function exportExcel($idnya){
 														$styles[$x][$rowflow+2][($i+$mulai_colom_grafik) - $nn]['fill'] = '#fa3eef';
 														if ($i == ($jumlah_hasil_irregular == 0 ? $cycle_time_tanpa_irregular-1:$cycle_time_tanpa_irregular)) {
 															if ($i > 1*$nn && $i < ((600*$x) + ($x<=1?0:180))) {
+																$muda_terakhir = ($jumlah_hasil_irregular == 0 ? $cycle_time_tanpa_irregular-1:$cycle_time_tanpa_irregular) - $finish[$j];
 																$rows[$x][$rowflow+2][($i+$mulai_colom_grafik) - $nn] = 'Muda: '.(($jumlah_hasil_irregular == 0 ? $cycle_time_tanpa_irregular-1:$cycle_time_tanpa_irregular) - $finish[$j]).' Detik ';
 															}
 														}
@@ -4198,6 +4204,31 @@ public function exportExcel($idnya){
 				}
         // $rows[$x][$rownya + 13][$cycle_time + 14] = 'Cycle Time = '.$cycle_time.' Detik';
 			// echo sizeof($rows[$x]);
+
+			// isi total waktu muda
+			if ($x <= 1) {
+				$h78218 = !empty($muda_terakhir) ? $muda_terakhir : '';
+				$keterangan_total_muda = !empty($total_muda) ? implode(' + ', $total_muda) : '';
+				if (!empty($total_muda) && !empty($muda_terakhir)) {
+					$hasil_total_muda = $keterangan_total_muda.' + '.$h78218;
+					$ttl_hsl = (array_sum($total_muda) + $muda_terakhir);
+				}elseif (!empty($total_muda) && empty($muda_terakhir)) {
+					if (sizeof($total_muda) == 1) {
+						$hasil_total_muda = (array_sum($total_muda));
+					}else {
+						$hasil_total_muda = $keterangan_total_muda.' = '.(array_sum($total_muda));
+					}
+					$ttl_hsl = array_sum($total_muda);
+				}elseif (empty($total_muda) && !empty($muda_terakhir)) {
+					$hasil_total_muda = $muda_terakhir;
+					$ttl_hsl = $muda_terakhir;
+				}else {
+					$hasil_total_muda = 0;
+					$ttl_hsl = 0;
+				}
+				$rows[$x][$rowJumlahElemen+1][170] = $hasil_total_muda;
+				$rows[$x][$rowJumlahElemen+2][170] = $ttl_hsl;
+			}
 
 			$writer->writeSheetHeader($sheet1.'_'.$x, $header, $col_options);      //WRITE HEADER
 			for ($i=0; $i < sizeof($rows[$x]); $i++) {
@@ -4317,6 +4348,13 @@ public function exportExcel($idnya){
 			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+1, $start_col= 93, $end_row=$rowjum+1, $end_col= 97);
 			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+1, $start_col= 98, $end_row=$rowjum+1, $end_col= 123);
 			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+1, $start_col= 124, $end_row=$rowjum+1, $end_col= 137);
+
+											$writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+1, $start_col= 140, $end_row=$rowjum+1, $end_col= 163);
+											$writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+1, $start_col= 164, $end_row=$rowjum+1, $end_col= 169);
+											$writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+1, $start_col= 170, $end_row=$rowjum+1, $end_col= 253);
+
+											$writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+2, $start_col= 164, $end_row=$rowjum+2, $end_col= 169);
+											$writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+2, $start_col= 170, $end_row=$rowjum+2, $end_col= 253);
 
 			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+2, $start_col= 20, $end_row=$rowjum+2, $end_col= 92);
 			                $writer->markMergedCell($sheet1.'_'.$x, $start_row= $rowjum+2, $start_col= 93, $end_row=$rowjum+2, $end_col= 97);
