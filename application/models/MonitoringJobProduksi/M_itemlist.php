@@ -79,5 +79,15 @@ public function updateflag($inv_id, $kategori, $sub, $flag){
   $query = $this->oracle->query("commit");
 }
 
+public function updateflagall($kategori, $sub, $flag){
+  $sql = "update khs_category_item_monitoring 
+          set flag = '$flag'
+          where category_name = '$kategori' 
+          and $sub";
+  // echo "<pre>";print_r($sql);exit();
+  $query = $this->oracle->query($sql);
+  $query = $this->oracle->query("commit");
+}
+
 
 }
