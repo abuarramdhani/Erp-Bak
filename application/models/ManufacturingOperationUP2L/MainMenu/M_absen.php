@@ -8,6 +8,73 @@ class M_absen extends CI_Model
         $this->load->database();
     }
 
+    // rozin edit 2021
+    // DATATABLE SERVERSIDE ABSEN
+    public function selectAbs($data)
+    {
+      $explode = ucwords($data['search']['value']);
+      $explode2 = strtoupper($data['search']['value']);
+        $res = $this->db->query(
+          "SELECT kdav.*
+          FROM
+              (
+              SELECT
+                      skdav.*,
+                      ROW_NUMBER () OVER (ORDER BY created_date DESC) as pagination
+                  FROM
+                      (
+                        SELECT mfo.*
+                        FROM
+                            (SELECT * FROM mo.mo_absensi WHERE presensi != 'HDR'
+                              ORDER BY extract(month from created_date) desc, extract(year from created_date) desc, extract(day from created_date)) mfo
+                        WHERE
+                            (
+                              nama LIKE '%{$explode}%'
+                              OR no_induk LIKE '%{$explode}%'
+                              OR created_date::text LIKE '%{$explode}%'
+                              OR presensi LIKE '%{$explode2}%'
+                            )
+                      ) skdav
+              ) kdav
+          WHERE
+              pagination BETWEEN {$data['pagination']['from']} AND {$data['pagination']['to']}"
+          )->result_array();
+
+      return $res;
+    }
+
+    public function countAllAbs()
+    {
+      return $this->db->query(
+        "SELECT
+            COUNT(*) AS \"count\"
+        FROM
+        (SELECT * FROM mo.mo_absensi WHERE presensi != 'HDR'
+          ORDER BY extract(month from created_date) desc, extract(year from created_date) desc, extract(day from created_date)
+          ) kdo"
+        )->row_array();
+    }
+
+    public function countFilteredAbs($data)
+    {
+      $explode = ucwords($data['search']['value']);
+      $explode2 = strtoupper($data['search']['value']);
+      return $this->db->query(
+        "SELECT
+              COUNT(*) AS \"count\"
+            FROM
+            (SELECT * FROM mo.mo_absensi WHERE presensi != 'HDR'
+              ORDER BY extract(month from created_date) desc, extract(year from created_date) desc, extract(day from created_date)) kdo
+            WHERE
+            (
+              nama LIKE '%{$explode}%'
+              OR no_induk LIKE '%{$explode}%'
+              OR created_date::text LIKE '%{$explode}%'
+              OR presensi LIKE '%{$explode2}%'
+            )"
+        )->row_array();
+    }
+    // END DATATABLE SERVERSIDE
     public function index_data()
     {
         $sql = "SELECT * FROM mo.mo_absensi WHERE presensi != 'HDR' ORDER BY extract(month from created_date) desc, extract(year from created_date) desc, extract(day from created_date)";

@@ -7,6 +7,85 @@ class M_core extends CI_Model
         parent::__construct();
         $this->load->database();
     }
+
+    // rozin edit 2021
+    // DATATABLE SERVERSIDE CORE
+    public function selectC($data)
+    {
+      $explode = strtoupper($data['search']['value']);
+        $res = $this->db
+            ->query(
+                "SELECT kdav.*
+                FROM
+                    (
+                    SELECT
+                            skdav.*,
+                            ROW_NUMBER () OVER (ORDER BY production_date DESC) as pagination
+                        FROM
+                            (
+                              SELECT mfo.*
+                              FROM
+                                  (SELECT mm.*, ma.kode kode
+                                          FROM mo.mo_core mm, mo.mo_absensi ma
+                                          WHERE ma.id_produksi = mm.core_id AND ma.category_produksi = 'Core'
+                                          GROUP BY mm.core_id, ma.kode
+                                          ORDER BY extract(month from mm.production_date) desc, extract(year from mm.production_date) desc, extract(day from mm.production_date), ma.kode) mfo
+                              WHERE
+                                    (
+                                      component_code LIKE '%{$explode}%'
+                                      OR component_description LIKE '%{$explode}%'
+                                      OR production_date::text LIKE '%{$explode}%'
+                                      OR kode LIKE '%{$explode}%'
+                                      OR shift LIKE '%{$explode}%'
+                                    )
+                            ) skdav
+
+                    ) kdav
+                WHERE
+                    pagination BETWEEN {$data['pagination']['from']} AND {$data['pagination']['to']}"
+            )->result_array();
+
+        return $res;
+    }
+
+    public function countAllC()
+    {
+      return $this->db->query(
+        "SELECT
+            COUNT(*) AS \"count\"
+        FROM
+        (   SELECT mm.*, ma.kode kode
+                FROM mo.mo_core mm, mo.mo_absensi ma
+                WHERE ma.id_produksi = mm.core_id AND ma.category_produksi = 'Core'
+                GROUP BY mm.core_id, ma.kode
+                ORDER BY extract(month from mm.production_date) desc, extract(year from mm.production_date) desc, extract(day from mm.production_date), ma.kode
+              ) kdo"
+        )->row_array();
+    }
+
+    public function countFilteredC($data)
+    {
+      $explode = strtoupper($data['search']['value']);
+      return $this->db->query(
+        "SELECT
+              COUNT(*) AS \"count\"
+            FROM
+            (SELECT mm.*, ma.kode kode
+                    FROM mo.mo_core mm, mo.mo_absensi ma
+                    WHERE ma.id_produksi = mm.core_id AND ma.category_produksi = 'Core'
+                    GROUP BY mm.core_id, ma.kode
+                    ORDER BY extract(month from mm.production_date) desc, extract(year from mm.production_date) desc, extract(day from mm.production_date), ma.kode) kdo
+                    WHERE
+                    (
+                      component_code LIKE '%{$explode}%'
+                      OR component_description LIKE '%{$explode}%'
+                      OR production_date::text LIKE '%{$explode}%'
+                      OR kode LIKE '%{$explode}%'
+                      OR shift LIKE '%{$explode}%'
+                    )"
+        )->row_array();
+    }
+    // END SERVERSIDE DATATABLE
     public function getCore()
     {
         $sql = "SELECT mm.*, ma.kode kode
@@ -16,7 +95,7 @@ class M_core extends CI_Model
                 ORDER BY extract(month from mm.production_date) desc, extract(year from mm.production_date) desc, extract(day from mm.production_date), ma.kode";
         return $this->db->query($sql)->result_array();
     }
-    
+
     public function getCoreById($id)
     {
         $sql = "SELECT mm.*, ma.kode kode

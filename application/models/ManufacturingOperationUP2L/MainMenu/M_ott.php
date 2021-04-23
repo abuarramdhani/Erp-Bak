@@ -8,6 +8,76 @@ class M_ott extends CI_Model
         $this->load->database();
     }
 
+    // rozin edit 2021
+    // DATATABLE SERVERSIDE OTT
+    public function selectOtt($data)
+    {
+      $explode = strtoupper($data['search']['value']);
+        $res = $this->db
+            ->query(
+              "SELECT kdav.*
+              FROM
+                  (
+                  SELECT
+                        skdav.*,
+                        ROW_NUMBER () OVER (ORDER BY otttgl DESC) as pagination
+                    FROM
+                        (
+                          SELECT mfo.*
+                          FROM
+                              (SELECT * FROM mo.mo_ott
+                                ORDER BY extract(month from otttgl) desc, extract(year from otttgl) desc, extract(day from otttgl)) mfo
+                          WHERE
+                                (
+                                  nama LIKE '%{$explode}%'
+                                  OR otttgl::text LIKE '%{$explode}%'
+                                  OR kode_cor LIKE '%{$explode}%'
+                                  OR shift LIKE '%{$explode}%'
+                                  OR pekerjaan LIKE '%{$explode}%'
+                                  OR kode LIKE '%{$explode}%'
+                                )
+                        ) skdav
+                ) kdav
+            WHERE
+                pagination BETWEEN {$data['pagination']['from']} AND {$data['pagination']['to']}"
+              )->result_array();
+
+          return $res;
+    }
+
+    public function countAllOtt()
+    {
+      return $this->db->query(
+        "SELECT
+            COUNT(*) AS \"count\"
+        FROM
+            (SELECT * FROM mo.mo_ott
+              ORDER BY extract(month from otttgl) desc, extract(year from otttgl) desc, extract(day from otttgl)
+            )kdo"
+        )->row_array();
+    }
+
+    public function countFilteredOtt($data)
+    {
+      $explode = strtoupper($data['search']['value']);
+      return $this->db->query(
+        "SELECT
+            COUNT(*) AS \"count\"
+        FROM
+          (SELECT * FROM mo.mo_ott
+            ORDER BY extract(month from otttgl) desc, extract(year from otttgl) desc, extract(day from otttgl)) kdo
+            WHERE
+            (
+              nama LIKE '%{$explode}%'
+              OR otttgl::text LIKE '%{$explode}%'
+              OR kode_cor LIKE '%{$explode}%'
+              OR shift LIKE '%{$explode}%'
+              OR pekerjaan LIKE '%{$explode}%'
+              OR kode LIKE '%{$explode}%'
+            )"
+        )->row_array();
+    }
+    // END SERVERSIDE DATATABLE
     public function index_data()
     {
         $sql = "SELECT * FROM mo.mo_ott ORDER BY extract(month from otttgl) desc, extract(year from otttgl) desc, extract(day from otttgl)";

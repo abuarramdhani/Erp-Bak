@@ -42,14 +42,61 @@ class C_Absen extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
-		$data['show'] = $this->M_absen->index_data();
-
 		$this->load->view('V_Header', $data);
 		$this->load->view('V_Sidemenu', $data);
 		$this->load->view('ManufacturingOperationUP2L/Absen/V_index', $data);
 		$this->load->view('V_Footer', $data);
     }
 
+		// edit rozin
+		public function buildAbsDataTable()
+		{
+			$post = $this->input->post();
+
+			foreach ($post['columns'] as $val) {
+				$post['search'][$val['data']]['value'] = $val['search']['value'];
+			}
+
+			$countall = $this->M_absen->countAllAbs()['count'];
+			$countfilter = $this->M_absen->countFilteredAbs($post)['count'];
+
+			$post['pagination']['from'] = $post['start'] + 1;
+			$post['pagination']['to'] = $post['start'] + $post['length'];
+
+			$protodata = $this->M_absen->selectAbs($post);
+
+			$data = [];
+			foreach ($protodata as $row) {
+
+				$sub_array = [];
+				$sub_array[] = '<center>'.$row['pagination'].'</center>';
+				$sub_array[] = '<center>
+													<a style="margin-right:4px" href="'.base_url('ManufacturingOperationUP2L/Absen/read_data/'.$row['id_absensi']).'" data-toggle="tooltip" data-placement="bottom" title="Read Data"><span class="fa fa-list-alt fa-2x"></span></a>
+													<a style="margin-right:4px" href="'.base_url('ManufacturingOperationUP2L/Absen/update_data/'.$row['id_absensi']).'" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o fa-2x"></span></a>
+													<a href="'.base_url('ManufacturingOperationUP2L/Absen/delete_data/'.$row['id_absensi']).'" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm("Are you sure you want to delete this item?");"><span class="fa fa-trash fa-2x"></span></a>
+												</center>';
+				$sub_array[] = $row['nama'];
+				$sub_array[] = '<center>'.$row['no_induk'].'</center>';
+				$sub_array[] = '<center>'.$row['created_date'].'</center>';
+				$sub_array[] = '<center>'.$row['presensi'].'</center>';
+
+				$data[] = $sub_array;
+			}
+
+			$output = [
+				'draw' => $post['draw'],
+				'recordsTotal' => $countall,
+				'recordsFiltered' => $countfilter,
+				'data' => $data,
+			];
+
+			die($this->output
+							->set_status_header(200)
+							->set_content_type('application/json')
+							->set_output(json_encode($output))
+							->_display());
+		}
+		
     public function view_create()
 	{
 		$user = $this->session->username;
@@ -65,7 +112,7 @@ class C_Absen extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
         $data['pekerja'] = $this->M_absen->pekerja();
-		
+
 		for ($i=1;$i<count($data['pekerja']);$i++) {
 			$data['data_p'][] = $data['pekerja'][$i]['no_induk'].' | '.$data['pekerja'][$i]['nama'];
 		}
@@ -115,7 +162,7 @@ class C_Absen extends CI_Controller
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
-        
+
         $data['show'] = $this->M_absen->byId($id);
 
 		$this->load->view('V_Header', $data);
@@ -139,7 +186,7 @@ class C_Absen extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 		$data['pekerja'] = $this->M_absen->pekerja();
-		
+
 		for ($i=1; $i < count($data['pekerja']); $i++) {
 			$data['data_p'][] = $data['pekerja'][$i]['no_induk'].' | '.$data['pekerja'][$i]['nama'];
 		}
@@ -176,7 +223,7 @@ class C_Absen extends CI_Controller
         $this->M_absen->delete($id);
         redirect(site_url('ManufacturingOperationUP2L/Absen'));
 	}
-	
+
 	public function pekerja()
 	{
 		$pekerja = $this->M_absen->pekerjaAjax(strtolower(array_keys($_GET)[0]));
