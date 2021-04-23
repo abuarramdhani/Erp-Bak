@@ -7,7 +7,7 @@ class M_laporan extends CI_Model
         parent::__construct();
         $this->load->database();    
         $this->oracle = $this->load->database('oracle', true);
-        $this->oracle_dev = $this->load->database('oracle_dev', true);
+        // $this->oracle_dev = $this->load->database('oracle_dev', true);
     }
     
     public function getCategory($term){
