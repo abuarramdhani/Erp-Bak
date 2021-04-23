@@ -1894,6 +1894,12 @@ $(document).ready(function () {
 							return swal.fire("Warning", "Kode Jabatan Masih Kosong", "warning");
 						}
 
+						var noid = $(".input_noind_baru_SP").val().substring(0, 1);
+						var arn = ['C','N','Q','F'];
+						if ($(".slc_jab_upah").val() == '' && !arn.includes(noid)) {
+							return swal.fire("Warning", "Jabatan Upah harus di isi", "warning");
+						}
+
 						function doAjaxCallToInsert() {
 							$.ajax({
 								type: "POST",
