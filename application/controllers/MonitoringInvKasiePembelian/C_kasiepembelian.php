@@ -229,6 +229,110 @@ class C_kasiepembelian extends CI_Controller{
 	
 	}
 
+	public function InvBermasalahBuyerSubkon()
+	{
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		
+		$data['Menu'] = 'Dashboard';
+		$data['SubMenuOne'] = '';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$user = $this->session->user;
+		$bermasalah = $this->M_kasiepembelian->listInvBermasalahBuyerSubkon();
+		$listBuyer = $this->M_kasiepembelian->getBuyer();
+		
+		$no = 0;
+		foreach ($bermasalah as $inv => $value) {
+
+			$invoice_id = $bermasalah[$inv]['INVOICE_ID'];
+			
+			$po_amount = 0;
+			$unit = $this->M_kasiepembelian->poAmount($invoice_id);
+
+			foreach ($unit as $price) {
+				$total = $price['UNIT_PRICE'] * $price['QTY_INVOICE'];
+				$po_amount = $po_amount + $total;
+				
+			} 
+
+			$bermasalah[$no]['PO_AMOUNT'] = $po_amount;
+
+			$po_numberr = $this->M_kasiepembelian->po_numberr($invoice_id);
+			
+			$bermasalah[$inv]['PO_NUMBER'] = '';
+			$bermasalah[$inv]['PPN'] = '';
+			foreach ($po_numberr as $key => $value) {
+				$bermasalah[$inv]['PO_NUMBER'] .= $value['PO_NUMBER'].'<br>';
+				$bermasalah[$inv]['PPN'] .= $value['PPN'].'<br>';
+			}
+
+			$no++;
+		}
+		$data['bermasalah'] =$bermasalah;
+		$data['buyer'] = $listBuyer;
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('MonitoringInvKasiePembelian/V_listInvBermasalahBuyerSubkon',$data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function InvBermasalahBuyerSupplier()
+	{
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		
+		$data['Menu'] = 'Dashboard';
+		$data['SubMenuOne'] = '';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$user = $this->session->user;
+		$bermasalah = $this->M_kasiepembelian->listInvBermasalahBuyerSupplier();
+		$listBuyer = $this->M_kasiepembelian->getBuyer();
+		
+		$no = 0;
+		foreach ($bermasalah as $inv => $value) {
+
+			$invoice_id = $bermasalah[$inv]['INVOICE_ID'];
+			
+			$po_amount = 0;
+			$unit = $this->M_kasiepembelian->poAmount($invoice_id);
+
+			foreach ($unit as $price) {
+				$total = $price['UNIT_PRICE'] * $price['QTY_INVOICE'];
+				$po_amount = $po_amount + $total;
+				
+			} 
+
+			$bermasalah[$no]['PO_AMOUNT'] = $po_amount;
+
+			$po_numberr = $this->M_kasiepembelian->po_numberr($invoice_id);
+			
+			$bermasalah[$inv]['PO_NUMBER'] = '';
+			$bermasalah[$inv]['PPN'] = '';
+			foreach ($po_numberr as $key => $value) {
+				$bermasalah[$inv]['PO_NUMBER'] .= $value['PO_NUMBER'].'<br>';
+				$bermasalah[$inv]['PPN'] .= $value['PPN'].'<br>';
+			}
+
+			$no++;
+		}
+		$data['bermasalah'] =$bermasalah;
+		$data['buyer'] = $listBuyer;
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('MonitoringInvKasiePembelian/V_listInvBermasalahBuyerSupplier',$data);
+		$this->load->view('V_Footer',$data);
+	}
+
 	public function InvBermasalahBuyerSistem()
 	{
 		$this->checkSession();
