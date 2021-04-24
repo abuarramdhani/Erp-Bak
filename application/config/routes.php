@@ -2555,6 +2555,8 @@ $route['AccountPayables/MonitoringInvoice/InvoiceBermasalahBuyer/List/(:any)/(:a
 $route['AccountPayables/MonitoringInvoice/InvoiceBermasalahBuyer/Finish'] = 'MonitoringInvKasiePembelian/C_kasiepembelian/FinishInvBermasalahBuyer';
 $route['AccountPayables/MonitoringInvoice/InvoiceBermasalahBuyer/Finish/(:any)'] = 'MonitoringInvKasiePembelian/C_kasiepembelian/$1';
 $route['AccountPayables/MonitoringInvoice/InvoiceBermasalahBuyer/Sistem'] = 'MonitoringInvKasiePembelian/C_kasiepembelian/InvBermasalahBuyerSistem';
+$route['AccountPayables/MonitoringInvoice/InvoiceBermasalahBuyer/Supplier'] = 'MonitoringInvKasiePembelian/C_kasiepembelian/InvBermasalahBuyerSupplier';
+$route['AccountPayables/MonitoringInvoice/InvoiceBermasalahBuyer/Subkon'] = 'MonitoringInvKasiePembelian/C_kasiepembelian/InvBermasalahBuyerSubkon';
 
 //--------------------------------------------------- Monitoring Invoice Akuntansi --------------------------------------------------//
 $route['AccountPayables/MonitoringInvoice/NewInvoice'] = 'MonitoringInvoiceAkuntansi/C_monitoringakuntansi/newInvoiceAkt';

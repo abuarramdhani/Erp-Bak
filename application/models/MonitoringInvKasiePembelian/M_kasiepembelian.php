@@ -426,6 +426,139 @@ class M_kasiepembelian extends CI_Model {
         return $runQuery->result_array();
     }
 
+    public function listInvBermasalahBuyerSubkon()
+    {
+        $erp_db = $this->load->database('oracle',true);
+        $sql = "SELECT
+            ami.invoice_id,
+            ami.vendor_name vendor_name,
+            ami.invoice_number invoice_number,
+            ami.invoice_date invoice_date,
+            ami.tax_invoice_number tax_invoice_number,
+            ami.invoice_amount invoice_amount,
+            ami.last_status_purchasing_date last_status_purchasing_date,
+            ami.last_status_finance_date last_status_finance_date,
+            ami.finance_batch_number finance_batch_number,
+            ami.last_finance_invoice_status last_finance_invoice_status,
+            ami.reason reason,
+            ami.info info,
+            ami.invoice_category invoice_category,
+            ami.nominal_dpp nominal_dpp,
+            ami.batch_number batch_number,
+            ami.jenis_jasa jenis_jasa,
+            ami.kategori_inv_bermasalah,
+            ami.kelengkapan_doc_inv_bermasalah,
+            ami.keterangan_inv_bermasalah,
+            ami.akt_action_bermasalah akt_date,
+            ami.source SOURCE,
+            ami.FEEDBACK_PURCHASING,
+            ami.PURC_ACTION_BERMASALAH,
+            ami.FEEDBACK_BUYER,
+            ami.BUYER_ACTION_BERMASALAH,
+            ami.STATUS_BERKAS_PURC,
+            ami.STATUS_BERKAS_BUYER,
+            ami.NO_INDUK_BUYER,
+            ami.SOURCE_BERMASALAH,
+            mib.NAMA_BUYER
+        FROM
+            khs_ap_monitoring_invoice ami
+            LEFT JOIN khs_ap_mon_inv_buyer mib ON mib.NO_INDUK = ami.NO_INDUK_BUYER
+        WHERE
+            STATUS_INV_BERMASALAH IN (3)
+            AND ami.VENDOR_NAME IN 
+            ('ADJI, BENGKEL', 'ANDRE, BENGKEL', 'ANEKA KOMKAR UTAMA, PT', 'APINDO BROTHER SUKSES, CV', 'ASAMA INDONESIA MANUFACTURING, PT', 'ASSAB STEEL INDONESIA, PT'
+            , 'ASTRA DAIDO STEEL INDONESIA, PT', 'ATMI DUTA ENGINEERING, PT', 'ATMI IGI CENTER, PT', 'B L P T', 'BAJA MULIA SEJAHTERA, CV', 'BAMA PUTRA SARANA PLASTINDO, PT'
+            , 'BANGUN ADIKARTO SELARAS, PT', 'BEJANA MAS PERKASA, PT', 'BENJAMIN BERSAUDARA DIESEL, PT', 'BUKAKA FORGING INDUSTRIES, PT', 'CABLE TECH, PT'
+            , 'CAHAYA, BENGKEL', 'CHRISMA GRAFINDO', 'CHUHATSU INDONESIA, PT', 'CITRASOFA', 'DHARMA POLIMETAL, PT', 'DHARMA POLIPLAST, PT', 'DOUBLE STONE GROUP'
+            , 'DUTA WIRA UTAMA, PT', 'DUTTA JAYA', 'DWI TEKNIK', 'ESSA PRINTING', 'EXEDY PRIMA INDONESIA, PT', 'EXPLORA PRINTAMA', 'GALANG PUTRA, BENGKEL'
+            , 'GENTHONG MAKMUR', 'GRAFINDO MITRASEMESTA, PT', 'GRAND PRIX INDOAGUNG, PT', 'HADI KARYA, BENGKEL', 'HAPPY SUSY', 'HARADA', 'HARAPAN BARU UTAMA, CV'
+            , 'HARAPAN INTI FELIX JAYA, PT', 'HARTA BAN INDONESIA, PT', 'HOTMAL JAYA PERKASA', 'INDOHEAT METAL INTI, PT', 'INDOPRIMA GEMILANG', 'INDOSPRING TBK, PT'
+            , 'INDRA ABADI, BENGKEL', 'INDUSTRI KARET DELI, PT', 'INKOASKU, PT', 'JAVA INDO CRAFT, CV', 'JAYA ABADI, BENGKEL', 'JIAXING YILONG IMPORT & EXPORT CO., LTD'
+            , 'KHS JAKARTA ECERAN', 'KHS-ECERAN', 'KHS - ONLINE', 'KING MANUFACTURE, PT', 'KOKURA TETSUDO CO., LTD', 'KUSNADI, UD', 'LARIS JAYA'
+            , 'LIMAE BANGUN PERKASA, PT', 'MADYA PUTERA TEHNIK, PT', 'MAJU TERUS, BENGKEL', 'MAKARYA GAYUH MUKTI', 'MANDIRI, BENGKEL', 'MANGGALA PRATAMA, CV'
+            , 'MARDIYANTO EKA JAYA, BENGKEL', 'MAWAR TERALIS', 'MEGA ANDALAN ELECTROPLATING', 'MEGATAMA SPRING, PT', 'MEKAR ARMADA JAYA, PT', 'MENARA TERUS MAKMUR, PT'
+            , 'MITRA UTAMA', 'MORITA TJOKRO GEARINDO, PT', 'MW CHROME', 'NAGAMAS CAHAYA SENTOSA, PT', 'NANCHANG QINGLIN AUTOMOBILE ACCESSORIES CO., LTD'
+            , 'NANCHANG QINGLIN SEAT MANUFACTURING CO., LTD', 'NANDYA KYOSEI INDONESIA, PT', 'ND BROTHER', 'NINGBO TOPWELL AUTO PARTS CO., LTD', 'PARTUNI PERDANA, PT'
+            , 'PENTASARI PRANAKARYA, PT', 'PERCETAKAN SURYA', 'PONG CODAN INDONESIA, PT', 'PRATAMA, BENGKEL', 'PRIMA DAYA, CV', 'PULOGADUNG TEMPAJAYA, PT'
+            , 'PUTRA SANJAYA, BENGKEL', 'RAHMAT HP, BENGKEL', 'RAINBOW', 'RAJA, BENGKEL', 'SAMUDERA LUAS PARAMACITRA, PT', 'SANTOSO, BENGKEL', 'SARINAH MOTOR'
+            , 'SATRYA MOTOR TOKO & AGEN VULKANISIR BAN', 'SENTOSA MOTOR', 'SINAR AGUNG SELALU SUKSES, PT', 'SINAR BIRU, BENGKEL', 'SINAR JAYA, BENGKEL'
+            , 'SINERGI AUTOCLUTCH, CV', 'SOESILO, BENGKEL', 'SRIREJEKI PERDANA STEEL, PT', 'STEEL PIPE INDUSTRY OF INDONESIA, PT', 'SUKSES CIPTA MAKMUR, PT'
+            , 'SUMBER ADI, TB', 'SUMBER KARET 76', 'SUMBER REJEKI FRP', 'SUMBER URIP, BENGKEL', 'SURABAYA KENCANA ANUGRAH, PT', 'SURYO, BENGKEL', 'TATA INOVINDO, PT'
+            , 'TI AUTOMOTIVE INDONESIA, PT', 'TJAKRINDO MAS, PT', 'TOSAMA ABADI, PT', 'TRI SAPTA JAYA, CV', 'TSPE, BENGKEL', 'TUNGGAL MANDIRI, CV', 'TYAS, BENGKEL'
+            , 'UPJ ITNY', 'VELINDO TEKNIK, CV', 'WAHANA SENTRA NIAGA, PT', 'WANGUN KARYA, BENGKEL', 'WESI AJI, UD', 'YASSIR, BENGKEL', 'YASUFUKU INDONESIA, PT'
+            , 'YOGYA PRESISI TEHNIKATAMA INDUSTRI, PT', 'YOSO PUTRA, BENGKEL')
+        ORDER BY
+            ami.akt_action_bermasalah DESC";       
+        $runQuery = $erp_db->query($sql);
+        return $runQuery->result_array();
+    }
+
+    public function listInvBermasalahBuyerSupplier()
+    {
+        $erp_db = $this->load->database('oracle',true);
+        $sql = "SELECT
+            ami.invoice_id,
+            ami.vendor_name vendor_name,
+            ami.invoice_number invoice_number,
+            ami.invoice_date invoice_date,
+            ami.tax_invoice_number tax_invoice_number,
+            ami.invoice_amount invoice_amount,
+            ami.last_status_purchasing_date last_status_purchasing_date,
+            ami.last_status_finance_date last_status_finance_date,
+            ami.finance_batch_number finance_batch_number,
+            ami.last_finance_invoice_status last_finance_invoice_status,
+            ami.reason reason,
+            ami.info info,
+            ami.invoice_category invoice_category,
+            ami.nominal_dpp nominal_dpp,
+            ami.batch_number batch_number,
+            ami.jenis_jasa jenis_jasa,
+            ami.kategori_inv_bermasalah,
+            ami.kelengkapan_doc_inv_bermasalah,
+            ami.keterangan_inv_bermasalah,
+            ami.akt_action_bermasalah akt_date,
+            ami.source SOURCE,
+            ami.FEEDBACK_PURCHASING,
+            ami.PURC_ACTION_BERMASALAH,
+            ami.FEEDBACK_BUYER,
+            ami.BUYER_ACTION_BERMASALAH,
+            ami.STATUS_BERKAS_PURC,
+            ami.STATUS_BERKAS_BUYER,
+            ami.NO_INDUK_BUYER,
+            ami.SOURCE_BERMASALAH,
+            mib.NAMA_BUYER
+        FROM
+            khs_ap_monitoring_invoice ami
+            LEFT JOIN khs_ap_mon_inv_buyer mib ON mib.NO_INDUK = ami.NO_INDUK_BUYER
+        WHERE
+            STATUS_INV_BERMASALAH IN (3)
+            AND ami.VENDOR_NAME NOT IN 
+            ('ADJI, BENGKEL', 'ANDRE, BENGKEL', 'ANEKA KOMKAR UTAMA, PT', 'APINDO BROTHER SUKSES, CV', 'ASAMA INDONESIA MANUFACTURING, PT', 'ASSAB STEEL INDONESIA, PT'
+            , 'ASTRA DAIDO STEEL INDONESIA, PT', 'ATMI DUTA ENGINEERING, PT', 'ATMI IGI CENTER, PT', 'B L P T', 'BAJA MULIA SEJAHTERA, CV', 'BAMA PUTRA SARANA PLASTINDO, PT'
+            , 'BANGUN ADIKARTO SELARAS, PT', 'BEJANA MAS PERKASA, PT', 'BENJAMIN BERSAUDARA DIESEL, PT', 'BUKAKA FORGING INDUSTRIES, PT', 'CABLE TECH, PT'
+            , 'CAHAYA, BENGKEL', 'CHRISMA GRAFINDO', 'CHUHATSU INDONESIA, PT', 'CITRASOFA', 'DHARMA POLIMETAL, PT', 'DHARMA POLIPLAST, PT', 'DOUBLE STONE GROUP'
+            , 'DUTA WIRA UTAMA, PT', 'DUTTA JAYA', 'DWI TEKNIK', 'ESSA PRINTING', 'EXEDY PRIMA INDONESIA, PT', 'EXPLORA PRINTAMA', 'GALANG PUTRA, BENGKEL'
+            , 'GENTHONG MAKMUR', 'GRAFINDO MITRASEMESTA, PT', 'GRAND PRIX INDOAGUNG, PT', 'HADI KARYA, BENGKEL', 'HAPPY SUSY', 'HARADA', 'HARAPAN BARU UTAMA, CV'
+            , 'HARAPAN INTI FELIX JAYA, PT', 'HARTA BAN INDONESIA, PT', 'HOTMAL JAYA PERKASA', 'INDOHEAT METAL INTI, PT', 'INDOPRIMA GEMILANG', 'INDOSPRING TBK, PT'
+            , 'INDRA ABADI, BENGKEL', 'INDUSTRI KARET DELI, PT', 'INKOASKU, PT', 'JAVA INDO CRAFT, CV', 'JAYA ABADI, BENGKEL', 'JIAXING YILONG IMPORT & EXPORT CO., LTD'
+            , 'KHS JAKARTA ECERAN', 'KHS-ECERAN', 'KHS - ONLINE', 'KING MANUFACTURE, PT', 'KOKURA TETSUDO CO., LTD', 'KUSNADI, UD', 'LARIS JAYA'
+            , 'LIMAE BANGUN PERKASA, PT', 'MADYA PUTERA TEHNIK, PT', 'MAJU TERUS, BENGKEL', 'MAKARYA GAYUH MUKTI', 'MANDIRI, BENGKEL', 'MANGGALA PRATAMA, CV'
+            , 'MARDIYANTO EKA JAYA, BENGKEL', 'MAWAR TERALIS', 'MEGA ANDALAN ELECTROPLATING', 'MEGATAMA SPRING, PT', 'MEKAR ARMADA JAYA, PT', 'MENARA TERUS MAKMUR, PT'
+            , 'MITRA UTAMA', 'MORITA TJOKRO GEARINDO, PT', 'MW CHROME', 'NAGAMAS CAHAYA SENTOSA, PT', 'NANCHANG QINGLIN AUTOMOBILE ACCESSORIES CO., LTD'
+            , 'NANCHANG QINGLIN SEAT MANUFACTURING CO., LTD', 'NANDYA KYOSEI INDONESIA, PT', 'ND BROTHER', 'NINGBO TOPWELL AUTO PARTS CO., LTD', 'PARTUNI PERDANA, PT'
+            , 'PENTASARI PRANAKARYA, PT', 'PERCETAKAN SURYA', 'PONG CODAN INDONESIA, PT', 'PRATAMA, BENGKEL', 'PRIMA DAYA, CV', 'PULOGADUNG TEMPAJAYA, PT'
+            , 'PUTRA SANJAYA, BENGKEL', 'RAHMAT HP, BENGKEL', 'RAINBOW', 'RAJA, BENGKEL', 'SAMUDERA LUAS PARAMACITRA, PT', 'SANTOSO, BENGKEL', 'SARINAH MOTOR'
+            , 'SATRYA MOTOR TOKO & AGEN VULKANISIR BAN', 'SENTOSA MOTOR', 'SINAR AGUNG SELALU SUKSES, PT', 'SINAR BIRU, BENGKEL', 'SINAR JAYA, BENGKEL'
+            , 'SINERGI AUTOCLUTCH, CV', 'SOESILO, BENGKEL', 'SRIREJEKI PERDANA STEEL, PT', 'STEEL PIPE INDUSTRY OF INDONESIA, PT', 'SUKSES CIPTA MAKMUR, PT'
+            , 'SUMBER ADI, TB', 'SUMBER KARET 76', 'SUMBER REJEKI FRP', 'SUMBER URIP, BENGKEL', 'SURABAYA KENCANA ANUGRAH, PT', 'SURYO, BENGKEL', 'TATA INOVINDO, PT'
+            , 'TI AUTOMOTIVE INDONESIA, PT', 'TJAKRINDO MAS, PT', 'TOSAMA ABADI, PT', 'TRI SAPTA JAYA, CV', 'TSPE, BENGKEL', 'TUNGGAL MANDIRI, CV', 'TYAS, BENGKEL'
+            , 'UPJ ITNY', 'VELINDO TEKNIK, CV', 'WAHANA SENTRA NIAGA, PT', 'WANGUN KARYA, BENGKEL', 'WESI AJI, UD', 'YASSIR, BENGKEL', 'YASUFUKU INDONESIA, PT'
+            , 'YOGYA PRESISI TEHNIKATAMA INDUSTRI, PT', 'YOSO PUTRA, BENGKEL')
+        ORDER BY
+            ami.akt_action_bermasalah DESC";       
+        $runQuery = $erp_db->query($sql);
+        return $runQuery->result_array();
+    }
 
      public function invBermasalah($invoice_id)
     {
