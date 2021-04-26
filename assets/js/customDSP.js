@@ -594,6 +594,9 @@ function SearchArsSPBDO() {
   var date1 = $("#dtfrmsp").val();
   var date2 = $("#dtotsp").val();
 
+  var date1input = $("#dtfrminput").val();
+  var date2input = $("#dtoinput").val();
+
   $.ajax({
     beforeSend: function () {
       $("div#arsipDepebeh").html(
@@ -606,6 +609,8 @@ function SearchArsSPBDO() {
     data: {
       datefrom: date1,
       dateto: date2,
+      dateinput1: date1input,
+      dateinput2: date2input,
     },
     dataType: "html",
     type: "post",

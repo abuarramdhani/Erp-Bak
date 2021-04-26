@@ -333,4 +333,92 @@ class M_dpb extends CI_Model
 
         return $query->result_array();
     }
+    public function getDataSPB3($date1, $date2)
+    {
+        $oracle = $this->load->database('oracle', true);
+
+        $sql = "select distinct
+       to_char(kts.jam_input, 'DD/MM/YYYY HH24:MI:SS') as jam_input, 
+       kts.tgl_dibuat,
+       kts.selesai_packing packing_selesai,
+       kts.jenis_dokumen, kts.no_dokumen, kts.jumlah_item, kts.jumlah_pcs,
+       to_char(kts.mulai_pelayanan, 'DD/MM/YYYY HH24:MI:SS') as mulai_pelayanan, 
+       to_char(kts.selesai_pelayanan, 'DD/MM/YYYY HH24:MI:SS') as selesai_pelayanan,kts.waktu_pelayanan,
+       to_char(kts.mulai_pengeluaran, 'DD/MM/YYYY HH24:MI:SS') as mulai_pengeluaran, 
+       to_char(kts.selesai_pengeluaran, 'DD/MM/YYYY HH24:MI:SS') as selesai_pengeluaran, kts.waktu_pengeluaran,
+       to_char(kts.mulai_packing, 'DD/MM/YYYY HH24:MI:SS') as mulai_packing, 
+       to_char(kts.selesai_packing, 'DD/MM/YYYY HH24:MI:SS') as selesai_packing, kts.waktu_packing,
+       kts.urgent, kts.pic_pelayan, kts.pic_pengeluaran, kts.pic_packing, kts.bon, kts.cancel,
+       kts.selesai_packing as order_berdasarkan,
+       sum(kcds.BERAT) over (partition by kts.no_dokumen) berat,
+       mtrh.attribute15 ekspedisi
+       from khs_tampung_spb kts, khs_colly_dospb_sp kcds,mtl_txn_request_headers mtrh
+       WHERE TRUNC (kts.selesai_packing) >= NVL (TO_DATE ('$date1', 'DD/MM/YYYY'), '01-JAN-2011')
+       AND TRUNC (kts.selesai_packing) <= NVL (TO_DATE ('$date2', 'DD/MM/YYYY'), SYSDATE)
+       and kts.NO_DOKUMEN = kcds.REQUEST_NUMBER
+       AND kts.no_dokumen = mtrh.request_number 
+       order by kts.selesai_packing ASC";
+
+        $query = $oracle->query($sql);
+        return $query->result_array();
+    }
+    public function getDataArsipSPB($date1, $date2)
+    {
+        $oracle = $this->load->database('oracle', true);
+
+        $sql = "select distinct
+        to_char(kts.jam_input, 'DD/MM/YYYY HH24:MI:SS') as jam_input, 
+        kts.tgl_dibuat,
+        kts.selesai_packing packing_selesai,
+        kts.jenis_dokumen, kts.no_dokumen, kts.jumlah_item, kts.jumlah_pcs,
+        to_char(kts.mulai_pelayanan, 'DD/MM/YYYY HH24:MI:SS') as mulai_pelayanan, 
+        to_char(kts.selesai_pelayanan, 'DD/MM/YYYY HH24:MI:SS') as selesai_pelayanan,kts.waktu_pelayanan,
+        to_char(kts.mulai_pengeluaran, 'DD/MM/YYYY HH24:MI:SS') as mulai_pengeluaran, 
+        to_char(kts.selesai_pengeluaran, 'DD/MM/YYYY HH24:MI:SS') as selesai_pengeluaran, kts.waktu_pengeluaran,
+        to_char(kts.mulai_packing, 'DD/MM/YYYY HH24:MI:SS') as mulai_packing, 
+        to_char(kts.selesai_packing, 'DD/MM/YYYY HH24:MI:SS') as selesai_packing, kts.waktu_packing,
+        kts.urgent, kts.pic_pelayan, kts.pic_pengeluaran, kts.pic_packing, kts.bon, kts.cancel,
+        kts.selesai_packing as order_berdasarkan,
+        sum(kcds.BERAT) over (partition by kts.no_dokumen) berat,
+        mtrh.attribute15 ekspedisi
+        from khs_tampung_spb kts, khs_colly_dospb_sp kcds,mtl_txn_request_headers mtrh
+        WHERE TRUNC (kts.tgl_dibuat) >= NVL (TO_DATE ('$date1', 'DD/MM/YYYY'), '01-JAN-2011')
+        AND TRUNC (kts.tgl_dibuat) <= NVL (TO_DATE ('$date2', 'DD/MM/YYYY'), SYSDATE)
+        and kts.NO_DOKUMEN = kcds.REQUEST_NUMBER
+        AND kts.no_dokumen = mtrh.request_number 
+        order by kts.selesai_packing ASC";
+
+        $query = $oracle->query($sql);
+        return $query->result_array();
+    }
+    public function getDataArsipSPB2($date1, $date2, $date3, $date4)
+    {
+        $oracle = $this->load->database('oracle', true);
+
+        $sql = "select distinct
+        to_char(kts.jam_input, 'DD/MM/YYYY HH24:MI:SS') as jam_input, 
+        kts.tgl_dibuat,
+        kts.selesai_packing packing_selesai,
+        kts.jenis_dokumen, kts.no_dokumen, kts.jumlah_item, kts.jumlah_pcs,
+        to_char(kts.mulai_pelayanan, 'DD/MM/YYYY HH24:MI:SS') as mulai_pelayanan, 
+        to_char(kts.selesai_pelayanan, 'DD/MM/YYYY HH24:MI:SS') as selesai_pelayanan,kts.waktu_pelayanan,
+        to_char(kts.mulai_pengeluaran, 'DD/MM/YYYY HH24:MI:SS') as mulai_pengeluaran, 
+        to_char(kts.selesai_pengeluaran, 'DD/MM/YYYY HH24:MI:SS') as selesai_pengeluaran, kts.waktu_pengeluaran,
+        to_char(kts.mulai_packing, 'DD/MM/YYYY HH24:MI:SS') as mulai_packing, 
+        to_char(kts.selesai_packing, 'DD/MM/YYYY HH24:MI:SS') as selesai_packing, kts.waktu_packing,
+        kts.urgent, kts.pic_pelayan, kts.pic_pengeluaran, kts.pic_packing, kts.bon, kts.cancel,
+        kts.selesai_packing as order_berdasarkan,
+        sum(kcds.BERAT) over (partition by kts.no_dokumen) berat, mtrh.attribute15 ekspedisi
+        from khs_tampung_spb kts, khs_colly_dospb_sp kcds,mtl_txn_request_headers mtrh
+        WHERE TRUNC (kts.selesai_packing) >= NVL (TO_DATE ('$date1', 'DD/MM/YYYY'), '01-JAN-2011')
+        AND TRUNC (kts.selesai_packing) <= NVL (TO_DATE ('$date2', 'DD/MM/YYYY'), SYSDATE)
+        AND TRUNC (kts.tgl_dibuat) >= NVL (TO_DATE ('$date3', 'DD/MM/YYYY'), '01-JAN-2011')
+        AND TRUNC (kts.tgl_dibuat) <= NVL (TO_DATE ('$date4', 'DD/MM/YYYY'), SYSDATE)
+        and kts.NO_DOKUMEN = kcds.REQUEST_NUMBER
+        AND kts.no_dokumen = mtrh.request_number 
+        order by kts.selesai_packing ASC";
+
+        $query = $oracle->query($sql);
+        return $query->result_array();
+    }
 }
