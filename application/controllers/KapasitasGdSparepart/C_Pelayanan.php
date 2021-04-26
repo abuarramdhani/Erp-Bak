@@ -340,6 +340,7 @@ class C_Pelayanan extends CI_Controller
 
 									}
 								}elseif (sizeof($one_page_is[$key99]) > 22) {
+
 									$coll_kelebihan = $one_page_is[$key99][sizeof($one_page_is[$key99])-1]['COLLY_NUMBER'];
 
 										foreach ($one_page_is[$key99] as $key_1 => $value_) {
@@ -350,7 +351,11 @@ class C_Pelayanan extends CI_Controller
 										}
 										if (!empty($siap_pindah_karna_kelebihan)) {
 											foreach (array_reverse($siap_pindah_karna_kelebihan) as $key_1 => $value_) {
-												array_unshift($one_page_is[$key99+1], $value_);
+												if (empty($one_page_is[$key99+1])) {
+													$one_page_is[$key99+1] = [$value_];
+												}else {
+													array_unshift($one_page_is[$key99+1], $value_);
+												}
 											}
 										}
 
@@ -386,7 +391,6 @@ class C_Pelayanan extends CI_Controller
 								}
 
 							}
-
 						}
 
 		        $data['get_header'] = $this->M_pelayanan->headfootPL($id);
