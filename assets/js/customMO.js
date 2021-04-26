@@ -4,8 +4,10 @@ const tblmould2021 = $('#tblMoulding2021').DataTable({
     // dom: 'rtp',
     ajax: {
       data: (d) => $.extend({}, d, {
-        org: null,    // optional
-        id_plan: null // optional
+        // org: null,    // optional
+        // id_plan: null // optional
+        bulan: null,
+        tanggal: null,
       }),
       url: baseurl + "ManufacturingOperationUP2L/Moulding/buildMDataTable",
       type: 'POST',
@@ -139,8 +141,124 @@ const tblAbs2021 = $('#tblMouldingAbs').DataTable({
          }
      }
 });
+// Search Bulan ditampilkan dengan serverside datatable
+let cari_mould, refresh_mould = null;
+
+const ref_mould = () =>{
+  if (refresh_mould != null){
+    refresh_mould.abort();
+  }
+
+  $('#sea_month').val(""); //Isi dari kolom bulan akan dihilangkan
+  $('#sea_date').val(""); //Isi dari kolom tanggal akan dihilangkan
+
+  refresh_mould = $.ajax({
+    url: baseurl + 'ManufacturingOperationUP2L/Moulding/getAjax',
+    type: 'POST',
+    data:{
+      bulan: null,
+      tanggal: null,
+    },
+    cache:false,
+    beforeSend: function() {
+      $('.area_mould').html(`<div style ="width: 70%;margin:auto;height: 30%;background: #fff;overflow: hidden;z-index: 9999;padding:20px 0 30px 0;border-radius:10px;text-align:center">
+                                  <img style="width: 13%;" src="${baseurl}assets/img/gif/loading14.gif"><br>
+                                  <span style="font-size:15px;font-weight:bold">Sedang memuat data...</span>
+                              </div>`);
+    },
+    success: function(result) {
+      if (result != 0 && result != 10) {
+        $('.area_mould').html(result);
+      }else if (result == 10) {
+        $('.area_mould').html(`<div style ="width: 70%;margin:auto;height: 30%;background: #fff;overflow: hidden;z-index: 9999;padding:20px 0 30px 0;border-radius:10px;text-align:center">
+                                  <i class="fa fa-remove" style="color:#d60d00;font-size:45px;"></i><br>
+                                  <h3 style="font-size:14px;font-weight:bold">Tidak ada data yang sesuai</h3>
+                              </div>`);
+      }else {
+        toastTCTxc("Warning", "Terdapat Kesalahan saat mengambil data");
+      }
+    },
+    error: function (XMLHttpRequest, textStatus, errorThrown) {
+      console.log();
+    }
+  })
+}
+
+const filter_mould = () =>{
+  let bulan = $('#sea_month').val();
+  let tanggal = $('#sea_date').val();
+
+  if (cari_mould != null){
+    cari_mould.abort();
+  }
+
+  cari_mould = $.ajax({
+    url: baseurl + 'ManufacturingOperationUP2L/Moulding/getAjax',
+    type: 'POST',
+    data:{
+      bulan: bulan,
+      tanggal: tanggal,
+    },
+    cache:false,
+    beforeSend: function() {
+      $('.area_mould').html(`<div style ="width: 70%;margin:auto;height: 30%;background: #fff;overflow: hidden;z-index: 9999;padding:20px 0 30px 0;border-radius:10px;text-align:center">
+                                  <img style="width: 13%;" src="${baseurl}assets/img/gif/loading14.gif"><br>
+                                  <span style="font-size:15px;font-weight:bold">Sedang memuat data...</span>
+                              </div>`);
+    },
+    success: function(result) {
+      if (result != 0 && result != 10) {
+        $('.area_mould').html(result);
+      }else if (result == 10) {
+        $('.area_mould').html(`<div style ="width: 70%;margin:auto;height: 30%;background: #fff;overflow: hidden;z-index: 9999;padding:20px 0 30px 0;border-radius:10px;text-align:center">
+                                  <i class="fa fa-remove" style="color:#d60d00;font-size:45px;"></i><br>
+                                  <h3 style="font-size:14px;font-weight:bold">Tidak ada data yang sesuai</h3>
+                              </div>`);
+      }else {
+        toastTCTxc("Warning", "Terdapat Kesalahan saat mengambil data");
+      }
+    },
+    error: function (XMLHttpRequest, textStatus, errorThrown) {
+      console.log();
+    }
+  })
+}
+
+function up2l_moulding_m() {
+  $('#sea_month').prop('readonly', false);
+  $('#sea_date').prop('readonly', true);
+  $('#sea_date').val("");
+}
+function up2l_moulding_d() {
+  $('#sea_month').prop('readonly', true);
+  $('#sea_date').prop('readonly', false);
+  $('#sea_month').val("");
+}
+
+// if ((bulan2 == null) && (tanggal2 == null)) {
+//   $('#sea_date').prop("readonly", false);
+//   $('#sea_date').prop("disabled", false);
+//   $('#sea_month').prop("readonly", false);
+//   $('#sea_month').prop("disabled", false);
+// }else if ((bulan2 != null) && (tanggal2 == null)){
+//   $('#sea_date').prop("readonly", true);
+//   $('#sea_date').prop("disabled", true);
+//   $('#sea_month').prop("readonly", false);
+//   $('#sea_month').prop("disabled", false);
+// }else {
+//   $('#sea_date').prop("readonly", false);
+//   $('#sea_date').prop("disabled", false);
+//   $('#sea_month').prop("readonly", true);
+//   $('#sea_month').prop("disabled", true);
+// }
+
 
 $(document).ready(function () {
+    $('.tanggal-up2l').datepicker({
+      autoClose: true,
+      format: 'yyyy-mm-dd',
+      todayHighlight: true,
+    })
 
     $('.onBtn').click(function () {
         $('.onBtn').hide();

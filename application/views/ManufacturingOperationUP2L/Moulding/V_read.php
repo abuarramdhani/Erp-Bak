@@ -189,7 +189,7 @@
                                 <div class="panel-footer">
                                     <div align="right">
                                         <?php foreach ($Moulding as $u) { ?>
-                                        <form method="POST" action="<?= base_url('ManufacturingOperationUP2L/Moulding/search')?>">
+                                        <form method="POST" action="<?= base_url('ManufacturingOperationUP2L/Moulding')?>">
                                         <input type="hidden" name="bulan" value="<?= $u['production_date']; ?>">
                                         <button type="submit" class="btn btn-danger btn-lg"><i class="fa fa-arrow-left"></i></i>  Back</button>
                                         </form>

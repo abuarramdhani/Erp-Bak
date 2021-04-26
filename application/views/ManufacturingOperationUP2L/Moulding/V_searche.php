@@ -36,12 +36,12 @@
                                         <div class="form-group">
                                         <div class="col-lg-2"></div>
                                             <div class="col-lg-6">
-                                                <form autocomplete="off" method="POST" action="<?= base_url('ManufacturingOperationUP2L/Moulding/search')?>">
+                                                <form autocomplete="off" method="POST" action="<?//= base_url('ManufacturingOperationUP2L/Moulding/search')?>">
                                                 <input type="text" required="" name="bulan" id="sea_month" class="form-control selectM" placeholder="Pilih Bulan" />
                                             </div>
                                             <div class="col-lg-2">
-                                                <button type="submit" class="btn btn-primary"> <i class="fa fa-search"></i></button>
-                                                <a href="<?= base_url('ManufacturingOperationUP2L/Moulding')?>" class="btn btn-success"> <i class="fa fa-refresh"></i></a>
+                                                <button type="button" onclick="" class="btn btn-primary"> <i class="fa fa-search"></i></button>
+                                                <!-- <a href="<?= base_url('ManufacturingOperationUP2L/Moulding')?>" class="btn btn-success"> <i class="fa fa-refresh"></i></a> -->
                                                 </form>
                                             </div>
                                             <div class="col-lg-2"></div>

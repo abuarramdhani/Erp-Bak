@@ -151,7 +151,7 @@
 				<script src="<?= base_url('assets/js/customUM.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customHLCM.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customMA.js') ?>"></script>
-				<script src="<?= base_url('assets/js/customMO.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customMO.js?version=' . filemtime('assets/js/customMO.js')) ?>"></script>
 				<script src="<?= base_url('assets/js/customERC.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customBI.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customMA.js') ?>"></script>
