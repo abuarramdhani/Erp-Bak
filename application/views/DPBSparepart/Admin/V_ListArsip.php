@@ -24,6 +24,9 @@
                 <th>Keterangan</th>
                 <th>Tanggal Cancel</th>
                 <th>Jumlah Coly</th>
+                <th>Berat</th>
+                <th>Total Waktu Proses</th>
+                <th>Ekspedisi</th>
             </tr>
         </thead>
         <tbody>
@@ -52,6 +55,9 @@
                     <td class="text-center"><?= $val['URGENT'] . ' ' . $val['BON'] ?></td>
                     <td class="text-center"><?= $val['CANCEL'] ?></td>
                     <td class="text-center"><?= $val['COLY'] ?></td>
+                    <td class="text-center"><?= $val['BERAT'] ?></td>
+                    <td class="text-center"><?= $val['TOTAL_WAKTU_PROSES'] ?> Hari</td>
+                    <td class="text-center"><?= $val['EKSPEDISI'] ?></td>
                 </tr>
             <?php $no++;
             } ?>

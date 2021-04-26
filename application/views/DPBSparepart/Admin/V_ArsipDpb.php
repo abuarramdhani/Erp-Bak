@@ -36,11 +36,19 @@
                                     <label class="control-label"><?php echo gmdate("l, d F Y, H:i:s", time() + 60 * 60 * 7) ?></label>
                                 </div>
                                 <div class="panel-body">
-                                    <div class="col-md-1"><label>Tanggal</label></div>
-                                    <div class="col-md-2"><input class="form-control datespbeh" placeholder="Tgl Selesai Packing" type="text" id="dtfrmsp"></div>
-                                    <div class="col-md-1"><label>Sampai</label></div>
-                                    <div class="col-md-2"><input class="form-control datespbeh" placeholder="Tgl Selesai Packing" type="text" id="dtotsp"></div>
-                                    <div class="col-md-1"><button class="btn btn-info" onclick="SearchArsSPBDO()">Search</button></div>
+                                    <div class="col-md-2" style="text-align: right;"><label>Tanggal Selesai Packing</label></div>
+                                    <div class="col-md-3"><input class="form-control datespbeh" placeholder="From" type="text" id="dtfrmsp"></div>
+                                    <div class="col-md-2" style="text-align: center;"><label>Sampai</label></div>
+                                    <div class="col-md-3"><input class="form-control datespbeh" placeholder="To" type="text" id="dtotsp"></div>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="col-md-2" style="text-align: right;"><label>Tanggal Dibuat</label></div>
+                                    <div class="col-md-3"><input class="form-control datespbeh" placeholder="From" type="text" id="dtfrminput"></div>
+                                    <div class="col-md-2" style="text-align: center;"><label>Sampai</label></div>
+                                    <div class="col-md-3"><input class="form-control datespbeh" placeholder="To" type="text" id="dtoinput"></div>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="col-md-12" style="text-align: center;"><button class="btn btn-info" onclick="SearchArsSPBDO()">Search</button></div>
                                 </div>
                                 <div class="panel-body">
                                     <div class="col-md-12">

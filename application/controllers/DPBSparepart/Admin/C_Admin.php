@@ -286,16 +286,22 @@ class C_Admin extends  CI_Controller
 		$datenow = date('d/m/Y');
 		$datebefore = date('d/m/Y', strtotime('- 30 days'));
 
-		// echo "<pre>";
-		// print_r($date);
-		// exit();
 
-		$getdata = $this->M_arsip->getDataSPB3($datebefore, $datenow);
+		$getdata = $this->M_dpb->getDataArsipSPB($datebefore, $datenow);
 
 		for ($i = 0; $i < sizeof($getdata); $i++) {
 			$coly = $this->M_packing->cekPacking($getdata[$i]['NO_DOKUMEN']);
 			$getdata[$i]['COLY'] = count($coly);
+			$tgl_dibuat = strtotime($getdata[$i]['TGL_DIBUAT']);
+			$selesai_packing = strtotime($getdata[$i]['PACKING_SELESAI']);
+			$datediff = $selesai_packing - $tgl_dibuat;
+
+			$getdata[$i]['TOTAL_WAKTU_PROSES'] = round($datediff / (60 * 60 * 24));
 		}
+		// echo "<pre>";
+		// print_r($getdata);
+		// exit();
+
 
 		$data['getdata'] = $getdata;
 
@@ -306,17 +312,33 @@ class C_Admin extends  CI_Controller
 		$datefrom = $_POST['datefrom'];
 		$dateto = $_POST['dateto'];
 
-		$data['periode_arsip'] = $datefrom . ' - ' . $dateto;
+		$datefrom2 = $_POST['dateinput1'];
+		$dateto2 = $_POST['dateinput2'];
 
-		// echo "<pre>";
-		// print_r($date);
-		// exit();
-
-		$getdata = $this->M_arsip->getDataSPB3($datefrom, $dateto);
+		if ($datefrom == null || $dateto == null) {
+			$getdata = $this->M_dpb->getDataArsipSPB($datefrom2, $dateto2);
+			$data['periode_arsip'] = $datefrom2 . ' - ' . $dateto2;
+		} else if ($datefrom != null && $dateto != null) {
+			if ($datefrom2 == null || $dateto2 == null) {
+				$data['periode_arsip'] = $datefrom . ' - ' . $dateto;
+				$getdata = $this->M_dpb->getDataSPB3($datefrom, $dateto);
+			} else {
+				$data['periode_arsip'] = $datefrom2 . ' - ' . $dateto2;
+				$getdata = $this->M_dpb->getDataArsipSPB2($datefrom, $dateto, $datefrom2, $dateto2);
+			}
+		} else if ($datefrom2 == null || $dateto2 == null) {
+			$data['periode_arsip'] = $datefrom . ' - ' . $dateto;
+			$getdata = $this->M_dpb->getDataSPB3($datefrom, $dateto);
+		}
 
 		for ($i = 0; $i < sizeof($getdata); $i++) {
 			$coly = $this->M_packing->cekPacking($getdata[$i]['NO_DOKUMEN']);
 			$getdata[$i]['COLY'] = count($coly);
+			$tgl_dibuat = strtotime($getdata[$i]['TGL_DIBUAT']);
+			$selesai_packing = strtotime($getdata[$i]['PACKING_SELESAI']);
+			$datediff = $selesai_packing - $tgl_dibuat;
+
+			$getdata[$i]['TOTAL_WAKTU_PROSES'] = round($datediff / (60 * 60 * 24));
 		}
 
 		$data['getdata'] = $getdata;
