@@ -207,7 +207,7 @@
 				<script src="<?= base_url('assets/js/customMPL.js'); ?>"></script>
 				<script src="<?= base_url('assets/js/customSMS.js'); ?>"></script>
 				<script src="<?= base_url('assets/js/customPDP.js'); ?>"></script>
-				<script src="<?= base_url('assets/js/customKGS.js'); ?>"></script>
+				<script src="<?= base_url('assets/js/customKGS.js?version=' . filemtime('assets/js/customKGS.js')) ?>"></script>
 				<script src="<?= base_url('assets/js/customRJP.js'); ?>"></script>
 				<script src="<?= base_url('assets/js/customMD.js'); ?>"></script>
 				<script src="<?= base_url('assets/js/customADO.js'); ?>"></script>
