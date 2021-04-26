@@ -380,6 +380,11 @@ $("input.p2k3_tanggal_periode").monthpicker({
 	dateFormat: "mm - yy",
 });
 
+$("input.p2k3_tanggal_periodeUnlimited").monthpicker({
+	changeYear: true,
+	dateFormat: "mm - yy",
+});
+
 $(".monthPicker").focus(function () {
 	$(".ui-datepicker-calendar").remove();
 	$("#ui-datepicker-div").position({
