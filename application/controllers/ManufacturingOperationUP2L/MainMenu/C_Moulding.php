@@ -51,19 +51,20 @@ class C_Moulding extends CI_Controller
 	public function buildMDataTable()
 	{
 		$post = $this->input->post();
-		// $bulan = $this->input->post('bulan');
+		$bulan = $this->input->post('bulan');
+		$tanggal = $this->input->post('tanggal');
 
 		foreach ($post['columns'] as $val) {
 				$post['search'][$val['data']]['value'] = $val['search']['value'];
 		}
 
-		$countall = $this->M_moulding->countAllM()['count'];
-		$countfilter = $this->M_moulding->countFilteredM($post)['count'];
-
+		$countall = $this->M_moulding->countAllM($bulan, $tanggal)[0]['jm'];
+		$countfilter = $this->M_moulding->countFilteredM($post, $bulan, $tanggal)['jm'];
+		 // echo "<pre>"; print_r($countfilter);die;
 		$post['pagination']['from'] = $post['start'] + 1;
 		$post['pagination']['to'] = $post['start'] + $post['length'];
 
-		$protodata = $this->M_moulding->selectM($post);
+		$protodata = $this->M_moulding->selectM($post, $bulan, $tanggal);
 		// echo "<pre>";
 		// print_r($protodata);
 		// die;
@@ -106,6 +107,13 @@ class C_Moulding extends CI_Controller
 						->set_content_type('application/json')
 						->set_output(json_encode($output))
 						->_display());
+	}
+
+	public function getAjax()
+	{
+		$data['bulan'] = $this->input->post('bulan');
+		$data['tanggal'] = $this->input->post('tanggal');
+		$this->load->view('ManufacturingOperationUP2L/Moulding/V_ajax', $data);
 	}
 
 
@@ -389,8 +397,8 @@ class C_Moulding extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
-		// $mon = explode('-', $this->input->post('bulan'));
-		// $data['Moulding'] = $this->M_moulding->search($mon[1], $mon[0]);
+		$mon = explode('-', $this->input->post('bulan'));
+		$data['Moulding'] = $this->M_moulding->search($mon[1], $mon[0]);
 
 		$this->load->view('V_Header', $data);
 		$this->load->view('V_Sidemenu', $data);

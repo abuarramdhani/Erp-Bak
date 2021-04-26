@@ -11,9 +11,21 @@ class M_moulding extends CI_Model
 
     //rozin edit 2021
     //DATATABLE SERVER SIDE MOULDING
-    public function selectM($data)
+    public function selectM($data, $bulan, $tanggal)
     {
       $explode = strtoupper($data['search']['value']);
+      $exbulan = explode('-', $bulan);
+      if (!empty($bulan) && empty($tanggal)) {
+        $tanggal__="";
+        $bulan__="AND extract(month from mm.production_date) = '$exbulan[1]'
+                  AND extract(year from mm.production_date) = '$exbulan[0]'";
+      }else if (!empty($tanggal) && empty($bulan)){
+        $tanggal__=$tanggal__="AND mm.production_date = '$tanggal'";
+        $bulan__="";
+      }else {
+        $tanggal__="";
+        $bulan__="";
+      }
         $res = $this->db
             ->query(
                 "SELECT kdav.*
@@ -45,6 +57,8 @@ class M_moulding extends CI_Model
                                           mo.mo_moulding_employee me,
                                   mo.mo_absensi ma
                                   WHERE  mm.moulding_id = me.moulding_id
+                                  $tanggal__
+                                  $bulan__
                                   and ma.category_produksi = 'Moulding'
                                   and ma.id_produksi = mm.moulding_id
                                   and ma.no_induk = me.no_induk
@@ -73,12 +87,24 @@ class M_moulding extends CI_Model
         return $res;
     }
 
-    public function countAllM()
+    public function countAllM($bulan, $tanggal)
     {
+      $exbulan = explode('-', $bulan);
+      if (!empty($bulan) && empty($tanggal)) {
+        $tanggal__="";
+        $bulan__="AND extract(month from mm.production_date) = '$exbulan[1]'
+                  AND extract(year from mm.production_date) = '$exbulan[0]'";
+      }else if(!empty($tanggal) && empty($bulan)){
+        $tanggal__="AND mm.production_date = '$tanggal'";
+        $bulan__="";
+      }else {
+        $tanggal__="";
+        $bulan__="";
+      }
         return $this->db
             ->query(
                 "SELECT
-                    COUNT(*) AS \"count\"
+                    COUNT(*) AS jm
                 FROM
                 (  SELECT mm.moulding_id,
                           mm.component_code,
@@ -99,6 +125,8 @@ class M_moulding extends CI_Model
                           mo.mo_moulding_employee me,
                   mo.mo_absensi ma
                   WHERE  mm.moulding_id = me.moulding_id
+                  $tanggal__
+                  $bulan__
                   and ma.category_produksi = 'Moulding'
                   and ma.id_produksi = mm.moulding_id
                   and ma.no_induk = me.no_induk
@@ -111,15 +139,27 @@ class M_moulding extends CI_Model
                           ORDER BY extract(month from mm.production_date) desc, extract(year from mm.production_date) desc, extract(day from mm.production_date), ma.kode
 
                 ) kdo"
-            )->row_array();
+            )->result_array();
     }
 
-    public function countFilteredM($data)
+    public function countFilteredM($data, $bulan, $tanggal)
     {
         $explode = strtoupper($data['search']['value']);
+        $exbulan = explode('-', $bulan);
+        if (!empty($bulan) && empty($tanggal)) {
+          $tanggal__="";
+          $bulan__="AND extract(month from mm.production_date) = '$exbulan[1]'
+                    AND extract(year from mm.production_date) = '$exbulan[0]'";
+        }else if(!empty($tanggal) && empty($bulan)) {
+          $tanggal__="AND mm.production_date = '$tanggal'";                      
+          $bulan__="";
+        }else {
+          $tanggal__="";
+          $bulan__="";
+        }
         return $this->db->query(
             "SELECT
-                    COUNT(*) AS \"count\"
+                    COUNT(*) AS jm
                 FROM
                 (SELECT mm.moulding_id,
                         mm.component_code,
@@ -140,6 +180,8 @@ class M_moulding extends CI_Model
                         mo.mo_moulding_employee me,
                 mo.mo_absensi ma
                 WHERE  mm.moulding_id = me.moulding_id
+                $tanggal__
+                $bulan__
                 and ma.category_produksi = 'Moulding'
                 and ma.id_produksi = mm.moulding_id
                 and ma.no_induk = me.no_induk
@@ -195,7 +237,7 @@ class M_moulding extends CI_Model
                 ma.kode
                 ORDER BY extract(month from mm.production_date) desc, extract(year from mm.production_date) desc, extract(day from mm.production_date), ma.kode";
         $query = $this->db->query($sql);
-        return $query->result_array();
+        return $query->row_array();
     }
 
     public function getMoulding($id = FALSE)
