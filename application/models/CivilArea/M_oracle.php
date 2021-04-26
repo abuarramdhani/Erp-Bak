@@ -34,8 +34,16 @@ class M_oracle extends CI_Model
         and ffv.flex_value NOT LIKE '0000'
         and ffv.ENABLED_FLAG = 'Y'
         and ffv.SUMMARY_FLAG = 'N'
-        and ffv.FLEX_VALUE = kbbc.COST_CENTER
-        AND kbbc.LOCATION IN ('PUSAT', 'TUKSONO')
+        and (
+        (
+            ffv.FLEX_VALUE = kbbc.COST_CENTER
+            and kbbc.LOCATION IN ('PUSAT', 'TUKSONO')
+        ) or (
+            -- COST CENTER KHUSUS YANG INGIN DITAMPILKAN
+            -- PENAMPUNGAN MARKETING CABANG (Branch Yogyakarta)
+            ffv.FLEX_VALUE = '3J99' and kbbc.LOCATION = 'YOGYAKARTA'
+        )
+        )
     order by ffv.FLEX_VALUE
     ";
 
