@@ -4092,6 +4092,10 @@ $route['KapasitasGdSparepart/Packing']					= 'KapasitasGdSparepart/C_Packing';
 $route['KapasitasGdSparepart/Packing/(:any)']			= 'KapasitasGdSparepart/C_Packing/$1';
 $route['KapasitasGdSparepart/Packing/(:any)/(:any)']	= 'KapasitasGdSparepart/C_Packing/$1/$2';
 
+$route['KapasitasGdSparepart/Cetak']					= 'KapasitasGdSparepart/C_Cetak';
+$route['KapasitasGdSparepart/Cetak/(:any)']				= 'KapasitasGdSparepart/C_Cetak/$1';
+$route['KapasitasGdSparepart/Cetak/(:any)/(:any)']		= 'KapasitasGdSparepart/C_Cetak/$1/$2';
+
 $route['KapasitasGdSparepart/Tracking']					= 'KapasitasGdSparepart/C_Tracking';
 $route['KapasitasGdSparepart/Tracking/(:any)']			= 'KapasitasGdSparepart/C_Tracking/$1';
 $route['KapasitasGdSparepart/Tracking/(:any)/(:any)']	= 'KapasitasGdSparepart/C_Tracking/$1/$2';
