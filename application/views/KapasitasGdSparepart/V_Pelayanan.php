@@ -1,20 +1,4 @@
-<script>
-    $(document).ready(function () {
-        $('.tblpelayanan').dataTable({
-            "scrollX": true,
-            scrollY: 500,
-            ordering: false,
-            paging:false,
-        });
-
-        $('.tblpelayanan2').dataTable({
-            "scrollX": true,
-            ordering: false
-        });
-    
-    });
-</script>
-
+<input type="hidden" id="punyaeSP" value="1">
 <section class="content">
     <div class="inner">
         <div class="row">
@@ -47,134 +31,100 @@
                 <br />
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="box box-primary box-solid">
-                            <div class="box-header with-border"><b>Pelayanan</b></div>
+                        <div class="box box-solid">
+                            <div class="box-header with-border">
+                              <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                                <li class="nav-item active" style="background:#e7e7e7">
+                                  <a class="nav-link" onclick="normal()" id="pills-normal-tab" data-toggle="pill" href="#pills-normal" role="tab" aria-controls="pills-home" aria-selected="true">NORMAL </a>
+                                </li>
+                                <li class="nav-item" style="background:#e7e7e7">
+                                  <a class="nav-link" onclick="urgent()" id="pills-urgent-tab" data-toggle="pill" href="#pills-urgent" role="tab" aria-controls="pills-profile" aria-selected="false">URGENT</a>
+                                </li>
+                                <li class="nav-item" style="background:#e7e7e7">
+                                  <a class="nav-link" onclick="eceran()" id="pills-eceran-tab" data-toggle="pill" href="#pills-eceran" role="tab" aria-controls="pills-home" aria-selected="true">ECERAN</a>
+                                </li>
+                                <li class="nav-item" style="background:#e7e7e7">
+                                  <a class="nav-link" onclick="best()" id="pills-best-tab" data-toggle="pill" href="#pills-best" role="tab" aria-controls="pills-home" aria-selected="true">BEST AGRO</a>
+                                </li>
+                                <li class="nav-item" style="background:#e7e7e7">
+                                  <a class="nav-link" onclick="ecom()" id="pills-ecom-tab" data-toggle="pill" href="#pills-ecom" role="tab" aria-controls="pills-home" aria-selected="true">E-COMMERCE</a>
+                                </li>
+                                <li class="nav-item" style="background:#e7e7e7">
+                                  <a class="nav-link" onclick="cetak()" id="pills-cetak-tab" data-toggle="pill" href="#pills-cetak" role="tab" aria-controls="pills-home" aria-selected="true">CETAK PACKING LIST</a>
+                                </li>
+                                <!-- <li>
+                                  <h5 style="margin-top:15px;font-weight:bold;margin-left:10px;"> Sub Inventory : <?php echo $this->session->datasubinven ?></h5>
+                                </li> -->
+                              </ul>
+                            </div>
                             <div class="box-body">
                                 <div class="col-md-12 text-right">
                                     <label class="control-label"><?php echo gmdate("l, d F Y, H:i:s", time()+60*60*7) ?></label>
                                 </div>
                                 <br>
-                                <center><label>DAFTAR KERJAAN BELUM RAMPUNG</label></center>
-                                <div class="panel-body">
-                                    <div class="table-responsive" >
-                                    <table class="datatable table table-bordered table-hover table-striped text-center tblpelayanan" style="width: 100%;table-layout:fixed">
-                                        <thead class="bg-primary">
-                                            <tr>
-                                                <th style="width:5%">No</th>
-                                                <th style="width:7%">Check</th>
-                                                <th>Tanggal</th>
-                                                <th>Jenis Dokumen</th>
-                                                <th>No Dokumen</th>
-                                                <th>Jumlah Item</th>
-                                                <th>Jumlah Pcs</th>
-                                                <th>PIC</th>
-                                                <th>Keterangan</th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php $i=0; $no=1; foreach($value as $val) {
-                                                if ($val['URGENT'] != '') {
-                                                    $td = 'bg-danger';
-                                                }else{
-                                                    $td = '';
-                                                }
-                                            ?>
-                                                <tr id="baris<?= $no?>">
-                                                    <td class="<?= $td?>" width="20px"><input type="hidden" id="no<?= $no?>" value="<?= $no?>"><?= $no; ?></td>
-                                                    <td class="<?= $td?>"><span class="btn check_semua2" style="background-color:inherit" id="cek<?= $no?>" onclick="checkdata(<?= $no?>)" ><i id="ceka<?= $no?>" class="fa fa-square-o bisacek ceka"></i></span>
-                                                        <input type="hidden" class="tandasemua" name="tandacek[]" id="tandacek<?= $no?>" value="cek"></td>
-                                                    <td class="<?= $td?>"><input type="hidden" id="jam<?= $no?>" value="<?= $val['TGL_DIBUAT']?>"><?= $val['TGL_DIBUAT']?></td>
-                                                    <td class="<?= $td?>"><input type="hidden" id="jenis<?= $no?>" value="<?= $val['JENIS_DOKUMEN']?>"><?= $val['JENIS_DOKUMEN']?></td>
-                                                    <td class="<?= $td?>" style="font-size:17px; font-weight: bold"><input type="hidden" id="nodoc<?= $no?>" value="<?= $val['NO_DOKUMEN']?>"><?= $val['NO_DOKUMEN']?></td>
-                                                    <td class="<?= $td?>"><input type="hidden" id="jml_item<?= $no?>" value="<?= $val['JUMLAH_ITEM']?>"><?= $val['JUMLAH_ITEM']?></td>
-                                                    <td class="<?= $td?>"><input type="hidden" id="jml_pcs<?= $no?>" value="<?= $val['JUMLAH_PCS']?>"><?= $val['JUMLAH_PCS']?></td>
-                                                    <td class="<?= $td?>">
-                                                        <?php if (!empty($val['PIC_PELAYAN'])) { ?>
-                                                            <!-- <select id="pic<?= $no?>" name="picspb" class="form-control select2 select2-hidden-accessible" style="width:100%;" disabled>
-                                                            <option value="<?= $val['PIC_PELAYAN']?>"><?= $val['PIC_PELAYAN']?></option>
-                                                        </select> -->
-                                                        <input id="pic<?= $no?>" name="picspb" class="form-control text-center" style="width:100px" value="<?= $val['PIC_PELAYAN']?>" readonly></td>
-                                                        <?php }else{?>
-                                                            <select id="pic<?= $no?>" name="picspb" class="form-control select2 select2-hidden-accessible picSPB" style="width:100%;" required>
-                                                            <option></option>
-                                                        </select></td>
-                                                        <?php }?>
-                                                    <td class="<?= $td?>"><?= $val['URGENT']?>  <?= $val['BON'] ?>
-                                                        <?php if (!empty($val['MULAI_PELAYANAN'])) { ?>
-                                                            <input type="hidden" id="mulai<?= $no?>" value="<?= $val['JAM_PELAYANAN']?>">
-                                                        <?php }else{?><input type="hidden" id="mulai<?= $no?>" value=""> <?php }?>
-                                                    </td>
-                                                    <td class="<?= $td?>">
-                                                        <?php if (!empty($val['MULAI_PELAYANAN']) && empty($val['WAKTU_PELAYANAN'])) { ?>
-                                                            <p id="timer<?= $no?>" style="">
-                                                                Mulai <?= $val['MULAI_PELAYANAN'] ?>
-                                                            </p>
-                                                            <input type="button" class="btn btn-md btn-danger" id="btnPelayanan<?= $no?>" onclick="btnPelayananSPB(<?= $no?>)" value="Selesai">
-                                                        <?php }else{?>
-                                                            <p id="timer<?= $no?>" style="">
-                                                                <label id="hours<?= $no?>" >00</label>:<label id="minutes<?= $no?>">00</label>:<label id="seconds<?= $no?>">00</label>
-                                                            </p>
-                                                            <input type="button" class="btn btn-md btn-success" id="btnPelayanan<?= $no?>" onclick="btnPelayananSPB(<?= $no?>)" value="Mulai"> 
-                                                        <?php }?><br><br>
-                                                        <button type="button" class="btn btn-xs btn-info" id="btnrestartSPB<?= $no?>" onclick="btnRestartPelayanan(<?= $no?>)"><i class="fa fa-refresh"></i></button>
-                                                        <button type="button" class="btn btn-xs btn-primary" id="btnpauseSPB<?= $no?>" onclick="btnPausePelayanan(<?= $no?>)"><i class="fa fa-pause"></i></button>
-                                                    </td>
-                                                </tr>
-                                            <?php $no++; $i++; } ?>
-                                        </tbody>
-                                    </table>
+                                <!-- <center><label>DAFTAR KERJAAN BELUM RAMPUNG</label></center> -->
+                                <input type="hidden" name="tipe" id="tipe">
+                                <div class="tab-content" id="pills-tabContent" >
+                                    <div class="tab-pane fade in active" id="pills-normal" role="tabpanel" aria-labelledby="pills-home-tab">
+                                      <div id="loadingArea1" style="display:none;">
+                                        <center><img style="width: 5%" src="<?php echo base_url('assets/img/gif/loading5.gif') ?>"></center>
+                                      </div>
+                                      <div class="table_area_1">
+
+                                      </div>
                                     </div>
-                                    <div class="text-right">
-                                        <button class="btn btn-warning" onclick="startselectedPelayanan()"><i class="fa fa-play"></i> Start Selected</button>
-                                        <button class="btn btn-danger" onclick="finishselectedPelayanan()"><i class="fa fa-stop"></i> Stop Selected</button>
+                                    <div class="tab-pane fade" id="pills-urgent" role="tabpanel" aria-labelledby="pills-profile-tab">
+                                      <div id="loadingArea2" style="display:none;">
+                                        <center><img style="width: 5%" src="<?php echo base_url('assets/img/gif/loading5.gif') ?>"></center>
+                                      </div>
+                                      <div class="table_area_2">
+
+                                      </div>
+                                    </div>
+                                    <div class="tab-pane fade" role="tabpanel" id="pills-eceran" >
+                                      <div id="loadingArea3" style="display:none;">
+                                        <center><img style="width: 5%" src="<?php echo base_url('assets/img/gif/loading5.gif') ?>"></center>
+                                      </div>
+                                      <div class="table_area_3">
+
+                                      </div>
+                                    </div>
+                                    <div class="tab-pane fade" role="tabpanel" id="pills-best" >
+                                      <div id="loadingArea4" style="display:none;">
+                                        <center><img style="width: 5%" src="<?php echo base_url('assets/img/gif/loading5.gif') ?>"></center>
+                                      </div>
+                                      <div class="table_area_4">
+
+                                      </div>
+                                    </div>
+                                    <div class="tab-pane fade" role="tabpanel" id="pills-ecom" >
+                                      <div id="loadingArea6" style="display:none;">
+                                        <center><img style="width: 5%" src="<?php echo base_url('assets/img/gif/loading5.gif') ?>"></center>
+                                      </div>
+                                      <div class="table_area_6">
+
+                                      </div>
+                                    </div>
+                                    <div class="tab-pane fade" role="tabpanel" id="pills-cetak" >
+                                      <div id="loadingArea5" style="display:none;">
+                                        <center><img style="width: 5%" src="<?php echo base_url('assets/img/gif/loading5.gif') ?>"></center>
+                                      </div>
+                                      <div class="table_area_5">
+
+                                      </div>
                                     </div>
                                 </div>
 
-                                <center><label>KERJAAN YANG SUDAH DILAYANI HARI INI</label></center>
-                                <div class="panel-body">
-                                    <div class="table-responsive" >
-                                    <table class="datatable table table-bordered table-hover table-striped text-center tblpelayanan2" style="width: 100%;">
-                                            <thead class="bg-primary">
-                                                <tr>
-                                                    <th>No</th>
-                                                    <th>Tanggal</th>
-                                                    <th>Jenis Dokumen</th>
-                                                    <th>No Dokumen</th>
-                                                    <th>Jumlah Item</th>
-                                                    <th>Jumlah Pcs</th>
-                                                    <th>Jam Mulai</th>
-                                                    <th>Jam Selesai</th>
-                                                    <th>Waktu</th>
-                                                    <th>PIC</th>
-                                                    <th>Keterangan</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <?php $i= 0 ;$no=1; foreach($data as $val) { 
-                                                    if ($val['URGENT'] != '') {
-                                                        $td = 'bg-danger';
-                                                    }else{
-                                                        $td = '';
-                                                    }
-                                                    ?>
-                                                    <tr>
-                                                        <td class="<?= $td?>" style="width: 5px"><?= $no; ?></td>
-                                                        <td class="<?= $td?>"><input type="hidden" id="jam<?= $no?>" value="<?= $val['TGL_DIBUAT']?>"><?= $val['TGL_DIBUAT']?></td>
-                                                        <td class="<?= $td?>"><input type="hidden" id="jenis_doc<?= $no?>" value="<?= $val['JENIS_DOKUMEN']?>"><?= $val['JENIS_DOKUMEN']?></td>
-                                                        <td class="<?= $td?>" style="font-size:17px; font-weight: bold"><input type="hidden" id="no_doc<?= $no?>" value="<?= $val['NO_DOKUMEN']?>"><?= $val['NO_DOKUMEN']?></td>
-                                                        <td class="<?= $td?>"><input type="hidden" id="jml_item<?= $no?>" value="<?= $val['JUMLAH_ITEM']?>"><?= $val['JUMLAH_ITEM']?></td>
-                                                        <td class="<?= $td?>"><input type="hidden" id="jml_pcs<?= $no?>" value="<?= $val['JUMLAH_PCS']?>"><?= $val['JUMLAH_PCS']?></td>
-                                                        <td class="<?= $td?>"><input type="hidden" id="mulai_pelayanan<?= $no?>" value="<?= $val['MULAI_PELAYANAN']?>"><?= $val['MULAI_PELAYANAN']?></td>
-                                                        <td class="<?= $td?>"><input type="hidden" id="selesai_pelayanan<?= $no?>" value="<?= $val['SELESAI_PELAYANAN']?>"><?= $val['SELESAI_PELAYANAN']?></td>
-                                                        <td class="<?= $td?>"><input type="hidden" id="waktu_pelayanan<?= $no?>" value="<?= $val['WAKTU_PELAYANAN'] ?>"><?= $val['WAKTU_PELAYANAN'] ?></td>
-                                                        <td class="<?= $td?>"><?= $val['PIC_PELAYAN']?></td>
-                                                        <td class="<?= $td?>"><?= $val['URGENT'] ?> <?= $val['BON'] ?></td>
-                                                    </tr>
-                                                <?php $no++; $i++; }?>
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                <!-- TABEL SELESAI -->
+                                <br>
+                                <br>
+
+                                <!-- <center><label>KERJAAN YANG SUDAH DILAYANI HARI INI</label></center> -->
+                                <div id="loadingArea5" style="display: none;">
+                                    <center><img style="width: 5%" src="<?php echo base_url('assets/img/gif/loading5.gif') ?>"></center>
+                                </div>
+                                <div class="table_area_selesai">
+                                    
                                 </div>
                             </div>
                         </div>
@@ -186,13 +136,13 @@
 </section>
 
 <div class="modal fade" id="mdlfinishplyn" tabindex="-1" role="dialog" aria-labelledby="myModalLoading">
-	<div class="modal-dialog" role="document" style="padding-top:200px;width:40%">
+	<div class="modal-dialog" role="document" style="padding-top: 200px; width: 40%">
 		<div class="modal-content">
 			<div class="modal-header">
 			</div>
 			<div class="modal-body">
             <h3 class="modal-title" style="text-align:center;"><b>Masukan PIC Finish</b></h3>
-            <select id="picfinish" name="picfinish" class="form-control select2 picSPB2" style="width:100%;">
+            <select id="picfinish" name="picfinish" class="form-control select2" style="width:100%;">
                 <option></option>
             </select>
             <br>
@@ -202,3 +152,40 @@
 		</div>
 	</div>
 </div>
+
+<div class="modal fade" id="modalDetailDOSP" tabindex="-1" role="dialog" aria-labelledby="myModalLoading">
+  <div class="modal-dialog" role="document" style="width: 70%">
+    <div class="modal-content">
+      <div class="modal-header">
+        <b>
+          <span style="font-size: large;">DETAIL  </span>
+          <span style="font-size: large;" id="nospbdetail"></span>
+        </b>
+      </div>
+      <div class="modal-body">
+          <div id="loadingAreaDetail" style="display: none;">
+              <center><img style="width: 5%" src="<?php echo base_url('assets/img/gif/loading5.gif') ?>"></center>
+          </div>
+          <div class="table_detail">
+              
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('.tblpelayanan').dataTable({
+            "scrollX": true,
+            scrollY: 500,
+            ordering: false,
+            paging:false,
+        });
+
+        $('.tblpelayanan2').dataTable({
+            "scrollX": true,
+            ordering: false
+        });
+    });
+</script>

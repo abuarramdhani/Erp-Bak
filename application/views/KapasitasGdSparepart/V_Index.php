@@ -1,10 +1,10 @@
 <section id="content">
-	<div class="inner" style="background: url('<?php echo base_url('assets/img/3.jpg');?>');background-size: cover;" >
+	<div class="inner" style="background: url("<?php echo base_url('assets/img/3.jpg');?>");background-size: cover;" >
 
 			<!-- Content Header (Page header) -->
 			<section class="content-header">
 					<div class="row">
-						<div class="col-lg-12">
+						<div class="col-lg-4">
 							<br />
 							<h1><?=$Title ?></h1>
 						</div>
