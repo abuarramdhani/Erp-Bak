@@ -242,7 +242,6 @@ class M_exportreport extends CI_Model
         AND tqp.post_id = cust.post_id
         AND toim.meta_key = '_product_id' 
         AND toim.meta_key = '_product_id'
-        AND cust.jml_order >= 1
         AND DATE(tp.post_date) BETWEEN '$newDateFrom' AND '$newDateTo'
         AND tqp.meta_value = '$CustId'
         AND produk.cat_id = '$TermId'
@@ -445,7 +444,6 @@ class M_exportreport extends CI_Model
         AND tqp.meta_value = cust.customer_id 
         AND tqp.post_id = cust.post_id
         AND toim.meta_key = '_product_id'
-        AND cust.jml_order >= 1
         AND DATE(tp.post_date) BETWEEN '$newDateFrom' AND '$newDateTo'
         AND tqp.meta_value = '$CustId'
         ORDER BY	tp.post_date
@@ -646,7 +644,6 @@ class M_exportreport extends CI_Model
         AND tqp.meta_value = cust.customer_id 
         AND tqp.post_id = cust.post_id
         AND toim.meta_key = '_product_id'
-        AND cust.jml_order >= 1 
         AND tqp.meta_value = '$CustId'
         ORDER BY	tp.post_date
         ";
@@ -847,7 +844,6 @@ class M_exportreport extends CI_Model
         AND tqp.meta_value = cust.customer_id 
         AND tqp.post_id = cust.post_id
         AND toim.meta_key = '_product_id'
-        AND cust.jml_order >= 1
         AND tqp.meta_value = '$CustId'
         AND produk.cat_id = '$TermId'
         ORDER BY	tp.post_date 
@@ -1047,8 +1043,7 @@ class M_exportreport extends CI_Model
         AND toim.order_item_id = produk.order_item_id
         AND tqp.meta_value = cust.customer_id 
         AND tqp.post_id = cust.post_id
-        AND toim.meta_key = '_product_id' 
-        AND cust.jml_order >= 1
+        AND toim.meta_key = '_product_id'
         AND DATE(tp.post_date) BETWEEN '$newDateFrom' AND '$newDateTo' 
         AND produk.cat_id = '$TermId'
         ORDER BY	tp.post_date
@@ -1250,7 +1245,6 @@ class M_exportreport extends CI_Model
         AND tqp.meta_value = cust.customer_id 
         AND tqp.post_id = cust.post_id
         AND toim.meta_key = '_product_id'
-        AND cust.jml_order >= 1
         AND produk.cat_id = '$TermId'
         ORDER BY	tp.post_date
         ";
@@ -1451,7 +1445,6 @@ class M_exportreport extends CI_Model
         AND tqp.meta_value = cust.customer_id 
         AND tqp.post_id = cust.post_id
         AND toim.meta_key = '_product_id' 
-        AND cust.jml_order >= 1
         AND DATE(tp.post_date) BETWEEN '$newDateFrom' AND '$newDateTo'
         ";
         $query = $tokoquick->query($sql1);
@@ -1650,7 +1643,6 @@ class M_exportreport extends CI_Model
         AND tqp.meta_value = cust.customer_id 
         AND tqp.post_id = cust.post_id
         AND toim.meta_key = '_product_id' 
-        AND cust.jml_order >= 1
         ORDER BY	tp.post_date
         ";
         $query = $tokoquick->query($sql1);
