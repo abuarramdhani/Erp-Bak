@@ -105,7 +105,7 @@ class C_Cetak extends CI_Controller
 				$data['get_colly'] = $this->M_cetak->getTotalColly($id);
         $data['total_colly'] = sizeof($data['get_colly']);
         $data['get_berat'] = $this->M_cetak->getTotalBerat($id);
- 				// $data['get_do'] = $this->M_cetak->getDofromSPB($id);
+ 				$data['get_do'] = $this->M_cetak->getDofromSPB($id);
 				$body = $data['get_body'];
 				foreach ($body as $key => $value) {
 					$tampung[] = $value;
