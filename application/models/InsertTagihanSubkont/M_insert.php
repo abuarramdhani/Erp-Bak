@@ -137,4 +137,45 @@ WHERE a2.vendor_id = apss.vendor_id
         $query = $this->db->query($sql);
         return $query->result_array();
     }
+
+    function loginTagihanSubkon($usr)
+    {
+    $sql = "
+            select psub.password from psub.psub_subkon_user as psub
+            where psub.username = upper(trim('$usr'))
+            ";
+    $query = $this->db->query($sql);
+    $row = $query->num_rows();
+            if($row == 1){
+                    return true;
+            }else{
+                    return false;
+            }
+    }
+
+    function loginSubkon($usr, $pwd)
+    {
+      $sql = "
+              select * from psub.psub_subkon_user as psub
+              where psub.username = upper(trim('$usr'))
+              and psub.password = '$pwd' 
+      ";
+      $query = $this->db->query($sql);
+      $row = $query->num_rows();
+      if($row == 1){
+          return true;
+      }else{
+          return false;
+      }
+    }
+            
+
+    function getDetailSubkon($usr)
+    {
+    $sql = "select psub.* from psub.psub_subkon_user as psub
+    where psub.username = upper(trim('$usr'))
+    ";
+    $query = $this->db->query($sql);
+            return $query->result();
+    }
 }
