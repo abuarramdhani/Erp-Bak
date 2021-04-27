@@ -5422,3 +5422,18 @@ $route['KapasitasGdPusat/Rekap/(:any)/(:any)']	= 'KapasitasGdPusat/C_Rekap/$1/$2
 $route['PenaltyCustomer/List']	= 'PenaltyCustomer/C_Penalty';
 $route['PenaltyCustomer/List/(:any)']	= 'PenaltyCustomer/C_Penalty/$1';
 $route['PenaltyCustomer/List/(:any)/(:any)']	= 'PenaltyCustomer/C_Penalty/$1/$2';
+
+// Insert Tagihan Subkont ----------------------------------------------------------------------------------------
+$route['InsertTagihanSubkont'] = 'InsertTagihanSubkont/C_Insert';
+$route['InsertTagihanSubkont/InsertReadyTagihan'] = 'InsertTagihanSubkont/C_Insert/InsertReadyTagihan';
+
+
+// Tagihan Subkont ------------------------------------------------------------------------------------------------
+$route['GetDataTagihan/getData'] = 'InsertTagihanSubkont/C_Data/getData';
+$route['TagihanVendor'] = 'InsertTagihanSubkont/C_List';
+$route['TagihanVendor/List'] = 'InsertTagihanSubkont/C_List';
+$route['TagihanVendor/List/(:any)'] = 'InsertTagihanSubkont/C_List/$1';
+
+$route['CetakanTagihan/Cetak/(:any)'] = 'InsertTagihanSubkont/C_Data/cetakanTagihan/$1';
+
+$route['ListTagihan/List'] = 'InsertTagihanSubkont/C_Data/ListData';
