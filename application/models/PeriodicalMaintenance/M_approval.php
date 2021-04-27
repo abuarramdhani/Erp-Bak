@@ -7,7 +7,7 @@ class M_approval extends CI_Model
     parent::__construct();
     $this->load->database();
     $this->load->library('encrypt');
-    $this->oracle = $this->load->database('oracle_dev', TRUE);
+    $this->oracle = $this->load->database('oracle', TRUE);
     $this->personalia = $this->load->database('personalia', TRUE);
   }
 
@@ -64,6 +64,15 @@ function getNoInduk(){
   $sql  = "select employee_name nama, employee_code noind from sys.sys_user as sys
   left join er.er_employee_all as er on upper(trim(sys.user_name)) = upper(trim(er.employee_code))
   where er.resign = 0";
+  $result  = $this->db->query($sql)->result_array();
+  return $result;
+}
+
+function getNama($noinduk){
+  $sql  = "select employee_name nama from sys.sys_user as sys
+  left join er.er_employee_all as er on upper(trim(sys.user_name)) = upper(trim(er.employee_code))
+  where er.resign = 0
+AND employee_code = '$noinduk'";
   $result  = $this->db->query($sql)->result_array();
   return $result;
 }

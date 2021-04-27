@@ -3,16 +3,52 @@ $(document).ready(function () {
       format: "dd/mm/yyyy",
       autoclose: true
   });
+
 });
 
-// var a = 2;
-// function addPMEImg() {
-// 	$('#addgambarPME').append('<div class="addgambarPME" ><br><br><br><div class="col-md-3"></div><div class="col-md-1" align="right"></div><div class="col-md-2"><input type="file" name="img_file" id="img_file" accept=".png, .jpeg" /></div><div class="col-md-2" style="text-align:right"><button class = "btn btn-default deletegambarPME'+a+'" type="button"><i class = "fa fa-minus" ></i></button></div></div></div></div>');
-// 	$(document).on('click', '.deletegambarPME'+a,  function() {
-// 		$(this).parents('.addgambarPME').remove()
-// 	});
-// 	a++; 
-// }
+$('#txtPeriodeMPA').change(function(){
+	var datePeriodMPA = $('input[name="txtPeriodeMPA"]').val();
+  var html = '<option></option>';
+  var from = datePeriodMPA.substr(0, 10);
+  var to = datePeriodMPA.substr(13, 23);
+
+  console.log(datePeriodMPA, from, to);
+	$.ajax({
+			url : baseurl+('PeriodicalMaintenance/Monitoring/getNoDocByBetween'),
+			type : 'POST',
+			data : {
+        from : from,
+        to : to
+				},
+			datatype : 'json',
+			success: function(result) {
+				$.each(JSON.parse(result), function(key, value) { 
+					html += '<option value="'+value.DOCUMENT_NUMBER+'">'+value.DOCUMENT_NUMBER+' - '+value.NAMA_MESIN+'</option>';
+					$('#nodocMPA').removeAttr("disabled");
+				});
+					$('#nodocMPA').html(html);
+					$('#nodocMPA').val(null).trigger('change');
+			}
+		});
+});
+
+$(document).ready(function () {
+  $('#txtPeriodeMPA').daterangepicker({
+      "todayHighlight" : true,
+      "autoclose": true,
+      locale: {
+            format: 'DD-MM-YYYY'
+          },
+    });
+    $('#txtPeriodeMPA').on('apply.daterangepicker', function(ev, picker) {
+      $(this).val(picker.startDate.format('DD-MM-YYYY') + ' - ' + picker.endDate.format('DD-MM-YYYY'));
+    });
+  
+    $('#txtPeriodeMPA').on('cancel.daterangepicker', function(ev, picker) {
+      $(this).val('');
+    });
+  });
+
 
 function addgambarMPA() {
   var a = $('input[name ="gambarMPA[]"]').length + 1;
@@ -84,8 +120,6 @@ function addRowPeriodicalMaintenance() {
 }
 
 $("#btnResetPME").click(function() {
-  // $("#formInputPME")[0].reset();
-
   $(".select4")
     .val("")
     .trigger("change");
@@ -175,7 +209,6 @@ function editTopPME(id) {
   });
 
   request.done(function(result) {
-    // console.log(result);
     $("#topManagementEdit").html(result);
     $("#modalEditTopManagement").modal("show");
 
@@ -642,3 +675,74 @@ function approveMPA(nodoc, id) {
     });
   }
 }
+
+function deleteCekMPA() {
+
+  var datePeriodMPA = $('input[name="txtPeriodeMPA"]').val();
+  var from = datePeriodMPA.substr(0, 10);
+  var to = datePeriodMPA.substr(13, 23);
+
+  console.log(from, to);
+
+  Swal.fire({
+    title: "Apa Anda Yakin?",
+    text: "Hapus data pengecekan periode "+from +" - "+ to +" ?",
+    type: "question",
+    showCancelButton: true,
+    confirmButtonColor: "#00a65a",
+    cancelButtonColor: "#d73925",
+    confirmButtonText: "Ya",
+    cancelButtonText: "Tidak"
+  }).then(result => {
+    if (result.value) {
+      var request = $.ajax({
+        url: baseurl + "PeriodicalMaintenance/Monitoring/deleteCekMPA",
+        data: {
+          from : from,
+          to : to
+        },
+        type: "POST",
+        datatype: "html"
+      });
+      request.done(function(result) {
+        Swal.fire({
+          position: "top",
+          type: "success",
+          title: "Berhasil Menghapus Data Pengecekan!",
+          showConfirmButton: false,
+          timer: 1500
+        }).then(() => {
+          window.location.reload();
+        });
+      });
+    }
+  });
+}
+
+function printMPA(nodoc, id) {
+  var nodocApprv = nodoc; 
+  console.log(nodoc, id);
+
+  $.ajax({
+    url:  baseurl + "PeriodicalMaintenance/Approval/printForm",
+    data: {  nodocApprv : nodocApprv},
+    type : "POST",
+  });
+}
+
+$(function(){
+	$('#txtPeriodeMPA').daterangepicker({
+		"todayHighlight" : true,
+		"autoclose": true,
+		locale: {
+					format: 'DD-MM-YYYY'
+				},
+	});
+	$('#txtPeriodeMPA').on('apply.daterangepicker', function(ev, picker) {
+		$(this).val(picker.startDate.format('DD-MM-YYYY') + ' - ' + picker.endDate.format('DD-MM-YYYY'));
+	});
+
+	$('#txtPeriodeMPA').on('cancel.daterangepicker', function(ev, picker) {
+		$(this).val('');
+	});
+});

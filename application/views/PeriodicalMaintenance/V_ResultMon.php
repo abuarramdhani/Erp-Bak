@@ -24,10 +24,10 @@
                     <thead class="btn-primary">
                         <tr class="text-center">
                             <th width="5%">No</th>
-                            <th width="25%">NAMA MESIN</th>
-                            <th width="15%">KONDISI MESIN</th>
-                            <th width="40%">HEADER</th>
-                            <th width="15%"></th>
+                            <th width="50%">NAMA MESIN</th>
+                            <th width="20%">KONDISI MESIN</th>
+                            <!-- <th width="40%">HEADER</th> -->
+                            <th width="25%"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -37,7 +37,7 @@
                             <td><?= $no; ?></td>
                             <td><?= $row['header']['NAMA_MESIN'] ?></td>
                             <td><?= $row['header']['KONDISI_MESIN'] ?></td>
-                            <td><?= $row['header']['HEADER_MESIN'] ?></td>
+                            <!-- <td><?= $row['header']['HEADER_MESIN'] ?></td> -->
                             <td><span class="btn btn-warning" onclick="getDetailPMEMon(this, <?= $no ?>)"><i
                                         class="fa fa-eye"></i> Detail</span></td>
                         </tr>
@@ -50,9 +50,10 @@
                                         <thead class="btn-danger">
                                             <tr>
                                                 <th width="5%">No</th>
+                                                <th width="15%">Header</th>
                                                 <th width="20%">Uraian Kerja</th>
-                                                <th width="20%">Standar</th>
-                                                <th width="10%">Periode</th>
+                                                <th width="10%">Standar</th>
+                                                <th width="5%">Periode</th>
                                                 <th width="5%">Durasi</th>
                                                 <th width="10%">Kondisi</th>
                                                 <th width="15%">Catatan</th>
@@ -70,15 +71,17 @@
                                                         value="<?= $v['SUB_HEADER'] ?>" />
 
                                                 </td>
+                                                <td style="text-align:left"><input type="hidden" name="header[]"
+                                                        value="<?= $v['HEADER_MESIN'] ?>" /><?= $v['HEADER_MESIN'] ?></td>
                                                 <td style="text-align:left"><input type="hidden" name="subheader[]"
                                                         id="subheader<?= $no ?><?= $nomor ?>"
                                                         value="<?= $v['SUB_HEADER'] ?>" /><?= $v['SUB_HEADER'] ?></td>
                                                 <td style="text-align:left"><input type="hidden" name="standar[]"
                                                         value="<?= $v['STANDAR'] ?>" /><?= $v['STANDAR'] ?></td>
-                                                <td style="text-align:left"><input type="hidden" name="periode[]"
+                                                <td style="text-align:center"><input type="hidden" name="periode[]"
                                                         value="<?= $v['PERIODE_CHECK'] ?>" /><?= $v['PERIODE_CHECK'] ?>
                                                 </td>
-                                                <td style="text-align:left"><input type="hidden" name="durasi[]"
+                                                <td style="text-align:center"><input type="hidden" name="durasi[]"
                                                         value="<?= $v['DURASI'] ?>" /><?= $v['DURASI'] ?></td>
                                                 <td style="text-align:left"><input type="hidden" name="kondisi[]"
                                                         value="<?= $v['KONDISI'] ?>" /><?= $v['KONDISI'] ?></td>
