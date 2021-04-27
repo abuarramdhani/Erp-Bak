@@ -5437,3 +5437,5 @@ $route['TagihanVendor/List/(:any)'] = 'InsertTagihanSubkont/C_List/$1';
 $route['CetakanTagihan/Cetak/(:any)'] = 'InsertTagihanSubkont/C_Data/cetakanTagihan/$1';
 
 $route['ListTagihan/List'] = 'InsertTagihanSubkont/C_Data/ListData';
+$route['LoginTagihanSubkon/cekUser'] = 'InsertTagihanSubkont/C_Login/loginTagihanSubkon';
+$route['LoginTagihanSubkon/loginSubkon'] = 'InsertTagihanSubkont/C_Login/loginAndroidSubkon';
