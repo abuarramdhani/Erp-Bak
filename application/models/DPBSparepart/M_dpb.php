@@ -357,7 +357,7 @@ class M_dpb extends CI_Model
        AND TRUNC (kts.selesai_packing) <= NVL (TO_DATE ('$date2', 'DD/MM/YYYY'), SYSDATE)
        and kts.NO_DOKUMEN = kcds.REQUEST_NUMBER
        AND kts.no_dokumen = mtrh.request_number 
-       order by kts.selesai_packing ASC";
+       order by kts.tgl_dibuat ASC";
 
         $query = $oracle->query($sql);
         return $query->result_array();
@@ -386,7 +386,7 @@ class M_dpb extends CI_Model
         AND TRUNC (kts.tgl_dibuat) <= NVL (TO_DATE ('$date2', 'DD/MM/YYYY'), SYSDATE)
         and kts.NO_DOKUMEN = kcds.REQUEST_NUMBER
         AND kts.no_dokumen = mtrh.request_number 
-        order by kts.selesai_packing ASC";
+        order by kts.tgl_dibuat ASC";
 
         $query = $oracle->query($sql);
         return $query->result_array();
@@ -416,7 +416,7 @@ class M_dpb extends CI_Model
         AND TRUNC (kts.tgl_dibuat) <= NVL (TO_DATE ('$date4', 'DD/MM/YYYY'), SYSDATE)
         and kts.NO_DOKUMEN = kcds.REQUEST_NUMBER
         AND kts.no_dokumen = mtrh.request_number 
-        order by kts.selesai_packing ASC";
+        order by kts.tgl_dibuat ASC";
 
         $query = $oracle->query($sql);
         return $query->result_array();
