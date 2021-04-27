@@ -32,18 +32,11 @@
                                     <div class="col-lg-3"> </div>
                                     <div class="col-lg-6">
                                         <div class="panel panel-default">
-                                            <div class="panel-heading">
-                                                Nama
-                                                <div style="float:right">
-                                                    <button onclick="ottPlusBtn()" class="btn btn-success"><i class="fa fa-plus"></i></button>
-                                                    <button onclick="ottTimesBtn()" class="btn btn-warning"><i class="fa fa-times"></i></button>
-                                                </div>
-                                                <br><br>
-                                            </div>
-                                            <div class="panel-body" id="container-employee">
+                                            <div class="panel-heading"><b>Nama</b></div>
+                                            <div class="panel-body" id="container-emplott">
                                                 <div class="form-group"> <br />
-                                                    <div class="col-lg-9" id="tmpNama">
-                                                        <select name="ottName[]" id="ott_Name" class="form-control" required>
+                                                    <div class="col-lg-10" id="tmpNama">
+                                                        <select name="ottName[]" class="form-control ott_Name" required>
                                                             <option value="">Pilih Pekerja</option>
                                                             <?php
                                                             foreach ($data_p as $key => $pekerja) { ?>
@@ -51,6 +44,8 @@
                                                             <?php } ?>
                                                         </select>
                                                     </div>
+                                                    <button type="button" class="btn btn-info ottPlusBtn"><i class="fa fa-plus"></i></button>
+                                                    <button type="button" class="btn btn-danger ottTimesBtn" style="display:none"><i class="fa fa-times"></i></button>
                                                 </div>
                                             </div>
                                         </div>
@@ -67,7 +62,7 @@
                                                             --</small>
                                             </div>
                                         </div>
-                                        
+
                                         <div class="form-group">
                                         <br />
                                             <select class="form-control slcShift" id="txtShift" name="txtShift" required>
@@ -99,7 +94,7 @@
                                                 <option name="ottKodeP" value="N">N</option>
                                             </select>
                                         </div> <br />
-                                    
+
                                         <div class="form-group">
                                             <label for="ottPekerjaan" class="control-label">Pekerjaan</label>
                                             <input type="text" name="ottPekerjaan" class="form-control" placeholder="Pekerjaan" id="ottPekerjaan" required>

@@ -30,10 +30,10 @@
                                 </a>
                             </div>
                             <div class="box-body">
+                              <div class="form-group">
                                 <div class="box box-default box-solid">
                                     <div class="box-header with-border">Search</div>
                                     <div class="box-body">
-                                        <div class="form-group">
                                         <div class="col-lg-2"></div>
                                             <div class="col-lg-3">
                                                 <form autocomplete="off" method="POST" action="<?//= base_url('ManufacturingOperationUP2L/Moulding/search')?>">

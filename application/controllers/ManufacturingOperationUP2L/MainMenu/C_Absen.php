@@ -73,7 +73,7 @@ class C_Absen extends CI_Controller
 				$sub_array[] = '<center>
 													<a style="margin-right:4px" href="'.base_url('ManufacturingOperationUP2L/Absen/read_data/'.$row['id_absensi']).'" data-toggle="tooltip" data-placement="bottom" title="Read Data"><span class="fa fa-list-alt fa-2x"></span></a>
 													<a style="margin-right:4px" href="'.base_url('ManufacturingOperationUP2L/Absen/update_data/'.$row['id_absensi']).'" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o fa-2x"></span></a>
-													<a href="'.base_url('ManufacturingOperationUP2L/Absen/delete_data/'.$row['id_absensi']).'" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm("Are you sure you want to delete this item?");"><span class="fa fa-trash fa-2x"></span></a>
+													<a href="'.base_url('ManufacturingOperationUP2L/Absen/delete_data/'.$row['id_absensi']).'" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm(\'Are you sure you want to delete this item?\');"><span class="fa fa-trash fa-2x"></span></a>
 												</center>';
 				$sub_array[] = $row['nama'];
 				$sub_array[] = '<center>'.$row['no_induk'].'</center>';
@@ -96,7 +96,7 @@ class C_Absen extends CI_Controller
 							->set_output(json_encode($output))
 							->_display());
 		}
-		
+
     public function view_create()
 	{
 		$user = $this->session->username;

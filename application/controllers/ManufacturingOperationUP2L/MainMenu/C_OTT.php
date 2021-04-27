@@ -75,7 +75,7 @@ class C_OTT extends CI_Controller
 				$sub_array[] = '<center>
 														<a style="margin-right:4px" href="'.base_url('ManufacturingOperationUP2L/OTT/read_data/'.$row['id']).'" data-toggle="tooltip" data-placement="bottom" title="Read Data"><span class="fa fa-list-alt fa-2x"></span></a>
 														<a style="margin-right:4px" href="'.base_url('ManufacturingOperationUP2L/OTT/update_data/'.$row['id']).'" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o fa-2x"></span></a>
-														<a href="'.base_url('ManufacturingOperationUP2L/OTT/delete_data/'.$row['id']).'" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm("Are you sure you want to delete this item?");"><span class="fa fa-trash fa-2x"></span></a>
+														<a href="'.base_url('ManufacturingOperationUP2L/OTT/delete_data/'.$row['id']).'" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm(\'Are you sure you want to delete this item?\');"><span class="fa fa-trash fa-2x"></span></a>
 												<center/>';
 				$sub_array[] = '<center>'.$row['nama'].'<center/>';
 				$sub_array[] = '<center>'.$row['otttgl'].'<center/>';

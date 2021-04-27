@@ -33,28 +33,24 @@
                                     <div class="col-lg-6">
                                         <div class="box box-default box-solid">
                                             <div class="box-header with-border">
-                                                <div class="col-lg-12">
-                                                    <div class="col-lg-9">
-                                                    <b>Nama</b>
-                                                    </div>
-                                                    <div class="col-lg-3">
-                                                    <button style="float:right;" onclick="unAbs()" class="btn btn-danger"> <i class="fa fa-times"></i></button>
-                                                    <button style="float:right;" onclick="abs()" class="btn btn-info"> <i class="fa fa-plus"></i></button>
-                                                    </div>
-                                                </div>
+                                                <div class="col-lg-12"><b>Nama</b></div>
                                             </div>
-                                            <div class="panel-body ini_absen_ta">
-                                                <div class="form-group"> <br />
-                                                    <label for="txt_employee" class="control-label">Nama</label>
-                                                    <select name="txt_employee[]" id="ott_Name" class="form-control" required>
+                                            <div class="panel-body ini_absen_ta" id="container-abs">
+                                                <div class="form-group"><br/>
+                                                  <div class="col-lg-10">
+                                                    <label for="txt_employee" class="control-label" hidden>Nama</label>
+                                                    <select name="txt_employee[]" class="form-control ott_Abs" required>
                                                         <option value="">Pilih Pekerja</option>
                                                         <?php
                                                         foreach ($data_p as $key => $pekerja) { ?>
                                                             <option name="txt_employee[]" value="<?= $pekerja?>"><?= $pekerja?></option>
                                                         <?php } ?>
                                                     </select>
+                                                  </div>
+                                                    <button type="button" class="btn btn-info abs"> <i class="fa fa-plus"></i></button>
+                                                    <button type="button" class="btn btn-danger unAbs" style="display:none"> <i class="fa fa-times"></i></button>
                                                 </div>
-                                            </div><br />
+                                            </div><br/>
                                         </div>
 
                                         <div class="form-group">

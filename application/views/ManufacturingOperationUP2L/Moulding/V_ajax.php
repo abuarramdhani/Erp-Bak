@@ -1,3 +1,6 @@
+<div style="margin-bottom:15px">
+  <b id="atas"></b>
+</div>
   <div class="table-responsive">
       <table class="datatable table table-striped table-bordered table-hover text-left" id="tblMoulding2021" style="font-size:12px;">
           <thead class="bg-primary">
@@ -32,6 +35,9 @@
         }),
         url: baseurl + "ManufacturingOperationUP2L/Moulding/buildMDataTable",
         type: 'POST',
+      },
+      language:{
+        processing: "<div class='overlay custom-loader-background'><i class='fa fa-cog fa-spin custom-loader-color' style='color:#fff'></i></div>"
       },
       ordering: false,
       pageLength: 10,
