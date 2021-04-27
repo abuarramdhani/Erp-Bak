@@ -5417,3 +5417,8 @@ $route['KapasitasGdPusat/PasangBan/(:any)/(:any)']	= 'KapasitasGdPusat/C_PasangB
 $route['KapasitasGdPusat/Rekap']				= 'KapasitasGdPusat/C_Rekap';
 $route['KapasitasGdPusat/Rekap/(:any)']			= 'KapasitasGdPusat/C_Rekap/$1';
 $route['KapasitasGdPusat/Rekap/(:any)/(:any)']	= 'KapasitasGdPusat/C_Rekap/$1/$2';
+
+// CREATE AR MISC RECIPT -----------------------------------------------------------------------------------------
+$route['PenaltyCustomer/List']	= 'PenaltyCustomer/C_Penalty';
+$route['PenaltyCustomer/List/(:any)']	= 'PenaltyCustomer/C_Penalty/$1';
+$route['PenaltyCustomer/List/(:any)/(:any)']	= 'PenaltyCustomer/C_Penalty/$1/$2';
