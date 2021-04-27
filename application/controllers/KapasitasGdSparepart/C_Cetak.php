@@ -51,7 +51,7 @@ class C_Cetak extends CI_Controller
 		$data['value'] 	= $this->M_cetak->siapCetak();
 		// $pelayanan 		= $this->M_cetak->dataPelayanan($date);
 		// $data['data']	= $pelayanan;
-		// for ($i=0; $i <count($data['value']); $i++) { 
+		// for ($i=0; $i <count($data['value']); $i++) {
 		// 	$getstatus = $this->M_cetak->getStatus($data['value'][$i]['NO_DOKUMEN']);
 		// 	if (empty($getstatus)) {
 		// 		$data['status'][$i] = 'Belum Allocate';
@@ -59,13 +59,13 @@ class C_Cetak extends CI_Controller
 		// 		$data['status'][$i] = 'Sudah Allocate';
 		// 	}
 		// }
-		
-		// echo "<pre>"; 
+
+		// echo "<pre>";
 		// print_r($user);
 		// echo "<br>";
 		// die();
 		// print_r(count_chars($menit, 1));
-		// echo "<br>"; 
+		// echo "<br>";
 		// print_r($data['selisih']);
 		// exit();
 
@@ -102,12 +102,24 @@ class C_Cetak extends CI_Controller
     {
         $data['get_header'] = $this->M_cetak->headfootSurat($id);
         $data['get_body'] = $this->M_cetak->bodySurat($id);
-		$data['get_colly'] = $this->M_cetak->getTotalColly($id);
+				$data['get_colly'] = $this->M_cetak->getTotalColly($id);
         $data['total_colly'] = sizeof($data['get_colly']);
         $data['get_berat'] = $this->M_cetak->getTotalBerat($id);
-        $data['get_do'] = $this->M_cetak->getDofromSPB($id);
+ 				$data['get_do'] = $this->M_cetak->getDofromSPB($id);
+				$body = $data['get_body'];
+				foreach ($body as $key => $value) {
+					$tampung[] = $value;
+					if (sizeof($tampung) == 22 || $key == sizeof($body) - 1 ) {
+						$one_page_is[] = $tampung;
+						$tampung = [];
+					}
+				}
 
-        // $dofromspb = 'DO : '.$data['get_do'][0]['BATCH_ID'];
+				// echo "<pre>";
+				// print_r($body);
+				// die;
+
+				$data['get_body'] = $one_page_is;
 
         if (!empty($id)) {
             // ====================== do something =========================
@@ -116,7 +128,7 @@ class C_Cetak extends CI_Controller
 
             $pdf = $this->pdf->load();
             $pdf = new mPDF('utf-8', array(202.5 , 267), 0, '', 3, 3, 3, 0, 0, 0);
-            
+
             // ------ GENERATE QRCODE ------
             if (!is_dir('./assets/img/monitoringDOSPQRCODE')) {
                 mkdir('./assets/img/monitoringDOSPQRCODE', 0777, true);
@@ -140,17 +152,17 @@ class C_Cetak extends CI_Controller
             $cetakDOSP	= $this->load->view('KapasitasGdSparepart/V_Pdf_DOSP', $data, true);
 
             if (ceil(strlen($data['get_header'][0]['CATATAN'])/25) == 1) {
-              $a = '<br>'.$data['get_header'][0]['CATATAN'].'<br><br><br><br><br>';
-            } elseif (ceil(strlen($data['get_header'][0]['CATATAN'])/25) == 2) {
               $a = '<br>'.$data['get_header'][0]['CATATAN'].'<br><br><br><br>';
-            } elseif (ceil(strlen($data['get_header'][0]['CATATAN'])/25) == 3) {
+            } elseif (ceil(strlen($data['get_header'][0]['CATATAN'])/25) == 2) {
               $a = '<br>'.$data['get_header'][0]['CATATAN'].'<br><br><br>';
-            } elseif (ceil(strlen($data['get_header'][0]['CATATAN'])/25) == 4) {
+            } elseif (ceil(strlen($data['get_header'][0]['CATATAN'])/25) == 3) {
               $a = '<br>'.$data['get_header'][0]['CATATAN'].'<br><br>';
+            } elseif (ceil(strlen($data['get_header'][0]['CATATAN'])/25) == 4) {
+              $a = '<br>'.$data['get_header'][0]['CATATAN'].'<br>';
             } elseif (ceil(strlen($data['get_header'][0]['CATATAN'])/25) == 5) {
               $a = $data['get_header'][0]['CATATAN'];
             } elseif (ceil(strlen($data['get_header'][0]['CATATAN'])/25) == 0) {
-              $a = '<br><br><br><br><br><br>';
+              $a = '<br><br><br><br><br>';
             }
 
             if (!empty($data['get_header'][0]['APPROVE_TO_1'])) {
@@ -169,7 +181,7 @@ class C_Cetak extends CI_Controller
 			'<table style="width: 100%; border-collapse: collapse !important; margin-top: 2px; overflow: wrap;">
         		<tr style="width: 100%">
         			<td rowspan="2" style="white-space: pre-line; vertical-align: top; border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black; font-size: 10px; padding: 5px">
-        				Catatan : '.$data['get_do'][0]['BATCH_ID'].'
+								Catatan : '.$data['get_do'][0]['BATCH_ID'].'
                 		'.strtoupper($a).'
         			</td>
         			<td rowspan="3" style="vertical-align: top; width: 98px; border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black; font-size: 10px; padding: 5px;">
