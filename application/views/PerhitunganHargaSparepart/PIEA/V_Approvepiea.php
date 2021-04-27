@@ -55,6 +55,7 @@
                                         <td><?= $v->COMPETITOR_FLAG === 'Y' ? 'Ya' : 'Tidak' ?></td>
                                         <td><?= $v->COMMENTS ?></td>
                                         <td class="text-center">
+                                            <input type="hidden" id="product_category<?= $v->ORDER_ID ?>" value="<?= $v->PRODUCT_CATEGORY ?>">
                                             <!-- <input type="checkbox" class="CheckAprop" id="checkApropMKTMastItem<?= $v->ORDER_ID ?>" /> Master Item
                                             <input type="checkbox" class="CheckAprop" id="checkApropMKTBOM<?= $v->ORDER_ID ?>" /> BOM
                                             <input type="checkbox" class="CheckAprop" id="checkApropMKTRouting<?= $v->ORDER_ID ?>" /> Routing

@@ -79,6 +79,8 @@ class C_Input extends CI_Controller
         'COMPETITOR_FLAG' => $post['competitor_flag'][$g],
         // 'dpp_price_reference' => $post['dpp_price_reference'][$g],
         'COMMENTS' => $post['comments'][$g],
+        'PRODUCT_CATEGORY' => $post['cat_product'][$g],
+
       );
 
       $this->calculate_spt->insertRows($rows);

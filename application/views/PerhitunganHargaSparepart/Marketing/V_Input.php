@@ -92,6 +92,7 @@
                         <tr class="bg-primary">
                           <th class="t-head-center" style="width: 2%">No.</th>
                           <th class="t-head-center" style="width: 10%;">Produk</th>
+                          <th class="t-head-center" style="width: 10%;">Kategori Produk</th>
                           <th class="t-head-center" style="width: 15%;">Kode Barang</th>
                           <th class="t-head-center" style="width: 15%;">Deskripsi</th>
                           <th class="t-head-center" style="width: 5%;">Bungkus<br>(Ya/Tidak)</th>
