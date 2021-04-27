@@ -34,7 +34,8 @@ class M_insert extends CI_Model
         po_unit_price,
         total_price,
         vendor_name,
-        transaction_id) values(" .
+        transaction_id,
+        po_num) values(" .
             $tagihan['QTY_BERSIH'] . ",'" .
             $tagihan['UOM_CODE'] . "','" .
             $tagihan['ITEM_DESCRIPTION_PO'] . "','" .
@@ -44,9 +45,96 @@ class M_insert extends CI_Model
             $tagihan['PO_UNIT_PRICE'] . "," .
             $tagihan['TOTAL_PRICE'] . ",'" .
             $tagihan['VENDOR_NAME'] . "'," .
-            $tagihan['TRANSACTION_ID'] . "
+            $tagihan['TRANSACTION_ID'] . "," .
+            $tagihan['NO_PO'] . "
         )";
         $query = $this->db->query($sql);
         return $sql;
+    }
+    public function getData($param)
+    {
+        $response['data'] = $this->db->query("SELECT *
+        FROM psub.psub_lppb_subkon p
+        WHERE p.vendor_name = '$param'
+        AND NOT EXISTS (select 1 from psub.psub_tagihan_subkon where transaction_id = p.transaction_id)")->result_array();
+        $response['message'] = 'success';
+        $response['success'] = true;
+
+        if (empty($response['data'])) {
+            $response = array(
+                'data'        => [],
+                'success' => false,
+                'message' => 'Data Not Found'
+            );
+        }
+        return $response;
+        // $sql = "select * from psub.psub_lppb_subkon where vendor_name = '$param'";
+        // $query = $this->db->query($sql);
+        // return $query->result_array();
+    }
+    public function ListTagihan()
+    {
+        $sql = "select distinct 
+        pts.nomor_tagihan,
+        pts.vendor_name,
+        count(pts.item_description_po) over (partition by pts.vendor_name) jml_item,
+        sum(pts.total_price) over (partition by pts.vendor_name) total
+        from psub.psub_tagihan_subkon pts";
+        $query = $this->db->query($sql);
+        return $query->result_array();
+    }
+    public function ListTagihanbyNom($nom)
+    {
+        $sql = "select * from psub.psub_tagihan_subkon where nomor_tagihan = '$nom'";
+        $query = $this->db->query($sql);
+        return $query->result_array();
+    }
+    public function getDatabyId($id)
+    {
+        $sql = "select * from psub.psub_lppb_subkon where id = '$id'";
+        $query = $this->db->query($sql);
+        return $query->result_array();
+    }
+    public function InsertToPSUBTagihan($data, $transaction_date, $created_date)
+    {
+        if (!empty($data)) {
+            $response['success'] = true;
+            $this->db
+                ->set('TRANSACTION_DATE', "TO_TIMESTAMP('$transaction_date','YYYY-MM-DD')", false)
+                ->set('CREATION_DATE', "TO_TIMESTAMP('$created_date','YYYY-MM-DD')", false)
+                ->set('LAST_UPDATE_DATE', "TO_TIMESTAMP('$created_date','YYYY-MM-DD')", false)
+                ->insert('psub.psub_tagihan_subkon', $data);
+        } else {
+            $response['message'] = 'Failed Insert';
+        }
+
+        return $response;
+    }
+    public function ListTagihanbyTID($nom)
+    {
+        $sql = "select * from psub.psub_tagihan_subkon where transaction_id = $nom";
+        $query = $this->db->query($sql);
+        return $query->result_array();
+    }
+    public function getVendorName($name)
+    {
+        $sql = "SELECT DISTINCT a2.vendor_name,
+        apss.address_line1
+     || ' '
+     || apss.city
+     || ' '
+     || apss.zip ADDRESS
+FROM ap_suppliers a2, ap_supplier_sites_all apss
+WHERE a2.vendor_id = apss.vendor_id
+ AND a2.vendor_name = '$name'
+ AND ROWNUM = 1";
+        $query = $this->oracle->query($sql);
+        return $query->result_array();
+    }
+    public function getNomorTagihan($vendor)
+    {
+        $sql = "select distinct nomor_tagihan from psub.psub_tagihan_subkon where vendor_name = '$vendor'";
+        $query = $this->db->query($sql);
+        return $query->result_array();
     }
 }
