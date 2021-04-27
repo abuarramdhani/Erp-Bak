@@ -1,4 +1,11 @@
 //---------------------------------------------- Pengeluaran ----------------------------------------------------
+
+$('#no_dokumen').on("keypress",function(e){
+    if (e.keyCode == 13) {
+        return false;
+    }
+}); 
+
 function cekPengeluaranKGP(th) {
     var subinv = $('#subinv').val();
     var no_dokumen = $('#no_dokumen').val();
@@ -15,6 +22,7 @@ function cekPengeluaranKGP(th) {
     $('#tb_pengeluaran').html('');
 	$('#tb_pengeluaran').html('<center><img style="width:70px; height:auto" src="'+baseurl+'assets/img/gif/loading11.gif"></center>' );
 	request.done(function(result){
+        // console.log(result);
         $('#tb_pengeluaran').html(result);
 
         var length = no_dokumen.length
