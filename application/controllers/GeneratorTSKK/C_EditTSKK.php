@@ -347,7 +347,7 @@ class C_EditTSKK extends CI_Controller {
 		}
 
 		//UPDATE TAKT TIME CALCULATION
-		if ($this->input->post('perhitunganTakt') == 1) {
+		if ($this->input->post('perhitunganTakt') == 1 || $this->input->post('perhitunganTakt') == 2) {
 			$waktu_satu_shift   = $this->input->post('txtWaktu1Shift');
 			$jumlah_shift       = $this->input->post('txtJumlahShift');
 			$forecast           = $this->input->post('txtForecast');
