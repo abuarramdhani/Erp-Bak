@@ -41,10 +41,11 @@ class C_Management extends CI_Controller
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
 		
 
-		$admin = ['a'=>'B0847', 'b'=>'T0015']; //, 'c'=>'B0713', 'd'=>'B0797'
+		$admin = ['a'=>'T0015' , 'b'=>'B0847', 'c'=>'B0655', 'd'=>'B0908']; 
 		if (empty(array_search($this->session->user, $admin))) {
 			unset($data['UserMenu'][0]);
 			unset($data['UserMenu'][1]);
+			unset($data['UserMenu'][2]);
 		}
 		
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
@@ -71,12 +72,12 @@ class C_Management extends CI_Controller
 		$array_sudah = array();
 		$array_terkelompok = array();
 		foreach ($dataGET as $key => $value) {
-			if (!in_array($value['HEADER'], $array_sudah)) {
-				array_push($array_sudah, $value['HEADER']);
-				$getBody = $this->M_management->getDetail($value['NAMA_MESIN'], $value['KONDISI_MESIN'], $value['HEADER']);
+			if (!in_array($value['KONDISI_MESIN'], $array_sudah)) {
+				array_push($array_sudah, $value['KONDISI_MESIN']);
+				$getBody = $this->M_management->getDetail($value['NAMA_MESIN'], $value['KONDISI_MESIN']);
 
-				$array_terkelompok[$value['HEADER']]['header'] = $value;
-				$array_terkelompok[$value['HEADER']]['body'] = $getBody;
+				$array_terkelompok[$value['KONDISI_MESIN']]['header'] = $value;
+				$array_terkelompok[$value['KONDISI_MESIN']]['body'] = $getBody;
 			}
 		}
 		$data['value'] = $array_terkelompok;

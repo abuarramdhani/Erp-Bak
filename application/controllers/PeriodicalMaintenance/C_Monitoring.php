@@ -15,6 +15,8 @@ class C_Monitoring extends CI_Controller
 
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('PeriodicalMaintenance/M_monitoring');
+		$this->load->model('PeriodicalMaintenance/M_approval');
+
 
 		$this->checkSession();
 	}
@@ -40,10 +42,11 @@ class C_Monitoring extends CI_Controller
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
 		
-		$admin = ['a'=>'B0847', 'b'=>'T0015']; //, 'c'=>'B0713', 'd'=>'B0797'
+		$admin = ['a'=>'T0015' , 'b'=>'B0847', 'c'=>'B0655', 'd'=>'B0908']; 
 		if (empty(array_search($this->session->user, $admin))) {
 			unset($data['UserMenu'][0]);
 			unset($data['UserMenu'][1]);
+			unset($data['UserMenu'][2]);
 		}
 
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
@@ -55,6 +58,14 @@ class C_Monitoring extends CI_Controller
 		$this->load->view('V_Sidemenu', $data);
 		$this->load->view('PeriodicalMaintenance/V_Monitoring', $data);
 		$this->load->view('V_Footer', $data);
+	}
+
+	public function getNoDocByBetween(){
+		$from = $this->input->post('from');
+		$to = $this->input->post('to');
+		// echo $from; exit;
+		$data = $this->M_monitoring->getNoDocMPABetween($from, $to);
+		echo json_encode($data);
 	}
 
 	public function getMesinByDate()
@@ -78,13 +89,21 @@ class C_Monitoring extends CI_Controller
 		$array_sudah = array();
 		$array_terkelompok = array();
 		foreach ($dataGET as $key => $value) {
-			if (!in_array($value['HEADER_MESIN'], $array_sudah)) {
-				array_push($array_sudah, $value['HEADER_MESIN']);
+			// if (!in_array($value['HEADER_MESIN'], $array_sudah)) {
+			// 	array_push($array_sudah, $value['HEADER_MESIN']);
 
-				$getBody = $this->M_monitoring->getDetailMon($nodoc, $value['NAMA_MESIN'], $value['KONDISI_MESIN'], $value['HEADER_MESIN']);
+			// 	$getBody = $this->M_monitoring->getDetailMon($nodoc, $value['NAMA_MESIN'], $value['KONDISI_MESIN'], $value['HEADER_MESIN']);
 
-				$array_terkelompok[$value['HEADER_MESIN']]['header'] = $value;
-				$array_terkelompok[$value['HEADER_MESIN']]['body'] = $getBody;
+			// 	$array_terkelompok[$value['HEADER_MESIN']]['header'] = $value;
+			// 	$array_terkelompok[$value['HEADER_MESIN']]['body'] = $getBody;
+			// }
+			if (!in_array($value['KONDISI_MESIN'], $array_sudah)) {
+				array_push($array_sudah, $value['KONDISI_MESIN']);
+
+				$getBody = $this->M_monitoring->getDetailMon($nodoc, $value['NAMA_MESIN'], $value['KONDISI_MESIN']);
+
+				$array_terkelompok[$value['KONDISI_MESIN']]['header'] = $value;
+				$array_terkelompok[$value['KONDISI_MESIN']]['body'] = $getBody;
 			}
 		}
 		$data['value'] = $array_terkelompok;
@@ -110,7 +129,7 @@ class C_Monitoring extends CI_Controller
 		$data['gambar'] = $this->M_monitoring->getDataGambar($datapdf[0]['NAMA_MESIN']);
 
 		// echo "<pre>"; 
-		// print_r($data); exit();
+		// print_r($datapdf); exit();
 
 		$array_Resource = array();
 		for ($i = 0; $i < sizeof($datapdf); $i++) {
@@ -146,13 +165,20 @@ class C_Monitoring extends CI_Controller
 			$array_pdf[$i]['PELAKSANA'] = $pdf['PELAKSANA'];
 
 			$array_pdf[$i]['REQUEST_BY'] = $pdf['REQUEST_BY'];
+			$array_pdf[$i]['REQUEST_BY_NAME'] = $this->M_approval->getNama( $pdf['REQUEST_BY']);
 			$array_pdf[$i]['CREATION_DATE'] = $pdf['CREATION_DATE'];
 			$array_pdf[$i]['REQUEST_TO'] = $pdf['REQUEST_TO'];
 			$array_pdf[$i]['REQUEST_TO_2'] = $pdf['REQUEST_TO_2'];
 			$array_pdf[$i]['APPROVED_BY'] = $pdf['APPROVED_BY'];
+			$array_pdf[$i]['APPROVED_BY_NAME'] = $this->M_approval->getNama( $pdf['APPROVED_BY']);
 			$array_pdf[$i]['APPROVED_DATE'] = $pdf['APPROVED_DATE'];
 			$array_pdf[$i]['APPROVED_BY_2'] = $pdf['APPROVED_BY_2'];
+			$array_pdf[$i]['APPROVED_BY_2_NAME'] = $this->M_approval->getNama( $pdf['APPROVED_BY_2']);
 			$array_pdf[$i]['APPROVED_DATE_2'] = $pdf['APPROVED_DATE_2'];
+			$array_pdf[$i]['DOCUMENT_NUMBER'] = $pdf['DOCUMENT_NUMBER'];
+
+			$array_pdf[$i]['CATATAN_TEMUAN'] = $pdf['CATATAN_TEMUAN'];
+
 
 			$i++;
 		}
@@ -160,14 +186,17 @@ class C_Monitoring extends CI_Controller
 		$data['arrayR'] = $array_Resource;
 		$data['datapdf'] = $array_pdf;
 
+		// echo "<pre>"; 
+		// print_r($data['datapdf']); exit();
+
 		ob_start();
 		$this->load->library('Pdf');
 		$pdf = $this->pdf->load();
 
 		$margin_left = 3; // sizes are defines in millimetres
 		$margin_right = 3;
-		$margin_top = 35;
-		$margin_bottom = 80;
+		$margin_top = 40;
+		$margin_bottom = 100;
 		$header = 3;
 		$footer = 3;
 		$orientation = "P"; // can be P (Portrait) or L (Landscape)
@@ -178,6 +207,7 @@ class C_Monitoring extends CI_Controller
 		$head = $this->load->view('PeriodicalMaintenance/V_CetakanHead', $data, true);
 		$html = $this->load->view('PeriodicalMaintenance/V_Cetakan_DetailBackup', $data, true);
 		$foot = $this->load->view('PeriodicalMaintenance/V_CetakanFoot', $data, true);
+		$html2 = $this->load->view('PeriodicalMaintenance/V_Cetakan_Lampiran', $data, true);
 
 		ob_end_clean();
 		$pdf->shrink_tables_to_fit = 1;
@@ -185,6 +215,9 @@ class C_Monitoring extends CI_Controller
 		$pdf->setHTMLHeader($head);
 		$pdf->setHTMLFooter($foot);
 		$pdf->WriteHTML($html);
+		if(sizeof($data['gambar'])>0){
+			$pdf->WriteHTML($html2);
+		}
 
 		$pdf->Output($filename, 'I');
 	}
@@ -290,6 +323,14 @@ class C_Monitoring extends CI_Controller
 		$nodoc 	= $this->input->post('nodoc');
 
 		$this->M_monitoring->deleteSubMonitoring($id, $nodoc);
+	}
+
+	public function deleteCekMPA()
+	{
+		$from = $this->input->post('from');
+		$to 	= $this->input->post('to');
+
+		$this->M_monitoring->deleteCekMPARange($from, $to);
 	}
 
 }

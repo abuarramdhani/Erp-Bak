@@ -7,7 +7,7 @@ class M_management extends CI_Model
     parent::__construct();
     $this->load->database();
     $this->load->library('encrypt');
-    $this->oracle = $this->load->database('oracle_dev', TRUE);
+    $this->oracle = $this->load->database('oracle', TRUE);
   }
 
   function getMesin()
@@ -20,13 +20,24 @@ class M_management extends CI_Model
   }
 
 
+  // public function getAll($mesin)
+  // {
+  //   $sql = "SELECT DISTINCT kpm.ID, kpm.NAMA_MESIN , kpm.KONDISI_MESIN, kpm.HEADER,
+  //           kpm.NO_DOKUMEN, kpm.NO_REVISI, kpm.TANGGAL_REVISI, kpm.CATATAN_REVISI 
+  //           FROM khs_periodical_maintenance kpm
+  //           WHERE kpm.NAMA_MESIN = '$mesin'
+  //           order by kpm.KONDISI_MESIN DESC, kpm.ID, kpm.HEADER";
+  //   $query = $this->oracle->query($sql);
+  //   return $query->result_array();
+  // }
+
   public function getAll($mesin)
   {
-    $sql = "SELECT DISTINCT kpm.ID, kpm.NAMA_MESIN , kpm.KONDISI_MESIN, kpm.HEADER,
+    $sql = "SELECT DISTINCT kpm.ID, kpm.NAMA_MESIN , kpm.KONDISI_MESIN,
             kpm.NO_DOKUMEN, kpm.NO_REVISI, kpm.TANGGAL_REVISI, kpm.CATATAN_REVISI 
             FROM khs_periodical_maintenance kpm
             WHERE kpm.NAMA_MESIN = '$mesin'
-            order by kpm.KONDISI_MESIN DESC, kpm.ID, kpm.HEADER";
+            order by kpm.KONDISI_MESIN DESC, kpm.ID";
     $query = $this->oracle->query($sql);
     return $query->result_array();
   }
@@ -40,18 +51,29 @@ class M_management extends CI_Model
     return $query->result_array();
   }
 
-  public function getDetail($mesin, $kondisi, $header)
+  // public function getDetail($mesin, $kondisi, $header)
+  // {
+  //   if (strlen($header) == 0) {
+  //     $coba = "AND kpm.HEADER IS NULL";
+  //   } else {
+  //     $coba = "AND kpm.HEADER = '$header'";
+  //   }
+  //   $sql = "SELECT kpm.HEADER_MESIN,kpm.SUB_HEADER, kpm.STANDAR, kpm.PERIODE 
+  //           FROM khs_periodical_maintenance kpm 
+  //           WHERE kpm.NAMA_MESIN = '$mesin' 
+  //           AND kpm.KONDISI_MESIN = '$kondisi' 
+  //           $coba";
+  //   $query = $this->oracle->query($sql);
+  //   return $query->result_array();
+  // }
+
+  public function getDetail($mesin, $kondisi)
   {
-    if (strlen($header) == 0) {
-      $coba = "AND kpm.HEADER IS NULL";
-    } else {
-      $coba = "AND kpm.HEADER = '$header'";
-    }
-    $sql = "SELECT kpm.SUB_HEADER, kpm.STANDAR, kpm.PERIODE 
+    
+    $sql = "SELECT kpm.HEADER,kpm.SUB_HEADER, kpm.STANDAR, kpm.PERIODE 
             FROM khs_periodical_maintenance kpm 
             WHERE kpm.NAMA_MESIN = '$mesin' 
-            AND kpm.KONDISI_MESIN = '$kondisi' 
-            $coba";
+            AND kpm.KONDISI_MESIN = '$kondisi'";
     $query = $this->oracle->query($sql);
     return $query->result_array();
   }

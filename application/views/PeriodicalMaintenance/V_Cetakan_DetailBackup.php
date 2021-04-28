@@ -177,16 +177,33 @@
     </tbody>
     <tbody>
         <tr>
-            <td colspan="4"
+        <td colspan="7"
+                style="border: 1px solid black;border-collapse: collapse; text-align: right;font-size: 12px">
+                Catatan Temuan Lain lain </td>
+
+                <td style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px">
+                <?= $datapdf['0']['CATATAN_TEMUAN'] ?></td>
+        </tr>
+    </tbody>
+    <tbody>
+        <tr>
+            <td colspan="5"
                 style="border: 1px solid black;border-collapse: collapse; text-align: right;font-size: 12px">Total
                 Durasi</td>
-            <td colspan="4" style="border: 1px solid black;border-collapse: collapse; text-align: left;font-size: 12px">
-                <?= $totalDurasi[0]['TOTAL_DURASI'] ?> Menit</td>
+            <td colspan="3" style="border: 1px solid black;border-collapse: collapse; text-align: left;font-size: 12px">
+                <?= $totalDurasi[0]['TOTAL_DURASI'] ?> Menit <? 
+                $init = $totalDurasi[0]['TOTAL_DURASI']*60;
+                $hours = floor($init / 3600);
+                $minutes = floor(($init / 60) % 60);
+                $seconds = $init % 60;
+
+                echo "($hours jam $minutes menit $seconds detik)";
+                ?></td>
         </tr>
     </tbody>
 
 </table>
-<table>
+<!-- <table>
     <tbody>
         <tr style="text-align:center; vertical-align:middle">
             <?php
@@ -202,4 +219,4 @@
             <?php }?>
         </tr>
     </tbody>
-</table>
+</table> -->

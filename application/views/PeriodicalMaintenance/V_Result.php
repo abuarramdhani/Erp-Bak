@@ -27,10 +27,10 @@
                     <thead class="btn-primary">
                         <tr class="text-center">
                             <th width="5%">No</th>
-                            <th width="25%">NAMA MESIN</th>
-                            <th width="15%">KONDISI MESIN</th>
-                            <th width="40%">HEADER</th>
-                            <th width="15%"></th>
+                            <th width="50%">NAMA MESIN</th>
+                            <th width="20%">KONDISI MESIN</th>
+                            <!-- <th width="40%">HEADER</th> -->
+                            <th width="25%"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -40,7 +40,7 @@
                             <td><?= $no; ?></td>
                             <td><?= $row['header']['NAMA_MESIN'] ?></td>
                             <td><?= $row['header']['KONDISI_MESIN'] ?></td>
-                            <td><?= $row['header']['HEADER'] ?></td>
+                            <!-- <td><?= $row['header']['HEADER'] ?></td> -->
                             <td><span class="btn btn-warning" onclick="getDetailPME(this, <?= $no ?>)">Detail</span>
                             </td>
                         </tr>
@@ -53,9 +53,10 @@
                                         <thead class="btn-danger">
                                             <tr>
                                                 <th width="5%">No</th>
+                                                <th width="20%">Header</th>
                                                 <th width="30%">Uraian Kerja</th>
-                                                <th width="30%">Standar</th>
-                                                <th width="15%">Periode</th>
+                                                <th width="15%">Standar</th>
+                                                <th width="10%">Periode</th>
                                                 <th width="20%">Action</th>
                                             </tr>
                                         </thead>
@@ -70,6 +71,8 @@
                                                         value="<?= $v['SUB_HEADER'] ?>" />
 
                                                 </td>
+                                                <td style="text-align:left"><input type="hidden" name="header[]"
+                                                        value="<?= $v['HEADER'] ?>" /><?= $v['HEADER'] ?></td>
                                                 <td style="text-align:left"><input type="hidden" name="subheader[]"
                                                         id="subheader<?= $no ?><?= $nomor ?>"
                                                         value="<?= $v['SUB_HEADER'] ?>" /><?= $v['SUB_HEADER'] ?></td>

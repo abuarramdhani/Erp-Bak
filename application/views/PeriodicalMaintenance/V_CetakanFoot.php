@@ -49,7 +49,7 @@
 		<td style="border: 0px solid black;border-collapse: collapse; text-align: left;font-size: 12px"> 
 	
 		<input type="checkbox" name="instruksi1" value="Baju kerja" checked="checked">
-							<label for="instruksi1"> Baju kerja</label>
+							<label for="instruksi1">Baju kerja</label>
 							
 							<br/>
 							<input type="checkbox" name="instruksi3" value="Ear Plug" checked="checked">
@@ -94,7 +94,7 @@
 	<tr>
 		<td colspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px; border-bottom: 1px solid black">Staff Seksi Terkait</td>
 		<td colspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px; border-bottom: 1px solid black">Staff Maintenance</td>
-		<td colspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: left;font-size: 12px; border-bottom: 1px solid black ;">Opt Maintenance</td>
+		<td colspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px; border-bottom: 1px solid black ;">Opt Maintenance</td>
 		<td colspan="2" rowspan ="3" style="border: 0px solid black;border-collapse: collapse; text-align: left;font-size: 12px;"><?= $header[0]['CATATAN_REVISI'] ?></td>
 	</tr>
 	<tr>
@@ -137,9 +137,9 @@
 		<td colspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;border-right: 1px solid black"><?= $datapdf['0']['APPROVED_BY'] ?></td>
 		<td colspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;border-right: 1px solid black"><?= $datapdf['0']['REQUEST_BY'] ?></td> -->
 
-		<td colspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><?= $datapdf['0']['REQUEST_TO_2'] ?></td>
-		<td colspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;border-right: 1px solid black"><?= $datapdf['0']['REQUEST_TO'] ?></td>
-		<td colspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;border-right: 1px solid black"><?= $datapdf['0']['REQUEST_BY'] ?></td>
+		<td colspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px"><b><?= $datapdf['0']['REQUEST_TO_2'] ?></b><br><?= $datapdf['0']['APPROVED_BY_2_NAME'][0]['nama'] ?></td>
+		<td colspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;border-right: 1px solid black"><b><?= $datapdf['0']['REQUEST_TO'] ?></b><br><?= $datapdf['0']['APPROVED_BY_NAME'][0]['nama'] ?></td>
+		<td colspan="2" style="border: 1px solid black;border-collapse: collapse; text-align: center;font-size: 12px;border-right: 1px solid black"><b><?= $datapdf['0']['REQUEST_BY'] ?></b><br><?= $datapdf['0']['REQUEST_BY_NAME'][0]['nama'] ?></td>
 
 	</tr>
 </table>

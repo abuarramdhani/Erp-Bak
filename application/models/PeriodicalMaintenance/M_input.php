@@ -7,7 +7,7 @@ class M_input extends CI_Model
     parent::__construct();
     $this->load->database();
     $this->load->library('encrypt');
-    $this->oracle = $this->load->database('oracle_dev', TRUE);
+    $this->oracle = $this->load->database('oracle', TRUE);
   }
 
   public function getDataPrevious($mesin)

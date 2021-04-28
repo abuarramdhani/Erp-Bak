@@ -40,10 +40,11 @@ class C_Input extends CI_Controller
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
 		
-		$admin = ['a'=>'B0847', 'b'=>'T0015']; //, 'c'=>'B0713', 'd'=>'B0797'
+		$admin = ['a'=>'T0015' , 'b'=>'B0847', 'c'=>'B0655', 'd'=>'B0908']; 
 		if (empty(array_search($this->session->user, $admin))) {
 			unset($data['UserMenu'][0]);
 			unset($data['UserMenu'][1]);
+			unset($data['UserMenu'][2]);
 		}
 
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);

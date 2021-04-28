@@ -41,13 +41,13 @@
 							<table class="table table-bordered table-fit tblApprovalMPA" id="<?= $desc[$i]['id_table'] ?>">
 								<thead>
 									<tr class="<?= $desc[$i]['bg_color'] ?>">
-										<th class="text-center" width="3%">No</th>
-										<th class="text-center" width="28%">Document Number</th>
+										<th class="text-center" width="5%">No</th>
+										<th class="text-center" width="15%">Document Number</th>
 										<th class="text-center" width="20%">Nama Mesin</th>
-										<th class="text-center" width="12%">Type Mesin</th>
-										<th class="text-center" width="22%">Schedule Date</th>
-										<th class="text-center" width="10%">Actual Date</th>
-										<th class="text-center" width="5%">Action</th>
+										<th class="text-center" width="10%">Type Mesin</th>
+										<th class="text-center" width="15%">Schedule Date</th>
+										<th class="text-center" width="15%">Actual Date</th>
+										<th class="text-center" width="20%">Action</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -56,15 +56,31 @@
                                      foreach ($$desc[$i]['name_array'] as $approval):; $no++ ?>
 									<tr>
 										<td class="text-center"><?= $no; ?></td>
-										<td><?= $approval['DOCUMENT_NUMBER']; ?></td>
-										<td><?= $approval['NAMA_MESIN']; ?></td>
-                                        <td><?= $approval['TYPE_MESIN']; ?></td>
-										<td><?= $approval['SCHEDULE_DATE']; ?></td>
-										<td><?= $approval['ACTUAL_DATE']; ?></td>
+										<td class="text-center"><?= $approval['DOCUMENT_NUMBER']; ?></td>
+										<td class="text-center"><?= $approval['NAMA_MESIN']; ?></td>
+                                        <td class="text-center"><?= $approval['TYPE_MESIN']; ?></td>
+										<td class="text-center"><?= $approval['SCHEDULE_DATE']; ?></td>
+										<td class="text-center"><?= $approval['ACTUAL_DATE']; ?></td>
+										
+										<?php
+                                                        if ($desc[$i]['id_tab'] == "approval-seksi") {
+														?>
+														
 										<td class="text-center">
-                                            <button type="button" class="btn btn-success btn-sm" onclick="approveMPA('<?= $approval['DOCUMENT_NUMBER'] ?>','<?= $desc[$i]['id_table'] ?>')"> Approve </button> 
+											<!-- <button type="button" class="btn btn-danger btn-sm" onclick="printMPA('<?= $approval['DOCUMENT_NUMBER'] ?>','<?= $desc[$i]['id_table'] ?>')"> 	Cetak Form </button>  -->
+											<a id="MPApdf" target="_blank" href="<?= base_url("PeriodicalMaintenance/Approval/printForm/$approval[DOCUMENT_NUMBER]") ?>" class="btn btn-sm btn-danger"><i class="fa fa-print"></i> Cetak</a>
+                                            <button type="button" class="btn btn-success btn-sm" onclick="approveMPA('<?= $approval['DOCUMENT_NUMBER'] ?>','<?= $desc[$i]['id_table'] ?>')"><i class="fa fa-check"></i> Approve </button> 
 
-                                        </td>
+										</td>
+										<?php } 
+														else { ?>
+														<td class="text-center">
+											<!-- <button type="button" class="btn btn-danger btn-sm" onclick="printMPA('<?= $approval['DOCUMENT_NUMBER'] ?>','<?= $desc[$i]['id_table'] ?>')"> 	Cetak Form </button>  -->
+											<!-- <a id="MPApdf" target="_blank" href="<?= base_url("PeriodicalMaintenance/Approval/printForm/$approval[DOCUMENT_NUMBER]") ?>" class="btn btn-sm btn-danger"><i class="fa fa-print"></i> Cetak</a> -->
+                                            <button type="button" class="btn btn-success btn-sm" onclick="approveMPA('<?= $approval['DOCUMENT_NUMBER'] ?>','<?= $desc[$i]['id_table'] ?>')"><i class="fa fa-check"></i> Approve </button> 
+
+										</td>
+														<?php } ?>
 									</tr>
                                     <?php endforeach; 
                                 ?>
