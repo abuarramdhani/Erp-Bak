@@ -999,3 +999,60 @@ $(document).ready(function(){
     })
 })
 // end tarik shift pekerja
+
+// start cetak presensi harian
+$(document).on('ready', function(){
+    $('#txtMPRPresensiHarianTanggal').daterangepicker({
+        "autoclose": true,
+        "todayHiglight": true,
+        locale: {
+            cancelLabel: 'Clear',
+            "format": "YYYY-MM-DD",
+            "separator": " - ",
+        }
+    });
+
+    $(document).on('ifChecked','#chkMPRPresensiHarianLokasiKerja',function(){
+        $('#divMPRPresensiHarianLokasiKerja').show(500);
+    })
+    $(document).on('ifUnchecked','#chkMPRPresensiHarianLokasiKerja',function(){
+        $('#divMPRPresensiHarianLokasiKerja').hide(500);
+    })
+    
+    $(document).on('ifChecked','#chkMPRPresensiHarianKodeInduk',function(){
+        $('#divMPRPresensiHarianKodeInduk').show(500);
+    })
+    $(document).on('ifUnchecked','#chkMPRPresensiHarianKodeInduk',function(){
+        $('#divMPRPresensiHarianKodeInduk').hide(500);
+    })
+    
+    $(document).on('ifChecked','#chkMPRPresensiHarianKodesie',function(){
+        $('#divMPRPresensiHarianKodesie').show(500);
+    })
+    $(document).on('ifUnchecked','#chkMPRPresensiHarianKodesie',function(){
+        $('#divMPRPresensiHarianKodesie').hide(500);
+    })
+    
+    $(document).on('ifChecked','#chkMPRPresensiHarianPekerja',function(){
+        $('#divMPRPresensiHarianPekerja').show(500);
+    })
+    $(document).on('ifUnchecked','#chkMPRPresensiHarianPekerja',function(){
+        $('#divMPRPresensiHarianPekerja').hide(500);
+    })
+
+    $('#btnMPRPresensiHarianPdf').on('click', function(){
+        var lokasi_kerja = $('#slcMPRPresensiHarianLokasiKerja').val();
+        var kode_induk = $('#slcMPRPresensiHarianKodeInduk').val();
+        var tanggal = $('#txtMPRPresensiHarianTanggal').val();
+
+        var params = "";
+        if (lokasi_kerja !== null && lokasi_kerja.length > 0) {
+            params += '&lokasi_kerja=' + lokasi_kerja;
+        }
+        if (kode_induk !== null && kode_induk.length >0) {
+            params += '&kode_induk=' + kode_induk
+        }
+        window.open(baseurl + 'MasterPresensi/DataPresensi/CetakPresensiHarian/cetak_pdf?tanggal=' + tanggal + params ,'_blank');
+    })
+})
+// end cetak presensi harian
