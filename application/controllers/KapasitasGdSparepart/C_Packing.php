@@ -304,14 +304,14 @@ class C_Packing extends CI_Controller
     	$data['dosp'] = $this->M_packing->getAPIdata($this->input->post('no_spb'));
 
     	$this->M_packing->transactDOSP($data['dosp'][0]['REQUEST_NUMBER'], $data['dosp'][0]['ORGANIZATION_ID']);
-    	$this->M_packing->closeLine($data['dosp'][0]['HEADER_ID'], $user);
+    // 	$this->M_packing->closeLine($data['dosp'][0]['HEADER_ID'], $user);
 
-    	if ($data['dosp'][0]['DELIVERY_TYPE'] == 'SPB') {
-    		$this->M_packing->autoInterorg($this->input->post('no_spb'));
-    	}
-    	else {
+    // 	if ($data['dosp'][0]['DELIVERY_TYPE'] == 'SPB') {
+    // 		$this->M_packing->autoInterorg($this->input->post('no_spb'));
+    // 	}
+    // 	else {
     		
-    	}
+    // 	}
     }
 
 
