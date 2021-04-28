@@ -15,12 +15,13 @@ class M_moulding extends CI_Model
     {
       $explode = strtoupper($data['search']['value']);
       $exbulan = explode('-', $bulan);
+      $range = explode(' - ', $tanggal);
       if (!empty($bulan) && empty($tanggal)) {
         $tanggal__="";
         $bulan__="AND extract(month from mm.production_date) = '$exbulan[1]'
                   AND extract(year from mm.production_date) = '$exbulan[0]'";
       }else if (!empty($tanggal) && empty($bulan)){
-        $tanggal__=$tanggal__="AND mm.production_date = '$tanggal'";
+        $tanggal__="AND mm.production_date BETWEEN '{$range[0]}' AND '{$range[1]}'";
         $bulan__="";
       }else {
         $tanggal__="";
@@ -90,12 +91,13 @@ class M_moulding extends CI_Model
     public function countAllM($bulan, $tanggal)
     {
       $exbulan = explode('-', $bulan);
+      $range = explode(' - ', $tanggal);
       if (!empty($bulan) && empty($tanggal)) {
         $tanggal__="";
         $bulan__="AND extract(month from mm.production_date) = '$exbulan[1]'
                   AND extract(year from mm.production_date) = '$exbulan[0]'";
       }else if(!empty($tanggal) && empty($bulan)){
-        $tanggal__="AND mm.production_date = '$tanggal'";
+        $tanggal__="AND mm.production_date BETWEEN '{$range[0]}' AND '{$range[1]}'";
         $bulan__="";
       }else {
         $tanggal__="";
@@ -146,12 +148,13 @@ class M_moulding extends CI_Model
     {
         $explode = strtoupper($data['search']['value']);
         $exbulan = explode('-', $bulan);
+        $range = explode(' - ', $tanggal);
         if (!empty($bulan) && empty($tanggal)) {
           $tanggal__="";
           $bulan__="AND extract(month from mm.production_date) = '$exbulan[1]'
                     AND extract(year from mm.production_date) = '$exbulan[0]'";
         }else if(!empty($tanggal) && empty($bulan)) {
-          $tanggal__="AND mm.production_date = '$tanggal'";                      
+          $tanggal__="AND mm.production_date BETWEEN '{$range[0]}' AND '{$range[1]}'";
           $bulan__="";
         }else {
           $tanggal__="";

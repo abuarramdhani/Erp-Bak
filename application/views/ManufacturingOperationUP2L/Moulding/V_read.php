@@ -148,20 +148,28 @@
                                                 <div class="panel-heading">
                                                     <h3>Add Scrap<i class="pull-right fa fa-plus"></i></h3>
                                                 </div>
-                                                <div class="panel-body">
-                                                    <div class="form-group col-lg-6">
-                                                        <label for="txtScrap" class="control-label col-lg-4">Scrap Type :</label>
-                                                        <select class="form-control jsSlcScrap" id="txtScrap" name="scrap" required data-placeholder="Scrap">
-                                                            <option></option>
-                                                        </select>
+                                                <div class="panel-body" id="container-scrap">
+                                                  <div class="form-group field_add_scrap">
+                                                    <label for="txtScrap" class="control-label col-lg-2" style="padding:5px">Scrap Type :</label>
+                                                    <div class="col-lg-3">
+                                                      <select class="form-control jsSlcScrap txtScrap" name="scrap" required data-placeholder="Scrap">
+                                                          <option></option>
+                                                      </select>
                                                     </div>
-                                                    <div class="form-group col-lg-6">
-                                                        <label for="scrap_qty" class="control-label col-lg-4">Quantity :</label>
-                                                        <input class="form-control" id="scrap_qty" type="number" name="scrap_qty" placeholder="QTY">
+                                                    <div class="col-lg-2">
+                                                      <label for="scrap_qty" class="control-label" style="padding:5px">Quantity :</label>
                                                     </div>
-                                                    <div class="col-lg-6">
-                                                        <button class="btn btn-default add_scrap">Add <i class="fa fa-plus"></i></button>
+                                                    <div class="col-lg-3">
+                                                      <input class="form-control scrap_qty" type="number" name="scrap_qty" placeholder="QTY">
                                                     </div>
+                                                    <button class="btn btn-info add_field_scrap"><i class="fa fa-plus"></i></button>
+                                                    <button class="btn btn-danger remove_field_scrap" style="display: none"><i class="fa fa-close"></i></button>
+
+                                                    <div style="padding-left:384px;margin-right:-305px;"></div>
+                                                  </div>
+                                                </div>
+                                                <div class="panel-footer">
+                                                      <button class="btn btn-success add_scrap">Add <i class="fa fa-plus"></i></button>
                                                 </div>
                                             </div>
 
@@ -169,17 +177,22 @@
                                                 <div class="panel-heading">
                                                     <h3>Add Bongkar<i class="pull-right fa fa-plus"></i></h3>
                                                 </div>
-                                                <div class="panel-body">
-                                                    <div class="form-group col-lg-6">
-                                                        <label for="bongkar_qty" class="control-label col-lg-4"> Quantity : </label>
-                                                    </div>
-                                                    <div class="form-group col-lg-6">
-
-                                                        <input class="form-control" id="bongkar_qty" type="number" name="bongkar_qty" placeholder="QTY">
-                                                    </div>
+                                                <div class="panel-body" id="container-bongkar">
+                                                  <div class="form-group field_add_bongkar">
                                                     <div class="col-lg-6">
-                                                        <button class="btn btn-default add_bongkar">Add <i class="fa fa-plus"></i></button>
+                                                      <label for="bongkar_qty" class="control-label" style="margin-top:7px"> Quantity : </label>
                                                     </div>
+                                                    <div class="col-lg-4">
+                                                        <input class="form-control bongkar_qty" type="number" name="bongkar_qty" placeholder="QTY">
+                                                    </div>
+                                                    <button class="btn btn-info add_field_bongkar"><i class="fa fa-plus"></i></button>
+                                                    <button class="btn btn-danger remove_field_bongkar" style="display: none"><i class="fa fa-close"></i></button>
+
+                                                    <div style="padding-left:384px;margin-right:-305px;"></div>
+                                                  </div>
+                                                </div>
+                                                <div class="panel-footer">
+                                                  <button class="btn btn-success add_bongkar">Add <i class="fa fa-plus"></i></button>
                                                 </div>
                                             </div>
                                         </div>

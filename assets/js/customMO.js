@@ -1,7 +1,7 @@
 //edit rozin
 // DATATABLE SERVERSIDE MOULD
 const tblmould2021 = $('#tblMoulding2021').DataTable({
-    // dom: 'rtp',
+    // dom: '<"top"lf>rt<"bottom"ip><"clear">',
     ajax: {
       data: (d) => $.extend({}, d, {
         // org: null,    // optional
@@ -11,6 +11,9 @@ const tblmould2021 = $('#tblMoulding2021').DataTable({
       }),
       url: baseurl + "ManufacturingOperationUP2L/Moulding/buildMDataTable",
       type: 'POST',
+    },
+    language:{
+      processing: "<div class='overlay custom-loader-background'><i class='fa fa-cog fa-spin custom-loader-color' style='color:#fff'></i></div>"
     },
     ordering: false,
     pageLength: 10,
@@ -40,6 +43,9 @@ const tblCore2021 = $('#tblCore2021').DataTable({
       url: baseurl + "ManufacturingOperationUP2L/Core/buildCDataTable",
       type: 'POST',
     },
+    language:{
+      processing: "<div class='overlay custom-loader-background'><i class='fa fa-cog fa-spin custom-loader-color' style='color:#fff'></i></div>"
+    },
     ordering: false,
     pageLength: 10,
     pagingType: 'first_last_numbers',
@@ -67,6 +73,9 @@ const tblMix2021 = $('#tblMixing2021').DataTable({
       }),
       url: baseurl + "ManufacturingOperationUP2L/Mixing/buildMixDataTable",
       type: 'POST',
+    },
+    language:{
+      processing: "<div class='overlay custom-loader-background'><i class='fa fa-cog fa-spin custom-loader-color' style='color:#fff'></i></div>"
     },
     ordering: false,
     pageLength: 10,
@@ -96,6 +105,9 @@ const tblOtt2021 = $('#tblMouldingOtt').DataTable({
       url: baseurl + "ManufacturingOperationUP2L/OTT/buildOttDataTable",
       type: 'POST',
     },
+    language:{
+      processing: "<div class='overlay custom-loader-background'><i class='fa fa-cog fa-spin custom-loader-color' style='color:#fff'></i></div>"
+    },
     ordering: false,
     pageLength: 10,
     pagingType: 'first_last_numbers',
@@ -123,6 +135,9 @@ const tblAbs2021 = $('#tblMouldingAbs').DataTable({
       }),
       url: baseurl + "ManufacturingOperationUP2L/Absen/buildAbsDataTable",
       type: 'POST',
+    },
+    language:{
+      processing: "<div class='overlay custom-loader-background'><i class='fa fa-cog fa-spin custom-loader-color' style='color:#fff'></i></div>"
     },
     ordering: false,
     pageLength: 10,
@@ -167,16 +182,16 @@ const ref_mould = () =>{
                               </div>`);
     },
     success: function(result) {
-      if (result != 0 && result != 10) {
+      // if (result != 0 && result != 10) {
         $('.area_mould').html(result);
-      }else if (result == 10) {
-        $('.area_mould').html(`<div style ="width: 70%;margin:auto;height: 30%;background: #fff;overflow: hidden;z-index: 9999;padding:20px 0 30px 0;border-radius:10px;text-align:center">
-                                  <i class="fa fa-remove" style="color:#d60d00;font-size:45px;"></i><br>
-                                  <h3 style="font-size:14px;font-weight:bold">Tidak ada data yang sesuai</h3>
-                              </div>`);
-      }else {
-        toastTCTxc("Warning", "Terdapat Kesalahan saat mengambil data");
-      }
+      // }else if (result == 10) {
+        // $('.area_mould').html(`<div style ="width: 70%;margin:auto;height: 30%;background: #fff;overflow: hidden;z-index: 9999;padding:20px 0 30px 0;border-radius:10px;text-align:center">
+                                  // <i class="fa fa-remove" style="color:#d60d00;font-size:45px;"></i><br>
+                                  // <h3 style="font-size:14px;font-weight:bold">Tidak ada data yang sesuai</h3>
+                              // </div>`);
+      // }else {
+        // toastTCTxc("Warning", "Terdapat Kesalahan saat mengambil data");
+      // }
     },
     error: function (XMLHttpRequest, textStatus, errorThrown) {
       console.log();
@@ -207,14 +222,19 @@ const filter_mould = () =>{
                               </div>`);
     },
     success: function(result) {
-      if (result != 0 && result != 10) {
+      // if (result != 0 && result != 10) {
         $('.area_mould').html(result);
-      }else if (result == 10) {
-        $('.area_mould').html(`<div style ="width: 70%;margin:auto;height: 30%;background: #fff;overflow: hidden;z-index: 9999;padding:20px 0 30px 0;border-radius:10px;text-align:center">
-                                  <i class="fa fa-remove" style="color:#d60d00;font-size:45px;"></i><br>
-                                  <h3 style="font-size:14px;font-weight:bold">Tidak ada data yang sesuai</h3>
-                              </div>`);
-      }else {
+        if (bulan != "") {
+          $('#atas').text(`Menampilkan data pada ${bulan}`);
+        }else if(tanggal != ""){
+          $('#atas').text(`Menampilkan data pada ${tanggal}`);
+        }
+      // }else if (result == 10) {
+        // $('.area_mould').html(`<div style ="width: 70%;margin:auto;height: 30%;background: #fff;overflow: hidden;z-index: 9999;padding:20px 0 30px 0;border-radius:10px;text-align:center">
+                                  // <i class="fa fa-remove" style="color:#d60d00;font-size:45px;"></i><br>
+                                  // <h3 style="font-size:14px;font-weight:bold">Tidak ada data yang sesuai</h3>
+                              // </div>`);}
+      else {
         toastTCTxc("Warning", "Terdapat Kesalahan saat mengambil data");
       }
     },
@@ -252,12 +272,99 @@ function up2l_moulding_d() {
 //   $('#sea_month').prop("disabled", true);
 // }
 
+// Form Input dinamis scrap
+  $('.add_field_scrap').click(function () {
+    $('.jsSlcScrap').select2('destroy').end();
+    $(this).parent().clone(true).appendTo($("#container-scrap"));
+    $('.remove_field_scrap').show();
+    $('.jsSlcScrap').select2({
+        allowClear: true,
+        placeholder: "Choose Scrap",
+        ajax: {
+            url: baseurl + "ManufacturingOperationUP2L/Ajax/getScrap",
+            dataType: 'json',
+            type: "post",
+            data: function (params) {
+                var queryParameters = {
+                    term: params.term
+                }
+                return queryParameters;
+            },
+            processResults: function (data) {
+                return {
+                    results: $.map(data, function (obj) {
+                        return {
+                            id: obj.scrap_code + '|' + obj.description,
+                            text: obj.scrap_code + " | " + obj.description
+                        };
+                    })
+                };
+            }
+        }
+    });
+  });
+
+  $('.remove_field_scrap').click(function () {
+    var count = $('#container-scrap').children().length;
+    // console.log(count);
+    c = count - parseInt(1);
+    // console.log(c);
+
+    if (count > 1) {
+      $(this).parent().remove();
+    }
+
+    if (c == 1) {
+      $('.remove_field_scrap').hide();
+    }
+  });
+
+  // Form Input dinamis bongkar
+  $('.add_field_bongkar').click(function () {
+    $(this).parent().clone(true).appendTo($("#container-bongkar"));
+    $('.remove_field_bongkar').show();
+  });
+
+  $('.remove_field_bongkar').click(function () {
+    var count = $('#container-bongkar').children().length;
+    // console.log(count);
+    c = count - parseInt(1);
+    // console.log(c);
+
+    if (count > 1) {
+      $(this).parent().remove();
+    }
+
+    if (c == 1) {
+      $('.remove_field_bongkar').hide();
+    }
+  });
+
 
 $(document).ready(function () {
-    $('.tanggal-up2l').datepicker({
-      autoClose: true,
-      format: 'yyyy-mm-dd',
+    $('.tanggal-up2l').daterangepicker({
+      showDropdowns: true,
+      autoApply: true,
       todayHighlight: true,
+      locale: {
+        format: 'YYYY-MM-DD',
+        separator: " - ",
+        daysOfWeeks: ["Mg", "Sn", "Sl", "Rb", "Km" ,"Jm", "Sa"],
+        monthNames: [
+          "Januari",
+          "Februari",
+          "Maret",
+          "Apil",
+          "Mei",
+          "Juni",
+          "Juli",
+          "Agustus",
+          "September",
+          "Oktober",
+          "November",
+          "Desember",
+        ]
+      },
     })
 
     $('.onBtn').click(function () {
@@ -572,9 +679,9 @@ $(window).load(function () {
 
     $('.remove_emp').click(function () {
         var count = $('#container-employee').children().length;
-        console.log(count);
+        // console.log(count);
         c = count - parseInt(1);
-        console.log(c);
+        // console.log(c);
 
         if (count > 1) {
             $(this).parent().remove();
@@ -1118,8 +1225,14 @@ function checkQuantity(th) {
 }
 
 $('.add_scrap').click(function () {
-    var type = $('#txtScrap').val();
-    var qty = $('#scrap_qty').val();
+    var type = [];
+    var qty = [];
+    $('.txtScrap').each((i,v)=>{
+      type.push($(v).val());
+    });
+    $('.scrap_qty').each((i,v)=>{
+      qty.push($(v).val());
+    });
     var mould_qty = $('#mould_qty').val();
     var id = $('#mould_id').val();
     var jml = $('#jumlah_scrap').val();
@@ -1153,7 +1266,10 @@ $('.add_scrap').click(function () {
 })
 
 $('.add_bongkar').click(function () {
-    var qty = $('#bongkar_qty').val();
+    var qty = [];
+    $('.bongkar_qty').each((i,v)=>{
+      qty.push($(v).val());
+    })
     var mould_qty = $('#mould_qty').val();
     var id = $('#mould_id').val();
     var jml = $('#jumlah_bongkar').val();
@@ -1173,7 +1289,7 @@ $('.add_bongkar').click(function () {
 
     console.log(jumlah);
     if (jumlah > mould_qty) {
-        alert('Jumlah scrap melebihi quantity moulding');
+        alert('Jumlah bongkar melebihi quantity moulding');
     } else {
         $.ajax({
             type: 'post',
@@ -1342,83 +1458,65 @@ if($('#up2l_tmpl').val() == 'A1'){
 }
 
 $(function(){
-    $('#ott_Name').select2();
+    $('.ott_Name').select2();
+    $('.ott_Abs').select2();
     $('#ottKodeP').select2();
 })
 
-function ottPlusBtn(){
+$('.ottPlusBtn').click(function () {
+  $('.ott_Name').select2('destroy').end();
+  $(this).parent().clone(true).appendTo($('#container-emplott'));
+  $('.ottTimesBtn').show();
+  // var ottPlus =
+  // `<br /><br /><select name="ottName[]" id="ott_Name" class="form-control ottName" required>
+  // <option value="">Pilih Pekerja</option>
+  // <option name="ottName" value="<?= $pekerja?>"><?= $pekerja?></option>
+  // </select>`;
+  //
+  // $('#tmpNama').append(ottPlus);
+  $('.ott_Name').select2(/*{
+      minimumInputLength: 0,
+      placeholder: 'Pilih Pekerja',
+      allowClear: true,
+      ajax: {
+          method: 'GET',
+          url: baseurl + 'ManufacturingOperationUP2L/Absen/pekerja',
+          dataType: 'JSON',
+          data: function (param) {
+              return param.term
+          },
+          processResults: function (data) {
+              return {
+                  results: $.map(data, function (obj) {
+                      return {
+                          id: obj.no_induk + " | " + obj.nama,
+                          text: obj.no_induk + " | " + obj.nama
+                      };
+                  })
+              };
+          }
+      }
+  }*/);
+});
 
-    var ottPlus =
-    `<br /><br /><select name="ottName[]" id="ott_Name" class="form-control ottName" required>
-    <option value="">Pilih Pekerja</option>
-    <option name="ottName" value="<?= $pekerja?>"><?= $pekerja?></option>
-    </select>`;
+$('.ottTimesBtn').click(function () {
+  var count = $('#container-emplott').children().length;
+  // console.log(count);
+  c = count - parseInt(1);
+  // console.log(c);
 
-    $('#tmpNama').append(ottPlus);
+  if (count > 1) {
+    $(this).parent().remove();
+  }
+  if (c == 1) {
+    $('.ottTimesBtn').hide();
+  }
+});
 
-    $('.ottName').select2({
-        minimumInputLength: 0,
-        placeholder: 'Pilih Pekerja',
-        allowClear: true,
-        ajax: {
-            method: 'GET',
-            url: baseurl + 'ManufacturingOperationUP2L/Absen/pekerja',
-            dataType: 'JSON',
-            data: function (param) {
-                return param.term
-            },
-            processResults: function (data) {
-                return {
-                    results: $.map(data, function (obj) {
-                        return {
-                            id: obj.no_induk + " | " + obj.nama,
-                            text: obj.no_induk + " | " + obj.nama
-                        };
-                    })
-                };
-            }
-        }
-    })
-}
-
-function ottTimesBtn() {
-    var ottPlus =
-    `<select name="ottName[]" id="ott_Name" class="form-control ottName" required>
-    <option value="">Pilih Pekerja</option>
-    <option name="ottName" value="<?= $pekerja?>"><?= $pekerja?></option>
-    </select>`;
-    $('#tmpNama').html(ottPlus);
-    $('.ottName').select2({
-        minimumInputLength: 0,
-        placeholder: 'Pilih Pekerja',
-        allowClear: true,
-        ajax: {
-            method: 'GET',
-            url: baseurl + 'ManufacturingOperationUP2L/Absen/pekerja',
-            dataType: 'JSON',
-            data: function (param) {
-                return param.term
-            },
-            processResults: function (data) {
-                return {
-                    results: $.map(data, function (obj) {
-                        return {
-                            id: obj.no_induk + " | " + obj.nama,
-                            text: obj.no_induk + " | " + obj.nama
-                        };
-                    })
-                };
-            }
-        }
-    })
-}
-
-$('.addCompMould').click(function () {
-    // var garisUP2L = `<hr><br>`;
+$('.addComp').click(function () {
     $('.jsSlcComp').select2('destroy').end();
-    // $('#container-component').append(garisUP2L);
     $(this).parent().clone(true).appendTo($("#container-comp"));
-    $('.delcompMould').show();
+    $('.delComp').show();
     // var addCompMould =
     // `<hr><br /><div class="form-group">
     //     <label for="txtComponentCodeHeader" class="control-label col-lg-4">Component</label>
@@ -1467,65 +1565,19 @@ $('.addCompMould').click(function () {
     });
 });
 
-$('.delCompMould').click(function () {
-    var remove_mould = $('#container-comp').children().length;
-    console.log(remove_mould);
-    m = remove_mould - parseInt(1);
-    console.log(m);
+$('.delComp').click(function () {
+    var count = $('#container-comp').children().length;
+    // console.log(count);
+    c = count - parseInt(1);
+    // console.log(c);
 
-    if (remove_mould > 1) {
+    if (count > 1) {
       $(this).parent().remove();
     }
 
-    if (m == 1) {
-      $('.delCompMould').hide();
+    if (c == 1) {
+      $('.delComp').hide();
     }
-    // var addCompMould =
-    // `<div class="form-group">
-    //     <label for="txtComponentCodeHeader" class="control-label col-lg-4">Component</label>
-    //     <div class="col-lg-6">
-    //         <select class="form-control jsSlcComp toupper" id="txtComponentCodeHeader" name="component_code[]" required data-placeholder="Component Code" onchange="getCompDescMO(this)">
-    //             <option></option>
-    //         </select>
-    //     </div>
-    // </div>
-    //
-    // <div class="form-group">
-    //     <label for="txtMouldingQuantityHeader" class="control-label col-lg-4">Moulding Quantity</label>
-    //     <div class="col-lg-6">
-    //         <input type="number" placeholder="Moulding Quantity" name="txtMouldingQuantityHeader[]" id="txtMouldingQuantityHeader" class="form-control" />
-    //     </div>
-    // </div>`;
-    // $('#container-component').html(addCompMould);
-    // $('.jsSlcComp').select2({
-    //     allowClear: true,
-    //     placeholder: "Choose Component Code",
-    //     minimumInputLength: 3,
-    //     ajax: {
-    //         url: baseurl + "ManufacturingOperationUP2L/Ajax/getComponent",
-    //         dataType: 'json',
-    //         type: "post",
-    //         data: function (params) {
-    //             var queryParameters = {
-    //                 term: params.term
-    //             }
-    //             return queryParameters;
-    //         },
-    //         processResults: function (data) {
-    //             return {
-    //                 results: $.map(data, function (obj) {
-    //                     return {
-    //                         id: obj.kode_barang + " | " + obj.nama_barang + ' | ' + obj.kode_proses,
-    //                         text: obj.kode_barang + " | " + obj.nama_barang + ' | ' + obj.kode_proses
-    //                     };
-    //                 })
-    //             };
-    //         },
-    //         error: function (error, status) {
-    //             console.log(error);
-    //         }
-    //     }
-    // });
 });
 
 function addcompSelep() {
@@ -1720,273 +1772,197 @@ function remove_emp_selep() {
     });
 }
 
-function abs() {
-    var copy = `
-                <hr><div class="form-group">
-                <label for="absName" class="control-label">Nama</label>
-                <select class="form-control jsSlcEmpl toupper" id="txtEmployeeHeader" name="txt_employee[]" required data-placeholder="Employee Name">
-                    <option></option>
-                </select>
-                </div>`;
-                $('.ini_absen_ta').append(copy);
-                $('.jsSlcEmpl').select2({
-        allowClear: true,
-        placeholder: "Choose Employee",
-        minimumInputLength: 3,
-        ajax: {
-            url: baseurl + "ManufacturingOperationUP2L/Ajax/getEmployee",
-            dataType: 'json',
-            type: "post",
-            data: function (params) {
-                var queryParameters = {
-                    term: params.term
-                }
-                return queryParameters;
-            },
-            processResults: function (data) {
-                return {
-                    results: $.map(data, function (obj) {
-                        return {
-                            id: obj.no_induk + '|' + obj.nama,
-                            text: obj.no_induk + " | " + obj.nama
-                        };
-                    })
-                };
+$('.abs').click(function () {
+  $('.ott_Abs').select2('destroy').end();
+  $(this).parent().clone(true).appendTo($("#container-abs"));
+  $('.unAbs').show();
+  // var copy = `
+  //             <hr><div class="form-group">
+  //             <label for="absName" class="control-label">Nama</label>
+  //             <select class="form-control jsSlcEmpl toupper" id="txtEmployeeHeader" name="txt_employee[]" required data-placeholder="Employee Name">
+  //                 <option></option>
+  //             </select>
+  //             </div>`;
+  //             $('.ini_absen_ta').append(copy);
+      $('.ott_Abs').select2(/*{
+      allowClear: true,
+      placeholder: "Choose Employee",
+      minimumInputLength: 3,
+      ajax: {
+          url: baseurl + "ManufacturingOperationUP2L/Ajax/getEmployee",
+          dataType: 'json',
+          type: "post",
+          data: function (params) {
+              var queryParameters = {
+                  term: params.term
+              }
+              return queryParameters;
+          },
+          processResults: function (data) {
+              return {
+                  results: $.map(data, function (obj) {
+                      return {
+                          id: obj.no_induk + '|' + obj.nama,
+                          text: obj.no_induk + " | " + obj.nama
+                      };
+                  })
+              };
+          }
+      }
+  }*/);
+});
+
+$('.unAbs').click(function () {
+    var count = $('#container-abs').children().length;
+    // console.log(count);
+    c = count - parseInt(1);
+    // console.log(c);
+
+    if (count > 1) {
+      $(this).parent().remove();
+    }
+    if (c == 1) {
+      $('.unAbs').hide();
+    }
+    // var copy = `
+    // <div class="form-group"> <br />
+    // <label for="absName" class="control-label">Nama</label>
+    // <select class="form-control jsSlcEmpl toupper" id="txtEmployeeHeader" name="txt_employee[]" required data-placeholder="Employee Name">
+    //     <option></option>
+    // </select>
+    // </div>`;
+    // $('.ini_absen_ta').html(copy);
+})
+
+
+$('.addCompCore').click(function () {
+  $('.jsSlcComp').select2('destroy').end();
+  $(this).parent().clone(true).appendTo($("#container-compcore"));
+  $('.delcompCore').show();
+  // var addCompCore =
+  // `<hr><br /><div class="form-group">
+  //     <label for="txtComponentCodeHeader" class="control-label col-lg-4">Component</label>
+  //     <div class="col-lg-6">
+  //         <select class="form-control jsSlcComp toupper" id="txtComponentCodeHeader" name="component_code[]" required data-placeholder="Component Code">
+  //             <option></option>
+  //         </select>
+  //     </div>
+  // </div>
+  //
+  // <div class="form-group">
+  //     <label for="txtCoreQuantityHeader" class="control-label col-lg-4">Core Quantity</label>
+  //     <div class="col-lg-6">
+  //         <input type="number" placeholder="Core Quantity" name="txtCoreQuantityHeader[]" id="txtCoreQuantityHeader" class="form-control" />
+  //     </div>
+  // </div>`;
+  // $('#container-component').append(addCompCore);
+  $('.jsSlcComp').select2({
+    allowClear: true,
+    placeholder: "Choose Component Code",
+    minimumInputLength: 3,
+    ajax: {
+        url: baseurl + "ManufacturingOperationUP2L/Ajax/getComponent",
+        dataType: 'json',
+        type: "post",
+        data: function (params) {
+            var queryParameters = {
+                term: params.term
             }
+            return queryParameters;
+        },
+        processResults: function (data) {
+            return {
+                results: $.map(data, function (obj) {
+                    return {
+                        id: obj.kode_barang + " | " + obj.nama_barang + ' | ' + obj.kode_proses,
+                        text: obj.kode_barang + " | " + obj.nama_barang + ' | ' + obj.kode_proses
+                    };
+                })
+            };
+        },
+        error: function (error, status) {
+            console.log(error);
         }
-    });
-}
-function unAbs() {
-                var copy = `
-                <div class="form-group"> <br />
-                <label for="absName" class="control-label">Nama</label>
-                <select class="form-control jsSlcEmpl toupper" id="txtEmployeeHeader" name="txt_employee[]" required data-placeholder="Employee Name">
-                    <option></option>
-                </select>
-                </div>`;
-                $('.ini_absen_ta').html(copy);
-                $('.jsSlcEmpl').select2({
-        allowClear: true,
-        placeholder: "Choose Employee",
-        minimumInputLength: 3,
-        ajax: {
-            url: baseurl + "ManufacturingOperationUP2L/Ajax/getEmployee",
-            dataType: 'json',
-            type: "post",
-            data: function (params) {
-                var queryParameters = {
-                    term: params.term
-                }
-                return queryParameters;
-            },
-            processResults: function (data) {
-                return {
-                    results: $.map(data, function (obj) {
-                        return {
-                            id: obj.no_induk + '|' + obj.nama,
-                            text: obj.no_induk + " | " + obj.nama
-                        };
-                    })
-                };
-            }
-        }
-    });
-}
+    }
+  });
+});
 
-function addCompCore() {
-    var addCompCore =
-    `<hr><br /><div class="form-group">
-        <label for="txtComponentCodeHeader" class="control-label col-lg-4">Component</label>
-        <div class="col-lg-6">
-            <select class="form-control jsSlcComp toupper" id="txtComponentCodeHeader" name="component_code[]" required data-placeholder="Component Code">
-                <option></option>
-            </select>
-        </div>
-    </div>
+$('.delcompCore').click(function () {
+  var count = $('#container-compcore').children().length;
+  // console.log(count);
+  c = count - parseInt(1);
+  // console.log(c);
 
-    <div class="form-group">
-        <label for="txtCoreQuantityHeader" class="control-label col-lg-4">Core Quantity</label>
-        <div class="col-lg-6">
-            <input type="number" placeholder="Core Quantity" name="txtCoreQuantityHeader[]" id="txtCoreQuantityHeader" class="form-control" />
-        </div>
-    </div>`;
-    $('#container-component').append(addCompCore);
-    $('.jsSlcComp').select2({
-        allowClear: true,
-        placeholder: "Choose Component Code",
-        minimumInputLength: 3,
-        ajax: {
-            url: baseurl + "ManufacturingOperationUP2L/Ajax/getComponent",
-            dataType: 'json',
-            type: "post",
-            data: function (params) {
-                var queryParameters = {
-                    term: params.term
-                }
-                return queryParameters;
-            },
-            processResults: function (data) {
-                return {
-                    results: $.map(data, function (obj) {
-                        return {
-                            id: obj.kode_barang + " | " + obj.nama_barang + ' | ' + obj.kode_proses,
-                            text: obj.kode_barang + " | " + obj.nama_barang + ' | ' + obj.kode_proses
-                        };
-                    })
-                };
-            },
-            error: function (error, status) {
-                console.log(error);
-            }
-        }
-    });
-}
+  if (count > 1) {
+    $(this).parent().remove();
+  }
+  if (c == 1) {
+    $('.delcompCore').hide();
+  }
+});
 
-function delcompCore() {
-    var addCompCore =
-    `<div class="form-group">
-        <label for="txtComponentCodeHeader" class="control-label col-lg-4">Component</label>
-        <div class="col-lg-6">
-            <select class="form-control jsSlcComp toupper" id="txtComponentCodeHeader" name="component_code[]" required data-placeholder="Component Code" onchange="getCompDescMO(this)">
-                <option></option>
-            </select>
-        </div>
-    </div>
+$('.addCompMixing').click(function () {
+  $('.jsSlcComp').select2('destroy').end();
+  $(this).parent().clone(true).appendTo($("#container-compmix"));
+  $('.delcompMixing').show();
+  // var addCompMixing =
+  // `<hr><br /><div class="form-group">
+  //     <label for="txtComponentCodeHeader" class="control-label col-lg-4">Component</label>
+  //     <div class="col-lg-6">
+  //         <select class="form-control jsSlcComp toupper" id="txtComponentCodeHeader" name="component_code[]" required data-placeholder="Component Code">
+  //             <option></option>
+  //         </select>
+  //     </div>
+  // </div>
+  //
+  // <div class="form-group">
+  //     <label for="txtMixingQuantityHeader" class="control-label col-lg-4">Mixing Quantity</label>
+  //     <div class="col-lg-6">
+  //         <input type="number" placeholder="Mixing Quantity" name="txtMixingQuantityHeader[]" id="txtMixingQuantityHeader" class="form-control" />
+  //     </div>
+  // </div>`;
+  // $('#container-component').append(addCompMixing);
+  $('.jsSlcComp').select2({
+      allowClear: true,
+      placeholder: "Choose Component Code",
+      minimumInputLength: 3,
+      ajax: {
+          url: baseurl + "ManufacturingOperationUP2L/Ajax/getComponent",
+          dataType: 'json',
+          type: "post",
+          data: function (params) {
+              var queryParameters = {
+                  term: params.term
+              }
+              return queryParameters;
+          },
+          processResults: function (data) {
+              return {
+                  results: $.map(data, function (obj) {
+                      return {
+                          id: obj.kode_barang + " | " + obj.nama_barang + ' | ' + obj.kode_proses,
+                          text: obj.kode_barang + " | " + obj.nama_barang + ' | ' + obj.kode_proses
+                      };
+                  })
+              };
+          },
+          error: function (error, status) {
+              console.log(error);
+          }
+      }
+  });
+});
 
-    <div class="form-group">
-        <label for="txtCoreQuantityHeader" class="control-label col-lg-4">Core Quantity</label>
-        <div class="col-lg-6">
-            <input type="number" placeholder="Core Quantity" name="txtCoreQuantityHeader[]" id="txtCoreQuantityHeader" class="form-control" />
-        </div>
-    </div>`;
-    $('#container-component').html(addCompCore);
+$('.delcompMixing').click(function () {
+  var count = $('#container-compmix').children().length;
+  // console.log(count);
+  c = count - parseInt(1);
+  // console.log(c);
 
-    $('.jsSlcComp').select2({
-        allowClear: true,
-        placeholder: "Choose Component Code",
-        minimumInputLength: 3,
-        ajax: {
-            url: baseurl + "ManufacturingOperationUP2L/Ajax/getComponent",
-            dataType: 'json',
-            type: "post",
-            data: function (params) {
-                var queryParameters = {
-                    term: params.term
-                }
-                return queryParameters;
-            },
-            processResults: function (data) {
-                return {
-                    results: $.map(data, function (obj) {
-                        return {
-                            id: obj.kode_barang + " | " + obj.nama_barang + ' | ' + obj.kode_proses,
-                            text: obj.kode_barang + " | " + obj.nama_barang + ' | ' + obj.kode_proses
-                        };
-                    })
-                };
-            },
-            error: function (error, status) {
-                console.log(error);
-            }
-        }
-    });
-}
-
-function addCompMixing() {
-    var addCompMixing =
-    `<hr><br /><div class="form-group">
-        <label for="txtComponentCodeHeader" class="control-label col-lg-4">Component</label>
-        <div class="col-lg-6">
-            <select class="form-control jsSlcComp toupper" id="txtComponentCodeHeader" name="component_code[]" required data-placeholder="Component Code">
-                <option></option>
-            </select>
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label for="txtMixingQuantityHeader" class="control-label col-lg-4">Mixing Quantity</label>
-        <div class="col-lg-6">
-            <input type="number" placeholder="Mixing Quantity" name="txtMixingQuantityHeader[]" id="txtMixingQuantityHeader" class="form-control" />
-        </div>
-    </div>`;
-    $('#container-component').append(addCompMixing);
-    $('.jsSlcComp').select2({
-        allowClear: true,
-        placeholder: "Choose Component Code",
-        minimumInputLength: 3,
-        ajax: {
-            url: baseurl + "ManufacturingOperationUP2L/Ajax/getComponent",
-            dataType: 'json',
-            type: "post",
-            data: function (params) {
-                var queryParameters = {
-                    term: params.term
-                }
-                return queryParameters;
-            },
-            processResults: function (data) {
-                return {
-                    results: $.map(data, function (obj) {
-                        return {
-                            id: obj.kode_barang + " | " + obj.nama_barang + ' | ' + obj.kode_proses,
-                            text: obj.kode_barang + " | " + obj.nama_barang + ' | ' + obj.kode_proses
-                        };
-                    })
-                };
-            },
-            error: function (error, status) {
-                console.log(error);
-            }
-        }
-    });
-}
-
-function delcompMixing() {
-    var addCompMixing =
-    `<div class="form-group">
-        <label for="txtComponentCodeHeader" class="control-label col-lg-4">Component</label>
-        <div class="col-lg-6">
-            <select class="form-control jsSlcComp toupper" id="txtComponentCodeHeader" name="component_code[]" required data-placeholder="Component Code" onchange="getCompDescMO(this)">
-                <option></option>
-            </select>
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label for="txtMixingQuantityHeader" class="control-label col-lg-4">Mixing Quantity</label>
-        <div class="col-lg-6">
-            <input type="number" placeholder="Mixing Quantity" name="txtMixingQuantityHeader[]" id="txtMixingQuantityHeader" class="form-control" />
-        </div>
-    </div>`;
-    $('#container-component').html(addCompMixing);
-
-    $('.jsSlcComp').select2({
-        allowClear: true,
-        placeholder: "Choose Component Code",
-        minimumInputLength: 3,
-        ajax: {
-            url: baseurl + "ManufacturingOperationUP2L/Ajax/getComponent",
-            dataType: 'json',
-            type: "post",
-            data: function (params) {
-                var queryParameters = {
-                    term: params.term
-                }
-                return queryParameters;
-            },
-            processResults: function (data) {
-                return {
-                    results: $.map(data, function (obj) {
-                        return {
-                            id: obj.kode_barang + " | " + obj.nama_barang + ' | ' + obj.kode_proses,
-                            text: obj.kode_barang + " | " + obj.nama_barang + ' | ' + obj.kode_proses
-                        };
-                    })
-                };
-            },
-            error: function (error, status) {
-                console.log(error);
-            }
-        }
-    });
-}
+  if (count > 1) {
+    $(this).parent().remove();
+  }
+  if (c == 1) {
+    $('.delcompMixing').hide();
+  }
+});

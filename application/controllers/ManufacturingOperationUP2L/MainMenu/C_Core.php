@@ -75,7 +75,7 @@ class C_Core extends CI_Controller
 			$sub_array[] = '<center>
 											<a style="margin-right:4px" href="'.base_url('ManufacturingOperationUP2L/Core/read/'.$encrypted_string.'').'" data-toggle="tooltip" data-placement="bottom" title="Read Data"><span class="fa fa-list-alt fa-2x"></span></a>
 											<a style="margin-right:4px" href="'.base_url('ManufacturingOperationUP2L/Core/update/'.$encrypted_string.'').'" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o fa-2x"></span></a>
-											<a href="'.base_url('ManufacturingOperationUP2L/Core/delete/'.$encrypted_string.'').'" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm("Are you sure you want to delete this item?");"><span class="fa fa-trash fa-2x"></span></a>
+											<a href="'.base_url('ManufacturingOperationUP2L/Core/delete/'.$encrypted_string.'').'" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm(\'Are you sure you want to delete this item?\');"><span class="fa fa-trash fa-2x"></span></a>
 										</center>';
 			$sub_array[] = '<center>'.$row['component_code'].'</center>';
 			$sub_array[] = '<center>'.$row['component_description'].'</center>';

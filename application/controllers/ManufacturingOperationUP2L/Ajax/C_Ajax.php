@@ -42,15 +42,17 @@ class C_Ajax extends CI_Controller
 		$type = $this->input->post('type');
 		$qty = $this->input->post('qty');
 
-		$a = explode('|', $type);
-		$code = $a[0];
-		$desc = $a[1];
+		foreach ($type as $key => $value) {
+			$a = explode('|', $value);
+			$code = $a[0];
+			$desc = $a[1];
+			// echo "<pre>"; print_r($this->input->post()); die;
+			$this->M_ajax->addScrap($id, $qty[$key], $code, $desc);
 
-		$this->M_ajax->addScrap($id, $qty, $code, $desc);
-
-		$data = $this->M_ajax->viewScrap($id);
-		foreach ($data as $scrap) {
-			echo '<li class="list-group-item">' . $scrap['type_scrap'] . ' [' . $scrap['kode_scrap'] . ']' . ' | ' . $scrap['quantity'] . '</li>';
+			$data = $this->M_ajax->viewScrap($id);
+			foreach ($data as $scrap) {
+				echo '<li class="list-group-item">' . $scrap['type_scrap'] . ' [' . $scrap['kode_scrap'] . ']' . ' | ' . $scrap['quantity'] . '</li>';
+			}
 		}
 	}
 
@@ -61,12 +63,16 @@ class C_Ajax extends CI_Controller
 		$type = $this->input->post('type');
 		$qty = $this->input->post('qty');
 
-		$this->M_ajax->addBongkar($id, $qty);
+		foreach ($qty as $key => $value) {
+			// echo "<pre>"; print_r($this->input->post()); die;
+			$this->M_ajax->addBongkar($id, $qty[$key]);
 
-		$data = $this->M_ajax->viewBongkar($id);
-		foreach ($data as $bongkar) {
-			echo '<li class="list-group-item">' . $bongkar['moulding_id'] . ' [' . $bongkar['qty'] . ']' . '</li>';
+			$data = $this->M_ajax->viewBongkar($id);
+			foreach ($data as $bongkar) {
+				echo '<li class="list-group-item">' . $bongkar['moulding_id'] . ' [' . $bongkar['qty'] . ']' . '</li>';
+			}
 		}
+
 	}
 
 	public function addQuality()
@@ -83,7 +89,7 @@ class C_Ajax extends CI_Controller
 		$component_description = $this->input->post('DESCRIPTION');
 		$selep_quantity = $this->input->post('SELEPQTY');
 		$shift = $this->input->post('SHIFT');
-		
+
 		$check_qc = TRUE;
 
 		$this->M_ajax->setQualityControl(
@@ -275,20 +281,20 @@ class C_Ajax extends CI_Controller
                                     <div class="form-group">
                                        	<label for="usr">Jumat-Sabtu:</label>
                                        	<input type="number" class="form-control" name="txtJS" value="' . $edit['target_js'] . '" required>
-                                    </div> 
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="usr">Tanggal Berlaku</label>
                                 <input id="tglBerlaku" type="date" class="form-control" name="tglBerlaku" value="' . $edit['tanggal_berlaku'] . '" required>
-                            </div>            
+                            </div>
                             <div class="form-group">
                                 <label for="usr">Jenis</label>
                                 <input id="txtJenis" type="text" class="form-control" name="txtJenis" value="' . $edit['jenis'] . '" required>
-                            </div>                     
-                            <button type="submit" class="btn btn-default" >Submit</button>       
+                            </div>
+                            <button type="submit" class="btn btn-default" >Submit</button>
                         </div>
-                        
+
                         </form>
                      </div>
 

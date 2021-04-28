@@ -82,8 +82,8 @@
                                                                 <option></option>
                                                             </select>
                                                         </div>
-                                                        <button class="btn btn-info add_emp"><i class="fa fa-plus"></i></button>
-                                                        <button class="btn btn-danger remove_emp" style="display: none"><i class="fa fa-close"></i></button>
+                                                        <button type="button" class="btn btn-info add_emp"><i class="fa fa-plus"></i></button>
+                                                        <button type="button" class="btn btn-danger remove_emp" style="display: none"><i class="fa fa-close"></i></button>
 
                                                         <div class="row" style="padding:20px;">
                                                             <label for="txtPresensi" class="control-label col-lg-4">Presensi</label>
@@ -142,15 +142,16 @@
                                                                 <option></option>
                                                             </select>
                                                         </div>
-                                                        <button class="btn btn-info addCompMould"> <i class="fa fa-plus"></i></button>
-                                                        <button class="btn btn-danger delcompMould" style="display: none"> <i class="fa fa-times"></i></button>
+                                                        <button type="button" class="btn btn-info addComp"> <i class="fa fa-plus"></i></button>
+                                                        <button type="button" class="btn btn-danger delComp" onclick="" style="display: none"> <i class="fa fa-times"></i></button>
 
                                                       <div class="row" style="padding:18px;">
                                                         <label for="txtMouldingQuantityHeader" class="control-label col-lg-4">Moulding Quantity</label>
                                                         <div class="col-lg-6">
                                                             <input type="number" placeholder="Moulding Quantity" name="txtMouldingQuantityHeader[]" id="txtMouldingQuantityHeader" class="form-control" />
                                                         </div>
-                                                    </div>
+
+                                                        <div class="row" style="padding-left:384px;margin-right:-305px;"></div>
                                                     </div>
                                                 </div>
                                             </div>
