@@ -398,7 +398,8 @@ class M_packing extends CI_Model
         }
 
         $oracle = $this->load->database('oracle', true);
-        $sql = "BEGIN APPS.KHS_DOSPB_SP_TRANSACT (:P_REQNUM, :P_ORG, 5177); END;";
+        // $sql = "BEGIN APPS.KHS_DOSPB_SP_TRANSACT (:P_REQNUM, :P_ORG, 5177); END;";
+        $sql = "BEGIN APPS.KHS_RUN_TRANSACT_DOSPB_SP (:P_REQNUM, :P_ORG, 5177); END;";
 
         $stmt = oci_parse($conn,$sql);
         oci_bind_by_name($stmt,':P_REQNUM',$id,100);
