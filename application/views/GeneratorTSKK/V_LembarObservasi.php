@@ -520,7 +520,8 @@
                     <div class="panel-heading text-left">
                       <label style="margin-left: 2%;">Perhitungan Takt Time</label> &nbsp;&nbsp;&nbsp;&nbsp;
                       <input type="radio" name="perhitunganTakt" value="1" checked> <label for="" class="control-label">&nbsp;&nbsp;Ya </label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                      <input type="radio" name="perhitunganTakt" value="0"><label for="norm" class="control-label">&nbsp;&nbsp; Tidak </label>
+                      <input type="radio" name="perhitunganTakt" value="0"><label for="norm" class="control-label">&nbsp;&nbsp; Tidak </label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <input type="radio" name="perhitunganTakt" value="2"><label for="" class="control-label">&nbsp;&nbsp; Manual </label>
                     </div>
                     <div class="panel-body tskk_delik_cek_pakai">
 

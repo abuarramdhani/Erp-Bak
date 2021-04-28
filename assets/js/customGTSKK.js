@@ -246,20 +246,36 @@ $(document).ready(function() {
     $('input[type=checkbox]').iCheck('destroy');
   }
   $('input[name="perhitunganTakt"]').on('ifChanged', function() {
-    if ($('input[name=perhitunganTakt]:checked').val() == "1") {
-      $('.tskk_delik_cek_pakai').show()
-      $('input[name=taktTime]').show()
-      $('input[name=taktTime]').val('')
-      $('#txtQtyUnit').trigger('input');
-      $('.tskk_tt').show()
-      // console.log("Ya");
-    } else if ($('input[name=perhitunganTakt]:checked').val() == "0") {
-      // console.log("Tidak");
-      $('.tskk_delik_cek_pakai').hide()
-      $('.tskk_tt').hide()
-      $('input[name=taktTime]').hide()
-      $('input[name=taktTime]').val('99999')
-    }
+      if ($('input[name=perhitunganTakt]:checked').val() == "1") {
+        $('.tskk_delik_cek_pakai').show()
+        $('input[name=taktTime]').show()
+        $('input[name=taktTime]').val('')
+        $('.tskk_tt').show()
+        // console.log("Ya");
+        $('input[name=taktTime]').attr('readonly', true);
+        $('#txtForecast').attr('oninput', 'countRencanaProduksi(this)');
+        $('#txtQtyUnit').attr('oninput', 'countRencanaProduksi(this)');
+        setTimeout(function () {
+          $('#txtForecast').trigger('input');
+        }, 50);
+
+      } else if ($('input[name=perhitunganTakt]:checked').val() == "0") {
+        // console.log("Tidak");
+        $('.tskk_delik_cek_pakai').hide()
+        $('.tskk_tt').hide()
+        $('input[name=taktTime]').hide()
+        $('input[name=taktTime]').val('99999');
+      } else if ($('input[name=perhitunganTakt]:checked').val() == "2") {
+        $('.tskk_delik_cek_pakai').show()
+        $('input[name=taktTime]').show()
+        $('input[name=taktTime]').val('')
+        $('.tskk_tt').show()
+        //
+        $('input[name=taktTime]').removeAttr('readonly');
+        $('#txtForecast').removeAttr('oninput');
+        $('#txtQtyUnit').removeAttr('oninput');
+         // oninput="countRencanaProduksi(this)"
+      }
   });
 })
 
@@ -659,19 +675,36 @@ function addRowObservationEdit() {
   });
 
   $('input[name="perhitunganTakt"]').on('ifChanged', function() {
-    if ($('input[name=perhitunganTakt]:checked').val() == "1") {
-      $('.tskk_delik_cek_pakai').show()
-      $('input[name=taktTime]').show()
-      $('input[name=taktTime]').val('')
-      $('.tskk_tt').show()
-      // console.log("Ya");
-    } else if ($('input[name=perhitunganTakt]:checked').val() == "0") {
-      // console.log("Tidak");
-      $('.tskk_delik_cek_pakai').hide()
-      $('.tskk_tt').hide()
-      $('input[name=taktTime]').hide()
-      $('input[name=taktTime]').val('99999')
-    }
+      if ($('input[name=perhitunganTakt]:checked').val() == "1") {
+        $('.tskk_delik_cek_pakai').show()
+        $('input[name=taktTime]').show()
+        $('input[name=taktTime]').val('')
+        $('.tskk_tt').show()
+        // console.log("Ya");
+        $('input[name=taktTime]').attr('readonly', true);
+        $('#txtForecast').attr('oninput', 'countRencanaProduksi(this)');
+        $('#txtQtyUnit').attr('oninput', 'countRencanaProduksi(this)');
+        setTimeout(function () {
+          $('#txtForecast').trigger('input');
+        }, 50);
+
+      } else if ($('input[name=perhitunganTakt]:checked').val() == "0") {
+        // console.log("Tidak");
+        $('.tskk_delik_cek_pakai').hide()
+        $('.tskk_tt').hide()
+        $('input[name=taktTime]').hide()
+        $('input[name=taktTime]').val('99999');
+      } else if ($('input[name=perhitunganTakt]:checked').val() == "2") {
+        $('.tskk_delik_cek_pakai').show()
+        $('input[name=taktTime]').show()
+        $('input[name=taktTime]').val('')
+        $('.tskk_tt').show()
+        //
+        $('input[name=taktTime]').removeAttr('readonly');
+        $('#txtForecast').removeAttr('oninput');
+        $('#txtQtyUnit').removeAttr('oninput');
+         // oninput="countRencanaProduksi(this)"
+      }
   });
 
   // $('.select4').select2({
@@ -1416,7 +1449,8 @@ $(document).ready(function() {
       data: function(params) {
         var queryParameters = {
           variable: params.term,
-          kode: $('#kodepart').val()
+          kode: $('#kodepart').val(),
+          type_product: $('#typeProduct').val()
         }
         return queryParameters;
       },
@@ -2845,19 +2879,36 @@ function attachRowObservation(th) {
   });
 
   $('input[name="perhitunganTakt"]').on('ifChanged', function() {
-    if ($('input[name=perhitunganTakt]:checked').val() == "1") {
-      $('.tskk_delik_cek_pakai').show()
-      $('input[name=taktTime]').show()
-      $('input[name=taktTime]').val('')
-      $('.tskk_tt').show()
-      // console.log("Ya");
-    } else if ($('input[name=perhitunganTakt]:checked').val() == "0") {
-      // console.log("Tidak");
-      $('.tskk_delik_cek_pakai').hide()
-      $('.tskk_tt').hide()
-      $('input[name=taktTime]').hide()
-      $('input[name=taktTime]').val('99999')
-    }
+      if ($('input[name=perhitunganTakt]:checked').val() == "1") {
+        $('.tskk_delik_cek_pakai').show()
+        $('input[name=taktTime]').show()
+        $('input[name=taktTime]').val('')
+        $('.tskk_tt').show()
+        // console.log("Ya");
+        $('input[name=taktTime]').attr('readonly', true);
+        $('#txtForecast').attr('oninput', 'countRencanaProduksi(this)');
+        $('#txtQtyUnit').attr('oninput', 'countRencanaProduksi(this)');
+        setTimeout(function () {
+          $('#txtForecast').trigger('input');
+        }, 50);
+
+      } else if ($('input[name=perhitunganTakt]:checked').val() == "0") {
+        // console.log("Tidak");
+        $('.tskk_delik_cek_pakai').hide()
+        $('.tskk_tt').hide()
+        $('input[name=taktTime]').hide()
+        $('input[name=taktTime]').val('99999');
+      } else if ($('input[name=perhitunganTakt]:checked').val() == "2") {
+        $('.tskk_delik_cek_pakai').show()
+        $('input[name=taktTime]').show()
+        $('input[name=taktTime]').val('')
+        $('.tskk_tt').show()
+        //
+        $('input[name=taktTime]').removeAttr('readonly');
+        $('#txtForecast').removeAttr('oninput');
+        $('#txtQtyUnit').removeAttr('oninput');
+         // oninput="countRencanaProduksi(this)"
+      }
   });
 
   $('.checkBoxParalel').each((i, v) => {

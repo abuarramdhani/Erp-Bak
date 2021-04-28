@@ -47,7 +47,7 @@ class M_gentskk extends CI_Model
 
 	public function getProses($value='')
 	{
-		return $this->oracle->order_by('ID_PROSES', 'DESC')->get('KHS_TSKK_PROSES')->result_array();
+		return $this->oracle->order_by('PROSES', 'ASC')->get('KHS_TSKK_PROSES')->result_array();
 	}
 
 	public function getseksi($value='')
@@ -135,25 +135,49 @@ class M_gentskk extends CI_Model
 						   AND ffv.summary_flag = 'N'
 						   AND ffv.enabled_flag = 'Y'
 						   AND ffvt.flex_value_meaning LIKE 'A%'
-							 AND NVL (ffvt.description, '000') LIKE '%$ucfirst%'";
+							 AND NVL (ffvt.description, '000') LIKE '%$ucfirst%'
+							 ORDER BY NVL (ffvt.description, '000') ASC";
 
 		$query = $this->oracle->query($sql);
 		return $query->result_array();
 	}
 
-	function kodePart($variable)
+	function kodePart($variable, $product)
 	{
-	$sql="SELECT msib.segment1
-       ,msib.description
-       from mtl_system_items_b msib
-       where msib.INVENTORY_ITEM_STATUS_CODE = 'Active'
-       and msib.organization_id = 81
-       AND (msib.DESCRIPTION LIKE '%$variable%'
-	   OR msib.SEGMENT1 LIKE '%$variable%')";
+  $where_product = '';
+	if (!empty($product)) {
+		$where_product .= "AND NVL (ffvt.description, '000') in";
+		$where_product .= '(\''.implode('\',\'',$product).'\')';
+	}
+
+	// $sql="SELECT msib.segment1
+  //      ,msib.description
+  //      from mtl_system_items_b msib
+  //      where msib.INVENTORY_ITEM_STATUS_CODE = 'Active'
+  //      and msib.organization_id = 81
+  //      AND (msib.DESCRIPTION LIKE '%$variable%'
+	//    OR msib.SEGMENT1 LIKE '%$variable%')";
+
+	$sql = "SELECT msib.segment1, msib.description
+							FROM fnd_flex_values ffv, fnd_flex_values_tl ffvt,
+									 mtl_system_items_b msib
+						 WHERE ffv.flex_value_set_id = 1013710
+							 AND ffv.flex_value_id = ffvt.flex_value_id
+							 AND ffv.end_date_active IS NULL
+							 AND ffv.summary_flag = 'N'
+							 AND ffv.enabled_flag = 'Y'
+							 AND ffv.flex_value = SUBSTR (msib.segment1, 1, 3)
+							 AND (msib.DESCRIPTION LIKE '%$variable%'
+					   				OR msib.SEGMENT1 LIKE '%$variable%')
+							 $where_product
+							 AND msib.organization_id = 81
+							 AND msib.inventory_item_status_code = 'Active'
+					ORDER BY 1";
 
 	   $query = $this->oracle->query($sql);
 	   return $query->result_array();
-	//    return $sql;
+	   // echo $sql;
+		 // die;
 	}
 
 	function namaPart($kode_part)
@@ -368,7 +392,7 @@ class M_gentskk extends CI_Model
 	function selectData()
 	{
 		$sql = "SELECT * FROM gtskk.gtskk_standar_elemen_kerja
-				ORDER BY id";
+				ORDER BY elemen_kerja asc";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
@@ -399,7 +423,7 @@ class M_gentskk extends CI_Model
 		$ucwords = ucwords($elk);
 		$sql = "SELECT elemen_kerja FROM gtskk.gtskk_standar_elemen_kerja
 				WHERE elemen_kerja LIKE '%$elk%' OR elemen_kerja LIKE '%$Low%' OR elemen_kerja LIKE '%$lcfirst%'
-				OR elemen_kerja LIKE '%$ucfirst%' OR elemen_kerja LIKE '%$ucwords%'";
+				OR elemen_kerja LIKE '%$ucfirst%' OR elemen_kerja LIKE '%$ucwords%' ORDER BY elemen_kerja ASC";
 
 		$query = $this->db->query($sql);
 		return $query->result_array();
