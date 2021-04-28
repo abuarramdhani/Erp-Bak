@@ -74,12 +74,13 @@ class M_insert extends CI_Model
     }
     public function ListTagihan()
     {
-        $sql = "select distinct 
-        pts.nomor_tagihan,
-        pts.vendor_name,
-        count(pts.item_description_po) over (partition by pts.vendor_name) jml_item,
-        sum(pts.total_price) over (partition by pts.vendor_name) total
-        from psub.psub_tagihan_subkon pts";
+        $sql = "select
+        pts.nomor_tagihan,       
+        pts.vendor_name,        
+       count(pts.nomor_tagihan),    
+       sum(pts.total_price)total        
+       from psub.psub_tagihan_subkon pts
+       group by pts.nomor_tagihan, pts.vendor_name";
         $query = $this->db->query($sql);
         return $query->result_array();
     }
