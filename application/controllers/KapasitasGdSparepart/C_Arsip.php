@@ -101,10 +101,6 @@ class C_Arsip extends CI_Controller
             $row[] = $val['SELESAI_PELAYANAN'];
             $row[] = $val['WAKTU_PELAYANAN'];
             $row[] = $val['PIC_PELAYAN'];
-            $row[] = $val['MULAI_PENGELUARAN'];
-            $row[] = $val['SELESAI_PENGELUARAN'];
-            $row[] = $val['WAKTU_PENGELUARAN'];
-            $row[] = $val['PIC_PENGELUARAN'];
             $row[] = $val['MULAI_PACKING'];
             $row[] = $val['SELESAI_PACKING'];
             $row[] = $val['WAKTU_PACKING'];

@@ -58,23 +58,15 @@ class C_Monitoring extends CI_Controller
 		$pelayanan 	= $this->M_monitoring->getDataSPB($query2);
 		$data['pelayanan'] 	= $pelayanan;
 		$data['jml_pelayanan'] = count($pelayanan);
-		$kurang = "where TO_CHAR(jam_input,'DD/MM/YYYY') between '$date' and '$date' and trunc(selesai_pelayanan) > '$tgl' or selesai_pelayanan is null and (bon != 'PENDING' or bon is null)";
+		$kurang = "where TO_CHAR(jam_input,'DD/MM/YYYY') between '$date' and '$date' and trunc(selesai_pelayanan) > '$tgl' or selesai_pelayanan is null and (bon != 'PENDING' or bon is null) and approval_flag is not null";
 		$data['krgpelayanan'] = $this->M_monitoring->dataKurang($kurang);
 		$data['krg_pelayanan'] = count($data['krgpelayanan']);
-
-		$query3 = "where TO_CHAR(selesai_pengeluaran,'DD/MM/YYYY') between '$date' and '$date' and selesai_pengeluaran is not null";
-		$pengeluaran = $this->M_monitoring->getDataSPB($query3);
-		$data['pengeluaran'] = $pengeluaran;
-		$data['jml_pengeluaran'] = count($pengeluaran);
-		$kurang = "where selesai_pelayanan is not null and selesai_pengeluaran is null and (bon != 'BON' or bon is null)";
-		$data['krgpengeluaran'] = $this->M_monitoring->dataKurang($kurang);
-		$data['krg_pengeluaran'] = count($data['krgpengeluaran']);
 
 		$query4 = "where TO_CHAR(selesai_packing,'DD/MM/YYYY') between '$date' and '$date' and selesai_packing is not null";
 		$packing = $this->M_monitoring->getDataSPB($query4);
 		$data['packing'] = $packing;
 		$data['jml_packing'] = count($packing);
-		$kurang = "where selesai_pengeluaran is not null and selesai_packing is null and (bon is null or bon = 'BEST')";
+		$kurang = "where selesai_pelayanan is not null and selesai_packing is null and (bon is null or bon = 'BEST') and tipe is not null";
 		$data['krgpacking'] = $this->M_monitoring->dataKurang($kurang);
 		$data['krg_packing'] = count($data['krgpacking']);
 
@@ -168,7 +160,7 @@ class C_Monitoring extends CI_Controller
 			$hasil[$a]['pelayanan'] = $pelayanan;
 			$hasil[$a]['jml_pelayanan'] = count($pelayanan);
 			if ($date == date('d/m/Y')) {
-				$kurang = "where selesai_pelayanan is null and (bon != 'PENDING' or bon is null)";
+				$kurang = "where selesai_pelayanan is null and (bon != 'PENDING' or bon is null) and approval_flag is not null";
 			}else {
 				$d = date('d') - 1;
 				if ($date == date(''.$d.'/m/Y')) {
@@ -181,38 +173,20 @@ class C_Monitoring extends CI_Controller
 			$hasil[$a]['krgpelayanan'] = $this->M_monitoring->dataKurang($kurang);
 			$hasil[$a]['krg_pelayanan'] = count($hasil[$a]['krgpelayanan']);
 
-			$query3 = "where TO_CHAR(selesai_pengeluaran,'DD/MM/YYYY') between '$date' and '$date' and selesai_pengeluaran is not null";
-			$pengeluaran = $this->M_monitoring->getDataSPB($query3);
-			$hasil[$a]['pengeluaran'] = $pengeluaran;
-			$hasil[$a]['jml_pengeluaran'] = count($pengeluaran);
-			if ($date == date('d/m/Y')) {
-				$kurang = "where selesai_pelayanan is not null and selesai_pengeluaran is null and (bon != 'BON' or bon is null)";
-			}else {
-				$d = date('d') - 1;
-				if ($date == date(''.$d.'/m/Y')) {
-					$tmb = 'or selesai_pengeluaran is null';
-				}else {
-					$tmb = "and trunc(selesai_pelayanan) <= '$tgl[$a]' or (selesai_pengeluaran is null and trunc(selesai_pelayanan) <= '$tgl[$a]')";
-				}
-				$kurang = "where (bon != 'BON' or bon is null) and TO_CHAR(selesai_pelayanan,'DD/MM/YYYY') != '".date('d/m/Y')."' and (trunc(selesai_pengeluaran) > '$tgl[$a]' ".$tmb.") and selesai_pelayanan is not null";
-			}
-			$hasil[$a]['krgpengeluaran'] = $this->M_monitoring->dataKurang($kurang);
-			$hasil[$a]['krg_pengeluaran'] = count($hasil[$a]['krgpengeluaran']);
-
 			$query4 = "where TO_CHAR(selesai_packing,'DD/MM/YYYY') between '$date' and '$date' and selesai_packing is not null";
 			$packing = $this->M_monitoring->getDataSPB($query4);
 			$hasil[$a]['packing'] = $packing;
 			$hasil[$a]['jml_packing'] = count($packing);
 			if ($date == date('d/m/Y')) {
-				$kurang = "where selesai_pengeluaran is not null and selesai_packing is null and (bon is null or bon = 'BEST')";
+				$kurang = "where selesai_pelayanan is not null and selesai_packing is null and (bon is null or bon = 'BEST') and tipe is not null";
 			}else {
 				$d = date('d') - 1;
 				if ($date == date(''.$d.'/m/Y')) {
 					$tmb = 'or selesai_packing is null';
 				}else {
-					$tmb = "and trunc(selesai_pengeluaran) <= '$tgl[$a]' or (selesai_packing is null and trunc(selesai_pengeluaran) <= '$tgl[$a]')";
+					$tmb = "and trunc(selesai_pelayanan) <= '$tgl[$a]' or (selesai_packing is null and trunc(selesai_pelayanan) <= '$tgl[$a]')";
 				}
-				$kurang = "where (bon is null or bon = 'BEST') and TO_CHAR(selesai_pengeluaran,'DD/MM/YYYY') != '".date('d/m/Y')."' and (trunc(selesai_packing) > '$tgl[$a]' ".$tmb.") and selesai_pengeluaran is not null";
+				$kurang = "where (bon is null or bon = 'BEST') and TO_CHAR(selesai_pelayanan,'DD/MM/YYYY') != '".date('d/m/Y')."' and (trunc(selesai_packing) > '$tgl[$a]' ".$tmb.") and selesai_pelayanan is not null";
 			}
 			$hasil[$a]['krgpacking'] = $this->M_monitoring->dataKurang($kurang);
 			$hasil[$a]['krg_packing'] = count($hasil[$a]['krgpacking']);
@@ -515,10 +489,6 @@ class C_Monitoring extends CI_Controller
 		$dataPlyn = $this->M_monitoring->dataPlyn($tglAwal[0], $tglAkhir[0]);
 
 		$dataKrgPlyn = $this->M_monitoring->dataKrgPlyn($tglAwal[0], $tglAkhir[0]);
-		
-		$dataPglr = $this->M_monitoring->dataPglr($tglAwal[0], $tglAkhir[0]);
-
-		$dataKrgPglr = $this->M_monitoring->dataKrgPglr($tglAwal[0], $tglAkhir[0]);
 	
 		$dataPck = $this->M_monitoring->dataPck($tglAwal[0], $tglAkhir[0]);
 
@@ -947,154 +917,8 @@ class C_Monitoring extends CI_Controller
 					}
 			}
 
-
-			$pglr = $noKPlyn + count($dataKrgPlyn) + 4;
-			$noPglr = $noKPlyn + count($dataKrgPlyn) + 5;
-			// TABEL Pengeluaran Terlayani
-			$excel->setActiveSheetIndex(0)->setCellValue("A$pglr", "3. DATA PENGELUARAN TERSELESAIKAN"); 
-			$excel->setActiveSheetIndex(0)->setCellValue("A$noPglr", "NO.");
-			$excel->setActiveSheetIndex(0)->setCellValue("B$noPglr", "TANGGAL DIBUAT");
-			$excel->setActiveSheetIndex(0)->setCellValue("C$noPglr", "JENIS DOKUMEN");
-			$excel->setActiveSheetIndex(0)->setCellValue("D$noPglr", "NO DOKUMEN");
-			$excel->setActiveSheetIndex(0)->setCellValue("E$noPglr", "JUMLAH ITEM");
-			$excel->setActiveSheetIndex(0)->setCellValue("F$noPglr", "JUMLAH PCS");
-			$excel->setActiveSheetIndex(0)->setCellValue("G$noPglr", "TANGGAL MULAI");
-			$excel->setActiveSheetIndex(0)->setCellValue("H$noPglr", "JAM MULAI");
-			$excel->setActiveSheetIndex(0)->setCellValue("I$noPglr", "TANGGAL SELESAI");
-			$excel->setActiveSheetIndex(0)->setCellValue("J$noPglr", "JAM SELESAI");
-			$excel->setActiveSheetIndex(0)->setCellValue("K$noPglr", "WAKTU");
-			$excel->setActiveSheetIndex(0)->setCellValue("L$noPglr", "PIC");
-			$excel->setActiveSheetIndex(0)->setCellValue("M$noPglr", "KET");
-			$excel->getActiveSheet()->getStyle("A$pglr")->applyFromArray($style1);
-			$excel->getActiveSheet()->getStyle("A$noPglr")->applyFromArray($style_col);
-			$excel->getActiveSheet()->getStyle("B$noPglr")->applyFromArray($style_col);
-			$excel->getActiveSheet()->getStyle("C$noPglr")->applyFromArray($style_col);
-			$excel->getActiveSheet()->getStyle("D$noPglr")->applyFromArray($style_col);
-			$excel->getActiveSheet()->getStyle("E$noPglr")->applyFromArray($style_col);
-			$excel->getActiveSheet()->getStyle("F$noPglr")->applyFromArray($style_col);
-			$excel->getActiveSheet()->getStyle("G$noPglr")->applyFromArray($style_col);
-			$excel->getActiveSheet()->getStyle("H$noPglr")->applyFromArray($style_col);
-			$excel->getActiveSheet()->getStyle("I$noPglr")->applyFromArray($style_col);
-			$excel->getActiveSheet()->getStyle("J$noPglr")->applyFromArray($style_col);
-			$excel->getActiveSheet()->getStyle("K$noPglr")->applyFromArray($style_col);
-			$excel->getActiveSheet()->getStyle("L$noPglr")->applyFromArray($style_col);
-			$excel->getActiveSheet()->getStyle("M$noPglr")->applyFromArray($style_col);
-
-			if (count($dataPglr) == 0){
-				$numrow = $noPglr + 1;
-				$excel->setActiveSheetIndex(0)->setCellValue("A$numrow", "No data available in table"); 
-				$excel->getActiveSheet()->mergeCells("A$numrow:M$numrow"); 
-				$excel->getActiveSheet()->getStyle("A$numrow")->applyFromArray($style_title);
-			}else {
-				$no=1;
-				$numrow = $noPglr + 1;
-					foreach ($dataPglr as $val) {
-						$excel->setActiveSheetIndex(0)->setCellValue('A'.$numrow, $no);
-						$excel->setActiveSheetIndex(0)->setCellValue('B'.$numrow, $val['TGL_DIBUAT']);
-						$excel->setActiveSheetIndex(0)->setCellValue('C'.$numrow, $val['JENIS_DOKUMEN']);
-						$excel->setActiveSheetIndex(0)->setCellValue('D'.$numrow, $val['NO_DOKUMEN']);
-						$excel->setActiveSheetIndex(0)->setCellValue('E'.$numrow, $val['JML_ITEM_DIKELUARKAN']);
-						$excel->setActiveSheetIndex(0)->setCellValue('F'.$numrow, $val['JML_PCS_DIKELUARKAN']);
-						$excel->setActiveSheetIndex(0)->setCellValue('G'.$numrow, $val['TGL_MULAI']);
-						$excel->setActiveSheetIndex(0)->setCellValue('H'.$numrow, $val['JAM_MULAI']);
-						$excel->setActiveSheetIndex(0)->setCellValue('I'.$numrow, $val['TGL_SELESAI']);
-						$excel->setActiveSheetIndex(0)->setCellValue('J'.$numrow, $val['JAM_SELESAI']);
-						$excel->setActiveSheetIndex(0)->setCellValue('K'.$numrow, $val['WAKTU_PENGELUARAN']);
-						$excel->setActiveSheetIndex(0)->setCellValue('L'.$numrow, $val['PIC_PENGELUARAN']);
-						$excel->setActiveSheetIndex(0)->setCellValue('M'.$numrow, $val['KETERANGAN'].' '.$val['BON']);
-
-						$excel->getActiveSheet()->getStyle('A'.$numrow)->applyFromArray($style2);
-						$excel->getActiveSheet()->getStyle('B'.$numrow)->applyFromArray($style2);
-						$excel->getActiveSheet()->getStyle('C'.$numrow)->applyFromArray($style2);
-						$excel->getActiveSheet()->getStyle('D'.$numrow)->applyFromArray($style2);
-						$excel->getActiveSheet()->getStyle('E'.$numrow)->applyFromArray($style2);
-						$excel->getActiveSheet()->getStyle('F'.$numrow)->applyFromArray($style2);
-						$excel->getActiveSheet()->getStyle('G'.$numrow)->applyFromArray($style2);
-						$excel->getActiveSheet()->getStyle('H'.$numrow)->applyFromArray($style2);
-						$excel->getActiveSheet()->getStyle('I'.$numrow)->applyFromArray($style2);
-						$excel->getActiveSheet()->getStyle('J'.$numrow)->applyFromArray($style2);
-						$excel->getActiveSheet()->getStyle('K'.$numrow)->applyFromArray($style2);
-						$excel->getActiveSheet()->getStyle('L'.$numrow)->applyFromArray($style2);
-						$excel->getActiveSheet()->getStyle('M'.$numrow)->applyFromArray($style2);
-					$numrow++;
-					$no++; 
-					}
-			}
-
-			$kPglr = $noPglr + count($dataPglr) + 4;
-			$noKPglr = $noPglr + count($dataPglr) + 5;
-			// TABEL Tanggungan Pengeluaran
-			$excel->setActiveSheetIndex(0)->setCellValue("A$kPglr", "3.1 DATA TANGGUNGAN PENGELUARAN"); 
-			$excel->setActiveSheetIndex(0)->setCellValue("A$noKPglr", "NO.");
-			$excel->setActiveSheetIndex(0)->setCellValue("B$noKPglr", "TANGGAL DIBUAT");
-			$excel->setActiveSheetIndex(0)->setCellValue("D$noKPglr", "JENIS DOKUMEN");
-			$excel->setActiveSheetIndex(0)->setCellValue("F$noKPglr", "NO DOKUMEN");
-			$excel->setActiveSheetIndex(0)->setCellValue("H$noKPglr", "JUMLAH ITEM");
-			$excel->setActiveSheetIndex(0)->setCellValue("J$noKPglr", "JUMLAH PCS");
-			$excel->setActiveSheetIndex(0)->setCellValue("K$noKPglr", "PIC");
-			$excel->setActiveSheetIndex(0)->setCellValue("M$noKPglr", "KET");
-			$excel->getActiveSheet()->mergeCells("B$noKPglr:C$noKPglr"); 
-			$excel->getActiveSheet()->mergeCells("D$noKPglr:E$noKPglr"); 
-			$excel->getActiveSheet()->mergeCells("F$noKPglr:G$noKPglr"); 
-			$excel->getActiveSheet()->mergeCells("H$noKPglr:I$noKPglr"); 
-			$excel->getActiveSheet()->mergeCells("K$noKPglr:L$noKPglr"); 
-			$excel->getActiveSheet()->getStyle("A$kPglr")->applyFromArray($style1);
-			$excel->getActiveSheet()->getStyle("A$noKPglr")->applyFromArray($style_col2);
-			$excel->getActiveSheet()->getStyle("B$noKPglr")->applyFromArray($style_col2);
-			$excel->getActiveSheet()->getStyle("C$noKPglr")->applyFromArray($style_col2);
-			$excel->getActiveSheet()->getStyle("D$noKPglr")->applyFromArray($style_col2);
-			$excel->getActiveSheet()->getStyle("E$noKPglr")->applyFromArray($style_col2);
-			$excel->getActiveSheet()->getStyle("F$noKPglr")->applyFromArray($style_col2);
-			$excel->getActiveSheet()->getStyle("G$noKPglr")->applyFromArray($style_col2);
-			$excel->getActiveSheet()->getStyle("H$noKPglr")->applyFromArray($style_col2);
-			$excel->getActiveSheet()->getStyle("I$noKPglr")->applyFromArray($style_col2);
-			$excel->getActiveSheet()->getStyle("J$noKPglr")->applyFromArray($style_col2);
-			$excel->getActiveSheet()->getStyle("K$noKPglr")->applyFromArray($style_col2);
-			$excel->getActiveSheet()->getStyle("L$noKPglr")->applyFromArray($style_col2);
-			$excel->getActiveSheet()->getStyle("M$noKPglr")->applyFromArray($style_col2);
-
-			if (count($dataKrgPglr) == 0){
-				$numrow = $noKPglr + 1;
-				$excel->setActiveSheetIndex(0)->setCellValue("A$numrow", "No data available in table"); 
-				$excel->getActiveSheet()->mergeCells("A$numrow:M$numrow");
-				$excel->getActiveSheet()->getStyle("A$numrow")->applyFromArray($style_title);
-			}else {
-				$no=1;
-				$numrow = $noKPglr + 1;
-					foreach ($dataKrgPglr as $val) {
-						$excel->setActiveSheetIndex(0)->setCellValue('A'.$numrow, $no);
-						$excel->setActiveSheetIndex(0)->setCellValue('B'.$numrow, $val['TGL_DIBUAT']);
-						$excel->setActiveSheetIndex(0)->setCellValue('D'.$numrow, $val['JENIS_DOKUMEN']);
-						$excel->setActiveSheetIndex(0)->setCellValue('F'.$numrow, $val['NO_DOKUMEN']);
-						$excel->setActiveSheetIndex(0)->setCellValue('H'.$numrow, $val['JML_ITEM_TERLAYANI']);
-						$excel->setActiveSheetIndex(0)->setCellValue('J'.$numrow, $val['JML_PCS_TERLAYANI']);
-						$excel->setActiveSheetIndex(0)->setCellValue('K'.$numrow, $val['PIC_PELAYAN']);
-						$excel->setActiveSheetIndex(0)->setCellValue('M'.$numrow, $val['KETERANGAN'].' '.$val['BON']);
-						$excel->getActiveSheet()->mergeCells("B$numrow:C$numrow"); 
-						$excel->getActiveSheet()->mergeCells("D$numrow:E$numrow"); 
-						$excel->getActiveSheet()->mergeCells("F$numrow:G$numrow"); 
-						$excel->getActiveSheet()->mergeCells("H$numrow:I$numrow"); 
-						$excel->getActiveSheet()->mergeCells("K$numrow:L$numrow"); 
-						$excel->getActiveSheet()->getStyle('A'.$numrow)->applyFromArray($style2);
-						$excel->getActiveSheet()->getStyle('B'.$numrow)->applyFromArray($style2);
-						$excel->getActiveSheet()->getStyle('C'.$numrow)->applyFromArray($style2);
-						$excel->getActiveSheet()->getStyle('D'.$numrow)->applyFromArray($style2);
-						$excel->getActiveSheet()->getStyle('E'.$numrow)->applyFromArray($style2);
-						$excel->getActiveSheet()->getStyle('F'.$numrow)->applyFromArray($style2);
-						$excel->getActiveSheet()->getStyle('G'.$numrow)->applyFromArray($style2);
-						$excel->getActiveSheet()->getStyle('H'.$numrow)->applyFromArray($style2);
-						$excel->getActiveSheet()->getStyle('I'.$numrow)->applyFromArray($style2);
-						$excel->getActiveSheet()->getStyle('J'.$numrow)->applyFromArray($style2);
-						$excel->getActiveSheet()->getStyle('K'.$numrow)->applyFromArray($style2);
-						$excel->getActiveSheet()->getStyle('L'.$numrow)->applyFromArray($style2);
-						$excel->getActiveSheet()->getStyle('M'.$numrow)->applyFromArray($style2);
-					$numrow++;
-					$no++; 
-					}
-			}
-
-			$pck = $noKPglr + count($dataKrgPglr) + 4;
-			$noPck = $noKPglr + count($dataKrgPglr) + 5;
+			$pck = $noKPlyn + count($dataKrgPlyn) + 4;
+			$noPck = $noKPlyn + count($dataKrgPlyn) + 5;
 			// TABEL Packing Terlayani
 			$excel->setActiveSheetIndex(0)->setCellValue("A$pck", "4. DATA PACKING TERSELESAIKAN"); 
 			$excel->setActiveSheetIndex(0)->setCellValue("A$noPck", "NO.");
@@ -1239,7 +1063,7 @@ class C_Monitoring extends CI_Controller
 						$excel->setActiveSheetIndex(0)->setCellValue('F'.$numrow, $val['NO_DOKUMEN']);
 						$excel->setActiveSheetIndex(0)->setCellValue('H'.$numrow, $val['JML_ITEM_TERLAYANI']);
 						$excel->setActiveSheetIndex(0)->setCellValue('J'.$numrow, $val['JML_PCS_TERLAYANI']);
-						$excel->setActiveSheetIndex(0)->setCellValue('K'.$numrow, $val['PIC_PENGELUARAN']);
+						$excel->setActiveSheetIndex(0)->setCellValue('K'.$numrow, $val['PIC_PELAYAN']);
 						$excel->setActiveSheetIndex(0)->setCellValue('M'.$numrow, $val['KETERANGAN'].' '.$val['BON']);
 						$excel->getActiveSheet()->mergeCells("B$numrow:C$numrow"); 
 						$excel->getActiveSheet()->mergeCells("D$numrow:E$numrow"); 
@@ -1510,13 +1334,10 @@ class C_Monitoring extends CI_Controller
 			$cancel = $this->jadigini($can);
 			$pdg 	= $this->M_monitoring->jml_pending2();
 			$pending = $this->jadibelum($pdg);
-			$query = "where selesai_pelayanan is null and (bon != 'PENDING' or bon is null)";
+			$query = "where selesai_pelayanan is null and (bon != 'PENDING' or bon is null) and approval_flag is not null";
 			$plyn 	= $this->M_monitoring->getDataSPB($query);
 			$pelayanan = $this->jadiin($plyn, 'plyn');
-			$query = "where selesai_pelayanan is not null and selesai_pengeluaran is null and (bon != 'BON' or bon is null)";
-			$pglr 	= $this->M_monitoring->getDataSPB($query);
-			$pengeluaran = $this->jadiin($pglr, 'pglr');
-			$query = "where selesai_pengeluaran is not null and selesai_packing is null and (bon is null or bon = 'BEST')";
+			$query = "where selesai_pelayanan is not null and selesai_packing is null and (bon is null or bon = 'BEST') and tipe is not null";
 			$pck 	= $this->M_monitoring->getDataSPB($query);
 			$packing = $this->jadiin($pck, 'pck');
 			$dikerjain = $this->jadiin($dataselesai, 'dkr');
@@ -1921,7 +1742,7 @@ class C_Monitoring extends CI_Controller
 	
 			$no=1;
 			$numrow3 = $h3 + 1;
-			$h4 = $numrow3+3;
+			$h4 = $numrow3+2;
 			$excel->setActiveSheetIndex(0)->setCellValue('B'.$numrow3, "PENDING");
 			$excel->setActiveSheetIndex(0)->setCellValue('C'.$numrow3, $pending[0]['lembar1']);
 			$excel->setActiveSheetIndex(0)->setCellValue('D'.$numrow3, $pending[0]['item1']);
@@ -1942,16 +1763,6 @@ class C_Monitoring extends CI_Controller
 			$excel->setActiveSheetIndex(0)->setCellValue('I'.($numrow3+1), ($pelayanan[0]['lembar1'] + $pelayanan[0]['lembar2']));
 			$excel->setActiveSheetIndex(0)->setCellValue('J'.($numrow3+1), ($pelayanan[0]['item1'] + $pelayanan[0]['item2']));
 			$excel->setActiveSheetIndex(0)->setCellValue('K'.($numrow3+1), ($pelayanan[0]['pcs1'] + $pelayanan[0]['pcs2']));
-			$excel->setActiveSheetIndex(0)->setCellValue('B'.($numrow3+2), "PENGELUARAN");
-			$excel->setActiveSheetIndex(0)->setCellValue('C'.($numrow3+2), $pengeluaran[0]['lembar1']);
-			$excel->setActiveSheetIndex(0)->setCellValue('D'.($numrow3+2), $pengeluaran[0]['item1']);
-			$excel->setActiveSheetIndex(0)->setCellValue('E'.($numrow3+2), $pengeluaran[0]['pcs1']);
-			$excel->setActiveSheetIndex(0)->setCellValue('F'.($numrow3+2), $pengeluaran[0]['lembar2']);
-			$excel->setActiveSheetIndex(0)->setCellValue('G'.($numrow3+2), $pengeluaran[0]['item2']);
-			$excel->setActiveSheetIndex(0)->setCellValue('H'.($numrow3+2), $pengeluaran[0]['pcs2']);
-			$excel->setActiveSheetIndex(0)->setCellValue('I'.($numrow3+2), ($pengeluaran[0]['lembar1'] + $pengeluaran[0]['lembar2']));
-			$excel->setActiveSheetIndex(0)->setCellValue('J'.($numrow3+2), ($pengeluaran[0]['item1'] + $pengeluaran[0]['item2']));
-			$excel->setActiveSheetIndex(0)->setCellValue('K'.($numrow3+2), ($pengeluaran[0]['pcs1'] + $pengeluaran[0]['pcs2']));
 			$excel->setActiveSheetIndex(0)->setCellValue('B'.$h4, "PACKING");
 			$excel->setActiveSheetIndex(0)->setCellValue('C'.$h4, $packing[0]['lembar1']);
 			$excel->setActiveSheetIndex(0)->setCellValue('D'.$h4, $packing[0]['item1']);
@@ -1962,17 +1773,17 @@ class C_Monitoring extends CI_Controller
 			$excel->setActiveSheetIndex(0)->setCellValue('I'.$h4, ($packing[0]['lembar1'] + $packing[0]['lembar2']));
 			$excel->setActiveSheetIndex(0)->setCellValue('J'.$h4, ($packing[0]['item1'] + $packing[0]['item2']));
 			$excel->setActiveSheetIndex(0)->setCellValue('K'.$h4, ($packing[0]['pcs1'] + $packing[0]['pcs2']));
-			$excel->setActiveSheetIndex(0)->setCellValue('B'.($numrow3+4), "JUMLAH");
-			$excel->setActiveSheetIndex(0)->setCellValue('C'.($numrow3+4), "=SUM(C$numrow3:C$h4)");
-			$excel->setActiveSheetIndex(0)->setCellValue('D'.($numrow3+4), "=SUM(D$numrow3:D$h4)");
-			$excel->setActiveSheetIndex(0)->setCellValue('E'.($numrow3+4), "=SUM(E$numrow3:E$h4)");
-			$excel->setActiveSheetIndex(0)->setCellValue('F'.($numrow3+4), "=SUM(F$numrow3:F$h4)");
-			$excel->setActiveSheetIndex(0)->setCellValue('G'.($numrow3+4), "=SUM(G$numrow3:G$h4)");
-			$excel->setActiveSheetIndex(0)->setCellValue('H'.($numrow3+4), "=SUM(H$numrow3:H$h4)");
-			$excel->setActiveSheetIndex(0)->setCellValue('I'.($numrow3+4), "=SUM(I$numrow3:I$h4)");
-			$excel->setActiveSheetIndex(0)->setCellValue('J'.($numrow3+4), "=SUM(J$numrow3:J$h4)");
-			$excel->setActiveSheetIndex(0)->setCellValue('K'.($numrow3+4), "=SUM(K$numrow3:K$h4)");
-				for ($i=1; $i < 6; $i++) { 
+			$excel->setActiveSheetIndex(0)->setCellValue('B'.($numrow3+3), "JUMLAH");
+			$excel->setActiveSheetIndex(0)->setCellValue('C'.($numrow3+3), "=SUM(C$numrow3:C$h4)");
+			$excel->setActiveSheetIndex(0)->setCellValue('D'.($numrow3+3), "=SUM(D$numrow3:D$h4)");
+			$excel->setActiveSheetIndex(0)->setCellValue('E'.($numrow3+3), "=SUM(E$numrow3:E$h4)");
+			$excel->setActiveSheetIndex(0)->setCellValue('F'.($numrow3+3), "=SUM(F$numrow3:F$h4)");
+			$excel->setActiveSheetIndex(0)->setCellValue('G'.($numrow3+3), "=SUM(G$numrow3:G$h4)");
+			$excel->setActiveSheetIndex(0)->setCellValue('H'.($numrow3+3), "=SUM(H$numrow3:H$h4)");
+			$excel->setActiveSheetIndex(0)->setCellValue('I'.($numrow3+3), "=SUM(I$numrow3:I$h4)");
+			$excel->setActiveSheetIndex(0)->setCellValue('J'.($numrow3+3), "=SUM(J$numrow3:J$h4)");
+			$excel->setActiveSheetIndex(0)->setCellValue('K'.($numrow3+3), "=SUM(K$numrow3:K$h4)");
+				for ($i=1; $i < 5; $i++) { 
 					$excel->setActiveSheetIndex(0)->setCellValue('A'.$numrow3, $i);
 					$excel->getActiveSheet()->getStyle('A'.$numrow3)->applyFromArray($style2);
 					$excel->getActiveSheet()->getStyle('B'.$numrow3)->applyFromArray($style3);
@@ -2045,13 +1856,10 @@ class C_Monitoring extends CI_Controller
 		$cancel 	= $this->jadigini($can);
 		$pdg 		= $this->M_monitoring->jml_pending2();
 		$pending 	= $this->jadibelum($pdg);
-		$query		= "where selesai_pelayanan is null and (bon != 'PENDING' or bon is null)";
+		$query		= "where selesai_pelayanan is null and (bon != 'PENDING' or bon is null) and approval_flag is not null";
 		$plyn 		= $this->M_monitoring->getDataSPB($query);
 		$pelayanan 	= $this->jadiin($plyn, 'plyn');
-		$query 		= "where selesai_pelayanan is not null and selesai_pengeluaran is null and (bon != 'BON' or bon is null)";
-		$pglr 		= $this->M_monitoring->getDataSPB($query);
-		$pengeluaran = $this->jadiin($pglr, 'pglr');
-		$query 		= "where selesai_pengeluaran is not null and selesai_packing is null and (bon is null or bon = 'BEST')";
+		$query 		= "where selesai_pelayanan is not null and selesai_packing is null and (bon is null or bon = 'BEST') and tipe is not null";
 		$pck 		= $this->M_monitoring->getDataSPB($query);
 		$packing 	= $this->jadiin($pck, 'pck');
 		$dataselesai = $this->M_monitoring->dataselesai($tglAwal[0], $tglAkhir[0]);
@@ -2079,8 +1887,7 @@ class C_Monitoring extends CI_Controller
 		$belum = array(
 			'0' => $pending[0],
 			'1' => $pelayanan[0],
-			'2' => $pengeluaran[0],
-			'3' => $packing[0],
+			'2' => $packing[0],
 		);
 
 		$data['data'] = array(

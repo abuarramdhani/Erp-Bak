@@ -204,89 +204,6 @@
                                         </div>
 
                                         <div class="col-md-12">
-                                            <label class="text-right">Pengeluaran</label>
-                                        </div>
-                                        <div class="col-md-3">
-                                            Terselesaikan : <?= $jml_pengeluaran ?> lembar
-                                        </div>
-                                        <div class="col-md-3">
-                                            Tanggungan : <?= $krg_pengeluaran ?> lembar
-                                        </div>
-                                        <div class="col-md-4">
-                                            <button type="button" class="btn btn-xs btn-info" onclick="addRinPengeluaran1(this)">Rincian</button></td>
-                                        </div>
-                                        <div class="col-md-12">
-                                        <div id="RinPengeluaran1" style="display:none">
-                                                <center><label>Terselesaikan</label></center>
-                                            <table class="table table-bordered table-hover table-striped text-center" id="myTable" style="width: 100%;table-layout:100%">
-                                                <thead class="bg-primary">
-                                                    <tr>
-                                                        <th>No</th>
-                                                        <th>Tanggal</th>
-                                                        <th>Jenis Dokumen</th>
-                                                        <th>No Dokumen</th>
-                                                        <th>Jumlah Item</th>
-                                                        <th>Jumlah Pcs</th>
-                                                        <th>Jam Mulai</th>
-                                                        <th>Jam Selesai</th>
-                                                        <th>Waktu</th>
-                                                        <th>PIC</th>
-                                                        <th>Keterangan</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <?php $i=0; $no=1; foreach($pengeluaran as $val){ ?>
-                                                        <tr>
-                                                            <td style="width: 5px"><?= $no; ?></td>
-                                                            <td><input type="hidden" name="jam[]" value="<?= $val['TGL_DIBUAT']?>"><?= $val['TGL_DIBUAT']?></td>
-                                                            <td><input type="hidden" name="jenis_doc[]" value="<?= $val['JENIS_DOKUMEN']?>"><?= $val['JENIS_DOKUMEN']?></td>
-                                                            <td><input type="hidden" name="no_doc[]" value="<?= $val['NO_DOKUMEN']?>"><?= $val['NO_DOKUMEN']?></td>
-                                                            <td><input type="hidden" name="jml_item[]" value="<?= $val['JUMLAH_ITEM']?>"><?= $val['JUMLAH_ITEM']?></td>
-                                                            <td><input type="hidden" name="jml_pcs[]" value="<?= $val['JUMLAH_PCS']?>"><?= $val['JUMLAH_PCS']?></td>
-                                                            <td><input type="hidden" name="mulai_pengeluaran[]" value="<?= $val['MULAI_PENGELUARAN']?>"><?= $val['MULAI_PENGELUARAN']?></td>
-                                                            <td><input type="hidden" name="selesai_pengeluaran[]" value="<?= $val['SELESAI_PENGELUARAN']?>"><?= $val['SELESAI_PENGELUARAN']?></td>
-                                                            <td><input type="hidden" name="waktu_pengeluaran[]" value="<?= $val['WAKTU_PENGELUARAN']?>"><?= $val['WAKTU_PENGELUARAN']?></td>
-                                                            <td><input type="hidden" name="pic[]" value="<?= $val['PIC_PENGELUARAN']?>"><?= $val['PIC_PENGELUARAN']?></td>
-                                                            <td><input type="hidden" name="urgent[]" value="<?= $val['URGENT']?> <?= $val['BON'] ?>"><?= $val['URGENT']?> <?= $val['BON'] ?></td>
-                                                        </tr>
-                                                    <?php $no++; $i++; } ?>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <div id="RinPengeluaran2" style="display:none">
-                                            <center><label>Tanggungan</label></center>
-                                            <table class="table table-bordered table-hover table-striped text-center" id="myTable" style="width: 100%;table-layout:100%">
-                                                <thead class="bg-primary">
-                                                    <tr>
-                                                        <th>No</th>
-                                                        <th>Tanggal</th>
-                                                        <th>Jenis Dokumen</th>
-                                                        <th>No Dokumen</th>
-                                                        <th>Jumlah Item</th>
-                                                        <th>Jumlah Pcs</th>
-                                                        <th>PIC</th>
-                                                        <th>Keterangan</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <?php $no=1; foreach($krgpengeluaran as $val){  ?>
-                                                        <tr>
-                                                            <td style="width: 5px"><?= $no; ?></td>
-                                                            <td><input type="hidden" name="jam[]" value="<?= $val['TGL_DIBUAT']?>"><?= $val['TGL_DIBUAT']?></td>
-                                                            <td><input type="hidden" name="jenis_doc[]" value="<?= $val['JENIS_DOKUMEN']?>"><?= $val['JENIS_DOKUMEN']?></td>
-                                                            <td><input type="hidden" name="no_doc[]" value="<?= $val['NO_DOKUMEN']?>"><?= $val['NO_DOKUMEN']?></td>
-                                                            <td><input type="hidden" name="jml_item[]" value="<?= $val['JUMLAH_ITEM']?>"><?= $val['JUMLAH_ITEM']?></td>
-                                                            <td><input type="hidden" name="jml_pcs[]" value="<?= $val['JUMLAH_PCS']?>"><?= $val['JUMLAH_PCS']?></td>
-                                                            <td><input type="hidden" name="pic[]" value="<?= $val['PIC_PELAYAN']?>"><?= $val['PIC_PELAYAN']?></td>
-                                                            <td><input type="hidden" name="urgent[]" value="<?= $val['URGENT']?> <?= $val['BON'] ?>"><?= $val['URGENT']?> <?= $val['BON'] ?></td>
-                                                        </tr>
-                                                    <?php $no++; } ?>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        </div>
-
-                                        <div class="col-md-12">
                                             <label class="text-right">Packing</label>
                                         </div>
                                         <div class="col-md-3">
@@ -360,7 +277,7 @@
                                                                 <td><input type="hidden" name="no_doc[]" value="<?= $val['NO_DOKUMEN']?>"><?= $val['NO_DOKUMEN']?></td>
                                                                 <td><input type="hidden" name="jml_item[]" value="<?= $val['JUMLAH_ITEM']?>"><?= $val['JUMLAH_ITEM']?></td>
                                                                 <td><input type="hidden" name="jml_pcs[]" value="<?= $val['JUMLAH_PCS']?>"><?= $val['JUMLAH_PCS']?></td>
-                                                                <td><input type="hidden" name="pic[]" value="<?= $val['PIC_PENGELUARAN']?>"><?= $val['PIC_PENGELUARAN']?></td>
+                                                                <td><input type="hidden" name="pic[]" value="<?= $val['PIC_PELAYAN']?>"><?= $val['PIC_PELAYAN']?></td>
                                                                 <td><input type="hidden" name="urgent[]" value="<?= $val['URGENT']?> <?= $val['BON'] ?>"><?= $val['URGENT']?> <?= $val['BON'] ?></td>
                                                             </tr>
                                                         <?php $no++; } ?>

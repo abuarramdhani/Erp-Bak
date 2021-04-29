@@ -75,7 +75,7 @@
                                                     if ($val['SELESAI_PELAYANAN'] == '') {
                                                         $status = "PELAYANAN";
                                                     }elseif ($val['SELESAI_PELAYANAN'] != '' && $val['SELESAI_PENGELUARAN'] == '') {
-                                                        $status = "PENGELUARAN";
+                                                        $status = "PACKING";
                                                     }elseif ($val['SELESAI_PELAYANAN'] != '' && $val['SELESAI_PENGELUARAN'] != '' && $val['SELESAI_PACKING'] == '') {
                                                         $status = "PACKING";
                                                     }
@@ -138,12 +138,9 @@
                         <thead>
                             <tr class="bg-info">
                                 <th colspan="2">Pelayanan</th>
-                                <th colspan="2">Pengeluaran</th>
                                 <th colspan="2">Packing</th>
                             </tr>
                             <tr class="bg-info">
-                                <td>Mulai</td>
-                                <td>Selesai</td>
                                 <td>Mulai</td>
                                 <td>Selesai</td>
                                 <td>Mulai</td>
@@ -154,8 +151,6 @@
                             <tr>
                                 <td><?php echo $key['MULAI_PELAYANAN']?></td>
                                 <td><?php echo $key['SELESAI_PELAYANAN']?></td>
-                                <td><?php echo $key['MULAI_PENGELUARAN']?></td>
-                                <td><?php echo $key['SELESAI_PENGELUARAN']?></td>
                                 <td><?php echo $key['MULAI_PACKING']?></td>
                                 <td><?php echo $key['SELESAI_PACKING']?></td>
                             </tr>  
