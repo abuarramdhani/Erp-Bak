@@ -74,7 +74,7 @@ text-align: center;
                                       <th width="15%" class="text-center">ACTION</th>
                                       <th width="20%" class="text-center">JUDUL</th>
                                       <th width="10%" class="text-center">PEMBUAT</th>
-                                      <th width="10%" class="text-center">TANGGAL OBSERVASI</th>
+                                      <th width="10%" class="text-center">TANGGAL PEMBUATAN</th>
                                       <th width="10%" class="text-center">TYPE</th>
                                       <th width="15%" class="text-center">NAMA PART</th>
                                       <th width="15%" class="text-center">SEKSI</th>
@@ -103,7 +103,7 @@ text-align: center;
                                           $mesin = $key['mesin'];
                                           $proses_ke = $key['proses_ke'];
                                           $proses_dari = $key['proses_dari'];
-                                          $tanggal = $key['tanggal'];
+                                          $tanggal = $key['tanggal_pembuatan'];
                                           $newDate = date("d-M-Y", strtotime($tanggal));
                                           $qty = $key['qty'];
                                           $operator = $key['operator'];

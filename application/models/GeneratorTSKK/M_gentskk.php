@@ -67,7 +67,7 @@ class M_gentskk extends CI_Model
 
 	public function filter($seksi, $tipe, $proses)
 	{
-		return $this->db->query("SELECT * from gtskk.gtskk_header_tskk where tipe like '%$tipe%' and seksi like '%$seksi%' and proses like '%$proses%' order by TO_DATE(tanggal, 'DD-Mon-YYYY') desc")->result_array();
+		return $this->db->query("SELECT * from gtskk.gtskk_header_tskk where tipe like '%$tipe%' and seksi like '%$seksi%' and proses like '%$proses%' order by tanggal_pembuatan desc")->result_array();
 	}
 
 	function getTipeProduk($tp)
@@ -518,7 +518,7 @@ class M_gentskk extends CI_Model
 																					 and head.id_tskk in (select distinct elem.id_tskk
 																						 										from gtskk.gtskk_elemen_tskk elem
 																																where id_tskk = head.id_tskk)
-																																order by TO_DATE(tanggal, 'DD-Mon-YYYY') desc")->result_array();
+																																order by head.tanggal_pembuatan desc")->result_array();
 	}
 
 	function cariId($id)

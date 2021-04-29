@@ -21,7 +21,7 @@
 
 						<center>
 
-							<img  src="<?php echo base_url('assets/img/logo.png');?>" style="max-width:27%;" />
+							<img  src="<?php echo base_url('assets/img/logo.png');?>" style="max-width:17%;" />
 							<input type="hidden" id="gtskk_app" value="1">
 						</center>
 						<br /><br />
