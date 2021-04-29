@@ -187,6 +187,7 @@ class M_monitoring extends CI_Model {
                     AND mtrl.line_status <> 6
                     AND (kts.bon != 'PENDING' or kts.bon is null)
                     AND (TRUNC(kts.jam_input) <= to_date('$date2','DD/MM/RR') or selesai_packing is null)
+                    AND kts.approval_flag is not null
                 GROUP BY kts.tgl_dibuat,
                         kts.jenis_dokumen,
                         kts.no_dokumen,
@@ -299,7 +300,7 @@ class M_monitoring extends CI_Model {
         $sql ="SELECT  kts.jam_input, kts.tgl_dibuat, kts.jenis_dokumen, kts.no_dokumen,
                         COUNT (mtrl.inventory_item_id) jml_item_terlayani,
                         SUM (mtrl.quantity) jml_pcs_terlayani,
-                        kts.urgent keterangan, kts.bon, kts.pic_pengeluaran
+                        kts.urgent keterangan, kts.bon, kts.pic_pelayan
                 FROM khs_tampung_spb kts,
                         mtl_txn_request_headers mtrh,
                         mtl_txn_request_lines mtrl,
@@ -309,13 +310,14 @@ class M_monitoring extends CI_Model {
                     AND mtrh.header_id = mtrl.header_id
                     AND mtrl.inventory_item_id = msib.inventory_item_id
                     AND mtrl.organization_id = msib.organization_id
-                    AND kts.selesai_pengeluaran IS NOT NULL
+                    AND kts.selesai_pelayanan IS NOT NULL
                 --     AND kts.mulai_packing IS NULL
                     AND kts.selesai_packing IS NULL
                     AND mtrl.line_status <> 6
                     AND (kts.bon IS NULL OR bon = 'BEST')
                     AND (TRUNC(kts.jam_input) <= to_date('$date2','DD/MM/RR') or selesai_packing is null)
-                GROUP BY kts.tgl_dibuat, kts.jenis_dokumen, kts.no_dokumen, kts.urgent, kts.bon, kts.jam_input, kts.pic_pengeluaran
+                    AND kts.tipe is not null
+                GROUP BY kts.tgl_dibuat, kts.jenis_dokumen, kts.no_dokumen, kts.urgent, kts.bon, kts.jam_input, kts.pic_pelayan
                 ORDER BY kts.urgent, kts.tgl_dibuat, kts.no_dokumen";
         $query = $oracle->query($sql);
         return $query->result_array();

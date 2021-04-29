@@ -273,8 +273,7 @@
                                                 $no=1; foreach ($data['belum'] as $val) { 
                                                 if ($no == 1) { $ket = 'PENDING';
                                                 }elseif ($no == 2) { $ket = 'PELAYANAN'; 
-                                                }elseif ($no == 3) { $ket = 'PENGELUARAN';
-                                                }elseif ($no == 4) { $ket = 'PACKING'; }
+                                                }elseif ($no == 3) { $ket = 'PACKING'; }
                                                 
                                                 $lembar1[$i] = $val['lembar1']; $item1[$i] = $val['item1']; $pcs1[$i] = $val['pcs1'];
                                                 $lembar2[$i] = $val['lembar2']; $item2[$i] = $val['item2']; $pcs2[$i] = $val['pcs2'];

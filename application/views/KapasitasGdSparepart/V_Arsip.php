@@ -106,10 +106,6 @@
                                                     <th>Selesai Pelayanan</th>
                                                     <th>Waktu Pelayanan</th>
                                                     <th>PIC Pelayanan</th>
-                                                    <th>Mulai Pengecekan</th>
-                                                    <th>Selesai Pengecekan</th>
-                                                    <th>Waktu Pengecekan</th>
-                                                    <th>PIC Pengecekan</th>
                                                     <th>Mulai Packing</th>
                                                     <th>Selesai Packing</th>
                                                     <th>Waktu Packing</th>
