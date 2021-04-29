@@ -42,7 +42,7 @@
                 <br><span class="loadingpick" name="ini_pick<?= $no?>"></span>
                 <br><span class="loadinggd" name="ini_gd<?= $no?>"></span>
                 <br><span><b>Available Picklist :</b></span>
-                <br><span style="font-size:50px"><?= $value['AVPICK']?></span>
+                <br><span style="font-size:50px"><?= round($value['AVPICK'])?></span>
             </td>
             <td class="text-nowrap"><p>P</p>
                 <?php if ($ket == 'All' || $ket == 'PA') { ?>
