@@ -11,6 +11,61 @@ class M_monitoringdo extends CI_Model
         $subinv = $this->session->datasubinven;
     }
 
+    public function runapi_interorg($tipe,$request_number,$org,$subinv)
+    {
+        // $conn = oci_connect('APPS', 'APPS', '192.168.7.3:1522/DEV');
+        $conn = oci_connect('APPS', 'APPS', '192.168.7.1:1521/PROD');
+        if (!$conn) {
+            $e = oci_error();
+            trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
+        }
+
+        $oracle = $this->load->database('oracle', true);
+        $sql = "APPS.KHS_INTERORG_SPB ('$tipe', '$request_number', '$org', '$subinv'); END;";
+
+        $stmt = oci_parse($conn,$sql);
+        // oci_bind_by_name($stmt,':P_REQNUM',$id,100);
+        // oci_bind_by_name($stmt,':P_ORG',$org,100);
+
+        oci_execute($stmt);
+    }
+
+    public function subinv_spbkit($org, $term)
+    {
+      $term = strtoupper($term);
+      return $this->oracle->query("SELECT msi.secondary_inventory_name subinv
+              FROM mtl_secondary_inventories msi
+             WHERE msi.organization_id = $org
+               AND msi.disable_date IS NULL
+               AND msi.reservable_type = 1
+               AND msi.secondary_inventory_name LIKE '%$term%'
+          ORDER BY 1 ASC")->result_array();
+    }
+
+    public function org_spbkit($rn)
+    {
+      return $this->oracle->query("SELECT DISTINCT kim.transaction_source_name, mp.organization_id,
+                mp.organization_code
+           FROM khs_inv_mtltransactions kim, mtl_parameters mp
+          WHERE REPLACE (kim.REFERENCE, 'IO : ', '') = mp.organization_id
+            AND kim.transaction_source_name = '$rn'")->result_array();
+    }
+
+    public function closeline($header_id)
+    {
+      $this->oracle->query("UPDATE mtl_txn_request_lines mtrl
+                             SET mtrl.line_status = 5
+                           WHERE mtrl.header_id = $header_id
+                             AND mtrl.line_status IN (3, 7)
+                             AND mtrl.quantity_delivered <> 0
+                             AND mtrl.quantity_delivered IS NOT NULL");
+      if ($this->oracle->affected_rows()) {
+        return 1;
+      }else {
+        return 0;
+      }
+    }
+
     public function cekDObukan($rn)
     {
       $res = $this->oracle->query("SELECT distinct
@@ -653,8 +708,8 @@ class M_monitoringdo extends CI_Model
         return 0;
       }
     }
-    
-    
+
+
     public function cek_checklist($req)
     {
       $sql = "SELECT *

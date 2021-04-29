@@ -1,3 +1,4 @@
+<!-- cek aldi -->
 <div class="table-responsive">
   <table class="table table-striped table-bordered table-hover text-left " id="tblMonitoringDOTransact" style="font-size:12px;width:100%">
     <thead>
@@ -26,7 +27,7 @@
           <td><center><button type="button" class="btn btn-info" name="button" style="font-weight:bold;" onclick="detailTransact('<?php echo $g['DO/SPB'] ?>', <?php echo $no ?>)" data-toggle="modal" data-target="#MyModalTransact"><i class="fa fa-eye"></i></button> </center></td>
           <td>
             <center>
-              <button type="button" class="btn btn-danger" name="button" style="font-weight:bold;" onclick="cetakDO('<?php echo $g['DO/SPB'] ?>')"><i class="fa fa-file-pdf-o"></i> Cetak</button>
+              <button type="button" class="btn btn-danger" name="button" style="font-weight:bold;" onclick="cetakDO('<?php echo $g['DO/SPB'] ?>', '<?php echo $g['TIPE'] ?>', '<?php echo $g['HEADER_ID'] ?>')"><i class="fa fa-file-pdf-o"></i> Cetak</button>
             </center>
           </td>
         </tr>

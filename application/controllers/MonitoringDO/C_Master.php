@@ -576,7 +576,7 @@ class C_Master extends CI_Controller
                 array_push($hasil, $explode[0]);
             }
             $data['check_header_sub'] = $set;
-            
+
             foreach ($hasil as $key => $value) {
                $tampungan[$value] = $value;
             }
@@ -734,6 +734,40 @@ class C_Master extends CI_Controller
         }
       }
     }
+
+    public function runapi_interorg($value='')
+    {
+      $tipe = $this->input->post('tipe');
+      $rn = $this->input->post('request_number');
+      $org_id = $this->input->post('org_id');
+      $subinv = $this->input->post('sub_inv');
+      if (!empty($tipe) && !empty($rn)) {
+        $this->M_monitoringdo->runapi_interorg($tipe, $rn, $org_id, $subinv);
+        echo json_encode(200);
+      }else {
+        echo json_encode(0);
+      }
+    }
+
+    public function org_spbkit($value='')
+    {
+      echo json_encode($this->M_monitoringdo->org_spbkit($this->input->post('rn')));
+    }
+
+    public function subinv_spbkit($value='')
+    {
+      echo json_encode($this->M_monitoringdo->subinv_spbkit($this->input->post('org'), $this->input->post('term')));
+    }
+
+    public function closeline()
+    {
+      if (!$this->input->is_ajax_request()) {
+        echo "Akses dilarang!";
+      }else {
+        return $this->M_monitoringdo->closeline($this->input->post('header_id'));
+      }
+    }
+
     public function cekapi()
     {
         // $get = $this->M_monitoringdo->cekkpd();
