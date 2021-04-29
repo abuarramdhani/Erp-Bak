@@ -50,6 +50,9 @@
 			<th style="text-align: center;vertical-align: middle;">No. Induk</th>
 			<th style="text-align: center;vertical-align: middle;">Nama</th>
 			<th style="text-align: center;vertical-align: middle;">Seksi</th>
+			<?php if (substr($dt['noind'], 0,1) == 'K' || substr($dt['noind'], 0,1) == 'P'): ?>
+			<th style="text-align: center;vertical-align: middle;">Asal OS</th>
+			<?php endif ?>			
 			<th style="text-align: center;vertical-align: middle;">Diangkat</th>
 			<th style="text-align: center;vertical-align: middle;">Masa Kerja</th>
 			<th style="text-align: center;vertical-align: middle;">Bulan THR</th>
@@ -65,6 +68,9 @@
 				<td style="text-align: center;"><?php echo $dt['noind']; ?></td>
 				<td><?php echo $dt['nama']; ?></td>
 				<td><?php echo $dt['seksi']; ?></td>
+				<?php if (substr($dt['noind'], 0,1) == 'K' || substr($dt['noind'], 0,1) == 'P'): ?>
+				<td><?php echo $dt['asal_outsourcing']; ?></td>
+				<?php endif ?>	
 				<td style="text-align: center;"><?php echo date('d M Y',strtotime($dt['diangkat'])); ?></td>
 				<td><?php echo $dt['masa_kerja']; ?></td>
 				<td style="text-align: center;"><?php echo $dt['bulan_thr']; ?></td>

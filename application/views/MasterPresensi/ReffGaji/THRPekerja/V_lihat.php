@@ -28,6 +28,7 @@
 													<th style="text-align: center;vertical-align: middle;">No. Induk</th>
 													<th style="text-align: center;vertical-align: middle;">Nama</th>
 													<th style="text-align: center;vertical-align: middle;">Seksi</th>
+													<th style="text-align: center;vertical-align: middle;">Asal OS</th>
 													<th style="text-align: center;vertical-align: middle;">Diangkat</th>
 													<th style="text-align: center;vertical-align: middle;">Masa Kerja</th>
 													<th style="text-align: center;vertical-align: middle;">Bulan THR</th>
@@ -44,6 +45,7 @@
 														<td style="text-align: center;"><?php echo $dt['noind']; ?></td>
 														<td><?php echo $dt['nama']; ?></td>
 														<td><?php echo $dt['seksi']; ?></td>
+														<td><?php echo trim($dt['asal_outsourcing']); ?></td>
 														<td style="text-align: center;"><?php echo date('d M Y',strtotime($dt['diangkat'])); ?></td>
 														<td><?php echo $dt['masa_kerja']; ?></td>
 														<td style="text-align: center;"><?php echo $dt['bulan_thr']; ?></td>
