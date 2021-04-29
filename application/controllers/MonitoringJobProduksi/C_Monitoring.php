@@ -78,6 +78,8 @@ class C_Monitoring extends CI_Controller
 			$plan = $this->M_monitoring->getPlan($value['INVENTORY_ITEM_ID'], $inibulan, $kategori);
 			$getdata[$key]['ITEM'] = $item[0]['SEGMENT1'];
 			$getdata[$key]['DESC'] = $item[0]['DESCRIPTION'];
+			$av_pick = $this->M_monitoring->get_available_picklist($item[0]['SEGMENT1']);
+			$getdata[$key]['AVPICK'] = !empty($av_pick) ? $av_pick[0]['AV_PICK'] : '';
 			$getdata[$key]['jml_plan'] = 0;
 			$getdata[$key]['jml_akt'] = 0;
 			$getdata[$key]['jml_min'] = 0;

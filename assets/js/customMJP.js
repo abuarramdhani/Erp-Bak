@@ -582,6 +582,29 @@ function updateflag(no) {
     })
 }
 
+function updateflagAll() {
+    var kategori   = $('#kategori').val();
+    var subkategori  = $('#sub_kategori').val();
+    var flag        = $('#flag_all').val();
+    if (flag == 'Y') {
+        $('#btn_check_all').removeClass('fa-check-square-o').addClass('fa-square-o');
+        $('#flag_all').val('');
+        $('.check_all').removeClass('fa-check-square-o').addClass('fa-square-o');
+        $('.flag_all').val('');
+    }else{
+        $('#btn_check_all').removeClass('fa-square-o').addClass('fa-check-square-o');
+        $('#flag_all').val('Y');
+        $('.check_all').removeClass('fa-square-o').addClass('fa-check-square-o');
+        $('.flag_all').val('Y');
+    }
+    $.ajax({
+        url : baseurl + "MonitoringJobProduksi/ItemList/updateflagall",
+        data: {kategori : kategori, subkategori : subkategori, flag : flag},
+        type : "POST",
+        dataType: "html"
+    })
+}
+
 //-------------------------------------------------------MASTER KATEGORI--------------------------------------------------------------
 function getMasterCategory(th) {
     $.ajax({

@@ -15,7 +15,8 @@
             <thead style="background-color:#5FEBC4">
                 <tr class="text-nowrap">
                     <th style="width:7%;">No</th>
-                    <th style="width:7%;">Check</th>
+                    <th style="width:7%;"><button type="button" class="btn btn-xs" style="background-color:inherit" onclick="updateflagAll()"><i id="btn_check_all" style="font-size:15px" class="fa fa-square-o"></i></button>
+                        <input type="hidden" id="flag_all"></th>
                     <th>Kode Item</th>
                     <th>Deskripsi Item</th>
                     <th style="width:15%;">Action</th>
@@ -30,9 +31,9 @@
                         <input type="hidden" id="inv_id<?= $no?>" value="<?= $val['INVENTORY_ITEM_ID']?>">
                         <input type="hidden" id="kategori<?= $no?>" value="<?= $val['CATEGORY_NAME']?>">
                         <input type="hidden" id="subkategori<?= $no?>" value="<?= $val['ID_SUBCATEGORY']?>">
-                        <input type="hidden" id="flag<?= $no?>" value="<?= $val['FLAG']?>">
+                        <input type="hidden" id="flag<?= $no?>" class="flag_all" value="<?= $val['FLAG']?>">
                     </td>
-                    <td><button type="button" class="btn btn-xs" style="background-color:inherit" onclick="updateflag(<?= $no?>)"><i id="btn_check<?= $no?>" style="font-size:15px" class="fa <?= $check?>"></i></button></td>
+                    <td><button type="button" class="btn btn-xs" style="background-color:inherit" onclick="updateflag(<?= $no?>)"><i id="btn_check<?= $no?>" style="font-size:15px" class="fa <?= $check?> check_all"></i></button></td>
                     <td><input type="hidden" id="item<?= $no?>" value="<?= $val['ITEM']?>"><?= $val['ITEM']?></td>
                     <td><?= $val['DESKRIPSI']?></td>
                     <td><button class="btn btn-danger" onclick="deleteitemList(<?= $no?>)"><i class="fa fa-trash"></i></td>
