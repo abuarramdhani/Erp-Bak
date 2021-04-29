@@ -125,6 +125,15 @@ class C_ItemList extends CI_Controller
 		$flag		= $flag == 'Y' ? '' : 'Y';
 		$this->M_itemlist->updateflag($inv_id, $kategori, $sub, $flag);
 	}
+	
+	public function updateflagall(){
+		$kategori 	= $this->input->post('kategori');
+		$subkategori 	= $this->input->post('subkategori');
+		$sub = $subkategori != '' ? "id_subcategory = $subkategori" : 'id_subcategory is NULL';
+		$flag 	= $this->input->post('flag');
+		$flag		= $flag == 'Y' ? '' : 'Y';
+		$this->M_itemlist->updateflagall($kategori, $sub, $flag);
+	}
 
 
 }

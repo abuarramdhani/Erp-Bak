@@ -1,14 +1,13 @@
 <?php $tabel = count($data) > 3 ? 'tb_monjob' : 'tb_monjob2'; 
-$tambahan = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
 ?>
 <form method="post">
-<table class="table table-bordered table-hover table-striped text-center" id="<?= $tabel?>" style="width: 100%; font-size:12px">
+<table class="table table-bordered table-hover table-striped text-center" id="<?= $tabel?>" style="font-size:12px">
     <thead style="background-color:#60BCEB">
         <tr class="text-nowrap">
             <th rowspan="2" style="width:5%;vertical-align:middle;background-color:#60BCEB">No
                 <input type="hidden" name="ket" value="<?= $ket?>">
             </th>
-            <th rowspan="2" style="vertical-align:middle;background-color:#60BCEB"><?= $tambahan?>Item<?= $tambahan?></th>
+            <th rowspan="2" style="width:130px;vertical-align:middle;background-color:#60BCEB">Item</th>
             <th rowspan="2" style="background-color:#60BCEB"></th>
             <th colspan="<?= $hari?>" >Tanggal</th>
             <th rowspan="2" style="vertical-align:middle;background-color:#60BCEB">Jumlah</th>
@@ -42,6 +41,8 @@ $tambahan = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&
                 <br><br><span class="loadingwip" name="ini_wip<?= $no?>"></span>
                 <br><span class="loadingpick" name="ini_pick<?= $no?>"></span>
                 <br><span class="loadinggd" name="ini_gd<?= $no?>"></span>
+                <br><span><b>Available Picklist :</b></span>
+                <br><span style="font-size:50px"><?= $value['AVPICK']?></span>
             </td>
             <td class="text-nowrap"><p>P</p>
                 <?php if ($ket == 'All' || $ket == 'PA') { ?>
