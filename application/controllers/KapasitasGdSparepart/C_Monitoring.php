@@ -58,7 +58,7 @@ class C_Monitoring extends CI_Controller
 		$pelayanan 	= $this->M_monitoring->getDataSPB($query2);
 		$data['pelayanan'] 	= $pelayanan;
 		$data['jml_pelayanan'] = count($pelayanan);
-		$kurang = "where TO_CHAR(jam_input,'DD/MM/YYYY') between '$date' and '$date' and trunc(selesai_pelayanan) > '$tgl' or selesai_pelayanan is null and (bon != 'PENDING' or bon is null) and approval_flag is not null";
+		$kurang = "where TO_CHAR(jam_input,'DD/MM/YYYY') between '$date' and '$date' and trunc(selesai_pelayanan) > '$tgl' or selesai_pelayanan is null and (bon != 'PENDING' or bon is null) and approval_flag ='Y'";
 		$data['krgpelayanan'] = $this->M_monitoring->dataKurang($kurang);
 		$data['krg_pelayanan'] = count($data['krgpelayanan']);
 
@@ -160,7 +160,7 @@ class C_Monitoring extends CI_Controller
 			$hasil[$a]['pelayanan'] = $pelayanan;
 			$hasil[$a]['jml_pelayanan'] = count($pelayanan);
 			if ($date == date('d/m/Y')) {
-				$kurang = "where selesai_pelayanan is null and (bon != 'PENDING' or bon is null) and approval_flag is not null";
+				$kurang = "where selesai_pelayanan is null and (bon != 'PENDING' or bon is null) and approval_flag ='Y'";
 			}else {
 				$d = date('d') - 1;
 				if ($date == date(''.$d.'/m/Y')) {
@@ -1334,7 +1334,7 @@ class C_Monitoring extends CI_Controller
 			$cancel = $this->jadigini($can);
 			$pdg 	= $this->M_monitoring->jml_pending2();
 			$pending = $this->jadibelum($pdg);
-			$query = "where selesai_pelayanan is null and (bon != 'PENDING' or bon is null) and approval_flag is not null";
+			$query = "where selesai_pelayanan is null and (bon != 'PENDING' or bon is null) and approval_flag ='Y'";
 			$plyn 	= $this->M_monitoring->getDataSPB($query);
 			$pelayanan = $this->jadiin($plyn, 'plyn');
 			$query = "where selesai_pelayanan is not null and selesai_packing is null and (bon is null or bon = 'BEST') and tipe is not null";
@@ -1856,7 +1856,7 @@ class C_Monitoring extends CI_Controller
 		$cancel 	= $this->jadigini($can);
 		$pdg 		= $this->M_monitoring->jml_pending2();
 		$pending 	= $this->jadibelum($pdg);
-		$query		= "where selesai_pelayanan is null and (bon != 'PENDING' or bon is null) and approval_flag is not null";
+		$query		= "where selesai_pelayanan is null and (bon != 'PENDING' or bon is null) and approval_flag ='Y'";
 		$plyn 		= $this->M_monitoring->getDataSPB($query);
 		$pelayanan 	= $this->jadiin($plyn, 'plyn');
 		$query 		= "where selesai_pelayanan is not null and selesai_packing is null and (bon is null or bon = 'BEST') and tipe is not null";
