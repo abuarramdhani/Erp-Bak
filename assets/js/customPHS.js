@@ -385,7 +385,7 @@ function ApprovePIEA(i) {
     chk += 1;
   }
   // console.log(chk);
-  if (produk_kat == "N") {
+  if (produk_kat == "NB") {
     if (master_item == "N") {
       Swal.fire({
         type: "error",
