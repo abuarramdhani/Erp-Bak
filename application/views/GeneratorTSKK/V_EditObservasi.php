@@ -351,6 +351,7 @@
                 $jenisInputElement = $key['jenis_input_element'];
                 $jenisInputMesin = $key['jenis_input_mesin'];
                 $status_observasi = $key['status_observasi'];
+                $takt_time_manual = $key['perhitungan_takt_time'];
 						?>
                   <?php } } ?>
                   <!--Judul TSKK :-->
@@ -664,9 +665,10 @@
                   <div class="panel panel-default">
                     <div class="panel-heading text-left">
                       <label style="margin-left: 2%;">Perhitungan Takt Time </label> &nbsp;&nbsp; &nbsp; &nbsp;
-                      <input type="radio" name="perhitunganTakt" value="1" <?php echo $takt_time != '99999' ? 'checked' : ''?>> <label for="" class="control-label">&nbsp;&nbsp;Ya </label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <input type="radio" name="perhitunganTakt" value="1" <?php echo ($takt_time != '99999' && $takt_time_manual != 2) ? 'checked' : ''?>> <label for="" class="control-label">&nbsp;&nbsp;Ya </label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                       <input type="radio" name="perhitunganTakt" value="0" <?php echo $takt_time == '99999' ? 'checked' : ''?>><label for="norm" class="control-label">&nbsp;&nbsp; Tidak </label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                      <input type="radio" name="perhitunganTakt" value="2"><label for="" class="control-label">&nbsp;&nbsp; Manual </label>
+                      <!-- kondisi baru 2021, kondisi yang lama biarkan saja -->
+                      <input type="radio" name="perhitunganTakt" value="2" <?php echo $takt_time_manual == 2 ? 'checked' : ''?>><label for="" class="control-label">&nbsp;&nbsp; Manual </label>
                     </div>
                     <div class="panel-body tskk_delik_cek_pakai" <?php echo $takt_time == '99999' ? 'style="display:none"' : ''?>>
                       <?php
@@ -715,14 +717,14 @@
                         <div class="row">
                           <label for="norm" class="control-label col-lg-6">Forecast (Unit) : </label>
                           <div class="col-lg-6">
-                            <input type="number" placeholder="Forecast" value="<?php echo $forecast;?>" name="txtForecast" id="txtForecast" class="form-control forecast" oninput="countRencanaProduksi(this)" />
+                            <input type="number" placeholder="Forecast" value="<?php echo $forecast;?>" name="txtForecast" id="txtForecast" class="form-control forecast" <?php echo $takt_time_manual == 2 ? 'oninput="countRencanaProduksiAja(this)"' : 'oninput="countRencanaProduksi(this)"'?>  />
                           </div>
                         </div>
                         <br>
                         <div class="row">
                           <label for="norm" class="control-label col-lg-6">Qty / Unit: </label>
                           <div class="col-lg-6">
-                            <input type="number" placeholder="Qty / Unit" value="<?php echo $qty_unit;?>" name="txtQtyUnit" id="txtQtyUnit" class="form-control qtyUnit" oninput="countRencanaProduksi(this)" />
+                            <input type="number" placeholder="Qty / Unit" value="<?php echo $qty_unit;?>" name="txtQtyUnit" id="txtQtyUnit" class="form-control qtyUnit"  <?php echo $takt_time_manual == 2 ? 'oninput="countRencanaProduksiAja(this)"' : 'oninput="countRencanaProduksi(this)"'?> />
                           </div>
                         </div>
                         <br>

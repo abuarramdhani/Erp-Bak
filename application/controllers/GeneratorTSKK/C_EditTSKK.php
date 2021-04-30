@@ -111,6 +111,7 @@ class C_EditTSKK extends CI_Controller {
 		// die;
 		$qty 	          = $this->input->post('txtQtyProses');
 		$status_observasi = $this->input->post('status_observasi');
+		$jenis_takt_time = $this->input->post('perhitunganTakt'); // jenis manual atau tidak
 		// exit();
 		//SEKSI PEMBUAT
 		$noind = $this->session->user;
@@ -133,7 +134,7 @@ class C_EditTSKK extends CI_Controller {
 					  $proses,$kode_proses,$jenis_mesin,$proses_ke,$dari,$tanggal,$qty,$nm,
 					  $nilai_distribusi,$takt_time,$no_mesin,$resource,$line,$alat_bantu,$tools,
 					  $jml_operator,$dr_operator,$seksi_pembuat,$jenis_inputPart,$jenis_inputEquipment,
-					  $sang_pembuat,$creationDate, $jenis_inputEquipmentMesin, $status_observasi);
+					  $sang_pembuat,$creationDate, $jenis_inputEquipmentMesin, $status_observasi, $jenis_takt_time);
 
 		//LEMBAR OBSERVASI ELEMEN KERJA
 		$deleteElement 	  = $this->M_gentskk->deleteObservation($id);
