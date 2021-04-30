@@ -77,7 +77,7 @@ class M_insert extends CI_Model
         $sql = "select
         pts.nomor_tagihan,       
         pts.vendor_name,        
-       count(pts.nomor_tagihan),    
+       count(pts.nomor_tagihan) jml_item,    
        sum(pts.total_price)total        
        from psub.psub_tagihan_subkon pts
        group by pts.nomor_tagihan, pts.vendor_name";
@@ -141,42 +141,42 @@ WHERE a2.vendor_id = apss.vendor_id
 
     function loginTagihanSubkon($usr)
     {
-    $sql = "
+        $sql = "
             select psub.password from psub.psub_subkon_user as psub
             where psub.username = upper(trim('$usr'))
             ";
-    $query = $this->db->query($sql);
-    $row = $query->num_rows();
-            if($row == 1){
-                    return true;
-            }else{
-                    return false;
-            }
+        $query = $this->db->query($sql);
+        $row = $query->num_rows();
+        if ($row == 1) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     function loginSubkon($usr, $pwd)
     {
-      $sql = "
+        $sql = "
               select * from psub.psub_subkon_user as psub
               where psub.username = upper(trim('$usr'))
               and psub.password = '$pwd' 
       ";
-      $query = $this->db->query($sql);
-      $row = $query->num_rows();
-      if($row == 1){
-          return true;
-      }else{
-          return false;
-      }
+        $query = $this->db->query($sql);
+        $row = $query->num_rows();
+        if ($row == 1) {
+            return true;
+        } else {
+            return false;
+        }
     }
-            
+
 
     function getDetailSubkon($usr)
     {
-    $sql = "select psub.* from psub.psub_subkon_user as psub
+        $sql = "select psub.* from psub.psub_subkon_user as psub
     where psub.username = upper(trim('$usr'))
     ";
-    $query = $this->db->query($sql);
-            return $query->result();
+        $query = $this->db->query($sql);
+        return $query->result();
     }
 }
