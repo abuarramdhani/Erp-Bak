@@ -1,4 +1,12 @@
 <br>
+<!-- <div class="alert bg-primary alert-dismissible" role="alert">
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">
+      <i class="fa fa-close"></i>
+    </span>
+  </button>
+  <strong>Sekilas Info! </strong> Klik pada running pos untuk mengedit pos</strong>
+</div> -->
 <table class="table table-bordered agt-running-andon" style="width:100%">
   <thead>
     <tr class="bg-primary">
@@ -18,17 +26,22 @@
   <tbody>
     <?php foreach ($get as $key => $value): ?>
       <tr>
-        <td><?php echo $key+1 ?></td>
+        <td><center><?php echo $key+1 ?></center></td>
         <td><?php echo $value['KODE_ITEM'] ?></td>
         <td><?php echo $value['DESCRIPTION'] ?></td>
         <td><b><?php echo $value['NO_JOB'] ?></b></td>
-        <td><?php echo $value['STATUS_JOB'] ?></td>
+        <!-- onclick="agt_update_pos('<?php //echo $value['ITEM_ID'] ?>', '<?php //echo $value['STATUS_JOB'] ?>', '<?php //echo $value['NO_JOB'] ?>')" -->
+        <td> <center><button type="button" class="btn btn-sm" name="button" style="font-weight:bold"><?php echo $value['STATUS_JOB'] ?></button><center> </td>
         <td><?php echo $value['TIMER_POS_1'] ?></td>
         <td><?php echo $value['TIMER_POS_2'] ?></td>
         <td><?php echo $value['TIMER_POS_3'] ?></td>
         <td><?php echo $value['TIMER_POS_4'] ?></td>
         <td><?php echo $value['CREATION_DATE'] ?></td>
-        <td> <center><button type="button" class="btn btn-success" name="button"> <i class="fa fa-edit"></i> Edit </button></center> </td>
+        <td>
+          <center>
+            <button type="button" class="btn btn-sm btn-danger" name="button" style="width:40px;" onclick="del_agt_andon_pos('<?php echo $value['ITEM_ID'] ?>')"> <i class="fa fa-trash"></i> </button>
+          </center>
+        </td>
       </tr>
     <?php endforeach; ?>
   </tbody>

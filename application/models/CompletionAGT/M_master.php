@@ -8,6 +8,34 @@ class M_master extends CI_Model
         $this->oracle = $this->load->database('oracle', true);
     }
 
+    public function filter_history_agt($range_date)
+    {
+      $range =  explode(' - ', $range_date);
+      return $this->oracle->query("SELECT *
+                                   FROM KHS_ANDON_ITEM_DEV
+                                   WHERE TO_CHAR(receipt_date, 'YYYY-MM-DD') BETWEEN '{$range[0]}' AND '$range[1]'")->result_array();
+    }
+
+    public function updatepos($data)
+    {
+      $this->oracle->where('ITEM_ID', $data['ITEM_ID'])->update('KHS_ANDON_ITEM_DEV', $data);
+      if ($this->oracle->affected_rows()) {
+        return 200;
+      }else {
+        return 0;
+      }
+    }
+
+    public function delpos($item_id)
+    {
+      $this->oracle->query("DELETE FROM khs_andon_item_dev WHERE ITEM_ID = '$item_id'");
+      if ($this->oracle->affected_rows()) {
+        return 200;
+      }else {
+        return 0;
+      }
+    }
+
     public function historyandon($value='')
     {
       return $this->oracle->query("SELECT * FROM khs_andon_item_dev WHERE rownum<=100 ORDER BY CREATION_DATE DESC")->result_array();

@@ -1,10 +1,9 @@
-<!-- <div class="alert bg-success alert-dismissible pbb_hide_001">
-    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-    <p><i class="icon fa fa-warning"></i>Sekilas Info! Klik berat timbang di kolom <b>Terima</b> untuk <b>me-reset</b> berat timbang.</p>
-</div> -->
-<p class="label label-warning" style="font-size:13px;" title="primary_item_id"><i class="fa fa-tag"></i> <?php echo $item_id ?> </p>
-<p class="label label-success" style="font-size:13px;margin-left:5px;"> <i class="fa fa-tag"></i> Menampilkan dari job yang tertua</p>
+<hr>
+<div class="agt_alert_area">
 
+</div>
+<p class="label label-warning" style="font-size:13px;" title="primary_item_id"> <?php echo $item_id ?> </p>
+<p class="label label-success" style="font-size:13px;margin-left:5px;"> <i class="fa fa-tag"></i> Menampilkan dari job yang tertua</p>
 <br>
 <br>
 <table class="table table-bordered" style="width:100%">
@@ -17,7 +16,7 @@
     <td> Remaining Qty</td>
     <td> Remaining WIP</td>
     <td> Creation Date</td>
-    <td style="text-align:center"> Action</td>
+    <td hidden style="text-align:center"> Action</td>
   </tr>
   <?php foreach ($old_job as $key => $value): ?>
     <tr>
@@ -29,7 +28,13 @@
       <td><?php echo $value['REMAINING_QTY'] ?></td>
       <td><?php echo $value['REMAINING_WIP'] ?></td>
       <td><?php echo $value['CREATION_DATE'] ?></td>
-      <td><center><button type="button" class="btn btn-success" name="button" onclick="update_pos_1('<?php echo $value['NO_JOB'] ?>', '<?php echo $value['KODE_ITEM'] ?>', '<?php echo $value['DESCRIPTION'] ?>', '<?php echo $value['ITEM_ID'] ?>')"> <b><i class="fa fa-send"></i> Send</b> </button><center></td>
+      <td hidden>
+        <center>
+            <button type="button" class="btn btn-success submitagtjob" name="button" onclick="update_pos_1('<?php echo $value['NO_JOB'] ?>', '<?php echo $value['KODE_ITEM'] ?>', '<?php echo $value['DESCRIPTION'] ?>', '<?php echo $value['ITEM_ID'] ?>')">
+             <b><i class="fa fa-send"></i> Send</b>
+           </button>
+         <center>
+       </td>
     </tr>
   <?php endforeach; ?>
 </table>

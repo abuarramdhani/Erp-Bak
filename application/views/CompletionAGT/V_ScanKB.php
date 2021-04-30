@@ -19,9 +19,8 @@
                     <button type="button" class="btn btn-success btn-reset-agt" name="button" style="width:100%;margin-top:24px"> <b>Reset</b> </button>
                   </div>
                 </div>
-                <div class="row" style="padding-top:30px;">
+                <div class="row" style="padding-top:15px;">
                   <div class="col-md-12">
-                    <hr>
                     <div id="areaAGT" style="overflow-x:auto;"></div>
                   </div>
                 </div>

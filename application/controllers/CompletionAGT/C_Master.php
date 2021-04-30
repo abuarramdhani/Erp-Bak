@@ -112,7 +112,7 @@ class C_Master extends CI_Controller
 
         $this->load->view('V_Header', $data);
         $this->load->view('V_Sidemenu', $data);
-        $this->load->view('CompletionAGT/V_ScanKB', $data);
+        $this->load->view('CompletionAGT/V_Completion', $data);
         $this->load->view('V_Footer', $data);
     }
 
@@ -135,6 +135,20 @@ class C_Master extends CI_Controller
       $this->load->view('V_Footer', $data);
     }
 
+    public function updatepos($value='')
+    {
+      $data = [
+        'ITEM_ID' => $this->input->post('item_id'),
+        'STATUS_JOB' => $this->input->post('status_job')
+      ];
+      echo json_encode($this->M_master->updatepos($data));
+    }
+
+    public function delpos($value='')
+    {
+      echo json_encode($this->M_master->delpos($this->input->post('item_id')));
+    }
+
     public function jobrelease($value='')
     {
       //sementara
@@ -152,6 +166,12 @@ class C_Master extends CI_Controller
     {
       $data['get'] = $this->M_master->historyandon();
       $this->load->view('CompletionAGT/monitoring/V_History_Andon', $data);
+    }
+
+    public function filter_history_agt()
+    {
+      $data['get'] = $this->M_master->filter_history_agt($this->input->post('range_date'));
+      $this->load->view('CompletionAGT/monitoring/V_History_Filtered', $data);
     }
 
 

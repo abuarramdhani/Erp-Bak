@@ -56,6 +56,86 @@ $(document).ready(function () {
   }
 })
 
+
+function agt_update_pos_submit() {
+  $.ajax({
+    url: baseurl + 'CompletionAssemblyGearTrans/action/updatepos',
+    type: 'POST',
+    dataType: 'JSON',
+    data: {
+      item_id: $('.agt_item_id').val(),
+      status_job: $('.agt_pos').val()
+    },
+    cache:false,
+    beforeSend: function() {
+      toastAGTLoading('Sedang mengupdate data..');
+    },
+    success: function(result) {
+      if (result == 200) {
+        toastAGT('success', 'Berhasil diupdate');
+        agtRunningAndon();
+        $('#modal-agt-edit-pos').modal('toggle');
+      }else {
+        toastAGT('warning', 'Data gagal diupdate, coba lagi');
+      }
+
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+    swalAGT('error', 'Terdapat Kesalahan, Coba Lagi...');
+    console.error();
+    }
+  })
+}
+
+function agt_update_pos(item_id, status_job, no_job) {
+  $('#modal-agt-edit-pos').modal('toggle');
+  $('.agt_pos').select2();
+  $('#agt_nojob').text(no_job);
+  $('.agt_pos').val(status_job).trigger('change');
+  $('.agt_item_id').val(item_id);
+}
+
+function del_agt_andon_pos(item_id) {
+  Swal.fire({
+    title: 'Apakah anda yakin?',
+    text: "Anda tidak akan dapat mengembalikan ini!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Ya, hapus saja!'
+  }).then((result) => {
+    if (result.value) {
+      $.ajax({
+        url: baseurl + 'CompletionAssemblyGearTrans/action/delpos',
+        type: 'POST',
+        dataType: 'JSON',
+        data: {
+          item_id: item_id
+        },
+        cache:false,
+        beforeSend: function() {
+          toastAGTLoading('Sedang menghapus data..');
+        },
+        success: function(result) {
+          if (result == 200) {
+            toastAGT('success', 'Data berhasil dihapus');
+            agtRunningAndon();
+          }else {
+            toastAGT('warning', 'Data gagal dihapus, coba lagi');
+          }
+
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+        swalAGT('error', 'Terdapat Kesalahan, Coba Lagi...');
+        console.error();
+        }
+      })
+    }
+  })
+
+}
+
 function agtMonJobRelease() {
   $.ajax({
     url: baseurl + 'CompletionAssemblyGearTrans/action/jobrelease',
@@ -148,6 +228,14 @@ function update_pos_1(no_job, item_code, description, item_id) {
     success: function(result) {
       if (result == 200) {
         swalAGT('warning',`Nomor job ${no_job} sudah pernah dipakai sebelumnya`);
+        $('.agt_alert_area').html(`<div class="alert alert-danger alert-dismissible" role="alert">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                      <span aria-hidden="true">
+                                        <i class="fa fa-close"></i>
+                                      </span>
+                                    </button>
+                                    <strong> Nomor job ${no_job} sudah ada di POS</strong>
+                                  </div>`);
       }else {
         //insert job ke andon
         $.ajax({
@@ -166,12 +254,22 @@ function update_pos_1(no_job, item_code, description, item_id) {
           success: function(result_1) {
             if (result_1 == 200) {
               swalAGT('success',`Sukses menambahkan job ${no_job} di POS 1`);
+              $('.agt_alert_area').html(`<div class="alert alert-success alert-dismissible" role="alert">
+                                          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">
+                                              <i class="fa fa-close"></i>
+                                            </span>
+                                          </button>
+                                          <strong><i class="fa fa-check-square"></i> Sukses menambahkan job ${no_job} di POS 1</strong>
+                                        </div>`);
+
             }else {
               swalAGT('warning',`Gagal menambahkan job ${no_job} di POS 1, Coba lagi`);
             }
           },
           error: function(XMLHttpRequest, textStatus, errorThrown) {
            swalAGT('error', 'Terdapat Kesalahan...');
+           $('.agt_alert_area').html('')
            console.error();
           }
         })
@@ -210,13 +308,14 @@ function ScanKartuBodyAGT(th) {
       beforeSend: function() {
         $('#areaAGT').html(`<div style ="width: 70%;margin:auto;height: 30%;background: #fff;overflow: hidden;z-index: 9999;padding:20px 0 30px 0;border-radius:10px;text-align:center">
                                   <img style="width: 8%;" src="${baseurl}assets/img/gif/loading5.gif"><br>
-                                  <span style="font-size:14px;font-weight:bold">Sedang memuat data...</span>
+                                  <span style="font-size:14px;font-weight:bold">Sedang memproses data...</span>
                               </div>`);
       },
       success: function(result) {
         if (result != 0) {
           $('#areaAGT').html(result);
           $(th).val('');
+          $('.submitagtjob').trigger('click');
         }else {
           $('#areaAGT').html(`<div style ="width: 70%;margin:auto;height: 30%;background: #fff;overflow: hidden;z-index: 9999;padding:20px 0 30px 0;border-radius:10px;text-align:center">
                                     <i class="fa fa-remove" style="color:#d60d00;font-size:45px;"></i><br>
@@ -241,102 +340,3 @@ function ScanKartuBodyAGT(th) {
   }
 
 }
-//
-// $(document).ready(function () {
-//   $(".slc_pbb_seksi").select2();
-//   $(".slc_pbb").select2({
-//     allowClear:true,
-//   });
-//
-//   $('.slc_pbbns_item').select2({
-//     tags: true,
-//     allowClear:true,
-//     minimumInputLength: 3,
-//     placeholder: "Item Kode",
-//     ajax: {
-//       url: baseurl + "BarangBekas/pbbns/item_pbbns",
-//       dataType: "JSON",
-//       type: "POST",
-//       cache: false,
-//       data: function(params) {
-//         return {
-//           term: params.term
-//         };
-//       },
-//       processResults: function(data) {
-//         return {
-//           results: $.map(data, function(obj) {
-//             return {
-//               id: obj.SEGMENT1==''?params.term:`${obj.SEGMENT1} - ${obj.PRIMARY_UOM_CODE} - ${obj.INVENTORY_ITEM_ID} - ${obj.ORGANIZATION_ID}`,
-//               text: obj.SEGMENT1==''?params.term:`${obj.SEGMENT1} - ${obj.DESCRIPTION}`
-//             }
-//           })
-//         }
-//       }
-//     }
-//   })
-//
-//   $('input[name="pbb_tujuan"]').on('change', function () {
-//     let val = $('input[name=pbb_tujuan]:checked').val();
-//     $.ajax({
-//       url: baseurl + 'BarangBekas/pbbs/locator',
-//       type: 'POST',
-//       dataType: 'JSON',
-//       data: {
-//         subinv: val,
-//         org_id: 102
-//       },
-//       cache:false,
-//       beforeSend: function() {
-//         $('.pbb_locator_tujuan').html('<b>Sedang Mengambil Locator...</b>');
-//       },
-//       success: function(result) {
-//         if (result != 0) {
-//           $('.pbb_locator_tujuan').html(`<select class="slc_pbb_locator pbbs_loc" id="pbbtt_locator" name="locator" style="width:100%" required >
-//                                   <option selected value="">Select..</option>
-//                                   ${result}
-//                                   </select>`);
-//           $('.slc_pbb_locator').select2({
-//             allowClear:true,
-//           });
-//         }else {
-//           $('.pbb_locator_tujuan').html('-')
-//         }
-//       },
-//       error: function(XMLHttpRequest, textStatus, errorThrown) {
-//       swalPBB('error', 'Koneksi Terputus...')
-//        console.error();
-//       }
-//     })
-//   });
-//
-//
-// $('.pbb_transact').select2({
-//   // tags: true,
-//   allowClear:true,
-//   // minimumInputLength: 3,
-//   placeholder: "Cari No Dokumen",
-//   ajax: {
-//     url: baseurl + "BarangBekas/transact/geDocBy",
-//     dataType: "JSON",
-//     type: "POST",
-//     cache: false,
-//     data: function(params) {
-//       return {
-//         term: params.term
-//       };
-//     },
-//     processResults: function(data) {
-//       return {
-//         results: $.map(data, function(obj) {
-//           return {
-//             id: obj.DOCUMENT_NUMBER,
-//             text: obj.DOCUMENT_NUMBER
-//           }
-//         })
-//       }
-//     }
-//   }
-// })
-//
-// })

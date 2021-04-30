@@ -11,7 +11,7 @@
     </div>
   </div>
   <div class="col-md-10">
-    <label for="">Select Date Range</label>
+    <label for="">Filter By Date Range</label>
     <input type="text" name="" class="form-control tanggal_agt_history_andon" placeholder="Select Yout Current Date" required="" >
   </div>
   <div class="col-md-2">
@@ -20,13 +20,14 @@
   </div>
 </div>
 <hr>
-<p class="label label-success ckmb_data" style="font-size:13px;margin-bottom:15px;"><i class="fa fa-tag"></i> Menampilkan <?php echo count($get) ?> data terbaru</p>
-<div style="margin-top:18.5px">
+<p class="label label-success agt_label_history" style="font-size:13px;margin-bottom:15px;"><i class="fa fa-tag"></i> Menampilkan <?php echo count($get) ?> data terbaru</p>
+
+<div style="margin-top:18.5px" class="area_history_filtered">
   <table class="table table-bordered agt-history-andon" style="width:100%">
     <thead>
       <tr class="bg-primary">
         <td> No</td>
-        <td> Item ID</td>
+        <td > Item ID</td>
         <td> Component Code</td>
         <td> Component Name</td>
         <td> No Job</td>
@@ -36,29 +37,28 @@
         <td> Time Post 3</td>
         <td> Time Post 4</td>
         <td> Creation Date</td>
-        <td> Action</td>
       </tr>
     </thead>
     <tbody>
       <?php foreach ($get as $key => $value): ?>
         <tr>
           <td><?php echo $key+1 ?></td>
-          <td><?php echo $value['ITEM_ID'] ?></td>
+          <td ><?php echo $value['ITEM_ID'] ?></td>
           <td><?php echo $value['KODE_ITEM'] ?></td>
           <td><?php echo $value['DESCRIPTION'] ?></td>
           <td><b><?php echo $value['NO_JOB'] ?></b></td>
-          <td><?php echo $value['STATUS_JOB'] ?></td>
+          <td><center><button type="button" class="btn btn-sm" name="button" style="font-weight:bold"><?php echo $value['STATUS_JOB'] ?></button><center> </td>
           <td><?php echo $value['TIMER_POS_1'] ?></td>
           <td><?php echo $value['TIMER_POS_2'] ?></td>
           <td><?php echo $value['TIMER_POS_3'] ?></td>
           <td><?php echo $value['TIMER_POS_4'] ?></td>
           <td><?php echo $value['CREATION_DATE'] ?></td>
-          <td> <center><button type="button" class="btn btn-success" name="button"> <i class="fa fa-edit"></i> Edit </button></center> </td>
         </tr>
       <?php endforeach; ?>
     </tbody>
   </table>
 </div>
+
 <script type="text/javascript">
   $('.agt-history-andon').DataTable();
   $(document).ready(function () {
@@ -94,5 +94,36 @@
       },
     },
   );
-  })
+});
+
+function filter_history_agt() {
+ let val = $('.tanggal_agt_history_andon').val();
+ $.ajax({
+   url: baseurl + 'CompletionAssemblyGearTrans/action/filter_history_agt',
+   type: 'POST',
+   // dataType: 'JSON',
+   data: {
+     range_date: val,
+   },
+   cache:false,
+   beforeSend: function() {
+     $('.area_history_filtered').html(`<div style ="width: 70%;margin:auto;height: 30%;background: #fff;overflow: hidden;z-index: 9999;padding:20px 0 30px 0;border-radius:10px;text-align:center">
+                                           <img style="width: 8%;" src="${baseurl}assets/img/gif/loading5.gif"><br>
+                                           <span style="font-size:14px;font-weight:bold">Sedang memproses data...</span>
+                                       </div>`);
+   },
+   success: function(result) {
+    $('.area_history_filtered').html(result);
+    $('.agt_label_history').hide();
+   },
+   error: function(XMLHttpRequest, textStatus, errorThrown) {
+    swalAGT('error', 'Terdapat Kesalahan...');
+    $('.area_history_filtered').html('')
+    console.error();
+   }
+ })
+}
+
+
+
 </script>
