@@ -265,6 +265,7 @@
 								$jenisInputElement = $key['jenis_input_element'];
                 $jenisInputMesin = $key['jenis_input_mesin'];
                 $status_observasi = $key['status_observasi'];
+                $takt_time_manual = $key['perhitungan_takt_time'];
 						?>
                   <?php } } ?>
                   <!--Judul TSKK :-->
@@ -539,8 +540,10 @@
                   <div class="panel panel-default">
                     <div class="panel-heading text-left">
                       <label style="margin-left: 2%;">Perhitungan Takt Time</label> &nbsp;&nbsp;&nbsp;&nbsp;
-                      <input type="radio" name="perhitunganTakt_diss" value="1" <?php echo $takt_time != '99999' ? 'checked' : ''?>> <label for="" class="control-label">&nbsp;&nbsp;Ya </label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                      <input type="radio" name="perhitunganTakt_diss" value="0" <?php echo $takt_time == '99999' ? 'checked' : ''?>><label for="norm" class="control-label">&nbsp;&nbsp; Tidak </label>
+                      <input type="radio" name="perhitunganTakt_diss" value="1" <?php echo ($takt_time != '99999' && $takt_time_manual != 2) ? 'checked' : ''?>> <label for="" class="control-label">&nbsp;&nbsp;Ya </label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <input type="radio" name="perhitunganTakt_diss" value="0" <?php echo $takt_time == '99999' ? 'checked' : ''?>><label for="norm" class="control-label">&nbsp;&nbsp; Tidak </label>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <!-- kondisi baru 2021, kondisi yang lama biarkan saja -->
+                      <input type="radio" name="perhitunganTakt_diss" value="2" <?php echo $takt_time_manual == 2 ? 'checked' : ''?>><label for="" class="control-label">&nbsp;&nbsp; Manual </label>
                     </div>
                     <div class="panel-body" style="<?php echo $takt_time == '99999' ? 'display:none;' : ''?>">
                       <?php

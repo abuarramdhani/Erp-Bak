@@ -499,6 +499,7 @@ public function save_as($id)
 		$jenisInputElement = $key['jenis_input_element'];
 		$jenisInputMesin = $key['jenis_input_mesin'];
 		$status_observasi = $key['status_observasi'];
+		$jenis_perhitungan_takt_time = $key['perhitungan_takt_time'];
 	}
 
 	//=========
@@ -558,7 +559,7 @@ public function save_as($id)
 								$proses,$kode_proses,$jenis_mesin,$proses_ke,$dari,$tanggal,$qty,$nm,
 								$nilai_distribusi,$takt_time,$no_mesin,$resource,$line,$alat_bantu,$tools,
 								$jml_operator,$dr_operator,$seksi_pembuat,$jenis_inputPart,$jenis_inputEquipment,
-								$sang_pembuat,$creationDate, $jenis_inputEquipmentMesin, $status_observasi);
+								$sang_pembuat,$creationDate, $jenis_inputEquipmentMesin, $status_observasi, $jenis_perhitungan_takt_time);
 
 	// echo"<pre>";print_r($saveHeader);
 	// die;
@@ -949,6 +950,7 @@ public function saveObservation(){
     $qty 	          = $this->input->post('txtQtyProses');
 
 		$status_observasi  = $this->input->post('status_observasi');
+		$perhitungan_takt_time = $this->input->post('perhitunganTakt'); // jenis manual atau tidak
     // die;
     //SEKSI PEMBUAT
     $noind = $this->session->user;
@@ -977,7 +979,7 @@ public function saveObservation(){
                   $proses,$kode_proses,$jenis_mesin,$proses_ke,$dari,$tanggal,$qty,$nm,
                   $nilai_distribusi,$takt_time,$no_mesin,$resource,$line,$alat_bantu,$tools,
                   $jml_operator,$dr_operator,$seksi_pembuat,$jenis_inputPart,$jenis_inputEquipment,
-                  $sang_pembuat,$creationDate, $jenis_inputEquipmentMesin, $status_observasi);
+                  $sang_pembuat,$creationDate, $jenis_inputEquipmentMesin, $status_observasi, $perhitungan_takt_time);
 
     // echo"<pre>";print_r($saveHeader);
     // die;
@@ -1788,7 +1790,9 @@ public function exportExcel($idnya){
 		//DATA FOR TSKK (elements table)
 		$id_tskk          	= $newID[0]['id_tskk'];
 		$takt_time        	= $newID[0]['takt_time'];
-
+		if ($takt_time != '-') {
+			$takt_time = $takt_time * $qty;
+		}
 		$jenis_proses 	  	= array_column($newID, 'jenis_proses');
 		$elemen           	= array_column($newID, 'elemen');
 		$keterangan_elemen	= array_column($newID, 'keterangan_elemen');

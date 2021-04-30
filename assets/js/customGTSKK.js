@@ -241,6 +241,12 @@ function filterGenTskk() {
   })
 }
 
+function countRencanaProduksiAja() {
+  var forecast = $('.forecast').val()
+  var qty_unit = $('.qtyUnit').val()
+  $('.rencanaKerja').val(Number(forecast) * Number(qty_unit))
+}
+
 $(document).ready(function() {
   if ($('#untuk_keperluan_gtskk').val() != undefined) {
     $('input[type=checkbox]').iCheck('destroy');
@@ -272,9 +278,8 @@ $(document).ready(function() {
         $('.tskk_tt').show()
         //
         $('input[name=taktTime]').removeAttr('readonly');
-        $('#txtForecast').removeAttr('oninput');
-        $('#txtQtyUnit').removeAttr('oninput');
-         // oninput="countRencanaProduksi(this)"
+        $('#txtForecast').attr('oninput', 'countRencanaProduksiAja(this)');
+        $('#txtQtyUnit').attr('oninput', 'countRencanaProduksiAja(this)');
       }
   });
 })
@@ -701,9 +706,8 @@ function addRowObservationEdit() {
         $('.tskk_tt').show()
         //
         $('input[name=taktTime]').removeAttr('readonly');
-        $('#txtForecast').removeAttr('oninput');
-        $('#txtQtyUnit').removeAttr('oninput');
-         // oninput="countRencanaProduksi(this)"
+        $('#txtForecast').attr('oninput', 'countRencanaProduksiAja(this)');
+        $('#txtQtyUnit').attr('oninput', 'countRencanaProduksiAja(this)');
       }
   });
 
@@ -2905,9 +2909,8 @@ function attachRowObservation(th) {
         $('.tskk_tt').show()
         //
         $('input[name=taktTime]').removeAttr('readonly');
-        $('#txtForecast').removeAttr('oninput');
-        $('#txtQtyUnit').removeAttr('oninput');
-         // oninput="countRencanaProduksi(this)"
+        $('#txtForecast').attr('oninput', 'countRencanaProduksiAja(this)');
+        $('#txtQtyUnit').attr('oninput', 'countRencanaProduksiAja(this)');
       }
   });
 

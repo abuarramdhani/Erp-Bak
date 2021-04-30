@@ -439,18 +439,18 @@ class M_gentskk extends CI_Model
 									 $kode_proses,$mach,$proses_ke,$dari,$tanggal,$qty,$operator,
 									 $nilai_distribusi,$takt_time,$no_mesin,$resource,$line,$alat_bantu,
 									 $tools,$jml_operator,$dr_operator,$seksi_pembuat,$jenis_inputPart,$jenis_inputEquipment,
-									 $nama_pekerja,$creationDate,$jenis_inputEquipmentMesin, $status_observasi)
+									 $nama_pekerja,$creationDate,$jenis_inputEquipmentMesin, $status_observasi, $ptt)
 	{
 		$sql = "INSERT INTO gtskk.gtskk_header_tskk(judul_tskk, tipe, kode_part, nama_part,
 				seksi, proses, kode_proses, mesin, proses_ke, proses_dari, tanggal,
 				qty, operator, nilai_distribusi, takt_time, no_mesin, resource_mesin, line_process,
 				alat_bantu, tools, jumlah_operator, jumlah_operator_dari, seksi_pembuat,jenis_input_part,jenis_input_element,
-				nama_pembuat, tanggal_pembuatan, jenis_input_mesin, status_observasi)
+				nama_pembuat, tanggal_pembuatan, jenis_input_mesin, status_observasi, perhitungan_takt_time)
 				values('$judul','$type','$kode','$nama_part','$seksi','$proses',
 				'$kode_proses','$mach','$proses_ke','$dari','$tanggal','$qty','$operator',
 				'$nilai_distribusi','$takt_time','$no_mesin','$resource','$line','$alat_bantu','$tools',
                 '$jml_operator','$dr_operator','$seksi_pembuat','$jenis_inputPart','$jenis_inputEquipment',
-				'$nama_pekerja','$creationDate','$jenis_inputEquipmentMesin', '$status_observasi')";
+				'$nama_pekerja','$creationDate','$jenis_inputEquipmentMesin', '$status_observasi', '$ptt')";
 		// echo $sql;
 		// exit();
 		$query = $this->db->query($sql);
@@ -670,7 +670,7 @@ class M_gentskk extends CI_Model
 	function UpdateHeaderTSKK($id,$judul,$type,$kode,$nama_part,$seksi,$proses,$kode_proses,
 							  $jenis_mesin,$proses_ke,$dari,$tanggal,$qty,$nm,$nilai_distribusi,$takt_time,
 							  $no_mesin,$resource,$line,$alat_bantu,$tools,$jml_operator,$dr_operator,$seksi_pembuat,
-							  $jenis_inputPart,$jenis_inputEquipment,$nama_pekerja,$creationDate,$jenis_inputEquipmentMesin,$status_observasi){
+							  $jenis_inputPart,$jenis_inputEquipment,$nama_pekerja,$creationDate,$jenis_inputEquipmentMesin,$status_observasi,$ptt){
 		$sql = "UPDATE gtskk.gtskk_header_tskk
 				SET judul_tskk ='$judul'
 					,tipe='$type'
@@ -701,6 +701,7 @@ class M_gentskk extends CI_Model
 					,tanggal_pembuatan = '$creationDate'
 					,jenis_input_mesin = '$jenis_inputEquipmentMesin'
 					,status_observasi = '$status_observasi'
+					,perhitungan_takt_time = '$ptt'
 				WHERE id_tskk='$id'";
 		// echo $sql;exit();
   		$query = $this->db->query($sql);
