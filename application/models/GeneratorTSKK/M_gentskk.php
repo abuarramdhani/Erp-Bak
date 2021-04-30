@@ -478,7 +478,7 @@ class M_gentskk extends CI_Model
 	function selectHeader()
 	{
 		$sql = "SELECT * FROM  gtskk.gtskk_header_tskk
-				ORDER BY id_tskk DESC limit 100";
+				ORDER BY tanggal_pembuatan DESC limit 100";
 
 		$query = $this->db->query($sql);
 		return $query->result_array();
@@ -487,7 +487,7 @@ class M_gentskk extends CI_Model
 	function selectHeaderMonTSKK()
 	{
 		$sql = "SELECT distinct head.* from gtskk.gtskk_header_tskk head where id_tskk in (select distinct elem.id_tskk from gtskk.gtskk_elemen_tskk  elem where id_tskk = head.id_tskk)
-				order by id_tskk DESC
+				order by tanggal_pembuatan DESC
 				";
 
 		$query = $this->db->query($sql);
