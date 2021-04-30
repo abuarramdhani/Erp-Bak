@@ -41,6 +41,17 @@ class C_Piea extends CI_Controller
         $this->calculate_spt->UpdateApprovalPIEA($id, $induk);
         $this->calculate_spt->UpdateApprovalPIEAOrder($id, $master_item, $bom, $routing);
     }
+    public function ApprovePIEA2()
+    {
+        $id = $_POST['order_id'];
+        $master_item = $_POST['master_item'];
+        $induk = $this->session->user;
+
+        for ($i = 0; $i < sizeof($id); $i++) {
+            $this->calculate_spt->UpdateApprovalPIEA($id[$i], $induk);
+            $this->calculate_spt->UpdateApprovalPIEAOrder($id[$i], $master_item, null, null);
+        }
+    }
     public function Rejected()
     {
         $view_data = $this->user_data->getUserMenu();
@@ -66,6 +77,17 @@ class C_Piea extends CI_Controller
         $induk = $this->session->user;
         $this->calculate_spt->UpdateRejectPIEA($order_id, $induk, $alasan);
         $this->calculate_spt->UpdateRejectOrder($order_id);
+    }
+    public function RejectPIEA2()
+    {
+        $order_id = $_POST['id'];
+        $alasan = $_POST['alasan'];
+
+        $induk = $this->session->user;
+        for ($i = 0; $i < sizeof($order_id); $i++) {
+            $this->calculate_spt->UpdateRejectPIEA($order_id[$i], $induk, $alasan);
+            $this->calculate_spt->UpdateRejectOrder($order_id[$i]);
+        }
     }
     public function Approved()
     {

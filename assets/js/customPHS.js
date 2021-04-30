@@ -107,7 +107,7 @@ $(".btnPHSAddRow").on("click", () => {
       </td>
       <td class="t-body-middle">
       <select required type="text" class="slcCatprod form-control" name="cat_product[]">
-      <option></option> 
+      <option selected="selected" disabled="disabled"></option> 
       <option value="B">BDL</option>
         <option value="NB">NON BDL</option>
       </select>
@@ -384,120 +384,134 @@ function ApprovePIEA(i) {
   } else {
     chk += 1;
   }
-  // console.log(chk);
-  if (produk_kat == "NB") {
-    if (master_item == "N") {
-      Swal.fire({
-        type: "error",
-        title:
-          "Tidak Bisa Melanjutkan Proses, Masih ada item yang data belum lengkap",
-        showConfirmButton: true,
-      });
-    } else if (bom == "N") {
-      Swal.fire({
-        type: "error",
-        title:
-          "Tidak Bisa Melanjutkan Proses, Masih ada item yang data belum lengkap",
-        showConfirmButton: true,
-      });
-    } else if (routing == "N") {
-      Swal.fire({
-        type: "error",
-        title:
-          "Tidak Bisa Melanjutkan Proses, Masih ada item yang datanya belum lengkap",
-        showConfirmButton: true,
-      });
-    } else if (chk == 3) {
-      Swal.fire({
-        title: "Apa Anda Yakin data Komponen yg anda isi sudah benar?",
-        text: "Request ini akan di Approve",
-        type: "question",
-        showCancelButton: true,
-        confirmButtonColor: "#00a65a",
-        cancelButtonColor: "#d73925",
-        confirmButtonText: "Ya",
-        cancelButtonText: "Tidak",
-      }).then((result) => {
-        if (result.value) {
-          // console.log("approve");
-          var request = $.ajax({
-            url: baseurl + "PerhitunganHargaSparepart/PIEA/ApprovePIEA",
-            data: {
-              i: i,
-              master_item: master_item,
-              bom: bom,
-              routing: routing,
-            },
-            type: "POST",
-            datatype: "html",
+  if (master_item == "N") {
+    Swal.fire({
+      type: "error",
+      title:
+        "Tidak Bisa Melanjutkan Proses, Masih ada item yang data belum lengkap",
+      showConfirmButton: true,
+    });
+  } else if (bom == "N") {
+    Swal.fire({
+      type: "error",
+      title:
+        "Tidak Bisa Melanjutkan Proses, Masih ada item yang data belum lengkap",
+      showConfirmButton: true,
+    });
+  } else if (routing == "N") {
+    Swal.fire({
+      type: "error",
+      title:
+        "Tidak Bisa Melanjutkan Proses, Masih ada item yang datanya belum lengkap",
+      showConfirmButton: true,
+    });
+  } else if (chk == 3) {
+    Swal.fire({
+      title: "Apa Anda Yakin data Komponen yg anda isi sudah benar?",
+      text: "Request ini akan di Approve",
+      type: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#00a65a",
+      cancelButtonColor: "#d73925",
+      confirmButtonText: "Ya",
+      cancelButtonText: "Tidak",
+    }).then((result) => {
+      if (result.value) {
+        // console.log("approve");
+        var request = $.ajax({
+          url: baseurl + "PerhitunganHargaSparepart/PIEA/ApprovePIEA",
+          data: {
+            i: i,
+            master_item: master_item,
+            bom: bom,
+            routing: routing,
+          },
+          type: "POST",
+          datatype: "html",
+        });
+        request.done(function (result) {
+          Swal.fire({
+            position: "top",
+            type: "success",
+            title: "Berhasil Approve",
+            showConfirmButton: false,
+            timer: 1500,
+          }).then(() => {
+            window.location.reload();
           });
-          request.done(function (result) {
-            Swal.fire({
-              position: "top",
-              type: "success",
-              title: "Berhasil Approve",
-              showConfirmButton: false,
-              timer: 1500,
-            }).then(() => {
-              window.location.reload();
-            });
-          });
-        }
-      });
-    } else {
-      Swal.fire({
-        type: "error",
-        title:
-          "Tidak Bisa Melanjutkan Proses, Pilihan pada kolom komponen belum lengkap",
-        showConfirmButton: true,
-      });
-    }
+        });
+      }
+    });
   } else {
-    if (chk == 3) {
-      Swal.fire({
-        title: "Apa Anda Yakin data Komponen yg anda isi sudah benar?",
-        text: "Request ini akan di Approve",
-        type: "question",
-        showCancelButton: true,
-        confirmButtonColor: "#00a65a",
-        cancelButtonColor: "#d73925",
-        confirmButtonText: "Ya",
-        cancelButtonText: "Tidak",
-      }).then((result) => {
-        if (result.value) {
-          // console.log("approve");
-          var request = $.ajax({
-            url: baseurl + "PerhitunganHargaSparepart/PIEA/ApprovePIEA",
-            data: {
-              i: i,
-              master_item: master_item,
-              bom: bom,
-              routing: routing,
-            },
-            type: "POST",
-            datatype: "html",
+    Swal.fire({
+      type: "error",
+      title:
+        "Tidak Bisa Melanjutkan Proses, Pilihan pada kolom komponen belum lengkap",
+      showConfirmButton: true,
+    });
+  }
+}
+$(document).ready(function () {
+  $(".cekBDLAll, .cekBDLList").iCheck({
+    checkboxClass: "icheckbox_flat-blue",
+  });
+  $(document).on("ifChecked", ".cekBDLAll", function () {
+    $(".cekBDLList").iCheck("check");
+  });
+  $(document).on("ifUnchecked", ".cekBDLAll", function () {
+    $(".cekBDLList").iCheck("uncheck");
+  });
+});
+function ApprovePIEA2() {
+  var master_item = $("#checkApropMKTMastItem").val();
+  var chk = $(".cekBDLList").filter(":checked");
+  order_id = [];
+  $(chk).each(function () {
+    var row_id = $(this).attr("data-row");
+    var order_to_push = $('.no_order_dbl[data-row="' + row_id + '"]').val();
+    order_id.push(order_to_push);
+  });
+  if (master_item != null && master_item != "N") {
+    Swal.fire({
+      title: "Apa Anda Yakin data Master Item yg anda isi sudah benar?",
+      text: "Request ini akan di Approve",
+      type: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#00a65a",
+      cancelButtonColor: "#d73925",
+      confirmButtonText: "Ya",
+      cancelButtonText: "Tidak",
+    }).then((result) => {
+      if (result.value) {
+        // console.log("approve");
+        var request = $.ajax({
+          url: baseurl + "PerhitunganHargaSparepart/PIEA/ApprovePIEA2",
+          data: {
+            order_id: order_id,
+            master_item: master_item,
+          },
+          type: "POST",
+          datatype: "html",
+        });
+        request.done(function (result) {
+          Swal.fire({
+            position: "top",
+            type: "success",
+            title: "Berhasil Approve",
+            showConfirmButton: false,
+            timer: 1500,
+          }).then(() => {
+            window.location.reload();
           });
-          request.done(function (result) {
-            Swal.fire({
-              position: "top",
-              type: "success",
-              title: "Berhasil Approve",
-              showConfirmButton: false,
-              timer: 1500,
-            }).then(() => {
-              window.location.reload();
-            });
-          });
-        }
-      });
-    } else {
-      Swal.fire({
-        type: "error",
-        title:
-          "Tidak Bisa Melanjutkan Proses, Pilihan pada kolom komponen belum lengkap",
-        showConfirmButton: true,
-      });
-    }
+        });
+      }
+    });
+  } else {
+    Swal.fire({
+      type: "error",
+      title: "Tidak Bisa Melanjutkan Proses, Master Item belum lengkap",
+      showConfirmButton: true,
+    });
   }
 }
 function RejectPIEA(i) {
@@ -519,6 +533,52 @@ function RejectPIEA(i) {
           url: baseurl + "PerhitunganHargaSparepart/PIEA/RejectPIEA",
           data: {
             id: i,
+            alasan: value,
+          },
+          type: "POST",
+          datatype: "html",
+        });
+        request.done(function (result) {
+          Swal.fire({
+            position: "top",
+            type: "success",
+            title: "Request Ditolak",
+            showConfirmButton: false,
+            timer: 1500,
+          }).then(() => {
+            window.location.reload();
+          });
+        });
+      }
+    },
+  });
+}
+function RejectPIEA2() {
+  var chk = $(".cekBDLList").filter(":checked");
+  order_id = [];
+  $(chk).each(function () {
+    var row_id = $(this).attr("data-row");
+    var order_to_push = $('.no_order_dbl[data-row="' + row_id + '"]').val();
+    order_id.push(order_to_push);
+  });
+  const { value: alasan } = Swal.fire({
+    title: "Masukan Alasan",
+    input: "text",
+    type: "question",
+    showCancelButton: true,
+    confirmButtonColor: "#d73925",
+    cancelButtonColor: "#b0bec5",
+    confirmButtonText: "Ok",
+    cancelButtonText: "Cancel",
+    inputValidator: (value) => {
+      if (!value) {
+        return "Masukan Alasan!";
+      }
+      if (value) {
+        var request = $.ajax({
+          url: baseurl + "PerhitunganHargaSparepart/PIEA/RejectPIEA2",
+          data: {
+            id: order_id,
             alasan: value,
           },
           type: "POST",
