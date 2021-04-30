@@ -187,7 +187,7 @@ class M_monitoring extends CI_Model {
                     AND mtrl.line_status <> 6
                     AND (kts.bon != 'PENDING' or kts.bon is null)
                     AND (TRUNC(kts.jam_input) <= to_date('$date2','DD/MM/RR') or selesai_packing is null)
-                    AND kts.approval_flag is not null
+                    AND kts.approval_flag = 'Y'
                 GROUP BY kts.tgl_dibuat,
                         kts.jenis_dokumen,
                         kts.no_dokumen,
