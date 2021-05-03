@@ -146,6 +146,13 @@
             $this->M_pengeluaran->SelesaiPengeluaran($date, $jenis_dokumen, $no_dokumen, $slsh, $pic);
         }
 
+        public function deleteDokumen(){
+            $jenis_dokumen	= $this->input->post('jenis_dokumen');
+            $no_dokumen 	= $this->input->post('no_dokumen');
+
+            $this->M_pengeluaran->deleteDokumen($jenis_dokumen, $no_dokumen );
+        }
+
         //------------------------------------- Menu MONITORING PENGELUARAN -------------------------------------
         public function MonitoringPengeluaran(){
             $user = $this->session->username;
