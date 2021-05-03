@@ -53,14 +53,23 @@ $('.touppergtskk').keyup(function() {
     this.value = this.value.toUpperCase();
 });
 
-$('#txtProcess').on('input', function (e) {
+$('#txtProcess').on('change', function (e) {
   let data = JSON.parse($('#gtskk_proses_get_code').val());
-  let find = data.find(x => x.PROSES == $(this).val());
-  if (find != undefined) {
-    $('#txtKodeProses').val(find.KODE_PROSES);
+  let tampung = [];
+  if ($(this).val() != null) {
+    $(this).val().forEach((v,i) => {
+      let find = data.find(x => x.PROSES == v);
+      if (find != undefined) {
+        tampung.push(find.KODE_PROSES);
+      }
+    });
+  }
+  if (tampung != '') {
+    $('#txtKodeProses').val(tampung.join(', '));
   }else {
     $('#txtKodeProses').val('');
   }
+
 })
 
 function updateProses() {
@@ -1438,6 +1447,11 @@ $(document).ready(function() {
     //     };
     //   }
     // }
+  });
+
+  $(".gtskkmultipleproses").select2({
+    tags: true,
+    tokenSeparators: [',']
   });
 });
 

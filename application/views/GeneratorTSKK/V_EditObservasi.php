@@ -248,12 +248,12 @@
     <?php endforeach; ?>
   </datalist>
 
-  <textarea hidden name="name" id="gtskk_proses_get_code" rows="8" cols="80"><?php echo json_encode($proses) ?></textarea>
-  <datalist id="brow_slc_proses">
-    <?php foreach ($proses as $key => $value): ?>
-      <option><?php echo $value['PROSES'] ?></option>
-    <?php endforeach; ?>
-  </datalist>
+  <textarea hidden name="name" id="gtskk_proses_get_code" rows="8" cols="80"><?php echo json_encode($proses_kerja) ?></textarea>
+  <!-- <datalist id="brow_slc_proses">
+    <?php // foreach ($proses_kerja as $key => $value): ?>
+      <option><?php // echo $value['PROSES'] ?></option>
+    <?php // endforeach; ?>
+  </datalist> -->
   <input type="hidden" id="untuk_keperluan_gtskk" name="" value="1">
 
   <?php foreach ($lihat_hasilObservasi_elemen as $key) {
@@ -622,7 +622,32 @@
                             <br>
                             <label for="norm" class="control-label col-lg-2">Proses :</label>
                             <div id="divPassCheck" class="col-lg-10">
-                              <input list="brow_slc_proses" autocomplete="off" type="text" value="<?= $proses; ?>" style="height: 35px;" placeholder="Input Proses" name="txtProses" id="txtProcess" class="form-control process" required />
+                              <?php
+                                $proses_boom = explode(', ', $proses); $indx_proses = 'a';$proses_b = [];$indx_proses_db = 'a';$proses_db = [];
+                                if (!empty($proses_boom)) {
+                                  foreach ($proses_boom as $key => $value) {
+                                    $proses_b[$indx_proses] = $value;
+                                    $indx_proses++;
+                                  }
+                                }
+                                if (!empty($proses_kerja)) {
+                                  foreach ($proses_kerja as $key => $value) {
+                                    $proses_db[$indx_proses_db] = $value['PROSES'];
+                                    $indx_proses_db++;
+                                  }
+                                }
+                               ?>
+                              <select class="gtskkmultipleproses" name="txtProses[]" id="txtProcess"  autocomplete="off" value="" multiple required style="width:100%">
+                                <?php foreach ($proses_kerja as $key => $value): ?>
+                                  <option <?php echo !empty(array_search($value['PROSES'], $proses_b))? 'selected' : '' ?> ><?php echo $value['PROSES'] ?></option>
+                                <?php endforeach; ?>
+                                <?php foreach ($proses_boom as $key => $value): ?>
+                                  <?php if (empty(array_search($value, $proses_db))){ ?>
+                                    <option selected><?php echo $value ?></option>
+                                  <?php } ?>
+                                <?php endforeach; ?>
+                              </select>
+                              <!-- <input autocomplete="off" type="text" value="" style="height: 35px;" placeholder="Input Proses" name="txtProses" id="txtProcess" class="form-control process" required /> -->
                             </div>
                           </div>
                           <br>

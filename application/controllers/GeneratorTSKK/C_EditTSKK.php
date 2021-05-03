@@ -103,7 +103,7 @@ class C_EditTSKK extends CI_Controller {
 		$dr_operator      = $this->input->post('txtDariOperator');
 		$seksi 	          = $this->input->post('txtSeksi');
 		//PROCESS
-		$proses 	      = $this->input->post('txtProses');
+		$proses 	        = implode(", ", $this->input->post('txtProses[]'));
 		$kode_proses      = $this->input->post('txtKodeProses');
 		$proses_ke 	      = $this->input->post('txtProsesKe');
 		$dari 	          = $this->input->post('txtDariProses');

@@ -208,11 +208,11 @@
   <input type="hidden" id="untuk_keperluan_gtskk" name="" value="1">
   <input type="hidden" id="untuk_keperluan_gtskk_input_observasi" name="" value="1">
   <textarea hidden name="name" id="gtskk_proses_get_code" rows="8" cols="80"><?php echo json_encode($proses) ?></textarea>
-  <datalist id="brow_slc_proses">
-    <?php foreach ($proses as $key => $value): ?>
-      <option><?php echo $value['PROSES'] ?></option>
-    <?php endforeach; ?>
-  </datalist>
+  <!-- <datalist id="brow_slc_proses">
+    <?php// foreach ($proses as $key => $value): ?>
+      <option><?php //echo $value['PROSES'] ?></option>
+    <?php //endforeach; ?>
+  </datalist> -->
 
   <form id='Observasi' method="POST" action="<?php echo base_url('GeneratorTSKK/saveObservation/'); ?>">
     <div class="inner">
@@ -482,7 +482,12 @@
                             <br>
                             <label for="norm" class="control-label col-lg-2">Proses :</label>
                             <div id="divPassCheck" class="col-lg-10">
-                              <input list="brow_slc_proses" autocomplete="off" type="text" style="height: 35px;" placeholder="Input Proses" name="txtProses" id="txtProcess" class="form-control process" required />
+                              <!-- <input list="brow_slc_proses" autocomplete="off" type="text" style="height: 35px;" placeholder="Input Proses" name="txtProses" id="txtProcess" class="form-control process" required /> -->
+                              <select class="gtskkmultipleproses" name="txtProses[]" id="txtProcess"  autocomplete="off" multiple required style="width:100%">
+                                <?php foreach ($proses as $key => $value): ?>
+                                  <option><?php echo $value['PROSES'] ?></option>
+                                <?php endforeach; ?>
+                              </select>
                             </div>
                           </div>
                           <br>

@@ -371,7 +371,7 @@ public function EditObservasi($id)
     $data['lihat_hasilObservasi'] = $this->M_gentskk->getAllObservation($id);
 		$data['product'] = $this->M_gentskk->getTipeProduk('');
 		$data['data_element_kerja'] = $this->M_gentskk->ElemenKerja('');
-		$data['proses'] = $this->M_gentskk->getProses();
+		$data['proses_kerja'] = $this->M_gentskk->getProses();
 
     $hitungData = count($data['lihat_hasilObservasi']);
     if (count($data['lihat_hasilObservasi']) < 5){
@@ -942,7 +942,7 @@ public function saveObservation(){
     $dr_operator      = $this->input->post('txtDariOperator');
     $seksi 	          = $this->input->post('txtSeksi');
     //PROCESS
-    $proses 	      = $this->input->post('txtProses');
+    $proses 	     	  = implode(", ", $this->input->post('txtProses[]'));
     $kode_proses      = $this->input->post('txtKodeProses');
     $proses_ke 	      = $this->input->post('txtProsesKe');
     $dari 	          = $this->input->post('txtDariProses');
