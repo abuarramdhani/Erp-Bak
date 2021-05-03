@@ -9,6 +9,7 @@
                 <th>Jumlah Item</th>
                 <th>PIC</th>
                 <th></th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -48,18 +49,9 @@
                     <input type="button" class="btn btn-md btn-success" id="btnTimerKGP<?= $no?>" onclick="btnTimerKGP(<?= $no?>)" value="Mulai"> 
                 <?php }?>
                 </td>
-                <!-- <td><select id="pic<?= $no?>" name="pic[]" class="form-control select2 picKGP" style="width:100%"></select></td>
-                <td class="text-center">
-                    <p id="timer<?= $no?>" style="">
-                        <label id="hours<?= $no?>" >00</label>:<label id="minutes<?= $no?>">00</label>:<label id="seconds<?= $no?>">00</label>
-                        <input type="hidden" id="jam<?= $no?>" value="00">
-                        <input type="hidden" id="menit<?= $no?>" value="00">
-                        <input type="hidden" id="detik<?= $no?>" value="00">
-                    </p>
-                    <input type="button" class="btn btn-sm btn-success" id="button_mulai<?php echo $no ?>"  onclick="btnTimerKGP(<?= $no?>, 'mulai')" value="Mulai">
-                    <input type="button" class="btn btn-sm btn-danger" id="button_selesai<?php echo $no ?>" style="display:none" onclick="btnTimerKGP(<?= $no?>,'')" value="Selesai">
-                    <br><br>
-                </td> -->
+                <td>
+                    <a class="btn btn-danger btn-sm" onclick="btnDeleteKGP(<?= $no?>)"><i class="fa fa-trash"></i>&nbsp; Hapus</a>
+                </td>
             </tr>
         <?php $no++; }?>
         </tbody>

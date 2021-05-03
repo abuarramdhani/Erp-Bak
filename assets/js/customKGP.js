@@ -175,6 +175,45 @@ function btnTimerKGP(no) {
     }
 }
 
+function btnDeleteKGP(no) {
+    var jenis_dokumen = $('#jenis_dokumen'+no).val();
+    var no_dokumen = $('#no_dokumen'+no).val();
+
+    Swal.fire({
+        title: "Anda Yakin?",
+        text: "Data Akan Di Hapus",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes",
+    }).then((result) => {
+        // console.log(result);
+        if (result.value) {
+            var request = $.ajax({
+              url: baseurl + "KapasitasGdPusat/Pengeluaran/deleteDokumen",
+              data: {
+                jenis_dokumen: jenis_dokumen,
+                no_dokumen: no_dokumen,
+              },
+              type: "POST",
+              datatype: "html",
+            });
+            request.done(function (result) {
+              Swal.fire({
+                position: "top",
+                type: "success",
+                title: "Berhasil Dihapus",
+                showConfirmButton: false,
+                timer: 1500,
+              }).then(() => {
+                window.location.reload();
+              });
+            });
+        }
+    })
+}
+
 //------------------------------------------- Monitoring Pengeluaran -------------------------------------------
 $(document).ready(function () {
     $(".picKGP").select2({

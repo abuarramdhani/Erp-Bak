@@ -5,6 +5,7 @@ class M_Pengeluaran extends CI_Model{
         parent::__construct();
         $this->load->database();    
         $this->oracle = $this->load->database('oracle', true);
+        // $this->oracle = $this->load->database('oracle_dev', true);
     }
 
 //--------------------------------------------- Menu PENGELUARAN ---------------------------------------------
@@ -96,6 +97,14 @@ ORDER BY 1, 2";
         SET selesai = TO_TIMESTAMP ('$date', 'DD-MM-YYYY HH24:MI:SS'),
             waktu = '$waktu',
             pic = '$pic'
+      WHERE jenis_dokumen = '$jenis_dokumen' AND no_dokumen = '$no_dokumen'";
+        $query = $this->oracle->query($sql);            
+        $query2 = $this->oracle->query('commit');       
+        echo $sql; 
+    }
+
+    public function deleteDokumen($jenis_dokumen, $no_dokumen){
+        $sql=" DELETE FROM khs_inv_kapasitas_gudang_pusat
       WHERE jenis_dokumen = '$jenis_dokumen' AND no_dokumen = '$no_dokumen'";
         $query = $this->oracle->query($sql);            
         $query2 = $this->oracle->query('commit');       
