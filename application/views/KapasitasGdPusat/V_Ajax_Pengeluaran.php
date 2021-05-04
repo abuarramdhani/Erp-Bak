@@ -8,7 +8,7 @@
                 <th>Gudang</th>
                 <th>Jumlah Item</th>
                 <th>PIC</th>
-                <th></th>
+                <th>Timer</th>
                 <th>Action</th>
             </tr>
         </thead>
