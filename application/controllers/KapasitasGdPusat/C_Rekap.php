@@ -51,14 +51,27 @@
 
 		$query2 = "WHERE TO_CHAR (selesai, 'DD/MM/YYYY') = '$date' AND gudang = 'KOM1-DM'";
 		$selesai = $this->M_rekap->getRekap($query2);
+		// $data['selesai_kom'] = $selesai;
+		// $data['jml_selesai_kom'] = count($data['selesai_kom']);
 		$data['selesai_kom'] = $selesai;
-		$data['jml_selesai_kom'] = count($data['selesai_kom']);
+		$selesai_kom = 0;
+		for ($p=0; $p < count($selesai) ; $p++) { 
+			$selesai_kom += $selesai[$p]['JUMLAH_ITEM'];
+		}
+		$data['jml_selesai_kom'] = $selesai_kom;
 
 		$query3 = "WHERE TO_CHAR (creation_date, 'DD/MM/YYYY') = '$date'
 		AND (TO_CHAR (selesai, 'DD/MM/YYYY') > '$date' OR selesai IS NULL)
 		AND gudang = 'KOM1-DM'";
-		$data['tanggungan_kom'] = $this->M_rekap->getTanggungan($query3);
-		$data['jml_tanggungan_kom'] = count($data['tanggungan_kom']);
+		// $data['tanggungan_kom'] = $this->M_rekap->getTanggungan($query3);
+		// $data['jml_tanggungan_kom'] = count($data['tanggungan_kom']);
+		$tanggungan = $this->M_rekap->getTanggungan($query3);
+		$data['tanggungan_kom'] = $tanggungan;
+		$tanggungan_kom = 0;
+		for ($p=0; $p < count($tanggungan) ; $p++) { 
+			$tanggungan_kom += $tanggungan[$p]['JUMLAH_ITEM'];
+		}
+		$data['jml_tanggungan_kom'] = $tanggungan_kom;
 
 		// PNL
 		$query1 = "WHERE TO_CHAR (creation_date, 'DD/MM/YYYY') = '$date' AND gudang = 'PNL-DM'";
@@ -72,13 +85,22 @@
 		$query2 = "WHERE TO_CHAR (selesai, 'DD/MM/YYYY') = '$date' AND gudang = 'PNL-DM'";
 		$selesai = $this->M_rekap->getRekap($query2);
 		$data['selesai_pnl'] = $selesai;
-		$data['jml_selesai_pnl'] = count($data['selesai_pnl']);
+		$selesai_pnl = 0;
+		for ($p=0; $p < count($selesai) ; $p++) { 
+			$selesai_pnl += $selesai[$p]['JUMLAH_ITEM'];
+		}
+		$data['jml_selesai_pnl'] = $selesai_pnl;
 
 		$query3 = "WHERE TO_CHAR (creation_date, 'DD/MM/YYYY') = '$date'
 		AND (TO_CHAR (selesai, 'DD/MM/YYYY') > '$date' OR selesai IS NULL)
 		AND gudang = 'PNL-DM'";
-		$data['tanggungan_pnl'] = $this->M_rekap->getTanggungan($query3);
-		$data['jml_tanggungan_pnl'] = count($data['tanggungan_pnl']);
+		$tanggungan = $this->M_rekap->getTanggungan($query3);
+		$data['tanggungan_pnl'] = $tanggungan;
+		$tanggungan_pnl = 0;
+		for ($p=0; $p < count($tanggungan) ; $p++) { 
+			$tanggungan_pnl += $tanggungan[$p]['JUMLAH_ITEM'];
+		}
+		$data['jml_tanggungan_pnl'] = $tanggungan_pnl;
 
 		// FG
 		$query1 = "WHERE TO_CHAR (creation_date, 'DD/MM/YYYY') = '$date' AND gudang = 'FG-DM'";
@@ -92,13 +114,23 @@
 		$query2 = "WHERE TO_CHAR (selesai, 'DD/MM/YYYY') = '$date' AND gudang = 'FG-DM'";
 		$selesai = $this->M_rekap->getRekap($query2);
 		$data['selesai_fg'] = $selesai;
-		$data['jml_selesai_fg'] = count($data['selesai_fg']);
+		$selesai_fg = 0;
+		for ($p=0; $p < count($selesai) ; $p++) { 
+			$selesai_fg += $selesai[$p]['JUMLAH_ITEM'];
+		}
+		$data['jml_selesai_fg'] = $selesai_fg;
 
 		$query3 = "WHERE TO_CHAR (creation_date, 'DD/MM/YYYY') = '$date'
 		AND (TO_CHAR (selesai, 'DD/MM/YYYY') > '$date' OR selesai IS NULL)
 		AND gudang = 'FG-DM'";
-		$data['tanggungan_fg'] = $this->M_rekap->getTanggungan($query3);
-		$data['jml_tanggungan_fg'] = count($data['tanggungan_fg']);
+		$tanggungan = $this->M_rekap->getTanggungan($query3);
+		$data['tanggungan_fg'] = $tanggungan;
+		$tanggungan = $this->M_rekap->getTanggungan($query3);
+		$tanggungan_fg = 0;
+		for ($p=0; $p < count($tanggungan) ; $p++) { 
+			$tanggungan_fg += $tanggungan[$p]['JUMLAH_ITEM'];
+		}
+		$data['jml_tanggungan_fg'] = $tanggungan_fg;
 
 		//pasang ban
 		$data['pasangban'] = $this->M_rekap->getPasangBan($date);
@@ -151,14 +183,27 @@
 
 			$query2 = "WHERE TO_CHAR (selesai, 'DD/MM/YYYY') = '$date' AND gudang = 'KOM1-DM'";
 			$selesai = $this->M_rekap->getRekap($query2);
+			// $hasil[$a]['selesai_kom'] = $selesai;
+			// $hasil[$a]['jml_selesai_kom'] = count($hasil[$a]['selesai_kom']);
 			$hasil[$a]['selesai_kom'] = $selesai;
-			$hasil[$a]['jml_selesai_kom'] = count($hasil[$a]['selesai_kom']);
+			$selesai_kom = 0;
+			for ($p=0; $p < count($selesai) ; $p++) { 
+				$selesai_kom += $selesai[$p]['JUMLAH_ITEM'];
+			}
+			$hasil[$a]['jml_selesai_kom'] = $selesai_kom;
 
 			$query3 = "WHERE TO_CHAR (creation_date, 'DD/MM/YYYY') = '$date'
 			AND (TO_CHAR (selesai, 'DD/MM/YYYY') > '$date' OR selesai IS NULL)
 			AND gudang = 'KOM1-DM'";
-			$hasil[$a]['tanggungan_kom'] = $this->M_rekap->getTanggungan($query3);
-			$hasil[$a]['jml_tanggungan_kom'] = count($hasil[$a]['tanggungan_kom']);
+			// $hasil[$a]['tanggungan_kom'] = $this->M_rekap->getTanggungan($query3);
+			// $hasil[$a]['jml_tanggungan_kom'] = count($hasil[$a]['tanggungan_kom']);
+			$tanggungan = $this->M_rekap->getTanggungan($query3);
+			$hasil[$a]['tanggungan_kom'] = $tanggungan;
+			$tanggungan_kom = 0;
+			for ($p=0; $p < count($tanggungan) ; $p++) { 
+				$tanggungan_kom += $tanggungan[$p]['JUMLAH_ITEM'];
+			}
+			$hasil[$a]['jml_tanggungan_kom'] = $tanggungan_kom;
 
 			// PNL
 			$query1 = "WHERE TO_CHAR (creation_date, 'DD/MM/YYYY') = '$date' AND gudang = 'PNL-DM'";
@@ -172,13 +217,22 @@
 			$query2 = "WHERE TO_CHAR (selesai, 'DD/MM/YYYY') = '$date' AND gudang = 'PNL-DM'";
 			$selesai = $this->M_rekap->getRekap($query2);
 			$hasil[$a]['selesai_pnl'] = $selesai;
-			$hasil[$a]['jml_selesai_pnl'] = count($hasil[$a]['selesai_pnl']);
+			$selesai_pnl = 0;
+			for ($p=0; $p < count($selesai) ; $p++) { 
+				$selesai_pnl += $selesai[$p]['JUMLAH_ITEM'];
+			}
+			$hasil[$a]['jml_selesai_pnl'] = $selesai_pnl;
 
 			$query3 = "WHERE TO_CHAR (creation_date, 'DD/MM/YYYY') = '$date'
 			AND (TO_CHAR (selesai, 'DD/MM/YYYY') > '$date' OR selesai IS NULL)
 			AND gudang = 'PNL-DM'";
-			$hasil[$a]['tanggungan_pnl'] = $this->M_rekap->getTanggungan($query3);
-			$hasil[$a]['jml_tanggungan_pnl'] = count($hasil[$a]['tanggungan_pnl']);
+			$tanggungan = $this->M_rekap->getTanggungan($query3);
+			$hasil[$a]['tanggungan_pnl'] = $tanggungan;
+			$tanggungan_pnl = 0;
+			for ($p=0; $p < count($tanggungan) ; $p++) { 
+				$tanggungan_pnl += $tanggungan[$p]['JUMLAH_ITEM'];
+			}
+			$hasil[$a]['jml_tanggungan_pnl'] = $tanggungan_pnl;
 
 			// FG
 			$query1 = "WHERE TO_CHAR (creation_date, 'DD/MM/YYYY') = '$date' AND gudang = 'FG-DM'";
@@ -192,13 +246,22 @@
 			$query2 = "WHERE TO_CHAR (selesai, 'DD/MM/YYYY') = '$date' AND gudang = 'FG-DM'";
 			$selesai = $this->M_rekap->getRekap($query2);
 			$hasil[$a]['selesai_fg'] = $selesai;
-			$hasil[$a]['jml_selesai_fg'] = count($hasil[$a]['selesai_fg']);
+			$selesai_fg = 0;
+			for ($p=0; $p < count($selesai) ; $p++) { 
+				$selesai_fg += $selesai[$p]['JUMLAH_ITEM'];
+			}
+			$hasil[$a]['jml_selesai_fg'] = $selesai_fg;
 
 			$query3 = "WHERE TO_CHAR (creation_date, 'DD/MM/YYYY') = '$date'
 			AND (TO_CHAR (selesai, 'DD/MM/YYYY') > '$date' OR selesai IS NULL)
 			AND gudang = 'FG-DM'";
-			$hasil[$a]['tanggungan_fg'] = $this->M_rekap->getTanggungan($query3);
-			$hasil[$a]['jml_tanggungan_fg'] = count($hasil[$a]['tanggungan_fg']);
+			$tanggungan = $this->M_rekap->getTanggungan($query3);
+			$hasil[$a]['tanggungan_fg'] = $tanggungan;
+			$tanggungan_fg = 0;
+			for ($p=0; $p < count($tanggungan) ; $p++) { 
+				$tanggungan_fg += $tanggungan[$p]['JUMLAH_ITEM'];
+			}
+			$hasil[$a]['jml_tanggungan_fg'] = $tanggungan_fg;
 
 			//pasang ban
 			$hasil[$a]['pasangban'] = $this->M_rekap->getPasangBan($date);
