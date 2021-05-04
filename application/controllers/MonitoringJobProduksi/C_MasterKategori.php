@@ -131,7 +131,7 @@ class C_MasterKategori extends CI_Controller
     public function deleteCategory(){
 			$id = $this->input->post('id');
 			$kategori = $this->input->post('kategori');
-			$subcategory = $this->M_itemlist->getSubKategori("where id_category = '$id'");
+			$subcategory = $this->M_masterkategori->getSubKategori("where id_category = '$id'");
 			if (!empty($subcategory)) {
 				for ($s=0; $s < count($subcategory) ; $s++) { 
 					$item = $this->M_itemlist->getdata("where category_name = '$id' and id_subcategory = ".$subcategory[$s]['ID_SUBCATEGORY']."");
@@ -140,7 +140,7 @@ class C_MasterKategori extends CI_Controller
 				}
 			}else {
 				$item = $this->M_itemlist->getdata("where category_name = '$id'");
-				$idsub = "is_subcategory is null";
+				$idsub = "id_subcategory is null";
 				$this->deleteitem($item, $id, $idsub);
 			}
 			// echo "<pre>";print_r($item);exit();
