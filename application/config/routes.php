@@ -5345,6 +5345,10 @@ $route['MiscellaneousAkt/Request/(:any)']				= 'MiscellaneousMng/Askanit_Akt/C_R
 $route['MiscellaneousAkt/Request/(:any)/(:any)']		= 'MiscellaneousMng/Askanit_Akt/C_RequestAkt/$1/$2';
 $route['MiscellaneousAkt/Request/(:any)/(:any)/(:any)']	= 'MiscellaneousMng/Askanit_Akt/C_RequestAkt/$1/$2/$3';
 
+$route['MiscellaneousSeksiLain'] 								= 'MiscellaneousMng/SeksiLain/C_Index';
+$route['MiscellaneousSeksiLain/Request']						= 'MiscellaneousMng/SeksiLain/C_RequestSeksiLain';
+$route['MiscellaneousSeksiLain/Request/(:any)']					= 'MiscellaneousMng/SeksiLain/C_RequestSeksiLain/$1';
+$route['MiscellaneousSeksiLain/Request/(:any)/(:any)']			= 'MiscellaneousMng/SeksiLain/C_RequestSeksiLain/$1/$2';
 
 // KHS Auto Invoice Lanjutan
 $route['AutoInvoiceKasie'] 								= 'AutoInvoice/C_Index';
@@ -5439,3 +5443,45 @@ $route['CetakanTagihan/Cetak/(:any)'] = 'InsertTagihanSubkont/C_Data/cetakanTagi
 $route['ListTagihan/List'] = 'InsertTagihanSubkont/C_Data/ListData';
 $route['LoginTagihanSubkon/cekUser'] = 'InsertTagihanSubkont/C_Login/loginTagihanSubkon';
 $route['LoginTagihanSubkon/loginSubkon'] = 'InsertTagihanSubkont/C_Login/loginAndroidSubkon';
+
+//-----------------------------------------------------Order Tool Making------------------------------------------------------------//
+$route['OrderToolMaking'] 									= 'OrderToolMaking/OrderToolMaking/C_Index';
+$route['OrderToolMaking/MonitoringOrder']					= 'OrderToolMaking/OrderToolMaking/C_MonitoringOrder';
+$route['OrderToolMaking/MonitoringOrder/(:any)']			= 'OrderToolMaking/OrderToolMaking/C_MonitoringOrder/$1';
+$route['OrderToolMaking/MonitoringOrder/(:any)/(:any)']		= 'OrderToolMaking/OrderToolMaking/C_MonitoringOrder/$1/$2';
+$route['OrderToolMaking/MonitoringOrder/(:any)/(:any)/(:any)'] = 'OrderToolMaking/OrderToolMaking/C_MonitoringOrder/$1/$2/$3';
+
+$route['ApprovalToolMaking'] 								= 'OrderToolMaking/ApprovalToolMaking/C_Index';
+$route['ApprovalToolMaking/MonitoringOrder']				= 'OrderToolMaking/ApprovalToolMaking/C_MonitoringOrder';
+$route['ApprovalToolMaking/MonitoringOrder/(:any)']			= 'OrderToolMaking/ApprovalToolMaking/C_MonitoringOrder/$1';
+$route['ApprovalToolMaking/MonitoringOrder/(:any)/(:any)']	= 'OrderToolMaking/ApprovalToolMaking/C_MonitoringOrder/$1/$2';
+
+$route['OrderToolMakingPE'] 								= 'OrderToolMaking/KasiePE/C_Index';
+$route['OrderToolMakingPE/MonitoringOrder']					= 'OrderToolMaking/KasiePE/C_MonitoringOrder';
+$route['OrderToolMakingPE/MonitoringOrder/(:any)']			= 'OrderToolMaking/KasiePE/C_MonitoringOrder/$1';
+
+$route['OrderToolMakingAssPE'] 								= 'OrderToolMaking/AssKaNitPE/C_Index';
+$route['OrderToolMakingAssPE/MonitoringOrder']				= 'OrderToolMaking/AssKaNitPE/C_MonitoringOrder';
+$route['OrderToolMakingAssPE/MonitoringOrder/(:any)']		= 'OrderToolMaking/AssKaNitPE/C_MonitoringOrder/$1';
+
+$route['OrderToolMakingDesigner'] 							= 'OrderToolMaking/DesignerProduk/C_Index';
+$route['OrderToolMakingDesigner/MonitoringOrder']			= 'OrderToolMaking/DesignerProduk/C_MonitoringOrder';
+$route['OrderToolMakingDesigner/MonitoringOrder/(:any)']	= 'OrderToolMaking/DesignerProduk/C_MonitoringOrder/$1';
+
+$route['OrderToolMakingQCQA'] 								= 'OrderToolMaking/UnitQCQA/C_Index';
+$route['OrderToolMakingQCQA/MonitoringOrder']				= 'OrderToolMaking/UnitQCQA/C_MonitoringOrder';
+$route['OrderToolMakingQCQA/MonitoringOrder/(:any)']		= 'OrderToolMaking/UnitQCQA/C_MonitoringOrder/$1';
+
+$route['OrderToolMakingKadepProduksi'] 						= 'OrderToolMaking/KaDepProduksi/C_Index';
+$route['OrderToolMakingKadepProduksi/MonitoringOrder']		= 'OrderToolMaking/KaDepProduksi/C_MonitoringOrder';
+$route['OrderToolMakingKadepProduksi/MonitoringOrder/(:any)'] = 'OrderToolMaking/KaDepProduksi/C_MonitoringOrder/$1';
+
+$route['OrderToolMakingTM'] 								= 'OrderToolMaking/KasiePPCTM/C_Index';
+$route['OrderToolMakingTM/MonitoringOrder']					= 'OrderToolMaking/KasiePPCTM/C_MonitoringOrder';
+$route['OrderToolMakingTM/MonitoringOrder/(:any)']			= 'OrderToolMaking/KasiePPCTM/C_MonitoringOrder/$1';
+$route['OrderToolMakingTM/MonitoringOrder/(:any)/(:any)'] = 'OrderToolMaking/KasiePPCTM/C_MonitoringOrder/$1/$2';
+$route['OrderToolMakingTM/MonitoringOrder/(:any)/(:any)/(:any)'] = 'OrderToolMaking/KasiePPCTM/C_MonitoringOrder/$1/$2/$3';
+
+$route['OrderToolMakingAssTM'] 						= 'OrderToolMaking/AssKaNitToolMaking/C_Index';
+$route['OrderToolMakingAssTM/MonitoringOrder']		= 'OrderToolMaking/AssKaNitToolMaking/C_MonitoringOrder';
+$route['OrderToolMakingAssTM/MonitoringOrder/(:any)'] = 'OrderToolMaking/AssKaNitToolMaking/C_MonitoringOrder/$1';
