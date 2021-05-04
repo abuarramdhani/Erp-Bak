@@ -151,8 +151,7 @@ class C_Master extends CI_Controller
 
     public function jobrelease($value='')
     {
-      //sementara
-      $data['get'] = $this->M_master->getJobRealease();
+      $data['get'] = [];
       $this->load->view('CompletionAGT/monitoring/V_Job_Release', $data);
     }
 
@@ -174,6 +173,11 @@ class C_Master extends CI_Controller
       $this->load->view('CompletionAGT/monitoring/V_History_Filtered', $data);
     }
 
+    public function filter_job_agt()
+    {
+      $data['get'] = $this->M_master->filter_job_agt($this->input->post('range_date'));
+      $this->load->view('CompletionAGT/monitoring/V_Job_Filtered', $data);
+    }
 
 
 }
