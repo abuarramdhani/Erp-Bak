@@ -5485,3 +5485,12 @@ $route['OrderToolMakingTM/MonitoringOrder/(:any)/(:any)/(:any)'] = 'OrderToolMak
 $route['OrderToolMakingAssTM'] 						= 'OrderToolMaking/AssKaNitToolMaking/C_Index';
 $route['OrderToolMakingAssTM/MonitoringOrder']		= 'OrderToolMaking/AssKaNitToolMaking/C_MonitoringOrder';
 $route['OrderToolMakingAssTM/MonitoringOrder/(:any)'] = 'OrderToolMaking/AssKaNitToolMaking/C_MonitoringOrder/$1';
+
+//-------------------------------Completion Assembly Gear Transmission SS------------------------------------------------------------//
+$route['CompletionAssemblyGearTrans']	=	'CompletionAGT/C_Master';
+$route['CompletionAssemblyGearTrans/ScanKartuBody']  = 'CompletionAGT/C_Master/ScanKartuBody';
+$route['CompletionAssemblyGearTrans/Completion']     = 'CompletionAGT/C_Master/Completion';
+$route['CompletionAssemblyGearTrans/Monitoring']     = 'CompletionAGT/C_Master/Monitoring';
+
+$route['CompletionAssemblyGearTrans/action/(:any)']			= 'CompletionAGT/C_Master/$1';
+$route['CompletionAssemblyGearTrans/action/(:any)/(:any)']	= 'CompletionAGT/C_Master/$1/$2';
