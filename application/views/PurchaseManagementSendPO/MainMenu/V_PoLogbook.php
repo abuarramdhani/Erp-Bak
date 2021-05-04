@@ -1,3 +1,11 @@
+<style>
+    .table-condensed thead tr:nth-child(2), .table-condensed tbody {
+        display: none;
+    }
+    .daterangepicker .drp-calendar {
+        min-width: 300px;
+    }
+</style>
 <section class="content">
     <div class="inner">
         <div class="row">
@@ -17,8 +25,17 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="box box-primary box-solid">
+                            <!-- /.box-header -->
                             <div class="box-body">
-                                <a href="<?= base_url('PurchaseManagementSendPO/POLogbook/exportExcel') ?>" class="btn btn-success excel-pologbook" style="margin-bottom: 10px">Export Excel</a>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <a href="<?= base_url('PurchaseManagementSendPO/POLogbook/exportExcel') ?>" class="btn btn-success excel-pologbook" style="margin-bottom: 10px">Export Excel</a>
+                                    </div>
+                                    <div class="col-sm-6 text-right">
+                                        <span>Global Search: &nbsp;</span>
+                                        <input type="text" class="input-sm form-control pull-right txtPoLogbookGlobalSearch" style="width: 30%" placeholder="Cari Data di Semua Bulan">
+                                    </div>
+                                </div>
                                 <div class="table-responsive">
                                     <table class="table table-bordered table-hover text-left" id="tbl-PoLogbook" style="font-size:12px; width: 150%;">
                                         <thead>

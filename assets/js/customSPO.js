@@ -433,11 +433,94 @@ $(document).ready(function () {
     }
   });
 
-  $("#tbl-PoLogbook").DataTable({
+  const dataTablePoLogbook = $("#tbl-PoLogbook").DataTable({
     scrollX: true,
     fixedColumns: {
       leftColumns: 10
+    },  
+    dom: `
+      <'row'
+        <'col-sm-12 col-md-2'l>
+        <'col-sm-12 col-md-8'<'tbl-PoLogbook_filter_by-date'>>
+        <'col-sm-12 col-md-2'f>
+      >
+      <'row'
+        <'col-sm-12'tr>
+      >
+      <'row'
+        <'col-sm-12'ip>
+      >`,
+  });
+
+  $("#tbl-PoLogbook_filter").find('input[type="search"]').attr('placeholder', 'Cari Data di Bulan Ini');
+
+  $('.tbl-PoLogbook_filter_by-date').html(/* html */`
+    <div class="box box-solid">
+      <div class="box-body text-center">
+        <span>Filter By Date: &nbsp;</span>
+        <input type="text" class="input-sm form-control txtPoLogbookFilterDateStart" style="width: 30%" placeholder="Dari Tanggal">
+        <span>&nbsp; - &nbsp;</span>
+        <input type="text" class="input-sm form-control txtPoLogbookFilterDateEnd" style="width: 30%" placeholder="Hingga Tanggal">
+        <button class="btn-sm btn btn-primary btnPoLogbookApplyFilterDate">Apply</button>
+        <button class="btn-sm btn btn-danger btnPoLogbookClearFilterDate">Clear</button>
+      </div>
+      <!-- /.box-body -->
+    </div>
+    <!-- /.box -->
+  `);
+
+  $('.btnPoLogbookApplyFilterDate').on('click', () => {
+    const startDate = moment($('.txtPoLogbookFilterDateStart').val(), 'MMM-YY');
+    const endDate = moment($('.txtPoLogbookFilterDateEnd').val(), 'MMM-YY');
+    const diffMonthsLength = endDate.diff(startDate, 'months');
+    const monthsRange = Array.from({ length: diffMonthsLength + 1 }).map((_, k) => (
+      startDate.clone().add(k, 'months').format('MMM-YY')
+    ));
+    const regexMonthsRange = monthsRange.join('|');
+
+    $('.txtPoLogbookGlobalSearch').val(null);
+
+    dataTablePoLogbook
+      .column(8)
+      .search(regexMonthsRange, true, false)
+      .draw();
+  });
+
+  $('.txtPoLogbookGlobalSearch').on('keyup', (e) => {
+    $('.btnPoLogbookClearFilterDate').trigger('click');
+
+    dataTablePoLogbook.column(8).search('');
+    dataTablePoLogbook.search($(e.currentTarget).val()).draw();
+  });
+
+  $('.btnPoLogbookClearFilterDate').on('click', () => {
+    $('.txtPoLogbookFilterDateStart, .txtPoLogbookFilterDateEnd').val(null);
+  });
+
+  $('.txtPoLogbookFilterDateStart, .txtPoLogbookFilterDateEnd').daterangepicker({
+    autoUpdateInput: false,
+    showDropdowns: true,
+    singleDatePicker: true,
+    minDate: moment('01/01/2010'),
+    maxYear: 2030,
+    locale: { 
+      format: 'MMM-YY',
+      cancelLabel: 'Clear',
     }
+  }).on('hide.daterangepicker', (_, picker) => {
+    const selectedMonth = $(picker.container).find('.monthselect').val();
+    const selectedYear = $(picker.container).find('.yearselect').val();
+    const formatedDate = moment(`${Number(selectedMonth) + 1} ${selectedYear}`, 'M YYYY').format('MMM-YY');
+
+    $(picker.element).val(formatedDate);
+  }).on('show.daterangepicker', (_, picker) => {
+    const inputDate = $(picker.element).val();
+    const formatedInputMonth = moment(inputDate, 'MMM-YY').format('M') - 1;
+    const formatedInputYear = moment(inputDate, 'MMM-YY').format('YYYY');
+
+    $(picker.container).find('.monthselect').val(formatedInputMonth);
+    $(picker.container).find('.yearselect').val(formatedInputYear);
+    $(picker.container).find('.monthselect, .yearselect').trigger('change');
   });
 
   if (window.location.href.includes("po_number=")) {
