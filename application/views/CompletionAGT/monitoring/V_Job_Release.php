@@ -20,7 +20,7 @@
   </div>
 </div>
 <hr>
-<p class="label label-success" style="font-size:13px;margin-bottom:15px;"><i class="fa fa-tag"></i> Menampilkan data dari <span class="tgl_job_agt_label"></span> </p>
+<p class="label label-success label_agt_job" style="font-size:13px;margin-bottom:15px;"><i class="fa fa-tag"></i> Menampilkan data dari <span class="tgl_job_agt_label"></span> </p>
 <div style="margin-top:18.5px" class="area_job_filtered">
 
 </div>
@@ -79,10 +79,12 @@ function filter_job_agt() {
                                            <img style="width: 8%;" src="${baseurl}assets/img/gif/loading5.gif"><br>
                                            <span style="font-size:14px;font-weight:bold">Sedang memproses data...</span>
                                        </div>`);
+     $('.label_agt_job').hide();
    },
    success: function(result) {
     $('.area_job_filtered').html(result);
     $('.tgl_job_agt_label').text(val);
+    $('.label_agt_job').show()
    },
    error: function(XMLHttpRequest, textStatus, errorThrown) {
     swalAGT('error', 'Terdapat Kesalahan...');

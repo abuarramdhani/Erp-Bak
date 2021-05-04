@@ -96,8 +96,8 @@ class M_master extends CI_Model
     public function filter_job_agt($range_date)
     {
       $range =  explode(' - ', $range_date);
-      $date1 = date("d-M-Y", strtotime($range[0]));
-      $date2 = date("d-M-Y", strtotime($range[1]));
+      $date1 = $range[0];
+      $date2 = $range[1];
       return $this->oracle->query("SELECT wdj.primary_item_id, we.wip_entity_name no_job, msib.segment1 kode_item, msib.description,
                                          wdj.start_quantity qty_job, wdj.quantity_completed, wdj.quantity_scrapped,
                                          (wdj.net_quantity - wdj.quantity_completed - wdj.quantity_scrapped) remaining_qty,
@@ -118,7 +118,7 @@ class M_master extends CI_Model
                                      AND wor.organization_id = wdj.organization_id
                                      AND wo.department_id = bd.department_id
                                      AND wo.organization_id = bd.organization_id
-                                     AND wdj.date_released BETWEEN '$date1' AND '$date2'")->result_array();
+                                     AND TO_CHAR(wdj.date_released, 'YYYY-MM-DD') BETWEEN '$date1' AND '$date2'")->result_array();
     }
     // --job tertua
     // SELECT wdj.primary_item_id, wdj.creation_date, we.wip_entity_name no_job,
