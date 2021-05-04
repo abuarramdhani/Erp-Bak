@@ -7,7 +7,6 @@ class M_monitoringorder extends CI_Model
         parent::__construct();
         $this->load->database();    
         $this->lantoma = $this->load->database('lantuma', true);
-        // $this->lantoma = $this->load->database('db_lantoolmaking', true);
     }
 
     public function getseksiunit($user){
@@ -182,7 +181,7 @@ class M_monitoringorder extends CI_Model
                 AND vsu.user_id = su.user_id
                 AND sua.user_group_menu_id = sugm.user_group_menu_id
                 AND smod.module_id= sugm.module_id
-                AND sugm.user_group_menu_id = 2798 -- 2817 prod, 2798 dev id resp. Order Tool Making - Ass Ka Nit Pengorder
+                AND sugm.user_group_menu_id = 2817 -- 2817 prod, 2798 dev id resp. Order Tool Making - Ass Ka Nit Pengorder
                 AND su.user_name like'%$no%'";
         $query = $this->db->query($sql);
         return $query->result_array();

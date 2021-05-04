@@ -58,7 +58,8 @@ $(document).ready(function () {
         })
     }
 
-    $(document).on("ifChecked", ".ganti", function () { //request order modifikasi / rekondisi 
+    // $(document).on("ifChecked", ".ganti", function () { //request order modifikasi / rekondisi 
+    $(".ganti").change(function(){ //request order modifikasi / rekondisi 
         $('.baru').css('display','none');
         $('.modifrekon').css('display','');
         $('.baru2').prop('required',false);
@@ -69,7 +70,8 @@ $(document).ready(function () {
         $('#user_mr').prop('required',true);
     })
     
-    $(document).on("ifChecked", ".gantibaru", function () { // request order baru
+    // $(document).on("ifChecked", ".gantibaru", function () { // request order baru
+    $(".gantibaru").change(function(){ // request order baru
         $('.baru').css('display','');
         $('.modifrekon').css('display','none');
         $('.baru2').prop('required',true);
@@ -157,20 +159,24 @@ $(document).ready(function () {
         }
     });
 
-    $(document).on("ifChecked", "#lembar", function () {
+    // $(document).on("ifChecked", "#lembar", function () {
+    $("#lembar").change(function(){
         $('.lembar').removeAttr('disabled');
     })
 
-    $(document).on("ifChecked", "#afval", function () {
+    // $(document).on("ifChecked", "#afval", function () {
+    $("#afval").change(function(){
         $('.lembar').attr('disabled', 'disabled');
         $('.lembar').val('');
     })
 
-    $(document).on("ifChecked", "#multi", function () {
+    // $(document).on("ifChecked", "#multi", function () {
+    $("#multi").change(function(){
         $('#isi_multi').removeAttr('disabled');
     })
 
-    $(document).on("ifChecked", "#tunggal", function () {
+    // $(document).on("ifChecked", "#tunggal", function () {
+    $("#tunggal").change(function(){
         $('#isi_multi').attr('disabled', 'disabled');
         $('#isi_multi').val('');
     })
@@ -457,3 +463,10 @@ function revisiorderyuhuuu(apa, siapa) {
         }
     })
 }
+
+$(document).keypress(
+function(event){
+    if (event.which == '13') {
+    event.preventDefault();
+    }
+});
