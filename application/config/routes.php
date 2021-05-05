@@ -5506,3 +5506,10 @@ $route['MonitoringShipConfirmDO/OnProcess/(:any)']		= 'AutoInvoice/C_Monprocess/
 
 $route['MonitoringShipConfirmDO/FinishInvoice']				= 'AutoInvoice/C_Monfinish';
 $route['MonitoringShipConfirmDO/FinishInvoice/(:any)']		= 'AutoInvoice/C_Monfinish/$1';
+
+//------------------------------- View History BPPBG ------------------------------------------------------------//
+$route['HistoryBppbg']	=	'HistoryBppbg/C_Index';
+
+$route['HistoryBppbg/View']					= 'HistoryBppbg/C_View';
+$route['HistoryBppbg/View/(:any)']			= 'HistoryBppbg/C_View/$1';
+$route['HistoryBppbg/View/(:any)/(:any)']	= 'HistoryBppbg/C_View/$1/$2';

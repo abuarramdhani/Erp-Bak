@@ -258,6 +258,7 @@
 				<script src="<?= base_url('assets/js/customMLQ.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customHAPH.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customKGP.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customHB.js') ?>"></script>
 
 
 				<!-- <script src="<?= base_url('assets/js/customMO.js') ?>"></script> -->
