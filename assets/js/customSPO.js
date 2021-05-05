@@ -433,6 +433,8 @@ $(document).ready(function () {
     }
   });
 
+  $('[title]').tooltip();
+
   const dataTablePoLogbook = $("#tbl-PoLogbook").DataTable({
     scrollX: true,
     fixedColumns: {
@@ -441,7 +443,7 @@ $(document).ready(function () {
     dom: `
       <'row'
         <'col-sm-12 col-md-2'l>
-        <'col-sm-12 col-md-8'<'tbl-PoLogbook_filter_by-date'>>
+        <'col-sm-12 col-md-8'>
         <'col-sm-12 col-md-2'f>
       >
       <'row'
@@ -451,8 +453,6 @@ $(document).ready(function () {
         <'col-sm-12'ip>
       >`,
   });
-
-  $("#tbl-PoLogbook_filter").find('input[type="search"]').attr('placeholder', 'Cari Data di Bulan Ini');
 
   $('.tbl-PoLogbook_filter_by-date').html(/* html */`
     <div class="box box-solid">

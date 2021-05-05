@@ -40,43 +40,48 @@ class C_PoLogbook extends CI_Controller
         // Ambil ID User
         $id_user = $this->session->user;
 
-        
-        // Jika user adalah koordinator Po
-        if(in_array($id_user, $koordinatorPo)){
-            if($id_user == 'B0537'){
-              $data['PoLogbook'] = $this->M_pologbook->getDataPoTeam($teamAlbert);
-            } else if ($id_user == 'B0729') {
-              $data['PoLogbook'] = $this->M_pologbook->getDataPoTeam($teamRahayu);
-            } else if ($id_user == 'B0580') {
-              $data['PoLogbook'] = $this->M_pologbook->getDataPoTeam($teamHermawan);
-            }
-        // Jika user adalah admin Po
-        } else if (in_array($id_user, $adminPo)) {
-            // if($id_user == 'H6634' || $id_user == 'P0384' || $id_user == 'H8409'){
-            if($id_user == 'H6634' || $id_user == 'H8409'){
-              $data['PoLogbook'] = $this->M_pologbook->getDataPObyNik('B0726');
-            } else if($id_user == 'P0603'){
-              $data['PoLogbook'] = $this->M_pologbook->getDataPoTeam(['B0794', 'B0868']);
-            } else if($id_user == 'P0391') {
-              $data['PoLogbook'] = $this->M_pologbook->getDataPoTeam(['B0794', 'B0537']);
-            } else if($id_user == 'P0384') { //P0389
-              $data['PoLogbook'] = $this->M_pologbook->getDataPObyNik('B0935');
-            } else if($id_user == 'P0608') {
-              $data['PoLogbook'] = $this->M_pologbook->getDataPObyNik('B0729');
-            } else if($id_user == 'P0629') {
-              $data['PoLogbook'] = $this->M_pologbook->getDataPObyNik('B0931');
-            } else if($id_user == 'A2412') {
-              $data['PoLogbook'] = $this->M_pologbook->getDataPObyNik('B0918');
-            } else if($id_user == 'K2298') {
-              $data['PoLogbook'] = $this->M_pologbook->getDataPoTeam(['B0918' ,'B0932']);
-            } else if($id_user == 'A2275') {
-              $data['PoLogbook'] = $this->M_pologbook->getDataPObyNik('B0932');
-            } else if($id_user == 'A2375') {
-              $data['PoLogbook'] = $this->M_pologbook->getDataPObyNik('B0668');
-            }
-        // User adalah Buyer
+        $query_params = $this->input->get();
+
+        if (count($query_params) === 0) {
+          $data['PoLogbook'] = [];
         } else {
-            $data['PoLogbook'] = $this->M_pologbook->getDataPObyNik($id_user);
+          // Jika user adalah koordinator Po
+          if(in_array($id_user, $koordinatorPo)){
+              if($id_user == 'B0537'){
+                $data['PoLogbook'] = $this->M_pologbook->getDataPoTeam($teamAlbert);
+              } else if ($id_user == 'B0729') {
+                $data['PoLogbook'] = $this->M_pologbook->getDataPoTeam($teamRahayu);
+              } else if ($id_user == 'B0580') {
+                $data['PoLogbook'] = $this->M_pologbook->getDataPoTeam($teamHermawan);
+              }
+          // Jika user adalah admin Po
+          } else if (in_array($id_user, $adminPo)) {
+              // if($id_user == 'H6634' || $id_user == 'P0384' || $id_user == 'H8409'){
+              if($id_user == 'H6634' || $id_user == 'H8409'){
+                $data['PoLogbook'] = $this->M_pologbook->getDataPoTeam('B0726');
+              } else if($id_user == 'P0603'){
+                $data['PoLogbook'] = $this->M_pologbook->getDataPoTeam(['B0794', 'B0868']);
+              } else if($id_user == 'P0391') {
+                $data['PoLogbook'] = $this->M_pologbook->getDataPoTeam(['B0794', 'B0537']);
+              } else if($id_user == 'P0384') { //P0389
+                $data['PoLogbook'] = $this->M_pologbook->getDataPoTeam('B0935');
+              } else if($id_user == 'P0608') {
+                $data['PoLogbook'] = $this->M_pologbook->getDataPoTeam('B0729');
+              } else if($id_user == 'P0629') {
+                $data['PoLogbook'] = $this->M_pologbook->getDataPoTeam('B0931');
+              } else if($id_user == 'A2412') {
+                $data['PoLogbook'] = $this->M_pologbook->getDataPoTeam('B0918');
+              } else if($id_user == 'K2298') {
+                $data['PoLogbook'] = $this->M_pologbook->getDataPoTeam(['B0918' ,'B0932']);
+              } else if($id_user == 'A2275') {
+                $data['PoLogbook'] = $this->M_pologbook->getDataPoTeam('B0932');
+              } else if($id_user == 'A2375') {
+                $data['PoLogbook'] = $this->M_pologbook->getDataPoTeam('B0668');
+              }
+          // User adalah Buyer
+          } else {
+              $data['PoLogbook'] = $this->M_pologbook->getDataPoTeam($id_user);
+          }
         }
 
         $this->load->view('V_Header', $data);
@@ -210,29 +215,29 @@ class C_PoLogbook extends CI_Controller
         } else if (in_array($BuyerNik, $adminPo)) {
             // if($BuyerNik == 'H6634' || $BuyerNik == 'P0384' || $BuyerNik == 'H8409'){
             if($BuyerNik == 'H6634' || $BuyerNik == 'H8409'){
-              $data = $this->M_pologbook->getDataPObyNik('B0726');
+              $data = $this->M_pologbook->getDataPoTeam('B0726');
             } else if($BuyerNik == 'P0603'){
               $data = $this->M_pologbook->getDataPoTeam(['B0794', 'B0868']);
             } else if($BuyerNik == 'P0391') {
               $data = $this->M_pologbook->getDataPoTeam(['B0794', 'B0537']);
             } else if($BuyerNik == 'P0384') { //P0389
-              $data = $this->M_pologbook->getDataPObyNik('B0935');
+              $data = $this->M_pologbook->getDataPoTeam('B0935');
             } else if($BuyerNik == 'P0608') {
-              $data = $this->M_pologbook->getDataPObyNik('B0729');
+              $data = $this->M_pologbook->getDataPoTeam('B0729');
             } else if($BuyerNik == 'P0629') {
-              $data = $this->M_pologbook->getDataPObyNik('B0931');
+              $data = $this->M_pologbook->getDataPoTeam('B0931');
             } else if($BuyerNik == 'A2412') {
-              $data = $this->M_pologbook->getDataPObyNik('B0918');
+              $data = $this->M_pologbook->getDataPoTeam('B0918');
             } else if($BuyerNik == 'K2298') {
               $data = $this->M_pologbook->getDataPoTeam(['B0918', 'B0932']);
             } else if($BuyerNik == 'A2275') {
-              $data = $this->M_pologbook->getDataPObyNik('B0932');
+              $data = $this->M_pologbook->getDataPoTeam('B0932');
             } else if($BuyerNik == 'A2375') {
-              $data = $this->M_pologbook->getDataPObyNik('B0668');
+              $data = $this->M_pologbook->getDataPoTeam('B0668');
             }
         // User adalah Buyer
         } else {
-            $data = $this->M_pologbook->getDataPObyNik($BuyerNik);
+            $data = $this->M_pologbook->getDataPoTeam($BuyerNik);
         }
 
         $php_excel = new PHPExcel();

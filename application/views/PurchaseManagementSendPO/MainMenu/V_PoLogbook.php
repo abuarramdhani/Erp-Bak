@@ -5,6 +5,9 @@
     .daterangepicker .drp-calendar {
         min-width: 300px;
     }
+    .btnPOLogbookSelectMonth {
+        display: block;
+    }
 </style>
 <section class="content">
     <div class="inner">
@@ -22,6 +25,107 @@
                 <p class="text-bold">*Background Kuning : PO belum konfirmasi setelah 1 x 24 jam dari Send Date 1</p>
                 <p class="text-bold">*Background Merah : PO belum konfirmasi setelah 1 x 24 jam dari Send Date 2</p>
                 <br />
+                <div class="box box-solid">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Waktu data yang akan ditampilkan</h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <div class="row">
+                            <p class="text-center">Cari data berdasarkan waktu tahun & bulan yang dipilih</p>
+
+                            <?php foreach (range(2020, date('Y')) as $key => $year) : ?>
+                                <div class="col-md-6">
+                                    <div class="panel box box-primary">
+                                        <div class="box-header with-border">
+                                            <h4 class="box-title">
+                                                <a data-toggle="collapse" data-parent="#accordion" href="#collapse<?= $year ?>" aria-expanded="false" class="collapsed">Data Tahun <?= $year ?></a>
+                                            </h4>
+                                        </div>
+                                        <div id="collapse<?= $year ?>" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                                            <div class="box-body">
+                                                <div class="row">
+                                                    <div class="col-sm-3">
+                                                        <a href="<?= base_url('PurchaseManagementSendPO/POLogbook?date=01-' . $year) ?>"
+                                                            class="btnPOLogbookSelectMonth btn alert-info alert text-center">Januari</a>
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <a href="<?= base_url('PurchaseManagementSendPO/POLogbook?date=02-' . $year) ?>"
+                                                            class="btnPOLogbookSelectMonth btn alert-info alert text-center">Februari</a>
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <a href="<?= base_url('PurchaseManagementSendPO/POLogbook?date=03-' . $year) ?>"
+                                                            class="btnPOLogbookSelectMonth btn alert-info alert text-center">Maret</a>
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <a href="<?= base_url('PurchaseManagementSendPO/POLogbook?date=04-' . $year) ?>"
+                                                            class="btnPOLogbookSelectMonth btn alert-info alert text-center">April</a>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-3">
+                                                        <a href="<?= base_url('PurchaseManagementSendPO/POLogbook?date=05-' . $year) ?>"
+                                                            class="btnPOLogbookSelectMonth btn alert-info alert text-center">Mei</a>
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <a href="<?= base_url('PurchaseManagementSendPO/POLogbook?date=06-' . $year) ?>"
+                                                            class="btnPOLogbookSelectMonth btn alert-info alert text-center">Juni</a>
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <a href="<?= base_url('PurchaseManagementSendPO/POLogbook?date=07-' . $year) ?>"
+                                                            class="btnPOLogbookSelectMonth btn alert-info alert text-center">Juli</a>
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <a href="<?= base_url('PurchaseManagementSendPO/POLogbook?date=08-' . $year) ?>"
+                                                            class="btnPOLogbookSelectMonth btn alert-info alert text-center">Agustus</a>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-3">
+                                                        <a href="<?= base_url('PurchaseManagementSendPO/POLogbook?date=09-' . $year) ?>"
+                                                            class="btnPOLogbookSelectMonth btn alert-info alert text-center">September</a>
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <a href="<?= base_url('PurchaseManagementSendPO/POLogbook?date=10-' . $year) ?>"
+                                                            class="btnPOLogbookSelectMonth btn alert-info alert text-center">Oktober</a>
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <a href="<?= base_url('PurchaseManagementSendPO/POLogbook?date=11-' . $year) ?>"
+                                                            class="btnPOLogbookSelectMonth btn alert-info alert text-center">November</a>
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <a href="<?= base_url('PurchaseManagementSendPO/POLogbook?date=12-' . $year) ?>"
+                                                            class="btnPOLogbookSelectMonth btn alert-info alert text-center">Desember</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>                                
+                            <?php endforeach ?>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <p class="text-center">Atau cari data di seluruh waktu dengan mengisikan kata kunci pada input berikut</p>
+                            <div class="text-center">
+                                <form action="<?= base_url('PurchaseManagementSendPO/POLogbook') ?>" method="get">
+                                    <div class="col-sm-4"></div>
+                                    <div class="col-sm-3">
+                                        <input type="text" name="keyword" class="form-control" placeholder="Kata kunci (tidak wajib diisi)">
+                                    </div>
+                                    <div class="col-sm-1">
+                                        <button class="btn btn-primary" title="Cari Sekarang">
+                                            <i class="fa fa-search"></i>
+                                        </button>
+                                    </div>
+                                    <div class="col-sm-4"></div>
+                                </form>
+                            </div>
+                        </div>
+                        <br>
+                    </div>
+                </div>
+                <?php if (count($PoLogbook) > 0 || count($this->input->get()) > 0) : ?>
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="box box-primary box-solid">
@@ -30,10 +134,6 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <a href="<?= base_url('PurchaseManagementSendPO/POLogbook/exportExcel') ?>" class="btn btn-success excel-pologbook" style="margin-bottom: 10px">Export Excel</a>
-                                    </div>
-                                    <div class="col-sm-6 text-right">
-                                        <span>Global Search: &nbsp;</span>
-                                        <input type="text" class="input-sm form-control pull-right txtPoLogbookGlobalSearch" style="width: 30%" placeholder="Cari Data di Semua Bulan">
                                     </div>
                                 </div>
                                 <div class="table-responsive">
@@ -199,6 +299,7 @@
                         </div>
                     </div>
                 </div>
+                <?php endif ?>
             </div>
         </div>
     </div>
