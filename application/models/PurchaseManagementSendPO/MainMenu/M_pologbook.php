@@ -11,6 +11,44 @@ class M_pologbook extends CI_Model
     }
     public function getDataPoTeam($team)
     {
+        $team_param = is_array($team) ? implode(',', array_map(function($name) { return "'$name'"; }, $team)) : "'$team'";
+        $date_param = $this->input->get('date');
+        $keyword_param = $this->input->get('keyword');
+
+        $query_params = " ";
+
+        if ($date_param) {
+            $query_params .= "AND TO_CHAR(kppl.PRINT_DATE, 'MM-YYYY') = '$date_param' ";
+        }
+
+        if ($keyword_param) {
+            $query_params .= "AND (
+                kppl.PRINT_DATE LIKE '%$keyword_param%'
+                OR kcpl.CF_ADMIN_PO LIKE '%$keyword_param%'
+                OR kppl.PHA_SEGMENT_1 LIKE '%$keyword_param%'
+                OR kppl.VENDOR_NAME LIKE '%$keyword_param%'
+                OR kppl.BUYER LIKE '%$keyword_param%'
+                OR ppf.NATIONAL_IDENTIFIER LIKE '%$keyword_param%'
+                OR kppl.REVISION_NUM LIKE '%$keyword_param%'
+                OR kppl.ATTACHMENT_FLAG LIKE '%$keyword_param%'
+                OR kppl.PRINT_DATE LIKE '%$keyword_param%'
+                OR kppl.DISTRIBUTION_METHOD LIKE '%$keyword_param%'
+                OR kppl.PURCHASING_APPROVE_DATE LIKE '%$keyword_param%'
+                OR kppl.MANAGEMENT_APPROVE_DATE LIKE '%$keyword_param%'
+                OR kppl.SEND_DATE_1 LIKE '%$keyword_param%'
+                OR CEIL(24*(sysdate-kppl.SEND_DATE_1)) LIKE '%$keyword_param%'
+                OR kppl.DELIVERY_STATUS_1 LIKE '%$keyword_param%'
+                OR kppl.SEND_DATE_2 LIKE '%$keyword_param%'
+                OR CEIL(24*(sysdate-kppl.SEND_DATE_2)) LIKE '%$keyword_param%'
+                OR kppl.DELIVERY_STATUS_2 LIKE '%$keyword_param%'
+                OR kppl.VENDOR_CONFIRM_DATE LIKE '%$keyword_param%'
+                OR kppl.VENDOR_CONFIRM_METHOD LIKE '%$keyword_param%'
+                OR kppl.VENDOR_CONFIRM_PIC LIKE '%$keyword_param%'
+                OR kppl.VENDOR_CONFIRM_NOTE LIKE '%$keyword_param%'
+                OR kppl.ATTACHMENT LIKE '%$keyword_param%'
+            ) ";
+        }
+
         $sql = 
         "SELECT
             kppl.LOGBOOK_ID
@@ -48,73 +86,17 @@ class M_pologbook extends CI_Model
             AND pha.SEGMENT1 = kppl.PHA_SEGMENT_1
             AND pha.AGENT_ID = ppf.PERSON_ID
             AND (kppl.DELETE_FLAG is null or kppl.DELETE_FLAG <> 'Y')
-            AND ppf.NATIONAL_IDENTIFIER = ?
+            AND ppf.NATIONAL_IDENTIFIER IN ($team_param)
             AND fu.USER_NAME like '%PSUP%'
             AND kppl.REQUEST_ID = kcpl.REQUEST_ID
             AND kppl.PHA_SEGMENT_1 = kcpl.SEGMENT1
             AND kcpl.NOMORQ = 1
+            $query_params
         ORDER BY PRINT_DATE desc";
 
-        // Tampung data sementara dalam array
-        $tempArr = [];
-        for($i = 0; $i < count($team); $i++){
-           array_push($tempArr, $this->oracle->query($sql, [$team[$i]])->result_array());
-        }
+        $query_result = $this->oracle->query($sql);
 
-        // Buka array sementara ambil isinya masukkan ke array baru
-        $dataPo = [];
-        for($x = 0; $x < count($tempArr); $x++){
-            foreach($tempArr[$x] as $val){
-                array_push($dataPo, $val);
-            }
-        }
-        return $dataPo;
-    }
-    public function getDataPObyNik($BuyerNIK)
-    {
-        $sql = "select
-        kppl.LOGBOOK_ID
-        ,kppl.PRINT_DATE input_date
-        ,kcpl.CF_ADMIN_PO employee
-        ,kppl.PHA_SEGMENT_1 po_number
-        ,kppl.VENDOR_NAME vendor_name
-        ,kppl.BUYER buyer_name
-        ,ppf.NATIONAL_IDENTIFIER buyer_nik
-        ,kppl.REVISION_NUM po_revision
-        ,kppl.ATTACHMENT_FLAG
-        ,kppl.PRINT_DATE po_print_date
-        ,kppl.DISTRIBUTION_METHOD
-        ,kppl.PURCHASING_APPROVE_DATE
-        ,kppl.MANAGEMENT_APPROVE_DATE
-        ,kppl.SEND_DATE_1
-        ,CEIL(24*(sysdate-kppl.SEND_DATE_1)) selisih_waktu_1
-        ,kppl.DELIVERY_STATUS_1
-        ,kppl.SEND_DATE_2
-        ,CEIL(24*(sysdate-kppl.SEND_DATE_2)) selisih_waktu_2
-        ,kppl.DELIVERY_STATUS_2
-        ,kppl.VENDOR_CONFIRM_DATE
-        ,kppl.VENDOR_CONFIRM_METHOD
-        ,kppl.VENDOR_CONFIRM_PIC
-        ,kppl.VENDOR_CONFIRM_NOTE
-        ,kppl.ATTACHMENT
-        from
-        khs_psup_po_logbook kppl
-        ,fnd_user fu
-        ,per_people_f ppf
-        ,po_headers_all pha
-        ,khs.khs_cetak_po_landscape kcpl
-        where
-        kppl.PRINT_BY = fu.USER_ID
-        and pha.SEGMENT1 = kppl.PHA_SEGMENT_1
-        and pha.AGENT_ID = ppf.PERSON_ID
-        and (kppl.DELETE_FLAG is null or kppl.DELETE_FLAG <> 'Y')
-        and ppf.NATIONAL_IDENTIFIER = '$BuyerNIK'
-        and fu.USER_NAME like '%PSUP%'
-        and kppl.REQUEST_ID = kcpl.REQUEST_ID
-        and kppl.PHA_SEGMENT_1 = kcpl.SEGMENT1
-        and kcpl.NOMORQ = 1
-        ORDER BY PRINT_DATE desc";
-        return $this->oracle->query($sql)->result_array();
+        return $query_result->result_array();
     }
     public function updateVendorData($noPO, $po_rev, $date, $dis_method, $send_date_1, $send_date_2, $con_method, $pic, $note, $attachment_flag, $lampiran)
     {

@@ -399,7 +399,7 @@ $(document).ready(function () {
         data: form_data,
         dataType: "json",
         success: function () {
-          Swal.fire("Success!", "Pesan telah terkirim dan terarsip", "success")
+          Swal.fire("Success!", `PO ${po_number} <br> Pesan telah terkirim dan terarsip`, "success")
             .then(() => {
               if (window.location.href.includes("po_number=")) {
                 window.location.href = baseurl + "PurchaseManagementSendPO/PoLog";
@@ -433,6 +433,8 @@ $(document).ready(function () {
     }
   });
 
+  $('[title]').tooltip();
+
   const dataTablePoLogbook = $("#tbl-PoLogbook").DataTable({
     scrollX: true,
     fixedColumns: {
@@ -441,7 +443,7 @@ $(document).ready(function () {
     dom: `
       <'row'
         <'col-sm-12 col-md-2'l>
-        <'col-sm-12 col-md-8'<'tbl-PoLogbook_filter_by-date'>>
+        <'col-sm-12 col-md-8'>
         <'col-sm-12 col-md-2'f>
       >
       <'row'
@@ -451,8 +453,6 @@ $(document).ready(function () {
         <'col-sm-12'ip>
       >`,
   });
-
-  $("#tbl-PoLogbook_filter").find('input[type="search"]').attr('placeholder', 'Cari Data di Bulan Ini');
 
   $('.tbl-PoLogbook_filter_by-date').html(/* html */`
     <div class="box box-solid">
