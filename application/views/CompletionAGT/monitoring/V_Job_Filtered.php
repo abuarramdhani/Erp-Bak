@@ -20,7 +20,7 @@
         <td><?php echo $value['DESCRIPTION'] ?></td>
         <td><?php echo $value['QTY_JOB'] ?></td>
         <td><?php echo $value['REMAINING_QTY'] ?></td>
-        <td><?php echo $value['DATE_RELEASED'] ?></td>
+        <td><center><?php echo $value['DATE_RELEASED'] ?></center></td>
         <td><?php echo $value['PRIMARY_ITEM_ID'] ?></td>
       </tr>
     <?php endforeach; ?>
