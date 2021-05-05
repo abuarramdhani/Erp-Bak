@@ -211,7 +211,7 @@
 								 <?= $text_button; ?> 
 						</button><br><br>
 						<button class="btn btn-sm  <?= ($value['body']) ? 'btn-success' : 'disabled btn-default' ?>" target="_blank" 
-								 <?= ($value['body']) ? "onclick=document.getElementById('form2".$value['header']['WIP_ENTITY_NAME']."').submit();" :'' ?>>
+								 <?= ($value['body']) ? "onclick=document.getElementById('form2".$value['header']['WIP_ENTITY_NAME']."').submit();print_sticker('".$value['header']['ITEM_CODE']."','".$value['header']['WIP_ENTITY_NAME']."',".$value['header']['START_QUANTITY'].")" :'' ?>>
 								 <?= $text_button2; ?> 
 						</button>
 					<?php } ?>
@@ -383,7 +383,7 @@
 	
 	</form>
 	<br><br>
-	<form method="post" target="_blank" action="<?php echo base_url('InventoryManagement/CreateMoveOrder/createall'); ?>">
+	<form method="post" target="_blank" id="createall_plheader" action="<?php echo base_url('InventoryManagement/CreateMoveOrder/createall'); ?>">
 		<input type="hidden" name="selectedPicklistIMO" value="">
 		<?php foreach ($allInvID as $key => $value) { ?>
 		<input type="hidden" name="no_job[]" value="<?= implode('<>', $allNojob[$key]) ?>">
@@ -399,7 +399,8 @@
 		<input type="hidden" name="departement" value="NONE">
 		<input type="hidden" name="piklis" value="2">
 		<?php } ?>
-	<button type="submit" class="btn btn-success pull-right" disabled="disabled" id="btnSelectedIMO2"><b> CREATE PL HEADER SELECTED </b><b id="jmlSlcIMO2"></b></button>
+	<!-- <button type="submit" class="btn btn-success pull-right" disabled="disabled" id="btnSelectedIMO2"><b> CREATE PL HEADER SELECTED </b><b id="jmlSlcIMO2"></b></button> -->
+	<button type="button" class="btn btn-success pull-right" disabled="disabled" id="btnSelectedIMO2" onclick="document.getElementById('createall_plheader').submit();print_sticker2()"><b> CREATE PL HEADER SELECTED </b><b id="jmlSlcIMO2"></b></button>
 	</form>
 
 	<form method="post" target="_blank" action="<?php echo base_url('InventoryManagement/Monitoring/exportPending'); ?>">
