@@ -2149,7 +2149,7 @@ public function exportExcel($idnya){
     for ($x=1; $x <=$loop_; $x++) {
 
 		if ($x > 1)  $indexAngka = 0; //set jika sampai sheet2
-    $end = 600 + ($x<=1?0:180);
+    $end = 600 + ($x<=1?0:(180*$n_));
 		$kolomA   = $this->Kolom($indexAngka);
 		$kolomB   = $this->Kolom($indexAngka + $end);
 		$kolomJDL = $this->Kolom($indexStart);
@@ -3480,8 +3480,9 @@ public function exportExcel($idnya){
             if ($x == 2) {
               $headtime = 610;
             }elseif ($x > 2) {
-							$xy = $x-2;
-            	$headtime = 10 + (1380 * $xy);
+							$h_ = $x - 1;
+							$hh = $h_ * 600 + ($x > 2 ? (180*($x - 2)) : 0);
+            	$headtime = 10 + $hh;
             }else {
               $headtime = 10;
             }
@@ -4021,7 +4022,7 @@ public function exportExcel($idnya){
 
 				$n_ = $x - 1;
 				// $nn $n_ * 600;
-				$nn = $n_ * 600 + ($x > 2 ? 180 : 0);
+				$nn = $n_ * 600 + ($x > 2 ? (180*($x - 2)) : 0);
 				// $auto_check = 0;
 				// for ($j=0; $j < sizeof($elemen_kerja); $j++) {
 				// 	if ($jenis_proses == 'AUTO') {
@@ -4094,7 +4095,7 @@ public function exportExcel($idnya){
 													$warna = '#00dbc5';
 											}
 
-											if ($i > 1*$nn && $i <= ((600*$x) + ($x<=1?0:180))) {
+											if ($i > 1*$nn && $i <= ((600*$x) + ($x<=1?0:(180*$n_)))) {
 												$styles[$x][$rowflow + 1][($i+$mulai_colom_grafik) - $nn]['fill'] = $warna;
 												$rows[$x][$rowflow + 1][($i+$mulai_colom_grafik) - $nn] = $i-$start[$j]+1;
 											}
@@ -4134,7 +4135,7 @@ public function exportExcel($idnya){
 												$styles[$x][$rowflow-1][($i+$mulai_colom_grafik) - $nn]['fill'] = '#fa3eef';
 												if ($i === $finishmuda[$j]) {
 													$total_muda[] = $muda[$j];
-													if ($i > 1*$nn && $i < ((600*$x) + ($x<=1?0:180))) {
+													if ($i > 1*$nn && $i < ((600*$x) + ($x<=1?0:(180*$n_)))) {
 														$rows[$x][$rowflow-1][($i+$mulai_colom_grafik) - $nn] = 'Muda: '.$muda[$j].' Detik ';
 													}
 												}
@@ -4146,7 +4147,7 @@ public function exportExcel($idnya){
 														$styles[$x][$rowflow+2][($i+$mulai_colom_grafik) - $nn]['fill'] = '#fa3eef';
 														if ($i == ($jumlah_hasil_irregular == 0 ? $cycle_time_tanpa_irregular-1:$cycle_time_tanpa_irregular)) {
 															$muda_terakhir = ($jumlah_hasil_irregular == 0 ? $cycle_time_tanpa_irregular-1:$cycle_time_tanpa_irregular) - $finish[$j];
-															if ($i > 1*$nn && $i < ((600*$x) + ($x<=1?0:180))) {
+															if ($i > 1*$nn && $i < ((600*$x) + ($x<=1?0:(180*$n_)))) {
 																$rows[$x][$rowflow+2][($i+$mulai_colom_grafik) - $nn] = 'Muda : '.$muda_terakhir.' Detik ';
 															}
 														}
@@ -4156,6 +4157,7 @@ public function exportExcel($idnya){
 										}
 
 									}
+
 							}
 						}
 
@@ -4165,15 +4167,14 @@ public function exportExcel($idnya){
 							$styles[$x][$rowflow+1][($takt_time + $mulai_colom_grafik) - $nn]['fill'] = '#ffffff';
 							$styles[$x][$rowflow+2][($takt_time + $mulai_colom_grafik) - $nn]['fill'] = '#ffffff';
 						}else {
-							if ($takt_time > 1*$nn && $takt_time <= ((600*$x) + ($x<=1?0:180))) {
+							if ($takt_time > 1*$nn && $takt_time <= ((600*$x) + ($x<=1?0:(180*$n_)))) {
 								$styles[$x][$rowflow][($takt_time + $mulai_colom_grafik) - $nn]['fill'] = '#fb0000';
 								$styles[$x][$rowflow+1][($takt_time + $mulai_colom_grafik) - $nn]['fill'] = '#fb0000';
 								$styles[$x][$rowflow+2][($takt_time + $mulai_colom_grafik) - $nn]['fill'] = '#fb0000';
-
 							}
 						}
 						// //Garis Cycletime
-						if ($cycle_time_tanpa_irregular > 1*$nn && $cycle_time_tanpa_irregular <= ((600*$x) + ($x<=1?0:180))) {
+						if ($cycle_time_tanpa_irregular > 1*$nn && $cycle_time_tanpa_irregular <= ((600*$x) + ($x<=1?0:(180*$n_)))) {
 							$styles[$x][$rowflow][($cycle_time_tanpa_irregular + ($mulai_colom_grafik)) - $nn]['fill'] = '#fcf403';
 							$styles[$x][$rowflow+1][($cycle_time_tanpa_irregular + ($mulai_colom_grafik)) - $nn]['fill'] = '#fcf403';
 							$styles[$x][$rowflow+2][($cycle_time_tanpa_irregular + ($mulai_colom_grafik)) - $nn]['fill'] = '#fcf403';
@@ -4183,34 +4184,41 @@ public function exportExcel($idnya){
 				//end style element
 
 				//Irregular Job
-				if ($last_finish > 1*$nn && $last_finish <= ((600*$x) + ($x<=1?0:180))) {
+				if ($last_finish > 1*$nn && $last_finish <= ((600*$x) + ($x<=1?0:(180*$n_)))) {
 					for ($i=0; $i < $jumlah_hasil_irregular; $i++) {
 							$styles[$x][$rownya][(($last_finish + $mulai_colom_grafik + 1) - $nn) + $i]['fill'] = '#2a61ad';
 							$rows[$x][$rownya][(($last_finish + $mulai_colom_grafik + 1) - $nn) + $i] = $i +1;
 					}
 				}
 
-				//muda diantara irregularJob dan takt_time
 				if ($takt_time != '-' && $takt_time >= $last_finish && !empty($jumlah_hasil_irregular)) {
 					$total_muda[] = $takt_time-($last_finish+$jumlah_hasil_irregular);
-					if ($last_finish+$jumlah_hasil_irregular+1 > 1*$nn && $last_finish+$jumlah_hasil_irregular+1 <= ((600*$x) + ($x<=1?0:180))) {
-						for ($i=0; $i <= ($takt_time-($last_finish+$jumlah_hasil_irregular+1)); $i++) {
-								$styles[$x][$rownya][((($last_finish+$jumlah_hasil_irregular+1) + $mulai_colom_grafik) - $nn) + $i]['fill'] = '#fa3eef';
-								$rows[$x][$rownya][((($last_finish+$jumlah_hasil_irregular+1) + $mulai_colom_grafik) - $nn) + $i] = $i +1;
-								if ($i == ($takt_time-($last_finish+$jumlah_hasil_irregular+1))) {
-									$rows[$x][$rownya][((($last_finish+$jumlah_hasil_irregular+1) + $mulai_colom_grafik) - $nn)+ 1 + $i] = 'Muda : '.($takt_time-($last_finish+$jumlah_hasil_irregular)).' Detik ';
+					if ($nn <= $takt_time) {
+						for ($i=$nn; $i <= $takt_time; $i++) {
+							//muda diantara irregularJob dan takt_time
+							if ($i > 1*$nn && $i <= ((600*$x) + ($x<=1?0:(180*$n_)))) {
+								if (($i >= $last_finish+$jumlah_hasil_irregular+1 && $i <= $takt_time)) {
+									$styles[$x][$rownya][($i+$mulai_colom_grafik) - $nn]['fill'] = '#fa3eef';
+									$rows[$x][$rownya][($i+$mulai_colom_grafik) - $nn] = $i;
 								}
+							}
+
+							if ($takt_time > 1*$nn && $takt_time <= ((600*$x) + ($x<=1?0:(180*$n_)))) {
+								if ($i == ($takt_time)) {
+									$rows[$x][$rownya][($i+$mulai_colom_grafik) - $nn + 1] = 'Muda : '.($takt_time-($last_finish+$jumlah_hasil_irregular)).' Detik ';
+								}
+							}
+
 						}
 					}
 				}
 
-
 				if ($takt_time == '-') {
 					$rows[$x][$rownya + 13][$takt_time + 14] = '';
 				}else {
-					if ($takt_time > 1*$nn && $takt_time <= ((600*$x) + ($x<=1?0:180))) {
+					if ($takt_time > 1*$nn && $takt_time <= ((600*$x) + ($x<=1?0:(180*$n_)))) {
 						$styles[$x][$rownya + 13][($takt_time + ($mulai_colom_grafik + 1)) - $nn]['font-size'] = 10; //14
-						if ($takt_time >= ((600*$x) + ($x<=1?0:180))-50) {
+						if ($takt_time >= ((600*$x) + ($x<=1?0:(180*$n_)))-50) {
 							$rows[$x][$rownya + 13][($takt_time - (($mulai_colom_grafik + 1) + 11)) - $nn] = 'Takt Time = '.$takt_time.' Detik'; //25
 						}else {
 							$rows[$x][$rownya + 13][($takt_time + ($mulai_colom_grafik + 1)) - $nn] = 'Takt Time = '.$takt_time.' Detik';
@@ -4219,8 +4227,8 @@ public function exportExcel($idnya){
 				}
 
 				//CycleTime
-				if ($cycle_time_tanpa_irregular > 1*$nn && $cycle_time_tanpa_irregular <= ((600*$x) + ($x<=1?0:180)) ) {
-					if ($cycle_time >= ((600*$x) + ($x<=1?0:180))-50) {
+				if ($cycle_time_tanpa_irregular > 1*$nn && $cycle_time_tanpa_irregular <= ((600*$x) + ($x<=1?0:(180*$n_))) ) {
+					if ($cycle_time_tanpa_irregular >= ((600*$x) + ($x<=1?0:(180*$n_)))-50) {
 						$rows[$x][$rownya + 2][($cycle_time_tanpa_irregular + ($mulai_colom_grafik + 1) + 14) - $nn] = 'Cycle Time = '.$cycle_time_tanpa_irregular.' Detik';
 					}else {
 						$rows[$x][$rownya + 2][($cycle_time_tanpa_irregular + ($mulai_colom_grafik + 1)) - $nn] = 'Cycle Time = '.$cycle_time_tanpa_irregular.' Detik';
