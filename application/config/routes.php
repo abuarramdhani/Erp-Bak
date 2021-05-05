@@ -5494,3 +5494,15 @@ $route['CompletionAssemblyGearTrans/Monitoring']     = 'CompletionAGT/C_Master/M
 
 $route['CompletionAssemblyGearTrans/action/(:any)']			= 'CompletionAGT/C_Master/$1';
 $route['CompletionAssemblyGearTrans/action/(:any)/(:any)']	= 'CompletionAGT/C_Master/$1/$2';
+
+// -------------------------------------- Monitoring Shipconfirm DO --------------------------------------------
+$route['MonitoringShipConfirmDO'] 								= 'AutoInvoice/C_Monitoringindex';
+
+$route['MonitoringShipConfirmDO/ReadyToShipConfirm']			= 'AutoInvoice/C_Monready';
+$route['MonitoringShipConfirmDO/ReadyToShipConfirm/(:any)']		= 'AutoInvoice/C_Monready/$1';
+
+$route['MonitoringShipConfirmDO/OnProcess']				= 'AutoInvoice/C_Monprocess';
+$route['MonitoringShipConfirmDO/OnProcess/(:any)']		= 'AutoInvoice/C_Monprocess/$1';
+
+$route['MonitoringShipConfirmDO/FinishInvoice']				= 'AutoInvoice/C_Monfinish';
+$route['MonitoringShipConfirmDO/FinishInvoice/(:any)']		= 'AutoInvoice/C_Monfinish/$1';
