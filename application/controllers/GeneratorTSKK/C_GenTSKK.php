@@ -2149,7 +2149,7 @@ public function exportExcel($idnya){
     for ($x=1; $x <=$loop_; $x++) {
 
 		if ($x > 1)  $indexAngka = 0; //set jika sampai sheet2
-    $end = 600 + ($x<=1?0:(180*$n_));
+    $end = 600 + ($x<=1?0:180);
 		$kolomA   = $this->Kolom($indexAngka);
 		$kolomB   = $this->Kolom($indexAngka + $end);
 		$kolomJDL = $this->Kolom($indexStart);
