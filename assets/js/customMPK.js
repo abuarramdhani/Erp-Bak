@@ -4274,6 +4274,9 @@ $(document).ready(function () {
   $("#tblMPSuratTugasIndex").DataTable();
   $("#txaMPSuratTugasRedactor").redactor({
     buttonsHide: ["image"],
+    keyupCallback: function(e){
+      $("#txtMPSuratTugasSurat").val(this.get());
+    }
   });
   $("#txtMPSuratTugasTanggal").datepicker({
     autoclose: true,
