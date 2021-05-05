@@ -25,7 +25,7 @@
                 <th>Tanggal Cancel</th>
                 <th>Jumlah Coly</th>
                 <th>Berat</th>
-                <th>Total Waktu Proses</th>
+                <th>Total Waktu Proses (Hari)</th>
                 <th>Ekspedisi</th>
             </tr>
         </thead>
@@ -56,7 +56,7 @@
                     <td class="text-center"><?= $val['CANCEL'] ?></td>
                     <td class="text-center"><?= $val['COLY'] ?></td>
                     <td class="text-center"><?= $val['BERAT'] ?></td>
-                    <td class="text-center"><?= $val['TOTAL_WAKTU_PROSES'] ?> Hari</td>
+                    <td class="text-center"><?= $val['TOTAL_WAKTU_PROSES'] ?></td>
                     <td class="text-center"><?= $val['EKSPEDISI'] ?></td>
                 </tr>
             <?php $no++;
