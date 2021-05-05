@@ -399,7 +399,7 @@ $(document).ready(function () {
         data: form_data,
         dataType: "json",
         success: function () {
-          Swal.fire("Success!", "Pesan telah terkirim dan terarsip", "success")
+          Swal.fire("Success!", `PO ${po_number} <br> Pesan telah terkirim dan terarsip`, "success")
             .then(() => {
               if (window.location.href.includes("po_number=")) {
                 window.location.href = baseurl + "PurchaseManagementSendPO/PoLog";
