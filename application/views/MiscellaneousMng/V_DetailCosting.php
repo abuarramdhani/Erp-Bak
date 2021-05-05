@@ -87,7 +87,7 @@
                                                 <th>Subinventory</th>
                                                 <th>Locator</th>
                                                 <?php echo (stripos($ket, 'approve') !== FALSE) ? '<th>Action</th><th>Note</th>' :'' ?>
-                                                <th style="width:300px">Alasan</th>
+                                                <th style="width:300px"><?= (stripos($ket, 'finishedCosting') !== FALSE) ? 'Referensi' : 'Alasan' ?></th>
                                                 <th>Attachment (.pdf)</th>
                                                 <th>No Serial</th>
                                                 <th>Cost Center</th>
@@ -136,8 +136,8 @@
                                                 <td><?= $val['locator']?></td>
                                                 <?php if (stripos($ket, 'approve') !== FALSE) { // tampil kalau detail untuk approve costing / akuntansi 
                                                     if ($val['status'] == '') { // item tidak reject ?> 
-                                                        <td><select name="action[]" id="action_costing<?= $no?>" class="form-control select2" style="width:150px" required onchange="gantiAction(<?= $no?>)">
-                                                                <option></option>
+                                                        <td><select name="action[]" id="action_costing<?= $no?>" class="form-control select2" style="width:150px" <?= stripos($ket, 'approveCosting') !== FALSE ? 'required' : '' ?> onchange="gantiAction(<?= $no?>)">
+                                                                <?= stripos($ket, 'approveCosting') !== FALSE ? '<option></option>' : '' ?>
                                                                 <option value="Approve">Approve</option>
                                                                 <option value="Reject">Reject</option>
                                                             </select>    
@@ -151,7 +151,7 @@
                                                             }
                                                         }
                                                     }?>
-                                                <td><?= $val['alasan']?> <br> <?= $val['deskripsi_alasan']?></td>
+                                                <td><?= (stripos($ket, 'finishedCosting') !== FALSE) ? $val['reference'] : $val['alasan'].'<br>'.$val['deskripsi_alasan'] ?></td>
                                                 <td>
                                                     <?php $filename = "assets/upload/Miscellaneous/Attachment/".$val['attachment']."";
                                                         $attach = file_exists($filename) ? '' : 'disabled'; ?>
@@ -172,7 +172,7 @@
                                                     if ((stripos($ket, 'approveCosting') !== FALSE)) { // cuma tampil kalau approve costing ?>
                                                             <td id="gantitipe<?= $no?>"><select name="type_transaksi[]" id="type_transaksi<?= $no?>" class="form-control select2 getTipeTrans" style="width:150px" required></select></td>
                                                             <td>1-<?= $branch?>-
-                                                                <span id="ganticoa<?= $no?>"><select name="coa[]" id="coa<?= $no?>" class="form-control select2 getAkunCOA" style="width:150px" onchange="getdescCOA(<?= $no?>)" required></select></span>
+                                                                <span id="ganticoa<?= $no?>"><select name="coa[]" id="coa<?= $no?>" class="form-control select2 getAkunCOA coa_yuk" style="width:150px" onchange="getdescCOA(<?= $no?>)" required></select></span>
                                                                 -<?= $val['cost_center']?>-
                                                                 <input name="produk[]" id="produk<?= $no?>" class="form-control" style="width:150px" required>
                                                                 -000-000
@@ -213,6 +213,7 @@
                                             <?php $no++; }?>
                                         </tbody>
                                     </table>
+                                    <p style="color:red;<?= stripos($ket, 'approveAkuntansi') !== FALSE ? '' : 'display:none' ?>">*jika ingin menolak item yang diajukan miscellaneous, klik "Approve" kemudian ubah menjadi "Reject"</p>
                                 </div>
                                 <div class="panel-body text-center">
                                     <button class="btn btn-success" style="<?= $save?>" formaction="<?php echo base_url($linkket)?>"><i class="fa fa-check"></i> Submit</button>

@@ -82,6 +82,8 @@ class C_RequestAskanit extends CI_Controller
 			$data['linkket'] = 'MiscellaneousAskanit/Request/submitAskanit';
 		}elseif(stripos($no, 'PPC') !== FALSE){ // link untuk submit seksi ppc
 			$data['linkket'] = 'MiscellaneousPPC/Request/submitPPC';
+		}elseif(stripos($no, 'Kasie') !== FALSE){ // link untuk submit kepala seksi
+			$data['linkket'] = 'MiscellaneousKasie/Request/submitKasie';
 		}
 		$getdata = $this->M_request->cekitemrequest("where id_header = $id_head order by id_item asc");
 		foreach ($getdata as $key => $val) {
@@ -126,7 +128,8 @@ class C_RequestAskanit extends CI_Controller
 		for ($i=0; $i < count($id_item); $i++) { 
 			$cek = $this->M_request->getdataAskanit('where id_item = '.$id_item[$i].'');
 			if (empty($cek)) {
-				$this->M_request->saveAskanit($id_item[$i], $action[$i], $note[$i], $pic, $tgl);
+				$act = empty($action[$i]) ? 'Approve' : $action[$i];
+				$this->M_request->saveAskanit($id_item[$i], $act, $note[$i], $pic, $tgl);
 				$cost[] = $this->cariItemCost($io, $kode_item[$i], $qty[$i]);
 				if ($uom[$i] == 'UNT' && !empty($no_serial[$i])) {
 					$serial = 1;

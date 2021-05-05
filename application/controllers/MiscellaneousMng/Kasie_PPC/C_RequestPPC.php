@@ -70,7 +70,8 @@ class C_RequestPPC extends CI_Controller
 		for ($i=0; $i < count($id_item); $i++) { 
 			$cek = $this->M_request->getdataPPC('where id_item = '.$id_item[$i].'');
 			if (empty($cek)) {
-				$this->M_request->savePPC($id_item[$i], $action[$i], $note[$i], $pic, $tgl);
+				$act = empty($action[$i]) ? 'Approve' : $action[$i];
+				$this->M_request->savePPC($id_item[$i], $act, $note[$i], $pic, $tgl);
 				$cost[] = $this->cariItemCost($io, $kode_item[$i], $qty[$i]);
 				if ($uom[$i] == 'UNT' && !empty($no_serial[$i])) {
 					$serial = 1;

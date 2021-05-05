@@ -5,13 +5,18 @@
                 <br />
                 <form method="post">
                 <?php 
-                    if ($view != 'Kasie' && $view != 'inputCosting') { // tidak muncul di Misc Kelapa Seksi dan Misc Costing menu Request Siap Input
+                    if ($view != 'inputCosting' && $view != 'seksi_lain') { // tidak muncul di Misc Kelapa Seksi dan Misc Costing menu Request Siap Input
                 ?>
                 <div class="row">
                     <div class="col-md-12">
                         <div class="box box-danger">
                         <div class="box-header text-left" style="font-size:20px">
+                            <div class="col-md-10">
                                 <strong><span style="color:#CC3E3B" id="jml_approve">REQUEST</span> MEMBUTUHKAN APPROVAL ANDA</strong>
+                            </div>
+                            <div class="col-md-2 text-right" <?= $view == 'Kasie' ? '' : 'style="display:none"' ?>>
+                                <button type="button" class="btn btn-success" onclick="mdlTambahRequest(this)" ><i class="fa fa-plus"></i> Tambah</button> 
+                            </div>
                         </div>
                             <div class="box-body">
                                 <div class="panel-body">
@@ -68,7 +73,7 @@
                 <?php }?>
 
                 <?php 
-                    if ($view == 'Costing' || $view == 'Kasie') { // selain resp. Miscellaneous Kepala Seksi dan Miscellaneous Costing tidak muncul 
+                    if ($view == 'Costing' || $view == 'Kasie' || $view == 'seksi_lain') { // selain resp. Miscellaneous Kepala Seksi dan Miscellaneous Costing tidak muncul 
                 ?>
                 <div class="row">
                     <div class="col-md-12">
@@ -78,9 +83,8 @@
                             <div class="col-md-8">
                                 <strong>ONPROCESS MISCELLANEOUS TRANSACTION REQUEST</strong>
                             </div>
-                            <div class="col-md-2 text-right" <?= $view == 'Kasie' ? '' : 'style="display:none"' ?>>
-                                <button type="button" class="btn btn-success" onclick="mdlTambahRequest(this)" ><i class="fa fa-plus"></i> Tambah</button> 
-                                <!--  -->
+                            <div class="col-md-2 text-right" <?= $view == 'seksi_lain' ? '' : 'style="display:none"' ?>>
+                                <button type="button" class="btn btn-success" onclick="mdlTambahRequest2(this)" ><i class="fa fa-plus"></i> Tambah</button> 
                             </div>
                         </div>
                             <div class="box-body">
@@ -96,7 +100,7 @@
                 <?php }?>
                 <br /> 
                 <?php 
-                    if ($view == 'inputCosting' || $view == 'Kasie') { // selain resp. Miscellaneous Kepala Seksi dan Miscellaneous Costing tidak muncul 
+                    if ($view == 'inputCosting' || $view == 'Kasie' || $view == 'seksi_lain') { // selain resp. Miscellaneous Kepala Seksi dan Miscellaneous Costing tidak muncul 
                 ?>
                 <div class="row">
                     <div class="col-md-12">

@@ -115,8 +115,7 @@
                                         <tbody>
                                         <?php $no = 1; foreach ($data as $key => $val) {
                                             if ($val['status'] == '') { // item accept
-                                                $action = '<select name="action[]" class="form-control select2" style="width:150px" required>
-                                                            <option></option>
+                                                $action = '<select name="action[]" class="form-control select2" style="width:150px">
                                                             <option value="Approve">Approve</option>
                                                             <option value="Reject">Reject</option>
                                                         </select>  ';
@@ -165,6 +164,7 @@
                                         <?php $no++; }?>
                                         </tbody>
                                     </table>
+                                    <p style="color:red">*jika ingin menolak item yang diajukan miscellaneous, klik "Approve" kemudian ubah menjadi "Reject"</p>
                                 </div>
                                 <div class="panel-body text-center">
                                     <button class="btn btn-success" formaction="<?php echo base_url("MiscellaneousKadep/Request/submitKadep")?>"><i class="fa fa-check"></i> Submit</button>

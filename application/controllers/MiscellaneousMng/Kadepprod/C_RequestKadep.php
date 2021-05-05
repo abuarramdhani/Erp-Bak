@@ -109,8 +109,9 @@ class C_RequestKadep extends CI_Controller
 		for ($i=0; $i < count($id_item); $i++) { 
 			$cek = $this->M_request->getdataKadep('where id_item = '.$id_item[$i].'');
 			if (empty($cek)) {
+				$act = empty($action[$i]) ? 'Approve' : $action[$i];
 				$qty = empty($revqty[$i]) ? 'null' : $revqty[$i];
-				$this->M_request->saveKadep($id_item[$i], $qty, $action[$i], $note[$i], $pic, $tgl);
+				$this->M_request->saveKadep($id_item[$i], $qty, $act, $note[$i], $pic, $tgl);
 			}
 		}
 		$this->M_request->updateHeader('Proses Approve Ka. Seksi Akt Biaya', $id_header);

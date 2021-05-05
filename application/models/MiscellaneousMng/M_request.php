@@ -146,6 +146,23 @@ public function getOrgID($io){
   return $query->result_array();
 }
 
+public function assign_kasie($term){
+  $sql = "SELECT su.user_name, vsu.employee_name
+          FROM sys.sys_user su,
+          sys.sys_user_application sua,
+          sys.sys_user_group_menu sugm,
+          sys.sys_module smod,
+          sys.vi_sys_user vsu
+          WHERE su.user_id = sua.user_id
+          AND vsu.user_id = su.user_id
+          AND sua.user_group_menu_id = sugm.user_group_menu_id
+          AND smod.module_id= sugm.module_id
+          AND sugm.user_group_menu_id = 2800 --2800 -- 2789 dev, id Miscellaneous Kepala Seksi
+          AND su.user_name like'%$term%'";
+  $query = $this->db->query($sql);
+  return $query->result_array();
+}
+
 public function assign_order($term){
   $sql = "SELECT su.user_name, vsu.employee_name
           FROM sys.sys_user su,
@@ -157,7 +174,7 @@ public function assign_order($term){
           AND vsu.user_id = su.user_id
           AND sua.user_group_menu_id = sugm.user_group_menu_id
           AND smod.module_id= sugm.module_id
-          AND sugm.user_group_menu_id = 2801 -- 2790 dev, id Miscellaneous Kepala Seksi Utama
+          AND sugm.user_group_menu_id = 2801 --2801 -- 2790 dev, id Miscellaneous Kepala Seksi Utama
           AND su.user_name like'%$term%'";
   $query = $this->db->query($sql);
   return $query->result_array();
@@ -174,7 +191,7 @@ public function assign_cabang($term){
           AND vsu.user_id = su.user_id
           AND sua.user_group_menu_id = sugm.user_group_menu_id
           AND smod.module_id= sugm.module_id
-          AND sugm.user_group_menu_id = 2806 -- 2823 dev, id Miscellaneous Kepala Cabang
+          AND sugm.user_group_menu_id = 2806 --2806 -- 2823 dev, id Miscellaneous Kepala Cabang
           AND su.user_name like'%$term%'";
   $query = $this->db->query($sql);
   return $query->result_array();
@@ -191,7 +208,7 @@ public function assign_ppc($term){
           AND vsu.user_id = su.user_id
           AND sua.user_group_menu_id = sugm.user_group_menu_id
           AND smod.module_id= sugm.module_id
-          AND sugm.user_group_menu_id = 2802 -- 2791 dev,id Miscellaneous Seksi PPC
+          AND sugm.user_group_menu_id = 2802 --2802 -- 2791 dev,id Miscellaneous Seksi PPC
           AND su.user_name like'%$term%'";
   $query = $this->db->query($sql);
   return $query->result_array();
@@ -338,6 +355,21 @@ public function getAkunCOA($term, $cost_center){
   return $query->result_array();
 }
 
+public function getAkunCOA2($term){
+  $sql = "SELECT DISTINCT gcc.segment3 akun
+          FROM gl_code_combinations gcc,
+            fnd_flex_values_vl ffv_akun,
+            fnd_flex_values_vl ffv_cc
+          WHERE ffv_akun.flex_value_set_id = 1013708
+          AND ffv_akun.flex_value = gcc.segment3
+          AND ffv_cc.flex_value_set_id = 1013709
+          AND ffv_cc.flex_value = gcc.segment4
+          AND gcc.segment3 like '%$term%'
+          ORDER BY gcc.segment3";
+  $query = $this->oracle->query($sql);
+  return $query->result_array();
+}
+
     public function saveTemp($data){
       $this->db->trans_start();
       $this->db->insert('mcl.tbl_request_temp',$data);
@@ -380,7 +412,8 @@ public function getAkunCOA($term, $cost_center){
     }
 
     public function approver_misc($id){
-      $sql = "SELECT mas.pic pic_askanit, mas.tgl_approve tgl_askanit,
+      $sql = "SELECT mck.pic pic_kasie, mck.tgl_approve tgl_kasie, 
+                    mas.pic pic_askanit, mas.tgl_approve tgl_askanit,
                     mca.pic pic_cabang, mca.tgl_approve tgl_cabang,
                     mpp.pic pic_ppc, mpp.tgl_approve tgl_ppc,
                     mkp.pic pic_kadep, mkp.tgl_approve tgl_kadep,
@@ -402,6 +435,8 @@ public function getAkunCOA($term, $cost_center){
                 ON mir.id_item = mak.id_item
                 FULL JOIN mcl.mcl_costing_input mci
                 ON mir.id_item = mci.id_item
+                FULL JOIN mcl.mcl_kasie mck
+                ON mir.id_item = mck.id_item
               WHERE mir.id_item = $id";
       $query = $this->db->query($sql);
       return $query->result_array();
@@ -409,7 +444,8 @@ public function getAkunCOA($term, $cost_center){
     
     public function cariReject($id){
       $sql = "SELECT 
-              case when mca.action = 'Reject' then mca.pic
+              case when mck.action = 'Reject' then mck.pic
+                  when mca.action = 'Reject' then mca.pic
                   when mas.action = 'Reject' then mas.pic
                   when mpc.action = 'Reject' then mpc.pic
                   when mkp.action = 'Reject' then mkp.pic
@@ -417,7 +453,8 @@ public function getAkunCOA($term, $cost_center){
                   when mak.action = 'Reject' then mak.pic
                   when mci.action = 'Reject' then mci.pic
               end pic,
-              case when mca.action = 'Reject' then mca.note
+              case when mck.action = 'Reject' then mck.note
+                  when mca.action = 'Reject' then mca.note
                   when mas.action = 'Reject' then mas.note
                   when mpc.action = 'Reject' then mpc.note
                   when mkp.action = 'Reject' then mkp.note
@@ -440,6 +477,8 @@ public function getAkunCOA($term, $cost_center){
               ON mir.id_item = mcr.id_item
               FULL JOIN mcl.mcl_costing_input mci
               ON mir.id_item = mci.id_item
+              FULL JOIN mcl.mcl_kasie mck
+              ON mir.id_item = mck.id_item
               where mir.id_item = $id";
       $query = $this->db->query($sql);
       return $query->result_array();
@@ -476,6 +515,12 @@ public function getAkunCOA($term, $cost_center){
               '$desc_alasan', '$attachment')";
       $this->db->query($sql);
       $this->db->query('commit');
+    }
+
+    public function getdataKasie($term){
+      $sql = "select * from mcl.mcl_kasie $term";
+      $query = $this->db->query($sql);
+      return $query->result_array();
     }
     
     public function getdataCabang($term){
@@ -518,6 +563,12 @@ public function getAkunCOA($term, $cost_center){
       $sql = "select * from mcl.mcl_akuntansi $term";
       $query = $this->db->query($sql);
       return $query->result_array();
+    }
+
+    public function saveKasie($iditem, $action, $note, $pic, $tgl){
+      $sql = "insert into mcl.mcl_kasie (id_item, action, note, pic, tgl_approve)
+              values($iditem, '$action', '$note', '$pic', '$tgl')";
+      $query = $this->db->query($sql);
     }
     
     public function saveCabang($iditem, $action, $note, $pic, $tgl){
@@ -570,6 +621,12 @@ public function getAkunCOA($term, $cost_center){
     
     public function deleteItem($id){
       $sql = "delete from mcl.mcl_item_request where id_item = $id";
+      $this->db->query($sql);
+      $this->db->query('commit');
+    }
+    
+    public function deleteKasie($id){
+      $sql = "delete from mcl.mcl_kasie where id_item = $id";
       $this->db->query($sql);
       $this->db->query('commit');
     }

@@ -76,6 +76,30 @@ $(document).ready(function () {
         }
     });
     
+    $(".getkasieReq").select2({
+        allowClear: true,
+        minimumInputLength: 0,
+        ajax: {
+                url: baseurl + "MiscellaneousKasie/Request/getKasieApprove",
+                dataType: 'json',
+                type: "GET",
+                data: function (params) {
+                        var queryParameters = {
+                                term: params.term,
+                        }
+                        return queryParameters;
+                },
+                processResults: function (data) {
+                        // console.log(apa);
+                        return {
+                                results: $.map(data, function (obj) {
+                                        return {id:obj.user_name, text:obj.user_name+' - '+obj.employee_name};
+                                })
+                        };
+                }
+        }
+    });
+    
     $(".getapproverReq").select2({
         allowClear: true,
         minimumInputLength: 0,
@@ -221,8 +245,67 @@ $(document).ready(function () {
         },
       });
 
+      
+      $(".getTipeTrans").select2({
+        allowClear: true,
+        placeholder: "",
+        minimumInputLength: 0,
+        ajax: {
+                url: baseurl + "MiscellaneousCosting/Request/getTypeTransact",
+                dataType: 'json',
+                type: "GET",
+                data: function (params) {
+                        var queryParameters = {
+                                term: params.term,
+                        }
+                        return queryParameters;
+                },
+                processResults: function (data) {
+                        // console.log(apa);
+                        return {
+                                results: $.map(data, function (obj) {
+                                        return {id:obj.TRANSACTION_TYPE_NAME, text:obj.TRANSACTION_TYPE_NAME};
+                                })
+                        };
+                }
+        }
+        });
+
+        
+        $(".coa_yuk").select2({
+                allowClear: true,
+                placeholder: "",
+                minimumInputLength: 0,
+                ajax: {
+                        url: baseurl + "MiscellaneousCosting/Request/getAkunCOA2",
+                        dataType: 'json',
+                        type: "GET",
+                        data: function (params) {
+                                var queryParameters = {
+                                        term: params.term
+                                }
+                                return queryParameters;
+                        },
+                        processResults: function (data) {
+                                // console.log(apa);
+                                return {
+                                        results: $.map(data, function (obj) {
+                                                return {id:obj.AKUN, text:obj.AKUN};
+                                        })
+                                };
+                        }
+                }
+        });
+      
+      var seksi_lain = document.getElementById("miscellaneousseksi_lain");
+      if(seksi_lain){ // resp. Miscellaneous Seksi Lain
+          viewrequest('onprocess', 'seksi_lain', '#5EDB8C', 'onprocessSeksi_Lain', -1);//parameter data onprocess Misc Seksi Lain
+          viewrequest('finished', 'seksi_lain', '#50B6E6', 'finishedSeksi_Lain', 8);//parameter data finished Misc Seksi Lain
+      }
+
         var kasie = document.getElementById("miscellaneousKasie");
-        if(kasie){ // resp. Niscellaneous Kepala Seksi
+        if(kasie){ // resp. Miscellaneous Kepala Seksi
+            viewrequest('approve', 'kasie', '#F2636E', 'approveKasie', 0);//parameter data approve Misc Kepala Seksi (khusus kalo dari seksi lain)
             viewrequest('onprocess', 'kasie', '#5EDB8C', 'onprocessKasie', 0);//parameter data onprocess Misc Kepala Seksi
             viewrequest('finished', 'kasie', '#50B6E6', 'finishedKasie', 8);//parameter data finished Misc Kepala Seksi
         }
@@ -279,12 +362,6 @@ $(document).ready(function () {
         if(alasan){ // resp. miscellaneous costing menu setting alasan
                 getdataalasan();
         }
-
-        // var user = document.getElementById("tb_user_mng");
-        // if(user){
-        //         var ket = $('#ketuser').val();
-        //         getdatausermis(ket);
-        // }
 
 })
 
@@ -600,6 +677,22 @@ function delete_attach(no) {
 function mdlTambahRequest(th) {
         $.ajax({
                 url : baseurl + "MiscellaneousKasie/Request/modalTambahReq",
+                dataType : 'html',
+                type : 'POST',
+                success : function (data) {
+                        $('#mdlReqMis').modal('show');
+                        $('#datareq').html(data);
+                        $("#io").select2({
+                                allowClear: true,
+                                minimumInputLength: 0,
+                        });
+                }
+        })
+}
+
+function mdlTambahRequest2(th) {
+        $.ajax({
+                url : baseurl + "MiscellaneousSeksiLain/Request/modalTambahReq",
                 dataType : 'html',
                 type : 'POST',
                 success : function (data) {

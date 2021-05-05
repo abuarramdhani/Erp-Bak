@@ -58,6 +58,13 @@ class C_RequestCosting extends CI_Controller
 		echo json_encode($data);
 	}
 
+	public function getAkunCOA2(){
+		$term = $this->input->get('term',TRUE);
+		// $term = strtoupper($term);
+		$data = $this->M_request->getAkunCOA2($term);
+		echo json_encode($data);
+	}
+
 	public function getAkunCOA(){
 		$term = $this->input->get('term',TRUE);
 		$cost = $this->input->get('cost',TRUE);
@@ -279,9 +286,13 @@ class C_RequestCosting extends CI_Controller
 		}
 		$data['data'] = $datanya;
 		// echo "<pre>";print_r($approver);exit();
-		$pic_askanit = $pic_ppc = $pic_kadep = $pic_costing = $pic_akt = $pic_input = '';
-		$tgl_askanit = $tgl_ppc = $tgl_kadep = $tgl_costing = $tgl_akt = $tgl_input = '';
+		$pic_askanit = $pic_ppc = $pic_kadep = $pic_costing = $pic_akt = $pic_input = $pic_kasie = $pic_cabang = '';
+		$tgl_askanit = $tgl_ppc = $tgl_kadep = $tgl_costing = $tgl_akt = $tgl_input = $tgl_kasie = $tgl_cabang = '';
 		for ($a=0; $a < count($approver); $a++) { 
+			$pic_kasie 		= !empty($approver[$a]['pic_kasie']) ? $approver[$a]['pic_kasie'] : $pic_kasie;
+			$tgl_kasie 		= !empty($approver[$a]['tgl_kasie']) ? $approver[$a]['tgl_kasie'] : $tgl_kasie;
+			$pic_cabang 	= !empty($approver[$a]['pic_cabang']) ? $approver[$a]['pic_cabang'] : $pic_cabang;
+			$tgl_cabang 	= !empty($approver[$a]['tgl_cabang']) ? $approver[$a]['tgl_cabang'] : $tgl_cabang;
 			$pic_askanit 	= !empty($approver[$a]['pic_askanit']) ? $approver[$a]['pic_askanit'] : $pic_askanit;
 			$tgl_askanit 	= !empty($approver[$a]['tgl_askanit']) ? $approver[$a]['tgl_askanit'] : $tgl_askanit;
 			$pic_ppc 		= !empty($approver[$a]['pic_ppc']) ? $approver[$a]['pic_ppc'] : $pic_ppc;
@@ -295,8 +306,18 @@ class C_RequestCosting extends CI_Controller
 			$pic_input 		= !empty($approver[$a]['pic_input']) ? $approver[$a]['pic_input'] : $pic_input;
 			$tgl_input 		= !empty($approver[$a]['tgl_input']) ? $approver[$a]['tgl_input'] : $tgl_input;
 		}
-		$data['approver'] = array('pic_seksi' 	=> $requester.' - '.$nama_req,
-								'tgl_seksi' 	=> $tgl_request,
+		if (!empty($pic_kasie)) {
+			$pic_seksi = $pic_kasie.' - '.$this->cariPIC($pic_kasie);
+			$tgl_seksi = $tgl_kasie;
+		}elseif (!empty($pic_cabang)) {
+			$pic_seksi = $pic_cabang.' - '.$this->cariPIC($pic_cabang);
+			$tgl_seksi = $tgl_cabang;
+		}else {
+			$pic_seksi = $requester.' - '.$nama_req;
+			$tgl_seksi = $tgl_request;
+		}
+		$data['approver'] = array('pic_seksi' 	=> $pic_seksi,
+								'tgl_seksi' 	=> $tgl_seksi,
 								'pic_askanit' 	=> $pic_askanit.' - '.$this->cariPIC($pic_askanit),
 								'tgl_askanit' 	=> $tgl_askanit,	
 								'pic_ppc'		=> $pic_ppc.' - '.$this->cariPIC($pic_ppc),
@@ -338,6 +359,7 @@ class C_RequestCosting extends CI_Controller
 	public function deleteItem(){
 		$id_item 		= $this->input->post('id_item');
 		$del_item 		= $this->M_request->deleteItem($id_item);
+		$del_kasie		= $this->M_request->deleteKasie($id_item);
 		$del_cabang		= $this->M_request->deleteCabang($id_item);
 		$del_askanit 	= $this->M_request->deleteAskanit($id_item);
 		$del_ppc 		= $this->M_request->deletePPC($id_item);

@@ -86,6 +86,8 @@ class C_InputCosting extends CI_Controller
 			if ($status == '') { // tidak reject
 				$getdata[$key]['coaa'] 	= $this->buatCOAyuk($val['kode_item'], $val['cost_center']);
 			}
+			$ref = $this->M_request->getdataCostingInput("where id_item = ".$val['id_item']."");
+			$getdata[$key]['reference'] = !empty($ref) ? $ref[0]['reference'] : '';
 		}
 		$data['data'] = $getdata;
 		
@@ -159,7 +161,7 @@ class C_InputCosting extends CI_Controller
 		$pic 			= $this->session->user;
 		$tgl 			= date('Y-m-d H:i:s');
 		$user_id 		= 5182;
-		// echo "<pre>";print_r($reference);exit();
+		// echo "<pre>";print_r($action);exit();
 		$ket = 0;
 		for ($x=0; $x < count($inv_id); $x++) { 
 			if ($action[$x] == 'Input Oracle') {
@@ -186,7 +188,8 @@ class C_InputCosting extends CI_Controller
 		for ($i=0; $i < count($id_item); $i++) { 
 			$cek = $this->M_request->getdataCostingInput('where id_item = '.$id_item[$i].'');
 			if (empty($cek)) {
-				$this->M_request->saveCostingInput($id_item[$i], $action[$i], $reference[$i], $pic, $tgl);
+				$act = empty($action[$i]) ? 'Input Oracle' : $action[$i];
+				$this->M_request->saveCostingInput($id_item[$i], $act, $reference[$i], $pic, $tgl);
 			}
 		}
 		$this->M_request->updateHeader('Finished', $id_header);

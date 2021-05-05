@@ -16,7 +16,11 @@
         </div>
     </div>
     <div class="panel-body text-center">
+        <?php if ($ket == 'kasie') { ?>
         <button class="btn btn-success" formaction="<?php echo base_url('MiscellaneousKasie/Request/tambahrequest') ?>">Submit</button>
+        <?php }else { ?>
+        <button class="btn btn-success" formaction="<?php echo base_url('MiscellaneousSeksiLain/Request/tambahrequest') ?>">Submit</button>
+        <?php } ?>
         <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-left:20px">Cancel</button>
     </div>
 </div>

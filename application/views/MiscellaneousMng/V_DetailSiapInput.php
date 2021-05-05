@@ -111,8 +111,8 @@
                                                 <td><?= $val['locator']?></td>
                                                 <?php if ($val['status'] == '') { //item tidak reject ?>
                                                     <td><input name="referensi[]" class="form-control" style="width:150px" autocomplete="off"></td>
-                                                    <td><select name="action[]" class="form-control select2" style="width:150px" required>
-                                                            <option></option>
+                                                    <td><select name="action[]" class="form-control select2" style="width:150px">
+                                                            <!-- <option></option> -->
                                                             <option value="Input Oracle">Input Oracle</option>
                                                             <option value="Reject">Reject</option>
                                                         </select>    
@@ -165,6 +165,7 @@
                                             <?php $no++; }?>
                                         </tbody>
                                     </table>
+                                    <p style="color:red">*jika ingin menolak item yang diajukan miscellaneous, klik "Input Oracle" kemudian ubah menjadi "Reject"</p>
                                 </div>
                                 <div class="panel-body text-center">
                                     <button class="btn btn-success" formaction="<?php echo base_url("MiscellaneousCosting/Input/inputCosting")?>"><i class="fa fa-check"></i> Submit</button>

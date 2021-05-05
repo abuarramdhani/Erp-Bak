@@ -130,7 +130,8 @@ class C_RequestAkt extends CI_Controller
 		for ($i=0; $i < count($id_item); $i++) { 
 			$cek = $this->M_request->getdataAkt('where id_item = '.$id_item[$i].'');
 			if (empty($cek)) {
-				$this->M_request->saveAkt($id_item[$i], $action[$i], $note[$i], $pic, $tgl);
+				$act = empty($action[$i]) ? 'Approve' : $action[$i];
+				$this->M_request->saveAkt($id_item[$i], $act, $note[$i], $pic, $tgl);
 			}
 		}
 		$this->M_request->updateHeader('Siap Input Ka. Seksi Akt Biaya', $id_header);

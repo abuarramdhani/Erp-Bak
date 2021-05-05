@@ -29,6 +29,12 @@
                                 <h2 class="text-center" style="font-weight:bold;color:#444">REQUEST MISCELLANEOUS</h2>
                                 <div class="box box-primary">
                                 <form method="post" enctype="multipart/form-data">
+                                <div class="panel-body">
+                                    <button id="download_layout" formaction="<?= base_url("MiscellaneousKasie/Request/layout_request")?>" class="btn btn-success"><i class="fa fa-download"></i> Layout</button>
+                                    <button type="button" id="import_request" data-toggle="modal" data-target="#mdlimportrequest" class="btn btn-info"><i class="fa fa-upload"></i> Import</button>
+                                </div>
+                                </form>
+                                <form method="post" enctype="multipart/form-data">
                                     <div class="panel-body">
                                         <div class="col-md-6 text-right">
                                             <input type="radio" name="order" class="order_misc" value="ISSUE">ISSUE
@@ -198,8 +204,11 @@
                                         </div>
                                     </div>
                                     <div class="panel-body text-center">
-                                        <button id="tambah_req" formaction="<?= base_url("MiscellaneousKasie/Request/addRequest")?>" class="btn bg-orange"><i class="fa fa-plus"></i> Tambah</button>
-                                        <!-- <button type="button" id="tambah_req" onclick="addrequest()" class="btn bg-orange"><i class="fa fa-plus"></i> Tambah</button> -->
+                                        <?php if ($ket == 'kasie') { ?>
+                                            <button id="tambah_req" formaction="<?= base_url("MiscellaneousKasie/Request/addRequest")?>" class="btn bg-orange"><i class="fa fa-plus"></i> Tambah</button>
+                                        <?php }else { ?>
+                                            <button id="tambah_req" formaction="<?= base_url("MiscellaneousSeksiLain/Request/addRequest")?>" class="btn bg-orange"><i class="fa fa-plus"></i> Tambah</button>
+                                        <?php } ?>
                                     </div>
                                 </div>
                             </form>
@@ -256,6 +265,7 @@
                                                     <input type="hidden" id="pic<?= $no?>" name="pic2[]" value="<?= $value['pic']?>">
                                                     <input type="hidden" id="nomor<?= $no?>" name="nomor2[]" value="<?= $value['nomor']?>">
                                                     <input type="hidden" id="inv_item<?= $no?>" name="inv_item2[]" value="<?= $value['inv_item_id']?>">
+                                                    <input type="hidden" id="io<?= $no?>" name="io2[]" value="<?= $value['io']?>">
                                                 </td>
                                                 <td class="text-nowrap"><?= $value['item']?></td>
                                                 <td><?= $value['description']?></td>
@@ -292,6 +302,18 @@
                                                 <label>ASSIGN APPROVAL REQUEST</label>
                                             </div>
                                             <div class="modal-body">
+                                            <?php $ionya = substr($ioo, 0,1);
+                                                if ($ket == 'seksi_lain' && $ionya != 'A' && $ionya != 'B' && $ionya != 'G' && $ionya != 'H' && $ionya != 'J' && $ionya != 'K' && $ionya != 'M' && $ionya != 'S' && $ionya != 'U') { ?>
+                                                <div class="panel-body">
+                                                    <div class="col-md-2"></div>
+                                                    <div class="col-md-8">
+                                                        <label>Pilih Ka. Seksi Gudang :</label>
+                                                        <select name="assign_kasie" id="assign_kasie" class="form-control select2 getkasieReq" style="width:100%" data-placeholder="Pilih Ka. Seksi Utama / Aska / Ka. Unit">
+                                                            <option></option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            <?php } ?>
                                                 <div class="panel-body">
                                                     <div class="col-md-2"></div>
                                                     <div class="col-md-8">
@@ -319,7 +341,12 @@
                                                     </div>
                                                 </div>
                                                 <div class="panel-body text-center">
-                                                    <button id="submit_req" class="btn btn-success" formaction="<?php echo base_url("MiscellaneousKasie/Request/SaveRequest")?>"><i class="fa fa-check"></i> Submit</button>
+                                                    <?php if ($ket == 'kasie') { ?>
+                                                        <button id="submit_req" class="btn btn-success" formaction="<?php echo base_url("MiscellaneousKasie/Request/SaveRequest")?>"><i class="fa fa-check"></i> Submit</button>
+                                                    <?php }else { ?>
+                                                        <button id="submit_req" class="btn btn-success" formaction="<?php echo base_url("MiscellaneousSeksiLain/Request/SaveRequest")?>"><i class="fa fa-check"></i> Submit</button>
+                                                    <?php } ?>
+                                                    
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
@@ -367,6 +394,36 @@
                 </div>
             </div>
         </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<div class="modal fade" id="mdlimportrequest" role="dialog">
+    <div class="modal-dialog" style="padding-left:5px;">
+      <!-- Modal content-->
+      <div class="modal-content">
+            <div class="modal-header text-center" style="background-color:#49D3F5;font-size:18px">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <label>UPLOAD REQUEST</label>
+            </div>
+            <div class="modal-body">
+                <div class="panel-body">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-8">
+                        <div class="input-group">
+                            <input type="file" class="form-control" id="file_request" name="file_request" accept=".xls, .xlsx, .csv">
+                            <input type="hidden" name="ket" id="ket" value="<?= $ket?>">
+                            <input type="hidden" name="io" id="io" value="<?= $ioo?>">
+                            <span class="input-group-btn">
+                                <button class="btn btn-success" style="margin-left:15px;" formaction="<?= base_url("MiscellaneousKasie/Request/import_request")?>"><i class="fa fa-check"></i> Submit</button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         </div>
