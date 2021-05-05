@@ -3,7 +3,7 @@
 <table style="width: 100%; border-bottom :0px; border-collapse: collapse; text-align:center;" >
     <tr>
         <td style="width: 30%;border-bottom :0px; border-collapse: collapse; border: 1px solid black;height:30px;text-align:left">Catatan / Keterangan</td>
-        <td style="width: 10%;border-bottom :0px; border-collapse: collapse; border: 1px solid black;height:30px">KA. Seksi</td>
+        <td style="width: 10%;border-bottom :0px; border-collapse: collapse; border: 1px solid black;height:30px">Ka. Seksi</td>
         <td style="width: 10%;border-bottom :0px; border-collapse: collapse; border: 1px solid black;height:30px">Ka. Seksi Utama / Aska. / Ka. Unit <sup style="font-size:9px">2</sup></td>
         <td style="width: 10%;border-bottom :0px; border-collapse: collapse; border: 1px solid black;height:30px">Ka. Seksi PPC <sup style="font-size:9px">3</sup></td>
         <td style="width: 10%;border-bottom :0px; border-collapse: collapse; border: 1px solid black;height:30px">Waka. / Ka. Department <sup style="font-size:9px">4</sup></td>

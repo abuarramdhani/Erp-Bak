@@ -63,7 +63,8 @@ class C_RequestCabang extends CI_Controller
 		for ($i=0; $i < count($id_item); $i++) { 
 			$cek = $this->M_request->getdataCabang('where id_item = '.$id_item[$i].'');
 			if (empty($cek)) {
-				$this->M_request->saveCabang($id_item[$i], $action[$i], $note[$i], $pic, $tgl);
+				$act = empty($action[$i]) ? 'Approve' : $action[$i];
+				$this->M_request->saveCabang($id_item[$i], $act, $note[$i], $pic, $tgl);
 			}
 		}
 
