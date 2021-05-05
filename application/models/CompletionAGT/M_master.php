@@ -99,26 +99,24 @@ class M_master extends CI_Model
       $date1 = $range[0];
       $date2 = $range[1];
       return $this->oracle->query("SELECT wdj.primary_item_id, we.wip_entity_name no_job, msib.segment1 kode_item, msib.description,
-                                         wdj.start_quantity qty_job, wdj.quantity_completed, wdj.quantity_scrapped,
-                                         (wdj.net_quantity - wdj.quantity_completed - wdj.quantity_scrapped) remaining_qty,
-                                         wdj.date_released
-                                    FROM wip_entities we,
-                                         wip_discrete_jobs wdj,
-                                         mtl_system_items_b msib,
-                                         wip_operations wo,
-                                         wip_operation_resources wor,
-                                         bom_departments bd
-                                   WHERE we.wip_entity_id = wdj.wip_entity_id
-                                     AND wdj.status_type = 3
-                                     AND wdj.primary_item_id = msib.inventory_item_id
-                                     AND wdj.organization_id = msib.organization_id
-                                     AND wo.wip_entity_id = wdj.wip_entity_id
-                                     AND wo.organization_id = wdj.organization_id
-                                     AND wor.wip_entity_id = wo.wip_entity_id
-                                     AND wor.organization_id = wdj.organization_id
-                                     AND wo.department_id = bd.department_id
-                                     AND wo.organization_id = bd.organization_id
-                                     AND TO_CHAR(wdj.date_released, 'YYYY-MM-DD') BETWEEN '$date1' AND '$date2'")->result_array();
+                                            wdj.start_quantity qty_job, wdj.quantity_completed, wdj.quantity_scrapped,
+                                            (wdj.net_quantity - wdj.quantity_completed - wdj.quantity_scrapped) remaining_qty,
+                                            TO_CHAR(wdj.date_released, 'YYYY-MM-DD HH:MI:SS') date_released
+                                       FROM wip_entities we,
+                                            wip_discrete_jobs wdj,
+                                            mtl_system_items_b msib,
+                                            wip_operations wo,
+                                            bom_departments bd
+                                      WHERE we.wip_entity_id = wdj.wip_entity_id
+                                        AND wdj.status_type = 3
+                                        AND wdj.primary_item_id = msib.inventory_item_id
+                                        AND wdj.organization_id = msib.organization_id
+                                        AND wo.wip_entity_id = wdj.wip_entity_id
+                                        AND wo.organization_id = wdj.organization_id
+                                        AND wo.department_id = bd.department_id
+                                        AND wo.organization_id = bd.organization_id
+                                        AND bd.department_class_code = 'PRKTA'
+                                        AND TO_CHAR(wdj.date_released, 'YYYY-MM-DD') BETWEEN '$date1' AND '$date2'")->result_array();
     }
     // --job tertua
     // SELECT wdj.primary_item_id, wdj.creation_date, we.wip_entity_name no_job,
