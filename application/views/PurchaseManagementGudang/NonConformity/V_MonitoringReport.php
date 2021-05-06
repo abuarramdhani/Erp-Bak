@@ -13,17 +13,18 @@
                         </div>
                     </div>
                 </div>
-                <br/>
+                <br />
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="box box-primary">
                             <div class="box-body">
-                                <button type="button" class="btn btn-default btnFilterNC"><i class="fa fa-filter"></i>Filters</button><br><br>
-                                <table class="table table-bordered table-hover table-striped" id="tblMonitoringNonC">
+                                <button type="button" class="btn btn-default btnFilterNC"><i
+                                        class="fa fa-filter"></i>Filters</button><br><br>
+                                <table class="table table-bordered" id="tblMonitoringNonC">
                                     <thead>
                                         <tr class="bg-aqua">
                                             <th>TASKLIST</th>
-                                            <th width="250px">NC Number</th>
+                                            <th>NC Number</th>
                                             <th>Verificator</th>
                                             <th>PERIODE</th>
                                             <th>NO.</th>
@@ -48,167 +49,192 @@
                                     </thead>
                                     <tbody>
                                         <?php foreach ($monitoring_report as $key => $report) { ?>
-                                            <tr>
-                                                <td>
-                                                    <?php
-
+                                        <tr>
+                                            <td>
+                                                <?php
+                                                    if ($report[0] != NULL) {
                                                         if (!$report['tasklist']) {
                                                             echo 'Pending Assign';
-                                                        }elseif ($report['tasklist'] == 1 &&  $report[0][0]['status'] !=1 && $report['forward_buyer'] != 1) {
-                                                           echo 'List Data Supplier';
-                                                        }elseif ($report['tasklist'] == 2 &&  $report[0][0]['status'] !=1 && $report['forward_buyer'] != 1) {
+                                                        } elseif ($report['tasklist'] == 1 &&  $report[0][0]['status'] != 1 && $report['forward_buyer'] != 1) {
+                                                            echo 'List Data Supplier';
+                                                        } elseif ($report['tasklist'] == 2 &&  $report[0][0]['status'] != 1 && $report['forward_buyer'] != 1) {
                                                             echo 'List Data Subkon';
-                                                        }elseif ($report['tasklist'] == 3 &&  $report[0][0]['status'] !=1) {
+                                                        } elseif ($report['tasklist'] == 3 &&  $report[0][0]['status'] != 1) {
                                                             echo 'Return to PPB';
-                                                        }elseif ($report['tasklist'] == 4 &&  $report[0][0]['status'] !=1) {
+                                                        } elseif ($report['tasklist'] == 4 &&  $report[0][0]['status'] != 1) {
                                                             echo 'Pending Execute';
-                                                        }elseif ($report['forward_buyer'] == 1 &&  $report[0][0]['status'] !=1) {
-                                                           echo 'List Data For Buyer';
-                                                        }elseif ( $report[0][0]['status'] == 1) {
+                                                        } elseif ($report['forward_buyer'] == 1 &&  $report[0][0]['status'] != 1) {
+                                                            echo 'List Data For Buyer';
+                                                        } elseif ($report[0][0]['status'] == 1) {
                                                             echo 'Finish Order';
                                                         }
+                                                    }
+                                                    if (empty($report[0])) {
+                                                        echo '-';
+                                                    }
                                                     ?>
-                                                </td>
-                                                <td>
-                                                    <button type="button" class="btn btn-default btnMdlNCMonitoring" value="<?= $report[0][0]['source_id'];?>"><?= $report['non_conformity_num'];?></button>
-                                                    
-                                                    <div class="modal fade" id="mdlNCMonitoring-<?= $report[0][0]['source_id'];?>">
-                                                        <div class="modal-dialog">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            </td>
+                                            <td>
+                                                <?php
+                                                    if ($report[0] != NULL) {
+                                                        if ($report[2] != NULL) {
+                                                            if ($report[2][0]['file_name'] != NULL) { ?>
+                                                <span><?= $report['non_conformity_num']; ?></span><br>
+                                                <div style="position:relative;width:fit-content;">
+                                                    <button class="btnMdlNCMonitoring"
+                                                        style="position:absolute;width:100%;height:100%;opacity:0;"
+                                                        data-ncnumber="<?= $report['non_conformity_num']; ?>"></button>
+                                                    <img style="max-height:200px;width:auto;"
+                                                        src="<?= base_url($report[2][0]['image_path'] . $report[2][0]['file_name']) ?>"></img>
+                                                </div>
+                                                <?php
+                                                            } else {
+                                                                echo '-';
+                                                            }
+                                                        }
+                                                        if (empty($report[2])) {
+                                                            echo '-';
+                                                        }
+                                                    } ?>
+
+                                                <div class="modal fade"
+                                                    id="mdlNCMonitoring-<?= $report['non_conformity_num']; ?>">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-label="Close">
                                                                     <span aria-hidden="true">&times;</span></button>
-                                                                <h4 class="modal-title">Attachment <?= $report['non_conformity_num'];?></h4>
+                                                                <h4 class="modal-title">Attachment
+                                                                    <?= $report['non_conformity_num']; ?></h4>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div align="center"><img style="width:100%"
+                                                                        src="<?= base_url($report[2][0]['image_path'] . $report[2][0]['file_name']) ?>">
                                                                 </div>
-                                                                <div class="modal-body">
-                                                                    <div align="center" class="loadingImageNC-<?= $report[0][0]['source_id'];?>" style="display:none">
-                                                                        <img src="<?= base_url('assets/img/gif/loading5.gif')?>" alt="">
-                                                                    </div>
-                                                                    <div class="imgNC-<?= $report[0][0]['source_id'];?>" align="center"></div>
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-default pull-left"
+                                                                    data-dismiss="modal">Close</button>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </td>
-                                                <td><?= $report['verificator'];?></td>
-                                                <td><?= date('Y-m-d', strtotime($report['periode']));?></td>
-                                                <td><?php
-                                                        $nc_num = $report['non_conformity_num'];
-                                                        $nc = explode('-',$nc_num);
+                                                </div>
+                                            </td>
+                                            <td><?= $report['verificator']; ?></td>
+                                            <td><?= date('Y-m-d', strtotime($report['periode'])); ?></td>
+                                            <td><?php
+                                                    $nc_num = $report['non_conformity_num'];
+                                                    $nc = explode('-', $nc_num);
 
-                                                        echo $nc[4];
+                                                    echo $nc[4];
                                                     ?>
-                                                </td>
-                                                <td>
-                                                    <?php 
-                                                        if ($report[1]) {
-                                                            echo $report[1][0]['no_lppb'];
-                                                        }
+                                            </td>
+                                            <td>
+                                                <?php
+                                                    if ($report[1]) {
+                                                        echo $report[1][0]['no_lppb'];
+                                                    }
                                                     ?>
-                                                </td>
-                                                <td><?= $report['tgl_sj'];?></td>
-                                                <td><?= $report['no_sj'];?></td>
-                                                <td><?php foreach ($report[1] as $keys => $po) { 
+                                            </td>
+                                            <td><?= $report['tgl_sj']; ?></td>
+                                            <td><?= $report['no_sj']; ?></td>
+                                            <td><?php foreach ($report[1] as $keys => $po) {
                                                         if (count($report[1]) > 1) {
-                                                            if (($keys+1) == count($report[1])) {
-                                                                echo $po['no_po'].'('.$po['line'].')';
-                                                            }else{
+                                                            if (($keys + 1) == count($report[1])) {
+                                                                echo $po['no_po'] . '(' . $po['line'] . ')';
+                                                            } else {
 
-                                                                echo $po['no_po'].'('.$po['line'].'), <br>';
+                                                                echo $po['no_po'] . '(' . $po['line'] . '), <br>';
                                                             }
-                                                            
-                                                        }else{
-                                                            echo $po['no_po'].'('.$po['line'].')';
+                                                        } else {
+                                                            echo $po['no_po'] . '(' . $po['line'] . ')';
                                                         }
-                                                        
                                                     } ?>
-                                                </td>
-                                                <td><?php foreach ($report[1] as $keys => $item) { 
+                                            </td>
+                                            <td><?php foreach ($report[1] as $keys => $item) {
                                                         if (count($report[1]) > 1) {
-                                                            if (($keys+1) == count($report[1])) {
+                                                            if (($keys + 1) == count($report[1])) {
                                                                 echo $item['item_code'];
-                                                            }else{
-                                                                echo $item['item_code'].', <br>';
+                                                            } else {
+                                                                echo $item['item_code'] . ', <br>';
                                                             }
-                                                        }else{
+                                                        } else {
                                                             echo $item['item_code'];
                                                         }
                                                     } ?>
-                                                </td>
-                                                <td><?= $report['vendor'];?></td>
-                                                <td><?php if ($report[1]) {
-                                                    echo $report[1][0]['buyer'];
-                                                };?></td>
-                                                <td><?php foreach ($report[0] as $keys => $case) { 
+                                            </td>
+                                            <td><?= $report['vendor']; ?></td>
+                                            <td><?php if ($report[1]) {
+                                                        echo $report[1][0]['buyer'];
+                                                    }; ?></td>
+                                            <td><?php foreach ($report[0] as $keys => $case) {
                                                         if (count($report[0] > 1)) {
-                                                            if (($keys+1) == count($report[1])) {
+                                                            if (($keys + 1) == count($report[1])) {
                                                                 echo $case['case_name'];
-                                                            }else{
-                                                                echo $case['case_name'].'. <br>';
+                                                            } else {
+                                                                echo $case['case_name'] . '. <br>';
                                                             }
-                                                        }else{
+                                                        } else {
                                                             echo $case['case_name'];
                                                         }
                                                     } ?></td>
-                                                 <td>
-                                                    <?php 
+                                            <td>
+                                                <?php
                                                     if ($report[0]) {
                                                         echo $report[0][0]['problem_tracking'];
                                                     }
                                                     ?>
-                                                </td>
-                                                <td>
-                                                    <?php 
-                                                        if ($report[0]) {
-                                                            
-                                                            $scope = $report[0][0]['scope'];
-                                                            if ($scope == 0) {
-                                                                echo 'External';
-                                                            }else if($scope == 1){
-                                                                echo 'Internal';
-                                                            }
+                                            </td>
+                                            <td>
+                                                <?php
+                                                    if ($report[0]) {
+
+                                                        $scope = $report[0][0]['scope'];
+                                                        if ($scope == 0) {
+                                                            echo 'External';
+                                                        } else if ($scope == 1) {
+                                                            echo 'Internal';
                                                         }
+                                                    }
                                                     ?>
-                                                </td>
-                                                <td>
-                                                    <?php 
+                                            </td>
+                                            <td>
+                                                <?php
                                                     if ($report[0]) {
                                                         echo $report[0][0]['judgement'];
                                                     }
                                                     ?>
-                                                </td>
-                                                <td>
-                                                    <?php 
+                                            </td>
+                                            <td>
+                                                <?php
                                                     if ($report[0]) {
                                                         echo $report[0][0]['problem_completion'];
                                                     }
                                                     ?>
-                                                </td>
-                                                <td>
-                                                    <?php 
+                                            </td>
+                                            <td>
+                                                <?php
                                                     if ($report[0]) {
                                                         echo $report[0][0]['completion_date'];
                                                     }
                                                     ?>
-                                                </td>
-                                                <td>
-                                                <?php 
-                                                if ($report[0]) {
-                                                    if ($report[0][0]['status'] == 0) {
-                                                       echo 'OPEN';
-                                                    }elseif ($report[0][0]['status'] == 1) {
-                                                        echo 'CLOSE';
+                                            </td>
+                                            <td>
+                                                <?php
+                                                    if ($report[0]) {
+                                                        if ($report[0][0]['status'] == 0) {
+                                                            echo 'OPEN';
+                                                        } elseif ($report[0][0]['status'] == 1) {
+                                                            echo 'CLOSE';
+                                                        }
                                                     }
-                                                }
-                                                ?>
-                                                </td>
-                                                <td><?php echo $report['last_menu'] ?></td>
-                                                <td><?php echo $report['last_update_date'] ?></td>
-                                                <td><?php echo $report['last_updated_by'] ?></td>
-                                            </tr>
+                                                    ?>
+                                            </td>
+                                            <td><?php echo $report['last_menu'] ?></td>
+                                            <td><?php echo $report['last_update_date'] ?></td>
+                                            <td><?php echo $report['last_updated_by'] ?></td>
+                                        </tr>
                                         <?php } ?>
                                     </tbody>
                                 </table>
@@ -222,68 +248,73 @@
 </section>
 <div class="modal fade" id="ModFilterReportNC">
     <div class="modal-dialog" style="min-width:800px;">
-    <div class="modal-content">
-        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title">Filter</h4>
-        </div>
-        <div class="modal-body">
-            <div class="box box-body">
-                <div class="col-md-12">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="col-sm-4 control-label">Status</label>
-            
-                            <div class="col-sm-8">
-                                <select class="slc2 slcStatusNC" data-placeholder="Filter by status" name="slcSeksi[]" style="width: 100%;">
-                                    <option></option>
-                                    <option value="OPEN">OPEN</option>
-                                    <option value="CLOSE">CLOSE</option>
-                                </select>
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Filter</h4>
+            </div>
+            <div class="modal-body">
+                <div class="box box-body">
+                    <div class="col-md-12">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">Status</label>
+
+                                <div class="col-sm-8">
+                                    <select class="slc2 slcStatusNC" data-placeholder="Filter by status"
+                                        name="slcSeksi[]" style="width: 100%;">
+                                        <option></option>
+                                        <option value="OPEN">OPEN</option>
+                                        <option value="CLOSE">CLOSE</option>
+                                    </select>
+                                </div>
+                            </div><br><br>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">Periode</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control minPeriodeNC"
+                                        placeholder="Filter by min. tanpa %" style="width: 100%;"><br>
+                                    <input type="text" class="form-control maxPeriodeNC"
+                                        placeholder="Filter by max. tanpa %" style="width: 100%;">
+                                </div>
                             </div>
-                        </div><br><br>
-                        <div class="form-group">
-						    <label class="col-sm-4 control-label">Periode</label>
-						    <div class="col-sm-8">
-							    <input type="text" class="form-control minPeriodeNC" placeholder="Filter by min. tanpa %" style="width: 100%;"><br>
-							    <input type="text" class="form-control maxPeriodeNC" placeholder="Filter by max. tanpa %" style="width: 100%;">
-						    </div>
-					    </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-							<label class="col-sm-4 control-label">Vendor</label>
-							<div class="col-sm-8">
-								<select name="slcVendorNC" class="slcVendorNC" data-placeholder="Filter by Vendor" style="width: 100%;">
-									<option></option>
-									<?php foreach ($list_vendor as $key => $vendor) { ?>
-										<option value="<?= $vendor['vendor'] ?>"> <?= $vendor['vendor'] ?></option>
-									<?php } ?>
-								</select>
-							</div>
-						</div>
-                    </div><br><br><br>
-                    <div class="col-md-6">
-                        <div class="form-group">
-							<label class="col-sm-4 control-label">Buyer</label>
-							<div class="col-sm-8">
-								<select name="slcBuyerNC" class="slcBuyerNC" data-placeholder="Filter by Buyer" style="width: 100%;">
-									<option></option>
-									<?php foreach ($list_buyer as $key => $buyer) { ?>
-										<option value="<?= $buyer['buyer'] ?>"> <?= $buyer['buyer'] ?></option>
-									<?php } ?>
-								</select>
-							</div>
-						</div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">Vendor</label>
+                                <div class="col-sm-8">
+                                    <select name="slcVendorNC" class="slcVendorNC" data-placeholder="Filter by Vendor"
+                                        style="width: 100%;">
+                                        <option></option>
+                                        <?php foreach ($list_vendor as $key => $vendor) { ?>
+                                        <option value="<?= $vendor['vendor'] ?>"> <?= $vendor['vendor'] ?></option>
+                                        <?php } ?>
+                                    </select>
+                                </div>
+                            </div>
+                        </div><br><br><br>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">Buyer</label>
+                                <div class="col-sm-8">
+                                    <select name="slcBuyerNC" class="slcBuyerNC" data-placeholder="Filter by Buyer"
+                                        style="width: 100%;">
+                                        <option></option>
+                                        <?php foreach ($list_buyer as $key => $buyer) { ?>
+                                        <option value="<?= $buyer['buyer'] ?>"> <?= $buyer['buyer'] ?></option>
+                                        <?php } ?>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
+            <div class="modal-footer">
+                <button class="btn btn-md btn-default pull-left" data-dismiss="modal">Close</button>
+                <button class="btn btn-md bg-navy" onclick="filterMonitoringReportNC(event)">Set Filter </button>
+            </div>
         </div>
-        <div class="modal-footer">
-            <button class="btn btn-md btn-default pull-left" data-dismiss="modal">Close</button>
-            <button class="btn btn-md bg-navy" onclick="filterMonitoringReportNC(event)">Set Filter </button>
-        </div>
-    </div>
     </div>
 </div>
