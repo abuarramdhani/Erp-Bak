@@ -2502,7 +2502,11 @@ class C_Order extends CI_Controller
 		$latestBon = $this->M_order->getLatestBonSafetyShoes($noind);
 		$safetyShoes = $this->M_order->getStockSafetyShoesById($no_apd, $gudang);
 		$periode = $this->M_order->getPeriodeSafetyShoes($kodesie);
-		$periode = $periode->periode;
+		
+		// periode pengambilan
+		$defaultPeriode = 12; // bulan
+		$periode = isset($periode->periode) ? $periode->periode : $defaultPeriode;
+		
 		if (!$safetyShoes) return $this->response(true, [
 			'bon_terakhir' => isset($latestBon->date) ? $latestBon->date : '-'
 		], "Sepatu tidak ada di database gudang");
