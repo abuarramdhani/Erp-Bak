@@ -25,6 +25,8 @@ class M_insert extends CI_Model
     public function InsertTagihan($tagihan)
     {
         $sql = "insert into psub.psub_lppb_subkon (
+        shipment_num,
+        quantity_receive,
         quantity_bersih,
         uom_code,
         item_description_po,
@@ -36,6 +38,8 @@ class M_insert extends CI_Model
         vendor_name,
         transaction_id,
         po_num) values(" .
+            $tagihan['SHIPMENT_NUM'] . ",'" .
+            $tagihan['QTY_RECEIVE'] . ",'" .
             $tagihan['QTY_BERSIH'] . ",'" .
             $tagihan['UOM_CODE'] . "','" .
             $tagihan['ITEM_DESCRIPTION_PO'] . "','" .
