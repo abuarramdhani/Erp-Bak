@@ -6,7 +6,7 @@
         <th style="border-right:none;border: 1px solid black;border-collapse:collapse;width:34%">NAMA BARANG</th>
         <th style="border-right:none;border: 1px solid black;border-collapse:collapse;width:8%">NO LPPB</th>
         <th style="border-right:none;border: 1px solid black;border-collapse:collapse;width:8%">NO PO</th>
-        <th style="border-right:none;border: 1px solid black;border-collapse:collapse;width:8%">NO SHPMENT</th>
+        <th style="border-right:none;border: 1px solid black;border-collapse:collapse;width:8%">NO SHIPMENT</th>
         <th style="border-right:none;border: 1px solid black;border-collapse:collapse;width:8%">TGL SP</th>
         <th style="border-right:none;border: 1px solid black;border-collapse:collapse;width:8%">HARGA SATUAN</th>
         <th style="border-right:none;border: 1px solid black;border-collapse:collapse;width:8%">JUMLAH</th>
@@ -48,7 +48,7 @@
             <th style="border-right:none;border: 1px solid black;border-collapse:collapse;width:34%">NAMA BARANG</th>
             <th style="border-right:none;border: 1px solid black;border-collapse:collapse;width:8%">NO LPPB</th>
             <th style="border-right:none;border: 1px solid black;border-collapse:collapse;width:8%">NO PO</th>
-            <th style="border-right:none;border: 1px solid black;border-collapse:collapse;width:8%">NO SHPMENT</th>
+            <th style="border-right:none;border: 1px solid black;border-collapse:collapse;width:8%">NO SHIPMENT</th>
             <th style="border-right:none;border: 1px solid black;border-collapse:collapse;width:8%">TGL SP</th>
             <th style="border-right:none;border: 1px solid black;border-collapse:collapse;width:8%">HARGA SATUAN</th>
             <th style="border-right:none;border: 1px solid black;border-collapse:collapse;width:8%">JUMLAH</th>
