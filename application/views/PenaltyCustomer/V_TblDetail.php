@@ -36,7 +36,7 @@
                     <td class="text-center">Rp <?= number_format($penalty['NOMINAL_INVOICE'], 0) ?></td>
                     <td class="text-center">Rp <?= number_format($penalty['NOMINAL_PENALTY'], 0) ?></td>
                     <td class="text-center">Rp <?= number_format($penalty['TOTAL_PEMBAYARAN'], 0) ?></td>
-                    <input type="hidden" class="total_byr_penalty" data-row="<?= $no ?>" id="total_byr_penalty<?= $no ?>" value="<?= $penalty['NOMINAL_PENALTY'] ?>">
+                    <input type="hidden" class="total_byr_penalty" data-row="<?= $no ?>" id="total_byr_penalty<?= $no ?>" value="<?= $penalty['SISA_PENALTY'] ?>">
                     <input type="hidden" class="org_id_penalty" data-row="<?= $no ?>" id="org_id_penalty<?= $no ?>" value="<?= $penalty['ORG_ID'] ?>">
                     <input type="hidden" class="invoice_num_penalty" data-row="<?= $no ?>" id="invoice_num_penalty<?= $no ?>" value="<?= $penalty['INVOICE_NUMBER'] ?>">
 
