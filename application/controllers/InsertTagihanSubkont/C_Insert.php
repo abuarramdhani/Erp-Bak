@@ -54,7 +54,9 @@ class C_Insert extends CI_Controller
                     'transaction_id' => $tagihan[$t]['transaction_id'],
                     'po_num' => $tagihan[$t]['po_num'],
                     'creation_by' => $username,
-                    'last_update_by' => $username
+                    'last_update_by' => $username,
+                    'shipment_num' =>  $tagihan[$t]['shipment_num'],
+                    'quantity_receive' =>  $tagihan[$t]['quantity_receive']
                 );
                 $transaction_date =  $tagihan[$t]['transaction_date'];
                 $created_date = date("Y-m-d");
