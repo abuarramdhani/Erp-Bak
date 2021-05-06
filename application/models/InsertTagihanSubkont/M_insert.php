@@ -37,9 +37,9 @@ class M_insert extends CI_Model
         total_price,
         vendor_name,
         transaction_id,
-        po_num) values(" .
-            $tagihan['SHIPMENT_NUM'] . ",'" .
-            $tagihan['QTY_RECEIVE'] . ",'" .
+        po_num) values(" . "'" .
+            $tagihan['SHIPMENT_NUM'] . "'," .
+            $tagihan['QTY_RECEIVE'] . "," .
             $tagihan['QTY_BERSIH'] . ",'" .
             $tagihan['UOM_CODE'] . "','" .
             $tagihan['ITEM_DESCRIPTION_PO'] . "','" .
