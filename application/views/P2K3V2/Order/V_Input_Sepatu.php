@@ -73,7 +73,7 @@
                           <td>
                             <textarea maxlength="30" name="reason" style="resize: vertical;max-height: 100px; min-height: 34px; height: 34px;" class="form-control reason" id="" placeholder="Alasan" required></textarea>
                           </td>
-                          <td class="text-center latest_bon"></td>
+                          <td class="text-center latest_bon" nowrap></td>
                           <td class="text-center">1</td>
                           <td class="text-center">
                             <button class="btn btn-sm btn-danger delete">
