@@ -43,12 +43,13 @@
                                         <div class="col-md-4" style="text-align: right;">
                                             <label>Periode Cek :</label>
                                         </div>
-                                        <div class="col-md-5">
+                                        <div class="col-md-4">
                                             <div class="form-group">
-                                            <input style="width:400px"  type="text" class="date form-control" name="txtPeriodeMPA" id="txtPeriodeMPA" autocomplete="off" required>
+                                            <input style="width:100%"  type="text" class="date form-control" name="txtPeriodeMPA" id="txtPeriodeMPA" autocomplete="off" required>
                                             </div>
                                            
                                         </div>
+                                        <div class="col-md-1" id="loadDateBetween"></div>
                                         <label class="label label-danger"
                                                 style="margin-left: 0px;font-size:16px;box-shadow: 0 1px 1px 0 rgba(0,0,0,0.14), 0 2px 1px -1px rgba(0,0,0,0.12), 0 1px 3px 0 rgba(0,0,0,0.20);">
                                                 <span onclick="deleteCekMPA()"><i class="fa fa-trash"></i>&nbsp; Hapus Data Pengecekan</span>
@@ -60,10 +61,10 @@
                                             <label>No Dokumen :</label>
                                         </div>
                                         
-                                        <div class="col-md-7">
+                                        <div class="col-md-4">
                                             <div class="form-group">
-                                                <select disabled="disabled" id="nodocMPA" name="nodocMPA" class="form-control select2" style="width:400px" data-placeholder="Pilih No Dokumen">
-                                                    <option></option>
+                                                <select disabled="disabled" id="nodocMPA" name="nodocMPA" class="form-control select2" style="width:100%" data-placeholder="Pilih No Dokumen">
+                                                    <!-- <option></option> -->
 
                                                 </select>
                                             </div>

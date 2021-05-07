@@ -1,8 +1,26 @@
 <div class="box box-solid">
     <div class="box-body">
         <div class="panel-body">
-
-            <div style="margin-top:8px;">
+        <?php
+            if(sizeof($top) == "0") {
+            ?>
+        <!-- <div style="margin-top:8px;">
+                <label class="label label-secondary"
+                    style="color:black;font-size:13px;box-shadow: 0 1px 1px 0 rgba(0,0,0,0.14), 0 2px 1px -1px rgba(0,0,0,0.12), 0 1px 3px 0 rgba(0,0,0,0.20);">
+                    Doc. No : <strong class="text-primary"> - </strong>
+                </label>
+                <label class="label label-secondary"
+                    style="color:black;margin-left: 7px;font-size:13px;box-shadow: 0 1px 1px 0 rgba(0,0,0,0.14), 0 2px 1px -1px rgba(0,0,0,0.12), 0 1px 3px 0 rgba(0,0,0,0.20);">
+                    Rev. No : <strong class="text-primary"> - </strong>
+                </label>
+                <label class="label label-secondary"
+                    style="color:black;margin-left: 7px;font-size:13px;box-shadow: 0 1px 1px 0 rgba(0,0,0,0.14), 0 2px 1px -1px rgba(0,0,0,0.12), 0 1px 3px 0 rgba(0,0,0,0.20);">
+                    Rev. Date : <strong class="text-primary"> - </strong>
+                </label>
+            </div> -->
+        <?php } 
+            else { ?>
+        <div style="margin-top:8px;">
                 <label class="label label-secondary"
                     style="color:black;font-size:13px;box-shadow: 0 1px 1px 0 rgba(0,0,0,0.14), 0 2px 1px -1px rgba(0,0,0,0.12), 0 1px 3px 0 rgba(0,0,0,0.20);">
                     Doc. No : <strong class="text-primary"><?php echo $top['0']['NO_DOKUMEN'] ?></strong>
@@ -16,6 +34,9 @@
                     Rev. Date : <strong class="text-primary"><?php echo $top['0']['TANGGAL_REVISI'] ?></strong>
                 </label>
             </div>
+        <?php } ?>
+
+            
             <br>
 
             <div class="table-responsive">
