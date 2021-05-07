@@ -146,6 +146,9 @@ class C_Approval extends CI_Controller
 			$array_pdf[$i]['APPROVED_BY_2'] = $pdf['APPROVED_BY_2'];
 			$array_pdf[$i]['APPROVED_BY_2_NAME'] = $this->M_approval->getNama( $pdf['APPROVED_BY_2']);
 			$array_pdf[$i]['APPROVED_DATE_2'] = $pdf['APPROVED_DATE_2'];
+			$array_pdf[$i]['DOCUMENT_NUMBER'] = $pdf['DOCUMENT_NUMBER'];
+
+			$array_pdf[$i]['CATATAN_TEMUAN'] = $pdf['CATATAN_TEMUAN'];
 
 			$i++;
 		}

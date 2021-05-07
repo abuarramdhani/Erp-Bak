@@ -64,8 +64,11 @@ class C_Monitoring extends CI_Controller
 		$from = $this->input->post('from');
 		$to = $this->input->post('to');
 		// echo $from; exit;
+		echo '<option></option>';
 		$data = $this->M_monitoring->getNoDocMPABetween($from, $to);
-		echo json_encode($data);
+		foreach ($data as $mach) {
+			echo '<option value="' . $mach['DOCUMENT_NUMBER'] . '">' . $mach['DOCUMENT_NUMBER'] . '-' . $mach['NAMA_MESIN'] . '</option>';
+		}
 	}
 
 	public function getMesinByDate()

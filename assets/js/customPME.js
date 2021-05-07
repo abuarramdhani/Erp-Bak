@@ -13,6 +13,15 @@ $('#txtPeriodeMPA').change(function(){
   var to = datePeriodMPA.substr(13, 23);
 
   console.log(datePeriodMPA, from, to);
+
+  if ($("#txtPeriodeMPA").val() !== "" && $("#txtPeriodeMPA").val() !== null) {
+    $("#loadDateBetween").html(
+      '<center><img style="width:100%; height:auto" src="' +
+        baseurl +
+        'assets/img/gif/loading5.gif"></center>'
+    );
+  }
+
 	$.ajax({
 			url : baseurl+('PeriodicalMaintenance/Monitoring/getNoDocByBetween'),
 			type : 'POST',
@@ -20,15 +29,17 @@ $('#txtPeriodeMPA').change(function(){
         from : from,
         to : to
 				},
-			datatype : 'json',
-			success: function(result) {
-				$.each(JSON.parse(result), function(key, value) { 
-					html += '<option value="'+value.DOCUMENT_NUMBER+'">'+value.DOCUMENT_NUMBER+' - '+value.NAMA_MESIN+'</option>';
-					$('#nodocMPA').removeAttr("disabled");
-				});
-					$('#nodocMPA').html(html);
-					$('#nodocMPA').val(null).trigger('change');
-			}
+      success: function(result) {
+        if (result != "<option></option>") {
+          $("#loadDateBetween").html("");
+          $("#nodocMPA")
+            .prop("disabled", false)
+            .html(result);
+        } else {
+          $("#loadDateBetween").html("");
+          swal.fire("404", "Data pengecekan untuk tanggal ini tidak tersedia!", "error");
+        }
+      }
 		});
 });
 
