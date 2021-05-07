@@ -13,6 +13,7 @@ class M_monitoringdo extends CI_Model
 
     public function runapi_interorg($tipe,$request_number,$org,$subinv)
     {
+        // echo "BEGIN APPS.KHS_INTERORG_SPB ('$tipe', '$request_number', $org, '$subinv'); END;";
         // $conn = oci_connect('APPS', 'APPS', '192.168.7.3:1522/DEV');
         $conn = oci_connect('APPS', 'APPS', '192.168.7.1:1521/PROD');
         if (!$conn) {
@@ -20,26 +21,39 @@ class M_monitoringdo extends CI_Model
             trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
         }
 
-        $oracle = $this->load->database('oracle', true);
-        $sql = "APPS.KHS_INTERORG_SPB ('$tipe', '$request_number', '$org', '$subinv'); END;";
+        if ($tipe == 'SPB KIT') {
+          $sql = "BEGIN APPS.KHS_INTERORG_SPB ('$tipe', '$request_number', $org, '$subinv'); END;";
+        }else {
+          $sql = "BEGIN APPS.KHS_INTERORG_SPB ('$tipe', '$request_number', NULL, NULL); END;";
+        }
 
-        $stmt = oci_parse($conn,$sql);
-        // oci_bind_by_name($stmt,':P_REQNUM',$id,100);
-        // oci_bind_by_name($stmt,':P_ORG',$org,100);
+        //Statement does not change
+        $stmt = oci_parse($conn, $sql);
+        // oci_bind_by_name($stmt, ':P_PARAM1', $rm);
 
+        // But BEFORE statement, Create your cursor
+        $cursor = oci_new_cursor($conn);
+
+        // Execute the statement as in your first try
         oci_execute($stmt);
+
+        // and now, execute the cursor
+        oci_execute($cursor);
     }
 
     public function subinv_spbkit($org, $term)
     {
       $term = strtoupper($term);
       return $this->oracle->query("SELECT msi.secondary_inventory_name subinv
-              FROM mtl_secondary_inventories msi
-             WHERE msi.organization_id = $org
-               AND msi.disable_date IS NULL
-               AND msi.reservable_type = 1
-               AND msi.secondary_inventory_name LIKE '%$term%'
-          ORDER BY 1 ASC")->result_array();
+                                      FROM mtl_secondary_inventories msi
+                                     WHERE msi.organization_id = $org
+                                       AND msi.disable_date IS NULL
+                                       AND msi.reservable_type = 1
+                                       AND msi.secondary_inventory_name NOT LIKE 'STAG%'
+                                       AND msi.secondary_inventory_name NOT LIKE 'KELUAR%'
+                                       AND msi.secondary_inventory_name NOT LIKE 'KLR%'
+                                       AND msi.secondary_inventory_name LIKE '%$term%'
+                                  ORDER BY 1 ASC")->result_array();
     }
 
     public function org_spbkit($rn)
@@ -148,6 +162,27 @@ class M_monitoringdo extends CI_Model
         $query = $this->oracle->query($sql);
 
         return $query;
+    }
+
+    public function sudah_cetak_blm($id)
+    {
+      return $this->oracle->query("SELECT status FROM khs_detail_dospb WHERE request_number = '$id'")->row_array();
+      // return ['STATUS' => 'T'];
+    }
+
+    public function cek_interog_blm($rn)
+    {
+      return $this->oracle->query("SELECT mtrh.attribute3
+                                    FROM mtl_txn_request_headers mtrh
+                                   WHERE mtrh.request_number = '$rn' AND mtrh.attribute3 IS NOT NULL")->row_array();
+    }
+
+    public function getsubinvksd($value='')
+    {
+      return $this->oracle->query("SELECT *
+                                      FROM khs_subinventory_do ksd
+                                     WHERE ksd.tipe = 'UNIT'
+                                  ORDER BY 2")->result_array();
     }
 
 
