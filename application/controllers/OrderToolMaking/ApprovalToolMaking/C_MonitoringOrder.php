@@ -233,6 +233,7 @@ class C_MonitoringOrder extends CI_Controller
 		$action         = $this->input->post('action');
 		$keterangan     = $this->input->post('keterangan');
 		$siapa 			= $this->input->post('siapa');
+		$seksi 			= $this->input->post('seksi_order');
 
 		$person = $this->cariperson($siapa);
 		// echo "<pre>";print_r($nama);
@@ -246,6 +247,15 @@ class C_MonitoringOrder extends CI_Controller
 			}else {
 				$this->M_monitoringorder->updateaction($no_order, $person, $action, $keterangan, date('Y-m-d H:i:s'));
 			}
+		}
+
+		if ($siapa == 'Ass Ka Nit Pengorder' && $seksi == 'PRODUCTION ENGINEERING') { // kalau order dari PE auto approve PE
+			$this->M_monitoringorder->saveaction($no_order, ($person+1), 1, '', date('Y-m-d H:i:s'));
+			$this->M_monitoringorder->saveaction($no_order, ($person+2), 1, '', date('Y-m-d H:i:s'));
+		}elseif ($siapa == 'Designer Produk' && ($seksi == 'QA & QC' || stripos($seksi, 'QUALITY') !== FALSE)) {  // kalau order dari QA & QC auto approve QA & QC
+			$this->M_monitoringorder->saveaction($no_order, ($person+1), 1, '', date('Y-m-d H:i:s'));
+		}elseif ($siapa == 'Ass Ka Nit PE' && $seksi == 'ENGINEERING') {  // kalau order dari Designer auto approve Designer
+			$this->M_monitoringorder->saveaction($no_order, ($person+1), 1, '', date('Y-m-d H:i:s'));
 		}
 		
 		// echo "<pre>";

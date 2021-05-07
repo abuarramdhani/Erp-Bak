@@ -9,8 +9,8 @@
             <p style="font-size: 10px">Jl Magelang 144, Yogyakarta</p>
         </td>
         <td rowspan="6" colspan="5" style="width: 50%; border-bottom :0px; border-collapse: collapse;text-align:center;font-weight:bold;border: 1px solid black">
-            <p style="font-size:35px; ">ORDER</p>
-            <p style="font-size:20px; ">PEMBUATAN ALAT BANTU PRODUKSI DAN SPARE PART di UNIT TOOL MAKING</p>
+            <p style="font-size:30px; ">ORDER</p>
+            <p style="font-size:18px; ">PEMBUATAN ALAT BANTU PRODUKSI DAN SPARE PART di UNIT TOOL MAKING</p>
         </td>
         <td style="width:12%;border-bottom :0px; border-collapse: collapse; border: 1px solid black">
             No. Order
@@ -184,7 +184,7 @@
     </tr>
     <tr>
         <td style="border-bottom :0px; border-collapse: collapse; border-bottom: 1px solid black;">Jumlah Alat :  <?php echo $fix['ket'] == 'Baru' ? $fix['jml_alat'] : '....' ?></td>
-        <td colspan="2" style="border-bottom :0px; border-collapse: collapse; border-bottom: 1px solid black;border-right: 1px solid black;">Distribusi:  <?php echo $fix['ket'] == 'Baru' ? $fix['distribusi'] : '....' ?> </td>
+        <td colspan="2" style="border-bottom :0px; border-collapse: collapse; border-bottom: 1px solid black;border-right: 1px solid black;">Distribusi:  <?php echo $fix['ket'] == 'Baru' ? '<span style="font-size:10px">'.$fix['distribusi'].'</span>' : '....' ?> </td>
     </tr>
     <tr>
         <td colspan="3" style="border-bottom :0px; border-collapse: collapse; border-right: 1px solid black;">Dimensi dan Toleransi (Untuk Gauge) : </td>
@@ -280,19 +280,19 @@
             <p>5. (***) Apabila Acuan Alat Bantu adalah Produk, maka pengorder menyatakan Data Inspection Report dari Produk tersebut.</p>
             <p>6. (****) No. Alat Bantu Diisi oleh Desain Tool Making untuk Order Alat Bantu / Alat Bantu Ukur baru.</p>
         </td>
-        <td style="border-bottom :0px; border-collapse: collapse; border-bottom: 1px solid black;border-left: 1px solid black;width:11%;vertical-align:top"> 
+        <td style="border-bottom :0px; border-collapse: collapse; border-bottom: 1px solid black;border-left: 1px solid black;width:11%;vertical-align:top;font-size:10.5px"> 
             <p>1. Ka. Dep. Produksi</p>
             <p>2. Unit QC / QA</p>
             <p>3. Design Produk</p><br>
             <p>4. Ka. Si. Pemberi Order</p>
         </td>
-        <td colspan="2" style="border-bottom :0px; border-collapse: collapse; border-right: 1px solid black;border-bottom: 1px solid black;vertical-align:top;"> 
+        <td colspan="2" style="border-bottom :0px; border-collapse: collapse; border-right: 1px solid black;border-bottom: 1px solid black;vertical-align:top;font-size:10.5px"> 
             <p>: Nilai Prioritas perusahaan</p>
             <p>: Toleransi dan Fungsional Alat Bantu Ukur</p>
             <p>: Tanggal Rilis Gambar, kode komponen terbaru, kemungkinan terjadi perubahan Gambar Produk</p>
             <p>: Sesuai kebutuhan, perhatikan ukuran produk termasuk kestabilan dalam penggunaan</p>
             <br><br>
-            <p style="text-style:italic; text-align:right;">FRM- TMK - 02 - 09 (Rev.06-27Februari 2017)</p>
+            <p style="text-style:italic;text-align:right; font-size:10px">FRM- TMK - 02 - 09 (Rev.06-27Februari 2017)</p>
         </td>
     </tr>
 </table>

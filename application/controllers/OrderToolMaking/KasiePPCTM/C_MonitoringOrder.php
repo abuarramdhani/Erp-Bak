@@ -117,7 +117,7 @@ class C_MonitoringOrder extends CI_Controller
 			$torder = array('fd_tgl_order' 	=> DateTime::createFromFormat('d/m/Y', $fix['tgl_order'])->format('Y-m-d'),
 						'fd_tgl_tmc' 	=> date('Y-m-d'),
 						'fs_no_order' 	=> $noorder,
-						'fs_seksi' 		=> 'PPC TM',
+						'fs_seksi' 		=> $fix['seksi'],
 						'fs_no_tool' 	=> $ket == 'Baru' ? $noalat : $fix['no_alat'],
 						'fs_nm_tool' 	=> $jenis,
 						'fs_kd_komp' 	=> $fix['kodekomp'],
@@ -198,7 +198,7 @@ class C_MonitoringOrder extends CI_Controller
 		ob_start();
 		$this->load->library('pdf');
 		$pdf = $this->pdf->load();
-		$pdf = new mPDF('utf-8','f4-L', 0, '', 5, 5, 5, 5, 0, 0);
+		$pdf = new mPDF('utf-8','f4-L', 0, '', 3, 3, 3, 3, 0, 0);
 		$filename 	= 'ImportToolRoom.pdf';
 		$html = $this->load->view('OrderToolMaking/V_PdfOrder', $data, true);
 		ob_end_clean();
@@ -217,7 +217,7 @@ class C_MonitoringOrder extends CI_Controller
 		ob_start();
 		$this->load->library('pdf');
 		$pdf = $this->pdf->load();
-		$pdf = new mPDF('utf-8','f4-L', 0, '', 5, 5, 5, 5, 0, 0);
+		$pdf = new mPDF('utf-8','f4-L', 0, '', 3, 3, 3, 3, 0, 0);
 		$filename 	= 'ImportToolRoom.pdf';
 		$html = $this->load->view('OrderToolMaking/V_PdfOrder', $data, true);
 		ob_end_clean();
@@ -237,7 +237,7 @@ class C_MonitoringOrder extends CI_Controller
 		ob_start();
 		$this->load->library('pdf');
 		$pdf = $this->pdf->load();
-		$pdf = new mPDF('utf-8','f4-L', 0, '', 5, 5, 5, 5, 0, 0);
+		$pdf = new mPDF('utf-8','f4-L', 0, '', 3, 3, 3, 3, 0, 0);
 		$filename 	= 'ImportToolRoom.pdf';
 		$html = $this->load->view('OrderToolMaking/V_PdfOrder', $data, true);
 		ob_end_clean();
