@@ -384,7 +384,7 @@ function addrevkolom() { // tambah baris revisi di modal view detail
 function revisiorderyuhuuu(apa, siapa) {
     $.ajax({
         url: baseurl+("ApprovalToolMaking/MonitoringOrder/daftarrevisi"),
-        data: { apa : apa, siapa : siapa},
+        data: { apa : apa, siapa : siapa, jenis : $('#jenis').val()},
         type: "POST",
         datatype: 'html',
         success : function (result) {
@@ -430,7 +430,7 @@ function revisiorderyuhuuu(apa, siapa) {
         }else if (rev == 'Acuan Alat Bantu') {
             $('.ganti:last').html('<input type="radio" name="isi_rev[]" value="Produk">Produk <input type="radio" name="isi_rev[]" value="Gambar Produk" style="margin-left: 25px">Gambar Produk');
         }else if (rev == 'Layout Alat Bantu') {
-            $('.ganti:last').html('<input type="radio" name="isi_rev[]" id="tunggal1" style="margin-left: -313px" value="Tunggal">Tunggal <input type="radio" name="isi_rev[]" id="multi1" value="Multi" style="margin-left: 23px">Multi <div class="col-md-6" style="margin-left: 130px"><input type="number" name="multi" id="isi_multi1" class="form-control" disabled autocomplete="off"></div>');
+            $('.ganti:last').html('<input type="radio" name="isi_rev[]" id="tunggal1" style="margin-left: -313px" value="Tunggal">Tunggal <input type="radio" name="isi_rev[]" id="multi1" value="Multi" style="margin-left: 23px">Multi <div class="col-md-6" style="margin-left: 130px"><input type="number" name="multi" id="isi_multi1" class="form-control" style="margin-left:20px" disabled autocomplete="off"></div>');
             $('#multi1').change(function(e) { 
                 $('#isi_multi1').removeAttr('disabled');
             })

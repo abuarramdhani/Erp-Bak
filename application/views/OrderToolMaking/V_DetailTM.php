@@ -107,6 +107,7 @@ $revisi = $val['revisi'] == 1 ? '' : 'display:none;'; // style button revisi
                 <input type="hidden" name="no_order" value="<?= $val['no_order']?>">
                 <input type="hidden" id="ket" name="ket" value="<?= $val['ket']?>">
                 <input type="hidden" name="siapa" value="<?= $val['siapa']?>">
+                <input type="hidden" name="seksi_order" value="<?= $val['seksi']?>">
                 <input type="hidden" id="tinggi" value="<?= $height?>">
             </div>
         </div>
