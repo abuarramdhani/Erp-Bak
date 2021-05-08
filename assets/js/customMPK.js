@@ -4274,6 +4274,9 @@ $(document).ready(function () {
   $("#tblMPSuratTugasIndex").DataTable();
   $("#txaMPSuratTugasRedactor").redactor({
     buttonsHide: ["image"],
+    keyupCallback: function (e) {
+      $("#txtMPSuratTugasSurat").val(this.get());
+    }
   });
   $("#txtMPSuratTugasTanggal").datepicker({
     autoclose: true,
@@ -5869,7 +5872,6 @@ $(document).ready(function () {
 
           $("#TDP_viewall").DataTable({
             dom: "Bfrtip",
-            'autoWidth': true,
             buttons: [{
               extend: "excelHtml5",
               title: "Cetak Kategori",
@@ -6279,8 +6281,37 @@ function ukuran_kertaz(type) {
   return x;
 }
 
-// Akbar Sani Hasan Order #400784
+//kronologis kecelakaan kerja
+$(document).ready(function () {
+  getPekerjaTpribadi('#mpk_slckkkpkj');
+  $('.mpk_slcclear').select2({
+    allowClear: true,
+    placeholder: 'Pilih salah satu!'
+  });
 
+  $('.mpk_dtables').DataTable();
+
+  $('#mpk_slckkkpkj').change(function () {
+    var noind = $(this).val();
+    $.ajax({
+      method: "get",
+      data: {
+        noind: noind
+      },
+      url: baseurl + "MasterPekerja/KronologisKecelakaanKerja/getnokpj",
+      success: a => {
+        var data = JSON.parse(a);
+        if (data.no_peserta != '') {
+          $('#mpk_innokpj').val(data.no_peserta.trim());
+        } else {
+          alert('No. KPJ tidak ditemukan!')
+        }
+      }
+    })
+  })
+});
+
+// Akbar Sani Hasan Order #400784
 $(document).ready(() => {
   $('#reviewBapak').redactor({ linebreaks: true })
   $('#MasterPekerja-namaPekerja').select2({
