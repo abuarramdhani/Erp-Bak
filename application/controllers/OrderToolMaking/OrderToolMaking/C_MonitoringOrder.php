@@ -59,6 +59,13 @@ class C_MonitoringOrder extends CI_Controller
 		echo json_encode($data);
 	}
 	
+	function getSeksiOrder(){
+		$term = $this->input->get('term',TRUE);
+		$term = strtoupper($term);
+		$data = $this->M_monitoringorder->getSeksiOrder($term);
+		echo json_encode($data);
+	}
+	
 	function getAssign(){
 		$term = $this->input->get('term',TRUE);
 		$term = strtoupper($term);
@@ -318,7 +325,7 @@ class C_MonitoringOrder extends CI_Controller
 			mkdir('./assets/upload/OrderToolMaking/Gambar_kerja/Pengorder', 0777, true);
 			chmod('./assets/upload/OrderToolMaking/Gambar_kerja/Pengorder', 0777);
 		}
-		$filename = './assets/upload/OrderToolMaking/Gambar_Kerja/Pengorder/'.$gambar_kerja; // save file gamker
+		$filename = './assets/upload/OrderToolMaking/Gambar_kerja/Pengorder/'.$gambar_kerja; // save file gamker
 		move_uploaded_file($_FILES['gambar_kerja']['tmp_name'],$filename);
 
 		if(!is_dir('./assets/upload/OrderToolMaking/Skets/Pengorder'))
