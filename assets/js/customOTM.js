@@ -207,6 +207,31 @@ $(document).ready(function () {
         }
     });
     
+    $(".seksiorder").select2({
+        allowClear: true,
+        placeholder: "user",
+        minimumInputLength: 0,
+        ajax: {
+            url: baseurl + "OrderToolMaking/MonitoringOrder/getSeksiOrder",
+            dataType: 'json',
+            type: "GET",
+            data: function (params) {
+                var queryParameters = {
+                    term: params.term,
+                }
+                return queryParameters;
+            },
+            processResults: function (data) {
+                // console.log(data);
+                return {
+                    results: $.map(data, function (obj) {
+                        return {id:obj.fs_nm_seksi, text:obj.fs_nm_seksi};
+                    })
+                };
+            }
+        }
+    });
+    
     $(".assignorder").select2({
         allowClear: true,
         placeholder: "assign approval",

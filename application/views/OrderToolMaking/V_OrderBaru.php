@@ -24,11 +24,11 @@
                                     <strong>Tanggal Order :</strong> <?php echo date('d/m/Y')?>
                                         <input type="hidden" name="tgl_order" value="<?php echo date('d/m/Y')?>">
                                     </div>
-                                    <div class="col-md-5">
+                                    <!-- <div class="col-md-5">
                                     <strong>Seksi Pengorder :</strong> <span style="font-size:12px"><?= $seksi?></span>
                                         <input type="hidden" name="seksi_order" value="<?= $seksi?>">
-                                    </div>
-                                    <div class="col-md-4">
+                                    </div> -->
+                                    <div class="col-md-5">
                                     <strong>Unit Pengorder :</strong> <span style="font-size:12px"><?= $unit?></span>
                                         <input type="hidden" name="unit_order" value="<?= $unit?>">
                                     </div>
@@ -44,6 +44,17 @@
                                     </div>
                                     <div class="col-md-3">
                                         <input type="radio" name="order" class="gantibaru" value="BARU" checked>BARU
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="col-md-2"></div>
+                                    <div class="col-md-2">
+                                        <label>Seksi Pengorder</label>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <select id="seksi_order" name="seksi_order" class="form-control select2 seksiorder" style="width:100%" data-placeholder="pilih seksi pengorder">
+                                            <option></option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="panel-body modifrekon" style="display:none">
@@ -205,13 +216,13 @@
                                         <label>Proses Ke</label>
                                     </div>
                                     <div class="col-md-3">
-                                        <input name="proses_ke" class="form-control" placeholder="proses ke" autocomplete="off" required>
+                                        <input type="number" name="proses_ke" class="form-control" placeholder="isi 1 jika tidak ada proses" autocomplete="off" required>
                                     </div>
                                     <div class="col-md-1">
                                         <label>Dari</label>
                                     </div>
                                     <div class="col-md-3">
-                                        <input name="dari" class="form-control" placeholder="dari" autocomplete="off" required>
+                                        <input type="number" name="dari" class="form-control" placeholder="isi 1 jika tidak ada proses" autocomplete="off" required>
                                     </div>
                                 </div>
                                 <div class="panel-body baru">

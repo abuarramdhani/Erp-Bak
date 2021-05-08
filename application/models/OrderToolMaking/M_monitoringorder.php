@@ -56,6 +56,14 @@ class M_monitoringorder extends CI_Model
         $query = $this->db->query($sql);
         return $query->result_array();
     }
+    
+    public function getSeksiOrder($term){
+        $sql = "SELECT fs_nm_seksi
+                FROM tseksi
+                WHERE fs_nm_seksi like '%$term%'";
+        $query = $this->lantoma->query($sql);
+        return $query->result_array();
+    }
 
     public function saveorderbaru($no_order, $tgl_order, $seksi_order, $unit_order, $user, $proposal, $no_proposal, $tgl_usul, $jenis, $gambar_kerja, $skets,
     $kode_komponen, $nama_komponen, $tipe_produk, $tgl_rilis, $mesin, $poin, $proses_ke, $dari, $jml_alat, $distribusi, $dimensi, $flow_sebelum, $flow_sesudah,
