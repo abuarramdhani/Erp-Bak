@@ -209,7 +209,7 @@
 				<script src="<?= base_url('assets/js/customPDP.js'); ?>"></script>
 				<script src="<?= base_url('assets/js/customKGS.js?version=' . filemtime('assets/js/customKGS.js')) ?>"></script>
 				<script src="<?= base_url('assets/js/customRJP.js'); ?>"></script>
-				<script src="<?= base_url('assets/js/customMD.js'); ?>"></script>
+			  <script src="<?= base_url('assets/js/customMD.js?version='.filemtime('assets/js/customMD.js')) ?>"></script>
 				<script src="<?= base_url('assets/js/customADO.js'); ?>"></script>
 				<script src="<?= base_url('assets/js/customIPM.js'); ?>"></script>
 				<script src="<?= base_url('assets/js/customPSPT.js'); ?>"></script>
