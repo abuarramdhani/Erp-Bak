@@ -33,9 +33,11 @@
                             <div class="box-header with-border"></div>
                             <div class="box-body">
                                 <div class="panel-body">
-                                    <!-- <div class="col-md-12">
-                                        <h3>Traktor</h3>
-                                    </div> -->
+                                    <div class="col-md-12">
+                                        <a href="<?= base_url('MuatanTruk/Simulasi') ?>" class="btn btn-danger">Reset</a>
+                                    </div>
+                                </div>
+                                <div class="panel-body">
                                     <div class="col-md-12">
                                         <table class="table table-bordered" id="tbl_simulasi" style="font-size: 9pt;">
                                             <thead style="color:white">
