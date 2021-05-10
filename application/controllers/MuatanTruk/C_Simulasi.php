@@ -86,6 +86,9 @@ class C_Simulasi extends CI_Controller
                         );
                     }
                 }
+                if ($produk[$i]['produk'] == 'Cakar Baja') {
+                    $dataperkendaraan[$j][0]['JENIS_MUATAN'] = 'disable';
+                }
             }
 
             $array = array(
