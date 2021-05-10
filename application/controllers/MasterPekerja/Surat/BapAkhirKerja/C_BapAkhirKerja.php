@@ -250,7 +250,7 @@ class C_BapAkhirKerja extends CI_Controller
       'pihak2' => $pihak2,
       'isi_surat' => $surat,
       'created_by' => $user,
-      'date_created' => date('Y-m-d H:I:S')
+      'date_created' => date('Y-m-d')
     ];
     $this->M_bapakhirkerja->insertSuratBapAkhirKerja($data_surat);
     redirect('MasterPekerja/Surat/BapAkhirKerja');
