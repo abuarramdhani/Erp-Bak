@@ -44,6 +44,9 @@ function checkBoxParalel_(th) {
   } else {
     $(th).closest('tr').find('input[name="start_time_together[]"]').attr('readonly', true);
     $(th).closest('tr').find('input[name="end_time_together[]"]').attr('readonly', true);
+
+    $(th).closest('tr').find('input[name="start_time_together[]"]').val('');
+    $(th).closest('tr').find('input[name="end_time_together[]"]').val('');
   }
 }
 
