@@ -263,16 +263,18 @@ class M_packing extends CI_Model
                    AND msib.organization_id = 81
                    AND msib.segment1 = '$item'
                    AND kcds.colly_number = '$colly'
-                   AND kcds.verif_qty < kcds.quantity";
-        $query = $oracle->query($sql)->num_rows();
+                   AND kcds.verif_qty < kcds.quantity
+                   AND ROWNUM = 1";
+        $query = $oracle->query($sql);
+        // $query = $oracle->query($sql)->num_rows();
 
-        if ($query >= 1) {
-            return TRUE;
-        }
-        else {
-            return FALSE;
-        }
-        // return $query->result_array();
+        // if ($query >= 1) {
+        //     return TRUE;
+        // }
+        // else {
+        //     return FALSE;
+        // }
+        return $query->result_array();
     }
 
 

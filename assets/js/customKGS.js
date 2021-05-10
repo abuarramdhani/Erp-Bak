@@ -1451,7 +1451,7 @@ function updateQty(event,item) {
         var item    = $(item).val().toUpperCase();
         var colly   = $('#activeColly').val();
         var no_spb  = $('#spbcolly').val();
-        var qty_pack = $('#qty'+colly+item).val();
+        // var qty_pack = $('#qty'+colly+item).val();
         var auto = $('#auto'+colly).val();
 
         var inputOptions = new Promise(function(resolve) {
@@ -1476,7 +1476,9 @@ function updateQty(event,item) {
                 Swal.showLoading();
             },
             success: function(result) {
-                if (result) {
+                if (result.length > 0) {
+                var qty_pack = result[0].QUANTITY;
+                console.log(qty_pack);
                     Swal.fire({
                         title: 'Masukkan qty ' + item,
                         input: 'number',
