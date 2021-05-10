@@ -980,10 +980,10 @@
 																				//}
                                                                             ?>
                                           </select> -->
-                                          <input list="brow_slc_elemen" value="<?php echo !empty($elemen) ? $elemen : '' ?>" class="form-control slcElemen0000" onchange="//disableOrnot(this)" name="txtSlcElemen[]" data-placeholder="Elemen">
+                                          <input list="brow_slc_elemen" value="<?php echo !empty($elemen) ? $elemen : '' ?>" <?php echo $jenis_proses == 'WALK' ? 'readonly' : '' ?> class="form-control slcElemen0000" onchange="//disableOrnot(this)" name="txtSlcElemen[]" data-placeholder="Elemen">
                                         </div>
                                         <div class="col-lg-6">
-                                          <input type="text" value="<?php echo $keterangan_elemen; ?>" id="elemen" name="elemen[]" class="form-control elemen" placeholder="Keterangan Elemen">
+                                          <input type="text" value="<?php echo $keterangan_elemen; ?>" id="elemen" name="elemen[]" <?php echo $jenis_proses == 'WALK' ? 'readonly' : '' ?> class="form-control elemen" placeholder="Keterangan Elemen">
                                         </div>
                                       </div>
                                     </td>
