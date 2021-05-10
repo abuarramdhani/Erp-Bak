@@ -203,7 +203,15 @@ class C_Pelayanan extends CI_Controller
 		$this->M_pelayanan->SelesaiPelayanan($date, $jenis, $nospb, $slsh, $pic);
 	}
 
-
+    
+    public function getJumlah()
+    {
+    	$this->checkSession();
+    	$date = date('d/m/Y');
+        echo json_encode($this->M_pelayanan->dataJumlah());
+    }
+    
+    
 	public function getNormal()
     {
     	$this->checkSession();
