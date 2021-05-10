@@ -35,8 +35,9 @@
                                     <div class="col-md-4">
 										<select id="routclass" name="routclass" class="form-control select2 slcRoclas" data-placeholder="Pilih Routing Class">
 											<option></option>
+                                            <option value="SHMT">SHMT</option>
+											<option value="PTAS">PTAS</option>
 										</select>
-										<input type="hidden" name="usernameopm" id="usernameopm" value="<?= $user?>">
 									</div>
                                 </div>
                                 <div class="form-group col-lg-12">
@@ -52,6 +53,16 @@
 										</select>
 									</div>
 								</div>
+                                <div class="form-group col-lg-12">
+                                    <div class="col-md-4" style="text-align: right;">
+										<label >Resource Code :</label>
+									</div>
+                                    <div class="col-md-4">
+                                        <select id="rsrc" name="rsrc" class="form-control select2 slcRsrc" data-placeholder="Pilih Resource Code">
+											<option></option>
+										</select>
+                                    </div>
+                                </div>
                                 <div class="panel-body">
                                     <div class="col-md-12">
                                         <center>
