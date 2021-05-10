@@ -1947,16 +1947,16 @@ function myFunctionTSKK(th) {
     $('table tbody tr:nth(' + row_index + ') td .tipe_urutan').trigger('change');
     // console.log("ini element: ", Element, elemen, elemen_kerja, keterangan)
   } else if (elemen == 'AUTO') { //how to make it works completely?
-    $('table tbody tr:nth(' + row_index + ') td .slcElemen0000').val(null).trigger('change');
-    $('table tbody tr:nth(' + row_index + ') td .elemen').val('');
+    $('table tbody tr:nth(' + row_index + ') td .slcElemen0000').val(null).trigger('change').attr('readonly', false);
+    $('table tbody tr:nth(' + row_index + ') td .elemen').val('').attr('readonly', false);
     $('table tbody tr:nth(' + row_index + ') td .tipe_urutan').val(null).trigger('change');
   } else if (elemen == 'MANUAL') { //how to make it works completely?
-    $('table tbody tr:nth(' + row_index + ') td .slcElemen0000').val(null).trigger('change');
-    $('table tbody tr:nth(' + row_index + ') td .elemen').val('');
+    $('table tbody tr:nth(' + row_index + ') td .slcElemen0000').val(null).trigger('change').attr('readonly', false);
+    $('table tbody tr:nth(' + row_index + ') td .elemen').val('').attr('readonly', false);
     $('table tbody tr:nth(' + row_index + ') td .tipe_urutan').val(null).trigger('change');
   } else if (elemen == 'WALK') { //how to make it works completely?
-    $('table tbody tr:nth(' + row_index + ') td .slcElemen0000').val(null).trigger('change');
-    $('table tbody tr:nth(' + row_index + ') td .elemen').val('');
+    $('table tbody tr:nth(' + row_index + ') td .slcElemen0000').val('Jalan').trigger('change').attr('readonly', true);
+    $('table tbody tr:nth(' + row_index + ') td .elemen').val('-').attr('readonly', true);
     $('table tbody tr:nth(' + row_index + ') td .tipe_urutan').val('SERIAL').trigger('change');
   } else if (elemen == 'WALK (Inheritance)') {
     var Element = `<option value="${elemen_kerja}">${elemen_kerja}</option>`;
