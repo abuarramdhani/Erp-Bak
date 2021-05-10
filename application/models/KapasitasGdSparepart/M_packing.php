@@ -16,7 +16,7 @@ class M_packing extends CI_Model
                          tgl_dibuat, TO_CHAR (mulai_packing, 'HH24:MI:SS') AS mulai_packing,
                          TO_CHAR (mulai_packing, 'YYYY-MM-DD HH24:MI:SS') AS jam_packing,
                          pic_packing, jenis_dokumen, no_dokumen, jumlah_item, jumlah_pcs,
-                         selesai_packing, urgent, waktu_packing, bon, tipe,
+                         selesai_packing, urgent, waktu_packing, bon, tipe, NVL(keterangan,'-') keterangan,
                          (SELECT DISTINCT mtrh.attribute15
                                      FROM mtl_txn_request_headers mtrh
                                     WHERE mtrh.request_number = no_dokumen) ekspedisi

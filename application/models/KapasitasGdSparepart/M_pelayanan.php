@@ -55,7 +55,7 @@ class M_pelayanan extends CI_Model
                          tgl_dibuat,
                          TO_CHAR (mulai_pelayanan, 'HH24:MI:SS') AS mulai_pelayanan,
                          pic_pelayan, jenis_dokumen, no_dokumen, jumlah_item, jumlah_pcs,
-                         selesai_pelayanan, urgent, waktu_pelayanan, bon, tipe
+                         selesai_pelayanan, urgent, waktu_pelayanan, bon, tipe, NVL(keterangan,'-') keterangan
                     FROM khs_tampung_spb
                    WHERE selesai_pelayanan IS NULL
                      AND CANCEL IS NULL
@@ -75,7 +75,7 @@ class M_pelayanan extends CI_Model
                          tgl_dibuat,
                          TO_CHAR (mulai_pelayanan, 'HH24:MI:SS') AS mulai_pelayanan,
                          pic_pelayan, jenis_dokumen, no_dokumen, jumlah_item, jumlah_pcs,
-                         selesai_pelayanan, urgent, waktu_pelayanan, bon, tipe
+                         selesai_pelayanan, urgent, waktu_pelayanan, bon, tipe, NVL(keterangan,'-') keterangan
                     FROM khs_tampung_spb
                    WHERE selesai_pelayanan IS NULL
                      AND CANCEL IS NULL
@@ -95,7 +95,7 @@ class M_pelayanan extends CI_Model
                          tgl_dibuat,
                          TO_CHAR (mulai_pelayanan, 'HH24:MI:SS') AS mulai_pelayanan,
                          pic_pelayan, jenis_dokumen, no_dokumen, jumlah_item, jumlah_pcs,
-                         selesai_pelayanan, urgent, waktu_pelayanan, bon, tipe
+                         selesai_pelayanan, urgent, waktu_pelayanan, bon, tipe, NVL(keterangan,'-') keterangan
                     FROM khs_tampung_spb
                    WHERE selesai_pelayanan IS NULL
                      AND CANCEL IS NULL
@@ -115,7 +115,7 @@ class M_pelayanan extends CI_Model
                          tgl_dibuat,
                          TO_CHAR (mulai_pelayanan, 'HH24:MI:SS') AS mulai_pelayanan,
                          pic_pelayan, jenis_dokumen, no_dokumen, jumlah_item, jumlah_pcs,
-                         selesai_pelayanan, urgent, waktu_pelayanan, bon, tipe
+                         selesai_pelayanan, urgent, waktu_pelayanan, bon, tipe, NVL(keterangan,'-') keterangan
                     FROM khs_tampung_spb
                    WHERE selesai_pelayanan IS NULL
                      AND CANCEL IS NULL
@@ -135,7 +135,7 @@ class M_pelayanan extends CI_Model
                          tgl_dibuat,
                          TO_CHAR (mulai_pelayanan, 'HH24:MI:SS') AS mulai_pelayanan,
                          pic_pelayan, jenis_dokumen, no_dokumen, jumlah_item, jumlah_pcs,
-                         selesai_pelayanan, urgent, waktu_pelayanan, bon, tipe
+                         selesai_pelayanan, urgent, waktu_pelayanan, bon, tipe, NVL(keterangan,'-') keterangan
                     FROM khs_tampung_spb
                    WHERE selesai_pelayanan IS NULL
                      AND CANCEL IS NULL
@@ -150,13 +150,13 @@ class M_pelayanan extends CI_Model
     public function dataCetak()
     {
         $oracle = $this->load->database('oracle', true);
-        $sql = "SELECT   *
-                    FROM khs_tampung_spb
+        $sql = "SELECT   kts.*, NVL(keterangan,'-') keterangan_mkt
+                    FROM khs_tampung_spb kts
                    WHERE CANCEL IS NULL
                      AND mulai_pelayanan IS NOT NULL
                      AND no_dokumen IN (SELECT DISTINCT kcds.request_number
                                                    FROM khs_colly_dospb_sp kcds)
-                ORDER BY TO_DATE (jam_input, 'DD/MM/YYYY HH24:MI:SS')";
+                ORDER BY TO_DATE (jam_input, 'DD/MM/YYYY HH24:MI:SS') DESC";
         $query = $oracle->query($sql);
         return $query->result_array();
     }

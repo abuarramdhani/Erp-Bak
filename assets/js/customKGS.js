@@ -330,6 +330,7 @@ function cetak() {
           $('#loadingArea5').show();
           $('div.table_area_5').hide();
           $('div.table_area_selesai').hide();
+          jumlah();
         },
         success: function(result) {
           // console.log(result);
