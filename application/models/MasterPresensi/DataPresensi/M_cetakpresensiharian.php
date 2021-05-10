@@ -29,15 +29,31 @@ class M_cetakpresensiharian extends CI_Model
 		return $this->personalia->query($sql)->result_array();
 	}
 
-	function getPekerjaByFilter($filter,$tanggal)
+	function getKodesie()
+	{
+		$sql = "select distinct kodesie as kodesie,dept,bidang,unit,seksi,pekerjaan
+			from hrd_khs.tseksi
+			where kodesie != '-'
+			order by 1";
+		return $this->personalia->query($sql)->result_array();
+	}
+
+	function getPekerjaByFilter($filter,$awal,$akhir)
 	{
 		$where = "";
-		if (isset($filter['lokasi_kerja']) && !empty($filter['lokasi_kerja'])) {
-			$where .= "and lokasi_kerja in (".$filter['lokasi_kerja'].")";
+		if (isset($filter['lokasi_kerja']) && !empty($filter['lokasi_kerja']) && $filter['lokasi_kerja'] !== false) {
+			$where .= "and a.lokasi_kerja in (".$filter['lokasi_kerja'].")";
 		}
-		if (isset($filter['kode_induk']) && !empty($filter['kode_induk'])) {
-			$where .= " and  left(noind,1) in (".$filter['kode_induk'].") ";
+		if (isset($filter['kode_induk']) && !empty($filter['kode_induk']) && $filter['kode_induk'] !== false) {
+			$where .= " and left(a.noind,1) in (".$filter['kode_induk'].") ";
 		}
+		if (isset($filter['kodesie']) && !empty($filter['kodesie']) && $filter['kodesie'] !== false) {
+			$where .= " and a.kodesie in (".$filter['kodesie'].") ";
+		}
+		if (isset($filter['noind']) && !empty($filter['noind']) && $filter['noind'] !== false) {
+			$where .= " and a.noind in (".$filter['noind'].")";
+		}
+		
 		$sql = "select a.nama,a.noind,b.seksi,b.unit 
 			from hrd_khs.tpribadi a 
 			inner join hrd_khs.tseksi b 
@@ -46,9 +62,10 @@ class M_cetakpresensiharian extends CI_Model
 				keluar = '0'
 				or (
 					keluar = '1'
-					and tglkeluar >= '$tanggal'
+					and tglkeluar >= '$awal'
 				)
 			)
+			and masukkerja <= '$akhir'
 			and left(noind,1) not in ('M','Z')
 			$where
 			order by a.kodesie,a.noind";
@@ -86,6 +103,19 @@ class M_cetakpresensiharian extends CI_Model
 			and tanggal = ?";
 		$result = $this->personalia->query($sql,array($noind,$tanggal))->row();
 		return !empty($result) ? $result->point : 0;
+	}
+
+	function getPekerjaByKey($key)
+	{
+		$sql = "select a.noind, a.nama
+			from hrd_khs.tpribadi a
+			where a.keluar = '0'
+			and (
+				a.noind like concat(?,'%')
+				or a.nama like concat('%',?,'%')
+			)
+			order by a.noind";
+		return $this->personalia->query($sql,array(strtoupper($key),strtoupper($key)))->result_array();
 	}
 }
 ?>

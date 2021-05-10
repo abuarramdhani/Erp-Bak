@@ -2313,6 +2313,10 @@ $route['MasterPresensi/DataPresensi/CetakPresensiHarian'] = 'MasterPresensi/Data
 $route['MasterPresensi/DataPresensi/CetakPresensiHarian/(:any)'] = 'MasterPresensi/DataPresensi/C_CetakPresensiHarian/$1';
 $route['MasterPresensi/DataPresensi/CetakPresensiHarian/(:any)/(:any)'] = 'MasterPresensi/DataPresensi/C_CetakPresensiHarian/$1/$2';
 
+$route['MasterPresensi/DataPresensi/DetailPresensi'] = 'MasterPresensi/DataPresensi/C_DetailPresensi';
+$route['MasterPresensi/DataPresensi/DetailPresensi/(:any)'] = 'MasterPresensi/DataPresensi/C_DetailPresensi/$1';
+$route['MasterPresensi/DataPresensi/DetailPresensi/(:any)/(:any)'] = 'MasterPresensi/DataPresensi/C_DetailPresensi/$1/$2';
+
 
 //-------------------------------------Hambatan Produksi-------------------------------------------------
 $route['ManufacturingOperation/ProductionObstacles/master'] = 'ManufacturingOperation/ProductionObstacles/MainMenu/C_Master';

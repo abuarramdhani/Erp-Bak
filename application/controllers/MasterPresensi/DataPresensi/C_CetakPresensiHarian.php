@@ -1,7 +1,8 @@
 <?php 
 Defined('BASEPATH') or exit('No DIrect Script Access Allowed');
-
-set_time_limit(1800);
+ini_set('date.timezone', 'Asia/Jakarta');
+ini_set('memory_limit', '2048M');
+set_time_limit(0);
 /**
  * 
  */
@@ -22,7 +23,6 @@ class C_CetakPresensiHarian extends CI_Controller
 	function checkSession()
 	{
 		if (!$this->session->is_logged) redirect('');
-
 	}
 
 	public function index()
@@ -48,39 +48,51 @@ class C_CetakPresensiHarian extends CI_Controller
 		$this->load->view('V_Footer',$data);
 	}
 
+	public function getPekerja()
+	{
+		$key = $this->input->get('term');
+		$data = $this->M_cetakpresensiharian->getPekerjaByKey($key);
+		echo json_encode($data);
+	}
+
+	public function transformFilter($ingredients)
+	{
+		$result = "";
+		if (isset($ingredients) && !empty($ingredients)) {
+			foreach (explode(",", $ingredients) as $ing) {
+				if ($result == "") {
+					$result .= "'$ing'";
+				}else{
+					$result .= ",'$ing'";
+				}
+			}
+			return $result;
+		}else{
+			return false;
+		}
+			
+	}
+
 	public function getData()
 	{
-		$lokasi_kerja = $this->input->get('lokasi_kerja');
-		$kode_induk = $this->input->get('kode_induk');
-		$periode = $this->input->get('tanggal');
+		$lokasi_kerja 	= $this->input->get('lokasi_kerja');
+		$kode_induk 	= $this->input->get('kode_induk');
+		$kodesie 		= $this->input->get('kodesie');
+		$noind 			= $this->input->get('noind');
+
+		$periode 		= $this->input->get('tanggal');
 		$tanggal_awal = explode(" - ", $periode)[0];
 		$tanggal_akhir = explode(" - ", $periode)[1];
 
-		$filter = array();
-		$filter_lokasi_kerja = "";
-		if (isset($lokasi_kerja) && !empty($lokasi_kerja)) {
-			foreach (explode(",", $lokasi_kerja) as $lks) {
-				if ($filter_lokasi_kerja == "") {
-					$filter_lokasi_kerja .= "'$lks'";
-				}else{
-					$filter_lokasi_kerja .= ",'$lks'";
-				}
-			}
-			$filter['lokasi_kerja'] = $filter_lokasi_kerja;
-		}
-		$filter_kode_induk = "";
-		if (isset($kode_induk) && !empty($kode_induk)) {
-			foreach (explode(",", $kode_induk) as $kdi) {
-				if ($filter_kode_induk == "") {
-					$filter_kode_induk .= "'$kdi'";
-				}else{
-					$filter_kode_induk .= ",'$kdi'";
-				}
-			}
-			$filter['kode_induk'] = $filter_kode_induk;
-		}
+		$filter = array(
+			'lokasi_kerja' 	=> $this->transformFilter($lokasi_kerja),
+			'kode_induk' 	=> $this->transformFilter($kode_induk),
+			'kodesie' 		=> $this->transformFilter($kodesie),
+			'noind' 		=> $this->transformFilter($noind)
+		);
 
-		$workers = $this->M_cetakpresensiharian->getPekerjaByFilter($filter,$tanggal_awal);
+
+		$workers = $this->M_cetakpresensiharian->getPekerjaByFilter($filter,$tanggal_awal,$tanggal_akhir);
 		$data = array();
 		if (isset($workers) && !empty($workers)) {
 			foreach ($workers as $key => $worker) {
@@ -112,10 +124,11 @@ class C_CetakPresensiHarian extends CI_Controller
 		return $bulan[$number];
 	}
 
-	public function cetak_pdf()
+	public function export_pdf()
 	{
 		$data = $this->getData();
 		$html = "";
+
 		foreach ($data as $key => $dt) {
 			if ($html != "") {
 				$html .= "<br>";
@@ -184,15 +197,137 @@ class C_CetakPresensiHarian extends CI_Controller
 			";
 		}
 
+		$lokasi_kerja 	= $this->input->get('lokasi_kerja');
+		$kode_induk 	= $this->input->get('kode_induk');
+		$kodesie 		= $this->input->get('kodesie');
+		$noind 			= $this->input->get('noind');
+		$periode 		= $this->input->get('tanggal');
+
+		$header = "<table style='width: 100%;border-bottom: 1px solid black;'>
+			<tr>
+				<td style='width: 20%'>Periode</td>
+				<td style='width: 5%'>:</td>
+				<td>$periode</td>
+			</tr>
+		";
+		if (isset($lokasi_kerja) && !empty($lokasi_kerja)) {
+			$header .= "
+			<tr>
+				<td>Lokasi Kerja</td>
+				<td>:</td>
+				<td>$lokasi_kerja</td>
+			</tr>
+			";
+		}
+		if (isset($kode_induk) && !empty($kode_induk)) {
+			$header .= "
+			<tr>
+				<td>Kode Induk</td>
+				<td>:</td>
+				<td>$kode_induk</td>
+			</tr>
+			";
+		}
+		if (isset($kodesie) && !empty($kodesie)) {
+			$header .= "
+			<tr>
+				<td>Kodesie</td>
+				<td>:</td>
+				<td>$kodesie</td>
+			</tr>
+			";
+		}
+		if (isset($noind) && !empty($noind)) {
+			$header .= "
+			<tr>
+				<td>No. Induk</td>
+				<td>:</td>
+				<td>$noind</td>
+			</tr>
+			";
+		}
+		$header .= "</table>";
+		$html = $header.$html;
 
 		$this->load->library('pdf');
 		$pdf = $this->pdf->load();
 		$pdf->debug = true;
-		$pdf = new mPDF('utf-8', 'A4', 10, '', 10, 10, 10, 10, 10, 10);
+		$pdf = new mPDF('utf-8', 'A4', 9, '', 10, 10, 10, 15, 10, 10);
 		$filename = 'PRESENSI_HARIAN.pdf';
+		$pdf->SetHTMLFooter("<table style='width: 100%;border-top: 1px solid black;'>
+				<tr>
+					<td style='vertical-align: middle;'><i style='font-size: 8pt'>Halaman ini dicetak melalui Aplikasi QuickERP Master Presensi pada oleh ".$this->session->user." - ".$this->session->employee." tgl. ".$waktu." WIB.</i></td>
+					<td style='text-align: right;vertical-align: middle;'>{PAGENO} of {nb}</td>
+				</tr>
+			</table>");
 		$pdf->WriteHTML($html);
-		$pdf->Output($filename, 'I');
-		
+		$pdf->Output($filename, 'I');	
+	}
+
+	public function export_excel()
+	{
+		$this->load->library('excel');
+		$worksheet = $this->excel->getActiveSheet();
+		$data = $this->getData();
+
+
+
+		$nomor = 1;
+		foreach ($data as $dt) {
+			$worksheet->setCellValue('A'.($nomor+1),'No. Induk');
+			$worksheet->setCellValue('B'.($nomor+1),$dt['noind']);
+			$worksheet->mergeCells('B'.($nomor+1).':G'.($nomor+1));
+
+			$worksheet->setCellValue('A'.($nomor+2),'Nama');
+			$worksheet->setCellValue('B'.($nomor+2),$dt['nama']);
+			$worksheet->mergeCells('B'.($nomor+2).':G'.($nomor+2));
+
+			$worksheet->setCellValue('A'.($nomor+3),'Seksi');
+			$worksheet->setCellValue('B'.($nomor+3),$dt['seksi']);
+			$worksheet->mergeCells('B'.($nomor+3).':G'.($nomor+3));
+
+			$worksheet->setCellValue('A'.($nomor+4),'Unit');
+			$worksheet->setCellValue('B'.($nomor+4),$dt['unit']);
+			$worksheet->mergeCells('B'.($nomor+4).':G'.($nomor+4));
+
+			$worksheet->setCellValue('A'.($nomor+6),'Tanggal');
+			$worksheet->setCellValue('B'.($nomor+6),'Shift');
+			$worksheet->setCellValue('C'.($nomor+6),'Point');
+
+			for ($i=0; $i < $dt['max_kolom']; $i++) { 
+				$worksheet->setCellValueByColumnAndRow($i+3,$nomor+6,"waktu ".($i+1));
+
+			}
+
+			$nomor += 7;
+			if (isset($dt['presensi_harian']) && !empty($dt['presensi_harian'])) {
+				foreach ($dt['presensi_harian'] as $harian) {
+					$worksheet->setCellValue('A'.($nomor),date('d',strtotime($harian['tanggal']))." ".$this->getMonth(intval(date('m',strtotime($harian['tanggal']))))." ".date('Y',strtotime($harian['tanggal'])));
+					$worksheet->setCellValue('B'.($nomor),$harian['shift']);
+					$worksheet->setCellValue('C'.($nomor),$harian['point']);
+					for ($i=0; $i < $dt['max_kolom']; $i++) { 
+						if (isset($harian['absen']) && !empty($harian['absen']) && isset($harian['absen'][$i]) && !empty($harian['absen'][$i])) {
+							$worksheet->setCellValueByColumnAndRow($i+3,$nomor,$harian['absen'][$i]['waktu']);
+						}
+					}
+					$nomor++;
+				}
+			}
+
+		}
+
+		$filename ='PRESENSI_HARIAN.xls';
+		header('Content-Type: aplication/vnd.ms-excel');
+		header('Content-Disposition:attachment;filename="'.$filename.'"');
+		header('Cache-Control: max-age=0');
+		$writer = PHPExcel_IOFactory::createWriter($this->excel,'Excel5');
+		$writer->save('php://output');
+	}
+
+	function getKodesie()
+	{
+		$data= $this->M_cetakpresensiharian->getKodesie();
+		echo json_encode($data);
 	}
 
 }
