@@ -2068,6 +2068,17 @@ $route['MasterPekerja/Surat/BAPSP3/(:any)/(:any)']					=	'MasterPekerja/Surat/BA
 $route['MasterPekerja/Surat/BAPSP3/(:any)/(:any)/(:any)']			=	'MasterPekerja/Surat/BAPSP3/C_Daftar/$1/$2/$3';
 $route['MasterPekerja/Surat/BAPSP3/(:any)/(:any)/(:any)/(:any)']	=	'MasterPekerja/Surat/BAPSP3/C_Daftar/$1/$2/$3/$4';
 
+// Bap Akhir Kerja
+$route['MasterPekerja/Surat/BapAkhirKerja']	=	'MasterPekerja/Surat/BapAkhirKerja/C_BapAkhirKerja';
+$route['MasterPekerja/Surat/BapAkhirKerja/(:any)']	=	'MasterPekerja/Surat/BapAkhirKerja/C_BapAkhirKerja/$1';
+$route['MasterPekerja/Surat/BapAkhirKerja/(:any)/(:any)']	=	'MasterPekerja/Surat/BapAkhirKerja/C_BapAkhirKerja/$1/$2';
+
+$route['MasterPekerja/Surat/ajax/getDataPekerja']	=	'MasterPekerja/Surat/BapAkhirKerja/C_BapAkhirKerja/getDataPekerja';
+$route['MasterPekerja/Surat/ajax/getDataPetugas']	=	'MasterPekerja/Surat/BapAkhirKerja/C_BapAkhirKerja/getDataPetugas';
+$route['MasterPekerja/Surat/ajax/getSebabBerakhir']	=	'MasterPekerja/Surat/BapAkhirKerja/C_BapAkhirKerja/getSebabBerakhir';
+$route['MasterPekerja/Surat/ajax/deleteSurat']	=	'MasterPekerja/Surat/BapAkhirKerja/C_BapAkhirKerja/deleteSurat';
+$route['MasterPekerja/Surat/ajax/previewSurat']	=	'MasterPekerja/Surat/BapAkhirKerja/C_BapAkhirKerja/previewSurat';
+
 $route['MasterPekerja/Surat/gajipekerjacutoff']									=	'MasterPekerja/Surat/GajiPekerjaCutoff/C_Index';
 $route['MasterPekerja/Surat/gajipekerjacutoff/(:any)']					=	'MasterPekerja/Surat/GajiPekerjaCutoff/C_Index/$1';
 $route['MasterPekerja/Surat/gajipekerjacutoff/(:any)/(:any)']					=	'MasterPekerja/Surat/GajiPekerjaCutoff/C_Index/$1/$2';

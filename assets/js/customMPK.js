@@ -6311,3 +6311,196 @@ $(document).ready(function(){
     })
   })
 });
+
+// Akbar Sani Hasan Order #400784 // Push 08 Mei 2021
+$(document).ready(() => {
+  $('#reviewBapak').redactor({ linebreaks: true })
+  $('#MasterPekerja-namaPekerja').select2({
+    ajax: {
+      url: baseurl + "MasterPekerja/Surat/ajax/getDataPekerja",
+      dataType: "json",
+      type: "get",
+      data: function (params) {
+        return { p: params.term };
+      },
+      processResults: (data) => {
+        return {
+          results: data.map((item) => { return { id: `${item.nama} / ${item.noind}`, text: `${item.nama} / ${item.noind}` } })
+        };
+      },
+      cache: true,
+    },
+    minimumInputLength: 2,
+    placeholder: "Nama Pekerja Atau Nomor Induk",
+    allowClear: true,
+  })
+  $('#MasterPekerja-namaPekerja').on('select2:select', e => {
+    const key = e.params.data.id.split('/')[1]
+    $.ajax({
+      url: baseurl + "MasterPekerja/Surat/ajax/getDataPekerja",
+      dataType: 'json',
+      method: 'get',
+      data: {
+        p: key,
+      },
+      dataType: 'json',
+      success: (res) => {
+        res.forEach((it) => {
+          $('#MasterPekerja-pihak1').val(`${it.nama} / ${it.noind}`);
+          $('#MasterPekerja-lokasiKerja').val(it.nama_lokasi)
+          $('#MasterPekerja-jabatanPekerja').val(it.jabatan.toUpperCase())
+          $('#MasterPekerja-seksiPekerja').val(it.seksi)
+          $('#MasterPekerja-tanggalAkhirKerja-singledate').datepicker('setDate', it.akhkontrak.split(' ')[0])
+          $('#MasterPekerja-tanggalBerhentiKerja-singledate').datepicker('setDate', new Date(Date.parse(it.akhkontrak.split(' ')[0]) + 86400000))
+          $('#MasterPekerja-noBpjskes').val(it.nobpk.trim())
+          $('#MasterPekerja-noBpjsket').val(it.nobpkt.trim())
+        })
+      }
+    })
+  })
+  $('#MasterPekerja-namaPetugas').select2({
+    ajax: {
+      url: baseurl + "MasterPekerja/Surat/ajax/getDataPetugas",
+      dataType: "json",
+      type: "get",
+      data: function (params) {
+        return { p: params.term };
+      },
+      processResults: (data) => {
+        return {
+          results: data.map((item) => { return { id: `${item.nama} / ${item.noind}`, text: `${item.nama} / ${item.noind}` } })
+        };
+      },
+      cache: true,
+    },
+    minimumInputLength: 2,
+    placeholder: "Nama Petugas Atau Nomor Induk",
+    allowClear: true,
+  })
+  $('#MasterPekerja-namaPetugas').on('select2:select', e => {
+    const key = e.params.data.id.split('/')[1]
+    $.ajax({
+      url: baseurl + "MasterPekerja/Surat/ajax/getDataPetugas",
+      dataType: 'json',
+      method: 'get',
+      data: {
+        p: key,
+      },
+      dataType: 'json',
+      success: (res) => {
+        res.forEach((it) => {
+          $('#MasterPekerja-pihak2').val(`${it.nama} / ${it.noind}`)
+          $('#MasterPekerja-jabatanPetugas').val(it.jabatan)
+        })
+      }
+    })
+  })
+  $('.btn-trash').click(function () {
+    let id = $(this).data('id')
+    swal.fire({
+      type: 'warning',
+      title: 'Apa Anda Yakin Ingin Menghapus ?',
+      text: 'Data Akan Terhapus Secara Permanent Dan Tidak Dapat Dikembalikan Lagi',
+      showCancelButton: true
+    }).then(res => {
+      if (res.value) {
+        $.ajax({
+          url: baseurl + 'MasterPekerja/Surat/ajax/deleteSurat',
+          method: 'post',
+          data: {
+            id
+          },
+          success: (res) => {
+            swal.fire("Data Berhasil Dihapus", "", "success").then(res => location.reload())
+          }
+        })
+      }
+    })
+  })
+  $('#MasterPekerja-bapAkhirKerja-btnPreview').on('click', () => {
+    tanggalSurat = $('#MasterPekerja-tanggalSuratBak-singledate').val()
+    lokasiKerja = $('#MasterPekerja-lokasiKerja').val()
+    namaPekerja = $('#MasterPekerja-namaPekerja').val()
+    jabatanPekerja = $('#MasterPekerja-jabatanPekerja').val()
+    seksiPekerja = $('#MasterPekerja-seksiPekerja').val()
+    namaPetugas = $('#MasterPekerja-namaPetugas').val()
+    jabatanPetugas = $('#MasterPekerja-jabatanPetugas').val()
+    tanggalAkhirKerja = $('#MasterPekerja-tanggalAkhirKerja-singledate').val()
+    tanggalBerhentiKerja = $('#MasterPekerja-tanggalBerhentiKerja-singledate').val()
+    sebabBerakhir = $('#MasterPekerja-sebabBerakhir').val()
+    tanggalPenggajian = $('#MasterPekerja-tanggalPenggajian-singledate').val()
+    keteranganPenggajian = $('#MasterPekerja-keteranganPenggajian').val()
+    tanggalAktifBpjs = $('#MasterPekerja-tanggalAktifBpjs-singledate').val()
+    tanggalNonAktifBpjs = $('#MasterPekerja-tanggalNonAktifBpjs-singledate').val()
+    no_bpjskes = $('#MasterPekerja-noBpjskes').val();
+    no_bpjsket = $('#MasterPekerja-noBpjsket').val();
+    tanggalPencairanJHT = $('#MasterPekerja-tanggalPencairanJHT-singledate').val()
+    tanggalSuratPengalamanKerja = $('#MasterPekerja-tanggalSuratPengalamanKerja-singledate').val()
+    laporanPajak = $('#MasterPekerja-laporanPajak-yearonly').val()
+    kontakHpHr = $('#MasterPekerja-kontakHpHr').val()
+    pihak1 = $('#MasterPekerja-pihak1').val()
+    pihak2 = $('#MasterPekerja-pihak2').val()
+    $.ajax({
+      url: baseurl + 'MasterPekerja/Surat/ajax/previewSurat',
+      method: 'post',
+      dataType: 'json',
+      data: {
+        tanggalSurat,
+        lokasiKerja,
+        namaPekerja,
+        jabatanPekerja,
+        seksiPekerja,
+        namaPetugas,
+        jabatanPetugas,
+        tanggalAkhirKerja,
+        tanggalBerhentiKerja,
+        sebabBerakhir,
+        tanggalPenggajian,
+        keteranganPenggajian,
+        tanggalAktifBpjs,
+        tanggalNonAktifBpjs,
+        no_bpjskes,
+        no_bpjsket,
+        tanggalPencairanJHT,
+        tanggalSuratPengalamanKerja,
+        laporanPajak,
+        kontakHpHr,
+        pihak1,
+        pihak2,
+      },
+      beforeSend: () => {
+        $('#surat-loading').removeAttr('hidden')
+      },
+      success: res => {
+        $('#surat-loading').attr('hidden', true)
+        $('#reviewBapak').redactor('set', res)
+      }
+    })
+  })
+
+  $("#MasterPekerja-tanggalAkhirKerja-singledate").datepicker({
+    format: 'yyyy-mm-dd',
+    todayHighlight: true,
+    autoClose: true,
+    autoApply: true,
+  }).on("changeDate", function (e) {
+    $('#MasterPekerja-tanggalBerhentiKerja-singledate').datepicker('setDate', new Date(Date.parse(e.date) + 86400000))
+  });
+
+  $('#MasterPekerja-tanggalNonAktifBpjs-singledate').datepicker({
+    format: 'MM yyyy',
+    autoClose: true,
+    autoApply: true,
+    minViewMode: "months"
+  }).on('changeDate', function (e) {
+    $('#MasterPekerja-tanggalPencairanJHT-singledate').datepicker('setDate', new Date(Date.parse(e.date) + 2716200000))
+  })
+  $('#MasterPekerja-sebabBerakhir').select2({
+    placeholder: "Sebab Keluar",
+    allowClear: true,
+  })
+  $('#MasterPekerja-kontakHpHr').select2({
+    placeholder: "Kontak Hp Seksi Hubungan Kerja",
+    allowClear: true,
+  })
+})
