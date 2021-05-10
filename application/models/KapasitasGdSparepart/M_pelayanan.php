@@ -27,7 +27,26 @@ class M_pelayanan extends CI_Model
         return $query->result_array();
     }
 
+    
+    public function dataJumlah()
+    {
+        $oracle = $this->load->database('oracle', true);
+        $sql = "SELECT DISTINCT kts.tipe,
+                                (SELECT COUNT (kts2.tipe)
+                                   FROM khs_tampung_spb kts2
+                                  WHERE kts2.selesai_pelayanan IS NULL
+                                    AND kts2.CANCEL IS NULL
+                                    AND kts2.approval_flag = 'Y'
+                                    AND kts2.tipe = kts.tipe) jumlah
+                           FROM khs_tampung_spb kts
+                          WHERE kts.tipe IS NOT NULL
+                       ORDER BY 1";
+        $query = $oracle->query($sql);
 
+        return $query->result_array();
+    }
+    
+    
     public function dataNormal()
     {
         $oracle = $this->load->database('oracle', true);

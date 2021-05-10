@@ -35,19 +35,34 @@
                             <div class="box-header with-border">
                               <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                                 <li class="nav-item active" style="background:#e7e7e7">
-                                  <a class="nav-link" onclick="normal()" id="pills-normal-tab" data-toggle="pill" href="#pills-normal" role="tab" aria-controls="pills-home" aria-selected="true">NORMAL </a>
+                                  <a class="nav-link" onclick="normal()" id="pills-normal-tab" data-toggle="pill" href="#pills-normal" role="tab" aria-controls="pills-home" aria-selected="true">
+                                    NORMAL 
+                                    <span id="lblNormal" class="label label-danger" style="margin-left: 5px; vertical-align: top;"></span>
+                                  </a>
                                 </li>
                                 <li class="nav-item" style="background:#e7e7e7">
-                                  <a class="nav-link" onclick="urgent()" id="pills-urgent-tab" data-toggle="pill" href="#pills-urgent" role="tab" aria-controls="pills-profile" aria-selected="false">URGENT</a>
+                                  <a class="nav-link" onclick="urgent()" id="pills-urgent-tab" data-toggle="pill" href="#pills-urgent" role="tab" aria-controls="pills-profile" aria-selected="false">
+                                    URGENT 
+                                    <span id="lblUrgent" class="label label-danger" style="margin-left: 5px; vertical-align: top;"></span>
+                                  </a>
                                 </li>
                                 <li class="nav-item" style="background:#e7e7e7">
-                                  <a class="nav-link" onclick="eceran()" id="pills-eceran-tab" data-toggle="pill" href="#pills-eceran" role="tab" aria-controls="pills-home" aria-selected="true">ECERAN</a>
+                                  <a class="nav-link" onclick="eceran()" id="pills-eceran-tab" data-toggle="pill" href="#pills-eceran" role="tab" aria-controls="pills-home" aria-selected="true">
+                                    ECERAN 
+                                    <span id="lblEceran" class="label label-danger" style="margin-left: 5px; vertical-align: top;"></span>
+                                  </a>
                                 </li>
                                 <li class="nav-item" style="background:#e7e7e7">
-                                  <a class="nav-link" onclick="best()" id="pills-best-tab" data-toggle="pill" href="#pills-best" role="tab" aria-controls="pills-home" aria-selected="true">BEST AGRO</a>
+                                  <a class="nav-link" onclick="best()" id="pills-best-tab" data-toggle="pill" href="#pills-best" role="tab" aria-controls="pills-home" aria-selected="true">
+                                    BEST AGRO 
+                                    <span id="lblBest" class="label label-danger" style="margin-left: 5px; vertical-align: top;"></span>
+                                  </a>
                                 </li>
                                 <li class="nav-item" style="background:#e7e7e7">
-                                  <a class="nav-link" onclick="ecom()" id="pills-ecom-tab" data-toggle="pill" href="#pills-ecom" role="tab" aria-controls="pills-home" aria-selected="true">E-COMMERCE</a>
+                                  <a class="nav-link" onclick="ecom()" id="pills-ecom-tab" data-toggle="pill" href="#pills-ecom" role="tab" aria-controls="pills-home" aria-selected="true">
+                                    E-COMMERCE 
+                                    <span id="lblEcom" class="label label-danger" style="margin-left: 5px; vertical-align: top;"></span>
+                                  </a>
                                 </li>
                                 <li class="nav-item" style="background:#e7e7e7">
                                   <a class="nav-link" onclick="cetak()" id="pills-cetak-tab" data-toggle="pill" href="#pills-cetak" role="tab" aria-controls="pills-home" aria-selected="true">CETAK PACKING LIST</a>

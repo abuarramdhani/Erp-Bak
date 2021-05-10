@@ -109,6 +109,33 @@ $(document).ready(function () {
       });
 });
 
+function jumlah() {
+    $.ajax({
+        url: baseurl + 'KapasitasGdSparepart/Pelayanan/getJumlah',
+        type: 'POST',
+        dataType: 'JSON',
+        beforeSend: function() {
+        },
+        success: function(result) {
+          // console.log(result.length);
+          var notif = [];
+          for (var i = 0; i < result.length; i++) {
+              notif[result[i].TIPE] = result[i].JUMLAH;
+          }
+          // console.log(notif['NORMAL']);
+            
+          $('#lblNormal').html(notif['NORMAL']);
+          $('#lblUrgent').html(notif['URGENT']);
+          $('#lblEceran').html(notif['ECERAN']);
+          $('#lblBest').html(notif['BEST AGRO']);
+          $('#lblEcom').html(notif['E-COMMERCE']);
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+          console.error();
+        }
+    })
+}
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////// PELAYANAN //////////////////////////////////////////////////////////
@@ -157,6 +184,7 @@ ajax1 = $.ajax({
     beforeSend: function() {
       $('#loadingArea1').show();
       $('div.table_area_1').hide();
+      jumlah();
       selesai();
     },
     success: function(result) {
@@ -165,7 +193,6 @@ ajax1 = $.ajax({
       $('div.table_area_1').show();
       $('div.table_area_1').html(result);
       $('#tipe').val('NORMAL');
-
     },
     error: function(XMLHttpRequest, textStatus, errorThrown) {
       console.error();
@@ -186,6 +213,7 @@ function urgent() {
         beforeSend: function() {
           $('#loadingArea2').show();
           $('div.table_area_2').hide();
+          jumlah();
           selesai();
         },
         success: function(result) {
@@ -194,7 +222,6 @@ function urgent() {
           $('div.table_area_2').show();
           $('div.table_area_2').html(result);
           $('#tipe').val('URGENT');
-
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
           console.error();
@@ -215,6 +242,7 @@ function eceran() {
         beforeSend: function() {
           $('#loadingArea3').show();
           $('div.table_area_3').hide();
+          jumlah();
           selesai();
         },
         success: function(result) {
@@ -223,7 +251,6 @@ function eceran() {
           $('div.table_area_3').show();
           $('div.table_area_3').html(result);
           $('#tipe').val('ECERAN');
-
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
           console.error();
@@ -244,6 +271,7 @@ function best() {
         beforeSend: function() {
           $('#loadingArea4').show();
           $('div.table_area_4').hide();
+          jumlah();
           selesai();
         },
         success: function(result) {
@@ -252,7 +280,6 @@ function best() {
           $('div.table_area_4').show();
           $('div.table_area_4').html(result);
           $('#tipe').val('BEST');
-
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
           console.error();
@@ -273,6 +300,7 @@ function ecom() {
         beforeSend: function() {
           $('#loadingArea6').show();
           $('div.table_area_6').hide();
+          jumlah();
           selesai();
         },
         success: function(result) {
@@ -281,7 +309,6 @@ function ecom() {
           $('div.table_area_6').show();
           $('div.table_area_6').html(result);
           $('#tipe').val('ECOM');
-
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
           console.error();
