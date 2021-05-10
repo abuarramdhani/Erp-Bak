@@ -207,11 +207,11 @@
 						</button>
 					<?php } else { ?>
 						<button class="btn btn-sm  <?= ($value['body']) ? 'btn-success' : 'disabled btn-default' ?>" target="_blank" 
-								 <?= ($value['body']) ? "onclick=document.getElementById('form".$value['header']['WIP_ENTITY_NAME']."').submit();print_sticker('".$value['header']['ITEM_CODE']."','".$value['header']['WIP_ENTITY_NAME']."',".$value['header']['START_QUANTITY'].")" :'' ?>>
+								 <?= ($value['body']) ? "onclick=document.getElementById('form".$value['header']['WIP_ENTITY_NAME']."').submit();print_sticker('".$value['header']['ITEM_CODE']."','".$value['header']['WIP_ENTITY_NAME']."',".$value['header']['START_QUANTITY'].",'')" :'' ?>>
 								 <?= $text_button; ?> 
 						</button><br><br>
 						<button class="btn btn-sm  <?= ($value['body']) ? 'btn-success' : 'disabled btn-default' ?>" target="_blank" 
-								 <?= ($value['body']) ? "onclick=document.getElementById('form2".$value['header']['WIP_ENTITY_NAME']."').submit();print_sticker('".$value['header']['ITEM_CODE']."','".$value['header']['WIP_ENTITY_NAME']."',".$value['header']['START_QUANTITY'].")" :'' ?>>
+								 <?= ($value['body']) ? "onclick=document.getElementById('form2".$value['header']['WIP_ENTITY_NAME']."').submit();print_sticker('".$value['header']['ITEM_CODE']."','".$value['header']['WIP_ENTITY_NAME']."',".$value['header']['START_QUANTITY'].",'')" :'' ?>>
 								 <?= $text_button2; ?> 
 						</button>
 					<?php } ?>
