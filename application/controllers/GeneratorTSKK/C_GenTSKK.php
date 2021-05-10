@@ -4205,8 +4205,9 @@ public function exportExcel($idnya){
 									if (($i >= $startmuda[$j] && $i <= $finishmuda[$j])
 										&& $manual_walk_finish[$manual_walk_finish_indx[$manual_walk_finish_indx_now-1]]+1 != $start[array_search($finish[$manual_walk_finish_indx[$manual_walk_finish_indx_now-1]]+1, $manual_walk_start)]) {
 											// echo ($manual_walk_finish[$manual_walk_finish_indx[$manual_walk_finish_indx_now-1]]+1).' <=finish start=> '.$start[array_search($finish[$manual_walk_finish_indx[$manual_walk_finish_indx_now-1]]+1, $manual_walk_start)].'index ke'.$j."<br>";
-												$styles[$x][$rowflow + $minus_master][($i+$mulai_colom_grafik) - $nn]['fill'] = '#fa3eef';
-												$styles[$x][($rowflow-1) + $minus_master][($i+$mulai_colom_grafik) - $nn]['fill'] = '#fa3eef';
+												$walk_muda = cek_walk_before($j, array_search($finish[$j]+1, $manual_walk_start), $jenis_proses) >= 1 ? 1 : 0;
+												$styles[$x][$rowflow + $minus_master + $walk_muda][($i+$mulai_colom_grafik) - $nn]['fill'] = '#fa3eef';
+												$styles[$x][($rowflow-1) + $minus_master + $walk_muda][($i+$mulai_colom_grafik) - $nn]['fill'] = '#fa3eef';
 												if ($i === $finishmuda[$j]) {
 													$total_muda[] = $muda[$j];
 													if ($i > 1*$nn && $i < ((600*$x) + ($x<=1?0:(180*$n_)))) {
