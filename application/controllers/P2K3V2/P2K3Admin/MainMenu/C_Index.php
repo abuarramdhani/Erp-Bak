@@ -58,6 +58,8 @@ class C_Index extends CI_Controller
 			$baru = $cek_terbaru[0]['tgl_approve_tim'];
 		}
 		$data['list'] = $this->M_dtmasuk->getListAprove($ks, $baru);
+		// echo "<pre>";
+		// print_r($data['list']);exit();
 		$data['daftar_pekerjaan']	= $this->M_order->daftar_pekerjaan($ks);
 		$data['seksi'] = '';
 		$data['seksi'] = $this->M_dtmasuk->cekseksi($ks);
@@ -186,6 +188,10 @@ class C_Index extends CI_Controller
 			// echo "<pre>";
 			foreach ($data['toHitung'] as $key) {
 				$kode = $key['item_kode'];
+				$moq = $this->M_dtmasuk->getMoq($kode)['MINIMUM_ORDER_QUANTITY'];
+				if (empty($moq)) {
+					$moq = 1;
+				}
 				$stok = $this->M_dtmasuk->stokOracle($kode, 'PNL-DM');
 				$po = $this->M_dtmasuk->OutstandingPO($kode);
 				$totalPO = 0;
@@ -207,7 +213,7 @@ class C_Index extends CI_Controller
 				$key['stokg'] = $stok;
 
 				$jpp = ceil(($a * 1.1) + $out - $stok - $totalPO);
-				$key['jpp'] = ($jpp < 0) ? 0 : $jpp;
+				$key['jpp'] = ($jpp < 0) ? 0 : ceil( $jpp / $moq ) * $moq;
 
 				$new[] = $key;
 				$data['toHitung'] = $new;
@@ -217,6 +223,10 @@ class C_Index extends CI_Controller
 			foreach ($data['toHitung2'] as $row) {
 				$kode = $row['item_kode'];
 				//tks saat ini 2 gudang
+				$moq = $this->M_dtmasuk->getMoq($kode)['MINIMUM_ORDER_QUANTITY'];
+				if (empty($moq)) {
+					$moq = 1;
+				}
 				$stok = $this->M_dtmasuk->stokOracle($kode, "PNL-TKS");
 				$stok += $this->M_dtmasuk->stokOracle($kode, "PNL-NPR");
 				$po = $this->M_dtmasuk->OutstandingPO($kode);
@@ -239,7 +249,7 @@ class C_Index extends CI_Controller
 				$row['stokg'] = $stok;
 
 				$jpp = ceil(($a * 1.1) + $out - $stok - $totalPO);
-				$row['jpp'] = ($jpp < 0) ? 0 : $jpp;
+				$row['jpp'] = ($jpp < 0) ? 0 : ceil( $jpp / $moq ) * $moq;
 
 				$new2[] = $row;
 				$data['toHitung2'] = $new2;

@@ -165,20 +165,6 @@
 </div>
 <script>
     $(document).ready(function(){
-        $('tr.multiinput').each(function(){
-            var ob = $(this).find('input.p2k3_ob').val();
-            var keb = $(this).find('input.p2k3_kebutuhan').val();
-            var po = $(this).find('p.p2k3_jpo').text();
-            var sg = $(this).closest('tr').find('td.p2k3_stok').text();
-            var hit = (Number(keb) * 1.1) + Number(ob) - Number(sg) - Number(po);
-            var up = Math.ceil(hit);
-            if (up < 0) {
-                // alert(up);
-                up = 0;
-            }
-            $(this).find('input.p2k3_ijpp').val(up);
-            $(this).find('p.p2k3_pjpp').text(up);
-        })
         var table_p2k3 = $('.p2k3_perhitungan').DataTable( {
             "paging":   false,
             "ordering": false,
@@ -188,50 +174,17 @@
             buttons: [
             {
                 extend: 'excelHtml5',
-              title: judul
-          },
-          {
-              extend: 'pdfHtml5',
-              title: judul,
-              customize: function(doc) {
-                doc.defaultStyle.alignment = 'center';
-                doc.defaultStyle.fontSize = 9;
-            } 
-        }
-        ]
-    });
-
-        $(".p2k3_stokaasd").bind("change paste keyup", function() { //tidak di pakai
-            var ob = $(this).closest('tr').find('input.p2k3_ob').val();
-            var keb = $(this).closest('tr').find('input.p2k3_kebutuhan').val();
-            var opp = $(this).closest('tr').find('input.p2k3_opp').val();
-            var sg = $(this).val();
-            var cal1 = (Number(keb) * 1.1)+ Number(ob) - Number(sg) - Number(opp);
-            if (Number(cal1) < 0) {
-                cal1 = 0;
-            }else{
-                cal1 = Math.ceil(cal1);
+                title: judul
+            },
+            {
+                extend: 'pdfHtml5',
+                title: judul,
+                customize: function(doc) {
+                    doc.defaultStyle.alignment = 'center';
+                    doc.defaultStyle.fontSize = 9;
+                } 
             }
-            $(this).closest('tr').find('input.p2k3_ijpp').val(cal1);
-            $(this).closest('tr').find('p.p2k3_pjpp').text(cal1);
-            $(this).closest('tr').find('p.p2k3_pstok').text($(this).val());
-            table_p2k3.cells().invalidate('dom');
-        });
-        $(".p2k3_opp").bind("change paste keyup", function() {
-            var ob = $(this).closest('tr').find('input.p2k3_ob').val();
-            var keb = $(this).closest('tr').find('input.p2k3_kebutuhan').val();
-            var sg = $(this).closest('tr').find('td.p2k3_stok').text();
-            var opp = $(this).val();
-            var cal1 = (Number(keb) * 1.1)+ Number(ob) - Number(sg) - Number(opp);
-            if (Number(cal1) < 0) {
-                cal1 = 0;
-            }else{
-                cal1 = Math.ceil(cal1);
-            }
-            $(this).closest('tr').find('input.p2k3_ijpp').val(cal1);
-            $(this).closest('tr').find('p.p2k3_pjpp').text(cal1);
-            $(this).closest('tr').find('p.p2k3_popp').text($(this).val());
-            table_p2k3.cells().invalidate('dom');
+            ]
         });
     });
 </script>
