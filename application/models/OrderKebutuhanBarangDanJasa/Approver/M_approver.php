@@ -26,6 +26,114 @@ class M_approver extends CI_Model
         return $query->result_array();
     }
 
+    public function getListDataOrderNormal($no_induk)
+    {
+        $sql = "SELECT
+                kooh.ORDER_ID
+            FROM
+                khs.khs_okbj_order_header kooh,
+                per_people_f ppfa,
+                khs.khs_okbj_order_approval kkooa,
+                (
+                SELECT
+                    kooa.ORDER_ID,
+                    MIN (kooa.APPROVER_TYPE) a_level
+                FROM
+                    khs.khs_okbj_order_approval kooa
+                WHERE
+                    kooa.JUDGEMENT IS NULL
+                GROUP BY
+                    kooa.ORDER_ID
+                ) tbl1
+            WHERE
+                kooh.ORDER_ID = tbl1.ORDER_ID
+                AND tbl1.a_level <> 7
+                AND kooh.ORDER_ID = kkooa.ORDER_ID
+                AND kkooa.APPROVER_TYPE = tbl1.a_level
+                AND kkooa.APPROVER_ID = ppfa.PERSON_ID
+                AND kooh.ORDER_STATUS_ID <> 4
+                AND ppfa.NATIONAL_IDENTIFIER = ?
+                AND (kooh.URGENT_FLAG <> 'Y' OR kooh.URGENT_FLAG IS NULL)
+                AND (kooh.IS_SUSULAN <> 'Y' OR kooh.IS_SUSULAN IS NULL)";
+
+        $query = $this->oracle->query($sql, [
+            $no_induk,
+        ]);
+        return $query->result_array();
+    }
+
+    public function getListDataOrderEmergency($no_induk)
+    {
+        $sql = "SELECT
+                    kooh.ORDER_ID
+                FROM
+                    khs.khs_okbj_order_header kooh,
+                    per_people_f ppfa,
+                    khs.khs_okbj_order_approval kkooa,
+                    (
+                    SELECT
+                        kooa.ORDER_ID,
+                        MIN (kooa.APPROVER_TYPE) a_level
+                    FROM
+                        khs.khs_okbj_order_approval kooa
+                    WHERE
+                        kooa.JUDGEMENT IS NULL
+                    GROUP BY
+                        kooa.ORDER_ID
+                    ) tbl1
+                WHERE
+                    kooh.ORDER_ID = tbl1.ORDER_ID
+                    AND tbl1.a_level <> 7
+                    AND kooh.ORDER_ID = kkooa.ORDER_ID
+                    AND kkooa.APPROVER_TYPE = tbl1.a_level
+                    AND kkooa.APPROVER_ID = ppfa.PERSON_ID
+                    AND kooh.ORDER_STATUS_ID <> 4
+                    AND ppfa.NATIONAL_IDENTIFIER = ?
+                    AND kooh.IS_SUSULAN = 'Y'";
+
+        $query = $this->oracle->query($sql, [
+            $no_induk,
+        ]);
+        return $query->result_array();
+    }
+    
+    public function getListDataOrderUrgent($no_induk)
+    {
+        $sql = "SELECT
+                    kooh.ORDER_ID
+                FROM
+                    khs.khs_okbj_order_header kooh,
+                    per_people_f ppfa,
+                    khs.khs_okbj_order_approval kkooa,
+                    (
+                    SELECT
+                        kooa.ORDER_ID,
+                        MIN (kooa.APPROVER_TYPE) a_level
+                    FROM
+                        khs.khs_okbj_order_approval kooa
+                    WHERE
+                        kooa.JUDGEMENT IS NULL
+                    GROUP BY
+                        kooa.ORDER_ID
+                    ) tbl1
+                WHERE
+                    kooh.ORDER_ID = tbl1.ORDER_ID
+                    AND tbl1.a_level <> 7
+                    AND kooh.ORDER_ID = kkooa.ORDER_ID
+                    AND kkooa.APPROVER_TYPE = tbl1.a_level
+                    AND kkooa.APPROVER_ID = ppfa.PERSON_ID
+                    AND kooh.ORDER_STATUS_ID <> 4
+                    AND ppfa.NATIONAL_IDENTIFIER = ?
+                    AND kooh.URGENT_FLAG = 'Y'
+                    AND (kooh.IS_SUSULAN = 'N'
+                    OR kooh.IS_SUSULAN IS NULL)";
+
+        $query = $this->oracle->query($sql, [
+            $no_induk,
+        ]);
+        return $query->result_array();
+    }
+
     public function ApproveOrder($orderid, $person_id, $approve, $type)
     {
         $oracle = $this->load->database('oracle', true);

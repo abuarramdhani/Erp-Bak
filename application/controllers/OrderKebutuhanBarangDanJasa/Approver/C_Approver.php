@@ -101,22 +101,13 @@ class C_Approver extends CI_Controller {
         $data['panelStatOrder'] = 'panel-success';
         $data['statOrder'] = 'Reguler';
 
-        $and = "URGENT_FLAG ='N' AND IS_SUSULAN ='N'";
+        $allOrder = $this->M_approver->getListDataOrderNormal($noind);
 
-        $allOrder = $this->M_approver->getListDataOrderCondition($and);
-        // echo'<pre>';
-        // print_r($allOrder);exit;
         foreach ($allOrder as $key => $order) {
-            $checkOrder = $this->M_approver->checkOrder($order['ORDER_ID']);
-            if (isset($checkOrder[0])) {
-                if ($checkOrder[0]['APPROVER_ID'] == $data['approver'][0]['PERSON_ID'] && $checkOrder[0]['APPROVER_TYPE'] != 7) {
                     $orderSiapTampil = $this->M_approver->getOrderToApprove($order['ORDER_ID']);
-                    if ($orderSiapTampil[0]['ORDER_CLASS'] != '2' && $orderSiapTampil[0]['ORDER_STATUS_ID'] != '4' || $orderSiapTampil[0]['ORDER_STATUS_ID'] != '5') {
                         array_push($data['listOrder'], $orderSiapTampil[0]);
                     }
-                }
-            }
-        }
+
         $data['position'] = $this->M_approver->checkPositionApproverIni($data['approver'][0]['PERSON_ID']);
 
 		$this->load->view('V_Header',$data);
@@ -145,25 +136,15 @@ class C_Approver extends CI_Controller {
         $data['panelStatOrder'] = 'panel-warning';
         $data['statOrder'] = 'Emergency';
 
-        $and = "IS_SUSULAN ='Y'";
+        $allOrder = $this->M_approver->getListDataOrderEmergency($noind);
 
-        $allOrder = $this->M_approver->getListDataOrderCondition($and);
-        // echo'<pre>';
-        // print_r($allOrder);exit;
         foreach ($allOrder as $key => $order) {
-            $checkOrder = $this->M_approver->checkOrder($order['ORDER_ID']);
-            // echo'<pre>';
-            // print_r($checkOrder);
-            if (isset($checkOrder[0])) {
-                if ($checkOrder[0]['APPROVER_ID'] == $data['approver'][0]['PERSON_ID'] && $checkOrder[0]['APPROVER_TYPE'] != 7) {
                     $orderSiapTampil = $this->M_approver->getOrderToApprove($order['ORDER_ID']);
                     if ($orderSiapTampil[0]['ORDER_CLASS'] != '2' && $orderSiapTampil[0]['ORDER_STATUS_ID'] != '4' || $orderSiapTampil[0]['ORDER_STATUS_ID'] != '5') {
                         array_push($data['listOrder'], $orderSiapTampil[0]);
                     }
                 }
-            }
-        }
-        // exit;
+
         $data['position'] = $this->M_approver->checkPositionApproverIni($data['approver'][0]['PERSON_ID']);
 
 		$this->load->view('V_Header',$data);
@@ -192,25 +173,13 @@ class C_Approver extends CI_Controller {
         $data['panelStatOrder'] = 'panel-danger';
         $data['statOrder'] = 'Urgent';
 
-        $and = "URGENT_FLAG ='Y' AND IS_SUSULAN ='N'";
+        $allOrder = $this->M_approver->getListDataOrderUrgent($noind);
 
-        $allOrder = $this->M_approver->getListDataOrderCondition($and);
-        // echo'<pre>';
-        // print_r($allOrder);exit;
         foreach ($allOrder as $key => $order) {
-            $checkOrder = $this->M_approver->checkOrder($order['ORDER_ID']);
-            // echo'<pre>';
-            // print_r($checkOrder);
-            if (isset($checkOrder[0])) {
-                if ($checkOrder[0]['APPROVER_ID'] == $data['approver'][0]['PERSON_ID'] && $checkOrder[0]['APPROVER_TYPE'] != 7) {
                     $orderSiapTampil = $this->M_approver->getOrderToApprove($order['ORDER_ID']);
-                    if ($orderSiapTampil[0]['ORDER_CLASS'] != '2' && $orderSiapTampil[0]['ORDER_STATUS_ID'] != '4' || $orderSiapTampil[0]['ORDER_STATUS_ID'] != '5') {
                         array_push($data['listOrder'], $orderSiapTampil[0]);
                     }
-                }
-            }
-        }
-        // exit;
+
         $data['position'] = $this->M_approver->checkPositionApproverIni($data['approver'][0]['PERSON_ID']);
         
 		$this->load->view('V_Header',$data);
