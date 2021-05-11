@@ -1232,7 +1232,8 @@ class M_Dtmasuk extends CI_Model
         return $this->personalia->query($sql)->row_array();
     }
 
-    public function getMasaKerja($noinduk, $tgl) {
+    public function getMasaKerja($noinduk, $tgl)
+    {
         $noinduk = "'$noinduk'";
         $sql = "select      masa_kerja.nik,
                                 masa_kerja.tgllahir,
@@ -1318,7 +1319,8 @@ class M_Dtmasuk extends CI_Model
         return $query->row_array();
     }
 
-    public function getMasaKerja2($noinduk, $tgl) {
+    public function getMasaKerja2($noinduk, $tgl)
+    {
         $noinduk = "'$noinduk'";
         $sql2 = "select         masa_kerja.nik,
                                 masa_kerja.tgllahir,
@@ -1425,7 +1427,8 @@ class M_Dtmasuk extends CI_Model
         return $query2->row_array();
     }
 
-    public function getMasaKerja3($noinduk, $tgl) {
+    public function getMasaKerja3($noinduk, $tgl)
+    {
         $noinduk = "'$noinduk'";
         $sql3 = "select         masa_kerja.nik,
                                 masa_kerja.tgllahir,
@@ -1599,7 +1602,7 @@ class M_Dtmasuk extends CI_Model
     {
         $this->db->where('id_kecelakaan', $id);
         $this->db->delete($table);
-        return $this->db->affected_rows()>0;
+        return $this->db->affected_rows() > 0;
     }
 
     public function getDatak3k($ym)
@@ -1681,11 +1684,11 @@ class M_Dtmasuk extends CI_Model
         return $this->db->query($sql)->row()->ttl;
     }
 
-    public function getTtlLoker($id_loker, $year)//lokasikerja
+    public function getTtlLoker($id_loker, $year) //lokasikerja
     {
         $sql = "SELECT count(*) ttl from k3.k3k_kecelakaan kkk where lokasi_kerja_kecelakaan like '$id_loker%'
                 and kkk.waktu_kecelakaan::text like '$year%'";
-                // echo $sql;exit();
+        // echo $sql;exit();
         return $this->db->query($sql)->row()->ttl;;
     }
 
@@ -1698,46 +1701,46 @@ class M_Dtmasuk extends CI_Model
 
     public function getTtlrange2($id, $year)
     {
-       $sql = "SELECT count(*) ttl from k3.k3k_kecelakaan kkk where range_waktu2 = '$id'
+        $sql = "SELECT count(*) ttl from k3.k3k_kecelakaan kkk where range_waktu2 = '$id'
                 and kkk.waktu_kecelakaan::text like '$year%'";
-       return $this->db->query($sql)->row()->ttl;
+        return $this->db->query($sql)->row()->ttl;
     }
 
     public function getTtlunsafe($id, $year)
     {
-       $sql = "SELECT count(*) ttl from k3.k3k_kecelakaan kkk where unsafe = '$id'
+        $sql = "SELECT count(*) ttl from k3.k3k_kecelakaan kkk where unsafe = '$id'
                 and kkk.waktu_kecelakaan::text like '$year%'";
-       return $this->db->query($sql)->row()->ttl;
+        return $this->db->query($sql)->row()->ttl;
     }
 
     public function getTtldept($id, $year)
     {
-        if($id) $t = 'not';
+        if ($id) $t = 'not';
         else $t = '';
-       $sql = "SELECT count(*) ttl from k3.k3k_kecelakaan kkk where kodesie::text $t like '$id%'
+        $sql = "SELECT count(*) ttl from k3.k3k_kecelakaan kkk where kodesie::text $t like '$id%'
                 and kkk.waktu_kecelakaan::text like '$year%'";
-       return $this->db->query($sql)->row()->ttl;
+        return $this->db->query($sql)->row()->ttl;
     }
 
     public function getTtljp($id, $year)
     {
-       $sql = "SELECT count(*) ttl from k3.k3k_kecelakaan kkk where jenis_pekerjaan::text like '$id%'
+        $sql = "SELECT count(*) ttl from k3.k3k_kecelakaan kkk where jenis_pekerjaan::text like '$id%'
                 and kkk.waktu_kecelakaan::text like '$year%'";
-       return $this->db->query($sql)->row()->ttl;
+        return $this->db->query($sql)->row()->ttl;
     }
 
     public function getTtlkolom($id, $year, $kolom)
     {
-       $sql = "SELECT count(*) ttl from k3.k3k_kecelakaan kkk where $kolom::text like '$id%'
+        $sql = "SELECT count(*) ttl from k3.k3k_kecelakaan kkk where $kolom::text like '$id%'
                 and kkk.waktu_kecelakaan::text like '$year%'";
-       return $this->db->query($sql)->row()->ttl;
+        return $this->db->query($sql)->row()->ttl;
     }
 
     public function getTtlkolomLok($id, $year, $kolom, $lokasi = '')
     {
-       $sql = "SELECT count(*) ttl from k3.k3k_kecelakaan kkk where $kolom::text like '$id%'
+        $sql = "SELECT count(*) ttl from k3.k3k_kecelakaan kkk where $kolom::text like '$id%'
                 and kkk.waktu_kecelakaan::text like '$year%' and kkk.lokasi_kerja_kecelakaan like '$lokasi%'";
-       return $this->db->query($sql)->row()->ttl;
+        return $this->db->query($sql)->row()->ttl;
     }
 
     public function getTtlapd($id, $year)
@@ -1790,7 +1793,7 @@ class M_Dtmasuk extends CI_Model
                 order by
                     jml desc
                 limit 5";
-                // echo $sql;exit();
+        // echo $sql;exit();
         return $this->db->query($sql)->result_array();
     }
 
@@ -1841,12 +1844,12 @@ class M_Dtmasuk extends CI_Model
                 FROM im_master_bon mb
                 where NO_BON = '$nobon'
                 and NO_ID in ($id_oracle)";
-         return $this->oracle->query($sql)->result_array();
+        return $this->oracle->query($sql)->result_array();
     }
 
     public function getTbonSpatu($id_oracle)
     {
-        if(empty($id_oracle)) return false;
+        if (empty($id_oracle)) return false;
         if (is_array($id_oracle)) {
             $id_oracle = implode(',', $id_oracle);
         }
@@ -1862,5 +1865,255 @@ class M_Dtmasuk extends CI_Model
     public function UpdatePeriodeSepatu($kodesie, $periode)
     {
         $this->db->query("update \"k3\".tbon_sepatu_periode set periode = '$periode' where left(kodesie, 7) = '$kodesie'");
+    }
+
+    //-------------// 16-Maret-2021 - Akbar Sani Hasan Order #518177 //-------------//
+    public function daftarPekerjaan($kodesie)
+    {
+        if (gettype($kodesie) == 'string') {
+            $kodesie = substr($kodesie, 0, 7);
+        } elseif (gettype($kodesie) == 'array') {
+            $kodesie = implode("', '", $kodesie);
+        }
+        $sql = "select
+                    tn.*,
+                    (select count(kd_pkj)
+                    from
+                        hrd_khs.tpribadi ti
+                    where
+                        ti.kd_pkj = tn.kdpekerjaan
+                        and ti.keluar = '0') jumlah
+                from
+                    hrd_khs.tpekerjaan tn
+                where
+                    substring(kdpekerjaan, 1, 7) in ('$kodesie')
+                    order by kdpekerjaan asc
+                    ";
+        // echo $sql;exit();
+        $query = $this->personalia->query($sql);
+        return $query->result_array();
+    }
+    public function getDaftarPekerjaanByStd($ks)
+    {
+        $ks = substr($ks, 0, 7);
+        $sql = "select
+                    regexp_split_to_table(kd_pekerjaan,',') as kdpekerjaan
+                from
+                    (
+                        select
+                            kd_pekerjaan
+                        from
+                            erp.k3.k3n_standar_kebutuhan ks
+                        where
+                            status = '3' and 
+                            kodesie = '$ks' order by tgl_approve_tim desc limit 1
+                    ) as ks";
+        $result = $this->erp->query($sql)->result_array();
+
+        $pekerjaan = [];
+
+        foreach ($result as $key) {
+            $sql = "select 
+                        pekerjaan 
+                    from 
+                        hrd_khs.tpekerjaan 
+                    where 
+                        kdpekerjaan = '" . $key['kdpekerjaan'] . "'";
+            $result = $this->personalia->query($sql)->result_array();
+            foreach ($result as $k) {
+                foreach ($k as $a) {
+                    array_push($pekerjaan, $a);
+                }
+            }
+        }
+        return $pekerjaan;
+    }
+    public function getListApproveNew($ks)
+    {
+        $ks = substr($ks, 0, 7);
+        $sql = "select 
+                distinct ks.kode_item, 
+                km.item 
+            from 
+                k3.k3n_standar_kebutuhan ks 
+            left join
+                k3.k3_master_item km on km.kode_item = ks.kode_item
+            where 
+                status = '3' and ks.kodesie like '$ks%' order by km.item asc";
+        $result = $this->erp->query($sql)->result_array();
+
+        $list = [];
+
+        foreach ($result as $key) {
+            $list_bundle = [];
+            $apd = "select
+                        km.item,
+                        ks.kode_item,
+                        ks.jml_kebutuhan_umum,
+                        ks.jml_kebutuhan_staff
+                    from
+                        k3.k3n_standar_kebutuhan ks
+                    inner join 
+                        k3.k3_master_item km on ks.kode_item = km.kode_item
+                    where
+                        ks.kodesie = '$ks' and
+                        ks.status = '3' and   
+                        ks.kode_item = '" . $key['kode_item'] . "' order by ks.tgl_approve_tim desc limit 1";
+            $list_apd = $this->erp->query($apd)->result_array();
+
+            foreach ($list_apd as $l_a) {
+                foreach ($l_a as $a => $b) {
+                    $list_bundle[$a] = $b;
+                }
+            }
+
+            $jml_item = "select 
+                            regexp_split_to_table(ks.kd_pekerjaan, ',') as pekerjaan,
+                            regexp_split_to_table(ks.jml_item, ',') as jml_item
+                        from 
+                            (
+                                select 
+                                    kd_pekerjaan,
+                                    kode_item,
+                                    jml_item,
+                                    tgl_approve_tim
+                                from 
+                                    k3.k3n_standar_kebutuhan ks
+                                where 
+                                    ks.kodesie = '$ks' and
+                                    ks.status = '3' and   
+                                    ks.kode_item = '" . $key['kode_item'] . "' order by ks.tgl_approve_tim desc limit 1
+                            ) as ks order by pekerjaan";
+            $list_jml_item = $this->erp->query($jml_item)->result_array();
+
+            $list_bundle['list_item'] = [];
+            foreach ($list_jml_item as $l_j_i) {
+                foreach ($l_j_i as $it => $item) {
+                    if ($it == 'pekerjaan') continue;
+                    array_push($list_bundle['list_item'], $item);
+                }
+            }
+
+            // Fix Struktur Tabel data-table
+            $kdp = $this->getDaftarPekerjaanByStd($ks);
+            $kdp2 = array_map(function ($dp) {
+                return $dp['pekerjaan'];
+            }, $this->daftarPekerjaan($ks));
+
+            $kd = array_diff($kdp2, $kdp);
+            if (in_array($kdp2, $kd) == false) {
+                foreach ($kd as $k) {
+                    array_push($list_bundle['list_item'], '0');
+                }
+            }
+
+            $keterangan = "select 
+                            coalesce(ks.keterangan,'-') as keterangan,
+                            coalesce(ks.lampiran,'-') as lampiran
+                        from 
+                            k3.k3n_standar_kebutuhan ks
+                        where 
+                            ks.kodesie = '$ks' and
+                            ks.status = '3' and 
+                            ks.kode_item = '" . $key['kode_item'] . "'
+                            order by ks.tgl_approve_tim desc limit 1";
+            $list_keterangan = $this->erp->query($keterangan)->result_array();
+
+            foreach ($list_keterangan as $ket) {
+                foreach ($ket as $item => $i) {
+                    $list_bundle[$item] = $i;
+                }
+            }
+
+            array_push($list, $list_bundle);
+        }
+        return $list;
+    }
+    public function getItemPekerja($ks, $kp)
+    {
+        $sql = "select 
+                    distinct ks.kode_item, 
+                    km.item 
+                from 
+                    k3.k3n_standar_kebutuhan ks 
+                left join
+                    k3.k3_master_item km on km.kode_item = ks.kode_item
+                where 
+                    status = '3' and ks.kodesie like '$ks%' order by km.item asc";
+        $result = $this->erp->query($sql)->result_array();
+
+        $data = [];
+        foreach ($result as $key) {
+            $sql = "select
+                        apd_pekerja.pekerjaan,
+                        apd_pekerja.kode_item,
+                        km.item,
+                        case 
+                            when 
+                                km.nama_file='-' then 'not_found.png'
+                            else 
+                                km.nama_file
+                        end as nama_file,
+                        apd_pekerja.jml_item,
+                        km.urutan
+                    from
+                        (
+                            select
+                                regexp_split_to_table(ks.kd_pekerjaan,',') as pekerjaan,
+                                ks.kode_item,
+                                regexp_split_to_table(ks.jml_item,',') as jml_item
+                            from
+                                k3.k3n_standar_kebutuhan ks
+                            where 
+                                ks.kodesie = '$ks' and ks.status = '3' order by ks.tgl_approve_tim desc
+                        )as apd_pekerja left join k3.k3_master_item km on apd_pekerja.kode_item = km.kode_item
+                    where pekerjaan = '$kp' and apd_pekerja.kode_item = '" . $key['kode_item'] . "' order by km.item limit 1";
+            $result = $this->erp->query($sql)->result_array();
+
+            foreach ($result as $key) {
+                array_push($data, $key);
+            }
+        }
+        return $data;
+    }
+    public function getItemStaff($ks)
+    {
+        $sql = "select 
+                distinct ks.kode_item, 
+                km.item,
+                km.urutan 
+            from 
+                k3.k3n_standar_kebutuhan ks 
+            left join
+                k3.k3_master_item km on km.kode_item = ks.kode_item
+            where 
+                status = '3' and ks.kodesie like '$ks%' order by km.item asc";
+        $result = $this->erp->query($sql)->result_array();
+
+        $data = [];
+
+        foreach ($result as $key) {
+            $sql = "select 
+                        ks.jml_kebutuhan_staff,
+                        ks.kode_item,
+                        km.item,
+                        km.nama_file,
+                        km.urutan
+                    from 
+                        k3.k3n_standar_kebutuhan ks
+                    left join 
+                        k3.k3_master_item km on ks.kode_item = km.kode_item
+                    where 
+                        ks.kodesie = '$ks' and
+                        ks.status = '3' and
+                        ks.kode_item = '" . $key['kode_item'] . "' order by tgl_approve_tim desc limit 1";
+
+            $result = $this->erp->query($sql)->result_array();
+
+            foreach ($result as $key) {
+                array_push($data, $key);
+            }
+        }
+        return $data;
     }
 }

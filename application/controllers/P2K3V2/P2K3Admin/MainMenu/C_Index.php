@@ -58,9 +58,13 @@ class C_Index extends CI_Controller
 			$baru = $cek_terbaru[0]['tgl_approve_tim'];
 		}
 		$data['list'] = $this->M_dtmasuk->getListAprove($ks, $baru);
+		$data['get_list_approve_new'] = $this->M_dtmasuk->getListApproveNew($ks);
+		$data['get_daftar_pekerjaan_by_std'] = $this->M_dtmasuk->getDaftarPekerjaanByStd($ks);
 		$data['daftar_pekerjaan']	= $this->M_order->daftar_pekerjaan($ks);
 		$data['seksi'] = '';
 		$data['seksi'] = $this->M_dtmasuk->cekseksi($ks);
+
+		$data['ks'] = substr($ks, 0, 7);
 
 		$this->load->view('V_Header', $data);
 		$this->load->view('V_Sidemenu', $data);
@@ -3557,5 +3561,27 @@ class C_Index extends CI_Controller
 		$periode = $this->input->post('periode');
 		$this->M_dtmasuk->UpdatePeriodeSepatu($kodesie, $periode);
 		redirect('p2k3adm_V2/Admin/PeriodeSafetyShoes');
+	}
+
+	public function ajaxGetKebSet()
+	{
+		header('Content-Type: json');
+
+		$key = $this->input->get('kodeSie');
+		$key2 = $this->input->get('kdPekerjaan');
+
+		$result = $this->M_dtmasuk->getItemPekerja($key, $key2);
+
+		echo json_encode($result);
+	}
+	public function getKebstaff()
+	{
+		header('Content-Type: json');
+
+		$ks = $this->input->get('kodeSie');
+
+		$result = $this->M_dtmasuk->getItemStaff($ks);
+
+		echo json_encode($result);
 	}
 }
