@@ -3,6 +3,7 @@
         <thead class="bg-primary">
             <tr>
                 <th>No</th>
+                <th>Check</th>
                 <th>No. Dokumen</th>
                 <th>Jenis Dokumen</th>
                 <th>Gudang</th>
@@ -15,7 +16,12 @@
         <tbody>
         <?php $no = 1; foreach ($get_data as $i) { ?>
             <tr>
-                <td><?= $no?></td>
+                <td><input type="hidden" id="no<?= $no?>" value="<?= $no?>"><?= $no; ?></td>
+                <td><span class="btn" style="background-color:inherit" id="check<?= $no?>" onclick="checkdokumenKGP(<?= $no?>)" >
+                        <i id="checka<?= $no?>" class="fa fa-square-o checka"></i>
+                    </span>
+                    <input type="hidden" name="tandacheck[]" id="tandacheck<?= $no?>" value="check">
+                </td>
                 <td><input type="hidden" id="no_dokumen<?= $no?>" value="<?= $i['NO_DOKUMEN']?>"><?= $i['NO_DOKUMEN'] ?></td>
                 <td><input type="hidden" id="jenis_dokumen<?= $no?>" value="<?= $i['JENIS_DOKUMEN']?>"><?= $i['JENIS_DOKUMEN']?></td>
                 <td><input type="hidden" id="gudang<?= $no?>" value="<?= $i['GUDANG']?>"><?= $i['GUDANG'] ?></td>
@@ -56,4 +62,27 @@
         <?php $no++; }?>
         </tbody>
     </table>
+</div>
+
+<div class="text-right">
+    <button class="btn btn-warning" onclick="startselectedKGP()"><i class="fa fa-play"></i> Start Selected</button>
+    <button class="btn btn-danger" onclick="finishselectedKGP()"><i class="fa fa-stop"></i> Stop Selected</button>
+</div>
+
+<div class="modal fade" id="modalfinishKGP" tabindex="-1" role="dialog" aria-labelledby="myModalLoading">
+	<div class="modal-dialog" role="document" style="padding-top:200px;width:40%">
+		<div class="modal-content">
+			<div class="modal-header">
+			</div>
+			<div class="modal-body">
+                <h3 class="modal-title" style="text-align:center;"><b>Masukan PIC Finish</b></h3>
+                <select id="picfinish" name="picfinish" class="form-control select2 picKGP2" style="width:100%;">
+                    <option></option>
+                </select>
+                <br>
+                <br>
+                <center><button class="btn btn-danger" onclick="SaveFinishKGP()">FINISH</button></center>
+		    </div>
+		</div>
+	</div>
 </div>

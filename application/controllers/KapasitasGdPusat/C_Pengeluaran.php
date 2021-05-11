@@ -75,7 +75,7 @@
             $GUDANG			= $this->input->post('subinv');
             $JUMLAH_ITEM	= $this->input->post('item');
             $JUMLAH_ITEM    = count($JUMLAH_ITEM);
-            $CREATION_DATE	= date("Y/m/d H:i:s");
+            $CREATION_DATE	= gmdate("Y/m/d H:i:s", time()+60*60*7);
 
             $this->M_pengeluaran->save($NO_DOKUMEN, $JENIS_DOKUMEN, $GUDANG, $JUMLAH_ITEM, $CREATION_DATE);
             
@@ -151,6 +151,45 @@
             $no_dokumen 	= $this->input->post('no_dokumen');
 
             $this->M_pengeluaran->deleteDokumen($jenis_dokumen, $no_dokumen );
+        }
+
+        public function getSelesai2(){
+            $date           = $this->input->post('date');
+            $jenis_dokumen	= $this->input->post('jenis_dokumen');
+            $no_dokumen 	= $this->input->post('no_dokumen');
+            $mulai 	        = $this->input->post('mulai');
+            $selesai        = $this->input->post('waktu');
+            $pic 	        = $this->input->post('pic');
+            $jml 	        = $this->input->post('j');
+    
+            $cek = $this->M_pengeluaran->cekMulai($no_dokumen, $jenis_dokumen);
+            if ($cek[0]['WAKTU'] == '') {
+                $waktu1 	= strtotime($mulai);
+                $waktu2 	= strtotime($selesai);
+                $selisih 	= ($waktu2 - $waktu1)/$jml;
+                $jam 		= floor($selisih/(60*60));
+                $menit 		= $selisih - $jam * (60 * 60);
+                $htgmenit 	= floor($menit/60) * 60;
+                $detik 		= floor($menit - $htgmenit);
+                $slsh 		= $jam.':'.floor($menit/60).':'.$detik;
+            }else {
+                $a 			= explode(':', $cek[0]['WAKTU']);
+                $jamA 		= $a[0] * 3600;
+                $menitA 	= $a[1] * 60;
+                $waktuA 	= $jamA + $menitA + $a[2];
+    
+                $waktu1 	= strtotime($mulai);
+                $waktu2 	= strtotime($selesai);
+                $waktuB 	= ($waktu2 - $waktu1)/$jml;
+                $jumlah 	= $waktuA + $waktuB;
+                $jam 		= floor($jumlah/(60*60));
+                $menit 		= $jumlah - $jam * (60 * 60);
+                $htgmenit 	= floor($menit/60) * 60;
+                $detik 		= floor($menit - $htgmenit);
+                $slsh 		= $jam.':'.floor($menit/60).':'.$detik;
+            }
+            
+            $this->M_pengeluaran->SelesaiPengeluaran($date, $jenis_dokumen, $no_dokumen, $slsh, $pic);
         }
 
         //------------------------------------- Menu MONITORING PENGELUARAN -------------------------------------
