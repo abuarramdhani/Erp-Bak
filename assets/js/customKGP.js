@@ -78,6 +78,31 @@ if (pengeluaran) {
                 }
             }
         });
+
+        $(".picKGP2").select2({
+            allowClear: false,
+            placeholder: "",
+            minimumInputLength: 0,
+            ajax: {
+                url: baseurl + "KapasitasGdPusat/Pengeluaran/getPIC",
+                dataType: 'json',
+                type: "GET",
+                data: function (params) {
+                    var queryParameters = {
+                            term: params.term,
+                    }
+                    return queryParameters;
+                },
+                processResults: function (data) {
+                    // console.log(data);
+                    return {
+                        results: $.map(data, function (obj) {
+                            return {id:obj.PIC, text:obj.PIC};
+                        })
+                    };
+                }
+            }
+        });
     })
 }
 
@@ -155,7 +180,7 @@ function btnTimerKGP(no) {
             dataType: "html"
             });
     }else if(valBtn == 'Selesai'){
-        $('#btnTimerKGP'+no).attr("disabled", "disabled"); 
+        $('#btnTimerKGP'+no).attr("disabled", "disabled");
         var mulai  = $('#mulai'+no).val();
         $('#timer'+no).css('display','none');     
 
@@ -168,6 +193,9 @@ function btnTimerKGP(no) {
                 mulai : mulai, 
                 waktu : waktu, 
                 pic : pic
+            },
+            success: function (response) {
+                location.reload();
             },
             type : "POST",
             dataType: "html"
@@ -212,6 +240,169 @@ function btnDeleteKGP(no) {
             });
         }
     })
+}
+
+function checkdokumenKGP(no) {
+    var val = $('#tandacheck'+no).val();
+    // console.log(val);
+
+    if (val == 'check') {
+        $('#tandacheck'+no).val('uncheck');
+        $('#checka'+no).removeClass('fa-square-o').addClass('fa-check-square-o');
+        $('#no'+no).addClass('noall');
+        $('#pic'+no).addClass('picall');
+    }else{
+        $('#tandacheck'+no).val('check');
+        $('#checka'+no).removeClass('fa-check-square-o').addClass('fa-square-o');
+        $('#no'+no).removeClass('noall');
+        $('#pic'+no).removeClass('picall');
+    }
+}
+
+function startselectedKGP() {
+    var no = $('.noall').map(function(){return $(this).val();}).get();
+    for (let i = 0; i < no.length; i++) {
+        const n = no[i];
+        MulaiChecked(n);        
+    }
+}
+
+function MulaiChecked(no) {
+    var valBtn = $('#btnTimerKGP'+no).val();
+    var jenis_dokumen = $('#jenis_dokumen'+no).val();
+    var no_dokumen = $('#no_dokumen'+no).val();
+    var pic = $('#pic'+no).val();
+    var d    = new Date();
+    var date = d.getDate()+'/'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'/'+d.getFullYear()+" "+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
+    var waktu = d.getFullYear()+'-'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'-'+d.getDate()+' '+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
+    // console.log(jenis_dokumen);
+
+    var hoursLabel   = document.getElementById("hours"+no);
+    var minutesLabel = document.getElementById("minutes"+no);
+    var secondsLabel = document.getElementById("seconds"+no);
+    var totalSeconds = 0;
+    var timer = null;
+
+    function setTime() {
+        totalSeconds++;
+        secondsLabel.innerHTML = pad(totalSeconds % 60);
+        minutesLabel.innerHTML = pad(parseInt(totalSeconds / 60));
+        hoursLabel.innerHTML = pad(parseInt(totalSeconds / 3600))
+    }
+    
+    function pad(val) {
+        var valString = val + "";
+        if (valString.length < 2) {
+        return "0" + valString;
+        } else {
+        return valString;
+        }
+    }
+
+    if (valBtn == 'Mulai') {
+        $('#btnTimerKGP'+no).each(function() {
+            $('#btnTimerKGP'+no).val('Selesai'); 
+            $('#mulai'+no).val(waktu); 
+            $(this).removeClass('btn-success').addClass('btn-danger');
+            $('#pic'+no).prop("disabled", true); 
+
+            if (!timer) {
+                timer = setInterval(setTime, 1000);
+            }
+        })
+        $.ajax ({
+            url : baseurl + "KapasitasGdPusat/Pengeluaran/getMulai",
+            data: { 
+                date : date , 
+                jenis_dokumen : jenis_dokumen, 
+                no_dokumen : no_dokumen, 
+                pic : pic
+            },
+            type : "POST",
+            dataType: "html"
+            });
+        
+    }
+}
+
+function finishselectedKGP() {
+    $("#modalfinishKGP").modal('show'); 
+}
+
+function SaveFinishKGP() {
+    var no = $('.noall').map(function(){return $(this).val();}).get();
+    var pic = $('.picall').map(function(){return $(this).val();}).get();
+    var pic_finish = $('#picfinish').val();
+    $("#modalfinishKGP").modal('hide');
+    // console.log(pic);
+    var j = 0;
+    for (let i = 0; i < no.length; i++) {
+        if (pic[i] == pic_finish) {
+            j = j + 1;
+            // console.log(j);
+        }       
+    }
+    for (let i = 0; i < no.length; i++) {
+        const n = no[i];
+        SelesaiChecked(n, pic_finish, j);  
+    }
+}
+
+function SelesaiChecked(no, pic_finish, j) {
+    var valBtn = $('#btnTimerKGP'+no).val();
+    var jenis_dokumen = $('#jenis_dokumen'+no).val();
+    var no_dokumen = $('#no_dokumen'+no).val();
+    var pic = $('#pic'+no).val();
+    var d    = new Date();
+    var date = d.getDate()+'/'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'/'+d.getFullYear()+" "+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
+    var waktu  = d.getFullYear()+'-'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'-'+d.getDate()+' '+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
+    // console.log(jenis_dokumen);
+
+    var hoursLabel   = document.getElementById("hours"+no);
+    var minutesLabel = document.getElementById("minutes"+no);
+    var secondsLabel = document.getElementById("seconds"+no);
+    var totalSeconds = 0;
+    var timer = null;
+
+    function setTime() {
+        totalSeconds++;
+        secondsLabel.innerHTML = pad(totalSeconds % 60);
+        minutesLabel.innerHTML = pad(parseInt(totalSeconds / 60));
+        hoursLabel.innerHTML = pad(parseInt(totalSeconds / 3600))
+    }
+    
+    function pad(val) {
+        var valString = val + "";
+        if (valString.length < 2) {
+        return "0" + valString;
+        } else {
+        return valString;
+        }
+    }
+
+    if(valBtn == 'Selesai' && pic == pic_finish){
+        $('#btnTimerKGP'+no).attr("disabled", "disabled"); 
+        var mulai  = $('#mulai'+no).val();
+        $('#timer'+no).css('display','none');     
+
+        $.ajax ({
+        url : baseurl + "KapasitasGdPusat/Pengeluaran/getSelesai2",
+        data: { 
+            date : date,
+            jenis_dokumen : jenis_dokumen,
+            no_dokumen : no_dokumen, 
+            mulai : mulai,
+            waktu : waktu, 
+            pic : pic, 
+            j : j
+        },
+        success: function (response) {
+            location.reload();
+        },
+        type : "POST",
+        dataType: "html"
+        });
+    }
 }
 
 //------------------------------------------- Monitoring Pengeluaran -------------------------------------------
