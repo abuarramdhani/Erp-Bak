@@ -1863,4 +1863,12 @@ class M_Dtmasuk extends CI_Model
     {
         $this->db->query("update \"k3\".tbon_sepatu_periode set periode = '$periode' where left(kodesie, 7) = '$kodesie'");
     }
+
+    public function getMoq($item)
+    {
+        $sql = "SELECT msib.segment1, msib.description, msib.minimum_order_quantity
+                  FROM mtl_system_items_b msib
+                WHERE msib.organization_id = 81 AND msib.segment1 = '$item'";
+        return $this->oracle->query($sql)->row_array();
+    }
 }
