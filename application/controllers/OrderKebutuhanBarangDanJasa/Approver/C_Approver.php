@@ -104,9 +104,9 @@ class C_Approver extends CI_Controller {
         $allOrder = $this->M_approver->getListDataOrderNormal($noind);
 
         foreach ($allOrder as $key => $order) {
-                    $orderSiapTampil = $this->M_approver->getOrderToApprove($order['ORDER_ID']);
-                        array_push($data['listOrder'], $orderSiapTampil[0]);
-                    }
+            $orderSiapTampil = $this->M_approver->getOrderToApprove($order['ORDER_ID']);
+            array_push($data['listOrder'], $orderSiapTampil[0]);
+        }
 
         $data['position'] = $this->M_approver->checkPositionApproverIni($data['approver'][0]['PERSON_ID']);
 
@@ -139,11 +139,9 @@ class C_Approver extends CI_Controller {
         $allOrder = $this->M_approver->getListDataOrderEmergency($noind);
 
         foreach ($allOrder as $key => $order) {
-                    $orderSiapTampil = $this->M_approver->getOrderToApprove($order['ORDER_ID']);
-                    if ($orderSiapTampil[0]['ORDER_CLASS'] != '2' && $orderSiapTampil[0]['ORDER_STATUS_ID'] != '4' || $orderSiapTampil[0]['ORDER_STATUS_ID'] != '5') {
-                        array_push($data['listOrder'], $orderSiapTampil[0]);
-                    }
-                }
+            $orderSiapTampil = $this->M_approver->getOrderToApprove($order['ORDER_ID']);
+            array_push($data['listOrder'], $orderSiapTampil[0]);
+        }
 
         $data['position'] = $this->M_approver->checkPositionApproverIni($data['approver'][0]['PERSON_ID']);
 
@@ -176,9 +174,9 @@ class C_Approver extends CI_Controller {
         $allOrder = $this->M_approver->getListDataOrderUrgent($noind);
 
         foreach ($allOrder as $key => $order) {
-                    $orderSiapTampil = $this->M_approver->getOrderToApprove($order['ORDER_ID']);
-                        array_push($data['listOrder'], $orderSiapTampil[0]);
-                    }
+            $orderSiapTampil = $this->M_approver->getOrderToApprove($order['ORDER_ID']);
+            array_push($data['listOrder'], $orderSiapTampil[0]);
+        }
 
         $data['position'] = $this->M_approver->checkPositionApproverIni($data['approver'][0]['PERSON_ID']);
         
