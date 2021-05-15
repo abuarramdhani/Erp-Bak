@@ -57,7 +57,7 @@ class M_monitoringlppbadmin extends CI_Model {
                              TO_CHAR (aa.po_number) po_number,
                              aa.vendor_name, aa.tanggal_lppb, aa.organization_code,
                              aa.organization_id, aa.status_lppb,
-                         -- REPLACE
+                         REPLACE
                             --((RTRIM
                             --    (XMLAGG (XMLELEMENT (e, TO_CHAR (aa.po_header_id) || '@')).EXTRACT
                             --        ('//text()').getclobval
@@ -73,7 +73,7 @@ class M_monitoringlppbadmin extends CI_Model {
                                           pov.vendor_name vendor_name,
                                           rsh.creation_date tanggal_lppb,
                                           mp.organization_code, mp.organization_id,
-                                          rt.transaction_type status_lppb, nvl(poh.po_header_id,0) po_header_id
+                                          rt.transaction_type status_lppb, nvl(poh.po_header_id,0)
                           FROM            rcv_shipment_headers rsh,
                                           rcv_shipment_lines rsl,
                                           po_vendors pov,
@@ -106,9 +106,7 @@ class M_monitoringlppbadmin extends CI_Model {
                          aa.tanggal_lppb,
                          aa.organization_code,
                          aa.organization_id,
-                         aa.status_lppb,
-                         aa.po_number,
-                         aa.po_header_id";
+                         aa.status_lppb";
 
         $runQuery = $oracle->query($query);
         // echo"<pre>";echo $query; exit();
