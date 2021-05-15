@@ -183,10 +183,11 @@ class M_monitoring extends CI_Model {
                     AND mtrl.inventory_item_id = msib.inventory_item_id
                     AND mtrl.organization_id = msib.organization_id
                 --     AND kts.mulai_pelayanan IS NULL
-                    AND kts.selesai_pelayanan IS NULL
+                    -- AND kts.selesai_pelayanan IS NULL
                     AND mtrl.line_status <> 6
                     AND (kts.bon != 'PENDING' or kts.bon is null)
-                    AND (TRUNC(kts.jam_input) <= to_date('$date2','DD/MM/RR') or selesai_packing is null)
+                    AND TRUNC(kts.jam_input) <= to_date('$date2','DD/MM/RR')
+                    and (TRUNC(kts.selesai_pelayanan) > to_date('$date2','DD/MM/RR') or selesai_pelayanan is null)
                     AND kts.approval_flag = 'Y'
                 GROUP BY kts.tgl_dibuat,
                         kts.jenis_dokumen,

@@ -168,7 +168,7 @@ class C_Monitoring extends CI_Controller
 				}else {
 					$tmb = "and trunc(jam_input) <= '$tgl[$a]' or (selesai_pelayanan is null and trunc(jam_input) <= '$tgl[$a]')";
 				}
-				$kurang = "where (bon != 'PENDING' or bon is null) and TO_CHAR(jam_input,'DD/MM/YYYY') != '".date('d/m/Y')."' and (trunc(selesai_pelayanan) > '$tgl[$a]' ".$tmb.")";
+				$kurang = "where (bon != 'PENDING' or bon is null) and TO_CHAR(jam_input,'DD/MM/YYYY') != '".date('d/m/Y')."' and approval_flag ='Y' and (trunc(selesai_pelayanan) > '$tgl[$a]' ".$tmb.")";
 			}
 			$hasil[$a]['krgpelayanan'] = $this->M_monitoring->dataKurang($kurang);
 			$hasil[$a]['krg_pelayanan'] = count($hasil[$a]['krgpelayanan']);
@@ -186,7 +186,7 @@ class C_Monitoring extends CI_Controller
 				}else {
 					$tmb = "and trunc(selesai_pelayanan) <= '$tgl[$a]' or (selesai_packing is null and trunc(selesai_pelayanan) <= '$tgl[$a]')";
 				}
-				$kurang = "where (bon is null or bon = 'BEST') and TO_CHAR(selesai_pelayanan,'DD/MM/YYYY') != '".date('d/m/Y')."' and (trunc(selesai_packing) > '$tgl[$a]' ".$tmb.") and selesai_pelayanan is not null";
+				$kurang = "where (bon is null or bon = 'BEST') and TO_CHAR(selesai_pelayanan,'DD/MM/YYYY') != '".date('d/m/Y')."' and tipe is not null and (trunc(selesai_packing) > '$tgl[$a]' ".$tmb.") and selesai_pelayanan is not null";
 			}
 			$hasil[$a]['krgpacking'] = $this->M_monitoring->dataKurang($kurang);
 			$hasil[$a]['krg_packing'] = count($hasil[$a]['krgpacking']);
