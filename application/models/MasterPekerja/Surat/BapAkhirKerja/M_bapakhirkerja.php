@@ -13,7 +13,7 @@ class M_bapakhirkerja extends CI_Model
   public function getAllSuratBapAkhir()
   {
     $this->personalia->select('id, noind_pekerja ,nama_pekerja ,jabatan_pekerja ,date_created ,seksi_pekerja, tgl_akhir_kerja');
-    $this->personalia->order_by('date_created','DESC');
+    $this->personalia->order_by('date_created', 'DESC');
     $all_surat = $this->personalia->get('"Surat".tsurat_akhir_kerja');
     return $all_surat->result_array();
   }
@@ -28,8 +28,6 @@ class M_bapakhirkerja extends CI_Model
   {
     return $this->personalia->select('isi_surat')->where('jenis_surat', 'BAP AKHIR KERJA')->get('Surat.tisi_surat')->result_array();
   }
-  public function ambilSurat($id)
-  { }
   // Adding And Removing Data
   public function insertSuratBapAkhirKerja($data)
   {
@@ -73,10 +71,11 @@ class M_bapakhirkerja extends CI_Model
             left join
               hrd_khs.tbpjstk tbpkt on tp.noind = tbpkt.noind
             where 
-              (tp.noind like('$key%') or 
-              tp.nama like('%$key%')) and
-              tp.lokasi_kerja in('01','02') and
-              tp.keluar = '0'";
+              (tp.noind like('$key%') or tp.nama like('%$key%')) and 
+              tp.lokasi_kerja in('01','02') and 
+              (tp.keluar = '0' or (tp.sebabklr not in('NO INDUK BERUBAH','NO INDUK BERUBAH ( DIANGKAT )') or tp.sebabklr = '-'))
+            order by 
+              tp.nama";
     return $this->personalia->query($sql)->result_array();
   }
   public function getDataPetugas($key)
