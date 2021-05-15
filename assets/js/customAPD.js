@@ -141,7 +141,6 @@ $(function () {
 
 	$(".dataTable-p2k3Frezz").DataTable({
 		dom: "frtp",
-		ordering: false,
 		scrollX: true,
 		fixedColumns: {
 			leftColumns: 3,
@@ -1545,6 +1544,13 @@ $(document).ready(function () {
 });
 
 //-------------// 16-Maret-2021 - Akbar Sani Hasan Order #518177 //-------------//
+$('.dataTable-noOrder').dataTable({
+	scrollX: true,
+	fixedColumns: {
+		leftColumns: 3,
+	},
+	ordering: false
+})
 $('.apd-staff').on('click', function () {
 	let kodeSie = $(this).data('ks')
 	$.ajax({

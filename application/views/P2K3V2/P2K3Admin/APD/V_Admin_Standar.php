@@ -23,7 +23,6 @@
         justify-content: center;
     }
 </style>
-<?php var_dump(base_url()); ?>
 <section class="content">
     <div class="inner">
         <div class="row">
@@ -68,7 +67,7 @@
                                             } ?>
                                         </h4>
                                     </div>
-                                    <table style="margin-top: 50px;" class="table table-striped table-bordered table-hover text-center dataTable-p2k3Frezz">
+                                    <table style="margin-top: 50px;" class="table table-striped table-bordered table-hover text-center dataTable-noOrder">
                                         <thead>
                                             <tr class="bg-info">
                                                 <th class="bg-info">No</th>
