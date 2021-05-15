@@ -83,19 +83,19 @@ class M_monitoringlppbadmin extends CI_Model {
                                     WHERE rsh.shipment_header_id = rsl.shipment_header_id
                                       AND rsh.shipment_header_id = rt.shipment_header_id
                                       AND rsl.shipment_line_id = rt.shipment_line_id
-                                      AND pov.vendor_id = rt.vendor_id
-                                      AND poh.po_header_id = rt.po_header_id
-                                      AND pol.po_line_id = rt.po_line_id
+                                      -- AND pov.vendor_id = rt.vendor_id
+                                      -- AND poh.po_header_id = rt.po_header_id
+                                      AND pol.po_line_id(+) = rt.po_line_id
                                       AND poh.po_header_id(+) = pol.po_header_id
                                       AND pov.vendor_id(+) = poh.vendor_id
-                                      AND pol.po_line_id(+) = pll.po_line_id
+                                      AND pol.po_line_id = pll.po_line_id(+)
                                       AND rsh.ship_to_org_id(+) = mp.organization_id
-                                      AND rt.transaction_id =
-                                             (SELECT MAX (rts.transaction_id)
-                                                FROM rcv_transactions rts
-                                               WHERE rt.shipment_header_id =
-                                                                        rts.shipment_header_id
-                                                 AND rts.po_line_id = pol.po_line_id)
+                                      --AND rt.transaction_id =
+                                      --       (SELECT MAX (rts.transaction_id)
+                                      --          FROM rcv_transactions rts
+                                      --         WHERE rt.shipment_header_id =
+                                      --                                  rts.shipment_header_id
+                                      --           AND rts.po_line_id = pol.po_line_id)
                                       AND rsh.receipt_num BETWEEN $lppb_numberFrom AND $lppb_numberTo
                                       $io
                                       $queryStatus) aa
