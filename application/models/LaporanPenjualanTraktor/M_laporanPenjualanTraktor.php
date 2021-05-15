@@ -1,5 +1,5 @@
 <?php
-class M_laporanPenjualanTraktor extends CI_Model
+class M_laporanpenjualantraktor extends CI_Model
 {
     public function __construct()
     {
