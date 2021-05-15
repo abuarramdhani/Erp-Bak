@@ -119,7 +119,7 @@ class M_monitoringlppbadmin extends CI_Model {
     function get_ora_blob_value($value)
     {
         $size = $value->size();
-        $result = $value->read($size);
+        $result = $value->read(1);  //diganti 1 awalnya  $size karena mencoba untuk po kosong
         return ($result)?$result:NULL;
     }
 
