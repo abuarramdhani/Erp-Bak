@@ -43,9 +43,31 @@ class M_monitoringlppbadmin extends CI_Model {
     {
         $oracle = $this->load->database('oracle',true);
         $query = " SELECT   aa.lppb_number,
+                         --REPLACE
+                         --   ((RTRIM
+                         --        (XMLAGG (XMLELEMENT (e, TO_CHAR (aa.po_number) || '@')).EXTRACT
+                         --           ('//text()').getclobval
+                         --               (),
+                         --         '@'
+                         --        )
+                         --    ),
+                         --    '@',
+                         --    ', '
+                         --   ) 
                              TO_CHAR (aa.po_number) po_number,
                              aa.vendor_name, aa.tanggal_lppb, aa.organization_code,
                              aa.organization_id, aa.status_lppb,
+                         -- REPLACE
+                            --((RTRIM
+                            --    (XMLAGG (XMLELEMENT (e, TO_CHAR (aa.po_header_id) || '@')).EXTRACT
+                            --        ('//text()').getclobval
+                            --            (),
+                            --      '@'
+                            --     )
+                            -- ),
+                            -- '@',
+                            -- ', '
+                            )
                             TO_CHAR (aa.po_header_id) po_header_id
                     FROM (SELECT DISTINCT rsh.receipt_num lppb_number, nvl(poh.segment1, 'no_po') po_number,
                                           pov.vendor_name vendor_name,
