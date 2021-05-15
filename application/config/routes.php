@@ -5526,3 +5526,9 @@ $route['HistoryBppbg/View/(:any)']			= 'HistoryBppbg/C_View/$1';
 $route['HistoryBppbg/View/(:any)/(:any)']	= 'HistoryBppbg/C_View/$1/$2';
 // ----------------------------------- Simulasi Muatan Truk ---------------------------------------------
 $route['MuatanTruk/Simulasi'] 						= 'MuatanTruk/C_Simulasi';
+
+// -------------------------- Laporan Penjualan Traktor -------------------------------------//
+$route['laporanPenjualanTraktor']	=	'LaporanPenjualanTraktor/C_laporanPenjualanTraktor';
+$route['laporanPenjualanTraktor/exportDaily']	=	'LaporanPenjualanTraktor/C_laporanPenjualanTraktor/exportDaily';
+$route['laporanPenjualanTraktor/exportTypeDaily']	=	'LaporanPenjualanTraktor/C_laporanPenjualanTraktor/exportTypeDaily';
+$route['laporanPenjualanTraktor/exportTypeTotal']	=	'LaporanPenjualanTraktor/C_laporanPenjualanTraktor/exportTypeTotal';
