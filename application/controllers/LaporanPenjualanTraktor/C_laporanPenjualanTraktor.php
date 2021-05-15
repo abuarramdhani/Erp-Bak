@@ -12,7 +12,7 @@ class C_laporanPenjualanTraktor extends CI_Controller
         $this->load->library('form_validation');
         $this->load->library('Excel');
         $this->load->model('M_Index');
-        $this->load->model('LaporanPenjualanTraktor/M_laporanPenjualanTraktor');
+        $this->load->model('LaporanPenjualanTraktor/M_laporanpenjualantraktor');
         $this->load->model('SystemAdministration/MainMenu/M_user');
     }
 
@@ -20,11 +20,11 @@ class C_laporanPenjualanTraktor extends CI_Controller
     public function index()
     {
         // mengambil data penjualan
-        $data['header'] = $this->M_laporanPenjualanTraktor->getHeader();
-        $data['daily'] = $this->M_laporanPenjualanTraktor->getDaily();
-        $data['sumDate'] = $this->M_laporanPenjualanTraktor->getCalcDate();
-        $data['typeSingle'] = $this->M_laporanPenjualanTraktor->getType('SINGLE');
-        $data['typeTotal'] = $this->M_laporanPenjualanTraktor->getType('TOTAL');
+        $data['header'] = $this->M_laporanpenjualantraktor->getHeader();
+        $data['daily'] = $this->M_laporanpenjualantraktor->getDaily();
+        $data['sumDate'] = $this->M_laporanpenjualantraktor->getCalcDate();
+        $data['typeSingle'] = $this->M_laporanpenjualantraktor->getType('SINGLE');
+        $data['typeTotal'] = $this->M_laporanpenjualantraktor->getType('TOTAL');
 
 
         // pendeklarasian varaibel untuk mencari nilai total
@@ -198,7 +198,7 @@ class C_laporanPenjualanTraktor extends CI_Controller
         $objPHPExcel->getActiveSheet()->getStyle('B17')->getAlignment()->setIndent(2);
 
 
-        $header = $this->M_laporanPenjualanTraktor->getHeader();
+        $header = $this->M_laporanpenjualantraktor->getHeader();
         
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A3', "Penjualan Cabang");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B3', $header[0]['TANGGAL']);
@@ -241,8 +241,8 @@ class C_laporanPenjualanTraktor extends CI_Controller
             $objPHPExcel->getActiveSheet()->getStyle($columnID)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         }
 
-        $daily = $this->M_laporanPenjualanTraktor->getDaily();
-        $sumDate = $this->M_laporanPenjualanTraktor->getCalcDate();
+        $daily = $this->M_laporanpenjualantraktor->getDaily();
+        $sumDate = $this->M_laporanpenjualantraktor->getCalcDate();
 
         $numrow = 5;
         foreach ($daily as $data) {
@@ -445,8 +445,8 @@ class C_laporanPenjualanTraktor extends CI_Controller
             $objPHPExcel->getActiveSheet()->getStyle($columnID)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         }
 
-        $typeSingle = $this->M_laporanPenjualanTraktor->getType('SINGLE');
-        $sumDate = $this->M_laporanPenjualanTraktor->getCalcDate();
+        $typeSingle = $this->M_laporanpenjualantraktor->getType('SINGLE');
+        $sumDate = $this->M_laporanpenjualantraktor->getCalcDate();
 
         $numrow = 5;
         foreach ($typeSingle as $data) {
@@ -684,8 +684,8 @@ class C_laporanPenjualanTraktor extends CI_Controller
             $objPHPExcel->getActiveSheet()->getStyle($columnID)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         }
 
-        $typeTotal = $this->M_laporanPenjualanTraktor->getType('TOTAL');
-        $sumDate = $this->M_laporanPenjualanTraktor->getCalcDate();
+        $typeTotal = $this->M_laporanpenjualantraktor->getType('TOTAL');
+        $sumDate = $this->M_laporanpenjualantraktor->getCalcDate();
 
         $numrow = 5;
         foreach ($typeTotal as $data) {
