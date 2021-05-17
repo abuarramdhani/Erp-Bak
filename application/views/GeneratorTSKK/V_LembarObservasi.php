@@ -694,7 +694,7 @@
                               </thead>
                               <tbody id="tbodyLembarObservasi">
                                 <?php
-																			for ($no = 1; $no <=5;) {
+																			for ($no = 1; $no <=1;) {
 																		?>
                                 <tr class="nomor_<?= $no ?>">
                                   <!--NO-->

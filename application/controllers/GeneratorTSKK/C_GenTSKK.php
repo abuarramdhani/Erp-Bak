@@ -374,8 +374,8 @@ public function EditObservasi($id)
 		$data['proses_kerja'] = $this->M_gentskk->getProses();
 
     $hitungData = count($data['lihat_hasilObservasi']);
-    if (count($data['lihat_hasilObservasi']) < 5){
-        for ($i=0; $i < 5- $hitungData ; $i++) {
+    if (count($data['lihat_hasilObservasi']) < 1){
+        for ($i=0; $i < 1- $hitungData ; $i++) {
             $data['lihat_hasilObservasi'][] = array("id_tskk"=>"",
             "judul_tskk"=>"",
             "tipe"=>"",
