@@ -23,6 +23,10 @@ $(document).ready(function () {
     format: "dd-M-yy",
     autoclose: true,
   });
+  $("#date_of_data_source").datepicker({
+    format: "dd-M-yy",
+    autoclose: true,
+  });
   $(".itemm_code").select2({
     allowClear: true,
     minimumInputLength: 3,

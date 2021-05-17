@@ -197,5 +197,58 @@
                 <td style="text-align: center;"><?= $val['ROOTCAUSE_CATEGORI'] ?></td>
             </tr>
         <?php } ?>
+
+    </table>
+    <?php
+    $date = explode("-", $c['DETAIL'][0]['DATE_OF_DATA_SOURCE']);
+    $day = $date[0];
+    $month = $date[1];
+    $years = $date[2];
+    $bulan = null;
+    if ($month == 'JAN') {
+        $month = 'January';
+        $bulan = 'Januari';
+    } else  if ($month == 'FEB') {
+        $month = 'February';
+        $bulan = 'Februari';
+    } else  if ($month == 'MAR') {
+        $month = 'March';
+        $bulan = 'Maret';
+    } else  if ($month == 'APR') {
+        $month = 'April';
+        $bulan = 'April';
+    } else  if ($month == 'MAY') {
+        $month = 'May';
+        $bulan = 'Mei';
+    } else  if ($month == 'JUN') {
+        $month = 'June';
+        $bulan = 'Juni';
+    } else  if ($month == 'JUL') {
+        $month = 'July';
+        $bulan = 'Juli';
+    } else  if ($month == 'AUG') {
+        $month = 'August';
+        $bulan = 'Agustus';
+    } else  if ($month == 'SEP') {
+        $month = 'September';
+        $bulan = 'September';
+    } else  if ($month == 'OCT') {
+        $month = 'October';
+        $bulan = 'Oktober';
+    } else  if ($month == 'NOV') {
+        $month = 'November';
+        $bulan = 'November';
+    } else  if ($month == 'DEC') {
+        $month = 'December';
+        $bulan = 'Desember';
+    }
+    ?>
+    <table style="margin-top: 10px;width:100%;font-family:arial;font-size:8pt">
+        <tr>
+            <td style="font-style: italic;">Notes / Catatan :</td>
+        </tr>
+        <tr>
+            <td style="font-style: italic;">The information above is based on the position of data source as of <?= $month . ' ' . $day . ', ' . $years ?> / Informasi diatas berdasarkan posisi tarikan data per tanggal <?= $day . ' ' . $bulan . ' ' . $years ?></td>
+        </tr>
     </table>
 <?php } ?>
