@@ -986,15 +986,23 @@ class M_monitoringdo extends CI_Model
     public function bodySurat($data,$tipe)
     {
         if ($tipe == 'DO') {
-          $order = 'kqbd.line_number';
+          // $order = 'kqbd.line_number';
+          $from = ', wsh_delivery_details wdd';
+          $where = 'AND kqbd.request_number = wdd.batch_id
+                    AND kqbd.item_id = wdd.inventory_item_id';
+          $order = 'wdd.source_line_id';
         }
         else {
+          $from = '';
+          $where = '';
           $order = 'kqbd.item';
         }
 
         $query = "SELECT *
                     FROM khs_qweb_body_dospb1 kqbd
+                         $from
                    WHERE kqbd.request_number = '$data'
+                         $where
                 ORDER BY $order";
 
         $response = $this->oracle->query($query)->result_array();
