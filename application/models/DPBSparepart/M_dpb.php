@@ -79,16 +79,17 @@ class M_dpb extends CI_Model
         ,kts.JENIS_DOKUMEN
         ,kts.TIPE
         ,mtrh.ATTRIBUTE15 EKSPEDISI
-        ,kts.MULAI_PELAYANAN
-        ,kts.SELESAI_PELAYANAN
+        ,to_char(kts.MULAI_PELAYANAN, 'DD-MON-YY HH24:MI:SS') MULAI_PELAYANAN
+        ,to_char(kts.SELESAI_PELAYANAN, 'DD-MON-YY HH24:MI:SS') SELESAI_PELAYANAN
         ,kts.WAKTU_PELAYANAN
-        ,kts.MULAI_PACKING
-        ,kts.SELESAI_PACKING
+        ,to_char(kts.MULAI_PACKING, 'DD-MON-YY HH24:MI:SS') MULAI_PACKING
+        ,to_char(kts.SELESAI_PACKING, 'DD-MON-YY HH24:MI:SS') SELESAI_PACKING
         ,kts.WAKTU_PACKING
-        from
+        ,to_char(kts.TGL_DIBUAT, 'DD-MON-YY HH24:MI:SS') TGL_DIBUAT
+    from
         khs_tampung_spb kts
         ,mtl_txn_request_headers mtrh
-        where
+    where
         kts.NO_DOKUMEN = mtrh.REQUEST_NUMBER
         and kts.APPROVE_TO_1 is not null");
 
