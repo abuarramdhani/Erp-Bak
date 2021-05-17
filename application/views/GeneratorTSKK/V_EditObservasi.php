@@ -966,7 +966,7 @@
                                         <option value="AUTO">AUTO</option>
                                         <option value="WALK">WALK</option>
                                       </select> -->
-                                      <input list="brow_jenis_proses" class="form-control select00004" value="<?php echo $jenis_proses ?>" onchange="myFunctionTSKK(this)" style="text-align:left;width:100%" data-placeholder="Jenis Proses" name="slcJenisProses[]" id="slcJenis_<?= $no ?>">
+                                      <input list="brow_jenis_proses" class="form-control select00004" required value="<?php echo $jenis_proses ?>" onchange="myFunctionTSKK(this)" style="text-align:left;width:100%" data-placeholder="Jenis Proses" name="slcJenisProses[]" id="slcJenis_<?= $no ?>">
 
                                     </td>
                                     <!--ELEMEN KERJA-->
@@ -980,7 +980,7 @@
 																				//}
                                                                             ?>
                                           </select> -->
-                                          <input list="brow_slc_elemen" value="<?php echo !empty($elemen) ? $elemen : '' ?>" <?php echo $jenis_proses == 'WALK' ? 'readonly' : '' ?> class="form-control slcElemen0000" onchange="//disableOrnot(this)" name="txtSlcElemen[]" data-placeholder="Elemen">
+                                          <input list="brow_slc_elemen" value="<?php echo !empty($elemen) ? $elemen : '' ?>" <?php echo $jenis_proses == 'WALK' ? 'readonly' : '' ?> class="form-control slcElemen0000" onchange="//disableOrnot(this)" name="txtSlcElemen[]" data-placeholder="Elemen" required>
                                         </div>
                                         <div class="col-lg-6">
                                           <input type="text" value="<?php echo $keterangan_elemen; ?>" id="elemen" name="elemen[]" <?php echo $jenis_proses == 'WALK' ? 'readonly' : '' ?> class="form-control elemen" placeholder="Keterangan Elemen">
