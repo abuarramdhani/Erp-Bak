@@ -141,7 +141,25 @@ class C_Approver extends  CI_Controller
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 		// echo $this->session->responsibility_id; exit;
 
-		$data['monitoring_list'] = $this->M_dpb->getMonitoringList();
+		$monitoring_list = $this->M_dpb->getMonitoringList();
+
+		// $ecer = array();
+		// $normal = array();
+		// $urgent = array();
+		// for ($i = 0; $i < sizeof($monitoring_list); $i++) {
+		// 	if ($monitoring_list[$i]['TIPE'] == 'ECERAN') {
+		// 		array_push($ecer, $monitoring_list[$i]);
+		// 	} else if ($monitoring_list[$i]['TIPE'] == 'NORMAL') {
+		// 		array_push($normal, $monitoring_list[$i]);
+		// 	} else if ($monitoring_list[$i]['TIPE'] == 'URGENT') {
+		// 		array_push($urgent, $monitoring_list[$i]);
+		// 	}
+		// }
+
+		$data['monitoring_list'] = $monitoring_list;
+		// $data['monitoring_list_normal'] = $normal;
+		// $data['monitoring_list_urgent'] = $urgent;
+
 
 		// echo '<pre>';
 		// print_r($data['monitoring_list']);exit;
