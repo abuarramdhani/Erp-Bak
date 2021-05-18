@@ -117,6 +117,7 @@ class C_MonitoringOrder extends CI_Controller
 		foreach ($getdata as $key => $value) {
 			$status = $this->M_monitoringorder->cekaction($value['no_order'], ''); // cek approval dari data yg terbaru
 			$getdata[$key]['status'] = $this->caristatus($status, $value['jenis'], $tabel, $value['assign_order']); // buat status
+			// cari no tool
 			if ($tabel == 'Baru') {
 				$getdata[$key]['no_tool'] = $value['no_alat_tm'];
 			}else {
@@ -124,9 +125,9 @@ class C_MonitoringOrder extends CI_Controller
 				$getdata[$key]['no_tool'] = empty($value['no_alat_tm']) || $value['no_alat_tm'] == '-' ? $notool : $value['no_alat_tm'];
 			}
 			
-			if ($siapa == 'Kasie Pengorder' || $siapa == 'Kasie PPC TM') {
+			if ($siapa == 'Kasie Pengorder' || $siapa == 'Kasie PPC TM') { // resp. Order Tool Making dan OTM - Tool Making tampil semua data
 				array_push($datanya, $getdata[$key]);
-			}else {
+			}else { // resp. lainnya hanya menampilkan data yang perlu diapprove saja
 				$cek = $this->dataygtampil($getdata[$key]['status'], $siapa);
 				$cek == 1  ? array_push($datanya, $getdata[$key]) : '';
 			}
