@@ -9,13 +9,6 @@ $(document).ready(function () {
     scrollX: true,
     scrollCollapse: true,
   });
-
-  $("#tblMonitoringDSP").DataTable({
-    scrollY: "300px",
-    scrollX: true,
-    scrollCollapse: true,
-  });
-
   $(document).on("click", ".btnReqNumberDSP", function () {
     var reqNumber = $(this).html();
 
@@ -629,6 +622,190 @@ function SearchArsSPBDO() {
           },
         ],
       });
+    },
+  });
+}
+$(document).ready(function () {
+  ajax1 = $.ajax({
+    url: baseurl + "DPBSparepart/Approver/getNormal",
+    type: "POST",
+    beforeSend: function () {
+      $("#loadingAreanormal").show();
+      $("div.table_area_normal").hide();
+    },
+    success: function (result) {
+      // console.log(result);
+      $("#loadingAreanormal").hide();
+      $("div.table_area_normal").show();
+      $("div.table_area_normal").html(result);
+      $("div.table_area_urgent").html("");
+      $("div.table_area_eceran").html("");
+      $("div.table_area_bagro").html("");
+      $("div.table_area_ecommerce").html("");
+      $(".tblMonitoringDSP").DataTable({
+        scrollY: "300px",
+        scrollX: true,
+        scrollCollapse: true,
+      });
+    },
+    error: function (XMLHttpRequest, textStatus, errorThrown) {
+      console.error();
+    },
+  });
+});
+function normalll() {
+  if (ajax2 != null) ajax2.abort();
+  if (ajax3 != null) ajax3.abort();
+
+  ajax1 = $.ajax({
+    url: baseurl + "DPBSparepart/Approver/getNormal",
+    type: "POST",
+    beforeSend: function () {
+      $("#loadingAreanormal").show();
+      $("div.table_area_normal").hide();
+    },
+    success: function (result) {
+      // console.log(result);
+      $("#loadingAreanormal").hide();
+      $("div.table_area_normal").show();
+      $("div.table_area_normal").html(result);
+      $("div.table_area_urgent").html("");
+      $("div.table_area_eceran").html("");
+      $("div.table_area_bagro").html("");
+      $("div.table_area_ecommerce").html("");
+      $(".tblMonitoringDSP").DataTable({
+        scrollY: "300px",
+        scrollX: true,
+        scrollCollapse: true,
+      });
+    },
+    error: function (XMLHttpRequest, textStatus, errorThrown) {
+      console.error();
+    },
+  });
+}
+function urgent() {
+  if (ajax1 != null) ajax1.abort();
+  if (ajax3 != null) ajax3.abort();
+
+  ajax1 = $.ajax({
+    url: baseurl + "DPBSparepart/Approver/geturgent",
+    type: "POST",
+    beforeSend: function () {
+      $("#loadingAreaurgent").show();
+      $("div.table_area_urgent").hide();
+    },
+    success: function (result) {
+      // console.log(result);
+      $("#loadingAreaurgent").hide();
+      $("div.table_area_urgent").show();
+      $("div.table_area_urgent").html(result);
+      $("div.table_area_normal").html("");
+      $("div.table_area_eceran").html("");
+      $("div.table_area_bagro").html("");
+      $("div.table_area_ecommerce").html("");
+      $(".tblMonitoringDSP").DataTable({
+        scrollY: "300px",
+        scrollX: true,
+        scrollCollapse: true,
+      });
+    },
+    error: function (XMLHttpRequest, textStatus, errorThrown) {
+      console.error();
+    },
+  });
+}
+function eceran() {
+  if (ajax1 != null) ajax1.abort();
+  if (ajax2 != null) ajax2.abort();
+
+  ajax1 = $.ajax({
+    url: baseurl + "DPBSparepart/Approver/geteceran",
+    type: "POST",
+    beforeSend: function () {
+      $("#loadingAreaeceran").show();
+      $("div.table_area_eceran").hide();
+    },
+    success: function (result) {
+      // console.log(result);
+      $("#loadingAreaeceran").hide();
+      $("div.table_area_eceran").show();
+      $("div.table_area_eceran").html(result);
+      $("div.table_area_normal").html("");
+      $("div.table_area_urgent").html("");
+      $("div.table_area_bagro").html("");
+      $("div.table_area_ecommerce").html("");
+      $(".tblMonitoringDSP").DataTable({
+        scrollY: "300px",
+        scrollX: true,
+        scrollCollapse: true,
+      });
+    },
+    error: function (XMLHttpRequest, textStatus, errorThrown) {
+      console.error();
+    },
+  });
+}
+function bagro() {
+  if (ajax1 != null) ajax1.abort();
+  if (ajax2 != null) ajax2.abort();
+
+  ajax1 = $.ajax({
+    url: baseurl + "DPBSparepart/Approver/getbagro",
+    type: "POST",
+    beforeSend: function () {
+      $("#loadingAreabagro").show();
+      $("div.table_area_bagro").hide();
+    },
+    success: function (result) {
+      // console.log(result);
+      $("#loadingAreabagro").hide();
+      $("div.table_area_bagro").show();
+      $("div.table_area_bagro").html(result);
+      $("div.table_area_normal").html("");
+      $("div.table_area_urgent").html("");
+      $("div.table_area_eceran").html("");
+      $("div.table_area_ecommerce").html("");
+      $(".tblMonitoringDSP").DataTable({
+        scrollY: "300px",
+        scrollX: true,
+        scrollCollapse: true,
+      });
+    },
+    error: function (XMLHttpRequest, textStatus, errorThrown) {
+      console.error();
+    },
+  });
+}
+function ecommerce() {
+  if (ajax1 != null) ajax1.abort();
+  if (ajax2 != null) ajax2.abort();
+
+  ajax1 = $.ajax({
+    url: baseurl + "DPBSparepart/Approver/getecommerce",
+    type: "POST",
+    beforeSend: function () {
+      $("#loadingAreaecommerce").show();
+      $("div.table_area_ecommerce").hide();
+    },
+    success: function (result) {
+      // console.log(result);
+      $("#loadingAreaecommerce").hide();
+      $("div.table_area_ecommerce").show();
+      $("div.table_area_ecommerce").html(result);
+      $("div.table_area_normal").html("");
+      $("div.table_area_urgent").html("");
+      $("div.table_area_eceran").html("");
+      $("div.table_area_bagro").html("");
+
+      $(".tblMonitoringDSP").DataTable({
+        scrollY: "300px",
+        scrollX: true,
+        scrollCollapse: true,
+      });
+    },
+    error: function (XMLHttpRequest, textStatus, errorThrown) {
+      console.error();
     },
   });
 }
