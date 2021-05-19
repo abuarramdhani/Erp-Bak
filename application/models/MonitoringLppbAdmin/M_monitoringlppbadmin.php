@@ -47,30 +47,32 @@ class M_monitoringlppbadmin extends CI_Model
   {
     $oracle = $this->load->database('oracle', true);
     $query = " SELECT   aa.lppb_number,
-                         REPLACE
-                            ((RTRIM
-                                 (XMLAGG (XMLELEMENT (e, TO_CHAR (aa.po_number) || '@')).EXTRACT
-                                    ('//text()').getclobval
-                                        (),
-                                  '@'
-                                 )
-                             ),
-                             '@',
-                             ', '
-                            ) po_number,
+                        --  REPLACE
+                        --     ((RTRIM
+                        --          (XMLAGG (XMLELEMENT (e, TO_CHAR (aa.po_number) || '@')).EXTRACT
+                        --             ('//text()').getclobval
+                        --                 (),
+                        --           '@'
+                        --          )
+                        --      ),
+                        --      '@',
+                        --      ', '
+                        --     ) 
+                        aa.po_number,
                              aa.vendor_name, aa.tanggal_lppb, aa.organization_code,
                              aa.organization_id, aa.status_lppb,
-                         REPLACE
-                            ((RTRIM
-                                (XMLAGG (XMLELEMENT (e, TO_CHAR (aa.po_header_id) || '@')).EXTRACT
-                                    ('//text()').getclobval
-                                        (),
-                                  '@'
-                                 )
-                             ),
-                             '@',
-                             ', '
-                            ) po_header_id
+                        --  REPLACE
+                        --     ((RTRIM
+                        --         (XMLAGG (XMLELEMENT (e, TO_CHAR (aa.po_header_id) || '@')).EXTRACT
+                        --             ('//text()').getclobval
+                        --                 (),
+                        --           '@'
+                        --          )
+                        --      ),
+                        --      '@',
+                        --      ', '
+                        --     ) 
+                        aa.po_header_id
                     FROM (SELECT DISTINCT rsh.receipt_num lppb_number, poh.segment1 po_number,
                                           pov.vendor_name vendor_name,
                                           rsh.creation_date tanggal_lppb,
@@ -108,15 +110,17 @@ class M_monitoringlppbadmin extends CI_Model
                          aa.tanggal_lppb,
                          aa.organization_code,
                          aa.organization_id,
-                         aa.status_lppb";
+                         aa.status_lppb,
+                         aa.po_number,
+                         aa.po_header_id";
 
     $runQuery = $oracle->query($query);
     // echo"<pre>";echo $query; exit();
     $arr = $runQuery->result_array();
-    foreach ($arr as $key => $value) {
-      $arr[$key]['PO_NUMBER'] = $this->get_ora_blob_value($value['PO_NUMBER']);
-      $arr[$key]['PO_HEADER_ID'] = $this->get_ora_blob_value($value['PO_HEADER_ID']);
-    }
+    // foreach ($arr as $key => $value) {
+    //   $arr[$key]['PO_NUMBER'] = $this->get_ora_blob_value($value['PO_NUMBER']);
+    //   $arr[$key]['PO_HEADER_ID'] = $this->get_ora_blob_value($value['PO_HEADER_ID']);
+    // }
     return $arr;
   }
 
