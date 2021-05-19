@@ -241,9 +241,21 @@
     <!-- <option value="AUTO (Inheritance)">AUTO (Inheritance)</option> -->
     <option value="WALK">WALK</option>
   </datalist>
-
   <datalist id="brow_slc_elemen">
-    <?php foreach ($data_element_kerja as $key => $value): ?>
+    <?php foreach ($data_element_kerja_auto as $key => $value): ?>
+      <option value="<?php echo $value['elemen_kerja'] ?>"><?php echo $value['elemen_kerja'] ?></option>
+    <?php endforeach; ?>
+    <?php foreach ($data_element_kerja_manual as $key => $value): ?>
+      <option value="<?php echo $value['elemen_kerja'] ?>"><?php echo $value['elemen_kerja'] ?></option>
+    <?php endforeach; ?>
+  </datalist>
+  <datalist id="brow_slc_elemen_manual">
+    <?php foreach ($data_element_kerja_manual as $key => $value): ?>
+      <option value="<?php echo $value['elemen_kerja'] ?>"><?php echo $value['elemen_kerja'] ?></option>
+    <?php endforeach; ?>
+  </datalist>
+  <datalist id="brow_slc_elemen_auto">
+    <?php foreach ($data_element_kerja_auto as $key => $value): ?>
       <option value="<?php echo $value['elemen_kerja'] ?>"><?php echo $value['elemen_kerja'] ?></option>
     <?php endforeach; ?>
   </datalist>
@@ -980,7 +992,8 @@
 																				//}
                                                                             ?>
                                           </select> -->
-                                          <input list="brow_slc_elemen" value="<?php echo !empty($elemen) ? $elemen : '' ?>" <?php echo $jenis_proses == 'WALK' ? 'readonly' : '' ?> class="form-control slcElemen0000" onchange="//disableOrnot(this)" name="txtSlcElemen[]" data-placeholder="Elemen" required>
+                                          <input <?php echo $jenis_proses == 'MANUAL' ? 'list="brow_slc_elemen_manual"' : 'list="brow_slc_elemen_auto"' ?> value="<?php echo !empty($elemen) ? $elemen : '' ?>" <?php echo $jenis_proses == 'WALK' ? 'readonly' : '' ?> class="form-control slcElemen0000"
+                                           onchange="//disableOrnot(this)" name="txtSlcElemen[]" autocomplete="off" data-placeholder="Elemen" required>
                                         </div>
                                         <div class="col-lg-6">
                                           <input type="text" value="<?php echo $keterangan_elemen; ?>" id="elemen" name="elemen[]" <?php echo $jenis_proses == 'WALK' ? 'readonly' : '' ?> class="form-control elemen" placeholder="Keterangan Elemen">

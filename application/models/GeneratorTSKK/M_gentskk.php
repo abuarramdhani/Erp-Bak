@@ -378,10 +378,10 @@ class M_gentskk extends CI_Model
 	return $query->result_array();
 	}
 
-	function insertData($inputan_elemen)
+	function insertData($inputan_elemen, $jenis)
 	{
-	   $sql ="INSERT into gtskk.gtskk_standar_elemen_kerja (elemen_kerja)
-		 	  VALUES ('$inputan_elemen')";
+	   $sql ="INSERT into gtskk.gtskk_standar_elemen_kerja (elemen_kerja, jenis)
+		 	  VALUES ('$inputan_elemen', '$jenis')";
 
 	   $query = $this->db->query($sql);
 	   // echo $sql.'<br>';
