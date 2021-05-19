@@ -184,14 +184,10 @@
                                     &emsp;&emsp;<?= $sumDate['JUMLAH_HARI'] ?>
                                 </td>
                                 <td colspan="2" style="text-align:center;">Laju
-                                    Hari&emsp;<?= $sumDate['JUMLAH_HARI'] ?> / 25</td>
+                                    Hari&emsp;<?= $sumDate['JUMLAH_HARI'] ?> / <?= $sumDayMonth['JUMLAH_HARI'] ?></td>
                             </tr>
                         </tbody>
                     </table>
-                    <div style="margin-bottom:30px;display:flex;justify-content:center;">
-                        <a class="btn btn-success" href="<?= base_url('laporanPenjualanTraktor/exportDaily') ?>"><i
-                                class="fa fa-file-excel-o" aria-hidden="true"></i><b>&ensp;Excel</b></a>
-                    </div>
                 </div>
                 <!-- Laporan Omset Penjualan Harian Pertipe Perproduk -->
                 <div class="item">
@@ -412,7 +408,7 @@
                                 <td colspan=7 style="text-align:center;">Laju Penjualan
                                     Hari (
                                     <?= $sumDate['JUMLAH_HARI'] ?>
-                                    / 25 )
+                                    / <?= $sumDayMonth['JUMLAH_HARI'] ?> )
                                 </td>
                                 <td colspan=8 style="text-align:right;">
                                     Total Penjualan =&emsp;
@@ -420,10 +416,6 @@
                             </tr>
                         </tbody>
                     </table>
-                    <div style="margin-bottom:30px;display:flex;justify-content:center;">
-                        <a class="btn btn-success" href="<?= base_url('laporanPenjualanTraktor/exportTypeDaily') ?>"><i
-                                class="fa fa-file-excel-o" aria-hidden="true"></i><b>&ensp;Excel</b></a>
-                    </div>
                 </div>
                 <!-- Total Laporan Omset Penjualan Pertipe Perproduk s/d hari ini -->
                 <div class="item">
@@ -733,14 +725,18 @@
                                 </td>
                                 <td style="text-align:center;">
                                     <?= $sumDate['JUMLAH_HARI'] ?></td>
-                                <td colspan="3">/ 25</td>
+                                <td colspan="3">/ <?= $sumDayMonth['JUMLAH_HARI'] ?></td>
                             </tr>
                         </tbody>
                     </table>
-                    <div style="margin-bottom:30px;display:flex;justify-content:center;">
-                        <a class="btn btn-success" href="<?= base_url('laporanPenjualanTraktor/exportTypeTotal') ?>"><i
-                                class="fa fa-file-excel-o" aria-hidden="true"></i><b>&ensp;Excel</b></a>
-                    </div>
+                </div>
+                <!-- Button export -->
+                <div style="margin-bottom:50px;display:flex;justify-content:center;">
+                    <a class="btn btn-danger" href="<?= base_url('laporanPenjualanTraktor/exportPdf') ?>"><i
+                            class="fa fa-file-pdf-o" aria-hidden="true"></i><b>&ensp;PDF</b></a>
+                    <a class="btn btn-success" href="<?= base_url('laporanPenjualanTraktor/exportExcel') ?>"
+                        style="margin-left: 15px;"><i class="fa fa-file-excel-o"
+                            aria-hidden="true"></i><b>&ensp;Excel</b></a>
                 </div>
             </div>
         </div>
