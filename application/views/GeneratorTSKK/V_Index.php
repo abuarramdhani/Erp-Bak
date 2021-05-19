@@ -8,7 +8,7 @@
 							<br/>
 							<h1><b><center>Dashboard Generator TSKK Versi 2.5</center></b></h1>
 							<br>
-							<center>Terakhir Diperbarui Pada 2021-05-05 11:25:56</center>
+							<center>Terakhir Diperbarui Pada 2021-05-19 11:43:15</center>
 						</div>
 					</div>
 			</section>

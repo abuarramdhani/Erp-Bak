@@ -50,7 +50,8 @@ public function DisplayLO()
     $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
     $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
  		$data['product'] = $this->M_gentskk->getTipeProduk('');
-		$data['data_element_kerja'] = $this->M_gentskk->ElemenKerja('');
+		$data['data_element_kerja_manual'] = $this->db->select('elemen_kerja')->where('jenis', 'MANUAL')->get('gtskk.gtskk_standar_elemen_kerja')->result_array();
+		$data['data_element_kerja_auto'] = $this->db->select('elemen_kerja')->where('jenis', 'AUTO')->get('gtskk.gtskk_standar_elemen_kerja')->result_array();
 		$data['proses'] = $this->M_gentskk->getProses();
     $this->load->view('V_Header',$data);
     $this->load->view('V_Sidemenu',$data);
