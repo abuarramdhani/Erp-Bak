@@ -263,4 +263,10 @@ class M_laporanpenjualantraktor extends CI_Model
     {
         $this->oracle->query("INSERT INTO KHS_LPB_SKIP_DATE VALUES('',TO_DATE('$date','DD-MM-YYYY'),'$notes')");
     }
+
+    //query mengahpus tanggal
+    public function deleteDate($id)
+    {
+        $this->oracle->query("DELETE FROM KHS_LPB_SKIP_DATE WHERE DATE_ID = '$id'");
+    }
 }
