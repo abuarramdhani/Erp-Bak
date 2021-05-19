@@ -5529,6 +5529,8 @@ $route['MuatanTruk/Simulasi'] 						= 'MuatanTruk/C_Simulasi';
 
 // -------------------------- Laporan Penjualan Traktor -------------------------------------//
 $route['laporanPenjualanTraktor']	=	'LaporanPenjualanTraktor/C_laporanPenjualanTraktor';
-$route['laporanPenjualanTraktor/exportDaily']	=	'LaporanPenjualanTraktor/C_laporanPenjualanTraktor/exportDaily';
-$route['laporanPenjualanTraktor/exportTypeDaily']	=	'LaporanPenjualanTraktor/C_laporanPenjualanTraktor/exportTypeDaily';
-$route['laporanPenjualanTraktor/exportTypeTotal']	=	'LaporanPenjualanTraktor/C_laporanPenjualanTraktor/exportTypeTotal';
+$route['laporanPenjualanTraktor/exportPdf']	=	'LaporanPenjualanTraktor/C_laporanPenjualanTraktor/exportPdf';
+$route['laporanPenjualanTraktor/exportExcel']	=	'LaporanPenjualanTraktor/C_laporanPenjualanTraktor/exportExcel';
+$route['menuLaporanPenjualanTraktor']	=	'LaporanPenjualanTraktor/C_index';
+$route['menuLaporanPenjualanTraktor/inputDate']	=	'LaporanPenjualanTraktor/C_inputDate';
+$route['menuLaporanPenjualanTraktor/inputDate/insertDate']	=	'LaporanPenjualanTraktor/C_inputDate/insertDate';

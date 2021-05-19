@@ -1,4 +1,4 @@
-<?php
+<?php defined('BASEPATH') or exit('No direct script access allowed');
 class M_laporanpenjualantraktor extends CI_Model
 {
     public function __construct()
@@ -196,13 +196,71 @@ class M_laporanpenjualantraktor extends CI_Model
     // query menghitung jumlah hari dari tanggal pertama bulan ini sampai tanggal sekarang
     public function getCalcDate()
     {
-        $query = $this->oracle->query("SELECT count(*) AS JUMLAH_HARI from
-                                            (SELECT to_date('01/' || to_char(SYSDATE, 'mm/yyyy'),'dd/mm/yyyy') + level - 1 TANGGAL,
-                                                to_char(to_date('01/' || to_char(to_date(SYSDATE, 'DD/MM/YYYY'), 'mm/yyyy'),'dd/mm/yyyy') + level - 1, 'fmday') hari
-                                        FROM DUAL
-                                        CONNECT BY LEVEL < TO_NUMBER(TO_CHAR(to_date(SYSDATE, 'DD/MM/YYYY'), 'DD')))
+        $query = $this->oracle->query("SELECT COUNT (*)
+                                            - (SELECT COUNT (*)
+                                                    FROM khs_lpb_skip_date
+                                                WHERE EXTRACT (MONTH FROM skip_date) = EXTRACT (MONTH FROM SYSDATE)) JUMLAH_HARI
+                                        FROM (SELECT       TO_DATE ('01/' || TO_CHAR (SYSDATE, 'mm/yyyy'),
+                                                                    'dd/mm/yyyy'
+                                                                    )
+                                                        + LEVEL
+                                                        - 1 tanggal,
+                                                        TO_CHAR (  TO_DATE ('01/' || TO_CHAR (SYSDATE, 'mm/yyyy'),
+                                                                            'dd/mm/yyyy'
+                                                                            )
+                                                                    + LEVEL
+                                                                    - 1,
+                                                                    'fmday'
+                                                                ) hari
+                                                    FROM DUAL
+                                                CONNECT BY LEVEL <= TO_NUMBER (TO_CHAR (SYSDATE, 'DD')))
                                         WHERE hari != 'sunday'
+                                        GROUP BY 1
                                         ");
         return $query->row_array();
+    }
+
+    //query meengitung jumlah hari kerja bulan ini
+    public function getCountDayWorkMonth()
+    {
+        $query = $this->oracle->query("SELECT COUNT (*)
+                                            - (SELECT COUNT (*)
+                                                    FROM khs_lpb_skip_date
+                                                WHERE EXTRACT (MONTH FROM skip_date) = EXTRACT (MONTH FROM SYSDATE)) JUMLAH_HARI
+                                        FROM (SELECT       TO_DATE ('01/' || TO_CHAR (SYSDATE, 'mm/yyyy'),
+                                                                    'dd/mm/yyyy'
+                                                                    )
+                                                        + LEVEL
+                                                        - 1 tanggal,
+                                                        TO_CHAR (  TO_DATE ('01/' || TO_CHAR (SYSDATE, 'mm/yyyy'),
+                                                                            'dd/mm/yyyy'
+                                                                            )
+                                                                    + LEVEL
+                                                                    - 1,
+                                                                    'fmday'
+                                                                ) hari
+                                                    FROM DUAL
+                                                CONNECT BY LEVEL <= TO_NUMBER (TO_CHAR (LAST_DAY (SYSDATE), 'DD')))
+                                        WHERE hari != 'sunday'
+                                        GROUP BY 1");
+        return $query->row_array();
+    }
+
+    //query mengambil data tanggal libur bulan ini
+    public function getSkipDate($date)
+    {
+        $query = $this->oracle->query("SELECT DATE_ID,
+                                            TO_CHAR(SKIP_DATE, 'dd') AS TANGGAL,
+                                            NOTES
+                                        FROM KHS_LPB_SKIP_DATE
+                                        WHERE TO_CHAR(SKIP_DATE, 'mm-yyyy') = '$date'
+                                        ORDER BY TANGGAL");
+        return $query->result_array();
+    }
+
+    //query menambahkan data tanggal libur ke database
+    public function insertDate($date, $notes)
+    {
+        $this->oracle->query("INSERT INTO KHS_LPB_SKIP_DATE VALUES('',TO_DATE('$date','DD-MM-YYYY'),'$notes')");
     }
 }
