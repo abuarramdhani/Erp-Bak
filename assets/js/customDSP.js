@@ -684,7 +684,7 @@ function normalll() {
     },
   });
 }
-function urgent() {
+function urgentttt() {
   if (ajax1 != null) ajax1.abort();
   if (ajax3 != null) ajax3.abort();
 
@@ -715,7 +715,7 @@ function urgent() {
     },
   });
 }
-function eceran() {
+function ecerannnn() {
   if (ajax1 != null) ajax1.abort();
   if (ajax2 != null) ajax2.abort();
 
@@ -746,7 +746,7 @@ function eceran() {
     },
   });
 }
-function bagro() {
+function bagroooo() {
   if (ajax1 != null) ajax1.abort();
   if (ajax2 != null) ajax2.abort();
 
@@ -777,7 +777,7 @@ function bagro() {
     },
   });
 }
-function ecommerce() {
+function ecommerceee() {
   if (ajax1 != null) ajax1.abort();
   if (ajax2 != null) ajax2.abort();
 

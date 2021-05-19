@@ -9,16 +9,16 @@
                             <a class="nav-link" onclick="normalll()" id="pills-normal-tab" data-toggle="pill" href="#pills-normal" aria-controls="pills-normal" role="tab" aria-selected="true">NORMAL </a>
                         </li>
                         <li class="nav-item" style="background:#e7e7e7">
-                            <a class="nav-link" onclick="urgent()" id="pills-urgent-tab" data-toggle="pill" href="#pills-urgent" role="tab" aria-controls="pills-urgent" aria-selected="false">URGENT</a>
+                            <a class="nav-link" onclick="urgentttt()" id="pills-urgent-tab" data-toggle="pill" href="#pills-urgent" role="tab" aria-controls="pills-urgent" aria-selected="false">URGENT</a>
                         </li>
                         <li class="nav-item" style="background:#e7e7e7">
-                            <a class="nav-link" onclick="eceran()" id="pills-eceran-tab" data-toggle="pill" href="#pills-eceran" role="tab" aria-controls="pills-eceran" aria-selected="false">ECERAN</a>
+                            <a class="nav-link" onclick="ecerannnn()" id="pills-eceran-tab" data-toggle="pill" href="#pills-eceran" role="tab" aria-controls="pills-eceran" aria-selected="false">ECERAN</a>
                         </li>
                         <li class="nav-item" style="background:#e7e7e7">
-                            <a class="nav-link" onclick="bagro()" id="pills-bagro-tab" data-toggle="pill" href="#pills-bagro" role="tab" aria-controls="pills-bagro" aria-selected="false">BEST AGRO</a>
+                            <a class="nav-link" onclick="bagroooo()" id="pills-bagro-tab" data-toggle="pill" href="#pills-bagro" role="tab" aria-controls="pills-bagro" aria-selected="false">BEST AGRO</a>
                         </li>
                         <li class="nav-item" style="background:#e7e7e7">
-                            <a class="nav-link" onclick="ecommerce()" id="pills-ecommerce-tab" data-toggle="pill" href="#pills-ecommerce" role="tab" aria-controls="pills-ecommerce" aria-selected="false">E-COMMERCE</a>
+                            <a class="nav-link" onclick="ecommerceee()" id="pills-ecommerce-tab" data-toggle="pill" href="#pills-ecommerce" role="tab" aria-controls="pills-ecommerce" aria-selected="false">E-COMMERCE</a>
                         </li>
                     </ul>
                 </div>
