@@ -752,7 +752,8 @@ class C_Master extends CI_Controller
 
     public function org_spbkit($value='')
     {
-      echo json_encode($this->M_monitoringdo->org_spbkit($this->input->post('rn')));
+      $data = $this->M_monitoringdo->org_spbkit($this->input->post('rn'));
+      echo json_encode(!empty($data[0]['ORGANIZATION_ID']) ? $data : '');
     }
 
     public function subinv_spbkit($value='')
