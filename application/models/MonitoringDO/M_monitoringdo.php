@@ -990,7 +990,7 @@ class M_monitoringdo extends CI_Model
           $from = ', wsh_delivery_details wdd';
           $where = 'AND kqbd.request_number = wdd.batch_id
                     AND kqbd.item_id = wdd.inventory_item_id
-                    AND wdd.move_order_line_id = mtrl.line_id';
+                    AND wdd.move_order_line_id = kqbd.line_id';
           $order = 'wdd.source_line_id';
         }
         else {
