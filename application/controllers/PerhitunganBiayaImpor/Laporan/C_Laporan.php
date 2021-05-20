@@ -455,6 +455,19 @@ class C_Laporan extends CI_Controller {
 		// print_r($additional_cost);exit;
 		$row = 15;
 		$no = 0;
+
+		if ($header['IOPBI'] == 'IPM'){
+			$objPHPExcel->getActiveSheet()->getStyle('P8:T10')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB('E6B8B7');
+			$objPHPExcel->getActiveSheet()->getStyle('P8:T10')->getAlignment()->setWrapText(true);
+			$objPHPExcel->getActiveSheet()->getStyle('P12')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB('E6B8B7');
+			$objPHPExcel->getActiveSheet()->getStyle('P13')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB('E6B8B7');
+			$objPHPExcel->getActiveSheet()->getStyle('P14')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB('E6B8B7');
+			$objPHPExcel->getActiveSheet()->getStyle('P8:T10')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+			$ipm_cell_val = 'Total Biaya : Nilai yang harus dimasukan saat melakukan Actual Cost Adjusment dengan type : Value Cost Adjusment';
+			$objset->mergeCells('P8:T10');
+			$objset->setCellValue("P8", $ipm_cell_val);	
+		}
+
 		for ($i=0; $i < count($line); $i++) { $no++;
 
 			$objset->mergeCells("B".$row.":C".$row);
@@ -506,6 +519,10 @@ class C_Laporan extends CI_Controller {
 			$objset->setCellValue("R".$row, '=P'.$row.'/H'.$row);
 			$objset->setCellValue("S".$row, '=Q'.$row.'+R'.$row);
 			$objset->setCellValue("T".$row, '=R'.$row.'/Q'.$row);
+
+			if ($header['IOPBI'] == 'IPM'){
+				$objPHPExcel->getActiveSheet()->getStyle('P'.$row)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB('E6B8B7');
+			}
 				
 			$row++;
 		}
@@ -515,6 +532,10 @@ class C_Laporan extends CI_Controller {
 		$objPHPExcel->getActiveSheet()->getStyle("N".$row)->getNumberFormat()->setFormatCode('#,##0.00');
 		$objPHPExcel->getActiveSheet()->getStyle("O".$row)->getNumberFormat()->setFormatCode('#,##0.00');
 		$objPHPExcel->getActiveSheet()->getStyle("P".$row)->getNumberFormat()->setFormatCode('#,##0.00');
+
+		if ($header['IOPBI'] == 'IPM'){
+			$objPHPExcel->getActiveSheet()->getStyle('P'.$row)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB('E6B8B7');
+		}
 
 		if ($bea_masuk) {
 			$bea = $bea_masuk[0]['HARGA'];
