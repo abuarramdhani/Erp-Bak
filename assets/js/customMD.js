@@ -887,6 +887,7 @@ function cetakDO(rn, tipe, header_id) {
                         $('#MyModalSPBKIT').modal({
                             backdrop: 'static'
                         });
+                        $('.select2subinv_spbkit').val('').trigger('change');
                         //ambil org code
                         $.ajax({
                           url: baseurl + 'MonitoringDO/SettingDO/org_spbkit',
@@ -899,7 +900,7 @@ function cetakDO(rn, tipe, header_id) {
                             toastDO2021Loading('Mencoba Mendapatkan ORGANIZATION ID..');
                           },
                           success: function(result_2) {
-                            if (result_2[0].ORGANIZATION_ID) {
+                            if (result_2 != '') {
                               toastDO2021('success', `ORGANIZATION ID Ditemukan ${result_2[0].ORGANIZATION_CODE} - ${result_2[0].ORGANIZATION_ID}`)
                               $('#org_code_spbkit').val(result_2[0].ORGANIZATION_CODE)
                               $('#org_id_spbkit').val(result_2[0].ORGANIZATION_ID)
