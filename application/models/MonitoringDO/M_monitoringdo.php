@@ -14,8 +14,8 @@ class M_monitoringdo extends CI_Model
     public function runapi_interorg($tipe,$request_number,$org,$subinv)
     {
         // echo "BEGIN APPS.KHS_INTERORG_SPB ('$tipe', '$request_number', $org, '$subinv'); END;";
-        // $conn = oci_connect('APPS', 'APPS', '192.168.7.3:1522/DEV');
-        $conn = oci_connect('APPS', 'APPS', '192.168.7.1:1521/PROD');
+        $conn = oci_connect('APPS', 'APPS', '192.168.7.3:1522/DEV');
+        // $conn = oci_connect('APPS', 'APPS', '192.168.7.1:1521/PROD');
         if (!$conn) {
             $e = oci_error();
             trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
@@ -134,9 +134,10 @@ class M_monitoringdo extends CI_Model
 
     public function insertDOCetak($data)
     {
+        $ip = $this->input->ip_address();
         $sql = "INSERT INTO khs_cetak_do
-                            (request_number, order_number, creation_date, nomor_cetak)
-                     VALUES ('$data[REQUEST_NUMBER]', '$data[ORDER_NUMBER]', SYSDATE, '$data[NOMOR_CETAK]')";
+                            (request_number, order_number, creation_date, nomor_cetak, ip_address)
+                     VALUES ('$data[REQUEST_NUMBER]', '$data[ORDER_NUMBER]', SYSDATE, '$data[NOMOR_CETAK]', '$ip')";
 
         if (!empty($data)) {
             $response = $this->oracle->query($sql);
