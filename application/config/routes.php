@@ -5534,3 +5534,5 @@ $route['laporanPenjualanTraktor/exportExcel']	=	'LaporanPenjualanTraktor/C_lapor
 $route['menuLaporanPenjualanTraktor']	=	'LaporanPenjualanTraktor/C_index';
 $route['menuLaporanPenjualanTraktor/inputDate']	=	'LaporanPenjualanTraktor/C_inputDate';
 $route['menuLaporanPenjualanTraktor/inputDate/insertDate']	=	'LaporanPenjualanTraktor/C_inputDate/insertDate';
+$route['menuLaporanPenjualanTraktor/inputDate/insertTable']	=	'LaporanPenjualanTraktor/C_inputDate/insertTable';
+$route['menuLaporanPenjualanTraktor/inputDate/deleteDate']	=	'LaporanPenjualanTraktor/C_inputDate/deleteDate';
