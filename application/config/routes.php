@@ -2320,6 +2320,14 @@ $route['MasterPresensi/Lelayu/TarifSPSI'] = 'MasterPresensi/Lelayu/C_TarifSPSI';
 $route['MasterPresensi/Lelayu/TarifSPSI/(:any)'] = 'MasterPresensi/Lelayu/C_TarifSPSI/$1';
 $route['MasterPresensi/Lelayu/TarifSPSI/(:any)/(:any)'] = 'MasterPresensi/Lelayu/C_TarifSPSI/$1/$2';
 
+$route['MasterPresensi/DataPresensi/CetakPresensiHarian'] = 'MasterPresensi/DataPresensi/C_CetakPresensiHarian';
+$route['MasterPresensi/DataPresensi/CetakPresensiHarian/(:any)'] = 'MasterPresensi/DataPresensi/C_CetakPresensiHarian/$1';
+$route['MasterPresensi/DataPresensi/CetakPresensiHarian/(:any)/(:any)'] = 'MasterPresensi/DataPresensi/C_CetakPresensiHarian/$1/$2';
+
+$route['MasterPresensi/DataPresensi/DetailPresensi'] = 'MasterPresensi/DataPresensi/C_DetailPresensi';
+$route['MasterPresensi/DataPresensi/DetailPresensi/(:any)'] = 'MasterPresensi/DataPresensi/C_DetailPresensi/$1';
+$route['MasterPresensi/DataPresensi/DetailPresensi/(:any)/(:any)'] = 'MasterPresensi/DataPresensi/C_DetailPresensi/$1/$2';
+
 
 //-------------------------------------Hambatan Produksi-------------------------------------------------
 $route['ManufacturingOperation/ProductionObstacles/master'] = 'ManufacturingOperation/ProductionObstacles/MainMenu/C_Master';
