@@ -96,13 +96,14 @@ class C_CetakPresensiHarian extends CI_Controller
 		$data = array();
 		if (isset($workers) && !empty($workers)) {
 			foreach ($workers as $key => $worker) {
-				$max_kolom = 4;
+				$max_kolom = 2;
 				$data[$key] = $worker;
 				$shifts = $this->M_cetakpresensiharian->getShiftPekerjaByNoindPeriode($worker['noind'],$tanggal_awal,$tanggal_akhir);
 				if (isset($shifts) || !empty($shifts)) {
 					foreach ($shifts as $key2 => $shift) {
 						$data[$key]['presensi_harian'][$key2] = $shift;
 						$data[$key]['presensi_harian'][$key2]['point'] = $this->M_cetakpresensiharian->getPointByNoindTanggal($worker['noind'],$shift['tanggal']);
+						$data[$key]['presensi_harian'][$key2]['ket'] = $this->M_cetakpresensiharian->getketeranganByNoindTanggal($worker['noind'],$shift['tanggal']);
 						$data[$key]['presensi_harian'][$key2]['absen'] = $this->M_cetakpresensiharian->getPresensiHarianByNoindTanggal($worker['noind'],$shift['tanggal']);
 						if ($max_kolom < count($data[$key]['presensi_harian'][$key2]['absen'])) {
 							$max_kolom = count($data[$key]['presensi_harian'][$key2]['absen']);
@@ -126,134 +127,20 @@ class C_CetakPresensiHarian extends CI_Controller
 
 	public function export_pdf()
 	{
-		$data = $this->getData();
-		$html = "";
-
-		foreach ($data as $key => $dt) {
-			if ($html != "") {
-				$html .= "<br>";
-			}
-			$html .= "
-			<table style='page-break-inside: avoid;'>
-				<tr>
-					<td>No. Induk</td>
-					<td>&nbsp;:&nbsp;<td>
-					<td>".$dt['noind']."</td>
-				</tr>
-				<tr>
-					<td>Nama</td>
-					<td>&nbsp;:&nbsp;<td>
-					<td>".$dt['nama']."</td>
-				</tr>
-				<tr>
-					<td>Seksi/Unit</td>
-					<td>&nbsp;:&nbsp;<td>
-					<td>".$dt['seksi']." / ".$dt['unit']."</td>
-				</tr>
-			</table>
-			";
-
-			$waktu_header = "";
-			for ($i=0; $i < $dt['max_kolom']; $i++) { 
-				$waktu_header .= "<th>Waktu ".($i+1)."</th>";
-			}
-
-			$record = "";
-			if (isset($dt['presensi_harian']) && !empty($dt['presensi_harian'])) {
-				foreach ($dt['presensi_harian'] as $harian) {
-					$waktu_body = "";
-					for ($i=0; $i < $dt['max_kolom']; $i++) { 
-						if (isset($harian['absen']) && !empty($harian['absen']) && isset($harian['absen'][$i]) && !empty($harian['absen'][$i])) {
-							$waktu_body .= "<td style='text-align: center'>".$harian['absen'][$i]['waktu']."</td>";
-						}else{
-							$waktu_body .= "<td></td>";
-						}
-					}
-					$record .= "
-					<tr>
-						<td style='text-align: center'>".date('d',strtotime($harian['tanggal']))." ".$this->getMonth(intval(date('m',strtotime($harian['tanggal']))))." ".date('Y',strtotime($harian['tanggal']))."</td>
-						<td style='text-align: center'>".$harian['shift']."</td>
-						<td style='text-align: center'>".$harian['point']."</td>
-						$waktu_body
-					</tr>
-					";
-				}
-			}
-
-			$html .= "
-			<table style='width: 100%; border: 1px solid black; border-collapse: collapse;' border='1'>
-				<thead>
-					<tr>
-						<th style='width: 15%;'>Tanggal</th>
-						<th style='width: 15%;'>Shift</th>
-						<th style='width: 10%;'>Point</th>
-						$waktu_header
-					</tr>
-				</thead>
-				<tbody>
-					$record
-				</tbody>
-			</table>
-			";
-		}
-
-		$lokasi_kerja 	= $this->input->get('lokasi_kerja');
-		$kode_induk 	= $this->input->get('kode_induk');
-		$kodesie 		= $this->input->get('kodesie');
-		$noind 			= $this->input->get('noind');
-		$periode 		= $this->input->get('tanggal');
-
-		$header = "<table style='width: 100%;border-bottom: 1px solid black;'>
-			<tr>
-				<td style='width: 20%'>Periode</td>
-				<td style='width: 5%'>:</td>
-				<td>$periode</td>
-			</tr>
-		";
-		if (isset($lokasi_kerja) && !empty($lokasi_kerja)) {
-			$header .= "
-			<tr>
-				<td>Lokasi Kerja</td>
-				<td>:</td>
-				<td>$lokasi_kerja</td>
-			</tr>
-			";
-		}
-		if (isset($kode_induk) && !empty($kode_induk)) {
-			$header .= "
-			<tr>
-				<td>Kode Induk</td>
-				<td>:</td>
-				<td>$kode_induk</td>
-			</tr>
-			";
-		}
-		if (isset($kodesie) && !empty($kodesie)) {
-			$header .= "
-			<tr>
-				<td>Kodesie</td>
-				<td>:</td>
-				<td>$kodesie</td>
-			</tr>
-			";
-		}
-		if (isset($noind) && !empty($noind)) {
-			$header .= "
-			<tr>
-				<td>No. Induk</td>
-				<td>:</td>
-				<td>$noind</td>
-			</tr>
-			";
-		}
-		$header .= "</table>";
-		$html = $header.$html;
-
+		$data['data'] 			= $this->getData();
+		$data['lokasi_kerja'] 	= $this->input->get('lokasi_kerja');
+		$data['kode_induk'] 	= $this->input->get('kode_induk');
+		$data['kodesie'] 		= $this->input->get('kodesie');
+		$data['noind'] 			= $this->input->get('noind');
+		$data['periode'] 		= $this->input->get('tanggal');
 		$this->load->library('pdf');
 		$pdf = $this->pdf->load();
 		$pdf->debug = true;
 		$pdf = new mPDF('utf-8', 'A4', 9, '', 10, 10, 10, 15, 10, 10);
-		$filename = 'PRESENSI_HARIAN.pdf';
+		$filename = 'PRESENSI_HARIAN_'.$data['lokasi_kerja'].'_'.$data['kode_induk'].'.pdf';
+		$html = $this->load->view('MasterPresensi/DataPresensi/CetakPresensiHarian/V_Pdf', $data, true);
+		
+		$waktu = date('d/M/Y H:i:s');
 		$pdf->SetHTMLFooter("<table style='width: 100%;border-top: 1px solid black;'>
 				<tr>
 					<td style='vertical-align: middle;'><i style='font-size: 8pt'>Halaman ini dicetak melalui Aplikasi QuickERP Master Presensi pada oleh ".$this->session->user." - ".$this->session->employee." tgl. ".$waktu." WIB.</i></td>
@@ -261,60 +148,179 @@ class C_CetakPresensiHarian extends CI_Controller
 				</tr>
 			</table>");
 		$pdf->WriteHTML($html);
-		$pdf->Output($filename, 'I');	
+		$pdf->Output($filename, 'D');	
 	}
 
-	public function export_excel()
-	{
+	function generate_excel_structure(){
 		$this->load->library('excel');
 		$worksheet = $this->excel->getActiveSheet();
 		$data = $this->getData();
+		$lokasi_kerja 	= $this->input->get('lokasi_kerja');
+		$kode_induk 	= $this->input->get('kode_induk');
+		$kodesie 		= $this->input->get('kodesie');
+		$noind 			= $this->input->get('noind');
+		$periode 		= $this->input->get('tanggal');
+		$prd = explode(" - ", $periode);
 
+		$awal = date("d",strtotime($prd[0]))." ".$this->getMonth(intval(date("m",strtotime($prd[0]))))." ".date("Y",strtotime($prd[0]));
+		$akhir = date("d",strtotime($prd[1]))." ".$this->getMonth(intval(date("m",strtotime($prd[1]))))." ".date("Y",strtotime($prd[1]));
+		$worksheet->setCellValue('A1','Periode');
+		$worksheet->setCellValue('B1',$awal." s/d ".$akhir);
+		
+		$nomor = 2;
+		if (isset($lokasi_kerja) && !empty($lokasi_kerja)) {
+			$worksheet->setCellValue('A'.$nomor,'Lokasi Kerja');
+			$worksheet->setCellValue('B'.$nomor,$lokasi_kerja);
+			$nomor++;
+		}
 
+		if (isset($kode_induk) && !empty($kode_induk)) {
+			$worksheet->setCellValue('A'.$nomor,'Kode Induk');
+			$worksheet->setCellValue('B'.$nomor,$kode_induk);
+			$nomor++;
+		}
 
-		$nomor = 1;
+		if (isset($kodesie) && !empty($kodesie)) {
+			$worksheet->setCellValue('A'.$nomor,'Kodesie');
+			$worksheet->setCellValue('B'.$nomor,$kodesie);
+			$nomor++;
+		}
+
+		if (isset($noind) && !empty($noind)) {
+			$worksheet->setCellValue('A'.$nomor,'No. Induk');
+			$worksheet->setCellValue('B'.$nomor,$noind);
+			$nomor++;
+		}
+		
+		$nomor++;
+		$kolom_min = 0;
+		$kolom_max = 4;
+		$printed = 0;
+		$kolom_max_all = $kolom_max;
+		$simpan_row_min = 0;
 		foreach ($data as $dt) {
-			$worksheet->setCellValue('A'.($nomor+1),'No. Induk');
-			$worksheet->setCellValue('B'.($nomor+1),$dt['noind']);
-			$worksheet->mergeCells('B'.($nomor+1).':G'.($nomor+1));
+			$simpan_row_min = $nomor;
+			$nomor += 1;
+			$row_min = $nomor;
+			$kolom_a = PHPExcel_Cell::stringFromColumnIndex($kolom_min);
+			$kolom_b = PHPExcel_Cell::stringFromColumnIndex($kolom_min + 1);
+			$kolom_c = PHPExcel_Cell::stringFromColumnIndex($kolom_min + 2);
+			$kolom_d = PHPExcel_Cell::stringFromColumnIndex($kolom_min + 3);
+			$kolom_e = PHPExcel_Cell::stringFromColumnIndex($kolom_min + 4);
+			$kolom_f = PHPExcel_Cell::stringFromColumnIndex($kolom_min + 5);
+			$kolom_g = PHPExcel_Cell::stringFromColumnIndex($kolom_min + 6);
 
-			$worksheet->setCellValue('A'.($nomor+2),'Nama');
-			$worksheet->setCellValue('B'.($nomor+2),$dt['nama']);
-			$worksheet->mergeCells('B'.($nomor+2).':G'.($nomor+2));
+			$worksheet->setCellValue($kolom_a.$nomor,'No. Induk');
+			$worksheet->setCellValue($kolom_b.$nomor,$dt['noind']);
+			$worksheet->mergeCells($kolom_b.$nomor.':'.$kolom_f.$nomor);
 
-			$worksheet->setCellValue('A'.($nomor+3),'Seksi');
-			$worksheet->setCellValue('B'.($nomor+3),$dt['seksi']);
-			$worksheet->mergeCells('B'.($nomor+3).':G'.($nomor+3));
+			$nomor += 1;
+			$worksheet->setCellValue($kolom_a.$nomor,'Nama');
+			$worksheet->setCellValue($kolom_b.$nomor,$dt['nama']);
+			$worksheet->mergeCells($kolom_b.$nomor.':'.$kolom_f.$nomor);
 
-			$worksheet->setCellValue('A'.($nomor+4),'Unit');
-			$worksheet->setCellValue('B'.($nomor+4),$dt['unit']);
-			$worksheet->mergeCells('B'.($nomor+4).':G'.($nomor+4));
+			$nomor += 1;
+			$worksheet->setCellValue($kolom_a.$nomor,'Unit');
+			$worksheet->setCellValue($kolom_b.$nomor,$dt['unit']);
+			$worksheet->mergeCells($kolom_b.$nomor.':'.$kolom_f.$nomor);
 
-			$worksheet->setCellValue('A'.($nomor+6),'Tanggal');
-			$worksheet->setCellValue('B'.($nomor+6),'Shift');
-			$worksheet->setCellValue('C'.($nomor+6),'Point');
+			$nomor += 1;
+			$worksheet->setCellValue($kolom_a.$nomor,'Seksi');
+			$worksheet->setCellValue($kolom_b.$nomor,$dt['seksi']);
+			$worksheet->mergeCells($kolom_b.$nomor.':'.$kolom_f.$nomor);
 
+			$kolom_kiri = PHPExcel_Cell::stringFromColumnIndex($kolom_min);
+			$kolom_kanan = PHPExcel_Cell::stringFromColumnIndex($kolom_min + $kolom_max + 1);
+			$worksheet->duplicateStyleArray(
+			array(
+				'borders' => array(
+					'allborders' => array(
+						'style' => PHPExcel_Style_Border::BORDER_THIN
+					)
+				)
+			),$kolom_kiri.$row_min.':'.$kolom_kanan.$nomor);
+
+			$nomor += 1;
+			$worksheet->getRowDimension($nomor)->setRowHeight(5);
+
+			$nomor += 1;
+			$row_min = $nomor;
+			$worksheet->setCellValue($kolom_a.$nomor,'Tanggal');
+			$worksheet->setCellValue($kolom_b.$nomor,'Shift');
+			$worksheet->setCellValue($kolom_c.$nomor,'Point');
+
+			$tmp_kolom_max = $kolom_max;
 			for ($i=0; $i < $dt['max_kolom']; $i++) { 
-				$worksheet->setCellValueByColumnAndRow($i+3,$nomor+6,"waktu ".($i+1));
+				if ($kolom_max < $i + 3) {
+					$kolom_max = $i + 3;
+				}
+				if ($kolom_max > $kolom_max_all) {
+					$kolom_max_all = $kolom_max;
+				}
+				$worksheet->setCellValueByColumnAndRow($i+3 + $kolom_min,$nomor,"waktu ".($i+1));
 
 			}
+			$kolom_max++;
+			$kolom_kanan = PHPExcel_Cell::stringFromColumnIndex($kolom_min + $kolom_max);
+			$worksheet->setCellValue($kolom_kanan.$nomor,'Keterangan');
 
-			$nomor += 7;
+			$kolom_kiri = PHPExcel_Cell::stringFromColumnIndex($kolom_min);
+			// $kolom_max++;
+			$kolom_kanan = PHPExcel_Cell::stringFromColumnIndex($kolom_min + $kolom_max);
+
+			$this->excel->getActiveSheet()->duplicateStyleArray(
+			array(
+				'fill' =>array(
+					'type' => PHPExcel_Style_Fill::FILL_SOLID,
+						'startcolor' => array(
+							'argb' => '0060A5FA'
+						)
+				)
+			),$kolom_kiri.$row_min.':'.$kolom_kanan.$nomor);
+
+			$nomor += 1;
 			if (isset($dt['presensi_harian']) && !empty($dt['presensi_harian'])) {
 				foreach ($dt['presensi_harian'] as $harian) {
-					$worksheet->setCellValue('A'.($nomor),date('d',strtotime($harian['tanggal']))." ".$this->getMonth(intval(date('m',strtotime($harian['tanggal']))))." ".date('Y',strtotime($harian['tanggal'])));
-					$worksheet->setCellValue('B'.($nomor),$harian['shift']);
-					$worksheet->setCellValue('C'.($nomor),$harian['point']);
+					$worksheet->setCellValue($kolom_a.($nomor),date('d',strtotime($harian['tanggal']))." ".$this->getMonth(intval(date('m',strtotime($harian['tanggal']))))." ".date('Y',strtotime($harian['tanggal'])));
+					$worksheet->setCellValue($kolom_b.($nomor),$harian['shift']);
+					$worksheet->setCellValue($kolom_c.($nomor),$harian['point'] != "0" ? $harian['point'] : '');
 					for ($i=0; $i < $dt['max_kolom']; $i++) { 
 						if (isset($harian['absen']) && !empty($harian['absen']) && isset($harian['absen'][$i]) && !empty($harian['absen'][$i])) {
-							$worksheet->setCellValueByColumnAndRow($i+3,$nomor,$harian['absen'][$i]['waktu']);
+							$worksheet->setCellValueByColumnAndRow($i+3 + $kolom_min,$nomor,$harian['absen'][$i]['waktu']);
 						}
 					}
+					$worksheet->setCellValueByColumnAndRow($i+3 + $kolom_min,$nomor,$harian['ket']);
 					$nomor++;
 				}
 			}
 
+			$worksheet->duplicateStyleArray(
+			array(
+				'borders' => array(
+					'allborders' => array(
+						'style' => PHPExcel_Style_Border::BORDER_THIN
+					)
+				)
+			),$kolom_kiri.$row_min.':'.$kolom_kanan.($nomor -1));
+			$kolom_max = $tmp_kolom_max;
+			$printed++;
+			if ($printed%5 == 0) { // kebawah
+				$nomor += 2;
+				$kolom_min = 0;
+				$kolom_max = 4;
+				$kolom_max_all = $kolom_max;
+			}else{ // ke samping
+				$kolom_min += $kolom_max_all + 3;
+				$nomor = $simpan_row_min;
+				$kolom_max = 4;
+				$kolom_max_all = $kolom_max;
+			}
 		}
+	}
+
+	public function export_excel()
+	{
+		$this->generate_excel_structure();
 
 		$filename ='PRESENSI_HARIAN.xls';
 		header('Content-Type: aplication/vnd.ms-excel');
@@ -324,9 +330,37 @@ class C_CetakPresensiHarian extends CI_Controller
 		$writer->save('php://output');
 	}
 
+	function view_excel()
+	{
+		$this->generate_excel_structure();
+
+		$data['filename'] ='PRESENSI_HARIAN'.time().'.xls';
+		// header('Content-Type: aplication/vnd.ms-excel');
+		// header('Content-Disposition:attachment;filename="'.$data['filename'].'"');
+		// header('Cache-Control: max-age=0');
+		$writer = PHPExcel_IOFactory::createWriter($this->excel,'Excel5');
+		$writer->save(str_replace(__FILE__, 'assets/generated/CetakPresensiHarian/'.$data['filename'], __FILE__));
+
+		$this->load->view('MasterPresensi/DataPresensi/CetakPresensiHarian/V_Excel',$data);
+	}
+
 	function getKodesie()
 	{
-		$data= $this->M_cetakpresensiharian->getKodesie();
+		$key = $this->input->get('term');
+		$kodesie = $this->input->get('prev');
+		$tingkat = $this->input->get('tingkat');
+
+		$data= $this->M_cetakpresensiharian->getKodesie($key,$kodesie,$tingkat);
+		
+		echo json_encode($data);
+	}
+
+	function getSeksi()
+	{
+		$kodesie = $this->input->get('kodesie');
+
+		$data= $this->M_cetakpresensiharian->getSeksiByKodesie($kodesie);
+
 		echo json_encode($data);
 	}
 

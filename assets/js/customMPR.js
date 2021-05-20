@@ -1022,12 +1022,6 @@ $(document).on('ready', function(){
         ]
     })
 
-    var tblMPRPresensiHarianModalKodesie = $('#tblMPRPresensiHarianModalKodesie').DataTable({
-        scrollY: "400px",
-        scrollX: true,
-        paging: false
-    })
-
     var tblMPRPresensiHarianModalKodesieSelected = $('#tblMPRPresensiHarianModalKodesieSelected').DataTable({
         scrollY: "400px",
         scrollX: true,
@@ -1083,12 +1077,250 @@ $(document).on('ready', function(){
     })
 
     $('#btnMPRPresensiHarianAddKodesie').on('click', function(){
-        if (tblMPRPresensiHarianModalKodesieSelected.rows().data().length == 0 && tblMPRPresensiHarianModalKodesie.rows().data().length == 0) {
-            $('#ldgMPRCetakPresensiHarianLoading').show();
-            $.ajax({
-                url: baseurl + "MasterPresensi/DataPresensi/CetakPresensiHarian/getKodesie",
-                error: function(xhr,status,error){
-                    $('#ldgMPRCetakPresensiHarianLoading').hide();
+        $('#mdlMPRPresensiHarianKodesie').modal('show');
+    })
+
+    $('#slcMPRPresensiHarianModalKodesieDepartemen').select2({
+        searching: true,
+        allowClear: false,
+        ajax: {
+            url: baseurl + 'MasterPresensi/DataPresensi/CetakPresensiHarian/getKodesie',
+            dataType: 'json',
+            delay: 500,
+            type: 'GET',
+            data: function(params) {
+                return {
+                    term: params.term,
+                    prev: '',
+                    tingkat: 1
+                }
+            },
+            processResults: function(data) {
+                return {
+                    results: $.map(data, function(obj) {
+                        return { id: obj.kode, text: obj.kode + " - " + obj.nama };
+                    })
+                }
+            }
+        }
+    })
+
+    $('#slcMPRPresensiHarianModalKodesieBidang').select2({
+        searching: true,
+        allowClear: false,
+        ajax: {
+            url: baseurl + 'MasterPresensi/DataPresensi/CetakPresensiHarian/getKodesie',
+            dataType: 'json',
+            delay: 500,
+            type: 'GET',
+            data: function(params) {
+                return {
+                    term: params.term,
+                    prev: $('#slcMPRPresensiHarianModalKodesieDepartemen').val(),
+                    tingkat: 3
+                }
+            },
+            processResults: function(data) {
+                return {
+                    results: $.map(data, function(obj) {
+                        return { id: obj.kode, text: obj.kode + " - " + obj.nama };
+                    })
+                }
+            }
+        }
+    })
+
+
+    $('#slcMPRPresensiHarianModalKodesieUnit').select2({
+        searching: true,
+        allowClear: false,
+        ajax: {
+            url: baseurl + 'MasterPresensi/DataPresensi/CetakPresensiHarian/getKodesie',
+            dataType: 'json',
+            delay: 500,
+            type: 'GET',
+            data: function(params) {
+                return {
+                    term: params.term,
+                    prev: $('#slcMPRPresensiHarianModalKodesieBidang').val(),
+                    tingkat: 5
+                }
+            },
+            processResults: function(data) {
+                return {
+                    results: $.map(data, function(obj) {
+                        return { id: obj.kode, text: obj.kode + " - " + obj.nama };
+                    })
+                }
+            }
+        }
+    })
+
+
+    $('#slcMPRPresensiHarianModalKodesieSeksi').select2({
+        searching: true,
+        allowClear: false,
+        ajax: {
+            url: baseurl + 'MasterPresensi/DataPresensi/CetakPresensiHarian/getKodesie',
+            dataType: 'json',
+            delay: 500,
+            type: 'GET',
+            data: function(params) {
+                return {
+                    term: params.term,
+                    prev: $('#slcMPRPresensiHarianModalKodesieUnit').val(),
+                    tingkat: 7
+                }
+            },
+            processResults: function(data) {
+                return {
+                    results: $.map(data, function(obj) {
+                        return { id: obj.kode, text: obj.kode + " - " + obj.nama };
+                    })
+                }
+            }
+        }
+    })
+
+
+    $('#slcMPRPresensiHarianModalKodesiePekerjaan').select2({
+        searching: true,
+        allowClear: false,
+        ajax: {
+            url: baseurl + 'MasterPresensi/DataPresensi/CetakPresensiHarian/getKodesie',
+            dataType: 'json',
+            delay: 500,
+            type: 'GET',
+            data: function(params) {
+                return {
+                    term: params.term,
+                    prev: $('#slcMPRPresensiHarianModalKodesieSeksi').val(),
+                    tingkat: 9
+                }
+            },
+            processResults: function(data) {
+                return {
+                    results: $.map(data, function(obj) {
+                        return { id: obj.kode, text: obj.kode + " - " + obj.nama };
+                    })
+                }
+            }
+        }
+    })
+
+    $('#slcMPRPresensiHarianModalKodesieDepartemen').on('change', function(){
+        $('#btnMPRPresensiHarianModalKodesieAdd').attr('disabled', true)
+        $('#slcMPRPresensiHarianModalKodesieBidang').attr('disabled', false)
+        $('#slcMPRPresensiHarianModalKodesieBidang').val("").trigger('change');
+    })
+    $('#slcMPRPresensiHarianModalKodesieBidang').on('change', function(){
+        $('#slcMPRPresensiHarianModalKodesieUnit').val("").trigger('change');
+        if ($(this).attr('disabled') || $(this).val() == null) {
+            $('#slcMPRPresensiHarianModalKodesieUnit').attr('disabled', true)
+        }else if ($(this).attr('disabled') == false && $(this).val() == null) {
+            $('#btnMPRPresensiHarianModalKodesieAdd').attr('disabled', true)
+        }else{
+            text = $(this).find('option:selected').text();
+            if (text.includes("Semua") || text.includes("Hanya tingkat")) {
+                $('#slcMPRPresensiHarianModalKodesieUnit').attr('disabled', true)
+                $('#btnMPRPresensiHarianModalKodesieAdd').attr('disabled', false)
+            }else{
+                $('#slcMPRPresensiHarianModalKodesieUnit').attr('disabled', false)
+                $('#btnMPRPresensiHarianModalKodesieAdd').attr('disabled', true)
+            }
+        }
+    })
+    $('#slcMPRPresensiHarianModalKodesieUnit').on('change', function(){
+        $('#slcMPRPresensiHarianModalKodesieSeksi').val("").trigger('change');
+        if ($(this).attr('disabled') || $(this).val() == null) {
+            $('#slcMPRPresensiHarianModalKodesieSeksi').attr('disabled', true)
+        }else if ($(this).attr('disabled') == false && $(this).val() == null) {
+            $('#btnMPRPresensiHarianModalKodesieAdd').attr('disabled', true)
+        }else{
+            text = $(this).find('option:selected').text();
+            if (text.includes("Semua") || text.includes("Hanya tingkat")) {
+                $('#slcMPRPresensiHarianModalKodesieSeksi').attr('disabled', true)
+                $('#btnMPRPresensiHarianModalKodesieAdd').attr('disabled', false)
+            }else{
+                $('#slcMPRPresensiHarianModalKodesieSeksi').attr('disabled', false)
+                $('#btnMPRPresensiHarianModalKodesieAdd').attr('disabled', true)
+            }
+        }
+    })
+    $('#slcMPRPresensiHarianModalKodesieSeksi').on('change', function(){
+        $('#slcMPRPresensiHarianModalKodesiePekerjaan').val("").trigger('change');
+        if ($(this).attr('disabled') || $(this).val() == null) {
+            $('#slcMPRPresensiHarianModalKodesiePekerjaan').attr('disabled', true)
+        }else if ($(this).attr('disabled') == false && $(this).val() == null) {
+            $('#btnMPRPresensiHarianModalKodesieAdd').attr('disabled', true)
+        }else{
+            text = $(this).find('option:selected').text();
+            if (text.includes("Semua") || text.includes("Hanya tingkat")) {
+                $('#slcMPRPresensiHarianModalKodesiePekerjaan').attr('disabled', true)
+                $('#btnMPRPresensiHarianModalKodesieAdd').attr('disabled', false)
+            }else{
+                $('#slcMPRPresensiHarianModalKodesiePekerjaan').attr('disabled', false)
+                $('#btnMPRPresensiHarianModalKodesieAdd').attr('disabled', true)
+            }
+        }
+    })
+
+    $('#slcMPRPresensiHarianModalKodesiePekerjaan').on('change', function(){
+        if ($(this).attr('disabled') == false && $(this).val() == null) {
+            $('#btnMPRPresensiHarianModalKodesieAdd').attr('disabled', true)
+        }else{
+            $('#btnMPRPresensiHarianModalKodesieAdd').attr('disabled', false)
+        }
+    })
+
+    $('#btnMPRPresensiHarianModalKodesieAdd').on('click', function(){
+        $('#ldgMPRCetakPresensiHarianLoading').show();
+
+        kodesie = ""
+        dept        =   $('#slcMPRPresensiHarianModalKodesieDepartemen').val()
+        bidang      =   $('#slcMPRPresensiHarianModalKodesieBidang').val()
+        unit        =   $('#slcMPRPresensiHarianModalKodesieUnit').val()
+        seksi       =   $('#slcMPRPresensiHarianModalKodesieSeksi').val()
+        pekerjaan   =   $('#slcMPRPresensiHarianModalKodesiePekerjaan').val()
+        if (pekerjaan !== null) {
+            kodesie = pekerjaan
+        }else if(seksi !== null){
+            kodesie = seksi
+        }else if(unit !== null){
+            kodesie = unit
+        }else if(bidang !== null){
+            kodesie = bidang
+        }else if(dept !== null) {
+            kodesie = dept
+        }
+
+        $.ajax({
+            url : baseurl + 'MasterPresensi/DataPresensi/CetakPresensiHarian/getSeksi?kodesie=' + kodesie,
+            error: function(xhr,status,error){
+                $('#ldgMPRCetakPresensiHarianLoading').hide();
+                swal.fire({
+                    title: xhr['status'] + "(" + xhr['statusText'] + ")",
+                    html: xhr['responseText'],
+                    type: "error",
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#d63031',
+                })
+            },
+            success: function(result){
+                $('#ldgMPRCetakPresensiHarianLoading').hide();
+                if (obj = JSON.parse(result)) {
+                    obj.map(function(value){
+                        tblMPRPresensiHarianModalKodesieSelected.row.add([
+                            '<button type="button" class="btn btn-danger btnMPRPresensiHarianKodesieUnselect"><span class="fa fa-trash"></span></button>',
+                            value['kodesie'],
+                            value['dept'],
+                            value['bidang'],
+                            value['unit'],
+                            value['seksi'],
+                            value['pekerjaan']
+                        ]).draw(false);
+                    })
+                }else{
                     swal.fire({
                         title: xhr['status'] + "(" + xhr['statusText'] + ")",
                         html: xhr['responseText'],
@@ -1096,58 +1328,20 @@ $(document).on('ready', function(){
                         confirmButtonText: 'OK',
                         confirmButtonColor: '#d63031',
                     })
-                },
-                success: function(result){
-                    if (obj = JSON.parse(result)) {
-
-                        tblMPRPresensiHarianModalKodesie.clear().draw();
-                        obj.forEach(function(value){
-                            tblMPRPresensiHarianModalKodesie.row.add([
-                                '<button type="button" class="btn btn-primary btnMPRPresensiHarianKodesieSelect kode' + value.kodesie + '"><span class="fa fa-chevron-right"></span></button>',
-                                value.kodesie,
-                                value.dept,
-                                value.bidang,
-                                value.unit,
-                                value.seksi,
-                                value.pekerjaan
-                            ]).draw(false)
-                        })
-                        $('#mdlMPRPresensiHarianKodesie').modal('show')
-                    }
-                    $('#ldgMPRCetakPresensiHarianLoading').hide();
                 }
-            })
-        }else{
-            $('#mdlMPRPresensiHarianKodesie').modal('show')
-        }
-    })
+            }
+        })
 
-    $('#tblMPRPresensiHarianModalKodesie').on('click', '.btnMPRPresensiHarianKodesieSelect', function(){
-        $('#ldgMPRCetakPresensiHarianLoading').show();
-        var data = tblMPRPresensiHarianModalKodesie.row(this.closest('tr')).data();
-        tblMPRPresensiHarianModalKodesieSelected.row.add([
-            '<button type="button" class="btn btn-danger btnMPRPresensiHarianKodesieUnselect"><span class="fa fa-trash"></span></button>',
-            data[1],
-            data[2],
-            data[3],
-            data[4],
-            data[5],
-            data[6]
-        ]).draw(false);
-        $('#tblMPRPresensiHarianModalKodesie').find('.kode' + data[1]).attr('disabled', true);
         $('#ldgMPRCetakPresensiHarianLoading').hide();
     })
 
     $('#tblMPRPresensiHarianModalKodesieSelected').on('click', '.btnMPRPresensiHarianKodesieUnselect', function(){
         $('#ldgMPRCetakPresensiHarianLoading').show();
-        var data = tblMPRPresensiHarianModalKodesieSelected.row(this.closest('tr')).data();
-        $('#tblMPRPresensiHarianModalKodesie').find('.kode' + data[1]).attr('disabled', false);
         tblMPRPresensiHarianModalKodesieSelected.row(this.closest('tr')).remove().draw();
         $('#ldgMPRCetakPresensiHarianLoading').hide();
     })
 
     $('#mdlMPRPresensiHarianKodesie').on('shown.bs.modal', function(){
-        tblMPRPresensiHarianModalKodesie.columns.adjust();
         tblMPRPresensiHarianModalKodesieSelected.columns.adjust();
         $('.chkMPRPresensiHarianKodesie').iCheck({
             checkboxClass: 'icheckbox_minimal-blue',
@@ -1335,6 +1529,19 @@ $(document).on('ready', function(){
         }
     })
 
+    $('#btnMPRPresensiHarianExcelView').on('click', function(){
+        parameter = getCetakPresensiharianParams();
+        if(parameter){
+            window.open(baseurl + 'MasterPresensi/DataPresensi/CetakPresensiHarian/view_excel?' + parameter ,'_blank');
+        }else{
+            swal.fire(
+                "Data Tidak Lengkap!",
+                "Lengkapi data yang di centang!",
+                "warning"
+            )
+        }
+    })
+
 })
 // end cetak presensi harian
 
@@ -1392,8 +1599,36 @@ $(document).on('ready', function(){
         periodeAbsen            = $('#slcMPRDetailPresensiPeriodeAbsen').val();
         pekerjaKeluar           = $('#chkMPRDetailPresensiPekerjaKeluar').prop('checked');
         periodePekerjaKeluar    = $('#txtMPRDetailPresensiPekerjaKeluar').val();
+
+        kodesie = ""
+        dept        =   $('#slcMPRDetailPresensiDepartemen').val()
+        bidang      =   $('#slcMPRDetailPresensiBidang').val()
+        unit        =   $('#slcMPRDetailPresensiUnit').val()
+        seksi       =   $('#slcMPRDetailPresensiSeksi').val()
+        pekerjaan   =   $('#slcMPRDetailPresensiPekerjaan').val()
+        if (pekerjaan !== null) {
+            kodesie = pekerjaan
+        }else if(seksi !== null){
+            kodesie = seksi
+        }else if(unit !== null){
+            kodesie = unit
+        }else if(bidang !== null){
+            kodesie = bidang
+        }else if(dept !== null) {
+            kodesie = dept
+        }
         
-        return '?jenisPresensi=' + jenisPresensi + '&jenisTampilan=' + jenisTampilan + '&kodeInduk=' + kodeInduk + '&lokasiKerja=' + lokasiKerja + '&periodeAbsen=' + periodeAbsen + '&pekerjaKeluar=' + pekerjaKeluar + '&periodePekerjaKeluar=' + periodePekerjaKeluar
+        filter = [
+            `jenisPresensi=${jenisPresensi}`,
+            `jenisTampilan=${jenisTampilan}`,
+            `kodeInduk=${kodeInduk}`,
+            `lokasiKerja=${lokasiKerja}`,
+            `periodeAbsen=${periodeAbsen}`,
+            `pekerjaKeluar=${pekerjaKeluar}`,
+            `periodePekerjaKeluar=${periodePekerjaKeluar}`,
+            `kodesie=${kodesie}`
+        ]
+        return '?' + filter.join("&");
     }
 
     $('#slcMPRDetailPresensiJenisPresensi, #slcMPRDetailPresensiJenisTampilan, #slcMPRDetailPresensiKodeInduk, #slcMPRDetailPresensiLokasiKerja, #slcMPRDetailPresensiPeriodeAbsen, #chkMPRDetailPresensiPekerjaKeluar, #txtMPRDetailPresensiPekerjaKeluar').on('change', function(){
@@ -1427,10 +1662,36 @@ $(document).on('ready', function(){
                     $('#tblMPRDetailPresensiPresensiHarian tbody').html(obj['body'])
                     $('#tblMPRDetailPresensiPresensiHarian').DataTable({
                         "scrollX": true,
+                        paging: false,
+                        dom: "Brftip",
+                        "scrollY": "400px",
                         fixedColumns:   {
                             leftColumns: 2
-                        }
+                        },
+                        buttons: [
+                            {
+                                text: 'Show Full Page',
+                                id: 'btnMPRDetailPresensiFullPage',
+                                action: function(){
+                                    $('#divMPRDetailPresensiResultKetAbsen').addClass('table-full');
+                                    $('#btnMPRDetailPresensiFullPage').hide();
+                                    $('#btnMPRDetailPresensiExitFullPage').show();
+                                    $('#tblMPRDetailPresensiPresensiHarian').DataTable().columns.adjust();
+                                }
+                            },
+                            {
+                                text: 'Exit Full Page',
+                                id: 'btnMPRDetailPresensiExitFullPage',
+                                action: function(){
+                                    $('#divMPRDetailPresensiResultKetAbsen').removeClass('table-full');
+                                    $('#btnMPRDetailPresensiFullPage').show();
+                                    $('#btnMPRDetailPresensiExitFullPage').hide();
+                                    $('#tblMPRDetailPresensiPresensiHarian').DataTable().columns.adjust();
+                                }
+                            }
+                        ]
                     });
+                    $('#divMPRDetailPresensiFilter').collapse('hide');
                 }else{
                     swal.fire({
                         title: xhr['status'] + "(" + xhr['statusText'] + ")",
@@ -1493,6 +1754,210 @@ $(document).on('ready', function(){
                 }
             })
         }
+    })
+
+    $('#slcMPRDetailPresensiDepartemen').select2({
+        searching: true,
+        allowClear: false,
+        ajax: {
+            url: baseurl + 'MasterPresensi/DataPresensi/DetailPresensi/getKodesie',
+            dataType: 'json',
+            delay: 500,
+            type: 'GET',
+            data: function(params) {
+                return {
+                    term: params.term,
+                    prev: '',
+                    tingkat: 1
+                }
+            },
+            processResults: function(data) {
+                return {
+                    results: $.map(data, function(obj) {
+                        return { id: obj.kode, text: obj.kode + " - " + obj.nama };
+                    })
+                }
+            }
+        }
+    })
+
+    $('#slcMPRDetailPresensiBidang').select2({
+        searching: true,
+        allowClear: false,
+        ajax: {
+            url: baseurl + 'MasterPresensi/DataPresensi/DetailPresensi/getKodesie',
+            dataType: 'json',
+            delay: 500,
+            type: 'GET',
+            data: function(params) {
+                return {
+                    term: params.term,
+                    prev: $('#slcMPRDetailPresensiDepartemen').val(),
+                    tingkat: 3
+                }
+            },
+            processResults: function(data) {
+                return {
+                    results: $.map(data, function(obj) {
+                        return { id: obj.kode, text: obj.kode + " - " + obj.nama };
+                    })
+                }
+            }
+        }
+    })
+
+    $('#slcMPRDetailPresensiLokasiKerja').select2({
+        allowClear: false,
+    })
+
+    $('#slcMPRDetailPresensiKodeInduk').select2({
+        allowClear: false,
+    })
+
+    $('#slcMPRDetailPresensiUnit').select2({
+        searching: true,
+        allowClear: false,
+        ajax: {
+            url: baseurl + 'MasterPresensi/DataPresensi/DetailPresensi/getKodesie',
+            dataType: 'json',
+            delay: 500,
+            type: 'GET',
+            data: function(params) {
+                return {
+                    term: params.term,
+                    prev: $('#slcMPRDetailPresensiBidang').val(),
+                    tingkat: 5
+                }
+            },
+            processResults: function(data) {
+                return {
+                    results: $.map(data, function(obj) {
+                        return { id: obj.kode, text: obj.kode + " - " + obj.nama };
+                    })
+                }
+            }
+        }
+    })
+
+
+    $('#slcMPRDetailPresensiSeksi').select2({
+        searching: true,
+        allowClear: false,
+        ajax: {
+            url: baseurl + 'MasterPresensi/DataPresensi/DetailPresensi/getKodesie',
+            dataType: 'json',
+            delay: 500,
+            type: 'GET',
+            data: function(params) {
+                return {
+                    term: params.term,
+                    prev: $('#slcMPRDetailPresensiUnit').val(),
+                    tingkat: 7
+                }
+            },
+            processResults: function(data) {
+                return {
+                    results: $.map(data, function(obj) {
+                        return { id: obj.kode, text: obj.kode + " - " + obj.nama };
+                    })
+                }
+            }
+        }
+    })
+
+
+    $('#slcMPRDetailPresensiPekerjaan').select2({
+        searching: true,
+        allowClear: false,
+        ajax: {
+            url: baseurl + 'MasterPresensi/DataPresensi/DetailPresensi/getKodesie',
+            dataType: 'json',
+            delay: 500,
+            type: 'GET',
+            data: function(params) {
+                return {
+                    term: params.term,
+                    prev: $('#slcMPRDetailPresensiSeksi').val(),
+                    tingkat: 9
+                }
+            },
+            processResults: function(data) {
+                return {
+                    results: $.map(data, function(obj) {
+                        return { id: obj.kode, text: obj.kode + " - " + obj.nama };
+                    })
+                }
+            }
+        }
+    })
+
+    $('#slcMPRDetailPresensiDepartemen').on('change', function(){
+        text = $(this).find('option:selected').text();
+        if (text.includes("Semua")) {
+            $('#slcMPRDetailPresensiBidang').attr('disabled', true)
+        }else{
+            $('#slcMPRDetailPresensiBidang').attr('disabled', false)
+            $('#slcMPRDetailPresensiBidang').val("").trigger('change');
+        }
+        $('#btnMPRDetailPresensiPdf').attr('disabled', true);
+        $('#btnMPRDetailPresensiExcel').attr('disabled', true);
+    })
+    $('#slcMPRDetailPresensiBidang').on('change', function(){
+        $('#slcMPRDetailPresensiUnit').val("").trigger('change');
+        if ($(this).attr('disabled') || $(this).val() == null) {
+            $('#slcMPRDetailPresensiUnit').attr('disabled', true)
+        }else{
+            text = $(this).find('option:selected').text();
+            if (text.includes("Semua") || text.includes("Hanya tingkat")) {
+                $('#slcMPRDetailPresensiUnit').attr('disabled', true)
+            }else{
+                $('#slcMPRDetailPresensiUnit').attr('disabled', false)
+            }
+        }
+        $('#btnMPRDetailPresensiPdf').attr('disabled', true);
+        $('#btnMPRDetailPresensiExcel').attr('disabled', true);
+    })
+    $('#slcMPRDetailPresensiUnit').on('change', function(){
+        $('#slcMPRDetailPresensiSeksi').val("").trigger('change');
+        if ($(this).attr('disabled') || $(this).val() == null) {
+            $('#slcMPRDetailPresensiSeksi').attr('disabled', true)
+        }else{
+            text = $(this).find('option:selected').text();
+            if (text.includes("Semua") || text.includes("Hanya tingkat")) {
+                $('#slcMPRDetailPresensiSeksi').attr('disabled', true)
+            }else{
+                $('#slcMPRDetailPresensiSeksi').attr('disabled', false)
+            }
+        }
+        $('#btnMPRDetailPresensiPdf').attr('disabled', true);
+        $('#btnMPRDetailPresensiExcel').attr('disabled', true);
+    })
+    $('#slcMPRDetailPresensiSeksi').on('change', function(){
+        $('#slcMPRDetailPresensiPekerjaan').val("").trigger('change');
+        if ($(this).attr('disabled') || $(this).val() == null) {
+            $('#slcMPRDetailPresensiPekerjaan').attr('disabled', true)
+        }else{
+            text = $(this).find('option:selected').text();
+            if (text.includes("Semua") || text.includes("Hanya tingkat")) {
+                $('#slcMPRDetailPresensiPekerjaan').attr('disabled', true)
+            }else{
+                $('#slcMPRDetailPresensiPekerjaan').attr('disabled', false)
+            }
+        }
+        $('#btnMPRDetailPresensiPdf').attr('disabled', true);
+        $('#btnMPRDetailPresensiExcel').attr('disabled', true);
+    })
+
+    $('#btnMPRDetailPresensiCollapsible').on('click',function(){
+        $('#divMPRDetailPresensiFilter').collapse('toggle');
+    })
+
+    $('#divMPRDetailPresensiFilter').on('show.bs.collapse',function(){
+        $('#btnMPRDetailPresensiCollapsible').html("Hide Filter");
+    })
+
+    $('#divMPRDetailPresensiFilter').on('hide.bs.collapse',function(){
+        $('#btnMPRDetailPresensiCollapsible').html("Show Filter");
     })
 })
 // end detail presensi

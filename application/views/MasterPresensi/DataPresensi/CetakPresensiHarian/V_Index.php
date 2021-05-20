@@ -148,7 +148,8 @@
 											</div>
 											<div class="form-group text-center">
 												<button type="button" class="btn btn-danger" id="btnMPRPresensiHarianPdf">PDF</button>
-												<button type="button" class="btn btn-success" id="btnMPRPresensiHarianExcel">EXCEL</button>
+												<button type="button" class="btn btn-success" id="btnMPRPresensiHarianExcel">Download EXCEL</button>
+												<button type="button" class="btn btn-success" id="btnMPRPresensiHarianExcelView">View EXCEL</button>
 											</div>
 										</form>
 									</div>
@@ -172,6 +173,9 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<h4 class="modal-title">Add Pekerja</h4>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: black !important;font-size: 30pt;">
+		          	<span aria-hidden="true">&times;</span>
+		        </button>
 			</div>
 			<div class="modal-body">
 				<div class="row">
@@ -210,30 +214,55 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<h4 class="modal-title">Add Kodesie</h4>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: black !important;font-size: 30pt;">
+		          	<span aria-hidden="true">&times;</span>
+		        </button>
 			</div>
 			<div class="modal-body">
 				<div class="row">
 					<div class="col-lg-6">
-						<h2>Unselected</h2>
-						<div class="table-responsive">
-							<table class="table table-striped table-bordered table-hover" id="tblMPRPresensiHarianModalKodesie" style="width: 100%">
-								<thead>
-									<tr>
-										<th class="bg-warning text-center">Action</th>
-										<th class="bg-warning text-center">Kodesie</th>
-										<th class="bg-warning text-center">Departemen</th>
-										<th class="bg-warning text-center">Bidang</th>
-										<th class="bg-warning text-center">Unit</th>
-										<th class="bg-warning text-center">Seksi</th>
-										<th class="bg-warning text-center">Pekerjaan</th>
-									</tr>
-								</thead>
-								<tbody></tbody>
-							</table>
-						</div>
+						<form class="form-horizontal">
+							<div class="form-group">
+								<label class="control-label col-md-4">Departemen</label>
+								<div class="col-md-8">
+									<select id="slcMPRPresensiHarianModalKodesieDepartemen" style="width: 100%" data-placeholder="Pilih Departemen"></select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-md-4">Bidang</label>
+								<div class="col-md-8">
+									<select id="slcMPRPresensiHarianModalKodesieBidang" style="width: 100%" data-placeholder="Pilih Bidang" disabled></select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-md-4">Unit</label>
+								<div class="col-md-8">
+									<select id="slcMPRPresensiHarianModalKodesieUnit" style="width: 100%" data-placeholder="Pilih Unit" disabled></select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-md-4">Seksi</label>
+								<div class="col-md-8">
+									<select id="slcMPRPresensiHarianModalKodesieSeksi" style="width: 100%" data-placeholder="Pilih Seksi" disabled></select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-md-4">Pekerjaan</label>
+								<div class="col-md-8">
+									<select id="slcMPRPresensiHarianModalKodesiePekerjaan" style="width: 100%" data-placeholder="Pilih Pekerjaan" disabled></select>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-md-12 text-center">
+									<button type="button" class="btn btn-primary" id="btnMPRPresensiHarianModalKodesieAdd" disabled>
+										<span class="fa fa-plus"></span>
+										&nbsp;Tambah
+									</button>
+								</div>
+							</div>
+						</form>
 					</div>
 					<div class="col-lg-6">
-						<h2>Selected</h2>
 						<div class="table-responsive">
 							<table class="table table-striped table-bordered table-hover" id="tblMPRPresensiHarianModalKodesieSelected" style="width: 100%">
 								<thead>

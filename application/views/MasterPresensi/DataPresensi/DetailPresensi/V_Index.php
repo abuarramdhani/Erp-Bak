@@ -4,79 +4,17 @@
 			<div class="col-lg-12">
 				<div class="box box-solid box-primary">
 					<div class="box-header with-border">
-						INFO PEGAWAI
+						<div class="row">
+							<div class="col-lg-8">
+								INFO PEGAWAI
+							</div>
+						</div>
 					</div>
 					<div class="box-body">
 						<div class="row">
 							<div class="col-lg-12">
-								<div class="row">
-									<div class="col-lg-4">
-										<form class="form-horizontal">
-											<div class="form-group">
-												<label class="control-label col-lg-4">Jenis Presensi</label>
-												<div class="col-lg-8">
-													<select id="slcMPRDetailPresensiJenisPresensi" style="width: 100%">
-														<option>Presensi</option>
-														<option>Lembur</option>
-													</select>
-												</div>
-											</div>
-											<div class="form-group">
-												<label class="control-label col-lg-4">Jenis Tampilan</label>
-												<div class="col-lg-8">
-													<select id="slcMPRDetailPresensiJenisTampilan" style="width: 100%">
-														<option value="1">/</option>
-														<option value="2">S</option>
-													</select>
-												</div>
-											</div>
-										</form>
-									</div>
-									<div class="col-lg-4">
-										<form class="form-horizontal">
-											<div class="form-group">
-												<label class="control-label col-lg-4">
-													Kode Induk
-													<span style="color: red;">*</span>
-												</label>
-												<div class="col-lg-8">
-													<select class="select2" id="slcMPRDetailPresensiKodeInduk" data-placeholder="Kode Induk" style="width: 100%">
-														<option></option>
-														<?php
-														if (isset($kode_induk) && !empty($kode_induk)) {
-															foreach ($kode_induk as $ki) {
-																?>
-																<option value="<?php echo $ki['noind'] ?>"><?php echo $ki['noind']." - ".$ki['ket'] ?></option>
-																<?php
-															}
-														}
-														 ?>
-													</select>
-												</div>
-											</div>
-											<div class="form-group">
-												<label class="control-label col-lg-4">
-													Lokasi Kerja
-													<span style="color: red;">*</span>
-												</label>
-												<div class="col-lg-8">
-													<select class="select2" id="slcMPRDetailPresensiLokasiKerja" data-placeholder="Lokasi Kerja" style="width: 100%">
-														<option></option>
-														<?php
-														if (isset($lokasi_kerja) && !empty($lokasi_kerja)) {
-															foreach ($lokasi_kerja as $lk) {
-																?>
-																<option value="<?php echo $lk['kode_lokasi'] ?>"><?php echo $lk['kode_lokasi']." - ".$lk['nama_lokasi'] ?></option>
-																<?php
-															}
-														}
-														 ?>
-													</select>
-												</div>
-											</div>
-										</form>
-									</div>
-									<div class="col-lg-4">
+								<div class="row collapse" id="divMPRDetailPresensiFilter">
+									<div class="col-lg-5 col-lg-offset-1">
 										<form class="form-horizontal">
 											<div class="form-group">
 												<label class="control-label col-lg-4">Periode Absen</label>
@@ -95,16 +33,103 @@
 													<input type="text" id="txtMPRDetailPresensiPekerjaKeluar" class="form-control" disabled>
 												</div>
 											</div>
+											<div class="form-group">
+												<label class="control-label col-lg-4">Jenis Presensi</label>
+												<div class="col-lg-6">
+													<select id="slcMPRDetailPresensiJenisPresensi" style="width: 100%">
+														<option>Presensi</option>
+														<option>Lembur</option>
+													</select>
+												</div>
+												<div class="col-lg-2">
+													<select id="slcMPRDetailPresensiJenisTampilan" style="width: 100%">
+														<option value="1">/</option>
+														<option value="2">S</option>
+													</select>
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="control-label col-lg-4">
+													Kode Induk
+												</label>
+												<div class="col-lg-8">
+													<select id="slcMPRDetailPresensiKodeInduk" data-placeholder="Kode Induk" style="width: 100%">
+														<option value="0">SEMUA KODE INDUK</option>
+														<?php
+														if (isset($kode_induk) && !empty($kode_induk)) {
+															foreach ($kode_induk as $ki) {
+																?>
+																<option value="<?php echo $ki['noind'] ?>"><?php echo $ki['noind']." - ".$ki['ket'] ?></option>
+																<?php
+															}
+														}
+														 ?>
+													</select>
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="control-label col-lg-4">
+													Lokasi Kerja
+												</label>
+												<div class="col-lg-8">
+													<select id="slcMPRDetailPresensiLokasiKerja" data-placeholder="Lokasi Kerja" style="width: 100%">
+														<option value="0">SEMUA LOKASI KERJA</option>
+														<?php
+														if (isset($lokasi_kerja) && !empty($lokasi_kerja)) {
+															foreach ($lokasi_kerja as $lk) {
+																?>
+																<option value="<?php echo $lk['kode_lokasi'] ?>"><?php echo $lk['kode_lokasi']." - ".$lk['nama_lokasi'] ?></option>
+																<?php
+															}
+														}
+														 ?>
+													</select>
+												</div>
+											</div>
+										</form>
+									</div>
+									<div class="col-lg-5">
+										<form class="form-horizontal">
+											<div class="form-group">
+												<label class="control-label col-md-4">Departemen</label>
+												<div class="col-md-8">
+													<select id="slcMPRDetailPresensiDepartemen" style="width: 100%" data-placeholder="Pilih Departemen">
+														<option value="0">SEMUA DEPARTEMEN</option>
+													</select>
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="control-label col-md-4">Bidang</label>
+												<div class="col-md-8">
+													<select id="slcMPRDetailPresensiBidang" style="width: 100%" data-placeholder="Pilih Bidang" disabled></select>
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="control-label col-md-4">Unit</label>
+												<div class="col-md-8">
+													<select id="slcMPRDetailPresensiUnit" style="width: 100%" data-placeholder="Pilih Unit" disabled></select>
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="control-label col-md-4">Seksi</label>
+												<div class="col-md-8">
+													<select id="slcMPRDetailPresensiSeksi" style="width: 100%" data-placeholder="Pilih Seksi" disabled></select>
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="control-label col-md-4">Pekerjaan</label>
+												<div class="col-md-8">
+													<select id="slcMPRDetailPresensiPekerjaan" style="width: 100%" data-placeholder="Pilih Pekerjaan" disabled></select>
+												</div>
+											</div>
 										</form>
 									</div>
 								</div>
 								<div class="row">
-									<div class="col-lg-12">
-										<span style="color: red">* : Kosongi untuk memilih semua.</span>
-									</div>
-								</div>
-								<div class="row">
 									<div class="col-lg-12 text-center">
+										<button type="button" class="btn btn-warning" id="btnMPRDetailPresensiCollapsible">
+											Show Filter
+										</button>
 										<button class="btn btn-primary" id="btnMPRDetailPresensiLihat">
 											<span class="fa fa-search"></span>
 											Lihat
@@ -119,9 +144,16 @@
 										</button>
 									</div>
 								</div>
-								<hr>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="box box-solid box-primary">
+					<div class="box-body">
+						<div class="row">
+							<div class="col-lg-12">
 								<div class="row">
-									<div class="col-lg-8">
+									<div class="col-lg-8" id="divMPRDetailPresensiResultKetAbsen">
 										<table id="tblMPRDetailPresensiPresensiHarian" class="table table-hover table-striped table-hover table-bordered">
 											<thead>
 												<tr>
@@ -180,7 +212,7 @@
 											</tbody>
 										</table>
 									</div>
-									<div class="col-lg-4">
+									<div class="col-lg-4" id="divMPRDetailPresensiResultJamAbsen">
 										<table id="tblMPRDetailPresensiJamAbsen" class="table table-hover table-striped table-hover table-bordered">
 											<thead>
 												<tr>
@@ -204,7 +236,28 @@
 	</div>
 </section>
 <style type="text/css">
-	.loading {
+.dt-buttons {
+	float: left;
+}
+.dataTables_filter {
+	float: right;
+	}
+.table-full .dataTables_scrollBody {
+	height: 80vh !important;
+}
+.table-full {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: white;
+    z-index: 8888;
+}
+
+.loading {
     width: 100%;
     height: 100%;
     position: fixed;

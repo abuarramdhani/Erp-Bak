@@ -49,10 +49,10 @@ class C_DetailPresensi extends CI_Controller
 		$this->load->view('V_Footer',$data);
 	}
 
-	function getAbsen($jenis_presensi, $jenis_tampilan, $kode_induk, $lokasi_kerja, $periode, $pekerja_keluar, $periode_pekerja_keluar){
+	function getAbsen($jenis_presensi, $jenis_tampilan, $kode_induk, $lokasi_kerja, $periode, $pekerja_keluar, $periode_pekerja_keluar,$kodesie){
     	
     	if ($jenis_presensi == "Presensi") {
-    		$absen = $this->M_detailpresensi->getAbsenByParams($kode_induk,$lokasi_kerja,$periode,$pekerja_keluar,$periode_pekerja_keluar);
+    		$absen = $this->M_detailpresensi->getAbsenByParams($kode_induk,$lokasi_kerja,$periode,$pekerja_keluar,$periode_pekerja_keluar,$kodesie);
 			$datareal = array();
 			$simpan_noind = "";
 			$angka = 0;
@@ -63,9 +63,11 @@ class C_DetailPresensi extends CI_Controller
 				if ($simpan_noind !== $key['noind']) {
 					$angka++;
 					$datareal[$angka] = array(
-							'nama' => $key['nama'],
+							'nama' 	=> $key['nama'],
 							'noind' => $key['noind'],
-							'data' => array()
+							'unit' 	=> $key['unit'],
+							'seksi' => $key['seksi'],
+							'data' 	=> array()
 						);
 				}
 
@@ -106,7 +108,7 @@ class C_DetailPresensi extends CI_Controller
 				$simpan_noind = $key['noind'];
 			}
     	}else{
-    		$absen = $this->M_detailpresensi->getLemburByParams($kode_induk,$lokasi_kerja,$periode,$pekerja_keluar,$periode_pekerja_keluar);
+    		$absen = $this->M_detailpresensi->getLemburByParams($kode_induk,$lokasi_kerja,$periode,$pekerja_keluar,$periode_pekerja_keluar,$kodesie);
 			$datareal = array();
 			$simpan_noind = "";
 			$angka = 0;
@@ -119,6 +121,8 @@ class C_DetailPresensi extends CI_Controller
 					$datareal[$angka] = array(
 							'nama' 	=> $key['nama'],
 							'noind' => $key['noind'],
+							'unit' 	=> $key['unit'],
+							'seksi' => $key['seksi'],
 							'total' => 0,
 							'data' 	=> array()
 						);
@@ -145,14 +149,17 @@ class C_DetailPresensi extends CI_Controller
     	$periode 				= $this->input->get('periodeAbsen');
     	$pekerja_keluar 		= $this->input->get('pekerjaKeluar');
     	$periode_pekerja_keluar = $this->input->get('periodePekerjaKeluar');
+    	$kodesie 				= $this->input->get('kodesie');
 
-    	$datareal = $this->getAbsen($jenis_presensi, $jenis_tampilan, $kode_induk, $lokasi_kerja, $periode, $pekerja_keluar, $periode_pekerja_keluar);
+    	$datareal = $this->getAbsen($jenis_presensi, $jenis_tampilan, $kode_induk, $lokasi_kerja, $periode, $pekerja_keluar, $periode_pekerja_keluar, $kodesie);
     	$data = array();
 
 		$data_tanggal = $this->M_detailpresensi->getTanggalByParams($periode);
     	//header awal
 		$header_bulan = '<th class="bg-primary" rowspan="2" style="text-align: center;vertical-align: middle;">No. Induk</th>
-						<th class="bg-primary" rowspan="2" style="text-align: center;vertical-align: middle;">Nama</th>';
+						<th class="bg-primary" rowspan="2" style="text-align: center;vertical-align: middle;">Nama</th>
+						<th class="bg-primary" rowspan="2" style="text-align: center;vertical-align: middle;">Unit</th>
+						<th class="bg-primary" rowspan="2" style="text-align: center;vertical-align: middle;">Seksi</th>';
 		$header_tanggal = "";
 		$simpan_bulan_tahun = "";
 		$simpan_bulan = "";
@@ -203,6 +210,8 @@ class C_DetailPresensi extends CI_Controller
 			$body .= "<tr><td style='text-align: center;vertical-align: middle'>".$abs['noind'];
 			$body .= "<input type='hidden' value='".$tanggal_pertama." - ".$tanggal_terakhir."'>";
 			$body .= "</td><td>".$abs['nama']."</td>";
+			$body .= "</td><td>".$abs['unit']."</td>";
+			$body .= "</td><td>".$abs['seksi']."</td>";
 			foreach ($data_tanggal as $dt_tanggal) {
 				$keterangan = "-";
 				if (isset($abs['data'][$dt_tanggal['index_tanggal']]) and !empty($abs['data'][$dt_tanggal['index_tanggal']])) {
@@ -228,8 +237,9 @@ class C_DetailPresensi extends CI_Controller
     	$periode 				= $this->input->get('periodeAbsen');
     	$pekerja_keluar 		= $this->input->get('pekerjaKeluar');
     	$periode_pekerja_keluar = $this->input->get('periodePekerjaKeluar');
+    	$kodesie 				= $this->input->get('kodesie');
 
-		$data['datareal'] 		= $this->getAbsen($jenis_presensi, $jenis_tampilan, $kode_induk, $lokasi_kerja, $periode, $pekerja_keluar, $periode_pekerja_keluar);
+		$data['datareal'] 		= $this->getAbsen($jenis_presensi, $jenis_tampilan, $kode_induk, $lokasi_kerja, $periode, $pekerja_keluar, $periode_pekerja_keluar, $kodesie);
 		$data['jenis_presensi'] = $jenis_presensi;
 		$data['tanggal'] 		= $this->M_detailpresensi->getTanggalByParams($periode);
 		$data['periode'] 		= $periode;
@@ -260,7 +270,26 @@ class C_DetailPresensi extends CI_Controller
 		$awal = $prd[0];
 		$akhir = $prd[1];
 
-		$pdf->SetHTMLHeader("<span>Data Rekap $jenis_presensi Periode ".date("d F Y", strtotime($awal))." s/d ".date("d F Y", strtotime($akhir))."</span>");
+		$head = "";
+		if (!empty(trim($kodesie)) && trim($kodesie) != "0") {
+			$head .= " kodesie : ".$kodesie;
+		}
+		if (!empty(trim($lokasi_kerja)) && trim($lokasi_kerja) != "0") {
+			$head .= " lokasi kerja : ".$lokasi_kerja;
+		}
+		if (!empty(trim($kode_induk)) && trim($kode_induk) != "0") {
+			$head .= " kode induk : ".$kode_induk;
+		}
+		if (!empty(trim($pekerja_keluar)) && trim($pekerja_keluar) != "false") {
+			$head .= " Pekerja Keluar";
+		}
+
+		$pdf->SetHTMLHeader("<table style='width: 100%;border-bottom: 1px solid black;'>
+				<tr>
+					<td style='width: 50%'>Data Rekap $jenis_presensi Periode ".date("d F Y", strtotime($awal))." s/d ".date("d F Y", strtotime($akhir))."</td>
+					<td style='width: 50%'>$head</td>
+				</tr>
+			</table>");
 		$pdf->SetHTMLFooter("<table style='width: 100%;border-top: 1px solid black;'>
 				<tr>
 					<td style='vertical-align: middle;'><i style='font-size: 8pt'>Halaman ini dicetak melalui Aplikasi QuickERP Master Presensi pada oleh ".$this->session->user." - ".$this->session->employee." tgl. ".$waktu." WIB.</i></td>
@@ -280,8 +309,9 @@ class C_DetailPresensi extends CI_Controller
     	$periode 				= $this->input->get('periodeAbsen');
     	$pekerja_keluar 		= $this->input->get('pekerjaKeluar');
     	$periode_pekerja_keluar = $this->input->get('periodePekerjaKeluar');
+    	$kodesie 				= $this->input->get('kodesie');
 
-    	$data = $this->getAbsen($jenis_presensi, $jenis_tampilan, $kode_induk, $lokasi_kerja, $periode, $pekerja_keluar, $periode_pekerja_keluar);
+    	$data = $this->getAbsen($jenis_presensi, $jenis_tampilan, $kode_induk, $lokasi_kerja, $periode, $pekerja_keluar, $periode_pekerja_keluar,$kodesie);
     	$data_tanggal = $this->M_detailpresensi->getTanggalByParams($periode);
     	$bulan = array (
 			1 =>   'Januari',
@@ -316,17 +346,21 @@ class C_DetailPresensi extends CI_Controller
 		$worksheet->mergeCells('B3:B4');
 		$worksheet->setCellValue('C3','Nama');
 		$worksheet->mergeCells('C3:C4');
-		$simpan_kolom = "D";
+		$worksheet->setCellValue('D3','Unit');
+		$worksheet->mergeCells('D3:D4');
+		$worksheet->setCellValue('E3','Seksi');
+		$worksheet->mergeCells('E3:E4');
+		$simpan_kolom = "F";
 		for ($i=0; $i < count($data_tanggal); $i++) { 
 			if ($i == count($data_tanggal) -1 || $data_tanggal[$i]['bulan'] != $data_tanggal[$i+1]['bulan']) {
-				$current_kolom = PHPExcel_Cell::stringFromColumnIndex($i + 3);
+				$current_kolom = PHPExcel_Cell::stringFromColumnIndex($i + 5);
 				$worksheet->setCellValue($simpan_kolom.'3',$bulan[$data_tanggal[$i]['bulan']]." ".$data_tanggal[$i]['tahun']);
 				$worksheet->mergeCells($simpan_kolom.'3:'.$current_kolom.'3');
-				$simpan_kolom = PHPExcel_Cell::stringFromColumnIndex($i + 4);
+				$simpan_kolom = PHPExcel_Cell::stringFromColumnIndex($i + 6);
 			}
 		}
 		foreach ($data_tanggal as $key => $tanggal) {
-			$worksheet->setCellValueByColumnAndRow(3+$key,4,$tanggal['hari']);
+			$worksheet->setCellValueByColumnAndRow(5+$key,4,$tanggal['hari']);
 		}
 
 		if ($jenis_presensi != "Presensi") {
@@ -342,16 +376,18 @@ class C_DetailPresensi extends CI_Controller
 			$worksheet->setCellValue('A'.$row,$key_pkj);
 			$worksheet->setCellValue('B'.$row,$pkj['noind']);
 			$worksheet->setCellValue('C'.$row,$pkj['nama']);
+			$worksheet->setCellValue('D'.$row,$pkj['unit']);
+			$worksheet->setCellValue('E'.$row,$pkj['seksi']);
 			
 			foreach ($data_tanggal as $key_tgl => $tgl) {
 				$keterangan = "-";
 				if (isset($pkj['data'][$tgl['index_tanggal']])) {
 					$keterangan = $pkj['data'][$tgl['index_tanggal']];
 				}
-				$worksheet->setCellValueByColumnAndRow(3+$key_tgl,$row,$keterangan);
+				$worksheet->setCellValueByColumnAndRow(5+$key_tgl,$row,$keterangan);
 			}
 			if ($jenis_presensi != "Presensi") {
-				$worksheet->setCellValue($current_kolom.$row,'=SUM(D'.$row.':'.$last_date_kolom.$row.')');
+				$worksheet->setCellValue($current_kolom.$row,'=SUM(F'.$row.':'.$last_date_kolom.$row.')');
 			}
 		}
 
@@ -368,7 +404,7 @@ class C_DetailPresensi extends CI_Controller
 					'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
 					'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER
 				)
-			),'C4:C'.$row);
+			),'C4:E'.$row);
 		$this->excel->getActiveSheet()->duplicateStyleArray(
 			array(
 				'borders' => array(
@@ -397,8 +433,10 @@ class C_DetailPresensi extends CI_Controller
 		$worksheet->getColumnDimension('A')->setWidth('5');
 		$worksheet->getColumnDimension('B')->setWidth('10');
 		$worksheet->getColumnDimension('C')->setWidth('20');
+		$worksheet->getColumnDimension('D')->setWidth('20');
+		$worksheet->getColumnDimension('E')->setWidth('20');
 		for ($i=0; $i < count($data_tanggal); $i++) {
-			$nama_kolom = PHPExcel_Cell::stringFromColumnIndex($i + 3);
+			$nama_kolom = PHPExcel_Cell::stringFromColumnIndex($i + 5);
 			$worksheet->getColumnDimension($nama_kolom)->setWidth('5');
 		}
 
@@ -419,6 +457,17 @@ class C_DetailPresensi extends CI_Controller
     	$data = $this->M_detailpresensi->getWaktuAbsen(trim($noind),$prd['0'],$prd['1']);
     	echo json_encode($data);
 		// print_r($_GET);
+	}
+
+	function getKodesie()
+	{
+		$key = $this->input->get('term');
+		$kodesie = $this->input->get('prev');
+		$tingkat = $this->input->get('tingkat');
+
+		$data= $this->M_detailpresensi->getKodesie($key,$kodesie,$tingkat);
+		
+		echo json_encode($data);
 	}
 }
 

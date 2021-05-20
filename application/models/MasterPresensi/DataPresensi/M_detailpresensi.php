@@ -202,7 +202,7 @@ class M_detailpresensi extends CI_Model
 		return (1 - $nilai);
 	}
 
-	function getAbsenByParams($kode_induk,$lokasi_kerja,$periode,$pekerja_keluar,$periode_pekerja_keluar){
+	function getAbsenByParams($kode_induk,$lokasi_kerja,$periode,$pekerja_keluar,$periode_pekerja_keluar,$kodesie){
 		$prd = explode(" - ", $periode);
 		$awal = $prd[0];
 		$akhir = $prd[1];
@@ -218,36 +218,49 @@ class M_detailpresensi extends CI_Model
 			$status = " b.keluar = '0' and b.masukkerja <= '$akhir' ";
 		}
 
-		if (!empty($kode_induk)) {
+		if (!empty(trim($kode_induk)) && trim($kode_induk) != "0") {
 			$noind = " AND left(a.noind,1) = '$kode_induk' ";
 		}else{
 			$noind = "";
 		}
 
-		if (!empty($lokasi_kerja)) {
+		if (!empty(trim($lokasi_kerja)) && trim($lokasi_kerja) != "0") {
 			$lokasi = " AND b.lokasi_kerja = '$lokasi_kerja' ";
 		}else{
 			$lokasi = "";
 		}
-		$sql = "(SELECT a.tanggal, a.noind, b.kodesie, trim(a.kd_ket) as kd_ket, trim(b.nama) as nama, 
+
+		if (!empty($kodesie) && $kodesie != "0") {
+			$kdsie = " and b.kodesie like '$kodesie%'";
+		}else{
+			$kdsie = "";
+		}
+
+		$sql = "(SELECT a.tanggal, a.noind, b.kodesie, trim(a.kd_ket) as kd_ket, trim(b.nama) as nama, c.unit,c.seksi,
 						to_char(a.tanggal,'yyyymmdd') as index_tanggal  
 				FROM \"Presensi\".tdatatim a
 				INNER JOIN hrd_khs.TPribadi b
 				ON b.noind=a.noind 
-				WHERE $status and tanggal between '$awal' and '$akhir' $noind $lokasi)
+				left join hrd_khs.tseksi c 
+				on b.kodesie = c.kodesie
+				WHERE $status and tanggal between '$awal' and '$akhir' $noind $lokasi $kdsie
+				)
 				UNION 
-				(SELECT a.tanggal, a.noind, b.kodesie, trim(a.kd_ket) as kd_ket, b.nama, 
+				(SELECT a.tanggal, a.noind, b.kodesie, trim(a.kd_ket) as kd_ket, b.nama, c.unit,c.seksi,
 						to_char(a.tanggal,'yyyymmdd') as index_tanggal  
 				FROM \"Presensi\".tdatapresensi a
 				INNER JOIN hrd_khs.TPribadi b 
 				ON b.noind=a.noind 
-				WHERE $status and tanggal between '$awal' and '$akhir' $noind $lokasi)
+				left join hrd_khs.tseksi c 
+				on b.kodesie = c.kodesie
+				WHERE $status and tanggal between '$awal' and '$akhir' $noind $lokasi $kdsie
+				)
 				ORDER BY  kodesie,noind,tanggal, kd_ket";
-			
+				// echo "<pre>".$sql;exit();
 		return $this->personalia->query($sql)->result_array();
 	}
 
-	public function getLemburByParams($kode_induk,$lokasi_kerja,$periode,$pekerja_keluar,$periode_pekerja_keluar){
+	public function getLemburByParams($kode_induk,$lokasi_kerja,$periode,$pekerja_keluar,$periode_pekerja_keluar,$kodesie){
 		$prd = explode(" - ", $periode);
 		$awal = $prd[0];
 		$akhir = $prd[1];
@@ -263,23 +276,30 @@ class M_detailpresensi extends CI_Model
 			$status = " b.keluar = '0' and b.masukkerja <= '$akhir' ";
 		}
 
-		if (!empty($kode_induk)) {
+		if (!empty(trim($kode_induk)) && trim($kode_induk) != "0") {
 			$noind = " AND left(a.noind,1) = '$kode_induk' ";
 		}else{
 			$noind = "";
 		}
 
-		if (!empty($lokasi_kerja)) {
+		if (!empty(trim($lokasi_kerja)) && trim($lokasi_kerja) != "0") {
 			$lokasi = " AND b.lokasi_kerja = '$lokasi_kerja' ";
 		}else{
 			$lokasi = "";
 		}
-		$sql = "(SELECT a.tanggal, a.noind, b.kodesie, trim(b.nama) as nama, sum(a.total_lembur ) total_lembur ,to_char(a.tanggal,'yyyymmdd') as index_tanggal 
+
+		if (!empty($kodesie) && $kodesie != "0") {
+			$kdsie = " and b.kodesie like '$kodesie%'";
+		}else{
+			$kdsie = "";
+		}
+		$sql = "(SELECT a.tanggal, a.noind, b.kodesie, trim(b.nama) as nama, sum(a.total_lembur ) total_lembur ,to_char(a.tanggal,'yyyymmdd') as index_tanggal ,c.unit,c.seksi
 				FROM \"Presensi\".TDataPresensi a
 				INNER JOIN hrd_khs.TPribadi b ON b.Noind = a.noind 
-				WHERE $status and a.tanggal between '$awal' and '$akhir' $noind $lokasi
+				left join hrd_khs.tseksi c on b.kodesie = c.kodesie
+				WHERE $status and a.tanggal between '$awal' and '$akhir' $noind $lokasi $kdsie
 				and a.total_lembur > 0
-				GROUP BY a.tanggal, a.noind, b.kodesie, b.nama ) 
+				GROUP BY a.tanggal, a.noind, b.kodesie, b.nama,c.unit,c.seksi ) 
 				ORDER BY b.kodesie, a.noind, a.tanggal";
 
 		return $this->personalia->query($sql)->result_array();
@@ -326,6 +346,58 @@ class M_detailpresensi extends CI_Model
 				where a.noind = '$noind'
 				and tanggal between '$awal' and '$akhir'
 				order by tanggal, waktu";
+		return $this->personalia->query($sql)->result_array();
+	}
+
+	function getKodesie($key,$kodesie,$tingkat)
+	{
+		$panjang = strlen($kodesie);
+		$where_kodesie = " and left(kodesie,$panjang) = '$kodesie' ";
+
+		switch ($tingkat) {
+			case '1':
+				$where_kodesie = "";
+				$where_key = " and (dept like '%$key%' or kodesie like '$key%') ";
+				$select = " left(kodesie,$tingkat) as kode, dept as nama";
+				$tambahan = " union select '0' as kode, 'Semua Departemen' as nama";
+				break;
+			case '3':
+				$where_key = " and (bidang like '%$key%' or kodesie like '$key%') ";
+				$select = " left(kodesie,$tingkat) as kode, 
+					case when trim(bidang) = '-' then 'Hanya tingkat Departemen' else bidang end as nama";
+				$tambahan = " union select '$kodesie' as kode, 'Semua Bidang' as nama";
+				break;
+			case '5':
+				$where_key = " and (unit like '%$key%' or kodesie like '$key%') ";
+				$select = " left(kodesie,$tingkat) as kode, 
+					case when trim(unit) = '-' then 'Hanya tingkat Bidang' else unit end as nama";
+				$tambahan = " union select '$kodesie' as kode, 'Semua Unit' as nama";
+				break;
+			case '7':
+				$where_key = " and (seksi like '%$key%' or kodesie like '$key%') ";
+				$select = " left(kodesie,$tingkat) as kode, 
+					case when trim(seksi) = '-' then 'Hanya tingkat Unit' else seksi end as nama";
+				$tambahan = " union select '$kodesie' as kode, 'Semua Seksi' as nama";
+				break;
+			case '9':
+				$where_key = " and (pekerjaan like '%$key%' or kodesie like '$key%') ";
+				$select = " left(kodesie,$tingkat) as kode, 
+					case when trim(pekerjaan) = '-' then 'Hanya tingkat Seksi' else pekerjaan end as nama";
+				$tambahan = " union select '$kodesie' as kode, 'Semua Pekerjaan' as nama";
+				break;
+			default:
+				$where_kodesie = "";
+				$where_key = "";
+				$select = " kodesie as kode, dept as nama";
+				break;
+		}
+		$sql = "select distinct $select
+			from hrd_khs.tseksi
+			where kodesie != '-'
+			$where_kodesie
+			$where_key
+			$tambahan
+			order by 1";
 		return $this->personalia->query($sql)->result_array();
 	}
 }

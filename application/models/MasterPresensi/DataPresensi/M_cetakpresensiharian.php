@@ -29,12 +29,64 @@ class M_cetakpresensiharian extends CI_Model
 		return $this->personalia->query($sql)->result_array();
 	}
 
-	function getKodesie()
+	function getKodesie($key,$kodesie,$tingkat)
 	{
-		$sql = "select distinct kodesie as kodesie,dept,bidang,unit,seksi,pekerjaan
+		$panjang = strlen($kodesie);
+		$where_kodesie = " and left(kodesie,$panjang) = '$kodesie' ";
+
+		switch ($tingkat) {
+			case '1':
+				$where_kodesie = "";
+				$where_key = " and (dept like '%$key%' or kodesie like '$key%') ";
+				$select = " left(kodesie,$tingkat) as kode, dept as nama";
+				$tambahan = "";
+				break;
+			case '3':
+				$where_key = " and (bidang like '%$key%' or kodesie like '$key%') ";
+				$select = " left(kodesie,$tingkat) as kode, 
+					case when trim(bidang) = '-' then 'Hanya tingkat Departemen' else bidang end as nama";
+				$tambahan = " union select '$kodesie' as kode, 'Semua Bidang' as nama";
+				break;
+			case '5':
+				$where_key = " and (unit like '%$key%' or kodesie like '$key%') ";
+				$select = " left(kodesie,$tingkat) as kode, 
+					case when trim(unit) = '-' then 'Hanya tingkat Bidang' else unit end as nama";
+				$tambahan = " union select '$kodesie' as kode, 'Semua Unit' as nama";
+				break;
+			case '7':
+				$where_key = " and (seksi like '%$key%' or kodesie like '$key%') ";
+				$select = " left(kodesie,$tingkat) as kode, 
+					case when trim(seksi) = '-' then 'Hanya tingkat Unit' else seksi end as nama";
+				$tambahan = " union select '$kodesie' as kode, 'Semua Seksi' as nama";
+				break;
+			case '9':
+				$where_key = " and (pekerjaan like '%$key%' or kodesie like '$key%') ";
+				$select = " left(kodesie,$tingkat) as kode, 
+					case when trim(pekerjaan) = '-' then 'Hanya tingkat Seksi' else pekerjaan end as nama";
+				$tambahan = " union select '$kodesie' as kode, 'Semua Pekerjaan' as nama";
+				break;
+			default:
+				$where_kodesie = "";
+				$where_key = "";
+				$select = " kodesie as kode, dept as nama";
+				break;
+		}
+		$sql = "select distinct $select
 			from hrd_khs.tseksi
 			where kodesie != '-'
+			$where_kodesie
+			$where_key
+			$tambahan
 			order by 1";
+		return $this->personalia->query($sql)->result_array();
+	}
+
+	function getSeksiByKodesie($kodesie)
+	{
+		$panjang = strlen($kodesie);
+		$sql = "select kodesie,dept,bidang,unit,seksi,pekerjaan
+			from hrd_khs.tseksi
+			where left(kodesie,$panjang) = '$kodesie'";
 		return $this->personalia->query($sql)->result_array();
 	}
 
@@ -74,7 +126,7 @@ class M_cetakpresensiharian extends CI_Model
 
 	function getShiftPekerjaByNoindPeriode($noind,$tgl_awal,$tgl_akhir)
 	{
-		$sql = "select tgl.tgl::date as tanggal,replace(b.shift,'SHIFT','') as shift
+		$sql = "select tgl.tgl::date as tanggal,b.shift as shift
 			from generate_series(?,?,interval '1 day') as tgl
 			left join \"Presensi\".tshiftpekerja a
 			on a.tanggal = tgl.tgl
@@ -116,6 +168,28 @@ class M_cetakpresensiharian extends CI_Model
 			)
 			order by a.noind";
 		return $this->personalia->query($sql,array(strtoupper($key),strtoupper($key)))->result_array();
+	}
+
+	function getketeranganByNoindTanggal($noind,$tanggal)
+	{
+		$sql = "select string_agg(trim(tk.keterangan),', ' order by tp.kd_ket) as keterangan
+			from (
+				select trim(kd_ket) as kd_ket
+				from \"Presensi\".tdatapresensi
+				where noind = ?
+				and tanggal = ?
+				and kd_ket != 'PKJ'
+				union
+				select trim(kd_ket) as kd_ket
+				from \"Presensi\".tdatatim
+				where noind = ?
+				and tanggal = ?
+				and point > 0
+			) as tp
+			inner join \"Presensi\".tketerangan tk 
+			on tp.kd_ket = tk.kd_ket";
+		$result = $this->personalia->query($sql,array($noind,$tanggal,$noind,$tanggal))->row();
+		return !empty($result) ? $result->keterangan : '';
 	}
 }
 ?>
