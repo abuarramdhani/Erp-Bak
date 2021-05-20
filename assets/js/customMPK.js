@@ -6504,3 +6504,153 @@ $(document).ready(() => {
     allowClear: true,
   })
 })
+
+
+// start sebab keluar
+$(document).on('ready', function(){
+  var tblMPKSebabKeluarList = $('#tblMPKSebabKeluarList').DataTable({
+    columnDefs: [
+      {
+        "targets" : [0,1,2,5,6,7],
+        "className": "text-center"
+      }
+    ]
+  });
+
+  $('#btnMPKSebabKeluarAdd').on('click', function(){
+    $('#txtMPKSebabKeluarKode').attr('disabled', false);
+    $('#divMPKSebabKeluarKodeKet').hide()
+    $('#txtMPKSebabKeluarKode').val('');
+    $('#txtMPKSebabKeluaSebabKeluar').val('');
+    $('#txtMPKSebabKeluarDasarhukum').val('');
+    $('#txtMPKSebabKeluarUpesangon').val('0');
+    $('#txtMPKSebabKeluarUmpk').val('0');
+    $('#txtMPKSebabKeluarUrutan').val(tblMPKSebabKeluarList.page.info().recordsTotal + 1);
+    $('#txtMPKSebabKeluarID').val('');
+    $('#mdlMPKSebabKeluar').modal('show');
+  })
+  $('#tblMPKSebabKeluarList').on('click','.btnMPKSebabKeluarEdit', function(){
+    id = $(this).data('id');
+    $('#ldgMPKSebabKeluarLoading').show();
+    $.ajax({
+      url: baseurl + "MasterPekerja/SebabKeluar/getData/" + id,
+      error: function(xhr,status,error){
+          $('#ldgMPKSebabKeluarLoading').hide();
+          swal.fire({
+              title: xhr['status'] + "(" + xhr['statusText'] + ")",
+              html: xhr['responseText'],
+              type: "error",
+              confirmButtonText: 'OK',
+              confirmButtonColor: '#d63031',
+          })
+      },
+      success: function(result){
+          $('#ldgMPKSebabKeluarLoading').hide();
+          if (obj = JSON.parse(result)) {
+            $('#txtMPKSebabKeluarID').val(id);
+            if (obj.digunakan != "0") {
+              $('#txtMPKSebabKeluarKode').attr('disabled', true);
+              $('#divMPKSebabKeluarKodeKet').show()
+              $('#divMPKSebabKeluarKodeKet b').html(obj.digunakan)
+            }else{
+              $('#txtMPKSebabKeluarKode').attr('disabled', false);
+              $('#divMPKSebabKeluarKodeKet').hide()
+            }
+            $('#txtMPKSebabKeluarKode').val(obj.kode);
+            $('#txtMPKSebabKeluaSebabKeluar').val(obj.sebab_keluar);
+            $('#txtMPKSebabKeluarDasarhukum').val(obj.dasar_hukum);
+            $('#txtMPKSebabKeluarUpesangon').val(obj.pengali_u_pesangon);
+            $('#txtMPKSebabKeluarUmpk').val(obj.pengali_u_pmk);
+            $('#txtMPKSebabKeluarUrutan').val(obj.urutan);
+            $('#mdlMPKSebabKeluar').modal('show');
+          }else{
+            swal.fire({
+                title: "Oops, Something Wrong !!",
+                html: result,
+                type: "error",
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#d63031',
+            })
+          }
+      }
+    })
+  })
+
+  $('#btnMPKSebabKeluarSimpan').on('click', function(){
+    id            = $('#txtMPKSebabKeluarID').val();
+    kode          = $('#txtMPKSebabKeluarKode').val();
+    sebab_keluar  = $('#txtMPKSebabKeluaSebabKeluar').val();
+    dasar_hukum   = $('#txtMPKSebabKeluarDasarhukum').val();
+    pengali_u_pes = $('#txtMPKSebabKeluarUpesangon').val();
+    pengali_u_pmk = $('#txtMPKSebabKeluarUmpk').val();
+    urutan        = $('#txtMPKSebabKeluarUrutan').val();
+    
+    if (kode.length > 0 && sebab_keluar.length > 0) {
+        $('#mdlMPKSebabKeluar').modal('hide');
+        $('#ldgMPKSebabKeluarLoading').show();
+        $.ajax({
+          url: baseurl + "MasterPekerja/SebabKeluar/simpanData",
+          type: 'POST',
+          data: {
+            id            : id,
+            kode          : kode,
+            sebab_keluar  : sebab_keluar,
+            dasar_hukum   : dasar_hukum,
+            pengali_u_pes : pengali_u_pes,
+            pengali_u_pmk : pengali_u_pmk,
+            urutan        : urutan
+          },
+          error: function(xhr,status,error){
+              $('#ldgMPKSebabKeluarLoading').hide();
+              swal.fire({
+                  title: xhr['status'] + "(" + xhr['statusText'] + ")",
+                  html: xhr['responseText'],
+                  type: "error",
+                  confirmButtonText: 'OK',
+                  confirmButtonColor: '#d63031',
+              })
+          },
+          success: function(result){
+              $('#ldgMPKSebabKeluarLoading').hide();
+              if (obj = JSON.parse(result)) {
+                tblMPKSebabKeluarList.clear().draw();
+                obj.forEach(function(daftar, index){
+                  tblMPKSebabKeluarList.row.add([
+                    (index + 1),
+                    `<button 
+                      type="button" 
+                      data-id="${daftar.id}" 
+                      class="btn btn-primary btnMPKSebabKeluarEdit"
+                      >
+                      <span class="fa fa-edit"></span>
+                    </button>`,
+                    daftar.kode,
+                    daftar.sebab_keluar,
+                    daftar.dasar_hukum,
+                    daftar.pengali_u_pesangon,
+                    daftar.pengali_u_pmk,
+                    daftar.urutan
+                  ]).draw(false);
+                })
+                tblMPKSebabKeluarList.columns.adjust().draw();
+              }else{
+                swal.fire({
+                    title: "Oops, Something Wrong !!",
+                    html: result,
+                    type: "error",
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#d63031',
+                })
+              }
+          }
+        })
+    }else{
+      swal.fire(
+        "Data Belum Lengkap !!!",
+        "Kode dan sebab keluar wajib diisi",
+        "warning"
+      )
+    }
+  })
+})
+// end sebab keluar
