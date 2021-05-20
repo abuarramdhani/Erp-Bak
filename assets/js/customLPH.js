@@ -34,6 +34,41 @@ const swaLPHLarge = (type, a) =>{
   })
 }
 
+$(document).ready(function () {
+  $(".tanggal_lph_99").daterangepicker(
+  {
+    showDropdowns: true,
+    autoApply: true,
+    locale: {
+      format: "YYYY-MM-DD",
+      separator: " - ",
+      applyLabel: "OK",
+      cancelLabel: "Batal",
+      fromLabel: "Dari",
+      toLabel: "Hingga",
+      customRangeLabel: "Custom",
+      weekLabel: "W",
+      daysOfWeek: ["Mg", "Sn", "Sl", "Rb", "Km", "Jm", "Sa"],
+      monthNames: [
+        "Januari",
+        "Februari",
+        "Maret",
+        "April",
+        "Mei",
+        "Juni",
+        "Juli",
+        "Agustus ",
+        "September",
+        "Oktober",
+        "November",
+        "Desember",
+      ],
+      firstDay: 1,
+    },
+  },
+);
+});
+
 const lphgetmon = () => {
   $.ajax({
     url: baseurl + 'LaporanProduksiHarian/action/getmon',

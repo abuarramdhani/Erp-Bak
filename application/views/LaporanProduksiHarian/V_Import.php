@@ -37,6 +37,9 @@ vertical-align: middle;
                   <div class="tab-content">
                     <div class="tab-pane active" id="lph-import">
                       <div class="row">
+                        <div class="col-md-12">
+                          <?php echo $this->session->flashdata('message_lph') ?>
+                        </div>
                         <div class="col-md-3">
 
                         </div>
@@ -55,6 +58,32 @@ vertical-align: middle;
                       </div>
                     </div>
                     <div class="tab-pane" id="lph-monitoring">
+                      <br>
+                      <div class="row">
+                        <div class="col-md-12">
+                          <div class="alert bg-primary alert-dismissible" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                              <span aria-hidden="true">
+                                <i class="fa fa-close"></i>
+                              </span>
+                            </button>
+                            <strong>Sekilas Info! </strong> Klik 2 kali jika hanya memilih 1 tanggal</strong>
+                          </div>
+                        </div>
+                        <div class="col-md-8">
+                          <label for="">Filter By Date Range</label>
+                          <input type="text" name="" class="form-control tanggal_lph_99" placeholder="Select Yout Current Date" required="" >
+                        </div>
+                        <div class="col-md-2">
+                          <label for="" style="color:transparent">Ini Filter</label>
+                          <button type="button" onclick="lph_filter()" style="font-size:15px" class="btn btn-primary btn-sm btn-block"> <i class="fa fa-search"></i> <strong>Filter</strong> </button>
+                        </div>
+                        <div class="col-md-2">
+                          <label for="" style="color:transparent">Ini Cetak</label>
+                          <button type="submit" style="font-size:15px" class="btn btn-danger btn-sm btn-block"> <i class="fa fa-file-pdf-o"></i> <strong>Cetak RKH</strong> </button>
+                        </div>
+                      </div>
+                      <hr>
                       <div class="table-responsive area-lph-monitoring">
 
                       </div>
