@@ -97,12 +97,17 @@ class M_cetak extends CI_Model
     {
         $oracle = $this->load->database('oracle', true);
         $sql = "SELECT   ttl.colly_number, NVL (SUM (ttl.berat), 0) berat,
-                         'C' || SUBSTR (ttl.colly_number, 10) cnum
+                            'C'
+                         || CASE
+                               WHEN LENGTH (ttl.request_number) > 7
+                                  THEN TO_NUMBER (SUBSTR (ttl.colly_number, 11))
+                               ELSE TO_NUMBER (SUBSTR (ttl.colly_number, 10))
+                            END cnum
                     FROM (SELECT DISTINCT kcds.request_number, kcds.colly_number, kcds.berat
                                      FROM khs_colly_dospb_sp kcds
                                     WHERE kcds.request_number = '$id') ttl
-                GROUP BY ttl.colly_number
-                ORDER BY TO_NUMBER (SUBSTR (ttl.colly_number, 10))";
+                GROUP BY ttl.colly_number, ttl.request_number
+                ORDER BY 3";
         $query = $oracle->query($sql);
         return $query->result_array();
     }
