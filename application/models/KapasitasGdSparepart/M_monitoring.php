@@ -311,13 +311,11 @@ class M_monitoring extends CI_Model {
                     AND mtrh.header_id = mtrl.header_id
                     AND mtrl.inventory_item_id = msib.inventory_item_id
                     AND mtrl.organization_id = msib.organization_id
-                    AND kts.selesai_pelayanan IS NOT NULL
-                --     AND kts.mulai_packing IS NULL
-                    AND kts.selesai_packing IS NULL
                     AND mtrl.line_status <> 6
-                    AND (kts.bon IS NULL OR bon = 'BEST')
-                    AND (TRUNC(kts.jam_input) <= to_date('$date2','DD/MM/RR') or selesai_packing is null)
-                    AND kts.tipe is not null
+                    AND (kts.bon is null or kts.bon = 'BEST') 
+                    and trunc(kts.selesai_pelayanan) <= to_date('$date2', 'DD/MM/YYYY')
+                    and (trunc(kts.selesai_packing) > to_date('$date2', 'DD/MM/YYYY') or kts.selesai_packing is null) 
+                    and kts.tipe is not null 
                 GROUP BY kts.tgl_dibuat, kts.jenis_dokumen, kts.no_dokumen, kts.urgent, kts.bon, kts.jam_input, kts.pic_pelayan
                 ORDER BY kts.urgent, kts.tgl_dibuat, kts.no_dokumen";
         $query = $oracle->query($sql);
