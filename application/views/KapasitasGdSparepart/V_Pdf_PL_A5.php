@@ -8,17 +8,16 @@
 	</head>
 
 	<body>
-		<?php //$a=0; while ($a < $total_hal) { ?>
-			<?php foreach ($total_hal as $key2 => $body_){ ?>
-
-			<br>
+			<?php
+				$no = 1;
+				foreach ($total_hal as $key => $body_) {
+				foreach ($body_ as $key2 => $value2) {
+			?>
 			<div style="position: absolute;">
-				<br>
 
 			</div>
-
 			<!-- Header -->
-			<table style="width: 100%; border-collapse: collapse !important; page-break-inside: avoid">
+			<table style="width: 100%; border-collapse: collapse !important; page-break-inside: avoid;margin-top:5px">
 				<tr>
 					<td style="border-bottom: 1px solid black; border-right: 1px solid black; border-left: 1px solid black; border-top: 1px solid black; width:10%; padding: 5px" rowspan="2">
 						<center>
@@ -46,7 +45,7 @@
 					</td>
 					<td style="border-bottom: 1px solid black; border-right: 1px solid black; width: 15%; font-size: 11px; padding: 5px; text-align: center">
 						<center>
-							<img style="width: 20mm; height: auto;" src="<?php echo base_url('assets/img/monitoringDOSPQRCODE/'.$get_header[0]['REQUEST_NUMBER'].'.png') ?>">
+							<img style="width: 17mm; height: auto;" src="<?php echo base_url('assets/img/monitoringDOSPQRCODE/'.$get_header[0]['REQUEST_NUMBER'].'.png') ?>">
 						</center>
 				  		<span style="font-size: 11.5px"><?php echo $get_header[0]['TIPE'].' '.$get_header[0]['REQUEST_NUMBER'] ?></span>
 					</td>
@@ -56,7 +55,7 @@
 
 
 			<!-- Alamat -->
-			<table style="width: 100%; border-collapse: collapse !important; margin-top: -1px; page-break-inside: avoid;">
+			<table style="width: 99.9%; border-collapse: collapse !important; margin-top: -1px; page-break-inside: avoid;">
 				<tr>
 					<td colspan="4" style="vertical-align: top; width: 367px; height: 80px; border-bottom: 1px solid black; border-top: 1px solid black; border-left: 1px solid black; font-size: 10px; padding: 5px">
 						<?php if ($get_header[0]['TIPE'] == 'DOSP') {
@@ -122,7 +121,7 @@
 			<!-- Isi body -->
 			<div style="position: absolute;">
 				<table style="margin-top: 25px;">
-					<?php $no = 1; foreach ($body_ as $key => $gb){ ?>
+					<?php $no = 1; foreach ($value2 as $key => $gb){ ?>
 						<tr>
 							<?php
 								if ($gb['COLLY_NUMBER'] != $flag) {
@@ -133,7 +132,7 @@
 									}
 									$rowval = $total[$flag]+1;
 							?>
-									<td rowspan="<?php echo $rowval ?>" style="font-size: 14px; font-weight: bold; padding: 3.5px; width: 127px; text-align: center; vertical-align: top;">
+									<td rowspan="<?php echo $rowval ?>" style="font-size: 14px; font-weight: bold; padding: 3.5px; width: 131px; text-align: center; vertical-align: top;">
 										<?php echo $gb['COLLY_NUMBER'] ?>
 										<!-- QRCODE -->
 										<!-- <center>
@@ -141,15 +140,15 @@
 											<span style="font-size: 11.5px"><?php echo $gb['COLLY_NUMBER'] ?></span>
 										</center> -->
 									</td>
-								<?php	}elseif($jumlah_colly == 1 && $key2 != 0) { ?>
-										<td style="font-size: 14px; font-weight: bold; padding: 3.5px; width: 127px; text-align: center; vertical-align: top;">
+							<?php	}elseif($key2 != 0) { ?>
+									<td style="font-size: 14px; font-weight: bold; padding: 3.5px; width: 131px; text-align: center; vertical-align: top;">
 
-										</td>
-								<?php }?>
-							<td style="font-size: 9.7px;  padding: 3.5px; width: 48px; text-align: center; vertical-align: top;">
+									</td>
+							<?php }?>
+							<td style="font-size: 9.7px;  padding: 3.5px; width: 58px; text-align: center; vertical-align: top;">
 								<?php echo $gb['QUANTITY'] ?>
 							</td>
-							<td style="font-size: 9.7px; padding: 3.5px; width: 57px; text-align: center; vertical-align: top;">
+							<td style="font-size: 9.7px; padding: 3.5px; width: 53px; text-align: center; vertical-align: top;">
 								<?php echo $gb['UOM'] ?>
 							</td>
 							<?php if ($gb['ITEM'] == 'TOTAL') {
@@ -163,17 +162,17 @@
 									$garis = '';
 								}
 							?>
-							<td style="<?php echo $size.$bold ?> padding: 3.5px; width: 132px; vertical-align: top;">
+							<td style="<?php echo $size.$bold ?> padding: 3.5px; width: 110px; vertical-align: top;">
 								<?php echo $gb['ITEM'] ?>
 							</td>
-							<td style="white-space:pre-line; font-size: 9.7px; margin-left: 2px; margin-right: 2px; padding: 3.5px; width: 293px; vertical-align: top;">
+							<td style="white-space:pre-line; font-size: 9.7px; margin-left: 2px; margin-right: 2px; padding: 3.5px; width: 335px; vertical-align: top;">
 								<?php echo $gb['DESCRIPTION'] ?>
 							</td>
-							<td style="white-space:pre-line; font-size: 9.7px; <?php echo $size.$bold ?> padding: 3.5px; width: 75px; text-align: right; vertical-align: top;">
+							<td style="white-space:pre-line; font-size: 9.7px; <?php echo $size.$bold ?> padding: 3.5px; width: 80px; text-align: right; vertical-align: top;">
 								<!-- <?php echo number_format($gb['BERAT'],3) ?> -->
 								<?php echo $garis ?>
 							</td>
-							<td style="white-space:pre-line; font-size: 9.7px; <?php echo $size.$bold ?> padding: 3.5px; width: 60px; text-align: left; vertical-align: top;">
+							<td style="white-space:pre-line; font-size: 9.7px; <?php echo $size.$bold ?> padding: 3.5px; width: 58px; text-align: left; vertical-align: top;">
 
 							</td>
 						</tr>
@@ -183,7 +182,7 @@
 
 
 			<!-- Tabel kerangka body -->
-			<table style="width: 100%; border-collapse: collapse !important; margin-top: -1px; page-break-inside: avoid;">
+			<table style="width: 99.9%; border-collapse: collapse !important; margin-top: -1px; page-break-inside: avoid;">
 				<thead>
 					<tr>
 						<td style="width: 15%; border-left: 1px solid black; border-bottom: 1px solid black; border-top: 1px solid black; font-size: 10px; padding: 5px">
@@ -195,20 +194,20 @@
 						<td style="width: 5%; border-left: 1px solid black; border-bottom: 1px solid black; font-size: 10px; padding: 5px; border-top: 1px solid black;">
 							<center>Satuan</center>
 						</td>
-						<td style="width: 15%; border-left: 1px solid black; border-bottom: 1px solid black; font-size: 10px; padding: 5px; border-top: 1px solid black;">
+						<td style="width: 12%; border-left: 1px solid black; border-bottom: 1px solid black; font-size: 10px; padding: 5px; border-top: 1px solid black;">
 							<center>Kode Barang</center>
 						</td>
-						<td style="width: 35%; border-left: 1px solid black; border-bottom: 1px solid black; font-size: 10px; padding: 5px; border-top: 1px solid black;">
+						<td style="width: 40%; border-left: 1px solid black; border-bottom: 1px solid black; font-size: 10px; padding: 5px; border-top: 1px solid black;">
 							<center>Nama Barang</center>
 						</td>
-						<td style="width: 15%; border-right: 1px solid black; border-left: 1px solid black; border-bottom: 1px solid black; font-size: 10px; padding: 5px; border-top: 1px solid black;">
+						<td style="width: 13%; border-right: 1px solid black; border-left: 1px solid black; border-bottom: 1px solid black; font-size: 10px; padding: 5px; border-top: 1px solid black;">
 							<center>Berat Estimasi</center>
 						</td>
 					</tr>
 				</thead>
 				<tbody style="vertical-align: top!important;">
 					<tr style="border-bottom: 1px solid black;">
-						<td style="vertical-align: top; border-right: 1px solid black; border-left: 1px solid black; height: 529px; font-size: 10px; padding:5px">
+						<td style="vertical-align: top; border-right: 1px solid black; border-left: 1px solid black; height: 138px; font-size: 10px; padding:5px">
 
 						</td>
 						<td style="vertical-align:top;border-right:1px solid black;font-size:10px;padding:5px">
@@ -237,7 +236,7 @@
 			</table>
 
 			<!-- Footer -->
-			<table style="width: 100%; border-collapse: collapse !important; margin-top: -1px; page-break-inside: avoid;">
+			<table style="width: 99.9%; border-collapse: collapse !important; margin-top: -1px; page-break-inside: avoid;">
 				<tr style="width: 100%">
 					<td rowspan="2" style="white-space: pre-line; vertical-align: top; border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black; font-size: 10px; padding: 5px">
 						Catatan : <br>
@@ -251,17 +250,20 @@
 					<td rowspan="2" style="vertical-align: top; width: 100px; border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black; font-size: 10px; padding: 5px;">
 						Tgl. <?php echo $get_header[0]['ASSIGN_DATE'] ?><br>
 						Pengawas : <br>
-						<br><br><br><br><br>
+						<br><br><br>
 						<?php echo $get_header[0]['ASSIGNER_NAME'] ?>
 					</td>
 					<td rowspan="2" style="vertical-align: top; width: 100px; border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black; border-right: 1px solid black; font-size: 10px; padding: 5px">
 						Tgl. <br>
 						Petugas Packing : <br>
-						<br><br><br><br><br>
+						<br><br><br>
 						<!-- <?php echo $get_header[0]['CATATAN'] ?> -->
 					</td>
 				</tr>
 			</table>
-		<?php } ?>
+
+		<?php }
+
+		$no++;} ?>
 	</body>
 </html>

@@ -203,15 +203,15 @@ class C_Pelayanan extends CI_Controller
 		$this->M_pelayanan->SelesaiPelayanan($date, $jenis, $nospb, $slsh, $pic);
 	}
 
-    
+
     public function getJumlah()
     {
     	$this->checkSession();
     	$date = date('d/m/Y');
         echo json_encode($this->M_pelayanan->dataJumlah());
     }
-    
-    
+
+
 	public function getNormal()
     {
     	$this->checkSession();
@@ -309,6 +309,7 @@ class C_Pelayanan extends CI_Controller
 		    {
 						$body =  $this->M_pelayanan->bodyPL($id);
 						foreach ($body as $key => $value) {
+							$cek_banyak_colly[$value['COLLY_NUMBER']] = $value['COLLY_NUMBER'];
 							$tampung[] = $value;
 							if (sizeof($tampung) == 22 || $key == sizeof($body) - 1 ) {
 								$one_page_is[] = $tampung;
@@ -316,7 +317,7 @@ class C_Pelayanan extends CI_Controller
 							}
 						}
 
-						if (!empty($one_page_is)) {
+						if (!empty($one_page_is) && sizeof($cek_banyak_colly) != 1) {
 
 							foreach ($one_page_is as $key99 => $value99) {
 
@@ -400,7 +401,6 @@ class C_Pelayanan extends CI_Controller
 
 							}
 						}
-
 		        $data['get_header'] = $this->M_pelayanan->headfootPL($id);
 		        $data['get_body'] = $cek;
 						$data['get_colly'] = $this->M_pelayanan->getTotalColly($id);
@@ -408,7 +408,7 @@ class C_Pelayanan extends CI_Controller
 		        $data['total_berat'] = $this->M_pelayanan->getTotalBerat($id);
 		        $data['petugas'] = $this->M_pelayanan->getAll($id);
 		        $data['total_hal'] = $one_page_is;
-
+						$data['jumlah_colly'] = sizeof($cek_banyak_colly);
 
 		        if (!empty($id)) {
 		            // ====================== do something =========================
@@ -481,7 +481,112 @@ class C_Pelayanan extends CI_Controller
 		        }
 		    }
 
+			public function cetakPL2($id)
+			    {
+							$body =  $this->M_pelayanan->bodyPL($id);
+							
+							foreach ($body as $key2 => $value) {
+								$tampung_master[$value['COLLY_NUMBER']][] = $value;
+							}
+							if (!empty($tampung_master)) {
+								$tampung = [];
+								$one_page_is = [];
+								foreach ($tampung_master as $key => $value) {
+									foreach ($value as $key2 => $value2) {
+										$tampung[] = $value2;
+										if (sizeof($tampung) == 4) {
+											$one_page_is[] = $tampung;
+											$tampung = [];
+										}elseif (sizeof($tampung) < 4 && empty($value[$key2+1])) {
+											$one_page_is[] = $tampung;
+											$tampung = [];
+										}
+									}
+									$tampung_master[$key] = $one_page_is;
+									$one_page_is = [];
+								}
+							}
 
+							// echo "<pre>";print_r($tampung_master);die;
+			        $data['get_header'] = $this->M_pelayanan->headfootPL($id);
+			        // $data['get_body'] = $cek;
+							$data['get_colly'] = $this->M_pelayanan->getTotalColly($id);
+			        $data['total_colly'] = sizeof($data['get_colly']);
+			        $data['total_berat'] = $this->M_pelayanan->getTotalBerat($id);
+			        $data['petugas'] = $this->M_pelayanan->getAll($id);
+			        $data['total_hal'] = $tampung_master;
+
+
+			        if (!empty($id)) {
+			            // ====================== do something =========================
+			            $this->load->library('Pdf');
+			            $this->load->library('ciqrcode');
+
+			            $pdf 		= $this->pdf->load();
+			            $pdf 		= new mPDF('utf-8', array(210 , 297), 0, '', 3, 3, 3, 0, 0, 0);
+
+			            // ------ GENERATE QRCODE ------
+			            if (!is_dir('./assets/img/monitoringDOSPQRCODE')) {
+			                mkdir('./assets/img/monitoringDOSPQRCODE', 0777, true);
+			                chmod('./assets/img/monitoringDOSPQRCODE', 0777);
+			            }
+
+			            $params['data']		= $data['get_header'][0]['REQUEST_NUMBER'];
+			            $params['level']	= 'H';
+			            $params['size']		= 3;
+			            $params['black']	= array(255,255,255);
+			            $params['white']	= array(0,0,0);
+			            $params['savename'] = './assets/img/monitoringDOSPQRCODE/'.$data['get_header'][0]['REQUEST_NUMBER'].'.png';
+
+			            $this->ciqrcode->generate($params);
+
+			            // foreach ($data['get_colly'] as $colly) {
+			            // 	$params2['data']		= $colly['COLLY_NUMBER'];
+					        // $params2['level']		= 'H';
+					        // $params2['size']		= 4;
+					        // $params2['black']		= array(255,255,255);
+					        // $params2['white']		= array(0,0,0);
+					        // $params2['savename']	= './assets/img/monitoringDOQRCODE/'.$colly['COLLY_NUMBER'].'.png';
+									//
+					        // $this->ciqrcode->generate($params2);
+			            // }
+
+			            ob_end_clean() ;
+
+			            $filename 	= 'Packing_List_'.$data['get_header'][0]['REQUEST_NUMBER'].'.pdf';
+			            $cetakPL	= $this->load->view('KapasitasGdSparepart/V_Pdf_PL_A5', $data, true);
+
+			            if (ceil(strlen($data['get_header'][0]['CATATAN'])/27) == 1) {
+			              $a = '<br>'.$data['get_header'][0]['CATATAN'].'<br><br><br><br><br>';
+			            }elseif (ceil(strlen($data['get_header'][0]['CATATAN'])/27) == 2) {
+			              $a = '<br>'.$data['get_header'][0]['CATATAN'].'<br><br><br><br>';
+			            }elseif (ceil(strlen($data['get_header'][0]['CATATAN'])/27) == 3) {
+			              $a = '<br>'.$data['get_header'][0]['CATATAN'].'<br><br><br>';
+			            }elseif (ceil(strlen($data['get_header'][0]['CATATAN'])/27) == 4) {
+			              $a = '<br>'.$data['get_header'][0]['CATATAN'].'<br><br>';
+			            }elseif (ceil(strlen($data['get_header'][0]['CATATAN'])/27) == 5) {
+			              $a = $data['get_header'][0]['CATATAN'];
+			            }elseif (ceil(strlen($data['get_header'][0]['CATATAN'])/27) == 0) {
+			              $a = '<br><br><br><br><br><br>';
+			            }
+
+
+			            $pdf->SetFillColor(0,255,0);
+			            // $pdf->SetAlpha(0.4);
+			            $pdf->WriteHTML($cetakPL);
+			            $pdf->Output($filename, 'I');
+			        // ========================end process=========================
+			        } else {
+				        echo json_encode(array(
+				          	'success' => false,
+				          	'message' => 'id is null'
+				        ));
+			        }
+
+			        if (!unlink($params['savename'])) {
+			            echo("Error deleting");
+			        }
+			    }
 
     public function cetakSM($id)
     {
