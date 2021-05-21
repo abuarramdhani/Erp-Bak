@@ -107,7 +107,11 @@ class M_cetak extends CI_Model
                                      FROM khs_colly_dospb_sp kcds
                                     WHERE kcds.request_number = '$id') ttl
                 GROUP BY ttl.colly_number, ttl.request_number
-                ORDER BY 3";
+                ORDER BY CASE
+                            WHEN LENGTH (ttl.request_number) > 7
+                               THEN TO_NUMBER (SUBSTR (ttl.colly_number, 11))
+                            ELSE TO_NUMBER (SUBSTR (ttl.colly_number, 10))
+                         END";
         $query = $oracle->query($sql);
         return $query->result_array();
     }
