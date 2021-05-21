@@ -134,9 +134,10 @@ class M_monitoringdo extends CI_Model
 
     public function insertDOCetak($data)
     {
+        $ip = $this->input->ip_address();
         $sql = "INSERT INTO khs_cetak_do
-                            (request_number, order_number, creation_date, nomor_cetak)
-                     VALUES ('$data[REQUEST_NUMBER]', '$data[ORDER_NUMBER]', SYSDATE, '$data[NOMOR_CETAK]')";
+                            (request_number, order_number, creation_date, nomor_cetak, ip_address)
+                     VALUES ('$data[REQUEST_NUMBER]', '$data[ORDER_NUMBER]', SYSDATE, '$data[NOMOR_CETAK]', '$ip')";
 
         if (!empty($data)) {
             $response = $this->oracle->query($sql);
