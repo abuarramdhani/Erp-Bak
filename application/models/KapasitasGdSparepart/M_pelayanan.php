@@ -358,20 +358,30 @@ class M_pelayanan extends CI_Model
     {
         $oracle = $this->load->database('oracle', true);
         $sql = "SELECT   *
-                  FROM (SELECT aa.*, TO_NUMBER (SUBSTR (aa.colly_number, 10)) num
-                          FROM khs_qweb_bodycolly_dospb_sp1 aa
-                         WHERE aa.request_number = '$id'
-                        UNION
-                        SELECT aa.header_id, aa.request_number, aa.colly_number, 'TOTAL',
-                               NULL, NULL, NULL,
-                               (SELECT SUM (bb.berat)
-                                  FROM khs_qweb_bodycolly_dospb_sp1 bb
-                                 WHERE bb.request_number = aa.request_number
-                                   AND bb.colly_number = aa.colly_number),
-                               NULL, TO_NUMBER (SUBSTR (aa.colly_number, 10)) num
-                          FROM khs_qweb_bodycolly_dospb_sp1 aa
-                         WHERE aa.request_number = '$id') x
-              ORDER BY x.num, x.description NULLS LAST";
+                    FROM (SELECT aa.*,
+                                 CASE
+                                    WHEN LENGTH (aa.request_number) > 7
+                                       THEN TO_NUMBER (SUBSTR (aa.colly_number, 11))
+                                    ELSE TO_NUMBER (SUBSTR (aa.colly_number, 10))
+                                 END num
+                            FROM khs_qweb_bodycolly_dospb_sp1 aa
+                           WHERE aa.request_number = '$id'
+                          UNION
+                          SELECT aa.header_id, aa.request_number, aa.colly_number, 'TOTAL',
+                                 NULL, NULL, NULL,
+                                 (SELECT SUM (bb.berat)
+                                    FROM khs_qweb_bodycolly_dospb_sp1 bb
+                                   WHERE bb.request_number = aa.request_number
+                                     AND bb.colly_number = aa.colly_number),
+                                 NULL,
+                                 CASE
+                                    WHEN LENGTH (aa.request_number) > 7
+                                       THEN TO_NUMBER (SUBSTR (aa.colly_number, 11))
+                                    ELSE TO_NUMBER (SUBSTR (aa.colly_number, 10))
+                                 END num
+                            FROM khs_qweb_bodycolly_dospb_sp1 aa
+                           WHERE aa.request_number = '$id') x
+                ORDER BY x.num, x.description NULLS LAST";
         $query = $oracle->query($sql);
         return $query->result_array();
     }
