@@ -984,6 +984,11 @@
 																		<label for="">Sebab Keluar</label>
 																	</div>
 																	<div class="col-md-8">
+																		<button class="btn btn-primary btn-sm" id="mpk_btnedtsbbbklr">
+																			Lihat/Edit Sebab Keluar
+																		</button>
+																	</div>
+																	<!-- <div class="col-md-8">
 																		<?php
 																		if (!in_array($data['sebabklr'], $arrsebabkeluar)) {
 																			array_push($arrsebabkeluar, array(
@@ -997,7 +1002,7 @@
 																				<option value="<?= $item['fs_sbb_keluar'] ?>" <?= ($item['fs_sbb_keluar'] === $data['sebabklr']) ? 'selected' : '' ?>><?= $item['fs_sbb_keluar'] ?></option>
 																			<?php endforeach ?>
 																		</select>
-																	</div>
+																	</div> -->
 																</div>
 																<div class="row mt-10">
 																	<div class="col-md-12">
@@ -1836,6 +1841,38 @@
 					<label class="pull-left" style="color: red">*Pastikan Data sudah Sesuai sebelum Klik Simpan!</label>
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 					<button type="button" id="mpkedksvppj1" class="btn btn-primary" value="<?= $data['noind'] ?>">Simpan</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="mpk_mdledtsbbklr" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<label class="modal-title" id="exampleModalLabelPPJ1">Edit Sebab Keluar <?= $data['noind'].' - '.$data['nama'] ?></label>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body" style="height: 400px; overflow: auto;">
+					<table class="table table-hover">
+						<?php foreach ($l_sebabklr as $key): ?>
+							<tr class="last_scrolll <?= ($key['kode'] == $data['sebabklr']) ? 'scrolll_this':'' ?>">
+								<td>
+									<input <?= ($key['kode'] == $data['sebabklr']) ? 'checked':'' ?> type="radio" class="form-control" name="new_sbabklr" value="<?= $key['kode'] ?>">
+								</td>
+								<td>
+									<label class="mpk_lblsbbklr" style="cursor: pointer;"><?= $key['sebab_keluar'] ?></label>
+								</td>
+							</tr>
+						<?php endforeach ?>
+					</table>
+				</div>
+				<div class="modal-footer">
+					<label class="pull-left" style="color: red">*Pastikan Data sudah Sesuai sebelum Klik Update!</label>
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					<button disabled="" type="button" id="mpk_btnmdlsvsbbklr" class="btn btn-success" value="<?= $data['noind'] ?>">Update</button>
 				</div>
 			</div>
 		</div>

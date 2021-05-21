@@ -1734,6 +1734,65 @@ function MPKmcc_showAlert(icon, title)
 	Toast.fire({
 		type: icon,
 		// title: title,
-		html: '<h2 style="color:black;font-weight: bold;padding-top:0px;padding-bottom:0px;">'+title+'</h2>'
+		html: '<h2 style="color:black;font-weight: bold;padding:0px;margin:0px;">'+title+'</h2>'
 	});
 }
+
+$(document).on('click','#mpk_btnedtsbbbklr',function(){
+	$('#mpk_mdledtsbbklr').modal('show');
+});
+
+$('#mpk_mdledtsbbklr').on('shown.bs.modal', function (event) { 
+	var sbbklr = $('input[name=new_sbabklr]:checked').val();
+	if (!sbbklr) {
+		return false;
+	}
+	var target = $('.scrolll_this')[0].scrollIntoView();
+});
+
+$('#mpk_mdledtsbbklr').on('hide.bs.modal', function (event) { 
+	$('.scrolll_this').eq(0).find('input').iCheck('check');
+	$('#mpk_btnmdlsvsbbklr').attr('disabled', true);
+});
+
+$(document).ready(function(){
+	$('.mpk_lblsbbklr').click(function(){
+		$(this).closest('tr').find('input').iCheck("check");
+	});
+
+	$('#mpk_btnmdlsvsbbklr').click(function(){
+		var noind = $(this).val();
+		var sbbklr = $('input[name=new_sbabklr]:checked').val();
+		if (!sbbklr) {
+			alert('Pilih Sebab Keluar');
+			return false;
+		}else{
+			$('input[name=new_sbabklr]:checked').closest('table').find('tr').each(function(){
+				$(this).removeClass('scrolll_this');
+			});
+			$('input[name=new_sbabklr]:checked').closest('tr').addClass('scrolll_this');
+		}
+		$.ajax({
+            type: 'post',
+            data: {
+               noind: noind,
+               kode: sbbklr
+            },
+            url: baseurl + "MasterPekerja/DataPekerjaKeluar/editSbabKeluar",
+            success: function (result) {
+                MPKmcc_showAlert('success', 'Berhasil Mengupdate Data');
+                $('#mpk_btnmdlsvsbbklr').attr('disabled', true);
+            },
+            error: function (jqXHR,error, errorThrown) {
+            	alert(jqXHR.responseText);
+            },
+            complete: function (result) {
+            	$('#mpk_mdledtsbbklr').modal('hide');
+            }
+        });
+	});
+});
+
+$(document).on('ifChanged', 'input[name="new_sbabklr"]', function(){
+	$('#mpk_btnmdlsvsbbklr').attr('disabled', false);
+});

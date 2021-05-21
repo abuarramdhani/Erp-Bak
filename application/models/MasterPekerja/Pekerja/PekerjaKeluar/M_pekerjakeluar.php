@@ -103,7 +103,7 @@ class M_pekerjakeluar extends CI_Model
 
 		$this->personalia->where('noind', $noind);
 		$this->personalia->update('hrd_khs.tpribadi', $data);
-		return;
+		return $this->personalia->affected_rows();
 	}
 
 	public function updatePekerjaan($data, $noind)
@@ -1076,6 +1076,7 @@ class M_pekerjakeluar extends CI_Model
 	{
 		$this->personalia->where('noind', $noind);
 		$this->personalia->update('hrd_khs.tpribadi', $data);
+		return $this->personalia->affected_rows();
 	}
 
 	public function upPPJ($data, $id)
@@ -1101,5 +1102,16 @@ class M_pekerjakeluar extends CI_Model
 	{
 		$this->personalia->where('id_perpanjangan', $id);
 		$this->personalia->delete('hrd_khs.tperpanjangan_pkwt');
+	}
+
+	public function getListSbabKlr()
+	{
+		$sql = "SELECT * from hrd_khs.t_sebab_keluar order by urutan";
+		return $this->personalia->query($sql)->result_array();
+	}
+
+	public function updateSbabKeluar($noind, $kode)
+	{
+
 	}
 }

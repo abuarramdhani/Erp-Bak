@@ -330,6 +330,8 @@ class C_Index extends CI_Controller
 		$lama = $this->getLamaperpanjangan($noind);
 		$data['lama'] = $lama;
 
+		$data['l_sebabklr'] = $this->M_pekerjakeluar->getListSbabKlr();
+
 		// debug($data);
 
 		$data['Menu'] = 'Pekerja';
@@ -1472,5 +1474,18 @@ class C_Index extends CI_Controller
 		}
 
 		return $lama;
+	}
+
+	public function editSbabKeluar()
+	{
+		$noind = $this->input->post('noind');
+		$kode = $this->input->post('kode');
+		
+		$arr = array('sebabklr' => $kode);
+		$upd = $this->M_pekerjakeluar->updateDataPekerja($arr, $noind);
+		if ($upd) {
+
+			echo json_encode(['result'=>'success']);
+		}
 	}
 }
