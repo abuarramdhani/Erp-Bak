@@ -31,7 +31,7 @@ vertical-align: middle;
                 <div class="nav-tabs-custom">
                   <ul class="nav nav-tabs pull-right">
                     <li onclick="lphgetmon()"><a href="#lph-monitoring" data-toggle="tab">Monitoring</a></li>
-                    <li class="active" onclick="agtMonJobRelease()"><a href="#lph-import" data-toggle="tab">Import</a></li>
+                    <li class="active"><a href="#lph-import" data-toggle="tab">Import</a></li>
                     <li class="pull-left header"><b class="fa fa-download"></b> Rencana Kerja Operator </li>
                   </ul>
                   <div class="tab-content">
@@ -70,18 +70,27 @@ vertical-align: middle;
                             <strong>Sekilas Info! </strong> Klik 2 kali jika hanya memilih 1 tanggal</strong>
                           </div>
                         </div>
-                        <div class="col-md-8">
-                          <label for="">Filter By Date Range</label>
-                          <input type="text" name="" class="form-control tanggal_lph_99" placeholder="Select Yout Current Date" required="" >
-                        </div>
-                        <div class="col-md-2">
-                          <label for="" style="color:transparent">Ini Filter</label>
-                          <button type="button" onclick="lph_filter()" style="font-size:15px" class="btn btn-primary btn-sm btn-block"> <i class="fa fa-search"></i> <strong>Filter</strong> </button>
-                        </div>
-                        <div class="col-md-2">
-                          <label for="" style="color:transparent">Ini Cetak</label>
-                          <button type="submit" style="font-size:15px" class="btn btn-danger btn-sm btn-block"> <i class="fa fa-file-pdf-o"></i> <strong>Cetak RKH</strong> </button>
-                        </div>
+                        <form class="" action="<?php echo base_url('LaporanProduksiHarian/action/lph_pdf_rk') ?>" method="post">
+                          <div class="col-md-5">
+                            <label for="">Filter By Date Range</label>
+                            <input type="text" name="range_date" class="form-control tanggal_lph_99" placeholder="Select Yout Current Date" required="" >
+                          </div>
+                          <div class="col-md-3">
+                            <label for="">Pilih Shift</label>
+                            <select class="select2 lph_pilih_shift" name="shift" style="width:100%">
+                              <option value="1">1 (Satu)</option>
+                              <option value="2">2 (Dua)</option>
+                            </select>
+                          </div>
+                          <div class="col-md-2">
+                            <label for="" style="color:transparent">Ini Filter</label>
+                            <button type="button" onclick="lphgetmon()" style="font-size:15px" class="btn btn-primary btn-sm btn-block"> <i class="fa fa-search"></i> <strong>Filter</strong> </button>
+                          </div>
+                          <div class="col-md-2">
+                            <label for="" style="color:transparent">Ini Cetak</label>
+                            <button type="submit" style="font-size:15px" target="_blank" class="btn btn-danger btn-sm btn-block lph_cetak_rkh"> <i class="fa fa-file-pdf-o"></i> <strong>Cetak RKH</strong> </button>
+                          </div>
+                        </form>
                       </div>
                       <hr>
                       <div class="table-responsive area-lph-monitoring">

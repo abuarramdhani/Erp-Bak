@@ -40,7 +40,7 @@ $(document).ready(function () {
     showDropdowns: true,
     autoApply: true,
     locale: {
-      format: "YYYY-MM-DD",
+      format: "DD-MM-YYYY",
       separator: " - ",
       applyLabel: "OK",
       cancelLabel: "Batal",
@@ -69,14 +69,23 @@ $(document).ready(function () {
 );
 });
 
+$(".tanggal_lph_99").on('change', function() {
+  let val = $(this).val().split(' - ');
+  if (val[0] != val[1]) {
+    $('.lph_cetak_rkh').attr('disabled', true);
+  }else {
+    $('.lph_cetak_rkh').attr('disabled', false);
+  }
+})
+
 const lphgetmon = () => {
   $.ajax({
     url: baseurl + 'LaporanProduksiHarian/action/getmon',
     type: 'POST',
     // dataType: 'JSON',
     data: {
-      range_date : '',
-      // tipe : param_2,
+      range_date : $('.tanggal_lph_99').val(),
+      shift : $('.lph_pilih_shift').val(),
     },
     cache:false,
     beforeSend: function() {

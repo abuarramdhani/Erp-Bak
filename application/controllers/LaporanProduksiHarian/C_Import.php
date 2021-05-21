@@ -199,8 +199,45 @@ class C_Import extends CI_Controller
 
     public function getmon($v='')
     {
-      $data['get'] = $this->db->get('lph.lph_rencana_kerja_operator')->result_array();
+      $range_date = $this->input->post('range_date');
+      $range =  explode(' - ', $range_date);
+      $shift = $this->input->post('shift');
+      $data['get'] = $this->db->query("SELECT * FROM lph.lph_rencana_kerja_operator WHERE shift = '$shift' AND tanggal BETWEEN '$range[0]' AND '$range[1]'")->result_array();
       $this->load->view('LaporanProduksiHarian/ajax/V_mon_rko', $data);
+    }
+
+    public function lph_pdf_rk($value='')
+    {
+      $range_date = $this->input->post('range_date');
+      $range =  explode(' - ', $range_date);
+      $range = $range[0];
+      $shift = $this->input->post('shift');
+      $data = $this->db->query("SELECT * FROM lph.lph_rencana_kerja_operator WHERE shift = '$shift' AND tanggal = '$range'")->result_array();
+      foreach ($data as $key => $value) {
+        $pengelompokan[$value['no_induk']][] = $value;
+      }
+
+      if (!empty($pengelompokan)) {
+        $tampung = [];
+        $one_page_is = [];
+        foreach ($pengelompokan as $key => $value) {
+          foreach ($value as $key2 => $v) {
+            $tampung[] = $v;
+            if (sizeof($tampung) == 10) {
+              $one_page_is[] = $tampung;
+              $tampung = [];
+            }elseif (sizeof($tampung) < 10 && empty($value[$key2+1])) {
+              $one_page_is[] = $tampung;
+              $tampung = [];
+            }
+          }
+          $pengelompokan[$key] = $one_page_is;
+          $one_page_is = [];
+        }
+      }
+      echo "<pre>";
+      print_r($pengelompokan);
+      die;
     }
 
 }
