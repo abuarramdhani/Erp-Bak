@@ -513,13 +513,14 @@ class C_Approver extends CI_Controller {
                     }else {
                         $jklApprover = 'Ibu ';
                     };
-    
+
                     $subject = '[PRE-LAUNCH] Order Disetujui';
                     $body = "<b>Yth. $jklRequester $namaRequester</b>,<br><br>";
                     $body .= "Order anda terkait barang - barang berikut :<br><br>";
                     $body .= "<table border='1' style=' border-collapse: collapse;'>
                                 <thead>
                                     <tr>
+                                        <th>Order Id</th>
                                         <th>Kode Barang</th>
                                         <th>Deskripsi Barang</th>
                                         <th>Quantity</th>
@@ -551,6 +552,7 @@ class C_Approver extends CI_Controller {
                                         $emailSendDate = date("d-M-Y");
                                         $pukul = date("h:i:sa");
                                         
+                                        $orderId = $pesanRequester[$i]['ORDER_ID'];
                                         $itemDanDeskripsi = $pesanRequester[$i]['SEGMENT1'].' - '.$pesanRequester[$i]['DESCRIPTION'];
                                         $kodeBarang = $itemDanDeskripsi;
                                         $deskripsi = $pesanRequester[$i]['ITEM_DESCRIPTION'];
@@ -559,6 +561,7 @@ class C_Approver extends CI_Controller {
                                         $alasanPengadaan = $pesanRequester[$i]['ORDER_PURPOSE'];
     
                                         $body .="<tr>
+                                                    <td>$orderId</td>
                                                     <td>$kodeBarang</td>
                                                     <td>$deskripsi</td>
                                                     <td>$qty</td>
