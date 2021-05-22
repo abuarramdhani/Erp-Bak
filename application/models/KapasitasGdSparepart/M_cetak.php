@@ -5,7 +5,7 @@ class M_cetak extends CI_Model
     public function __construct()
     {
         parent::__construct();
-        $this->load->database();    
+        $this->load->database();
     }
 
 
@@ -151,10 +151,11 @@ class M_cetak extends CI_Model
 
     public function insertCetak($id)
     {
+        $ip = $this->input->ip_address();
         $oracle = $this->load->database('oracle', true);
         $sql = "INSERT INTO khs_cetak_do
-                            (request_number, creation_date)
-                     VALUES ('$id', SYSDATE)";
+                            (request_number, creation_date, ip_address)
+                     VALUES ('$id', SYSDATE, '$ip')";
         $query = $oracle->query($sql);
         return $query;
     }
