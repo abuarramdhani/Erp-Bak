@@ -35,6 +35,7 @@ const swaLPHLarge = (type, a) =>{
 }
 
 $(document).ready(function () {
+
   $(".tanggal_lph_99").daterangepicker(
   {
     showDropdowns: true,
@@ -104,7 +105,13 @@ const lphgetmon = () => {
     }
   })
 }
-
+$('.tanggal_lph_100').datepicker({
+  todayBtn: "linked",
+  language: "it",
+  autoclose: true,
+  todayHighlight: true,
+  format: 'dd-mm-yyyy'
+});
 $('.LphTanggal').datepicker({
   todayHighlight: true,
   format: 'dd-M-yyyy',

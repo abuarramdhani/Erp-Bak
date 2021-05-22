@@ -38,7 +38,40 @@ vertical-align: middle;
                     <div class="tab-pane active" id="lph-import">
                       <div class="row pt-4">
                         <div class="col-md-12">
-
+                          <br>
+                          <div class="row">
+                            <!-- <div class="col-md-12">
+                              <div class="alert bg-primary alert-dismissible" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                  <span aria-hidden="true">
+                                    <i class="fa fa-close"></i>
+                                  </span>
+                                </button>
+                                <strong>Sekilas Info! </strong> Klik 2 kali jika hanya memilih 1 tanggal</strong>
+                              </div>
+                            </div> -->
+                            <div class="col-md-4">
+                              <label for="">Pilih Tanggal RKH</label>
+                              <input type="text" name="date" class="form-control tanggal_lph_100" placeholder="Select Yout Current Date" required="" >
+                            </div>
+                            <div class="col-md-3">
+                              <label for="">Pilih Shift</label>
+                              <select class="select2 lph_pilih_shift" name="shift" style="width:100%">
+                                <option value="1">1 (Satu)</option>
+                                <option value="2">2 (Dua)</option>
+                              </select>
+                            </div>
+                            <div class="col-md-3">
+                              <label for="">Pekerja</label>
+                              <select class="select2 lph_list_pekerja" name="shift" style="width:100%">
+                              </select>
+                            </div>
+                            <div class="col-md-2">
+                              <label for="" style="color:transparent">Ini Submit</label>
+                              <button type="button" style="font-size:15px"  class="btn btn-primary btn-sm btn-block lph_cetak_rkh"> <i class="fa fa-file-pdf-o"></i> <strong>Submit</strong> </button>
+                            </div>
+                          </div>
+                          <hr>
                         </div>
                         <div class="col-md-7">
                           <div class="box box-primary box-solid">

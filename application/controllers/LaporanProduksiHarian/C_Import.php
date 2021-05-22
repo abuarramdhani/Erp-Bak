@@ -213,6 +213,7 @@ class C_Import extends CI_Controller
       $range = $range[0];
       $shift = $this->input->post('shift');
       $data = $this->db->query("SELECT * FROM lph.lph_rencana_kerja_operator WHERE shift = '$shift' AND tanggal = '$range'")->result_array();
+      $pengelompokan = [];
       foreach ($data as $key => $value) {
         $pengelompokan[$value['no_induk']][] = $value;
       }
@@ -231,13 +232,62 @@ class C_Import extends CI_Controller
               $tampung = [];
             }
           }
+
+          foreach ($one_page_is as $key3 => $value3) {
+            if (sizeof($value3) < 10) {
+              for ($i=0; $i < 10 - sizeof($value3); $i++) {
+                $data = [
+                          'urut_job' => ''
+                          ,'nama_operator' => ''
+                          ,'no_induk' => ''
+                          ,'kode_mesin' => ''
+                          ,'no_batch' => ''
+                          ,'kode_komponen' => ''
+                          ,'nama_komponen' => ''
+                          ,'plan' => ''
+                          ,'foq' => ''
+                          ,'target_sk' => ''
+                          ,'target_js' => ''
+                          ,'persen_target_sk' => ''
+                          ,'persen_target_js' => ''
+                          ,'persen_jml_target_sk' => ''
+                          ,'persen_jml_target_js' => ''
+                          ,'proses' => ''
+                          ,'resource' => ''
+                          ,'hasil' => ''
+                          ,'repair' => ''
+                          ,'scrap' => ''
+                          ,'hari' => ''
+                          ,'tanggal' => ''
+                          ,'shift' => ''
+                        ];
+                $one_page_is[$key3][] = $data;
+              }
+            }
+          }
+
           $pengelompokan[$key] = $one_page_is;
           $one_page_is = [];
         }
       }
-      echo "<pre>";
-      print_r($pengelompokan);
-      die;
+
+      $data['get'] = $pengelompokan;
+      $data['date'] = $range;
+      $this->load->library('Pdf');
+
+      $pdf 		= $this->pdf->load();
+      $pdf 		= new mPDF('utf-8', array(210 , 267), 0, 'calibri', 3, 3, 3, 0, 0, 0);
+      ob_end_clean() ;
+
+      $doc = 'RENCANA-KERJA-OPERATOR-'.$range;
+      $filename 	= $doc.'.pdf';
+      if (!empty($data['get'])) {
+        $isi 	= $this->load->view('LaporanProduksiHarian/pdf/V_pdf_lkh', $data, true);
+      }else {
+        $isi 	= 'Data is empty';
+      }
+      $pdf->WriteHTML($isi);
+      $pdf->Output($filename, 'I');
     }
 
 }

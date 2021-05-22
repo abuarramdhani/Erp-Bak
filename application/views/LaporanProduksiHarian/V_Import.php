@@ -70,7 +70,7 @@ vertical-align: middle;
                             <strong>Sekilas Info! </strong> Klik 2 kali jika hanya memilih 1 tanggal</strong>
                           </div>
                         </div>
-                        <form class="" action="<?php echo base_url('LaporanProduksiHarian/action/lph_pdf_rk') ?>" method="post">
+                        <form class="" action="<?php echo base_url('LaporanProduksiHarian/action/lph_pdf_rk') ?>" method="post" target="_blank">
                           <div class="col-md-5">
                             <label for="">Filter By Date Range</label>
                             <input type="text" name="range_date" class="form-control tanggal_lph_99" placeholder="Select Yout Current Date" required="" >
@@ -88,7 +88,7 @@ vertical-align: middle;
                           </div>
                           <div class="col-md-2">
                             <label for="" style="color:transparent">Ini Cetak</label>
-                            <button type="submit" style="font-size:15px" target="_blank" class="btn btn-danger btn-sm btn-block lph_cetak_rkh"> <i class="fa fa-file-pdf-o"></i> <strong>Cetak RKH</strong> </button>
+                            <button type="submit" style="font-size:15px"  class="btn btn-danger btn-sm btn-block lph_cetak_rkh"> <i class="fa fa-file-pdf-o"></i> <strong>Cetak RKH</strong> </button>
                           </div>
                         </form>
                       </div>

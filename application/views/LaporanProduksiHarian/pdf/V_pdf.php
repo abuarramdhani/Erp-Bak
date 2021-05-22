@@ -57,7 +57,7 @@
 						<td style="padding:5px;border-left: 1px solid black;border-bottom: 1px solid black;border-right: 1px solid black;border-top: 1px solid black;">
 							Nama Brg
 						</td>
-						<td colspan="2" style="padding:5px;font-size:12px;border-right: 1px solid black;border-top: 1px solid black;">
+						<td colspan="2" style="padding:5px;border-right: 1px solid black;border-top: 1px solid black;font-size:12px;">
 							<?php echo $var['TYPE_SETELAH'] ?>
 						</td>
 					</tr>
