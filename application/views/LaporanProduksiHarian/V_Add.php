@@ -52,7 +52,7 @@ vertical-align: middle;
                             </div> -->
                             <div class="col-md-4">
                               <label for="">Pilih Tanggal RKH</label>
-                              <input type="text" name="date" class="form-control tanggal_lph_100" placeholder="Select Yout Current Date" required="" >
+                              <input type="text" name="date" class="form-control LphTanggal" placeholder="Select Yout Current Date" required="" >
                             </div>
                             <div class="col-md-3">
                               <label for="">Pilih Shift</label>
@@ -68,7 +68,7 @@ vertical-align: middle;
                             </div>
                             <div class="col-md-2">
                               <label for="" style="color:transparent">Ini Submit</label>
-                              <button type="button" style="font-size:15px"  class="btn btn-primary btn-sm btn-block lph_cetak_rkh"> <i class="fa fa-file-pdf-o"></i> <strong>Submit</strong> </button>
+                              <button type="button" style="font-size:15px"  class="btn btn-primary btn-sm btn-block lph_cetak_rkh"> <i class="fa fa-book"></i> <strong>Submit</strong> </button>
                             </div>
                           </div>
                           <hr>
