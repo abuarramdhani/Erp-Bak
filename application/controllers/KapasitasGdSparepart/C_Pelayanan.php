@@ -344,14 +344,15 @@ class C_Pelayanan extends CI_Controller
 												foreach (array_reverse($siap_pindah) as $key_1 => $value_) {
 													array_unshift($one_page_is[$key99+1], $value_);
 												}
+												$siap_pindah = [];
 											}
 										}
 
 									}
 								}elseif (sizeof($one_page_is[$key99]) > 22) {
 
+									//pindah elemen kelebihan ke index seltelahnya
 									$coll_kelebihan = $one_page_is[$key99][sizeof($one_page_is[$key99])-1]['COLLY_NUMBER'];
-
 										foreach ($one_page_is[$key99] as $key_1 => $value_) {
 											if ($value_['COLLY_NUMBER'] == $coll_kelebihan) {
 												$siap_pindah_karna_kelebihan[] = $value_;
@@ -366,10 +367,11 @@ class C_Pelayanan extends CI_Controller
 													array_unshift($one_page_is[$key99+1], $value_);
 												}
 											}
+											$siap_pindah_karna_kelebihan = [];
 										}
 
 										//kembali ke pengecekan
-										$coll_ = $one_page_is[$key99][21]['COLLY_NUMBER'];
+										$coll_ = !empty($one_page_is[$key99][21]['COLLY_NUMBER']) ? $one_page_is[$key99][21]['COLLY_NUMBER'] : '';
 										if (!empty($one_page_is[$key99+1][0]['COLLY_NUMBER'])) {
 
 											$cek_kk = 0;
@@ -391,12 +393,11 @@ class C_Pelayanan extends CI_Controller
 													foreach (array_reverse($siap_pindah) as $key_1 => $value_) {
 														array_unshift($one_page_is[$key99+1], $value_);
 													}
+													$siap_pindah = [];
 												}
 											}
 
 										}
-
-
 								}
 
 							}
