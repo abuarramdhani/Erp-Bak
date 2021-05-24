@@ -240,7 +240,7 @@ ORDER BY num";
     }
     public function getPeriode($no_car)
     {
-        $sql = "Select TO_CHAR (kpcv.created_date, 'Mon YYYY') created_date from khs_psup_car_vendor kpcv where kpcv.car_num = '$no_car'";
+        $sql = "Select TO_CHAR (kpcv.date_of_data_source, 'Mon YYYY') created_date from khs_psup_car_vendor kpcv where kpcv.car_num = '$no_car'";
         $query = $this->oracle->query($sql);
         return $query->result_array();
     }
