@@ -2,13 +2,84 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class M_pesangon extends CI_Model {
+
 	function __construct()
 	{
 		parent:: __construct();
 		$this->personalia 	= 	$this->load->database('personalia', TRUE);
 		$this->erp 			=	$this->load->database('erp_db', TRUE);
-
 	}
+
+	function getDetailPekerja($noind)
+	{
+		$sql = "select a.noind,a.nama,a.nik,a.npwp,
+				a.diangkat::date,a.tglkeluar::date,
+				trim(a.alamat) as alamat,trim(a.kec) as kec,trim(a.kab) as kab,trim(a.prop) as prop,
+				trim(a.templahir) as tempat_lahir,a.tgllahir::date as tanggal_lahir,
+				b.dept,b.unit,b.seksi,d.lokasi_kerja,e.pekerjaan,
+				(
+					select string_agg(c.jabatan,'; ')
+					from hrd_khs.trefjabatan c 
+					where c.noind = a.noind
+				) as jabatan,
+				f.dasar_hukum,f.sebab_keluar,f.pengali_u_pesangon,f.pengali_u_pmk,
+				case extract(isodow from tglkeluar)
+				when 1 then 'Senin' 
+				when 2 then 'Selasa' 
+				when 3 then 'Rabu' 
+				when 4 then 'Kamis' 
+				when 5 then 'Jumat' 
+				when 6 then 'Sabtu' 
+				when 7 then 'Minggu'
+				else 'undefined' 
+				end as hari
+			from hrd_khs.tpribadi a 
+			inner join hrd_khs.tseksi b 
+			on a.kodesie = b.kodesie
+			inner join hrd_khs.tlokasi_kerja d 
+			on a.lokasi_kerja = d.id_
+			inner join hrd_khs.t_sebab_keluar f 
+			on trim(a.sebabklr) = f.kode
+			left join hrd_khs.tpekerjaan e 
+			on a.kd_pkj = e.kdpekerjaan
+			where a.noind = ?
+			and a.keluar = '0'";
+		return $this->personalia->query($sql,array($noind))->row();
+	}
+
+	function getSisaCuti($noind)
+	{
+		$sql = "select coalesce(
+					b.sisa_cuti-
+					(
+						select count(*) 
+						from \"Presensi\".tdatapresensi c
+						where c.tanggal>=a.tglkeluar::date 
+						and c.noind=a.noind
+						and (
+							trim(c.kd_ket) like 'C%'
+							or trim(c.kd_ket) = 'PCZ'
+						)
+					),
+					0
+				) as sisa_cuti
+			from hrd_khs.tpribadi a
+			left join \"Presensi\".tdatacuti b 
+			on a.noind = b.noind
+			and b.periode =extract(year from current_date)::varchar
+			where a.noind = ?";
+		return $this->personalia->query($sql,array($noind))->row()->sisa_cuti;
+	}
+
+	function getSetupPesangon($tahun)
+	{
+		$sql = "select u_pesangon, u_pmk
+			from hrd_khs.t_setup_pesangon
+			where batas_tahun_kerja_awal <= ?
+			and batas_tahun_kerja_akhir > ?";
+		return $this->personalia->query($sql,array($tahun,$tahun))->row();
+	}
+
 	public function detailPekerja($noind,$cuti)
 	 	{
 

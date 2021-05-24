@@ -1369,72 +1369,51 @@ $(function () {
     console.log("STATUS CUTI : " + cuti);
     if (noind) {
       $.ajax({
-        type: "POST",
+        type: "GET",
         data: { noind: noind, cuti: cuti },
-        url: baseurl + "MasterPekerja/PerhitunganPesangon/detailPekerja",
+        url: baseurl + "MasterPekerja/PerhitunganPesangon/getDetailPekerja",
         success: function (result) {
           if (result !== "Data Kosong") {
             var res = JSON.parse(result);
-            $("#txtSeksi").val(res[0]["seksi"]);
-            $("#txtUnit").val(res[0]["unit"]);
-            $("#txtDepartemen").val(res[0]["departemen"]);
-            $("#txtLokasi").val(res[0]["lokasi_kerja"]);
-            $("#txtJabatan").val(res[0]["pekerjaan"]);
-            $("#txtDiangkat").val(res[0]["diangkat"]);
-            $("#txtAlamat").val(res[0]["alamat"]);
-            $("#txtLahir").val(res[0]["tempat"]);
-            $("#txtMasaKerja").val(res[0]["masakerja"]);
-            if (cuti == "0") {
-              $("#txtSisaCuti").val("0 hari");
-            } else {
-              $("#txtSisaCuti").val(res[0]["sisacuti"]);
+            $("#txtSeksi").val(res["seksi"]);
+            $("#txtUnit").val(res["unit"]);
+            $("#txtDepartemen").val(res["dept"]);
+            $("#txtLokasi").val(res["lokasi_kerja"]);
+            $("#txtJabatan").val(res["pekerjaan"].length > 0 ? res["pekerjaan"] : res["jabatan"]);
+            $("#txtDiangkat").val(res["diangkat"]);
+            $("#txtAlamat").val(res["alamat"] + ", " + res['kec'] + ", " + res['kab'] + ", " + res['prop']);
+            $("#txtLahir").val(res["tempat_lahir"] + ", " + res["tanggal_lahir"]);
+            $("#txtMasaKerja").val(res["masa_kerja"]['tahun'] + " Tahun " + res["masa_kerja"]['bulan'] + " Bulan " + res["masa_kerja"]['hari'] + " Hari");
+            $("#txtSisaCuti").val(res["sisa_cuti"] + " Hari");
+            $("#txtCuti").val(res['sisa_cuti']);
+            
+            $("#txtStatus").val(res["sebab_keluar"]);
+            $("#txtUangPesangon").val(" ".repeat(6 - res["pengali_u_pesangon"].length) + res["pengali_u_pesangon"] + " X " + " ".repeat(6 - res['banyak_gp']['u_pesangon'].length) + res['banyak_gp']['u_pesangon'] + " GP");
+            $("#txtUangUMPK").val(" ".repeat(6 - res["pengali_u_pmk"].length) + res["pengali_u_pmk"] + " X " + " ".repeat(6 - res['banyak_gp']['u_pmk'].length) + res['banyak_gp']['u_pmk'] + " GP");
+            $("#txtSisaCutiHari").val(" ".repeat(15 - res["sisa_cuti"].length) + res["sisa_cuti"] + " (GP/30)");
+            $("#txtTahun").val(res["masa_kerja"]['tahun']);
+            $("#txtBulan").val(res["masa_kerja"]['bulan']);
+            $("#txtHari").val(res["masa_kerja"]['hari']);
+            $("#txtPengaliUPesangon").val(res["pengali_u_pesangon"]);
+            $("#txtPesangon").val(res['banyak_gp']['u_pesangon']);
+            $("#txtPengaliUPMK").val(res["pengali_u_pmk"]);
+            $("#txtUPMK").val(res['banyak_gp']['u_pmk']);
+            
+            $("#txtAkhir").val(res["tglkeluar"]);
+            $("#txtNPWP").val(res["npwp"]);
+            $("#txtNIK").val(res["nik"]);
+            if (res["hari"] == "Minggu") {
+              var styles = {
+                color: "red",
+                fontWeight: "bold",
+              };
+              $(this).css(styles);
             }
-            $("#txtStatus").val(res[0]["alasan"]);
-            $("#txtUangPesangon").val(res[0]["pengali"]);
-            $("#txtUangUMPK").val(res[0]["upmk"]);
-            $("#txtSisaCutiHari").val(res[0]["sisacutihari"]);
-            $("#txtUangGantiRugi").val(res[0]["gantirugi"]);
-            $("#txtTahun").val(res[0]["masakerja_tahun"]);
-            $("#txtBulan").val(res[0]["masakerja_bulan"]);
-            $("#txtHari").val(res[0]["masakerja_hari"]);
-            $("#txtPasal").val(res[0]["pasal"]);
-            $("#txtPesangon").val(res[0]["pesangon"]);
-            $("#txtUPMK").val(res[0]["up"]);
-            if (cuti == "0") {
-              $("#txtCuti").val("0");
-            } else {
-              $("#txtCuti").val(res[0]["cuti"]);
-            }
-            $("#txtRugi").val(res[0]["rugi"]);
-            $("#txtAkhir").val(res[0]["metu"]);
-            $("#txtNPWP").val(res[0]["npwp"]);
-            $("#txtNIK").val(res[0]["nik"]);
-            $("#txtHariLmt").val(function () {
-              if (res["hari_terakhir"] == "Sun") {
-                var styles = {
-                  color: "red",
-                  fontWeight: "bold",
-                };
-                $(this).css(styles);
-                return "Minggu";
-              } else if (res["hari_terakhir"] == "Mon") {
-                return "Senin";
-              } else if (res["hari_terakhir"] == "Tue") {
-                return "Selasa";
-              } else if (res["hari_terakhir"] == "Wed") {
-                return "Rabu";
-              } else if (res["hari_terakhir"] == "Thu") {
-                return "Kamis";
-              } else if (res["hari_terakhir"] == "Fri") {
-                return "Jumat";
-              } else if (res["hari_terakhir"] == "Sat") {
-                return "Sabtu";
-              }
-            });
+            $("#txtHariLmt").val(res["hari"]);
           } else {
             swal.fire({
               title: "Data pekerja Tidak Ditemukan",
-              text: "Mohon Lakukan Pengecekan Ulang Data Pekerja",
+              text: "Mohon Lakukan Pengecekan Ulang Data Pekerja. Salah satu kemungkinan penyebabnya karena sebab keluar belum sesuai.",
               type: "warning",
             });
           }
