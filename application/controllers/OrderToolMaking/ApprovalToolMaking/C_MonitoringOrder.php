@@ -258,10 +258,7 @@ class C_MonitoringOrder extends CI_Controller
 		// 	$this->M_monitoringorder->saveaction($no_order, ($person+1), 1, '', date('Y-m-d H:i:s'));
 		// }
 		
-		if ($siapa == 'Ass Ka Nit Pengorder' && $seksi == 'PE') { // kalau order dari PE auto approve PE
-			$this->M_monitoringorder->saveaction($no_order, ($person+1), 1, '', date('Y-m-d H:i:s'));
-			$this->M_monitoringorder->saveaction($no_order, ($person+2), 1, '', date('Y-m-d H:i:s'));
-		}elseif ($siapa == 'Designer Produk' && ($seksi == 'QA' || stripos($seksi, 'QC') !== FALSE)) {  // kalau order dari QA & QC auto approve QA & QC
+		if ($siapa == 'Designer Produk' && ($seksi == 'QA' || stripos($seksi, 'QC') !== FALSE)) {  // kalau order dari QA & QC auto approve QA & QC
 			$this->M_monitoringorder->saveaction($no_order, ($person+1), 1, '', date('Y-m-d H:i:s'));
 		}elseif ($siapa == 'Ass Ka Nit PE' && stripos($seksi, 'DES') !== FALSE) {  // kalau order dari Designer auto approve Designer
 			$this->M_monitoringorder->saveaction($no_order, ($person+1), 1, '', date('Y-m-d H:i:s'));

@@ -363,6 +363,10 @@ class C_MonitoringOrder extends CI_Controller
 			$this->M_monitoringorder->saveorderrekon($no_order, $tgl_order, $seksi_order, $unit_order, $user_mr, $tgl_usul, $jenis, $gambar_kerja, $skets,
 			$kode_komponen, $nama_komponen, $tipe_produk, $tgl_rilis, $no_alat, $poin, $proses_ke, $dari, $alasan, $referensi2, $assign, $pengorder, $inspect_report);
 		}
+		if ($seksi_order == 'PE') { // jika order dari PE, auto approve Ass Ka Nit Pengorder dan PE, jadi langsung ke Ass Ka Nit PE
+			$this->M_monitoringorder->saveaction($no_order, 2, 1, '', date('Y-m-d H:i:s'));
+			$this->M_monitoringorder->saveaction($no_order, 3, 1, '', date('Y-m-d H:i:s'));
+		}
 
 		redirect(base_url('OrderToolMaking/MonitoringOrder/'));
 	}
