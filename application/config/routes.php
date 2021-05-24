@@ -575,6 +575,16 @@ $route['CateringManagement/PrintPPCatering'] 				= 'CateringManagement/C_Printpp
 $route['CateringManagement/PrintPPCatering/(:any)'] 		= 'CateringManagement/C_PrintppCatering/$1';
 $route['CateringManagement/PrintPPCatering/(:any)/(:any)'] 	= 'CateringManagement/C_PrintppCatering/$1/$2';
 
+//----------------------------------- Catering Management - Notula Sampling --------------------------------- //
+$route['CateringManagement/NotulaSampling'] 				= 'CateringManagement/Catering/NotulaSampling/C_NotulaSampling/index';
+$route['CateringManagement/NotulaSampling/Sampling']['post'] = 'CateringManagement/Catering/NotulaSampling/C_NotulaSampling/insert_sampling';
+$route['CateringManagement/NotulaSampling/Export']	= 'CateringManagement/Catering/NotulaSampling/C_NotulaSampling/export';
+
+$route['CateringManagement/NotulaSampling/GenerateSamplingTemplate']['post']	= 'CateringManagement/Catering/NotulaSampling/C_NotulaSampling/GenerateSamplingTemplate';
+$route['CateringManagement/NotulaSampling/CheckCateringGenerated']['get']	= 'CateringManagement/Catering/NotulaSampling/C_NotulaSampling/CheckCateringGenerated';
+
+$route['CateringManagement/NotulaSampling/Api/UpdateSampling']['post']	= 'CateringManagement/Catering/NotulaSampling/C_NotulaSampling/updateSampling';
+
 //-----------------------------------Catering Management -Setup-----------------------------------------------//
 $route['CateringManagement/catering'] 			= 'CateringManagement/Setup/C_Catering/index';
 $route['CateringManagement/catering/Create'] 			= 'CateringManagement/Setup/C_Catering/Create';
