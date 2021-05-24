@@ -25,7 +25,7 @@
                 <td><?= $i['PEMAKAI'] ?></td>
                 <td><?= $i['TUJUAN_GUDANG'] ?></td>
                 <td><?= $i['TANGGAL'] ?></td>
-            <tr>
+            </tr>
             <?php $no++;} ?>
         </tbody>
     </table>
