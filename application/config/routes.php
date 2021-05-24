@@ -5558,3 +5558,7 @@ $route['menuLaporanPenjualanTraktor/inputDate']	=	'LaporanPenjualanTraktor/C_inp
 $route['menuLaporanPenjualanTraktor/inputDate/insertDate']	=	'LaporanPenjualanTraktor/C_inputDate/insertDate';
 $route['menuLaporanPenjualanTraktor/inputDate/insertTable']	=	'LaporanPenjualanTraktor/C_inputDate/insertTable';
 $route['menuLaporanPenjualanTraktor/inputDate/deleteDate']	=	'LaporanPenjualanTraktor/C_inputDate/deleteDate';
+
+// -------------------------- Monitoring Cetak PO -------------------------------------//
+$route['monitoring-cetak-po'] = 'MonitoringCetakPO/C_Subkon';
+$route['monitoring-cetak-po/(:any)'] = 'MonitoringCetakPO/C_Subkon/$1';
