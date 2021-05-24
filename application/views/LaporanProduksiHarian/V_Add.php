@@ -36,9 +36,8 @@ vertical-align: middle;
                   </ul>
                   <div class="tab-content">
                     <div class="tab-pane active" id="lph-import">
-                      <div class="row pt-4">
+                      <div class="row pt-3">
                         <div class="col-md-12">
-                          <br>
                           <div class="row">
                             <!-- <div class="col-md-12">
                               <div class="alert bg-primary alert-dismissible" role="alert">
@@ -52,19 +51,30 @@ vertical-align: middle;
                             </div> -->
                             <div class="col-md-4">
                               <label for="">Pilih Tanggal RKH</label>
-                              <input type="text" name="date" class="form-control LphTanggal" placeholder="Select Yout Current Date" required="" >
+                              <div class="input-group">
+                                <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                                <input type="text" name="date" class="form-control LphTanggal" placeholder="Select Yout Current Date" required="" >
+                              </div>
                             </div>
                             <div class="col-md-3">
                               <label for="">Pilih Shift</label>
-                              <select class="select2 lph_pilih_shift" name="shift" style="width:100%">
-                                <option value="1">1 (Satu)</option>
-                                <option value="2">2 (Dua)</option>
-                              </select>
+                              <div class="input-group">
+                                <div class="input-group-addon"><i class="fa fa-fire"></i></div>
+                                <select class="select2 lph_pilih_shift" name="shift" style="width:100%">
+                                  <option value="1">1 (Satu)</option>
+                                  <option value="2">2 (Dua)</option>
+                                </select>
+                              </div>
+
                             </div>
                             <div class="col-md-3">
                               <label for="">Pekerja</label>
-                              <select class="select2 lph_list_pekerja" name="shift" style="width:100%">
-                              </select>
+                              <div class="input-group">
+                                <div class="input-group-addon"><i class="fa fa-user"></i></div>
+                                <select class="select2 lph_list_pekerja" name="shift" style="width:100%">
+
+                                </select>
+                              </div>
                             </div>
                             <div class="col-md-2">
                               <label for="" style="color:transparent">Ini Submit</label>
@@ -445,10 +455,10 @@ vertical-align: middle;
                                 </div>
                               </div>
                             </div>
-
+                            <div class="col-md-12">
+                              <center> <button type="button" class="btn btn-success mb-4 mt-2" name="button" style="width:20%;font-weight:bold"> <i class="fa fa-save"></i> Save</button> </center>
+                            </div>
                           </div>
-
-
                       </div>
                     </div>
                   </div>

@@ -47,7 +47,10 @@ vertical-align: middle;
                           <div class="form-group">
                             <form class="" action="<?php echo base_url('LaporanProduksiHarian/action/submit_import') ?>" method="post" enctype="multipart/form-data">
                               <label for="">Pilih File</label>
-                              <input type="file" class="form-control" name="excel_file" value="">
+                              <div class="input-group">
+                                <div class="input-group-addon"><i class="fa fa-file-excel-o"></i></div>
+                                <input type="file" class="form-control" name="excel_file" value="">
+                              </div>
                               <center> <button type="submit" class="btn btn-primary mt-4" style="width:30%;font-weight:bold" name="button"> <i class="fa fa-download"></i> Import</button> </center>
                             </form>
                           </div>
@@ -73,14 +76,21 @@ vertical-align: middle;
                         <form class="" action="<?php echo base_url('LaporanProduksiHarian/action/lph_pdf_rk') ?>" method="post" target="_blank">
                           <div class="col-md-5">
                             <label for="">Filter By Date Range</label>
-                            <input type="text" name="range_date" class="form-control tanggal_lph_99" placeholder="Select Yout Current Date" required="" >
+                            <div class="input-group">
+                              <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                              <input type="text" name="range_date" class="form-control tanggal_lph_99" placeholder="Select Yout Current Date" required="" >
+                            </div>
                           </div>
                           <div class="col-md-3">
                             <label for="">Pilih Shift</label>
-                            <select class="select2 lph_pilih_shift" name="shift" style="width:100%">
-                              <option value="1">1 (Satu)</option>
-                              <option value="2">2 (Dua)</option>
-                            </select>
+                            <div class="input-group">
+                              <div class="input-group-addon"><i class="fa fa-fire"></i></div>
+                              <select class="select2 lph_pilih_shift" name="shift" style="width:200px">
+                                <?php foreach ($shift as $key => $value): ?>
+                                  <option value="<?php echo $value['SHIFT_NUM'] ?>"><?php echo $value['SHIFT_NUM'] ?> - <?php echo $value['DESCRIPTION'] ?></option>
+                                <?php endforeach; ?>
+                              </select>
+                            </div>
                           </div>
                           <div class="col-md-2">
                             <label for="" style="color:transparent">Ini Filter</label>
