@@ -54,7 +54,6 @@ class C_NotulaSampling extends CI_Controller
 
     $data['notulaSamplings'] = $this->M_notulasampling->getSampling($year_month, $kd_katering);
 
-    $data['menuMakanan'] = $this->M_notulasampling->getMenuMakanan();
     $data['cateringProvider'] = $this->M_notulasampling->getCateringProvider();
 
     $this->load->view('V_Header', $data);
