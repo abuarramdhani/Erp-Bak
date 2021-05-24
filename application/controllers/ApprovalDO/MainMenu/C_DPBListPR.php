@@ -66,7 +66,7 @@ class C_DPBListPR extends CI_Controller
             'catatan'          => 'readonly',
             'estdate'          => ''
         ];
-        if ($this->session->user === 'B0445' || $this->session->user === 'A2146') {
+        if ($this->session->user === 'B0445' || $this->session->user === 'A2146' || $this->session->user === 'P0616') {
             $data['UserAccess'] = [
                 'jenis_kendaraan'  => '',
                 'no_kendaraan'     => 'readonly',
