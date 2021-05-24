@@ -151,6 +151,12 @@ class C_DPBListPR extends CI_Controller
         } elseif ($gudang == 'TUKSONO') {
             $org_id = 102;
             $kode_gudang = 'FG-TKS';
+        } elseif ($gudang == 'PUSAT') {
+            $org_id = 102;
+            $kode_gudang = 'FG-DM';
+        } elseif ($gudang == 'JAKARTA') {
+            $org_id = 207;
+            $kode_gudang = 'FG-JFG';
         }
 
         $no_do = $_POST['noDO'];
