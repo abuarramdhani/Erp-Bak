@@ -5542,6 +5542,10 @@ $route['HistoryBppbg']	=	'HistoryBppbg/C_Index';
 $route['HistoryBppbg/View']					= 'HistoryBppbg/C_View';
 $route['HistoryBppbg/View/(:any)']			= 'HistoryBppbg/C_View/$1';
 $route['HistoryBppbg/View/(:any)/(:any)']	= 'HistoryBppbg/C_View/$1/$2';
+
+$route['HistoryBppbg/Monitoring']				= 'HistoryBppbg/C_Monitoring';
+$route['HistoryBppbg/Monitoring/(:any)']		= 'HistoryBppbg/C_Monitoring/$1';
+$route['HistoryBppbg/Monitoring/(:any)/(:any)']	= 'HistoryBppbg/C_Monitoring/$1/$2';
 // ----------------------------------- Simulasi Muatan Truk ---------------------------------------------
 $route['MuatanTruk/Simulasi'] 						= 'MuatanTruk/C_Simulasi';
 
