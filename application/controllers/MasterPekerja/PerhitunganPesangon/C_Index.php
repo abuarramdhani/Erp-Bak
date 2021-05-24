@@ -5,15 +5,15 @@ class C_Index extends CI_Controller {
 
 
 	public function __construct()
-  {
-    parent::__construct();
+  	{
+		parent::__construct();
 
-	$this->load->library('Log_Activity');
-	$this->load->library('KonversiBulan');
-    $this->load->library('General');
-    $this->load->library('encrypt');
+		$this->load->library('Log_Activity');
+		$this->load->library('KonversiBulan');
+		$this->load->library('General');
+		$this->load->library('encrypt');
 		$this->load->library('session');
-    $this->load->model('M_Index');
+		$this->load->model('M_Index');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('MasterPekerja/PerhitunganPesangon/M_pesangon');
 
@@ -26,7 +26,7 @@ class C_Index extends CI_Controller {
 		}
 		date_default_timezone_set('Asia/Jakarta');
 		$this->checkSession();
-  }
+  	}
 
 	public function checkSession()
 	{
@@ -58,6 +58,74 @@ class C_Index extends CI_Controller {
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MasterPekerja/PerhitunganPesangon/V_Index',$data);
 		$this->load->view('V_Footer',$data);
+	}
+
+	function hitungMasaKerja($awal,$akhir){
+		$tahun 	= 0;
+		$tahun1 = 0;
+		$bulan 	= 0;
+		$bulan1 = 0;
+		$hari 	= 0;
+		$year_awal 	= intval(date('Y',strtotime($awal)));
+		$month_awal	= intval(date('m',strtotime($awal)));
+		$day_awal 	= intval(date('d',strtotime($awal)));
+		$year_akhir = intval(date('Y',strtotime($akhir)));
+		$month_akhir= intval(date('m',strtotime($akhir)));
+		$day_akhir 	= intval(date('d',strtotime($akhir)));
+		if ($day_akhir - $day_awal < 0) {
+			if ($month_akhir == 3) {
+				if ($year_akhir%4 == 0) {
+					$hari = $day_akhir + 29 - $day_awal;
+				}else{
+					$hari = $day_akhir + 28 - $day_awal;
+				}
+			}else{
+				if (in_array($month_akhir, array(5,7,10,12))) {
+					$hari = $day_akhir + 30 - $day_awal;
+				}else{
+					$hari = $day_akhir + 31 - $day_awal;
+				}
+			}
+			$bulan1 = $month_akhir - 1;
+		}else{
+			$hari = $day_akhir - $day_awal;
+			$bulan1 = $month_akhir;
+		}
+		if ($bulan1 -  $month_awal < 0) {
+			$bulan = $bulan1 + 12 - $month_awal;
+			$tahun1 = $year_akhir - 1;
+		}else{
+			$bulan = $bulan1 - $month_awal;
+			$tahun1 = $year_akhir;
+		}
+		if ($year_awal <= 1900) {
+			$tahun = 0;
+		}else{
+			$tahun = $tahun1 - $year_awal;
+		}
+		return array(
+			'tahun' => $tahun,
+			'bulan' => $bulan,
+			'hari' 	=> $hari
+		);
+	}
+
+	public function getDetailPekerja()
+	{
+		$noind 	= $this->input->get('noind');
+		$cuti 	= $this->input->get('cuti');
+
+		$data = $this->M_pesangon->getDetailPekerja($noind);
+		if (!empty($data)) {
+			$data->masa_kerja = $this->hitungMasaKerja($data->diangkat,$data->tglkeluar);
+			$data->sisa_cuti = $this->M_pesangon->getSisaCuti($noind);
+			$data->banyak_gp = $this->M_pesangon->getSetupPesangon($data->masa_kerja['tahun']);
+			// echo "<pre>";print_r($data);exit();
+			echo json_encode($data);
+		}else{
+			echo "Data Kosong";
+		}
+
 	}
 
 	public function create()
@@ -119,8 +187,6 @@ class C_Index extends CI_Controller {
 	{
 		$noind 				=	$this->input->post('noind');
 		$cuti 				=	$this->input->post('cuti');
-
-		
 		
 		$detailPekerja 		=	$this->M_pesangon->detailPekerja($noind,$cuti);
 		if (!empty($detailPekerja)) {
@@ -143,7 +209,6 @@ class C_Index extends CI_Controller {
 		$jml_upmk 	   	    		=	$this->input->post('txtUPMK');
 		$jml_cuti 	    			=	$this->input->post('txtCuti');
 		$uang_ganti_kerugian 		=	$this->input->post('txtRugi');
-		$potongan 					=	$this->input->post('txtPotongan');
 		$hutang_koperasi 			=	$this->input->post('txtHutangKoperasi');
 		$hutang_perusahaan 			=	$this->input->post('txtHutangPerusahaan');
 		$lain_lain 					=	$this->input->post('txtLainLain');
@@ -170,7 +235,6 @@ class C_Index extends CI_Controller {
 										'jml_upmk' 	            	=>  $jml_upmk,
 									    'jml_cuti'              	=>	$jml_cuti,
 									    'uang_ganti_kerugian'		=>	$uang_ganti_kerugian,
-									    'potongan'			    	=>  $potongan,
 									    'hutang_koperasi'			=>	$hutang_koperasi,
 									    'hutang_perusahaan'			=>	$hutang_perusahaan,
 									    'lain_lain'					=>	$lain_lain,
