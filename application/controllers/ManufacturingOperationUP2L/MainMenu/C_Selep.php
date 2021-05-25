@@ -41,12 +41,63 @@ class C_Selep extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
-		$data['Selep'] = $this->M_selep->getSelep();
+		// $data['Selep'] = $this->M_selep->getSelep(); // hehe
 
 		$this->load->view('V_Header', $data);
 		$this->load->view('V_Sidemenu', $data);
 		$this->load->view('ManufacturingOperationUP2L/Selep/V_index', $data);
 		$this->load->view('V_Footer', $data);
+	}
+
+	public function buildSelepDataTable()
+	{
+		$post = $this->input->post();
+
+		foreach ($post['columns'] as $val) {
+			$post['search'][$val['data']]['value'] = $val['search']['value'];
+		}
+
+		$countall = $this->M_selep->countAllSelep()['count'];
+		$countfilter = $this->M_selep->countFilteredSelep($post)['count'];
+
+		$post['pagination']['from'] = $post['start'] + 1;
+		$post['pagination']['to'] = $post['start'] + $post['length'];
+
+		$protodata = $this->M_selep->selectSelep($post);
+
+		$data = [];
+		foreach ($protodata as $row) {
+
+			$sub_array = [];
+			$sub_array[] = '<center>'.$row['pagination'].'</center>';
+			$sub_array[] = '<center>
+											<a style="margin-right:4px" href="'.base_url('ManufacturingOperationUP2L/Selep/read/'.$row['selep_id'].'').'" data-toggle="tooltip" data-placement="bottom" title="Read Data"><span class="fa fa-list-alt fa-2x"></span></a>
+											<a style="margin-right:4px" href="'.base_url('ManufacturingOperationUP2L/Selep/edit/'.$row['selep_id'].'').'" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o fa-2x"></span></a>
+											<a href="'.base_url('ManufacturingOperationUP2L/Selep/delete/'.$row['selep_id'].'').'" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm(\'Are you sure you want to delete this item?\');"><span class="fa fa-trash fa-2x"></span></a>
+										</center>';
+			$sub_array[] = '<center>'.$row['selep_date'].'</center>';
+			$sub_array[] = '<center>'.$row['component_code'].'</center>';
+			$sub_array[] = '<center>'.$row['component_description'].'</center>';
+			$sub_array[] = '<center>'.$row['selep_quantity'].'</center>';
+			$sub_array[] = '<center>'.$row['scrap_quantity'].'</center>';
+			$sub_array[] = '<center>'.$row['shift'].'</center>';
+			$sub_array[] = '<center>'.$row['job_id'].'</center>';
+
+			$data[] = $sub_array;
+		}
+
+		$output = [
+			'draw' => $post['draw'],
+			'recordsTotal' => $countall,
+			'recordsFiltered' => $countfilter,
+			'data' => $data,
+		];
+
+		die($this->output
+						->set_status_header(200)
+						->set_content_type('application/json')
+						->set_output(json_encode($output))
+						->_display());
 	}
 
 	public function view_create()
@@ -61,7 +112,7 @@ class C_Selep extends CI_Controller
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
-		
+
 		$this->load->view('V_Header', $data);
 		$this->load->view('V_Sidemenu', $data);
 		$this->load->view('ManufacturingOperationUP2L/Selep/V_create', $data);
@@ -111,7 +162,7 @@ class C_Selep extends CI_Controller
 			$selepData[$aksen3]['keterangan'] = $c;
 			$aksen3++;
 		}
-		
+
 		foreach ($selepData as $se) {
 			$this->M_selep->setSelep($se);
 		}
@@ -127,7 +178,7 @@ class C_Selep extends CI_Controller
 		$data['Menu'] = 'Manufacturing Operation';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
-		
+
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
