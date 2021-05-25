@@ -1747,7 +1747,7 @@ $('#mpk_mdledtsbbklr').on('shown.bs.modal', function (event) {
 	if (!sbbklr) {
 		return false;
 	}
-	var target = $('.scrolll_this')[0].scrollIntoView();
+	if($('.scrolll_this')) $('.scrolll_this')[0].scrollIntoView();
 });
 
 $('#mpk_mdledtsbbklr').on('hide.bs.modal', function (event) { 
@@ -1780,8 +1780,10 @@ $(document).ready(function(){
             },
             url: baseurl + "MasterPekerja/DataPekerjaKeluar/editSbabKeluar",
             success: function (result) {
+            	var d = JSON.parse(result);
                 MPKmcc_showAlert('success', 'Berhasil Mengupdate Data');
                 $('#mpk_btnmdlsvsbbklr').attr('disabled', true);
+                $('#mpk_divtxtsbbklr').text(d.sebabklr);
             },
             error: function (jqXHR,error, errorThrown) {
             	alert(jqXHR.responseText);

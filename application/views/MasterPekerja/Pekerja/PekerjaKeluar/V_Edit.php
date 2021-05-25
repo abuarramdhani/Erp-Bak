@@ -983,26 +983,16 @@
 																	<div class="col-md-4">
 																		<label for="">Sebab Keluar</label>
 																	</div>
-																	<div class="col-md-8">
+																	<div class="col-md-8" id="mpk_divtxtsbbklr">
+																		<?= $data['sebabklr'] ?>
+																	</div>
+																</div>
+																<div class="row mt-10" style="margin-bottom: 20px;">
+																	<div class="col-md-12 text-center">
 																		<button class="btn btn-primary btn-sm" id="mpk_btnedtsbbbklr">
-																			Lihat/Edit Sebab Keluar
+																			Edit Sebab Keluar
 																		</button>
 																	</div>
-																	<!-- <div class="col-md-8">
-																		<?php
-																		if (!in_array($data['sebabklr'], $arrsebabkeluar)) {
-																			array_push($arrsebabkeluar, array(
-																				'fs_sbb_keluar' => $data['sebabklr']
-																			));
-																		}
-																		?>
-																		<select name="sebabklr" id="" class="form-control">
-																			<option value="-">-</option>
-																			<?php foreach ($arrsebabkeluar as $item) : ?>
-																				<option value="<?= $item['fs_sbb_keluar'] ?>" <?= ($item['fs_sbb_keluar'] === $data['sebabklr']) ? 'selected' : '' ?>><?= $item['fs_sbb_keluar'] ?></option>
-																			<?php endforeach ?>
-																		</select>
-																	</div> -->
 																</div>
 																<div class="row mt-10">
 																	<div class="col-md-12">
@@ -1858,9 +1848,9 @@
 				<div class="modal-body" style="height: 400px; overflow: auto;">
 					<table class="table table-hover">
 						<?php foreach ($l_sebabklr as $key): ?>
-							<tr class="last_scrolll <?= ($key['kode'] == $data['sebabklr']) ? 'scrolll_this':'' ?>">
+							<tr class="last_scrolll <?= ($key['kode'] == $data['sebabklr_kode']) ? 'scrolll_this':'' ?>">
 								<td>
-									<input <?= ($key['kode'] == $data['sebabklr']) ? 'checked':'' ?> type="radio" class="form-control" name="new_sbabklr" value="<?= $key['kode'] ?>">
+									<input <?= ($key['kode'] == $data['sebabklr_kode']) ? 'checked':'' ?> type="radio" class="form-control" name="new_sbabklr" value="<?= $key['kode'] ?>">
 								</td>
 								<td>
 									<label class="mpk_lblsbbklr" style="cursor: pointer;"><?= $key['sebab_keluar'] ?></label>
