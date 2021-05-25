@@ -58,7 +58,7 @@
 </table>
 </div>
 <br>
-<?php if (stripos($key, 'SPAREPART') !== FALSE) { // tampilan jika kategori sparepart ?>
+<?php if ($value[0]['ID_CATEGORY'] == 15 || $value[0]['ID_CATEGORY'] == 19) { // tampilan jika kategori sparepart ?>
 <table class="table table-bordered hor-center ver-center" repeat_header="1">
 <thead>
 	<tr style="background-color: #f0f0f0;" class="table-head">

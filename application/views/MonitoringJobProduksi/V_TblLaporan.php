@@ -1,7 +1,7 @@
 <form method="post">
 <?php
 $tabel = count($data)> 10 ? 'tb_laporan' : 'tb_laporan2';
-if ($kategori != 15) { // view kategori bukan sparepart
+if ($kategori != 15 && $kategori != 19) { // view kategori bukan sparepart
 ?>
 <table class="table table-bordered table-hover table-striped text-center" id="<?= $tabel?>">
     <thead style="background-color:#63E1EB">
@@ -150,8 +150,9 @@ if ($kategori != 15) { // view kategori bukan sparepart
 </table>
 <?php }?>
 <div class="panel-body text-right">
-    <button class="btn btn-lg" formtarget="_blank" formaction="<?php echo base_url("MonitoringJobProduksi/LaporanProduksi/laporan_produksi_pdf2")?>"><i class="fa fa-print"></i> FULL</button>
-    <button class="btn btn-lg btn-info" formtarget="_blank" formaction="<?php echo base_url("MonitoringJobProduksi/LaporanProduksi/laporan_produksi_pdf")?>"><i class="fa fa-print"></i> PDF</button>
-    <button class="btn btn-lg btn-success" formaction="<?php echo base_url("MonitoringJobProduksi/LaporanProduksi/DownloadExcel")?>"><i class="fa fa-download"></i> Excel</button>
+    <button class="btn" formaction="<?php echo base_url("MonitoringJobProduksi/LaporanProduksi/laporan_produksi_excel2")?>"><i class="fa fa-download"></i> EXCEL FULL</button>
+    <button class="btn" formtarget="_blank" formaction="<?php echo base_url("MonitoringJobProduksi/LaporanProduksi/laporan_produksi_pdf2")?>"><i class="fa fa-print"></i> PDF FULL</button>
+    <button class="btn btn-info" formtarget="_blank" formaction="<?php echo base_url("MonitoringJobProduksi/LaporanProduksi/laporan_produksi_pdf")?>"><i class="fa fa-print"></i> PDF</button>
+    <button class="btn btn-success" formaction="<?php echo base_url("MonitoringJobProduksi/LaporanProduksi/DownloadExcel")?>"><i class="fa fa-download"></i> EXCEL</button>
 </div>
 </form>
