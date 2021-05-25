@@ -14,6 +14,72 @@ class M_selep extends CI_Model
         $query = $this->db->query($sql);
         return $query->result_array();
     }
+
+    // DATATABLE SERVERSIDE CORE
+    public function selectSelep($data)
+    {
+      $explode = strtoupper($data['search']['value']);
+        $res = $this->db
+            ->query(
+                "SELECT kdav.*
+                FROM
+                    (
+                    SELECT
+                            skdav.*,
+                            ROW_NUMBER () OVER (ORDER BY selep_date DESC) as pagination
+                        FROM
+                            (
+                              SELECT mfo.*
+                              FROM
+                                  (SELECT * FROM mo.mo_selep ORDER BY extract(month from selep_date) desc, extract(year from selep_date) desc, extract(day from selep_date), shift, job_id) mfo
+                              WHERE
+                                    (
+                                      component_code LIKE '%{$explode}%'
+                                      OR component_description LIKE '%{$explode}%'
+                                      OR selep_date::text LIKE '%{$explode}%'
+                                      OR job_id LIKE '%{$explode}%'
+                                      OR shift LIKE '%{$explode}%'
+                                    )
+                            ) skdav
+
+                    ) kdav
+                WHERE
+                    pagination BETWEEN {$data['pagination']['from']} AND {$data['pagination']['to']}"
+            )->result_array();
+
+        return $res;
+    }
+
+    public function countAllSelep()
+    {
+      return $this->db->query(
+        "SELECT
+            COUNT(*) AS \"count\"
+        FROM
+        (SELECT selep_id FROM mo.mo_selep ORDER BY extract(month from selep_date) desc, extract(year from selep_date) desc, extract(day from selep_date), shift, job_id) kdo"
+        )->row_array();
+    }
+
+    public function countFilteredSelep($data)
+    {
+      $explode = strtoupper($data['search']['value']);
+      return $this->db->query(
+        "SELECT
+              COUNT(*) AS \"count\"
+            FROM
+            (SELECT * FROM mo.mo_selep ORDER BY extract(month from selep_date) desc, extract(year from selep_date) desc, extract(day from selep_date), shift, job_id) kdo
+            WHERE
+            (
+              component_code LIKE '%{$explode}%'
+              OR component_description LIKE '%{$explode}%'
+              OR selep_date::text LIKE '%{$explode}%'
+              OR job_id LIKE '%{$explode}%'
+              OR shift LIKE '%{$explode}%'
+            )"
+        )->row_array();
+    }
+    // END SERVERSIDE DATATABLE
+
     public function getSelepById($id)
     {
         $query = $this->db->get_where('mo.mo_selep', array('selep_id' => $id));

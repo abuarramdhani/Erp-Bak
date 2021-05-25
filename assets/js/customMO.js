@@ -156,6 +156,38 @@ const tblAbs2021 = $('#tblMouldingAbs').DataTable({
          }
      }
 });
+// DATATABLE SERVERSIDE SELEP
+ $('#tblSelep_ss').DataTable({
+    // dom: 'rtp',
+    ajax: {
+      data: (d) => $.extend({}, d, {
+        // org: null,    // optional
+        // id_plan: null // optional
+      }),
+      url: baseurl + "ManufacturingOperationUP2L/Selep/buildSelepDataTable",
+      type: 'POST',
+    },
+    language:{
+      processing: "<div class='overlay custom-loader-background'><i class='fa fa-cog fa-spin custom-loader-color' style='color:#fff'></i></div>"
+    },
+    ordering: false,
+    pageLength: 10,
+    pagingType: 'first_last_numbers',
+    processing: true,
+    serverSide: true,
+    preDrawCallback: function(settings) {
+         if ($.fn.DataTable.isDataTable('#tblCore2021')) {
+             var dt = $('#tblCore2021').DataTable();
+
+             //Abort previous ajax request if it is still in process.
+             var settings = dt.settings();
+             if (settings[0].jqXHR) {
+                 settings[0].jqXHR.abort();
+             }
+         }
+     }
+});
+
 // Search Bulan ditampilkan dengan serverside datatable
 let cari_mould, refresh_mould = null;
 
