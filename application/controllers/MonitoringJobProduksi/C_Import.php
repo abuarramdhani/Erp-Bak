@@ -96,6 +96,8 @@ class C_Import extends CI_Controller
 					$id_plan = $cek_id[0]['PLAN_ID'] + 1;
 					$this->M_import->savePlan($id_plan, $inv, $bulan, $kategori, $subctgr);
 					$this->M_import->savePlanDate($id_plan, $plan);
+				}else {
+					$this->M_import->savePlanDate($cek_plan[0]['PLAN_ID'], $plan);
 				}
 			}
             $i++;

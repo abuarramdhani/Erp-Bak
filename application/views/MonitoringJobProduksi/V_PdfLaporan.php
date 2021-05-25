@@ -57,7 +57,7 @@
 </table>
 </div>
 <br>
-<?php if ($data['kategori'] != 'SPAREPART') { // tampilan jika kategori bukan sparepart ?>
+<?php if ($data['id_kategori'] != 15 && $data['id_kategori'] != 19) { // tampilan jika kategori bukan sparepart ?>
 <table class="table table-bordered hor-center ver-center" repeat_header="1">
 <thead>
 	<tr style="background-color: #f0f0f0;" class="table-head">
