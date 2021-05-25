@@ -176,8 +176,8 @@ const tblAbs2021 = $('#tblMouldingAbs').DataTable({
     processing: true,
     serverSide: true,
     preDrawCallback: function(settings) {
-         if ($.fn.DataTable.isDataTable('#tblCore2021')) {
-             var dt = $('#tblCore2021').DataTable();
+         if ($.fn.DataTable.isDataTable('#tblSelep_ss')) {
+             var dt = $('#tblSelep_ss').DataTable();
 
              //Abort previous ajax request if it is still in process.
              var settings = dt.settings();
