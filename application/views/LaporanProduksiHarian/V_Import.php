@@ -46,11 +46,25 @@ vertical-align: middle;
                         <div class="col-md-6  pt-4 pb-4">
                           <div class="form-group">
                             <form class="" action="<?php echo base_url('LaporanProduksiHarian/action/submit_import') ?>" method="post" enctype="multipart/form-data">
-                              <label for="">Pilih File</label>
-                              <div class="input-group">
-                                <div class="input-group-addon"><i class="fa fa-file-excel-o"></i></div>
-                                <input type="file" class="form-control" name="excel_file" value="">
+                              <div class="form-group">
+                                <label for="">Pilih Shift</label>
+                                <div class="input-group">
+                                  <div class="input-group-addon"><i class="fa fa-fire"></i></div>
+                                  <select class="select2" name="shift" style="width:100%">
+                                    <?php foreach ($shift as $key => $value): ?>
+                                      <option value="<?php echo $value['SHIFT_NUM'] ?>"><?php echo $value['SHIFT_NUM'] ?> - <?php echo $value['DESCRIPTION'] ?></option>
+                                    <?php endforeach; ?>
+                                  </select>
+                                </div>
                               </div>
+                              <div class="form-group">
+                                <label for="">Pilih File</label>
+                                <div class="input-group">
+                                  <div class="input-group-addon"><i class="fa fa-file-excel-o"></i></div>
+                                  <input type="file" class="form-control" name="excel_file" value="" required>
+                                </div>
+                              </div>
+
                               <center> <button type="submit" class="btn btn-primary mt-4" style="width:30%;font-weight:bold" name="button"> <i class="fa fa-download"></i> Import</button> </center>
                             </form>
                           </div>

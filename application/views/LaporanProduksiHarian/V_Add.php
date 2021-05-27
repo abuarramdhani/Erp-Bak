@@ -150,40 +150,41 @@ vertical-align: middle;
                           </div>
                         </div>
                         <div class="col-md-5">
-                          <div class="box box-primary box-solid">
+                          <div class="box box-primary box-solid" style="height:305px">
                             <div class="box-header" style="padding:5px !important">
-                              <b>Operator</b>
+                              <b>Pengawas & Operator</b>
                             </div>
-                            <div class="box-body">
+                            <div class="box-body" style="padding-top:60px">
                               <div class="form-group">
                                 <label for="">Cari Pekerja</label>
-                                <div class="row">
-                                  <div class="col-sm-8">
-                                    <select class="select2" name=""  style="width:100%">
+                                <select class="select2" name=""  style="width:100%">
 
-                                    </select>
+                                </select>
+                              </div>
+                              <div class="form-group">
+                                <label for="">Cari Pengawas</label>
+                                <select class="select2" name=""  style="width:100%">
+
+                                </select>
+                                <!-- <div class="row">
+                                  <div class="col-sm-8">
                                   </div>
                                   <div class="col-sm-4">
                                     <button type="button" class="btn btn-primary" style="width:100%" name="button"> <i class="fa fa-download"></i> Tambah </button>
                                   </div>
-                                </div>
-                                <div class="mt-4" style="overflow-y:scroll;height:164px;">
+                                </div> -->
+                                <!-- <div class="mt-4" style="overflow-y:scroll;height:164px;">
                                   <table class="table" style="width:100%;">
                                     <thead class="bg-primary">
                                       <tr>
                                         <td style="width:30%">No. Induk</td>
-                                        <td>Nama Pekerja</td>
+                                        <td>Nama Pengawas</td>
                                       </tr>
                                     </thead>
                                     <tbody>
-                                      <!-- <tr>
-                                        <td>t0012</td>
-                                        <td>aldipradana</td>
-                                      </tr> -->
                                     </tbody>
                                   </table>
-                                </div>
-
+                                </div> -->
                               </div>
                             </div>
                           </div>
@@ -236,52 +237,11 @@ vertical-align: middle;
                           </div>
                         </div>
                         <div class="col-md-6">
-                          <div class="box box-primary box-solid">
-                            <div class="box-header" style="padding:5px !important">
-                              <b>Pengawas</b>
-                            </div>
-                            <div class="box-body">
-                              <div class="form-group">
-                                <label for="">Cari Pengawas</label>
-                                <div class="row">
-                                  <div class="col-sm-8">
-                                    <select class="select2" name=""  style="width:100%">
-
-                                    </select>
-                                  </div>
-                                  <div class="col-sm-4">
-                                    <button type="button" class="btn btn-primary" style="width:100%" name="button"> <i class="fa fa-download"></i> Tambah </button>
-                                  </div>
-                                </div>
-                                <div class="mt-4" style="overflow-y:scroll;height:164px;">
-                                  <table class="table" style="width:100%;">
-                                    <thead class="bg-primary">
-                                      <tr>
-                                        <td style="width:30%">No. Induk</td>
-                                        <td>Nama Pengawas</td>
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-                                      <!-- <tr>
-                                        <td>t0012</td>
-                                        <td>aldipradana</td>
-                                      </tr> -->
-                                    </tbody>
-                                  </table>
-                                </div>
-
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="row pt-2">
-                        <div class="col-md-12">
-                          <div class="box box-primary box-solid">
+                          <div class="box box-primary box-solid" style="height:305px">
                             <div class="box-header" style="padding:5px !important">
                               <b>Operator Tanpa Target</b>
                             </div>
-                            <div class="box-body">
+                            <div class="box-body" style="padding-top:37px">
                               <div class="form-group">
                                 <label for="">Jenis</label>
                                 <select class="select2" name=""  style="width:100%">
@@ -293,10 +253,10 @@ vertical-align: middle;
                                  <label for="">Keterangan</label>
                                  <textarea name="name" class="form-control" rows="4" style="width:100%"></textarea>
                                </div>
-                              </div>
                             </div>
                           </div>
                         </div>
+                      </div>
                         <div class="row pt-2">
                           <div class="col-md-12">
                             <div class="box box-primary box-solid">
@@ -443,10 +403,10 @@ vertical-align: middle;
                                     <tr>
                                       <td style="width:70px"> <b>Total</b> </td>
                                       <td>:</td>
-                                      <td><center><input type="text" class="form-control" style="width:80%" name="" value=""></center> </td>
+                                      <td><center><input type="text" class="form-control" readonly style="width:80%" name="" value=""></center> </td>
                                       <td style="width:70px"> <b>Kurang</b> </td>
                                       <td>:</td>
-                                      <td><center><input type="text" class="form-control" style="width:80%" name="" value=""></center> </td>
+                                      <td><center><input type="text" class="form-control" readonly style="width:80%" name="" value=""></center> </td>
                                     </tr>
                                   </table>
                                 </div>
