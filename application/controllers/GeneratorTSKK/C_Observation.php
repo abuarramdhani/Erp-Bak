@@ -79,9 +79,9 @@ public function AngkaToChar($sisa){
       }elseif ($sisa == 9) {
         $kolom = 'I';
       }elseif ($sisa == 10) {
-        $kolom = 'J';
-      }elseif ($sisa == 11) {
         $kolom = 'K';
+      }elseif ($sisa == 11) {
+        $kolom = 'L';
       }elseif ($sisa == 12) {
         $kolom = 'L';
       }elseif ($sisa == 13) {
@@ -273,13 +273,21 @@ $objget->setTitle("Lembar Observasi Elemen Kerja");
 
 // ------- SET COLUMN --------- //
 $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(2);
+
 $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(4);
 $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(4);
-$objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(16);
+$objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(14);
 $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(5.38);
-for ($i='F'; $i <= 'Y'; $i++) {
-	$objPHPExcel->getActiveSheet()->getColumnDimension($i)->setWidth(5.07);
+
+$objPHPExcel->getActiveSheet()->getColumnDimension('I')->setWidth(5.5);
+$objPHPExcel->getActiveSheet()->getColumnDimension('J')->setWidth(5.5);
+$objPHPExcel->getActiveSheet()->getColumnDimension('K')->setWidth(5.5);
+$objPHPExcel->getActiveSheet()->getColumnDimension('X')->setWidth(5.2);
+$objPHPExcel->getActiveSheet()->getColumnDimension('Y')->setWidth(5.2);
+for ($i='L'; $i <= 'W'; $i++) {
+	$objPHPExcel->getActiveSheet()->getColumnDimension($i)->setWidth(6.07);
 }
+// $objPHPExcel->getActiveSheet()->getColumnDimension('Y')->setWidth(9.6);
 $objPHPExcel->getActiveSheet()->getColumnDimension('Z')->setWidth(9.6);
 
 // $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
@@ -287,8 +295,8 @@ $objPHPExcel->getActiveSheet()->getColumnDimension('Z')->setWidth(9.6);
 // $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setAutoSize(true);
 // $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
 // $objPHPExcel->getActiveSheet()->getColumnDimension('I')->setAutoSize(true);
-// $objPHPExcel->getActiveSheet()->getColumnDimension('J')->setAutoSize(true);
 // $objPHPExcel->getActiveSheet()->getColumnDimension('K')->setAutoSize(true);
+// $objPHPExcel->getActiveSheet()->getColumnDimension('L')->setAutoSize(true);
 
 // MERGING TO SET THE PAGE HEADER//
 $objPHPExcel->getActiveSheet()->mergeCells('B1:C6');//LOGO QUICK
@@ -332,15 +340,15 @@ $objPHPExcel->getActiveSheet()->mergeCells('X6:Y6'); //hal.
 $objPHPExcel->getActiveSheet()->mergeCells('Z6:AA6'); //ISI Hal..
 
 $objPHPExcel->getActiveSheet()->mergeCells('B7:B9'); //NO.
-$objPHPExcel->getActiveSheet()->mergeCells('C7:E9'); //Elemen Kerja.
-$objPHPExcel->getActiveSheet()->mergeCells('F7:Y7'); //Waktu Pengukuran (detik)
+$objPHPExcel->getActiveSheet()->mergeCells('C7:K9'); //Elemen Kerja.
+$objPHPExcel->getActiveSheet()->mergeCells('L7:Y7'); //Waktu Pengukuran (detik)
 //bawah waktu Pengukuran
 $ii_ = 1;
-for ($i='F'; $i <= 'Y'; $i++) {
-	if ($ii_%2 != 0) {
-		$objPHPExcel->getActiveSheet()->mergeCells($i.'8:'.(chr(ord($i)+1)).'8');
-	}
-	$ii_++;
+for ($i='F'; $i <= 'W'; $i++) {
+	// if ($ii_%2 != 0) { (chr(ord($i)+1))
+		$objPHPExcel->getActiveSheet()->mergeCells($i.'8:'.$i.'9');
+	// }
+	// $ii_++;
 }
 
 $objPHPExcel->getActiveSheet()->mergeCells('Z7:AA9'); //Catatan
@@ -390,27 +398,25 @@ $objPHPExcel->setActiveSheetIndex(0)
 
         ->setCellValue('B7', 'NO')
         ->setCellValue('C7', 'Elemen Kerja')
-				->setCellValue('F7', 'Waktu Pengukuran (detik)')
-				->setCellValue('Z7', 'Catatan')
+				->setCellValue('L7', 'Waktu Pengukuran (detik)')
+				->setCellValue('Z7', 'Keterangan')
 
 
-        ->setCellValue('U7', 'X min')
-        ->setCellValue('V7', 'R')
-        ->setCellValue('W7', 'Waktu Kerja')
-        ->setCellValue('X7', 'Keterangan')
+        ->setCellValue('V8', 'X min')
+        ->setCellValue('W8', 'R')
+        ->setCellValue('X8', 'Waktu Kerja')
         ;
 
 	$ii = 1;
 	$ke = 1;
-	for ($i='F'; $i <= 'Y'; $i++) {
-		if ($ii%2 != 0) {
-			$objPHPExcel->setActiveSheetIndex(0)->setCellValue($i.'8', $ke)
-																					->setCellValue($i.'9', 'Kon.');
+	for ($i='L'; $i <= 'U'; $i++) {
+		// if ($ii%2 != 0) {
+			$objPHPExcel->setActiveSheetIndex(0)->setCellValue($i.'8', $ke);
 			$ke++;
-		}else {
-			$objPHPExcel->setActiveSheetIndex(0)->setCellValue($i.'9', 'Sat.');
-		}
-		$ii++;
+		// }else {
+		// 	$objPHPExcel->setActiveSheetIndex(0)->setCellValue($i.'9', 'Sat.');
+		// }
+		// $ii++;
 	}
 //STYLING HEADER//
 
@@ -526,8 +532,8 @@ $objget->getStyle('I1:O6')->applyFromArray(
 $objPHPExcel->getActiveSheet()->getStyle("I1:O6")->getFont()->setSize(18);
 
 //WRAP TEXT ON WAKTU KERJA COLUMN
-  $objget->getStyle('W6:W7')->getAlignment()->setWrapText(true);
-
+$objget->getStyle('W6:W7')->getAlignment()->setWrapText(true);
+// $objget->getStyle('Y8:Y9')->getAlignment()->setWrapText(true);
 //SET THE TABLE VALUES//
 $baris  = 10;
 $no = 1;
@@ -548,33 +554,37 @@ if (sizeof($newID) < 45) {
 			,'waktu_10' => ''
 			,'keterangan' => ''
 			,'keterangan_elemen' => ''
+			,'x_min' => ''
+			,'r' => ''
+			,'waktu_kerja' => ''
 		];
 	}
 	foreach ($isi_kosong as $key => $value) {
 		$newID[] = $value;
 	}
 }
-
 foreach ($newID as $isi) {
 
+	$objPHPExcel->getActiveSheet()->mergeCells('X'.$baris.':Y'.$baris);
+
   $objset->setCellValue("B".$baris, $no);
-  $objPHPExcel->getActiveSheet()->mergeCells('C'.$baris.':E'.$baris);
+  $objPHPExcel->getActiveSheet()->mergeCells('C'.$baris.':K'.$baris);
   $objset->setCellValue("C".$baris, $isi['elemen']." ".$isi['keterangan_elemen']);
-  // $objPHPExcel->getActiveSheet()->mergeCells('K'.$baris.':K'.$baris);
-  $objget->getStyle('C'.$baris.':E'.$baris)->getAlignment()->setWrapText(true);
-  $objset->setCellValue("G".$baris, $isi['waktu_1']);
-  $objset->setCellValue("I".$baris, $isi['waktu_2']);
-  $objset->setCellValue("K".$baris, $isi['waktu_3']);
-  $objset->setCellValue("M".$baris, $isi['waktu_4']);
-  $objset->setCellValue("O".$baris, $isi['waktu_5']);
+  // $objPHPExcel->getActiveSheet()->mergeCells('L'.$baris.':K'.$baris);
+  $objget->getStyle('C'.$baris.':K'.$baris)->getAlignment()->setWrapText(true);
+  $objset->setCellValue("L".$baris, $isi['waktu_1']);
+  $objset->setCellValue("M".$baris, $isi['waktu_2']);
+  $objset->setCellValue("N".$baris, $isi['waktu_3']);
+  $objset->setCellValue("O".$baris, $isi['waktu_4']);
+  $objset->setCellValue("P".$baris, $isi['waktu_5']);
   $objset->setCellValue("Q".$baris, $isi['waktu_6']);
-  $objset->setCellValue("S".$baris, $isi['waktu_7']);
-  $objset->setCellValue("U".$baris, $isi['waktu_8']);
-  $objset->setCellValue("W".$baris, $isi['waktu_9']);
-  $objset->setCellValue("Y".$baris, $isi['waktu_10']);
-  // $objset->setCellValue("U".$baris, $isi['x_min']);
-  // $objset->setCellValue("V".$baris, $isi['r']);
-  // $objset->setCellValue("W".$baris, $isi['waktu_kerja']);
+  $objset->setCellValue("R".$baris, $isi['waktu_7']);
+  $objset->setCellValue("S".$baris, $isi['waktu_8']);
+	$objset->setCellValue("T".$baris, $isi['waktu_9']);
+	$objset->setCellValue("U".$baris, $isi['waktu_10']);
+  $objset->setCellValue("V".$baris, $isi['x_min']);
+  $objset->setCellValue("W".$baris, $isi['r']);
+  $objset->setCellValue("X".$baris, $isi['waktu_kerja']);
   $objPHPExcel->getActiveSheet()->mergeCells('Z'.$baris.':AA'.$baris);
   $objset->setCellValue("Z".$baris, $isi['keterangan']);
 
@@ -604,16 +614,16 @@ foreach ($newID as $isi) {
   //SET TOTAL TIMES//
   $indexJml = $baris;
 	$objset->setCellValue("B".$indexJml, "1 Cycle Time (satuan Detik)");
-	$objPHPExcel->getActiveSheet()->mergeCells('B'.$indexJml.':E'.($indexJml + 1));
+	$objPHPExcel->getActiveSheet()->mergeCells('B'.$indexJml.':K'.($indexJml + 1));
 	$objPHPExcel->getActiveSheet()->mergeCells('Z'.$indexJml.':AA'.($indexJml + 1));
 	$aa_ = 1;
-	for ($i='F'; $i <= 'Y'; $i++) {
-		if ($aa_%2 != 0) {
-			$objset->setCellValue($i.$indexJml, '=SUM('.(chr(ord($i)+1)).'10:'.(chr(ord($i)+1)).($indexJml-1).')');
-			$objPHPExcel->getActiveSheet()->mergeCells($i.$indexJml.':'.(chr(ord($i)+1)).($indexJml+1));
+	for ($i='L'; $i <= 'X'; $i++) {
+		$objset->setCellValue($i.$indexJml, '=SUM('.$i.'10:'.$i.($indexJml-1).')');
+		if ($i != 'X') {
+			$objPHPExcel->getActiveSheet()->mergeCells($i.$indexJml.':'.$i.($indexJml + 1));
 		}
-		$aa_++;
 	}
+	$objPHPExcel->getActiveSheet()->mergeCells('X'.$indexJml.':Y'.($indexJml + 1));
 
 	// set font
 	for ($i='F'; $i <= 'Y'; $i++) {
@@ -641,6 +651,8 @@ foreach ($newID as $isi) {
               )
           )
       );
+
+$objPHPExcel->getActiveSheet()->mergeCells('X8:Y9');
 $objPHPExcel->getActiveSheet()->getPageSetup()->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE);
 $objPHPExcel->getActiveSheet()->getPageSetup()->setPaperSize(PHPExcel_WorkSheet_PageSetup::PAPERSIZE_A4);
 $objPHPExcel->getActiveSheet()->getPageSetup()->setFitToWidth(1);
