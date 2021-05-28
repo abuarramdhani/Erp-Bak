@@ -201,13 +201,13 @@ class M_laporanpenjualantraktor extends CI_Model
         $query = $this->oracle->query("SELECT COUNT (*)
                                             - (SELECT COUNT (*)
                                                     FROM khs_lpb_skip_date
-                                                WHERE EXTRACT (MONTH FROM skip_date) = EXTRACT (MONTH FROM SYSDATE)) JUMLAH_HARI
-                                        FROM (SELECT       TO_DATE ('01/' || TO_CHAR (SYSDATE, 'mm/yyyy'),
+                                                WHERE EXTRACT (MONTH FROM skip_date) = EXTRACT (MONTH FROM SYSDATE-1)) JUMLAH_HARI
+                                        FROM (SELECT       TO_DATE ('01/' || TO_CHAR (SYSDATE-1, 'mm/yyyy'),
                                                                     'dd/mm/yyyy'
                                                                     )
                                                         + LEVEL
                                                         - 1 tanggal,
-                                                        TO_CHAR (  TO_DATE ('01/' || TO_CHAR (SYSDATE, 'mm/yyyy'),
+                                                        TO_CHAR (  TO_DATE ('01/' || TO_CHAR (SYSDATE-1, 'mm/yyyy'),
                                                                             'dd/mm/yyyy'
                                                                             )
                                                                     + LEVEL
@@ -215,7 +215,7 @@ class M_laporanpenjualantraktor extends CI_Model
                                                                     'fmday'
                                                                 ) hari
                                                     FROM DUAL
-                                                CONNECT BY LEVEL <= TO_NUMBER (TO_CHAR (SYSDATE, 'DD')))
+                                                CONNECT BY LEVEL <= TO_NUMBER (TO_CHAR (SYSDATE-1, 'DD')))
                                         WHERE hari != 'sunday'
                                         GROUP BY 1
                                         ");
