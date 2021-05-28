@@ -139,7 +139,7 @@
                                                                  </div>
                                                             </div>
                                                         </div>
-                                                         <div class="row">
+                                                        <div class="row">
                                                             <div class="col-lg-6">
                                                                 <div class="form-group">
                                                                     <label for="txtAlamat" class="col-lg-4 control-label ">Alamat
@@ -173,12 +173,12 @@
                                                                     </div>
                                                                  </div>
                                                             </div>
-                                                        <div class="col-lg-6">
+                                                            <div class="col-lg-6">
                                                                 <div class="form-group">
                                                                     <label for="txtProses" class="col-lg-4 control-label">Tgl Proses PHK
                                                                     </label>
                                                                     <div class="col-lg-5">
-                                                                        <input type="text" name="txtProses" class="form-control" id="txtProses" autocomplete="off">
+                                                                        <input type="text" name="txtProses" class="form-control" id="txtProses" autocomplete="off" required>
                                                                     </div>
                                                                     <div class="col-lg-3">
                                                                         <input type="text" name="txtPrs" class="form-control" id="txtHariPrs"
@@ -197,8 +197,7 @@
                                                                     </div>
                                                                  </div>
                                                             </div>
-
-                                                         <div class="col-lg-6">
+                                                            <div class="col-lg-6">
                                                                 <div class="form-group">
                                                                     <label for="txtNPWP" class="col-lg-4 control-label">NPWP
                                                                     </label>
@@ -219,7 +218,7 @@
                                                                     </div>
                                                                  </div>
                                                             </div>
-                                                        <div class="col-lg-6">
+                                                            <div class="col-lg-6">
                                                                 <div class="form-group">
                                                                     <label for="txtNIK" class="col-lg-4 control-label">NIK
                                                                     </label>
@@ -231,12 +230,21 @@
                                                             </div>
                                                         </div>
                                                         <div class="row">
-                                                            <div class="col-lg-12">
+                                                            <div class="col-lg-6">
                                                                 <div class="form-group">
-                                                                    <label for="txtStatus" class="col-lg-2 control-label">Status
+                                                                    <label for="txtStatus" class="col-lg-4 control-label">Sebab Keluar
                                                                     </label>
-                                                                    <div class="col-lg-4">
+                                                                    <div class="col-lg-8">
                                                                         <input type="text" name="txtStatus" class="form-control" id="txtStatus"  readonly="">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-6">
+                                                                <div class="form-group">
+                                                                    <label for="txtHukum" class="col-lg-4 control-label">Dasar Hukum
+                                                                    </label>
+                                                                    <div class="col-lg-8">
+                                                                        <input type="text" name="txtHukum" class="form-control" id="txtHukum"  readonly="">
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -293,7 +301,7 @@
                                                                                 <label for="txtNomorRekening" class="col-lg-4 control-label ">Nomor Rekening
                                                                                 </label>
                                                                                 <div class="col-lg-8">
-                                                                                    <input type="text" name="txtNomorRekening" class="form-control" id="txtNomorRekening" required>
+                                                                                    <input type="text" name="txtNomorRekening" class="form-control" id="txtNomorRekening" autocomplete="off" required>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -304,7 +312,7 @@
                                                                                 <label for="txtNamaRekening" class="col-lg-4 control-label ">Nama Pemilik Rekening
                                                                                 </label>
                                                                                 <div class="col-lg-8">
-                                                                                    <input type="text" name="txtNamaRekening" class="form-control" id="txtNamaRekening" required>
+                                                                                    <input type="text" name="txtNamaRekening" class="form-control" id="txtNamaRekening" autocomplete="off" required>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -363,11 +371,11 @@
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <div class="col-lg-6">
+                                                <div class="col-lg-12">
                                                     <fieldset>
                                                         <legend>Memo</legend>
                                                         <div class="row">
-                                                            <div class="col-lg-12">
+                                                            <div class="col-lg-6">
                                                                 <div class="form-group">
                                                                     <label for="cmbPengirim" class="col-lg-4 control-label text-left">Pengirim Memo</label>
                                                                     <div class="col-lg-8">
@@ -377,9 +385,7 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="col-lg-12">
+                                                            <div class="col-lg-6">
                                                                 <div class="form-group">
                                                                     <label for="cmbPenerima" class="col-lg-4 control-label text-left">Penerima Memo</label>
                                                                     <div class="col-lg-8">

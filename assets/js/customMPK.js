@@ -1388,6 +1388,7 @@ $(function () {
             $("#txtCuti").val(res['sisa_cuti']);
             
             $("#txtStatus").val(res["sebab_keluar"]);
+            $("#txtHukum").val(res["dasar_hukum"]);
             $("#txtUangPesangon").val(" ".repeat(6 - res["pengali_u_pesangon"].length) + res["pengali_u_pesangon"] + " X " + " ".repeat(6 - res['banyak_gp']['u_pesangon'].length) + res['banyak_gp']['u_pesangon'] + " GP");
             $("#txtUangUMPK").val(" ".repeat(6 - res["pengali_u_pmk"].length) + res["pengali_u_pmk"] + " X " + " ".repeat(6 - res['banyak_gp']['u_pmk'].length) + res['banyak_gp']['u_pmk'] + " GP");
             $("#txtSisaCutiHari").val(" ".repeat(15 - res["sisa_cuti"].length) + res["sisa_cuti"] + " (GP/30)");
@@ -2967,11 +2968,9 @@ $(".prevSangu").click(function () {
     dataType: "json",
     url: baseurl + "MasterPekerja/PerhitunganPesangon/getDataPreview/" + a,
     success: function (result) {
-      $("#Psg_approver1").val(result.dataPreview[0].pengirim).trigger("change");
-      $("#id_prev_sangu").val(result.dataPreview[0].id).trigger("change");
-      $("#psg_tglCetak")
-        .val(result.dataPreview[0].tgl_cetak_prev)
-        .trigger("change");
+      $("#Psg_approver1").val(result.pengirim).trigger("change");
+      $("#id_prev_sangu").val(result.id_pesangon).trigger("change");
+      $("#psg_tglCetak").val(result.tgl_cetak_prev).trigger("change");
       $("#Modal_Tertanda_Pesangon").modal("show");
     },
   });

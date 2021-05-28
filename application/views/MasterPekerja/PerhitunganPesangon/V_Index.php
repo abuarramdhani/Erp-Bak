@@ -37,11 +37,13 @@
                                                 <th style="text-align:center;">NoInduk</th>
                                                 <th style="text-align:center;">Nama</th>
                                                 <th style="text-align:center;">Jabatan Terakhir</th>
+                                                <th style="text-align:center;">Pengali<br>U.Pesangon</th>
                                                 <th style="text-align:center;">U.Pesangon</th>
-                                                <th style="text-align:center;">U.UPMK</th>
+                                                <th style="text-align:center;">Pengali<br>U.PMK</th>
+                                                <th style="text-align:center;">U.PMK</th>
                                                 <th style="text-align:center;">Sisa Cuti</th>
-                                                <th style="text-align:center;">Htg Koperasi</th>
-                                                <th style="text-align:center;">Htg Perusahaan</th>
+                                                <th style="text-align:center;">Hutang<br>Koperasi</th>
+                                                <th style="text-align:center;">Hutang<br>Perusahaan</th>
                                                 <th style="text-align:center;">Lain lain</th>
                                          </thead>
 
@@ -64,7 +66,9 @@
                                                 <td><?php echo $pesangon['noinduk'];?></td>
                                                 <td><?php echo $pesangon['nama'];?></td>
                                                 <td><?php echo $pesangon['jabatan_terakhir'];?></td>
+                                                <td><?php echo $pesangon['pengali_u_pesangon'];?></td>
                                                 <td><?php echo $pesangon['jml_pesangon'];?></td>
+                                                <td><?php echo $pesangon['pengali_upmk'];?></td>
                                                 <td><?php echo $pesangon['jml_upmk'];?></td>
                                                 <td><?php echo $pesangon['jml_cuti'];?></td>
                                                 <td><?php echo $pesangon['hutang_koperasi'];?></td>
