@@ -10,7 +10,9 @@ class M_laporanpenjualantraktor extends CI_Model
     // query mengambil data tanggal
     public function getHeader()
     {
-        $query = $this->oracle->query("SELECT DISTINCT tanggal, to_char(to_date(bulan, 'MM'), 'Month') bulan
+        $query = $this->oracle->query("SELECT DISTINCT tanggal,
+                                        to_char(to_date(bulan, 'MM'), 'Month') bulan,
+                                        tahun
                                         FROM khs_lpb_hari kl
                                         WHERE request_id = (SELECT MAX (request_id) FROM khs_lpb_hari)
                                         ORDER BY 1

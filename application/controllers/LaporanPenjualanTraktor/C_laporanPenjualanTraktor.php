@@ -328,7 +328,6 @@ class C_laporanPenjualanTraktor extends CI_Controller
 
         $objPHPExcel->createSheet(1);
 
-
         $objPHPExcel->setActiveSheetIndex(1)->setCellValue('A1', "Laporan Omset Penjualan Harian Pertipe Perproduk");
         $objPHPExcel->setActiveSheetIndex(1)->setCellValue('A2',  $this->dateInd(date('Y-m-d')));
         $objPHPExcel->getActiveSheet(1)->mergeCells('A1:P1');
@@ -897,23 +896,17 @@ class C_laporanPenjualanTraktor extends CI_Controller
         $pdf = new mPDF('utf-8', 'Legal', '', 'Calibri', 10, 10, 10, 10, 6, 3);
         $pdf->WriteHTML($fill);
 
-        $pdf->Output('Laporan Penjualan Traktor' . $data['date'] . '.pdf', 'D');
+        $pdf->Output('Laporan Penjualan Traktor ' . $data['date'] . '.pdf', 'D');
     }
 
     // function tanggal = tanggal sekarang dikurangi 1 hari
     function dateHmin()
     {
-        $explodeDate = explode('-', date('Y-m-d-D'));
-        $year = $explodeDate[0];
-        $month = $explodeDate[1];
-        $day = $explodeDate[2];
-        $nameDay = $explodeDate[3];
+        $header = $this->M_laporanpenjualantraktor->getHeader();
 
-        if ($nameDay == 'Mon') {
-            $date = date('Y-m-d', strtotime("-2 days"));
-        } else {
-            $date = date('Y-m-d', strtotime("-1 days"));
-        }
+        $date = $header[9];
+        $date = $date['TAHUN'] . '-' . rtrim($date['BULAN']) . '-' . $date['TANGGAL'];
+        $date = date('Y-m-d', strtotime($date));
 
         return $this->dateInd($date);
     }
