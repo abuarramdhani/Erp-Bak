@@ -915,7 +915,18 @@ class C_laporanPenjualanTraktor extends CI_Controller
             $date = date('Y-m-d', strtotime("-1 days"));
         }
 
-        return $this->dateInd($date);
+        $skipDate = $this->M_laporanpenjualantraktor->getSkipDate(date('m-Y'));
+
+        $explodeDate2 = explode('-', $date);
+        foreach ($skipDate as $value) {
+            if ($explodeDate2[2] == $value['TANGGAL']) {
+                $dateNew = date('Y-m-d', strtotime("-2 days"));
+            } else {
+                $dateNew = date('Y-m-d', strtotime("-1 days"));
+            }
+        }
+
+        return $this->dateInd($dateNew);
     }
 
     // function mengubah nama bulan
