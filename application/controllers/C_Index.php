@@ -212,6 +212,38 @@ class C_Index extends CI_Controller
 
 					redirect(base_url());
 				}
+			} else {
+				$user = $this->M_Index->getDetail($username);
+				$path = $this->M_Index->path_photo($username);
+
+				foreach ($user as $user_item) {
+					$iduser 			= $user_item->user_id;
+					$password_default 	= $user_item->password_default;
+					$kodesie			= $user_item->section_code;
+					$employee_name 		= $user_item->employee_name;
+					$kode_lokasi_kerja 	= $user_item->location_code;
+				}
+				$path_photo 		= trim($path);
+				$ses = array(
+					'is_logged' 		=> 1,
+					'userid' 			=> $iduser,
+					'user' 				=> strtoupper($username),
+					'employee'  		=> $employee_name,
+					'kodesie' 			=> $kodesie,
+					'kode_lokasi_kerja'	=> $kode_lokasi_kerja,
+					'path_photo'		=> $path_photo,
+				);
+
+				$isDefaultPass = $this->M_Index->getPassword($username);
+				$ses['pass_is_default'] = $isDefaultPass;
+
+				$this->session->set_userdata($ses);
+
+				$aksi = 'Login';
+				$detail = 'Login';
+				$this->log_activity->activity_log2($aksi, $detail, $ip);
+
+				redirect(base_url());
 			}
 		} else {
 			$ses = array(
