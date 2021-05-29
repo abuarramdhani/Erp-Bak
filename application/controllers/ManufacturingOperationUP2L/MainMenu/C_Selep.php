@@ -49,6 +49,142 @@ class C_Selep extends CI_Controller
 		$this->load->view('V_Footer', $data);
 	}
 
+	public function generate_kib()
+	{
+		if (!empty($this->input->post('batch_no'))) {
+	    $batch_no = $this->input->post('batch_no');
+	    $data = $this->M_selep->get_data_kib($batch_no);
+	    $get_kib =  $this->M_selep->generate_no_kib($batch_no);
+
+			$subinv = explode(' - ', $this->input->post('subinv'));
+	    $data[0]['NO_KIB'] = $get_kib['NO_KIB'];
+			$data[0]['FROM_SUBINVENTORY_CODE'] = $this->input->post('from_sub_code');
+	    $data[0]['TO_ORG_ID'] = $this->input->post('io');
+	    $data[0]['TO_SUBINVENTORY_CODE'] = $subinv[0];
+	    $data[0]['TO_LOCATOR_ID'] = $this->input->post('locator');
+	    $data[0]['QTY_SELEP'] = $this->input->post('qty_selep');
+	    $data[0]['NO_INDUK'] = $this->session->user;
+
+	    $insert = $this->M_selep->insertKIB($data);
+	    if ($insert == 1) {
+				 echo $data[0]['NO_KIB'];
+				 echo "berhasil";
+				 die;
+				// redirect('InventoryManagement/CreateKIB/pdf/1/'.$batch_no.'/0');
+				//http://erp.quick.com/InventoryManagement/CreateKIB/pdf/1/1811000065/0
+	    }else {
+				echo "<pre>";
+				print_r($data);
+				echo "<br>";
+				echo "<pre>";
+				print_r($_POST);
+				die;
+	    }
+
+	  }else {
+	    echo "Batch Number can't null";
+	  }
+	}
+
+	// public function report_kib_opm($batch_no)
+	// {
+	// 	$get = $this->M_selep->report_kib($batch_no);
+	// 	// echo "<PRE>";
+	// 	// print_r($get);
+	// 	// die;
+	// 	$data['get'] = $get;
+	// 	ob_start();
+	// 	$this->load->library('ciqrcode');
+	// 	if (!is_dir('./assets/img/PBIQRCode')) {
+	// 			mkdir('./assets/img/PBIQRCode', 0777, true);
+	// 			chmod('./assets/img/PBIQRCode', 0777);
+	// 	}
+	// 	foreach ($get as $key => $value) {
+	// 		// ------ GENERATE QRCODE ------
+	// 		$params['data']		= $value['SERIAL_NUMBER'];
+	// 		$params['level']	= 'H';
+	// 		$params['size']		= 5;
+	// 		$params['black']	= array(255,255,255);
+	// 		$params['white']	= array(0,0,0);
+	// 		$params['savename'] = './assets/img/PBIQRCode/'.$value['NOKIB'].'.png';
+	// 		$this->ciqrcode->generate($params);
+	// 	}
+	//
+	// 	$pdf 		= $this->pdf->load();
+	// 	// $pdf 		= new mPDF('utf-8', array(120, 210), 0, 'calibri', 3, 3, 15, 0, 0, 0);
+	// 	$pdf 		= new mPDF('utf-8', array(120, 210), 0, 'calibri', 3, 3, 10, 3, 3, 3);
+	// 	ob_end_clean() ;
+	//
+	// 	$doc = 'Cetak-KIB-'.$batch_no;
+	// 	$filename 	= $doc.'.pdf';
+	// 	if (!empty($data['get'])) {
+	// 		$isi 	= $this->load->view('ManufacturingOperationUP2L/Selep/V_cetak_kib', $data, true);
+	// 	}else {
+	// 		$isi 	= 'Data is empty';
+	// 	}
+	// 	$pdf->WriteHTML($isi);
+	// 	$pdf->Output($filename, 'I');
+	//
+	// 	foreach ($get as $key => $value) {
+	// 		if (!unlink('./assets/img/PBIQRCode/'.$value['NOKIB'].'.png')) {
+	// 				echo("Error deleting");
+	// 		}
+	// 	}
+	// }
+
+	public function batch_completion($value='')
+	{
+		$data = 'gada';
+		$no_batch = $this->input->post('batch_no');
+		$qty = $this->input->post('qty');
+		if (!empty($no_batch) && !empty($qty)) {
+			$this->M_selep->batch_completion($no_batch, $qty);
+			$data = 1;
+		}
+		echo json_encode($data);
+	}
+
+	public function check_onhand($value='')
+	{
+		$data = 'gada';
+		$res = $this->M_selep->check_onhand($this->input->post('batch_no'));
+		if (!empty($res[0]['BATCH_NO'])) {
+			$data = $res;
+		}
+		echo json_encode($data);
+	}
+
+	public function create_batch($value='')
+	{
+		$res = $this->M_selep->create_batch($this->input->post('item'), $this->input->post('recipe_no'), $this->input->post('recipe_version'), $this->input->post('uom'), $this->input->post('subinv'), $this->input->post('qty'));
+		if (!empty($res['no_batch'])) {
+			$data = $res;
+		}else {
+			$data = [
+				'no_batch' => 'gada',
+				'reason' => $res['reason']
+			];
+		}
+		echo json_encode($data);
+	}
+
+	public function SubInv($value='')
+	{
+		$data = $this->M_selep->SubInv($this->input->post('io'));
+		$tampung[] = '<option value="">Select..</option>';
+		foreach ($data as $key => $value) {
+			$tampung[] = '<option value="'.$value['SUBINV'].'">'.$value['SUBINV'].' - '.$value['DESCRIPTION'].'</option>';
+		}
+		if (empty($tampung)) $tampung = [];
+		echo json_encode(implode('', $tampung));
+	}
+
+	public function get_recipe($value='')
+	{
+		$data = $this->M_selep->get_recipe($this->input->post('component_code'));
+		echo json_encode(!empty($data)?$data:'gada');
+	}
+
 	public function buildSelepDataTable()
 	{
 		$post = $this->input->post();
@@ -112,6 +248,7 @@ class C_Selep extends CI_Controller
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
+		$data['io'] = $this->M_selep->get_io();
 
 		$this->load->view('V_Header', $data);
 		$this->load->view('V_Sidemenu', $data);
@@ -153,6 +290,7 @@ class C_Selep extends CI_Controller
 			} else {
 				$selepData[$aksen2]['jam_pengurangan'] = '';
 			}
+			$selepData[$aksen2]['batch_no'] = $this->input->post('txtSelepBatchHeader');
 			// $selepData[$aksen2]['jam_pengurangan'] = $this->input->post('txtJamPemotonganTarget');
 			$aksen2++;
 		}
