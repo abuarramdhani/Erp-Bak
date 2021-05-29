@@ -161,13 +161,13 @@
                                     </div>
                                     <div class="panel-footer ">
                                       <div class="row">
-                                        <div class="col-md-6 text-left">
-                                          <button type="button" data-toggle="modal" data-target="#modalUP2LCreateKIB" class="btn btn-danger btn-lg btn-up2l-cetakkib" ><i class="fa fa-file-pdf-o"></i></i>  Cetak KIB</button>
+                                        <div class="col-md-10 text-left">
+                                          <button type="submit" class="btn btn-success btn-lg btn-up2l-save-selep" disabled><i class="fa fa-save"></i></i>  Save</button>
+                                          <button type="button" data-toggle="modal" data-target="#modalUP2LCreateKIB" class="btn btn-danger btn-lg btn-up2l-cetakkib" disabled><i class="fa fa-file-pdf-o"></i></i>  Cetak KIB</button>
                                           <button type="button" data-toggle="modal" data-target="#modalUP2LCompleteJob" class="btn btn-primary btn-lg btn-complate-job" disabled><i class="fa fa-upload"></i></i>  Complete Job</button>
                                           <button type="button" onclick="createBatchMO()" class="btn btn-primary btn-lg"><i class="fa fa-rocket"></i></i>  Create Batch</button>
                                         </div>
-                                        <div class="col-md-6 text-right">
-                                          <button type="submit" class="btn btn-success btn-lg"><i class="fa fa-save"></i></i>  Save</button>
+                                        <div class="col-md-2 text-right">
                                           <a href="<?php echo site_url('ManufacturingOperationUP2L/Selep'); ?>" class="btn btn-danger btn-lg"><i class="fa fa-arrow-left"></i></i>  Back</a>
                                         </div>
                                       </div>
@@ -298,59 +298,68 @@
               </div>
               <div class="box-body">
                 <div class="row">
-                  <div class="col-md-1"></div>
-                  <div class="col-md-10">
+                  <div class="col-md-12">
                     <form class="" target="_blank" action="<?php echo base_url('ManufacturingOperationUP2L/Selep/generate_kib') ?>" method="post">
                       <br>
-                      <table style="width:100%" class="al_up2l">
-                        <tr>
-                          <td style="width:15%"><b>IO Tujuan</b> </td>
-                          <td style="width:5%;">:</td>
-                          <td style="width:80%">
-                            <select class="slcUP2L2021 up2l_io_99" name="io" style="width:100%" required>
-                              <option value="">Select..</option>
-                              <?php foreach ($io as $key => $value): ?>
-                                <option value="<?php echo $value['ORGANIZATION_ID'] ?>"><?php echo strtoupper($value['ORGANIZATION_CODE']) ?></option>
-                              <?php endforeach; ?>
-                            </select>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td><b>SubInv Tujuan</b> </td>
-                          <td>:</td>
-                          <td class="pbb_sudah_pilih_io">
-                            <select class="slcUP2L2021 up2l_subinv_99" name="subinv" style="width:100%" required>
-                              <option value="">Select..</option>
-                            </select>
-                          </td>
-                        </tr>
-                        <tr id="locator_check">
-                          <td><b>Locator Tujuan</b> </td>
-                          <td>:</td>
-                          <td class="up2l_locator">
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label for="">IO Tujuan</label>
+                            <input type="text" readonly class="form-control up2l_io_99" name="io" value="">
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label for="">SubInv Tujuan</label>
+                            <input type="text" readonly class="form-control up2l_io_99" name="io" value="">
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label for="">Locator Tujuan</label>
                             <input type="text" readonly class="form-control slc_up2l_locator" name="locator" value="">
-                          </td>
-                        </tr>
-                        <tr id="">
-                          <td><b>Batch Number</b> </td>
-                          <td>:</td>
-                          <td class="">
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label for="">Batch Number</label>
                             <input type="number" id="txtSelepBatchCetakKIB" name="batch_no" class="form-control" readonly />
-                          </td>
-                        </tr>
-                        <tr id="">
-                          <td><b>Selep Quantity</b> </td>
-                          <td>:</td>
-                          <td class="">
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label for="">Quantity Handling</label>
+                            <div class="up2l_qty_handling">
+                              <input type="number" id="txtSelepQtyHandlingCetakKIB" name="qty_handling" class="form-control"/>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label for="">Selep Quantity</label>
                             <input type="number" id="txtSelepQtyCetakKIB" name="qty_selep" class="form-control" readonly />
                             <input type="hidden" id="txtSelepSubInvFromCetakKIB" name="from_sub_code" value="">
+                          </div>
+                        </div>
+                      </div>
+                      <!-- <table style="width:100%" class="al_up2l">
+                        <tr>
+                          <td style="width:15%"><b>Selep Quantity</b> </td>
+                          <td style="width:5%;">:</td>
+                          <td style="width:80%">
+
                           </td>
                         </tr>
-                      </table>
-                      <center><button type="submit" class="btn btn-success" name="button" style="font-weight:bold;margin-top:10px;margin-bottom:10px;width:20%"> <i class="fa fa-rocket"></i> Create KIB </button>
+                        <tr id="">
+                          <td><b>Quantity Handling</b> </td>
+                          <td>:</td>
+                          <td class="">
+                          </td>
+                        </tr>
+                      </table> -->
+                      <center><button type="submit" class="btn btn-success" onclick="submit_up2l_selep_master()" name="button" style="font-weight:bold;margin-top:10px;margin-bottom:10px;width:20%"> <i class="fa fa-rocket"></i> Create KIB </button>
                     </form>
                   </div>
-                  <div class="col-md-1"></div>
                 </div>
               </div>
             </div>

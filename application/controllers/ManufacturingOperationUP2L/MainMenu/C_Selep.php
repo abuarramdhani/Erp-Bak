@@ -49,6 +49,11 @@ class C_Selep extends CI_Controller
 		$this->load->view('V_Footer', $data);
 	}
 
+	public function get_io_subinv_locator_tujuan($value='')
+	{
+	  echo json_encode($this->M_selep->get_io_subinv_locator_tujuan($this->input->post('batch_no')));
+	}
+
 	public function generate_kib()
 	{
 		if (!empty($this->input->post('batch_no'))) {
@@ -56,29 +61,30 @@ class C_Selep extends CI_Controller
 	    $data = $this->M_selep->get_data_kib($batch_no);
 	    $get_kib =  $this->M_selep->generate_no_kib($batch_no);
 
+  		//SCHEDULED_QUANTITY => qty handling => misal handling 205 SCHEDULED_QUANTITY = 50 jadi 50 50 50 50 5
 			$subinv = explode(' - ', $this->input->post('subinv'));
 	    $data[0]['NO_KIB'] = $get_kib['NO_KIB'];
 			$data[0]['FROM_SUBINVENTORY_CODE'] = $this->input->post('from_sub_code');
 	    $data[0]['TO_ORG_ID'] = $this->input->post('io');
 	    $data[0]['TO_SUBINVENTORY_CODE'] = $subinv[0];
 	    $data[0]['TO_LOCATOR_ID'] = $this->input->post('locator');
-	    $data[0]['QTY_SELEP'] = $this->input->post('qty_selep');
+			$data[0]['QTY_SELEP'] = $this->input->post('qty_selep');
+			$data[0]['QTY_HANDLING'] = $this->input->post('qty_handling');
 	    $data[0]['NO_INDUK'] = $this->session->user;
 
 	    $insert = $this->M_selep->insertKIB($data);
+
 	    if ($insert == 1) {
-				 echo $data[0]['NO_KIB'];
-				 echo "berhasil";
-				 die;
-				// redirect('InventoryManagement/CreateKIB/pdf/1/'.$batch_no.'/0');
-				//http://erp.quick.com/InventoryManagement/CreateKIB/pdf/1/1811000065/0
+				redirect('InventoryManagement/CreateKIBDEV/pdf/1/'.$batch_no.'/0');
 	    }else {
+				echo "Terdapat Kesalahan <br>";
+
 				echo "<pre>";
 				print_r($data);
 				echo "<br>";
 				echo "<pre>";
 				print_r($_POST);
-				die;
+				// die;
 	    }
 
 	  }else {
@@ -248,7 +254,7 @@ class C_Selep extends CI_Controller
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
-		$data['io'] = $this->M_selep->get_io();
+		// $data['io'] = $this->M_selep->get_io();
 
 		$this->load->view('V_Header', $data);
 		$this->load->view('V_Sidemenu', $data);

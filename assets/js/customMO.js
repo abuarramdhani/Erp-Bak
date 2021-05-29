@@ -67,81 +67,115 @@ function swalup2l(type, pesan) {
   })
 }
 
-$('.up2l_subinv_99').on('change', function() {
-  if ($(this).val() != '') {
+function submit_up2l_selep_master() {
+  $('.btn-up2l-save-selep').attr('disabled', false);
+  $('.btn-up2l-cetakkib').attr('disabled', false);
+}
 
-  let val_ = $(this).val().split(' - ');
-  let val = val_[0];
-    // numpang barang bekas
-    $.ajax({
-      url: baseurl + 'BarangBekas/pbbs/locator',
-      type: 'POST',
-      dataType: 'JSON',
-      data: {
-        subinv: val,
-        org_id: val_[1]
-      },
-      cache:false,
-      beforeSend: function() {
-        $('.up2l_locator').html('<b>Sedang Mengambil Locator...</b>');
-      },
-      success: function(result) {
-        if (result != 0) {
-          $('.up2l_locator').html(`<select class="slc_up2l_locator pbbs_loc" name="locator" style="width:100%" required >
-                                  <option selected value="">Select..</option>
-                                  ${result}
-                                  </select>`);
-          $('.slc_up2l_locator').select2();
-        }else {
-          $('.up2l_locator').html('<input type="text" readonly class="form-control slc_up2l_locator" name="locator" value="">')
+$('.btn-up2l-cetakkib').on('click', function() {
+      $.ajax({
+        url: baseurl + 'ManufacturingOperationUP2L/Selep/get_io_subinv_locator_tujuan',
+        type: 'POST',
+        dataType: 'JSON',
+        data: {
+          batch_no: $('#txtSelepBatchCetakKIB').val()
+        },
+        cache:false,
+        beforeSend: function() {
+          Swal.fire({
+            onBeforeOpen: () => {
+               Swal.showLoading();
+               $('.swal2-loading').children('button').css({'width': '40px', 'height': '40px'})
+             },
+            text: 'Sedang Mengambil IO Tujuan, Sub Inv. Tujuan, Locator Tujuan.'
+          })
+        },
+        success: function(result) {
+
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+        swalup2l('error', 'Koneksi Terputus...')
+         console.error();
         }
-        // getOnhand();
-      },
-      error: function(XMLHttpRequest, textStatus, errorThrown) {
-      swalup2l('error', 'Koneksi Terputus...')
-       console.error();
-      }
-    })
-  }
-
-})
-
-$('.up2l_io_99').on('change', function() {
-  let val = $(this).val();
-  $.ajax({
-    url: baseurl + 'BarangBekas/pbbs/SubInv',
-    type: 'POST',
-    dataType: 'JSON',
-    data: {
-      io : val
-    },
-    cache: false,
-    beforeSend: function() {
-      Swal.fire({
-        onBeforeOpen: () => {
-           Swal.showLoading();
-           $('.swal2-loading').children('button').css({'width': '40px', 'height': '40px'})
-         },
-        text: 'Sedang Mengambil SubInv..'
       })
-    },
-    success: function(result) {
-      if (result != 0) {
-        toastup2l('success', 'Selesai..');
-        $('.up2l_subinv_99').html(result);
-      }else {
-        swalup2l('warning', 'IO belum Open Period');
-        $('.up2l_subinv_99').html('');
-      }
-      $('.up2l_locator').html('<input type="text" readonly class="form-control slc_up2l_locator" name="locator" value="">');
-      $('.up2l_subinv_99').val('').trigger('change');
-    },
-    error: function(XMLHttpRequest, textStatus, errorThrown) {
-    swalPBB('error', 'Koneksi Terputus...')
-     console.error();
-    }
-  })
 })
+
+// revisi
+// $('.up2l_subinv_99').on('change', function() {
+//   if ($(this).val() != '') {
+//
+//   let val_ = $(this).val().split(' - ');
+//   let val = val_[0];
+//     // numpang barang bekas
+//     $.ajax({
+//       url: baseurl + 'BarangBekas/pbbs/locator',
+//       type: 'POST',
+//       dataType: 'JSON',
+//       data: {
+//         subinv: val,
+//         org_id: val_[1]
+//       },
+//       cache:false,
+//       beforeSend: function() {
+//         $('.up2l_locator').html('<b>Sedang Mengambil Locator...</b>');
+//       },
+//       success: function(result) {
+//         if (result != 0) {
+//           $('.up2l_locator').html(`<select class="slc_up2l_locator pbbs_loc" name="locator" style="width:100%" required >
+//                                   <option selected value="">Select..</option>
+//                                   ${result}
+//                                   </select>`);
+//           $('.slc_up2l_locator').select2();
+//         }else {
+//           $('.up2l_locator').html('<input type="text" readonly class="form-control slc_up2l_locator" name="locator" value="">')
+//         }
+//         // getOnhand();
+//       },
+//       error: function(XMLHttpRequest, textStatus, errorThrown) {
+//       swalup2l('error', 'Koneksi Terputus...')
+//        console.error();
+//       }
+//     })
+//   }
+//
+// })
+//
+// $('.up2l_io_99').on('change', function() {
+//   let val = $(this).val();
+//   $.ajax({
+//     url: baseurl + 'BarangBekas/pbbs/SubInv',
+//     type: 'POST',
+//     dataType: 'JSON',
+//     data: {
+//       io : val
+//     },
+//     cache: false,
+//     beforeSend: function() {
+//       Swal.fire({
+//         onBeforeOpen: () => {
+//            Swal.showLoading();
+//            $('.swal2-loading').children('button').css({'width': '40px', 'height': '40px'})
+//          },
+//         text: 'Sedang Mengambil SubInv..'
+//       })
+//     },
+//     success: function(result) {
+//       if (result != 0) {
+//         toastup2l('success', 'Selesai..');
+//         $('.up2l_subinv_99').html(result);
+//       }else {
+//         swalup2l('warning', 'IO belum Open Period');
+//         $('.up2l_subinv_99').html('');
+//       }
+//       $('.up2l_locator').html('<input type="text" readonly class="form-control slc_up2l_locator" name="locator" value="">');
+//       $('.up2l_subinv_99').val('').trigger('change');
+//     },
+//     error: function(XMLHttpRequest, textStatus, errorThrown) {
+//     swalPBB('error', 'Koneksi Terputus...')
+//      console.error();
+//     }
+//   })
+// })
 
 function completejobUP2L2021() {
   let qty = $('#txtSelepQuantityConfrm').val();

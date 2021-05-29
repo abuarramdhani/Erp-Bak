@@ -9,6 +9,25 @@ class M_selep extends CI_Model
         $this->oracle = $this->load->database('oracle_dev', TRUE);
     }
 
+    // baru dari mb div
+    public function get_io_subinv_locator_tujuan($batch_no)
+    {
+      return $this->oracle->query("SELECT.ORGANIZATION_CODE org_code
+                                        ,fmd.ATTRIBUTE1 org_id
+                                        ,fmd.ATTRIBUTE2 subinventory
+                                        ,mil.SEGMENT1 locator_code
+                                        ,fmd.ATTRIBUTE3 locator_id
+                                  from gme_batch_header gbh
+                                      ,fm_matl_dtl fmd
+                                      ,mtl_parameters mp
+                                      ,mtl_item_locations mil
+                                  where fmd.FORMULA_ID = gbh.FORMULA_ID
+                                    and mp.ORGANIZATION_ID = fmd.ORGANIZATION_ID
+                                    and mil.INVENTORY_LOCATION_ID = fmd.ATTRIBUTE3
+                                    and gbh.BATCH_NO = '$batch_no'
+                                    and fmd.LINE_TYPE = 1")->row_array();
+    }
+
     public function get_io($value='')
     {
       return $this->oracle->query("SELECT mp.ORGANIZATION_ID, mp.ORGANIZATION_CODE
@@ -26,6 +45,7 @@ class M_selep extends CI_Model
                   AND gbh.BATCH_NO = '$batch_no'")->row_array();
     }
 
+    //SCHEDULED_QUANTITY => qty handling => misal handling 205 SCHEDULED_QUANTITY = 50 jadi 50 50 50 50 5
     public function get_data_kib($batch_no)
     {
       return $this->oracle->query("SELECT gbh.ORGANIZATION_ID ,
@@ -35,7 +55,7 @@ class M_selep extends CI_Model
                                   gob.OPRN_ID,
                                   gmd.INVENTORY_ITEM_ID PRIMARY_ITEM_ID,
                                   gmd.PLAN_QTY SCHEDULED_QUANTITY,
-                                  NVL(NULL,gmd.PLAN_QTY) QTY_HANDLING,
+                                  -- NVL(NULL,gmd.PLAN_QTY) QTY_HANDLING,
                                   frh.ROUTING_ID DEPARTMENT_ID,
                                   mp.ORGANIZATION_CODE KIB_GROUP,
                                   'N' inventory_trans_flag,
