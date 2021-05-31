@@ -33,7 +33,7 @@ class M_itemlist extends CI_Model
               FROM mtl_system_items_b msib            
               WHERE msib.inventory_item_status_code = 'Active'              
               AND (msib.description LIKE '%$term%' OR msib.segment1 LIKE '%$term%')              
-              AND msib.organization_id IN (101, 102) --OPM, ODM         
+              AND msib.organization_id IN (101, 102, 225) --OPM, ODM, YSP         
               ORDER BY msib.segment1
               ";
       $query = $this->oracle->query($sql);
@@ -45,7 +45,7 @@ class M_itemlist extends CI_Model
                 FROM mtl_system_items_b msib            
                 WHERE msib.inventory_item_status_code = 'Active'              
                 AND msib.inventory_item_id = '$term'
-                AND msib.organization_id IN (101, 102) --OPM, ODM         
+                AND msib.organization_id IN (101, 102, 225) --OPM, ODM, YSP         
                 ORDER BY msib.organization_id desc
                 ";
         $query = $this->oracle->query($sql);
