@@ -204,7 +204,7 @@ class C_Selep extends CI_Controller
 			if (!empty($res[0]['BATCH_NO'])) {
 				foreach ($res as $key => $value) {
 					if ($value['ONHAND'] <= 0) {
-						$style = 'style="background:#ff6b6b" class="up2l_selep_merah"';
+						$style = 'class="up2l_selep_merah"';
 						$merah = 500;
 					}else {
 						$style = '';
