@@ -745,4 +745,11 @@ class M_requisition extends CI_Model
 
         return $query->row_array();
     }
+    public function getDescItem($inv_item_id)
+    {
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query("SELECT msib.SEGMENT1,
+        msib.DESCRIPTION from mtl_system_items_b msib where msib.INVENTORY_ITEM_ID = '$inv_item_id'");
+        return $query->result_array();
+    }
 }
