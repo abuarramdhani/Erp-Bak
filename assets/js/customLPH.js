@@ -35,6 +35,30 @@ const swaLPHLarge = (type, a) =>{
 }
 
 $(document).ready(function () {
+  $('.lphgetEmployee').select2({
+    minimumInputLength: 2,
+    placeholder: "Employee",
+    ajax: {
+      url: baseurl + "PengirimanBarangInternal/Input/employee",
+      dataType: "JSON",
+      type: "POST",
+      data: function(params) {
+        return {
+          term: params.term
+        };
+      },
+      processResults: function(data) {
+        return {
+          results: $.map(data, function(obj) {
+            return {
+              id: obj.employee_code,
+              text: `${obj.employee_name} - ${obj.employee_code}`
+            }
+          })
+        }
+      }
+    }
+  })
   $(".LphTanggal").daterangepicker({
     singleDatePicker: true,
     timePicker: false,
@@ -77,6 +101,91 @@ $(document).ready(function () {
 );
 });
 
+$('.lph_tdl_add').on('change', function() {
+  let t = $(this).val().split('-');
+  let d = new Date(`${t[2]}-${t[1]}-${t[0]}`);
+  var weekday = new Array(7);
+  weekday[0] = "Sunday";
+  weekday[1] = "Monday";
+  weekday[2] = "Tuesday";
+  weekday[3] = "Wednesday";
+  weekday[4] = "Thursday";
+  weekday[5] = "Friday";
+  weekday[6] = "Saturday";
+  var n = weekday[d.getDay()];
+  let menit, standar
+  if (n == 'Friday' || n == 'Saturday') {
+    menit = 360;
+    standar = 330;
+  }else {
+    menit = 420;
+    standar = 390;
+  }
+  $('.lph_waktu_kerja').text(menit);
+  $('.lph_w_standar_efk').text(standar);
+})
+
+function lph_search_rkh() {
+  let tanggal = $('.lph_search_tanggal').val();
+  let shift = $('.lph_shift_dinamis').val();
+  let no_induk = $('.lph_search_pekerja').val();
+  $.ajax({
+    url: baseurl + 'LaporanProduksiHarian/action/getRKH',
+    type: 'POST',
+    dataType: 'JSON',
+    data: {
+      tanggal : tanggal,
+      shift : shift,
+      no_induk : no_induk
+    },
+    cache:false,
+    beforeSend: function() {
+      toastLPHLoading('Sedang menyiapkan data..');
+    },
+    success: function(result) {
+      if (result != 'gada') {
+
+      }else {
+        swaLPHLarge('warning', 'Data tidak ditemukan');
+      }
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+    swaLPHLarge('error', textStatus)
+     console.error();
+    }
+  })
+}
+
+function lph_filter_shift(th) {
+  $.ajax({
+    url: baseurl + 'LaporanProduksiHarian/action/getShift',
+    type: 'POST',
+    dataType: 'JSON',
+    data: {
+      tanggal : $(th).val(),
+    },
+    cache:false,
+    beforeSend: function() {
+      $('.lph_shift_dinamis').val('').trigger('change');
+      toastLPHLoading('Sedang Mengambil Shift...');
+    },
+    success: function(result) {
+      console.log(result);
+      if (result != 0) {
+        toastLPH('success', 'Selesai.');
+        $('.lph_shift_dinamis').html(result);
+      }else {
+        toastLPH('warning', 'koneksi terputus, coba lagi nanti');
+        $('.lph_shift_dinamis').html('');
+      }
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+    swaLPHLarge('error', textStatus)
+     console.error();
+    }
+  })
+}
+
 $(".tanggal_lph_99").on('change', function() {
   let val = $(this).val().split(' - ');
   if (val[0] != val[1]) {
@@ -107,7 +216,7 @@ const lphgetmon = () => {
       $('.area-lph-monitoring').html(result);
     },
     error: function(XMLHttpRequest, textStatus, errorThrown) {
-    swalLPHLarge('error', textStatus)
+    swaLPHLarge('error', textStatus)
      console.error();
     }
   })

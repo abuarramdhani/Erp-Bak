@@ -53,16 +53,15 @@ vertical-align: middle;
                               <label for="">Pilih Tanggal RKH</label>
                               <div class="input-group">
                                 <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
-                                <input type="text" name="date" class="form-control LphTanggal" placeholder="Select Yout Current Date" required="" >
+                                <input type="text" name="date" class="form-control LphTanggal lph_search_tanggal" onchange="lph_filter_shift(this)" placeholder="Select Yout Current Date" required="" >
                               </div>
                             </div>
                             <div class="col-md-3">
                               <label for="">Pilih Shift</label>
                               <div class="input-group">
                                 <div class="input-group-addon"><i class="fa fa-fire"></i></div>
-                                <select class="select2 lph_pilih_shift" name="shift" style="width:100%">
-                                  <option value="1">1 (Satu)</option>
-                                  <option value="2">2 (Dua)</option>
+                                <select class="select2 lph_shift_dinamis" name="shift" style="width:100%">
+
                                 </select>
                               </div>
 
@@ -71,14 +70,14 @@ vertical-align: middle;
                               <label for="">Pekerja</label>
                               <div class="input-group">
                                 <div class="input-group-addon"><i class="fa fa-user"></i></div>
-                                <select class="select2 lph_list_pekerja" name="shift" style="width:100%">
+                                <select class="select2 lphgetEmployee lph_search_pekerja" name="shift" style="width:100%">
 
                                 </select>
                               </div>
                             </div>
                             <div class="col-md-2">
                               <label for="" style="color:transparent">Ini Submit</label>
-                              <button type="button" style="font-size:15px"  class="btn btn-primary btn-sm btn-block lph_cetak_rkh"> <i class="fa fa-book"></i> <strong>Submit</strong> </button>
+                              <button type="button" style="font-size:15px"  class="btn btn-primary btn-sm btn-block" onclick="lph_search_rkh()"> <i class="fa fa-book"></i> <strong>Submit</strong> </button>
                             </div>
                           </div>
                           <hr>
@@ -92,14 +91,14 @@ vertical-align: middle;
                               <div class="row">
                                 <div class="col-md-5">
                                   <div class="form-group">
+                                    <label for="">Tanggal</label>
+                                    <input type="text" class="form-control LphTanggal lph_tdl_add"  name="" value="">
+                                  </div>
+                                  <div class="form-group">
                                     <label for="">Shift</label>
                                     <select class="select2" name=""  style="width:100%">
 
                                     </select>
-                                  </div>
-                                  <div class="form-group">
-                                    <label for="">Tanggal</label>
-                                    <input type="text" class="form-control LphTanggal"  name="" value="">
                                   </div>
                                   <div class="form-group">
                                     <label for="">Kelompok</label>
@@ -157,13 +156,13 @@ vertical-align: middle;
                             <div class="box-body" style="padding-top:60px">
                               <div class="form-group">
                                 <label for="">Cari Pekerja</label>
-                                <select class="select2" name=""  style="width:100%">
+                                <select class="lphgetEmployee" name=""  style="width:100%">
 
                                 </select>
                               </div>
                               <div class="form-group">
                                 <label for="">Cari Pengawas</label>
-                                <select class="select2" name=""  style="width:100%">
+                                <select class="lphgetEmployee" name=""  style="width:100%">
 
                                 </select>
                                 <!-- <div class="row">
@@ -265,6 +264,32 @@ vertical-align: middle;
                               </div>
                               <div class="box-body">
                                 <div class="row">
+                                  <!-- <div class="col-md-6">
+                                    <div class="form-group">
+                                      <label for="">Alat Bantu</label>
+                                      <select class="select2" name="" style="width:100%">
+
+                                      </select>
+                                     </div>
+                                  </div>
+                                  <div class="col-md-6">
+                                    <div class="form-group">
+                                      <label for="">Umur Pakai</label>
+                                      <input type="text" readonly class="form-control"  name="" value="">
+                                    </div>
+                                  </div>
+                                  <div class="col-md-6">
+                                    <div class="form-group">
+                                      <label for="">Toleransi</label>
+                                      <input type="text" readonly class="form-control"  name="" value="">
+                                    </div>
+                                  </div>
+                                  <div class="col-md-6">
+                                    <div class="form-group">
+                                      <label for="">Proses</label>
+                                      <input type="text" readonly class="form-control"  name="" value="">
+                                    </div>
+                                  </div> -->
                                   <div class="col-md-6">
                                     <div class="form-group">
                                       <label for="">Alat Bantu</label>
@@ -375,7 +400,7 @@ vertical-align: middle;
                                 </div>
                                 <div class="col-md-12">
                                   <div class="mt-4" style="overflow:scroll;height:204px;">
-                                    <table class="table" style="width:100%;">
+                                    <table class="table" style="width:1200px;">
                                       <thead class="bg-primary">
                                         <tr>
                                           <td style="width:120px">Kode Part</td>
@@ -385,10 +410,14 @@ vertical-align: middle;
                                           <td>Target PE</td>
                                           <td>100%</td>
                                           <td>AKT.</td>
-                                          <td>...</td>
-                                          <td>...</td>
-                                          <td>...</td>
-                                          <td>...</td>
+                                          <td>%TASE</td>
+                                          <td>Hasil Baik</td>
+                                          <td>Repair Man</td>
+                                          <td>Repair Mat</td>
+                                          <td>Repair Mach</td>
+                                          <td>Scrap Man</td>
+                                          <td>Scrap Mat</td>
+                                          <td>Scrap Mach</td>
                                         </tr>
                                       </thead>
                                       <tbody>

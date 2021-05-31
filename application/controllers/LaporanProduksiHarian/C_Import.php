@@ -201,6 +201,15 @@ class C_Import extends CI_Controller
 
     }
 
+    public function getRKH($value='')
+    {
+      $res = $this->db->where('tanggal', $this->input->post('tanggal'))
+                      ->where('shift', $this->input->post('shift'))
+                      ->where('no_induk', $this->input->post('no_induk'))
+                      ->get('lph.lph_rencana_kerja_operator')->result_array();
+      echo json_encode(!empty($res[0]['nama_operator']) ? $res : 'gada');
+    }
+
     public function getmon($v='')
     {
       $range_date = $this->input->post('range_date');
@@ -215,6 +224,24 @@ class C_Import extends CI_Controller
       }
       $data['get'] = $this->db->query("SELECT * FROM lph.lph_rencana_kerja_operator WHERE $shift AND tanggal BETWEEN '$range[0]' AND '$range[1]'")->result_array();
       $this->load->view('LaporanProduksiHarian/ajax/V_mon_rko', $data);
+    }
+
+    public function getShift($value='')
+    {
+      // $date = str_replace('-','/',$this->input->post('tanggal'));
+      $date  = date("Y/m/d", strtotime($this->input->post('tanggal')));
+      $data = $this->M_master->getShift($date);
+      $s[] =  '<option selected value=""></option>';
+        foreach ($data as $key => $value) {
+          if (!empty($value['SHIFT_NUM'])) {
+            $s[] = '<option value="'.$value['SHIFT_NUM'].'">'.$value['SHIFT_NUM'].' - '.$value['DESCRIPTION'].'</option>';
+          }
+        }
+        if (!empty($s)) {
+          echo json_encode(implode($s, ''));
+        }else {
+          echo json_encode(0);
+        }
     }
 
     public function lph_pdf_rk($value='')
