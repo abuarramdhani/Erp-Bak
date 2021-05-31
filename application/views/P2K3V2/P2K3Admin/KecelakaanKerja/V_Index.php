@@ -90,7 +90,7 @@
                               <?php if ($isAdmin) : ?>
                                 <!-- Tampilan di TIM -->
                                 <?php if ($key['car_is_created'] == 't') : ?>
-                                  <a target="_blank" href="<?= base_url("p2k3adm_V2/Admin/Car/Verification/$key[id_kecelakaan]") ?>" title="Verifikasi CAR File" class="btn <?= $key['car_tim_is_approved'] ? 'btn-success' : 'btn-info' ?> btn-sm">
+                                  <a target="_blank" href="<?= base_url("p2k3adm_V2/Admin/Car/Approval/Tim/$key[id_kecelakaan]") ?>" title="Verifikasi CAR File" class="btn <?= $key['car_tim_is_approved'] ? 'btn-success' : 'btn-info' ?> btn-sm">
                                     <i class="fa fa-check-circle"></i>
                                   </a>
                                 <?php else : ?>
