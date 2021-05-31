@@ -1,19 +1,23 @@
 <style>
-.slcOKBNewOrderList+.select2-container>.selection>.select2-selection,
-.slcOKBNewUomList+.select2-container>.selection>.select2-selection,
-.slcModalOrganization+.select2-container>.selection>.select2-selection,
-.slcLocation+.select2-container>.selection>.select2-selection {
-    background: #fbfb5966;
-    text-align: left;
-}
+    .slcOKBNewOrderList+.select2-container>.selection>.select2-selection,
+    .slcOKBNewUomList+.select2-container>.selection>.select2-selection,
+    .slcModalOrganization+.select2-container>.selection>.select2-selection,
+    .slcLocation+.select2-container>.selection>.select2-selection {
+        background: #fbfb5966;
+        text-align: left;
+    }
 
     .bright-success {
         background-color: #62d19f !important;
     }
+
     .bright-warning {
         background-color: #f6d365 !important;
     }
-    .organizationOKB+.select2-container>.selection>.select2-selection, .locationOKB+.select2-container>.selection>.select2-selection,.subinventoryOKB+.select2-container>.selection>.select2-selection{
+
+    .organizationOKB+.select2-container>.selection>.select2-selection,
+    .locationOKB+.select2-container>.selection>.select2-selection,
+    .subinventoryOKB+.select2-container>.selection>.select2-selection {
         text-align: center;
     }
 </style>
@@ -46,7 +50,7 @@
                             <div class="col-sm-3">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i style="width:15px;" class="fa fa-calendar"></i></span>
-                                    <input class="form-control" id="txtOKBOrderDate" name="txtOKBOrderDate" value="<?php echo date("d F Y")?>" readonly>
+                                    <input class="form-control" id="txtOKBOrderDate" name="txtOKBOrderDate" value="<?php echo date("d F Y") ?>" readonly>
                                 </div>
                             </div>
                         </div> <br>
@@ -60,15 +64,15 @@
                                     <input type="hidden" class="form-control" id="txtOKBOrderCreatorId" name="txtOKBOrderCreatorId" value="<?php echo $pengorder[0]['PERSON_ID'] ?>" readonly>
                                 </div>
                             </div>
-                                    
+
                         </div> <br>
-                                
+
                         <div class="form-group">
                             <label for="txtOKBSectionOrderCreator" class="col-sm-2 control-label" style="font-weight:normal">Seksi Penginput Order</label>
                             <div class="col-sm-3">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i style="width:15px;" class="fa fa-users"></i></span>
-                                    <input class="form-control" id="txtOKBSectionOrderCreator" name="txtOKBSectionOrderCreator" value="<?php echo $pengorder[0]['ATTRIBUTE3']?>" readonly>
+                                    <input class="form-control" id="txtOKBSectionOrderCreator" name="txtOKBSectionOrderCreator" value="<?php echo $pengorder[0]['ATTRIBUTE3'] ?>" readonly>
                                 </div>
                             </div>
                             <!-- untuk admin -->
@@ -81,20 +85,20 @@
                                         <input type="hidden" class="form-control" id="txtOKBOrderReqesterId" name="txtOKBOrderRequesterId" value="<?php echo $requester[0]['APPROVER']; ?>" readonly>
                                     </div>
                                 </div>
-                            <?php }else{ ?>
+                            <?php } else { ?>
                                 <input type="hidden" class="form-control" id="txtOKBOrderReqesterId" name="txtOKBOrderRequesterId" value="<?php echo $pengorder[0]['PERSON_ID']; ?>" readonly>
-                            <?php } ?>  
+                            <?php } ?>
                         </div> <br> <br>
 
                         <div class="form-group">
                             <label for="txtOKBStatusOrder" class="col-sm-2 control-label" style="font-weight:normal">Status Order</label>
                             <div class="col-sm-3">
                                 <a href="#">
-                                <div class="input-group">
-                                    <span class="input-group-addon bright-success btnOKBChangeStatusOrder" style=""><i style="width: 15px; color: #f7f7f7 !important;" class="fa fa-fw fa-check"></i></span>
-                                    <input class="form-control btnOKBChangeStatusOrder" id="txtOKBStatusOrder" name="txtOKBStatusOrder" value="REGULER" readonly="">
-                                    <input type="hidden" id="txtOKBHdnStatusOrder" name="txtOKBHdnStatusOrder" value="N" readonly="" class="form-control"> 
-                                </div>
+                                    <div class="input-group">
+                                        <span class="input-group-addon bright-success btnOKBChangeStatusOrder" style=""><i style="width: 15px; color: #f7f7f7 !important;" class="fa fa-fw fa-check"></i></span>
+                                        <input class="form-control btnOKBChangeStatusOrder" id="txtOKBStatusOrder" name="txtOKBStatusOrder" value="REGULER" readonly="">
+                                        <input type="hidden" id="txtOKBHdnStatusOrder" name="txtOKBHdnStatusOrder" value="N" readonly="" class="form-control">
+                                    </div>
                                 </a>
                             </div>
                         </div> <br> <br>
@@ -133,13 +137,13 @@
                                         <tr>
                                             <th>Nama Barang</th>
                                             <th>:</th>
-                                            <td><select class="select2 slcOKBNewOrderListNamaBarang slcOKBOrder" name="" required style="width:360px"></select></td>
+                                            <td><select class="select2 slcOKBNewOrderListNamaBarang slcOKBOrder" id="slcOKBNewOrderListNamaBarang1" name="" required style="width:360px"></select></td>
                                             <!-- <td><input class="form-control txtOKBNewOrderListItemName" readonly name="txtOKBitemName[]" style="width:360px"></td> -->
                                         </tr>
                                         <tr>
                                             <th>Deskripsi</th>
                                             <th>:</th>
-                                            <td><textarea style="height: 34px; width:360px;" class="form-control txaOKBNewOrderDescription" name="txtOKBinputDescription[]" readonly></textarea></td>
+                                            <td><textarea style="height: 34px; width:360px;" class="form-control txaOKBNewOrderDescription" id="txaOKBNewOrderDescription1" onkeyup="changeDescNewOrder(1)" name="txtOKBinputDescription[]" readonly></textarea></td>
                                         </tr>
                                         <tr>
                                             <th>Quantity</th>
@@ -181,8 +185,8 @@
                                             <th>:</th>
                                             <td>
                                                 <div class="loadingDestinationOKB" style="display:none; width:100%;margin-top: 0px;margin-bottom: 20px" data-row="1">
-                                                    <img style="width:50px" src="<?php echo base_url().'assets/img/gif/loading5.gif' ?>" />
-                                                 </div>
+                                                    <img style="width:50px" src="<?php echo base_url() . 'assets/img/gif/loading5.gif' ?>" />
+                                                </div>
                                                 <div class="dest_typeOKB" style="display: block;">
                                                     <input type="text" class="form-control text-center destinationOKB" id="txtModalDestination" name="hdnDestinationOKB[]" style="width: 250px;" title="Destination Type" readonly>
                                                 </div>
@@ -193,7 +197,7 @@
                                             <th>:</th>
                                             <td>
                                                 <div class="loadingOrganizationOKB" style="display: none; width:100%;margin-top: 0px;margin-bottom: 20px">
-                                                    <img style="width:50px" src="<?php echo base_url().'assets/img/gif/loading5.gif' ?>" />
+                                                    <img style="width:50px" src="<?php echo base_url() . 'assets/img/gif/loading5.gif' ?>" />
                                                 </div>
                                                 <div class="viewOrganizationOKB" style="display: block;">
                                                     <select class="select2 organizationOKB slcModalOrganization" id="slcModalOrganization" style="width: 250px; text-align:center;" name="organizationOKB[]" required title="Organization">
@@ -207,7 +211,7 @@
                                             <th>:</th>
                                             <td>
                                                 <div class="loadingLocationOKB" style="display: none; width:100%;margin-top: 0px;margin-bottom: 20px">
-                                                    <img style="width:50px" src="<?php echo base_url().'assets/img/gif/loading5.gif' ?>" />
+                                                    <img style="width:50px" src="<?php echo base_url() . 'assets/img/gif/loading5.gif' ?>" />
                                                 </div>
                                                 <div class="viewLocationOKB">
                                                     <select class="select2 locationOKB slcLocation" id="slcLocation" style="width: 250px; text-align:center;" name="locationOKB[]" required title="Location">
@@ -221,7 +225,7 @@
                                             <th>:</th>
                                             <td>
                                                 <div class="loadingSubinventoryOKB" style="display: none; width:100%;margin-top: 0px;margin-bottom: 20px">
-                                                    <img style="width:50px" src="<?php echo base_url().'assets/img/gif/loading5.gif' ?>" />
+                                                    <img style="width:50px" src="<?php echo base_url() . 'assets/img/gif/loading5.gif' ?>" />
                                                 </div>
                                                 <div class="viewSubinventoryOKB">
                                                     <select class="select2 subinventoryOKB" id="slcSubinventory" style="width: 250px; text-align:center" name="">
@@ -256,7 +260,7 @@
                                                 </select><br><br>
                                                 <textarea style="height: 34px; width:360px; display:none;" class="form-control txaOKBNewOrderListUrgentReason" name="txtOKBinputUrgentReason[]"></textarea>
                                             </td>
-                                            
+
                                         </tr>
                                         <tr>
                                             <th>Note to Pengelola</th>
@@ -312,7 +316,7 @@
                                 Pernyataan Konfirmasi
                             </label>
                         </div>
-                        <div class="col-sm">                    
+                        <div class="col-sm">
                             <label class="control-label ml-15px">
                                 <input type="checkbox" id="txaOKBNewOrderListConfirm" class="minimal checkBoxConfirmOrderOkebaja">
                                 <span style="font-weight:normal">Order yang dibuat adalah sepenuhnya tanggung jawab pembuat order dan akan di teruskan ke atasan terkait serta pengelola.</span>
