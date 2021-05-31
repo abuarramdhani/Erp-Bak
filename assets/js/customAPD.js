@@ -19,21 +19,14 @@ $("#group_add").click(function (e) {
 		$(".multiinput").last().clone().appendTo("#tb_InputKebutuhanAPD tbody");
 		$("tr:last .form-control").val("").end();
 		// var idsekarang = Number($('tr:last input#txtKodeItem').attr('data-id'));
-		var nomorr = Number(
-			$("#tb_InputKebutuhanAPD tr:last")
-				.find("input#txtKodeItem")
-				.attr("data-id")
-		);
+		var nomorr = Number($("#tb_InputKebutuhanAPD tr:last").find("input#txtKodeItem").attr("data-id"));
 		// var tez = $('tr:last input#txtKodeItem').attr('data-id');
 
 		nomorr = nomorr + 1;
 		// alert(nomorr);
 		// alert(tez);
 		$("#tb_InputKebutuhanAPD tr:last td#nomor").html(nomorr);
-		$("#tb_InputKebutuhanAPD tr:last input#txtKodeItem").attr(
-			"data-id",
-			nomorr
-		);
+		$("#tb_InputKebutuhanAPD tr:last input#txtKodeItem").attr("data-id", nomorr);
 		$(".apd-select2").select2({
 			ajax: {
 				url: baseurl + "P2K3_V2/Order/getItem",
@@ -86,21 +79,14 @@ $("#group_add2").click(function (e) {
 		$(".multiinput").last().clone().appendTo("#tb_InputKebutuhanAPD tbody");
 		$("tr:last .form-control").val("").end();
 		// var idsekarang = Number($('tr:last input#txtKodeItem').attr('data-id'));
-		var nomorr = Number(
-			$("#tb_InputKebutuhanAPD tr:last")
-				.find("input#txtKodeItem")
-				.attr("data-id")
-		);
+		var nomorr = Number($("#tb_InputKebutuhanAPD tr:last").find("input#txtKodeItem").attr("data-id"));
 		// var tez = $('tr:last input#txtKodeItem').attr('data-id');
 
 		nomorr = nomorr + 1;
 		// alert(nomorr);
 		// alert(tez);
 		$("#tb_InputKebutuhanAPD tr:last td#nomor").html(nomorr);
-		$("#tb_InputKebutuhanAPD tr:last input#txtKodeItem").attr(
-			"data-id",
-			nomorr
-		);
+		$("#tb_InputKebutuhanAPD tr:last input#txtKodeItem").attr("data-id", nomorr);
 		$(".apd-select2").select2({
 			ajax: {
 				url: baseurl + "P2K3_V2/Order/getItem",
@@ -235,27 +221,12 @@ $(document).ready(function () {
 				customRangeLabel: "Custom",
 				weekLabel: "W",
 				daysOfWeek: ["Mg", "Sn", "Sl", "Rb", "Km", "Jm", "Sa"],
-				monthNames: [
-					"Januari",
-					"Februari",
-					"Maret",
-					"April",
-					"Mei",
-					"Juni",
-					"Juli",
-					"Agustus ",
-					"September",
-					"Oktober",
-					"November",
-					"Desember",
-				],
+				monthNames: ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus ", "September", "Oktober", "November", "Desember"],
 				firstDay: 1,
 			},
 		},
 		function (start, end, label) {
-			console.log(
-				"New date range selected: ' + start.format('DD-MM-YYYY H:i:s') + ' to ' + end.format('DD-MM-YYYY H:i:s') + ' (predefined range: ' + label + ')"
-			);
+			console.log("New date range selected: ' + start.format('DD-MM-YYYY H:i:s') + ' to ' + end.format('DD-MM-YYYY H:i:s') + ' (predefined range: ' + label + ')");
 		}
 	);
 
@@ -275,27 +246,12 @@ $(document).ready(function () {
 				customRangeLabel: "Custom",
 				weekLabel: "W",
 				daysOfWeek: ["Mg", "Sn", "Sl", "Rb", "Km", "Jm", "Sa"],
-				monthNames: [
-					"Januari",
-					"Februari",
-					"Maret",
-					"April",
-					"Mei",
-					"Juni",
-					"Juli",
-					"Agustus ",
-					"September",
-					"Oktober",
-					"November",
-					"Desember",
-				],
+				monthNames: ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus ", "September", "Oktober", "November", "Desember"],
 				firstDay: 1,
 			},
 		},
 		function (start, end, label) {
-			console.log(
-				"New date range selected: ' + start.format('DD-MM-YYYY H:i:s') + ' to ' + end.format('DD-MM-YYYY H:i:s') + ' (predefined range: ' + label + ')"
-			);
+			console.log("New date range selected: ' + start.format('DD-MM-YYYY H:i:s') + ' to ' + end.format('DD-MM-YYYY H:i:s') + ' (predefined range: ' + label + ')");
 		}
 	);
 
@@ -316,27 +272,12 @@ $(document).ready(function () {
 				customRangeLabel: "Custom",
 				weekLabel: "W",
 				daysOfWeek: ["Mg", "Sn", "Sl", "Rb", "Km", "Jm", "Sa"],
-				monthNames: [
-					"Januari",
-					"Februari",
-					"Maret",
-					"April",
-					"Mei",
-					"Juni",
-					"Juli",
-					"Agustus ",
-					"September",
-					"Oktober",
-					"November",
-					"Desember",
-				],
+				monthNames: ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus ", "September", "Oktober", "November", "Desember"],
 				firstDay: 1,
 			},
 		},
 		function (start, end, label) {
-			console.log(
-				"New date range selected: ' + start.format('DD-MM-YYYY H:i:s') + ' to ' + end.format('DD-MM-YYYY H:i:s') + ' (predefined range: ' + label + ')"
-			);
+			console.log("New date range selected: ' + start.format('DD-MM-YYYY H:i:s') + ' to ' + end.format('DD-MM-YYYY H:i:s') + ' (predefined range: ' + label + ')");
 		}
 	);
 
@@ -474,9 +415,7 @@ $(document).ready(function () {
 			//     }
 			//   })
 			$(".modal-title").text("Anda Sudah Order!");
-			$("#p2k3_mb").text(
-				"Order hanya dapat dilakukan sekali dalam satu periode!"
-			);
+			$("#p2k3_mb").text("Order hanya dapat dilakukan sekali dalam satu periode!");
 			$("#p2k3_modal").modal("show");
 		} else if (n > 10) {
 			// Swal.fire({
@@ -600,36 +539,7 @@ $(document).on("ifUnchecked", ".p2k3_chkAll", function () {
 /* Formatting function for row details - modify as you need */
 function format(d) {
 	// `d` is the original data object for the row
-	return (
-		'<div class="slider">' +
-		'<table class="table table-xs table-bordered">' +
-		'<thead class="bg-info">' +
-		"<tr>" +
-		"<td>Kode Item</td>" +
-		"<td>Nama Item</td>" +
-		"<td>Jumlah Bon</td>" +
-		"<td>Satuan</td>" +
-		"</tr>" +
-		"</thead>" +
-		"<tbody>" +
-		"<tr>" +
-		"<td>" +
-		d.kode_barang +
-		"</td>" +
-		"<td>" +
-		d.nama_apd +
-		"</td>" +
-		"<td>" +
-		d.jml_bon +
-		"</td>" +
-		"<td>" +
-		d.satuan +
-		"</td>" +
-		"<tr>" +
-		"<tbody>" +
-		"</table>" +
-		"</div>"
-	);
+	return '<div class="slider">' + '<table class="table table-xs table-bordered">' + '<thead class="bg-info">' + "<tr>" + "<td>Kode Item</td>" + "<td>Nama Item</td>" + "<td>Jumlah Bon</td>" + "<td>Satuan</td>" + "</tr>" + "</thead>" + "<tbody>" + "<tr>" + "<td>" + d.kode_barang + "</td>" + "<td>" + d.nama_apd + "</td>" + "<td>" + d.jml_bon + "</td>" + "<td>" + d.satuan + "</td>" + "<tr>" + "<tbody>" + "</table>" + "</div>";
 }
 
 $(document).ready(function () {
@@ -678,9 +588,7 @@ $(document).ready(function () {
 		var clas2 = $(this).find("img").attr("class");
 		// alert (clas2);
 		if (clas2 == "1") {
-			$(this)
-				.find("img")
-				.attr("src", "../../assets/img/icon/details_close.png");
+			$(this).find("img").attr("src", "../../assets/img/icon/details_close.png");
 			$(this).find("img").attr("class", "2");
 		} else {
 			$(this).find("img").attr("src", "../../assets/img/icon/details_open.png");
@@ -737,12 +645,7 @@ $(document).ready(function () {
 			Swal.fire({
 				type: "error",
 				title: "Oops...",
-				text:
-					"Jumlah Item " +
-					item +
-					" tidak boleh Melebihi jumlah Stok Gudang (" +
-					stokgudang +
-					") !",
+				text: "Jumlah Item " + item + " tidak boleh Melebihi jumlah Stok Gudang (" + stokgudang + ") !",
 			});
 			return false;
 		}
@@ -856,17 +759,11 @@ $(document).ready(function () {
 				// alert(data.indexOf('center'));
 				if (data.indexOf("center") > 10) {
 					$(".p2k3_submit_hitung").css("cursor", "not-allowed");
-					$(".p2k3_submit_hitung").attr(
-						"data-original-title",
-						"Ada Error Pada data. Harap perbaiki sebelum melanjutkan"
-					);
+					$(".p2k3_submit_hitung").attr("data-original-title", "Ada Error Pada data. Harap perbaiki sebelum melanjutkan");
 					$(".p2k3_submit_hitung").attr("type", "button");
 				} else {
 					$(".p2k3_submit_hitung").css("cursor", "pointer");
-					$(".p2k3_submit_hitung").attr(
-						"data-original-title",
-						"Data Aman klik untuk Melanjutkan"
-					);
+					$(".p2k3_submit_hitung").attr("data-original-title", "Data Aman klik untuk Melanjutkan");
 					$(".p2k3_submit_hitung").attr("type", "submit");
 				}
 			},
@@ -1150,9 +1047,7 @@ function erp_checkPopUp() {
 	setTimeout(function () {
 		var newWin = window.open(url);
 		if (!newWin || newWin.closed || typeof newWin.closed == "undefined") {
-			alert(
-				"Popup Tidak Aktif (Blocked)!\nMohon Aktifkan Pop up Untuk melanjutkan, lalu refresh/reload Halaman ini!"
-			);
+			alert("Popup Tidak Aktif (Blocked)!\nMohon Aktifkan Pop up Untuk melanjutkan, lalu refresh/reload Halaman ini!");
 			$("#p2k3_popup").modal({ backdrop: "static", keyboard: false });
 		} else {
 			newWin.close();
@@ -1165,277 +1060,294 @@ function pad(d) {
 }
 
 //Kecelakaan Kerja
-$(document).ready(function(){
-	$('#apdtblmkk').DataTable({
-		"scrollX": true,
-		fixedColumns:   {
-            leftColumns: 3,
-        }
-	});
-	getPekerjaTpribadi('#apdslcpic');
+$(document).ready(function () {
+	getPekerjaTpribadi("#apdslcpic");
 
-	$('#apdslcpkj').change(function(){
+	$("#apdslcpkj").change(function () {
 		var noind = $(this).val();
-		$("#surat-loading").attr('hidden', false);
+		$("#surat-loading").attr("hidden", false);
 		$.ajax({
 			type: "get",
 			url: baseurl + "p2k3adm_V2/Admin/detail_pkj_mkk",
 			data: {
 				noind: noind,
 			},
+			dataType: "json",
 			success: function (response) {
-				var d = JSON.parse(response);
-				$('[name="seksi"]').val(d['seksi'].trim());
-				$('[name="unit"]').val(d['unit'].trim());
-				$('[name="bidang"]').val(d['bidang'].trim());
-				$('[name="dept"]').val(d['dept'].trim());
+				$('[name="seksi"]').val(response["seksi"].trim());
+				$('[name="unit"]').val(response["unit"].trim());
+				$('[name="bidang"]').val(response["bidang"].trim());
+				$('[name="dept"]').val(response["dept"].trim());
+				$('[name="masa_kerja"]').val(response["masa_kerja_seksi"].trim());
 			},
 			complete: function (response) {
-				$("#surat-loading").attr('hidden', true);
-			}
+				$("#surat-loading").attr("hidden", true);
+			},
 		});
 	});
 
-	$('#apdslcpic').change(function(){
+	$("#apdslcpic").change(function () {
 		var noind = $(this).val();
-		if (noind == null || noind == '') {
-			$('[name="seksi_car"]').val('');
-			$('[attr-name="seksi_car"]').val('');
-			return false
+		if (noind == null || noind == "") {
+			$('[name="seksi_car"]').val("");
+			$('[attr-name="seksi_car"]').val("");
+			return false;
 		}
-		$("#surat-loading").attr('hidden', false);
+		$("#surat-loading").attr("hidden", false);
+
 		$.ajax({
 			type: "get",
 			url: baseurl + "p2k3adm_V2/Admin/detail_pkj_mkk",
 			data: {
 				noind: noind,
 			},
+			dataType: "json",
 			success: function (response) {
-				var d = JSON.parse(response);
-				$('[name="seksi_car"]').val(d['seksi'].trim());
-				$('[attr-name="seksi_car"]').val(d['seksi'].trim());
+				$('[name="seksi_car"]').val(response["seksi"].trim());
+				$('[attr-name="seksi_car"]').val(response["seksi"].trim());
 			},
+			error() {},
 			complete: function (response) {
-				$("#surat-loading").attr('hidden', true);
-			}
+				$("#surat-loading").attr("hidden", true);
+			},
 		});
 	});
 
 	$(".daterangepickerYMDhis").daterangepicker({
-        "singleDatePicker": true,
-         "drops": "up",
-        "timePicker": true,
-        "timePicker24Hour": true,
-        "showDropdowns": true,
-        locale: {
-            format: 'YYYY-MM-DD HH:mm:ss'
-        },
-    });
+		singleDatePicker: true,
+		drops: "up",
+		timePicker: true,
+		timePicker24Hour: true,
+		showDropdowns: true,
+		locale: {
+			format: "YYYY-MM-DD HH:mm:ss",
+		},
+	});
 
-    $(".daterangepickerYMD").daterangepicker({
-    	"singleDatePicker": true,
-    	"drops": "up",
-    	"timePicker": false,
-    	"showDropdowns": true,
-    	autoApply: true,
-    	autoUpdateInput: false,
-    	locale: {
-    		cancelLabel: 'Clear',
-    		format: 'YYYY-MM-DD'
-    	},
-    });
+	$(".daterangepickerYMD").daterangepicker({
+		singleDatePicker: true,
+		drops: "up",
+		timePicker: false,
+		showDropdowns: true,
+		autoApply: true,
+		autoUpdateInput: false,
+		locale: {
+			cancelLabel: "Clear",
+			format: "YYYY-MM-DD",
+		},
+	});
 
-    $('.daterangepickerYMD').on('apply.daterangepicker', function(ev, picker) {
-    	$(this).val(picker.startDate.format('YYYY-MM-DD'));
-    	$(this).change();
-    });
-    $('.daterangepickerYMD').on('cancel.daterangepicker', function(ev, picker) {
-    	$(this).val('');
-    	$(this).change();
-    });
+	$(".daterangepickerYMD").on("apply.daterangepicker", function (ev, picker) {
+		$(this).val(picker.startDate.format("YYYY-MM-DD"));
+		$(this).change();
+	});
+	$(".daterangepickerYMD").on("cancel.daterangepicker", function (ev, picker) {
+		$(this).val("");
+		$(this).change();
+	});
 
-    $('#apdinptglkc').change(function(){
-    	var tgl = $(this).val();
-    	var noind = $('#apdslcpkj').val();
-    	if (noind == '' || noind == null) {
-    		alert('Pilih Pekerja terlebih dahulu!');
-    		return false;
-    	}
-    	$("#surat-loading").attr('hidden', false);
-    	$.ajax({
+	$("#apdinptglkc").change(function () {
+		var tgl = $(this).val();
+		var noind = $("#apdslcpkj").val();
+		if (noind == "" || noind == null) {
+			alert("Pilih Pekerja terlebih dahulu!");
+			return false;
+		}
+		$("#surat-loading").attr("hidden", false);
+		$.ajax({
 			type: "get",
 			url: baseurl + "p2k3adm_V2/Admin/ket_mkk",
 			data: {
 				tgl: tgl,
-				noind: noind
+				noind: noind,
 			},
 			success: function (response) {
 				var data = JSON.parse(response);
-				console.log(data['success']);
-				if (data['success'] == '1') {
+				console.log(data["success"]);
+				if (data["success"] == "1") {
 					// $('[name="range1"]').val(data['ket1']);
 					// $('[name="range2"]').val(data['ket2']);
-					$('.apdinprngwkt1mkk, .apdinprngwkt2mkk').each(function(){
-						$(this).iCheck('uncheck');
+					$(".apdinprngwkt1mkk, .apdinprngwkt2mkk").each(function () {
+						$(this).iCheck("uncheck");
 					});
-					$('.apdinprngwkt1mkk').eq(data['rng1']-1).iCheck('check');
-					$('.apdinprngwkt2mkk').eq(data['rng2']-1).iCheck('check');
-					$('[name="masa_kerja"]').val(data['masa_kerja']);
-					$('[attr-name="masa_kerja"]').val(data['masa_kerja']).trigger('change');
+					$(".apdinprngwkt1mkk")
+						.eq(data["rng1"] - 1)
+						.iCheck("check");
+					$(".apdinprngwkt2mkk")
+						.eq(data["rng2"] - 1)
+						.iCheck("check");
+					$('[name="masa_kerja"]').val(data["masa_kerja"]);
+					$('[attr-name="masa_kerja"]').val(data["masa_kerja"]).trigger("change");
 				}
 			},
 			complete: function (response) {
-				$("#surat-loading").attr('hidden', true);
+				$("#surat-loading").attr("hidden", true);
+			},
+		});
+	});
+
+	$(".apdSlcTags").select2({
+		placeholder: "Masukan TKP",
+		tags: true,
+	});
+
+	$(".apd_select2").select2({
+		placeholder: "Pilih Salah Satu!",
+	});
+
+	$("#apdslcmkkloker").change(function () {
+		var id = $(this).val();
+		return true;
+		// alert(id);
+		if (id == "999") {
+			$('input[type="radio"], input[type="checkbox"]').each(function () {
+				// $(this).attr('checked', false);
+				$(this).iCheck("uncheck");
+				$(this).iCheck("disable");
+				$(this).closest("label").css("color", "grey");
+				// $(this).closest('div').attr('disabled', true);
+			});
+		} else {
+			// alert('a');
+			$('input[type="radio"], input[type="checkbox"]').each(function () {
+				// alert('n');
+				$(this).closest("label").css("color", "black");
+				$(this).iCheck("enable");
+				// return false;
+			});
+		}
+	});
+
+	$("#apddivaddmkk").on("click", ".iradio_square-green", function (event) {
+		if ($(this).hasClass("checked")) {
+			event.stopImmediatePropagation();
+			$(this).removeClass("checked");
+			$(this).find("input").attr("checked", false);
+		}
+	});
+
+	$(document).on("ifClicked", ".apdinpjpmkk", function () {
+		$(".apdinpjpmkk").each(function () {
+			$(this).iCheck("uncheck");
+		});
+	});
+	$(document).on("ifClicked", ".apdinpprosmkk", function () {
+		$(".apdinpprosmkk").each(function () {
+			$(this).iCheck("uncheck");
+		});
+	});
+	$(document).on("ifClicked", ".apdinpunsmkk", function () {
+		$(".apdinpunsmkk").each(function () {
+			$(this).iCheck("uncheck");
+		});
+	});
+	$(document).on("ifClicked", ".apdinpkssmkk", function () {
+		$(".apdinpkssmkk").each(function () {
+			$(this).iCheck("uncheck");
+		});
+	});
+	$(document).on("ifClicked", ".apdinprngwkt1mkk", function () {
+		$(".apdinprngwkt1mkk").each(function () {
+			$(this).iCheck("uncheck");
+		});
+	});
+	$(document).on("ifClicked", ".apdinprngwkt2mkk", function () {
+		$(".apdinprngwkt2mkk").each(function () {
+			$(this).iCheck("uncheck");
+		});
+	});
+
+	$(document).on("click", ".apdbtndelmkk", function (e) {
+		e.preventDefault();
+
+		const $this = $(this);
+		var id = $(this).val();
+		var pkj = $(this).attr("pkj");
+
+		Swal.fire({
+			title: "Anda Yakin?",
+			text: "Hapus Data " + pkj + "?",
+			type: "warning",
+			showCancelButton: true,
+		}).then(function (result) {
+			if (result.value) {
+				$.ajax({
+					type: "post",
+					url: baseurl + "p2k3adm_V2/Admin/del_k3k",
+					data: {
+						id: id,
+					},
+					beforeSend() {
+						$this.prop("disabled", true);
+						$("#surat-loading").prop("hidden", false);
+					},
+					success: function (response) {
+						location.reload();
+					},
+					error(response) {
+						Swal.fire({
+							title: response.message,
+							text: "",
+							type: "error",
+						});
+					},
+					complete: function (response) {
+						$("#surat-loading").prop("hidden", true);
+					},
+				});
 			}
 		});
-    });
+	});
 
-    $('.apdSlcTags').select2({
-    	placeholder: 'Masukan TKP',
-    	tags: true
-    });
+	$("#apdtblmkk").DataTable({
+		scrollX: true,
+		fixedColumns: {
+			leftColumns: 3,
+		},
+	});
 
-    $('.apd_select2').select2({
-    	placeholder: "Pilih Salah Satu!"
-    });
+	$("#apdslclstkp").select2({
+		ajax: {
+			url: baseurl + "p2k3adm_V2/Admin/get_tkp",
+			dataType: "json",
+			type: "get",
+			data: function (params) {
+				return { s: params.term };
+			},
+			processResults: function (data) {
+				return {
+					results: $.map(data, function (item) {
+						return {
+							id: item.tkp,
+							text: item.tkp,
+						};
+					}),
+				};
+			},
+			cache: false,
+		},
+		minimumInputLength: -1,
+		tags: true,
+		placeholder: "Select Item",
+		allowClear: true,
+	});
 
-    $('#apdslcmkkloker').change(function(){
-    	var id = $(this).val();
-    	return true;
-    	// alert(id);
-    	if (id == '999') {
-    		$('input[type="radio"], input[type="checkbox"]').each(function(){
-    			// $(this).attr('checked', false);
-    			$(this).iCheck('uncheck');
-    			$(this).iCheck('disable');
-    			$(this).closest('label').css('color', 'grey');
-    			// $(this).closest('div').attr('disabled', true);
-    		});
-    	}else{
-    		// alert('a');
-    		$('input[type="radio"], input[type="checkbox"]').each(function(){
-	    		// alert('n');
-    			$(this).closest('label').css('color', 'black');
-	    		$(this).iCheck('enable');
-	    		// return false;
-    		});
-    	}
-    });
+	$("#apd_yearonly").datepicker({
+		autoclose: true,
+		todayHighlight: true,
+		format: "yyyy",
+		viewMode: "years",
+		minViewMode: "years",
+	});
 
-    $('#apddivaddmkk').on('click', '.iradio_square-green', function(event){
-    	if($(this).hasClass('checked')){
-    		event.stopImmediatePropagation();
-    		$(this).removeClass('checked');
-    		$(this).find('input').attr('checked', false);
-    	}
-    });
-
-    $(document).on('ifClicked', '.apdinpjpmkk', function(){
-    	$('.apdinpjpmkk').each(function(){
-    		$(this).iCheck('uncheck');
-    	});
-    });
-    $(document).on('ifClicked', '.apdinpprosmkk', function(){
-    	$('.apdinpprosmkk').each(function(){
-    		$(this).iCheck('uncheck');
-    	});
-    });
-    $(document).on('ifClicked', '.apdinpunsmkk', function(){
-    	$('.apdinpunsmkk').each(function(){
-    		$(this).iCheck('uncheck');
-    	});
-    });
-    $(document).on('ifClicked', '.apdinpkssmkk', function(){
-    	$('.apdinpkssmkk').each(function(){
-    		$(this).iCheck('uncheck');
-    	});
-    });
-    $(document).on('ifClicked', '.apdinprngwkt1mkk', function(){
-    	$('.apdinprngwkt1mkk').each(function(){
-    		$(this).iCheck('uncheck');
-    	});
-    });
-    $(document).on('ifClicked', '.apdinprngwkt2mkk', function(){
-    	$('.apdinprngwkt2mkk').each(function(){
-    		$(this).iCheck('uncheck');
-    	});
-    });
-
-    $(document).on('click', '.apdbtndelmkk',function(){
-    	var id = $(this).val();
-    	var pkj = $(this).attr('pkj');
-    	Swal.fire({
-    		title: "Anda Yakin?",
-    		text: "Hapus Data "+pkj+"?",
-    		type: 'warning',
-    		showCancelButton: true,
-    	}).then(function (result) {
-    		if (result.value) {
-    			$.ajax({
-    				type: "post",
-    				url: baseurl + "p2k3adm_V2/Admin/del_k3k",
-    				data: {
-    					id: id
-    				},
-    				success: function (response) {
-    					location.reload();
-    				},
-    				complete: function (response) {
-    					$("#surat-loading").attr('hidden', true);
-    				}
-    			});
-    		}
-    	});
-    });
-
-    $('#apdslclstkp').select2({
-    	ajax: {
-    		url: baseurl + "p2k3adm_V2/Admin/get_tkp",
-    		dataType: "json",
-    		type: "get",
-    		data: function (params) {
-    			return { s: params.term };
-    		},
-    		processResults: function (data) {
-    			return {
-    				results: $.map(data, function (item) {
-    					return {
-    						id: item.tkp,
-    						text: item.tkp,
-    					};
-    				}),
-    			};
-    		},
-    		cache: false,
-    	},
-    	minimumInputLength: -1,
-    	tags:true,
-    	placeholder: "Select Item",
-    	allowClear: true,
-    });
-
-    $('#apd_yearonly').datepicker({
-            autoclose: true,
-            todayHighlight: true,
-            format: 'yyyy',
-            viewMode: 'years',
-            minViewMode: 'years'
-    });
-
-    $('#apdmkkbyyear').click(function(){
-    	var y = $('#apd_yearonly').val();
-    	window.location.replace(baseurl + "p2k3adm_V2/Admin/monitoringKK?y="+y);
-    });
-
-    $('.apd_delbonspt').click(function(){
-    	var id = $(this).val();
-    	$('#apd_mdldelspt').find('#apd_btnsubdelspt').val(id);
-    	$('#apd_mdldelspt').modal('show');
-    });
+	$(".apd_delbonspt").click(function () {
+		var id = $(this).val();
+		$("#apd_mdldelspt").find("#apd_btnsubdelspt").val(id);
+		$("#apd_mdldelspt").modal("show");
+	});
 });
 
-function InitK3kForm()
-{
+function InitK3kForm() {
 	// $('input').iCheck({
 	// 	labelHover: false,
 	// 	cursor: true,
@@ -1444,63 +1356,62 @@ function InitK3kForm()
 	// 	increaseArea: '20%'
 	// });
 	var changed = false;
-	$('textarea, select, input').change(function(){
+	$("textarea, select, input").change(function () {
 		changed = true;
 	});
-	$(document).on('ifChanged', 'input', function(){
+	$(document).on("ifChanged", "input", function () {
 		changed = true;
+	});
 
-	});
-	$('#apdbtnupdatemkk').click(function(){
+	$("#apdbtnupdatemkk").click(function () {
 		changed = false;
 	});
-	$(window).bind('beforeunload', function(){
+
+	$(window).bind("beforeunload", function () {
 		if (changed) {
-			return 'Are you sure you want to leave?';
+			return "Are you sure you want to leave?";
 		}
 	});
 }
 
-function InitK3kFormEdit()
-{
-	$('textarea, select, input').change(function(){
-		var nm = $(this).attr('attr-name');
-		$(this).attr('name', nm);
-		$('#apdbtnupdatemkk').attr('disabled', false);
+function InitK3kFormEdit() {
+	$("textarea, select, input").change(function () {
+		var nm = $(this).attr("attr-name");
+		$(this).attr("name", nm);
+		$("#apdbtnupdatemkk").attr("disabled", false);
 	});
-	$(document).on('ifChanged', 'input', function(){
-		var nm = $(this).attr('attr-name');
-		$(this).attr('name', nm);
-		$('#apdbtnupdatemkk').attr('disabled', false);
+	$(document).on("ifChanged", "input", function () {
+		var nm = $(this).attr("attr-name");
+		$(this).attr("name", nm);
+		$("#apdbtnupdatemkk").attr("disabled", false);
 	});
 }
 
-function apd_alert_mixin(icon, title)
-{
+function apd_alert_mixin(icon, title) {
 	const Toast = Swal.mixin({
 		toast: true,
-		background: '#ebfff0',
-		position: 'center',
+		background: "#ebfff0",
+		position: "center",
 		showConfirmButton: false,
 		timer: 5000,
-		width:500,
+		width: 500,
 		timerProgressBar: true,
 		onOpen: (toast) => {
-			toast.addEventListener('mouseenter', Swal.stopTimer)
-			toast.addEventListener('mouseleave', Swal.resumeTimer)
-		}
+			toast.addEventListener("mouseenter", Swal.stopTimer);
+			toast.addEventListener("mouseleave", Swal.resumeTimer);
+		},
 	});
 
 	Toast.fire({
 		type: icon,
-		title: title
+		title: title,
 	});
 }
 
-$(document).ready(function(){
-	$('#apd_btnceknoBon').click(function(){
-		$("#surat-loading").attr('hidden', false);
-		var id = $('#apd_inpnobon').val();
+$(document).ready(function () {
+	$("#apd_btnceknoBon").click(function () {
+		$("#surat-loading").attr("hidden", false);
+		var id = $("#apd_inpnobon").val();
 		$.ajax({
 			type: "get",
 			url: baseurl + "P2K3_V2/Order/checkNobon",
@@ -1509,29 +1420,28 @@ $(document).ready(function(){
 			},
 			success: function (response) {
 				var d = JSON.parse(response);
-				if(d.error == '1'){
+				if (d.error == "1") {
 					showSwal(d);
-				}else{
-					$('#apd_table-shoes tbody').html(d.tr);
-					$('#apd_inpnobon').attr('disabled', true);
-					$('#apd_submit_bonM').attr('disabled', false);
-					$('#apd_submit_bonM').val(id);
-					$('#apd_btnceknoBon').off('click');
-					$('#apd_btnceknoBon').attr('disabled', true);
+				} else {
+					$("#apd_table-shoes tbody").html(d.tr);
+					$("#apd_inpnobon").attr("disabled", true);
+					$("#apd_submit_bonM").attr("disabled", false);
+					$("#apd_submit_bonM").val(id);
+					$("#apd_btnceknoBon").off("click");
+					$("#apd_btnceknoBon").attr("disabled", true);
 				}
-				
 			},
 			complete: function (response) {
-				$("#surat-loading").attr('hidden', true);
-			}
+				$("#surat-loading").attr("hidden", true);
+			},
 		});
 	});
 
-	$('#apd_submit_bonM').click(function(){
+	$("#apd_submit_bonM").click(function () {
 		var id = $(this).val();
 		Swal.fire({
-			type: 'question',
-			title: "Insert Data Nomor Bon "+id+" ?",
+			type: "question",
+			title: "Insert Data Nomor Bon " + id + " ?",
 			showCancelButton: true,
 		}).then(function (result) {
 			if (result.value) {
@@ -1549,7 +1459,7 @@ $(document).ready(function(){
 	});
 });
 
-function showSwal(d){
+function showSwal(d) {
 	Swal.fire({
 		type: d.type,
 		title: d.pesan,

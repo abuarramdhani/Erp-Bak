@@ -7,7 +7,7 @@
       <div class="col-lg-12">
         <div class="col-lg-11">
           <div class="text-right">
-            <h1><b><?= $Title ?></b></h1>
+            <h1><b>Approval CAR</b></h1>
           </div>
         </div>
         <div class="row">
@@ -28,27 +28,20 @@
                       <label style="margin-top: 5px;">Tahun</label>
                     </div>
                     <div class="col-md-2">
-                      <input class="form-control" name="y" id="apd_yearonly" value="<?= $year ?>" />
+                      <input class="form-control yearpicker" name="year" value="<?= $year ?>" />
                     </div>
                     <div class="col-md-2">
-                      <button class="btn btn-primary" id="apdmkkbyyear">Lihat</button>
+                      <button class="btn btn-primary">Lihat</button>
                     </div>
                   </form>
                   <div class="col-md-12" style="height: 50px;"></div>
                   <div class="col-md-12" style="margin-bottom: 20px; padding: 0px;">
-                    <?php if ($isAdmin) : ?>
-                      <a href="<?= base_url('p2k3adm_V2/Admin/excel_monitoringKK?y=' . $year); ?>" title="Cetak daftar rekapan ke Excel" class="btn btn-success pull-left">
-                        <i class="fa fa-file-excel-o"></i> Excel
-                      </a>
-                    <?php endif ?>
+                    <a href="<?= base_url('p2k3adm_V2/Admin/excel_monitoringKK?y=' . $year); ?>" title="Cetak daftar rekapan ke Excel" class="btn btn-success pull-left">
+                      <i class="fa fa-file-excel-o"></i> Excel
+                    </a>
                     <a href="<?= base_url('p2k3adm_V2/Admin/pdf_monitoringKK?y=' . $year); ?>" title="Cetak daftar rekapan ke PDF" class="btn btn-danger pull-left" style="margin-left: 10px;" target="_blank">
                       <i class="fa fa-file-pdf-o"></i> PDF
                     </a>
-                    <?php if ($index != $allIndex) : ?>
-                      <a href="<?= base_url('p2k3adm_V2/Admin/add_monitoringKK'); ?>" title="Tambah data kecelakaan baru" class="btn btn-info pull-right">
-                        <i class="fa fa-plus"></i> Tambah
-                      </a>
-                    <?php endif ?>
                   </div>
                   <table class="table table-bordered table-hover" id="monitoring-kecelaakaan">
                     <thead>
@@ -65,6 +58,7 @@
                         <th class="text-center">Tempat Kecelakaan</th>
                         <th class="text-center">Dibuat pada</th>
                         <th class="text-center">Penginput</th>
+                        <!-- <th class="text-center">Status</th> -->
                       </tr>
                     </thead>
                     <tbody>
@@ -77,39 +71,14 @@
                             <a href="<?= base_url('p2k3adm_V2/Admin/exportKecelakaanKerjaPDF?id=' . $key['id_kecelakaan']) ?>" title="Cetak PDF" target="_blank" class="btn btn-danger btn-sm">
                               <i class="fa fa-file-pdf-o"></i>
                             </a>
-                            <?php if ($index !== $allIndex) : ?>
-                              <!-- Dapat di edit sebelum 7 hari dari tanggal pembuatan-->
-                              <?php if ((new DateTime($key['user_created_at']))->diff(new DateTime())->d < 700) : ?>
-                                <a href="<?= base_url('p2k3adm_V2/Admin/edit_monitoringKK?id=' . $key['id_kecelakaan']); ?>" title="Edit rekapan" class="btn btn-primary btn-sm" title="Edit">
-                                  <i class="fa fa-edit"></i>
-                                </a>
-                              <?php endif ?>
-                              <button class="btn btn-danger btn-sm apdbtndelmkk" title="Hapus Rekap" value="<?= $key['id_kecelakaan'] ?>" pkj="<?= $key['noind'] . ' - ' . $key['nama'] ?>">
-                                <i class="fa fa-trash"></i>
-                              </button>
-                              <?php if ($isAdmin) : ?>
-                                <!-- Tampilan di TIM -->
-                                <?php if ($key['car_is_created'] == 't') : ?>
-                                  <a target="_blank" href="<?= base_url("p2k3adm_V2/Admin/Car/Verification/$key[id_kecelakaan]") ?>" title="Verifikasi CAR File" class="btn <?= $key['car_tim_is_approved'] ? 'btn-success' : 'btn-info' ?> btn-sm">
-                                    <i class="fa fa-check-circle"></i>
-                                  </a>
-                                <?php else : ?>
-                                  <!-- <a target="_blank" title="Lampiran CAR belum dibuat" class="btn btn-sm btn-warning">
-                                    <i class="fa fa-check"></i>
-                                  </a> -->
-                                <?php endif ?>
-                              <?php else : ?>
-                                <!-- Tampilan di seksi -->
-                                <?php if ($key['car_is_created'] == 't') : ?>
-                                  <a target="_blank" href="<?= base_url("p2k3adm_V2/Admin/Car/View/$key[id_kecelakaan]") ?>" title="Edit file CAR" class="btn btn-info btn-sm">
-                                    <i class="fa fa-check-circle"></i>
-                                  </a>
-                                <?php else : ?>
-                                  <a target="_blank" href="<?= base_url("p2k3adm_V2/Admin/Car/Create/$key[id_kecelakaan]") ?>" title="Lampirkan file CAR" class="btn btn-sm">
-                                    <i class="fa fa-check"></i>
-                                  </a>
-                                <?php endif ?>
-                              <?php endif ?>
+                            <?php if ($key['car_is_created'] == 't') : ?>
+                              <a target="_blank" href="<?= base_url("p2k3adm_V2/Admin/Car/Approval/$key[id_kecelakaan]") ?>" title="Approval file CAR" class="btn <?= $key['car_tim_is_approved'] ? 'btn-success' : 'btn-info' ?> btn-sm">
+                                <i class="fa fa-check-circle"></i>
+                              </a>
+                            <?php else : ?>
+                              <!-- <a target="_blank" title="CAR belum dibuat" class="btn btn-sm">
+                                <i class="fa fa-check"></i>
+                              </a> -->
                             <?php endif ?>
                           </td>
                           <td><?= $key['noind'] ?></td>
@@ -122,6 +91,7 @@
                           <td><?= $key['tkp'] ?></td>
                           <td nowrap><?= date('d-m-Y', strtotime($key['user_created_at'])) ?></td>
                           <td><?= $key['user_created_by'] ?></td>
+                          <!-- <td><?= $key['approval_status'] ?></td> -->
                         </tr>
                       <?php endforeach ?>
                     </tbody>
@@ -139,6 +109,13 @@
   var year = '<?= $year ?>';
 
   $(() => {
+    $('.yearpicker').datepicker({
+      autoclose: true,
+      todayHighlight: true,
+      format: "yyyy",
+      viewMode: "years",
+      minViewMode: "years",
+    })
     $("#monitoring-kecelaakaan").DataTable({
       scrollX: true,
       fixedColumns: {

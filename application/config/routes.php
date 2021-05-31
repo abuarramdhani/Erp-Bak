@@ -2514,6 +2514,28 @@ $route['p2k3adm_V2/datamasuk'] = 'P2K3V2/P2K3Admin/MainMenu/C_DataMasuk';
 $route['p2k3adm_V2/datamasuk/(:any)'] = 'P2K3V2/P2K3Admin/MainMenu/C_DataMasuk/$1';
 $route['p2k3adm_V2/datamasuk/(:any)/(:any)'] = 'P2K3V2/P2K3Admin/MainMenu/C_DataMasuk/$1/$2';
 $route['p2k3adm_V2/datamasuk/(:any)/(:any)/(:any)'] = 'P2K3V2/P2K3Admin/MainMenu/C_DataMasuk/$1/$2/$3';
+
+$route['p2k3adm_V2/Admin/Car/Create/(:any)'] = 'P2K3V2/P2K3Admin/MainMenu/C_Car/CreateCarView/$1';
+$route['p2k3adm_V2/Admin/Car/Create']['post'] = 'P2K3V2/P2K3Admin/MainMenu/C_Car/CreateCar';
+
+$route['p2k3adm_V2/Admin/Car/View/(:any)'] = 'P2K3V2/P2K3Admin/MainMenu/C_Car/ViewCar/$1';
+$route['p2k3adm_V2/Admin/Car/Update/(:any)']['post'] = 'P2K3V2/P2K3Admin/MainMenu/C_Car/UpdateCar/$1';
+
+$route['p2k3adm_V2/Admin/Car/Approval/History'] = 'P2K3V2/P2K3Admin/MainMenu/C_Car/ApprovalHistory';
+
+$route['p2k3adm_V2/Admin/Car/Approval/Unit'] = 'P2K3V2/P2K3Admin/MainMenu/C_Car/ApprovalUnitListView';
+$route['p2k3adm_V2/Admin/Car/Approval/Unit/']['post'] = 'P2K3V2/P2K3Admin/MainMenu/C_Car/approvalUnitAction';
+$route['p2k3adm_V2/Admin/Car/Approval/Unit/(:any)'] = 'P2K3V2/P2K3Admin/MainMenu/C_Car/approvalUnitView/$1';
+
+$route['p2k3adm_V2/Admin/Car/Approval/Tim/(:any)'] = 'P2K3V2/P2K3Admin/MainMenu/C_Car/VerificationView/$1';
+$route['p2k3adm_V2/Admin/Car/Approval/Tim']['post'] = 'P2K3V2/P2K3Admin/MainMenu/C_Car/approvalTimAction';
+$route['p2k3adm_V2/Admin/Car/Approval/Tim/Notes']['post'] = 'P2K3V2/P2K3Admin/MainMenu/C_Car/approvalTimNotes';
+
+
+$route['p2k3adm_V2/Admin/Car/Pdf/(:num)'] = 'P2K3V2/P2K3Admin/MainMenu/C_Car/ExportPDF/$1';
+
+$route['p2k3adm_V2/Admin/Car/api/employeePIC'] = 'P2K3V2/P2K3Admin/MainMenu/C_Car/getEmployeePIC';
+
 $route['p2k3adm_V2/Admin/(:any)'] = 'P2K3V2/P2K3Admin/MainMenu/C_Index/$1';
 $route['p2k3adm_V2/Admin/(:any)/(:any)'] = 'P2K3V2/P2K3Admin/MainMenu/C_Index/$1/$2';
 $route['p2k3adm_V2/Admin/(:any)/(:any)/(:any)'] = 'P2K3V2/P2K3Admin/MainMenu/C_Index/$1/$2/$3';
