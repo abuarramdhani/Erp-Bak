@@ -387,7 +387,7 @@ class C_IsolasiMandiri extends CI_Controller
 				continue;
 			}
 
-			$updt = $this->ubahKePRM($tgl, $pekerja);
+			$updt = $this->ubahKePRM($tgl, $pekerja, $arAlasan[$zx]);
 			if ($updt) {
 				// jika berhasil update pkj, PSP ke prm
 				$zx++;
@@ -765,7 +765,7 @@ class C_IsolasiMandiri extends CI_Controller
 					continue;
 				}
 
-				$updt = $this->ubahKePRM($tgl, $pkj);
+				$updt = $this->ubahKePRM($tgl, $pkj, $arAlasan[$zx]);
 				if ($updt) {
 					$zx++;
 					continue;
@@ -1244,10 +1244,10 @@ class C_IsolasiMandiri extends CI_Controller
 		echo $txt;
 	}
 
-	function ubahKePRM($tgl, $pekerja)
+	function ubahKePRM($tgl, $pekerja, $alasan = '- WFO')
 	{
 		$dataPrez = $this->M_isolasimandiri->getTdataPresensiR($tgl, $tgl, $pekerja);
-		$updt = $this->M_isolasimandiri->updateKePRM($tgl, $pekerja);
+		$updt = $this->M_isolasimandiri->updateKePRM($tgl, $pekerja, $alasan);
 		if ($updt) {
 			$arl = array(
 				'wkt'	=>	date('Y-m-d H:i:s'),
