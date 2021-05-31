@@ -1710,6 +1710,7 @@ $(function () {
         });
      });
 
+    $('.mepk_select_basic').select2();
 	// $('#select-kd_jbt_dl').select2({
 	// 	dropdownCssClass: 'bigdrop'
 	// })
