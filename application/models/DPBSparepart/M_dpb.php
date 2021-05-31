@@ -91,6 +91,7 @@ class M_dpb extends CI_Model
         ,mtl_txn_request_headers mtrh
     where
         kts.NO_DOKUMEN = mtrh.REQUEST_NUMBER
+        and kts.APPROVAL_FLAG != 'N'
         and kts.APPROVE_TO_1 is not null");
 
         return $query->result_array();
