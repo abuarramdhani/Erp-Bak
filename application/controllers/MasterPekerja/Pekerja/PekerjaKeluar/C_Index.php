@@ -235,7 +235,6 @@ class C_Index extends CI_Controller
 			'kd_pkj'						=> $pekerja->kd_pkj,
 			'golkerja'					=> $pekerja->golkerja,
 			'jenispekerjaan'		=> $pekerjaan->jenispekerjaan === 't', // direct = false, indirect = true
-			'npwp'							=> $pekerja->npwp,
 			'ruang'							=> $pekerja->ruang,
 			'lmkontrak'         => $pekerja->lmkontrak,
 			'akhkontrak'        => (new DateTime($pekerja->akhkontrak))->format('d-m-Y'),
@@ -271,6 +270,7 @@ class C_Index extends CI_Controller
 			'statpajak'					=> $pekerja->statpajak,
 			'jtanak'						=> $pekerja->jtanak,
 			'jtbknanak'					=> $pekerja->jtbknanak,
+			'npwp'							=> $pekerja->npwp,
 
 			// lain 
 			'kodesie'						=> $pekerja->kodesie,
@@ -285,6 +285,7 @@ class C_Index extends CI_Controller
 			'uk_baju'           => $pekerja->uk_baju,
 			'uk_celana'         => $pekerja->uk_celana,
 			'uk_sepatu'         => $pekerja->uk_sepatu,
+			'warna_celana'      => $pekerja->warna_celana,
 		);
 
 		// remove whitespace right and left all key
@@ -621,6 +622,7 @@ class C_Index extends CI_Controller
 				'uk_baju'           => $this->input->post('uk_baju'),
 				'uk_celana'         => $this->input->post('uk_celana'),
 				'uk_sepatu'         => $this->input->post('uk_sepatu'),
+				'warna_celana'         => $this->input->post('warna_celana'),
 			);
 
 			$tpekerjaan = array(
