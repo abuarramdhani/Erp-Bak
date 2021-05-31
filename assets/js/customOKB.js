@@ -2163,15 +2163,21 @@ $(document).ready(function () {
             }
         });
 
-        //subinventory
         prn.find('.organizationOKB').on('change', function () {
-            var organization = $(this).val();
+            prn.find('.locationOKB').val('').trigger('change');
+        });
+
+        //subinventory
+        prn.find('.locationOKB').on('change', function () {
+            var organization = prn.find('.organizationOKB').val();
+            var location = $(this).val();
             prn.find('.loadingSubinventoryOKB').css('display', 'block');
             prn.find('.viewSubinventoryOKB').css('display', 'none');
             $.ajax({
                 type: "POST",
                 url: baseurl+"OrderKebutuhanBarangDanJasa/Requisition/getSubinventory",
                 data: {
+                    location: location,
                     organization: organization
                 },
                 dataType: "JSON",
