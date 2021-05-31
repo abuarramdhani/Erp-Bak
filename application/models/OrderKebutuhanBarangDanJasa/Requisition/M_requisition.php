@@ -220,7 +220,7 @@ class M_requisition extends CI_Model
             ooa.ORDER_ID = ooh.ORDER_ID
             AND ooa.JUDGEMENT is null
             AND ooa.APPROVER_ID = ppf.PERSON_ID    
-            AND ooa.APPROVER_TYPE > ooh.APPROVE_LEVEL_POS
+            AND ooa.APPROVER_TYPE > nvl(ooh.APPROVE_LEVEL_POS, 1)
         GROUP BY
             rownum, ppf.FULL_NAME    
         HAVING rownum = 1    
@@ -688,7 +688,7 @@ class M_requisition extends CI_Model
                     and rt.transaction_type(+) = 'RECEIVE'
                     and prha.INTERFACE_SOURCE_CODE IN ('IMPORT_EXP', 'IMPORT_INV', 'OKEBAJA')
                     and prla.ATTRIBUTE9 = to_char(kooh.ORDER_ID) 
-                    and prha.ATTRIBUTE4 = nvl(kooh.PRE_REQ_ID, prha.ATTRIBUTE4)
+                    -- and prha.ATTRIBUTE4 = nvl(kooh.PRE_REQ_ID, prha.ATTRIBUTE4)
                     and kooh.ORDER_ID = '$order_id' --isi dengan order_id
                     group by
                     prha.SEGMENT1 
