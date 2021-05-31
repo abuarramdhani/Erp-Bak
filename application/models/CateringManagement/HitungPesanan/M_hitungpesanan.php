@@ -1432,7 +1432,7 @@ class M_hitungpesanan extends Ci_Model
 				Where 
 				    ( 
 				        ( 
-				            trim(tsp.kd_shift) in ('1','4','7') 
+				            trim(tsp.kd_shift) in ('1','4','7','9') 
 				            and concat(?,' 18:00:00')::timestamp between trl.mulai and trl.selesai 
 				        ) or 
 				        ( 
@@ -1456,7 +1456,7 @@ class M_hitungpesanan extends Ci_Model
 				Where 
 				    ( 
 				        ( 
-				            trim(tsp.kd_shift) in ('1','4','7') 
+				            trim(tsp.kd_shift) in ('1','4','7','9') 
 				            and concat(?,' 18:00:00')::timestamp between trl.mulai and trl.selesai 
 				        ) or 
 				        ( 
