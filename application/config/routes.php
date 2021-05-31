@@ -2527,7 +2527,7 @@ $route['p2k3adm_V2/Admin/Car/Approval/Unit'] = 'P2K3V2/P2K3Admin/MainMenu/C_Car/
 $route['p2k3adm_V2/Admin/Car/Approval/Unit/']['post'] = 'P2K3V2/P2K3Admin/MainMenu/C_Car/approvalUnitAction';
 $route['p2k3adm_V2/Admin/Car/Approval/Unit/(:any)'] = 'P2K3V2/P2K3Admin/MainMenu/C_Car/approvalUnitView/$1';
 
-$route['p2k3adm_V2/Admin/Car/Approval/Tim/(:any)'] = 'P2K3V2/P2K3Admin/MainMenu/C_Car/VerificationView/$1';
+$route['p2k3adm_V2/Admin/Car/Approval/Tim/(:any)'] = 'P2K3V2/P2K3Admin/MainMenu/C_Car/approvalTimView/$1';
 $route['p2k3adm_V2/Admin/Car/Approval/Tim']['post'] = 'P2K3V2/P2K3Admin/MainMenu/C_Car/approvalTimAction';
 $route['p2k3adm_V2/Admin/Car/Approval/Tim/Notes']['post'] = 'P2K3V2/P2K3Admin/MainMenu/C_Car/approvalTimNotes';
 

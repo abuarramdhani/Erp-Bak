@@ -441,7 +441,7 @@ class C_Car extends CI_Controller
    * @page
    * @domain TIM P2K3
    */
-  public function aprpovalTimView($id_kecelakaan)
+  public function approvalTimView($id_kecelakaan)
   {
     $data['Title'] = 'Kebutuhan APD';
     $data['Menu'] = 'Kebutuhan APD';
