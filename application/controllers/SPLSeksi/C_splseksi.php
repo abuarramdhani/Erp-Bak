@@ -536,13 +536,13 @@ class C_splseksi extends CI_Controller
 		$old_spl = $this->M_splseksi->show_current_spl('', '', '', $spl_id);
 
 		// Generate ID Riwayat
-		$maxid = $this->M_splseksi->show_maxid("splseksi.tspl_riwayat", "ID_Riwayat");
-		if (empty($maxid)) {
-			$splr_id = "0000000001";
-		} else {
-			$splr_id = $maxid->id;
-			$splr_id = substr("0000000000", 0, 10 - strlen($splr_id)) . $splr_id;
-		}
+		// $maxid = $this->M_splseksi->show_maxid("splseksi.tspl_riwayat", "ID_Riwayat");
+		// if (empty($maxid)) {
+		// 	$splr_id = "0000000001";
+		// } else {
+		// 	$splr_id = $maxid->id;
+		// 	$splr_id = substr("0000000000", 0, 10 - strlen($splr_id)) . $splr_id;
+		// }
 
 		// Insert data
 		$log_ket = "";
@@ -584,7 +584,7 @@ class C_splseksi extends CI_Controller
 		$to_spl = $this->M_splseksi->update_spl($data_spl, $spl_id);
 
 		$data_splr = array(
-			"ID_Riwayat" => $splr_id,
+			// "ID_Riwayat" => $splr_id,
 			"ID_SPL" => $spl_id,
 			"Tgl_Berlaku" => date('Y-m-d H:i:s'),
 			"Tgl_Tdk_Berlaku" => date('Y-m-d H:i:s'),
@@ -944,25 +944,25 @@ class C_splseksi extends CI_Controller
 
 			// Generate ID SPL
 			$maxid = $this->M_splseksi->show_maxid("splseksi.tspl", "ID_SPL");
-			if (empty($maxid)) {
-				$spl_id = "0000000001";
-			} else {
-				$spl_id = $maxid->id;
-				$spl_id = substr("0000000000", 0, 10 - strlen($spl_id)) . $spl_id;
-			}
-			if ($sendmail_splid == "") {
-				$sendmail_splid = "'$spl_id'";
-			} else {
-				$sendmail_splid .= ",'$spl_id'";
-			}
+			// if (empty($maxid)) {
+			// 	$spl_id = "0000000001";
+			// } else {
+			// 	$spl_id = $maxid->id;
+			// 	$spl_id = substr("0000000000", 0, 10 - strlen($spl_id)) . $spl_id;
+			// }
+			// if ($sendmail_splid == "") {
+			// 	$sendmail_splid = "'$spl_id'";
+			// } else {
+			// 	$sendmail_splid .= ",'$spl_id'";
+			// }
 			// Generate ID Riwayat
-			$maxid = $this->M_splseksi->show_maxid("splseksi.tspl_riwayat", "ID_Riwayat");
-			if (empty($maxid)) {
-				$splr_id = "0000000001";
-			} else {
-				$splr_id = $maxid->id;
-				$splr_id = substr("0000000000", 0, 10 - strlen($splr_id)) . $splr_id;
-			}
+			// $maxid = $this->M_splseksi->show_maxid("splseksi.tspl_riwayat", "ID_Riwayat");
+			// if (empty($maxid)) {
+			// 	$splr_id = "0000000001";
+			// } else {
+			// 	$splr_id = $maxid->id;
+			// 	$splr_id = substr("0000000000", 0, 10 - strlen($splr_id)) . $splr_id;
+			// }
 
 			// Insert data
 			$log_ket = "Noind:" . $noind . " Tgl:" . $tanggal . " Kd:" . $lembur . " Jam:" . $mulai . "-" . $selesai .
@@ -978,7 +978,7 @@ class C_splseksi extends CI_Controller
 			$to_log = $this->M_splseksi->save_log($data_log);
 
 			$data_spl = array(
-				"ID_SPL" => $spl_id,
+				// "ID_SPL" => $spl_id,
 				"Tgl_Berlaku" => date('Y-m-d H:i:s'),
 				"Tgl_Lembur" => $tanggal,
 				"Noind" => $noind,
@@ -996,10 +996,15 @@ class C_splseksi extends CI_Controller
 				"alasan_lembur" => $alasan
 			);
 			$to_spl = $this->M_splseksi->save_spl($data_spl);
+			if ($sendmail_splid == "") {
+				$sendmail_splid = "'$to_spl'";
+			} else {
+				$sendmail_splid .= ",'$to_spl'";
+			}
 
 			$data_splr = array(
-				"ID_Riwayat" => $splr_id,
-				"ID_SPL" => $spl_id,
+				// "ID_Riwayat" => $splr_id,
+				"ID_SPL" => $to_spl,
 				"Tgl_Berlaku" => date('Y-m-d H:i:s'),
 				"Tgl_Tdk_Berlaku" => date('Y-m-d H:i:s'),
 				"Tgl_Lembur" => $tanggal,
