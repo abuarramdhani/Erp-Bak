@@ -7,7 +7,7 @@ class M_requisition extends CI_Model
     {
         parent::__construct();
         $this->load->database();
-        $this->oracle = $this->load->database('oracle',TRUE);
+        $this->oracle = $this->load->database('oracle', TRUE);
     }
 
     // public function getItem($string)
@@ -123,7 +123,7 @@ class M_requisition extends CI_Model
     public function getPengorder($noind)
     {
         $query = $this->db->query("SELECT sec.section_name, sec.department_name FROM er.er_employee_all as emp, er.er_section as sec where emp.section_code=sec.section_code and emp.employee_code='$noind'");
-		return $query->result_array();
+        return $query->result_array();
     }
 
     // public function saveHeader($head)
@@ -138,9 +138,9 @@ class M_requisition extends CI_Model
     public function saveLine($line, $nbd, $cutoff)
     {
         $oracle = $this->load->database('oracle', true);
-        $oracle->set('NEED_BY_DATE',"TO_DATE('$nbd','YYYY-MM-DD')",false);
-        $oracle->set('CUT_OFF_DATE',"TO_DATE('$cutoff','YYYY-MM-DD')",false);
-        $oracle->set('ORDER_DATE',"SYSDATE",false);
+        $oracle->set('NEED_BY_DATE', "TO_DATE('$nbd','YYYY-MM-DD')", false);
+        $oracle->set('CUT_OFF_DATE', "TO_DATE('$cutoff','YYYY-MM-DD')", false);
+        $oracle->set('ORDER_DATE', "SYSDATE", false);
         $oracle->insert('KHS.KHS_OKBJ_ORDER_HEADER', $line);
         $order_id = $oracle->query("SELECT MAX(ORDER_ID) ORDER_ID FROM KHS.KHS_OKBJ_ORDER_HEADER");
 
@@ -195,42 +195,64 @@ class M_requisition extends CI_Model
         //     $where
         //     ORDER BY ooh.ORDER_ID DESC
         //     ");
-        $query = $oracle->query("SELECT 
-                                    OOH.*,
-                                    MSIB.SEGMENT1,
-                                    MSIB.DESCRIPTION,
-                                    PPF1.NATIONAL_IDENTIFIER,
-                                    PPF1.FULL_NAME,
-                                    PPF1.ATTRIBUTE3,
-                                    (
-                                    SELECT
-                                        COUNT ( FILE_NAME )
-                                    FROM
-                                        KHS.KHS_OKBJ_ORDER_ATTACHMENTS
-                                    WHERE
-                                        ORDER_ID = OOH.ORDER_ID ) ATTACHMENT    
-                                FROM
-                                    KHS.KHS_OKBJ_ORDER_HEADER OOH,
-                                    PER_PEOPLE_F PPF,
-                                    MTL_SYSTEM_ITEMS_B MSIB,
-                                    KHS_HRD_TPRIBADI TP,
-                                    KHS_HRD_TSEKSI TS,
-                                    KHS_HRD_TPRIBADI TP1,
-                                    KHS_HRD_TSEKSI TS1,
-                                    PER_PEOPLE_F PPF1
-                                WHERE 1=1
-                                    AND PPF.NATIONAL_IDENTIFIER = TP.NOIND
-                                    AND TP.KODESIE = TS.KODESIE
-                                    AND TO_CHAR(TS.COST_CENTER) = TO_CHAR(TS1.COST_CENTER)
-                                    AND TS1.KODESIE = TP1.KODESIE
-                                    AND TP1.NOIND = PPF1.NATIONAL_IDENTIFIER
-                                    AND OOH.CREATE_BY = PPF1.PERSON_ID   
-                                    AND OOH.INVENTORY_ITEM_ID = MSIB.INVENTORY_ITEM_ID
-                                    AND OOH.DESTINATION_ORGANIZATION_ID = MSIB.ORGANIZATION_ID
-                                    AND OOH.ORDER_STATUS_ID <> 5
-                                    AND PPF.NATIONAL_IDENTIFIER = '$noind' -- PARAMETER
-                                    $where
-                                ORDER BY ooh.ORDER_ID DESC");
+        $query = $oracle->query("SELECT
+        OOH.*,
+        MSIB.SEGMENT1,
+        MSIB.DESCRIPTION,
+        PPF1.NATIONAL_IDENTIFIER,
+        PPF1.FULL_NAME,
+        PPF1.ATTRIBUTE3,
+        (
+        SELECT
+            COUNT (FILE_NAME)
+        FROM
+            KHS.KHS_OKBJ_ORDER_ATTACHMENTS
+        WHERE
+            ORDER_ID = OOH.ORDER_ID ) ATTACHMENT,
+        mp.ORGANIZATION_CODE ||', '|| hla.LOCATION_CODE ||' '|| ooh.DESTINATION_TYPE_CODE distribution,    
+        (
+        SELECT
+            ppf.FULL_NAME
+        FROM
+            KHS.KHS_OKBJ_ORDER_APPROVAL ooa,
+            PER_PEOPLE_F ppf
+        WHERE   
+            ooa.ORDER_ID = ooh.ORDER_ID
+            AND ooa.JUDGEMENT is null
+            AND ooa.APPROVER_ID = ppf.PERSON_ID    
+            AND ooa.APPROVER_TYPE > ooh.APPROVE_LEVEL_POS
+        GROUP BY
+            rownum, ppf.FULL_NAME    
+        HAVING rownum = 1    
+        ) approval    
+    FROM
+        KHS.KHS_OKBJ_ORDER_HEADER OOH,
+        PER_PEOPLE_F PPF,
+        MTL_SYSTEM_ITEMS_B MSIB,
+        KHS_HRD_TPRIBADI TP,
+        KHS_HRD_TSEKSI TS,
+        KHS_HRD_TPRIBADI TP1,
+        KHS_HRD_TSEKSI TS1,
+        PER_PEOPLE_F PPF1,
+        mtl_parameters mp,
+        hr_locations_all hla
+    WHERE
+        1 = 1
+        AND PPF.NATIONAL_IDENTIFIER = TP.NOIND
+        AND TP.KODESIE = TS.KODESIE
+        AND TO_CHAR( TS.COST_CENTER ) = TO_CHAR( TS1.COST_CENTER )
+        AND TS1.KODESIE = TP1.KODESIE
+        AND TP1.NOIND = PPF1.NATIONAL_IDENTIFIER
+        AND OOH.CREATE_BY = PPF1.PERSON_ID
+        AND OOH.INVENTORY_ITEM_ID = MSIB.INVENTORY_ITEM_ID
+        AND OOH.DESTINATION_ORGANIZATION_ID = MSIB.ORGANIZATION_ID
+        AND OOH.ORDER_STATUS_ID <> 5
+        AND OOH.DESTINATION_ORGANIZATION_ID = mp.ORGANIZATION_ID
+        AND OOH.DELIVER_TO_LOCATION_ID = hla.LOCATION_ID
+        AND PPF.NATIONAL_IDENTIFIER = '$noind'
+        $where
+    ORDER BY
+        ooh.ORDER_ID DESC");
 
         return $query->result_array();
     }
@@ -520,7 +542,7 @@ class M_requisition extends CI_Model
     public function setAtasan($atasan)
     {
         $oracle = $this->load->database('oracle', true);
-        $oracle->insert("KHS.KHS_OKBJ_APPROVE_HIR",$atasan);
+        $oracle->insert("KHS.KHS_OKBJ_APPROVE_HIR", $atasan);
     }
 
     public function getRequsterAdmin($noind)
@@ -553,15 +575,15 @@ class M_requisition extends CI_Model
     {
         $oracle = $this->load->database('oracle', true);
         $query =  $oracle->query("SELECT ppf.NATIONAL_IDENTIFIER, ppf.PERSON_ID FROM PER_PEOPLE_F ppf $cond");
-        
+
         return $query->result_array();
     }
 
     public function uploadFiles($upload)
     {
         $oracle = $this->load->database('oracle', true);
-        $oracle->set('CREATION_DATE',"SYSDATE",false);
-        $oracle->insert("KHS.KHS_OKBJ_ORDER_ATTACHMENTS",$upload);
+        $oracle->set('CREATION_DATE', "SYSDATE", false);
+        $oracle->insert("KHS.KHS_OKBJ_ORDER_ATTACHMENTS", $upload);
     }
 
     public function getApprover($person_id, $level)
@@ -580,7 +602,7 @@ class M_requisition extends CI_Model
         return $query->result_array();
     }
 
-    public function setDeactiveApprover($approver,$person_id)
+    public function setDeactiveApprover($approver, $person_id)
     {
         $cond = array('ACTIVE_FLAG' => 'N');
         $oracle = $this->load->database('oracle', true);
@@ -589,8 +611,8 @@ class M_requisition extends CI_Model
         $oracle->where('PERSON_ID', $person_id);
         $oracle->update('KHS.KHS_OKBJ_APPROVE_HIR', $cond);
     }
-    
-    public function setActiveApprover($approver,$person_id)
+
+    public function setActiveApprover($approver, $person_id)
     {
         $oracle = $this->load->database('oracle', true);
         $cond = array('ACTIVE_FLAG' => 'Y');
@@ -683,18 +705,18 @@ class M_requisition extends CI_Model
     }
 
     public function getNamaUser($user)
-	{
-		$personalia = $this->load->database("personalia", true);
-		$query= $personalia->query("select
+    {
+        $personalia = $this->load->database("personalia", true);
+        $query = $personalia->query("select
 									*
 									from
 									hrd_khs.tpribadi
 									where
 									noind = '$user'
 									");
-		return $query->result_array();
+        return $query->result_array();
     }
-    
+
     public function sementara($order_id)
     {
         $oracle = $this->load->database('oracle', true);
@@ -712,14 +734,14 @@ class M_requisition extends CI_Model
     public function CancelOrder($order_id)
     {
         $oracle = $this->load->database('oracle', true);
-        $oracle->where('ORDER_ID',$order_id);
-        $oracle->update('KHS.KHS_OKBJ_ORDER_HEADER',array('ORDER_STATUS_ID' => 5,));
+        $oracle->where('ORDER_ID', $order_id);
+        $oracle->update('KHS.KHS_OKBJ_ORDER_HEADER', array('ORDER_STATUS_ID' => 5,));
     }
 
     public function getAttachment($attachment_id)
     {
         $oracle = $this->load->database('oracle', true);
-        $query = $oracle->get_where('KHS.KHS_OKBJ_ORDER_ATTACHMENTS', array('ATTACHMENT_ID' => $attachment_id, ));
+        $query = $oracle->get_where('KHS.KHS_OKBJ_ORDER_ATTACHMENTS', array('ATTACHMENT_ID' => $attachment_id,));
 
         return $query->row_array();
     }
