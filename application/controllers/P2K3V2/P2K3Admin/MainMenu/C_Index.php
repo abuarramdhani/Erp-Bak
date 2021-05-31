@@ -137,7 +137,6 @@ class C_Index extends CI_Controller
 			$ks = '';
 		}
 
-
 		// $data['listtobon'] = $this->M_dtmasuk->listtobon2($ks, $pr);
 		$data['listtobon'] = $this->M_dtmasuk->listtobonHitung2($ks, $pr);
 		$jml = '';
@@ -1433,6 +1432,7 @@ class C_Index extends CI_Controller
 			// get all from their section
 			$data['list'] = $this->M_dtmasuk->getK3K($data['year'], $kodesie);
 		}
+
 
 		$data['lokasi'] = array_column($this->M_pekerjakeluar->getLokasiKerja(), 'lokasi_kerja', 'id_');
 		$data['lokasi'][999] = 'LAKA';

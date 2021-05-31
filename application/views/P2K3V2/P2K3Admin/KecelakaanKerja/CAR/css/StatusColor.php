@@ -4,6 +4,10 @@
     border-radius: 8px;
   }
 
+  .status:hover {
+    filter: brightness(90%);
+  }
+
   .status.process {
     background-color: #ffe266;
     color: #d17c00;

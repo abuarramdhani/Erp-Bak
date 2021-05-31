@@ -187,7 +187,7 @@
                                   </tr>
                                 <?php endforeach ?>
 
-                                <?php if (count($car->revisi) > 0 && end($car_revisi)->approval_status == CAR_STATUS::REVISI) : ?>
+                                <?php if (count($car->revisi) > 0 && end($car->revisi)->approval_status == CAR_STATUS::REVISI) : ?>
                                   <?php
                                   $this->load->view('P2K3V2/P2K3Admin/KecelakaanKerja/CAR/_partials/EmptyCarList', [
                                     'kecelakaan_car_id' => $car->kecelakaan_car_id

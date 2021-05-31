@@ -2524,13 +2524,12 @@ $route['p2k3adm_V2/Admin/Car/Update/(:any)']['post'] = 'P2K3V2/P2K3Admin/MainMen
 $route['p2k3adm_V2/Admin/Car/Approval/History'] = 'P2K3V2/P2K3Admin/MainMenu/C_Car/ApprovalHistory';
 
 $route['p2k3adm_V2/Admin/Car/Approval/Unit'] = 'P2K3V2/P2K3Admin/MainMenu/C_Car/ApprovalUnitListView';
-$route['p2k3adm_V2/Admin/Car/Approval/Unit/']['post'] = 'P2K3V2/P2K3Admin/MainMenu/C_Car/approvalUnitAction';
+$route['p2k3adm_V2/Admin/Car/Approval/Unit/Action']['post'] = 'P2K3V2/P2K3Admin/MainMenu/C_Car/approvalUnitAction';
 $route['p2k3adm_V2/Admin/Car/Approval/Unit/(:any)'] = 'P2K3V2/P2K3Admin/MainMenu/C_Car/approvalUnitView/$1';
 
 $route['p2k3adm_V2/Admin/Car/Approval/Tim/(:any)'] = 'P2K3V2/P2K3Admin/MainMenu/C_Car/approvalTimView/$1';
 $route['p2k3adm_V2/Admin/Car/Approval/Tim']['post'] = 'P2K3V2/P2K3Admin/MainMenu/C_Car/approvalTimAction';
 $route['p2k3adm_V2/Admin/Car/Approval/Tim/Notes']['post'] = 'P2K3V2/P2K3Admin/MainMenu/C_Car/approvalTimNotes';
-
 
 $route['p2k3adm_V2/Admin/Car/Pdf/(:num)'] = 'P2K3V2/P2K3Admin/MainMenu/C_Car/ExportPDF/$1';
 

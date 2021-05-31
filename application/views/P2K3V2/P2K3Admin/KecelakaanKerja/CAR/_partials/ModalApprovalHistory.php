@@ -5,7 +5,7 @@
         <h4>Riwayat Approval</h4>
       </div>
       <div class="modal-body">
-        Aku modal history
+
       </div>
     </div>
   </div>

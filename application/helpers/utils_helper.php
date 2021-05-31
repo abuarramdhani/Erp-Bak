@@ -4,10 +4,13 @@
  * Global function to print single variable
  */
 if (!function_exists('debug')) {
-  function debug($var)
+  function debug(...$var)
   {
     echo "<pre>";
-    print_r($var);
+    foreach ($var as $item) {
+      print_r($item);
+      echo "<br>";
+    }
     exit();
   }
 }

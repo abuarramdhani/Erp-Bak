@@ -45,7 +45,7 @@
                         </button>
                       </div> -->
                     </div>
-                    <form action="<?= base_url('p2k3adm_V2/Admin/Car/Approval/Unit/') ?>" method="POST">
+                    <form action="<?= base_url('p2k3adm_V2/Admin/Car/Approval/Unit/Action') ?>" method="POST">
                       <input type="hidden" name="id_kecelakaan" value="<?= $id_kecelakaan ?>">
                       <div class="col-md-12">
                         <div class="table-responsive">
@@ -103,38 +103,23 @@
                                 </tr>
 
                                 <?php foreach ($car->revisi as $car_revisi) : ?>
-                                  <tr data-status="<?= $car_revisi->approval_status ?>">
+                                  <tr>
                                     <td class="text-center js-row-number">
-                                      <input type="hidden" name="car_id[]" value="<?= $car_revisi->kecelakaan_car_id ?>">
-                                      <input type="hidden" name="sub_car_revision_id[]" value="<?= $car_revisi->sub_revisi_kecelakaan_car_id ?>">
                                     </td>
                                     <td>
-                                      <?php
-                                      $factors = ['Man', 'Machine', 'Method', 'Working', 'Area', 'Other'];
-                                      ?>
-                                      <select class="form-control" name="factor[]" required <?= $car_revisi->approval_status == CAR_STATUS::PROCESS ? '' : 'readonly' ?>>
-                                        <?php foreach ($factors as $factor) : ?>
-                                          <option value="<?= $factor ?>" <?= $factor == $car_revisi->factor ? 'selected' : '' ?>><?= $factor ?></option>
-                                        <?php endforeach ?>
-                                      </select>
+                                      <?= $car_revisi->factor ?>
                                     </td>
                                     <td>
-                                      <input autocomplete="off" type="text" placeholder="Tulis akar masalah ..." value="<?= $car_revisi->root_cause ?>" name="root_cause[]" class="form-control" required <?= $car_revisi->approval_status == CAR_STATUS::PROCESS ? '' : 'readonly' ?>>
+                                      <?= $car_revisi->root_cause ?>
                                     </td>
                                     <td>
-                                      <input autocomplete="off" type="text" placeholder="Tulis tindakan ..." value="<?= $car_revisi->corrective_action ?>" name="corrective_action[]" class="form-control" required <?= $car_revisi->approval_status == CAR_STATUS::PROCESS ? '' : 'readonly' ?>>
+                                      <?= $car_revisi->corrective_action ?>
                                     </td>
                                     <td>
-                                      <?php if ($car_revisi->approval_status == CAR_STATUS::PROCESS) : ?>
-                                        <select class="form-control js-pic-select2" value="<?= $car_revisi->noind_pic ?>" name="noind_pic[]" required <?= $car_revisi->approval_status == CAR_STATUS::PROCESS ? '' : 'readonly' ?>>
-                                          <option value="<?= $car_revisi->noind_pic ?>" selected><?= $car_revisi->noind_pic . " - " . $car_revisi->nama_pic ?></option>
-                                        </select>
-                                      <?php else : ?>
-                                        <input autocomplete="off" type="text" value="<?= $car_revisi->noind_pic . " - " . $car_revisi->nama_pic ?>" name="noind_pic[]" class="form-control" readonly>
-                                      <?php endif ?>
+                                      <?= $car_revisi->noind_pic . " - " . $car_revisi->nama_pic ?>
                                     </td>
                                     <td>
-                                      <input type="text" autocomplete="off" placeholder="Tanggal jatuh tempo" value="<?= $car_revisi->due_date ?>" name="due_date[]" class="form-control js-datepicker" required <?= $car_revisi->approval_status == CAR_STATUS::PROCESS ? '' : 'readonly' ?>>
+                                      <?= $car_revisi->due_date ?>
                                     </td>
                                     <td>
                                       <?= $car_revisi->notes ?>

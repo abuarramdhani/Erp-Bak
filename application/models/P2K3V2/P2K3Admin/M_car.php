@@ -49,6 +49,20 @@ class M_car extends CI_Model
   /**
    * 
    * @param Int $id_car
+   */
+  public function getCarById($id_car)
+  {
+    return $this->db
+      ->select('*')
+      ->from('k3.k3k_kecelakaan_car')
+      ->where('kecelakaan_car_id', $id_car)
+      ->get()
+      ->row();
+  }
+
+  /**
+   * 
+   * @param Int $id_car
    * @return Array<Object>
    */
   public function getCarRevisiById($id_car)
@@ -89,7 +103,7 @@ class M_car extends CI_Model
   {
     try {
       foreach ($cars as $car) {
-        if (!empty($car['kecelakaan_car_id'])) {
+        if (isset($car['kecelakaan_car_id']) && !empty($car['kecelakaan_car_id'])) {
           // update
           $this->db
             ->update('k3.k3k_kecelakaan_car', $car, [
@@ -239,7 +253,7 @@ class M_car extends CI_Model
    * 
    * @return Void
    */
-  public function approvalTimCar($id_car, $approval_by, $approval_status)
+  public function approvalTimCar($id_car, $approval_by, $approval_status, $FuncIsAllCarIsClosed)
   {
     // update car with id
     $this->db
@@ -248,11 +262,32 @@ class M_car extends CI_Model
       ->update('k3.k3k_kecelakaan_car');
 
     // :TODO
-    // Select all car
-    // case 1: jika semua sudah closed, maka call $this->updateCarHasBeenApprovedByTim()
-    // note: untuk cek apakah semua car sudah closed, see C_Car->isAllCarIsClosed()
+    // test this
 
-    // case 2: jika ada yang revisi / status revisi, maka update ke tabel k3k.kecelakaan_kerja column is_car_tim_approved = false, is_car_unit_approved = false
+    // get id kecelakaan
+    $car = $this->getCarById($id_car);
+
+    // undefined safety
+    if ($car) {
+      $id_kecelakaan = $car->id_kecelakaan;
+      // Select all car
+      $cars = $this->getCarByIdKecelakaan($id_kecelakaan);
+
+      //untuk cek apakah semua car sudah closed, @see C_Car->isAllCarIsClosed()
+      $isAllCarClosed = $FuncIsAllCarIsClosed($cars);
+
+      // if all car is closed
+      if ($isAllCarClosed) {
+        // case 1: jika semua sudah closed, maka call $this->updateCarHasBeenApprovedByTim()
+        $this->updateCarHasBeenApprovedByTim($id_kecelakaan);
+      }
+
+      // if $approval_status is revisi
+      if ($approval_status == CAR_STATUS::REVISI) {
+        // case 2: jika ada yang revisi / status revisi, maka update ke tabel k3k.kecelakaan_kerja column is_car_tim_approved = false, is_car_unit_approved = false
+        $this->updateCarHasBeenRevisedByTim($id_kecelakaan);
+      }
+    }
 
     // insert car history
     $this->insertCarApprovalHistory($id_car, $approval_status, $approval_by, null);
@@ -294,6 +329,20 @@ class M_car extends CI_Model
     return $this->db
       ->update('k3.k3k_kecelakaan', [
         'car_tim_is_approved' => true
+      ], [
+        'id_kecelakaan' => $id_kecelakaan
+      ]);
+  }
+
+  /**
+   * not yet used
+   */
+  public function updateCarHasBeenRevisedByTim($id_kecelakaan)
+  {
+    return $this->db
+      ->update('k3.k3k_kecelakaan', [
+        'car_tim_is_approved' => false,
+        'car_unit_is_approved' => false,
       ], [
         'id_kecelakaan' => $id_kecelakaan
       ]);

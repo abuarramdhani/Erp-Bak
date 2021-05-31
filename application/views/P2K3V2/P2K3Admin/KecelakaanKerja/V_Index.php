@@ -1,6 +1,8 @@
 <style>
 
 </style>
+<?php $this->load->view('P2K3V2/P2K3Admin/KecelakaanKerja/CAR/css/StatusColor') ?>
+
 <section class="content">
   <div class="inner">
     <div class="row">
@@ -87,21 +89,36 @@
                               <button class="btn btn-danger btn-sm apdbtndelmkk" title="Hapus Rekap" value="<?= $key['id_kecelakaan'] ?>" pkj="<?= $key['noind'] . ' - ' . $key['nama'] ?>">
                                 <i class="fa fa-trash"></i>
                               </button>
+                              <?php
+                              // tim approved && unit approved -> closed |
+                              if ($key['car_tim_is_approved'] == 't' && $key['car_unit_is_approved'] == 't') {
+                                $carButtonClass = 'status closed';
+                                $seksiCarButtonTitle = 'CAR is closed';
+                                $timCarButtonTitle = 'CAR is closed';
+                              } else if ($key['car_unit_is_approved'] == 't') {
+                                // unit approved -> verified -> green
+                                $carButtonClass = 'status verified';
+                                $seksiCarButtonTitle = 'CAR telah di approve';
+                                $timCarButtonTitle = 'Verifikasi CAR';
+                              } else {
+                                // else -> prosess
+                                $carButtonClass = 'status process';
+                                $seksiCarButtonTitle = 'Menunggu CAR diapprove (Proses)';
+                                $timCarButtonTitle = 'Lihat CAR (Proses)';
+                              }
+                              ?>
                               <?php if ($isAdmin) : ?>
                                 <!-- Tampilan di TIM -->
                                 <?php if ($key['car_is_created'] == 't') : ?>
-                                  <a target="_blank" href="<?= base_url("p2k3adm_V2/Admin/Car/Approval/Tim/$key[id_kecelakaan]") ?>" title="Verifikasi CAR File" class="btn <?= $key['car_tim_is_approved'] ? 'btn-success' : 'btn-info' ?> btn-sm">
+                                  <a target="_blank" href="<?= base_url("p2k3adm_V2/Admin/Car/Approval/Tim/$key[id_kecelakaan]") ?>" title="<?= $timCarButtonTitle ?>" class="btn <?= $carButtonClass ?> btn-sm">
                                     <i class="fa fa-check-circle"></i>
                                   </a>
                                 <?php else : ?>
-                                  <!-- <a target="_blank" title="Lampiran CAR belum dibuat" class="btn btn-sm btn-warning">
-                                    <i class="fa fa-check"></i>
-                                  </a> -->
                                 <?php endif ?>
                               <?php else : ?>
                                 <!-- Tampilan di seksi -->
                                 <?php if ($key['car_is_created'] == 't') : ?>
-                                  <a target="_blank" href="<?= base_url("p2k3adm_V2/Admin/Car/View/$key[id_kecelakaan]") ?>" title="Edit file CAR" class="btn btn-info btn-sm">
+                                  <a target="_blank" href="<?= base_url("p2k3adm_V2/Admin/Car/View/$key[id_kecelakaan]") ?>" title="<?= $seksiCarButtonTitle ?>" class="btn <?= $carButtonClass ?> btn-sm">
                                     <i class="fa fa-check-circle"></i>
                                   </a>
                                 <?php else : ?>

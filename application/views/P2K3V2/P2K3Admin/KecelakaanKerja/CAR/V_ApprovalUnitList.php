@@ -1,6 +1,19 @@
+<?php $this->load->view('P2K3V2/P2K3Admin/KecelakaanKerja/CAR/css/StatusColor') ?>
 <style>
+  .btn-pdf {
+    background: transparent;
+    padding: 0.2em 0.7em;
+    background: pink;
+    color: red;
+    border-radius: 8px;
+  }
 
+  .btn-pdf:hover {
+    background: red;
+    color: white;
+  }
 </style>
+
 <section class="content">
   <div class="inner">
     <div class="row">
@@ -65,14 +78,29 @@
                       <?php
                       $x = 1;
                       foreach ($list as $key) : ?>
+                        <?php
+                        // tim approved && unit approved -> closed |
+                        if ($key['car_tim_is_approved'] == 't' && $key['car_unit_is_approved'] == 't') {
+                          $carButtonClass = 'status closed';
+                          $unitCarButtonTitle = 'CAR is closed';
+                        } else if ($key['car_unit_is_approved'] == 't') {
+                          // unit approved -> verified -> green
+                          $carButtonClass = 'status verified';
+                          $unitCarButtonTitle = 'CAR telah di approve';
+                        } else {
+                          // else -> prosess
+                          $carButtonClass = 'status process';
+                          $unitCarButtonTitle = 'Approve CAR';
+                        }
+                        ?>
                         <tr>
                           <td class="text-center"><?= $x++; ?></td>
                           <td class="text-center" nowrap>
-                            <a href="<?= base_url('p2k3adm_V2/Admin/exportKecelakaanKerjaPDF?id=' . $key['id_kecelakaan']) ?>" title="Cetak PDF" target="_blank" class="btn btn-danger btn-sm">
+                            <a href="<?= base_url('p2k3adm_V2/Admin/exportKecelakaanKerjaPDF?id=' . $key['id_kecelakaan']) ?>" title="Cetak PDF" target="_blank" class="btn btn-pdf btn-sm">
                               <i class="fa fa-file-pdf-o"></i>
                             </a>
                             <?php if ($key['car_is_created'] == 't') : ?>
-                              <a target="_blank" href="<?= base_url("p2k3adm_V2/Admin/Car/Approval/Unit/$key[id_kecelakaan]") ?>" title="Approval file CAR" class="btn <?= $key['car_tim_is_approved'] ? 'btn-success' : 'btn-info' ?> btn-sm">
+                              <a target="_blank" href="<?= base_url("p2k3adm_V2/Admin/Car/Approval/Unit/$key[id_kecelakaan]") ?>" title="<?= $unitCarButtonTitle ?>" class="btn <?= $carButtonClass ?> btn-sm">
                                 <i class="fa fa-check-circle"></i>
                               </a>
                             <?php else : ?>

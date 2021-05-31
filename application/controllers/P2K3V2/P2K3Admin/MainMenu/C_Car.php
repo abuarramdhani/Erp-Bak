@@ -8,6 +8,24 @@ if (!function_exists('nullWhenEmpty')) {
   }
 }
 
+/**
+ * Not yet used
+ */
+class EncryptCar
+{
+  const key = '1';
+
+  static function encode($str)
+  {
+    return (new CI_Encrypt)->encode($str, static::key);
+  }
+
+  static function decode($encoded)
+  {
+    return (new CI_Encrypt)->decode($encoded, static::key);
+  }
+}
+
 // Just an helper class
 class HelperClass
 {
@@ -62,10 +80,15 @@ class CAR_STATUS
  * dibagian seksi, jika sudah closed semua, tidak ada fitur tambah (Ok)
  * dibagian unit, warna CAR dibuat beda antara yg sudah di verifikasi sama belum (-)
  * dibagian tim, warna car dibuat beda antara yang sudah di closed, (-)
+ * 
+ * - Enkripsi id url
  */
 
 /**
  * @class C_Car
+ * 
+ * Suggestion (Hanya usulan):
+ * - Ketika melakukan approval, kirim notifikasi ke pekerja terkait ()
  * 
  * notes: 
  * CAR (Corrective Action Report)
@@ -290,7 +313,6 @@ class C_Car extends CI_Controller
     }
 
     $this->M_car->updateCarIfHasBeenCreated($id_kecelakaan);
-    // debug($data);
 
     try {
       $this->M_car->updateOrInsertBatchCar($data);
@@ -302,7 +324,6 @@ class C_Car extends CI_Controller
     // redirect back
     return redirect($_SERVER['HTTP_REFERER']);
   }
-
 
   /**
    * To see page of list kecelakaan kerja where CAR is created
@@ -496,7 +517,10 @@ class C_Car extends CI_Controller
       // TIM just can set approval within REVISI, OPEN, CLOSED
       if (!in_array($approval_status, [CAR_STATUS::OPEN, CAR_STATUS::REVISI, CAR_STATUS::CLOSED])) throw new Exception("Approval type is not valid type");
 
-      $this->M_car->approvalTimCar($id, $approval_by, $approval_status);
+      // using funcion as parameter
+      $this->M_car->approvalTimCar($id, $approval_by, $approval_status, function ($cars) {
+        return $this->isAllCarIsClosed($cars);
+      });
 
       return $this->output
         ->set_content_type('application/json')
@@ -612,11 +636,6 @@ class C_Car extends CI_Controller
    * 
    * TODO: 
    * Ubah format tanggal menjadi DD MMMM YYYY, ex: 31 Januari 2021
-   * // 
-   * 
-   * Suggestion (Hanya usulan):
-   * - Ketika melakukan approval, kirim notifikasi ke pekerja terkait ()
-   * 
    * 
    * Print CAR handler
    * @method POST
