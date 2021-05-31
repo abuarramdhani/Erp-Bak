@@ -49,9 +49,20 @@ class C_Selep extends CI_Controller
 		$this->load->view('V_Footer', $data);
 	}
 
+	public function get_qty_handling($value='')
+	{
+		$data = 'gada';
+		$res =  $this->M_selep->get_qty_handling($this->input->post('component_code'), $this->input->post('org_code'));
+		if (!empty($res['HANDLING'])) {
+			$data = $res['HANDLING'];
+		}
+		echo json_encode($data);
+	}
+
 	public function get_io_subinv_locator_tujuan($value='')
 	{
-	  echo json_encode($this->M_selep->get_io_subinv_locator_tujuan($this->input->post('batch_no')));
+		$data = $this->M_selep->get_io_subinv_locator_tujuan($this->input->post('batch_no'));
+		echo json_encode($data);
 	}
 
 	public function generate_kib()
@@ -59,33 +70,67 @@ class C_Selep extends CI_Controller
 		if (!empty($this->input->post('batch_no'))) {
 	    $batch_no = $this->input->post('batch_no');
 	    $data = $this->M_selep->get_data_kib($batch_no);
-	    $get_kib =  $this->M_selep->generate_no_kib($batch_no);
+			$qty_selep = $this->input->post('qty_selep');
+			$qty_handling = $this->input->post('qty_handling');
 
-  		//SCHEDULED_QUANTITY => qty handling => misal handling 205 SCHEDULED_QUANTITY = 50 jadi 50 50 50 50 5
-			$subinv = explode(' - ', $this->input->post('subinv'));
-	    $data[0]['NO_KIB'] = $get_kib['NO_KIB'];
-			$data[0]['FROM_SUBINVENTORY_CODE'] = $this->input->post('from_sub_code');
-	    $data[0]['TO_ORG_ID'] = $this->input->post('io');
-	    $data[0]['TO_SUBINVENTORY_CODE'] = $subinv[0];
-	    $data[0]['TO_LOCATOR_ID'] = $this->input->post('locator');
-			$data[0]['QTY_SELEP'] = $this->input->post('qty_selep');
-			$data[0]['QTY_HANDLING'] = $this->input->post('qty_handling');
-	    $data[0]['NO_INDUK'] = $this->session->user;
+			if ($qty_handling != 0) {
+					$locator = explode(' - ', $this->input->post('locator'));
+					$org_id = explode(' - ', $this->input->post('io'));
+		  		//SCHEDULED_QUANTITY => qty handling => misal handling 50 qty_kib 205 jadi 50 50 50 50 5
+					if ($qty_selep > $qty_handling) {
+						$loop = floor($qty_selep/$qty_handling);
+						$modulus = $qty_selep%$qty_handling;
+						for ($i=0; $i < $loop; $i++) {
+							$get_kib =  $this->M_selep->generate_no_kib($batch_no);
+							$data[0]['NO_KIB'] = $get_kib['NO_KIB'];
+							$data[0]['FROM_SUBINVENTORY_CODE'] = $this->input->post('from_sub_code');
+							$data[0]['TO_ORG_ID'] = $org_id[1];
+							$data[0]['TO_SUBINVENTORY_CODE'] = $this->input->post('subinv');
+							$data[0]['TO_LOCATOR_ID'] = $locator[1];
+							$data[0]['QTY_HANDLING'] = $qty_handling;
+							$data[0]['NO_INDUK'] = $this->session->user;
+							$data[0]['QTY_SELEP'] = $qty_handling;
+							$insert = $this->M_selep->insertKIB($data);
+						}
+						if (!empty($modulus)) {
+							$get_kib =  $this->M_selep->generate_no_kib($batch_no);
+							$data[0]['NO_KIB'] = $get_kib['NO_KIB'];
+							$data[0]['FROM_SUBINVENTORY_CODE'] = $this->input->post('from_sub_code');
+							$data[0]['TO_ORG_ID'] = $org_id[1];
+							$data[0]['TO_SUBINVENTORY_CODE'] = $this->input->post('subinv');
+							$data[0]['TO_LOCATOR_ID'] = $locator[1];
+							$data[0]['QTY_HANDLING'] = $qty_handling;
+							$data[0]['NO_INDUK'] = $this->session->user;
+							$data[0]['QTY_SELEP'] = $modulus;
+							$insert = $this->M_selep->insertKIB($data);
+						}
+					}else {
+						$get_kib =  $this->M_selep->generate_no_kib($batch_no);
+						$data[0]['NO_KIB'] = $get_kib['NO_KIB'];
+						$data[0]['FROM_SUBINVENTORY_CODE'] = $this->input->post('from_sub_code');
+						$data[0]['TO_ORG_ID'] = $org_id[1];
+						$data[0]['TO_SUBINVENTORY_CODE'] = $this->input->post('subinv');
+						$data[0]['TO_LOCATOR_ID'] = $locator[1];
+						$data[0]['QTY_HANDLING'] = $qty_handling;
+						$data[0]['NO_INDUK'] = $this->session->user;
+						$data[0]['QTY_SELEP'] = $qty_selep;
+						$insert = $this->M_selep->insertKIB($data);
+					}
 
-	    $insert = $this->M_selep->insertKIB($data);
-
-	    if ($insert == 1) {
-				redirect('InventoryManagement/CreateKIBDEV/pdf/1/'.$batch_no.'/0');
-	    }else {
-				echo "Terdapat Kesalahan <br>";
-
-				echo "<pre>";
-				print_r($data);
-				echo "<br>";
-				echo "<pre>";
-				print_r($_POST);
-				// die;
-	    }
+			    if ($insert == 1) {
+						// redirect('InventoryManagement/CreateKIBDEV/pdf/1/'.$batch_no.'/0');
+						echo "Karena masih di local, Klik link berikut <a href='http://erp.quick.com/InventoryManagement/CreateKIBDEV/pdf/1/$batch_no/0'>$batch_no</a>";
+			    }else {
+						echo "Terdapat Kesalahan <br>";
+						echo "<pre>";
+						print_r($data);
+						echo "<br>";
+						echo "<pre>";
+						print_r($_POST);
+			    }
+			}else {
+				echo "QTY_HANDLING can't 0";
+			}
 
 	  }else {
 	    echo "Batch Number can't null";
@@ -149,6 +194,47 @@ class C_Selep extends CI_Controller
 		}
 		echo json_encode($data);
 	}
+
+	public function check_detail_onhand($value='')
+	{
+		$data = '';
+		$merah = 0;
+		if (!empty($this->input->post('batch_no'))) {
+			$res = $this->M_selep->check_onhand($this->input->post('batch_no'));
+			if (!empty($res[0]['BATCH_NO'])) {
+				foreach ($res as $key => $value) {
+					if ($value['ONHAND'] <= 0) {
+						$style = 'style="background:#ff6b6b" class="up2l_selep_merah"';
+						$merah = 500;
+					}else {
+						$style = '';
+					}
+					$tampung[] = '<tr '.$style.'>
+		                      <td>'.$value['BATCH_NO'].'</td>
+		                      <td>'.$value['SUBINVENTORY'].'</td>
+		                      <td>'.$value['ITEM'].'</td>
+													<td>'.$value['DESCRIPTION'].'</td>
+													<td>'.abs($value['ATT']).'</td>
+													<td>'.abs($value['PLAN_QTY']).'</td>
+													<td>'.abs($value['ONHAND']).'</td>
+		                    </tr>';
+				}
+				$response = implode('', $tampung);
+			}else {
+				$response = '<tr><td colspan="7">Onhand dengan batch '.$this->input->post('batch_no').' tidak ditemukan, Hubungi ICT</td></tr>';
+				$merah = 500;
+			}
+		}else {
+			$response = '<tr><td colspan="7">Batch Number NULL</td></tr>';
+			$merah = 500;
+		}
+		$data = [
+			'data' => $response,
+			'merah' => $merah
+		];
+		echo json_encode($data);
+	}
+
 
 	public function check_onhand($value='')
 	{

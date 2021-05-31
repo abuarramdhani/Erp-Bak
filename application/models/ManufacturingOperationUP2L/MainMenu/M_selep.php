@@ -9,10 +9,18 @@ class M_selep extends CI_Model
         $this->oracle = $this->load->database('oracle_dev', TRUE);
     }
 
-    // baru dari mb div
+
+    public function get_qty_handling($component_code, $org_code)
+    {
+      return $this->oracle->query("SELECT decode(MSIB.UNIT_VOLUME,NULL,'0',msib.unit_volume) handling FROM MTL_SYSTEM_ITEMS_B MSIB, MTL_PARAMETERS MP
+                                    WHERE MSIB.ORGANIZATION_ID = MP.ORGANIZATION_ID
+                                    AND MSIB.SEGMENT1 = '$component_code'
+                                    AND MP.ORGANIZATION_CODE = '$org_code'")->row_array();
+    }
+
     public function get_io_subinv_locator_tujuan($batch_no)
     {
-      return $this->oracle->query("SELECT.ORGANIZATION_CODE org_code
+      return $this->oracle->query("SELECT mp.ORGANIZATION_CODE org_code
                                         ,fmd.ATTRIBUTE1 org_id
                                         ,fmd.ATTRIBUTE2 subinventory
                                         ,mil.SEGMENT1 locator_code

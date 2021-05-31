@@ -67,9 +67,13 @@ function swalup2l(type, pesan) {
   })
 }
 
+
 function submit_up2l_selep_master() {
   $('.btn-up2l-save-selep').attr('disabled', false);
-  $('.btn-up2l-cetakkib').attr('disabled', false);
+  $('.btn-up2l-cetakkib').attr('disabled', true);
+  setTimeout(function () {
+    $('#modalUP2LCreateKIB').modal('hide');
+  }, 1500);
 }
 
 $('.btn-up2l-cetakkib').on('click', function() {
@@ -91,6 +95,44 @@ $('.btn-up2l-cetakkib').on('click', function() {
           })
         },
         success: function(result) {
+          toastup2l('success', 'Done.')
+          console.log(result, 'get_io_subinv_locator_tujuan');
+          $('.up2l_io_99').val(`${result.ORG_CODE} - ${result.ORG_ID}`);
+          $('.up2l_subinv_99').val(result.SUBINVENTORY);
+          $('.slc_up2l_locator').val(`${result.LOCATOR_CODE} - ${result.LOCATOR_ID}`);
+
+          //cek handling
+          $.ajax({
+            url: baseurl + 'ManufacturingOperationUP2L/Selep/get_qty_handling',
+            type: 'POST',
+            dataType: 'JSON',
+            data: {
+              component_code: $('#txtComponentCodeHeader').val(),
+              org_code: result.ORG_CODE
+            },
+            cache:false,
+            beforeSend: function() {
+              Swal.fire({
+                onBeforeOpen: () => {
+                   Swal.showLoading();
+                   $('.swal2-loading').children('button').css({'width': '40px', 'height': '40px'})
+                 },
+                text: 'Sedang Mengecek Quantity Handling..'
+              })
+            },
+            success: function(result_2) {
+              toastup2l('success', 'Done.');
+              if (result_2 != 'gada') {
+                $('#txtSelepQtyHandlingCetakKIB').val(result_2).attr('readonly', true);
+              }else {
+                $('#txtSelepQtyHandlingCetakKIB').val('').attr('readonly', false);
+              }
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+            swalup2l('error', 'Koneksi Terputus...')
+             console.error();
+            }
+          })
 
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -177,16 +219,65 @@ $('.btn-up2l-cetakkib').on('click', function() {
 //   })
 // })
 
+$('.btn-complate-job').on('click', function() {
+  let qty = $('#txtSelepQuantityConfrm').val();
+  let batch_no = $('#txtSelepBatchConfrm').val();
+  $.ajax({
+    url: baseurl + 'ManufacturingOperationUP2L/Selep/check_detail_onhand',
+    type: 'POST',
+    dataType: 'JSON',
+    data: {
+      batch_no: batch_no
+    },
+    cache:false,
+    beforeSend: function() {
+      Swal.fire({
+        onBeforeOpen: () => {
+           Swal.showLoading();
+           $('.swal2-loading').children('button').css({'width': '40px', 'height': '40px'})
+         },
+        text: 'Checking Onhand..'
+      })
+    $('.alert-area-up2l-onhand-kurang').html('');
+    $('#area-check-onhand-up2l').html('');
+    },
+    success: function(result) {
+      toastup2l('success', 'Done.')
+      console.log(result, 'Onhand');
+      $('#area-check-onhand-up2l').html(result.data);
+      if (result.merah == 500) {
+        $('.alert-area-up2l-onhand-kurang').html(`<div class="alert bg-danger alert-dismissible" role="alert">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">
+                  <i class="fa fa-close"></i>
+                </span>
+              </button>
+              <strong>Tidak dapat melakukan complation job.</strong> Terdapat Onhand yang kurang.</strong>
+            </div>`)
+        $('.btn-complation-up2l-2021').attr('disabled', true);
+      }else {
+        $('.alert-area-up2l-onhand-kurang').html('');
+        $('.btn-complation-up2l-2021').attr('disabled', false);
+      }
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+    swalup2l('error', 'Koneksi Terputus...')
+     console.error();
+    }
+  })
+})
+
 function completejobUP2L2021() {
   let qty = $('#txtSelepQuantityConfrm').val();
   let batch_no = $('#txtSelepBatchConfrm').val();
   console.log(qty, batch_no, 'ini di complate job');
   $.ajax({
-    url: baseurl + 'ManufacturingOperationUP2L/Selep/check_onhand',
+    url: baseurl + 'ManufacturingOperationUP2L/Selep/batch_completion',
     type: 'POST',
     dataType: 'JSON',
     data: {
       batch_no: batch_no,
+      qty: qty
     },
     cache:false,
     beforeSend: function() {
@@ -196,56 +287,15 @@ function completejobUP2L2021() {
            Swal.showLoading();
            $('.swal2-loading').children('button').css({'width': '40px', 'height': '40px'})
          },
-        text: 'Checking Onhand..'
+        text: 'Completion job..'
       })
     },
-    success: function(result) {
-      if (result != 'gada') {
-        console.log(result, 'cek onhand');
-        console.log(result[0]['ONHAND'], 'cek hanya onhand');
-        if (result[0]['SUBINVENTORY'] != '') {
-          if (result[0]['ONHAND'] >= qty) {
-            $.ajax({
-              url: baseurl + 'ManufacturingOperationUP2L/Selep/batch_completion',
-              type: 'POST',
-              dataType: 'JSON',
-              data: {
-                batch_no: batch_no,
-                qty: qty
-              },
-              cache:false,
-              beforeSend: function() {
-                // $('#modalUP2LCompleteJob').modal('hide');
-                Swal.fire({
-                  onBeforeOpen: () => {
-                     Swal.showLoading();
-                     $('.swal2-loading').children('button').css({'width': '40px', 'height': '40px'})
-                   },
-                  text: 'Completion job..'
-                })
-              },
-              success: function(result_2) {
-                if (result_2 != 'gada') {
-                  swalup2l('success', 'Completion job berhasil');
-                  $('#modalUP2LCompleteJob').modal('hide');
-                  $('.btn-complate-job').attr('disabled', true);
-                  $('.btn-up2l-cetakkib').attr('disabled', false);
-                  // $('.btn-up2l-cetakkib').attr('href', `${baseurl}ManufacturingOperationUP2L/Selep/report_kib_opm/${batch_no}`);
-                }
-              },
-              error: function(XMLHttpRequest, textStatus, errorThrown) {
-              swalup2l('error', 'textStatus');
-               console.error();
-              }
-            })
-          }else {
-            swalup2l('warning', `Onhand = ${result[0]['ONHAND']} & Quantity Selep = ${qty}`);
-          }
-        }else {
-          swalup2l('warning', `SUBINVENTORY kosong, no batch =  ${batch_no}!`);
-        }
-      }else {
-        swalup2l('warning', 'Onhand tidak ditemukan, Hubungi ICT');
+    success: function(result_2) {
+      if (result_2 != 'gada') {
+        swalup2l('success', 'Completion job berhasil');
+        $('#modalUP2LCompleteJob').modal('hide');
+        $('.btn-complate-job').attr('disabled', true);
+        $('.btn-up2l-cetakkib').attr('disabled', false);
       }
     },
     error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -329,6 +379,7 @@ $('#txtComponentCodeHeader').on('change', function() {
   $('#txtSelepQtyCetakKIB').val('');
   $('#txtSelepSubInvFromCetakKIB').val('');
   $('.btn-up2l-cetakkib').attr('disabled', true);
+  $('.btn-up2l-save-selep').attr('disabled', true);
 })
 
 function createBatchMO() { //recipe

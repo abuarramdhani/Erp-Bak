@@ -18,6 +18,9 @@
   text-align: left;
   vertical-align: middle;
   }
+  body{
+    padding-right: 0px!important;
+  }
   .al_up2l td{
     padding-bottom: 20px !important;
   }
@@ -245,8 +248,8 @@
 </div>
 
 <!-- show complate job -->
-<div class="modal fade bd-example-modal-md" id="modalUP2LCompleteJob" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-md" role="document">
+<div class="modal fade bd-example-modal-lg" id="modalUP2LCompleteJob" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content" style="border-radius: 5px !important; background-color:transparent !important; box-shadow:none;">
       <div class="panel-body">
         <div class="row">
@@ -259,19 +262,51 @@
                 <button type="button" class="btn btn-danger" style="float:right;font-weight:bold" data-dismiss="modal"><i class="fa fa-times"></i></button>
               </div>
               <div class="box-body">
-                <div class="form-group">
-                  <label for="txtComponentCodeHeader" class="control-label">Component</label>
-                  <input type="text" id="txtSelepComponentConfrm" class="form-control" readonly />
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="txtComponentCodeHeader" class="control-label">Component</label>
+                      <input type="text" id="txtSelepComponentConfrm" class="form-control" readonly />
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="txtSelepQuantityHeader" class="control-label">Selep Quantity</label>
+                      <input type="number" id="txtSelepQuantityConfrm" class="form-control" readonly />
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <label for="txtSelepQuantityHeader" class="control-label">Batch Number</label>
+                      <input type="number" id="txtSelepBatchConfrm" class="form-control" readonly />
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="alert-area-up2l-onhand-kurang">
+
+                    </div>
+                    <div class="form-group">
+                      <label for="">Detail Onhand</label>
+                      <table class="table table-bordered" style="width:100%;text-align:center">
+                        <thead class="bg-primary">
+                          <tr>
+                            <td>BATCH_NO</td>
+                            <td>SUBINVENTORY</td>
+                            <td>ITEM</td>
+                            <td>DESCRIPTION</td>
+                            <td>ATT</td>
+                            <td>PLAN_QTY</td>
+                            <td>ONHAND</td>
+                          </tr>
+                        </thead>
+                        <tbody id="area-check-onhand-up2l">
+
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
                 </div>
-                <div class="form-group">
-                  <label for="txtSelepQuantityHeader" class="control-label">Selep Quantity</label>
-                  <input type="number" id="txtSelepQuantityConfrm" class="form-control" readonly />
-                </div>
-                <div class="form-group">
-                  <label for="txtSelepQuantityHeader" class="control-label">Batch Number</label>
-                  <input type="number" id="txtSelepBatchConfrm" class="form-control" readonly />
-                </div>
-                <center><button type="button" onclick="completejobUP2L2021()" class="btn btn-success" name="button" style="font-weight:bold;margin-top:10px;margin-bottom:10px;width:20%"> <i class="fa fa-save"></i> Submit </button>
+                <center><button type="button" onclick="completejobUP2L2021()" class="btn btn-success btn-complation-up2l-2021" name="button" style="font-weight:bold;margin-top:10px;margin-bottom:10px;width:20%"> <i class="fa fa-save"></i> Submit </button>
               </div>
             </div>
           </div>
@@ -311,7 +346,7 @@
                         <div class="col-md-6">
                           <div class="form-group">
                             <label for="">SubInv Tujuan</label>
-                            <input type="text" readonly class="form-control up2l_io_99" name="io" value="">
+                            <input type="text" readonly class="form-control up2l_subinv_99" name="subinv" value="">
                           </div>
                         </div>
                         <div class="col-md-6">
@@ -330,7 +365,7 @@
                           <div class="form-group">
                             <label for="">Quantity Handling</label>
                             <div class="up2l_qty_handling">
-                              <input type="number" id="txtSelepQtyHandlingCetakKIB" name="qty_handling" class="form-control"/>
+                              <input type="number" id="txtSelepQtyHandlingCetakKIB" name="qty_handling" class="form-control" required/>
                             </div>
                           </div>
                         </div>
