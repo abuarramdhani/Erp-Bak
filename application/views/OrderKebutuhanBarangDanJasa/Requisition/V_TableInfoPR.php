@@ -13,6 +13,8 @@
                 <th>PO Creation Date</th>
                 <th>PO Line Number</th>
                 <th>PO Promised Date</th>
+                <th>Nomor Receipt</th>
+                <th>Qty Receipt</th>
             </tr>
         </thead>
         <tbody>
@@ -25,6 +27,8 @@
                 <td><?php echo $list['PO_CREATION_DATE']; ?></td>
                 <td><?php echo $list['PO_LINE_NUM']; ?></td>
                 <td><?php echo $list['PO_PROMISED_DATE']; ?></td>
+                <td><?php echo $list['NOMOR_RECEIPT']; ?></td>
+                <td><?php echo $list['QTY_RECEIPT']; ?></td>
             </tr>
         <?php } ?>
         </tbody>

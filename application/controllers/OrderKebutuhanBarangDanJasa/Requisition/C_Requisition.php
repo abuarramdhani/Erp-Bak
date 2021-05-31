@@ -521,8 +521,9 @@ class C_Requisition extends CI_Controller {
 	public function getSubinventory()
 	{
 		$organization = $_POST['organization'];
+		$location = $_POST['location'] == 142 || $_POST['location'] == 16103 ? $_POST['location'] : 'null';
 
-		$data = $this->M_requisition->getSubinventory($organization);
+		$data = $this->M_requisition->getSubinventory($organization, $location);
 
 		echo json_encode($data);
 	}
