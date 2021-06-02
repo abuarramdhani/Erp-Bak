@@ -174,8 +174,8 @@ class C_Index extends CI_Controller
 
 		$log = $this->M_Index->login($username, $password_md5);
 		if ($log) {
-			// if ($getAksesKDJabatan[0]['kd_jabatan'] <= '17' || $getAksesKDJabatan[0]['kd_jabatan'] == '16' || $getAksesKDJabatan[0]['kd_jabatan'] == '19') {
-			if ($username == 'B0661' || $username == 'B0898' || $username == 'B0773') {
+			if ($getAksesKDJabatan[0]['kd_jabatan'] <= '13' || $getAksesKDJabatan[0]['kd_jabatan'] == '16' || $getAksesKDJabatan[0]['kd_jabatan'] == '19') {
+				// if ($username == 'B0661' || $username == 'B0898' || $username == 'B0773') {
 
 				if ($ip != $ipaddresslast[0]['ip_address']) {
 					$this->getAkses($username, $password_md5);
