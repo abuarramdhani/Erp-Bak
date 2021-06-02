@@ -28,7 +28,7 @@
                                                 </div>
                                                 <label class="col-lg-1" style="width: 10px;">: </label>
                                                 <div class="col-lg-4 text-left">
-                                                    <select type="select select2" class="form-control" id="select_distribution_method" name="distribution_method" required>
+                                                    <select type="select select2" class="form-control" id="select_distribution_method" name="distribution_method" <?= $req ?>>
                                                         <option <?= $edit_Special['DISTRIBUTION_METHOD'] == NULL ? 'selected' : '' ?> disabled>--Select Confirm Method--</option>
                                                         <option <?= $edit_Special['DISTRIBUTION_METHOD'] == "email" ? 'selected' : '' ?> value="email">Email</option>
                                                         <option <?= $edit_Special['DISTRIBUTION_METHOD'] == "fax" ? 'selected' : '' ?> value="fax">Fax</option>
@@ -49,7 +49,7 @@
                                                     <label class="col-lg-1" style="width:10px">:</label>
                                                     <div class="col-lg-4 text-left">
                                                         <?php $date = date_create($edit_Special['PURCHASING_APPROVE_DATE']); ?>
-                                                        <input type="text" class="form-control input_approve_date" id="purchasing_approve_date" name="purchasing_approve_date" autocomplete="off" value="<?= ($edit_Special['PURCHASING_APPROVE_DATE'] !== NULL) ? date_format($date, 'd/m/Y') : '';?>" required>
+                                                        <input type="text" class="form-control input_approve_date" id="purchasing_approve_date" name="purchasing_approve_date" autocomplete="off" value="<?= ($edit_Special['PURCHASING_APPROVE_DATE'] !== NULL) ? date_format($date, 'd/m/Y') : ''; ?>" <?= $req ?>>
                                                     </div>
                                                 </div>
                                             </div>
@@ -62,7 +62,7 @@
                                                     <label class="col-lg-1" style="width:10px">:</label>
                                                     <div class="col-lg-4 text-left">
                                                         <?php $date = date_create($edit_Special['MANAGEMENT_APPROVE_DATE']) ?>
-                                                        <input type="text" class="form-control input_approve_date" id="management_approve_date" name="management_approve_date" autocomplete="off" value="<?= ($edit_Special['MANAGEMENT_APPROVE_DATE'] !== NULL) ? date_format($date, 'd/m/Y') : '';?>" required>
+                                                        <input type="text" class="form-control input_approve_date" id="management_approve_date" name="management_approve_date" autocomplete="off" value="<?= ($edit_Special['MANAGEMENT_APPROVE_DATE'] !== NULL) ? date_format($date, 'd/m/Y') : ''; ?>" <?= $req ?>>
                                                     </div>
                                                 </div>
                                             </div>
@@ -75,7 +75,7 @@
                                                     <label class="col-lg-1" style="width:10px">:</label>
                                                     <div class="col-lg-4 text-left">
                                                         <?php $date = date_create($edit_Special['SEND_DATE_1']); ?>
-                                                        <input type="text" class="form-control input_send_date" id="send_date_1" name="send_date_1" autocomplete="off" value="<?= ($edit_Special['SEND_DATE_1'] !== NULL) ? date_format($date, 'd/m/Y') : '';?>">
+                                                        <input type="text" class="form-control input_send_date" id="send_date_1" name="send_date_1" autocomplete="off" value="<?= ($edit_Special['SEND_DATE_1'] !== NULL) ? date_format($date, 'd/m/Y') : ''; ?>">
                                                     </div>
                                                 </div>
                                             </div>
@@ -88,7 +88,7 @@
                                                     <label class="col-lg-1" style="width:10px">:</label>
                                                     <div class="col-lg-4 text-left">
                                                         <?php $date = date_create($edit_Special['SEND_DATE_2']) ?>
-                                                        <input type="text" class="form-control input_send_date" id="send_date_2" name="send_date_2" autocomplete="off" value="<?= ($edit_Special['SEND_DATE_2'] !== NULL) ? date_format($date, 'd/m/Y') : '';?>">
+                                                        <input type="text" class="form-control input_send_date" id="send_date_2" name="send_date_2" autocomplete="off" value="<?= ($edit_Special['SEND_DATE_2'] !== NULL) ? date_format($date, 'd/m/Y') : ''; ?>">
                                                     </div>
                                                 </div>
                                             </div>
@@ -155,7 +155,7 @@
                                                 </div>
                                                 <label class="col-lg-1" style="width: 10px;">: </label>
                                                 <div class="col-lg-4 text-left">
-                                                    <select type="select select2" class="form-control input_attachment_flag" id="select_attachment_flag" name="attachment_flag" required>
+                                                    <select type="select select2" class="form-control input_attachment_flag" id="select_attachment_flag" name="attachment_flag" <?= $req ?>>
                                                         <option <?= $edit_Special['ATTACHMENT_FLAG'] == NULL ? 'selected' : '' ?> disabled>--Select Attachment Flag--</option>
                                                         <option <?= $edit_Special['ATTACHMENT_FLAG'] == 'Y' ? 'selected' : '' ?> value="Y">Yes</option>
                                                         <option <?= $edit_Special['ATTACHMENT_FLAG'] == 'N' ? 'selected' : '' ?> value="N">No</option>
