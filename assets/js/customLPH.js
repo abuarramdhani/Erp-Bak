@@ -132,7 +132,7 @@ function lph_search_rkh() {
   $.ajax({
     url: baseurl + 'LaporanProduksiHarian/action/getRKH',
     type: 'POST',
-    dataType: 'JSON',
+    // dataType: 'JSON',
     data: {
       tanggal : tanggal,
       shift : shift,
@@ -144,7 +144,8 @@ function lph_search_rkh() {
     },
     success: function(result) {
       if (result != 'gada') {
-
+        toastLPH('success', 'Selesai.')
+        $('.area-lph-2021').html(result)
       }else {
         swaLPHLarge('warning', 'Data tidak ditemukan');
       }

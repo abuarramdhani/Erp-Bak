@@ -207,7 +207,13 @@ class C_Import extends CI_Controller
                       ->where('shift', $this->input->post('shift'))
                       ->where('no_induk', $this->input->post('no_induk'))
                       ->get('lph.lph_rencana_kerja_operator')->result_array();
-      echo json_encode(!empty($res[0]['nama_operator']) ? $res : 'gada');
+      if (!empty($res[0]['nama_operator'])) {
+        $data['get'] = $res;
+        // echo "<pre>";print_r($res);
+        $this->load->view('LaporanProduksiHarian/ajax/V_ajax_add', $data);
+      }else {
+        echo json_encode('gada');
+      }
     }
 
     public function getmon($v='')
