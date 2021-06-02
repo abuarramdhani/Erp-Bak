@@ -203,7 +203,7 @@ class C_Selep extends CI_Controller
 			$res = $this->M_selep->check_onhand($this->input->post('batch_no'));
 			if (!empty($res[0]['BATCH_NO'])) {
 				foreach ($res as $key => $value) {
-					if ($value['ONHAND'] <= 0) {
+					if ($value['ONHAND'] <= 0 || empty($value['SUBINVENTORY'])) {
 						$style = 'class="up2l_selep_merah"';
 						$merah = 500;
 					}else {
@@ -214,9 +214,9 @@ class C_Selep extends CI_Controller
 		                      <td>'.$value['SUBINVENTORY'].'</td>
 		                      <td>'.$value['ITEM'].'</td>
 													<td>'.$value['DESCRIPTION'].'</td>
-													<td>'.abs($value['ATT']).'</td>
-													<td>'.abs($value['PLAN_QTY']).'</td>
-													<td>'.abs($value['ONHAND']).'</td>
+													<td>'.number_format($value['ATT'],2).'</td>
+													<td>'.number_format($value['PLAN_QTY'],2).'</td>
+													<td>'.number_format($value['ONHAND'],2).'</td>
 		                    </tr>';
 				}
 				$response = implode('', $tampung);
@@ -295,15 +295,21 @@ class C_Selep extends CI_Controller
 
 		$data = [];
 		foreach ($protodata as $row) {
-
+			if (!empty($row['batch_no'])) {
+				$cetak_kib = '<a style="margin-right:4px" href="http://erp.quick.com/InventoryManagement/CreateKIBDEV/pdf/1/'.$row['batch_no'].'/0"  title="Cetak KIB" target="_blank"><span class="fa fa-file-pdf-o fa-2x"></span></a>';
+			}else {
+				$cetak_kib = '';
+			}
 			$sub_array = [];
 			$sub_array[] = '<center>'.$row['pagination'].'</center>';
 			$sub_array[] = '<center>
+											'.$cetak_kib.'
 											<a style="margin-right:4px" href="'.base_url('ManufacturingOperationUP2L/Selep/read/'.$row['selep_id'].'').'" data-toggle="tooltip" data-placement="bottom" title="Read Data"><span class="fa fa-list-alt fa-2x"></span></a>
 											<a style="margin-right:4px" href="'.base_url('ManufacturingOperationUP2L/Selep/edit/'.$row['selep_id'].'').'" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o fa-2x"></span></a>
 											<a href="'.base_url('ManufacturingOperationUP2L/Selep/delete/'.$row['selep_id'].'').'" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm(\'Are you sure you want to delete this item?\');"><span class="fa fa-trash fa-2x"></span></a>
 										</center>';
 			$sub_array[] = '<center>'.$row['selep_date'].'</center>';
+			$sub_array[] = '<center>'.$row['batch_no'].'</center>';
 			$sub_array[] = '<center>'.$row['component_code'].'</center>';
 			$sub_array[] = '<center>'.$row['component_description'].'</center>';
 			$sub_array[] = '<center>'.$row['selep_quantity'].'</center>';

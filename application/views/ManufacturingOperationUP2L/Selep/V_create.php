@@ -87,7 +87,7 @@
                                         <div class="form-group">
                                             <label for="txtShift" class="control-label col-lg-4">Shift</label>
                                             <div class="col-lg-6">
-                                                <select class="form-control slcShift" id="txtShift" name="txtShift">
+                                                <select class="form-control slcShift" id="txtShift" name="txtShift" style="width:100%">
                                                 </select>
                                             </div>
                                         </div>
@@ -193,7 +193,7 @@
                                           <button type="button" onclick="createBatchMO()" class="btn btn-primary btn-lg"><i class="fa fa-rocket"></i></i>  Create Batch</button>
                                         </div>
                                         <div class="col-md-2 text-right">
-                                          <a href="<?php echo site_url('ManufacturingOperationUP2L/Selep'); ?>" class="btn btn-danger btn-lg"><i class="fa fa-arrow-left"></i></i>  Back</a>
+                                          <a href="<?php echo site_url('ManufacturingOperationUP2L/Selep'); ?>" class="btn btn-danger btn-lg btn-up2l-back-selep"><i class="fa fa-arrow-left"></i></i>  Back</a>
                                         </div>
                                       </div>
 
@@ -210,7 +210,7 @@
 
 <!-- show recipe -->
 <div class="modal fade bd-example-modal-lg" id="modalMOreceip" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
+  <div class="modal-dialog modal-lg" role="document" style="width:1100px;">
     <div class="modal-content" style="border-radius: 5px !important; background-color:transparent !important; box-shadow:none;">
       <div class="panel-body">
         <div class="row">
@@ -229,6 +229,8 @@
                     <div class="input-group-addon"><i class="fa fa-external-link"></i></div>
                     <select class="select2subinv_up2l" name="" style="width:100%">
                       <option value=""></option>
+                      <option value="INT-FDY">INT-FDY - GUDANG INTERNAL UNIT FOUNDRY</option>
+                      <option value="INT-FDYTKS">INT-FDYTKS - GUDANG INTERNAL UNIT FOUNDRY DI TUKSONO</option>
                     </select>
                   </div>
                 </div>
@@ -240,6 +242,9 @@
                   </div>
                 </div>
                 <div class="form-group">
+                  <div class="alert-area-up2l-cek-sub-inv-tujuan">
+
+                  </div>
                   <label for="">Pilih Salah Satu Recipe Number</label>
                   <table class="table table-bordered" style="width:100%;text-align:center">
                     <thead class="bg-primary">
@@ -249,7 +254,10 @@
                         <td>RECIPE_ID</td>
                         <td>RECIPE_NO</td>
                         <td>RECIPE_VERSION</td>
+                        <td>GUDANG_TUJUAN</td>
                         <td>UOM</td>
+                        <td>LOCATOR</td>
+                        <td>JUMLAH_LOCATOR</td>
                         <td>ACTION</td>
                       </tr>
                     </thead>
@@ -282,6 +290,7 @@
                   <h4 style="font-weight:bold;">Complete Job</h4>
                 </div>
                 <button type="button" class="btn btn-danger" style="float:right;font-weight:bold" data-dismiss="modal"><i class="fa fa-times"></i></button>
+                <button type="button" class="btn btn-info mr-2" onclick="up2l_refresh_complation()" style="float:right;font-weight:bold;" ><i class="fa fa-refresh"></i> Muat ulang</button>
               </div>
               <div class="box-body">
                 <div class="row">

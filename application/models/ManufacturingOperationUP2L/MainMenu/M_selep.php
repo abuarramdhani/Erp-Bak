@@ -30,8 +30,8 @@ class M_selep extends CI_Model
                                       ,mtl_parameters mp
                                       ,mtl_item_locations mil
                                   where fmd.FORMULA_ID = gbh.FORMULA_ID
-                                    and mp.ORGANIZATION_ID = fmd.ORGANIZATION_ID
-                                    and mil.INVENTORY_LOCATION_ID = fmd.ATTRIBUTE3
+                                    and mp.ORGANIZATION_ID = fmd.ATTRIBUTE1
+                                    and mil.INVENTORY_LOCATION_ID(+) = fmd.ATTRIBUTE3
                                     and gbh.BATCH_NO = '$batch_no'
                                     and fmd.LINE_TYPE = 1")->row_array();
     }
@@ -281,13 +281,19 @@ class M_selep extends CI_Model
       gr.RECIPE_VERSION,
       msib.SEGMENT1 item,
       msib.INVENTORY_ITEM_ID item_id,
-      msib.PRIMARY_UOM_CODE uom
+      msib.PRIMARY_UOM_CODE uom,
+      fmd.ATTRIBUTE2 subinventory
+      ,mil.SEGMENT1 locator_code
+      ,fmd.ATTRIBUTE3 locator_id
+      ,(SELECT COUNT(*) FROM MTL_ITEM_LOCATIONS MIL
+        WHERE MIL.SUBINVENTORY_CODE = fmd.ATTRIBUTE2) JML_LOCATOR
       from
       gmd_recipes gr,
       GMD_RECIPE_VALIDITY_RULES grvr,
       FM_FORM_MST ffm,
       FM_MATL_DTL fmd,
-      MTL_SYSTEM_items_b MSIB,
+      mtl_system_items_b MSIB,
+      mtl_item_locations mil,
       (select msib2.INVENTORY_ITEM_ID, msib2.SEGMENT1, msib2.DESCRIPTION, fmd2.FORMULA_ID
       from FM_MATL_DTL fmd2,
       mtl_system_items_b msib2
@@ -303,6 +309,7 @@ class M_selep extends CI_Model
       and gr.RECIPE_STATUS = 700 --status: Approved for General Use
       and gr.RECIPE_ID = grvr.recipe_id
       and fmd.FORMULA_ID = ingr.FORMULA_ID
+      and mil.INVENTORY_LOCATION_ID(+) = fmd.ATTRIBUTE3
       and msib.SEGMENT1 = '$component_code'
       and gr.RECIPE_VERSION = 1
       and grvr.END_DATE is null
