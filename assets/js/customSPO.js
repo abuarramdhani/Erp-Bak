@@ -1,6 +1,6 @@
 $(document).ready(function () {
   // Sort date datatables format
-  $.fn.dataTable.moment('DD-MMM-YY');
+  $.fn.dataTable.moment("DD-MMM-YY");
 
   if ($(".PurchaseManagementSendPOTitle").html() == "WEB SEND PO BDL") {
     var IndonesiaMessageFormat =
@@ -44,7 +44,7 @@ $(document).ready(function () {
         </div>\
         ';
   } else if (window.location.href.includes("po_number=")) {
-    var po_number = $("#txtPMSPONoPO").val().split('-')[0];
+    var po_number = $("#txtPMSPONoPO").val().split("-")[0];
     var po_number_rev = $("#txtPMSPONoPO").val();
     var IndonesiaMessageFormat =
       `
@@ -94,8 +94,7 @@ $(document).ready(function () {
       </div>\
       `;
   } else {
-    var IndonesiaMessageFormat =
-      `<div style="  font-family: Times New Roman, Times, serif;">
+    var IndonesiaMessageFormat = `<div style="  font-family: Times New Roman, Times, serif;">
             <p>Dengan hormat,</p>
                 <br>
             <p>
@@ -217,8 +216,8 @@ $(document).ready(function () {
           } else {
             $(".spnPMSPOWarnAddrNotFound").html(
               " Tidak ditemukan Email Address dengan PO Number " +
-              PONumber +
-              ". "
+                PONumber +
+                ". "
             );
             $(".divPMSPOWarnAddrNotFound").fadeIn();
             $("#txtPMSPOToEmailAddr").val("");
@@ -347,13 +346,16 @@ $(document).ready(function () {
       $(".divPMSPOcalloutWarning").fadeIn();
       $(".divPMSPOcalloutWarning").fadeOut(10000);
       $("#txtPMSPONoPO").attr("style", "background-color:#ffa8a8");
-    } else if ($("#txtPMSPOStatusPo").val() !== 'APPROVED') {
+    } else if ($("#txtPMSPOStatusPo").val() !== "APPROVED") {
       Swal.fire({
         type: "error",
         title: "Oops...",
         text: "Pesan gagal terkirim :(",
-        footer: '<span class="text-center" style="color:#3c8dbc">' + 'PO TIDAK DAPAT DIKIRIM, MOHON CEK STATUS APPROVAL PO/ALAMAT EMAIL' + "</span>",
-      })
+        footer:
+          '<span class="text-center" style="color:#3c8dbc">' +
+          "PO TIDAK DAPAT DIKIRIM, MOHON CEK STATUS APPROVAL PO/ALAMAT EMAIL" +
+          "</span>",
+      });
     } else {
       // Disable form from user interaction
       Swal.fire({
@@ -399,14 +401,18 @@ $(document).ready(function () {
         data: form_data,
         dataType: "json",
         success: function () {
-          Swal.fire("Success!", `PO ${po_number} <br> Pesan telah terkirim dan terarsip`, "success")
-            .then(() => {
-              if (window.location.href.includes("po_number=")) {
-                window.location.href = baseurl + "PurchaseManagementSendPO/PoLog";
-              } else {
-                window.location.href = baseurl + "PurchaseManagementSendPO/SendPO";
-              }
-            });
+          Swal.fire(
+            "Success!",
+            `PO ${po_number} <br> Pesan telah terkirim dan terarsip`,
+            "success"
+          ).then(() => {
+            if (window.location.href.includes("po_number=")) {
+              window.location.href = baseurl + "PurchaseManagementSendPO/PoLog";
+            } else {
+              window.location.href =
+                baseurl + "PurchaseManagementSendPO/SendPO";
+            }
+          });
         },
         error: function (result) {
           globalresult = result;
@@ -429,17 +435,17 @@ $(document).ready(function () {
   $("#tbl-PoLog").DataTable({
     scrollX: true,
     fixedColumns: {
-      leftColumns: 10
-    }
+      leftColumns: 10,
+    },
   });
 
-  $('[title]').tooltip();
+  $("[title]").tooltip();
 
   const dataTablePoLogbook = $("#tbl-PoLogbook").DataTable({
     scrollX: true,
     fixedColumns: {
-      leftColumns: 10
-    },  
+      leftColumns: 10,
+    },
     dom: `
       <'row'
         <'col-sm-12 col-md-2'l>
@@ -454,7 +460,7 @@ $(document).ready(function () {
       >`,
   });
 
-  $('.tbl-PoLogbook_filter_by-date').html(/* html */`
+  $(".tbl-PoLogbook_filter_by-date").html(/* html */ `
     <div class="box box-solid">
       <div class="box-body text-center">
         <span>Filter By Date: &nbsp;</span>
@@ -469,59 +475,62 @@ $(document).ready(function () {
     <!-- /.box -->
   `);
 
-  $('.btnPoLogbookApplyFilterDate').on('click', () => {
-    const startDate = moment($('.txtPoLogbookFilterDateStart').val(), 'MMM-YY');
-    const endDate = moment($('.txtPoLogbookFilterDateEnd').val(), 'MMM-YY');
-    const diffMonthsLength = endDate.diff(startDate, 'months');
-    const monthsRange = Array.from({ length: diffMonthsLength + 1 }).map((_, k) => (
-      startDate.clone().add(k, 'months').format('MMM-YY')
-    ));
-    const regexMonthsRange = monthsRange.join('|');
+  $(".btnPoLogbookApplyFilterDate").on("click", () => {
+    const startDate = moment($(".txtPoLogbookFilterDateStart").val(), "MMM-YY");
+    const endDate = moment($(".txtPoLogbookFilterDateEnd").val(), "MMM-YY");
+    const diffMonthsLength = endDate.diff(startDate, "months");
+    const monthsRange = Array.from({
+      length: diffMonthsLength + 1,
+    }).map((_, k) => startDate.clone().add(k, "months").format("MMM-YY"));
+    const regexMonthsRange = monthsRange.join("|");
 
-    $('.txtPoLogbookGlobalSearch').val(null);
+    $(".txtPoLogbookGlobalSearch").val(null);
 
-    dataTablePoLogbook
-      .column(8)
-      .search(regexMonthsRange, true, false)
-      .draw();
+    dataTablePoLogbook.column(8).search(regexMonthsRange, true, false).draw();
   });
 
-  $('.txtPoLogbookGlobalSearch').on('keyup', (e) => {
-    $('.btnPoLogbookClearFilterDate').trigger('click');
+  $(".txtPoLogbookGlobalSearch").on("keyup", (e) => {
+    $(".btnPoLogbookClearFilterDate").trigger("click");
 
-    dataTablePoLogbook.column(8).search('');
+    dataTablePoLogbook.column(8).search("");
     dataTablePoLogbook.search($(e.currentTarget).val()).draw();
   });
 
-  $('.btnPoLogbookClearFilterDate').on('click', () => {
-    $('.txtPoLogbookFilterDateStart, .txtPoLogbookFilterDateEnd').val(null);
+  $(".btnPoLogbookClearFilterDate").on("click", () => {
+    $(".txtPoLogbookFilterDateStart, .txtPoLogbookFilterDateEnd").val(null);
   });
 
-  $('.txtPoLogbookFilterDateStart, .txtPoLogbookFilterDateEnd').daterangepicker({
-    autoUpdateInput: false,
-    showDropdowns: true,
-    singleDatePicker: true,
-    minDate: moment('01/01/2010'),
-    maxYear: 2030,
-    locale: { 
-      format: 'MMM-YY',
-      cancelLabel: 'Clear',
-    }
-  }).on('hide.daterangepicker', (_, picker) => {
-    const selectedMonth = $(picker.container).find('.monthselect').val();
-    const selectedYear = $(picker.container).find('.yearselect').val();
-    const formatedDate = moment(`${Number(selectedMonth) + 1} ${selectedYear}`, 'M YYYY').format('MMM-YY');
+  $(".txtPoLogbookFilterDateStart, .txtPoLogbookFilterDateEnd")
+    .daterangepicker({
+      autoUpdateInput: false,
+      showDropdowns: true,
+      singleDatePicker: true,
+      minDate: moment("01/01/2010"),
+      maxYear: 2030,
+      locale: {
+        format: "MMM-YY",
+        cancelLabel: "Clear",
+      },
+    })
+    .on("hide.daterangepicker", (_, picker) => {
+      const selectedMonth = $(picker.container).find(".monthselect").val();
+      const selectedYear = $(picker.container).find(".yearselect").val();
+      const formatedDate = moment(
+        `${Number(selectedMonth) + 1} ${selectedYear}`,
+        "M YYYY"
+      ).format("MMM-YY");
 
-    $(picker.element).val(formatedDate);
-  }).on('show.daterangepicker', (_, picker) => {
-    const inputDate = $(picker.element).val();
-    const formatedInputMonth = moment(inputDate, 'MMM-YY').format('M') - 1;
-    const formatedInputYear = moment(inputDate, 'MMM-YY').format('YYYY');
+      $(picker.element).val(formatedDate);
+    })
+    .on("show.daterangepicker", (_, picker) => {
+      const inputDate = $(picker.element).val();
+      const formatedInputMonth = moment(inputDate, "MMM-YY").format("M") - 1;
+      const formatedInputYear = moment(inputDate, "MMM-YY").format("YYYY");
 
-    $(picker.container).find('.monthselect').val(formatedInputMonth);
-    $(picker.container).find('.yearselect').val(formatedInputYear);
-    $(picker.container).find('.monthselect, .yearselect').trigger('change');
-  });
+      $(picker.container).find(".monthselect").val(formatedInputMonth);
+      $(picker.container).find(".yearselect").val(formatedInputYear);
+      $(picker.container).find(".monthselect, .yearselect").trigger("change");
+    });
 
   if (window.location.href.includes("po_number=")) {
     $("#txtPMSPONoPO").trigger("blur");
@@ -529,27 +538,27 @@ $(document).ready(function () {
 
   // Date Picker edit data
   $("#vendor_confirm_date").datepicker({
-    format: 'dd/mm/yyyy',
+    format: "dd/mm/yyyy",
     todayHighlight: true,
     autoclose: true,
   });
   $("#purchasing_approve_date").datepicker({
-    format: 'dd/mm/yyyy',
+    format: "dd/mm/yyyy",
     todayHighlight: true,
     autoclose: true,
   });
   $("#management_approve_date").datepicker({
-    format: 'dd/mm/yyyy',
+    format: "dd/mm/yyyy",
     todayHighlight: true,
     autoclose: true,
   });
   $("#send_date_1").datepicker({
-    format: 'dd/mm/yyyy',
+    format: "dd/mm/yyyy",
     todayHighlight: true,
     autoclose: true,
   });
   $("#send_date_2").datepicker({
-    format: 'dd/mm/yyyy',
+    format: "dd/mm/yyyy",
     todayHighlight: true,
     autoclose: true,
   });
@@ -632,87 +641,87 @@ $(document).ready(function () {
       });
   });
 
-  let distributionMethod = $('#select_distribution_method').val();
+  let distributionMethod = $("#select_distribution_method").val();
   if (distributionMethod === "email") {
-    $('.send_date_row').hide();
-    $('.vendor_confirm_row').show();
-    $('.attachment_flag_row').show();
-    $('.attachment_row').show();
-    $('.input_send_date').prop('required', false)
-    $('.input_attachment_flag').prop('required', true)
-    if ($('[name="vendor_confirm_date"]').prop('disabled')) {
-      $('.input_vendor_confirm').prop('required', false);
-      $('.input_attachment').prop('required', false);
+    $(".send_date_row").hide();
+    $(".vendor_confirm_row").show();
+    $(".attachment_flag_row").show();
+    $(".attachment_row").show();
+    // $(".input_send_date").prop("required", false);
+    $(".input_attachment_flag").prop("required", true);
+    if ($('[name="vendor_confirm_date"]').prop("disabled")) {
+      //   $(".input_vendor_confirm").prop("required", false);
+      $(".input_attachment").prop("required", false);
     } else {
-      $('.input_vendor_confirm').prop('required', true);
-      $('.input_attachment').prop('required', true);
+      //   $(".input_vendor_confirm").prop("required", true);
+      $(".input_attachment").prop("required", true);
     }
   } else if (distributionMethod === "none") {
-    $('.send_date_row').hide();
-    $('.vendor_confirm_row').hide();
-    $('.attachment_flag_row').hide();
-    $('.attachment_row').hide();
-    $('.input_send_date').prop('required', false)
-    $('.input_vendor_confirm').prop('required', false);
-    $('.input_attachment_flag').prop('required', false)
-    $('.input_attachment').prop('required', false);
+    $(".send_date_row").hide();
+    $(".vendor_confirm_row").hide();
+    $(".attachment_flag_row").hide();
+    $(".attachment_row").hide();
+    // $(".input_send_date").prop("required", false);
+    // $(".input_vendor_confirm").prop("required", false);
+    $(".input_attachment_flag").prop("required", false);
+    // $(".input_attachment").prop("required", false);
   } else if (distributionMethod !== "email" && distributionMethod !== "none") {
-    $('.send_date_row').show();
-    $('.vendor_confirm_row').show();
-    $('.attachment_flag_row').show();
-    $('.attachment_row').show();
-    $('.input_send_date').prop('required', true)
-    $('.input_attachment_flag').prop('required', true)
-    if ($('[name="vendor_confirm_date"]').prop('disabled')) {
-      $('.input_vendor_confirm').prop('required', false);
-      $('.input_attachment').prop('required', false);
+    $(".send_date_row").show();
+    $(".vendor_confirm_row").show();
+    $(".attachment_flag_row").show();
+    $(".attachment_row").show();
+    // $(".input_send_date").prop("required", true);
+    $(".input_attachment_flag").prop("required", true);
+    if ($('[name="vendor_confirm_date"]').prop("disabled")) {
+      //   $(".input_vendor_confirm").prop("required", false);
+      $(".input_attachment").prop("required", false);
     } else {
-      $('.input_vendor_confirm').prop('required', true);
-      $('.input_attachment').prop('required', true);
+      //   $(".input_vendor_confirm").prop("required", true);
+      $(".input_attachment").prop("required", true);
     }
   }
-  $('#select_distribution_method').on('change', function (e) {
+  $("#select_distribution_method").on("change", function (e) {
     e.preventDefault();
     distributionMethod = $(this).val();
     if (distributionMethod !== "email" && distributionMethod !== "none") {
-      $('.send_date_row').show();
-      $('.vendor_confirm_row').show();
-      $('.attachment_flag_row').show();
-      $('.attachment_row').show();
-      $('.input_send_date').prop('required', true)
-      $('.input_attachment_flag').prop('required', true)
-      if ($('[name="vendor_confirm_date"]').prop('disabled')) {
-        $('.input_vendor_confirm').prop('required', false);
-        $('.input_attachment').prop('required', false);
+      $(".send_date_row").show();
+      $(".vendor_confirm_row").show();
+      $(".attachment_flag_row").show();
+      $(".attachment_row").show();
+      // $(".input_send_date").prop("required", true);
+      $(".input_attachment_flag").prop("required", true);
+      if ($('[name="vendor_confirm_date"]').prop("disabled")) {
+        //   $(".input_vendor_confirm").prop("required", false);
+        $(".input_attachment").prop("required", false);
       } else {
-        $('.input_vendor_confirm').prop('required', true);
-        $('.input_attachment').prop('required', true);
+        //   $(".input_vendor_confirm").prop("required", true);
+        $(".input_attachment").prop("required", true);
       }
     } else if (distributionMethod === "email") {
-      $('.send_date_row').hide();
-      $('.vendor_confirm_row').show();
-      $('.attachment_flag_row').show();
-      $('.attachment_row').show();
-      $('.input_send_date').prop('required', false)
-      $('.input_attachment_flag').prop('required', true)
-      if ($('[name="vendor_confirm_date"]').prop('disabled')) {
-        $('.input_vendor_confirm').prop('required', false);
-        $('.input_attachment').prop('required', false);
+      $(".send_date_row").hide();
+      $(".vendor_confirm_row").show();
+      $(".attachment_flag_row").show();
+      $(".attachment_row").show();
+      // $(".input_send_date").prop("required", false);
+      $(".input_attachment_flag").prop("required", true);
+      if ($('[name="vendor_confirm_date"]').prop("disabled")) {
+        //   $(".input_vendor_confirm").prop("required", false);
+        $(".input_attachment").prop("required", false);
       } else {
-        $('.input_vendor_confirm').prop('required', true);
-        $('.input_attachment').prop('required', true);
+        //   $(".input_vendor_confirm").prop("required", true);
+        $(".input_attachment").prop("required", true);
       }
     } else if (distributionMethod === "none") {
-      $('.send_date_row').hide();
-      $('.vendor_confirm_row').hide();
-      $('.attachment_flag_row').hide();
-      $('.attachment_row').hide();
-      $('.input_send_date').prop('required', false)
-      $('.input_vendor_confirm').prop('required', false);
-      $('.input_attachment_flag').prop('required', false)
-      $('.input_attachment').prop('required', false);
+      $(".send_date_row").hide();
+      $(".vendor_confirm_row").hide();
+      $(".attachment_flag_row").hide();
+      $(".attachment_row").hide();
+      // $(".input_send_date").prop("required", false);
+      // $(".input_vendor_confirm").prop("required", false);
+      $(".input_attachment_flag").prop("required", false);
+      $(".input_attachment").prop("required", false);
     }
-  })
+  });
 
   $("#editPoLogbook").on("click", ".btnEditPoLogbook", function () {
     // Ajax edit Data di Menu POLogbook
@@ -767,9 +776,15 @@ $(document).ready(function () {
           ) {
             alert("Silahkan lengkapi data");
           } else {
-            if (!$('#vendor_confirm_date').prop("disabled") && distribution_method !== "none") {
+            if (
+              !$("#vendor_confirm_date").prop("disabled") &&
+              distribution_method !== "none"
+            ) {
               eplb_form_data.append("vendor_confirm_date", vendor_confirm_date);
-              eplb_form_data.append("vendor_confirm_method", vendor_confirm_method);
+              eplb_form_data.append(
+                "vendor_confirm_method",
+                vendor_confirm_method
+              );
               eplb_form_data.append("vendor_confirm_pic", vendor_confirm_pic);
               eplb_form_data.append("vendor_confirm_note", vendor_confirm_note);
               eplb_form_data.append("lampiran_po", lampiran_po);
@@ -867,7 +882,10 @@ $(document).ready(function () {
           } else {
             if (distribution_method !== "none") {
               epls_form_data.append("vendor_confirm_date", vendor_confirm_date);
-              epls_form_data.append("vendor_confirm_method", vendor_confirm_method);
+              epls_form_data.append(
+                "vendor_confirm_method",
+                vendor_confirm_method
+              );
               epls_form_data.append("vendor_confirm_pic", vendor_confirm_pic);
               epls_form_data.append("vendor_confirm_note", vendor_confirm_note);
               epls_form_data.append("lampiran_po", lampiran_po);
@@ -907,44 +925,90 @@ $(document).ready(function () {
   });
 
   // View file attachment PO
-  $('#tbl-PoLog tbody').on('click', '.view-attachment-polog', function () {
-    let fileName = $(this).attr('file-name');
-    if (fileName !== '') {
-      let poNumber = $(this).attr('data-po');
+  $("#tbl-PoLog tbody").on("click", ".view-attachment-polog", function () {
+    let fileName = $(this).attr("file-name");
+    if (fileName !== "") {
+      let poNumber = $(this).attr("data-po");
       let extensionFile = fileName.split(".")[1];
       let extensionToLower = extensionFile.toLowerCase();
 
       if (extensionToLower == "pdf") {
-        window.open(baseurl + 'assets/upload/PurchaseManagementSendPO/LampiranPO/' + poNumber + '/' + fileName, '_blank')
-      } else if (extensionToLower == 'jpg' || extensionToLower == 'jpeg' || extensionToLower == 'png') {
-        window.open(baseurl + "PurchaseManagementSendPO/PoLog/viewImageAttachmentPO?noPo=" + poNumber, '_blank');
+        window.open(
+          baseurl +
+            "assets/upload/PurchaseManagementSendPO/LampiranPO/" +
+            poNumber +
+            "/" +
+            fileName,
+          "_blank"
+        );
+      } else if (
+        extensionToLower == "jpg" ||
+        extensionToLower == "jpeg" ||
+        extensionToLower == "png"
+      ) {
+        window.open(
+          baseurl +
+            "PurchaseManagementSendPO/PoLog/viewImageAttachmentPO?noPo=" +
+            poNumber,
+          "_blank"
+        );
       } else {
-        window.open(baseurl + "PurchaseManagementSendPO/PoLog/downloadFileAttachment?noPo=" + poNumber, '_blank')
+        window.open(
+          baseurl +
+            "PurchaseManagementSendPO/PoLog/downloadFileAttachment?noPo=" +
+            poNumber,
+          "_blank"
+        );
       }
     }
-  })
+  });
 
-  $('#tbl-PoLogbook tbody').on('click', '.view-attachment-pologbook', function () {
-    let fileName = $(this).attr('file-name');
-    if (fileName !== '') {
-      let poNumber = $(this).attr('data-po');
-      let extensionFile = fileName.split(".")[1];
-      let extensionToLower = extensionFile.toLowerCase();
+  $("#tbl-PoLogbook tbody").on(
+    "click",
+    ".view-attachment-pologbook",
+    function () {
+      let fileName = $(this).attr("file-name");
+      if (fileName !== "") {
+        let poNumber = $(this).attr("data-po");
+        let extensionFile = fileName.split(".")[1];
+        let extensionToLower = extensionFile.toLowerCase();
 
-      if (extensionToLower == "pdf") {
-        window.open(baseurl + 'assets/upload/PurchaseManagementSendPO/LampiranPO/' + poNumber + '/' + fileName, '_blank')
-      } else if (extensionToLower == 'jpg' || extensionToLower == 'jpeg' || extensionToLower == 'png') {
-        window.open(baseurl + "PurchaseManagementSendPO/POLogbook/viewImageAttachmentPO?noPo=" + poNumber, '_blank');
-      } else {
-        window.open(baseurl + "PurchaseManagementSendPO/POLogbook/downloadFileAttachment?noPo=" + poNumber, '_blank')
+        if (extensionToLower == "pdf") {
+          window.open(
+            baseurl +
+              "assets/upload/PurchaseManagementSendPO/LampiranPO/" +
+              poNumber +
+              "/" +
+              fileName,
+            "_blank"
+          );
+        } else if (
+          extensionToLower == "jpg" ||
+          extensionToLower == "jpeg" ||
+          extensionToLower == "png"
+        ) {
+          window.open(
+            baseurl +
+              "PurchaseManagementSendPO/POLogbook/viewImageAttachmentPO?noPo=" +
+              poNumber,
+            "_blank"
+          );
+        } else {
+          window.open(
+            baseurl +
+              "PurchaseManagementSendPO/POLogbook/downloadFileAttachment?noPo=" +
+              poNumber,
+            "_blank"
+          );
+        }
       }
     }
-  })
+  );
 
-  $('#tbl-PoLog tbody').hover(function () {
-    $('.name-attachment').css({ 'cursor': 'pointer', 'color': '#0000ff' });
-  })
-  $('#tbl-PoLogbook tbody').hover(function () {
-    $('.name-attachment').css({ 'cursor': 'pointer', 'color': '#0000ff' });
-  })
+  $("#tbl-PoLog tbody").hover(function () {
+    $(".name-attachment").css({ cursor: "pointer", color: "#0000ff" });
+  });
+  $("#tbl-PoLogbook tbody").hover(function () {
+    $(".name-attachment").css({ cursor: "pointer", color: "#0000ff" });
+  });
 });
