@@ -5562,3 +5562,10 @@ $route['menuLaporanPenjualanTraktor/inputDate/deleteDate']	=	'LaporanPenjualanTr
 // -------------------------- Monitoring Cetak PO -------------------------------------//
 $route['monitoring-cetak-po'] = 'MonitoringCetakPO/C_Subkon';
 $route['monitoring-cetak-po/(:any)'] = 'MonitoringCetakPO/C_Subkon/$1';
+
+//------------------------------- Barang Repair Subkon ------------------------------------------------------------//
+$route['BarangRepairSubkon']	=	'BarangRepairSubkon/C_Index';
+
+$route['BarangRepairSubkon/Monitoring']					= 'BarangRepairSubkon/C_Monitoring';
+$route['BarangRepairSubkon/Monitoring/(:any)']			= 'BarangRepairSubkon/C_Monitoring/$1';
+$route['BarangRepairSubkon/Monitoring/(:any)/(:any)']	= 'BarangRepairSubkon/C_Monitoring/$1/$2';
