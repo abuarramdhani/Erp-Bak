@@ -626,32 +626,35 @@ function SearchArsSPBDO() {
   });
 }
 $(document).ready(function () {
-  ajax1 = $.ajax({
-    url: baseurl + "DPBSparepart/Approver/getNormal",
-    type: "POST",
-    beforeSend: function () {
-      $("#loadingAreanormal").show();
-      $("div.table_area_normal").hide();
-    },
-    success: function (result) {
-      // console.log(result);
-      $("#loadingAreanormal").hide();
-      $("div.table_area_normal").show();
-      $("div.table_area_normal").html(result);
-      $("div.table_area_urgent").html("");
-      $("div.table_area_eceran").html("");
-      $("div.table_area_bagro").html("");
-      $("div.table_area_ecommerce").html("");
-      $(".tblMonitoringDSP").DataTable({
-        scrollY: "300px",
-        scrollX: true,
-        scrollCollapse: true,
-      });
-    },
-    error: function (XMLHttpRequest, textStatus, errorThrown) {
-      console.error();
-    },
-  });
+  var view = document.getElementById("V_Monitoring_List");
+  if (view) {
+    ajax1 = $.ajax({
+      url: baseurl + "DPBSparepart/Approver/getNormal",
+      type: "POST",
+      beforeSend: function () {
+        $("#loadingAreanormal").show();
+        $("div.table_area_normal").hide();
+      },
+      success: function (result) {
+        // console.log(result);
+        $("#loadingAreanormal").hide();
+        $("div.table_area_normal").show();
+        $("div.table_area_normal").html(result);
+        $("div.table_area_urgent").html("");
+        $("div.table_area_eceran").html("");
+        $("div.table_area_bagro").html("");
+        $("div.table_area_ecommerce").html("");
+        $(".tblMonitoringDSP").DataTable({
+          scrollY: "300px",
+          scrollX: true,
+          scrollCollapse: true,
+        });
+      },
+      error: function (XMLHttpRequest, textStatus, errorThrown) {
+        console.error();
+      },
+    });
+  }
 });
 function normalll() {
   if (ajax2 != null) ajax2.abort();
