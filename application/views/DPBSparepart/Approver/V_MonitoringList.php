@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="box box-primary">
-                <div class="box-header">
+                <div class="box-header" id="V_Monitoring_List">
                     <!-- <h3 class="box-title">Approved List DPB</h3> -->
                     <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                         <li class="nav-item active" style="background:#e7e7e7">
