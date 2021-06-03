@@ -18,7 +18,8 @@
                                         <div class="col-md-2">
                                             <p style="margin: 5px 0 20px 0;"><label>Subinventory</label></p>
                                             <p style="margin: 5px 0 20px 0;"><label>Item</label></p>
-                                            <p style="margin: 5px 0 5px 0;"><label>Status</label></p>
+                                            <p style="margin: 5px 0 20px 0;"><label>Status</label></p>
+                                            <p style="margin: 5px 0 5px 0;"><label>Tanggal</label></p>
                                         </div>
                                         <div class="col-md-4">
                                             <p>
@@ -37,6 +38,9 @@
                                                     <option value="Y">SUDAH TRANSACT</option>
                                                     <option value="N">BELUM TRANSACT</option>
                                                 </select>
+                                            </p>
+                                            <p>
+                                                <input type="text" class="date form-control" name="slcDate" id="slcDate" autocomplete="off">
                                             </p>
                                             <button type="button" class="btn btn-primary" style="float: right;" onclick="cari()">
                                                 <i class="fa fa-search"></i> Cari

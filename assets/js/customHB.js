@@ -81,7 +81,8 @@ function cari(){
   var subinv = $('#slcSubinv option:selected').val();
   var item = $('#slcItem option:selected').val();
   var status = $('#slcStatus option:selected').val();
-  console.log(status + ' ' + item + ' ' + subinv);
+  var date = $('#slcDate').val();
+  console.log(status + ' ' + item + ' ' + subinv + ' ' + date);
 
   if (subinv == '') {
     Swal.fire(
@@ -96,7 +97,8 @@ function cari(){
       data: {
         subinv : subinv,
         item : item,
-        status : status
+        status : status,
+        date : date
       },
       type: 'POST',
       beforeSend: function() {
@@ -143,3 +145,20 @@ function detailBon(bon) {
     }
   })
 }
+
+$(function(){
+  $('#slcDate').daterangepicker({
+    "todayHighlight" : true,
+    "autoclose": true,
+    locale: {
+          format: 'DD MMMM YYYY'
+        },
+  });
+  $('#slcDate').on('apply.daterangepicker', function(ev, picker) {
+    $(this).val(picker.startDate.format('DD MMMM YYYY') + ' - ' + picker.endDate.format('DD MMMM YYYY'));
+  });
+
+  $('#slcDate').on('cancel.daterangepicker', function(ev, picker) {
+    $(this).val('');
+  });
+});
