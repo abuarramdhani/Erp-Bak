@@ -54,13 +54,32 @@ class C_Monitoring extends CI_Controller {
     }
 
     public function getData(){
-        $bppbg = $this->input->post('bppbg');
-        // echo "<pre>";print_r($bppbg);exit();
+        $bon = $this->input->post('bon');
+        $item = $this->input->post('item');
 
-        $data['bppbg'] = $this->M_bppbg->getData($bppbg);
-        // echo "<pre>";print_r($data['bppbg']);exit();
+        $this->load->library('ciqrcode');
 
-        $this->load->view('HistoryBppbg/V_TblView', $data);
+        // ------ GENERATE QRCODE ------
+        if (!is_dir('./assets/img/bppbgQRCODE')) {
+            mkdir('./assets/img/bppbgQRCODE', 0777, true);
+            chmod('./assets/img/bppbgQRCODE', 0777);
+        }
+
+        $params['data']     = $bon;
+        $params['level']    = 'H';
+        $params['size']     = 4;
+        $params['black']    = array(255,255,255);
+        $params['white']    = array(0,0,0);
+        $params['savename'] = './assets/img/bppbgQRCODE/'.$bon.'.png';
+
+        $this->ciqrcode->generate($params);
+
+        ob_end_clean() ;
+
+        $data['bppbg'] = $this->M_bppbg->getData($bon);
+        $data['bon'] = $bon;
+        $data['item'] = $item;
+        $this->load->view('HistoryBppbg/V_TblDetail', $data);
     }
 
     public function getSubinv(){
@@ -80,7 +99,7 @@ class C_Monitoring extends CI_Controller {
     public function getDataMonitoring(){
         $subinv = $this->input->post('subinv');
         $item = $this->input->post('item');
-        $status = $this->input->post('status');        
+        $status = $this->input->post('status');
 
         $data['mon'] = $this->M_bppbg->getDataMonitoring($subinv,$item,$status);
 
