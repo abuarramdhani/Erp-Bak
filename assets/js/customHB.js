@@ -114,3 +114,32 @@ function cari(){
     })    
   }
 }
+
+function detailBon(bon) {
+  var item = $('#slcItem option:selected').val();
+  console.log(bon);
+
+
+  $.ajax({
+    url: baseurl + 'HistoryBppbg/Monitoring/getData',
+    type: 'POST',
+    data: {
+      bon: bon,
+      item : item
+    },
+    beforeSend: function() {
+      $('#loadingAreaDetail').show();
+      $('div#tb_detail').hide();
+    },
+    success: function(result) {
+      $('#loadingAreaDetail').hide();
+      $('div#tb_detail').show();
+      $('div#tb_detail').html(result);
+
+      $('#noBon').html(bon);
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+      console.error();
+    }
+  })
+}
