@@ -75,6 +75,9 @@ $route['api/services/notification/read/all']['post'] = 'Api/Services/Notificatio
 $route['api/services/notification/delete']['post'] = 'Api/Services/Notifications/C_Index/setDelete';
 $route['api/services/notification/delete/all']['post'] = 'Api/Services/Notifications/C_Index/setDeleteAll';
 
+//API ERP MOBILE
+$route['Api/ErpMobile/(:any)'] = 'Api/ErpMobile/C_ErpMobile/$1';
+
 //-------------------------------------------------Notification-------------------------------------------------------
 $route['notifications'] = 'Notifications/C_Index/index';
 $route['notifications/(:any)'] = 'Notifications/C_Index/redirect/$1';
