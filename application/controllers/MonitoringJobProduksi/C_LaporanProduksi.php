@@ -15,6 +15,7 @@ class C_LaporanProduksi extends CI_Controller
 
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('MonitoringJobProduksi/M_laporan');
+		$this->load->model('MonitoringJobProduksi/M_usermng');
 
 		$this->checkSession();
 	}
@@ -38,9 +39,23 @@ class C_LaporanProduksi extends CI_Controller
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
 
-		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$UserMenu = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$user = $this->session->user;
+		$cekHak = $this->M_usermng->getUser("where no_induk = '$user'");
+		if (!empty($cekHak)) {
+			if($user == 'B0599' || $user == 'B0653' || $user == 'B0886') {
+				$data['UserMenu'] = array($UserMenu[0], $UserMenu[5]);
+			}elseif ($cekHak[0]['JENIS'] == 'Admin') {
+				$data['UserMenu'] = array($UserMenu[0]);
+			}else {
+				$data['UserMenu'] = $UserMenu;
+			}
+		}else {
+			$data['UserMenu'] = $UserMenu;
+		}
 
 		$data['kategori'] = $this->M_laporan->getCategory('order by category_name');
         // echo "<pre>";print_r($getdata);exit();
