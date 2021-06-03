@@ -52,7 +52,7 @@ class M_bppbg extends CI_Model{
       return $query->result_array();
     }
 
-    public function getDataMonitoring($subinv,$item,$status){
+    public function getDataMonitoring($subinv,$item,$status,$date){
       if ($subinv == 'SEMUA SUBINVENTORY') {
         $line1 = "imb.tujuan_gudang LIKE '%%'";
       }
@@ -74,12 +74,17 @@ class M_bppbg extends CI_Model{
         $line3 = "AND imb.flag = '$status'";
       }
 
+      $date2 = explode(' - ', $date);      
+      $dateA = $date2[0];
+      $dateB = $date2[1];
+
       $sql = "SELECT DISTINCT imb.no_bon, imb.seksi_bon, imb.tujuan_gudang, imb.flag,
-                              imb.tanggal --, UPPER (imb.keterangan) keterangan
+                              imb.tanggal
                          FROM im_master_bon imb
                         WHERE $line1
                               $line2
                               $line3
+                          AND TRUNC (TO_DATE (imb.tanggal)) BETWEEN TRUNC (TO_DATE ('$dateA')) AND TRUNC (TO_DATE ('$dateB'))
                      ORDER BY 1";
       $query = $this->oracle->query($sql);
       return $query->result_array();
