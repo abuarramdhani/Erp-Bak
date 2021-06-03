@@ -34,6 +34,38 @@ const swaLPHLarge = (type, a) =>{
   })
 }
 
+$('#lph_form_pwe').on('submit', function(e) {
+  e.preventDefault();
+  $('#lph_pwe_area').append(`<tr>
+                              <td>${$('.lph_pwe_faktor').val()}</td>
+                              <td>${$('.lph_pwe_waktu').val()}</td>
+                            </tr>`);
+})
+
+function lph_empty_form() {
+  $.ajax({
+    url: baseurl + 'LaporanProduksiHarian/action/getEmptyRKH',
+    type: 'POST',
+    // dataType: 'JSON',
+    data: {
+    },
+    cache:false,
+    beforeSend: function() {
+      $('.area-lph-2021').html(`<div style ="width: 70%;margin:auto;height: 30%;background: #fff;overflow: hidden;z-index: 9999;padding:20px 0 30px 0;border-radius:10px;text-align:center">
+                                    <img style="width: 8%;" src="${baseurl}assets/img/gif/loading5.gif"><br>
+                                    <span style="font-size:14px;font-weight:bold">Sedang memuat form input...</span>
+                                </div>`);
+    },
+    success: function(result) {
+      $('.area-lph-2021').html(result)
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+    swaLPHLarge('error', textStatus)
+     console.error();
+    }
+  })
+}
+
 $(document).ready(function () {
   $('.lphgetEmployee').select2({
     minimumInputLength: 2,
@@ -99,6 +131,11 @@ $(document).ready(function () {
     },
   },
 );
+
+if ($('.area-lph-2021').html() != undefined) {
+ lph_empty_form();
+}
+
 });
 
 $('.lph_tdl_add').on('change', function() {
@@ -125,7 +162,8 @@ $('.lph_tdl_add').on('change', function() {
   $('.lph_w_standar_efk').text(standar);
 })
 
-function lph_search_rkh() {
+$("#lph_search_rkh").on('submit', function (e) {
+  e.preventDefault();
   let tanggal = $('.lph_search_tanggal').val();
   let shift = $('.lph_shift_dinamis').val();
   let no_induk = $('.lph_search_pekerja').val();
@@ -140,14 +178,18 @@ function lph_search_rkh() {
     },
     cache:false,
     beforeSend: function() {
-      toastLPHLoading('Sedang menyiapkan data..');
+      $('.area-lph-2021').html(`<div style ="width: 70%;margin:auto;height: 30%;background: #fff;overflow: hidden;z-index: 9999;padding:20px 0 30px 0;border-radius:10px;text-align:center">
+                                <img style="width: 8%;" src="${baseurl}assets/img/gif/loading5.gif"><br>
+                                <span style="font-size:14px;font-weight:bold">Sedang memuat data...</span>
+                            </div>`);
     },
     success: function(result) {
       if (result != 'gada') {
         toastLPH('success', 'Selesai.')
         $('.area-lph-2021').html(result)
       }else {
-        swaLPHLarge('warning', 'Data tidak ditemukan');
+        // swaLPHLarge('warning', 'Data tidak ditemukan');
+        $('.area-lph-2021').html(`<center style="font-weight:bold;margin-bottom:13px;"><i class="fa fa-warning"></i> Data tidak ditemukan</center>`);
       }
     },
     error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -155,7 +197,7 @@ function lph_search_rkh() {
      console.error();
     }
   })
-}
+})
 
 function lph_filter_shift(th) {
   $.ajax({
@@ -171,7 +213,7 @@ function lph_filter_shift(th) {
       toastLPHLoading('Sedang Mengambil Shift...');
     },
     success: function(result) {
-      console.log(result);
+      // console.log(result);
       if (result != 0) {
         toastLPH('success', 'Selesai.');
         $('.lph_shift_dinamis').html(result);

@@ -9,12 +9,12 @@
           <div class="col-md-5">
             <div class="form-group">
               <label for="">Tanggal</label>
-              <input type="text" class="form-control LphTanggal lph_tdl_add"  name="" value="">
+              <input type="text" class="form-control LphTanggal lph_tdl_add"  name="tanggal" value="<?php echo $get[0]['tanggal'] ?>">
             </div>
             <div class="form-group">
               <label for="">Shift</label>
               <select class="select2" name=""  style="width:100%">
-
+                <option value="<?php echo $get[0]['shift'] ?>"><?php echo $get[0]['shift'] ?> - <?php echo $get[0]['shift_description'] ?></option>
               </select>
             </div>
             <div class="form-group">
@@ -74,7 +74,7 @@
         <div class="form-group">
           <label for="">Cari Pekerja</label>
           <select class="lphgetEmployee" name=""  style="width:100%">
-
+            <option value="<?php echo $get[0]['no_induk'] ?>"><?php echo $get[0]['nama_operator'] ?> - <?php echo $get[0]['no_induk'] ?></option>
           </select>
         </div>
         <div class="form-group">
@@ -95,36 +95,35 @@
       </div>
       <div class="box-body">
         <div class="form-group">
-          <div class="row">
-            <div class="col-sm-5">
-              <label for="">Faktor</label>
-              <input type="text" class="form-control"  name="" value="">
-            </div>
-            <div class="col-sm-7">
-              <label for="">Menit</label>
-              <div class="row">
-                <div class="col-sm-7">
-                  <input type="text" class="form-control"  name="" value="">
-                </div>
-                <div class="col-sm-5">
-                  <button type="button" class="btn btn-primary" style="width:100%" name="button"> <i class="fa fa-download"></i> Tambah </button>
+          <form id="lph_form_pwe" action="index.html" method="post">
+            <div class="row">
+              <div class="col-sm-5">
+                <label for="">Faktor</label>
+                <input type="text" class="form-control lph_pwe_faktor" required name="" value="">
+              </div>
+              <div class="col-sm-7">
+                <label for="">Menit</label>
+                <div class="row">
+                  <div class="col-sm-7">
+                    <input type="text" class="form-control lph_pwe_waktu" required name="" value="">
+                  </div>
+                  <div class="col-sm-5">
+                    <button type="submit" class="btn btn-primary" style="width:100%" name="button"> <i class="fa fa-download"></i> Tambah </button>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          </form>
           <div class="mt-4" style="overflow-y:scroll;height:164px;">
-            <table class="table" style="width:100%;">
+            <table class="table table-bordered" style="width:100%;">
               <thead class="bg-primary">
                 <tr>
                   <td style="width:30%">Faktor</td>
                   <td>Menit</td>
                 </tr>
               </thead>
-              <tbody>
-                <!-- <tr>
-                  <td>t0012</td>
-                  <td>aldipradana</td>
-                </tr> -->
+              <tbody id="lph_pwe_area">
+
               </tbody>
             </table>
           </div>
@@ -164,19 +163,20 @@
         <div class="row">
         <div class="col-md-12">
           <div class="mt-4" style="overflow-y:scroll;">
-            <table class="table table-bordered" style="width:2200px;text-align:center">
+            <table class="table table-bordered" style="width:2300px;text-align:center">
               <thead class="bg-primary">
                 <tr>
                   <td style="width:30px">No</td>
                   <td style="width:200px">Kode Part</td>
-                  <td style="width:200px">Nama Part</td>
+                  <td style="width:270px">Nama Part</td>
                   <td style="width:200px">Alat Bantu</td>
-                  <td style="width:100px">No Mesin</td>
+                  <td style="width:130px">Kode Mesin</td>
                   <td style="width:200px">Kode Proses</td>
                   <td style="width:200px">Nama Proses</td>
                   <td style="width:100px">Target PE</td>
-                  <td style="width:100px">100%</td>
-                  <td style="width:100px">AKT.</td>
+                  <td style="width:100px">Target <span class="lph_jenis_target"></span></td>
+                  <td style="width:100px">T.100%</td>
+                  <td style="width:100px">Aktual</td>
                   <td style="width:100px">%TASE</td>
                   <td style="width:100px">Hasil Baik</td>
                   <td style="width:100px">Repair Man</td>
@@ -202,6 +202,14 @@
                     </td>
                     <td><input type="text" class="form-control"  name="namaproses[]" value="<?php echo $value['proses'] ?>"></td>
                     <td><input type="text" class="form-control"  name="targetpe[]" value=""></td>
+                    <?php
+                      if ($value['hari'] == ('Jumat' || 'Sabtu')) {
+                        $target_harian = $value['target_js'];
+                      }else {
+                        $target_harian = $value['target_sk'];
+                      }
+                    ?>
+                    <td><input type="text" class="form-control"  name="target_harian[]" value="<?php echo $target_harian ?>"></td>
                     <td><input type="text" class="form-control"  name="" value=""></td>
                     <td><input type="text" class="form-control"  name="" value=""></td>
                     <td><input type="text" class="form-control"  name="" value=""></td>
@@ -235,9 +243,79 @@
       </div>
     </div>
     <div class="col-md-12">
-      <center> <button type="button" class="btn btn-success mb-4 mt-2" name="button" style="width:20%;font-weight:bold"> <i class="fa fa-save"></i> Save</button> </center>
+      <center> <button type="button" class="btn btn-primary mb-4 mt-2" name="button" style="width:20%;font-weight:bold"> <i class="fa fa-save"></i> Save</button> </center>
     </div>
   </div>
+
 <script type="text/javascript">
-  $('.select2').select2();
+
+  function set_set() {
+    return new Promise((resolve, reject) =>{
+      $('.select2').select2();
+      resolve(1)
+    })
+  }
+
+  function set_waktu_kerja() {
+    return new Promise((resolve, reject) =>{
+      let t = $('.lph_tdl_add').val().split('-');
+      let d = new Date(`${t[2]}-${t[1]}-${t[0]}`);
+      var weekday = new Array(7);
+      weekday[0] = "Sunday";
+      weekday[1] = "Monday";
+      weekday[2] = "Tuesday";
+      weekday[3] = "Wednesday";
+      weekday[4] = "Thursday";
+      weekday[5] = "Friday";
+      weekday[6] = "Saturday";
+      var n = weekday[d.getDay()];
+      let menit, standar
+      if (n == 'Friday' || n == 'Saturday') {
+        menit = 360;
+        standar = 330;
+        $('.lph_jenis_target').text('J-S');
+      }else {
+        menit = 420;
+        standar = 390;
+        $('.lph_jenis_target').text('S-K');
+      }
+      $('.lph_waktu_kerja').text(menit);
+      $('.lph_w_standar_efk').text(standar);
+      resolve(1)
+    })
+  }
+
+  async function run() {
+    let set = await set_set();
+    let set_wk = await set_waktu_kerja();
+  }
+
+  $(function() {
+    run();
+  })
+
+  $('.lphgetEmployee').select2({
+    minimumInputLength: 2,
+    placeholder: "Employee",
+    ajax: {
+      url: baseurl + "PengirimanBarangInternal/Input/employee",
+      dataType: "JSON",
+      type: "POST",
+      data: function(params) {
+        return {
+          term: params.term
+        };
+      },
+      processResults: function(data) {
+        return {
+          results: $.map(data, function(obj) {
+            return {
+              id: obj.employee_code,
+              text: `${obj.employee_name} - ${obj.employee_code}`
+            }
+          })
+        }
+      }
+    }
+  })
 </script>

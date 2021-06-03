@@ -208,12 +208,21 @@ class C_Import extends CI_Controller
                       ->where('no_induk', $this->input->post('no_induk'))
                       ->get('lph.lph_rencana_kerja_operator')->result_array();
       if (!empty($res[0]['nama_operator'])) {
+        $detail_shift = $this->M_master->get_detail_shift($this->input->post('shift'));
+        foreach ($res as $key => $value) {
+          $res[$key]['shift_description'] = $detail_shift['DESCRIPTION'];
+        }
         $data['get'] = $res;
         // echo "<pre>";print_r($res);
         $this->load->view('LaporanProduksiHarian/ajax/V_ajax_add', $data);
       }else {
-        echo json_encode('gada');
+        echo 'gada';
       }
+    }
+
+    public function getEmptyRKH($value='')
+    {
+      $this->load->view('LaporanProduksiHarian/ajax/V_ajax_add_empty');
     }
 
     public function getmon($v='')
@@ -223,12 +232,8 @@ class C_Import extends CI_Controller
       $shift = $this->input->post('shift');
       // echo "<pre>";print_r($_POST);
       // die;
-      if (!empty($shift)) {
-        $shift = "shift = '$shift'";
-      }else {
-        $shift = 'shift IS NOT NULL';
-      }
-      $data['get'] = $this->db->query("SELECT * FROM lph.lph_rencana_kerja_operator WHERE $shift AND tanggal BETWEEN '$range[0]' AND '$range[1]'")->result_array();
+
+      $data['get'] = $this->M_master->getMon($range, $shift);
       $this->load->view('LaporanProduksiHarian/ajax/V_mon_rko', $data);
     }
 

@@ -8,6 +8,36 @@ class M_master extends CI_Model
 	  $this->oracle = $this->load->database('oracle',TRUE);
 	}
 
+	public function get_detail_shift($where)
+	{
+		return $this->oracle->query("SELECT DESCRIPTION FROM BOM_CALENDAR_SHIFTS WHERE shift_num = '$where'")->row_array();
+	}
+
+	public function getMon($range, $shift)
+	{
+		if (!empty($shift)) {
+			$shift = "shift = '$shift'";
+		}else {
+			$shift = 'shift IS NOT NULL';
+		}
+		$data = $this->db->query("SELECT *
+															 FROM lph.lph_rencana_kerja_operator
+															 WHERE $shift
+															 AND tanggal BETWEEN '$range[0]' AND '$range[1]'")->result_array();
+		$m = '';
+		if (!empty($data)) {
+			$where = $data[0]['shift'];
+
+			$detail_shift =  $this->oracle->query("SELECT DESCRIPTION FROM BOM_CALENDAR_SHIFTS WHERE shift_num = '$where'")->row_array();
+			$m = $detail_shift['DESCRIPTION'];
+		}
+
+		foreach ($data as $key => $value) {
+				$data[$key]['shift_description'] = $m;
+		}
+		return $data;
+	}
+
 	function getShift($date=FALSE)
 	{
 		if ($date === FALSE) {
