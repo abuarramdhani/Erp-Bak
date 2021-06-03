@@ -252,7 +252,8 @@
 						Tgl. <?php echo $get_header[0]['ASSIGN_DATE'] ?><br>
 						Pengawas : <br>
 						<br><br><br><br><br>
-						<?php echo $get_header[0]['ASSIGNER_NAME'] ?>
+						<!-- <?php echo $get_header[0]['ASSIGNER_NAME'] ?> -->
+						<?php echo 'REYNALDI, NELSON'; ?>
 					</td>
 					<td rowspan="2" style="vertical-align: top; width: 100px; border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black; border-right: 1px solid black; font-size: 10px; padding: 5px">
 						Tgl. <br>
