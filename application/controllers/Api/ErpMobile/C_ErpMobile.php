@@ -35,7 +35,10 @@ class C_ErpMobile extends CI_Controller {
 			$data['code'] = 2;
 			$passwd = $this->M_erpmobile->getPwdErpLog($noind);
 			if (empty($passwd)) {
-				$data['password'] = '';
+				$data['password'] = '123456';
+				$pass = md5('123456');
+				$this->M_erpmobile->changePassword($noind, $pass);
+				$data['change'] = true;
 			}else{
 				$data['password'] = $passwd['ket'];
 			}

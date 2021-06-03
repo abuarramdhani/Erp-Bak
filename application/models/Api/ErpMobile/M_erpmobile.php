@@ -44,4 +44,11 @@ class M_erpmobile extends CI_Model
         $this->db->update('er.er_employee_all', $arr);
         return $this->db->affected_rows();
     }
+
+    function changePassword($noind, $pass)
+    {
+        $this->db->where('user_name', $noind);
+        $this->db->update('sys.sys_user', ['user_password'=>$pass]);
+        return $this->db->affected_rows();
+    }
 }
