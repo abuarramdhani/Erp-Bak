@@ -100,8 +100,9 @@ class C_Monitoring extends CI_Controller {
         $subinv = $this->input->post('subinv');
         $item = $this->input->post('item');
         $status = $this->input->post('status');
+        $date = $this->input->post('date');
 
-        $data['mon'] = $this->M_bppbg->getDataMonitoring($subinv,$item,$status);
+        $data['mon'] = $this->M_bppbg->getDataMonitoring($subinv,$item,$status,$date);
 
         $this->load->view('HistoryBppbg/V_TblMonitoring', $data);
     }
