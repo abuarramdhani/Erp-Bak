@@ -50,7 +50,9 @@ class C_Index extends CI_Controller {
 		if (empty($cekHak)) {
 			$this->load->view('MonitoringJobProduksi/V_UserKosong');
 		}else {
-			if ($cekHak[0]['JENIS'] == 'Admin') {
+			if($user == 'B0599' || $user == 'B0653' || $user == 'B0886') {
+				$data['UserMenu'] = array($UserMenu[0], $UserMenu[5]);
+			}elseif ($cekHak[0]['JENIS'] == 'Admin') {
 				$data['UserMenu'] = array($UserMenu[0]);
 			}else {
 				$data['UserMenu'] = $UserMenu;

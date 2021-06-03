@@ -48,7 +48,9 @@ class C_Monitoring extends CI_Controller
 		$user = $this->session->user;
 		$cekHak = $this->M_usermng->getUser("where no_induk = '$user'");
 		if (!empty($cekHak)) {
-			if ($cekHak[0]['JENIS'] == 'Admin') {
+			if($user == 'B0599' || $user == 'B0653' || $user == 'B0886') {
+				$data['UserMenu'] = array($UserMenu[0], $UserMenu[5]);
+			}elseif ($cekHak[0]['JENIS'] == 'Admin') {
 				$data['UserMenu'] = array($UserMenu[0]);
 			}else {
 				$data['UserMenu'] = $UserMenu;
