@@ -648,14 +648,14 @@ $(document).ready(function () {
     $(".attachment_flag_row").show();
     $(".attachment_row").show();
     // $(".input_send_date").prop("required", false);
-    $(".input_attachment_flag").prop("required", true);
-    if ($('[name="vendor_confirm_date"]').prop("disabled")) {
-      //   $(".input_vendor_confirm").prop("required", false);
-      $(".input_attachment").prop("required", false);
-    } else {
-      //   $(".input_vendor_confirm").prop("required", true);
-      $(".input_attachment").prop("required", true);
-    }
+    // $(".input_attachment_flag").prop("required", true);
+    // if ($('[name="vendor_confirm_date"]').prop("disabled")) {
+    //   $(".input_vendor_confirm").prop("required", false);
+    // $(".input_attachment").prop("required", false);
+    // } else {
+    //   $(".input_vendor_confirm").prop("required", true);
+    // $(".input_attachment").prop("required", true);
+    // }
   } else if (distributionMethod === "none") {
     $(".send_date_row").hide();
     $(".vendor_confirm_row").hide();
@@ -663,7 +663,7 @@ $(document).ready(function () {
     $(".attachment_row").hide();
     // $(".input_send_date").prop("required", false);
     // $(".input_vendor_confirm").prop("required", false);
-    $(".input_attachment_flag").prop("required", false);
+    // $(".input_attachment_flag").prop("required", false);
     // $(".input_attachment").prop("required", false);
   } else if (distributionMethod !== "email" && distributionMethod !== "none") {
     $(".send_date_row").show();
@@ -671,14 +671,14 @@ $(document).ready(function () {
     $(".attachment_flag_row").show();
     $(".attachment_row").show();
     // $(".input_send_date").prop("required", true);
-    $(".input_attachment_flag").prop("required", true);
-    if ($('[name="vendor_confirm_date"]').prop("disabled")) {
-      //   $(".input_vendor_confirm").prop("required", false);
-      $(".input_attachment").prop("required", false);
-    } else {
-      //   $(".input_vendor_confirm").prop("required", true);
-      $(".input_attachment").prop("required", true);
-    }
+    // $(".input_attachment_flag").prop("required", true);
+    // if ($('[name="vendor_confirm_date"]').prop("disabled")) {
+    //   $(".input_vendor_confirm").prop("required", false);
+    // $(".input_attachment").prop("required", false);
+    // } else {
+    //   $(".input_vendor_confirm").prop("required", true);
+    // $(".input_attachment").prop("required", true);
+    // }
   }
   $("#select_distribution_method").on("change", function (e) {
     e.preventDefault();
@@ -689,28 +689,28 @@ $(document).ready(function () {
       $(".attachment_flag_row").show();
       $(".attachment_row").show();
       // $(".input_send_date").prop("required", true);
-      $(".input_attachment_flag").prop("required", true);
-      if ($('[name="vendor_confirm_date"]').prop("disabled")) {
-        //   $(".input_vendor_confirm").prop("required", false);
-        $(".input_attachment").prop("required", false);
-      } else {
-        //   $(".input_vendor_confirm").prop("required", true);
-        $(".input_attachment").prop("required", true);
-      }
+      // $(".input_attachment_flag").prop("required", true);
+      // if ($('[name="vendor_confirm_date"]').prop("disabled")) {
+      //   $(".input_vendor_confirm").prop("required", false);
+      // $(".input_attachment").prop("required", false);
+      // } else {
+      //   $(".input_vendor_confirm").prop("required", true);
+      // $(".input_attachment").prop("required", true);
+      // }
     } else if (distributionMethod === "email") {
       $(".send_date_row").hide();
       $(".vendor_confirm_row").show();
       $(".attachment_flag_row").show();
       $(".attachment_row").show();
       // $(".input_send_date").prop("required", false);
-      $(".input_attachment_flag").prop("required", true);
-      if ($('[name="vendor_confirm_date"]').prop("disabled")) {
-        //   $(".input_vendor_confirm").prop("required", false);
-        $(".input_attachment").prop("required", false);
-      } else {
-        //   $(".input_vendor_confirm").prop("required", true);
-        $(".input_attachment").prop("required", true);
-      }
+      // $(".input_attachment_flag").prop("required", true);
+      // if ($('[name="vendor_confirm_date"]').prop("disabled")) {
+      //   $(".input_vendor_confirm").prop("required", false);
+      // $(".input_attachment").prop("required", false);
+      // } else {
+      //   $(".input_vendor_confirm").prop("required", true);
+      // $(".input_attachment").prop("required", true);
+      // }
     } else if (distributionMethod === "none") {
       $(".send_date_row").hide();
       $(".vendor_confirm_row").hide();
@@ -718,8 +718,8 @@ $(document).ready(function () {
       $(".attachment_row").hide();
       // $(".input_send_date").prop("required", false);
       // $(".input_vendor_confirm").prop("required", false);
-      $(".input_attachment_flag").prop("required", false);
-      $(".input_attachment").prop("required", false);
+      // $(".input_attachment_flag").prop("required", false);
+      // $(".input_attachment").prop("required", false);
     }
   });
 
