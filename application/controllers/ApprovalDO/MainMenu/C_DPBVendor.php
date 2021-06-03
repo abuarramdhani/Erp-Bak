@@ -71,7 +71,7 @@ class C_DPBVendor extends CI_Controller {
             'tgl_kirim'          => '',
             'gudang_pengirim'  => 'readonly'
         ];
-        if ($this->session->user === 'B0445' || $this->session->user === 'A2146') {
+        if ($this->session->user === 'B0445' || $this->session->user === 'H6968' || $this->session->user === 'K1778' || $this->session->user === 'A2146') {
             $data['UserAccess'] = [   
                     'jenis_kendaraan'  => '',
                     'no_kendaraan'     => '',
@@ -109,7 +109,7 @@ class C_DPBVendor extends CI_Controller {
         //         'vendor_ekspedisi' => '',
         //         'lain_lain'        => ''
         //     ];
-        // } else if ( $this->session->user === 'B0445' ) {
+        // } else if ( $this->session->user === 'B0445' || $this->session->user === 'K1778' ) {
         //     $data['UserAccess'] = [   
         //         'jenis_kendaraan'  => '',
         //         'no_kendaraan'     => 'readonly',
