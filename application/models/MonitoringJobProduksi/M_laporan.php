@@ -29,16 +29,21 @@ class M_laporan extends CI_Model
     
     public function getItem2($category, $bulan){
         $sql = "SELECT msib.segment1 item, msib.description, msib.inventory_item_id,
-                        (SELECT SUM (NVL (kpimd.value_plan, 0) + NVL (kpimd.value_plan_month, 0))
+                        (SELECT SUM (NVL (kpimd.value_plan, 0)
+                                    + NVL (kpimd.value_plan_month, 0)
+                                    )
                         FROM khs_plan_item_monitoring kpim,
                                 khs_plan_item_monitoring_date kpimd
                         WHERE kpim.plan_id = kpimd.plan_id
                             AND msib.inventory_item_id = kpim.inventory_item_id
                             AND kpim.MONTH = '$bulan' --'202104'
-                            AND mkim.id_category || mcim.id_subcategory = kpim.id_category || kpim.id_subcategory) target
+                            AND mkim.id_category || mcim.id_subcategory =
+                                                        kpim.id_category || kpim.id_subcategory)
+                                                                                        target,
+                        ksi.id_category, ksi.id_subcategory, ksi.subcategory_name
                 FROM khs_category_item_monitoring mcim,
                         khs_kategori_item_monitoring mkim,
-                        (SELECT ksi.id_category || ksi.id_subcategory konek,
+                        (SELECT ksi.id_category || ksi.id_subcategory konek, ksi.id_category,
                                 ksi.id_subcategory, ksi.subcategory_name
                         FROM khs_subcategory_item ksi) ksi,
                         mtl_system_items_b msib
@@ -47,7 +52,8 @@ class M_laporan extends CI_Model
                     AND mcim.category_name = mkim.id_category
                     AND mcim.flag = 'Y'
                     AND ksi.konek(+) = mcim.category_name || mcim.id_subcategory
-                    AND mkim.id_category = $category";
+                    AND mkim.id_category = $category
+                    order by 6,1";
         $query = $this->oracle->query($sql);
         return $query->result_array();
     }
@@ -134,6 +140,20 @@ class M_laporan extends CI_Model
                 where fin.BULAN = '$month'
                 and fin.ID_CATEGORY = '$kategori'
                 and fin.kode = $kode $subinv";
+                // echo "<pre>";print_r($sql);exit();
+        $query = $this->oracle->query($sql);
+        return $query->result_array();
+    }
+    
+    public function gettargetPlan($kategori, $subkategori, $inv, $bulan){
+        $sql = "select kpimd.VALUE_PLAN_MONTH
+                from khs_plan_item_monitoring kpim,
+                khs_plan_item_monitoring_date kpimd
+                where kpim.MONTH = '$bulan'
+                and kpim.ID_CATEGORY = $kategori
+                and kpim.ID_SUBCATEGORY = $subkategori
+                and kpim.INVENTORY_ITEM_ID = '$inv'
+                and kpim.PLAN_ID = kpimd.PLAN_ID";
                 // echo "<pre>";print_r($sql);exit();
         $query = $this->oracle->query($sql);
         return $query->result_array();
