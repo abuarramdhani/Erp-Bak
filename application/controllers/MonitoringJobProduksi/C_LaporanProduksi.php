@@ -111,21 +111,23 @@ class C_LaporanProduksi extends CI_Controller
 			$total['TANGGAL'.$h2.''] = 0;
 		}
         foreach ($getdata as $key => $val) {
-			if ((!in_array($val['DESCRIPTION'], $itemnya) && $asal == 'TRANSAKSI') || (!in_array($val['SUBCATEGORY_NAME'], $subcategory) && $asal == 'COMPLETION')) {
+			if ((!in_array($val['INVENTORY_ITEM_ID'].'_'.$val['ID_SUBCATEGORY'], $itemnya) && $asal == 'TRANSAKSI') || (!in_array($val['SUBCATEGORY_NAME'], $subcategory) && $asal == 'COMPLETION')) {
 				if ($asal == 'TRANSAKSI') {
-					array_push($itemnya, $val['DESCRIPTION']);
+					array_push($itemnya, $val['INVENTORY_ITEM_ID'].'_'.$val['ID_SUBCATEGORY']);
 					$item = $val['ITEM'];
 					$desc = $val['DESCRIPTION'];
 				}else {
 					array_push($subcategory, $val['SUBCATEGORY_NAME']);
 					$item = $desc = $val['SUBCATEGORY_NAME'];
-					array_push($itemnya, $val['ITEM']);
+					array_push($itemnya, $val['INVENTORY_ITEM_ID'].'_'.$val['ID_SUBCATEGORY']);
 				}
 				$datanya[$no] = array(
 									'ITEM' 				=> $item,
 									'DESKRIPSI' 		=> $desc,
 									'ID_CATEGORY' 		=> $val['ID_CATEGORY'],
 									'CATEGORY_NAME' 	=> $val['CATEGORY_NAME'],
+									'ID_SUBCATEGORY' 	=> $val['ID_SUBCATEGORY'],
+									'SUBCATEGORY_NAME' 	=> $val['SUBCATEGORY_NAME'],
 									'BULAN' 			=> $val['BULAN'],
 									'QTY' 				=> $val['QTY'],
 									'REAL_PROD' 		=> $val['QTY'],
@@ -153,13 +155,15 @@ class C_LaporanProduksi extends CI_Controller
 		if ($asal == 'TRANSAKSI') {
 			$dataitem = $this->M_laporan->getItem2($kategori, $bulan);
 			foreach ($dataitem as $key2 => $value) {
-				if (!in_array($value['DESCRIPTION'], $itemnya)) {
-					array_push($itemnya, $value['DESCRIPTION']);
+				if (!in_array($value['INVENTORY_ITEM_ID'].'_'.$value['ID_SUBCATEGORY'], $itemnya)) {
+					array_push($itemnya, $value['INVENTORY_ITEM_ID'].'_'.$value['ID_SUBCATEGORY']);
 					$datanya[$no] = array(
 						'ITEM' 				=> $value['ITEM'],
 						'DESKRIPSI' 		=> $value['DESCRIPTION'],
 						'ID_CATEGORY' 		=> $kategori,
 						'CATEGORY_NAME' 	=> '',
+						'ID_SUBCATEGORY' 	=> $value['ID_SUBCATEGORY'],
+						'SUBCATEGORY_NAME' 	=> $value['SUBCATEGORY_NAME'],
 						'BULAN' 			=> '',
 						'QTY' 				=> '',
 						'REAL_PROD' 		=> '',
@@ -183,6 +187,8 @@ class C_LaporanProduksi extends CI_Controller
 						'DESKRIPSI' 		=> $value['SUBCATEGORY_NAME'],
 						'ID_CATEGORY' 		=> $kategori,
 						'CATEGORY_NAME' 	=> '',
+						'ID_SUBCATEGORY' 	=> $value['ID_SUBCATEGORY'],
+						'SUBCATEGORY_NAME' 	=> $value['SUBCATEGORY_NAME'],
 						'BULAN' 			=> '',
 						'QTY' 				=> '',
 						'REAL_PROD' 		=> '',
@@ -218,29 +224,34 @@ class C_LaporanProduksi extends CI_Controller
 			$total['TANGGAL'.$h2.''] = 0;
 		}
         foreach ($getdata as $key => $val) {
-			if ((!in_array($val['DESCRIPTION'], $itemnya) && $asal == 'TRANSAKSI') || (!in_array($val['SUBCATEGORY_NAME'], $subcategory) && $asal == 'COMPLETION')) {
+			if ((!in_array($val['INVENTORY_ITEM_ID'].'_'.$val['ID_SUBCATEGORY'], $itemnya) && $asal == 'TRANSAKSI') || (!in_array($val['SUBCATEGORY_NAME'], $subcategory) && $asal == 'COMPLETION')) {
 				if ($asal == 'TRANSAKSI') {
-					array_push($itemnya, $val['DESCRIPTION']);
+					array_push($itemnya, $val['INVENTORY_ITEM_ID'].'_'.$val['ID_SUBCATEGORY']);
 					$item = $val['ITEM'];
 					$desc = $val['DESCRIPTION'];
+					$target = $this->M_laporan->gettargetPlan($val['ID_CATEGORY'], $val['ID_SUBCATEGORY'],$val['INVENTORY_ITEM_ID'], $bulan);
+					$target = !empty($target) ? $target[0]['VALUE_PLAN_MONTH'] : '';
 				}else {
 					array_push($subcategory, $val['SUBCATEGORY_NAME']);
 					$item = $desc = $val['SUBCATEGORY_NAME'];
-					array_push($itemnya, $val['ITEM']);
+					$target = $val['TARGET'];
+					array_push($itemnya, $val['INVENTORY_ITEM_ID'].'_'.$val['ID_SUBCATEGORY']);
 				}
 				$datanya[$no] = array(
 									'ITEM' 				=> $item,
 									'DESKRIPSI' 		=> $desc,
 									'ID_CATEGORY' 		=> $val['ID_CATEGORY'],
 									'CATEGORY_NAME' 	=> $val['CATEGORY_NAME'],
+									'ID_SUBCATEGORY' 	=> $val['ID_SUBCATEGORY'],
+									'SUBCATEGORY_NAME' 	=> $val['SUBCATEGORY_NAME'],
 									'QTY' 				=> $val['QTY'],
-									'TARGET' 			=> $val['TARGET'],
+									'TARGET' 			=> $target,
 									'WOS_JOB' 			=> $val['WOS_JOB'],
 									'COMPLETION' 		=> $val['COMPLETION'],
 									'REAL_PROD' 		=> $val['QTY'],
 				);
 				$total['REAL_PROD'] += $val['QTY'];
-				$total['TARGET'] += $val['TARGET'];
+				$total['TARGET'] += $target;
 				$total['WOS_JOB'] += $val['WOS_JOB'];
 				$total['COMPLETION'] += $val['COMPLETION'];
 				for ($h=1; $h < $hari+1 ; $h++) { 
@@ -257,8 +268,8 @@ class C_LaporanProduksi extends CI_Controller
 				$datanya[$no-1]['REAL_PROD'] += $val['QTY'];
 				$total['TANGGAL'.$tgl[0].''] += $val['QTY'];
 				$total['REAL_PROD'] += $val['QTY'];
-				if ($asal == 'COMPLETION' && !in_array($val['ITEM'], $itemnya)) {
-					array_push($itemnya, $val['ITEM']);
+				if ($asal == 'COMPLETION' && !in_array($val['INVENTORY_ITEM_ID'].'_'.$val['ID_SUBCATEGORY'], $itemnya)) {
+					array_push($itemnya, $val['INVENTORY_ITEM_ID'].'_'.$val['ID_SUBCATEGORY']);
 					$datanya[$no-1]['WOS_JOB'] += $val['WOS_JOB'];
 					$datanya[$no-1]['COMPLETION'] += $val['COMPLETION'];
 					$total['WOS_JOB'] += $val['WOS_JOB'];
@@ -267,28 +278,59 @@ class C_LaporanProduksi extends CI_Controller
 			}
 		}
 
-		$dataitem = $this->M_laporan->getsubcategory($kategori, $bulan);
-		foreach ($dataitem as $key => $value) {
-			if (!in_array($value['SUBCATEGORY_NAME'], $subcategory)) {
-				array_push($subcategory, $value['SUBCATEGORY_NAME']);
-				$datanya[$no] = array(
-					'ITEM' 				=> $value['SUBCATEGORY_NAME'],
-					'DESKRIPSI' 		=> $value['SUBCATEGORY_NAME'],
-					'ID_CATEGORY' 		=> 15,
-					'CATEGORY_NAME' 	=> '',
-					'BULAN' 			=> '',
-					'QTY' 				=> '',
-					'TARGET' 			=> $value['TARGET'],
-					'WOS_JOB' 			=> '',
-					'COMPLETION' 		=> '',
-					'REAL_PROD' 		=> '',
-				);
-				$total['TARGET'] += $value['TARGET'];
-				for ($h=1; $h < $hari+1 ; $h++) { 
-					$h2 = sprintf("%02d", $h);
-					$datanya[$no]['TANGGAL'.$h2.''] = '';
+		if ($asal == 'TRANSAKSI') {
+			$dataitem = $this->M_laporan->getItem2($kategori, $bulan);
+			foreach ($dataitem as $key2 => $value) {
+				if (!in_array($value['INVENTORY_ITEM_ID'].'_'.$value['ID_SUBCATEGORY'], $itemnya)) {
+					array_push($itemnya, $value['INVENTORY_ITEM_ID'].'_'.$value['ID_SUBCATEGORY']);
+					$datanya[$no] = array(
+						'ITEM' 				=> $value['ITEM'],
+						'DESKRIPSI' 		=> $value['DESCRIPTION'],
+						'ID_CATEGORY' 		=> $kategori,
+						'CATEGORY_NAME' 	=> '',
+						'ID_SUBCATEGORY' 	=> $value['ID_SUBCATEGORY'],
+						'SUBCATEGORY_NAME' 	=> $value['SUBCATEGORY_NAME'],
+						'BULAN' 			=> '',
+						'QTY' 				=> '',
+						'TARGET' 			=> $value['TARGET'],
+						'WOS_JOB' 			=> '',
+						'COMPLETION' 		=> '',
+						'REAL_PROD' 		=> '',
+					);
+					$total['TARGET'] += $value['TARGET'];
+					for ($h=1; $h < $hari+1 ; $h++) { 
+						$h2 = sprintf("%02d", $h);
+						$datanya[$no]['TANGGAL'.$h2.''] = '';
+					}
+					$no++;
 				}
-				$no++;
+			}
+		}else if($asal == 'COMPLETION'){
+			$dataitem = $this->M_laporan->getsubcategory($kategori, $bulan);
+			foreach ($dataitem as $key => $value) {
+				if (!in_array($value['SUBCATEGORY_NAME'], $subcategory)) {
+					array_push($subcategory, $value['SUBCATEGORY_NAME']);
+					$datanya[$no] = array(
+						'ITEM' 				=> $value['SUBCATEGORY_NAME'],
+						'DESKRIPSI' 		=> $value['SUBCATEGORY_NAME'],
+						'ID_CATEGORY' 		=> $kategori,
+						'CATEGORY_NAME' 	=> '',
+						'ID_SUBCATEGORY' 	=> $value['ID_SUBCATEGORY'],
+						'SUBCATEGORY_NAME' 	=> $value['SUBCATEGORY_NAME'],
+						'BULAN' 			=> '',
+						'QTY' 				=> '',
+						'TARGET' 			=> $value['TARGET'],
+						'WOS_JOB' 			=> '',
+						'COMPLETION' 		=> '',
+						'REAL_PROD' 		=> '',
+					);
+					$total['TARGET'] += $value['TARGET'];
+					for ($h=1; $h < $hari+1 ; $h++) { 
+						$h2 = sprintf("%02d", $h);
+						$datanya[$no]['TANGGAL'.$h2.''] = '';
+					}
+					$no++;
+				}
 			}
 		}
 		
@@ -1097,6 +1139,342 @@ class C_LaporanProduksi extends CI_Controller
 		header('Cache-Control: max-age=0');
 		$write = PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
 		$write->save('php://output');
+	}
+
+	public function detail_laporan(){
+		$id_kategori 	= $this->input->post('kategori');
+		$cari_kategori 	= $this->M_laporan->getCategory("where id_category = ".$id_kategori."");
+		$kategori 		= $cari_kategori[0]['CATEGORY_NAME'];
+		$bulan 			= $this->input->post('bulan');
+		$bln			= explode("/", $bulan[0]);
+		$hari 			= $this->input->post('hari');
+
+		if ($id_kategori == 13 || $id_kategori == 14) { // kategori VERZINC dan IMPLEMEN
+			$getdata = $this->M_laporan->getdataLaporanCompletion($id_kategori, $bulan[0]);
+			$asal = 'TRANSAKSI';
+			$olah = $this->olah_data($getdata, $asal, $hari, $id_kategori, $bln[1].$bln[0]);
+		}elseif ($id_kategori == 15 || $id_kategori == 19) { // kategori SPAREPART
+			$getdata = $this->M_laporan->getdataLaporanSP($id_kategori, $bulan[0]);
+			$asal = 'TRANSAKSI';
+			$olah = $this->olah_data_sp($getdata, $asal, $hari, $bln[1].$bln[0], $id_kategori);
+		}else {
+			if ($id_kategori == 1) { // kategori PACKAGING BODY SET
+				$tujuan = "'INT-ASSY', 'INT-PAINT'";
+			}elseif ($id_kategori == 2) { // kategori PACKAGING HANDLE BAR
+				$tujuan = "'INT-PAINT'";
+			}else {
+				$tujuan = "'INT-ASSY'";
+			}
+			$getdata = $this->M_laporan->getdataLaporanTransaksi($id_kategori, $bulan[0], $tujuan);
+			$asal = 'TRANSAKSI';
+			$olah = $this->olah_data($getdata, $asal, $hari, $id_kategori, $bln[1].$bln[0]);
+		}
+		// echo "<pre>";print_r($olah);exit();
+		
+		foreach ($olah[0] as $key => $row) {
+			$return_fare[$key]  = $row['ID_SUBCATEGORY'];
+			$one_way_fare[$key] = $row['ITEM'];
+		}
+		// Sort the data with volume descending, edition ascending
+		array_multisort($return_fare, SORT_ASC, $one_way_fare, SORT_ASC, $olah[0]);
+		$datanya = $olah[0];
+		$total = $olah[1];
+
+		include APPPATH.'third_party/Excel/PHPExcel.php';
+		$excel = new PHPExcel();
+		$excel->getProperties()->setCreator('CV. KHS')
+					->setLastModifiedBy('CV. KHS')
+					->setTitle("Monitoring Job Produksi")
+					->setSubject("Laporan Produksi")
+					->setDescription("Laporan Produksi");
+		
+		$style_title = array(
+			'alignment' => array(
+				'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER, 
+				'vertical' 	 => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+			),
+		);
+		$style1 = array(
+			'fill' => array(
+				'type' => PHPExcel_Style_Fill::FILL_SOLID,
+				// 'color' => array('rgb' => 'bdeefc'),
+				'color' => array('rgb' => 'E6E8E6'),
+			),
+			'font' => array(
+				'bold' => true,
+			), 
+			'alignment' => array(
+				'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER, 
+				'vertical' 	=> PHPExcel_Style_Alignment::VERTICAL_CENTER,
+				'wrap' => true,
+			),
+			'borders' => array(
+				'top' 	=> array('style'  => PHPExcel_Style_Border::BORDER_THIN), 
+				'right' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),  
+				'bottom'=> array('style'  => PHPExcel_Style_Border::BORDER_THIN),
+				'left' 	=> array('style'  => PHPExcel_Style_Border::BORDER_THIN) 
+			)
+		);
+		$style2 = array(
+			'alignment' => array(
+				'vertical'	 => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+				'wrap' => true,
+			),
+			'borders' => array(
+				'top' 	=> array('style'  => PHPExcel_Style_Border::BORDER_THIN), 
+				'right' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),  
+				'bottom'=> array('style'  => PHPExcel_Style_Border::BORDER_THIN),
+				'left' 	=> array('style'  => PHPExcel_Style_Border::BORDER_THIN) 
+			)
+		);
+		$style3 = array(
+			'alignment' => array(
+				'vertical'	 => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+				'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER, 
+			),
+			'borders' => array(
+				'top' 	=> array('style'  => PHPExcel_Style_Border::BORDER_THIN), 
+				'right' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),  
+				'bottom'=> array('style'  => PHPExcel_Style_Border::BORDER_THIN),
+				'left' 	=> array('style'  => PHPExcel_Style_Border::BORDER_THIN) 
+			)
+			
+		);
+		
+		$style4 = array(
+			'fill' => array(
+				'type' => PHPExcel_Style_Fill::FILL_SOLID,
+				'color' => array('rgb' => 'E6E8E6'),
+			),
+			'alignment' => array(
+				'vertical'	 => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+				'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER, 
+			),
+			'borders' => array(
+				'top' 	=> array('style'  => PHPExcel_Style_Border::BORDER_THIN), 
+				'right' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),  
+				'bottom'=> array('style'  => PHPExcel_Style_Border::BORDER_THIN),
+				'left' 	=> array('style'  => PHPExcel_Style_Border::BORDER_THIN) 
+			)
+			
+		);
+		
+		if ($hari == 31) {
+			$akhir 	= 'AG';
+			$plus1 	= 'AH';
+			$plus2 	= 'AI';
+			$plus3 	= 'AJ';
+			$plus4 	= 'AK';
+			$plus5 	= 'AL';
+			$plus6 	= 'AM';
+			$plus7 	= 'AN';
+		}elseif ($hari == 30) {
+			$akhir 	= 'AF';
+			$plus1 	= 'AG';
+			$plus2 	= 'AH';
+			$plus3 	= 'AI';
+			$plus4 	= 'AJ';
+			$plus5 	= 'AK';
+			$plus6 	= 'AL';
+			$plus7 	= 'AM';
+		}elseif ($hari == 29){
+			$akhir 	= 'AE';
+			$plus1 	= 'AF';
+			$plus2	= 'AG';
+			$plus3 	= 'AH';
+			$plus4 	= 'AI';
+			$plus5 	= 'AJ';
+			$plus6 	= 'AK';
+			$plus7 	= 'AL';
+		}else {
+			$akhir 	= 'AD';
+			$plus1 	= 'AE';
+			$plus2 	= 'AF';
+			$plus3 	= 'AG';
+			$plus4 	= 'AH';
+			$plus5 	= 'AI';
+			$plus6 	= 'AJ';
+			$plus7 	= 'AK';
+		}
+
+		//TITLE
+		$excel->setActiveSheetIndex(0)->setCellValue('A1', "DETAIL LAPORAN PRODUKSI"); 
+		$excel->getActiveSheet()->mergeCells("A1:".$plus3."1"); 
+		$excel->getActiveSheet()->getStyle('A1')->applyFromArray($style_title);
+		
+		$excel->setActiveSheetIndex(0)->setCellValue('A2', "Kategori"); 
+		$excel->setActiveSheetIndex(0)->setCellValue('B2', ": ".$kategori); 
+		
+		$excel->setActiveSheetIndex(0)->setCellValue('A3', "Bulan"); 
+		$excel->setActiveSheetIndex(0)->setCellValue('B3', ": ".$bulan[0]); 
+		$excel->setActiveSheetIndex(0)->setCellValue('A5', "SUBCATEGORY");
+		$excel->setActiveSheetIndex(0)->setCellValue('B5', "PRODUK");
+		$excel->setActiveSheetIndex(0)->setCellValue('C5', "PRODUKSI");
+		if ($id_kategori == 15  || $id_kategori == 19) { // khusus kategori sparepart
+			$excel->setActiveSheetIndex(0)->setCellValue("".$plus1."5", "TARGET");
+			$excel->setActiveSheetIndex(0)->setCellValue("".$plus2."5", "WOS / JOB");
+			$excel->setActiveSheetIndex(0)->setCellValue("".$plus3."5", "% JOB PPIC");
+			$excel->setActiveSheetIndex(0)->setCellValue("".$plus4."5", "COMPLETION INT ASSY + NO PACKG");
+			$excel->setActiveSheetIndex(0)->setCellValue("".$plus5."5", "% COMPLETION ASSY");
+			$excel->setActiveSheetIndex(0)->setCellValue("".$plus6."5", "IN YSP");
+			$excel->setActiveSheetIndex(0)->setCellValue("".$plus7."5", "YSP");
+		}else {
+			$excel->setActiveSheetIndex(0)->setCellValue("".$plus1."5", "REAL PROD");
+			$excel->setActiveSheetIndex(0)->setCellValue("".$plus2."5", "TARGET");
+			$excel->setActiveSheetIndex(0)->setCellValue("".$plus3."5", "PENCAPAIAN PRODUKSI(%)");
+		}
+		$excel->getActiveSheet()->mergeCells("A5:A6"); 
+		$excel->getActiveSheet()->mergeCells("B5:B6"); 
+		$excel->getActiveSheet()->mergeCells("C5:".$akhir."5");
+		$excel->getActiveSheet()->mergeCells("".$plus1."5:".$plus1."6");
+		$excel->getActiveSheet()->mergeCells("".$plus2."5:".$plus2."6");
+		$excel->getActiveSheet()->mergeCells("".$plus3."5:".$plus3."6");
+		if ($id_kategori == 15  || $id_kategori == 19) { // khusus kategori sparepart
+		$excel->getActiveSheet()->mergeCells("".$plus4."5:".$plus4."6");
+		$excel->getActiveSheet()->mergeCells("".$plus5."5:".$plus5."6");
+		$excel->getActiveSheet()->mergeCells("".$plus6."5:".$plus6."6");
+		$excel->getActiveSheet()->mergeCells("".$plus7."5:".$plus7."6");
+		}
+		$row = 6;
+		$col = 2;
+		for ($i=0; $i < $hari ; $i++) { //tanggal 1 - akhir
+			$excel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, ($i+1));
+			$col++;
+		} 
+
+		$excel->getActiveSheet()->getStyle('A5')->applyFromArray($style1);
+		$excel->getActiveSheet()->getStyle('A6')->applyFromArray($style1);
+		$excel->getActiveSheet()->getStyle('B5')->applyFromArray($style1);
+		$excel->getActiveSheet()->getStyle('B6')->applyFromArray($style1);
+		$excel->getActiveSheet()->getStyle("C5:".$akhir."6")->applyFromArray($style1);
+		$excel->getActiveSheet()->getStyle("".$plus1."5:".$plus1."6")->applyFromArray($style1);
+		$excel->getActiveSheet()->getStyle("".$plus2."5:".$plus2."6")->applyFromArray($style1);
+		$excel->getActiveSheet()->getStyle("".$plus3."5:".$plus3."6")->applyFromArray($style1);
+		if ($id_kategori == 15  || $id_kategori == 19) {
+		$excel->getActiveSheet()->getStyle("".$plus4."5:".$plus4."6")->applyFromArray($style1);
+		$excel->getActiveSheet()->getStyle("".$plus5."5:".$plus5."6")->applyFromArray($style1);
+		$excel->getActiveSheet()->getStyle("".$plus6."5:".$plus6."6")->applyFromArray($style1);
+		$excel->getActiveSheet()->getStyle("".$plus7."5:".$plus7."6")->applyFromArray($style1);
+		}
+		for ($n=2; $n < ($hari+5) ; $n++) { // styling tanggal col 4 - akhir
+			$a = $this->numbertoalpha($n);
+			$excel->getActiveSheet()->getStyle("".$a."6")->applyFromArray($style1);
+		}
+
+		$no = 1;
+		$numrow = 7;
+		foreach ($datanya as $key => $val) {
+			// echo "<pre>";print_r($val);exit();
+			$excel->setActiveSheetIndex(0)->setCellValue('A'.$numrow, $val['SUBCATEGORY_NAME']);
+			$excel->setActiveSheetIndex(0)->setCellValue('B'.$numrow, $val['ITEM'].'
+																		'.$val['DESKRIPSI']);
+			$col = 2;
+			for ($i=0; $i < $hari ; $i++) { //tanggal 1 - akhir
+				$val_tgl = $val['TANGGAL'.(sprintf("%02d", $i+1)).''] == 0 ? '' : $val['TANGGAL'.(sprintf("%02d", $i+1)).''];
+				$excel->getActiveSheet()->setCellValueByColumnAndRow($col, $numrow, $val_tgl);
+				$a = $this->numbertoalpha($col);
+				$excel->getActiveSheet()->getStyle("$a$numrow")->applyFromArray($style3);
+				$col++;
+			} 
+			if ($id_kategori == 15  || $id_kategori == 19) {
+					$ttl_wosjob = number_format(!empty($val['TARGET']) && $val['TARGET'] != 0 ? ($val['WOS_JOB'] / $val['TARGET']) * 100 : 0 ,2);
+					$ttl_comp = number_format(!empty($val['TARGET']) && $val['TARGET'] != 0 ? ($val['COMPLETION'] / $val['TARGET']) * 100 : 0 ,2);
+					$ttl_capai = number_format(!empty($val['TARGET']) && $val['TARGET'] != 0 ? ($val['REAL_PROD'] / $val['TARGET']) * 100 : 0 ,2);
+					$excel->setActiveSheetIndex(0)->setCellValue($plus1.$numrow, $val['TARGET']);
+					$excel->setActiveSheetIndex(0)->setCellValue($plus2.$numrow, $val['WOS_JOB']);
+					$excel->setActiveSheetIndex(0)->setCellValue($plus3.$numrow, $ttl_wosjob > 100 ? number_format(100,2) : $ttl_wosjob);
+					$excel->setActiveSheetIndex(0)->setCellValue($plus4.$numrow, $val['COMPLETION']);
+					$excel->setActiveSheetIndex(0)->setCellValue($plus5.$numrow, $ttl_comp > 100 ? number_format(100,2) : $ttl_comp);
+					$excel->setActiveSheetIndex(0)->setCellValue($plus6.$numrow, $val['REAL_PROD']);
+					$excel->setActiveSheetIndex(0)->setCellValue($plus7.$numrow, $ttl_capai > 100 ? number_format(100,2) : $ttl_capai);
+				}else {
+					$excel->setActiveSheetIndex(0)->setCellValue($plus1.$numrow, $val['REAL_PROD']);
+					$excel->setActiveSheetIndex(0)->setCellValue($plus2.$numrow, $val['TARGET']);
+					$excel->setActiveSheetIndex(0)->setCellValue($plus3.$numrow, number_format(!empty($val['TARGET']) && $val['TARGET'] != 0 ? ($val['REAL_PROD'] / $val['TARGET']) * 100 : 0 ,2));
+			}
+
+			$excel->getActiveSheet()->getStyle("A$numrow")->applyFromArray($style3);
+			$excel->getActiveSheet()->getStyle("B$numrow")->applyFromArray($style2);
+			$excel->getActiveSheet()->getStyle("$plus1$numrow")->applyFromArray($style3);
+			$excel->getActiveSheet()->getStyle("$plus2$numrow")->applyFromArray($style3);
+			$excel->getActiveSheet()->getStyle("$plus3$numrow")->applyFromArray($style3);
+			if ($id_kategori == 15  || $id_kategori == 19) {
+				$excel->getActiveSheet()->getStyle("$plus4$numrow")->applyFromArray($style3);
+				$excel->getActiveSheet()->getStyle("$plus5$numrow")->applyFromArray($style3);
+				$excel->getActiveSheet()->getStyle("$plus6$numrow")->applyFromArray($style3);
+				$excel->getActiveSheet()->getStyle("$plus7$numrow")->applyFromArray($style3);
+			}
+			$no++;$numrow++;
+		}
+
+		//TOTAL
+		$excel->setActiveSheetIndex(0)->setCellValue('A'.$numrow, 'Total');
+		$col = 2;
+		for ($i=0; $i < $hari ; $i++) { //tanggal 1 - akhir
+			$excel->getActiveSheet()->setCellValueByColumnAndRow($col, $numrow, $total['TANGGAL'.(sprintf("%02d", $i+1)).'']);
+			$a = $this->numbertoalpha($col);
+			$excel->getActiveSheet()->getStyle("$a$numrow")->applyFromArray($style4);
+			$col++;
+		} 
+		// echo "<pre>";print_r($total);exit();
+		if ($id_kategori == 15 || $id_kategori == 19) { // khusus kategori sparepart
+			$ttl_wosjob = number_format(!empty($total['TARGET']) && $total['TARGET'] != 0 ? ($total['WOS_JOB'] / $total['TARGET']) * 100 : 0 ,2);
+			$ttl_comp 	= number_format(!empty($total['TARGET']) && $total['TARGET'] != 0 ? ($total['COMPLETION'] / $total['TARGET']) * 100 : 0 ,2);
+			$ttl_capai 	= number_format(!empty($total['TARGET']) && $total['TARGET'] != 0 ? ($total['REAL_PROD'] / $total['TARGET']) * 100 : 0 ,2);
+			$excel->setActiveSheetIndex(0)->setCellValue($plus1.$numrow, $total['TARGET']);
+			$excel->setActiveSheetIndex(0)->setCellValue($plus2.$numrow, $total['WOS_JOB']);
+			$excel->setActiveSheetIndex(0)->setCellValue($plus3.$numrow, $ttl_wosjob > 100 ? number_format(100,2) : $ttl_wosjob);
+			$excel->setActiveSheetIndex(0)->setCellValue($plus4.$numrow, $total['COMPLETION']);
+			$excel->setActiveSheetIndex(0)->setCellValue($plus5.$numrow, $ttl_comp > 100 ? number_format(100,2) : $ttl_comp);
+			$excel->setActiveSheetIndex(0)->setCellValue($plus6.$numrow, $total['REAL_PROD']);
+			$excel->setActiveSheetIndex(0)->setCellValue($plus7.$numrow, $ttl_capai > 100 ? number_format(100,2) : $ttl_capai);
+		}else {
+			$excel->setActiveSheetIndex(0)->setCellValue($plus1.$numrow, $total['REAL_PROD']);
+			$excel->setActiveSheetIndex(0)->setCellValue($plus2.$numrow, $total['TARGET']);
+			$excel->setActiveSheetIndex(0)->setCellValue($plus3.$numrow, number_format(!empty($total['TARGET']) && $total['TARGET'] != 0 ? ($total['REAL_PROD'] / $total['TARGET']) * 100 : 0 ,2));
+		}
+
+		$excel->getActiveSheet()->mergeCells("A$numrow:B$numrow"); 
+		$excel->getActiveSheet()->getStyle("A$numrow")->applyFromArray($style4);
+		$excel->getActiveSheet()->getStyle("B$numrow")->applyFromArray($style4);
+		$excel->getActiveSheet()->getStyle("$plus1$numrow")->applyFromArray($style4);
+		$excel->getActiveSheet()->getStyle("$plus2$numrow")->applyFromArray($style4);
+		$excel->getActiveSheet()->getStyle("$plus3$numrow")->applyFromArray($style4);
+		if ($id_kategori == 15  || $id_kategori == 19) {
+			$excel->getActiveSheet()->getStyle("$plus4$numrow")->applyFromArray($style4);
+			$excel->getActiveSheet()->getStyle("$plus5$numrow")->applyFromArray($style4);
+			$excel->getActiveSheet()->getStyle("$plus6$numrow")->applyFromArray($style4);
+			$excel->getActiveSheet()->getStyle("$plus7$numrow")->applyFromArray($style4);
+		}
+
+		$excel->getActiveSheet()->getColumnDimension('A')->setWidth(15); 
+		$excel->getActiveSheet()->getColumnDimension('B')->setWidth(30); 
+		for($col = 'C'; $col !== $plus1; $col++) { // autowidth
+			$excel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
+		}
+		$excel->getActiveSheet()->getColumnDimension($plus1)->setWidth(10); 
+		$excel->getActiveSheet()->getColumnDimension($plus2)->setWidth(10); 
+		$excel->getActiveSheet()->getColumnDimension($plus3)->setWidth(15); 
+		if ($id_kategori == 15  || $id_kategori == 19) {
+			$excel->getActiveSheet()->getColumnDimension($plus4)->setWidth(15); 
+			$excel->getActiveSheet()->getColumnDimension($plus5)->setWidth(15); 
+			$excel->getActiveSheet()->getColumnDimension($plus6)->setWidth(15); 
+			$excel->getActiveSheet()->getColumnDimension($plus7)->setWidth(15); 
+		}
+		$excel->getActiveSheet()->getDefaultRowDimension()->setRowHeight(-1);
+		
+		// Set orientasi kertas jadi LANDSCAPE
+		$excel->getActiveSheet()->getPageSetup()->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE);
+		// Set judul file excel nya
+		$excel->getActiveSheet(1)->setTitle("Laporan Produksi");
+		$excel->setActiveSheetIndex();
+		// Proses file excel
+		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+		header('Content-Disposition: attachment; filename="Detail-Laporan-Produksi-'.$kategori.'-'.$bulan[0].'.xlsx"'); 
+		header('Cache-Control: max-age=0');
+		$write = PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
+		$write->save('php://output');
+	
 	}
 
     
