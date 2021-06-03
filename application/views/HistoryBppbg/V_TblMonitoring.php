@@ -1,4 +1,8 @@
 <div class="panel-body">
+    <div style="background: #95f576; color: transparent; width: 20%; display: inline;">______</div>
+    <span style="display: inline;">: SUDAH TRANSACT</span><br>
+    <div style="background: #f06f4f; color: transparent; width: 20%; display: inline;">______</div>
+    <span style="display: inline;">: BELUM TRANSACT</span><br><br>
     <table class="datatable table table-bordered table-hover table-striped text-center" id="tblMon" style="width: 100%;">
         <thead class="bg-primary">
             <tr>

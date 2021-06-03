@@ -16,8 +16,7 @@ class M_bppbg extends CI_Model{
     }
 
     public function getData($bppbg){
-      $sql = "SELECT imb.kode_barang, imb.nama_barang, imb.ACCOUNT, imb.cost_center,
-                     imb.seksi_bon, imb.pemakai, imb.tujuan_gudang, imb.tanggal
+      $sql = "SELECT imb.*
                 FROM im_master_bon imb
                WHERE imb.no_bon = $bppbg
             ORDER BY 1";
@@ -41,7 +40,19 @@ class M_bppbg extends CI_Model{
       return $query->result_array();
     }
 
-    public function getDataMonitoring($subinv,$status){
+    public function getItem($term){
+      $sql = "SELECT   NULL urut, 'SEMUA' segment1, 'SEMUA ITEM' description
+                  FROM DUAL
+              UNION
+              SELECT DISTINCT imb.kode_barang urut, imb.kode_barang, imb.nama_barang
+                         FROM im_master_bon imb
+                        WHERE imb.kode_barang LIKE '%$term%' OR imb.nama_barang LIKE '%$term%'
+                     ORDER BY 1 NULLS FIRST";
+      $query = $this->oracle->query($sql);
+      return $query->result_array();
+    }
+
+    public function getDataMonitoring($subinv,$item,$status){
       if ($subinv == 'SEMUA SUBINVENTORY') {
         $line1 = "imb.tujuan_gudang LIKE '%%'";
       }
@@ -49,11 +60,18 @@ class M_bppbg extends CI_Model{
         $line1 = "imb.tujuan_gudang = '$subinv'";
       }
 
-      if ($status == 'SEMUA') {
+      if ($item == 'SEMUA' || $item == '') {
         $line2 = "";
       }
       else {
-        $line2 = "AND imb.flag = '$status'";
+        $line2 = "AND imb.kode_barang = '$item'";
+      }
+
+      if ($status == 'SEMUA') {
+        $line3 = "";
+      }
+      else {
+        $line3 = "AND imb.flag = '$status'";
       }
 
       $sql = "SELECT DISTINCT imb.no_bon, imb.seksi_bon, imb.tujuan_gudang, imb.flag,
@@ -61,6 +79,7 @@ class M_bppbg extends CI_Model{
                          FROM im_master_bon imb
                         WHERE $line1
                               $line2
+                              $line3
                      ORDER BY 1";
       $query = $this->oracle->query($sql);
       return $query->result_array();

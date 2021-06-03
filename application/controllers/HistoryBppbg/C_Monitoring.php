@@ -70,11 +70,19 @@ class C_Monitoring extends CI_Controller {
         echo json_encode($data);
     }
 
+    public function getItem(){
+        $term = $this->input->get('term',TRUE);
+        $term = strtoupper($term);
+        $data = $this->M_bppbg->getItem($term);
+        echo json_encode($data);
+    }
+
     public function getDataMonitoring(){
         $subinv = $this->input->post('subinv');
-        $status = $this->input->post('status');
+        $item = $this->input->post('item');
+        $status = $this->input->post('status');        
 
-        $data['mon'] = $this->M_bppbg->getDataMonitoring($subinv,$status);
+        $data['mon'] = $this->M_bppbg->getDataMonitoring($subinv,$item,$status);
 
         $this->load->view('HistoryBppbg/V_TblMonitoring', $data);
     }

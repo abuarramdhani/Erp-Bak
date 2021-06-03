@@ -23,6 +23,31 @@ $(document).ready(function(){
       }
     }
   });
+
+  $(".item").select2({
+    placeholder: 'Pilih Item',
+    minimumInputLength: 3,
+    allowClear: true,
+    ajax: {
+      url: baseurl + "HistoryBppbg/Monitoring/getItem",
+      dataType: 'json',
+      type: "GET",
+      data: function (params) {
+        var queryParameters = {
+            term: params.term,
+        }
+        return queryParameters;
+      },
+      processResults: function (data) {
+      // console.log(data);
+        return {
+            results: $.map(data, function (obj) {
+                return {id:obj.SEGMENT1, text: '[ ' + obj.SEGMENT1 + ' ] ' + obj.DESCRIPTION};
+            })                      
+        };
+      }
+    }
+  });
 });
 
 $('#bppbg').on("keypress",function(e){
@@ -54,8 +79,9 @@ function cekBppbgHB(th) {
 
 function cari(){
   var subinv = $('#slcSubinv option:selected').val();
+  var item = $('#slcItem option:selected').val();
   var status = $('#slcStatus option:selected').val();
-  console.log(status + ' ' + subinv);
+  console.log(status + ' ' + item + ' ' + subinv);
 
   if (subinv == '') {
     Swal.fire(
@@ -69,6 +95,7 @@ function cari(){
       url: baseurl + 'HistoryBppbg/Monitoring/getDataMonitoring',
       data: {
         subinv : subinv,
+        item : item,
         status : status
       },
       type: 'POST',

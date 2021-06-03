@@ -17,11 +17,17 @@
                                     <div class="col-md-12">
                                         <div class="col-md-2">
                                             <p style="margin: 5px 0 20px 0;"><label>Subinventory</label></p>
+                                            <p style="margin: 5px 0 20px 0;"><label>Item</label></p>
                                             <p style="margin: 5px 0 5px 0;"><label>Status</label></p>
                                         </div>
                                         <div class="col-md-4">
                                             <p>
                                                 <select class="form-control select2 subinv" name="slcSubinv" id="slcSubinv" style="width: 200px;" required>
+                                                  <option></option>
+                                                </select>
+                                            </p>
+                                            <p>
+                                                <select class="form-control select2 item" name="slcItem" id="slcItem" style="width: 700px;" required>
                                                   <option></option>
                                                 </select>
                                             </p>
