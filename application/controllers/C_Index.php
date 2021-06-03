@@ -163,6 +163,7 @@ class C_Index extends CI_Controller
 
 		//$this->load->model('M_index');
 		$username = $this->input->post('username');
+		$username = strtoupper($username);
 		$password = $this->input->post('password');
 
 		$password_md5 = md5($password);
