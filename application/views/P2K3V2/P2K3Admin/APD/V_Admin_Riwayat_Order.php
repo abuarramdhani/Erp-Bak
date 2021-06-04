@@ -87,8 +87,8 @@
                                                 $kdpkj = explode(',', $key['kd_pekerjaan']);
                                                 $arrn = array_combine($kdpkj, $jml);
                                                 foreach ($daftar_pekerjaan as $dp) {
-                                                    if (in_array($dp, $kdpkj)) {
-                                                        $r = $arrn[$dp];
+                                                    if (in_array($dp['kdpekerjaan'], $kdpkj)) {
+                                                        $r = $arrn[$dp['kdpekerjaan']];
                                                     }else{
                                                         $r = 0;
                                                     }
