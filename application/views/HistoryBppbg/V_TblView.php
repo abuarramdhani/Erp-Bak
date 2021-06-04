@@ -5,6 +5,7 @@
                 <th style="vertical-align: middle; width: 5%;">No</th>
                 <th style="vertical-align: middle;">Kode Barang</th>
                 <th style="vertical-align: middle;">Deskripsi</th>
+                <th style="vertical-align: middle; width: 8%;">Permintaan</th>
                 <th style="vertical-align: middle; width: 5%;">Account</th>
                 <th style="vertical-align: middle; width: 5%;">Cost Center</th>
                 <th style="vertical-align: middle;">Seksi Pengebon</th>
@@ -60,6 +61,9 @@
                 </td>
                 <td style="text-align:left;">
                     <?= $i['NAMA_BARANG'] ?>
+                </td>
+                <td style="width: 8%;">
+                    <?= $i['PERMINTAAN'].' '.$i['SATUAN'] ?>
                 </td>
                 <td style="width: 5%;">
                     <?= $i['ACCOUNT'] ?>
