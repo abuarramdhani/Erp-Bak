@@ -29,8 +29,7 @@ class C_PresensiHarian extends CI_Controller
 
 	public function checkSession()
 	{
-		if ($this->session->is_logged) {
-		} else {
+		if ($this->session->is_logged) { } else {
 			redirect('');
 		}
 	}
@@ -52,6 +51,11 @@ class C_PresensiHarian extends CI_Controller
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 		$data['seksi'] = $this->M_presensiharian->getSeksiByKodesie($kodesie);
 		$user = $this->session->user;
+		$akses = $this->M_presensiharian->getAksesByUser($user);
+		$kodeSieAkses = $this->M_presensiharian->getSeksiByAkses($user);
+		var_dump($kodeSieAkses);
+		die;
+		$noindAkses = $this->M_presensiharian->getNoindAkses();
 		if (substr($user, 0, 1) != 'B' && substr($user, 0, 1) != 'D' && substr($user, 0, 1) != 'J') {
 			unset($data['UserMenu'][2]);
 			unset($data['UserMenu'][3]);
@@ -59,7 +63,7 @@ class C_PresensiHarian extends CI_Controller
 
 		$tanggal = $this->input->post('txtPeriodePresensiHarian');
 		if ($tanggal) {
-			$data['pekerja'] = $this->M_presensiharian->getPekerjaByKodesie($kodesie);
+			$data['pekerja'] = $this->M_presensiharian->getPekerjaByKodesie($kodesie, $user, $akses, $noindAkses);
 			$pekerja = $data['pekerja'];
 			$jmlpekerja = count($pekerja);
 			$noind = "";
@@ -284,13 +288,15 @@ class C_PresensiHarian extends CI_Controller
 		$i = $i + 1;
 		$this->excel->getActiveSheet()->setCellValueByColumnAndRow(0, $i, 'Noind');
 		$this->excel->getActiveSheet()->setCellValueByColumnAndRow(1, $i, 'Nama');
-		$this->excel->getActiveSheet()->setCellValueByColumnAndRow(2, $i, 'Tanggal');
-		$this->excel->getActiveSheet()->setCellValueByColumnAndRow(3, $i, 'Shift');
-		$this->excel->getActiveSheet()->setCellValueByColumnAndRow(4, $i, 'Point');
-		$this->excel->getActiveSheet()->setCellValueByColumnAndRow(5, $i, 'Waktu');
+		$this->excel->getActiveSheet()->setCellValueByColumnAndRow(2, $i, 'Seksi');
+		$this->excel->getActiveSheet()->setCellValueByColumnAndRow(3, $i, 'Tanggal');
+		$this->excel->getActiveSheet()->setCellValueByColumnAndRow(4, $i, 'Shift');
+		$this->excel->getActiveSheet()->setCellValueByColumnAndRow(5, $i, 'Point');
+		$this->excel->getActiveSheet()->setCellValueByColumnAndRow(6, $i, 'Waktu');
 		foreach ($pekerja as $val) {
 			$this->excel->getActiveSheet()->setCellValueByColumnAndRow(0, $i + 1, $val['noind']);
 			$this->excel->getActiveSheet()->setCellValueByColumnAndRow(1, $i + 1, $val['nama']);
+			$this->excel->getActiveSheet()->setCellValueByColumnAndRow(2, $i + 1, $val['seksi']);
 			$shift = $this->M_presensiharian->getShiftByNoind($val['noind'], $tanggal);
 			foreach ($shift as $key) {
 				$presensi = $this->M_presensiharian->getPresensiByNoind($val['noind'], $key['tanggal']);
@@ -302,15 +308,15 @@ class C_PresensiHarian extends CI_Controller
 						$presensi = '';
 					}
 				}
-				$this->excel->getActiveSheet()->setCellValueByColumnAndRow(2, $i + 1, $key['tgl']);
-				$this->excel->getActiveSheet()->setCellValueByColumnAndRow(3, $i + 1, $key['shift']);
+				$this->excel->getActiveSheet()->setCellValueByColumnAndRow(3, $i + 1, $key['tgl']);
+				$this->excel->getActiveSheet()->setCellValueByColumnAndRow(4, $i + 1, $key['shift']);
 				if (!empty($tim)) {
 					foreach ($tim as $valTim) {
-						$this->excel->getActiveSheet()->setCellValueByColumnAndRow(4, $i + 1, $valTim['point'] == 0 ? '' : $valTim['point']);
+						$this->excel->getActiveSheet()->setCellValueByColumnAndRow(5, $i + 1, $valTim['point'] == 0 ? '' : $valTim['point']);
 					}
 				}
 				if (!empty($presensi)) {
-					$j = 5;
+					$j = 6;
 					foreach ($presensi as $waktu) {
 						$this->excel->getActiveSheet()->setCellValueByColumnAndRow($j, $i + 1, $waktu['waktu']);
 						$j++;
@@ -328,7 +334,7 @@ class C_PresensiHarian extends CI_Controller
 						$j++;
 					}
 				} else {
-					$j = 7;
+					$j = 8;
 					foreach ($ket as $keterangan) {
 						$this->excel->getActiveSheet()->setCellValueByColumnAndRow($j, $i + 1, $keterangan['keterangan']);
 						$j++;

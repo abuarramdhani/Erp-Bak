@@ -30,9 +30,8 @@ class M_presensiharian extends Ci_Model
 	/**
 	 * 
 	 */
-	public function getAksesByUser()
+	public function getAksesByUser($user)
 	{
-		$user = $this->session->user;
 		$sql = "select left(h.kodesie,7) as kodesie from \"Presensi\".t_hak_akses_presensi h where h.noind = '$user'";
 		$result = $this->personalia->query($sql)->result_array();
 
@@ -62,12 +61,8 @@ class M_presensiharian extends Ci_Model
 		return $noind;
 	}
 
-	public function getPekerjaByKodesie($kd)
+	public function getPekerjaByKodesie($kd, $noind, $akses, $noind_akses)
 	{
-		$akses = $this->getAksesByUser();
-		$noind_akses = $this->getNoindAkses();
-		$noind = $this->session->user;
-
 		if (in_array($noind, $noind_akses)) {
 			$sql = "select a.noind,a.nama, b.seksi
 			from hrd_khs.tpribadi a
@@ -332,5 +327,22 @@ class M_presensiharian extends Ci_Model
 				order by shift.noind,shift.tanggal";
 		$result = $this->personalia->query($sql);
 		return $result->result_array();
+	}
+
+	public function getSeksiByAkses($user)
+	{
+		$sql = "select 
+								left(h.kodesie,7) as kodesie,
+								ts.seksi 
+						from 
+								\"Presensi\".t_hak_akses_presensi h 
+						left join
+								hrd_khs.tseksi ts using(kodesie)
+						where 
+								h.noind = '$user' and
+								substr(ts.kodesie,1,7) = h.kodesie";
+		$result = $this->personalia->query($sql)->result_array();
+
+		return $result;
 	}
 }
