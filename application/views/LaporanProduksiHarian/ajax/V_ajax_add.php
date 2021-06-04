@@ -1,3 +1,5 @@
+<button type="button" class="btn btn-primary" name="button" onclick="lph_add_row_hasil_produksi()" style="position:fixed;bottom:9%;right: 3.8%;border-radius: 50%;z-index: 9999;height: 37px;"> <b class="fa fa-plus-square"></b> </button>
+
 <div class="row">
   <div class="col-md-7">
     <div class="box box-primary box-solid">
@@ -164,7 +166,7 @@
         <div class="row">
         <div class="col-md-12">
           <div class="mt-4" style="overflow-y:scroll;">
-            <table class="table table-bordered" style="width:2400px;text-align:center">
+            <table class="table table-bordered" style="width:2430px;text-align:center">
               <thead class="bg-primary">
                 <tr>
                   <td style="width:30px">No</td>
@@ -186,6 +188,7 @@
                   <td style="width:100px">Scrap Man</td>
                   <td style="width:100px">Scrap Mat</td>
                   <td style="width:100px">Scrap Mach</td>
+                  <td style="width:30px"></td>
                 </tr>
               </thead>
               <tbody>
@@ -215,12 +218,13 @@
                     <td><input type="number" class="form-control lph_aktual" name="aktual[]" value=""></td>
                     <td><input type="text" class="form-control lph_persentase" name="persentase[]" value="" readonly></td>
                     <td><input type="number" class="form-control lph_hasil_baik" name="hasil_baik[]" value=""></td>
+                    <td><input type="text" class="form-control" name="repair_man[]" value=""></td>
                     <td><input type="text" class="form-control" name="" value=""></td>
                     <td><input type="text" class="form-control" name="" value=""></td>
                     <td><input type="text" class="form-control" name="" value=""></td>
                     <td><input type="text" class="form-control" name="" value=""></td>
                     <td><input type="text" class="form-control" name="" value=""></td>
-                    <td><input type="text" class="form-control" name="" value=""></td>
+                    <td><button class="btn btn-sm" onclick="min_elem_hasil_produksi(this)"><i class="fa fa-times"></i></button></td>
                   </tr>
                 <?php endforeach; ?>
 
@@ -269,6 +273,10 @@
   })
 
   function min_elem_pwe(th) {
+    $(th).parent().parent('tr').remove();
+  }
+
+  function min_elem_hasil_produksi(th) {
     $(th).parent().parent('tr').remove();
   }
 

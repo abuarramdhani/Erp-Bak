@@ -170,7 +170,7 @@ class C_Import extends CI_Controller
                 ];
                 $cek_shift_tgl = $this->db->select('tanggal')
                                           ->where('tanggal', $date)
-                                          ->where('shift', strval($sheets[4]['C']))
+                                          ->where('shift', strval($this->input->post('shift')))
                                           ->where('kode_komponen', $v['G'])
                                           ->where('no_induk', $v['D'])
                                           ->where('urut_job', $v['B'])
@@ -181,7 +181,7 @@ class C_Import extends CI_Controller
                   $this->db->insert('lph.lph_rencana_kerja_operator', $data);
                 }else {
                   $this->db->where('tanggal', $date)
-                           ->where('shift', strval($sheets[4]['C']))
+                           ->where('shift', strval($this->input->post('shift')))
                            ->where('kode_komponen', $v['G'])
                            ->where('no_induk', $v['D'])
                            ->where('urut_job', $v['B'])

@@ -1,3 +1,5 @@
+<button type="button" class="btn btn-primary" name="button" onclick="lph_add_row_hasil_produksi()" style="position:fixed;bottom:9%;right: 3.8%;border-radius: 50%;z-index: 9999;height: 37px;"> <b class="fa fa-plus-square"></b> </button>
+
 <div class="row">
   <div class="col-md-7">
     <div class="box box-primary box-solid">
@@ -13,7 +15,7 @@
             </div>
             <div class="form-group">
               <label for="">Shift</label>
-              <select class="select2" name=""  style="width:100%">
+              <select class="lph_shift_dinamis_v2" name=""  style="width:100%">
 
               </select>
             </div>
@@ -317,7 +319,7 @@
         </div> -->
         <div class="col-md-12">
           <div class="mt-4" style="overflow-y:scroll;">
-            <table class="table table-bordered" style="width:2400px;text-align:center">
+            <table class="table table-bordered" style="width:2430px;text-align:center">
               <thead class="bg-primary">
                 <tr>
                   <td style="width:30px">No</td>
@@ -339,6 +341,7 @@
                   <td style="width:100px">Scrap Man</td>
                   <td style="width:100px">Scrap Mat</td>
                   <td style="width:100px">Scrap Mach</td>
+                  <td style="width:30px"></td>
                 </tr>
               </thead>
               <tbody>
@@ -366,6 +369,7 @@
                   <td><input type="text" class="form-control" name="" value=""></td>
                   <td><input type="text" class="form-control" name="" value=""></td>
                   <td><input type="text" class="form-control" name="" value=""></td>
+                  <td><button class="btn btn-sm" onclick="min_elem_hasil_produksi(this)"><i class="fa fa-times"></i></button></td>
                 </tr>
               </tbody>
             </table>
@@ -392,6 +396,10 @@
   </div>
 
 <script type="text/javascript">
+  function lph_add_row_hasil_produksi() {
+
+  }
+
   $('.lph_aktual').on('input', function() {
     let target = $(this).parent().parent('tr').find('.lph_target_harian').val();
     let aktual = $(this).val();
@@ -413,6 +421,10 @@
   })
 
     function min_elem_pwe(th) {
+      $(th).parent().parent('tr').remove();
+    }
+
+    function min_elem_hasil_produksi(th) {
       $(th).parent().parent('tr').remove();
     }
 
@@ -445,7 +457,10 @@
 
     $(function() {
       $('.select2').select2();
-
+      $('.lph_shift_dinamis_v2').select2();
+      setTimeout(function () {
+        $('.lph_tdl_add').trigger('change');
+      }, 50);
       let t = $('.lph_tdl_add').val().split('-');
       let d = new Date(`${t[2]}-${t[1]}-${t[0]}`);
       var weekday = new Array(7);
@@ -528,6 +543,34 @@
       }
       $('.lph_waktu_kerja').text(menit);
       $('.lph_w_standar_efk').text(standar);
+
+      $.ajax({
+        url: baseurl + 'LaporanProduksiHarian/action/getShift',
+        type: 'POST',
+        dataType: 'JSON',
+        data: {
+          tanggal : $(this).val(),
+        },
+        cache:false,
+        beforeSend: function() {
+          toastLPHLoading('Sedang Mengambil Shift...');
+          $('.lph_shift_dinamis_v2').val('').trigger('change');
+        },
+        success: function(result) {
+          // console.log(result);
+          if (result != 0) {
+            toastLPH('success', 'Selesai.');
+            $('.lph_shift_dinamis_v2').html(result);
+          }else {
+            toastLPH('warning', 'koneksi terputus, coba lagi nanti');
+            $('.lph_shift_dinamis_v2').html('');
+          }
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+        swaLPHLarge('error', textStatus)
+         console.error();
+        }
+      })
     })
 
     $('.lphgetEmployee').select2({
