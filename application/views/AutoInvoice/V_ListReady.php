@@ -24,10 +24,9 @@
                             <button class="btn btn-default btn-sm" onclick="DetDo(<?= $red['NO_DO'] ?>)">Detail</button>
                             <!-- <button class="btn btn-primary btn-sm" id="btn-view-AIN">View</button> -->
                             <?php 
-                                if ($red['LINK'] != '-'){
-                                    
+                                if ($red['LINK'] != '-'){  
                             ?>
-                                <a href="http://produksi.quick.com/api-scanner-doc-satpam/assets/img/docsatpam/<?php $red['LINK']?>.jpeg" target="_blank" class="btn btn-primary btn-sm">View</a>
+                                <a href="http://produksi.quick.com/api-scanner-doc-satpam/assets/img/docsatpam/<?= $red['LINK']?>.jpeg" target="_blank" class="btn btn-primary btn-sm">View Dokument Fisik</a>
                             <?php } ?>
                         </td>
                     </tr>
