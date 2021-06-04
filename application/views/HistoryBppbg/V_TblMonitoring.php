@@ -9,6 +9,7 @@
                 <th style="width: 5%; vertical-align: middle;">No</th>
                 <th style="width: 10%; vertical-align: middle;">No Bon</th>
                 <th style="width: 20%; vertical-align: middle;">Seksi Pengebon</th>
+                <th style="width: 20%; vertical-align: middle;">Seksi Pemakai</th>
                 <th style="width: 10%; vertical-align: middle;">Tanggal Pembuatan Bppbg</th>
                 <th style="width: 10%; vertical-align: middle;">Gudang</th>
                 <th style="width: 5%; vertical-align: middle;">Detail</th>
@@ -33,6 +34,9 @@
                 </td>
                 <td style="width: 20%; text-align: left;">
                     <?= $i['SEKSI_BON'] ?>
+                </td>
+                <td style="width: 20%; text-align: left;">
+                    <?= $i['SEKSI_PEMAKAI'] ?>
                 </td>
                 <td style="width: 10%;">
                     <?= $i['TANGGAL'] ?>
