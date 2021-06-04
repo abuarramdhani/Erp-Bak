@@ -77,6 +77,14 @@ class C_Import extends CI_Controller
       $this->load->view('V_Footer', $data);
     }
 
+    public function AlatBantu()
+    {
+        $ab = $this->input->post('ab',TRUE);
+        $ab = strtoupper($ab);
+        $alatBantu = $this->M_master->selectAlatBantu($ab);
+        echo json_encode($alatBantu);
+    }
+
     function hari_ini($hari){
       switch($hari){
         case 'Sun':

@@ -34,14 +34,6 @@ const swaLPHLarge = (type, a) =>{
   })
 }
 
-$('#lph_form_pwe').on('submit', function(e) {
-  e.preventDefault();
-  $('#lph_pwe_area').append(`<tr>
-                              <td>${$('.lph_pwe_faktor').val()}</td>
-                              <td>${$('.lph_pwe_waktu').val()}</td>
-                            </tr>`);
-})
-
 function lph_empty_form() {
   $.ajax({
     url: baseurl + 'LaporanProduksiHarian/action/getEmptyRKH',
@@ -129,8 +121,7 @@ $(document).ready(function () {
       ],
       firstDay: 1,
     },
-  },
-);
+  });
 
 if ($('.area-lph-2021').html() != undefined) {
  lph_empty_form();

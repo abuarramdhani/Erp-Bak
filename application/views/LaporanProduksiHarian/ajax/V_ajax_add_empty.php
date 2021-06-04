@@ -114,36 +114,36 @@
       </div>
       <div class="box-body">
         <div class="form-group">
-          <div class="row">
-            <div class="col-sm-5">
-              <label for="">Faktor</label>
-              <input type="text" class="form-control"  name="" value="">
-            </div>
-            <div class="col-sm-7">
-              <label for="">Menit</label>
-              <div class="row">
-                <div class="col-sm-7">
-                  <input type="text" class="form-control"  name="" value="">
-                </div>
-                <div class="col-sm-5">
-                  <button type="button" class="btn btn-primary" style="width:100%" name="button"> <i class="fa fa-download"></i> Tambah </button>
+          <form id="lph_form_pwe" action="index.html" method="post">
+            <div class="row">
+              <div class="col-sm-5">
+                <label for="">Faktor</label>
+                <input type="text" class="form-control lph_pwe_faktor" required name="" value="">
+              </div>
+              <div class="col-sm-7">
+                <label for="">Menit</label>
+                <div class="row">
+                  <div class="col-sm-7">
+                    <input type="number" class="form-control lph_pwe_waktu" required name="" value="">
+                  </div>
+                  <div class="col-sm-5">
+                    <button type="submit" class="btn btn-primary" style="width:100%" name="button"> <i class="fa fa-download"></i> Tambah </button>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          </form>
           <div class="mt-4" style="overflow-y:scroll;height:164px;">
-            <table class="table" style="width:100%;">
+            <table class="table table-bordered" style="width:100%;">
               <thead class="bg-primary">
                 <tr>
                   <td style="width:30%">Faktor</td>
                   <td>Menit</td>
+                  <td style="width:10%"> </td>
                 </tr>
               </thead>
-              <tbody>
-                <!-- <tr>
-                  <td>t0012</td>
-                  <td>aldipradana</td>
-                </tr> -->
+              <tbody id="lph_pwe_area">
+
               </tbody>
             </table>
           </div>
@@ -317,7 +317,7 @@
         </div> -->
         <div class="col-md-12">
           <div class="mt-4" style="overflow-y:scroll;">
-            <table class="table table-bordered" style="width:2300px;text-align:center">
+            <table class="table table-bordered" style="width:2400px;text-align:center">
               <thead class="bg-primary">
                 <tr>
                   <td style="width:30px">No</td>
@@ -325,9 +325,9 @@
                   <td style="width:270px">Nama Part</td>
                   <td style="width:200px">Alat Bantu</td>
                   <td style="width:130px">Kode Mesin</td>
+                  <td style="width:100px">Wkt. Mesin</td>
                   <td style="width:200px">Kode Proses</td>
                   <td style="width:200px">Nama Proses</td>
-                  <td style="width:100px">Target PE</td>
                   <td style="width:100px">Target <span class="lph_jenis_target"></span></td>
                   <td style="width:100px">T.100%</td>
                   <td style="width:100px">Aktual</td>
@@ -347,25 +347,25 @@
                   <td><input type="text" class="form-control"  name="kodepart[]" value=""></td>
                   <td><input type="text" class="form-control"  name="namapart[]" value=""></td>
                   <td>
-                    <select class="select2" name="alatbantu[]" style="width:100%"></select>
+                    <select class="LphAlatBantu" name="alatbantu[]" style="width:200px"></select>
                   </td>
                   <td><input type="text" class="form-control"  name="kodemesin[]" value=""></td>
+                  <td><input type="text" class="form-control"  name="waktumesin[]" value=""></td>
                   <td>
                     <select class="select2" name="kodeproses[]" style="width:100%"></select>
                   </td>
                   <td><input type="text" class="form-control"  name="namaproses[]" value=""></td>
-                  <td><input type="text" class="form-control"  name="targetpe[]" value=""></td>
-                  <td><input type="text" class="form-control"  name="" value=""></td>
-                  <td><input type="text" class="form-control"  name="" value=""></td>
-                  <td><input type="text" class="form-control"  name="" value=""></td>
-                  <td><input type="text" class="form-control"  name="" value=""></td>
-                  <td><input type="text" class="form-control"  name="" value=""></td>
-                  <td><input type="text" class="form-control"  name="" value=""></td>
-                  <td><input type="text" class="form-control"  name="" value=""></td>
-                  <td><input type="text" class="form-control"  name="" value=""></td>
-                  <td><input type="text" class="form-control"  name="" value=""></td>
-                  <td><input type="text" class="form-control"  name="" value=""></td>
-                  <td><input type="text" class="form-control"  name="" value=""></td>
+                  <td><input type="text" class="form-control lph_target_harian" name="target_harian[]" readonly value=""></td>
+                  <td><input type="text" class="form-control" name="target_seratus_persen[]" readonly value=""></td>
+                  <td><input type="number" class="form-control lph_aktual" name="aktual[]" value=""></td>
+                  <td><input type="text" class="form-control lph_persentase" name="persentase[]" value="" readonly></td>
+                  <td><input type="number" class="form-control lph_hasil_baik" name="hasil_baik[]" value=""></td>
+                  <td><input type="text" class="form-control" name="" value=""></td>
+                  <td><input type="text" class="form-control" name="" value=""></td>
+                  <td><input type="text" class="form-control" name="" value=""></td>
+                  <td><input type="text" class="form-control" name="" value=""></td>
+                  <td><input type="text" class="form-control" name="" value=""></td>
+                  <td><input type="text" class="form-control" name="" value=""></td>
                 </tr>
               </tbody>
             </table>
@@ -392,50 +392,84 @@
   </div>
 
 <script type="text/javascript">
+  $('.lph_aktual').on('input', function() {
+    let target = $(this).parent().parent('tr').find('.lph_target_harian').val();
+    let aktual = $(this).val();
+    if (aktual != '') {
+      if (target == '') {
+        swaLPHLarge('info',`Target ${$('.lph_jenis_target').text()} tidak boleh kosong`);
+        $(this).parent().parent('tr').find('.lph_persentase').val('');
+        $(this).parent().parent('tr').find('.lph_hasil_baik').val('');
+        $(this).val('');
+      }else {
+        let persentase = ((Number(aktual)/Number(target))*100).toFixed(2)+'%';
+        $(this).parent().parent('tr').find('.lph_persentase').val(persentase);
+        $(this).parent().parent('tr').find('.lph_hasil_baik').val(aktual);
+      }
+    }else {
+      $(this).parent().parent('tr').find('.lph_persentase').val('');
+      $(this).parent().parent('tr').find('.lph_hasil_baik').val('');
+    }
+  })
 
-    function set_set() {
-      return new Promise((resolve, reject) =>{
-        $('.select2').select2();
-        resolve(1)
-      })
+    function min_elem_pwe(th) {
+      $(th).parent().parent('tr').remove();
     }
 
-    function set_waktu_kerja() {
-      return new Promise((resolve, reject) =>{
-        let t = $('.lph_tdl_add').val().split('-');
-        let d = new Date(`${t[2]}-${t[1]}-${t[0]}`);
-        var weekday = new Array(7);
-        weekday[0] = "Sunday";
-        weekday[1] = "Monday";
-        weekday[2] = "Tuesday";
-        weekday[3] = "Wednesday";
-        weekday[4] = "Thursday";
-        weekday[5] = "Friday";
-        weekday[6] = "Saturday";
-        var n = weekday[d.getDay()];
-        let menit, standar
-        if (n == 'Friday' || n == 'Saturday') {
-          menit = 360;
-          standar = 330;
-          $('.lph_jenis_target').text('J-S');
-        }else {
-          menit = 420;
-          standar = 390;
-          $('.lph_jenis_target').text('S-K');
-        }
-        $('.lph_waktu_kerja').text(menit);
-        $('.lph_w_standar_efk').text(standar);
-        resolve(1)
-      })
-    }
+    $('#lph_form_pwe').on('submit', function(e) {
+      e.preventDefault();
+      $('#lph_pwe_area').append(`<tr>
+                                  <td><input type="text" class="form-control" name="faktor_pwe" value="${$('.lph_pwe_faktor').val()}"></td>
+                                  <td><input type="number" class="form-control" name="menit_pwe" value="${$('.lph_pwe_waktu').val()}"></td>
+                                  <td> <button class="btn btn-sm" onclick="min_elem_pwe(this)"><i class="fa fa-times"></i></button></td>
+                                </tr>`);
+    })
 
-    async function run() {
-      let set = await set_set();
-      let set_wk = await set_waktu_kerja();
-    }
+    // function set_set() {
+    //   return new Promise((resolve, reject) =>{
+    //
+    //     resolve(1)
+    //   })
+    // }
+    //
+    // function set_waktu_kerja() {
+    //   return new Promise((resolve, reject) =>{
+    //     resolve(1)
+    //   })
+    // }
+    //
+    // async function run() {
+    //   let set = await set_set();
+    //   let set_wk = await set_waktu_kerja();
+    // }
 
     $(function() {
-      run();
+      $('.select2').select2();
+
+      let t = $('.lph_tdl_add').val().split('-');
+      let d = new Date(`${t[2]}-${t[1]}-${t[0]}`);
+      var weekday = new Array(7);
+      weekday[0] = "Sunday";
+      weekday[1] = "Monday";
+      weekday[2] = "Tuesday";
+      weekday[3] = "Wednesday";
+      weekday[4] = "Thursday";
+      weekday[5] = "Friday";
+      weekday[6] = "Saturday";
+      var n = weekday[d.getDay()];
+      let menit, standar
+      if (n == 'Friday' || n == 'Saturday') {
+        menit = 360;
+        standar = 330;
+        $('.lph_jenis_target').text('J-S');
+      }else {
+        menit = 420;
+        standar = 390;
+        $('.lph_jenis_target').text('S-K');
+      }
+      $('.lph_waktu_kerja').text(menit);
+      $('.lph_w_standar_efk').text(standar);
+
       $(".LphTanggal").daterangepicker({
         singleDatePicker: true,
         timePicker: false,
@@ -443,6 +477,32 @@
         locale: {
           format: "DD-MM-YYYY",
         },
+      });
+      $(".LphAlatBantu").select2({
+        minimumInputLength: 3,
+        maximumSelectionLength: 3,
+        ajax: {
+          url: baseurl + 'LaporanProduksiHarian/action/AlatBantu/',
+          dataType: 'json',
+          type: "POST",
+          data: function(params) {
+            var queryParameters = {
+              ab: params.term,
+              alatBantu: $('#txtAlatBantu').val()
+            }
+            return queryParameters;
+          },
+          processResults: function(alatBantu) {
+            return {
+              results: $.map(alatBantu, function(obj) {
+                return {
+                  id: obj.fs_nm_tool + ' - '+obj.fs_no_tool,
+                  text: obj.fs_nm_tool + ' - '+obj.fs_no_tool
+                }; //njg
+              })
+            };
+          }
+        }
       });
     })
 

@@ -6,6 +6,16 @@ class M_master extends CI_Model
 	{
 		parent::__construct();
 	  $this->oracle = $this->load->database('oracle',TRUE);
+		$this->lantuma = $this->load->database('lantuma', TRUE);
+	}
+
+	//SEARCH ALAT BANTU
+	public function selectAlatBantu($ab){
+		$sql = "SELECT distinct tto.fs_nm_tool, tto.fs_no_tool
+							from ttool tto where (
+								tto.fs_nm_tool like '%$ab%' or tto.fs_no_tool like '%$ab%'
+							)";
+		return $this->lantuma->query($sql)->result_array();
 	}
 
 	public function get_detail_shift($where)
