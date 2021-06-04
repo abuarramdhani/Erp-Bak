@@ -16,10 +16,21 @@ class M_bppbg extends CI_Model{
     }
 
     public function getData($bppbg){
-      $sql = "SELECT imb.*
-                FROM im_master_bon imb
-               WHERE imb.no_bon = $bppbg
-            ORDER BY 1";
+      $sql = "SELECT   imb.*,
+                       NVL ((SELECT    ffvt.description
+                                    || ' - '
+                                    || DECODE (imb.kode_cabang,
+                                               'AA', 'PUSAT',
+                                               'AC', 'TUKSONO',
+                                               NULL
+                                              )
+                               FROM fnd_flex_values_tl ffvt
+                              WHERE imb.pemakai = ffvt.flex_value_meaning),
+                            imb.pemakai
+                           ) seksi_pemakai
+                  FROM im_master_bon imb
+                 WHERE imb.no_bon = $bppbg
+              ORDER BY 1";
       $query = $this->oracle->query($sql);
       return $query->result_array();
     }
@@ -79,7 +90,18 @@ class M_bppbg extends CI_Model{
       $dateB = $date2[1];
 
       $sql = "SELECT DISTINCT imb.no_bon, imb.seksi_bon, imb.tujuan_gudang, imb.flag,
-                              imb.tanggal
+                              imb.tanggal,
+                              NVL ((SELECT    ffvt.description
+                                           || ' - '
+                                           || DECODE (imb.kode_cabang,
+                                                      'AA', 'PUSAT',
+                                                      'AC', 'TUKSONO',
+                                                      NULL
+                                                     )
+                                      FROM fnd_flex_values_tl ffvt
+                                     WHERE imb.pemakai = ffvt.flex_value_meaning),
+                                   imb.pemakai
+                                  ) seksi_pemakai
                          FROM im_master_bon imb
                         WHERE $line1
                               $line2
