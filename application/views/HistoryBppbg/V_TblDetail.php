@@ -11,7 +11,7 @@
                 <th style="vertical-align: middle;">Kode Barang</th>
                 <th style="vertical-align: middle;">Deskripsi</th>
                 <th style="vertical-align: middle;">Seksi Pengebon</th>
-                <th style="vertical-align: middle; width: 8%;">Gudang</th>
+                <th style="vertical-align: middle; width: 8%;">Permintaan</th>
                 <th style="vertical-align: middle; width: 5%;">Tanggal Pembuatan Bppbg</th>
                 <th style="vertical-align: middle; width: 14%;">Keterangan</th>
                 <th style="vertical-align: middle; width: 5%;">Status Transact</th>
@@ -43,7 +43,7 @@
                 <td><?= $i['KODE_BARANG'] ?></td>
                 <td style="text-align:left;"><?= $i['NAMA_BARANG'] ?></td>
                 <td><?= $i['SEKSI_BON'] ?></td>
-                <td style="width: 8%;"><?= $i['TUJUAN_GUDANG'] ?></td>
+                <td style="width: 8%;"><?= $i['PERMINTAAN'] ?></td>
                 <td style="width: 10%;"><?= $i['TANGGAL'] ?></td>
                 <td style="width: 14%;"><?= $i['KETERANGAN'] ?></td>
                 <td style="width: 5%; <?= $style ?>"><?= $icon ?></td>
