@@ -66,7 +66,7 @@ class C_DPBListPR extends CI_Controller
             'catatan'          => 'readonly',
             'estdate'          => ''
         ];
-        if ($this->session->user === 'B0445' || $this->session->user === 'H6968' || $this->session->user === 'K1778' || $this->session->user === 'A2146' || $this->session->user === 'P0616') {
+        if ($this->session->user === 'B0445' || $this->session->user === 'H6843' || $this->session->user === 'H6968' || $this->session->user === 'K1778' || $this->session->user === 'A2146' || $this->session->user === 'P0616') {
             $data['UserAccess'] = [
                 'jenis_kendaraan'  => '',
                 'no_kendaraan'     => 'readonly',
@@ -99,7 +99,7 @@ class C_DPBListPR extends CI_Controller
         //         'vendor_ekspedisi' => '',
         //         'lain_lain'        => ''
         //     ];
-        // } else if ( $this->session->user === 'B0445' || $this->session->user === 'K1778' ) {
+        // } else if ( $this->session->user === 'B0445' || $this->session->user === 'H6843' || $this->session->user === 'K1778' ) {
         //     $data['UserAccess'] = [   
         //         'jenis_kendaraan'  => '',
         //         'no_kendaraan'     => 'readonly',
