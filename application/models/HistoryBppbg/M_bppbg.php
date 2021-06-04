@@ -27,9 +27,29 @@ class M_bppbg extends CI_Model{
                                FROM fnd_flex_values_tl ffvt
                               WHERE imb.pemakai = ffvt.flex_value_meaning),
                             imb.pemakai
-                           ) seksi_pemakai
-                  FROM im_master_bon imb
-                 WHERE imb.no_bon = $bppbg
+                           ) seksi_pemakai,
+                       CASE
+                          WHEN (SELECT mmt.transaction_id
+                                  FROM mtl_material_transactions mmt
+                                 WHERE mmt.inventory_item_id = msib.inventory_item_id
+                                   AND SUBSTR (mmt.transaction_source_name, 7, 9) =
+                                                                        TO_CHAR (imb.no_bon)) IS NOT NULL
+                             THEN 'Y'
+                          ELSE 'N'
+                       END mmt,
+                       CASE
+                          WHEN (SELECT mti.transaction_source_name
+                                  FROM mtl_transactions_interface mti
+                                 WHERE mti.inventory_item_id = msib.inventory_item_id
+                                   AND SUBSTR (mti.transaction_source_name, 7, 9) =
+                                                                        TO_CHAR (imb.no_bon)) IS NULL
+                             THEN 'N'
+                          ELSE 'Y'
+                       END mti
+                  FROM im_master_bon imb, mtl_system_items_b msib
+                 WHERE imb.kode_barang = msib.segment1
+                   AND msib.organization_id = 81
+                   AND imb.no_bon = $bppbg
               ORDER BY 1";
       $query = $this->oracle->query($sql);
       return $query->result_array();
@@ -101,13 +121,25 @@ class M_bppbg extends CI_Model{
                                       FROM fnd_flex_values_tl ffvt
                                      WHERE imb.pemakai = ffvt.flex_value_meaning),
                                    imb.pemakai
-                                  ) seksi_pemakai
-                         FROM im_master_bon imb
-                        WHERE $line1
+                                  ) seksi_pemakai,
+                              CASE
+                                 WHEN (SELECT mmt.transaction_id
+                                         FROM mtl_material_transactions mmt
+                                        WHERE mmt.inventory_item_id =
+                                                                 msib.inventory_item_id
+                                          AND SUBSTR (mmt.transaction_source_name, 7, 9) =
+                                                                        TO_CHAR (imb.no_bon)
+                                          AND ROWNUM = 1) IS NOT NULL
+                                    THEN 'Y'
+                                 ELSE 'N'
+                              END mmt
+                         FROM im_master_bon imb, mtl_system_items_b msib
+                        WHERE imb.kode_barang = msib.segment1 AND msib.organization_id = 81
+                          AND $line1
                               $line2
                               $line3
                           AND TRUNC (TO_DATE (imb.tanggal)) BETWEEN TRUNC (TO_DATE ('$dateA')) AND TRUNC (TO_DATE ('$dateB'))
-                     ORDER BY 1";
+                     ORDER BY TRUNC (TO_DATE (imb.tanggal)), 1";
       $query = $this->oracle->query($sql);
       return $query->result_array();
     }
