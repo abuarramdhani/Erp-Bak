@@ -18,7 +18,7 @@
         <tbody>
             <?php $no=1; foreach ($mon as $i) { ?>
             <?php
-                if ($i['FLAG'] == 'Y') {
+                if ($i['MMT'] == 'Y') {
                     $color = '#95f576';
                 }
                 else {
