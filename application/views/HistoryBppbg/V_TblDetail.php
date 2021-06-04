@@ -43,7 +43,7 @@
                 <td><?= $i['KODE_BARANG'] ?></td>
                 <td style="text-align:left;"><?= $i['NAMA_BARANG'] ?></td>
                 <td><?= $i['SEKSI_BON'] ?></td>
-                <td style="width: 8%;"><?= $i['PERMINTAAN'] ?></td>
+                <td style="width: 8%;"><?= $i['PERMINTAAN'].'  '.$i['SATUAN'] ?></td>
                 <td style="width: 10%;"><?= $i['TANGGAL'] ?></td>
                 <td style="width: 14%;"><?= $i['KETERANGAN'] ?></td>
                 <td style="width: 5%; <?= $style ?>"><?= $icon ?></td>
