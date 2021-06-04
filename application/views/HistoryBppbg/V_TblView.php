@@ -12,7 +12,9 @@
                 <th style="vertical-align: middle; width: 8%;">Gudang</th>
                 <th style="vertical-align: middle; width: 5%;">Tanggal Pembuatan Bppbg</th>
                 <th style="vertical-align: middle; width: 14%;">Keterangan</th>
-                <th style="vertical-align: middle; width: 5%;">Status Transact</th>
+                <th style="vertical-align: middle; width: 5%;">Transact Android</th>
+                <th style="vertical-align: middle; width: 5%;">Material Transaction</th>
+                <th style="vertical-align: middle; width: 5%;">MTI</th>
             </tr>
         </thead>
         <tbody>
@@ -25,6 +27,28 @@
                 else {
                     $style = 'color: red;';
                     $icon = '<i class="fa fa-close"></i>';
+                }
+
+                if ($i['MMT'] == 'Y') {
+                    $style2 = 'color: green;';
+                    $icon2 = '<i class="fa fa-check"></i>';
+                    // $color = '#95f576';
+                }
+                else {
+                    $style2 = 'color: red;';
+                    $icon2 = '<i class="fa fa-close"></i>';
+                    // $color = '#f06f4f';
+                }
+
+                if ($i['MTI'] == 'Y') {
+                    $style3 = 'color: green;';
+                    $icon3 = '<i class="fa fa-check"></i>';
+                    // $color = '#95f576';
+                }
+                else {
+                    $style3 = 'color: red;';
+                    $icon3 = '<i class="fa fa-close"></i>';
+                    // $color = '#f06f4f';
                 }
             ?>
             <tr>
@@ -60,6 +84,12 @@
                 </td>
                 <td style="width: 5%; <?= $style ?>">
                     <?= $icon ?>
+                </td>
+                <td style="width: 5%; <?= $style2 ?>">
+                    <?= $icon2 ?>
+                </td>
+                <td style="width: 5%; <?= $style3 ?>">
+                    <?= $icon3 ?>
                 </td>
             </tr>
             <?php $no++;} ?>

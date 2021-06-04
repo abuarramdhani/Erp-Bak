@@ -65,7 +65,7 @@
 
 <!-- MODAL -->
 <div class="modal fade bd-example-modal-xl" id="detailBon" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document" style="width: 80%;">
+  <div class="modal-dialog" role="document" style="width: 90%;">
     <div class="modal-content" style="border-radius: 5px !important; background-color: transparent !important; box-shadow: none;">
       <div class="panel-body">
         <div class="row">
