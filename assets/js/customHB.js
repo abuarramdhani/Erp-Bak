@@ -25,7 +25,7 @@ $(document).ready(function(){
     }
   });
 
-  $(".item").select2({
+  $(".item_his_bppbg").select2({
     placeholder: 'Pilih Item',
     minimumInputLength: 3,
     allowClear: true,
