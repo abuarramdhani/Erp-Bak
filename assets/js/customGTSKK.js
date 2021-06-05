@@ -269,7 +269,7 @@ $(document).ready(function() {
   if ($('#untuk_keperluan_gtskk').val() != undefined) {
     $('input[type=checkbox]').iCheck('destroy');
   }
-  $('input[name="perhitunganTakt"]').on('ifChanged', function() {
+  $('input[name="perhitunganTakt"]').on('change', function() {
       if ($('input[name=perhitunganTakt]:checked').val() == "1") {
         $('.tskk_delik_cek_pakai').show()
         $('input[name=taktTime]').show()
@@ -388,7 +388,7 @@ function addRowObservation() {
   //   radioClass: 'iradio_flat-blue'
   // });
 
-  $('input[name="terdaftar"]').on('ifChanged', function() {
+  $('input[name="terdaftar"]').on('change', function() {
     if ($('input[name=terdaftar]:checked').val() == "TidakTerdaftar") {
       console.log("tdk");
       $('.terdaftar').css("display", "none");
@@ -400,7 +400,7 @@ function addRowObservation() {
     }
   });
 
-  $('input[name="equipmenTerdaftarMesin"]').on('ifChanged', function() {
+  $('input[name="equipmenTerdaftarMesin"]').on('change', function() {
     if ($('input[name=equipmenTerdaftarMesin]:checked').val() == "TidakTerdaftar") {
       console.log("tdk");
       $('.equipmenTerdaftarMesin').css("display", "none");
@@ -412,7 +412,7 @@ function addRowObservation() {
     }
   });
 
-  $('input[name="equipmenTerdaftar"]').on('ifChanged', function() {
+  $('input[name="equipmenTerdaftar"]').on('change', function() {
     if ($('input[name=equipmenTerdaftar]:checked').val() == "TidakTerdaftar") {
       console.log("tdk");
       $('.equipmenTerdaftar').css("display", "none");
@@ -661,7 +661,7 @@ function addRowObservationEdit() {
   //   radioClass: 'iradio_flat-blue'
   // });
 
-  $('input[name="terdaftar"]').on('ifChanged', function() {
+  $('input[name="terdaftar"]').on('change', function() {
     if ($('input[name=terdaftar]:checked').val() == "TidakTerdaftar") {
       console.log("tdk");
       $('.terdaftar').css("display", "none");
@@ -673,7 +673,7 @@ function addRowObservationEdit() {
     }
   });
 
-  $('input[name="equipmenTerdaftarMesin"]').on('ifChanged', function() {
+  $('input[name="equipmenTerdaftarMesin"]').on('change', function() {
     if ($('input[name=equipmenTerdaftarMesin]:checked').val() == "TidakTerdaftar") {
       console.log("tdk");
       $('.equipmenTerdaftarMesin').css("display", "none");
@@ -685,7 +685,7 @@ function addRowObservationEdit() {
     }
   });
 
-  $('input[name="equipmenTerdaftar"]').on('ifChanged', function() {
+  $('input[name="equipmenTerdaftar"]').on('change', function() {
     if ($('input[name=equipmenTerdaftar]:checked').val() == "TidakTerdaftar") {
       console.log("tdk");
       $('.equipmenTerdaftar').css("display", "none");
@@ -697,7 +697,7 @@ function addRowObservationEdit() {
     }
   });
 
-  $('input[name="perhitunganTakt"]').on('ifChanged', function() {
+  $('input[name="perhitunganTakt"]').on('change', function() {
       if ($('input[name=perhitunganTakt]:checked').val() == "1") {
         $('.tskk_delik_cek_pakai').show()
         $('input[name=taktTime]').show()
@@ -1384,7 +1384,7 @@ const onClickNasgor = (th) => {
 
 //DISPLAY AND UNDISPLAY DIV IN PART SECTION//
 $(document).ready(function() {
-  $('input[name="terdaftar"]').on('ifChanged', function() {
+  $('input[name="terdaftar"]').on('change', function() {
     if ($('input[name=terdaftar]:checked').val() == "TidakTerdaftar") {
       console.log("tdk");
       $('.terdaftar').css("display", "none");
@@ -1402,7 +1402,7 @@ $(document).ready(function() {
 
 //DISPLAY AND UNDISPLAY DIV IN EQUIPMENT SECTION//
 $(document).ready(function() {
-  $('input[name="equipmenTerdaftar"]').on('ifChanged', function() {
+  $('input[name="equipmenTerdaftar"]').on('change', function() {
     if ($('input[name=equipmenTerdaftar]:checked').val() == "TidakTerdaftar") {
       console.log("tdk");
       $('.equipmenTerdaftar').css("display", "none");
@@ -1414,7 +1414,7 @@ $(document).ready(function() {
     }
   });
 
-  $('input[name="equipmenTerdaftarMesin"]').on('ifChanged', function() {
+  $('input[name="equipmenTerdaftarMesin"]').on('change', function() {
     if ($('input[name=equipmenTerdaftarMesin]:checked').val() == "TidakTerdaftar") {
       console.log("tdk");
       $('.equipmenTerdaftarMesin').css("display", "none");
@@ -2616,7 +2616,7 @@ function attachRowObservation_new(th) {
     })
   }, 50);
 
-  $('input[name="terdaftar"]').on('ifChanged', function() {
+  $('input[name="terdaftar"]').on('change', function() {
     if ($('input[name=terdaftar]:checked').val() == "TidakTerdaftar") {
       console.log("tdk");
       $('.terdaftar').css("display", "none");
@@ -2628,7 +2628,7 @@ function attachRowObservation_new(th) {
     }
   });
 
-  $('input[name="equipmenTerdaftarMesin"]').on('ifChanged', function() {
+  $('input[name="equipmenTerdaftarMesin"]').on('change', function() {
     if ($('input[name=equipmenTerdaftarMesin]:checked').val() == "TidakTerdaftar") {
       console.log("tdk");
       $('.equipmenTerdaftarMesin').css("display", "none");
@@ -2640,7 +2640,7 @@ function attachRowObservation_new(th) {
     }
   });
 
-  $('input[name="equipmenTerdaftar"]').on('ifChanged', function() {
+  $('input[name="equipmenTerdaftar"]').on('change', function() {
     if ($('input[name=equipmenTerdaftar]:checked').val() == "TidakTerdaftar") {
       console.log("tdk");
       $('.equipmenTerdaftar').css("display", "none");
@@ -2871,7 +2871,7 @@ function attachRowObservation(th) {
   }, 50);
 
 
-  $('input[name="terdaftar"]').on('ifChanged', function() {
+  $('input[name="terdaftar"]').on('change', function() {
     if ($('input[name=terdaftar]:checked').val() == "TidakTerdaftar") {
       console.log("tdk");
       $('.terdaftar').css("display", "none");
@@ -2883,7 +2883,7 @@ function attachRowObservation(th) {
     }
   });
 
-  $('input[name="equipmenTerdaftarMesin"]').on('ifChanged', function() {
+  $('input[name="equipmenTerdaftarMesin"]').on('change', function() {
     if ($('input[name=equipmenTerdaftarMesin]:checked').val() == "TidakTerdaftar") {
       console.log("tdk");
       $('.equipmenTerdaftarMesin').css("display", "none");
@@ -2895,7 +2895,7 @@ function attachRowObservation(th) {
     }
   });
 
-  $('input[name="equipmenTerdaftar"]').on('ifChanged', function() {
+  $('input[name="equipmenTerdaftar"]').on('change', function() {
     if ($('input[name=equipmenTerdaftar]:checked').val() == "TidakTerdaftar") {
       console.log("tdk");
       $('.equipmenTerdaftar').css("display", "none");
@@ -2907,7 +2907,7 @@ function attachRowObservation(th) {
     }
   });
 
-  $('input[name="perhitunganTakt"]').on('ifChanged', function() {
+  $('input[name="perhitunganTakt"]').on('change', function() {
       if ($('input[name=perhitunganTakt]:checked').val() == "1") {
         $('.tskk_delik_cek_pakai').show()
         $('input[name=taktTime]').show()
