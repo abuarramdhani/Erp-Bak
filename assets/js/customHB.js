@@ -1,4 +1,5 @@
 $(document).ready(function(){
+  if ($('#app_his_bppbg_2021') != undefined) {
   $(".subinv").select2({
     placeholder: 'Pilih Subinventory',
     // minimumInputLength: 2,
@@ -18,7 +19,7 @@ $(document).ready(function(){
         return {
             results: $.map(data, function (obj) {
                 return {id:obj.SUBINV, text:obj.SUBINV};
-            })                      
+            })
         };
       }
     }
@@ -43,18 +44,19 @@ $(document).ready(function(){
         return {
             results: $.map(data, function (obj) {
                 return {id:obj.SEGMENT1, text: '[ ' + obj.SEGMENT1 + ' ] ' + obj.DESCRIPTION};
-            })                      
+            })
         };
       }
     }
   });
+  }
 });
 
 $('#bppbg').on("keypress",function(e){
     if (e.keyCode == 13) {
         return false;
     }
-}); 
+});
 
 function cekBppbgHB(th) {
   var bppbg = $('#bppbg').val();
@@ -113,7 +115,7 @@ function cari(){
       error: function(XMLHttpRequest, textStatus, errorThrown) {
         console.error();
       }
-    })    
+    })
   }
 }
 
