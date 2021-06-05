@@ -23,7 +23,7 @@
 							<div class="box-body">
 								<div class="row">
 									<div class="col-lg-12">
-										<form class="form-horizontal" id="form_presensiH" target="_blank" method="post">
+										<form class="form-horizontal" id="form_presensiH" method="post">
 											<div class="form-group">
 												<label class="control-label col-lg-2">Kodesie</label>
 												<div class="col-lg-8">
@@ -33,9 +33,27 @@
 											<div class="form-group">
 												<label class="control-label col-lg-2">Seksi</label>
 												<div class="col-lg-8">
-													<select multiple style="width:100%;" class="form-control select2" name="txtKodesie" id="seksiPresensi">
-														<option value="<?= $seksi[0]['kodesie']; ?>" selected><?= $seksi[0]['seksi']; ?></option>
-													</select>
+													<?php if (in_array($this->session->user, $noind_akses)) : ?>
+														<select multiple style="width:100%;" class="form-control select2" name="txtKodesie[]" id="seksiPresensi">
+															<?php if (isset($_POST['txtKodesie'])) : ?>
+																<?php foreach ($_POST['txtKodesie'] as $selectedKod) : ?>
+																	<option value="<?= array_keys($kodesieAkses, $kodesieAkses[$selectedKod])[0] ?>" selected><?= $kodesieAkses[$selectedKod] ?></option>
+																<?php endforeach; ?>
+															<?php endif; ?>
+															<?php foreach ($kodesieAkses as $kodAksesk => $kodAkses) : ?>
+																<?php if (isset($_POST['txtKodesie'])) : ?>
+																	<?php if (in_array($kodAksesk, $_POST['txtKodesie'])) continue; ?>
+																	<option value="<?= $kodAksesk ?>"><?= $kodAkses ?></option>
+																<?php else : ?>
+																	<option value="<?= $kodAksesk ?>" selected><?= $kodAkses ?></option>
+																<?php endif; ?>
+															<?php endforeach; ?>
+														</select>
+													<?php else : ?>
+														<select style="width:100%;" class="form-control" name="txtKodesie[]" disabled>
+															<option value="<?= $seksi['0']['kodesie'] ?>"><?= $seksi[0]['seksi']; ?></option>
+														</select>
+													<?php endif ?>
 												</div>
 											</div>
 											<div class="form-group">

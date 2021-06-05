@@ -64,56 +64,56 @@ class M_presensiharian extends Ci_Model
 	public function getPekerjaByKodesie($kd, $noind, $akses, $noind_akses)
 	{
 		if (in_array($noind, $noind_akses)) {
-			$sql = "select a.noind,a.nama, b.seksi
+			$sql = "select a.noind,a.nama, b.seksi,left(b.kodesie,7) as kodesie
 			from hrd_khs.tpribadi a
 			left join hrd_khs.tseksi b on a.kodesie=b.kodesie
 				where left(a.kodesie,7) in (left('$kd', 7), $akses)
 				and a.keluar = false
 			order by a.kodesie,a.noind;";
 		} elseif ($noind == 'B0380') { // ada di ticket
-			$sql = "select a.noind,a.nama, b.seksi
+			$sql = "select a.noind,a.nama, b.seksi,left(b.kodesie,7) as kodesie
 				from hrd_khs.tpribadi a
 				left join hrd_khs.tseksi b on a.kodesie=b.kodesie
 				where (left(a.kodesie,7) = left('$kd',7) or a.noind in ('J1171','G1041','L8001'))
 				and a.keluar = false
 				order by a.kodesie,a.noind;";
 		} elseif ($noind == 'B0370') { //ada di ticket
-			$sql = "select a.noind,a.nama, b.seksi
+			$sql = "select a.noind,a.nama, b.seksi,left(b.kodesie,7) as kodesie
 				from hrd_khs.tpribadi a
 				left join hrd_khs.tseksi b on a.kodesie=b.kodesie
 				where (left(a.kodesie,7) = left('$kd',7) or a.noind in ('D1535','P0426'))
 				and a.keluar = false
 				order by a.kodesie,a.noind;";
 		} elseif ($noind == 'H7726') { //Order #972784 (PENAMBAHAN AKSES BUKA PRESENSI DI PROGRAM ERP)
-			$sql = "select a.noind,a.nama, b.seksi
+			$sql = "select a.noind,a.nama, b.seksi,left(b.kodesie,7) as kodesie
 				from hrd_khs.tpribadi a
 				left join hrd_khs.tseksi b on a.kodesie=b.kodesie
 		  		where left(a.kodesie,5) = left('$kd',5)
 		  		and a.keluar = false
 				order by a.kodesie,a.noind;";
 		} elseif ($noind == 'J1378') { // Order #112817 (Pembuatan Login ERP)
-			$sql = "select a.noind,a.nama, b.seksi
+			$sql = "select a.noind,a.nama, b.seksi,left(b.kodesie,7) as kodesie
 				from hrd_khs.tpribadi a
 				left join hrd_khs.tseksi b on a.kodesie=b.kodesie
 		  		where left(a.kodesie,5) in ('10101','10102')
 		  		and a.keluar = false
 				order by a.kodesie,a.noind;";
 		} elseif ($noind == 'J1338') { // Order #456799 (Pembuatan Login ERP)
-			$sql = "select a.noind,a.nama, b.seksi
+			$sql = "select a.noind,a.nama, b.seksi,left(b.kodesie,7) as kodesie
 				from hrd_khs.tpribadi a
 				left join hrd_khs.tseksi b on a.kodesie=b.kodesie
 		  		where left(a.kodesie,3) in ('302','324','325')
 		  		and a.keluar = false
 				order by a.kodesie,a.noind;";
 		} elseif ($noind == 'B0901') { // Order #524240 (Pembukaan hak akses)
-			$sql = "select a.noind,a.nama, b.seksi
+			$sql = "select a.noind,a.nama, b.seksi,left(b.kodesie,7) as kodesie
 				from hrd_khs.tpribadi a
 				left join hrd_khs.tseksi b on a.kodesie=b.kodesie
 		  		where left(a.kodesie,4) = '3070'
 		  		and a.keluar = false
 				order by a.kodesie,a.noind;";
 		} elseif ($noind == 'B0267') { // Nugroho Budi Utomo | #854719 akses seksi toolware house-tks(3240101) dan seksi assembling gear transmission-tks(3250201)
-			$sql = "select a.noind,a.nama, b.seksi
+			$sql = "select a.noind,a.nama, b.seksi,left(b.kodesie,7) as kodesie
 			 from hrd_khs.tpribadi a
 			 left join hrd_khs.tseksi b on a.kodesie=b.kodesie
 				 where left(a.kodesie, 7) in (left('$kd', 7), '3240101', '3250201')
@@ -121,21 +121,21 @@ class M_presensiharian extends Ci_Model
 				 and a.keluar = false
 			 order by a.kodesie,a.noind;";
 		} elseif ($noind == 'B0344') { // Enaryono Order #741867 akses semua seksi di bidang ENGINEERING
-			$sql = "select a.noind,a.nama, b.seksi
+			$sql = "select a.noind,a.nama, b.seksi,left(b.kodesie,7) as kodesie
 					from hrd_khs.tpribadi a
 					left join hrd_khs.tseksi b on a.kodesie=b.kodesie
 						where left(a.kodesie, 4) in ('3060')
 						and a.keluar = false
 					order by a.kodesie,a.noind;";
 		} elseif ('306030' == substr($kd, 0, 6)) { // ada diticket
-			$sql = "select a.noind,a.nama, b.seksi
+			$sql = "select a.noind,a.nama, b.seksi,left(b.kodesie,7) as kodesie
 				from hrd_khs.tpribadi a
 				left join hrd_khs.tseksi b on a.kodesie=b.kodesie
 						where left(a.kodesie,6) = left('$kd',6)
 						and a.keluar = false
 						order by a.kodesie,a.noind;";
 		} else {
-			$sql = "select a.noind,a.nama, b.seksi
+			$sql = "select a.noind,a.nama, b.seksi,left(b.kodesie,7) as kodesie
 			from hrd_khs.tpribadi a
 			left join hrd_khs.tseksi b on a.kodesie=b.kodesie
 					where left(a.kodesie,7) = left('$kd',7)
@@ -332,15 +332,14 @@ class M_presensiharian extends Ci_Model
 	public function getSeksiByAkses($user)
 	{
 		$sql = "select 
-								left(h.kodesie,7) as kodesie,
-								ts.seksi 
+							left(h.kodesie,7) as kodesie,
+							ts.seksi
 						from 
-								\"Presensi\".t_hak_akses_presensi h 
+							\"Presensi\".t_hak_akses_presensi h 
 						left join
-								hrd_khs.tseksi ts using(kodesie)
+							hrd_khs.tseksi ts on left(h.kodesie,7) = left(ts.kodesie,7)
 						where 
-								h.noind = '$user' and
-								substr(ts.kodesie,1,7) = h.kodesie";
+							h.noind = '$user'	";
 		$result = $this->personalia->query($sql)->result_array();
 
 		return $result;

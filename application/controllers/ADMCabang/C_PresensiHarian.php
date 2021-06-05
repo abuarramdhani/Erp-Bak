@@ -36,8 +36,6 @@ class C_PresensiHarian extends CI_Controller
 
 	public function index()
 	{
-		$pnoind = $this->session->user;
-		$nama = $this->M_presensiharian->ambilNamaPekerjaByNoind($pnoind);
 		$user_id = $this->session->userid;
 		$kodesie = $this->session->kodesie;
 
@@ -51,11 +49,18 @@ class C_PresensiHarian extends CI_Controller
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 		$data['seksi'] = $this->M_presensiharian->getSeksiByKodesie($kodesie);
 		$user = $this->session->user;
+
 		$akses = $this->M_presensiharian->getAksesByUser($user);
 		$kodeSieAkses = $this->M_presensiharian->getSeksiByAkses($user);
-		var_dump($kodeSieAkses);
-		die;
+		array_push($kodeSieAkses, $data['seksi'][0]);
+
+		$data['kodesieAkses'] = [];
+		foreach ($kodeSieAkses as $kodAkses) {
+			$data['kodesieAkses'][substr($kodAkses['kodesie'], 0, 7)] = $kodAkses['seksi'];
+		}
+
 		$noindAkses = $this->M_presensiharian->getNoindAkses();
+
 		if (substr($user, 0, 1) != 'B' && substr($user, 0, 1) != 'D' && substr($user, 0, 1) != 'J') {
 			unset($data['UserMenu'][2]);
 			unset($data['UserMenu'][3]);
@@ -64,6 +69,7 @@ class C_PresensiHarian extends CI_Controller
 		$tanggal = $this->input->post('txtPeriodePresensiHarian');
 		if ($tanggal) {
 			$data['pekerja'] = $this->M_presensiharian->getPekerjaByKodesie($kodesie, $user, $akses, $noindAkses);
+
 			$pekerja = $data['pekerja'];
 			$jmlpekerja = count($pekerja);
 			$noind = "";
@@ -92,6 +98,7 @@ class C_PresensiHarian extends CI_Controller
 					'noind' => $val['noind'],
 					'nama' => $val['nama'],
 					'seksi' => $val['seksi'],
+					'kodesie' => $val['kodesie'],
 				);
 
 				$shift = $this->M_presensiharian->getShiftByNoind($val['noind'], $tanggal);
@@ -145,9 +152,13 @@ class C_PresensiHarian extends CI_Controller
 
 			$data['max'] = $simpan2;
 			$data['pekerja'] = $arr;
-			// echo "<pre>";
-			// print_r($arr);exit();
+			if (isset($_POST['txtKodesie'])) {
+				$data['pekerja'] = array_filter($data['pekerja'], function ($pek) {
+					return in_array($pek['kodesie'], $_POST['txtKodesie']);
+				});
+			};
 		}
+		$data['noind_akses'] = $noindAkses;
 
 		$this->load->view('V_Header', $data);
 		$this->load->view('V_Sidemenu', $data);
@@ -158,12 +169,18 @@ class C_PresensiHarian extends CI_Controller
 	public function ExportExcel()
 	{
 		$this->load->library('excel');
-
+		$pnoind = $this->session->user;
+		$noindAkses = $this->M_presensiharian->getNoindAkses();
+		$akses = $this->M_presensiharian->getAksesByUser($pnoind);
 		$kodesie = $this->session->kodesie;
-		$pekerja = $this->M_presensiharian->getPekerjaByKodesie($kodesie);
+		$pekerja = $this->M_presensiharian->getPekerjaByKodesie($kodesie, $pnoind, $akses, $noindAkses);;
 		$seksi = $this->M_presensiharian->getSeksiByKodesie($kodesie);
 		$tanggal = $this->input->post('txtPeriodePresensiHarian');
-
+		if (isset($_POST['txtKodesie'])) {
+			$pekerja = array_filter($pekerja, function ($pek) {
+				return in_array($pek['kodesie'], $_POST['txtKodesie']);
+			});
+		};
 		$this->excel->getActiveSheet()->setCellValueByColumnAndRow(0, 1, 'Data Presensi');
 		$this->excel->getActiveSheet()->setCellValueByColumnAndRow(0, 2, 'Kodesie');
 		$this->excel->getActiveSheet()->setCellValueByColumnAndRow(0, 3, 'Seksi');
@@ -266,11 +283,18 @@ class C_PresensiHarian extends CI_Controller
 	public function ExportExcelv2()
 	{
 		$this->load->library('excel');
-
+		$pnoind = $this->session->user;
 		$kodesie = $this->session->kodesie;
-		$pekerja = $this->M_presensiharian->getPekerjaByKodesie($kodesie);
+		$noindAkses = $this->M_presensiharian->getNoindAkses();
+		$akses = $this->M_presensiharian->getAksesByUser($pnoind);
+		$pekerja = $this->M_presensiharian->getPekerjaByKodesie($kodesie, $pnoind, $akses, $noindAkses);
 		$seksi = $this->M_presensiharian->getSeksiByKodesie($kodesie);
 		$tanggal = $this->input->post('txtPeriodePresensiHarian');
+		if (isset($_POST['txtKodesie'])) {
+			$pekerja = array_filter($pekerja, function ($pek) {
+				return in_array($pek['kodesie'], $_POST['txtKodesie']);
+			});
+		};
 		//insert to sys.log_activity
 		$aksi = 'Presensi';
 		$detail = "Export Excel lv2 tanggal=$tanggal kodesie=$kodesie";
@@ -357,10 +381,17 @@ class C_PresensiHarian extends CI_Controller
 	{
 		$this->load->library('pdf');
 		$pnoind = $this->session->user;
+		$noindAkses = $this->M_presensiharian->getNoindAkses();
+		$akses = $this->M_presensiharian->getAksesByUser($pnoind);
 		$nama = $this->M_presensiharian->ambilNamaPekerjaByNoind($pnoind);
 		$kodesie = $this->session->kodesie;
 		$data['kodesie'] = $kodesie;
-		$data['pekerja'] = $this->M_presensiharian->getPekerjaByKodesie($kodesie);
+		$data['pekerja'] = $this->M_presensiharian->getPekerjaByKodesie($kodesie, $pnoind, $akses, $noindAkses);
+		if (isset($_POST['txtKodesie'])) {
+			$data['pekerja'] = array_filter($data['pekerja'], function ($pek) {
+				return in_array($pek['kodesie'], $_POST['txtKodesie']);
+			});
+		};
 		$data['seksi'] = $this->M_presensiharian->getSeksiByKodesie($kodesie);
 		$tanggal = $this->input->post('txtPeriodePresensiHarian');
 		$data['tanggal'] = $tanggal;
@@ -490,10 +521,17 @@ class C_PresensiHarian extends CI_Controller
 	{
 		$this->load->library('pdf');
 		$pnoind = $this->session->user;
+		$noindAkses = $this->M_presensiharian->getNoindAkses();
+		$akses = $this->M_presensiharian->getAksesByUser($pnoind);
 		$nama = $this->M_presensiharian->ambilNamaPekerjaByNoind($pnoind);
 		$kodesie = $this->session->kodesie;
 		$data['kodesie'] = $kodesie;
-		$data['pekerja'] = $this->M_presensiharian->getPekerjaByKodesie($kodesie);
+		$data['pekerja'] = $this->M_presensiharian->getPekerjaByKodesie($kodesie, $pnoind, $akses, $noindAkses);
+		if (isset($_POST['txtKodesie'])) {
+			$data['pekerja'] = array_filter($data['pekerja'], function ($pek) {
+				return in_array($pek['kodesie'], $_POST['txtKodesie']);
+			});
+		};
 		$data['seksi'] = $this->M_presensiharian->getSeksiByKodesie($kodesie);
 		$tanggal = $this->input->post('txtPeriodePresensiHarian');
 		$data['tanggal'] = $tanggal;
