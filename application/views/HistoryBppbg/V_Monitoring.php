@@ -1,3 +1,4 @@
+<input type="hidden" id="app_his_bppbg_2021" value="">
 <section class="content">
     <div class="inner">
         <div class="row">
@@ -52,7 +53,7 @@
                                   <center><img style="width: 5%" src="<?php echo base_url('assets/img/gif/loading5.gif') ?>"></center>
                                 </div>
                                 <div id="tb_monitoring">
-                                  
+
                                 </div>
                             </div>
                         </div>
