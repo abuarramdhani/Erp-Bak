@@ -17,8 +17,9 @@
                                     <div class="col-md-12">
                                         <div class="col-md-2">
                                             <p style="margin: 5px 0 20px 0;"><label>Nama Subkon</label></p>
-                                            <p style="margin: 5px 0 5px 0;"><label>Jenis Handling</label></p>
-                                            <!-- <p style="margin: 5px 0 5px 0;"><label>Tanggal</label></p> -->
+                                            <p style="margin: 5px 0 20px 0;"><label>Jenis Handling</label></p>
+                                            <p style="margin: 5px 0 20px 0;"><label>Tanggal</label></p>
+                                            <p style="margin: 5px 0 5px 0;"><label>Status</label></p>
                                         </div>
                                         <div class="col-md-4">
                                             <p>
@@ -31,9 +32,16 @@
                                                   <option></option>
                                                 </select>
                                             </p>
-                                            <!-- <p>
-                                                <input type="text" class="date form-control" name="slcDate" id="slcDate" autocomplete="off">
-                                            </p> -->
+                                            <p>
+                                                <input type="text" class="date form-control" name="slcDateRange" id="slcDateRange" autocomplete="off">
+                                            </p>
+                                            <p>
+                                                <select class="form-control select2" name="slcType" id="slcType" style="width: 100px;" required>
+                                                    <option value="ALL">ALL</option>
+                                                    <option value="IN">IN</option>
+                                                    <option value="OUT">OUT</option>
+                                                </select>
+                                            </p>
                                             <button type="button" class="btn btn-primary" style="float: right;" onclick="cariHS()">
                                                 <i class="fa fa-search"></i> Cari
                                             </button>
