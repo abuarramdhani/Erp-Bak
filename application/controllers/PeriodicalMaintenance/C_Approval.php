@@ -54,7 +54,9 @@ class C_Approval extends CI_Controller
 
 		$data['approval_staffmtn'] = $this->M_approval->getApprovalMPA($employee_code, "1");
         $data['approval_seksi'] = $this->M_approval->getApprovalMPA($employee_code, "2");
-        $data['approver2'] = $this->M_approval->getNoInduk();
+		$data['approver2'] = $this->M_approval->getNoInduk();
+		
+		// echo"<pre>"; print_r($data['approver2']); exit;
 
 		$this->load->view('V_Header', $data);
 		$this->load->view('V_Sidemenu', $data);
@@ -71,9 +73,12 @@ class C_Approval extends CI_Controller
         $employee_code = $this->session->user;
         
         $nodoc 	= $this->input->post('nodoc');
-		$req2 = $this->input->post('req2');        
+		// $req2 = $this->input->post('req2'); 
+		// date_default_timezone_set('Asia/Jakarta');
+		// $currentdate = date("Y-m-d H:i:s");
+		// echo $currentdate;exit;     
 
-		$this->M_approval->updateApproval1($nodoc, $employee_code, $req2);
+		$this->M_approval->updateApproval1($nodoc, $employee_code);
     }
     
     public function updateApproval2()
@@ -86,6 +91,21 @@ class C_Approval extends CI_Controller
 
 		$this->M_approval->updateApproval2($nodoc, $employee_code);
 	}
+
+	public function updateApprovalSeksi()
+	{
+        $this->checkSession();
+		$user_id = $this->session->userid;
+        $employee_code = $this->session->user;
+        
+        $nodoc 	= $this->input->post('nodoc');
+		$req2 = $this->input->post('req2'); 
+		// date_default_timezone_set('Asia/Jakarta');
+		// $currentdate = date("Y-m-d H:i:s");
+		// echo $currentdate;exit;     
+
+		$this->M_approval->updateApprovalSeksi($nodoc, $req2);
+    }
 
 	public function printForm($nodoc)
 	{

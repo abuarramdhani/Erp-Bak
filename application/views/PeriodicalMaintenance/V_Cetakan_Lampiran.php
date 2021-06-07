@@ -11,7 +11,7 @@
 
             <td>
             <div style="float:none; margin: 0 auto">
-                                        <center> <img style="max-width: 250px;max-height: 250px"
+                                        <center> <img style="max-width: 100%;max-height: 100%"
                     src="<?php echo base_url($gambar[$g]['FILE_DIR_ADDRESS']); ?>"></center>
                                     </div>
                
