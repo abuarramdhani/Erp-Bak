@@ -26,13 +26,13 @@
 										<form class="form-horizontal" id="form_presensiH" method="post">
 											<div class="form-group">
 												<label class="control-label col-lg-2">Kodesie</label>
-												<div class="col-lg-8">
+												<div class="col-lg-9">
 													<input type="text" value="<?= $seksi['0']['kodesie'] ?>" class="form-control" name="txtKodesie" disabled>
 												</div>
 											</div>
 											<div class="form-group">
 												<label class="control-label col-lg-2">Seksi</label>
-												<div class="col-lg-8">
+												<div class="col-lg-9">
 													<?php if (in_array($this->session->user, $noind_akses)) : ?>
 														<select multiple style="width:100%;" class="form-control select2" name="txtKodesie[]" id="seksiPresensi">
 															<?php if (isset($_POST['txtKodesie'])) : ?>
@@ -58,7 +58,7 @@
 											</div>
 											<div class="form-group">
 												<label class="control-label col-lg-2">Periode</label>
-												<div class="col-lg-8">
+												<div class="col-lg-9">
 													<input type="text" class="date form-control" name="txtPeriodePresensiHarian" id="txtPeriodePresensiHarian" autocomplete="off" required>
 												</div>
 											</div>

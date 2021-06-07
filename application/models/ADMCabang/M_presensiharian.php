@@ -329,7 +329,7 @@ class M_presensiharian extends Ci_Model
 		return $result->result_array();
 	}
 
-	public function getSeksiByAkses($user)
+	public function getSeksiByAkses($user, $ks)
 	{
 		$sql = "select 
 							left(h.kodesie,7) as kodesie,
@@ -337,9 +337,18 @@ class M_presensiharian extends Ci_Model
 						from 
 							\"Presensi\".t_hak_akses_presensi h 
 						left join
-							hrd_khs.tseksi ts on left(h.kodesie,7) = left(ts.kodesie,7)
+							hrd_khs.tseksi ts using(kodesie)
 						where 
-							h.noind = '$user'	";
+							h.noind = '$user'
+						union	
+						select
+							left(ts.kodesie,7) as kodesie,
+							ts.seksi
+						from 
+							hrd_khs.tseksi ts
+						where 
+							ts.kodesie = '$ks'
+						order by kodesie";
 		$result = $this->personalia->query($sql)->result_array();
 
 		return $result;
