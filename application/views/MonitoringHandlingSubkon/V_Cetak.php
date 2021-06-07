@@ -20,7 +20,7 @@
                                         </div>
                                         <div class="col-md-5">
                                             <p>
-                                                <select class="form-control select2 subkon" name="slcSubkon" id="slcSubkon" style="width: 450px;" required>
+                                                <select class="form-control select2 jenisSub" name="slcSubkon" id="slcSubkon" style="width: 450px;" required>
                                                   <option></option>
                                                 </select>
                                             </p>
