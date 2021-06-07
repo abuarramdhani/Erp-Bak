@@ -33,16 +33,19 @@
                 <input type="hidden" id="inv<?= $no?>" name="inv<?= $no?>" value="<?= $value['INVENTORY_ITEM_ID']?>"> 
                 <input type="hidden" name="wip<?= $no?>"> 
                 <input type="hidden" name="picklist<?= $no?>"> 
+                <input type="hidden" name="completion<?= $no?>"> 
                 <input type="hidden" name="fg_tks<?= $no?>"> 
                 <input type="hidden" name="mlati<?= $no?>"> 
+                <input type="hidden" name="av_pick<?= $no?>" value="<?= round($value['AVPICK'])?>"> 
             </td>
 
             <td style="text-align:left"><?= $value['ITEM']?><br><?= $value['DESC']?>
                 <br><br><span class="loadingwip" name="ini_wip<?= $no?>"></span>
                 <br><span class="loadingpick" name="ini_pick<?= $no?>"></span>
+                <br><span class="loadingcomp" name="ini_comp<?= $no?>"></span>
                 <br><span class="loadinggd" name="ini_gd<?= $no?>"></span>
                 <br><span><b>Available Picklist :</b></span>
-                <br><span style="font-size:50px"><?= round($value['AVPICK'])?></span>
+                <br><span style="font-size:35px"><?= round($value['AVPICK'])?></span>
             </td>
             <td class="text-nowrap"><p>P</p>
                 <?php if ($ket == 'All' || $ket == 'PA') { ?>
