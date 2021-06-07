@@ -35,9 +35,20 @@ $('#txtPeriodeMPA').change(function(){
           $("#nodocMPA")
             .prop("disabled", false)
             .html(result);
+          $("#nodocMPA")
+            .val("")
+            .trigger("change");
+          $("div#ResultPMEMon").html("");
         } else {
           $("#loadDateBetween").html("");
           swal.fire("404", "Data pengecekan untuk tanggal ini tidak tersedia!", "error");
+          $("#nodocMPA")
+          .val("")
+          .trigger("change");
+          $("#nodocMPA")
+          .prop("disabled", true)
+          .html(result);
+          $("div#ResultPMEMon").html("");
         }
       }
 		});
@@ -623,33 +634,69 @@ function approveMPA(nodoc, id) {
 
   if(id === "tblStaffMtn")
   {
-      $("#modalApprovalMPA").modal("show");
+      // $("#modalApprovalMPA").modal("show");
   
-      $(".btn-approve-mpa").on("click", function() {
-        var req2 = $("#reqSeksiysb").val();
+      // $(".btn-approve-mpa").on("click", function() {
+      //   var req2 = $("#reqSeksiysb").val();
   
-        console.log(req2);
-        var request = $.ajax({
-          url: baseurl + "PeriodicalMaintenance/Approval/updateApproval1",
-          data: {
-            req2: req2,
-            nodoc : nodoc
-          },
-          type: "POST",
-          datatype: "html"
-        });
-        request.done(function() {
-          $("#modalApprovalMPA").modal("hide");
-          Swal.fire({
-            position: "top",
-            type: "success",
-            title: "Berhasil Approve Staff Maintenance!",
-            showConfirmButton: false,
-            timer: 1500
-          }).then(() => {
-            window.location.reload();
+      //   console.log(req2);
+      //   var request = $.ajax({
+      //     url: baseurl + "PeriodicalMaintenance/Approval/updateApproval1",
+      //     data: {
+      //       req2: req2,
+      //       nodoc : nodoc
+      //     },
+      //     type: "POST",
+      //     datatype: "html"
+      //   });
+      //   request.done(function() {
+      //     $("#modalApprovalMPA").modal("hide");
+      //     Swal.fire({
+      //       position: "top",
+      //       type: "success",
+      //       title: "Berhasil Approve Staff Maintenance!",
+      //       showConfirmButton: false,
+      //       timer: 1500
+      //     }).then(() => {
+      //       window.location.reload();
+      //     });
+      //   });
+      // });
+
+     
+
+      Swal.fire({
+        title: "Apa Anda Yakin?",
+        text: "Akan Melakukan Approve?",
+        type: "question",
+        showCancelButton: true,
+        confirmButtonColor: "#00a65a",
+        cancelButtonColor: "#d73925",
+        confirmButtonText: "Ya",
+        cancelButtonText: "Tidak"
+      }).then(result => {
+        if (result.value) {
+
+          var request = $.ajax({
+            url: baseurl + "PeriodicalMaintenance/Approval/updateApproval1",
+            data: {
+              nodoc : nodoc
+            },
+            type: "POST",
+            datatype: "html"
           });
-        });
+          request.done(function(result) {
+            Swal.fire({
+              position: "top",
+              type: "success",
+              title: "Berhasil Approve Staff Maintenance!",
+              showConfirmButton: false,
+              timer: 1500
+            }).then(() => {
+              window.location.reload();
+            });
+          });
+        }
       });
   } else if(id === "tblSeksiTerkait"){
     Swal.fire({
@@ -685,6 +732,83 @@ function approveMPA(nodoc, id) {
       }
     });
   }
+}
+
+function editApproveMPA(nodoc, id) {
+
+  console.log(nodoc, id);
+
+  if(id === "tblStaffMtn")
+  {
+      $("#modalApprovalMPA").modal("show");
+  
+      $(".btn-approve-mpa").on("click", function() {
+        var req2 = $("#reqSeksiysb").val();
+  
+        console.log(req2);
+        var request = $.ajax({
+          url: baseurl + "PeriodicalMaintenance/Approval/updateApprovalSeksi",
+          data: {
+            req2: req2,
+            nodoc : nodoc
+          },
+          type: "POST",
+          datatype: "html"
+        });
+        request.done(function() {
+          $("#modalApprovalMPA").modal("hide");
+          Swal.fire({
+            position: "top",
+            type: "success",
+            title: "Berhasil Update Approval Seksi Terkait!",
+            showConfirmButton: false,
+            timer: 1500
+          }).then(() => {
+            window.location.reload();
+          });
+        });
+      });
+  } 
+}
+
+function delImageMPA(mesin,path) {
+
+  console.log(mesin, path);
+
+      Swal.fire({
+        title: "Apa Anda Yakin?",
+        text: "Akan Menghapus Gambar?",
+        type: "question",
+        showCancelButton: true,
+        confirmButtonColor: "#00a65a",
+        cancelButtonColor: "#d73925",
+        confirmButtonText: "Ya",
+        cancelButtonText: "Tidak"
+      }).then(result => {
+        if (result.value) {
+
+          var request = $.ajax({
+            url: baseurl + "PeriodicalMaintenance/Management/deleteImageMPA",
+            data: {
+              mesin : mesin,
+              path : path
+            },
+            type: "POST",
+            datatype: "html"
+          });
+          request.done(function(result) {
+            Swal.fire({
+              position: "top",
+              type: "success",
+              title: "Berhasil menghapus gambar!",
+              showConfirmButton: false,
+              timer: 1500
+            }).then(() => {
+              window.location.reload();
+            });
+          });
+        }
+      });
 }
 
 function deleteCekMPA() {

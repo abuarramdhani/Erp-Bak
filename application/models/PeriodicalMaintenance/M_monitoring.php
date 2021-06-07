@@ -146,17 +146,16 @@ class M_monitoring extends CI_Model
 
   public function getDataHeader($nodoc)
   {
-    $sql = "SELECT DISTINCT kpm.NO_DOKUMEN, kpm.NO_REVISI, kpm.TANGGAL_REVISI, kpm.CATATAN_REVISI
-    FROM KHS_PERIODICAL_MAINTENANCE kpm, KHS_CEK_MESIN kcm
-    WHERE kcm.DOCUMENT_NUMBER = '$nodoc'
-    AND kpm.NAMA_MESIN = kcm.NAMA_MESIN ";
+    $sql = "SELECT DISTINCT kcm.NO_DOKUMEN, kcm.NO_REVISI, kcm.TANGGAL_REVISI, kcm.CATATAN_REVISI
+    FROM KHS_CEK_MESIN kcm
+    WHERE kcm.DOCUMENT_NUMBER = '$nodoc'";
     $query = $this->oracle->query($sql);
     return $query->result_array();
   }
 
   public function getDataFooter($nodoc)
   {
-    $sql = "SELECT DISTINCT kcm.APPROVED_BY, kcm.APPROVED_DATE, kcm.APPROVED_BY_2, kcm.APPROVED_DATE_2
+    $sql = "SELECT DISTINCT kcm.APPROVED_BY, kcm.APPROVED_DATE, kcm.APPROVED_BY_2, kcm.APPROVED_DATE_2, STATUS_APPROVAL
     FROM KHS_PERIODICAL_MAINTENANCE kpm, KHS_CEK_MESIN kcm
     WHERE kcm.DOCUMENT_NUMBER = '$nodoc'
     AND kpm.NAMA_MESIN = kcm.NAMA_MESIN";
@@ -214,6 +213,16 @@ class M_monitoring extends CI_Model
   {
     $sql = "DELETE FROM KHS_CEK_MESIN kcm 
     WHERE kcm.ACTUAL_DATE BETWEEN TO_DATE('$from 00:00:00','DD-MM-YYYY HH24:MI:SS') 
+                    AND TO_DATE('$to 23:59:00','DD-MM-YYYY HH24:MI:SS')";
+
+    $query = $this->oracle->query($sql);
+    return $query;
+  }
+
+  public function deleteSparepartMPARange($from, $to)
+  {
+    $sql = "DELETE FROM KHS_DAFTAR_SPAREPART_MPA kdsm 
+    WHERE kdsm.ACTUAL_DATE BETWEEN TO_DATE('$from 00:00:00','DD-MM-YYYY HH24:MI:SS') 
                     AND TO_DATE('$to 23:59:00','DD-MM-YYYY HH24:MI:SS')";
 
     $query = $this->oracle->query($sql);

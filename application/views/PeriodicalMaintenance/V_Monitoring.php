@@ -31,7 +31,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="box box-primary box-solid">
-                                <div class="box-header with-border"><b>Monitoring</b></div>
+                                <div class="box-header with-border"><b>Lihat Hasil Preventive</b></div>
                                 <div class="box-body">
                                     <div class="panel-body">
                                         <div class="col-md-12 text-left">

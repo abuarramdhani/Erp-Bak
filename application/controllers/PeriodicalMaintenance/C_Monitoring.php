@@ -35,7 +35,7 @@ class C_Monitoring extends CI_Controller
 
 		$user_id = $this->session->userid;
 
-		$data['Title'] = 'Monitoring Pengecekan';
+		$data['Title'] = 'Lihat Hasil Preventive';
 		$data['Menu'] = '';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
@@ -141,8 +141,15 @@ class C_Monitoring extends CI_Controller
 			} else {
 				$alter[$i] = $datapdf[$i]['KONDISI_MESIN'];
 			}
+			if ($datapdf[$i]['HEADER_MESIN'] == null) {
+				$altar[$i] = '';
+			} else {
+				$altar[$i] = $datapdf[$i]['HEADER_MESIN'];
+			}
 			$array_Resource['KONDISI_MESIN'][$alter[$i]][$i] = $datapdf[$i]['SUB_HEADER'];
-			$array_Resource['HEADER_MESIN'][$datapdf[$i]['HEADER_MESIN']][$i] = $datapdf[$i]['SUB_HEADER'];
+			// $array_Resource['HEADER_MESIN'][$altar[$i]][$i] = $datapdf[$i]['SUB_HEADER'];
+			$array_Resource['HEADER_MESIN'][$alter[$i]][$i] = $datapdf[$i]['HEADER_MESIN'];
+
 		}
 
 		$array_pdf = array();
@@ -173,10 +180,10 @@ class C_Monitoring extends CI_Controller
 			$array_pdf[$i]['REQUEST_TO'] = $pdf['REQUEST_TO'];
 			$array_pdf[$i]['REQUEST_TO_2'] = $pdf['REQUEST_TO_2'];
 			$array_pdf[$i]['APPROVED_BY'] = $pdf['APPROVED_BY'];
-			$array_pdf[$i]['APPROVED_BY_NAME'] = $this->M_approval->getNama( $pdf['APPROVED_BY']);
+			$array_pdf[$i]['APPROVED_BY_NAME'] = $this->M_approval->getNama( $pdf['REQUEST_TO']);
 			$array_pdf[$i]['APPROVED_DATE'] = $pdf['APPROVED_DATE'];
 			$array_pdf[$i]['APPROVED_BY_2'] = $pdf['APPROVED_BY_2'];
-			$array_pdf[$i]['APPROVED_BY_2_NAME'] = $this->M_approval->getNama( $pdf['APPROVED_BY_2']);
+			$array_pdf[$i]['APPROVED_BY_2_NAME'] = $this->M_approval->getNama( $pdf['REQUEST_TO_2']);
 			$array_pdf[$i]['APPROVED_DATE_2'] = $pdf['APPROVED_DATE_2'];
 			$array_pdf[$i]['DOCUMENT_NUMBER'] = $pdf['DOCUMENT_NUMBER'];
 
@@ -190,7 +197,7 @@ class C_Monitoring extends CI_Controller
 		$data['datapdf'] = $array_pdf;
 
 		// echo "<pre>"; 
-		// print_r($data['datapdf']); exit();
+		// print_r($data['arrayR']); exit();
 
 		ob_start();
 		$this->load->library('Pdf');
@@ -334,6 +341,8 @@ class C_Monitoring extends CI_Controller
 		$to 	= $this->input->post('to');
 
 		$this->M_monitoring->deleteCekMPARange($from, $to);
+
+		$this->M_monitoring->deleteSparepartMPARange($from, $to);
 	}
 
 }

@@ -51,6 +51,15 @@ class M_management extends CI_Model
     return $query->result_array();
   }
 
+
+  public function getGambar($mesin)
+  {
+    $sql = "SELECT DISTINCT * FROM KHS_GAMBAR_MPA kgm 
+    WHERE kgm.NAMA_MESIN = '$mesin'";
+    $query = $this->oracle->query($sql);
+    return $query->result_array();
+  }
+
   // public function getDetail($mesin, $kondisi, $header)
   // {
   //   if (strlen($header) == 0) {
@@ -69,11 +78,16 @@ class M_management extends CI_Model
 
   public function getDetail($mesin, $kondisi)
   {
+    if($kondisi == null){
+      $qkondisi = "AND kpm.KONDISI_MESIN IS NULL";
+    } else {
+      $qkondisi = "AND kpm.KONDISI_MESIN = '$kondisi'";
+    }
     
     $sql = "SELECT kpm.HEADER,kpm.SUB_HEADER, kpm.STANDAR, kpm.PERIODE 
             FROM khs_periodical_maintenance kpm 
             WHERE kpm.NAMA_MESIN = '$mesin' 
-            AND kpm.KONDISI_MESIN = '$kondisi'";
+            $qkondisi";
     $query = $this->oracle->query($sql);
     return $query->result_array();
   }
@@ -128,6 +142,24 @@ class M_management extends CI_Model
     return $query->result_array();
   }
 
+  public function getDataHeader($mesin)
+  {
+    $sql = "SELECT DISTINCT kpm.NO_DOKUMEN, kpm.NO_REVISI
+    , kpm.TANGGAL_REVISI, kpm.CATATAN_REVISI 
+    FROM khs_periodical_maintenance kpm
+    WHERE kpm.nama_mesin = '$mesin'";
+    $query = $this->oracle->query($sql);
+    return $query->result_array();
+  }
+
+  public function getDataGambar($mesin)
+  {
+    $sql = "SELECT * FROM khs_gambar_mpa kgm
+    WHERE kgm.NAMA_MESIN = '$mesin'";
+    $query = $this->oracle->query($sql);
+    return $query->result_array();
+  }
+
   /////////////////////////////////////////////////////////////////////////////
 
   public function insertGambarMPA($mesin, $img)
@@ -136,5 +168,14 @@ class M_management extends CI_Model
       VALUES ('$mesin', '$img')";
       $query = $this->oracle->query($sql);
       return $sql;
+  }
+
+  public function deleteImageMPA($mesin)
+  {
+    $sql = " DELETE FROM khs_gambar_mpa kgm
+    WHERE kgm.NAMA_MESIN = '$mesin'";
+
+    $query = $this->oracle->query($sql);
+    return $query;
   }
 }
