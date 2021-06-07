@@ -64,9 +64,10 @@ class C_Monitoring extends CI_Controller {
         $subkon = $this->input->post('subkon');
         $subname = $this->input->post('subname');
         $handling = $this->input->post('handling');
-        // $date = $this->input->post('date');
+        $date = $this->input->post('date');
+        $status = $this->input->post('status');
 
-        $data['mon'] = $this->M_monhansub->getDataMonitoring($subkon,$handling);
+        $data['mon'] = $this->M_monhansub->getDataMonitoring($subkon,$handling,$date,$status);
         $data['pic'] = $this->M_monhansub->getDataPIC();
         $data['subname'] = $subname;
 
