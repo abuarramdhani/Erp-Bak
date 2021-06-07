@@ -1,0 +1,61 @@
+<div class="panel-body">
+    <h2 style="font-weight: bold; text-align: center;"><?= $subname; ?></h2>
+    <table class="datatable table table-bordered table-hover table-striped text-center" id="tblMon" style="width: 100%;">
+        <thead class="bg-primary">
+            <tr>
+                <th style="width: 5%; vertical-align: middle;">No</th>
+                <th style="width: 10%; vertical-align: middle;">KIS</th>
+                <th style="width: 5%; vertical-align: middle;">Kode Handling</th>
+                <th style="width: 25%; vertical-align: middle;">Nama Handling</th>
+                <th style="width: 5%; vertical-align: middle;">In / Out</th>
+                <th style="width: 5%; vertical-align: middle;">Qty</th>
+                <th style="width: 10%; vertical-align: middle;">Transaction Date</th>
+                <th style="width: 15%; vertical-align: middle;">Transaction By</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php $no=1; foreach ($mon as $i) { ?>
+            <tr>
+                <td style="width: 5%;">
+                    <?= $no; ?>
+                </td>
+                <td style="width: 10%; text-align: left;">
+                    <?= $i['KIS'] ?>
+                </td>
+                <td style="width: 5%; text-align: left;">
+                    <?= $i['HANDLING_CODE'] ?>
+                </td>
+                <td style="width: 20%; text-align: left;">
+                    <?= $i['HANDLING_NAME'] ?>
+                </td>
+                <td style="width: 5%;">
+                    <?= $i['TRANSACTION_TYPE'] ?>
+                </td>
+                <td style="width: 5%;">
+                    <?= $i['TRANSACTION_QUANTITY'] ?>
+                </td>
+                <td style="width: 10%;">
+                    <?= $i['TANGGAL'].'<br>'.$i['WAKTU'] ?>
+                </td>
+                <td style="width: 15%;">
+                    <?php
+                        foreach ($pic as $p) {
+                            if ($p['noind'] == $i['TRANSACTION_BY']) {
+                                $nama = $i['TRANSACTION_BY'].'<br>'.$p['nama'];
+                            }
+                        }
+                    ?>
+                    <!-- <?= $i['TRANSACTION_BY'] ?> -->
+                    <?= $nama ?>
+                </td>
+            </tr>
+            <?php $no++;} ?>
+        </tbody>
+    </table>
+</div>
+
+
+
+<script type="text/javascript">
+  $('#tblMon').DataTable({})
+</script>
