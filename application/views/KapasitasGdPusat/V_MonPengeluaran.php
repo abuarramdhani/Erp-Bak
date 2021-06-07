@@ -49,6 +49,9 @@
                                                     <option></option>
                                                     <option value="PICKLIST">PICKLIST</option>
                                                     <option value="BON">BON</option>
+                                                    <option value="MO">MO</option>
+                                                    <option value="DO">DO</option>
+                                                    <option value="IO">IO</option>
                                                 </select>
                                         </div>
                                     </div>
