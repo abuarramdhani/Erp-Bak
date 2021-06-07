@@ -5572,3 +5572,14 @@ $route['BarangRepairSubkon']	=	'BarangRepairSubkon/C_Index';
 $route['BarangRepairSubkon/Monitoring']					= 'BarangRepairSubkon/C_Monitoring';
 $route['BarangRepairSubkon/Monitoring/(:any)']			= 'BarangRepairSubkon/C_Monitoring/$1';
 $route['BarangRepairSubkon/Monitoring/(:any)/(:any)']	= 'BarangRepairSubkon/C_Monitoring/$1/$2';
+
+// -------------------------------------- Monitoring Handling Subkon --------------------------------------------//
+$route['MonitoringHandlingSubkon']	=	'MonitoringHandlingSubkon/C_Index';
+
+$route['MonitoringHandlingSubkon/Cetak']				= 'MonitoringHandlingSubkon/C_Cetak';
+$route['MonitoringHandlingSubkon/Cetak/(:any)']			= 'MonitoringHandlingSubkon/C_Cetak/$1';
+$route['MonitoringHandlingSubkon/Cetak/(:any)/(:any)']	= 'MonitoringHandlingSubkon/C_Cetak/$1/$2';
+
+$route['MonitoringHandlingSubkon/Monitoring']				= 'MonitoringHandlingSubkon/C_Monitoring';
+$route['MonitoringHandlingSubkon/Monitoring/(:any)']		= 'MonitoringHandlingSubkon/C_Monitoring/$1';
+$route['MonitoringHandlingSubkon/Monitoring/(:any)/(:any)']	= 'MonitoringHandlingSubkon/C_Monitoring/$1/$2';
