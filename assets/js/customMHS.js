@@ -54,7 +54,8 @@ function cariHS(){
   var subkon = $('#slcJenisSub option:selected').val();
   var subname = $('#slcJenisSub option:selected').html();
   var handling = $('#slcHandling option:selected').val();
-  // var date = $('#slcDate').val();
+  var date = $('#slcDateRange').val();
+  var status = $('#slcType option:selected').val();
   console.log(subkon + ' ' + subname + ' ' + handling);
 
   if (subkon == '') {
@@ -70,7 +71,9 @@ function cariHS(){
       data: {
         subkon : subkon,
         subname : subname,
-        handling : handling
+        handling : handling,
+        date : date,
+        status : status
       },
       type: 'POST',
       beforeSend: function() {
@@ -91,18 +94,18 @@ function cariHS(){
 
 
 $(function(){
-  $('#slcDate').daterangepicker({
+  $('#slcDateRange').daterangepicker({
     "todayHighlight" : true,
     "autoclose": true,
     locale: {
           format: 'DD MMMM YYYY'
         },
   });
-  $('#slcDate').on('apply.daterangepicker', function(ev, picker) {
+  $('#slcDateRange').on('apply.daterangepicker', function(ev, picker) {
     $(this).val(picker.startDate.format('DD MMMM YYYY') + ' - ' + picker.endDate.format('DD MMMM YYYY'));
   });
 
-  $('#slcDate').on('cancel.daterangepicker', function(ev, picker) {
+  $('#slcDateRange').on('cancel.daterangepicker', function(ev, picker) {
     $(this).val('');
   });
 });
