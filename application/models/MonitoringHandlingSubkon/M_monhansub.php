@@ -45,20 +45,33 @@ class M_monhansub extends CI_Model{
       return $query->result_array();
     }
 
-    public function getDataMonitoring($subkon,$handling){
+    public function getDataMonitoring($subkon,$handling,$date,$status){
       if ($handling == '') {
-        $code = "";
+        $code1 = "";
       }
       else {
-        $code = "AND kmhs.handling_code = '$handling'";
+        $code1 = "AND kmhs.handling_code = '$handling'";
       }
+
+      if ($status == 'ALL') {
+        $code2 = "";
+      }
+      else {
+        $code2 = "AND kmhs.transaction_type = '$status'";
+      }
+
+      $date2 = explode(' - ', $date);      
+      $dateA = $date2[0];
+      $dateB = $date2[1];
 
       $sql = "SELECT kmhs.*,
                      TO_CHAR (kmhs.transaction_date,'DD-MON-YYYY') tanggal,
                      TO_CHAR (kmhs.transaction_date,'HH24:MI:SS') waktu
                 FROM khs_mon_handling_subkon kmhs
                WHERE kmhs.locator_name = '$subkon'
-                     $code
+                     $code1
+                     $code2
+                     AND TRUNC (kmhs.transaction_date) BETWEEN TRUNC (TO_DATE ('$dateA')) AND TRUNC (TO_DATE ('$dateB'))
             ORDER BY kmhs.locator_name, kmhs.kis";
       $query = $this->oracle->query($sql);
       return $query->result_array();
@@ -73,9 +86,6 @@ class M_monhansub extends CI_Model{
               order by
                 1";
       $query = $this->personalia->query($sql);
-
-      // print_r($query->result_array());
-      // die();
       return $query->result_array();
     }
 }
