@@ -1,4 +1,6 @@
 $(document).ready(function () {
+  var view_hand = document.getElementById("tabel_reqhand");
+  if (view_hand) {
   var request = $.ajax({
     url: baseurl + "DbHandling/MonitoringHandling/loadviewreqhand",
     type: "POST",
@@ -14,8 +16,11 @@ $(document).ready(function () {
     // console.log(result);
     $("div#tabel_reqhand").html(result);
   });
+}
 });
 $(document).ready(function () {
+  var view_hand2 = document.getElementById("tabel_reqhand2");
+  if (view_hand2) {
   var request = $.ajax({
     url: baseurl + "DbHandling/MonitoringHandling/loadviewreqhand2",
     type: "POST",
@@ -31,8 +36,11 @@ $(document).ready(function () {
     // console.log(result);
     $("div#tabel_reqhand2").html(result);
   });
+}
 });
 $(document).ready(function () {
+  var view_reqhand = document.getElementById("tabel_datahand");
+  if (view_reqhand) {
   var sarana = null;
   var produk = null;
   var seksi = null;
@@ -64,6 +72,7 @@ $(document).ready(function () {
       datat.fnFilter(this.value);
     });
   });
+}
 });
 $(document).ready(function () {
   var view = document.getElementById("view_presentasi");
@@ -1480,6 +1489,8 @@ function PrevImg(input, g) {
 }
 // ------------------------------------------------- Set Data Master ----------------------------------------------------//
 $(document).ready(function () {
+  var master = document.getElementById("tabel_master_handling");
+  if (master) {
   var request = $.ajax({
     url: baseurl + "DbHandling/SetDataMaster/loadviewmasterhandling",
     type: "POST",
@@ -1495,8 +1506,11 @@ $(document).ready(function () {
     // console.log(result);
     $("div#tabel_master_handling").html(result);
   });
+}
 });
 $(document).ready(function () {
+  var masterpro = document.getElementById("tabel_masterpro_seksi");
+  if (masterpro) {
   var request = $.ajax({
     url: baseurl + "DbHandling/SetDataMaster/loadviewmasterproseksi",
     type: "POST",
@@ -1512,8 +1526,11 @@ $(document).ready(function () {
     // console.log(result);
     $("div#tabel_masterpro_seksi").html(result);
   });
+}
 });
 $(document).ready(function () {
+  var masterstat = document.getElementById("tabel_masterstat_komp");
+  if (masterstat) {
   var request = $.ajax({
     url: baseurl + "DbHandling/SetDataMaster/loadviewmasterstatkomp",
     type: "POST",
@@ -1529,6 +1546,7 @@ $(document).ready(function () {
     // console.log(result);
     $("div#tabel_masterstat_komp").html(result);
   });
+}
 });
 function tambahmasterhandling() {
   var no_order = 1;
@@ -2235,6 +2253,8 @@ function deletestatkomp(id) {
 }
 // --------------------------------------------------- MondHand Seksi ----------------------------------------------
 $(document).ready(function () {
+  var tbl_reqseksi = document.getElementById('tabel_reqhandseksi');
+  if (tbl_reqseksi) {
   var request = $.ajax({
     url: baseurl + "DbHandlingSeksi/MonitoringHandling/loadviewreqhand",
     type: "POST",
@@ -2250,8 +2270,11 @@ $(document).ready(function () {
     // console.log(result);
     $("div#tabel_reqhandseksi").html(result);
   });
+  }
 });
 $(document).ready(function () {
+  var tbl_reqseksi2 = document.getElementById('tabel_reqhandseksi2');
+  if (tbl_reqseksi2) {
   var request = $.ajax({
     url: baseurl + "DbHandlingSeksi/MonitoringHandling/loadviewreqhand2",
     type: "POST",
@@ -2267,8 +2290,11 @@ $(document).ready(function () {
     // console.log(result);
     $("div#tabel_reqhandseksi2").html(result);
   });
+}
 });
 $(document).ready(function () {
+  var tbl_rjc = document.getElementById('tabel_rejecthandseksi');
+  if (tbl_rjc) {
   var request = $.ajax({
     url: baseurl + "DbHandlingSeksi/MonitoringHandling/loadviewrejhand",
     type: "POST",
@@ -2284,8 +2310,11 @@ $(document).ready(function () {
     // console.log(result);
     $("div#tabel_rejecthandseksi").html(result);
   });
+  }
 });
 $(document).ready(function () {
+  var tbl_dataseksi = document.getElementById('tabel_datahandseksi');
+  if (tbl_dataseksi) {
   var request = $.ajax({
     url: baseurl + "DbHandlingSeksi/MonitoringHandling/loadviewdatahand",
     type: "POST",
@@ -2301,6 +2330,7 @@ $(document).ready(function () {
     // console.log(result);
     $("div#tabel_datahandseksi").html(result);
   });
+}
 });
 $(document).ready(function () {
   $("#komponen_Seksi").select2({
@@ -2898,6 +2928,8 @@ $(document).ready(function () {
   });
 });
 $(document).ready(function () {
+  var tbl_reqjns = document.getElementById('tabel_reqjnshand');
+  if (tbl_reqjns) {
   var request = $.ajax({
     url: baseurl + "DbHandlingSeksi/ReqMasterHandling/loadviewreqjns",
     type: "POST",
@@ -2913,6 +2945,7 @@ $(document).ready(function () {
     // console.log(result);
     $("div#tabel_reqjnshand").html(result);
   });
+}
 });
 function AddReqMasterHandling() {
   var request = $.ajax({
@@ -2993,6 +3026,8 @@ function AddReqMasterHandling() {
   });
 }
 $(document).ready(function () {
+  var tbl_reqmas = document.getElementById('tabel_req_master_handling');
+  if (tbl_reqmas) {
   var request = $.ajax({
     url: baseurl + "DbHandling/SetDataMaster/loadviewreqmashand",
     type: "POST",
@@ -3008,6 +3043,7 @@ $(document).ready(function () {
     // console.log(result);
     $("div#tabel_req_master_handling").html(result);
   });
+}
 });
 function accreqmasthand(id) {
   Swal.fire({
