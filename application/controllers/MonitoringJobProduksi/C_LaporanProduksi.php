@@ -940,6 +940,15 @@ class C_LaporanProduksi extends CI_Controller
 		);
 		
 		if ($hari == 31) {
+			$akhir 	= 'AH';
+			$plus1 	= 'AI';
+			$plus2 	= 'AJ';
+			$plus3 	= 'AK';
+			$plus4 	= 'AL';
+			$plus5 	= 'AM';
+			$plus6 	= 'AN';
+			$plus7 	= 'AO';
+		}elseif ($hari == 30) {
 			$akhir 	= 'AG';
 			$plus1 	= 'AH';
 			$plus2 	= 'AI';
@@ -948,33 +957,24 @@ class C_LaporanProduksi extends CI_Controller
 			$plus5 	= 'AL';
 			$plus6 	= 'AM';
 			$plus7 	= 'AN';
-		}elseif ($hari == 30) {
+		}elseif ($hari == 29){
 			$akhir 	= 'AF';
 			$plus1 	= 'AG';
-			$plus2 	= 'AH';
+			$plus2	= 'AH';
 			$plus3 	= 'AI';
 			$plus4 	= 'AJ';
 			$plus5 	= 'AK';
 			$plus6 	= 'AL';
 			$plus7 	= 'AM';
-		}elseif ($hari == 29){
+		}else {
 			$akhir 	= 'AE';
 			$plus1 	= 'AF';
-			$plus2	= 'AG';
+			$plus2 	= 'AG';
 			$plus3 	= 'AH';
 			$plus4 	= 'AI';
 			$plus5 	= 'AJ';
 			$plus6 	= 'AK';
 			$plus7 	= 'AL';
-		}else {
-			$akhir 	= 'AD';
-			$plus1 	= 'AE';
-			$plus2 	= 'AF';
-			$plus3 	= 'AG';
-			$plus4 	= 'AH';
-			$plus5 	= 'AI';
-			$plus6 	= 'AJ';
-			$plus7 	= 'AK';
 		}
 
 		//TITLE
@@ -989,8 +989,16 @@ class C_LaporanProduksi extends CI_Controller
 			$excel->setActiveSheetIndex(0)->setCellValue("A".($jdl+1)."", "Bulan"); 
 			$excel->setActiveSheetIndex(0)->setCellValue("B".($jdl+1)."", ": ".$bulan[0]); 
 			$excel->setActiveSheetIndex(0)->setCellValue("A".($jdl+2)."", "NO.");
-			$excel->setActiveSheetIndex(0)->setCellValue("B".($jdl+2)."", "PRODUK");
-			$excel->setActiveSheetIndex(0)->setCellValue("C".($jdl+2)."", "PRODUKSI");
+			if ($value[0]['ITEM'] != $value[0]['DESKRIPSI']) { //selain verzinc, implemen, sparepart
+				$excel->setActiveSheetIndex(0)->setCellValue("B".($jdl+2)."", "KODE PRODUK");
+				$excel->setActiveSheetIndex(0)->setCellValue("C".($jdl+2)."", "PRODUK");
+				$excel->getActiveSheet()->mergeCells("B".($jdl+2).":B".($jdl+3).""); 
+				$excel->getActiveSheet()->mergeCells("C".($jdl+2).":C".($jdl+3).""); 
+			}else {
+				$excel->setActiveSheetIndex(0)->setCellValue("B".($jdl+2)."", "PRODUK");
+				$excel->getActiveSheet()->mergeCells("B".($jdl+2).":C".($jdl+3).""); 
+			}
+			$excel->setActiveSheetIndex(0)->setCellValue("D".($jdl+2)."", "PRODUKSI");
 			if ($value[0]['ID_CATEGORY'] == 15 || $value[0]['ID_CATEGORY'] == 19) { // khusus kategori sparepart
 				$excel->setActiveSheetIndex(0)->setCellValue("".$plus1.($jdl+2)."", "TARGET");
 				$excel->setActiveSheetIndex(0)->setCellValue("".$plus2.($jdl+2)."", "WOS / JOB");
@@ -1005,8 +1013,7 @@ class C_LaporanProduksi extends CI_Controller
 				$excel->setActiveSheetIndex(0)->setCellValue("".$plus3.($jdl+2)."", "PENCAPAIAN PRODUKSI(%)");
 			}
 			$excel->getActiveSheet()->mergeCells("A".($jdl+2).":A".($jdl+3).""); 
-			$excel->getActiveSheet()->mergeCells("B".($jdl+2).":B".($jdl+3).""); 
-			$excel->getActiveSheet()->mergeCells("C".($jdl+2).":".$akhir.($jdl+2)."");
+			$excel->getActiveSheet()->mergeCells("D".($jdl+2).":".$akhir.($jdl+2)."");
 			$excel->getActiveSheet()->mergeCells("".$plus1.($jdl+2).":".$plus1.($jdl+3)."");
 			$excel->getActiveSheet()->mergeCells("".$plus2.($jdl+2).":".$plus2.($jdl+3)."");
 			$excel->getActiveSheet()->mergeCells("".$plus3.($jdl+2).":".$plus3.($jdl+3)."");
@@ -1017,7 +1024,7 @@ class C_LaporanProduksi extends CI_Controller
 			$excel->getActiveSheet()->mergeCells("".$plus7.($jdl+2).":".$plus7.($jdl+3)."");
 			}
 			$row = $jdl+3;
-			$col = 2;
+			$col = 3;
 			for ($i=0; $i < $hari ; $i++) { //tanggal 1 - akhir
 				$excel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, ($i+1));
 				$col++;
@@ -1027,7 +1034,9 @@ class C_LaporanProduksi extends CI_Controller
 			$excel->getActiveSheet()->getStyle("A".($jdl+3)."")->applyFromArray($style1);
 			$excel->getActiveSheet()->getStyle("B".($jdl+2)."")->applyFromArray($style1);
 			$excel->getActiveSheet()->getStyle("B".($jdl+3)."")->applyFromArray($style1);
-			$excel->getActiveSheet()->getStyle("C".($jdl+2).":".$akhir.($jdl+3)."")->applyFromArray($style1);
+			$excel->getActiveSheet()->getStyle("C".($jdl+2)."")->applyFromArray($style1);
+			$excel->getActiveSheet()->getStyle("C".($jdl+3)."")->applyFromArray($style1);
+			$excel->getActiveSheet()->getStyle("D".($jdl+2).":".$akhir.($jdl+3)."")->applyFromArray($style1);
 			$excel->getActiveSheet()->getStyle("".$plus1.($jdl+2).":".$plus1.($jdl+3)."")->applyFromArray($style1);
 			$excel->getActiveSheet()->getStyle("".$plus2.($jdl+2).":".$plus2.($jdl+3)."")->applyFromArray($style1);
 			$excel->getActiveSheet()->getStyle("".$plus3.($jdl+2).":".$plus3.($jdl+3)."")->applyFromArray($style1);
@@ -1047,8 +1056,14 @@ class C_LaporanProduksi extends CI_Controller
 			foreach ($value as $key2 => $val) {
 				// echo "<pre>";print_r($val);exit();
 				$excel->setActiveSheetIndex(0)->setCellValue('A'.$numrow, $no);
-				$excel->setActiveSheetIndex(0)->setCellValue('B'.$numrow, $val['DESKRIPSI']);
-				$col = 2;
+				if ($val['ITEM'] != $val['DESKRIPSI']) { //selain verzinc, implemen, sparepart
+					$excel->setActiveSheetIndex(0)->setCellValue('B'.$numrow, $val['ITEM']);
+					$excel->setActiveSheetIndex(0)->setCellValue('C'.$numrow, $val['DESKRIPSI']);
+				}else {
+					$excel->setActiveSheetIndex(0)->setCellValue('B'.$numrow, $val['DESKRIPSI']);
+					$excel->getActiveSheet()->mergeCells("B$numrow:C$numrow");
+				}
+				$col = 3;
 				for ($i=0; $i < $hari ; $i++) { //tanggal 1 - akhir
 					$isi = $val['TANGGAL'.(sprintf("%02d", $i+1)).''];
 					$excel->getActiveSheet()->setCellValueByColumnAndRow($col, $numrow, $isi == 0 ? '' : $isi);
@@ -1075,6 +1090,7 @@ class C_LaporanProduksi extends CI_Controller
 
 				$excel->getActiveSheet()->getStyle("A$numrow")->applyFromArray($style3);
 				$excel->getActiveSheet()->getStyle("B$numrow")->applyFromArray($style2);
+				$excel->getActiveSheet()->getStyle("C$numrow")->applyFromArray($style2);
 				$excel->getActiveSheet()->getStyle("$plus1$numrow")->applyFromArray($style3);
 				$excel->getActiveSheet()->getStyle("$plus2$numrow")->applyFromArray($style3);
 				$excel->getActiveSheet()->getStyle("$plus3$numrow")->applyFromArray($style3);
@@ -1089,7 +1105,7 @@ class C_LaporanProduksi extends CI_Controller
 
 			//TOTAL
 			$excel->setActiveSheetIndex(0)->setCellValue('A'.$numrow, 'Total');
-			$col = 2;
+			$col = 3;
 			for ($i=0; $i < $hari ; $i++) { //tanggal 1 - akhir
 				$excel->getActiveSheet()->setCellValueByColumnAndRow($col, $numrow, $total[$key]['TANGGAL'.(sprintf("%02d", $i+1)).'']);
 				$a = $this->numbertoalpha($col);
@@ -1114,9 +1130,10 @@ class C_LaporanProduksi extends CI_Controller
 				$excel->setActiveSheetIndex(0)->setCellValue($plus3.$numrow, number_format(!empty($total[$key]['TARGET']) && $total[$key]['TARGET'] != 0 ? ($total[$key]['REAL_PROD'] / $total[$key]['TARGET']) * 100 : 0 ,2));
 			}
 
-			$excel->getActiveSheet()->mergeCells("A$numrow:B$numrow"); 
+			$excel->getActiveSheet()->mergeCells("A$numrow:C$numrow"); 
 			$excel->getActiveSheet()->getStyle("A$numrow")->applyFromArray($style4);
 			$excel->getActiveSheet()->getStyle("B$numrow")->applyFromArray($style4);
+			$excel->getActiveSheet()->getStyle("C$numrow")->applyFromArray($style4);
 			$excel->getActiveSheet()->getStyle("$plus1$numrow")->applyFromArray($style4);
 			$excel->getActiveSheet()->getStyle("$plus2$numrow")->applyFromArray($style4);
 			$excel->getActiveSheet()->getStyle("$plus3$numrow")->applyFromArray($style4);
@@ -1130,8 +1147,9 @@ class C_LaporanProduksi extends CI_Controller
 		}
 
 		$excel->getActiveSheet()->getColumnDimension('A')->setWidth(10); 
-		$excel->getActiveSheet()->getColumnDimension('B')->setWidth(30); 
-		for($col = 'C'; $col !== $plus1; $col++) { // autowidth
+		$excel->getActiveSheet()->getColumnDimension('B')->setWidth(20); 
+		$excel->getActiveSheet()->getColumnDimension('C')->setWidth(30); 
+		for($col = 'D'; $col !== $plus1; $col++) { // autowidth
 			$excel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
 		}
 		$excel->getActiveSheet()->getColumnDimension($plus1)->setWidth(10); 

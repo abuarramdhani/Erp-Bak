@@ -272,6 +272,19 @@ public function getPicklist($item){
     return $query->result_array();
 }
 
+public function getCompletion($item){
+    $sql = "SELECT SUM (mmt.transaction_quantity) trx_qty
+                FROM mtl_material_transactions mmt, mtl_system_items_b msib
+            WHERE mmt.transaction_type_id = 44 --WIP Completion
+                AND TRUNC (mmt.transaction_date) BETWEEN TO_DATE ('01-' || TO_CHAR (SYSDATE, 'Mon-YYYY'))
+                                                    AND TO_DATE (SYSDATE)
+                AND mmt.organization_id = msib.organization_id
+                AND mmt.inventory_item_id = msib.inventory_item_id
+                AND msib.segment1 = '$item'";
+    $query = $this->oracle->query($sql);
+    return $query->result_array();
+}
+
 public function getGudang($item){
     $sql = "SELECT DISTINCT msib.segment1
                 ,khs_inv_qty_att(102,msib.inventory_item_id,'FG-TKS','','') FG_TKS

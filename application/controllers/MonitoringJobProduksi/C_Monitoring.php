@@ -171,6 +171,13 @@ class C_Monitoring extends CI_Controller
 		echo json_encode($wip2);
 	}
 	
+	public function searchcompmonitoring(){
+		$item 	= $this->input->post('item', TRUE);
+		$comp 	= $this->M_monitoring->getCompletion($item);
+		$comp2	= $comp[0]['TRX_QTY'] != null ? $comp[0]['TRX_QTY'] : '';
+		echo json_encode($comp2);
+	}
+	
 	public function searchpickmonitoring(){
 		$item 			= $this->input->post('item', TRUE);
 		$picklist		= $this->M_monitoring->getPicklist($item);
@@ -505,8 +512,10 @@ class C_Monitoring extends CI_Controller
 			$baris['desc'] = $this->input->post('desc'.$no[$i].'');
 			$baris['wip'] = $this->input->post('wip'.$no[$i].'');
 			$baris['picklist'] = $this->input->post('picklist'.$no[$i].'');
+			$baris['completion'] = $this->input->post('completion'.$no[$i].'');
 			$baris['fg_tks'] = $this->input->post('fg_tks'.$no[$i].'');
 			$baris['mlati'] = $this->input->post('mlati'.$no[$i].'');
+			$baris['av_pick'] = $this->input->post('av_pick'.$no[$i].'');
 			$baris['jml_plan'] = $this->input->post('jml_plan'.$no[$i].'');
 			$baris['jml_akt'] = $this->input->post('jml_akt'.$no[$i].'');
 			$baris['jml_min'] = $this->input->post('jml_min'.$no[$i].'');
@@ -694,8 +703,10 @@ class C_Monitoring extends CI_Controller
 																	'.$d['desc']);
 			$excel->setActiveSheetIndex(0)->setCellValue('C'.$numrow, 'WIP : '.$d['wip'].'
 																		Picklist : '.$d['picklist'].'
+																		Completion : '.$d['completion'].'
 																		FG-TKS : '.$d['fg_tks'].'
-																		MLATI-DM : '.$d['mlati'].'');
+																		MLATI-DM : '.$d['mlati'].'
+																		Available Picklist : '.$d['av_pick'].'');
 			$excel->setActiveSheetIndex(0)->setCellValue('D'.$numrow, "P");
 			$excel->setActiveSheetIndex(0)->setCellValue('D'.($numrow+1), "A");
 			$excel->setActiveSheetIndex(0)->setCellValue('D'.($numrow+2), "(A - P)");
@@ -975,8 +986,10 @@ class C_Monitoring extends CI_Controller
 			$baris['desc'] = $this->input->post('desc'.$no[$i].'');
 			$baris['wip'] = $this->input->post('wip'.$no[$i].'');
 			$baris['picklist'] = $this->input->post('picklist'.$no[$i].'');
+			$baris['completion'] = $this->input->post('completion'.$no[$i].'');
 			$baris['fg_tks'] = $this->input->post('fg_tks'.$no[$i].'');
 			$baris['mlati'] = $this->input->post('mlati'.$no[$i].'');
+			$baris['av_pick'] = $this->input->post('av_pick'.$no[$i].'');
 			$baris['jml_plan'] = $this->input->post('jml_plan'.$no[$i].'');
 			if ($ket == 'PA') {
 				$baris['jml_pa'] = $this->input->post('jml_akt'.$no[$i].'');
@@ -1186,8 +1199,10 @@ class C_Monitoring extends CI_Controller
 																	'.$d['desc']);
 			$excel->setActiveSheetIndex(0)->setCellValue('C'.$numrow, 'WIP : '.$d['wip'].'
 																		Picklist : '.$d['picklist'].'
+																		Completion : '.$d['completion'].'
 																		FG-TKS : '.$d['fg_tks'].'
-																		MLATI-DM : '.$d['mlati'].'');
+																		MLATI-DM : '.$d['mlati'].'
+																		Available Picklist : '.$d['av_pick'].'');
 			$excel->setActiveSheetIndex(0)->setCellValue('D'.$numrow, "P");
 			$excel->setActiveSheetIndex(0)->setCellValue('D'.($numrow+1), $pa);
 			$excel->setActiveSheetIndex(0)->setCellValue('D'.($numrow+2), $min);

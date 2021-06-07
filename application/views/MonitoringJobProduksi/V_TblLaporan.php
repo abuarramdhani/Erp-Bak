@@ -152,8 +152,8 @@ if ($kategori != 15 && $kategori != 19) { // view kategori bukan sparepart
 <div class="panel-body text-right">
     <button class="btn" formaction="<?php echo base_url("MonitoringJobProduksi/LaporanProduksi/detail_laporan")?>"><i class="fa fa-download"></i> DETAIL</button>
     <button class="btn btn-success" formaction="<?php echo base_url("MonitoringJobProduksi/LaporanProduksi/DownloadExcel")?>"><i class="fa fa-download"></i> EXCEL</button>
-    <button class="btn btn-success" formaction="<?php echo base_url("MonitoringJobProduksi/LaporanProduksi/laporan_produksi_excel2")?>"><i class="fa fa-download"></i> EXCEL FULL</button>
+    <button class="btn btn-success" formaction="<?php echo base_url("MonitoringJobProduksi/LaporanProduksi/laporan_produksi_excel2")?>"><i class="fa fa-download"></i> EXCEL ALL</button>
     <button class="btn btn-info" formtarget="_blank" formaction="<?php echo base_url("MonitoringJobProduksi/LaporanProduksi/laporan_produksi_pdf")?>"><i class="fa fa-print"></i> PDF</button>
-    <button class="btn btn-info" formtarget="_blank" formaction="<?php echo base_url("MonitoringJobProduksi/LaporanProduksi/laporan_produksi_pdf2")?>"><i class="fa fa-print"></i> PDF FULL</button>
+    <button class="btn btn-info" formtarget="_blank" formaction="<?php echo base_url("MonitoringJobProduksi/LaporanProduksi/laporan_produksi_pdf2")?>"><i class="fa fa-print"></i> PDF ALL</button>
 </div>
 </form>
