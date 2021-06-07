@@ -5583,3 +5583,8 @@ $route['MonitoringHandlingSubkon/Cetak/(:any)/(:any)']	= 'MonitoringHandlingSubk
 $route['MonitoringHandlingSubkon/Monitoring']				= 'MonitoringHandlingSubkon/C_Monitoring';
 $route['MonitoringHandlingSubkon/Monitoring/(:any)']		= 'MonitoringHandlingSubkon/C_Monitoring/$1';
 $route['MonitoringHandlingSubkon/Monitoring/(:any)/(:any)']	= 'MonitoringHandlingSubkon/C_Monitoring/$1/$2';
+
+// lanjutan po log book 
+
+$route['PurchaseManagementSendPO/Setup'] = 'PurchaseManagementSendPO/MainMenu/C_Setup';
+$route['PurchaseManagementSendPO/Setup/(:any)'] = 'PurchaseManagementSendPO/MainMenu/C_Setup/$1';
