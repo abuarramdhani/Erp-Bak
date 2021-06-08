@@ -211,7 +211,7 @@ class C_PresensiHarian extends CI_Controller
 			$this->excel->getActiveSheet()->setCellValueByColumnAndRow(1, $i + 3, 'Shift');
 			$this->excel->getActiveSheet()->setCellValueByColumnAndRow(2, $i + 3, 'Point');
 			if (empty($presensi_loop)) {
-				$this->excel->getActiveSheet()->setCellValueByColumnAndRow(3, $i + 3, 'Waktu');
+				$this->excel->getActiveSheet()->setCellValueByColumnAndRow(3, $i + 3, 'Waktu1');
 				$this->excel->getActiveSheet()->setCellValueByColumnAndRow(4, $i + 3, 'Waktu2');
 				$this->excel->getActiveSheet()->setCellValueByColumnAndRow(5, $i + 3, 'Keterangan');
 			} else {
@@ -329,8 +329,9 @@ class C_PresensiHarian extends CI_Controller
 		$this->excel->getActiveSheet()->setCellValueByColumnAndRow(3, $i, 'Tanggal');
 		$this->excel->getActiveSheet()->setCellValueByColumnAndRow(4, $i, 'Shift');
 		$this->excel->getActiveSheet()->setCellValueByColumnAndRow(5, $i, 'Point');
-		$this->excel->getActiveSheet()->setCellValueByColumnAndRow(6, $i, 'Waktu');
+		$this->excel->getActiveSheet()->setCellValueByColumnAndRow(6, $i, 'Waktu1');
 		$this->excel->getActiveSheet()->setCellValueByColumnAndRow(7, $i, 'Waktu2');
+		$this->excel->getActiveSheet()->setCellValueByColumnAndRow(8, $i, 'Keterangan');
 		foreach ($pekerja as $val) {
 			$this->excel->getActiveSheet()->setCellValueByColumnAndRow(0, $i + 1, $val['noind']);
 			$this->excel->getActiveSheet()->setCellValueByColumnAndRow(1, $i + 1, $val['nama']);
@@ -381,6 +382,8 @@ class C_PresensiHarian extends CI_Controller
 				$i++;
 			}
 		}
+
+		$this->excel->getActiveSheet()->freezePane('A8');
 
 		$filename = 'Daftar Hadir ' . $tanggal . '_' . $seksi['0']['seksi'] . '.ods';
 		header('Content-Type: aplication/vnd.ms-excel');
