@@ -225,11 +225,11 @@ function btnTimerKGP(no) {
             dataType: "html"
         });
     }else if(valBtn == 'Selesai'){
-        testmodal(no);
+        testmodalKGP(no);
     }
 }
 
-function testmodal(no) {
+function testmodalKGP(no) {
     $('#modalDetailDOK').modal();
 
     var no_dokumen = $('#no_dokumen'+no).val();
