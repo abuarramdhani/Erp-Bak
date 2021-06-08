@@ -23,6 +23,15 @@ const toastup2l = (type, message) => {
   })
 }
 
+function swalup2l(type, pesan) {
+  Swal.fire({
+    type: type,
+    html:  `<div style="font-weight:400">${pesan}</div>`,
+    text: '',
+    showConfirmButton: false,
+    showCloseButton: true,
+  })
+}
 
 $(function() {
   if ($('.select2subinv_up2l').val() != undefined) {
@@ -55,18 +64,127 @@ $(function() {
     //   })
     // }, 2000);
   }
+  $('.up2l_date_selep_88').daterangepicker({
+    singleDatePicker: true,
+    timePicker: true,
+    autoclose: true,
+    autoUpdateInput: false,
+    locale: {
+      format: "YYYY/MM/DD HH:mm:ss",
+      cancelLabel: 'Clear'
+    },
+  });
+  $('.up2l_date_selep_88').on('apply.daterangepicker', function(ev, picker) {
+      $(this).val(picker.startDate.format('YYYY/MM/DD HH:mm:ss'));
+      $(this).trigger('change');
+  });
+  $('.up2l_date_selep_88').on('cancel.daterangepicker', function(ev, picker) {
+      $(this).val('');
+  });
+  $('.up2l_date_selep_88').on('change', function () {
+      let val = $(this).val().split(' ');
+      $('.slcShift').val('').trigger('change');
+      //SHIFT
+      $.ajax({
+          type: "POST",
+          url: baseurl + 'ManufacturingOperationUP2L/Ajax/getShift',
+          data: {
+              tanggal: val[0]
+          },
+          dataType: "JSON",
+          beforeSend: function () {
+            toastup2lLoading('Sedang Memuat Data Shift..');
+          },
+          success: function (response) {
+              //console.log(response);
+              swal.close();
+              var html = '';
+              html += '<option></option>';
+              for (var i = 0; i < response.length; i++) {
+                  if (i == 0) {
+                      html += '<option value="' + response[i]['DESCRIPTION'] + '">' + response[i]['DESCRIPTION'] + '</option>';
+                  } else {
+                      html += '<option value="' + response[i]['DESCRIPTION'] + '">' + response[i]['DESCRIPTION'] + '</option>';
+                  }
+              }
+              $('.slcShift').html(html);
+          }
+      });
+  });
 })
 
-function swalup2l(type, pesan) {
-  Swal.fire({
-    type: type,
-    title: pesan,
-    text: '',
-    showConfirmButton: false,
-    showCloseButton: true,
+function set_tosubinv_up2l(item_id, batch_no) {
+  $.ajax({
+    url: baseurl + 'ManufacturingOperationUP2L/Selep/update_subinv_complation',
+    type: 'POST',
+    dataType: 'JSON',
+    data: {
+      item_id : item_id,
+      batch_no : batch_no,
+      subinv : $('.select2subinv_up2l_complation').val()
+    },
+    cache:false,
+    beforeSend: function() {
+      Swal.fire({
+        onBeforeOpen: () => {
+           Swal.showLoading();
+           $('.swal2-loading').children('button').css({'width': '40px', 'height': '40px'})
+         },
+        text: 'Mengupdate SUBINVENTORY..',
+        allowOutsideClick: false,
+      })
+    },
+    success: function(result_2) {
+      if (result_2 == 100) {
+        swalup2l('success', 'Sukses Melakukan Update SUBINVENTORY');
+        up2l_refresh_complation();
+      }else {
+        swalup2l('warning', 'Terjadi Kesalahan Saat Melakukan Update SUBINVENTORY');
+      }
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+    swalup2l('error', 'Koneksi Terputus...')
+     console.error();
+    }
   })
 }
+
+$('#form_input_selep_master').on('submit', function(e) {
+  e.preventDefault();
+  $('#modalUP2LCreateKIB').modal('show');
+   // data-toggle="modal" data-target="#modalUP2LCreateKIB"
+})
+
 //ADB1BA0011E1MD
+function settingUserSubinv() {
+  $.ajax({
+    url: baseurl + 'ManufacturingOperationUP2L/Selep/user_subinv',
+    type: 'POST',
+    // dataType: 'JSON',
+    data: {
+    },
+    cache:false,
+    beforeSend: function() {
+      Swal.fire({
+        onBeforeOpen: () => {
+           Swal.showLoading();
+           $('.swal2-loading').children('button').css({'width': '40px', 'height': '40px'})
+         },
+        text: 'Sedang Mengambil Data..',
+        allowOutsideClick: false,
+      })
+    },
+    success: function(result_2) {
+      toastup2l('success', 'Done.');
+      $('.area-setting-user-subinv').html(result_2);
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+    swalup2l('error', 'Koneksi Terputus...')
+     console.error();
+    }
+  })
+}
+
 function up2l_refresh_complation() {
   $('#modalUP2LCompleteJob').modal('hide')
   setTimeout(function () {
@@ -74,13 +192,88 @@ function up2l_refresh_complation() {
   }, 750);
 }
 
-function submit_up2l_selep_master() {
-  $('.btn-up2l-save-selep').attr('disabled', false);
-  $('.btn-up2l-cetakkib').attr('disabled', true);
-  setTimeout(function () {
-    $('#modalUP2LCreateKIB').modal('hide');
-  }, 1500);
-}
+$('.form_generate_kib_up2l').on('submit', function(e) {
+   e.preventDefault();
+   let form_data_utama = new FormData($('#form_input_selep_master').get(0));
+   $.ajax({
+     url: baseurl + 'ManufacturingOperationUP2L/Selep/create',
+     type: 'POST',
+     data : form_data_utama,
+     contentType: false,
+     cache: false,
+     async:false,
+     processData: false,
+     dataType: "JSON",
+     beforeSend: function() {
+       // $('#modalUP2LCompleteJob').modal('hide');
+       Swal.fire({
+         onBeforeOpen: () => {
+            Swal.showLoading();
+            $('.swal2-loading').children('button').css({'width': '40px', 'height': '40px'})
+          },
+         text: 'Sedang menyimpan data selep..'
+       })
+     },
+     success: function(result) {
+       if (result == 'done') {
+         swalup2l('success', `Data Selep Berhasil Tersimpan`);
+         let form_data  = new FormData($('.form_generate_kib_up2l').get(0));
+         $.ajax({
+           url: baseurl + 'ManufacturingOperationUP2L/Selep/generate_kib',
+           type: 'POST',
+           data : form_data,
+           contentType: false,
+           cache: false,
+           async:false,
+           processData: false,
+           dataType: "JSON",
+           beforeSend: function() {
+             // $('#modalUP2LCompleteJob').modal('hide');
+             Swal.fire({
+               onBeforeOpen: () => {
+                  Swal.showLoading();
+                  $('.swal2-loading').children('button').css({'width': '40px', 'height': '40px'})
+                },
+               text: 'Sedang menyimpan data KIB..'
+             })
+           },
+           success: function(result_2) {
+             if (result_2 != 500) {
+               swalup2l('success', `KIB berhasil tersimpan, klik link berikut untuk mencetak KIB ${result_2}`);
+                 $('.btn-up2l-cetakkib').attr('disabled', true);
+                 setTimeout(function () {
+                   // swal.close();
+                   // location.reload();
+                   $('#modalUP2LCreateKIB').modal('hide');
+                 }, 1000);
+             }
+           },
+           error: function(XMLHttpRequest, textStatus, errorThrown) {
+           swalup2l('error', XMLHttpRequest);
+            console.error();
+           }
+         })
+
+       }else {
+         swalup2l('warning', 'Terjadi Kesalahan Saat Menginput Data Selep! Harap Coba lagi');
+       }
+     },
+     error: function(XMLHttpRequest, textStatus, errorThrown) {
+     swalup2l('error', XMLHttpRequest);
+      console.error();
+     }
+   })
+
+
+})
+
+// function submit_up2l_selep_master() {
+//   // $('.btn-up2l-save-selep').attr('disabled', false);
+//   $('.btn-up2l-cetakkib').attr('disabled', true);
+//   setTimeout(function () {
+//     $('#modalUP2LCreateKIB').modal('hide');
+//   }, 1500);
+// }
 
 $('.btn-up2l-cetakkib').on('click', function() {
       $.ajax({
@@ -97,7 +290,8 @@ $('.btn-up2l-cetakkib').on('click', function() {
                Swal.showLoading();
                $('.swal2-loading').children('button').css({'width': '40px', 'height': '40px'})
              },
-            text: 'Sedang Mengambil IO Tujuan, Sub Inv. Tujuan, Locator Tujuan.'
+            text: 'Sedang Mengambil IO Tujuan, Sub Inv. Tujuan, Locator Tujuan.',
+            allowOutsideClick: false,
           })
         },
         success: function(result) {
@@ -123,7 +317,8 @@ $('.btn-up2l-cetakkib').on('click', function() {
                    Swal.showLoading();
                    $('.swal2-loading').children('button').css({'width': '40px', 'height': '40px'})
                  },
-                text: 'Sedang Mengecek Quantity Handling..'
+                text: 'Sedang Mengecek Quantity Handling..',
+                allowOutsideClick: false,
               })
             },
             success: function(result_2) {
@@ -242,7 +437,8 @@ $('.btn-complate-job').on('click', function() {
            Swal.showLoading();
            $('.swal2-loading').children('button').css({'width': '40px', 'height': '40px'})
          },
-        text: 'Checking Onhand..'
+        text: 'Checking Onhand..',
+        allowOutsideClick: false,
       })
     $('.alert-area-up2l-onhand-kurang').html('');
     $('#area-check-onhand-up2l').html('');
@@ -251,6 +447,8 @@ $('.btn-complate-job').on('click', function() {
       toastup2l('success', 'Done.')
       console.log(result, 'Onhand');
       $('#area-check-onhand-up2l').html(result.data);
+      $('.select2subinv_up2l_complation').select2();
+
       if (result.merah == 500) {
         $('.alert-area-up2l-onhand-kurang').html(`<div class="alert bg-danger alert-dismissible" role="alert">
               <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -293,12 +491,13 @@ function completejobUP2L2021() {
            Swal.showLoading();
            $('.swal2-loading').children('button').css({'width': '40px', 'height': '40px'})
          },
-        text: 'Completion job..'
+        text: 'Completion job..',
+        allowOutsideClick: false,
       })
     },
     success: function(result_2) {
       if (result_2 != 'gada') {
-        swalup2l('success', 'Completion job berhasil');
+        swalup2l('success', 'Completion Job <b>Berhasil</b>');
         $('#modalUP2LCompleteJob').modal('hide');
         $('.btn-complate-job').attr('disabled', true);
         $('.btn-up2l-cetakkib').attr('disabled', false);
@@ -311,11 +510,11 @@ function completejobUP2L2021() {
   })
 }
 
-function create_batch_up2l(item, recipe_no, recipe_version, uom) {
-  console.log(item, recipe_no, recipe_version, uom);
+function create_batch_up2l(item, recipe_no, recipe_version, uom, job_date) {
+  console.log(item, recipe_no, recipe_version, uom, job_date);
   console.log($(`#cek_sub_inv_tujuan_${recipe_no}`).text(),' disiniiii');
   if ($(`#cek_locator_code_${recipe_no}`).text() != '-' && $(`#cek_jml_locator_${recipe_no}`).text() == 0) {
-      swalup2l('warning', `Jumlah Locator di ${$(`#cek_locator_code_${recipe_no}`).text()} tidak boleh 0`);
+      swalup2l('warning', `<b>Jumlah Locator di <span style="color:#002b65">${$(`#cek_locator_code_${recipe_no}`).text()}</span> tidak boleh 0</b>`);
   }else {
     if ($(`#cek_sub_inv_tujuan_${recipe_no}`).text() != '-') {
       let subinv = $('.select2subinv_up2l').val();
@@ -331,7 +530,8 @@ function create_batch_up2l(item, recipe_no, recipe_version, uom) {
             recipe_version: recipe_version,
             uom: uom,
             subinv: subinv,
-            qty: selepQtyHeader
+            qty: selepQtyHeader,
+            job_date: job_date
           },
           cache:false,
           beforeSend: function() {
@@ -340,7 +540,8 @@ function create_batch_up2l(item, recipe_no, recipe_version, uom) {
                  Swal.showLoading();
                  $('.swal2-loading').children('button').css({'width': '40px', 'height': '40px'})
                },
-              text: 'Creating Batch..'
+              text: 'Creating Batch..',
+              allowOutsideClick: false,
             })
             $('#modalMOreceip').modal('hide');
             $('#txtSelepComponentConfrm').val('');
@@ -372,7 +573,7 @@ function create_batch_up2l(item, recipe_no, recipe_version, uom) {
               $('#txtSelepSubInvFromCetakKIB').val(subinv);
 
             }else {
-              swalup2l('warning', `Failed to create batch <br> [ ${result.reason} ]`);
+              swalup2l('warning', `Failed to create batch <br> <b> [ ${result.reason} ] </b>`);
             }
           },
           error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -381,7 +582,7 @@ function create_batch_up2l(item, recipe_no, recipe_version, uom) {
           }
         })
       }else {
-        swalup2l('warning', 'Isi Sub. Inventory Dahulu..');
+        swalup2l('warning', 'Karena anda belum terdaftar di User Sub. Inventory, <br><b>Pilih Sub.Inv. terlebih dahulu!</b>');
       }
     }else {
       swalup2l('warning', `Gudang tujuan pada no recipe ${recipe_no} tidak boleh kosong.`);
@@ -398,17 +599,19 @@ $('#txtComponentCodeHeader').on('change', function() {
   $('#txtSelepQtyCetakKIB').val('');
   $('#txtSelepSubInvFromCetakKIB').val('');
   $('.btn-up2l-cetakkib').attr('disabled', true);
-  $('.btn-up2l-save-selep').attr('disabled', true);
+  // $('.btn-up2l-save-selep').attr('disabled', true);
 })
 
 function createBatchMO() { //recipe
   let batch_number_cek = $('#txtSelepBatchHeader').val();
   let component_code = $('#txtComponentCodeHeader').val();
   let selepQtyHeader = $('#txtSelepQuantityHeader').val();
-  if (component_code == null || selepQtyHeader == '') {
-    alert('component code & selep qty header tidak boleh kosong');
+  let job_date = $('#txtSelepDate').val();
+  if (component_code == null || selepQtyHeader == '' || job_date == '') {
+    swalup2l('info', '<b>Selep Date</b>, <b>Component Code</b>, dan <b>Selep QTY Header</b> <br> Tidak boleh kosong!')
   }else {
     component_code = component_code.split(' | ')[0];
+    let result_cek_987 = 0;
     if (batch_number_cek == '') {
       let tampung = [];
       $.ajax({
@@ -430,9 +633,10 @@ function createBatchMO() { //recipe
         },
         success: function(result) {
           if (result != 'gada') {
+            console.log(result_cek_987, 'ini lhoo');
             $('#mo_comp_code').text(`Create Batch (${component_code})`);
             $('#txtSelepQuantityHeaderModal').val(selepQtyHeader);
-            $('.select2subinv_up2l').val('').trigger('change');
+            // $('.select2subinv_up2l').val('').trigger('change');
 
             console.log(result);
             result.forEach((v,i)=>{
@@ -447,26 +651,58 @@ function createBatchMO() { //recipe
                             <td>${v.UOM}</td>
                             <td id="cek_locator_code_${v.RECIPE_NO}">${v.LOCATOR_CODE == null ? '-' : v.LOCATOR_CODE}</td>
                             <td id="cek_jml_locator_${v.RECIPE_NO}">${v.JML_LOCATOR}</td>
-                            <td><button type="button" class="btn btn-success" onclick="create_batch_up2l('${v.ITEM}', '${v.RECIPE_NO}', '${v.RECIPE_VERSION}', '${v.UOM}')" name="button"><b> <i class="fa fa-check"></i> Pilih </b></button></td>
+                            <td><button type="button" class="btn btn-success create_batch_up2l_if_1" onclick="create_batch_up2l('${v.ITEM}', '${v.RECIPE_NO}', '${v.RECIPE_VERSION}', '${v.UOM}', '${job_date}')" name="button"><b> <i class="fa fa-check"></i> Pilih </b></button></td>
                           </tr>`;
               tampung.push(body);
               swal.close();
             });
+            $.ajax({
+              url: baseurl + 'ManufacturingOperationUP2L/Selep/cek_user',
+              type: 'POST',
+              dataType: 'JSON',
+              data: {
+                noind : $('#up2l_user_login_2021').val(),
+              },
+              cache:false,
+              beforeSend: function() {
+                toastup2lLoading('Filtering subinv by user login..')
+                $('.select2subinv_up2l').val('').trigger('change');
+              },
+              success: function(result) {
+                if (result != 'gada') {
+                  $('.select2subinv_up2l').val(result).trigger('change');
+                }else {
+                  $('.select2subinv_up2l').val('').trigger('change');
+                }
+                swal.close()
+              },
+              error: function(XMLHttpRequest, textStatus, errorThrown) {
+                swalup2l('error', 'when get user');
+               console.error();
+              }
+            });
             $('#modalMOreceip').modal('show');
           }else {
-            swalup2l('warning', 'Kode komponen belum punya recipe!');
+            swalup2l('warning', `Kode komponen <b>${component_code}</b> belum mempunyai recipe!`);
           }
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
           swalup2l('error', 'textStatus');
          console.error();
         }
-      }).then(() =>{
-        console.log(tampung, 'tampung recipe done');
+      }).done((result) =>{
+        console.log(result,'ini result dari recipt ');
         $('#area-up2l-body-recipe').html(tampung.join());
+        //delay modal akan show
+        setTimeout(function () {
+          if (result.length == 1) {
+            console.log('heiheiehiehi');
+            $('.create_batch_up2l_if_1').trigger('click');
+          }
+        }, 678);
       })
     }else {
-      swalup2l('warning', 'No. batch sudah dibuat');
+      swalup2l('warning', '<b>No. Batch</b> sudah dibuat');
     }
 
   }
@@ -1245,8 +1481,12 @@ $(window).load(function () {
                 tanggal: $('.time-form1.ajaxOnChange').val()
             },
             dataType: "JSON",
+            beforeSend: function () {
+              toastup2lLoading('Sedang Memuat Data Shift..');
+            },
             success: function (response) {
                 //console.log(response);
+                swal.close();
                 var html = '';
                 html += '<option></option>';
                 for (var i = 0; i < response.length; i++) {

@@ -49,6 +49,51 @@ class C_Selep extends CI_Controller
 		$this->load->view('V_Footer', $data);
 	}
 
+	public function update_user_subinv($value='')
+	{
+		// echo "<pre>";
+		// print_r($this->input->post());
+		if (!empty($this->input->post('no_induk'))) {
+			$this->db->where('id IS NOT', NULL)->delete('mo.mo_selep_subinv');
+			foreach ($this->input->post('no_induk') as $key => $value) {
+				if (!empty($value) && !empty( $this->input->post('subinv')[$key])) {
+					$data = [
+						'no_induk' => strtoupper($value),
+						'subinv' => $this->input->post('subinv')[$key]
+					];
+					$this->db->insert('mo.mo_selep_subinv', $data);
+				}
+			}
+			if ($this->db->affected_rows()) {
+				echo json_encode(200);
+			}else {
+				echo json_encode(500);
+			}
+		}else {
+			echo json_encode(500);
+		}
+
+
+	}
+
+	public function user_subinv($value='')
+	{
+		$data['get'] = $this->db->get('mo.mo_selep_subinv')->result_array();
+		$this->load->view('ManufacturingOperationUP2L/Selep/V_setting_subinv', $data);
+	}
+
+	public function cek_user($value='')
+	{
+		// SEBELUM PUSH PRODUKSI PASTIKAN TABEL INI ADA //
+		$data_ = $this->db->where('no_induk', $this->input->post('noind'))->get('mo.mo_selep_subinv')->row_array();
+		if (!empty($data_['no_induk'])) {
+			$res = $data_['subinv'];
+		}else {
+			$res = 'gada';
+		}
+		echo json_encode($res);
+	}
+
 	public function get_qty_handling($value='')
 	{
 		$data = 'gada';
@@ -119,21 +164,19 @@ class C_Selep extends CI_Controller
 
 			    if ($insert == 1) {
 						// redirect('InventoryManagement/CreateKIBDEV/pdf/1/'.$batch_no.'/0');
-						echo "Karena masih di local, Klik link berikut <a href='http://erp.quick.com/InventoryManagement/CreateKIBDEV/pdf/1/$batch_no/0'>$batch_no</a>";
+						// echo "Karena masih di local, Klik link berikut <a href='http://192.168.168.196/erp-2021/ManufacturingOperationUP2L/CreateKIBDEV/pdf/1/$batch_no/0'>$batch_no</a>";
+						echo json_encode("<a href='http://192.168.168.196/erp-2021/ManufacturingOperationUP2L/CreateKIBDEV/pdf/1/$batch_no/0'>$batch_no</a>");
 			    }else {
-						echo "Terdapat Kesalahan <br>";
-						echo "<pre>";
-						print_r($data);
-						echo "<br>";
-						echo "<pre>";
-						print_r($_POST);
+						echo json_encode(500);
 			    }
 			}else {
-				echo "QTY_HANDLING can't 0";
+				// echo "QTY_HANDLING can't 0";
+				echo json_encode(500);
 			}
 
 	  }else {
-	    echo "Batch Number can't null";
+	    // echo "Batch Number can't null";
+			echo json_encode(500);
 	  }
 	}
 
@@ -195,6 +238,16 @@ class C_Selep extends CI_Controller
 		echo json_encode($data);
 	}
 
+	public function update_subinv_complation()
+	{
+		$update = $this->M_selep->update_subinv_complation($this->input->post('item_id'), $this->input->post('batch_no'), $this->input->post('subinv'));
+		if ($update == 100) {
+			echo json_encode(100);
+		}else {
+			echo json_encode('gada');
+		}
+	}
+
 	public function check_detail_onhand($value='')
 	{
 		$data = '';
@@ -209,9 +262,34 @@ class C_Selep extends CI_Controller
 					}else {
 						$style = '';
 					}
+					if (!empty($value['SUBINVENTORY'])) {
+						$sub_to = $value['SUBINVENTORY'];
+					}else {
+						$user_login = $this->session->user;
+						$cek_sub_inv_user = $this->db->select('subinv')->where('no_induk', $user_login)->get('mo.mo_selep_subinv')->row_array();
+						if (!empty($cek_sub_inv_user)) {
+							if ($cek_sub_inv_user['subinv'] == 'INT-FDY') {
+								$option = '<option value="INT-FDY">INT-FDY - GUDANG INTERNAL UNIT FOUNDRY</option>';
+							}else {
+								$option = '<option value="INT-FDYTKS">INT-FDYTKS - GUDANG INTERNAL UNIT FOUNDRY DI TUKSONO</option>';
+							}
+							$sub_to = '<select class="select2subinv_up2l_complation" onchange="set_tosubinv_up2l(\''.$value['INVENTORY_ITEM_ID'].'\', \''.$value['BATCH_NO'].'\')" name="" style="width:150px;">
+													<option value=""></option>
+													'.$option.'
+												</select>';
+						}else {
+							$sub_to = '<select class="select2subinv_up2l_complation" onchange="set_tosubinv_up2l(\''.$value['INVENTORY_ITEM_ID'].'\', \''.$value['BATCH_NO'].'\')" name="" style="width:150px;">
+													<option value=""></option>
+													<option value="INT-FDY">INT-FDY - GUDANG INTERNAL UNIT FOUNDRY</option>
+													<option value="INT-FDYTKS">INT-FDYTKS - GUDANG INTERNAL UNIT FOUNDRY DI TUKSONO</option>
+												</select>';
+						}
+					}
 					$tampung[] = '<tr '.$style.'>
 		                      <td>'.$value['BATCH_NO'].'</td>
-		                      <td>'.$value['SUBINVENTORY'].'</td>
+		                      <td>
+													'.$sub_to.'
+													</td>
 		                      <td>'.$value['ITEM'].'</td>
 													<td>'.$value['DESCRIPTION'].'</td>
 													<td>'.number_format($value['ATT'],2).'</td>
@@ -248,7 +326,15 @@ class C_Selep extends CI_Controller
 
 	public function create_batch($value='')
 	{
-		$res = $this->M_selep->create_batch($this->input->post('item'), $this->input->post('recipe_no'), $this->input->post('recipe_version'), $this->input->post('uom'), $this->input->post('subinv'), $this->input->post('qty'));
+		$job_date=date_create($this->input->post('job_date'));
+		$job_date=strtoupper(date_format($job_date,"d-M-Y H:i:s"));
+		$res = $this->M_selep->create_batch($this->input->post('item'),
+																				$this->input->post('recipe_no'),
+																				$this->input->post('recipe_version'),
+																				$this->input->post('uom'),
+																				$this->input->post('subinv'),
+																				$this->input->post('qty'),
+																				$job_date);
 		if (!empty($res['no_batch'])) {
 			$data = $res;
 		}else {
@@ -296,7 +382,7 @@ class C_Selep extends CI_Controller
 		$data = [];
 		foreach ($protodata as $row) {
 			if (!empty($row['batch_no'])) {
-				$cetak_kib = '<a style="margin-right:4px" href="http://erp.quick.com/InventoryManagement/CreateKIBDEV/pdf/1/'.$row['batch_no'].'/0"  title="Cetak KIB" target="_blank"><span class="fa fa-file-pdf-o fa-2x"></span></a>';
+				$cetak_kib = '<a style="margin-right:4px" href="http://192.168.168.196/erp-2021/ManufacturingOperationUP2L/CreateKIBDEV/pdf/1/'.$row['batch_no'].'/0"  title="Cetak KIB" target="_blank"><span class="fa fa-file-pdf-o fa-2x"></span></a>';
 			}else {
 				$cetak_kib = '';
 			}
@@ -373,12 +459,13 @@ class C_Selep extends CI_Controller
 		}
 
 		$aksen2 = 0;
+		$date_nya = explode(' ', $this->input->post('txtSelepDateHeader'));
 		foreach ($this->input->post('component_code[]') as $b) {
 			$pec = explode(' | ', $b);
 			$selepData[$aksen2]['component_code'] = trim($pec[0]);
 			$selepData[$aksen2]['component_description'] = trim($pec[1]);
 			$selepData[$aksen2]['kode_proses'] = trim($pec[2]);
-			$selepData[$aksen2]['selep_date'] = $this->input->post('txtSelepDateHeader');
+			$selepData[$aksen2]['selep_date'] = $date_nya[0];
 			$selepData[$aksen2]['shift'] = $this->input->post('txtShift');
 			$selepData[$aksen2]['scrap_quantity'] = '0';
 			$selepData[$aksen2]['job_id'] = $employee;
@@ -403,7 +490,9 @@ class C_Selep extends CI_Controller
 			$this->M_selep->setSelep($se);
 		}
 
-		redirect(site_url('ManufacturingOperationUP2L/Selep/view_create'));
+		echo json_encode('done');
+
+		//// redirect(site_url('ManufacturingOperationUP2L/Selep/view_create'));
 	}
 
 	public function edit($id)

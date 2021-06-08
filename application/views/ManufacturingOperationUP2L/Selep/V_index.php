@@ -34,7 +34,7 @@
                                             <tr>
                                                 <th style="text-align:center; width:30px">No</th>
                                                 <th style="text-align:center; min-width:120px">Action</th>
-                                                <th>Selep Date</th>
+                                                <th style="text-align:center; min-width:80px">Selep Date</th>
                                                 <th>Batch No.</th>
                         												<th>Component Code</th>
                         												<th>Component Description</th>

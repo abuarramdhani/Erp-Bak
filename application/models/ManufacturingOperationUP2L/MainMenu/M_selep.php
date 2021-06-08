@@ -45,7 +45,7 @@ class M_selep extends CI_Model
 
     public function generate_no_kib($batch_no)
     {
-      return $this->oracle->query("SELECT  frh.ROUTING_CLASS|| TO_CHAR (SYSDATE, 'RRMM')
+      return $this->oracle->query("SELECT frh.ROUTING_CLASS|| TO_CHAR (SYSDATE, 'RRMM')
                   || LPAD (KHS_CREATE_MO_SEQ.NEXTVAL, 5, '0') NO_KIB
                   FROM GME_BATCH_HEADER gbh,
                   fm_rout_hdr frh
@@ -58,7 +58,7 @@ class M_selep extends CI_Model
     {
       return $this->oracle->query("SELECT gbh.ORGANIZATION_ID ,
                                   frh.ROUTING_CLASS ROUTING_DEPT_CLASS ,
-                                  gbh.PLAN_START_DATE PLANED_DATE,
+                                  TO_CHAR(gbh.PLAN_START_DATE, 'DD-MON-YYYY HH24:MI:SS') PLANED_DATE,
                                   bcs.SHIFT_NUM PLANSHIFT_NUM,
                                   gob.OPRN_ID,
                                   gmd.INVENTORY_ITEM_ID PRIMARY_ITEM_ID,
@@ -153,7 +153,7 @@ class M_selep extends CI_Model
                             VALUES(
                               '{$data[0]['ORGANIZATION_ID']}',
                               '{$data[0]['ROUTING_DEPT_CLASS']}',
-                              '{$data[0]['PLANED_DATE']}',
+                              TO_DATE('{$data[0]['PLANED_DATE']}','DD-MON-YYYY HH24:MI:SS') ,
                               '{$data[0]['PLANSHIFT_NUM']}',
                               '{$data[0]['OPRN_ID']}',
                               '{$data[0]['PRIMARY_ITEM_ID']}',
@@ -195,8 +195,8 @@ class M_selep extends CI_Model
 
     public function batch_completion($no_batch, $qty)
     {
-      $conn = oci_connect('APPS', 'APPS', '192.168.7.3:1522/DEV');
-      // $conn = oci_connect('APPS', 'APPS', '192.168.7.1:1521/PROD');
+      // $conn = oci_connect('APPS', 'APPS', '192.168.7.3:1522/DEV');
+      $conn = oci_connect('APPS', 'APPS', '192.168.7.1:1521/PROD');
 
       if (!$conn) {
           $e = oci_error();
@@ -216,6 +216,20 @@ class M_selep extends CI_Model
 
       // and now, execute the cursor
       oci_execute($cursor);
+    }
+
+    public function update_subinv_complation($item_id, $batch_no, $subinv)
+    {
+      $this->oracle->query("UPDATE gme_material_details gmd
+                            set gmd.SUBINVENTORY = '$subinv'
+                            where gmd.LINE_TYPE = -1
+                              and gmd.INVENTORY_ITEM_ID = '$item_id'
+                              and gmd.BATCH_ID = (select gbh.BATCH_ID
+                                                    from gme_batch_header gbh
+                                                   where gbh.BATCH_NO = '$batch_no')");
+       if ($this->oracle->affected_rows()) {
+         return 100;
+       }
     }
 
     public function check_onhand($no_batch)
@@ -238,10 +252,11 @@ class M_selep extends CI_Model
                                     and gmd.LINE_TYPE = -1")->result_array();
     }
 
-    public function create_batch($item, $recipe_no, $recipe_version, $uom, $subinv, $qty)
+    public function create_batch($item, $recipe_no, $recipe_version, $uom, $subinv, $qty, $job_date)
     {
-        $conn = oci_connect('APPS', 'APPS', '192.168.7.3:1522/DEV');
-        // $conn = oci_connect('APPS', 'APPS', '192.168.7.1:1521/PROD');
+      // echo $job_date;die;
+        // $conn = oci_connect('APPS', 'APPS', '192.168.7.3:1522/DEV');
+        $conn = oci_connect('APPS', 'APPS', '192.168.7.1:1521/PROD');
         if (!$conn) {
             $e = oci_error();
             trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
@@ -251,7 +266,7 @@ class M_selep extends CI_Model
         $response_2 = '';
 
         $sql = "BEGIN
-                khscreatebatch.create_batch(5177,'OPM','$item','$recipe_no',$recipe_version,'$uom',$qty,'$subinv',:param, :reason);
+                khscreatebatch.create_batch(5177,'OPM','$item','$recipe_no',$recipe_version,'$uom',$qty,'$subinv',TO_DATE('$job_date','DD-MON-YYYY HH24:MI:SS'),:param, :reason);
                 END;";
 
         $stmt = oci_parse($conn, $this->removeNewLine($sql));

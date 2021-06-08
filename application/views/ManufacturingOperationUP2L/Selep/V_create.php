@@ -47,12 +47,13 @@
     padding-bottom: 20px !important;
   }
 </style>
+<input type="hidden" id="up2l_user_login_2021" value="<?php echo $this->session->user ?>">
 <section class="content">
     <div class="inner">
         <div class="row">
-            <form autocomplete="off" method="post" action="<?php echo site_url('ManufacturingOperationUP2L/Selep/create'); ?>" class="form-horizontal">
+            <form autocomplete="off" id="form_input_selep_master" method="post" action="<?php // echo site_url('ManufacturingOperationUP2L/Selep/create'); ?>" class="form-horizontal">
                 <div class="col-lg-12">
-                    <div class="row">
+                    <!-- <div class="row">
                         <div class="col-lg-12">
                             <div class="col-lg-11">
                                 <div class="text-right">
@@ -67,50 +68,68 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <br />
+                    </div> -->
+                    <!-- <br /> -->
 
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="box box-primary box-solid">
-                                <div class="box-header with-border">Create Selep</div>
+                                <div class="box-header with-border">
+                                  <a class="btn btn-danger pull-right ml-2" href="<?php echo site_url('ManufacturingOperationUP2L/Selep/'); ?>"> <i class="fa fa-reply"></i> <b>Kembali</b> </a>
+                                  <?php if ($this->session->user == 'T0012'): ?>
+                                    <button type="button" class="btn btn-info pull-right" name="button" data-toggle="modal" data-target="#modalUP2LSettingSubinv" onclick="settingUserSubinv()"> <b> <i class="icon-wrench"></i> Setting User Subinv</b></button>
+                                  <?php endif; ?>
+                                  <b class="pull-left" style="padding-top:1.7px;font-size:20px;">Create Selep</b>
+                                </div>
                                 <div class="box-body">
                                     <div class="panel-body">
                                         <div class="row">
-                                        <div class="form-group">
-                                            <label for="txtSelepDateHeader" class="control-label col-lg-4">Selep Date</label>
-                                            <div class="col-lg-6">
-                                            <input type="text" name="txtSelepDateHeader" class="form-control time-form1 ajaxOnChange" placeholder="Production Date">
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="txtShift" class="control-label col-lg-4">Shift</label>
-                                            <div class="col-lg-6">
-                                                <select class="form-control slcShift" id="txtShift" name="txtShift" style="width:100%">
-                                                </select>
-                                            </div>
-                                        </div>
                                         <div class="box box-default box-solid">
-                                                <div class="box-header with-border"><div class="col-lg-12">
-                                                <div class="col-lg-10">
-                                                    <b>Employee</b>
+                                             <div class="box-header with-border">
+                                                <div class="col-lg-12">
+                                                  <div class="col-lg-12" style="margin-top: 3px;">
+                                                      <b class="mt-3">Date Setting</b>
+                                                  </div>
                                                 </div>
-                                                <div class="col-lg-2">
-                                                        <button class="btn btn-info" onclick="add_emp_selep()" style="color:white;"><i class="fa fa-plus"></i></button>
-                                                        <button class="btn btn-danger" onclick="remove_emp_selep()" style="color:white;"><i class="fa fa-close"></i></button>
-                                                </div>
-                                                </div></div>
-                                                <div class="panel-body" id="container-employee">
-                                                    <div class="form-group employee">
-                                                        <label for="txtSelepQuantityHeader" class="control-label col-lg-4">Nama</label>
-                                                        <div class="col-lg-6">
-                                                            <select class="form-control jsSlcEmpl toupper" id="txtEmployeeHeader" style="width:100%" name="txt_employee[]" required data-placeholder="Employee Name">
-                                                                <option></option>
-                                                            </select>
-                                                        </div>
+                                              </div>
+                                              <div class="panel-body">
+                                                <div class="form-group">
+                                                    <label for="txtSelepDateHeader" class="control-label col-lg-4">Selep Date</label>
+                                                    <div class="col-lg-6">
+                                                    <input type="text" name="txtSelepDateHeader" id="txtSelepDate" class="form-control up2l_date_selep_88" placeholder="Production Date">
                                                     </div>
                                                 </div>
+                                                <div class="form-group">
+                                                    <label for="txtShift" class="control-label col-lg-4">Shift</label>
+                                                    <div class="col-lg-6">
+                                                        <select class="form-control slcShift" id="txtShift" name="txtShift" style="width:100%">
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                              </div>
+                                            </div>
+                                        <div class="box box-default box-solid">
+                                             <div class="box-header with-border">
+                                                <div class="col-lg-12">
+                                                  <div class="col-lg-10" style="margin-top: 3px;">
+                                                      <b class="mt-3">Employee</b>
+                                                  </div>
+                                                  <div class="col-lg-2">
+                                                      <button class="btn btn-sm btn-info" onclick="add_emp_selep()" style="color:white;"><i class="fa fa-plus"></i></button>
+                                                      <button class="btn btn-sm btn-danger" onclick="remove_emp_selep()" style="color:white;"><i class="fa fa-close"></i></button>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                              <div class="panel-body" id="container-employee">
+                                                  <div class="form-group employee">
+                                                      <label for="txtSelepQuantityHeader" class="control-label col-lg-4">Nama</label>
+                                                      <div class="col-lg-6">
+                                                          <select class="form-control jsSlcEmpl toupper" id="txtEmployeeHeader" style="width:100%" name="txt_employee[]" required data-placeholder="Employee Name">
+                                                              <option></option>
+                                                          </select>
+                                                      </div>
+                                                  </div>
+                                              </div>
                                             </div>
                                             <div class="box box-default box-solid">
                                                 <div class="box-header with-border">
@@ -187,8 +206,8 @@
                                     <div class="panel-footer ">
                                       <div class="row">
                                         <div class="col-md-10 text-left">
-                                          <button type="submit" class="btn btn-success btn-lg btn-up2l-save-selep" disabled><i class="fa fa-save"></i></i>  Save</button>
-                                          <button type="button" data-toggle="modal" data-target="#modalUP2LCreateKIB" class="btn btn-danger btn-lg btn-up2l-cetakkib" disabled><i class="fa fa-file-pdf-o"></i></i>  Cetak KIB</button>
+                                          <!-- <button type="submit" class="btn btn-success btn-lg btn-up2l-save-selep" disabled><i class="fa fa-save"></i></i>  Save</button> -->
+                                          <button type="submit" class="btn btn-danger btn-lg btn-up2l-cetakkib" disabled><i class="fa fa-file-pdf-o"></i></i>  Cetak KIB</button>
                                           <button type="button" data-toggle="modal" data-target="#modalUP2LCompleteJob" class="btn btn-primary btn-lg btn-complate-job" disabled><i class="fa fa-upload"></i></i>  Complete Job</button>
                                           <button type="button" onclick="createBatchMO()" class="btn btn-primary btn-lg"><i class="fa fa-rocket"></i></i>  Create Batch</button>
                                         </div>
@@ -365,31 +384,31 @@
               <div class="box-body">
                 <div class="row">
                   <div class="col-md-12">
-                    <form class="" target="_blank" action="<?php echo base_url('ManufacturingOperationUP2L/Selep/generate_kib') ?>" method="post">
+                    <form class="form_generate_kib_up2l"  action="<?php //echo base_url('ManufacturingOperationUP2L/Selep/generate_kib') ?>" method="post">
                       <br>
                       <div class="row">
-                        <div class="col-md-6">
+                        <!-- <div class="col-md-6">
                           <div class="form-group">
                             <label for="">IO Tujuan</label>
-                            <input type="text" readonly class="form-control up2l_io_99" name="io" value="">
                           </div>
                         </div>
                         <div class="col-md-6">
                           <div class="form-group">
                             <label for="">SubInv Tujuan</label>
-                            <input type="text" readonly class="form-control up2l_subinv_99" name="subinv" value="">
                           </div>
                         </div>
                         <div class="col-md-6">
                           <div class="form-group">
                             <label for="">Locator Tujuan</label>
-                            <input type="text" readonly class="form-control slc_up2l_locator" name="locator" value="">
                           </div>
-                        </div>
-                        <div class="col-md-6">
+                        </div> -->
+                        <div class="col-md-12">
                           <div class="form-group">
                             <label for="">Batch Number</label>
                             <input type="number" id="txtSelepBatchCetakKIB" name="batch_no" class="form-control" readonly />
+                            <input type="hidden" class="form-control up2l_io_99" name="io" value="">
+                            <input type="hidden" class="form-control up2l_subinv_99" name="subinv" value="">
+                            <input type="hidden" class="form-control slc_up2l_locator" name="locator" value="">
                           </div>
                         </div>
                         <div class="col-md-6">
@@ -423,8 +442,40 @@
                           </td>
                         </tr>
                       </table> -->
-                      <center><button type="submit" class="btn btn-success" onclick="submit_up2l_selep_master()" name="button" style="font-weight:bold;margin-top:10px;margin-bottom:10px;width:20%"> <i class="fa fa-rocket"></i> Create KIB </button>
+                      <center><button type="submit" class="btn btn-success" name="button" style="font-weight:bold;margin-top:10px;margin-bottom:10px;width:20%"> <i class="fa fa-rocket"></i> Create KIB </button>
                     </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Setting User SubInv -->
+<div class="modal fade bd-example-modal-lg" id="modalUP2LSettingSubinv" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content" style="border-radius: 5px !important; background-color:transparent !important; box-shadow:none;">
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="box box-primary box-solid">
+              <div class="box-header with-border">
+                <div style="float:left">
+                  <h4 style="font-weight:bold;">Setting User SubInv</h4>
+                </div>
+                <button type="button" class="btn btn-danger pull-right" style="font-weight:bold" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+                <button type="button" class="btn btn-info mr-2 pull-right" name="button" onclick="up2l_add_selep_setting_subinv()"> <i class="fa fa-plus"></i> </button>
+              </div>
+              <div class="box-body">
+                <div class="row">
+                  <div class="col-md-12">
+                      <div class="area-setting-user-subinv mt-3">
+
+                      </div>
                   </div>
                 </div>
               </div>

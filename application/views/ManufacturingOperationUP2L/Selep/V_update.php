@@ -13,13 +13,13 @@
                                     <a class="btn btn-default btn-lg" href="<?php echo site_url('ManufacturingOperationUP2L/Selep/');?>">
                                         <i class="icon-wrench icon-2x"></i>
                                         <span ><br /></span>
-                                    </a>                             
+                                    </a>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <br />
-                
+
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="box box-primary box-solid">
@@ -33,34 +33,36 @@
 											<div class="form-group">
                                                 <label for="txtSelepDateHeader" class="control-label col-lg-4">Selep Date</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" name="txtSelepDateHeader" class="form-control time-form1 ajaxOnChange" value="<?php echo $headerRow['selep_date']; ?>" required="" placeholder="Selep Date">
+                                                    <input type="text" name="txtSelepDateHeader" class="form-control time-form1 ajaxOnChange" value="<?php echo $headerRow['selep_date']; ?>" required="" readonly placeholder="Selep Date">
                                                 </div>
-                                                
+
                                             </div>
 											<div class="form-group">
                                                 <label for="txtComponentCodeHeader" class="control-label col-lg-4">Component</label>
                                                 <div class="col-lg-4">
-                                                    <select class="form-control jsSlcComp toupper" data-placeholder="Choose an option" id="cmbComponentCodeHeader" name="cmbComponentCodeHeader" onchange="getCompDescMO(this)">
+                                                  <input type="text" name="cmbComponentCodeHeader" readonly class="form-control" value="<?php echo $headerRow['component_code'].' | '.$headerRow['component_description'].' | '.$headerRow['kode_proses']?>">
+                                                    <!-- <select class="form-control jsSlcComp toupper" data-placeholder="Choose an option" id="cmbComponentCodeHeader" name="cmbComponentCodeHeader" onchange="getCompDescMO(this)">
                                                         <option value="<?php echo $headerRow['component_code'].' | '.$headerRow['component_description'].' | '.$headerRow['kode_proses']?>">
                                                         <?php echo $headerRow['component_code'].' | '.$headerRow['component_description'].' | '.$headerRow['kode_proses']?>
                                                         </option>
-                                                    </select>
+                                                    </select> -->
                                                 </div>
                                             </div>
 
                                             <div class="form-group">
                                                 <label for="txtShift" class="control-label col-lg-4">Shift</label>
                                                 <div class="col-lg-4">
-                                                    <select class="form-control slcShift" id="txtShift" name="txtShift">
-                                                        <option><?php echo $headerRow['shift']; ?></option> 
-                                                    </select>    
+                                                  <input type="text" class="form-control" readonly name="txtShift" value="<?php echo $headerRow['shift']; ?>">
+                                                    <!-- <select class="form-control slcShift" id="txtShift" name="txtShift">
+                                                        <option><?php echo $headerRow['shift']; ?></option>
+                                                    </select>     -->
                                                 </div>
                                             </div>
-                                            
+
 											<div class="form-group">
                                                 <label for="txtSelepQuantityHeader" class="control-label col-lg-4">Selep Quantity</label>
                                                 <div class="col-lg-4">
-                                                    <input type="number" placeholder="Selep Quantity" name="txtSelepQuantityHeader" id="txtSelepQuantityHeader" class="form-control" value="<?php echo $headerRow['selep_quantity']; ?>"/>
+                                                    <input type="number" placeholder="Selep Quantity" readonly name="txtSelepQuantityHeader" id="txtSelepQuantityHeader" class="form-control" value="<?php echo $headerRow['selep_quantity']; ?>"/>
                                                 </div>
                                             </div>
 											<div class="form-group">
