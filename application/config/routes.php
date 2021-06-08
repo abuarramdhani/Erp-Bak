@@ -2835,7 +2835,17 @@ $route['ManufacturingOperationUP2L/Absen/(:any)/(:any)']			= 'ManufacturingOpera
 $route['ManufacturingOperationUP2L/DeleteDataUP2L']							= 'ManufacturingOperationUP2L/MainMenu/C_Delete';
 $route['ManufacturingOperationUP2L/DeleteDataUP2L/(:any)']					= 'ManufacturingOperationUP2L/MainMenu/C_Delete/$1';
 
+$route['ManufacturingOperationUP2L/CreateKIB/pdf/(:any)/(:any)/(:any)'] = 'ManufacturingOperationUP2L/KIB/CreateKIB/C_CreateKIB/pdf/$1/$2/$3';
+$route['ManufacturingOperationUP2L/CreateKIB/pdf1/(:any)/(:any)'] = 'ManufacturingOperationUP2L/KIB/CreateKIB/C_CreateKIB/pdf1/$1/$2/';
+$route['ManufacturingOperationUP2L/CreateKIB/pdf1/(:any)/(:any)/(:any)'] = 'ManufacturingOperationUP2L/KIB/CreateKIB/C_CreateKIB/pdf1/$1/$2/$3';
+$route['ManufacturingOperationUP2L/CreateKIB/pdf2/(:any)/(:any)/(:any)'] = 'ManufacturingOperationUP2L/KIB/CreateKIB/C_CreateKIB/pdf2/$1/$2/$3';
+$route['ManufacturingOperationUP2L/CreateKIB/pdf3/(:any)'] = 'ManufacturingOperationUP2L/KIB/CreateKIB/C_CreateKIB/pdf3/$1';
 
+$route['ManufacturingOperationUP2L/CreateKIBDEV/pdf/(:any)/(:any)/(:any)'] = 'ManufacturingOperationUP2L/KIB/CreateKIBDEV/C_CreateKIBDEV/pdf/$1/$2/$3';
+$route['ManufacturingOperationUP2L/CreateKIBDEV/pdf1/(:any)/(:any)'] = 'ManufacturingOperationUP2L/KIB/CreateKIB/C_CreateKIBDEV/pdf1/$1/$2/';
+$route['ManufacturingOperationUP2L/CreateKIBDEV/pdf1/(:any)/(:any)/(:any)'] = 'ManufacturingOperationUP2L/KIB/CreateKIBDEV/C_CreateKIBDEV/pdf1/$1/$2/$3';
+$route['ManufacturingOperationUP2L/CreateKIBDEV/pdf2/(:any)/(:any)/(:any)'] = 'ManufacturingOperationUP2L/KIB/CreateKIBDEV/C_CreateKIBDEV/pdf2/$1/$2/$3';
+$route['ManufacturingOperationUP2L/CreateKIBDEV/pdf3/(:any)'] = 'ManufacturingOperationUP2L/KIB/CreateKIBDEV/C_CreateKIBDEV/pdf3/$1';
 //------------------------------------Employee Recruitment---------------------------------------------//
 
 $route['EmployeeRecruitment']		= 'EmployeeRecruitment/C_TestCorrection/index';
@@ -5584,7 +5594,7 @@ $route['MonitoringHandlingSubkon/Monitoring']				= 'MonitoringHandlingSubkon/C_M
 $route['MonitoringHandlingSubkon/Monitoring/(:any)']		= 'MonitoringHandlingSubkon/C_Monitoring/$1';
 $route['MonitoringHandlingSubkon/Monitoring/(:any)/(:any)']	= 'MonitoringHandlingSubkon/C_Monitoring/$1/$2';
 
-// lanjutan po log book 
+// lanjutan po log book
 
 $route['PurchaseManagementSendPO/Setup'] = 'PurchaseManagementSendPO/MainMenu/C_Setup';
 $route['PurchaseManagementSendPO/Setup/(:any)'] = 'PurchaseManagementSendPO/MainMenu/C_Setup/$1';
