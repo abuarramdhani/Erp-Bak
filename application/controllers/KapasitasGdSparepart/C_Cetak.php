@@ -97,7 +97,6 @@ class C_Cetak extends CI_Controller
         $this->load->view('KapasitasGdSparepart/V_Ajax_Selesai_Cetak_DO', $data);
 	}
 
-
 	public function cetakDOSP($id)
     {
         $data['get_header'] = $this->M_cetak->headfootSurat($id);
@@ -203,7 +202,7 @@ class C_Cetak extends CI_Controller
         			<td rowspan="3" style="vertical-align: top; width: 95px; border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black; font-size: 10px; padding: 5px">
         				Gudang : <br><br>
         				Tgl. '.$data['get_header'][0]['ASSIGN_DATE'].'
-        				<br><br><br><br><br><br>REYNALDI, NELSON
+        				<br><br><br><br><br><br>'.$data['get_header'][0]['ASSIGNER_NAME'].'
         			</td>
         			<td colspan="2" style="vertical-align: top; border-right: 1px solid black; border-top: 1px solid black; border-left: 1px solid black; font-size: 10px; padding: 5px; height: 20px!important;">
         				Pemasaran :
@@ -251,4 +250,216 @@ class C_Cetak extends CI_Controller
             unlink($params['savename']);
         }
     }
+
+		public function cetakDOSP2($id)
+		{
+			$xyz = explode('_', $id);
+			$id = $xyz[0];
+
+			$data['get_header'] = $this->M_cetak->headfootSurat($id);
+			$data['get_body'] = $this->M_cetak->bodySurat($id);
+			$data['get_colly'] = $this->M_cetak->getTotalColly($id);
+			$data['total_colly'] = sizeof($data['get_colly']);
+			$data['get_berat'] = $this->M_cetak->getTotalBerat($id);
+			$data['get_do'] = $this->M_cetak->getDofromSPB($id);
+			$body = $data['get_body'];
+			foreach ($body as $key => $value) {
+				$tampung[] = $value;
+				if (sizeof($tampung) == 22 || $key == sizeof($body) - 1 ) {
+					$one_page_is[] = $tampung;
+					$tampung = [];
+				}
+			}
+
+			$data['get_body'] = $one_page_is;
+
+			if (!empty($id)) {
+					// ====================== do something =========================
+					$this->load->library('Pdf');
+					$this->load->library('ciqrcode');
+
+					$pdf = $this->pdf->load();
+					$pdf = new mPDF('utf-8', array(202.5 , 267), 0, '', 3, 3, 3, 0, 0, 14);
+
+					// ------ GENERATE QRCODE ------
+					if (!is_dir('./assets/img/monitoringDOSPQRCODE')) {
+							mkdir('./assets/img/monitoringDOSPQRCODE', 0777, true);
+							chmod('./assets/img/monitoringDOSPQRCODE', 0777);
+					}
+
+					$params['data']		= $data['get_header'][0]['REQUEST_NUMBER'];
+					$params['level']	= 'H';
+					$params['size']		= 4;
+					$params['black']	= array(255,255,255);
+					$params['white']	= array(0,0,0);
+					$params['savename'] = './assets/img/monitoringDOSPQRCODE/'.$data['get_header'][0]['REQUEST_NUMBER'].'.png';
+
+					$this->ciqrcode->generate($params);
+					if ($xyz[1] == 'y') {
+						$this->M_cetak->insertCetak($id);
+					}
+
+					ob_end_clean() ;
+
+					$filename 	= $data['get_header'][0]['TIPE'].'_'.$data['get_header'][0]['REQUEST_NUMBER'].'.pdf';
+					$cetakDOSP	= $this->load->view('KapasitasGdSparepart/V_Pdf_DOSP_No_Border', $data, true);
+
+					if (ceil(strlen($data['get_header'][0]['CATATAN'])/25) == 1) {
+						$a = '<br>'.$data['get_header'][0]['CATATAN'].'<br><br><br><br>';
+					} elseif (ceil(strlen($data['get_header'][0]['CATATAN'])/25) == 2) {
+						$a = '<br>'.$data['get_header'][0]['CATATAN'].'<br><br><br>';
+					} elseif (ceil(strlen($data['get_header'][0]['CATATAN'])/25) == 3) {
+						$a = '<br>'.$data['get_header'][0]['CATATAN'].'<br><br>';
+					} elseif (ceil(strlen($data['get_header'][0]['CATATAN'])/25) == 4) {
+						$a = '<br>'.$data['get_header'][0]['CATATAN'].'<br>';
+					} elseif (ceil(strlen($data['get_header'][0]['CATATAN'])/25) == 5) {
+						$a = $data['get_header'][0]['CATATAN'];
+					} elseif (ceil(strlen($data['get_header'][0]['CATATAN'])/25) == 0) {
+						$a = '<br><br><br><br><br>';
+					}
+
+					if (!empty($data['get_header'][0]['APPROVE_TO_1'])) {
+						$appr = '<center>Approved by <br>'.$data['get_header'][0]['APPROVE_TO_1'].'<br><br><br>'.$data['get_header'][0]['APPROVE_TONAME'].'</center>';
+					} else {
+						$appr = '';
+					}
+
+					if (!empty($data['get_header'][0]['CREATED_BY'])) {
+						$appr2 = '<center>Approved by <br>'.$data['get_header'][0]['CREATED_BY'].'<br><br><br>'.$data['get_header'][0]['CREATED_BYNAME'].'</center>';
+					}else {
+						$appr2 = '';
+					}
+					// $newDate = date("m-d-Y", strtotime($orgDate));
+					$pdf->SetHTMLFooter(
+					'<table style="width: 100%; border-collapse: collapse !important; margin-top: 2px; overflow: wrap;">
+					<tr style="width: 100%">
+						<td rowspan="2" style="white-space: pre-line; vertical-align: top; border-top: 1px solid white; border-bottom: 1px solid white; border-left: 1px solid white; font-size: 10px; padding: 5px">
+						 		<br>'.$data['get_do'][0]['BATCH_ID'].'
+									'.strtoupper($a).'
+						</td>
+						<td rowspan="3" style="vertical-align: top; width: 98px; border-top: 1px solid white; border-bottom: 1px solid white; border-left: 1px solid white; font-size: 10px; padding: 5px;">
+
+							<br><br>
+
+							<br><br><br><br><br><br><br>
+						</td>
+						<td rowspan="3" style="vertical-align: top; width: 90px; border-top: 1px solid white; border-bottom: 1px solid white; border-left: 1px solid white; font-size: 10px; padding: 5px">
+							 <br> <br>
+
+							<br><br><br><br><br><br><br>
+						</td>
+							<td rowspan="3" style="vertical-align: top; width: 95px; border-top: 1px solid white; border-bottom: 1px solid white; border-left: 1px solid white; font-size: 10px; padding: 5px">
+									<br> <br>
+
+									<br><br><br><br><br><br><br>
+							</td>
+						<td rowspan="3" style="vertical-align: top; width: 90px; border-top: 1px solid white; border-bottom: 1px solid white; border-left: 1px solid white; font-size: 10px; padding: 5px">
+						 <br><br>
+							'.$data['get_header'][0]['ASSIGN_DATE'].'
+							<br><br><br><br><br><br>'.$data['get_header'][0]['ASSIGNER_NAME'].'
+						</td>
+						<td colspan="2" style="vertical-align: top; border-right: 1px solid white; border-top: 1px solid white; border-left: 1px solid white; font-size: 10px; padding: 5px; height: 20px!important;">
+
+						</td>
+					</tr>
+					<tr>
+						<td rowspan="2" style="vertical-align: top; width: 90px; border-top: 1px solid white; border-bottom: 1px solid white; border-left: 1px solid white; font-size: 10px; padding: 5px;">
+
+							<br><br>'.$appr.'
+						</td>
+						<td rowspan="2" style="vertical-align: top; width: 80px; border-top: 1px solid white; border-bottom: 1px solid white; border-left: 1px solid white; border-right: 1px solid white; font-size: 10px; padding: 5px">
+							'.$data['get_header'][0]['CREATION_DATE'].'
+							<br>'.$appr2.'
+						</td>
+					</tr>
+					<tr>
+						<td style="vertical-align: top; border-left: 1px solid white; border-bottom: 1px solid white; font-size: 8.5px; padding: 5px; height: 60px!important;">
+
+						</td>
+					</tr>
+				</table>'
+		);
+					$pdf->SetFillColor(0,255,0);
+					// $pdf->SetAlpha(0.4);
+					$pdf->WriteHTML($cetakDOSP);
+					$pdf->Output($filename, 'I');
+			// ========================end process=========================
+			} else {
+				echo json_encode(array(
+						'success' => false,
+						'message' => 'id is null'
+				));
+			}
+
+			if (!unlink($params['savename'])) {
+					echo("Error deleting");
+			} else {
+					unlink($params['savename']);
+			}
+		}
+
+		public function cetakSPB3($id)
+		{
+			$xyz = explode('_', $id);
+			$id = $xyz[0];
+
+			$data['get_header'] = $this->M_cetak->headfootSurat($id);
+			$data['get_body'] = $this->M_cetak->bodySurat($id);
+			$data['get_colly'] = $this->M_cetak->getTotalColly($id);
+			$data['total_colly'] = sizeof($data['get_colly']);
+			$data['get_berat'] = $this->M_cetak->getTotalBerat($id);
+			$data['get_do'] = $this->M_cetak->getDofromSPB($id);
+
+			$data['row'] = $data['get_header'][0];
+
+			if (!empty($id)) {
+					// ====================== do something =========================
+					$this->load->library('Pdf');
+					$this->load->library('ciqrcode');
+
+					$pdf = $this->pdf->load();
+					$pdf = new mPDF('utf-8',array(216 , 280), 0, '', 6, 0, 4, 0);
+
+					// ------ GENERATE QRCODE ------
+					if (!is_dir('./assets/img/monitoringDOSPQRCODE')) {
+							mkdir('./assets/img/monitoringDOSPQRCODE', 0777, true);
+							chmod('./assets/img/monitoringDOSPQRCODE', 0777);
+					}
+
+					$params['data']		= $data['get_header'][0]['REQUEST_NUMBER'];
+					$params['level']	= 'H';
+					$params['size']		= 4;
+					$params['black']	= array(255,255,255);
+					$params['white']	= array(0,0,0);
+					$params['savename'] = './assets/img/monitoringDOSPQRCODE/'.$data['get_header'][0]['REQUEST_NUMBER'].'.png';
+
+					$this->ciqrcode->generate($params);
+
+					ob_end_clean() ;
+					if ($xyz[1] == 'y') {
+						$this->M_cetak->insertCetak($id);
+					}
+
+					$filename 	= $data['get_header'][0]['TIPE'].'_'.$data['get_header'][0]['REQUEST_NUMBER'].'.pdf';
+					$cetakDOSP	= $this->load->view('KapasitasGdSparepart/V_Pdf_SPB_No_Border', $data, true);
+
+
+					$pdf->SetFillColor(0,255,0);
+					// $pdf->SetAlpha(0.4);
+					$pdf->WriteHTML($cetakDOSP);
+					$pdf->Output($filename, 'I');
+			// ========================end process=========================
+			} else {
+				echo json_encode(array(
+						'success' => false,
+						'message' => 'id is null'
+				));
+			}
+
+			if (!unlink($params['savename'])) {
+					echo("Error deleting");
+			} else {
+					unlink($params['savename']);
+			}
+		}
 }

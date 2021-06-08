@@ -5,7 +5,7 @@ class M_pelayanan extends CI_Model
     public function __construct()
     {
         parent::__construct();
-        $this->load->database();    
+        $this->load->database();
     }
 
 
@@ -27,7 +27,7 @@ class M_pelayanan extends CI_Model
         return $query->result_array();
     }
 
-    
+
     public function dataJumlah()
     {
         $oracle = $this->load->database('oracle', true);
@@ -45,8 +45,8 @@ class M_pelayanan extends CI_Model
 
         return $query->result_array();
     }
-    
-    
+
+
     public function dataNormal()
     {
         $oracle = $this->load->database('oracle', true);
@@ -150,12 +150,13 @@ class M_pelayanan extends CI_Model
     public function dataCetak()
     {
         $oracle = $this->load->database('oracle', true);
-        $sql = "SELECT   kts.*, NVL(keterangan,'-') keterangan_mkt
+        $sql = "SELECT   kts.*, NVL (keterangan, '-') keterangan_mkt
                     FROM khs_tampung_spb kts
                    WHERE CANCEL IS NULL
                      AND mulai_pelayanan IS NOT NULL
                      AND no_dokumen IN (SELECT DISTINCT kcds.request_number
                                                    FROM khs_colly_dospb_sp kcds)
+                     AND TRUNC (kts.mulai_pelayanan) = TRUNC (SYSDATE)
                 ORDER BY TO_DATE (jam_input, 'DD/MM/YYYY HH24:MI:SS') DESC";
         $query = $oracle->query($sql);
         return $query->result_array();
@@ -205,9 +206,9 @@ class M_pelayanan extends CI_Model
                  SET mulai_pelayanan = TO_TIMESTAMP ('$date', 'DD-MM-YYYY HH24:MI:SS'),
                      pic_pelayan = '$pic'
                WHERE jenis_dokumen = '$jenis' AND no_dokumen = '$nospb'";
-        $query = $oracle->query($sql);         
-        $query2 = $oracle->query('commit');          
-        echo $sql; 
+        $query = $oracle->query($sql);
+        $query2 = $oracle->query('commit');
+        echo $sql;
     }
 
 
@@ -219,9 +220,9 @@ class M_pelayanan extends CI_Model
                        aa.assigner_id = '$user',
                        aa.assignee_id = '$pic'
                  WHERE aa.request_number = '$nospb'";
-        $query = $oracle->query($sql);         
-        $query2 = $oracle->query('commit');          
-        echo $sql; 
+        $query = $oracle->query($sql);
+        $query2 = $oracle->query('commit');
+        echo $sql;
     }
 
 
@@ -233,9 +234,9 @@ class M_pelayanan extends CI_Model
                        waktu_pelayanan = '$wkt',
                        pic_pelayan = '$pic'
                  WHERE jenis_dokumen = '$jenis' AND no_dokumen = '$nospb'";
-        $query = $oracle->query($sql);            
-        $query2 = $oracle->query('commit');       
-        echo $sql; 
+        $query = $oracle->query($sql);
+        $query2 = $oracle->query('commit');
+        echo $sql;
     }
 
 
@@ -297,8 +298,8 @@ class M_pelayanan extends CI_Model
         $sql = "UPDATE khs_tampung_spb
                    SET waktu_pelayanan = '$slsh'
                  WHERE jenis_dokumen = '$jenis' AND no_dokumen = '$nospb'";
-        $query = $oracle->query($sql);            
-        $query2 = $oracle->query('commit');       
+        $query = $oracle->query($sql);
+        $query2 = $oracle->query('commit');
     }
 
 
@@ -417,7 +418,7 @@ class M_pelayanan extends CI_Model
         $query = $oracle->query($sql);
         return $query->result_array();
     }
-    
+
 
     public function getAll($id)
     {
