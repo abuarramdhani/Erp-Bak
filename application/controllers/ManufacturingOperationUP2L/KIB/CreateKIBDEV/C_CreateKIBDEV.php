@@ -389,11 +389,11 @@ public function printpdf99(){
 			$operator = $this->db->select('job_id')->where('batch_no', $no_batch)->get('mo.mo_selep')->row_array();
 			$operator = str_replace(',',"','", $operator['job_id']);
 			$tampung_operator = $this->db->query("SELECT
-																							employee_code,
-																							employee_name
+																							msp.no_induk employee_code,
+																							msp.nama employee_name
 																						from
-																							er.er_employee_all
-																						where employee_code in('$operator')")->result_array();
+																							mo.mo_master_personal msp
+																						where msp.no_induk in('$operator')")->result_array();
 		}else {
 			$tampung_operator = [];
 		}
