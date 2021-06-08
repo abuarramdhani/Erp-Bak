@@ -106,10 +106,12 @@ function schMonJob(ket) {
                 getWipMonitoring(1, nomor);
                 getGdMonitoring(1, nomor);
                 getCompMonitoring(1, nomor);
+                getAvPickMonitoring(1, nomor);
                 $('.loadingwip').html('<center><img style="width:30px; height:auto" src="'+baseurl+'assets/img/gif/loading5.gif"></center>' );
                 $('.loadingpick').html('<center><img style="width:30px; height:auto" src="'+baseurl+'assets/img/gif/loading5.gif"></center>' );
                 $('.loadinggd').html('<center><img style="width:30px; height:auto" src="'+baseurl+'assets/img/gif/loading5.gif"></center>' );
                 $('.loadingcomp').html('<center><img style="width:30px; height:auto" src="'+baseurl+'assets/img/gif/loading5.gif"></center>' );
+                $('.loadingavpick').html('<center><img style="width:30px; height:auto" src="'+baseurl+'assets/img/gif/loading5.gif"></center>' );
             }
         }
     })
@@ -185,6 +187,24 @@ function getGdMonitoring(no, batas) {
                 $('[name ="fg_tks'+no+'"]').val(result[0]);
                 $('[name ="mlati'+no+'"]').val(result[1]);
                 getGdMonitoring((no+1), batas);
+            }
+        })
+    }
+}
+
+function getAvPickMonitoring(no, batas) {
+    if (no <= batas) {
+        var item = $('#item'+no).val();
+        $.ajax ({
+            url : baseurl + "MonitoringJobProduksi/Monitoring/searchavpickmonitoring",
+            data : {item : item},
+            dataType : 'json',
+            type : 'POST',
+            success : function (result) {
+                // console.log(result,no)
+                $('[name = "ini_avpick'+no+'"]').html('<b>Available Picklist :</b></span><br><span style="font-size:35px">'+result+'</span>')
+                $('[name ="av_pick'+no+'"]').val(result);
+                getAvPickMonitoring((no+1), batas);
             }
         })
     }

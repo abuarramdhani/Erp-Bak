@@ -36,7 +36,7 @@
                 <input type="hidden" name="completion<?= $no?>"> 
                 <input type="hidden" name="fg_tks<?= $no?>"> 
                 <input type="hidden" name="mlati<?= $no?>"> 
-                <input type="hidden" name="av_pick<?= $no?>" value="<?= round($value['AVPICK'])?>"> 
+                <input type="hidden" name="av_pick<?= $no?>"> 
             </td>
 
             <td style="text-align:left"><?= $value['ITEM']?><br><?= $value['DESC']?>
@@ -44,8 +44,7 @@
                 <br><span class="loadingpick" name="ini_pick<?= $no?>"></span>
                 <br><span class="loadingcomp" name="ini_comp<?= $no?>"></span>
                 <br><span class="loadinggd" name="ini_gd<?= $no?>"></span>
-                <br><span><b>Available Picklist :</b></span>
-                <br><span style="font-size:35px"><?= round($value['AVPICK'])?></span>
+                <br><span class="loadingavpick" name="ini_avpick<?= $no?>"></span>
             </td>
             <td class="text-nowrap"><p>P</p>
                 <?php if ($ket == 'All' || $ket == 'PA') { ?>

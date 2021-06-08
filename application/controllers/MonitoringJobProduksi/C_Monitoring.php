@@ -80,8 +80,8 @@ class C_Monitoring extends CI_Controller
 			$plan = $this->M_monitoring->getPlan($value['INVENTORY_ITEM_ID'], $inibulan, $kategori);
 			$getdata[$key]['ITEM'] = $item[0]['SEGMENT1'];
 			$getdata[$key]['DESC'] = $item[0]['DESCRIPTION'];
-			$av_pick = $this->M_monitoring->get_available_picklist($item[0]['SEGMENT1']);
-			$getdata[$key]['AVPICK'] = !empty($av_pick) ? $av_pick[0]['AV_PICK'] : '';
+			// $av_pick = $this->M_monitoring->get_available_picklist($item[0]['SEGMENT1']);
+			// $getdata[$key]['AVPICK'] = !empty($av_pick) ? $av_pick[0]['AV_PICK'] : '';
 			$getdata[$key]['jml_plan'] = 0;
 			$getdata[$key]['jml_akt'] = 0;
 			$getdata[$key]['jml_min'] = 0;
@@ -195,6 +195,13 @@ class C_Monitoring extends CI_Controller
 		$mlati 			= !empty($gudang) ? $gudang[0]['MLATI_DM'] : '';
 		$hasil 			= array($fg_tks, $mlati);
 		echo json_encode($hasil);
+	}
+	
+	public function searchavpickmonitoring(){
+		$item 		= $this->input->post('item', TRUE);
+		$av_pick 	= $this->M_monitoring->get_available_picklist($item);
+		$avpick 	= !empty($av_pick) ? round($av_pick[0]['AV_PICK'],0) : '';
+		echo json_encode($avpick);
 	}
 
 	public function jumlahHari($bulan){
