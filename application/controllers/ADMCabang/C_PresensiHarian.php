@@ -56,7 +56,6 @@ class C_PresensiHarian extends CI_Controller
 		foreach ($kodeSieAkses as $kodAkses) {
 			$data['kodesieAkses'][substr($kodAkses['kodesie'], 0, 7)] = $kodAkses['seksi'];
 		}
-
 		$noindAkses = $this->M_presensiharian->getNoindAkses();
 
 		if (substr($user, 0, 1) != 'B' && substr($user, 0, 1) != 'D' && substr($user, 0, 1) != 'J') {
@@ -65,6 +64,7 @@ class C_PresensiHarian extends CI_Controller
 		}
 
 		$tanggal = $this->input->post('txtPeriodePresensiHarian');
+
 		if ($tanggal) {
 			$data['pekerja'] = $this->M_presensiharian->getPekerjaByKodesie($kodesie, $user, $akses, $noindAkses);
 
@@ -212,7 +212,7 @@ class C_PresensiHarian extends CI_Controller
 			$this->excel->getActiveSheet()->setCellValueByColumnAndRow(2, $i + 3, 'Point');
 			if (empty($presensi_loop)) {
 				$this->excel->getActiveSheet()->setCellValueByColumnAndRow(3, $i + 3, 'Waktu');
-				$this->excel->getActiveSheet()->setCellValueByColumnAndRow(4, $i + 3, 'Waktu');
+				$this->excel->getActiveSheet()->setCellValueByColumnAndRow(4, $i + 3, 'Waktu2');
 				$this->excel->getActiveSheet()->setCellValueByColumnAndRow(5, $i + 3, 'Keterangan');
 			} else {
 				for ($e = 1; $e <= $presensi_loop; $e++) {

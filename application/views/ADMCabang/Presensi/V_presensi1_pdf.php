@@ -35,7 +35,6 @@
 					<td width="15%">Shift</td>
 					<td width="6%">Point</td>
 					<td style="text-align: center;" colspan="<?php echo $key['max'] ?>">Waktu</td>
-					<td style="text-align: center;" colspan="<?php echo $key['max'] ?>">Waktu2</td>
 					<td>Keterangan</td>
 				</tr>
 				<?php foreach ($key['data'] as $shi) : ?>

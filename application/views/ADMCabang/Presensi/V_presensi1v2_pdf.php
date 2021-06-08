@@ -23,7 +23,6 @@
 				<td width="10%">Shift</td>
 				<td width="6%">Point</td>
 				<td style="text-align: center;" colspan="<?php echo $max ?>">Waktu</td>
-				<td style="text-align: center;" colspan="<?php echo $max ?>">Waktu2</td>
 				<td>Keterangan</td>
 			</tr>
 			<?php
