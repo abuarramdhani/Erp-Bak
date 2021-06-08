@@ -33,15 +33,11 @@ class C_ErpMobile extends CI_Controller {
 		}else{
 			$data['result'] = 'Email di Temukan';
 			$data['code'] = 2;
-			$passwd = $this->M_erpmobile->getPwdErpLog($noind);
-			if (empty($passwd)) {
-				$data['password'] = '123456';
-				$pass = md5('123456');
-				$this->M_erpmobile->changePassword($noind, $pass);
-				$data['change'] = true;
-			}else{
-				$data['password'] = $passwd['ket'];
-			}
+			$rand_pass = $this->randomPassword();
+			$data['password'] = $rand_pass;
+			$pass = md5($rand_pass);
+			$this->M_erpmobile->changePassword($noind, $pass);
+			$data['change'] = true;
 			$this->kirimEmailEx(trim($data['external_mail']), $data['password']);
 			$data['external_mail'] = preg_replace('/(?:^|@).\K|\.[^@]*$(*SKIP)(*F)|.(?=.*?\.)/', '*', trim($data['external_mail']));
 		}
@@ -69,13 +65,11 @@ class C_ErpMobile extends CI_Controller {
 
 		$data = $this->M_erpmobile->getNoindErp($noind);
 		$data['result'] = 'Email di Temukan';
-		$data['code'] = 2;
-		$passwd = $this->M_erpmobile->getPwdErpLog($noind);
-		if (empty($passwd)) {
-			$data['password'] = '';
-		}else{
-			$data['password'] = $passwd['ket'];
-		}
+		$rand_pass = $this->randomPassword();
+		$data['password'] = $rand_pass;
+		$pass = md5($rand_pass);
+		$this->M_erpmobile->changePassword($noind, $pass);
+		$data['change'] = true;
 		$this->kirimEmailEx(trim($data['external_mail']), $data['password']);
 		$data['external_mail'] = preg_replace('/(?:^|@).\K|\.[^@]*$(*SKIP)(*F)|.(?=.*?\.)/', '*', trim($data['external_mail']));
 
@@ -122,5 +116,40 @@ class C_ErpMobile extends CI_Controller {
 		} else {
 			// echo "string";
 		}
+	}
+
+	function randomPassword($length = 6, $add_dashes = false, $available_sets = 'luds')
+	{
+		$sets = array();
+		if(strpos($available_sets, 'l') !== false)
+			$sets[] = 'abcdefghjkmnpqrstuvwxyz';
+		if(strpos($available_sets, 'u') !== false)
+			$sets[] = 'ABCDEFGHJKMNPQRSTUVWXYZ';
+		if(strpos($available_sets, 'd') !== false)
+			$sets[] = '23456789';
+		if(strpos($available_sets, 's') !== false)
+			$sets[] = '!@#$%&*?';
+		$all = '';
+		$password = '';
+		foreach($sets as $set)
+		{
+			$password .= $set[array_rand(str_split($set))];
+			$all .= $set;
+		}
+		$all = str_split($all);
+		for($i = 0; $i < $length - count($sets); $i++)
+			$password .= $all[array_rand($all)];
+		$password = str_shuffle($password);
+		if(!$add_dashes)
+			return $password;
+		$dash_len = floor(sqrt($length));
+		$dash_str = '';
+		while(strlen($password) > $dash_len)
+		{
+			$dash_str .= substr($password, 0, $dash_len) . '-';
+			$password = substr($password, $dash_len);
+		}
+		$dash_str .= $password;
+		return $dash_str;
 	}
 }
