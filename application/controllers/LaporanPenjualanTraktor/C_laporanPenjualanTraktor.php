@@ -905,8 +905,7 @@ class C_laporanPenjualanTraktor extends CI_Controller
         $header = $this->M_laporanpenjualantraktor->getHeader();
 
         $date = $header[9];
-        $date = $date['TAHUN'] . '-' . rtrim($date['BULAN']) . '-' . $date['TANGGAL'];
-        $date = date('Y-m-d', strtotime($date));
+        $date = $date['TAHUN'] . '-' . date('m', strtotime(rtrim($date['BULAN']))) . '-' . $date['TANGGAL'];
 
         return $this->dateInd($date);
     }
