@@ -68,9 +68,9 @@
                     <td class="<?= $td?>">
                         <a href="<?php echo base_url('KapasitasGdSparepart/Cetak/cetakDOSP/'.$val['NO_DOKUMEN']) ?>" target="_blank" class="btn btn-danger"><i class="fa fa-file-pdf-o"> Cetak</i></a><br>
                         <?php if ($val['JENIS_DOKUMEN'] == 'SPB'){ ?>
-                          <a href="<?php echo base_url('KapasitasGdSparepart/Cetak/cetakSPB3/'.$val['NO_DOKUMEN'].'_n') ?>" style="margin-top:5px;width:114px;" target="_blank" class="btn btn-danger" ><i class="fa fa-file-pdf-o"> SPB No Border</i></a>
+                          <a href="<?php echo base_url('KapasitasGdSparepart/Cetak/cetakSPB3/'.$val['NO_DOKUMEN'].'_n') ?>" style="margin-top:5px;width:130px;" target="_blank" class="btn btn-danger" ><i class="fa fa-file-pdf-o"> SPB No Border</i></a>
                         <?php }elseif ($val['JENIS_DOKUMEN'] == 'DOSP') { ?>
-                          <a href="<?php echo base_url('KapasitasGdSparepart/Cetak/cetakDOSP2/'.$val['NO_DOKUMEN'].'_n') ?>" style="margin-top:5px;" target="_blank" class="btn btn-danger" ><i class="fa fa-file-pdf-o"> DOSP No Border</i></a> <br>
+                          <a href="<?php echo base_url('KapasitasGdSparepart/Cetak/cetakDOSP2/'.$val['NO_DOKUMEN'].'_n') ?>" style="margin-top:5px;width:130px;" target="_blank" class="btn btn-danger" ><i class="fa fa-file-pdf-o"> DOSP No Border</i></a> <br>
                         <?php } ?>
                     </td>
                 </tr>
