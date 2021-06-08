@@ -1,15 +1,14 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
- * KHUSUS Kasie utama, kasie madya, kasi pratama, Supervisor & operator
+ * KHUSUS SUPERVISOR & OPERATOR
  */
 
 class M_kaizentimtks extends CI_Model
 {
 	// kode lokasi kerja tuksono
 	public $location_code_tuksono = '02';
-	// hrd_khs.torganisasi
-	public $operator_kd_jabatan = "'10', '11', '12', '13', '15', '17', '18', '20', '21', '23', '22', '24'";
+	public $operator_kd_jabatan = "'13', '15', '17', '18', '20', '21', '23', '24' , '22'";
 
 	function __construct()
 	{
@@ -108,8 +107,8 @@ class M_kaizentimtks extends CI_Model
 			FROM (
 				select
 					distinct left(es.section_code, 7) section_code,
-					(select section_name from er.er_section where left(section_code, 7) = es.section_code limit 1) as section_name,
-					(select unit_name from er.er_section where left(section_code, 7) = es.section_code limit 1) as unit_name,
+					es.section_name,
+					es.unit_name,
 					(
 						select
 							count(section_code)
@@ -338,23 +337,30 @@ class M_kaizentimtks extends CI_Model
 							to_char(skt.created_at, 'YYYY-MM') = '$year-12'
 							and left(es.section_code, 7) = left(skt.section_code, 7)
 					) as actual_desember
-				FROM (
-					select 
-						distinct left(section_code, 7) section_code
-					from 
-						er.er_employee_all eea
-						inner join dblink(
-							'host={$this->personalia->hostname} user={$this->personalia->username} password={$this->personalia->password} dbname={$this->personalia->database}',
-							'select noind, kd_jabatan from hrd_khs.tpribadi'
-						) as tp(noind varchar, kd_jabatan varchar) on tp.noind = eea.employee_code
-					where 
-						to_char(resign_date, 'YYYY-MM') >= '$year-01'
-						and tp.kd_jabatan in ($this->operator_kd_jabatan)
-						and location_code = '$this->location_code_tuksono' 
-						and trim(section_code) <> '-'
-				) as es
+				from
+					er.er_section es
+				left join si.si_kaizen_tks skt on
+					es.section_code = skt.section_code
+				where
+					left(es.section_code, 7) in (
+						select 
+							distinct left(section_code, 7) 
+						from 
+							er.er_employee_all 
+						where 
+							to_char(resign_date, 'YYYY-MM') >= '$year-01'
+							and location_code = '$this->location_code_tuksono' 
+							and trim(section_code) <> '-'
+					)
+					and trim(section_name) not in ('-', '')
+					and location_code = '$this->location_code_tuksono'
+				group by
+					es.section_code,
+					es.section_name,
+					es.unit_name,
+					skt.created_at
 				order by
-					section_name
+					es.section_name
 			) as n1
 			group by
 				n1.section_code,
@@ -402,8 +408,8 @@ class M_kaizentimtks extends CI_Model
 		$query = $this->erp->query("
 			SELECT
 				distinct left(es.section_code, 7) section_code,
-				(select section_name from er.er_section where left(section_code, 7) = es.section_code limit 1) as section_name,
-				(select unit_name from er.er_section where left(section_code, 7) = es.section_code limit 1) as unit_name,
+				es.section_name,
+				es.unit_name,
 				(select count(distinct no_ind) from si.si_kaizen_tks where left(section_code, 7) = left(es.section_code, 7) and to_char(created_at, 'YYYY-MM-DD') = '$yearMonth-01')as a,
 				(select count(distinct no_ind) from si.si_kaizen_tks where left(section_code, 7) = left(es.section_code, 7) and to_char(created_at, 'YYYY-MM-DD') = '$yearMonth-02')as b,
 				(select count(distinct no_ind) from si.si_kaizen_tks where left(section_code, 7) = left(es.section_code, 7) and to_char(created_at, 'YYYY-MM-DD') = '$yearMonth-03')as c,
@@ -436,23 +442,27 @@ class M_kaizentimtks extends CI_Model
 				(select count(distinct no_ind) from si.si_kaizen_tks where left(section_code, 7) = left(es.section_code, 7) and to_char(created_at, 'YYYY-MM-DD') = '$yearMonth-30')as gh,
 				(select count(distinct no_ind) from si.si_kaizen_tks where left(section_code, 7) = left(es.section_code, 7) and to_char(created_at, 'YYYY-MM-DD') = '$yearMonth-31')as ij,
 				(select count(distinct no_ind) from si.si_kaizen_tks where left(section_code, 7) = left(es.section_code, 7) and to_char(created_at, 'YYYY-MM') = '$yearMonth')as total
-			FROM (
-				select 
-					distinct left(section_code, 7) section_code
-				from 
-					er.er_employee_all eea
-					inner join dblink(
-						'host={$this->personalia->hostname} user={$this->personalia->username} password={$this->personalia->password} dbname={$this->personalia->database}',
-						'select noind, kd_jabatan from hrd_khs.tpribadi'
-					) as tp(noind varchar, kd_jabatan varchar) on tp.noind = eea.employee_code
-				where 
-					to_char(resign_date, 'YYYY-MM') >= '$yearMonth'
-					and tp.kd_jabatan in ($this->operator_kd_jabatan)
-					and location_code = '$this->location_code_tuksono' 
-					and trim(section_code) <> '-'
-			) as es
+			FROM
+				er.er_section es
+			where
+				left(es.section_code, 7) in (
+					select 
+						distinct left(section_code, 7) 
+					from 
+						er.er_employee_all 
+					where 
+						to_char(resign_date, 'YYYY-MM') >= '$yearMonth'
+						and location_code = '$this->location_code_tuksono' 
+						and trim(section_code) <> '-'
+				)
+				and trim(section_name) not in ('-', '')
+				and location_code = '$this->location_code_tuksono'
+			group by
+				es.section_code,
+				es.section_name,
+				es.unit_name
 			order by
-				section_name
+				es.section_name
 		");
 
 		return $query->result_array();
@@ -460,7 +470,6 @@ class M_kaizentimtks extends CI_Model
 
 	/**
 	 * TODO: Slow execution time
-	 * TODO: Bug pekerja kodesie ict tks & pusat sama, harus dibedain berdasarkan lokasi kerja
 	 * Query sama seperti function getDataKaizenTotalPekerjaSatuTahun
 	 * tetapi tidak ada distinct di kolom actual
 	 * 
@@ -525,8 +534,8 @@ class M_kaizentimtks extends CI_Model
 			FROM (
 				select
 					distinct left(es.section_code, 7) section_code,
-					(select section_name from er.er_section where left(section_code, 7) = es.section_code limit 1) as section_name,
-					(select unit_name from er.er_section where left(section_code, 7) = es.section_code limit 1) as unit_name,
+					es.section_name,
+					es.unit_name,
 					(
 						select
 							count(section_code)
@@ -724,7 +733,7 @@ class M_kaizentimtks extends CI_Model
 							er.er_employee_all
 						where
 							left(section_code, 7) = left(es.section_code, 7)
-							and to_char(resign_date, 'YYYY-MM') >= '$year-11'
+							and to_char(resign_date, 'YYYY-MM') >= '$year-11
 							and to_char(worker_start_working_date, 'YYYY-MM') <= '$year-11'
 					) as plan_november,
 					(
@@ -755,23 +764,30 @@ class M_kaizentimtks extends CI_Model
 							to_char(skt.created_at, 'YYYY-MM') = '$year-12'
 							and left(es.section_code, 7) = left(skt.section_code, 7)
 					) as actual_desember
-				FROM (
-					select 
-						distinct left(section_code, 7) section_code
+				from
+					er.er_section es
+				left join si.si_kaizen_tks skt on
+					es.section_code = skt.section_code
+				where
+					left(es.section_code, 7) in (
+						select 
+						distinct left(section_code, 7) 
 					from 
-						er.er_employee_all eea
-						inner join dblink(
-							'host={$this->personalia->hostname} user={$this->personalia->username} password={$this->personalia->password} dbname={$this->personalia->database}',
-							'select noind, kd_jabatan from hrd_khs.tpribadi'
-						) as tp(noind varchar, kd_jabatan varchar) on tp.noind = eea.employee_code
+						er.er_employee_all 
 					where 
 						to_char(resign_date, 'YYYY-MM') >= '$year-01'
-						and tp.kd_jabatan in ($this->operator_kd_jabatan)
 						and location_code = '$this->location_code_tuksono' 
-						and trim(section_code) <> '-'
-				) as es
+						and trim(section_code) <> '-'	
+					)
+					and trim(section_name) not in ('-', '')
+					and location_code = '$this->location_code_tuksono'
+				group by
+					es.section_code,
+					es.section_name,
+					es.unit_name,
+					skt.created_at
 				order by
-					section_name
+					es.section_name
 			) as n1
 			group by
 				n1.section_code,
@@ -819,8 +835,8 @@ class M_kaizentimtks extends CI_Model
 		$query = $this->erp->query("
 			select
 				distinct left(es.section_code, 7) section_code,
-				(select section_name from er.er_section where left(section_code, 7) = es.section_code limit 1) as section_name,
-				(select unit_name from er.er_section where left(section_code, 7) = es.section_code limit 1) as unit_name,
+				es.section_name,
+				es.unit_name,
 				(select count(no_ind) from si.si_kaizen_tks where left(section_code, 7) = left(es.section_code, 7) and to_char(created_at, 'YYYY-MM-DD') = '$yearMonth-01')as a,
 				(select count(no_ind) from si.si_kaizen_tks where left(section_code, 7) = left(es.section_code, 7) and to_char(created_at, 'YYYY-MM-DD') = '$yearMonth-02')as b,
 				(select count(no_ind) from si.si_kaizen_tks where left(section_code, 7) = left(es.section_code, 7) and to_char(created_at, 'YYYY-MM-DD') = '$yearMonth-03')as c,
@@ -853,23 +869,27 @@ class M_kaizentimtks extends CI_Model
 				(select count(no_ind) from si.si_kaizen_tks where left(section_code, 7) = left(es.section_code, 7) and to_char(created_at, 'YYYY-MM-DD') = '$yearMonth-30')as gh,
 				(select count(no_ind) from si.si_kaizen_tks where left(section_code, 7) = left(es.section_code, 7) and to_char(created_at, 'YYYY-MM-DD') = '$yearMonth-31')as ij,
 				(select count(no_ind) from si.si_kaizen_tks where left(section_code, 7) = left(es.section_code, 7) and to_char(created_at, 'YYYY-MM') = '$yearMonth')as total
-			FROM (
-				select 
-					distinct left(section_code, 7) section_code
-				from 
-					er.er_employee_all eea
-					inner join dblink(
-						'host={$this->personalia->hostname} user={$this->personalia->username} password={$this->personalia->password} dbname={$this->personalia->database}',
-						'select noind, kd_jabatan from hrd_khs.tpribadi'
-					) as tp(noind varchar, kd_jabatan varchar) on tp.noind = eea.employee_code
-				where 
-					to_char(resign_date, 'YYYY-MM') >= '$yearMonth'
-					and tp.kd_jabatan in ($this->operator_kd_jabatan)
-					and location_code = '$this->location_code_tuksono' 
-					and trim(section_code) <> '-'
-			) as es
+			from
+				er.er_section es
+			where
+				left(es.section_code, 7) in (
+					select 
+						distinct left(section_code, 7) 
+					from 
+						er.er_employee_all 
+					where 
+						to_char(resign_date, 'YYYY-MM') >= '$yearMonth'
+						and location_code = '$this->location_code_tuksono' 
+						and trim(section_code) <> '-'	
+				)
+				and trim(section_name) not in ('-', '')
+				and location_code = '$this->location_code_tuksono'
+			group by
+				es.section_code,
+				es.section_name,
+				es.unit_name
 			order by
-				section_name
+				es.section_name
 		");
 
 		return $query->result_array();
@@ -886,31 +906,35 @@ class M_kaizentimtks extends CI_Model
 		$query = $this->erp->query("
 			select
 				distinct left(es.section_code, 7) section_code,
-				(select section_name from er.er_section where left(section_code, 7) = es.section_code limit 1) as section_name,
-				(select unit_name from er.er_section where left(section_code, 7) = es.section_code limit 1) as unit_name,
+				es.section_name,
+				es.unit_name,
 				(select count(section_code) from si.si_kaizen_tks where left(section_code, 7) = left(es.section_code, 7) and to_char(created_at, 'YYYY') = '$year' and kaizen_category = 'Process')as p,
 				(select count(section_code) from si.si_kaizen_tks where left(section_code, 7) = left(es.section_code, 7) and to_char(created_at, 'YYYY') = '$year' and kaizen_category = 'Quality')as q,
 				(select count(section_code) from si.si_kaizen_tks where left(section_code, 7) = left(es.section_code, 7) and to_char(created_at, 'YYYY') = '$year' and kaizen_category = 'Handling')as h,
 				(select count(section_code) from si.si_kaizen_tks where left(section_code, 7) = left(es.section_code, 7) and to_char(created_at, 'YYYY') = '$year' and kaizen_category = '5S')as s5,
 				(select count(section_code) from si.si_kaizen_tks where left(section_code, 7) = left(es.section_code, 7) and to_char(created_at, 'YYYY') = '$year' and kaizen_category = 'Safety')as s,
 				(select count(section_code) from si.si_kaizen_tks where left(section_code, 7) = left(es.section_code, 7) and to_char(created_at, 'YYYY') = '$year' and kaizen_category = 'Yokoten')as y
-			FROM (
-				select 
-					distinct left(section_code, 7) section_code
-				from 
-					er.er_employee_all eea
-					inner join dblink(
-						'host={$this->personalia->hostname} user={$this->personalia->username} password={$this->personalia->password} dbname={$this->personalia->database}',
-						'select noind, kd_jabatan from hrd_khs.tpribadi'
-					) as tp(noind varchar, kd_jabatan varchar) on tp.noind = eea.employee_code
-				where 
-					to_char(resign_date, 'YYYY-MM') >= '$year-01'
-					and tp.kd_jabatan in ($this->operator_kd_jabatan)
-					and location_code = '$this->location_code_tuksono' 
-					and trim(section_code) <> '-'
-			) as es
+			from
+				er.er_section es
+			where
+				left(es.section_code, 7) in (
+					select 
+						distinct left(section_code, 7) 
+					from 
+						er.er_employee_all 
+					where 
+						to_char(resign_date, 'YYYY-MM') >= '$year-01'
+						and location_code = '$this->location_code_tuksono' 
+						and trim(section_code) <> '-'
+				)
+				and trim(section_name) not in ('-', '')
+				and location_code = '$this->location_code_tuksono'
+			group by
+				es.section_code,
+				es.section_name,
+				es.unit_name
 			order by
-				section_name
+				es.section_name
 		");
 		return $query->result_array();
 	}
@@ -926,8 +950,8 @@ class M_kaizentimtks extends CI_Model
 		$query = $this->erp->query("
 			select
 				distinct left(es.section_code, 7) section_code,
-				(select section_name from er.er_section where left(section_code, 7) = es.section_code limit 1) as section_name,
-				(select unit_name from er.er_section where left(section_code, 7) = es.section_code limit 1) as unit_name,
+				es.section_name,
+				es.unit_name,
 				(select count(no_ind) from si.si_kaizen_tks where left(section_code, 7) = left(es.section_code, 7) and to_char(created_at, 'YYYY-MM') = '$year-01' and kaizen_category = 'Process')as p_jan,
 				(select count(no_ind) from si.si_kaizen_tks where left(section_code, 7) = left(es.section_code, 7) and to_char(created_at, 'YYYY-MM') = '$year-01' and kaizen_category = 'Quality')as q_jan,
 				(select count(no_ind) from si.si_kaizen_tks where left(section_code, 7) = left(es.section_code, 7) and to_char(created_at, 'YYYY-MM') = '$year-01' and kaizen_category = 'Handling')as h_jan,
@@ -1000,29 +1024,32 @@ class M_kaizentimtks extends CI_Model
 				(select count(no_ind) from si.si_kaizen_tks where left(section_code, 7) = left(es.section_code, 7) and to_char(created_at, 'YYYY-MM') = '$year-12' and kaizen_category = '5S')as s5_des,
 				(select count(no_ind) from si.si_kaizen_tks where left(section_code, 7) = left(es.section_code, 7) and to_char(created_at, 'YYYY-MM') = '$year-12' and kaizen_category = 'Safety')as s_des,
 				(select count(no_ind) from si.si_kaizen_tks where left(section_code, 7) = left(es.section_code, 7) and to_char(created_at, 'YYYY-MM') = '$year-12' and kaizen_category = 'Yokoten')as y_des
-			FROM (
-				select 
-					distinct left(section_code, 7) section_code
-				from 
-					er.er_employee_all eea
-					inner join dblink(
-						'host={$this->personalia->hostname} user={$this->personalia->username} password={$this->personalia->password} dbname={$this->personalia->database}',
-						'select noind, kd_jabatan from hrd_khs.tpribadi'
-					) as tp(noind varchar, kd_jabatan varchar) on tp.noind = eea.employee_code
-				where 
-					to_char(resign_date, 'YYYY-MM') >= '$year-01'
-					and tp.kd_jabatan in ($this->operator_kd_jabatan)
-					and location_code = '$this->location_code_tuksono' 
-					and trim(section_code) <> '-'
-			) as es
+			from
+				er.er_section es
+			where
+				left(es.section_code, 7) in (
+					select 
+						distinct left(section_code, 7) 
+					from 
+						er.er_employee_all 
+					where 
+						to_char(resign_date, 'YYYY-MM') >= '$year-01'
+						and location_code = '$this->location_code_tuksono' 
+						and trim(section_code) <> '-'	
+				)
+				and trim(section_name) not in ('-', '')
+				and location_code = '$this->location_code_tuksono'
+				group by
+				es.section_code,
+				es.section_name,
+				es.unit_name
 			order by
-				section_name
+				es.section_name
 		");
 		return $query->result_array();
 	}
 
 	/**
-	 * HOVER CARD
 	 * Get employee and title of kaizen tuksono by parameter
 	 * 
 	 * @param String $year
@@ -1049,7 +1076,6 @@ class M_kaizentimtks extends CI_Model
 				section_code,
 				kaizen_category,
 				kaizen_title,
-				kaizen_file
 			")
 			->from('si.si_kaizen_tks');
 
@@ -1067,7 +1093,7 @@ class M_kaizentimtks extends CI_Model
 		}
 
 		if ($section_code) {
-			$query->like('section_code', $section_code, 'after');
+			$query->like('section_code', $section_code, 'right');
 		}
 
 		if ($category) {
@@ -1077,53 +1103,6 @@ class M_kaizentimtks extends CI_Model
 		if ($noind) {
 			$query->where('no_ind', $noind);
 		}
-
-		return $query->get()->result_object();
-	}
-
-	/**
-	 * HOVER CARD
-	 * Get active employee by parameter
-	 * 
-	 * @param String $year
-	 * @param String $month|Optional
-	 * @param String $day|Optional
-	 * @param String $section_code|Optional
-	 */
-	public function getEmployeeByParameter($year, $month, $day = false, $section_code = false)
-	{
-		// validaton format
-		if ($month) {
-			$month = str_pad($month, 2, "0", STR_PAD_LEFT);
-		}
-
-		$query = $this->personalia
-			->select("
-					tp.noind,
-					tp.nama,
-					tp.kodesie
-				")
-			->from('hrd_khs.tpribadi tp')
-			->where("tp.kd_jabatan in ($this->operator_kd_jabatan)");
-
-		if ($year && !$month && !$day) {
-			$query->where("TO_CHAR(tp.tglkeluar, 'YYYY') >= ", $year);
-			$query->where("TO_CHAR(tp.masukkerja, 'YYYY') <= ", $year);
-		} elseif ($year && $month && !$day) {
-			$dateMonth = "$year-$month";
-			$query->where("TO_CHAR(tp.tglkeluar, 'YYYY-MM') >= ", $dateMonth);
-			$query->where("TO_CHAR(tp.masukkerja, 'YYYY-MM') <= ", $dateMonth);
-		} elseif ($year && $month && $day) {
-			$fullDate = "$year-$month-$day";
-			$query->where("TO_CHAR(tp.tglkeluar, 'YYYY-MM-DD') >= ", $fullDate);
-			$query->where("TO_CHAR(tp.masukkerja, 'YYYY-MM-DD') <= ", $fullDate);
-		}
-
-		if ($section_code) {
-			$query->like('tp.kodesie', $section_code, 'after');
-		}
-
-		$query->order_by('nama', 'asc');
 
 		return $query->get()->result_object();
 	}
@@ -1168,20 +1147,15 @@ class M_kaizentimtks extends CI_Model
 		$queryString = "
 			SELECT
 				distinct left(es.section_code, 7) section_code,
-				(select section_name from er.er_section where left(section_code, 7) = es.section_code limit 1) as section_name,
-				(select unit_name from er.er_section where left(section_code, 7) = es.section_code limit 1) as unit_name,
+				es.section_name,
+				es.unit_name,
 				(
 					select
 						count(section_code)
 					from
-						er.er_employee_all eea
-						inner join dblink(
-							'host={$this->personalia->hostname} user={$this->personalia->username} password={$this->personalia->password} dbname={$this->personalia->database}',
-							'select noind, kd_jabatan from hrd_khs.tpribadi'
-						) as tp(noind varchar, kd_jabatan varchar) on tp.noind = eea.employee_code
+						er.er_employee_all
 					where
 						left(section_code, 7) = left(es.section_code, 7)
-						and tp.kd_jabatan in ($this->operator_kd_jabatan)
 						and to_char(resign_date, 'YYYY-MM') >= '$year-01' 
 						and to_char(worker_start_working_date, 'YYYY-MM') <= '$year-01'
 						and location_code = '$this->location_code_tuksono'
@@ -1208,14 +1182,9 @@ class M_kaizentimtks extends CI_Model
 					select
 						count(section_code)
 					from
-						er.er_employee_all eea
-						inner join dblink(
-							'host={$this->personalia->hostname} user={$this->personalia->username} password={$this->personalia->password} dbname={$this->personalia->database}',
-							'select noind, kd_jabatan from hrd_khs.tpribadi'
-						) as tp(noind varchar, kd_jabatan varchar) on tp.noind = eea.employee_code
+						er.er_employee_all
 					where
 						left(section_code, 7) = left(es.section_code, 7)
-						and tp.kd_jabatan in ($this->operator_kd_jabatan)
 						and to_char(resign_date, 'YYYY-MM') >= '$year-02' 
 						and to_char(worker_start_working_date, 'YYYY-MM') <= '$year-02'
 						and location_code = '$this->location_code_tuksono'
@@ -1242,14 +1211,9 @@ class M_kaizentimtks extends CI_Model
 					select
 						count(section_code)
 					from
-						er.er_employee_all eea
-						inner join dblink(
-							'host={$this->personalia->hostname} user={$this->personalia->username} password={$this->personalia->password} dbname={$this->personalia->database}',
-							'select noind, kd_jabatan from hrd_khs.tpribadi'
-						) as tp(noind varchar, kd_jabatan varchar) on tp.noind = eea.employee_code
+						er.er_employee_all
 					where
 						left(section_code, 7) = left(es.section_code, 7)
-						and tp.kd_jabatan in ($this->operator_kd_jabatan)
 						and to_char(resign_date, 'YYYY-MM') >= '$year-03' 
 						and to_char(worker_start_working_date, 'YYYY-MM') <= '$year-03'
 						and location_code = '$this->location_code_tuksono'
@@ -1276,14 +1240,9 @@ class M_kaizentimtks extends CI_Model
 					select
 						count(section_code)
 					from
-						er.er_employee_all eea
-						inner join dblink(
-							'host={$this->personalia->hostname} user={$this->personalia->username} password={$this->personalia->password} dbname={$this->personalia->database}',
-							'select noind, kd_jabatan from hrd_khs.tpribadi'
-						) as tp(noind varchar, kd_jabatan varchar) on tp.noind = eea.employee_code
+						er.er_employee_all
 					where
 						left(section_code, 7) = left(es.section_code, 7)
-						and tp.kd_jabatan in ($this->operator_kd_jabatan)
 						and to_char(resign_date, 'YYYY-MM') >= '$year-04' 
 						and to_char(worker_start_working_date, 'YYYY-MM') <= '$year-04'
 						and location_code = '$this->location_code_tuksono'
@@ -1310,14 +1269,9 @@ class M_kaizentimtks extends CI_Model
 					select
 						count(section_code)
 					from
-						er.er_employee_all eea
-						inner join dblink(
-							'host={$this->personalia->hostname} user={$this->personalia->username} password={$this->personalia->password} dbname={$this->personalia->database}',
-							'select noind, kd_jabatan from hrd_khs.tpribadi'
-						) as tp(noind varchar, kd_jabatan varchar) on tp.noind = eea.employee_code
+						er.er_employee_all
 					where
 						left(section_code, 7) = left(es.section_code, 7)
-						and tp.kd_jabatan in ($this->operator_kd_jabatan)
 						and to_char(resign_date, 'YYYY-MM') >= '$year-05' 
 						and to_char(worker_start_working_date, 'YYYY-MM') <= '$year-05'
 						and location_code = '$this->location_code_tuksono'
@@ -1344,14 +1298,9 @@ class M_kaizentimtks extends CI_Model
 					select
 						count(section_code)
 					from
-						er.er_employee_all eea
-						inner join dblink(
-							'host={$this->personalia->hostname} user={$this->personalia->username} password={$this->personalia->password} dbname={$this->personalia->database}',
-							'select noind, kd_jabatan from hrd_khs.tpribadi'
-						) as tp(noind varchar, kd_jabatan varchar) on tp.noind = eea.employee_code
+						er.er_employee_all
 					where
 						left(section_code, 7) = left(es.section_code, 7)
-						and tp.kd_jabatan in ($this->operator_kd_jabatan)
 						and to_char(resign_date, 'YYYY-MM') >= '$year-06' 
 						and to_char(worker_start_working_date, 'YYYY-MM') <= '$year-06'
 						and location_code = '$this->location_code_tuksono'
@@ -1378,14 +1327,9 @@ class M_kaizentimtks extends CI_Model
 					select
 						count(section_code)
 					from
-						er.er_employee_all eea
-						inner join dblink(
-							'host={$this->personalia->hostname} user={$this->personalia->username} password={$this->personalia->password} dbname={$this->personalia->database}',
-							'select noind, kd_jabatan from hrd_khs.tpribadi'
-						) as tp(noind varchar, kd_jabatan varchar) on tp.noind = eea.employee_code
+						er.er_employee_all
 					where
 						left(section_code, 7) = left(es.section_code, 7)
-						and tp.kd_jabatan in ($this->operator_kd_jabatan)
 						and to_char(resign_date, 'YYYY-MM') >= '$year-07' 
 						and to_char(worker_start_working_date, 'YYYY-MM') <= '$year-07'
 						and location_code = '$this->location_code_tuksono'
@@ -1412,14 +1356,9 @@ class M_kaizentimtks extends CI_Model
 					select
 						count(section_code)
 					from
-						er.er_employee_all eea
-						inner join dblink(
-							'host={$this->personalia->hostname} user={$this->personalia->username} password={$this->personalia->password} dbname={$this->personalia->database}',
-							'select noind, kd_jabatan from hrd_khs.tpribadi'
-						) as tp(noind varchar, kd_jabatan varchar) on tp.noind = eea.employee_code
+						er.er_employee_all
 					where
 						left(section_code, 7) = left(es.section_code, 7)
-						and tp.kd_jabatan in ($this->operator_kd_jabatan)
 						and to_char(resign_date, 'YYYY-MM') >= '$year-08' 
 						and to_char(worker_start_working_date, 'YYYY-MM') <= '$year-08'
 						and location_code = '$this->location_code_tuksono'
@@ -1446,14 +1385,9 @@ class M_kaizentimtks extends CI_Model
 					select
 						count(section_code)
 					from
-						er.er_employee_all eea
-						inner join dblink(
-							'host={$this->personalia->hostname} user={$this->personalia->username} password={$this->personalia->password} dbname={$this->personalia->database}',
-							'select noind, kd_jabatan from hrd_khs.tpribadi'
-						) as tp(noind varchar, kd_jabatan varchar) on tp.noind = eea.employee_code
+						er.er_employee_all
 					where
 						left(section_code, 7) = left(es.section_code, 7)
-						and tp.kd_jabatan in ($this->operator_kd_jabatan)
 						and to_char(resign_date, 'YYYY-MM') >= '$year-09'
 						and to_char(worker_start_working_date, 'YYYY-MM') <= '$year-09'
 						and location_code = '$this->location_code_tuksono'
@@ -1480,14 +1414,9 @@ class M_kaizentimtks extends CI_Model
 					select
 						count(section_code)
 					from
-						er.er_employee_all eea
-						inner join dblink(
-							'host={$this->personalia->hostname} user={$this->personalia->username} password={$this->personalia->password} dbname={$this->personalia->database}',
-							'select noind, kd_jabatan from hrd_khs.tpribadi'
-						) as tp(noind varchar, kd_jabatan varchar) on tp.noind = eea.employee_code
+						er.er_employee_all
 					where
 						left(section_code, 7) = left(es.section_code, 7)
-						and tp.kd_jabatan in ($this->operator_kd_jabatan)
 						and to_char(resign_date, 'YYYY-MM') >= '$year-10' 
 						and to_char(worker_start_working_date, 'YYYY-MM') <= '$year-10'
 						and location_code = '$this->location_code_tuksono'
@@ -1514,14 +1443,9 @@ class M_kaizentimtks extends CI_Model
 					select
 						count(section_code)
 					from
-						er.er_employee_all eea
-						inner join dblink(
-							'host={$this->personalia->hostname} user={$this->personalia->username} password={$this->personalia->password} dbname={$this->personalia->database}',
-							'select noind, kd_jabatan from hrd_khs.tpribadi'
-						) as tp(noind varchar, kd_jabatan varchar) on tp.noind = eea.employee_code
+						er.er_employee_all
 					where
 						left(section_code, 7) = left(es.section_code, 7)
-						and tp.kd_jabatan in ($this->operator_kd_jabatan)
 						and to_char(resign_date, 'YYYY-MM') >= '$year-11'
 						and to_char(worker_start_working_date, 'YYYY-MM') <= '$year-11'
 						and location_code = '$this->location_code_tuksono'
@@ -1541,21 +1465,16 @@ class M_kaizentimtks extends CI_Model
 					from
 						si.si_kaizen_tks skt
 					where
-						to_char(skt.created_at, 'YYYY-MM') = '$year-11'
+						to_char(skt.created_at, 'YYYY-MM') = '$year-1'
 						and left(es.section_code, 7) = left(skt.section_code, 7)
 				) as kaizen_november, -- KAIZEN
 				(
 					select
 						count(section_code)
 					from
-						er.er_employee_all eea
-						inner join dblink(
-							'host={$this->personalia->hostname} user={$this->personalia->username} password={$this->personalia->password} dbname={$this->personalia->database}',
-							'select noind, kd_jabatan from hrd_khs.tpribadi'
-						) as tp(noind varchar, kd_jabatan varchar) on tp.noind = eea.employee_code
+						er.er_employee_all
 					where
 						left(section_code, 7) = left(es.section_code, 7)
-						and tp.kd_jabatan in ($this->operator_kd_jabatan)
 						and to_char(resign_date, 'YYYY-MM') >= '$year-12' 
 						and to_char(worker_start_working_date, 'YYYY-MM') <= '$year-12'
 						and location_code = '$this->location_code_tuksono'
@@ -1578,25 +1497,28 @@ class M_kaizentimtks extends CI_Model
 						to_char(skt.created_at, 'YYYY-MM') = '$year-12'
 						and left(es.section_code, 7) = left(skt.section_code, 7)
 				) as kaizen_desember -- KAIZEN
-			FROM (
+			FROM
+				er.er_section es 
+				left join si.si_kaizen_tks skt on es.section_code = skt.section_code
+			WHERE
+				left(es.section_code, 7) in (
 					select 
-						distinct left(section_code, 7) section_code
+						distinct left(section_code, 7) 
 					from 
-						er.er_employee_all eea
-						inner join dblink(
-							'host={$this->personalia->hostname} user={$this->personalia->username} password={$this->personalia->password} dbname={$this->personalia->database}',
-							'select noind, kd_jabatan from hrd_khs.tpribadi'
-						) as tp(noind varchar, kd_jabatan varchar) on tp.noind = eea.employee_code
+						er.er_employee_all 
 					where 
 						to_char(resign_date, 'YYYY-MM') >= '$year-01'
-						and tp.kd_jabatan in ($this->operator_kd_jabatan)
 						and location_code = '$this->location_code_tuksono' 
 						and trim(section_code) <> '-'
-			) as es
-			-- WHERE 
-				-- trim(section_name) not in ('-', '')
+				)
+				and trim(section_name) not in ('-', '')
+			GROUP BY
+				es.section_code,
+				es.section_name,
+				es.unit_name,
+				skt.created_at
 			ORDER BY
-				section_name
+				es.section_name
 		";
 
 		$query = $this->erp->query($queryString);
@@ -1610,12 +1532,12 @@ class M_kaizentimtks extends CI_Model
 	 * @param String $untilMonth YYYY-MM
 	 * @return Array of Year-Month
 	 */
-	protected function generateArrayOfMonth($fromMonth, $untilMonth)
+	protected function generateArrayMonthPeriode($fromMonth, $untilMonth)
 	{
 		$months = [];
 
 		$month = $fromMonth;
-		while ($month <= $untilMonth) {
+		while ($month < $untilMonth) {
 			array_push($months, $month);
 			$month = date('Y-m', strtotime($month . '+1 month'));
 		}
@@ -1625,39 +1547,24 @@ class M_kaizentimtks extends CI_Model
 
 	/**
 	 * 
-	 * @param String $fromMonth
-	 * @param String $untilMonth
-	 * 
-	 * @return String 
 	 */
-	public function getPercentageKaizenPerMonth($fromMonth, $untilMonth, $distinctEmployee = false)
+	public function getPercentageKaizenPerMonth($fromMonth, $untilMonth)
 	{
 		$data = [];
-
-		$months = $this->generateArrayOfMonth($fromMonth, $untilMonth);
-
-		$distinctEmployee = $distinctEmployee ? "distinct" : '';
+		# code...
+		$months = $this->generateArrayMonthPeriode($fromMonth, $untilMonth);
 
 		foreach ($months as $yearMonth) {
-			$shortMonth = date('M', strtotime($yearMonth));
 			$sql = "
 				SELECT
-				'$yearMonth' as month,
-				'$shortMonth' as short_month,
 				(
 					select
-						count($distinctEmployee eea.section_code)
+						count(eea.section_code)
 					from
-						er.er_employee_all eea inner join
-						dblink(
-							'host={$this->personalia->hostname} user={$this->personalia->username} password={$this->personalia->password} dbname={$this->personalia->database}',
-							'select noind, kd_jabatan from hrd_khs.tpribadi'
-						) as tp(noind varchar, kd_jabatan varchar) on tp.noind = eea.employee_code
+						er.er_employee_all eea
 					where
 						to_char(eea.resign_date, 'YYYY-MM') >= '$yearMonth' 
 						and to_char(eea.worker_start_working_date, 'YYYY-MM') <= '$yearMonth'
-						and tp.kd_jabatan in ($this->operator_kd_jabatan)
-						and eea.location_code = '$this->location_code_tuksono'
 						and left(eea.section_code, 7) in (
 							select 
 								distinct left(section_code, 7) 
@@ -1680,213 +1587,16 @@ class M_kaizentimtks extends CI_Model
 			";
 
 			$result = $this->db->query($sql)->row();
-			array_push($data, $result);
-		}
-
-		return $data;
-	}
-
-
-	/**
-	 * Get count of operator employee with tuksono location in month
-	 * 
-	 * @param String $yearMonth
-	 * @return String Count of employee
-	 */
-	public function getOperatorEmployeeCountOfMonth($yearMonth)
-	{
-		$query = "
-			select 
-				count(*) employee_count
-			from 
-				er.er_employee_all eea
-				inner join dblink(
-					'host={$this->personalia->hostname} user={$this->personalia->username} password={$this->personalia->password} dbname={$this->personalia->database}',
-					'select noind, kd_jabatan from hrd_khs.tpribadi'
-				) as tp(noind varchar, kd_jabatan varchar) on tp.noind = eea.employee_code
-			where 
-				to_char(resign_date, 'YYYY-MM') >= '$yearMonth'
-				and tp.kd_jabatan in ($this->operator_kd_jabatan)
-				and location_code = '$this->location_code_tuksono' 
-				and trim(section_code) <> '-'
-		";
-
-		return $this->db->query($query)->row()->employee_count;
-	}
-
-	/**
-	 * TODO FIX THIS
-	 * 
-	 * @param String $fromMonth
-	 * @param String $untilMonth
-	 * @param Boolean $distinctEmployee -> true: maka select total pekerja yg buat kaizennya, false: select total semua kaizen yang dibuat pekerja
-	 * @return Array<Array>
-	 */
-	public function getPercentageSeksiKaizenPerMonth($fromMonth, $untilMonth, $distinctEmployee = false)
-	{
-		$data = [];
-
-		$months = $this->generateArrayOfMonth($fromMonth, $untilMonth);
-
-		$distinctEmployee = $distinctEmployee ? "distinct" : '';
-
-		foreach ($months as $yearMonth) {
-			$shortMonth = date('M', strtotime($yearMonth));
-
-			$query = $this->erp->query("
-				select
-					distinct left(es.section_code, 7) section_code,
-					'$shortMonth' as short_month,
-					(select section_name from er.er_section where left(section_code, 7) = es.section_code limit 1) as section_name,
-					(select unit_name from er.er_section where left(section_code, 7) = es.section_code limit 1) as unit_name,
-					(
-						select
-							count(*)
-						from
-							er.er_employee_all
-						where
-							left(section_code, 7) = left(es.section_code, 7)
-							and to_char(resign_date, 'YYYY-MM') >= '$yearMonth'
-							and to_char(worker_start_working_date, 'YYYY-MM') <= '$yearMonth'
-					) as employee_count,
-					(select count($distinctEmployee no_ind) from si.si_kaizen_tks where left(section_code, 7) = left(es.section_code, 7) and to_char(created_at, 'YYYY-MM') = '$yearMonth')as total
-				FROM (
-					select 
-						distinct left(section_code, 7) section_code
-					from 
-						er.er_employee_all eea
-						inner join dblink(
-							'host={$this->personalia->hostname} user={$this->personalia->username} password={$this->personalia->password} dbname={$this->personalia->database}',
-							'select noind, kd_jabatan from hrd_khs.tpribadi'
-						) as tp(noind varchar, kd_jabatan varchar) on tp.noind = eea.employee_code
-					where 
-						to_char(resign_date, 'YYYY-MM') >= '$fromMonth'
-						and tp.kd_jabatan in ($this->operator_kd_jabatan)
-						and location_code = '$this->location_code_tuksono' 
-						and trim(section_code) <> '-'
-				) as es
-				order by
-					section_name
-			");
-
-			$kaizenPerMonth = $query->result_array();
-			$data[] = $kaizenPerMonth;
 		}
 
 		return $data;
 	}
 
 	/**
-	 * Get single employee by noind 
 	 * 
-	 * @param String $noind
-	 * @return Object of DB
 	 */
-	public function getEmployeeSectionByNoind($noind)
+	public function getPercentageEmployeePerMonth($fromMonth, $untilMonth)
 	{
-		$queryTpribadi = "
-			SELECT
-				tp.noind,
-				tp.nama as name,
-				tp.kodesie as section_code,
-				ts.seksi as section_name,
-				ts.unit as unit_name
-			FROM
-				hrd_khs.tpribadi tp 
-					inner join hrd_khs.tseksi ts on tp.kodesie = ts.kodesie
-			WHERE
-				tp.keluar = false
-				and tp.noind = '$noind'
-			LIMIT 1;
-		";
-
-		$sql = $this->personalia->query($queryTpribadi);
-
-		return $sql->row();
-	}
-
-	/**
-	 * Get last import batch
-	 * 
-	 * @return Integer
-	 */
-	public function getLastImportBatch()
-	{
-		return $this->db
-			->select('max(import_batch_id) batch')
-			->from('si.si_kaizen_tks')
-			->get()
-			->row()
-			->batch ?: 0;
-	}
-
-	/**
-	 * Insert kaizen on table si.si_kaizen_tks batch/bulk
-	 * 
-	 * @param Array $kaizens
-	 * @return Object of DB
-	 */
-	public function insertBatchKaizen($kaizens)
-	{
-		return $this->db->insert_batch('si.si_kaizen_tks', $kaizens);
-	}
-
-	/**
-	 * Delete kaizen batch based on import_batch_id column
-	 * 
-	 * @param Int $batch_id
-	 * @param Object of DB
-	 */
-	public function deleteBatchKaizen($batch_id)
-	{
-		return $this->db
-			->where('import_batch_id', $batch_id)
-			->delete('si.si_kaizen_tks');
-	}
-
-	/**
-	 * Get import history
-	 * 
-	 * @return Array<Object> of import history
-	 */
-	public function getImportHistory()
-	{
-		$sql = "
-			SELECT 
-				distinct(import_batch_id), 
-				(select employee_name from er.er_employee_all where employee_code = kzn.import_by) import_by_name, 
-				import_by, 
-				import_at, 
-				count(*) amount
-			FROM
-				si.si_kaizen_tks kzn
-			GROUP BY 
-				import_batch_id, 
-				import_by, 
-				import_at
-			ORDER BY
-				1 DESC
-		";
-
-		return $this->db->query($sql)->result_object();
-	}
-
-	/**
-	 * Get batch import by id
-	 * 
-	 * @param Int $batch_id
-	 * @return Array<Object>
-	 */
-	public function getImportHistoryById($batch_id)
-	{
-		return $this->db
-			->select('*')
-			->from('si.si_kaizen_tks')
-			->where('import_batch_id', $batch_id)
-			->order_by('created_at')
-			->order_by('section')
-			->order_by('no_ind')
-			->get()
-			->result_object();
+		# code...
 	}
 }

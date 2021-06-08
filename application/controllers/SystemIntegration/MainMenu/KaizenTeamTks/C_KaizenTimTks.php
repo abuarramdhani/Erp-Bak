@@ -1,19 +1,16 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed');
 
+date_default_timezone_set('Asia/Jakarta'); // set timezone
+set_time_limit(0); // disable time limit
+ignore_user_abort(false); // ignore user aborting request
+
 class C_KaizenTimTks extends CI_Controller
-{ //ealah :v
+{
 
   function __construct()
   {
     parent::__construct();
-    date_default_timezone_set('Asia/Jakarta');
-    $this->load->helper('form');
-    $this->load->helper('url');
-    $this->load->helper('html');
-
     $this->load->library('form_validation');
-    $this->load->library('session');
-    $this->load->library('encrypt');
 
     $this->load->model('M_index');
     $this->load->model('SystemAdministration/MainMenu/M_user');
@@ -36,7 +33,6 @@ class C_KaizenTimTks extends CI_Controller
 
   function index()
   {
-    // die;
     $this->checkSession();
     $user_id = $this->session->userid;
     $user = $this->session->user;
@@ -52,7 +48,7 @@ class C_KaizenTimTks extends CI_Controller
 
     $this->load->view('V_Header', $data);
     $this->load->view('V_Sidemenu', $data);
-    $this->load->view('SystemIntegration/MainMenu/KaizenTeamTks/V_Dasboard', $data);
+    $this->load->view('SystemIntegration/MainMenu/KaizenTeamTks/V_Dashboard', $data);
     $this->load->view('V_Footer', $data);
   }
 
@@ -62,9 +58,9 @@ class C_KaizenTimTks extends CI_Controller
     $user_id = $this->session->userid;
     $user = $this->session->user;
 
-    $data['Title']      =  'Rekap Data Kaizen - Total Pekerja';
-    $data['Header']      =  'Rekap Data Kaizen - Total Pekerja';
-    $data['Menu']       =   'Rekap Data Kaizen - Total Pekerja';
+    $data['Title']      =  'Rekap Kaizen - Total Pekerja';
+    $data['Header']      =  'Rekap Kaizen - Total Pekerja';
+    $data['Menu']       =   'Rekap Kaizen - Total Pekerja';
     $data['SubMenuOne']   =   'Periode 1 Tahun';
     $data['SubMenuTwo']   =   '';
 
@@ -85,9 +81,9 @@ class C_KaizenTimTks extends CI_Controller
     $user_id = $this->session->userid;
     $user = $this->session->user;
 
-    $data['Title']      =  'Rekap Data Kaizen - Total Pekerja';
-    $data['Header']      =  'Rekap Data Kaizen - Total Pekerja';
-    $data['Menu']       =   'Rekap Data Kaizen - Total Pekerja';
+    $data['Title']      =  'Rekap Kaizen - Total Pekerja';
+    $data['Header']      =  'Rekap Kaizen - Total Pekerja';
+    $data['Menu']       =   'Rekap Kaizen - Total Pekerja';
     $data['SubMenuOne']   =   'Periode 1 Bulan';
     $data['SubMenuTwo']   =   '';
 
@@ -108,9 +104,9 @@ class C_KaizenTimTks extends CI_Controller
     $user_id = $this->session->userid;
     $user = $this->session->user;
 
-    $data['Title']      =  'Rekap Data Kaizen - Total Kaizen';
-    $data['Header']      =  'Rekap Data Kaizen - Total Kaizen';
-    $data['Menu']       =   'Rekap Data Kaizen - Total Kaizen';
+    $data['Title']      =  'Rekap Kaizen - Total Kaizen';
+    $data['Header']      =  'Rekap Kaizen - Total Kaizen';
+    $data['Menu']       =   'Rekap Kaizen - Total Kaizen';
     $data['SubMenuOne']   =   'Periode 1 Tahun';
     $data['SubMenuTwo']   =   '';
 
@@ -131,9 +127,9 @@ class C_KaizenTimTks extends CI_Controller
     $user_id = $this->session->userid;
     $user = $this->session->user;
 
-    $data['Title']      =  'Rekap Data Kaizen - Total Kaizen';
-    $data['Header']      =  'Rekap Data Kaizen - Total Kaizen';
-    $data['Menu']       =   'Rekap Data Kaizen - Total Kaizen';
+    $data['Title']      =  'Rekap Kaizen - Total Kaizen';
+    $data['Header']      =  'Rekap Kaizen - Total Kaizen';
+    $data['Menu']       =   'Rekap Kaizen - Total Kaizen';
     $data['SubMenuOne']   =   'Periode 1 Bulan';
     $data['SubMenuTwo']   =   '';
 
@@ -154,9 +150,9 @@ class C_KaizenTimTks extends CI_Controller
     $user_id = $this->session->userid;
     $user = $this->session->user;
 
-    $data['Title']      =  'Rekap Data Kaizen - Kategori Kaizen';
-    $data['Header']      =  'Rekap Data Kaizen - Kategori Kaizen';
-    $data['Menu']       =   'Rekap Data Kaizen - Kategori Kaizen';
+    $data['Title']      =  'Rekap Kaizen - Kategori Kaizen';
+    $data['Header']      =  'Rekap Kaizen - Kategori Kaizen';
+    $data['Menu']       =   'Rekap Kaizen - Kategori Kaizen';
     $data['SubMenuOne']   =   'Bulanan';
     $data['SubMenuTwo']   =   '';
 
@@ -177,9 +173,9 @@ class C_KaizenTimTks extends CI_Controller
     $user_id = $this->session->userid;
     $user = $this->session->user;
 
-    $data['Title']      =  'Rekap Data Kaizen - Kategori Kaizen';
-    $data['Header']      =  'Rekap Data Kaizen - Kategori Kaizen';
-    $data['Menu']       =   'Rekap Data Kaizen - Kategori Kaizen';
+    $data['Title']      =  'Rekap Kaizen - Kategori Kaizen';
+    $data['Header']      =  'Rekap Kaizen - Kategori Kaizen';
+    $data['Menu']       =   'Rekap Kaizen - Kategori Kaizen';
     $data['SubMenuOne']   =   'Tahunan';
     $data['SubMenuTwo']   =   '';
 
@@ -197,7 +193,7 @@ class C_KaizenTimTks extends CI_Controller
   function get_data_kaizen_total_pekerja_satu_tahun()
   {
     $get = $this->input->get();
-    (!empty($get['year'])) ? $year = $get['year'] : $year = date('Y');
+    $year = (!empty($get['year'])) ? $get['year'] : date('Y');
 
     $data = $this->M_kaizentimtks->getDataKaizenTotalPekerjaSatuTahun($year);
 
@@ -308,7 +304,7 @@ class C_KaizenTimTks extends CI_Controller
   function get_data_kaizen_kategori_kaizen_bulanan()
   {
     $get = $this->input->get();
-    (!empty($get['year'])) ? $year = $get['year'] : $year = date('Y');
+    $year = (!empty($get['year'])) ? $get['year'] : date('Y');
 
     $data = $this->M_kaizentimtks->getDataKaizenKategoriBulanan($year);
 

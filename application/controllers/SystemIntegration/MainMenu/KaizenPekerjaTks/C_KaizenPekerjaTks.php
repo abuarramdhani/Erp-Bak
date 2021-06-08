@@ -49,7 +49,7 @@ class C_KaizenPekerjaTks extends CI_Controller
     $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
     $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
-    $data["kaizenCategory"] = $this->M_kaizentks->kaizenCategory();
+    $data["kaizenCategory"] = $this->M_kaizentks->kaizenCategory;
 
     $this->load->view('V_Header', $data);
     $this->load->view('V_Sidemenu', $data);
@@ -57,8 +57,13 @@ class C_KaizenPekerjaTks extends CI_Controller
     $this->load->view('V_Footer', $data);
   }
 
+  /**
+   * Get employee based on sesssion section
+   */
   function getEmployees()
   {
+    $userKodesie = $this->session->kodesie;
+
     $search = $this->input->get('searchTerm');
     $respose = $this->M_kaizentks->getEmployees($search);
 
@@ -214,6 +219,15 @@ class C_KaizenPekerjaTks extends CI_Controller
     $get = $this->input->post();
     $id = $get['id'];
     $file = $get['kaizen_file'];
-    $this->M_kaizentks->deleteKaizen($id, $file);
+
+    $delete = $this->M_kaizentks->deleteKaizen($id, $file);
+
+    if ($delete) {
+      echo json_encode(array(
+        "statusCode" => 200
+      ));
+    } else {
+      echo "gagal menghapus";
+    }
   }
 }

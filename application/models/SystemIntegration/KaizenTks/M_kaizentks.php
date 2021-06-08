@@ -6,7 +6,6 @@ class M_kaizentks extends CI_Model
   private $_tableKaizen = "si.si_kaizen_tks";
   private $_tableLog = "hrd_khs.tlog";
 
-  public $kaizen_id;
   public $no_ind;
   public $name;
   public $kaizen_title;
@@ -19,6 +18,16 @@ class M_kaizentks extends CI_Model
   public $updated_at;
   public $updated_by;
 
+  private $_location_code_tuksono = '02';
+
+  public $kaizenCategory = array(
+    "Process",
+    "Quality",
+    "Handling",
+    "5S",
+    "Safety",
+    "Yokoten"
+  );
 
   function __construct()
   {
@@ -46,47 +55,31 @@ class M_kaizentks extends CI_Model
 
   function getEmployees($search)
   {
+    // to uppercase
     $searchUp = strtoupper($search);
 
-    $query = $this->erp->query("select trim(eea.employee_code) as noind, 
-    trim(employee_name) as name, 
-    trim(ees.section_code) as section_code, 
-    trim(ees.unit_name) as unit_name, 
-    trim(ees.section_name) as section_name
-    from er.er_employee_all eea 
-    	inner join er.er_section ees on ees.section_code = eea.section_code
-   where eea.section_code in ('325020100',
-	'320010100',
-	'329010103',
-	'329030100',
-	'330100701',
-	'330101103',
-	'325010805',
-	'322010101',
-	'321010300',
-	'328010305',
-	'323020101',
-	'323010100',
-	'323030102',
-	'331010103',
-	'326010100',
-	'324010101') and to_char(eea.resign_date, 'YYYY-MM') >= to_char(current_date,'YYYY-MM')  and eea.employee_code like '%$searchUp%'");
+    $queryTpribadi = "
+      SELECT
+        tp.noind,
+        tp.nama as name,
+        tp.kodesie as section_code,
+        ts.seksi as section_name,
+        ts.unit as unit_name
+      FROM
+        hrd_khs.tpribadi tp 
+          inner join hrd_khs.tseksi ts on tp.kodesie = ts.kodesie
+      WHERE
+        tp.keluar = false
+        and tp.kd_jabatan in ('10', '11', '12', '13', '15', '17', '18', '20', '21', '23', '22', '24') -- operator, supervisor, kasie utama, madya, pratama
+        and tp.lokasi_kerja = '$this->_location_code_tuksono'
+        and (tp.noind like '$searchUp%' or upper(tp.nama) like '%$searchUp%')
+      LIMIT 30;
+    ";
 
-    return $query->result_array();
+    $sql = $this->personalia->query($queryTpribadi);
+
+    return $sql->result_array();
   }
-
-  // function getAllKaizen()
-  // {
-  //   // $query = $this->erp->select("*")
-  //   //   ->from("si.si_kaizen_tks");
-  //   // $query->get()->result_array();
-  //   return $this->erp->query("SELECT * from si.si_kaizen_tks")->result_array(); //seharus e ngene ki we gelem ki la iyo
-  //   // print("<pre>");
-  //   // print_r($query);
-  //   // die;
-
-  //   // return $query;
-  // }
 
   function getCountKaizen()
   {
@@ -103,34 +96,20 @@ class M_kaizentks extends CI_Model
   {
     return $this->erp->get_where($this->_tableKaizen, ["kaizen_id" => $id])->row();
   }
-  function kaizenCategory()
-  {
-    $category =  array(
-      "Process",
-      "Quality",
-      "Handling",
-      "5S",
-      "Safety",
-      "Yokoten"
-    );
-    return $category;
-  }
 
   function saveKaizen($user)
   {
-    $randomId = abs(crc32(uniqid()));
     $post = $this->input->post();
-    $this->kaizen_id = $randomId;
+
     $this->no_ind = $post["slcNoind"];
     $this->name = $post["employeeName"];
     $this->kaizen_title = $post["kaizenTitle"];
     $this->kaizen_category = $post["slcKaizenCategory"];
-    $this->kaizen_file = $this->uploadImage($post["slcNoind"], $randomId);
+    $this->kaizen_file = $this->uploadImage($post["slcNoind"]);
     $this->created_by = $user;
     $this->section = $post["employeeSection"];
     $this->section_code = $post["sectionCode"];
     $this->unit = $post["employeeUnit"];
-
 
     if ($this->kaizen_file == "gagal") {
       return "gagal";
@@ -192,24 +171,28 @@ class M_kaizentks extends CI_Model
   function deleteKaizen($id, $file)
   {
     $this->load->helper('file');
-    if (base_url("assets/upload/uploadKaizenTks/" . $file)) {
-      unlink(FCPATH . "assets/upload/uploadKaizenTks/" . $file);
-      echo json_encode(array(
-        "statusCode" => 200
-      ));
-    } else {
-      echo "gagal menghapus";
+    try {
+
+      if (base_url("assets/upload/uploadKaizenTks/" . $file)) {
+        unlink(FCPATH . "assets/upload/uploadKaizenTks/" . $file);
+      }
+
+      $this->erp->delete($this->_tableKaizen, array("kaizen_id" => $id));
+
+      return true;
+    } catch (Exception $e) {
+      return false;
     }
-    $this->erp->delete($this->_tableKaizen, array("kaizen_id" => $id));
   }
 
-  function uploadImage($user, $id)
+  function uploadImage($user)
   {
     $config['upload_path'] = './assets/upload/uploadKaizenTks/';
     $config['allowed_types'] = 'jpg|png|pdf|jpeg';
-    $config['file_name']  = $user . "_" . $id;
+    $config['file_name']  = $user . "_" . time();
     $config['overwrite'] = true;
-    $config['max_size'] = 3048;
+    $config['max_size'] = 4096; // 4 Mb
+
     $this->load->library('upload', $config);
 
     if ($config['allowed_types'] && $this->upload->do_upload('file')) {
@@ -235,12 +218,10 @@ class M_kaizentks extends CI_Model
       'November',
       'Desember'
     );
-    $pecahkan = explode('-', $tanggal);
 
-    // variabel pecahkan 0 = tanggal
-    // variabel pecahkan 1 = bulan
-    // variabel pecahkan 2 = tahun
+    // Array destructor
+    list($tanggal, $month, $tahun) = explode('-', $tanggal);
 
-    return $pecahkan[2] . ' ' . $bulan[(int)$pecahkan[1]] . ' ' . $pecahkan[0];
+    return $tahun . ' ' . $bulan[(int)$month] . ' ' . $tanggal;
   }
 }
