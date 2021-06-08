@@ -202,7 +202,7 @@ class C_Cetak extends CI_Controller
         			<td rowspan="3" style="vertical-align: top; width: 95px; border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black; font-size: 10px; padding: 5px">
         				Gudang : <br><br>
         				Tgl. '.$data['get_header'][0]['ASSIGN_DATE'].'
-        				<br><br><br><br><br><br>'.$data['get_header'][0]['ASSIGNER_NAME'].'
+        				<br><br><br><br><br><br>REYNALDI, NELSON
         			</td>
         			<td colspan="2" style="vertical-align: top; border-right: 1px solid black; border-top: 1px solid black; border-left: 1px solid black; font-size: 10px; padding: 5px; height: 20px!important;">
         				Pemasaran :
