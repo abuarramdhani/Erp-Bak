@@ -86,12 +86,27 @@ class M_monitoring extends CI_Model
     
     public function get_available_picklist($kode){
         $sql = "SELECT msib.segment1 assy_code, msib.description assy_desc,
-                        msib.primary_uom_code uom_assy,
-                        msib2.inventory_item_id, msib2.segment1 komponen,
-                        msib2.description komp_desc, msib2.primary_uom_code uom_komponen,
-                        bic.component_quantity,
-                        khs_inv_qty_att (msib2.organization_id, msib2.inventory_item_id, bic.attribute1, bic.attribute2, '')  att,
-                        khs_inv_qty_att (msib2.organization_id, msib2.inventory_item_id, bic.attribute1, bic.attribute2, '') / bic.component_quantity av_pick,
+                    msib.primary_uom_code uom_assy, msib2.inventory_item_id,
+                    msib2.segment1 komponen, msib2.description komp_desc,
+                    msib2.primary_uom_code uom_komponen, bic.component_quantity,
+                    khs_inv_qty_att (msib2.organization_id,
+                                        msib2.inventory_item_id,
+                                        bic.attribute1,
+                                        bic.attribute2,
+                                        ''
+                                        ) att,
+                        (CASE
+                            WHEN bic.component_quantity = 0
+                            THEN 0
+                            ELSE   khs_inv_qty_att (msib2.organization_id,
+                                                    msib2.inventory_item_id,
+                                                    bic.attribute1,
+                                                    bic.attribute2,
+                                                    ''
+                                                )
+                                / bic.component_quantity
+                        END
+                        ) av_pick,
                         bic.attribute1 gudang_asal, mil.segment1 locator_asal
                 FROM mtl_system_items_b msib,
                         mtl_system_items_b msib2,
