@@ -76,7 +76,7 @@
                             <div class="box box-primary box-solid">
                                 <div class="box-header with-border">
                                   <a class="btn btn-danger pull-right ml-2" href="<?php echo site_url('ManufacturingOperationUP2L/Selep/'); ?>"> <i class="fa fa-reply"></i> <b>Kembali</b> </a>
-                                  <?php if ($this->session->user == 'T0012'): ?>
+                                  <?php if ($this->session->user == 'B0724' || $this->session->user == 'T0012'): ?>
                                     <button type="button" class="btn btn-info pull-right" name="button" data-toggle="modal" data-target="#modalUP2LSettingSubinv" onclick="settingUserSubinv()"> <b> <i class="icon-wrench"></i> Setting User Subinv</b></button>
                                   <?php endif; ?>
                                   <b class="pull-left" style="padding-top:1.7px;font-size:20px;">Create Selep</b>
