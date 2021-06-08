@@ -173,7 +173,6 @@
 				<script src="<?= base_url('assets/js/customSGA.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customTB.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customPurM.js') ?>"></script>
-				<script src="<?= base_url('assets/js/customSPO.js?version=' . filemtime('assets/js/customSPO.js')) ?>"></script>
 				<script src="<?= base_url('assets/js/customTK.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customAS.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customMBK.js') ?>"></script>
@@ -210,7 +209,6 @@
 				<script src="<?= base_url('assets/js/customKGS.js?version=' . filemtime('assets/js/customKGS.js')) ?>"></script>
 				<script src="<?= base_url('assets/js/customRJP.js'); ?>"></script>
 			  <script src="<?= base_url('assets/js/customMD.js?version='.filemtime('assets/js/customMD.js')) ?>"></script>
-				<script src="<?= base_url('assets/js/customADO.js'); ?>"></script>
 				<script src="<?= base_url('assets/js/customIPM.js'); ?>"></script>
 				<script src="<?= base_url('assets/js/customPSPT.js'); ?>"></script>
 				<script type="text/javascript" src="<?= base_url('assets/js/customKTR.js') ?>"></script>
