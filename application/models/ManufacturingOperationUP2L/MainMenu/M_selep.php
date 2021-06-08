@@ -6,7 +6,7 @@ class M_selep extends CI_Model
     {
         parent::__construct();
         $this->load->database();
-        $this->oracle = $this->load->database('oracle_dev', TRUE);
+        $this->oracle = $this->load->database('oracle', TRUE);
     }
 
 
