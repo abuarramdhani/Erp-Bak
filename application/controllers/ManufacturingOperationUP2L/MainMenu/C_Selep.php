@@ -165,7 +165,7 @@ class C_Selep extends CI_Controller
 			    if ($insert == 1) {
 						// redirect('InventoryManagement/CreateKIBDEV/pdf/1/'.$batch_no.'/0');
 						// echo "Karena masih di local, Klik link berikut <a href='http://192.168.168.196/erp-2021/ManufacturingOperationUP2L/CreateKIBDEV/pdf/1/$batch_no/0'>$batch_no</a>";
-						echo json_encode("<a href='http://192.168.168.196/erp-2021/ManufacturingOperationUP2L/CreateKIBDEV/pdf/1/$batch_no/0'>$batch_no</a>");
+						echo json_encode("<a href='http://192.168.168.196/erp-2021/ManufacturingOperationUP2L/CreateKIB/pdf/1/$batch_no/0'>$batch_no</a>");
 			    }else {
 						echo json_encode(500);
 			    }
@@ -382,7 +382,7 @@ class C_Selep extends CI_Controller
 		$data = [];
 		foreach ($protodata as $row) {
 			if (!empty($row['batch_no'])) {
-				$cetak_kib = '<a style="margin-right:4px" href="http://192.168.168.196/erp-2021/ManufacturingOperationUP2L/CreateKIBDEV/pdf/1/'.$row['batch_no'].'/0"  title="Cetak KIB" target="_blank"><span class="fa fa-file-pdf-o fa-2x"></span></a>';
+				$cetak_kib = '<a style="margin-right:4px" href="http://192.168.168.196/erp-2021/ManufacturingOperationUP2L/CreateKIB/pdf/1/'.$row['batch_no'].'/0"  title="Cetak KIB" target="_blank"><span class="fa fa-file-pdf-o fa-2x"></span></a>';
 			}else {
 				$cetak_kib = '';
 			}
