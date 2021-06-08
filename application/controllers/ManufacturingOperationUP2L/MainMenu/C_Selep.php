@@ -51,27 +51,27 @@ class C_Selep extends CI_Controller
 
 	public function update_user_subinv($value='')
 	{
-		// echo "<pre>";
-		// print_r($this->input->post());
-		if (!empty($this->input->post('no_induk'))) {
-			$this->db->where('id IS NOT', NULL)->delete('mo.mo_selep_subinv');
-			foreach ($this->input->post('no_induk') as $key => $value) {
-				if (!empty($value) && !empty( $this->input->post('subinv')[$key])) {
-					$data = [
-						'no_induk' => strtoupper($value),
-						'subinv' => $this->input->post('subinv')[$key]
-					];
-					$this->db->insert('mo.mo_selep_subinv', $data);
-				}
-			}
-			if ($this->db->affected_rows()) {
-				echo json_encode(200);
-			}else {
-				echo json_encode(500);
-			}
-		}else {
-			echo json_encode(500);
-		}
+		echo "<pre>";
+		print_r($this->input->post());
+		// if (!empty($this->input->post('no_induk'))) {
+		// 	$this->db->where('id IS NOT', NULL)->delete('mo.mo_selep_subinv');
+		// 	foreach ($this->input->post('no_induk') as $key => $value) {
+		// 		if (!empty($value) && !empty( $this->input->post('subinv')[$key])) {
+		// 			$data = [
+		// 				'no_induk' => strtoupper($value),
+		// 				'subinv' => $this->input->post('subinv')[$key]
+		// 			];
+		// 			$this->db->insert('mo.mo_selep_subinv', $data);
+		// 		}
+		// 	}
+		// 	if ($this->db->affected_rows()) {
+		// 		echo json_encode(200);
+		// 	}else {
+		// 		echo json_encode(500);
+		// 	}
+		// }else {
+		// 	echo json_encode(500);
+		// }
 
 
 	}
@@ -165,7 +165,7 @@ class C_Selep extends CI_Controller
 			    if ($insert == 1) {
 						// redirect('InventoryManagement/CreateKIBDEV/pdf/1/'.$batch_no.'/0');
 						// echo "Karena masih di local, Klik link berikut <a href='http://192.168.168.196/erp-2021/ManufacturingOperationUP2L/CreateKIBDEV/pdf/1/$batch_no/0'>$batch_no</a>";
-						echo json_encode("<a href='http://erp.quick.com/ManufacturingOperationUP2L/CreateKIB/pdf/1/$batch_no/0'>$batch_no</a>");
+						echo json_encode("<a href='http://erp.quick.com/ManufacturingOperationUP2L/CreateKIB/pdf/1/$batch_no/0' target='_blank' onclick='up2l_selep_reload_saya()'>$batch_no</a>");
 			    }else {
 						echo json_encode(500);
 			    }
@@ -268,11 +268,17 @@ class C_Selep extends CI_Controller
 						$user_login = $this->session->user;
 						$cek_sub_inv_user = $this->db->select('subinv')->where('no_induk', $user_login)->get('mo.mo_selep_subinv')->row_array();
 						if (!empty($cek_sub_inv_user)) {
+
 							if ($cek_sub_inv_user['subinv'] == 'INT-FDY') {
 								$option = '<option value="INT-FDY">INT-FDY - GUDANG INTERNAL UNIT FOUNDRY</option>';
-							}else {
+							}elseif ($cek_sub_inv_user['subinv'] == 'INT-FDYTKS') {
 								$option = '<option value="INT-FDYTKS">INT-FDYTKS - GUDANG INTERNAL UNIT FOUNDRY DI TUKSONO</option>';
+							}elseif ($cek_sub_inv_user['subinv'] == 'FDY-PM') {
+								$option = '<option value="FDY-PM">FDY-PM - GUDANG FOUNDRY DI PUSAT</option>';
+							}elseif ($cek_sub_inv_user['subinv'] == 'FDY-TKS') {
+								$option = '<option value="FDY-TKS">FDY-TKS - GUDANG FOUNDRY DI TUKSONO</option>';
 							}
+
 							$sub_to = '<select class="select2subinv_up2l_complation" onchange="set_tosubinv_up2l(\''.$value['INVENTORY_ITEM_ID'].'\', \''.$value['BATCH_NO'].'\')" name="" style="width:150px;">
 													<option value=""></option>
 													'.$option.'
@@ -282,6 +288,8 @@ class C_Selep extends CI_Controller
 													<option value=""></option>
 													<option value="INT-FDY">INT-FDY - GUDANG INTERNAL UNIT FOUNDRY</option>
 													<option value="INT-FDYTKS">INT-FDYTKS - GUDANG INTERNAL UNIT FOUNDRY DI TUKSONO</option>
+													<option value="FDY-PM">FDY-PM - GUDANG FOUNDRY DI PUSAT</option>
+													<option value="FDY-TKS">FDY-TKS - GUDANG FOUNDRY DI TUKSONO</option>
 												</select>';
 						}
 					}

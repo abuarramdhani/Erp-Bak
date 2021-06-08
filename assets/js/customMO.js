@@ -113,6 +113,10 @@ $(function() {
   });
 })
 
+function up2l_selep_reload_saya() {
+  location.reload();
+}
+
 function set_tosubinv_up2l(item_id, batch_no) {
   $.ajax({
     url: baseurl + 'ManufacturingOperationUP2L/Selep/update_subinv_complation',
@@ -152,7 +156,73 @@ function set_tosubinv_up2l(item_id, batch_no) {
 $('#form_input_selep_master').on('submit', function(e) {
   e.preventDefault();
   $('#modalUP2LCreateKIB').modal('show');
-   // data-toggle="modal" data-target="#modalUP2LCreateKIB"
+
+  // dari trigger onclick sebelumnya
+  $.ajax({
+    url: baseurl + 'ManufacturingOperationUP2L/Selep/get_io_subinv_locator_tujuan',
+    type: 'POST',
+    dataType: 'JSON',
+    data: {
+      batch_no: $('#txtSelepBatchCetakKIB').val()
+    },
+    cache:false,
+    beforeSend: function() {
+      Swal.fire({
+        onBeforeOpen: () => {
+           Swal.showLoading();
+           $('.swal2-loading').children('button').css({'width': '40px', 'height': '40px'})
+         },
+        text: 'Sedang Mengambil IO Tujuan, Sub Inv. Tujuan, Locator Tujuan.',
+        allowOutsideClick: false,
+      })
+    },
+    success: function(result) {
+      toastup2l('success', 'Done.')
+      console.log(result, 'get_io_subinv_locator_tujuan');
+      $('.up2l_io_99').val(`${result.ORG_CODE} - ${result.ORG_ID}`);
+      $('.up2l_subinv_99').val(result.SUBINVENTORY);
+      $('.slc_up2l_locator').val(`${result.LOCATOR_CODE == null ? '' : result.LOCATOR_CODE} - ${result.LOCATOR_ID == null ? '' : result.LOCATOR_ID}`);
+
+      //cek handling
+      $.ajax({
+        url: baseurl + 'ManufacturingOperationUP2L/Selep/get_qty_handling',
+        type: 'POST',
+        dataType: 'JSON',
+        data: {
+          component_code: $('#txtComponentCodeHeader').val(),
+          org_code: result.ORG_CODE
+        },
+        cache:false,
+        beforeSend: function() {
+          Swal.fire({
+            onBeforeOpen: () => {
+               Swal.showLoading();
+               $('.swal2-loading').children('button').css({'width': '40px', 'height': '40px'})
+             },
+            text: 'Sedang Mengecek Quantity Handling..',
+            allowOutsideClick: false,
+          })
+        },
+        success: function(result_2) {
+          toastup2l('success', 'Done.');
+          if (result_2 != 'gada') {
+            $('#txtSelepQtyHandlingCetakKIB').val(result_2).attr('readonly', true);
+          }else {
+            $('#txtSelepQtyHandlingCetakKIB').val('').attr('readonly', false);
+          }
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+        swalup2l('error', 'Koneksi Terputus...')
+         console.error();
+        }
+      })
+
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+    swalup2l('error', 'Koneksi Terputus...')
+     console.error();
+    }
+  })
 })
 
 //ADB1BA0011E1MD
@@ -195,28 +265,29 @@ function up2l_refresh_complation() {
 $('.form_generate_kib_up2l').on('submit', function(e) {
    e.preventDefault();
    let form_data_utama = new FormData($('#form_input_selep_master').get(0));
+   Swal.fire({
+     onBeforeOpen: () => {
+        Swal.showLoading();
+        $('.swal2-loading').children('button').css({'width': '40px', 'height': '40px'})
+      },
+     text: 'Sedang menyimpan data Selep & KIB..',
+     allowOutsideClick: false,
+   })
    $.ajax({
      url: baseurl + 'ManufacturingOperationUP2L/Selep/create',
      type: 'POST',
      data : form_data_utama,
      contentType: false,
      cache: false,
-     async:false,
+     // async:false,
      processData: false,
      dataType: "JSON",
      beforeSend: function() {
        // $('#modalUP2LCompleteJob').modal('hide');
-       Swal.fire({
-         onBeforeOpen: () => {
-            Swal.showLoading();
-            $('.swal2-loading').children('button').css({'width': '40px', 'height': '40px'})
-          },
-         text: 'Sedang menyimpan data selep..'
-       })
      },
      success: function(result) {
        if (result == 'done') {
-         swalup2l('success', `Data Selep Berhasil Tersimpan`);
+         // swalup2l('success', `Data Selep Berhasil Tersimpan`);
          let form_data  = new FormData($('.form_generate_kib_up2l').get(0));
          $.ajax({
            url: baseurl + 'ManufacturingOperationUP2L/Selep/generate_kib',
@@ -224,18 +295,11 @@ $('.form_generate_kib_up2l').on('submit', function(e) {
            data : form_data,
            contentType: false,
            cache: false,
-           async:false,
+           // async:false,
            processData: false,
            dataType: "JSON",
            beforeSend: function() {
-             // $('#modalUP2LCompleteJob').modal('hide');
-             Swal.fire({
-               onBeforeOpen: () => {
-                  Swal.showLoading();
-                  $('.swal2-loading').children('button').css({'width': '40px', 'height': '40px'})
-                },
-               text: 'Sedang menyimpan data KIB..'
-             })
+
            },
            success: function(result_2) {
              if (result_2 != 500) {
@@ -276,71 +340,7 @@ $('.form_generate_kib_up2l').on('submit', function(e) {
 // }
 
 $('.btn-up2l-cetakkib').on('click', function() {
-      $.ajax({
-        url: baseurl + 'ManufacturingOperationUP2L/Selep/get_io_subinv_locator_tujuan',
-        type: 'POST',
-        dataType: 'JSON',
-        data: {
-          batch_no: $('#txtSelepBatchCetakKIB').val()
-        },
-        cache:false,
-        beforeSend: function() {
-          Swal.fire({
-            onBeforeOpen: () => {
-               Swal.showLoading();
-               $('.swal2-loading').children('button').css({'width': '40px', 'height': '40px'})
-             },
-            text: 'Sedang Mengambil IO Tujuan, Sub Inv. Tujuan, Locator Tujuan.',
-            allowOutsideClick: false,
-          })
-        },
-        success: function(result) {
-          toastup2l('success', 'Done.')
-          console.log(result, 'get_io_subinv_locator_tujuan');
-          $('.up2l_io_99').val(`${result.ORG_CODE} - ${result.ORG_ID}`);
-          $('.up2l_subinv_99').val(result.SUBINVENTORY);
-          $('.slc_up2l_locator').val(`${result.LOCATOR_CODE == null ? '' : result.LOCATOR_CODE} - ${result.LOCATOR_ID == null ? '' : result.LOCATOR_ID}`);
 
-          //cek handling
-          $.ajax({
-            url: baseurl + 'ManufacturingOperationUP2L/Selep/get_qty_handling',
-            type: 'POST',
-            dataType: 'JSON',
-            data: {
-              component_code: $('#txtComponentCodeHeader').val(),
-              org_code: result.ORG_CODE
-            },
-            cache:false,
-            beforeSend: function() {
-              Swal.fire({
-                onBeforeOpen: () => {
-                   Swal.showLoading();
-                   $('.swal2-loading').children('button').css({'width': '40px', 'height': '40px'})
-                 },
-                text: 'Sedang Mengecek Quantity Handling..',
-                allowOutsideClick: false,
-              })
-            },
-            success: function(result_2) {
-              toastup2l('success', 'Done.');
-              if (result_2 != 'gada') {
-                $('#txtSelepQtyHandlingCetakKIB').val(result_2).attr('readonly', true);
-              }else {
-                $('#txtSelepQtyHandlingCetakKIB').val('').attr('readonly', false);
-              }
-            },
-            error: function(XMLHttpRequest, textStatus, errorThrown) {
-            swalup2l('error', 'Koneksi Terputus...')
-             console.error();
-            }
-          })
-
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown) {
-        swalup2l('error', 'Koneksi Terputus...')
-         console.error();
-        }
-      })
 })
 
 // revisi
@@ -628,7 +628,8 @@ function createBatchMO() { //recipe
                Swal.showLoading();
                $('.swal2-loading').children('button').css({'width': '40px', 'height': '40px'})
              },
-            text: 'Check Recipe..'
+            text: 'Check Recipe..',
+            allowOutsideClick: false,
           })
         },
         success: function(result) {

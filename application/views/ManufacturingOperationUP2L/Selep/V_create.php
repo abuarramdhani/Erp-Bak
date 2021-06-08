@@ -102,7 +102,7 @@
                                                 <div class="form-group">
                                                     <label for="txtShift" class="control-label col-lg-4">Shift</label>
                                                     <div class="col-lg-6">
-                                                        <select class="form-control slcShift" id="txtShift" name="txtShift" style="width:100%">
+                                                        <select class="form-control slcShift" id="txtShift" name="txtShift" style="width:100%" required>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -250,6 +250,8 @@
                       <option value=""></option>
                       <option value="INT-FDY">INT-FDY - GUDANG INTERNAL UNIT FOUNDRY</option>
                       <option value="INT-FDYTKS">INT-FDYTKS - GUDANG INTERNAL UNIT FOUNDRY DI TUKSONO</option>
+                      <option value="FDY-PM">FDY-PM - GUDANG FOUNDRY DI PUSAT</option>
+                      <option value="FDY-TKS">FDY-TKS - GUDANG FOUNDRY DI TUKSONO</option>
                     </select>
                   </div>
                 </div>

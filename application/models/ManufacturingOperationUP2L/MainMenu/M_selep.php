@@ -6,7 +6,7 @@ class M_selep extends CI_Model
     {
         parent::__construct();
         $this->load->database();
-        $this->oracle = $this->load->database('oracle', TRUE);
+        $this->oracle = $this->load->database('oracle_dev', TRUE);
     }
 
 
@@ -195,8 +195,8 @@ class M_selep extends CI_Model
 
     public function batch_completion($no_batch, $qty)
     {
-      // $conn = oci_connect('APPS', 'APPS', '192.168.7.3:1522/DEV');
-      $conn = oci_connect('APPS', 'APPS', '192.168.7.1:1521/PROD');
+      $conn = oci_connect('APPS', 'APPS', '192.168.7.3:1522/DEV');
+      // $conn = oci_connect('APPS', 'APPS', '192.168.7.1:1521/PROD');
 
       if (!$conn) {
           $e = oci_error();
@@ -255,8 +255,8 @@ class M_selep extends CI_Model
     public function create_batch($item, $recipe_no, $recipe_version, $uom, $subinv, $qty, $job_date)
     {
       // echo $job_date;die;
-        // $conn = oci_connect('APPS', 'APPS', '192.168.7.3:1522/DEV');
-        $conn = oci_connect('APPS', 'APPS', '192.168.7.1:1521/PROD');
+        $conn = oci_connect('APPS', 'APPS', '192.168.7.3:1522/DEV');
+        // $conn = oci_connect('APPS', 'APPS', '192.168.7.1:1521/PROD');
         if (!$conn) {
             $e = oci_error();
             trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
