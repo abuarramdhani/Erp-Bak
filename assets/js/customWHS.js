@@ -4,6 +4,8 @@
 //     }
 // });
 
+var checkspb = document.getElementById('formPackingList');
+if (checkspb) {
 $("#formPackingList").ready(function() {
   $.ajax({
     url: baseurl + "WarehouseSPB/Ajax/checkSPB",
@@ -29,6 +31,7 @@ $("#formPackingList").ready(function() {
   });
 
 });
+}
 
 
 function getDataSPB() {
