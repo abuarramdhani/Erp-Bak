@@ -29,8 +29,7 @@ class C_PresensiBulanan extends CI_Controller
 
 	public function checkSession()
 	{
-		if ($this->session->is_logged) {
-		} else {
+		if ($this->session->is_logged) { } else {
 			redirect('');
 		}
 	}
@@ -65,9 +64,11 @@ class C_PresensiBulanan extends CI_Controller
 	public function ExportExcel()
 	{
 		$this->load->library('excel');
-
+		$pnoind = $this->session->user;
 		$kodesie = $this->session->kodesie;
-		$pekerja = $this->M_presensiharian->getPekerjaByKodesie($kodesie);
+		$noindAkses = $this->M_presensiharian->getNoindAkses();
+		$akses = $this->M_presensiharian->getAksesByUser($pnoind);
+		$pekerja = $this->M_presensiharian->getPekerjaByKodesie($kodesie, $pnoind, $akses, $noindAkses);
 		$seksi = $this->M_presensibulanan->getSeksiByKodesie($kodesie);
 		$tanggal = $this->input->post('txtPeriodePresensiHarian');
 		$tgl = $this->M_presensibulanan->getTanggal($tanggal);
@@ -81,11 +82,13 @@ class C_PresensiBulanan extends CI_Controller
 
 		$this->excel->getActiveSheet()->setCellValueByColumnAndRow(0, 3, 'No Induk');
 		$this->excel->getActiveSheet()->setCellValueByColumnAndRow(1, 3, 'Nama');
+		$this->excel->getActiveSheet()->setCellValueByColumnAndRow(2, 3, 'Seksi');
 		$this->excel->getActiveSheet()->mergeCells('A3:A4');
 		$this->excel->getActiveSheet()->mergeCells('B3:B4');
+		$this->excel->getActiveSheet()->mergeCells('C3:C4');
 		$this->excel->getActiveSheet()->getColumnDimension('B')->setWidth('35');
 
-		$h = 2;
+		$h = 3;
 		$simpanBulan = "";
 
 		$coorCellBulan1 = null;
@@ -164,7 +167,8 @@ class C_PresensiBulanan extends CI_Controller
 		foreach ($pekerja as $val) {
 			$this->excel->getActiveSheet()->setCellValueByColumnAndRow(0, $i, $val['noind']);
 			$this->excel->getActiveSheet()->setCellValueByColumnAndRow(1, $i, $val['nama']);
-			$j = 2;
+			$this->excel->getActiveSheet()->setCellValueByColumnAndRow(2, $i, $val['seksi']);
+			$j = 3;
 
 			foreach ($tgl as $key) {
 				$presensi = $this->M_presensibulanan->getPresensiByNoind($val['noind'], $key['tanggal']);
@@ -210,16 +214,8 @@ class C_PresensiBulanan extends CI_Controller
 						$this->excel->getActiveSheet()->setCellValueByColumnAndRow($j + 5, $i, number_format(($value['frekip'] + $value['frekips']) / ($value['totalhk'] + $value['totalhks']) * 100, 2) . ' %');
 						$this->excel->getActiveSheet()->setCellValueByColumnAndRow($j + 6, $i, number_format(($value['frekct'] + $value['frekcts']) / ($value['totalhk'] + $value['totalhks']) * 100, 2) . ' %');
 						$this->excel->getActiveSheet()->setCellValueByColumnAndRow($j + 7, $i, number_format(($value['freksp'] + $value['freksps']) / ($value['totalhk'] + $value['totalhks']) * 100, 2) . ' %');
-						$total_masuk = (($value['totalhk'] + $value['totalhks']) -
-							(
-								($value['freki'] + $value['frekis']) +
-								($value['frekm'] + $value['frekms']) +
-								($value['freksk'] + $value['freksks']) +
-								($value['frekpsp'] + $value['frekpsps']) +
-								($value['frekip'] + $value['frekips']) +
-								($value['frekct'] + $value['frekcts']) +
-								($value['frekmnon'] + $value['frekmsnon']))) /
-							((($value['totalhk'] + $value['totalhks']) - ($value['frekct'] + $value['frekcts']) - ($value['frekmnon'] + $value['frekmsnon'])) ?: 1) *
+						$total_masuk = (($value['totalhk'] + $value['totalhks']) - (
+							($value['freki'] + $value['frekis']) + ($value['frekm'] + $value['frekms']) + ($value['freksk'] + $value['freksks']) + ($value['frekpsp'] + $value['frekpsps']) + ($value['frekip'] + $value['frekips']) + ($value['frekct'] + $value['frekcts']) + ($value['frekmnon'] + $value['frekmsnon']))) / ((($value['totalhk'] + $value['totalhks']) - ($value['frekct'] + $value['frekcts']) - ($value['frekmnon'] + $value['frekmsnon'])) ?: 1) *
 							100;
 
 						$this->excel->getActiveSheet()->setCellValueByColumnAndRow($j + 8, $i, number_format(($total_masuk), 2) . ' %');
