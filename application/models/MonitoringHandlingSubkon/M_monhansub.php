@@ -112,7 +112,7 @@ class M_monhansub extends CI_Model{
         $code1 = "AND aa.handling_code = '$handling'";
       }
 
-      $sql = "SELECT   aa.*, CASE
+      $sql = "SELECT aa.*, CASE
                         WHEN aa.qty < 0
                            THEN aa.qty * -1
                         ELSE 0
@@ -123,50 +123,49 @@ class M_monhansub extends CI_Model{
                      END di_subkon
                 FROM (SELECT DISTINCT mil.description subkon, kmhs.locator_name,
                                       kmhs.handling_code, kmhs.handling_name,
-                                      kmhs.saldo_awal,
+                                      kshs.saldo_awal,
                                       NVL ((SELECT SUM (kmhs2.transaction_quantity)
                                               FROM khs_mon_handling_subkon kmhs2
                                              WHERE kmhs2.locator_name = kmhs.locator_name
-                                               AND kmhs2.handling_code =
-                                                                        kmhs.handling_code
+                                               AND kmhs2.handling_code = kmhs.handling_code
                                                AND kmhs2.transaction_type = 'OUT'),
                                            0
                                           ) o,
                                       NVL ((SELECT SUM (kmhs2.transaction_quantity)
                                               FROM khs_mon_handling_subkon kmhs2
                                              WHERE kmhs2.locator_name = kmhs.locator_name
-                                               AND kmhs2.handling_code =
-                                                                        kmhs.handling_code
+                                               AND kmhs2.handling_code = kmhs.handling_code
                                                AND kmhs2.transaction_type = 'IN'),
                                            0
                                           ) i,
-                                        kmhs.saldo_awal
+                                        kshs.saldo_awal
                                       + NVL ((SELECT SUM (kmhs2.transaction_quantity)
                                                 FROM khs_mon_handling_subkon kmhs2
-                                               WHERE kmhs2.locator_name =
-                                                                         kmhs.locator_name
+                                               WHERE kmhs2.locator_name = kmhs.locator_name
                                                  AND kmhs2.handling_code =
-                                                                        kmhs.handling_code
+                                                                          kmhs.handling_code
                                                  AND kmhs2.transaction_type = 'OUT'),
                                              0
                                             )
                                       - NVL ((SELECT SUM (kmhs2.transaction_quantity)
                                                 FROM khs_mon_handling_subkon kmhs2
-                                               WHERE kmhs2.locator_name =
-                                                                         kmhs.locator_name
+                                               WHERE kmhs2.locator_name = kmhs.locator_name
                                                  AND kmhs2.handling_code =
-                                                                        kmhs.handling_code
+                                                                          kmhs.handling_code
                                                  AND kmhs2.transaction_type = 'IN'),
                                              0
                                             ) qty
                                  FROM khs_mon_handling_subkon kmhs,
-                                      mtl_item_locations mil
+                                      mtl_item_locations mil,
+                                      khs_saldo_handling_subkon kshs
                                 WHERE kmhs.locator_name = mil.segment1
+                                  AND kshs.locator_name = kmhs.locator_name
+                                  AND kshs.handling_code = kmhs.handling_code
                              GROUP BY mil.description,
                                       kmhs.locator_name,
                                       kmhs.handling_code,
                                       kmhs.handling_name,
-                                      kmhs.saldo_awal,
+                                      kshs.saldo_awal,
                                       kmhs.transaction_type) aa
                WHERE aa.locator_name $code
                      $code1
@@ -176,9 +175,9 @@ class M_monhansub extends CI_Model{
     }
 
     public function editSaldoAwal($subkon,$handling,$qty){
-      $sql = "UPDATE khs_mon_handling_subkon kmhs
-                 SET kmhs.saldo_awal = $qty
-               WHERE kmhs.locator_name = '$subkon' AND kmhs.handling_code = '$handling'";
+      $sql = "UPDATE khs_saldo_handling_subkon kshs
+                 SET kshs.saldo_awal = $qty
+               WHERE kshs.locator_name = '$subkon' AND kshs.handling_code = '$handling'";
       $query = $this->oracle->query($sql);
       return $query;
     }
