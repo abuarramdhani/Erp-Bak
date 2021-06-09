@@ -302,18 +302,33 @@ $('.form_generate_kib_up2l').on('submit', function(e) {
 
            },
            success: function(result_2) {
-             if (result_2 != 500) {
-               swalup2l('success', `KIB berhasil tersimpan, klik link berikut untuk mencetak KIB ${result_2}`);
-                 $('.btn-up2l-cetakkib').attr('disabled', true);
-                 setTimeout(function () {
-                   // swal.close();
-                   // location.reload();
-                   $('#modalUP2LCreateKIB').modal('hide');
-                 }, 1000);
+             if (result_2.status == 500) {
+               swalup2l('warning', 'Terjadi kesalahan, Qty Handling tidak boleh 0')
+             }else if (result_2.status == 400) {
+               swalup2l('warning', `${result_2.isi} (Complate Batch)`)
+             }else if (result_2.status == 300) {
+               swalup2l('warning', `${result_2.isi} (Close Batch)`)
+             }else if (result_2.status == 100) {
+               Swal.fire({
+                 type: 'success',
+                 html:  `<div style="font-weight:400">KIB berhasil tersimpan, klik link berikut untuk mencetak KIB ${result_2}</div>`,
+                 text: '',
+                 showConfirmButton: false,
+                 allowOutsideClick: false,
+                 showCloseButton: true,
+               });
+               $('.btn-up2l-cetakkib').attr('disabled', true);
+               setTimeout(function () {
+                 // swal.close();
+                 // location.reload();
+                 $('#modalUP2LCreateKIB').modal('hide');
+               }, 1000);
+             }else {
+               swalup2l('error', 'Hubungi ICT');
              }
            },
            error: function(XMLHttpRequest, textStatus, errorThrown) {
-           swalup2l('error', XMLHttpRequest);
+             swalup2l('error', XMLHttpRequest);
             console.error();
            }
          })

@@ -49,6 +49,23 @@ class C_Selep extends CI_Controller
 		$this->load->view('V_Footer', $data);
 	}
 
+	public function employee($value='')
+	{
+		$data = $this->input->post('term');
+		$employee = $this->db->query("SELECT
+						employee_code,
+						employee_name
+					from
+						er.er_employee_all
+					where
+						resign = '0'
+						and (employee_code like '%$data%'
+						or employee_name like '%$data%')
+					order by
+						1")->result_array();
+		echo json_encode($employee);
+	}
+
 	public function update_user_subinv($value='')
 	{
 		// echo "<pre>";
@@ -145,13 +162,43 @@ class C_Selep extends CI_Controller
 			$qty_handling = $this->input->post('qty_handling');
 
 			if ($qty_handling != 0) {
-					$locator = explode(' - ', $this->input->post('locator'));
-					$org_id = explode(' - ', $this->input->post('io'));
-		  		//SCHEDULED_QUANTITY => qty handling => misal handling 50 qty_kib 205 jadi 50 50 50 50 5
-					if ($qty_selep > $qty_handling) {
-						$loop = floor($qty_selep/$qty_handling);
-						$modulus = $qty_selep%$qty_handling;
-						for ($i=0; $i < $loop; $i++) {
+
+				$close_job1 = $this->M_selep->tahap_close_batch_1($batch_no);
+				if ($close_job1 == 100) {
+					$close_job2 = $this->M_selep->tahap_close_batch_2($batch_no);
+					if ($close_job2 == 100) {
+
+						$locator = explode(' - ', $this->input->post('locator'));
+						$org_id = explode(' - ', $this->input->post('io'));
+						//SCHEDULED_QUANTITY => qty handling => misal handling 50 qty_kib 205 jadi 50 50 50 50 5
+						if ($qty_selep > $qty_handling) {
+							$loop = floor($qty_selep/$qty_handling);
+							$modulus = $qty_selep%$qty_handling;
+							for ($i=0; $i < $loop; $i++) {
+								$get_kib =  $this->M_selep->generate_no_kib($batch_no);
+								$data[0]['NO_KIB'] = $get_kib['NO_KIB'];
+								$data[0]['FROM_SUBINVENTORY_CODE'] = $this->input->post('from_sub_code');
+								$data[0]['TO_ORG_ID'] = $org_id[1];
+								$data[0]['TO_SUBINVENTORY_CODE'] = $this->input->post('subinv');
+								$data[0]['TO_LOCATOR_ID'] = $locator[1];
+								$data[0]['QTY_HANDLING'] = $qty_handling;
+								$data[0]['NO_INDUK'] = $this->session->user;
+								$data[0]['QTY_SELEP'] = $qty_handling;
+								$insert = $this->M_selep->insertKIB($data, $batch_no);
+							}
+							if (!empty($modulus)) {
+								$get_kib =  $this->M_selep->generate_no_kib($batch_no);
+								$data[0]['NO_KIB'] = $get_kib['NO_KIB'];
+								$data[0]['FROM_SUBINVENTORY_CODE'] = $this->input->post('from_sub_code');
+								$data[0]['TO_ORG_ID'] = $org_id[1];
+								$data[0]['TO_SUBINVENTORY_CODE'] = $this->input->post('subinv');
+								$data[0]['TO_LOCATOR_ID'] = $locator[1];
+								$data[0]['QTY_HANDLING'] = $qty_handling;
+								$data[0]['NO_INDUK'] = $this->session->user;
+								$data[0]['QTY_SELEP'] = $modulus;
+								$insert = $this->M_selep->insertKIB($data, $batch_no);
+							}
+						}else {
 							$get_kib =  $this->M_selep->generate_no_kib($batch_no);
 							$data[0]['NO_KIB'] = $get_kib['NO_KIB'];
 							$data[0]['FROM_SUBINVENTORY_CODE'] = $this->input->post('from_sub_code');
@@ -160,49 +207,33 @@ class C_Selep extends CI_Controller
 							$data[0]['TO_LOCATOR_ID'] = $locator[1];
 							$data[0]['QTY_HANDLING'] = $qty_handling;
 							$data[0]['NO_INDUK'] = $this->session->user;
-							$data[0]['QTY_SELEP'] = $qty_handling;
+							$data[0]['QTY_SELEP'] = $qty_selep;
 							$insert = $this->M_selep->insertKIB($data, $batch_no);
 						}
-						if (!empty($modulus)) {
-							$get_kib =  $this->M_selep->generate_no_kib($batch_no);
-							$data[0]['NO_KIB'] = $get_kib['NO_KIB'];
-							$data[0]['FROM_SUBINVENTORY_CODE'] = $this->input->post('from_sub_code');
-							$data[0]['TO_ORG_ID'] = $org_id[1];
-							$data[0]['TO_SUBINVENTORY_CODE'] = $this->input->post('subinv');
-							$data[0]['TO_LOCATOR_ID'] = $locator[1];
-							$data[0]['QTY_HANDLING'] = $qty_handling;
-							$data[0]['NO_INDUK'] = $this->session->user;
-							$data[0]['QTY_SELEP'] = $modulus;
-							$insert = $this->M_selep->insertKIB($data, $batch_no);
+
+						if ($insert == 1) {
+							// redirect('InventoryManagement/CreateKIBDEV/pdf/1/'.$batch_no.'/0');
+							// echo "Karena masih di local, Klik link berikut <a href='http://192.168.168.196/erp-2021/ManufacturingOperationUP2L/CreateKIBDEV/pdf/1/$batch_no/0'>$batch_no</a>";
+							echo json_encode(['status' => 100, 'isi' => "<a href='http://erp.quick.com/ManufacturingOperationUP2L/CreateKIB/pdf/1/$batch_no/0' target='_blank' onclick='up2l_selep_reload_saya()'>$batch_no</a>"]);
+						}else {
+							echo json_encode(['status' => 500, 'isi' => '']);
 						}
 					}else {
-						$get_kib =  $this->M_selep->generate_no_kib($batch_no);
-						$data[0]['NO_KIB'] = $get_kib['NO_KIB'];
-						$data[0]['FROM_SUBINVENTORY_CODE'] = $this->input->post('from_sub_code');
-						$data[0]['TO_ORG_ID'] = $org_id[1];
-						$data[0]['TO_SUBINVENTORY_CODE'] = $this->input->post('subinv');
-						$data[0]['TO_LOCATOR_ID'] = $locator[1];
-						$data[0]['QTY_HANDLING'] = $qty_handling;
-						$data[0]['NO_INDUK'] = $this->session->user;
-						$data[0]['QTY_SELEP'] = $qty_selep;
-						$insert = $this->M_selep->insertKIB($data, $batch_no);
+						echo json_encode(['status' => 300, 'isi' => $close_job2]);
 					}
 
-			    if ($insert == 1) {
-						// redirect('InventoryManagement/CreateKIBDEV/pdf/1/'.$batch_no.'/0');
-						// echo "Karena masih di local, Klik link berikut <a href='http://192.168.168.196/erp-2021/ManufacturingOperationUP2L/CreateKIBDEV/pdf/1/$batch_no/0'>$batch_no</a>";
-						echo json_encode("<a href='http://erp.quick.com/ManufacturingOperationUP2L/CreateKIB/pdf/1/$batch_no/0' target='_blank' onclick='up2l_selep_reload_saya()'>$batch_no</a>");
-			    }else {
-						echo json_encode(500);
-			    }
+				}else {
+					echo json_encode(['status' => 400, 'isi' => $close_job1]);
+				}
+
 			}else {
 				// echo "QTY_HANDLING can't 0";
-				echo json_encode(500);
+				echo json_encode(['status' => 500, 'isi' => '']);
 			}
 
 	  }else {
 	    // echo "Batch Number can't null";
-			echo json_encode(500);
+			echo json_encode(['status' => 500, 'isi' => '']);
 	  }
 	}
 

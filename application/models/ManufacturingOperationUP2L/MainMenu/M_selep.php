@@ -121,7 +121,7 @@ class M_selep extends CI_Model
                                   AND rownum = 1")->result_array();
     }
 
-    private function tahap_close_batch_1($no_batch)
+    public function tahap_close_batch_1($no_batch)
     {
       // $conn = oci_connect('APPS', 'APPS', '192.168.7.3:1522/DEV');
       $conn = oci_connect('APPS', 'APPS', '192.168.7.1:1521/PROD');
@@ -131,22 +131,23 @@ class M_selep extends CI_Model
           trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
       }
 
-      $sql = "BEGIN KHSCREATEBATCH.completed_batch($no_batch); END;";
+      $response_1 = '';
+      $sql = "BEGIN KHSCREATEBATCH.completed_batch($no_batch,:param); END;";
 
       //Statement does not change
-      $stmt = oci_parse($conn, $sql);
-
-      // But BEFORE statement, Create your cursor
-      $cursor = oci_new_cursor($conn);
-
-      // Execute the statement as in your first try
+      $stmt = oci_parse($conn, $this->removeNewLine($sql));
+      oci_bind_by_name($stmt, ':param', $response_1, 512, SQLT_CHR);
       oci_execute($stmt);
 
-      // and now, execute the cursor
-      oci_execute($cursor);
+      if (empty($response_1)) {
+        $res = 100;
+      }else {
+        $res = $response_1;
+      }
+      return $res;
     }
 
-    private function tahap_close_batch_2($no_batch)
+    public function tahap_close_batch_2($no_batch)
     {
       // $conn = oci_connect('APPS', 'APPS', '192.168.7.3:1522/DEV');
       $conn = oci_connect('APPS', 'APPS', '192.168.7.1:1521/PROD');
@@ -156,19 +157,20 @@ class M_selep extends CI_Model
           trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
       }
 
-      $sql = "BEGIN KHSCREATEBATCH.close_batch($no_batch); END;";
+      $response_1 = '';
+      $sql = "BEGIN KHSCREATEBATCH.close_batch($no_batch, :param); END;";
 
       //Statement does not change
-      $stmt = oci_parse($conn, $sql);
-
-      // But BEFORE statement, Create your cursor
-      $cursor = oci_new_cursor($conn);
-
-      // Execute the statement as in your first try
+      $stmt = oci_parse($conn, $this->removeNewLine($sql));
+      oci_bind_by_name($stmt, ':param', $response_1, 512, SQLT_CHR);
       oci_execute($stmt);
 
-      // and now, execute the cursor
-      oci_execute($cursor);
+      if (empty($response_1)) {
+        $res = 100;
+      }else {
+        $res = $response_1;
+      }
+      return $res;
     }
 
     public function insertKIB($data, $batch_no)
@@ -228,8 +230,8 @@ class M_selep extends CI_Model
                               'N'
                             )");
         if ($this->oracle->affected_rows()) {
-          $this->tahap_close_batch_1($batch_no);
-          $this->tahap_close_batch_2($batch_no);
+          // $this->tahap_close_batch_1($batch_no);
+          // $this->tahap_close_batch_2($batch_no);
           return 1;
         }else {
           return 0;
