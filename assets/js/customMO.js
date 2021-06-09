@@ -311,7 +311,7 @@ $('.form_generate_kib_up2l').on('submit', function(e) {
              }else if (result_2.status == 100) {
                Swal.fire({
                  type: 'success',
-                 html:  `<div style="font-weight:400">KIB berhasil tersimpan, klik link berikut untuk mencetak KIB ${result_2}</div>`,
+                 html:  `<div style="font-weight:400">KIB berhasil tersimpan, klik link berikut untuk mencetak KIB ${result_2.isi}</div>`,
                  text: '',
                  showConfirmButton: false,
                  allowOutsideClick: false,
