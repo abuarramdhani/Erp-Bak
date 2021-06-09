@@ -180,9 +180,11 @@ class C_PresensiHarian extends CI_Controller
 			});
 		};
 		$kodeSieAkses = $this->M_presensiharian->getSeksiByAkses($pnoind, $kodesie);
-		$kodeSieAkses = array_filter($kodeSieAkses, function ($kodAksSie) {
-			return in_array($kodAksSie['kodesie'], $_POST['txtKodesie']);
-		});
+		if (isset($_POST['txtKodesie'])) {
+			$kodeSieAkses = array_filter($kodeSieAkses, function ($kodAksSie) {
+				return in_array($kodAksSie['kodesie'], $_POST['txtKodesie']);
+			});
+		}
 		$kodeSieAkses = array_column($kodeSieAkses, 'kodesie');
 		$kodeSieAkses = implode(', ', $kodeSieAkses);
 		$this->excel->getActiveSheet()->setCellValueByColumnAndRow(0, 3, 'Data Presensi');
@@ -296,9 +298,11 @@ class C_PresensiHarian extends CI_Controller
 		$seksi = $this->M_presensiharian->getSeksiByKodesie($kodesie);
 		// Proses Judul Header Export Excel
 		$kodeSieAkses = $this->M_presensiharian->getSeksiByAkses($pnoind, $kodesie);
-		$kodeSieAkses = array_filter($kodeSieAkses, function ($kodAksSie) {
-			return in_array($kodAksSie['kodesie'], $_POST['txtKodesie']);
-		});
+		if (isset($_POST['txtKodesie'])) {
+			$kodeSieAkses = array_filter($kodeSieAkses, function ($kodAksSie) {
+				return in_array($kodAksSie['kodesie'], $_POST['txtKodesie']);
+			});
+		}
 		$kodeSieAkses = array_column($kodeSieAkses, 'kodesie');
 		$kodeSieAkses = implode(', ', $kodeSieAkses);
 
@@ -413,9 +417,11 @@ class C_PresensiHarian extends CI_Controller
 		$this->log_activity->activity_log($aksi, $detail);
 		//
 		$kodeSieAkses = $this->M_presensiharian->getSeksiByAkses($pnoind, $kodesie);
-		$kodeSieAkses = array_filter($kodeSieAkses, function ($kodAksSie) {
-			return in_array($kodAksSie['kodesie'], $_POST['txtKodesie']);
-		});
+		if (isset($_POST['txtKodesie'])) {
+			$kodeSieAkses = array_filter($kodeSieAkses, function ($kodAksSie) {
+				return in_array($kodAksSie['kodesie'], $_POST['txtKodesie']);
+			});
+		}
 		$kodeSieAkses = array_column($kodeSieAkses, 'kodesie');
 		$kodeSieAkses = implode(', ', $kodeSieAkses);
 
@@ -551,9 +557,11 @@ class C_PresensiHarian extends CI_Controller
 		$data['pekerja'] = $this->M_presensiharian->getPekerjaByKodesie($kodesie, $pnoind, $akses, $noindAkses);
 		$data['seksi'] = $this->M_presensiharian->getSeksiByKodesie($kodesie);
 		$kodeSieAkses = $this->M_presensiharian->getSeksiByAkses($pnoind, $kodesie);
-		$kodeSieAkses = array_filter($kodeSieAkses, function ($kodAksSie) {
-			return in_array($kodAksSie['kodesie'], $_POST['txtKodesie']);
-		});
+		if (isset($_POST['txtKodesie'])) {
+			$kodeSieAkses = array_filter($kodeSieAkses, function ($kodAksSie) {
+				return in_array($kodAksSie['kodesie'], $_POST['txtKodesie']);
+			});
+		}
 		$kodeSieAkses = array_column($kodeSieAkses, 'kodesie');
 		$kodeSieAkses = implode(', ', $kodeSieAkses);
 		$tanggal = $this->input->post('txtPeriodePresensiHarian');
