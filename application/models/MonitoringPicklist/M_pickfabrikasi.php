@@ -78,7 +78,7 @@ class M_pickfabrikasi extends CI_Model
 			and wro.WIP_ENTITY_ID = wo.WIP_ENTITY_ID
 			and wro.OPERATION_SEQ_NUM = wo.OPERATION_SEQ_NUM
 			and wo.DEPARTMENT_ID = bd.DEPARTMENT_ID
-			and wdj.STATUS_TYPE not in (4, 5, 6, 12)
+			and wdj.STATUS_TYPE not in (4, 5, 6, 7, 12)
 			--
 			and mtrh.REQUEST_NUMBER = kpa.PICKLIST 
 			-- 
@@ -199,7 +199,7 @@ class M_pickfabrikasi extends CI_Model
 			and wro.WIP_ENTITY_ID = wo.WIP_ENTITY_ID
 			and wro.OPERATION_SEQ_NUM = wo.OPERATION_SEQ_NUM
 			and wo.DEPARTMENT_ID = bd.DEPARTMENT_ID
-			and wdj.STATUS_TYPE not in (4, 5, 6, 12)
+			and wdj.STATUS_TYPE not in (4, 5, 6, 7, 12)
 			--
 			and mtrh.REQUEST_NUMBER = kpa.PICKLIST 
 			-- 
@@ -210,7 +210,8 @@ class M_pickfabrikasi extends CI_Model
 					) = 2
 			and kpa.PROCESS = 2 -- fabrikasi
 			and bd.DEPARTMENT_CLASS_CODE = '$dept'
-			and TRUNC(wdj.SCHEDULED_START_DATE) BETWEEN to_date('$tgl1','DD/MM/YYYY') AND to_date('$tgl2','DD/MM/YYYY')";
+			and TRUNC(wdj.SCHEDULED_START_DATE) BETWEEN to_date('$tgl1','DD/MM/YYYY') AND to_date('$tgl2','DD/MM/YYYY')
+			order by 13";
 		$query = $oracle->query($sql);
 		return $query->result_array();
 	}
@@ -268,7 +269,7 @@ class M_pickfabrikasi extends CI_Model
 			and wro.WIP_ENTITY_ID = wo.WIP_ENTITY_ID
 			and wro.OPERATION_SEQ_NUM = wo.OPERATION_SEQ_NUM
 			and wo.DEPARTMENT_ID = bd.DEPARTMENT_ID
-			and wdj.STATUS_TYPE not in (4, 5, 6, 12)
+			and wdj.STATUS_TYPE not in (4, 5, 6, 7, 12)
 			--
 			and mtrh.REQUEST_NUMBER = kpa.PICKLIST 
 			-- 
@@ -307,9 +308,9 @@ class M_pickfabrikasi extends CI_Model
 		return $query->result_array();
 	}
 
-	public function cekapprove2($nojob){
+	public function cekapprove2($picklist){
 		$oracle = $this->load->database('oracle', true);
-		$sql = "select * from khs_picklist_approved where job_number = '$nojob' and process = 2";
+		$sql = "select * from khs_picklist_approved where picklist = '$picklist' and process = 2";
 		$query = $oracle->query($sql);
 		return $query->result_array();
 	}
@@ -324,13 +325,6 @@ class M_pickfabrikasi extends CI_Model
 		$query = $oracle->query($sql);
 		return $query->result_array();
 	}
-
-	public function cekpermintaanPelayanan($nojob){
-		$oracle = $this->load->database('oracle', true);
-		$sql = "select * from khs_pelayanan_picklist where job_number = '$nojob'";
-		$query = $oracle->query($sql);
-		return $query->result_array();
-	}
 	
 	public function permintaanApprove($nojob, $date, $shift){
 		$oracle = $this->load->database('oracle', true);
@@ -340,9 +334,9 @@ class M_pickfabrikasi extends CI_Model
 		$query = $oracle->query('commit');
 	}
 
-	public function recallpermintaan($nojob){
+	public function recallpermintaan($no){
 		$oracle = $this->load->database('oracle', true);
-		$sql = "delete from khs_pelayanan_picklist where job_number = '$nojob'";
+		$sql = "delete from khs_pelayanan_picklist where job_number = '$no'";
 		$query = $oracle->query($sql);
 		$query = $oracle->query('commit');
 	}
@@ -350,6 +344,24 @@ class M_pickfabrikasi extends CI_Model
 	public function cariReqPelayanan(){
 		$oracle = $this->load->database('oracle', true);
 		$sql = "select * from khs_pelayanan_picklist order by 2, 3";
+		$query = $oracle->query($sql);
+		return $query->result_array();
+	}
+
+	public function cariReqPelayanan2($nojob){
+		$oracle = $this->load->database('oracle', true);
+		$sql = "select job_number, 
+					to_char(tanggal_pelayanan, 'dd-Mon-yyyy') tanggal_pelayanan,
+					shift 
+				from khs_pelayanan_picklist 
+				where job_number like '$nojob%'";
+		$query = $oracle->query($sql);
+		return $query->result_array();
+	}
+	
+	public function cariReqPelayanan3($no){
+		$oracle = $this->load->database('oracle', true);
+		$sql = "select * from khs_pelayanan_picklist where job_number = '$nojob'";
 		$query = $oracle->query($sql);
 		return $query->result_array();
 	}
@@ -383,7 +395,7 @@ class M_pickfabrikasi extends CI_Model
 					,case when kqem.job_from_subinv is null 
 							and kqem.bom_from_subinv is not null
 							and kqem.code is null
-							then 'KOMPONEN DI MO GUDANG'
+							then 'KOMPONEN DI MO GUDANG : ' || kqem.required_quantity || ' PCS'
 							when nvl (kqem.job_comp_qty,0) <> nvl (kqem.bom_comp_qty,0)
 							and kqem.code is null
 							then 'LAYANI QTY SESUAI JOB : ' || kqem.required_quantity || ' PCS'

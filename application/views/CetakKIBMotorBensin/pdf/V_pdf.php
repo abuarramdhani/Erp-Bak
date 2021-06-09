@@ -7,9 +7,9 @@
 	<body>
 	<div style="width:100%">
 
-		<?php foreach ($get as $key => $var):?>
+		<?php $noo = 1; foreach ($get as $key => $var):?>
 
-		<div style="width:49.5%;float:left;<?php echo ($key+1)%2 == 0 ? 'margin-left:10px' : '' ?>">
+		<div style="width:49.2%;height: 400px;float: left;<?php echo ($key+1)%2 == 0 ? 'margin-left:10px' : '' ?>">
 		 <!-- <span style="font-size:12px;">STANDAR KERTAS WARNA HIJAU</span> -->
 			<table style="width:100%; border-collapse: collapse !important;page-break-inside:avoid;">
 				<thead>
@@ -19,7 +19,7 @@
 						</td>
 						<td style="width:57%;padding:5px;font-size:13px;border-right: 1px solid black;border-top: 1px solid black;">
 							<center>
-								<h4 style="text-a">Gudang Produksi & Ekspedisi <br> CV. Karya Hidup Sentosa</h4>
+								<h4>Gudang Produksi & Ekspedisi <br> CV. Karya Hidup Sentosa</h4>
 							</center>
 						</td>
 						<td style="width:21%;border-right: 1px solid black;border-top: 1px solid black;padding:5px">
@@ -43,10 +43,10 @@
 				</thead>
 				<tbody>
 					<tr>
-						<td style="padding:5px;border-left: 1px solid black;border-bottom: 1px solid black;border-right: 1px solid black;">
+						<td style="font-size:13px;padding:5px;border-left: 1px solid black;border-bottom: 1px solid black;border-right: 1px solid black;">
 							Kode Brg
 						</td>
-						<td colspan="2" style="padding:5px;font-size:12px;border-right: 1px solid black;">
+						<td colspan="2" style="padding:5px;font-size:11px;border-right: 1px solid black;">
 							<?php echo $var['KODE_SETELAH'] ?>
 						</td>
 						<!-- <td rowspan="3" style="border-right: 1px solid black;padding:5px;font-size:9px;">
@@ -54,15 +54,15 @@
 						</td> -->
 					</tr>
 					<tr>
-						<td style="padding:5px;border-left: 1px solid black;border-bottom: 1px solid black;border-right: 1px solid black;border-top: 1px solid black;">
+						<td style="font-size:13px;padding:5px;border-left: 1px solid black;border-bottom: 1px solid black;border-right: 1px solid black;border-top: 1px solid black;">
 							Nama Brg
 						</td>
-						<td colspan="2" style="padding:5px;font-size:12px;border-right: 1px solid black;border-top: 1px solid black;">
+						<td colspan="2" style="padding:5px;font-size:11px;border-right: 1px solid black;border-top: 1px solid black;">
 							<?php echo $var['TYPE_SETELAH'] ?>
 						</td>
 					</tr>
 					<tr>
-						<td style="padding:5px;border-left: 1px solid black;border-bottom: 1px solid black;border-right: 1px solid black;">
+						<td style="font-size:13px;padding:5px;border-left: 1px solid black;border-bottom: 1px solid black;border-right: 1px solid black;">
 							Tipe
 						</td>
 						<?php
@@ -86,7 +86,7 @@
 						</td>
 					</tr>
 					<tr>
-						<td colspan="3" style="padding:5px;border-left: 1px solid black;border-bottom: 1px solid black;border-right: 1px solid black;border-top: 1px solid black;">
+						<td colspan="3" style="padding:5px;font-size:13px;border-left: 1px solid black;border-bottom: 1px solid black;border-right: 1px solid black;border-top: 1px solid black;">
 							<center> Untuk Produk<strong> <?php echo $var['PRODUK'] ?></strong> </center>
 						</td>
 						<!-- <td style="padding:5px;font-size:12px;border-right: 1px solid black;border-top: 1px solid black;border-bottom: 1px solid black;">
@@ -104,7 +104,7 @@
 						</td>
 					</tr>
 					<tr>
-						<td style="padding:5px;border-left: 1px solid black;border-bottom: 1px solid black;border-right: 1px solid black;">
+						<td style="font-size:13px;padding:5px;border-left: 1px solid black;border-bottom: 1px solid black;border-right: 1px solid black;">
 							No. Seri :
 						</td>
 						<td style="padding:5px;border-left: 1px solid black;border-bottom: 1px solid black;border-right: 1px solid black;">
@@ -123,27 +123,33 @@
 			<table style="width:100%; border-collapse: collapse !important;page-break-inside:avoid;">
 				<tr>
 					<td style="padding:12px;border-left: 1px solid black;border-bottom: 1px solid black;border-right: 1px solid black;border-top: 1px solid black;" colspan="3">
-						<center><h3>UNTUK WOLC</h3></center>
+						<center><h3>UNTUK WOLC
+							<?php
+							if (($key+1)%2 != 0) {
+								echo $noo;
+							}
+							 ?></h3></center>
+
 					</td>
 				</tr>
 				<tr>
-					<td style="width:22%;padding:5px;border-left: 1px solid black;border-bottom: 1px solid black;border-right: 1px solid black;">
+					<td style="font-size:13px;width:22%;padding:5px;border-left: 1px solid black;border-bottom: 1px solid black;border-right: 1px solid black;">
 						Kode Brg
 					</td>
-					<td colspan="2" style="width:57%;padding:5px;font-size:12px;border-right: 1px solid black;">
+					<td colspan="2" style="width:57%;padding:5px;font-size:11px;border-right: 1px solid black;">
 						<?php echo $var['KODE_SEBELUM'] ?>
 					</td>
 				</tr>
 				<tr>
-					<td style="padding:5px;border-left: 1px solid black;border-bottom: 1px solid black;border-right: 1px solid black;">
+					<td style="font-size:13px;padding:5px;border-left: 1px solid black;border-bottom: 1px solid black;border-right: 1px solid black;">
 						Nama Brg
 					</td>
-					<td colspan="2" style="padding:5px;font-size:12px;border-right: 1px solid black;border-top: 1px solid black;">
+					<td colspan="2" style="padding:5px;font-size:10px;border-right: 1px solid black;border-top: 1px solid black;">
 						<?php echo $var['TYPE_SEBELUM'] ?>
 					</td>
 				</tr>
 				<tr>
-					<td style="padding:5px;border-left: 1px solid black;border-bottom: 1px solid black;border-right: 1px solid black;">
+					<td style="font-size:13px;padding:5px;border-left: 1px solid black;border-bottom: 1px solid black;border-right: 1px solid black;">
 						Tipe
 					</td>
 					<td style="padding:5px;font-size:12px;border-right: 1px solid black;border-top: 1px solid black;background:<?php echo $warna ?>">
@@ -156,7 +162,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td style="padding:5px;border-left: 1px solid black;border-bottom: 1px solid black;border-right: 1px solid black;">
+					<td style="font-size:13px;padding:5px;border-left: 1px solid black;border-bottom: 1px solid black;border-right: 1px solid black;">
 						No. Seri :
 					</td>
 					<td style="padding:5px;border-left: 1px solid black;border-bottom: 1px solid black;border-right: 1px solid black;border-top: 1px solid black;">
@@ -165,10 +171,13 @@
 				</tr>
 			</table>
 		</div>
-		<?php
 
+		<?php
 			if (($key+1)%2 == 0) {
-				echo "<div style='width=100%;'><hr style='color:red;padding:0;margin:10px 0 10px 0'></div>";
+				if ($noo%2 != 0) {
+					echo "<div style='width=100%;'><hr style='color:red;padding:0;margin:10px 0 10px 0'></div>";
+				}
+				$noo++;
 			}
 
 

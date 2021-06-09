@@ -689,7 +689,7 @@ function revisiTKB2(no) { // revisi deskripsi barang dari master item tim kode b
 		var item = ': <b>'+kode+'</b> <br>Deskripsi revisi : <b>'+revisi+'</b>';
 	}
 	Swal.fire({
-		title: 'Revisi Kode Item : ',
+		title: 'Revisi Deskripsi Item : ',
 		html : "Deskripsi Item "+item+"",
 		// type: 'success',
 		input: 'text',

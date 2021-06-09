@@ -4644,6 +4644,7 @@ $(document).ready(function(){
 // start izin dinas pusat tuksono mlati
 $(document).ready(function(){
 	var tblCMIzinDinasPTM = $('#tbl-CM-IzinDinasPTM-table').DataTable({
+		"scrollX": true,
         "lengthMenu": [
             [  -1, 5, 10, 25, 50 ],
             [ 'Show all', '5 rows', '10 rows', '25 rows', '50 rows' ]
@@ -4652,6 +4653,32 @@ $(document).ready(function(){
         "buttons" : [
             'copy', 'csv', 'excel', 'pdf', 'print', 'pageLength'
         ],
+        "fnRowCallback": function(nRow, aData, iDisplayIndex, iDisplayIndexFull){
+        	if (aData[8] == "Belum diproses" ||aData[9] == "Belum diproses" ) {
+        		$('td', nRow).css('color','red');
+        	}else{
+        		$('td', nRow).css('color','black');
+        	}
+        }
+	});
+
+	$('#tbl-CM-IzinDinasPTM-table2').DataTable({
+		"scrollX": true,
+        "lengthMenu": [
+            [  -1, 5, 10, 25, 50 ],
+            [ 'Show all', '5 rows', '10 rows', '25 rows', '50 rows' ]
+        ],
+        "dom" : 'Bfrtip',
+        "buttons" : [
+            'copy', 'csv', 'excel', 'pdf', 'print', 'pageLength'
+        ],
+        "fnRowCallback": function(nRow, aData, iDisplayIndex, iDisplayIndexFull){
+        	if (aData[8] == "Belum diproses" ||aData[9] == "Belum diproses" ) {
+        		$('td', nRow).css('color','red');
+        	}else{
+        		$('td', nRow).css('color','black');
+        	}
+        }
 	});
 
 	$('#btn-CM-IzinDinasPTM-Proses').on('click', function(){
@@ -4672,8 +4699,32 @@ $(document).ready(function(){
 			success: function(data){
 				obj = JSON.parse(data);
 				tblCMIzinDinasPTM.clear().draw();
-				console.log(obj);
+				// console.log(obj);
 				obj.forEach(function(daftar, index){
+					if (daftar.tidak_dihitung == "ada") {
+						btnDihitung = `	<button type="button" class="btn btn-primary btn-CM-IzinDinasPTM-dihitung"
+											data-tanggal="${daftar.tanggal}"
+											data-noind="${daftar.noind}"
+											data-asal="${daftar.tempat_makan}"
+											data-tujuan="${daftar.tujuan}"
+											data-kategori="${daftar.jenis_dinas}"
+											>
+											<span class="fa fa-check"></span> 
+											Hitung Lagi
+										</button>`;
+					}else{
+						btnDihitung = `	<button type="button" class="btn btn-danger btn-CM-IzinDinasPTM-tidakdihitung"
+											data-tanggal="${daftar.tanggal}"
+											data-noind="${daftar.noind}"
+											data-asal="${daftar.tempat_makan}"
+											data-tujuan="${daftar.tujuan}"
+											data-kategori="${daftar.jenis_dinas}"
+											>
+											<span class="fa fa-times"></span> 
+											Tidak Dihitung
+										</button>`;
+
+					}
 					tblCMIzinDinasPTM.row.add([
 						daftar.tanggal ,
 						daftar.izin_id ,
@@ -4684,7 +4735,161 @@ $(document).ready(function(){
 						daftar.keterangan,
 						daftar.jenis_dinas,
 						daftar.diproses_tambah,
-						daftar.diproses_kurang
+						daftar.diproses_kurang,
+						btnDihitung
+					]).draw(false);
+				})
+
+				$('#ldg-CM-IzinDinasPTM-Loading').hide();
+			}
+		})
+	});
+
+	$('#tbl-CM-IzinDinasPTM-table').on('click','.btn-CM-IzinDinasPTM-dihitung', function(){
+		tanggal = $(this).data('tanggal');
+		noind = $(this).data('noind');
+		asal = $(this).data('asal');
+		tujuan = $(this).data('tujuan');
+		kategori = $(this).data('kategori');
+		$('#ldg-CM-IzinDinasPTM-Loading').show();
+		$.ajax({
+			method: 'POST',
+			data: {
+				noind: noind,
+				tanggal: tanggal,
+				asal: asal,
+				tujuan: tujuan,
+				action: 'dihitung',
+				jenis_dinas: kategori
+			},
+			url: baseurl + 'CateringManagement/Extra/IzinDinasPTM/prosesDihitung',
+			error: function(xhr,status,error){
+				$('#ldg-CM-IzinDinasPTM-Loading').hide();
+				swal.fire({
+	                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+	                html: xhr['responseText'],
+	                type: "error",
+	                confirmButtonText: 'OK',
+	                confirmButtonColor: '#d63031',
+	            })
+			},
+			success: function(data){
+				obj = JSON.parse(data);
+				tblCMIzinDinasPTM.clear().draw();
+				// console.log(obj);
+				obj.forEach(function(daftar, index){
+					if (daftar.tidak_dihitung == "ada") {
+						btnDihitung = `	<button type="button" class="btn btn-primary btn-CM-IzinDinasPTM-dihitung"
+											data-tanggal="${daftar.tanggal}"
+											data-noind="${daftar.noind}"
+											data-asal="${daftar.tempat_makan}"
+											data-tujuan="${daftar.tujuan}"
+											data-kategori="${daftar.jenis_dinas}"
+											>
+											<span class="fa fa-check"></span> 
+											Hitung Lagi
+										</button>`;
+					}else{
+						btnDihitung = `	<button type="button" class="btn btn-danger btn-CM-IzinDinasPTM-tidakdihitung"
+											data-tanggal="${daftar.tanggal}"
+											data-noind="${daftar.noind}"
+											data-asal="${daftar.tempat_makan}"
+											data-tujuan="${daftar.tujuan}"
+											data-kategori="${daftar.jenis_dinas}"
+											>
+											<span class="fa fa-times"></span> 
+											Tidak Dihitung
+										</button>`;
+
+					}
+					tblCMIzinDinasPTM.row.add([
+						daftar.tanggal ,
+						daftar.izin_id ,
+						daftar.noind ,
+						daftar.nama,
+						daftar.tempat_makan,
+						daftar.tujuan,
+						daftar.keterangan,
+						daftar.jenis_dinas,
+						daftar.diproses_tambah,
+						daftar.diproses_kurang,
+						btnDihitung
+					]).draw(false);
+				})
+
+				$('#ldg-CM-IzinDinasPTM-Loading').hide();
+			}
+		})
+	});
+
+	$('#tbl-CM-IzinDinasPTM-table').on('click','.btn-CM-IzinDinasPTM-tidakdihitung', function(){
+		tanggal = $(this).data('tanggal');
+		noind = $(this).data('noind');
+		asal = $(this).data('asal');
+		tujuan = $(this).data('tujuan');
+		kategori = $(this).data('kategori');
+		$.ajax({
+			method: 'POST',
+			data: {
+				noind: noind,
+				tanggal: tanggal,
+				asal: asal,
+				tujuan: tujuan,
+				action: 'tidakdihitung',
+				jenis_dinas: kategori
+			},
+			url: baseurl + 'CateringManagement/Extra/IzinDinasPTM/prosesDihitung',
+			error: function(xhr,status,error){
+				$('#ldg-CM-IzinDinasPTM-Loading').hide();
+				swal.fire({
+	                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+	                html: xhr['responseText'],
+	                type: "error",
+	                confirmButtonText: 'OK',
+	                confirmButtonColor: '#d63031',
+	            })
+			},
+			success: function(data){
+				obj = JSON.parse(data);
+				tblCMIzinDinasPTM.clear().draw();
+				// console.log(obj);
+				obj.forEach(function(daftar, index){
+					if (daftar.tidak_dihitung == "ada") {
+						btnDihitung = `	<button type="button" class="btn btn-primary btn-CM-IzinDinasPTM-dihitung"
+											data-tanggal="${daftar.tanggal}"
+											data-noind="${daftar.noind}"
+											data-asal="${daftar.tempat_makan}"
+											data-tujuan="${daftar.tujuan}"
+											data-kategori="${daftar.jenis_dinas}"
+											>
+											<span class="fa fa-check"></span> 
+											Hitung Lagi
+										</button>`;
+					}else{
+						btnDihitung = `	<button type="button" class="btn btn-danger btn-CM-IzinDinasPTM-tidakdihitung"
+											data-tanggal="${daftar.tanggal}"
+											data-noind="${daftar.noind}"
+											data-asal="${daftar.tempat_makan}"
+											data-tujuan="${daftar.tujuan}"
+											data-kategori="${daftar.jenis_dinas}"
+											>
+											<span class="fa fa-times"></span> 
+											Tidak Dihitung
+										</button>`;
+
+					}
+					tblCMIzinDinasPTM.row.add([
+						daftar.tanggal ,
+						daftar.izin_id ,
+						daftar.noind ,
+						daftar.nama,
+						daftar.tempat_makan,
+						daftar.tujuan,
+						daftar.keterangan,
+						daftar.jenis_dinas,
+						daftar.diproses_tambah,
+						daftar.diproses_kurang,
+						btnDihitung
 					]).draw(false);
 				})
 
@@ -6349,31 +6554,11 @@ $(document).ready(function(){
         ],
         'columnDefs': [
 			{
-			    "targets": 0,
+			    "targets": [0,-1],
 			    "className": "text-center"
 			},
 			{
-			    "targets": 2,
-			    "className": "text-right"
-			},
-			{
-			    "targets": 3,
-			    "className": "text-right"
-			},
-			{
-			    "targets": 4,
-			    "className": "text-right"
-			},
-			{
-			    "targets": 5,
-			    "className": "text-right"
-			},
-			{
-			    "targets": 6,
-			    "className": "text-right"
-			},
-			{
-			    "targets": 7,
+			    "targets": [2,3,4,5,6,7,8,9,10],
 			    "className": "text-right"
 			}
 		],

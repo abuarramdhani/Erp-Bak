@@ -1853,4 +1853,22 @@ class M_Dtmasuk extends CI_Model
         $sql = "SELECT * FROM k3.tbon_sepatu where id_oracle in ($id_oracle)";
         return $this->db->query($sql)->result_array();
     }
+
+    public function GetPeriodeSepatu()
+    {
+        return $this->db->query("select trim(pk.periode) periode, es.* from \"k3\".tbon_sepatu_periode pk left join \"er\".er_section es on es.section_code = pk.kodesie")->result_array();
+    }
+
+    public function UpdatePeriodeSepatu($kodesie, $periode)
+    {
+        $this->db->query("update \"k3\".tbon_sepatu_periode set periode = '$periode' where left(kodesie, 7) = '$kodesie'");
+    }
+
+    public function getMoq($item)
+    {
+        $sql = "SELECT msib.segment1, msib.description, msib.minimum_order_quantity
+                  FROM mtl_system_items_b msib
+                WHERE msib.organization_id = 81 AND msib.segment1 = '$item'";
+        return $this->oracle->query($sql)->row_array();
+    }
 }

@@ -23,9 +23,10 @@
         <th width="10%" style="font-family: times; border-collapse: collapse; border: 0.5px solid black; font-size: 9pt;">Jumlah Shift</th>
         <th width="10%" style="font-family: times; border-collapse: collapse; border: 0.5px solid black; font-size: 9pt;">Dirumahkan (NON WFH)</th>
         <th width="10%" style="font-family: times; border-collapse: collapse; border: 0.5px solid black; font-size: 9pt;">Dirumahkan (WFH)</th>
-        <th width="10%" style="font-family: times; border-collapse: collapse; border: 0.5px solid black; font-size: 9pt;">Cuti</th>
+        <th width="5%" style="font-family: times; border-collapse: collapse; border: 0.5px solid black; font-size: 9pt;">Cuti</th>
         <th width="10%" style="font-family: times; border-collapse: collapse; border: 0.5px solid black; font-size: 9pt;">Sakit</th>
         <th width="10%" style="font-family: times; border-collapse: collapse; border: 0.5px solid black; font-size: 9pt;">Dinas Luar</th>
+        <th width="5%" style="font-family: times; border-collapse: collapse; border: 0.5px solid black; font-size: 9pt;">Puasa</th>
         <th width="10%" style="font-family: times; border-collapse: collapse; border: 0.5px solid black; font-size: 9pt;">Total</th>
       </tr>
     </thead>
@@ -43,6 +44,7 @@
           <td align="center" style="font-family: times; border-collapse: collapse; border: 0.5px solid black; font-size: 9pt; <?php echo $val['cuti'] != "0" ? "background-color: #ff8888" : ""; ?>"><?= $val['cuti']; ?></td>
           <td align="center" style="font-family: times; border-collapse: collapse; border: 0.5px solid black; font-size: 9pt; <?php echo $val['sakit'] != "0" ? "background-color: #ff8888" : ""; ?>"><?= $val['sakit']; ?></td>
           <td align="center" style="font-family: times; border-collapse: collapse; border: 0.5px solid black; font-size: 9pt; <?php echo $val['dinas_luar'] != "0" ? "background-color: #ff8888" : ""; ?>"><?= $val['dinas_luar']; ?></td>
+          <td align="center" style="font-family: times; border-collapse: collapse; border: 0.5px solid black; font-size: 9pt; <?php echo $val['puasa'] != "0" ? "background-color: #ff8888" : ""; ?>"><?= $val['puasa']; ?></td>
           <td align="center" style="font-family: times; border-collapse: collapse; border: 0.5px solid black; font-size: 9pt;"><?= $val['total']; ?></td>
 
         </tr>
@@ -60,6 +62,7 @@
         <td align="center" style="font-family: times; border-collapse: collapse; border: 0.5px solid black; font-size: 9pt;"><b><?= array_sum(array_column($PrediksiCatering, 'cuti')); ?></b></td>
         <td align="center" style="font-family: times; border-collapse: collapse; border: 0.5px solid black; font-size: 9pt;"><b><?= array_sum(array_column($PrediksiCatering, 'sakit')); ?></b></td>
         <td align="center" style="font-family: times; border-collapse: collapse; border: 0.5px solid black; font-size: 9pt;"><b><?= array_sum(array_column($PrediksiCatering, 'dinas_luar')); ?></b></td>
+        <td align="center" style="font-family: times; border-collapse: collapse; border: 0.5px solid black; font-size: 9pt;"><b><?= array_sum(array_column($PrediksiCatering, 'puasa')); ?></b></td>
         <td align="center" style="font-family: times; border-collapse: collapse; border: 0.5px solid black; font-size: 9pt;"><b><?= array_sum(array_column($PrediksiCatering, 'total')); ?></b></td>
       </tr>
     </tfoot>

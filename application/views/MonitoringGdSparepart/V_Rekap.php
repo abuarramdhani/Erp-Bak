@@ -1,3 +1,4 @@
+<input type="hidden" value="ok" id="rekapmpg">
 <script src="<?php echo base_url('assets/plugins/dataTables/jquery.dataTables.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/dataTables/dataTables.bootstrap.js');?>"></script>
      <script>
@@ -53,6 +54,10 @@
                                     </div>
                                     <div class="col-md-12">
                                         <div class="col-md-3">
+                                            <label class="control-label">Subinventory</label>
+                                            <input id="subinventory" name="subinventory" class="form-control pull-right" placeholder="Subinventory" readonly>
+                                        </div>
+                                        <div class="col-md-3">
                                             <label class="text-right">Tanggal Awal</label>
                                             <input id="tglAwal" name="tglAwal" class="form-control pull-right datepicktgl" placeholder="yyyy-mm-dd" autocomplete="off">
                                         </div>
@@ -69,7 +74,7 @@
                                 </div>
                                 <form method="post" action="<?= base_url('MonitoringGdSparepart/Rekap/exportRekap'); ?>">
                                 <div class="panel-body" id="tb_RkpMGS">
-                                    <div class="col-md-12">
+                                    <!-- <div class="col-md-12">
                                         <table class="datatable table table-bordered table-hover table-striped text-center" id="myTable" style="width: 100%; table-layout:fixed">
                                             <thead class="bg-info">
                                                 <tr>
@@ -126,7 +131,7 @@
                                                 </tr>
                                             </tbody>
                                         </table>
-                                    </div>
+                                    </div> -->
                                 </div>
                                 </form>
                             </div>

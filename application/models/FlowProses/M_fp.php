@@ -10,16 +10,30 @@ class M_fp extends CI_Model
         $this->personalia = $this->load->database('personalia', true);
         $this->lantuma = $this->load->database('lantuma',TRUE);
     }
-    public function agag($value='')
-    {
-      return $this->oracle->query("select * from khs_ascp_ek_temp")->result_array();
-    }
 
     public function update_adjuvant($value)
     {
       $this->db->where('id', $value['id'])->update('md.md_adjuvant', $value);
     }
 
+    public function getMemo($type)
+    {
+      if ($type == 'Product') {
+        // code...
+        $res = $this->design->select('mm.memo_number, mp.product_name, mm.memo_id, mm.tanggal_distribusi')->join('md.md_product as mp', 'mp.product_id = mm.product_id')->where('mm.jenis_memo', $type)->where('mm.tanggal_distribusi !=', null)->order_by('mm.memo_id', 'desc')->get('md.md_memo as mm')->result_array();
+        foreach ($res as $key => $value) {
+          $res[$key]['status'] = $this->db->where('memo_number', $value['memo_number'])->get('md.md_component_approved')->num_rows();
+        }
+      }else {
+        $res = $this->design->select('mm.memo_number, mp.product_name, mm.bukti_id memo_id')->join('md.md_product as mp', 'mp.product_id = mm.product_id')->where('mm.jenis_memo', $type)->where('mm.tanggal_distribusi !=', null)->order_by('mm.bukti_id', 'desc')->get('md.md_bukti as mm')->result_array();
+        foreach ($res as $key => $value) {
+          $res[$key]['status'] = $this->db->where('memo_number', $value['memo_number'])->get('md.md_component_approved')->num_rows();
+        }
+      }
+      return $res;
+    }
+
+    // detail memo area
     public function getComponentMemo($memo, $type)
     {
       if ($type == 'Product') {
@@ -27,26 +41,277 @@ class M_fp extends CI_Model
       }else {
         $type = 'md.md_product_component_prototype';
       }
-      return $this->design->select('component_code, component_name, product_component_id, memo_number, product_id')->where('memo_number', $memo)->get($type)->result_array();
+      return $this->design->select('component_code, component_name, product_component_id, memo_number, product_id, revision, revision_date')->where('memo_number', $memo)->get($type)->result_array();
     }
 
-    public function getMemo($type)
+    public function getMemoLine($memo_id, $memoNumber=false, $type)
     {
       if ($type == 'Product') {
-        // code...
-        $res = $this->design->select('mm.memo_number, mp.product_name, mm.memo_id')->join('md.md_product as mp', 'mp.product_id = mm.product_id')->where('mm.jenis_memo', $type)->order_by('mm.memo_id', 'desc')->get('md.md_memo as mm')->result_array();
-        foreach ($res as $key => $value) {
-          $res[$key]['status'] = $this->db->where('memo_number', $value['memo_number'])->get('md.md_component_approved')->num_rows();
-        }
+        $table = 'md.md_product_component';
       }else {
-        $res = $this->design->select('mm.memo_number, mp.product_name, mm.bukti_id memo_id')->join('md.md_product as mp', 'mp.product_id = mm.product_id')->where('mm.jenis_memo', $type)->order_by('mm.bukti_id', 'desc')->get('md.md_bukti as mm')->result_array();
-        foreach ($res as $key => $value) {
-          $res[$key]['status'] = $this->db->where('memo_number', $value['memo_number'])->get('md.md_component_approved')->num_rows();
-        }
+        $table = 'md.md_product_component_prototype';
       }
+      $sql = "SELECT
+                mpch.history_id,
+                mpch.jenis,
+                mpchparent.history_id historyparent,
+                (
+                    case
+                        when mpch.history_id_parent is null then mpc.product_component_id
+                        else mpchparent.product_component_id
+                    end
+                ) product_component_id,
+                (
+                    case
+                        when mpch.history_id_parent is null then mpc.component_name
+                        else mpchparent.component_name
+                    end
+                ) nama_komponen,
+                mpch.component_code component_code_old,
+                (
+                    case
+                        when mpch.history_id_parent is null then mpc.component_code
+                        else mpchparent.component_code
+                    end
+                ) kodebaru,
+                (
+                    case
+                        when mpch.history_id_parent is null then mpc.revision
+                        else mpchparent.revision
+                    end
+                ) norevisi,
+                (
+                    case
+                        when mpch.history_id_parent is null then mpc.information
+                        else mpchparent.information
+                    end
+                ) detailperubahan,
+                (
+                    case
+                        when mpch.history_id_parent is null then mpc.change_type
+                        else mpchparent.change_type
+                    end
+                ) sifatperubahan,
+                (
+                    case
+                        when mpch.history_id_parent is null then mpc.status_design
+                        else mpchparent.status_design
+                    end
+                ) gambarkerjalama,
+                (
+                    case
+                        when mpch.history_id_parent is null then mpc.status_component
+                        else mpchparent.status_component
+                    end
+                ) statuskomponen,
+                (
+                    case
+                        when mpch.history_id_parent is null then mpc.revision_date
+                        else mpchparent.revision_date
+                    end
+                ) revision_date,
+                (
+                    case
+                        when mpchparent.revision_date is null then '01-01-1970'
+                        else mpc.revision_date
+                    end
+                ) oldrevisiondate,
+                mpc.status,
+                mpch.product_id
+            FROM
+                md.md_product_component_history mpch,
+                md.md_product_component_history mpchparent,
+                $table mpc
+            WHERE
+                mpc.product_component_id = mpch.product_component_id
+                and mpch.memo_number_after = '$memoNumber'
+                and(
+                    case
+                        when mpch.history_id_parent is null then mpchparent.history_id = mpch.history_id
+                        and mpc.memo_id = $memo_id
+                        else mpch.history_id_parent = mpchparent.history_id
+                        and mpchparent.memo_id = $memo_id
+                    end
+                )
+                -- ini untuk memo line
+                ORDER BY kodebaru asc";
 
-      return $res;
+        $query = $this->design->query($sql);
+        return $query->result_array();
     }
+
+    public function getMemoLineNew($memo_id, $memoNumber=false, $type)
+    {
+      $this->design->select('*');
+      if ($type == 'Product') {
+        $this->design->from('md.md_product_component');
+      }else {
+        $this->design->from('md.md_product_component_prototype');
+      }
+      $this->design->where('memo_number', $memoNumber);
+      $this->design->where('memo_id', $memo_id);
+      if ($type == 'Product') {
+        $this->design->where('new_component = 1');
+      }else {
+        $this->design->where('new_component = 0');
+      }
+      $this->design->order_by("component_code", "asc");
+      $query = $this->design->get();
+      return $query->result_array();
+    }
+
+    public function kpsrMemoProduct($memo, $type)
+    {
+      return $this->design->query("select product_component_id, history_id from md.md_product_component_history
+                               where memo_number_before = '{$memo}'
+                               and jenis = '$type'")->result_array();
+    }
+
+    public function cek_kom_in_histo($product_component_id, $type)
+    {
+      if ($type == 'Product') {
+        $table = 'md.md_product_component';
+      }else {
+        $table = 'md.md_product_component_prototype';
+      }
+       return $this->design->query("select
+                        ch.product_component_id,
+                        ch.product_id,
+                        ch.component_name,
+                        ch.component_code,
+                        ch.change_detail,
+                        ch.information,
+                        ch.change_type,
+                        ch.status_design,
+                        ch.status_component,
+                        ch.revision_date,
+                        pc.status
+                        from md.md_product_component_history ch,
+                        $table pc
+                        where ch.product_component_id = '{$product_component_id}'
+                        and ch.product_component_id = pc.product_component_id
+                        and ch.jenis = 'Product'
+                        and ch.revision = (select min(revision)
+                                          from md.md_product_component_history
+                                          where product_component_id = '{$product_component_id}'
+                                          and jenis = '$type')")->row_array();
+    }
+
+    public function getMemoLineNewUniqueUpdate($memo_id, $memoNumber=false, $id, $type)
+    {
+        if ($type == 'Product') {
+          $table = 'md.md_product_component';
+        }else {
+          $table = 'md.md_product_component_prototype';
+        }
+        $sql = "SELECT
+            mpch.history_id,
+            mpchparent.history_id historyparent,
+            (
+                case
+                    when mpch.history_id_parent is null then mpc.product_component_id
+                    else mpchparent.product_component_id
+                end
+            ) product_component_id,
+            (
+                case
+                    when mpch.history_id_parent is null then mpc.component_name
+                    else mpchparent.component_name
+                end
+            ) nama_komponen,
+            (
+
+               SELECT component_code FROM md.md_product_component_history WHERE product_component_id = '$id' AND revision = (SELECT MAX(REVISION) FROM md.md_product_component_history Where product_component_id = '$id' and jenis = 'Product')
+
+            ) component_code_old,
+            (
+                case
+                    when mpch.history_id_parent is null then mpc.component_code
+                    else mpchparent.component_code
+                end
+            ) kodebaru,
+            (
+                case
+                    when mpch.history_id_parent is null then mpc.revision
+                    else mpchparent.revision
+                end
+            ) norevisi,
+            (
+                case
+                    when mpch.history_id_parent is null then mpc.information
+                    else mpchparent.information
+                end
+            ) detailperubahan,
+            (
+                case
+                    when mpch.history_id_parent is null then mpc.change_type
+                    else mpchparent.change_type
+                end
+            ) sifatperubahan,
+            (
+                case
+                    when mpch.history_id_parent is null then mpc.status_design
+                    else mpchparent.status_design
+                end
+            ) gambarkerjalama,
+            (
+                case
+                    when mpch.history_id_parent is null then mpc.status_component
+                    else mpchparent.status_component
+                end
+            ) statuskomponen,
+            (
+                case
+                    when mpch.history_id_parent is null then mpc.revision_date
+                    else mpchparent.revision_date
+                end
+            ) revision_date,
+            (
+                case
+                    when mpchparent.revision_date is null then '01-01-1970'
+                    else mpc.revision_date
+                end
+            ) oldrevisiondate,
+            mpc.status,
+            mpc.product_id
+        FROM
+            md.md_product_component_history mpch,
+            md.md_product_component_history mpchparent,
+            $table mpc
+        WHERE
+            mpc.product_component_id = mpch.product_component_id
+            and mpch.memo_number_after = '$memoNumber'
+            and(
+                case
+                    when mpch.history_id_parent is null then mpchparent.history_id = mpch.history_id
+                    and mpc.memo_id = $memo_id
+                    else mpch.history_id_parent = mpchparent.history_id
+                    and mpchparent.memo_id = $memo_id
+                end
+            )
+          -- ini untuk memo line
+        ORDER BY kodebaru asc";
+
+        $query = $this->design->query($sql);
+        return $query->result_array();
+    }
+
+    public function getimgCek($id, $type)
+    {
+      if ($type == 'Product') {
+        $where = "(jenis = '$type' OR jenis is null)";
+      }else {
+        $where = "jenis = '$type'";
+      }
+      $query = "SELECT product_component_id, file_location, file_name FROM md.md_product_component_design WHERE product_component_id = '$id' and $where and history_id is NULL";
+      $sql = $this->design->query($query);
+      return $sql->row_array();
+    }
+
+    // detail memo area end ========================================
+
+
+
 
     function getTool($param)
     {
@@ -72,7 +337,7 @@ class M_fp extends CI_Model
                                   'J',
                                   'M',
                                   'P')
-                                  and UPPER(ffvt.DESCRIPTION) like '%$param%'")->result_array();
+                                  --and UPPER(ffvt.DESCRIPTION) like '%$param%'")->result_array();
     }
 
 
@@ -472,9 +737,9 @@ class M_fp extends CI_Model
          // if (!empty($res)) {
          //   return $res;
          // }else {
-         //   return $this->db->like('DEPARTMENT_CLASS_CODE', $param, 'both')->or_like('DESCRIPTION', $param, 'both')->get('md.md_destination_optional')->result_array();
+         //   return $this->oracle->like('DEPARTMENT_CLASS_CODE', $param, 'both')->or_like('DESCRIPTION', $param, 'both')->get('flow_proses_destinasi_tambahan')->result_array();
          // }
-           $res2 = $this->db->get('md.md_destination_optional')->result_array();
+         $res2 = $this->oracle->query("SELECT * FROM flow_proses_destinasi_tambahan")->result_array();
 
            $done = array_merge($res, $res2);
            usort($done, function ($a, $b) {
@@ -504,7 +769,11 @@ class M_fp extends CI_Model
          if (!empty($res)) {
            return $res;
          }else {
-           return $this->db->like('DEPARTMENT_CLASS_CODE', $param, 'both')->or_like('DESCRIPTION', $param, 'both')->get('md.md_destination_optional')->result_array();
+           // return $this->oracle->like('DEPARTMENT_CLASS_CODE', $param, 'both')->or_like('DESCRIPTION', $param, 'both')->get('flow_proses_destinasi_tambahan')->result_array();
+           return $this->oracle->query("SELECT * FROM flow_proses_destinasi_tambahan WHERE (
+                                         DEPARTMENT_CLASS_CODE LIKE '%$param%'
+                                         OR DESCRIPTION LIKE '%$param%'
+                                       )")->result_array();
          }
       }
 

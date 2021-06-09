@@ -48,7 +48,9 @@ class C_Monitoring extends CI_Controller
 		$user = $this->session->user;
 		$cekHak = $this->M_usermng->getUser("where no_induk = '$user'");
 		if (!empty($cekHak)) {
-			if ($cekHak[0]['JENIS'] == 'Admin') {
+			if($user == 'B0599' || $user == 'B0653' || $user == 'B0886') {
+				$data['UserMenu'] = array($UserMenu[0], $UserMenu[5]);
+			}elseif ($cekHak[0]['JENIS'] == 'Admin') {
 				$data['UserMenu'] = array($UserMenu[0]);
 			}else {
 				$data['UserMenu'] = $UserMenu;
@@ -57,7 +59,7 @@ class C_Monitoring extends CI_Controller
 			$data['UserMenu'] = $UserMenu;
 		}
 
-		$data['kategori'] = $this->M_monitoring->getCategory('');
+		$data['kategori'] = $this->M_monitoring->getCategory('order by category_name');
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -69,15 +71,17 @@ class C_Monitoring extends CI_Controller
 		$getdata = $this->M_monitoring->getdataMonitoring($kategori);
 		$cariakt = $this->M_monitoring->getAktual2($kategori, $inibulan);
 		// $cariakt = $this->M_monitoring->getAktual($kategori, $data['bulan']);
-		$getplandate = $this->M_monitoring->getPlanDate();
+		$getplandate = $this->M_monitoring->getPlanDate('');
 		$datanya = array();
 		$total['item'] = $total['ttl_jml_plan'] = $total['ttl_jml_akt'] = $total['ttl_jml_min'] = 0;
 		$total['ttl_jml_com'] = $total['ttl_jml_pl'] = $total['ttl_jml_plmin'] = $total['ttl_jml_cmin'] = 0;
 		foreach ($getdata as $key => $value) {
 			$item = $this->M_monitoring->getitem($value['INVENTORY_ITEM_ID']);
-			$plan = $this->M_monitoring->getPlan($value['INVENTORY_ITEM_ID'], $inibulan);
+			$plan = $this->M_monitoring->getPlan($value['INVENTORY_ITEM_ID'], $inibulan, $kategori);
 			$getdata[$key]['ITEM'] = $item[0]['SEGMENT1'];
 			$getdata[$key]['DESC'] = $item[0]['DESCRIPTION'];
+			// $av_pick = $this->M_monitoring->get_available_picklist($item[0]['SEGMENT1']);
+			// $getdata[$key]['AVPICK'] = !empty($av_pick) ? $av_pick[0]['AV_PICK'] : '';
 			$getdata[$key]['jml_plan'] = 0;
 			$getdata[$key]['jml_akt'] = 0;
 			$getdata[$key]['jml_min'] = 0;
@@ -123,6 +127,13 @@ class C_Monitoring extends CI_Controller
 					}
 					
 				}
+
+				$plandate = $this->M_monitoring->getPlanDate("where plan_id = ".$plan[0]['PLAN_ID']."");
+				if (!empty($plandate)) {
+					$getdata[$key]['jml_plan'] += $plandate[0]['VALUE_PLAN_MONTH'];
+					$ket = 'oke';
+				}
+					
 				if ($ket == 'oke') {
 					array_push($datanya,$getdata[$key]);
 					// $total['item'] += 1;
@@ -160,6 +171,13 @@ class C_Monitoring extends CI_Controller
 		echo json_encode($wip2);
 	}
 	
+	public function searchcompmonitoring(){
+		$item 	= $this->input->post('item', TRUE);
+		$comp 	= $this->M_monitoring->getCompletion($item);
+		$comp2	= $comp[0]['TRX_QTY'] != null ? $comp[0]['TRX_QTY'] : '';
+		echo json_encode($comp2);
+	}
+	
 	public function searchpickmonitoring(){
 		$item 			= $this->input->post('item', TRUE);
 		$picklist		= $this->M_monitoring->getPicklist($item);
@@ -177,6 +195,13 @@ class C_Monitoring extends CI_Controller
 		$mlati 			= !empty($gudang) ? $gudang[0]['MLATI_DM'] : '';
 		$hasil 			= array($fg_tks, $mlati);
 		echo json_encode($hasil);
+	}
+	
+	public function searchavpickmonitoring(){
+		$item 		= $this->input->post('item', TRUE);
+		$av_pick 	= $this->M_monitoring->get_available_picklist($item);
+		$avpick 	= !empty($av_pick) ? round($av_pick[0]['AV_PICK'],0) : '';
+		echo json_encode($avpick);
 	}
 
 	public function jumlahHari($bulan){
@@ -494,8 +519,10 @@ class C_Monitoring extends CI_Controller
 			$baris['desc'] = $this->input->post('desc'.$no[$i].'');
 			$baris['wip'] = $this->input->post('wip'.$no[$i].'');
 			$baris['picklist'] = $this->input->post('picklist'.$no[$i].'');
+			$baris['completion'] = $this->input->post('completion'.$no[$i].'');
 			$baris['fg_tks'] = $this->input->post('fg_tks'.$no[$i].'');
 			$baris['mlati'] = $this->input->post('mlati'.$no[$i].'');
+			$baris['av_pick'] = $this->input->post('av_pick'.$no[$i].'');
 			$baris['jml_plan'] = $this->input->post('jml_plan'.$no[$i].'');
 			$baris['jml_akt'] = $this->input->post('jml_akt'.$no[$i].'');
 			$baris['jml_min'] = $this->input->post('jml_min'.$no[$i].'');
@@ -683,8 +710,10 @@ class C_Monitoring extends CI_Controller
 																	'.$d['desc']);
 			$excel->setActiveSheetIndex(0)->setCellValue('C'.$numrow, 'WIP : '.$d['wip'].'
 																		Picklist : '.$d['picklist'].'
+																		Completion : '.$d['completion'].'
 																		FG-TKS : '.$d['fg_tks'].'
-																		MLATI-DM : '.$d['mlati'].'');
+																		MLATI-DM : '.$d['mlati'].'
+																		Available Picklist : '.$d['av_pick'].'');
 			$excel->setActiveSheetIndex(0)->setCellValue('D'.$numrow, "P");
 			$excel->setActiveSheetIndex(0)->setCellValue('D'.($numrow+1), "A");
 			$excel->setActiveSheetIndex(0)->setCellValue('D'.($numrow+2), "(A - P)");
@@ -964,8 +993,10 @@ class C_Monitoring extends CI_Controller
 			$baris['desc'] = $this->input->post('desc'.$no[$i].'');
 			$baris['wip'] = $this->input->post('wip'.$no[$i].'');
 			$baris['picklist'] = $this->input->post('picklist'.$no[$i].'');
+			$baris['completion'] = $this->input->post('completion'.$no[$i].'');
 			$baris['fg_tks'] = $this->input->post('fg_tks'.$no[$i].'');
 			$baris['mlati'] = $this->input->post('mlati'.$no[$i].'');
+			$baris['av_pick'] = $this->input->post('av_pick'.$no[$i].'');
 			$baris['jml_plan'] = $this->input->post('jml_plan'.$no[$i].'');
 			if ($ket == 'PA') {
 				$baris['jml_pa'] = $this->input->post('jml_akt'.$no[$i].'');
@@ -1175,8 +1206,10 @@ class C_Monitoring extends CI_Controller
 																	'.$d['desc']);
 			$excel->setActiveSheetIndex(0)->setCellValue('C'.$numrow, 'WIP : '.$d['wip'].'
 																		Picklist : '.$d['picklist'].'
+																		Completion : '.$d['completion'].'
 																		FG-TKS : '.$d['fg_tks'].'
-																		MLATI-DM : '.$d['mlati'].'');
+																		MLATI-DM : '.$d['mlati'].'
+																		Available Picklist : '.$d['av_pick'].'');
 			$excel->setActiveSheetIndex(0)->setCellValue('D'.$numrow, "P");
 			$excel->setActiveSheetIndex(0)->setCellValue('D'.($numrow+1), $pa);
 			$excel->setActiveSheetIndex(0)->setCellValue('D'.($numrow+2), $min);

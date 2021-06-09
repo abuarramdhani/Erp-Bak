@@ -1,6 +1,6 @@
 <?php
+$no = 1;
 for ($i=0; $i < count($org); $i++) { 
-    $no = 1;
 ?>
     <div class="tmborg_assign<?= $no?>">
         <div class="col-md-3"></div>
@@ -11,7 +11,7 @@ for ($i=0; $i < count($org); $i++) {
             <button class = "btn btn-default tombolhapus<?= ($i+1)?>" onclick="tombolapus(<?= ($i+1)?>)" type="button"><i class = "fa fa-minus" ></i></button>
         </div>
     <br><br></div>
-<?php }?>
+<?php $no++; }?>
 <div class="tambahorg_assign">
     <div class="col-md-3"></div>
     <div class="col-md-6">

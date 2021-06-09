@@ -92,7 +92,14 @@
             <td style="border-left: 0px;" colspan="5">Nama Perusahaan</td>
             <td colspan="6"><?= $cetak['nama_perusahaan'] ?></td>
             <td style="width: 4.2%; border-right: 0px;">NPP :</td>
-            <td colspan="2" style="border-left: 0px;"><?= $cetak['kd_mitra'] ?></td>
+            <?php
+              if (substr($cetak['noind'], 0,1) == 'R') {
+                $kd_mitra = '18157562';
+              }else{
+                $kd_mitra = $cetak['kd_mitra'];
+              }
+            ?>
+            <td colspan="2" style="border-left: 0px;"><?= $kd_mitra ?></td>
           </tr>
 
           <tr>
@@ -133,7 +140,7 @@
           <tr>
             <td style="border-right: 0px;">5.</td>
             <td style="border-left: 0px;" colspan="5">Dari hasil pemeriksaan didapatkan :</td>
-            <td colspan="9" rowspan="12 "><img width="430px" src="<?= base_url('assets/img/resumeMedis/kondisi.png') ?>" alt=""></td>
+            <td colspan="9" rowspan="12 "><img style="width: 415px;" src="<?= base_url('assets/img/resumeMedis/kondisi.png') ?>" alt=""></td>
           </tr>
 
           <tr>
@@ -243,9 +250,15 @@
             <td style="border-left: 0px;" colspan="3"><img width="12px" src="<?= base_url('assets/img/resumeMedis/box.png') ?>" alt="">Dokter swasta</td>
           </tr>
 
+          <tr>
+            <td style="border-right: 0px;"></td>
+            <td style="border-left: 0px;" colspan="5">Alamat</td>
+            <td colspan="9"></td>
+          </tr>
+
         </tbody>
       </table>
-      <table style="width: 100%;  margin-top: 8px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;  table-layout: fixed;">
+      <table style="width: 100%;  margin-top: 0px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;  table-layout: fixed;">
         <tbody>
           <tr>
             <td colspan="3" style="text-align: center;">Dibuat dengan sesungguhnya,</td>

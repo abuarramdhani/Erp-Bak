@@ -15,6 +15,12 @@ class M_masterkategori extends CI_Model
       return $query->result_array();
     }
 
+    public function getSubKategori($term){
+      $sql = "select * from khs_subcategory_item $term";
+      $query = $this->oracle->query($sql);
+      return $query->result_array();
+    }
+
     public function saveKategori($id, $kategori){
       $sql = "insert into khs_kategori_item_monitoring (id_category, category_name)
               values('$id', '$kategori')";
@@ -35,6 +41,28 @@ class M_masterkategori extends CI_Model
       $query = $this->oracle->query($sql);
       $query2 = $this->oracle->query('commit');
       // echo $sql;
+    }
+
+    public function saveSubCategory($id, $idsub, $subkategori){
+      $sql = "insert into khs_subcategory_item (id_category, id_subcategory, subcategory_name)
+              values('$id','$idsub', '$subkategori')";
+      $query = $this->oracle->query($sql);
+      $query2 = $this->oracle->query('commit');
+      // echo $sql;
+    }
+
+    public function deletesubcategory($id){
+      $sql = "delete from khs_subcategory_item where id_category = $id";
+      $query = $this->oracle->query($sql);
+      $query2 = $this->oracle->query('commit');
+      // echo $sql;
+    }
+    
+    public function updateBulan($id, $bulan){
+      $sql = "update khs_kategori_item_monitoring set month = '$bulan'
+              where id_category = $id";
+      $query = $this->oracle->query($sql);
+      $query2 = $this->oracle->query('commit');
     }
 
 

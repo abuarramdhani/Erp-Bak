@@ -6,11 +6,10 @@ class M_car extends CI_Model
     {
         parent::__construct();
         $this->load->database();
-        $this->oracle = $this->load->database('oracle_dev', true);
-        $this->oracle_prod = $this->load->database('oracle', true);
+        $this->oracle = $this->load->database('oracle', true);
         $this->personalia = $this->load->database('personalia', true);
     }
-    function InsertDataCAR($id, $supplier, $po, $line, $item_code, $item_desc, $uom, $qty_po, $received_date_po, $shipment_date, $lppb, $act_receipt_date, $qty_receipt, $notes, $detail_rootcause, $rootcause_category, $car_type, $nc_scope, $created_by, $created_date, $no_car)
+    function InsertDataCAR($id, $supplier, $po, $line, $item_code, $item_desc, $uom, $qty_po, $received_date_po, $shipment_date, $lppb, $act_receipt_date, $qty_receipt, $notes, $detail_rootcause, $rootcause_category, $car_type, $nc_scope, $created_by, $created_date, $no_car, $date_source)
     {
         $sql = "insert into khs_psup_car_vendor(
         CAR_ID,
@@ -34,7 +33,8 @@ class M_car extends CI_Model
         CREATED_BY,
         CREATED_DATE,
         ACTIVE_FLAG,
-        CAR_NUM
+        CAR_NUM,
+        DATE_OF_DATA_SOURCE
     ) values (
         $id, 
         '$supplier',
@@ -57,9 +57,10 @@ class M_car extends CI_Model
         '$created_by', 
         TO_TIMESTAMP('$created_date', 'YYYY-MM-DD HH24:MI:SS'),
         'B',
-        '$no_car'
+        '$no_car',
+        TO_TIMESTAMP('$date_source', 'DD-MM-YY')
     )";
-        $query = $this->oracle_prod->query($sql);
+        $query = $this->oracle->query($sql);
         // return $query->result_array();
         return $sql;
     }
@@ -67,7 +68,7 @@ class M_car extends CI_Model
     {
         $sql = "SELECT max(CAR_ID) baris from khs_psup_car_vendor";
 
-        $query = $this->oracle_prod->query($sql);
+        $query = $this->oracle->query($sql);
         return $query->row()->BARIS + 1;
     }
     public function Listcar()
@@ -88,7 +89,7 @@ class M_car extends CI_Model
          END) num
    FROM khs_psup_car_vendor
 ORDER BY num";
-        $query = $this->oracle_prod->query($sql);
+        $query = $this->oracle->query($sql);
         return $query->result_array();
     }
     public function Listcarr()
@@ -109,19 +110,19 @@ ORDER BY num";
          END) num
    FROM khs_psup_car_vendor
 ORDER BY num";
-        $query = $this->oracle_prod->query($sql);
+        $query = $this->oracle->query($sql);
         return $query->result_array();
     }
     public function ListsupplierbyNoCAR($no_car)
     {
         $sql = "Select distinct supplier_name,car_num from khs_psup_car_vendor where car_num = '$no_car' ORDER BY 1";
-        $query = $this->oracle_prod->query($sql);
+        $query = $this->oracle->query($sql);
         return $query->result_array();
     }
     public function ListbyCAR($car)
     {
         $sql = "Select * from khs_psup_car_vendor where car_num = '$car' order by car_id";
-        $query = $this->oracle_prod->query($sql);
+        $query = $this->oracle->query($sql);
         return $query->result_array();
     }
     public function pembandingToInsert($supplier)
@@ -130,13 +131,13 @@ ORDER BY num";
         FROM khs_psup_car_vendor kpcv
        WHERE kpcv.supplier_name = '$supplier'
     ORDER BY kpcv.created_date desc";
-        $query = $this->oracle_prod->query($sql);
+        $query = $this->oracle->query($sql);
         return $query->result_array();
     }
     public function nocar($car)
     {
         $sql = "Select car_num from khs_psup_car_vendor where car_num = '$car'";
-        $query = $this->oracle_prod->query($sql);
+        $query = $this->oracle->query($sql);
         return $query->result_array();
     }
     public function GetApprover($term)
@@ -148,49 +149,49 @@ ORDER BY num";
     public function SendReqAppr($no_car, $approver_car)
     {
         $sql = "update khs_psup_car_vendor set approve_to = '$approver_car' , active_flag = 'E' where car_num = '$no_car'";
-        $query = $this->oracle_prod->query($sql);
+        $query = $this->oracle->query($sql);
         return $sql;
     }
     public function ListtoApprove($noind)
     {
         $sql = "Select distinct supplier_name, car_num from khs_psup_car_vendor where approve_to = '$noind' and active_flag = 'E' ORDER BY 1";
-        $query = $this->oracle_prod->query($sql);
+        $query = $this->oracle->query($sql);
         return $query->result_array();
     }
     public function UpdateApprove($no_car, $approve_date)
     {
         $sql = "update khs_psup_car_vendor set approve_date = TO_TIMESTAMP('$approve_date', 'DD-MM-YY') where car_num = '$no_car'";
-        $query = $this->oracle_prod->query($sql);
+        $query = $this->oracle->query($sql);
         return $sql;
     }
     public function UpdateFlag($flag, $no_car)
     {
         $sql = "update khs_psup_car_vendor set active_flag = '$flag' where car_num = '$no_car'";
-        $query = $this->oracle_prod->query($sql);
+        $query = $this->oracle->query($sql);
         return $sql;
     }
     public function UpdateFlagReject($flag, $alasan, $no_car)
     {
         $sql = "update khs_psup_car_vendor set active_flag = '$flag', reject_reason='$alasan' where car_num = '$no_car'";
-        $query = $this->oracle_prod->query($sql);
+        $query = $this->oracle->query($sql);
         return $sql;
     }
     public function dataToEdit($car)
     {
         $sql = "Select * from khs_psup_car_vendor where car_num = '$car'";
-        $query = $this->oracle_prod->query($sql);
+        $query = $this->oracle->query($sql);
         return $query->result_array();
     }
     public function deleteCAR($no_car)
     {
         $sql = "delete from khs_psup_car_vendor where car_num = '$no_car'";
-        $query = $this->oracle_prod->query($sql);
+        $query = $this->oracle->query($sql);
         return $sql;
     }
     public function deleteItem($id)
     {
         $sql = "delete from khs_psup_car_vendor where car_id = '$id'";
-        $query = $this->oracle_prod->query($sql);
+        $query = $this->oracle->query($sql);
         return $sql;
     }
     public function getItem($term)
@@ -201,7 +202,7 @@ ORDER BY num";
          AND msib.inventory_item_status_code = 'Active'
          AND msib.segment1 like '%$term%' or msib.description like '%$term%'
     ORDER BY 1";
-        $query = $this->oracle_prod->query($sql);
+        $query = $this->oracle->query($sql);
         return $query->result_array();
     }
     public function getDescandUom($item)
@@ -212,7 +213,7 @@ ORDER BY num";
          AND msib.inventory_item_status_code = 'Active'
          AND msib.segment1 = '$item'
     ORDER BY 1";
-        $query = $this->oracle_prod->query($sql);
+        $query = $this->oracle->query($sql);
         return $query->result_array();
     }
     public function UpdateCAR($car_po_num, $car_line, $car_item_code, $car_item_desc, $car_uom, $car_qty_po, $car_receive_date, $car_ship_date, $car_lppb, $car_act_receive_date, $car_qty_receipt, $car_notes, $car_detail_rootcause, $car_rootcause_category, $car_id)
@@ -234,25 +235,25 @@ ORDER BY num";
         rootcause_categori = '$car_rootcause_category'
         where car_id = $car_id
         ";
-        $query = $this->oracle_prod->query($sql);
+        $query = $this->oracle->query($sql);
         return $sql;
     }
     public function getPeriode($no_car)
     {
-        $sql = "Select TO_CHAR (kpcv.created_date, 'Mon YYYY') created_date from khs_psup_car_vendor kpcv where kpcv.car_num = '$no_car'";
-        $query = $this->oracle_prod->query($sql);
+        $sql = "Select TO_CHAR (kpcv.date_of_data_source, 'Mon YYYY') created_date from khs_psup_car_vendor kpcv where kpcv.car_num = '$no_car'";
+        $query = $this->oracle->query($sql);
         return $query->result_array();
     }
     public function getAttendance($po)
     {
         $sql = "SELECT DISTINCT VENDOR_CONTACT FROM KHS.KHS_CETAK_PO_LANDSCAPE WHERE SEGMENT1 = '$po'";
-        $query = $this->oracle_prod->query($sql);
+        $query = $this->oracle->query($sql);
         return $query->result_array();
     }
     public function getPO($no_car)
     {
         $sql = "SELECT DISTINCT PO_NUMBER FROM khs_psup_car_vendor WHERE CAR_NUM = '$no_car'";
-        $query = $this->oracle_prod->query($sql);
+        $query = $this->oracle->query($sql);
         return $query->result_array();
     }
     public function getNamaApprover($noind)
@@ -264,13 +265,13 @@ ORDER BY num";
     public function getEmailVendor($po)
     {
         $sql = "SELECT DISTINCT EMAIL FROM KHS.KHS_CETAK_PO_LANDSCAPE WHERE SEGMENT1 = '$po'";
-        $query = $this->oracle_prod->query($sql);
+        $query = $this->oracle->query($sql);
         return $query->result_array();
     }
     // public function HapusAll()
     // {
     //     $sql = "delete from khs_psup_car_vendor";
-    //     $query = $this->oracle_prod->query($sql);
+    //     $query = $this->oracle->query($sql);
     //     return $sql;
     // }
 }

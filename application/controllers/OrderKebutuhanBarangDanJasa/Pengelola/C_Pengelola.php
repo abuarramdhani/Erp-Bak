@@ -508,6 +508,7 @@ class C_Pengelola extends CI_Controller {
             $body .= "<table border='1' style=' border-collapse: collapse;'>
                         <thead>
                             <tr>
+                                <th>Order Id</th>
                                 <th>Kode Barang</th>
                                 <th>Deskripsi Barang</th>
                                 <th>Quantity</th>
@@ -539,6 +540,7 @@ class C_Pengelola extends CI_Controller {
                                 $emailSendDate = date("d-M-Y");
                                 $pukul = date("h:i:sa");
                                 
+                                $orderId = $pesanRequester[$i]['ORDER_ID'];
                                 $itemDanDeskripsi = $pesanRequester[$i]['SEGMENT1'].' - '.$pesanRequester[$i]['DESCRIPTION'];
                                 $kodeBarang = $itemDanDeskripsi;
                                 $deskripsi = $pesanRequester[$i]['ITEM_DESCRIPTION'];
@@ -547,6 +549,7 @@ class C_Pengelola extends CI_Controller {
                                 $alasanPengadaan = $pesanRequester[$i]['ORDER_PURPOSE'];
 
                                 $body .="<tr>
+                                            <td>$orderId</td>
                                             <td>$kodeBarang</td>
                                             <td>$deskripsi</td>
                                             <td>$qty</td>
@@ -746,6 +749,17 @@ class C_Pengelola extends CI_Controller {
 		$this->load->view('V_Sidemenu',$data);
         $this->load->view('OrderKebutuhanBarangDanJasa/Approver/V_OrderApproved',$data);
         $this->load->view('V_Footer',$data);
+    }
+
+    public function getUnapprovedOrderCount()
+    {
+        $noind = $this->session->user;
+        $total_unapproved_order = $this->M_pengelola->getUnapprovedOrderCount($noind, 'ALL');
+
+        $this->output
+            ->set_status_header(200)
+            ->set_content_type('application/json')
+            ->set_output(json_encode($total_unapproved_order));
     }
 
 }

@@ -7,6 +7,7 @@ class M_pengelola extends CI_Model
     {
         parent::__construct();
         $this->load->database();
+        $this->oracle = $this->load->database('oracle', true);
     }
 
     public function checkOrder($person_id)
@@ -269,5 +270,47 @@ class M_pengelola extends CI_Model
     {
         $oracle = $this->load->database('oracle', true);
         $query = $oracle->insert('PO_REQUISITIONS_INTERFACE_ALL',$order);
+    }
+
+    /**
+     * @param   string  ENUM $status 'SUSULAN', 'URGENT', 'NORMAL' or 'ALL'
+     * @return  int     Outstand order count
+     */
+    public function getUnapprovedOrderCount($no_induk, $status)
+    {
+        return (int) $this->oracle
+            ->query(
+                "SELECT
+                    APPS.KHS_OUTSTAND_OKBJ_PENGELOL_TOT (?, ?) AS \"count\"
+                FROM
+                    DUAL",
+                [
+                    $no_induk,
+                    $status,
+                ]
+            )
+            ->row()
+            ->count;
+    }
+
+    /**
+     * @param   string  ENUM $status 'SUSULAN', 'URGENT', 'NORMAL' or 'ALL'
+     * @return  int     Judged order count
+     */
+    public function getJudgedOrderCount($no_induk, $status)
+    {
+        return (int) $this->oracle
+            ->query(
+                "SELECT
+                    APPS.KHS_JUDGED_OKBJ_PENGELOL_TOT (?, ?) AS \"count\"
+                FROM
+                    DUAL",
+                [
+                    $no_induk,
+                    $status,
+                ]
+            )
+            ->row()
+            ->count;
     }
 }

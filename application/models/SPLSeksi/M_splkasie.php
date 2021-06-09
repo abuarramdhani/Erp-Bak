@@ -167,4 +167,8 @@ class M_splkasie extends CI_Model{
 		return $this->prs->query("SELECT nama FROM hrd_khs.tpribadi WHERE noind='$noind' limit 1")->row()->nama;
 	}
 
+	public function insertMailCronjob($data)
+	{
+		$this->spl->insert('splseksi.t_kirim_email', $data);
+	}
 }

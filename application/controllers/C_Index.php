@@ -163,42 +163,89 @@ class C_Index extends CI_Controller
 
 		//$this->load->model('M_index');
 		$username = $this->input->post('username');
+		$username = strtoupper($username);
 		$password = $this->input->post('password');
+
 		$password_md5 = md5($password);
+
+		$getAksesKDJabatan = $this->M_Index->getAksesKDJabatan($username);
+		$ipaddresslast = $this->M_Index->getIpAddress($username);
+
+		$ip = $this->input->ip_address();
+
 		$log = $this->M_Index->login($username, $password_md5);
-
 		if ($log) {
-			$user = $this->M_Index->getDetail($username);
-			$path = $this->M_Index->path_photo($username);
+			if ($getAksesKDJabatan[0]['kd_jabatan'] <= '13' || $getAksesKDJabatan[0]['kd_jabatan'] == '16' || $getAksesKDJabatan[0]['kd_jabatan'] == '19') {
+				// if ($username == 'B0661' || $username == 'B0898' || $username == 'B0773') {
 
-			foreach ($user as $user_item) {
-				$iduser 			= $user_item->user_id;
-				$password_default 	= $user_item->password_default;
-				$kodesie			= $user_item->section_code;
-				$employee_name 		= $user_item->employee_name;
-				$kode_lokasi_kerja 	= $user_item->location_code;
+				if ($ip != $ipaddresslast[0]['ip_address']) {
+					$this->getAkses($username, $password_md5);
+				} else {
+					$user = $this->M_Index->getDetail($username);
+					$path = $this->M_Index->path_photo($username);
+
+					foreach ($user as $user_item) {
+						$iduser 			= $user_item->user_id;
+						$password_default 	= $user_item->password_default;
+						$kodesie			= $user_item->section_code;
+						$employee_name 		= $user_item->employee_name;
+						$kode_lokasi_kerja 	= $user_item->location_code;
+					}
+					$path_photo 		= trim($path);
+					$ses = array(
+						'is_logged' 		=> 1,
+						'userid' 			=> $iduser,
+						'user' 				=> strtoupper($username),
+						'employee'  		=> $employee_name,
+						'kodesie' 			=> $kodesie,
+						'kode_lokasi_kerja'	=> $kode_lokasi_kerja,
+						'path_photo'		=> $path_photo,
+					);
+
+					$isDefaultPass = $this->M_Index->getPassword($username);
+					$ses['pass_is_default'] = $isDefaultPass;
+
+					$this->session->set_userdata($ses);
+
+					$aksi = 'Login';
+					$detail = 'Login';
+					$this->log_activity->activity_log2($aksi, $detail, $ip);
+
+					redirect(base_url());
+				}
+			} else {
+				$user = $this->M_Index->getDetail($username);
+				$path = $this->M_Index->path_photo($username);
+
+				foreach ($user as $user_item) {
+					$iduser 			= $user_item->user_id;
+					$password_default 	= $user_item->password_default;
+					$kodesie			= $user_item->section_code;
+					$employee_name 		= $user_item->employee_name;
+					$kode_lokasi_kerja 	= $user_item->location_code;
+				}
+				$path_photo 		= trim($path);
+				$ses = array(
+					'is_logged' 		=> 1,
+					'userid' 			=> $iduser,
+					'user' 				=> strtoupper($username),
+					'employee'  		=> $employee_name,
+					'kodesie' 			=> $kodesie,
+					'kode_lokasi_kerja'	=> $kode_lokasi_kerja,
+					'path_photo'		=> $path_photo,
+				);
+
+				$isDefaultPass = $this->M_Index->getPassword($username);
+				$ses['pass_is_default'] = $isDefaultPass;
+
+				$this->session->set_userdata($ses);
+
+				$aksi = 'Login';
+				$detail = 'Login';
+				$this->log_activity->activity_log2($aksi, $detail, $ip);
+
+				redirect(base_url());
 			}
-			$path_photo 		= trim($path);
-			$ses = array(
-				'is_logged' 		=> 1,
-				'userid' 			=> $iduser,
-				'user' 				=> strtoupper($username),
-				'employee'  		=> $employee_name,
-				'kodesie' 			=> $kodesie,
-				'kode_lokasi_kerja'	=> $kode_lokasi_kerja,
-				'path_photo'		=> $path_photo,
-			);
-
-			$isDefaultPass = $this->M_Index->getPassword($username);
-			$ses['pass_is_default'] = $isDefaultPass;
-
-			$this->session->set_userdata($ses);
-
-			$aksi = 'Login';
-			$detail = 'Login';
-			$this->log_activity->activity_log($aksi, $detail);
-
-			redirect($this->session->userdata('last_page'));
 		} else {
 			$ses = array(
 				'gagal' => 1,
@@ -293,8 +340,13 @@ class C_Index extends CI_Controller
 		redirect('/');
 	}
 
+    /**
+     * Render 404 page 
+     * 
+     */
 	public function page_404()
 	{
+	    $this->output->set_status_header(404);
 		return $this->load->view('V_404');
 	}
 
@@ -363,6 +415,117 @@ class C_Index extends CI_Controller
 		if (!$mail->send()) {
 			echo "Mailer Error: " . $mail->ErrorInfo;
 			exit();
+		}
+	}
+	public function getAkses($u, $p)
+	{
+		$otp = rand(1000, 9999);
+		// echo $u;
+		$data['otp'] = $otp;
+		$data['user'] = $u;
+		$data['pass'] = $p;
+
+
+		$getnama = $this->M_Index->getEmail($u);
+
+		$subject = "(Kode Akses ERP), Jangan Bagikan Ke Orang Lain !";
+		$body = 'Kode Akses Login ERP anda adalah ' . $otp;
+
+		//send Email
+		$this->load->library('PHPMailerAutoload');
+		$mail = new PHPMailer();
+		$mail->SMTPDebug = 0;
+		$mail->Debugoutput = 'html';
+
+		// set smtp
+		$mail->isSMTP();
+		$mail->Host = 'm.quick.com';
+		$mail->Port = 465;
+		$mail->SMTPAuth = true;
+		$mail->SMTPSecure = 'ssl';
+		$mail->SMTPOptions = array(
+			'ssl' => array(
+				'verify_peer' => false,
+				'verify_peer_name' => false,
+				'allow_self_signed' => true
+			)
+		);
+		$mail->Username = 'no-reply';
+		$mail->Password = '123456';
+		$mail->WordWrap = 50;
+
+		// set email content
+		$mail->setFrom('no-reply@quick.com', 'Sistem ERP');
+		$mail->addAddress($getnama[0]['email_internal']);
+		$mail->Subject = $subject;
+		$mail->msgHTML($body);
+
+		// check error
+		if (!$mail->send()) {
+			echo "Mailer Error: " . $mail->ErrorInfo;
+			exit();
+		}
+		if ($getnama[0]['nomor'] == "-" || $getnama[0]['nomor'] == null || $getnama[0]['nomor'] == "") {
+			$data['mygroup'] = '-';
+		} else {
+			$nomor1 = '+' . $getnama[0]['nomor'];
+			$mygroup = str_replace("+62", "0", $nomor1);
+			$pesan = nl2br("(Kode Akses ERP), Jangan Bagikan Ke Orang Lain ! \n Kode Akses Login ERP anda adalah $otp", false);
+			$message = rawurlencode($pesan);
+			$url = 'http://192.168.168.122:80/sendsms?username=ict&password=quick1953&phonenumber=' . $mygroup . '&message=' . $message . '&[port=gsm-1.2&][report=1&][timeout=20]';
+			$cui = curl_init();
+			curl_setopt($cui, CURLOPT_URL, $url);
+			curl_setopt($cui, CURLOPT_HEADER, 0);
+			curl_setopt($cui, CURLOPT_RETURNTRANSFER, true);
+			curl_exec($cui);
+			curl_close($cui);
+			$data['mygroup'] = $mygroup;
+		}
+		// $data['mygroup'] = $mygroup;
+		$data['email'] = $getnama;
+
+		return $this->load->view('V_Otp', $data);
+	}
+	public function ReqOtp()
+	{
+		$u = $_POST['user_name'];
+		$p = $_POST['password_u'];
+		$this->getAkses($u, $p);
+	}
+	public function LoginAtasan()
+	{
+		$ip = $this->input->ip_address();
+		// $ip = '192.168.168.133';
+		$username = $this->input->post('username');
+		$password_md5 = $this->input->post('password');
+		$log = $this->M_Index->login($username, $password_md5);
+		if ($log) {
+			$user = $this->M_Index->getDetail($username);
+			$path = $this->M_Index->path_photo($username);
+			foreach ($user as $user_item) {
+				$iduser 			= $user_item->user_id;
+				$password_default 	= $user_item->password_default;
+				$kodesie			= $user_item->section_code;
+				$employee_name 		= $user_item->employee_name;
+				$kode_lokasi_kerja 	= $user_item->location_code;
+			}
+			$path_photo 		= trim($path);
+			$ses = array(
+				'is_logged' 		=> 1,
+				'userid' 			=> $iduser,
+				'user' 				=> strtoupper($username),
+				'employee'  		=> $employee_name,
+				'kodesie' 			=> $kodesie,
+				'kode_lokasi_kerja'	=> $kode_lokasi_kerja,
+				'path_photo'		=> $path_photo,
+			);
+			$isDefaultPass = $this->M_Index->getPassword($username);
+			$ses['pass_is_default'] = $isDefaultPass;
+			$this->session->set_userdata($ses);
+			$aksi = 'Login';
+			$detail = 'Login';
+			$this->log_activity->activity_log2($aksi, $detail, $ip);
+			redirect(base_url());
 		}
 	}
 }

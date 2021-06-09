@@ -75,6 +75,8 @@ class C_Input extends CI_Controller
         require_once APPPATH . 'third_party/Excel/PHPExcel.php';
         require_once APPPATH . 'third_party/Excel/PHPExcel/IOFactory.php';
 
+        $datesource = $_POST['date_of_data_source'];
+
         // load excel
         $file = $_FILES['excel_file']['tmp_name'];
         $load = PHPExcel_IOFactory::load($file);
@@ -121,6 +123,7 @@ class C_Input extends CI_Controller
             $array_import[$u]['rootcause_category'] = $rootcause_category[$u];
             $array_import[$u]['car_type'] = $car_type[$u];
             $array_import[$u]['nc_scope'] = $nc_scope[$u];
+            $array_import[$u]['date_source'] = $datesource;
         }
 
         // echo "<pre>";
@@ -154,9 +157,10 @@ class C_Input extends CI_Controller
         $rootcause_category = $this->input->post('car_rootcause_category[]');
         $car_type = $this->input->post('car_car_type[]');
         $nc_scope = $this->input->post('car_nc_scope[]');
+        $date_source = $this->input->post('date_source[]');
+
         $created_date = date('Y-m-d H:i:s');
         $created_by = $this->session->user;
-
         $date_to_input = strtoupper(date('d-M-Y H:i:s'));
 
         // echo "<pre>";
@@ -164,7 +168,12 @@ class C_Input extends CI_Controller
         // exit();
 
         for ($u = 0; $u < sizeof($supplier); $u++) {
-
+            if ($qty_po[$u] == null || $qty_po[$u] == "") {
+                $qty_po[$u] = 0;
+            }
+            if ($qty_receipt[$u] == null || $qty_receipt[$u] == "") {
+                $qty_receipt[$u] = 0;
+            }
             $data_supplier = $this->M_car->pembandingToInsert($supplier[$u]);
             if (!empty($data_supplier)) {
                 if ($date_to_input == $data_supplier[0]['CREATED_DATE']) {
@@ -176,7 +185,7 @@ class C_Input extends CI_Controller
                 $no_car = $this->no_car_generator();
             }
             $id = $this->M_car->getIdOr();
-            $this->M_car->InsertDataCAR($id, $supplier[$u], $po[$u], $line[$u], $item_code[$u], $item_desc[$u], $uom[$u], $qty_po[$u], $received_date_po[$u], $shipment_date[$u], $lppb[$u], $act_receipt_date[$u], $qty_receipt[$u], $notes[$u], $detail_rootcause[$u], $rootcause_category[$u], $car_type[$u], $nc_scope[$u], $created_by, $created_date, $no_car);
+            $this->M_car->InsertDataCAR($id, $supplier[$u], $po[$u], $line[$u], $item_code[$u], $item_desc[$u], $uom[$u], $qty_po[$u], $received_date_po[$u], $shipment_date[$u], $lppb[$u], $act_receipt_date[$u], $qty_receipt[$u], $notes[$u], $detail_rootcause[$u], $rootcause_category[$u], $car_type[$u], $nc_scope[$u], $created_by, $created_date, $no_car, $date_source[$u]);
         }
 
 

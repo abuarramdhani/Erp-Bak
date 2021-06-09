@@ -69,16 +69,33 @@ class C_SudahFabrikasi extends CI_Controller
 	}
 	
 	public function sortbyTanggalPelayanan($getdata){
-		$pelayanan = $this->M_pickfabrikasi->cariReqPelayanan();
-		$datanya = $nojob = $datanya2 = array();
-		foreach ($pelayanan as $key => $value) {
-			foreach ($getdata as $key2 => $get) {
-				if ($get['JOB_NO'] == $value['JOB_NUMBER']) {
-					$getdata[$key2]['TGL_PELAYANAN'] = $value['TANGGAL_PELAYANAN'];
-					$shift = $this->M_pickfabrikasi->getShift2($value['SHIFT']);
-					$getdata[$key2]['SHIFT'] = $shift[0]['DESCRIPTION'];
-					array_push($datanya, $getdata[$key2]);
-					array_push($nojob, $get['JOB_NO']);
+		// $pelayanan = $this->M_pickfabrikasi->cariReqPelayanan();
+		// $datanya = $nojob = $datanya2 = array();
+		// foreach ($pelayanan as $key => $value) {
+		// 	foreach ($getdata as $key2 => $get) {
+		// 		if ($get['JOB_NO'] == $value['JOB_NUMBER']) {
+		// 			$getdata[$key2]['TGL_PELAYANAN'] = $value['TANGGAL_PELAYANAN'];
+		// 			$shift = $this->M_pickfabrikasi->getShift2($value['SHIFT']);
+		// 			$getdata[$key2]['SHIFT'] = $shift[0]['DESCRIPTION'];
+		// 			array_push($datanya, $getdata[$key2]);
+		// 			array_push($nojob, $get['JOB_NO']);
+		// 		}
+		// 	}
+		// }
+		
+		$datanya = $nojob = $datanya2 = $picklist = array();
+		foreach ($getdata as $key2 => $get) {
+			$cari_plyn = $this->M_pickfabrikasi->cariReqPelayanan2($get['JOB_NO']);
+			if (!empty($cari_plyn)) {
+				foreach ($cari_plyn as $key3 => $value) {
+					if ($value['JOB_NUMBER'] == $get['PICKLIST'] || ($value['JOB_NUMBER'] == $get['JOB_NO'] && !in_array($get['PICKLIST'], $picklist))) {
+						$getdata[$key2]['TGL_PELAYANAN'] = $value['TANGGAL_PELAYANAN'];
+						$shift = $this->M_pickfabrikasi->getShift2($value['SHIFT']);
+						$getdata[$key2]['SHIFT'] = $shift[0]['DESCRIPTION'];
+						array_push($datanya, $getdata[$key2]);
+						array_push($nojob, $get['JOB_NO']);
+						array_push($picklist, $get['PICKLIST']);
+					}
 				}
 			}
 		}
@@ -104,7 +121,12 @@ class C_SudahFabrikasi extends CI_Controller
 		// echo "<pre>";print_r($cek);exit();
 		if (empty($cek)) {
 			$this->M_pickfabrikasi->recallData($picklist, $nojob);
-			$this->M_pickfabrikasi->recallpermintaan($nojob);
+			$cek2 = $this->M_pickfabrikasi->cariReqPelayanan2($picklist);
+			if (!empty($cek2)) {
+				$this->M_pickfabrikasi->recallpermintaan($picklist);
+			}else {
+				$this->M_pickfabrikasi->recallpermintaan($nojob);
+			}
 		}
 	}
 

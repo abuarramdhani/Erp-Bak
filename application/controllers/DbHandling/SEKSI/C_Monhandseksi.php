@@ -85,6 +85,21 @@ class C_Monhandseksi extends CI_Controller
         $data['handling'] = $handling;
         $this->load->view('DbHandling/SEKSI/V_TblReqRev', $data);
     }
+    public function loadviewrejhand()
+    {
+        $handling = $this->M_dbhandling->getrejdatahandbystat();
+        for ($i = 0; $i < sizeof($handling); $i++) {
+            $sarana_handling = $this->M_dbhandling->selectdatatoedit($handling[$i]['id_master_handling']);
+
+            if ($sarana_handling == null) {
+                $handling[$i]['sarana'] = 'Invalid';
+            } else {
+                $handling[$i]['sarana'] = $sarana_handling[0]['nama_handling'];
+            }
+        }
+        $data['handling'] = $handling;
+        $this->load->view('DbHandling/SEKSI/V_TblReject', $data);
+    }
     public function loadviewdatahand()
     {
         $datahandling = $this->M_dbhandling->selectdatahandling();
@@ -96,6 +111,9 @@ class C_Monhandseksi extends CI_Controller
             } else {
                 $datahandling[$i]['sarana'] = $sarana_handling[0]['nama_handling'];
             }
+            $pic = $this->M_dbhandling->getnamaseksi($datahandling[$i]['last_update_by']);
+            $datahandling[$i]['nama_pic'] = !empty($datahandling[$i]['last_update_by']) ? $pic[0]['nama'] : '';
+            $datahandling[$i]['seksi_pic'] = !empty($datahandling[$i]['last_update_by']) ? $pic[0]['seksi'] : '';
         }
 
         $data['datahandling'] = $datahandling;
@@ -576,12 +594,20 @@ class C_Monhandseksi extends CI_Controller
             <input type="hidden" value="' . $dataHandrev[0]['proses'] .  '" id="pronih"/>
             <div class="col-md-3" style="text-align:right;"><label>Proses</label></div>
             <div class="col-md-8">
-                <select class="form-control select2 Pros_Es" name="Pros_Es" onchange="prosesonchange()" style="width:100%">
-                    <option value="' . $dataHandrev[0]['proses'] . '">' . $dataHandrev[0]['proses'] .  '</option>
-                    ' . $pi . '
-                </select>
+                <input  class="form-control" name="Pros_Es" style="width:100%" value="' . $dataHandrev[0]['proses'] . '" readonly>
             </div>
         </div>';
+        // $selectProses = '
+        // <div class="panel-body">
+        //     <input type="hidden" value="' . $dataHandrev[0]['proses'] .  '" id="pronih"/>
+        //     <div class="col-md-3" style="text-align:right;"><label>Proses</label></div>
+        //     <div class="col-md-8">
+        //         <select class="form-control select2 Pros_Es" name="Pros_Es" onchange="prosesonchange()" style="width:100%">
+        //             <option value="' . $dataHandrev[0]['proses'] . '">' . $dataHandrev[0]['proses'] .  '</option>
+        //             ' . $pi . '
+        //         </select>
+        //     </div>
+        // </div>';
 
         $alur_proses = '';
         $btntambah = '';

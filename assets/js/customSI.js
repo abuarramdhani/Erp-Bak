@@ -78,12 +78,12 @@ $(function() {
         $('.komponenKaizenSI').val(null).trigger('change')
     })
 
-    $('input#checkNextApprover').on('ifChecked', function() {
+    $(document).on('ifChecked','#checkNextApprover', function(event) {
         $('input#checkNextApprover').attr("checked", "checked")
         $('select#slcApprover').removeAttr("disabled")
     })
 
-    $('input#checkNextApprover').on('ifUnchecked', function() {
+    $(document).on('ifUnchecked','#checkNextApprover', function(event) {
         $('input#checkNextApprover').removeAttr("checked")
         $('select#slcApprover').attr("disabled", "disabled")
         $('select#slcApprover').val(null).trigger('change')
@@ -371,6 +371,24 @@ $(function() {
     })
 
     if (typeof(realisasiSIpage) != "undefined" && realisasiSIpage !== null) $('.select2').prepend('<div class="disabled-select"></div>')
+
+
+    $('#SI_btncanclecrtkaizen').click(function(){
+         Swal.fire({
+                title: 'Peringatan !!!',
+                text: "Apa anda yakin Ingin membatalkan Pembuatan Kaizen ?",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya',
+                cancelButtonText: 'Tidak'
+            }).then((result) => {
+                if (result.value) {
+                    window.location.href = baseurl+"SystemIntegration/KaizenGenerator/MyKaizen/index";
+                }
+            });
+    });
 })
 
 function openTabSI(th, tab) {

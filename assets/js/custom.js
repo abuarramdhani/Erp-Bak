@@ -1054,3 +1054,11 @@ $(document).ready(function(){
 		})
 	});
 });
+$(document).ready(function(){
+	$('#tbl-Sys-Responsibility-index').dataTable({
+		dom: 'Bfrtip',
+      	buttons: [
+        	'excel'
+      	]
+	})
+})

@@ -1,4 +1,1125 @@
+const toastup2lLoading = (pesan) => {
+  Swal.fire({
+    toast: true,
+    position: 'top-end',
+    onBeforeOpen: () => {
+       Swal.showLoading();
+       $('.swal2-loading').children('button').css({'width': '20px', 'height': '20px'})
+     },
+    text: pesan
+  })
+}
+
+const toastup2l = (type, message) => {
+  Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000
+  }).fire({
+    customClass: 'swal-font-small',
+    type: type,
+    title: message
+  })
+}
+
+function swalup2l(type, pesan) {
+  Swal.fire({
+    type: type,
+    html:  `<div style="font-weight:400">${pesan}</div>`,
+    text: '',
+    showConfirmButton: false,
+    showCloseButton: true,
+  })
+}
+
+$(function() {
+  if ($('.select2subinv_up2l').val() != undefined) {
+    $('.select2subinv_up2l').select2();
+    // setTimeout(function () {
+    //   $.ajax({
+    //     url: baseurl + 'ManufacturingOperationUP2L/Selep/SubInv',
+    //     type: 'POST',
+    //     dataType: 'JSON',
+    //     data: {
+    //       io : 101 //OPM
+    //     },
+    //     cache: false,
+    //     beforeSend: function() {
+    //       toastup2lLoading('Sedang Mengambil SubInv..');
+    //     },
+    //     success: function(result) {
+    //       if (result != 0) {
+    //         toastup2l('success', 'Selesai..');
+    //         $('.select2subinv_up2l').html(result);
+    //         $('.select2subinv_up2l').val('').trigger('change');
+    //       }else {
+    //         $('.select2subinv_up2l').html('');
+    //       }
+    //     },
+    //     error: function(XMLHttpRequest, textStatus, errorThrown) {
+    //       swalup2l('error', 'Koneksi Terputus...')
+    //      console.error();
+    //     }
+    //   })
+    // }, 2000);
+  }
+  $('.up2l_date_selep_88').daterangepicker({
+    singleDatePicker: true,
+    timePicker: true,
+    autoclose: true,
+    autoUpdateInput: false,
+    locale: {
+      format: "YYYY/MM/DD HH:mm:ss",
+      cancelLabel: 'Clear'
+    },
+  });
+  $('.up2l_date_selep_88').on('apply.daterangepicker', function(ev, picker) {
+      $(this).val(picker.startDate.format('YYYY/MM/DD HH:mm:ss'));
+      $(this).trigger('change');
+  });
+  $('.up2l_date_selep_88').on('cancel.daterangepicker', function(ev, picker) {
+      $(this).val('');
+  });
+  $('.up2l_date_selep_88').on('change', function () {
+      let val = $(this).val().split(' ');
+      $('.slcShift').val('').trigger('change');
+      //SHIFT
+      $.ajax({
+          type: "POST",
+          url: baseurl + 'ManufacturingOperationUP2L/Ajax/getShift',
+          data: {
+              tanggal: val[0]
+          },
+          dataType: "JSON",
+          beforeSend: function () {
+            toastup2lLoading('Sedang Memuat Data Shift..');
+          },
+          success: function (response) {
+              //console.log(response);
+              swal.close();
+              var html = '';
+              html += '<option></option>';
+              for (var i = 0; i < response.length; i++) {
+                  if (i == 0) {
+                      html += '<option value="' + response[i]['DESCRIPTION'] + '">' + response[i]['DESCRIPTION'] + '</option>';
+                  } else {
+                      html += '<option value="' + response[i]['DESCRIPTION'] + '">' + response[i]['DESCRIPTION'] + '</option>';
+                  }
+              }
+              $('.slcShift').html(html);
+          }
+      });
+  });
+})
+
+function up2l_selep_reload_saya() {
+  location.reload();
+}
+
+function set_tosubinv_up2l(item_id, batch_no) {
+  $.ajax({
+    url: baseurl + 'ManufacturingOperationUP2L/Selep/update_subinv_complation',
+    type: 'POST',
+    dataType: 'JSON',
+    data: {
+      item_id : item_id,
+      batch_no : batch_no,
+      subinv : $('.select2subinv_up2l_complation').val()
+    },
+    cache:false,
+    beforeSend: function() {
+      Swal.fire({
+        onBeforeOpen: () => {
+           Swal.showLoading();
+           $('.swal2-loading').children('button').css({'width': '40px', 'height': '40px'})
+         },
+        text: 'Mengupdate SUBINVENTORY..',
+        allowOutsideClick: false,
+      })
+    },
+    success: function(result_2) {
+      if (result_2 == 100) {
+        swalup2l('success', 'Sukses Melakukan Update SUBINVENTORY');
+        up2l_refresh_complation();
+      }else {
+        swalup2l('warning', 'Terjadi Kesalahan Saat Melakukan Update SUBINVENTORY');
+      }
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+    swalup2l('error', 'Koneksi Terputus...')
+     console.error();
+    }
+  })
+}
+
+$('#form_input_selep_master').on('submit', function(e) {
+  e.preventDefault();
+  $('#modalUP2LCreateKIB').modal('show');
+
+  // dari trigger onclick sebelumnya
+  $.ajax({
+    url: baseurl + 'ManufacturingOperationUP2L/Selep/get_io_subinv_locator_tujuan',
+    type: 'POST',
+    dataType: 'JSON',
+    data: {
+      batch_no: $('#txtSelepBatchCetakKIB').val()
+    },
+    cache:false,
+    beforeSend: function() {
+      Swal.fire({
+        onBeforeOpen: () => {
+           Swal.showLoading();
+           $('.swal2-loading').children('button').css({'width': '40px', 'height': '40px'})
+         },
+        text: 'Sedang Mengambil IO Tujuan, Sub Inv. Tujuan, Locator Tujuan.',
+        allowOutsideClick: false,
+      })
+    },
+    success: function(result) {
+      toastup2l('success', 'Done.')
+      console.log(result, 'get_io_subinv_locator_tujuan');
+      $('.up2l_io_99').val(`${result.ORG_CODE} - ${result.ORG_ID}`);
+      $('.up2l_subinv_99').val(result.SUBINVENTORY);
+      $('.slc_up2l_locator').val(`${result.LOCATOR_CODE == null ? '' : result.LOCATOR_CODE} - ${result.LOCATOR_ID == null ? '' : result.LOCATOR_ID}`);
+
+      //cek handling
+      $.ajax({
+        url: baseurl + 'ManufacturingOperationUP2L/Selep/get_qty_handling',
+        type: 'POST',
+        dataType: 'JSON',
+        data: {
+          component_code: $('#txtComponentCodeHeader').val(),
+          org_code: result.ORG_CODE
+        },
+        cache:false,
+        beforeSend: function() {
+          Swal.fire({
+            onBeforeOpen: () => {
+               Swal.showLoading();
+               $('.swal2-loading').children('button').css({'width': '40px', 'height': '40px'})
+             },
+            text: 'Sedang Mengecek Quantity Handling..',
+            allowOutsideClick: false,
+          })
+        },
+        success: function(result_2) {
+          toastup2l('success', 'Done.');
+          if (result_2 != 'gada') {
+            $('#txtSelepQtyHandlingCetakKIB').val(result_2).attr('readonly', true);
+          }else {
+            $('#txtSelepQtyHandlingCetakKIB').val('').attr('readonly', false);
+          }
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+        swalup2l('error', 'Koneksi Terputus...')
+         console.error();
+        }
+      })
+
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+    swalup2l('error', 'Koneksi Terputus...')
+     console.error();
+    }
+  })
+})
+
+//ADB1BA0011E1MD
+function settingUserSubinv() {
+  $.ajax({
+    url: baseurl + 'ManufacturingOperationUP2L/Selep/user_subinv',
+    type: 'POST',
+    // dataType: 'JSON',
+    data: {
+    },
+    cache:false,
+    beforeSend: function() {
+      Swal.fire({
+        onBeforeOpen: () => {
+           Swal.showLoading();
+           $('.swal2-loading').children('button').css({'width': '40px', 'height': '40px'})
+         },
+        text: 'Sedang Mengambil Data..',
+        allowOutsideClick: false,
+      })
+    },
+    success: function(result_2) {
+      toastup2l('success', 'Done.');
+      $('.area-setting-user-subinv').html(result_2);
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+    swalup2l('error', 'Koneksi Terputus...')
+     console.error();
+    }
+  })
+}
+
+function up2l_refresh_complation() {
+  $('#modalUP2LCompleteJob').modal('hide')
+  setTimeout(function () {
+    $('.btn-complate-job').trigger('click')
+  }, 750);
+}
+
+$('.form_generate_kib_up2l').on('submit', function(e) {
+   e.preventDefault();
+   let form_data_utama = new FormData($('#form_input_selep_master').get(0));
+   Swal.fire({
+     onBeforeOpen: () => {
+        Swal.showLoading();
+        $('.swal2-loading').children('button').css({'width': '40px', 'height': '40px'})
+      },
+     text: 'Sedang menyimpan data Selep, KIB & Close Batch..',
+     allowOutsideClick: false,
+   })
+   $.ajax({
+     url: baseurl + 'ManufacturingOperationUP2L/Selep/create',
+     type: 'POST',
+     data : form_data_utama,
+     contentType: false,
+     cache: false,
+     // async:false,
+     processData: false,
+     dataType: "JSON",
+     beforeSend: function() {
+       // $('#modalUP2LCompleteJob').modal('hide');
+     },
+     success: function(result) {
+       if (result == 'done') {
+         // swalup2l('success', `Data Selep Berhasil Tersimpan`);
+         let form_data  = new FormData($('.form_generate_kib_up2l').get(0));
+         $.ajax({
+           url: baseurl + 'ManufacturingOperationUP2L/Selep/generate_kib',
+           type: 'POST',
+           data : form_data,
+           contentType: false,
+           cache: false,
+           // async:false,
+           processData: false,
+           dataType: "JSON",
+           beforeSend: function() {
+
+           },
+           success: function(result_2) {
+             if (result_2 != 500) {
+               swalup2l('success', `KIB berhasil tersimpan, klik link berikut untuk mencetak KIB ${result_2}`);
+                 $('.btn-up2l-cetakkib').attr('disabled', true);
+                 setTimeout(function () {
+                   // swal.close();
+                   // location.reload();
+                   $('#modalUP2LCreateKIB').modal('hide');
+                 }, 1000);
+             }
+           },
+           error: function(XMLHttpRequest, textStatus, errorThrown) {
+           swalup2l('error', XMLHttpRequest);
+            console.error();
+           }
+         })
+
+       }else {
+         swalup2l('warning', 'Terjadi Kesalahan Saat Menginput Data Selep! Harap Coba lagi');
+       }
+     },
+     error: function(XMLHttpRequest, textStatus, errorThrown) {
+     swalup2l('error', XMLHttpRequest);
+      console.error();
+     }
+   })
+
+
+})
+
+// function submit_up2l_selep_master() {
+//   // $('.btn-up2l-save-selep').attr('disabled', false);
+//   $('.btn-up2l-cetakkib').attr('disabled', true);
+//   setTimeout(function () {
+//     $('#modalUP2LCreateKIB').modal('hide');
+//   }, 1500);
+// }
+
+$('.btn-up2l-cetakkib').on('click', function() {
+
+})
+
+// revisi
+// $('.up2l_subinv_99').on('change', function() {
+//   if ($(this).val() != '') {
+//
+//   let val_ = $(this).val().split(' - ');
+//   let val = val_[0];
+//     // numpang barang bekas
+//     $.ajax({
+//       url: baseurl + 'BarangBekas/pbbs/locator',
+//       type: 'POST',
+//       dataType: 'JSON',
+//       data: {
+//         subinv: val,
+//         org_id: val_[1]
+//       },
+//       cache:false,
+//       beforeSend: function() {
+//         $('.up2l_locator').html('<b>Sedang Mengambil Locator...</b>');
+//       },
+//       success: function(result) {
+//         if (result != 0) {
+//           $('.up2l_locator').html(`<select class="slc_up2l_locator pbbs_loc" name="locator" style="width:100%" required >
+//                                   <option selected value="">Select..</option>
+//                                   ${result}
+//                                   </select>`);
+//           $('.slc_up2l_locator').select2();
+//         }else {
+//           $('.up2l_locator').html('<input type="text" readonly class="form-control slc_up2l_locator" name="locator" value="">')
+//         }
+//         // getOnhand();
+//       },
+//       error: function(XMLHttpRequest, textStatus, errorThrown) {
+//       swalup2l('error', 'Koneksi Terputus...')
+//        console.error();
+//       }
+//     })
+//   }
+//
+// })
+//
+// $('.up2l_io_99').on('change', function() {
+//   let val = $(this).val();
+//   $.ajax({
+//     url: baseurl + 'BarangBekas/pbbs/SubInv',
+//     type: 'POST',
+//     dataType: 'JSON',
+//     data: {
+//       io : val
+//     },
+//     cache: false,
+//     beforeSend: function() {
+//       Swal.fire({
+//         onBeforeOpen: () => {
+//            Swal.showLoading();
+//            $('.swal2-loading').children('button').css({'width': '40px', 'height': '40px'})
+//          },
+//         text: 'Sedang Mengambil SubInv..'
+//       })
+//     },
+//     success: function(result) {
+//       if (result != 0) {
+//         toastup2l('success', 'Selesai..');
+//         $('.up2l_subinv_99').html(result);
+//       }else {
+//         swalup2l('warning', 'IO belum Open Period');
+//         $('.up2l_subinv_99').html('');
+//       }
+//       $('.up2l_locator').html('<input type="text" readonly class="form-control slc_up2l_locator" name="locator" value="">');
+//       $('.up2l_subinv_99').val('').trigger('change');
+//     },
+//     error: function(XMLHttpRequest, textStatus, errorThrown) {
+//     swalPBB('error', 'Koneksi Terputus...')
+//      console.error();
+//     }
+//   })
+// })
+
+$('.btn-complate-job').on('click', function() {
+  let qty = $('#txtSelepQuantityConfrm').val();
+  let batch_no = $('#txtSelepBatchConfrm').val();
+  $.ajax({
+    url: baseurl + 'ManufacturingOperationUP2L/Selep/check_detail_onhand',
+    type: 'POST',
+    dataType: 'JSON',
+    data: {
+      batch_no: batch_no
+    },
+    cache:false,
+    beforeSend: function() {
+      Swal.fire({
+        onBeforeOpen: () => {
+           Swal.showLoading();
+           $('.swal2-loading').children('button').css({'width': '40px', 'height': '40px'})
+         },
+        text: 'Checking Onhand..',
+        allowOutsideClick: false,
+      })
+    $('.alert-area-up2l-onhand-kurang').html('');
+    $('#area-check-onhand-up2l').html('');
+    },
+    success: function(result) {
+      toastup2l('success', 'Done.')
+      console.log(result, 'Onhand');
+      $('#area-check-onhand-up2l').html(result.data);
+      $('.select2subinv_up2l_complation').select2();
+
+      if (result.merah == 500) {
+        $('.alert-area-up2l-onhand-kurang').html(`<div class="alert bg-danger alert-dismissible" role="alert">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">
+                  <i class="fa fa-close"></i>
+                </span>
+              </button>
+              <strong>Tidak dapat melakukan complation job.</strong> Onhand tidak mencukupi / Sub. Inventory Ingredient belum disetting.</strong>
+            </div>`)
+        $('.btn-complation-up2l-2021').attr('disabled', true);
+      }else {
+        $('.alert-area-up2l-onhand-kurang').html('');
+        $('.btn-complation-up2l-2021').attr('disabled', false);
+      }
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+    swalup2l('error', 'Koneksi Terputus...')
+     console.error();
+    }
+  })
+})
+
+function completejobUP2L2021() {
+  let qty = $('#txtSelepQuantityConfrm').val();
+  let batch_no = $('#txtSelepBatchConfrm').val();
+  console.log(qty, batch_no, 'ini di complate job');
+  $.ajax({
+    url: baseurl + 'ManufacturingOperationUP2L/Selep/batch_completion',
+    type: 'POST',
+    dataType: 'JSON',
+    data: {
+      batch_no: batch_no,
+      qty: qty
+    },
+    cache:false,
+    beforeSend: function() {
+      // $('#modalUP2LCompleteJob').modal('hide');
+      Swal.fire({
+        onBeforeOpen: () => {
+           Swal.showLoading();
+           $('.swal2-loading').children('button').css({'width': '40px', 'height': '40px'})
+         },
+        text: 'Completion job..',
+        allowOutsideClick: false,
+      })
+    },
+    success: function(result_2) {
+      if (result_2 != 'gada') {
+        swalup2l('success', 'Completion Job <b>Berhasil</b>');
+        $('#modalUP2LCompleteJob').modal('hide');
+        $('.btn-complate-job').attr('disabled', true);
+        $('.btn-up2l-cetakkib').attr('disabled', false);
+      }
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+    swalup2l('error', 'textStatus');
+     console.error();
+    }
+  })
+}
+
+function create_batch_up2l(item, recipe_no, recipe_version, uom, job_date) {
+  console.log(item, recipe_no, recipe_version, uom, job_date);
+  console.log($(`#cek_sub_inv_tujuan_${recipe_no}`).text(),' disiniiii sub inv tujuan');
+  if ($(`#cek_locator_code_${recipe_no}`).text() != '-' && $(`#cek_jml_locator_${recipe_no}`).text() == 0) {
+      swalup2l('warning', `<b>Jumlah Locator di <span style="color:#002b65">${$(`#cek_locator_code_${recipe_no}`).text()}</span> tidak boleh 0</b>`);
+  }else {
+    if ($(`#cek_sub_inv_tujuan_${recipe_no}`).text() != '-') {
+      let subinv = $('.select2subinv_up2l').val();
+      let selepQtyHeader = $('#txtSelepQuantityHeader').val();
+      console.log(subinv, 'ini sub inv 1');
+      if (subinv == '' || subinv == null) {
+        swalup2l('warning', 'Karena anda belum terdaftar di User Sub. Inventory, <br><b>Pilih Sub.Inv. terlebih dahulu!</b>');
+      }else {
+        $.ajax({
+          url: baseurl + 'ManufacturingOperationUP2L/Selep/create_batch',
+          type: 'POST',
+          dataType: 'JSON',
+          data: {
+            item : item,
+            recipe_no: recipe_no,
+            recipe_version: recipe_version,
+            uom: uom,
+            subinv: subinv,
+            qty: selepQtyHeader,
+            job_date: job_date
+          },
+          cache:false,
+          beforeSend: function() {
+            Swal.fire({
+              onBeforeOpen: () => {
+                 Swal.showLoading();
+                 $('.swal2-loading').children('button').css({'width': '40px', 'height': '40px'})
+               },
+              text: 'Creating Batch..',
+              allowOutsideClick: false,
+            })
+            $('#modalMOreceip').modal('hide');
+            $('#txtSelepComponentConfrm').val('');
+            $('#txtSelepBatchConfrm').val('');
+            $('#txtSelepQuantityConfrm').val('');
+
+            $('#txtSelepBatchCetakKIB').val('');
+            $('#txtSelepQtyCetakKIB').val('');
+            $('#txtSelepSubInvFromCetakKIB').val('');
+          },
+          success: function(result) {
+            console.log(result, 'status batch information');
+            if (result.no_batch != 'gada') {
+              toastup2l('success', 'No. Batch berhasil dibuat');
+              $('#txtSelepBatchHeader').val(result.no_batch);
+
+              $('.btn-complate-job').attr('disabled', false);
+              $('.btn-up2l-back-selep').attr('disabled', true);
+              $('#txtSelepQuantityHeader').attr('readonly', true);
+
+              $('#txtComponentCodeHeader').select2('destroy').attr('readonly', true).attr('style', 'pointer-events:none;');
+
+              $('#txtSelepComponentConfrm').val(item);
+              $('#txtSelepBatchConfrm').val(result.no_batch);
+              $('#txtSelepQuantityConfrm').val(selepQtyHeader);
+
+              $('#txtSelepBatchCetakKIB').val(result.no_batch);
+              $('#txtSelepQtyCetakKIB').val(selepQtyHeader);
+              $('#txtSelepSubInvFromCetakKIB').val(subinv);
+
+            }else {
+              swalup2l('warning', `Failed to create batch <br> <b> [ ${result.reason} ] </b>`);
+            }
+          },
+          error: function(XMLHttpRequest, textStatus, errorThrown) {
+          swalup2l('error', 'textStatus');
+           console.error();
+          }
+        })
+      }
+    }else {
+      swalup2l('warning', `Gudang tujuan pada no recipe ${recipe_no} tidak boleh kosong.`);
+    }
+  }
+
+}
+
+$('#txtComponentCodeHeader').on('change', function() {
+  $('.btn-complate-job').attr('disabled', true);
+  $('#txtSelepQuantityHeader').attr('readonly', false);
+  $('#txtSelepBatchHeader').val('');
+  $('#txtSelepBatchCetakKIB').val('');
+  $('#txtSelepQtyCetakKIB').val('');
+  $('#txtSelepSubInvFromCetakKIB').val('');
+  $('.btn-up2l-cetakkib').attr('disabled', true);
+  // $('.btn-up2l-save-selep').attr('disabled', true);
+})
+
+function createBatchMO() { //recipe
+  let batch_number_cek = $('#txtSelepBatchHeader').val();
+  let component_code = $('#txtComponentCodeHeader').val();
+  let selepQtyHeader = $('#txtSelepQuantityHeader').val();
+  let job_date = $('#txtSelepDate').val();
+  if (component_code == null || selepQtyHeader == '' || job_date == '') {
+    swalup2l('info', '<b>Selep Date</b>, <b>Component Code</b>, dan <b>Selep QTY Header</b> <br> Tidak boleh kosong!')
+  }else {
+    component_code = component_code.split(' | ')[0];
+    let result_cek_987 = 0;
+    if (batch_number_cek == '') {
+      let tampung = [];
+      $.ajax({
+        url: baseurl + 'ManufacturingOperationUP2L/Selep/get_recipe',
+        type: 'POST',
+        dataType: 'JSON',
+        data: {
+          component_code : component_code,
+        },
+        cache:false,
+        beforeSend: function() {
+          Swal.fire({
+            onBeforeOpen: () => {
+               Swal.showLoading();
+               $('.swal2-loading').children('button').css({'width': '40px', 'height': '40px'})
+             },
+            text: 'Check Recipe..',
+            allowOutsideClick: false,
+          })
+        },
+        success: function(result) {
+          if (result != 'gada') {
+            console.log(result_cek_987, 'ini lhoo');
+            $('#mo_comp_code').text(`Create Batch (${component_code})`);
+            $('#txtSelepQuantityHeaderModal').val(selepQtyHeader);
+            // $('.select2subinv_up2l').val('').trigger('change');
+
+            console.log(result);
+            result.forEach((v,i)=>{
+              console.log('hai'+i);
+              let body = `<tr>
+                            <td>${v.ITEM}</td>
+                            <td>${v.ITEM_ID}</td>
+                            <td>${v.RECIPE_ID}</td>
+                            <td>${v.RECIPE_NO}</td>
+                            <td>${v.RECIPE_VERSION}</td>
+                            <td id="cek_sub_inv_tujuan_${v.RECIPE_NO}">${v.SUBINVENTORY == null ? '-' : v.SUBINVENTORY}</td>
+                            <td>${v.UOM}</td>
+                            <td id="cek_locator_code_${v.RECIPE_NO}">${v.LOCATOR_CODE == null ? '-' : v.LOCATOR_CODE}</td>
+                            <td id="cek_jml_locator_${v.RECIPE_NO}">${v.JML_LOCATOR}</td>
+                            <td><button type="button" class="btn btn-success create_batch_up2l_if_1" onclick="create_batch_up2l('${v.ITEM}', '${v.RECIPE_NO}', '${v.RECIPE_VERSION}', '${v.UOM}', '${job_date}')" name="button"><b> <i class="fa fa-check"></i> Pilih </b></button></td>
+                          </tr>`;
+              tampung.push(body);
+              swal.close();
+            });
+            $('#area-up2l-body-recipe').html(tampung.join());
+            $.ajax({
+              url: baseurl + 'ManufacturingOperationUP2L/Selep/cek_user',
+              type: 'POST',
+              dataType: 'JSON',
+              data: {
+                noind : $('#up2l_user_login_2021').val(),
+              },
+              cache:false,
+              beforeSend: function() {
+                toastup2lLoading('Filtering subinv by user login..')
+                $('.select2subinv_up2l').val('').trigger('change');
+              },
+              success: function(result_3) {
+                if (result_3 != 'gada') {
+                  //======================//===================
+                  if (Number(result_3.length) == 1) {
+                    $('.select2subinv_up2l').html(result_3.join('')).trigger('change');
+                    console.log(result_3,'ini result dari recipt ');
+
+                    // cek banyak recipt
+                    if (result.length == 1) {
+                      //delay modal akan show
+                      setTimeout(function () {
+                        if (result_3.length == 1) {
+                          console.log('heiheiehiehi');
+                          $('.create_batch_up2l_if_1').trigger('click');
+                        }
+                      }, 678);
+                    }
+
+                  }else if (Number(result_3.length) > 1) {
+                    $('.select2subinv_up2l').html(result_3.join(''));
+                    $('.select2subinv_up2l').val('').trigger('change');
+                  }
+                  //======================//===================
+                }else {
+                  $('.select2subinv_up2l').val('').trigger('change');
+                }
+                swal.close()
+              },
+              error: function(XMLHttpRequest, textStatus, errorThrown) {
+                swalup2l('error', 'when get user');
+               console.error();
+              }
+            });
+            $('#modalMOreceip').modal('show');
+          }else {
+            swalup2l('warning', `Kode komponen <b>${component_code}</b> belum mempunyai recipe!`);
+          }
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+          swalup2l('error', 'textStatus');
+         console.error();
+        }
+      })
+    }else {
+      swalup2l('warning', '<b>No. Batch</b> sudah dibuat');
+    }
+
+  }
+}
+//edit rozin
+// DATATABLE SERVERSIDE MOULD
+const tblmould2021 = $('#tblMoulding2021').DataTable({
+    // dom: '<"top"lf>rt<"bottom"ip><"clear">',
+    ajax: {
+      data: (d) => $.extend({}, d, {
+        // org: null,    // optional
+        // id_plan: null // optional
+        bulan: null,
+        tanggal: null,
+      }),
+      url: baseurl + "ManufacturingOperationUP2L/Moulding/buildMDataTable",
+      type: 'POST',
+    },
+    language:{
+      processing: "<div class='overlay custom-loader-background'><i class='fa fa-cog fa-spin custom-loader-color' style='color:#fff'></i></div>"
+    },
+    ordering: false,
+    pageLength: 10,
+    pagingType: 'first_last_numbers',
+    processing: true,
+    serverSide: true,
+    preDrawCallback: function(settings) {
+         if ($.fn.DataTable.isDataTable('#tblMoulding2021')) {
+             var dt = $('#tblMoulding2021').DataTable();
+
+             //Abort previous ajax request if it is still in process.
+             var settings = dt.settings();
+             if (settings[0].jqXHR) {
+                 settings[0].jqXHR.abort();
+             }
+         }
+     }
+});
+// DATATABLE SERVERSIDE CORE
+const tblCore2021 = $('#tblCore2021').DataTable({
+    // dom: 'rtp',
+    ajax: {
+      data: (d) => $.extend({}, d, {
+        org: null,    // optional
+        id_plan: null // optional
+      }),
+      url: baseurl + "ManufacturingOperationUP2L/Core/buildCDataTable",
+      type: 'POST',
+    },
+    language:{
+      processing: "<div class='overlay custom-loader-background'><i class='fa fa-cog fa-spin custom-loader-color' style='color:#fff'></i></div>"
+    },
+    ordering: false,
+    pageLength: 10,
+    pagingType: 'first_last_numbers',
+    processing: true,
+    serverSide: true,
+    preDrawCallback: function(settings) {
+         if ($.fn.DataTable.isDataTable('#tblCore2021')) {
+             var dt = $('#tblCore2021').DataTable();
+
+             //Abort previous ajax request if it is still in process.
+             var settings = dt.settings();
+             if (settings[0].jqXHR) {
+                 settings[0].jqXHR.abort();
+             }
+         }
+     }
+});
+// DATATABLE SERVERSIDE MIXING
+const tblMix2021 = $('#tblMixing2021').DataTable({
+    // dom: 'rtp',
+    ajax: {
+      data: (d) => $.extend({}, d, {
+        org: null,    // optional
+        id_plan: null // optional
+      }),
+      url: baseurl + "ManufacturingOperationUP2L/Mixing/buildMixDataTable",
+      type: 'POST',
+    },
+    language:{
+      processing: "<div class='overlay custom-loader-background'><i class='fa fa-cog fa-spin custom-loader-color' style='color:#fff'></i></div>"
+    },
+    ordering: false,
+    pageLength: 10,
+    pagingType: 'first_last_numbers',
+    processing: true,
+    serverSide: true,
+    preDrawCallback: function(settings) {
+         if ($.fn.DataTable.isDataTable('#tblMixing2021')) {
+             var dt = $('#tblMixing2021').DataTable();
+
+             //Abort previous ajax request if it is still in process.
+             var settings = dt.settings();
+             if (settings[0].jqXHR) {
+                 settings[0].jqXHR.abort();
+             }
+         }
+     }
+});
+// DATATABLE SERVERSIDE OTT
+const tblOtt2021 = $('#tblMouldingOtt').DataTable({
+    // dom: 'rtp',
+    ajax: {
+      data: (d) => $.extend({}, d, {
+        org: null,    // optional
+        id_plan: null // optional
+      }),
+      url: baseurl + "ManufacturingOperationUP2L/OTT/buildOttDataTable",
+      type: 'POST',
+    },
+    language:{
+      processing: "<div class='overlay custom-loader-background'><i class='fa fa-cog fa-spin custom-loader-color' style='color:#fff'></i></div>"
+    },
+    ordering: false,
+    pageLength: 10,
+    pagingType: 'first_last_numbers',
+    processing: true,
+    serverSide: true,
+    preDrawCallback: function(settings) {
+         if ($.fn.DataTable.isDataTable('#tblMouldingOtt')) {
+             var dt = $('#tblMouldingOtt').DataTable();
+
+             //Abort previous ajax request if it is still in process.
+             var settings = dt.settings();
+             if (settings[0].jqXHR) {
+                 settings[0].jqXHR.abort();
+             }
+         }
+     }
+});
+// DATATABLE SERVERSIDE ABSEN
+const tblAbs2021 = $('#tblMouldingAbs').DataTable({
+    // dom: 'rtp',
+    ajax: {
+      data: (d) => $.extend({}, d, {
+        org: null,    // optional
+        id_plan: null // optional
+      }),
+      url: baseurl + "ManufacturingOperationUP2L/Absen/buildAbsDataTable",
+      type: 'POST',
+    },
+    language:{
+      processing: "<div class='overlay custom-loader-background'><i class='fa fa-cog fa-spin custom-loader-color' style='color:#fff'></i></div>"
+    },
+    ordering: false,
+    pageLength: 10,
+    pagingType: 'first_last_numbers',
+    processing: true,
+    serverSide: true,
+    preDrawCallback: function(settings) {
+         if ($.fn.DataTable.isDataTable('#tblMouldingAbs')) {
+             var dt = $('#tblMouldingAbs').DataTable();
+
+             //Abort previous ajax request if it is still in process.
+             var settings = dt.settings();
+             if (settings[0].jqXHR) {
+                 settings[0].jqXHR.abort();
+             }
+         }
+     }
+});
+// DATATABLE SERVERSIDE SELEP
+ $('#tblSelep_ss').DataTable({
+    // dom: 'rtp',
+    ajax: {
+      data: (d) => $.extend({}, d, {
+        // org: null,    // optional
+        // id_plan: null // optional
+      }),
+      url: baseurl + "ManufacturingOperationUP2L/Selep/buildSelepDataTable",
+      type: 'POST',
+    },
+    language:{
+      processing: "<div class='overlay custom-loader-background'><i class='fa fa-cog fa-spin custom-loader-color' style='color:#fff'></i></div>"
+    },
+    ordering: false,
+    pageLength: 10,
+    pagingType: 'first_last_numbers',
+    processing: true,
+    serverSide: true,
+    preDrawCallback: function(settings) {
+         if ($.fn.DataTable.isDataTable('#tblSelep_ss')) {
+             var dt = $('#tblSelep_ss').DataTable();
+
+             //Abort previous ajax request if it is still in process.
+             var settings = dt.settings();
+             if (settings[0].jqXHR) {
+                 settings[0].jqXHR.abort();
+             }
+         }
+     }
+});
+
+// Search Bulan ditampilkan dengan serverside datatable
+let cari_mould, refresh_mould = null;
+
+const ref_mould = () =>{
+  if (refresh_mould != null){
+    refresh_mould.abort();
+  }
+
+  $('#sea_month').val(""); //Isi dari kolom bulan akan dihilangkan
+  $('#sea_date').val(""); //Isi dari kolom tanggal akan dihilangkan
+
+  refresh_mould = $.ajax({
+    url: baseurl + 'ManufacturingOperationUP2L/Moulding/getAjax',
+    type: 'POST',
+    data:{
+      bulan: null,
+      tanggal: null,
+    },
+    cache:false,
+    beforeSend: function() {
+      $('.area_mould').html(`<div style ="width: 70%;margin:auto;height: 30%;background: #fff;overflow: hidden;z-index: 9999;padding:20px 0 30px 0;border-radius:10px;text-align:center">
+                                  <img style="width: 13%;" src="${baseurl}assets/img/gif/loading14.gif"><br>
+                                  <span style="font-size:15px;font-weight:bold">Sedang memuat data...</span>
+                              </div>`);
+    },
+    success: function(result) {
+      // if (result != 0 && result != 10) {
+        $('.area_mould').html(result);
+      // }else if (result == 10) {
+        // $('.area_mould').html(`<div style ="width: 70%;margin:auto;height: 30%;background: #fff;overflow: hidden;z-index: 9999;padding:20px 0 30px 0;border-radius:10px;text-align:center">
+                                  // <i class="fa fa-remove" style="color:#d60d00;font-size:45px;"></i><br>
+                                  // <h3 style="font-size:14px;font-weight:bold">Tidak ada data yang sesuai</h3>
+                              // </div>`);
+      // }else {
+        // toastTCTxc("Warning", "Terdapat Kesalahan saat mengambil data");
+      // }
+    },
+    error: function (XMLHttpRequest, textStatus, errorThrown) {
+      console.log();
+    }
+  })
+}
+
+const filter_mould = () =>{
+  let bulan = $('#sea_month').val();
+  let tanggal = $('#sea_date').val();
+
+  if (cari_mould != null){
+    cari_mould.abort();
+  }
+
+  cari_mould = $.ajax({
+    url: baseurl + 'ManufacturingOperationUP2L/Moulding/getAjax',
+    type: 'POST',
+    data:{
+      bulan: bulan,
+      tanggal: tanggal,
+    },
+    cache:false,
+    beforeSend: function() {
+      $('.area_mould').html(`<div style ="width: 70%;margin:auto;height: 30%;background: #fff;overflow: hidden;z-index: 9999;padding:20px 0 30px 0;border-radius:10px;text-align:center">
+                                  <img style="width: 13%;" src="${baseurl}assets/img/gif/loading14.gif"><br>
+                                  <span style="font-size:15px;font-weight:bold">Sedang memuat data...</span>
+                              </div>`);
+    },
+    success: function(result) {
+      // if (result != 0 && result != 10) {
+        $('.area_mould').html(result);
+        if (bulan != "") {
+          $('#atas').text(`Menampilkan data pada ${bulan}`);
+        }else if(tanggal != ""){
+          $('#atas').text(`Menampilkan data pada ${tanggal}`);
+        }
+      // }else if (result == 10) {
+        // $('.area_mould').html(`<div style ="width: 70%;margin:auto;height: 30%;background: #fff;overflow: hidden;z-index: 9999;padding:20px 0 30px 0;border-radius:10px;text-align:center">
+                                  // <i class="fa fa-remove" style="color:#d60d00;font-size:45px;"></i><br>
+                                  // <h3 style="font-size:14px;font-weight:bold">Tidak ada data yang sesuai</h3>
+                              // </div>`);}
+      else {
+        toastTCTxc("Warning", "Terdapat Kesalahan saat mengambil data");
+      }
+    },
+    error: function (XMLHttpRequest, textStatus, errorThrown) {
+      console.log();
+    }
+  })
+}
+
+function up2l_moulding_m() {
+  $('#sea_month').prop('readonly', false);
+  $('#sea_date').prop('readonly', true);
+  $('#sea_date').val("");
+}
+function up2l_moulding_d() {
+  $('#sea_month').prop('readonly', true);
+  $('#sea_date').prop('readonly', false);
+  $('#sea_month').val("");
+}
+
+// if ((bulan2 == null) && (tanggal2 == null)) {
+//   $('#sea_date').prop("readonly", false);
+//   $('#sea_date').prop("disabled", false);
+//   $('#sea_month').prop("readonly", false);
+//   $('#sea_month').prop("disabled", false);
+// }else if ((bulan2 != null) && (tanggal2 == null)){
+//   $('#sea_date').prop("readonly", true);
+//   $('#sea_date').prop("disabled", true);
+//   $('#sea_month').prop("readonly", false);
+//   $('#sea_month').prop("disabled", false);
+// }else {
+//   $('#sea_date').prop("readonly", false);
+//   $('#sea_date').prop("disabled", false);
+//   $('#sea_month').prop("readonly", true);
+//   $('#sea_month').prop("disabled", true);
+// }
+
+// Form Input dinamis scrap
+  $('.add_field_scrap').click(function () {
+    $('.jsSlcScrap').select2('destroy').end();
+    $(this).parent().clone(true).appendTo($("#container-scrap"));
+    $('.remove_field_scrap').show();
+    $('.jsSlcScrap').select2({
+        allowClear: true,
+        placeholder: "Choose Scrap",
+        ajax: {
+            url: baseurl + "ManufacturingOperationUP2L/Ajax/getScrap",
+            dataType: 'json',
+            type: "post",
+            data: function (params) {
+                var queryParameters = {
+                    term: params.term
+                }
+                return queryParameters;
+            },
+            processResults: function (data) {
+                return {
+                    results: $.map(data, function (obj) {
+                        return {
+                            id: obj.scrap_code + '|' + obj.description,
+                            text: obj.scrap_code + " | " + obj.description
+                        };
+                    })
+                };
+            }
+        }
+    });
+  });
+
+  $('.remove_field_scrap').click(function () {
+    var count = $('#container-scrap').children().length;
+    // console.log(count);
+    c = count - parseInt(1);
+    // console.log(c);
+
+    if (count > 1) {
+      $(this).parent().remove();
+    }
+
+    if (c == 1) {
+      $('.remove_field_scrap').hide();
+    }
+  });
+
+  // Form Input dinamis bongkar
+  $('.add_field_bongkar').click(function () {
+    $(this).parent().clone(true).appendTo($("#container-bongkar"));
+    $('.remove_field_bongkar').show();
+  });
+
+  $('.remove_field_bongkar').click(function () {
+    var count = $('#container-bongkar').children().length;
+    // console.log(count);
+    c = count - parseInt(1);
+    // console.log(c);
+
+    if (count > 1) {
+      $(this).parent().remove();
+    }
+
+    if (c == 1) {
+      $('.remove_field_bongkar').hide();
+    }
+  });
+
+
 $(document).ready(function () {
+    $('.tanggal-up2l').daterangepicker({
+      showDropdowns: true,
+      autoApply: true,
+      todayHighlight: true,
+      locale: {
+        format: 'YYYY-MM-DD',
+        separator: " - ",
+        daysOfWeeks: ["Mg", "Sn", "Sl", "Rb", "Km" ,"Jm", "Sa"],
+        monthNames: [
+          "Januari",
+          "Februari",
+          "Maret",
+          "Apil",
+          "Mei",
+          "Juni",
+          "Juli",
+          "Agustus",
+          "September",
+          "Oktober",
+          "November",
+          "Desember",
+        ]
+      },
+    })
 
     $('.onBtn').click(function () {
         $('.onBtn').hide();
@@ -188,6 +1309,9 @@ function getCompDescMO(th) {
 }
 
 $(window).load(function () {
+    $('.slcUP2L2021').select2({
+        placeholder: "",
+    });
 
     $('.slcShift').select2({
         placeholder: "Shift",
@@ -312,9 +1436,9 @@ $(window).load(function () {
 
     $('.remove_emp').click(function () {
         var count = $('#container-employee').children().length;
-        console.log(count);
+        // console.log(count);
         c = count - parseInt(1);
-        console.log(c);
+        // console.log(c);
 
         if (count > 1) {
             $(this).parent().remove();
@@ -370,8 +1494,12 @@ $(window).load(function () {
                 tanggal: $('.time-form1.ajaxOnChange').val()
             },
             dataType: "JSON",
+            beforeSend: function () {
+              toastup2lLoading('Sedang Memuat Data Shift..');
+            },
             success: function (response) {
                 //console.log(response);
+                swal.close();
                 var html = '';
                 html += '<option></option>';
                 for (var i = 0; i < response.length; i++) {
@@ -848,7 +1976,7 @@ function checkQuantity(th) {
             },
             success: function (results) {
                 window.location.replace(baseurl + 'ManufacturingOperationUP2L/QualityControl');
-                
+
             },
             error: function (error, status, f, s) {
                 console.log(error);
@@ -858,8 +1986,14 @@ function checkQuantity(th) {
 }
 
 $('.add_scrap').click(function () {
-    var type = $('#txtScrap').val();
-    var qty = $('#scrap_qty').val();
+    var type = [];
+    var qty = [];
+    $('.txtScrap').each((i,v)=>{
+      type.push($(v).val());
+    });
+    $('.scrap_qty').each((i,v)=>{
+      qty.push($(v).val());
+    });
     var mould_qty = $('#mould_qty').val();
     var id = $('#mould_id').val();
     var jml = $('#jumlah_scrap').val();
@@ -893,7 +2027,10 @@ $('.add_scrap').click(function () {
 })
 
 $('.add_bongkar').click(function () {
-    var qty = $('#bongkar_qty').val();
+    var qty = [];
+    $('.bongkar_qty').each((i,v)=>{
+      qty.push($(v).val());
+    })
     var mould_qty = $('#mould_qty').val();
     var id = $('#mould_id').val();
     var jml = $('#jumlah_bongkar').val();
@@ -913,7 +2050,7 @@ $('.add_bongkar').click(function () {
 
     console.log(jumlah);
     if (jumlah > mould_qty) {
-        alert('Jumlah scrap melebihi quantity moulding');
+        alert('Jumlah bongkar melebihi quantity moulding');
     } else {
         $.ajax({
             type: 'post',
@@ -1082,95 +2219,82 @@ if($('#up2l_tmpl').val() == 'A1'){
 }
 
 $(function(){
-    $('#ott_Name').select2();
+    $('.ott_Name').select2();
+    $('.ott_Abs').select2();
     $('#ottKodeP').select2();
 })
 
-function ottPlusBtn(){
-    
-    var ottPlus =
-    `<br /><br /><select name="ottName[]" id="ott_Name" class="form-control ottName" required>
-    <option value="">Pilih Pekerja</option>
-    <option name="ottName" value="<?= $pekerja?>"><?= $pekerja?></option>
-    </select>`;
+$('.ottPlusBtn').click(function () {
+  $('.ott_Name').select2('destroy').end();
+  $(this).parent().clone(true).appendTo($('#container-emplott'));
+  $('.ottTimesBtn').show();
+  // var ottPlus =
+  // `<br /><br /><select name="ottName[]" id="ott_Name" class="form-control ottName" required>
+  // <option value="">Pilih Pekerja</option>
+  // <option name="ottName" value="<?= $pekerja?>"><?= $pekerja?></option>
+  // </select>`;
+  //
+  // $('#tmpNama').append(ottPlus);
+  $('.ott_Name').select2(/*{
+      minimumInputLength: 0,
+      placeholder: 'Pilih Pekerja',
+      allowClear: true,
+      ajax: {
+          method: 'GET',
+          url: baseurl + 'ManufacturingOperationUP2L/Absen/pekerja',
+          dataType: 'JSON',
+          data: function (param) {
+              return param.term
+          },
+          processResults: function (data) {
+              return {
+                  results: $.map(data, function (obj) {
+                      return {
+                          id: obj.no_induk + " | " + obj.nama,
+                          text: obj.no_induk + " | " + obj.nama
+                      };
+                  })
+              };
+          }
+      }
+  }*/);
+});
 
-    $('#tmpNama').append(ottPlus);
-    
-    $('.ottName').select2({
-        minimumInputLength: 0,
-        placeholder: 'Pilih Pekerja',
-        allowClear: true,
-        ajax: {
-            method: 'GET',
-            url: baseurl + 'ManufacturingOperationUP2L/Absen/pekerja',
-            dataType: 'JSON',
-            data: function (param) {
-                return param.term
-            },
-            processResults: function (data) {
-                return {
-                    results: $.map(data, function (obj) {
-                        return {
-                            id: obj.no_induk + " | " + obj.nama,
-                            text: obj.no_induk + " | " + obj.nama
-                        };
-                    })
-                };
-            }
-        }
-    })
-}
+$('.ottTimesBtn').click(function () {
+  var count = $('#container-emplott').children().length;
+  // console.log(count);
+  c = count - parseInt(1);
+  // console.log(c);
 
-function ottTimesBtn() {
-    var ottPlus =
-    `<select name="ottName[]" id="ott_Name" class="form-control ottName" required>
-    <option value="">Pilih Pekerja</option>
-    <option name="ottName" value="<?= $pekerja?>"><?= $pekerja?></option>
-    </select>`;
-    $('#tmpNama').html(ottPlus);
-    $('.ottName').select2({
-        minimumInputLength: 0,
-        placeholder: 'Pilih Pekerja',
-        allowClear: true,
-        ajax: {
-            method: 'GET',
-            url: baseurl + 'ManufacturingOperationUP2L/Absen/pekerja',
-            dataType: 'JSON',
-            data: function (param) {
-                return param.term
-            },
-            processResults: function (data) {
-                return {
-                    results: $.map(data, function (obj) {
-                        return {
-                            id: obj.no_induk + " | " + obj.nama,
-                            text: obj.no_induk + " | " + obj.nama
-                        };
-                    })
-                };
-            }
-        }
-    })
-}
+  if (count > 1) {
+    $(this).parent().remove();
+  }
+  if (c == 1) {
+    $('.ottTimesBtn').hide();
+  }
+});
 
-function addCompMould() {
-    var addCompMould =
-    `<hr><br /><div class="form-group">
-        <label for="txtComponentCodeHeader" class="control-label col-lg-4">Component</label>
-        <div class="col-lg-6">
-            <select class="form-control jsSlcComp toupper" id="txtComponentCodeHeader" name="component_code[]" required data-placeholder="Component Code" onchange="getCompDescMO(this)">
-                <option></option>
-            </select>
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label for="txtMouldingQuantityHeader" class="control-label col-lg-4">Moulding Quantity</label>
-        <div class="col-lg-6">
-            <input type="number" placeholder="Moulding Quantity" name="txtMouldingQuantityHeader[]" id="txtMouldingQuantityHeader" class="form-control" />
-        </div>
-    </div>`;
-    $('#container-component').append(addCompMould);
+$('.addComp').click(function () {
+    $('.jsSlcComp').select2('destroy').end();
+    $(this).parent().clone(true).appendTo($("#container-comp"));
+    $('.delComp').show();
+    // var addCompMould =
+    // `<hr><br /><div class="form-group">
+    //     <label for="txtComponentCodeHeader" class="control-label col-lg-4">Component</label>
+    //     <div class="col-lg-6">
+    //         <select class="form-control jsSlcComp toupper" id="txtComponentCodeHeader" name="component_code[]" required data-placeholder="Component Code" onchange="getCompDescMO(this)">
+    //             <option></option>
+    //         </select>
+    //     </div>
+    // </div>
+    //
+    // <div class="form-group">
+    //     <label for="txtMouldingQuantityHeader" class="control-label col-lg-4">Moulding Quantity</label>
+    //     <div class="col-lg-6">
+    //         <input type="number" placeholder="Moulding Quantity" name="txtMouldingQuantityHeader[]" id="txtMouldingQuantityHeader" class="form-control" />
+    //     </div>
+    // </div>`;
+    // $('#container-component').append(addCompMould);
     $('.jsSlcComp').select2({
         allowClear: true,
         placeholder: "Choose Component Code",
@@ -1200,57 +2324,22 @@ function addCompMould() {
             }
         }
     });
-}
+});
 
-function delcompMould() {
-    var addCompMould =
-    `<div class="form-group">
-        <label for="txtComponentCodeHeader" class="control-label col-lg-4">Component</label>
-        <div class="col-lg-6">
-            <select class="form-control jsSlcComp toupper" id="txtComponentCodeHeader" name="component_code[]" required data-placeholder="Component Code" onchange="getCompDescMO(this)">
-                <option></option>
-            </select>
-        </div>
-    </div>
+$('.delComp').click(function () {
+    var count = $('#container-comp').children().length;
+    // console.log(count);
+    c = count - parseInt(1);
+    // console.log(c);
 
-    <div class="form-group">
-        <label for="txtMouldingQuantityHeader" class="control-label col-lg-4">Moulding Quantity</label>
-        <div class="col-lg-6">
-            <input type="number" placeholder="Moulding Quantity" name="txtMouldingQuantityHeader[]" id="txtMouldingQuantityHeader" class="form-control" />
-        </div>
-    </div>`;
-    $('#container-component').html(addCompMould);
+    if (count > 1) {
+      $(this).parent().remove();
+    }
 
-    $('.jsSlcComp').select2({
-        allowClear: true,
-        placeholder: "Choose Component Code",
-        minimumInputLength: 3,
-        ajax: {
-            url: baseurl + "ManufacturingOperationUP2L/Ajax/getComponent",
-            dataType: 'json',
-            type: "post",
-            data: function (params) {
-                var queryParameters = {
-                    term: params.term
-                }
-                return queryParameters;
-            },
-            processResults: function (data) {
-                return {
-                    results: $.map(data, function (obj) {
-                        return {
-                            id: obj.kode_barang + " | " + obj.nama_barang + ' | ' + obj.kode_proses,
-                            text: obj.kode_barang + " | " + obj.nama_barang + ' | ' + obj.kode_proses
-                        };
-                    })
-                };
-            },
-            error: function (error, status) {
-                console.log(error);
-            }
-        }
-    });
-}
+    if (c == 1) {
+      $('.delComp').hide();
+    }
+});
 
 function addcompSelep() {
     var addCompMould =
@@ -1444,273 +2533,197 @@ function remove_emp_selep() {
     });
 }
 
-function abs() {  
-    var copy = `
-                <hr><div class="form-group">
-                <label for="absName" class="control-label">Nama</label>
-                <select class="form-control jsSlcEmpl toupper" id="txtEmployeeHeader" name="txt_employee[]" required data-placeholder="Employee Name">
-                    <option></option>
-                </select>
-                </div>`;
-                $('.ini_absen_ta').append(copy);
-                $('.jsSlcEmpl').select2({
-        allowClear: true,
-        placeholder: "Choose Employee",
-        minimumInputLength: 3,
-        ajax: {
-            url: baseurl + "ManufacturingOperationUP2L/Ajax/getEmployee",
-            dataType: 'json',
-            type: "post",
-            data: function (params) {
-                var queryParameters = {
-                    term: params.term
-                }
-                return queryParameters;
-            },
-            processResults: function (data) {
-                return {
-                    results: $.map(data, function (obj) {
-                        return {
-                            id: obj.no_induk + '|' + obj.nama,
-                            text: obj.no_induk + " | " + obj.nama
-                        };
-                    })
-                };
+$('.abs').click(function () {
+  $('.ott_Abs').select2('destroy').end();
+  $(this).parent().clone(true).appendTo($("#container-abs"));
+  $('.unAbs').show();
+  // var copy = `
+  //             <hr><div class="form-group">
+  //             <label for="absName" class="control-label">Nama</label>
+  //             <select class="form-control jsSlcEmpl toupper" id="txtEmployeeHeader" name="txt_employee[]" required data-placeholder="Employee Name">
+  //                 <option></option>
+  //             </select>
+  //             </div>`;
+  //             $('.ini_absen_ta').append(copy);
+      $('.ott_Abs').select2(/*{
+      allowClear: true,
+      placeholder: "Choose Employee",
+      minimumInputLength: 3,
+      ajax: {
+          url: baseurl + "ManufacturingOperationUP2L/Ajax/getEmployee",
+          dataType: 'json',
+          type: "post",
+          data: function (params) {
+              var queryParameters = {
+                  term: params.term
+              }
+              return queryParameters;
+          },
+          processResults: function (data) {
+              return {
+                  results: $.map(data, function (obj) {
+                      return {
+                          id: obj.no_induk + '|' + obj.nama,
+                          text: obj.no_induk + " | " + obj.nama
+                      };
+                  })
+              };
+          }
+      }
+  }*/);
+});
+
+$('.unAbs').click(function () {
+    var count = $('#container-abs').children().length;
+    // console.log(count);
+    c = count - parseInt(1);
+    // console.log(c);
+
+    if (count > 1) {
+      $(this).parent().remove();
+    }
+    if (c == 1) {
+      $('.unAbs').hide();
+    }
+    // var copy = `
+    // <div class="form-group"> <br />
+    // <label for="absName" class="control-label">Nama</label>
+    // <select class="form-control jsSlcEmpl toupper" id="txtEmployeeHeader" name="txt_employee[]" required data-placeholder="Employee Name">
+    //     <option></option>
+    // </select>
+    // </div>`;
+    // $('.ini_absen_ta').html(copy);
+})
+
+
+$('.addCompCore').click(function () {
+  $('.jsSlcComp').select2('destroy').end();
+  $(this).parent().clone(true).appendTo($("#container-compcore"));
+  $('.delcompCore').show();
+  // var addCompCore =
+  // `<hr><br /><div class="form-group">
+  //     <label for="txtComponentCodeHeader" class="control-label col-lg-4">Component</label>
+  //     <div class="col-lg-6">
+  //         <select class="form-control jsSlcComp toupper" id="txtComponentCodeHeader" name="component_code[]" required data-placeholder="Component Code">
+  //             <option></option>
+  //         </select>
+  //     </div>
+  // </div>
+  //
+  // <div class="form-group">
+  //     <label for="txtCoreQuantityHeader" class="control-label col-lg-4">Core Quantity</label>
+  //     <div class="col-lg-6">
+  //         <input type="number" placeholder="Core Quantity" name="txtCoreQuantityHeader[]" id="txtCoreQuantityHeader" class="form-control" />
+  //     </div>
+  // </div>`;
+  // $('#container-component').append(addCompCore);
+  $('.jsSlcComp').select2({
+    allowClear: true,
+    placeholder: "Choose Component Code",
+    minimumInputLength: 3,
+    ajax: {
+        url: baseurl + "ManufacturingOperationUP2L/Ajax/getComponent",
+        dataType: 'json',
+        type: "post",
+        data: function (params) {
+            var queryParameters = {
+                term: params.term
             }
+            return queryParameters;
+        },
+        processResults: function (data) {
+            return {
+                results: $.map(data, function (obj) {
+                    return {
+                        id: obj.kode_barang + " | " + obj.nama_barang + ' | ' + obj.kode_proses,
+                        text: obj.kode_barang + " | " + obj.nama_barang + ' | ' + obj.kode_proses
+                    };
+                })
+            };
+        },
+        error: function (error, status) {
+            console.log(error);
         }
-    });
-}
-function unAbs() {  
-                var copy = `
-                <div class="form-group"> <br />
-                <label for="absName" class="control-label">Nama</label>
-                <select class="form-control jsSlcEmpl toupper" id="txtEmployeeHeader" name="txt_employee[]" required data-placeholder="Employee Name">
-                    <option></option>
-                </select>
-                </div>`;
-                $('.ini_absen_ta').html(copy);
-                $('.jsSlcEmpl').select2({
-        allowClear: true,
-        placeholder: "Choose Employee",
-        minimumInputLength: 3,
-        ajax: {
-            url: baseurl + "ManufacturingOperationUP2L/Ajax/getEmployee",
-            dataType: 'json',
-            type: "post",
-            data: function (params) {
-                var queryParameters = {
-                    term: params.term
-                }
-                return queryParameters;
-            },
-            processResults: function (data) {
-                return {
-                    results: $.map(data, function (obj) {
-                        return {
-                            id: obj.no_induk + '|' + obj.nama,
-                            text: obj.no_induk + " | " + obj.nama
-                        };
-                    })
-                };
-            }
-        }
-    });
-}
+    }
+  });
+});
 
-function addCompCore() {
-    var addCompCore =
-    `<hr><br /><div class="form-group">
-        <label for="txtComponentCodeHeader" class="control-label col-lg-4">Component</label>
-        <div class="col-lg-6">
-            <select class="form-control jsSlcComp toupper" id="txtComponentCodeHeader" name="component_code[]" required data-placeholder="Component Code">
-                <option></option>
-            </select>
-        </div>
-    </div>
+$('.delcompCore').click(function () {
+  var count = $('#container-compcore').children().length;
+  // console.log(count);
+  c = count - parseInt(1);
+  // console.log(c);
 
-    <div class="form-group">
-        <label for="txtCoreQuantityHeader" class="control-label col-lg-4">Core Quantity</label>
-        <div class="col-lg-6">
-            <input type="number" placeholder="Core Quantity" name="txtCoreQuantityHeader[]" id="txtCoreQuantityHeader" class="form-control" />
-        </div>
-    </div>`;
-    $('#container-component').append(addCompCore);
-    $('.jsSlcComp').select2({
-        allowClear: true,
-        placeholder: "Choose Component Code",
-        minimumInputLength: 3,
-        ajax: {
-            url: baseurl + "ManufacturingOperationUP2L/Ajax/getComponent",
-            dataType: 'json',
-            type: "post",
-            data: function (params) {
-                var queryParameters = {
-                    term: params.term
-                }
-                return queryParameters;
-            },
-            processResults: function (data) {
-                return {
-                    results: $.map(data, function (obj) {
-                        return {
-                            id: obj.kode_barang + " | " + obj.nama_barang + ' | ' + obj.kode_proses,
-                            text: obj.kode_barang + " | " + obj.nama_barang + ' | ' + obj.kode_proses
-                        };
-                    })
-                };
-            },
-            error: function (error, status) {
-                console.log(error);
-            }
-        }
-    });
-}
+  if (count > 1) {
+    $(this).parent().remove();
+  }
+  if (c == 1) {
+    $('.delcompCore').hide();
+  }
+});
 
-function delcompCore() {
-    var addCompCore =
-    `<div class="form-group">
-        <label for="txtComponentCodeHeader" class="control-label col-lg-4">Component</label>
-        <div class="col-lg-6">
-            <select class="form-control jsSlcComp toupper" id="txtComponentCodeHeader" name="component_code[]" required data-placeholder="Component Code" onchange="getCompDescMO(this)">
-                <option></option>
-            </select>
-        </div>
-    </div>
+$('.addCompMixing').click(function () {
+  $('.jsSlcComp').select2('destroy').end();
+  $(this).parent().clone(true).appendTo($("#container-compmix"));
+  $('.delcompMixing').show();
+  // var addCompMixing =
+  // `<hr><br /><div class="form-group">
+  //     <label for="txtComponentCodeHeader" class="control-label col-lg-4">Component</label>
+  //     <div class="col-lg-6">
+  //         <select class="form-control jsSlcComp toupper" id="txtComponentCodeHeader" name="component_code[]" required data-placeholder="Component Code">
+  //             <option></option>
+  //         </select>
+  //     </div>
+  // </div>
+  //
+  // <div class="form-group">
+  //     <label for="txtMixingQuantityHeader" class="control-label col-lg-4">Mixing Quantity</label>
+  //     <div class="col-lg-6">
+  //         <input type="number" placeholder="Mixing Quantity" name="txtMixingQuantityHeader[]" id="txtMixingQuantityHeader" class="form-control" />
+  //     </div>
+  // </div>`;
+  // $('#container-component').append(addCompMixing);
+  $('.jsSlcComp').select2({
+      allowClear: true,
+      placeholder: "Choose Component Code",
+      minimumInputLength: 3,
+      ajax: {
+          url: baseurl + "ManufacturingOperationUP2L/Ajax/getComponent",
+          dataType: 'json',
+          type: "post",
+          data: function (params) {
+              var queryParameters = {
+                  term: params.term
+              }
+              return queryParameters;
+          },
+          processResults: function (data) {
+              return {
+                  results: $.map(data, function (obj) {
+                      return {
+                          id: obj.kode_barang + " | " + obj.nama_barang + ' | ' + obj.kode_proses,
+                          text: obj.kode_barang + " | " + obj.nama_barang + ' | ' + obj.kode_proses
+                      };
+                  })
+              };
+          },
+          error: function (error, status) {
+              console.log(error);
+          }
+      }
+  });
+});
 
-    <div class="form-group">
-        <label for="txtCoreQuantityHeader" class="control-label col-lg-4">Core Quantity</label>
-        <div class="col-lg-6">
-            <input type="number" placeholder="Core Quantity" name="txtCoreQuantityHeader[]" id="txtCoreQuantityHeader" class="form-control" />
-        </div>
-    </div>`;
-    $('#container-component').html(addCompCore);
+$('.delcompMixing').click(function () {
+  var count = $('#container-compmix').children().length;
+  // console.log(count);
+  c = count - parseInt(1);
+  // console.log(c);
 
-    $('.jsSlcComp').select2({
-        allowClear: true,
-        placeholder: "Choose Component Code",
-        minimumInputLength: 3,
-        ajax: {
-            url: baseurl + "ManufacturingOperationUP2L/Ajax/getComponent",
-            dataType: 'json',
-            type: "post",
-            data: function (params) {
-                var queryParameters = {
-                    term: params.term
-                }
-                return queryParameters;
-            },
-            processResults: function (data) {
-                return {
-                    results: $.map(data, function (obj) {
-                        return {
-                            id: obj.kode_barang + " | " + obj.nama_barang + ' | ' + obj.kode_proses,
-                            text: obj.kode_barang + " | " + obj.nama_barang + ' | ' + obj.kode_proses
-                        };
-                    })
-                };
-            },
-            error: function (error, status) {
-                console.log(error);
-            }
-        }
-    });
-}
-
-function addCompMixing() {
-    var addCompMixing =
-    `<hr><br /><div class="form-group">
-        <label for="txtComponentCodeHeader" class="control-label col-lg-4">Component</label>
-        <div class="col-lg-6">
-            <select class="form-control jsSlcComp toupper" id="txtComponentCodeHeader" name="component_code[]" required data-placeholder="Component Code">
-                <option></option>
-            </select>
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label for="txtMixingQuantityHeader" class="control-label col-lg-4">Mixing Quantity</label>
-        <div class="col-lg-6">
-            <input type="number" placeholder="Mixing Quantity" name="txtMixingQuantityHeader[]" id="txtMixingQuantityHeader" class="form-control" />
-        </div>
-    </div>`;
-    $('#container-component').append(addCompMixing);
-    $('.jsSlcComp').select2({
-        allowClear: true,
-        placeholder: "Choose Component Code",
-        minimumInputLength: 3,
-        ajax: {
-            url: baseurl + "ManufacturingOperationUP2L/Ajax/getComponent",
-            dataType: 'json',
-            type: "post",
-            data: function (params) {
-                var queryParameters = {
-                    term: params.term
-                }
-                return queryParameters;
-            },
-            processResults: function (data) {
-                return {
-                    results: $.map(data, function (obj) {
-                        return {
-                            id: obj.kode_barang + " | " + obj.nama_barang + ' | ' + obj.kode_proses,
-                            text: obj.kode_barang + " | " + obj.nama_barang + ' | ' + obj.kode_proses
-                        };
-                    })
-                };
-            },
-            error: function (error, status) {
-                console.log(error);
-            }
-        }
-    });
-}
-
-function delcompMixing() {
-    var addCompMixing =
-    `<div class="form-group">
-        <label for="txtComponentCodeHeader" class="control-label col-lg-4">Component</label>
-        <div class="col-lg-6">
-            <select class="form-control jsSlcComp toupper" id="txtComponentCodeHeader" name="component_code[]" required data-placeholder="Component Code" onchange="getCompDescMO(this)">
-                <option></option>
-            </select>
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label for="txtMixingQuantityHeader" class="control-label col-lg-4">Mixing Quantity</label>
-        <div class="col-lg-6">
-            <input type="number" placeholder="Mixing Quantity" name="txtMixingQuantityHeader[]" id="txtMixingQuantityHeader" class="form-control" />
-        </div>
-    </div>`;
-    $('#container-component').html(addCompMixing);
-
-    $('.jsSlcComp').select2({
-        allowClear: true,
-        placeholder: "Choose Component Code",
-        minimumInputLength: 3,
-        ajax: {
-            url: baseurl + "ManufacturingOperationUP2L/Ajax/getComponent",
-            dataType: 'json',
-            type: "post",
-            data: function (params) {
-                var queryParameters = {
-                    term: params.term
-                }
-                return queryParameters;
-            },
-            processResults: function (data) {
-                return {
-                    results: $.map(data, function (obj) {
-                        return {
-                            id: obj.kode_barang + " | " + obj.nama_barang + ' | ' + obj.kode_proses,
-                            text: obj.kode_barang + " | " + obj.nama_barang + ' | ' + obj.kode_proses
-                        };
-                    })
-                };
-            },
-            error: function (error, status) {
-                console.log(error);
-            }
-        }
-    });
-}
+  if (count > 1) {
+    $(this).parent().remove();
+  }
+  if (c == 1) {
+    $('.delcompMixing').hide();
+  }
+});

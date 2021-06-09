@@ -15,6 +15,7 @@ class C_Monitoring extends CI_Controller
 
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('KapasitasGdSparepart/M_monitoring');
+        date_default_timezone_set('Asia/Jakarta');
 
 		$this->checkSession();
 	}
@@ -57,23 +58,15 @@ class C_Monitoring extends CI_Controller
 		$pelayanan 	= $this->M_monitoring->getDataSPB($query2);
 		$data['pelayanan'] 	= $pelayanan;
 		$data['jml_pelayanan'] = count($pelayanan);
-		$kurang = "where TO_CHAR(jam_input,'DD/MM/YYYY') between '$date' and '$date' and trunc(selesai_pelayanan) > '$tgl' or selesai_pelayanan is null and (bon != 'PENDING' or bon is null)";
+		$kurang = "where TO_CHAR(jam_input,'DD/MM/YYYY') between '$date' and '$date' and trunc(selesai_pelayanan) > '$tgl' or selesai_pelayanan is null and (bon != 'PENDING' or bon is null) and approval_flag ='Y'";
 		$data['krgpelayanan'] = $this->M_monitoring->dataKurang($kurang);
 		$data['krg_pelayanan'] = count($data['krgpelayanan']);
-
-		$query3 = "where TO_CHAR(selesai_pengeluaran,'DD/MM/YYYY') between '$date' and '$date' and selesai_pengeluaran is not null";
-		$pengeluaran = $this->M_monitoring->getDataSPB($query3);
-		$data['pengeluaran'] = $pengeluaran;
-		$data['jml_pengeluaran'] = count($pengeluaran);
-		$kurang = "where selesai_pelayanan is not null and selesai_pengeluaran is null and (bon != 'BON' or bon is null)";
-		$data['krgpengeluaran'] = $this->M_monitoring->dataKurang($kurang);
-		$data['krg_pengeluaran'] = count($data['krgpengeluaran']);
 
 		$query4 = "where TO_CHAR(selesai_packing,'DD/MM/YYYY') between '$date' and '$date' and selesai_packing is not null";
 		$packing = $this->M_monitoring->getDataSPB($query4);
 		$data['packing'] = $packing;
 		$data['jml_packing'] = count($packing);
-		$kurang = "where selesai_pengeluaran is not null and selesai_packing is null and (bon is null or bon = 'BEST')";
+		$kurang = "where selesai_pelayanan is not null and selesai_packing is null and (bon is null or bon = 'BEST') and tipe is not null";
 		$data['krgpacking'] = $this->M_monitoring->dataKurang($kurang);
 		$data['krg_packing'] = count($data['krgpacking']);
 
@@ -167,7 +160,7 @@ class C_Monitoring extends CI_Controller
 			$hasil[$a]['pelayanan'] = $pelayanan;
 			$hasil[$a]['jml_pelayanan'] = count($pelayanan);
 			if ($date == date('d/m/Y')) {
-				$kurang = "where selesai_pelayanan is null and (bon != 'PENDING' or bon is null)";
+				$kurang = "where selesai_pelayanan is null and (bon != 'PENDING' or bon is null) and approval_flag ='Y'";
 			}else {
 				$d = date('d') - 1;
 				if ($date == date(''.$d.'/m/Y')) {
@@ -175,43 +168,25 @@ class C_Monitoring extends CI_Controller
 				}else {
 					$tmb = "and trunc(jam_input) <= '$tgl[$a]' or (selesai_pelayanan is null and trunc(jam_input) <= '$tgl[$a]')";
 				}
-				$kurang = "where (bon != 'PENDING' or bon is null) and TO_CHAR(jam_input,'DD/MM/YYYY') != '".date('d/m/Y')."' and (trunc(selesai_pelayanan) > '$tgl[$a]' ".$tmb.")";
+				$kurang = "where (bon != 'PENDING' or bon is null) and TO_CHAR(jam_input,'DD/MM/YYYY') != '".date('d/m/Y')."' and approval_flag ='Y' and (trunc(selesai_pelayanan) > '$tgl[$a]' ".$tmb.")";
 			}
 			$hasil[$a]['krgpelayanan'] = $this->M_monitoring->dataKurang($kurang);
 			$hasil[$a]['krg_pelayanan'] = count($hasil[$a]['krgpelayanan']);
-
-			$query3 = "where TO_CHAR(selesai_pengeluaran,'DD/MM/YYYY') between '$date' and '$date' and selesai_pengeluaran is not null";
-			$pengeluaran = $this->M_monitoring->getDataSPB($query3);
-			$hasil[$a]['pengeluaran'] = $pengeluaran;
-			$hasil[$a]['jml_pengeluaran'] = count($pengeluaran);
-			if ($date == date('d/m/Y')) {
-				$kurang = "where selesai_pelayanan is not null and selesai_pengeluaran is null and (bon != 'BON' or bon is null)";
-			}else {
-				$d = date('d') - 1;
-				if ($date == date(''.$d.'/m/Y')) {
-					$tmb = 'or selesai_pengeluaran is null';
-				}else {
-					$tmb = "and trunc(selesai_pelayanan) <= '$tgl[$a]' or (selesai_pengeluaran is null and trunc(selesai_pelayanan) <= '$tgl[$a]')";
-				}
-				$kurang = "where (bon != 'BON' or bon is null) and TO_CHAR(selesai_pelayanan,'DD/MM/YYYY') != '".date('d/m/Y')."' and (trunc(selesai_pengeluaran) > '$tgl[$a]' ".$tmb.") and selesai_pelayanan is not null";
-			}
-			$hasil[$a]['krgpengeluaran'] = $this->M_monitoring->dataKurang($kurang);
-			$hasil[$a]['krg_pengeluaran'] = count($hasil[$a]['krgpengeluaran']);
 
 			$query4 = "where TO_CHAR(selesai_packing,'DD/MM/YYYY') between '$date' and '$date' and selesai_packing is not null";
 			$packing = $this->M_monitoring->getDataSPB($query4);
 			$hasil[$a]['packing'] = $packing;
 			$hasil[$a]['jml_packing'] = count($packing);
 			if ($date == date('d/m/Y')) {
-				$kurang = "where selesai_pengeluaran is not null and selesai_packing is null and (bon is null or bon = 'BEST')";
+				$kurang = "where selesai_pelayanan is not null and selesai_packing is null and (bon is null or bon = 'BEST') and tipe is not null";
 			}else {
 				$d = date('d') - 1;
 				if ($date == date(''.$d.'/m/Y')) {
 					$tmb = 'or selesai_packing is null';
 				}else {
-					$tmb = "and trunc(selesai_pengeluaran) <= '$tgl[$a]' or (selesai_packing is null and trunc(selesai_pengeluaran) <= '$tgl[$a]')";
+					$tmb = "and trunc(selesai_pelayanan) <= '$tgl[$a]' or (selesai_packing is null and trunc(selesai_pelayanan) <= '$tgl[$a]')";
 				}
-				$kurang = "where (bon is null or bon = 'BEST') and TO_CHAR(selesai_pengeluaran,'DD/MM/YYYY') != '".date('d/m/Y')."' and (trunc(selesai_packing) > '$tgl[$a]' ".$tmb.") and selesai_pengeluaran is not null";
+				$kurang = "where (bon is null or bon = 'BEST') and TO_CHAR(selesai_pelayanan,'DD/MM/YYYY') != '".date('d/m/Y')."' and tipe is not null and (trunc(selesai_packing) > '$tgl[$a]' ".$tmb.") and selesai_pelayanan is not null";
 			}
 			$hasil[$a]['krgpacking'] = $this->M_monitoring->dataKurang($kurang);
 			$hasil[$a]['krg_packing'] = count($hasil[$a]['krgpacking']);
@@ -406,6 +381,23 @@ class C_Monitoring extends CI_Controller
 					}
 				}
 			}
+			
+			$cari2 = $this->M_monitoring->getDataColly2($pck['NO_DOKUMEN']);
+			if (!empty($cari2)) {
+				foreach ($cari2 as $val) {
+					if ($val['JENIS'] == 'KARDUS KECIL') {
+						$dus_kecil += 1;
+					}elseif ($val['JENIS'] == 'KARDUS SEDANG') {
+						$dus_sdg += 1;
+					}elseif ($val['JENIS'] == 'KARDUS PANJANG') {
+						$dus_pjg += 1;
+					}elseif ($val['JENIS'] == 'KARUNG') {
+						$karung += 1;
+					}elseif ($val['JENIS'] == 'PETI') {
+						$peti += 1;
+					}
+				}
+			}
 		}
 		
 		$tampung = array(
@@ -497,10 +489,6 @@ class C_Monitoring extends CI_Controller
 		$dataPlyn = $this->M_monitoring->dataPlyn($tglAwal[0], $tglAkhir[0]);
 
 		$dataKrgPlyn = $this->M_monitoring->dataKrgPlyn($tglAwal[0], $tglAkhir[0]);
-		
-		$dataPglr = $this->M_monitoring->dataPglr($tglAwal[0], $tglAkhir[0]);
-
-		$dataKrgPglr = $this->M_monitoring->dataKrgPglr($tglAwal[0], $tglAkhir[0]);
 	
 		$dataPck = $this->M_monitoring->dataPck($tglAwal[0], $tglAkhir[0]);
 
@@ -553,6 +541,24 @@ class C_Monitoring extends CI_Controller
 						array_push($peti, $val['nomor_do']);
 					}
 				}
+			}
+			$cekcolly2 = $this->M_monitoring->getDataColly2($dataselesai[$i]['NO_DOKUMEN']);
+			if (!empty($cekcolly2)) {
+				foreach ($cekcolly2 as $val) {
+					if ($val['JENIS'] == 'KARDUS KECIL') {
+						array_push($dus_kecil, $dataselesai[$i]['NO_DOKUMEN']);
+					}elseif ($val['JENIS'] == 'KARDUS SEDANG') {
+						array_push($dus_sdg, $dataselesai[$i]['NO_DOKUMEN']);
+					}elseif ($val['JENIS'] == 'KARDUS PANJANG') {
+						array_push($dus_pjg, $dataselesai[$i]['NO_DOKUMEN']);
+					}elseif ($val['JENIS'] == 'KARUNG') {
+						array_push($karung, $dataselesai[$i]['NO_DOKUMEN']);
+					}elseif ($val['JENIS'] == 'PETI') {
+						array_push($peti, $dataselesai[$i]['NO_DOKUMEN']);
+					}
+				}
+			}
+			if (!empty($cekcolly) || !empty($cekcolly2)) {
 				$array = array(
 					'nospb' => $dataselesai[$i]['NO_DOKUMEN'],
 					'dus_kecil' => count($dus_kecil),
@@ -911,154 +917,8 @@ class C_Monitoring extends CI_Controller
 					}
 			}
 
-
-			$pglr = $noKPlyn + count($dataKrgPlyn) + 4;
-			$noPglr = $noKPlyn + count($dataKrgPlyn) + 5;
-			// TABEL Pengeluaran Terlayani
-			$excel->setActiveSheetIndex(0)->setCellValue("A$pglr", "3. DATA PENGELUARAN TERSELESAIKAN"); 
-			$excel->setActiveSheetIndex(0)->setCellValue("A$noPglr", "NO.");
-			$excel->setActiveSheetIndex(0)->setCellValue("B$noPglr", "TANGGAL DIBUAT");
-			$excel->setActiveSheetIndex(0)->setCellValue("C$noPglr", "JENIS DOKUMEN");
-			$excel->setActiveSheetIndex(0)->setCellValue("D$noPglr", "NO DOKUMEN");
-			$excel->setActiveSheetIndex(0)->setCellValue("E$noPglr", "JUMLAH ITEM");
-			$excel->setActiveSheetIndex(0)->setCellValue("F$noPglr", "JUMLAH PCS");
-			$excel->setActiveSheetIndex(0)->setCellValue("G$noPglr", "TANGGAL MULAI");
-			$excel->setActiveSheetIndex(0)->setCellValue("H$noPglr", "JAM MULAI");
-			$excel->setActiveSheetIndex(0)->setCellValue("I$noPglr", "TANGGAL SELESAI");
-			$excel->setActiveSheetIndex(0)->setCellValue("J$noPglr", "JAM SELESAI");
-			$excel->setActiveSheetIndex(0)->setCellValue("K$noPglr", "WAKTU");
-			$excel->setActiveSheetIndex(0)->setCellValue("L$noPglr", "PIC");
-			$excel->setActiveSheetIndex(0)->setCellValue("M$noPglr", "KET");
-			$excel->getActiveSheet()->getStyle("A$pglr")->applyFromArray($style1);
-			$excel->getActiveSheet()->getStyle("A$noPglr")->applyFromArray($style_col);
-			$excel->getActiveSheet()->getStyle("B$noPglr")->applyFromArray($style_col);
-			$excel->getActiveSheet()->getStyle("C$noPglr")->applyFromArray($style_col);
-			$excel->getActiveSheet()->getStyle("D$noPglr")->applyFromArray($style_col);
-			$excel->getActiveSheet()->getStyle("E$noPglr")->applyFromArray($style_col);
-			$excel->getActiveSheet()->getStyle("F$noPglr")->applyFromArray($style_col);
-			$excel->getActiveSheet()->getStyle("G$noPglr")->applyFromArray($style_col);
-			$excel->getActiveSheet()->getStyle("H$noPglr")->applyFromArray($style_col);
-			$excel->getActiveSheet()->getStyle("I$noPglr")->applyFromArray($style_col);
-			$excel->getActiveSheet()->getStyle("J$noPglr")->applyFromArray($style_col);
-			$excel->getActiveSheet()->getStyle("K$noPglr")->applyFromArray($style_col);
-			$excel->getActiveSheet()->getStyle("L$noPglr")->applyFromArray($style_col);
-			$excel->getActiveSheet()->getStyle("M$noPglr")->applyFromArray($style_col);
-
-			if (count($dataPglr) == 0){
-				$numrow = $noPglr + 1;
-				$excel->setActiveSheetIndex(0)->setCellValue("A$numrow", "No data available in table"); 
-				$excel->getActiveSheet()->mergeCells("A$numrow:M$numrow"); 
-				$excel->getActiveSheet()->getStyle("A$numrow")->applyFromArray($style_title);
-			}else {
-				$no=1;
-				$numrow = $noPglr + 1;
-					foreach ($dataPglr as $val) {
-						$excel->setActiveSheetIndex(0)->setCellValue('A'.$numrow, $no);
-						$excel->setActiveSheetIndex(0)->setCellValue('B'.$numrow, $val['TGL_DIBUAT']);
-						$excel->setActiveSheetIndex(0)->setCellValue('C'.$numrow, $val['JENIS_DOKUMEN']);
-						$excel->setActiveSheetIndex(0)->setCellValue('D'.$numrow, $val['NO_DOKUMEN']);
-						$excel->setActiveSheetIndex(0)->setCellValue('E'.$numrow, $val['JML_ITEM_DIKELUARKAN']);
-						$excel->setActiveSheetIndex(0)->setCellValue('F'.$numrow, $val['JML_PCS_DIKELUARKAN']);
-						$excel->setActiveSheetIndex(0)->setCellValue('G'.$numrow, $val['TGL_MULAI']);
-						$excel->setActiveSheetIndex(0)->setCellValue('H'.$numrow, $val['JAM_MULAI']);
-						$excel->setActiveSheetIndex(0)->setCellValue('I'.$numrow, $val['TGL_SELESAI']);
-						$excel->setActiveSheetIndex(0)->setCellValue('J'.$numrow, $val['JAM_SELESAI']);
-						$excel->setActiveSheetIndex(0)->setCellValue('K'.$numrow, $val['WAKTU_PENGELUARAN']);
-						$excel->setActiveSheetIndex(0)->setCellValue('L'.$numrow, $val['PIC_PENGELUARAN']);
-						$excel->setActiveSheetIndex(0)->setCellValue('M'.$numrow, $val['KETERANGAN'].' '.$val['BON']);
-
-						$excel->getActiveSheet()->getStyle('A'.$numrow)->applyFromArray($style2);
-						$excel->getActiveSheet()->getStyle('B'.$numrow)->applyFromArray($style2);
-						$excel->getActiveSheet()->getStyle('C'.$numrow)->applyFromArray($style2);
-						$excel->getActiveSheet()->getStyle('D'.$numrow)->applyFromArray($style2);
-						$excel->getActiveSheet()->getStyle('E'.$numrow)->applyFromArray($style2);
-						$excel->getActiveSheet()->getStyle('F'.$numrow)->applyFromArray($style2);
-						$excel->getActiveSheet()->getStyle('G'.$numrow)->applyFromArray($style2);
-						$excel->getActiveSheet()->getStyle('H'.$numrow)->applyFromArray($style2);
-						$excel->getActiveSheet()->getStyle('I'.$numrow)->applyFromArray($style2);
-						$excel->getActiveSheet()->getStyle('J'.$numrow)->applyFromArray($style2);
-						$excel->getActiveSheet()->getStyle('K'.$numrow)->applyFromArray($style2);
-						$excel->getActiveSheet()->getStyle('L'.$numrow)->applyFromArray($style2);
-						$excel->getActiveSheet()->getStyle('M'.$numrow)->applyFromArray($style2);
-					$numrow++;
-					$no++; 
-					}
-			}
-
-			$kPglr = $noPglr + count($dataPglr) + 4;
-			$noKPglr = $noPglr + count($dataPglr) + 5;
-			// TABEL Tanggungan Pengeluaran
-			$excel->setActiveSheetIndex(0)->setCellValue("A$kPglr", "3.1 DATA TANGGUNGAN PENGELUARAN"); 
-			$excel->setActiveSheetIndex(0)->setCellValue("A$noKPglr", "NO.");
-			$excel->setActiveSheetIndex(0)->setCellValue("B$noKPglr", "TANGGAL DIBUAT");
-			$excel->setActiveSheetIndex(0)->setCellValue("D$noKPglr", "JENIS DOKUMEN");
-			$excel->setActiveSheetIndex(0)->setCellValue("F$noKPglr", "NO DOKUMEN");
-			$excel->setActiveSheetIndex(0)->setCellValue("H$noKPglr", "JUMLAH ITEM");
-			$excel->setActiveSheetIndex(0)->setCellValue("J$noKPglr", "JUMLAH PCS");
-			$excel->setActiveSheetIndex(0)->setCellValue("K$noKPglr", "PIC");
-			$excel->setActiveSheetIndex(0)->setCellValue("M$noKPglr", "KET");
-			$excel->getActiveSheet()->mergeCells("B$noKPglr:C$noKPglr"); 
-			$excel->getActiveSheet()->mergeCells("D$noKPglr:E$noKPglr"); 
-			$excel->getActiveSheet()->mergeCells("F$noKPglr:G$noKPglr"); 
-			$excel->getActiveSheet()->mergeCells("H$noKPglr:I$noKPglr"); 
-			$excel->getActiveSheet()->mergeCells("K$noKPglr:L$noKPglr"); 
-			$excel->getActiveSheet()->getStyle("A$kPglr")->applyFromArray($style1);
-			$excel->getActiveSheet()->getStyle("A$noKPglr")->applyFromArray($style_col2);
-			$excel->getActiveSheet()->getStyle("B$noKPglr")->applyFromArray($style_col2);
-			$excel->getActiveSheet()->getStyle("C$noKPglr")->applyFromArray($style_col2);
-			$excel->getActiveSheet()->getStyle("D$noKPglr")->applyFromArray($style_col2);
-			$excel->getActiveSheet()->getStyle("E$noKPglr")->applyFromArray($style_col2);
-			$excel->getActiveSheet()->getStyle("F$noKPglr")->applyFromArray($style_col2);
-			$excel->getActiveSheet()->getStyle("G$noKPglr")->applyFromArray($style_col2);
-			$excel->getActiveSheet()->getStyle("H$noKPglr")->applyFromArray($style_col2);
-			$excel->getActiveSheet()->getStyle("I$noKPglr")->applyFromArray($style_col2);
-			$excel->getActiveSheet()->getStyle("J$noKPglr")->applyFromArray($style_col2);
-			$excel->getActiveSheet()->getStyle("K$noKPglr")->applyFromArray($style_col2);
-			$excel->getActiveSheet()->getStyle("L$noKPglr")->applyFromArray($style_col2);
-			$excel->getActiveSheet()->getStyle("M$noKPglr")->applyFromArray($style_col2);
-
-			if (count($dataKrgPglr) == 0){
-				$numrow = $noKPglr + 1;
-				$excel->setActiveSheetIndex(0)->setCellValue("A$numrow", "No data available in table"); 
-				$excel->getActiveSheet()->mergeCells("A$numrow:M$numrow");
-				$excel->getActiveSheet()->getStyle("A$numrow")->applyFromArray($style_title);
-			}else {
-				$no=1;
-				$numrow = $noKPglr + 1;
-					foreach ($dataKrgPglr as $val) {
-						$excel->setActiveSheetIndex(0)->setCellValue('A'.$numrow, $no);
-						$excel->setActiveSheetIndex(0)->setCellValue('B'.$numrow, $val['TGL_DIBUAT']);
-						$excel->setActiveSheetIndex(0)->setCellValue('D'.$numrow, $val['JENIS_DOKUMEN']);
-						$excel->setActiveSheetIndex(0)->setCellValue('F'.$numrow, $val['NO_DOKUMEN']);
-						$excel->setActiveSheetIndex(0)->setCellValue('H'.$numrow, $val['JML_ITEM_TERLAYANI']);
-						$excel->setActiveSheetIndex(0)->setCellValue('J'.$numrow, $val['JML_PCS_TERLAYANI']);
-						$excel->setActiveSheetIndex(0)->setCellValue('K'.$numrow, $val['PIC_PELAYAN']);
-						$excel->setActiveSheetIndex(0)->setCellValue('M'.$numrow, $val['KETERANGAN'].' '.$val['BON']);
-						$excel->getActiveSheet()->mergeCells("B$numrow:C$numrow"); 
-						$excel->getActiveSheet()->mergeCells("D$numrow:E$numrow"); 
-						$excel->getActiveSheet()->mergeCells("F$numrow:G$numrow"); 
-						$excel->getActiveSheet()->mergeCells("H$numrow:I$numrow"); 
-						$excel->getActiveSheet()->mergeCells("K$numrow:L$numrow"); 
-						$excel->getActiveSheet()->getStyle('A'.$numrow)->applyFromArray($style2);
-						$excel->getActiveSheet()->getStyle('B'.$numrow)->applyFromArray($style2);
-						$excel->getActiveSheet()->getStyle('C'.$numrow)->applyFromArray($style2);
-						$excel->getActiveSheet()->getStyle('D'.$numrow)->applyFromArray($style2);
-						$excel->getActiveSheet()->getStyle('E'.$numrow)->applyFromArray($style2);
-						$excel->getActiveSheet()->getStyle('F'.$numrow)->applyFromArray($style2);
-						$excel->getActiveSheet()->getStyle('G'.$numrow)->applyFromArray($style2);
-						$excel->getActiveSheet()->getStyle('H'.$numrow)->applyFromArray($style2);
-						$excel->getActiveSheet()->getStyle('I'.$numrow)->applyFromArray($style2);
-						$excel->getActiveSheet()->getStyle('J'.$numrow)->applyFromArray($style2);
-						$excel->getActiveSheet()->getStyle('K'.$numrow)->applyFromArray($style2);
-						$excel->getActiveSheet()->getStyle('L'.$numrow)->applyFromArray($style2);
-						$excel->getActiveSheet()->getStyle('M'.$numrow)->applyFromArray($style2);
-					$numrow++;
-					$no++; 
-					}
-			}
-
-			$pck = $noKPglr + count($dataKrgPglr) + 4;
-			$noPck = $noKPglr + count($dataKrgPglr) + 5;
+			$pck = $noKPlyn + count($dataKrgPlyn) + 4;
+			$noPck = $noKPlyn + count($dataKrgPlyn) + 5;
 			// TABEL Packing Terlayani
 			$excel->setActiveSheetIndex(0)->setCellValue("A$pck", "4. DATA PACKING TERSELESAIKAN"); 
 			$excel->setActiveSheetIndex(0)->setCellValue("A$noPck", "NO.");
@@ -1203,7 +1063,7 @@ class C_Monitoring extends CI_Controller
 						$excel->setActiveSheetIndex(0)->setCellValue('F'.$numrow, $val['NO_DOKUMEN']);
 						$excel->setActiveSheetIndex(0)->setCellValue('H'.$numrow, $val['JML_ITEM_TERLAYANI']);
 						$excel->setActiveSheetIndex(0)->setCellValue('J'.$numrow, $val['JML_PCS_TERLAYANI']);
-						$excel->setActiveSheetIndex(0)->setCellValue('K'.$numrow, $val['PIC_PENGELUARAN']);
+						$excel->setActiveSheetIndex(0)->setCellValue('K'.$numrow, $val['PIC_PELAYAN']);
 						$excel->setActiveSheetIndex(0)->setCellValue('M'.$numrow, $val['KETERANGAN'].' '.$val['BON']);
 						$excel->getActiveSheet()->mergeCells("B$numrow:C$numrow"); 
 						$excel->getActiveSheet()->mergeCells("D$numrow:E$numrow"); 
@@ -1474,13 +1334,10 @@ class C_Monitoring extends CI_Controller
 			$cancel = $this->jadigini($can);
 			$pdg 	= $this->M_monitoring->jml_pending2();
 			$pending = $this->jadibelum($pdg);
-			$query = "where selesai_pelayanan is null and (bon != 'PENDING' or bon is null)";
+			$query = "where selesai_pelayanan is null and (bon != 'PENDING' or bon is null) and approval_flag ='Y'";
 			$plyn 	= $this->M_monitoring->getDataSPB($query);
 			$pelayanan = $this->jadiin($plyn, 'plyn');
-			$query = "where selesai_pelayanan is not null and selesai_pengeluaran is null and (bon != 'BON' or bon is null)";
-			$pglr 	= $this->M_monitoring->getDataSPB($query);
-			$pengeluaran = $this->jadiin($pglr, 'pglr');
-			$query = "where selesai_pengeluaran is not null and selesai_packing is null and (bon is null or bon = 'BEST')";
+			$query = "where selesai_pelayanan is not null and selesai_packing is null and (bon is null or bon = 'BEST') and tipe is not null";
 			$pck 	= $this->M_monitoring->getDataSPB($query);
 			$packing = $this->jadiin($pck, 'pck');
 			$dikerjain = $this->jadiin($dataselesai, 'dkr');
@@ -1885,7 +1742,7 @@ class C_Monitoring extends CI_Controller
 	
 			$no=1;
 			$numrow3 = $h3 + 1;
-			$h4 = $numrow3+3;
+			$h4 = $numrow3+2;
 			$excel->setActiveSheetIndex(0)->setCellValue('B'.$numrow3, "PENDING");
 			$excel->setActiveSheetIndex(0)->setCellValue('C'.$numrow3, $pending[0]['lembar1']);
 			$excel->setActiveSheetIndex(0)->setCellValue('D'.$numrow3, $pending[0]['item1']);
@@ -1906,16 +1763,6 @@ class C_Monitoring extends CI_Controller
 			$excel->setActiveSheetIndex(0)->setCellValue('I'.($numrow3+1), ($pelayanan[0]['lembar1'] + $pelayanan[0]['lembar2']));
 			$excel->setActiveSheetIndex(0)->setCellValue('J'.($numrow3+1), ($pelayanan[0]['item1'] + $pelayanan[0]['item2']));
 			$excel->setActiveSheetIndex(0)->setCellValue('K'.($numrow3+1), ($pelayanan[0]['pcs1'] + $pelayanan[0]['pcs2']));
-			$excel->setActiveSheetIndex(0)->setCellValue('B'.($numrow3+2), "PENGELUARAN");
-			$excel->setActiveSheetIndex(0)->setCellValue('C'.($numrow3+2), $pengeluaran[0]['lembar1']);
-			$excel->setActiveSheetIndex(0)->setCellValue('D'.($numrow3+2), $pengeluaran[0]['item1']);
-			$excel->setActiveSheetIndex(0)->setCellValue('E'.($numrow3+2), $pengeluaran[0]['pcs1']);
-			$excel->setActiveSheetIndex(0)->setCellValue('F'.($numrow3+2), $pengeluaran[0]['lembar2']);
-			$excel->setActiveSheetIndex(0)->setCellValue('G'.($numrow3+2), $pengeluaran[0]['item2']);
-			$excel->setActiveSheetIndex(0)->setCellValue('H'.($numrow3+2), $pengeluaran[0]['pcs2']);
-			$excel->setActiveSheetIndex(0)->setCellValue('I'.($numrow3+2), ($pengeluaran[0]['lembar1'] + $pengeluaran[0]['lembar2']));
-			$excel->setActiveSheetIndex(0)->setCellValue('J'.($numrow3+2), ($pengeluaran[0]['item1'] + $pengeluaran[0]['item2']));
-			$excel->setActiveSheetIndex(0)->setCellValue('K'.($numrow3+2), ($pengeluaran[0]['pcs1'] + $pengeluaran[0]['pcs2']));
 			$excel->setActiveSheetIndex(0)->setCellValue('B'.$h4, "PACKING");
 			$excel->setActiveSheetIndex(0)->setCellValue('C'.$h4, $packing[0]['lembar1']);
 			$excel->setActiveSheetIndex(0)->setCellValue('D'.$h4, $packing[0]['item1']);
@@ -1926,17 +1773,17 @@ class C_Monitoring extends CI_Controller
 			$excel->setActiveSheetIndex(0)->setCellValue('I'.$h4, ($packing[0]['lembar1'] + $packing[0]['lembar2']));
 			$excel->setActiveSheetIndex(0)->setCellValue('J'.$h4, ($packing[0]['item1'] + $packing[0]['item2']));
 			$excel->setActiveSheetIndex(0)->setCellValue('K'.$h4, ($packing[0]['pcs1'] + $packing[0]['pcs2']));
-			$excel->setActiveSheetIndex(0)->setCellValue('B'.($numrow3+4), "JUMLAH");
-			$excel->setActiveSheetIndex(0)->setCellValue('C'.($numrow3+4), "=SUM(C$numrow3:C$h4)");
-			$excel->setActiveSheetIndex(0)->setCellValue('D'.($numrow3+4), "=SUM(D$numrow3:D$h4)");
-			$excel->setActiveSheetIndex(0)->setCellValue('E'.($numrow3+4), "=SUM(E$numrow3:E$h4)");
-			$excel->setActiveSheetIndex(0)->setCellValue('F'.($numrow3+4), "=SUM(F$numrow3:F$h4)");
-			$excel->setActiveSheetIndex(0)->setCellValue('G'.($numrow3+4), "=SUM(G$numrow3:G$h4)");
-			$excel->setActiveSheetIndex(0)->setCellValue('H'.($numrow3+4), "=SUM(H$numrow3:H$h4)");
-			$excel->setActiveSheetIndex(0)->setCellValue('I'.($numrow3+4), "=SUM(I$numrow3:I$h4)");
-			$excel->setActiveSheetIndex(0)->setCellValue('J'.($numrow3+4), "=SUM(J$numrow3:J$h4)");
-			$excel->setActiveSheetIndex(0)->setCellValue('K'.($numrow3+4), "=SUM(K$numrow3:K$h4)");
-				for ($i=1; $i < 6; $i++) { 
+			$excel->setActiveSheetIndex(0)->setCellValue('B'.($numrow3+3), "JUMLAH");
+			$excel->setActiveSheetIndex(0)->setCellValue('C'.($numrow3+3), "=SUM(C$numrow3:C$h4)");
+			$excel->setActiveSheetIndex(0)->setCellValue('D'.($numrow3+3), "=SUM(D$numrow3:D$h4)");
+			$excel->setActiveSheetIndex(0)->setCellValue('E'.($numrow3+3), "=SUM(E$numrow3:E$h4)");
+			$excel->setActiveSheetIndex(0)->setCellValue('F'.($numrow3+3), "=SUM(F$numrow3:F$h4)");
+			$excel->setActiveSheetIndex(0)->setCellValue('G'.($numrow3+3), "=SUM(G$numrow3:G$h4)");
+			$excel->setActiveSheetIndex(0)->setCellValue('H'.($numrow3+3), "=SUM(H$numrow3:H$h4)");
+			$excel->setActiveSheetIndex(0)->setCellValue('I'.($numrow3+3), "=SUM(I$numrow3:I$h4)");
+			$excel->setActiveSheetIndex(0)->setCellValue('J'.($numrow3+3), "=SUM(J$numrow3:J$h4)");
+			$excel->setActiveSheetIndex(0)->setCellValue('K'.($numrow3+3), "=SUM(K$numrow3:K$h4)");
+				for ($i=1; $i < 5; $i++) { 
 					$excel->setActiveSheetIndex(0)->setCellValue('A'.$numrow3, $i);
 					$excel->getActiveSheet()->getStyle('A'.$numrow3)->applyFromArray($style2);
 					$excel->getActiveSheet()->getStyle('B'.$numrow3)->applyFromArray($style3);
@@ -2009,13 +1856,10 @@ class C_Monitoring extends CI_Controller
 		$cancel 	= $this->jadigini($can);
 		$pdg 		= $this->M_monitoring->jml_pending2();
 		$pending 	= $this->jadibelum($pdg);
-		$query		= "where selesai_pelayanan is null and (bon != 'PENDING' or bon is null)";
+		$query		= "where selesai_pelayanan is null and (bon != 'PENDING' or bon is null) and approval_flag ='Y'";
 		$plyn 		= $this->M_monitoring->getDataSPB($query);
 		$pelayanan 	= $this->jadiin($plyn, 'plyn');
-		$query 		= "where selesai_pelayanan is not null and selesai_pengeluaran is null and (bon != 'BON' or bon is null)";
-		$pglr 		= $this->M_monitoring->getDataSPB($query);
-		$pengeluaran = $this->jadiin($pglr, 'pglr');
-		$query 		= "where selesai_pengeluaran is not null and selesai_packing is null and (bon is null or bon = 'BEST')";
+		$query 		= "where selesai_pelayanan is not null and selesai_packing is null and (bon is null or bon = 'BEST') and tipe is not null";
 		$pck 		= $this->M_monitoring->getDataSPB($query);
 		$packing 	= $this->jadiin($pck, 'pck');
 		$dataselesai = $this->M_monitoring->dataselesai($tglAwal[0], $tglAkhir[0]);
@@ -2043,8 +1887,7 @@ class C_Monitoring extends CI_Controller
 		$belum = array(
 			'0' => $pending[0],
 			'1' => $pelayanan[0],
-			'2' => $pengeluaran[0],
-			'3' => $packing[0],
+			'2' => $packing[0],
 		);
 
 		$data['data'] = array(
@@ -2077,5 +1920,380 @@ class C_Monitoring extends CI_Controller
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('KapasitasGdSparepart/V_KetMonitoring', $data);
 		$this->load->view('V_Footer',$data);
+	}
+
+	public function itungcolly($cari_coly, $ket){
+		$data['DUS_KECIL'] = $data['DUS_SEDANG'] = $data['DUS_PANJANG'] = 0;
+		$data['KARUNG'] = $data['PETI'] = 0;
+		foreach ($cari_coly as $val) {
+			if ($ket == 'coly1') {
+				if ($val['kode_packing'] == 1) {
+					$data['DUS_KECIL'] += 1;
+				}elseif ($val['kode_packing'] == 2) {
+					$data['DUS_SEDANG'] += 1;
+				}elseif ($val['kode_packing'] == 3) {
+					$data['DUS_PANJANG'] += 1;
+				}elseif ($val['kode_packing'] == 4) {
+					$data['KARUNG'] += 1;
+				}elseif ($val['kode_packing'] == 5) {
+					$data['PETI'] += 1;
+				}
+			}else {
+				if ($val['JENIS'] == 'KARDUS KECIL') {
+					$data['DUS_KECIL'] += 1;
+				}elseif ($val['JENIS'] == 'KARDUS SEDANG') {
+					$data['DUS_SEDANG'] += 1;
+				}elseif ($val['JENIS'] == 'KARDUS PANJANG') {
+					$data['DUS_PANJANG'] += 1;
+				}elseif ($val['JENIS'] == 'KARUNG') {
+					$data['KARUNG'] += 1;
+				}elseif ($val['JENIS'] == 'PETI') {
+					$data['PETI'] += 1;
+				}
+			}
+		}
+		return $data;
+	}
+
+	public function convers_time($waktu){
+		$jam = floor($waktu/(60*60));
+		$menit = $waktu - $jam * (60 * 60);
+		$htgmenit = floor($menit/60) * 60;
+		$detik = $menit - $htgmenit;
+		return $jam.':'.floor($menit/60).':'.$detik;
+	}
+
+
+	public function report_period(){
+		$tgl_awal = $this->input->post('tgl_awal');
+		$tgl_akhir = $this->input->post('tgl_akhir');
+		$getdata = $this->M_monitoring->data_report_period($tgl_awal, $tgl_akhir);
+		$datacoly = array();
+		$waktu_pelayanan = $waktu_packing = 0;
+		foreach ($getdata as $key => $value) {
+			$getdata[$key]['DUS_KECIL'] = $getdata[$key]['DUS_SEDANG'] = $getdata[$key]['DUS_PANJANG'] = 0;
+			$getdata[$key]['KARUNG'] = $getdata[$key]['PETI'] = $getdata[$key]['JUMLAH'] = 0;
+			$cari_coly = $this->M_monitoring->getDataColly($value['NO_DOKUMEN']);
+			$cari_coly2 = $this->M_monitoring->getDataColly2($value['NO_DOKUMEN']);
+			if (!empty($cari_coly)) {
+				$hitung = $this->itungcolly($cari_coly, 'coly1');
+				$getdata[$key]['DUS_KECIL'] 	= $hitung['DUS_KECIL'];
+				$getdata[$key]['DUS_SEDANG'] 	= $hitung['DUS_SEDANG'];
+				$getdata[$key]['DUS_PANJANG'] 	= $hitung['DUS_PANJANG'];
+				$getdata[$key]['KARUNG'] 		= $hitung['KARUNG'];
+				$getdata[$key]['PETI'] 			= $hitung['PETI'];
+			}
+			if (!empty($cari_coly2)) {
+				$hitung = $this->itungcolly($cari_coly2, 'coly2');
+				$getdata[$key]['DUS_KECIL'] 	= $hitung['DUS_KECIL'];
+				$getdata[$key]['DUS_SEDANG'] 	= $hitung['DUS_SEDANG'];
+				$getdata[$key]['DUS_PANJANG'] 	= $hitung['DUS_PANJANG'];
+				$getdata[$key]['KARUNG'] 		= $hitung['KARUNG'];
+				$getdata[$key]['PETI'] 			= $hitung['PETI'];
+			}
+			$waktu_pelayanan += $value['DETIK_PELAYANAN'];
+			$waktu_packing += $value['DETIK_PACKING'];
+		}
+		
+		// echo "<pre>";print_r($waktu_packing);exit();
+		include APPPATH.'third_party/Excel/PHPExcel.php';
+		$excel = new PHPExcel();
+		$excel->getProperties()->setCreator('CV. KHS')
+					->setLastModifiedBy('Quick')
+					->setTitle("Kapasitas Gudang Sparepart")
+					->setSubject("CV. KHS")
+					->setDescription("Kapasitas Gudang Sparepart")
+					->setKeywords("KGS");
+		
+		$style_head = array(
+			'fill' => array(
+				'type' => PHPExcel_Style_Fill::FILL_SOLID,
+				'color' => array('rgb' => 'ACD4FF'),
+			),
+			'font' => array('bold' => true), 
+			'alignment' => array(
+				'horizontal'=> PHPExcel_Style_Alignment::HORIZONTAL_CENTER, 
+				'vertical' 	=> PHPExcel_Style_Alignment::VERTICAL_CENTER,
+				'wrap'		=> true
+			),
+			'borders' => array(
+				'top' 	=> array('style'  => PHPExcel_Style_Border::BORDER_THIN), 
+				'right' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),  
+				'bottom'=> array('style'  => PHPExcel_Style_Border::BORDER_THIN),
+				'left' 	=> array('style'  => PHPExcel_Style_Border::BORDER_THIN) 
+			)
+		);
+		
+		$style_head2 = array(
+			'fill' => array(
+				'type' => PHPExcel_Style_Fill::FILL_SOLID,
+				'color' => array('rgb' => 'BDF7C9'),
+			),
+			'font' => array('bold' => true), 
+			'alignment' => array(
+				'horizontal'=> PHPExcel_Style_Alignment::HORIZONTAL_CENTER, 
+				'vertical' 	=> PHPExcel_Style_Alignment::VERTICAL_CENTER,
+				'wrap'		=> true
+			),
+			'borders' => array(
+				'top' 	=> array('style'  => PHPExcel_Style_Border::BORDER_THIN), 
+				'right' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),  
+				'bottom'=> array('style'  => PHPExcel_Style_Border::BORDER_THIN),
+				'left' 	=> array('style'  => PHPExcel_Style_Border::BORDER_THIN) 
+			)
+		);
+		
+		$style_col = array(
+			'alignment' => array(
+				'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER, 
+				'vertical'	 => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+				'wrap'		 => true
+			),
+			'borders' => array(
+				'top' 		=> array('style'  => PHPExcel_Style_Border::BORDER_THIN), 
+				'right' 	=> array('style'  => PHPExcel_Style_Border::BORDER_THIN),  
+				'bottom' 	=> array('style'  => PHPExcel_Style_Border::BORDER_THIN),
+				'left' 		=> array('style'  => PHPExcel_Style_Border::BORDER_THIN) 
+			)
+		);
+
+		$excel->setActiveSheetIndex(0)->setCellValue('A1', "Tanggal Input : ".$tgl_awal." - ".$tgl_akhir.""); 
+		$excel->getActiveSheet()->mergeCells("A1:AE1"); 
+		
+		$excel->setActiveSheetIndex(0)->setCellValue("A3", "No"); // rowspan 3
+		$excel->getActiveSheet()->mergeCells("A3:A5"); 
+		$excel->getActiveSheet()->getStyle('A3:A5')->applyFromArray($style_head);
+		$excel->setActiveSheetIndex(0)->setCellValue("B3", "Input"); //colspan 2
+		$excel->getActiveSheet()->mergeCells("B3:C3"); 
+		$excel->getActiveSheet()->getStyle('B3:C3')->applyFromArray($style_head);
+		$excel->setActiveSheetIndex(0)->setCellValue("B4", "Tanggal"); // rowspan 2
+		$excel->getActiveSheet()->mergeCells("B4:B5"); 
+		$excel->getActiveSheet()->getStyle("B4:B5")->applyFromArray($style_head);
+		$excel->setActiveSheetIndex(0)->setCellValue("C4", "Jam");// rowspan 2
+		$excel->getActiveSheet()->mergeCells("C4:C5"); 
+		$excel->getActiveSheet()->getStyle("C4:C5")->applyFromArray($style_head);
+		$excel->setActiveSheetIndex(0)->setCellValue("D3", "Dokumen"); // colspan 5
+		$excel->getActiveSheet()->mergeCells("D3:H3"); 
+		$excel->getActiveSheet()->getStyle("D3:H3")->applyFromArray($style_head);
+		$excel->setActiveSheetIndex(0)->setCellValue("D4", "Jenis");// rowspan 2
+		$excel->getActiveSheet()->mergeCells("D4:D5"); 
+		$excel->getActiveSheet()->getStyle("D4:D5")->applyFromArray($style_head);
+		$excel->setActiveSheetIndex(0)->setCellValue("E4", "Nomor");// rowspan 2
+		$excel->getActiveSheet()->mergeCells("E4:E5"); 
+		$excel->getActiveSheet()->getStyle("E4:E5")->applyFromArray($style_head);
+		$excel->setActiveSheetIndex(0)->setCellValue("F4", "Jumlah Item");// rowspan 2
+		$excel->getActiveSheet()->mergeCells("F4:F5"); 
+		$excel->getActiveSheet()->getStyle("F4:F5")->applyFromArray($style_head);
+		$excel->setActiveSheetIndex(0)->setCellValue("G4", "Jumlah Pcs");// rowspan 2
+		$excel->getActiveSheet()->mergeCells("G4:G5"); 
+		$excel->getActiveSheet()->getStyle("G4:G5")->applyFromArray($style_head);
+		$excel->setActiveSheetIndex(0)->setCellValue("H4", "Ket");// rowspan 2
+		$excel->getActiveSheet()->mergeCells("H4:H5"); 
+		$excel->getActiveSheet()->getStyle("H4:H5")->applyFromArray($style_head);
+		$excel->setActiveSheetIndex(0)->setCellValue("I3", "Pelayanan"); //colspan 10
+		$excel->getActiveSheet()->mergeCells("I3:R3"); 
+		$excel->getActiveSheet()->getStyle("I3:R3")->applyFromArray($style_head2);
+		$excel->setActiveSheetIndex(0)->setCellValue("I4", "PIC"); // rowspan 2
+		$excel->getActiveSheet()->mergeCells("I4:I5"); 
+		$excel->getActiveSheet()->getStyle("I4:I5")->applyFromArray($style_head2);
+		$excel->setActiveSheetIndex(0)->setCellValue("J4", "Mulai"); //COLSPAN2
+		$excel->getActiveSheet()->mergeCells("J4:K4"); 
+		$excel->getActiveSheet()->getStyle("J4:K4")->applyFromArray($style_head2);
+		$excel->setActiveSheetIndex(0)->setCellValue("J5", "Tanggal");
+		$excel->getActiveSheet()->getStyle("J5")->applyFromArray($style_head2);
+		$excel->setActiveSheetIndex(0)->setCellValue("K5", "Jam");
+		$excel->getActiveSheet()->getStyle("K5")->applyFromArray($style_head2);
+		$excel->setActiveSheetIndex(0)->setCellValue("L4", "Selesai"); //COLSPAN2
+		$excel->getActiveSheet()->mergeCells("L4:M4"); 
+		$excel->getActiveSheet()->getStyle("L4:M4")->applyFromArray($style_head2);
+		$excel->setActiveSheetIndex(0)->setCellValue("L5", "Tanggal");
+		$excel->getActiveSheet()->getStyle("L5")->applyFromArray($style_head2);
+		$excel->setActiveSheetIndex(0)->setCellValue("M5", "Jam");
+		$excel->getActiveSheet()->getStyle("M5")->applyFromArray($style_head2);
+		$excel->setActiveSheetIndex(0)->setCellValue("N4", "Waktu");// rowspan 2
+		$excel->getActiveSheet()->mergeCells("N4:N5"); 
+		$excel->getActiveSheet()->getStyle("N4:N5")->applyFromArray($style_head2);
+		$excel->setActiveSheetIndex(0)->setCellValue("O4", "Terpenuhi");//COLSPAN2
+		$excel->getActiveSheet()->mergeCells("O4:P4"); 
+		$excel->getActiveSheet()->getStyle("O4:P4")->applyFromArray($style_head2);
+		$excel->setActiveSheetIndex(0)->setCellValue("O5", "Item");
+		$excel->getActiveSheet()->getStyle("O5")->applyFromArray($style_head2);
+		$excel->setActiveSheetIndex(0)->setCellValue("P5", "Pcs");
+		$excel->getActiveSheet()->getStyle("P5")->applyFromArray($style_head2);
+		$excel->setActiveSheetIndex(0)->setCellValue("Q4", "Tidak Terpenuhi");//COLSPAN2
+		$excel->getActiveSheet()->mergeCells("Q4:R4"); 
+		$excel->getActiveSheet()->getStyle("Q4:R4")->applyFromArray($style_head2);
+		$excel->setActiveSheetIndex(0)->setCellValue("Q5", "Item");
+		$excel->getActiveSheet()->getStyle("Q5")->applyFromArray($style_head2);
+		$excel->setActiveSheetIndex(0)->setCellValue("R5", "Pcs");
+		$excel->getActiveSheet()->getStyle("R5")->applyFromArray($style_head2);
+		$excel->setActiveSheetIndex(0)->setCellValue("S3", "Packing"); //colspan 13
+		$excel->getActiveSheet()->mergeCells("S3:AF3"); 
+		$excel->getActiveSheet()->getStyle("S3:AF3")->applyFromArray($style_head);
+		$excel->setActiveSheetIndex(0)->setCellValue("S4", "PIC"); // rowspan 2
+		$excel->getActiveSheet()->mergeCells("S4:S5"); 
+		$excel->getActiveSheet()->getStyle("S4:S5")->applyFromArray($style_head);
+		$excel->setActiveSheetIndex(0)->setCellValue("T4", "Mulai"); //COLSPAN2
+		$excel->getActiveSheet()->mergeCells("T4:U4"); 
+		$excel->getActiveSheet()->getStyle("T4:U4")->applyFromArray($style_head);
+		$excel->setActiveSheetIndex(0)->setCellValue("T5", "Tanggal");
+		$excel->getActiveSheet()->getStyle('T5')->applyFromArray($style_head);
+		$excel->setActiveSheetIndex(0)->setCellValue("U5", "Jam");
+		$excel->getActiveSheet()->getStyle('U5')->applyFromArray($style_head);
+		$excel->setActiveSheetIndex(0)->setCellValue("V4", "Selesai"); //COLSPAN2
+		$excel->getActiveSheet()->mergeCells("V4:W4"); 
+		$excel->getActiveSheet()->getStyle("V4:W4")->applyFromArray($style_head);
+		$excel->setActiveSheetIndex(0)->setCellValue("V5", "Tanggal");
+		$excel->getActiveSheet()->getStyle('V5')->applyFromArray($style_head);
+		$excel->setActiveSheetIndex(0)->setCellValue("W5", "Jam");
+		$excel->getActiveSheet()->getStyle('W5')->applyFromArray($style_head);
+		$excel->setActiveSheetIndex(0)->setCellValue("X4", "Waktu"); // rowspan 2
+		$excel->getActiveSheet()->mergeCells("X4:X5"); 
+		$excel->getActiveSheet()->getStyle("X4:X5")->applyFromArray($style_head);
+		$excel->setActiveSheetIndex(0)->setCellValue("Y4", "Item"); // rowspan 2
+		$excel->getActiveSheet()->mergeCells("Y4:Y5"); 
+		$excel->getActiveSheet()->getStyle("Y4:Y5")->applyFromArray($style_head);
+		$excel->setActiveSheetIndex(0)->setCellValue("Z4", "Pcs"); // rowspan 2
+		$excel->getActiveSheet()->mergeCells("Z4:Z5"); 
+		$excel->getActiveSheet()->getStyle("Z4:Z5")->applyFromArray($style_head);
+		$excel->setActiveSheetIndex(0)->setCellValue("AA4", "Coly"); //COLSPAN 6
+		$excel->getActiveSheet()->mergeCells("AA4:AF4"); 
+		$excel->getActiveSheet()->getStyle("AA4:AF4")->applyFromArray($style_head);
+		$excel->setActiveSheetIndex(0)->setCellValue("AA5", "Dus Kecil");
+		$excel->getActiveSheet()->getStyle('AA5')->applyFromArray($style_head);
+		$excel->setActiveSheetIndex(0)->setCellValue("AB5", "Dus Sedang");
+		$excel->getActiveSheet()->getStyle('AB5')->applyFromArray($style_head);
+		$excel->setActiveSheetIndex(0)->setCellValue("AC5", "Dus Panjang");
+		$excel->getActiveSheet()->getStyle('AC5')->applyFromArray($style_head);
+		$excel->setActiveSheetIndex(0)->setCellValue("AD5", "Karung");
+		$excel->getActiveSheet()->getStyle('AD5')->applyFromArray($style_head);
+		$excel->setActiveSheetIndex(0)->setCellValue("AE5", "Peti");
+		$excel->getActiveSheet()->getStyle('AE5')->applyFromArray($style_head);
+		$excel->setActiveSheetIndex(0)->setCellValue("AF5", "Jumlah");
+		$excel->getActiveSheet()->getStyle('AF5')->applyFromArray($style_head);
+
+		$no=1;
+		$numrow = 6;
+			foreach ($getdata as $val) {
+				$excel->setActiveSheetIndex(0)->setCellValue('A'.$numrow, $no);
+				$excel->setActiveSheetIndex(0)->setCellValue('B'.$numrow, $val['TGL_INPUT']);
+				$excel->setActiveSheetIndex(0)->setCellValue('C'.$numrow, $val['JAM_INPUT']);
+				$excel->setActiveSheetIndex(0)->setCellValue('D'.$numrow, $val['JENIS_DOKUMEN']);
+				$excel->setActiveSheetIndex(0)->setCellValue('E'.$numrow, $val['NO_DOKUMEN']);
+				$excel->setActiveSheetIndex(0)->setCellValue('F'.$numrow, $val['JUMLAH_ITEM']);
+				$excel->setActiveSheetIndex(0)->setCellValue('G'.$numrow, $val['JUMLAH_PCS']);
+				$excel->setActiveSheetIndex(0)->setCellValue('H'.$numrow, $val['KETERANGAN'].' '.$val['BON']);
+				$excel->setActiveSheetIndex(0)->setCellValue('I'.$numrow, $val['PIC_PELAYAN']);
+				$excel->setActiveSheetIndex(0)->setCellValue('J'.$numrow, $val['TGL_MULAI_PELAYANAN']);
+				$excel->setActiveSheetIndex(0)->setCellValue('K'.$numrow, $val['JAM_MULAI_PELAYANAN']);
+				$excel->setActiveSheetIndex(0)->setCellValue('L'.$numrow, $val['TGL_SELESAI_PELAYANAN']);
+				$excel->setActiveSheetIndex(0)->setCellValue('M'.$numrow, $val['JAM_SELESAI_PELAYANAN']);
+				$excel->setActiveSheetIndex(0)->setCellValue('N'.$numrow, $val['WAKTU_PELAYANAN']);
+				$excel->setActiveSheetIndex(0)->setCellValue('O'.$numrow, !empty($val['TGL_SELESAI_PELAYANAN']) ? $val['JML_ITEM_TERLAYANI'] : '');
+				$excel->setActiveSheetIndex(0)->setCellValue('P'.$numrow, !empty($val['TGL_SELESAI_PELAYANAN']) ? $val['JML_PCS_TERLAYANI'] : '');
+				$excel->setActiveSheetIndex(0)->setCellValue('Q'.$numrow, !empty($val['TGL_SELESAI_PELAYANAN']) ? $val['JUMLAH_ITEM'] - $val['JML_ITEM_TERLAYANI'] : '');
+				$excel->setActiveSheetIndex(0)->setCellValue('R'.$numrow, !empty($val['TGL_SELESAI_PELAYANAN']) ? $val['JUMLAH_PCS'] - $val['JML_PCS_TERLAYANI'] : '');
+				$excel->setActiveSheetIndex(0)->setCellValue('S'.$numrow, $val['PIC_PACKING']);
+				$excel->setActiveSheetIndex(0)->setCellValue('T'.$numrow, $val['TGL_MULAI_PACKING']);
+				$excel->setActiveSheetIndex(0)->setCellValue('U'.$numrow, $val['JAM_MULAI_PACKING']);
+				$excel->setActiveSheetIndex(0)->setCellValue('V'.$numrow, $val['TGL_SELESAI_PACKING']);
+				$excel->setActiveSheetIndex(0)->setCellValue('W'.$numrow, $val['JAM_SELESAI_PACKING']);
+				$excel->setActiveSheetIndex(0)->setCellValue('X'.$numrow, $val['WAKTU_PACKING']);
+				$excel->setActiveSheetIndex(0)->setCellValue('Y'.$numrow, !empty($val['TGL_SELESAI_PACKING']) ? $val['JML_ITEM_TERLAYANI'] : '');
+				$excel->setActiveSheetIndex(0)->setCellValue('Z'.$numrow, !empty($val['TGL_SELESAI_PACKING']) ? $val['JML_PCS_TERLAYANI'] : '');
+				$excel->setActiveSheetIndex(0)->setCellValue('AA'.$numrow, $val['DUS_KECIL'] != 0 ? $val['DUS_KECIL'] : '');
+				$excel->setActiveSheetIndex(0)->setCellValue('AB'.$numrow, $val['DUS_SEDANG'] != 0 ? $val['DUS_SEDANG'] : '');
+				$excel->setActiveSheetIndex(0)->setCellValue('AC'.$numrow, $val['DUS_PANJANG'] != 0 ? $val['DUS_PANJANG'] : '');
+				$excel->setActiveSheetIndex(0)->setCellValue('AD'.$numrow, $val['KARUNG'] != 0 ? $val['KARUNG'] : '');
+				$excel->setActiveSheetIndex(0)->setCellValue('AE'.$numrow, $val['PETI'] != 0 ? $val['PETI'] : '');
+				$excel->setActiveSheetIndex(0)->setCellValue('AF'.$numrow, "=SUM(AA$numrow:AE$numrow)");
+
+				$excel->getActiveSheet()->getStyle('A'.$numrow)->applyFromArray($style_col);
+				$excel->getActiveSheet()->getStyle('B'.$numrow)->applyFromArray($style_col);
+				$excel->getActiveSheet()->getStyle('C'.$numrow)->applyFromArray($style_col);
+				$excel->getActiveSheet()->getStyle('D'.$numrow)->applyFromArray($style_col);
+				$excel->getActiveSheet()->getStyle('E'.$numrow)->applyFromArray($style_col);
+				$excel->getActiveSheet()->getStyle('F'.$numrow)->applyFromArray($style_col);
+				$excel->getActiveSheet()->getStyle('G'.$numrow)->applyFromArray($style_col);
+				$excel->getActiveSheet()->getStyle('H'.$numrow)->applyFromArray($style_col);
+				$excel->getActiveSheet()->getStyle('I'.$numrow)->applyFromArray($style_col);
+				$excel->getActiveSheet()->getStyle('J'.$numrow)->applyFromArray($style_col);
+				$excel->getActiveSheet()->getStyle('K'.$numrow)->applyFromArray($style_col);
+				$excel->getActiveSheet()->getStyle('L'.$numrow)->applyFromArray($style_col);
+				$excel->getActiveSheet()->getStyle('M'.$numrow)->applyFromArray($style_col);
+				$excel->getActiveSheet()->getStyle('N'.$numrow)->applyFromArray($style_col);
+				$excel->getActiveSheet()->getStyle('O'.$numrow)->applyFromArray($style_col);
+				$excel->getActiveSheet()->getStyle('P'.$numrow)->applyFromArray($style_col);
+				$excel->getActiveSheet()->getStyle('Q'.$numrow)->applyFromArray($style_col);
+				$excel->getActiveSheet()->getStyle('R'.$numrow)->applyFromArray($style_col);
+				$excel->getActiveSheet()->getStyle('S'.$numrow)->applyFromArray($style_col);
+				$excel->getActiveSheet()->getStyle('T'.$numrow)->applyFromArray($style_col);
+				$excel->getActiveSheet()->getStyle('U'.$numrow)->applyFromArray($style_col);
+				$excel->getActiveSheet()->getStyle('V'.$numrow)->applyFromArray($style_col);
+				$excel->getActiveSheet()->getStyle('W'.$numrow)->applyFromArray($style_col);
+				$excel->getActiveSheet()->getStyle('X'.$numrow)->applyFromArray($style_col);
+				$excel->getActiveSheet()->getStyle('Y'.$numrow)->applyFromArray($style_col);
+				$excel->getActiveSheet()->getStyle('Z'.$numrow)->applyFromArray($style_col);
+				$excel->getActiveSheet()->getStyle('AA'.$numrow)->applyFromArray($style_col);
+				$excel->getActiveSheet()->getStyle('AB'.$numrow)->applyFromArray($style_col);
+				$excel->getActiveSheet()->getStyle('AC'.$numrow)->applyFromArray($style_col);
+				$excel->getActiveSheet()->getStyle('AD'.$numrow)->applyFromArray($style_col);
+				$excel->getActiveSheet()->getStyle('AE'.$numrow)->applyFromArray($style_col);
+				$excel->getActiveSheet()->getStyle('AF'.$numrow)->applyFromArray($style_col);
+			$numrow++;
+			$no++; 
+			}
+
+		//TOTAL
+		$akhir = $numrow-1;
+		$excel->setActiveSheetIndex(0)->setCellValue('F'.$numrow, "=SUM(F6:F$akhir)");
+		$excel->setActiveSheetIndex(0)->setCellValue('G'.$numrow, "=SUM(G6:G$akhir)");
+		$excel->setActiveSheetIndex(0)->setCellValue('N'.$numrow, $this->convers_time($waktu_pelayanan));
+		$excel->setActiveSheetIndex(0)->setCellValue('O'.$numrow, "=SUM(O6:O$akhir)");
+		$excel->setActiveSheetIndex(0)->setCellValue('P'.$numrow, "=SUM(P6:P$akhir)");
+		$excel->setActiveSheetIndex(0)->setCellValue('Q'.$numrow, "=SUM(Q6:Q$akhir)");
+		$excel->setActiveSheetIndex(0)->setCellValue('R'.$numrow, "=SUM(R6:R$akhir)");
+		$excel->setActiveSheetIndex(0)->setCellValue('X'.$numrow, $this->convers_time($waktu_packing));
+		$excel->setActiveSheetIndex(0)->setCellValue('Y'.$numrow, "=SUM(Y6:Y$akhir)");
+		$excel->setActiveSheetIndex(0)->setCellValue('Z'.$numrow, "=SUM(Z6:Z$akhir)");
+		$excel->setActiveSheetIndex(0)->setCellValue('AA'.$numrow, "=SUM(AA6:AA$akhir)");
+		$excel->setActiveSheetIndex(0)->setCellValue('AB'.$numrow, "=SUM(AB6:AB$akhir)");
+		$excel->setActiveSheetIndex(0)->setCellValue('AC'.$numrow, "=SUM(AC6:AC$akhir)");
+		$excel->setActiveSheetIndex(0)->setCellValue('AD'.$numrow, "=SUM(AD6:AD$akhir)");
+		$excel->setActiveSheetIndex(0)->setCellValue('AE'.$numrow, "=SUM(AE6:AE$akhir)");
+		$excel->setActiveSheetIndex(0)->setCellValue('AF'.$numrow, "=SUM(AF6:AF$akhir)");
+		$excel->getActiveSheet()->getStyle('F'.$numrow)->applyFromArray($style_col);
+		$excel->getActiveSheet()->getStyle('G'.$numrow)->applyFromArray($style_col);
+		$excel->getActiveSheet()->getStyle('N'.$numrow)->applyFromArray($style_col);
+		$excel->getActiveSheet()->getStyle('O'.$numrow)->applyFromArray($style_col);
+		$excel->getActiveSheet()->getStyle('P'.$numrow)->applyFromArray($style_col);
+		$excel->getActiveSheet()->getStyle('Q'.$numrow)->applyFromArray($style_col);
+		$excel->getActiveSheet()->getStyle('R'.$numrow)->applyFromArray($style_col);
+		$excel->getActiveSheet()->getStyle('X'.$numrow)->applyFromArray($style_col);
+		$excel->getActiveSheet()->getStyle('Y'.$numrow)->applyFromArray($style_col);
+		$excel->getActiveSheet()->getStyle('Z'.$numrow)->applyFromArray($style_col);
+		$excel->getActiveSheet()->getStyle('AA'.$numrow)->applyFromArray($style_col);
+		$excel->getActiveSheet()->getStyle('AB'.$numrow)->applyFromArray($style_col);
+		$excel->getActiveSheet()->getStyle('AC'.$numrow)->applyFromArray($style_col);
+		$excel->getActiveSheet()->getStyle('AD'.$numrow)->applyFromArray($style_col);
+		$excel->getActiveSheet()->getStyle('AE'.$numrow)->applyFromArray($style_col);
+		$excel->getActiveSheet()->getStyle('AF'.$numrow)->applyFromArray($style_col);
+
+		for($col = 'A'; $col !== 'AG'; $col++) { // autowidth
+			$excel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
+		}
+		// Set height semua kolom menjadi auto (mengikuti height isi dari kolommnya, jadi otomatis)
+		$excel->getActiveSheet()->getDefaultRowDimension()->setRowHeight(-1);
+		// Set orientasi kertas jadi LANDSCAPE
+		$excel->getActiveSheet()->getPageSetup()->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE);
+		// Set judul file excel nya
+		$excel->getActiveSheet(0)->setTitle("report period");
+		$excel->setActiveSheetIndex(0);
+		// Proses file excel
+		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+		header('Content-Disposition: attachment; filename="Report Period.xlsx"'); 
+		header('Cache-Control: max-age=0');
+		$write = PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
+		$write->save('php://output');
 	}
 }

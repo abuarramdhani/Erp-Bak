@@ -1,5 +1,5 @@
 <?php
-Defined('BASEPATH') or exit('No Direct Script Access Allowed');
+defined('BASEPATH') or exit('No Direct Script Access Allowed');
 
 class M_purchasing extends CI_Model
 {
@@ -7,6 +7,7 @@ class M_purchasing extends CI_Model
     {
         parent::__construct();
         $this->load->database();
+        $this->oracle = $this->load->database('oracle', true);
     }
 
     public function getReleasedOrder()
@@ -26,6 +27,80 @@ class M_purchasing extends CI_Model
                                 AND oprh.APPROVED_DATE is null");
 
         return $query->result_array();
+    }
+
+    public function getReleasedOrderEmergency()
+    {
+        return $this->oracle
+            ->query(
+                "SELECT DISTINCT
+                    oprh.* ,
+                    ppf.national_identifier noind ,
+                    ppf.full_name creator,
+                    kooh.CUT_OFF_DATE
+                FROM
+                    khs.khs_okbj_pre_req_header oprh,
+                    per_people_f ppf,
+                    khs.khs_okbj_order_header kooh
+                WHERE
+                    oprh.created_by = ppf.person_id
+                    AND oprh.PRE_REQ_ID = kooh.PRE_REQ_ID
+                    AND oprh.approved_flag IS NULL
+                    AND oprh.approved_by IS NULL
+                    AND oprh.approved_date IS NULL    
+                    AND kooh.IS_SUSULAN = 'Y'"
+            )
+            ->result_array();
+    }
+
+    public function getReleasedOrderReguler()
+    {
+        return $this->oracle
+            ->query(
+                "SELECT DISTINCT
+                    oprh.* ,
+                    ppf.national_identifier noind ,
+                    ppf.full_name creator,
+                    kooh.CUT_OFF_DATE
+                FROM
+                    khs.khs_okbj_pre_req_header oprh,
+                    per_people_f ppf,
+                    khs.khs_okbj_order_header kooh
+                WHERE
+                    oprh.created_by = ppf.person_id
+                    AND oprh.PRE_REQ_ID = kooh.PRE_REQ_ID
+                    AND oprh.approved_flag IS NULL
+                    AND oprh.approved_by IS NULL
+                    AND oprh.approved_date IS NULL    
+                    AND (kooh.URGENT_FLAG <> 'Y' or kooh.URGENT_FLAG is null)
+                    AND (kooh.IS_SUSULAN <> 'Y' or kooh.IS_SUSULAN is null)"
+            )
+            ->result_array();
+    }
+
+    public function getReleasedOrderUrgent()
+    {
+        return $this->oracle
+            ->query(
+                "SELECT DISTINCT
+                    oprh.* ,
+                    ppf.national_identifier noind ,
+                    ppf.full_name creator,
+                    kooh.CUT_OFF_DATE
+                FROM
+                    khs.khs_okbj_pre_req_header oprh,
+                    per_people_f ppf,
+                    khs.khs_okbj_order_header kooh
+                WHERE
+                    oprh.created_by = ppf.person_id
+                    AND oprh.PRE_REQ_ID = kooh.PRE_REQ_ID
+                    AND oprh.approved_flag IS NULL
+                    AND oprh.approved_by IS NULL
+                    AND oprh.approved_date IS NULL    
+                    AND kooh.URGENT_FLAG = 'Y'
+                    AND (kooh.IS_SUSULAN <> 'Y' or kooh.IS_SUSULAN is null)"
+            )
+            ->result_array();
     }
 
     public function updateReleasedOrder($pre_req_id, $order)
@@ -282,5 +357,45 @@ class M_purchasing extends CI_Model
         order by kooa.APPROVER_TYPE");
 
         return $query->result_array();
+    }
+
+    /**
+     * @param   string  ENUM $status 'SUSULAN', 'URGENT', 'NORMAL' or 'ALL'
+     * @return  int     Outstand order count
+     */
+    public function getUnapprovedOrderCount($status)
+    {
+        return (int) $this->oracle
+            ->query(
+                "SELECT
+                    APPS.KHS_OUTSTAND_OKBJ_PEMBEL_TOT (?) AS \"count\"
+                FROM
+                    DUAL",
+                [
+                    $status,
+                ]
+            )
+            ->row()
+            ->count;
+    }
+
+    /**
+     * @param   string  ENUM $status 'SUSULAN', 'URGENT', 'NORMAL' or 'ALL'
+     * @return  int     Judged order count
+     */
+    public function getJudgedOrderCount($status)
+    {
+        return (int) $this->oracle
+            ->query(
+                "SELECT
+                    APPS.KHS_JUDGED_OKBJ_PEMBEL_TOT (?) AS \"count\"
+                FROM
+                    DUAL",
+                [
+                    $status,
+                ]
+            )
+            ->row()
+            ->count;
     }
 }

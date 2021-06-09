@@ -36,7 +36,7 @@
                                 <div class="panel panel-default">
                                   <div class="panel-heading" style="height: 55px;">Lines of Input Order
                                     <a href="javascript:void(0);" id="group_add" title="Tambah Baris">
-                                      <button type="button" class="btn btn-success pull-right" style="margin-bottom:10px; margin-right: 10px;"><i class="fa fa-fw fa-plus"></i>Add New</button>
+                                      <button tippy-title="Untuk menambah data nama APD" type="button" class="btn btn-success pull-right" style="margin-bottom:10px; margin-right: 10px;"><i class="fa fa-fw fa-plus"></i>Add New</button>
                                     </a>
                                   </div>
                                   <div class="panel-body table-responsive" style="overflow-x: auto;">
@@ -51,7 +51,7 @@
                                           <?php foreach ($daftar_pekerjaan as $key) { ?>
                                             <th><?php echo $key['pekerjaan']; ?></th>
                                           <?php } ?>
-                                          <th>Keterangan</th>
+                                          <th>Alasan Perubahan APD</th>
                                           <th>Lampiran <b style="color: yellow">(*PDF)</b></th>
                                           <th>Action</th>
                                         </tr>
@@ -59,7 +59,7 @@
                                       <tbody id="DetailInputKebutuhanAPD">
                                         <tr style="color: #000;" class="multiinput">
                                           <td id="nomor" style="min-width: 10px;">1</td>
-                                          <td>
+                                          <td tippy-title="Diisi dengan nama APD <br> yang akan diinput">
                                             <select required="" class="form-control apd-select2" onchange="JenisAPD(this)" data-id="1">
                                               <option></option>
                                             </select>
@@ -67,24 +67,24 @@
                                           <td>
                                             <input id="txtKodeItem" readonly="" type="text" class="form-control apd-isk-kode p2k3_see_apd" name="txtKodeItem[]" data-id="1">
                                           </td>
-                                          <td>
+                                          <td tippy-title="Jumlah kebutuhan umum ditunjukkan sebagai candangan internal seksi tidak untuk cadangan semua pekerja di seksi terkait">
                                             <input required="" type="number" class="form-control apd-isk-kode" name="txtkebUmum[]">
                                           </td>
-                                          <td>
+                                          <td tippy-title="Pcs/Bln/Org">
                                             <input required="" type="number" class="form-control apd-isk-kode" name="txtkebStaff[]">
                                           </td>
                                           <?php foreach ($daftar_pekerjaan as $key) { ?>
-                                            <td>
+                                            <td tippy-title="Pcs/Bln/Org">
                                               <input required="" type="number" class="form-control" name="p2k3_isk_standar[]" min="0">
                                             </td>
                                           <?php } ?>
-                                          <td>
+                                          <td tippy-title="Kolom keterangan wajib diisi dengan alasan yang tepat">
                                             <input required="" class="form-control" name="keterangan[]" placeholder="Keterangan" />
                                           </td>
-                                          <td>
+                                          <td tippy-title="Diisi dengan lampiran atau file tambahkan bila ada seperti: foto, analisa, kebutuhan, analisa potensi bahaya">
                                             <input class="form-control" name="lampiran[]" type="file" accept="application/pdf" placeholder="Keterangan" />
                                           </td>
-                                          <td>
+                                          <td tippy-title="Kolom action digunakan untuk menghapus data APD yang sudah diinput bila terjadi kesalahan dalam penginputan data">
                                             <button class="btn btn-default group_rem">
                                               <a href="javascript:void(0);" title="Hapus Baris">
                                                 <span class="glyphicon glyphicon-trash"></span>
@@ -112,9 +112,9 @@
                           $d = 'disabled';
                         }
                         ?>
-                        <a href="<?php echo site_url('P2K3_V2/Order/inputStandarKebutuhan'); ?>" class="btn btn-primary btn-lg btn-rect">Back</a>
+                        <a tippy-title="Untuk kembali ke menu sebelumnya" href="<?php echo site_url('P2K3_V2/Order/inputStandarKebutuhan'); ?>" class="btn btn-primary btn-lg btn-rect">Back</a>
                         &nbsp;&nbsp;
-                        <button <?php echo $d; ?> type="submit" class="btn btn-primary btn-lg btn-rect">
+                        <button tippy-title="Untuk menyimpan data saat data sudah selesai diinput jika terjadi perubahan standar atau input standar baru" onclick="return confirm('Apa anda yakin ingin Menginput Data Ini?')" <?php echo $d; ?> type="submit" class="btn btn-primary btn-lg btn-rect">
                           Tambah Data
                         </button>
                       </div>
@@ -132,3 +132,22 @@
 <div id="surat-loading" style="top: 0;left: 0;right: 0;bottom: 0; margin: auto; position: fixed; background: rgba(0,0,0,.5); z-index: 11;" hidden="hidden">
   <img src="http://erp.quick.com/assets/img/gif/loadingtwo.gif" style="position: fixed; top: 0;left: 0;right: 0;bottom: 0; margin: auto; width: 40%;">
 </div>
+<script src="<?= base_url('assets/plugins/@popperjs/core/popper.min.js') ?>"></script>
+<script src="<?= base_url('assets/plugins/tippy.js/dist/tippy-bundle.umd.min.js') ?>"></script>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $(window).keydown(function(event) {
+      if (event.keyCode == 13) {
+        event.preventDefault();
+        return false;
+      }
+    });
+
+    /**
+     * initialize tippy
+     * 
+     * @see /assets/js/customAPD.js
+     */
+    tippyInit();
+  });
+</script>

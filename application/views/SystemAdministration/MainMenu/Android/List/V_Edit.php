@@ -83,7 +83,8 @@
 					<td>Valid Until (Default Akhir Kontrak)</td>
 					<td>
 						<div id="datepicker" class="input-group date" data-provide="datepicker">
-						   <input type="text" id="input_valid_until" class="form-control" name="valid-until" value="<?php echo date('Y-m-d', strtotime($valid['akhkontrak'])); ?>">
+						   	<input type="text" id="input_valid_until" class="form-control" name="valid-until" 
+						   		value="<?php echo $android[0]['validation'] == 1 ?  date('Y-m-d', strtotime($android[0]['valid_until'])) : date('Y-m-d', strtotime($valid['akhkontrak'])); ?>">
 						<!-- </div> -->
 
 						    <div class="input-group-addon">
@@ -103,7 +104,7 @@
 	
 $(document).ready(function(){
 	$('#datepicker').datepicker({
-		    format: 'yyyy/mm/dd'
+		    format: 'yyyy-mm-dd'
 		});
 
 let valid = $('#valValidasi').val();
@@ -117,13 +118,13 @@ if(valid == 1){
       if ( value == 1)
       {
         $("#row_valid_until").show();
-        $("#input_valid_until").attr('value','<?php echo date('Y/m/d', strtotime($valid['akhkontrak'])); ?>');
+        $("#input_valid_until").attr('value','<?php echo date('Y-m-d', strtotime($valid['akhkontrak'])); ?>');
 
       }
       else
       {
         $("#row_valid_until").hide();
-        $("#input_valid_until").attr('value','1000/01/01');
+        $("#input_valid_until").attr('value','1000-01-01');
       }
     });
 });

@@ -1,6 +1,6 @@
 <?php $num=1; $i=0; foreach($hasil as $val){ 
 // echo "<pre>"; print_r($val[$i]); exit();
- if ($val['jml_spb'] == '0' && $val['jml_pelayanan'] == '0' && $val['jml_pengeluaran'] == '0' && $val['jml_packing'] == '0') {
+ if ($val['jml_spb'] == '0' && $val['jml_pelayanan'] == '0' && $val['jml_packing'] == '0') {
     
 } else{
 ?>
@@ -133,90 +133,6 @@
         </div>
 
         <div class="col-md-12">
-            <label class="text-right">Pengeluaran</label>
-        </div>
-        <div class="col-md-3">
-            Terselesaikan : <?= $val['jml_pengeluaran'] ?> lembar
-        </div>
-        <div class="col-md-3">
-            Tanggungan : <?= $val['krg_pengeluaran'] ?> lembar
-        </div>
-        <div class="col-md-4">
-            <button type="button" class="btn btn-xs btn-info" onclick="addRinPengeluaran2(this, <?= $num?>)">Rincian</button></td>
-        </div>
-        <div class="col-md-12">
-            <div id="RinPengeluaran1<?= $num?>" style="display:none">
-                <center><label>Terselesaikan</label></center>
-                <table class="table table-bordered table-hover table-striped text-center" id="myTable" style="width: 100%;table-layout:100%">
-                    <thead class="bg-primary">
-                        <tr>
-                            <th>No</th>
-                            <th>Tanggal</th>
-                            <th>Jenis Dokumen</th>
-                            <th>No Dokumen</th>
-                            <th>Jumlah Item</th>
-                            <th>Jumlah Pcs</th>
-                            <th>Jam Mulai</th>
-                            <th>Jam Selesai</th>
-                            <th>Waktu</th>
-                            <th>PIC</th>
-                            <th>Keterangan</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php $no=1; foreach($val['pengeluaran'] as $pglr){ ?>
-                            <tr>
-                                <td style="width: 5px"><?= $no; ?></td>
-                                <td><input type="hidden" name="tgl_pglr[]" value="<?= $pglr['TGL_DIBUAT']?>"><?= $pglr['TGL_DIBUAT']?></td>
-                                <td><input type="hidden" name="jenis_pglr[]" value="<?= $pglr['JENIS_DOKUMEN']?>"><?= $pglr['JENIS_DOKUMEN']?></td>
-                                <td><input type="hidden" name="no_pglr[]" value="<?= $pglr['NO_DOKUMEN']?>"><?= $pglr['NO_DOKUMEN']?></td>
-                                <td><input type="hidden" name="jml_item_pglr[]" value="<?= $pglr['JUMLAH_ITEM']?>"><?= $pglr['JUMLAH_ITEM']?></td>
-                                <td><input type="hidden" name="jml_pcs_pglr[]" value="<?= $pglr['JUMLAH_PCS']?>"><?= $pglr['JUMLAH_PCS']?></td>
-                                <td><?= $pglr['MULAI_PENGELUARAN']?></td>
-                                <td><?= $pglr['SELESAI_PENGELUARAN']?></td>
-                                <td><input type="hidden" name="waktu_pengeluaran[]" value="<?= $pglr['WAKTU_PENGELUARAN']?>"><?= $pglr['WAKTU_PENGELUARAN']?></td>
-                                <td><input type="hidden" name="pic_pglr[]" value="<?= $pglr['PIC_PENGELUARAN']?>"><?= $pglr['PIC_PENGELUARAN']?></td>
-                                <td><input type="hidden" name="urgent_pglr[]" value="<?= $pglr['URGENT']?> <?= $pglr['BON'] ?>"><?= $pglr['URGENT']?> <?= $pglr['BON'] ?></td>
-                            </tr>
-                        <?php $no++;} ?>
-                        
-                    </tbody>
-                </table>
-            </div>
-            <div id="RinPengeluaran2<?= $num?>" style="display:none">
-                <center><label>Tanggungan</label></center>
-                <table class="table table-bordered table-hover table-striped text-center" id="myTable" style="width: 100%;table-layout:100%">
-                    <thead class="bg-primary">
-                        <tr>
-                            <th>No</th>
-                            <th>Tanggal</th>
-                            <th>Jenis Dokumen</th>
-                            <th>No Dokumen</th>
-                            <th>Jumlah Item</th>
-                            <th>Jumlah Pcs</th>
-                            <th>PIC</th>
-                            <th>Keterangan</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php $no=1; foreach($val['krgpengeluaran'] as $kpglr){ ?>
-                            <tr>
-                                <td style="width: 5px"><?= $no; ?></td>
-                                <td><input type="hidden" name="tgl_krgpglr[]" value="<?= $kpglr['TGL_DIBUAT']?>"><?= $kpglr['TGL_DIBUAT']?></td>
-                                <td><input type="hidden" name="jenis_krgpglr[]" value="<?= $kpglr['JENIS_DOKUMEN']?>"><?= $kpglr['JENIS_DOKUMEN']?></td>
-                                <td><input type="hidden" name="no_krgpglr[]" value="<?= $kpglr['NO_DOKUMEN']?>"><?= $kpglr['NO_DOKUMEN']?></td>
-                                <td><input type="hidden" name="jml_item_krgpglr[]" value="<?= $kpglr['JUMLAH_ITEM']?>"><?= $kpglr['JUMLAH_ITEM']?></td>
-                                <td><input type="hidden" name="jml_pcs_krgpglr[]" value="<?= $kpglr['JUMLAH_PCS']?>"><?= $kpglr['JUMLAH_PCS']?></td>
-                                <td><input type="hidden" name="pic_krgpglr[]" value="<?= $kpglr['PIC_PELAYAN']?>"><?= $kpglr['PIC_PELAYAN']?></td>
-                                <td><input type="hidden" name="urgent_krgpglr[]" value="<?= $kpglr['URGENT']?> <?= $kpglr['BON'] ?>"><?= $kpglr['URGENT']?> <?= $kpglr['BON'] ?></td>
-                            </tr>
-                        <?php $no++; } ?>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <div class="col-md-12">
             <label class="text-right">Packing</label>
         </div>
         <div class="col-md-3">
@@ -290,7 +206,7 @@
                                 <td><input type="hidden" name="no_krgpck[]" value="<?= $kpck['NO_DOKUMEN']?>"><?= $kpck['NO_DOKUMEN']?></td>
                                 <td><input type="hidden" name="jml_item_krgpck[]" value="<?= $kpck['JUMLAH_ITEM']?>"><?= $kpck['JUMLAH_ITEM']?></td>
                                 <td><input type="hidden" name="jml_pcs_krgpck[]" value="<?= $kpck['JUMLAH_PCS']?>"><?= $kpck['JUMLAH_PCS']?></td>
-                                <td><input type="hidden" name="pic_krgpck[]" value="<?= $kpck['PIC_PENGELUARAN']?>"><?= $kpck['PIC_PENGELUARAN']?></td>
+                                <td><input type="hidden" name="pic_krgpck[]" value="<?= $kpck['PIC_PELAYAN']?>"><?= $kpck['PIC_PELAYAN']?></td>
                                 <td><input type="hidden" name="urgent_krgpck[]" value="<?= $kpck['URGENT']?> <?= $kpck['BON'] ?>"><?= $kpck['URGENT']?> <?= $kpck['BON'] ?></td>
                             </tr>
                         <?php $no++; } ?>

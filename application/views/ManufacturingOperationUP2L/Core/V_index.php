@@ -26,7 +26,7 @@
                             </div>
                             <div class="box-body">
                                 <div class="table-responsive">
-                                    <table class="datatable table table-striped table-bordered table-hover text-left" id="tblCore" style="font-size:12px;">
+                                    <table class="datatable table table-striped table-bordered table-hover text-left" id="tblCore2021" style="font-size:12px;">
                                         <thead class="bg-primary">
                                             <tr>
                                                 <th style="text-align:center; width:30px">No</th>
@@ -42,8 +42,8 @@
 											</tr>
                                         </thead>
                                         <tbody>
-                                            <?php 
-                                                $no = 1; 
+                                            <!-- <?php
+                                                $no = 1;
                                                 foreach($Core as $row):
                                                 $encrypted_string = $this->encrypt->encode($row['core_id']);
 												$encrypted_string = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
@@ -64,15 +64,15 @@
                                                 <td align='center'><?php echo $row['shift'];?></td>
                                                 <td align='center'><?php echo $row['employee_id'];?></td>
 											</tr>
-                                            <?php endforeach; ?>
-                                        </tbody>                                      
+                                            <?php endforeach; ?> -->
+                                        </tbody>
                                     </table>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>    
+            </div>
         </div>
     </div>
 </section>

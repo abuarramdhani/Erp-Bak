@@ -213,6 +213,10 @@ class C_Monhand extends CI_Controller
             } else {
                 $datahandling[$i]['sarana'] = $sarana_handling[0]['nama_handling'];
             }
+            
+            $pic = $this->M_dbhandling->getnamaseksi($datahandling[$i]['last_update_by']);
+            $datahandling[$i]['nama_pic'] = !empty($datahandling[$i]['last_update_by']) ? $pic[0]['nama'] : '';
+            $datahandling[$i]['seksi_pic'] = !empty($datahandling[$i]['last_update_by']) ? $pic[0]['seksi'] : '';
         }
 
         $data['datahandling'] = $datahandling;
@@ -923,12 +927,20 @@ class C_Monhand extends CI_Controller
             <input type="hidden" value="' . $dataHandrev[0]['proses'] .  '" id="pronih"/>
             <div class="col-md-3" style="text-align:right;"><label>Proses</label></div>
             <div class="col-md-8">
-                <select class="form-control select2 Pros_Es" name="Pros_Es" onchange="prosesonchange()" style="width:100%">
-                    <option value="' . $dataHandrev[0]['proses'] . '">' . $dataHandrev[0]['proses'] .  '</option>
-                    ' . $pi . '
-                </select>
+                <input  class="form-control" name="Pros_Es" style="width:100%" value="' . $dataHandrev[0]['proses'] . '" readonly>
             </div>
         </div>';
+        // $selectProses = '
+        // <div class="panel-body">
+        //     <input type="hidden" value="' . $dataHandrev[0]['proses'] .  '" id="pronih"/>
+        //     <div class="col-md-3" style="text-align:right;"><label>Proses</label></div>
+        //     <div class="col-md-8">
+        //         <select class="form-control select2 Pros_Es" name="Pros_Es" onchange="prosesonchange()" style="width:100%">
+        //             <option value="' . $dataHandrev[0]['proses'] . '">' . $dataHandrev[0]['proses'] .  '</option>
+        //             ' . $pi . '
+        //         </select>
+        //     </div>
+        // </div>';
 
         $alur_proses = '';
         $btntambah = '';
@@ -1468,7 +1480,8 @@ class C_Monhand extends CI_Controller
     public function updatereject()
     {
         $id = $this->input->post('id');
-        $this->M_dbhandling->updatereject($id);
+        $alasan = $this->input->post('alasan');
+        $this->M_dbhandling->updatereject($id, $alasan);
     }
     public function suggestseksi()
     {

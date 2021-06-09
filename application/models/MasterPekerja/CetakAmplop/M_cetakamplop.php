@@ -5,7 +5,8 @@ class M_cetakamplop extends CI_Model
     public function __construct()
     {
         parent::__construct();
-        $this->load->database();    
+        $this->load->database();
+        $this->personalia = $this->load->database('personalia', true);
     }
 
     public function getDataWorker()
@@ -135,4 +136,19 @@ class M_cetakamplop extends CI_Model
         return $sql->result_array();
     }
 
+    public function getDetailPkj($noind)
+    {
+        $sql = "SELECT
+                    *,
+                    t.lokasi_kerja
+                from
+                    hrd_khs.tpribadi t
+                left join hrd_khs.tseksi ts on
+                    ts.kodesie = t.kodesie
+                left join hrd_khs.tlokasi_kerja tk on
+                    tk.id_ = t.lokasi_kerja
+                where
+                    noind in ('$noind')";
+        return $this->personalia->query($sql)->result_array();
+    }
 }

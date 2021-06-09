@@ -1,6 +1,6 @@
 <div style="margin-left:20px;margin-right:20px;padding-top:0px" class="print_lkh">
 		<div class="row" style="margin-left:3px;margin-right:3px; size=23px">
-			<h2 style="text-align: center"><b>LAPORAN HASIL KERJA ADMINISTRASI PENGEMBANGAN SISTEM</b></h2>
+			<h2 style="text-align: center"><b>LAPORAN HASIL KERJA ADMINISTRASI INFORMATION & COMMUNICATION TECHNOLOGY</b></h2>
 			<table style="font-size: 12px;">
 				<tr>
 					<th style="text-align: left">

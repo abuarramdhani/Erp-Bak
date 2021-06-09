@@ -12,10 +12,10 @@
               <form action="<?php echo base_url('MonitoringDO/SettingDO/Subinv_submit') ?>" method="post">
                 <div class="form-group">
                   <label for="usr">Sub Inventory</label>
-                  <select class="form-control" name="Subinv" required>
-                    <option value="FG-TKS">FG-TKS</option>
-                    <option value="MLATI-DM">MLATI-DM</option>
-                    <option value="FG-DM">FG-DM</option>
+                    <select class="form-control select2" name="Subinv" required>
+                    <?php foreach ($get as $key => $value): ?>
+                      <option value="<?php echo $value['SUBINVENTORY'] ?>"><?php echo $value['SUBINVENTORY'] ?> (<?php echo $value['GUDANG_PENGIRIM'] ?>)</option>
+                    <?php endforeach; ?>
                   </select>
                 </div>
                 <center><button type="submit" style="!important;font-weight:bold" class="btn btn-success" name="button">Submit</button></center>

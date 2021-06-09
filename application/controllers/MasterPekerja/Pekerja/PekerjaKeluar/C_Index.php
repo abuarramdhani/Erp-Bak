@@ -226,6 +226,7 @@ class C_Index extends CI_Controller
 			'diangkat' 	        => (new DateTime($pekerja->diangkat))->format('d-m-Y'),
 			'masukkerja'        => (new DateTime($pekerja->masukkerja))->format('d-m-Y'),
 			'status_diangkat'   => $pekerja->status_diangkat === 't',
+			'asal_outsourcing'   => @$pekerja->asal_outsourcing,
 			/**Penempatan Jabatan skip */
 			/** */
 			'kd_jbt_dl'					=> $pekerja->kd_jbt_dl,
@@ -234,7 +235,6 @@ class C_Index extends CI_Controller
 			'kd_pkj'						=> $pekerja->kd_pkj,
 			'golkerja'					=> $pekerja->golkerja,
 			'jenispekerjaan'		=> $pekerjaan->jenispekerjaan === 't', // direct = false, indirect = true
-			'npwp'							=> $pekerja->npwp,
 			'ruang'							=> $pekerja->ruang,
 			'lmkontrak'         => $pekerja->lmkontrak,
 			'akhkontrak'        => (new DateTime($pekerja->akhkontrak))->format('d-m-Y'),
@@ -270,6 +270,7 @@ class C_Index extends CI_Controller
 			'statpajak'					=> $pekerja->statpajak,
 			'jtanak'						=> $pekerja->jtanak,
 			'jtbknanak'					=> $pekerja->jtbknanak,
+			'npwp'							=> $pekerja->npwp,
 
 			// lain 
 			'kodesie'						=> $pekerja->kodesie,
@@ -284,6 +285,7 @@ class C_Index extends CI_Controller
 			'uk_baju'           => $pekerja->uk_baju,
 			'uk_celana'         => $pekerja->uk_celana,
 			'uk_sepatu'         => $pekerja->uk_sepatu,
+			'warna_celana'      => $pekerja->warna_celana,
 		);
 
 		// remove whitespace right and left all key
@@ -586,6 +588,7 @@ class C_Index extends CI_Controller
 				'diangkat' 	        => $this->input->post('diangkat') ? date('Y-m-d', strtotime($this->input->post('diangkat'))) : '',
 				'masukkerja'        => $this->input->post('masukkerja') ? date('Y-m-d', strtotime($this->input->post('masukkerja'))) : '',
 				'status_diangkat'   => $this->input->post('status_diangkat'),
+				'asal_outsourcing'   => $this->input->post('asal_outsourcing'),
 				'kd_jbt_dl'					=> $this->input->post('kd_jbt_dl'),
 				// 'jabatan' 	        => $this->input->post('jabatan'),
 				'kd_pkj'						=> $this->input->post('kd_pkj'),
@@ -619,6 +622,7 @@ class C_Index extends CI_Controller
 				'uk_baju'           => $this->input->post('uk_baju'),
 				'uk_celana'         => $this->input->post('uk_celana'),
 				'uk_sepatu'         => $this->input->post('uk_sepatu'),
+				'warna_celana'         => $this->input->post('warna_celana'),
 			);
 
 			$tpekerjaan = array(

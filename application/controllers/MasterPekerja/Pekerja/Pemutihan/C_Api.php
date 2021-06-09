@@ -83,6 +83,6 @@ class C_Api extends CI_Controller
 
     $this->ModelPemutihan->unsetSessionOfPage($id);
 
-    return json_encode(200);
+    return response()->json(200);
   }
 }

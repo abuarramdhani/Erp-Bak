@@ -25,6 +25,17 @@ class C_Laporan extends CI_Controller {
 		 }
 	}
 
+	public function GetSortedItem()
+	{
+		$data = $_POST['data'];
+		// echo "<pre>";
+		// print_r($data);
+		// die;
+
+		$this->session->set_userdata('data_biaya', $data);
+		echo 1;
+	}
+
 	public function Input()
 	{
         $this->checkSession();
@@ -127,49 +138,78 @@ class C_Laporan extends CI_Controller {
 
 	public function Action($reqid)
 	{
-		$button = $this->input->post('btnSubPBI');
-		// $localTransport = $this->input->post('localTransport');
-		// $biayaSurvey = $this->input->post('biayaSurvey');
-		$kodebarang = $this->input->post('kodebarang[]');
-		$rate = $this->input->post('rate[]');
-		$qtyKirim = $this->input->post('qtyKirim[]');
+		$addAdditionalInfo = '';
+		$addAdditionalInfoPrice = '';
+		$data_item = '';
+		$data = $this->session->userdata('data_biaya');
 
-		$nomorUrutPBI = $this->input->post('nomorUrutPBI');
-		$IOPBI = $this->input->post('IOPBI');
-		$vendorPBI = $this->input->post('vendorPBI');
-		$noPackingPBI = $this->input->post('noPackingPBI');
-		$noBLPBI = $this->input->post('noBLPBI');
-		$noPOPBI = $this->input->post('noPOPBI');
-		$noInterorgPBI = $this->input->post('noInterorgPBI');
-		$noReceiptPBI = $this->input->post('noReceiptPBI');
-		// $localTransportCurr = $this->input->post('localTransportCurrency');
-		$currency = $this->input->post('slcCurrencyPBI');
-		$notes = $this->input->post('notesPBI');
+		if($data['source'] == 'ajax'){
+		    $status = 'export';
+			$kodebarang = $data['kode_barang'];
+			$rate = $data['rate'];
+			$qtyKirim = $data['qtyKirim'];
 
-		if ($this->input->post('additionalAdd[]')) {
-			$addAdditionalInfo = $this->input->post('additionalAdd[]');
-			$addAdditionalInfoPrice = $this->input->post('additionalAddPrice[]');
-		}else{
-			$addAdditionalInfo = '';
-			$addAdditionalInfoPrice = '';
+			$data_item = $data['data_item'];
+			$nomorUrutPBI = $data['nomorUrutPBI'];
+			$IOPBI = $data['IOPBI'];
+			$vendorPBI = $data['vendorPBI'];
+			$noPackingPBI = $data['noPackingPBI'];
+			$noBLPBI = $data['noBLPBI'];
+			$noPOPBI = $data['noPOPBI'];
+			$noInterorgPBI = $data['noInterorgPBI'];
+			$noReceiptPBI = $data['noPackingPBI'];
+			// $localTransportCurr = $this->input->post('localTransportCurrency');
+			$currency = $data['slcCurrencyPBI'];
+			$notes = $data['notesPBI'];
+
+			if ($data['addAdditional'][0] != 'empty'){
+				$addAdditionalInfo = $data['addAdditional'];
+				$addAdditionalInfoPrice = $data['addAdditionalPrice'];
+			}
+
+		} else {
+			// $button = $this->input->post('btnSubPBI');
+			// $localTransport = $this->input->post('localTransport');
+			// $biayaSurvey = $this->input->post('biayaSurvey');
+			$status = 'save';
+			$kodebarang = $this->input->post('kodebarang[]');
+			$rate = $this->input->post('rate[]');
+			$qtyKirim = $this->input->post('qtyKirim[]');
+
+			$nomorUrutPBI = $this->input->post('nomorUrutPBI');
+			$IOPBI = $this->input->post('IOPBI');
+			$vendorPBI = $this->input->post('vendorPBI');
+			$noPackingPBI = $this->input->post('noPackingPBI');
+			$noBLPBI = $this->input->post('noBLPBI');
+			$noPOPBI = $this->input->post('noPOPBI');
+			$noInterorgPBI = $this->input->post('noInterorgPBI');
+			$noReceiptPBI = $this->input->post('noReceiptPBI');
+			// $localTransportCurr = $this->input->post('localTransportCurrency');
+			$currency = $this->input->post('slcCurrencyPBI');
+			$notes = $this->input->post('notesPBI');
+
+			if ($this->input->post('additionalAdd[]')) {
+				$addAdditionalInfo = $this->input->post('additionalAdd[]');
+				$addAdditionalInfoPrice = $this->input->post('additionalAddPrice[]');
+			}
 		}
 
 		$header = array(
-							'nomorUrutPBI' => $nomorUrutPBI,
-							'IOPBI' => $IOPBI,
-							'vendorPBI' => $vendorPBI,
-							'noPackingPBI' => $noPackingPBI,
-							'noBLPBI' => $noBLPBI,
-							'noPOPBI' => $noPOPBI,
-							'noInterorgPBI' => $noInterorgPBI,
-							'noReceiptPBI' => $noReceiptPBI,
-							'notes' => $notes
-						 );
-		
-		if ($button == 0) {
-			$this->SaveData($reqid,$kodebarang,$rate,$qtyKirim,$header,$currency,$addAdditionalInfo,$addAdditionalInfoPrice);
-			$this->Export($reqid,$rate,$header,$currency);
+			'nomorUrutPBI' => $nomorUrutPBI,
+			'IOPBI' => $IOPBI,
+			'vendorPBI' => $vendorPBI,
+			'noPackingPBI' => $noPackingPBI,
+			'noBLPBI' => $noBLPBI,
+			'noPOPBI' => $noPOPBI,
+			'noInterorgPBI' => $noInterorgPBI,
+			'noReceiptPBI' => $noReceiptPBI,
+			'notes' => $notes
+		);
 
+		// if ($button == 0) {
+		if ($status == 'export') {
+			$this->SaveData($reqid,$kodebarang,$rate,$qtyKirim,$header,$currency,$addAdditionalInfo,$addAdditionalInfoPrice);
+			$this->Export($reqid,$rate,$header,$currency,$data_item);
 		}else{
 			$this->SaveData($reqid,$kodebarang,$rate,$qtyKirim,$header,$currency,$addAdditionalInfo,$addAdditionalInfoPrice);
 			redirect('PerhitunganBiayaImpor/Laporan/Perhitungan/'.$reqid,'refresh');
@@ -241,9 +281,9 @@ class C_Laporan extends CI_Controller {
         $this->load->view('V_Footer',$data);
 	}
 
-	public function Export($reqid,$rate,$header,$currency)
+	public function Export($reqid,$rate,$header,$currency,$data_item)
 	{
-		
+		$this->session->unset_userdata('data_biaya');
 		$objPHPExcel = new PHPExcel();
 		
 		$objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(3);
@@ -401,7 +441,7 @@ class C_Laporan extends CI_Controller {
 		//end
 		
 		// ambil data
-		$add_cost = $this->M_laporan->getAdditionalCost($reqid);
+		$add_cost = $this->M_laporan->getAdditionalCost($reqid, $data_item);
 		$additional_cost = array();
 		foreach ($add_cost as $key => $add) {
 			if ($add['DESKRIPSI'] != 'BEA MASUK' && $add['DESKRIPSI'] != 'Local Transport and Shipping') {
@@ -415,6 +455,19 @@ class C_Laporan extends CI_Controller {
 		// print_r($additional_cost);exit;
 		$row = 15;
 		$no = 0;
+
+		if ($header['IOPBI'] == 'IPM'){
+			$objPHPExcel->getActiveSheet()->getStyle('P8:T10')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB('E6B8B7');
+			$objPHPExcel->getActiveSheet()->getStyle('P8:T10')->getAlignment()->setWrapText(true);
+			$objPHPExcel->getActiveSheet()->getStyle('P12')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB('E6B8B7');
+			$objPHPExcel->getActiveSheet()->getStyle('P13')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB('E6B8B7');
+			$objPHPExcel->getActiveSheet()->getStyle('P14')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB('E6B8B7');
+			$objPHPExcel->getActiveSheet()->getStyle('P8:T10')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+			$ipm_cell_val = 'Total Biaya : Nilai yang harus dimasukan saat melakukan Actual Cost Adjusment dengan type : Value Cost Adjusment';
+			$objset->mergeCells('P8:T10');
+			$objset->setCellValue("P8", $ipm_cell_val);	
+		}
+
 		for ($i=0; $i < count($line); $i++) { $no++;
 
 			$objset->mergeCells("B".$row.":C".$row);
@@ -466,6 +519,10 @@ class C_Laporan extends CI_Controller {
 			$objset->setCellValue("R".$row, '=P'.$row.'/H'.$row);
 			$objset->setCellValue("S".$row, '=Q'.$row.'+R'.$row);
 			$objset->setCellValue("T".$row, '=R'.$row.'/Q'.$row);
+
+			if ($header['IOPBI'] == 'IPM'){
+				$objPHPExcel->getActiveSheet()->getStyle('P'.$row)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB('E6B8B7');
+			}
 				
 			$row++;
 		}
@@ -475,6 +532,10 @@ class C_Laporan extends CI_Controller {
 		$objPHPExcel->getActiveSheet()->getStyle("N".$row)->getNumberFormat()->setFormatCode('#,##0.00');
 		$objPHPExcel->getActiveSheet()->getStyle("O".$row)->getNumberFormat()->setFormatCode('#,##0.00');
 		$objPHPExcel->getActiveSheet()->getStyle("P".$row)->getNumberFormat()->setFormatCode('#,##0.00');
+
+		if ($header['IOPBI'] == 'IPM'){
+			$objPHPExcel->getActiveSheet()->getStyle('P'.$row)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB('E6B8B7');
+		}
 
 		if ($bea_masuk) {
 			$bea = $bea_masuk[0]['HARGA'];

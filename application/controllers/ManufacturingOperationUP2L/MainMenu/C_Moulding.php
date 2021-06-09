@@ -41,13 +41,81 @@ class C_Moulding extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
-		$data['Moulding'] = $this->M_moulding->monitoringMoulding();
-		
 		$this->load->view('V_Header', $data);
 		$this->load->view('V_Sidemenu', $data);
 		$this->load->view('ManufacturingOperationUP2L/Moulding/V_index', $data);
 		$this->load->view('V_Footer', $data);
 	}
+
+	//edit rozin
+	public function buildMDataTable()
+	{
+		$post = $this->input->post();
+		$bulan = $this->input->post('bulan');
+		$tanggal = $this->input->post('tanggal');
+
+		foreach ($post['columns'] as $val) {
+				$post['search'][$val['data']]['value'] = $val['search']['value'];
+		}
+
+		$countall = $this->M_moulding->countAllM($bulan, $tanggal)[0]['jm'];
+		$countfilter = $this->M_moulding->countFilteredM($post, $bulan, $tanggal)['jm'];
+		 // echo "<pre>"; print_r($countfilter);die;
+		$post['pagination']['from'] = $post['start'] + 1;
+		$post['pagination']['to'] = $post['start'] + $post['length'];
+
+		$protodata = $this->M_moulding->selectM($post, $bulan, $tanggal);
+		// echo "<pre>";
+		// print_r($protodata);
+		// die;
+		$data = [];
+		foreach ($protodata as $row) {
+		$encrypted_string = $this->encrypt->encode($row['moulding_id']);
+		$encrypted_string = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
+
+				$sub_array   = [];
+				$sub_array[] = '<center>'.$row['pagination'].'</center>';
+				$sub_array[] = '<center>
+													<a style="margin-right:4px" href="'.base_url('ManufacturingOperationUP2L/Moulding/read/'.$encrypted_string.'').'" data-toggle="tooltip" data-placement="bottom" title="Read Data"><span class="fa fa-list-alt fa-2x"></span></a>
+													<a style="margin-right:4px" href="'.base_url('ManufacturingOperationUP2L/Moulding/edit/'.$row['moulding_id'].'').'" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o fa-2x"></span></a>
+													<a href="'.base_url('ManufacturingOperationUP2L/Moulding/delete/'.$encrypted_string.'').'" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm(\'Are you sure you want to delete this item?\');"><span class="fa fa-trash fa-2x"></span></a>
+												</center>';
+				$sub_array[] = '<center>'.$row['component_code'].'</center>';
+				$sub_array[] = '<center>'.$row['component_description'].'</center>';
+				$sub_array[] = '<center>'.$row['production_date'].'</center>';
+				$sub_array[] = '<center>'.$row['print_code'].'</center>';
+				$sub_array[] = '<center>'.$row['shift'].'</center>';
+				$sub_array[] = '<center>'.$row['moulding_quantity'].'</center>';
+				$sub_array[] = '<center>'.$row['kode'].'</center>';
+				$sub_array[] = '<center>'.$row['jumlah_pekerja'].'</center>';
+				$sub_array[] = '<center>'.$row['bongkar_qty'].'</center>';
+				$sub_array[] = '<center>'.$row['scrap_qty'].'</center>';
+				$sub_array[] = '<center>'.($row['bongkar_qty'] - $row['scrap_qty']).'</center>';
+
+				$data[] = $sub_array;
+		}
+
+		$output = [
+				'draw' => $post['draw'],
+				'recordsTotal' => $countall,
+				'recordsFiltered' => $countfilter,
+				'data' => $data,
+		];
+
+		die($this->output
+						->set_status_header(200)
+						->set_content_type('application/json')
+						->set_output(json_encode($output))
+						->_display());
+	}
+
+	public function getAjax()
+	{
+		$data['bulan'] = $this->input->post('bulan');
+		$data['tanggal'] = $this->input->post('tanggal');
+		$this->load->view('ManufacturingOperationUP2L/Moulding/V_ajax', $data);
+	}
+
 
 	function view_create()
 	{
@@ -74,7 +142,7 @@ class C_Moulding extends CI_Controller
 
 	public function create()
 	{
-		
+
 		$mouldingData = array();
 		$aksen1 = 0;
 		foreach ($this->input->post('txtMouldingQuantityHeader[]') as $a) {
@@ -97,16 +165,16 @@ class C_Moulding extends CI_Controller
 			} else {
 				$mouldingData[$aksen2]['jam_pengurangan'] = '';
 			}
-			
+
 			$aksen2++;
 		}
 
 
 		foreach ($mouldingData as $mo) {
-			
+
 			$this->M_moulding->setMoulding($mo);
 			$header_id = $this->db->insert_id();
-			
+
 			$emp = $this->input->post('txt_employee[]');
 			$produksi = $this->input->post('txt_produksi[]');
 			$lembur = $this->input->post('txt_lembur[]');
@@ -131,7 +199,7 @@ class C_Moulding extends CI_Controller
 					'kode' => $kode,
 					'created_date' =>  $this->input->post('production_date')
 				);
-				
+
 				$this->M_moulding->insMouldingEmployee($header_id, $no_induk, $nama);
 				$this->M_moulding->setAbsensi($data);
 				$i++;

@@ -41,10 +41,18 @@ class C_Rekap extends CI_Controller
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+        
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('MonitoringGdSparepart/V_Rekap', $data);
+		$this->load->view('V_Footer',$data);
+    }
 
+    public function getRekap(){
         $date = date('d/m/Y');
-        $masuk = $this->M_rekap->getMasuk($date);
-        $pcs = $this->M_rekap->getpcs($date);
+        $subinv = $this->input->post('subinv');
+        $masuk = $this->M_rekap->getMasuk($date, $subinv);
+        $pcs = $this->M_rekap->getpcs($date, $subinv);
         $data['pcs'] = $pcs[0]['PCS'];
         $data['sudah'] = 0;
         $data['belum'] = 0;
@@ -88,16 +96,13 @@ class C_Rekap extends CI_Controller
         }
         $data['asal'] = $asal;
         // echo "<pre>";print_r($asal);exit();
-        
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('MonitoringGdSparepart/V_Rekap', $data);
-		$this->load->view('V_Footer',$data);
+        $this->load->view('MonitoringGdSparepart/V_TblRekap2', $data);
     }
 
     public function searchRekap(){
 		$tglAwl = $this->input->post('tglAwl');
-		$tglAkh = $this->input->post('tglAkh');
+        $tglAkh = $this->input->post('tglAkh');
+        $subinv = $this->input->post('subinv');
 
 		$tanggal1 	= new DateTime($tglAwl);
 		$tanggal2 	= new DateTime($tglAkh);
@@ -117,9 +122,9 @@ class C_Rekap extends CI_Controller
         $hasil = array();
         for ($a=0; $a < count($tanggal) ; $a++) { 
             $hasil[$a]['tanggal'] = $tgl[$a];
-            $masuk = $this->M_rekap->getMasuk($tanggal[$a]);
+            $masuk = $this->M_rekap->getMasuk($tanggal[$a], $subinv);
             // $hasil[$a]['masuk'] = count($masuk);
-            $pcs = $this->M_rekap->getpcs($tanggal[$a]);
+            $pcs = $this->M_rekap->getpcs($tanggal[$a], $subinv);
             $hasil[$a]['pcs'] = $pcs[0]['PCS'];
             $hasil[$a]['sudah'] = 0;
             $hasil[$a]['belum'] = 0;
@@ -195,6 +200,14 @@ class C_Rekap extends CI_Controller
             }else {
                 $hasil['asal'] = $gudang[0]['SUBINVENTORY_CODE'];
             }
+        }else if($val['JENIS_DOKUMEN'] == 'MO'){
+			$getKet = $this->M_rekap->getKetMO($val['NO_DOCUMENT']);;
+			$gudang = $this->M_rekap->gdAsalMO($val['NO_DOCUMENT']);
+			if (empty($gudang)) {
+				$hasil['asal'] = '';
+			}else {
+				$hasil['asal'] = $gudang[0]['FROM_SUBINVENTORY_CODE'];
+			}
         }elseif ($val['JENIS_DOKUMEN'] == 'FPB') {
 			$gudang = $this->M_rekap->getKetFPB($val['NO_DOCUMENT']);
 			if (empty($gudang)) {

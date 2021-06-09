@@ -465,7 +465,7 @@ if (in_array($kaizen[0]['status'], $needthisform = array(0,1,6))) { ?>
             			<label class="checkbox-inline" style="padding: 5px"><input type="checkbox" value="1" name="checkNextApprover" id="checkNextApprover"><b> Set Approver Selanjutnya</b></label>
             			<br/>
 						<input type="hidden" name="levelnext" value="<?= $levelku == 2 ? '3' : ($levelku == 3 ? '4' : '') ?>">
-						<select class="form-control select2si" style="width: 100%" data-placeholder="Select Employee" id="slcApprover" name="slcApprover" disabled>
+						<select class="form-control select2si" style="width: 100%" data-placeholder="Select Employee" id="slcApprover" name="slcApprover" required disabled>
 							<option></option>
 							<?php
 								if($next_level == 'level Departemen'){

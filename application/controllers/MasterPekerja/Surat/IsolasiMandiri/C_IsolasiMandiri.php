@@ -328,18 +328,6 @@ class C_IsolasiMandiri extends CI_Controller
 			}
 		}
 
-		//delete presensi di tanggal mulai - selesai jika pkj
-		// $dataPrez = $this->M_isolasimandiri->getDataPresensiIs($pekerja, $mulai, $selesai);
-		// $arl = array(
-		// 	'wkt'	=>	date('Y-m-d H:i:s'),
-		// 	'transaksi'	=>	'DELETE DATA Presensi & edit presensi tanggal '.$mulai.' sampai '.$selesai.' noind '.$pekerja,
-		// 	'keterangan'	=>	json_encode($dataPrez),
-		// 	'program'	=>	'TIM-COVID19->MonitoringCovid',
-		// 	'tgl_proses'	=>	date('Y-m-d H:i:s'),
-		// 	);
-		// $this->M_isolasimandiri->instoLog2($arl);
-		// $del = $this->M_isolasimandiri->delEditPres($pekerja, $mulai, $selesai, 'PKJ');
-		// $del2 = $this->M_isolasimandiri->delTdataPres($pekerja, $mulai, $selesai, 'PKJ');
 		//insert ke tdatapresensi dan tinput_edit_presensi
 		$begin = new DateTime($mulai);
 		$akh = $selesai;
@@ -392,6 +380,20 @@ class C_IsolasiMandiri extends CI_Controller
 			}
 
 			$tgl = $d;
+			$adaAbsen = $this->M_isolasimandiri->getAbsentoSkip($tgl, $pekerja);
+			if (!empty($adaAbsen)) {
+				//jika ada absen cuti miaslnya
+				$zx++;
+				continue;
+			}
+
+			$updt = $this->ubahKePRM($tgl, $pekerja, $arAlasan[$zx]);
+			if ($updt) {
+				// jika berhasil update pkj, PSP ke prm
+				$zx++;
+				continue;
+			}
+
 			$arrx = array(
 				'tanggal1'	=>	$tgl,
 				'tanggal2'	=>	$now,
@@ -699,35 +701,8 @@ class C_IsolasiMandiri extends CI_Controller
 			$baru = $selesai;
 			$now = date('Y-m-d');
 			$batas = '2020-12-03';
-			// hapus presensi dulu
-			if (strtotime($awal_lama) < strtotime($batas)) {
-				$awal_lama = $batas;
-			}
-			if (strtotime($akhir_lama) > strtotime($batas)) {
-				//log presensi
-				$dataPrez = $this->M_isolasimandiri->getDataPresensiIs2($pkj, $awal_lama, $akhir_lama);
-				$arl = array(
-					'wkt'	=>	date('Y-m-d H:i:s'),
-					'transaksi'	=>	'DELETE DATA Presensi & edit presensi tanggal '.$mulai.' sampai '.$selesai.' noind '.$pkj,
-					'keterangan'	=>	json_encode($dataPrez),
-					'program'	=>	'TIM-COVID19->MonitoringCovid',
-					'tgl_proses'	=>	date('Y-m-d H:i:s'),
-					);
-				$this->M_isolasimandiri->instoLog2($arl);
-				$del = $this->M_isolasimandiri->delEditPres2($pkj, $awal_lama, $akhir_lama, $data['status']);
-				$del2 = $this->M_isolasimandiri->delTdataPres2($pkj, $awal_lama, $akhir_lama, $data['status']);
-				$ard = array(
-					'wkt'	=>	date('Y-m-d H:i:s'),
-					'menu'	=>	'TIM-COVID19->MonitoringCovid',
-					'ket'	=>	$awal_lama.' - '.$akhir_lama.' noind '.$pkj,
-					'noind'	=>	$this->session->user,
-					'jenis'	=>	'Delet Absensi Status != PKJ ke tdatapresensi & tinput_edit_presensi',
-					'program'	=>	'ERP - Tim Covid 19',
-					);
-				$this->M_isolasimandiri->instoLog($ard);
-
-			}
-			//lalu insert kembali :)
+			
+			//persiapan insert
 			$tglPer = $this->input->post('tgl_perperiode');
 			$arStatus = $this->input->post('slcMPSuratIsolasiMandiriStatus2');
 			$arAlasan = $this->input->post('slcMPSuratIsolasiMandiriAlasan2');
@@ -759,20 +734,39 @@ class C_IsolasiMandiri extends CI_Controller
 			foreach ($tglPer as $dt) {
 				$d = $dt.' 00:00:00';
 				if (!in_array($d, $sh) || $arStatus[$zx] == 'PKJ') {
+					//skip jika tidak ada shift atau status pkj
 					$zx++;
 					continue;
 				}
 				$day = date('D', strtotime($d));
 				if ($day == 'Sun') {
+					//skip jika hari minggu
+					$zx++;
 					continue;
 				}
+
 				$tgl = $dt;
+				
 				if (strtotime($tgl) < strtotime($batas)) {
+					//skip jika kurang dari batas 
 					$zx++;
 					continue;
 				}
 				if (in_array($d, $larct)) {
 					//untuk mengecek data cuti.. jika ada maka skip
+					$zx++;
+					continue;
+				}
+
+				$adaAbsen = $this->M_isolasimandiri->getAbsentoSkip($tgl, $pekerja);
+				if (!empty($adaAbsen)) {
+				//jika ada absen cuti miaslnya
+					$zx++;
+					continue;
+				}
+
+				$updt = $this->ubahKePRM($tgl, $pkj, $arAlasan[$zx]);
+				if ($updt) {
 					$zx++;
 					continue;
 				}
@@ -829,9 +823,39 @@ class C_IsolasiMandiri extends CI_Controller
 				$arr2[] = $arry;
 				$zx++;
 			}
+			// echo "<pre>";
 			// print_r($arr2);
 			// exit();
 			if (!empty($arr)) {
+				// hapus presensi dulu
+				if (strtotime($awal_lama) < strtotime($batas)) {
+					$awal_lama = $batas;
+				}
+				if (strtotime($akhir_lama) > strtotime($batas)) {
+				//log presensi
+					$dataPrez = $this->M_isolasimandiri->getDataPresensiIs2($pkj, $awal_lama, $akhir_lama);
+					$arl = array(
+						'wkt'	=>	date('Y-m-d H:i:s'),
+						'transaksi'	=>	'DELETE DATA Presensi & edit presensi tanggal '.$mulai.' sampai '.$selesai.' noind '.$pkj,
+						'keterangan'	=>	json_encode($dataPrez),
+						'program'	=>	'TIM-COVID19->MonitoringCovid',
+						'tgl_proses'	=>	date('Y-m-d H:i:s'),
+						);
+					$this->M_isolasimandiri->instoLog2($arl);
+					$del = $this->M_isolasimandiri->delEditPres2($pkj, $awal_lama, $akhir_lama, $data['status']);
+					$del2 = $this->M_isolasimandiri->delTdataPres2($pkj, $awal_lama, $akhir_lama, $data['status']);
+					$ard = array(
+						'wkt'	=>	date('Y-m-d H:i:s'),
+						'menu'	=>	'TIM-COVID19->MonitoringCovid',
+						'ket'	=>	$awal_lama.' - '.$akhir_lama.' noind '.$pkj,
+						'noind'	=>	$this->session->user,
+						'jenis'	=>	'Delet Absensi Status != PKJ ke tdatapresensi & tinput_edit_presensi',
+						'program'	=>	'ERP - Tim Covid 19',
+						);
+					$this->M_isolasimandiri->instoLog($ard);
+				}
+
+				//insert
 				$insertBatch = $this->M_isolasimandiri->insEditPresensi($arr);
 				$insertBatch2 = $this->M_isolasimandiri->insTdataPresensi($arr2);
 				$arll = array(
@@ -964,18 +988,18 @@ class C_IsolasiMandiri extends CI_Controller
 			$text[] = '*MOHON MELAKUKAN PERUBAHAN DATA ABSENSI PEKERJA PADA TANGGAL '.date('d M Y', strtotime($awal_lama)).$as;
 		}
 
-		//jika tanggal lama berubah
+		//jika tanggal lama berubah dan kurang dari now
 		if (strtotime($akhir_baru) < strtotime($now) && strtotime($akhir_baru) < strtotime($akhir_lama)) {
 			if (strtotime($akhir_lama) > strtotime($now)) {
 				$sampai2 = $now;
 			}else{
-				$sampai2 = $akhir_baru;
+				$sampai2 = $akhir_lama;
 			}
 			$earlier = new DateTime($akhir_baru);
 			$later = new DateTime($sampai2);
 
 			$diff = $later->diff($earlier)->format("%a");
-			if ($diff > 1) {
+			if (abs($diff) > 1) {
 				$as = ' s.d '.date('d M Y', strtotime($sampai2));
 			}else{
 				$as = '';
@@ -1218,5 +1242,32 @@ class C_IsolasiMandiri extends CI_Controller
 		}
 
 		echo $txt;
+	}
+
+	function ubahKePRM($tgl, $pekerja, $alasan = '- WFO')
+	{
+		$dataPrez = $this->M_isolasimandiri->getTdataPresensiR($tgl, $tgl, $pekerja);
+		$updt = $this->M_isolasimandiri->updateKePRM($tgl, $pekerja, $alasan);
+		if ($updt) {
+			$arl = array(
+				'wkt'	=>	date('Y-m-d H:i:s'),
+				'menu'	=>	'TIM-COVID19->MonitoringCovid',
+				'ket'	=>	'Update Presensi PKJ -> PRM tanggal '.$tgl.' noind '.$pekerja,
+				'noind'	=>	$this->session->user,
+				'jenis'	=>	'Update Presensi tanggal '.$tgl.' noind '.$pekerja,
+				'program'	=>	'ERP - Tim Covid 19',
+				);
+			$this->M_isolasimandiri->instoLog($arl);
+
+			$arl = array(
+				'wkt'	=>	date('Y-m-d H:i:s'),
+				'transaksi'	=>	'Update Presensi PKJ -> PRM tanggal '.$tgl.' sampai '.$tgl.' noind '.$pekerja,
+				'keterangan'	=>	json_encode($dataPrez),
+				'program'	=>	'TIM-COVID19->MonitoringCovid',
+				'tgl_proses'	=>	date('Y-m-d H:i:s'),
+				);
+			$this->M_isolasimandiri->instoLog2($arl);
+		}
+		return $updt;
 	}
 }

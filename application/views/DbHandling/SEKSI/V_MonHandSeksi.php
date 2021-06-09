@@ -15,7 +15,7 @@
                         </div>
                         <div class="col-lg-1 ">
                             <div class="text-right hidden-md hidden-sm hidden-xs">
-                                <a class="btn btn-default btn-lg" href="<?php echo site_url('DbHandling/MonitoringHandling'); ?>">
+                                <a class="btn btn-default btn-lg" href="<?php echo site_url('DbHandlingSeksi/MonitoringHandling'); ?>">
                                     <i class="fa fa-list fa-2x">
                                     </i>
                                     <span>
@@ -43,7 +43,10 @@
                                     <h4>REVISI</h4>
                                 </div>
                                 <div class="col-md-12" id="tabel_reqhandseksi2"></div>
-
+                                <div class="col-md-12" style="font-weight: bold;text-align:center">
+                                    <h4>REJECT</h4>
+                                </div>
+                                <div class="col-md-12" id="tabel_rejecthandseksi"></div>
                             </div>
                         </div>
                     </div>

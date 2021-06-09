@@ -9,6 +9,7 @@
             Memo Number
         </th>
         <th>Product Name</th>
+        <th>Approval Date</th>
         <th style="text-align:center">Status</th>
         <th style="text-align:center;width:20%">
            Detail Component
@@ -21,6 +22,7 @@
           <td style="text-align:center"><?php echo $no ?> </td>
           <td><?php echo $v['memo_number'] ?> </td>
           <td><?php echo $v['product_name'] ?></td>
+          <td><?php echo !empty($v['tanggal_distribusi']) ? $v['tanggal_distribusi'] : NULL ?></td>
           <td style="vertical-align:middle" id="fp_status_<?php echo $v['memo_id']  ?>"><center>
             <?php
               if ($v['status'] == 0) {

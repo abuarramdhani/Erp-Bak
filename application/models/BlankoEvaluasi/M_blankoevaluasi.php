@@ -28,6 +28,16 @@ class M_blankoevaluasi extends CI_Model
         $userLogged = $this->session->user;
         if ($filterSie) {
             $refJabatan = $this->getRefJabatan($userLogged);
+
+            if ($userLogged == 'B0865') {
+                //Order #399407
+                $refJabatan = array('330100700', '330100800');
+            }
+            if ($userLogged == 'B0697') {
+                //Order #896394
+                $refJabatan = array('401010100', '401010200');
+            }
+
             function trimSie($arrSie)
             {
                 return " tp.kodesie like '" . rtrim($arrSie, '0') . "%' OR";
@@ -56,6 +66,12 @@ class M_blankoevaluasi extends CI_Model
         $userLogged = $this->session->user;
         if ($filterSie) {
             $refJabatan = $this->getRefJabatan($userLogged);
+
+            if ($userLogged == 'B0865') {
+                //Order #399407
+                $refJabatan = array('330100700', '330100800');
+            }
+
             function trimSie($arrSie)
             {
                 return " tp.kodesie like '" . rtrim($arrSie, '0') . "%' OR";
@@ -78,7 +94,6 @@ class M_blankoevaluasi extends CI_Model
                 AND substring(tp.noind, 1, 1) in ('G', 'J') 
                 $stringFilterSie 
             ORDER BY tp.nama LIMIT 50";
-
         $result = $this->personalia->query($queryNoind)->result_array();
         return $result;
     }

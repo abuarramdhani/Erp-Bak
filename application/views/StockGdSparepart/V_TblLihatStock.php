@@ -12,6 +12,9 @@
                 <th>ATT</th>
                 <th>Min</th>
                 <th>Max</th>
+                <?php if ($ket == 'kode_unit') { ?>
+                    <th>QTY Unit</th>
+                <?php }?>
                 <th>Lokasi Simpan</th>
                 <th>SubInventory</th>
                 <th>Action</th>
@@ -59,6 +62,9 @@
                 <td class="<?= $td?>"><input type="hidden" id="att<?= $i?>" value="<?= $val['ATT']?>"><?= $val['ATT']?></td>
                 <td class="<?= $td?>"><input type="hidden" id="min<?= $i?>" value="<?= $val['MIN']?>"><?= $val['MIN']?></td>
                 <td class="<?= $td?>"><input type="hidden" id="max<?= $i?>" value="<?= $val['MAX']?>"><?= $val['MAX']?></td>
+                <?php if ($ket == 'kode_unit') { ?>
+                    <td class="<?= $td?>"><input type="hidden" id="qty_unit<?= $i?>" value="<?= $val['QTY_UNIT']?>"><?= $val['QTY_UNIT']?></td>
+                <?php }?>
                 <td class="<?= $td?>"><input type="hidden" id="alamat<?= $i?>" value="<?= $val['LOKASI']?>"><?= $val['LOKASI']?></td>
                 <td class="<?= $td?>"><input type="hidden" id="subinv<?= $i?>" value="<?= $val['SUBINV']?>"><?= $val['SUBINV']?></td>
                 <td class="<?= $td?>"><button type="button" class="btn btn-md btn-info" onclick="modalHistory(<?= $i?>)"><i class="fa fa-search"></i></button>

@@ -8,41 +8,241 @@ class M_moulding extends CI_Model
         $this->load->database();
     }
 
+
+    //rozin edit 2021
+    //DATATABLE SERVER SIDE MOULDING
+    public function selectM($data, $bulan, $tanggal)
+    {
+      $explode = strtoupper($data['search']['value']);
+      $exbulan = explode('-', $bulan);
+      $range = explode(' - ', $tanggal);
+      if (!empty($bulan) && empty($tanggal)) {
+        $tanggal__="";
+        $bulan__="AND extract(month from mm.production_date) = '$exbulan[1]'
+                  AND extract(year from mm.production_date) = '$exbulan[0]'";
+      }else if (!empty($tanggal) && empty($bulan)){
+        $tanggal__="AND mm.production_date BETWEEN '{$range[0]}' AND '{$range[1]}'";
+        $bulan__="";
+      }else {
+        $tanggal__="";
+        $bulan__="";
+      }
+        $res = $this->db
+            ->query(
+                "SELECT kdav.*
+                FROM
+                    (
+                    SELECT
+                            skdav.*,
+                            ROW_NUMBER () OVER (ORDER BY production_date DESC) as pagination
+                        FROM
+                            (
+                              SELECT mfo.*
+                              FROM
+                                  (SELECT mm.moulding_id,
+                                          mm.component_code,
+                                          mm.component_description,
+                                          mm.production_date,
+                                          mm.shift,
+                                          mm.moulding_quantity,
+                                          mm.print_code,
+                                          Count(me.name)                           jumlah_pekerja,
+                                          (SELECT Sum(ms.quantity)
+                                          FROM   mo.mo_moulding_scrap ms
+                                          WHERE  ms.moulding_id = mm.moulding_id) scrap_qty,
+                                          (SELECT Sum(mb.qty)
+                                          FROM   mo.mo_moulding_bongkar mb
+                                          WHERE  mb.moulding_id = mm.moulding_id) bongkar_qty,
+                                          ma.kode
+                                  FROM   mo.mo_moulding mm,
+                                          mo.mo_moulding_employee me,
+                                  mo.mo_absensi ma
+                                  WHERE  mm.moulding_id = me.moulding_id
+                                  $tanggal__
+                                  $bulan__
+                                  and ma.category_produksi = 'Moulding'
+                                  and ma.id_produksi = mm.moulding_id
+                                  and ma.no_induk = me.no_induk
+                                  GROUP  BY mm.moulding_id,
+                                          mm.moulding_quantity,
+                                          mm.component_code,
+                                          mm.component_description,
+                                          mm.production_date,
+                                          ma.kode
+                                          ORDER BY extract(month from mm.production_date) desc, extract(year from mm.production_date) desc, extract(day from mm.production_date), ma.kode) mfo
+                              WHERE
+                                    (
+                                      component_code LIKE '%{$explode}%'
+                                      OR component_description LIKE '%{$explode}%'
+                                      OR production_date::text LIKE '%{$explode}%'
+                                      OR kode LIKE '%{$explode}%'
+                                      OR shift LIKE '%{$explode}%'
+                                    )
+                            ) skdav
+
+                    ) kdav
+                WHERE
+                    pagination BETWEEN {$data['pagination']['from']} AND {$data['pagination']['to']}"
+            )->result_array();
+
+        return $res;
+    }
+
+    public function countAllM($bulan, $tanggal)
+    {
+      $exbulan = explode('-', $bulan);
+      $range = explode(' - ', $tanggal);
+      if (!empty($bulan) && empty($tanggal)) {
+        $tanggal__="";
+        $bulan__="AND extract(month from mm.production_date) = '$exbulan[1]'
+                  AND extract(year from mm.production_date) = '$exbulan[0]'";
+      }else if(!empty($tanggal) && empty($bulan)){
+        $tanggal__="AND mm.production_date BETWEEN '{$range[0]}' AND '{$range[1]}'";
+        $bulan__="";
+      }else {
+        $tanggal__="";
+        $bulan__="";
+      }
+        return $this->db
+            ->query(
+                "SELECT
+                    COUNT(*) AS jm
+                FROM
+                (  SELECT mm.moulding_id,
+                          mm.component_code,
+                          mm.component_description,
+                          mm.production_date,
+                          mm.shift,
+                          mm.moulding_quantity,
+                          mm.print_code,
+                          Count(me.name)                           jumlah_pekerja,
+                          (SELECT Sum(ms.quantity)
+                          FROM   mo.mo_moulding_scrap ms
+                          WHERE  ms.moulding_id = mm.moulding_id) scrap_qty,
+                          (SELECT Sum(mb.qty)
+                          FROM   mo.mo_moulding_bongkar mb
+                          WHERE  mb.moulding_id = mm.moulding_id) bongkar_qty,
+                          ma.kode
+                  FROM   mo.mo_moulding mm,
+                          mo.mo_moulding_employee me,
+                  mo.mo_absensi ma
+                  WHERE  mm.moulding_id = me.moulding_id
+                  $tanggal__
+                  $bulan__
+                  and ma.category_produksi = 'Moulding'
+                  and ma.id_produksi = mm.moulding_id
+                  and ma.no_induk = me.no_induk
+                  GROUP  BY mm.moulding_id,
+                          mm.moulding_quantity,
+                          mm.component_code,
+                          mm.component_description,
+                          mm.production_date,
+                          ma.kode
+                          ORDER BY extract(month from mm.production_date) desc, extract(year from mm.production_date) desc, extract(day from mm.production_date), ma.kode
+
+                ) kdo"
+            )->result_array();
+    }
+
+    public function countFilteredM($data, $bulan, $tanggal)
+    {
+        $explode = strtoupper($data['search']['value']);
+        $exbulan = explode('-', $bulan);
+        $range = explode(' - ', $tanggal);
+        if (!empty($bulan) && empty($tanggal)) {
+          $tanggal__="";
+          $bulan__="AND extract(month from mm.production_date) = '$exbulan[1]'
+                    AND extract(year from mm.production_date) = '$exbulan[0]'";
+        }else if(!empty($tanggal) && empty($bulan)) {
+          $tanggal__="AND mm.production_date BETWEEN '{$range[0]}' AND '{$range[1]}'";
+          $bulan__="";
+        }else {
+          $tanggal__="";
+          $bulan__="";
+        }
+        return $this->db->query(
+            "SELECT
+                    COUNT(*) AS jm
+                FROM
+                (SELECT mm.moulding_id,
+                        mm.component_code,
+                        mm.component_description,
+                        mm.production_date,
+                        mm.shift,
+                        mm.moulding_quantity,
+                        mm.print_code,
+                        Count(me.name)                           jumlah_pekerja,
+                        (SELECT Sum(ms.quantity)
+                        FROM   mo.mo_moulding_scrap ms
+                        WHERE  ms.moulding_id = mm.moulding_id) scrap_qty,
+                        (SELECT Sum(mb.qty)
+                        FROM   mo.mo_moulding_bongkar mb
+                        WHERE  mb.moulding_id = mm.moulding_id) bongkar_qty,
+                        ma.kode
+                FROM   mo.mo_moulding mm,
+                        mo.mo_moulding_employee me,
+                mo.mo_absensi ma
+                WHERE  mm.moulding_id = me.moulding_id
+                $tanggal__
+                $bulan__
+                and ma.category_produksi = 'Moulding'
+                and ma.id_produksi = mm.moulding_id
+                and ma.no_induk = me.no_induk
+                GROUP  BY mm.moulding_id,
+                        mm.moulding_quantity,
+                        mm.component_code,
+                        mm.component_description,
+                        mm.production_date,
+                        ma.kode
+                        ORDER BY extract(month from mm.production_date) desc, extract(year from mm.production_date) desc, extract(day from mm.production_date), ma.kode) kdo
+                        WHERE
+                         (
+                           component_code LIKE '%{$explode}%'
+                           OR component_description LIKE '%{$explode}%'
+                           OR production_date::text LIKE '%{$explode}%'
+                           OR kode LIKE '%{$explode}%'
+                           OR shift LIKE '%{$explode}%'
+                         )"
+        )->row_array();
+    }
+    //END SERVERSIDE DATATABLE
+
+
     public function monitoringMoulding()
     {
-        $sql = "SELECT mm.moulding_id, 
-                mm.component_code, 
-                mm.component_description, 
-                mm.production_date, 
-                mm.shift, 
-                mm.moulding_quantity, 
-                mm.print_code, 
-                Count(me.name)                           jumlah_pekerja, 
-                (SELECT Sum(ms.quantity) 
-                FROM   mo.mo_moulding_scrap ms 
-                WHERE  ms.moulding_id = mm.moulding_id) scrap_qty, 
-                (SELECT Sum(mb.qty) 
-                FROM   mo.mo_moulding_bongkar mb 
+        $sql = "SELECT mm.moulding_id,
+                mm.component_code,
+                mm.component_description,
+                mm.production_date,
+                mm.shift,
+                mm.moulding_quantity,
+                mm.print_code,
+                Count(me.name)                           jumlah_pekerja,
+                (SELECT Sum(ms.quantity)
+                FROM   mo.mo_moulding_scrap ms
+                WHERE  ms.moulding_id = mm.moulding_id) scrap_qty,
+                (SELECT Sum(mb.qty)
+                FROM   mo.mo_moulding_bongkar mb
                 WHERE  mb.moulding_id = mm.moulding_id) bongkar_qty,
                 ma.kode
-        FROM   mo.mo_moulding mm, 
+        FROM   mo.mo_moulding mm,
                 mo.mo_moulding_employee me,
         mo.mo_absensi ma
-        WHERE  mm.moulding_id = me.moulding_id 
+        WHERE  mm.moulding_id = me.moulding_id
         and ma.category_produksi = 'Moulding'
         and ma.id_produksi = mm.moulding_id
         and ma.no_induk = me.no_induk
-        GROUP  BY mm.moulding_id, 
-                mm.moulding_quantity, 
-                mm.component_code, 
-                mm.component_description, 
-                mm.production_date, 
+        GROUP  BY mm.moulding_id,
+                mm.moulding_quantity,
+                mm.component_code,
+                mm.component_description,
+                mm.production_date,
                 ma.kode
                 ORDER BY extract(month from mm.production_date) desc, extract(year from mm.production_date) desc, extract(day from mm.production_date), ma.kode";
         $query = $this->db->query($sql);
-        return $query->result_array();
+        return $query->row_array();
     }
-    
+
     public function getMoulding($id = FALSE)
     {
         if ($id === FALSE) {
@@ -92,7 +292,7 @@ class M_moulding extends CI_Model
 
     public function getBongkar($id)
     {
-        $sql = "select 
+        $sql = "select
                     moulding_id,
                     qty,
                     bongkar_id,
@@ -173,35 +373,35 @@ class M_moulding extends CI_Model
     }
     public function search($mon, $year)
     {
-        $sql = "SELECT mm.moulding_id, 
-                mm.component_code, 
-                mm.component_description, 
-                mm.production_date, 
-                mm.shift, 
-                mm.moulding_quantity, 
-                mm.print_code, 
-                Count(me.name)                           jumlah_pekerja, 
-                (SELECT Sum(ms.quantity) 
-                FROM   mo.mo_moulding_scrap ms 
-                WHERE  ms.moulding_id = mm.moulding_id) scrap_qty, 
-                (SELECT Sum(mb.qty) 
-                FROM   mo.mo_moulding_bongkar mb 
+        $sql = "SELECT mm.moulding_id,
+                mm.component_code,
+                mm.component_description,
+                mm.production_date,
+                mm.shift,
+                mm.moulding_quantity,
+                mm.print_code,
+                Count(me.name)                           jumlah_pekerja,
+                (SELECT Sum(ms.quantity)
+                FROM   mo.mo_moulding_scrap ms
+                WHERE  ms.moulding_id = mm.moulding_id) scrap_qty,
+                (SELECT Sum(mb.qty)
+                FROM   mo.mo_moulding_bongkar mb
                 WHERE  mb.moulding_id = mm.moulding_id) bongkar_qty,
                 ma.kode
-        FROM   mo.mo_moulding mm, 
+        FROM   mo.mo_moulding mm,
                 mo.mo_moulding_employee me,
         mo.mo_absensi ma
         WHERE EXTRACT(MONTH FROM mm.production_date) = '$mon'
         and EXTRACT(YEAR FROM mm.production_date) = '$year'
-        and mm.moulding_id = me.moulding_id 
+        and mm.moulding_id = me.moulding_id
         and ma.category_produksi = 'Moulding'
         and ma.id_produksi = mm.moulding_id
         and ma.no_induk = me.no_induk
-        GROUP  BY mm.moulding_id, 
-                mm.moulding_quantity, 
-                mm.component_code, 
-                mm.component_description, 
-                mm.production_date, 
+        GROUP  BY mm.moulding_id,
+                mm.moulding_quantity,
+                mm.component_code,
+                mm.component_description,
+                mm.production_date,
                 ma.kode
         ORDER  BY mm.production_date, ma.kode";
         $query = $this->db->query($sql);

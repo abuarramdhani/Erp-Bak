@@ -58,10 +58,10 @@ class M_cetakkategori extends CI_Model
         return $this->personalia->query($sql)->result_array();
     }
 
-    public function GetFilter($kodeind, $pend, $jenkel,  $lokasi, $kategori, $select, $rangekeluarstart, $rangekeluarend,  $rangemasukstart, $rangemasukend, $status)
+    public function GetFilter($kodeind, $pend, $jenkel,  $lokasi, $kategori, $select, $rangekeluarstart, $rangekeluarend,  $rangemasukstart, $rangemasukend, $status, $masakerja)
     {
         if ($rangekeluarstart == "1000-01-01" && $rangemasukstart == "1000-01-01") {
-            $sql = "SELECT DISTINCT $select
+            $sql = "SELECT DISTINCT $select $masakerja
             FROM hrd_khs.tseksi ts, hrd_khs.tpribadi tp
             left join hrd_khs.tbpjskes tb on tb.noind = tp.noind
             left join hrd_khs.tbpjstk ttk on ttk.noind=tp.noind 
@@ -70,7 +70,7 @@ class M_cetakkategori extends CI_Model
             LIKE '$jenkel%' AND tp.lokasi_kerja LIKE '$lokasi%' AND tp.keluar = '$status' order by noind";
             return $this->personalia->query($sql)->result_array();
         } else {
-            $sql = "SELECT DISTINCT $select
+            $sql = "SELECT DISTINCT $select $masakerja
             FROM hrd_khs.tseksi ts, hrd_khs.tpribadi tp
             left join hrd_khs.tbpjskes tb on tb.noind = tp.noind
             left join hrd_khs.tbpjstk ttk on ttk.noind=tp.noind 

@@ -1,6 +1,6 @@
 <section class="content">
     <div class="row">
-        <form  method="POST" action="<?= base_url('PerhitunganBiayaImpor/Laporan/Action/'.$id);?>">
+        <form  method="POST" action="<?= base_url('PerhitunganBiayaImpor/Laporan/Action/'.$id);?>" id="formLaporanPBI" data-id="<?= $id?>">
             <div class="col-lg-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
@@ -121,16 +121,16 @@
                                             $nilaiBarang = $line['QTY_KIRIM']*$line['HARGA']*$line['RATE'];
                                             $totalNilaiBarang = $totalNilaiBarang + $nilaiBarang;
                                             ?>
-                                        <tr data-row="<?= $nos;?>">
+                                        <tr data-row="<?= $nos;?>" class="trTblPerhitunganPBI">
                                             <td><button type="button" class="btn btn-danger btnDeleteLinePBI" value="<?= $line['KODE_BARANG'].'+'.$line['NO_PO'].'+'.$line['QTY_PO'].'+'.$line['IO'].'+'.$id; ?>"><i class="fa fa-trash"></i></button></td>
                                             <td><?= $nos; ?></td>
-                                            <td><?= $line['KODE_BARANG']; ?><input type="hidden" class="form-control" value="<?= $line['KODE_BARANG']; ?>" name="kodebarang[]"></td>
+                                            <td><?= $line['KODE_BARANG']; ?><input type="hidden" class="form-control inpKodeBarangPBI" value="<?= $line['KODE_BARANG']; ?>" name="kodebarang[]"></td>
                                             <td><?= $line['DESKRIPSI_BARANG']; ?></td>
                                             <td><?= $line['NO_PO']; ?></td>
                                             <td align="right"><?= number_format($line['QTY_PO']); ?></td>
                                             <td> <input type="text" class="form-control qtyKirimPBI" value="<?= number_format($line['QTY_KIRIM']); ?>" style="width:100px; text-align:right" name="qtyKirim[]"></td>
                                             <td align="right" class="hargaPBI"><?= number_format($line['HARGA'],2); ?></td>
-                                            <td align="right" class="totalUSDPBI"><?= number_format($line['QTY_KIRIM']*$line['HARGA'],2); ?></td>
+                                            <td align="right" class="totalUSDPBI"><?= number_format($line['QTY_KIRIM'] * number_format($line['HARGA'],2), 2); ?></td>
                                             <td><input type="text" class="form-control txtRatePBI" style="width:100px; text-align:right;" name="rate[]" value="<?= number_format($line['RATE'],2);?>"></td>
                                             <td align="right" class="nilaiBarangPBI"><?= number_format($nilaiBarang,2); ?></td>
                                             <td align="right" class="pembagianBiayaPBI"></td>
@@ -156,11 +156,14 @@
                                         <td></td>
                                         <td align="right"><b class="ttotalUSDPBI"><?= number_format($totalUSD,2); ?></b></td>
                                         <td></td>
-                                        <td align="right"><b class="totalNilaiBarangPBI"><?= number_format($totalNilaiBarang,2); ?></b></td>
+                                        <td align="right">
+                                            <b class="totalNilaiBarangPBI"><?= number_format($totalNilaiBarang,2); ?></b>
+                                            <input type="text" style="display: None" id="inptotalNilaiBarangPBI" name="inptotalNilaiBarangPBI" value="<?= number_format($totalNilaiBarang,2); ?>">
+                                        </td>
                                         <td></td>
                                         <td align="right"><b class="totalBeaMasukPBI"><?php if (!$bea_masuk) {
                                             // echo '0';
-                                            echo '<input type="text" class="form-contro inpBeaMasukPBI" style="width:100px; text-align:right;" value="0">';
+                                            echo '<input type="text" class="form-control inpBeaMasukPBI" style="width:100px; text-align:right;" value="0">';
                                         }else {
                                             // echo number_format($bea_masuk[0]['HARGA'],2);
                                             echo '<input type="text" class="form-control inpBeaMasukPBI" style="width:100px; text-align:right;" value='.number_format($bea_masuk[0]['HARGA'],2).'>';
@@ -190,6 +193,7 @@
                                                 <th class="text-center">in IDR</th>
                                                 <th class="text-center">Action</th>
                                                 <td><button type="button" class="btn btn-primary tambahAdditionalInfoPBI"><i class="fa fa-plus"></i></button></td>
+                                                <th class="text-center">Sort</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -198,7 +202,7 @@
                                             ?>
                                                 <tr class="trAdditionalInfoAddPBI" data-row="<?= $no;?>">
                                                     <td><?= $no; ?></td>
-                                                    <td><?= $acost['DESKRIPSI']; ?></td>
+                                                    <td class="tdAdditionalInfoDescPBI"><?= $acost['DESKRIPSI']; ?></td>
                                                     <td align="right"><?= $acost['HARGA_USD']; ?></td>
                                                     <td align="right" class=""><input type="text" class="form-control hrgLainAdditionalCostPBI" value="<?= number_format($acost['HARGA'],2); ?>" style="text-align:right;" rid="<?= $no;?>" readonly></td>
                                                     <td><button type="button" class="btn btn-danger btndeleteAddCostPBI" value="<?= $id.'-'.$acost['DESKRIPSI']; ?>"><i class="fa fa-trash"></i></button>
@@ -207,7 +211,10 @@
                                                         <button type="button" class="btn btn-success prosesEditAddCostPBI" style="display:none" rid="<?= $no;?>" value="<?= $id.'-'.$acost['DESKRIPSI']; ?>"><i class="fa fa-check"></i></button>
                                                         <img src="<?= base_url('assets/img/gif/spinner.gif');?>" alt="" class="loadingEditAddCostPBI" style="display:none" rid="<?= $no;?>">
                                                     </td>
-                                                    <td></td>
+                                                    <!-- <td></td> -->
+                                                    <td class="text-center">
+                                                        <input type="text" class="form-control inpSortingRowPBI text-center" style="width: 50px">
+                                                    </td>
                                                 </tr>
                                             <?php } ?>
                                         </tbody>
@@ -234,7 +241,7 @@
                     </div>
                     <div class="box-footer">
                         <div class="pull-right">
-                            <button type="submit" value="0" class="btn btn-success" name="btnSubPBI"><i class="fa fa-file-excel-o"></i> Save & Export Data</button>
+                            <button type="button" value="0" class="btn btn-success" id="btnSubPBI" name="btnSubPBI"><i class="fa fa-file-excel-o"></i> Save & Export Data</button>
                             <button type="submit" value="1" class="btn btn-primary" name="btnSubPBI"><i class="fa fa-save"></i> save Data</button>
                         </div>
                     </div>

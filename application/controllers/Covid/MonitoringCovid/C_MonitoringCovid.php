@@ -1657,17 +1657,17 @@ class C_MonitoringCovid extends CI_Controller
 		$mail->Password = '123456';
 		$mail->WordWrap = 50;
 		$mail->setFrom('noreply@quick.com', 'TIM COVID 19');
-		$mail->addAddress('emanuel_dakris@quick.com');
-		$mail->addAddress('enggal_aldiansyah@quick.com');
-		$mail->addAddress('rheza_egha@quick.com');
+		$mail->addAddress('khoerul_amri@quick.com');
 		$mail->addAddress('nurul_wachidah@quick.com');
+		$mail->addAddress('enggal_aldiansyah@quick.com');
+		$mail->addAddress('reny_sulistiyaningtyas@quick.com');
+		$mail->addAddress('ika_narati@quick.com');
 		$mail->addAddress('tim_pencegahan_covid19@quick.com');
 		$mail->Subject = 'Laporan Covid Baru dari '.trim($pkj['nama']).' ('.$noind.')';
 		$mail->msgHTML($message);
 
 		if (!$mail->send()) {
 			echo "Mailer Error: " . $mail->ErrorInfo;
-			show_error($this->email->print_debugger());
 			exit();
 		} else {
 			// okey
@@ -1698,9 +1698,11 @@ class C_MonitoringCovid extends CI_Controller
 		$mail->WordWrap = 50;
 		
 		$mail->setFrom('noreply@quick.co.id', 'KHS TIM-COVID19');
-		$mail->addAddress('enggalaldian@gmail.com');
-		$mail->addAddress('emanueldakris.ditya25@gmail.com');
+		$mail->addAddress('khoerulamri.id@gmail.com');
+		$mail->addAddress('nuruliik2@gmail.com');
 		$mail->addAddress('timcovid19.khs@quick.co.id');
+		$mail->addAddress('renysulistya@yahoo.com');
+		$mail->addAddress('ika.narati3007@gmail.com');
 		$mail->Subject = 'Laporan Covid Baru dari '.trim($pkj['nama']).' ('.$noind.')';
 		$mail->msgHTML($message);
 		

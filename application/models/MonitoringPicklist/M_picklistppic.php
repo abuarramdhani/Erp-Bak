@@ -62,7 +62,7 @@ class M_picklistppic extends CI_Model
 			and wro.WIP_ENTITY_ID = wo.WIP_ENTITY_ID
 			and wro.OPERATION_SEQ_NUM = wo.OPERATION_SEQ_NUM
 			and wo.DEPARTMENT_ID = bd.DEPARTMENT_ID
-			and wdj.STATUS_TYPE not in (4, 5, 6, 12)
+			and wdj.STATUS_TYPE not in (4, 5, 6, 7, 12)
 			--
 			and mtrh.REQUEST_NUMBER not in (select distinct kpa.PICKLIST 
 												from khs_picklist_approved kpa
@@ -119,7 +119,7 @@ class M_picklistppic extends CI_Model
    and wro.WIP_ENTITY_ID = wo.WIP_ENTITY_ID
    and wro.OPERATION_SEQ_NUM = wo.OPERATION_SEQ_NUM
    and wo.DEPARTMENT_ID = bd.DEPARTMENT_ID
-	 and wdj.STATUS_TYPE not in (4, 5, 6, 12)
+	 and wdj.STATUS_TYPE not in (4, 5, 6, 7, 12)
    --
    and mtrh.REQUEST_NUMBER = kpa.PICKLIST 
    -- 
@@ -157,9 +157,9 @@ class M_picklistppic extends CI_Model
 		return $query->result_array();
 	}
 	
-	public function cekapprove2($nojob){
+	public function cekapprove2($picklist){
 		$oracle = $this->load->database('oracle', true);
-		$sql = "select * from khs_picklist_approved where job_number = '$nojob' and process = 1";
+		$sql = "select * from khs_picklist_approved where picklist = '$picklist' and process = 1";
 		$query = $oracle->query($sql);
 		return $query->result_array();
 	}

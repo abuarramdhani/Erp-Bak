@@ -1,7 +1,8 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class C_DPBListPR extends CI_Controller {
+class C_DPBListPR extends CI_Controller
+{
 
     public function __construct()
     {
@@ -11,10 +12,10 @@ class C_DPBListPR extends CI_Controller {
         $this->load->model('ApprovalDO/M_dpb');
         $this->load->model('SystemAdministration/MainMenu/M_user');
     }
-    
+
     private function checkSession()
     {
-        if ( ! $this->session->is_logged ) {
+        if (!$this->session->is_logged) {
             redirect();
         }
     }
@@ -24,23 +25,23 @@ class C_DPBListPR extends CI_Controller {
         $user_id = $this->session->userid;
         $resp_id = $this->session->responsibility_id;
 
-		$data['Menu']           = 'List PR';
-		$data['SubMenuOne']     = '';
-		$data['UserMenu']       = $this->M_user->getUserMenu($user_id, $resp_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $resp_id);
+        $data['Menu']           = 'List PR';
+        $data['SubMenuOne']     = '';
+        $data['UserMenu']       = $this->M_user->getUserMenu($user_id, $resp_id);
+        $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $resp_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $resp_id);
         $data['DPBVendorList']  = $this->M_dpb->getPRList();
         // echo '<pre>';
         // print_r($data['DPBVendorList']);exit;
-		$this->load->view('V_Header', $data);
-		$this->load->view('V_Sidemenu', $data);
+        $this->load->view('V_Header', $data);
+        $this->load->view('V_Sidemenu', $data);
         $this->load->view('ApprovalDO/MainMenu/V_DPBPR', $data);
         $this->load->view('V_Footer', $data);
     }
 
     public function detail()
     {
-        if ( ! $data['NO_PR'] = $this->input->post('data-pr') ) {
+        if (!$data['NO_PR'] = $this->input->post('data-pr')) {
             redirect('ApprovalDO/ListPR');
         }
 
@@ -48,12 +49,12 @@ class C_DPBListPR extends CI_Controller {
         $resp_id = $this->session->responsibility_id;
 
         $data['Menu']            = 'List PR';
-		$data['SubMenuOne']      = '';
-		$data['UserMenu']        = $this->M_user->getUserMenu($user_id, $resp_id);
-		$data['UserSubMenuOne']  = $this->M_user->getMenuLv2($user_id, $resp_id);
+        $data['SubMenuOne']      = '';
+        $data['UserMenu']        = $this->M_user->getUserMenu($user_id, $resp_id);
+        $data['UserSubMenuOne']  = $this->M_user->getMenuLv2($user_id, $resp_id);
         $data['UserSubMenuTwo']  = $this->M_user->getMenuLv3($user_id, $resp_id);
         $data['DPBVendorDetail'] = $this->M_dpb->getDPBVendorDetail($data['NO_PR']);
-        $data['UserAccess']      = [   
+        $data['UserAccess']      = [
             'jenis_kendaraan'  => 'readonly',
             'no_kendaraan'     => 'readonly',
             'nama_supir'       => 'readonly',
@@ -65,29 +66,29 @@ class C_DPBListPR extends CI_Controller {
             'catatan'          => 'readonly',
             'estdate'          => ''
         ];
-        if ($this->session->user === 'B0445' || $this->session->user === 'A2146') {
-            $data['UserAccess'] = [   
-                    'jenis_kendaraan'  => '',
-                    'no_kendaraan'     => 'readonly',
-                    'nama_supir'       => 'readonly',
-                    'kontak_supir'     => 'readonly',
-                    'vendor_ekspedisi' => 'readonly',
-                    'estimasi_datang'  => 'readonly',
-                    'alamat_bongkar'   => '',
-                    'catatan'          => '',
-                    'estdate'          => ''
+        if ($this->session->user === 'B0445' || $this->session->user === 'H6843' || $this->session->user === 'H6968' || $this->session->user === 'K1778' || $this->session->user === 'A2146' || $this->session->user === 'P0616') {
+            $data['UserAccess'] = [
+                'jenis_kendaraan'  => '',
+                'no_kendaraan'     => 'readonly',
+                'nama_supir'       => 'readonly',
+                'kontak_supir'     => 'readonly',
+                'vendor_ekspedisi' => 'readonly',
+                'estimasi_datang'  => 'readonly',
+                'alamat_bongkar'   => '',
+                'catatan'          => '',
+                'estdate'          => ''
             ];
-        }else {
-            $data['UserAccess'] = [   
-                    'jenis_kendaraan'  => 'readonly',
-                    'no_kendaraan'     => '',
-                    'nama_supir'       => '',
-                    'kontak_supir'     => '',
-                    'vendor_ekspedisi' => '',
-                    'estimasi_datang'  => '',
-                    'alamat_bongkar'   => 'readonly',
-                    'catatan'          => 'readonly',
-                    'estdate'          => 'ADOEstDatang'
+        } else {
+            $data['UserAccess'] = [
+                'jenis_kendaraan'  => 'readonly',
+                'no_kendaraan'     => '',
+                'nama_supir'       => '',
+                'kontak_supir'     => '',
+                'vendor_ekspedisi' => '',
+                'estimasi_datang'  => '',
+                'alamat_bongkar'   => 'readonly',
+                'catatan'          => 'readonly',
+                'estdate'          => 'ADOEstDatang'
             ];
         }
         // if ( $this->session->user === 'B0747' ) {
@@ -98,7 +99,7 @@ class C_DPBListPR extends CI_Controller {
         //         'vendor_ekspedisi' => '',
         //         'lain_lain'        => ''
         //     ];
-        // } else if ( $this->session->user === 'B0445' ) {
+        // } else if ( $this->session->user === 'B0445' || $this->session->user === 'H6843' || $this->session->user === 'K1778' ) {
         //     $data['UserAccess'] = [   
         //         'jenis_kendaraan'  => '',
         //         'no_kendaraan'     => 'readonly',
@@ -124,15 +125,15 @@ class C_DPBListPR extends CI_Controller {
         //     ];
         // }
 
-		$this->load->view('V_Header', $data);
-		$this->load->view('V_Sidemenu', $data);
+        $this->load->view('V_Header', $data);
+        $this->load->view('V_Sidemenu', $data);
         $this->load->view('ApprovalDO/MainMenu/V_DetailDPBPR', $data);
         $this->load->view('V_Footer', $data);
     }
 
     public function saveDetail()
-    {        
-        if ( ! $this->input->is_ajax_request() ) {
+    {
+        if (!$this->input->is_ajax_request()) {
             redirect('ApprovalDO/ListPR');
         }
 
@@ -146,33 +147,41 @@ class C_DPBListPR extends CI_Controller {
 
         if ($gudang == 'MLATI') {
             $kode_gudang = 'MLATI-DM';
-        }elseif ($gudang == 'TUKSONO') {
+            $org_id = 102;
+        } elseif ($gudang == 'TUKSONO') {
+            $org_id = 102;
             $kode_gudang = 'FG-TKS';
+        } elseif ($gudang == 'PUSAT') {
+            $org_id = 102;
+            $kode_gudang = 'FG-DM';
+        } elseif ($gudang == 'JAKARTA') {
+            $org_id = 207;
+            $kode_gudang = 'FG-JFG';
         }
 
         $no_do = $_POST['noDO'];
 
         $nomor_do = '';
-        
-        for ($i=0; $i < count($no_do); $i++) { 
+
+        for ($i = 0; $i < count($no_do); $i++) {
             if ($nomor_do == '') {
                 $nomor_do .= $no_do[$i]['nomor_do'];
-            }else {
-                $nomor_do .= ','.$no_do[$i]['nomor_do'];
+            } else {
+                $nomor_do .= ',' . $no_do[$i]['nomor_do'];
             }
         }
 
-        $returnOnhand = $this->M_dpb->checkOnhand($nomor_do,$kode_gudang);
+        $returnOnhand = $this->M_dpb->checkOnhand($nomor_do, $kode_gudang, $org_id);
 
         if ($returnOnhand[0]['STOCKONHAND'] == 0) {
 
-            $returnLineStatus = $this->M_dpb->checkLineStatus($nomor_do,$kode_gudang);
+            $returnLineStatus = $this->M_dpb->checkLineStatus($nomor_do, $kode_gudang, $org_id);
 
             if ($returnLineStatus[0]['LINESTATUS'] == 0) {
-                for ($i=0; $i < count($no_do); $i++) { 
-                    $this->M_dpb->procedureLockStock($no_do[$i]['nomor_do'], $kode_gudang, $noind);
+                for ($i = 0; $i < count($no_do); $i++) {
+                    $this->M_dpb->procedureLockStock($no_do[$i]['nomor_do'], $kode_gudang, $noind, $org_id);
                 }
-    
+
                 $data = [
                     'NO_PR'            => $this->input->post('prNumber'),
                     'JENIS_KENDARAAN'  => $this->input->post('vehicleCategory'),
@@ -184,32 +193,31 @@ class C_DPBListPR extends CI_Controller {
                     'CATATAN'          => $this->input->post('catatan'),
                     'CREATED_BY'       => $noind,
                 ];
-    
-                if ( count($this->M_dpb->checkIsExist($data['NO_PR'])) === 0 ) {
-                    $this->M_dpb->insertNewDetailListPR1($data,$tgl_kirim);
+
+                if (count($this->M_dpb->checkIsExist($data['NO_PR'])) === 0) {
+                    $this->M_dpb->insertNewDetailListPR1($data, $tgl_kirim);
                 } else {
                     $id = $data['NO_PR'];
                     unset($data['NO_PR']);
                     $this->M_dpb->updateDetailListPR1($id, $data, $tgl_kirim);
                 }
                 echo json_encode('Success!');
-            }else if($returnLineStatus[0]['LINESTATUS'] == 77777){
+            } else if ($returnLineStatus[0]['LINESTATUS'] == 77777) {
                 echo json_encode('error ada do/spb bukan ODM');
-            }else if ($returnLineStatus[0]['LINESTATUS'] == 99999) {
+            } else if ($returnLineStatus[0]['LINESTATUS'] == 99999) {
                 echo json_encode('error alamat belum lengkap');
-            }else{
+            } else {
                 echo json_encode('error ada do/spb yang transact');
             }
-
-        }else{
+        } else {
             echo json_encode('error stok gudang tidak mencukupi');
-        } 
-
+        }
     }
 
     public function CheckStok()
     {
         $no_do = $_POST['no_do'];
+        // $org = $_POST['org'];
 
         $nomor_do = '';
 
@@ -217,19 +225,24 @@ class C_DPBListPR extends CI_Controller {
 
         if ($gudang == 'MLATI') {
             $kode_gudang = 'MLATI-DM';
-        }elseif ($gudang == 'TUKSONO') {
+            $org = 102;
+        } elseif ($gudang == 'TUKSONO') {
             $kode_gudang = 'FG-TKS';
+            $org = 102;
+        } elseif ($gudang == 'JAKARTA') {
+            $kode_gudang = 'FG-JFG';
+            $org = 207;
         }
-        
-        for ($i=0; $i < count($no_do); $i++) { 
+
+        for ($i = 0; $i < count($no_do); $i++) {
             if ($nomor_do == '') {
                 $nomor_do .= $no_do[$i]['nomor_do'];
-            }else {
-                $nomor_do .= ','.$no_do[$i]['nomor_do'];
+            } else {
+                $nomor_do .= ',' . $no_do[$i]['nomor_do'];
             }
         }
 
-        $data = $this->M_dpb->CekStok($nomor_do, $kode_gudang);
+        $data = $this->M_dpb->CekStok($nomor_do, $kode_gudang, $org);
 
         // if ($data) {
         //     $response['pesan'] = 'Stok Mencukupi';
@@ -240,7 +253,5 @@ class C_DPBListPR extends CI_Controller {
         // }
 
         echo json_encode($data);
-
     }
-
 }

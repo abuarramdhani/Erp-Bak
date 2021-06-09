@@ -31,7 +31,7 @@
                             </div>
                             <div class="box-body">
                                 <div class="table-responsive">
-                                    <table class="datatable table table-striped table-bordered table-hover text-left" id="tblMoulding" style="font-size:12px;">
+                                    <table class="datatable table table-striped table-bordered table-hover text-left" id="tblMouldingAbs" style="font-size:12px;">
                                         <thead class="bg-primary">
                                             <tr>
                                                 <th style="text-align:center; width:30px">No</th>
@@ -43,7 +43,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <?php $a=1; foreach ($show as $key => $value) { ?>
+                                            <!-- <?php $a=1; foreach ($show as $key => $value) { ?>
                                             <tr>
                                                 <td><?= $a++; ?></td>
                                                 <td>
@@ -56,7 +56,7 @@
                                                 <td><?= $value['created_date']?></td>
                                                 <td><?= $value['presensi']?></td>
                                             </tr>
-                                            <?php }?>
+                                            <?php }?> -->
                                         </tbody>
                                     </table>
                                 </div>

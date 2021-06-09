@@ -70,6 +70,78 @@ class C_Purchasing extends CI_Controller {
         $this->load->view('V_Footer',$data);
     }
 
+    public function PermintaanApproveNormal()
+	{   
+        $user_id = $this->session->userid;
+        $noind = $this->session->user;
+		
+		$data['Menu'] = 'Approve Order';
+		$data['SubMenuOne'] = 'Permintaan Approve Order Normal';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+        $data['approver'] = $this->M_requisition->getPersonId($noind);
+        $person_id = $data['approver'][0]['PERSON_ID'];
+
+        $data['listOrder'] = $this->M_purchasing->getReleasedOrderReguler();
+
+     
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+        $this->load->view('OrderKebutuhanBarangDanJasa/Purchasing/V_PermintaanApprove',$data);
+        $this->load->view('V_Footer',$data);
+    }
+
+    public function PermintaanApproveSusulan()
+	{   
+        $user_id = $this->session->userid;
+        $noind = $this->session->user;
+		
+		$data['Menu'] = 'Approve Order';
+		$data['SubMenuOne'] = 'Permintaan Approve Order Susulan';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+        $data['approver'] = $this->M_requisition->getPersonId($noind);
+        $person_id = $data['approver'][0]['PERSON_ID'];
+
+        $data['listOrder'] = $this->M_purchasing->getReleasedOrderEmergency();
+
+     
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+        $this->load->view('OrderKebutuhanBarangDanJasa/Purchasing/V_PermintaanApprove',$data);
+        $this->load->view('V_Footer',$data);
+    }
+
+    public function PermintaanApproveUrgent()
+	{   
+        $user_id = $this->session->userid;
+        $noind = $this->session->user;
+		
+		$data['Menu'] = 'Approve Order';
+		$data['SubMenuOne'] = 'Permintaan Approve Order Urgent';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+        $data['approver'] = $this->M_requisition->getPersonId($noind);
+        $person_id = $data['approver'][0]['PERSON_ID'];
+
+        $data['listOrder'] = $this->M_purchasing->getReleasedOrderUrgent();
+
+     
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+        $this->load->view('OrderKebutuhanBarangDanJasa/Purchasing/V_PermintaanApprove',$data);
+        $this->load->view('V_Footer',$data);
+    }
+
     public function ReleaseOrder()
     {
         $noind = $this->session->user;
@@ -137,7 +209,8 @@ class C_Purchasing extends CI_Controller {
 
                 foreach ($dataOrder as $key => $data) {
                     // echo $data['DESTINATION_TYPE_CODE'];
-                    $interface_source_code = $this->M_pengelola->getInterfaceSourceCode($data['INVENTORY_ITEM_ID']);
+                    //$interface_source_code = $this->M_pengelola->getInterfaceSourceCode($data['INVENTORY_ITEM_ID']);
+                    $interface_source_code = 'OKEBAJA';
                     $category_id = $this->M_pengelola->getCategoryId($data['INVENTORY_ITEM_ID']);
                     $charge_account_id = $this->M_pengelola->getChargeAccountId($data['ORDER_ID']);
                     $desc = $this->M_purchasing->getDescItem($data['INVENTORY_ITEM_ID']);
@@ -155,7 +228,8 @@ class C_Purchasing extends CI_Controller {
                     }
 
                     $orderPR = array(
-                        'INTERFACE_SOURCE_CODE' => $interface_source_code[0]['INTERFACE_SOURCE_CODE'],
+                        //'INTERFACE_SOURCE_CODE' => $interface_source_code[0]['INTERFACE_SOURCE_CODE'],
+                        'INTERFACE_SOURCE_CODE' => $interface_source_code,
                         'ORG_ID' => 82,
                         'DESTINATION_TYPE_CODE' => $data['DESTINATION_TYPE_CODE'],
                         'DESTINATION_ORGANIZATION_ID' => $data['DESTINATION_ORGANIZATION_ID'],
@@ -403,4 +477,13 @@ class C_Purchasing extends CI_Controller {
 		$pdf->Output($filename, 'I');
     }
     
+    public function getUnapprovedOrderCount()
+    {
+        $total_unapproved_order = $this->M_purchasing->getUnapprovedOrderCount('ALL');
+
+        $this->output
+            ->set_status_header(200)
+            ->set_content_type('application/json')
+            ->set_output(json_encode($total_unapproved_order));
+    }
 }

@@ -1524,7 +1524,9 @@ class M_pekerjakeluar extends CI_Model
 
 		$tgl_um_awal = $result['0']['awal'];
 		$tgl_um_akhir = $result['0']['akhir'];
-
+		if (empty($tgl_um_awal) || empty($tgl_um_akhir)) {
+			return 0;
+		}
 		$sql1 = "	select count(*) as jml
 				from \"Presensi\".tdatapresensi pres
 				inner join \"Presensi\".tshiftpekerja shift

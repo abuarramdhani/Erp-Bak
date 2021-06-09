@@ -226,10 +226,46 @@ class M_hitungpesanan extends Ci_Model
 									or p.fb_status<>'1'
 								) 
 							group by a.tempat_makan, a.nama,trim(a.noind),b.jam_msk
+							union
+							select noind, tempat_makan, count(*)
+							from hrd_khs.tpribadi a
+							inner join \"Catering\".ttempat_makan tmkn 
+								on a.tempat_makan = tmkn.fs_tempat_makan 
+								and tmkn.fs_lokasi = ?
+							where noind = 'G1043'
+							and (
+								select count(*)
+								from \"Catering\".tpresensi b 
+								where b.noind = a.noind
+								and b.tanggal = ?
+								and left(b.waktu, 5) >= (
+									select left(c.fs_jam_akhir,5)
+									from \"Catering\".tbatas_datang_shift c
+									where c.fs_kd_shift = '1' 
+									and c.fs_hari = (extract(dow from b.tanggal::date)+1)::varchar
+								) 
+								and left(b.waktu,5) <= (
+									select left(d.jam_akhmsk,5)
+									from \"Presensi\".tjamshift d
+									where d.kd_shift = '8'
+									and d.hari = (
+										case extract(dow from b.tanggal::date)
+											when 0 then 'Minggu'
+											when 1 then 'Senin'
+											when 2 then 'Selasa'
+											when 3 then 'Rabu'
+											when 4 then 'Kamis'
+											when 5 then 'Jumat'
+											when 6 then 'Sabtu'
+										end
+									)
+								)
+							) > 0
+							group by a.noind, a.tempat_makan
 						) derivedtbl 
 					group by tempat_makan 
 					order by tempat_makan, jumlah ";
-			return $this->personalia->query($sql,array($tanggal,$tanggal,$tanggal,$lokasi,$tanggal,$tanggal,$tanggal,$tanggal,$lokasi,$tanggal))->result_array();
+			return $this->personalia->query($sql,array($tanggal,$tanggal,$tanggal,$lokasi,$tanggal,$tanggal,$tanggal,$tanggal,$lokasi,$tanggal,$lokasi,$tanggal))->result_array();
 		}
 	}
 
@@ -386,101 +422,245 @@ class M_hitungpesanan extends Ci_Model
 								) 
 								and a.tempat_makan = ?
 							group by a.tempat_makan, a.nama,trim(a.noind),b.jam_msk
+							union
+							select noind, tempat_makan, count(*)
+							from hrd_khs.tpribadi a
+							inner join \"Catering\".ttempat_makan tmkn 
+								on a.tempat_makan = tmkn.fs_tempat_makan 
+								and tmkn.fs_lokasi = ?
+							where noind = 'G1043'
+							and (
+								select count(*)
+								from \"Catering\".tpresensi b 
+								where b.noind = a.noind
+								and b.tanggal = ?
+								and left(b.waktu, 5) >= (
+									select left(c.fs_jam_akhir,5)
+									from \"Catering\".tbatas_datang_shift c
+									where c.fs_kd_shift = '1' 
+									and c.fs_hari = (extract(dow from b.tanggal::date)+1)::varchar
+								) 
+								and left(b.waktu,5) <= (
+									select left(d.jam_akhmsk,5)
+									from \"Presensi\".tjamshift d
+									where d.kd_shift = '8'
+									and d.hari = (
+										case extract(dow from b.tanggal::date)
+											when 0 then 'Minggu'
+											when 1 then 'Senin'
+											when 2 then 'Selasa'
+											when 3 then 'Rabu'
+											when 4 then 'Kamis'
+											when 5 then 'Jumat'
+											when 6 then 'Sabtu'
+										end
+									)
+								)
+							) > 0
+							and a.tempat_makan = ?
+							group by a.noind, a.tempat_makan
 						) derivedtbl 
 					group by tempat_makan 
 					order by tempat_makan, jumlah ";
-			return $this->personalia->query($sql,array($tanggal,$tanggal,$tanggal,$lokasi,$tanggal,$tanggal,$tanggal,$tanggal,$tempat_makan,$lokasi,$tanggal,$tempat_makan))->result_array();
+			return $this->personalia->query($sql,array($tanggal,$tanggal,$tanggal,$lokasi,$tanggal,$tanggal,$tanggal,$tanggal,$tempat_makan,$lokasi,$tanggal,$tempat_makan,$lokasi,$tanggal,$tempat_makan))->result_array();
 		}
 	}
 
-	public function getAbsenShiftSatuByTanggalLokasiTempatMakanNoind($tanggal,$lokasi,$tempat_makan,$noind){
-		$sql = "select *
-				from (
-						select 	trim(tpres.noind) as noind, 
-								tpri.tempat_makan as tempat_makan, 
-								count(tpri.tempat_makan) as jumlah_karyawan 
-						from hrd_khs.tpribadi tpri
-						inner join \"Catering\".tpresensi tpres 
-							ON trim(tpres.noind) = trim(tpri.noind) 
-							and left(tpres.waktu, 5) >= (
-								 select left(fs_jam_awal,5)
-								 from \"Catering\".tbatas_datang_shift 
-								 where fs_kd_shift = '1' 
-								 and fs_hari = (extract(dow from ?::date)+1)::varchar
-							)
-							and left(tpres.waktu, 5) <= (
-								 select left(fs_jam_akhir,5)
-								 from \"Catering\".tbatas_datang_shift 
-								 where fs_kd_shift = '1' 
-								 and fs_hari = (extract(dow from ?::date)+1)::varchar
+	public function getAbsenShiftSatuByTanggalLokasiTempatMakanNoind($tanggal,$lokasi,$tempat_makan,$noind,$jenis = false){
+		if ($jenis == "Snack") {
+			$sql = "select *
+					from (
+							select 	trim(tpres.noind) as noind, 
+									tpri.tempat_makan as tempat_makan, 
+									count(tpri.tempat_makan) as jumlah_karyawan 
+							from hrd_khs.tpribadi tpri
+							inner join \"Catering\".tpresensi tpres 
+								ON trim(tpres.noind) = trim(tpri.noind) 
+								and left(tpres.waktu, 5) >= (
+									 select left(fs_jam_awal,5)
+									 from \"Catering\".tbatas_datang_shift 
+									 where fs_kd_shift = '1' 
+									 and fs_hari = (extract(dow from ?::date)+1)::varchar
+								)
+								and left(tpres.waktu, 5) <= (
+									 select left(fs_jam_akhir,5)
+									 from \"Catering\".tbatas_datang_shift 
+									 where fs_kd_shift = '1' 
+									 and fs_hari = (extract(dow from ?::date)+1)::varchar
+								) 
+								and tpres.tanggal = ?
+							inner join \"Catering\".ttempat_makan tmkn 
+								on tpri.tempat_makan = tmkn.fs_tempat_makan 
+								and tmkn.fs_lokasi = ?
+							Where 
+							trim(tpres.noind) not in (
+								select trim(fs_noind) as noind 
+								from \"Catering\".tpuasa 
+								where fd_tanggal = ?::date
+								and fb_status = '1'
 							) 
-							and tpres.tanggal = ?
-						inner join \"Catering\".ttempat_makan tmkn 
-							on tpri.tempat_makan = tmkn.fs_tempat_makan 
-							and tmkn.fs_lokasi = ?
-						Where 
-						trim(tpres.noind) not in (
-							select trim(fs_noind) as noind 
-							from \"Catering\".tpuasa 
-							where fd_tanggal = ?::date
-							and fb_status = '1'
-						) 
-						and trim(tpres.noind) not in (
-							select trim(noind) as noind 
-							from \"Presensi\".tshiftPekerja 
-							where tanggal in (?::date - interval '1 day', ?::date) 
-							and kd_shift in ('3', '12')
-						) 
-						and left(trim(tpres.noind), 1) not in ('M','Z') 
-						and trim(tpres.noind) not in (
-							select distinct trim(t.noind) as noind 
-							from \"Presensi\".tshiftpekerja t  
-							where kd_shift = '2' 
-							and tanggal = ?::date - interval '1 day' 
-							and ( 
-								select count(*) 
-								from \"Presensi\".tprs_shift ts  
-								where ts.tanggal = t.tanggal  
-								and trim(ts.noind) = trim(t.noind)  
-								and ts.waktu::time > t.jam_msk::time - interval '1 hours' 
-								and ts.waktu::time < t.jam_msk::time + interval '1 hours' 
-								and trim(ts.waktu) not in ('0') 
-							) > 0 
-							and ( 
-								select count(*) 
-								from \"Presensi\".tprs_shift ts  
-								where ts.tanggal = t.tanggal  
-								and trim(ts.noind) = trim(t.noind)  
-								and ts.waktu::time > t.jam_msk::time - interval '1 hours' 
-								and trim(ts.waktu) not in ('0') 
-							) = 1
-						) 
-						and tpri.tempat_makan = ?
-						group by tpri.tempat_makan, trim(tpres.noind)
-						union 
-						select trim(a.noind) as noind,a.tempat_makan,count(a.tempat_makan) as jumlah_karyawan 
-						from hrd_khs.tpribadi a 
-						inner join \"Presensi\".tshiftpekerja b 
-							on trim(a.noind)=trim(b.noind) 
-						inner join \"Catering\".ttempat_makan tmkn 
-							on a.tempat_makan = tmkn.fs_tempat_makan 
-							and tmkn.fs_lokasi = ?
-						left join \"Catering\".tpuasa p 
-							on b.tanggal=p.fd_tanggal 
-							and trim(b.noind) =trim(p.fs_noind) 
-						where b.tanggal = ? 
-							and b.kd_shift in('5','8','18') 
-							and left(trim(a.noind), 1) not in ('M','Z') 
+							and trim(tpres.noind) not in (
+								select trim(noind) as noind 
+								from \"Presensi\".tshiftPekerja 
+								where tanggal in (?::date - interval '1 day', ?::date) 
+								and kd_shift in ('3', '12')
+							) 
+							and left(trim(tpres.noind), 1) not in ('M','Z') 
+							and trim(tpres.noind) not in (
+								select distinct trim(t.noind) as noind 
+								from \"Presensi\".tshiftpekerja t  
+								where kd_shift = '2' 
+								and tanggal = ?::date - interval '1 day' 
+								and ( 
+									select count(*) 
+									from \"Presensi\".tprs_shift ts  
+									where ts.tanggal = t.tanggal  
+									and trim(ts.noind) = trim(t.noind)  
+									and ts.waktu::time > t.jam_msk::time - interval '1 hours' 
+									and ts.waktu::time < t.jam_msk::time + interval '1 hours' 
+									and trim(ts.waktu) not in ('0') 
+								) > 0 
+								and ( 
+									select count(*) 
+									from \"Presensi\".tprs_shift ts  
+									where ts.tanggal = t.tanggal  
+									and trim(ts.noind) = trim(t.noind)  
+									and ts.waktu::time > t.jam_msk::time - interval '1 hours' 
+									and trim(ts.waktu) not in ('0') 
+								) = 1
+							) 
+							and tpri.tempat_makan = ?
+							group by tpri.tempat_makan, trim(tpres.noind)
+						) derivedtbl 
+					where trim(noind) = ?
+					order by tempat_makan ";
+			return $this->personalia->query($sql,array($tanggal,$tanggal,$tanggal,$lokasi,$tanggal,$tanggal,$tanggal,$tanggal,$tempat_makan,$noind))->result_array();
+		}else{
+			$sql = "select *
+					from (
+							select 	trim(tpres.noind) as noind, 
+									tpri.tempat_makan as tempat_makan, 
+									count(tpri.tempat_makan) as jumlah_karyawan 
+							from hrd_khs.tpribadi tpri
+							inner join \"Catering\".tpresensi tpres 
+								ON trim(tpres.noind) = trim(tpri.noind) 
+								and left(tpres.waktu, 5) >= (
+									 select left(fs_jam_awal,5)
+									 from \"Catering\".tbatas_datang_shift 
+									 where fs_kd_shift = '1' 
+									 and fs_hari = (extract(dow from ?::date)+1)::varchar
+								)
+								and left(tpres.waktu, 5) <= (
+									 select left(fs_jam_akhir,5)
+									 from \"Catering\".tbatas_datang_shift 
+									 where fs_kd_shift = '1' 
+									 and fs_hari = (extract(dow from ?::date)+1)::varchar
+								) 
+								and tpres.tanggal = ?
+							inner join \"Catering\".ttempat_makan tmkn 
+								on tpri.tempat_makan = tmkn.fs_tempat_makan 
+								and tmkn.fs_lokasi = ?
+							Where 
+							trim(tpres.noind) not in (
+								select trim(fs_noind) as noind 
+								from \"Catering\".tpuasa 
+								where fd_tanggal = ?::date
+								and fb_status = '1'
+							) 
+							and trim(tpres.noind) not in (
+								select trim(noind) as noind 
+								from \"Presensi\".tshiftPekerja 
+								where tanggal in (?::date - interval '1 day', ?::date) 
+								and kd_shift in ('3', '12')
+							) 
+							and left(trim(tpres.noind), 1) not in ('M','Z') 
+							and trim(tpres.noind) not in (
+								select distinct trim(t.noind) as noind 
+								from \"Presensi\".tshiftpekerja t  
+								where kd_shift = '2' 
+								and tanggal = ?::date - interval '1 day' 
+								and ( 
+									select count(*) 
+									from \"Presensi\".tprs_shift ts  
+									where ts.tanggal = t.tanggal  
+									and trim(ts.noind) = trim(t.noind)  
+									and ts.waktu::time > t.jam_msk::time - interval '1 hours' 
+									and ts.waktu::time < t.jam_msk::time + interval '1 hours' 
+									and trim(ts.waktu) not in ('0') 
+								) > 0 
+								and ( 
+									select count(*) 
+									from \"Presensi\".tprs_shift ts  
+									where ts.tanggal = t.tanggal  
+									and trim(ts.noind) = trim(t.noind)  
+									and ts.waktu::time > t.jam_msk::time - interval '1 hours' 
+									and trim(ts.waktu) not in ('0') 
+								) = 1
+							) 
+							and tpri.tempat_makan = ?
+							group by tpri.tempat_makan, trim(tpres.noind)
+							union 
+							select trim(a.noind) as noind,a.tempat_makan,count(a.tempat_makan) as jumlah_karyawan 
+							from hrd_khs.tpribadi a 
+							inner join \"Presensi\".tshiftpekerja b 
+								on trim(a.noind)=trim(b.noind) 
+							inner join \"Catering\".ttempat_makan tmkn 
+								on a.tempat_makan = tmkn.fs_tempat_makan 
+								and tmkn.fs_lokasi = ?
+							left join \"Catering\".tpuasa p 
+								on b.tanggal=p.fd_tanggal 
+								and trim(b.noind) =trim(p.fs_noind) 
+							where b.tanggal = ? 
+								and b.kd_shift in('5','8','18') 
+								and left(trim(a.noind), 1) not in ('M','Z') 
+								and (
+									p.fb_status is null 
+									or p.fb_status<>'1'
+								) 
+								and a.tempat_makan = ?
+							group by a.tempat_makan, a.nama,trim(a.noind),b.jam_msk
+							union
+							select noind, tempat_makan, count(*)
+							from hrd_khs.tpribadi a
+							inner join \"Catering\".ttempat_makan tmkn 
+								on a.tempat_makan = tmkn.fs_tempat_makan 
+								and tmkn.fs_lokasi = ?
+							where noind = 'G1043'
 							and (
-								p.fb_status is null 
-								or p.fb_status<>'1'
-							) 
+								select count(*)
+								from \"Catering\".tpresensi b 
+								where b.noind = a.noind
+								and b.tanggal = ?
+								and left(b.waktu, 5) >= (
+									select left(c.fs_jam_akhir,5)
+									from \"Catering\".tbatas_datang_shift c
+									where c.fs_kd_shift = '1' 
+									and c.fs_hari = (extract(dow from b.tanggal::date)+1)::varchar
+								) 
+								and left(b.waktu,5) <= (
+									select left(d.jam_akhmsk,5)
+									from \"Presensi\".tjamshift d
+									where d.kd_shift = '8'
+									and d.hari = (
+										case extract(dow from b.tanggal::date)
+											when 0 then 'Minggu'
+											when 1 then 'Senin'
+											when 2 then 'Selasa'
+											when 3 then 'Rabu'
+											when 4 then 'Kamis'
+											when 5 then 'Jumat'
+											when 6 then 'Sabtu'
+										end
+									)
+								)
+							) > 0
 							and a.tempat_makan = ?
-						group by a.tempat_makan, a.nama,trim(a.noind),b.jam_msk
-					) derivedtbl 
-				where trim(noind) = ?
-				order by tempat_makan ";
-		return $this->personalia->query($sql,array($tanggal,$tanggal,$tanggal,$lokasi,$tanggal,$tanggal,$tanggal,$tanggal,$tempat_makan,$lokasi,$tanggal,$tempat_makan,$noind))->result_array();
+							group by a.noind, a.tempat_makan
+						) derivedtbl 
+					where trim(noind) = ?
+					order by tempat_makan ";
+			return $this->personalia->query($sql,array($tanggal,$tanggal,$tanggal,$lokasi,$tanggal,$tanggal,$tanggal,$tanggal,$tempat_makan,$lokasi,$tanggal,$tempat_makan,$lokasi,$tanggal,$tempat_makan,$noind))->result_array();
+		}
 	}
 
 	public function getAbsenShiftDuaByTanggalLokasi($tanggal,$lokasi,$jenis){
@@ -1252,7 +1432,7 @@ class M_hitungpesanan extends Ci_Model
 				Where 
 				    ( 
 				        ( 
-				            trim(tsp.kd_shift) in ('1','4') 
+				            trim(tsp.kd_shift) in ('1','4','7','9') 
 				            and concat(?,' 18:00:00')::timestamp between trl.mulai and trl.selesai 
 				        ) or 
 				        ( 
@@ -1276,7 +1456,7 @@ class M_hitungpesanan extends Ci_Model
 				Where 
 				    ( 
 				        ( 
-				            trim(tsp.kd_shift) in ('1','4') 
+				            trim(tsp.kd_shift) in ('1','4','7','9') 
 				            and concat(?,' 18:00:00')::timestamp between trl.mulai and trl.selesai 
 				        ) or 
 				        ( 
@@ -1619,17 +1799,25 @@ class M_hitungpesanan extends Ci_Model
 		return $this->personalia->query($sql,array($id_pengurangan,$noind))->result_array();
 	}
 
+	public function getPesananPenguranganByIdPenguranganNoind($id_pengurangan,$noind){
+        $sql = "select *
+                from \"Catering\".tpenguranganpesanan_detail
+                where id_pengurangan = ?
+                and fs_noind = ? ";
+        return $this->personalia->query($sql,array($id_pengurangan,$noind))->result_array();
+    }
+
 	public function insertPesananPenguranganDetail($id_pengurangan,$noind){
 		$sql = "insert into \"Catering\".tpenguranganpesanan_detail 
 				(id_pengurangan,fs_noind,fs_nama,fs_ket) 
 				select ?,trim(noind),nama,jabatan 
 				From hrd_khs.tpribadi 
 				where trim(noind) = trim(?) ";
- 		$this->personalia->query($sql,array($id_tambahan,$noind));
+ 		$this->personalia->query($sql,array($id_pengurangan,$noind));
 	}
 
 	public function insertPesananPenguranganTidakMakan($tanggal,$tempat_makan,$shift){
-		$sql = "insert into \"Catering\".tpenguranganpesanan_detail 
+		$sql = "insert into \"Catering\".tpenguranganpesanan 
 				(fd_tanggal,fs_tempat_makan,fs_kd_shift,fn_jml_tdkpesan,fb_kategori) 
 				values(?,?,?,0,'8')";
 		$this->personalia->query($sql,array($tanggal,$tempat_makan,$shift));
@@ -1864,9 +2052,45 @@ class M_hitungpesanan extends Ci_Model
 									or p.fb_status<>'1'
 								) 
 							group by a.tempat_makan, a.nama,trim(a.noind),b.jam_msk
+							union
+							select noind, tempat_makan, count(*), 'TKPW G'
+							from hrd_khs.tpribadi a
+							inner join \"Catering\".ttempat_makan tmkn 
+								on a.tempat_makan = tmkn.fs_tempat_makan 
+								and tmkn.fs_lokasi = ?
+							where noind = 'G1043'
+							and (
+								select count(*)
+								from \"Catering\".tpresensi b 
+								where b.noind = a.noind
+								and b.tanggal = ?
+								and left(b.waktu, 5) >= (
+									select left(c.fs_jam_akhir,5)
+									from \"Catering\".tbatas_datang_shift c
+									where c.fs_kd_shift = '1' 
+									and c.fs_hari = (extract(dow from b.tanggal::date)+1)::varchar
+								) 
+								and left(b.waktu,5) <= (
+									select left(d.jam_akhmsk,5)
+									from \"Presensi\".tjamshift d
+									where d.kd_shift = '8'
+									and d.hari = (
+										case extract(dow from b.tanggal::date)
+											when 0 then 'Minggu'
+											when 1 then 'Senin'
+											when 2 then 'Selasa'
+											when 3 then 'Rabu'
+											when 4 then 'Kamis'
+											when 5 then 'Jumat'
+											when 6 then 'Sabtu'
+										end
+									)
+								)
+							) > 0
+							group by a.noind, a.tempat_makan
 						) derivedtbl 
 					order by tempat_makan ";
-			return $this->personalia->query($sql,array($tanggal,$tanggal,$tanggal,$lokasi,$tanggal,$tanggal,$tanggal,$tanggal,$lokasi,$tanggal,$lokasi,$tanggal))->result_array();
+			return $this->personalia->query($sql,array($tanggal,$tanggal,$tanggal,$lokasi,$tanggal,$tanggal,$tanggal,$tanggal,$lokasi,$tanggal,$lokasi,$tanggal,$lokasi,$tanggal))->result_array();
 		}
 	}
 
@@ -2113,18 +2337,28 @@ class M_hitungpesanan extends Ci_Model
 				and tpd.shift = ?
 				and tpd.lokasi = ?
 				and tpd.tempat_makan = ?
+				and tpd.noind not in (
+					select tpd2.noind
+					from \"Catering\".t_pesanan_detail tpd2
+					where tpd2.tanggal = tpd.tanggal
+					and tpd2.tempat_makan = tpd.tempat_makan
+					and tpd2.shift = tpd.shift
+					and left(lower(tpd2.keterangan),11) = 'pengurangan'
+				)
 				and (
 					lower(tpd.keterangan) in ('absen', 'shift tanggung')
 					or left(lower(tpd.keterangan),8) = 'tambahan'
 				)
 				and ( 
-					( 1 = 1 $custom_condition )
+					( 
+						1 = 1 $custom_condition 
+					)
 					or 
 					(
-					(tpmk.menu_sayur = 'Semua Sayur' and tpmk.menu_sayur <> tpmk.pengganti_sayur)
-					or (tpmk.menu_lauk_utama = 'Semua Lauk Utama' and tpmk.menu_lauk_utama <> tpmk.pengganti_lauk_utama)
-					or (tpmk.menu_lauk_pendamping = 'Semua Lauk Pendamping' and tpmk.menu_lauk_pendamping <> tpmk.pengganti_lauk_pendamping)
-					or (tpmk.menu_buah = 'Semua Buah' and tpmk.menu_buah <> tpmk.pengganti_buah)
+						(tpmk.menu_sayur = 'Semua Sayur' and tpmk.menu_sayur <> tpmk.pengganti_sayur)
+						or (tpmk.menu_lauk_utama = 'Semua Lauk Utama' and tpmk.menu_lauk_utama <> tpmk.pengganti_lauk_utama)
+						or (tpmk.menu_lauk_pendamping = 'Semua Lauk Pendamping' and tpmk.menu_lauk_pendamping <> tpmk.pengganti_lauk_pendamping)
+						or (tpmk.menu_buah = 'Semua Buah' and tpmk.menu_buah <> tpmk.pengganti_buah)
 					)
 				)
 				order by trim(tpmk.noind) ";

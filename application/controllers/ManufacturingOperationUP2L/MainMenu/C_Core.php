@@ -42,13 +42,67 @@ class C_Core extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
-		$data['Core'] = $this->M_core->getCore();
-
 		$this->load->view('V_Header', $data);
 		$this->load->view('V_Sidemenu', $data);
 		$this->load->view('ManufacturingOperationUP2L/Core/V_index', $data);
 		$this->load->view('V_Footer', $data);
 	}
+
+	// edit rozin
+	public function buildCDataTable()
+	{
+		$post = $this->input->post();
+
+		foreach ($post['columns'] as $val) {
+			$post['search'][$val['data']]['value'] = $val['search']['value'];
+		}
+
+		$countall = $this->M_core->countAllC()['count'];
+		$countfilter = $this->M_core->countFilteredC($post)['count'];
+
+		$post['pagination']['from'] = $post['start'] + 1;
+		$post['pagination']['to'] = $post['start'] + $post['length'];
+
+		$protodata = $this->M_core->SelectC($post);
+
+		$data = [];
+		foreach ($protodata as $row) {
+		$encrypted_string = $this->encrypt->encode($row['core_id']);
+		$encrypted_string = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
+
+			$sub_array = [];
+			$sub_array[] = '<center>'.$row['pagination'].'</center>';
+			$sub_array[] = '<center>
+											<a style="margin-right:4px" href="'.base_url('ManufacturingOperationUP2L/Core/read/'.$encrypted_string.'').'" data-toggle="tooltip" data-placement="bottom" title="Read Data"><span class="fa fa-list-alt fa-2x"></span></a>
+											<a style="margin-right:4px" href="'.base_url('ManufacturingOperationUP2L/Core/update/'.$encrypted_string.'').'" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o fa-2x"></span></a>
+											<a href="'.base_url('ManufacturingOperationUP2L/Core/delete/'.$encrypted_string.'').'" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm(\'Are you sure you want to delete this item?\');"><span class="fa fa-trash fa-2x"></span></a>
+										</center>';
+			$sub_array[] = '<center>'.$row['component_code'].'</center>';
+			$sub_array[] = '<center>'.$row['component_description'].'</center>';
+			$sub_array[] = '<center>'.$row['production_date'].'</center>';
+			$sub_array[] = '<center>'.$row['core_quantity'].'</center>';
+			$sub_array[] = '<center>'.$row['print_code'].'</center>';
+			$sub_array[] = '<center>'.$row['kode'].'</center>';
+			$sub_array[] = '<center>'.$row['shift'].'</center>';
+			$sub_array[] = '<center>'.$row['employee_id'].'</center>';
+
+			$data[] = $sub_array;
+		}
+
+		$output = [
+			'draw' => $post['draw'],
+			'recordsTotal' => $countall,
+			'recordsFiltered' => $countfilter,
+			'data' => $data,
+		];
+
+		die($this->output
+						->set_status_header(200)
+						->set_content_type('application/json')
+						->set_output(json_encode($output))
+						->_display());
+	}
+
 	public function view_create()
 	{
 		$user_id = $this->session->userid;
@@ -68,7 +122,7 @@ class C_Core extends CI_Controller
 		$this->load->view('ManufacturingOperationUP2L/Core/V_create', $data);
 		$this->load->view('V_Footer', $data);
 	}
-	
+
 	public function create()
 	{
 		$emp			= $this->input->post('txt_employee[]');
@@ -106,11 +160,11 @@ class C_Core extends CI_Controller
 			}
 			$aksen2++;
 		}
-		
+
 		foreach ($coreData as $co) {
 			$this->M_core->setCore($co);
 			$header_id = $this->db->insert_id();
-			
+
 			$emp = $this->input->post('txt_employee[]');
 			$produksi = $this->input->post('txt_produksi[]');
 			$lembur = $this->input->post('txt_lembur[]');

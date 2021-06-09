@@ -49,10 +49,12 @@ class C_Input extends CI_Controller
 	}
 
 	public function input()
-	{
+	{	
+		$subinv = $this->input->post('subinv');
 		$noDokumen = $this->input->post('noDokumen');
 		$jenis_dokumen = $this->input->post('jenis_dokumen');
 		$atr=NULL;
+		
 		if ($jenis_dokumen == 'KIB') {
 			$ceknomor = $this->M_input->ceknoKIB($noDokumen);
 		}else{
@@ -64,24 +66,30 @@ class C_Input extends CI_Controller
 		}else{
 			if ($jenis_dokumen == 'IO') {
 				$atr = "and mmt.SHIPMENT_NUMBER = '$noDokumen'";
-				$data['input'] = $this->M_input->getInput($atr);
+				$data['input'] = $this->M_input->getInput($atr, $subinv);
 			} else if ($jenis_dokumen == 'KIB'){
 				$atr = "and kk.KIBCODE = 'PACKG$noDokumen'";
-				$data['input'] = $this->M_input->getInputKIB($atr);
+				$data['input'] = $this->M_input->getInputKIB($atr, $subinv);
 			} else if ($jenis_dokumen == 'LPPB'){
 				$atr = "and RSH.RECEIPT_NUM ='$noDokumen'";
-				$data['input'] = $this->M_input->getInputLPPB($atr);
+				$data['input'] = $this->M_input->getInputLPPB($atr, $subinv);
+			} else if ($jenis_dokumen == 'MO'){
+				$atr = "and MTRH.REQUEST_NUMBER ='$noDokumen'";
+				$data['input'] = $this->M_input->getInputMO($atr, $subinv);
 			} else if ($jenis_dokumen == 'FPB') {
-				$data['input'] = $this->M_input->getInputFPB($noDokumen);
-			}else if ($jenis_dokumen == 'SPBSPI') {
-				$data['input'] = $this->M_input->getInputSPBSPI($noDokumen);
-			}else{
+				$data['input'] = $this->M_input->getInputFPB($noDokumen, $subinv);
+			} else if ($jenis_dokumen == 'SPBSPI') {
+				$data['input'] = $this->M_input->getInputSPBSPI($noDokumen, $subinv);
+			} else{
 				$atr = '';
 			}
 		}
 
+		// echo "<pre>";print_r($data['input']);exit();
+
 		foreach ($data['input'] as $key => $k) {
 			$data['input'][$key]['JENIS_DOKUMEN'] = $jenis_dokumen;
+			$data['input'][$key]['SUBINV'] = $subinv;
 		}
 		
 		return $this->load->view('MonitoringGdSparepart/V_TableInput', $data);
@@ -97,14 +105,13 @@ class C_Input extends CI_Controller
 		$CREATION_DATE	= $this->input->post('creation_date');
 		$STATUS			= $this->input->post('status');
 		$PIC			= $this->input->post('pic');
+		$SUBINV			= $this->input->post('subinv');
 
 		foreach($ITEM as $key => $no){
-			$this->M_input->save($NO_DOCUMENT[$key],$JENIS_DOKUMEN[$key],$no,$DESCRIPTION[$key],$UOM[$key],$QTY[$key],$CREATION_DATE[$key],$STATUS[$key],$PIC);
+			$this->M_input->save($NO_DOCUMENT[$key],$JENIS_DOKUMEN[$key],$no,$DESCRIPTION[$key],$UOM[$key],$QTY[$key],$CREATION_DATE[$key],$STATUS[$key],$PIC, $SUBINV[$key]);
 		}
-		// echo "<pre>";
-		// print_r ($save);
-		// exit();
-		redirect(base_url('MonitoringGdSparepart/Input/'));
+		
+		redirect(base_url('MonitoringGdSparepart/Monitoring/'));
 	}
 
 }

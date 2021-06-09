@@ -136,7 +136,7 @@
                                                     <div class="form-group">
                                                         <label class="form-check-label">Kode Induk :</label>
                                                         <br>
-                                                        <select class="form-control pull-right" id="TDP_Tariknoind" multiple>         
+                                                        <select class="form-control pull-right" id="TDP_Tariknoind" multiple>
                                                             <?php foreach ($Tariknoind as $key) { ?>
                                                                 <option value="<?= $key['fs_noind'] ?>"><?= $key['fs_noind'], ' - ', $key['fs_ket'] ?></option>
                                                             <?php
@@ -367,6 +367,10 @@
                                                 <label> Tanggal Keluar</label><br>
                                                 <input name="sebabklr" type="checkbox" class="chk_FilterTarikData" value="tp.sebabklr">
                                                 <label> Sebab Keluar</label><br>
+                                                <input name="status_diangkat" type="checkbox" class="chk_FilterTarikData" value="tp.status_diangkat">
+                                                <label> Status Diangkat</label><br>
+                                                <input name="masa_kerja" type="checkbox" class="chk_FilterTarikData_masakerja" value=",to_char(diangkat, 'DD-MM-YYYY') AS diangkat,to_char(masukkerja, 'DD-MM-YYYY') AS masukkerja">
+                                                <label> Masa Kerja</label><br>
                                             </div>
 
                                             <div class="col-sm-3">
@@ -414,7 +418,7 @@
 
                                             <div class="col-sm-3">
                                                 <h3 class="text-primary">BPJS Kes</h3>
-                                                <input name="nokes" type="checkbox" class="chk_FilterTarikData" value="tb.no_peserta">
+                                                <input name="nokes" type="checkbox" class="chk_FilterTarikData" value="tb.no_peserta as no_bpjskes">
                                                 <label> No Kes</label><br>
                                                 <input name="tglmulaik" type="checkbox" class="chk_FilterTarikData" value="to_char(tb.tglmulai, 'DD-MM-YYYY') AS tglmulaik">
                                                 <label> Tgl. mulai</label><br>
@@ -432,7 +436,7 @@
 
                                             <div class="col-sm-3">
                                                 <h3 class="text-primary">BPJS TK</h3>
-                                                <input name="nokpj" type="checkbox" class="chk_FilterTarikData" value="ttk.no_peserta">
+                                                <input name="nokpj" type="checkbox" class="chk_FilterTarikData" value="ttk.no_peserta as no_bpjstk">
                                                 <label> No KPJ</label><br>
                                                 <input name="tglmulai" type="checkbox" class="chk_FilterTarikData" value="to_char(ttk.tglmulai, 'DD-MM-YYYY') AS tglmulai">
                                                 <label> Tgl. Mulai</label><br>

@@ -1,3 +1,49 @@
+const toastDO2021 = (type, message) => {
+  Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000
+  }).fire({
+    customClass: 'swal-font-small',
+    type: type,
+    title: message
+  })
+}
+
+const toastDO2021Loading = (pesan) => {
+  Swal.fire({
+    toast: true,
+    position: 'top-end',
+    onBeforeOpen: () => {
+       Swal.showLoading();
+       $('.swal2-loading').children('button').css({'width': '20px', 'height': '20px'})
+     },
+    text: pesan
+  })
+}
+
+const swalDO2021Loading = (pesan) => {
+  Swal.fire({
+    allowOutsideClick:false,
+    onBeforeOpen: () => {
+       Swal.showLoading();
+       $('.swal2-loading').children('button').css({'width': '40px', 'height': '40px'})
+     },
+    text: pesan
+  })
+}
+
+const swalDO2021 = (type, title) => {
+  Swal.fire({
+    type: type,
+    title: title,
+    text: '',
+    showConfirmButton: false,
+    showCloseButton: true,
+  })
+}
+
 var ajax1  = null;
 var ajax2  = null;
 var ajax3  = null;
@@ -6,7 +52,6 @@ var ajax5  = null;
 var ajax6  = null;
 
 $(document).ready(function() {
-
   var checkDO = $('#punyaeDO').val();
   if (checkDO == 'trueDO') {
     $.ajax({
@@ -689,8 +734,106 @@ function GetSudahCetakDetail(rm, rowID) {
   })
 }
 
+// $(document).ready(function() {
+    // startintervalcetak(2100000002);
+// })
 
-function cetakDO(rn) {
+let do_cekcetak;
+function startintervalcetak(rn) {
+ do_cekcetak = setInterval(function() {
+   ceksudahcetak(rn);
+ }, 2000);
+}
+
+function ceksudahcetak(rn) {
+  $.ajax({
+    url: baseurl + 'MonitoringDO/SettingDO/cek_sudah_cetak',
+    type: 'POST',
+    dataType:'JSON',
+    data: {
+      rn:rn,
+    },
+    beforeSend: function() {
+    },
+    success: function(result) {
+      console.log(result.STATUS, 'ini statusnya');
+      if (result.STATUS == 'C') {
+         clearInterval(do_cekcetak);
+         swalDO2021('success', 'Selesai.');
+         dodo3();
+      }
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+      console.error();
+    }
+  })
+}
+
+function runapi_interorg(tipe, request_number, org_id, subinv) {
+  $.ajax({
+    url: baseurl + 'MonitoringDO/SettingDO/cek_interog_blm',
+    type: 'POST',
+    dataType:'JSON',
+    data: {
+      rn:request_number,
+    },
+    beforeSend: function() {
+      swalDO2021Loading('Mengecek Prosedur INTERORG SPB..')
+    },
+    success: function(result0) {
+      if (result0 == '') {
+        $.ajax({
+          url: baseurl + 'MonitoringDO/SettingDO/runapi_interorg',
+          type: 'POST',
+          dataType:'JSON',
+          data: {
+            tipe: tipe,
+            request_number: request_number,
+            org_id: org_id,
+            subinv: subinv
+          },
+          beforeSend: function() {
+            swalDO2021Loading('Menjalankan Prosedur INTERORG SPB..')
+          },
+          success: function(result) {
+            if (result == 200) {
+              // swalDO2021('success', 'Berhasil menjalankan prosedur');
+              swalDO2021Loading('Sedang Mencetak Dokumen')
+              $('#MyModalSPBKIT').modal('hide');
+              startintervalcetak(request_number);
+              window.open(baseurl+'MonitoringDO/PDF/'+request_number);
+            }else {
+              swalDO2021('warning', 'tipe dan request_number kosong');
+            }
+          },
+          error: function(XMLHttpRequest, textStatus, errorThrown) {
+            console.error();
+            swalDO2021('error', 'Terjadi kesalahan saat menjalankan prosedur INTERORG_SPB');
+          }
+        })
+      }else {
+        swalDO2021Loading('Sedang Mencetak Dokumen')
+        startintervalcetak(request_number);
+        window.open(baseurl+'MonitoringDO/PDF/'+request_number);
+      }
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+      console.error();
+      swalDO2021('error', 'Terjadi kesalahan saat mengecek prosedur INTERORG_SPB');
+    }
+  })
+}
+
+$('.cetak_spbkit').on('submit', function() {
+  event.preventDefault();
+  let tipe = $('#tipe_spbkit').text();
+  let request_number = $('#nospbkit').text();
+  let org_id = $('#org_id_spbkit').val();
+  let subinv = $('.select2subinv_spbkit').val();
+  runapi_interorg(tipe, request_number, org_id, subinv);
+})
+
+function cetakDO(rn, tipe, header_id) {
   $.ajax({
     url: baseurl + 'MonitoringDO/SettingDO/cekDObukan',
     type: 'POST',
@@ -699,13 +842,131 @@ function cetakDO(rn) {
       rn : rn,
     },
     beforeSend: function() {
-      Swal.showLoading();
+      swalDO2021Loading('Mengecek Alamat..')
     },
     success: function(result) {
       if (result) {
         Swal.close()
         // dodo3();
-        window.open(baseurl+'MonitoringDO/PDF/'+rn)
+
+        //tambahan kondisi 2021
+        if (tipe == 'DO') {
+          swalDO2021Loading('Sedang Mencetak Dokumen')
+          startintervalcetak(rn);
+          window.open(baseurl+'MonitoringDO/PDF/'+rn)
+        }else {
+          $.ajax({
+            url: baseurl + 'MonitoringDO/SettingDO/closeline',
+            type: 'POST',
+            dataType:'JSON',
+            data: {
+              header_id: header_id,
+            },
+            beforeSend: function() {
+              swalDO2021Loading('Close Line..')
+            },
+            success: function(result_1) {
+              // if (result_1) {
+                if (tipe == 'SPB KIT') {
+
+                  $.ajax({
+                    url: baseurl + 'MonitoringDO/SettingDO/cek_interog_blm',
+                    type: 'POST',
+                    dataType:'JSON',
+                    data: {
+                      rn:rn,
+                    },
+                    beforeSend: function() {
+                      swalDO2021Loading('Mengecek Prosedur INTERORG SPB..')
+                    },
+                    success: function(result0) {
+                      if (result0 == '') {
+
+                        $('#tipe_spbkit').text(tipe)
+                        $('#nospbkit').text(rn)
+                        $('#MyModalSPBKIT').modal({
+                            backdrop: 'static'
+                        });
+                        $('.select2subinv_spbkit').val('').trigger('change');
+                        //ambil org code
+                        $.ajax({
+                          url: baseurl + 'MonitoringDO/SettingDO/org_spbkit',
+                          type: 'POST',
+                          dataType:'JSON',
+                          data: {
+                            rn: rn,
+                          },
+                          beforeSend: function() {
+                            toastDO2021Loading('Mencoba Mendapatkan ORGANIZATION ID..');
+                          },
+                          success: function(result_2) {
+                            if (result_2 != '') {
+                              toastDO2021('success', `ORGANIZATION ID Ditemukan ${result_2[0].ORGANIZATION_CODE} - ${result_2[0].ORGANIZATION_ID}`)
+                              $('#org_code_spbkit').val(result_2[0].ORGANIZATION_CODE)
+                              $('#org_id_spbkit').val(result_2[0].ORGANIZATION_ID)
+                              //isi subinv
+                              $('.select2subinv_spbkit').select2({
+                                placeholder: "Pilih Sub.Inventory",
+                                ajax: {
+                                  url: baseurl + "MonitoringDO/SettingDO/subinv_spbkit",
+                                  dataType: "JSON",
+                                  type: "POST",
+                                  cache: false,
+                                  data: function(params) {
+                                    return {
+                                      term: params.term,
+                                      org: result_2[0].ORGANIZATION_ID
+                                    };
+                                  },
+                                  processResults: function(data) {
+                                    return {
+                                      results: $.map(data, function(obj) {
+                                        return {
+                                          id: obj.SUBINV,
+                                          text: obj.SUBINV
+                                        }
+                                      })
+                                    }
+                                  }
+                                }
+                              });
+                            }else {
+                              toastDO2021('warning', `ORGANIZATION ID tidak Ditemukan, hubungi ICT`);
+                            }
+                          },
+                          error: function(XMLHttpRequest, textStatus, errorThrown) {
+                            console.error();
+                          }
+                        })
+
+                      }else {
+                        swalDO2021Loading('Sedang Mencetak Dokumen')
+                        startintervalcetak(rn);
+                        window.open(baseurl+'MonitoringDO/PDF/'+rn);
+                      }
+                    },
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                      console.error();
+                      swalDO2021('error', 'Terjadi kesalahan saat mengecek prosedur INTERORG_SPB');
+                    }
+                  })
+
+
+                }else if (tipe == 'SPB') {
+                  runapi_interorg(tipe, rn, null, null);
+                }else {
+                  swalDO2021('warning', `Tipe dokumen ${tipe} tidak masuk dikondisi`);
+                }
+              // }else {
+                // swalDO2021('warning', 'Gagal Close Line '+header_id);
+              // }
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+              console.error();
+            }
+          })
+        }
+
       }else {
         Swal.fire({
           position: 'middle',
@@ -715,7 +976,7 @@ function cetakDO(rn) {
         })
       }
 
-      dodo3();
+      // dodo3();
 
     },
     error: function(XMLHttpRequest, textStatus, errorThrown) {

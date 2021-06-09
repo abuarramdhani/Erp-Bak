@@ -47,14 +47,12 @@ $jml = count($data);
 for ($i=6; $i > -1; $i--) { ?>
     wkt.push("<?= $data[$i]['TGL_INPUT']; ?>")
     plyn.push(<?= $data[$i]['PELAYANAN'];?>)
-    pglr.push(<?= $data[$i]['PENGELUARAN'];?>)
     pck.push(<?= $data[$i]['PACKING'];?>)
     coly.push(<?= $data[$i]['COLY'];?>)
     pcs.push(<?= $data[$i]['JML_PACK'];?>)
     item_in.push(<?= $data[$i]['ITEM_MASUK'];?>)
     out.push(<?= $data[$i]['ITEM_KELUAR'];?>)
     plynout.push(<?= $data[$i]['ITEM_PLYN'];?>)
-    pglrout.push(<?= $data[$i]['ITEM_PGLR'];?>)
 <?php }?>
 
 
@@ -70,13 +68,8 @@ var myChart = new Chart(ctx, {
             backgroundColor: "#E86761",
             pointBackgroundColor: "black",
             fill: false
-        }, { 
-            data: pglr,
-            label: "Pengecekan",
-            borderColor: "#F2A966",
-            backgroundColor: "#F2A966",
-            fill: false
-        },{ 
+        }, 
+        { 
             data: pck,
             label: "Packing",
             borderColor: "#3ED6A6",
@@ -311,13 +304,8 @@ var myChart3 = new Chart(ctx, {
             borderColor: "#E86761",
             backgroundColor: "#E86761",
             fill: true
-        }, { 
-            data: pglrout,
-            label: "Pengecekan",
-            borderColor: "#F2A966",
-            backgroundColor: "#F2A966",
-            fill: true
-        },{ 
+        }, 
+        { 
             data: out,
             label: "Packing",
             borderColor: "#3ED6A6",
@@ -487,14 +475,11 @@ var myChart5 = new Chart(ctx, {
                     <th>Item Masuk</th>
                     <th>Pcs Masuk</th>
                     <th>Pelayanan</th>
-                    <th>Pengecekan</th>
                     <th>Packing</th>
                     <th>Coly</th>
                     <th>Lembar Pelayanan</th>
-                    <th>Lembar Pengecekan</th>
                     <th>Lembar Packing</th>
                     <th>Item Pelayanan</th>
-                    <th>Item Pengecekan</th>
                     <th>Item Packing</th>
                     <th>Pcs Packing</th>
                     <th>Jenis Item</th>
@@ -509,14 +494,11 @@ var myChart5 = new Chart(ctx, {
                         <td><input type="hidden" id="item_in<?= $no?>" value="<?= $val['ITEM_MASUK']?>"><?= $val['ITEM_MASUK']?></td>
                         <td><input type="hidden" id="pcs_msk<?= $no?>" value="<?= $val['PCS_MASUK']?>"><?= $val['PCS_MASUK']?></td>
                         <td><input type="hidden" id="plyn<?= $no?>" value="<?= $val['PELAYANAN']?>"><?= $val['PELAYANAN']?> detik</td>
-                        <td><input type="hidden" id="pglr<?= $no?>" value="<?= $val['PENGELUARAN']?>"><?= $val['PENGELUARAN']?> detik</td>
                         <td><input type="hidden" id="pck<?= $no?>" value="<?= $val['PACKING']?>"><?= $val['PACKING']?> detik</td>
                         <td><input type="hidden" id="coly<?= $no?>" value="<?= $val['COLY']?>"><?= $val['COLY']?></td>
                         <td><input type="hidden" id="lembar_plyn<?= $no?>" value="<?= $val['LEMBAR_PLYN']?>"><?= $val['LEMBAR_PLYN']?></td>
-                        <td><input type="hidden" id="lembar_pglr<?= $no?>" value="<?= $val['LEMBAR_PGLR']?>"><?= $val['LEMBAR_PGLR']?></td>
                         <td><input type="hidden" id="lembar_pack<?= $no?>" value="<?= $val['LEMBAR_PACK']?>"><?= $val['LEMBAR_PACK']?></td>
                         <td><input type="hidden" id="item_plyn<?= $no?>" value="<?= $val['ITEM_PLYN']?>"><?= $val['ITEM_PLYN']?></td>
-                        <td><input type="hidden" id="item_pglr<?= $no?>" value="<?= $val['ITEM_PGLR']?>"><?= $val['ITEM_PGLR']?></td>
                         <td><input type="hidden" id="item_out<?= $no?>" value="<?= $val['ITEM_KELUAR']?>"><?= $val['ITEM_KELUAR']?></td>
                         <td><input type="hidden" id="pcs_pack<?= $no?>" value="<?= $val['PCS_PACK']?>"><?= $val['PCS_PACK']?></td>
                         <td><button class="btn btn-info" onclick="detailJenisItem(<?= $no?>)">Detail</button></td>

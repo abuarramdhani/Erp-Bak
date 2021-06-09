@@ -45,8 +45,9 @@ class C_Index extends CI_Controller {
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		if ($user == 'B0892' || $user == 'J1365' || $user == 'K1778') {
-			$data['UserMenu'][] = $UserMenu[6]; // menu Tracking SPB
+		$user_arsip = array('P0256', 'K1778', 'B0892', 'J1365');
+		if (in_array($user, $user_arsip)) {
+			$data['UserMenu'][] = $UserMenu[7]; // menu Arsip SPB
 		}else {
 			$data['UserMenu'] = $UserMenu;
 		}

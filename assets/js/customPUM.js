@@ -130,3 +130,79 @@ function insertPUM(th) {
 		}})
 	}
 }
+
+// //---------------------------------------------- OPM -------------------------------------------//
+$('#routclass').change(function(){
+	$('#findPUMopm').removeAttr("disabled");
+
+	var routclass = $(this).val();
+	// console.log(routclass);
+	$("#rsrc").select2({
+		allowClear: true,
+		placeholder: "Resource Code",
+		// minimumInputLength: 0,
+		ajax: {		
+			url:baseurl+"PerhitunganUM/HitungOPM/getResources",
+			dataType: 'json',
+			type: "GET",
+			data: function (params) {
+				var queryParameters = {
+					term: params.term,
+					routclass : routclass
+				}
+				return queryParameters;
+			},
+			processResults: function (data) {
+				// console.log(data);
+				return {
+					results: $.map(data, function(obj) {
+						return { id:obj.RESOURCES, text:obj.RESOURCES};
+					})
+				};
+			}
+		}
+	});
+});
+
+let ajax_1 = null;
+
+function getPUMopm(th) {
+	$(document).ready(function(){
+		if (ajax_1 != null) {
+			ajax_1.abort();
+		}
+
+		var routclass = $('select[name="routclass"]').val();
+		var plan = $('select[name="planopm"]').val();
+		var rsrc = $('select[name="rsrc"]').val();
+
+		var request = $.ajax({
+			url: baseurl+'PerhitunganUM/HitungOPM/getData',
+			data: {
+				routclass : routclass, 
+				plan : plan,
+				rsrc : rsrc
+			},
+			type: "POST",
+			datatype: 'html'
+		});
+		$('#ResultPUMopm').html('');
+		$('#ResultPUMopm').html('<center><img style="width:100px; height:auto" src="'+baseurl+'assets/img/gif/loading14.gif"><br/></center><center><p style="font-size:12px">Harap tunggu beberapa menit...<p></center>' );
+
+		request.done(function(result){
+			// console.log(result);
+			$('#ResultPUMopm').html(result);
+			$('#tblhtgopm').DataTable({
+				scrollX: true,
+				scrollY:  500,
+				scrollCollapse: true,
+				paging:false,
+				info:true,
+				ordering:false,
+				fixedColumns: {
+					leftColumns: 1
+				}
+			});
+		});
+	});
+}

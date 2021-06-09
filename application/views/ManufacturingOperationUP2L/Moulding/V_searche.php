@@ -36,12 +36,12 @@
                                         <div class="form-group">
                                         <div class="col-lg-2"></div>
                                             <div class="col-lg-6">
-                                                <form autocomplete="off" method="POST" action="<?= base_url('ManufacturingOperationUP2L/Moulding/search')?>">
+                                                <form autocomplete="off" method="POST" action="<?//= base_url('ManufacturingOperationUP2L/Moulding/search')?>">
                                                 <input type="text" required="" name="bulan" id="sea_month" class="form-control selectM" placeholder="Pilih Bulan" />
                                             </div>
                                             <div class="col-lg-2">
-                                                <button type="submit" class="btn btn-primary"> <i class="fa fa-search"></i></button>
-                                                <a href="<?= base_url('ManufacturingOperationUP2L/Moulding')?>" class="btn btn-success"> <i class="fa fa-refresh"></i></a>
+                                                <button type="button" onclick="" class="btn btn-primary"> <i class="fa fa-search"></i></button>
+                                                <!-- <a href="<?= base_url('ManufacturingOperationUP2L/Moulding')?>" class="btn btn-success"> <i class="fa fa-refresh"></i></a> -->
                                                 </form>
                                             </div>
                                             <div class="col-lg-2"></div>
@@ -49,26 +49,26 @@
                                     </div>
                                 </div>
                                 <div class="table-responsive">
-                                    <table class="datatable table table-striped table-bordered table-hover text-left" id="tblMoulding" style="font-size:12px;">
+                                    <table class="datatable table table-striped table-bordered table-hover text-left" id="tblMoulding2021" style="font-size:12px;">
                                         <thead class="bg-primary">
                                             <tr>
                                                 <th style="text-align:center; width:30px">No</th>
                                                 <th style="text-align:center; min-width:80px">Action</th>
-                                                <th>Component Code</th>
-                                                <th>Component Description</th>
-                                                <th>Production Date</th>
-                                                <th>Kode Cetak</th>
-                                                <th>Shift</th>
-                                                <th>Komponen (pcs)</th>
-                                                <th>Kode</th>
-                                                <th>Jumlah Pekerja</th>
-                                                <th>Bongkar Qty</th>
-                                                <th>Scrap Qty</th>
-                                                <th>Hasil Baik</th>
+                                                <th style="text-align:center">Component Code</th>
+                                                <th style="text-align:center">Component Description</th>
+                                                <th style="text-align:center">Production Date</th>
+                                                <th style="text-align:center">Kode Cetak</th>
+                                                <th style="text-align:center">Shift</th>
+                                                <th style="text-align:center">Komponen (pcs)</th>
+                                                <th style="text-align:center">Kode</th>
+                                                <th style="text-align:center">Jumlah Pekerja</th>
+                                                <th style="text-align:center">Bongkar Qty</th>
+                                                <th style="text-align:center">Scrap Qty</th>
+                                                <th style="text-align:center">Hasil Baik</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <?php
+                                            <!-- <?php
                                             $no = 1;
                                             foreach ($Moulding as $row) :
                                                 $encrypted_string = $this->encrypt->encode($row['moulding_id']);
@@ -93,7 +93,7 @@
                                                     <td><?php echo $row['scrap_qty'] ?></td>
                                                     <td><?php echo $row['bongkar_qty'] - $row['scrap_qty'] ?></td>
                                                 </tr>
-                                            <?php endforeach; ?>
+                                            <?php endforeach; ?> -->
                                         </tbody>
                                     </table>
                                 </div>

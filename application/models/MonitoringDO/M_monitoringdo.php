@@ -11,6 +11,75 @@ class M_monitoringdo extends CI_Model
         $subinv = $this->session->datasubinven;
     }
 
+    public function runapi_interorg($tipe,$request_number,$org,$subinv)
+    {
+        // echo "BEGIN APPS.KHS_INTERORG_SPB ('$tipe', '$request_number', $org, '$subinv'); END;";
+        // $conn = oci_connect('APPS', 'APPS', '192.168.7.3:1522/DEV');
+        $conn = oci_connect('APPS', 'APPS', '192.168.7.1:1521/PROD');
+        if (!$conn) {
+            $e = oci_error();
+            trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
+        }
+
+        if ($tipe == 'SPB KIT') {
+          $sql = "BEGIN APPS.KHS_INTERORG_SPB ('$tipe', '$request_number', $org, '$subinv'); END;";
+        }else {
+          $sql = "BEGIN APPS.KHS_INTERORG_SPB ('$tipe', '$request_number', NULL, NULL); END;";
+        }
+
+        //Statement does not change
+        $stmt = oci_parse($conn, $sql);
+        // oci_bind_by_name($stmt, ':P_PARAM1', $rm);
+
+        // But BEFORE statement, Create your cursor
+        $cursor = oci_new_cursor($conn);
+
+        // Execute the statement as in your first try
+        oci_execute($stmt);
+
+        // and now, execute the cursor
+        oci_execute($cursor);
+    }
+
+    public function subinv_spbkit($org, $term)
+    {
+      $term = strtoupper($term);
+      return $this->oracle->query("SELECT msi.secondary_inventory_name subinv
+                                      FROM mtl_secondary_inventories msi
+                                     WHERE msi.organization_id = $org
+                                       AND msi.disable_date IS NULL
+                                       AND msi.reservable_type = 1
+                                       AND msi.secondary_inventory_name NOT LIKE 'STAG%'
+                                       AND msi.secondary_inventory_name NOT LIKE 'KELUAR%'
+                                       AND msi.secondary_inventory_name NOT LIKE 'KLR%'
+                                       AND msi.secondary_inventory_name LIKE '%$term%'
+                                  ORDER BY 1 ASC")->result_array();
+    }
+
+    public function org_spbkit($rn)
+    {
+      return $this->oracle->query("SELECT DISTINCT kim.transaction_source_name, mp.organization_id,
+                mp.organization_code
+           FROM khs_inv_mtltransactions kim, mtl_parameters mp
+          WHERE REPLACE (kim.REFERENCE, 'IO : ', '') = mp.organization_id
+            AND kim.transaction_source_name = '$rn'")->result_array();
+    }
+
+    public function closeline($header_id)
+    {
+      $this->oracle->query("UPDATE mtl_txn_request_lines mtrl
+                             SET mtrl.line_status = 5
+                           WHERE mtrl.header_id = $header_id
+                             AND mtrl.line_status IN (3, 7)
+                             AND mtrl.quantity_delivered <> 0
+                             AND mtrl.quantity_delivered IS NOT NULL");
+      if ($this->oracle->affected_rows()) {
+        return 1;
+      }else {
+        return 0;
+      }
+    }
+
     public function cekDObukan($rn)
     {
       $res = $this->oracle->query("SELECT distinct
@@ -65,9 +134,10 @@ class M_monitoringdo extends CI_Model
 
     public function insertDOCetak($data)
     {
+        $ip = $this->input->ip_address();
         $sql = "INSERT INTO khs_cetak_do
-                            (request_number, order_number, creation_date, nomor_cetak)
-                     VALUES ('$data[REQUEST_NUMBER]', '$data[ORDER_NUMBER]', SYSDATE, '$data[NOMOR_CETAK]')";
+                            (request_number, order_number, creation_date, nomor_cetak, ip_address)
+                     VALUES ('$data[REQUEST_NUMBER]', '$data[ORDER_NUMBER]', SYSDATE, '$data[NOMOR_CETAK]', '$ip')";
 
         if (!empty($data)) {
             $response = $this->oracle->query($sql);
@@ -93,6 +163,27 @@ class M_monitoringdo extends CI_Model
         $query = $this->oracle->query($sql);
 
         return $query;
+    }
+
+    public function sudah_cetak_blm($id)
+    {
+      return $this->oracle->query("SELECT status FROM khs_detail_dospb WHERE request_number = '$id'")->row_array();
+      // return ['STATUS' => 'T'];
+    }
+
+    public function cek_interog_blm($rn)
+    {
+      return $this->oracle->query("SELECT mtrh.attribute3
+                                    FROM mtl_txn_request_headers mtrh
+                                   WHERE mtrh.request_number = '$rn' AND mtrh.attribute3 IS NOT NULL")->row_array();
+    }
+
+    public function getsubinvksd($value='')
+    {
+      return $this->oracle->query("SELECT *
+                                      FROM khs_subinventory_do ksd
+                                     WHERE ksd.tipe = 'UNIT'
+                                  ORDER BY 2")->result_array();
     }
 
 
@@ -211,8 +302,8 @@ class M_monitoringdo extends CI_Model
         $subinv = $this->session->datasubinven;
         $query = "SELECT *
                     FROM khs_qweb_siap_assign1 kqsa
-                   WHERE TRUNC (SYSDATE) BETWEEN TRUNC (kqsa.tgl_kirim - 1)
-                                             AND TRUNC (kqsa.tgl_kirim + 6)
+                   WHERE TRUNC (kqsa.tgl_kirim) BETWEEN TRUNC (SYSDATE - 2)
+                                                    AND TRUNC (SYSDATE + 7)
                      AND kqsa.subinventory = '$subinv'
                 ORDER BY kqsa.no_pr, kqsa.header_id";
 
@@ -571,7 +662,7 @@ class M_monitoringdo extends CI_Model
                        AND kdd.inventory_item_id = mtrl.inventory_item_id
                        AND kdd.line_number = mtrl.line_number
                        AND mtrh.request_number = '$data'
-                       AND kdd.status = 'C'
+                       AND kdd.status IN ('C','V')
                        AND mtrl.line_status = 5
                   ORDER BY msib.description";
 
@@ -653,8 +744,8 @@ class M_monitoringdo extends CI_Model
         return 0;
       }
     }
-    
-    
+
+
     public function cek_checklist($req)
     {
       $sql = "SELECT *
@@ -896,15 +987,24 @@ class M_monitoringdo extends CI_Model
     public function bodySurat($data,$tipe)
     {
         if ($tipe == 'DO') {
-          $order = 'kqbd.line_number';
+          // $order = 'kqbd.line_number';
+          $from = ', wsh_delivery_details wdd';
+          $where = 'AND kqbd.request_number = wdd.batch_id
+                    AND kqbd.item_id = wdd.inventory_item_id
+                    AND wdd.move_order_line_id = kqbd.line_id';
+          $order = 'wdd.source_line_id';
         }
         else {
+          $from = '';
+          $where = '';
           $order = 'kqbd.item';
         }
 
         $query = "SELECT *
                     FROM khs_qweb_body_dospb1 kqbd
+                         $from
                    WHERE kqbd.request_number = '$data'
+                         $where
                 ORDER BY $order";
 
         $response = $this->oracle->query($query)->result_array();

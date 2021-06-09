@@ -161,4 +161,143 @@ class C_Penyerahan extends CI_Controller
 
 	}
 
+
+	public function getEkspedisi()
+	{
+		$term = $this->input->get('term',TRUE);
+		$term = strtoupper($term);
+		$data = $this->M_penyerahan->getEkspedisi($term);
+		echo json_encode($data);
+	}
+
+
+	public function getManifest()
+    {
+    	$this->checkSession();
+    	$date = date('d/m/Y');
+		$data['value'] 	= $this->M_penyerahan->dataManifest();
+		$data['noind']  = $this->M_penyerahan->getPIC();
+		// $data['noind']  = $this->M_penyerahan->getPIC(null);
+		// $pelayanan 		= $this->M_penyerahan->dataPelayanan($date);
+		// $data['data']	= $pelayanan;
+        $this->load->view('KapasitasGdSparepart/V_Ajax_Penyerahan', $data);
+    }
+
+
+    public function getSudahManifest()
+    {
+    	$this->checkSession();
+    	$date = date('d/m/Y');
+		$data['value'] 	= $this->M_penyerahan->dataSudahManifest();
+		$data['noind']  = $this->M_penyerahan->getPIC();
+		// $data['noind']  = $this->M_penyerahan->getPIC(null);
+		// $pelayanan 		= $this->M_penyerahan->dataPelayanan($date);
+		// $data['data']	= $pelayanan;
+        $this->load->view('KapasitasGdSparepart/V_Ajax_Selesai_Penyerahan', $data);
+    }
+
+
+    public function cekSiapManifest()
+    {
+    	echo json_encode($this->M_penyerahan->cekSiapManifest(
+          	$this->input->post('no_spb'),
+          	$this->input->post('ekspedisi')
+        ));
+    }
+
+
+    public function cekSudahManifest()
+    {
+    	echo json_encode($this->M_penyerahan->cekSudahManifest(
+          	$this->input->post('no_spb')
+        ));
+    }
+
+
+    public function insertManifest()
+    {
+    	echo json_encode($this->M_penyerahan->insertManifest(
+          	$this->input->post('no_spb'),
+          	$this->session->userdata('user'),
+          	$this->input->post('ekspedisi')
+        ));
+    }
+
+
+    public function cekBeforeGenerate()
+    {
+    	echo json_encode($this->M_penyerahan->cekBeforeGenerate(
+          	$this->session->userdata('user'),
+          	$this->input->post('ekspedisi')
+        ));
+    }
+
+
+    public function generateManifestNum()
+    {
+    	$new = $this->M_penyerahan->generateManifestNum();
+    	$user = $this->session->userdata('user');
+
+    	$this->M_penyerahan->updateManifest($new,$user);
+
+    	echo json_encode($this->M_penyerahan->updateManifest($new,$user));  	
+    }
+
+
+    public function cetakMNF($id)
+    {
+    	$data['get_data'] = $this->M_penyerahan->getDataCetak($id);
+    	$data['get_nama'] = $this->M_penyerahan->getNamaEkspedisi();
+  //       $data['get_body'] = $this->M_penyerahan->bodyPL($id);
+		// $data['get_colly'] = $this->M_penyerahan->getTotalColly($id);
+  //       $data['total_colly'] = sizeof($data['get_colly']);
+  //       $data['total_berat'] = $this->M_penyerahan->getTotalBerat($id);
+  //       $data['petugas'] = $this->M_penyerahan->getAll($id);
+        
+        if (!empty($id)) {
+            // ====================== do something =========================
+            $this->load->library('Pdf');
+            $this->load->library('ciqrcode');
+
+            $pdf 		= $this->pdf->load();
+            $pdf 		= new mPDF('utf-8', 'F4', 0, '', 3, 3, 3, 0, 0, 0);
+
+            // ------ GENERATE QRCODE ------
+            if (!is_dir('./assets/img/monitoringDOSPQRCODE')) {
+                mkdir('./assets/img/monitoringDOSPQRCODE', 0777, true);
+                chmod('./assets/img/monitoringDOSPQRCODE', 0777);
+            }
+
+            $params['data']		= $data['get_data'][0]['MANIFEST_NUMBER'];
+            $params['level']	= 'H';
+            $params['size']		= 4;
+            $params['black']	= array(255,255,255);
+            $params['white']	= array(0,0,0);
+            $params['savename'] = './assets/img/monitoringDOSPQRCODE/'.$data['get_data'][0]['MANIFEST_NUMBER'].'.png';
+            
+            $this->ciqrcode->generate($params);
+            
+            ob_end_clean() ;
+            
+            $filename 	= 'Manifest_'.$data['get_data'][0]['EKSPEDISI'].'_'.$data['get_data'][0]['MANIFEST_NUMBER'].'.pdf';
+            $cetakPL	= $this->load->view('KapasitasGdSparepart/V_Pdf_MNF', $data, true);
+                               
+            $pdf->SetFillColor(0,255,0);
+            // $pdf->SetAlpha(0.4);
+            $pdf->WriteHTML($cetakPL);
+            $pdf->Output($filename, 'I');
+        // ========================end process=========================
+        } else {
+	        echo json_encode(array(
+	          	'success' => false,
+	          	'message' => 'id is null'
+	        ));
+        }
+
+        if (!unlink($params['savename'])) {
+            echo("Error deleting");
+        } else {
+            unlink($params['savename']);
+        }
+    }
 }

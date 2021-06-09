@@ -83,9 +83,11 @@
                                                     <td><?php echo $a; ?></td>
                                                     <td><?php echo $key['jml_pekerja_staff']; ?></td>
                                                     <?php $jml = explode(',', $key['jml_pekerja']);
+                                                    if (!empty(trim($key['jml_pekerja']))) {
                                                     foreach ($jml as $row) { ?>
                                                     <td><?php echo $row; ?></td>
-                                                    <?php  } ?>
+                                                    
+                                                    <?php }  } ?>
                                                     <td><?php echo $key['tgl_input']; ?></td>
                                                     <td><?php echo $status; ?></td>
                                                     <td><?php echo $key['periode']; ?></td>

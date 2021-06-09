@@ -79,7 +79,7 @@ class C_PrediksiCatering extends CI_Controller
             }
           }
         }
-        $prediksi[$key]['total'] = $prediksi[$key]['jumlah_shift'] - ($prediksi[$key]['dirumahkan_nonwfh'] + $prediksi[$key]['wfh'] + $prediksi[$key]['cuti'] + $prediksi[$key]['sakit'] + $prediksi[$key]['dinas_luar']);
+        $prediksi[$key]['total'] = $prediksi[$key]['jumlah_shift'] - ($prediksi[$key]['dirumahkan_nonwfh'] + $prediksi[$key]['wfh'] + $prediksi[$key]['cuti'] + $prediksi[$key]['sakit'] + $prediksi[$key]['dinas_luar'] + $prediksi[$key]['puasa']);
         $data['PrediksiCatering'] = $prediksi;
       }
     } else {
@@ -115,7 +115,7 @@ class C_PrediksiCatering extends CI_Controller
             }
           }
         }
-        $prediksi[$key]['total'] = $prediksi[$key]['jumlah_shift'] - ($prediksi[$key]['dirumahkan_nonwfh'] + $prediksi[$key]['wfh'] + $prediksi[$key]['cuti'] + $prediksi[$key]['sakit'] + $prediksi[$key]['dinas_luar']);
+        $prediksi[$key]['total'] = $prediksi[$key]['jumlah_shift'] - ($prediksi[$key]['dirumahkan_nonwfh'] + $prediksi[$key]['wfh'] + $prediksi[$key]['cuti'] + $prediksi[$key]['sakit'] + $prediksi[$key]['dinas_luar'] + $prediksi[$key]['puasa']);
         $data['PrediksiCatering'] = $prediksi;
       }
     } else {
@@ -204,7 +204,7 @@ class C_PrediksiCatering extends CI_Controller
             }
           }
         }
-        $prediksi[$key]['total'] = $prediksi[$key]['jumlah_shift'] - ($prediksi[$key]['dirumahkan_nonwfh'] + $prediksi[$key]['wfh'] + $prediksi[$key]['cuti'] + $prediksi[$key]['sakit'] + $prediksi[$key]['dinas_luar']);
+        $prediksi[$key]['total'] = $prediksi[$key]['jumlah_shift'] - ($prediksi[$key]['dirumahkan_nonwfh'] + $prediksi[$key]['wfh'] + $prediksi[$key]['cuti'] + $prediksi[$key]['sakit'] + $prediksi[$key]['dinas_luar'] + $prediksi[$key]['puasa']);
       }
     } else {
       echo "Data Shift kosong";
@@ -217,8 +217,8 @@ class C_PrediksiCatering extends CI_Controller
     $worksheet->getCell('A1')
       ->setValue('Export Prediksi Catering')->getStyle("A1")->applyFromArray(array("font" => array("bold" => true)));
 
-    $worksheet->getStyle("A5:J5")->applyFromArray(array("font" => array("bold" => true)))->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-    $worksheet->getStyle("A5:J5")->applyFromArray(array(
+    $worksheet->getStyle("A5:K5")->applyFromArray(array("font" => array("bold" => true)))->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+    $worksheet->getStyle("A5:K5")->applyFromArray(array(
       'borders' => array(
         'allborders' => array(
           'style' => PHPExcel_Style_Border::BORDER_THIN
@@ -268,7 +268,8 @@ class C_PrediksiCatering extends CI_Controller
     $worksheet->setCellValue('G5', 'Cuti');
     $worksheet->setCellValue('H5', 'Sakit');
     $worksheet->setCellValue('I5', 'Dinas Luar');
-    $worksheet->setCellValue('J5', 'Total');
+    $worksheet->setCellValue('J5', 'Puasa');
+    $worksheet->setCellValue('K5', 'Total');
 
     $angka = 1;
     $row = 6;
@@ -282,10 +283,11 @@ class C_PrediksiCatering extends CI_Controller
       $worksheet->setCellValue('G' . $row, $key['cuti']);
       $worksheet->setCellValue('H' . $row, $key['sakit']);
       $worksheet->setCellValue('I' . $row, $key['dinas_luar']);
-      $worksheet->setCellValue('J' . $row, $key['total']);
+      $worksheet->setCellValue('J' . $row, $key['puasa']);
+      $worksheet->setCellValue('K' . $row, $key['total']);
       $worksheet->getStyle('A' . $row)->applyFromArray($border)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
       $worksheet->getStyle('B' . $row)->applyFromArray($border);
-      foreach (range('C', 'J') as $columnID) {
+      foreach (range('C', 'K') as $columnID) {
         $worksheet->getStyle($columnID . $row)
           ->applyFromArray($border)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
       }
@@ -298,8 +300,9 @@ class C_PrediksiCatering extends CI_Controller
       $worksheet->setCellValue('G' . $row, array_sum(array_column($prediksi, 'cuti')));
       $worksheet->setCellValue('H' . $row, array_sum(array_column($prediksi, 'sakit')));
       $worksheet->setCellValue('I' . $row, array_sum(array_column($prediksi, 'dinas_luar')));
-      $worksheet->setCellValue('J' . $row, array_sum(array_column($prediksi, 'total')));
-      foreach (range('C', 'J') as $columnID) {
+      $worksheet->setCellValue('J' . $row, array_sum(array_column($prediksi, 'puasa')));
+      $worksheet->setCellValue('K' . $row, array_sum(array_column($prediksi, 'total')));
+      foreach (range('C', 'K') as $columnID) {
         $worksheet->getStyle($columnID . $row)
           ->applyFromArray($border)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
       }
@@ -307,7 +310,7 @@ class C_PrediksiCatering extends CI_Controller
 
     $worksheet->getColumnDimension('A')->setWidth('5');
     $worksheet->getColumnDimension('B')->setWidth('25');
-    foreach (range('C', 'J') as $columnID) {
+    foreach (range('C', 'K') as $columnID) {
       $worksheet->getColumnDimension($columnID)
         ->setWidth('15');
     }

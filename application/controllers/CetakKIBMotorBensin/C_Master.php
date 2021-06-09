@@ -41,7 +41,7 @@ class C_Master extends CI_Controller
         $this->checkSession();
         $user_id = $this->session->userid;
 
-        $data['Menu'] = 'Dashboard Cetak KIB Motor Bensin V.1.0';
+        $data['Menu'] = 'Dashboard Cetak KIB Motor Bensin V.1.5';
         $data['SubMenuOne'] = '';
         $data['SubMenuTwo'] = '';
 
@@ -77,6 +77,11 @@ class C_Master extends CI_Controller
         $this->load->view('V_Sidemenu', $data);
         $this->load->view('CetakKIBMotorBensin/V_Cetak', $data);
         $this->load->view('V_Footer', $data);
+    }
+
+    public function updateSerial($value='')
+    {
+      echo json_encode($this->M_master->updateSerial($this->input->post()));
     }
 
     public function getFilterByDate($value='')
@@ -115,7 +120,7 @@ class C_Master extends CI_Controller
       $data['segment1'] = $this->input->post('segment1');
       $data['receipt_date'] = $this->input->post('receipt_date');
 
-      $data['get_serial'] = $this->M_master->getSerial($data['no_po'], $data['surat_jalan'], $data['segment1']);
+      $data['get_serial'] = $this->M_master->getSerial($data['no_po'], $data['surat_jalan'], $data['segment1'], $data['receipt_date']);
       if (!empty($data['get_serial'])) {
         $this->load->view('CetakKIBMotorBensin/ajax/V_serial', $data);
       }else {
@@ -201,7 +206,7 @@ class C_Master extends CI_Controller
           $pdf 		= $this->pdf->load();
           $pdf 		= new mPDF('utf-8', array(210 , 267), 0, 'calibri', 3, 3, 3, 0, 0, 0);
 
-          $doc = 'Cetak-CKMB-'.$range1.'_'.$range2;
+          $doc = 'QRCODE-CKMB-'.$no_po.'-'.$segment1.'-'.$receipt_date;
           $filename 	= $doc.'.pdf';
           $isi 				= $this->load->view('CetakKIBMotorBensin/pdf/V_pdf', $data, true);
           ob_end_clean() ;
@@ -253,7 +258,7 @@ class C_Master extends CI_Controller
       $pdf 		= new mPDF('utf-8', array(210 , 267), 0, 'calibri', 3, 3, 15, 0, 0, 0);
       ob_end_clean() ;
 
-      $doc = 'Cetak-CKMB-'.$range1.'_'.$range2;
+      $doc = 'Checklist-CKMB-'.$no_po.'-'.$segment1.'-'.$receipt_date;
       $filename 	= $doc.'.pdf';
       if (!empty($data['get'])) {
         $isi 	= $this->load->view('CetakKIBMotorBensin/pdf/V_checklist', $data, true);

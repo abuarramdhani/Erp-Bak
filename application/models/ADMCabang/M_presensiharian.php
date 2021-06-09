@@ -27,104 +27,128 @@ class M_presensiharian extends Ci_Model
 		return $result->result_array();
 	}
 
-	public function getPekerjaByKodesie($kd)
+	/**
+	 * 
+	 */
+	public function getAksesByUser($user)
 	{
-		$noind = $this->session->user;
-		if ($noind == 'B0380') { // ada di ticket
-			$sql = "select a.noind,a.nama, b.seksi
+		$sql = "select left(h.kodesie,7) as kodesie from \"Presensi\".t_hak_akses_presensi h where h.noind = '$user'";
+		$result = $this->personalia->query($sql)->result_array();
+
+		$akses = [];
+
+		foreach ($result as $key) {
+			array_push($akses, $key['kodesie']);
+		}
+		$akses = implode("','", $akses);
+
+		$ak = "'" . "$akses" . "'";
+
+		return $ak;
+	}
+
+	public function getNoindAkses()
+	{
+
+		$sql = "select distinct h.noind from \"Presensi\".t_hak_akses_presensi h";
+		$result = $this->personalia->query($sql)->result_array();
+
+		$noind = [];
+
+		foreach ($result as $key) {
+			array_push($noind, $key['noind']);
+		}
+		return $noind;
+	}
+
+	public function getPekerjaByKodesie($kd, $noind, $akses, $noind_akses)
+	{
+		if (in_array($noind, $noind_akses)) {
+			$sql = "select a.noind,a.nama, b.seksi,left(b.kodesie,7) as kodesie
+			from hrd_khs.tpribadi a
+			left join hrd_khs.tseksi b on a.kodesie=b.kodesie
+				where left(a.kodesie,7) in (left('$kd', 7), $akses)
+				and a.keluar = false
+			order by a.kodesie,a.noind;";
+		} elseif ($noind == 'B0380') { // ada di ticket
+			$sql = "select a.noind,a.nama, b.seksi,left(b.kodesie,7) as kodesie
 				from hrd_khs.tpribadi a
 				left join hrd_khs.tseksi b on a.kodesie=b.kodesie
 				where (left(a.kodesie,7) = left('$kd',7) or a.noind in ('J1171','G1041','L8001'))
 				and a.keluar = false
 				order by a.kodesie,a.noind;";
 		} elseif ($noind == 'B0370') { //ada di ticket
-			$sql = "select a.noind,a.nama, b.seksi
+			$sql = "select a.noind,a.nama, b.seksi,left(b.kodesie,7) as kodesie
 				from hrd_khs.tpribadi a
 				left join hrd_khs.tseksi b on a.kodesie=b.kodesie
 				where (left(a.kodesie,7) = left('$kd',7) or a.noind in ('D1535','P0426'))
 				and a.keluar = false
 				order by a.kodesie,a.noind;";
 		} elseif ($noind == 'H7726') { //Order #972784 (PENAMBAHAN AKSES BUKA PRESENSI DI PROGRAM ERP)
-			$sql = "select a.noind,a.nama, b.seksi
+			$sql = "select a.noind,a.nama, b.seksi,left(b.kodesie,7) as kodesie
 				from hrd_khs.tpribadi a
 				left join hrd_khs.tseksi b on a.kodesie=b.kodesie
-	    		where left(a.kodesie,5) = left('$kd',5)
-	    		and a.keluar = false
+		  		where left(a.kodesie,5) = left('$kd',5)
+		  		and a.keluar = false
 				order by a.kodesie,a.noind;";
 		} elseif ($noind == 'J1378') { // Order #112817 (Pembuatan Login ERP)
-			$sql = "select a.noind,a.nama, b.seksi
+			$sql = "select a.noind,a.nama, b.seksi,left(b.kodesie,7) as kodesie
 				from hrd_khs.tpribadi a
 				left join hrd_khs.tseksi b on a.kodesie=b.kodesie
-	    		where left(a.kodesie,5) in ('10101','10102')
-	    		and a.keluar = false
+		  		where left(a.kodesie,5) in ('10101','10102')
+		  		and a.keluar = false
 				order by a.kodesie,a.noind;";
 		} elseif ($noind == 'J1338') { // Order #456799 (Pembuatan Login ERP)
-			$sql = "select a.noind,a.nama, b.seksi
+			$sql = "select a.noind,a.nama, b.seksi,left(b.kodesie,7) as kodesie
 				from hrd_khs.tpribadi a
 				left join hrd_khs.tseksi b on a.kodesie=b.kodesie
-	    		where left(a.kodesie,3) in ('302','324','325')
-	    		and a.keluar = false
+		  		where left(a.kodesie,3) in ('302','324','325')
+		  		and a.keluar = false
 				order by a.kodesie,a.noind;";
 		} elseif ($noind == 'B0901') { // Order #524240 (Pembukaan hak akses)
-			$sql = "select a.noind,a.nama, b.seksi
+			$sql = "select a.noind,a.nama, b.seksi,left(b.kodesie,7) as kodesie
 				from hrd_khs.tpribadi a
 				left join hrd_khs.tseksi b on a.kodesie=b.kodesie
-	    		where left(a.kodesie,4) = '3070'
-	    		and a.keluar = false
+		  		where left(a.kodesie,4) = '3070'
+		  		and a.keluar = false
 				order by a.kodesie,a.noind;";
-		} elseif ($noind == 'H8455') { // Order #574033 dapat mengakses Presensi Harian gudang PPB dan Produksi & Expedisi Pusat
-			$sql = "select a.noind,a.nama, b.seksi
-				from hrd_khs.tpribadi a
-				left join hrd_khs.tseksi b on a.kodesie=b.kodesie
-	    		where left(a.kodesie,7) in ('3070103','3070201','3070301')
-	    		and a.keluar = false
-				order by a.kodesie,a.noind;";
-		} elseif ($noind == 'B0365') { // Suwardi | #401628 akses seksi pengembangan prototype A(3060403) & B(3060404)
-			$sql = "select a.noind,a.nama, b.seksi
-			 from hrd_khs.tpribadi a
-			 left join hrd_khs.tseksi b on a.kodesie=b.kodesie
-				 where left(a.kodesie,7) in (left('$kd', 7), '3060403', '3060404')
-				 and a.keluar = false
-			 order by a.kodesie,a.noind;";
 		} elseif ($noind == 'B0267') { // Nugroho Budi Utomo | #854719 akses seksi toolware house-tks(3240101) dan seksi assembling gear transmission-tks(3250201)
-			$sql = "select a.noind,a.nama, b.seksi
+			$sql = "select a.noind,a.nama, b.seksi,left(b.kodesie,7) as kodesie
 			 from hrd_khs.tpribadi a
 			 left join hrd_khs.tseksi b on a.kodesie=b.kodesie
 				 where left(a.kodesie, 7) in (left('$kd', 7), '3240101', '3250201')
 				 or a.kodesie like trim(TRAILING '0' FROM '$kd') || '%'
 				 and a.keluar = false
 			 order by a.kodesie,a.noind;";
-		} elseif ($noind == 'B0834') { // Astiati #681867 -> gudang ppic tks, CPP tks, finishing tks, otomasi & pengembangan alat tks, quality tks, pola/pattern tks, maintenance up2l tks
-			$sql = "select a.noind,a.nama, b.seksi
-			 from hrd_khs.tpribadi a
-			 left join hrd_khs.tseksi b on a.kodesie=b.kodesie
-				 where left(a.kodesie,7) in (left('$kd', 7), '3280102', '3280101', '3280105', '3280107', '3280104', '3280106', '3280103')
-				 and a.keluar = false
-			 order by a.kodesie,a.noind;";
-		} else {
-			if ('306030' == substr($kd, 0, 6)) { //ada diticket
-				$sql = "select a.noind,a.nama, b.seksi
+		} elseif ($noind == 'B0344') { // Enaryono Order #741867 akses semua seksi di bidang ENGINEERING
+			$sql = "select a.noind,a.nama, b.seksi,left(b.kodesie,7) as kodesie
+					from hrd_khs.tpribadi a
+					left join hrd_khs.tseksi b on a.kodesie=b.kodesie
+						where left(a.kodesie, 4) in ('3060')
+						and a.keluar = false
+					order by a.kodesie,a.noind;";
+		} elseif ('306030' == substr($kd, 0, 6)) { // ada diticket
+			$sql = "select a.noind,a.nama, b.seksi,left(b.kodesie,7) as kodesie
 				from hrd_khs.tpribadi a
 				left join hrd_khs.tseksi b on a.kodesie=b.kodesie
 						where left(a.kodesie,6) = left('$kd',6)
 						and a.keluar = false
 						order by a.kodesie,a.noind;";
-			} else {
-				$sql = "select a.noind,a.nama, b.seksi
-				from hrd_khs.tpribadi a
-				left join hrd_khs.tseksi b on a.kodesie=b.kodesie
-						where left(a.kodesie,7) = left('$kd',7)
-						and a.keluar = false
-						order by a.kodesie,a.noind;";
-			}
+		} else {
+			$sql = "select a.noind,a.nama, b.seksi,left(b.kodesie,7) as kodesie
+			from hrd_khs.tpribadi a
+			left join hrd_khs.tseksi b on a.kodesie=b.kodesie
+					where left(a.kodesie,7) = left('$kd',7)
+					and a.keluar = false
+					order by a.kodesie,a.noind;";
 		}
 
 		$result = $this->personalia->query($sql);
 		return $result->result_array();
 	}
-
 	public function getPresensiByNoind($noind, $tgl)
 	{
+		// RIA CAHYANI HARTONO
 		if ($noind == 'L8001') {
 			$sql = "select waktu
 					from \"Presensi\".tprs_shift2 tp
@@ -303,5 +327,30 @@ class M_presensiharian extends Ci_Model
 				order by shift.noind,shift.tanggal";
 		$result = $this->personalia->query($sql);
 		return $result->result_array();
+	}
+
+	public function getSeksiByAkses($user, $ks)
+	{
+		$sql = "select 
+							left(h.kodesie,7) as kodesie,
+							ts.seksi
+						from 
+							\"Presensi\".t_hak_akses_presensi h 
+						left join
+							hrd_khs.tseksi ts using(kodesie)
+						where 
+							h.noind = '$user'
+						union	
+						select
+							left(ts.kodesie,7) as kodesie,
+							ts.seksi
+						from 
+							hrd_khs.tseksi ts
+						where 
+							ts.kodesie = '$ks'
+						order by kodesie";
+		$result = $this->personalia->query($sql)->result_array();
+
+		return $result;
 	}
 }

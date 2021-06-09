@@ -7,7 +7,7 @@ class M_moveorder extends CI_Model
 		parent::__construct();
 	}
 
-	function search($date,$dept,$shift,$atr)
+	function search($date,$dept,$shift,$atr, $ket)
 	{
 		$oracle = $this->load->database('oracle',TRUE);
 		// $sql = "SELECT we.WIP_ENTITY_ID job_id
@@ -119,6 +119,7 @@ class M_moveorder extends CI_Model
 				where trunc (kqel.TANGGAL) = '$date'
 				and kqel.DEPARTMENT_CLASS_CODE = '$dept'
 				$shift
+				and kqel.KET = '$ket'
 				order by 1";
 		// echo "<pre>";
 		// print_r($sql);
@@ -126,6 +127,29 @@ class M_moveorder extends CI_Model
 		$query = $oracle->query($sql);
 		return $query->result_array();
 		// return $sql;
+	}
+
+	function search2($job_no) //----------------->>
+	{
+		$oracle = $this->load->database('oracle',TRUE);
+		$sql = "select *
+				from khs_qweb_ect_listall kqel
+				where kqel.NO_JOB in ($job_no)
+				order by 1 ";
+		
+		$query = $oracle->query($sql);
+		return $query->result_array();
+	}
+
+	
+	function count_itemMGA($job_no) //----------------->>
+	{
+		$oracle = $this->load->database('oracle',TRUE);
+		$sql = "select nvl (khs_hitung_stiker ('$job_no'),0) stiker
+				from dual";
+		
+		$query = $oracle->query($sql);
+		return $query->result_array();
 	}
 
 
@@ -396,7 +420,7 @@ class M_moveorder extends CI_Model
                 -- INT THE TRUTH ABOVE IT WILL USED --
                 and we.WIP_ENTITY_NAME = '$job_no'--'D191103750'
                 and bd.DEPARTMENT_CLASS_CODE = '$dept'  
-                order by 3 asc";
+                order by 11 asc";
                 // return $sql;
 		$query = $oracle->query($sql);
 		return $query->result_array();
@@ -439,9 +463,23 @@ class M_moveorder extends CI_Model
 	function checkPicklist($no)
 	{
 		$oracle = $this->load->database('oracle',TRUE);
-		$sql = "SELECT mtrh.REQUEST_NUMBER from mtl_txn_request_headers mtrh, wip_entities we
-				    where mtrh.ATTRIBUTE1 = we.WIP_ENTITY_ID
-				    and mtrh.ORGANIZATION_ID = we.ORGANIZATION_ID
+		// $sql = "SELECT mtrh.REQUEST_NUMBER from mtl_txn_request_headers mtrh, wip_entities we
+		// 		    where mtrh.ATTRIBUTE1 = we.WIP_ENTITY_ID
+		// 		    and mtrh.ORGANIZATION_ID = we.ORGANIZATION_ID
+		// 		and we.WIP_ENTITY_NAME = '$no'
+		// 		order by 1";
+		$sql = "SELECT distinct
+						mtrh.REQUEST_NUMBER
+					,mtrl.FROM_SUBINVENTORY_CODE
+					,mil.SEGMENT1 locator 
+				from mtl_txn_request_headers mtrh
+					,wip_entities we
+					,mtl_txn_request_lines mtrl
+					,mtl_item_locations mil
+				where mtrh.ATTRIBUTE1 = we.WIP_ENTITY_ID
+				and mtrh.ORGANIZATION_ID = we.ORGANIZATION_ID
+				and mtrl.HEADER_ID = mtrh.HEADER_ID
+				and mtrl.FROM_LOCATOR_ID = mil.INVENTORY_LOCATION_ID (+)
 				and we.WIP_ENTITY_NAME = '$no'
 				order by 1";
 		
@@ -834,10 +872,11 @@ class M_moveorder extends CI_Model
 							and wro.INVENTORY_ITEM_ID = mtrl.INVENTORY_ITEM_ID
 							and mtrl.FROM_LOCATOR_ID = mil.INVENTORY_LOCATION_ID(+)
 							order by
-							mtrl.LINE_ID,
-							we.WIP_ENTITY_NAME,
-							mtrl.FROM_SUBINVENTORY_CODE,
-							msib_compnt.SEGMENT1";
+							23 -- lokasi simpan
+							--mtrl.LINE_ID,
+							--we.WIP_ENTITY_NAME,
+							--mtrl.FROM_SUBINVENTORY_CODE,
+							--msib_compnt.SEGMENT1";
 		
 		// echo "<pre>";
 		// echo "$sql";
@@ -907,7 +946,7 @@ class M_moveorder extends CI_Model
 	function deleteTemp($ip, $job_id)
 	{
 		$oracle = $this->load->database('oracle',TRUE);
-		$sql = "DELETE from CREATE_MO_KIB_TEMP where IP_ADDRESS = '$ip' and JOB_ID = $job_id ";
+		$sql = "DELETE from CREATE_MO_KIB_TEMP where IP_ADDRESS = '$ip' and JOB_ID = '$job_id' ";
 		$oracle->trans_start();
 		$oracle->query($sql);
 		$oracle->trans_complete();
@@ -962,7 +1001,8 @@ class M_moveorder extends CI_Model
 	    		trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
 			}
 		  
-		$sql =  "BEGIN APPS.KHS_CREATE_MO_JOB(:P_PARAM1,:P_PARAM2,:P_PARAM3,:P_PARAM4,:P_PARAM5,:P_PARAM6,:P_PARAM7,:P_PARAM8,:P_PARAM9,:P_PARAM10); END;";
+		// $sql =  "BEGIN APPS.KHS_CREATE_MO_JOB(:P_PARAM1,:P_PARAM2,:P_PARAM3,:P_PARAM4,:P_PARAM5,:P_PARAM6,:P_PARAM7,:P_PARAM8,:P_PARAM9,:P_PARAM10); END;";
+		$sql =  "BEGIN APPS.KHSCREATEMO.create_job_header(:P_PARAM1,:P_PARAM2,:P_PARAM3,:P_PARAM4,:P_PARAM5,:P_PARAM6,:P_PARAM7,:P_PARAM8,:P_PARAM9,:P_PARAM10); END;";
 
 		// $param4 = '';
 
@@ -1181,9 +1221,14 @@ class M_moveorder extends CI_Model
 		return $query->result_array();
 	}
 	
-	function getPerbedaan($no_mo, $subinv)
+	function getPerbedaan($no_mo, $subinv, $lokator)
 	{		
 		$oracle = $this->load->database('oracle',TRUE);
+		if ($lokator != '') {
+			$lokator = "and (kqem.BOM_FROM_LOC = '$lokator' or kqem.JOB_FROM_LOC = '$lokator')";
+		}else {
+			$lokator = "and (kqem.BOM_FROM_LOC is null and kqem.JOB_FROM_LOC is null)";
+		}
 		$sql = "with kqem as
 				(
 				select distinct 
@@ -1191,7 +1236,7 @@ class M_moveorder extends CI_Model
 					,case when kqem.job_from_subinv is null 
 							and kqem.bom_from_subinv is not null
 							and kqem.code is null
-							then 'KOMPONEN DI MO GUDANG'
+							then 'KOMPONEN DI MO GUDANG : ' || kqem.required_quantity || ' PCS'
 							when nvl (kqem.job_comp_qty,0) <> nvl (kqem.bom_comp_qty,0)
 							and kqem.code is null
 							then 'LAYANI QTY SESUAI JOB : ' || kqem.required_quantity || ' PCS'
@@ -1205,6 +1250,7 @@ class M_moveorder extends CI_Model
 					,mtl_txn_request_headers mtrh
 				where mtrh.REQUEST_NUMBER = '$no_mo'
 				and (kqem.BOM_FROM_SUBINV = '$subinv' or kqem.JOB_FROM_SUBINV = '$subinv')
+                $lokator
 				and kqem.JOB_ID = mtrh.ATTRIBUTE1
 				)
 				select *

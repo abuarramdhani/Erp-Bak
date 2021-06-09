@@ -1,15 +1,16 @@
 <?php
-class M_kasiepembelian extends CI_Model {
+class M_kasiepembelian extends CI_Model
+{
 
-	public function __construct()
-	{
-		$this->load->database();
-		$this->load->library('encrypt');
-	}
-//---------------------------aktifkan PROD------------------------------------------------//
-      public function checkLoginInKasiePembelian($employee_code)
+    public function __construct()
     {
-        $oracle = $this->load->database('erp_db',true);
+        $this->load->database();
+        $this->load->library('encrypt');
+    }
+    //---------------------------aktifkan PROD------------------------------------------------//
+    public function checkLoginInKasiePembelian($employee_code)
+    {
+        $oracle = $this->load->database('erp_db', true);
         $query = "select eea.employee_code, es.unit_name
                     from er.er_employee_all eea, er.er_section es
                     where eea.section_code = es.section_code
@@ -18,21 +19,22 @@ class M_kasiepembelian extends CI_Model {
         return $runQuery->result_array();
     }
 
-//-----------------------koneksi lokal---------------------------------------------//
-// 
-  // public function checkLoginInKasiePembelian($employee_code)
-  //   {
-  //       $oracle = $this->load->database();
-  //       $query = "select eea.employee_code, es.unit_name
-  //                   from er.er_employee_all eea, er.er_section es
-  //                   where eea.section_code = es.section_code
-  //                   and eea.employee_code = '$employee_code' ";
-  //       $runQuery = $this->db->query($query);
-  //       return $runQuery->result_array();
-  //   }
+    //-----------------------koneksi lokal---------------------------------------------//
+    // 
+    // public function checkLoginInKasiePembelian($employee_code)
+    //   {
+    //       $oracle = $this->load->database();
+    //       $query = "select eea.employee_code, es.unit_name
+    //                   from er.er_employee_all eea, er.er_section es
+    //                   where eea.section_code = es.section_code
+    //                   and eea.employee_code = '$employee_code' ";
+    //       $runQuery = $this->db->query($query);
+    //       return $runQuery->result_array();
+    //   }
 
-     public function po_numberr($invoice_id){
-        $oracle = $this->load->database("oracle",TRUE);
+    public function po_numberr($invoice_id)
+    {
+        $oracle = $this->load->database("oracle", TRUE);
         $query = "SELECT DISTINCT aipo.po_number, aipo.invoice_id, poh.attribute2 ppn
                   FROM khs_ap_invoice_purchase_order aipo, po_headers_all poh
                   WHERE invoice_id = '$invoice_id'
@@ -42,41 +44,41 @@ class M_kasiepembelian extends CI_Model {
     }
 
     public function poAmount($id)
-      {
-        $erp_db = $this->load->database('oracle',true);
+    {
+        $erp_db = $this->load->database('oracle', true);
         $sql = "SELECT unit_price unit_price,
             qty_invoice qty_invoice
             FROM khs_ap_invoice_purchase_order
             WHERE invoice_id = $id";
         $run = $erp_db->query($sql);
         return $run->result_array();
-      }
+    }
 
-       public function returnToAkuntansi($invoice_id, $action_date, $note)
-      {
-        $erp_db = $this->load->database('oracle',true);
+    public function returnToAkuntansi($invoice_id, $action_date, $note)
+    {
+        $erp_db = $this->load->database('oracle', true);
         $sql = "update khs_ap_monitoring_invoice set 
                     returned_date_purc = to_date('$action_date', 'DD/MM/YYYY HH24:MI:SS'),
                     source_bermasalah = 'PURCHASING',
                     note_return_purc = '$note' 
                     where invoice_id = '$invoice_id'";
         $run = $erp_db->query($sql);
-      }
+    }
 
-      public function returnToAkuntansiBuyer($invoice_id, $action_date, $note)
-      {
-        $erp_db = $this->load->database('oracle',true);
+    public function returnToAkuntansiBuyer($invoice_id, $action_date, $note)
+    {
+        $erp_db = $this->load->database('oracle', true);
         $sql = "update khs_ap_monitoring_invoice set 
                     returned_date_buyer = to_date('$action_date', 'DD/MM/YYYY HH24:MI:SS'),
                     source_bermasalah = 'BUYER',
                     note_return_buyer = '$note' 
                     where invoice_id = '$invoice_id'";
         $run = $erp_db->query($sql);
-      }
+    }
 
-      public function getDokumenBermasalah($invoice_id)
-      {
-        $erp_db = $this->load->database('oracle',true);
+    public function getDokumenBermasalah($invoice_id)
+    {
+        $erp_db = $this->load->database('oracle', true);
         $sql = "SELECT 
                     adi.DOCUMENT_ID, 
                     adi.INVOICE_ID, 
@@ -92,11 +94,11 @@ class M_kasiepembelian extends CI_Model {
                 and adi.INVOICE_ID = $invoice_id";
         $runQuery = $erp_db->query($sql);
         return $runQuery->result_array();
-      }
+    }
 
-      public function getDokumenRekonfirmasi($invoice_id)
-      {
-        $erp_db = $this->load->database('oracle',true);
+    public function getDokumenRekonfirmasi($invoice_id)
+    {
+        $erp_db = $this->load->database('oracle', true);
         $sql = "SELECT 
                     DOCUMENT_ID, 
                     INVOICE_ID, 
@@ -110,11 +112,11 @@ class M_kasiepembelian extends CI_Model {
                 WHERE INVOICE_ID = $invoice_id";
         $runQuery = $erp_db->query($sql);
         return $runQuery->result_array();
-      }
+    }
 
     public function finishInvBermasalah()
     {
-        $erp_db = $this->load->database('oracle',true);
+        $erp_db = $this->load->database('oracle', true);
         $sql = "SELECT  ami.invoice_id, ami.vendor_name vendor_name,
                 ami.invoice_number invoice_number,
                 ami.invoice_date invoice_date,
@@ -162,9 +164,9 @@ class M_kasiepembelian extends CI_Model {
         return $runQuery->result_array();
     }
 
-     public function finishInvBermasalahBuyer($user)
+    public function finishInvBermasalahBuyer($user)
     {
-        $erp_db = $this->load->database('oracle',true);
+        $erp_db = $this->load->database('oracle', true);
         $sql = "SELECT  ami.invoice_id, ami.vendor_name vendor_name,
                 ami.invoice_number invoice_number,
                 ami.invoice_date invoice_date,
@@ -215,7 +217,7 @@ class M_kasiepembelian extends CI_Model {
 
     public function getBuyer()
     {
-        $erp_db = $this->load->database('oracle',true);
+        $erp_db = $this->load->database('oracle', true);
         $sql = "SELECT NO_INDUK, NAMA_BUYER FROM khs_ap_mon_inv_buyer";
         $runQuery = $erp_db->query($sql);
         return $runQuery->result_array();
@@ -223,7 +225,7 @@ class M_kasiepembelian extends CI_Model {
 
     public function getStatusPurc($invoice_id)
     {
-        $erp_db = $this->load->database('oracle',true);
+        $erp_db = $this->load->database('oracle', true);
         $sql = "SELECT STATUS_BERKAS_PURC, NOTE_BUYER FROM KHS_AP_MONITORING_INVOICE WHERE INVOICE_ID = '$invoice_id'";
         $runQuery = $erp_db->query($sql);
         return $runQuery->result_array();
@@ -231,7 +233,7 @@ class M_kasiepembelian extends CI_Model {
 
     public function getPoandBuyer($invoice_id)
     {
-        $erp_db = $this->load->database('oracle',true);
+        $erp_db = $this->load->database('oracle', true);
         $sql = "SELECT DISTINCT po_number FROM khs_ap_invoice_purchase_order WHERE invoice_id = $invoice_id";
         $runQuery = $erp_db->query($sql);
         return $runQuery->result_array();
@@ -239,7 +241,7 @@ class M_kasiepembelian extends CI_Model {
 
     public function cariBuyerDefault($po_number)
     {
-        $erp_db = $this->load->database('oracle',true);
+        $erp_db = $this->load->database('oracle', true);
         $sql = "SELECT DISTINCT  
                          pha.SEGMENT1 NO_PO
                         ,ppf.full_name buyer 
@@ -258,16 +260,16 @@ class M_kasiepembelian extends CI_Model {
         return $runQuery->result_array();
     }
 
-    public function isiNote($invoice_id,$note)
+    public function isiNote($invoice_id, $note)
     {
-        $erp_db = $this->load->database('oracle',true);
+        $erp_db = $this->load->database('oracle', true);
         $sql = "INSERT INTO KHS_AP_DOKUMEN_INV (INVOICE_ID, NOTE_BUYER, CREATION_DATE) VALUES ($invoice_id, '$note', sysdate)";
         $runQuery = $erp_db->query($sql);
     }
 
-    public function ForwardToBuyer($invoice_id,$no_induk,$note)
+    public function ForwardToBuyer($invoice_id, $no_induk, $note)
     {
-        $erp_db = $this->load->database('oracle',true);
+        $erp_db = $this->load->database('oracle', true);
         $sql = "UPDATE KHS_AP_MONITORING_INVOICE SET NO_INDUK_BUYER = '$no_induk', STATUS_INV_BERMASALAH = 3, NOTE_BUYER = '$note'
                 WHERE invoice_id = '$invoice_id'";
         $runQuery = $erp_db->query($sql);
@@ -275,8 +277,9 @@ class M_kasiepembelian extends CI_Model {
 
     public function listInvBermasalah()
     {
-        $erp_db = $this->load->database('oracle',true);
+        $erp_db = $this->load->database('oracle', true);
         $sql = "  SELECT  ami.invoice_id, ami.vendor_name vendor_name,
+                ami.SOURCE source,
                 ami.invoice_number invoice_number,
                 ami.invoice_date invoice_date,
                 ami.tax_invoice_number tax_invoice_number,
@@ -334,7 +337,7 @@ class M_kasiepembelian extends CI_Model {
 
     public function listInvBermasalahBuyer($user)
     {
-        $erp_db = $this->load->database('oracle',true);
+        $erp_db = $this->load->database('oracle', true);
         $sql = "SELECT  ami.invoice_id, 
                 ami.vendor_name vendor_name,
                 ami.invoice_number invoice_number,
@@ -380,14 +383,14 @@ class M_kasiepembelian extends CI_Model {
                     WHERE kategori_inv_bermasalah IS NOT NULL 
                     AND ami.NO_INDUK_BUYER = '$user'
                     AND STATUS_INV_BERMASALAH not in (5)
-                    ORDER BY ami.akt_action_bermasalah DESC";       
+                    ORDER BY ami.akt_action_bermasalah DESC";
         $runQuery = $erp_db->query($sql);
         return $runQuery->result_array();
     }
 
-     public function listInvBermasalahBuyerSistem()
+    public function listInvBermasalahBuyerSistem()
     {
-        $erp_db = $this->load->database('oracle',true);
+        $erp_db = $this->load->database('oracle', true);
         $sql = "SELECT  ami.invoice_id, 
                 ami.vendor_name vendor_name,
                 ami.invoice_number invoice_number,
@@ -421,15 +424,148 @@ class M_kasiepembelian extends CI_Model {
                     FROM khs_ap_monitoring_invoice ami
                     LEFT JOIN khs_ap_mon_inv_buyer mib ON mib.NO_INDUK = ami.NO_INDUK_BUYER
                     WHERE STATUS_INV_BERMASALAH IN (3)
-                    ORDER BY ami.akt_action_bermasalah DESC";       
+                    ORDER BY ami.akt_action_bermasalah DESC";
         $runQuery = $erp_db->query($sql);
         return $runQuery->result_array();
     }
 
-
-     public function invBermasalah($invoice_id)
+    public function listInvBermasalahBuyerSubkon()
     {
         $erp_db = $this->load->database('oracle',true);
+        $sql = "SELECT
+            ami.invoice_id,
+            ami.vendor_name vendor_name,
+            ami.invoice_number invoice_number,
+            ami.invoice_date invoice_date,
+            ami.tax_invoice_number tax_invoice_number,
+            ami.invoice_amount invoice_amount,
+            ami.last_status_purchasing_date last_status_purchasing_date,
+            ami.last_status_finance_date last_status_finance_date,
+            ami.finance_batch_number finance_batch_number,
+            ami.last_finance_invoice_status last_finance_invoice_status,
+            ami.reason reason,
+            ami.info info,
+            ami.invoice_category invoice_category,
+            ami.nominal_dpp nominal_dpp,
+            ami.batch_number batch_number,
+            ami.jenis_jasa jenis_jasa,
+            ami.kategori_inv_bermasalah,
+            ami.kelengkapan_doc_inv_bermasalah,
+            ami.keterangan_inv_bermasalah,
+            ami.akt_action_bermasalah akt_date,
+            ami.source SOURCE,
+            ami.FEEDBACK_PURCHASING,
+            ami.PURC_ACTION_BERMASALAH,
+            ami.FEEDBACK_BUYER,
+            ami.BUYER_ACTION_BERMASALAH,
+            ami.STATUS_BERKAS_PURC,
+            ami.STATUS_BERKAS_BUYER,
+            ami.NO_INDUK_BUYER,
+            ami.SOURCE_BERMASALAH,
+            mib.NAMA_BUYER
+        FROM
+            khs_ap_monitoring_invoice ami
+            LEFT JOIN khs_ap_mon_inv_buyer mib ON mib.NO_INDUK = ami.NO_INDUK_BUYER
+        WHERE
+            STATUS_INV_BERMASALAH IN (3)
+            AND ami.VENDOR_NAME IN 
+            ('ADJI, BENGKEL', 'ANDRE, BENGKEL', 'ANEKA KOMKAR UTAMA, PT', 'APINDO BROTHER SUKSES, CV', 'ASAMA INDONESIA MANUFACTURING, PT', 'ASSAB STEEL INDONESIA, PT'
+            , 'ASTRA DAIDO STEEL INDONESIA, PT', 'ATMI DUTA ENGINEERING, PT', 'ATMI IGI CENTER, PT', 'B L P T', 'BAJA MULIA SEJAHTERA, CV', 'BAMA PUTRA SARANA PLASTINDO, PT'
+            , 'BANGUN ADIKARTO SELARAS, PT', 'BEJANA MAS PERKASA, PT', 'BENJAMIN BERSAUDARA DIESEL, PT', 'BUKAKA FORGING INDUSTRIES, PT', 'CABLE TECH, PT'
+            , 'CAHAYA, BENGKEL', 'CHRISMA GRAFINDO', 'CHUHATSU INDONESIA, PT', 'CITRASOFA', 'DHARMA POLIMETAL, PT', 'DHARMA POLIPLAST, PT', 'DOUBLE STONE GROUP'
+            , 'DUTA WIRA UTAMA, PT', 'DUTTA JAYA', 'DWI TEKNIK', 'ESSA PRINTING', 'EXEDY PRIMA INDONESIA, PT', 'EXPLORA PRINTAMA', 'GALANG PUTRA, BENGKEL'
+            , 'GENTHONG MAKMUR', 'GRAFINDO MITRASEMESTA, PT', 'GRAND PRIX INDOAGUNG, PT', 'HADI KARYA, BENGKEL', 'HAPPY SUSY', 'HARADA', 'HARAPAN BARU UTAMA, CV'
+            , 'HARAPAN INTI FELIX JAYA, PT', 'HARTA BAN INDONESIA, PT', 'HOTMAL JAYA PERKASA', 'INDOHEAT METAL INTI, PT', 'INDOPRIMA GEMILANG', 'INDOSPRING TBK, PT'
+            , 'INDRA ABADI, BENGKEL', 'INDUSTRI KARET DELI, PT', 'INKOASKU, PT', 'JAVA INDO CRAFT, CV', 'JAYA ABADI, BENGKEL', 'JIAXING YILONG IMPORT & EXPORT CO., LTD'
+            , 'KHS JAKARTA ECERAN', 'KHS-ECERAN', 'KHS - ONLINE', 'KING MANUFACTURE, PT', 'KOKURA TETSUDO CO., LTD', 'KUSNADI, UD', 'LARIS JAYA'
+            , 'LIMAE BANGUN PERKASA, PT', 'MADYA PUTERA TEHNIK, PT', 'MAJU TERUS, BENGKEL', 'MAKARYA GAYUH MUKTI', 'MANDIRI, BENGKEL', 'MANGGALA PRATAMA, CV'
+            , 'MARDIYANTO EKA JAYA, BENGKEL', 'MAWAR TERALIS', 'MEGA ANDALAN ELECTROPLATING', 'MEGATAMA SPRING, PT', 'MEKAR ARMADA JAYA, PT', 'MENARA TERUS MAKMUR, PT'
+            , 'MITRA UTAMA', 'MORITA TJOKRO GEARINDO, PT', 'MW CHROME', 'NAGAMAS CAHAYA SENTOSA, PT', 'NANCHANG QINGLIN AUTOMOBILE ACCESSORIES CO., LTD'
+            , 'NANCHANG QINGLIN SEAT MANUFACTURING CO., LTD', 'NANDYA KYOSEI INDONESIA, PT', 'ND BROTHER', 'NINGBO TOPWELL AUTO PARTS CO., LTD', 'PARTUNI PERDANA, PT'
+            , 'PENTASARI PRANAKARYA, PT', 'PERCETAKAN SURYA', 'PONG CODAN INDONESIA, PT', 'PRATAMA, BENGKEL', 'PRIMA DAYA, CV', 'PULOGADUNG TEMPAJAYA, PT'
+            , 'PUTRA SANJAYA, BENGKEL', 'RAHMAT HP, BENGKEL', 'RAINBOW', 'RAJA, BENGKEL', 'SAMUDERA LUAS PARAMACITRA, PT', 'SANTOSO, BENGKEL', 'SARINAH MOTOR'
+            , 'SATRYA MOTOR TOKO & AGEN VULKANISIR BAN', 'SENTOSA MOTOR', 'SINAR AGUNG SELALU SUKSES, PT', 'SINAR BIRU, BENGKEL', 'SINAR JAYA, BENGKEL'
+            , 'SINERGI AUTOCLUTCH, CV', 'SOESILO, BENGKEL', 'SRIREJEKI PERDANA STEEL, PT', 'STEEL PIPE INDUSTRY OF INDONESIA, PT', 'SUKSES CIPTA MAKMUR, PT'
+            , 'SUMBER ADI, TB', 'SUMBER KARET 76', 'SUMBER REJEKI FRP', 'SUMBER URIP, BENGKEL', 'SURABAYA KENCANA ANUGRAH, PT', 'SURYO, BENGKEL', 'TATA INOVINDO, PT'
+            , 'TI AUTOMOTIVE INDONESIA, PT', 'TJAKRINDO MAS, PT', 'TOSAMA ABADI, PT', 'TRI SAPTA JAYA, CV', 'TSPE, BENGKEL', 'TUNGGAL MANDIRI, CV', 'TYAS, BENGKEL'
+            , 'UPJ ITNY', 'VELINDO TEKNIK, CV', 'WAHANA SENTRA NIAGA, PT', 'WANGUN KARYA, BENGKEL', 'WESI AJI, UD', 'YASSIR, BENGKEL', 'YASUFUKU INDONESIA, PT'
+            , 'YOGYA PRESISI TEHNIKATAMA INDUSTRI, PT', 'YOSO PUTRA, BENGKEL')
+        ORDER BY
+            ami.akt_action_bermasalah DESC";       
+        $runQuery = $erp_db->query($sql);
+        return $runQuery->result_array();
+    }
+
+    public function listInvBermasalahBuyerSupplier()
+    {
+        $erp_db = $this->load->database('oracle',true);
+        $sql = "SELECT
+            ami.invoice_id,
+            ami.vendor_name vendor_name,
+            ami.invoice_number invoice_number,
+            ami.invoice_date invoice_date,
+            ami.tax_invoice_number tax_invoice_number,
+            ami.invoice_amount invoice_amount,
+            ami.last_status_purchasing_date last_status_purchasing_date,
+            ami.last_status_finance_date last_status_finance_date,
+            ami.finance_batch_number finance_batch_number,
+            ami.last_finance_invoice_status last_finance_invoice_status,
+            ami.reason reason,
+            ami.info info,
+            ami.invoice_category invoice_category,
+            ami.nominal_dpp nominal_dpp,
+            ami.batch_number batch_number,
+            ami.jenis_jasa jenis_jasa,
+            ami.kategori_inv_bermasalah,
+            ami.kelengkapan_doc_inv_bermasalah,
+            ami.keterangan_inv_bermasalah,
+            ami.akt_action_bermasalah akt_date,
+            ami.source SOURCE,
+            ami.FEEDBACK_PURCHASING,
+            ami.PURC_ACTION_BERMASALAH,
+            ami.FEEDBACK_BUYER,
+            ami.BUYER_ACTION_BERMASALAH,
+            ami.STATUS_BERKAS_PURC,
+            ami.STATUS_BERKAS_BUYER,
+            ami.NO_INDUK_BUYER,
+            ami.SOURCE_BERMASALAH,
+            mib.NAMA_BUYER
+        FROM
+            khs_ap_monitoring_invoice ami
+            LEFT JOIN khs_ap_mon_inv_buyer mib ON mib.NO_INDUK = ami.NO_INDUK_BUYER
+        WHERE
+            STATUS_INV_BERMASALAH IN (3)
+            AND ami.VENDOR_NAME NOT IN 
+            ('ADJI, BENGKEL', 'ANDRE, BENGKEL', 'ANEKA KOMKAR UTAMA, PT', 'APINDO BROTHER SUKSES, CV', 'ASAMA INDONESIA MANUFACTURING, PT', 'ASSAB STEEL INDONESIA, PT'
+            , 'ASTRA DAIDO STEEL INDONESIA, PT', 'ATMI DUTA ENGINEERING, PT', 'ATMI IGI CENTER, PT', 'B L P T', 'BAJA MULIA SEJAHTERA, CV', 'BAMA PUTRA SARANA PLASTINDO, PT'
+            , 'BANGUN ADIKARTO SELARAS, PT', 'BEJANA MAS PERKASA, PT', 'BENJAMIN BERSAUDARA DIESEL, PT', 'BUKAKA FORGING INDUSTRIES, PT', 'CABLE TECH, PT'
+            , 'CAHAYA, BENGKEL', 'CHRISMA GRAFINDO', 'CHUHATSU INDONESIA, PT', 'CITRASOFA', 'DHARMA POLIMETAL, PT', 'DHARMA POLIPLAST, PT', 'DOUBLE STONE GROUP'
+            , 'DUTA WIRA UTAMA, PT', 'DUTTA JAYA', 'DWI TEKNIK', 'ESSA PRINTING', 'EXEDY PRIMA INDONESIA, PT', 'EXPLORA PRINTAMA', 'GALANG PUTRA, BENGKEL'
+            , 'GENTHONG MAKMUR', 'GRAFINDO MITRASEMESTA, PT', 'GRAND PRIX INDOAGUNG, PT', 'HADI KARYA, BENGKEL', 'HAPPY SUSY', 'HARADA', 'HARAPAN BARU UTAMA, CV'
+            , 'HARAPAN INTI FELIX JAYA, PT', 'HARTA BAN INDONESIA, PT', 'HOTMAL JAYA PERKASA', 'INDOHEAT METAL INTI, PT', 'INDOPRIMA GEMILANG', 'INDOSPRING TBK, PT'
+            , 'INDRA ABADI, BENGKEL', 'INDUSTRI KARET DELI, PT', 'INKOASKU, PT', 'JAVA INDO CRAFT, CV', 'JAYA ABADI, BENGKEL', 'JIAXING YILONG IMPORT & EXPORT CO., LTD'
+            , 'KHS JAKARTA ECERAN', 'KHS-ECERAN', 'KHS - ONLINE', 'KING MANUFACTURE, PT', 'KOKURA TETSUDO CO., LTD', 'KUSNADI, UD', 'LARIS JAYA'
+            , 'LIMAE BANGUN PERKASA, PT', 'MADYA PUTERA TEHNIK, PT', 'MAJU TERUS, BENGKEL', 'MAKARYA GAYUH MUKTI', 'MANDIRI, BENGKEL', 'MANGGALA PRATAMA, CV'
+            , 'MARDIYANTO EKA JAYA, BENGKEL', 'MAWAR TERALIS', 'MEGA ANDALAN ELECTROPLATING', 'MEGATAMA SPRING, PT', 'MEKAR ARMADA JAYA, PT', 'MENARA TERUS MAKMUR, PT'
+            , 'MITRA UTAMA', 'MORITA TJOKRO GEARINDO, PT', 'MW CHROME', 'NAGAMAS CAHAYA SENTOSA, PT', 'NANCHANG QINGLIN AUTOMOBILE ACCESSORIES CO., LTD'
+            , 'NANCHANG QINGLIN SEAT MANUFACTURING CO., LTD', 'NANDYA KYOSEI INDONESIA, PT', 'ND BROTHER', 'NINGBO TOPWELL AUTO PARTS CO., LTD', 'PARTUNI PERDANA, PT'
+            , 'PENTASARI PRANAKARYA, PT', 'PERCETAKAN SURYA', 'PONG CODAN INDONESIA, PT', 'PRATAMA, BENGKEL', 'PRIMA DAYA, CV', 'PULOGADUNG TEMPAJAYA, PT'
+            , 'PUTRA SANJAYA, BENGKEL', 'RAHMAT HP, BENGKEL', 'RAINBOW', 'RAJA, BENGKEL', 'SAMUDERA LUAS PARAMACITRA, PT', 'SANTOSO, BENGKEL', 'SARINAH MOTOR'
+            , 'SATRYA MOTOR TOKO & AGEN VULKANISIR BAN', 'SENTOSA MOTOR', 'SINAR AGUNG SELALU SUKSES, PT', 'SINAR BIRU, BENGKEL', 'SINAR JAYA, BENGKEL'
+            , 'SINERGI AUTOCLUTCH, CV', 'SOESILO, BENGKEL', 'SRIREJEKI PERDANA STEEL, PT', 'STEEL PIPE INDUSTRY OF INDONESIA, PT', 'SUKSES CIPTA MAKMUR, PT'
+            , 'SUMBER ADI, TB', 'SUMBER KARET 76', 'SUMBER REJEKI FRP', 'SUMBER URIP, BENGKEL', 'SURABAYA KENCANA ANUGRAH, PT', 'SURYO, BENGKEL', 'TATA INOVINDO, PT'
+            , 'TI AUTOMOTIVE INDONESIA, PT', 'TJAKRINDO MAS, PT', 'TOSAMA ABADI, PT', 'TRI SAPTA JAYA, CV', 'TSPE, BENGKEL', 'TUNGGAL MANDIRI, CV', 'TYAS, BENGKEL'
+            , 'UPJ ITNY', 'VELINDO TEKNIK, CV', 'WAHANA SENTRA NIAGA, PT', 'WANGUN KARYA, BENGKEL', 'WESI AJI, UD', 'YASSIR, BENGKEL', 'YASUFUKU INDONESIA, PT'
+            , 'YOGYA PRESISI TEHNIKATAMA INDUSTRI, PT', 'YOSO PUTRA, BENGKEL')
+        ORDER BY
+            ami.akt_action_bermasalah DESC";       
+        $runQuery = $erp_db->query($sql);
+        return $runQuery->result_array();
+    }
+
+    public function invBermasalah($invoice_id)
+    {
+        $erp_db = $this->load->database('oracle', true);
         $sql = "SELECT aipo.invoice_id invoice_id, 
                 invoice_number invoice_number,
                 invoice_date invoice_date,
@@ -467,7 +603,7 @@ class M_kasiepembelian extends CI_Model {
 
     public function invBermasalahBuyer($invoice_id)
     {
-        $erp_db = $this->load->database('oracle',true);
+        $erp_db = $this->load->database('oracle', true);
         $sql = " SELECT aipo.invoice_id invoice_id, 
                 invoice_number invoice_number,
                 invoice_date invoice_date,
@@ -510,7 +646,7 @@ class M_kasiepembelian extends CI_Model {
 
     public function getFeedback($invoice_id)
     {
-        $erp_db = $this->load->database('oracle',true);
+        $erp_db = $this->load->database('oracle', true);
         $sql = "SELECT FEEDBACK_PURCHASING, STATUS_BERKAS_PURC, RESTATUS_BERKAS_PURC, NOTE_BUYER from KHS_AP_MONITORING_INVOICE WHERE INVOICE_ID = '$invoice_id'";
         $runQuery = $erp_db->query($sql);
         return $runQuery->result_array();
@@ -518,29 +654,29 @@ class M_kasiepembelian extends CI_Model {
 
     public function getFeedbackBuyer($invoice_id)
     {
-        $erp_db = $this->load->database('oracle',true);
+        $erp_db = $this->load->database('oracle', true);
         $sql = "SELECT FEEDBACK_BUYER, STATUS_BERKAS_BUYER from KHS_AP_MONITORING_INVOICE WHERE INVOICE_ID = '$invoice_id'";
         $runQuery = $erp_db->query($sql);
         return $runQuery->result_array();
     }
 
-    public function kirimFeedback($invoice_id,$feedback,$action_date)
+    public function kirimFeedback($invoice_id, $feedback, $action_date)
     {
-        $erp_db = $this->load->database('oracle',true);
+        $erp_db = $this->load->database('oracle', true);
         $sql = "UPDATE KHS_AP_MONITORING_INVOICE SET PURC_FINISHED_DATE = to_date('$action_date', 'DD/MM/YYYY HH24:MI:SS'), FEEDBACK_PURCHASING = '$feedback', STATUS_INV_BERMASALAH = '4' WHERE INVOICE_ID = '$invoice_id'";
         $runQuery = $erp_db->query($sql);
     }
 
-     public function kirimFeedbackBuyer($invoice_id,$feedback,$action_date)
+    public function kirimFeedbackBuyer($invoice_id, $feedback, $action_date)
     {
-        $erp_db = $this->load->database('oracle',true);
+        $erp_db = $this->load->database('oracle', true);
         $sql = "UPDATE KHS_AP_MONITORING_INVOICE SET BUYER_FINISHED_DATE = to_date('$action_date', 'DD/MM/YYYY HH24:MI:SS'), FEEDBACK_BUYER = '$feedback', STATUS_INV_BERMASALAH = '4' WHERE INVOICE_ID = '$invoice_id'";
         $runQuery = $erp_db->query($sql);
-    }    
+    }
 
-        public function saveInvBermasalah($invoice_id,$action_date,$status_berkas)
+    public function saveInvBermasalah($invoice_id, $action_date, $status_berkas)
     {
-        $erp_db = $this->load->database('oracle',true);
+        $erp_db = $this->load->database('oracle', true);
         $sql = "UPDATE KHS_AP_MONITORING_INVOICE 
                 SET 
                 PURC_ACTION_BERMASALAH = to_date('$action_date', 'DD/MM/YYYY HH24:MI:SS'),
@@ -551,9 +687,9 @@ class M_kasiepembelian extends CI_Model {
         $runQuery = $erp_db->query($sql);
     }
 
-    public function saveReconfirmInvBermasalah($invoice_id,$action_date,$status_berkas)
+    public function saveReconfirmInvBermasalah($invoice_id, $action_date, $status_berkas)
     {
-        $erp_db = $this->load->database('oracle',true);
+        $erp_db = $this->load->database('oracle', true);
         $sql = "UPDATE KHS_AP_MONITORING_INVOICE 
                 SET 
                 PURC_RESTATUS_DATE = to_date('$action_date', 'DD/MM/YYYY HH24:MI:SS'),
@@ -563,9 +699,9 @@ class M_kasiepembelian extends CI_Model {
         $runQuery = $erp_db->query($sql);
     }
 
-    public function saveInvBermasalahBuyer($invoice_id,$action_date,$status_berkas)
+    public function saveInvBermasalahBuyer($invoice_id, $action_date, $status_berkas)
     {
-        $erp_db = $this->load->database('oracle',true);
+        $erp_db = $this->load->database('oracle', true);
         $sql = "UPDATE KHS_AP_MONITORING_INVOICE 
                 SET 
                 BUYER_ACTION_BERMASALAH = to_date('$action_date', 'DD/MM/YYYY HH24:MI:SS'),
@@ -575,9 +711,9 @@ class M_kasiepembelian extends CI_Model {
         $runQuery = $erp_db->query($sql);
     }
 
-    public function updateTabelBerkas($waktu_berkas,$doc_id,$hasil,$invoice_id)
+    public function updateTabelBerkas($waktu_berkas, $doc_id, $hasil, $invoice_id)
     {
-        $erp_db = $this->load->database('oracle',true);
+        $erp_db = $this->load->database('oracle', true);
         $sql = "UPDATE KHS_AP_DOKUMEN_INV
                 SET DATE_CONFIRMATION_PURC = '$waktu_berkas',
                 STATUS_DOCUMENT_PURC = '$hasil'
@@ -585,9 +721,9 @@ class M_kasiepembelian extends CI_Model {
         $runQuery = $erp_db->query($sql);
     }
 
-    public function ReupdateTabelBerkas($waktu_berkas,$doc_id,$hasil,$invoice_id)
+    public function ReupdateTabelBerkas($waktu_berkas, $doc_id, $hasil, $invoice_id)
     {
-        $erp_db = $this->load->database('oracle',true);
+        $erp_db = $this->load->database('oracle', true);
         $sql = "UPDATE KHS_AP_DOKUMEN_INV
                 SET REDATE_CONFIRMATION_PURC = '$waktu_berkas',
                 RESTATUS_DOCUMENT_PURC = '$hasil'
@@ -595,9 +731,9 @@ class M_kasiepembelian extends CI_Model {
         $runQuery = $erp_db->query($sql);
     }
 
-      public function updateTabelBerkasBuyer($waktu_berkas,$doc_id,$hasil,$invoice_id)
+    public function updateTabelBerkasBuyer($waktu_berkas, $doc_id, $hasil, $invoice_id)
     {
-        $erp_db = $this->load->database('oracle',true);
+        $erp_db = $this->load->database('oracle', true);
         $sql = "UPDATE KHS_AP_DOKUMEN_INV
                 SET DATE_CONFIRMATION_BUYER = '$waktu_berkas',
                 STATUS_DOCUMENT_BUYER = '$hasil'
@@ -606,9 +742,10 @@ class M_kasiepembelian extends CI_Model {
     }
 
 
-	public function showListSubmittedForChecking($login){
-		$erp_db = $this->load->database('oracle',true);
-		$sql = "SELECT distinct batch_number batch_number, MAX (to_date(last_admin_date)) submited_date,
+    public function showListSubmittedForChecking($login)
+    {
+        $erp_db = $this->load->database('oracle', true);
+        $sql = "SELECT distinct batch_number batch_number, MAX (to_date(last_admin_date)) submited_date,
                 last_finance_invoice_status, source
                 FROM khs_ap_monitoring_invoice 
                 WHERE (last_purchasing_invoice_status = 1 OR last_purchasing_invoice_status = 2)
@@ -616,26 +753,28 @@ class M_kasiepembelian extends CI_Model {
                 $login
                 GROUP BY batch_number, last_finance_invoice_status, source
                 ORDER BY submited_date";
-		$run = $erp_db->query($sql);
-		return $run->result_array();
-	}
+        $run = $erp_db->query($sql);
+        return $run->result_array();
+    }
 
-	public function getJmlInvPerBatch($batch){
-        $erp_db = $this->load->database('oracle',true);
+    public function getJmlInvPerBatch($batch)
+    {
+        $erp_db = $this->load->database('oracle', true);
         $sql = "SELECT batch_number FROM khs_ap_monitoring_invoice WHERE batch_number = '$batch'";
         $run = $erp_db->query($sql);
         return $run->num_rows();
     }
 
-  function get_ora_blob_value($value)
-      {
-          $size = $value->size();
-          $result = $value->read($size);
-          return ($result)?$result:NULL;
-      }
+    function get_ora_blob_value($value)
+    {
+        $size = $value->size();
+        $result = $value->read($size);
+        return ($result) ? $result : NULL;
+    }
 
-    public function showDetailPerBatch($batchNumber){
-        $oracle = $this->load->database('oracle',true);
+    public function showDetailPerBatch($batchNumber)
+    {
+        $oracle = $this->load->database('oracle', true);
         $sql = "SELECT ami.invoice_id invoice_id,
                          ami.vendor_name vendor_name,
                          ami.invoice_number invoice_number, 
@@ -686,14 +825,15 @@ class M_kasiepembelian extends CI_Model {
         $query = $oracle->query($sql);
         $arr = $query->result_array();
         foreach ($arr as $key => $value) {
-          $arr[$key]['PO_DETAIL'] = $this->get_ora_blob_value($arr[$key]['PO_DETAIL']);
+            $arr[$key]['PO_DETAIL'] = $this->get_ora_blob_value($arr[$key]['PO_DETAIL']);
         }
-       
+
         return $arr;
     }
 
-    public function getUnitPrice($invoice_id){
-        $oracle = $this->load->database('oracle',true);
+    public function getUnitPrice($invoice_id)
+    {
+        $oracle = $this->load->database('oracle', true);
         $query = "SELECT unit_price , qty_invoice 
                   FROM khs_ap_invoice_purchase_order
                     WHERE invoice_id = $invoice_id";
@@ -701,17 +841,19 @@ class M_kasiepembelian extends CI_Model {
         return $runQuery->result_array();
     }
 
-    public function approvedbykasiepurchasing($id,$status,$last_status_purchasing_date){
-    	$erp_db = $this->load->database('oracle',true);
-    	$sql = "UPDATE khs_ap_monitoring_invoice
+    public function approvedbykasiepurchasing($id, $status, $last_status_purchasing_date)
+    {
+        $erp_db = $this->load->database('oracle', true);
+        $sql = "UPDATE khs_ap_monitoring_invoice
     			SET last_purchasing_invoice_status = '$status',
                 last_status_purchasing_date = to_date('$last_status_purchasing_date', 'DD/MM/YYYY HH24:MI:SS')
                 WHERE invoice_id = $id";
-    	$run = $erp_db->query($sql);
+        $run = $erp_db->query($sql);
     }
 
-    public function rejectbykasiepurchasing($id,$status,$last_status_purchasing_date,$reason){
-        $erp_db = $this->load->database('oracle',true);
+    public function rejectbykasiepurchasing($id, $status, $last_status_purchasing_date, $reason)
+    {
+        $erp_db = $this->load->database('oracle', true);
         $sql = "UPDATE khs_ap_monitoring_invoice
                 SET last_purchasing_invoice_status = '$status',
                 last_status_purchasing_date = to_date('$last_status_purchasing_date', 'DD/MM/YYYY HH24:MI:SS'),
@@ -720,26 +862,28 @@ class M_kasiepembelian extends CI_Model {
         $run = $erp_db->query($sql);
     }
 
-    public function approveInvoice($id,$status,$last_status_purchasing_date){
-      $erp_db = $this->load->database('oracle',true);
-      $sql = "UPDATE khs_ap_monitoring_invoice
+    public function approveInvoice($id, $status, $last_status_purchasing_date)
+    {
+        $erp_db = $this->load->database('oracle', true);
+        $sql = "UPDATE khs_ap_monitoring_invoice
           SET last_purchasing_invoice_status = '$status',
                 last_status_purchasing_date = to_date('$last_status_purchasing_date', 'DD/MM/YYYY HH24:MI:SS'),
                 reason = ''
                 WHERE invoice_id = $id";
-      $run = $erp_db->query($sql);
+        $run = $erp_db->query($sql);
     }
 
-    public function inputstatuspurchasing($invoice_id,$action_date,$purchasing_status)
+    public function inputstatuspurchasing($invoice_id, $action_date, $purchasing_status)
     {
-        $oracle = $this->load->database('oracle',true);
+        $oracle = $this->load->database('oracle', true);
         $sql = "INSERT INTO khs_ap_invoice_action_detail (invoice_id,action_date,purchasing_status)
                 VALUES($invoice_id, to_date('$action_date', 'DD/MM/YYYY HH24:MI:SS'),'$purchasing_status')";
         $run = $oracle->query($sql);
     }
 
-    public function btnSubmitToFinance($id,$finance_status,$finance_date){
-        $erp_db = $this->load->database('oracle',true);
+    public function btnSubmitToFinance($id, $finance_status, $finance_date)
+    {
+        $erp_db = $this->load->database('oracle', true);
         $sql = "UPDATE khs_ap_monitoring_invoice
                 set last_finance_invoice_status = '$finance_status',
                 last_status_finance_date = to_date('$finance_date', 'DD/MM/YYYY HH24:MI:SS')
@@ -748,16 +892,16 @@ class M_kasiepembelian extends CI_Model {
         $run = $erp_db->query($sql);
     }
 
-    public function insertstatusfinance($invoice_id,$action_date,$finance_status)
+    public function insertstatusfinance($invoice_id, $action_date, $finance_status)
     {
-        $oracle = $this->load->database('oracle',true);
+        $oracle = $this->load->database('oracle', true);
         $sql = "INSERT INTO khs_ap_invoice_action_detail (invoice_id,action_date,purchasing_status,finance_status)
                 VALUES($invoice_id, to_date('$action_date', 'DD/MM/YYYY HH24:MI:SS'),'2','$finance_status')";
         $run = $oracle->query($sql);
     }
     public function checkFinanceNumber()
     {
-        $oracle = $this->load->database('oracle',true);
+        $oracle = $this->load->database('oracle', true);
         $sql = "SELECT max(finance_batch_number) finance_batch_number
                   FROM khs_ap_monitoring_invoice 
                   WHERE ROWNUM >= 1";
@@ -766,8 +910,9 @@ class M_kasiepembelian extends CI_Model {
     }
 
 
-    public function getSubmitToFinance($id){
-        $oracle = $this->load->database('oracle',true);
+    public function getSubmitToFinance($id)
+    {
+        $oracle = $this->load->database('oracle', true);
         $query = "SELECT last_purchasing_invoice_status status_finance 
                   FROM  khs_ap_monitoring_invoice
                   WHERE invoice_id = $id";
@@ -775,8 +920,9 @@ class M_kasiepembelian extends CI_Model {
         return $runQuery->result_array();
     }
 
-    public function invoiceDetail($invoice_id){
-        $oracle = $this->load->database('oracle',true);
+    public function invoiceDetail($invoice_id)
+    {
+        $oracle = $this->load->database('oracle', true);
         $sql = "SELECT ami.invoice_number invoice_number,
                 ami.invoice_date invoice_date,
                 ami.invoice_amount invoice_amount,
@@ -809,7 +955,7 @@ class M_kasiepembelian extends CI_Model {
 
     public function getStatusSatu()
     {
-        $oracle = $this->load->database('oracle',TRUE);
+        $oracle = $this->load->database('oracle', TRUE);
         $sql = "SELECT  ami.invoice_id, ami.vendor_name vendor_name,
                 ami.invoice_number invoice_number,
                 ami.invoice_date invoice_date,
@@ -866,7 +1012,7 @@ class M_kasiepembelian extends CI_Model {
 
     public function getStatusBuyer($user)
     {
-        $oracle = $this->load->database('oracle',TRUE);
+        $oracle = $this->load->database('oracle', TRUE);
         $sql = "SELECT COUNT(INVOICE_ID) SATU FROM khs_ap_monitoring_invoice WHERE STATUS_INV_BERMASALAH = 3 AND NO_INDUK_BUYER = '$user'";
         $run = $oracle->query($sql);
         return $run->result_array();
@@ -874,7 +1020,7 @@ class M_kasiepembelian extends CI_Model {
 
     public function getNamaVendor($id)
     {
-        $oracle = $this->load->database('oracle',TRUE);
+        $oracle = $this->load->database('oracle', TRUE);
         $sql = "SELECT * 
                 FROM po_vendors pov
                 WHERE vendor_id = $id";
@@ -884,7 +1030,7 @@ class M_kasiepembelian extends CI_Model {
 
     public function checkExist($id)
     {
-        $oracle = $this->load->database('oracle',true);
+        $oracle = $this->load->database('oracle', true);
         $query = "SELECT last_purchasing_invoice_status purchasing_status
                   FROM  khs_ap_monitoring_invoice
                   WHERE invoice_id = $id";
@@ -892,8 +1038,9 @@ class M_kasiepembelian extends CI_Model {
         return $runQuery->result_array();
     }
 
-    public function showFinishBatch($login){
-        $erp_db = $this->load->database('oracle',true);
+    public function showFinishBatch($login)
+    {
+        $erp_db = $this->load->database('oracle', true);
         $sql = "SELECT to_char(tabel.submited_date, 'MONTH'),
                 tabel.batch_number,
                 tabel.finance_batch_number,
@@ -923,35 +1070,36 @@ class M_kasiepembelian extends CI_Model {
                 $login) tabel
                 WHERE 
                 to_char(tabel.submited_date, 'MONTH')=to_char(sysdate, 'MONTH')";
-                
-                $run = $erp_db->query($sql);
-                return $run->result_array();
 
-                // -------untuk menampilkan seluruh data -----
-                // $sql = "SELECT DISTINCT a.batch_number, 
-                //                         a.finance_batch_number, 
-                //                         a.last_purchasing_invoice_status, 
-                //                         a.last_finance_invoice_status,
-                //                         a.source,
-                //                         (SELECT DISTINCT to_date(d.action_date)
-                //                                     FROM khs_ap_invoice_action_detail d
-                //                                    WHERE d.invoice_id = a.invoice_id
-                //                                      AND d.finance_status = 1
-                //                                      AND d.purchasing_status = 2 AND rownum = 1) submited_date,
-                //                         (SELECT COUNT (*)
-                //                            FROM khs_ap_monitoring_invoice b
-                //                           WHERE b.batch_number = a.batch_number)jml_invoice
-                //         FROM khs_ap_monitoring_invoice a
-                //         WHERE a.batch_number IS NOT NULL
-                //         AND a.last_finance_invoice_status = 2
-                //         AND (a.last_purchasing_invoice_status = 2 OR a.last_purchasing_invoice_status = 3)
-                //         $login
-                //         ORDER BY submited_date desc";
-        
+        $run = $erp_db->query($sql);
+        return $run->result_array();
+
+        // -------untuk menampilkan seluruh data -----
+        // $sql = "SELECT DISTINCT a.batch_number, 
+        //                         a.finance_batch_number, 
+        //                         a.last_purchasing_invoice_status, 
+        //                         a.last_finance_invoice_status,
+        //                         a.source,
+        //                         (SELECT DISTINCT to_date(d.action_date)
+        //                                     FROM khs_ap_invoice_action_detail d
+        //                                    WHERE d.invoice_id = a.invoice_id
+        //                                      AND d.finance_status = 1
+        //                                      AND d.purchasing_status = 2 AND rownum = 1) submited_date,
+        //                         (SELECT COUNT (*)
+        //                            FROM khs_ap_monitoring_invoice b
+        //                           WHERE b.batch_number = a.batch_number)jml_invoice
+        //         FROM khs_ap_monitoring_invoice a
+        //         WHERE a.batch_number IS NOT NULL
+        //         AND a.last_finance_invoice_status = 2
+        //         AND (a.last_purchasing_invoice_status = 2 OR a.last_purchasing_invoice_status = 3)
+        //         $login
+        //         ORDER BY submited_date desc";
+
     }
 
-    public function finish_detail($batchNumber){
-        $oracle = $this->load->database('oracle',true);
+    public function finish_detail($batchNumber)
+    {
+        $oracle = $this->load->database('oracle', true);
         $sql = "SELECT ami.invoice_id invoice_id,
                          ami.vendor_name vendor_name,
                          ami.invoice_number invoice_number, 
@@ -1003,15 +1151,15 @@ class M_kasiepembelian extends CI_Model {
         $query = $oracle->query($sql);
         $arr = $query->result_array();
         foreach ($arr as $key => $value) {
-          $arr[$key]['PO_DETAIL'] = $this->get_ora_blob_value($arr[$key]['PO_DETAIL']);
+            $arr[$key]['PO_DETAIL'] = $this->get_ora_blob_value($arr[$key]['PO_DETAIL']);
         }
-       
+
         return $arr;
     }
 
     public function finish_detail_invoice($invoice_id)
     {
-        $erp_db = $this->load->database('oracle',true);
+        $erp_db = $this->load->database('oracle', true);
         $sql = "SELECT aipo.invoice_id invoice_id, 
                 invoice_number invoice_number,
                 invoice_date invoice_date,
@@ -1040,8 +1188,9 @@ class M_kasiepembelian extends CI_Model {
         return $runQuery->result_array();
     }
 
-    public function checkApprove($invoice_id){
-        $oracle = $this->load->database('oracle',true);
+    public function checkApprove($invoice_id)
+    {
+        $oracle = $this->load->database('oracle', true);
         $sql = "SELECT last_purchasing_invoice_status, last_finance_invoice_status
                 FROM khs_ap_monitoring_invoice
                 WHERE invoice_id = $invoice_id";
@@ -1049,17 +1198,19 @@ class M_kasiepembelian extends CI_Model {
         return $run->result_array();
     }
 
-    public function getLastStatusActionDetail($invoice_id){
-        $oracle = $this->load->database('oracle',true);
-        $sql="SELECT action_date, purchasing_status, action_id
+    public function getLastStatusActionDetail($invoice_id)
+    {
+        $oracle = $this->load->database('oracle', true);
+        $sql = "SELECT action_date, purchasing_status, action_id
                     FROM khs_ap_invoice_action_detail a
                     WHERE a.ACTION_ID = (SELECT MAX(ACTION_ID) FROM khs_ap_invoice_action_detail b WHERE INVOICE_ID = '$invoice_id')";
         $run = $oracle->query($sql);
         return $run->result_array();
     }
 
-     public function detailBatch($batch_number){
-        $oracle = $this->load->database('oracle',true);
+    public function detailBatch($batch_number)
+    {
+        $oracle = $this->load->database('oracle', true);
         $sql = "SELECT distinct (SELECT COUNT (last_purchasing_invoice_status)
                       FROM khs_ap_monitoring_invoice b
                      WHERE b.last_purchasing_invoice_status = 2
@@ -1077,9 +1228,10 @@ class M_kasiepembelian extends CI_Model {
         return $run->result_array();
     }
 
-    public function editInvoiceKasiePurc($invoice_id,$invoice_number,$invoice_date,$invoice_amount,$tax_invoice_number,$info,$nominal_dpp,$invoice_category,$jenis_jasa){
-       $oracle = $this->load->database('oracle',true);
-       $query2 = "UPDATE khs_ap_monitoring_invoice 
+    public function editInvoiceKasiePurc($invoice_id, $invoice_number, $invoice_date, $invoice_amount, $tax_invoice_number, $info, $nominal_dpp, $invoice_category, $jenis_jasa)
+    {
+        $oracle = $this->load->database('oracle', true);
+        $query2 = "UPDATE khs_ap_monitoring_invoice 
                   SET invoice_number = '$invoice_number', 
                     invoice_date = '$invoice_date',
                     invoice_amount = '$invoice_amount',
@@ -1093,52 +1245,55 @@ class M_kasiepembelian extends CI_Model {
         // oci_commit($oracle);
     }
 
-    public function submitUlang($invoice_id,$date){
-      $erp_db = $this->load->database('oracle',true);
-      $sql = "UPDATE khs_ap_monitoring_invoice
+    public function submitUlang($invoice_id, $date)
+    {
+        $erp_db = $this->load->database('oracle', true);
+        $sql = "UPDATE khs_ap_monitoring_invoice
           SET last_purchasing_invoice_status = '1',
                 last_status_purchasing_date = to_date('$date', 'DD/MM/YYYY HH24:MI:SS')
                 WHERE invoice_id = '$invoice_id'";
-      $run = $erp_db->query($sql);
-
+        $run = $erp_db->query($sql);
     }
 
-    public function insertSubmitUlang($invoice_id,$date)
+    public function insertSubmitUlang($invoice_id, $date)
     {
-      $erp_db = $this->load->database('oracle',true);
-      $sql = "INSERT INTO khs_ap_invoice_action_detail (invoice_id,action_date,purchasing_status,finance_status)
+        $erp_db = $this->load->database('oracle', true);
+        $sql = "INSERT INTO khs_ap_invoice_action_detail (invoice_id,action_date,purchasing_status,finance_status)
                 VALUES('$invoice_id', to_date('$date', 'DD/MM/YYYY HH24:MI:SS'),'1','0')";
-      $run = $erp_db->query($sql);
+        $run = $erp_db->query($sql);
     }
 
-    public function submitUlangKasieGudang($batch_number,$date){
-      $erp_db = $this->load->database('oracle',true);
-      $sql = "UPDATE khs_ap_monitoring_invoice
+    public function submitUlangKasieGudang($batch_number, $date)
+    {
+        $erp_db = $this->load->database('oracle', true);
+        $sql = "UPDATE khs_ap_monitoring_invoice
           SET last_purchasing_invoice_status = '1',
                 last_status_purchasing_date = to_date('$date', 'DD/MM/YYYY HH24:MI:SS'),
                 last_finance_invoice_status = '0'
                 WHERE batch_number = '$batch_number'";
-      $run = $erp_db->query($sql);
+        $run = $erp_db->query($sql);
         // oci_commit($erp_db);
     }
 
-    public function ambilID($batch_number){
-      $erp_db = $this->load->database('oracle',true);
-      $sql = "SELECT invoice_id FROM khs_ap_monitoring_invoice WHERE batch_number = '$batch_number' ";
-      $run = $erp_db->query($sql);
-      return $run->result_array();
+    public function ambilID($batch_number)
+    {
+        $erp_db = $this->load->database('oracle', true);
+        $sql = "SELECT invoice_id FROM khs_ap_monitoring_invoice WHERE batch_number = '$batch_number' ";
+        $run = $erp_db->query($sql);
+        return $run->result_array();
     }
 
     public function simpanID($id, $date)
     {
-      $erp_db = $this->load->database('oracle',true);
-      $sql = "INSERT INTO khs_ap_invoice_action_detail (invoice_id,action_date,purchasing_status,finance_status)
+        $erp_db = $this->load->database('oracle', true);
+        $sql = "INSERT INTO khs_ap_invoice_action_detail (invoice_id,action_date,purchasing_status,finance_status)
                 VALUES('$id', to_date('$date', 'DD/MM/YYYY HH24:MI:SS'),'1','0')";
-      $run = $erp_db->query($sql);
+        $run = $erp_db->query($sql);
     }
 
-    public function checkPPN($po_numberInv){
-        $oracle = $this->load->database("oracle",TRUE);
+    public function checkPPN($po_numberInv)
+    {
+        $oracle = $this->load->database("oracle", TRUE);
         $query = "SELECT distinct poh.attribute2 ppn
                             from PO_HEADERS_ALL POH
                             ,PO_LINES_ALL POL
@@ -1152,18 +1307,91 @@ class M_kasiepembelian extends CI_Model {
 
     public function showInv($invoice_id)
     {
-          $erp_db = $this->load->database('oracle',true);
-          $sql = "SELECT NOTE_RETURN_PURC,INVOICE_ID FROM khs_ap_monitoring_invoice WHERE invoice_id = '$invoice_id' ";
-          $run = $erp_db->query($sql);
-          return $run->result_array();
+        $erp_db = $this->load->database('oracle', true);
+        $sql = "SELECT NOTE_RETURN_PURC,INVOICE_ID FROM khs_ap_monitoring_invoice WHERE invoice_id = '$invoice_id' ";
+        $run = $erp_db->query($sql);
+        return $run->result_array();
     }
 
-     public function showInvBuyer($invoice_id)
+    public function showInvBuyer($invoice_id)
     {
-          $erp_db = $this->load->database('oracle',true);
-          $sql = "SELECT NOTE_RETURN_BUYER,INVOICE_ID FROM khs_ap_monitoring_invoice WHERE invoice_id = '$invoice_id' ";
-          $run = $erp_db->query($sql);
-          return $run->result_array();
+        $erp_db = $this->load->database('oracle', true);
+        $sql = "SELECT NOTE_RETURN_BUYER,INVOICE_ID FROM khs_ap_monitoring_invoice WHERE invoice_id = '$invoice_id' ";
+        $run = $erp_db->query($sql);
+        return $run->result_array();
     }
-
+    public function listInvBermasalahbyFilter($vendor, $status)
+    {
+        $erp_db = $this->load->database('oracle', true);
+        $sql = "SELECT * FROM
+        (SELECT  ami.invoice_id, ami.vendor_name vendor_name,
+                ami.invoice_number invoice_number,
+                ami.invoice_date invoice_date,
+                ami.tax_invoice_number tax_invoice_number,
+                ami.invoice_amount invoice_amount,
+                ami.last_status_purchasing_date last_status_purchasing_date,
+                ami.last_status_finance_date last_status_finance_date,
+                ami.finance_batch_number finance_batch_number,
+                ami.last_finance_invoice_status last_finance_invoice_status,
+                ami.reason reason, 
+                ami.info info,
+                ami.invoice_category invoice_category,
+                ami.nominal_dpp nominal_dpp,
+                ami.batch_number batch_number,
+                ami.jenis_jasa jenis_jasa,
+                ami.kategori_inv_bermasalah,
+                ami.kelengkapan_doc_inv_bermasalah,
+                ami.keterangan_inv_bermasalah,
+                ami.akt_action_bermasalah akt_date,
+                ami.source_bermasalah,
+                ami.FEEDBACK_PURCHASING,
+                ami.PURC_ACTION_BERMASALAH,
+                ami.FEEDBACK_BUYER,
+                ami.BUYER_ACTION_BERMASALAH,
+                ami.NO_INDUK_BUYER,
+                ami.STATUS_BERKAS_PURC,
+                ami.STATUS_BERKAS_BUYER,
+                mib.NAMA_BUYER,
+                ami.status_inv_bermasalah,
+                ami.returned_flag,
+                ami.returned_date_akt,
+                ami.returned_date_purc,
+                ami.note_buyer,
+                ami.note_return_akt,
+                ami.note_return_purc,
+                ami.kelengkapan_doc_inv_returned,
+                ami.note_return_buyer,
+                ami.returned_date_buyer,
+                        (SELECT COUNT (adi.status_document_buyer) hasil_n
+                            FROM khs_ap_dokumen_inv adi LEFT JOIN khs_ap_monitoring_invoice ami3
+                              ON ami3.invoice_id = adi.invoice_id
+                           WHERE status_document_buyer = 'Y'
+                             and adi.invoice_id = ami.invoice_id) jmlh_y,
+                         (SELECT COUNT (adi.status_document_buyer) hasil_n
+                            FROM khs_ap_dokumen_inv adi LEFT JOIN khs_ap_monitoring_invoice ami3
+                              ON ami3.invoice_id = adi.invoice_id
+                           WHERE status_document_buyer = 'N'
+                             and adi.invoice_id = ami.invoice_id) jmlh_n,
+                case 
+                    when pha.created_by IN (5183, 5184, 5185, 5186, 5187, 5188) then 'SUPPLIER'
+                    when pha.created_by IN (5327, 5189, 5190) then 'SUBKONT'
+                    else 'UNDEFINED'
+                end vendor_source,
+                pha.segment1
+                FROM khs_ap_monitoring_invoice ami
+                LEFT JOIN khs_ap_mon_inv_buyer mib ON mib.NO_INDUK = ami.NO_INDUK_BUYER
+                LEFT
+                 JOIN khs_ap_invoice_purchase_order aipo ON ami.invoice_id = aipo.invoice_id
+                LEFT JOIN po_headers_all pha ON pha.segment1 = aipo.po_number 
+                WHERE STATUS_INV_BERMASALAH NOT IN (0,3,5)
+                ORDER BY ami.akt_action_bermasalah DESC)
+        WHERE
+            vendor_source = '$vendor'";
+        $run = $erp_db->query($sql);
+        if ($status == 'data') {
+            return $run->result_array();
+        } else {
+            return $run->num_rows();
+        }
+    }
 }

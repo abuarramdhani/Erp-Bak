@@ -1,3 +1,27 @@
+<style media="screen">
+.modal {
+text-align: center;
+padding: 0!important;
+overflow-y: auto !important;
+}
+
+.modal:before {
+content: '';
+display: inline-block;
+height: 100%;
+vertical-align: middle;
+margin-right: -4px; /* Adjusts for spacing */
+}
+
+.modal-dialog {
+display: inline-block;
+text-align: left;
+vertical-align: middle;
+}
+body{
+  padding-right: 0px!important;
+}
+</style>
 <input type="hidden" id="punyaeDO" value="trueDO">
 <div class="content">
   <div class="row">
@@ -221,6 +245,50 @@
                   </div>
                 </div>
                 <!-- <center><button type="button" class="btn btn-success" name="button" id="rootbutton" onclick="rootsubmit()" style="font-weight:bold;display:none;margin-top:10px">ROOT APPROVE</button> -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- modal area SPBKIT -->
+<div class="modal fade bd-example-modal-md" id="MyModalSPBKIT" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content" style="border-radius: 5px !important; background-color:transparent !important; box-shadow:none;">
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="box box-primary box-solid">
+              <div class="box-header with-border">
+                <div style="float:left">
+                  <h4 style="font-weight:bold;"><span id="tipe_spbkit"></span> <span id="nospbkit"></span> </h4>
+                </div>
+                <!-- <button type="button" class="btn btn-danger" style="float:right;font-weight:bold" data-dismiss="modal">Close</button> -->
+              </div>
+              <div class="box-body">
+                <form class="cetak_spbkit" action="index.html" method="post">
+                  <div class="form-group">
+                    <label for="">Org :</label>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <input type="text" class="form-control" id="org_code_spbkit" value="" readonly>
+                      </div>
+                      <div class="col-md-6">
+                        <input type="text" class="form-control" id="org_id_spbkit" value="" readonly>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="">Sub.Inv :</label>
+                    <select class="select2subinv_spbkit" name="" style="width:100%" required>
+                      <option value=""></option>
+                    </select>
+                  </div>
+                  <center><button type="submit" class="btn btn-success" name="button" style="font-weight:bold;margin-top:10px;margin-bottom:10px"> <i class="fa fa-save"></i> Submit </button>
+                </form>
               </div>
             </div>
           </div>

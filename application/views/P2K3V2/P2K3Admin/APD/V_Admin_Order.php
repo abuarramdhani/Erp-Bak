@@ -42,7 +42,7 @@
                                         </div>
                                         <div class="col-md-3">
                                             <div class="input-group col-md-12">
-                                                <input required="" class="form-control p2k3_tanggal_periode"  autocomplete="off" type="text" name="k3_periode" value="<?php echo $pr; ?>" id="yangPentingtdkKosong"/>
+                                                <input required="" class="form-control p2k3_tanggal_periodeUnlimited"  autocomplete="off" type="text" name="k3_periode" value="<?php echo $pr; ?>" id="yangPentingtdkKosong"/>
                                             </div>
                                         </div>
                                         <div class="col-md-2">

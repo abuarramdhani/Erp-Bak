@@ -75,7 +75,7 @@
                                                     if ($val['SELESAI_PELAYANAN'] == '') {
                                                         $status = "PELAYANAN";
                                                     }elseif ($val['SELESAI_PELAYANAN'] != '' && $val['SELESAI_PENGELUARAN'] == '') {
-                                                        $status = "PENGELUARAN";
+                                                        $status = "PACKING";
                                                     }elseif ($val['SELESAI_PELAYANAN'] != '' && $val['SELESAI_PENGELUARAN'] != '' && $val['SELESAI_PACKING'] == '') {
                                                         $status = "PACKING";
                                                     }
@@ -89,7 +89,7 @@
                                                         }else {
                                                             $btn = 'btn-info';
                                                         }
-                                                    $eks = $this->M_tracking->getEkspedisi($val['NO_DOKUMEN']);
+                                                    // $eks = $this->M_tracking->getEkspedisi($val['NO_DOKUMEN']);
                                                     // echo "<pre>";print_r($eks);exit();
                                                     ?>
                                                     <tr id="baris<?= $no?>">
@@ -98,8 +98,8 @@
                                                         <td class="<?= $td?>"><input type="hidden" id="jam<?= $no?>" value="<?= $val['TGL_DIBUAT']?>"><?= $val['TGL_DIBUAT']?></td>
                                                         <td class="<?= $td?>"><input type="hidden" id="jenis<?= $no?>" value="<?= $val['JENIS_DOKUMEN']?>"><?= $val['JENIS_DOKUMEN']?></td>
                                                         <td class="<?= $td?>" style="font-size:17px; font-weight: bold"><input type="hidden" id="nodoc<?= $no?>" value="<?= $val['NO_DOKUMEN']?>"><?= $val['NO_DOKUMEN']?></td>
-                                                        <td class="<?= $td?>"><input type="hidden" id="ekspedisi<?= $no?>" value="<?= $eks[0]['EKSPEDISI']?>"><?= $eks[0]['EKSPEDISI']?></td>
-                                                        <td class="<?= $td?>"><input type="hidden" id="kota<?= $no?>" value="<?= $eks[0]['KOTA_KIRIM']?>"><?= $eks[0]['KOTA_KIRIM']?></td>
+                                                        <td class="<?= $td?>"><input type="hidden" id="ekspedisi<?= $no?>" value="<?= $val['EKSPEDISI']?>"><?= $val['EKSPEDISI']?></td>
+                                                        <td class="<?= $td?>"><input type="hidden" id="kota<?= $no?>" value="<?= $val['KOTA_KIRIM']?>"><?= $val['KOTA_KIRIM']?></td>
                                                         <td class="<?= $td?>"><input type="hidden" id="jml_item<?= $no?>" value="<?= $val['JUMLAH_ITEM']?>"><?= $val['JUMLAH_ITEM']?></td>
                                                         <td class="<?= $td?>"><input type="hidden" id="jml_pcs<?= $no?>" value="<?= $val['JUMLAH_PCS']?>"><?= $val['JUMLAH_PCS']?></td>
                                                         <td class="<?= $td?>"><input type="hidden" id="bon<?= $no?>" value="<?= $val['BON']?>"><?= $val['URGENT'] ?>  <?= $val['BON'] ?></td>
@@ -138,12 +138,9 @@
                         <thead>
                             <tr class="bg-info">
                                 <th colspan="2">Pelayanan</th>
-                                <th colspan="2">Pengeluaran</th>
                                 <th colspan="2">Packing</th>
                             </tr>
                             <tr class="bg-info">
-                                <td>Mulai</td>
-                                <td>Selesai</td>
                                 <td>Mulai</td>
                                 <td>Selesai</td>
                                 <td>Mulai</td>
@@ -154,8 +151,6 @@
                             <tr>
                                 <td><?php echo $key['MULAI_PELAYANAN']?></td>
                                 <td><?php echo $key['SELESAI_PELAYANAN']?></td>
-                                <td><?php echo $key['MULAI_PENGELUARAN']?></td>
-                                <td><?php echo $key['SELESAI_PENGELUARAN']?></td>
                                 <td><?php echo $key['MULAI_PACKING']?></td>
                                 <td><?php echo $key['SELESAI_PACKING']?></td>
                             </tr>  

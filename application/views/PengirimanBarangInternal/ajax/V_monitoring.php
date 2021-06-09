@@ -37,7 +37,7 @@
           <?php if (($g['TYPE'] == '3' && $g['FLAG_APPROVE_ASET'] == 'N' && $g['STATUS'] == '1') || ($g['TYPE'] == '2' && $g['STATUS'] == '1')) { ?>
             <td>
               <center>
-                <button type="button" class="btn btn-primary" style="margin-left:1px;padding:5px 7px;font-weight:bold;" name="button" onclick="edit_pbi('<?php echo $g['DOC_NUMBER'] ?>', '<?php echo $g['KETERANGAN'] ?>', '<?php echo $g['USER_TUJUAN'] ?>', '<?php echo $g['SEKSI_TUJUAN'] ?>', '<?php echo $g['TYPE'] ?>', '<?php echo $g['NO_TRANSFER_ASET'] ?>')" data-toggle="modal" data-target="#edit_pbi">
+                <button type="button" class="btn btn-primary" style="margin-left:1px;padding:5px 7px;font-weight:bold;" name="button" onclick="edit_pbi('<?php echo $g['DOC_NUMBER'] ?>', '<?php echo $g['KETERANGAN'] ?>', '<?php echo $g['USER_TUJUAN'] ?>', '<?php echo $g['SEKSI_TUJUAN'] ?>', '<?php echo $g['TYPE'] ?>', '<?php echo $g['NO_TRANSFER_ASET'] ?>', '<?php echo $g['TUJUAN'] ?>')" data-toggle="modal" data-target="#edit_pbi">
                   <i class="fa fa-pencil"></i>
                 </button>
                 <button type="button" class="btn btn-danger" style="margin-left:1px;padding:5px 7px;font-weight:bold;" name="button" onclick="hapus_pbi('<?php echo $g['DOC_NUMBER'] ?>')">

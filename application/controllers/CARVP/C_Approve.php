@@ -218,7 +218,7 @@ class C_Approve extends CI_Controller
 
 
         Terima kasih,<br>
-        Rani<br>
+        Ikhwan<br>
         Adm. Sistem Pembelian<br>
         CV. Karya Hidup Sentosa<br>
         Telp. +62-274-512095 ext 225<br>
@@ -331,7 +331,7 @@ class C_Approve extends CI_Controller
         
         
         Terima kasih,<br>
-        Rani<br>
+        Ikhwan<br>
         Adm. Sistem Pembelian<br>
         CV. Karya Hidup Sentosa<br>
         Telp. +62-274-512095 ext 225<br>

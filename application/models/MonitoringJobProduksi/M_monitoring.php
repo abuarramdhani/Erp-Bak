@@ -7,7 +7,7 @@ class M_monitoring extends CI_Model
         parent::__construct();
         $this->load->database();   
         $this->oracle = $this->load->database('oracle', true);
-        $this->oracle_dev = $this->load->database('oracle_dev', true);
+        // $this->oracle_dev = $this->load->database('oracle_dev', true);
     }
     
     public function getCategory($term){
@@ -64,23 +64,67 @@ class M_monitoring extends CI_Model
     public function getitem($term){
         $sql = "SELECT DISTINCT msib.segment1, msib.description, msib.inventory_item_id, msib.organization_id             
                 FROM mtl_system_items_b msib            
-                WHERE msib.inventory_item_status_code = 'Active'              
-                AND msib.inventory_item_id = '$term'
-                AND msib.organization_id IN (101, 102) --OPM, ODM         
+                WHERE msib.inventory_item_id = '$term'
+                AND msib.organization_id IN (101, 102, 225) --OPM, ODM, YSP         
                 ORDER BY msib.segment1
                 ";
         $query = $this->oracle->query($sql);
         return $query->result_array();
     }
     
-    public function getPlan($id, $bulan){
-        $sql = "select * from khs_plan_item_monitoring where inventory_item_id = $id and month = $bulan";
+    public function getPlan($id, $bulan, $kategori){
+        $sql = "select * from khs_plan_item_monitoring where inventory_item_id = $id and month = $bulan and id_category = $kategori";
         $query = $this->oracle->query($sql);
         return $query->result_array();
     }
     
-    public function getPlanDate(){
-        $sql = "select * from khs_plan_item_monitoring_date";
+    public function getPlanDate($term){
+        $sql = "select * from khs_plan_item_monitoring_date $term";
+        $query = $this->oracle->query($sql);
+        return $query->result_array();
+    }
+    
+    public function get_available_picklist($kode){
+        $sql = "SELECT msib.segment1 assy_code, msib.description assy_desc,
+                    msib.primary_uom_code uom_assy, msib2.inventory_item_id,
+                    msib2.segment1 komponen, msib2.description komp_desc,
+                    msib2.primary_uom_code uom_komponen, bic.component_quantity,
+                    khs_inv_qty_att (msib2.organization_id,
+                                        msib2.inventory_item_id,
+                                        bic.attribute1,
+                                        bic.attribute2,
+                                        ''
+                                        ) att,
+                        (CASE
+                            WHEN bic.component_quantity = 0
+                            THEN 0
+                            ELSE   khs_inv_qty_att (msib2.organization_id,
+                                                    msib2.inventory_item_id,
+                                                    bic.attribute1,
+                                                    bic.attribute2,
+                                                    ''
+                                                )
+                                / bic.component_quantity
+                        END
+                        ) av_pick,
+                        bic.attribute1 gudang_asal, mil.segment1 locator_asal
+                FROM mtl_system_items_b msib,
+                        mtl_system_items_b msib2,
+                        bom_bill_of_materials bom,
+                        bom_inventory_components bic,
+                        mtl_item_locations mil
+                WHERE msib.segment1 = '$kode'
+                    AND msib.inventory_item_status_code = 'Active'
+                    AND bom.assembly_item_id = msib.inventory_item_id
+                    AND bom.organization_id = msib.organization_id
+                    AND bom.organization_id = 102
+                    AND bom.alternate_bom_designator IS NULL
+                    AND bom.bill_sequence_id = bic.bill_sequence_id
+                    AND bic.disable_date IS NULL
+                    AND bic.component_item_id = msib2.inventory_item_id
+                    AND bom.organization_id = msib2.organization_id
+                    AND bic.attribute2 = mil.inventory_location_id
+                    order by 9";
         $query = $this->oracle->query($sql);
         return $query->result_array();
     }
@@ -107,9 +151,8 @@ class M_monitoring extends CI_Model
                 ,bic.SUPPLY_SUBINVENTORY gudang_tujuan
                 ,bic.SUPPLY_LOCATOR_ID locator_tujuan_id 
                 ,mil.SEGMENT1 locator_tujuan
-                --,khs_inv_qty_att(msib2.ORGANIZATION_ID,msib2.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'') att
-                ,(khs_inv_qty_att(msib2.ORGANIZATION_ID,msib2.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'') - khs_inv_qty_att(msib2.ORGANIZATION_ID,msib2.INVENTORY_ITEM_ID,'SS-ODM',bic.ATTRIBUTE2,'')) att
-                ,((khs_inv_qty_att(msib2.ORGANIZATION_ID,msib2.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'') - khs_inv_qty_att(msib2.ORGANIZATION_ID,msib2.INVENTORY_ITEM_ID,'SS-ODM',bic.ATTRIBUTE2,'')) - bic.COMPONENT_QUANTITY*'$qty') kekurangan
+                ,khs_inv_qty_att(msib2.ORGANIZATION_ID,msib2.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'') att
+                ,(khs_inv_qty_att(msib2.ORGANIZATION_ID,msib2.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'') - bic.COMPONENT_QUANTITY*'$qty') kekurangan
                 ,nvl(
                         (select sum(mtrl.QUANTITY)
                             from mtl_txn_request_headers mtrh
@@ -240,6 +283,19 @@ public function getPicklist($item){
             from khs_qweb_job_wipicklist kqjw
             where kqjw.ASSY = '$item'
             group by kqjw.ASSY";
+    $query = $this->oracle->query($sql);
+    return $query->result_array();
+}
+
+public function getCompletion($item){
+    $sql = "SELECT SUM (mmt.transaction_quantity) trx_qty
+                FROM mtl_material_transactions mmt, mtl_system_items_b msib
+            WHERE mmt.transaction_type_id = 44 --WIP Completion
+                AND TRUNC (mmt.transaction_date) BETWEEN TO_DATE ('01-' || TO_CHAR (SYSDATE, 'Mon-YYYY'))
+                                                    AND TO_DATE (SYSDATE)
+                AND mmt.organization_id = msib.organization_id
+                AND mmt.inventory_item_id = msib.inventory_item_id
+                AND msib.segment1 = '$item'";
     $query = $this->oracle->query($sql);
     return $query->result_array();
 }

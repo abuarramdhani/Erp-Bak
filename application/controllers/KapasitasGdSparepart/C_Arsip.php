@@ -29,7 +29,7 @@ class C_Arsip extends CI_Controller
 	}
 
 	public function index(){
-		$user = $this->session->username;
+		$user = $this->session->user;
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Arsip SPB/DO';
@@ -37,10 +37,18 @@ class C_Arsip extends CI_Controller
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
 
-		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$UserMenu = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-
+		$user_arsip = array('P0256', 'K1778', 'B0892', 'J1365');
+		if (in_array($user, $user_arsip)) {
+			$data['UserMenu'][] = $UserMenu[7]; // menu Arsip SPB
+			$data['user_arsip'] = 'user_arsip';
+		}else {
+			$data['UserMenu'] = $UserMenu;
+			$data['user_arsip'] = 'user_lain';
+		}
+		$data['user'] = $user;
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('KapasitasGdSparepart/V_Arsip', $data);
@@ -69,7 +77,9 @@ class C_Arsip extends CI_Controller
 		$getdata = array();
 		for ($i= $_POST['start']; $i < $length ; $i++) { 
 			$coly = $this->M_packing->cekPacking($val[$i]['NO_DOKUMEN']);
-			$val[$i]['COLY'] = count($coly);
+			$val[$i]['COLY'] = count($coly); 
+			$coly2 = $this->M_arsip->cekColy($val[$i]['NO_DOKUMEN']);
+			$val[$i]['COLY'] += count($coly2);
 			// $tgl 	= $this->M_arsip->dataSPB($val[$i]['NO_DOKUMEN']);
 			// $val[$i]['MTRL'] = $tgl[0]['MTRL'];
 			array_push($getdata, $val[$i]);
@@ -91,18 +101,14 @@ class C_Arsip extends CI_Controller
             $row[] = $val['SELESAI_PELAYANAN'];
             $row[] = $val['WAKTU_PELAYANAN'];
             $row[] = $val['PIC_PELAYAN'];
-            $row[] = $val['MULAI_PENGELUARAN'];
-            $row[] = $val['SELESAI_PENGELUARAN'];
-            $row[] = $val['WAKTU_PENGELUARAN'];
-            $row[] = $val['PIC_PENGELUARAN'];
             $row[] = $val['MULAI_PACKING'];
             $row[] = $val['SELESAI_PACKING'];
             $row[] = $val['WAKTU_PACKING'];
             $row[] = $val['PIC_PACKING'];
             $row[] = $val['URGENT'].' '.$val['BON'];
             $row[] = $val['CANCEL'];
-            $row[] = $val['COLY'];
-            $row[] = '<button type="button" class="btn btn-md bg-teal" onclick="editColy('.$no.')">Edit Coly</button>';
+			$row[] = $val['COLY'];
+			$row[] = '<button type="button" class="btn btn-md bg-teal" onclick="editColy('.$no.')">Edit Coly</button>';
  
             $data[] = $row;
         }
@@ -123,10 +129,23 @@ class C_Arsip extends CI_Controller
 		$data['nospb'] 	= $this->input->post('no_spb');
 		$data['nomor'] 	= $this->input->post('no');
 		$data['ket']	= 'arsip';
+		$user = $this->session->user;
+		$user_arsip = array('P0256', 'K1778', 'B0892', 'J1365');
+		if (in_array($user, $user_arsip)) {
+			$data['user_arsip'] = 'user_arsip';
+		}else {
+			$data['user_arsip'] = 'user_lain';
+		}
 
-		$data['data'] = $this->M_packing->cekPacking($data['nospb']);
+		$coly_baru = $this->M_arsip->cekColy($data['nospb']);
+		if (empty($coly_baru)) {
+			$data['data'] = $this->M_packing->cekPacking($data['nospb']);
+			$this->load->view('KapasitasGdSparepart/V_ModalArsipColy', $data);
+		}else {
+			$data['data'] = $coly_baru;
+			$this->load->view('KapasitasGdSparepart/V_ModalArsipColy2', $data);
+		}
 		
-		$this->load->view('KapasitasGdSparepart/V_ModalArsipColy', $data);
 		// echo "<pre>";print_r($cek);exit();
 	}
 
@@ -139,11 +158,20 @@ class C_Arsip extends CI_Controller
 		for ($i= 0; $i < count($val) ; $i++) { 
 			$coly = $this->M_packing->cekPacking($val[$i]['NO_DOKUMEN']);
 			$val[$i]['COLY'] = count($coly);
+			$coly2 = $this->M_arsip->cekColy($val[$i]['NO_DOKUMEN']);
+			$val[$i]['COLY'] += count($coly2);
 			array_push($getdata, $val[$i]);
 		}
 		// echo "<pre>";print_r($val);exit();
 		$data['data'] = $getdata;
 		$this->load->view('KapasitasGdSparepart/V_TblArsip', $data);
+	}
+
+	public function saveColly2(){
+		$no_spb = $this->input->post('no_spb');
+		$no_colly = $this->input->post('no_colly');
+		$berat = $this->input->post('berat');
+		$this->M_arsip->saveColly2($no_spb, $no_colly, $berat);
 	}
 
 }

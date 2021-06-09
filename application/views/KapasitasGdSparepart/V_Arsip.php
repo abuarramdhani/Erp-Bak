@@ -106,10 +106,6 @@
                                                     <th>Selesai Pelayanan</th>
                                                     <th>Waktu Pelayanan</th>
                                                     <th>PIC Pelayanan</th>
-                                                    <th>Mulai Pengecekan</th>
-                                                    <th>Selesai Pengecekan</th>
-                                                    <th>Waktu Pengecekan</th>
-                                                    <th>PIC Pengecekan</th>
                                                     <th>Mulai Packing</th>
                                                     <th>Selesai Packing</th>
                                                     <th>Waktu Packing</th>
@@ -138,16 +134,18 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h3 style="text-align:center">Detail Coly</h3>
+                <h3 style="text-align:center">Detail Coly <span id="head_mdl_arsip"></span></h3>
             <!-- <div id="datahidden"></div> -->
 			</div>
 			<div class="modal-body">
             <div id="datacoly2"></div>
+            <?php if ($user_arsip != 'user_arsip') { ?>
             <div class="panel-body">
                 <div class="col-md-12 text-center">
                     <button type="button" class="btn btn-danger" data-dismiss="modal" aria-label="Close">SAVE</button>
                 </div>
             </div>
+            <?php } ?>
 		    </div>
             <div class="modal-footer">
 		</div>

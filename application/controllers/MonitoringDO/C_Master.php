@@ -60,6 +60,7 @@ class C_Master extends CI_Controller
         $data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
         $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
+        $data['get'] = $this->M_monitoringdo->getsubinvksd();
         $this->load->view('V_Header', $data);
         $this->load->view('V_Sidemenu', $data);
         $this->load->view('MonitoringDO/V_Subinv', $data);
@@ -576,7 +577,7 @@ class C_Master extends CI_Controller
                 array_push($hasil, $explode[0]);
             }
             $data['check_header_sub'] = $set;
-            
+
             foreach ($hasil as $key => $value) {
                $tampungan[$value] = $value;
             }
@@ -734,6 +735,52 @@ class C_Master extends CI_Controller
         }
       }
     }
+
+    public function runapi_interorg($value='')
+    {
+      $tipe = $this->input->post('tipe');
+      $rn = $this->input->post('request_number');
+      $org_id = $this->input->post('org_id');
+      $subinv = $this->input->post('subinv');
+      if (!empty($tipe) && !empty($rn)) {
+        $this->M_monitoringdo->runapi_interorg($tipe, $rn, $org_id, $subinv);
+        echo json_encode(200);
+      }else {
+        echo json_encode(0);
+      }
+    }
+
+    public function org_spbkit($value='')
+    {
+      $data = $this->M_monitoringdo->org_spbkit($this->input->post('rn'));
+      echo json_encode(!empty($data[0]['ORGANIZATION_ID']) ? $data : '');
+    }
+
+    public function subinv_spbkit($value='')
+    {
+      echo json_encode($this->M_monitoringdo->subinv_spbkit($this->input->post('org'), $this->input->post('term')));
+    }
+
+    public function closeline()
+    {
+      if (!$this->input->is_ajax_request()) {
+        echo "Akses dilarang!";
+      }else {
+        echo json_encode($this->M_monitoringdo->closeline($this->input->post('header_id')));
+      }
+    }
+
+    public function cek_sudah_cetak($value='')
+    {
+      echo json_encode($this->M_monitoringdo->sudah_cetak_blm($this->input->post('rn')));
+    }
+
+    public function cek_interog_blm($value='')
+    {
+      $data = $this->M_monitoringdo->cek_interog_blm($this->input->post('rn'));
+      echo json_encode(!empty($data['ATTRIBUTE3']) ? $data['ATTRIBUTE3'] : '');
+    }
+
     public function cekapi()
     {
         // $get = $this->M_monitoringdo->cekkpd();

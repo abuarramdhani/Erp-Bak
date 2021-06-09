@@ -130,6 +130,7 @@ class C_Index extends CI_Controller
 	public function getTableData()
 	{
 		$data['list'] = $this->M_cc->getListCC();
+		$sudah = 0; $belum = 0;
 		$br = array_column($data['list'], 'branch');
 		$br = array_filter($br, function($var){
           return ($var != '');
@@ -145,6 +146,11 @@ class C_Index extends CI_Controller
 					}else{
 						$data['list'][$i]['nama_branch'] = '';
 					}
+
+					if(trim($data['list'][$i]['cost_center']) != '')
+						$sudah++;
+					else
+						$belum++;
 				}
 			}
 		}else{
@@ -152,7 +158,9 @@ class C_Index extends CI_Controller
 				$data['list'][$i]['nama_branch'] = '';
 			}
 		}
-		$data['jumlah'] = $this->M_cc->get_jumlah();
+		// $data['jumlah'] = $this->M_cc->get_jumlah();
+		$data['sudah'] = $sudah;
+		$data['belum'] = $belum;
 		$html = $this->load->view('MasterCostCenter/ListCC/V_Table_CC',$data);
 
 		return json_encode($html);

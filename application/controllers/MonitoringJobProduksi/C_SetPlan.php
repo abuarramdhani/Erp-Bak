@@ -55,7 +55,7 @@ class C_SetPlan extends CI_Controller
 		// 	$data['UserMenu'] = $UserMenu;
 		// }
 
-		$data['kategori'] = $this->M_setplan->getCategory('');
+		$data['kategori'] = $this->M_setplan->getCategory('order by category_name');
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -85,6 +85,9 @@ class C_SetPlan extends CI_Controller
 		$data['kategori2'] = $kategori;
         $bulan 		= explode("/", $bulan);
 		$data['bulan'] = $bulan[1].$bulan[0];
+		// $subkategori   = $this->input->post('subkategori');
+		// $data['subcategory'] = $subkategori;
+		// $sub = empty($subkategori) ? 'id_subcategory is null' : "id_subcategory = ".$subkategori."";
         // echo "<pre>";print_r($bulan);exit();
         $data['hari'] = $this->jumlahHari($bulan[0], $bulan[1]);
 		
@@ -93,7 +96,7 @@ class C_SetPlan extends CI_Controller
 		$datanya = array();
 		foreach ($getdata as $key => $value) {
 			$item = $this->M_setplan->getitem2($value['INVENTORY_ITEM_ID']);
-			$plan = $this->M_setplan->getPlan("where inventory_item_id = ".$value['INVENTORY_ITEM_ID']." and month = ".$data['bulan']."");
+			$plan = $this->M_setplan->getPlan("where inventory_item_id = ".$value['INVENTORY_ITEM_ID']." and month = ".$data['bulan']." and id_category = $kategori");
 			$getdata[$key]['ITEM'] = $item[0]['SEGMENT1'];
 			$getdata[$key]['DESKRIPSI'] = $item[0]['DESCRIPTION'];
 			$getdata[$key]['JUMLAH'] = 0;
@@ -103,6 +106,8 @@ class C_SetPlan extends CI_Controller
 					$getdata[$key][$i] = $this->getPlanDate($plan[0]['PLAN_ID'], ($i+1), $getplandate);
 					$getdata[$key]['JUMLAH'] += $getdata[$key][$i];
 				}
+				$planbulanan = $this->M_setplan->getPlanDate("where plan_id = ".$plan[0]['PLAN_ID']." and value_plan_month is not null");
+				!empty($planbulanan)? $getdata[$key]['JUMLAH'] += $planbulanan[0]['VALUE_PLAN_MONTH'] : '';
 			}else {
 				$getdata[$key]['PLAN_ID'] = '';
 				for ($i=0; $i < $data['hari'] ; $i++) { 
@@ -112,6 +117,10 @@ class C_SetPlan extends CI_Controller
 			}
 			array_push($datanya, $getdata[$key]);
 		}
+		
+		usort($datanya, function($y, $z) {
+			return strcasecmp($y['ITEM'], $z['ITEM']);
+		});
 		$data['data'] = $datanya;
 
         $this->load->view('MonitoringJobProduksi/V_TblSetplan', $data);
@@ -132,6 +141,7 @@ class C_SetPlan extends CI_Controller
 public function savePlan(){
  		$bulan 		= $this->input->post('bulan');
  		$kategori 	= $this->input->post('kategori');
+ 		$subkategori = $this->input->post('subcategory');
  		$item 		= $this->input->post('item[]');
  		$plan 		= $this->input->post('plan[]');
  		$plan2 = count($plan)/(count($item)/2);
@@ -145,12 +155,14 @@ public function savePlan(){
 			 }
  			$p = $plan2;
  			$plan2 = $plan2 + $plann;
- 			$cekdata = $this->M_setplan->getPlan("where inventory_item_id = ".$item[$i]." and month = $bulan");
+			$sub = empty($subkategori[$i]) ? 'id_subcategory is null' : "id_subcategory = ".$subkategori[$i]."";
+			$subcategory = empty($subkategori[$i]) ? 'null' : $subkategori[$i];
+ 			$cekdata = $this->M_setplan->getPlan("where inventory_item_id = ".$item[$i]." and month = $bulan and id_category = $kategori and $sub");
  			if (empty($cekdata)) {
 				// echo "<pre>";print_r($plan3);exit();
  				$cekid = $this->M_setplan->getPlan('order by plan_id desc');
  				$id = !empty($cekid) ? $cekid[0]['PLAN_ID'] + 1 : 1;
- 				$savePlan = $this->M_setplan->savePlan($id, $item[$i], $bulan);
+ 				$savePlan = $this->M_setplan->savePlan($id, $item[$i], $bulan, $kategori, $subcategory);
  				for ($a=0; $a < count($plan3) ; $a++) { 
  					if (!empty($plan3[$a])) {
  						$this->M_setplan->savePlanDate($id, ($a+1), $plan3[$a]);
@@ -191,22 +203,30 @@ public function savePlan(){
 						$kategori 	= $row['B'];
 						$ktgr 		= $this->M_setplan->getCategory("where category_name = '$kategori'");
 						$kategori	= $ktgr[0]['ID_CATEGORY'];
-
-						$bulan 		= $row['C'];
+						$subcategory= $row['C'];
+						if (!empty($subcategory)) {
+							$subktgr 		= $this->M_setplan->getSubCategory("where subcategory_name = '$subcategory'");
+							$subcategory	= $subktgr[0]['ID_SUBCATEGORY'];
+							$sub			= "id_subcategory = ".$subktgr[0]['ID_SUBCATEGORY']."";
+						}else {
+							$sub			= "id_subcategory is null";
+						}
+						$bulan 		= $row['D'];
 						$bulan1		= explode("/", $bulan);
 						$bulan		= $bulan1[1].$bulan1[0];
-						$inv 		= $row['F'];
-						$cekplan = $this->M_setplan->getPlan("where inventory_item_id = ".$inv." and month = $bulan");
+						$inv 		= $row['G'];
+						$cekplan = $this->M_setplan->getPlan("where inventory_item_id = ".$inv." and month = $bulan and id_category = $kategori and $sub");
 						if (empty($cekplan)) {
 							$cekid = $this->M_setplan->getPlan('order by plan_id desc');
 							$id = !empty($cekid) ? $cekid[0]['PLAN_ID'] + 1 : 1;
-							$savePlan = $this->M_setplan->savePlan($id, $inv, $bulan);
+							$id_sub = !empty($subcategory) ? $subcategory : 'NULL';
+							$savePlan = $this->M_setplan->savePlan($id, $inv, $bulan, $kategori, $id_sub);
 						}else {
 							$id = $cekplan[0]['PLAN_ID'];
 						}
 
 						$hari = $this->jumlahHari($bulan1[0], $bulan1[1]);
-						$d = 6;
+						$d = 7;
 						for ($p=0; $p < $hari ; $p++) { 
 							$a = $this->numbertoalpha($d);
 							$plan = $row[$a];
@@ -234,6 +254,7 @@ public function savePlan(){
 		$plan 		= $this->input->post('plan[]');
 		$kode_item 	= $this->input->post('kode_item[]');
 		$desc 		= $this->input->post('desc[]');
+		$subcategory= $this->input->post('subcategory[]');
 		$bulan 		= $this->input->post('bulan2');
 		$bulan2		= explode("/", $bulan);
 		// $bulan2		= $bulan2[0];
@@ -243,13 +264,19 @@ public function savePlan(){
 		$kategori 	= $this->input->post('kategori2');
 		$ktgr 		= $this->M_setplan->getCategory("where id_category = $kategori");
 		$kategori	= $ktgr[0]['CATEGORY_NAME'];
-
+		
 		$x = 0; $bts = 0;
 		for ($i=0; $i < (count($item)/2) ; $i++) { 
 			$bts = $bts + $hari;
 			$datanya[$i]['inv'] = $item[$i];
 			$datanya[$i]['kode_item'] = $kode_item[$i];
 			$datanya[$i]['desc'] = $desc[$i];
+			if (!empty($subcategory[$i])) {
+				$subktgr = $this->M_setplan->getSubCategory("where id_subcategory = ".$subcategory[$i]."");
+				$datanya[$i]['subcategory']	= $subktgr[0]['SUBCATEGORY_NAME'];
+			}else {
+				$datanya[$i]['subcategory']	= '';
+			}
 			$z = 0;
 			for ($x=$x; $x < $bts ; $x++) { 
 				$datanya[$i]['plan'.$z.''] = $plan[$x];
@@ -338,36 +365,38 @@ public function savePlan(){
 		);
 		
 		if ($hari == 31) {
+			$akhir = 'AL';
+			$ajml = 'AM';
+		}elseif ($hari == 30) {
 			$akhir = 'AK';
 			$ajml = 'AL';
-		}elseif ($hari == 30) {
+		}elseif ($hari == 29){
 			$akhir = 'AJ';
 			$ajml = 'AK';
-		}elseif ($hari == 29){
+		}else {
 			$akhir = 'AI';
 			$ajml = 'AJ';
-		}else {
-			$akhir = 'AH';
-			$ajml = 'AI';
 		}
 
 		$excel->setActiveSheetIndex(0)->setCellValue('A1', "NO.");
 		$excel->setActiveSheetIndex(0)->setCellValue('B1', "KATEGORI");
-		$excel->setActiveSheetIndex(0)->setCellValue('C1', "BULAN");
-		$excel->setActiveSheetIndex(0)->setCellValue('D1', "KODE");
-		$excel->setActiveSheetIndex(0)->setCellValue('E1', "DESKRIPSI");
-		$excel->setActiveSheetIndex(0)->setCellValue('F1', "INVENTORY ITEM ID");
-		$excel->setActiveSheetIndex(0)->setCellValue('G1', "TANGGAL");
+		$excel->setActiveSheetIndex(0)->setCellValue('C1', "SUBKATEGORI");
+		$excel->setActiveSheetIndex(0)->setCellValue('D1', "BULAN");
+		$excel->setActiveSheetIndex(0)->setCellValue('E1', "KODE");
+		$excel->setActiveSheetIndex(0)->setCellValue('F1', "DESKRIPSI");
+		$excel->setActiveSheetIndex(0)->setCellValue('G1', "INVENTORY ITEM ID");
+		$excel->setActiveSheetIndex(0)->setCellValue('H1', "TANGGAL");
 		$excel->getActiveSheet()->mergeCells("A1:A2"); 
 		$excel->getActiveSheet()->mergeCells("B1:B2"); 
 		$excel->getActiveSheet()->mergeCells("C1:C2"); 
 		$excel->getActiveSheet()->mergeCells("D1:D2"); 
 		$excel->getActiveSheet()->mergeCells("E1:E2"); 
 		$excel->getActiveSheet()->mergeCells("F1:F2"); 
-		$excel->getActiveSheet()->mergeCells("G1:".$akhir."1"); 
+		$excel->getActiveSheet()->mergeCells("G1:G2"); 
+		$excel->getActiveSheet()->mergeCells("H1:".$akhir."1"); 
 		
 		$row = 2;
-		$col = 6;
+		$col = 7;
 		for ($i=0; $i < $hari ; $i++) { //tanggal 1 - akhir
 			$excel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, ($i+1));
 			$col++;
@@ -385,8 +414,10 @@ public function savePlan(){
 		$excel->getActiveSheet()->getStyle('E2')->applyFromArray($style1);
 		$excel->getActiveSheet()->getStyle('F1')->applyFromArray($style1);
 		$excel->getActiveSheet()->getStyle('F2')->applyFromArray($style1);
-		$excel->getActiveSheet()->getStyle("G1:".$akhir."2")->applyFromArray($style1);
-		for ($n=6; $n < ($hari+6) ; $n++) { // styling tanggal col 6 - akhir
+		$excel->getActiveSheet()->getStyle('G1')->applyFromArray($style1);
+		$excel->getActiveSheet()->getStyle('G2')->applyFromArray($style1);
+		$excel->getActiveSheet()->getStyle("H1:".$akhir."2")->applyFromArray($style1);
+		for ($n=7; $n < ($hari+7) ; $n++) { // styling tanggal col 7 - akhir
 			$a = $this->numbertoalpha($n);
 			$excel->getActiveSheet()->getStyle("".$a."2")->applyFromArray($style1);
 		}
@@ -397,11 +428,12 @@ public function savePlan(){
 			// echo "<pre>";print_r($d);exit();
 			$excel->setActiveSheetIndex(0)->setCellValue('A'.$numrow, $no);
 			$excel->setActiveSheetIndex(0)->setCellValue('B'.$numrow, $kategori);
-			$excel->setActiveSheetIndex(0)->setCellValue('C'.$numrow, $bulan);
-			$excel->setActiveSheetIndex(0)->setCellValue('D'.$numrow, $d['kode_item']);
-			$excel->setActiveSheetIndex(0)->setCellValue('E'.$numrow, $d['desc']);
-			$excel->setActiveSheetIndex(0)->setCellValue('F'.$numrow, $d['inv']);
-			$col = 6;
+			$excel->setActiveSheetIndex(0)->setCellValue('C'.$numrow, $d['subcategory']);
+			$excel->setActiveSheetIndex(0)->setCellValue('D'.$numrow, $bulan);
+			$excel->setActiveSheetIndex(0)->setCellValue('E'.$numrow, $d['kode_item']);
+			$excel->setActiveSheetIndex(0)->setCellValue('F'.$numrow, $d['desc']);
+			$excel->setActiveSheetIndex(0)->setCellValue('G'.$numrow, $d['inv']);
+			$col = 7;
 			for ($i=0; $i < $hari ; $i++) { // value per tanggal
 				$excel->getActiveSheet()->setCellValueByColumnAndRow($col, $numrow, $d['plan'.$i.'']);
 				$col++;
@@ -414,7 +446,8 @@ public function savePlan(){
 			$excel->getActiveSheet()->getStyle("D$numrow")->applyFromArray($style2);
 			$excel->getActiveSheet()->getStyle("E$numrow")->applyFromArray($style2);
 			$excel->getActiveSheet()->getStyle("F$numrow")->applyFromArray($style3);
-			for ($n=6; $n < ($hari+6) ; $n++) { // styling kolom tanggal/numrow
+			$excel->getActiveSheet()->getStyle("G$numrow")->applyFromArray($style3);
+			for ($n=7; $n < ($hari+7) ; $n++) { // styling kolom tanggal/numrow
 				$a = $this->numbertoalpha($n);
 				$excel->getActiveSheet()->getStyle("$a$numrow")->applyFromArray($style2);
 			}
@@ -424,10 +457,11 @@ public function savePlan(){
 				
 		$excel->getActiveSheet()->getColumnDimension('A')->setWidth(10); 
 		$excel->getActiveSheet()->getColumnDimension('B')->setWidth(25); 
-		$excel->getActiveSheet()->getColumnDimension('C')->setWidth(13); 
-		$excel->getActiveSheet()->getColumnDimension('D')->setWidth(20); 
-		$excel->getActiveSheet()->getColumnDimension('E')->setWidth(30); 
-		$excel->getActiveSheet()->getColumnDimension('F')->setWidth(15); 
+		$excel->getActiveSheet()->getColumnDimension('C')->setWidth(25); 
+		$excel->getActiveSheet()->getColumnDimension('D')->setWidth(13); 
+		$excel->getActiveSheet()->getColumnDimension('E')->setWidth(20); 
+		$excel->getActiveSheet()->getColumnDimension('F')->setWidth(30); 
+		$excel->getActiveSheet()->getColumnDimension('G')->setWidth(15); 
 		for($col = 'G'; $col !== $ajml; $col++) { // autowidth
 			$excel->getActiveSheet()
 				->getColumnDimension($col)

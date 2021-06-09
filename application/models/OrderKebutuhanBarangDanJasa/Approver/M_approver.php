@@ -7,6 +7,7 @@ class M_approver extends CI_Model
     {
         parent::__construct();
         $this->load->database();
+        $this->oracle = $this->load->database('oracle', true);
     }
 
     public function getListDataOrder()
@@ -22,6 +23,114 @@ class M_approver extends CI_Model
         $oracle = $this->load->database('oracle', true);
         $query = $oracle->query("SELECT * From KHS.KHS_OKBJ_ORDER_HEADER where $and");
 
+        return $query->result_array();
+    }
+
+    public function getListDataOrderNormal($no_induk)
+    {
+        $sql = "SELECT
+                kooh.ORDER_ID
+            FROM
+                khs.khs_okbj_order_header kooh,
+                per_people_f ppfa,
+                khs.khs_okbj_order_approval kkooa,
+                (
+                SELECT
+                    kooa.ORDER_ID,
+                    MIN (kooa.APPROVER_TYPE) a_level
+                FROM
+                    khs.khs_okbj_order_approval kooa
+                WHERE
+                    kooa.JUDGEMENT IS NULL
+                GROUP BY
+                    kooa.ORDER_ID
+                ) tbl1
+            WHERE
+                kooh.ORDER_ID = tbl1.ORDER_ID
+                AND tbl1.a_level <> 7
+                AND kooh.ORDER_ID = kkooa.ORDER_ID
+                AND kkooa.APPROVER_TYPE = tbl1.a_level
+                AND kkooa.APPROVER_ID = ppfa.PERSON_ID
+                AND kooh.ORDER_STATUS_ID <> 4
+                AND ppfa.NATIONAL_IDENTIFIER = ?
+                AND (kooh.URGENT_FLAG <> 'Y' OR kooh.URGENT_FLAG IS NULL)
+                AND (kooh.IS_SUSULAN <> 'Y' OR kooh.IS_SUSULAN IS NULL)";
+
+        $query = $this->oracle->query($sql, [
+            $no_induk,
+        ]);
+        return $query->result_array();
+    }
+
+    public function getListDataOrderEmergency($no_induk)
+    {
+        $sql = "SELECT
+                    kooh.ORDER_ID
+                FROM
+                    khs.khs_okbj_order_header kooh,
+                    per_people_f ppfa,
+                    khs.khs_okbj_order_approval kkooa,
+                    (
+                    SELECT
+                        kooa.ORDER_ID,
+                        MIN (kooa.APPROVER_TYPE) a_level
+                    FROM
+                        khs.khs_okbj_order_approval kooa
+                    WHERE
+                        kooa.JUDGEMENT IS NULL
+                    GROUP BY
+                        kooa.ORDER_ID
+                    ) tbl1
+                WHERE
+                    kooh.ORDER_ID = tbl1.ORDER_ID
+                    AND tbl1.a_level <> 7
+                    AND kooh.ORDER_ID = kkooa.ORDER_ID
+                    AND kkooa.APPROVER_TYPE = tbl1.a_level
+                    AND kkooa.APPROVER_ID = ppfa.PERSON_ID
+                    AND kooh.ORDER_STATUS_ID <> 4
+                    AND ppfa.NATIONAL_IDENTIFIER = ?
+                    AND kooh.IS_SUSULAN = 'Y'";
+
+        $query = $this->oracle->query($sql, [
+            $no_induk,
+        ]);
+        return $query->result_array();
+    }
+    
+    public function getListDataOrderUrgent($no_induk)
+    {
+        $sql = "SELECT
+                    kooh.ORDER_ID
+                FROM
+                    khs.khs_okbj_order_header kooh,
+                    per_people_f ppfa,
+                    khs.khs_okbj_order_approval kkooa,
+                    (
+                    SELECT
+                        kooa.ORDER_ID,
+                        MIN (kooa.APPROVER_TYPE) a_level
+                    FROM
+                        khs.khs_okbj_order_approval kooa
+                    WHERE
+                        kooa.JUDGEMENT IS NULL
+                    GROUP BY
+                        kooa.ORDER_ID
+                    ) tbl1
+                WHERE
+                    kooh.ORDER_ID = tbl1.ORDER_ID
+                    AND tbl1.a_level <> 7
+                    AND kooh.ORDER_ID = kkooa.ORDER_ID
+                    AND kkooa.APPROVER_TYPE = tbl1.a_level
+                    AND kkooa.APPROVER_ID = ppfa.PERSON_ID
+                    AND kooh.ORDER_STATUS_ID <> 4
+                    AND ppfa.NATIONAL_IDENTIFIER = ?
+                    AND kooh.URGENT_FLAG = 'Y'
+                    AND (kooh.IS_SUSULAN = 'N'
+                    OR kooh.IS_SUSULAN IS NULL)";
+
+        $query = $this->oracle->query($sql, [
+            $no_induk,
+        ]);
         return $query->result_array();
     }
 
@@ -576,24 +685,64 @@ class M_approver extends CI_Model
 
         return $query->result_array();
     }
-
-    public function getUnapprovedOrderCount($noind){
-        $oracle = $this->load->database('oracle', true);
-        $query  = $oracle->query("SELECT
-                                    COUNT(kooh.ORDER_ID) total
-                                 FROM
-                                    khs.khs_okbj_order_header kooh,
-                                    khs.khs_okbj_order_approval kooa,
-                                    per_people_f ppfa
-                                 WHERE 
-                                    kooh.ORDER_ID = kooa.ORDER_ID
-                                    AND kooh.APPROVE_LEVEL_POS < kooa.APPROVER_TYPE
-                                    AND kooa.APPROVER_TYPE <> 7
-                                    AND kooa.APPROVER_ID = ppfa.PERSON_ID
-                                    AND kooh.ORDER_STATUS_ID <> 4
-                                    AND ppfa.NATIONAL_IDENTIFIER = '$noind'
-                                ");
-        return $query->row_array();
+    
+    /**
+     * @param   string  ENUM $status 'SUSULAN', 'URGENT', 'NORMAL' or 'ALL'
+     * @return  int     Outstand order count
+     */
+    public function getUnapprovedOrderCount($no_induk, $status)
+    {
+        return (int) $this->oracle
+            ->query(
+                "SELECT
+                    APPS.KHS_OUTSTAND_OKBJ_APPROVER_TOT (?, ?) AS \"count\"
+                FROM
+                    DUAL",
+                [
+                    $no_induk,
+                    $status,
+                ]
+            )
+            ->row()
+            ->count;
     }
 
+    /**
+     * @param   string  ENUM $status 'SUSULAN', 'URGENT', 'NORMAL' or 'ALL'
+     * @return  int     Judged order count
+     */
+    public function getJudgedOrderCount($no_induk, $status)
+    {
+        return (int) $this->oracle
+            ->query(
+                "SELECT
+                    APPS.KHS_JUDGED_OKBJ_APPROVER_TOT (?, ?) AS \"count\"
+                FROM
+                    DUAL",
+                [
+                    $no_induk,
+                    $status,
+                ]
+            )
+            ->row()
+            ->count;
+    }
+
+    public function rejectOrderAfterApproved($note, $order_id, $approver_id)
+    {
+        $query = $this->oracle->query(
+            "UPDATE KHS.KHS_OKBJ_ORDER_APPROVAL SET NOTE = '$note', JUDGEMENT = 'R', JUDGEMENT_DATE = SYSDATE WHERE ORDER_ID = $order_id AND APPROVER_ID = $approver_id"
+        );
+        return $this->oracle->affected_rows();
+    }
+
+    public function updateOrderStatusID($order_id)
+    {
+        $query = $this->oracle->query(
+            "UPDATE KHS.KHS_OKBJ_ORDER_HEADER SET ORDER_STATUS_ID = 4 WHERE ORDER_ID = $order_id"
+        );
+        return $this->oracle->affected_rows();
+    }
+
+    
 }

@@ -43,6 +43,7 @@
 						<th class="text-center ">Versi Aplikasi</th>
 						<th class="text-center ">Employee</th>
 						<th class="text-center ">Validation</th>						
+						<th class="text-center ">Approved</th>						
 					</tr>
 			</thead>
 			<tbody>
@@ -70,13 +71,13 @@
 					<tr>
 					<td><?php echo $no ?></td>
 					<td class="text-center">
-						<a href="<?php echo base_url('SystemAdministration/Android/edit/'.$andro['gadget_id']) ?>" class="btn btn-success btn-edit"><i class="fa fa-edit"></i> 
+						<a href="<?php echo base_url('SystemAdministration/Android/edit/'.$andro['gadget_id']) ?>" class="btn btn-success btn-sm btn-edit"><i class="fa fa-edit"></i> 
 						Edit
 						</a>
 						
 <!-- <?php echo base_url('SystemAdministration/Android/delete/'.$andro['gadget_id']) ?> -->
 						
-						<a class="btn btn-danger btn-hapus" href="<?php echo base_url('SystemAdministration/Android/delete/'.$andro['gadget_id']) ?>"><i class="fa fa-close"></i> Hapus</a>
+						<a class="btn btn-sm btn-danger btn-hapus" href="<?php echo base_url('SystemAdministration/Android/delete/'.$andro['gadget_id']) ?>"><i class="fa fa-close"></i> Hapus</a>
 						</td>
 
 					<td><?php echo $andro['android_id'] ?></td>
@@ -86,6 +87,7 @@
 					<td><?php echo $andro['versi_aplikasi']?></td>
 					<td><?php echo $andro['info_1']?></td>
 					<td class="text-center" id="tdStatus"><span class="<?=$classLabel ?>"><?php echo $status;?></span></td>
+					<td class="text-center"><?php echo $andro['approved_timestamp'] != "" ? $andro['approved_timestamp']."<br>(".$andro['approved_user'].")" : '-' ?></td>
 											
 					</tr>
 					<?php } ?>

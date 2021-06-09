@@ -399,9 +399,9 @@ class M_index extends CI_Model
     public function getRekapSaran($param1 = false, $param2 = false)
     {
         $sql = "SELECT created_date,
-                    (select tp.noind || ' - '|| tp.nama from hrd_khs.tpribadi tp where noind = tp.noind) as noind,
+                    (select tp.noind || ' - '|| tp.nama from hrd_khs.tpribadi tp where ts.noind = tp.noind) as noind,
                     saran
-                FROM \"Surat\".tsaran_perizinan $param1
+                FROM \"Surat\".tsaran_perizinan ts $param1
                 UNION
                 SELECT created_date,
                     (select string_agg(concat(noind,' - ',trim(nama)),'<br>') from hrd_khs.tpribadi where noind in 

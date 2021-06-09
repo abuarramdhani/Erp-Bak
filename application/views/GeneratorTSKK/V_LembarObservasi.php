@@ -143,25 +143,110 @@
     position: absolute;
     top: auto;
   }
+
+  .table-responsive-custom{
+    height:570px;
+    overflow:scroll;
+  }
+
+  .tblObservasi thead tr th{
+    position: sticky;
+    background: #337ab7;
+    top: 0;
+    flex: 0 0 auto;
+    z-index: 10;
+  }
+
+  .first-col-h {
+    position: sticky;
+    background: #dff0d8;
+    z-index: 12 !important;
+    width: 50px;
+    min-width: 50px;
+    max-width: 50px;
+    left: 0px;
+  }
+
+  .first-col {
+    position: sticky;
+    background: #dff0d8;
+    z-index: 8;
+    left: 0px;
+  }
+
+  .second-col-h {
+    position: sticky;
+    background: #337ab7;
+    z-index: 12 !important;
+    left: 50px;
+  }
+
+  .second-col {
+    background: #fff;
+    position: sticky;
+    z-index: 8;
+    left: 50px;
+  }
+
 </style>
 
 <section class="content">
+
+  <datalist id="brow_jenis_proses">
+    <option value=""></option>
+    <option value="MANUAL">MANUAL</option>
+    <option value="AUTO">AUTO</option>
+    <!-- <option value="AUTO (Inheritance)">AUTO (Inheritance)</option> -->
+    <option value="WALK">WALK</option>
+  </datalist>
+
+  <datalist id="brow_slc_elemen">
+    <?php foreach ($data_element_kerja_auto as $key => $value): ?>
+      <option value="<?php echo $value['elemen_kerja'] ?>"><?php echo $value['elemen_kerja'] ?></option>
+    <?php endforeach; ?>
+    <?php foreach ($data_element_kerja_manual as $key => $value): ?>
+      <option value="<?php echo $value['elemen_kerja'] ?>"><?php echo $value['elemen_kerja'] ?></option>
+    <?php endforeach; ?>
+  </datalist>
+  <datalist id="brow_slc_elemen_manual">
+    <?php foreach ($data_element_kerja_manual as $key => $value): ?>
+      <option value="<?php echo $value['elemen_kerja'] ?>"><?php echo $value['elemen_kerja'] ?></option>
+    <?php endforeach; ?>
+  </datalist>
+  <datalist id="brow_slc_elemen_auto">
+    <?php foreach ($data_element_kerja_auto as $key => $value): ?>
+      <option value="<?php echo $value['elemen_kerja'] ?>"><?php echo $value['elemen_kerja'] ?></option>
+    <?php endforeach; ?>
+  </datalist>
+  <input type="hidden" id="untuk_keperluan_gtskk" name="" value="1">
+  <input type="hidden" id="untuk_keperluan_gtskk_input_observasi" name="" value="1">
+  <textarea hidden name="name" id="gtskk_proses_get_code" rows="8" cols="80"><?php echo json_encode($proses) ?></textarea>
+  <!-- <datalist id="brow_slc_proses">
+    <?php// foreach ($proses as $key => $value): ?>
+      <option><?php //echo $value['PROSES'] ?></option>
+    <?php //endforeach; ?>
+  </datalist> -->
+
   <form id='Observasi' method="POST" action="<?php echo base_url('GeneratorTSKK/saveObservation/'); ?>">
     <div class="inner">
       <div class="row">
         <div class="col-lg-12">
           <div class="row">
             <div class="col-lg-12">
-              <div class="col-lg-11">
-                <div class="text-center">
-                  <h1><b>LEMBAR OBSERVASI ELEMEN KERJA</b></h1>
-                </div>
+              <div class="text-center">
+                <h1><b>LEMBAR OBSERVASI ELEMEN KERJA</b></h1>
               </div>
             </div>
           </div>
           <br />
           <div class="row">
             <div class="col-lg-12">
+              <!-- <div class="alert alert-success alert-dismissible">
+                  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                  <h4><i class="icon fa fa-warning"></i> Info!</h4>
+                  Aplikasi Terakhir Diperbarui Pada 2021-04-21 16:30:23. <b>Reload halaman ini</b> dengan menekan <b>CTRL+SHIFT+R</b> secara berurutan jika telah melewati tanggal pembaruan..
+              </div> -->
+
               <div class="box box-primary box-solid">
                 <div class="box-header with-border">
                   <?php
@@ -177,7 +262,7 @@
                   <label style="margin-left:4%;" for="norm">Judul: </label>
                   <input type="text" style="width:50%; height:34px;  margin-left:2%; text-align:center;" placeholder="Input Judul TSKK" name="txtTitle" id="judul" class="lockscreen-credentials judul" required />
                   <label for="norm" style="margin-left:5%; margin-right:-4%;">Tanggal Observasi:</label>
-                  <input type="text" style="width:17%; height:34px; text-align:center;" placeholder="Input Tanggal" name="txtTanggal" id="txtTanggal" class="lockscreen-credentials txtTanggal" required />
+                  <input type="text" style="width:17%; height:34px; text-align:center;" placeholder="Input Tanggal" name="txtTanggal" id="txtTanggal" class="lockscreen-credentials txtTanggal" required  autocomplete="off" />
                 </div>
                 <div class="panel-body">
                   <div class="row">
@@ -192,7 +277,11 @@
                           <br />
                           <label for="norm" class="control-label col-lg-4">Type Product:</label>
                           <div class="col-lg-8">
-                            <select style="height: 35px;" class="form-control select2 type" id="typeProduct" name="txtType" data-placeholder="Input Product Type" tabindex="-1" aria-hidden="true">
+                            <select style="height: 35px;" class="form-control type" id="typeProduct" name="txtType[]" data-placeholder="Input Product Type" tabindex="-1" aria-hidden="true" multiple>
+                              <option value=""></option>
+                              <?php foreach ($product as $key => $value): ?>
+                                <option value="<?php echo $value['DESCRIPTION'] ?>"><?php echo $value['DESCRIPTION'] ?></option>
+                              <?php endforeach; ?>
                             </select>
                             <!-- <input type="text" placeholder="Input Type" name="txtType" value="" id="typeProduct" class="form-control type" required/> -->
                           </div>
@@ -211,7 +300,7 @@
                           <label for="norm" class="control-label col-lg-4">Kode Part :</label>
                           <div class="col-lg-8">
                             <!-- <input type="text" data-placeholder="Input Kode Part" value="" id="kodepart" name="txtKodepart" class="form-control kodepart" /> -->
-                            <select style="height: 35px;" class="form-control select2 kodepart" id="kodepart" name="txtKodepart[]" data-placeholder="Input Kode Part" tabindex="-1" aria-hidden="true" multiple>
+                            <select style="height: 35px;" class="form-control select2 kodepart" id="kodepart" name="txtKodepart[]" data-placeholder="Input Kode Part/ Nama Part" tabindex="-1" aria-hidden="true" multiple>
                             </select>
                           </div>
                         </div>
@@ -227,7 +316,7 @@
                         <div class="row terdaftar">
                           <label for="norm" class="control-label col-lg-4">Nama Part :</label>
                           <div id="divPassCheck" class="col-lg-8">
-                            <input type="text" style="height: 35px;" placeholder="Input Nama Part" name="txtNamaPart" value="" id="namaPart" class="form-control namaPart" />
+                            <input type="text" style="height: 35px;" placeholder="Input Nama Part" name="txtNamaPart" value="" id="namaPart" class="form-control namaPart" readonly />
                             <!-- <textarea type="text" style="height: 35px;" placeholder="Input Resource" name="txtResource[]" value="" id="txtResource" class="form-control resource" required></textarea> -->
                           </div>
                         </div>
@@ -246,18 +335,27 @@
                         <label for="norm" class="control-label" style="color:#428bca;font-size:18px;">EQUIPMENT</label><br />
                         <!-- <br/><br/> -->
                         <div class="col-lg-6">
-                          <br /><br />
-                          <div class="row">
+                          <input type="radio" name="equipmenTerdaftarMesin" value="Terdaftar" checked> <label for="norm" class="control-label">&nbsp;&nbsp;Terdaftar </label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          <input type="radio" name="equipmenTerdaftarMesin" value="TidakTerdaftar"><label for="norm" class="control-label">&nbsp;&nbsp; Tidak Terdaftar </label>
+                          <div class="row equipmenTerdaftarMesin">
+                            <br>
                             <label for="norm" class="control-label col-lg-4">No. Mesin :</label>
                             <div class="col-lg-8">
-                              <select style="height: 35px;" class="form-control select2 noMesin" id="txtNoMesinTSKK" name="txtNoMesin[]" data-placeholder="Input Nomor Mesin" multiple>
+                              <select style="height: 35px;" class="form-control select2 noMesin" id="txtNoMesinTSKK" name="txtNoMesin[]" data-placeholder="Search By No / Jenis Mesin" multiple>
                               </select>
                               <!-- <input type="text" placeholder="Input Nomor Mesin" name="txtNoMesin" value="" id="txtNoMesin" class="form-control noMesin" required/> -->
                             </div>
                           </div>
+                          <div class="row equipmenTdkTerdaftarMesin" style="display:none">
+                            <br>
+                            <label for="norm" class="control-label col-lg-4">No. Mesin :</label>
+                            <div class="col-lg-8">
+                              <input type="text" placeholder="Input No Mesin" name="txtNoMesinT" value="" class="form-control noMesin" />
+                            </div>
+                          </div>
                           <br>
                           <!-- <input hidden class="form-control getID" value="<?php echo $id ?>"> -->
-                          <div class="row">
+                          <div class="row equipmenTerdaftarMesin">
                             <label for="norm" class="control-label col-lg-4">Jenis Mesin :</label>
                             <div class="col-lg-8">
                               <!-- <texarea type="text" placeholder="Input Jenis Mesin" value="" id="jenisMesin" name="txtJenisMesin" class="form-control jenisMesin"></textarea> -->
@@ -266,14 +364,26 @@
 													</select> -->
                             </div>
                           </div>
+                          <div class="row equipmenTdkTerdaftarMesin" style="display:none">
+                            <label for="norm" class="control-label col-lg-4">Jenis Mesin :</label>
+                            <div class="col-lg-8">
+                              <textarea type="text" style="height: 35px;" placeholder="Input Jenis Mesin" name="txtJenisMesinT" value="" class="form-control jenisMesin"></textarea>
+                            </div>
+                          </div>
                           <br>
-                          <div class="row">
+                          <div class="row equipmenTerdaftarMesin">
                             <label for="norm" class="control-label col-lg-4">Resource :</label>
                             <div id="divPassCheck" class="col-lg-8">
                               <textarea type="text" style="height: 35px;" placeholder="Input Resource" name="txtResource[]" value="" id="txtResource" class="form-control resource"></textarea>
                               <!-- <select style="height: 35px;" data-placeholder="Input Resource" name="txtResource" value="" id="txtResource" class="form-control select2 resource" multiple>
 													</select> -->
                               <!-- <input type="text" style="height: 35px;" placeholder="Input Resource" name="txtResource" value="" id="txtResource" class="form-control resource"/> -->
+                            </div>
+                          </div>
+                          <div class="row equipmenTdkTerdaftarMesin" style="display:none">
+                            <label for="norm" class="control-label col-lg-4">Resource :</label>
+                            <div class="col-lg-8">
+                              <textarea type="text" style="height: 35px;" placeholder="Input Resource" name="txtResourceT" value="" class="form-control resource"></textarea>
                             </div>
                           </div>
                           <br>
@@ -385,14 +495,19 @@
                             <br>
                             <label for="norm" class="control-label col-lg-2">Proses :</label>
                             <div id="divPassCheck" class="col-lg-10">
-                              <input type="text" style="height: 35px;" placeholder="Input Proses" name="txtProses" id="txtProcess" class="form-control process" required />
+                              <!-- <input list="brow_slc_proses" autocomplete="off" type="text" style="height: 35px;" placeholder="Input Proses" name="txtProses" id="txtProcess" class="form-control process" required /> -->
+                              <select class="gtskkmultipleproses" name="txtProses[]" id="txtProcess"  autocomplete="off" multiple required style="width:100%">
+                                <?php foreach ($proses as $key => $value): ?>
+                                  <option><?php echo $value['PROSES'] ?></option>
+                                <?php endforeach; ?>
+                              </select>
                             </div>
                           </div>
                           <br>
                           <div class="row">
                             <label for="norm" class="control-label col-lg-2">Kode Proses :</label>
                             <div id="divPassCheck" class="col-lg-10">
-                              <input type="text" style="height: 35px;" placeholder="Input Kode Proses" name="txtKodeProses" id="txtKodeProses" class="form-control kodeproses" required />
+                              <input type="text" style="height: 35px;" autocomplete="off" placeholder="Input Kode Proses" name="txtKodeProses" id="txtKodeProses" class="form-control kodeproses" required />
                             </div>
                           </div>
                           <br>
@@ -423,15 +538,16 @@
                     <div class="panel-heading text-left">
                       <label style="margin-left: 2%;">Perhitungan Takt Time</label> &nbsp;&nbsp;&nbsp;&nbsp;
                       <input type="radio" name="perhitunganTakt" value="1" checked> <label for="" class="control-label">&nbsp;&nbsp;Ya </label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                      <input type="radio" name="perhitunganTakt" value="0"><label for="norm" class="control-label">&nbsp;&nbsp; Tidak </label>
+                      <input type="radio" name="perhitunganTakt" value="0"><label for="norm" class="control-label">&nbsp;&nbsp; Tidak </label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <input type="radio" name="perhitunganTakt" value="2"><label for="" class="control-label">&nbsp;&nbsp; Manual </label>
                     </div>
-                    <div class="panel-body tskk_delik_cek">
+                    <div class="panel-body tskk_delik_cek_pakai">
 
                       <div class="col-lg-6">
                         <div class="row">
                           <label for="norm" class="control-label col-lg-6">Waktu 1 Shift (Detik) : </label>
                           <div class="col-lg-6">
-                            <input type="number" style="margin-left:-35px;" placeholder="Input Waktu Satu Shift" oninput="countTaktTime(this)" name="txtWaktu1Shift" id="txtWaktu1Shift" class="form-control waktu1Shift" required />
+                            <input type="number" style="margin-left:-35px;" placeholder="Input Waktu Satu Shift" value="0" oninput="countTaktTime(this)" name="txtWaktu1Shift" class="form-control waktu1Shift" />
                           </div>
                         </div>
                         <br>
@@ -480,27 +596,96 @@
 											</div>
 										</div>	 -->
                     </div>
+                    <div class="panel-body tskk_delik_cek_tidak_pakai" style="display:none">
+
+                      <div class="col-lg-6">
+                        <div class="row">
+                          <label for="norm" class="control-label col-lg-6">Waktu 1 Shift (Detik) : </label>
+                          <div class="col-lg-6">
+                            <input type="number" style="margin-left:-35px;" placeholder="Input Waktu Satu Shift" oninput="countTaktTime(this)" name="txtWaktu1ShiftT" class="form-control waktu1Shift" value="0" />
+                          </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                          <label for="norm" class="control-label col-lg-6">Jumlah Shift (Shift) :</label>
+                          <div class="col-lg-6">
+                            <input type="number" style="margin-left:-35px;" placeholder="Input Jumlah Shift" value="0" name="txtJumlahShiftT" class="form-control jumlahShift" />
+                          </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                          <label for="norm" class="control-label col-lg-6">Jumlah Hari Kerja (Hari) :</label>
+                          <div class="col-lg-6">
+                            <input type="number" value="0" placeholder="Input Jumlah Hari Kerja" style="margin-left:-35px;" name="txtJumlahHariKerjaT" class="form-control jumlahHariKerja" />
+                          </div>
+                        </div>
+                        <!-- <br> -->
+                      </div>
+                      <div class="col-lg-6">
+                        <div class="row">
+                          <label for="norm" class="control-label col-lg-6">Forecast (Unit) : </label>
+                          <div class="col-lg-6">
+                            <input type="number" value="0" placeholder="Input Forecast" name="txtForecastT"  class="form-control forecast" oninput="countRencanaProduksi(this)" />
+                          </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                          <label for="norm" class="control-label col-lg-6">Qty / Unit: </label>
+                          <div class="col-lg-6">
+                            <input type="number" value="0" placeholder="Input Qty / Unit" name="txtQtyUnitT"  class="form-control qtyUnit" oninput="countRencanaProduksi(this)" />
+                          </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                          <label for="norm" class="control-label col-lg-6">Rencana Produksi (Pcs) : </label>
+                          <div class="col-lg-6">
+                            <input type="number" value="0" placeholder="Rencana Produksi" name="txtRencanaProduksiT" readonly  class="form-control rencanaKerja" />
+                          </div>
+                        </div>
+                      </div>
+                      <br><br>
+                      <!-- <div class="col-lg-12" style="padding-top: 8px;">
+                    <br>
+                      <div style="text-align:center;">
+                        <button type="button" onclick="countTaktTime(this)" style="float: center; margin-right: 3%; margin-top: -0.5%;" class="btn btn-primary btn-md" id="btnSaveObservationTaktTime"><i class="fa fa-calculator "></i>  HITUNG TAKT TIME</button>
+                      </div>
+                    </div>	 -->
+                    </div>
                   </div>
                   <br>
                   <div class="row">
                     <div class="col-lg-12">
+
+                      <div class="alert bg-success alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                          <span aria-hidden="true">
+                            <i class="fa fa-close"></i>
+                          </span>
+                        </button>
+                        <strong>Sekilas Info! </strong> Klik pada kolom <b>NO</b> Untuk Menambah Elemen</strong>
+                      </div>
+
                       <div class="panel panel-default">
                         <div class="panel-heading">
-                          <label style="margin-left:3%;" class="tskk_tt" for="norm">Takt Time : </label>
-                          <input type="number" style="width:35%; height:34px; margin-right:2%;  margin-left:3%;text-align:center" placeholder="Hasil Takt Time" name="taktTime" id="inputInsert" class="lockscreen-credentials" readonly />
+                          <label style="" class="tskk_tt" for="norm">Takt Time : </label>
+                          <input type="number" style="width:15%; height:34px; margin-right:2%;  margin-left:3%;text-align:center" placeholder="Hasil Takt Time" name="taktTime" id="inputInsert" class="lockscreen-credentials" readonly />
                           <label for="norm">Nilai Distribusi : </label>
-                          <input type="number" style="width:35%; height:34px; margin-right:1%;  margin-left:2%; text-align:center" name="inputInsert" id="dst" class="lockscreen-credentials dst" readonly />
+                          <input type="number" style="width:15%; height:34px; margin-right:1%;  margin-left:2%; text-align:center" name="inputInsert" id="dst" class="lockscreen-credentials dst" readonly />
+                          <!-- <label for="norm" style="margin-left:1.5%;">Posisi Elemen Tambahan : </label>
+                          <input type="number" style="width:17%; height:34px;  margin-left:2%; margin-right:2%;border-radius:25px;" placeholder="Input Posisi untuk Menyisipkan Elemen" name="inputInsert" id="inputInsertPosiition" class="lockscreen-credentials"  />
+                          <button type="button" class=" btn btn-primary btn-md" style="height:34px;float:right" onclick="attachRowObservation_new(this)" id="btnInsert">Add</button> -->
                         </div>
                         <div class="panel-body">
                           <div class="table-responsive" id="tableGenerate">
                             <table class="table table-striped table-bordered table-hover text-center tblObservasi" style="width:2300px; padding-bottom: 0;" name="tblObservasi" id="tblObservasi">
                               <thead>
                                 <tr class="bg-primary">
-                                  <th style="width: 50 px;  text-align:center;">NO</th>
-                                  <th style="width: 50 px;  text-align:center;">PARALEL</th>
+                                  <th style="width: 50px;  text-align:center;" class="first-col-h">NO</th>
+                                  <th style="width: 50px;   text-align:center;">PARALEL</th>
                                   <th style="text-align:center;">FOLLOW START</th>
+                                  <th style="text-align:center;">FOLLOW END</th>
                                   <th style="width: 200px;  text-align:center;">JENIS PROSES</th>
-                                  <th style="width: 400px;  text-align:center;">ELEMEN KERJA</th>
+                                  <th style="width: 400px;  text-align:center;" class="second-col-h">ELEMEN KERJA</th>
                                   <th style="width: 100px;  text-align:center;">1</th>
                                   <th style="width: 100px;  text-align:center;">2</th>
                                   <th style="width: 100px;  text-align:center;">3</th>
@@ -517,39 +702,44 @@
                                   <th style="width: 100px;  text-align:center;">AUTO WAKTU DISTRIBUSI</th>
                                   <th style="width: 100px;  text-align:center;">WAKTU KERJA</th>
                                   <th style="width: 150px;  text-align:center;">KETERANGAN</th>
-                                  <th style="width: 50 px;  text-align:center;">HAPUS</th>
+                                  <th style="width: 50px;  text-align:center;">HAPUS</th>
                                 </tr>
                               </thead>
                               <tbody id="tbodyLembarObservasi">
                                 <?php
-																			for ($no = 1; $no <=5;) {
+																			for ($no = 1; $no <=1;) {
 																		?>
                                 <tr class="nomor_<?= $no ?>">
                                   <!--NO-->
-                                  <td class="posisi"><?php echo $no; ?></td>
+                                  <td class="posisi bg-success first-col" title="Klik Untuk Menambah Elemen Disini" onclick="attachRowObservation_new(this)"><?php echo $no; ?></td>
                                   <!--TIPE URUTAN-->
                                   <td style="text-align: center;">
-                                    <input type="checkbox" name="checkBoxParalel[<?php echo $no-1;?>]" value="PARALEL" class="checkBoxParalel">
+                                    <input type="checkbox" style="width:19px;height:19px;" name="checkBoxParalel[<?php echo $no-1;?>]" value="PARALEL" class="checkBoxParalel" onclick="checkBoxParalel_(this)">
+                                  </td>
+                                  <!-- FOLLOW START END -->
+                                  <td>
+                                    <input type="number" class="form-control" style="width: 70px;" name="start_time_together[]" value="" readonly>
                                   </td>
                                   <td>
-                                    <input type="number" class="form-control" style="width: 70px;" name="start_time_together[]" value="">
+                                    <input type="number" class="form-control" style="width: 70px;" name="end_time_together[]" value="" readonly>
                                   </td>
                                   <!--JENIS PROSES-->
                                   <td>
-                                    <select class="form-control select4" onchange="myFunctionTSKK(this)" style="text-align:left" data-placeholder="Jenis Proses" name="slcJenisProses[]" id="slcJenis_<?= $no ?>">
+                                    <input list="brow_jenis_proses" class="form-control select00004" onchange="myFunctionTSKK(this)" style="text-align:left;width:100%" data-placeholder="Jenis Proses" name="slcJenisProses[]" id="slcJenis_<?= $no ?>" required>
+                                    <!-- <select class="form-control select4" onchange="myFunctionTSKK(this)" style="text-align:left;width:100%" data-placeholder="Jenis Proses" name="slcJenisProses[]" id="slcJenis_<?= $no ?>">
                                       <option value=""></option>
                                       <option value="MANUAL">MANUAL</option>
                                       <option value="AUTO">AUTO</option>
-                                      <!-- <option value="AUTO (Inheritance)">AUTO (Inheritance)</option> -->
                                       <option value="WALK">WALK</option>
-                                    </select>
+                                    </select> -->
                                   </td>
                                   <!--ELEMEN KERJA-->
-                                  <td>
-                                    <div class="col-lg-12">
+                                  <td class="second-col">
+                                    <div class="row">
                                       <div class="col-lg-6">
-                                        <select class="form-control select2 slcElemen" onchange="//disableOrnot(this)" id="slcElemen" name="txtSlcElemen[]" data-placeholder="Elemen">
-                                        </select>
+                                        <!-- <select class="form-control select2 slcElemen" onchange="//disableOrnot(this)" id="slcElemen" name="txtSlcElemen[]" data-placeholder="Elemen">
+                                        </select> -->
+                                        <input list="brow_slc_elemen" class="form-control slcElemen0000" onchange="//disableOrnot(this)" name="txtSlcElemen[]" data-placeholder="Elemen" autocomplete="off">
                                       </div>
                                       <div class="col-lg-6">
                                         <input type="text" name="elemen[]" class="form-control elemen" placeholder="Keterangan Elemen">
@@ -603,12 +793,11 @@
                         </div>
                       </div>
                     </div>
-  </form>
   </div>
   <br>
   <div class="panel panel-default">
     <div class="panel-heading text-left">
-      <label style="margin-left: 2%;">Input Irregular Job</label>
+      <label>Input Irregular Job</label>
     </div>
     <div class="panel-body">
       <table class="datatable table table-striped table-bordered table-hover tabel_irregular_job" style="width: 100%">
@@ -625,9 +814,9 @@
         <tbody id="tbodyIrregularJob">
           <tr class="nmbr_1">
             <td style="width: 5%; text-align:center;" class="position">1</td>
-            <td style="text-align: center;"> <input type="text" class="form-control irregularJob" name="txtIrregularJob[]" id="irregularJob" placeholder="Input Irregular Job"></td>
-            <td style="text-align: center;"> <input type="number" onchange="countIrregularJobs(this)" style="text-align: center;" class="form-control ratio" name="txtRatioIrregular[]" id="ratio" placeholder="Input Ratio"></td>
-            <td style="text-align: center;"> <input type="number" onchange="countIrregularJobs(this)" style="text-align: center;" class="form-control waktu" name="txtWaktuIrregular[]" id="waktu" placeholder="Input Waktu"></td>
+            <td style="text-align: center;"> <input type="text" required class="form-control irregularJob" name="txtIrregularJob[]" id="irregularJob" placeholder="Input Irregular Job"></td>
+            <td style="text-align: center;"> <input type="number" required onchange="countIrregularJobs(this)" style="text-align: center;" class="form-control ratio" name="txtRatioIrregular[]" id="ratio" placeholder="Input Ratio"></td>
+            <td style="text-align: center;"> <input type="number" required onchange="countIrregularJobs(this)" style="text-align: center;" class="form-control waktu" name="txtWaktuIrregular[]" id="waktu" placeholder="Input Waktu"></td>
             <td style="text-align: center;" class="hasilIrregularJob" id="hasilIrregularJob"><input type="text" style="text-align: center;" class="form-control hasilIrregularJob" name="txtHasilWaktuIrregular[]" placeholder="Hasil" readonly></td>
             <td style="text-align: center;">
               <i class="fa fa-times fa-2x deleteIrregularJob" id="deleteIrregularJob" onclick="deleteIrregularJobs(this)" style="color:red" title="Hapus Irregular Job"></i>&nbsp;&nbsp;
@@ -638,19 +827,36 @@
       </table>
     </div>
   </div>
-  <div class="col-lg-12" style="padding-top: 8px;">
+  <br>
+   <div class="panel panel-default">
+     <div class="panel-heading text-left">
+       <label style="">Status Observasi</label>
+     </div>
+     <div class="panel-body">
+       <select class="select2" name="status_observasi" style="width:100%" required>
+         <option value="publish" selected>Siap Dicetak</option>
+         <option value="draft">Belum Siap Cetak</option>
+       </select>
+     </div>
+   </div>
+
+  <div class="col-md-12" style="padding-top:8px">
     <div style="text-align:center;">
       <button type="submit" style="float: center; margin-right: 3%; margin-top: -0.5%;  display: none" class="btn btn-primary btn-md" id="btnSaveObservationHidden"><i class="fa fa-floppy-o "></i> SIMPAN LEMBAR OBSERVASI</button>
       <button type="button" onclick="checkNilaiDistribusiObservasi(this)" style="float: center; margin-right: 3%; margin-top: -0.5%;" class="btn btn-primary btn-md" id="btnSaveObservation"><i class="fa fa-floppy-o "></i> SIMPAN LEMBAR
         OBSERVASI</button>
     </div>
+    <br>
   </div>
-  <br>
   </div>
+
+</form>
 
   <button type="button" onclick="addRowObservation($(this))" id="myBtn" class="fa fa-plus fa-lg"
     style=" position: fixed;  bottom: 50px;  right: 45px;  z-index: 99;  font-size: 30px  text-center;  border: none; outline: none; background-color: green; color: white; cursor: pointer; width:35px; height:35px; border-radius: 50%;"
-    title="Tambah Elemen"></button>
+    title="Tambah Elemen">
+  </button>
+
 
   <script>
     // When the user scrolls down 20px from the top of the document, show the button

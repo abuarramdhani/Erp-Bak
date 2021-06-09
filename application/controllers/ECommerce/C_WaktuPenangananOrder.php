@@ -82,11 +82,12 @@ class C_WaktuPenangananOrder extends CI_Controller
 
         $search_date = $this->M_waktupenangananorder->getRange($newDateFrom,$newDateTo);
 
-        // echo "<pre>";print_r($search_date);exit();
+
+        // echo "<pre>";print_r($newDateFrom);print_r($newDateTo);exit();
 
         $i=0;
         foreach ($search_date as $key => $value) {
-          $no_order =  $value['comment_post_id'];
+          $no_order =  $value['id'];
 
           $dataoracle = $this->M_waktupenangananorder->getDataOracle($no_order);
 
@@ -112,13 +113,13 @@ class C_WaktuPenangananOrder extends CI_Controller
             $search_date[$i]['GUDANG_TRANSACT'] =  " ";
           }
 
-          if($value['date_proccess'] != null && $value['date_resi'] != null){
+          if($value['post_date'] != null && $value['tanggal_kirim'] != null){
             // echo "<pre>";
             // print_r($value['date_proccess']);
             // print_r($value['date_resi']);
             // exit();
-            $coba = str_replace(';', ':', $value['date_resi']);
-            $date1 = date_create($value['date_proccess']);
+            $coba = str_replace(';', ':', $value['tanggal_kirim']);
+            $date1 = date_create($value['post_date']);
             $date2 = date_create($coba);
             $diff  = date_diff($date1, $date2);
             // echo $diff->format("%d Hari %h Jam %i Menit %s Detik");
@@ -194,25 +195,26 @@ class C_WaktuPenangananOrder extends CI_Controller
 
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A4', "No");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B4', "Shipping Instructions");
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C4', "Order Diterima");
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('D4', "Nomor Receipt");
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E4', "Tanggal Receipt");
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('F4', "Nomor SO");
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G4', "Nomor DO");
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('H4', "Tanggal DO");
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('I4', "Nomor Invoice");
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('J4', "Tanggal Invoice");
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('K4', "Gudang Transact");
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('L4', "Pengiriman");
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('M4', "Lama Proses Penanganan Order");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C4', "Order Dibuat");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('D4', "Order Diterima");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E4', "Nomor Receipt");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('F4', "Tanggal Receipt");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G4', "Nomor SO");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('H4', "Nomor DO");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('I4', "Tanggal DO");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('J4', "Nomor Invoice");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('K4', "Tanggal Invoice");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('L4', "Gudang Transact");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('M4', "Pengiriman");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('N4', "Lama Proses Penanganan Order");
 
-        foreach(range('A','M') as $columnID) {
+        foreach(range('A','N') as $columnID) {
             $objPHPExcel->getActiveSheet()->getColumnDimension($columnID)
                 ->setAutoSize(true);
             $objPHPExcel->getActiveSheet()->getStyle($columnID.'4')->applyFromArray($style_col);
         }
 
-        foreach(range('A','M') as $columnID) {
+        foreach(range('A','N') as $columnID) {
             $objPHPExcel->getActiveSheet()->getStyle($columnID)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         }
         
@@ -222,7 +224,7 @@ class C_WaktuPenangananOrder extends CI_Controller
 
         $i=0;
         foreach ($search_date as $key => $value) {
-          $no_order =  $value['comment_post_id'];
+          $no_order =  $value['id'];
 
           $dataoracle = $this->M_waktupenangananorder->getDataOracle($no_order);
 
@@ -248,13 +250,13 @@ class C_WaktuPenangananOrder extends CI_Controller
             $search_date[$i]['GUDANG_TRANSACT'] =  " ";
           }
 
-          if($value['date_proccess'] != null && $value['date_resi'] != null){
+          if($value['post_date'] != null && $value['tanggal_kirim'] != null){
             // echo "<pre>";
             // print_r($value['date_proccess']);
             // print_r($value['date_resi']);
             // exit();
-            $coba = str_replace(';', ':', $value['date_resi']);
-            $date1 = date_create($value['date_proccess']);
+            $coba = str_replace(';', ':', $value['tanggal_kirim']);
+            $date1 = date_create($value['post_date']);
             $date2 = date_create($coba);
             $diff  = date_diff($date1, $date2);
             // echo $diff->format("%d Hari %h Jam %i Menit %s Detik");
@@ -278,18 +280,28 @@ class C_WaktuPenangananOrder extends CI_Controller
         $numrow = 5;
         foreach($search_date as $data){
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$numrow, $no);
-            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B'.$numrow, $data['SHIPPING_INSTRUCTIONS']);
-            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C'.$numrow, $data['date_proccess']);
-            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('D'.$numrow, $data['NO_RECEIPT']);
-            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.$numrow, $data['TGL_RECEIPT']);
-            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('F'.$numrow, $data['NOMOR_SO']);
-            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G'.$numrow, $data['NOMOR_DO']);
-            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('H'.$numrow, $data['TGL_DO']);
-            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('I'.$numrow, $data['NOMOR_INVOICE']);
-            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('J'.$numrow, $data['TGL_RECEIPT']);
-            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('K'.$numrow, $data['GUDANG_TRANSACT']);
-            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('L'.$numrow, $data['comment_content2']);
-            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('M'.$numrow, $data['RANGE']);
+            // $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B'.$numrow, $data['SHIPPING_INSTRUCTIONS']);
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B' . $numrow, 'NO ORDER : ' . substr($data['SHIPPING_INSTRUCTIONS'], 11));
+            if($data['post_date'] == null){
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C'.$numrow, " ");
+            } else{
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C'.$numrow, date("d-m-Y H:i:s", strtotime($data['post_date'])));
+            }
+            if($data['date_proses'] == null){
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('D'.$numrow, " ");
+            } else{
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('D'.$numrow, date("d-m-Y H:i:s", strtotime($data['date_proses'])));
+            }
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.$numrow, $data['NO_RECEIPT']);
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('F'.$numrow, $data['TGL_RECEIPT']);
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G'.$numrow, $data['NOMOR_SO']);
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('H'.$numrow, $data['NOMOR_DO']);
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('I'.$numrow, $data['TGL_DO']);
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('J'.$numrow, $data['NOMOR_INVOICE']);
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('K'.$numrow, $data['TGL_RECEIPT']);
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('L'.$numrow, $data['GUDANG_TRANSACT']);
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('M'.$numrow, $data['comment_kirim']);
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('N'.$numrow, $data['RANGE']);
          
             $objPHPExcel->getActiveSheet()->getStyle('A'.$numrow)->applyFromArray($style_row);
             $objPHPExcel->getActiveSheet()->getStyle('B'.$numrow)->applyFromArray($style_row);
@@ -304,6 +316,7 @@ class C_WaktuPenangananOrder extends CI_Controller
             $objPHPExcel->getActiveSheet()->getStyle('K'.$numrow)->applyFromArray($style_row);
             $objPHPExcel->getActiveSheet()->getStyle('L'.$numrow)->applyFromArray($style_row);
             $objPHPExcel->getActiveSheet()->getStyle('M'.$numrow)->applyFromArray($style_row);
+            $objPHPExcel->getActiveSheet()->getStyle('N'.$numrow)->applyFromArray($style_row);
              
             $no++;
             $numrow++;

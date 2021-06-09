@@ -87,7 +87,7 @@ class M_pickgudang extends CI_Model
 			and wro.OPERATION_SEQ_NUM = wo.OPERATION_SEQ_NUM
             and wro.SUPPLY_LOCATOR_ID = mil.INVENTORY_LOCATION_ID (+)
 			and wo.DEPARTMENT_ID = bd.DEPARTMENT_ID
-			and wdj.STATUS_TYPE not in (4, 5, 6, 12)
+			and wdj.STATUS_TYPE not in (4, 5, 6, 7, 12)
 			--
 			and mtrh.REQUEST_NUMBER = kpa.PICKLIST 
 			-- 
@@ -101,7 +101,7 @@ class M_pickgudang extends CI_Model
 			--  and bd.DEPARTMENT_CLASS_CODE = 'WELD'
 			and TRUNC(wdj.SCHEDULED_START_DATE) BETWEEN to_date('$tgl1','DD/MM/YYYY') AND to_date('$tgl2','DD/MM/YYYY')
 			$dept
-			order by 12 desc ";
+			order by 12 ";
         $query = $oracle->query($sql);
         return $query->result_array();
         // return $sql;
@@ -162,7 +162,7 @@ class M_pickgudang extends CI_Model
 			and wro.OPERATION_SEQ_NUM = wo.OPERATION_SEQ_NUM            
             and wro.SUPPLY_LOCATOR_ID = mil.INVENTORY_LOCATION_ID (+)       
 			and wo.DEPARTMENT_ID = bd.DEPARTMENT_ID
-			and wdj.STATUS_TYPE not in (4, 5, 6, 12)
+			and wdj.STATUS_TYPE not in (4, 5, 6, 7, 12)
 			--
 			and mtrh.REQUEST_NUMBER = kpa.PICKLIST 
 			-- 
@@ -216,9 +216,9 @@ class M_pickgudang extends CI_Model
 		$query = $oracle->query('commit');
 	}
 
-	public function cekapprove2($nojob){
+	public function cekapprove2($picklist){
 		$oracle = $this->load->database('oracle', true);
-		$sql = "select * from khs_picklist_approved where job_number = '$nojob' and process = 3";
+		$sql = "select * from khs_picklist_approved where picklist = '$picklist' and process = 3";
 		$query = $oracle->query($sql);
 		return $query->result_array();
 	}
@@ -256,6 +256,13 @@ class M_pickgudang extends CI_Model
 				  and bsd.SEQ_NUM is not null
 				  and BCS.SHIFT_NUM = $shift
 				  ORDER BY BCS.SHIFT_NUM asc";
+		$query = $oracle->query($sql);
+		return $query->result_array();
+	}
+	
+	public function cekpermintaanPelayanan($nojob){
+		$oracle = $this->load->database('oracle', true);
+		$sql = "select * from khs_pelayanan_picklist where job_number like '$nojob%'";
 		$query = $oracle->query($sql);
 		return $query->result_array();
 	}

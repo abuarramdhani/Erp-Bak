@@ -20,7 +20,7 @@ class M_tarikshiftpekerja extends CI_Model
 			$kd = '';
 		}
 
-		$sql= "SELECT distinct a.noind, a.kodesie,  trim(b.nama) as nama,trim(d.seksi)as seksi,trim(b.jabatan)as jabatan, trim(b.tempat_makan)as tempat_makan
+		$sql= "SELECT distinct a.noind, a.kodesie,  trim(b.nama) as nama,trim(d.seksi)as seksi,trim(b.jabatan)as jabatan, trim(b.tempat_makan)as tempat_makan,e.lokasi_kerja
 				FROM  \"Presensi\".tshiftpekerja a
 				INNER JOIN hrd_khs.TPribadi b ON b.noind=a.noind 
 				inner join  \"Presensi\".tshift c on a.kd_shift=c.kd_shift
@@ -29,10 +29,7 @@ class M_tarikshiftpekerja extends CI_Model
 				WHERE b.keluar='0'and ( a.tanggal between '$periode1' and '$periode2' )AND left(a.noind,1) in ($hubungan) $kd 
 				and b.lokasi_kerja in ($lok)
 				ORDER BY  a.kodesie,a.noind ";
-				
-
-
-			
+							
 		$query = $this->personalia->query($sql);
 		return $query->result_array();
 	}

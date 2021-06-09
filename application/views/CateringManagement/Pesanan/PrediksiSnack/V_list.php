@@ -76,7 +76,10 @@
 															<td><?php echo $value['lokasi'] ? 'Yogyakarta & Mlati' : 'Tuksono' ?></td>
 															<td><?php echo $value['created_by'].' - '.$value['nama'] ?></td>
 															<td><?php echo date("Y-m-d H:i:s",strtotime($value['created_timestamp'])) ?></td>
-															<td><a href="<?php echo base_url('CateringManagement/Pesanan/PrediksiSnack/lihat/'.$value['id_prediksi'].'_'.$tanggal.'_'.$shift.'_'.$lokasi) ?>" class="btn btn-info"><span class="fa fa-file-o"></span>&nbsp;Lihat</a></td>
+															<td>
+																<a href="<?php echo base_url('CateringManagement/Pesanan/PrediksiSnack/lihat/'.$value['id_prediksi'].'_'.$tanggal.'_'.$shift.'_'.$lokasi) ?>" class="btn btn-info"><span class="fa fa-file-o"></span>&nbsp;Lihat</a>
+																<a href="<?php echo base_url('CateringManagement/Pesanan/PrediksiSnack/cetak/'.$value['id_prediksi'].'_'.$tanggal.'_'.$shift.'_'.$lokasi) ?>" class="btn btn-danger"><span class="fa fa-file-pdf-o"></span>&nbsp;PDF</a>
+															</td>
 														</tr>
 														<?php
 														$nomor++;

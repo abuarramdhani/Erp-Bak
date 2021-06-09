@@ -11,6 +11,7 @@ $no=1; foreach ($input as $i) { ?>
     <td><input type="hidden" name="qty[]" value="<?= $i['QTY'] ?>"/><?= $i['QTY'] ?></td>
     <td><input type="hidden" name="uom[]" value="<?= $i['UOM'] ?>"/><?= $i['UOM'] ?></td>
     <td><input type="hidden" name="status[]" value="OK"/>OK</td>
+    <input type="hidden" name="subinv[]" value="<?= $i['SUBINV'] ?>"/>
 </tr>
 
 <?php $no++;} ?>

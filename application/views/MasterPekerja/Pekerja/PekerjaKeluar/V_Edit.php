@@ -589,6 +589,9 @@
 																			<option value="-">-</option>
 																			<option value="MAN" <?= $data['jenis_baju'] === 'MAN' ? 'selected' : '' ?>>MAN</option>
 																			<option value="LADIES" <?= $data['jenis_baju'] === 'LADIES' ? 'selected' : '' ?>>LADIES</option>
+																			<option value="BAJU KANCING PENDEK" <?= $data['jenis_baju'] === 'BAJU KANCING PENDEK' ? 'selected' : '' ?>>BAJU KANCING PENDEK</option>
+																			<option value="BAJU KANCING PANJANG" <?= $data['jenis_baju'] === 'BAJU KANCING PANJANG' ? 'selected' : '' ?>>BAJU KANCING PANJANG</option>
+																			<option value="BAJU REKAT PANJANG" <?= $data['jenis_baju'] === 'BAJU REKAT PANJANG' ? 'selected' : '' ?>>BAJU REKAT PANJANG</option>
 																		</select>
 																	</div>
 																	<div class="col-lg-3 text-right" style="padding: 0;">
@@ -614,6 +617,20 @@
 															</div>
 															<div class="col-lg-8">
 																<input type="text" name="uk_celana" id="" class="form-control" value="<?= $data['uk_celana'] ?>">
+															</div>
+														</div>
+														<div class="row" style="margin-top: 10px;">
+															<div class="col-lg-4">
+																<label for="PK_txt_ukurancelana">Warna Celana </label>
+															</div>
+															<div class="col-lg-8">
+																<select type="text" name="warna_celana" id="" class="form-control mepk_select_basic">
+																	<option>-</option>
+																	<option <?= ($data['warna_celana'] == 'MERAH') ? 'selected':'' ?>>MERAH</option>
+																	<option <?= ($data['warna_celana'] == 'MERAH SAKU') ? 'selected':'' ?>>MERAH SAKU</option>
+																	<option <?= ($data['warna_celana'] == 'COKLAT') ? 'selected':'' ?>>COKLAT</option>
+																	<option <?= ($data['warna_celana'] == 'COKLAT SAKU') ? 'selected':'' ?>>COKLAT SAKU</option>
+																</select>
 															</div>
 														</div>
 														<div class="row" style="margin-top: 10px;">
@@ -835,11 +852,15 @@
 																	<div class="col-md-3">
 																		<input type="text" name="ruang" class="form-control uppercase" value="<?= $data['ruang'] ?>">
 																	</div>
-																	<div class="col-md-2">
-																		<label for="">NPWP</label>
+																</div>
+															</div>
+															<div class="row mt-10">
+																<div class="col-md-12">
+																	<div class="col-md-3">
+																		<label for="">Asal OS</label>
 																	</div>
-																	<div class="col-md-4">
-																		<input type="text" name="npwp" class="form-control" value="<?= $data['npwp'] ?>">
+																	<div class="col-md-9">
+																	<input type="text" name="asal_outsourcing" class="form-control" value="<?= $data['asal_outsourcing'] ?>">
 																	</div>
 																</div>
 															</div>
@@ -1167,6 +1188,14 @@
 																			<option value="<?= $item ?>" <?= $item === $statpajak ? 'selected' : '' ?>><?= $item ?></option>
 																		<?php endforeach ?>
 																	</select>
+																</div>
+															</div>
+															<div class="row mt-10">
+																<div class="col-lg-6">
+																	<label for="PK_txt_alamatPekerja">NPWP </label>
+																</div>
+																<div class="col-lg-4">
+																	<input type="text" name="npwp" class="form-control" value="<?= $data['npwp'] ?>">
 																</div>
 															</div>
 															<div class="row mt-10">

@@ -31,23 +31,23 @@
                             </div>
                             <div class="box-body">
                                 <div class="table-responsive">
-                                    <table class="datatable table table-striped table-bordered table-hover text-left" id="tblMixing" style="font-size:12px;">
+                                    <table class="datatable table table-striped table-bordered table-hover text-left" id="tblMixing2021" style="font-size:12px;">
                                         <thead class="bg-primary">
                                             <tr>
                                                 <th style="text-align:center; width:30px">No</th>
                                                 <th style="text-align:center; min-width:80px">Action</th>
-                                                <th>Component Code</th>
-                                                <th>Component Description</th>
-                                                <th>Production Date</th>
-                                                <th>Mixing Quantity</th>
-                                                <th>Shift</th>
-                                                <th>Kode</th>
-                                                <th>Print Code</th>
-                                                <th>Employee</th>
+                                                <th style="text-align:center;">Component Code</th>
+                                                <th style="text-align:center;">Component Description</th>
+                                                <th style="text-align:center;">Production Date</th>
+                                                <th style="text-align:center;">Mixing Quantity</th>
+                                                <th style="text-align:center;">Shift</th>
+                                                <th style="text-align:center;">Kode</th>
+                                                <th style="text-align:center;">Print Code</th>
+                                                <th style="text-align:center;">Employee</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <?php
+                                            <!-- <?php
                                             $no = 1;
                                             foreach ($Mixing as $row) :
                                                 $encrypted_string = $this->encrypt->encode($row['mixing_id']);
@@ -69,7 +69,7 @@
                                                     <td><?php echo $row['print_code']?></td>
                                                     <td><?php echo $row['job_id'] ?></td>
                                                 </tr>
-                                            <?php endforeach; ?>
+                                            <?php endforeach; ?> -->
                                         </tbody>
                                     </table>
                                 </div>
