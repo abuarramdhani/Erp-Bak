@@ -5606,6 +5606,10 @@ $route['MonitoringHandlingSubkon/Monitoring']				= 'MonitoringHandlingSubkon/C_M
 $route['MonitoringHandlingSubkon/Monitoring/(:any)']		= 'MonitoringHandlingSubkon/C_Monitoring/$1';
 $route['MonitoringHandlingSubkon/Monitoring/(:any)/(:any)']	= 'MonitoringHandlingSubkon/C_Monitoring/$1/$2';
 
+$route['MonitoringHandlingSubkon/Stock']				= 'MonitoringHandlingSubkon/C_Stock';
+$route['MonitoringHandlingSubkon/Stock/(:any)']			= 'MonitoringHandlingSubkon/C_Stock/$1';
+$route['MonitoringHandlingSubkon/Stock/(:any)/(:any)']	= 'MonitoringHandlingSubkon/C_Stock/$1/$2';
+
 // lanjutan po log book
 
 $route['PurchaseManagementSendPO/Setup'] = 'PurchaseManagementSendPO/MainMenu/C_Setup';
