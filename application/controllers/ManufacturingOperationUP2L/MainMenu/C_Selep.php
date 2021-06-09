@@ -59,7 +59,7 @@ class C_Selep extends CI_Controller
 				if (!empty($value) && !empty( $this->input->post('subinv')[$key])) {
 					$data = [
 						'no_induk' => strtoupper($value),
-						'subinv' => $this->input->post('subinv')[$key]
+						'subinv' =>implode(',',$this->input->post('subinv')[$key]) // jo lali di implode (dev)
 					];
 					$this->db->insert('mo.mo_selep_subinv', $data);
 				}
@@ -87,7 +87,33 @@ class C_Selep extends CI_Controller
 		// SEBELUM PUSH PRODUKSI PASTIKAN TABEL INI ADA //
 		$data_ = $this->db->where('no_induk', $this->input->post('noind'))->get('mo.mo_selep_subinv')->row_array();
 		if (!empty($data_['no_induk'])) {
-			$res = $data_['subinv'];
+			// $res = $data_['subinv'];
+			$data_ = explode(',', $data_['subinv']);
+			$res = [];
+			if (sizeof($data_) == 1) {
+				if ($data_[0] == 'INT-FDY') {
+					$res[] = '<option value="INT-FDY" selected>INT-FDY - GUDANG INTERNAL UNIT FOUNDRY</option>';
+				}elseif ($data_[0] == 'INT-FDYTKS') {
+					$res[] = '<option value="INT-FDYTKS" selected>INT-FDYTKS - GUDANG INTERNAL UNIT FOUNDRY DI TUKSONO</option>';
+				}elseif ($data_[0] == 'FDY-PM') {
+					$res[] = '<option value="FDY-PM" selected>FDY-PM - GUDANG FOUNDRY DI PUSAT</option>';
+				}elseif ($data_[0] == 'FDY-TKS') {
+					$res[] = '<option value="FDY-TKS" selected>FDY-TKS - GUDANG FOUNDRY DI TUKSONO</option>';
+				}
+			}elseif (sizeof($data_) > 1) {
+				foreach ($data_ as $key => $value) {
+					if ($value == 'INT-FDY') {
+						$res[] = '<option value="INT-FDY">INT-FDY - GUDANG INTERNAL UNIT FOUNDRY</option>';
+					}elseif ($value == 'INT-FDYTKS') {
+						$res[] = '<option value="INT-FDYTKS">INT-FDYTKS - GUDANG INTERNAL UNIT FOUNDRY DI TUKSONO</option>';
+					}elseif ($value == 'FDY-PM') {
+						$res[] = '<option value="FDY-PM">FDY-PM - GUDANG FOUNDRY DI PUSAT</option>';
+					}elseif ($value == 'FDY-TKS') {
+						$res[] = '<option value="FDY-TKS">FDY-TKS - GUDANG FOUNDRY DI TUKSONO</option>';
+					}
+				}
+			}
+
 		}else {
 			$res = 'gada';
 		}
@@ -269,19 +295,46 @@ class C_Selep extends CI_Controller
 						$cek_sub_inv_user = $this->db->select('subinv')->where('no_induk', $user_login)->get('mo.mo_selep_subinv')->row_array();
 						if (!empty($cek_sub_inv_user)) {
 
-							if ($cek_sub_inv_user['subinv'] == 'INT-FDY') {
-								$option = '<option value="INT-FDY">INT-FDY - GUDANG INTERNAL UNIT FOUNDRY</option>';
-							}elseif ($cek_sub_inv_user['subinv'] == 'INT-FDYTKS') {
-								$option = '<option value="INT-FDYTKS">INT-FDYTKS - GUDANG INTERNAL UNIT FOUNDRY DI TUKSONO</option>';
-							}elseif ($cek_sub_inv_user['subinv'] == 'FDY-PM') {
-								$option = '<option value="FDY-PM">FDY-PM - GUDANG FOUNDRY DI PUSAT</option>';
-							}elseif ($cek_sub_inv_user['subinv'] == 'FDY-TKS') {
-								$option = '<option value="FDY-TKS">FDY-TKS - GUDANG FOUNDRY DI TUKSONO</option>';
+							// if ($cek_sub_inv_user['subinv'] == 'INT-FDY') {
+							// 	$option = '<option value="INT-FDY">INT-FDY - GUDANG INTERNAL UNIT FOUNDRY</option>';
+							// }elseif ($cek_sub_inv_user['subinv'] == 'INT-FDYTKS') {
+							// 	$option = '<option value="INT-FDYTKS">INT-FDYTKS - GUDANG INTERNAL UNIT FOUNDRY DI TUKSONO</option>';
+							// }elseif ($cek_sub_inv_user['subinv'] == 'FDY-PM') {
+							// 	$option = '<option value="FDY-PM">FDY-PM - GUDANG FOUNDRY DI PUSAT</option>';
+							// }elseif ($cek_sub_inv_user['subinv'] == 'FDY-TKS') {
+							// 	$option = '<option value="FDY-TKS">FDY-TKS - GUDANG FOUNDRY DI TUKSONO</option>';
+							// }
+
+							$data_ = explode(',', $cek_sub_inv_user['subinv']);
+							$res2 = [];
+
+							if (sizeof($data_) == 1) {
+								if ($data_[0] == 'INT-FDY') {
+									$res2[] = '<option value="INT-FDY" >INT-FDY - GUDANG INTERNAL UNIT FOUNDRY</option>';
+								}elseif ($data_[0] == 'INT-FDYTKS') {
+									$res2[] = '<option value="INT-FDYTKS" >INT-FDYTKS - GUDANG INTERNAL UNIT FOUNDRY DI TUKSONO</option>';
+								}elseif ($data_[0] == 'FDY-PM') {
+									$res2[] = '<option value="FDY-PM" >FDY-PM - GUDANG FOUNDRY DI PUSAT</option>';
+								}elseif ($data_[0] == 'FDY-TKS') {
+									$res2[] = '<option value="FDY-TKS" >FDY-TKS - GUDANG FOUNDRY DI TUKSONO</option>';
+								}
+							}elseif (sizeof($data_) > 1) {
+								foreach ($data_ as $key2 => $value2) {
+									if ($value2 == 'INT-FDY') {
+										$res2[] = '<option value="INT-FDY">INT-FDY - GUDANG INTERNAL UNIT FOUNDRY</option>';
+									}elseif ($value2 == 'INT-FDYTKS') {
+										$res2[] = '<option value="INT-FDYTKS">INT-FDYTKS - GUDANG INTERNAL UNIT FOUNDRY DI TUKSONO</option>';
+									}elseif ($value2 == 'FDY-PM') {
+										$res2[] = '<option value="FDY-PM">FDY-PM - GUDANG FOUNDRY DI PUSAT</option>';
+									}elseif ($value2 == 'FDY-TKS') {
+										$res2[] = '<option value="FDY-TKS">FDY-TKS - GUDANG FOUNDRY DI TUKSONO</option>';
+									}
+								}
 							}
 
 							$sub_to = '<select class="select2subinv_up2l_complation" onchange="set_tosubinv_up2l(\''.$value['INVENTORY_ITEM_ID'].'\', \''.$value['BATCH_NO'].'\')" name="" style="width:150px;">
 													<option value=""></option>
-													'.$option.'
+													'.implode('',$res2).'
 												</select>';
 						}else {
 							$sub_to = '<select class="select2subinv_up2l_complation" onchange="set_tosubinv_up2l(\''.$value['INVENTORY_ITEM_ID'].'\', \''.$value['BATCH_NO'].'\')" name="" style="width:150px;">

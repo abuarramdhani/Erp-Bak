@@ -270,7 +270,7 @@ $('.form_generate_kib_up2l').on('submit', function(e) {
         Swal.showLoading();
         $('.swal2-loading').children('button').css({'width': '40px', 'height': '40px'})
       },
-     text: 'Sedang menyimpan data Selep & KIB..',
+     text: 'Sedang menyimpan data Selep, KIB & Close Batch..',
      allowOutsideClick: false,
    })
    $.ajax({
@@ -512,14 +512,17 @@ function completejobUP2L2021() {
 
 function create_batch_up2l(item, recipe_no, recipe_version, uom, job_date) {
   console.log(item, recipe_no, recipe_version, uom, job_date);
-  console.log($(`#cek_sub_inv_tujuan_${recipe_no}`).text(),' disiniiii');
+  console.log($(`#cek_sub_inv_tujuan_${recipe_no}`).text(),' disiniiii sub inv tujuan');
   if ($(`#cek_locator_code_${recipe_no}`).text() != '-' && $(`#cek_jml_locator_${recipe_no}`).text() == 0) {
       swalup2l('warning', `<b>Jumlah Locator di <span style="color:#002b65">${$(`#cek_locator_code_${recipe_no}`).text()}</span> tidak boleh 0</b>`);
   }else {
     if ($(`#cek_sub_inv_tujuan_${recipe_no}`).text() != '-') {
       let subinv = $('.select2subinv_up2l').val();
       let selepQtyHeader = $('#txtSelepQuantityHeader').val();
-      if (subinv != '') {
+      console.log(subinv, 'ini sub inv 1');
+      if (subinv == '' || subinv == null) {
+        swalup2l('warning', 'Karena anda belum terdaftar di User Sub. Inventory, <br><b>Pilih Sub.Inv. terlebih dahulu!</b>');
+      }else {
         $.ajax({
           url: baseurl + 'ManufacturingOperationUP2L/Selep/create_batch',
           type: 'POST',
@@ -581,8 +584,6 @@ function create_batch_up2l(item, recipe_no, recipe_version, uom, job_date) {
            console.error();
           }
         })
-      }else {
-        swalup2l('warning', 'Karena anda belum terdaftar di User Sub. Inventory, <br><b>Pilih Sub.Inv. terlebih dahulu!</b>');
       }
     }else {
       swalup2l('warning', `Gudang tujuan pada no recipe ${recipe_no} tidak boleh kosong.`);
@@ -657,6 +658,7 @@ function createBatchMO() { //recipe
               tampung.push(body);
               swal.close();
             });
+            $('#area-up2l-body-recipe').html(tampung.join());
             $.ajax({
               url: baseurl + 'ManufacturingOperationUP2L/Selep/cek_user',
               type: 'POST',
@@ -669,9 +671,29 @@ function createBatchMO() { //recipe
                 toastup2lLoading('Filtering subinv by user login..')
                 $('.select2subinv_up2l').val('').trigger('change');
               },
-              success: function(result) {
-                if (result != 'gada') {
-                  $('.select2subinv_up2l').val(result).trigger('change');
+              success: function(result_3) {
+                if (result_3 != 'gada') {
+                  //======================//===================
+                  if (Number(result_3.length) == 1) {
+                    $('.select2subinv_up2l').html(result_3.join('')).trigger('change');
+                    console.log(result_3,'ini result dari recipt ');
+
+                    // cek banyak recipt
+                    if (result.length == 1) {
+                      //delay modal akan show
+                      setTimeout(function () {
+                        if (result_3.length == 1) {
+                          console.log('heiheiehiehi');
+                          $('.create_batch_up2l_if_1').trigger('click');
+                        }
+                      }, 678);
+                    }
+
+                  }else if (Number(result_3.length) > 1) {
+                    $('.select2subinv_up2l').html(result_3.join(''));
+                    $('.select2subinv_up2l').val('').trigger('change');
+                  }
+                  //======================//===================
                 }else {
                   $('.select2subinv_up2l').val('').trigger('change');
                 }
@@ -691,16 +713,6 @@ function createBatchMO() { //recipe
           swalup2l('error', 'textStatus');
          console.error();
         }
-      }).done((result) =>{
-        console.log(result,'ini result dari recipt ');
-        $('#area-up2l-body-recipe').html(tampung.join());
-        //delay modal akan show
-        setTimeout(function () {
-          if (result.length == 1) {
-            console.log('heiheiehiehi');
-            $('.create_batch_up2l_if_1').trigger('click');
-          }
-        }, 678);
       })
     }else {
       swalup2l('warning', '<b>No. Batch</b> sudah dibuat');
