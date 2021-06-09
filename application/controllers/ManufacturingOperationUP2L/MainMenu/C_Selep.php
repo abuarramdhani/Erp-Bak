@@ -135,7 +135,7 @@ class C_Selep extends CI_Controller
 							$data[0]['QTY_HANDLING'] = $qty_handling;
 							$data[0]['NO_INDUK'] = $this->session->user;
 							$data[0]['QTY_SELEP'] = $qty_handling;
-							$insert = $this->M_selep->insertKIB($data);
+							$insert = $this->M_selep->insertKIB($data, $batch_no);
 						}
 						if (!empty($modulus)) {
 							$get_kib =  $this->M_selep->generate_no_kib($batch_no);
@@ -147,7 +147,7 @@ class C_Selep extends CI_Controller
 							$data[0]['QTY_HANDLING'] = $qty_handling;
 							$data[0]['NO_INDUK'] = $this->session->user;
 							$data[0]['QTY_SELEP'] = $modulus;
-							$insert = $this->M_selep->insertKIB($data);
+							$insert = $this->M_selep->insertKIB($data, $batch_no);
 						}
 					}else {
 						$get_kib =  $this->M_selep->generate_no_kib($batch_no);
@@ -159,7 +159,7 @@ class C_Selep extends CI_Controller
 						$data[0]['QTY_HANDLING'] = $qty_handling;
 						$data[0]['NO_INDUK'] = $this->session->user;
 						$data[0]['QTY_SELEP'] = $qty_selep;
-						$insert = $this->M_selep->insertKIB($data);
+						$insert = $this->M_selep->insertKIB($data, $batch_no);
 					}
 
 			    if ($insert == 1) {
