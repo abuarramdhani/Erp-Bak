@@ -56,18 +56,27 @@
 												<tr>
 													<th>No.</th>
 													<th>Tempat Makan</th>
-													<th>Jumlah Shift</th>
+													<th>Shift Umum</th>
+													<th>Shift 1</th>
+													<th>Shift 1 Satpam</th>
+													<th>Shift 1 PU</th>
+													<th>Shift Dapur Umum</th>
 													<th>Dirumahkan</th>
 													<th>Cuti</th>
 													<th>Sakit</th>
 													<th>Dinas Luar</th>
 													<th>Puasa</th>
 													<th>Total</th>
+													<th>Action</th>
 												</tr>
 											</thead>
 											<tbody>
 												<?php 
-												$total_jumlah_shift = 0;
+												$total_jumlah_shift_umum = 0;
+												$total_jumlah_shift_1 = 0;
+												$total_jumlah_shift_1_satpam = 0;
+												$total_jumlah_shift_1_pu = 0;
+												$total_jumlah_shift_dapur_umum = 0;
 												$total_dirumahkan = 0;
 												$total_cuti = 0;
 												$total_sakit = 0;
@@ -81,16 +90,29 @@
 														<tr>
 															<td><?php echo $nomor; ?></td>
 															<td><?php echo $value['tempat_makan'] ?></td>
-															<td><?php echo $value['jumlah_shift'] ?></td>
+															<td><?php echo $value['shift_umum'] ?></td>
+															<td><?php echo $value['shift_1'] ?></td>
+															<td><?php echo $value['shift_1_satpam'] ?></td>
+															<td><?php echo $value['shift_1_pu'] ?></td>
+															<td><?php echo $value['shift_dapur_umum'] ?></td>
 															<td style="<?php echo $value['dirumahkan'] != "0" ? "background-color: #ff4d4d" : ""; ?>" ><?php echo $value['dirumahkan'] ?></td>
 															<td style="<?php echo $value['cuti'] != "0" ? "background-color: #ff4d4d" : ""; ?>" ><?php echo $value['cuti'] ?></td>
 															<td style="<?php echo $value['sakit'] != "0" ? "background-color: #ff4d4d" : ""; ?>" ><?php echo $value['sakit'] ?></td>
 															<td style="<?php echo $value['dinas_luar'] != "0" ? "background-color: #ff4d4d" : ""; ?>" ><?php echo $value['dinas_luar'] ?></td>
 															<td style="<?php echo $value['puasa'] != "0" ? "background-color: #ff4d4d" : ""; ?>" ><?php echo $value['puasa'] ?></td>
 															<td><?php echo $value['total'] ?></td>
+															<td>
+																<a target="_blank" class="btn btn-primary btn-xs" href="<?php echo base_url('CateringManagement/Pesanan/PrediksiSnack/pekerja?id='.$value['id']) ?>">
+																	<span class="fa fa-file-pdf-o"></span>
+																</a>
+															</td>
 														</tr>
 														<?php
-														$total_jumlah_shift += $value['jumlah_shift'];
+														$total_jumlah_shift_umum += $value['shift_umum'];
+														$total_jumlah_shift_1 += $value['shift_1'];
+														$total_jumlah_shift_1_satpam += $value['shift_1_satpam'];
+														$total_jumlah_shift_1_pu += $value['shift_1_pu'];
+														$total_jumlah_shift_dapur_umum += $value['shift_dapur_umum'];
 														$total_dirumahkan += $value['dirumahkan'];
 														$total_cuti += $value['cuti'];
 														$total_sakit += $value['sakit'];
@@ -107,13 +129,18 @@
 												<tr>
 													<th></th>
 													<th></th>
-													<th><?php echo $total_jumlah_shift; ?></th>
+													<th><?php echo $total_jumlah_shift_umum; ?></th>
+													<th><?php echo $total_jumlah_shift_1; ?></th>
+													<th><?php echo $total_jumlah_shift_1_satpam; ?></th>
+													<th><?php echo $total_jumlah_shift_1_pu; ?></th>
+													<th><?php echo $total_jumlah_shift_dapur_umum; ?></th>
 													<th><?php echo $total_dirumahkan; ?></th>
 													<th><?php echo $total_cuti; ?></th>
 													<th><?php echo $total_sakit; ?></th>
 													<th><?php echo $total_dinas_luar; ?></th>
 													<th><?php echo $total_puasa; ?></th>
 													<th><?php echo $total_total; ?></th>
+													<th></th>
 												</tr>
 											</tfoot>
 										</table>

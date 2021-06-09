@@ -72,7 +72,8 @@ class C_PrediksiSnack extends CI_Controller
     	$prediksi = $this->M_prediksisnack->getPrediksiSnackByTanggalShiftLokasi($tanggal,$shift,$lokasi);
     	if (!empty($prediksi)) {
     		foreach ($prediksi as $key => $value) {
-    			$noind_array = $this->M_prediksisnack->getNoindByTempatMakanShiftTanggal($value['tempat_makan'],$shift,$tanggal);
+                $pekerja_dl = array();
+    			$noind_array = $this->M_prediksisnack->getNoindByTempatMakanShiftTanggal($value['tempat_makan'],$value['shift'],$tanggal);
     			if (!empty($noind_array)) {
     				foreach ($noind_array as $key2 => $value2) {
     					$dinas_luar = $this->M_prediksisnack->getDinasLuarByNoind($value2['noind']);
@@ -81,6 +82,7 @@ class C_PrediksiSnack extends CI_Controller
 	    						$absen = $this->M_prediksisnack->getAbsenSetelahPulangByTimestampNoind($value3['tgl_pulang'],$value3['noind']);
 	    						if (empty($absen)) {
 		    						$prediksi[$key]['dinas_luar'] += 1;
+                                    $pekerja_dl[] = $value3;
 	    						}
     						}
     					}
@@ -91,15 +93,25 @@ class C_PrediksiSnack extends CI_Controller
     			$data_insert = array(
     				'id_prediksi' 	=> $id_prediksi,
     				'tempat_makan' 	=> $prediksi[$key]['tempat_makan'],
-    				'jumlah_shift' 	=> $prediksi[$key]['jumlah_shift'],
+    				'shift'      	=> $prediksi[$key]['shift'],
+                    'jumlah_shift'  => $prediksi[$key]['jumlah_shift'],
     				'dirumahkan' 	=> $prediksi[$key]['dirumahkan'],
     				'cuti' 			=> $prediksi[$key]['cuti'],
     				'sakit' 		=> $prediksi[$key]['sakit'],
                     'dinas_luar'    => $prediksi[$key]['dinas_luar'],
-    				'puasa' 	=> $prediksi[$key]['puasa'],
+    				'puasa' 	    => $prediksi[$key]['puasa'],
     				'total' 		=> $prediksi[$key]['total']
     			);
-    			$this->M_prediksisnack->insertPrediksiDetail($data_insert);
+    			$id_detail = $this->M_prediksisnack->insertPrediksiDetail($data_insert);
+                
+                if (!empty($pekerja_dl)) {
+                    foreach($pekerja_dl as $pdl){
+                        $data_dl = $pdl;
+                        $data_dl['id_prediksi_snack_detail'] = $id_detail;
+                        $this->M_prediksisnack->insertPrediksiDL($data_dl);
+                    }
+                }
+                $this->M_prediksisnack->insertPrediksiPekerja($id_detail,$tanggal,$prediksi[$key]['shift'],$lokasi,$prediksi[$key]['tempat_makan']);
     		}
     		$data = array(
     			'status' => 'sukses',
@@ -122,6 +134,7 @@ class C_PrediksiSnack extends CI_Controller
     	$user_id = $this->session->userid;
 
         $data['Title'] = 'Prediksi Snack Shift 1 & Umum';
+        $data['Header'] = 'Prediksi Snack Shift 1 & Umum / '.$tanggal." / ".($lokasi == "1" ? "Pusat" : "Tuksono");
         $data['Menu'] = 'Prediksi Snack';
         $data['SubMenuOne'] = '';
         $data['SubMenuTwo'] = '';
@@ -140,6 +153,122 @@ class C_PrediksiSnack extends CI_Controller
         $this->load->view('V_Sidemenu',$data);
         $this->load->view('CateringManagement/Pesanan/PrediksiSnack/V_result.php',$data);
         $this->load->view('V_Footer',$data);
+    }
+
+    public function cetak($text){
+        $txt = explode("_", $text);
+        $id_prediksi = $txt[0];
+        $tanggal = $txt[1];
+        $shift = $txt[2];
+        $lokasi = $txt[3];
+
+        $data_prediksi = $this->M_prediksisnack->getDataPrediksiSnackDetailByIdPrediksi($id_prediksi);
+
+        $rows = "";
+        $total_jumlah_shift_umum = 0;
+        $total_jumlah_shift_1 = 0;
+        $total_jumlah_shift_1_satpam = 0;
+        $total_jumlah_shift_1_pu = 0;
+        $total_jumlah_shift_dapur_umum = 0;
+        $total_dirumahkan = 0;
+        $total_cuti = 0;
+        $total_sakit = 0;
+        $total_dinas_luar = 0;
+        $total_puasa = 0;
+        $total_total = 0;
+        foreach ($data_prediksi as $key => $value) {
+            $rows .= "<tr>
+                <td style='text-align: center;'>".($key+1)."</td>
+                <td>".$value['tempat_makan']."</td>
+                <td style='text-align: right;'>".$value['shift_umum']."</td>
+                <td style='text-align: right;'>".$value['shift_1']."</td>
+                <td style='text-align: right;'>".$value['shift_1_satpam']."</td>
+                <td style='text-align: right;'>".$value['shift_1_pu']."</td>
+                <td style='text-align: right;'>".$value['shift_dapur_umum']."</td>
+                <td style=\"text-align: right;".($value['dirumahkan'] != "0" ? "background-color: #ff4d4d" : "")."\" >".$value['dirumahkan']."</td>
+                <td style=\"text-align: right;".($value['cuti'] != "0" ? "background-color: #ff4d4d" : "")."\" >".$value['cuti']."</td>
+                <td style=\"text-align: right;".($value['sakit'] != "0" ? "background-color: #ff4d4d" : "")."\" >".$value['sakit']."</td>
+                <td style=\"text-align: right;".($value['dinas_luar'] != "0" ? "background-color: #ff4d4d" : "")."\" >".$value['dinas_luar']."</td>
+                <td style=\"text-align: right;".($value['puasa'] != "0" ? "background-color: #ff4d4d" : "")."\" >".$value['puasa']."</td>
+                <td style='text-align: right;'>".$value['total']."</td>
+            </tr>";
+            $total_jumlah_shift_umum += $value['shift_umum'];
+            $total_jumlah_shift_1 += $value['shift_1'];
+            $total_jumlah_shift_1_satpam += $value['shift_1_satpam'];
+            $total_jumlah_shift_1_pu += $value['shift_1_pu'];
+            $total_jumlah_shift_dapur_umum += $value['shift_dapur_umum'];
+            $total_dirumahkan += $value['dirumahkan'];
+            $total_cuti += $value['cuti'];
+            $total_sakit += $value['sakit'];
+            $total_dinas_luar += $value['dinas_luar'];
+            $total_puasa += $value['puasa'];
+            $total_total += $value['total'];
+        }
+
+        $body .= "<div style='padding-top: 20px'>
+                <table style='border: 1px solid black;border-collapse: collapse;width: 100%;' border='1' >
+                    <thead>
+                        <tr>
+                            <th style='background-color: #60A5FA;width: 5%'>No.</th>
+                            <th style='background-color: #60A5FA;width: 20%'>Tempat Makan</th>
+                            <th style='background-color: #60A5FA;width: ".(75/11)."%'>S. Umum</th>
+                            <th style='background-color: #60A5FA;width: ".(75/11)."%'>S. 1</th>
+                            <th style='background-color: #60A5FA;width: ".(75/11)."%'>S. 1 Satpam</th>
+                            <th style='background-color: #60A5FA;width: ".(75/11)."%'>S. 1 PU</th>
+                            <th style='background-color: #60A5FA;width: ".(75/11)."%'>S. Dapur Umum</th>
+                            <th style='background-color: #60A5FA;width: ".(75/11)."%'>Di rumah kan</th>
+                            <th style='background-color: #60A5FA;width: ".(75/11)."%'>Cuti</th>
+                            <th style='background-color: #60A5FA;width: ".(75/11)."%'>Sakit</th>
+                            <th style='background-color: #60A5FA;width: ".(75/11)."%'>Dinas Luar</th>
+                            <th style='background-color: #60A5FA;width: ".(75/11)."%'>Puasa</th>
+                            <th style='background-color: #60A5FA;width: ".(75/11)."%'>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        $rows
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th style='background-color: #60A5FA;' colspan='2'>Total :</th>
+                            <th style='background-color: #60A5FA;'>".$total_jumlah_shift_umum."</th>
+                            <th style='background-color: #60A5FA;'>".$total_jumlah_shift_1."</th>
+                            <th style='background-color: #60A5FA;'>".$total_jumlah_shift_1_satpam."</th>
+                            <th style='background-color: #60A5FA;'>".$total_jumlah_shift_1_pu."</th>
+                            <th style='background-color: #60A5FA;'>".$total_jumlah_shift_dapur_umum."</th>
+                            <th style='background-color: #60A5FA;'>".$total_dirumahkan."</th>
+                            <th style='background-color: #60A5FA;'>".$total_cuti."</th>
+                            <th style='background-color: #60A5FA;'>".$total_sakit."</th>
+                            <th style='background-color: #60A5FA;'>".$total_dinas_luar."</th>
+                            <th style='background-color: #60A5FA;'>".$total_puasa."</th>
+                            <th style='background-color: #60A5FA;'>".$total_total."</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>";
+
+        $template = "
+            <div>
+                <table style='width: 100%;border: 1px solid black;border-collapse: collapse;' border='1'>
+                    <tr>
+                        <td rowspan='2' style='text-align: center;font-size: 24pt;width: 55%;'>PREDIKSI SNACK</td>
+                        <td style='font-size: 9pt;width: 15%;padding-left: 3mm;'>Lokasi : </td>
+                        <td style='font-size: 9pt;width: 15%;padding-left: 3mm;'>Tanggal : </td>
+                    </tr>
+                    <tr>
+                        <td style='padding-left: 3mm;'>".($lokasi == "1" ? "Pusat" : "Tuksono")."</td>
+                        <td style='padding-left: 3mm;'>".$tanggal."</td>
+                    </tr>
+                </table>
+            </div>
+        ".$body;
+
+        $mpdf = $this->pdf->load();
+        $mpdf = new mPDF('utf8', 'A4-L',0,'mono');
+        $mpdf->SetHTMLFooter("<table style=\"width: 100%\"><tr><td><i style='font-size: 8pt'>Halaman ini dicetak melalui Aplikasi QuickERP-CateringManagement oleh " . $this->session->user . " - " . $this->session->employee . " pada tgl. " . date('Y/M/d H:i:s') . "</i></td><td  rowspan=\"2\" style=\"vertical-align: middle; font-size: 8pt; text-align: right;\">Halaman {PAGENO} dari {nb}</td></tr></table>");
+        $filename = 'Prediksi_Catering_' . $tanggal . '.pdf';
+        $mpdf->WriteHTML($template);
+        $mpdf->setTitle($filename);
+        $mpdf->Output($filename, 'I');
     }
 
     public function daftar($text){
@@ -189,6 +318,131 @@ class C_PrediksiSnack extends CI_Controller
         $this->load->view('V_Sidemenu',$data);
         $this->load->view('CateringManagement/Pesanan/PrediksiSnack/V_history.php',$data);
         $this->load->view('V_Footer',$data);
+    }
+
+    public function pekerja(){
+        if (!isset($_GET['id'])) {
+            exit("Error, required data not found");
+        }
+        $ids = explode(",",$_GET['id']);
+        $head = $this->M_prediksisnack->getPrediksiSnackDetailByIdDetail($ids);
+        
+        $this->load->library('pdf');
+
+        $body = "";
+        $panjang_nama = 28;
+        foreach ($ids as $id) {
+            $rows = "";
+            $shift = "";
+            $data = $this->M_prediksisnack->getPrediksiSnackPekerjaByIdDetail($id);
+            for($i=0;$i<ceil(count($data)/2);$i++) {
+
+                $rows .= "<tr>
+                    <td style='text-align: center;'>".($i+1)."</td>
+                    <td style='text-align: center;'>".$data[$i]['noind']."</td>
+                    <td>".substr($data[$i]['nama'], 0, $panjang_nama)."</td>
+                    <td style='".($data[$i]['keterangan'] != "" ? 'color: red' : '')."'>
+                        ".$data[$i]['keterangan']."
+                    </td>
+                    <td></td>";
+                    if (isset($data[$i + ceil(count($data)/2)])) {
+                        $rows .= "
+                            <td style='text-align: center;'>".(ceil(count($data)/2) + $i + 1)."</td>
+                            <td style='text-align: center;'>".($data[$i + ceil(count($data)/2)]['noind'])."</td>
+                            <td>".substr($data[$i + ceil(count($data)/2)]['nama'], 0, $panjang_nama)."</td>
+                            <td style='".($data[$i + ceil(count($data)/2)]['keterangan'] != "" ? 'color: red' : '')."'>
+                                ".$data[$i + ceil(count($data)/2)]['keterangan']."
+                            </td>
+                        </tr>";
+                    }else{
+                        $rows .= "
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>";
+                    }
+                $shift = $data[$i]['shift'];
+            }
+            
+            $body .= "<div style='padding-top: 20px'>
+                <span style='font-weight: bold;'>$shift</span>
+                <table style='border: 1px solid black;border-collapse: collapse;width: 100%;' border='1' >
+                    <thead>
+                        <tr>
+                            <th style='width: 5%'>No.</th>
+                            <th style='width: 7%'>No.Induk</th>
+                            <th style='width: 25%'>Nama</th>
+                            <th style='width: 12%'>Ket</th>
+                            <th style='width: 2%;border-top: 0px solid white;border-bottom: 0px;'>&nbsp;</th>
+                            <th style='width: 5%'>No.</th>
+                            <th style='width: 7%'>No.Induk</th>
+                            <th style='width: 25%'>Nama</th>
+                            <th style='width: 12%'>Ket</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        $rows
+                    </tbody>
+                </table>
+            </div>";
+        }
+
+        $template = "
+        <div>
+            <table style='width: 100%;border: 1px solid black;border-collapse: collapse;' border='1'>
+                <tr>
+                    <td rowspan='2' style='text-align: center;font-size: 24pt;width: 55%;'>PREDIKSI SNACK</td>
+                    <td style='font-size: 9pt;width: 15%;padding-left: 3mm;'>Tempat Makan : </td>
+                    <td style='font-size: 9pt;width: 15%;padding-left: 3mm;'>Lokasi : </td>
+                    <td style='font-size: 9pt;width: 15%;padding-left: 3mm;'>Tanggal : </td>
+                </tr>
+                <tr>
+                    <td style='padding-left: 3mm;'>".$head->tempat_makan."</td>
+                    <td style='padding-left: 3mm;'>".($head->lokasi == "1" ? "Pusat" : "Tuksono")."</td>
+                    <td style='padding-left: 3mm;'>".$head->tanggal."</td>
+                </tr>
+            </table>
+            <table style='width: 100%;border: 1px solid black;border-collapse: collapse;margin-top: 2mm' border='1'>
+                <tr>
+                    <td style='width: ".(100/11)."%;text-align: center;'>S. Umum</td>
+                    <td style='width: ".(100/11)."%;text-align: center;'>S. 1</td>
+                    <td style='width: ".(100/11)."%;text-align: center;'>S. 1 Satpam</td>
+                    <td style='width: ".(100/11)."%;text-align: center;'>S. 1 PU</td>
+                    <td style='width: ".(100/11)."%;text-align: center;'>S. Dapur Umum</td>
+                    <td style='width: ".(100/11)."%;text-align: center;'>Cuti</td>
+                    <td style='width: ".(100/11)."%;text-align: center;'>Dirumahkan</td>
+                    <td style='width: ".(100/11)."%;text-align: center;'>Sakit</td>
+                    <td style='width: ".(100/11)."%;text-align: center;'>Dinas Luar</td>
+                    <td style='width: ".(100/11)."%;text-align: center;'>Puasa</td>
+                    <td style='width: ".(100/11)."%;text-align: center;'>Total</td>
+                </tr>
+                <tr>
+                    <td style='width: ".(100/11)."%;text-align: center;'>".$head->shift_umum."</td>
+                    <td style='width: ".(100/11)."%;text-align: center;'>".$head->shift_1."</td>
+                    <td style='width: ".(100/11)."%;text-align: center;'>".$head->shift_1_satpam."</td>
+                    <td style='width: ".(100/11)."%;text-align: center;'>".$head->shift_1_pu."</td>
+                    <td style='width: ".(100/11)."%;text-align: center;'>".$head->shift_dapur_umum."</td>
+                    <td style='width: ".(100/11)."%;text-align: center;'>".$head->cuti."</td>
+                    <td style='width: ".(100/11)."%;text-align: center;'>".$head->dirumahkan."</td>
+                    <td style='width: ".(100/11)."%;text-align: center;'>".$head->sakit."</td>
+                    <td style='width: ".(100/11)."%;text-align: center;'>".$head->dinas_luar."</td>
+                    <td style='width: ".(100/11)."%;text-align: center;'>".$head->puasa."</td>
+                    <td style='width: ".(100/11)."%;text-align: center;'>".$head->total."</td>
+                </tr>
+            </table>
+        </div>
+        $body
+        ";
+        // echo $template;exit();
+
+        $mpdf = $this->pdf->load();
+        $mpdf = new mPDF('utf8', 'A4-L',0,'mono');
+        $mpdf->SetHTMLFooter("<table style=\"width: 100%\"><tr><td><i style='font-size: 8pt'>Halaman ini dicetak melalui Aplikasi QuickERP-CateringManagement oleh " . $this->session->user . " - " . $this->session->employee . " pada tgl. " . date('Y/M/d H:i:s') . "</i></td><td  rowspan=\"2\" style=\"vertical-align: middle; font-size: 8pt; text-align: right;\">Halaman {PAGENO} dari {nb}</td></tr></table>");
+        $filename = 'Prediksi_Catering_' . $tanggal . '.pdf';
+        $mpdf->WriteHTML($template);
+        $mpdf->setTitle($filename);
+        $mpdf->Output($filename, 'I');
     }
 
 }
