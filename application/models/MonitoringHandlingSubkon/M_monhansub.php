@@ -5,7 +5,7 @@ class M_monhansub extends CI_Model{
       parent::__construct();
       $this->load->database();    
       $this->oracle = $this->load->database('oracle', true);
-      $this->erp = $this->load->database('erp', true);
+      $this->erp = $this->load->database('erp_db', true);
       $this->personalia = $this->load->database('personalia', true);
     }
 
