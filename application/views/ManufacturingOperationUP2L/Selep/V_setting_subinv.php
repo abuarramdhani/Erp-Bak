@@ -1,6 +1,5 @@
 <form id="form-submit-up2l-setting-subinv" method="post" autocomplete="off">
-
-<div class="table-responsive" style="height:300px;">
+<div class="table-responsive" style="height:350px;overflow:auto !important">
   <table style="width:100%" class="table table-bordered text-center up2l_ss_88">
       <thead class="bg-primary">
         <tr>
@@ -16,15 +15,24 @@
               <input type="text" class="form-control" name="no_induk[]" style="text-transform:uppercase" value="<?php echo $value['no_induk'] ?>" required>
             </td>
             <td>
-              <select class="select2232" name="subinv[]" style="width:100%" required>
+              <?php $cek_sub_inv = explode(',', $value['subinv']);
+              $idx = 'a';
+              foreach ($cek_sub_inv as $key2 => $value2) {
+                $tampung_cek[$idx] = $value2;
+                $idx++;
+              }
+              ?>
+              <select class="select2232" name="subinv[<?php echo $key ?>][]" style="width:100%" tabindex="-1"  required multiple>
                 <option value=""></option>
-                <option value="INT-FDY" <?= $value['subinv'] == 'INT-FDY' ? 'selected' : '' ?>>INT-FDY - GUDANG INTERNAL UNIT FOUNDRY</option>
-                <option value="INT-FDYTKS" <?= $value['subinv'] == 'INT-FDYTKS' ? 'selected' : '' ?>>INT-FDYTKS - GUDANG INTERNAL UNIT FOUNDRY DI TUKSONO</option>
+                <option value="INT-FDY" <?= !empty(array_search('INT-FDY', $tampung_cek)) ? 'selected' : '' ?>>INT-FDY - GUDANG INTERNAL UNIT FOUNDRY</option>
+                <option value="INT-FDYTKS" <?= !empty(array_search('INT-FDYTKS', $tampung_cek)) ? 'selected' : '' ?>>INT-FDYTKS - GUDANG INTERNAL UNIT FOUNDRY DI TUKSONO</option>
+                <option value="FDY-PM" <?= !empty(array_search('FDY-PM', $tampung_cek)) ? 'selected' : '' ?>>FDY-PM - GUDANG FOUNDRY DI PUSAT</option>
+                <option value="FDY-TKS" <?= !empty(array_search('FDY-TKS', $tampung_cek)) ? 'selected' : '' ?>>FDY-TKS - GUDANG FOUNDRY DI TUKSONO</option>
               </select>
             </td>
             <td> <button type="button" class="btn btn-sm btn-default" name="button" onclick="up2l_min_selep_setting_subinv(this)"> <i class="fa fa-times"></i> </button> </td>
           </tr>
-        <?php endforeach; ?>
+        <?php endforeach;?>
       </tbody>
     </table>
 </div>
@@ -33,25 +41,35 @@
 </form>
 
 <script type="text/javascript">
-  $('.select2232').select2();
+  $('.select2232').select2({
+    tags: true,
+    tokenSeparators: [',']
+  });
   function up2l_min_selep_setting_subinv(b) {
    $(b).parent().parent('tr').remove();
   }
   function up2l_add_selep_setting_subinv() {
+    let no = Number($('.up2l_ss_88 tbody tr').length);
     $('.up2l_ss_88 tbody').append(`<tr>
       <td>
         <input type="text" class="form-control" name="no_induk[]" style="text-transform:uppercase" value="" required>
       </td>
       <td>
-        <select class="select2232" name="subinv[]" style="width:100%" required>
+        <select class="select2232" name="subinv[${no}][]" style="width:100%" tabindex="-1" multiple required>
           <option value=""></option>
           <option value="INT-FDY" >INT-FDY - GUDANG INTERNAL UNIT FOUNDRY</option>
           <option value="INT-FDYTKS">INT-FDYTKS - GUDANG INTERNAL UNIT FOUNDRY DI TUKSONO</option>
+          <option value="FDY-PM">FDY-PM - GUDANG FOUNDRY DI PUSAT</option>
+          <option value="FDY-TKS">FDY-TKS - GUDANG FOUNDRY DI TUKSONO</option>
         </select>
       </td>
       <td> <button type="button" class="btn btn-sm btn-default" name="button" onclick="up2l_min_selep_setting_subinv(this)"> <i class="fa fa-times"></i> </button> </td>
     </tr>`);
-    $('.select2232').select2();
+
+    $('.select2232').select2({
+      tags: true,
+      tokenSeparators: [',']
+    });
   }
 
   $('#form-submit-up2l-setting-subinv').on('submit', function(th) {
