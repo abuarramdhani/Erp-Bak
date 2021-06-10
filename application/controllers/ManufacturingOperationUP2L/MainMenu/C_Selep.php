@@ -651,13 +651,17 @@ class C_Selep extends CI_Controller
 
 	public function delete($id)
 	{
-		$this->M_selep->deleteSelep($id);
+		// $this->M_selep->deleteSelep($id);
+		$info = $this->session->user.' - '.date('d-M-Y H:i:s');
+		$this->db->query("update mo.mo_selep set delete_info = '$info' WHERE selep_id = '$id'");
 		redirect(site_url('ManufacturingOperationUP2L/Selep'));
 	}
 
 	public function delete2($id)
 	{
-		$this->M_selep->deleteSelep($id);
+		// $this->M_selep->deleteSelep($id);
+		$info = $this->session->user.' - '.date('d-M-Y H:i:s');
+		$this->db->query("update mo.mo_selep set delete_info = '$info' WHERE selep_id = '$id'");
 		redirect(base_url('ManufacturingOperationUP2L/QualityControl'));
 	}
 }

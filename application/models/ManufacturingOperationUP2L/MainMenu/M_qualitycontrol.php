@@ -31,7 +31,7 @@ class M_qualitycontrol extends CI_Model
 
     public function getSelep()
     {
-        $sql = "SELECT * FROM mo.mo_selep WHERE check_qc = FALSE ORDER BY extract(month from selep_date) desc, extract(year from selep_date) desc, extract(day from selep_date), shift, job_id";
+        $sql = "SELECT * FROM mo.mo_selep WHERE check_qc = FALSE AND delete_info is null ORDER BY extract(month from selep_date) desc, extract(year from selep_date) desc, extract(day from selep_date), shift, job_id";
         $query = $this->db->query($sql);
         return $query->result_array();
     }
