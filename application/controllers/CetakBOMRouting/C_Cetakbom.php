@@ -296,6 +296,7 @@ class C_Cetakbom extends CI_Controller
 
 				$i++;
 			}
+
 			if ($array_Resource2['ALT'] != null) {
 				$merge = $this->batasMerge($array_Resource2['ALT']);
 				$tabelBoM = $this->generateTableBoM($merge, $datapdf2);
@@ -303,9 +304,8 @@ class C_Cetakbom extends CI_Controller
 				$merge = null;
 				$tabelBoM = null;
 			}
-
 			// echo "<pre>";
-			// print_r($merge);
+			// print_r($tabelBoM);
 			// exit();
 			$data['tabel'] = $tabelBoM;
 			$data['merge'] = $merge;
@@ -440,11 +440,10 @@ class C_Cetakbom extends CI_Controller
     	$foot = $this->load->view('CetakBOMRouting/V_CetakanFoot', $data, true);
 
 		ob_end_clean();
-		$pdf->shrink_tables_to_fit = 0;
+		$pdf->shrink_tables_to_fit = 1;
 		$pdf->setHTMLHeader($head);
     	$pdf->WriteHTML($html);
   		$pdf->setHTMLFooter($foot);												//-----> Pakai Library MPDF
-
 		$pdf->Output($filename, 'I');
 
 
@@ -479,7 +478,7 @@ class C_Cetakbom extends CI_Controller
 	}
 
 	public function batasMerge($arrayALT){
-		$batas = 50;
+		$batas = 21; //50
 		// $halsatu = 25;
 		foreach ($arrayALT as $key => $value) {
 			$barisalt[$key] = sizeof($arrayALT[$key]);
