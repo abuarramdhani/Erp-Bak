@@ -114,7 +114,9 @@ $(function() {
 })
 
 function up2l_selep_reload_saya() {
-  location.reload();
+  setTimeout(function () {
+    location.reload();
+  }, 200);
 }
 
 function set_tosubinv_up2l(item_id, batch_no) {
@@ -315,7 +317,7 @@ $('.form_generate_kib_up2l').on('submit', function(e) {
                  text: '',
                  showConfirmButton: false,
                  allowOutsideClick: false,
-                 showCloseButton: true,
+                 showCloseButton: false,
                });
                $('.btn-up2l-cetakkib').attr('disabled', true);
                setTimeout(function () {
