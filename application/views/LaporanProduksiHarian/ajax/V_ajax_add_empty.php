@@ -319,7 +319,7 @@
         </div> -->
         <div class="col-md-12">
           <div class="mt-4" style="overflow-y:scroll;">
-            <table class="table table-bordered" style="width:2430px;text-align:center">
+            <table class="table table-bordered tbl_lph_add_comp" style="width:2430px;text-align:center">
               <thead class="bg-primary">
                 <tr>
                   <td style="width:30px">No</td>
@@ -363,12 +363,12 @@
                   <td><input type="number" class="form-control lph_aktual" name="aktual[]" value=""></td>
                   <td><input type="text" class="form-control lph_persentase" name="persentase[]" value="" readonly></td>
                   <td><input type="number" class="form-control lph_hasil_baik" name="hasil_baik[]" value=""></td>
-                  <td><input type="text" class="form-control" name="" value=""></td>
-                  <td><input type="text" class="form-control" name="" value=""></td>
-                  <td><input type="text" class="form-control" name="" value=""></td>
-                  <td><input type="text" class="form-control" name="" value=""></td>
-                  <td><input type="text" class="form-control" name="" value=""></td>
-                  <td><input type="text" class="form-control" name="" value=""></td>
+                  <td><input type="number" class="form-control" name="" value=""></td>
+                  <td><input type="number" class="form-control" name="" value=""></td>
+                  <td><input type="number" class="form-control" name="" value=""></td>
+                  <td><input type="number" class="form-control" name="" value=""></td>
+                  <td><input type="number" class="form-control" name="" value=""></td>
+                  <td><input type="number" class="form-control" name="" value=""></td>
                   <td><button class="btn btn-sm" onclick="min_elem_hasil_produksi(this)"><i class="fa fa-times"></i></button></td>
                 </tr>
               </tbody>
@@ -378,10 +378,10 @@
             <tr>
               <td style="width:70px"> <b>Total</b> </td>
               <td>:</td>
-              <td><center><input type="text" class="form-control" readonly style="width:80%" name="" value=""></center> </td>
+              <td><center><input type="text" class="form-control lph_total" readonly style="width:80%" name="" value=""></center> </td>
               <td style="width:70px"> <b>Kurang</b> </td>
               <td>:</td>
-              <td><center><input type="text" class="form-control" readonly style="width:80%" name="" value=""></center> </td>
+              <td><center><input type="text" class="form-control lph_kurang" readonly style="width:80%" name="" value=""></center> </td>
             </tr>
           </table>
         </div>
@@ -397,8 +397,61 @@
 
 <script type="text/javascript">
   function lph_add_row_hasil_produksi() {
-
-  }
+    let no = Number($('.tbl_lph_add_comp tbody tr').length)+1;
+    $('.tbl_lph_add_comp tbody').append(`<tr>
+                                          <td>${no}</td>
+                                          <td><input type="text" class="form-control"  name="kodepart[]" value=""></td>
+                                          <td><input type="text" class="form-control"  name="namapart[]" value=""></td>
+                                          <td>
+                                            <select class="LphAlatBantu" name="alatbantu[]" style="width:200px"></select>
+                                          </td>
+                                          <td><input type="text" class="form-control"  name="kodemesin[]" value=""></td>
+                                          <td><input type="text" class="form-control"  name="waktumesin[]" value=""></td>
+                                          <td>
+                                            <select class="select2" name="kodeproses[]" style="width:100%"></select>
+                                          </td>
+                                          <td><input type="text" class="form-control"  name="namaproses[]" value=""></td>
+                                          <td><input type="text" class="form-control lph_target_harian" name="target_harian[]" readonly value=""></td>
+                                          <td><input type="text" class="form-control" name="target_seratus_persen[]" readonly value=""></td>
+                                          <td><input type="number" class="form-control lph_aktual" name="aktual[]" value=""></td>
+                                          <td><input type="text" class="form-control lph_persentase" name="persentase[]" value="" readonly></td>
+                                          <td><input type="number" class="form-control lph_hasil_baik" name="hasil_baik[]" value=""></td>
+                                          <td><input type="number" class="form-control" name="" value=""></td>
+                                          <td><input type="number" class="form-control" name="" value=""></td>
+                                          <td><input type="number" class="form-control" name="" value=""></td>
+                                          <td><input type="number" class="form-control" name="" value=""></td>
+                                          <td><input type="number" class="form-control" name="" value=""></td>
+                                          <td><input type="number" class="form-control" name="" value=""></td>
+                                          <td><button class="btn btn-sm" onclick="min_elem_hasil_produksi(this)"><i class="fa fa-times"></i></button></td>
+                                        </tr>`);
+      $(".LphAlatBantu").select2({
+        minimumInputLength: 3,
+        maximumSelectionLength: 3,
+        ajax: {
+          url: baseurl + 'LaporanProduksiHarian/action/AlatBantu/',
+          dataType: 'json',
+          type: "POST",
+          data: function(params) {
+            var queryParameters = {
+              ab: params.term,
+              alatBantu: $('#txtAlatBantu').val()
+            }
+            return queryParameters;
+          },
+          processResults: function(alatBantu) {
+            return {
+              results: $.map(alatBantu, function(obj) {
+                return {
+                  id: obj.fs_nm_tool + ' - '+obj.fs_no_tool,
+                  text: obj.fs_nm_tool + ' - '+obj.fs_no_tool
+                }; //njg
+              })
+            };
+          }
+        }
+      });
+      // $('.select2').select2();
+}
 
   $('.lph_aktual').on('input', function() {
     let target = $(this).parent().parent('tr').find('.lph_target_harian').val();
@@ -418,6 +471,15 @@
       $(this).parent().parent('tr').find('.lph_persentase').val('');
       $(this).parent().parent('tr').find('.lph_hasil_baik').val('');
     }
+
+    //total
+    let total = 0;
+    $('.lph_persentase').each((index, item)=>{
+      total += Number($(item).val().replace('%',''));
+      $('.lph_total').val(`${total.toFixed(2)}%`);
+      $('.lph_kurang').val(`${(100-Number(total)).toFixed(2)}%`);
+    });
+
   })
 
     function min_elem_pwe(th) {
@@ -537,9 +599,11 @@
       if (n == 'Friday' || n == 'Saturday') {
         menit = 360;
         standar = 330;
+        $('.lph_jenis_target').text('J-S');
       }else {
         menit = 420;
         standar = 390;
+        $('.lph_jenis_target').text('S-K');
       }
       $('.lph_waktu_kerja').text(menit);
       $('.lph_w_standar_efk').text(standar);
