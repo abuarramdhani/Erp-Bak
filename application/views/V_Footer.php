@@ -143,7 +143,6 @@
 				<script src="<?= base_url('assets/js/customMC.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customSM.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customPKEL.js') ?>"></script>
-				<script src="<?= base_url('assets/js/customECM.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customLKKK.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customWH.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customWMS.js') ?>"></script>
@@ -157,7 +156,6 @@
 				<script src="<?= base_url('assets/js/customMA.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customTI.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customTF.js') ?>"></script>
-				<script src="<?= base_url('assets/js/customPPH.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customSPL.js?version=' . filemtime('assets/js/customSPL.js')) ?>) ?>"></script>
 				<script src="<?= base_url('assets/js/customWHS.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customBK.js') ?>"></script>
@@ -165,17 +163,14 @@
 				<script src="<?= base_url('assets/js/customPD.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customMPO.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customOR.js') ?>"></script>
-				<script src="<?= base_url('assets/js/customMOA.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customET.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customOSP.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customML.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customMPBG.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customSGA.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customTB.js') ?>"></script>
-				<script src="<?= base_url('assets/js/customPurM.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customTK.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customAS.js') ?>"></script>
-				<script src="<?= base_url('assets/js/customMBK.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customMPM.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customPCP.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customCSC.js') ?>"></script>
@@ -184,16 +179,13 @@
 				<script src="<?= base_url('assets/js/customMLPA.js'); ?>"></script>
 				<script src="<?= base_url('assets/js/customMLPD.js'); ?>"></script>
 				<script src="<?= base_url('assets/js/customMPR.js'); ?>"></script>
-				<script src="<?= base_url('assets/js/customMBI.js'); ?>"></script>
 				<script src="<?= base_url('assets/js/customPLO.js'); ?>"></script>
 				<script src="<?= base_url('assets/js/customPBD.js'); ?>"></script>
 				<script src="<?= base_url('assets/js/customSI.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customSPS.js'); ?>"></script>
 				<script src="<?= base_url('assets/js/customMFO.js'); ?>"></script>
 				<script src="<?= base_url('assets/js/customVBC.js'); ?>"></script>
-				<script src="<?= base_url('assets/js/customMBP.js'); ?>"></script>
 				<script src="<?= base_url('assets/js/customMSO.js'); ?>"></script>
-				<script src="<?= base_url('assets/js/customPPHC.js'); ?>"></script>
 				<script src="<?= base_url('assets/js/customMPG.js'); ?>"></script>
 				<script src="<?= base_url('assets/js/customPSS.js'); ?>"></script>
 				<script src="<?= base_url('assets/js/customRL.js'); ?>"></script>
@@ -210,7 +202,6 @@
 				<script src="<?= base_url('assets/js/customRJP.js'); ?>"></script>
 			  <script src="<?= base_url('assets/js/customMD.js?version='.filemtime('assets/js/customMD.js')) ?>"></script>
 				<script src="<?= base_url('assets/js/customIPM.js'); ?>"></script>
-				<script src="<?= base_url('assets/js/customPSPT.js'); ?>"></script>
 				<script type="text/javascript" src="<?= base_url('assets/js/customKTR.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customHW.js'); ?>"></script>
 				<script src="<?= base_url('assets/js/customMCC.js'); ?>"></script>
