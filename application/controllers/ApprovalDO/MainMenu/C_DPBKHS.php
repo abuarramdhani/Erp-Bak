@@ -36,7 +36,7 @@ class C_DPBKHS extends CI_Controller
             'delete'    => 'disabled'
         ];
 
-        if ($this->session->user === 'B0445' || $this->session->user === 'H6843' || $this->session->user === 'H6968' || $this->session->user === 'K1778' || $this->session->user === 'A2146') {
+        if ($this->session->user === 'B0445' || $this->session->user === 'H7611' || $this->session->user === 'H6843' || $this->session->user === 'H6968' || $this->session->user === 'K1778' || $this->session->user === 'A2146') {
             $data['UserAccess'] = [
                 'add_data' => '',
                 'delete'   => ''
@@ -95,7 +95,7 @@ class C_DPBKHS extends CI_Controller
             'delete'    => 'disabled'
         ];
 
-        if ($this->session->user === 'B0445' || $this->session->user === 'H6843' || $this->session->user === 'H6968' || $this->session->user === 'K1778') {
+        if ($this->session->user === 'B0445' || $this->session->user === 'H7611' || $this->session->user === 'H6843' || $this->session->user === 'H6968' || $this->session->user === 'K1778') {
             $data['UserAccess'] = [
                 'add_data' => '',
                 'delete'   => ''
@@ -140,7 +140,7 @@ class C_DPBKHS extends CI_Controller
             'save'       => 'disabled'
         ];
 
-        if ($this->session->user === 'B0445' || $this->session->user === 'H6843' || $this->session->user === 'H6968' || $this->session->user === 'K1778') {
+        if ($this->session->user === 'B0445' || $this->session->user === 'H7611' || $this->session->user === 'H6843' || $this->session->user === 'H6968' || $this->session->user === 'K1778') {
             $data['UserAccess'] = [
                 'add_row'    => '',
                 'edit_field' => '',
