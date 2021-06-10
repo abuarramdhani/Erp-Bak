@@ -9,7 +9,7 @@
             <th class="text-center">Interorg Status</th>
             <th class="text-center">IO Tujuan</th>
             <th class="text-center">Receipt Date</th>
-            <th class="text-center">Action</th>
+            <th class="text-center" style="width: 200px;">Action</th>
         </tr>
     </thead>
     <tbody>
@@ -25,7 +25,16 @@
                 <td class="text-center"><?= $v['INTERORG_STATUS'] ?></td>
                 <td class="text-center"><?= $v['IO_TUJUAN'] ?></td>
                 <td class="text-center"><?= $v['TANGGAL_RECEIPT'] ?></td>
-                <td class="text-center"><button class="btn btn-sm btn-default" onclick="DetailSPB(<?= $i ?>)">Detail</button></td>
+                <td class="text-center">
+                    <button class="btn btn-sm btn-default" onclick="DetailSPB(<?= $i ?>)">Detail</button>
+                    <?php if ($v['LINK'] == "-") { ?>
+                        <a disabled="disabled" target="_blank" class="btn btn-primary btn-sm">View Dokumen</a>
+                        <p style="font-size: 8pt;color:red;">*Dokumen Belum Ada</p>
+                    <?php } else { ?>
+                        <a href="http://produksi.quick.com/api-scanner-doc-satpam/assets/img/docsatpam/<?= $v['LINK'] ?>.jpeg" target="_blank" class="btn btn-primary btn-sm">View Dokumen</a>
+                        <p style="font-size: 8pt;">*Dokumen Sudah Ada, Silahkan Klik Tombol View Dokumen</p>
+                    <?php } ?>
+                </td>
             </tr>
         <?php $i++;
         } ?>

@@ -1,5 +1,25 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
+set_include_path(get_include_path() . PATH_SEPARATOR . 'phpseclib');
+
+include(APPPATH . 'third_party/phpseclib/Net/SSH2.php');
+include(APPPATH . 'third_party/phpseclib/Net/SFTP.php');
+include(APPPATH . 'third_party/phpseclib/Crypt/RSA.php');
+include(APPPATH . 'third_party/phpseclib/Math/BigInteger.php');
+include(APPPATH . 'third_party/phpseclib/Crypt/Hash.php');
+include(APPPATH . 'third_party/phpseclib/Crypt/Random.php');
+include(APPPATH . 'third_party/phpseclib/Crypt/Base.php');
+include(APPPATH . 'third_party/phpseclib/Crypt/Rijndael.php');
+include(APPPATH . 'third_party/phpseclib/Crypt/AES.php');
+include(APPPATH . 'third_party/phpseclib/Crypt/Blowfish.php');
+include(APPPATH . 'third_party/phpseclib/Crypt/DES.php');
+include(APPPATH . 'third_party/phpseclib/Crypt/RC2.php');
+include(APPPATH . 'third_party/phpseclib/Crypt/RC4.php');
+include(APPPATH . 'third_party/phpseclib/Crypt/TripleDES.php');
+include(APPPATH . 'third_party/phpseclib/Crypt/Twofish.php');
+
+use phpseclib\Net\SFTP;
+
 class C_Monspb extends CI_Controller
 {
     function __construct()
@@ -129,12 +149,36 @@ class C_Monspb extends CI_Controller
 
         $header = $this->M_monspb->ListSpb($where);
 
+        $sftp = new SFTP('produksi.quick.com');
+        error_reporting(0);
+        if (!$sftp->login('root', '123456')) {
+            throw new Exception('Gagal melakukan autentikasi ke Server Produksi.');
+        }
+
+        $files = $sftp->nlist('/var/www/html/api-scanner-doc-satpam/assets/img/docsatpam', true);
+
+        for ($i = 0; $i < count($files); $i++) {
+            $info = pathinfo($files[$i]);
+            $name = basename($files[$i], '.' . $info['extension']);
+            $files[$i] = $name;
+        }
+
+        for ($i = 0; $i < count($header); $i++) {
+            if (in_array($header[$i]['NO_SPB'], $files)) {
+                $header[$i]['LINK'] = $header[$i]['NO_SPB'];
+            } else {
+                $header[$i]['LINK'] = '-';
+            }
+        }
+
         $data['header'] = $header;
 
         $this->load->view('MonitoringSPB/V_tbl_List', $data);
 
         // echo "<pre>";
-        // print_r($spb);
+        // print_r($header);
+        // print_r($files);
+
         // exit();
     }
 }
