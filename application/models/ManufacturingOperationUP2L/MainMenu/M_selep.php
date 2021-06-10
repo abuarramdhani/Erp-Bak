@@ -387,7 +387,7 @@ class M_selep extends CI_Model
 
     public function getSelep()
     {
-        $sql = "SELECT * FROM mo.mo_selep ORDER BY extract(month from selep_date) desc, extract(year from selep_date) desc, extract(day from selep_date), shift, job_id";
+        $sql = "SELECT * FROM mo.mo_selep WHERE delete_info is null ORDER BY extract(month from selep_date) desc, extract(year from selep_date) desc, extract(day from selep_date), shift, job_id";
         $query = $this->db->query($sql);
         return $query->result_array();
     }
@@ -408,7 +408,7 @@ class M_selep extends CI_Model
                             (
                               SELECT mfo.*
                               FROM
-                                  (SELECT * FROM mo.mo_selep ORDER BY extract(month from selep_date) desc, extract(year from selep_date) desc, extract(day from selep_date), shift, job_id) mfo
+                                  (SELECT * FROM mo.mo_selep WHERE delete_info is null ORDER BY extract(month from selep_date) desc, extract(year from selep_date) desc, extract(day from selep_date), shift, job_id, batch_no) mfo
                               WHERE
                                     (
                                       component_code LIKE '%{$explode}%'
@@ -416,6 +416,7 @@ class M_selep extends CI_Model
                                       OR selep_date::text LIKE '%{$explode}%'
                                       OR job_id LIKE '%{$explode}%'
                                       OR shift LIKE '%{$explode}%'
+                                      OR batch_no LIKE '%{$explode}%'
                                     )
                             ) skdav
 
@@ -433,7 +434,7 @@ class M_selep extends CI_Model
         "SELECT
             COUNT(*) AS \"count\"
         FROM
-        (SELECT selep_id FROM mo.mo_selep ORDER BY extract(month from selep_date) desc, extract(year from selep_date) desc, extract(day from selep_date), shift, job_id) kdo"
+        (SELECT selep_id FROM mo.mo_selep WHERE delete_info is null ORDER BY extract(month from selep_date) desc, extract(year from selep_date) desc, extract(day from selep_date), shift, job_id) kdo"
         )->row_array();
     }
 
@@ -444,7 +445,7 @@ class M_selep extends CI_Model
         "SELECT
               COUNT(*) AS \"count\"
             FROM
-            (SELECT * FROM mo.mo_selep ORDER BY extract(month from selep_date) desc, extract(year from selep_date) desc, extract(day from selep_date), shift, job_id) kdo
+            (SELECT * FROM mo.mo_selep WHERE delete_info is null ORDER BY extract(month from selep_date) desc, extract(year from selep_date) desc, extract(day from selep_date), shift, job_id) kdo
             WHERE
             (
               component_code LIKE '%{$explode}%'
@@ -452,6 +453,7 @@ class M_selep extends CI_Model
               OR selep_date::text LIKE '%{$explode}%'
               OR job_id LIKE '%{$explode}%'
               OR shift LIKE '%{$explode}%'
+              OR batch_no LIKE '%{$explode}%'
             )"
         )->row_array();
     }
