@@ -43,7 +43,9 @@
 	</style>
 
 <body>
-<?php foreach ($data as $key => $value) {?>
+<?php foreach ($data as $key => $value) {
+	$satuan_laju = $value[0]['ID_CATEGORY'] == 15 || $value[0]['ID_CATEGORY'] == 19 || $value[0]['ID_CATEGORY'] == 13 || $value[0]['ID_CATEGORY'] == 14 ? 'pcs' : 'unit';
+?>
 <div class="row" style="padding-left:0px;padding-right:0px">
 <table style="width: 100%; border-bottom :0px; border-collapse: collapse;" >
     <tr>
@@ -56,7 +58,7 @@
         <td style="border-bottom:0px solid black; border-collapse: collapse;text-align:center;font-size: 12px"><?= ($tanggal)?>/<?= ($hari - 4)?> hari kerja = <?= round((($tanggal)/($hari - 4)) * 100, 2)?>% </td>
     </tr>
     <tr>
-        <td style="border-bottom:0px solid black; border-collapse: collapse;text-align:center;font-size: 12px">Target laju saat ini : <?= round(($total[$key]['TARGET'] - $total[$key]['REAL_PROD'])/ (($hari - 4) - $tanggal)) ?> unit</td>
+        <td style="border-bottom:0px solid black; border-collapse: collapse;text-align:center;font-size: 12px">Target laju saat ini : <?= round(($total[$key]['TARGET'] - $total[$key]['REAL_PROD'])/ (($hari - 4) - $tanggal)).' '.$satuan_laju?></td>
     </tr>
 </table>
 </div>
