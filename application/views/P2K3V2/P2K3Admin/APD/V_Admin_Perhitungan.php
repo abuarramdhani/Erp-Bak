@@ -48,6 +48,8 @@
                                                     <th scope="col">APD</th>
                                                     <th scope="col">Jumlah Kebutuhan</th>
                                                     <th scope="col">Outstanding Bon</th>
+                                                    <th scope="col">Transact</th>
+                                                    <th scope="col">Non Bon</th>
                                                     <th scope="col">Stock Gudang</th>
                                                     <th scope="col">Outstanding PO</th>
                                                     <th scope="col">PO Number</th>
@@ -73,6 +75,12 @@
                                                     <td>
                                                         <?php echo $key['outBon']; ?>
                                                         <input hidden="" class="p2k3_ob" type="text" value="<?php echo $key['outBon']; ?>">
+                                                    </td>
+                                                    <td>
+                                                        <?php echo $key['transact']; ?>
+                                                    </td>
+                                                    <td>
+                                                        <?php echo ($key['jml_kebutuhan']-$key['outBon']); ?>
                                                     </td>
                                                     <td class="p2k3_stok">
                                                         <?php echo $key['stokg']; ?>
@@ -101,6 +109,8 @@
                                                     <th scope="col">APD</th>
                                                     <th scope="col">Jumlah Kebutuhan</th>
                                                     <th scope="col">Outstanding Bon</th>
+                                                    <th scope="col">Transact</th>
+                                                    <th scope="col">Non Bon</th>
                                                     <th scope="col">Stock Gudang</th>
                                                     <th scope="col">Outstanding PO</th>
                                                     <th scope="col">PO Number</th>
@@ -126,6 +136,12 @@
                                                     <td>
                                                         <?php echo $key['outBon']; ?>
                                                         <input hidden="" class="p2k3_ob" type="text" value="<?php echo $key['outBon']; ?>">
+                                                    </td>
+                                                    <td>
+                                                        <?php echo $key['transact']; ?>
+                                                    </td>
+                                                    <td>
+                                                        <?php echo ($key['jml_kebutuhan']-$key['outBon']); ?>
                                                     </td>
                                                     <td class="p2k3_stok">
                                                         <?php echo $key['stokg']; ?>
