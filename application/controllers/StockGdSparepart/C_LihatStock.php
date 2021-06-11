@@ -48,8 +48,8 @@ class C_LihatStock extends CI_Controller
 		}else {
 			$data['UserMenu'] = $UserMenu;
 		}
-		
-		if ($user == 'B0901' || $user == 'T0016') {
+		$seksi = $this->M_lihatstock->getseksi($user);
+		if ($user == 'B0901' || $user == 'T0016' || $seksi[0]['seksi'] == 'GUDANG D & E') {
 			$data['tglawal']    = date('d/m/Y', strtotime('-1 year', strtotime( date('Y-m-d') )));;
 			$data['tglakhir']   = date('d/m/Y');
 			$data['subinv']     = 'SP-YSP';

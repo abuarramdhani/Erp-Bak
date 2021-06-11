@@ -43,7 +43,7 @@
             }else {
                 $td = '';
             }
-            $peti = $siapa == 'B0901' ? '' : 'readonly';
+            $peti = $siapa == 'B0901' || $seksi[0]['seksi'] == 'GUDANG D & E' ? '' : 'readonly';
         ?>
             <tr>
                 <td class="<?= $td?>"><?= $i?>

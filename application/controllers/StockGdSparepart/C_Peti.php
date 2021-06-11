@@ -65,6 +65,7 @@ class C_Peti extends CI_Controller
 		$data['tglAk'] 	= $tglAk;
 		$data['subinv'] = $subinv;
 		$data['siapa']  = $this->session->user;
+		$data['seksi'] = $this->M_lihatstock->getseksi($this->session->user);
 		$datanya = array();
     for ($i=0; $i < count($kode_awal); $i++) { 
 			$kode = "and msib.segment1 = '".$kode_awal[$i]['kode']."'";
