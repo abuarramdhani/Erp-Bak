@@ -212,6 +212,13 @@ class C_Index extends CI_Controller
 				$key['outBon'] = $out;
 				$key['stokg'] = $stok;
 
+				$lnobon = $key['list_no_bon'];
+				if (empty($lnobon)) {
+					$key['transact'] = 0;
+				}else{
+					$key['transact'] = $this->M_dtmasuk->getttlTransactAPD($lnobon, $kode);
+				}
+
 				$jpp = ceil(($a * 1.1) + $out - $stok - $totalPO);
 				$key['jpp'] = ($jpp < 0) ? 0 : ceil( $jpp / $moq ) * $moq;
 
@@ -247,6 +254,13 @@ class C_Index extends CI_Controller
 				$out = ($a - $b);
 				$row['outBon'] = $out;
 				$row['stokg'] = $stok;
+
+				$lnobon = $key['list_no_bon'];
+				if (empty($lnobon)) {
+					$key['transact'] = 0;
+				}else{
+					$key['transact'] = $this->M_dtmasuk->getttlTransactAPD($lnobon, $kode);
+				}
 
 				$jpp = ceil(($a * 1.1) + $out - $stok - $totalPO);
 				$row['jpp'] = ($jpp < 0) ? 0 : ceil( $jpp / $moq ) * $moq;

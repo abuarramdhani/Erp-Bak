@@ -584,7 +584,8 @@ class M_Dtmasuk extends CI_Model
                     mon.item ,
                     sum(mon.jml_kebutuhan) jml_kebutuhan ,
                     sum(mon.ttl_bon) ttl_bon ,
-                    sum(mon.sisa_saldo) sisa_saldo
+                    sum(mon.sisa_saldo) sisa_saldo,
+                    mon.list_no_bon
                 from
                     (
                     select
@@ -593,7 +594,8 @@ class M_Dtmasuk extends CI_Model
                         km.item,
                         sum(kh.jml_kebutuhan::int) jml_kebutuhan,
                         coalesce(bon.ttl_bon, 0) ttl_bon,
-                        sum(kh.jml_kebutuhan::int)-coalesce(bon.ttl_bon, 0) sisa_saldo
+                        sum(kh.jml_kebutuhan::int)-coalesce(bon.ttl_bon, 0) sisa_saldo,
+                        bon.list_no_bon
                     from
                         k3.k3_master_item km,
                         k3.k3n_hitung kh
@@ -601,7 +603,8 @@ class M_Dtmasuk extends CI_Model
                         select
                             kb.periode,
                             kb.item_code,
-                            sum(jml_bon::int) ttl_bon
+                            sum(jml_bon::int) ttl_bon,
+                            string_agg(kb.no_bon::text, ',') list_no_bon
                         from
                             k3.k3n_bon kb
                         where
@@ -631,11 +634,13 @@ class M_Dtmasuk extends CI_Model
                         kh.periode,
                         kh.item_kode,
                         km.item,
+                        bon.list_no_bon,
                         bon.ttl_bon) mon
                 group by
                     mon.periode ,
                     mon.item_kode ,
-                    mon.item
+                    mon.item,
+                    mon.list_no_bon
                 order by
                     3;";
         // echo $sql;exit();
@@ -1870,5 +1875,20 @@ class M_Dtmasuk extends CI_Model
                   FROM mtl_system_items_b msib
                 WHERE msib.organization_id = 81 AND msib.segment1 = '$item'";
         return $this->oracle->query($sql)->row_array();
+    }
+
+    function getttlTransactAPD($no_bon, $apd)
+    {
+        $sql = "SELECT
+                    sum(PENYERAHAN) transact
+                FROM
+                    im_master_bon
+                WHERE
+                    no_bon IN($no_bon)
+                    AND kode_barang = '$apd'";
+        if (empty($this->oracle->query($sql)->row()->TRANSACT)) {
+            return 0;
+        }
+        return $this->oracle->query($sql)->row()->TRANSACT;
     }
 }
