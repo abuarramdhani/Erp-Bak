@@ -110,8 +110,8 @@ class C_Arsip extends CI_Controller
 			$row[] = $val['COLY'];
 			$row[] = '<button type="button" class="btn btn-md bg-teal" onclick="editColy('.$no.')">Edit Coly</button>';
 			$row[] = '<a href="'.base_url().'KapasitasGdSparepart/Pelayanan/cetakPL/'.$val['NO_DOKUMEN'].'" target="_blank" class="btn btn-danger btn-md"><i class="fa fa-file-pdf-o"> PL1</i></a>
-								<a href="http://192.168.168.196/erp-2021/KapasitasGdSparepart/Pelayanan/cetakPL2/'.$val['NO_DOKUMEN'].'" target="_blank" class="btn btn-danger btn-md mt-2"><i class="fa fa-file-pdf-o"> PL2</i></a>
-								<a href="http://192.168.168.196/erp-2021/KapasitasGdSparepart/Pelayanan/cetakSM/'.$val['NO_DOKUMEN'].'" target="_blank" class="btn btn-info btn-md mt-2"><i class="fa fa-file-pdf-o"> SM</i></a>';
+								<a href="'.base_url().'KapasitasGdSparepart/Pelayanan/cetakPL2/'.$val['NO_DOKUMEN'].'" target="_blank" class="btn btn-danger btn-md mt-2"><i class="fa fa-file-pdf-o"> PL2</i></a>
+								<a href="'.base_url().'KapasitasGdSparepart/Pelayanan/cetakSM/'.$val['NO_DOKUMEN'].'" target="_blank" class="btn btn-info btn-md mt-2"><i class="fa fa-file-pdf-o"> SM</i></a>';
 
             $data[] = $row;
         }
