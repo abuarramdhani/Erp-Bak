@@ -123,7 +123,7 @@ class M_monhansub extends CI_Model{
                      END di_subkon
                 FROM (SELECT DISTINCT mil.description subkon, kmhs.locator_name,
                                       kmhs.handling_code, kmhs.handling_name,
-                                      kshs.saldo_awal,
+                                      NVL (kshs.saldo_awal, 0) saldo_awal,
                                       NVL ((SELECT SUM (kmhs2.transaction_quantity)
                                               FROM khs_mon_handling_subkon kmhs2
                                              WHERE kmhs2.locator_name = kmhs.locator_name
@@ -138,7 +138,7 @@ class M_monhansub extends CI_Model{
                                                AND kmhs2.transaction_type = 'IN'),
                                            0
                                           ) i,
-                                        kshs.saldo_awal
+                                        NVL (kshs.saldo_awal, 0)
                                       + NVL ((SELECT SUM (kmhs2.transaction_quantity)
                                                 FROM khs_mon_handling_subkon kmhs2
                                                WHERE kmhs2.locator_name = kmhs.locator_name
@@ -159,8 +159,8 @@ class M_monhansub extends CI_Model{
                                       mtl_item_locations mil,
                                       khs_saldo_handling_subkon kshs
                                 WHERE kmhs.locator_name = mil.segment1
-                                  AND kshs.locator_name = kmhs.locator_name
-                                  AND kshs.handling_code = kmhs.handling_code
+                                  AND kshs.locator_name(+) = kmhs.locator_name
+                                  AND kshs.handling_code(+) = kmhs.handling_code
                              GROUP BY mil.description,
                                       kmhs.locator_name,
                                       kmhs.handling_code,
