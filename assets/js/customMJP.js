@@ -167,6 +167,14 @@ function getCompMonitoring(no, batas) {
                 // console.log(result,no)
                 $('[name = "ini_comp'+no+'"]').html('<b>Completion :</b> '+result+'')
                 $('[name ="completion'+no+'"]').val(result);
+                var jumlah      = $('.val_completion').map(function(){return $(this).val();}).get();
+                var sumjml      = jumlah.map( function(elt){ // assure the value can be converted into a number
+                                        return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
+                                    }).reduce( function(a,b){ // sum all resulting numbers
+                                        return a+b
+                                    })
+                // console.log(sumjml/2)
+                $('.jml_all_comp').html('<b>Completion :</b> '+(sumjml/2)+'')
                 getCompMonitoring((no+1), batas);
             }
         })
@@ -520,11 +528,25 @@ function create_job_otomatis(th) {
                         console.log(result);
                         hitung_mulai = parseInt(hitung_mulai) + 1;
                         if (hitung_mulai == sumjml) {
-                            var tambahan = '<i class="fa fa-check" style="color:green"></i>';
+                            var tambahan = '<i class="fa fa-spinner fa-spin"></i>';
+                            $('#ket_create_job').html(hitung_mulai+'/'+sumjml+' '+tambahan);
+                            //run api
+                            console.log('run api');
+                            $.ajax({
+                                url : baseurl+"MonitoringJobProduksi/SetPlan/runAPICreateJob",
+                                data : {kategori : kategori},
+                                type : 'POST',
+                                dataType : 'json',
+                                success : function (data) {
+                                    console.log('sukses api',data);
+                                    var tambahan = '<i class="fa fa-check" style="color:green"></i>';
+                                    $('#ket_create_job').html(hitung_mulai+'/'+sumjml+' '+tambahan);
+                                }
+                            });
                         }else{
-                            var tambahan = '';
+                            var tambahan = '<i class="fa fa-spinner fa-spin"></i>';
+                            $('#ket_create_job').html(hitung_mulai+'/'+sumjml+' '+tambahan);
                         }
-                        $('#ket_create_job').html(hitung_mulai+'/'+sumjml+' '+tambahan);
                     },
                 });
             }

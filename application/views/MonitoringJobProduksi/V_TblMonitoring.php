@@ -33,7 +33,7 @@
                 <input type="hidden" id="inv<?= $no?>" name="inv<?= $no?>" value="<?= $value['INVENTORY_ITEM_ID']?>"> 
                 <input type="hidden" name="wip<?= $no?>"> 
                 <input type="hidden" name="picklist<?= $no?>"> 
-                <input type="hidden" name="completion<?= $no?>"> 
+                <input type="hidden" name="completion<?= $no?>" class="val_completion"> 
                 <input type="hidden" name="fg_tks<?= $no?>"> 
                 <input type="hidden" name="mlati<?= $no?>"> 
                 <input type="hidden" name="av_pick<?= $no?>"> 
@@ -143,7 +143,9 @@
     <?php if($no-1 > 0) {?>
         <tr>
             <td style="font-weight:bold">Total</td>
-            <td><input type="hidden" name="jml_item" value="<?= $no-1?>"><?= $no-1?></td>
+            <td><input type="hidden" name="jml_item" value="<?= $no-1?>"><?= $no-1?>
+                <br><span class="jml_all_comp"></span>
+            </td>
             <td><p>P</p>
             <?php if ($ket == 'All' || $ket == 'PA') { ?>
                 <p>A</p>
