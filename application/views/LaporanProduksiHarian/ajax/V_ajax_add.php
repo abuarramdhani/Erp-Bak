@@ -120,7 +120,7 @@
             <table class="table table-bordered" style="width:100%;">
               <thead class="bg-primary">
                 <tr>
-                  <td style="width:30%">Faktor</td>
+                  <td style="width:50%">Faktor</td>
                   <td>Menit</td>
                   <td style="width:10%"> </td>
                 </tr>
@@ -253,6 +253,24 @@
   </div>
 <script type="text/javascript">
 
+function itungitung() {
+  //pwe
+  let pengurangan_waktu_efektif = 0;
+  $('.menit_pwe').each((index, item) => {
+    pengurangan_waktu_efektif += Number($(item).val());
+  });
+  pengurangan_waktu_efektif = (pengurangan_waktu_efektif/Number($('.lph_w_standar_efk').text()))*100;
+
+  //total
+  let total = 0;
+  $('.lph_persentase').each((index, item)=>{
+    total += Number($(item).val().replace('%',''));
+    total_master =(Number(total)+Number(pengurangan_waktu_efektif));
+    $('.lph_total').val(`${total_master.toFixed(2)}%`);
+    $('.lph_kurang').val(`${(100-Number(total_master)).toFixed(2)}%`);
+  });
+}
+
 function lph_add_row_hasil_produksi() {
   let no = Number($('.tbl_lph_add_comp tbody tr').length)+1;
   $('.tbl_lph_add_comp tbody').append(`<tr>
@@ -301,7 +319,7 @@ function lph_add_row_hasil_produksi() {
               return {
                 id: obj.fs_nm_tool + ' - '+obj.fs_no_tool,
                 text: obj.fs_nm_tool + ' - '+obj.fs_no_tool
-              }; //njg
+              };
             })
           };
         }
@@ -329,18 +347,13 @@ function lph_add_row_hasil_produksi() {
       $(this).parent().parent('tr').find('.lph_hasil_baik').val('');
     }
 
-    //total
-    let total = 0;
-    $('.lph_persentase').each((index, item)=>{
-      total += Number($(item).val().replace('%',''));
-      $('.lph_total').val(`${total.toFixed(2)}%`);
-      $('.lph_kurang').val(`${(100-Number(total)).toFixed(2)}%`);
-    });
+    itungitung();
 
   })
 
   function min_elem_pwe(th) {
     $(th).parent().parent('tr').remove();
+    itungitung();
   }
 
   function min_elem_hasil_produksi(th) {
@@ -351,9 +364,11 @@ function lph_add_row_hasil_produksi() {
     e.preventDefault();
     $('#lph_pwe_area').append(`<tr>
                                 <td><input type="text" class="form-control" name="faktor_pwe" value="${$('.lph_pwe_faktor').val()}"></td>
-                                <td><input type="number" class="form-control" name="menit_pwe" value="${$('.lph_pwe_waktu').val()}"></td>
+                                <td><input type="number" class="form-control menit_pwe" name="menit_pwe" value="${$('.lph_pwe_waktu').val()}"></td>
                                 <td> <button class="btn btn-sm" onclick="min_elem_pwe(this)"><i class="fa fa-times"></i></button></td>
                               </tr>`);
+
+                              itungitung();
   })
 
   // di non aktifkan karena di chrome user versi lama tidak jalan

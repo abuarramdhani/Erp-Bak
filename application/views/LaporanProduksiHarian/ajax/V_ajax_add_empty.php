@@ -129,7 +129,7 @@
                     <input type="number" class="form-control lph_pwe_waktu" required name="" value="">
                   </div>
                   <div class="col-sm-5">
-                    <button type="submit" class="btn btn-primary" style="width:100%" name="button"> <i class="fa fa-download"></i> Tambah </button>
+                    <button type="submit" id="lph_form_pwe" class="btn btn-primary" style="width:100%" name="button"> <i class="fa fa-download"></i> Tambah </button>
                   </div>
                 </div>
               </div>
@@ -139,9 +139,9 @@
             <table class="table table-bordered" style="width:100%;">
               <thead class="bg-primary">
                 <tr>
-                  <td style="width:30%">Faktor</td>
+                  <td style="width:50%">Faktor</td>
                   <td>Menit</td>
-                  <td style="width:10%"> </td>
+                  <td style="width:10%">Aksi</td>
                 </tr>
               </thead>
               <tbody id="lph_pwe_area">
@@ -396,6 +396,24 @@
   </div>
 
 <script type="text/javascript">
+function itungitung() {
+  //pwe
+  let pengurangan_waktu_efektif = 0;
+  $('.menit_pwe').each((index, item) => {
+    pengurangan_waktu_efektif += Number($(item).val());
+  });
+  pengurangan_waktu_efektif = (pengurangan_waktu_efektif/Number($('.lph_w_standar_efk').text()))*100;
+
+  //total
+  let total = 0;
+  $('.lph_persentase').each((index, item)=>{
+    total += Number($(item).val().replace('%',''));
+    total_master =(Number(total)+Number(pengurangan_waktu_efektif));
+    $('.lph_total').val(`${total_master.toFixed(2)}%`);
+    $('.lph_kurang').val(`${(100-Number(total_master)).toFixed(2)}%`);
+  });
+}
+
   function lph_add_row_hasil_produksi() {
     let no = Number($('.tbl_lph_add_comp tbody tr').length)+1;
     $('.tbl_lph_add_comp tbody').append(`<tr>
