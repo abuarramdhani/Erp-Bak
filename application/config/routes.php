@@ -5622,3 +5622,13 @@ $route['MonitoringPendingTrx']	=	'MonitoringPendingTrx/C_Index';
 $route['MonitoringPendingTrx/Monitoring']				= 'MonitoringPendingTrx/C_Monitoring';
 $route['MonitoringPendingTrx/Monitoring/(:any)']		= 'MonitoringPendingTrx/C_Monitoring/$1';
 $route['MonitoringPendingTrx/Monitoring/(:any)/(:any)']	= 'MonitoringPendingTrx/C_Monitoring/$1/$2';
+
+
+// -------------------------- Grouping Master Item -------------------------------------//
+$route['grouping-master-item'] = 'GroupingMasterItem/C_Group';
+$route['grouping-master-item/detail/(:any)'] = 'GroupingMasterItem/C_Group/get_detail_group/$1';
+$route['grouping-master-item/update/(:any)'] = 'GroupingMasterItem/C_Group/input_group_item/$1';
+$route['grouping-master-item/input'] = 'GroupingMasterItem/C_Group/input_group_item';
+$route['grouping-master-item/get-items'] = 'GroupingMasterItem/C_Group/get_data_items';
+$route['grouping-master-item/save-items'] = 'GroupingMasterItem/C_Group/save_data_items';
+$route['grouping-master-item/input/excel'] = 'GroupingMasterItem/C_Group/input_excel';
