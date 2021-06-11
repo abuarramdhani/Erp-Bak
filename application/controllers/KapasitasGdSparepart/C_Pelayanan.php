@@ -403,7 +403,7 @@ class C_Pelayanan extends CI_Controller
 							}
 						}
 		        $data['get_header'] = $this->M_pelayanan->headfootPL($id);
-		        $data['get_body'] = $cek;
+		        // $data['get_body'] = $cek;
 						$data['get_colly'] = $this->M_pelayanan->getTotalColly($id);
 		        $data['total_colly'] = sizeof($data['get_colly']);
 		        $data['total_berat'] = $this->M_pelayanan->getTotalBerat($id);
@@ -485,7 +485,7 @@ class C_Pelayanan extends CI_Controller
 			public function cetakPL2($id)
 			    {
 							$body =  $this->M_pelayanan->bodyPL($id);
-							
+
 							foreach ($body as $key2 => $value) {
 								$tampung_master[$value['COLLY_NUMBER']][] = $value;
 							}

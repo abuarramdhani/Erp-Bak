@@ -75,9 +75,9 @@ class C_Arsip extends CI_Controller
 		}
 		// echo "<pre>";print_r($length);exit();
 		$getdata = array();
-		for ($i= $_POST['start']; $i < $length ; $i++) { 
+		for ($i= $_POST['start']; $i < $length ; $i++) {
 			$coly = $this->M_packing->cekPacking($val[$i]['NO_DOKUMEN']);
-			$val[$i]['COLY'] = count($coly); 
+			$val[$i]['COLY'] = count($coly);
 			$coly2 = $this->M_arsip->cekColy($val[$i]['NO_DOKUMEN']);
 			$val[$i]['COLY'] += count($coly2);
 			// $tgl 	= $this->M_arsip->dataSPB($val[$i]['NO_DOKUMEN']);
@@ -109,10 +109,13 @@ class C_Arsip extends CI_Controller
             $row[] = $val['CANCEL'];
 			$row[] = $val['COLY'];
 			$row[] = '<button type="button" class="btn btn-md bg-teal" onclick="editColy('.$no.')">Edit Coly</button>';
- 
+			$row[] = '<a href="'.base_url().'KapasitasGdSparepart/Pelayanan/cetakPL/'.$val['NO_DOKUMEN'].'" target="_blank" class="btn btn-danger btn-md"><i class="fa fa-file-pdf-o"> PL1</i></a>
+								<a href="'.base_url().'KapasitasGdSparepart/Pelayanan/cetakPL2/'.$val['NO_DOKUMEN'].'" target="_blank" class="btn btn-danger btn-md mt-2"><i class="fa fa-file-pdf-o"> PL2</i></a>
+								<a href="'.base_url().'KapasitasGdSparepart/Pelayanan/cetakSM/'.$val['NO_DOKUMEN'].'" target="_blank" class="btn btn-info btn-md mt-2"><i class="fa fa-file-pdf-o"> SM</i></a>';
+
             $data[] = $row;
         }
- 
+
         $output = array(
                         "draw" => $_POST['draw'],
                         "recordsTotal" => $jml,
@@ -145,17 +148,17 @@ class C_Arsip extends CI_Controller
 			$data['data'] = $coly_baru;
 			$this->load->view('KapasitasGdSparepart/V_ModalArsipColy2', $data);
 		}
-		
+
 		// echo "<pre>";print_r($cek);exit();
 	}
 
 	public function searchDataArsip(){
 		$tgl_awal = $this->input->post('tgl_awal');
 		$tgl_akhir = $this->input->post('tgl_akhir');
-		
+
 		$val = $this->M_arsip->getDataSPB3($tgl_awal, $tgl_akhir);
 		$getdata = array();
-		for ($i= 0; $i < count($val) ; $i++) { 
+		for ($i= 0; $i < count($val) ; $i++) {
 			$coly = $this->M_packing->cekPacking($val[$i]['NO_DOKUMEN']);
 			$val[$i]['COLY'] = count($coly);
 			$coly2 = $this->M_arsip->cekColy($val[$i]['NO_DOKUMEN']);
