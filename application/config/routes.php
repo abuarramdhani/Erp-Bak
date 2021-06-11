@@ -5614,3 +5614,11 @@ $route['MonitoringHandlingSubkon/Stock/(:any)/(:any)']	= 'MonitoringHandlingSubk
 
 $route['PurchaseManagementSendPO/Setup'] = 'PurchaseManagementSendPO/MainMenu/C_Setup';
 $route['PurchaseManagementSendPO/Setup/(:any)'] = 'PurchaseManagementSendPO/MainMenu/C_Setup/$1';
+
+
+// -------------------------------------- Monitoring Pending Transactions --------------------------------------------//
+$route['MonitoringPendingTrx']	=	'MonitoringPendingTrx/C_Index';
+
+$route['MonitoringPendingTrx/Monitoring']				= 'MonitoringPendingTrx/C_Monitoring';
+$route['MonitoringPendingTrx/Monitoring/(:any)']		= 'MonitoringPendingTrx/C_Monitoring/$1';
+$route['MonitoringPendingTrx/Monitoring/(:any)/(:any)']	= 'MonitoringPendingTrx/C_Monitoring/$1/$2';
