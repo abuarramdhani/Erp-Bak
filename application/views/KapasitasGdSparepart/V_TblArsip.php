@@ -21,6 +21,7 @@
                 <th>Tanggal Cancel</th>
                 <th>Jumlah Coly</th>
                 <th>Edit Coly</th>
+                <th style="width:50px">Cetak</th>
             </tr>
         </thead>
         <tbody>
@@ -48,6 +49,10 @@
                 <td><?= $val['CANCEL']?></td>
                 <td><?= $val['COLY']?></td>
                 <td><button type="button" class="btn btn-md bg-teal" onclick="editColy(<?= $no?>)">Edit Coly</button></td>
+                <td>                <?php echo '<a href="'.base_url().'KapasitasGdSparepart/Pelayanan/cetakPL/'.$val['NO_DOKUMEN'].'" target="_blank" class="btn btn-danger btn-md"><i class="fa fa-file-pdf-o"> PL1</i></a>
+                          								<a href="'.base_url().'KapasitasGdSparepart/Pelayanan/cetakPL2/'.$val['NO_DOKUMEN'].'" target="_blank" class="btn btn-danger btn-md mt-2"><i class="fa fa-file-pdf-o"> PL2</i></a>
+                          								<a href="'.base_url().'KapasitasGdSparepart/Pelayanan/cetakSM/'.$val['NO_DOKUMEN'].'" target="_blank" class="btn btn-info btn-md mt-2"><i class="fa fa-file-pdf-o"> SM</i></a>' ?></td>
+
             </tr>
             <?php $no++; }?>
         <tbody>
