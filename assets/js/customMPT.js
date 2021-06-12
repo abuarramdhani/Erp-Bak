@@ -81,6 +81,7 @@ $('#slcSubinv').on("select2:select", function(e) {
 function cariPending(){
   var subinv = $('#slcSubinv option:selected').val();
   var loc = $('#slcLoc option:selected').val();
+  var loc2 = $('#slcLoc option:selected').html();
 
   if (loc == undefined) {
     loc = '';
@@ -99,7 +100,8 @@ function cariPending(){
       url: baseurl + 'MonitoringPendingTrx/Monitoring/getDataMonitoring',
       data: {
         subinv : subinv,
-        loc : loc
+        loc : loc,
+        loc2 : loc2
       },
       type: 'POST',
       beforeSend: function() {
