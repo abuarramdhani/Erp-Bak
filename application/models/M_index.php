@@ -4,7 +4,9 @@ class M_index extends CI_Model
 
 	public function __construct()
 	{
+		parent::__construct();
 		$this->load->database();
+		$this->personalia = $this->load->database('personalia', TRUE);
 		$this->load->library('encrypt');
 	}
 
@@ -193,5 +195,71 @@ class M_index extends CI_Model
 		$personalia = $this->load->database('personalia', true);
 		$sql = "SELECT email_internal, trim(telkomsel_mygroup) nomor from hrd_khs.tpribadi where noind = '$noind'";
 		return $personalia->query($sql)->result_array();
+	}
+
+	public function cekUsername($username)
+	{
+		$sql = "SELECT
+					*
+				from
+					sys.sys_user su
+				left join er.er_employee_all eea on
+					eea.employee_id = su.employee_id
+				where
+					su.user_name = '$username'
+					and eea.resign = 0
+				limit 1";
+		return $this->db->query($sql)->row_array();
+	}
+
+	function randomPassword($length = 6, $add_dashes = false, $available_sets = 'luds')
+	{
+		$sets = array();
+		if(strpos($available_sets, 'l') !== false)
+			$sets[] = 'abcdefghjkmnpqrstuvwxyz';
+		if(strpos($available_sets, 'u') !== false)
+			$sets[] = 'ABCDEFGHJKMNPQRSTUVWXYZ';
+		if(strpos($available_sets, 'd') !== false)
+			$sets[] = '23456789';
+		if(strpos($available_sets, 's') !== false)
+			$sets[] = '!@#$%&*?';
+		$all = '';
+		$password = '';
+		foreach($sets as $set)
+		{
+			$password .= $set[array_rand(str_split($set))];
+			$all .= $set;
+		}
+		$all = str_split($all);
+		for($i = 0; $i < $length - count($sets); $i++)
+			$password .= $all[array_rand($all)];
+		$password = str_shuffle($password);
+		if(!$add_dashes)
+			return $password;
+		$dash_len = floor(sqrt($length));
+		$dash_str = '';
+		while(strlen($password) > $dash_len)
+		{
+			$dash_str .= substr($password, 0, $dash_len) . '-';
+			$password = substr($password, $dash_len);
+		}
+		$dash_str .= $password;
+		return $dash_str;
+	}
+
+	public function getTpribadiIndex($noind, $field = '*')
+	{
+		return $this->personalia
+			->select($field)
+			->from('hrd_khs.tpribadi')
+			->where('noind', $noind)
+			->get()
+			->row();
+	}
+
+	public function insertLogSMS($data)
+	{
+		$this->db->insert('si.si_sent_sms', $data);
+		return $this->db->insert_id();
 	}
 }
