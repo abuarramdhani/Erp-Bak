@@ -70,8 +70,11 @@ class C_Monitoring extends CI_Controller {
     public function getDataMonitoring(){
         $subinv = $this->input->post('subinv');
         $loc = $this->input->post('loc');
+        $loc2 = $this->input->post('loc2');
 
         $data['mon'] = $this->M_monpentrx->getDataMonitoring($subinv,$loc);
+        $data['subinv'] = $subinv;
+        $data['loc2'] = $loc2;
 
         $this->load->view('MonitoringPendingTrx/V_TblMonitoring', $data);
     }
