@@ -5632,3 +5632,6 @@ $route['grouping-master-item/input'] = 'GroupingMasterItem/C_Group/input_group_i
 $route['grouping-master-item/get-items'] = 'GroupingMasterItem/C_Group/get_data_items';
 $route['grouping-master-item/save-items'] = 'GroupingMasterItem/C_Group/save_data_items';
 $route['grouping-master-item/input/excel'] = 'GroupingMasterItem/C_Group/input_excel';
+
+// ----------------------------------- Simulasi Muatan Truk ---------------------------------------------
+$route['MuatanTruk/Simulasi/(:any)'] 						= 'MuatanTruk/C_Simulasi/$1';
