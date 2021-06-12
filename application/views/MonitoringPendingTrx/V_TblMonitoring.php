@@ -17,14 +17,14 @@
         <tbody>
             <?php $no=1; foreach ($mon as $i) { ?>
             <?php 
-                if ($i['FROM_SUBINVENTORY_CODE'] == $subinv && $i['FROM_LOCATOR'] == $loc2) {
+                if ($i['FROM_SUBINVENTORY_CODE'] == $subinv || $i['FROM_LOCATOR'] == $loc2) {
                     $fw1 = 'font-weight: bold; font-size: 16px; color: red;';
                 }
                 else {
                     $fw1 = '';
                 }
 
-                if ($i['TO_SUBINVENTORY_CODE'] == $subinv && $i['TO_LOCATOR'] == $loc2) {
+                if ($i['TO_SUBINVENTORY_CODE'] == $subinv || $i['TO_LOCATOR'] == $loc2) {
                     $fw2 = 'font-weight: bold; font-size: 16px; color: red;';
                 }
                 else {
