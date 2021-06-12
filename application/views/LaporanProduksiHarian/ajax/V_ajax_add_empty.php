@@ -21,7 +21,7 @@
             </div>
             <div class="form-group">
               <label for="">Kelompok</label>
-              <input type="text" class="form-control"  name="" value="">
+              <input type="text" class="form-control" readonly name="" value="">
             </div>
           </div>
           <div class="col-md-7">
@@ -149,7 +149,14 @@
               </tbody>
             </table>
           </div>
-
+          <div class="row">
+            <div class="col-md-6">
+              <b>Total Waktu : <span class="total_waktu_pengurangan" style="color:#337ab7"></span> </b>
+            </div>
+            <div class="col-md-6">
+              <b>Persentase : <span class="persentase_waktu_pengurangan" style="color:#337ab7"></span> </b>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -183,140 +190,6 @@
       </div>
       <div class="box-body">
         <div class="row">
-          <!-- <div class="col-md-6">
-            <div class="form-group">
-              <label for="">Alat Bantu</label>
-              <select class="select2" name="" style="width:100%">
-
-              </select>
-             </div>
-          </div>
-          <div class="col-md-6">
-            <div class="form-group">
-              <label for="">Umur Pakai</label>
-              <input type="text" readonly class="form-control"  name="" value="">
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="form-group">
-              <label for="">Toleransi</label>
-              <input type="text" readonly class="form-control"  name="" value="">
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="form-group">
-              <label for="">Proses</label>
-              <input type="text" readonly class="form-control"  name="" value="">
-            </div>
-          </div> -->
-          <!-- <div class="col-md-6">
-            <div class="form-group">
-              <label for="">Alat Bantu</label>
-              <select class="select2" name="" style="width:100%">
-
-              </select>
-             </div>
-             <div class="form-group">
-               <label for="">Kode Part</label>
-               <input type="text" class="form-control"  name="" value="">
-             </div>
-             <div class="form-group">
-               <label for="">Nama Part</label>
-               <input type="text" readonly class="form-control"  name="" value="">
-             </div>
-             <div class="form-group">
-               <label for="">Kode Proses</label>
-               <select class="select2" name="" style="width:100%">
-
-               </select>
-              </div>
-              <div class="form-group">
-                <label for="">Nama Proses</label>
-                <input type="text" readonly class="form-control"  name="" value="">
-               </div>
-          </div>
-          <div class="col-md-6">
-            <div class="form-group">
-              <label for="">Umur Pakai</label>
-              <input type="text" readonly class="form-control"  name="" value="">
-            </div>
-            <div class="form-group">
-              <label for="">Toleransi</label>
-              <input type="text" readonly class="form-control"  name="" value="">
-            </div>
-            <div class="form-group">
-              <label for="">Proses</label>
-              <input type="text" readonly class="form-control"  name="" value="">
-            </div>
-            <div class="form-group">
-              <label for="">No Mesin</label>
-              <div class="row">
-                <div class="col-sm-7">
-                  <input type="text" class="form-control"  name="" value="">
-                </div>
-                <div class="col-sm-5">
-                  <input type="text" readonly class="form-control"  name="" value="">
-                </div>
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="">Target PPIC</label>
-              <input type="number" class="form-control"  name="" value="">
-            </div>
-          </div>
-        <div class="col-md-12">
-          <hr>
-        </div>
-        <div class="col-md-4">
-          <div class="form-group">
-            <label for="">Target S-K</label>
-            <input type="text" class="form-control" readonly  name="" value="">
-          </div>
-          <div class="form-group">
-            <label for="">Target 100%</label>
-            <input type="text" class="form-control" readonly  name="" value="">
-          </div>
-          <div class="form-group">
-            <label for="">Aktual</label>
-            <input type="text" class="form-control"  name="" value="">
-          </div>
-          <div class="form-group">
-            <label for="">%tase</label>
-            <input type="text" class="form-control" readonly  name="" value="">
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="form-group">
-            <label for="">Hasil Baik</label>
-            <input type="text" class="form-control" readonly  name="" value="">
-          </div>
-          <div class="form-group">
-            <label for="">Repair MAN</label>
-            <input type="text" class="form-control"  name="" value="">
-          </div>
-          <div class="form-group">
-            <label for="">Repair MAT</label>
-            <input type="text" class="form-control"  name="" value="">
-          </div>
-          <div class="form-group">
-            <label for="">Repair MACH</label>
-            <input type="text" class="form-control"  name="" value="">
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="form-group" style="margin-top:74px">
-            <label for="">Scrap MAN</label>
-            <input type="text" class="form-control"  name="" value="">
-          </div>
-          <div class="form-group">
-            <label for="">Scrap MAT</label>
-            <input type="text" class="form-control"  name="" value="">
-          </div>
-          <div class="form-group">
-            <label for="">Scrap MACH</label>
-            <input type="text" class="form-control"  name="" value="">
-          </div>
-        </div> -->
         <div class="col-md-12">
           <div class="mt-4" style="overflow-y:scroll;">
             <table class="table table-bordered tbl_lph_add_comp" style="width:2430px;text-align:center">
@@ -402,7 +275,13 @@ function itungitung() {
   $('.menit_pwe').each((index, item) => {
     pengurangan_waktu_efektif += Number($(item).val());
   });
+
+  let total_pwe = pengurangan_waktu_efektif;
   pengurangan_waktu_efektif = (pengurangan_waktu_efektif/Number($('.lph_w_standar_efk').text()))*100;
+
+  // persentase pwe dan total print
+  $('.total_waktu_pengurangan').text(total_pwe);
+  $('.persentase_waktu_pengurangan').text(`${(Number(pengurangan_waktu_efektif)).toFixed(2)}%`);
 
   //total
   let total = 0;
@@ -468,7 +347,28 @@ function itungitung() {
           }
         }
       });
-      // $('.select2').select2();
+
+      $('.lph_aktual').on('input', function() {
+        let target = $(this).parent().parent('tr').find('.lph_target_harian').val();
+        let aktual = $(this).val();
+        console.log(Number.isInteger(Number(target)), 'tipe number');
+        if (aktual != '') {
+          if (target == '' || !Number.isInteger(Number(target))) {
+            swaLPHLarge('info',`Target ${$('.lph_jenis_target').text()} tidak boleh kosong`);
+            $(this).parent().parent('tr').find('.lph_persentase').val('');
+            $(this).parent().parent('tr').find('.lph_hasil_baik').val('');
+            $(this).val('');
+          }else {
+            let persentase = ((Number(aktual)/Number(target))*100).toFixed(2)+'%';
+            $(this).parent().parent('tr').find('.lph_persentase').val(persentase);
+            $(this).parent().parent('tr').find('.lph_hasil_baik').val(aktual);
+          }
+        }else {
+          $(this).parent().parent('tr').find('.lph_persentase').val('');
+          $(this).parent().parent('tr').find('.lph_hasil_baik').val('');
+        }
+        itungitung();
+      })
 }
 
   $('.lph_aktual').on('input', function() {
@@ -490,22 +390,18 @@ function itungitung() {
       $(this).parent().parent('tr').find('.lph_hasil_baik').val('');
     }
 
-    //total
-    let total = 0;
-    $('.lph_persentase').each((index, item)=>{
-      total += Number($(item).val().replace('%',''));
-      $('.lph_total').val(`${total.toFixed(2)}%`);
-      $('.lph_kurang').val(`${(100-Number(total)).toFixed(2)}%`);
-    });
+    itungitung();
 
   })
 
     function min_elem_pwe(th) {
       $(th).parent().parent('tr').remove();
+      itungitung();
     }
 
     function min_elem_hasil_produksi(th) {
       $(th).parent().parent('tr').remove();
+      itungitung();
     }
 
     $('#lph_form_pwe').on('submit', function(e) {
@@ -515,6 +411,9 @@ function itungitung() {
                                   <td><input type="number" class="form-control" name="menit_pwe" value="${$('.lph_pwe_waktu').val()}"></td>
                                   <td> <button class="btn btn-sm" onclick="min_elem_pwe(this)"><i class="fa fa-times"></i></button></td>
                                 </tr>`);
+      $('.menit_pwe').on('input', function() {
+        itungitung();
+      });
     })
 
     // function set_set() {

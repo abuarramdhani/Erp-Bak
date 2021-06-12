@@ -21,7 +21,7 @@
             </div>
             <div class="form-group">
               <label for="">Kelompok</label>
-              <input type="text" class="form-control"  name="" value="">
+              <input type="text" class="form-control" readonly name="" value="">
             </div>
           </div>
           <div class="col-md-7">
@@ -116,7 +116,7 @@
               </div>
             </div>
           </form>
-          <div class="mt-4" style="overflow-y:scroll;height:164px;">
+          <div class="mt-4 mb-3" style="overflow-y:scroll;height:164px;border-bottom:1px solid #337ab7;">
             <table class="table table-bordered" style="width:100%;">
               <thead class="bg-primary">
                 <tr>
@@ -130,13 +130,20 @@
               </tbody>
             </table>
           </div>
-
+          <div class="row">
+            <div class="col-md-6">
+              <b>Total Waktu : <span class="total_waktu_pengurangan" style="color:#337ab7"></span> </b>
+            </div>
+            <div class="col-md-6">
+              <b>Persentase : <span class="persentase_waktu_pengurangan" style="color:#337ab7"></span> </b>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
   <div class="col-md-6">
-    <div class="box box-primary box-solid" style="height:305px">
+    <div class="box box-primary box-solid" style="height:335px">
       <div class="box-header" style="padding:5px !important">
         <b>Operator Tanpa Target</b>
       </div>
@@ -150,7 +157,7 @@
          </div>
          <div class="form-group">
            <label for="">Keterangan</label>
-           <textarea name="name" class="form-control" rows="4" style="width:100%"></textarea>
+           <textarea name="name" class="form-control" rows="6" style="width:100%"></textarea>
          </div>
       </div>
     </div>
@@ -259,7 +266,12 @@ function itungitung() {
   $('.menit_pwe').each((index, item) => {
     pengurangan_waktu_efektif += Number($(item).val());
   });
+  let total_pwe = pengurangan_waktu_efektif;
   pengurangan_waktu_efektif = (pengurangan_waktu_efektif/Number($('.lph_w_standar_efk').text()))*100;
+
+  // persentase pwe dan total print
+  $('.total_waktu_pengurangan').text(total_pwe);
+  $('.persentase_waktu_pengurangan').text(`${(Number(pengurangan_waktu_efektif)).toFixed(2)}%`);
 
   //total
   let total = 0;
@@ -275,7 +287,9 @@ function lph_add_row_hasil_produksi() {
   let no = Number($('.tbl_lph_add_comp tbody tr').length)+1;
   $('.tbl_lph_add_comp tbody').append(`<tr>
                                         <td>${no}</td>
-                                        <td><input type="text" class="form-control"  name="kodepart[]" value=""></td>
+                                        <td>
+                                          <select class="lph_kodepart" name="kodepart[]" style="width:182px"></select>
+                                        </td>
                                         <td><input type="text" class="form-control"  name="namapart[]" value=""></td>
                                         <td>
                                           <select class="LphAlatBantu" name="alatbantu[]" style="width:200px"></select>
@@ -325,18 +339,74 @@ function lph_add_row_hasil_produksi() {
         }
       }
     });
-    // $('.select2').select2();
+
+    $(".lph_kodepart").select2({
+      minimumInputLength: 3,
+      // maximumSelectionLength: 1,
+      ajax: {
+        url: baseurl + 'GeneratorTSKK/C_GenTSKK/kodePart/',
+        dataType: 'json',
+        type: "GET",
+        data: function(params) {
+          var queryParameters = {
+            variable: params.term,
+            kode: $('.lph_kodepart').val(),
+            type_product: ''
+          }
+          return queryParameters;
+        },
+        processResults: function(kode) {
+          return {
+            results: $.map(kode, function(obj) {
+              if (kode !== null) {
+                return {
+                  id: obj.SEGMENT1,
+                  text: obj.SEGMENT1 +' ~ '+ obj.DESCRIPTION
+                };
+              } else {
+                $('.namaPart').val('');
+              }
+            })
+          };
+        }
+      }
+    });
+
+    $('.lph_aktual').on('input', function() {
+      let target = $(this).parent().parent('tr').find('.lph_target_harian').val();
+      let aktual = $(this).val();
+      console.log(Number.isInteger(Number(target)), 'tipe number');
+      if (aktual != '') {
+        if (target == '' || !Number.isInteger(Number(target))) {
+          swaLPHLarge('info',`Target ${$('.lph_jenis_target').text()} tidak boleh kosong`);
+          $(this).parent().parent('tr').find('.lph_persentase').val('');
+          $(this).parent().parent('tr').find('.lph_hasil_baik').val('');
+          $(this).val('');
+        }else {
+          let persentase = ((Number(aktual)/Number(target))*100).toFixed(2)+'%';
+          $(this).parent().parent('tr').find('.lph_persentase').val(persentase);
+          $(this).parent().parent('tr').find('.lph_hasil_baik').val(aktual);
+        }
+      }else {
+        $(this).parent().parent('tr').find('.lph_persentase').val('');
+        $(this).parent().parent('tr').find('.lph_hasil_baik').val('');
+      }
+      itungitung();
+    });
+
 }
 
 
   $('.lph_aktual').on('input', function() {
     let target = $(this).parent().parent('tr').find('.lph_target_harian').val();
     let aktual = $(this).val();
+    console.log(Number.isInteger(Number(target)), 'tipe number');
     if (aktual != '') {
-      if (target == '') {
+      if (target == '' || !Number.isInteger(Number(target))) {
         swaLPHLarge('info',`Target ${$('.lph_jenis_target').text()} tidak boleh kosong`);
         $(this).parent().parent('tr').find('.lph_persentase').val('');
         $(this).parent().parent('tr').find('.lph_hasil_baik').val('');
+        $(this).val('');
       }else {
         let persentase = ((Number(aktual)/Number(target))*100).toFixed(2)+'%';
         $(this).parent().parent('tr').find('.lph_persentase').val(persentase);
@@ -346,9 +416,7 @@ function lph_add_row_hasil_produksi() {
       $(this).parent().parent('tr').find('.lph_persentase').val('');
       $(this).parent().parent('tr').find('.lph_hasil_baik').val('');
     }
-
     itungitung();
-
   })
 
   function min_elem_pwe(th) {
@@ -358,6 +426,7 @@ function lph_add_row_hasil_produksi() {
 
   function min_elem_hasil_produksi(th) {
     $(th).parent().parent('tr').remove();
+    itungitung();
   }
 
   $('#lph_form_pwe').on('submit', function(e) {
@@ -368,7 +437,10 @@ function lph_add_row_hasil_produksi() {
                                 <td> <button class="btn btn-sm" onclick="min_elem_pwe(this)"><i class="fa fa-times"></i></button></td>
                               </tr>`);
 
-                              itungitung();
+    itungitung();
+    $('.menit_pwe').on('input', function() {
+      itungitung();
+    })
   })
 
   // di non aktifkan karena di chrome user versi lama tidak jalan
