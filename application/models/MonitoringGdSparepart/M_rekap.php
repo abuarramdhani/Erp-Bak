@@ -102,7 +102,12 @@ class M_rekap extends CI_Model {
         where kk.ORDER_ID = wdj.WIP_ENTITY_ID  
         and kk.PRIMARY_ITEM_ID = wdj.PRIMARY_ITEM_ID  
         and kk.INVENTORY_TRANS_FLAG = 'Y'     
-        and kk.KIBCODE = '$no_document'";
+        and kk.KIBCODE = '$no_document'
+        UNION
+        select distinct kkk.*
+        from khs_kib_kanban kkk
+        where kkk.INVENTORY_TRANS_FLAG = 'Y'     
+        and kkk.KIBCODE = '$no_document'";
           $query = $oracle->query($sql);
           return $query->result_array();
           
@@ -125,9 +130,9 @@ class M_rekap extends CI_Model {
     AND mmt.inventory_item_id = mtrl.inventory_item_id
     AND mmt.transaction_quantity LIKE '-%'
     AND mtrh.move_order_type = 1
-    AND mtrh.header_status IN (3, 7)
-    AND mtrl.line_status IN (3, 7)
-    AND mtrl.quantity = mtrl.quantity_delivered
+    -- AND mtrh.header_status IN (3, 7)
+    -- AND mtrl.line_status IN (3, 7)
+    -- AND mtrl.quantity = mtrl.quantity_delivered
     AND mtrh.request_number = '$no_document'";
           $query = $oracle->query($sql);
           return $query->result_array();
@@ -179,7 +184,15 @@ class M_rekap extends CI_Model {
                     --
                     and wdj.WIP_ENTITY_ID = mmt.TRANSACTION_SOURCE_ID
                     and wdj.PRIMARY_ITEM_ID = mmt.INVENTORY_ITEM_ID
-                    and kk.KIBCODE = '$no_document'";
+                    and kk.KIBCODE = '$no_document'
+                    UNION
+      SELECT kkk.kibcode no_interorg, msib.segment1 item, kkk.from_subinventory_code subinventory_code
+        FROM khs_kib_kanban kkk,
+             mtl_system_items_b msib
+       WHERE kkk.primary_item_id = msib.inventory_item_id
+         AND kkk.organization_id = msib.organization_id
+         AND kkk.transfer_by IS NOT NULL
+         AND kkk.kibcode = '$no_document'";
         $query = $oracle->query($sql);
         return $query->result_array();
         // echo $sql;
@@ -191,8 +204,8 @@ class M_rekap extends CI_Model {
         FROM mtl_txn_request_headers mtrh, mtl_txn_request_lines mtrl
        WHERE mtrh.header_id = mtrl.header_id
          AND mtrh.move_order_type = 1
-         AND mtrh.header_status IN (3, 7)
-         AND mtrl.line_status IN (3, 7)
+        --  AND mtrh.header_status IN (3, 7)
+        --  AND mtrl.line_status IN (3, 7)
          AND mtrh.request_number = '$no_document'";
         $query = $oracle->query($sql);
         return $query->result_array();

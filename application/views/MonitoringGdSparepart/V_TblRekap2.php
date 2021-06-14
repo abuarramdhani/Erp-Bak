@@ -9,8 +9,8 @@
                 <th rowspan="2">Asal</th>
             </tr>
             <tr>
-                <th>Sudah Terlayani</th>
-                <th>Belum Terlayani</th>
+                <th>Sudah Terlayani / Sudah Input</th>
+                <th>Belum Terlayani / Belum Input</th>
             </tr>
         </thead>
         <tbody>
@@ -28,8 +28,8 @@
                             <thead class="bg-success">
                                 <tr>
                                     <th rowspan="2">Asal Gudang</th>
-                                    <th colspan="2">Sudah Terlayani</th>
-                                    <th colspan="2">Belum Terlayani</th>
+                                    <th colspan="2">Sudah Terlayani / Sudah Input</th>
+                                    <th colspan="2">Belum Terlayani / Belum Input</th>
                                 </tr>
                                 <tr>
                                     <th>Item</th>
