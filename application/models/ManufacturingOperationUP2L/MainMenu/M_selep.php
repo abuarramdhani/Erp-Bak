@@ -215,7 +215,7 @@ class M_selep extends CI_Model
                               '{$data[0]['NO_KIB']}',
                               '{$data[0]['KIB_GROUP']}',
                               '{$data[0]['INVENTORY_TRANS_FLAG']}',
-                              '{$data[0]['QTY_TRANSACTION']}',
+                              '{$data[0]['QTY_SELEP']}',
                               '{$data[0]['ORDER_ID']}',
                               SYSDATE,
                               '{$data[0]['TO_ORG_ID']}',
