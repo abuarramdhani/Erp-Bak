@@ -189,11 +189,17 @@ class C_Monitoring extends CI_Controller
 	}
 	
 	public function searchgdmonitoring(){
-		$item 			= $this->input->post('item', TRUE);
-		$gudang			= $this->M_monitoring->getGudang($item);
-		$fg_tks 		= !empty($gudang) ? $gudang[0]['FG_TKS'] : '';
-		$mlati 			= !empty($gudang) ? $gudang[0]['MLATI_DM'] : '';
-		$hasil 			= array($fg_tks, $mlati);
+		$item 		= $this->input->post('item', TRUE);
+		$kategori 	= $this->input->post('kategori', TRUE);
+		$subinv		= $this->M_monitoring->getCategory("where id_category = $kategori");
+		$subinv		= explode(";",$subinv[0]['SUBINVENTORY']);
+		$sub		= !empty($subinv[0]) ? ",khs_inv_qty_att(102,msib.inventory_item_id,'".$subinv[0]."','','') GUDANG1" : '';
+		$sub		.= count($subinv) > 1 && $subinv[1] != '' ? ",khs_inv_qty_att(102,msib.inventory_item_id,'".$subinv[1]."','','') GUDANG2" : '';
+		// echo "<pre>";print_r($sub);exit();
+		$gudang		= $this->M_monitoring->getGudang($item, $sub);
+		$gd1 		= !empty($subinv[0]) ? $gudang[0]['GUDANG1'] : '';
+		$gd2 		= count($subinv) > 1 && $subinv[1] != '' ? $gudang[0]['GUDANG2'] : '';
+		$hasil 		= array(array($subinv[0],$gd1), array(count($subinv) > 1 && $subinv[1] != ''? $subinv[1] : '',$gd2));
 		echo json_encode($hasil);
 	}
 	
@@ -511,7 +517,11 @@ class C_Monitoring extends CI_Controller
 		$kategori 	= $this->input->post('kategori');
 		$bulan2 	= $this->input->post('bulan2');
 		$kategori2 	= $this->input->post('kategori2');
-		$hari 		= $this->input->post('hari');
+		$hari 		= $this->input->post('hari');		
+		$subinv		= $this->M_monitoring->getCategory("where id_category = $kategori2");
+		$subinv		= explode(";",$subinv[0]['SUBINVENTORY']);
+		$subinv1	= $subinv[0];
+		$subinv2	= count($subinv) > 1? $subinv[1] : '';
 		$datanya = array();
 		for ($i=0; $i < (count($no)/2); $i++) { 
 			$baris['inv'] = $this->input->post('inv'.$no[$i].'');
@@ -520,8 +530,8 @@ class C_Monitoring extends CI_Controller
 			$baris['wip'] = $this->input->post('wip'.$no[$i].'');
 			$baris['picklist'] = $this->input->post('picklist'.$no[$i].'');
 			$baris['completion'] = $this->input->post('completion'.$no[$i].'');
-			$baris['fg_tks'] = $this->input->post('fg_tks'.$no[$i].'');
-			$baris['mlati'] = $this->input->post('mlati'.$no[$i].'');
+			$baris['gudang1'] = $this->input->post('gudang1'.$no[$i].'');
+			$baris['gudang2'] = $this->input->post('gudang2'.$no[$i].'');
 			$baris['av_pick'] = $this->input->post('av_pick'.$no[$i].'');
 			$baris['jml_plan'] = $this->input->post('jml_plan'.$no[$i].'');
 			$baris['jml_akt'] = $this->input->post('jml_akt'.$no[$i].'');
@@ -705,14 +715,15 @@ class C_Monitoring extends CI_Controller
 		$sesuatu = 6;
 		foreach ($datanya as $d) {	
 			// echo "<pre>";print_r($d);exit();
+			$sub2 = !empty($subinv2) ? '' : ''.$subinv2.' : '.$d['gudang2'].'';
 			$excel->setActiveSheetIndex(0)->setCellValue('A'.$numrow, $no);
 			$excel->setActiveSheetIndex(0)->setCellValue('B'.$numrow, $d['item'].'
 																	'.$d['desc']);
 			$excel->setActiveSheetIndex(0)->setCellValue('C'.$numrow, 'WIP : '.$d['wip'].'
 																		Picklist : '.$d['picklist'].'
 																		Completion : '.$d['completion'].'
-																		FG-TKS : '.$d['fg_tks'].'
-																		MLATI-DM : '.$d['mlati'].'
+																		'.$subinv1.' : '.$d['gudang1'].'
+																		'.$sub2.'
 																		Available Picklist : '.$d['av_pick'].'');
 			$excel->setActiveSheetIndex(0)->setCellValue('D'.$numrow, "P");
 			$excel->setActiveSheetIndex(0)->setCellValue('D'.($numrow+1), "A");
@@ -982,10 +993,14 @@ class C_Monitoring extends CI_Controller
 		$no 		= $this->input->post('nomor[]');
 		$bulan 		= $this->input->post('bulan');
 		$kategori 	= $this->input->post('kategori');
-		$bulan2 		= $this->input->post('bulan2');
+		$bulan2 	= $this->input->post('bulan2');
 		$kategori2 	= $this->input->post('kategori2');
 		$hari 		= $this->input->post('hari');
 		$ket 		= $this->input->post('ket');
+		$subinv		= $this->M_monitoring->getCategory("where id_category = $kategori2");
+		$subinv		= explode(";",$subinv[0]['SUBINVENTORY']);
+		$subinv1	= $subinv[0];
+		$subinv2	= count($subinv) > 1 ? $subinv[1] : '';
 		$datanya = array();
 		for ($i=0; $i < (count($no)/2); $i++) { 
 			$baris['inv'] = $this->input->post('inv'.$no[$i].'');
@@ -994,8 +1009,8 @@ class C_Monitoring extends CI_Controller
 			$baris['wip'] = $this->input->post('wip'.$no[$i].'');
 			$baris['picklist'] = $this->input->post('picklist'.$no[$i].'');
 			$baris['completion'] = $this->input->post('completion'.$no[$i].'');
-			$baris['fg_tks'] = $this->input->post('fg_tks'.$no[$i].'');
-			$baris['mlati'] = $this->input->post('mlati'.$no[$i].'');
+			$baris['gudang1'] = $this->input->post('gudang1'.$no[$i].'');
+			$baris['gudang2'] = $this->input->post('gudang2'.$no[$i].'');
 			$baris['av_pick'] = $this->input->post('av_pick'.$no[$i].'');
 			$baris['jml_plan'] = $this->input->post('jml_plan'.$no[$i].'');
 			if ($ket == 'PA') {
@@ -1201,14 +1216,15 @@ class C_Monitoring extends CI_Controller
 				$ket == 'PLP' ? '(PL - P)' : '(C - P)');
 		foreach ($datanya as $d) {	
 			// echo "<pre>";print_r($d);exit();
+			$sub2 = !empty($subinv2) ? '' : ''.$subinv2.' : '.$d['gudang2'].'';
 			$excel->setActiveSheetIndex(0)->setCellValue('A'.$numrow, $no);
 			$excel->setActiveSheetIndex(0)->setCellValue('B'.$numrow, $d['item'].'
 																	'.$d['desc']);
 			$excel->setActiveSheetIndex(0)->setCellValue('C'.$numrow, 'WIP : '.$d['wip'].'
 																		Picklist : '.$d['picklist'].'
 																		Completion : '.$d['completion'].'
-																		FG-TKS : '.$d['fg_tks'].'
-																		MLATI-DM : '.$d['mlati'].'
+																		'.$subinv1.' : '.$d['gudang1'].'
+																		'.$sub2.'
 																		Available Picklist : '.$d['av_pick'].'');
 			$excel->setActiveSheetIndex(0)->setCellValue('D'.$numrow, "P");
 			$excel->setActiveSheetIndex(0)->setCellValue('D'.($numrow+1), $pa);
