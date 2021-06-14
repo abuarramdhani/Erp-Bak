@@ -1,5 +1,12 @@
+<style media="screen">
+  .select2-selection__rendered{
+    height: 80px;
+    overflow-y: auto !important;
+  }
+</style>
 <button type="button" class="btn btn-primary" name="button" onclick="lph_add_row_hasil_produksi()" style="position:fixed;bottom:9%;right: 3.8%;border-radius: 50%;z-index: 9999;height: 37px;"> <b class="fa fa-plus-square"></b> </button>
 
+<form id="submit_form_lkh_add" action="index.html" method="post">
 <div class="row">
   <div class="col-md-7">
     <div class="box box-primary box-solid">
@@ -15,13 +22,13 @@
             </div>
             <div class="form-group">
               <label for="">Shift</label>
-              <select class="select2" name=""  style="width:100%">
-                <option value="<?php echo $get[0]['shift'] ?>"><?php echo $get[0]['shift'] ?> - <?php echo $get[0]['shift_description'] ?></option>
+              <select class="select2" name="shift"  style="width:100%">
+                <option value="<?php echo $get[0]['shift'] ?> - <?php echo $get[0]['shift_description'] ?>"><?php echo $get[0]['shift'] ?> - <?php echo $get[0]['shift_description'] ?></option>
               </select>
             </div>
             <div class="form-group">
               <label for="">Kelompok</label>
-              <input type="text" class="form-control" readonly name="" value="">
+              <input type="text" class="form-control" readonly name="kelompok" value="">
             </div>
           </div>
           <div class="col-md-7">
@@ -58,7 +65,9 @@
               </tr>
               <tr >
                 <td> <b>Standar Waktu Efektif Seksi</b> </td>
-                <td>: <span class="lph_w_standar_efk">..</span> </td>
+                <td>: <span class="lph_w_standar_efk">..</span>
+                  <input type="hidden" name="standar_waktu_efektif" value="">
+                </td>
                 <td style="float:right">Menit</td>
               </tr>
             </table>
@@ -72,16 +81,16 @@
       <div class="box-header" style="padding:5px !important">
         <b>Pengawas & Operator</b>
       </div>
-      <div class="box-body" style="padding-top:60px">
-        <div class="form-group">
+      <div class="box-body" style="padding-top:30px">
+        <div class="form-group lph_operator" >
           <label for="">Cari Pekerja</label>
-          <select class="lphgetEmployee" name=""  style="width:100%">
-            <option value="<?php echo $get[0]['no_induk'] ?>"><?php echo $get[0]['nama_operator'] ?> - <?php echo $get[0]['no_induk'] ?></option>
+          <select class="lphgetEmployee" name="operator[]"  style="width:100%" multiple>
+            <option value="<?php echo $get[0]['no_induk'] ?>" selected><?php echo $get[0]['nama_operator'] ?> - <?php echo $get[0]['no_induk'] ?></option>
           </select>
         </div>
         <div class="form-group">
           <label for="">Cari Pengawas</label>
-          <select class="lphgetEmployee" name=""  style="width:100%">
+          <select class="lphgetEmployee" name="pengawas"  style="width:100%">
 
           </select>
         </div>
@@ -97,25 +106,25 @@
       </div>
       <div class="box-body">
         <div class="form-group">
-          <form id="lph_form_pwe" action="index.html" method="post">
+          <!-- <form id="lph_form_pwe" action="index.html" method="post"> -->
             <div class="row">
               <div class="col-sm-5">
                 <label for="">Faktor</label>
-                <input type="text" class="form-control lph_pwe_faktor" required name="" value="">
+                <input type="text" class="form-control lph_pwe_faktor" value="">
               </div>
               <div class="col-sm-7">
                 <label for="">Menit</label>
                 <div class="row">
                   <div class="col-sm-7">
-                    <input type="number" class="form-control lph_pwe_waktu" required name="" value="">
+                    <input type="number" class="form-control lph_pwe_waktu" value="">
                   </div>
                   <div class="col-sm-5">
-                    <button type="submit" class="btn btn-primary" style="width:100%" name="button"> <i class="fa fa-download"></i> Tambah </button>
+                    <button type="button" id="lph_form_pwe" class="btn btn-primary" style="width:100%" name="button"> <i class="fa fa-download"></i> Tambah </button>
                   </div>
                 </div>
               </div>
             </div>
-          </form>
+          <!-- </form> -->
           <div class="mt-4 mb-3" style="overflow-y:scroll;height:164px;border-bottom:1px solid #337ab7;">
             <table class="table table-bordered" style="width:100%;">
               <thead class="bg-primary">
@@ -150,14 +159,15 @@
       <div class="box-body" style="padding-top:37px">
         <div class="form-group">
           <label for="">Jenis</label>
-          <select class="select2" name=""  style="width:100%">
+          <select class="select2" name="ott_jenis"  style="width:100%">
+            <option value=""></option>
             <option value="OTT">OTT</option>
             <option value="IK">IK</option>
           </select>
          </div>
          <div class="form-group">
            <label for="">Keterangan</label>
-           <textarea name="name" class="form-control" rows="6" style="width:100%"></textarea>
+           <textarea name="ott_keterangan" class="form-control" rows="6" style="width:100%"></textarea>
          </div>
       </div>
     </div>
@@ -173,7 +183,7 @@
         <div class="row">
         <div class="col-md-12">
           <div class="mt-4" style="overflow-y:scroll;">
-            <table class="table table-bordered tbl_lph_add_comp" style="width:2430px;text-align:center">
+            <table class="table table-bordered tbl_lph_add_comp" style="width:2530px;text-align:center">
               <thead class="bg-primary">
                 <tr>
                   <td style="width:30px">No</td>
@@ -184,6 +194,7 @@
                   <td style="width:100px">Wkt. Mesin</td>
                   <td style="width:200px">Kode Proses</td>
                   <td style="width:200px">Nama Proses</td>
+                  <td style="width:100px">Target PPIC</td>
                   <td style="width:100px">Target <span class="lph_jenis_target"></span></td>
                   <td style="width:100px">T.100%</td>
                   <td style="width:100px">Aktual</td>
@@ -202,17 +213,18 @@
                 <?php foreach ($get as $key => $value): ?>
                   <tr>
                     <td><?php echo $key+1 ?></td>
-                    <td><input type="text" class="form-control"  name="kodepart[]" value="<?php echo $value['kode_komponen'] ?>"></td>
-                    <td><input type="text" class="form-control"  name="namapart[]" value="<?php echo $value['nama_komponen'] ?>"></td>
+                    <td><input type="text" class="form-control"  name="kodepart[]" required value="<?php echo $value['kode_komponen'] ?>"></td>
+                    <td><input type="text" class="form-control"  name="namapart[]" required value="<?php echo $value['nama_komponen'] ?>"></td>
                     <td>
                       <select class="LphAlatBantu" name="alatbantu[]" style="width:200px"></select>
                     </td>
-                    <td><input type="text" class="form-control"  name="kodemesin[]" value="<?php echo $value['kode_mesin'] ?>"></td>
+                    <td><input type="text" class="form-control"  name="kodemesin[]" value="<?php echo str_replace(' ','',$value['kode_mesin']) ?>"></td>
                     <td><input type="text" class="form-control"  name="waktumesin[]" value=""></td>
                     <td>
                       <select class="select2" name="kodeproses[]" style="width:100%"></select>
                     </td>
-                    <td><input type="text" class="form-control"  name="namaproses[]" value="<?php echo $value['proses'] ?>"></td>
+                    <td><input type="text" class="form-control"  name="namaproses[]" required value="<?php echo $value['proses'] ?>"></td>
+                    <td><input type="text" class="form-control"  name="target_ppic[]" required readonly value="<?php echo $value['plan'] ?>"></td>
                     <?php
                       if ($value['hari'] == ('Jumat' || 'Sabtu')) {
                         $target_harian = $value['target_js'];
@@ -220,17 +232,17 @@
                         $target_harian = $value['target_sk'];
                       }
                     ?>
-                    <td><input type="text" class="form-control lph_target_harian" name="target_harian[]" readonly value="<?php echo $target_harian ?>"></td>
+                    <td><input type="text" class="form-control lph_target_harian" name="target_harian[]" required readonly value="<?php echo $target_harian ?>"></td>
                     <td><input type="text" class="form-control" name="target_seratus_persen[]" readonly value="<?php echo $target_harian ?>"></td>
-                    <td><input type="number" class="form-control lph_aktual" name="aktual[]" value=""></td>
+                    <td><input type="number" class="form-control lph_aktual" <?php echo is_numeric($target_harian) ? 'required' : '' ?> name="aktual[]" value=""></td>
                     <td><input type="text" class="form-control lph_persentase" name="persentase[]" value="" readonly></td>
                     <td><input type="number" class="form-control lph_hasil_baik" name="hasil_baik[]" value=""></td>
                     <td><input type="number" class="form-control" name="repair_man[]" value=""></td>
-                    <td><input type="number" class="form-control" name="" value=""></td>
-                    <td><input type="number" class="form-control" name="" value=""></td>
-                    <td><input type="number" class="form-control" name="" value=""></td>
-                    <td><input type="number" class="form-control" name="" value=""></td>
-                    <td><input type="number" class="form-control" name="" value=""></td>
+                    <td><input type="number" class="form-control" name="repair_mat[]" value=""></td>
+                    <td><input type="number" class="form-control" name="repair_mach[]" value=""></td>
+                    <td><input type="number" class="form-control" name="scrap_man[]" value=""></td>
+                    <td><input type="number" class="form-control" name="scrap_mat[]" value=""></td>
+                    <td><input type="number" class="form-control" name="scrap_mach[]" value=""></td>
                     <td><button class="btn btn-sm" onclick="min_elem_hasil_produksi(this)"><i class="fa fa-times"></i></button></td>
                   </tr>
                 <?php endforeach; ?>
@@ -255,9 +267,10 @@
       </div>
     </div>
     <div class="col-md-12">
-      <center> <button type="button" class="btn btn-primary mb-4 mt-2" name="button" style="width:20%;font-weight:bold"> <i class="fa fa-save"></i> Save</button> </center>
+      <center> <button type="submit" class="btn btn-primary mb-4 mt-2" name="button" style="width:20%;font-weight:bold"> <i class="fa fa-save"></i> Save</button> </center>
     </div>
   </div>
+</form>
 <script type="text/javascript">
 
 function itungitung() {
@@ -288,29 +301,30 @@ function lph_add_row_hasil_produksi() {
   $('.tbl_lph_add_comp tbody').append(`<tr>
                                         <td>${no}</td>
                                         <td>
-                                          <select class="lph_kodepart" name="kodepart[]" style="width:182px"></select>
+                                          <select class="lph_kodepart" name="kodepart[]" required style="width:182px"></select>
                                         </td>
-                                        <td><input type="text" class="form-control"  name="namapart[]" value=""></td>
+                                        <td><input type="text" class="form-control" required name="namapart[]" value=""></td>
                                         <td>
                                           <select class="LphAlatBantu" name="alatbantu[]" style="width:200px"></select>
                                         </td>
-                                        <td><input type="text" class="form-control"  name="kodemesin[]" value=""></td>
-                                        <td><input type="text" class="form-control"  name="waktumesin[]" value=""></td>
+                                        <td><input type="text" class="form-control" required name="kodemesin[]" value=""></td>
+                                        <td><input type="text" class="form-control" name="waktumesin[]" value=""></td>
                                         <td>
                                           <select class="select2" name="kodeproses[]" style="width:100%"></select>
                                         </td>
-                                        <td><input type="text" class="form-control"  name="namaproses[]" value=""></td>
-                                        <td><input type="text" class="form-control lph_target_harian" name="target_harian[]" readonly value=""></td>
+                                        <td><input type="text" class="form-control" required name="namaproses[]" value=""></td>
+                                        <td><input type="text" class="form-control" required name="target_ppic[]" readonly value=""></td>
+                                        <td><input type="text" class="form-control lph_target_harian" name="target_harian[]" required readonly value=""></td>
                                         <td><input type="text" class="form-control" name="target_seratus_persen[]" readonly value=""></td>
-                                        <td><input type="number" class="form-control lph_aktual" name="aktual[]" value=""></td>
+                                        <td><input type="number" class="form-control lph_aktual" required name="aktual[]" value=""></td>
                                         <td><input type="text" class="form-control lph_persentase" name="persentase[]" value="" readonly></td>
                                         <td><input type="number" class="form-control lph_hasil_baik" name="hasil_baik[]" value=""></td>
-                                        <td><input type="text" class="form-control" name="" value=""></td>
-                                        <td><input type="number" class="form-control" name="" value=""></td>
-                                        <td><input type="number" class="form-control" name="" value=""></td>
-                                        <td><input type="number" class="form-control" name="" value=""></td>
-                                        <td><input type="number" class="form-control" name="" value=""></td>
-                                        <td><input type="number" class="form-control" name="" value=""></td>
+                                        <td><input type="number" class="form-control" name="repair_man[]" value=""></td>
+                                        <td><input type="number" class="form-control" name="repair_mat[]" value=""></td>
+                                        <td><input type="number" class="form-control" name="repair_mach[]" value=""></td>
+                                        <td><input type="number" class="form-control" name="scrap_man[]" value=""></td>
+                                        <td><input type="number" class="form-control" name="scrap_mat[]" value=""></td>
+                                        <td><input type="number" class="form-control" name="scrap_mach[]" value=""></td>
                                         <td><button class="btn btn-sm" onclick="min_elem_hasil_produksi(this)"><i class="fa fa-times"></i></button></td>
                                       </tr>`);
     $(".LphAlatBantu").select2({
@@ -340,11 +354,18 @@ function lph_add_row_hasil_produksi() {
       }
     });
 
+    $(".lph_kodepart").on('change', function() {
+      let ambil_desc = $(this).text().split(' ~ ');
+      if (ambil_desc != '') {
+        $(this).parent().parent('tr').find('input[name="namapart[]"]').val(ambil_desc[1]);
+      }
+    })
+
     $(".lph_kodepart").select2({
       minimumInputLength: 3,
       // maximumSelectionLength: 1,
       ajax: {
-        url: baseurl + 'GeneratorTSKK/C_GenTSKK/kodePart/',
+        url: baseurl + 'LaporanProduksiHarian/action/kodePart/',
         dataType: 'json',
         type: "GET",
         data: function(params) {
@@ -407,6 +428,7 @@ function lph_add_row_hasil_produksi() {
         $(this).parent().parent('tr').find('.lph_persentase').val('');
         $(this).parent().parent('tr').find('.lph_hasil_baik').val('');
         $(this).val('');
+        $(this).attr('required', false);
       }else {
         let persentase = ((Number(aktual)/Number(target))*100).toFixed(2)+'%';
         $(this).parent().parent('tr').find('.lph_persentase').val(persentase);
@@ -429,18 +451,24 @@ function lph_add_row_hasil_produksi() {
     itungitung();
   }
 
-  $('#lph_form_pwe').on('submit', function(e) {
-    e.preventDefault();
-    $('#lph_pwe_area').append(`<tr>
-                                <td><input type="text" class="form-control" name="faktor_pwe" value="${$('.lph_pwe_faktor').val()}"></td>
-                                <td><input type="number" class="form-control menit_pwe" name="menit_pwe" value="${$('.lph_pwe_waktu').val()}"></td>
-                                <td> <button class="btn btn-sm" onclick="min_elem_pwe(this)"><i class="fa fa-times"></i></button></td>
-                              </tr>`);
-
-    itungitung();
-    $('.menit_pwe').on('input', function() {
+  $('#lph_form_pwe').on('click', function(e) {
+    // e.preventDefault();
+    if ($('.lph_pwe_faktor').val() != '' && $('.lph_pwe_waktu').val() != '') {
+      $('#lph_pwe_area').append(`<tr>
+                                  <td><input type="text" class="form-control" name="faktor_pwe[]" value="${$('.lph_pwe_faktor').val()}"></td>
+                                  <td><input type="number" class="form-control menit_pwe" name="menit_pwe[]" value="${$('.lph_pwe_waktu').val()}"></td>
+                                  <td> <button class="btn btn-sm" onclick="min_elem_pwe(this)"><i class="fa fa-times"></i></button></td>
+                                </tr>`);
       itungitung();
-    })
+      $('.menit_pwe').on('input', function() {
+        itungitung();
+      })
+      $('.lph_pwe_faktor').val('');
+      $('.lph_pwe_waktu').val('');
+    }else {
+      swaLPHLarge('warning', 'Form input faktor dan menit tidak boleh kosong !');
+    }
+
   })
 
   // di non aktifkan karena di chrome user versi lama tidak jalan
@@ -487,6 +515,7 @@ function lph_add_row_hasil_produksi() {
     }
     $('.lph_waktu_kerja').text(menit);
     $('.lph_w_standar_efk').text(standar);
+    $('input[name="standar_waktu_efektif"]').val(standar)
 
     $(".LphAlatBantu").select2({
       minimumInputLength: 3,
@@ -525,7 +554,7 @@ function lph_add_row_hasil_produksi() {
   })
 
   $('.lphgetEmployee').select2({
-    minimumInputLength: 2,
+    minimumInputLength: 3,
     placeholder: "Employee",
     ajax: {
       url: baseurl + "PengirimanBarangInternal/Input/employee",
@@ -548,4 +577,31 @@ function lph_add_row_hasil_produksi() {
       }
     }
   })
+
+  //input form
+  $('#submit_form_lkh_add').on('submit', function(e) {
+    e.preventDefault();
+    let form_data  = new FormData($(this)[0]);
+    $.ajax({
+      url: baseurl + 'LaporanProduksiHarian/action/insert',
+      type: 'POST',
+      data : form_data,
+      contentType: false,
+      cache: false,
+      // async:false,
+      processData: false,
+      dataType: "JSON",
+      beforeSend: function() {
+
+      },
+      success: function(result) {
+
+      },
+      error: function(XMLHttpRequest, textStatus, errorThrown) {
+        swaLPHLarge('error', 'Terjadi kesalahan');
+       console.error();
+      }
+    })
+  });
+
 </script>

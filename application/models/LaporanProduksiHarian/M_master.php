@@ -9,6 +9,44 @@ class M_master extends CI_Model
 		$this->lantuma = $this->load->database('lantuma', TRUE);
 	}
 
+	function kodePart($variable, $product) // dari TSKK 
+	{
+	$where_product = '';
+	if (!empty($product)) {
+		$where_product .= "AND NVL (ffvt.description, '000') in";
+		$where_product .= '(\''.implode('\',\'',$product).'\')';
+	}
+
+	// $sql="SELECT msib.segment1
+	//      ,msib.description
+	//      from mtl_system_items_b msib
+	//      where msib.INVENTORY_ITEM_STATUS_CODE = 'Active'
+	//      and msib.organization_id = 81
+	//      AND (msib.DESCRIPTION LIKE '%$variable%'
+	//    OR msib.SEGMENT1 LIKE '%$variable%')";
+
+	$sql = "SELECT msib.segment1, msib.description
+							FROM fnd_flex_values ffv, fnd_flex_values_tl ffvt,
+									 mtl_system_items_b msib
+						 WHERE ffv.flex_value_set_id = 1013710
+							 AND ffv.flex_value_id = ffvt.flex_value_id
+							 AND ffv.end_date_active IS NULL
+							 AND ffv.summary_flag = 'N'
+							 AND ffv.enabled_flag = 'Y'
+							 AND ffv.flex_value = SUBSTR (msib.segment1, 1, 3)
+							 AND (msib.DESCRIPTION LIKE '%$variable%'
+										OR msib.SEGMENT1 LIKE '%$variable%')
+							 $where_product
+							 AND msib.organization_id = 81
+							 AND msib.inventory_item_status_code = 'Active'
+					ORDER BY 1";
+
+		 $query = $this->oracle->query($sql);
+		 return $query->result_array();
+		 // echo $sql;
+		 // die;
+	}
+
 	//SEARCH ALAT BANTU
 	public function selectAlatBantu($ab){
 		$sql = "SELECT distinct tto.fs_nm_tool, tto.fs_no_tool

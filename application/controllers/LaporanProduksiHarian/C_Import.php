@@ -77,6 +77,56 @@ class C_Import extends CI_Controller
       $this->load->view('V_Footer', $data);
     }
 
+    public function insert($value='')
+    {
+      echo "<pre>";
+      print_r($this->input->post());
+      die;
+
+      //insert rkom
+      $lph =  [
+        'tanggal' => $this->input->post('tanggal'),
+        'shift' => $this->input->post('shift'),
+        'kelompok' => $this->input->post('kelompok'),
+        'standar_waktu_efektif' => $this->input->post('standar_waktu_efektif'),
+        // '' => $this->input->post(''),
+        // '' => $this->input->post(''),
+        // '' => $this->input->post(''),
+        // '' => $this->input->post(''),
+        // '' => $this->input->post(''),
+        // '' => $this->input->post(''),
+        // '' => $this->input->post(''),
+        // '' => $this->input->post(''),
+        // '' => $this->input->post(''),
+        // '' => $this->input->post(''),
+        // '' => $this->input->post(''),
+      ]
+
+      //insert pwe part
+      $faktor_pwe = $this->input->post('faktor_pwe');
+      $menit_pwe = $this->input->post('menit_pwe');
+      if (!empty($faktor_pwe) && !empty($menit_pwe)) {
+        $pwe = [
+          'faktor' => $faktor_pwe,
+          'waktu' => $menit_pwe
+        ];
+        // $this->db->insert('lph.lph_pengurangan_waktu_ef', $pwe);
+        if ($this->db->affected_rows()) {
+
+        }else {
+          echo json_encode('fail insert pwe');
+        }
+      }
+    }
+
+    public function kodePart()
+    {
+        $variable = $this->input->GET('variable',TRUE);
+        $variable = strtoupper($variable);
+        $kode = $this->M_master->kodePart($variable, $this->input->get('type_product'));
+        echo json_encode($kode);
+    }
+
     public function AlatBantu()
     {
         $ab = $this->input->post('ab',TRUE);

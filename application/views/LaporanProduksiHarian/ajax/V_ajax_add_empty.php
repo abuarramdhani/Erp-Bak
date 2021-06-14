@@ -129,7 +129,7 @@
                     <input type="number" class="form-control lph_pwe_waktu" required name="" value="">
                   </div>
                   <div class="col-sm-5">
-                    <button type="submit" id="lph_form_pwe" class="btn btn-primary" style="width:100%" name="button"> <i class="fa fa-download"></i> Tambah </button>
+                    <button type="submit" class="btn btn-primary" style="width:100%" name="button"> <i class="fa fa-download"></i> Tambah </button>
                   </div>
                 </div>
               </div>
@@ -192,7 +192,7 @@
         <div class="row">
         <div class="col-md-12">
           <div class="mt-4" style="overflow-y:scroll;">
-            <table class="table table-bordered tbl_lph_add_comp" style="width:2430px;text-align:center">
+            <table class="table table-bordered tbl_lph_add_comp" style="width:2530px;text-align:center">
               <thead class="bg-primary">
                 <tr>
                   <td style="width:30px">No</td>
@@ -203,6 +203,7 @@
                   <td style="width:100px">Wkt. Mesin</td>
                   <td style="width:200px">Kode Proses</td>
                   <td style="width:200px">Nama Proses</td>
+                  <td style="width:100px">Target PPIC</td>
                   <td style="width:100px">Target <span class="lph_jenis_target"></span></td>
                   <td style="width:100px">T.100%</td>
                   <td style="width:100px">Aktual</td>
@@ -231,6 +232,7 @@
                     <select class="select2" name="kodeproses[]" style="width:100%"></select>
                   </td>
                   <td><input type="text" class="form-control"  name="namaproses[]" value=""></td>
+                  <td><input type="text" class="form-control"  name="target_ppic[]" readonly value=""></td>
                   <td><input type="text" class="form-control lph_target_harian" name="target_harian[]" readonly value=""></td>
                   <td><input type="text" class="form-control" name="target_seratus_persen[]" readonly value=""></td>
                   <td><input type="number" class="form-control lph_aktual" name="aktual[]" value=""></td>
@@ -307,6 +309,7 @@ function itungitung() {
                                           <td>
                                             <select class="select2" name="kodeproses[]" style="width:100%"></select>
                                           </td>
+                                          <td><input type="text" class="form-control"  name="target_ppic[]" readonly value=""></td>
                                           <td><input type="text" class="form-control"  name="namaproses[]" value=""></td>
                                           <td><input type="text" class="form-control lph_target_harian" name="target_harian[]" readonly value=""></td>
                                           <td><input type="text" class="form-control" name="target_seratus_persen[]" readonly value=""></td>
@@ -393,6 +396,45 @@ function itungitung() {
     itungitung();
 
   })
+
+  $(".lph_kodepart").on('change', function() {
+    let ambil_desc = $(this).text().split(' ~ ');
+    if (ambil_desc != '') {
+      $(this).parent().parent('tr').find('input[name="namapart[]"]').val(ambil_desc[1]);
+    }
+  })
+
+  $(".lph_kodepart").select2({
+    minimumInputLength: 3,
+    // maximumSelectionLength: 1,
+    ajax: {
+      url: baseurl + 'LaporanProduksiHarian/action/kodePart/',
+      dataType: 'json',
+      type: "GET",
+      data: function(params) {
+        var queryParameters = {
+          variable: params.term,
+          kode: $('.lph_kodepart').val(),
+          type_product: ''
+        }
+        return queryParameters;
+      },
+      processResults: function(kode) {
+        return {
+          results: $.map(kode, function(obj) {
+            if (kode !== null) {
+              return {
+                id: obj.SEGMENT1,
+                text: obj.SEGMENT1 +' ~ '+ obj.DESCRIPTION
+              };
+            } else {
+              $('.namaPart').val('');
+            }
+          })
+        };
+      }
+    }
+  });
 
     function min_elem_pwe(th) {
       $(th).parent().parent('tr').remove();
