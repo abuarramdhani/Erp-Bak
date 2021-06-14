@@ -216,7 +216,7 @@ class C_Index extends CI_Controller
 				if (empty($lnobon)) {
 					$key['transact'] = 0;
 				}else{
-					$key['transact'] = $this->M_dtmasuk->getttlTransactAPD($lnobon, $kode);
+					$key['transact'] = $this->M_dtmasuk->getttlTransactAPD($lnobon, $kode, $pr);
 				}
 
 				$jpp = ceil(($a * 1.1) + $out - $stok - $totalPO);
@@ -257,9 +257,9 @@ class C_Index extends CI_Controller
 
 				$lnobon = $key['list_no_bon'];
 				if (empty($lnobon)) {
-					$key['transact'] = 0;
+					$row['transact'] = 0;
 				}else{
-					$key['transact'] = $this->M_dtmasuk->getttlTransactAPD($lnobon, $kode);
+					$row['transact'] = $this->M_dtmasuk->getttlTransactAPD($lnobon, $kode, $pr);
 				}
 
 				$jpp = ceil(($a * 1.1) + $out - $stok - $totalPO);

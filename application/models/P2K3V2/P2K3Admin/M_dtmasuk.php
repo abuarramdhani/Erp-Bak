@@ -1877,15 +1877,19 @@ class M_Dtmasuk extends CI_Model
         return $this->oracle->query($sql)->row_array();
     }
 
-    function getttlTransactAPD($no_bon, $apd)
+    function getttlTransactAPD($no_bon, $apd, $pr='')
     {
+        if ($pr == '') {
+            $pr = date('Y-m');
+        }
         $sql = "SELECT
                     sum(PENYERAHAN) transact
                 FROM
                     im_master_bon
                 WHERE
                     no_bon IN($no_bon)
-                    AND kode_barang = '$apd'";
+                    AND kode_barang = '$apd'
+                    AND keterangan LIKE '%$pr'";
         if (empty($this->oracle->query($sql)->row()->TRANSACT)) {
             return 0;
         }
