@@ -34,8 +34,8 @@
                 <input type="hidden" name="wip<?= $no?>"> 
                 <input type="hidden" name="picklist<?= $no?>"> 
                 <input type="hidden" name="completion<?= $no?>" class="val_completion"> 
-                <input type="hidden" name="fg_tks<?= $no?>"> 
-                <input type="hidden" name="mlati<?= $no?>"> 
+                <input type="hidden" name="gudang1<?= $no?>"> 
+                <input type="hidden" name="gudang2<?= $no?>"> 
                 <input type="hidden" name="av_pick<?= $no?>"> 
             </td>
 

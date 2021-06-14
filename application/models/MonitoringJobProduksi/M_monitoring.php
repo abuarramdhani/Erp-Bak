@@ -300,10 +300,9 @@ public function getCompletion($item){
     return $query->result_array();
 }
 
-public function getGudang($item){
+public function getGudang($item, $subinv){
     $sql = "SELECT DISTINCT msib.segment1
-                ,khs_inv_qty_att(102,msib.inventory_item_id,'FG-TKS','','') FG_TKS
-            ,khs_inv_qty_att(102,msib.inventory_item_id,'MLATI-DM','','') MLATI_DM
+            $subinv
             FROM mtl_system_items_b msib
             WHERE msib.segment1 = '$item'";
     $query = $this->oracle->query($sql);

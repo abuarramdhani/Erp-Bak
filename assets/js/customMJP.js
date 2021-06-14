@@ -184,16 +184,27 @@ function getCompMonitoring(no, batas) {
 function getGdMonitoring(no, batas) {
     if (no <= batas) {
         var item = $('#item'+no).val();
+        var  kategori   = $('#kategori').val();
         $.ajax ({
             url : baseurl + "MonitoringJobProduksi/Monitoring/searchgdmonitoring",
-            data : {item : item},
+            data : {item : item, kategori : kategori},
             dataType : 'json',
             type : 'POST',
             success : function (result) {
                 // console.log(result,no)
-                $('[name = "ini_gd'+no+'"]').html('<b>FG-TKS :</b> '+result[0]+'<br><b>MLATI-DM :</b> '+result[1]+'')
-                $('[name ="fg_tks'+no+'"]').val(result[0]);
-                $('[name ="mlati'+no+'"]').val(result[1]);
+                if (result[0][0] != '') {
+                    var gd1 = '<b>'+result[0][0]+' :</b> '+result[0][1]+'';
+                }else{
+                    var gd1 = '';
+                }
+                if (result[1][0] != '') {
+                    var gd2 = '<br><b>'+result[1][0]+':</b> '+result[1][1]+'';
+                }else{
+                    var gd2 = '';
+                }
+                $('[name = "ini_gd'+no+'"]').html(gd1+gd2)
+                $('[name ="gudang1'+no+'"]').val(result[0][1]);
+                $('[name ="gudang2'+no+'"]').val(result[1][1]);
                 getGdMonitoring((no+1), batas);
             }
         })
@@ -512,13 +523,17 @@ function create_job_otomatis(th) {
                         }).reduce( function(a,b){ // sum all resulting numbers
                             return a+b
                         })
+    if (sumjml == 0) {
+        $('#ket_create_job').html('<i class="fa fa-check" style="color:green"></i>');
+    }
     console.log(item, sumjml);
     var hitung_mulai = 0;
     for (let i = 0; i < item.length/2; i++) {
-        var plan = $('.plan'+(i+1)).map(function(){return $(this).val();}).get();
+        var plan    = $('.plan'+(i+1)).map(function(){return $(this).val();}).get();
+        var job     = $('.ket_job'+(i+1)).map(function(){return $(this).val();}).get();
         console.log(i,plan);
         for (let p = 0; p < plan.length; p++) {
-            if (plan[p] != '') {
+            if (plan[p] != '' && job[p] == 1) {
                 $.ajax({
                     type: "POST",
                     dataType : 'json',
@@ -807,6 +822,28 @@ function editcategory(no) {
         success: function(data) {
             $('#mdl_masterctgr').modal('show');
             $('#data_masterctgr').html(data);
+            
+            $(".getsubinv2").select2({
+                allowClear: true,
+                ajax: {
+                    url: baseurl + "MonitoringJobProduksi/LaporanProduksi/getSubinv",
+                    dataType: 'json',
+                    type: "GET",
+                    data: function (params) {
+                            var queryParameters = {
+                                    term: params.term,
+                            }
+                            return queryParameters;
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: $.map(data, function (obj) {
+                                return {id:obj.SECONDARY_INVENTORY_NAME, text:obj.SECONDARY_INVENTORY_NAME};
+                            })
+                        };
+                    }
+                }
+            });	
         }
     })
     // Swal.fire({
@@ -884,14 +921,15 @@ function updateCategory() {
     var id          = $('#id_kategori').val();
     var kategori    = $('#kategorii').val();
     var sub_kategori = $('[name="sub_kategori2[]"]').map(function(){return $(this).val();}).get();
+    var gudang      = $('[name="gudang[]"]').map(function(){return $(this).val();}).get();
     $.ajax({
         url : baseurl + "MonitoringJobProduksi/MasterKategori/updateCategory",
-        data: {id : id,kategori : kategori, sub_kategori : sub_kategori},
+        data: {id : id,kategori : kategori, sub_kategori : sub_kategori, gudang : gudang},
         type : "POST",
         dataType: "html",
         success: function(data) {
             $('#mdl_masterctgr').modal('hide');
-            window.location.reload();
+            getMasterCategory(this)
         }
     })
 }
@@ -907,9 +945,9 @@ function tmb_subkategori() {
 
 var j = 2;
 function tmb_subkategori2() {
-    $('#tambah_subkategori2').append('<div class="tambah_subkategori2"><div class="col-md-3 text-right"></div><div class="col-md-6"><input name="sub_kategori2[]" class="form-control" style="text-transform:uppercase" placeholder="Masukkan SubKategori"></div><div class="col-md-1"><button type="button" class="btn bg-default tombolhapus'+j+'" style="margin-left:15px"><i class="fa fa-minus"></i></button></div><br><br></div>');
+    $('#tambah_subkategori2').append('<div class="tambah_subkategori2"><div class="col-md-2 text-right"></div><div class="col-md-8"><input name="sub_kategori2[]" class="form-control" style="text-transform:uppercase" placeholder="Masukkan SubKategori"></div><div class="col-md-1"><button type="button" class="btn bg-default tombolhapus'+j+'" style="margin-left:15px"><i class="fa fa-minus"></i></button></div><br><br></div>');
 
-    $(document).on('click', '.tombolhapus'+i,  function() {
+    $(document).on('click', '.tombolhapus'+j,  function() {
 		$(this).parents('.tambah_subkategori2').remove()
 	});
 }
@@ -939,7 +977,9 @@ function saveQuantityItem(th) {
         type : "POST",
         dataType: "html",
         success: function(data) {
-            window.location.reload();
+            $('#kode_item').select2('val', '');
+            $('#qty_item').val('');
+            getMasterQuantity(this);
         }
     }) 
 }
@@ -949,31 +989,38 @@ function editmasterqty(no) {
     var inv   = $('#inv'+no).val();
     var qty    = $('#qty'+no).val();
     
-    $.ajax({
-        url : baseurl + "MonitoringJobProduksi/MasterKategori/editItemQty",
-        data: {item : item, inv : inv, qty : qty},
-        type : "POST",
-        dataType: "html",
-        success: function(data) {
-            $('#mdl_masterctgr').modal('show');
-            $('#data_masterctgr').html(data);
-        }
-    })
-}
-
-function updateQuantityItem() {
-    var id_item = $('#id_item').val();
-    var qty     = $('#qty_item_edit').val();
-    $.ajax({
-        url : baseurl + "MonitoringJobProduksi/MasterKategori/updateQuantity",
-        data: {id_item : id_item,qty : qty,},
-        type : "POST",
-        dataType: "html",
-        success: function(data) {
-            $('#mdl_masterctgr').modal('hide');
-            window.location.reload();
-        }
-    })
+	Swal.fire({
+		title: 'Edit Quantity Item',
+        html : `<span style="margin-left:-10px">Kode Item : `+item+`</span>
+                <br><span style="margin-left:-145px">Quantity : `+qty+`</span>`,
+		// type: 'success',
+		input: 'number',
+		inputAttributes: {
+			autocapitalize: 'off'
+		},
+		showCancelButton: true,
+		confirmButtonText: 'Submit',
+		showLoaderOnConfirm: true,
+	}).then(result => {
+		if (result.value) {
+        var val = result.value;
+        $.ajax({
+            url : baseurl + "MonitoringJobProduksi/MasterKategori/updateQuantity",
+            data: {id_item : inv,qty : val,},
+            type : "POST",
+            dataType: "html",
+            success: function(data) {
+                Swal.fire({
+                    title: 'Quantity berhasil diedit!',
+                    type: 'success',
+                    allowOutsideClick: false
+                }).then(result => {
+                    if (result.value) {
+                        getMasterQuantity(this);
+                }})  
+            }
+        })
+	}})
 }
 
 function deletemasterqty(inv) {
