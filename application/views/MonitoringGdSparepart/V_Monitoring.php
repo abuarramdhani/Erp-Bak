@@ -1,4 +1,3 @@
-<input type="hidden" value="ok" id="monmpg">
 <section class="content">
     <div class="inner">
         <div class="row">
@@ -40,21 +39,28 @@
                                     </div>
                                 </div>
                                 <div class="panel-body">
-                                    <div class="col-md-3">
+                                    <div class="col-md-4">
                                         <label class="control-label">Subinventory</label>
-                                        <input id="subinventory" name="subinventory" class="form-control pull-right" placeholder="Subinventory" readonly>
+                                        <select class="form-control select2" data-placeholder="Pilih Subinventory Terlebih Dahulu" id="subinventory" name="subinventory" onchange="getMON(this)">
+                                            <option> </option>
+                                            <option>SP-YSP</option>
+                                            <option>KOM1-DM</option>
+                                            <option>PNL-DM</option>
+                                            <option>FG-DM</option>
+                                        </select>
+                                        <!-- <input id="subinventory" name="subinventory" class="form-control pull-right" placeholder="Subinventory" readonly> -->
                                     </div>
                                     <div class="col-md-3">
                                         <label class="control-label">Search by </label>
                                             <select id="search_by" name="search_by" class="form-control select2 select2-hidden-accessible" style="width:100%;" data-placeholder="Cari berdasarkan">
-                                            <option></option>
-                                            <option value="dokumen">Dokumen</option>
-                                            <option value="tanggal">Tanggal</option>
-                                            <option value="pic">PIC</option>
-                                            <option value="item">Item</option>
-                                            <option value="belumterlayani">Belum Terlayani</option>
-                                            <option value="export" id="slcExMGS">Export Excel</option>
-                                            <option value="tanpa_surat" id="tanpa_surat">Tanpa Surat</option>
+                                                <option></option>
+                                                <option value="dokumen">Dokumen</option>
+                                                <option value="tanggal">Tanggal</option>
+                                                <option value="pic">PIC</option>
+                                                <option value="item">Item</option>
+                                                <option value="belumterlayani">Belum Terlayani</option>
+                                                <option value="export" id="slcExMGS">Export Excel</option>
+                                                <option value="tanpa_surat" id="tanpa_surat">Tanpa Surat</option>
                                             </select>
                                     </div>
                                 </div>
@@ -66,13 +72,13 @@
                                     <div class="col-md-3" style="display:none" id="slcjenis">
                                         <label class="control-label">Jenis Dokumen </label>
                                             <select id="jenis_dokumen" name="jenis_dokumen" class="form-control select2 select2-hidden-accessible" style="width:100%;" data-placeholder="Pilih Jenis Dokumen">
-                                            <option></option>
-                                            <option value="IO">IO</option>
-                                            <option value="KIB">KIB</option>
-                                            <option value="LPPB">LPPB</option>
-                                            <option value="MO">MO</option>
-                                            <!-- <option value="FPB">FPB</option> -->
-                                            <option value="SPBSPI">SPBSPI</option>
+                                                <option></option>
+                                                <option value="IO">IO</option>
+                                                <option value="KIB">KIB</option>
+                                                <option value="LPPB">LPPB</option>
+                                                <option value="MO">MO</option>
+                                                <!-- <option value="FPB">FPB</option> -->
+                                                <option value="SPBSPI">SPBSPI</option>
                                             </select>
                                     </div>
                                 </div>
