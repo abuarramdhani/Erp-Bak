@@ -53,6 +53,7 @@ $(document).ready(function(){
 
 $('#slcSubinv').on("select2:select", function(e) {
   var subinv = $('#slcSubinv option:selected').val();
+  $("#slcLoc").select2("val", "");
   ajax = $.ajax({
     url: baseurl + 'MonitoringPendingTrx/Monitoring/checkLocator',
     data: {
@@ -67,7 +68,6 @@ $('#slcSubinv').on("select2:select", function(e) {
         $('#slcLoc').removeAttr('disabled');
       }
       else {
-        $("#slcLoc").select2("val", "");
         $('#slcLoc').attr('disabled',true);
       }
     },
