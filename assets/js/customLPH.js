@@ -33,6 +33,17 @@ const swaLPHLarge = (type, a) =>{
     // }
   })
 }
+const swaLPHLoading = (a) =>{
+  Swal.fire({
+    allowOutsideClick: false,
+    // type: type,
+    // cancelButtonText: 'Ok!',
+    html: `<div style="font-weight:400">${a}</div>`,
+    onBeforeOpen: () => {
+      Swal.showLoading()
+    }
+  })
+}
 
 function lph_empty_form() {
   $.ajax({

@@ -71,7 +71,7 @@ vertical-align: middle;
                                 <label for="">Pekerja</label>
                                 <div class="input-group">
                                   <div class="input-group-addon"><i class="fa fa-user"></i></div>
-                                  <select class="select2 lphgetEmployee lph_search_pekerja" name="shift" style="width:200px" required>
+                                  <select class="lphgetEmployee lph_search_pekerja" name="Pekerja" style="width:200px" required>
 
                                   </select>
                                 </div>

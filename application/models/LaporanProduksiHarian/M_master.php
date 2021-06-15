@@ -9,7 +9,7 @@ class M_master extends CI_Model
 		$this->lantuma = $this->load->database('lantuma', TRUE);
 	}
 
-	function kodePart($variable, $product) // dari TSKK 
+	function kodePart($variable, $product) // dari TSKK
 	{
 	$where_product = '';
 	if (!empty($product)) {
@@ -68,10 +68,10 @@ class M_master extends CI_Model
 		}else {
 			$shift = 'shift IS NOT NULL';
 		}
-		$data = $this->db->query("SELECT *
-															 FROM lph.lph_rencana_kerja_operator
+		$data = $this->db->query("SELECT rko.*
+															 FROM lph.lph_rencana_kerja_operator rko
 															 WHERE $shift
-															 AND tanggal BETWEEN '$range[0]' AND '$range[1]'")->result_array();
+															 AND to_date(rko.tanggal, 'dd-mm-yyyy') BETWEEN to_date('$range[0]', 'dd-mm-yyyy') AND to_date('$range[1]', 'dd-mm-yyyy')")->result_array();
 		$m = '';
 		if (!empty($data)) {
 			$where = $data[0]['shift'];

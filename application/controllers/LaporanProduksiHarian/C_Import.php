@@ -79,44 +79,115 @@ class C_Import extends CI_Controller
 
     public function insert($value='')
     {
-      echo "<pre>";
-      print_r($this->input->post());
-      die;
+      $operator_ = $this->input->post('operator');
 
-      //insert rkom
-      $lph =  [
-        'tanggal' => $this->input->post('tanggal'),
-        'shift' => $this->input->post('shift'),
-        'kelompok' => $this->input->post('kelompok'),
-        'standar_waktu_efektif' => $this->input->post('standar_waktu_efektif'),
-        // '' => $this->input->post(''),
-        // '' => $this->input->post(''),
-        // '' => $this->input->post(''),
-        // '' => $this->input->post(''),
-        // '' => $this->input->post(''),
-        // '' => $this->input->post(''),
-        // '' => $this->input->post(''),
-        // '' => $this->input->post(''),
-        // '' => $this->input->post(''),
-        // '' => $this->input->post(''),
-        // '' => $this->input->post(''),
-      ]
+      foreach ($operator_ as $ket_opr => $operator) {
 
-      //insert pwe part
-      $faktor_pwe = $this->input->post('faktor_pwe');
-      $menit_pwe = $this->input->post('menit_pwe');
-      if (!empty($faktor_pwe) && !empty($menit_pwe)) {
-        $pwe = [
-          'faktor' => $faktor_pwe,
-          'waktu' => $menit_pwe
-        ];
-        // $this->db->insert('lph.lph_pengurangan_waktu_ef', $pwe);
-        if ($this->db->affected_rows()) {
-
+        // ============= generate group_id =============
+        $group_id = $this->db->select_max('lph_group_id')->get('lph.lph_master')->row_array();
+        if (!empty($group_id['lph_group_id'])) {
+          $groupid = $group_id['lph_group_id']+1;
         }else {
-          echo json_encode('fail insert pwe');
+          $groupid = 1;
+        }
+
+        // ============= insert rkom =============
+        $kodepart = $this->input->post('kodepart');
+        $tanggal = $this->input->post('tanggal');
+        foreach ($kodepart as $key => $kode_komponen) {
+          $lph = [
+            'tanggal' => $tanggal,
+            'shift' => $this->input->post('shift'),
+            'kelompok' => $this->input->post('kelompok'),
+            'standar_waktu_efektif' => $this->input->post('standar_waktu_efektif'),
+            'operator' => $operator,
+            'pengawas' => $this->input->post('pengawas'),
+            'jenis_ott' => $this->input->post('ott_jenis'),
+            'keterangan_ott' => $this->input->post('ott_keterangan'),
+            'kode_komponen' => $kode_komponen, // ========== dari sini =================
+            'nama_komponen' => $this->input->post('namapart')[$key],
+            'alat_bantu' => $this->input->post('alatbantu')[$key],
+            'kode_mesin' => $this->input->post('kodemesin')[$key],
+            'waktu_mesin' => empty($this->input->post('waktumesin')[$key]) ? NULL : $this->input->post('waktumesin')[$key],
+            'kode_proses' => $this->input->post('kodeproses')[$key],
+            'nama_proses' => $this->input->post('namaproses')[$key],
+            'plan' => $this->input->post('target_ppic')[$key],
+            'target_sk' => $this->input->post('target_harian_sk')[$key],
+            'target_js' => $this->input->post('target_harian_js')[$key],
+            'aktual' => $this->input->post('aktual')[$key],
+            'persentase_aktual' => $this->input->post('persentase')[$key],
+            'repair_man' => empty($this->input->post('repair_man')[$key]) ? NULL : $this->input->post('repair_man')[$key],
+            'repair_mat' => empty($this->input->post('repair_mat')[$key]) ? NULL : $this->input->post('repair_mat')[$key],
+            'repair_mach' => empty($this->input->post('repair_mach')[$key]) ? NULL : $this->input->post('repair_mach')[$key],
+            'scrap_man' => empty($this->input->post('scrap_man')[$key]) ? NULL : $this->input->post('scrap_man')[$key],
+            'scrap_mat' => empty($this->input->post('scrap_mat')[$key]) ? NULL : $this->input->post('scrap_mat')[$key],
+            'scrap_mach' => empty($this->input->post('scrap_mach')[$key]) ? NULL : $this->input->post('scrap_mach')[$key],
+            'rko_id' => empty($this->input->post('rko_id')[$key]) ? NULL : $this->input->post('rko_id')[$key],
+            'hari' => $this->hari_ini(date('D', strtotime(str_replace('/', '-', $tanggal)))),
+            'total' => $this->input->post('total'),
+            'kurang' => $this->input->post('kurang'),
+            'lph_group_id' => $groupid
+          ];
+          // echo "<pre>";
+          // print_r($lph);
+          $this->db->insert('lph.lph_master', $lph);
+          if (!$this->db->affected_rows()) {
+            $lph_master_insert_status = 0;
+            echo json_encode(
+            [
+              'status' => 'gagal insert lph master',
+              'type' => 'warning',
+              'message' => "Gagal melakukan insert, gagal insert saat dikomponen $kode_komponen"
+            ]);
+            die;
+          }else {
+            $lph_master_insert_status = 1;
+          }
+        }
+
+        if ($lph_master_insert_status) {
+          //insert pwe
+          $faktor_pwe = $this->input->post('faktor_pwe');
+          $menit_pwe = $this->input->post('menit_pwe');
+          if (!empty($faktor_pwe) && !empty($menit_pwe)) {
+            foreach ($faktor_pwe as $key => $value) {
+              $pwe = [
+                'faktor' => $value,
+                'waktu' => $menit_pwe[$key],
+                'total_waktu' => $this->input->post('total_waktu_pwe'),
+                'persentase_waktu' => $this->input->post('persentase_waktu_pwe'),
+                'id_lphm' => $groupid
+              ];
+              $this->db->insert('lph.lph_pengurangan_waktu_ef', $pwe);
+              if ($this->db->affected_rows()) {
+                $sukses_pwe = 1;
+              }else {
+                $sukses_pwe = 0;
+                echo json_encode([
+                  'status' => 'gagal insert pwe',
+                  'type' => 'warning',
+                  'message' => "Gagal melakukan insert di pengurangan_waktu_efektif, gagal saat melakukan insert di $value"
+                ]);
+                die;
+              }
+            }
+            if ($sukses_pwe) {
+              $pwe = 1;
+            }
+          }else {
+            $pwe = 1;
+          }
         }
       }
+
+      if ($pwe) {
+        echo json_encode([
+          'status' => 200,
+          'type' => 'success',
+          'message' => 'Berhasil melakukan insert data'
+        ]);
+      }
+
     }
 
     public function kodePart()
@@ -265,6 +336,7 @@ class C_Import extends CI_Controller
                       ->where('shift', $this->input->post('shift'))
                       ->where('no_induk', $this->input->post('no_induk'))
                       ->get('lph.lph_rencana_kerja_operator')->result_array();
+                      // echo $this->db->last_query();die;
       if (!empty($res[0]['nama_operator'])) {
         $detail_shift = $this->M_master->get_detail_shift($this->input->post('shift'));
         foreach ($res as $key => $value) {

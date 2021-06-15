@@ -22,9 +22,10 @@
             </div>
             <div class="form-group">
               <label for="">Shift</label>
-              <select class="select2" name="shift"  style="width:100%">
+              <select class="lph_shift_dinamis_v2" name="shift"  style="width:100%">
                 <option value="<?php echo $get[0]['shift'] ?> - <?php echo $get[0]['shift_description'] ?>"><?php echo $get[0]['shift'] ?> - <?php echo $get[0]['shift_description'] ?></option>
               </select>
+
             </div>
             <div class="form-group">
               <label for="">Kelompok</label>
@@ -84,13 +85,13 @@
       <div class="box-body" style="padding-top:30px">
         <div class="form-group lph_operator" >
           <label for="">Cari Pekerja</label>
-          <select class="lphgetEmployee" name="operator[]"  style="width:100%" multiple>
-            <option value="<?php echo $get[0]['no_induk'] ?>" selected><?php echo $get[0]['nama_operator'] ?> - <?php echo $get[0]['no_induk'] ?></option>
+          <select class="lphgetEmployee_form" name="operator[]" required style="width:100%" multiple>
+            <option value="<?php echo $get[0]['nama_operator'] ?> - <?php echo $get[0]['no_induk'] ?>" selected><?php echo $get[0]['nama_operator'] ?> - <?php echo $get[0]['no_induk'] ?></option>
           </select>
         </div>
         <div class="form-group">
           <label for="">Cari Pengawas</label>
-          <select class="lphgetEmployee" name="pengawas"  style="width:100%">
+          <select class="lphgetEmployee_form" name="pengawas" required style="width:100%">
 
           </select>
         </div>
@@ -142,9 +143,11 @@
           <div class="row">
             <div class="col-md-6">
               <b>Total Waktu : <span class="total_waktu_pengurangan" style="color:#337ab7"></span> </b>
+              <input type="hidden" name="total_waktu_pwe" value="">
             </div>
             <div class="col-md-6">
               <b>Persentase : <span class="persentase_waktu_pengurangan" style="color:#337ab7"></span> </b>
+              <input type="hidden" name="persentase_waktu_pwe" value="">
             </div>
           </div>
         </div>
@@ -183,7 +186,7 @@
         <div class="row">
         <div class="col-md-12">
           <div class="mt-4" style="overflow-y:scroll;">
-            <table class="table table-bordered tbl_lph_add_comp" style="width:2530px;text-align:center">
+            <table class="table table-bordered tbl_lph_add_comp" style="width:2430px;text-align:center">
               <thead class="bg-primary">
                 <tr>
                   <td style="width:30px">No</td>
@@ -196,7 +199,7 @@
                   <td style="width:200px">Nama Proses</td>
                   <td style="width:100px">Target PPIC</td>
                   <td style="width:100px">Target <span class="lph_jenis_target"></span></td>
-                  <td style="width:100px">T.100%</td>
+                  <!-- <td style="width:100px">T.100%</td> -->
                   <td style="width:100px">Aktual</td>
                   <td style="width:100px">%TASE</td>
                   <td style="width:100px">Hasil Baik</td>
@@ -213,10 +216,16 @@
                 <?php foreach ($get as $key => $value): ?>
                   <tr>
                     <td><?php echo $key+1 ?></td>
-                    <td><input type="text" class="form-control"  name="kodepart[]" required value="<?php echo $value['kode_komponen'] ?>"></td>
+                    <td>
+                      <select class="lph_kodepart" name="kodepart[]" required style="width:182px">
+                       <option value="<?php echo $value['kode_komponen'] ?>" selected><?php echo $value['kode_komponen'] ?></option>
+                      </select>
+                    </td>
                     <td><input type="text" class="form-control"  name="namapart[]" required value="<?php echo $value['nama_komponen'] ?>"></td>
                     <td>
-                      <select class="LphAlatBantu" name="alatbantu[]" style="width:200px"></select>
+                      <select class="LphAlatBantu" name="alatbantu[]" style="width:200px">
+                        <option value="" selected></option>
+                      </select>
                     </td>
                     <td><input type="text" class="form-control"  name="kodemesin[]" value="<?php echo str_replace(' ','',$value['kode_mesin']) ?>"></td>
                     <td><input type="text" class="form-control"  name="waktumesin[]" value=""></td>
@@ -232,8 +241,13 @@
                         $target_harian = $value['target_sk'];
                       }
                     ?>
-                    <td><input type="text" class="form-control lph_target_harian" name="target_harian[]" required readonly value="<?php echo $target_harian ?>"></td>
-                    <td><input type="text" class="form-control" name="target_seratus_persen[]" readonly value="<?php echo $target_harian ?>"></td>
+                    <td>
+                      <input type="text" class="form-control lph_target_harian" name="target_harian[]" required readonly value="<?php echo $target_harian ?>">
+                      <input type="hidden" name="target_harian_sk[]" value="<?php echo $value['target_sk'] ?>">
+                      <input type="hidden" name="target_harian_js[]" value="<?php echo $value['target_js'] ?>">
+                      <input type="hidden" name="rko_id[]" value="<?php echo $value['id'] ?>">
+                    </td>
+                    <!-- <td><input type="text" class="form-control" name="target_seratus_persen[]" readonly value="<?php //echo $target_harian ?>"></td> -->
                     <td><input type="number" class="form-control lph_aktual" <?php echo is_numeric($target_harian) ? 'required' : '' ?> name="aktual[]" value=""></td>
                     <td><input type="text" class="form-control lph_persentase" name="persentase[]" value="" readonly></td>
                     <td><input type="number" class="form-control lph_hasil_baik" name="hasil_baik[]" value=""></td>
@@ -284,8 +298,9 @@ function itungitung() {
 
   // persentase pwe dan total print
   $('.total_waktu_pengurangan').text(total_pwe);
+  $('input[name="total_waktu_pwe"]').val(total_pwe);
   $('.persentase_waktu_pengurangan').text(`${(Number(pengurangan_waktu_efektif)).toFixed(2)}%`);
-
+  $('input[name="persentase_waktu_pwe"]').val(`${(Number(pengurangan_waktu_efektif)).toFixed(2)}%`)
   //total
   let total = 0;
   $('.lph_persentase').each((index, item)=>{
@@ -301,21 +316,31 @@ function lph_add_row_hasil_produksi() {
   $('.tbl_lph_add_comp tbody').append(`<tr>
                                         <td>${no}</td>
                                         <td>
-                                          <select class="lph_kodepart" name="kodepart[]" required style="width:182px"></select>
+                                          <select class="lph_kodepart" name="kodepart[]" required style="width:182px">
+                                           <option value="" selected></option>
+                                          </select>
                                         </td>
                                         <td><input type="text" class="form-control" required name="namapart[]" value=""></td>
                                         <td>
-                                          <select class="LphAlatBantu" name="alatbantu[]" style="width:200px"></select>
+                                          <select class="LphAlatBantu" name="alatbantu[]" style="width:200px">
+                                           <option value="" selected></option>
+                                          </select>
                                         </td>
                                         <td><input type="text" class="form-control" required name="kodemesin[]" value=""></td>
                                         <td><input type="text" class="form-control" name="waktumesin[]" value=""></td>
                                         <td>
-                                          <select class="select2" name="kodeproses[]" style="width:100%"></select>
+                                          <select class="select2" name="kodeproses[]" style="width:100%">
+                                            <option value="" selected></option>
+                                          </select>
                                         </td>
                                         <td><input type="text" class="form-control" required name="namaproses[]" value=""></td>
                                         <td><input type="text" class="form-control" required name="target_ppic[]" readonly value=""></td>
-                                        <td><input type="text" class="form-control lph_target_harian" name="target_harian[]" required readonly value=""></td>
-                                        <td><input type="text" class="form-control" name="target_seratus_persen[]" readonly value=""></td>
+                                        <td>
+                                         <input type="text" class="form-control lph_target_harian" name="target_harian[]" required readonly value="">
+                                         <input type="hidden" name="target_harian_sk[]" value="">
+                                         <input type="hidden" name="target_harian_js[]" value="">
+                                         <input type="hidden" name="rko_id[]" value="">
+                                        </td>
                                         <td><input type="number" class="form-control lph_aktual" required name="aktual[]" value=""></td>
                                         <td><input type="text" class="form-control lph_persentase" name="persentase[]" value="" readonly></td>
                                         <td><input type="number" class="form-control lph_hasil_baik" name="hasil_baik[]" value=""></td>
@@ -491,7 +516,8 @@ function lph_add_row_hasil_produksi() {
 
   $(function() {
     // run();
-    $('.select2').select2();
+    // $('.select2').select2();
+    $('.lph_shift_dinamis_v2').select2();
     let t = $('.lph_tdl_add').val().split('-');
     let d = new Date(`${t[2]}-${t[1]}-${t[0]}`);
     var weekday = new Array(7);
@@ -551,9 +577,95 @@ function lph_add_row_hasil_produksi() {
         format: "DD-MM-YYYY",
       },
     });
+
+    $(".lph_kodepart").select2({
+      minimumInputLength: 3,
+      // maximumSelectionLength: 1,
+      ajax: {
+        url: baseurl + 'LaporanProduksiHarian/action/kodePart/',
+        dataType: 'json',
+        type: "GET",
+        data: function(params) {
+          var queryParameters = {
+            variable: params.term,
+            kode: $('.lph_kodepart').val(),
+            type_product: ''
+          }
+          return queryParameters;
+        },
+        processResults: function(kode) {
+          return {
+            results: $.map(kode, function(obj) {
+              if (kode !== null) {
+                return {
+                  id: obj.SEGMENT1,
+                  text: obj.SEGMENT1 +' ~ '+ obj.DESCRIPTION
+                };
+              } else {
+                $('.namaPart').val('');
+              }
+            })
+          };
+        }
+      }
+    });
   })
 
-  $('.lphgetEmployee').select2({
+  $('.lph_tdl_add').on('change', function() {
+    let t = $(this).val().split('-');
+    let d = new Date(`${t[2]}-${t[1]}-${t[0]}`);
+    var weekday = new Array(7);
+    weekday[0] = "Sunday";
+    weekday[1] = "Monday";
+    weekday[2] = "Tuesday";
+    weekday[3] = "Wednesday";
+    weekday[4] = "Thursday";
+    weekday[5] = "Friday";
+    weekday[6] = "Saturday";
+    var n = weekday[d.getDay()];
+    let menit, standar
+    if (n == 'Friday' || n == 'Saturday') {
+      menit = 360;
+      standar = 330;
+      $('.lph_jenis_target').text('J-S');
+    }else {
+      menit = 420;
+      standar = 390;
+      $('.lph_jenis_target').text('S-K');
+    }
+    $('.lph_waktu_kerja').text(menit);
+    $('.lph_w_standar_efk').text(standar);
+
+    $.ajax({
+      url: baseurl + 'LaporanProduksiHarian/action/getShift',
+      type: 'POST',
+      dataType: 'JSON',
+      data: {
+        tanggal : $(this).val(),
+      },
+      cache:false,
+      beforeSend: function() {
+        toastLPHLoading('Sedang Mengambil Shift...');
+        $('.lph_shift_dinamis_v2').val('').trigger('change');
+      },
+      success: function(result) {
+        // console.log(result);
+        if (result != 0) {
+          toastLPH('success', 'Selesai.');
+          $('.lph_shift_dinamis_v2').html(result);
+        }else {
+          toastLPH('warning', 'koneksi terputus, coba lagi nanti');
+          $('.lph_shift_dinamis_v2').html('');
+        }
+      },
+      error: function(XMLHttpRequest, textStatus, errorThrown) {
+      swaLPHLarge('error', textStatus)
+       console.error();
+      }
+    })
+  })
+
+  $('.lphgetEmployee_form').select2({
     minimumInputLength: 3,
     placeholder: "Employee",
     ajax: {
@@ -569,7 +681,7 @@ function lph_add_row_hasil_produksi() {
         return {
           results: $.map(data, function(obj) {
             return {
-              id: obj.employee_code,
+              id: `${obj.employee_name} - ${obj.employee_code}`,
               text: `${obj.employee_name} - ${obj.employee_code}`
             }
           })
@@ -592,10 +704,13 @@ function lph_add_row_hasil_produksi() {
       processData: false,
       dataType: "JSON",
       beforeSend: function() {
-
+        swaLPHLoading('Sedang memproses data...');
       },
       success: function(result) {
-
+        swaLPHLarge(result.type, result.message);
+        if (result.type == 'success') {
+          lph_empty_form();
+        }
       },
       error: function(XMLHttpRequest, textStatus, errorThrown) {
         swaLPHLarge('error', 'Terjadi kesalahan');
