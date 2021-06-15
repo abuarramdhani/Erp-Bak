@@ -37,19 +37,20 @@
                                     </div>
                                 </div>
                                 <div id="loadingAreaPersen" style="display: none;">
-                                  <center>
-                                    <img style="width: 5%" src="<?php echo base_url('assets/img/gif/loading5.gif') ?>"><br>
-                                    <b>Loading Persentase...</b>
-                                  </center>
+                                    <center>
+                                        <img style="width: 5%" src="<?php echo base_url('assets/img/gif/loading5.gif') ?>"><br>
+                                        <b>Loading Persentase...</b>
+                                    </center>
                                 </div>
                                 <div id="tb_persen">
                                   
                                 </div>
+                                <br>
                                 <div id="loadingArea" style="display: none;">
-                                  <center>
-                                    <img style="width: 5%" src="<?php echo base_url('assets/img/gif/loading5.gif') ?>"><br>
-                                    <b>Loading Tabel...</b>
-                                  </center>
+                                    <center>
+                                        <img style="width: 5%" src="<?php echo base_url('assets/img/gif/loading5.gif') ?>"><br>
+                                        <b>Loading Tabel...</b>
+                                    </center>
                                 </div>
                                 <div id="tb_monitoring">
                                   
