@@ -77,6 +77,10 @@ $('#slcSubinv').on("select2:select", function(e) {
   })
 });
 
+function dang(){
+  cariPending();
+  hitungPersentase();
+}
 
 function cariPending(){
   var subinv = $('#slcSubinv option:selected').val();
@@ -138,6 +142,40 @@ function detailData(req,jenis) {
 
       $('#noReq').html(req);
       $('#jenisDoc').html(jenis);
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+      console.error();
+    }
+  })
+}
+
+function hitungPersentase(){
+  var subinv = $('#slcSubinv option:selected').val();
+  var loc = $('#slcLoc option:selected').val();
+  var loc2 = $('#slcLoc option:selected').html();
+
+  if (loc == undefined) {
+    loc = '';
+  }
+  console.log(subinv+' '+loc);
+
+  
+  ajax = $.ajax({
+    url: baseurl + 'MonitoringPendingTrx/Monitoring/getDataPersen',
+    data: {
+      subinv : subinv,
+      loc : loc,
+      loc2 : loc2
+    },
+    type: 'POST',
+    beforeSend: function() {
+      $('#loadingAreaPersen').show();
+      $('div#tb_persen').hide();
+    },
+    success: function(result) {
+      $('#loadingAreaPersen').hide();       
+      $('div#tb_persen').show();
+      $('div#tb_persen').html(result);
     },
     error: function(XMLHttpRequest, textStatus, errorThrown) {
       console.error();
