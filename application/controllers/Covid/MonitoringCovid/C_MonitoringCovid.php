@@ -1629,7 +1629,7 @@ class C_MonitoringCovid extends CI_Controller
 
 		$nomorWA = str_replace(' ', '', $nomor);
 		if(substr($nomorWA, 0,2) == '08')
-			$nomorWA = preg_replace('/0/', '+62', $nomorWA, 1);
+			$nomorWA = preg_replace('/0/', '62', $nomorWA, 1);
 
 		$aemail = trim($pkj['email']);
 		if(empty($aemail)) $aemail = '-';
