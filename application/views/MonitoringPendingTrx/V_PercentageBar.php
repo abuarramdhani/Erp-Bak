@@ -114,3 +114,56 @@
     </div>
     </div>
 </div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-success">
+            <div class="box-header" style="font-weight: bold;">
+                Export Data
+            </div>
+            <div class="box-body">
+            <form name="exportData" action="<?php echo base_url('MonitoringPendingTrx/Monitoring/exportData'); ?>" target="_blank" enctype="multipart/form-data" method="post">
+                <div class="col-md-3">
+                    <label>From Subinv</label>
+                    <select class="form-control select2" name="expFSubinv" id="expFSubinv" required>
+                        <option></option>
+                        <?php 
+                            foreach ($ke as $value) {
+                        ?>
+                        <option value="<?= $value['FROM_SUBINVENTORY_CODE'] ?>"><?= $value['FROM_SUBINVENTORY_CODE'] ?></option>
+                        <?php
+                            }
+                        ?>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label>To Subinv</label>
+                    <!-- <select class="form-control select2" name="expTSubinv" id="expTSubinv" required>
+                        <option></option>
+                    </select> -->
+                    <input type="text" class="form-control" name="expTSubinv" id="expTSubinv" value="<?= $subinv ?>" readonly>
+                </div>
+                <div class="col-md-3">
+                    <label>To Locator</label>
+                    <!-- <select class="form-control select2" name="expTLoc" id="expTLoc" required>
+                        <option></option>
+                    </select> -->
+                    <input type="text" class="form-control" name="expLSubinv" id="expLSubinv" value="<?= $loc2 ?>" readonly>
+                </div>
+                <div class="col-md-3">
+                    <label style="color: transparent;">____</label>
+                    <p>
+                        <button type="submit" class="btn btn-success"><i class="fa fa-file-excel-o"> Export Excel</i></button>
+                    </p>    
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $("#expFSubinv").select2({
+        placeholder: 'Pilih Subinventory',
+        allowClear: true
+    });
+</script>
