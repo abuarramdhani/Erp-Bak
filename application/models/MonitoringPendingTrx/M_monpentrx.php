@@ -252,5 +252,157 @@ class M_monpentrx extends CI_Model{
       $query = $this->oracle->query($sql);
       return $query->result_array();
     }
+
+
+    public function getRekapDari($subinv,$loc){
+      if ($loc == '') {
+        $code1 = "";
+        $code2 = "";
+        $code3 = "";
+      }
+      else {
+        $code1 = "AND mtrl.from_locator_id = $loc";
+        $code2 = "AND kkk.from_locator_id = $loc";
+        $code3 = "AND mmt.locator_id = $loc";
+      }
+
+      $sql = "SELECT dari.to_subinventory_code, SUM (dari.jml) jml
+                FROM (SELECT   mtrl.to_subinventory_code, COUNT (msib.segment1) jml
+                          FROM mtl_txn_request_headers mtrh,
+                               mtl_txn_request_lines mtrl,
+                               mtl_item_locations mil,
+                               mtl_item_locations mil2,
+                               mtl_system_items_b msib,
+                               mtl_parameters mp
+                         WHERE mtrh.header_id = mtrl.header_id
+                           AND mtrl.from_locator_id = mil.inventory_location_id(+)
+                           AND mtrl.to_locator_id = mil2.inventory_location_id(+)
+                           AND mtrl.inventory_item_id = msib.inventory_item_id
+                           AND mtrl.organization_id = msib.organization_id
+                           AND mtrl.organization_id = mp.organization_id
+                           AND mtrl.from_subinventory_code = '$subinv'
+                           AND mtrl.line_status NOT IN (1, 5, 6)
+                           $code1
+                      GROUP BY mtrl.to_subinventory_code
+                      UNION
+                      SELECT   kkk.to_subinventory_code, COUNT (msib.segment1) jml
+                          FROM khs_kib_kanban kkk,
+                               mtl_item_locations mil,
+                               mtl_item_locations mil2,
+                               mtl_system_items_b msib,
+                               mtl_parameters mp
+                         WHERE kkk.from_locator_id = mil.inventory_location_id(+)
+                           AND kkk.to_locator_id = mil2.inventory_location_id(+)
+                           AND kkk.primary_item_id = msib.inventory_item_id
+                           AND msib.organization_id = 81
+                           AND kkk.organization_id = mp.organization_id
+                           AND kkk.inventory_trans_flag <> 'Y'
+                           AND kkk.kibcode NOT LIKE 'SET%'
+                           AND kkk.from_subinventory_code = '$subinv'
+                           $code2
+                      GROUP BY kkk.to_subinventory_code
+                      UNION
+                      SELECT   rsl.to_subinventory, COUNT (msib.segment1) jml
+                          FROM rcv_shipment_headers rsh,
+                               rcv_shipment_lines rsl,
+                               mtl_material_transactions mmt,
+                               mtl_item_locations mil,
+                               mtl_item_locations mil2,
+                               mtl_system_items_b msib,
+                               mtl_parameters mp
+                         WHERE rsh.shipment_header_id = rsl.shipment_header_id
+                           AND rsh.shipment_num IS NOT NULL
+                           AND rsl.mmt_transaction_id = mmt.transaction_id
+                           AND mmt.locator_id = mil.inventory_location_id(+)
+                           AND rsl.locator_id = mil2.inventory_location_id(+)
+                           AND rsl.item_id = msib.inventory_item_id
+                           AND msib.organization_id = 81
+                           AND rsl.to_organization_id = mp.organization_id
+                           AND rsh.receipt_source_code = 'INVENTORY'
+                           AND rsl.shipment_line_status_code <> 'FULLY RECEIVED'
+                           AND mmt.subinventory_code = '$subinv'
+                           $code3
+                      GROUP BY rsl.to_subinventory) dari
+            GROUP BY dari.to_subinventory_code
+            ORDER BY 1";
+      $query = $this->oracle->query($sql);
+      return $query->result_array();
+    }
+
+
+    public function getRekapKe($subinv,$loc){
+      if ($loc == '') {
+        $code1 = "";
+        $code2 = "";
+        $code3 = "";
+      }
+      else {
+        $code1 = "AND mtrl.to_locator_id = $loc";
+        $code2 = "AND kkk.to_locator_id = $loc";
+        $code3 = "AND rsl.locator_id = $loc";
+      }
+
+      $sql = "SELECT ke.from_subinventory_code, SUM (ke.jml) jml
+                FROM (SELECT   mtrl.from_subinventory_code, COUNT (msib.segment1) jml
+                          FROM mtl_txn_request_headers mtrh,
+                               mtl_txn_request_lines mtrl,
+                               mtl_item_locations mil,
+                               mtl_item_locations mil2,
+                               mtl_system_items_b msib,
+                               mtl_parameters mp
+                         WHERE mtrh.header_id = mtrl.header_id
+                           AND mtrl.from_locator_id = mil.inventory_location_id(+)
+                           AND mtrl.to_locator_id = mil2.inventory_location_id(+)
+                           AND mtrl.inventory_item_id = msib.inventory_item_id
+                           AND mtrl.organization_id = msib.organization_id
+                           AND mtrl.organization_id = mp.organization_id
+                           AND mtrl.to_subinventory_code = '$subinv'
+                           AND mtrl.line_status NOT IN (1, 5, 6)
+                           $code1
+                      GROUP BY mtrl.from_subinventory_code, 'MO'
+                      UNION
+                      SELECT   kkk.from_subinventory_code, COUNT (msib.segment1) jml
+                          FROM khs_kib_kanban kkk,
+                               mtl_item_locations mil,
+                               mtl_item_locations mil2,
+                               mtl_system_items_b msib,
+                               mtl_parameters mp
+                         WHERE kkk.from_locator_id = mil.inventory_location_id(+)
+                           AND kkk.to_locator_id = mil2.inventory_location_id(+)
+                           AND kkk.primary_item_id = msib.inventory_item_id
+                           AND msib.organization_id = 81
+                           AND kkk.to_org_id = mp.organization_id
+                           AND kkk.inventory_trans_flag <> 'Y'
+                           AND kkk.kibcode NOT LIKE 'SET%'
+                           AND kkk.to_subinventory_code = '$subinv'
+                           $code2
+                      GROUP BY kkk.from_subinventory_code
+                      UNION
+                      SELECT   mmt.subinventory_code, COUNT (msib.segment1) jml
+                          FROM rcv_shipment_headers rsh,
+                               rcv_shipment_lines rsl,
+                               mtl_material_transactions mmt,
+                               mtl_item_locations mil,
+                               mtl_item_locations mil2,
+                               mtl_system_items_b msib,
+                               mtl_parameters mp
+                         WHERE rsh.shipment_header_id = rsl.shipment_header_id
+                           AND rsh.shipment_num IS NOT NULL
+                           AND rsl.mmt_transaction_id = mmt.transaction_id
+                           AND mmt.locator_id = mil.inventory_location_id(+)
+                           AND rsl.locator_id = mil2.inventory_location_id(+)
+                           AND rsl.item_id = msib.inventory_item_id
+                           AND msib.organization_id = 81
+                           AND rsl.to_organization_id = mp.organization_id
+                           AND rsh.receipt_source_code = 'INVENTORY'
+                           AND rsl.shipment_line_status_code <> 'FULLY RECEIVED'
+                           AND rsl.to_subinventory = '$subinv'
+                           $code3
+                      GROUP BY mmt.subinventory_code) ke
+            GROUP BY ke.from_subinventory_code
+            ORDER BY 1";
+      $query = $this->oracle->query($sql);
+      return $query->result_array();
+    }
 }
 ?>
