@@ -1,3 +1,9 @@
+<style type="text/css">
+    .green {
+        color:  white;
+        background-color: green;
+    }
+</style>
 <div class="panel-body">
     <table class="datatable table table-bordered table-hover table-striped text-center" id="tblMon" style="width: 100%;">
         <thead class="bg-primary">
@@ -70,5 +76,16 @@
 </div>
 
 <script type="text/javascript">
-  $('#tblMon').DataTable({})
+    $('#tblMon').DataTable({
+        dom: "<'row'<'col-sm-6'l><'col-sm-3 text-right'B><'col-sm-3'f>>" +
+        "<'row'<'col-sm-12'tr>>" +
+        "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+        buttons: [
+            {
+              extend: 'excelHtml5',
+              text: 'Export Excel',
+              className: 'green'
+            }
+        ]
+    })
 </script>
