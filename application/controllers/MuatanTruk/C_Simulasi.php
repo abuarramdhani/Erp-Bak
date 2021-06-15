@@ -122,4 +122,75 @@ class C_Simulasi extends CI_Controller
 
         $this->parser->parse('MuatanTruk/V_Template', $data);
     }
+    public function CreateSimulasi()
+    {
+        $produknondiesel = $this->M_simulasi->getProduk(); //buat foreach ambil data
+        $produkdiesel = $this->M_simulasi->getProduk2(); //buat foreach ambil data
+        $produk = array();
+        for ($p = 0; $p < sizeof($produknondiesel); $p++) {
+            $a = array(
+                'jns' => 'Traktor',
+                'produk' => $produknondiesel[$p]['MUATAN']
+            );
+            array_push($produk, $a);
+        };
+        for ($p = 0; $p < sizeof($produkdiesel); $p++) {
+            $a = array(
+                'jns' => 'Diesel',
+                'produk' => $produkdiesel[$p]['MUATAN']
+            );
+            array_push($produk, $a);
+        };
+        $coba = array();
+        for ($i = 0; $i < sizeof($produk); $i++) {
+            // for ($j = 0; $j < sizeof($kendaraan); $j++) {
+            $dataperkendaraan = $this->M_simulasi->getDatabyProduk($produk[$i]['produk'], $_POST['kendaraan']);
+            if (count($dataperkendaraan) != 3) {
+                for ($r = 1; $r < 3; $r++) {
+                    $dataperkendaraan[$r] = array(
+                        'MUATAN' => $produk[$i]['produk'],
+                        'JENIS_MUATAN' => 'disable',
+                        'KENDARAAN' => $_POST['kendaraan'],
+                        'PROSENTASE' => null,
+                    );
+                }
+            }
+            if ($produk[$i]['produk'] == 'Cakar Baja') {
+                $dataperkendaraan[0]['JENIS_MUATAN'] = 'disable';
+            }
+            // }
+
+            $array = array(
+                'jenis' => $produk[$i]['jns'],
+                'item' => $produk[$i]['produk'],
+                'kendaraan' => $_POST['kendaraan'],
+                'muatan' => $dataperkendaraan,
+            );
+            array_push($coba, $array);
+        }
+
+        // echo "<pre>";
+        // print_r($coba);
+        // exit();
+        $data['simulasi'] = $coba;
+
+        $this->load->view('MuatanTruk/V_TblSimulasi', $data);
+    }
+    public function HitungPresentase()
+    {
+        // echo "<pre>";
+        // print_r($_POST);
+        // exit();
+        $muatan = $_POST['jml_muatan'];
+        $presentase = $_POST['presentase_value'];
+        $nilai = "";
+        for ($i = 0; $i < sizeof($muatan); $i++) {
+            if ($muatan[$i] != null || $muatan[$i] != "") {
+                $nilai += ceil($muatan[$i] * $presentase[$i] * 100);
+            } else {
+                $nilai += 0;
+            }
+        }
+        echo json_encode($nilai);
+    }
 }

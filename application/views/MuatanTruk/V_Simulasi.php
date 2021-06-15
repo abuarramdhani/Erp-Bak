@@ -31,15 +31,31 @@
                     <div class="col-md-12">
                         <div class="box box-info">
                             <div class="box-header with-border"></div>
-                            <div class="box-body">
+                            <div class="box-body" id="view_simulasihh">
                                 <div class="panel-body">
                                     <div class="col-md-12">
                                         <a href="<?= base_url('MuatanTruk/Simulasi') ?>" class="btn btn-danger">Reset</a>
                                     </div>
                                 </div>
                                 <div class="panel-body">
-                                    <div class="col-md-12">
-                                        <table class="table table-bordered" id="tbl_simulasi" style="font-size: 9pt;">
+                                    <div class="col-md-1"><b>Kendaraan</b></div>
+                                    <div class="col-md-3">
+                                        <select class="form-control select2" name="" data-placeholder="Select" id="SelctKendaraAn">
+                                            <option value=""></option>
+                                            <option value="Engkel">Engkel</option>
+                                            <option value="Rhino">Rhino</option>
+                                            <option value="Fuso6-7M">Fuso6-7M</option>
+                                            <option value="Tronton10M">Tronton10M</option>
+                                            <option value="Fuso8M/Tronton9M">Fuso8M/Tronton9M</option>
+                                            <option value="Container20">Container20</option>
+                                            <option value="Container40">Container40</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-2"><button class="btn btn-danger" onclick="CrtSims()">Buat Simulasi</button></div>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="col-md-12" id="TableSimUlasi">
+                                        <!-- <table class="table table-bordered" id="tbl_simulasi" style="font-size: 9pt;">
                                             <thead style="color:white">
                                                 <tr>
                                                     <th class="text-center" style="background-color: #00c0ef;" rowspan="2">Kapasitas <br>Muat</th>
@@ -93,61 +109,10 @@
                                                 <?php $no++;
                                                 } ?>
                                             </tbody>
-                                        </table>
+                                        </table> -->
                                     </div>
                                 </div>
-                                <!-- Table Diesel
-                                <div class=" panel-body">
-                                    <div class="col-md-12">
-                                        <h3>Diesel</h3>
-                                    </div>
 
-                                    <div class="col-md-12">
-                                        <table class="table table-bordered" style="font-size: 9pt;">
-                                            <tbody>
-                                                <?php $no = 1;
-                                                foreach ($DataSimulasi2 as $key => $simulasi) { ?>
-                                                    <tr>
-                                                        <td><b><?= $simulasi['item'] ?></b></td>
-
-                                                        <?php $nos = 1;
-                                                        foreach ($simulasi['kendaraan'] as $key => $sim) {
-                                                            foreach ($sim as $keys => $value) { ?>
-                                                                <td colspan="3"><input type="number" id="precentinputt<?= $no . $nos ?>" onkeyup="Changepresentase2(<?= $no ?>,<?= $nos ?>)" class="form-control" style="width: 100%;"></td>
-                                                                <input type="hidden" id="precentt<?= $no . $nos ?>" value="<?= $value['PROSENTASE']  ?>" />
-                                                                <input type="hidden" class="lasttvalue<?= $no . $nos ?>">
-                                                        <?php
-                                                            }
-                                                            $nos++;
-                                                        } ?>
-                                                    </tr>
-                                                <?php $no++;
-                                                } ?>
-                                            </tbody>
-                                            <tfoot class="bg-aqua">
-                                                <tr>
-                                                    <th class="text-center" rowspan="2">Kapasitas <br>Muat</th>
-                                                    <?php for ($i = 0; $i < sizeof($kendaraan); $i++) { ?>
-                                                        <th class="text-center">Body</th>
-                                                        <th class="text-center">Kopel</th>
-                                                        <th class="text-center">Peti</th>
-                                                    <?php } ?>
-                                                </tr>
-                                                <tr>
-                                                    <?php $ken = 1;
-                                                    for ($i = 0; $i < sizeof($kendaraan); $i++) { ?>
-                                                        <th class="text-center" colspan="3">
-                                                            <?= $kendaraan[$i]['KENDARAAN'] ?>
-                                                            <p class="presentase<?= $ken ?>">Presentase : 0%</p>
-                                                            <input type="hidden" class="presentasehidden<?= $ken ?>" value="0">
-                                                        </th>
-                                                    <?php $ken++;
-                                                    } ?>
-                                                </tr>
-                                            </tfoot>
-                                        </table>
-                                    </div>
-                                </div> -->
                             </div>
                         </div>
                     </div>
