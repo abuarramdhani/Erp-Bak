@@ -86,5 +86,18 @@ class C_Monitoring extends CI_Controller {
 
         $this->load->view('MonitoringPendingTrx/V_TblDetail', $data);
     }
+
+    public function getDataPersen(){
+        $subinv = $this->input->post('subinv');
+        $loc = $this->input->post('loc');
+        $loc2 = $this->input->post('loc2');
+
+        $data['dari'] = $this->M_monpentrx->getRekapDari($subinv,$loc);
+        $data['ke'] = $this->M_monpentrx->getRekapKe($subinv,$loc);
+        $data['subinv'] = $subinv;
+        $data['loc2'] = $loc2;
+
+        $this->load->view('MonitoringPendingTrx/V_PercentageBar', $data);
+    }
 }
 ?>
