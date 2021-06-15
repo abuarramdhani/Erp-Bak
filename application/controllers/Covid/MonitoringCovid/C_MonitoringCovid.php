@@ -1626,6 +1626,11 @@ class C_MonitoringCovid extends CI_Controller
 		}else{
 			$nomor = $telepon;
 		}
+
+		$nomorWA = str_replace(' ', '', $nomor);
+		if(substr($nomorWA, 0,2) == '08')
+			$nomorWA = preg_replace('/0/', '+62', $nomorWA, 1);
+
 		$aemail = trim($pkj['email']);
 		if(empty($aemail)) $aemail = '-';
 
@@ -1634,7 +1639,7 @@ class C_MonitoringCovid extends CI_Controller
 		$message .= '<p>Data :</p>';
 		$message .= '<p>Keterangan : '.$data['keterangan'].'</p>';
 		$message .= $data['wawancara'];
-		$message .= 'Nomor HP : '.$nomor;
+		$message .= 'Nomor HP : '.$nomor.' (<a target="_blank" href="https://wa.me/'.$nomorWA.'">https://wa.me/'.$nomorWA.'</a>)';
 		$message .= '<br>Alamat Email : '.$aemail;
 
 		$mail = new PHPMailer();
