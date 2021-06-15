@@ -62,7 +62,7 @@ class C_SendSMS extends CI_Controller
             $jumlahPesan = count($newData);
             $message     = "Selesai SMS Approver. " . $jumlahSukses . " SMS Sukses dari " . $jumlahPesan . " SMS dikirim";
             $message = rawurlencode($message);
-            $url = 'http://192.168.168.122:80/sendsms?username=ict&password=quick1953&phonenumber=08112669449&message=' . $message . '&[port=gsm-1.2&][report=1&][timeout=20]';
+            $url = 'http://192.168.168.122:80/sendsms?username=ict&password=quick1953&phonenumber=08112669449&message=' . $message . '&[port=gsm-1.1]&[report=1]&[timeout=20]';
 
             $cui = curl_init();
             curl_setopt($cui, CURLOPT_URL, $url);
@@ -105,7 +105,7 @@ class C_SendSMS extends CI_Controller
             foreach ($newData as $pengelola) {
                 $pesan = "Selamat Pagi " . $pengelola['SAPAAN'] . " " . $pengelola['FULL_NAME'] . ",\rAnda masih memiliki " . $pengelola['UNAPPROVED_ORDER'] . " order yang belum di approve pada aplikasi PENGELOLA-OKEBAJA. Silahkan buka erp.quick.com melalui jaringan CV.KHS untuk approve order.\r-- Dikirim oleh ERP Okebaja (No-Reply) --";
                 $pesan = rawurlencode($pesan);
-                $url   = 'http://192.168.168.122:80/sendsms?username=ict&password=quick1953&phonenumber=' . $pengelola['NOMOR_MYGROUP'] . '&message=' . $pesan . '&[port=gsm-1.2&][report=1&][timeout=20]';
+                $url   = 'http://192.168.168.122:80/sendsms?username=ict&password=quick1953&phonenumber=' . $pengelola['NOMOR_MYGROUP'] . '&message=' . $pesan . '&[port=gsm-1.1]&[report=1]&[timeout=20]';
                 // print_r($url);
                 $ch = curl_init();
                 curl_setopt($ch, CURLOPT_URL, $url);
@@ -122,7 +122,7 @@ class C_SendSMS extends CI_Controller
             $jumlahPesan = count($newData);
             $message     = "Selesai SMS Pengelola. " . $jumlahSukses . " SMS Sukses dari " . $jumlahPesan . " SMS dikirim";
             $message = rawurlencode($message);
-            $url = 'http://192.168.168.122:80/sendsms?username=ict&password=quick1953&phonenumber=08112669449&message=' . $message . '&[port=gsm-1.2&][report=1&][timeout=20]';
+            $url = 'http://192.168.168.122:80/sendsms?username=ict&password=quick1953&phonenumber=08112669449&message=' . $message . '&[port=gsm-1.1]&[report=1]&[timeout=20]';
 
             $cui = curl_init();
             curl_setopt($cui, CURLOPT_URL, $url);
@@ -165,7 +165,7 @@ class C_SendSMS extends CI_Controller
             foreach ($newData as $puller) {
                 $pesan = "Selamat Pagi " . $puller['SAPAAN'] . " " . $puller['FULL_NAME'] . ",\rAnda masih memiliki " . $puller['UNAPPROVED_ORDER'] . " order yang belum di approve pada aplikasi PULLER-OKEBAJA. Silahkan buka erp.quick.com melalui jaringan CV.KHS untuk approve order.\r-- Dikirim oleh ERP Okebaja (No-Reply) --";
                 $pesan = rawurlencode($pesan);
-                $url   = 'http://192.168.168.122:80/sendsms?username=ict&password=quick1953&phonenumber=' . $puller['NOMOR_MYGROUP'] . '&message=' . $pesan . '&[port=gsm-1.2&][report=1&][timeout=20]';
+                $url   = 'http://192.168.168.122:80/sendsms?username=ict&password=quick1953&phonenumber=' . $puller['NOMOR_MYGROUP'] . '&message=' . $pesan . '&[port=gsm-1.1]&[report=1]&[timeout=20]';
                 // print_r($url);
                 $ch = curl_init();
                 curl_setopt($ch, CURLOPT_URL, $url);
@@ -182,7 +182,7 @@ class C_SendSMS extends CI_Controller
             $jumlahPesan = count($newData);
             $message     = "Selesai SMS Puller. " . $jumlahSukses . " SMS Sukses dari " . $jumlahPesan . " SMS dikirim";
             $message = rawurlencode($message);
-            $url = 'http://192.168.168.122:80/sendsms?username=ict&password=quick1953&phonenumber=08112669449&message=' . $message . '&[port=gsm-1.2&][report=1&][timeout=20]';
+            $url = 'http://192.168.168.122:80/sendsms?username=ict&password=quick1953&phonenumber=08112669449&message=' . $message . '&[port=gsm-1.1]&[report=1]&[timeout=20]';
 
             $cui = curl_init();
             curl_setopt($cui, CURLOPT_URL, $url);
@@ -203,7 +203,7 @@ class C_SendSMS extends CI_Controller
         } else {
             $pesan = "Selamat Pagi,\rAnda masih memiliki " . $judgedOrder . " order Urgent yang belum di approve pada aplikasi PURCHASING-OKEBAJA. Silahkan buka erp.quick.com melalui jaringan CV.KHS untuk approve order.\r-- Dikirim oleh ERP Okebaja (No-Reply) --";
             $pesan = rawurlencode($pesan);
-            $url   = 'http://192.168.168.122:80/sendsms?username=ict&password=quick1953&phonenumber=08112856996&message=' . $pesan . '&[port=gsm-1.2&][report=1&][timeout=20]';
+            $url   = 'http://192.168.168.122:80/sendsms?username=ict&password=quick1953&phonenumber=08112856996&message=' . $pesan . '&[port=gsm-1.1]&[report=1]&[timeout=20]';
             // print_r($url);
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
@@ -222,7 +222,7 @@ class C_SendSMS extends CI_Controller
             $jumlahPesan = 1;
             $message = "Selesai SMS Purchasing. " . $jumlahSukses . " SMS Sukses dari " . $jumlahPesan . " SMS dikirim";
             $message = rawurlencode($message);
-            $url     = 'http://192.168.168.122:80/sendsms?username=ict&password=quick1953&phonenumber=08112669449&message=' . $message . '&[port=gsm-1.2&][report=1&][timeout=20]';
+            $url     = 'http://192.168.168.122:80/sendsms?username=ict&password=quick1953&phonenumber=08112669449&message=' . $message . '&[port=gsm-1.1]&[report=1]&[timeout=20]';
             // print_r($url);
             $cui = curl_init();
             curl_setopt($cui, CURLOPT_URL, $url);
