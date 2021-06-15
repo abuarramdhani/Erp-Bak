@@ -404,5 +404,95 @@ class M_monpentrx extends CI_Model{
       $query = $this->oracle->query($sql);
       return $query->result_array();
     }
+
+
+    public function exportData($from_subinv,$to_subinv,$to_loc){
+      if ($to_loc == '') {
+        $code1 = "";
+        $code2 = "";
+        $code3 = "";
+      }
+      else {
+        $code1 = "AND mtrl.to_locator_id = $to_loc";
+        $code2 = "AND kkk.to_locator_id = $to_loc";
+        $code3 = "AND rsl.locator_id = $to_loc";
+      }
+
+      $sql = "SELECT mtrh.request_number, mtrl.from_subinventory_code,
+                     NVL (mil.segment1, '-') from_locator,
+                     mp.organization_code to_organization, mtrl.to_subinventory_code,
+                     NVL (mil2.segment1, '-') to_locator, msib.segment1 item_code,
+                     msib.description, mtrl.quantity, mtrl.quantity_detailed,
+                     mtrl.quantity_delivered, mtrl.uom_code, 'MOVE ORDER' jenis
+                FROM mtl_txn_request_headers mtrh,
+                     mtl_txn_request_lines mtrl,
+                     mtl_item_locations mil,
+                     mtl_item_locations mil2,
+                     mtl_system_items_b msib,
+                     mtl_parameters mp
+               WHERE mtrh.header_id = mtrl.header_id
+                 AND mtrl.from_locator_id = mil.inventory_location_id(+)
+                 AND mtrl.to_locator_id = mil2.inventory_location_id(+)
+                 AND mtrl.inventory_item_id = msib.inventory_item_id
+                 AND mtrl.organization_id = msib.organization_id
+                 AND mtrl.organization_id = mp.organization_id
+                 AND mtrl.line_status NOT IN (5, 6)
+                 AND mtrl.from_subinventory_code = '$from_subinv'
+                 AND mtrl.to_subinventory_code = '$to_subinv'
+                 AND mil2.segment1 = '$to_loc'
+            UNION
+            SELECT   kkk.kibcode, kkk.from_subinventory_code,
+                     NVL (mil.segment1, '-') from_locator,
+                     mp.organization_code to_organization, kkk.to_subinventory_code,
+                     NVL (mil2.segment1, '-') to_locator, msib.segment1 item_code,
+                     msib.description, kkk.qty_transactions qty_diminta,
+                     NULL qty_detailed, kkk.qty_transaction qty_delivered,
+                     msib.primary_uom_code, 'KIB' jenis
+                FROM khs_kib_kanban kkk,
+                     mtl_item_locations mil,
+                     mtl_item_locations mil2,
+                     mtl_system_items_b msib,
+                     mtl_parameters mp
+               WHERE kkk.from_locator_id = mil.inventory_location_id(+)
+                 AND kkk.to_locator_id = mil2.inventory_location_id(+)
+                 AND kkk.primary_item_id = msib.inventory_item_id
+                 AND msib.organization_id = 81
+                 AND kkk.to_org_id = mp.organization_id
+                 AND kkk.inventory_trans_flag <> 'Y'
+                 AND kkk.kibcode NOT LIKE 'SET%'
+                 AND kkk.from_subinventory_code = '$from_subinv'
+                 AND kkk.to_subinventory_code = '$to_subinv'
+                 AND mil2.segment1 = '$to_loc'
+            UNION
+            SELECT   rsh.shipment_num, mmt.subinventory_code from_subinventory_code,
+                     NVL (mil.segment1, '-') from_locator,
+                     mp.organization_code to_organization, rsl.to_subinventory,
+                     NVL (mil2.segment1, '-') to_locator, msib.segment1 item_code,
+                     msib.description, rsl.quantity_shipped, NULL, rsl.quantity_received,
+                     rsl.primary_unit_of_measure, 'INTERORG' jenis
+                FROM rcv_shipment_headers rsh,
+                     rcv_shipment_lines rsl,
+                     mtl_material_transactions mmt,
+                     mtl_item_locations mil,
+                     mtl_item_locations mil2,
+                     mtl_system_items_b msib,
+                     mtl_parameters mp
+               WHERE rsh.shipment_header_id = rsl.shipment_header_id
+                 AND rsh.shipment_num IS NOT NULL
+                 AND rsl.mmt_transaction_id = mmt.transaction_id
+                 AND mmt.locator_id = mil.inventory_location_id(+)
+                 AND rsl.locator_id = mil2.inventory_location_id(+)
+                 AND rsl.item_id = msib.inventory_item_id
+                 AND msib.organization_id = 81
+                 AND rsl.to_organization_id = mp.organization_id
+                 AND rsh.receipt_source_code = 'INVENTORY'
+                 AND rsl.shipment_line_status_code <> 'FULLY RECEIVED'
+                 AND mmt.subinventory_code = '$from_subinv'
+                 AND rsl.to_subinventory = '$to_subinv'
+                 AND mil2.segment1 = '$to_loc'
+            ORDER BY jenis, 1";
+      $query = $this->oracle->query($sql);
+      return $query->result_array();
+    }
 }
 ?>
