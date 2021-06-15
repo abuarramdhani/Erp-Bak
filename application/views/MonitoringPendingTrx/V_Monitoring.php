@@ -30,14 +30,26 @@
                                                   <option></option>
                                                 </select>
                                             </p>
-                                            <button type="button" class="btn btn-primary" style="float: right;" onclick="cariPending()">
+                                            <button type="button" class="btn btn-primary" style="float: right;" onclick="dang()">
                                                 <i class="fa fa-search"></i> Cari
                                             </button>
                                         </div>
                                     </div>
                                 </div>
+                                <div id="loadingAreaPersen" style="display: none;">
+                                  <center>
+                                    <img style="width: 5%" src="<?php echo base_url('assets/img/gif/loading5.gif') ?>"><br>
+                                    <b>Loading Persentase...</b>
+                                  </center>
+                                </div>
+                                <div id="tb_persen">
+                                  
+                                </div>
                                 <div id="loadingArea" style="display: none;">
-                                  <center><img style="width: 5%" src="<?php echo base_url('assets/img/gif/loading5.gif') ?>"></center>
+                                  <center>
+                                    <img style="width: 5%" src="<?php echo base_url('assets/img/gif/loading5.gif') ?>"><br>
+                                    <b>Loading Tabel...</b>
+                                  </center>
                                 </div>
                                 <div id="tb_monitoring">
                                   
