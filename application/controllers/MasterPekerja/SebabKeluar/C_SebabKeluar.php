@@ -82,15 +82,32 @@ class C_SebabKeluar extends CI_Controller
 				}
 			}
 			$this->M_sebabkeluar->updateSebabKeluarById($input,$id);
-			$this->M_sebabkeluar->insertLog('update',json_encode($sebelum)." => ".json_encode($input));
+			$sesudah = $this->M_sebabkeluar->getSebabKeluarById($id);
+			$this->M_sebabkeluar->insertLog('UPDATE',json_encode($sebelum)." => ".json_encode($sesudah));
 		}else{
 			$urut = $this->M_sebabkeluar->getSebabKeluarByUrutan($input['urutan']);
 			if (!empty($urut)) {
 				$this->M_sebabkeluar->updateUrutanAfter($input['urutan']);
 			}
 			$this->M_sebabkeluar->insertSebabKeluar($input);
-			$this->M_sebabkeluar->insertLog('insert',json_encode($input));
+			$this->M_sebabkeluar->insertLog('INSERT',json_encode($input));
 		}
+
+		$data = $this->M_sebabkeluar->getSebabKeluarAll();
+		if (!empty($data)) {
+			foreach ($data as $key => $value) {
+				$data[$key]['id'] = str_replace(['+','/','='], ['-','_','~'], base64_encode($value['id']));
+			}
+		}
+		echo json_encode($data);
+	}
+
+	function deleteData($encrypted_id){
+		$id = base64_decode(str_replace(['+','/','='], ['-','_','~'],$encrypted_id));
+
+		$sebelum = $this->M_sebabkeluar->getSebabKeluarById($id);
+		$this->M_sebabkeluar->deleteSebabKeluarById($id);
+		$this->M_sebabkeluar->insertLog('DELETE',json_encode($sebelum));
 
 		$data = $this->M_sebabkeluar->getSebabKeluarAll();
 		if (!empty($data)) {

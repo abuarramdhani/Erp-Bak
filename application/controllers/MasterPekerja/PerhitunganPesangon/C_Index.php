@@ -454,7 +454,11 @@ class C_Index extends CI_Controller {
 		$html = str_replace("[dasar_hukum_phk]", $pesangon->dasar_hukum, $html);
 		$html = str_replace("[isi_dasar_hukum_phk]", $pesangon->sebab_keluar, $html);
 		$html = str_replace("[tanggal_akhir_hubungan_kerja]", date('d',strtotime($pesangon->tglkeluar))." ".$month_tglkeluar." ".date('Y',strtotime($pesangon->tglkeluar)), $html);
-
+		$html = str_replace("font-size: 14px;", "font-size: 10pt;", $html);
+		$html = str_replace("font-size: 18px;", "font-size: 10pt;", $html);
+		$html = str_replace("font-size: 15px;", "font-size: 10pt;", $html);
+		$html = str_replace("height: 15px;", "height: 10px;", $html);
+		$html = "<div style='page-break-inside: avoid;'>$html</div>";
 		$pdf->WriteHTML($html, 2);
      	$pdf->setTitle($filename);
 		$pdf->Output($filename, 'I');

@@ -37,6 +37,7 @@
                                                 <th style="text-align:center;">NoInduk</th>
                                                 <th style="text-align:center;">Nama</th>
                                                 <th style="text-align:center;">Jabatan Terakhir</th>
+                                                <th style="text-align:center;">Sebab Keluar</th>
                                                 <th style="text-align:center;">Pengali<br>U.Pesangon</th>
                                                 <th style="text-align:center;">U.Pesangon</th>
                                                 <th style="text-align:center;">Pengali<br>U.PMK</th>
@@ -66,6 +67,7 @@
                                                 <td><?php echo $pesangon['noinduk'];?></td>
                                                 <td><?php echo $pesangon['nama'];?></td>
                                                 <td><?php echo $pesangon['jabatan_terakhir'];?></td>
+                                                <td><?php echo $pesangon['dasar_hukum']." - ".$pesangon['sebab_keluar'];?></td>
                                                 <td><?php echo $pesangon['pengali_u_pesangon'];?></td>
                                                 <td><?php echo $pesangon['jml_pesangon'];?></td>
                                                 <td><?php echo $pesangon['pengali_upmk'];?></td>

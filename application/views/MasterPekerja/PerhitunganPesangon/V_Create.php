@@ -416,7 +416,7 @@
                                         <div class="panel-footer">
                                             <div class="row text-right">
                                                 <a href="javascript:history.back(1)" class="btn btn-primary btn-lg btn-rect">Back</a>
-                                                <button type="submit" class="btn btn-primary btn-lg btn-rect">Save Data</button>
+                                                <button type="submit" class="btn btn-primary btn-lg btn-rect" id="btnSubmit">Save Data</button>
                                             </div>
                                         </div>
                                     </div>

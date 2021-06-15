@@ -1373,13 +1373,13 @@ $(function () {
         data: { noind: noind, cuti: cuti },
         url: baseurl + "MasterPekerja/PerhitunganPesangon/getDetailPekerja",
         success: function (result) {
-          if (result !== "Data Kosong") {
-            var res = JSON.parse(result);
+          if (result !== "Data Kosong" ) {
+            var res = JSON.parse(result)
             $("#txtSeksi").val(res["seksi"]);
             $("#txtUnit").val(res["unit"]);
             $("#txtDepartemen").val(res["dept"]);
             $("#txtLokasi").val(res["lokasi_kerja"]);
-            $("#txtJabatan").val(res["pekerjaan"].length > 0 ? res["pekerjaan"] : res["jabatan"]);
+            $("#txtJabatan").val((res["pekerjaan"] !== null && res["pekerjaan"].length > 0) ? res["pekerjaan"] : res["jabatan"]);
             $("#txtDiangkat").val(res["diangkat"]);
             $("#txtAlamat").val(res["alamat"] + ", " + res['kec'] + ", " + res['kab'] + ", " + res['prop']);
             $("#txtLahir").val(res["tempat_lahir"] + ", " + res["tanggal_lahir"]);
@@ -1411,12 +1411,14 @@ $(function () {
               $(this).css(styles);
             }
             $("#txtHariLmt").val(res["hari"]);
+            $('#btnSubmit').attr('disabled', false);
           } else {
             swal.fire({
               title: "Data pekerja Tidak Ditemukan",
               text: "Mohon Lakukan Pengecekan Ulang Data Pekerja. Salah satu kemungkinan penyebabnya karena sebab keluar belum sesuai.",
               type: "warning",
             });
+            $('#btnSubmit').attr('disabled', true);
           }
         },
       });
@@ -6554,6 +6556,89 @@ $(document).on('ready', function(){
     })
   })
 
+  $('#tblMPKSebabKeluarList').on('click','.btnMPKSebabKeluarHapus', function(){
+    id = $(this).data('id');
+    Swal.fire({
+      title: 'Apakah Anda Yakin?',
+      text: "Mengapus data ini secara permanent !",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.value) {
+        $('#ldgMPKSebabKeluarLoading').show();
+        $.ajax({
+          url: baseurl + "MasterPekerja/SebabKeluar/deleteData/" + id,
+          error: function(xhr,status,error){
+              $('#ldgMPKSebabKeluarLoading').hide();
+              swal.fire({
+                  title: xhr['status'] + "(" + xhr['statusText'] + ")",
+                  html: xhr['responseText'],
+                  type: "error",
+                  confirmButtonText: 'OK',
+                  confirmButtonColor: '#d63031',
+              })
+          },
+          success: function(result){
+              $('#ldgMPKSebabKeluarLoading').hide();
+              if (obj = JSON.parse(result)) {
+                swal.fire(
+                  "Sukses !!!",
+                  "Data Berhasil Dihapus",
+                  "success"
+                )
+                tblMPKSebabKeluarList.clear().draw();
+                obj.forEach(function(daftar, index){
+
+                  var tombol = `
+                    <button 
+                      type="button" 
+                      data-id="${daftar.id}" 
+                      class="btn btn-primary btnMPKSebabKeluarEdit"
+                      >
+                      <span class="fa fa-edit"></span>
+                    </button>`
+                  if(daftar.digunakan == 0){
+                    tombol += `
+                      <button 
+                        type="button" 
+                        data-id="${daftar.id}" 
+                        class="btn btn-danger btnMPKSebabKeluarHapus"
+                        >
+                        <span class="fa fa-trash"></span>
+                      </button>`
+                  }
+
+                  tblMPKSebabKeluarList.row.add([
+                    (index + 1),
+                    tombol,
+                    daftar.kode,
+                    daftar.sebab_keluar,
+                    daftar.dasar_hukum,
+                    daftar.pengali_u_pesangon,
+                    daftar.pengali_u_pmk,
+                    daftar.urutan
+                  ]).draw(false);
+                })
+                tblMPKSebabKeluarList.columns.adjust().draw();
+              }else{
+                swal.fire({
+                    title: "Oops, Something Wrong !!",
+                    html: result,
+                    type: "error",
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#d63031',
+                })
+              }
+          }
+        })
+        
+      }
+    });
+  })
+
   $('#btnMPKSebabKeluarSimpan').on('click', function(){
     id            = $('#txtMPKSebabKeluarID').val();
     kode          = $('#txtMPKSebabKeluarKode').val();
@@ -6591,17 +6676,36 @@ $(document).on('ready', function(){
           success: function(result){
               $('#ldgMPKSebabKeluarLoading').hide();
               if (obj = JSON.parse(result)) {
+                swal.fire(
+                  "Sukses !!!",
+                  "Data Berhasil Disimpan",
+                  "success"
+                )
                 tblMPKSebabKeluarList.clear().draw();
                 obj.forEach(function(daftar, index){
-                  tblMPKSebabKeluarList.row.add([
-                    (index + 1),
-                    `<button 
+
+                  var tombol = `
+                    <button 
                       type="button" 
                       data-id="${daftar.id}" 
                       class="btn btn-primary btnMPKSebabKeluarEdit"
                       >
                       <span class="fa fa-edit"></span>
-                    </button>`,
+                    </button>`
+                  if(daftar.digunakan == 0){
+                    tombol += `
+                      <button 
+                        type="button" 
+                        data-id="${daftar.id}" 
+                        class="btn btn-danger btnMPKSebabKeluarHapus"
+                        >
+                        <span class="fa fa-trash"></span>
+                      </button>`
+                  }
+
+                  tblMPKSebabKeluarList.row.add([
+                    (index + 1),
+                    tombol,
                     daftar.kode,
                     daftar.sebab_keluar,
                     daftar.dasar_hukum,

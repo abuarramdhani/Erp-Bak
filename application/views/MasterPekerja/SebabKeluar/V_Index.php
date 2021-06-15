@@ -51,6 +51,19 @@
 																	>
 																	<span class="fa fa-edit"></span>
 																</button>
+																<?php 
+																if ($dt['digunakan'] == 0) {
+																	?>
+																	<button 
+																		type="button" 
+																		data-id="<?php echo str_replace(['+','/','='], ['-','_','~'], base64_encode($dt['id'])) ?>" 
+																		class="btn btn-danger btnMPKSebabKeluarHapus"
+																		>
+																		<span class="fa fa-trash"></span>
+																	</button>
+																	<?php
+																}
+																?>
 															</td>
 															<td><?php echo $dt['kode'] ?></td>
 															<td><?php echo $dt['sebab_keluar'] ?></td>
@@ -66,6 +79,11 @@
 												?>
 											</tbody>
 										</table>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-lg-12" style="color: red">
+										*Sebab Keluar yang tidak muncul tombol Hapus merupakan sebab keluar yang masih dipakai di hrd_khs.tpribadi
 									</div>
 								</div>
 							</div>

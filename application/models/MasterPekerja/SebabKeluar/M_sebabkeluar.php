@@ -16,8 +16,13 @@ class M_sebabkeluar extends CI_Model
 
 	function getSebabKeluarAll()
 	{
-		$sql = "select *
-			from hrd_khs.t_sebab_keluar
+		$sql = "select *,
+				(
+					select count(*)
+					from hrd_khs.tpribadi b
+					where a.kode = trim(b.sebabklr)
+				) as digunakan
+			from hrd_khs.t_sebab_keluar a
 			order by urutan";
 		return $this->personalia->query($sql)->result_array();
 	}
@@ -83,6 +88,12 @@ class M_sebabkeluar extends CI_Model
 			from hrd_khs.t_sebab_keluar
 			where urutan = $urutan";
 		return $this->personalia->query($sql)->result_array();
+	}
+
+	function deleteSebabKeluarById($id)
+	{
+		$this->personalia->where('id',$id);
+		$this->personalia->delete("hrd_khs.t_sebab_keluar");
 	}
 
 }
