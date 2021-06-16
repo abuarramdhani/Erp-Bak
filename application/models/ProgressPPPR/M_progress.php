@@ -116,7 +116,7 @@ class M_progress extends CI_Model
                 and
                 nvl(to_date('$tanggal2','YYYY/MM/DD'),trunc(to_date(substr(prha.attribute1,1,10),'YYYY/MM/DD')))
             and nvl(pha.SEGMENT1,1) = nvl($no_po, NVL(pha.SEGMENT1,1))
-            and prla.CANCEL_FLAG is null
+            and (prla.CANCEL_FLAG is null or prla.CANCEL_FLAG = 'N')
             and prla.MODIFIED_BY_AGENT_FLAG is null
         order by 1,3");
 
