@@ -80,7 +80,7 @@ class M_monhansub extends CI_Model{
                      $code1
                      $code2
                  AND TRUNC (kmhs.transaction_date) BETWEEN TRUNC (TO_DATE ('$dateA')) AND TRUNC (TO_DATE ('$dateB'))
-            ORDER BY kmhs.locator_name, kmhs.kis";
+            ORDER BY kmhs.transaction_date DESC, kmhs.locator_name, kmhs.kis";
       $query = $this->oracle->query($sql);
       return $query->result_array();
     }
