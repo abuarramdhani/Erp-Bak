@@ -27,7 +27,7 @@
                     $color = 'color: red';
                 }
                 else {
-                    $color = '';
+                    $color = 'color: blue';
                 }
             ?>
             <tr style="<?= $color; ?>">
@@ -47,7 +47,7 @@
                     <?= $i['HANDLING_NAME'] ?>
                 </td>
                 <td style="width: 5%;">
-                    <?= $i['TRANSACTION_TYPE'] ?>
+                    <?= $i['TRANSACTION_TYPE'].' KHS' ?>
                 </td>
                 <td style="width: 5%;">
                     <?= $i['TRANSACTION_QUANTITY'] ?>
