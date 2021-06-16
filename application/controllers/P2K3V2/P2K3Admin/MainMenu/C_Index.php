@@ -3568,6 +3568,8 @@ class C_Index extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
+		$data['lseksi'] = $this->M_dtmasuk->getSeksiNotPeriode();
+
 		$data['periode'] = $this->M_dtmasuk->GetPeriodeSepatu();
 		$this->load->view('V_Header', $data);
 		$this->load->view('V_Sidemenu', $data);
@@ -3580,6 +3582,18 @@ class C_Index extends CI_Controller
 		$kodesie = $this->input->post('kodesie');
 		$periode = $this->input->post('periode');
 		$this->M_dtmasuk->UpdatePeriodeSepatu($kodesie, $periode);
+		redirect('p2k3adm_V2/Admin/PeriodeSafetyShoes');
+	}
+
+	public function AddPeriodeSafetyShoes()
+	{
+		$kodesie = $this->input->post('kodesie');
+		$periode = $this->input->post('periode');
+		$arr = [
+		'kodesie'	=>	$kodesie,
+		'periode'	=>	$periode,
+		];
+		$this->M_dtmasuk->addPeriodeSepatu($arr);
 		redirect('p2k3adm_V2/Admin/PeriodeSafetyShoes');
 	}
 }

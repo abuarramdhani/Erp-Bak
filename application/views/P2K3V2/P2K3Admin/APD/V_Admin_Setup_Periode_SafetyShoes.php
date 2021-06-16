@@ -24,7 +24,12 @@
             <div class="box box-primary box-solid">
               <div class="box-header with-border"></div>
               <div class="box-body">
-                <div class="table-responsive" style="overflow:hidden;">
+                <div class="col-md-12 text-right">
+                  <button class="btn btn-success" data-toggle="modal" data-target="#addSafetyShoes_Modal">
+                    <i class="fa fa-plus"></i> Tambah
+                  </button>
+                </div>
+                <div class="col-md-12" style="margin-top: 30px;">
                   <table class="table table-striped table-bordered table-hover et_jenis_penilaian" style="font-size : 14px; ">
                     <thead class=" bg-primary">
                       <tr>
@@ -92,6 +97,39 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
           <button type="submit" class="btn btn-primary">Save changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="addSafetyShoes_Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form method="post" action="<?php echo base_url('p2k3adm_V2/Admin/AddPeriodeSafetyShoes'); ?>" enctype="multipart/form-data">
+        <div class="modal-header">
+          <h3 class="modal-title" id="exampleModalLabel">Tambah Seksi Periode Safety Shoes</h3>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <label class="control-label">Seksi</label>
+          <select class="form-control apd_slcBasic" name="kodesie" required="" style="width: 100%;">
+            <?php foreach ($lseksi as $key): ?>
+              <option value="<?= $key['section_code'] ?>"><?= $key['section_name'] ?></option>
+            <?php endforeach ?>
+          </select>
+          <br>
+          <br>
+          <br>
+          <label class="control-label">Periode (bulan)</label>
+          <input required="" type="number" class="form-control" id="editSafetyShoes_Periode" name="periode" value="12">
+          <br>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Submit</button>
         </div>
       </form>
     </div>

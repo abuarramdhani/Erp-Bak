@@ -1895,4 +1895,28 @@ class M_Dtmasuk extends CI_Model
         }
         return $this->oracle->query($sql)->row()->TRANSACT;
     }
+
+    function getSeksiNotPeriode()
+    {
+        $sql = "SELECT
+                    *
+                from
+                    er.er_section es
+                where
+                    trim(section_name) != '-'
+                    and section_name not like '***%'
+                    and section_code like '%00'
+                    and section_code not in (
+                    select
+                        tsp.kodesie
+                    from
+                        k3.tbon_sepatu_periode tsp)";
+        return $this->db->query($sql)->result_array();
+    }
+
+    function addPeriodeSepatu($data)
+    {
+        $this->db->insert('k3.tbon_sepatu_periode', $data);
+        return $this->db->affected_rows();
+    }
 }
