@@ -409,13 +409,13 @@ class M_monpentrx extends CI_Model{
     public function exportData($from_subinv,$to_subinv,$to_loc){
       if ($to_loc == '') {
         $code1 = "";
-        $code2 = "";
-        $code3 = "";
+        // $code2 = "";
+        // $code3 = "";
       }
       else {
-        $code1 = "AND mtrl.to_locator_id = $to_loc";
-        $code2 = "AND kkk.to_locator_id = $to_loc";
-        $code3 = "AND rsl.locator_id = $to_loc";
+        $code1 = "AND mil2.segment1 = '$to_loc'";
+        // $code2 = "AND kkk.to_locator_id = $to_loc";
+        // $code3 = "AND rsl.locator_id = $to_loc";
       }
 
       $sql = "SELECT mtrh.request_number, mtrl.from_subinventory_code,
@@ -439,7 +439,7 @@ class M_monpentrx extends CI_Model{
                  AND mtrl.line_status NOT IN (5, 6)
                  AND mtrl.from_subinventory_code = '$from_subinv'
                  AND mtrl.to_subinventory_code = '$to_subinv'
-                 AND mil2.segment1 = '$to_loc'
+                 $code1
             UNION
             SELECT   kkk.kibcode, kkk.from_subinventory_code,
                      NVL (mil.segment1, '-') from_locator,
@@ -462,7 +462,7 @@ class M_monpentrx extends CI_Model{
                  AND kkk.kibcode NOT LIKE 'SET%'
                  AND kkk.from_subinventory_code = '$from_subinv'
                  AND kkk.to_subinventory_code = '$to_subinv'
-                 AND mil2.segment1 = '$to_loc'
+                 $code1
             UNION
             SELECT   rsh.shipment_num, mmt.subinventory_code from_subinventory_code,
                      NVL (mil.segment1, '-') from_locator,
@@ -489,7 +489,7 @@ class M_monpentrx extends CI_Model{
                  AND rsl.shipment_line_status_code <> 'FULLY RECEIVED'
                  AND mmt.subinventory_code = '$from_subinv'
                  AND rsl.to_subinventory = '$to_subinv'
-                 AND mil2.segment1 = '$to_loc'
+                 $code1
             ORDER BY jenis, 1";
       $query = $this->oracle->query($sql);
       return $query->result_array();
