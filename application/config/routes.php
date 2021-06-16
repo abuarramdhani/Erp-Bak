@@ -5638,12 +5638,12 @@ $route['MuatanTruk/Simulasi/(:any)'] 						= 'MuatanTruk/C_Simulasi/$1';
 
 // ------------------------------------------- Komisi Penjualan ----------------------------------------//
 $route['KomisiPenjualanMarketing'] 						= 'KomisiPenjualan/C_Index';
-$route['KomisiPenjualanMarketing/CreateMemo/'] 			= 'KomisiPenjualan/C_Komisi/CreateMemo';
+$route['KomisiPenjualanMarketing/CreateMemo'] 			= 'KomisiPenjualan/C_Komisi/CreateMemo';
 $route['KomisiPenjualanMarketing/CreateMemo/(:any)'] 	= 'KomisiPenjualan/C_Komisi/$1';
 $route['KomisiPenjualanMarketing/CreateMemo/(:any)/(:any)'] = 'KomisiPenjualan/C_Komisi/$1/$2';
 
 
 $route['KomisiPenjualanAkuntansi'] 						= 'KomisiPenjualan/C_Index';
-$route['KomisiPenjualanAkuntansi/CreateInvoice/'] 		= 'KomisiPenjualan/C_Komisi/CreateInvoice';
+$route['KomisiPenjualanAkuntansi/CreateInvoice'] 		= 'KomisiPenjualan/C_Komisi/CreateInvoice';
 $route['KomisiPenjualanAkuntansi/CreateInvoice/(:any)'] = 'KomisiPenjualan/C_Komisi/$1';
 $route['KomisiPenjualanAkuntansi/CreateInvoice/(:any)/(:any)'] = 'KomisiPenjualan/C_Komisi/$1/$2';
