@@ -33,6 +33,7 @@ SELECT   mtrh.request_number no_dokumen, msib.segment1 kode_item,
   WHERE mtrh.header_id = mtrl.header_id
     AND mtrl.organization_id = msib.organization_id
     AND mtrl.inventory_item_id = msib.inventory_item_id
+    AND mtrh.request_number NOT LIKE 'D%'
     AND mtrh.request_number = '$no_dokumen'
     AND mtrl.from_subinventory_code = '$subinv'
 UNION
