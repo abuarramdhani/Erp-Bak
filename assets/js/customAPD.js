@@ -1533,4 +1533,6 @@ $(document).ready(function () {
 		$("#editSafetyShoes_Periode").val(periode);
 		$("#editSafetyShoes_Modal").modal("show");
 	});
+
+	$('.apd_slcBasic').select2();
 });
