@@ -1335,7 +1335,7 @@ class C_SuratPenyerahan extends CI_Controller
     if ($pekerja) {
       $implode = implode("', '", $pekerja);
       $kd_jabatan = $this->M_penyerahan->getKdJabatan($implode);
-      $data = $this->M_penyerahan->getKepada($kodesie, $kd_jabatan, $jenis);
+      $data = $this->M_penyerahan->getKepada($kodesie, $kd_jabatan, $jenis, $_POST['kodesie']);
     }
     echo json_encode($data);
   }

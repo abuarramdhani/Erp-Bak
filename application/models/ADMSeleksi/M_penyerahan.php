@@ -284,14 +284,28 @@ class M_penyerahan extends CI_Model
 		return $this->personalia->query($sql)->row()->kd_jabatan;
 	}
 
-	public function getKepada($kodesie, $kd_jabatan, $jenis)
+	public function getKepada($kodesie, $kd_jabatan, $jenis, $fullks)
 	{
 		if ($kd_jabatan >= '13') {
 			$kd_jabatan = '13';
 		}
 
 		if ($jenis == '1') {
-			$where = "and a.kd_jabatan <= '07'";
+			//logic |  if ga ada bidang milih unit if unit ga ada milih kasie utama
+			//10 kasie utama, 9 askanit, 7 askabid
+			$where = "and a.kd_jabatan <= '10'";
+			$fks = substr($fullks, 0,5);
+			foreach (['07','09'] as $k) {
+			$sqlj = "SELECT
+						* from
+						hrd_khs.tpribadi t
+					where
+						kodesie like 'fks%'
+						and keluar = false
+						and kd_jabatan <= '$k'";
+			if($this->personalia->query($sqlj)->num_rows() > 0)
+				$where = "and a.kd_jabatan <= '$k'";
+			}
 		} else if ($jenis == '6') {
 			$where = "and a.kd_jabatan < '10'";
 		} else {
