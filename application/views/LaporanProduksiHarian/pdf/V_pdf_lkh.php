@@ -8,7 +8,7 @@
 		<?php $no = 1;foreach ($get as $key => $value): ?>
 			<?php foreach ($value as $k1 => $v1): ?>
 				<div style="page-break-inside:avoid;border-bottom:1px solid black;height:303px">
-					<center style="font-size:10px;text-align:center;font-weight:bold">Rencana Kerja Operator Sheet Metal</center>
+					<center style="font-size:10px;text-align:center;font-weight:bold;margin-top:10px">Rencana Kerja Operator Sheet Metal</center>
 					<table style="font-size:10px;width:100%;margin-top:10px;">
 						<tr>
 							<td style="width:50px">No. <?php echo $no; $no++ ?></td>
@@ -35,13 +35,13 @@
 						<thead>
 							<tr>
 								<td style="text-align:center;padding:2px;border-right: 1px solid black;border-top: 1px solid black;border-left: 1px solid black;width:3.3%">Prio</td>
-								<td style="text-align:center;padding:2px;border-right: 1px solid black;border-top: 1px solid black;width:9%">Batch</td>
+								<td style="text-align:center;padding:2px;border-right: 1px solid black;border-top: 1px solid black;width:7%">Batch</td>
 								<td style="text-align:center;padding:2px;border-right: 1px solid black;border-top: 1px solid black;width:6%">Product</td>
 								<td style="text-align:center;padding:2px;border-right: 1px solid black;border-top: 1px solid black;width: 17.7%">Nama Part</td>
-								<td style="text-align:center;padding:2px;border-right: 1px solid black;border-top: 1px solid black;width:12%">Kode Part</td>
+								<td style="text-align:center;padding:2px;border-right: 1px solid black;border-top: 1px solid black;width:10%">Kode Part</td>
 								<td style="text-align:center;padding:2px;border-right: 1px solid black;border-top: 1px solid black;width:5.5%">Mesin</td>
 								<td style="text-align:center;padding:2px;border-right: 1px solid black;border-top: 1px solid black;width:9%">Proses</td>
-								<td style="text-align:center;padding:2px;border-right: 1px solid black;border-top: 1px solid black;width:4%">No Dies</td>
+								<td style="text-align:center;padding:2px;border-right: 1px solid black;border-top: 1px solid black;width:6%">No Dies</td>
 								<td style="text-align:center;padding:2px;border-right: 1px solid black;border-top: 1px solid black;width:4%">Plan</td>
 								<td style="text-align:center;padding:2px;border-right: 1px solid black;border-top: 1px solid black;width:6%">%Tgt</td>
 								<td style="text-align:center;padding:2px;border-right: 1px solid black;border-top: 1px solid black;width:4%">CT/PCS</td>
@@ -49,7 +49,7 @@
 								<td style="text-align:center;padding:2px;border-right: 1px solid black;border-top: 1px solid black;width:4.5%">Repair</td>
 								<td style="text-align:center;padding:2px;border-right: 1px solid black;border-top: 1px solid black;width:4%">Scrap</td>
 								<td style="text-align:center;padding:2px;border-right: 1px solid black;border-top: 1px solid black;width:8%">STD HANDLING</td>
-								<td style="text-align:center;padding:2px;border-right: 1px solid black;border-top: 1px solid black;width:7%">SARANA</td>
+								<td style="text-align:center;padding:2px;border-right: 1px solid black;border-top: 1px solid black;width:9	%">SARANA</td>
 							</tr>
 						</thead>
 						<tbody>

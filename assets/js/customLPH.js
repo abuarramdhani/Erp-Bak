@@ -45,6 +45,34 @@ const swaLPHLoading = (a) =>{
   })
 }
 
+
+$('.lph_search').on('submit', function(e) {
+  e.preventDefault()
+  $.ajax({
+    url: baseurl + 'LaporanProduksiHarian/action/getDataRKH',
+    type: 'POST',
+    // dataType: 'JSON',
+    data: {
+      range_date: $('.tanggal_lph_99').val(),
+      shift: $('.lph_pilih_shift_97').val()
+    },
+    cache:false,
+    beforeSend: function() {
+      $('.area-getlph-2021').html(`<div style ="width: 70%;margin:auto;height: 30%;background: #fff;overflow: hidden;z-index: 9999;padding:20px 0 30px 0;border-radius:10px;text-align:center">
+                                    <img style="width: 8%;" src="${baseurl}assets/img/gif/loading5.gif"><br>
+                                    <span style="font-size:14px;font-weight:bold">Sedang memuat form input...</span>
+                                </div>`);
+    },
+    success: function(result) {
+      $('.area-getlph-2021').html(result)
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+    swaLPHLarge('error', textStatus)
+     console.error();
+    }
+  })
+})
+
 function lph_empty_form() {
   $.ajax({
     url: baseurl + 'LaporanProduksiHarian/action/getEmptyRKH',

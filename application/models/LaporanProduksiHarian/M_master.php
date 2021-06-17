@@ -9,37 +9,179 @@ class M_master extends CI_Model
 		$this->lantuma = $this->load->database('lantuma', TRUE);
 	}
 
-	function kodePart($variable, $product) // dari TSKK
+	public function get_target_pe($code)
 	{
-	$where_product = '';
-	if (!empty($product)) {
-		$where_product .= "AND NVL (ffvt.description, '000') in";
-		$where_product .= '(\''.implode('\',\'',$product).'\')';
+		$sql = "SELECT msib.segment1
+						-- ,msib.description
+						-- ,grvr.PREFERENCE
+						-- ,grb.RECIPE_ID
+						-- ,grb.RECIPE_NO
+						-- ,grb.RECIPE_VERSION
+						-- ,ffb.FORMULA_NO
+						-- ,ffb.FORMULA_VERS
+						-- ,grtb.ROUTING_ID
+						-- ,grtb.ROUTING_NO
+						-- ,grtb.ROUTING_VERS
+						-- ,grtb.ROUTING_CLASS
+						-- ,frd.ROUTINGSTEP_NO
+						-- ,gob.OPRN_NO
+						-- ,gob.OPRN_VERS
+						-- ,goa.OPRN_ID
+						,goa.ACTIVITY
+						,goa.ATTRIBUTE1 kode_proses
+						-- ,goa.OPRN_LINE_ID
+						-- ,mc.resources
+						-- ,mc.resource_desc
+						,round((op.RESOURCE_USAGE/op.PROCESS_QTY),5) usage
+						,round(6.5/(round((op.RESOURCE_USAGE/op.PROCESS_QTY),5))) targetSK
+						,round(330/390*round(6.5/(round((op.RESOURCE_USAGE/op.PROCESS_QTY),5)))) targetJS
+						-- ,mc.RESOURCE_COUNT qty_mesin
+						-- ,op.RESOURCE_COUNT qty_optr
+						from gmd_recipe_validity_rules grvr
+						,gmd_recipes_b grb
+						,mtl_system_items_b msib
+						,fm_form_mst_b ffb
+						,gmd_routings_b grtb
+						,fm_rout_dtl frd
+						,gmd_operations_b gob
+						,GMD_OPERATION_ACTIVITIES GOA
+						,(select gorop.OPRN_LINE_ID
+						,crmbop.RESOURCES
+						,crmtop.RESOURCE_DESC
+						,gorop.PROCESS_QTY
+						,gorop.RESOURCE_USAGE
+						,gorop.RESOURCE_COUNT
+						from gmd_operation_resources gorop
+						,cr_rsrc_mst_tl crmtop
+						,cr_rsrc_mst_b crmbop
+						where gorop.RESOURCES = crmtop.RESOURCES
+						and gorop.RESOURCES = crmbop.RESOURCES
+						and crmbop.RESOURCE_CLASS = 'OPERATOR') op
+						,(select gormc.OPRN_LINE_ID
+						,crmbmc.RESOURCES
+						,crmtmc.RESOURCE_DESC
+						,gormc.PROCESS_QTY
+						,gormc.RESOURCE_USAGE
+						,gormc.RESOURCE_COUNT
+						from gmd_operation_resources gormc
+						,cr_rsrc_mst_tl crmtmc
+						,cr_rsrc_mst_b crmbmc
+						where gormc.RESOURCES = crmtmc.RESOURCES
+						and gormc.RESOURCES = crmbmc.RESOURCES
+						and crmbmc.RESOURCE_CLASS = 'MESIN') mc
+						where grvr.RECIPE_ID = grb.RECIPE_ID
+						and grvr.VALIDITY_RULE_STATUS = 700
+						and grvr.RECIPE_USE = 0
+						and grvr.END_DATE is null
+						and grvr.ORGANIZATION_ID = grb.OWNER_ORGANIZATION_ID
+						and grb.RECIPE_STATUS = 700
+						and grvr.INVENTORY_ITEM_ID = msib.INVENTORY_ITEM_ID
+						and grvr.ORGANIZATION_ID = msib.ORGANIZATION_ID
+						--and msib.INVENTORY_ITEM_STATUS_CODE = 'Active'
+						and grb.FORMULA_ID = ffb.FORMULA_ID
+						and grb.OWNER_ORGANIZATION_ID = ffb.OWNER_ORGANIZATION_ID
+						and ffb.FORMULA_STATUS = 700
+						and grb.ROUTING_ID = grtb.ROUTING_ID(+)
+						and grtb.ROUTING_ID = frd.ROUTING_ID
+						and grtb.OWNER_ORGANIZATION_ID = gob.OWNER_ORGANIZATION_ID
+						and frd.OPRN_ID = gob.OPRN_ID
+						and frd.OPRN_ID = goa.OPRN_ID
+						and goa.OPRN_ID = gob.OPRN_ID
+						--AND grtb.ROUTING_CLASS        = 'SHMT'
+						and msib.SEGMENT1 IN ('$code')         -----------------------------------------> ISI DENGAN ITEM YANG AKAN DICARI
+						and goa.OPRN_LINE_ID = mc.OPRN_LINE_ID(+)
+						and goa.OPRN_LINE_ID = op.OPRN_LINE_ID(+)
+						order by substr(msib.segment1,1,11)
+						,grb.RECIPE_VERSION
+						,substr(msib.segment1,1,11)||substr(msib.segment1,12,2)
+						,grb.RECIPE_NO
+						,grb.RECIPE_VERSION desc
+						,grtb.ROUTING_NO
+						,grtb.ROUTING_VERS
+						,frd.ROUTINGSTEP_NO
+						,ffb.FORMULA_NO
+						,ffb.FORMULA_VERS";
+
+			return	$this->oracle->query($sql)->result_array();
+
 	}
 
-	// $sql="SELECT msib.segment1
-	//      ,msib.description
-	//      from mtl_system_items_b msib
-	//      where msib.INVENTORY_ITEM_STATUS_CODE = 'Active'
-	//      and msib.organization_id = 81
-	//      AND (msib.DESCRIPTION LIKE '%$variable%'
-	//    OR msib.SEGMENT1 LIKE '%$variable%')";
+	function kodePart($variable, $product) // dari TSKK
+	{
 
-	$sql = "SELECT msib.segment1, msib.description
-							FROM fnd_flex_values ffv, fnd_flex_values_tl ffvt,
-									 mtl_system_items_b msib
-						 WHERE ffv.flex_value_set_id = 1013710
-							 AND ffv.flex_value_id = ffvt.flex_value_id
-							 AND ffv.end_date_active IS NULL
-							 AND ffv.summary_flag = 'N'
-							 AND ffv.enabled_flag = 'Y'
-							 AND ffv.flex_value = SUBSTR (msib.segment1, 1, 3)
-							 AND (msib.DESCRIPTION LIKE '%$variable%'
-										OR msib.SEGMENT1 LIKE '%$variable%')
-							 $where_product
-							 AND msib.organization_id = 81
-							 AND msib.inventory_item_status_code = 'Active'
-					ORDER BY 1";
+
+	// $sql = "SELECT msib.segment1, msib.description
+	// 						FROM fnd_flex_values ffv, fnd_flex_values_tl ffvt,
+	// 								 mtl_system_items_b msib
+	// 					 WHERE ffv.flex_value_set_id = 1013710
+	// 						 AND ffv.flex_value_id = ffvt.flex_value_id
+	// 						 AND ffv.end_date_active IS NULL
+	// 						 AND ffv.summary_flag = 'N'
+	// 						 AND ffv.enabled_flag = 'Y'
+	// 						 AND ffv.flex_value = SUBSTR (msib.segment1, 1, 3)
+	// 						 AND (msib.DESCRIPTION LIKE '%$variable%'
+	// 									OR msib.SEGMENT1 LIKE '%$variable%')
+	// 						 $where_product
+	// 						 AND msib.organization_id = 81
+	// 						 AND msib.inventory_item_status_code = 'Active'
+	// 				ORDER BY 1";
+
+	$sql = "SELECT DISTINCT msib.segment1, msib.description
+									FROM mtl_system_items_b msib,
+											gmd_recipe_validity_rules grvr,
+											gmd_recipes_b grb,
+											gmd_routings_b grtb
+								WHERE msib.inventory_item_id = grvr.inventory_item_id
+									AND msib.organization_id = grvr.organization_id
+									AND grvr.recipe_id = grb.recipe_id
+									AND grvr.validity_rule_status = 700
+									AND grvr.end_date IS NULL
+									AND grb.recipe_status = 700
+									AND grb.routing_id = grtb.routing_id
+									AND grtb.routing_class = 'SHMT'
+									AND msib.item_type = '2096'
+									AND msib.min_minmax_quantity <> 0
+									AND msib.max_minmax_quantity <> 0
+									AND msib.attribute9 <> 0
+									AND (msib.DESCRIPTION LIKE '%$variable%'
+											 OR msib.SEGMENT1 LIKE '%$variable%')
+					UNION
+					SELECT DISTINCT msib.segment1, msib.description
+									FROM mtl_system_items_b msib,
+											gmd_recipe_validity_rules grvr,
+											gmd_recipes_b grb,
+											gmd_routings_b grtb
+								WHERE msib.inventory_item_id = grvr.inventory_item_id
+									AND msib.organization_id = grvr.organization_id
+									AND grvr.recipe_id = grb.recipe_id
+									AND grvr.validity_rule_status = 700
+									AND grvr.end_date IS NULL
+									AND grb.recipe_status = 700
+									AND grb.routing_id = grtb.routing_id
+									AND grtb.routing_class = 'SHMT'
+									AND msib.segment1 IN
+													('AAB300A053AY-0', 'AAB300A054AY-0', 'AAB5AAB122AY-0',
+													'AAC5AAB111AY-0', 'AAK5AAB082AY-0', 'AAL300A051AY-0',
+													'AAL300A052AY-0', 'AAL5AAB071AY-0', 'AGC4D0A051AY-0')
+									AND (msib.DESCRIPTION LIKE '%$variable%'
+											 OR msib.SEGMENT1 LIKE '%$variable%')
+					UNION
+					SELECT DISTINCT msib.segment1, msib.description
+										FROM mtl_system_items_b msib,
+													gmd_recipe_validity_rules grvr,
+													gmd_recipes_b grb,
+													gmd_routings_b grtb
+										WHERE msib.inventory_item_id = grvr.inventory_item_id
+											AND msib.organization_id = grvr.organization_id
+											AND grvr.recipe_id = grb.recipe_id
+											AND grvr.validity_rule_status = 700
+											AND grvr.end_date IS NULL
+											AND grb.recipe_status = 700
+											AND grb.routing_id = grtb.routing_id
+											AND grtb.routing_class = 'SHMT'
+											AND msib.item_type = '2095'
+											AND (msib.DESCRIPTION LIKE '%$variable%'
+													 OR msib.SEGMENT1 LIKE '%$variable%')";
 
 		 $query = $this->oracle->query($sql);
 		 return $query->result_array();
@@ -125,5 +267,96 @@ class M_master extends CI_Model
 			$response = $this->db->query($sql)->result_array();
 			return $response;
 	}
+
+// 	select msib.segment1
+// ,msib.description
+// ,grvr.PREFERENCE
+// ,grb.RECIPE_ID
+// ,grb.RECIPE_NO
+// ,grb.RECIPE_VERSION
+// ,ffb.FORMULA_NO
+// ,ffb.FORMULA_VERS
+// ,grtb.ROUTING_ID
+// ,grtb.ROUTING_NO
+// ,grtb.ROUTING_VERS
+// ,grtb.ROUTING_CLASS
+// ,frd.ROUTINGSTEP_NO
+// ,gob.OPRN_NO
+// ,gob.OPRN_VERS
+// ,goa.OPRN_ID
+// ,goa.ACTIVITY
+// ,goa.ATTRIBUTE1
+// ,goa.OPRN_LINE_ID
+// ,mc.resources
+// ,mc.resource_desc
+// ,round((op.RESOURCE_USAGE/op.PROCESS_QTY),5) usage
+// ,round(6.5/(round((op.RESOURCE_USAGE/op.PROCESS_QTY),5))) targetSK
+// ,round(330/390*round(6.5/(round((op.RESOURCE_USAGE/op.PROCESS_QTY),5)))) targetJS
+// ,mc.RESOURCE_COUNT qty_mesin
+// ,op.RESOURCE_COUNT qty_optr
+// from gmd_recipe_validity_rules grvr
+// ,gmd_recipes_b grb
+// ,mtl_system_items_b msib
+// ,fm_form_mst_b ffb
+// ,gmd_routings_b grtb
+// ,fm_rout_dtl frd
+// ,gmd_operations_b gob
+// ,GMD_OPERATION_ACTIVITIES GOA
+// ,(select gorop.OPRN_LINE_ID
+// ,crmbop.RESOURCES
+// ,crmtop.RESOURCE_DESC
+// ,gorop.PROCESS_QTY
+// ,gorop.RESOURCE_USAGE
+// ,gorop.RESOURCE_COUNT
+// from gmd_operation_resources gorop
+// ,cr_rsrc_mst_tl crmtop
+// ,cr_rsrc_mst_b crmbop
+// where gorop.RESOURCES = crmtop.RESOURCES
+// and gorop.RESOURCES = crmbop.RESOURCES
+// and crmbop.RESOURCE_CLASS = 'OPERATOR') op
+// ,(select gormc.OPRN_LINE_ID
+// ,crmbmc.RESOURCES
+// ,crmtmc.RESOURCE_DESC
+// ,gormc.PROCESS_QTY
+// ,gormc.RESOURCE_USAGE
+// ,gormc.RESOURCE_COUNT
+// from gmd_operation_resources gormc
+// ,cr_rsrc_mst_tl crmtmc
+// ,cr_rsrc_mst_b crmbmc
+// where gormc.RESOURCES = crmtmc.RESOURCES
+// and gormc.RESOURCES = crmbmc.RESOURCES
+// and crmbmc.RESOURCE_CLASS = 'MESIN') mc
+// where grvr.RECIPE_ID = grb.RECIPE_ID
+// and grvr.VALIDITY_RULE_STATUS = 700
+// and grvr.RECIPE_USE = 0
+// and grvr.END_DATE is null
+// and grvr.ORGANIZATION_ID = grb.OWNER_ORGANIZATION_ID
+// and grb.RECIPE_STATUS = 700
+// and grvr.INVENTORY_ITEM_ID = msib.INVENTORY_ITEM_ID
+// and grvr.ORGANIZATION_ID = msib.ORGANIZATION_ID
+// --and msib.INVENTORY_ITEM_STATUS_CODE = 'Active'
+// and grb.FORMULA_ID = ffb.FORMULA_ID
+// and grb.OWNER_ORGANIZATION_ID = ffb.OWNER_ORGANIZATION_ID
+// and ffb.FORMULA_STATUS = 700
+// and grb.ROUTING_ID = grtb.ROUTING_ID(+)
+// and grtb.ROUTING_ID = frd.ROUTING_ID
+// and grtb.OWNER_ORGANIZATION_ID = gob.OWNER_ORGANIZATION_ID
+// and frd.OPRN_ID = gob.OPRN_ID
+// and frd.OPRN_ID = goa.OPRN_ID
+// and goa.OPRN_ID = gob.OPRN_ID
+// --AND grtb.ROUTING_CLASS        = 'SHMT'
+// and msib.SEGMENT1 IN ('ADA100A011AY-0')         -----------------------------------------> ISI DENGAN ITEM YANG AKAN DICARI
+// and goa.OPRN_LINE_ID = mc.OPRN_LINE_ID(+)
+// and goa.OPRN_LINE_ID = op.OPRN_LINE_ID(+)
+// order by substr(msib.segment1,1,11)
+// ,grb.RECIPE_VERSION
+// ,substr(msib.segment1,1,11)||substr(msib.segment1,12,2)
+// ,grb.RECIPE_NO
+// ,grb.RECIPE_VERSION desc
+// ,grtb.ROUTING_NO
+// ,grtb.ROUTING_VERS
+// ,frd.ROUTINGSTEP_NO
+// ,ffb.FORMULA_NO
+// ,ffb.FORMULA_VERS
 
 }

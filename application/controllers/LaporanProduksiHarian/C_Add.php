@@ -48,7 +48,8 @@ class C_Add extends CI_Controller
       $data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
       $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
       $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
-
+      $data['shift'] = $this->M_master->getShift();
+      
       $this->load->view('V_Header', $data);
       $this->load->view('V_Sidemenu', $data);
       $this->load->view('LaporanProduksiHarian/V_Add', $data);

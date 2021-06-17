@@ -77,6 +77,34 @@ class C_Import extends CI_Controller
       $this->load->view('V_Footer', $data);
     }
 
+    public function getDataRKH($value='')
+    {
+      $range_date = $this->input->post('range_date', true);
+      $range =  explode(' - ', $range_date);
+      $shift = $this->input->post('shift', true);
+
+      $data['get'] = $this->db->query("SELECT * FROM lph.lph_master WHERE shift = '$shift' AND to_date(tanggal, 'dd-mm-yyyy') BETWEEN to_date('$range[0]', 'dd-mm-yyyy') AND to_date('$range[1]', 'dd-mm-yyyy')")->result_array();
+      $this->load->view('LaporanProduksiHarian/ajax/V_mon_lkh', $data);
+      // echo "<pre>";
+      // print_r($date['get']);
+      // die;
+    }
+
+    public function get_pe($value='')
+    {
+      $code = $this->input->post('kode_komponen');
+      $res = $this->M_master->get_target_pe($code);
+      if (!empty($res[0]['SEGMENT1'])) {
+        $tampung[] = '<option value="">Tidak Memilih</option>';
+        foreach ($res as $key => $value) {
+          $tampung[] = '<option value="'.$value['KODE_PROSES'].' ~ '.$value['ACTIVITY'].' ~ '.$value['TARGETSK'].' ~ '.$value['TARGETJS'].'">'.$value['KODE_PROSES'].' ~ '.$value['ACTIVITY'].'</option>';
+        }
+        echo json_encode(implode('', $tampung));
+      }else {
+        echo json_encode(500);
+      }
+    }
+
     public function insert($value='')
     {
       $operator_ = $this->input->post('operator');
@@ -455,7 +483,7 @@ class C_Import extends CI_Controller
       $this->load->library('Pdf');
 
       $pdf 		= $this->pdf->load();
-      $pdf 		= new mPDF('utf-8', array(210 , 267), 0, 'calibri', 3, 3, 3, 0, 0, 0);
+      $pdf 		= new mPDF('utf-8', array(267, 210), 0, 'calibri', 3, 3, 3, 0, 0, 0);
       ob_end_clean() ;
 
       $doc = 'RENCANA-KERJA-OPERATOR-'.$range;

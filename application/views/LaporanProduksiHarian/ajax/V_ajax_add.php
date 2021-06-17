@@ -162,7 +162,7 @@
       <div class="box-body" style="padding-top:37px">
         <div class="form-group">
           <label for="">Jenis</label>
-          <select class="select2" name="ott_jenis"  style="width:100%">
+          <select class="lph_select2" name="ott_jenis"  style="width:100%">
             <option value=""></option>
             <option value="OTT">OTT</option>
             <option value="IK">IK</option>
@@ -221,7 +221,7 @@
                        <option value="<?php echo $value['kode_komponen'] ?>" selected><?php echo $value['kode_komponen'] ?></option>
                       </select>
                     </td>
-                    <td><input type="text" class="form-control"  name="namapart[]" required value="<?php echo $value['nama_komponen'] ?>"></td>
+                    <td><input type="text" class="form-control" name="namapart[]" readonly value="<?php echo $value['nama_komponen'] ?>"></td>
                     <td>
                       <select class="LphAlatBantu" name="alatbantu[]" style="width:200px">
                         <option value="" selected></option>
@@ -229,11 +229,13 @@
                     </td>
                     <td><input type="text" class="form-control"  name="kodemesin[]" value="<?php echo str_replace(' ','',$value['kode_mesin']) ?>"></td>
                     <td><input type="text" class="form-control"  name="waktumesin[]" value=""></td>
-                    <td>
-                      <select class="select2" name="kodeproses[]" style="width:100%"></select>
+                    <td >
+                      <select class="lph_select2 lph_kode_proses" name="kodeproses[]" style="width:182px">
+                        <option value="" selected></option>
+                      </select>
                     </td>
                     <td><input type="text" class="form-control"  name="namaproses[]" required value="<?php echo $value['proses'] ?>"></td>
-                    <td><input type="text" class="form-control"  name="target_ppic[]" required readonly value="<?php echo $value['plan'] ?>"></td>
+                    <td><input type="text" class="form-control"  name="target_ppic[]" required value="<?php echo $value['plan'] ?>"></td>
                     <?php
                       if ($value['hari'] == ('Jumat' || 'Sabtu')) {
                         $target_harian = $value['target_js'];
@@ -311,6 +313,73 @@ function itungitung() {
   });
 }
 
+function lph_kodepart(e) {
+  let ambil_desc = $(e).select2('data')[0].text.split(' ~ ');
+  if (ambil_desc != '') {
+    $(e).parent().parent('tr').find('input[name="namapart[]"]').val(ambil_desc[1]);
+  }
+
+  $.ajax({
+    url: baseurl + 'LaporanProduksiHarian/action/get_pe',
+    type: 'POST',
+    data : {
+      kode_komponen : ambil_desc[0]
+    },
+    dataType: "JSON",
+    beforeSend: function() {
+      toastLPHLoading('Sedang Mengambil Target PE...');
+    },
+    success: function(result) {
+      if (result != 500) {
+        toastLPH('success', 'Silahkan memilih kode proses');
+        $(e).parent().parent('tr').find('.lph_kode_proses').html(result);
+      }else {
+        toastLPH('warning', `Komponen ${ambil_desc[0]} tidak memiliki target PE (SK/JS)`);
+      }
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+      swaLPHLarge('error', 'Terjadi kesalahan');
+     console.error();
+    }
+  })
+}
+
+function lph_aktual(e) {
+  let target = $(e).parent().parent('tr').find('.lph_target_harian').val();
+  let aktual = $(e).val();
+  console.log(Number.isInteger(Number(target)), 'tipe number');
+  if (aktual != '') {
+    if (target == '' || !Number.isInteger(Number(target))) {
+      swaLPHLarge('info',`Target ${$('.lph_jenis_target').text()} tidak boleh kosong`);
+      $(e).parent().parent('tr').find('.lph_persentase').val('');
+      $(e).parent().parent('tr').find('.lph_hasil_baik').val('');
+      $(e).val('');
+      $(e).attr('required', false);
+    }else {
+      let persentase = ((Number(aktual)/Number(target))*100).toFixed(2)+'%';
+      $(e).parent().parent('tr').find('.lph_persentase').val(persentase);
+      $(e).parent().parent('tr').find('.lph_hasil_baik').val(aktual);
+    }
+  }else {
+    $(e).parent().parent('tr').find('.lph_persentase').val('');
+    $(e).parent().parent('tr').find('.lph_hasil_baik').val('');
+  }
+  itungitung();
+}
+
+function fun_lphkodeproses(e) {
+  let val = $(e).val().split(' ~ ');
+  console.log(val, 'ini data PE');
+  $(e).parent().parent('tr').find('input[name="namaproses[]"]').val(val[1]);
+  $(e).parent().parent('tr').find('input[name="target_harian_js[]"]').val(val[3]);
+  $(e).parent().parent('tr').find('input[name="target_harian_sk[]"]').val(val[2]);
+  if ($('.lph_jenis_target').text() == 'J-S') {
+    $(e).parent().parent('tr').find('.lph_target_harian').val(val[3]);
+  }else {
+    $(e).parent().parent('tr').find('.lph_target_harian').val(val[2]);
+  }
+}
+
 function lph_add_row_hasil_produksi() {
   let no = Number($('.tbl_lph_add_comp tbody tr').length)+1;
   $('.tbl_lph_add_comp tbody').append(`<tr>
@@ -320,7 +389,7 @@ function lph_add_row_hasil_produksi() {
                                            <option value="" selected></option>
                                           </select>
                                         </td>
-                                        <td><input type="text" class="form-control" required name="namapart[]" value=""></td>
+                                        <td><input type="text" class="form-control" readonly name="namapart[]" value=""></td>
                                         <td>
                                           <select class="LphAlatBantu" name="alatbantu[]" style="width:200px">
                                            <option value="" selected></option>
@@ -329,12 +398,12 @@ function lph_add_row_hasil_produksi() {
                                         <td><input type="text" class="form-control" required name="kodemesin[]" value=""></td>
                                         <td><input type="text" class="form-control" name="waktumesin[]" value=""></td>
                                         <td>
-                                          <select class="select2" name="kodeproses[]" style="width:100%">
+                                          <select class="lph_select2 lph_kode_proses" name="kodeproses[]" style="width:182px">
                                             <option value="" selected></option>
                                           </select>
                                         </td>
                                         <td><input type="text" class="form-control" required name="namaproses[]" value=""></td>
-                                        <td><input type="text" class="form-control" required name="target_ppic[]" readonly value=""></td>
+                                        <td><input type="text" class="form-control" required name="target_ppic[]" value=""></td>
                                         <td>
                                          <input type="text" class="form-control lph_target_harian" name="target_harian[]" required readonly value="">
                                          <input type="hidden" name="target_harian_sk[]" value="">
@@ -379,13 +448,7 @@ function lph_add_row_hasil_produksi() {
       }
     });
 
-    $(".lph_kodepart").on('change', function() {
-      let ambil_desc = $(this).text().split(' ~ ');
-      if (ambil_desc != '') {
-        $(this).parent().parent('tr').find('input[name="namapart[]"]').val(ambil_desc[1]);
-      }
-    })
-
+    $('.lph_select2').select2();
     $(".lph_kodepart").select2({
       minimumInputLength: 3,
       // maximumSelectionLength: 1,
@@ -418,52 +481,31 @@ function lph_add_row_hasil_produksi() {
       }
     });
 
+    $(".lph_kodepart").on('change', function() {
+      lph_kodepart(this);
+    })
+
     $('.lph_aktual').on('input', function() {
-      let target = $(this).parent().parent('tr').find('.lph_target_harian').val();
-      let aktual = $(this).val();
-      console.log(Number.isInteger(Number(target)), 'tipe number');
-      if (aktual != '') {
-        if (target == '' || !Number.isInteger(Number(target))) {
-          swaLPHLarge('info',`Target ${$('.lph_jenis_target').text()} tidak boleh kosong`);
-          $(this).parent().parent('tr').find('.lph_persentase').val('');
-          $(this).parent().parent('tr').find('.lph_hasil_baik').val('');
-          $(this).val('');
-        }else {
-          let persentase = ((Number(aktual)/Number(target))*100).toFixed(2)+'%';
-          $(this).parent().parent('tr').find('.lph_persentase').val(persentase);
-          $(this).parent().parent('tr').find('.lph_hasil_baik').val(aktual);
-        }
-      }else {
-        $(this).parent().parent('tr').find('.lph_persentase').val('');
-        $(this).parent().parent('tr').find('.lph_hasil_baik').val('');
-      }
-      itungitung();
-    });
+      lph_aktual(this)
+    })
 
-}
+    $('.lph_kode_proses').on('change', function() {
+      fun_lphkodeproses(this);
+    })
 
+  }
+
+  // batas ++++++++++++++++++++++++++++++ batas ++++++++++++++++++++
+  $('.lph_kode_proses').on('change', function() {
+    fun_lphkodeproses(this);
+  })
+
+  $(".lph_kodepart").on('change', function() {
+    lph_kodepart(this);
+  })
 
   $('.lph_aktual').on('input', function() {
-    let target = $(this).parent().parent('tr').find('.lph_target_harian').val();
-    let aktual = $(this).val();
-    console.log(Number.isInteger(Number(target)), 'tipe number');
-    if (aktual != '') {
-      if (target == '' || !Number.isInteger(Number(target))) {
-        swaLPHLarge('info',`Target ${$('.lph_jenis_target').text()} tidak boleh kosong`);
-        $(this).parent().parent('tr').find('.lph_persentase').val('');
-        $(this).parent().parent('tr').find('.lph_hasil_baik').val('');
-        $(this).val('');
-        $(this).attr('required', false);
-      }else {
-        let persentase = ((Number(aktual)/Number(target))*100).toFixed(2)+'%';
-        $(this).parent().parent('tr').find('.lph_persentase').val(persentase);
-        $(this).parent().parent('tr').find('.lph_hasil_baik').val(aktual);
-      }
-    }else {
-      $(this).parent().parent('tr').find('.lph_persentase').val('');
-      $(this).parent().parent('tr').find('.lph_hasil_baik').val('');
-    }
-    itungitung();
+    lph_aktual(this)
   })
 
   function min_elem_pwe(th) {
@@ -516,7 +558,7 @@ function lph_add_row_hasil_produksi() {
 
   $(function() {
     // run();
-    // $('.select2').select2();
+    $('.lph_select2').select2();
     $('.lph_shift_dinamis_v2').select2();
     let t = $('.lph_tdl_add').val().split('-');
     let d = new Date(`${t[2]}-${t[1]}-${t[0]}`);
