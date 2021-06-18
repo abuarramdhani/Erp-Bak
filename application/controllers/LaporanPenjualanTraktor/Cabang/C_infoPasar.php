@@ -97,7 +97,7 @@ class C_infoPasar extends CI_Controller
                 }
 
                 if ($this->upload->do_upload('file')) {
-                    $array[] = base_url() . 'assets/upload/LaporanPenjualanTR2/InfoPasar' . '/' . $_FILES['file']['name'];
+                    $array[] = base_url() . 'assets/upload/LaporanPenjualanTR2/InfoPasar' . '/' . str_replace(' ', '_', $_FILES['file']['name']);
                 }
             }
         }
@@ -156,7 +156,7 @@ class C_infoPasar extends CI_Controller
 
                 if ($this->upload->do_upload('file')) {
                     $dataarray = $this->upload->data();
-                    $array[] = base_url() . 'assets/upload/LaporanPenjualanTR2/InfoPasar' . '/' . $_FILES['file']['name'];
+                    $array[] = base_url() . 'assets/upload/LaporanPenjualanTR2/InfoPasar' . '/' . str_replace(' ', '_', $_FILES['file']['name']);
                 } else {
                     $error = array('error' => $this->upload->display_errors());
                     echo '<pre>';
