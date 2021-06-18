@@ -11,10 +11,11 @@
                 <th style="vertical-align: middle;">Kode Barang</th>
                 <th style="vertical-align: middle;">Deskripsi</th>
                 <th style="vertical-align: middle;">Seksi Pengebon</th>
-                <th style="vertical-align: middle; width: 8%;">Permintaan</th>
-                <th style="vertical-align: middle; width: 8%;">Penyerahan</th>
+                <th style="vertical-align: middle; width: 5%;">Permintaan</th>
+                <th style="vertical-align: middle; width: 5%;">Penyerahan</th>
+                <th style="vertical-align: middle; width: 5%;">Satuan</th>
                 <th style="vertical-align: middle; width: 5%;">Tanggal Pembuatan Bppbg</th>
-                <th style="vertical-align: middle; width: 14%;">Keterangan</th>
+                <th style="vertical-align: middle; width: 15%;">Keterangan</th>
                 <th style="vertical-align: middle; width: 5%;">Transact Android</th>
                 <th style="vertical-align: middle; width: 5%;">Material Transaction</th>
                 <th style="vertical-align: middle; width: 5%;">MTI</th>
@@ -84,16 +85,19 @@
                 <td>
                     <?= $i['SEKSI_BON'] ?>
                 </td>
-                <td style="width: 8%;">
-                    <?= $i['PERMINTAAN'].' '.$i['SATUAN'] ?>
+                <td style="width: 5%;">
+                    <?= $i['PERMINTAAN'] ?>
                 </td>
-                <td style="width: 8%;">
-                    <?= $i['PENYERAHAN'].' '.$i['SATUAN'] ?>
+                <td style="width: 5%;">
+                    <?= $i['PENYERAHAN'] ?>
+                </td>
+                <td style="width: 5%;">
+                    <?= $i['SATUAN'] ?>
                 </td>
                 <td style="width: 10%;">
                     <?= $i['TANGGAL'] ?>
                 </td>
-                <td style="width: 14%;">
+                <td style="width: 15%;">
                     <?= $i['KETERANGAN'] ?>
                 </td>
                 <td style="width: 5%; <?= $style ?>">
