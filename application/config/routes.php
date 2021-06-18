@@ -5647,3 +5647,14 @@ $route['KomisiPenjualanAkuntansi'] 						= 'KomisiPenjualan/C_Index';
 $route['KomisiPenjualanAkuntansi/CreateInvoice'] 		= 'KomisiPenjualan/C_Komisi/CreateInvoice';
 $route['KomisiPenjualanAkuntansi/CreateInvoice/(:any)'] = 'KomisiPenjualan/C_Komisi/$1';
 $route['KomisiPenjualanAkuntansi/CreateInvoice/(:any)/(:any)'] = 'KomisiPenjualan/C_Komisi/$1/$2';
+
+//-----------------------------------------------------Monitoring Cat------------------------------------------------------------//
+$route['MonitoringCat'] 						= 'MonitoringCat/C_Index';
+$route['MonitoringCat/InputCat']				= 'MonitoringCat/C_Input';;
+$route['MonitoringCat/InputCat/(:any)']			= 'MonitoringCat/C_Input/$1';
+$route['MonitoringCat/InputCat/(:any)/(:any)']	= 'MonitoringCat/C_Input/$1/$2';
+$route['MonitoringCat/Monitoring']				= 'MonitoringCat/C_Monitoring';;
+$route['MonitoringCat/Monitoring/(:any)']		= 'MonitoringCat/C_Monitoring/$1';
+$route['MonitoringCat/Monitoring/(:any)/(:any)']= 'MonitoringCat/C_Monitoring/$1/$2';
+$route['MonitoringCat/SettingCat']				= 'MonitoringCat/C_Setting';;
+$route['MonitoringCat/SettingCat/(:any)']		= 'MonitoringCat/C_Setting/$1';
