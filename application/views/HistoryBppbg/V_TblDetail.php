@@ -12,6 +12,7 @@
                 <th style="vertical-align: middle;">Deskripsi</th>
                 <th style="vertical-align: middle;">Seksi Pengebon</th>
                 <th style="vertical-align: middle; width: 8%;">Permintaan</th>
+                <th style="vertical-align: middle; width: 8%;">Penyerahan</th>
                 <th style="vertical-align: middle; width: 5%;">Tanggal Pembuatan Bppbg</th>
                 <th style="vertical-align: middle; width: 14%;">Keterangan</th>
                 <th style="vertical-align: middle; width: 5%;">Transact Android</th>
@@ -25,12 +26,10 @@
                 if ($i['FLAG'] == 'Y') {
                     $style = 'color: green;';
                     $icon = '<i class="fa fa-check"></i>';
-                    // $color = '#95f576';
                 }
                 else {
                     $style = 'color: red;';
                     $icon = '<i class="fa fa-close"></i>';
-                    // $color = '#f06f4f';
                 }
 
                 if ($i['KODE_BARANG'] == $item) {
@@ -43,23 +42,32 @@
                 if ($i['MMT'] == 'Y') {
                     $style2 = 'color: green;';
                     $icon2 = '<i class="fa fa-check"></i>';
-                    $color = '#95f576';
                 }
                 else {
                     $style2 = 'color: red;';
                     $icon2 = '<i class="fa fa-close"></i>';
-                    $color = '#f06f4f';
                 }
 
                 if ($i['MTI'] == 'Y') {
                     $style3 = 'color: green;';
                     $icon3 = '<i class="fa fa-check"></i>';
-                    // $color = '#95f576';
                 }
                 else {
                     $style3 = 'color: red;';
                     $icon3 = '<i class="fa fa-close"></i>';
-                    // $color = '#f06f4f';
+                }
+
+                if ($i['MMT'] == 'Y' && $i['FLAG'] == 'Y') {
+                    $color = '#95f576';
+                }
+                elseif ($i['MMT'] == 'N' && $i['FLAG'] == 'N') {
+                    $color = '';
+                }
+                elseif ($i['MMT'] == 'Y' && $i['FLAG'] == 'N') {
+                    $color = '#fae48e';
+                }
+                else {
+                    $color = '#f06f4f';
                 }
             ?>
             <tr style="background-color: <?= $color ?>; <?= $fw ?>">
@@ -78,6 +86,9 @@
                 </td>
                 <td style="width: 8%;">
                     <?= $i['PERMINTAAN'].' '.$i['SATUAN'] ?>
+                </td>
+                <td style="width: 8%;">
+                    <?= $i['PENYERAHAN'].' '.$i['SATUAN'] ?>
                 </td>
                 <td style="width: 10%;">
                     <?= $i['TANGGAL'] ?>
