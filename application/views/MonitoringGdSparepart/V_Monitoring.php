@@ -1,3 +1,13 @@
+<script>
+    $(document).ready(function () {            
+        $('.dateMonMPG').datepicker({
+            format: 'dd/mm/yyyy',
+            todayHighlight: true,
+            autoclose: true
+        });
+    });
+</script>
+
 <section class="content">
     <div class="inner">
         <div class="row">
@@ -87,14 +97,14 @@
                                         <label class="control-label">Tanggal Awal</label>
                                         <div class="input-group date">
                                             <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
-                                            <input id="tglAwal" name="tglAwal" type="text" class="form-control pull-right" style="width:100%;" placeholder="dd/mm/yyyy" autocomplete="off">
+                                            <input id="tglAwal" name="tglAwal" type="text" class="form-control pull-right dateMonMPG" style="width:100%;" placeholder="dd/mm/yyyy" autocomplete="off">
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <label class="control-label">Tanggal Akhir</label>
                                         <div class="input-group date">
                                             <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
-                                            <input id="tglAkhir" name="tglAkhir" type="text" class="form-control pull-right" style="width:100%;" placeholder="dd/mm/yyyy" autocomplete="off">
+                                            <input id="tglAkhir" name="tglAkhir" type="text" class="form-control pull-right dateMonMPG" style="width:100%;" placeholder="dd/mm/yyyy" autocomplete="off">
                                         </div>
                                     </div>
                                 </div>
