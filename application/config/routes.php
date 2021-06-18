@@ -5584,6 +5584,20 @@ $route['menuLaporanPenjualanTraktor/inputDate/insertDate']	=	'LaporanPenjualanTr
 $route['menuLaporanPenjualanTraktor/inputDate/insertTable']	=	'LaporanPenjualanTraktor/C_inputDate/insertTable';
 $route['menuLaporanPenjualanTraktor/inputDate/deleteDate']	=	'LaporanPenjualanTraktor/C_inputDate/deleteDate';
 
+$route['laporanPenjualanTR2/Pusat'] = 'LaporanPenjualanTraktor/Pusat/C_index';
+$route['laporanPenjualanTR2/Pusat/inputTarget'] = 'LaporanPenjualanTraktor/Pusat/C_target';
+$route['laporanPenjualanTR2/Pusat/inputTargetToDB'] = 'LaporanPenjualanTraktor/Pusat/C_target/inputTarget';
+$route['laporanPenjualanTR2/Pusat/inputTarget/viewTarget'] = 'LaporanPenjualanTraktor/Pusat/C_target/viewTarget';
+$route['laporanPenjualanTR2/Pusat/inputTarget/editTarget'] = 'LaporanPenjualanTraktor/Pusat/C_target/editTarget';
+
+$route['laporanPenjualanTR2/Cabang/(:any)'] = 'LaporanPenjualanTraktor/Cabang/C_index/index/$1';
+$route['laporanPenjualanTR2/Cabang/(:any)/inputAnalisa'] = 'LaporanPenjualanTraktor/Cabang/C_analisa/index/$1';
+$route['laporanPenjualanTR2/inputAnalisa'] = 'LaporanPenjualanTraktor/Cabang/C_analisa/inputAnalisa';
+$route['laporanPenjualanTR2/Cabang/(:any)/inputInfoPasar'] = 'LaporanPenjualanTraktor/Cabang/C_infoPasar/index/$1';
+$route['laporanPenjualanTR2/inputInfoPasar'] = 'LaporanPenjualanTraktor/Cabang/C_infoPasar/inputInfoPasar';
+$route['laporanPenjualanTR2/editInfoPasar'] = 'LaporanPenjualanTraktor/Cabang/C_infoPasar/editInfoPasar';
+$route['laporanPenjualanTR2/editFileInfoPasar'] = 'LaporanPenjualanTraktor/Cabang/C_infoPasar/editFileInfoPasar';
+
 // -------------------------- Monitoring Cetak PO -------------------------------------//
 $route['monitoring-cetak-po'] = 'MonitoringCetakPO/C_Subkon';
 $route['monitoring-cetak-po/(:any)'] = 'MonitoringCetakPO/C_Subkon/$1';
@@ -5655,6 +5669,6 @@ $route['MonitoringCat/InputCat/(:any)']			= 'MonitoringCat/C_Input/$1';
 $route['MonitoringCat/InputCat/(:any)/(:any)']	= 'MonitoringCat/C_Input/$1/$2';
 $route['MonitoringCat/Monitoring']				= 'MonitoringCat/C_Monitoring';;
 $route['MonitoringCat/Monitoring/(:any)']		= 'MonitoringCat/C_Monitoring/$1';
-$route['MonitoringCat/Monitoring/(:any)/(:any)']= 'MonitoringCat/C_Monitoring/$1/$2';
+$route['MonitoringCat/Monitoring/(:any)/(:any)'] = 'MonitoringCat/C_Monitoring/$1/$2';
 $route['MonitoringCat/SettingCat']				= 'MonitoringCat/C_Setting';;
 $route['MonitoringCat/SettingCat/(:any)']		= 'MonitoringCat/C_Setting/$1';
