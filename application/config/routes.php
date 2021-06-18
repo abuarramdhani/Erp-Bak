@@ -5658,3 +5658,17 @@ $route['MonitoringCat/Monitoring/(:any)']		= 'MonitoringCat/C_Monitoring/$1';
 $route['MonitoringCat/Monitoring/(:any)/(:any)']= 'MonitoringCat/C_Monitoring/$1/$2';
 $route['MonitoringCat/SettingCat']				= 'MonitoringCat/C_Setting';;
 $route['MonitoringCat/SettingCat/(:any)']		= 'MonitoringCat/C_Setting/$1';
+
+// ------------------------------------------- Menjawab Temuan Audite ----------------------------------------//
+$route['MenjawabTemuanAudite']  = 'MenjawabTemuanAudite/C_Index';
+
+$route['MenjawabTemuanAudite/Handling'] = 'MenjawabTemuanAudite/MainMenu/C_Handling';
+$route['MenjawabTemuanAudite/Handling/(:any)'] = 'MenjawabTemuanAudite/MainMenu/C_Handling/$1';
+$route['MenjawabTemuanAudite/Handling/(:any)/(:any)'] = 'MenjawabTemuanAudite/MainMenu/C_Handling/$1/$2';
+
+// ------------------------------------------- Rekap Temuan Audite ----------------------------------------//
+$route['RekapTemuanAudite'] = 'RekapTemuanAudite/C_Index';
+
+$route['RekapTemuanAudite/Handling'] = 'RekapTemuanAudite/MainMenu/C_Handling';
+$route['RekapTemuanAudite/Handling/(:any)'] = 'RekapTemuanAudite/MainMenu/C_Handling/$1';
+$route['RekapTemuanAudite/Handling/(:any)/(:any)'] = 'RekapTemuanAudite/MainMenu/C_Handling/$1/$2';
