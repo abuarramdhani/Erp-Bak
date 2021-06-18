@@ -158,6 +158,7 @@ class C_infoPasar extends CI_Controller
                     $dataarray = $this->upload->data();
 
                     $array[] = $dataarray;
+
                 } else {
                     $error = array('error' => $this->upload->display_errors());
                     echo '<pre>';
@@ -169,13 +170,13 @@ class C_infoPasar extends CI_Controller
 
         $pathimg = '';
         foreach ($array as $value) {
-            $pathimg = $pathimg . $value['upload_path'] . ',';
+            $pathimg = $pathimg .'/assets/upload/LaporanPenjualanTR2/InfoPasar/'. $value['orig_name'] . ',';
         };
 
         $pathimg = rtrim($pathimg, ",");
 
         $this->M_pusat->editFileInfoPasar((int)$reportid, $pathimg);
 
-        redirect(base_url('laporanPenjualanTR2/Cabang/' . $cabang . '/inputInfoPasar'));
+        // redirect(base_url('laporanPenjualanTR2/Cabang/' . $cabang . '/inputInfoPasar'));
     }
 }
