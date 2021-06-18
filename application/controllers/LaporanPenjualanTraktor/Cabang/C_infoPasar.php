@@ -97,9 +97,7 @@ class C_infoPasar extends CI_Controller
                 }
 
                 if ($this->upload->do_upload('file')) {
-                    $dataarray = $this->upload->data();
-
-                    $array[] = $dataarray;
+                    $array[] = base_url() . 'assets/upload/LaporanPenjualanTR2/InfoPasar' . '/' . $_FILES['file']['name'];
                 }
             }
         }
@@ -112,7 +110,7 @@ class C_infoPasar extends CI_Controller
     {
         $pathimg = '';
         foreach ($filename as $value) {
-            $pathimg = $pathimg . $value['upload_path'] . ',';
+            $pathimg = $pathimg . $value . ',';
         };
 
         $pathimg = rtrim($pathimg, ",");
@@ -137,7 +135,9 @@ class C_infoPasar extends CI_Controller
         $reportid = $this->input->post('reportid-input-lpt');
         $attachment = $_FILES['input-attachment-market-info-lpt'];
         $jumlahfile = count($attachment['name']);
-
+        // echo "<pre>";
+        // print_r($_FILES);
+        // die;
         $array = array();
 
         for ($i = 0; $i < $jumlahfile; $i++) {
@@ -156,9 +156,7 @@ class C_infoPasar extends CI_Controller
 
                 if ($this->upload->do_upload('file')) {
                     $dataarray = $this->upload->data();
-
-                    $array[] = $dataarray;
-
+                    $array[] = base_url() . 'assets/upload/LaporanPenjualanTR2/InfoPasar' . '/' . $_FILES['file']['name'];
                 } else {
                     $error = array('error' => $this->upload->display_errors());
                     echo '<pre>';
@@ -170,13 +168,16 @@ class C_infoPasar extends CI_Controller
 
         $pathimg = '';
         foreach ($array as $value) {
-            $pathimg = $pathimg .'/assets/upload/LaporanPenjualanTR2/InfoPasar/'. $value['orig_name'] . ',';
+            $pathimg = $pathimg . $value . ',';
         };
 
         $pathimg = rtrim($pathimg, ",");
+        // echo "<pre>";
+        // print_r($pathimg);
+        // die;
 
         $this->M_pusat->editFileInfoPasar((int)$reportid, $pathimg);
 
-        // redirect(base_url('laporanPenjualanTR2/Cabang/' . $cabang . '/inputInfoPasar'));
+        redirect(base_url('laporanPenjualanTR2/Cabang/' . $cabang . '/inputInfoPasar'));
     }
 }
