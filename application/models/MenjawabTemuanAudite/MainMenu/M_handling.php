@@ -132,7 +132,8 @@ class M_handling extends CI_Model
 
   public function getAuditAlasan($id_audit)
   {
-    return $this->db->query("SELECT DISTINCT avht.alasan_masih_open alasan_masih_open,
+    return $this->db->query("SELECT DISTINCT avht.id id_temuan,
+                                             avht.alasan_masih_open alasan_masih_open,
                                              avht.last_update_date last_update_date_temuan,
                                              avht.last_update_by last_update_by_temuan
                       FROM (avh.avh_audit avha
@@ -141,7 +142,7 @@ class M_handling extends CI_Model
                       WHERE avhj.id_audit = '$id_audit'
                       AND avht.id_audit = '$id_audit'
                       AND avht.alasan_masih_open IS NOT NULL
-                      ORDER BY last_update_date_temuan DESC")->result_array();
+                      ORDER BY avht.id DESC")->result_array();
   }
 
   // public function getAuditLog($id_audit)
