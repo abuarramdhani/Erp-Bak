@@ -112,7 +112,7 @@ class C_infoPasar extends CI_Controller
     {
         $pathimg = '';
         foreach ($filename as $value) {
-            $pathimg = $pathimg . $value['full_path'] . ',';
+            $pathimg = $pathimg . $value['upload_path'] . ',';
         };
 
         $pathimg = rtrim($pathimg, ",");
@@ -169,7 +169,7 @@ class C_infoPasar extends CI_Controller
 
         $pathimg = '';
         foreach ($array as $value) {
-            $pathimg = $pathimg . $value['full_path'] . ',';
+            $pathimg = $pathimg . $value['upload_path'] . ',';
         };
 
         $pathimg = rtrim($pathimg, ",");
