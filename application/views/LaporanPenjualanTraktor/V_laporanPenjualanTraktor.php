@@ -51,6 +51,12 @@
                                 <th rowspan=2 style="vertical-align:middle;">
                                     <center>AK</center>
                                 </th>
+                                <th rowspan=2 style="vertical-align:middle;">
+                                    <center>Target</center>
+                                </th>
+                                <th rowspan=2 style="vertical-align:middle;">
+                                    <center>%</center>
+                                </th>
                             </tr>
                             <tr class="bg-primary">
                                 <th>
@@ -129,6 +135,14 @@
                                 <td>
                                     <center><?= $row['TOTAL'] ?></center>
                                 </td>
+                                <td>
+                                    <center><?= $row['TARGET'] ?></center>
+                                </td>
+                                <td>
+                                    <center><?php if ($row['TARGET'] != 0) {
+                                                    echo round(($row['TOTAL'] * 100) / $row['TARGET'], 2) . " %";
+                                                } ?></center>
+                                </td>
                             </tr>
                             <?php
                                 $i++;
@@ -177,13 +191,23 @@
                                 <td>
                                     <center><b><?= $totalDaily['TOTAL'] ?></b></center>
                                 </td>
+                                <td>
+                                    <center><b><?= $totalDaily['TARGET'] ?></b></center>
+                                </td>
+                                <td>
+                                    <center>
+                                        <b><?php if ($totalDaily['TARGET'] != 0) {
+                                                echo round(($totalDaily['TOTAL'] * 100) / $totalDaily['TARGET'], 2) . " %";
+                                            } ?></b>
+                                    </center>
+                                </td>
                             </tr>
                             <tr>
                                 <td>Jumlah Hari Penjualan</td>
                                 <td colspan="10">
                                     &emsp;&emsp;<?= $sumDate['JUMLAH_HARI'] ?>
                                 </td>
-                                <td colspan="2" style="text-align:center;">Laju
+                                <td colspan="4" style="text-align:center;">Laju
                                     Hari&emsp;<?= $sumDate['JUMLAH_HARI'] ?> / <?= $sumDayMonth['JUMLAH_HARI'] ?></td>
                             </tr>
                         </tbody>
@@ -451,7 +475,7 @@
                                     </center>
                                 </th>
                                 <th rowspan=2 style="vertical-align:middle;">
-                                    <center style="writing-mode: vertical-lr;font-weight:normal;margin:auto;">ZENA Rotary
+                                    <center style="writing-mode: vertical-lr;font-weight:normal;margin:auto;">ENA Rotary
                                     </center>
                                 </th>
                                 <th rowspan=2 style="vertical-align:middle;">
@@ -737,6 +761,8 @@
                     <a class="btn btn-success" href="<?= base_url('laporanPenjualanTraktor/exportExcel') ?>"
                         style="margin-left: 15px;"><i class="fa fa-file-excel-o"
                             aria-hidden="true"></i><b>&ensp;Excel</b></a>
+                    <a class="btn btn-primary" href="<?= base_url() ?>" style="margin-left: 15px;"><i class="fa fa-edit"
+                            aria-hidden="true"></i><b>&ensp;Input</b></a>
                 </div>
             </div>
         </div>

@@ -14,6 +14,7 @@ class C_laporanPenjualanTraktor extends CI_Controller
         $this->load->library('Pdf');
         $this->load->model('M_Index');
         $this->load->model('LaporanPenjualanTraktor/M_laporanpenjualantraktor');
+        $this->load->model('LaporanPenjualanTraktor/M_pusat');
         $this->load->model('SystemAdministration/MainMenu/M_user');
     }
 
@@ -41,6 +42,7 @@ class C_laporanPenjualanTraktor extends CI_Controller
             $subdata['SEMBILAN'] =
             $subdata['SEPULUH'] =
             $subdata['TOTAL'] =
+            $subdata['TARGET'] =
             $subdata1['AAH0'] =
             $subdata1['AAB0'] =
             $subdata1['AAG0'] =
@@ -74,6 +76,7 @@ class C_laporanPenjualanTraktor extends CI_Controller
 
         // mencari nilai total dari Laporan Penjualan Harian
         for ($i = 0; $i < count($data['daily']); $i++) {
+            $subdata['TARGET'] = $subdata['TARGET'] + $data['daily'][$i]['TARGET'];
             $subdata['TOTAL'] = $subdata['TOTAL'] + $data['daily'][$i]['TOTAL'];
             $subdata['SEPULUH'] = $subdata['SEPULUH'] + $data['daily'][$i]['SEPULUH'];
             $subdata['SEMBILAN'] = $subdata['SEMBILAN'] + $data['daily'][$i]['SEMBILAN'];
@@ -164,6 +167,7 @@ class C_laporanPenjualanTraktor extends CI_Controller
 
         $style_row = array(
             'alignment' => array(
+                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
                 'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER
             ),
             'borders' => array(
@@ -179,28 +183,39 @@ class C_laporanPenjualanTraktor extends CI_Controller
         $objPHPExcel->getActiveSheet(0)->mergeCells('A3:A4');
         $objPHPExcel->getActiveSheet(0)->mergeCells('L3:L4');
         $objPHPExcel->getActiveSheet(0)->mergeCells('M3:M4');
+        $objPHPExcel->getActiveSheet(0)->mergeCells('N3:N4');
+        $objPHPExcel->getActiveSheet(0)->mergeCells('O3:O4');
         $objPHPExcel->getActiveSheet(0)->mergeCells('B17:K17');
         $objPHPExcel->getActiveSheet(0)->getStyle('A1')->getFont()->setBold(TRUE);
         $objPHPExcel->getActiveSheet(0)->getStyle('A1')->getFont()->setSize(15);
         $objPHPExcel->getActiveSheet(0)->getStyle('A1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         $objPHPExcel->getActiveSheet(0)->getStyle('A1')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
-        $objPHPExcel->getActiveSheet(0)->getStyle('A3:M4')->applyFromArray(array('font' => array(
+        $objPHPExcel->getActiveSheet(0)->getStyle('A3:O4')->applyFromArray(array('font' => array(
             'color' => array('rgb' => 'FFFFFF')
         )));
-        $objPHPExcel->getActiveSheet(0)->getStyle('A3:M4')->getFill()->applyFromArray(
+        $objPHPExcel->getActiveSheet(0)->getStyle('A3:O4')->getFill()->applyFromArray(
             array(
                 'type' => PHPExcel_Style_Fill::FILL_SOLID,
                 'startcolor' => array('rgb' => '337AB7'),
             )
         );
-        $objPHPExcel->getActiveSheet(0)->getStyle('A16:M16')->getFont()->setBold(TRUE);
-        $objPHPExcel->getActiveSheet(0)->getStyle('A16:M16')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $objPHPExcel->getActiveSheet(0)->getStyle('A16:O16')->getFont()->setBold(TRUE);
+        $objPHPExcel->getActiveSheet(0)->getStyle('A16:O16')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         $objPHPExcel->getActiveSheet(0)->getStyle('B17:K17')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
         $objPHPExcel->getActiveSheet(0)->getStyle('B17:K17')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
         $objPHPExcel->getActiveSheet(0)->getStyle('B17')->getAlignment()->setIndent(2);
+        $objPHPExcel->getActiveSheet()->getStyle('O5:O16')->getNumberFormat()->applyFromArray(
+            array(
+                'code' => PHPExcel_Style_NumberFormat::FORMAT_PERCENTAGE_00
+            )
+        );
 
 
         $header = $this->M_laporanpenjualantraktor->getHeader();
+
+        $daily = $this->M_laporanpenjualantraktor->getDaily();
+        $sumDate = $this->M_laporanpenjualantraktor->getCalcDate();
+        $sumDayMonth = $this->M_laporanpenjualantraktor->getCountDayWorkMonth();
 
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A3', "Penjualan Cabang");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B3', $header[0]['TANGGAL']);
@@ -225,27 +240,25 @@ class C_laporanPenjualanTraktor extends CI_Controller
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('K4', rtrim($header[9]['BULAN']));
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('L3', "Rata2");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('M3', "AK");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('N3', "Target");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('O3', "%");
 
-        foreach (range('A', 'M') as $columnID) {
+        foreach (range('A', 'O') as $columnID) {
             $objPHPExcel->getActiveSheet(0)->getColumnDimension($columnID)
                 ->setAutoSize(true);
             $objPHPExcel->getActiveSheet(0)->getStyle($columnID . '3')->applyFromArray($style_col);
         }
-        foreach (range('A', 'M') as $columnID) {
+        foreach (range('A', 'O') as $columnID) {
             $objPHPExcel->getActiveSheet(0)->getStyle($columnID)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         }
-        foreach (range('A', 'M') as $columnID) {
+        foreach (range('A', 'O') as $columnID) {
             $objPHPExcel->getActiveSheet(0)->getColumnDimension($columnID)
                 ->setAutoSize(true);
             $objPHPExcel->getActiveSheet(0)->getStyle($columnID . '4')->applyFromArray($style_col);
         }
-        foreach (range('A4', 'M4') as $columnID) {
+        foreach (range('A4', 'O4') as $columnID) {
             $objPHPExcel->getActiveSheet(0)->getStyle($columnID)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         }
-
-        $daily = $this->M_laporanpenjualantraktor->getDaily();
-        $sumDate = $this->M_laporanpenjualantraktor->getCalcDate();
-        $sumDayMonth = $this->M_laporanpenjualantraktor->getCountDayWorkMonth();
 
         $numrow = 5;
         foreach ($daily as $data) {
@@ -262,6 +275,10 @@ class C_laporanPenjualanTraktor extends CI_Controller
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('K' . $numrow, $data['SEPULUH']);
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('L' . $numrow, "=ROUND((M" . $numrow . "/B17),0)");
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('M' . $numrow, $data['TOTAL']);
+            if ($data['TARGET'] != 0) {
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('N' . $numrow, $data['TARGET']);
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('O' . $numrow, "=M" . $numrow . "/N" . $numrow);
+            }
 
             $objPHPExcel->getActiveSheet(0)->getStyle('A' . $numrow)->applyFromArray($style_row);
             $objPHPExcel->getActiveSheet(0)->getStyle('B' . $numrow)->applyFromArray($style_row);
@@ -276,6 +293,8 @@ class C_laporanPenjualanTraktor extends CI_Controller
             $objPHPExcel->getActiveSheet(0)->getStyle('K' . $numrow)->applyFromArray($style_row);
             $objPHPExcel->getActiveSheet(0)->getStyle('L' . $numrow)->applyFromArray($style_row);
             $objPHPExcel->getActiveSheet(0)->getStyle('M' . $numrow)->applyFromArray($style_row);
+            $objPHPExcel->getActiveSheet(0)->getStyle('N' . $numrow)->applyFromArray($style_row);
+            $objPHPExcel->getActiveSheet(0)->getStyle('O' . $numrow)->applyFromArray($style_row);
 
             $numrow++;
         }
@@ -293,10 +312,12 @@ class C_laporanPenjualanTraktor extends CI_Controller
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('K16', "=SUM(K5:K15)");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('L16', "=ROUND((M16/B17),0)");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('M16', "=SUM(M5:M15)");
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('M17', $sumDate['JUMLAH_HARI'] . " / " . $sumDayMonth['JUMLAH_HARI']);
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('N16', "=SUM(N5:N15)");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('O16', "=M16/N16");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('N17', $sumDate['JUMLAH_HARI'] . " / " . $sumDayMonth['JUMLAH_HARI']);
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A17', "Jumlah Hari Penjualan");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B17', $sumDate['JUMLAH_HARI']);
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('L17', "Laju Hari");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('M17', "Laju Hari");
 
         $objPHPExcel->getActiveSheet(0)->getStyle('A16')->applyFromArray($style_row);
         $objPHPExcel->getActiveSheet(0)->getStyle('B16')->applyFromArray($style_row);
@@ -311,17 +332,23 @@ class C_laporanPenjualanTraktor extends CI_Controller
         $objPHPExcel->getActiveSheet(0)->getStyle('K16')->applyFromArray($style_row);
         $objPHPExcel->getActiveSheet(0)->getStyle('L16')->applyFromArray($style_row);
         $objPHPExcel->getActiveSheet(0)->getStyle('M16')->applyFromArray($style_row);
+        $objPHPExcel->getActiveSheet(0)->getStyle('N16')->applyFromArray($style_row);
+        $objPHPExcel->getActiveSheet(0)->getStyle('O16')->applyFromArray($style_row);
         $objPHPExcel->getActiveSheet(0)->getStyle('A17')->applyFromArray($style_row);
         $objPHPExcel->getActiveSheet(0)->getStyle('B17:K17')->applyFromArray($style_row);
-        $objPHPExcel->getActiveSheet(0)->getStyle('L17:M17')->applyFromArray($style_row);
+        $objPHPExcel->getActiveSheet(0)->getStyle('L17:O17')->applyFromArray($style_row);
 
         $objPHPExcel->getActiveSheet(0)->getColumnDimension('A')->setAutoSize(false);
         $objPHPExcel->getActiveSheet(0)->getColumnDimension('L')->setAutoSize(false);
         $objPHPExcel->getActiveSheet(0)->getColumnDimension('M')->setAutoSize(false);
+        $objPHPExcel->getActiveSheet(0)->getColumnDimension('N')->setAutoSize(false);
+        $objPHPExcel->getActiveSheet(0)->getColumnDimension('O')->setAutoSize(false);
 
         $objPHPExcel->getActiveSheet(0)->getColumnDimension('A')->setWidth(24);
         $objPHPExcel->getActiveSheet(0)->getColumnDimension('L')->setWidth(10);
         $objPHPExcel->getActiveSheet(0)->getColumnDimension('M')->setWidth(10);
+        $objPHPExcel->getActiveSheet(0)->getColumnDimension('N')->setWidth(10);
+        $objPHPExcel->getActiveSheet(0)->getColumnDimension('O')->setWidth(10);
         $today = $this->dateInd(date('Y-m-d'));
         $objPHPExcel->getActiveSheet(0)->getDefaultRowDimension()->setRowHeight(20);
         $objPHPExcel->getActiveSheet(0)->setTitle('PER HARI');
@@ -791,6 +818,7 @@ class C_laporanPenjualanTraktor extends CI_Controller
             $subdata['DELAPAN'] =
             $subdata['SEMBILAN'] =
             $subdata['SEPULUH'] =
+            $subdata['TARGET'] =
             $subdata['TOTAL'] =
             $subdata1['AAH0'] =
             $subdata1['AAB0'] =
@@ -825,6 +853,7 @@ class C_laporanPenjualanTraktor extends CI_Controller
 
         // mencari nilai total dari Laporan Penjualan Harian
         for ($i = 0; $i < count($data['daily']); $i++) {
+            $subdata['TARGET'] = $subdata['TARGET'] + $data['daily'][$i]['TARGET'];
             $subdata['TOTAL'] = $subdata['TOTAL'] + $data['daily'][$i]['TOTAL'];
             $subdata['SEPULUH'] = $subdata['SEPULUH'] + $data['daily'][$i]['SEPULUH'];
             $subdata['SEMBILAN'] = $subdata['SEMBILAN'] + $data['daily'][$i]['SEMBILAN'];
@@ -889,12 +918,18 @@ class C_laporanPenjualanTraktor extends CI_Controller
         $data['dateToday'] = $this->dateHmin();
         $data['date'] = $this->dateInd(date('Y-m-d'));
 
+        $data['analisa'] = $this->M_pusat->getReportMonth(date('m'));
+
         $fill = $this->load->view('LaporanPenjualanTraktor/V_pdf', $data, true);
+        $fill2 = $this->load->view('LaporanPenjualanTraktor/V_pdf2', $data, true);
+        $fill3 = $this->load->view('LaporanPenjualanTraktor/V_pdf3', $data, true);
 
         $pdf = $this->pdf->load();
 
         $pdf = new mPDF('utf-8', 'Legal', '', 'Calibri', 10, 10, 10, 10, 6, 3);
         $pdf->WriteHTML($fill);
+        $pdf->WriteHTML($fill2);
+        $pdf->WriteHTML($fill3);
 
         $pdf->Output('Laporan Penjualan Traktor ' . $data['date'] . '.pdf', 'D');
     }

@@ -1,16 +1,16 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed');
 class M_laporanpenjualantraktor extends CI_Model
 {
-    public function __construct()
-    {
-        $this->load->database();
-        $this->oracle = $this->load->database('oracle', TRUE);
-    }
+   public function __construct()
+   {
+      $this->load->database();
+      $this->oracle = $this->load->database('oracle', TRUE);
+   }
 
-    // query mengambil data tanggal
-    public function getHeader()
-    {
-        $query = $this->oracle->query("SELECT   ROWNUM urutan, tab.*
+   // query mengambil data tanggal
+   public function getHeader()
+   {
+      $query = $this->oracle->query("SELECT   ROWNUM urutan, tab.*
         FROM (SELECT DISTINCT CASE
                                  WHEN TO_NUMBER (bulan) =
                                         EXTRACT
@@ -35,109 +35,205 @@ class M_laporanpenjualantraktor extends CI_Model
                                               FROM khs_lpb_hari)
                      ORDER BY 4, 5) tab
     ORDER BY 5, 6");
-        return $query->result_array();
-    }
+      return $query->result_array();
+   }
 
-    // query mengambil data laporan penjualan per hari
-    public function getDaily()
-    {
-        $query = $this->oracle->query("WITH data_header AS
-        (SELECT   ROWNUM urutan, tab.*
-            FROM (SELECT DISTINCT CASE
-                                     WHEN TO_NUMBER (bulan) =
-                                            EXTRACT
-                                               (MONTH FROM khs_lpb_range_date (NULL,
-                                                                               2)
-                                               )
-                                        THEN TO_CHAR (tanggal)
-                                     ELSE '-'
-                                  END tanggal,
-                                  CASE
-                                     WHEN TO_NUMBER (bulan) =
-                                            EXTRACT
-                                               (MONTH FROM khs_lpb_range_date (NULL,
-                                                                               2)
-                                               )
-                                        THEN TO_CHAR (TO_DATE (bulan, 'MM'), 'Month')
-                                     ELSE '-'
-                                  END bulan,
-                                  tahun, TO_NUMBER (bulan), TO_NUMBER (tanggal)
-                             FROM khs_lpb_hari kl
-                            WHERE request_id = (SELECT MAX (request_id)
-                                                  FROM khs_lpb_hari)
-                         ORDER BY 4, 5) tab
-        ORDER BY 5, 6)
-        SELECT DISTINCT urutan, cabang,
-                        case when (select tanggal from data_header where urutan = 1) = '-' then
-                             '-' else to_char(SUM (satu) OVER (PARTITION BY cabang))
-                        end satu,
-                        case when (select tanggal from data_header where urutan = 2) = '-' then
-                            '-' else to_char(SUM (dua) OVER (PARTITION BY cabang))
-                        end dua,
-                        case when (select tanggal from data_header where urutan = 3) = '-' then
-                            '-' else to_char(SUM (tiga) OVER (PARTITION BY cabang))
-                        end tiga,
-                        case when (select tanggal from data_header where urutan = 4) = '-' then
-                            '-' else to_char(SUM (empat) OVER (PARTITION BY cabang))
-                        end empat,
-                        case when (select tanggal from data_header where urutan = 5) = '-' then
-                            '-' else to_char(SUM (lima) OVER (PARTITION BY cabang))
-                        end lima,
-                        case when (select tanggal from data_header where urutan = 6) = '-' then
-                            '-' else to_char(SUM (enam) OVER (PARTITION BY cabang))
-                        end enam,
-                        case when (select tanggal from data_header where urutan = 7) = '-' then
-                            '-' else to_char(SUM (tujuh) OVER (PARTITION BY cabang))
-                        end tujuh,
-                        case when (select tanggal from data_header where urutan = 8) = '-' then
-                            '-' else to_char(SUM (delapan) OVER (PARTITION BY cabang))
-                        end delapan,
-                        case when (select tanggal from data_header where urutan = 9) = '-' then
-                            '-' else to_char(SUM (sembilan) OVER (PARTITION BY cabang))
-                        end sembilan,
-                        case when (select tanggal from data_header where urutan = 10) = '-' then
-                            '-' else to_char(SUM (sepuluh) OVER (PARTITION BY cabang))
-                        end sepuluh,
-                        (SELECT DISTINCT SUM (klt.quantity) OVER (PARTITION BY cabang) total
-                                    FROM khs_lpb_type klt
-                                   WHERE klt.request_id =(SELECT MAX (request_id) FROM khs_lpb_type)
-                                     AND klt.status = 'TOTAL' AND klt.cabang = tab.cabang) total
-                   FROM (SELECT urutan, cabang, (SELECT quantity FROM DUAL WHERE lines = 1) satu,
-                                (SELECT quantity FROM DUAL WHERE lines = 2) dua, 
-                                (SELECT quantity FROM DUAL WHERE lines = 3) tiga,
-                                (SELECT quantity FROM DUAL WHERE lines = 4) empat, 
-                                (SELECT quantity FROM DUAL WHERE lines = 5) lima,
-                                (SELECT quantity FROM DUAL WHERE lines = 6) enam, 
-                                (SELECT quantity FROM DUAL WHERE lines = 7) tujuh,
-                                (SELECT quantity FROM DUAL WHERE lines = 8) delapan,
-                                (SELECT quantity FROM DUAL WHERE lines = 9) sembilan,
-                                (SELECT quantity FROM DUAL WHERE lines = 10) sepuluh
-                           FROM (SELECT klt.urutan, klt.tanggal, klt.bulan, klt.tahun,
-                                        klt.cabang, klt.quantity, ROWNUM - (10 * (urutan - 1)) lines
-                                   FROM (SELECT   CASE
-                                                     WHEN cabang = 'MKS' THEN 1
-                                                     WHEN cabang = 'GJK' THEN 2
-                                                     WHEN cabang = 'YGY' THEN 3
-                                                     WHEN cabang = 'JKT' THEN 4
-                                                     WHEN cabang = 'TJK' THEN 5
-                                                     WHEN cabang = 'MDN' THEN 6
-                                                     WHEN cabang = 'PLU' THEN 7
-                                                     WHEN cabang = 'PKU' THEN 8
-                                                     WHEN cabang = 'PNK' THEN 9
-                                                     WHEN cabang = 'BJM' THEN 10
-                                                     WHEN cabang = 'EKSPOR' THEN 11
-                                                  END urutan, kl.*,
-                                                  to_number(tanggal), to_number(bulan)
-                                             FROM khs_lpb_hari kl
-                                            WHERE request_id = (SELECT MAX (request_id)FROM khs_lpb_hari)
-                                         ORDER BY 1, 9, 8) klt)) tab ORDER BY 1");
-        return $query->result_array();
-    }
+   // query mengambil data laporan penjualan per hari
+   public function getDaily()
+   {
+      $query = $this->oracle->query("WITH data_header AS
+     (SELECT   ROWNUM urutan, tab.*
+          FROM (SELECT DISTINCT CASE
+                                   WHEN TO_NUMBER (bulan) =
+                                          EXTRACT
+                                             (MONTH FROM khs_lpb_range_date
+                                                                        (NULL,
+                                                                         2
+                                                                        )
+                                             )
+                                      THEN TO_CHAR (tanggal)
+                                   ELSE '-'
+                                END tanggal,
+                                CASE
+                                   WHEN TO_NUMBER (bulan) =
+                                          EXTRACT
+                                             (MONTH FROM khs_lpb_range_date
+                                                                        (NULL,
+                                                                         2
+                                                                        )
+                                             )
+                                      THEN TO_CHAR (TO_DATE (bulan, 'MM'),
+                                                    'Month'
+                                                   )
+                                   ELSE '-'
+                                END bulan,
+                                tahun, TO_NUMBER (bulan), TO_NUMBER (tanggal)
+                           FROM khs_lpb_hari kl
+                          WHERE request_id = (SELECT MAX (request_id)
+                                                FROM khs_lpb_hari)
+                       ORDER BY 4, 5) tab
+      ORDER BY 5, 6)
+SELECT DISTINCT urutan, cabang,
+                CASE
+                   WHEN (SELECT tanggal
+                           FROM data_header
+                          WHERE urutan = 1) = '-'
+                      THEN '-'
+                   ELSE TO_CHAR (SUM (satu) OVER (PARTITION BY cabang))
+                END satu,
+                CASE
+                   WHEN (SELECT tanggal
+                           FROM data_header
+                          WHERE urutan = 2) = '-'
+                      THEN '-'
+                   ELSE TO_CHAR (SUM (dua) OVER (PARTITION BY cabang))
+                END dua,
+                CASE
+                   WHEN (SELECT tanggal
+                           FROM data_header
+                          WHERE urutan = 3) = '-'
+                      THEN '-'
+                   ELSE TO_CHAR (SUM (tiga) OVER (PARTITION BY cabang))
+                END tiga,
+                CASE
+                   WHEN (SELECT tanggal
+                           FROM data_header
+                          WHERE urutan = 4) = '-'
+                      THEN '-'
+                   ELSE TO_CHAR (SUM (empat) OVER (PARTITION BY cabang))
+                END empat,
+                CASE
+                   WHEN (SELECT tanggal
+                           FROM data_header
+                          WHERE urutan = 5) = '-'
+                      THEN '-'
+                   ELSE TO_CHAR (SUM (lima) OVER (PARTITION BY cabang))
+                END lima,
+                CASE
+                   WHEN (SELECT tanggal
+                           FROM data_header
+                          WHERE urutan = 6) = '-'
+                      THEN '-'
+                   ELSE TO_CHAR (SUM (enam) OVER (PARTITION BY cabang))
+                END enam,
+                CASE
+                   WHEN (SELECT tanggal
+                           FROM data_header
+                          WHERE urutan = 7) = '-'
+                      THEN '-'
+                   ELSE TO_CHAR (SUM (tujuh) OVER (PARTITION BY cabang))
+                END tujuh,
+                CASE
+                   WHEN (SELECT tanggal
+                           FROM data_header
+                          WHERE urutan = 8) = '-'
+                      THEN '-'
+                   ELSE TO_CHAR
+                              (SUM (delapan) OVER (PARTITION BY cabang)
+                              )
+                END delapan,
+                CASE
+                   WHEN (SELECT tanggal
+                           FROM data_header
+                          WHERE urutan = 9) = '-'
+                      THEN '-'
+                   ELSE TO_CHAR
+                            (SUM (sembilan) OVER (PARTITION BY cabang)
+                            )
+                END sembilan,
+                CASE
+                   WHEN (SELECT tanggal
+                           FROM data_header
+                          WHERE urutan = 10) = '-'
+                      THEN '-'
+                   ELSE TO_CHAR
+                              (SUM (sepuluh) OVER (PARTITION BY cabang)
+                              )
+                END sepuluh,
+                (SELECT DISTINCT SUM (klt.quantity) OVER (PARTITION BY cabang)
+                                                                 total
+                            FROM khs_lpb_type klt
+                           WHERE klt.request_id =
+                                             (SELECT MAX (request_id)
+                                                FROM khs_lpb_type)
+                             AND klt.status = 'TOTAL'
+                             AND klt.cabang = tab.cabang) total,
+                -- target
+                (SELECT target
+                 FROM khs_lpb_report
+                 WHERE branch = cabang
+                    and extract(month from target_creation_date) = extract(month from khs_lpb_range_date(null, 2))
+                    and extract(year from target_creation_date) = extract(year from khs_lpb_range_date(null, 2))
+                    ) target
+           FROM (SELECT urutan, cabang, (SELECT quantity
+                                           FROM DUAL
+                                          WHERE lines = 1) satu,
+                        (SELECT quantity
+                           FROM DUAL
+                          WHERE lines = 2) dua, (SELECT quantity
+                                                   FROM DUAL
+                                                  WHERE lines = 3) tiga,
+                        (SELECT quantity
+                           FROM DUAL
+                          WHERE lines = 4) empat, (SELECT quantity
+                                                     FROM DUAL
+                                                    WHERE lines = 5) lima,
+                        (SELECT quantity
+                           FROM DUAL
+                          WHERE lines = 6) enam, (SELECT quantity
+                                                    FROM DUAL
+                                                   WHERE lines = 7) tujuh,
+                        (SELECT quantity
+                           FROM DUAL
+                          WHERE lines = 8) delapan,
+                        (SELECT quantity
+                           FROM DUAL
+                          WHERE lines = 9) sembilan,
+                        (SELECT quantity
+                           FROM DUAL
+                          WHERE lines = 10) sepuluh
+                   FROM (SELECT klt.urutan, klt.tanggal, klt.bulan, klt.tahun,
+                                klt.cabang, klt.quantity,
+                                ROWNUM - (10 * (urutan - 1)) lines
+                           FROM (SELECT   CASE
+                                             WHEN cabang = 'MKS'
+                                                THEN 1
+                                             WHEN cabang = 'GJK'
+                                                THEN 2
+                                             WHEN cabang = 'YGY'
+                                                THEN 3
+                                             WHEN cabang = 'JKT'
+                                                THEN 4
+                                             WHEN cabang = 'TJK'
+                                                THEN 5
+                                             WHEN cabang = 'MDN'
+                                                THEN 6
+                                             WHEN cabang = 'PLU'
+                                                THEN 7
+                                             WHEN cabang = 'PKU'
+                                                THEN 8
+                                             WHEN cabang = 'PNK'
+                                                THEN 9
+                                             WHEN cabang = 'BJM'
+                                                THEN 10
+                                             WHEN cabang = 'EKSPOR'
+                                                THEN 11
+                                          END urutan,
+                                          kl.*, TO_NUMBER (tanggal),
+                                          TO_NUMBER (bulan)
+                                     FROM khs_lpb_hari kl
+                                    WHERE request_id =
+                                                    (SELECT MAX (request_id)
+                                                       FROM khs_lpb_hari)
+                                 ORDER BY 1, 9, 8) klt)) tab
+       ORDER BY 1");
+      return $query->result_array();
+   }
 
-    // query mengambil data laporan penjualan per tipe
-    public function getType($status)
-    {
-        $query = $this->oracle->query("SELECT tab.*,
+   // query mengambil data laporan penjualan per tipe
+   public function getType($status)
+   {
+      $query = $this->oracle->query("SELECT tab.*,
                                             (AAH0 + AAB0 + AAG0 + AAE0 + AAC0 + ACA0 + ACC0 + AAK0 + AAL0 + AAN0 + ADA0 + ADB0 + ADC0 + ADD0) TOTAL
                                         FROM
                                         (SELECT DISTINCT
@@ -234,13 +330,13 @@ class M_laporanpenjualantraktor extends CI_Model
                                                                 FROM khs_lpb_type) AND status = '$status' --'TOTAL'
                                         ORDER BY 5, 4))) tab
                                         ORDER BY 1");
-        return $query->result_array();
-    }
+      return $query->result_array();
+   }
 
-    // query menghitung jumlah hari dari tanggal pertama bulan ini sampai tanggal sekarang
-    public function getCalcDate()
-    {
-        $query = $this->oracle->query("SELECT COUNT (*)
+   // query menghitung jumlah hari dari tanggal pertama bulan ini sampai tanggal sekarang
+   public function getCalcDate()
+   {
+      $query = $this->oracle->query("SELECT COUNT (*)
                                             - (SELECT COUNT (*)
                                                     FROM khs_lpb_skip_date
                                                 WHERE EXTRACT (MONTH FROM skip_date) = EXTRACT (MONTH FROM khs_lpb_range_date (NULL, 2))) JUMLAH_HARI
@@ -261,13 +357,13 @@ class M_laporanpenjualantraktor extends CI_Model
                                         WHERE hari != 'sunday'
                                         GROUP BY 1
                                         ");
-        return $query->row_array();
-    }
+      return $query->row_array();
+   }
 
-    //query meengitung jumlah hari kerja bulan ini
-    public function getCountDayWorkMonth()
-    {
-        $query = $this->oracle->query("SELECT COUNT (*)
+   //query meengitung jumlah hari kerja bulan ini
+   public function getCountDayWorkMonth()
+   {
+      $query = $this->oracle->query("SELECT COUNT (*)
                                             - (SELECT COUNT (*)
                                                     FROM khs_lpb_skip_date
                                                 WHERE EXTRACT (MONTH FROM skip_date) = EXTRACT (MONTH FROM khs_lpb_range_date(null, 2))) JUMLAH_HARI
@@ -287,30 +383,30 @@ class M_laporanpenjualantraktor extends CI_Model
                                                 CONNECT BY LEVEL <= TO_NUMBER (TO_CHAR (LAST_DAY (khs_lpb_range_date(null, 2)), 'DD')))
                                         WHERE hari != 'sunday'
                                         GROUP BY 1");
-        return $query->row_array();
-    }
+      return $query->row_array();
+   }
 
-    //query mengambil data tanggal libur bulan ini
-    public function getSkipDate($date)
-    {
-        $query = $this->oracle->query("SELECT DATE_ID,
+   //query mengambil data tanggal libur bulan ini
+   public function getSkipDate($date)
+   {
+      $query = $this->oracle->query("SELECT DATE_ID,
                                             TO_CHAR(SKIP_DATE, 'dd') AS TANGGAL,
                                             NOTES
                                         FROM KHS_LPB_SKIP_DATE
                                         WHERE TO_CHAR(SKIP_DATE, 'mm-yyyy') = '$date'
                                         ORDER BY TANGGAL");
-        return $query->result_array();
-    }
+      return $query->result_array();
+   }
 
-    //query menambahkan data tanggal libur ke database
-    public function insertDate($date, $notes)
-    {
-        $this->oracle->query("INSERT INTO KHS_LPB_SKIP_DATE VALUES('',TO_DATE('$date','DD-MM-YYYY'),'$notes')");
-    }
+   //query menambahkan data tanggal libur ke database
+   public function insertDate($date, $notes)
+   {
+      $this->oracle->query("INSERT INTO KHS_LPB_SKIP_DATE VALUES('',TO_DATE('$date','DD-MM-YYYY'),'$notes')");
+   }
 
-    //query mengahpus tanggal
-    public function deleteDate($id)
-    {
-        $this->oracle->query("DELETE FROM KHS_LPB_SKIP_DATE WHERE DATE_ID = '$id'");
-    }
+   //query mengahpus tanggal
+   public function deleteDate($id)
+   {
+      $this->oracle->query("DELETE FROM KHS_LPB_SKIP_DATE WHERE DATE_ID = '$id'");
+   }
 }
