@@ -91,6 +91,11 @@ class C_infoPasar extends CI_Controller
 
                 $this->load->library('upload', $config);
 
+                if (!is_dir('./assets/upload/LaporanPenjualanTR2/InfoPasar/')) {
+                    mkdir('./assets/upload/LaporanPenjualanTR2/InfoPasar/', 0777, true);
+                    chmod('./assets/upload/LaporanPenjualanTR2/InfoPasar/', 0777);
+                }
+
                 if ($this->upload->do_upload('file')) {
                     $dataarray = $this->upload->data();
 
