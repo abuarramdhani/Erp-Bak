@@ -1,8 +1,31 @@
 <div class="panel-body">
-    <div style="background: #95f576; color: transparent; width: 20%; display: inline;">______</div>
-    <span style="display: inline;">: SUDAH TRANSACT</span><br>
-    <div style="background: #f06f4f; color: transparent; width: 20%; display: inline;">______</div>
-    <span style="display: inline;">: BELUM TRANSACT</span><br><br>
+    <div class="row">
+        <div class="col-md-3">
+            <center>
+                <div style="background: #95f576; color: transparent; width: 20%; display: inline; border: 1px solid black;">______</div>
+                <span style="display: inline; font-weight: bold;">: TRANSACT BERHASIL</span>
+            </center>
+        </div>
+        <div class="col-md-3">
+            <center>
+                <div style="background: #f06f4f; color: transparent; width: 20%; display: inline; border: 1px solid black;">______</div>
+                <span style="display: inline; font-weight: bold;">: TRANSACT BERMASALAH</span>
+            </center>
+        </div>
+        <div class="col-md-3">
+            <center>
+                <div style="background: #fae48e; color: transparent; width: 20%; display: inline; border: 1px solid black;">______</div>
+                <span style="display: inline; font-weight: bold;">: TRANSACT SEBAGIAN</span>
+            </center>
+        </div>
+        <div class="col-md-3">
+            <center>
+                <div style="color: transparent; width: 20%; display: inline; border: 1px solid black;">______</div>
+                <span style="display: inline; font-weight: bold;">: BON BARU & BELUM DI-TRANSACT</span>
+            </center>
+        </div>
+    </div>
+    <br><br>
     <table class="datatable table table-bordered table-hover table-striped text-center" id="tblMon" style="width: 100%;">
         <thead class="bg-primary">
             <tr>
@@ -18,8 +41,14 @@
         <tbody>
             <?php $no=1; foreach ($mon as $i) { ?>
             <?php
-                if ($i['MMT'] == 'Y') {
+                if ($i['MMT'] == 'Y' && $i['FLAG'] == 'Y') {
                     $color = '#95f576';
+                }
+                elseif ($i['MMT'] == 'N' && $i['FLAG'] == 'N') {
+                    $color = '';
+                }
+                elseif ($i['MMT'] == 'Y' && $i['FLAG'] == 'N') {
+                    $color = '#fae48e';
                 }
                 else {
                     $color = '#f06f4f';
