@@ -442,7 +442,7 @@ th {
                 </center>
             </th>
             <th rowspan=2 style="vertical-align:middle;">
-                <center style="margin:auto;">ENA Rotary
+                <center style="margin:auto;">ZENA Rotary
                 </center>
             </th>
             <th rowspan=2 style="vertical-align:middle;">
