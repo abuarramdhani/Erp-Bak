@@ -306,6 +306,30 @@ function lph_kodepart(e) {
   if (ambil_desc != '') {
     $(e).parent().parent('tr').find('input[name="namapart[]"]').val(ambil_desc[1]);
   }
+
+  $.ajax({
+    url: baseurl + 'LaporanProduksiHarian/action/get_pe',
+    type: 'POST',
+    data : {
+      kode_komponen : ambil_desc[0]
+    },
+    dataType: "JSON",
+    beforeSend: function() {
+      toastLPHLoading('Sedang Mengambil Target PE...');
+    },
+    success: function(result) {
+      if (result != 500) {
+        toastLPH('success', 'Silahkan memilih kode proses');
+        $(e).parent().parent('tr').find('.lph_kode_proses').html(result);
+      }else {
+        toastLPH('warning', `Komponen ${ambil_desc[0]} tidak memiliki target PE (SK/JS)`);
+      }
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+      swaLPHLarge('error', 'Terjadi kesalahan');
+     console.error();
+    }
+  })
 }
 
 function lph_aktual(e) {
@@ -362,7 +386,7 @@ function lph_add_row_hasil_produksi() {
                                         <td><input type="text" class="form-control" required name="kodemesin[]" value=""></td>
                                         <td><input type="text" class="form-control" name="waktumesin[]" value=""></td>
                                         <td>
-                                          <select class="select2 lph_kode_proses" name="kodeproses[]" style="width:182px">
+                                          <select class="lph_select2 lph_kode_proses" name="kodeproses[]" style="width:182px">
                                             <option value="" selected></option>
                                           </select>
                                         </td>
@@ -454,7 +478,17 @@ function lph_add_row_hasil_produksi() {
       lph_aktual(this)
     })
 
+    $('.lph_kode_proses').on('change', function() {
+      fun_lphkodeproses(this);
+    })
+
   }
+
+  // batas ++++++++++++++++++++++++++++++ batas ++++++++++++++++++++
+
+  $('.lph_kode_proses').on('change', function() {
+    fun_lphkodeproses(this);
+  })
 
   $(".lph_kodepart").on('change', function() {
     lph_kodepart(this);

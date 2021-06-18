@@ -123,6 +123,7 @@ class C_Import extends CI_Controller
         $kodepart = $this->input->post('kodepart');
         $tanggal = $this->input->post('tanggal');
         foreach ($kodepart as $key => $kode_komponen) {
+          $kodeproses = explode(' ~ ', $this->input->post('kodeproses')[$key]);
           $lph = [
             'tanggal' => $tanggal,
             'shift' => $this->input->post('shift'),
@@ -137,7 +138,7 @@ class C_Import extends CI_Controller
             'alat_bantu' => $this->input->post('alatbantu')[$key],
             'kode_mesin' => $this->input->post('kodemesin')[$key],
             'waktu_mesin' => empty($this->input->post('waktumesin')[$key]) ? NULL : $this->input->post('waktumesin')[$key],
-            'kode_proses' => $this->input->post('kodeproses')[$key],
+            'kode_proses' => $kodeproses[0],
             'nama_proses' => $this->input->post('namaproses')[$key],
             'plan' => $this->input->post('target_ppic')[$key],
             'target_sk' => $this->input->post('target_harian_sk')[$key],

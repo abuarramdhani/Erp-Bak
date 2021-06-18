@@ -5,7 +5,7 @@ class M_master extends CI_Model
 	function __construct()
 	{
 		parent::__construct();
-	  $this->oracle = $this->load->database('oracle',TRUE);
+	  $this->oracle = $this->load->database('oracle_dev',TRUE);
 		$this->lantuma = $this->load->database('lantuma', TRUE);
 	}
 
