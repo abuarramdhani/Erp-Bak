@@ -46,7 +46,7 @@ class C_LaporanProduksi extends CI_Controller
 		$user = $this->session->user;
 		$cekHak = $this->M_usermng->getUser("where no_induk = '$user'");
 		if (!empty($cekHak)) {
-			if($user == 'B0599' || $user == 'B0653' || $user == 'B0886') {
+			if($user == 'B0599' || $user == 'B0653' || $user == 'B0886' || $user == 'P0364') {
 				$data['UserMenu'] = array($UserMenu[0], $UserMenu[5]);
 			}elseif ($cekHak[0]['JENIS'] == 'Admin') {
 				$data['UserMenu'] = array($UserMenu[0]);
