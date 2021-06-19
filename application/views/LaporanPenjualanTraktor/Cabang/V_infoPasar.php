@@ -48,16 +48,21 @@ input[readonly] {
                     <div class="box-body">
                         <div class="col-lg-12"
                             style="padding:40px 40px;display:flex;justify-content:center;flex-direction:column;">
+                            <?php if ($data == '') { ?>
                             <div style="display:flex;align-items:center;font-size:24px;">
                                 <i class="fa fa-edit" style="margin-right:10px;"></i>
                                 <b>Input Info Pasar</b>&nbsp;Penjualan TR2 per Bulan ( <b><?= $cabang ?></b> )
                             </div>
                             <hr style="width:100%;height:1px;">
-                            <?php if ($data == '') { ?>
                             <label style="font-weight:normal;"><b>Maaf</b> kamu belum bisa menginputkan data
                                 info pasar sekarang</label>
                             <?php } else { ?>
                             <?php if ($data['MARKET_DESC'] == '' && $data['ATTACHMENT'] == '') { ?>
+                            <div style="display:flex;align-items:center;font-size:24px;">
+                                <i class="fa fa-edit" style="margin-right:10px;"></i>
+                                <b>Input Info Pasar</b>&nbsp;Penjualan TR2 per Bulan ( <b><?= $cabang ?></b> )
+                            </div>
+                            <hr style="width:100%;height:1px;">
                             <?= form_open_multipart(base_url('laporanPenjualanTR2/inputInfoPasar')) ?>
                             <table style="width:70%;">
                                 <input type="text" style="display:none" name="cabang-input-lpt"
@@ -230,13 +235,13 @@ input[readonly] {
                                         <td></td>
                                         <td style="padding-top:10px;">
                                             <div style="display:flex;">
-                                                <?php if (end($explodefile) == 'png' || end($explodefile) == 'PNG' || end($explodefile) == 'jpg') { ?>
+                                                <?php if (end($explodefile) == 'png' || end($explodefile) == 'PNG' || end($explodefile) == 'jpg' || end($explodefile) == 'JPG' || end($explodefile) == 'jpeg' || end($explodefile) == 'JPEG') { ?>
                                                 <div
                                                     style="height:34px;width:40px;background-color:#BA372A;color:white;display:flex;justify-content:center;align-items:center">
                                                     <i class="fa fa-image"></i>
                                                 </div>
                                                 <?php } ?>
-                                                <?php if (end($explodefile) == 'xls' || end($explodefile) == 'xlsx') { ?>
+                                                <?php if (end($explodefile) == 'xls' || end($explodefile) == 'xlsx' || end($explodefile) == 'XLS' || end($explodefile) == 'XLSX') { ?>
                                                 <div
                                                     style="height:34px;width:40px;background-color:green;color:white;display:flex;justify-content:center;align-items:center">
                                                     <i class="fa fa-file-excel-o"></i>

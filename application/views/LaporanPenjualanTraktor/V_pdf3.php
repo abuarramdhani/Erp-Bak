@@ -54,10 +54,10 @@ th {
                         $explodepath = explode('/', $row);
                         $end = explode('.', end($explodepath));
 
-                        if (end($end) == 'png' || end($end) == 'jpg' || end($end) == 'jpeg') { ?>
+                        if (end($end) == 'png' || end($end) == 'jpg' || end($end) == 'jpeg' || end($end) == 'JPG' || end($end) == 'PNG' || end($end) == 'JPEG') { ?>
                 <img style="display:block;width:160px;margin:10px 0;" src="<?= $row ?>">
                 <?php }
-                        if (end($end) == 'xls' || end($end) == 'xlsx') {
+                        if (end($end) == 'xls' || end($end) == 'xlsx' || end($end) == 'XLS' || end($end) == 'XLSX') {
                             echo '<a style="margin:10px 0" href="' . $row . '">link</a>';
                         }
                     }
