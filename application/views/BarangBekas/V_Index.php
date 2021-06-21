@@ -39,6 +39,6 @@
         </div>
 </section>
 
-<script type="text/javascript">
+<!-- <script type="text/javascript">
 	alert('Agar pembaruan aplikasi PBB pada tanggal 30/03/2021 13:33:33 berjalan sepenuhnya, Reload halaman ini dengan menekan CTRL+SHIFT+R secara berurutan... Abaikan jika telah melakukan sebelumnya')
-</script>
+</script> -->
