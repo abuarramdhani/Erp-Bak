@@ -29,19 +29,21 @@
                                                 </select>
                                             </p>
                                             <p>
-                                                <select class="form-control select2 item_his_bppbg" name="slcItem" id="slcItem" style="width: 700px;" required>
+                                                <select class="form-control select2 item" name="slcItem" id="slcItem" style="width: 700px;" required>
                                                   <option></option>
                                                 </select>
                                             </p>
                                             <p>
-                                                <select class="form-control select2" name="slcStatus" id="slcStatus" style="width: 200px;" required>
+                                                <select class="form-control select2" name="slcStatus" id="slcStatus" style="width: 300px;" required>
                                                     <option value="SEMUA">SEMUA</option>
-                                                    <option value="Y">SUDAH TRANSACT</option>
-                                                    <option value="N">BELUM TRANSACT</option>
+                                                    <option value="O">TRANSACT BERHASIL</option>
+                                                    <option value="X">TRANSACT BERMASALAH</option>
+                                                    <option value="S">TRANSACT SEBAGIAN</option>
+                                                    <option value="B">BON BARU & BELUM DI-TRANSACT</option>
                                                 </select>
                                             </p>
                                             <p>
-                                                <input type="text" class="date form-control" name="slcDate" id="slcDate" autocomplete="off">
+                                                <input type="text" class="date form-control" name="slcDate" id="slcDate" style="width: 300px;" autocomplete="off">
                                             </p>
                                             <button type="button" class="btn btn-primary" style="float: right;" onclick="cari()">
                                                 <i class="fa fa-search"></i> Cari
