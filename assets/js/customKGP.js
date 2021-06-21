@@ -991,6 +991,12 @@ function addRinFG(th){
 	$('#RinTanggunganFG').slideToggle('slow');
 }
 
+function addRinMAT(th){
+	var title = $(th).text();
+	$('#RinSelesaiMAT').slideToggle('slow');
+	$('#RinTanggunganMAT').slideToggle('slow');
+}
+
 function addRinPasangBan(th){
 	var title = $(th).text();
 	$('#RinPasangBan').slideToggle('slow');
@@ -1012,6 +1018,12 @@ function addRinFG_src(th, num){
 	var title = $(th).text();
 	$('#RinSelesaiFG'+num).slideToggle('slow');
 	$('#RinTanggunganFG'+num).slideToggle('slow');
+}
+
+function addRinMAT_src(th, num){
+	var title = $(th).text();
+	$('#RinSelesaiMAT'+num).slideToggle('slow');
+	$('#RinTanggunganMAT'+num).slideToggle('slow');
 }
 
 function addRinPasangBan_src(th, num){

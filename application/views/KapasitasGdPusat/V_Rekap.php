@@ -259,6 +259,76 @@
                                                             </div>
                                                         </td>
                                                     </tr>
+                                                    <tr>
+                                                        <td>MAT</td>
+                                                        <td><?= $item_mat?></td>
+                                                        <td><?= $jml_selesai_mat?></td>
+                                                        <td><?= $jml_tanggungan_mat?></td>
+                                                        <td><button type="button" class="btn btn-xs btn-info" onclick="addRinMAT(this)">Rincian</button></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td></td>
+                                                        <td colspan="4">
+                                                            <div id="RinSelesaiMAT" style="display:none">
+                                                                <center><label>Terselesaikan</label></center>
+                                                                <table class="table table-bordered table-hover table-striped text-center" id="myTable" style="width: 100%; table-layout:fixed">
+                                                                    <thead class="bg-primary">
+                                                                        <tr>
+                                                                            <th>No</th>
+                                                                            <th>Creation Date</th>
+                                                                            <th>No Dokumen</th>
+                                                                            <th>Jenis Dokumen</th>
+                                                                            <th>Jumlah Item</th>
+                                                                            <th>PIC</th>
+                                                                            <th>Mulai</th>
+                                                                            <th>Selesai</th>
+                                                                            <th>Waktu</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <?php $i= 0 ;$no=1; foreach($selesai_mat as $val) {?>
+                                                                        <tr>
+                                                                            <td><?= $no; ?></td>
+                                                                            <td><?= $val['CREATION_DATE']?></td>
+                                                                            <td><?= $val['NO_DOKUMEN']?></td>
+                                                                            <td><?= $val['JENIS_DOKUMEN']?></td>
+                                                                            <td><?= $val['JUMLAH_ITEM']?></td>
+                                                                            <td><?= $val['PIC']?></td>
+                                                                            <td><?= $val['MULAI']?></td>
+                                                                            <td><?= $val['SELESAI']?></td>
+                                                                            <td><?= $val['WAKTU']?></td>
+                                                                        </tr>
+                                                                        <?php $no++; $i++; }?>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                            <div id="RinTanggunganMAT" style="display:none">
+                                                                <center><label>Tanggungan</label></center>
+                                                                <table class="table table-bordered table-hover table-striped text-center" id="myTable" style="width: 100%; table-layout:fixed">
+                                                                    <thead class="bg-primary">
+                                                                        <tr>
+                                                                            <th>No</th>
+                                                                            <th>Creation Date</th>
+                                                                            <th>No Dokumen</th>
+                                                                            <th>Jenis Dokumen</th>
+                                                                            <th>Jumlah Item</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <?php $i= 0 ;$no=1; foreach($tanggungan_mat as $val) {?>
+                                                                        <tr>
+                                                                            <td><?= $no; ?></td>
+                                                                            <td><?= $val['CREATION_DATE']?></td>
+                                                                            <td><?= $val['NO_DOKUMEN']?></td>
+                                                                            <td><?= $val['JENIS_DOKUMEN']?></td>
+                                                                            <td><?= $val['JUMLAH_ITEM']?></td>
+                                                                        </tr>
+                                                                        <?php $no++; $i++; }?>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
                                                 </tbody>
                                             </table>
                                         </div>

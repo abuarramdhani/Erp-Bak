@@ -132,6 +132,36 @@
 		}
 		$data['jml_tanggungan_fg'] = $tanggungan_fg;
 
+		// MAT
+		$query1 = "WHERE TO_CHAR (creation_date, 'DD/MM/YYYY') = '$date' AND gudang = 'MAT-PM'";
+		$RkpMAT = $this->M_rekap->getRekap($query1);
+		$item_mat = 0;
+		for ($p=0; $p < count($RkpMAT) ; $p++) { 
+			$item_mat += $RkpMAT[$p]['JUMLAH_ITEM'];
+		}
+		$data['item_mat'] = $item_mat;
+
+		$query2 = "WHERE TO_CHAR (selesai, 'DD/MM/YYYY') = '$date' AND gudang = 'MAT-PM'";
+		$selesai = $this->M_rekap->getRekap($query2);
+		$data['selesai_mat'] = $selesai;
+		$selesai_mat = 0;
+		for ($p=0; $p < count($selesai) ; $p++) { 
+			$selesai_mat += $selesai[$p]['JUMLAH_ITEM'];
+		}
+		$data['jml_selesai_mat'] = $selesai_mat;
+
+		$query3 = "WHERE TO_CHAR (creation_date, 'DD/MM/YYYY') = '$date'
+		AND (TO_CHAR (selesai, 'DD/MM/YYYY') > '$date' OR selesai IS NULL)
+		AND gudang = 'MAT-PM'";
+		$tanggungan = $this->M_rekap->getTanggungan($query3);
+		$data['tanggungan_mat'] = $tanggungan;
+		$tanggungan = $this->M_rekap->getTanggungan($query3);
+		$tanggungan_mat = 0;
+		for ($p=0; $p < count($tanggungan) ; $p++) { 
+			$tanggungan_mat += $tanggungan[$p]['JUMLAH_ITEM'];
+		}
+		$data['jml_tanggungan_mat'] = $tanggungan_mat;
+
 		//pasang ban
 		$data['pasangban'] = $this->M_rekap->getPasangBan($date);
 		$realisasi = 0;
@@ -262,6 +292,35 @@
 				$tanggungan_fg += $tanggungan[$p]['JUMLAH_ITEM'];
 			}
 			$hasil[$a]['jml_tanggungan_fg'] = $tanggungan_fg;
+
+			// MAT
+			$query1 = "WHERE TO_CHAR (creation_date, 'DD/MM/YYYY') = '$date' AND gudang = 'MAT-PM'";
+			$RkpMAT = $this->M_rekap->getRekap($query1);
+			$item_mat = 0;
+			for ($p=0; $p < count($RkpMAT) ; $p++) { 
+				$item_mat += $RkpMAT[$p]['JUMLAH_ITEM'];
+			}
+			$hasil[$a]['item_mat'] = $item_mat;
+
+			$query2 = "WHERE TO_CHAR (selesai, 'DD/MM/YYYY') = '$date' AND gudang = 'MAT-PM'";
+			$selesai = $this->M_rekap->getRekap($query2);
+			$hasil[$a]['selesai_mat'] = $selesai;
+			$selesai_mat = 0;
+			for ($p=0; $p < count($selesai) ; $p++) { 
+				$selesai_mat += $selesai[$p]['JUMLAH_ITEM'];
+			}
+			$hasil[$a]['jml_selesai_mat'] = $selesai_mat;
+
+			$query3 = "WHERE TO_CHAR (creation_date, 'DD/MM/YYYY') = '$date'
+			AND (TO_CHAR (selesai, 'DD/MM/YYYY') > '$date' OR selesai IS NULL)
+			AND gudang = 'MAT-PM'";
+			$tanggungan = $this->M_rekap->getTanggungan($query3);
+			$hasil[$a]['tanggungan_mat'] = $tanggungan;
+			$tanggungan_mat = 0;
+			for ($p=0; $p < count($tanggungan) ; $p++) { 
+				$tanggungan_mat += $tanggungan[$p]['JUMLAH_ITEM'];
+			}
+			$hasil[$a]['jml_tanggungan_mat'] = $tanggungan_mat;
 
 			//pasang ban
 			$hasil[$a]['pasangban'] = $this->M_rekap->getPasangBan($date);

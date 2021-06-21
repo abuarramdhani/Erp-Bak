@@ -1,6 +1,17 @@
 <?php $num=1; $i=0; foreach($hasil as $val){ 
 // echo "<pre>"; print_r($val[$i]); exit();
-if ($val['item_kom'] == '0' && $val['jml_selesai_kom'] == '0' && $val['jml_tanggungan_kom'] == '0' && $val['item_pnl'] == '0' && $val['jml_selesai_pnl'] == '0' && $val['jml_tanggungan_pnl'] == '0' && $val['item_fg'] == '0' && $val['jml_selesai_fg'] == '0' && $val['jml_tanggungan_fg'] == '0') {
+if ($val['item_kom'] == '0' 
+&& $val['jml_selesai_kom'] == '0' 
+&& $val['jml_tanggungan_kom'] == '0' 
+&& $val['item_pnl'] == '0' 
+&& $val['jml_selesai_pnl'] == '0' 
+&& $val['jml_tanggungan_pnl'] == '0' 
+&& $val['item_fg'] == '0' 
+&& $val['jml_selesai_fg'] == '0' 
+&& $val['jml_tanggungan_fg'] == '0'
+&& $val['item_mat'] == '0' 
+&& $val['jml_selesai_mat'] == '0' 
+&& $val['jml_tanggungan_mat'] == '0') {
     
 } else{
 ?>
@@ -221,6 +232,76 @@ if ($val['item_kom'] == '0' && $val['jml_selesai_kom'] == '0' && $val['jml_tangg
                                     </thead>
                                     <tbody>
                                         <?php $i= 0 ;$no=1; foreach($val['tanggungan_fg'] as $tng) {?>
+                                        <tr>
+                                            <td><?= $no; ?></td>
+                                            <td><?= $tng['CREATION_DATE']?></td>
+                                            <td><?= $tng['NO_DOKUMEN']?></td>
+                                            <td><?= $tng['JENIS_DOKUMEN']?></td>
+                                            <td><?= $tng['JUMLAH_ITEM']?></td>
+                                        </tr>
+                                        <?php $no++; $i++; }?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>MAT</td>
+                        <td><?= $val['item_mat']?></td>
+                        <td><?= $val['jml_selesai_mat']?></td>
+                        <td><?= $val['jml_tanggungan_mat']?></td>
+                        <td><button type="button" class="btn btn-xs btn-info" onclick="addRinMAT_src(this, <?= $num?>)">Rincian</button></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td colspan="4">
+                            <div id="RinSelesaiMAT<?= $num?>" style="display:none">
+                                <center><label>Terselesaikan</label></center>
+                                <table class="table table-bordered table-hover table-striped text-center" id="myTable" style="width: 100%; table-layout:fixed">
+                                    <thead class="bg-primary">
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Creation Date</th>
+                                            <th>No Dokumen</th>
+                                            <th>Jenis Dokumen</th>
+                                            <th>Jumlah Item</th>
+                                            <th>PIC</th>
+                                            <th>Mulai</th>
+                                            <th>Selesai</th>
+                                            <th>Waktu</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php $i= 0 ;$no=1; foreach($val['selesai_mat'] as $sls) {?>
+                                        <tr>
+                                            <td><?= $no; ?></td>
+                                            <td><?= $sls['CREATION_DATE']?></td>
+                                            <td><?= $sls['NO_DOKUMEN']?></td>
+                                            <td><?= $sls['JENIS_DOKUMEN']?></td>
+                                            <td><?= $sls['JUMLAH_ITEM']?></td>
+                                            <td><?= $sls['PIC']?></td>
+                                            <td><?= $sls['MULAI']?></td>
+                                            <td><?= $sls['SELESAI']?></td>
+                                            <td><?= $sls['WAKTU']?></td>
+                                        </tr>
+                                        <?php $no++; $i++; }?>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div id="RinTanggunganMAT<?= $num?>" style="display:none">
+                                <center><label>Tanggungan</label></center>
+                                <table class="table table-bordered table-hover table-striped text-center" id="myTable" style="width: 100%; table-layout:fixed">
+                                    <thead class="bg-primary">
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Creation Date</th>
+                                            <th>No Dokumen</th>
+                                            <th>Jenis Dokumen</th>
+                                            <th>Jumlah Item</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php $i= 0 ;$no=1; foreach($val['tanggungan_mat'] as $tng) {?>
                                         <tr>
                                             <td><?= $no; ?></td>
                                             <td><?= $tng['CREATION_DATE']?></td>
