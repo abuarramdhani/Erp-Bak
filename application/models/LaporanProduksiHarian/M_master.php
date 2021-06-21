@@ -9,6 +9,87 @@ class M_master extends CI_Model
 		$this->lantuma = $this->load->database('lantuma', TRUE);
 	}
 
+	public function get_sarana($code)
+	{
+		$sql = "SELECT
+						  msib.SEGMENT1 item_code,
+						  msib.DESCRIPTION ,
+						  msib.UNIT_VOLUME STD_HANDLING,
+						  msib.CONTAINER_TYPE_CODE kode_kontainer,
+						  FLV.MEANING deskripsi_kontainer,
+						  FLV.DESCRIPTION
+						FROM mtl_system_items_b msib ,
+						  fnd_lookup_values flv
+						WHERE msib.CONTAINER_TYPE_CODE   = flv.LOOKUP_CODE (+)
+						and flv.LOOKUP_TYPE (+)            = 'CONTAINER_TYPE'
+						and msib.SEGMENT1 = '$code'
+						and msib.ORGANIZATION_ID = 81";
+		$this->oracle->query($sql)->row_array();
+	}
+
+	public function get_no_dies($code)
+	{
+		$sql = "SELECT msib.segment1
+                  ,goa.ACTIVITY
+                  ,goa.ATTRIBUTE1 kode_proses
+                  ,mc.*
+                  -- ,op.RESOURCE_COUNT qty_optr
+                  from gmd_recipe_validity_rules grvr
+                  ,gmd_recipes_b grb
+                  ,mtl_system_items_b msib
+                  ,fm_form_mst_b ffb
+                  ,gmd_routings_b grtb
+                  ,fm_rout_dtl frd
+                  ,gmd_operations_b gob
+                  ,GMD_OPERATION_ACTIVITIES GOA
+                  ,(select gormc.OPRN_LINE_ID
+                  ,crmbmc.RESOURCES
+                  ,crmtmc.RESOURCE_DESC
+                  ,gormc.PROCESS_QTY
+                  ,gormc.RESOURCE_USAGE
+                  ,gormc.RESOURCE_COUNT
+                  ,gormc.ATTRIBUTE1 ab1,gormc.ATTRIBUTE2 ab2,gormc.ATTRIBUTE3 ab3,gormc.ATTRIBUTE4 ab4,gormc.ATTRIBUTE5 ab5,gormc.ATTRIBUTE6 ab6,gormc.ATTRIBUTE7 ab7
+                  from gmd_operation_resources gormc
+                  ,cr_rsrc_mst_tl crmtmc
+                  ,cr_rsrc_mst_b crmbmc
+                  where gormc.RESOURCES = crmtmc.RESOURCES
+                  and gormc.RESOURCES = crmbmc.RESOURCES
+                  and crmbmc.RESOURCE_CLASS = 'ALTBANTU') mc
+                  where grvr.RECIPE_ID = grb.RECIPE_ID
+                  and grvr.VALIDITY_RULE_STATUS = 700
+                  and grvr.RECIPE_USE = 0
+                  and grvr.END_DATE is null
+                  and grvr.ORGANIZATION_ID = grb.OWNER_ORGANIZATION_ID
+                  and grb.RECIPE_STATUS = 700
+                  and grvr.INVENTORY_ITEM_ID = msib.INVENTORY_ITEM_ID
+                  and grvr.ORGANIZATION_ID = msib.ORGANIZATION_ID
+                  --and msib.INVENTORY_ITEM_STATUS_CODE = 'Active'
+                  and grb.FORMULA_ID = ffb.FORMULA_ID
+                  and grb.OWNER_ORGANIZATION_ID = ffb.OWNER_ORGANIZATION_ID
+                  and ffb.FORMULA_STATUS = 700
+                  and grb.ROUTING_ID = grtb.ROUTING_ID(+)
+                  and grtb.ROUTING_ID = frd.ROUTING_ID
+                  and grtb.OWNER_ORGANIZATION_ID = gob.OWNER_ORGANIZATION_ID
+                  and frd.OPRN_ID = gob.OPRN_ID
+                  and frd.OPRN_ID = goa.OPRN_ID
+                  and goa.OPRN_ID = gob.OPRN_ID
+                  --AND grtb.ROUTING_CLASS        = 'SHMT'
+                  and msib.SEGMENT1 IN ('$code')  --------------------> ISI DENGAN ITEM YANG AKAN DICARI
+                  and goa.OPRN_LINE_ID = mc.OPRN_LINE_ID(+)
+--                        order by substr(msib.segment1,1,11)
+--                        ,grb.RECIPE_VERSION
+--                        ,substr(msib.segment1,1,11)||substr(msib.segment1,12,2)
+--                        ,grb.RECIPE_NO
+--                        ,grb.RECIPE_VERSION desc
+--                        ,grtb.ROUTING_NO
+--                        ,grtb.ROUTING_VERS
+--                        ,frd.ROUTINGSTEP_NO
+--                        ,ffb.FORMULA_NO
+--                        ,ffb.FORMULA_VERS";
+
+			return $this->oracle->query($sql)->result_array();
+	}
+
 	public function get_target_pe($code)
 	{
 		$sql = "SELECT msib.segment1
@@ -139,49 +220,12 @@ class M_master extends CI_Model
 									AND grb.recipe_status = 700
 									AND grb.routing_id = grtb.routing_id
 									AND grtb.routing_class = 'SHMT'
-									AND msib.item_type = '2096'
-									AND msib.min_minmax_quantity <> 0
-									AND msib.max_minmax_quantity <> 0
-									AND msib.attribute9 <> 0
+									-- AND msib.item_type = '2096'
+									-- AND msib.min_minmax_quantity <> 0
+									-- AND msib.max_minmax_quantity <> 0
+									-- AND msib.attribute9 <> 0
 									AND (msib.DESCRIPTION LIKE '%$variable%'
-											 OR msib.SEGMENT1 LIKE '%$variable%')
-					UNION
-					SELECT DISTINCT msib.segment1, msib.description
-									FROM mtl_system_items_b msib,
-											gmd_recipe_validity_rules grvr,
-											gmd_recipes_b grb,
-											gmd_routings_b grtb
-								WHERE msib.inventory_item_id = grvr.inventory_item_id
-									AND msib.organization_id = grvr.organization_id
-									AND grvr.recipe_id = grb.recipe_id
-									AND grvr.validity_rule_status = 700
-									AND grvr.end_date IS NULL
-									AND grb.recipe_status = 700
-									AND grb.routing_id = grtb.routing_id
-									AND grtb.routing_class = 'SHMT'
-									AND msib.segment1 IN
-													('AAB300A053AY-0', 'AAB300A054AY-0', 'AAB5AAB122AY-0',
-													'AAC5AAB111AY-0', 'AAK5AAB082AY-0', 'AAL300A051AY-0',
-													'AAL300A052AY-0', 'AAL5AAB071AY-0', 'AGC4D0A051AY-0')
-									AND (msib.DESCRIPTION LIKE '%$variable%'
-											 OR msib.SEGMENT1 LIKE '%$variable%')
-					UNION
-					SELECT DISTINCT msib.segment1, msib.description
-										FROM mtl_system_items_b msib,
-													gmd_recipe_validity_rules grvr,
-													gmd_recipes_b grb,
-													gmd_routings_b grtb
-										WHERE msib.inventory_item_id = grvr.inventory_item_id
-											AND msib.organization_id = grvr.organization_id
-											AND grvr.recipe_id = grb.recipe_id
-											AND grvr.validity_rule_status = 700
-											AND grvr.end_date IS NULL
-											AND grb.recipe_status = 700
-											AND grb.routing_id = grtb.routing_id
-											AND grtb.routing_class = 'SHMT'
-											AND msib.item_type = '2095'
-											AND (msib.DESCRIPTION LIKE '%$variable%'
-													 OR msib.SEGMENT1 LIKE '%$variable%')";
+											 OR msib.SEGMENT1 LIKE '%$variable%')";
 
 		 $query = $this->oracle->query($sql);
 		 return $query->result_array();

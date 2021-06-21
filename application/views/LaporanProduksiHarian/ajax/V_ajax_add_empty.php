@@ -162,7 +162,7 @@
         <div class="form-group">
           <label for="">Jenis</label>
           <select class="lph_select2" name="ott_jenis"  style="width:100%">
-            <option value=""></option>
+            <option value="">Tidak Ada</option>
             <option value="OTT">OTT</option>
             <option value="IK">IK</option>
           </select>
@@ -233,7 +233,7 @@
                       </select>
                     </td>
                     <td><input type="text" class="form-control"  name="namaproses[]" required value=""></td>
-                    <td><input type="text" class="form-control"  name="target_ppic[]" required readonly value=""></td>
+                    <td><input type="text" class="form-control"  name="target_ppic[]" required value=""></td>
                     <td>
                       <input type="text" class="form-control lph_target_harian" name="target_harian[]" required value="">
                       <input type="hidden" name="target_harian_sk[]" value="">
@@ -306,6 +306,12 @@ function lph_kodepart(e) {
   if (ambil_desc != '') {
     $(e).parent().parent('tr').find('input[name="namapart[]"]').val(ambil_desc[1]);
   }
+
+  $(e).parent().parent('tr').find('input[name="namaproses[]"]').val('');
+  $(e).parent().parent('tr').find('input[name="target_harian_js[]"]').val('');
+  $(e).parent().parent('tr').find('input[name="target_harian_sk[]"]').val('');
+  $(e).parent().parent('tr').find('.lph_target_harian').val('');
+  $(e).parent().parent('tr').find('.lph_kode_proses').html('<option value="" selected></option>').trigger('change');
 
   $.ajax({
     url: baseurl + 'LaporanProduksiHarian/action/get_pe',
@@ -391,7 +397,7 @@ function lph_add_row_hasil_produksi() {
                                           </select>
                                         </td>
                                         <td><input type="text" class="form-control" required name="namaproses[]" value=""></td>
-                                        <td><input type="text" class="form-control" required name="target_ppic[]" value=""></td>
+                                        <td><input type="number" class="form-control" required name="target_ppic[]" value=""></td>
                                         <td>
                                          <input type="text" class="form-control lph_target_harian" name="target_harian[]" required readonly value="">
                                          <input type="hidden" name="target_harian_sk[]" value="">

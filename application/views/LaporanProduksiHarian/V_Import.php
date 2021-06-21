@@ -61,11 +61,14 @@ vertical-align: middle;
                                 <label for="">Pilih File</label>
                                 <div class="input-group">
                                   <div class="input-group-addon"><i class="fa fa-file-excel-o"></i></div>
-                                  <input type="file" class="form-control" name="excel_file" value="" required>
+                                  <input type="file" class="form-control" name="excel_file" value="" accept=".xlsx, .xls" required>
                                 </div>
                               </div>
 
-                              <center> <button type="submit" class="btn btn-primary mt-4" style="width:30%;font-weight:bold" name="button"> <i class="fa fa-download"></i> Import</button> </center>
+                              <center>
+                                <button type="submit" class="btn btn-primary mt-4 pull-left" style="width:150px;font-weight:bold" name="button"> <i class="fa fa-download"></i> Import</button>
+                                <button type="button" class="btn btn-success mt-4 pull-right" name="button" style="width: 150px;font-weight:bold"> <i class="fa fa-file-excel-o"></i> Template</button>
+                              </center>
                             </form>
                           </div>
                         </div>

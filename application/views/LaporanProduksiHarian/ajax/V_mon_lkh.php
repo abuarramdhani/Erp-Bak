@@ -12,16 +12,16 @@
   <table class="table table-bordered tbl_lph_2021" style="width:2630px;text-align:center">
     <thead class="bg-primary">
       <tr>
-        <td style="width:30px">No</td>
-        <td style="width:30px"></td>
-        <td style="width:200px">Operator</td>
-        <td style="width:200px">Kode Part</td>
+        <td class="bg-primary" style="width:30px">No</td>
+        <td class="bg-primary" style="width:30px"></td>
+        <td class="bg-primary" style="width:130px">Operator</td>
+        <td style="width:100px">Kode Part</td>
         <td style="width:270px">Nama Part</td>
         <td style="width:200px">Alat Bantu</td>
         <td style="width:130px">Kode Mesin</td>
         <td style="width:100px">Wkt. Mesin</td>
-        <td style="width:200px">Kode Proses</td>
-        <td style="width:200px">Nama Proses</td>
+        <td style="width:100px">Kode Proses</td>
+        <td style="width:100px">Nama Proses</td>
         <td style="width:100px">Target PPIC</td>
         <td style="width:100px">Target PE</td>
         <!-- <td style="width:100px">T.100%</td> -->
@@ -34,6 +34,7 @@
         <td style="width:100px">Scrap Man</td>
         <td style="width:100px">Scrap Mat</td>
         <td style="width:100px">Scrap Mach</td>
+        <td style="display:none"></td>
       </tr>
     </thead>
     <tbody>
@@ -77,15 +78,71 @@
           <td><?php echo $value['scrap_man'] ?></td>
           <td><?php echo $value['scrap_mat'] ?></td>
           <td><?php echo $value['scrap_mach'] ?></td>
+          <td hidden><?php echo $value['id'] ?></td>
         </tr>
       <?php endforeach; ?>
 
     </tbody>
   </table>
+  <button type="button" class="btn btn-danger" onclick="deleteselectedrowmonlkh()" name="button"> <i class="fa fa-trash"></i> Delete Selected Row</button>
 </div>
 <br>
 <script type="text/javascript">
 const table_lph = $('.tbl_lph_2021').DataTable({
-  // ordering: false
-})
+  scrollX: true,
+  scrollY: 471,
+  fixedColumns: {
+    leftColumns: 3,
+  },
+  columnDefs: [
+    {orderable: false, targets: [1, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]},
+    {
+      orderable: false,
+      className: 'select-checkbox',
+      targets: 1
+    }
+  ],
+  select: {
+      style: 'multi',
+      selector: 'td:nth-child(2)'
+  },
+});
+
+function deleteselectedrowmonlkh() {
+  let row = table_lph.rows( { selected: true } ).data();
+  let count = table_lph.rows( { selected: true } ).count();
+  let id_lph_master = [];
+  row.each((v,i)=>{
+    id_lph_master.push(v[21]);
+  });
+  if (count > 0) {
+    $.ajax({
+      url: baseurl + 'LaporanProduksiHarian/action/delete_lkh',
+      type: 'POST',
+      data : {
+        id : id_lph_master
+      },
+      cache: false,
+      // async:false,
+      dataType: "JSON",
+      beforeSend: function() {
+        swaLPHLoading('Sedang menghapus data...');
+      },
+      success: function(result) {
+        if (result == 1) {
+          swaLPHLarge('success', 'Berhasil menghapus data');
+        }else {
+          swaLPHLarge('warning', 'Tidak berhasil menghapus data');
+        }
+      },
+      error: function(XMLHttpRequest, textStatus, errorThrown) {
+        swaLPHLarge('error', 'Terjadi kesalahan');
+       console.error();
+      }
+    })
+  }else {
+    swaLPHLarge('warning', 'Tidak ada baris yang terpilih!');
+  }
+}
+
 </script>

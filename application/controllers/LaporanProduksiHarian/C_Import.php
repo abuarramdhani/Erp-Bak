@@ -90,10 +90,26 @@ class C_Import extends CI_Controller
       // die;
     }
 
+    public function delete_lkh($value='')
+    {
+      if (!empty($this->input->post('id'))) {
+        foreach ($this->input->post('id') as $key => $value) {
+          $this->db->delete('lph.lph_master', ['id' => $value]);
+        }
+        if ($this->db->affected_rows()) {
+          echo json_encode(1);
+        }else {
+          echo json_encode(0);
+        }
+      }
+    }
+
     public function get_pe($value='')
     {
       $code = $this->input->post('kode_komponen');
       $res = $this->M_master->get_target_pe($code);
+      // echo "<pre>";
+      // print_r($res);
       if (!empty($res[0]['SEGMENT1'])) {
         $tampung[] = '<option value="">Tidak Memilih</option>';
         foreach ($res as $key => $value) {
@@ -420,7 +436,20 @@ class C_Import extends CI_Controller
       $range =  explode(' - ', $range_date);
       $range = $range[0];
       $shift = $this->input->post('shift');
-      $data = $this->db->query("SELECT * FROM lph.lph_rencana_kerja_operator WHERE shift = '$shift' AND tanggal = '$range'")->result_array();
+      $data = $this->db->query("SELECT rk.*,
+                                      COALESCE ((select product_name
+                                                 from lph.list_product lp
+                                                 where SUBSTRING(rk.kode_komponen, 1, 3) = lp.product_code), NULL) product_name
+                                FROM lph.lph_rencana_kerja_operator rk WHERE rk.shift = '$shift' AND rk.tanggal = '$range'")->result_array();
+
+      foreach ($data as $key => $value) {
+        $std = $this->M_master->get_sarana($value['kode_komponen']);
+        if (!empty($std)) {
+          $data[$key]['STD_HANDLING'] = $std['STD_HANDLING'];
+          $data[$key]['DESCRIPTION'] = $std['DESCRIPTION'];
+        }
+      }
+
       $pengelompokan = [];
       foreach ($data as $key => $value) {
         $pengelompokan[$value['no_induk']][] = $value;

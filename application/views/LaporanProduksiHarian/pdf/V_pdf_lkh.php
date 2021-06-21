@@ -57,7 +57,7 @@
 								<tr>
 									<td style="padding:2px;border-right: 1px solid black;border-top: 1px solid black;border-left: 1px solid black;text-align:center"><?php echo $k2+1 ?></td>
 									<td style="padding:2px;border-right: 1px solid black;border-top: 1px solid black;"><?php echo $v2['no_batch'] ?></td>
-									<td style="padding:2px;border-right: 1px solid black;border-top: 1px solid black;"></td>
+									<td style="padding:2px;border-right: 1px solid black;border-top: 1px solid black;"><?php echo $v2['product_name'] ?></td>
 									<td style="padding:2px;border-right: 1px solid black;border-top: 1px solid black;"><?php echo $v2['nama_komponen'] ?></td>
 									<td style="padding:2px;border-right: 1px solid black;border-top: 1px solid black;"><?php echo $v2['kode_komponen'] ?></td>
 									<td style="padding:2px;border-right: 1px solid black;border-top: 1px solid black;"><?php echo $v2['kode_mesin'] ?></td>
@@ -77,8 +77,8 @@
 									<td style="padding:2px;border-right: 1px solid black;border-top: 1px solid black;"></td>
 									<td style="padding:2px;border-right: 1px solid black;border-top: 1px solid black;"></td>
 									<td style="padding:2px;border-right: 1px solid black;border-top: 1px solid black;"></td>
-									<td style="padding:2px;border-right: 1px solid black;border-top: 1px solid black;"></td>
-									<td style="padding:2px;border-right: 1px solid black;border-top: 1px solid black;"></td>
+									<td style="padding:2px;border-right: 1px solid black;border-top: 1px solid black;"><?php echo $v2['STD_HANDLING'] ?></td>
+									<td style="padding:2px;border-right: 1px solid black;border-top: 1px solid black;"><?php echo $v2['DESCRIPTION'] ?></td>
 								</tr>
 							<?php endforeach; ?>
 							<tr>
