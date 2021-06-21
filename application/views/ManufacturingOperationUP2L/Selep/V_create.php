@@ -211,7 +211,7 @@
                                           <button type="button" onclick="createBatchMO()" class="btn btn-primary btn-lg"><i class="fa fa-rocket"></i></i>  Create Batch</button>
                                         </div>
                                         <div class="col-md-4 text-right">
-                                          <button type="button" class="btn btn-success btn-lg btn-up2l-repair-selep pull-right ml-2"><i class="fa fa-save"></i></i> Repair</button>
+                                          <button type="button" class="btn btn-success btn-lg btn-up2l-repair-selep pull-right ml-2"><i class="fa fa-wrench"></i></i> Repair</button>
                                           <a href="<?php echo site_url('ManufacturingOperationUP2L/Selep'); ?>" class="btn btn-danger btn-lg btn-up2l-back-selep pull-right"><i class="fa fa-arrow-left"></i></i>  Back</a>
                                         </div>
                                       </div>
