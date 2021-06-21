@@ -205,14 +205,14 @@
                                     </div>
                                     <div class="panel-footer ">
                                       <div class="row">
-                                        <div class="col-md-10 text-left">
-                                          <!-- <button type="submit" class="btn btn-success btn-lg btn-up2l-save-selep" disabled><i class="fa fa-save"></i></i>  Save</button> -->
+                                        <div class="col-md-8 text-left">
                                           <button type="submit" class="btn btn-danger btn-lg btn-up2l-cetakkib" disabled><i class="fa fa-file-pdf-o"></i></i>  Cetak KIB</button>
                                           <button type="button" data-toggle="modal" data-target="#modalUP2LCompleteJob" class="btn btn-primary btn-lg btn-complate-job" disabled><i class="fa fa-upload"></i></i>  Complete Job</button>
                                           <button type="button" onclick="createBatchMO()" class="btn btn-primary btn-lg"><i class="fa fa-rocket"></i></i>  Create Batch</button>
                                         </div>
-                                        <div class="col-md-2 text-right">
-                                          <a href="<?php echo site_url('ManufacturingOperationUP2L/Selep'); ?>" class="btn btn-danger btn-lg btn-up2l-back-selep"><i class="fa fa-arrow-left"></i></i>  Back</a>
+                                        <div class="col-md-4 text-right">
+                                          <button type="button" class="btn btn-success btn-lg btn-up2l-repair-selep pull-right ml-2"><i class="fa fa-save"></i></i> Repair</button>
+                                          <a href="<?php echo site_url('ManufacturingOperationUP2L/Selep'); ?>" class="btn btn-danger btn-lg btn-up2l-back-selep pull-right"><i class="fa fa-arrow-left"></i></i>  Back</a>
                                         </div>
                                       </div>
 
