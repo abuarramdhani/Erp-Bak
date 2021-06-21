@@ -1,18 +1,32 @@
 <div class="panel-body">
+    <div class="row">
+        <div class="col-md-3">
+            <label>Tanggal Pengebonan : </label><h5><?= $bppbg[0]['TANGGAL'] ?></h5>
+        </div>
+        <div class="col-md-3">
+            <label>Tujuan Gudang : </label><h5><?= $bppbg[0]['TUJUAN_GUDANG'] ?></h5>          
+        </div>
+        <div class="col-md-3">
+            <label>Seksi Pengebon : </label><h5><?= $bppbg[0]['SEKSI_BON'] ?></h5>            
+        </div>
+        <div class="col-md-3">
+            <label>Seksi Pemakai : </label><h5><?= $bppbg[0]['SEKSI_PEMAKAI'] ?></h5>            
+        </div>
+    </div>
+    <br>
     <table class="datatable table table-bordered table-hover table-striped text-center" id="myTable" style="width: 100%;">
         <thead style="background-color:#6ACEF0">
             <tr>
                 <th style="vertical-align: middle; width: 5%;">No</th>
                 <th style="vertical-align: middle;">Kode Barang</th>
                 <th style="vertical-align: middle;">Deskripsi</th>
-                <th style="vertical-align: middle; width: 8%;">Permintaan</th>
+                <th style="vertical-align: middle; width: 5%;">Permintaan</th>
+                <th style="vertical-align: middle; width: 5%;">Penyerahan</th>
+                <th style="vertical-align: middle; width: 5%;">UOM</th>
+                <th style="vertical-align: middle; width: 5%;">Branch</th>
                 <th style="vertical-align: middle; width: 5%;">Account</th>
                 <th style="vertical-align: middle; width: 5%;">Cost Center</th>
-                <th style="vertical-align: middle;">Seksi Pengebon</th>
-                <th style="vertical-align: middle; width: 15%;">Seksi Pemakai</th>
-                <th style="vertical-align: middle; width: 8%;">Gudang</th>
-                <th style="vertical-align: middle; width: 5%;">Tanggal Pembuatan Bppbg</th>
-                <th style="vertical-align: middle; width: 14%;">Keterangan</th>
+                <th style="vertical-align: middle; width: 10%;">Keterangan</th>
                 <th style="vertical-align: middle; width: 5%;">Transact Android</th>
                 <th style="vertical-align: middle; width: 5%;">Material Transaction</th>
                 <th style="vertical-align: middle; width: 5%;">MTI</th>
@@ -33,23 +47,19 @@
                 if ($i['MMT'] == 'Y') {
                     $style2 = 'color: green;';
                     $icon2 = '<i class="fa fa-check"></i>';
-                    // $color = '#95f576';
                 }
                 else {
                     $style2 = 'color: red;';
                     $icon2 = '<i class="fa fa-close"></i>';
-                    // $color = '#f06f4f';
                 }
 
                 if ($i['MTI'] == 'Y') {
                     $style3 = 'color: green;';
                     $icon3 = '<i class="fa fa-check"></i>';
-                    // $color = '#95f576';
                 }
                 else {
                     $style3 = 'color: red;';
                     $icon3 = '<i class="fa fa-close"></i>';
-                    // $color = '#f06f4f';
                 }
             ?>
             <tr>
@@ -62,8 +72,17 @@
                 <td style="text-align:left;">
                     <?= $i['NAMA_BARANG'] ?>
                 </td>
-                <td style="width: 8%;">
-                    <?= $i['PERMINTAAN'].' '.$i['SATUAN'] ?>
+                <td style="width: 5%;">
+                    <?= $i['PERMINTAAN'] ?>
+                </td>
+                <td style="width: 5%;">
+                    <?= $i['PENYERAHAN'] ?>
+                </td>
+                <td style="width: 5%;">
+                    <?= $i['SATUAN'] ?>
+                </td>
+                <td style="width: 5%;">
+                    <?= $i['KODE_CABANG'] ?>
                 </td>
                 <td style="width: 5%;">
                     <?= $i['ACCOUNT'] ?>
@@ -71,19 +90,7 @@
                 <td style="width: 5%;">
                     <?= $i['COST_CENTER'] ?>
                 </td>
-                <td>
-                    <?= $i['SEKSI_BON'] ?>
-                </td>
-                <td style="width: 15%;">
-                    <?= $i['SEKSI_PEMAKAI'] ?>
-                </td>
-                <td style="width: 8%;">
-                    <?= $i['TUJUAN_GUDANG'] ?>
-                </td>
-                <td style="width: 5%;">
-                    <?= $i['TANGGAL'] ?>
-                </td>
-                <td style="width: 14%;">
+                <td style="width: 10%;">
                     <?= $i['KETERANGAN'] ?>
                 </td>
                 <td style="width: 5%; <?= $style ?>">
