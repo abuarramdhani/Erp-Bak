@@ -55,18 +55,11 @@ class M_bppbg extends CI_Model{
       return $query->result_array();
     }
 
-    public function getSubinv($term){
-      $sql = "SELECT   msi.secondary_inventory_name, msi.secondary_inventory_name subinv,
-                       msi.description, msi.organization_id
-                  FROM mtl_secondary_inventories msi
-                 WHERE msi.secondary_inventory_name IN (
-                                              SELECT DISTINCT imb.tujuan_gudang
-                                                                               subinventory
-                                                         FROM im_master_bon imb
-                                                        WHERE imb.tujuan_gudang IS NOT NULL)
-                   AND msi.disable_date IS NULL
-                   AND msi.secondary_inventory_name LIKE '%$term%'
-              ORDER BY 1 NULLS FIRST";
+    public function getSubinv($term,$user){
+      $sql = "SELECT kba.*
+                FROM khs_bon_account kba
+               WHERE kba.subinv LIKE '%$term%' AND kba.induk = '$user'
+            ORDER BY kba.subinv, kba.induk";
       $query = $this->oracle->query($sql);
       return $query->result_array();
     }
@@ -101,45 +94,60 @@ class M_bppbg extends CI_Model{
       if ($status == 'SEMUA') {
         $line3 = "";
       }
+      elseif ($status == 'O') {
+        $line3 = "WHERE aa.flag = 'Y' AND aa.mmt = 'Y'";
+      }
+      elseif ($status == 'X') {
+        $line3 = "WHERE aa.flag = 'Y' AND aa.mmt = 'N'";
+      }
+      elseif ($status == 'S') {
+        $line3 = "WHERE aa.flag = 'N' AND aa.mmt = 'Y'";
+      }
       else {
-        $line3 = "AND imb.flag = '$status'";
+        $line3 = "WHERE aa.flag = 'N' AND aa.mmt = 'N'";
       }
 
       $date2 = explode(' - ', $date);      
       $dateA = $date2[0];
       $dateB = $date2[1];
 
-      $sql = "SELECT DISTINCT imb.no_bon, imb.seksi_bon, imb.tujuan_gudang, imb.flag,
-                              imb.tanggal,
-                              NVL ((SELECT    ffvt.description
-                                           || ' - '
-                                           || DECODE (imb.kode_cabang,
-                                                      'AA', 'PUSAT',
-                                                      'AC', 'TUKSONO',
-                                                      NULL
-                                                     )
-                                      FROM fnd_flex_values_tl ffvt
-                                     WHERE imb.pemakai = ffvt.flex_value_meaning),
-                                   imb.pemakai
-                                  ) seksi_pemakai,
-                              CASE
-                                 WHEN (SELECT mmt.transaction_id
-                                         FROM mtl_material_transactions mmt
-                                        WHERE mmt.inventory_item_id =
+      $sql = "SELECT aa.*
+                FROM (SELECT DISTINCT imb.no_bon, imb.seksi_bon, imb.tujuan_gudang,
+                                      imb.flag, imb.tanggal,
+                                      NVL ((SELECT    ffvt.description
+                                                   || ' - '
+                                                   || DECODE (imb.kode_cabang,
+                                                              'AA', 'PUSAT',
+                                                              'AC', 'TUKSONO',
+                                                              NULL
+                                                             )
+                                              FROM fnd_flex_values_tl ffvt
+                                             WHERE imb.pemakai = ffvt.flex_value_meaning),
+                                           imb.pemakai
+                                          ) seksi_pemakai,
+                                      CASE
+                                         WHEN (SELECT mmt.transaction_id
+                                                 FROM mtl_material_transactions mmt
+                                                WHERE mmt.inventory_item_id =
                                                                  msib.inventory_item_id
-                                          AND SUBSTR (mmt.transaction_source_name, 7, 9) =
-                                                                        TO_CHAR (imb.no_bon)
-                                          AND ROWNUM = 1) IS NOT NULL
-                                    THEN 'Y'
-                                 ELSE 'N'
-                              END mmt
-                         FROM im_master_bon imb, mtl_system_items_b msib
-                        WHERE imb.kode_barang = msib.segment1 AND msib.organization_id = 81
-                          AND $line1
-                              $line2
-                              $line3
-                          AND TRUNC (TO_DATE (imb.tanggal)) BETWEEN TRUNC (TO_DATE ('$dateA')) AND TRUNC (TO_DATE ('$dateB'))
-                     ORDER BY TRUNC (TO_DATE (imb.tanggal)), 1";
+                                                  AND SUBSTR (mmt.transaction_source_name,
+                                                              7,
+                                                              9
+                                                             ) = TO_CHAR (imb.no_bon)
+                                                  AND ROWNUM = 1) IS NOT NULL
+                                            THEN 'Y'
+                                         ELSE 'N'
+                                      END mmt
+                                 FROM im_master_bon imb, mtl_system_items_b msib
+                                WHERE imb.kode_barang = msib.segment1
+                                  AND msib.organization_id = 81
+                                  AND $line1
+                                      $line2
+                                  AND TRUNC (TO_DATE (imb.tanggal))
+                                         BETWEEN TRUNC (TO_DATE ('$dateA'))
+                                             AND TRUNC (TO_DATE ('$dateB'))
+                             ORDER BY TRUNC (TO_DATE (imb.tanggal)), 1) aa
+               $line3";
       $query = $this->oracle->query($sql);
       return $query->result_array();
     }

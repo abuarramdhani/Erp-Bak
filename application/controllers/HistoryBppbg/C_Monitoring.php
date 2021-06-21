@@ -85,7 +85,8 @@ class C_Monitoring extends CI_Controller {
     public function getSubinv(){
         $term = $this->input->get('term',TRUE);
         $term = strtoupper($term);
-        $data = $this->M_bppbg->getSubinv($term);
+        $user = $this->session->user;
+        $data = $this->M_bppbg->getSubinv($term,$user);
         echo json_encode($data);
     }
 
