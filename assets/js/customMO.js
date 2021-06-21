@@ -345,7 +345,36 @@ $('.form_generate_kib_up2l').on('submit', function(e) {
      }
    })
 
+})
 
+$('.btn-up2l-repair-selep').on('click', function() {
+  $.ajax({
+    url: baseurl + 'ManufacturingOperationUP2L/Selep/create',
+    type: 'POST',
+    data : new FormData($('#form_input_selep_master').get(0)),
+    contentType: false,
+    cache: false,
+    // async:false,
+    processData: false,
+    dataType: "JSON",
+    beforeSend: function() {
+      // $('#modalUP2LCompleteJob').modal('hide');
+    },
+    success: function(result) {
+      if (result == 'done') {
+        swalup2l('success', `Data Selep Berhasil Tersimpan`);
+        setTimeout(function () {
+          location.reload();
+        }, 400);
+      }else {
+        swalup2l('warning', 'Terjadi Kesalahan Saat Menginput Data Selep! Harap Coba lagi');
+      }
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+    swalup2l('error', XMLHttpRequest);
+     console.error();
+    }
+  })
 })
 
 // function submit_up2l_selep_master() {

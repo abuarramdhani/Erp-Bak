@@ -380,7 +380,8 @@ class M_selep extends CI_Model
       and fmd.FORMULA_ID = ingr.FORMULA_ID
       and mil.INVENTORY_LOCATION_ID(+) = fmd.ATTRIBUTE3
       and msib.SEGMENT1 = '$component_code'
-      and gr.RECIPE_VERSION = 1
+      and fmd.LINE_TYPE = 1
+      -- and gr.RECIPE_VERSION = 1
       and grvr.END_DATE is null
       order by 2")->result_array();
     }
