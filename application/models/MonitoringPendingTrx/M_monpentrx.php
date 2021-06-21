@@ -56,7 +56,12 @@ class M_monpentrx extends CI_Model{
 
       $sql = "SELECT DISTINCT mtrh.request_number, mtrl.from_subinventory_code,
                      NVL (mil.segment1,'-') from_locator, mp.organization_code to_organization, mtrl.to_subinventory_code,
-                     NVL (mil2.segment1,'-') to_locator, 'MOVE ORDER' jenis, mtrh.creation_date,
+                     NVL (mil2.segment1,'-') to_locator,
+                     CASE
+                        WHEN SUBSTR (mtrh.request_number, 1, 1) = 'D'
+                           THEN 'PICKLIST'
+                        ELSE 'MOVE ORDER'
+                     END jenis, mtrh.creation_date,
                      TO_CHAR (mtrh.creation_date, 'DD-MON-YYYY HH24:MI:SS') creation_date2
                 FROM mtl_txn_request_headers mtrh,
                      mtl_txn_request_lines mtrl,
@@ -76,7 +81,12 @@ class M_monpentrx extends CI_Model{
             UNION
             SELECT DISTINCT mtrh.request_number, mtrl.from_subinventory_code,
                      NVL (mil.segment1,'-') from_locator, mp.organization_code to_organization, mtrl.to_subinventory_code,
-                     NVL (mil2.segment1,'-') to_locator, 'MOVE ORDER' jenis, mtrh.creation_date,
+                     NVL (mil2.segment1,'-') to_locator,
+                     CASE
+                        WHEN SUBSTR (mtrh.request_number, 1, 1) = 'D'
+                           THEN 'PICKLIST'
+                        ELSE 'MOVE ORDER'
+                     END jenis, mtrh.creation_date,
                      TO_CHAR (mtrh.creation_date, 'DD-MON-YYYY HH24:MI:SS') creation_date2
                 FROM mtl_txn_request_headers mtrh,
                      mtl_txn_request_lines mtrl,
@@ -189,7 +199,12 @@ class M_monpentrx extends CI_Model{
                      NVL (mil.segment1,'-') from_locator, mp.organization_code to_organization, mtrl.to_subinventory_code,
                      NVL (mil2.segment1,'-') to_locator, msib.segment1 item_code, msib.description,
                      mtrl.quantity, mtrl.quantity_detailed, mtrl.quantity_delivered,
-                     mtrl.uom_code, 'MOVE ORDER' jenis
+                     mtrl.uom_code,
+                     CASE
+                        WHEN SUBSTR (mtrh.request_number, 1, 1) = 'D'
+                           THEN 'PICKLIST'
+                        ELSE 'MOVE ORDER'
+                     END jenis
                 FROM mtl_txn_request_headers mtrh,
                      mtl_txn_request_lines mtrl,
                      mtl_item_locations mil,
@@ -423,7 +438,12 @@ class M_monpentrx extends CI_Model{
                      mp.organization_code to_organization, mtrl.to_subinventory_code,
                      NVL (mil2.segment1, '-') to_locator, msib.segment1 item_code,
                      msib.description, mtrl.quantity, mtrl.quantity_detailed,
-                     mtrl.quantity_delivered, mtrl.uom_code, 'MOVE ORDER' jenis
+                     mtrl.quantity_delivered, mtrl.uom_code,
+                     CASE
+                        WHEN SUBSTR (mtrh.request_number, 1, 1) = 'D'
+                           THEN 'PICKLIST'
+                        ELSE 'MOVE ORDER'
+                     END jenis
                 FROM mtl_txn_request_headers mtrh,
                      mtl_txn_request_lines mtrl,
                      mtl_item_locations mil,
