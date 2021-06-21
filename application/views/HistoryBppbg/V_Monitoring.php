@@ -29,7 +29,7 @@
                                                 </select>
                                             </p>
                                             <p>
-                                                <select class="form-control select2 item" name="slcItem" id="slcItem" style="width: 700px;" required>
+                                                <select class="form-control select2 item_his_bppbg" name="slcItem" id="slcItem" style="width: 700px;" required>
                                                   <option></option>
                                                 </select>
                                             </p>
