@@ -68,12 +68,12 @@ $('#noDokumen').keypress(function (e) {
 function getAutoFillDocument(){
     var no_document = $('input[name="noDokumen"]').val();
     $('input[name="no_document"]').val(no_document)
-    var subinv = $('input[name="subinventory"]').val();
-    $('input[name="subinv"]').val(subinv)
-
+    var subinv = $('#subinventory').val();
+    // $('input[name="subinv"]').val(subinv)
+    console.log(subinv)
     var length = no_document.length
     // console.log(length)
-    if (subinv == 'SP-YSP'){
+    if (subinv == 'SP-YSP' || subinv == 'MAT-PM'){
         if(length == 12){
             var awl = no_document.substring(0, 3);
             if (awl == 'FPB') {

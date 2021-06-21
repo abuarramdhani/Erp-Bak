@@ -43,6 +43,7 @@
                                             <option>KOM1-DM</option>
                                             <option>PNL-DM</option>
                                             <option>FG-DM</option>
+                                            <option>MAT-PM</option>
                                         </select>
                                         <!-- <input id="subinventory" name="subinventory" class="form-control pull-right" placeholder="Subinventory" readonly> -->
                                     </div>
