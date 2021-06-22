@@ -1889,7 +1889,7 @@ class M_Dtmasuk extends CI_Model
                 WHERE
                     no_bon IN($no_bon)
                     AND kode_barang = '$apd'
-                    AND keterangan LIKE '%$pr'";
+                    -- AND keterangan LIKE '%$pr'";
         if (empty($this->oracle->query($sql)->row()->TRANSACT)) {
             return 0;
         }
