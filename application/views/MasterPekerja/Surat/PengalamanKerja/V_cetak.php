@@ -138,7 +138,7 @@
             <td valign="top"> Jabatan </td>
             <td valign="top">:</td>
             <!-- // isian manual hanya untuk jabatan C & H -->
-            <td><?= $jabatan_pengalaman_check && in_array(substr($jabatan['noind'], 0, 1), ['C', 'H']) ? trim($jabatan_pengalaman) : trim($jabatan['jabatan']) ?></td>
+            <td><?= $jabatan_pengalaman_check || in_array(substr($jabatan['noind'], 0, 1), ['C', 'H']) ? trim($jabatan_pengalaman) : trim($jabatan['jabatan']) ?></td>
           </tr>
         <?php endforeach ?>
       </tbody>
