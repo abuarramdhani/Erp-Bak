@@ -35,7 +35,7 @@
 					<td height="6.5mm" width="70mm"></td>
 				</tr>
 				<tr>
-					<td style="padding-left: 28mm; font-size:14pt; height: 9mm"> <?php echo $row['REQUEST_NUMBER']; ?></td>
+					<td style="padding-left: 28mm; font-size:14pt; height: 9mm;padding-top:2mm"> <?php echo $row['REQUEST_NUMBER']; ?></td>
 				</tr>
 			</table>
 			<table style="border-collapse:collapse; width: 197mm">
@@ -62,7 +62,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td style="height: 17mm; vertical-align: top; width: 20mm;padding-left:1mm;padding-top:6.2mm"><!-- Berat : --> <?php echo number_format($get_berat[0]['TTL_BERAT'],3).' Kg' ?></td>
+					<td style="height: 17mm; vertical-align: top; width: 20mm;padding-left:2.5mm;padding-top:6.2mm"><!-- Berat : --> <?php echo number_format($get_berat[0]['TTL_BERAT'],3).' Kg' ?></td>
 					<td style="vertical-align: middle;padding-left:15mm; width: 40mm;font-size:12px;" colspan="2">
 						<!-- Ekspedisi : -->
 						<?php echo $row['EKSPEDISI']; ?>
@@ -71,7 +71,7 @@
 				</tr>
 			</table>
 		</div>
-		<div class="content" style="width: 197mm; height: 128mm;margin-top:-4mm">
+		<div class="content" style="width: 197mm; height: 128mm;margin-top:-2mm">
 			<table style="border-collapse: collapse; width: 199mm;">
 				<tr>
 					<th rowspan=2 style="height:20px; width: 6mm"><!-- NO --></th>
@@ -133,7 +133,7 @@
 			</table>
 
 		</div>
-		<div class="footer" style="padding-top:1mm;height:34mm;">
+		<div class="footer" style="padding-top:-1.5mm;height:34mm;">
 				<table style="width:199mm;text-align: center">
 					<!-- <tr>
 						<td style="height:20px;width:17%">Penerima Barang</td>
@@ -154,7 +154,6 @@
 								<p style="font-size:7pt">(Ttd dan nama jelas)</p> -->
 						</td>
 						<td width="20mm">
-
 						</td>
 						<td style="padding-left:1mm;text-align:right" width="24mm"><br><br><br><br><br><br>
 								<?php echo $row['ASSIGNER_NAME']; ?>
@@ -162,7 +161,7 @@
 						<td style="padding-left:2mm;text-align:right" width="25mm"><!-- Mengetahui : --><br><br><br><br><br><br>
 								<?php echo '('.$row['APPROVE_TONAME'].')'; ?>
 						</td>
-						<td style="padding-left:2mm;text-align:right;width:20mm!important" width="30mm"><br><?php echo $row['ASSIGN_DATE']?><br>
+						<td style="padding-left:2mm;text-align:right;width:20mm!important" width="30mm"><br> <span style="color:white"><?php echo $row['ASSIGN_DATE']?></span> <br>
 								<br><br><br><br><?php echo '('.$row['CREATED_BYNAME'].')';?>
 						</td>
 					</tr>
@@ -178,5 +177,6 @@
 			</table>
 		</div> -->
 	</div>
+	<div style="position:absolute;right: 12mm;bottom: 38mm"><?php echo $row['ASSIGN_DATE']?></div>
 </body>
 </html>
