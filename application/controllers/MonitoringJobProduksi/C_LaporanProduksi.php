@@ -46,7 +46,7 @@ class C_LaporanProduksi extends CI_Controller
 		$user = $this->session->user;
 		$cekHak = $this->M_usermng->getUser("where no_induk = '$user'");
 		if (!empty($cekHak)) {
-			if($user == 'B0599' || $user == 'B0653' || $user == 'B0886' || $user == 'P0364') {
+			if($user == 'B0599' || $user == 'B0653' || $user == 'B0886' || $user == 'P0364' || $user == 'B0608') {
 				$data['UserMenu'] = array($UserMenu[0], $UserMenu[5]);
 			}elseif ($cekHak[0]['JENIS'] == 'Admin') {
 				$data['UserMenu'] = array($UserMenu[0]);
@@ -239,13 +239,17 @@ class C_LaporanProduksi extends CI_Controller
 			$total['TANGGAL'.$h2.''] = 0;
 		}
         foreach ($getdata as $key => $val) {
+			$target2 	= $this->M_laporan->gettargetPlan($val['ID_CATEGORY'], $val['ID_SUBCATEGORY'],$val['INVENTORY_ITEM_ID'], $bulan);
+			$target2	= !empty($target2) ? $target2[0]['VALUE_PLAN_MONTH'] : '';
+			$wosjob 	= $target2 < $val['WOS_JOB'] ? $target2 : $val['WOS_JOB'];
+			$comp 		= $target2 < $val['COMPLETION'] ? $target2 : $val['COMPLETION'];
+			$real 		= $target2 < $val['IN_YSP'] ? $target2 : $val['IN_YSP'];
 			if ((!in_array($val['INVENTORY_ITEM_ID'].'_'.$val['ID_SUBCATEGORY'], $itemnya) && $asal == 'TRANSAKSI') || (!in_array($val['SUBCATEGORY_NAME'], $subcategory) && $asal == 'COMPLETION')) {
 				if ($asal == 'TRANSAKSI') {
 					array_push($itemnya, $val['INVENTORY_ITEM_ID'].'_'.$val['ID_SUBCATEGORY']);
 					$item = $val['ITEM'];
 					$desc = $val['DESCRIPTION'];
-					$target = $this->M_laporan->gettargetPlan($val['ID_CATEGORY'], $val['ID_SUBCATEGORY'],$val['INVENTORY_ITEM_ID'], $bulan);
-					$target = !empty($target) ? $target[0]['VALUE_PLAN_MONTH'] : '';
+					$target = $target2;
 				}else {
 					array_push($subcategory, $val['SUBCATEGORY_NAME']);
 					$item = $desc = $val['SUBCATEGORY_NAME'];
@@ -261,14 +265,14 @@ class C_LaporanProduksi extends CI_Controller
 									'SUBCATEGORY_NAME' 	=> $val['SUBCATEGORY_NAME'],
 									'QTY' 				=> $val['QTY'],
 									'TARGET' 			=> $target,
-									'WOS_JOB' 			=> $val['WOS_JOB'],
-									'COMPLETION' 		=> $val['COMPLETION'],
-									'REAL_PROD' 		=> $val['QTY'],
+									'WOS_JOB' 			=> $wosjob,
+									'COMPLETION' 		=> $comp,
+									'REAL_PROD' 		=> $real,
 				);
-				$total['REAL_PROD'] += $val['QTY'];
+				$total['REAL_PROD'] += $real;
 				$total['TARGET'] += $target;
-				$total['WOS_JOB'] += $val['WOS_JOB'];
-				$total['COMPLETION'] += $val['COMPLETION'];
+				$total['WOS_JOB'] += $wosjob;
+				$total['COMPLETION'] += $comp;
 				for ($h=1; $h < $hari+1 ; $h++) { 
 					$h2 = sprintf("%02d", $h);
 					$datanya[$no]['TANGGAL'.$h2.''] = 0;
@@ -280,15 +284,17 @@ class C_LaporanProduksi extends CI_Controller
 			}else {
 				$tgl = explode('-', $val['TANGGAL']);
 				$datanya[$no-1]['TANGGAL'.$tgl[0].''] += $val['QTY'];
-				$datanya[$no-1]['REAL_PROD'] += $val['QTY'];
+				// $datanya[$no-1]['REAL_PROD'] += $val['QTY'];
 				$total['TANGGAL'.$tgl[0].''] += $val['QTY'];
-				$total['REAL_PROD'] += $val['QTY'];
+				// $total['REAL_PROD'] += $val['QTY'];
 				if ($asal == 'COMPLETION' && !in_array($val['INVENTORY_ITEM_ID'].'_'.$val['ID_SUBCATEGORY'], $itemnya)) {
 					array_push($itemnya, $val['INVENTORY_ITEM_ID'].'_'.$val['ID_SUBCATEGORY']);
-					$datanya[$no-1]['WOS_JOB'] += $val['WOS_JOB'];
-					$datanya[$no-1]['COMPLETION'] += $val['COMPLETION'];
-					$total['WOS_JOB'] += $val['WOS_JOB'];
-					$total['COMPLETION'] += $val['COMPLETION'];
+					$datanya[$no-1]['WOS_JOB'] += $wosjob;
+					$datanya[$no-1]['COMPLETION'] += $comp;
+					$datanya[$no-1]['REAL_PROD'] += $real;
+					$total['WOS_JOB'] += $wosjob;
+					$total['COMPLETION'] += $comp;
+					$total['REAL_PROD'] += $real;
 				}
 			}
 		}
@@ -1053,6 +1059,7 @@ class C_LaporanProduksi extends CI_Controller
 
 			$no = 1;
 			$numrow = $jdl+4;
+			$total_wos = $total_comp = $total_real = 0;
 			foreach ($value as $key2 => $val) {
 				// echo "<pre>";print_r($val);exit();
 				$excel->setActiveSheetIndex(0)->setCellValue('A'.$numrow, $no);
@@ -1073,14 +1080,20 @@ class C_LaporanProduksi extends CI_Controller
 				} 
 				if ($val['ID_CATEGORY'] == 15 || $val['ID_CATEGORY'] == 19) { // khusus kategori sparepart
 					$ttl_wosjob = number_format(!empty($val['TARGET']) && $val['TARGET'] != 0 ? ($val['WOS_JOB'] / $val['TARGET']) * 100 : 0 ,2);
-					$ttl_comp = number_format(!empty($val['TARGET']) && $val['TARGET'] != 0 ? ($val['COMPLETION'] / $val['TARGET']) * 100 : 0 ,2);
-					$ttl_capai = number_format(!empty($val['TARGET']) && $val['TARGET'] != 0 ? ($val['REAL_PROD'] / $val['TARGET']) * 100 : 0 ,2);
+					$ttl_comp 	= number_format(!empty($val['TARGET']) && $val['TARGET'] != 0 ? ($val['COMPLETION'] / $val['TARGET']) * 100 : 0 ,2);
+					$ttl_capai 	= number_format(!empty($val['TARGET']) && $val['TARGET'] != 0 ? ($val['REAL_PROD'] / $val['TARGET']) * 100 : 0 ,2);
+					$wos        = $val['WOS_JOB'] > $val['TARGET'] ? $val['TARGET'] : $val['WOS_JOB'];
+					$comp       = $val['COMPLETION'] > $val['TARGET'] ? $val['TARGET'] : $val['COMPLETION'];
+					$real       = $val['REAL_PROD'] > $val['TARGET'] ? $val['TARGET'] : $val['REAL_PROD'];
+					$total_wos  += $wos;
+					$total_comp  += $comp;
+					$total_real  += $real;
 					$excel->setActiveSheetIndex(0)->setCellValue($plus1.$numrow, $val['TARGET']);
-					$excel->setActiveSheetIndex(0)->setCellValue($plus2.$numrow, $val['WOS_JOB']);
+					$excel->setActiveSheetIndex(0)->setCellValue($plus2.$numrow, $wos);
 					$excel->setActiveSheetIndex(0)->setCellValue($plus3.$numrow, $ttl_wosjob > 100 ? number_format(100,2) : $ttl_wosjob);
-					$excel->setActiveSheetIndex(0)->setCellValue($plus4.$numrow, $val['COMPLETION']);
+					$excel->setActiveSheetIndex(0)->setCellValue($plus4.$numrow, $comp);
 					$excel->setActiveSheetIndex(0)->setCellValue($plus5.$numrow, $ttl_comp > 100 ? number_format(100,2) : $ttl_comp);
-					$excel->setActiveSheetIndex(0)->setCellValue($plus6.$numrow, $val['REAL_PROD']);
+					$excel->setActiveSheetIndex(0)->setCellValue($plus6.$numrow, $real);
 					$excel->setActiveSheetIndex(0)->setCellValue($plus7.$numrow, $ttl_capai > 100 ? number_format(100,2) : $ttl_capai);
 				}else {
 					$excel->setActiveSheetIndex(0)->setCellValue($plus1.$numrow, $val['REAL_PROD']);
@@ -1114,15 +1127,15 @@ class C_LaporanProduksi extends CI_Controller
 			} 
 			// echo "<pre>";print_r($value);exit();
 			if ($value[0]['ID_CATEGORY'] == 15 || $value[0]['ID_CATEGORY'] == 19) { // khusus kategori sparepart
-				$ttl_wosjob = number_format(!empty($total[$key]['TARGET']) && $total[$key]['TARGET'] != 0 ? ($total[$key]['WOS_JOB'] / $total[$key]['TARGET']) * 100 : 0 ,2);
-				$ttl_comp = number_format(!empty($total[$key]['TARGET']) && $total[$key]['TARGET'] != 0 ? ($total[$key]['COMPLETION'] / $total[$key]['TARGET']) * 100 : 0 ,2);
-				$ttl_capai = number_format(!empty($total[$key]['TARGET']) && $total[$key]['TARGET'] != 0 ? ($total[$key]['REAL_PROD'] / $total[$key]['TARGET']) * 100 : 0 ,2);
+				$ttl_wosjob = number_format(!empty($total[$key]['TARGET']) && $total[$key]['TARGET'] != 0 ? ($total_wos / $total[$key]['TARGET']) * 100 : 0 ,2);
+				$ttl_comp = number_format(!empty($total[$key]['TARGET']) && $total[$key]['TARGET'] != 0 ? ($total_comp / $total[$key]['TARGET']) * 100 : 0 ,2);
+				$ttl_capai = number_format(!empty($total[$key]['TARGET']) && $total[$key]['TARGET'] != 0 ? ($total_real / $total[$key]['TARGET']) * 100 : 0 ,2);
 				$excel->setActiveSheetIndex(0)->setCellValue($plus1.$numrow, $total[$key]['TARGET']);
-				$excel->setActiveSheetIndex(0)->setCellValue($plus2.$numrow, $total[$key]['WOS_JOB']);
+				$excel->setActiveSheetIndex(0)->setCellValue($plus2.$numrow, $total_wos > $total[$key]['TARGET'] ? $total[$key]['TARGET'] : $total_wos);
 				$excel->setActiveSheetIndex(0)->setCellValue($plus3.$numrow, $ttl_wosjob > 100 ? number_format(100,2) : $ttl_wosjob);
-				$excel->setActiveSheetIndex(0)->setCellValue($plus4.$numrow, $total[$key]['COMPLETION']);
+				$excel->setActiveSheetIndex(0)->setCellValue($plus4.$numrow, $total_comp > $total[$key]['TARGET'] ? $total[$key]['TARGET'] : $total_comp);
 				$excel->setActiveSheetIndex(0)->setCellValue($plus5.$numrow, $ttl_comp > 100 ? number_format(100,2) : $ttl_comp);
-				$excel->setActiveSheetIndex(0)->setCellValue($plus6.$numrow, $total[$key]['REAL_PROD']);
+				$excel->setActiveSheetIndex(0)->setCellValue($plus6.$numrow, $total_real > $total[$key]['TARGET'] ? $total[$key]['TARGET'] : $total_real);
 				$excel->setActiveSheetIndex(0)->setCellValue($plus7.$numrow, $ttl_capai > 100 ? number_format(100,2) : $ttl_capai);
 			}else {
 				$excel->setActiveSheetIndex(0)->setCellValue($plus1.$numrow, $total[$key]['REAL_PROD']);
@@ -1396,6 +1409,7 @@ class C_LaporanProduksi extends CI_Controller
 
 		$no = 1;
 		$numrow = 7;
+		$total_wos = $total_comp = $total_real = 0;
 		foreach ($datanya as $key => $val) {
 			// echo "<pre>";print_r($val);exit();
 			$excel->setActiveSheetIndex(0)->setCellValue('A'.$numrow, $val['SUBCATEGORY_NAME']);
@@ -1411,14 +1425,20 @@ class C_LaporanProduksi extends CI_Controller
 			} 
 			if ($id_kategori == 15  || $id_kategori == 19) {
 					$ttl_wosjob = number_format(!empty($val['TARGET']) && $val['TARGET'] != 0 ? ($val['WOS_JOB'] / $val['TARGET']) * 100 : 0 ,2);
-					$ttl_comp = number_format(!empty($val['TARGET']) && $val['TARGET'] != 0 ? ($val['COMPLETION'] / $val['TARGET']) * 100 : 0 ,2);
-					$ttl_capai = number_format(!empty($val['TARGET']) && $val['TARGET'] != 0 ? ($val['REAL_PROD'] / $val['TARGET']) * 100 : 0 ,2);
+					$ttl_comp 	= number_format(!empty($val['TARGET']) && $val['TARGET'] != 0 ? ($val['COMPLETION'] / $val['TARGET']) * 100 : 0 ,2);
+					$ttl_capai 	= number_format(!empty($val['TARGET']) && $val['TARGET'] != 0 ? ($val['REAL_PROD'] / $val['TARGET']) * 100 : 0 ,2);
+					$wos        = $val['WOS_JOB'] > $val['TARGET'] ? $val['TARGET'] : $val['WOS_JOB'];
+					$comp       = $val['COMPLETION'] > $val['TARGET'] ? $val['TARGET'] : $val['COMPLETION'];
+					$real       = $val['REAL_PROD'] > $val['TARGET'] ? $val['TARGET'] : $val['REAL_PROD'];
+					$total_wos  += $wos;
+					$total_comp  += $comp;
+					$total_real  += $real;
 					$excel->setActiveSheetIndex(0)->setCellValue($plus1.$numrow, $val['TARGET']);
-					$excel->setActiveSheetIndex(0)->setCellValue($plus2.$numrow, $val['WOS_JOB']);
+					$excel->setActiveSheetIndex(0)->setCellValue($plus2.$numrow, $wos);
 					$excel->setActiveSheetIndex(0)->setCellValue($plus3.$numrow, $ttl_wosjob > 100 ? number_format(100,2) : $ttl_wosjob);
-					$excel->setActiveSheetIndex(0)->setCellValue($plus4.$numrow, $val['COMPLETION']);
+					$excel->setActiveSheetIndex(0)->setCellValue($plus4.$numrow, $comp);
 					$excel->setActiveSheetIndex(0)->setCellValue($plus5.$numrow, $ttl_comp > 100 ? number_format(100,2) : $ttl_comp);
-					$excel->setActiveSheetIndex(0)->setCellValue($plus6.$numrow, $val['REAL_PROD']);
+					$excel->setActiveSheetIndex(0)->setCellValue($plus6.$numrow, $real);
 					$excel->setActiveSheetIndex(0)->setCellValue($plus7.$numrow, $ttl_capai > 100 ? number_format(100,2) : $ttl_capai);
 				}else {
 					$excel->setActiveSheetIndex(0)->setCellValue($plus1.$numrow, $val['REAL_PROD']);
@@ -1451,15 +1471,18 @@ class C_LaporanProduksi extends CI_Controller
 		} 
 		// echo "<pre>";print_r($total);exit();
 		if ($id_kategori == 15 || $id_kategori == 19) { // khusus kategori sparepart
-			$ttl_wosjob = number_format(!empty($total['TARGET']) && $total['TARGET'] != 0 ? ($total['WOS_JOB'] / $total['TARGET']) * 100 : 0 ,2);
-			$ttl_comp 	= number_format(!empty($total['TARGET']) && $total['TARGET'] != 0 ? ($total['COMPLETION'] / $total['TARGET']) * 100 : 0 ,2);
-			$ttl_capai 	= number_format(!empty($total['TARGET']) && $total['TARGET'] != 0 ? ($total['REAL_PROD'] / $total['TARGET']) * 100 : 0 ,2);
+			$ttl_wosjob = number_format(!empty($total['TARGET']) && $total['TARGET'] != 0 ? ($total_wos / $total['TARGET']) * 100 : 0 ,2);
+			$ttl_comp 	= number_format(!empty($total['TARGET']) && $total['TARGET'] != 0 ? ($total_comp / $total['TARGET']) * 100 : 0 ,2);
+			$ttl_capai 	= number_format(!empty($total['TARGET']) && $total['TARGET'] != 0 ? ($total_real / $total['TARGET']) * 100 : 0 ,2);
+			$wosjobnya  = $total_wos > $total['TARGET'] ? $total['TARGET'] : $total_wos;
+			$compnya    = $total_comp > $total['TARGET'] ? $total['TARGET'] : $total_comp;
+			$pencapaian = $total_real > $total['TARGET'] ? $total['TARGET'] : $total_real;
 			$excel->setActiveSheetIndex(0)->setCellValue($plus1.$numrow, $total['TARGET']);
-			$excel->setActiveSheetIndex(0)->setCellValue($plus2.$numrow, $total['WOS_JOB']);
+			$excel->setActiveSheetIndex(0)->setCellValue($plus2.$numrow, $wosjobnya);
 			$excel->setActiveSheetIndex(0)->setCellValue($plus3.$numrow, $ttl_wosjob > 100 ? number_format(100,2) : $ttl_wosjob);
-			$excel->setActiveSheetIndex(0)->setCellValue($plus4.$numrow, $total['COMPLETION']);
+			$excel->setActiveSheetIndex(0)->setCellValue($plus4.$numrow, $compnya);
 			$excel->setActiveSheetIndex(0)->setCellValue($plus5.$numrow, $ttl_comp > 100 ? number_format(100,2) : $ttl_comp);
-			$excel->setActiveSheetIndex(0)->setCellValue($plus6.$numrow, $total['REAL_PROD']);
+			$excel->setActiveSheetIndex(0)->setCellValue($plus6.$numrow, $pencapaian);
 			$excel->setActiveSheetIndex(0)->setCellValue($plus7.$numrow, $ttl_capai > 100 ? number_format(100,2) : $ttl_capai);
 		}else {
 			$excel->setActiveSheetIndex(0)->setCellValue($plus1.$numrow, $total['REAL_PROD']);
