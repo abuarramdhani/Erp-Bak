@@ -25,6 +25,7 @@
             <th>Quantity Rejected</th>
             <th>Quantity Due</th>
             <th>Buyer</th>
+            <th>Receipt Date</th>
             <th>Keterangan Progress</th>
 
         </tr>
@@ -56,6 +57,7 @@
                 <td><?= $rep['QUANTITY_REJECTED']; ?></td>
                 <td><?= $rep['QUANTITY_DUE']; ?></td>
                 <td><?= $rep['BUYER']; ?></td>
+                <td><?= $rep['RECEIPT_DATE']; ?></td>
                 <td><?= $rep['KETERANGAN_PROGRESS']; ?></td>
             </tr>
         <?php } ?>
