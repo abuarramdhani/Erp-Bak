@@ -41,15 +41,15 @@
 								<td style="text-align:center;padding:2px;border-right: 1px solid black;border-top: 1px solid black;width:10%">Kode Part</td>
 								<td style="text-align:center;padding:2px;border-right: 1px solid black;border-top: 1px solid black;width:5.5%">Mesin</td>
 								<td style="text-align:center;padding:2px;border-right: 1px solid black;border-top: 1px solid black;width:9%">Proses</td>
-								<td style="text-align:center;padding:2px;border-right: 1px solid black;border-top: 1px solid black;width:6%">No Dies</td>
+								<td style="text-align:center;padding:2px;border-right: 1px solid black;border-top: 1px solid black;width:9%">No Dies</td>
 								<td style="text-align:center;padding:2px;border-right: 1px solid black;border-top: 1px solid black;width:4%">Plan</td>
 								<td style="text-align:center;padding:2px;border-right: 1px solid black;border-top: 1px solid black;width:6%">%Tgt</td>
 								<td style="text-align:center;padding:2px;border-right: 1px solid black;border-top: 1px solid black;width:4%">CT/PCS</td>
 								<td style="text-align:center;padding:2px;border-right: 1px solid black;border-top: 1px solid black;width:4%">Hasil</td>
 								<td style="text-align:center;padding:2px;border-right: 1px solid black;border-top: 1px solid black;width:4.5%">Repair</td>
 								<td style="text-align:center;padding:2px;border-right: 1px solid black;border-top: 1px solid black;width:4%">Scrap</td>
-								<td style="text-align:center;padding:2px;border-right: 1px solid black;border-top: 1px solid black;width:8%">STD HANDLING</td>
-								<td style="text-align:center;padding:2px;border-right: 1px solid black;border-top: 1px solid black;width:9	%">SARANA</td>
+								<td style="text-align:center;padding:2px;border-right: 1px solid black;border-top: 1px solid black;width:4%">STD HAND LING</td>
+								<td style="text-align:center;padding:2px;border-right: 1px solid black;border-top: 1px solid black;width:9%">SARANA</td>
 							</tr>
 						</thead>
 						<tbody>
@@ -62,7 +62,7 @@
 									<td style="padding:2px;border-right: 1px solid black;border-top: 1px solid black;"><?php echo $v2['kode_komponen'] ?></td>
 									<td style="padding:2px;border-right: 1px solid black;border-top: 1px solid black;"><?php echo $v2['kode_mesin'] ?></td>
 									<td style="padding:2px;border-right: 1px solid black;border-top: 1px solid black;"><?php echo $v2['proses'] ?></td>
-									<td style="padding:2px;border-right: 1px solid black;border-top: 1px solid black;"></td>
+									<td style="padding:2px;border-right: 1px solid black;border-top: 1px solid black;"><?php echo $v2['NO_DIES'] ?></td>
 									<td style="padding:2px;border-right: 1px solid black;border-top: 1px solid black;"><?php echo $v2['plan'] ?></td>
 									<td style="padding:2px;border-right: 1px solid black;border-top: 1px solid black;">
 										<?php

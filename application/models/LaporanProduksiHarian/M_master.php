@@ -24,10 +24,10 @@ class M_master extends CI_Model
 						and flv.LOOKUP_TYPE (+)            = 'CONTAINER_TYPE'
 						and msib.SEGMENT1 = '$code'
 						and msib.ORGANIZATION_ID = 81";
-		$this->oracle->query($sql)->row_array();
+		return $this->oracle->query($sql)->row_array();
 	}
 
-	public function get_no_dies($code)
+	public function get_no_dies($code, $proses)
 	{
 		$sql = "SELECT msib.segment1
                   ,goa.ACTIVITY
@@ -75,6 +75,7 @@ class M_master extends CI_Model
                   and goa.OPRN_ID = gob.OPRN_ID
                   --AND grtb.ROUTING_CLASS        = 'SHMT'
                   and msib.SEGMENT1 IN ('$code')  --------------------> ISI DENGAN ITEM YANG AKAN DICARI
+									and goa.ACTIVITY = '$proses'
                   and goa.OPRN_LINE_ID = mc.OPRN_LINE_ID(+)
 --                        order by substr(msib.segment1,1,11)
 --                        ,grb.RECIPE_VERSION
@@ -87,7 +88,7 @@ class M_master extends CI_Model
 --                        ,ffb.FORMULA_NO
 --                        ,ffb.FORMULA_VERS";
 
-			return $this->oracle->query($sql)->result_array();
+			return $this->oracle->query($sql)->row_array();
 	}
 
 	public function get_target_pe($code)

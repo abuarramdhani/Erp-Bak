@@ -83,7 +83,7 @@ class C_Import extends CI_Controller
       $range =  explode(' - ', $range_date);
       $shift = $this->input->post('shift', true);
 
-      $data['get'] = $this->db->query("SELECT * FROM lph.lph_master WHERE shift = '$shift' AND to_date(tanggal, 'dd-mm-yyyy') BETWEEN to_date('$range[0]', 'dd-mm-yyyy') AND to_date('$range[1]', 'dd-mm-yyyy')")->result_array();
+      $data['get'] = $this->db->query("SELECT * FROM lph.lph_master WHERE shift = '$shift' AND to_date(tanggal, 'dd-mm-yyyy') BETWEEN to_date('$range[0]', 'dd-mm-yyyy') AND to_date('$range[1]', 'dd-mm-yyyy') ORDER BY id")->result_array();
       $this->load->view('LaporanProduksiHarian/ajax/V_mon_lkh', $data);
       // echo "<pre>";
       // print_r($date['get']);
@@ -128,9 +128,10 @@ class C_Import extends CI_Controller
       foreach ($operator_ as $ket_opr => $operator) {
 
         // ============= generate group_id =============
-        $group_id = $this->db->select_max('lph_group_id')->get('lph.lph_master')->row_array();
+        $group_id = $this->db->select('lph_group_id')->get('lph.lph_id_group')->row_array();
         if (!empty($group_id['lph_group_id'])) {
           $groupid = $group_id['lph_group_id']+1;
+          $this->db->where('lph_group_id', $group_id['lph_group_id'])->update('lph.lph_id_group', ['lph_group_id' => $groupid]);
         }else {
           $groupid = 1;
         }
@@ -408,7 +409,7 @@ class C_Import extends CI_Controller
       // echo "<pre>";print_r($_POST);
       // die;
 
-      $data['get'] = $this->M_master->getMon($range, $shift);
+      $data['get']= $this->M_master->getMon($range, $shift);
       $this->load->view('LaporanProduksiHarian/ajax/V_mon_rko', $data);
     }
 
@@ -443,13 +444,25 @@ class C_Import extends CI_Controller
                                 FROM lph.lph_rencana_kerja_operator rk WHERE rk.shift = '$shift' AND rk.tanggal = '$range'")->result_array();
 
       foreach ($data as $key => $value) {
-        $std = $this->M_master->get_sarana($value['kode_komponen']);
-        if (!empty($std)) {
-          $data[$key]['STD_HANDLING'] = $std['STD_HANDLING'];
-          $data[$key]['DESCRIPTION'] = $std['DESCRIPTION'];
+        if (!empty($value['kode_komponen'])) {
+          $std = $this->M_master->get_sarana($value['kode_komponen']);
+          if (!empty($std)) {
+            $data[$key]['STD_HANDLING'] = $std['STD_HANDLING'];
+            $data[$key]['DESCRIPTION'] = $std['DESCRIPTION'];
+          }
+
+          $ambil_no_dies = $this->M_master->get_no_dies($value['kode_komponen'], strtoupper($value['proses']));
+          $no_dies = '';
+          if (!empty($ambil_no_dies['SEGMENT1'])) {
+            for ($i=1; $i <= 7; $i++) {
+              if (!empty($ambil_no_dies['AB'.$i])) {
+                $no_dies .= explode(' - ', $ambil_no_dies['AB'.$i])[0].', ';
+              }
+            }
+            $data[$key]['NO_DIES'] = $no_dies;
+          }
         }
       }
-
       $pengelompokan = [];
       foreach ($data as $key => $value) {
         $pengelompokan[$value['no_induk']][] = $value;

@@ -23,8 +23,9 @@
         <td style="width:100px">Kode Proses</td>
         <td style="width:100px">Nama Proses</td>
         <td style="width:100px">Target PPIC</td>
+        <td style="width:100px">Hari</td>
+        <td style="width:100px">Tanggal</td>
         <td style="width:100px">Target PE</td>
-        <!-- <td style="width:100px">T.100%</td> -->
         <td style="width:100px">Aktual</td>
         <td style="width:100px">%TASE</td>
         <td style="width:100px">Hasil Baik</td>
@@ -59,6 +60,8 @@
           </td>
           <td><?php echo $value['nama_proses'] ?></td>
           <td><?php echo $value['plan'] ?></td>
+          <td><?php echo $value['hari'] ?></td>
+          <td><?php echo $value['tanggal'] ?></td>
           <?php
             if ($value['hari'] == ('Jumat' || 'Sabtu')) {
               $target_harian = $value['target_js'];
@@ -113,7 +116,7 @@ function deleteselectedrowmonlkh() {
   let count = table_lph.rows( { selected: true } ).count();
   let id_lph_master = [];
   row.each((v,i)=>{
-    id_lph_master.push(v[21]);
+    id_lph_master.push(v[23]); // perhatikan jika menambah kolom
   });
   if (count > 0) {
     $.ajax({
@@ -131,6 +134,7 @@ function deleteselectedrowmonlkh() {
       success: function(result) {
         if (result == 1) {
           swaLPHLarge('success', 'Berhasil menghapus data');
+          $('.lph_search').trigger('submit');
         }else {
           swaLPHLarge('warning', 'Tidak berhasil menghapus data');
         }
