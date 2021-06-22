@@ -36,10 +36,10 @@
                                                 <input type="text" class="date form-control" name="slcDateRange" id="slcDateRange" autocomplete="off">
                                             </p>
                                             <p>
-                                                <select class="form-control select2" name="slcType" id="slcType" style="width: 100px;" required>
+                                                <select class="form-control select2" name="slcType" id="slcType" style="width: 150px;" required>
                                                     <option value="ALL">ALL</option>
-                                                    <option value="IN">IN</option>
-                                                    <option value="OUT">OUT</option>
+                                                    <option value="IN">IN KHS</option>
+                                                    <option value="OUT">OUT KHS</option>
                                                 </select>
                                             </p>
                                             <button type="button" class="btn btn-primary" style="float: right;" onclick="cariHS()">
