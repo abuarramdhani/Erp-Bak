@@ -35,8 +35,7 @@
 				</td>
 			</tr>
 		</table>
-
-		<table style="width: 100%; border-collapse: collapse !important; margin-top: -1px; page-break-inside: avoid">
+		<table style="width: 100%; border-collapse: collapse !important; margin-top: 7px; page-break-inside: avoid">
 			<tr>
 				<td style="vertical-align: top; height: 95px; width: 55%; border-bottom: 1px solid white; border-top: 1px solid white; border-left: 1px solid white; font-size: 10px; padding: 5px 5px 5px 15px;" colspan="4">
 					<?php
@@ -85,7 +84,7 @@
 
 		<!-- coba  coba  -->
 		<div style="position: absolute;">
-			<table style="width: 635px; margin-top: 20px;">
+			<table style="width: 635px; margin-top: 13px;">
 				<?php $no = 1; foreach ($get_body[$key_master] as $key => $gb){ ?>
 					<tr>
 						<td style="font-size: 9.7px; padding: 3.5px; width: 35px; text-align: center;">
