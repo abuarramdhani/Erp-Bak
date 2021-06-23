@@ -26,7 +26,7 @@ const swaLPHLarge = (type, a) =>{
   Swal.fire({
     allowOutsideClick: true,
     type: type,
-    cancelButtonText: 'Ok!',
+    showConfirmButton: 'Ok!',
     html: a,
     // onBeforeOpen: () => {
     // Swal.showLoading()
@@ -214,12 +214,13 @@ $("#lph_search_rkh").on('submit', function (e) {
                             </div>`);
     },
     success: function(result) {
-      if (result != 'gada') {
+      if (result != 'gada' && result != 'uda_ada') {
         toastLPH('success', 'Selesai.')
         $('.area-lph-2021').html(result)
-      }else {
-        // swaLPHLarge('warning', 'Data tidak ditemukan');
+      }else if (result == 'gada') {
         $('.area-lph-2021').html(`<center style="font-weight:bold;margin-bottom:13px;"><i class="fa fa-warning"></i> Data tidak ditemukan</center>`);
+      }else if (result == 'uda_ada') {
+        $('.area-lph-2021').html(`<center style="margin-bottom:13px;"><i class="fa fa-warning"></i> No induk <b>${no_induk}</b> dengan tanggal <b>${tanggal}</b> dan shift <b>${shift}</b> telah ada di database</center>`);
       }
     },
     error: function(XMLHttpRequest, textStatus, errorThrown) {

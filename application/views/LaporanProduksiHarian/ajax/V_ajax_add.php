@@ -228,7 +228,7 @@
                     </td>
                     <td><input type="text" class="form-control"  name="kodemesin[]" value="<?php echo str_replace(' ','',$value['kode_mesin']) ?>"></td>
                     <td><input type="text" class="form-control"  name="waktumesin[]" value=""></td>
-                    <td >
+                    <td class="lph_kode_proses_trigger_khusus">
                       <select class="lph_select2 lph_kode_proses" name="kodeproses[]" style="width:182px">
                         <option value="" selected></option>
                       </select>
@@ -324,29 +324,32 @@ function lph_kodepart(e) {
   $(e).parent().parent('tr').find('.lph_target_harian').val('');
   $(e).parent().parent('tr').find('.lph_kode_proses').html('<option value="" selected></option>').trigger('change');
 
-  $.ajax({
-    url: baseurl + 'LaporanProduksiHarian/action/get_pe',
-    type: 'POST',
-    data : {
-      kode_komponen : ambil_desc[0]
-    },
-    dataType: "JSON",
-    beforeSend: function() {
-      toastLPHLoading('Sedang Mengambil Target PE...');
-    },
-    success: function(result) {
-      if (result != 500) {
-        toastLPH('success', 'Silahkan memilih kode proses');
-        $(e).parent().parent('tr').find('.lph_kode_proses').html(result);
-      }else {
-        toastLPH('warning', `Komponen ${ambil_desc[0]} tidak memiliki target PE (SK/JS)`);
+  if (ambil_desc[0] != '') {
+    $.ajax({
+      url: baseurl + 'LaporanProduksiHarian/action/get_pe',
+      type: 'POST',
+      data : {
+        kode_komponen : ambil_desc[0]
+      },
+      dataType: "JSON",
+      beforeSend: function() {
+        toastLPHLoading('Sedang Mengambil Target PE...');
+      },
+      success: function(result) {
+        if (result != 500) {
+          toastLPH('success', 'Silahkan memilih kode proses');
+          $(e).parent().parent('tr').find('.lph_kode_proses').html(result);
+        }else {
+          toastLPH('warning', `Komponen ${ambil_desc[0]} tidak memiliki target PE (SK/JS)`);
+        }
+      },
+      error: function(XMLHttpRequest, textStatus, errorThrown) {
+        swaLPHLarge('error', 'Terjadi kesalahan');
+       console.error();
       }
-    },
-    error: function(XMLHttpRequest, textStatus, errorThrown) {
-      swaLPHLarge('error', 'Terjadi kesalahan');
-     console.error();
-    }
-  })
+    })
+  }
+
 }
 
 function lph_aktual(e) {
@@ -374,6 +377,40 @@ function lph_aktual(e) {
 
 function fun_lphkodeproses(e) {
   let val = $(e).val().split(' ~ ');
+
+  let ambil_kode_part = $('.lph_kodepart');
+  let kode_proses = $('.lph_kode_proses');
+  let my_index = Number($(e).parent().parent('tr').find('td:first').text()) - 1;
+  let kodepart_elemen = $(e).parent().parent('tr').find('.lph_kodepart').val();
+  let nama_proses_elemen = val[1];
+  let cek = 0;
+
+  ambil_kode_part.each((i,v)=>{
+    if (i != my_index) {
+      let a5ag27 = $(kode_proses[i]).val().split(' ~ ')[1];
+      let h83h = $(v).val();
+      if (nama_proses_elemen == a5ag27 && kodepart_elemen == h83h) {
+        cek = 1;
+      }
+    }
+  });
+
+  if (cek) {
+    Swal.fire({
+      allowOutsideClick: true,
+      type: 'warning',
+      showConfirmButton: 'Ok!',
+      html: `Kode part <b>${kodepart_elemen}</b> dengan proses <b>${nama_proses_elemen}</b> telah ada!`,
+    }).then(function(isConfirm) {
+      if (isConfirm) {
+        console.log('done');
+        $(e).parent().parent('tr').find('.lph_kodepart').val('').trigger('change');
+        $(e).parent().parent('tr').find('input[name="namapart[]"]').val('');
+      }
+      cek = 0;
+    })
+  }
+
   console.log(val, 'ini data PE');
   $(e).parent().parent('tr').find('input[name="namaproses[]"]').val(val[1]);
   $(e).parent().parent('tr').find('input[name="target_harian_js[]"]').val(val[3]);
@@ -383,6 +420,8 @@ function fun_lphkodeproses(e) {
   }else {
     $(e).parent().parent('tr').find('.lph_target_harian').val(val[2]);
   }
+
+
 }
 
 function lph_add_row_hasil_produksi() {
@@ -735,6 +774,41 @@ function lph_add_row_hasil_produksi() {
         }
       }
     }
+  })
+
+  $('.lph_kode_proses_trigger_khusus').on('click', function() {
+    let ambil_kode_part = $(this).parent('tr').find('.lph_kodepart').val();
+    let elemen = $(this)[0];
+    let selected = $(elemen).find('.lph_kode_proses').select2('data')[0].text;
+    console.log(selected);
+    if (selected == '') {
+      $.ajax({
+        url: baseurl + 'LaporanProduksiHarian/action/get_pe',
+        type: 'POST',
+        data : {
+          kode_komponen : ambil_kode_part
+        },
+        dataType: "JSON",
+        beforeSend: function() {
+          toastLPHLoading('Sedang Mengambil Target PE...');
+        },
+        success: function(result) {
+          if (result != 500) {
+            toastLPH('success', 'Silahkan memilih kode proses');
+            $(elemen).find('.lph_kode_proses').html(result).trigger('click');
+          }else {
+            toastLPH('warning', `Komponen ${ambil_kode_part} tidak memiliki target PE (SK/JS)`);
+          }
+          $(elemen).off('click')
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+          swaLPHLarge('error', 'Terjadi kesalahan');
+         console.error();
+        }
+      })
+    }
+
+    // alert(`kode part saya ${ambil_kode_part}`)
   })
 
   //input form

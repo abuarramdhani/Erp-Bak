@@ -111,7 +111,7 @@ class C_Import extends CI_Controller
       // echo "<pre>";
       // print_r($res);
       if (!empty($res[0]['SEGMENT1'])) {
-        $tampung[] = '<option value="">Tidak Memilih</option>';
+        $tampung[] = '<option value="" selected>Pilih Proses</option>';
         foreach ($res as $key => $value) {
           $tampung[] = '<option value="'.$value['KODE_PROSES'].' ~ '.$value['ACTIVITY'].' ~ '.$value['TARGETSK'].' ~ '.$value['TARGETJS'].'">'.$value['KODE_PROSES'].' ~ '.$value['ACTIVITY'].'</option>';
         }
@@ -378,22 +378,34 @@ class C_Import extends CI_Controller
 
     public function getRKH($value='')
     {
-      $res = $this->db->where('tanggal', $this->input->post('tanggal'))
-                      ->where('shift', $this->input->post('shift'))
-                      ->where('no_induk', $this->input->post('no_induk'))
-                      ->get('lph.lph_rencana_kerja_operator')->result_array();
-                      // echo $this->db->last_query();die;
-      if (!empty($res[0]['nama_operator'])) {
-        $detail_shift = $this->M_master->get_detail_shift($this->input->post('shift'));
-        foreach ($res as $key => $value) {
-          $res[$key]['shift_description'] = $detail_shift['DESCRIPTION'];
+      $tgl = $this->input->post('tanggal');
+      $shift = $this->input->post('shift');
+      $no_induk = $this->input->post('no_induk');
+      $cek = $this->db->query("select operator from lph.lph_master
+                                               where tanggal = '$tgl'
+                                               and shift like '$shift%'
+                                               and operator like '%$no_induk'")->row_array();
+      // echo "<pre>";print_r($cek);die;
+      if (empty($cek['operator'])) {
+        $res = $this->db->where('tanggal', $tgl)
+                        ->where('shift', $shift)
+                        ->where('no_induk', $no_induk)
+                        ->get('lph.lph_rencana_kerja_operator')->result_array();
+                        // echo $this->db->last_query();die;
+        if (!empty($res[0]['nama_operator'])) {
+          $detail_shift = $this->M_master->get_detail_shift($this->input->post('shift'));
+          foreach ($res as $key => $value) {
+            $res[$key]['shift_description'] = $detail_shift['DESCRIPTION'];
+          }
+          $data['get'] = $res;
+          $this->load->view('LaporanProduksiHarian/ajax/V_ajax_add', $data);
+        }else {
+          echo 'gada';
         }
-        $data['get'] = $res;
-        // echo "<pre>";print_r($res);
-        $this->load->view('LaporanProduksiHarian/ajax/V_ajax_add', $data);
       }else {
-        echo 'gada';
+        echo 'uda_ada';
       }
+
     }
 
     public function getEmptyRKH($value='')
