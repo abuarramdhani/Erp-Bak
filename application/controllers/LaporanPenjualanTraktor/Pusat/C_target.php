@@ -47,7 +47,7 @@ class C_target extends CI_Controller
         $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
-        $data['infoTarget'] = $this->M_pusat->getInfoTarget(date('m'));
+        $data['infoTarget'] = $this->M_pusat->getInfoTarget(date('m-Y'));
 
         $this->load->view('V_Header', $data);
         $this->load->view('V_Sidemenu', $data);
@@ -75,7 +75,7 @@ class C_target extends CI_Controller
         $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
-        $data['data'] = $this->M_pusat->getInfoTarget(date('m'));
+        $data['data'] = $this->M_pusat->getInfoTarget(date('m-Y'));
 
         $this->load->view('V_Header', $data);
         $this->load->view('V_Sidemenu', $data);
@@ -85,9 +85,9 @@ class C_target extends CI_Controller
 
     public function editTarget()
     {
-        $reportid = $this->input->post('reportId');
+        $targetid = $this->input->post('reportId');
         $target = $this->input->post('target');
 
-        $this->M_pusat->editTarget((int)$reportid, (int)$target);
+        $this->M_pusat->editTarget((int)$targetid, (int)$target);
     }
 }

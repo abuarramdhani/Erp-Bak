@@ -5575,14 +5575,18 @@ $route['HistoryBppbg/Monitoring/(:any)/(:any)']	= 'HistoryBppbg/C_Monitoring/$1/
 $route['MuatanTruk/Simulasi'] 						= 'MuatanTruk/C_Simulasi';
 
 // -------------------------- Laporan Penjualan Traktor -------------------------------------//
+$route['laporanPenjualanTraktor/logined'] = 'LaporanPenjualanTraktor/C_laporanPenjualanTraktor/indexkedua';
+$route['laporanPenjualanTraktor/login'] = 'LaporanPenjualanTraktor/C_laporanPenjualanTraktor/login';
+$route['laporanPenjualanTraktor/logoutFromView'] = 'LaporanPenjualanTraktor/C_laporanPenjualanTraktor/logoutFromView';
 $route['laporanPenjualanTraktor']	=	'LaporanPenjualanTraktor/C_laporanPenjualanTraktor';
-$route['laporanPenjualanTraktor/exportPdf']	=	'LaporanPenjualanTraktor/C_laporanPenjualanTraktor/exportPdf';
-$route['laporanPenjualanTraktor/exportExcel']	=	'LaporanPenjualanTraktor/C_laporanPenjualanTraktor/exportExcel';
+$route['laporanPenjualanTR2/exportPdf/(:any)']	=	'LaporanPenjualanTraktor/C_laporanPenjualanTraktor/exportPdf/$1';
+$route['laporanPenjualanTR2/exportExcel/(:any)']	=	'LaporanPenjualanTraktor/C_laporanPenjualanTraktor/exportExcel/$1';
 $route['menuLaporanPenjualanTraktor']	=	'LaporanPenjualanTraktor/C_index';
 $route['menuLaporanPenjualanTraktor/inputDate']	=	'LaporanPenjualanTraktor/C_inputDate';
 $route['menuLaporanPenjualanTraktor/inputDate/insertDate']	=	'LaporanPenjualanTraktor/C_inputDate/insertDate';
 $route['menuLaporanPenjualanTraktor/inputDate/insertTable']	=	'LaporanPenjualanTraktor/C_inputDate/insertTable';
 $route['menuLaporanPenjualanTraktor/inputDate/deleteDate']	=	'LaporanPenjualanTraktor/C_inputDate/deleteDate';
+$route['laporanPenjualanTR2/monitoringPenjualanTR2/Cabang/(:any)'] = 'LaporanPenjualanTraktor/C_laporanPenjualanTraktor/indexKetiga/$1';
 
 $route['laporanPenjualanTR2/Pusat'] = 'LaporanPenjualanTraktor/Pusat/C_index';
 $route['laporanPenjualanTR2/Pusat/inputTarget'] = 'LaporanPenjualanTraktor/Pusat/C_target';
@@ -5592,11 +5596,14 @@ $route['laporanPenjualanTR2/Pusat/inputTarget/editTarget'] = 'LaporanPenjualanTr
 
 $route['laporanPenjualanTR2/Cabang/(:any)'] = 'LaporanPenjualanTraktor/Cabang/C_index/index/$1';
 $route['laporanPenjualanTR2/Cabang/(:any)/inputAnalisa'] = 'LaporanPenjualanTraktor/Cabang/C_analisa/index/$1';
+$route['laporanPenjualanTR2/Cabang/(:any)/viewAnalisa/(:any)'] = 'LaporanPenjualanTraktor/Cabang/C_analisa/viewAnalisa/$1/$2';
 $route['laporanPenjualanTR2/inputAnalisa'] = 'LaporanPenjualanTraktor/Cabang/C_analisa/inputAnalisa';
+$route['laporanPenjualanTR2/editAnalisa'] = 'LaporanPenjualanTraktor/Cabang/C_analisa/editAnalisa';
 $route['laporanPenjualanTR2/Cabang/(:any)/inputInfoPasar'] = 'LaporanPenjualanTraktor/Cabang/C_infoPasar/index/$1';
 $route['laporanPenjualanTR2/inputInfoPasar'] = 'LaporanPenjualanTraktor/Cabang/C_infoPasar/inputInfoPasar';
-$route['laporanPenjualanTR2/editInfoPasar'] = 'LaporanPenjualanTraktor/Cabang/C_infoPasar/editInfoPasar';
-$route['laporanPenjualanTR2/editFileInfoPasar'] = 'LaporanPenjualanTraktor/Cabang/C_infoPasar/editFileInfoPasar';
+$route['laporanPenjualanTR2/inputFileInfoPasar'] = 'LaporanPenjualanTraktor/Cabang/C_infoPasar/inputFileInfoPasar';
+$route['laporanPenjualanTR2/Cabang/(:any)/viewInfoPasar/(:any)'] = 'LaporanPenjualanTraktor/Cabang/C_infoPasar/viewInfoPasar/$1/$2';
+$route['laporanPenjualanTR2/editInputInfoPasar'] = 'LaporanPenjualanTraktor/Cabang/C_infoPasar/editInfoPasar';
 
 // -------------------------- Monitoring Cetak PO -------------------------------------//
 $route['monitoring-cetak-po'] = 'MonitoringCetakPO/C_Subkon';

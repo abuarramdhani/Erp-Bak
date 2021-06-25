@@ -18,9 +18,196 @@ class C_laporanPenjualanTraktor extends CI_Controller
         $this->load->model('SystemAdministration/MainMenu/M_user');
     }
 
+    public function checkSession()
+    {
+        if ($this->session->is_logged) {
+        } else {
+            redirect();
+        }
+    }
+
     // function index atau utama (yang dipanggil)
     public function index()
     {
+        if ($this->session->loginLpt) {
+            redirect('laporanPenjualanTraktor/logined');
+        } else {
+            $this->load->view('LaporanPenjualanTraktor/V_login');
+        }
+    }
+
+    public function login()
+    {
+        $user = strtoupper($this->input->post('username'));
+        $pass = strtoupper($this->input->post('password'));
+
+        $userpass = array('username' => 'MPTR2', 'password' => '162534');
+
+        sleep(1);
+
+        if ($user == $userpass['username'] && $pass == $userpass['password']) {
+            $this->session->set_userdata('loginLpt', true);
+            echo json_encode($this->session->loginLpt);
+        } else {
+            echo json_encode('');
+        }
+    }
+
+    public function logoutFromView()
+    {
+        $this->session->unset_userdata('loginLpt');
+        redirect('laporanPenjualanTraktor/logined');
+    }
+
+    // function index atau utama (yang dipanggil)
+    public function indexKedua()
+    {
+        if ($this->session->loginLpt) {
+            // mengambil data penjualan
+            $data['header'] = $this->M_laporanpenjualantraktor->getHeader();
+            $data['daily'] = $this->M_laporanpenjualantraktor->getDaily();
+            $data['sumDate'] = $this->M_laporanpenjualantraktor->getCalcDate();
+            $data['sumDayMonth'] = $this->M_laporanpenjualantraktor->getCountDayWorkMonth();
+            $data['typeSingle'] = $this->M_laporanpenjualantraktor->getType('SINGLE');
+            $data['typeTotal'] = $this->M_laporanpenjualantraktor->getType('TOTAL');
+
+
+            // pendeklarasian varaibel untuk mencari nilai total
+            $subdata['SATU'] =
+                $subdata['DUA'] =
+                $subdata['TIGA'] =
+                $subdata['EMPAT'] =
+                $subdata['LIMA'] =
+                $subdata['ENAM'] =
+                $subdata['TUJUH'] =
+                $subdata['DELAPAN'] =
+                $subdata['SEMBILAN'] =
+                $subdata['SEPULUH'] =
+                $subdata['TOTAL'] =
+                $subdata['TARGET'] =
+                $subdata1['AAH0'] =
+                $subdata1['AAB0'] =
+                $subdata1['AAG0'] =
+                $subdata1['AAE0'] =
+                $subdata1['AAC0'] =
+                $subdata1['ACA0'] =
+                $subdata1['ACC0'] =
+                $subdata1['AAK0'] =
+                $subdata1['AAL0'] =
+                $subdata1['AAN0'] =
+                $subdata1['ADA0'] =
+                $subdata1['ADB0'] =
+                $subdata1['ADC0'] =
+                $subdata1['ADD0'] =
+                $subdata1['TOTAL'] =
+                $subdata2['AAH0'] =
+                $subdata2['AAB0'] =
+                $subdata2['AAG0'] =
+                $subdata2['AAE0'] =
+                $subdata2['AAC0'] =
+                $subdata2['ACA0'] =
+                $subdata2['ACC0'] =
+                $subdata2['AAK0'] =
+                $subdata2['AAL0'] =
+                $subdata2['AAN0'] =
+                $subdata2['ADA0'] =
+                $subdata2['ADB0'] =
+                $subdata2['ADC0'] =
+                $subdata2['ADD0'] =
+                $subdata2['TOTAL'] = 0;
+
+            // mencari nilai total dari Laporan Penjualan Harian
+            for ($i = 0; $i < count($data['daily']); $i++) {
+                $subdata['TARGET'] = $subdata['TARGET'] + $data['daily'][$i]['TARGET'];
+                $subdata['TOTAL'] = $subdata['TOTAL'] + $data['daily'][$i]['TOTAL'];
+                $subdata['SEPULUH'] = $subdata['SEPULUH'] + $data['daily'][$i]['SEPULUH'];
+                $subdata['SEMBILAN'] = $subdata['SEMBILAN'] + $data['daily'][$i]['SEMBILAN'];
+                $subdata['DELAPAN'] = $subdata['DELAPAN'] + $data['daily'][$i]['DELAPAN'];
+                $subdata['TUJUH'] = $subdata['TUJUH'] + $data['daily'][$i]['TUJUH'];
+                $subdata['ENAM'] = $subdata['ENAM'] + $data['daily'][$i]['ENAM'];
+                $subdata['LIMA'] = $subdata['LIMA'] + $data['daily'][$i]['LIMA'];
+                $subdata['EMPAT'] = $subdata['EMPAT'] + $data['daily'][$i]['EMPAT'];
+                $subdata['TIGA'] = $subdata['TIGA'] + $data['daily'][$i]['TIGA'];
+                $subdata['DUA'] = $subdata['DUA'] + $data['daily'][$i]['DUA'];
+                $subdata['SATU'] = $subdata['SATU'] + $data['daily'][$i]['SATU'];
+                $totalDaily = $subdata;
+            }
+
+            $data['totalDaily'] = $totalDaily;
+
+            // mencari nilai total dari Laporan Penjualan Per Tipe Harian
+            for ($i = 0; $i < count($data['typeSingle']); $i++) {
+                $subdata1['AAH0'] = $subdata1['AAH0'] + $data['typeSingle'][$i]['AAH0'];
+                $subdata1['AAB0'] = $subdata1['AAB0'] + $data['typeSingle'][$i]['AAB0'];
+                $subdata1['AAG0'] = $subdata1['AAG0'] + $data['typeSingle'][$i]['AAG0'];
+                $subdata1['AAE0'] = $subdata1['AAE0'] + $data['typeSingle'][$i]['AAE0'];
+                $subdata1['AAC0'] = $subdata1['AAC0'] + $data['typeSingle'][$i]['AAC0'];
+                $subdata1['ACA0'] = $subdata1['ACA0'] + $data['typeSingle'][$i]['ACA0'];
+                $subdata1['ACC0'] = $subdata1['ACC0'] + $data['typeSingle'][$i]['ACC0'];
+                $subdata1['AAK0'] = $subdata1['AAK0'] + $data['typeSingle'][$i]['AAK0'];
+                $subdata1['AAL0'] = $subdata1['AAL0'] + $data['typeSingle'][$i]['AAL0'];
+                $subdata1['AAN0'] = $subdata1['AAN0'] + $data['typeSingle'][$i]['AAN0'];
+                $subdata1['ADA0'] = $subdata1['ADA0'] + $data['typeSingle'][$i]['ADA0'];
+                $subdata1['ADB0'] = $subdata1['ADB0'] + $data['typeSingle'][$i]['ADB0'];
+                $subdata1['ADC0'] = $subdata1['ADC0'] + $data['typeSingle'][$i]['ADC0'];
+                $subdata1['ADD0'] = $subdata1['ADD0'] + $data['typeSingle'][$i]['ADD0'];
+                $subdata1['TOTAL'] = $subdata1['TOTAL'] + $data['typeSingle'][$i]['TOTAL'];
+                $totalTypeSingle = $subdata1;
+            }
+
+            $data['totalTypeSingle'] = $totalTypeSingle;
+
+            // mencari nilai total dari Laporan Penjualan Per Tipe Total
+            for ($i = 0; $i < count($data['typeTotal']); $i++) {
+                $subdata2['AAH0'] = $subdata2['AAH0'] + $data['typeTotal'][$i]['AAH0'];
+                $subdata2['AAB0'] = $subdata2['AAB0'] + $data['typeTotal'][$i]['AAB0'];
+                $subdata2['AAG0'] = $subdata2['AAG0'] + $data['typeTotal'][$i]['AAG0'];
+                $subdata2['AAE0'] = $subdata2['AAE0'] + $data['typeTotal'][$i]['AAE0'];
+                $subdata2['AAC0'] = $subdata2['AAC0'] + $data['typeTotal'][$i]['AAC0'];
+                $subdata2['ACA0'] = $subdata2['ACA0'] + $data['typeTotal'][$i]['ACA0'];
+                $subdata2['ACC0'] = $subdata2['ACC0'] + $data['typeTotal'][$i]['ACC0'];
+                $subdata2['AAK0'] = $subdata2['AAK0'] + $data['typeTotal'][$i]['AAK0'];
+                $subdata2['AAL0'] = $subdata2['AAL0'] + $data['typeTotal'][$i]['AAL0'];
+                $subdata2['AAN0'] = $subdata2['AAN0'] + $data['typeTotal'][$i]['AAN0'];
+                $subdata2['ADA0'] = $subdata2['ADA0'] + $data['typeTotal'][$i]['ADA0'];
+                $subdata2['ADB0'] = $subdata2['ADB0'] + $data['typeTotal'][$i]['ADB0'];
+                $subdata2['ADC0'] = $subdata2['ADC0'] + $data['typeTotal'][$i]['ADC0'];
+                $subdata2['ADD0'] = $subdata2['ADD0'] + $data['typeTotal'][$i]['ADD0'];
+                $subdata2['TOTAL'] = $subdata2['TOTAL'] + $data['typeTotal'][$i]['TOTAL'];
+                $totalTypeTotal = $subdata2;
+            }
+
+            $data['totalTypeTotal'] = $totalTypeTotal;
+
+            // mengambil tanggal sekarang dikurangi 1 hari (etc: if today = 15 January => 14 January)
+            $data['dateToday'] = $this->dateHmin();
+
+            $data['cabang'] = 'Pusat';
+
+            $data['statusView'] = 0;
+
+            $data['statusButton'] = 0;
+
+            // memanggil view
+            $this->load->view('V_Header', $data);
+            $this->load->view('LaporanPenjualanTraktor/V_laporanPenjualanTraktor', $data);
+            $this->load->view('V_Footer', $data);
+        } else {
+            redirect('laporanPenjualanTraktor');
+        }
+    }
+
+    public function indexKetiga($cabang)
+    {
+        $this->checkSession();
+        $user_id = $this->session->userid;
+        $data['Menu'] = 'Dashboard';
+        $data['SubMenuOne'] = '';
+
+        $data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
+
         // mengambil data penjualan
         $data['header'] = $this->M_laporanpenjualantraktor->getHeader();
         $data['daily'] = $this->M_laporanpenjualantraktor->getDaily();
@@ -140,6 +327,14 @@ class C_laporanPenjualanTraktor extends CI_Controller
         // mengambil tanggal sekarang dikurangi 1 hari (etc: if today = 15 January => 14 January)
         $data['dateToday'] = $this->dateHmin();
 
+        $data['cabang'] = $cabang;
+
+        $data['statusView'] = 1;
+
+        $data['statusButton'] = 1;
+
+        // echo '<pre>';print_r($data);die;
+
         // memanggil view
         $this->load->view('V_Header', $data);
         $this->load->view('LaporanPenjualanTraktor/V_laporanPenjualanTraktor', $data);
@@ -147,7 +342,7 @@ class C_laporanPenjualanTraktor extends CI_Controller
     }
 
     // function export file excel Laporan Penjualan 
-    public function exportExcel()
+    public function exportExcel($cabang)
     {
         $objPHPExcel = new PHPExcel();
 
@@ -796,7 +991,7 @@ class C_laporanPenjualanTraktor extends CI_Controller
     }
 
     // function export file PDF Laporan Penjualan
-    public function exportPdf()
+    public function exportPdf($cabang)
     {
         // mengambil data penjualan
         $data['header'] = $this->M_laporanpenjualantraktor->getHeader();
@@ -918,7 +1113,65 @@ class C_laporanPenjualanTraktor extends CI_Controller
         $data['dateToday'] = $this->dateHmin();
         $data['date'] = $this->dateInd(date('Y-m-d'));
 
-        $data['analisa'] = $this->M_pusat->getReportMonth(date('m'));
+        $data['dayName'] = array('Sabtu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat');
+        $data['namaCabang'] = array('MKS', 'GJK', 'YGY', 'JKT', 'TJK', 'MDN', 'PLU', 'PKU', 'PNK', 'BJM', 'EKSPOR');
+
+        if ($cabang == 'Pusat') {
+            $mksa = $this->M_pusat->getAnalysReport('MKS');
+            $mksl = $this->M_pusat->getInfoPenjualanCabang('MKS');
+            $mksi = $this->M_pusat->getInfoPasarReport('MKS');
+
+            $gjka = $this->M_pusat->getAnalysReport('GJK');
+            $gjkl = $this->M_pusat->getInfoPenjualanCabang('GJK');
+            $gjki = $this->M_pusat->getInfoPasarReport('GJK');
+
+            $ygya = $this->M_pusat->getAnalysReport('YGY');
+            $ygyl = $this->M_pusat->getInfoPenjualanCabang('YGY');
+            $ygyi = $this->M_pusat->getInfoPasarReport('YGY');
+
+            $jkta = $this->M_pusat->getAnalysReport('JKT');
+            $jktl = $this->M_pusat->getInfoPenjualanCabang('JKT');
+            $jkti = $this->M_pusat->getInfoPasarReport('JKT');
+
+            $tjka = $this->M_pusat->getAnalysReport('TJK');
+            $tjkl = $this->M_pusat->getInfoPenjualanCabang('TJK');
+            $tjki = $this->M_pusat->getInfoPasarReport('TJK');
+
+            $mdna = $this->M_pusat->getAnalysReport('MDN');
+            $mdnl = $this->M_pusat->getInfoPenjualanCabang('MDN');
+            $mdni = $this->M_pusat->getInfoPasarReport('MDN');
+
+            $plua = $this->M_pusat->getAnalysReport('PLU');
+            $plul = $this->M_pusat->getInfoPenjualanCabang('PLU');
+            $plui = $this->M_pusat->getInfoPasarReport('PLU');
+
+            $pkua = $this->M_pusat->getAnalysReport('PKU');
+            $pkul = $this->M_pusat->getInfoPenjualanCabang('PKU');
+            $pkui = $this->M_pusat->getInfoPasarReport('PKU');
+
+            $pnka = $this->M_pusat->getAnalysReport('PNK');
+            $pnkl = $this->M_pusat->getInfoPenjualanCabang('PNK');
+            $pnki = $this->M_pusat->getInfoPasarReport('PNK');
+
+            $bjma = $this->M_pusat->getAnalysReport('BJM');
+            $bjml = $this->M_pusat->getInfoPenjualanCabang('BJM');
+            $bjmi = $this->M_pusat->getInfoPasarReport('BJM');
+
+            $ekspora = $this->M_pusat->getAnalysReport('EKSPOR');
+            $eksporl = $this->M_pusat->getInfoPenjualanCabang('EKSPOR');
+            $ekspori = $this->M_pusat->getInfoPasarReport('EKSPOR');
+
+            $data['status'] = 0;
+            $data['analisa'] = array($mksa, $gjka, $ygya, $jkta, $tjka, $mdna, $plua, $pkua, $pnka, $bjma, $ekspora);
+            $data['lajupenjualan'] = array($mksl, $gjkl, $ygyl, $jktl, $tjkl, $mdnl, $plul, $pkul, $pnkl, $bjml, $eksporl);
+            $data['infoPasar'] = array($mksi, $gjki, $ygyi, $jkti, $tjki, $mdni, $plui, $pkui, $pnki, $bjmi, $ekspori);
+        } else {
+            $data['analisa'] = $this->M_pusat->getAnalysReport($cabang);
+            $data['infoPasar'] = $this->M_pusat->getInfoPasarReport($cabang);
+            $data['infoDetail'] = $this->M_pusat->getInfoPenjualanCabang($cabang);
+            $data['status'] = 1;
+            $data['cabang'] = $cabang;
+        }
 
         $fill = $this->load->view('LaporanPenjualanTraktor/V_pdf', $data, true);
         $fill2 = $this->load->view('LaporanPenjualanTraktor/V_pdf2', $data, true);

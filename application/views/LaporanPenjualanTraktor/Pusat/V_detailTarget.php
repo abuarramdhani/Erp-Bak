@@ -39,15 +39,15 @@ input[type=number] {
                                         <td class="text-center" style="vertical-align:middle;"><?= $value['BRANCH'] ?>
                                         </td>
                                         <td class="text-center"><input style="font-weight:bold;text-align:center;"
-                                                class="form-control edit-input-target-lpt-pusat edit-input-target-lpt-pusat-<?= $value['REPORT_ID'] ?>"
+                                                class="form-control edit-input-target-lpt-pusat edit-input-target-lpt-pusat-<?= $value['TARGET_ID'] ?>"
                                                 type="number" value="<?= $value['TARGET'] ?>"
-                                                data-id="<?= $value['REPORT_ID'] ?>" disabled></td>
+                                                data-id="<?= $value['TARGET_ID'] ?>" disabled></td>
                                         <td class="text-center" style="vertical-align:middle;">
                                             <button class="btn btn-primary button-edit-target-lpt-pusat"
-                                                data-id="<?= $value['REPORT_ID'] ?>"><i class="fa fa-edit"></i></button>
+                                                data-id="<?= $value['TARGET_ID'] ?>"><i class="fa fa-edit"></i></button>
                                             <button
-                                                class="btn btn-success button-save-target-lpt-pusat button-save-target-lpt-pusat-<?= $value['REPORT_ID'] ?>"
-                                                style="display:none" data-id="<?= $value['REPORT_ID'] ?>"><i
+                                                class="btn btn-success button-save-target-lpt-pusat button-save-target-lpt-pusat-<?= $value['TARGET_ID'] ?>"
+                                                style="display:none" data-id="<?= $value['TARGET_ID'] ?>"><i
                                                     class="fa fa-save"></i></button>
                                         </td>
                                     </tr>

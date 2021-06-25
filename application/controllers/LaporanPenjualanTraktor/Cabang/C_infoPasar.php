@@ -45,19 +45,9 @@ class C_infoPasar extends CI_Controller
         $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
-        $data['data'] = $this->M_pusat->getReportCabangAndMonth($cabang, date('m'));
-
-        if ($data['data']['MARKET_DESC'] != '' && $data['data']['ATTACHMENT'] != '') {
-            $pathimg = explode(',', $data['data']['ATTACHMENT']);
-
-            $filename = array();
-            foreach ($pathimg as $value) {
-                $explodepath = explode('/', $value);
-                $filename[] = end($explodepath);
-            }
-
-            $data['filename'] = $filename;
-        }
+        $data['info_target'] = $this->M_pusat->getInfoTargetCabangAndMonth($cabang, date('m-Y'));
+        $data['info_month'] = $this->M_pusat->getInfoTargetMonth($cabang);
+        $data['info_today'] = $this->M_pusat->getInfoTargetToday(date('d-m-Y'), $cabang);
 
         $data['cabang'] = $cabang;
 
@@ -69,115 +59,69 @@ class C_infoPasar extends CI_Controller
 
     public function inputInfoPasar()
     {
-        $info = $this->input->post('value-info-pasar-lpt');
-        $cabang = $this->input->post('cabang-input-lpt');
-        $reportid = $this->input->post('reportid-input-lpt');
-        $attachment = $_FILES['input-attachment-market-info-lpt'];
-        $jumlahfile = count($attachment['name']);
 
-        $array = array();
+        $info = $this->input->post('info');
+        $cabang = $this->input->post('cabang');
+        $path = $this->input->post('path');
 
-        for ($i = 0; $i < $jumlahfile; $i++) {
-            $_FILES['file']['name'] = $attachment['name'][$i];
-            $_FILES['file']['type'] = $attachment['type'][$i];
-            $_FILES['file']['tmp_name'] = $attachment['tmp_name'][$i];
-            $_FILES['file']['error'] = $attachment['error'][$i];
-            $_FILES['file']['size'] = $attachment['size'][$i];
+        $info = str_replace("'", "''", $info);
 
-            if ($attachment['name'][$i] != NULL) {
-                $config['upload_path'] = './assets/upload/LaporanPenjualanTR2/InfoPasar';
-                $config['allowed_types'] = 'xls|xlsx|jpg|jpeg|png';
-                $config['max_size']    = '10000';
-
-                $this->load->library('upload', $config);
-
-                if (!is_dir('./assets/upload/LaporanPenjualanTR2/InfoPasar/')) {
-                    mkdir('./assets/upload/LaporanPenjualanTR2/InfoPasar/', 0777, true);
-                    chmod('./assets/upload/LaporanPenjualanTR2/InfoPasar/', 0777);
-                }
-
-                if ($this->upload->do_upload('file')) {
-                    $array[] = base_url() . 'assets/upload/LaporanPenjualanTR2/InfoPasar' . '/' . str_replace(' ', '_', $_FILES['file']['name']);
-                }
-            }
-        }
-
-        $this->insertInfoPasar($reportid, $info, $array);
-        redirect(base_url('laporanPenjualanTR2/Cabang/' . $cabang . '/inputInfoPasar'));
+        $this->M_pusat->insertInfoPasar($info, $cabang, $path);
     }
 
-    public function insertInfoPasar($reportid, $info, $filename)
+    public function inputFileInfoPasar()
     {
-        $pathimg = '';
-        foreach ($filename as $value) {
-            $pathimg = $pathimg . $value . ',';
-        };
+        $config['upload_path'] = './assets/upload/LaporanPenjualanTR2/InfoPasar';
+        $config['allowed_types'] = 'xls|xlsx|jpg|jpeg|png';
+        $config['max_size']    = '10000';
 
-        $pathimg = rtrim($pathimg, ",");
+        $this->load->library('upload', $config);
 
-        $this->M_pusat->insertInfoPasar((int)$reportid, $info, $pathimg);
+        if ($this->upload->do_upload('file')) {
+            $path = base_url() . 'assets/upload/LaporanPenjualanTR2/InfoPasar' . '/' . str_replace(' ', '_', $_FILES['file']['name']);
+            echo json_encode($path);
+        } else {
+            echo json_encode('');
+        }
     }
 
     public function editInfoPasar()
     {
-        $info = $this->input->post('value-info-pasar-lpt');
-        $cabang = $this->input->post('cabang-input-lpt');
-        $reportid = $this->input->post('reportid-input-lpt');
+        $info = $this->input->post('info');
+        $cabang = $this->input->post('cabang');
+        $path = $this->input->post('path');
+        $status = $this->input->post('status');
 
-        $this->M_pusat->editInfoPasar($info, $reportid);
+        $info = str_replace("'", "''", $info);
 
-        redirect(base_url('laporanPenjualanTR2/Cabang/' . $cabang . '/inputInfoPasar'));
+        if ($path == '') {
+            if ($status == '1') {
+                $this->M_pusat->editInfoPasarAndFile($cabang, $info, $path);
+            } else {
+                $this->M_pusat->editInfoPasar($info, $cabang);
+            }
+        } else {
+            $this->M_pusat->editInfoPasarAndFile($cabang, $info, $path);
+        }
     }
 
-    public function editFileInfoPasar()
+    public function viewInfoPasar($cabang, $id)
     {
-        $cabang = $this->input->post('cabang-input-lpt');
-        $reportid = $this->input->post('reportid-input-lpt');
-        $attachment = $_FILES['input-attachment-market-info-lpt'];
-        $jumlahfile = count($attachment['name']);
-        // echo "<pre>";
-        // print_r($_FILES);
-        // die;
-        $array = array();
+        $this->checkSession();
+        $user_id = $this->session->userid;
+        $data['Menu'] = 'Dashboard';
+        $data['SubMenuOne'] = '';
 
-        for ($i = 0; $i < $jumlahfile; $i++) {
-            $_FILES['file']['name'] = $attachment['name'][$i];
-            $_FILES['file']['type'] = $attachment['type'][$i];
-            $_FILES['file']['tmp_name'] = $attachment['tmp_name'][$i];
-            $_FILES['file']['error'] = $attachment['error'][$i];
-            $_FILES['file']['size'] = $attachment['size'][$i];
+        $data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
-            if ($attachment['name'][$i] != NULL) {
-                $config['upload_path'] = './assets/upload/LaporanPenjualanTR2/InfoPasar';
-                $config['allowed_types'] = 'xls|xlsx|jpg|jpeg|png';
-                $config['max_size']    = '10000';
+        $data['infoPasar'] = $this->M_pusat->getViewInfoPasar($id);
+        $data['cabang'] = $cabang;
 
-                $this->load->library('upload', $config);
-
-                if ($this->upload->do_upload('file')) {
-                    $dataarray = $this->upload->data();
-                    $array[] = base_url() . 'assets/upload/LaporanPenjualanTR2/InfoPasar' . '/' . str_replace(' ', '_', $_FILES['file']['name']);
-                } else {
-                    $error = array('error' => $this->upload->display_errors());
-                    echo '<pre>';
-                    print_r($error);
-                    die;
-                }
-            }
-        }
-
-        $pathimg = '';
-        foreach ($array as $value) {
-            $pathimg = $pathimg . $value . ',';
-        };
-
-        $pathimg = rtrim($pathimg, ",");
-        // echo "<pre>";
-        // print_r($pathimg);
-        // die;
-
-        $this->M_pusat->editFileInfoPasar((int)$reportid, $pathimg);
-
-        redirect(base_url('laporanPenjualanTR2/Cabang/' . $cabang . '/inputInfoPasar'));
+        $this->load->view('V_Header', $data);
+        $this->load->view('V_Sidemenu', $data);
+        $this->load->view('LaporanPenjualanTraktor/Cabang/V_viewInfoPasar', $data);
+        $this->load->view('V_Footer', $data);
     }
 }
