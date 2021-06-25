@@ -473,7 +473,7 @@ $(document).ready(function (){
             $(".input-analytics-problem-lpt-cabang").attr('style', 'height:80px')
             $(".input-analytics-rootcause-lpt-cabang").attr('style', 'height:80px')
             $(".input-analytics-action-lpt-cabang").attr('style', 'height:80px')
-            $(".input-analytics-duedate-lpt-cabang").attr('style', 'margin-bottom:10px;')
+            $(".input-analytics-duedate-lpt-cabang").attr('style', 'margin-bottom:8px;')
             Swal.fire({
                 type: 'warning',
                 title: 'Yakin ?',
@@ -485,7 +485,7 @@ $(document).ready(function (){
             .then(function(isConfirm) {
                 if (isConfirm.value) {
                     $.ajax({
-                        url:baseurl + "laporanPenjualanTR2/inputAnalisa",
+                        url:baseurl + "laporanPenjualanTR2/editAnalisa",
                         type: 'POST',
                         data: {
                             problem:problem,
@@ -528,18 +528,87 @@ $(document).ready(function (){
         }
     })
 
-    $(".input-attachment-lpt").on('change', function(){
-        var id = parseInt($(this).data('id'))
-        id++
-        if(id != 5){
-            $(".ial-"+id).attr('style', 'margin:10px 0')
-        }
+    var cra = $("#table-list-analys-lpt tbody tr").length
+
+    for ($i = 0; $i < cra; $i++) {
+        var analytics = $(".text-list-analys-month-lpt-"+$i).html()
+
+        if (analytics.length > 120) {
+                var analyticsFinal = analytics.replace(analytics.substring(110, analytics.length), " ... ")
+                $('.text-list-analys-month-lpt-'+$i).html(analyticsFinal)
+            } else {
+                $('.text-list-analys-month-lpt-'+$i).html(analytics)
+            }
+    }
+
+    $(".button-input-info-pasar-lpt").on('click', function(){
+        var file_data = $('.input-attachment-market-info-lpt').prop('files')[0];   
+        var form_data = new FormData();                  
+        form_data.append('file', file_data);
+        var info = $('.value-info-pasar-lpt').val()
+        var cabang = $('#cabang-input-lpt').val()
+
+        $.ajax({
+            url: baseurl + 'laporanPenjualanTR2/inputFileInfoPasar',
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: form_data,                         
+            type: 'post',
+            dataType: 'json',
+            beforeSend: function () {
+                Swal.fire({
+                    allowOutsideClick: false,
+                    html: 'Upload File ...',
+                    onBeforeOpen: () => {
+                        Swal.showLoading()
+                    },
+                })
+            },
+            success: function(response){
+                $.ajax({
+                    url: baseurl + "laporanPenjualanTR2/inputInfoPasar",
+                    type: 'POST',
+                    data: {
+                        cabang:cabang,
+                        info:info,
+                        path:response
+                    },
+                    beforeSend: function () {
+                        Swal.fire({
+                            allowOutsideClick: false,
+                            html: 'Upload Info Pasar ...',
+                            onBeforeOpen: () => {
+                                Swal.showLoading()
+                            },
+                        })
+                    },
+                    success: function(){
+                        Swal.fire({
+                            title: 'Finished!',
+                            type: 'success',
+                            html: 'Behasil Input Info Pasar',
+                            allowOutsideClick: true,
+                            confirmButtonText: 'OK',
+                            showConfirmButton: true
+                        })
+                        .then(function(isConfirm) {
+                            if (isConfirm.value) {
+                                window.location.reload();
+                            }else {
+                                window.location.reload();
+                            }
+                        })
+                    }
+                })
+            }
+        })
     })
 
-    $(".button-edit-info-pasar-lpt").on("click", function(){
+    $(".button-edit-input-info-pasar-lpt").on('click', function () {
         Swal.fire({
-            type: 'warning',
             title: 'Edit ?',
+            type: 'warning',
             confirmButtonText: 'Edit',
             cancelButtonText: 'Cancel',
             showCancelButton: true
@@ -547,26 +616,152 @@ $(document).ready(function (){
         .then(function(isConfirm) {
             if (isConfirm.value) {
                 $(".value-info-pasar-lpt").removeAttr('disabled')
-                $(".button-save-edit-info-pasar-lpt").attr('style', 'margin-left:10px;')
+                $(".input-replace-attachment-info-pasar-lpt").attr('style', 'display:none')
+                $(".input-attachment-lpt").removeAttr('style')
+                $(".button-save-edit-input-info-pasar-lpt").attr('style','margin-left:8px;')
+                $(".button-remove-file-attachment").removeAttr('style')
             }
         })
     })
 
-    $(".button-edit-attachment-info-pasar-lpt").on("click", function(){
+    $(".button-remove-file-attachment").on('click', function() {
         Swal.fire({
+            title: 'Hapus?',
             type: 'warning',
-            title: 'Edit ?',
-            html: 'semua file akan dihapus, upload ulang semua file',
-            confirmButtonText: 'Edit',
-            cancelButtonText: 'Cancel',
-            showCancelButton: true
+            confirmButtonText: 'Hapus',
+            showCancelButton: true,
+            cancelButtonText: 'Cancel'
         })
         .then(function(isConfirm) {
-            if (isConfirm.value) {
-                $(".file-attachment-info-pasar-lpt").remove()
-                $("#input-edit-file-attachment-info-pasar-lpt").removeAttr('style')
-                $(".button-save-edit-attachment-info-pasar-lpt").attr('style', 'margin-left:10px')
+            if(isConfirm.value){
+                $(".file-attachment-info-pasar-lpt").attr('style', 'display:none;')
+                $(".input-attachment-lpt-in").removeAttr('style')
+                $(".button-save-edit-input-info-pasar-lpt").attr('data-statusfile','1')
             }
         })
+    })
+
+    $(".button-save-edit-input-info-pasar-lpt").on('click', function() {
+        var file_data = $('.input-attachment-market-info-lpt').prop('files')[0];   
+        var form_data = new FormData();                  
+        form_data.append('file', file_data);
+        var info = $('.value-info-pasar-lpt').val()
+        var cabang = $('#cabang-input-lpt').val()
+        var status = $(this).data('statusfile')
+
+        $.ajax({
+            url: baseurl + 'laporanPenjualanTR2/inputFileInfoPasar',
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: form_data,                         
+            type: 'post',
+            dataType: 'json',
+            beforeSend: function () {
+                Swal.fire({
+                    allowOutsideClick: false,
+                    html: 'Upload File ...',
+                    onBeforeOpen: () => {
+                        Swal.showLoading()
+                    },
+                })
+            },
+            success: function(response){
+                $.ajax({
+                    url: baseurl + "laporanPenjualanTR2/editInputInfoPasar",
+                    type: 'POST',
+                    data: {
+                        cabang:cabang,
+                        info:info,
+                        path:response,
+                        status:status
+                    },
+                    beforeSend: function () {
+                        Swal.fire({
+                            allowOutsideClick: false,
+                            html: 'Edit Info Pasar ...',
+                            onBeforeOpen: () => {
+                                Swal.showLoading()
+                            },
+                        })
+                    },
+                    success: function(){
+                        Swal.fire({
+                            title: 'Finished!',
+                            type: 'success',
+                            html: 'Behasil Edit Info Pasar',
+                            allowOutsideClick: true,
+                            confirmButtonText: 'OK',
+                            showConfirmButton: true
+                        })
+                        .then(function(isConfirm) {
+                            if (isConfirm.value) {
+                                window.location.reload();
+                            }else {
+                                window.location.reload();
+                            }
+                        })
+                    }
+                })
+            }
+        })
+    })
+
+    $("#button-login-view-lpt").on('click', function(){
+        var username = $("#username-login-lpt").val()
+        var password = $("#password-login-lpt").val()
+
+        if (username == '' || password == '') {
+            if(username == '' && password == '') {
+                $("#username-login-lpt").attr('style','border:none;background-color:#f7f7f7;outline:1px solid red')
+                $("#password-login-lpt").attr('style','border:none;background-color:#f7f7f7;outline:1px solid red')
+            } else {
+            if(username == '') {
+                $("#username-login-lpt").attr('style','border:none;background-color:#f7f7f7;outline:1px solid red')
+            } 
+            if (password == '') {
+                $("#password-login-lpt").attr('style','border:none;background-color:#f7f7f7;outline:1px solid red')
+            }}
+        } else {
+                $("#username-login-lpt").attr('style','border:none;background-color:#f7f7f7;')
+                $("#password-login-lpt").attr('style','border:none;background-color:#f7f7f7;')
+            $.ajax({
+                url: 'laporanPenjualanTraktor/login',
+                type: 'post',
+                dataType: 'json',
+                data: {
+                    username : username,
+                    password : password
+                },
+                beforeSend: function () {
+                    $("#content-input-uspas-lpt").attr('style','display:none;padding:30px')
+                    $("#loading-login-lpt").attr('style','width:100%;height:100%;')
+                },
+                success: function(response){
+                    if(response){
+                        window.location.href = "laporanPenjualanTraktor/logined"
+                    } else {
+                        $("#content-input-uspas-lpt").attr('style','padding:30px')
+                        $("#loading-login-lpt").attr('style','display:none')
+                        $("#password-login-lpt").val('')
+
+                        const toastMTA_ = (type, message) => {
+                            Swal.mixin({
+                                toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 4000
+                            }).fire({
+                                customClass: 'swal-font-small',
+                                type: type,
+                                title: message
+                            })
+                        }
+
+                        toastMTA_('warning', 'Username atau Password Salah');
+                    }
+                }
+            })
+        }
     })
 })

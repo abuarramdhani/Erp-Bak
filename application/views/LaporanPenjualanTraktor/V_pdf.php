@@ -143,7 +143,7 @@ th {
             </td>
             <td>
                 <center><?php if ($row['TARGET'] != 0) {
-                                echo round(($row['TOTAL'] * 100) / $row['TARGET'], 2) . " %";
+                                echo $row['PERBANDINGAN_TOTAL'];
                             } ?></center>
             </td>
         </tr>

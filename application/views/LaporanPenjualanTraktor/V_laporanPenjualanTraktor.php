@@ -140,7 +140,7 @@
                                 </td>
                                 <td>
                                     <center><?php if ($row['TARGET'] != 0) {
-                                                    echo round(($row['TOTAL'] * 100) / $row['TARGET'], 2) . " %";
+                                                    echo $row['PERBANDINGAN_TOTAL'];
                                                 } ?></center>
                                 </td>
                             </tr>
@@ -756,13 +756,24 @@
                 </div>
                 <!-- Button export -->
                 <div style="margin-bottom:50px;display:flex;justify-content:center;">
-                    <a class="btn btn-danger" href="<?= base_url('laporanPenjualanTraktor/exportPdf') ?>"><i
+                    <a class="btn btn-danger" href="<?= base_url('laporanPenjualanTR2/exportPdf/' . $cabang) ?>"><i
                             class="fa fa-file-pdf-o" aria-hidden="true"></i><b>&ensp;PDF</b></a>
-                    <a class="btn btn-success" href="<?= base_url('laporanPenjualanTraktor/exportExcel') ?>"
+                    <a class="btn btn-success" href="<?= base_url('laporanPenjualanTR2/exportExcel/' . $cabang) ?>"
                         style="margin-left: 15px;"><i class="fa fa-file-excel-o"
                             aria-hidden="true"></i><b>&ensp;Excel</b></a>
-                    <a class="btn btn-primary" href="<?= base_url() ?>" style="margin-left: 15px;"><i class="fa fa-edit"
-                            aria-hidden="true"></i><b>&ensp;Input</b></a>
+                    <?php if ($statusView == 1) { ?>
+                    <a class="btn" href="<?php if ($cabang == 'Pusat') {
+                                                    echo base_url('laporanPenjualanTR2/Pusat');
+                                                } else {
+                                                    echo base_url('laporanPenjualanTR2/Cabang/' . $cabang);
+                                                } ?>" style="margin-left: 15px;color:white;background-color:#4C575E"><i
+                            class="fa fa-arrow-left" aria-hidden="true"></i><b>&ensp;Kembali</b></a>
+                    <?php }
+                    if ($statusButton == 0) { ?>
+                    <a class="btn" href="<?= base_url('laporanPenjualanTraktor/logoutFromView') ?>"
+                        style="margin-left: 15px;color:white;background-color:#4C575E">Logout From
+                        View</a>
+                    <?php } ?>
                 </div>
             </div>
         </div>
