@@ -59,7 +59,8 @@ $('.select-handling').change(function(){
         success: function (result) {
           if (result != 0) {
             $('.presentase_rta').html(result);
-            $('#presentase_all').text(`Presentase seluruh data temuan audite`);
+            $('#presentase_all_co').text(`Presentase Open Close seluruh data temuan audite`);
+            $('#presentase_all_pp').text(`Presentase Poin Penyimpangan seluruh data temuan audite`);
             $('.rta_handling_area').html(``);
           }else if (result == 0) {
             $('.presentase_rta').html(`<div style ="width: 70%;margin:auto;height: 30%;background: #fff;overflow: hidden;z-index: 9999;padding:20px 0 30px 0;border-radius:10px;text-align:center">
@@ -101,7 +102,8 @@ const presentase_rta = () =>{
     success: function (result) {
       if (result != 0) {
         $('.presentase_rta').html(result);
-        $('#presentase_seksi').text(`Presentase data temuan audite area ${seksi_handling}`);
+        $('#presentase_seksi_co').text(`Presentase Open Close temuan audite area ${seksi_handling}`);
+        $('#presentase_seksi_pp').text(`Presentase Poin Penyimpangan temuan audite area ${seksi_handling}`);
         rta_presentase = null;
       }else if (result == 0) {
         $('.presentase_rta').html(`<div style ="width: 70%;margin:auto;height: 30%;background: #fff;overflow: hidden;z-index: 9999;padding:20px 0 30px 0;border-radius:10px;text-align:center">

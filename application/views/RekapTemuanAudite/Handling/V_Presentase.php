@@ -1,5 +1,5 @@
 <div style="margin-bottom:20px">
-  <center><b style="font-size:17px" id="presentase_all"></b></center>
+  <center><b style="font-size:17px" id="presentase_all_co"></b></center>
 </div>
 <table style="width:100%">
     <?php $all_temuan = $getJumlahGeneralAudite[0]['jumlah_general'];?>
@@ -19,7 +19,10 @@
       </tr>
     </tbody>
 </table>
-<table style="width:100%;margin-top:15px">
+<div style="margin-top:20px">
+  <center><b style="font-size:17px" id="presentase_all_pp"></b></center>
+</div>
+<table style="width:100%">
   <tbody>
     <?php foreach ($getGeneralPoinPenyimpangan as $key => $pp): //$i = 0;?>
     <tr>
