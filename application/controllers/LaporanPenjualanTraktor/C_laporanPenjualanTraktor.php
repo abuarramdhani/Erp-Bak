@@ -133,6 +133,8 @@ class C_laporanPenjualanTraktor extends CI_Controller
                 $totalDaily = $subdata;
             }
 
+            $totalDaily['TOTAL_TARGET'] = number_format(($totalDaily['TOTAL'] * 100) / $totalDaily['TARGET'], 2, '.', '');
+
             $data['totalDaily'] = $totalDaily;
 
             // mencari nilai total dari Laporan Penjualan Per Tipe Harian

@@ -197,7 +197,7 @@
                                 <td>
                                     <center>
                                         <b><?php if ($totalDaily['TARGET'] != 0) {
-                                                echo round(($totalDaily['TOTAL'] * 100) / $totalDaily['TARGET'], 2) . " %";
+                                                echo $totalDaily['TOTAL_TARGET'] . " %";
                                             } ?></b>
                                     </center>
                                 </td>
