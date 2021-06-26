@@ -46,10 +46,77 @@ $('.select-handling').change(function(){
     $('#handlingRTA').removeAttr("disabled");
   }else {
     $('#handlingRTA').attr("disabled", true);
+    setTimeout(function () {
+      $.ajax({
+        url: baseurl + 'RekapTemuanAudite/Handling/getGeneralPresentase',
+        type: 'POST',
+        data:{},
+        beforeSend: function () {
+          $('.presentase_rta').html(`<div style ="width: 70%;margin:auto;height: 30%;background: #fff;overflow: hidden;z-index: 9999;padding:20px 0 30px 0;border-radius:10px;text-align:center">
+                                      <img style="width: 12%;" src="${baseurl}/assets/img/gif/loading14.gif">
+                                  </div>`);
+        },
+        success: function (result) {
+          if (result != 0) {
+            $('.presentase_rta').html(result);
+            $('#presentase_all').text(`Presentase seluruh data temuan audite`);
+            $('.rta_handling_area').html(``);
+          }else if (result == 0) {
+            $('.presentase_rta').html(`<div style ="width: 70%;margin:auto;height: 30%;background: #fff;overflow: hidden;z-index: 9999;padding:20px 0 30px 0;border-radius:10px;text-align:center">
+                                      <i class="fa fa-remove" style="color:#d60d00;font-size:45px;"></i><br>
+                                      <h3 style="font-size:14px;font-weight:bold">Tidak ada data Temuan Audite</h3>
+                                  </div>`);
+          }
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+          console.log();
+        }
+      })
+    }, 150);
   }
 })
 
-let rta_handling = null;
+let rta_handling, rta_presentase = null;
+
+const presentase_rta = () =>{
+  let seksi_handling = $('.select-handling').val();
+
+  if (rta_presentase != null) {
+    rta_presentase.abort();
+    toastRTA_('Warning', 'Data Request Canceled');
+  }
+
+  rta_presentase = $.ajax({
+    url: baseurl + 'RekapTemuanAudite/Handling/getSeksiPresentase',
+    type: 'POST',
+    data: {
+      seksi_handling: seksi_handling,
+    },
+    cache:false,
+    beforeSend: function () {
+      $('.presentase_rta').html(`<div style ="width: 70%;margin:auto;height: 30%;background: #fff;overflow: hidden;z-index: 9999;padding:20px 0 30px 0;border-radius:10px;text-align:center">
+                                  <img style="width: 12%;" src="${baseurl}/assets/img/gif/loading14.gif">
+                              </div>`);
+    },
+    success: function (result) {
+      if (result != 0) {
+        $('.presentase_rta').html(result);
+        $('#presentase_seksi').text(`Presentase data temuan audite area ${seksi_handling}`);
+        rta_presentase = null;
+      }else if (result == 0) {
+        $('.presentase_rta').html(`<div style ="width: 70%;margin:auto;height: 30%;background: #fff;overflow: hidden;z-index: 9999;padding:20px 0 30px 0;border-radius:10px;text-align:center">
+                                  <i class="fa fa-remove" style="color:#d60d00;font-size:45px;"></i><br>
+                                  <h3 style="font-size:14px;font-weight:bold">Tidak ada data Temuan Audite</h3>
+                              </div>`);
+        rta_presentase = null;
+      }
+    },
+    error: function (XMLHttpRequest, textStatus, errorThrown) {
+      console.log();
+      rta_presentase = null;
+    }
+  })
+}
 
 const handling_rta = () =>{
   let seksi_handling = $('.select-handling').val();
@@ -75,7 +142,7 @@ const handling_rta = () =>{
     success: function(result) {
       if (result != 0) {
         $('.rta_handling_area').html(result);
-        $('#top').text(`Menampilkan Daftar Temuan Audite ${seksi_handling}`);
+        $('#top').text(`Daftar Temuan Audite ${seksi_handling}`);
         toastRTA_('success', 'Success Load Data');
         rta_handling = null;
       }else if (result == 0) {

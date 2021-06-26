@@ -81,6 +81,16 @@ class M_handling extends CI_Model
                       ORDER BY avhj.last_update_date DESC, avht.id DESC, avhj.id DESC LIMIT 3")->result_array();
   }
 
+  public function getSaranaHandling()
+  {
+    return $this->db->query("SELECT avhs.id id,
+                             avhs.sarana_handling sarana,
+                             avhs.last_update_date last_update_date,
+                             avhs.last_update_by last_update_by
+                      FROM avh.avh_sarana avhs
+                      ORDER BY id")->result_array();
+  }
+
   public function gambarHandlingPDF($id_temuan)
   {
     return $this->db->query("SELECT avht.foto_before foto_before,
@@ -90,5 +100,55 @@ class M_handling extends CI_Model
                       LEFT JOIN avh.avh_jawaban avhj ON avht.id_jawaban = avhj.id
                       WHERE avht.id = '$id_temuan'
                       ORDER BY avht.id DESC, avhj.id DESC LIMIT 1")->result_array();
+  }
+
+  public function getJumlahGeneralAudite()
+  {
+    return $this->db->query("SELECT count(*) AS jumlah_general FROM avh.avh_audit")->result_array();
+  }
+
+  public function getStatusGeneralAudite()
+  {
+    return $this->db->query("SELECT status,
+                             count(*) jumlah_per_status,
+                             round(count(*) * 100.00 / (select count(*) FROM avh.avh_audit),2)||'%' persen_per_status
+                             FROM avh.avh_audit
+                             GROUP BY status
+                             ORDER BY status DESC")->result_array();
+  }
+
+  public function getGeneralPoinPenyimpangan()
+  {
+    return $this->db->query("SELECT poin_penyimpangan,
+                             count(*) jumlah_per_pp,
+                             round(count(*) * 100.00 / (select count(*) FROM avh.avh_audit),2)||'%' persen_per_pp
+                             FROM avh.avh_audit
+                             GROUP BY poin_penyimpangan
+                             ORDER BY poin_penyimpangan")->result_array();
+  }
+
+  public function getJumlahSeksiAudite($seksi_handling)
+  {
+    return $this->db->query("SELECT count(*) AS jumlah_seksi FROM avh.avh_audit WHERE area = '$seksi_handling'")->result_array();
+  }
+
+  public function getStatusSeksiAudite($seksi_handling)
+  {
+    return $this->db->query("SELECT status,
+                             count(*) jumlah_per_status_seksi,
+                             round(count(*) * 100.00 / (select count(*) FROM avh.avh_audit WHERE area = '$seksi_handling'),2)||'%' persen_per_status_seksi
+                             FROM avh.avh_audit WHERE area = '$seksi_handling'
+                             GROUP BY status
+                             ORDER BY status DESC")->result_array();
+  }
+
+  public function getSeksiPoinPenyimpangan($seksi_handling)
+  {
+    return $this->db->query("SELECT poin_penyimpangan,
+                             count(*) jumlah_per_pp_seksi,
+                             round(count(*) * 100.00 / (select count(*) FROM avh.avh_audit WHERE area = '$seksi_handling'),2)||'%' persen_per_pp_seksi
+                             FROM avh.avh_audit WHERE area = '$seksi_handling'
+                             GROUP BY poin_penyimpangan
+                             ORDER BY poin_penyimpangan")->result_array();
   }
 }

@@ -56,11 +56,40 @@ class C_Handling extends CI_Controller
     $this->load->view('V_Footer', $data);
   }
 
+  public function getGeneralPresentase()
+  {
+    $data['getStatusGeneralAudite'] = $this->M_handling->getStatusGeneralAudite();
+    $data['getGeneralPoinPenyimpangan'] = $this->M_handling->getGeneralPoinPenyimpangan();
+    $data['getJumlahGeneralAudite'] = $this->M_handling->getJumlahGeneralAudite();
+    // echo "<pre>";print_r($data['getGeneralPoinPenyimpangan']);die;
+    if (!empty($data['getGeneralPoinPenyimpangan'])) {
+      $this->load->view('RekapTemuanAudite/Handling/V_Presentase', $data);
+    }
+    else {
+      echo 0;
+    }
+    // echo "<pre>";print_r($data['getJumlahGeneralAudite']);die;
+  }
+
+  public function getSeksiPresentase()
+  {
+    $seksi_handling = $this->input->post('seksi_handling');
+    $data['getJumlahSeksiAudite'] = $this->M_handling->getJumlahSeksiAudite($seksi_handling);
+    $data['getStatusSeksiAudite'] = $this->M_handling->getStatusSeksiAudite($seksi_handling);
+    $data['getSeksiPoinPenyimpangan'] = $this->M_handling->getSeksiPoinPenyimpangan($seksi_handling);
+    // echo "<pre>";print_r($data['getSeksiPoinPenyimpangan']);print_r($data['getJumlahSeksiAudite']);die;
+    if (!empty($data['getSeksiPoinPenyimpangan'])) {
+      $this->load->view('RekapTemuanAudite/Handling/V_PresentaseSeksi', $data);
+    }
+    else {
+      echo 0;
+    }
+  }
+
   public function getDataAudite()
   {
     $seksi_handling = $this->input->post('seksi_handling');
     $data['getDataAudite'] = $this->M_handling->getDataAudite($seksi_handling);
-    // echo "<pre>";print_r($data['getDataAudite']);die;
     if (!empty($data['getDataAudite'])) {
       $this->load->view('RekapTemuanAudite/Handling/V_DaftarTemuanAudite',$data);
     }else {
@@ -107,7 +136,8 @@ class C_Handling extends CI_Controller
 
     $data['handlingPdf'] = $this->M_handling->handlingPDF($id_audit);
     $data['gambarHandlingPdf'] = $this->M_handling->gambarHandlingPDF($id_temuan);
-    // echo "<pre>";print_r($data['handlingPdf']);die;
+    $data['getSaranaHandling'] = $this->M_handling->getSaranaHandling();
+    // echo "<pre>";print_r($data['getSaranaHandling']);die;
     $pdf = $this->pdf->load();
     $pdf = new mPDF('utf-8', array(210,297), 0, 'calibri', 3, 3, 5, 0, 0, 0);
     ob_end_clean();

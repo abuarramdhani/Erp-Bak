@@ -144,6 +144,10 @@ class C_Handling extends CI_Controller
       // $config['quality']        = 60;
       // $config['max_size']       = 5000;
       $this->upload->initialize($config);
+      if (!is_dir('./assets/upload/MenjawabTemuanAudite/Handling/')) {
+          mkdir('./assets/upload/MenjawabTemuanAudite/Handling/', 0777, true);
+          chmod('./assets/upload/MenjawabTemuanAudite/Handling', 0777);
+      }
 
       if (!empty($_FILES['foto_after']['name'][$i])) {
         $_FILES['file']['name'] = $_FILES['foto_after']['name'][$i];
@@ -222,7 +226,8 @@ class C_Handling extends CI_Controller
 
     $data['handlingPdf'] = $this->M_handling->handlingPDF($id_audit);
     $data['gambarHandlingPdf'] = $this->M_handling->gambarHandlingPDF($id_temuan);
-    // echo "<pre>";print_r($data['handlingPdf']);die;
+    $data['getSaranaHandling'] = $this->M_handling->getSaranaHandling();
+    // echo "<pre>";print_r($data['getSaranaHandling']);die;
     $pdf = $this->pdf->load();
     $pdf = new mPDF('utf-8', array(210,297), 0, 'calibri', 3, 3, 5, 0, 0, 0);
     ob_end_clean();
@@ -264,7 +269,6 @@ class C_Handling extends CI_Controller
     $insert = $this->M_handling->insPoinPenyimpangan($data);
     echo json_encode($insert);
 
-    redirect(site_url('MenjawabTemuanAudite/Handling/viewPoinPenyimpangan'));
   }
 
   public function getPoinPenyimpangan()
@@ -278,10 +282,10 @@ class C_Handling extends CI_Controller
     }
   }
 
-  public function deletePoinPenyimpangan($id)
+  public function deletePoinPenyimpangan()
   {
+    $id = $this->input->post('id');
     $this->M_handling->deletePoinPenyimpangan($id);
-    redirect(site_url('MenjawabTemuanAudite/Handling/viewPoinPenyimpangan'));
   }
 
   public function getPP()
@@ -305,5 +309,52 @@ class C_Handling extends CI_Controller
     // echo $last_update_by, "<br>";
     // die;
     $this->M_handling->updatePP($id,$poin,$last_update_date,$last_update_by);
+  }
+
+  public function insertSaranaHandling()
+  {
+    $data = [
+      'sarana_handling' => $this->input->post('sarana_handling'),
+      'last_update_date' => date('Y-m-d H:i:s'),
+      'last_update_by' => $this->session->user,
+    ];
+    $insert = $this->M_handling->insSaranaHandling($data);
+    echo json_encode($insert);
+  }
+
+  public function getSaranaHandling()
+  {
+    $data['getSaranaHandling'] = $this->M_handling->getSaranaHandling();
+    // echo "<pre>";print_r($data['getSaranaHandling']);die;
+    if (!empty($data['getSaranaHandling'])) {
+      $this->load->view('MenjawabTemuanAudite/Handling/V_TableSaranaHandling', $data);
+    }else {
+      echo 0;
+    }
+  }
+
+  public function deleteSaranaHandling()
+  {
+    $id = $this->input->post('id');
+    // echo $id;die;
+    $this->M_handling->deleteSaranaHandling($id);
+  }
+
+  public function getSH()
+  {
+    $id = $this->input->post('id');
+    $data['getSH'] = $this->M_handling->getSH($id);
+    // echo "<pre>";print_r($data['getSH']);die;
+    $this->load->view('MenjawabTemuanAudite/Handling/V_DetailSH', $data);
+  }
+
+  public function updateSH()
+  {
+    $id = $this->input->post('id');
+    $sarana_handling = $this->input->post('sarana_handling');
+    $last_update_date = date('Y-m-d H:i:s');
+    $last_update_by = $this->session->user;
+
+    $this->M_handling->updateSH($id, $sarana_handling, $last_update_date, $last_update_by);
   }
 }

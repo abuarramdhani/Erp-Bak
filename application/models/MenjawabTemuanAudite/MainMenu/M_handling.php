@@ -254,6 +254,11 @@ class M_handling extends CI_Model
     return $this->db->insert('avh.avh_penyimpangan', $data);
   }
 
+  public function insSaranaHandling($data)
+  {
+    return $this->db->insert('avh.avh_sarana', $data);
+  }
+
   public function getPoinPenyimpangan()
   {
     return $this->db->query("SELECT avhp.id id,
@@ -265,9 +270,25 @@ class M_handling extends CI_Model
                       ")->result_array();
   }
 
+  public function getSaranaHandling()
+  {
+    return $this->db->query("SELECT avhs.id id,
+                             avhs.sarana_handling sarana,
+                             avhs.last_update_date last_update_date,
+                             avhs.last_update_by last_update_by
+                      FROM avh.avh_sarana avhs
+                      ORDER BY id
+                      ")->result_array();
+  }
+
   public function deletePoinPenyimpangan($id)
   {
     return $this->db->query("DELETE FROM avh.avh_penyimpangan WHERE id = '$id'");
+  }
+
+  public function deleteSaranaHandling($id)
+  {
+    return $this->db->query("DELETE FROM avh.avh_sarana WHERE id = '$id'");
   }
 
   public function getPP($id)
@@ -280,10 +301,29 @@ class M_handling extends CI_Model
                       WHERE id = '$id'")->row_array();
   }
 
+  public function getSH($id)
+  {
+    return $this->db->query("SELECT avhs.id id,
+                             avhs.sarana_handling sarana,
+                             avhs.last_update_date last_update_date,
+                             avhs.last_update_by last_update_by
+                      FROM avh.avh_sarana avhs
+                      WHERE id = '$id'")->row_array();
+  }
+
   public function updatePP($id, $poin, $last_update_date, $last_update_by)
   {
     return $this->db->query("UPDATE avh.avh_penyimpangan
                       SET poin = '$poin',
+                          last_update_date = '$last_update_date',
+                          last_update_by = '$last_update_by'
+                      WHERE id = '$id'");
+  }
+
+  public function updateSH($id, $sarana_handling, $last_update_date, $last_update_by)
+  {
+    return $this->db->query("UPDATE avh.avh_sarana
+                      SET sarana_handling = '$sarana_handling',
                           last_update_date = '$last_update_date',
                           last_update_by = '$last_update_by'
                       WHERE id = '$id'");

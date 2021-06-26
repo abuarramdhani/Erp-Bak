@@ -160,7 +160,7 @@ $('.select-handling').change(function(){
 //   }
 // })
 
-let mta_handling, poin_penyimpangan = null;
+let mta_handling, poin_penyimpangan, sarana = null;
 
 const handling_mta = () =>{
   let area_handling = $('#area_handling').val();
@@ -252,7 +252,134 @@ const poin_penyimpangan_handling = () =>{
       }
     })
   }, 50);
-  // console.log(area_handling);
+}
+
+const sarana_handling = () => {
+  if (sarana != null) {
+    sarana.abort();
+  }
+
+  setTimeout(function () {
+    sarana = $.ajax({
+      url: baseurl + 'MenjawabTemuanAudite/Handling/getSaranaHandling',
+      type: 'POST',
+      data:{},
+      beforeSend: function () {
+        $('.area_sarana_handling').html(`<div style ="width: 70%;margin:auto;height: 30%;background: #fff;overflow: hidden;z-index: 9999;padding:20px 0 30px 0;border-radius:10px;text-align:center">
+                                    <img style="width: 12%;" src="${baseurl}assets/img/gif/loading14.gif"><br>
+                                    <span style="font-size:13px;font-weight:bold;margin-top:5px">Data sedang dimuat...</span>
+                                </div>`);
+      },
+      success: function (result) {
+        if (result != 0) {
+          $('.area_sarana_handling').html(result);
+          sarana = null;
+        }else if (result == 0) {
+          $('.area_sarana_handling').html(`<div style ="width: 70%;margin:auto;height: 30%;background: #fff;overflow: hidden;z-index: 9999;padding:20px 0 30px 0;border-radius:10px;text-align:center">
+                                    <i class="fa fa-remove" style="color:#d60d00;font-size:45px;"></i><br>
+                                    <h3 style="font-size:14px;font-weight:bold">Tidak ada data Sarana Handling</h3>
+                                </div>`);
+          sarana = null;
+        }else {
+          sarana = null;
+        }
+      },
+      eror: function (XMLHttpRequest, textStatus, errorThrown) {
+        console.log();
+        sarana = null;
+      }
+    })
+  }, 50);
+}
+
+function insPP() {
+  var data = $('[name=poin_penyimpangan]').val();
+  if (data != '') {
+  $.ajax({
+    url: baseurl + 'MenjawabTemuanAudite/Handling/insertPoinPenyimpangan',
+    type: 'POST',
+    data: {
+      poin_penyimpangan: data,
+    },
+    Cache: false,
+    success: function () {
+      $('[name=poin_penyimpangan]').val('');
+      $.ajax({
+        url: baseurl + 'MenjawabTemuanAudite/Handling/getPoinPenyimpangan',
+        type: 'POST',
+        data: {},
+        cache: false,
+        beforeSend: function () {
+          $('.area_poin_penyimpangan').html(`<div style ="width: 70%;margin:auto;height: 30%;background: #fff;overflow: hidden;z-index: 9999;padding:20px 0 30px 0;border-radius:10px;text-align:center">
+                                      <img style="width: 12%;" src="${baseurl}assets/img/gif/loading14.gif"><br>
+                                      <span style="font-size:13px;font-weight:bold;margin-top:5px">Data sedang dimuat...</span>
+                                  </div>`);
+        },
+        success: function (result) {
+          $('.area_poin_penyimpangan').html(result);
+          toastMTA_('success', 'Berhasil Menambahkan Data');
+        },
+        eror: function (XMLHttpRequest, textStatus, errorThrown) {
+          console.log();
+        }
+      })
+    }
+  })
+}else {
+  Swal.fire({
+    title: "Data is Empty",
+    text: "Please fill out the input field !",
+    type: "info",
+    showConfirmButton: false,
+    timer: 1750,
+    width: 400,
+    allowOutsideClick: false
+  })
+}
+}
+
+function deletePP(id) {
+  Swal.fire({
+    title: 'Are you sure?',
+    text: "You won't be able to revert this!",
+    type: 'question',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes'
+  }).then((result) => {
+    if (result.value) {
+      $.ajax({
+        url: baseurl + 'MenjawabTemuanAudite/Handling/deletePoinPenyimpangan',
+        type: 'POST',
+        data: {
+          id: id,
+        },
+        cache: false,
+        success: function () {
+          $.ajax({
+            url: baseurl + 'MenjawabTemuanAudite/Handling/getPoinPenyimpangan',
+            type: 'POST',
+            data: {},
+            cache: false,
+            beforeSend: function () {
+              $('.area_poin_penyimpangan').html(`<div style ="width: 70%;margin:auto;height: 30%;background: #fff;overflow: hidden;z-index: 9999;padding:20px 0 30px 0;border-radius:10px;text-align:center">
+                                          <img style="width: 12%;" src="${baseurl}assets/img/gif/loading14.gif"><br>
+                                          <span style="font-size:13px;font-weight:bold;margin-top:5px">Data sedang dimuat...</span>
+                                      </div>`);
+            },
+            success: function (result) {
+              $('.area_poin_penyimpangan').html(result);
+              toastMTA_('success', 'Data Berhasil Dihapus');
+            },
+            eror: function (XMLHttpRequest, textStatus, errorThrown) {
+              console.log();
+            }
+          })
+        }
+      })
+    }
+  })
 }
 
 function updatePP() {
@@ -267,7 +394,6 @@ function updatePP() {
     },
     cache: false,
     success: function () {
-      toastMTA_('success', 'Data Berhasil Diupdate');
       $('#editpp').modal('hide');
       setTimeout(function () {
         poin_penyimpangan = $.ajax({
@@ -282,26 +408,149 @@ function updatePP() {
                                     </div>`);
           },
           success: function(result) {
-            if (result != 0) {
               $('.area_poin_penyimpangan').html(result);
-              poin_penyimpangan = null;
-            }else if (result == 0) {
-              $('.area_poin_penyimpangan').html(`<div style ="width: 70%;margin:auto;height: 30%;background: #fff;overflow: hidden;z-index: 9999;padding:20px 0 30px 0;border-radius:10px;text-align:center">
-                                        <i class="fa fa-remove" style="color:#d60d00;font-size:45px;"></i><br>
-                                        <h3 style="font-size:14px;font-weight:bold">Tidak ada data Poin Penyimpangan</h3>
-                                    </div>`);
-              poin_penyimpangan = null;
-            }else {
-              poin_penyimpangan = null;
-            }
+              toastMTA_('success', 'Data Berhasil Diupdate');
           },
           eror: function (XMLHttpRequest, textStatus, errorThrown) {
             console.log();
-            poin_penyimpangan = null;
           }
         })
       }, 400);
     },
+  })
+}
+
+function insSH() {
+  var data = $('[name=sarana_handling]').val();
+  if (data != '') {
+    $.ajax({
+      url: baseurl + 'MenjawabTemuanAudite/Handling/insertSaranaHandling',
+      type: 'POST',
+      data: {
+        sarana_handling: data,
+      },
+      cache: false,
+      success: function () {
+        $.ajax({
+          url: baseurl + 'MenjawabTemuanAudite/Handling/getSaranaHandling',
+          type: 'POST',
+          data: {},
+          cache: false,
+          beforeSend: function () {
+            $('.area_sarana_handling').html(`<div style ="width: 70%;margin:auto;height: 30%;background: #fff;overflow: hidden;z-index: 9999;padding:20px 0 30px 0;border-radius:10px;text-align:center">
+                                        <img style="width: 12%;" src="${baseurl}assets/img/gif/loading14.gif"><br>
+                                        <span style="font-size:13px;font-weight:bold;margin-top:5px">Data sedang dimuat...</span>
+                                    </div>`);
+          },
+          success: function (result) {
+            $('.area_sarana_handling').html(result);
+            toastMTA_('success', 'Data Berhasil Ditambahkan');
+          },
+          eror: function (XMLHttpRequest, textStatus, errorThrown) {
+            console.log();
+          }
+        })
+      },
+      beforeSend: function () {
+        $('[name=sarana_handling]').val('');
+        $('.area_sarana_handling').html(`<div style ="width: 70%;margin:auto;height: 30%;background: #fff;overflow: hidden;z-index: 9999;padding:20px 0 30px 0;border-radius:10px;text-align:center">
+                                    <img style="width: 12%;" src="${baseurl}assets/img/gif/loading14.gif"><br>
+                                    <span style="font-size:13px;font-weight:bold;margin-top:5px">Data sedang dimuat...</span>
+                                </div>`);
+      }
+    })
+  }else {
+    Swal.fire({
+      title: "Data is Empty",
+      text: "Please fill out the input field !",
+      type: "info",
+      showConfirmButton: false,
+      timer: 1750,
+      width: 400,
+      allowOutsideClick: false
+    })
+  }
+}
+
+function deleteSH(id) {
+  Swal.fire({
+    title: 'Are you sure?',
+    text: "You won't be able to revert this!",
+    type: 'question',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes'
+  }).then((result) => {
+    if (result.value) {
+      $.ajax({
+        url: baseurl + 'MenjawabTemuanAudite/Handling/deleteSaranaHandling',
+        type: 'POST',
+        data: {
+          id: id,
+        },
+        cache: false,
+        success: function () {
+          $.ajax({
+            url: baseurl + 'MenjawabTemuanAudite/Handling/getSaranaHandling',
+            type: 'POST',
+            data: {},
+            cache: false,
+            beforeSend: function () {
+              $('.area_sarana_handling').html(`<div style ="width: 70%;margin:auto;height: 30%;background: #fff;overflow: hidden;z-index: 9999;padding:20px 0 30px 0;border-radius:10px;text-align:center">
+                                          <img style="width: 12%;" src="${baseurl}assets/img/gif/loading14.gif"><br>
+                                          <span style="font-size:13px;font-weight:bold;margin-top:5px">Data sedang dimuat...</span>
+                                      </div>`);
+            },
+            success: function(result) {
+                $('.area_sarana_handling').html(result);
+                toastMTA_('success', 'Data Berhasil Dihapus');
+            },
+            eror: function (XMLHttpRequest, textStatus, errorThrown) {
+              console.log();
+            }
+          })
+        },
+      })
+    }
+  })
+}
+
+function updateSH() {
+  var id = $('[name=id]').val();
+  var sarana = $('[name=editsh]').val();
+  $.ajax({
+    url: baseurl + 'MenjawabTemuanAudite/Handling/updateSH',
+    type: 'POST',
+    data: {
+      id: id,
+      sarana_handling: sarana,
+    },
+    cache: false,
+    success: function () {
+      $('#editsh').modal('hide');
+      setTimeout(function () {
+        $.ajax({
+          url: baseurl + 'MenjawabTemuanAudite/Handling/getSaranaHandling',
+          type: 'POST',
+          data: {},
+          cache: false,
+          beforeSend: function () {
+            $('.area_sarana_handling').html(`<div style ="width: 70%;margin:auto;height: 30%;background: #fff;overflow: hidden;z-index: 9999;padding:20px 0 30px 0;border-radius:10px;text-align:center">
+                                        <img style="width: 12%;" src="${baseurl}assets/img/gif/loading14.gif"><br>
+                                        <span style="font-size:13px;font-weight:bold;margin-top:5px">Data sedang dimuat...</span>
+                                    </div>`);
+          },
+          success: function(result) {
+              $('.area_sarana_handling').html(result);
+              toastMTA_('success', 'Data Berhasil Diupdate');
+          },
+          eror: function (XMLHttpRequest, textStatus, errorThrown) {
+            console.log();
+          }
+        })
+      }, 400);
+    }
   })
 }
 

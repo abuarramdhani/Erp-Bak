@@ -25,7 +25,7 @@
             <div class="box box-primary box-solid">
               <div class="box-header with-border">
                 <h4 class="col-lg-11"><i class="fa fa-tasks fa-lg "></i> <b>TEMUAN AUDITE <span style="font-family:Source Sans Pro,Helvetica Neue,Helvetica,Arial,sans-serif"><?php echo $area['seksi'] ?></span></b></h4>
-                <a href="<?php echo base_url('MenjawabTemuanAudite/Handling/viewPoinPenyimpangan') ?>" style="float:right;border:2px solid white" class="btn btn-default" title="Add Poin Penyimpangan">
+                <a href="<?php echo base_url('MenjawabTemuanAudite/Handling/viewPoinPenyimpangan') ?>" style="float:right;border:2px solid white" class="btn btn-default" title="Custom Sarana and Penyimpangan">
                   <!-- <button type="button" class="btn btn-default"> -->
                     <i class="fa fa-plus "></i>
                   <!-- </button> -->

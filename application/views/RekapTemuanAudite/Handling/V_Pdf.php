@@ -20,12 +20,41 @@
             <td colspan="8" style="border-left:1px solid black;border-right:1px solid black;border-bottom:1px solid black;padding:5px;text-align:center;font-size:14px">SARANA HANDLING</td>
           </tr>
           <tr>
-            <td colspan="2" style="border-left:1px solid black;border-bottom:1px solid black;padding:10px;text-align:center;font-size:12px"><?php echo $handlingPdf[0]['sarana_handling'] == 'Kontainer' ? '<span style="font-size:14px">&#9745;</span> KONTAINER' : '<span style="font-size:13px">&#9744;</span> KONTAINER'?></td>
-            <td colspan="3" style="border-left:1px solid black;border-bottom:1px solid black;padding:10px;text-align:center;font-size:12px"><?php echo $handlingPdf[0]['sarana_handling'] == 'Tatakan' ? '<span style="font-size:14px">&#9745;</span> TATAKAN' : '<span style="font-size:13px">&#9744;</span> TATAKAN'?></td>
-            <td colspan="3" style="border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;padding:10px;text-align:center;font-size:12px"><?php echo $handlingPdf[0]['sarana_handling'] == 'Keranjang' ? '<span style="font-size:14px">&#9745;</span> KERANJANG' : '<span style="font-size:13px">&#9744;</span> KERANJANG'?></td>
+            <td colspan="1" style="border-left:1px solid black; padding:5px;padding-left:30px">
+              <?php foreach ($getSaranaHandling as $key => $value): ?>
+              <?php if (($key+1) % 4 == 1) {
+                echo ($key+1) > 4 ? '<br>' : '' ;
+                echo $handlingPdf[0]['sarana_handling'] == $getSaranaHandling[$key]['sarana'] ? '<span style="font-size:13px">&#9745; '.strtoupper($getSaranaHandling[$key]['sarana']).'</span>' : '<span style="font-size:13px">&#9744; '.strtoupper($getSaranaHandling[$key]['sarana']).'</span>';
+              } ?>
+              <?php endforeach; ?>
+            </td>
+            <td colspan="3" style="padding:5px;padding-right:35px">
+              <?php foreach ($getSaranaHandling as $key => $value): ?>
+              <?php if (($key+1) % 4 == 2) {
+                echo ($key+1) > 4 ? '<br>' : '';
+                echo $handlingPdf[0]['sarana_handling'] == $getSaranaHandling[$key]['sarana'] ? '<span style="font-size:13px">&#9745; '.strtoupper($getSaranaHandling[$key]['sarana']).'</span>' : '<span style="font-size:13px">&#9744; '.strtoupper($getSaranaHandling[$key]['sarana']).'</span>';
+              } ?>
+              <?php endforeach; ?>
+            </td>
+            <td colspan="2" style="padding:5px;padding-left:35px">
+              <?php foreach ($getSaranaHandling as $key => $value): ?>
+              <?php if (($key+1) % 4 == 3) {
+                echo ($key+1) > 4 ? '<br>' : '' ;
+                echo $handlingPdf[0]['sarana_handling'] == $getSaranaHandling[$key]['sarana'] ? '<span style="font-size:13px">&#9745; '.strtoupper($getSaranaHandling[$key]['sarana']).'</span>' : '<span style="font-size:13px">&#9744; '.strtoupper($getSaranaHandling[$key]['sarana']).'</span>';
+              } ?>
+              <?php endforeach; ?>
+            </td>
+            <td colspan="2" style="border-right:1px solid black;padding:5px;padding-left:40px">
+              <?php foreach ($getSaranaHandling as $key => $value): ?>
+              <?php if (($key+1) % 4 == 0) {
+                echo ($key+1) > 4 ? '<br>' : '';
+                echo $handlingPdf[0]['sarana_handling'] == $getSaranaHandling[$key]['sarana'] ? '<span style="font-size:13px">&#9745; '.strtoupper($getSaranaHandling[$key]['sarana']).'</span>' : '<span style="font-size:13px">&#9744; '.strtoupper($getSaranaHandling[$key]['sarana']).'</span>';
+              } ?>
+              <?php endforeach; ?>
+            </td>
           </tr>
           <tr>
-            <td colspan="8" style="border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;padding:5px;text-align:center;font-size:14px">VISUALISASI TEMUAN</td>
+            <td colspan="8" style="border-top:1px solid black;border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;padding:5px;text-align:center;font-size:14px">VISUALISASI TEMUAN</td>
           </tr>
           <tr>
             <td colspan="4" style="border-left:1px solid black;border-bottom:1px solid black;padding:5px;text-align:center;font-size:12px">BEFORE</td>

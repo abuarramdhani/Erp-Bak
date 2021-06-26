@@ -20,7 +20,7 @@
           <a class="btn btn-primary" href="#" title="Update Poin Penyimpangan" data-id="<?php echo $value['id'] ?>" data-toggle="modal" data-target="#editpp" style="width:37px;margin-right:4px">
             <i class="fa fa-edit"></i>
           </a>
-          <a class="btn btn-danger" href="<?php echo base_url('MenjawabTemuanAudite/Handling/deletePoinPenyimpangan/'.$value['id']) ?>" title="Delete Poin Penyimpangan" data-id="<?php echo $value['id'] ?>" onclick="return confirm('Are you sure to delete this item ?')">
+          <a class="btn btn-danger" title="Delete Poin Penyimpangan" data-id="<?php echo $value['id'] ?>" onclick="deletePP(<?php echo $value['id'] ?>)">
             <i class="fa fa-trash"></i>
           </a>
         </td>
@@ -47,9 +47,7 @@
 <script type="text/javascript">
 $(document).ready(function () {
   $('.tb-poinpenyimpangan').dataTable({
-    scrollX: true,
-    scrollY: 420,
-    ordering: true,
+    ordering: false,
   })
 })
 $('#editpp').on('show.bs.modal', function(e) {

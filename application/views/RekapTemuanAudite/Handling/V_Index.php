@@ -42,11 +42,18 @@
                     </div>
                     <div class="col-lg-1">
                       <label style="color:transparent">For Filter</label>
-                      <button type="button" id="handlingRTA" onclick="handling_rta()" style="font-size:15px" class="btn btn-primary btn-sm btn-block" disabled><strong><i class="fa fa-search"></i></strong></button>
+                      <button type="button" id="handlingRTA" onclick="handling_rta();presentase_rta()" style="font-size:15px" class="btn btn-primary btn-sm btn-block" disabled><strong><i class="fa fa-search"></i></strong></button>
                     </div>
                     <div class="col-lg-2"></div>
                   </div>
                   <div class="row" style="margin-top:12px">
+                    <hr>
+                  </div>
+                  <div class="row" style="margin-top:-10px">
+                    <div class="col-lg-12 presentase_rta">
+                    </div>
+                  </div>
+                  <div class="row">
                     <hr>
                   </div>
                   <div class="row">
@@ -62,3 +69,31 @@
     </div>
   </div>
 </section>
+<script type="text/javascript">
+  setTimeout(function () {
+    $.ajax({
+      url: baseurl + 'RekapTemuanAudite/Handling/getGeneralPresentase',
+      type: 'POST',
+      data:{},
+      beforeSend: function () {
+        $('.presentase_rta').html(`<div style ="width: 70%;margin:auto;height: 30%;background: #fff;overflow: hidden;z-index: 9999;padding:20px 0 30px 0;border-radius:10px;text-align:center">
+                                    <img style="width: 12%;" src="${baseurl}/assets/img/gif/loading14.gif">
+                                </div>`);
+      },
+      success: function (result) {
+        if (result != 0) {
+          $('.presentase_rta').html(result);
+          $('#presentase_all').text(`Presentase seluruh data temuan audite`);
+        }else if (result == 0) {
+          $('.presentase_rta').html(`<div style ="width: 70%;margin:auto;height: 30%;background: #fff;overflow: hidden;z-index: 9999;padding:20px 0 30px 0;border-radius:10px;text-align:center">
+                                    <i class="fa fa-remove" style="color:#d60d00;font-size:45px;"></i><br>
+                                    <h3 style="font-size:14px;font-weight:bold">Tidak ada data Temuan Audite</h3>
+                                </div>`);
+        }
+      },
+      error: function (XMLHttpRequest, textStatus, errorThrown) {
+        console.log();
+      }
+    })
+  }, 150);
+</script>
