@@ -83,7 +83,8 @@
       success: function (result) {
         if (result != 0) {
           $('.presentase_rta').html(result);
-          $('#presentase_all').text(`Presentase seluruh data temuan audite`);
+          $('#presentase_all_co').text(`Presentase Open Close seluruh data temuan audite`);
+          $('#presentase_all_pp').text(`Presentase Poin Penyimpangan Seluruh data temuan audite`);
         }else if (result == 0) {
           $('.presentase_rta').html(`<div style ="width: 70%;margin:auto;height: 30%;background: #fff;overflow: hidden;z-index: 9999;padding:20px 0 30px 0;border-radius:10px;text-align:center">
                                     <i class="fa fa-remove" style="color:#d60d00;font-size:45px;"></i><br>
