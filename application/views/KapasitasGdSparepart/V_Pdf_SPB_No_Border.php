@@ -44,7 +44,8 @@
 						<?php echo $row['NAMA_ASAL'].'<br>'.$row['ALAMAT_ASAL'].'<br>'.$row['KOTA_ASAL']; ?>
 					</td>
 					<td style="width: 108mm; padding-left: 25mm; vertical-align: middle;font-size: 10pt;">
-						<?php echo $row['ORGANIZATION_CODE'].'<br>'.$row['NAMA_KIRIM'].'<br>'.$row['ALAMAT_KIRIM'].'<br>'.$row['KOTA_KIRIM'];?>
+						<?php echo $row['NAMA_KIRIM'].' ['.$row['ORGANIZATION_CODE'].']' ?> <br>
+						<?php echo $row['ALAMAT_KIRIM'] ?>, <?php echo $row['KOTA_KIRIM'] ?>
 					</td>
 				</tr>
 			</table>
@@ -143,8 +144,8 @@
 						<td colspan="2" style="width:32%">Pemasaran</td>
 					</tr> -->
 					<tr>
-						<td width="52mm"  style="text-align:left;padding-top:-20mm" rowspan="4">
-								<span style="padding-left:20mm"><?= $get_do[0]['BATCH_ID'] ?></span> <br>
+						<td width="52mm"  style="text-align:left;padding-top:-17mm" rowspan="4">
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span><?= $get_do[0]['BATCH_ID'] ?></span> <br>
 								<?php echo $row['CATATAN']; ?>
 						</td>
 						<td width="25mm"><!-- Tgl.....................<br><br><br><br><br><br>

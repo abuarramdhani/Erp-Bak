@@ -13,6 +13,7 @@
 		<?php if ($key_master > 0): ?>
 			<br>
 		<?php endif; ?>
+		<div style="position:absolute;top:155px;left:87px;font-size: 10px"><?php echo $get_header[0]['NPWP'] ?> </div>
 		<table style="width:100%; border-collapse: collapse !important; page-break-inside: avoid;">
 			<tr>
 				<td style="border-bottom: 1px solid white; border-right: 1px solid white; border-left: 1px solid white; border-top: 1px solid white; width:10%; padding: 5px" rowspan="2">
@@ -35,14 +36,14 @@
 				</td>
 			</tr>
 		</table>
-		<table style="width: 100%; border-collapse: collapse !important; margin-top: 7px; page-break-inside: avoid">
+		<table style="width: 100%; border-collapse: collapse !important; margin-top: 7.8px; page-break-inside: avoid">
 			<tr>
 				<td style="vertical-align: top; height: 95px; width: 55%; border-bottom: 1px solid white; border-top: 1px solid white; border-left: 1px solid white; font-size: 10px; padding: 5px 5px 5px 15px;" colspan="4">
 					<?php
 						echo ''.$get_header[0]['NAMA_ASAL'].'<br>';
 					?>
 					<?php echo $get_header[0]['ALAMAT_ASAL'] ?>, <?php echo $get_header[0]['KOTA_ASAL'] ?><br><br>
-					<span style="color:white">NPWP :</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $get_header[0]['NPWP'] ?><br>
+					<span style="color:white">NPWP :</span> <br>
 				</td>
 				<td colspan="2" style="vertical-align: top; border-bottom: 1px solid white; border-right: 1px solid white; border-top: 1px solid white; border-left: 1px solid white; font-size: 10px; padding: 5px;">
 					<?php echo $get_header[0]['NAMA_KIRIM'] ?> <br>
@@ -55,7 +56,7 @@
 				</td>
 			</tr>
 			<tr style="text-align: center;">
-				<td style="vertical-align: top; border-bottom: 1px solid white; border-left: 1px solid white; font-size: 10px; width: 10px;padding-top:-0.5mm">
+				<td style="vertical-align: top; border-bottom: 1px solid white; border-left: 1px solid white; font-size: 10px; width: 10px;padding-top:-0.8mm">
 				 <!-- <br> -->
 					<?php echo $get_header[0]['NO_SO'] ?>
 				</td>
@@ -63,15 +64,15 @@
 					 <!-- <br> -->
 					<?php echo $get_header[0]['SO_DATE'] ?>
 				</td>
-				<td style="vertical-align: top; border-bottom: 1px solid white; border-left: 1px solid white; font-size: 10px; width: 7%;padding-left:-2mm;padding-top:-0.5mm">
+				<td style="vertical-align: top; border-bottom: 1px solid white; border-left: 1px solid white; font-size: 10px; width: 7%;padding-left:-2mm;padding-top:-0.8mm">
 				<!-- <br> -->
 					<?php echo number_format($get_berat[0]['TTL_BERAT'],3).' KG' ?>
 				</td>
-				<td style="vertical-align: top; border-bottom: 1px solid white; border-left: 1px solid white; font-size: 10px;padding-left:5mm;padding-top:-0.5mm">
+				<td style="vertical-align: top; border-bottom: 1px solid white; border-left: 1px solid white; font-size: 10px;padding-left:5mm;padding-top:-0.8mm">
 				<!-- <br> -->
 					<?php echo $get_header[0]['BSATERM_NOMORIO'] ?>
 				</td>
-				<td style="vertical-align: top; border-bottom: 1px solid white; border-left: 1px solid white; font-size: 10px;padding-left:10mm; width: 28%;padding-top:-0.5mm">
+				<td style="vertical-align: top; border-bottom: 1px solid white; border-left: 1px solid white; font-size: 10px;padding-left:10mm; width: 28%;padding-top:-0.8mm">
 				 <!-- <br> -->
 					<?php echo $get_header[0]['EKSPEDISI'] ?>
 				</td>
@@ -87,10 +88,10 @@
 			<table style="width: 635px; margin-top: 13px;">
 				<?php $no = 1; foreach ($get_body[$key_master] as $key => $gb){ ?>
 					<tr>
-						<td style="font-size: 9.7px; padding: 3.5px; width: 35px; text-align: center;">
+						<td style="font-size: 9.7px; padding: 3.5px; width: 35px; text-align: center;padding-left:-1.8mm">
 							<?php echo $no+($key_master*22) ?>
 						</td>
-						<td style="font-size: 9.7px; padding: 3.5px; width: 60px; text-align: center;">
+						<td style="font-size: 9.7px; padding: 3.5px; width: 60px; text-align: center;padding-left:-1.8mm">
 							<?php echo $gb['QTY_REQUESTED'] ?>
 						</td>
 						<td style="font-size: 9.7px; padding: 3.5px; width: 40px; text-align: center;">
