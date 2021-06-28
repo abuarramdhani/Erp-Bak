@@ -62,10 +62,10 @@ class M_index extends CI_Model {
 					end as zona_sebelumnya
 				from si.si_covid a
 				where a.created_timestamp = (
-					select created_timestamp
-					from si.si_covid
-					order by created_timestamp desc 
-					limit 1
+					select max(created_timestamp)
+					from si.si_covid b
+					where a.kabupaten = b.kabupaten
+					and a.provinsi = b.provinsi
 				)
 				order by a.provinsi,a.kabupaten";
 		return $this->db->query($sql)->result_array();
