@@ -1667,6 +1667,8 @@ class C_MonitoringCovid extends CI_Controller
 		$mail->addAddress('enggal_aldiansyah@quick.com');
 		$mail->addAddress('reny_sulistiyaningtyas@quick.com');
 		$mail->addAddress('ika_narati@quick.com');
+		$mail->addAddress('johannes_andri@quick.com');
+		$mail->addAddress('bambang_yudhosuseno@quick.com');
 		$mail->addAddress('tim_pencegahan_covid19@quick.com');
 		$mail->Subject = 'Laporan Covid Baru dari '.trim($pkj['nama']).' ('.$noind.')';
 		$mail->msgHTML($message);
@@ -1708,6 +1710,8 @@ class C_MonitoringCovid extends CI_Controller
 		$mail->addAddress('timcovid19.khs@quick.co.id');
 		$mail->addAddress('renysulistya@yahoo.com');
 		$mail->addAddress('ika.narati3007@gmail.com');
+		$mail->addAddress('xiau_long@yahoo.com');
+		$mail->addAddress('hrd.head3@quick.co.id');
 		$mail->Subject = 'Laporan Covid Baru dari '.trim($pkj['nama']).' ('.$noind.')';
 		$mail->msgHTML($message);
 		
