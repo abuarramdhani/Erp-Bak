@@ -601,7 +601,7 @@
                                 <div class="form-group">
                                   <label class="control-label col-lg-4">Alamat Email</label>
                                   <div class="col-lg-8">
-                                    <input class="form-control" type="text" name="email_address" value="<?= $tpribadi->email_internal ?>" readonly />
+                                    <input class="form-control" type="text" name="email_address" value="<?= $tpribadi->email_internal ?>" />
                                   </div>
                                 </div>
                               </form>
@@ -619,7 +619,7 @@
                                 <div class="form-group">
                                   <label class="control-label col-lg-4">Email Pidgin</label>
                                   <div class="col-lg-8">
-                                    <input class="form-control" placeholder="nama_email@chat.quick.com" value="<?= $tpribadi->pidgin_account ?>" type="text" name="pidgin_email" readonly />
+                                    <input class="form-control" placeholder="nama_email@chat.quick.com" value="<?= $tpribadi->pidgin_account ?>" type="text" name="pidgin_email"/>
                                   </div>
                                 </div>
                               </form>
