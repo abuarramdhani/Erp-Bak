@@ -764,7 +764,7 @@ class C_Monhand extends CI_Controller
         $proses = $this->input->post('prosesss');
         $urutan_proses = $this->input->post('nomorproses[]');
         $proses_seksi = $this->input->post('prosesseksi[]');
-        $keterangan = $this->input->post('kethand');
+        $keterangan = str_replace("'","`",$this->input->post('kethand'));
         $explode = explode("-", $produk);
         $kode_produk = $explode[0];
         $nama_produk = $explode[1];
@@ -1243,7 +1243,7 @@ class C_Monhand extends CI_Controller
             </div>
             <div class="panel-body">
                 <div class="col-md-3" style="text-align:right;"><label>Keterangan</label></div>
-                <div class="col-md-8"><textarea class="form-control" name="ket_handl">' . $dataHandrev[0]['keterangan'] . '</textarea></div>
+                <div class="col-md-8"><textarea class="form-control" name="ket_handl">' . str_replace("`", "'", $dataHandrev[0]['keterangan']) . '</textarea></div>
             </div>
             <div class="panel-body">
                 <div class="col-md-12" style="text-align:right;"><button class="btn btn-success">Save</button></div>
@@ -1265,7 +1265,7 @@ class C_Monhand extends CI_Controller
         $lastupdate_by = $this->session->user;
         $lastupdate_date = date("Y-m-d H:i:s");
         $proses = $this->input->post('Pros_Es');
-        $keterangan = $this->input->post('ket_handl');
+        $keterangan = str_replace("'", "`", $this->input->post('ket_handl'));
         $rev_no = $dataHandling[0]['rev_no'] + 1;
         $manual_proses = $this->input->post('ProSesSeksi[]');
         $sar = $this->M_dbhandling->selectdatatoedit($id_master_handling);
