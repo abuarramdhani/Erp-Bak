@@ -590,39 +590,36 @@
                         <div class="box-body">
                           <div class="col-lg-6">
                             <div class="col-lg-12">
-                              <form></form>
-                              <form class="form-horizontal" id="form_email_account">
-                                <div class="form-group">
-                                  <label class="control-label col-lg-4"></label>
-                                  <div class="col-lg-8">
-                                    <label>Akun email (Zimbra)</label>
-                                  </div>
+                              <div class="form-group">
+                                <label class="control-label col-lg-4"></label>
+                                <div class="col-lg-8">
+                                  <label>Akun email (Zimbra)</label>
                                 </div>
-                                <div class="form-group">
-                                  <label class="control-label col-lg-4">Alamat Email</label>
-                                  <div class="col-lg-8">
-                                    <input class="form-control" type="text" name="email_address" value="<?= $tpribadi->email_internal ?>" />
-                                  </div>
+                              </div>
+                              <div class="form-group">
+                                <label class="control-label col-lg-4">Alamat Email</label>
+                                <div class="col-lg-8">
+                                  <input class="form-control" type="text" name="email_address" value="<?= $tpribadi->email_internal ?>" />
+                                  <span id="email_error_alert"></span>  
                                 </div>
-                              </form>
+                              </div>
                             </div>
                           </div>
                           <div class="col-lg-6">
                             <div class="col-lg-12">
-                              <form class="form-horizontal" id="form_pidgin_account">
-                                <div class="form-group">
-                                  <label class="control-label col-lg-4"></label>
-                                  <div class="col-lg-8">
-                                    <label>Akun Pidgin</label>
-                                  </div>
+                              <div class="form-group">
+                                <label class="control-label col-lg-4"></label>
+                                <div class="col-lg-8">
+                                  <label>Akun Pidgin</label>
                                 </div>
-                                <div class="form-group">
-                                  <label class="control-label col-lg-4">Email Pidgin</label>
-                                  <div class="col-lg-8">
-                                    <input class="form-control" placeholder="nama_email@chat.quick.com" value="<?= $tpribadi->pidgin_account ?>" type="text" name="pidgin_email"/>
-                                  </div>
+                              </div>
+                              <div class="form-group">
+                                <label class="control-label col-lg-4">Username Pidgin</label>
+                                <div class="col-lg-8">
+                                  <input class="form-control" placeholder="" value="<?= $tpribadi->pidgin_account ?>" type="text" name="pidgin_username"/>
+                                  <span id="pidgin_error_alert"></span>
                                 </div>
-                              </form>
+                              </div>
                             </div>
                           </div>
                         </div>
