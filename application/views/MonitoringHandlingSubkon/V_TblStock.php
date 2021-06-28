@@ -45,5 +45,10 @@
 </div>
 
 <script type="text/javascript">
-  $('#tblStock').DataTable({})
+  $('#tblStock').DataTable({
+     dom: "<'row'<'col-sm-2'l><'col-sm-7'B><'col-sm-3'f>>" +
+    "<'row'<'col-sm-12'tr>>" +
+    "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+    buttons: [{ extend: 'excelHtml5', className: 'btn-success' }]
+  })
 </script>
