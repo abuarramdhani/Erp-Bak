@@ -123,6 +123,9 @@ class C_SuratPenyerahan extends CI_Controller
 
   public function saveEditPenyerahan()
   {
+    require_once(APPPATH . 'controllers/ADMSeleksi/Openfire/Openfire.php');
+    require_once(APPPATH . 'controllers/ADMSeleksi/Zimbra/Zimbra.php');
+
     $noind      = $_POST['input_noind_baru_SP'];
     $jenis      = $_POST['slc_pkj_SP'];
     $kodesie    = $_POST['inpKodesie_SP'];
@@ -161,6 +164,43 @@ class C_SuratPenyerahan extends CI_Controller
     $ori_hubker     = $_POST['txt_try_hubker'];
     $ik_hubker      = $_POST['txt_IK_hubker'];
     $tgl_pyrhn = date('Y-m-d', strtotime($_POST['txt_tgl_SP']));
+
+
+    $Zimbra = new Zimbra;
+    // email_address, email_display_name, email_password
+    // :TODO verifiy that right email
+    $email_address = $this->input->post('email_address');
+    $email_display_name = $nama;
+    $email_password = '123456';
+
+    try {
+      $Zimbra->createAccount($email_address, $email_password, $email_display_name);
+      // add to mandatory distribution
+      $Zimbra->email = $email_address;
+      $Zimbra->addDistributions($Zimbra->mandatoryDistributions);
+      $Zimbra->addRelatedDepartemenDistributions($kodesie, $loker);
+      // if success code below will execute
+      $email_internal = $email_address;
+    } catch (Exception $e) {
+      // What happen when error ?
+      # :TODO
+    }
+
+
+    $pidgin_username = $this->input->post('pidgin_username');
+    $Openfire = new Openfire;
+    $domain = "@chat.quick.com";
+    // pidgin_username, pidgin_name, pidgin_email, pidgin_password
+    $pidgin_username = $this->input->post('pidgin_username'); // this from email
+    $pidgin_email = $pidgin_username . $domain;
+    $pidgin_name = $nama;
+    $pidgin_password = '123456';
+
+    try {
+      $Openfire->createUser($pidgin_username, $pidgin_name, $pidgin_email, $pidgin_password);
+      $pidgin_account = $pidgin_email;
+    } catch (Exception $e) {
+    }
 
     if ($jab_upah) {
       $explode_jabatan = explode('|', $jab_upah);
@@ -268,7 +308,9 @@ class C_SuratPenyerahan extends CI_Controller
       'akhkontrak'    => $akhir_kontrak,
       'tglkeluar'     => $tgl_keluar,
       'golkerja'      => $golongan,
-      'kd_pkj'        => $kd_pkj
+      'kd_pkj'        => $kd_pkj,
+      'pidgin_account'        => $pidgin_username,
+      'email_internal'        => $email_address
     );
     $this->M_penyerahan->updateTpribadi($pribadi, $noind);
 

@@ -10,6 +10,17 @@
  *
  */
 
+ let accountState = {
+ 	email: {
+ 		checked: false,
+ 		exist: false,
+ 	},
+ 	pidgin: {
+ 		checked: false,
+ 		exist: false,
+ 	},
+ };
+
 //---------------Surat Penyerahan--------------------
 $(document).on("input keyup keypress", "input.select2-search__field", function (e) {
 	$(this).val($(this).val().toUpperCase());
@@ -1409,157 +1420,6 @@ $(document).ready(function () {
 						const nameWithSnakeCase = result.pkj[0].nama && result.pkj[0].nama.toLowerCase().replace(/ /g, "_");
 						const nameWithCapitalize = result.pkj[0].nama && result.pkj[0].nama.toLowerCase().replace(/(^\w{1})|(\s+\w{1})/g, (letter) => letter.toUpperCase());
 						const defaultPassword = "123456";
-
-						let accountState = {
-							email: {
-								checked: false,
-								exist: false,
-							},
-							pidgin: {
-								checked: false,
-								exist: false,
-							},
-						};
-
-						// EMAIL
-						$("input[name=create_email_account]").on("change", function () {
-							const isChecked = $(this).is(":checked");
-							accountState.email.checked = isChecked;
-							accountVerify();
-							const $wrapper = $("#form_email_account");
-
-							$wrapper.find("input[type=text], input[type=password]").prop("disabled", !isChecked);
-
-							if (isChecked) {
-								const domain = "quick.com";
-
-								$wrapper.find("input[name=email_address]").val(`${nameWithSnakeCase}@${domain}`).trigger("change");
-								$wrapper.find("input[name=email_display_name]").val(nameWithCapitalize);
-								$wrapper.find("input[name=email_password]").val(defaultPassword);
-							} else {
-								$("#email_error_alert").text("");
-								$wrapper.find("input[name=email_address]").val("");
-								$wrapper.find("input[name=email_display_name]").val("");
-								$wrapper.find("input[name=email_password]").val("");
-							}
-						});
-
-						// PIDGIN
-						$("input[name=create_pidgin_account]").on("change", function () {
-							const isChecked = $(this).is(":checked");
-							accountState.pidgin.checked = isChecked;
-							accountVerify();
-							const $wrapper = $("#form_pidgin_account");
-
-							// to disable/enable input
-							$wrapper.find("input[type=text], input[type=password]").prop("disabled", !isChecked);
-
-							if (isChecked) {
-								$wrapper.find("input[name=pidgin_username]").val(`${nameWithSnakeCase}`).trigger("change");
-								$wrapper.find("input[name=pidgin_name]").val(nameWithCapitalize);
-								$wrapper.find("input[name=pidgin_password]").val(defaultPassword);
-							} else {
-								$("#pidgin_error_alert").text("");
-								$wrapper.find("input[name=pidgin_username]").val("");
-								$wrapper.find("input[name=pidgin_email]").val("");
-								$wrapper.find("input[name=pidgin_password]").val("");
-							}
-						});
-
-						/**
-						 * To check is valid or not to be submitted
-						 *
-						 * // valid jika
-						 */
-						function accountVerify() {
-							const { pidgin, email } = accountState;
-							const $submitButton = $("button.btn_Save_SP");
-
-							let emailValid = false;
-							let pidginValid = false;
-
-							// pidgin account has been checked and username is available
-							if (pidgin.checked && !pidgin.exist) {
-								// enable the submit button
-								pidginValid = true;
-							} else if (pidgin.checked == false) {
-								pidginValid = true;
-							}
-
-							// email account has been checked and username is available
-							if (email.checked && !email.exist) {
-								// enable the submit button
-								emailValid = true;
-							} else if (email.checked == false) {
-								emailValid = true;
-							}
-
-							if (emailValid && pidginValid) {
-								// enabled button
-								$submitButton.prop("disabled", false);
-							} else {
-								// disable button
-								$submitButton.prop("disabled", true);
-							}
-						}
-
-						// EMAIL CHECK
-						$("input[name=email_address]").on("change", function () {
-							const val = $(this).val();
-
-							$.ajax({
-								method: "POST",
-								url: baseurl + "ADMSeleksi/api/zimbra/check",
-								data: {
-									email: val,
-								},
-								beforeSend() {
-									$("button.btn_Save_SP").prop("disabled", true);
-								},
-								success(response) {
-									if (response.data.exist) {
-										accountState.email.exist = true;
-										$("#email_error_alert").text("Alamat email sudah digunakan !").css("color", "red");
-									} else {
-										accountState.email.exist = false;
-										$("#email_error_alert").text("Alamat email dapat digunakan").css("color", "green");
-									}
-								},
-								error() {},
-								complete() {
-									accountVerify();
-								},
-							});
-						});
-
-						// PIDGIN CHECK
-						$("input[name=pidgin_username]").on("change", function () {
-							const val = $(this).val();
-
-							$.ajax({
-								method: "POST",
-								url: baseurl + "ADMSeleksi/api/pidgin/check",
-								data: {
-									username: val,
-								},
-								beforeSend() {
-									$("button.btn_Save_SP").prop("disabled", true);
-								},
-								success(response) {
-									if (response.data.exist) {
-										accountState.pidgin.exist = true;
-										$("#pidgin_error_alert").text("Username sudah digunakan !").css("color", "red");
-									} else {
-										accountState.pidgin.exist = false;
-										$("#pidgin_error_alert").text("Username dapat digunakan").css("color", "green");
-									}
-								},
-								error() {},
-								complete() {
-									accountVerify();
-								},
-							});
-						});
 					})();
 
 					$(".cekSameNoHP").on("change", function (e) {
@@ -2286,4 +2146,144 @@ function openNav(a) {
 
 function closeNav() {
 	$(".myNav").attr("style", "width: 0%");
+}
+
+// EMAIL
+$(document).on("change", "input[name=create_email_account]", function () {
+	const isChecked = $(this).is(":checked");
+	accountState.email.checked = isChecked;
+	accountVerify();
+	const $wrapper = $("#form_email_account");
+
+	$wrapper.find("input[type=text], input[type=password]").prop("disabled", !isChecked);
+
+	if (isChecked) {
+		const domain = "quick.com";
+
+		$wrapper.find("input[name=email_address]").val(`${nameWithSnakeCase}@${domain}`).trigger("change");
+		$wrapper.find("input[name=email_display_name]").val(nameWithCapitalize);
+		$wrapper.find("input[name=email_password]").val(defaultPassword);
+	} else {
+		$("#email_error_alert").text("");
+		$wrapper.find("input[name=email_address]").val("");
+		$wrapper.find("input[name=email_display_name]").val("");
+		$wrapper.find("input[name=email_password]").val("");
+	}
+});
+
+// PIDGIN
+$(document).on("change", "input[name=create_pidgin_account]", function () {
+	const isChecked = $(this).is(":checked");
+	accountState.pidgin.checked = isChecked;
+	accountVerify();
+	const $wrapper = $("#form_pidgin_account");
+
+	// to disable/enable input
+	$wrapper.find("input[type=text], input[type=password]").prop("disabled", !isChecked);
+
+	if (isChecked) {
+		$wrapper.find("input[name=pidgin_username]").val(`${nameWithSnakeCase}`).trigger("change");
+		$wrapper.find("input[name=pidgin_name]").val(nameWithCapitalize);
+		$wrapper.find("input[name=pidgin_password]").val(defaultPassword);
+	} else {
+		$("#pidgin_error_alert").text("");
+		$wrapper.find("input[name=pidgin_username]").val("");
+		$wrapper.find("input[name=pidgin_email]").val("");
+		$wrapper.find("input[name=pidgin_password]").val("");
+	}
+});
+
+// EMAIL CHECK
+$(document).on("change", "input[name=email_address]", function () {
+	const val = $(this).val();
+
+	$.ajax({
+		method: "POST",
+		url: baseurl + "ADMSeleksi/api/zimbra/check",
+		data: {
+			email: val,
+		},
+		beforeSend() {
+			$("button.btn_Save_SP").prop("disabled", true);
+		},
+		success(response) {
+			if (response.data.exist) {
+				accountState.email.exist = true;
+				$("#email_error_alert").text("Alamat email sudah digunakan !").css("color", "red");
+			} else {
+				accountState.email.exist = false;
+				$("#email_error_alert").text("Alamat email dapat digunakan").css("color", "green");
+			}
+		},
+		error() {},
+		complete() {
+			accountVerify();
+		},
+	});
+});
+
+// PIDGIN CHECK
+$(document).on("change", "input[name=pidgin_username]", function () {
+	const val = $(this).val();
+
+	$.ajax({
+		method: "POST",
+		url: baseurl + "ADMSeleksi/api/pidgin/check",
+		data: {
+			username: val,
+		},
+		beforeSend() {
+			$("button.btn_Save_SP").prop("disabled", true);
+		},
+		success(response) {
+			if (response.data.exist) {
+				accountState.pidgin.exist = true;
+				$("#pidgin_error_alert").text("Username sudah digunakan !").css("color", "red");
+			} else {
+				accountState.pidgin.exist = false;
+				$("#pidgin_error_alert").text("Username dapat digunakan").css("color", "green");
+			}
+		},
+		error() {},
+		complete() {
+			accountVerify();
+		},
+	});
+});
+
+/**
+ * To check is valid or not to be submitted
+ *
+ * // valid jika
+ */
+function accountVerify() {
+	const { pidgin, email } = accountState;
+	const $submitButton = $("button.btn_Save_SP");
+
+	let emailValid = false;
+	let pidginValid = false;
+
+	// pidgin account has been checked and username is available
+	if (pidgin.checked && !pidgin.exist) {
+		// enable the submit button
+		pidginValid = true;
+	} else if (pidgin.checked == false) {
+		pidginValid = true;
+	}
+
+	// email account has been checked and username is available
+	if (email.checked && !email.exist) {
+		// enable the submit button
+		emailValid = true;
+	} else if (email.checked == false) {
+		emailValid = true;
+	}
+
+	if (emailValid && pidginValid) {
+		// enabled button
+		$submitButton.prop("disabled", false);
+	} else {
+		// disable button
+		$submitButton.prop("disabled", true);
+	}
 }
