@@ -18,7 +18,7 @@ class Openfire
     return [
       'client' => [
         'username' => 'admin',
-        'password' => '123456',
+        'password' => 'sys123456',
         'scheme' => 'http',
         'basePath' => '/plugins/restapi/v1/',
         'host' => 'chat.quick.com',
