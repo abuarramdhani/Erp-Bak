@@ -87,10 +87,33 @@
 
     </tbody>
   </table>
-  <button type="button" class="btn btn-danger" onclick="deleteselectedrowmonlkh()" name="button"> <i class="fa fa-trash"></i> Delete Selected Row</button>
+</div>
+<br>
+<div class="row">
+  <div class="col-md-4">
+    <button type="button" class="btn btn-danger" onclick="deleteselectedrowmonlkh()" name="button"> <i class="fa fa-trash"></i> Delete Selected Row</button>
+  </div>
+  <div class="col-md-8">
+    <form class="" action="<?php echo base_url('LaporanProduksiHarian/action/report_lkh') ?>" method="post" target="_blank">
+      <input type="hidden" name="date" id="t22_date" value="">
+      <input type="hidden" name="shift" id="t22_shift" value="">
+      <button type="submit" class="btn btn-success pull-right lph_export_hasil_kerja" name="button"><i class="fa fa-file-excel-o"></i>  Report Hasil Kerja</button>
+    </form>
+    <!-- <button type="button" class="btn btn-success pull-right" name="button"> <i class="fa fa-file-excel-o"></i> Report Hasil Kerja</button> -->
+  </div>
 </div>
 <br>
 <script type="text/javascript">
+$(function() {
+    let val_x = $('.123_lph_mon_tgl').val().split(' - ');
+    if (val_x[0] != val_x[1]) {
+      $('.lph_export_hasil_kerja').attr('disabled', true);
+    }else {
+      $('.lph_export_hasil_kerja').attr('disabled', false);
+      $('#t22_date').val(val_x[0]);
+      $('#t22_shift').val($('.lph_pilih_shift_97').val());
+    }
+})
 const table_lph = $('.tbl_lph_2021').DataTable({
   scrollX: true,
   scrollY: 471,

@@ -116,7 +116,7 @@ vertical-align: middle;
                             <label for="">Filter By Date Range</label>
                             <div class="input-group">
                               <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
-                              <input type="text" required name="range_date" class="form-control tanggal_lph_99" placeholder="Select Yout Current Date" required="" >
+                              <input type="text" required name="range_date" class="form-control tanggal_lph_99 123_lph_mon_tgl" placeholder="Select Yout Current Date" required="" >
                             </div>
                           </div>
                           <div class="col-md-5">

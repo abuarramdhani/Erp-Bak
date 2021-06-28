@@ -45,7 +45,6 @@ const swaLPHLoading = (a) =>{
   })
 }
 
-
 $('.lph_search').on('submit', function(e) {
   e.preventDefault()
   $.ajax({
@@ -294,4 +293,5 @@ const lphgetmon = () => {
      console.error();
     }
   })
+
 }
