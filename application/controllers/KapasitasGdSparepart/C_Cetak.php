@@ -353,9 +353,9 @@ class C_Cetak extends CI_Controller
 
 									<br><br><br><br><br><br><br>
 							</td>
-						<td rowspan="3" style="vertical-align: top; width: 90px; border-top: 1px solid white; border-bottom: 1px solid white; border-left: 1px solid white; font-size: 10px; padding: 5px">
+						<td rowspan="3" style="vertical-align: top; width: 90px; border-top: 1px solid white; border-bottom: 1px solid white; border-left: 1px solid white; font-size: 10px; padding: 5px;">
 						 <br><br>
-							'.$data['get_header'][0]['ASSIGN_DATE'].'
+							&nbsp;&nbsp;&nbsp;'.$data['get_header'][0]['ASSIGN_DATE'].'
 							<br><br><br><br><br><br>'.$data['get_header'][0]['ASSIGNER_NAME'].'
 						</td>
 						<td colspan="2" style="vertical-align: top; border-right: 1px solid white; border-top: 1px solid white; border-left: 1px solid white; font-size: 10px; padding: 5px; height: 20px!important;">
@@ -367,8 +367,8 @@ class C_Cetak extends CI_Controller
 
 							<br><br>'.$appr.'
 						</td>
-						<td rowspan="2" style="vertical-align: top; width: 80px; border-top: 1px solid white; border-bottom: 1px solid white; border-left: 1px solid white; border-right: 1px solid white; font-size: 10px; padding: 5px;padding-left:2.5mm">
-							'.$data['get_header'][0]['CREATION_DATE'].'
+						<td rowspan="2" style="vertical-align: top; width: 80px; border-top: 1px solid white; border-bottom: 1px solid white; border-left: 1px solid white; border-right: 1px solid white; font-size: 10px; padding: 5px;padding-top:2.7mm;padding-left:2.5mm">
+							&nbsp;&nbsp;&nbsp;'.$data['get_header'][0]['CREATION_DATE'].'
 							<br>'.$appr2.'
 						</td>
 					</tr>
