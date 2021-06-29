@@ -5693,3 +5693,9 @@ $route['RekapTemuanAudite'] = 'RekapTemuanAudite/C_Index';
 $route['RekapTemuanAudite/Handling'] = 'RekapTemuanAudite/MainMenu/C_Handling';
 $route['RekapTemuanAudite/Handling/(:any)'] = 'RekapTemuanAudite/MainMenu/C_Handling/$1';
 $route['RekapTemuanAudite/Handling/(:any)/(:any)'] = 'RekapTemuanAudite/MainMenu/C_Handling/$1/$2';
+
+// ---------------------------------- Monitoring Item Intransit -----------------------------------------------------
+$route['MonitoringItemIntransit'] 	= 'MonitoringItemIntransit/C_Index';
+$route['MonitoringItemIntransit/Monitoring'] 	= 'MonitoringItemIntransit/C_Simulasi';
+$route['MonitoringItemIntransit/Monitoring/(:any)'] 	= 'MonitoringItemIntransit/C_Simulasi/$1';
+$route['MonitoringItemIntransit/Monitoring/(:any)/(:any)'] 	= 'MonitoringItemIntransit/C_Simulasi/$1/$2';
