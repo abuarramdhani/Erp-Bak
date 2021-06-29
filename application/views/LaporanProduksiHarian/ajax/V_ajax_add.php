@@ -582,7 +582,7 @@ function lph_add_row_hasil_produksi() {
     // e.preventDefault();
     if ($('.lph_pwe_faktor').val() != '' && $('.lph_pwe_waktu').val() != '') {
       $('#lph_pwe_area').append(`<tr>
-                                  <td><input type="text" class="form-control" name="faktor_pwe[]" value="${$('.lph_pwe_faktor').val()}"></td>
+                                  <td><input type="text" class="form-control" name="faktor_pwe[]" value="${$('.lph_pwe_faktor').val()}: ${$('.lph_pwe_waktu').val()}"></td>
                                   <td><input type="number" class="form-control menit_pwe" name="menit_pwe[]" value="${$('.lph_pwe_waktu').val()}"></td>
                                   <td> <button class="btn btn-sm" onclick="min_elem_pwe(this)"><i class="fa fa-times"></i></button></td>
                                 </tr>`);

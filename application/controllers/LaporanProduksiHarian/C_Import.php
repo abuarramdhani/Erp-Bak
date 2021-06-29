@@ -455,7 +455,7 @@ class C_Import extends CI_Controller
                                                  from lph.list_product lp
                                                  where SUBSTRING(rk.kode_komponen, 1, 3) = lp.product_code), NULL) product_name
                                 FROM lph.lph_rencana_kerja_operator rk WHERE rk.shift = '$shift' AND rk.tanggal = '$range'")->result_array();
-
+      // ;
       foreach ($data as $key => $value) {
         if (!empty($value['kode_komponen'])) {
           $std = $this->M_master->get_sarana($value['kode_komponen']);
@@ -559,10 +559,15 @@ class C_Import extends CI_Controller
      $shift = $this->input->post('shift');
 
      $data_lph = $this->db->query("SELECT rk.* FROM lph.lph_master rk WHERE rk.shift = '$shift' AND rk.tanggal = '$tanggal'")->result_array();
+     $lph_group_id = $this->db->query("SELECT distinct rk.lph_group_id FROM lph.lph_master rk WHERE rk.shift = '$shift' AND rk.tanggal = '$tanggal'")->result_array();
+     $id_group = '';
+     foreach ($lph_group_id as $key => $value) {
+       $id_group .= $value['lph_group_id'].($key == (sizeof($lph_group_id) -1) ? '' : ',');
+     }
+     $ambil_pro = $this->db->query("SELECT * FROM lph.lph_pengurangan_waktu_ef where id_lphm in($id_group)")->result_array();
      // echo "<pre>";
-     // print_r($data_lph);
+     // print_r($ambil_pro);
      // die;
-
      $title = 'Laporan-Pekerja-Harian';
      $objPHPExcel = new PHPExcel();
 
@@ -667,7 +672,7 @@ class C_Import extends CI_Controller
        $worksheet->setCellValue('J'.$row_number,str_replace('%', '', $value['persentase_aktual']));
        $worksheet->setCellValue('K'.$row_number, empty($value['scrap_mat']) ? 0 : $value['scrap_mat']);
        $worksheet->setCellValue('L'.$row_number, empty($value['scrap_mach']) ? 0 : $value['scrap_mach']);
-       $worksheet->setCellValue('M'.$row_number, ''); //rep
+       $worksheet->setCellValue('M'.$row_number, ''); //repair
        $worksheet->setCellValue('N'.$row_number, ''); //setting tanyakan dulu
        $shift = explode(' : ', explode(' - ',$value['shift'])[1])[0];
        $worksheet->setCellValue('O'.$row_number, $shift);
@@ -675,12 +680,13 @@ class C_Import extends CI_Controller
        $worksheet->setCellValue('Q'.$row_number, '');
        $worksheet->setCellValue('R'.$row_number, '');
        $worksheet->setCellValue('S'.$row_number, '');
-       $worksheet->setCellValue('T'.$row_number, '');
-       $worksheet->setCellValue('U'.$row_number, '');
-       $worksheet->setCellValue('V'.$row_number, '');
-       $worksheet->setCellValue('W'.$row_number, '');
-       $worksheet->setCellValue('X'.$row_number, '');
-       $worksheet->setCellValue('Y'.$row_number, '');
+
+       $worksheet->setCellValue('T'.$row_number, ''); //DIES
+       $worksheet->setCellValue('U'.$row_number, ''); //NON DIES
+       $worksheet->setCellValue('V'.$row_number, ''); //STOPPER
+       $worksheet->setCellValue('W'.$row_number, ''); //PISAU
+       $worksheet->setCellValue('X'.$row_number, ''); //LAIN2
+       $worksheet->setCellValue('Y'.$row_number, ''); //NON SETT
        $row_number++;
      }
      $worksheet->getStyle('A2:'.$last_column.($row_number-1))->applyFromArray($styleIsi);
