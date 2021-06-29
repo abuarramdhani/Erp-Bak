@@ -56,7 +56,7 @@ input[type=number] {
                                                         <td style="padding-left:20px;">/ Hari</td>
                                                     </tr>
                                                     <tr>
-                                                        <td style="padding:5px 0;">Ketrangan</td>
+                                                        <td style="padding:5px 0;">Keterangan</td>
                                                         <td colspan="2">
                                                             <b><?php if ($info_penjualan['TOTAL_PER_HARI'] < $info_penjualan['TARGET_PER_HARI']) {
                                                                     echo 'Dibawah Target Laju Penjualan';
@@ -138,6 +138,9 @@ input[type=number] {
                                     <button class="btn btn-success" style="display:none;"
                                         id="button-save-edit-analytics-lpt-cabang"><i class="fa fa-save"
                                             style="padding-right:8px;"></i>Save</button>
+                                    <button class="btn btn-danger" style="display:none;"
+                                        id="button-cancel-edit-analytics-lpt-cabang"><i class="fa fa-close"
+                                            style="padding-right:8px;"></i>Cancel</button>
                                     <a href="<?= base_url('laporanPenjualanTR2/Cabang/' . $cabang . '/inputAnalisa') ?>"
                                         style="float:right" class="btn btn-primary">Kembali</a>
                                 </div>

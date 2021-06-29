@@ -87,12 +87,12 @@ input[readonly] {
                                         <td></td>
                                         <td style="padding-top:10px;">
                                             <div class="form-group">
-                                            <?php if ($infoPasar['ATTACHMENT'] != '') { ?>
+                                                <?php if ($infoPasar['ATTACHMENT'] != '') { ?>
                                                 <div style="display:flex" class="file-attachment-info-pasar-lpt">
                                                     <?php $explode1 = explode("/", $infoPasar['ATTACHMENT']);
-                                                    $explode2 = explode(".", end($explode1));
-                                                    $ekstensi = strtolower(end($explode2));
-                                                    if ($ekstensi == 'png' || $ekstensi == 'jpg' || $ekstensi == 'jpeg') { ?>
+                                                        $explode2 = explode(".", end($explode1));
+                                                        $ekstensi = strtolower(end($explode2));
+                                                        if ($ekstensi == 'png' || $ekstensi == 'jpg' || $ekstensi == 'jpeg') { ?>
                                                     <button type="button" class="btn" data-toggle="modal"
                                                         data-target="#modal-image-lpt-info-pasar"
                                                         style="width:38px;height:34px;background-color:#BA372A;color:white;display:flex">
@@ -130,7 +130,7 @@ input[readonly] {
                                                         </div>
                                                     </div>
                                                     <?php }
-                                                    if ($ekstensi == 'xls' || $ekstensi == 'xlsx') { ?>
+                                                        if ($ekstensi == 'xls' || $ekstensi == 'xlsx') { ?>
                                                     <a class="btn" href="<?= $infoPasar['ATTACHMENT'] ?>"
                                                         style="width:38px;height:34px;background-color:green;color:white;display:flex">
                                                         <i class="fa fa-file-excel-o" style="margin:auto"></i>
@@ -141,54 +141,59 @@ input[readonly] {
                                                             disabled>
                                                     </div>
                                                     <div>
-                                                        <button class="btn btn-danger button-remove-file-attachment" style="display:none"><i class="fa fa-trash"></i></button>
+                                                        <button class="btn btn-danger button-remove-file-attachment"
+                                                            style="display:none"><i class="fa fa-trash"></i></button>
                                                     </div>
                                                 </div>
-                                                    <div class="input-group input-attachment-lpt-in ial-1"
-                                                        style="display:none" data-id="1">
-                                                        <span class="input-group-btn">
-                                                            <span class="btn btn-default btn-file">
-                                                                Browse...
-                                                                <input type="file"
-                                                                    name="input-attachment-market-info-lpt[]"
-                                                                    class="input-attachment-market-info-lpt"
-                                                                    data-input="1"
-                                                                    accept="image/jpeg, image/png, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
-                                                            </span>
+                                                <div class="input-group input-attachment-lpt-in ial-1"
+                                                    style="display:none" data-id="1">
+                                                    <span class="input-group-btn">
+                                                        <span class="btn btn-default btn-file">
+                                                            Browse...
+                                                            <input type="file" name="input-attachment-market-info-lpt[]"
+                                                                class="input-attachment-market-info-lpt" data-input="1"
+                                                                accept="image/jpeg, image/png, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
                                                         </span>
-                                                        <input readonly="readonly" placeholder="File Lampiran"
-                                                            class="form-control output-attachment-market-info-lpt"
-                                                            type="text">
-                                                    </div>
-                                                <?php } else {?>
-                                                    <div style="width:100%;">
-                                                        <input class="form-control input-replace-attachment-info-pasar-lpt" value="Tidak Ada Lampiran"
-                                                            disabled>
-                                                    </div>
-                                                    <div class="input-group input-attachment-lpt ial-1"
-                                                        style="display:none" data-id="1">
-                                                        <span class="input-group-btn">
-                                                            <span class="btn btn-default btn-file">
-                                                                Browse...
-                                                                <input type="file"
-                                                                    name="input-attachment-market-info-lpt[]"
-                                                                    class="input-attachment-market-info-lpt"
-                                                                    data-input="1"
-                                                                    accept="image/jpeg, image/png, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
-                                                            </span>
+                                                    </span>
+                                                    <input readonly="readonly" placeholder="File Lampiran"
+                                                        class="form-control output-attachment-market-info-lpt"
+                                                        type="text">
+                                                </div>
+                                                <?php } else { ?>
+                                                <div style="width:100%;">
+                                                    <input class="form-control input-replace-attachment-info-pasar-lpt"
+                                                        value="Tidak Ada Lampiran" disabled>
+                                                </div>
+                                                <div class="input-group input-attachment-lpt ial-1" style="display:none"
+                                                    data-id="1">
+                                                    <span class="input-group-btn">
+                                                        <span class="btn btn-default btn-file">
+                                                            Browse...
+                                                            <input type="file" name="input-attachment-market-info-lpt[]"
+                                                                class="input-attachment-market-info-lpt" data-input="1"
+                                                                accept="image/jpeg, image/png, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
                                                         </span>
-                                                        <input readonly="readonly" placeholder="File Lampiran"
-                                                            class="form-control output-attachment-market-info-lpt"
-                                                            type="text">
-                                                    </div>
+                                                    </span>
+                                                    <input readonly="readonly" placeholder="File Lampiran"
+                                                        class="form-control output-attachment-market-info-lpt"
+                                                        type="text">
+                                                </div>
                                                 <?php } ?>
                                                 <div style="width:70%;display:flex;;margin-top:15px;">
                                                     <button class="btn button-edit-input-info-pasar-lpt" type="button"
                                                         style="background-color: #4C575E;color:white;"><i
                                                             class="fa fa-edit" style="padding-right:6px;"></i>Edit
                                                         Info Pasar</button>
-                                                    <button class="btn btn-success button-save-edit-input-info-pasar-lpt" style="display:none" data-statusfile="0">
+                                                    <button
+                                                        class="btn btn-success button-save-edit-input-info-pasar-lpt"
+                                                        style="display:none" data-statusfile="0">
                                                         <i class="fa fa-save" style="padding-right:8px"></i>Save
+                                                    </button>
+                                                    <button
+                                                        class="btn btn-danger button-cancel-edit-input-info-pasar-lpt"
+                                                        style="display:none">
+                                                        <i class="fa fa-close" style="padding-right:8px"></i>
+                                                        Cancel
                                                     </button>
                                                 </div>
                                             </div>

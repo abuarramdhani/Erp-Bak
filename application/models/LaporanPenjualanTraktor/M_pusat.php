@@ -62,7 +62,7 @@ class M_pusat extends CI_Model
                                                                         )
                                                                 + 1) hari),
                                         data_hari2 AS
-                                        (SELECT ( -- get last saturday before sysdate
+                                        (SELECT ( -- get last saturday before SYSDATE
                                                 SELECT DISTINCT MAX (curr_date)
                                                             FROM data_hari
                                                             WHERE hari = 'SATURDAY'
@@ -76,6 +76,7 @@ class M_pusat extends CI_Model
                                                         curr_date
                                                         - (  last_sat
                                                         - CASE
+                                                                WHEN TO_CHAR(curr_date, 'FMDAY') = 'SATURDAY' THEN 0 -- validasi hari sabtu
                                                                 WHEN (SELECT COUNT (*)
                                                                         FROM khs_lpb_analys
                                                                     WHERE branch = '$cabang'
@@ -93,13 +94,13 @@ class M_pusat extends CI_Model
                                             nvl(klm.root_cause,'-') root_cause,
                                             nvl(klm.action,'-') action,
                                             nvl(to_char(klm.due_date, 'DD-MM-YYYY'), '-') due_date
-                                    FROM (SELECT klm1.*, TRUNC(klm1.creation_date) days
+                                    FROM (SELECT klm1.*, TRUNC (klm1.creation_date) days
                                             FROM khs_lpb_analys klm1
                                             WHERE klm1.branch = '$cabang') klm
                                         RIGHT JOIN
                                         data_hari3 d3 ON klm.days = d3.days
                                     WHERE TO_CHAR (d3.days, 'FMDAY') != 'SUNDAY'
-                                    ORDER BY 1");
+                                    ORDER BY 1 ");
         return $query->result_array();
     }
 
@@ -138,7 +139,7 @@ class M_pusat extends CI_Model
                                                                         )
                                                                 + 1) hari),
                                         data_hari2 AS
-                                        (SELECT ( -- get last saturday before sysdate
+                                        (SELECT ( -- get last saturday before SYSDATE
                                                 SELECT DISTINCT MAX (curr_date)
                                                             FROM data_hari
                                                             WHERE hari = 'SATURDAY'
@@ -152,6 +153,7 @@ class M_pusat extends CI_Model
                                                         curr_date
                                                         - (  last_sat
                                                         - CASE
+                                                                WHEN TO_CHAR(curr_date, 'FMDAY') = 'SATURDAY' THEN 0 -- validasi hari sabtu
                                                                 WHEN (SELECT COUNT (*)
                                                                         FROM khs_lpb_market
                                                                     WHERE branch = '$cabang'
@@ -162,7 +164,7 @@ class M_pusat extends CI_Model
                                                                 ELSE 0
                                                             END
                                                         ))
-                                    SELECT TO_CHAR(d3.days, 'DD-MM-YYYY') DAYS, 
+                                    SELECT to_char(d3.days, 'DD-MM-YYYY') days,
                                             nvl(to_char(klm.market_id), '-') market_id,
                                             nvl(klm.branch,'-') branch,
                                             nvl(klm.description,'-') description,
@@ -173,7 +175,7 @@ class M_pusat extends CI_Model
                                         RIGHT JOIN
                                         data_hari3 d3 ON klm.days = d3.days
                                     WHERE TO_CHAR (d3.days, 'FMDAY') != 'SUNDAY'
-                                    ORDER BY 1 ");
+                                    ORDER BY 1");
         return $query->result_array();
     }
 

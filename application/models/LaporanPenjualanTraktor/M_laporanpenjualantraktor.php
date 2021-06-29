@@ -409,4 +409,26 @@ class M_laporanpenjualantraktor extends CI_Model
    {
       $this->oracle->query("DELETE FROM KHS_LPB_SKIP_DATE WHERE DATE_ID = '$id'");
    }
+
+   public function getGrafik()
+   {
+      $query = $this->oracle->query("SELECT branch,
+                                          ROUND
+                                             (  (SELECT DISTINCT SUM (klt.quantity) OVER (PARTITION BY cabang)
+                                                                                                            total
+                                                            FROM khs_lpb_type klt
+                                                            WHERE klt.request_id = (SELECT MAX (request_id)
+                                                                                    FROM khs_lpb_type)
+                                                            AND klt.status = 'TOTAL'
+                                                            AND klt.cabang = branch)
+                                             / (target / 100),
+                                             2
+                                             ) perbandingan
+                                    FROM khs_lpb_targets
+                                    WHERE EXTRACT (MONTH FROM creation_date) =
+                                                               EXTRACT (MONTH FROM khs_lpb_range_date (NULL, 2))
+                                       AND EXTRACT (YEAR FROM creation_date) =
+                                                                  EXTRACT (YEAR FROM khs_lpb_range_date (NULL, 2))");
+      return $query->result_array();
+   }
 }
