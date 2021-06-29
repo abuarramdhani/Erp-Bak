@@ -1179,14 +1179,18 @@ class C_laporanPenjualanTraktor extends CI_Controller
             $data['cabang'] = $cabang;
         }
 
+        $data['grafik'] = $this->M_laporanpenjualantraktor->getGrafik();
+
         $fill = $this->load->view('LaporanPenjualanTraktor/V_pdf', $data, true);
         $fill2 = $this->load->view('LaporanPenjualanTraktor/V_pdf2', $data, true);
         $fill3 = $this->load->view('LaporanPenjualanTraktor/V_pdf3', $data, true);
+        $fill4 = $this->load->view('LaporanPenjualanTraktor/V_graph', $data, true);
 
         $pdf = $this->pdf->load();
 
         $pdf = new mPDF('utf-8', 'Legal', '', 'Calibri', 10, 10, 10, 10, 6, 3);
         $pdf->WriteHTML($fill);
+        $pdf->WriteHTML($fill4);
         $pdf->WriteHTML($fill2);
         $pdf->WriteHTML($fill3);
 

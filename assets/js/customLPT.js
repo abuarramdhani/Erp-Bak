@@ -424,8 +424,13 @@ $(document).ready(function (){
                 $(".input-analytics-duedate-lpt-cabang").attr('style', 'margin-bottom:10px;')
 
                 $("#button-save-edit-analytics-lpt-cabang").attr('style', 'margin-left:10px;')
+                $("#button-cancel-edit-analytics-lpt-cabang").attr('style', 'margin-left:10px;')
             }
         })
+    })
+
+    $("#button-cancel-edit-analytics-lpt-cabang").on('click', function () {
+        window.location.reload()
     })
 
     $("#button-save-edit-analytics-lpt-cabang").on('click', function(){
@@ -528,19 +533,6 @@ $(document).ready(function (){
         }
     })
 
-    var cra = $("#table-list-analys-lpt tbody tr").length
-
-    for ($i = 0; $i < cra; $i++) {
-        var analytics = $(".text-list-analys-month-lpt-"+$i).html()
-
-        if (analytics.length > 120) {
-                var analyticsFinal = analytics.replace(analytics.substring(110, analytics.length), " ... ")
-                $('.text-list-analys-month-lpt-'+$i).html(analyticsFinal)
-            } else {
-                $('.text-list-analys-month-lpt-'+$i).html(analytics)
-            }
-    }
-
     $(".button-input-info-pasar-lpt").on('click', function(){
         var file_data = $('.input-attachment-market-info-lpt').prop('files')[0];   
         var form_data = new FormData();                  
@@ -619,9 +611,14 @@ $(document).ready(function (){
                 $(".input-replace-attachment-info-pasar-lpt").attr('style', 'display:none')
                 $(".input-attachment-lpt").removeAttr('style')
                 $(".button-save-edit-input-info-pasar-lpt").attr('style','margin-left:8px;')
+                $(".button-cancel-edit-input-info-pasar-lpt").attr('style','margin-left:8px;')
                 $(".button-remove-file-attachment").removeAttr('style')
             }
         })
+    })
+
+    $(".button-cancel-edit-input-info-pasar-lpt").on('click', function(){
+        window.location.reload()
     })
 
     $(".button-remove-file-attachment").on('click', function() {
@@ -764,4 +761,17 @@ $(document).ready(function (){
             })
         }
     })
+
+    var cra = $("#table-list-analys-lpt tbody tr").length
+
+    for ($i = 0; $i < cra; $i++) {
+        var analytics = $(".text-list-analys-month-lpt-"+$i).html()
+
+        if (analytics.length > 120) {
+                var analyticsFinal = analytics.replace(analytics.substring(110, analytics.length), " ... ")
+                $('.text-list-analys-month-lpt-'+$i).html(analyticsFinal)
+            } else {
+                $('.text-list-analys-month-lpt-'+$i).html(analytics)
+            }
+    }
 })
