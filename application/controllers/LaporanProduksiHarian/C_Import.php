@@ -469,7 +469,7 @@ class C_Import extends CI_Controller
           if (!empty($ambil_no_dies['SEGMENT1'])) {
             for ($i=1; $i <= 7; $i++) {
               if (!empty($ambil_no_dies['AB'.$i])) {
-                $no_dies .= explode(' - ', $ambil_no_dies['AB'.$i])[0].', ';
+                $no_dies .= substr(explode(' - ', $ambil_no_dies['AB'.$i])[0], 3) .', ';
               }
             }
             $data[$key]['NO_DIES'] = $no_dies;

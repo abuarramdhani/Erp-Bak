@@ -28,7 +28,7 @@
             </div>
             <div class="form-group">
               <label for="">Kelompok</label>
-              <input type="text" class="form-control" readonly name="kelompok" value="">
+              <input type="text" class="form-control" name="kelompok" value="">
             </div>
           </div>
           <div class="col-md-7">
@@ -110,7 +110,20 @@
             <div class="row">
               <div class="col-sm-5">
                 <label for="">Faktor</label>
-                <input type="text" class="form-control lph_pwe_faktor" value="">
+                <select class="lph_select2 lph_pwe_faktor" name="" style="width:100%">
+                  <option value="">Pilih..</option>
+                  <option value="5S">5S</option>
+                  <option value="TUNGGU MAT">TUNGGU MAT</option>
+                  <option value="TUNGGU KRJ">TUNGGU KRJ</option>
+                  <option value="MATI LISTRIK">MATI LISTRIK</option>
+                  <option value="AMBIL MAT">AMBIL MAT</option>
+                  <option value="BRIEFING">BRIEFING</option>
+                  <option value="MESIN RUSAK">MESIN RUSAK</option>
+                  <option value="STOP-CALL-WAIT">STOP-CALL-WAIT</option>
+                  <option value="CARI MAT">CARI MAT</option>
+                  <option value="CARI AFVAL">CARI AFVAL</option>
+                  <option value="HANDLING">HANDLING</option>
+                </select>
               </div>
               <div class="col-sm-7">
                 <label for="">Menit</label>
@@ -492,7 +505,10 @@ function lph_add_row_hasil_produksi() {
       }
     });
 
-    $('.lph_select2').select2();
+    $('.lph_select2').select2({
+      tags: true,
+      // allowClear:true,
+    });
     $(".lph_kodepart").select2({
       minimumInputLength: 3,
       // maximumSelectionLength: 1,
@@ -602,7 +618,9 @@ function lph_add_row_hasil_produksi() {
 
   $(function() {
     // run();
-    $('.lph_select2').select2();
+    $('.lph_select2').select2({
+      tags: true,
+    });
     $('.lph_shift_dinamis_v2').select2();
     let t = $('.lph_tdl_add').val().split('-');
     let d = new Date(`${t[2]}-${t[1]}-${t[0]}`);

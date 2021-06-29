@@ -135,41 +135,55 @@ const table_lph = $('.tbl_lph_2021').DataTable({
 });
 
 function deleteselectedrowmonlkh() {
-  let row = table_lph.rows( { selected: true } ).data();
-  let count = table_lph.rows( { selected: true } ).count();
-  let id_lph_master = [];
-  row.each((v,i)=>{
-    id_lph_master.push(v[23]); // perhatikan jika menambah kolom
-  });
-  if (count > 0) {
-    $.ajax({
-      url: baseurl + 'LaporanProduksiHarian/action/delete_lkh',
-      type: 'POST',
-      data : {
-        id : id_lph_master
-      },
-      cache: false,
-      // async:false,
-      dataType: "JSON",
-      beforeSend: function() {
-        swaLPHLoading('Sedang menghapus data...');
-      },
-      success: function(result) {
-        if (result == 1) {
-          swaLPHLarge('success', 'Berhasil menghapus data');
-          $('.lph_search').trigger('submit');
-        }else {
-          swaLPHLarge('warning', 'Tidak berhasil menghapus data');
-        }
-      },
-      error: function(XMLHttpRequest, textStatus, errorThrown) {
-        swaLPHLarge('error', 'Terjadi kesalahan');
-       console.error();
+  Swal.fire({
+    title: 'Are you sure?',
+    text: "You won't be able to revert this!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, delete it!'
+  }).then((result) => {
+    if (result.value) {
+      let row = table_lph.rows( { selected: true } ).data();
+      let count = table_lph.rows( { selected: true } ).count();
+      let id_lph_master = [];
+      row.each((v,i)=>{
+        id_lph_master.push(v[23]); // perhatikan jika menambah kolom
+      });
+      if (count > 0) {
+        $.ajax({
+          url: baseurl + 'LaporanProduksiHarian/action/delete_lkh',
+          type: 'POST',
+          data : {
+            id : id_lph_master
+          },
+          cache: false,
+          // async:false,
+          dataType: "JSON",
+          beforeSend: function() {
+            swaLPHLoading('Sedang menghapus data...');
+          },
+          success: function(result) {
+            if (result == 1) {
+              swaLPHLarge('success', 'Berhasil menghapus data');
+              $('.lph_search').trigger('submit');
+            }else {
+              swaLPHLarge('warning', 'Tidak berhasil menghapus data');
+            }
+          },
+          error: function(XMLHttpRequest, textStatus, errorThrown) {
+            swaLPHLarge('error', 'Terjadi kesalahan');
+           console.error();
+          }
+        })
+      }else {
+        swaLPHLarge('warning', 'Tidak ada baris yang terpilih!');
       }
-    })
-  }else {
-    swaLPHLarge('warning', 'Tidak ada baris yang terpilih!');
-  }
+    }
+  })
+
+
 }
 
 </script>
