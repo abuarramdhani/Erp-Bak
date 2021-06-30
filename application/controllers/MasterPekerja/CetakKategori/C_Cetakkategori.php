@@ -108,6 +108,7 @@ class C_Cetakkategori extends CI_Controller
     {
         $list_filter = $this->session->list_filter;
         set_time_limit(0);
+        ini_set('precision', '17');
         $kodeind = $list_filter[0];
         $pend = $list_filter[1];
         $jenkel = $list_filter[2];
@@ -123,7 +124,8 @@ class C_Cetakkategori extends CI_Controller
         $dataheader = explode(', ', $this->input->get('dataHeader'));
         $data = $this->M_cetakkategori->GetFilter($kodeind, $pend, $jenkel,  $lokasi, $kategori, $select, $rangekeluarstart, $rangekeluarend,  $rangemasukstart, $rangemasukend, $status, $masakerja);
 
-        $this->load->library('excel');
+        $this->load->library(array('Excel', 'Excel/PHPExcel/IOFactory'));
+        $worksheet = new PHPExcel();
         $worksheet = $this->excel->getActiveSheet();
 
         $worksheet->setCellValue('A2', 'DATA PEKERJA');
@@ -153,10 +155,13 @@ class C_Cetakkategori extends CI_Controller
                     if ($datvk == 'masa_kerja') {
                         $worksheet->setCellValue($cell[$cellInd] . $rowStart, str_replace(['years', 'mons', 'days'], ['Tahun', 'Bulan', 'Hari'], $datvkv));
                     } else {
-                        if($datvk == 'nik' || $datvk == 'no_kk')
-                            $worksheet->setCellValue($cell[$cellInd] . $rowStart, "'".$datvkv);
-                        else
-                            $worksheet->setCellValue($cell[$cellInd] . $rowStart, $datvkv);
+                        $worksheet
+                        ->getStyle($cell[$cellInd] . $rowStart)
+                        ->getNumberFormat()
+                        ->setFormatCode(
+                            PHPExcel_Style_NumberFormat::FORMAT_TEXT
+                            );
+                        $worksheet->setCellValue($cell[$cellInd] . $rowStart, $datvkv);
                     }
                     $worksheet->getStyle($cell[$cellInd] . $rowStart)->applyFromArray([
                         'borders' => [
@@ -206,7 +211,7 @@ class C_Cetakkategori extends CI_Controller
         header('Content-Disposition:attachment;filename="' . $filename . '"');
         header('Cache-Control: max-age=0');
 
-        $writer = PHPExcel_IOFactory::createWriter($this->excel, 'Excel5');
+        $writer = PHPExcel_IOFactory::createWriter($this->excel, 'Excel2007');
         $writer->save('php://output');
     }
 }
