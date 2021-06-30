@@ -561,12 +561,24 @@ class C_Import extends CI_Controller
      $data_lph = $this->db->query("SELECT rk.* FROM lph.lph_master rk WHERE rk.shift = '$shift' AND rk.tanggal = '$tanggal'")->result_array();
      $lph_group_id = $this->db->query("SELECT distinct rk.lph_group_id FROM lph.lph_master rk WHERE rk.shift = '$shift' AND rk.tanggal = '$tanggal'")->result_array();
      $id_group = '';
+
+     $co = [];
      foreach ($lph_group_id as $key => $value) {
-       $id_group .= $value['lph_group_id'].($key == (sizeof($lph_group_id) -1) ? '' : ',');
+       $ambil_pro = $this->db->query("SELECT * FROM lph.lph_pengurangan_waktu_ef where id_lphm = {$value['lph_group_id']}")->result_array();
+       // echo "<pre>";
+       // print_r($ambil_pro);
+       // echo "blablablabl";
+       $co_per_item = '';
+       foreach ($ambil_pro as $key2 => $value2) {
+         $co_per_item .= $value2['faktor'].',';
+       }
+       $co[] = [
+         'lph_group_id' => $value['lph_group_id'],
+         'co' => substr($co_per_item, 0, -1)
+       ];
      }
-     $ambil_pro = $this->db->query("SELECT * FROM lph.lph_pengurangan_waktu_ef where id_lphm in($id_group)")->result_array();
      // echo "<pre>";
-     // print_r($ambil_pro);
+     // print_r($co);
      // die;
      $title = 'Laporan-Pekerja-Harian';
      $objPHPExcel = new PHPExcel();
@@ -681,12 +693,50 @@ class C_Import extends CI_Controller
        $worksheet->setCellValue('R'.$row_number, '');
        $worksheet->setCellValue('S'.$row_number, '');
 
-       $worksheet->setCellValue('T'.$row_number, ''); //DIES
-       $worksheet->setCellValue('U'.$row_number, ''); //NON DIES
-       $worksheet->setCellValue('V'.$row_number, ''); //STOPPER
+       $dies = '';
+       $non_dies = '';
+       $stopper = '';
+       $non_set = '';
+       foreach ($co as $i_ => $v_) {
+         if ($v_['lph_group_id'] == $value['lph_group_id']) {
+           $cek_1 = explode(',', $v_['co']);
+           foreach ($cek_1 as $ii_ => $vv_) {
+             if ('DS' == substr($vv_, 0, 2)) {
+               $dies .= $vv_.', ';
+             }elseif ('ND' == substr($vv_, 0, 2)) {
+               $non_dies .= $vv_.', ';
+             }elseif ('ST' == substr($vv_, 0, 2)) {
+               $stopper .= $vv_.', ';
+             }else {
+               $non_set .= $vv_.', ';
+             }
+           }
+         }
+       }
+       if ($key != 0) {
+         if ($value['lph_group_id'] != $data_lph[$key-1]['lph_group_id']) {
+           $dies_ = $dies;
+           $non_dies_ = $non_dies;
+           $stopper_ = $stopper;
+           $non_set_ = $non_set;
+         }else {
+           $dies_ = '';
+           $non_dies_ = '';
+           $stopper_ = '';
+           $non_set_ = '';
+         }
+       }else {
+         $dies_ = $dies;
+         $non_dies_ = $non_dies;
+         $stopper_ = $stopper;
+         $non_set_ = $non_set;
+       }
+       $worksheet->setCellValue('T'.$row_number, !empty($dies_) ? substr($dies_, 0, -2) : ''); //DIES
+       $worksheet->setCellValue('U'.$row_number, !empty($non_dies_) ? substr($non_dies_, 0, -2) : ''); //NON DIES
+       $worksheet->setCellValue('V'.$row_number, !empty($stopper_) ? substr($stopper_, 0, -2) : ''); //STOPPER
        $worksheet->setCellValue('W'.$row_number, ''); //PISAU
        $worksheet->setCellValue('X'.$row_number, ''); //LAIN2
-       $worksheet->setCellValue('Y'.$row_number, ''); //NON SETT
+       $worksheet->setCellValue('Y'.$row_number, !empty($non_set_) ? substr($non_set_, 0, -2) : ''); //NON SETT
        $row_number++;
      }
      $worksheet->getStyle('A2:'.$last_column.($row_number-1))->applyFromArray($styleIsi);
