@@ -31,4 +31,14 @@ class Log_Activity
     //save to database
     $this->CI->M_log_all_activity->save_log($param);
   }
+  function otp_log($date, $time, $ip, $otp)
+  {
+    $param['otp_date']   = $date;
+    $param['otp_time']   = $time;
+    $param['otp_address'] = $ip;
+    $param['otp_code'] = $otp;
+
+    //save to database
+    $this->CI->M_log_all_activity->otp_log($param);
+  }
 }
