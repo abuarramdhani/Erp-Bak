@@ -1176,7 +1176,7 @@ $(document).ready(function () {
 				$('[name="unit"]').val(response["unit"].trim());
 				$('[name="bidang"]').val(response["bidang"].trim());
 				$('[name="dept"]').val(response["dept"].trim());
-				$('[name="masa_kerja"]').val(response["masa_kerja"].trim());
+				$('[name="masa_kerja"]').val(response["maskerja"].trim());
 			},
 			complete: function (response) {
 				$("#surat-loading").attr("hidden", true);
@@ -1274,8 +1274,8 @@ $(document).ready(function () {
 					$(".apdinprngwkt2mkk")
 						.eq(data["rng2"] - 1)
 						.iCheck("check");
-					$('[name="masa_kerja"]').val(data["masa_kerja"]);
-					$('[attr-name="masa_kerja"]').val(data["masa_kerja"]).trigger("change");
+					$('[name="masa_kerja"]').val(data["masa"]);
+					$('[attr-name="masa_kerja"]').val(data["masa"]).trigger("change");
 				}
 			},
 			complete: function (response) {

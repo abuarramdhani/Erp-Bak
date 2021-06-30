@@ -1223,7 +1223,7 @@ class M_Dtmasuk extends CI_Model
         return $this->db->query($sql)->result_array();
     }
 
-    public function getdetail_pkj_mkk($noind)
+    public function getdetail_pkj_mkk($noind, $date = false)
     {
         $sql = "select
                     t.*,
@@ -1249,10 +1249,11 @@ class M_Dtmasuk extends CI_Model
                     t.noind = '$noind'";
         $result = $this->personalia->query($sql)->row_array();
 
+        $diangkat = $result['diangkat'];
 
         // find on surat first, if null then show from tpribadi
-
         $result['masa_kerja_seksi'] = $this->getPostMasaKerjaKecelakaanFromSurat($noind) ?: $result['masa_kerja'];
+        $result['maskerja'] = date_diff(date_create($date), date_create($diangkat))->format('%y Tahun %m Bulan %d Hari');
 
         return $result;
     }
@@ -1764,8 +1765,7 @@ class M_Dtmasuk extends CI_Model
         return $this->db
             ->select("
                 kk.*,
-                el.location_name as lokasi_kerja_kecelakaan,
-                replace(replace(replace(age(date(kk.tgl_masuk_pos), date(kk.waktu_kecelakaan))::VARCHAR,'years', 'Tahun'),'mons','Bulan'),'days','Hari') as masuk_pos
+                el.location_name as lokasi_kerja_kecelakaan
             ")
             ->from('k3.k3k_kecelakaan kk')
             ->join('er.er_location el', 'el.location_code = kk.lokasi_kerja_kecelakaan', 'left')

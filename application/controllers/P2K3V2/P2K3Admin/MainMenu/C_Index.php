@@ -1690,7 +1690,7 @@ class C_Index extends CI_Controller
 		}
 
 		$kode = substr($noind, 0, 1);
-		$dat = $this->M_dtmasuk->getdetail_pkj_mkk($noind);
+		$dat = $this->M_dtmasuk->getdetail_pkj_mkk($noind, $date);
 		$kd_jabatan = $dat['kd_jabatan'];
 		if ($kode == 'K' || $kode == 'P'  || $kode == 'R' || $kode = 'F') {
 			$masakrj = $this->M_dtmasuk->getMasaKerja($noind, $tgl);
@@ -1713,7 +1713,7 @@ class C_Index extends CI_Controller
 		} else {
 			$masa = '-';
 		}
-		$data['masa'] = $dat['masa_kerja'];
+		$data['masa'] = $dat['maskerja'];
 		$data['masa_kerja'] = $masa;
 		// print_r($ket2);
 		$data['success'] = '1';
@@ -1954,7 +1954,8 @@ class C_Index extends CI_Controller
 	{
 		$data['kecelakaan'] = $this->M_dtmasuk->getKecelakaan($id);
 		$data['kecelakaan']['masa_masuk_pos'] = date_diff(date_create($data['kecelakaan']['waktu_kecelakaan']), date_create($data['kecelakaan']['tgl_masuk_pos']))->format('%y Tahun %m Bulan %d Hari');
-		$data['kecelakaan']['userName_created_by'] = $this->M_dtmasuk->getEmployeeByNoind($data['kecelakaan']['user_created_by'])->nama;
+		$created = $this->M_dtmasuk->getEmployeeByNoind($data['kecelakaan']['user_created_by']);
+		$data['kecelakaan']['userName_created_by'] = !empty($created) ? $created->name : '-';
 		if (empty($data['kecelakaan'])) return NULL;
 
 		$noind = $data['kecelakaan']['noind'];
@@ -2298,8 +2299,6 @@ class C_Index extends CI_Controller
 		$id = EncryptCar::decode($this->input->get('id'));
 
 		$data = $this->getKecelakaanDetail($id);
-		// var_dump($data);
-		// die;
 		if (isset($_GET['debug'])) {
 			debug($data);
 		}
@@ -2310,6 +2309,7 @@ class C_Index extends CI_Controller
 		$pdf = new mPDF('', 'A4', 10, '', 4, 4, 4, 4, 10, 3);
 		$filename = 'P2K3Seksi.pdf';
 		$html = $this->load->view('P2K3V2/P2K3Admin/KecelakaanKerja/Export/V_Pdf', $data, true);
+		// echo $html;die;
 		$footer = "
 			Dicetak melalui Quick ERP - P2K3 Kecelakaan Kerja pada " . date('Y-m-d H:i:s') . " oleh " . $this->session->user . " - " . $this->session->employee . "
 		";
