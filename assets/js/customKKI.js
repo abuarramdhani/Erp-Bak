@@ -84,6 +84,7 @@ const update_pbi = (no_doc) => {
   let keterangan = $('#keterangan').val()
   let seksi_tujuan = $('#seksi_tujuan').val()
   let no_transfer_asset = $('#no_transfer_asset').val()
+  let tujuan_ = $('#pbi_update_tujuan').val()
   $.ajax({
     url: baseurl + 'PengirimanBarangInternal/Input/edit_pbi',
     type: 'POST',
@@ -95,6 +96,7 @@ const update_pbi = (no_doc) => {
       keterangan: keterangan,
       seksi_tujuan: seksi_tujuan,
       no_transfer_asset: no_transfer_asset == undefined ? '' : no_transfer_asset,
+      tujuan: tujuan_
     },
     beforeSend: function() {
       Swal.fire({
@@ -126,7 +128,7 @@ const update_pbi = (no_doc) => {
   })
 }
 
-const edit_pbi = (no_dok, keterangan, user_tujuan, seksi_tujuan, type, no_trans) => {
+const edit_pbi = (no_dok, keterangan, user_tujuan, seksi_tujuan, type, no_trans, tujuan) => {
   $('.b01dqd').hide()
   $('.select2PBI').val(null)
   $('.area-edit-pbi').html('<h5>Sedang Menyiapkan Data...</h5>')
@@ -182,6 +184,7 @@ const edit_pbi = (no_dok, keterangan, user_tujuan, seksi_tujuan, type, no_trans)
     success: function(result) {
       // console.log(result, user_tujuan);
       $('#seksi_tujuan').val(seksi_tujuan);
+      $('#pbi_update_tujuan').val(tujuan).trigger('change');
       var data = {
         id: user_tujuan,
         text: `${result[0].employee_name} - ${result[0].employee_code}`
@@ -1028,3 +1031,29 @@ const detailPBI = d => {
     }
   })
 }
+
+function pbi_big_alert(type, message) {
+  Swal.fire({
+    type: type,
+    html: message,
+    text: ''
+  })
+}
+
+$('.pbi_check_desc_1').on('mouseover', function () {
+  if ($('.desc_1').val() == '') {
+    pbi_big_alert('warning', 'Input <b>Tujuan</b> Tidak Boleh Kosong');
+  }
+})
+
+$('.pbi_check_desc_2').on('mouseover', function () {
+  if ($('.desc_2').val() == '') {
+    pbi_big_alert('warning', 'Input <b>Tujuan</b> Tidak Boleh Kosong');
+  }
+})
+
+$('.pbi_check_desc_3').on('mouseover', function () {
+  if ($('.desc_3').val() == '') {
+    pbi_big_alert('warning', 'Input <b>Tujuan</b> Tidak Boleh Kosong');
+  }
+})

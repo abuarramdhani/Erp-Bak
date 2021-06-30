@@ -1,7 +1,8 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class C_DPBKHS extends CI_Controller {
+class C_DPBKHS extends CI_Controller
+{
 
     public function __construct()
     {
@@ -14,7 +15,7 @@ class C_DPBKHS extends CI_Controller {
 
     private function checkSession()
     {
-        if ( ! $this->session->is_logged ) {
+        if (!$this->session->is_logged) {
             redirect();
         }
     }
@@ -24,10 +25,10 @@ class C_DPBKHS extends CI_Controller {
         $user_id = $this->session->userid;
         $resp_id = $this->session->responsibility_id;
 
-		$data['Menu']           = 'DPB KHS';
-		$data['SubMenuOne']     = '';
-		$data['UserMenu']       = $this->M_user->getUserMenu($user_id, $resp_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $resp_id);
+        $data['Menu']           = 'DPB KHS';
+        $data['SubMenuOne']     = '';
+        $data['UserMenu']       = $this->M_user->getUserMenu($user_id, $resp_id);
+        $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $resp_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $resp_id);
         $data['DPBKHSList']     = $this->M_dpb->getDPBKHSList();
         $data['UserAccess']     = [
@@ -35,25 +36,45 @@ class C_DPBKHS extends CI_Controller {
             'delete'    => 'disabled'
         ];
 
-        if ( $this->session->user === 'B0445' || $this->session->user === 'A2146') {
+        if ($this->session->user === 'B0445' || $this->session->user === 'H7611' || $this->session->user === 'H6843' || $this->session->user === 'H6968' || $this->session->user === 'K1778' || $this->session->user === 'A2146') {
             $data['UserAccess'] = [
                 'add_data' => '',
                 'delete'   => ''
             ];
-        } else if ( $this->session->user === 'F2326' ) {
+        } else if ($this->session->user === 'F2326') {
             $data['UserAccess'] = [
                 'add_data' => '',
                 'delete'   => ''
             ];
-        } else if ( $this->session->user === 'J1396' ) {
+        } else if ($this->session->user === 'J1396') {
+            $data['UserAccess'] = [
+                'add_data' => '',
+                'delete'   => ''
+            ];
+        } else if ($this->session->user === 'B0661') {
+            $data['UserAccess'] = [
+                'add_data' => '',
+                'delete'   => ''
+            ];
+        } else if ($this->session->user === 'T0017') {
+            $data['UserAccess'] = [
+                'add_data' => '',
+                'delete'   => ''
+            ];
+        } else if ($this->session->user === 'B0854') {
+            $data['UserAccess'] = [
+                'add_data' => '',
+                'delete'   => ''
+            ];
+        } else if ($this->session->user === 'B0860') {
             $data['UserAccess'] = [
                 'add_data' => '',
                 'delete'   => ''
             ];
         }
 
-		$this->load->view('V_Header', $data);
-		$this->load->view('V_Sidemenu', $data);
+        $this->load->view('V_Header', $data);
+        $this->load->view('V_Sidemenu', $data);
         $this->load->view('ApprovalDO/MainMenu/V_DPBKHS', $data);
         $this->load->view('V_Footer', $data);
     }
@@ -63,10 +84,10 @@ class C_DPBKHS extends CI_Controller {
         $user_id = $this->session->userid;
         $resp_id = $this->session->responsibility_id;
 
-		$data['Menu']           = 'DPB KHS';
-		$data['SubMenuOne']     = '';
-		$data['UserMenu']       = $this->M_user->getUserMenu($user_id, $resp_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $resp_id);
+        $data['Menu']           = 'DPB KHS';
+        $data['SubMenuOne']     = '';
+        $data['UserMenu']       = $this->M_user->getUserMenu($user_id, $resp_id);
+        $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $resp_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $resp_id);
         $data['DPBKHSList']     = $this->M_dpb->getListDPBKHS();
         $data['UserAccess']     = [
@@ -74,32 +95,32 @@ class C_DPBKHS extends CI_Controller {
             'delete'    => 'disabled'
         ];
 
-        if ( $this->session->user === 'B0445' ) {
+        if ($this->session->user === 'B0445' || $this->session->user === 'H7611' || $this->session->user === 'H6843' || $this->session->user === 'H6968' || $this->session->user === 'K1778') {
             $data['UserAccess'] = [
                 'add_data' => '',
                 'delete'   => ''
             ];
-        } else if ( $this->session->user === 'F2326' ) {
+        } else if ($this->session->user === 'F2326') {
             $data['UserAccess'] = [
                 'add_data' => '',
                 'delete'   => ''
             ];
-        } else if ( $this->session->user === 'J1396' ) {
+        } else if ($this->session->user === 'J1396') {
             $data['UserAccess'] = [
                 'add_data' => '',
                 'delete'   => ''
             ];
         }
 
-		$this->load->view('V_Header', $data);
-		$this->load->view('V_Sidemenu', $data);
+        $this->load->view('V_Header', $data);
+        $this->load->view('V_Sidemenu', $data);
         $this->load->view('ApprovalDO/MainMenu/V_ListDPBKHS', $data);
         $this->load->view('V_Footer', $data);
     }
 
     public function detail()
     {
-        if ( ! $data['NO_PR'] = $this->input->post('data-pr') ) {
+        if (!$data['NO_PR'] = $this->input->post('data-pr')) {
             redirect('ApprovalDO/DPBKHS');
         }
 
@@ -107,9 +128,9 @@ class C_DPBKHS extends CI_Controller {
         $resp_id = $this->session->responsibility_id;
 
         $data['Menu']           = 'DPB KHS';
-		$data['SubMenuOne']     = '';
-		$data['UserMenu']       = $this->M_user->getUserMenu($user_id, $resp_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $resp_id);
+        $data['SubMenuOne']     = '';
+        $data['UserMenu']       = $this->M_user->getUserMenu($user_id, $resp_id);
+        $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $resp_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $resp_id);
         $data['DPBKHSDetail']   = $this->M_dpb->getDPBKHSDetail($data['NO_PR']);
         $data['UserAccess']     = [
@@ -119,21 +140,21 @@ class C_DPBKHS extends CI_Controller {
             'save'       => 'disabled'
         ];
 
-        if ( $this->session->user === 'B0445' ) {
+        if ($this->session->user === 'B0445' || $this->session->user === 'H7611' || $this->session->user === 'H6843' || $this->session->user === 'H6968' || $this->session->user === 'K1778') {
             $data['UserAccess'] = [
                 'add_row'    => '',
                 'edit_field' => '',
                 'delete_row' => '',
                 'save'       => ''
             ];
-        } else if ( $this->session->user === 'F2326' ) {
+        } else if ($this->session->user === 'F2326') {
             $data['UserAccess'] = [
                 'add_row'    => '',
                 'edit_field' => '',
                 'delete_row' => '',
                 'save'       => ''
             ];
-        } else if ( $this->session->user === 'J1396' ) {
+        } else if ($this->session->user === 'J1396') {
             $data['UserAccess'] = [
                 'add_row'    => '',
                 'edit_field' => '',
@@ -142,8 +163,8 @@ class C_DPBKHS extends CI_Controller {
             ];
         }
 
-		$this->load->view('V_Header', $data);
-		$this->load->view('V_Sidemenu', $data);
+        $this->load->view('V_Header', $data);
+        $this->load->view('V_Sidemenu', $data);
         $this->load->view('ApprovalDO/MainMenu/V_DetailDPBKHS', $data);
         $this->load->view('V_Footer', $data);
     }
@@ -154,23 +175,23 @@ class C_DPBKHS extends CI_Controller {
         $resp_id = $this->session->responsibility_id;
 
         $data['Menu']           = 'DPB KHS';
-		$data['SubMenuOne']     = '';
-		$data['UserMenu']       = $this->M_user->getUserMenu($user_id, $resp_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $resp_id);
+        $data['SubMenuOne']     = '';
+        $data['UserMenu']       = $this->M_user->getUserMenu($user_id, $resp_id);
+        $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $resp_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $resp_id);
 
-		$this->load->view('V_Header', $data);
-		$this->load->view('V_Sidemenu', $data);
+        $this->load->view('V_Header', $data);
+        $this->load->view('V_Sidemenu', $data);
         $this->load->view('ApprovalDO/MainMenu/V_DPBKHSNew', $data);
         $this->load->view('V_Footer', $data);
     }
 
     public function saveNew()
     {
-        if ( ! $this->input->is_ajax_request())
+        if (!$this->input->is_ajax_request())
             redirect('ApprovalDO/DPBKHS');
 
-        $pr_number = 'KHS'.date('Ymd');
+        $pr_number = 'KHS' . date('Ymd');
 
         if ($last_pr_number = $this->M_dpb->checkPRNumber($pr_number)) {
             $array_pr_number = explode('-', $last_pr_number['NO_PR']);
@@ -184,44 +205,66 @@ class C_DPBKHS extends CI_Controller {
 
         $data = $this->input->post();
 
+        // echo "<pre>";
+        // print_r($data);
+        // exit();
+
         //cek onhand
 
         $gudang = $data['header']['gudangPengirim'];
 
+        $tgl_kirim = $data['header']['tgl_kirim'];
+
+        $estDatang = $data['header']['estDatang'];
+
+        // echo "<pre>";
+        // print_r($tgl_kirim);
+        // print_r($estDatang);
+        // exit();
+
         if ($gudang == 'MLATI') {
             $kode_gudang = 'MLATI-DM';
-        }elseif ($gudang == 'TUKSONO') {
+            $org_id = 102;
+        } elseif ($gudang == 'TUKSONO') {
+            $org_id = 102;
             $kode_gudang = 'FG-TKS';
-        }elseif ($gudang == 'PUSAT') {
+        } elseif ($gudang == 'PUSAT') {
+            $org_id = 102;
             $kode_gudang = 'FG-DM';
+        } elseif ($gudang == 'JAKARTA') {
+            $org_id = 207;
+            $kode_gudang = 'FG-JFG';
         }
 
         $line = $data['line'];
 
         $nomor_do = '';
 
-        for ($i=0; $i < count($line); $i++) {
+        for ($i = 0; $i < count($line); $i++) {
             if ($nomor_do == '') {
                 $nomor_do .= $line[$i]['doNumber'];
-            }else {
-                $nomor_do .= ','.$line[$i]['doNumber'];
+            } else {
+                $nomor_do .= ',' . $line[$i]['doNumber'];
             }
         }
 
-        $returnOnhand = $this->M_dpb->checkOnhand($nomor_do,$kode_gudang);
+        // $org_id = $data['header']['org_id'];
+
+
+        $returnOnhand = $this->M_dpb->checkOnhand($nomor_do, $kode_gudang, $org_id);
 
         //end
 
         if ($returnOnhand[0]['STOCKONHAND'] == 0) {
 
-        $returnLineStatus = $this->M_dpb->checkLineStatus($nomor_do,$kode_gudang);
+            $returnLineStatus = $this->M_dpb->checkLineStatus($nomor_do, $kode_gudang, $org_id);
 
             if ($returnLineStatus[0]['LINESTATUS'] == 0) {
                 foreach ($data['line'] as $key => $val) {
-    
-                    $this->M_dpb->procedureLockStock($val['doNumber'], $kode_gudang, $noind);
-    
-                    $this->M_dpb->insertNewDetailKHS([
+
+                    $this->M_dpb->procedureLockStock($val['doNumber'], $kode_gudang, $noind, $org_id);
+
+                    $this->M_dpb->insertNewDetailKHS($tgl_kirim, $estDatang, [
                         'NO_PR'            => $new_pr_number,
                         'JENIS_KENDARAAN'  => $data['header']['vehicleCategory'],
                         'NO_KENDARAAN'     => $data['header']['vehicleId'],
@@ -241,24 +284,21 @@ class C_DPBKHS extends CI_Controller {
                     ]);
                 }
                 echo json_encode($new_pr_number);
-            }else if($returnLineStatus[0]['LINESTATUS'] == 77777){
+            } else if ($returnLineStatus[0]['LINESTATUS'] == 77777) {
                 echo json_encode('error ada do/spb bukan ODM');
-            }else if ($returnLineStatus[0]['LINESTATUS'] == 99999) {
+            } else if ($returnLineStatus[0]['LINESTATUS'] == 99999) {
                 echo json_encode('error alamat belum lengkap');
-            }else{
+            } else {
                 echo json_encode('error ada do/spb yang transact');
             }
-
-        }else{
+        } else {
             echo json_encode('error stok gudang tidak mencukupi');
         }
-
-
     }
 
     public function saveUpdate()
     {
-        if ( ! $this->input->is_ajax_request())
+        if (!$this->input->is_ajax_request())
             redirect('ApprovalDO/DPBKHS');
 
         $data = $this->input->post();
@@ -317,7 +357,7 @@ class C_DPBKHS extends CI_Controller {
 
     public function delete()
     {
-        if ( ! $this->input->is_ajax_request())
+        if (!$this->input->is_ajax_request())
             redirect('ApprovalDO/DPBKHS');
 
         $this->M_dpb->deleteDPBKHS($this->input->post('prNumber'));
@@ -332,5 +372,11 @@ class C_DPBKHS extends CI_Controller {
 
         echo json_encode($data);
     }
+    public function cekOrgID()
+    {
+        $reqNum = $_POST['value'];
+        $data = $this->M_dpb->cekOrgID($reqNum);
 
+        echo json_encode($data[0]['ORGANIZATION_ID']);
+    }
 }

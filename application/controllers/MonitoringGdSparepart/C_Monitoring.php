@@ -42,10 +42,19 @@ class C_Monitoring extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('MonitoringGdSparepart/V_Monitoring',$data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function getMon(){
 		// menampilkan semua data
 		$date = date('d/m/Y', strtotime('-1 days'));
 		$date2 = date('d/m/Y');
-		$dataTampil = $this->M_monitoring->tampilsemua($date, $date2);
+		$subinv = $this->input->post('subinv');
+		// echo "<pre>";print_r($subinv);exit();
+		$dataTampil = $this->M_monitoring->tampilsemua($date, $date2, $subinv);
 		
 		// pengelompokan data
 		$a= 0;
@@ -69,11 +78,9 @@ class C_Monitoring extends CI_Controller
 
 		$data['value'] = $array_terkelompok;
 
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('MonitoringGdSparepart/V_Monitoring', $data);
-		$this->load->view('V_Footer',$data);
+		$this->load->view('MonitoringGdSparepart/V_TblMonitoring',$data);
 	}
+
 
 	public function getPIC(){
 		$term = $this->input->get('term',TRUE);
@@ -90,15 +97,16 @@ class C_Monitoring extends CI_Controller
 		$tglAkhir		= $this->input->post('tglAkhir');
 		$pic			= $this->input->post('pic');
 		$item			= $this->input->post('item');
+		$subinv			= $this->input->post('subinv');
 		$data['searchby'] = $search;
 
 		if ($search == 'tanpa_surat') {
-			$data['value'] = $this->M_monitoring->getData_Tanpa_Surat();
+			$data['value'] = $this->M_monitoring->getData_Tanpa_Surat($subinv);
 			// echo "<pre>";print_r($data);exit();s
 			$this->load->view('MonitoringGdSparepart/V_Result3', $data);
 		}else {
 			if ($search == 'export') {		// jika search by export excel
-				$dataGET = $this->M_monitoring->getExport($jenis_dokumen, $tglAwal, $tglAkhir);
+				$dataGET = $this->M_monitoring->getExport($jenis_dokumen, $tglAwal, $tglAkhir, $subinv);
 				
 				// pengelompokan data export
 				$a= 0;
@@ -121,7 +129,7 @@ class C_Monitoring extends CI_Controller
 				$data['value'] = $array_terkelompok;
 	
 			}else{
-				$dataGET = $this->M_monitoring->getSearch($no_document, $jenis_dokumen, $tglAwal, $tglAkhir, $pic, $item);				
+				$dataGET = $this->M_monitoring->getSearch($no_document, $jenis_dokumen, $tglAwal, $tglAkhir, $pic, $item, $subinv);				
 				// echo "<pre>"; 
 				// print_r($dataGET); exit();
 				// pengelompokan data
@@ -136,7 +144,7 @@ class C_Monitoring extends CI_Controller
 							$gdAsal = $cari['asal'];
 							$status = $cari['status'];
 						}else {
-							$getBody = $this->M_monitoring->getSearch($value['NO_DOCUMENT'], $jenis_dokumen,  $tglAwal, $tglAkhir, $pic, $item);
+							$getBody = $this->M_monitoring->getSearch($value['NO_DOCUMENT'], $jenis_dokumen,  $tglAwal, $tglAkhir, $pic, $item, $subinv);
 							$cari = $this->pencarian($value);
 							$gdAsal = $cari['asal'];
 							$status = $cari['status'];
@@ -188,6 +196,19 @@ class C_Monitoring extends CI_Controller
 			}else {
 				$cari['asal'] = $gudang[0]['SUBINVENTORY_CODE'];
 			}
+		}else if($value['JENIS_DOKUMEN'] == 'MO'){
+			$getKet = $this->M_monitoring->getKetMO($value['NO_DOCUMENT']);;
+			$gudang = $this->M_monitoring->gdAsalMO($value['NO_DOCUMENT']);
+			if (empty($getKet)) {
+				$cari['status'] = 'Belum input';
+			}else {
+				$cari['status'] = 'Sudah input';
+			}
+			if (empty($gudang)) {
+				$cari['asal'] = '';
+			}else {
+				$cari['asal'] = $gudang[0]['FROM_SUBINVENTORY_CODE'];
+			}
 		}elseif ($value['JENIS_DOKUMEN'] == 'FPB') {
 			$gudang = $this->M_monitoring->getKetFPB($value['NO_DOCUMENT']);
 			if (empty($gudang)) {
@@ -213,7 +234,7 @@ class C_Monitoring extends CI_Controller
 				}
 			}
 		}
-		if ($value['JENIS_DOKUMEN'] != 'FPB' && $value['JENIS_DOKUMEN'] != 'SPBSPI') {
+		if ($value['JENIS_DOKUMEN'] != 'FPB' && $value['JENIS_DOKUMEN'] != 'SPBSPI'  && $value['JENIS_DOKUMEN'] != 'MO') {
 			$hitung_bd = count($cari['getbody']);
 			$hitung_ket = count($getKet);
 			if ($hitung_bd <= $hitung_ket) {

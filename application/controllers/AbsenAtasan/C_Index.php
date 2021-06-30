@@ -21,6 +21,7 @@ class C_Index extends CI_Controller
 			$this->load->library('email');
 			$this->load->model('M_Index');
 			$this->load->model('AbsenAtasan/M_absenatasan');
+			$this->load->model('MasterPekerja/Surat/IsolasiMandiri/M_isolasimandiri');
 			$this->load->model('SystemIntegration/M_submit');
 			$this->load->model('SystemAdministration/MainMenu/M_user');
 		}
@@ -44,10 +45,10 @@ class C_Index extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$this->load->view('V_Header',$data);
+		$this->load->view('AbsenAtasan/V_CHeader',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('AbsenAtasan/V_Index',$data);
-		$this->load->view('V_Footer',$data);
+		$this->load->view('AbsenAtasan/V_CFooter',$data);
 		}
 
 		public function listData(){
@@ -64,12 +65,13 @@ class C_Index extends CI_Controller
 		$employee = $this->session->employee;
 		$nama = trim($employee);
 		$noind = trim($this->session->user);
-		$data['listData'] = $this->M_absenatasan->getList($noind,$nama);
+		$data['listData'] = $this->M_absenatasan->getList($noind,$nama, 'limit 20');
+		$data['listData2'] = $this->M_absenatasan->getList($noind,$nama);
 		
-		$this->load->view('V_Header',$data);
+		$this->load->view('AbsenAtasan/V_CHeader',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('AbsenAtasan/V_List',$data);
-		$this->load->view('V_Footer',$data);
+		$this->load->view('AbsenAtasan/V_CFooter',$data);
 		}
 
 		public function getAtasan(){
@@ -133,13 +135,33 @@ class C_Index extends CI_Controller
 		$data['dataEmployee'] = $this->M_absenatasan->getListAbsenById($id);
 
 		$noinduk = $data['dataEmployee'][0]['noind'];
+		$gambar = $data['dataEmployee'][0]['gambar'];
+		if (base_url()=='http://erp.quick.com/'){
+			$gambar = str_replace('182.23.18.195','erp.quick.com',$gambar);
+		}
+
+		$type = pathinfo($gambar, PATHINFO_EXTENSION);
+		$file = file_get_contents($gambar);
+		$base64 = 'data:image/' . $type . ';base64,' . base64_encode($file);
+		$data['gambar'] = $base64;
+
+		if (isset( $data['dataEmployee'][0]['waktu'])) {
+			$waktu = $data['dataEmployee'][0]['waktu'];
+			$waktu = date('Y-m-d', strtotime($waktu));
+			$pres = $this->M_absenatasan->getTdataPres($noinduk, $waktu);
+			if (!empty($pres)) {
+				$stpres = array_column($pres, 'kd_ket');
+				$stpres = implode(', ', $stpres);
+				$data['pres'] = 'Pekerja memiliki Absen '.$stpres.' pada tanggal '.$waktu;
+			}
+		}
 
 		$data['employeeInfo'] = $this->M_absenatasan->getEmployeeInfo($noinduk);
 		// echo "<pre>";print_r($data['dataEmployee']);exit();
-		$this->load->view('V_Header',$data);
+		$this->load->view('AbsenAtasan/V_CHeader',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('AbsenAtasan/V_Approval',$data);
-		$this->load->view('V_Footer',$data);
+		$this->load->view('AbsenAtasan/V_CFooter',$data);
 		}
 
 
@@ -238,7 +260,8 @@ class C_Index extends CI_Controller
 			$pesan = "";
 			if (strtotime($tanggal) < strtotime(date('Y-m-d'))) {
 				$cekMangkir = $this->M_absenatasan->getAbsenMangkirByNoindTanggal($noind,$tanggal);
-				if (count($cekMangkir) > 0) {
+				$cekPRM		= $this->M_absenatasan->getTdataPresPRM($noind,$tanggal);
+				if (count($cekMangkir) > 0 || !empty($cekPRM)) {
 					$shift = $this->M_absenatasan->getShiftByNoindTanggal($noind,$tanggal);
 
 					if(!empty($shift)){
@@ -258,7 +281,16 @@ class C_Index extends CI_Controller
 							if (count($absen)%2 == 0) {
 								if (strtotime($absen['0']['waktu']) <= strtotime($jam_akhmsk) && strtotime($absen[count($absen) - 1]['waktu']) > strtotime($jam_msk)) {
 									$pesan .= "Bekerja ".$absen['0']['waktu']." s/d ".$absen[count($absen) - 1]['waktu'];
-									$this->M_absenatasan->insertBekerja($noind,$tanggal,$absen['0']['waktu'],$absen[count($absen) - 1]['waktu']);
+									$kd_ketz = 'PKJ';
+									$prez = $this->M_absenatasan->getTdataPres($noind, $tanggal);
+									if (!empty($prez)) {
+										if ($prez[0]['kd_ket'] == 'PRM') {
+											$kd_ketz = 'PRM';
+											$this->saveLogs($noind, $tanggal);
+											$this->M_absenatasan->delPRMAA($noind, $tanggal);
+										}
+									}
+									$this->M_absenatasan->insertBekerja($noind,$tanggal,$absen['0']['waktu'],$absen[count($absen) - 1]['waktu'], $kd_ketz);
 
 									if (strtotime($absen['0']['waktu']) > strtotime($jam_msk) && strtotime($absen['0']['waktu']) <= strtotime($jam_akhmsk)) {
 										$pesan .= "<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Terlambat, Jam Absen Pertama (".$absen['0']['waktu'].") melebihi Jam Masuk Shift (".$jam_msk.")";
@@ -461,8 +493,8 @@ class C_Index extends CI_Controller
 				}
 
 		}
-
-		if(!empty($eksternalMail) and $eksternalMail != null and trim($eksternalMail) != '' and trim($eksternalMail) != '-'){
+		//hapus 'and 1==2' unuk mengaktifkan kirim email external
+		if(!empty($eksternalMail) and $eksternalMail != null and trim($eksternalMail) != '' and trim($eksternalMail) != '-' and 1==2){
 				$this->load->library('PHPMailerAutoload');
 				$mail = new PHPMailer;
 				$mail->isSMTP();
@@ -565,7 +597,8 @@ class C_Index extends CI_Controller
 
 				}
 
-			if(!empty($externalMailPersonalia) and $externalMailPersonalia != null and trim($externalMailPersonalia) != '' and trim($externalMailPersonalia) != '-'){
+			//hapus 'and 1==2' untuk mengaktifkan fitur kirim email external
+			if(!empty($externalMailPersonalia) and $externalMailPersonalia != null and trim($externalMailPersonalia) != '' and trim($externalMailPersonalia) != '-' and 1==2){
 				$this->load->library('PHPMailerAutoload');
 				$mail = new PHPMailer;
 				$mail->SMTPDebug = 0;
@@ -847,7 +880,29 @@ class C_Index extends CI_Controller
 				
 
 
-			}		
-	}
+			}
 
-?>
+		public function getListAbsenAll()
+		{
+			$employee = $this->session->employee;
+			$nama = trim($employee);
+			$noind = trim($this->session->user);
+			$data['listData'] = $this->M_absenatasan->getList($noind,$nama);
+
+			$table = $this->load->view('AbsenAtasan/V_Table',$data, true);
+			echo $table;
+		}
+
+		function saveLogs($noind, $tanggal)
+		{
+			$dataPrez = $this->M_isolasimandiri->getTdataPresensiR($tanggal, $tanggal, $noind);
+			$arl = array(
+				'wkt'	=>	date('Y-m-d H:i:s'),
+				'transaksi'	=>	'Update Presensi PKJ -> PRM tanggal '.$tanggal.' sampai '.$tanggal.' noind '.$noind,
+				'keterangan'	=>	json_encode($dataPrez),
+				'program'	=>	'TIM-COVID19->MonitoringCovid',
+				'tgl_proses'	=>	date('Y-m-d H:i:s'),
+				);
+			$this->M_isolasimandiri->instoLog2($arl);
+		}
+	}

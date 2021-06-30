@@ -427,4 +427,49 @@ class M_isolasimandiri extends CI_Model
 					and kd_ket like '%CT%'";
 		return $this->personalia->query($sql)->result_array();
 	}
+
+	public function getTdataPresensiR($mulai, $selesai, $noind)
+	{
+		$sql = "SELECT * from \"Presensi\".tdatapresensi where
+				tanggal between '$mulai' and '$selesai' and noind = '$noind'";
+		return $this->personalia->query($sql)->result_array();
+	}
+
+	public function deleteTdataPresensi($mulai, $selesai, $noind)
+	{
+		$sql = "DELETE from \"Presensi\".tdatapresensi where
+				tanggal between '$mulai' and '$selesai' and noind = '$noind'";
+		$res = $this->personalia->query($sql);
+		return $this->personalia->affected_rows() > 0;
+	}
+
+	public function getTinpEdtPres($mulai, $selesai, $noind)
+	{
+		$sql = "SELECT * from \"Presensi\".tinput_edit_presensi where
+				tanggal1 between '$mulai' and '$selesai' and noind = '$noind'";
+		return $this->personalia->query($sql)->result_array();
+	}
+
+	public function deleteTinpEdtPres($mulai, $selesai, $noind)
+	{
+		$sql = "DELETE from \"Presensi\".tinput_edit_presensi where
+				tanggal1 between '$mulai' and '$selesai' and noind = '$noind'";
+		$res = $this->personalia->query($sql);
+		return $this->personalia->affected_rows() > 0;
+	}
+
+	public function updateKePRM($tgl, $pekerja, $alasan)
+	{
+		$sql = "UPDATE \"Presensi\".tdatapresensi set kd_ket = 'PRM', alasan = '$alasan' where tanggal = '$tgl' and noind = '$pekerja' and kd_ket in ('PKJ', 'PSP')";
+		$query = $this->personalia->query($sql);
+		return $this->personalia->affected_rows() > 0;
+	}
+
+	public function getAbsentoSkip($tgl, $pekerja)
+	{
+		//not in
+		$sql = "SELECT * from \"Presensi\".tdatapresensi where tanggal = '$tgl' and noind = '$pekerja'
+				and kd_ket not in ('PKJ','PSK','PSP', 'PRM')";
+		return $this->personalia->query($sql)->result_array();
+	}
 }

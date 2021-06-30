@@ -72,6 +72,32 @@ $(document).ready(function () {
     allowClear: false,
   });
 
+  $(".select-nama-amplop2").select2({
+    ajax: {
+      url: baseurl + "MasterPekerja/CetakAmplop/pekerja",
+      dataType: "json",
+      type: "get",
+      data: function (params) {
+        return { p: params.term };
+      },
+      processResults: function (data) {
+        return {
+          results: $.map(data, function (item) {
+            return {
+              id: item.noind + " - " + item.nama,
+              text: item.noind + " - " + item.nama,
+            };
+          }),
+        };
+      },
+      cache: true,
+    },
+    tags: true,
+    minimumInputLength: 2,
+    placeholder: "Select Nama Pekerja ",
+    allowClear: false,
+  });
+
   $(function () {
     $("#tabel-idcard").DataTable({
       dom: "frt",
@@ -1188,7 +1214,7 @@ $(function () {
     console.log(a);
     console.log(b);
     console.log(c);
-    
+
     $.ajax({
       type: "get",
       dataType: "json",
@@ -4248,6 +4274,9 @@ $(document).ready(function () {
   $("#tblMPSuratTugasIndex").DataTable();
   $("#txaMPSuratTugasRedactor").redactor({
     buttonsHide: ["image"],
+    keyupCallback: function (e) {
+      $("#txtMPSuratTugasSurat").val(this.get());
+    }
   });
   $("#txtMPSuratTugasTanggal").datepicker({
     autoclose: true,
@@ -4536,9 +4565,9 @@ $(document).ready(function () {
         simCetak: simCetak,
         simNo: simNo,
         simTembusan: simTembusan,
-        al: $('[name="slcMPSuratIsolasiMandiriAlasan2[]"]').map(function(){return $(this).val();}).get(),
-        st: $('[name="slcMPSuratIsolasiMandiriStatus2[]"]').map(function(){return $(this).val();}).get(),
-        tgl: $('[name="tgl_perperiode[]"]').map(function(){return $(this).val();}).get()
+        al: $('[name="slcMPSuratIsolasiMandiriAlasan2[]"]').map(function () { return $(this).val(); }).get(),
+        st: $('[name="slcMPSuratIsolasiMandiriStatus2[]"]').map(function () { return $(this).val(); }).get(),
+        tgl: $('[name="tgl_perperiode[]"]').map(function () { return $(this).val(); }).get()
       },
       type: "GET",
       url: baseurl + "MasterPekerja/Surat/SuratIsolasiMandiri/Preview",
@@ -5121,7 +5150,7 @@ $(document).ready(function () {
             });
 
             // onchange auto set tgl selesai belaku
-            $("#tblMPKSimForkliftTambahPekerja .txtMPKSimForkliftMulaiBerlaku").change(function() {
+            $("#tblMPKSimForkliftTambahPekerja .txtMPKSimForkliftMulaiBerlaku").change(function () {
               const $tr = $(this).closest('tr')
               const value = $(this).val();
               const year = moment(value).format('Y')
@@ -5790,7 +5819,9 @@ $(document).ready(function () {
         return this.value;
       })
       .get()
-      .join(", ");
+      .join(";");
+
+    // var masakerja = $(".chk_FilterTarikData_masakerja:checked").val();
 
     var loading = baseurl + "assets/img/gif/loadingquick.gif";
 
@@ -5816,11 +5847,10 @@ $(document).ready(function () {
           rangemasukstart: startmasuk,
           rangemasukend: endmasuk,
           arrselect: arrselect,
-          status: status
+          status: status,
         },
         url: baseurl + "MasterPekerja/cetakkategori/GetFilter",
         beforeSend: function () {
-          console.log(kategori)
           swal.fire({
             html: "<div><img style='width: 320px; height: auto;'src='" +
               loading +
@@ -5838,31 +5868,34 @@ $(document).ready(function () {
             $(tdphide).remove();
           });
 
+          const dataHeader = $.makeArray($('.tdp_th:not(.no):not(.status_keluarga)')).map(th => th.innerText).join(', ')
+          const hrefData = $('#exportExcel').attr('href')
+          $('#exportExcel').attr('href', `${hrefData}?dataHeader=${dataHeader}`)
+
           $("#TDP_viewall").DataTable({
-            dom: "Bfrtip",
-            buttons: [{
-              extend: "excelHtml5",
-              title: "Cetak Kategori",
-              customizeData: function (data) {
-                var tblnik = data.header.indexOf("NIK");
-                for (var i = 0; i < data.body.length; i++) {
-                  data.body[i][tblnik] = '\u200C' + data.body[i][tblnik]; 
-                }
-              }
-            }],
+            dom: "frtip",
             initComplete: function (settings, json) {
               $("#TDP_viewall").wrap(
                 "<div style='overflow:auto; width:100%;position:relative;'></div>"
               );
             },
           });
+        },
+        error: (xhr, status, error) => {
+          swal.fire({
+            title: xhr['status'] + "(" + xhr['statusText'] + ")",
+            html: xhr['responseText'],
+            type: "error",
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#d63031',
+          })
         }
       });
     }
   });
 });
 
-  //End Cetak Kategori
+//End Cetak Kategori
 
 //Cetak Jumlah Pekerja
 $(document).ready(function () {
@@ -6161,3 +6194,314 @@ $(document).ready(function () {
   });
 });
 //End Masa Pekrja
+
+//cetak amplop 2
+$(document).ready(function () {
+  $('#mpk_crpkjamp2').click(function () {
+    var val = $('#mpk_slcnmamp2').val();
+    console.log(val);
+    $.ajax({
+      type: "get",
+      data: {
+        noind: val,
+      },
+      url: baseurl + "MasterPekerja/CetakAmplop/tableAmplop2",
+      beforeSend: (a) => {
+
+      },
+      success: function (data) {
+        $('#mpk_tblamp2').html(data);
+        $('#mpk_print_amplop').attr('disabled', false);
+      },
+    });
+  });
+
+  $('.mpk_slcamplop').select2();
+
+  $()
+});
+$(document).on('change', '#mpk_slcnmamp2', function () {
+  var val = $(this).val();
+  if (val == '') {
+    $('#mpk_crpkjamp2').attr('disabled', true);
+  } else {
+    $('#mpk_crpkjamp2').attr('disabled', false);
+  }
+});
+
+$(document).on('change', '#mpk_slcukrkts', function () {
+  var val = $(this).val();
+  if (val == 'Custom') { return true; }
+  var x = ukuran_kertaz(val);
+  $('#mpk_lbr').val(x.hor);
+  $('#mpk_pjng').val(x.ver);
+  $('[name="mkanan"]').val(x.mr);
+  $('[name="mkiri"]').val(x.ml);
+  $('[name="matas"]').val(x.ma);
+  $('[name="mbawah"]').val(x.mb);
+});
+
+function ukuran_kertaz(type) {
+  var x = { ver: 148, ver: 210, mr: 10, ml: 10, ma: 48, mb: 10 };
+  if (type == 'DL')
+    var x = { ver: 110, hor: 220, mr: 10, ml: 10, ma: 48, mb: 10 };
+
+  if (type == 'C7')
+    var x = { ver: 87, hor: 114, mr: 10, ml: 10, ma: 10, mb: 10 };
+
+  if (type == 'C7/C6')
+    var x = { ver: 81, hor: 162, mr: 10, ml: 10, ma: 10, mb: 10 };
+
+  if (type == 'C6')
+    var x = { ver: 114, hor: 162, mr: 10, ml: 10, ma: 48, mb: 10 };
+
+  if (type == 'C6/C5')
+    var x = { ver: 114, hor: 229, mr: 10, ml: 10, ma: 48, mb: 10 };
+
+  if (type == 'C5')//amplop coklat
+    var x = { ver: 118, hor: 229, mr: 10, ml: 12, ma: 30, mb: 15 };
+
+  if (type == 'C4')//amplop putih
+    var x = { ver: 188, hor: 279, mr: 15, ml: 20, ma: 60, mb: 20 };
+
+  if (type == 'C3')
+    var x = { ver: 324, hor: 458, mr: 10, ml: 10, ma: 48, mb: 10 };
+
+  if (type == 'B6')
+    var x = { ver: 125, hor: 176, mr: 10, ml: 10, ma: 48, mb: 10 };
+
+  if (type == 'B5')
+    var x = { ver: 176, hor: 250, mr: 10, ml: 10, ma: 48, mb: 10 };
+
+  if (type == 'B4')
+    var x = { ver: 250, hor: 353, mr: 10, ml: 10, ma: 48, mb: 10 };
+
+  if (type == 'E4')
+    var x = { ver: 280, hor: 400, mr: 10, ml: 10, ma: 48, mb: 10 };
+
+  return x;
+}
+
+//kronologis kecelakaan kerja
+$(document).ready(function () {
+  getPekerjaTpribadi('#mpk_slckkkpkj');
+  $('.mpk_slcclear').select2({
+    allowClear: true,
+    placeholder: 'Pilih salah satu!'
+  });
+
+  $('.mpk_dtables').DataTable();
+
+  $('#mpk_slckkkpkj').change(function () {
+    var noind = $(this).val();
+    $.ajax({
+      method: "get",
+      data: {
+        noind: noind
+      },
+      url: baseurl + "MasterPekerja/KronologisKecelakaanKerja/getnokpj",
+      success: a => {
+        var data = JSON.parse(a);
+        if (data.no_peserta != '') {
+          $('#mpk_innokpj').val(data.no_peserta.trim());
+        } else {
+          alert('No. KPJ tidak ditemukan!')
+        }
+      }
+    })
+  })
+});
+
+// Akbar Sani Hasan Order #400784 // Push 08 Mei 2021
+$(document).ready(() => {
+  $('#reviewBapak').redactor({ linebreaks: true })
+  $('#MasterPekerja-namaPekerja').select2({
+    ajax: {
+      url: baseurl + "MasterPekerja/Surat/ajax/getDataPekerja",
+      dataType: "json",
+      type: "get",
+      data: function (params) {
+        return { p: params.term };
+      },
+      processResults: (data) => {
+        return {
+          results: data.map((item) => { return { id: `${item.nama} / ${item.noind}`, text: `${item.nama} / ${item.noind}` } })
+        };
+      },
+      cache: true,
+    },
+    minimumInputLength: 2,
+    placeholder: "Nama Pekerja Atau Nomor Induk",
+    allowClear: true,
+  })
+  $('#MasterPekerja-namaPekerja').on('select2:select', e => {
+    const key = e.params.data.id.split('/')[1]
+    $.ajax({
+      url: baseurl + "MasterPekerja/Surat/ajax/getDataPekerja",
+      dataType: 'json',
+      method: 'get',
+      data: {
+        p: key,
+      },
+      dataType: 'json',
+      success: (res) => {
+        res.forEach((it) => {
+          $('#MasterPekerja-pihak1').val(`${it.nama} / ${it.noind}`);
+          $('#MasterPekerja-lokasiKerja').val(it.nama_lokasi)
+          $('#MasterPekerja-jabatanPekerja').val(it.jabatan.toUpperCase())
+          $('#MasterPekerja-seksiPekerja').val(it.seksi)
+          $('#MasterPekerja-tanggalAkhirKerja-singledate').datepicker('setDate', it.akhkontrak.split(' ')[0])
+          $('#MasterPekerja-tanggalBerhentiKerja-singledate').datepicker('setDate', new Date(Date.parse(it.akhkontrak.split(' ')[0]) + 86400000))
+          $('#MasterPekerja-noBpjskes').val(it.nobpk.trim())
+          $('#MasterPekerja-noBpjsket').val(it.nobpkt.trim())
+        })
+      }
+    })
+  })
+  $('#MasterPekerja-namaPetugas').select2({
+    ajax: {
+      url: baseurl + "MasterPekerja/Surat/ajax/getDataPetugas",
+      dataType: "json",
+      type: "get",
+      data: function (params) {
+        return { p: params.term };
+      },
+      processResults: (data) => {
+        return {
+          results: data.map((item) => { return { id: `${item.nama} / ${item.noind}`, text: `${item.nama} / ${item.noind}` } })
+        };
+      },
+      cache: true,
+    },
+    minimumInputLength: 2,
+    placeholder: "Nama Petugas Atau Nomor Induk",
+    allowClear: true,
+  })
+  $('#MasterPekerja-namaPetugas').on('select2:select', e => {
+    const key = e.params.data.id.split('/')[1]
+    $.ajax({
+      url: baseurl + "MasterPekerja/Surat/ajax/getDataPetugas",
+      dataType: 'json',
+      method: 'get',
+      data: {
+        p: key,
+      },
+      dataType: 'json',
+      success: (res) => {
+        res.forEach((it) => {
+          $('#MasterPekerja-pihak2').val(`${it.nama} / ${it.noind}`)
+          $('#MasterPekerja-jabatanPetugas').val(it.jabatan)
+        })
+      }
+    })
+  })
+  $('.btn-trash').click(function () {
+    let id = $(this).data('id')
+    swal.fire({
+      type: 'warning',
+      title: 'Apa Anda Yakin Ingin Menghapus ?',
+      text: 'Data Akan Terhapus Secara Permanent Dan Tidak Dapat Dikembalikan Lagi',
+      showCancelButton: true
+    }).then(res => {
+      if (res.value) {
+        $.ajax({
+          url: baseurl + 'MasterPekerja/Surat/ajax/deleteSurat',
+          method: 'post',
+          data: {
+            id
+          },
+          success: (res) => {
+            swal.fire("Data Berhasil Dihapus", "", "success").then(res => location.reload())
+          }
+        })
+      }
+    })
+  })
+  $('#MasterPekerja-bapAkhirKerja-btnPreview').on('click', () => {
+    // Titip Sekalian BAP Akhir Kerja Lupa ngasih keyword variable
+    const tanggalSurat = $('#MasterPekerja-tanggalSuratBak-singledate').val()
+    const lokasiKerja = $('#MasterPekerja-lokasiKerja').val()
+    const namaPekerja = $('#MasterPekerja-namaPekerja').val()
+    const jabatanPekerja = $('#MasterPekerja-jabatanPekerja').val()
+    const seksiPekerja = $('#MasterPekerja-seksiPekerja').val()
+    const namaPetugas = $('#MasterPekerja-namaPetugas').val()
+    const jabatanPetugas = $('#MasterPekerja-jabatanPetugas').val()
+    const tanggalAkhirKerja = $('#MasterPekerja-tanggalAkhirKerja-singledate').val()
+    const tanggalBerhentiKerja = $('#MasterPekerja-tanggalBerhentiKerja-singledate').val()
+    const sebabBerakhir = $('#MasterPekerja-sebabBerakhir').val()
+    const tanggalPenggajian = $('#MasterPekerja-tanggalPenggajian-singledate').val()
+    const keteranganPenggajian = $('#MasterPekerja-keteranganPenggajian').val()
+    const tanggalAktifBpjs = $('#MasterPekerja-tanggalAktifBpjs-singledate').val()
+    const tanggalNonAktifBpjs = $('#MasterPekerja-tanggalNonAktifBpjs-singledate').val()
+    const no_bpjskes = $('#MasterPekerja-noBpjskes').val();
+    const no_bpjsket = $('#MasterPekerja-noBpjsket').val();
+    const tanggalPencairanJHT = $('#MasterPekerja-tanggalPencairanJHT-singledate').val()
+    const tanggalSuratPengalamanKerja = $('#MasterPekerja-tanggalSuratPengalamanKerja-singledate').val()
+    const laporanPajak = $('#MasterPekerja-laporanPajak-yearonly').val()
+    const kontakHpHr = $('#MasterPekerja-kontakHpHr').val()
+    const pihak1 = $('#MasterPekerja-pihak1').val()
+    const pihak2 = $('#MasterPekerja-pihak2').val()
+    $.ajax({
+      url: baseurl + 'MasterPekerja/Surat/ajax/previewSurat',
+      method: 'post',
+      dataType: 'json',
+      data: {
+        tanggalSurat,
+        lokasiKerja,
+        namaPekerja,
+        jabatanPekerja,
+        seksiPekerja,
+        namaPetugas,
+        jabatanPetugas,
+        tanggalAkhirKerja,
+        tanggalBerhentiKerja,
+        sebabBerakhir,
+        tanggalPenggajian,
+        keteranganPenggajian,
+        tanggalAktifBpjs,
+        tanggalNonAktifBpjs,
+        no_bpjskes,
+        no_bpjsket,
+        tanggalPencairanJHT,
+        tanggalSuratPengalamanKerja,
+        laporanPajak,
+        kontakHpHr,
+        pihak1,
+        pihak2,
+      },
+      beforeSend: () => {
+        $('#surat-loading').removeAttr('hidden')
+      },
+      success: res => {
+        $('#surat-loading').attr('hidden', true)
+        $('#reviewBapak').redactor('set', res)
+      }
+    })
+  })
+
+  $("#MasterPekerja-tanggalAkhirKerja-singledate").datepicker({
+    format: 'yyyy-mm-dd',
+    todayHighlight: true,
+    autoClose: true,
+    autoApply: true,
+  }).on("changeDate", function (e) {
+    $('#MasterPekerja-tanggalBerhentiKerja-singledate').datepicker('setDate', new Date(Date.parse(e.date) + 86400000))
+  });
+
+  $('#MasterPekerja-tanggalNonAktifBpjs-singledate').datepicker({
+    format: 'MM yyyy',
+    autoClose: true,
+    autoApply: true,
+    minViewMode: "months"
+  }).on('changeDate', function (e) {
+    $('#MasterPekerja-tanggalPencairanJHT-singledate').datepicker('setDate', new Date(Date.parse(e.date) + 2716200000))
+  })
+  $('#MasterPekerja-sebabBerakhir').select2({
+    placeholder: "Sebab Keluar",
+    allowClear: true,
+  })
+  $('#MasterPekerja-kontakHpHr').select2({
+    placeholder: "Kontak Hp Seksi Hubungan Kerja",
+    allowClear: true,
+  })
+})

@@ -30,71 +30,55 @@
                                 </a>
                             </div>
                             <div class="box-body">
+                              <div class="form-group">
                                 <div class="box box-default box-solid">
                                     <div class="box-header with-border">Search</div>
                                     <div class="box-body">
-                                        <div class="form-group">
                                         <div class="col-lg-2"></div>
-                                            <div class="col-lg-6">
-                                                <form autocomplete="off" method="POST" action="<?= base_url('ManufacturingOperationUP2L/Moulding/search')?>">
-                                                <input type="text" required="" name="bulan" id="sea_month" class="form-control selectM" placeholder="Pilih Bulan" />
+                                            <div class="col-lg-3">
+                                                <form autocomplete="off" method="POST" action="<?//= base_url('ManufacturingOperationUP2L/Moulding/search')?>">
+                                                <label for="">Bulan</label>
+                                                <input type="text" required="" name="bulan" id="sea_month" class="form-control selectM" onclick="up2l_moulding_m()" placeholder="Pilih Bulan" />
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <label for="">Tanggal</label>
+                                                <input type="text" required="" name="tanggal" id="sea_date" class="form-control SelectD tanggal-up2l" onclick="up2l_moulding_d()" placeholder="Pilih Tanggal" />
                                             </div>
                                             <div class="col-lg-2">
-                                                <button type="submit" class="btn btn-primary"> <i class="fa fa-search"></i></button>
+                                                <label for="" style="color: transparent">Search & Refresh Disini</label>
+                                                <button type="button" onclick="filter_mould()" class="btn btn-primary"> <i class="fa fa-search"></i></button>
+                                                <button type="button" onclick="ref_mould()" class="btn btn-success"> <i class="fa fa-refresh"></i></button>
                                                 </form>
                                             </div>
                                             <div class="col-lg-2"></div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="table-responsive">
-                                    <table class="datatable table table-striped table-bordered table-hover text-left" id="tblMoulding" style="font-size:12px;">
-                                        <thead class="bg-primary">
-                                            <tr>
-                                                <th style="text-align:center; width:30px">No</th>
-                                                <th style="text-align:center; min-width:80px">Action</th>
-                                                <th>Component Code</th>
-                                                <th>Component Description</th>
-                                                <th>Production Date</th>
-                                                <th>Kode Cetak</th>
-                                                <th>Shift</th>
-                                                <th>Komponen (pcs)</th>
-                                                <th>Kode</th>
-                                                <th>Jumlah Pekerja</th>
-                                                <th>Bongkar Qty</th>
-                                                <th>Scrap Qty</th>
-                                                <th>Hasil Baik</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php
-                                            $no = 1;
-                                            foreach ($Moulding as $row) :
-                                                $encrypted_string = $this->encrypt->encode($row['moulding_id']);
-                                                $encrypted_string = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
-                                                ?>
-                                                <tr>
-                                                    <td align='center'><?php echo $no++; ?></td>
-                                                    <td align='center'>
-                                                        <a style="margin-right:4px" href="<?php echo base_url('ManufacturingOperationUP2L/Moulding/read/' . $encrypted_string . ''); ?>" data-toggle="tooltip" data-placement="bottom" title="Read Data"><span class="fa fa-list-alt fa-2x"></span></a>
-                                                        <a style="margin-right:4px" href="<?php echo base_url('ManufacturingOperationUP2L/Moulding/edit/' . $row['moulding_id'] . ''); ?>" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o fa-2x"></span></a>
-                                                        <a href="<?php echo base_url('ManufacturingOperationUP2L/Moulding/delete/' . $encrypted_string . ''); ?>" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-trash fa-2x"></span></a>
-                                                    </td>
-                                                    <td><?php echo $row['component_code'] ?></td>
-                                                    <td><?php echo $row['component_description'] ?></td>
-                                                    <td><?php echo $row['production_date'] ?></td>
-                                                    <td><?php echo $row['print_code'] ?></td>
-                                                    <td><?php echo $row['shift'] ?></td>
-                                                    <td><?php echo $row['moulding_quantity'] ?></td>
-                                                    <td><?php echo $row['kode'] ?></td>
-                                                    <td><?php echo $row['jumlah_pekerja'] ?></td>
-                                                    <td><?php echo $row['bongkar_qty'] ?></td>
-                                                    <td><?php echo $row['scrap_qty'] ?></td>
-                                                    <td><?php echo $row['bongkar_qty'] - $row['scrap_qty'] ?></td>
-                                                </tr>
-                                            <?php endforeach; ?>
-                                        </tbody>
-                                    </table>
+                                <div class="area_mould">
+                                  <div class="table-responsive">
+                                      <table class="datatable table table-striped table-bordered table-hover text-left" id="tblMoulding2021" style="font-size:12px;">
+                                          <thead class="bg-primary">
+                                              <tr>
+                                                  <th style="text-align:center; width:30px">No</th>
+                                                  <th style="text-align:center; min-width:80px">Action</th>
+                                                  <th style="text-align:center">Component Code</th>
+                                                  <th style="text-align:center">Component Description</th>
+                                                  <th style="text-align:center">Production Date</th>
+                                                  <th style="text-align:center">Kode Cetak</th>
+                                                  <th style="text-align:center">Shift</th>
+                                                  <th style="text-align:center">Komponen (pcs)</th>
+                                                  <th style="text-align:center">Kode</th>
+                                                  <th style="text-align:center">Jumlah Pekerja</th>
+                                                  <th style="text-align:center">Bongkar Qty</th>
+                                                  <th style="text-align:center">Scrap Qty</th>
+                                                  <th style="text-align:center">Hasil Baik</th>
+                                              </tr>
+                                          </thead>
+                                          <tbody>
+
+                                          </tbody>
+                                      </table>
+                                  </div>
                                 </div>
                             </div>
                         </div>

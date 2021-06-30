@@ -99,12 +99,12 @@
 			if ($customJavascript) {
 				$customJavascript_ = explode(";", $customJavascript);
 				foreach ($customJavascript_ as $key => $value) :
-			?>
+					?>
 					<script src="<?= base_url('assets/js/' . trim($value)) ?>"></script>
 				<?php endforeach ?>
 			<?php
 			} else {
-			?>
+				?>
 				<script src="<?= base_url('assets/js/customFA.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customCM.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customADB.js') ?>"></script>
@@ -143,7 +143,6 @@
 				<script src="<?= base_url('assets/js/customMC.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customSM.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customPKEL.js') ?>"></script>
-				<script src="<?= base_url('assets/js/customECM.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customLKKK.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customWH.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customWMS.js') ?>"></script>
@@ -151,32 +150,27 @@
 				<script src="<?= base_url('assets/js/customUM.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customHLCM.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customMA.js') ?>"></script>
-				<script src="<?= base_url('assets/js/customMO.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customMO.js?version=' . filemtime('assets/js/customMO.js')) ?>"></script>
 				<script src="<?= base_url('assets/js/customERC.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customBI.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customMA.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customTI.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customTF.js') ?>"></script>
-				<script src="<?= base_url('assets/js/customPPH.js') ?>"></script>
-				<script src="<?= base_url('assets/js/customSPL.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customSPL.js?version=' . filemtime('assets/js/customSPL.js')) ?>) ?>"></script>
 				<script src="<?= base_url('assets/js/customWHS.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customBK.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customKMK.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customPD.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customMPO.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customOR.js') ?>"></script>
-				<script src="<?= base_url('assets/js/customMOA.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customET.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customOSP.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customML.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customMPBG.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customSGA.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customTB.js') ?>"></script>
-				<script src="<?= base_url('assets/js/customPurM.js') ?>"></script>
-				<script src="<?= base_url('assets/js/customSPO.js?version=' . filemtime('assets/js/customSPO.js')) ?>"></script>
 				<script src="<?= base_url('assets/js/customTK.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customAS.js') ?>"></script>
-				<script src="<?= base_url('assets/js/customMBK.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customMPM.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customPCP.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customCSC.js') ?>"></script>
@@ -185,16 +179,13 @@
 				<script src="<?= base_url('assets/js/customMLPA.js'); ?>"></script>
 				<script src="<?= base_url('assets/js/customMLPD.js'); ?>"></script>
 				<script src="<?= base_url('assets/js/customMPR.js'); ?>"></script>
-				<script src="<?= base_url('assets/js/customMBI.js'); ?>"></script>
 				<script src="<?= base_url('assets/js/customPLO.js'); ?>"></script>
 				<script src="<?= base_url('assets/js/customPBD.js'); ?>"></script>
 				<script src="<?= base_url('assets/js/customSI.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customSPS.js'); ?>"></script>
 				<script src="<?= base_url('assets/js/customMFO.js'); ?>"></script>
 				<script src="<?= base_url('assets/js/customVBC.js'); ?>"></script>
-				<script src="<?= base_url('assets/js/customMBP.js'); ?>"></script>
 				<script src="<?= base_url('assets/js/customMSO.js'); ?>"></script>
-				<script src="<?= base_url('assets/js/customPPHC.js'); ?>"></script>
 				<script src="<?= base_url('assets/js/customMPG.js'); ?>"></script>
 				<script src="<?= base_url('assets/js/customPSS.js'); ?>"></script>
 				<script src="<?= base_url('assets/js/customRL.js'); ?>"></script>
@@ -203,20 +194,18 @@
 				<script src="<?= base_url('assets/js/customFPD.js'); ?>"></script>
 				<script src="<?= base_url('assets/js/customBD.js'); ?>"></script>
 				<script src="<?= base_url('assets/js/customMSB.js'); ?>"></script>
-				<script src="<?= base_url('assets/js/customOKB.js?version=' . filemtime('assets/js/customOKB.js')) ?>"></script>
+				<script src="<?= base_url('assets/js/customOKB-Dashboard.js?version=' . filemtime('assets/js/customOKB-Dashboard.js')) ?>"></script>
 				<script src="<?= base_url('assets/js/customMPL.js'); ?>"></script>
 				<script src="<?= base_url('assets/js/customSMS.js'); ?>"></script>
 				<script src="<?= base_url('assets/js/customPDP.js'); ?>"></script>
-				<script src="<?= base_url('assets/js/customKGS.js'); ?>"></script>
+				<script src="<?= base_url('assets/js/customKGS.js?version=' . filemtime('assets/js/customKGS.js')) ?>"></script>
 				<script src="<?= base_url('assets/js/customRJP.js'); ?>"></script>
-				<script src="<?= base_url('assets/js/customMD.js'); ?>"></script>
-				<script src="<?= base_url('assets/js/customADO.js'); ?>"></script>
+			  <script src="<?= base_url('assets/js/customMD.js?version='.filemtime('assets/js/customMD.js')) ?>"></script>
 				<script src="<?= base_url('assets/js/customIPM.js'); ?>"></script>
-				<script src="<?= base_url('assets/js/customPSPT.js'); ?>"></script>
 				<script type="text/javascript" src="<?= base_url('assets/js/customKTR.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customHW.js'); ?>"></script>
 				<script src="<?= base_url('assets/js/customMCC.js'); ?>"></script>
-				<script src="<?= base_url('assets/js/customGTSKK.js'); ?>"></script>
+				<script src="<?= base_url('assets/js/customGTSKK.js?version='.filemtime('assets/js/customGTSKK.js')) ?>"></script>
 				<script src="<?= base_url('assets/js/customCKB.js'); ?>"></script>
 				<script src="<?= base_url('assets/js/customME.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customRPO.js'); ?>"></script>
@@ -244,7 +233,7 @@
 				<script src="<?= base_url('assets/js/customCMO.js'); ?>"></script>
 				<script src="<?= base_url('assets/js/customPAD.js'); ?>"></script>
 				<script src="<?= base_url('assets/js/customJT.js'); ?>"></script>
-				<script src="<?= base_url('assets/js/customJTIP.js'); ?>"></script>
+				<script src="<?= base_url('assets/js/customJTIP.js?version='.filemtime('assets/js/customJTIP.js')) ?>"></script>
 				<script src="<?= base_url('assets/js/customMCT.js'); ?>"></script>
 				<script src="<?= base_url('assets/js/customWLP.js'); ?>"></script>
 				<script src="<?= base_url('assets/js/customDBHA.js'); ?>"></script>
@@ -253,10 +242,14 @@
 				<script src="<?= base_url('assets/js/customCOPS.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customOVP.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customDSP.js') ?>"></script>
-
-
-
-
+				<script src="<?= base_url('assets/js/customPME.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customOSR.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customMLQ.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customHAPH.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customKGP.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customHB.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customBRS.js') ?>"></script>
+                <script src="<?= base_url('assets/js/kaizenPkjTks.js') ?>"></script>
 
 				<!-- <script src="<?= base_url('assets/js/customMO.js') ?>"></script> -->
 				<!-- <script src="<?= base_url('assets/js/customPR.js') ?>"></script> -->
@@ -399,6 +392,9 @@
 						});
 					})
 				})
+			</script>
+			<script>
+				<?= $this->session->flashdata('swal'); ?>
 			</script>
 			</body>
 

@@ -1,14 +1,13 @@
 <?php $tabel = count($data) > 3 ? 'tb_monjob' : 'tb_monjob2'; 
-$tambahan = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
 ?>
 <form method="post">
-<table class="table table-bordered table-hover table-striped text-center" id="<?= $tabel?>" style="width: 100%; font-size:12px">
+<table class="table table-bordered table-hover table-striped text-center" id="<?= $tabel?>" style="font-size:12px">
     <thead style="background-color:#60BCEB">
         <tr class="text-nowrap">
             <th rowspan="2" style="width:5%;vertical-align:middle;background-color:#60BCEB">No
                 <input type="hidden" name="ket" value="<?= $ket?>">
             </th>
-            <th rowspan="2" style="vertical-align:middle;background-color:#60BCEB"><?= $tambahan?>Item<?= $tambahan?></th>
+            <th rowspan="2" style="width:130px;vertical-align:middle;background-color:#60BCEB">Item</th>
             <th rowspan="2" style="background-color:#60BCEB"></th>
             <th colspan="<?= $hari?>" >Tanggal</th>
             <th rowspan="2" style="vertical-align:middle;background-color:#60BCEB">Jumlah</th>
@@ -34,14 +33,18 @@ $tambahan = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&
                 <input type="hidden" id="inv<?= $no?>" name="inv<?= $no?>" value="<?= $value['INVENTORY_ITEM_ID']?>"> 
                 <input type="hidden" name="wip<?= $no?>"> 
                 <input type="hidden" name="picklist<?= $no?>"> 
-                <input type="hidden" name="fg_tks<?= $no?>"> 
-                <input type="hidden" name="mlati<?= $no?>"> 
+                <input type="hidden" name="completion<?= $no?>" class="val_completion"> 
+                <input type="hidden" name="gudang1<?= $no?>"> 
+                <input type="hidden" name="gudang2<?= $no?>"> 
+                <input type="hidden" name="av_pick<?= $no?>"> 
             </td>
 
             <td style="text-align:left"><?= $value['ITEM']?><br><?= $value['DESC']?>
                 <br><br><span class="loadingwip" name="ini_wip<?= $no?>"></span>
                 <br><span class="loadingpick" name="ini_pick<?= $no?>"></span>
+                <br><span class="loadingcomp" name="ini_comp<?= $no?>"></span>
                 <br><span class="loadinggd" name="ini_gd<?= $no?>"></span>
+                <br><span class="loadingavpick" name="ini_avpick<?= $no?>"></span>
             </td>
             <td class="text-nowrap"><p>P</p>
                 <?php if ($ket == 'All' || $ket == 'PA') { ?>
@@ -140,7 +143,9 @@ $tambahan = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&
     <?php if($no-1 > 0) {?>
         <tr>
             <td style="font-weight:bold">Total</td>
-            <td><input type="hidden" name="jml_item" value="<?= $no-1?>"><?= $no-1?></td>
+            <td><input type="hidden" name="jml_item" value="<?= $no-1?>"><?= $no-1?>
+                <br><span class="jml_all_comp"></span>
+            </td>
             <td><p>P</p>
             <?php if ($ket == 'All' || $ket == 'PA') { ?>
                 <p>A</p>

@@ -1,7 +1,8 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class C_Daftar extends CI_Controller {
+class C_Daftar extends CI_Controller
+{
 
     public function __construct()
     {
@@ -19,14 +20,15 @@ class C_Daftar extends CI_Controller {
         $data['Title']     = 'Daftar Pendampingan SPT';
         $data['Link']      = 'PendampinganSPT/Daftar';
         $data['Content']   = $this->parser->parse('PendampinganSPT/MainMenu/V_ContentDaftar', $content, TRUE);
-        $data['Copyright'] = '<strong>Copyright &copy; Quick 2015-'.date('Y').'.</strong> All rights reserved.';
+        $data['Copyright'] = '<strong>Copyright &copy; Quick 2015-' . date('Y') . '.</strong> All rights reserved.';
+        $data['JSVersion'] = filemtime('assets/js/customPSPT.js');
 
         $this->parser->parse('PendampinganSPT/MainMenu/V_Template', $data);
     }
 
     public function getUserInformation()
-    {        
-        if ( ! $this->input->is_ajax_request() ) 
+    {
+        if (!$this->input->is_ajax_request())
             redirect('PendampinganSPT/Daftar');
 
         $user_id = $this->input->post('userId');
@@ -37,21 +39,33 @@ class C_Daftar extends CI_Controller {
 
     public function addRegisteredUser()
     {
-        if ( ! $this->input->is_ajax_request() ) 
+        if (!$this->input->is_ajax_request())
             redirect('PendampinganSPT/Daftar');
 
         $user_data = $this->input->post();
         $data = $this->M_daftar->selectRegisteredUser($user_data['nomor_induk']);
 
-        if ( $data ) {
+        if ($data) {
             header('HTTP/1.1 428');
             die(json_encode([
                 'status' => 'already available',
                 'registered_number' => $data[0]['nomor_pendaftaran']
             ]));
-        } else {
-            echo json_encode($this->M_daftar->insertRegisteredUser($user_data));
+        } else {    
+            $location = $user_data['lokasi_kerja'] === 'PUSAT' ? 'PST' : 'TKS';
+            $unique_number = sprintf('%03d', $this->M_daftar->selectNextRegisterNumberSeq());
+            $registered_number = "$location-21-$unique_number";
+
+            $insert_data = array_merge($user_data, [
+                'nomor_pendaftaran' => $registered_number,
+            ]);
+
+            $this->M_daftar->insertRegisteredUser($insert_data);
+
+            echo json_encode([
+                'status'            => 'Success',
+                'registered_number' => $registered_number
+            ]);
         }
     }
-
 }

@@ -45,40 +45,41 @@ class C_EditTSKK extends CI_Controller {
 		$nd               = $this->input->post('inputInsert');
 		//PART
 		$jenis_inputPart  = $this->input->post('terdaftar');
-		$type 	          = $this->input->post('txtType');
-		// echo $type;die;
-		if ($type == null) {
-			$type 	          = $this->input->post('txtTypeT');
-		}else{
-			$type 	          = $this->input->post('txtType');
-		}
-
-		$kode_part 	      = $this->input->post('txtKodepart[]');
-		if ($kode_part == null) {
-			$kode 	          = $this->input->post('txtKodepartT');
-		}else{
+		if ($jenis_inputPart == 'Terdaftar') {
+			$type 	          = implode(",", $this->input->post('txtType[]'));
 			$kode_part 	      = $this->input->post('txtKodepart[]');
-			$kode = implode(", ", $kode_part);
-		}
-
-		$nama_part 	      = $this->input->post('txtNamaPart');
-		if ($nama_part == null) {
-			$nama_part 	          = $this->input->post('txtNamaPartT');
-		}else{
+			$kode = implode(",", $kode_part);
 			$nama_part 	      = $this->input->post('txtNamaPart');
+		}else {
+			$type 	      = $this->input->post('txtTypeT');
+			$kode 	      = $this->input->post('txtKodepartT');
+			$nama_part 	  = $this->input->post('txtNamaPartT');
 		}
-
 		//EQUIPMENT
 		$jenis_inputEquipment  = $this->input->post('equipmenTerdaftar');
-		$no_mesin	      	   = $this->input->post('txtNoMesin[]');
-		$no_mesin 		  	   = implode("; ", $no_mesin);
+		$jenis_inputEquipmentMesin  = $this->input->post('equipmenTerdaftarMesin');
+		$no_mesin	      = $this->input->post('txtNoMesin[]');
+		if ($no_mesin == null) {
+				$no_mesin	      = $this->input->post('txtNoMesinT');
+		}else{
+				$no_mesin = implode("; ", $no_mesin);
+		}
+		// echo "<pre>";echo $no_mesin;
 		$jenis_mesin      = $this->input->post('txtJenisMesin[]');
-		$jm = implode("; ", $jenis_mesin);
-		$jenis_mesin = trim(preg_replace('/\s\s+/', ' ', $jm));
+		if (empty($jenis_mesin[0])) {
+				$jenis_mesin = $this->input->post('txtJenisMesinT');
+		}else{
+				$jenis_mesin = implode("; ", $jenis_mesin);
+		}
 
+		// $jenis_mesin = trim(preg_replace('/\s\s+/', ' ', $jm));
 		$resource         = $this->input->post('txtResource[]');
-		$rsc = implode("; ", $resource);
-		$resource = trim(preg_replace('/\s\s+/', '; ', $rsc));
+		if (empty($resource[0])) {
+				$resource = $this->input->post('txtResourceT');
+		}else{
+				$resource = implode("; ", $resource);
+		}
+
 		$line             = $this->input->post('txtLine');
 		$alat_bantu	      = $this->input->post('txtAlatBantu[]');
 		if ($alat_bantu == null) {
@@ -102,13 +103,15 @@ class C_EditTSKK extends CI_Controller {
 		$dr_operator      = $this->input->post('txtDariOperator');
 		$seksi 	          = $this->input->post('txtSeksi');
 		//PROCESS
-		$proses 	      = $this->input->post('txtProses');
+		$proses 	        = implode(", ", $this->input->post('txtProses[]'));
 		$kode_proses      = $this->input->post('txtKodeProses');
 		$proses_ke 	      = $this->input->post('txtProsesKe');
 		$dari 	          = $this->input->post('txtDariProses');
 		$tanggal          = $this->input->post('txtTanggal');
 		// die;
 		$qty 	          = $this->input->post('txtQtyProses');
+		$status_observasi = $this->input->post('status_observasi');
+		$jenis_takt_time = $this->input->post('perhitunganTakt'); // jenis manual atau tidak
 		// exit();
 		//SEKSI PEMBUAT
 		$noind = $this->session->user;
@@ -131,7 +134,7 @@ class C_EditTSKK extends CI_Controller {
 					  $proses,$kode_proses,$jenis_mesin,$proses_ke,$dari,$tanggal,$qty,$nm,
 					  $nilai_distribusi,$takt_time,$no_mesin,$resource,$line,$alat_bantu,$tools,
 					  $jml_operator,$dr_operator,$seksi_pembuat,$jenis_inputPart,$jenis_inputEquipment,
-					  $sang_pembuat,$creationDate);
+					  $sang_pembuat,$creationDate, $jenis_inputEquipmentMesin, $status_observasi, $jenis_takt_time);
 
 		//LEMBAR OBSERVASI ELEMEN KERJA
 		$deleteElement 	  = $this->M_gentskk->deleteObservation($id);
@@ -157,6 +160,7 @@ class C_EditTSKK extends CI_Controller {
 		$keterangan_elemen= $this->input->post('elemen[]');
 		$tipe_urutan 	  = $this->input->post('checkBoxParalel[]');
 		$startTimeTogether =  $this->input->post('start_time_together[]');
+		$endTimeTogether =  $this->input->post('end_time_together[]');
 
 		for ($i=0; $i < count($elemen); $i++) {
 
@@ -287,6 +291,11 @@ class C_EditTSKK extends CI_Controller {
 					$startTimeTogether[$i] = null;
 			}
 
+			if ($endTimeTogether[$i] == ''){
+					$endTimeTogether[$i] = null;
+			}
+
+
 				$data = array(
 				'id_tskk'  	        => $id,
 				'waktu_1' 	        => $w1,
@@ -309,7 +318,8 @@ class C_EditTSKK extends CI_Controller {
 				'elemen'        	=> $elm,
 				'keterangan_elemen' => $ktr_elm,
 				'tipe_urutan'       => $tu,
-				'start_together'		=> $startTimeTogether[$i]
+				'start_together'		=> $startTimeTogether[$i],
+				'end_together'		=> $endTimeTogether[$i]
 				);
 				// echo"<pre>";print_r($data);
 			if ($data['jenis_proses'] != null) {
@@ -338,12 +348,21 @@ class C_EditTSKK extends CI_Controller {
 		}
 
 		//UPDATE TAKT TIME CALCULATION
-		$waktu_satu_shift   = $this->input->post('txtWaktu1Shift');
-		$jumlah_shift       = $this->input->post('txtJumlahShift');
-		$forecast           = $this->input->post('txtForecast');
-		$qty_unit           = $this->input->post('txtQtyUnit');
-		$rencana_produksi   = $forecast * $qty_unit;
-		$jumlah_hari_kerja  = $this->input->post('txtJumlahHariKerja');
+		if ($this->input->post('perhitunganTakt') == 1 || $this->input->post('perhitunganTakt') == 2) {
+			$waktu_satu_shift   = $this->input->post('txtWaktu1Shift');
+			$jumlah_shift       = $this->input->post('txtJumlahShift');
+			$forecast           = $this->input->post('txtForecast');
+			$qty_unit           = $this->input->post('txtQtyUnit');
+			$rencana_produksi   = $forecast * $qty_unit;
+			$jumlah_hari_kerja  = $this->input->post('txtJumlahHariKerja');
+		}else {
+			$waktu_satu_shift   = $this->input->post('txtWaktu1ShiftT');
+			$jumlah_shift       = $this->input->post('txtJumlahShiftT');
+			$forecast           = $this->input->post('txtForecastT');
+			$qty_unit           = $this->input->post('txtQtyUnitT');
+			$rencana_produksi   = $forecast * $qty_unit;
+			$jumlah_hari_kerja  = $this->input->post('txtJumlahHariKerjaT');
+		}
 
 		$checkTaktTime = $this->M_gentskk->selectTaktTimeCalculation($id);
 		// echo"<pre>";print_r($checkTaktTime);die;
@@ -369,7 +388,6 @@ class C_EditTSKK extends CI_Controller {
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-
 		// $dataId = $this->M_gentskk->selectIdHeader();
 		// $id = $dataId[0]['id'];
 		$data['status'] = 1;

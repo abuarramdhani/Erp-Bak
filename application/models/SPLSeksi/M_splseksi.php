@@ -152,7 +152,7 @@ class M_splseksi extends CI_Model
 	public function save_spl($data)
 	{
 		$this->spl->insert('splseksi.tspl', $data);
-		return;
+		return $this->spl->insert_id();
 	}
 
 	public function save_splr($data)

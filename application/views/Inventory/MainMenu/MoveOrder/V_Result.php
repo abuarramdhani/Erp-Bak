@@ -167,6 +167,9 @@
 							value="<?= $value['header']['WIP_ENTITY_NAME'].'+'; ?>">
 				<?php } ?>
 				</center>
+				<input type="hidden" name="wip_entity_name[]" value="<?= $value['header']['WIP_ENTITY_NAME'] ?>">
+				<input type="hidden" name="kodeitem[]" value="<?= $value['header']['ITEM_CODE'] ?>">
+				<input type="hidden" name="startqty[]" value="<?= $value['header']['START_QUANTITY'] ?>">
 			</td>
 			<td class="<?= $penanda ?>" ><b><?= $value['header']['WIP_ENTITY_NAME']; ?></b></td>
 			<td class="<?= $penanda ?>" ><?= $value['header']['ITEM_CODE'] ?></td>
@@ -204,11 +207,11 @@
 						</button>
 					<?php } else { ?>
 						<button class="btn btn-sm  <?= ($value['body']) ? 'btn-success' : 'disabled btn-default' ?>" target="_blank" 
-								 <?= ($value['body']) ? "onclick=document.getElementById('form".$value['header']['WIP_ENTITY_NAME']."').submit();" :'' ?>>
+								 <?= ($value['body']) ? "onclick=document.getElementById('form".$value['header']['WIP_ENTITY_NAME']."').submit();print_sticker('".$value['header']['ITEM_CODE']."','".$value['header']['WIP_ENTITY_NAME']."',".$value['header']['START_QUANTITY'].",'')" :'' ?>>
 								 <?= $text_button; ?> 
 						</button><br><br>
 						<button class="btn btn-sm  <?= ($value['body']) ? 'btn-success' : 'disabled btn-default' ?>" target="_blank" 
-								 <?= ($value['body']) ? "onclick=document.getElementById('form2".$value['header']['WIP_ENTITY_NAME']."').submit();" :'' ?>>
+								 <?= ($value['body']) ? "onclick=document.getElementById('form2".$value['header']['WIP_ENTITY_NAME']."').submit();print_sticker('".$value['header']['ITEM_CODE']."','".$value['header']['WIP_ENTITY_NAME']."',".$value['header']['START_QUANTITY'].",'')" :'' ?>>
 								 <?= $text_button2; ?> 
 						</button>
 					<?php } ?>
@@ -274,7 +277,7 @@
 							<td class="<?= ($vulue['REQUIRED_QUANTITY'] > $vulue['ATR']) ? "bg-danger " : "" ?>"><?= $vulue['REQUIRED_QUANTITY'] ?></td>
 							<td class="<?= ($vulue['REQUIRED_QUANTITY'] > $vulue['ATR']) ? "text-danger text-bold-cuk" : "" ?>"><?= $vulue['ATR'] ?></td>
 							<td ><?= $vulue['MO']?></td>
-							<td class="<?= ($vulue['REQUIRED_QUANTITY'] > $vulue['KURANG']) ? "text-danger text-bold-cuk" : "" ?>"><?= $vulue['KURANG'] ?></td>
+							<td class="<?= ($vulue['REQUIRED_QUANTITY'] > $vulue['KURANG']) ? "bg-danger text-danger text-bold-cuk" : "" ?>"><?= $vulue['KURANG'] ?></td>
 						</tr>
 						<?php 
 							$allNojob[$no][] =  $vulue['WIP_ENTITY_NAME'];
@@ -317,7 +320,8 @@
 								<input type="hidden" name="subinvto[]" value="<?= $vulue['GUDANG_TUJUAN'] ?>">
 								<input type="hidden" name="subinvfrom[]" value="<?= $vulue['GUDANG_ASAL'] ?>">
 								<input type="hidden" name="locatorto[]" value="<?= $vulue['LOCATOR_TUJUAN_ID'] ?>">
-								<input type="hidden" name="locatorfrom[]" value="<?= $vulue['LOCATOR_ASAL_ID'] ?>">
+								<input type="hidden" name="locatorfrom[]" value="<?= $vulue['LOCATOR_ASAL'] ?>">
+								<input type="hidden" name="locatorfromid[]" value="<?= $vulue['LOCATOR_ASAL_ID'] ?>">
 								<input type="hidden" name="departement" value="NONE">
 								<input type="hidden" name="piklis" value="2">
 						<?php 
@@ -358,7 +362,7 @@
 <div>
 	<?php 
 	if ($requirement) { ?>
-	<form method="post" target="_blank" action="<?php echo base_url('InventoryManagement/CreateMoveOrder/createall'); ?>">
+	<form method="post" target="_blank" id="createall_picklist" action="<?php echo base_url('InventoryManagement/CreateMoveOrder/createall'); ?>">
 		<input type="hidden" name="selectedPicklistIMO" value="">
 		<?php foreach ($allInvID as $key => $value) { ?>
 		<input type="hidden" name="no_job[]" value="<?= implode('<>', $allNojob[$key]) ?>">
@@ -374,10 +378,12 @@
 		<input type="hidden" name="departement" value="NONE">
 		<input type="hidden" name="piklis" value="1">
 		<?php } ?>
-	<button type="submit" class="btn btn-success pull-right" disabled="disabled" id="btnSelectedIMO"><b> CREATE PICKLIST SELECTED </b><b id="jmlSlcIMO"></b></button>
+	<!-- <button type="submit" class="btn btn-success pull-right" disabled="disabled" id="btnSelectedIMO"><b> CREATE PICKLIST SELECTED </b><b id="jmlSlcIMO"></b></button> -->
+	<button type="button" class="btn btn-success pull-right" disabled="disabled" id="btnSelectedIMO" onclick="document.getElementById('createall_picklist').submit();print_sticker2()"><b> CREATE PICKLIST SELECTED </b><b id="jmlSlcIMO"></b></button>
+	
 	</form>
 	<br><br>
-	<form method="post" target="_blank" action="<?php echo base_url('InventoryManagement/CreateMoveOrder/createall'); ?>">
+	<form method="post" target="_blank" id="createall_plheader" action="<?php echo base_url('InventoryManagement/CreateMoveOrder/createall'); ?>">
 		<input type="hidden" name="selectedPicklistIMO" value="">
 		<?php foreach ($allInvID as $key => $value) { ?>
 		<input type="hidden" name="no_job[]" value="<?= implode('<>', $allNojob[$key]) ?>">
@@ -393,7 +399,8 @@
 		<input type="hidden" name="departement" value="NONE">
 		<input type="hidden" name="piklis" value="2">
 		<?php } ?>
-	<button type="submit" class="btn btn-success pull-right" disabled="disabled" id="btnSelectedIMO2"><b> CREATE PL HEADER SELECTED </b><b id="jmlSlcIMO2"></b></button>
+	<!-- <button type="submit" class="btn btn-success pull-right" disabled="disabled" id="btnSelectedIMO2"><b> CREATE PL HEADER SELECTED </b><b id="jmlSlcIMO2"></b></button> -->
+	<button type="button" class="btn btn-success pull-right" disabled="disabled" id="btnSelectedIMO2" onclick="document.getElementById('createall_plheader').submit();print_sticker2()"><b> CREATE PL HEADER SELECTED </b><b id="jmlSlcIMO2"></b></button>
 	</form>
 
 	<form method="post" target="_blank" action="<?php echo base_url('InventoryManagement/Monitoring/exportPending'); ?>">
@@ -404,7 +411,7 @@
 		<input type="hidden" name="no_job[]" value="<?= implode('<>', $allNojob[$key]) ?>">
 		<input type="hidden" name="assy[]" value="<?= implode('<>', $allAssy[$key]) ?>">
 		<?php } ?>
-		<button type="submit" class="btn btn-danger" id="btnpdfMerah"><b> Export Kekurangan </b></button>
+		<button type="submit" class="btn btn-danger" id="btnpdfMerah" style="<?= empty($dept) ? 'display:none' : ''; ?>"><b> Export Kekurangan </b></button>
 	</form>
 	<?php } ?>
 </div>

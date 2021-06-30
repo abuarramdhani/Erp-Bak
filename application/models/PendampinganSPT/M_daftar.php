@@ -13,7 +13,8 @@ class M_daftar extends CI_Model {
     public function selectUserInformation($id)
     {
         return $this->personalia
-            ->select('tpribadi.noind, tpribadi.nama, tpribadi.npwp, tseksi.seksi, tnoind.fs_ket')            
+            ->select('tpribadi.noind, tpribadi.nama, tpribadi.npwp, tseksi.seksi, tnoind.fs_ket')
+            ->select("EXTRACT(YEAR FROM AGE('2021/01/01'::DATE, tpribadi.tgllahir)) AS umur", false)
             ->where('tpribadi.noind', $id)
             ->from('hrd_khs.tpribadi')
             ->join('hrd_khs.tseksi', 'tseksi.kodesie = tpribadi.kodesie')
@@ -27,6 +28,7 @@ class M_daftar extends CI_Model {
         return $this->db
             ->select('nomor_pendaftaran')
             ->where('nomor_induk', $id)
+            ->where('extract(year from tanggal_daftar) = ', 2021)
             ->get('ap.ap_spt')
             ->result_array();
     }
@@ -34,22 +36,17 @@ class M_daftar extends CI_Model {
     public function insertRegisteredUser($data)
     {
         $this->db->insert('ap.ap_spt', $data);
+    }
 
-        $last_id       = $this->db->insert_id();
-        $unique_number = sprintf('%03d', $last_id);
-        $data['lokasi_kerja'] === 'PUSAT' ?
-            $registered_number = "PST-$unique_number" :
-            $registered_number = "TKS-$unique_number";
-
-        $this->db
-            ->set('nomor_pendaftaran', $registered_number)
-            ->where('id', $last_id)
-            ->update('ap.ap_spt');
-
-        return [
-            'status'            => 'Success',
-            'registered_number' => $registered_number
-        ];
+    public function selectNextRegisterNumberSeq()
+    {
+        return $this->db
+            ->query(
+                "SELECT
+                    NEXTVAL('ap.ap_spt_2021_register_number_seq') id"
+            )
+            ->row()
+            ->id;
     }
 
 }

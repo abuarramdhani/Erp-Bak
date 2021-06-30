@@ -3,12 +3,11 @@
 		scroll-behavior: smooth;
 	}
 
-	#example11_paginate {
-		float: right;
-	}
-
-	#example11_info {
+	.dataTables_info {
 		float: left;
+	}
+	.dataTables_paginate {
+		float: right;
 	}
 
 	span.select2-container {
@@ -145,7 +144,7 @@
 								<div class="form-group">
 									<div class="col-sm-12">
 										<input type="text" id="txt_ses" value="<?php echo $this->session->userid; ?>" hidden>
-										<button type="button" class="btn btn-primary hidden" data-toggle="modal" data-target="#ProsesDialog" id="btn-ProsesSPL"><i class="fa fa-save"></i> Proses</button>
+										<button type="button" class="btn btn-primary hidden" id="btn-ProsesSPL"><i class="fa fa-save"></i> Proses</button>
 										<button data-step="7" data-intro="Tombol untuk melakukan pencarian" type="button" id="spl-approval-1" style="margin-right:3px" class="btn btn-primary pull-right"> <i class="fa fa-search"></i> Cari</button>
 										<button data-step="8" data-intro="Tombol untuk mereload halaman" type="reset" style="margin-right:3px" class="btn btn-primary pull-right" onclick="location.reload()"> <i class="fa fa-refresh"></i> Reset</button>
 										<img src="<?= base_url('assets/img/gif/loading6.gif') ?>" class="pull-right spl-loading hidden" width="33px" height="33px" style="margin-right:3px">
@@ -164,8 +163,11 @@
 
 				<div class="box box-primary">
 					<div class="box-body">
+						<div class="col-md-12 text-center">
+							<!-- <label style="color: red;">* Maksimal 1 x proses approve 100 data lembur.</label> -->
+						</div>
 						<link rel="stylesheet" href="<?= base_url('assets/plugins/bootstrap/3.3.7/css/bootstrap.css'); ?>" />
-						<div data-step="9" data-intro="Tabel untuk melihat pekerja lembur dan untuk memilih pekerja yang akan di approve lemburnya" class="table-responsive">
+						<div data-step="9" data-intro="Tabel untuk melihat pekerja lembur dan untuk memilih pekerja yang akan di approve lemburnya" class="table-responsive col-md-12">
 							<table id="example11" class="table table-bordered table-striped spl-table aska">
 								<thead style="background:#3c8dbc; color:#fff">
 									<tr>

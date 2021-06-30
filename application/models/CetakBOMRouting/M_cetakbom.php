@@ -5,27 +5,27 @@ class M_cetakbom extends CI_Model
   public function __construct()
   {
     parent::__construct();
-    $this->load->database();    
+    $this->load->database();
     $this->personalia = $this->load->database('personalia', true);
 
   }
 
   function getNama($opr)
   {
-  $sql = "SELECT trim(nama) as nama from hrd_khs.tpribadi 
+  $sql = "SELECT trim(nama) as nama from hrd_khs.tpribadi
       where noind = '$opr'";
-    
+
   $query = $this->personalia->query($sql);
   return $query->result_array();
   }
 
   public function selectproduk($term) {
     $oracle = $this->load->database('oracle', true);
-    $sql = "select ffv.FLEX_VALUE ,ffvt.DESCRIPTION from fnd_flex_values ffv ,fnd_flex_values_tl ffvt 
-    where ffv.FLEX_VALUE_ID = ffvt.FLEX_VALUE_ID 
-    and ffv.FLEX_VALUE_SET_ID = 1013710 
-    and ffv.END_DATE_ACTIVE is null 
-    and ffv.ENABLED_FLAG = 'Y' 
+    $sql = "select ffv.FLEX_VALUE ,ffvt.DESCRIPTION from fnd_flex_values ffv ,fnd_flex_values_tl ffvt
+    where ffv.FLEX_VALUE_ID = ffvt.FLEX_VALUE_ID
+    and ffv.FLEX_VALUE_SET_ID = 1013710
+    and ffv.END_DATE_ACTIVE is null
+    and ffv.ENABLED_FLAG = 'Y'
     and (upper(ffv.FLEX_VALUE) like upper('%$term%') or upper(ffvt.DESCRIPTION) like upper('%$term%'))
  ";
 // return $sql;
@@ -51,9 +51,9 @@ and ffv.FLEX_VALUE = '$produk'
  }
    public function getkomponen($term) {
     $oracle = $this->load->database('oracle', true);
-    $sql = "SELECT msib.segment1, msib.description 
-FROM mtl_system_items_b msib 
-WHERE msib.INVENTORY_ITEM_STATUS_CODE = 'Active'  
+    $sql = "SELECT msib.segment1, msib.description
+FROM mtl_system_items_b msib
+WHERE msib.INVENTORY_ITEM_STATUS_CODE = 'Active'
 AND msib.organization_id = 81
 AND msib.segment1 LIKE '$term%'
  ";
@@ -63,9 +63,9 @@ AND msib.segment1 LIKE '$term%'
  }
  public function getdesckomponen($komp) {
     $oracle = $this->load->database('oracle', true);
-    $sql = "SELECT msib.segment1, msib.description 
-FROM mtl_system_items_b msib 
-WHERE msib.INVENTORY_ITEM_STATUS_CODE = 'Active'  
+    $sql = "SELECT msib.segment1, msib.description
+FROM mtl_system_items_b msib
+WHERE msib.INVENTORY_ITEM_STATUS_CODE = 'Active'
 AND msib.organization_id = 81
 AND msib.segment1 = '$komp'
  ";
@@ -107,7 +107,7 @@ AND msib.segment1 = '$komp'
 			$alter = "AND bor.ALTERNATE_ROUTING_DESIGNATOR = '$alt'";
 		}
 
-      $sql = "Select bor.ORGANIZATION_ID
+      $sql = "SELECT bor.ORGANIZATION_ID
       ,msib.segment1
       ,msib.description
       ,bor.ROUTING_SEQUENCE_ID
@@ -132,6 +132,7 @@ AND msib.segment1 = '$komp'
       ,bos.ATTRIBUTE10 P4
       ,bos.ATTRIBUTE11 P5
       ,'#'||NVL(bos.ATTRIBUTE7, '$%' )||'#'||NVL(bos.ATTRIBUTE8, '$%' )||'#'||NVL(bos.ATTRIBUTE9, '$%' )||'#'||NVL(bos.ATTRIBUTE10, '$%' )||'#'||NVL(bos.ATTRIBUTE11, '$%' ) detail
+      ,bos.ATTRIBUTE15 status_target
       from mtl_system_items_b msib
       ,bom_operational_routings bor
       ,bom_operation_sequences bos
@@ -139,7 +140,7 @@ AND msib.segment1 = '$komp'
           ,(select borsop.OPERATION_SEQUENCE_ID
           ,borsop.USAGE_RATE_OR_AMOUNT
           ,borsop.ASSIGNED_UNITS
-          ,borsop.LAST_UPDATE_DATE 
+          ,borsop.LAST_UPDATE_DATE
           from bom_operation_resources borsop
           ,bom_resources brop
           where borsop.RESOURCE_ID = brop.RESOURCE_ID
@@ -152,7 +153,7 @@ AND msib.segment1 = '$komp'
           ,kdmr.TAG_NUMBER
           ,kdmr.SPEC_MESIN
           ,brmc.DESCRIPTION
-          ,borsmc.ASSIGNED_UNITS 
+          ,borsmc.ASSIGNED_UNITS
           from bom_operation_resources borsmc
           ,bom_resources brmc
           ,khs_daftar_mesin_resource kdmr
@@ -172,7 +173,7 @@ AND msib.segment1 = '$komp'
       $alter
       and bos.OPERATION_SEQUENCE_ID = opt.OPERATION_SEQUENCE_ID(+)
       and bos.OPERATION_SEQUENCE_ID = mach.OPERATION_SEQUENCE_ID(+)
-      and msib.segment1 like '$kode' 
+      and msib.segment1 like '$kode'
       order by bos.OPERATION_SEQ_NUM ,bor.ROUTING_SEQUENCE_ID ,bos.OPERATION_SEQUENCE_ID";
        $query = $oracle->query($sql);
         return $query->result_array();
@@ -494,7 +495,7 @@ order by fmd.FORMULA_ID
        $query = $oracle->query($sql);
         return $query->result_array();
  }
-  
+
  public function get_log(){
     $oracle = $this->load->database('oracle', true);
     date_default_timezone_set('Asia/Jakarta');

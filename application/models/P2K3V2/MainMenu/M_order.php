@@ -31,7 +31,7 @@ class M_Order extends CI_Model
 
     public function getItem($item)
     {
-        $query = $this->db->query("select * from k3.k3_master_item where item like upper('%$item%')");
+        $query = $this->db->query("select * from k3.k3_master_item where item like upper('%$item%') order by item");
         return $query->result_array();
     }
 
@@ -494,21 +494,28 @@ class M_Order extends CI_Model
     public function getOr($t)
     {
         $sql = "SELECT
-                    ffv.FLEX_VALUE as COST_CENTER,
-                    ffvt.DESCRIPTION as PEMAKAI,
-                    ffv.ATTRIBUTE10
-                from fnd_flex_values ffv,
-                    fnd_flex_values_TL ffvt
-                where ffv.FLEX_VALUE_SET_ID=1013709
-                    and ffv.ATTRIBUTE10 != ' '
-                    and ffv.ATTRIBUTE10 = 'Seksi'
-                    and ffv.FLEX_VALUE_ID=ffvt.FLEX_VALUE_ID
+                    ffv.FLEX_VALUE AS COST_CENTER,
+                    ffvt.DESCRIPTION || ' - ' || kbbc.LOCATION AS PEMAKAI,
+                    kbbc.LOCATION,
+                    kbbc.BRANCH,
+                    kbbc.COST_CENTER_TYPE
+                FROM
+                    fnd_flex_values ffv,
+                    fnd_flex_values_TL ffvt,
+                    khs_bppbg_branch_cc kbbc
+                WHERE
+                    ffv.FLEX_VALUE_SET_ID = 1013709
+                    AND ffv.ATTRIBUTE10 != ' '
+                    AND ffv.ATTRIBUTE10 = 'Seksi'
+                    AND ffv.FLEX_VALUE_ID = ffvt.FLEX_VALUE_ID
                     AND ffv.END_DATE_ACTIVE IS NULL
                     AND ffv.flex_value NOT LIKE '0000'
-                    and ffv.ENABLED_FLAG = 'Y'
-                    and ffv.SUMMARY_FLAG = 'N'
-                    and ffvt.DESCRIPTION like '%$t%'
-                order by ffv.FLEX_VALUE
+                    AND ffv.ENABLED_FLAG = 'Y'
+                    AND ffv.SUMMARY_FLAG = 'N'
+                    AND ffv.FLEX_VALUE = kbbc.COST_CENTER
+                    AND ffvt.DESCRIPTION LIKE '%$t%'
+                ORDER BY
+                    ffv.FLEX_VALUE
                 ";
         // echo $sql;exit();
         $query = $this->oracle->query($sql);
@@ -637,7 +644,8 @@ class M_Order extends CI_Model
         $sql = "select
                     tp.noind,
                     tp.nama,
-                    coalesce(tk.pekerjaan, 'STAFF') pekerjaan
+                    coalesce(tk.pekerjaan, 'STAFF') pekerjaan,
+                    tk.kdpekerjaan
                 from
                     hrd_khs.tpribadi tp
                 left join hrd_khs.tpekerjaan tk on
@@ -649,6 +657,37 @@ class M_Order extends CI_Model
                     1";
         $query = $this->personalia->query($sql);
         return $query->result_array();
+    }
+
+    public function getPekerjaforDetail($ks, $tglinput)
+    {
+        $ks = substr($ks, 0, 7);
+        $sql = "select
+                    tp.noind,
+                    tp.nama,
+                    coalesce(tk.pekerjaan, 'STAFF') pekerjaan,
+                    tk.kdpekerjaan,
+                    (case when (tp.tglkeluar > '$tglinput' and keluar = '1') then 'red'
+                    when (tp.masukkerja > '$tglinput') then 'blue'
+                    else 'black' end) color                
+                from
+                    hrd_khs.tpribadi tp
+                left join hrd_khs.tpekerjaan tk on
+                    tp.kd_pkj = tk.kdpekerjaan
+                where
+                    (keluar = '0'
+                    or tglkeluar > '$tglinput')
+                    and kodesie like '$ks%'
+                order by
+                    1";
+        $query = $this->personalia->query($sql);
+        return $query->result_array();
+    }
+
+    public function getTglInputOrder($ks, $pr)
+    {
+        $sql = "select ko.tgl_input from k3.k3n_order ko where status = 1 and kodesie like '$ks%' and periode = '$pr'";
+        return $this->erp->query($sql)->row();
     }
 
     public function getEmail($kodesie)
@@ -944,7 +983,7 @@ class M_Order extends CI_Model
                 $terakhir_bon = $terakhir_bon ? date('d-m-Y', strtotime($terakhir_bon->date)) : '';
 
                 $sql = "SELECT 
-                        tp.noind, tp.nama, tp.kodesie, ts.seksi, tpk.pekerjaan, '$ukuran' uk_sepatu, '{$item['item_code']}' item_code, '$sepatu' jenis_sepatu, now() create_timestamp, '$logged_user' user_, '$nobon' no_bon
+                        tp.noind, trim(tp.nama) nama, tp.kodesie, ts.seksi, tpk.pekerjaan, '$ukuran' uk_sepatu, '{$item['item_code']}' item_code, '$sepatu' jenis_sepatu, now() create_timestamp, '$logged_user' user_, '$nobon' no_bon
                     FROM 
                         hrd_khs.tpribadi tp 
                         inner join hrd_khs.tseksi ts on tp.kodesie = ts.kodesie
@@ -956,9 +995,11 @@ class M_Order extends CI_Model
 
                 // oracle
                 $generate_new_id = $this->M_dtmasuk->getIdOr();
-                $cost_center = $this->getCostCenter($item_data['kodesie']);
+                $cost_center = $item['cost_center'];
+                // $cost_center = $this->getCostCenter($item_data['kodesie']);
                 $account = $this->account('APD', $cost_center);
-                $kode_cabang = $this->pemakai_2($cost_center);
+                // $kode_cabang = $this->pemakai_2($cost_center);
+                $kode_cabang = $item['branch'];
 
                 $nick_name = implode(' ', array_slice(explode(' ', $item_data['nama']), 0, 2));
 
@@ -980,7 +1021,7 @@ class M_Order extends CI_Model
                     'LOKASI'         =>    $lokasi,
                     'LOKATOR'        =>    $lokator,
                     'ACCOUNT'        =>    $account,
-                    'KODE_CABANG'    =>    $kode_cabang['0']['KODE_CABANG'],
+                    'KODE_CABANG'    =>    $kode_cabang,
                     'EXP'            =>    'N',
                 );
                 $this->insertBonIm($dataBonOracle);
@@ -1145,5 +1186,19 @@ class M_Order extends CI_Model
     {
         $this->db->insert('k3.tbon_sepatu', $data);
         return $this->db->affected_rows();
+    }
+
+    public function getLatestTransactSafetyShoes($nobon, $bon_date, $gudang)
+    {
+        $sql = "SELECT tgl_transact from k3.tbon_sepatu where no_bon = '$nobon' order by tgl_transact desc limit 1";
+
+        $query = $this->erp->query($sql);
+        return $query->row()->tgl_transact;
+    }
+
+    public function getPeriodeSafetyShoes($kodesie)
+    {
+        $kodesie = substr($kodesie, 0, 7);
+        return $this->db->query("select trim(periode)periode from \"k3\".tbon_sepatu_periode where left(kodesie,7) = '$kodesie'")->row();
     }
 }

@@ -101,22 +101,13 @@ class C_Approver extends CI_Controller {
         $data['panelStatOrder'] = 'panel-success';
         $data['statOrder'] = 'Reguler';
 
-        $and = "URGENT_FLAG ='N' AND IS_SUSULAN ='N'";
+        $allOrder = $this->M_approver->getListDataOrderNormal($noind);
 
-        $allOrder = $this->M_approver->getListDataOrderCondition($and);
-        // echo'<pre>';
-        // print_r($allOrder);exit;
         foreach ($allOrder as $key => $order) {
-            $checkOrder = $this->M_approver->checkOrder($order['ORDER_ID']);
-            if (isset($checkOrder[0])) {
-                if ($checkOrder[0]['APPROVER_ID'] == $data['approver'][0]['PERSON_ID'] && $checkOrder[0]['APPROVER_TYPE'] != 7) {
-                    $orderSiapTampil = $this->M_approver->getOrderToApprove($order['ORDER_ID']);
-                    if ($orderSiapTampil[0]['ORDER_CLASS'] != '2' && $orderSiapTampil[0]['ORDER_STATUS_ID'] != '4' || $orderSiapTampil[0]['ORDER_STATUS_ID'] != '5') {
-                        array_push($data['listOrder'], $orderSiapTampil[0]);
-                    }
-                }
-            }
+            $orderSiapTampil = $this->M_approver->getOrderToApprove($order['ORDER_ID']);
+            array_push($data['listOrder'], $orderSiapTampil[0]);
         }
+
         $data['position'] = $this->M_approver->checkPositionApproverIni($data['approver'][0]['PERSON_ID']);
 
 		$this->load->view('V_Header',$data);
@@ -145,25 +136,13 @@ class C_Approver extends CI_Controller {
         $data['panelStatOrder'] = 'panel-warning';
         $data['statOrder'] = 'Emergency';
 
-        $and = "IS_SUSULAN ='Y'";
+        $allOrder = $this->M_approver->getListDataOrderEmergency($noind);
 
-        $allOrder = $this->M_approver->getListDataOrderCondition($and);
-        // echo'<pre>';
-        // print_r($allOrder);exit;
         foreach ($allOrder as $key => $order) {
-            $checkOrder = $this->M_approver->checkOrder($order['ORDER_ID']);
-            // echo'<pre>';
-            // print_r($checkOrder);
-            if (isset($checkOrder[0])) {
-                if ($checkOrder[0]['APPROVER_ID'] == $data['approver'][0]['PERSON_ID'] && $checkOrder[0]['APPROVER_TYPE'] != 7) {
-                    $orderSiapTampil = $this->M_approver->getOrderToApprove($order['ORDER_ID']);
-                    if ($orderSiapTampil[0]['ORDER_CLASS'] != '2' && $orderSiapTampil[0]['ORDER_STATUS_ID'] != '4' || $orderSiapTampil[0]['ORDER_STATUS_ID'] != '5') {
-                        array_push($data['listOrder'], $orderSiapTampil[0]);
-                    }
-                }
-            }
+            $orderSiapTampil = $this->M_approver->getOrderToApprove($order['ORDER_ID']);
+            array_push($data['listOrder'], $orderSiapTampil[0]);
         }
-        // exit;
+
         $data['position'] = $this->M_approver->checkPositionApproverIni($data['approver'][0]['PERSON_ID']);
 
 		$this->load->view('V_Header',$data);
@@ -192,25 +171,13 @@ class C_Approver extends CI_Controller {
         $data['panelStatOrder'] = 'panel-danger';
         $data['statOrder'] = 'Urgent';
 
-        $and = "URGENT_FLAG ='Y' AND IS_SUSULAN ='N'";
+        $allOrder = $this->M_approver->getListDataOrderUrgent($noind);
 
-        $allOrder = $this->M_approver->getListDataOrderCondition($and);
-        // echo'<pre>';
-        // print_r($allOrder);exit;
         foreach ($allOrder as $key => $order) {
-            $checkOrder = $this->M_approver->checkOrder($order['ORDER_ID']);
-            // echo'<pre>';
-            // print_r($checkOrder);
-            if (isset($checkOrder[0])) {
-                if ($checkOrder[0]['APPROVER_ID'] == $data['approver'][0]['PERSON_ID'] && $checkOrder[0]['APPROVER_TYPE'] != 7) {
-                    $orderSiapTampil = $this->M_approver->getOrderToApprove($order['ORDER_ID']);
-                    if ($orderSiapTampil[0]['ORDER_CLASS'] != '2' && $orderSiapTampil[0]['ORDER_STATUS_ID'] != '4' || $orderSiapTampil[0]['ORDER_STATUS_ID'] != '5') {
-                        array_push($data['listOrder'], $orderSiapTampil[0]);
-                    }
-                }
-            }
+            $orderSiapTampil = $this->M_approver->getOrderToApprove($order['ORDER_ID']);
+            array_push($data['listOrder'], $orderSiapTampil[0]);
         }
-        // exit;
+
         $data['position'] = $this->M_approver->checkPositionApproverIni($data['approver'][0]['PERSON_ID']);
         
 		$this->load->view('V_Header',$data);
@@ -546,13 +513,14 @@ class C_Approver extends CI_Controller {
                     }else {
                         $jklApprover = 'Ibu ';
                     };
-    
+
                     $subject = '[PRE-LAUNCH] Order Disetujui';
                     $body = "<b>Yth. $jklRequester $namaRequester</b>,<br><br>";
                     $body .= "Order anda terkait barang - barang berikut :<br><br>";
                     $body .= "<table border='1' style=' border-collapse: collapse;'>
                                 <thead>
                                     <tr>
+                                        <th>Order Id</th>
                                         <th>Kode Barang</th>
                                         <th>Deskripsi Barang</th>
                                         <th>Quantity</th>
@@ -584,6 +552,7 @@ class C_Approver extends CI_Controller {
                                         $emailSendDate = date("d-M-Y");
                                         $pukul = date("h:i:sa");
                                         
+                                        $orderId = $pesanRequester[$i]['ORDER_ID'];
                                         $itemDanDeskripsi = $pesanRequester[$i]['SEGMENT1'].' - '.$pesanRequester[$i]['DESCRIPTION'];
                                         $kodeBarang = $itemDanDeskripsi;
                                         $deskripsi = $pesanRequester[$i]['ITEM_DESCRIPTION'];
@@ -592,6 +561,7 @@ class C_Approver extends CI_Controller {
                                         $alasanPengadaan = $pesanRequester[$i]['ORDER_PURPOSE'];
     
                                         $body .="<tr>
+                                                    <td>$orderId</td>
                                                     <td>$kodeBarang</td>
                                                     <td>$deskripsi</td>
                                                     <td>$qty</td>
@@ -615,6 +585,101 @@ class C_Approver extends CI_Controller {
             }
 
 
+        echo 1;
+    }
+
+    public function rejectOrderAfterApproved()
+    {
+        $noind = $this->session->user;
+        $order_id  = $this->input->post('order_id');
+        $person_id = $this->input->post('person_id');
+        $note      = $this->input->post('note');
+        $judgement = 'R';
+        $order     = $this->M_approver->getOrderToApprove1($order_id)[0];
+
+        $this->M_approver->rejectOrderAfterApproved($note, $order_id, $person_id);
+        $this->M_approver->updateOrderStatusID($order_id);
+
+        $noindemail = $order['NATIONAL_IDENTIFIER'];
+        $nRequester = $this->M_requisition->getNamaUser($noindemail);
+        $namaRequester = $nRequester[0]['nama'];
+
+        if ($nRequester[0]['jenkel'][0]=='L') {
+            $jklRequester = 'Bapak ';
+        }else {
+            $jklRequester = 'Ibu ';
+        };
+
+        $nApprover = $this->M_requisition->getNamaUser($noind);
+        $namaApprover = $nApprover[0]['nama'];
+
+        if ($nApprover[0]['jenkel'][0]=='L') {
+            $jklApprover = 'Bapak ';
+        }else {
+            $jklApprover = 'Ibu ';
+        };
+
+        $subject = '[PRE-LAUNCH] Order Ditolak';
+        $body = "<b>Yth. $jklRequester $namaRequester</b>,<br><br>";
+        $body .= "Order anda terkait barang - barang berikut :<br><br>";
+        $body .= "<table border='1' style=' border-collapse: collapse;'>
+                    <thead>
+                        <tr>
+                            <th>Kode Barang</th>
+                            <th>Deskripsi Barang</th>
+                            <th>Quantity</th>
+                            <th>UOM</th>
+                            <th>Status Order</th>
+                            <th>Alasan Pengadaan</th>
+                            <th>Alasan Urgensi</th>
+                        </tr>
+                    </thead>
+                    <tbody>";
+                        if ($order['URGENT_FLAG']=='Y' && $order['IS_SUSULAN'] =='N') {
+                            $statusOrder = 'Urgent';
+                            $bgColor = '#d73925';
+                        }else if($order['URGENT_FLAG']=='N' && $order['IS_SUSULAN'] =='N'){
+                            $statusOrder = 'Reguler';
+                            $bgColor = '#009551';
+                        }elseif ($order['IS_SUSULAN'] =='Y') {
+                            $statusOrder = 'Emergency';
+                            $bgColor = '#da8c10';
+                        }
+
+                        if ($order['URGENT_REASON']=='') {
+                            $urgentReason = '-';
+                        }else{
+                            $urgentReason = $order['URGENT_REASON'];
+                        }
+
+                        $emailSendDate = date("d-M-Y");
+                        $pukul = date("h:i:sa");
+                        
+                        $itemDanDeskripsi = $order['SEGMENT1'].' - '.$order['DESCRIPTION'];
+                        $kodeBarang       = $itemDanDeskripsi;
+                        $deskripsi        = $order['ITEM_DESCRIPTION'];
+                        $qty              = $order['QUANTITY'];
+                        $uom              = $order['UOM'];
+                        $alasanPengadaan  = $order['ORDER_PURPOSE'];
+
+                        $body .="<tr>
+                                    <td>$kodeBarang</td>
+                                    <td>$deskripsi</td>
+                                    <td>$qty</td>
+                                    <td>$uom</td>
+                                    <td style='background-color:$bgColor;'>$statusOrder</td>
+                                    <td>$alasanPengadaan</td>
+                                    <td>$urgentReason</td>
+                                </tr>";
+        $body .= "</body>";
+        $body .= "</table> <br><br>";
+        $body .= "Tidak Disetujui oleh $jklApprover $namaApprover dengan alasan : <b>$note</b><br><br>";
+
+        $body .= "<span style='font-size:10px;'>*Email ini dikirimkan secara otomatis oleh aplikasi <b>Order Kebutuhan Barang Dan Jasa</b> pada $emailSendDate pukul $pukul<br>";
+        $body .= "*Apabila Anda menemukan kendala atau kesulitan maka dapat menghubungi Call Center ICT <b>12300 extensi 1. </span>";
+    
+        $this->EmailAlert($noindemail,$subject,$body);
+        
         echo 1;
     }
 

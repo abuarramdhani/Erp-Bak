@@ -60,8 +60,11 @@
                                                 </div>
                                                 <div class="form-group row">
                                                     <label for="daterev_fp" class="control-label col-lg-4">Tgl. Revisi</label>
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-8" style="padding-right: 0">
                                                         <input value="<?php echo $listdatafp[0]['date_rev']?>" type="date" name="date_rev_fp" id="date_rev_fp" class="form-control">
+                                                    </div>
+                                                    <div onclick="reset_date_jquery()" class="btn">
+                                                    <span class="remove-date"><i class="fa fa-close fa-fw"></i></span>
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">

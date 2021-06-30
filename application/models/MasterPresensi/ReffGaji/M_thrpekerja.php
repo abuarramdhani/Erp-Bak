@@ -145,7 +145,7 @@ class M_thrpekerja extends CI_Model
 	}
 
 	function getTHRDetailByIdTHR($id_thr){
-		$sql = "select t1.*,t2.kodesie,t2.lokasi_kerja
+		$sql = "select t1.*,t2.kodesie,t2.lokasi_kerja, t2.asal_outsourcing
 				from \"Presensi\".t_thr_detail t1 
 				left join hrd_khs.tpribadi t2 
 				on t1.noind = t2.noind
@@ -155,7 +155,7 @@ class M_thrpekerja extends CI_Model
 	}
 
 	function getTHRDetailByIdTHRKode($id_thr,$kode_induk){
-		$sql = "select t1.*,t2.kodesie,t2.lokasi_kerja
+		$sql = "select t1.*,t2.kodesie,t2.lokasi_kerja, t2.asal_outsourcing
 				from \"Presensi\".t_thr_detail t1 
 				left join hrd_khs.tpribadi t2 
 				on t1.noind = t2.noind

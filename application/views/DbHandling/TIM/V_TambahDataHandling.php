@@ -91,14 +91,15 @@
                                         <div class="panel-body">
                                             <div class="col-md-3" style="text-align: right;"><label>Proses</label></div>
                                             <div class="col-md-8" style="text-align: left;">
-                                                <select required style="width: 100%;" class="form-control select2 prosesss" id="prosesss" name="prosesss" data-placeholder="Select">
+                                                <input  required style="width: 100%;" class="form-control" id="prosesss" name="prosesss" value="Linear" readonly>
+                                                <!-- <select required style="width: 100%;" class="form-control select2 prosesss" id="prosesss" name="prosesss" data-placeholder="Select">
                                                     <option></option>
                                                     <option value="Linear">Linear</option>
                                                     <option value="Non Linear">Non Linear</option>
-                                                </select>
+                                                </select> -->
                                             </div>
                                         </div>
-                                        <div id="afterprosesslinier" style="display: none;">
+                                        <div id="afterprosesslinier">
                                             <div class="panel-body">
                                                 <div class="col-md-3" style="text-align: right;color:white"><label>Proses</label></div>
                                                 <div class="col-md-8" style="text-align: left;">
@@ -151,7 +152,7 @@
                                             <div id="appendinputgambar"></div>
 
                                         </div>
-                                        <div id="afterprosesnonlinier" style="display: none;">
+                                        <!-- <div id="afterprosesnonlinier" style="display: none;">
                                             <div class="panel-body">
                                                 <div class="col-md-3" style="text-align: right; color:white"><label>Foto</label></div>
                                                 <div class="col-md-8"><input type="file" required class="form-control" accept=".jpg, .png, ,jpeg" id="prosesnonlinear" onchange="tampilprosesnonlinear(this)" name="prosesnonlinear[]" /></div>
@@ -172,7 +173,7 @@
                                                 <div class="col-md-5"><img style="width:100%" id="gambarprosesnonlinearimg"></div>
                                             </div>
                                             <div id="appendinputgambar2"></div>
-                                        </div>
+                                        </div> -->
                                         <div class="panel-body">
                                             <div class="col-md-3" style="text-align: right;"><label>Keterangan</label></div>
 

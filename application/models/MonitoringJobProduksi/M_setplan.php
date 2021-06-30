@@ -15,6 +15,12 @@ class M_setplan extends CI_Model
         $query = $this->oracle->query($sql);
         return $query->result_array();
     }
+
+    public function getSubCategory($term){
+        $sql = "select * from khs_subcategory_item $term";
+        $query = $this->oracle->query($sql);
+        return $query->result_array();
+    }
     
     public function getdataMonitoring($kategori){
         $sql = "select * from khs_category_item_monitoring where category_name = '$kategori'";
@@ -43,18 +49,17 @@ class M_setplan extends CI_Model
     public function getitem2($term){
         $sql = "SELECT DISTINCT msib.segment1, msib.description, msib.inventory_item_id, msib.organization_id             
                 FROM mtl_system_items_b msib            
-                WHERE msib.inventory_item_status_code = 'Active'              
-                AND msib.inventory_item_id = '$term'
-                AND msib.organization_id IN (101, 102) --OPM, ODM         
+                WHERE msib.inventory_item_id = '$term'
+                AND msib.organization_id IN (101, 102, 225) --OPM, ODM, YSP         
                 ORDER BY msib.segment1
                 ";
         $query = $this->oracle->query($sql);
         return $query->result_array();
     }
   
-    public function savePlan($id, $inv_id, $bulan){
-        $sql = "insert into khs_plan_item_monitoring (plan_id, inventory_item_id, month)
-                values($id, $inv_id, $bulan)";
+    public function savePlan($id, $inv_id, $bulan, $category, $subcategory){
+        $sql = "insert into khs_plan_item_monitoring (plan_id, inventory_item_id, month, id_category, id_subcategory)
+                values($id, $inv_id, $bulan, $category, $subcategory)";
         $query = $this->oracle->query($sql);
         $query = $this->oracle->query('commit');
     // echo $sql;

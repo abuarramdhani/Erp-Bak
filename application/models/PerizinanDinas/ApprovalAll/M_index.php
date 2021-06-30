@@ -23,7 +23,7 @@ class M_index extends CI_Model
                     left join hrd_khs.trefjabatan b on a.noind = b.noind
                 where
                     (b.kodesie like '4010101%'
-                    or a.noind in ('B0307','J1269','B0898','B0720'))
+                    or a.noind in ('J1269','B0898','B0720'))
                     and a.keluar = '0'
                     $where";
         return $this->personalia->query($sql)->result_array();

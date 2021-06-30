@@ -225,7 +225,7 @@ body{
 
                     <div class="col-md-6">
                       <label for="" style="margin-top:10px;">Tool</label><br>
-                      <select required class="form-control select2 fp_check_tool" name="" id="tool" style="width:100%;">
+                      <select required class="form-control select2FP1 fp_check_tool" name="" id="tool" style="width:100%;">
                         <option value="">Select...</option>
                         <option value="1">New</option>
                         <option value="2">Exiting</option>
@@ -238,7 +238,7 @@ body{
                     </div>
                     <div class="col-md-6">
                       <label for="" style="margin-top:10px;">Inspectool</label><br>
-                      <select required class="form-control select2 fp_check_inspectool" style="width:100%;" id="inspectool">
+                      <select required class="form-control select2FP1 fp_check_inspectool" style="width:100%;" id="inspectool">
                         <option value="">Select...</option>
                         <option value="1">Yes</option>
                         <option value="0">No</option>

@@ -13,10 +13,6 @@
                 <th>Selesai Pelayanan</th>
                 <th>Waktu Pelayanan</th>
                 <th>PIC Pelayanan</th>
-                <th>Mulai Pengecekan</th>
-                <th>Selesai Pengecekan</th>
-                <th>Waktu Pengecekan</th>
-                <th>PIC Pengecekan</th>
                 <th>Mulai Packing</th>
                 <th>Selesai Packing</th>
                 <th>Waktu Packing</th>
@@ -24,9 +20,8 @@
                 <th>Keterangan</th>
                 <th>Tanggal Cancel</th>
                 <th>Jumlah Coly</th>
-                <?php if ($user_arsip != 'user_arsip') { ?>
                 <th>Edit Coly</th>
-                <?php }?>
+                <th style="width:50px">Cetak</th>
             </tr>
         </thead>
         <tbody>
@@ -46,10 +41,6 @@
                 <td><?= $val['SELESAI_PELAYANAN']?></td>
                 <td><?= $val['WAKTU_PELAYANAN']?></td>
                 <td><?= $val['PIC_PELAYAN']?></td>
-                <td><?= $val['MULAI_PENGELUARAN']?></td>
-                <td><?= $val['SELESAI_PENGELUARAN']?></td>
-                <td><?= $val['WAKTU_PENGELUARAN']?></td>
-                <td><?= $val['PIC_PENGELUARAN']?></td>
                 <td><?= $val['MULAI_PACKING']?></td>
                 <td><?= $val['SELESAI_PACKING']?></td>
                 <td><?= $val['WAKTU_PACKING']?></td>
@@ -57,9 +48,11 @@
                 <td><?= $val['URGENT'].' '.$val['BON']?></td>
                 <td><?= $val['CANCEL']?></td>
                 <td><?= $val['COLY']?></td>
-                <?php if ($user_arsip != 'user_arsip') { ?>
                 <td><button type="button" class="btn btn-md bg-teal" onclick="editColy(<?= $no?>)">Edit Coly</button></td>
-                <?php }?>
+                <td>                <?php echo '<a href="'.base_url().'KapasitasGdSparepart/Pelayanan/cetakPL/'.$val['NO_DOKUMEN'].'" target="_blank" class="btn btn-danger btn-md"><i class="fa fa-file-pdf-o"> PL1</i></a>
+                          								<a href="'.base_url().'KapasitasGdSparepart/Pelayanan/cetakPL2/'.$val['NO_DOKUMEN'].'" target="_blank" class="btn btn-danger btn-md mt-2"><i class="fa fa-file-pdf-o"> PL2</i></a>
+                          								<a href="'.base_url().'KapasitasGdSparepart/Pelayanan/cetakSM/'.$val['NO_DOKUMEN'].'" target="_blank" class="btn btn-info btn-md mt-2"><i class="fa fa-file-pdf-o"> SM</i></a>' ?></td>
+
             </tr>
             <?php $no++; }?>
         <tbody>

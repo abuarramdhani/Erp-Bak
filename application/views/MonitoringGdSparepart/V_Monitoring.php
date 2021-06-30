@@ -1,3 +1,13 @@
+<script>
+    $(document).ready(function () {            
+        $('.dateMonMPG').datepicker({
+            format: 'dd/mm/yyyy',
+            todayHighlight: true,
+            autoclose: true
+        });
+    });
+</script>
+
 <section class="content">
     <div class="inner">
         <div class="row">
@@ -39,17 +49,29 @@
                                     </div>
                                 </div>
                                 <div class="panel-body">
+                                    <div class="col-md-4">
+                                        <label class="control-label">Subinventory</label>
+                                        <select class="form-control select2" data-placeholder="Pilih Subinventory Terlebih Dahulu" id="subinventory" name="subinventory" onchange="getMON(this)">
+                                            <option> </option>
+                                            <option>SP-YSP</option>
+                                            <option>KOM1-DM</option>
+                                            <option>PNL-DM</option>
+                                            <option>FG-DM</option>
+                                            <option>MAT-PM</option>
+                                        </select>
+                                        <!-- <input id="subinventory" name="subinventory" class="form-control pull-right" placeholder="Subinventory" readonly> -->
+                                    </div>
                                     <div class="col-md-3">
                                         <label class="control-label">Search by </label>
                                             <select id="search_by" name="search_by" class="form-control select2 select2-hidden-accessible" style="width:100%;" data-placeholder="Cari berdasarkan">
-                                            <option></option>
-                                            <option value="dokumen">Dokumen</option>
-                                            <option value="tanggal">Tanggal</option>
-                                            <option value="pic">PIC</option>
-                                            <option value="item">Item</option>
-                                            <option value="belumterlayani">Belum Terlayani</option>
-                                            <option value="export" id="slcExMGS">Export Excel</option>
-                                            <option value="tanpa_surat" id="tanpa_surat">Tanpa Surat</option>
+                                                <option></option>
+                                                <option value="dokumen">Dokumen</option>
+                                                <option value="tanggal">Tanggal</option>
+                                                <option value="pic">PIC</option>
+                                                <option value="item">Item</option>
+                                                <option value="belumterlayani">Belum Terlayani</option>
+                                                <option value="export" id="slcExMGS">Export Excel</option>
+                                                <option value="tanpa_surat" id="tanpa_surat">Tanpa Surat</option>
                                             </select>
                                     </div>
                                 </div>
@@ -61,12 +83,13 @@
                                     <div class="col-md-3" style="display:none" id="slcjenis">
                                         <label class="control-label">Jenis Dokumen </label>
                                             <select id="jenis_dokumen" name="jenis_dokumen" class="form-control select2 select2-hidden-accessible" style="width:100%;" data-placeholder="Pilih Jenis Dokumen">
-                                            <option></option>
-                                            <option value="IO">IO</option>
-                                            <option value="KIB">KIB</option>
-                                            <option value="LPPB">LPPB</option>
-                                            <!-- <option value="FPB">FPB</option> -->
-                                            <option value="SPBSPI">SPBSPI</option>
+                                                <option></option>
+                                                <option value="IO">IO</option>
+                                                <option value="KIB">KIB</option>
+                                                <option value="LPPB">LPPB</option>
+                                                <option value="MO">MO</option>
+                                                <!-- <option value="FPB">FPB</option> -->
+                                                <option value="SPBSPI">SPBSPI</option>
                                             </select>
                                     </div>
                                 </div>
@@ -75,14 +98,14 @@
                                         <label class="control-label">Tanggal Awal</label>
                                         <div class="input-group date">
                                             <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
-                                            <input id="tglAwal" name="tglAwal" type="text" class="form-control pull-right" style="width:100%;" placeholder="dd/mm/yyyy" autocomplete="off">
+                                            <input id="tglAwal" name="tglAwal" type="text" class="form-control pull-right dateMonMPG" style="width:100%;" placeholder="dd/mm/yyyy" autocomplete="off">
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <label class="control-label">Tanggal Akhir</label>
                                         <div class="input-group date">
                                             <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
-                                            <input id="tglAkhir" name="tglAkhir" type="text" class="form-control pull-right" style="width:100%;" placeholder="dd/mm/yyyy" autocomplete="off">
+                                            <input id="tglAkhir" name="tglAkhir" type="text" class="form-control pull-right dateMonMPG" style="width:100%;" placeholder="dd/mm/yyyy" autocomplete="off">
                                         </div>
                                     </div>
                                 </div>
@@ -107,97 +130,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="panel-body">
-                                <div class="col-md-12" ></div>
-                                    <div class="box box-primary box-solid">
-                                        <div class="box-header with-border"><b>Hasil</b></div>
-                                        <div class="box-body" id="tblMGS">
-                                        <!-- <form method="post" id="frmMGS" action="<?= base_url('MonitoringGdSparepart/Monitoring/getUpdate'); ?>">
-                                            <div class="panel-body"> -->
-                                                <div class="table-responsive">
-                                                    <table class="table table-bordered table-hover table-striped text-center" style="width: 100%; table-layout:fixed;">
-                                                        <thead class="bg-primary">
-                                                            <tr class="text-center">
-                                                                <th width="5%">No</th>
-                                                                <th>Jenis Dokumen</th>
-                                                                <th>No Dokumen</th>
-                                                                <th>Tanggal</th>
-                                                                <th>Jam Input</th>
-                                                                <th>PIC</th>
-                                                                <th>Asal</th>
-                                                                <th>Keterangan</th>
-                                                                <th></th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                        <?php $no=1; foreach ($value as $k => $row) { ?>
-                                                            <tr class="text-center">
-                                                                <td width="5%"><?= $no; ?></td>
-                                                                <td><?= $row['header']['JENIS_DOKUMEN'] ?></td>
-                                                                <td><?= $row['header']['NO_DOCUMENT'] ?></td>
-                                                                <td><?= $row['header']['CREATION_DATE'] ?></td>
-                                                                <td><?= $row['header']['JAM_INPUT'] ?></td>
-                                                                <td><?= $row['header']['PIC'] ?></td>
-                                                                <td><?= $row['header']['gd_asal'] ?></td>
-                                                                <td><?= $row['header']['statusket']  ?></td>
-                                                                <td><span class="btn btn-success" onclick="addDetailMGS(this, <?= $no ?>)" >Detail</span></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td></td>
-                                                                <td colspan="8" >
-                                                                    <div id="detail<?= $no ?>" style="display:none">
-                                                                        <table class="table table-bordered table-hover table-striped table-responsive " style="width: 100%; border: 2px solid #ddd;">
-                                                                            <thead class="bg-teal">
-                                                                                <tr>
-                                                                                    <th>No</th>
-                                                                                    <th>Item</th>
-                                                                                    <th>Deskripsi</th>
-                                                                                    <th>Jumlah</th>
-                                                                                    <th width="10%">OK</th>
-                                                                                    <th width="10%">NOT OK</th>
-                                                                                    <th>Keterangan</th>
-                                                                                    <th>Action</th>
-                                                                                </tr>
-                                                                            </thead>
-                                                                            <tbody>
-                                                                            <?php $nomor=1; foreach ($row['body'] as $v) { 
-                                                                                $edit = $row['header']['statusket']== 'Sudah terlayani' ? 'readonly' : ''; 
-                                                                            ?>
-                                                                                <tr>
-                                                                                    <td><?= $nomor++ ?>
-                                                                                        <input type="hidden" name="doc[]" id="doc<?=$no?><?= $nomor ?>" value="<?= $v['NO_DOCUMENT'] ?>"/>
-                                                                                        <input type="hidden" name="jenis[]" value="<?= $v['JENIS_DOKUMEN'] ?>"/>
-                                                                                        <input type="hidden" name="uom[]" value="<?= $v['UOM'] ?>"/>
-                                                                                        <input type="hidden" name="tanggal[]" value="<?= $v['CREATION_DATE'] ?>"/>
-                                                                                        <input type="hidden" name="ktrgn[]" value="<?= $row['header']['statusket'] ?>"/>
-                                                                                    </td>
-                                                                                    <td style="text-align:left"><input type="hidden" name="item[]" id="item<?=$no?><?= $nomor ?>" value="<?= $v['ITEM'] ?>"/><?= $v['ITEM'] ?></td>
-                                                                                    <td style="text-align:left"><input type="hidden" name="nama_brg[]" value="<?= $v['DESCRIPTION'] ?>"/><?= $v['DESCRIPTION'] ?></td>
-                                                                                    <td><input type="hidden" name="qty[]" value="<?= $v['QTY'] ?>"/><?= $v['QTY'] ?></td>
-                                                                                    <td><input type="text" style="width:100%; text-align:center" name="qty_ok[]" id="jml_ok<?=$no?><?= $nomor ?>" onchange="saveJmlOk(<?=$no?>,<?= $nomor ?>)" value="<?= $v['JML_OK'] ?>" <?= $edit?> /></td>
-                                                                                    <td><input type="text" style="width:100%; text-align:center" name="qty_not[]" id="jml_not_ok<?=$no?><?= $nomor ?>" onchange="saveNotOk(<?=$no?>,<?= $nomor ?>)" value="<?= $v['JML_NOT_OK'] ?>" <?= $edit?> /></td>
-                                                                                    <td style="text-align:left"><input type="text" style="width:100%" name="ketr[]" id="keterangan<?=$no?><?= $nomor ?>" onchange="saveKetr(<?=$no?>,<?= $nomor ?>)" value="<?= $v['KETERANGAN'] ?>" <?= $edit?> /></td>
-                                                                                    <td style="text-align:left"><input type="text" style="width:100%" name="action[]" id="action<?=$no?><?= $nomor ?>" onchange="saveAction(<?=$no?>,<?= $nomor ?>)" value="<?= $v['ACTION'] ?>" <?= $edit?> /></td>
-                                                                                <?php } ?>
-                                                                            </tbody>                                     
-                                                                        </table>
-                                                                    </div>
-                                                                </td>
-                                                            </tr>
-                                                            <?php $no++;} ?>
-                                                        </tbody>
-                                                    </table>
-                                                    <!-- <div class="panel-heading text-right">
-                                                        <input type="submit" class="btn btn-lg btn-success" name="action" style="display:none" id="btnExMGS" value="Export">
-                                                    </div> -->
-                                                </div>
-                                            <!-- </div>
-                                        </form> -->
-                                        </div>
-                                    </div>
-                            </div>
-                        </div>
+                        
+                        <div id="TblMon"></div>
+                        
                     </div>
                 </div>
             </div>

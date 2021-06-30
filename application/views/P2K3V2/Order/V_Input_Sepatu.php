@@ -40,7 +40,7 @@
                 <form>
                   <div class="col-md-12">
                     <!-- <div class="table-responsive"> -->
-                    <table id="table-shoes" class="table table-striped table-bordered table-hover">
+                    <table id="table-shoes" class="table table-striped table-bordered table-hover" style="margin-bottom: 0px;">
                       <thead>
                         <tr class="bg-primary">
                           <td class="text-center">No</td>
@@ -73,7 +73,7 @@
                           <td>
                             <textarea maxlength="30" name="reason" style="resize: vertical;max-height: 100px; min-height: 34px; height: 34px;" class="form-control reason" id="" placeholder="Alasan" required></textarea>
                           </td>
-                          <td class="text-center latest_bon"></td>
+                          <td class="text-center latest_bon" nowrap></td>
                           <td class="text-center">1</td>
                           <td class="text-center">
                             <button class="btn btn-sm btn-danger delete">
@@ -82,6 +82,30 @@
                           </td>
                         </tr>
                       </tbody>
+                    </table>
+                    <table class="table table-striped table-bordered table-hover" style="margin-bottom: 0px;">
+                      <tr>
+                        <td style="vertical-align: middle; font-weight: bold; text-align: center;" width="12%">
+                          Seksi Pemakai
+                        </td>
+                        <td width="40%">
+                           <select class="form-control apd_slccostc" name="cost_center" placeholder="Pilih Seksi Pemakai" id="apd_seksi_pemakai_ss">
+                          <option></option>
+                          <?php foreach ($listcc as $key): ?>
+                            <option <?= ($key['COST_CENTER']==$costc && $lokerbr==$key['BRANCH']) ? 'selected':''; ?> value="<?= $key['COST_CENTER']; ?>">
+                              <?= '['.$key['COST_CENTER'].'] - '.$key['PEMAKAI']; ?>
+                            </option>
+                          <?php endforeach ?>
+                        </select>
+                        </td>
+                        <td width="8%"></td>
+                        <td style="vertical-align: middle; font-weight: bold; text-align: center;" width="10%">
+                          Branch
+                        </td>
+                        <td width="30%">
+                          <input class="form-control" readonly="" id="apd_inpsptbranch" value="<?= $branch ?>">
+                        </td>
+                      </tr>
                     </table>
                   </div>
                   <div class="col-md-12">
@@ -223,10 +247,14 @@
             let apd = $(this).find('.select-shoes').val()
             let noind = $(this).find('.select-pekerja').val()
             let reason = $(this).find('.reason').val()
+            let cost_center = $('#apd_seksi_pemakai_ss').val();
+            let branch = $("#apd_inpsptbranch").val();
             data.push({
               item_code: apd,
               noind,
-              reason
+              reason,
+              cost_center: cost_center,
+              branch: branch
             })
           })
           return data
@@ -350,10 +378,13 @@
       if ($(this).attr('valid') == 0) {
         invalid.push(false)
       }
-    })
+    });
+
 
     // disable or enable submit button
     $('#submit_bon').prop('disabled', invalid.length)
+    let cost_center = $('#apd_seksi_pemakai_ss').val();
+    if(cost_center == '') return false;
     return (invalid.length == 0)
   }
 
@@ -393,7 +424,14 @@
           pekerjaColumn.css({
             backgroundColor: '',
             color: ''
-          })
+          });
+          if(response.message.indexOf('Pekerja sudah pernah mengebon') != '-1'){
+            pekerjaColumn.css({
+              backgroundColor: '#f2f1a7',
+              color: '#000'
+            });
+            pekerjaColumn.append(`<p class="text-center"><b><i class="fa fa-lg fa-info-circle"></i> Peringatan : </b>${response.message}</p>`)
+          }
           $(element).closest('tr').attr('valid', 1)
         }
         latest_bon.html(`<span>${response.data.bon_terakhir}</span>`)
@@ -478,4 +516,11 @@
       showCancelButton: cancelButton
     }).then(callback)
   }
+
+  var listbr = <?= $listbrjs ?>;
+  $(document).on('change', '.apd_slccostc', function(){
+    var ini = $(this).find('option:selected').text().split('] - ')[1].trim();
+    var br = listbr[ini];
+    $('#apd_inpsptbranch').val(br);
+  });
 </script>

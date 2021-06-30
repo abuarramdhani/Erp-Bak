@@ -14,44 +14,66 @@ class M_prediksisnack extends CI_Model
     	$sql = "select 
 					tp.tempat_makan,
 					tsp.tanggal,
+					ts.shift,
 					count(*) as jumlah_shift,
 					/*string_agg(tdp.kd_ket,',') as ket,*/
 					sum(
-						case when tdp.kd_ket = 'PCZ' or left(tdp.kd_ket,1) = 'C' then 
+						case when (tdp.kd_ket = 'PCZ' or left(tdp.kd_ket, 1) = 'C') and t.fs_noind is null then 
 							1
 						else 
 							0
 						end
 					) as cuti,
 					sum(
-						case when tdp.kd_ket = 'PRM' then 
+						case when tdp.kd_ket = 'PRM' and t.fs_noind is null then 
 							1
 						else 
 							0
 						end
 					) as dirumahkan,
 					sum(
-						case when tdp.kd_ket = 'PSK' then 
+						case when tdp.kd_ket = 'PSK' and t.fs_noind is null then 
 							1
 						else 
 							0
 						end
 					) as sakit,
 					0 as dinas_luar,
-					0 as total
+					0 as total,
+					(
+						select count(*)
+                        from
+                        \"Catering\".tpuasa t2
+                        inner join \"Presensi\".tshiftpekerja tsp2 
+                        on t2.fs_noind = tsp2.noind
+                        and t2.fd_tanggal = tsp2.tanggal
+                        left join \"Presensi\".tshift ts2 
+						on tsp2.kd_shift = ts2.kd_shift
+                        left join hrd_khs.tpribadi t3 
+                        on t3.noind = t2.fs_noind 
+                        where trim(t3.tempat_makan) = trim(tp.tempat_makan)
+                        and t2.fd_tanggal = tsp.tanggal
+                        and ts2.shift = ts.shift
+                    ) puasa
 				from hrd_khs.tpribadi tp 
 				inner join \"Presensi\".tshiftpekerja tsp 
 				on tp.noind = tsp.noind
+				inner join \"Presensi\".tshift ts 
+				on tsp.kd_shift = ts.kd_shift
 				inner join \"Catering\".ttempat_makan ttm
 				on tp.tempat_makan = ttm.fs_tempat_makan
 				left join \"Presensi\".tdatapresensi tdp 
 				on tp.noind = tdp.noind
 				and tdp.tanggal = tsp.tanggal
+                left join \"Catering\".tpuasa t on
+                    t.fs_noind = tsp.noind
+                    and t.fd_tanggal = tsp.tanggal
+                    and tsp.kd_shift in ('1','4','7','9','10')
 				where tsp.tanggal = ?
 				and ttm.fs_lokasi = ?
 				and tp.keluar = '0'
-				and tsp.kd_shift in ('1','4','10')
-				group by tp.tempat_makan,tsp.tanggal
+				and tsp.kd_shift in ('1','4','7','9','10')
+				group by tp.tempat_makan,tsp.tanggal,ts.shift
 				order by 1 ";
 		return $this->personalia->query($sql,array($tanggal,$lokasi))->result_array();
     }
@@ -79,11 +101,21 @@ class M_prediksisnack extends CI_Model
 				from hrd_khs.tpribadi tp 
 				inner join \"Presensi\".tshiftpekerja tsp 
 				on tp.noind = tsp.noind
+				inner join \"Presensi\".tshift ts 
+				on tsp.kd_shift = ts.kd_shift
 				where tsp.tanggal = ?
 				and tp.tempat_makan = ?
-				and tsp.kd_shift in ('1','4','10')
+				and ts.shift = ?
+				and tp.noind not in (
+					select t.fs_noind from \"Catering\".tpuasa t
+                	left join \"Presensi\".tshiftpekerja t2 
+                	on t2.noind = t.fs_noind 
+                	and t2.tanggal = t.fd_tanggal 
+                	where t.fs_noind = tp.noind 
+                	and tsp.tanggal = t.fd_tanggal 
+                )
 				order by 1 ";
-    	return $this->personalia->query($sql,array($tanggal,$tempat_makan))->result_array();
+    	return $this->personalia->query($sql,array($tanggal,$tempat_makan,$shift))->result_array();
     }
 
     public function getAbsenSetelahPulangByTimestampNoind($tgl_pulang,$noind){
@@ -101,13 +133,56 @@ class M_prediksisnack extends CI_Model
 
     public function insertPrediksiDetail($data){
     	$this->personalia->insert("\"Catering\".t_prediksi_snack_detail", $data);
+    	return $this->personalia->insert_id();
     }
 
     public function getDataPrediksiSnackDetailByIdPrediksi($id_prediksi){
-    	$sql = "select *
-				from \"Catering\".t_prediksi_snack_detail
-				where id_prediksi = ?
-				order by id_prediksi_detail";
+    	$sql = "select string_agg(id_prediksi_detail::varchar,',') as id,tempat_makan,
+				sum(
+					case when trim(shift) = 'SHIFT UMUM' then 
+						jumlah_shift
+					else 
+						0
+					end
+				) as shift_umum,
+				sum(
+					case when trim(shift) = 'SHIFT 1' then 
+						jumlah_shift
+					else 
+						0
+					end
+				) as shift_1,
+				sum(
+					case when trim(shift) = 'SHIFT 1 SATPAM' then 
+						jumlah_shift
+					else 
+						0
+					end
+				) as shift_1_satpam,
+				sum(
+					case when trim(shift) = 'SHIFT 1 PU' then 
+						jumlah_shift
+					else 
+						0
+					end
+				) as shift_1_pu,
+				sum(
+					case when trim(shift) = 'SHIFT DAPUR  UMUM' then 
+						jumlah_shift
+					else 
+						0
+					end
+				) as shift_dapur_umum,
+				sum(dirumahkan) as dirumahkan, 
+				sum(cuti) as cuti,
+				sum(sakit) as sakit,
+				sum(dinas_luar) as dinas_luar,
+				sum(puasa) as puasa,
+				sum(total) as total
+			from \"Catering\".t_prediksi_snack_detail
+			where id_prediksi = ?
+			group by tempat_makan
+			order by tempat_makan";
     	return $this->personalia->query($sql,array($id_prediksi))->result_array();
     }
 
@@ -130,6 +205,118 @@ class M_prediksisnack extends CI_Model
 				from \"Catering\".t_prediksi_snack
 				group by tanggal,shift,lokasi";
     	return $this->personalia->query($sql)->result_array();
+    }
+
+    public function insertPrediksiPekerja($id_prediksi_detail,$tanggal,$shift,$lokasi,$tempat_makan){
+    	$sql = "insert into \"Catering\".t_prediksi_snack_pekerja
+    		(id_prediksi_snack_detail, noind, nama,keterangan)
+			select ?, tp.noind, tp.nama,
+				case when t.fs_noind is null then 
+					case when tdp.kd_ket = 'PCZ' or left(tdp.kd_ket, 1) = 'C' then 
+						'Cuti'
+					when tdp.kd_ket = 'PRM' then 
+						'Dirumahkan'
+					when tdp.kd_ket = 'PSK' then 
+						'Sakit'
+					when (
+						select count(*)
+						from \"Catering\".t_prediksi_snack_dl tpsdl
+						where tpsdl.noind = tp.noind
+						and tpsdl.id_prediksi_snack_detail = ?
+						and tpsdl.tgl_pulang >= tsp.tanggal
+					) > 0 then 
+						'Dinas Luar'
+					else 
+						null 
+					end
+				else 
+					'Puasa'
+				end as ket
+			from hrd_khs.tpribadi tp 
+			inner join \"Presensi\".tshiftpekerja tsp 
+			on tp.noind = tsp.noind
+			inner join \"Presensi\".tshift ts 
+			on tsp.kd_shift = ts.kd_shift
+			inner join \"Catering\".ttempat_makan ttm
+			on tp.tempat_makan = ttm.fs_tempat_makan
+			left join \"Presensi\".tdatapresensi tdp 
+			on tp.noind = tdp.noind
+			and tdp.tanggal = tsp.tanggal
+			left join \"Catering\".tpuasa t 
+			on t.fs_noind = tsp.noind
+			and t.fd_tanggal = tsp.tanggal
+			where tsp.tanggal = ?
+			and ttm.fs_lokasi = ?
+			and tp.tempat_makan = ?
+			and ts.shift = ?
+			and tp.keluar = '0'
+			";
+		$this->personalia->query($sql,array($id_prediksi_detail,$id_prediksi_detail,$tanggal,$lokasi,$tempat_makan,$shift));
+    }
+
+    public function getPrediksiSnackPekerjaByIdDetail($id){
+    	$sql = "select a.*,b.shift 
+    		from \"Catering\".t_prediksi_snack_pekerja a
+    		inner join \"Catering\".t_prediksi_snack_detail b 
+    		on a.id_prediksi_snack_detail = b.id_prediksi_detail
+    		where b.id_prediksi_detail = ?
+    		order by b.shift,a.noind";
+    	return $this->personalia->query($sql,array($id))->result_array();
+    }
+
+    public function getPrediksiSnackDetailByIdDetail($id){
+    	$sql = "select b.lokasi,b.tanggal,a.tempat_makan,
+				sum(
+					case when trim(a.shift) = 'SHIFT UMUM' then 
+						jumlah_shift
+					else 
+						0
+					end
+				) as shift_umum,
+				sum(
+					case when trim(a.shift) = 'SHIFT 1' then 
+						jumlah_shift
+					else 
+						0
+					end
+				) as shift_1,
+				sum(
+					case when trim(a.shift) = 'SHIFT 1 SATPAM' then 
+						jumlah_shift
+					else 
+						0
+					end
+				) as shift_1_satpam,
+				sum(
+					case when trim(a.shift) = 'SHIFT 1 PU' then 
+						jumlah_shift
+					else 
+						0
+					end
+				) as shift_1_pu,
+				sum(
+					case when trim(a.shift) = 'SHIFT DAPUR  UMUM' then 
+						jumlah_shift
+					else 
+						0
+					end
+				) as shift_dapur_umum,
+				sum(a.dirumahkan) as dirumahkan, 
+				sum(a.cuti) as cuti,
+				sum(a.sakit) as sakit,
+				sum(a.dinas_luar) as dinas_luar,
+				sum(a.puasa) as puasa,
+				sum(a.total) as total
+    		from \"Catering\".t_prediksi_snack_detail a 
+    		inner join \"Catering\".t_prediksi_snack b 
+    		on a.id_prediksi = b.id_prediksi
+    		where a.id_prediksi_detail in ?
+    		group by b.lokasi,b.tanggal,a.tempat_makan";
+    	return $this->personalia->query($sql,array($id))->row();
+    }
+
+    public function insertPrediksiDL($data){
+    	$this->personalia->insert("\"Catering\".t_prediksi_snack_dl",$data);
     }
 
 }

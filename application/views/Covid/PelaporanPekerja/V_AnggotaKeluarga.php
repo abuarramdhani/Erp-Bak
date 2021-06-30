@@ -13,7 +13,7 @@
                                 </div>
                                 <div class="panel-body">
                                   <div class="row">
-                                        <form method="post" action="<?php echo base_url('Covid/MonitoringCovid/insertAnggotaKeluarga')?>" enctype="multipart/form-data">
+                                        <form id="cvd_frmsbmtcvd" method="post" action="<?php echo base_url('Covid/MonitoringCovid/insertAnggotaKeluarga')?>" enctype="multipart/form-data">
                                             <div class="col-md-12">
                                                 <div class="panel panel-default">
                                                     <div class="panel-heading">Biodata</div>
@@ -227,8 +227,8 @@
     <script>
         window.addEventListener('load', function () {
             Swal.fire(
-              'Berhasil Insert Data',
-              ':D',
+              'Berhasil Menyimpan Data',
+              'Data Anda telah tersimpan dan otomatis terkirim ke Tim Covid CV. KHS.',
               'success'
               )
         });

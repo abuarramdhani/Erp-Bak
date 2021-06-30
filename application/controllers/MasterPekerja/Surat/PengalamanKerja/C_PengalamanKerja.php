@@ -271,6 +271,7 @@ class C_PengalamanKerja extends CI_Controller
 		set_time_limit(0);
 
 		$jabatan_pengalaman = $this->input->post('jabatan_pengalaman');
+		$jabatan_pengalaman_check = $this->input->post('jabatan_pengalaman_check');
 		$status_jabatan = $this->input->post('status_jabatan');
 		$datane = $this->input->post('link_pengalaman');
 		$nik_pengalaman = $this->input->post('nik_pengalaman');
@@ -295,6 +296,9 @@ class C_PengalamanKerja extends CI_Controller
 		$data['approver'] = $this->M_pengalamankerja->detailPekerja($approver)[0];
 
 		$data['tgl_masuk'] = $data['masuk'] ? $data['masuk'] : $this->_indonesianDate($data['masukkerja']);
+
+		// get history of jabatan pekerja
+		$data['history_jabatan'] = $this->M_pengalamankerja->getHistoryJabatan($data['noind']);
 
 		// update to cetak with now date
 		$data['update'] = $this->M_pengalamankerja->updateSuratPengalamanKerjaBy($kd_surat, $no_surat, $pengalaman_tglCetak);
@@ -330,6 +334,8 @@ class C_PengalamanKerja extends CI_Controller
 
 
 		// comment by dk 30 dec 2020
+		// alasan: tulisan jabatan diganti dengan user memilih option di UI/view
+		// --
 		// hope your day is good :)
 		// like woody stand alone above the wood
 		// don't forget to get a food
@@ -378,6 +384,7 @@ class C_PengalamanKerja extends CI_Controller
 		$data['stat'] = $status_jabatan;
 		$data['sampai'] = $sampai;
 		$data['jabatan_pengalaman'] = $jabatan_pengalaman;
+		$data['jabatan_pengalaman_check'] = $jabatan_pengalaman_check;
 
 		$pdf = $this->pdf->load();
 		$pdf = new mPDF('utf-8', 'A4', 10, "verdana", 20, 20, 50, 20, 20, 5, ['default_font' => 'verdana']);

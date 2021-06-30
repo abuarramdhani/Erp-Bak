@@ -54,6 +54,7 @@
                     <input type="hidden" id="int_machb<?= $level?><?= $no?><?= $nomor?>" value="<?= $val['INT_MACHB']?>">
                     <input type="hidden" id="int_machc<?= $level?><?= $no?><?= $nomor?>" value="<?= $val['INT_MACHC']?>">
                     <input type="hidden" id="int_machd<?= $level?><?= $no?><?= $nomor?>" value="<?= $val['INT_MACHD']?>">
+                    <input type="hidden" id="btn_level_<?= $level?>" value="<?= $level?>">
                 </td>
                 <td class="<?= $tanda?>"><?= $val['KOMPONEN']?></td>
                 <td class="<?= $tanda?>"><?= $val['KOMP_DESC']?></td>
@@ -69,7 +70,7 @@
                 <td class="<?= $tanda?>"><?= $val['ATT']?></td>
                 <td class="<?= $tanda?>">
                     <?php $btn = $tanda == 'bg-danger' ? 'btn-danger' : 'btn-success'?>
-                    <button type="button" class="btn btn-xs <?= $btn?>" style="font-size:12px" onclick="tambahsimulasi(<?= $level?>, <?= $no?>, <?= $nomor?>)"><?= ($val['KEKURANGAN'])?></button>
+                    <button type="button" id="button<?= $level?>" class="btn btn-xs button<?= $level?> button<?= $nomor?> <?= $btn?>" style="font-size:12px" onclick="tambahsimulasi(<?= $level?>, <?= $no?>, <?= $nomor?>)"><?= ($val['KEKURANGAN'])?></button>
                 </td>
                 <td class="<?= $tanda?>">
                     <?php if ($val['TOTAL_WIP'] != '') { ?>

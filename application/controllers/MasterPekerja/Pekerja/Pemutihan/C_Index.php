@@ -24,7 +24,11 @@ class C_Index extends CI_Controller
     $this->load->model('SystemAdministration/MainMenu/M_user');
     $this->load->model('MasterPekerja/Pekerja/Pemutihan/M_pemutihan', 'ModelPemutihan');
 
-    $this->attachment_path = base_url("/assets/uploads/attachment") . '/';
+    # production
+    $this->attachment_path = base_url("/assets/upload/pemutihan_data_pekerja/attachment") . '/';
+
+    # dev
+    // $this->attachment_path = "http://192.168.168.189/erp/update-pekerja/assets/uploads/attachment/";
 
     $this->user = $this->session->user;
     $this->user_id = $this->session->userid;

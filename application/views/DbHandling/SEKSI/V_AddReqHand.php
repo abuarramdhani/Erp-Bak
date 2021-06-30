@@ -94,15 +94,16 @@
                                         <div class="panel-body">
                                             <div class="col-md-3" style="text-align: right;"><label>Proses</label></div>
                                             <div class="col-md-8" style="text-align: left;">
-                                                <select required style="width: 100%;" class="form-control select2 Pro_seksi" id="Pro_seksi" name="Pro_seksi" data-placeholder="Select">
+                                                <input  required style="width: 100%;" class="form-control" id="Pro_seksi" name="Pro_seksi" value="Linear" readonly>
+                                                <!-- <select required style="width: 100%;" class="form-control select2 Pro_seksi" id="Pro_seksi" name="Pro_seksi" data-placeholder="Select">
                                                     <option></option>
                                                     <option value="Linear">Linear</option>
                                                     <option value="Non Linear">Non Linear</option>
-                                                </select>
+                                                </select> -->
                                             </div>
                                         </div>
 
-                                        <div id="iflinier" style="display: none;">
+                                        <div id="iflinier">
                                             <div class="addhere">
                                                 <div class="panel-body">
                                                     <div class="col-md-3" style="text-align: right;color:white"><label>Proses</label></div>
@@ -156,7 +157,7 @@
                                             <div id="inputgambarnew"></div>
 
                                         </div>
-                                        <div id="ifnonlinier" style="display: none;">
+                                        <!-- <div id="ifnonlinier" style="display: none;">
                                             <div class="panel-body">
                                                 <div class="col-md-3" style="text-align: right; color:white"><label>Foto</label></div>
                                                 <div class="col-md-8"><input type="file" required class="form-control" accept=".jpg, .png, ,jpeg" id="pros_n_linear" onchange="viewprosnonlinier(this)" name="pros_n_linear[]" /></div>
@@ -177,7 +178,7 @@
                                                 <div class="col-md-5"><img style="width:100%" id="prevFotoNonLinear0"></div>
                                             </div>
                                             <div id="appendinputfotononlinier"></div>
-                                        </div>
+                                        </div> -->
                                         <div class="panel-body">
                                             <div class="col-md-3" style="text-align: right;"><label>Keterangan</label></div>
 

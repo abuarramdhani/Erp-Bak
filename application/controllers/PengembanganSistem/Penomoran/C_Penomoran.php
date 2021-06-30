@@ -14,6 +14,7 @@ class C_Penomoran extends CI_Controller
 		$this->load->library('form_validation');
 		$this->load->library('session');
 		$this->load->library('General');
+		$this->load->library('ciqrcode');
 		$this->load->model('M_Index');
 		
 		$this->load->model('SystemAdministration/MainMenu/M_user');
@@ -95,9 +96,13 @@ class C_Penomoran extends CI_Controller
         $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 		//Pengembangan Sistem
+		$kodeakses = $this->session->kodesie;
+		$parameter = $this->M_pengsistem->find($kodeakses);
         $data['listdatafp'] = $this->M_pengsistem->list_data_fp();
         $data['listseksi'] = $this->M_pengsistem->select_seksi();
         $data['listorg'] = $this->M_pengsistem->ambilSemuaPekerja();
+		$data['user'] = $this->session->employee;
+		$data['dept'] = $parameter[0]['dept'];
 
         $this->load->view('V_Header', $data);
         $this->load->view('V_Sidemenu', $data);
@@ -117,6 +122,9 @@ class C_Penomoran extends CI_Controller
 
 	public function inputdata_fp()
 	{
+		$kodeakses = $this->session->kodesie;
+		$parameter = $this->M_pengsistem->find($kodeakses);
+
 		$doc = 'FP';
 		$judul = $this->input->post('judul_fp');
 		$seksi = $this->input->post('seksi_fp');
@@ -154,6 +162,8 @@ class C_Penomoran extends CI_Controller
 						'seksi_full'		=> $seksi_full,
 						'nomor_flow'		=> $nomor,
 						'date_input'		=> $date_input,
+						'user'				=> $this->session->employee,
+						'dept'				=> $parameter[0]['dept'],
 					);
 		}else{
 			$data		 = array(
@@ -169,6 +179,8 @@ class C_Penomoran extends CI_Controller
 						'seksi_full'		=> $seksi_full,
 						'nomor_flow'		=> '001',
 						'date_input'		=> $date_input,
+						'user'				=> $this->session->employee,
+						'dept'				=> $parameter[0]['dept'],
 						);
 		}
 		
@@ -201,6 +213,9 @@ class C_Penomoran extends CI_Controller
 
 	public function update_flow($id)
 	{
+		$kodeakses = $this->session->kodesie;
+		$parameter = $this->M_pengsistem->find($kodeakses);
+
 		$number_flow = $this->input->post('nomor_doc');
 			$kodepisah = explode('-', $number_flow);
 			$doc= $kodepisah[0];
@@ -235,6 +250,8 @@ class C_Penomoran extends CI_Controller
 					'seksi_full'		=> $seksi_full,
 					'nomor_flow'		=> $kode,
 					'date_input'		=> $date_update,
+					'user'				=> $this->session->employee,
+					'dept'				=> $parameter[0]['dept'],
 				);
 				
 		$this->M_pengsistem->update_flow_fp($data,$id);
@@ -259,11 +276,10 @@ class C_Penomoran extends CI_Controller
 				chmod('.assets/upload/PengembanganSistem/fp', 0777); 
 			}
 
-			$data_file = $_FILES['fileupload']['name'];
-
+			$data_file = $_FILES['fileupload']['type'];
 			$pathh = null;
 			$nmfile = $data_file;
-				$l = explode('.',$nmfile);
+				$l = explode('/',$nmfile);
 					$s = $l[1];
 				$fls = preg_replace("![^a-z0-9]+!i", "_", $judul);
 			$judul_baru = $id_data.'-'.$fls.'.'.$s;
@@ -275,12 +291,29 @@ class C_Penomoran extends CI_Controller
 			// $config['max_width']            = 1000;
 			// $config['max_height']           = 7680;
 			$config['file_name'] = $nama_baru;
+
+			if (file_exists($config['upload_path'].$config['file_name'])) {
+				unlink($config['upload_path'].$config['file_name']);
+			}
+
+			// qr_image
+			$qr_image= $nama_baru.'.png';
+			$params['data'] = 'http://erp.quick.com/assets/upload/PengembanganSistem/fp/'.$nama_baru;
+			$params['level'] = 'H';
+			$params['size'] = 8;
+			$params['savename'] =FCPATH."assets/upload/PengembanganSistem/fp/".$qr_image;
+			if (file_exists($params['savename'])) {
+				unlink($params['savename']);
+			}
+			$this->ciqrcode->generate($params);
+			//end
+
 			$this->load->library('upload', $config);
 
 			$this->upload->initialize($config);
 			if (!$this->upload->do_upload('fileupload')) {
 			$error = array('error' => $this->upload->display_errors());
-			// aktifkan kode di bawah ini untuk melihat pesan error saat upload file
+			// untuk melihat pesan error saat upload file
 			echo 'error';
 			  print_r($error);
 				} else {
@@ -290,6 +323,7 @@ class C_Penomoran extends CI_Controller
 		
 				$data = array(
 					'file' =>$judul_baru,
+					'link_file' => 'assets/upload/PengembanganSistem/fp/'.$judul_baru,
 					'status_doc' =>$status
 					
 				);
@@ -314,7 +348,6 @@ class C_Penomoran extends CI_Controller
 	{
         $this->checkSession();
         $user_id = $this->session->userid;
-
         $data['Menu'] = 'Dashboard';
         $data['SubMenuOne'] = '';
         $data['SubMenuTwo'] = '';
@@ -323,10 +356,13 @@ class C_Penomoran extends CI_Controller
         $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 		//Pengembangan Sistem
+		$kodeakses = $this->session->kodesie;
+		$parameter = $this->M_pengsistem->find($kodeakses);
         $data['listdatacopwi'] = $this->M_pengsistem->list_data_copwi();
         $data['listseksi'] = $this->M_pengsistem->select_seksi();
         $data['listorg'] = $this->M_pengsistem->ambilSemuaPekerja();
-
+		$data['user'] = $this->session->employee;
+		$data['dept'] = $parameter[0]['dept'];
 
         $this->load->view('V_Header', $data);
         $this->load->view('V_Sidemenu', $data);
@@ -342,12 +378,15 @@ class C_Penomoran extends CI_Controller
 		$number_sop = $_POST['number_sop'];
 
 		$data = $this->M_pengsistem->cek_data_nomor_copwi($doc,$seksi,$number_sop)[0]['max'];
-		
+
 		echo json_encode($data);
 	}
 
 	public function inputdata_copwi()
 	{
+		$kodeakses = $this->session->kodesie;
+		$parameter = $this->M_pengsistem->find($kodeakses);
+
 		$judul_cw = $this->input->post('judul_cw');
 		$item_doc_cw = $this->input->post('doc_cw');
 		$doc_cw = $this->input->post('doccopwi_cw');
@@ -393,6 +432,8 @@ class C_Penomoran extends CI_Controller
 						'seksi_sop'			=> $sop_cw,
 						'number_rev'		=> $number_rev,
 						'jenis_doc_cw'		=> $item_doc_cw,
+						'user'				=> $this->session->employee,
+						'dept'				=> $parameter[0]['dept'],
 					);
 		}else{
 			$data		 = array(
@@ -410,6 +451,8 @@ class C_Penomoran extends CI_Controller
 						'seksi_sop'			=> $sop_cw,
 						'number_rev'		=> $number_rev,
 						'jenis_doc_cw'		=> $item_doc_cw,
+						'user'				=> $this->session->employee,
+						'dept'				=> $parameter[0]['dept'],
 						);
 		}
 
@@ -434,7 +477,6 @@ class C_Penomoran extends CI_Controller
         $data['listseksi'] = $this->M_pengsistem->select_seksi();
         $data['listorg'] = $this->M_pengsistem->ambilSemuaPekerja();
 
-		
         $this->load->view('V_Header', $data);
         $this->load->view('V_Sidemenu', $data);
         $this->load->view('PengembanganSistem/Penomoran/copwi/V_Read_cw', $data);
@@ -443,6 +485,9 @@ class C_Penomoran extends CI_Controller
 
 	public function update_copwi($id)
   	{
+		$kodeakses = $this->session->kodesie;
+		$parameter = $this->M_pengsistem->find($kodeakses);
+
 		$number_doc_cw = $this->input->post('nomor_doc');
 			$kode_cop_wi = explode('-', $number_doc_cw);
 			$cop_wi= $kode_cop_wi[0];
@@ -482,7 +527,9 @@ class C_Penomoran extends CI_Controller
 					'number_rev'		=> $number_rev_doc,
 					'number_sop'		=> $nomor_sop_doc,
 					'jenis_doc_cw'		=> $doc_cw,
-					'nomor_copwi'		=> $number_kode_doc
+					'nomor_copwi'		=> $number_kode_doc,
+					'user'				=> $this->session->employee,
+					'dept'				=> $parameter[0]['dept'],
 					);
 					
 		$this->M_pengsistem->update_cope($data,$id);
@@ -507,11 +554,11 @@ class C_Penomoran extends CI_Controller
 				chmod('.assets/upload/PengembanganSistem/copwi', 0777); 
 			}
 
-			$data_file = $_FILES['fileupload']['name'];
+			$data_file = $_FILES['fileupload']['type'];
 
 			$pathh = null;
 			$nmfile = $data_file;
-				$l = explode('.',$nmfile);
+				$l = explode('/',$nmfile);
 					$s = $l[1];
 					$fls = preg_replace("![^a-z0-9]+!i", "_", $judul);
 			$judul_baru = $id_data.'-'.$fls.'.'.$s;
@@ -523,6 +570,23 @@ class C_Penomoran extends CI_Controller
 			// $config['max_width']            = 1000;
 			// $config['max_height']           = 7680;
 			$config['file_name'] = $nama_baru;
+
+			if (file_exists($config['upload_path'].$config['file_name'])) {
+				unlink($config['upload_path'].$config['file_name']);
+			}
+
+			// qr_image
+			$qr_image= $nama_baru.'.png';
+			$params['data'] = 'http://erp.quick.com/assets/upload/PengembanganSistem/copwi/'.$nama_baru;
+			$params['level'] = 'H';
+			$params['size'] = 8;
+			$params['savename'] =FCPATH."assets/upload/PengembanganSistem/copwi/qrcop/".$qr_image;
+
+			if (file_exists($params['savename'])) {
+				unlink($params['savename']);
+			}
+			$this->ciqrcode->generate($params);
+			//end
 
 			$this->load->library('upload', $config);
 
@@ -538,6 +602,7 @@ class C_Penomoran extends CI_Controller
 		
 				$data = array(
 					'file' =>$judul_baru,
+					'link_file' => 'assets/upload/PengembanganSistem/copwi/'.$judul_baru,
 					'status_doc' =>$status
 					
 				);
@@ -573,9 +638,13 @@ class C_Penomoran extends CI_Controller
         $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 		//Pengembangan Sistem
+		$kodeakses = $this->session->kodesie;
+		$parameter = $this->M_pengsistem->find($kodeakses);
         $data['listdataum'] = $this->M_pengsistem->list_data_um();
         $data['listseksi'] = $this->M_pengsistem->select_seksi();
         $data['listorg'] = $this->M_pengsistem->ambilSemuaPekerja();
+		$data['user'] = $this->session->employee;
+		$data['dept'] = $parameter[0]['dept'];
 
         $this->load->view('V_Header', $data);
         $this->load->view('V_Sidemenu', $data);
@@ -606,6 +675,9 @@ class C_Penomoran extends CI_Controller
 
 	public function input_data_um()
 	{
+		$kodeakses = $this->session->kodesie;
+		$parameter = $this->M_pengsistem->find($kodeakses);
+
 		$judul_um = $this->input->post('judul_um');
 		$item_doc_um = $this->input->post('doc_um');
 		$doc = 'User Manual';
@@ -651,7 +723,9 @@ class C_Penomoran extends CI_Controller
 						'status_doc'		=> $status_um,
 						'date_input'		=> $date_input,
 						'nomor_um'		=> $nomor,
-						'a'					=> $pic_id
+						'a'					=> $pic_id,
+						'user'				=> $this->session->employee,
+						'dept'				=> $parameter[0]['dept'],
 					);
 		}else{
 			$data		 = array(
@@ -668,7 +742,9 @@ class C_Penomoran extends CI_Controller
 						'status_doc'		=> $status_um,
 						'date_input'		=> $date_input,
 						'nomor_um'			=> '001',
-						'a'					=> $pic_id
+						'a'					=> $pic_id,
+						'user'				=> $this->session->employee,
+						'dept'				=> $parameter[0]['dept'],
 						);
 		}
 		
@@ -701,6 +777,9 @@ class C_Penomoran extends CI_Controller
 
 	public function update_um($id)
   	{
+		$kodeakses = $this->session->kodesie;
+		$parameter = $this->M_pengsistem->find($kodeakses);
+
 		$number_doc_um = $this->input->post('number_doc_um');
 			$kode_um = explode('-', $number_doc_um);
 			$um= $kode_um[0];
@@ -741,6 +820,8 @@ class C_Penomoran extends CI_Controller
 						'date_update'		=> $date_update,
 						'nomor_um'			=> $number_kode_doc,
 						'a'					=> $pic_id,
+						'user'				=> $this->session->employee,
+						'dept'				=> $parameter[0]['dept'],
 					);
 		$this->M_pengsistem->update_data_um($data,$id);
 		redirect('PengembanganSistem/Usermanual');
@@ -765,11 +846,11 @@ class C_Penomoran extends CI_Controller
 			}
 
 
-			$data_file = $_FILES['fileupload']['name'];
+			$data_file = $_FILES['fileupload']['type'];
 
 			$pathh = null;
 			$nmfile = $data_file;
-				$l = explode('.',$nmfile);
+				$l = explode('/',$nmfile);
 					$s = $l[1];
 				$fls = preg_replace("![^a-z0-9]+!i", "_", $judul);
 			$judul_baru = $number_file.'-'.$fls.'.'.$s;
@@ -781,6 +862,23 @@ class C_Penomoran extends CI_Controller
 			// $config['max_width']            = 1000;
 			// $config['max_height']           = 7680;
 			$config['file_name'] = $nama_baru;
+
+			if (file_exists($config['upload_path'].$config['file_name'])) {
+				unlink($config['upload_path'].$config['file_name']);
+			}
+
+			// qr_image
+			$qr_image= $nama_baru.'.png';
+			$params['data'] = 'http://erp.quick.com/assets/upload/PengembanganSistem/um/'.$nama_baru;
+			$params['level'] = 'H';
+			$params['size'] = 8;
+			$params['savename'] =FCPATH."assets/upload/PengembanganSistem/um/".$qr_image;
+
+			if (file_exists($params['savename'])) {
+				unlink($params['savename']);
+			}
+			$this->ciqrcode->generate($params);
+			//end
 
 			$this->load->library('upload', $config);
 
@@ -796,6 +894,7 @@ class C_Penomoran extends CI_Controller
 		
 				$data = array(
 					'file' =>$judul_baru,
+					'link_file' => 'assets/upload/PengembanganSistem/um/'.$judul_baru,
 					'status_doc' =>$status
 					
 				);

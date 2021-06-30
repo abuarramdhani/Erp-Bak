@@ -643,6 +643,10 @@ $(document).ready(function(){
 			$('[name="gejala[]"]').not('#cvd_tidakgejala').attr('disabled', false);
 		}
 	});
+
+	$('#cvd_frmsbmtcvd').on('submit', function(){
+		fakeLoading(0);
+	});
 });
 
 function cvd_deleteAttachment(id)

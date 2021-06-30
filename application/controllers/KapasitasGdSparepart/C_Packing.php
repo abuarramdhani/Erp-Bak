@@ -19,14 +19,17 @@ class C_Packing extends CI_Controller
 		$this->checkSession();
 	}
 
+
 	public function checkSession()
 	{
 		if($this->session->is_logged){
 
 		} else {
+			session_destroy();
 			redirect('');
 		}
 	}
+
 
 	public function index()
 	{
@@ -79,7 +82,39 @@ class C_Packing extends CI_Controller
 		$this->load->view('V_Footer',$data);
 	}
 
-	public function updateMulai(){
+
+	public function getPIC()
+	{
+		$term = $this->input->get('term',TRUE);
+		$term = strtoupper($term);
+		$data = $this->M_packing->getPIC($term);
+		echo json_encode($data);
+	}
+
+
+	public function getPacking()
+    {
+    	$this->checkSession();
+    	$date = date('d/m/Y');
+		$data['value'] 	= $this->M_packing->tampilhariini();
+		$data['noind']  = $this->M_packing->getPIC2();
+        $this->load->view('KapasitasGdSparepart/V_Ajax_Packing', $data);
+    }
+
+
+	public function getSelesaiPacking()
+	{
+		$this->checkSession();
+    	$date = date('d/m/Y');
+		$packing 		= $this->M_packing->dataPacking($date);
+		$data['data']	= $packing;
+		$data['noind']  = $this->M_packing->getPIC(null);
+        $this->load->view('KapasitasGdSparepart/V_Ajax_Selesai_Packing', $data);
+	}
+
+
+	public function updateMulai()
+	{
 		$date 	= $this->input->post('date');
 		$jenis	= $this->input->post('jenis');
 		$nospb 	= $this->input->post('no_spb');
@@ -91,18 +126,20 @@ class C_Packing extends CI_Controller
 		}
 	}
 
-	public function updateSelesai(){
+
+	public function updateSelesai()
+	{
 		$date 	= $this->input->post('date');
 		$jenis	= $this->input->post('jenis');
 		$nospb 	= $this->input->post('no_spb');
 		$mulai 	= $this->input->post('mulai');
 		$selesai = $this->input->post('wkt');
 		$pic 	= $this->input->post('pic');
-		$jml_colly 		= $this->input->post('jml_colly');
-		$kardus_kecil 	= $this->input->post('kardus_kecil');
-		$kardus_sdg 	= $this->input->post('kardus_sdg');
-		$kardus_bsr 	= $this->input->post('kardus_bsr');
-		$karung 		= $this->input->post('karung');
+		// $jml_colly 		= $this->input->post('jml_colly');
+		// $kardus_kecil 	= $this->input->post('kardus_kecil');
+		// $kardus_sdg 	= $this->input->post('kardus_sdg');
+		// $kardus_bsr 	= $this->input->post('kardus_bsr');
+		// $karung 		= $this->input->post('karung');
 		// echo "<pre>";print_r($karung);exit();
 
 		$cek = $this->M_packing->cekMulai($nospb, $jenis);
@@ -115,7 +152,7 @@ class C_Packing extends CI_Controller
 			$htgmenit 	= floor($menit/60) * 60;
 			$detik 		= $menit - $htgmenit;
 			$slsh 		= $jam.':'.floor($menit/60).':'.$detik;	
-		}else {
+		} else {
 			$a = explode(':', $cek[0]['WAKTU_PACKING']);
 			$jamA 	= $a[0] * 3600;
 			$menitA = $a[1] * 60;
@@ -136,7 +173,9 @@ class C_Packing extends CI_Controller
 		// $this->M_packing->insertColly($nospb, $jml_colly, $kardus_kecil, $kardus_sdg, $kardus_bsr, $karung);
 	}
 
-	public function pauseSPB(){
+
+	public function pauseSPB()
+	{
 		$nospb = $this->input->post('no_spb');
 		$jenis = $this->input->post('jenis');
 		$mulai = $this->input->post('mulai');
@@ -145,14 +184,15 @@ class C_Packing extends CI_Controller
 		$waktu1		= strtotime($mulai);
 		$waktu2 	= strtotime($selesai);
 		$selisih 	= $waktu2 - $waktu1;
-		$jam 		= floor($selesai/(60*60));
-		$menit 		= $selesai - $jam * (60*60);
-		$htgmenit 	= floor($menit/60) * 60;
+		$jam 		= floor($selesai / (60 * 60));
+		$menit 		= $selisih - $jam * (60 * 60);
+		$htgmenit 	= floor($menit / 60) * 60;
 		$detik 		= $menit - $htgmenit;
-		$slsh 		= $jam.':'.floor($menit/60).':'.$detik;
+		$slsh 		= $jam.':'.floor($menit / 60).':'.$detik;
 
 		$this->M_packing->waktuPacking($nospb, $jenis, $slsh);
 	}
+
 
 	public function modalColly2(){
 		$data['date'] 	= $this->input->post('date');
@@ -169,6 +209,7 @@ class C_Packing extends CI_Controller
 		$this->load->view('KapasitasGdSparepart/V_ModalArsipColy', $data);
 		// echo "<pre>";print_r($cek);exit();
 	}
+
 
 	public function saveberatPacking(){
 		$no_spb = $this->input->post('no_spb');
@@ -196,4 +237,143 @@ class C_Packing extends CI_Controller
 	}
 
 	
+	public function getData()
+    {
+    	$data['colly'] = $this->M_packing->getDataPacking($this->input->post('no_spb'));
+    	$data['total'] = $this->M_packing->getTotalColly($this->input->post('no_spb'));
+
+        $this->load->view('KapasitasGdSparepart/V_Ajax_Colly', $data);
+    }
+
+    public function cekItem()
+    {
+    	echo json_encode($this->M_packing->cekItem(
+          	$this->input->post('item'),
+          	$this->input->post('colly')
+         ));
+    }
+
+
+    public function updateQtyVerif()
+    {
+    	$update = $this->M_packing->updateQtyVerif(
+    		$this->input->post('qty_verif'),
+    		$this->input->post('colly'),
+    		$this->input->post('item')
+    	);
+    }
+
+
+    public function cekColly()
+    {
+    	echo json_encode($this->M_packing->cekColly(
+          	$this->input->post('colly')
+         ));
+    }
+
+
+    public function updateBeratColly()
+    {
+    	$update = $this->M_packing->updateBeratColly(
+    		$this->input->post('berat'),
+    		$this->input->post('colly')
+    	);
+    }
+
+
+    public function updateJenisColly()
+    {
+    	$update = $this->M_packing->updateJenisColly(
+    		$this->input->post('jenis'),
+    		$this->input->post('colly')
+    	);
+    }
+
+
+    public function cekTransact()
+    {
+    	echo json_encode($this->M_packing->cekTransact(
+          	$this->input->post('no_spb')
+         ));
+    }
+
+
+    public function transactDOSP()
+    {	
+    	$user = $this->session->userdata('user');
+    	$data['dosp'] = $this->M_packing->getAPIdata($this->input->post('no_spb'));
+
+    	$this->M_packing->transactDOSP($data['dosp'][0]['REQUEST_NUMBER'], $data['dosp'][0]['ORGANIZATION_ID']);
+    // 	$this->M_packing->closeLine($data['dosp'][0]['HEADER_ID'], $user);
+
+    // 	if ($data['dosp'][0]['DELIVERY_TYPE'] == 'SPB') {
+    // 		$this->M_packing->autoInterorg($this->input->post('no_spb'));
+    // 	}
+    // 	else {
+    		
+    // 	}
+    }
+
+
+  //   public function cetakSM($colly)
+  //   {
+  //       $data['get_header'] = $this->M_packing->headfootPL($colly);
+
+  //       $id = $data['get_header'][0]['REQUEST_NUMBER'];
+
+  //       // $data['get_body'] = $this->M_packing->bodyPL($id);
+		// $data['get_colly'] = $this->M_packing->getTotalColly($id);
+  //       $data['total_colly'] = sizeof($data['get_colly']);
+  //       $data['this_colly'] = $colly;
+
+  //       // echo "<pre>";
+  //       // print_r($data);
+  //       // die();
+
+  //       if (!empty($id)) {
+  //           // ====================== do something =========================
+  //           $this->load->library('Pdf');
+  //           $this->load->library('ciqrcode');
+
+  //           $pdf 		= $this->pdf->load();
+  //           $pdf 		= new mPDF('utf-8', array(110 , 80), 0, '', 3, 3, 3, 0, 0, 0);
+
+  //           // ------ GENERATE QRCODE ------
+  //           if (!is_dir('./assets/img/monitoringDOSPQRCODE')) {
+  //               mkdir('./assets/img/monitoringDOSPQRCODE', 0777, true);
+  //               chmod('./assets/img/monitoringDOSPQRCODE', 0777);
+  //           }
+
+  //           $params['data']		= $data['get_header'][0]['REQUEST_NUMBER'];
+  //           $params['level']	= 'H';
+  //           $params['size']		= 4;
+  //           $params['black']	= array(255,255,255);
+  //           $params['white']	= array(0,0,0);
+  //           $params['savename'] = './assets/img/monitoringDOSPQRCODE/'.$data['get_header'][0]['REQUEST_NUMBER'].'.png';
+            
+  //           $this->ciqrcode->generate($params);
+           
+  //           ob_end_clean() ;
+            
+  //           $filename 	= 'Shipping_Mark_'.$colly.'.pdf';
+  //           $cetakPL	= $this->load->view('KapasitasGdSparepart/V_Pdf_SM', $data, true);
+            
+  //           $pdf->SetFillColor(0,255,0);
+  //           $pdf->WriteHTML($cetakPL);
+  //           $pdf->Output($filename, 'I');
+
+  //       // ========================end process=========================
+  //       } else {
+	 //        echo json_encode(array(
+	 //          	'success' => false,
+	 //          	'message' => 'id is null'
+	 //        ));
+  //       }
+
+  //       if (!unlink($params['savename'])) {
+  //           echo("Error deleting");
+  //       } else {
+  //           unlink($params['savename']);
+  //       }
+  //   }
 }

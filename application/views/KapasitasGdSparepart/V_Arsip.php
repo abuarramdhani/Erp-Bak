@@ -16,8 +16,8 @@
                 },
                 //Set column definition initialisation properties.
                 "columnDefs": [
-                { 
-                    "targets": [ 0 ], //first column / numbering column
+                {
+                    "targets": [ 0, 19 ], //first column / numbering column
                     "orderable": false, //set not orderable
                 },
                 ],
@@ -46,7 +46,7 @@
                             <div class="text-right">
                                 <h1>
                                     <b>
-                                        <?= $Title ?> 
+                                        <?= $Title ?>
                                     </b>
                                 </h1>
                             </div>
@@ -84,7 +84,7 @@
                                         <div class="input-group">
                                         <input id="tglAkhir" name="tglAkhir" class="form-control pull-right datepicktgl" placeholder="dd/mm/yyyy" autocomplete="off">
                                         <span class="input-group-btn">
-                                            <button type="button" onclick="schArsipdospb(this)" class="btn btn-flat" style="background:inherit; text-align:left;padding:0px;padding-left:10px;"><i class="fa fa-2x fa-arrow-circle-right" ></i></button>    
+                                            <button type="button" onclick="schArsipdospb(this)" class="btn btn-flat" style="background:inherit; text-align:left;padding:0px;padding-left:10px;"><i class="fa fa-2x fa-arrow-circle-right" ></i></button>
                                         </span>
                                         </div>
                                     </div>
@@ -106,10 +106,6 @@
                                                     <th>Selesai Pelayanan</th>
                                                     <th>Waktu Pelayanan</th>
                                                     <th>PIC Pelayanan</th>
-                                                    <th>Mulai Pengecekan</th>
-                                                    <th>Selesai Pengecekan</th>
-                                                    <th>Waktu Pengecekan</th>
-                                                    <th>PIC Pengecekan</th>
                                                     <th>Mulai Packing</th>
                                                     <th>Selesai Packing</th>
                                                     <th>Waktu Packing</th>
@@ -117,9 +113,8 @@
                                                     <th>Keterangan</th>
                                                     <th>Tanggal Cancel</th>
                                                     <th>Jumlah Coly</th>
-                                                    <?php if ($user_arsip != 'user_arsip') { ?>
                                                     <th>Edit Coly</th>
-                                                    <?php }?>
+																										<th style="width:50px">Cetak</th>
                                                 </tr>
                                             </thead>
                                         </table>
@@ -140,16 +135,18 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h3 style="text-align:center">Detail Coly</h3>
+                <h3 style="text-align:center">Detail Coly <span id="head_mdl_arsip"></span></h3>
             <!-- <div id="datahidden"></div> -->
 			</div>
 			<div class="modal-body">
             <div id="datacoly2"></div>
+            <?php if ($user_arsip != 'user_arsip') { ?>
             <div class="panel-body">
                 <div class="col-md-12 text-center">
                     <button type="button" class="btn btn-danger" data-dismiss="modal" aria-label="Close">SAVE</button>
                 </div>
             </div>
+            <?php } ?>
 		    </div>
             <div class="modal-footer">
 		</div>

@@ -570,6 +570,8 @@ public function printpdf99(){
 				$dataKIBKelompok[$indexnya]['REQUEST_NUMBER'] = $value['REQUEST_NUMBER'];
 				$dataKIBKelompok[$indexnya]['BATCH_NUMBER'] = $value['BATCH_NUMBER'];
 				$dataKIBKelompok[$indexnya]['ALIAS_KODE'] = $value['ALIAS_KODE'];
+				$dataKIBKelompok[$indexnya]['LOKASI_SIMPAN'] = $value['LOKASI_SIMPAN'];
+
 				// $a++;
 			}
 			

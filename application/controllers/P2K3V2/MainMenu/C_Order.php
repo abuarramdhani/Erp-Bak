@@ -27,8 +27,7 @@ class C_Order extends CI_Controller
 	/* CHECK SESSION */
 	public function checkSession()
 	{
-		if ($this->session->is_logged) {
-		} else {
+		if ($this->session->is_logged) { } else {
 			redirect('');
 		}
 	}
@@ -838,7 +837,7 @@ class C_Order extends CI_Controller
 
 	public function getItem()
 	{
-		$item = $_GET['s'];
+		$item = $this->input->get('s');
 		$data = $this->M_order->getItem($item);
 		echo json_encode($data);
 	}
@@ -1331,12 +1330,16 @@ class C_Order extends CI_Controller
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 		$data['seksi'] 		= $this->M_order->getSeksi($noind);
 		$data['daftar_pekerjaan']	= $this->M_order->daftar_pekerjaan($kodesie);
-
+		$ks = substr($kodesie, 0, 7);
 		$pr = $this->input->post('k3_periode');
 		$m = substr($pr, 0, 2);
 		$y = substr($pr, 5, 5);
 		$periode = $pr;
+
 		$pr = $y . '-' . $m;
+		if (!empty($_POST)) {
+			$this->session->set_flashdata('button', "<button value='$ks' type='button' class='btn btn-primary details-apd p2k3_detail_seksi_hitung'>Detail</button>");
+		}
 		// echo $pr;exit();
 		if (empty($pr)) {
 			$pr = date('Y-m');
@@ -1801,152 +1804,9 @@ class C_Order extends CI_Controller
 			}
 			// exit();
 		}
-		// exit();
 
-		//PDF Untuk Bon
-		/*
-		 * DK 18 juni 2020 - comment karena tidak perlu
-		 * 
-		 */
-
-		// if (!is_dir('./assets/img/temp_qrcode')) {
-		// 	mkdir('./assets/img/temp_qrcode', 0777, true);
-		// 	chmod('./assets/img/temp_qrcode', 0777);
-		// }
-		// if (!is_dir('./assets/upload/P2K3/PDF')) {
-		// 	mkdir('./assets/upload/P2K3/PDF', 0777, true);
-		// 	chmod('./assets/upload/P2K3/PDF', 0777);
-		// }
-
-		// $newApd = $apd;
-		// $newNama_apd = $nama_apd;
-		// $newSatuan_apd = $satuan_apd;
-		// $newBon = $bon;
-
-		// for ($i = 0; $i < count($bon); $i++) {
-		// 	if ($newBon[$i] == 0) {
-		// 		unset($newBon[$i]);
-		// 		unset($newNama_apd[$i]);
-		// 		unset($newApd[$i]);
-		// 		unset($newSatuan_apd[$i]);
-		// 	}
-		// }
-
-		// $newApd = array_values($newApd);
-		// $newNama_apd = array_values($newNama_apd);
-		// $newSatuan_apd = array_values($newSatuan_apd);
-		// $newBon = array_values($newBon);
-
-		// $nol = array_count_values($bon);
-		// $nol = $nol['0'];
-		// $all = count($apd);
-		// $lembar = ceil(($all - $nol) / 10);
-
-		// $y = 0;
-		// $k = 1;
-		// for ($i = 0; $i < $lembar; $i++) {
-		// 	$max = (10 * $k);
-		// 	$data_array_2 = array();
-		// 	for ($x = $y; $x < $max; $x++) {
-		// 		if (!array_key_exists($x, $newBon)) {
-		// 			$data_array_2[] = array(
-		// 				'kode' => '',
-		// 				'nama' => '',
-		// 				'satuan' => '',
-		// 				'diminta' => '',
-		// 				'ket' => '',
-		// 				'account' => '',
-		// 				'produk' => '',
-		// 				'exp' => '',
-		// 				'lokasi_simpanku' => ''
-		// 			);
-		// 		} else {
-		// 			$data_array_2[] = array(
-		// 				'kode' => $newApd[$x],
-		// 				'nama' => $newNama_apd[$x],
-		// 				'satuan' => $newSatuan_apd[$x],
-		// 				'diminta' => $newBon[$x],
-		// 				'account' => $account,
-		// 				'ket' => 'UNTUK KEBUTUHAN APD PERIODE ' . $pr,
-		// 			);
-		// 		}
-		// 	}
-
-		// 	$data_array[] = array(
-		// 		'nomor' => $noBon,
-		// 		'tgl' => $tanggal,
-		// 		'gudang' => $gudang,
-		// 		'seksi' => $seksi,
-		// 		'pemakai' => $pemakai,
-		// 		'rdPemakai' => 'Seksi',
-		// 		'fungsi' => 'BARANG P2K3 & APD',
-		// 		'cost' => $cost_center,
-		// 		'kocab' => $kode_cabang,
-		// 		'data_body' => $data_array_2,
-		// 	);
-		// 	$y = $y + 10;
-		// 	$k++;
-		// }
-		// // print_r($data_array);
-		// // exit();
-		// $this->load->library('ciqrcode');
-		// $params['data']		= $noBon;
-		// $params['level']	= 'H';
-		// $params['size']		= 10;
-		// $config['black']	= array(224, 255, 255);
-		// $config['white']	= array(70, 130, 180);
-		// $params['savename'] = './assets/img/temp_qrcode/' . $noBon . '.png';
-		// $this->ciqrcode->generate($params);
-
-		// $data['kumpulandata'] = $data_array;
-		// // print_r($data_array);
-		// // exit;
-		// $this->load->library('Pdf');
-		// $pdf = $this->pdf->load();
-		// $pdf = new mPDF('', array(210, 148.5), 0, '', 10, 10, 5, 0, 0, 5, 'P');
-		// $pdf->setAutoTopMargin = 'stretch';
-		// $pdf->setAutoBottomMargin = 'stretch';
-		// $filename = './assets/upload/P2K3/PDF/' . $noBon . '-Bon-Bppbg.pdf';
-		// $stylesheet = file_get_contents(base_url('assets/plugins/bootstrap/3.3.6/css/bootstrap.css'));
-		// $html = $this->load->view('P2K3V2/Order/V_pdfBon', $data, true);
-
-
-		// $pdf->setFooter('<div style="float: left; margin-right: 30px; width:200px">
-		// 	<i style="font-size: 10px;margin-right: 10%">FRM-WHS-02-PDN-02 (Rev.04)</i>
-		// </div>
-		// <div style="float: left; width: 350px; background-color=red">
-		// 	<i style="padding-left: 60%; font-size: 10px;margin-left: 10%">**) Pengebonan komponen/material produksi harus disetujui PPIC</i>
-		// </div>
-		// <div style="float: right; width: 100px">
-		// 	<i style="padding-left: 60%; font-size: 10px;margin-left: 10%">Hal. {PAGENO} dari {nb}</i>
-		// </div>');
-		// $pdf->WriteHTML($stylesheet, 1);
-		// $pdf->WriteHTML($html);
-
-		/*
-		 * DK 18 juni 2020 - comment karena tidak perlu
-		 * 
-		 */
-
-		// $pdf->Output($filename, 'F'); // dicomment maybe tidak diperlukan
 		redirect('P2K3_V2/Order/PDF/' . $noBon);
 	}
-
-	// Yang ini memakai sistem save file dulu
-	// public function PDF($id)
-	// {
-	// 	$file = './assets/upload/P2K3/PDF/' . $id . '-Bon-Bppbg.pdf';
-	// 	$filename = $id . '-Bon-Bppbg.pdf'; /* Note: Always use .pdf at the end. */
-	// 	// echo $filename;exit();
-
-	// 	header('Content-type: application/pdf');
-	// 	header('Content-Disposition: inline; filename="' . $filename . '"');
-	// 	header('Content-Transfer-Encoding: binary');
-	// 	header('Content-Length: ' . filesize($file));
-	// 	header('Accept-Ranges: bytes');
-
-	// 	@readfile($file);
-	// }
 
 	/*
 		@generate bon pdf
@@ -2496,6 +2356,7 @@ class C_Order extends CI_Controller
 	public function SafetyShoes()
 	{
 		$user_id = $this->session->userid;
+		$user = $this->session->user;
 		$kodesie = $this->session->kodesie;
 		$logged_noind = $this->session->user;
 		$lokasi_kerja = $this->session->kode_lokasi_kerja;
@@ -2523,6 +2384,28 @@ class C_Order extends CI_Controller
 			$data['seksi'] = array('section_name' 	=>	'');
 		}
 
+		$costc = $this->M_order->getCostCenter($kodesie);
+		$listcc = $this->M_order->getOr('');
+		$listcc2 = array_column($listcc, 'COST_CENTER');
+		$listbr =  array_column($listcc, 'BRANCH', 'COST_CENTER');
+		$listbr2 =  array_column($listcc, 'BRANCH', 'PEMAKAI');
+		$data['listbrjs'] = json_encode($listbr2);
+		if (!in_array($costc, $listcc2)) {
+			$costc = '';
+		}
+		$data['branch'] = '';
+		if (isset($listbr[$costc])) {
+			$data['branch'] = $listbr[$costc];
+		}
+		$data['costc'] = $costc;
+		$data['listcc'] = $listcc;
+		$pkj_lok = $this->M_order->getDetailPekerja($user)->row()->lokasi_kerja;
+		if (intval($pkj_lok) == 2) {
+			$data['lokerbr'] = 'AC';
+		} else {
+			$data['lokerbr'] = 'AA';
+		}
+
 		$this->load->view('V_Header', $data);
 		$this->load->view('V_Sidemenu', $data);
 		$this->load->view('P2K3V2/Order/V_Input_Sepatu', $data);
@@ -2544,7 +2427,7 @@ class C_Order extends CI_Controller
 		if (!$kodesie) return;
 		// if session responsibility is P2K3 TIM V2
 		// "can select all worker
-		if ((int)$this->session->responsibility_id === 2615 || $this->session->responsibility == 'P2K3 TIM V.2') {
+		if ((int) $this->session->responsibility_id === 2615 || $this->session->responsibility == 'P2K3 TIM V.2') {
 			$kodesie = '';
 		}
 
@@ -2607,6 +2490,7 @@ class C_Order extends CI_Controller
 		$noind = $this->input->get('noind');
 		$decrease = (int) $this->input->get('decrease');
 		$user_logged = $this->session->user;
+		$kodesie = $this->session->kodesie;
 		$pkj_lok = $this->M_order->getDetailPekerja($user_logged)->row()->lokasi_kerja;
 		if (intval($pkj_lok) == 2) {
 			$lokasi = '16103';
@@ -2615,64 +2499,87 @@ class C_Order extends CI_Controller
 			$lokasi = '142';
 			$gudang = 'PNL-DM';
 		}
-
 		$latestBon = $this->M_order->getLatestBonSafetyShoes($noind);
 		$safetyShoes = $this->M_order->getStockSafetyShoesById($no_apd, $gudang);
+		$periode = $this->M_order->getPeriodeSafetyShoes($kodesie);
+
+		// periode pengambilan
+		$defaultPeriode = 12; // bulan
+		$periode = isset($periode->periode) ? $periode->periode : $defaultPeriode;
 
 		if (!$safetyShoes) return $this->response(true, [
 			'bon_terakhir' => isset($latestBon->date) ? $latestBon->date : '-'
 		], "Sepatu tidak ada di database gudang");
-
 		// jumlah aktual stock, dikurangi sepatu yang sudah dipilih di frontend
 		$safetyShoes->stock = (int) $safetyShoes->STOCK - (int) $decrease;
-
 		// TODO : FIX THIS LOGIC
 		if ($safetyShoes->stock == 0) return $this->response(true, [
 			'bon_terakhir' => isset($latestBon->date) ? $latestBon->date : '-'
 		], "Stock {$safetyShoes->DESCRIPTION} Kosong");
 		// if ($safetyShoes->stock < $requestBon) return $this->response();
-
 		/*
 		|--------------------------------------------------|
 		|	Check bon terakhir noind di database bon sepatu? |
 		|--------------------------------------------------|
 		*/
 		if (!empty($latestBon)) {
-			$nobon = $latestBon->no_bon;
-			$cekRombongannya = $this->M_order->getNobondtl($nobon);
-			$id_orc = array_column($cekRombongannya, 'id_oracle');
-			$id_orc = implode(',', $id_orc);
-			$transcT = $this->M_dtmasuk->getTranscT($id_orc, $nobon);
-			$x = 0;
-			foreach ($transcT as $key) {
-				$transcT[$x]['noind'] = explode(' - ', $key['KETERANGAN'])[0];
-				$x++;
-			}
-			$arrF = array_column($transcT, 'FLAG');
-			$arrN = array_column($transcT, 'FLAG', 'noind');
-			if (in_array('Y', $arrF) && $arrN[$noind] == 'N' && 1 == 2) {
-				//skip
-			} else {
+			// $nobon = $latestBon->no_bon;
+			// $cekRombongannya = $this->M_order->getNobondtl($nobon);
+			// $id_orc = array_column($cekRombongannya, 'id_oracle');
+			// $id_orc = implode(',', $id_orc);
+			// $transcT = $this->M_dtmasuk->getTranscT($id_orc, $nobon);
+			// $x = 0;
+			// foreach ($transcT as $key) {
+			// 	$transcT[$x]['noind'] = explode(' - ', $key['KETERANGAN'])[0];
+			// 	$x++;
+			// }
+			// $arrF = array_column($transcT, 'FLAG');
+			// $arrN = array_column($transcT, 'FLAG', 'noind');
+			// if (in_array('Y', $arrF) && $arrN[$noind] == 'N' && 1 == 2) {
+			// 	//skip
+			// } else {
+			$latestTransact = $this->M_order->getLatestTransactSafetyShoes($latestBon->no_bon, $latestBon->date, $gudang);
+			if (!empty($latestTransact)) {
+				$transact = $latestTransact;
 				$today = date_create(date('Y-m-d'));
-				$latest = date_create($latestBon->date);
-				if ($latestBon->seksi == 'UP2L') {
-					// Rentang waktu sekarang dengan waktu bon sebelumnya
-					$moreThan9Month = date_diff($today, $latest)->m > 9;
-					if (!$moreThan9Month) return $this->response(true, [
-						'bon_terakhir' => isset($latestBon->date) ? $latestBon->date : '-'
-					], "Pekerja sudah pernah bon sepatu kerja dalam waktu dekat");
-				} else {
-					// Rentang waktu sekarang dengan waktu bon sebelumnya
-					$moreThan1Year = date_diff($today, $latest)->y > 0;
-					if (!$moreThan1Year) return $this->response(true, [
-						'bon_terakhir' => isset($latestBon->date) ? $latestBon->date : '-'
+				$latest = date_create($transact);
+				$diff = date_diff($latest, $today);
+				$canBon = $diff->format('%y') * 12 + $diff->format('%m') >= $periode;
+				if (!$canBon) return $this->response(true, [
+					'bon_terakhir' => isset($transact) ? $transact : '-'
+				], "Pekerja sudah pernah bon sepatu kerja dalam waktu dekat");
+			} else {
+				$nobon = $latestBon->no_bon;
+				$last = null;
+				$cekRombongannya = $this->M_order->getNobondtl($nobon);
+				$id_orc = array_column($cekRombongannya, 'id_oracle');
+				$id_orc = implode(',', $id_orc);
+				$transcT = $this->M_dtmasuk->getTranscT($id_orc, $nobon);
+				$transact = $transcT[0]['TANGGAL'];
+				$x = 0;
+				foreach ($transcT as $key) {
+					$transcT[$x]['noind'] = explode(' - ', $key['KETERANGAN'])[0];
+					$x++;
+				}
+				$arrN = array_column($transcT, 'FLAG', 'noind');
+				if (isset($arrN[$noind]) && $arrN[$noind] == 'N') {
+					return $this->response(false, [
+						'bon_terakhir' =>  '-'
+					], "Pekerja sudah pernah mengebon dengan nomor $nobon");
+				}
+				if (isset($arrN[$noind]) && $arrN[$noind] == 'Y') {
+					$today = date_create(date('Y-m-d'));
+					$latest = date_create($transact);
+					$diff = date_diff($latest, $today);
+					$canBon = $diff->format('%y') * 12 + $diff->format('%m') >= $periode;
+					return $this->response(true, [
+						'bon_terakhir' => isset($transact) ? $transact : '-'
 					], "Pekerja sudah pernah bon sepatu kerja dalam waktu dekat");
 				}
 			}
 		}
-
 		return $this->response(false, [
-			'bon_terakhir' => isset($latestBon->date) ? $latestBon->date : '-'
+			'bon_terakhir' => isset($transact) ? $transact : '-'
 		], "Pekerja dapat mengebon sepatu");
 	}
 

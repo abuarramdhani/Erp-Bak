@@ -16,35 +16,24 @@
                     </div>
                 </div>
                 <br />
-
                 <div class="row">
-
                     <div class="col-lg-12">
                         <div class="box box-primary box-solid">
                             <div class="box-header with-border">
                                 <h1 style="text-align:left padding:5px;">Cetak Kategori</h1>
                             </div>
-
-
                             <div class="box-body bg-white">
-
                                 <div class="box box-primary">
-
                                     <div class="box-header with-border">
                                         <h2 class="box-title text-primary"><b>Cari Pekerja</b></h2>
                                         <br>
-
                                     </div>
-
                                     <div class="bg-light box-body">
-
-
                                         <div class="col-sm-6">
                                             <div class="form-group row">
                                                 <div class="col-sm-4">
                                                     <label> Pendidikan</label>
                                                 </div>
-
                                                 <div class="col-sm-8">
                                                     <select class="form-control" id="TDP_Tarikpendidikan">
                                                         <option value="">Semua</option>
@@ -55,14 +44,11 @@
                                                         ?>
                                                     </select>
                                                 </div>
-
                                             </div>
-
                                             <div class="form-group row">
                                                 <div class="col-sm-4">
                                                     <label> Jenis Kelamin</label>
                                                 </div>
-
                                                 <div class=" col-sm-8">
                                                     <select class="form-control" id="TDP_Tarikjenkel">
                                                         <option value="">Semua</option>
@@ -74,12 +60,10 @@
                                                     </select>
                                                 </div>
                                             </div>
-
                                             <div class="form-group row">
                                                 <div class="col-sm-4">
                                                     <label>Lokasi Kerja</label>
                                                 </div>
-
                                                 <div class="col-sm-8">
                                                     <select class="form-control" id="TDP_Tariklokasi">
                                                         <option value="">Semua</option>
@@ -97,25 +81,20 @@
                                                     <input type="radio" name="rbt_TDPRange" id="rbt_TDPRange1" />
                                                     <label>Tgl. Masuk Kerja</label>
                                                 </div>
-
                                                 <div class="col-sm-8">
                                                     <div class="input-group ">
                                                         <div class="input-group-addon">
                                                             <i class="fa fa-calendar"></i>
                                                         </div>
-
                                                         <input type="text" name="tdpdrp" class="form-control pull-right" id="TDP_Rangemasuk" value="" disabled>
                                                     </div>
                                                 </div>
                                             </div>
-
                                             <div class="form-group row">
                                                 <div class="col-sm-4">
-
                                                     <input type="radio" name="rbt_TDPRange" id="rbt_TDPRange2" />
                                                     <label>Tgl. Keluar Kerja</label>
                                                 </div>
-
                                                 <div class="col-sm-8">
                                                     <div class="input-group ">
                                                         <div class="input-group-addon">
@@ -125,11 +104,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-
-
                                         </div>
-
-
                                         <div class="col-sm-6">
                                             <div class="form-group row">
                                                 <div class="col-sm-12">
@@ -146,15 +121,11 @@
                                                     </div>
                                                 </div>
                                             </div>
-
-
                                             <div class="form-group row">
-
                                                 <div class="col-sm-12">
                                                     <label class="form-check-label">Kategori :</label>
                                                     <br>
                                                 </div>
-
                                                 <div class="col-sm-4">
                                                     <select class="form-control" id="TDP_Tarikkategori">
                                                         <option selected>Seksi</option>
@@ -162,46 +133,30 @@
                                                         <option value="Dept">Departemen</option>
                                                     </select>
                                                 </div>
-
                                                 <div class="col-sm-8">
                                                     <select class="form-control" id="TDP_IsiKategoritarik">
                                                     </select>
                                                 </div>
                                                 <br>
-
                                             </div>
                                             <br>
-
-
                                             <div class="col-sm-6 textt-left ">
                                                 <label class="radio-inline control-label float-left"><input value="f" type="radio" name="tdpstatus" checked> &nbsp; <b>Aktif</b></label>
                                                 <label class="radio-inline control-label float-left"><input value="t" type="radio" name="tdpstatus"> &nbsp; <b>Keluar</b></label>
-
-
                                             </div>
-
-
                                         </div>
                                     </div>
-
                                 </div>
-
-
                             </div>
-
                             <div class="box-body bg-white" id="Div_ProsesTarik">
-
                                 <div class="box box-primary">
-
                                     <div class="box-header with-border">
                                         <h2 class="box-title text-primary"><b>Tarik Data</b></h2>
                                         <br>
                                         <div class="small text-danger">*Pilih minimal satu</div>
                                     </div>
                                     <br>
-
                                     <div class="nav-tabs-custom" style="position: relative;">
-
                                         <ul class="nav nav-tabs">
                                             <li class="active">
                                                 <a href="#Data_pribadi" data-toggle="tab">Data Pribadi</a>
@@ -213,12 +168,9 @@
                                                 <a href="#Jamsostek" data-toggle="tab">Jamsostek</a>
                                             </li>
                                         </ul>
-
                                     </div>
                                     <div class="tab-content">
-
                                         <div class="tab-pane active" id="Data_pribadi">
-
                                             <div class="col-sm-3">
                                                 <h3 class="text-primary">Data Pribadi</h3>
                                                 <input name="induk" type="checkbox" class="chk_FilterTarikData" value="tp.noind" checked>
@@ -243,8 +195,9 @@
                                                 <label> No. HP</label><br>
                                                 <input name="notelepon" type="checkbox" class="chk_FilterTarikData" value="tp.telepon">
                                                 <label> No. Telepon</label><br>
+                                                <input name="status_keluarga" type="checkbox" class="chk_FilterTarikData" value="tk.nama_keluarga,tk.status_keluarga">
+                                                <label> Status Keluarga</label><br>
                                             </div>
-
                                             <div class="col-sm-3">
                                                 <h3 class="text-primary">Alamat Pekerja</h3>
                                                 <input name="alamat" type="checkbox" class="chk_FilterTarikData" value="tp.alamat">
@@ -264,7 +217,6 @@
                                                 <input name="almt_kost" type="checkbox" class="chk_FilterTarikData" value="tp.almt_kost">
                                                 <label> Alamat Kos</label><br>
                                             </div>
-
                                             <div class="col-sm-3">
                                                 <h3 class="text-primary">Anak dan Keluarga</h3>
                                                 <input name="namaayah" type="checkbox" class="chk_FilterTarikData" value="(select tk.nama from hrd_khs.tkeluarga tk where nokel = '01A' and tk.noind = tp.noind limit 1) ayah">
@@ -284,7 +236,6 @@
                                                 <input name="jtbknanak" type="checkbox" class="chk_FilterTarikData" value="tp.jtbknanak">
                                                 <label> JTBKN Anak</label>
                                             </div>
-
                                             <div class=" col-sm-3">
                                                 <h3 class="text-primary">Pendidikan</h3>
                                                 <input name="gelard" type="checkbox" class="chk_FilterTarikData" value="tp.gelard">
@@ -298,7 +249,6 @@
                                                 <input name="sekolah" type="checkbox" class="chk_FilterTarikData" value="tp.sekolah">
                                                 <label> Asal Sekolah</label><br>
                                             </div>
-
                                             <div class="col-sm-3 pull-right">
                                                 <h3 class="text-primary">Lain-lain</h3>
                                                 <input name="email_internal" type="checkbox" class="chk_FilterTarikData" value="tp.email_internal">
@@ -318,10 +268,7 @@
                                                 <input name="uk_sepatu" type="checkbox" class="chk_FilterTarikData" value="tp.uk_sepatu">
                                                 <label> Ukuran Sepatu</label><br>
                                             </div>
-
                                         </div>
-
-
                                         <div class="tab-pane" id="Hubungan_kerja">
                                             <div class="col-sm-3">
                                                 <h3 class="text-primary">Penempatan</h3>
@@ -348,7 +295,6 @@
                                                 <input name="ruang" type="checkbox" class="chk_FilterTarikData" value="tp.ruang">
                                                 <label> Ruang</label><br>
                                             </div>
-
                                             <div class="col-sm-3">
                                                 <h3 class="text-primary">Hubungan Kerja</h3>
                                                 <input name="asal_outsourcing" type="checkbox" class="chk_FilterTarikData" value="tp.asal_outsourcing">
@@ -369,8 +315,13 @@
                                                 <label> Sebab Keluar</label><br>
                                                 <input name="status_diangkat" type="checkbox" class="chk_FilterTarikData" value="tp.status_diangkat">
                                                 <label> Status Diangkat</label><br>
+                                                <input name="masa_kerja" type="checkbox" class="chk_FilterTarikData" value="case when substring(tp.noind, 1,1) = 'K' then age(date(now()),date(tp.masukkerja)) when substring(tp.noind, 1,1) = 'P' then age(date(now()),date(tp.masukkerja)) when substring(tp.noind, 1,1) = 'R' then age(date(now()),date(tp.masukkerja)) else age(date(now()),date(tp.diangkat)) end as masa_kerja">
+                                                <label> Masa Kerja</label><br>
+                                                <input name="jabatan_upah" type="checkbox" class="chk_FilterTarikData" value="tmj.nama_jabatan">
+                                                <label> Jabatan Upah</label><br>
+                                                <input name="status_jabatan" type="checkbox" class="chk_FilterTarikData" value="tj.nama_status">
+                                                <label> Status Jabatan</label><br>
                                             </div>
-
                                             <div class="col-sm-3">
                                                 <h3 class="text-primary">Pajak</h3>
                                                 <input name="statpajak" type="checkbox" class="chk_FilterTarikData" value="tp.statpajak">
@@ -378,7 +329,6 @@
                                                 <input name="npwp" type="checkbox" class="chk_FilterTarikData" value="tp.npwp">
                                                 <label> NPWP</label><br>
                                             </div>
-
                                             <div class="col-sm-3">
                                                 <h3 class="text-primary">Tempat Makan</h3>
                                                 <input name="makan" type="checkbox" class="chk_FilterTarikData" value="tp.tempat_makan">
@@ -388,7 +338,6 @@
                                                 <input name="makan2" type="checkbox" class="chk_FilterTarikData" value="tp.tempat_makan2">
                                                 <label>Tempat Makan 2</label><br>
                                             </div>
-
                                             <div class="col-sm-3">
                                                 <h3 class="text-primary">SPSI & Koperasi</h3>
                                                 <input name="tglspsi" type="checkbox" class="chk_FilterTarikData" value="to_char(tglspsi, 'DD-MM-YYYY') AS tglspsi">
@@ -400,7 +349,6 @@
                                                 <input name="nokop" type="checkbox" class="chk_FilterTarikData" value="tp.nokoperasi">
                                                 <label> No. Koperasi</label><br>
                                             </div>
-
                                             <div class="col-sm-3">
                                                 <h3 class="text-primary">Lain - lain</h3>
                                                 <input name="nokeb" type="checkbox" class="chk_FilterTarikData" value="tp.nokeb">
@@ -408,15 +356,11 @@
                                                 <input name="upamk" type="checkbox" class="chk_FilterTarikData" value="tp.ang_upamk">
                                                 <label> Ang_upamk</label><br>
                                             </div>
-
-
                                         </div>
-
                                         <div class="tab-pane" id="Jamsostek">
-
                                             <div class="col-sm-3">
                                                 <h3 class="text-primary">BPJS Kes</h3>
-                                                <input name="nokes" type="checkbox" class="chk_FilterTarikData" value="tb.no_peserta">
+                                                <input name="nokes" type="checkbox" class="chk_FilterTarikData" value="tb.no_peserta as no_bpjskes">
                                                 <label> No Kes</label><br>
                                                 <input name="tglmulaik" type="checkbox" class="chk_FilterTarikData" value="to_char(tb.tglmulai, 'DD-MM-YYYY') AS tglmulaik">
                                                 <label> Tgl. mulai</label><br>
@@ -431,10 +375,9 @@
                                                 <input name="dokterjpk" type="checkbox" class="chk_FilterTarikData" value="tb.dokterjpk">
                                                 <label> Dokter JPK</label><br>
                                             </div>
-
                                             <div class="col-sm-3">
                                                 <h3 class="text-primary">BPJS TK</h3>
-                                                <input name="nokpj" type="checkbox" class="chk_FilterTarikData" value="ttk.no_peserta">
+                                                <input name="nokpj" type="checkbox" class="chk_FilterTarikData" value="ttk.no_peserta as no_bpjstk">
                                                 <label> No KPJ</label><br>
                                                 <input name="tglmulai" type="checkbox" class="chk_FilterTarikData" value="to_char(ttk.tglmulai, 'DD-MM-YYYY') AS tglmulai">
                                                 <label> Tgl. Mulai</label><br>
@@ -443,17 +386,12 @@
                                                 <input name="pensiun" type="checkbox" class="chk_FilterTarikData" value="ttk.kartu_jaminan_pensiun">
                                                 <label> Kartu Jaminan Pensiun</label><br>
                                             </div>
-
-
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                             <div class="box-footer with-border"><button class="btn btn-lg btn-rect btn-primary" id="TDP_TarikDataAll">TAMPIL DATA</button></div>
                             <div class="box-body bg-white" id="Div_viewall"></div>
                         </div>
-
-
                     </div>
 </section>

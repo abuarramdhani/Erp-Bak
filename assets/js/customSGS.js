@@ -71,6 +71,11 @@ $(document).ready(function () {
 					}
 			}
 	});
+
+	var kode_unit = document.getElementById('kode_unit_ls');
+	if (kode_unit) {
+		getKodeUnit(this);
+	}
 });
 
 function getLihatStock(no, ket) {
@@ -120,6 +125,66 @@ function getLihatStock(no, ket) {
 			 order: [[0, 'asc']]
 			});
 		});
+}
+
+function getLihatStockKodeUnit(no) {
+	var tglAw 		= $('#tglAwal').val();
+	var tglAk 		= $('#tglAkhir').val();
+	var subinv 		= $('#subinv').val();
+	var unit 		= $('#unit'+no).val();
+	// console.log(unit, no, ket)
+	var request = $.ajax({
+		url: baseurl+'StockGdSparepart/LihatStock/searchDataKodeUnit',
+		data: {
+			tglAw : tglAw, tglAk : tglAk, subinv : subinv, unit : unit
+		},
+		type: "POST",
+		datatype: 'html'
+	});
+	$('#tb_lihatstock').html('');
+	$('#tb_lihatstock').html('<center><img style="width:100px; height:auto" src="'+baseurl+'assets/img/gif/loadingtwo.gif"><br/></center>' );
+		
+	request.done(function(result){
+		$('#tb_lihatstock').html(result);
+		// $('.myTable').dataTable({
+		//     "scrollX": true,
+		// });
+		$('.myTable').dataTable({
+			dom: 'lfrtBip',
+			scrollY : true,
+			"scrollX": true,
+			buttons: [{
+				extend: 'excel',
+				title: 'Stock Gudang Sparepart',
+				message:'Periode : '+tglAw+' - '+tglAk+'',
+				text: '<i class="fa fa-download"></i> Download',
+				exportOptions: {
+					columns: ':visible',
+					columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14],
+				},
+			}        
+		
+		],
+		 order: [[0, 'asc']]
+		});
+	});
+}
+
+function getKodeUnit(th) {
+	var subinv = $('#subinv').val();
+	
+	$.ajax({
+		url : baseurl + "StockGdSparepart/LihatStock/getKodeUnit",
+		data : {subinv : subinv},
+		type : 'POST',
+		datatype : "html",
+		beforeSend: function() {
+			$('div#kode_unit_ls' ).html('<center><img style="width:50px; height:auto" src="'+baseurl+'assets/img/gif/loading5.gif"></center>' );
+		},
+		success : function (result) {
+			$('div#kode_unit_ls' ).html(result);
+		}
+	})
 }
 
 var peti = document.getElementById('tb_peti');

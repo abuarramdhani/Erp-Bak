@@ -62,7 +62,8 @@
                                     <?php if ($run == '1') { ?>
                                     <?php $a = 0; foreach ($listHitung as $key): ?>
                                     <table id="tb_InputKebutuhanAPD" class="table table-striped table-bordered table-hover text-center">
-                                        <caption style="color: #000; font-weight: bold;"><?php echo $allKs[$a]['section_name'].' - '.$allKs[$a]['kodesie']; ?></caption>
+                                        <caption style="color: #000; font-weight: bold;"><?php echo $allKs[$a]['section_name'].' - '.$allKs[$a]['kodesie']; ?>
+                                        <button class="p2k3_detail_seksi_hitung btn btn-xs" value="<?php echo $allKs[$a]['kodesie']; ?>">Detail</button> </caption>
                                         <thead>
                                             <tr class="bg-info" style="font-weight: bold;">
                                                 <td width="15%">Periode</td>
@@ -115,6 +116,23 @@
       </div>
     </div>
   </div>
+</div>
+<div class="modal fade" id="p2k3_detail_seksi_hitung" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true" style="margin-top: -20px;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Detail Pekerja</h4>
+            </div>
+            <div class="modal-body">
+                <!-- Place to print the fetched phone -->
+                <div id="phone_result_seksi_hitung"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
 </div>
 <div id="surat-loading" style="top: 0;left: 0;right: 0;bottom: 0; margin: auto; position: fixed; background: rgba(0,0,0,.5); z-index: 11;" hidden="hidden">
     <img src="http://erp.quick.com/assets/img/gif/loadingtwo.gif" style="position: fixed; top: 0;left: 0;right: 0;bottom: 0; margin: auto; width: 40%;">

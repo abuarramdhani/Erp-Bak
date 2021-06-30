@@ -12,7 +12,7 @@
                                 <div class="text-right hidden-md hidden-sm hidden-xs">
                                     <a class="btn btn-default btn-lg" href="<?php echo site_url('ManufacturingOperationUP2L/Core/');?>">
                                         <i class="icon-wrench icon-2x"></i>
-                                    </a>                             
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -78,8 +78,8 @@
                                                                 <option></option>
                                                             </select>
                                                         </div>
-                                                        <button class="btn btn-info add_emp"><i class="fa fa-plus"></i></button>
-                                                        <button class="btn btn-danger remove_emp" style="display: none"><i class="fa fa-close"></i></button>
+                                                        <button type="button" class="btn btn-info add_emp"><i class="fa fa-plus"></i></button>
+                                                        <button type="button" class="btn btn-danger remove_emp" style="display: none"><i class="fa fa-close"></i></button>
 
                                                         <div class="row" style="padding:20px;">
                                                             <label for="txtPresensi" class="control-label col-lg-4">Presensi</label>
@@ -114,7 +114,7 @@
                                                             </div>
 
                                                             <div class="row" style="padding-left:384px;margin-right:-305px;">
-                                                                
+
                                                             </div>
                                                         </div>
                                                     </div>
@@ -123,26 +123,26 @@
                                             <div class="box box-default box-solid">
                                                 <div class="box-header with-border">
                                                     <div class="col-lg-12">
-                                                        <div class="col-lg-10"><b>Component</b></div>
-                                                        <div class="col-lg-2" style="float:right;">
-                                                            <button onclick="addCompCore()" class="btn btn-success"> <i class="fa fa-plus"></i></button>
-                                                            <button onclick="delcompCore()" class="btn btn-danger"> <i class="fa fa-times"></i></button>
-                                                        </div>
+                                                        <div><b>Component</b></div>
                                                     </div>
                                                 </div>
-                                                <div class="panel-body" id="container-component">
+                                                <div class="panel-body" id="container-compcore">
                                                     <div class="form-group">
                                                         <label for="txtComponentCodeHeader" class="control-label col-lg-4">Component</label>
                                                         <div class="col-lg-6">
                                                             <select class="form-control jsSlcComp toupper" id="txtComponentCodeHeader" name="component_code[]" required data-placeholder="Component Code" onchange="getCompDescMO(this)">
                                                             </select>
                                                         </div>
-                                                    </div>
+                                                        <button type="button" class="btn btn-info addCompCore"> <i class="fa fa-plus"></i></button>
+                                                        <button type="button" class="btn btn-danger delcompCore" style="display:none"> <i class="fa fa-times"></i></button>
 
-                                                    <div class="form-group">
-                                                        <label for="txtCoreQuantityHeader" class="control-label col-lg-4">Core Quantity</label>
-                                                        <div class="col-lg-6">
-                                                            <input type="number" placeholder="Core Quantity" name="txtCoreQuantityHeader[]" id="txtCoreQuantityHeader" class="form-control" />
+                                                        <div class="row" style="padding:18px">
+                                                          <label for="txtCoreQuantityHeader" class="control-label col-lg-4">Core Quantity</label>
+                                                          <div class="col-lg-6">
+                                                              <input type="number" placeholder="Core Quantity" name="txtCoreQuantityHeader[]" id="txtCoreQuantityHeader" class="form-control" />
+                                                          </div>
+
+                                                          <div class="row" style="padding-left:384px;margin-right:-305px;"></div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -165,7 +165,7 @@
                                                     <div class="form-group">
                                                         <label for="txtJamPemotonganTarget" class="control-label col-lg-4">Jam</label>
                                                         <div class="col-lg-6">
-                                                            <input type="text" name="txtJamPemotonganTarget" id="txtJamPemotonganTarget" class="txtJamPemotonganTarget form-control" disabled="disabled" /> 
+                                                            <input type="text" name="txtJamPemotonganTarget" id="txtJamPemotonganTarget" class="txtJamPemotonganTarget form-control" disabled="disabled" />
                                                         </div>
                                                         <span class="btn btn-info onBtn" >ON</span>
                                                         <span class="btn btn-danger offBtn" style="display: none">OFF</span>

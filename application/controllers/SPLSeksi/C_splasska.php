@@ -19,7 +19,7 @@ class C_splasska extends CI_Controller
 
 		// FOR DEVELOPMENT
 		$this->is_production = true; // change it to true before push
-		$this->developer_email = 'dicka_ismaji@quick.com';
+		$this->developer_email = 'enggal_aldiansyah@quick.com';
 	}
 
 	public function checkSession()
@@ -179,13 +179,13 @@ class C_splasska extends CI_Controller
 
 		foreach ($data_spl as $ds) {
 			// Generate ID Riwayat
-			$maxid = $this->M_splseksi->show_maxid("splseksi.tspl_riwayat", "ID_Riwayat");
-			if (empty($maxid)) {
-				$splr_id = "0000000001";
-			} else {
-				$splr_id = $maxid->id;
-				$splr_id = substr("0000000000", 0, 10 - strlen($splr_id)) . $splr_id;
-			}
+			// $maxid = $this->M_splseksi->show_maxid("splseksi.tspl_riwayat", "ID_Riwayat");
+			// if (empty($maxid)) {
+			// 	$splr_id = "0000000001";
+			// } else {
+			// 	$splr_id = $maxid->id;
+			// 	$splr_id = substr("0000000000", 0, 10 - strlen($splr_id)) . $splr_id;
+			// }
 
 			// Approv or Cancel
 			if ($stat == "25") {
@@ -219,7 +219,7 @@ class C_splasska extends CI_Controller
 			$noind_baru = $this->M_splseksi->getNoindBaru($ds['Noind']);
 
 			$data_splr = array(
-				"ID_Riwayat" => $splr_id,
+				// "ID_Riwayat" => $splr_id,
 				"ID_SPL" => $id,
 				"Tgl_Berlaku" => date('Y-m-d H:i:s'),
 				"Tgl_Tdk_Berlaku" => date('Y-m-d H:i:s'),
@@ -306,7 +306,7 @@ class C_splasska extends CI_Controller
 
 	public function send_email_2($status, $spl_id, $ket)
 	{
-		$this->checkSession();
+		// $this->checkSession();
 		$this->session->spl_validasi_waktu_asska = time();
 		$user = $this->session->user;
 		$spl_id = explode('.', $spl_id);
@@ -535,36 +535,50 @@ class C_splasska extends CI_Controller
 
 	function fp_succes()
 	{
-		$status = $_GET['status'];
-		$spl_id = $_GET['spl_id'];
-		$ket = $_GET['ket'];
+		echo "<script>localStorage.setItem('resultApproveSPL', true);window.close();</script>";
+	}
+
+	function sendSPLEmail()
+	{
+		//kirim email ada di fungsi sendSPLEmailSchedule yg di jalankan cronjob
+		$status = $_POST['status'];
+		$spl_id = $_POST['spl_id'];
+		$ket = $_POST['ket'];
+
 		foreach (explode('.', $spl_id) as $si) {
 			if (empty(trim($si))) {
 				continue;
 			}
-
 			// reject / approve oleh asska
 			if ($status == '35' || $status == '25') {
 				$this->data_spl_approv($si, $status, $ket);
 			}
 		}
 
-		// issue slow saat approve
-		// $this->send_email_2($status, $spl_id, $ket); // pindah ke sendSPLEmail
-		$this->session->spl_validasi_waktu_asska = time();
-
-		echo "<script>localStorage.setItem('resultApproveSPL', true);window.close();</script>";
+		$arr = array(
+			'status'	=>	$status,
+			'spl_id'	=>	$spl_id,
+			'ket'		=>	$ket,
+			'path'		=>	'ALA',
+			'nama'		=>	trim($this->session->employee)
+			);
+		$this->M_splkasie->insertMailCronjob($arr);
+		echo "sukses";
 	}
 
-	function sendSPLEmail()
+	function sendSPLEmailSchedule()
 	{
-		$status = $_GET['status'];
-		$spl_id = $_GET['spl_id'];
-		$ket = $_GET['ket'];
+		$status = $_POST['status'];
+		$spl_id = $_POST['spl_id'];
+		$ket = $_POST['ket'];
+		$nama = $_POST['nama'];
+		$this->session->set_userdata('employee', $nama);
+		print_r($_POST);
 
 		$time_start = time();
 		$this->send_email_2($status, $spl_id, $ket);
 		echo "send email 2 -> " . (time() - $time_start) . "<br>";
+
 	}
 
 	function result_reject_UNUSED($spl_id = FALSE)

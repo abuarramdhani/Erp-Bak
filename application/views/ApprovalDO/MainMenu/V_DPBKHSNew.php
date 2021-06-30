@@ -2,18 +2,22 @@
     .bg-danger-important {
         background-color: #f2dede !important;
     }
+
     label {
         font-weight: normal !important;
     }
+
     .label {
         font-size: 90% !important;
         display: inline-block;
         width: 100px;
         padding: 5px;
     }
+
     .form-control-auto {
         width: 100% !important;
     }
+
     .swal-font-small {
         font-size: 1.5rem !important;
     }
@@ -82,7 +86,28 @@
                                         <option value="TUKSONO">TUKSONO</option>
                                         <option value="MLATI">MLATI</option>
                                         <option value="PUSAT">PUSAT</option>
+                                        <option value="JAKARTA">JAKARTA</option>
                                     </select>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Tanggal Kirim</label>
+                            <div class="col-sm-5">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i style="width:15px;" class="fa fa-clock-o"></i></span>
+                                    <input class="form-control txttglKirimDPB">
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Estimasi Kedatangan</label>
+                            <div class="col-sm-5">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i style="width:15px;" class="fa fa-clock-o"></i></span>
+                                    <input class="form-control txtDPBEstDatang">
                                 </div>
                             </div>
                         </div>
@@ -131,6 +156,7 @@
                                 <br>
                             </div>
                             <div class="panel-body">
+                                <input type="hidden" id="org_id_nya" />
                                 <div class="col-sm-12 text-center divADOLoadingTable">
                                     <label class="control-label">
                                         <p><img src="<?= base_url('assets/img/gif/loading5.gif') ?>" style="width:30px"> Sedang Memproses ...</p>

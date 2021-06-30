@@ -102,6 +102,125 @@ class M_lihatstock extends CI_Model
         return $query->result_array();
         // echo $sql;
     }
+    
+    public function getKodeUnit($subinv){
+        $oracle = $this->load->database('oracle', true);
+        $sql = "select distinct kategori 
+                from khs_sp_kode_unit 
+                where subinventory = '$subinv'
+                order by kategori";
+        $query = $oracle->query($sql);
+        return $query->result_array();
+    }
+    
+    public function getdataKodeUnit($tglawal, $tglakhir, $subinv, $kategori) {
+        $oracle = $this->load->database('oracle', true);
+        $sql = "SELECT *
+                FROM (SELECT   aa.item, aa.description, aa.uom,
+                            NVL (SUM (aa.qty_in), 0) sum_qty_in,
+                            NVL (SUM (aa.qty_out), 0) sum_qty_out,
+                            NVL (SUM (aa.qty_out1), 0) sum_qty_out1, aa.onhand, aa.att,
+                            aa.MIN, aa.MAX, aa.subinv, aa.lokasi, aa.qty_unit
+                        FROM (
+                        SELECT msib.segment1 item, msib.description,
+                                    mmt.transaction_uom uom,
+                                    (SELECT SUM (mmt_in.transaction_quantity)
+                                        FROM mtl_material_transactions mmt_in
+                                        WHERE mmt_in.transaction_id = mmt.transaction_id
+                                        AND mmt_in.transaction_quantity NOT LIKE '-%') qty_in,
+                                    (SELECT SUM (mmt_out.transaction_quantity * -1)
+                                        FROM mtl_material_transactions mmt_out
+                                        WHERE mmt_out.transaction_id = mmt.transaction_id
+                                        AND mmt_out.transaction_quantity LIKE '-%') qty_out,
+                                    (SELECT SUM (mmt_out.transaction_quantity)
+                                        FROM mtl_material_transactions mmt_out
+                                        WHERE mmt_out.transaction_id = mmt.transaction_id
+                                        AND mmt_out.transaction_quantity LIKE '-%') qty_out1,
+                                    khs_inv_qty_oh (mmt.organization_id, mmt.inventory_item_id, mmt.subinventory_code, NULL, NULL) onhand,
+                                    khs_inv_qty_att (mmt.organization_id, mmt.inventory_item_id, mmt.subinventory_code, NULL, NULL) att,
+                                    ksm.MIN, ksm.MAX, mmt.subinventory_code subinv,
+                                    mmt.transaction_date, mmt.transaction_type_id,
+                                    mtt.transaction_type_name,
+                                    mmt.transaction_source_type_id,
+                                    mtst.transaction_source_type_name,
+                                    fu.user_name transact_by,
+                                    (SELECT lok.lokasi
+                                        FROM khsinvlokasisimpan lok
+                                        WHERE mmt.inventory_item_id =
+                                                            lok.inventory_item_id
+                                        AND mmt.subinventory_code = lok.subinv
+                                        AND ROWNUM = 1) lokasi,
+                                    ksku.qty_unit
+                                FROM mtl_system_items_b msib,
+                                    mtl_material_transactions mmt,
+                                    fnd_user fu,
+                                    mtl_transaction_types mtt,
+                                    mtl_txn_source_types mtst,
+                                    khs_sp_minmax ksm,
+                                    (select distinct kategori, kode_item, qty_unit from khs_sp_kode_unit) ksku
+            --                         khs_sp_kode_unit ksku
+                                WHERE msib.inventory_item_status_code = 'Active'
+                                AND msib.organization_id = mmt.organization_id
+                                AND msib.inventory_item_id = mmt.inventory_item_id
+                                AND mmt.last_updated_by = fu.user_id
+                                AND mmt.transaction_type_id = mtt.transaction_type_id
+                                AND mtst.transaction_source_type_id =
+                                                            mmt.transaction_source_type_id
+                                AND msib.segment1 = ksm.item(+)
+                                --AND khs_inv_qty_oh (mmt.organization_id, mmt.inventory_item_id, mmt.subinventory_code, NULL, NULL)  0
+                                --
+                                AND TRUNC (mmt.transaction_date)
+                                        BETWEEN TO_DATE ('$tglawal', 'DD/MM/RR')
+                                            AND TO_DATE ('$tglakhir', 'DD/MM/RR')
+                                AND mmt.subinventory_code = '$subinv'        --subinventory
+                                AND msib.segment1 = ksku.kode_item
+            --                     AND mmt.subinventory_code = ksku.subinventory
+                                AND ksku.kategori = '$kategori'
+                                ) aa
+                    GROUP BY aa.item,
+                            aa.description,
+                            aa.uom,
+                            aa.onhand,
+                            aa.att,
+                            aa.MIN,
+                            aa.MAX,
+                            aa.subinv,
+                            aa.lokasi,
+                            aa.qty_unit
+                    UNION
+                    SELECT msib.segment1 item, msib.description,
+                            msib.primary_uom_code uom, NVL (NULL, 0) sum_qty_in,
+                            NVL (NULL, 0) sum_qty_out, NVL (NULL, 0) sum_qty_out1,
+                            khs_inv_qty_oh (msib.organization_id, msib.inventory_item_id, msi.secondary_inventory_name, NULL, NULL) onhand,
+                            khs_inv_qty_att (msib.organization_id, msib.inventory_item_id, msi.secondary_inventory_name, NULL, NULL) att,
+                            ksm.MIN, ksm.MAX, msi.secondary_inventory_name subinv,
+                            (SELECT lok.lokasi
+                                FROM khsinvlokasisimpan lok
+                            WHERE msib.inventory_item_id = lok.inventory_item_id
+                                AND msi.secondary_inventory_name = lok.subinv
+                                AND ROWNUM = 1) lokasi,
+                            ksku.qty_unit
+                        FROM mtl_system_items_b msib,
+                            mtl_secondary_inventories msi,
+                            khs_sp_minmax ksm,
+                            (select distinct kategori, kode_item, qty_unit from khs_sp_kode_unit) ksku
+                    WHERE msib.inventory_item_status_code = 'Active'
+                        AND msi.secondary_inventory_name = '$subinv'           --subinventory
+                        AND msib.organization_id = msi.organization_id
+                        AND msib.segment1 = ksm.item(+)
+                        AND msib.inventory_item_id NOT IN (
+                                SELECT mmt.inventory_item_id
+                                FROM mtl_material_transactions mmt
+                                WHERE TRUNC (mmt.transaction_date)
+                                        BETWEEN TO_DATE ('$tglawal', 'DD/MM/RR')
+                                            AND TO_DATE ('$tglakhir', 'DD/MM/RR')
+                                AND mmt.subinventory_code = '$subinv')
+                        AND msib.segment1 = ksku.kode_item
+                        AND ksku.kategori = '$kategori')";
+        $query = $oracle->query($sql);
+        return $query->result_array();
+        // return $sql;
+    }
 
     public function getKodeBarang($term, $sub) {
         $oracle = $this->load->database('oracle', true);
@@ -266,6 +385,16 @@ class M_lihatstock extends CI_Model
         $mysql = $this->load->database('khs_packing', true);
         $sql = "delete from sp_monitoring_peti where kode = '$item'";
         $query = $mysql->query($sql);
+    }
+    
+    public function getseksi($user){
+        $oracle = $this->load->database('personalia',true);
+        $sql = "select ts.seksi, ts.unit, tp.nama
+                from hrd_khs.tseksi ts, hrd_khs.tpribadi tp
+                where tp.kodesie = ts.kodesie
+                and tp.noind = '$user'";
+        $query = $oracle->query($sql);
+        return $query->result_array();
     }
 
 }

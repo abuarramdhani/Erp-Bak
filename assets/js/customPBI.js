@@ -1,17 +1,204 @@
 $(document).ready(function () {
     
-    $(document).on('change', '.inpBeaMasukPBI', function () {
-        var totalBeaMasuk = $(this).val()
-        var biayaPembagian = $('.pembagianBiayaPBI')
-        var beaMasukPBI = $('.pembagianBiayaPBI').parentsUntil('tbody').find('.beaMasukPBI')
+    $(document).on('click', '#btnSubPBI', function (e) {
+        e.preventDefault()
+        // group data
+        var jml_row_item = $('.trAdditionalInfoAddPBI')
+        var jml_row_biaya = $('.trTblPerhitunganPBI')
+        var jml_row_biaya_add = $('.newTrAdditionalInfoAddPBI')
 
-        for (let index = 0; index < biayaPembagian.length; index++) {
-            var f = biayaPembagian[index].innerHTML
-            f = f.slice(0, -1)
-            var newBeaMasukPBI = Number(f) / 100 * totalBeaMasuk
-            beaMasukPBI[index].innerHTML = formatMoney(Math.round((newBeaMasukPBI + Number.EPSILON) * 100) / 100)
+        // single data
+        var req_id = $('#formLaporanPBI').attr('data-id')
+        var nomorUrutPBI = $('input[name="nomorUrutPBI"]').val()
+        var IOPBI  = $('input[name="IOPBI"]').val()
+        var vendorPBI  = $('input[name="vendorPBI"]').val()
+        var noPackingPBI  = $('input[name="noPackingPBI"]').val()
+        var noBLPBI  = $('input[name="noBLPBI"]').val()
+        var noPOPBI  = $('input[name="noPOPBI"]').val()
+        var noInterorgPBI  = $('input[name="noInterorgPBI"]').val()
+        var slcCurrencyPBI  = $('.slcCurrencyPBI').val()
+        var notesPBI  = $('textarea[name="notesPBI"]').val()
+
+        var data_item = new Array()
+        var kode_barang = new Array()
+        var rate = new Array()
+        var qtyKirim = new Array()
+        var addAdditionalInfo = new Array()
+        var addAdditionalInfoPrice = new Array()
+        
+        // get item based on sorted input
+        $.each(jml_row_item, function (i, val) { 
+            var item = $(this).find('.tdAdditionalInfoDescPBI').html()
+            var row = $(this).find('.inpSortingRowPBI').val()
+            var index = (row) ? Number(row) - 1 : i
+            data_item[index] = item
+        });
+        data_item = data_item.join(',')
+
+        $.each(jml_row_biaya, function (i, val) { 
+            // get kode barang
+            var item_code = $(this).find('.inpKodeBarangPBI').val()
+            kode_barang.push(item_code)
+
+            // get rate
+            var item_rate = $(this).find('.txtRatePBI').val()
+            rate.push(item_rate)
+
+            // get qty kirim
+            var deliver_qty = $(this).find('.qtyKirimPBI').val()
+            qtyKirim.push(deliver_qty)
+        });
+
+        // get new additional info
+        if (jml_row_biaya_add.length > 0) {
+            $.each(jml_row_biaya_add, function (i, val) { 
+                var add_info = $(this).find('.newDataAdditionaInfoPBI').val()
+                var add_info_price = $(this).find('.additionalAddPricePBI').val()
+   
+                addAdditionalInfo.push(add_info)
+                addAdditionalInfoPrice.push(add_info_price)
+           })
+        } else {
+            addAdditionalInfo.push('empty')
+            addAdditionalInfoPrice.push('empty')
         }
 
+        var final_data = {
+            'source': 'ajax',
+            'data_item': data_item,
+            'kode_barang': kode_barang,
+            'rate': rate,
+            'qtyKirim': qtyKirim,
+            'addAdditional': addAdditionalInfo,
+            'addAdditionalPrice': addAdditionalInfoPrice,
+            'nomorUrutPBI': nomorUrutPBI,
+            'IOPBI': IOPBI,
+            'vendorPBI': vendorPBI,
+            'noPackingPBI': noPackingPBI,
+            'noBLPBI': noBLPBI,
+            'noPOPBI': noPOPBI,
+            'noInterorgPBI': noInterorgPBI,
+            'slcCurrencyPBI': slcCurrencyPBI,
+            'notesPBI': notesPBI
+        }
+
+        $.ajax({
+            type: "POST",    
+            url: baseurl + "PerhitunganBiayaImpor/Laporan/GetSortedItem",
+            data: {data: final_data},
+            dataType: "JSON",
+            beforeSend: function () {
+                $('#btnSubPBI').attr('disabled', 'disabled')
+            },
+            success: function (response) {
+                if (response == 1){
+                    $('#btnSubPBI').removeAttr('disabled')
+                    window.location.replace(baseurl + 'PerhitunganBiayaImpor/Laporan/Action/' + req_id)
+                }
+            }
+        });
+    })
+
+    $(document).on('change', '.inpBeaMasukPBI', function () {
+        var totalDataTbl = $('.trTblPerhitunganPBI')
+        var totalBeaMasuk = $(this).val()
+        totalBeaMasuk = totalBeaMasuk.replace(/,/g, '')
+        var totalbiayaPBI = 0
+
+        // $(this).val(formatMoney(Math.round((Number(totalBeaMasuk) + Number.EPSILON) * 100) / 100))
+        $('.inpBeaMasukPBI').val(formatMoney(Math.round((Number(totalBeaMasuk) + Number.EPSILON) * 100) / 100))
+
+        $.each(totalDataTbl, function (index, val) { 
+
+            // rumus Bea Masuk
+            var f = $(this).find('.pembagianBiayaPBI').html()
+            f = f.slice(0, -1)
+            var newBeaMasukPBI = Number(f) / 100 * Number(totalBeaMasuk)
+            $(this).find('.beaMasukPBI').html(formatMoney(Math.round((newBeaMasukPBI + Number.EPSILON) * 100) / 100))
+
+            // rumus Total Biaya
+            var i = $(this).find('.nilaiAdditionalCostPBI').html()
+            i = i.replace(/,/g, '')
+            var newTotalBiayaRPBI = Number(newBeaMasukPBI) + Number(i)
+            $(this).find('.totalBiayaRPPBI').html(formatMoney(Math.round((newTotalBiayaRPBI + Number.EPSILON) * 100) / 100)) 
+
+            // rumus Tamb
+            var a = $(this).find('.qtyKirimPBI').val()
+            a = a.replace(/,/g, '')
+            var newTambPBI = Number(newTotalBiayaRPBI) / Number(a)
+            $(this).find('.tambPBI').html(formatMoney(Math.round((newTambPBI + Number.EPSILON) * 100) / 100))
+
+            // rumus harga total
+            var m = $(this).find('.hargaPOPBI').html()
+            m = m.replace(/,/g, '')
+            var newHrgTotPBI = Number(m) + Number(newTambPBI)
+            $(this).find('.hrgTotPBI').html(formatMoney(Math.round((newHrgTotPBI + Number.EPSILON) * 100) / 100))
+
+            // rumus %
+            var newPercentPBI = Number(newTambPBI) / Number(m)
+            $(this).find('.percentPBI').html(newPercentPBI.toFixed(2) + '%')
+
+            // rumus total total biaya
+            totalbiayaPBI = Number(totalbiayaPBI) + Number(newTotalBiayaRPBI)
+        });
+
+        $('.totalbiayaPBI').html(formatMoney(Math.round((totalbiayaPBI + Number.EPSILON) * 100) / 100))
+        
+    })
+
+    $(document).on('change', '#inptotalNilaiBarangPBI', function () {
+        var totalDataTbl = $('.trTblPerhitunganPBI')
+        var totalNilaiBarang = $(this).val()
+        var totalAdditionalCostAtas = 0
+        var totalBeaMasuk = $('.inpBeaMasukPBI').val()
+        totalBeaMasuk = totalBeaMasuk.replace(/,/g, '')
+        var totalbiayaPBI = 0
+
+        $.each(totalDataTbl, function (index, val) { 
+
+            // rumus Bea masuk
+            var f = $(this).find('.pembagianBiayaPBI').html()
+            f = f.slice(0, -1)
+            var newBeaMasukPBI = Number(f) / 100 * Number(totalBeaMasuk)
+            $(this).find('.beaMasukPBI').html(formatMoney(Math.round((newBeaMasukPBI + Number.EPSILON) * 100) / 100))
+
+            // rumus total biaya
+            var i = $(this).find('.nilaiAdditionalCostPBI').html()
+            i = i.replace(/,/g, '')
+            var newTotalBiayaRPBI = Number(newBeaMasukPBI) + Number(i)
+            $(this).find('.totalBiayaRPPBI').html(formatMoney(Math.round((newTotalBiayaRPBI + Number.EPSILON) * 100) / 100)) 
+
+            // rumus pembagian biaya
+            var nilaiBarang = $(this).find('.nilaiBarangPBI').html()
+            nilaiBarang = nilaiBarang.replace(/,/g, '')
+            var newPembagianBiaya = Number(nilaiBarang) / Number(totalNilaiBarang) * 100             
+            $(this).find('.pembagianBiayaPBI').html(newPembagianBiaya.toFixed(2) + '%')
+
+            // rumus Addtiotinal Cost
+            var pembagianBiaya = $(this).find('.pembagianBiayaPBI').html()
+            var totalAdditionalCost = $('.totalAdditionalCostPBI').html()
+
+            pembagianBiaya = pembagianBiaya.slice(0, -1)
+            totalAdditionalCost = totalAdditionalCost.replace(/,/g, '')
+            var newNilaiAdditionalCost = Number(pembagianBiaya) / 100 * Number(totalAdditionalCost)            
+            $(this).find('.nilaiAdditionalCostPBI').html(formatMoney(Math.round((newNilaiAdditionalCost + Number.EPSILON) * 100) / 100))
+            
+            // rumus harga Po 
+            var hargaPBI = $(this).find('.hargaPBI').html()
+            var txtrate = $(this).find('.txtRatePBI').val()
+            hargaPBI = hargaPBI.replace(/,/g, '')
+            var newHargaPOPBI = Number(hargaPBI) * Number(txtrate)
+
+            $(this).find('.hargaPOPBI').html(formatMoney(Math.round((newHargaPOPBI + Number.EPSILON) * 100) / 100))
+
+            // rumus Total additiona cost atas
+            totalAdditionalCostAtas = Number(newNilaiAdditionalCost) + Number(totalAdditionalCostAtas)
+
+            // rumus total total biaya
+            totalbiayaPBI = Number(totalbiayaPBI) + Number(newTotalBiayaRPBI)
+        });
+        $('.totalbiayaPBI').html(formatMoney(Math.round((totalbiayaPBI + Number.EPSILON) * 100) / 100))
+        $('.totalAdditionalAtasCostPBI').html(formatMoney(Math.round((totalAdditionalCostAtas + Number.EPSILON) * 100) / 100))
     })
 
     $(document).on('click','.tambahAdditionalInfoPBI', function () {
@@ -51,7 +238,9 @@ $(document).ready(function () {
 
             var bulat = Math.round((pembagianBiaya + Number.EPSILON) * 100) / 100;
             // beamasuk
-            var totalBeaMasuk = $('.totalBeaMasukPBI').html();
+            // var totalBeaMasuk = $('.totalBeaMasukPBI').html();
+            var totalBeaMasuk = $('.inpBeaMasukPBI').val()
+            totalBeaMasuk = totalBeaMasuk.replace(/,/g, '')
 
             var rincianBeaMasuk = pembagianBiaya * Number(purify(totalBeaMasuk)) / 100;
             $(this).parentsUntil('tbody').find('.beaMasukPBI').html(formatMoney(Math.round((rincianBeaMasuk + Number.EPSILON) * 100) / 100));
@@ -327,33 +516,49 @@ $(document).ready(function () {
     var totalNilaiBarang = 0;
 
     $(document).on('change','.txtRatePBI',function () {
-        totalNilaiBarang = 0;
+        var totalNilaiBarang = 0;
         var row_id = $(this).closest('tr').attr('data-row');
+        var totalRowRate = $('.txtRatePBI')
         var rate = Number($(this).val());
         var totalUSD = Number(purify($(this).parentsUntil('tbody').find('.totalUSDPBI').html()));
+        $(this).val(formatMoney(Math.round((rate + Number.EPSILON) * 100) / 100))
 
         var nilaiBarang = rate * totalUSD;
 
         // totalNilaiBarang = Number(totalNilaiBarang) + nilaiBarang;
         // console.log(totalNilaiBarang)
         
-        $(this).parentsUntil('tbody').find('.nilaiBarangPBI').html(nilaiBarang);
+        $(this).parentsUntil('tbody').find('.nilaiBarangPBI').html(formatMoney(Math.round((nilaiBarang + Number.EPSILON) * 100) / 100));
         
         //total nilai barang
         $('.nilaiBarangPBI').each(function () {
             var nilaiBarangs = $(this).html();
+            nilaiBarangs = nilaiBarangs.replace(/,/g, '')
+            // nilaiBarang = nilaiBarang.replace(/,/g, '')
             // alert(nilaiBarangs)
             totalNilaiBarang += parseInt(nilaiBarangs);
         })
         
-        $('.totalNilaiBarangPBI').html('<b>'+totalNilaiBarang+'</b>')
+        $('.totalNilaiBarangPBI').html('<b>'+formatMoney(Math.round((totalNilaiBarang + Number.EPSILON) * 100) / 100)+'</b>')
+        $('input[name=inptotalNilaiBarangPBI]').val(totalNilaiBarang)
+
+        $('input[name=inptotalNilaiBarangPBI]').val(totalNilaiBarang).trigger('change')
+
         //pembagian biaya
         var pembagianBiaya = nilaiBarang / totalNilaiBarang *100;
         $(this).parentsUntil('tbody').find('.pembagianBiayaPBI').html(Math.round((pembagianBiaya + Number.EPSILON) * 100) / 100+'%');
         //bea masuk
-        var totalBeaMasuk = $('.totalBeaMasukPBI').html();
-        var rincianBeaMasuk = pembagianBiaya * Number(totalBeaMasuk) / 100;
-        $(this).parentsUntil('tbody').find('.beaMasukPBI').html(Math.round((rincianBeaMasuk + Number.EPSILON) * 100) / 100);
+        // var totalBeaMasuk = $('.totalBeaMasukPBI').html();
+        // var rincianBeaMasuk = pembagianBiaya * Number(totalBeaMasuk) / 100;
+        // $(this).parentsUntil('tbody').find('.beaMasukPBI').html(Math.round((rincianBeaMasuk + Number.EPSILON) * 100) / 100);
+
+        // rumus hat PO (.hargaPOPBI)
+        $.each(totalRowRate, function () { 
+            var hargaPBI = $(this).parentsUntil('tbody').find('.hargaPBI').html()
+            var hargaPOPBI = Number(hargaPBI) * Number(rate)
+            $(this).parentsUntil('tbody').find('.hargaPOPBI').html(formatMoney(Math.round((hargaPOPBI + Number.EPSILON) * 100) / 100))  
+        });
+
     });
 
     // $(document).on('change','.nilaiBarangPBI',function () {

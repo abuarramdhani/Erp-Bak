@@ -13,6 +13,8 @@ class C_Admin extends  CI_Controller
 		$this->load->library('session');
 		$this->load->library('encryption');
 		$this->load->model('DPBSparepart/M_dpb');
+		$this->load->model('KapasitasGdSparepart/M_arsip');
+		$this->load->model('KapasitasGdSparepart/M_packing');
 		$this->load->model('M_Index');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 
@@ -184,14 +186,22 @@ class C_Admin extends  CI_Controller
 	{
 		$noDPB = $_POST['noDPB'];
 		$data = $this->M_dpb->getAlamat($noDPB);
+		$org_id = $this->M_dpb->getOrgID($noDPB);
+
+		$data[0]['ORG_ID'] = $org_id[0]['ORGANIZATION_ID'];
+		$data[0]['SUBINV'] = $org_id[0]['SUBINV'];
+
 		echo json_encode($data);
 	}
 
 	public function listBarang()
 	{
 		$noDPB = $_POST['noDPB'];
+		$org = $_POST['org'];
+		$subinv = $_POST['subinv'];
 
-		$data['list_barang'] = $this->M_dpb->listBarang($noDPB);
+
+		$data['list_barang'] = $this->M_dpb->listBarang($noDPB, $org, $subinv);
 
 		$returnTable = $this->load->view('DPBSparepart/Admin/V_Table', $data, TRUE);
 
@@ -208,7 +218,9 @@ class C_Admin extends  CI_Controller
 	public function cekStatusLine()
 	{
 		$noDPB = $_POST['noDPB'];
-		$data = $this->M_dpb->cekStatusLine($noDPB);
+		$org = $_POST['org'];
+		$subinv = $_POST['subinv'];
+		$data = $this->M_dpb->cekStatusLine($noDPB, $org, $subinv);
 		echo json_encode($data);
 	}
 
@@ -220,6 +232,12 @@ class C_Admin extends  CI_Controller
 		$forward = $_POST['forward'];
 		$keterangan = $_POST['keterangan'];
 		$lines = $_POST['lines'];
+		$ekspedisi = $_POST['ekspedisi'];
+		$alamat_kirim = $_POST['alamat_kirim'];
+		$org = $_POST['org'];
+		$subinv = $_POST['subinv'];
+
+
 
 		foreach ($lines as $line) {
 			if ($line['reqQty'] != null) {
@@ -229,8 +247,102 @@ class C_Admin extends  CI_Controller
 			}
 		}
 
-		$this->M_dpb->createDPB($noDPB, $jenis, $creator, $forward, $keterangan);
+		$this->M_dpb->createDPB($noDPB, $jenis, $creator, $forward, $keterangan, $alamat_kirim, $ekspedisi, $org, $subinv);
 
 		echo 1;
+	}
+
+	public function reSubmitDPB()
+	{
+		$noDPB = $_POST['id'];
+		print_r($noDPB);
+		$this->M_dpb->reSubmitDPB($noDPB);
+	}
+	public function ArsipSPBDO()
+	{
+		$user = $this->session->user;
+
+		$user_id = $this->session->userid;
+
+		$data['Title'] = '';
+		$data['Menu'] = 'Input DPB';
+		$data['SubMenuOne'] = '';
+		$data['SubMenuTwo'] = '';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
+		// echo $this->session->responsibility_id; exit;
+
+
+
+		$this->load->view('V_Header', $data);
+		$this->load->view('V_Sidemenu', $data);
+		$this->load->view('DPBSparepart/Admin/V_ArsipDpb', $data);
+		$this->load->view('V_Footer', $data);
+	}
+	public function getArsipDPB()
+	{
+		$datenow = date('d/m/Y');
+		$datebefore = date('d/m/Y', strtotime('- 30 days'));
+
+
+		$getdata = $this->M_dpb->getDataArsipSPB($datebefore, $datenow);
+
+		for ($i = 0; $i < sizeof($getdata); $i++) {
+			$coly = $this->M_packing->cekPacking($getdata[$i]['NO_DOKUMEN']);
+			$getdata[$i]['COLY'] = count($coly);
+			$tgl_dibuat = strtotime($getdata[$i]['TGL_DIBUAT']);
+			$selesai_packing = strtotime($getdata[$i]['PACKING_SELESAI']);
+			$datediff = $selesai_packing - $tgl_dibuat;
+
+			$getdata[$i]['TOTAL_WAKTU_PROSES'] = round($datediff / (60 * 60 * 24));
+		}
+		// echo "<pre>";
+		// print_r($getdata);
+		// exit();
+
+
+		$data['getdata'] = $getdata;
+
+		$this->load->view('DPBSparepart/Admin/V_ListArsip', $data);
+	}
+	public function getArsipDPBbyDate()
+	{
+		$datefrom = $_POST['datefrom'];
+		$dateto = $_POST['dateto'];
+
+		$datefrom2 = $_POST['dateinput1'];
+		$dateto2 = $_POST['dateinput2'];
+
+		if ($datefrom == null || $dateto == null) {
+			$getdata = $this->M_dpb->getDataArsipSPB($datefrom2, $dateto2);
+			$data['periode_arsip'] = $datefrom2 . ' - ' . $dateto2;
+		} else if ($datefrom != null && $dateto != null) {
+			if ($datefrom2 == null || $dateto2 == null) {
+				$data['periode_arsip'] = $datefrom . ' - ' . $dateto;
+				$getdata = $this->M_dpb->getDataSPB3($datefrom, $dateto);
+			} else {
+				$data['periode_arsip'] = $datefrom2 . ' - ' . $dateto2;
+				$getdata = $this->M_dpb->getDataArsipSPB2($datefrom, $dateto, $datefrom2, $dateto2);
+			}
+		} else if ($datefrom2 == null || $dateto2 == null) {
+			$data['periode_arsip'] = $datefrom . ' - ' . $dateto;
+			$getdata = $this->M_dpb->getDataSPB3($datefrom, $dateto);
+		}
+
+		for ($i = 0; $i < sizeof($getdata); $i++) {
+			$coly = $this->M_packing->cekPacking($getdata[$i]['NO_DOKUMEN']);
+			$getdata[$i]['COLY'] = count($coly);
+			$tgl_dibuat = strtotime($getdata[$i]['TGL_DIBUAT']);
+			$selesai_packing = strtotime($getdata[$i]['PACKING_SELESAI']);
+			$datediff = $selesai_packing - $tgl_dibuat;
+
+			$getdata[$i]['TOTAL_WAKTU_PROSES'] = round($datediff / (60 * 60 * 24));
+		}
+
+		$data['getdata'] = $getdata;
+
+		$this->load->view('DPBSparepart/Admin/V_ListArsip', $data);
 	}
 }

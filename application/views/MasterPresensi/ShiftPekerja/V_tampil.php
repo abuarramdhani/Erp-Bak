@@ -133,7 +133,7 @@
                  </div>
  
             
-             <?php if ($shiftpekerja == 'SHIFT 2') { ?>
+             <?php if ($shiftpekerja == 'SHIFT 2' || $shiftpekerja == 'SHIFT TANGGUNG 5') { ?>
  
                 <div class="row">   
                      <div class="col-lg-12">

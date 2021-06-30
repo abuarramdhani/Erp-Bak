@@ -6,7 +6,7 @@ class M_monitoring extends CI_Model {
         parent::__construct();
     }
 
-    public function tampilsemua($date, $date2) {
+    public function tampilsemua($date, $date2, $subinv) {
         $oracle = $this->load->database('oracle', true);
         $sql ="
                 SELECT NO_DOCUMENT, JENIS_DOKUMEN, ITEM, DESCRIPTION, 
@@ -14,6 +14,7 @@ class M_monitoring extends CI_Model {
                 STATUS, JML_OK, JML_NOT_OK, PIC, KETERANGAN, ACTION 
                 from KHS_MONITORING_GD_SP 
                 where TRUNC(creation_date) BETWEEN TO_DATE('$date', 'DD/MM/YYYY') AND TO_DATE('$date2', 'DD/MM/YYYY')
+                and subinv = '$subinv'
                 and no_document != '-'
                 order by CREATION_DATE DESC";
         $query = $oracle->query($sql);
@@ -21,7 +22,7 @@ class M_monitoring extends CI_Model {
         // echo $sql;
     }
     
-    public function getData_Tanpa_Surat() {
+    public function getData_Tanpa_Surat($subinv) {
         $oracle = $this->load->database('oracle', true);
         $sql ="
                 SELECT ITEM, DESCRIPTION, 
@@ -29,6 +30,7 @@ class M_monitoring extends CI_Model {
                 STATUS, JML_OK, JML_NOT_OK, PIC, KETERANGAN, ACTION 
                 from KHS_MONITORING_GD_SP 
                 where jenis_dokumen = 'TANPA SURAT'
+                and subinv = '$subinv'
                 order by CREATION_DATE DESC";
         $query = $oracle->query($sql);
         return $query->result_array();
@@ -36,7 +38,7 @@ class M_monitoring extends CI_Model {
     }
 
     
-    public function getSearch($no_document, $jenis_dokumen, $tglAwal, $tglAkhir, $pic, $item) {
+    public function getSearch($no_document, $jenis_dokumen, $tglAwal, $tglAkhir, $pic, $item, $subinv) {
         $oracle = $this->load->database('oracle', true);
         $no_document == null? $nodoku = '' : $nodoku = "and no_document = '$no_document'";
         $pic == null ? $pic2 = '' : $pic2 = "and pic like '%$pic%'";
@@ -51,39 +53,46 @@ class M_monitoring extends CI_Model {
                 SELECT NO_DOCUMENT, JENIS_DOKUMEN, ITEM, DESCRIPTION,
                         UOM, QTY, CREATION_DATE, to_char(CREATION_DATE, 'hh24:mi:ss') as JAM_INPUT,
                         STATUS, JML_OK, JML_NOT_OK, PIC, KETERANGAN, ACTION
-                from KHS_MONITORING_GD_SP
+                from (SELECT no_document, jenis_dokumen, item, description, uom, qty,
+                creation_date, status, jml_ok, jml_not_ok, pic, keterangan,
+                action, NVL (subinv, 'SP-YSP') subinv
+           FROM khs_monitoring_gd_sp)
                 WHERE CREATION_DATE IS NOT NULL
                 $dokudoku $nodoku $tanggal $pic2 $item2
                 and no_document != '-'
+                and subinv = '$subinv'
                 order by CREATION_DATE DESC";
         $query = $oracle->query($sql);
         return $query->result_array();
         // echo $sql;
     }
 
-    public function getExport($jenis_dokumen, $tglAwal, $tglAkhir) {
+    public function getExport($jenis_dokumen, $tglAwal, $tglAkhir, $subinv) {
         $oracle = $this->load->database('oracle', true);
         $sql ="SELECT NO_DOCUMENT, JENIS_DOKUMEN, ITEM, DESCRIPTION,
                 UOM, QTY, CREATION_DATE, to_char(CREATION_DATE, 'hh24:mi:ss') as JAM_INPUT,
                 STATUS, JML_OK, JML_NOT_OK, PIC, KETERANGAN 
-        from KHS_MONITORING_GD_SP
+        from (SELECT no_document, jenis_dokumen, item, description, uom, qty,
+                creation_date, status, jml_ok, jml_not_ok, pic, keterangan,
+                action, NVL (subinv, 'SP-YSP') subinv
+           FROM khs_monitoring_gd_sp)
         WHERE jenis_dokumen = '$jenis_dokumen'
         AND TRUNC(creation_date) BETWEEN TO_DATE('$tglAwal', 'DD/MM/YYYY') AND TO_DATE('$tglAkhir', 'DD/MM/YYYY')
         and no_document != '-'
+        and subinv = '$subinv'
         order by CREATION_DATE DESC";
         $query = $oracle->query($sql);
         return $query->result_array();
         // echo $sql;
     }
 
-        public function dataUpdate($item, $query, $doc)
-    {
+    public function dataUpdate($item, $query, $doc){
         $oracle = $this->load->database('oracle', true);
         $sql="UPDATE KHS_MONITORING_GD_SP $query WHERE ITEM = '$item' and NO_DOCUMENT = '$doc'";
         $query = $oracle->query($sql);
         $query2 = $oracle->query('commit');
 			// echo $sql;
-        }  
+    }  
         
         
     public function getKet($no_document){
@@ -100,9 +109,8 @@ class M_monitoring extends CI_Model {
                 and mmt.SHIPMENT_NUMBER = '$no_document'
                 and rt.TRANSACTION_TYPE = 'RECEIVE'
                 and mmt.TRANSACTION_TYPE_ID in (21,12)";
-          $query = $oracle->query($sql);
-          return $query->result_array();
-          
+        $query = $oracle->query($sql);
+        return $query->result_array();
     }
     public function getKetLPPB($no_document){
         $oracle = $this->load->database('oracle', true);
@@ -117,23 +125,49 @@ class M_monitoring extends CI_Model {
                 ---- parameter untuk LPPB
                 and rsh.RECEIPT_NUM = '$no_document'
                 and rt.TRANSACTION_TYPE = 'DELIVER'";
-          $query = $oracle->query($sql);
-          return $query->result_array();
-          
+        $query = $oracle->query($sql);
+        return $query->result_array();
     }
 
     public function getKetKIB($no_document){
         $oracle = $this->load->database('oracle', true);
-        $sql = "select distinct kk.*, wdj.QUANTITY_COMPLETED from 
-        khs_kib kk,
-        wip_discrete_jobs wdj         
-        where kk.ORDER_ID = wdj.WIP_ENTITY_ID  
-        and kk.PRIMARY_ITEM_ID = wdj.PRIMARY_ITEM_ID  
-        and kk.INVENTORY_TRANS_FLAG = 'Y'     
-        and kk.KIBCODE = '$no_document'";
-          $query = $oracle->query($sql);
-          return $query->result_array();
-          
+        $sql = "SELECT DISTINCT wdj.quantity_completed
+        FROM khs_kib kk, wip_discrete_jobs wdj
+       WHERE kk.order_id = wdj.wip_entity_id
+         AND kk.primary_item_id = wdj.primary_item_id
+         AND kk.inventory_trans_flag = 'Y'
+         AND kk.kibcode = '$no_document'
+UNION
+SELECT DISTINCT kkk.qty_kib quantity_completed
+        FROM khs_kib_kanban kkk
+        WHERE kkk.kibcode = '$no_document'";
+        $query = $oracle->query($sql);
+        return $query->result_array();
+    }
+
+    public function getKetMO($no_document){
+        $oracle = $this->load->database('oracle', true);
+        $sql = "SELECT mtrh.request_number no_do_spb, msib.segment1 item, msib.description,
+        (mmt.transaction_quantity * -1) transaction_quantity,
+        mtrl.quantity_delivered, mtrl.from_subinventory_code,
+        mtrl.to_subinventory_code, mtrh.creation_date, mmt.transaction_date
+   FROM mtl_txn_request_headers mtrh,
+        mtl_txn_request_lines mtrl,
+        mtl_system_items_b msib,
+        mtl_material_transactions mmt
+  WHERE mtrl.header_id = mtrh.header_id
+    AND mtrl.inventory_item_id = msib.inventory_item_id
+    AND mtrl.organization_id = msib.organization_id
+    AND mmt.move_order_line_id = mtrl.line_id
+    AND mmt.inventory_item_id = mtrl.inventory_item_id
+    AND mmt.transaction_quantity LIKE '-%'
+    AND mtrh.move_order_type = 1
+    -- AND mtrh.header_status IN (3, 7)
+    -- AND mtrl.line_status IN (3, 7)
+    -- AND mtrl.quantity = mtrl.quantity_delivered
+    AND mtrh.request_number = '$no_document'";
+        $query = $oracle->query($sql);
+        return $query->result_array();
     }
 
     public function getKetFPB($no_document){
@@ -190,53 +224,78 @@ class M_monitoring extends CI_Model {
 
     public function gdAsalKIB($no_document) {
         $oracle = $this->load->database('oracle', true);
-        $sql ="select kk.KIBCODE no_interorg
-                        ,msib.SEGMENT1 item
-                        ,mmt.SUBINVENTORY_CODE
-                from khs_kib kk
-                    ,mtl_system_items_b msib 
-                    ,wip_discrete_jobs wdj
-                    --
-                    ,mtl_material_transactions mmt   
-                where kk.PRIMARY_ITEM_ID = msib.INVENTORY_ITEM_ID
-                    and kk.ORGANIZATION_ID = msib.ORGANIZATION_ID
-                    and kk.ORDER_ID = wdj.WIP_ENTITY_ID 
-                    and kk.PRIMARY_ITEM_ID = wdj.PRIMARY_ITEM_ID 
-                    --
-                    and wdj.WIP_ENTITY_ID = mmt.TRANSACTION_SOURCE_ID
-                    and wdj.PRIMARY_ITEM_ID = mmt.INVENTORY_ITEM_ID
-                    and kk.KIBCODE = '$no_document'";
+        $sql ="SELECT kk.kibcode no_interorg, msib.segment1 item, mmt.subinventory_code
+        FROM khs_kib kk,
+             mtl_system_items_b msib,
+             wip_discrete_jobs wdj,
+             mtl_material_transactions mmt
+       WHERE kk.primary_item_id = msib.inventory_item_id
+         AND kk.organization_id = msib.organization_id
+         AND kk.order_id = wdj.wip_entity_id
+         AND kk.primary_item_id = wdj.primary_item_id
+         --
+         AND wdj.wip_entity_id = mmt.transaction_source_id
+         AND wdj.primary_item_id = mmt.inventory_item_id
+         AND kk.kibcode = '$no_document'
+      UNION
+      SELECT kkk.kibcode no_interorg, msib.segment1 item, kkk.from_subinventory_code subinventory_code
+        FROM khs_kib_kanban kkk,
+             mtl_system_items_b msib
+       WHERE kkk.primary_item_id = msib.inventory_item_id
+         AND kkk.organization_id = msib.organization_id
+         AND kkk.transfer_by IS NOT NULL
+         AND kkk.kibcode = '$no_document'";
         $query = $oracle->query($sql);
         return $query->result_array();
         // echo $sql;
     }
 
+    public function gdAsalMo($no_document){
+        $oracle = $this->load->database('oracle', true);
+        $sql = "SELECT DISTINCT mtrl.from_subinventory_code
+        FROM mtl_txn_request_headers mtrh, mtl_txn_request_lines mtrl
+       WHERE mtrh.header_id = mtrl.header_id
+         AND mtrh.move_order_type = 1
+        --  AND mtrh.header_status IN (3, 7)
+        --  AND mtrl.line_status IN (3, 7)
+         AND mtrh.request_number = '$no_document'";
+        $query = $oracle->query($sql);
+        return $query->result_array();
+    }
+
     public function getPIC($term){
         $oracle = $this->load->database('oracle', true);
-        $sql = "select * from khs_tabel_user
-                where pic like '%$term%'";
+        $sql = "SELECT   pic
+        FROM khs_tabel_user
+       WHERE pic LIKE '%$term%'
+    UNION
+    SELECT   pic
+        FROM khs_operator_pelayan
+       WHERE pic LIKE '%$term%'
+    ORDER BY 1";
         $query = $oracle->query($sql);
         return $query->result_array();
     }
 
     public function cariKIB($atr) {
         $oracle = $this->load->database('oracle', true);
-        $sql = "
-                select kk.KIBCODE no_interorg
-                        ,msib.SEGMENT1 item
-                        ,msib.DESCRIPTION
-                        ,msib.PRIMARY_UOM_CODE uom
-                        ,wdj.QUANTITY_COMPLETED qty
-                        ,kk.QTY_KIB qbt
-                        ,kk.VERIFY_DATE creation_date
-                from khs_kib kk
-                    ,mtl_system_items_b msib 
-                    ,wip_discrete_jobs wdj   
-                where kk.PRIMARY_ITEM_ID = msib.INVENTORY_ITEM_ID
-                    and kk.ORGANIZATION_ID = msib.ORGANIZATION_ID
-                    and kk.ORDER_ID = wdj.WIP_ENTITY_ID 
-                    and kk.PRIMARY_ITEM_ID = wdj.PRIMARY_ITEM_ID 
-                    and kk.KIBCODE = '$atr'";
+        $sql = "SELECT kk.kibcode no_interorg, msib.segment1 item, msib.description,
+        msib.primary_uom_code uom, wdj.quantity_completed qty, --kk.qty_kib qbt,
+        kk.verify_date creation_date
+   FROM khs_kib kk, mtl_system_items_b msib, wip_discrete_jobs wdj
+  WHERE kk.primary_item_id = msib.inventory_item_id
+    AND kk.organization_id = msib.organization_id
+    AND kk.order_id = wdj.wip_entity_id
+    AND kk.primary_item_id = wdj.primary_item_id
+    AND kk.kibcode = '$atr'
+ UNION
+ SELECT kkk.kibcode no_interorg, msib.segment1 item, msib.description,
+        msib.primary_uom_code uom, kkk.qty_kib qty,
+        kkk.verify_date creation_date
+   FROM khs_kib_kanban kkk, mtl_system_items_b msib
+  WHERE kkk.primary_item_id = msib.inventory_item_id
+    AND kkk.organization_id = msib.organization_id
+    AND kkk.kibcode = '$atr'";
         $query = $oracle->query($sql);
         return $query->result_array();
         // return $sql;

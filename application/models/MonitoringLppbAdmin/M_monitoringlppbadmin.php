@@ -1,72 +1,78 @@
 <?php
-class M_monitoringlppbadmin extends CI_Model {
+class M_monitoringlppbadmin extends CI_Model
+{
   public function __construct()
   {
     $this->load->database();
     $this->load->library('encrypt');
   }
   public function checkSourceLogin($employee_code)
-    {
-        $oracle = $this->load->database('erp_db',true);
-        $query = "select eea.employee_code, es.section_name
+  {
+    $oracle = $this->load->database('erp_db', true);
+    $query = "select eea.employee_code, es.section_name
                     from er.er_employee_all eea, er.er_section es
                     where eea.section_code = es.section_code
                     and eea.employee_code = '$employee_code' ";
-        $runQuery = $oracle->query($query);
-        return $runQuery->result_array();
-    }
-    public function  checkSectionName($id){
-        $oracle = $this->load->database('oracle',true);
-        $query = "SELECT a.section_id, a.section_name, a.section_keyword 
+    $runQuery = $oracle->query($query);
+    return $runQuery->result_array();
+  }
+  public function  checkSectionName($id)
+  {
+    $oracle = $this->load->database('oracle', true);
+    $query = "SELECT a.section_id, a.section_name, a.section_keyword 
                   FROM KHS_LPPB_SECTION a
                   WHERE a.section_id = '$id'";
-        $runQuery = $oracle->query($query);
-        return $runQuery->result_array();
-    }
-    public function  checkGroupBatch($group_batch,$length){
-        $oracle = $this->load->database('oracle',true);
-        $query = "SELECT COUNT(GROUP_batch) BATCH
+    $runQuery = $oracle->query($query);
+    return $runQuery->result_array();
+  }
+  public function  checkGroupBatch($group_batch, $length)
+  {
+    $oracle = $this->load->database('oracle', true);
+    $query = "SELECT COUNT(GROUP_batch) BATCH
                   FROM khs_lppb_batch
                   WHERE GROUP_BATCH = (CASE WHEN GROUP_BATCH LIKE '%$group_batch%' THEN SUBSTR(group_batch, 1, '$length') END)";
-        $runQuery = $oracle->query($query);
-        return $runQuery->result_array();
-    }
-    public function  checkLengthBatch($group_batch){
-        $oracle = $this->load->database('oracle',true);
-        $query = "SELECT DISTINCT length(GROUP_BATCH) length
+    $runQuery = $oracle->query($query);
+    return $runQuery->result_array();
+  }
+  public function  checkLengthBatch($group_batch)
+  {
+    $oracle = $this->load->database('oracle', true);
+    $query = "SELECT DISTINCT length(GROUP_BATCH) length
                   FROM khs_lppb_batch
                   WHERE GROUP_BATCH = '$group_batch'";
-        $runQuery = $oracle->query($query);
-        return $runQuery->result_array();
-    }
-    public function searchNumberLppb($lppb_numberFrom,$lppb_numberTo,$io,$queryStatus)
-    {
-        $oracle = $this->load->database('oracle',true);
-        $query = " SELECT   aa.lppb_number,
-                         REPLACE
-                            ((RTRIM
-                                 (XMLAGG (XMLELEMENT (e, TO_CHAR (aa.po_number) || '@')).EXTRACT
-                                    ('//text()').getclobval
-                                        (),
-                                  '@'
-                                 )
-                             ),
-                             '@',
-                             ', '
-                            ) po_number,
+    $runQuery = $oracle->query($query);
+    return $runQuery->result_array();
+  }
+  public function searchNumberLppb($lppb_numberFrom, $lppb_numberTo, $io, $queryStatus)
+  {
+    $oracle = $this->load->database('oracle', true);
+    $query = " SELECT   aa.lppb_number,
+                        --  REPLACE
+                        --     ((RTRIM
+                        --          (XMLAGG (XMLELEMENT (e, TO_CHAR (aa.po_number) || '@')).EXTRACT
+                        --             ('//text()').getclobval
+                        --                 (),
+                        --           '@'
+                        --          )
+                        --      ),
+                        --      '@',
+                        --      ', '
+                        --     ) 
+                        aa.po_number,
                              aa.vendor_name, aa.tanggal_lppb, aa.organization_code,
                              aa.organization_id, aa.status_lppb,
-                         REPLACE
-                            ((RTRIM
-                                (XMLAGG (XMLELEMENT (e, TO_CHAR (aa.po_header_id) || '@')).EXTRACT
-                                    ('//text()').getclobval
-                                        (),
-                                  '@'
-                                 )
-                             ),
-                             '@',
-                             ', '
-                            ) po_header_id
+                        --  REPLACE
+                        --     ((RTRIM
+                        --         (XMLAGG (XMLELEMENT (e, TO_CHAR (aa.po_header_id) || '@')).EXTRACT
+                        --             ('//text()').getclobval
+                        --                 (),
+                        --           '@'
+                        --          )
+                        --      ),
+                        --      '@',
+                        --      ', '
+                        --     ) 
+                        aa.po_header_id
                     FROM (SELECT DISTINCT rsh.receipt_num lppb_number, poh.segment1 po_number,
                                           pov.vendor_name vendor_name,
                                           rsh.creation_date tanggal_lppb,
@@ -83,19 +89,19 @@ class M_monitoringlppbadmin extends CI_Model {
                                     WHERE rsh.shipment_header_id = rsl.shipment_header_id
                                       AND rsh.shipment_header_id = rt.shipment_header_id
                                       AND rsl.shipment_line_id = rt.shipment_line_id
-                                      AND pov.vendor_id = rt.vendor_id
-                                      AND poh.po_header_id = rt.po_header_id
-                                      AND pol.po_line_id = rt.po_line_id
+                                      -- AND pov.vendor_id = rt.vendor_id
+                                      -- AND poh.po_header_id = rt.po_header_id
+                                      AND pol.po_line_id(+) = rt.po_line_id
                                       AND poh.po_header_id(+) = pol.po_header_id
                                       AND pov.vendor_id(+) = poh.vendor_id
-                                      AND pol.po_line_id(+) = pll.po_line_id
+                                      AND pol.po_line_id = pll.po_line_id(+)
                                       AND rsh.ship_to_org_id(+) = mp.organization_id
-                                      AND rt.transaction_id =
-                                             (SELECT MAX (rts.transaction_id)
-                                                FROM rcv_transactions rts
-                                               WHERE rt.shipment_header_id =
-                                                                        rts.shipment_header_id
-                                                 AND rts.po_line_id = pol.po_line_id)
+                                      --AND rt.transaction_id =
+                                      --       (SELECT MAX (rts.transaction_id)
+                                      --          FROM rcv_transactions rts
+                                      --         WHERE rt.shipment_header_id =
+                                      --                                  rts.shipment_header_id
+                                      --           AND rts.po_line_id = pol.po_line_id)
                                       AND rsh.receipt_num BETWEEN $lppb_numberFrom AND $lppb_numberTo
                                       $io
                                       $queryStatus) aa
@@ -104,29 +110,31 @@ class M_monitoringlppbadmin extends CI_Model {
                          aa.tanggal_lppb,
                          aa.organization_code,
                          aa.organization_id,
-                         aa.status_lppb";
+                         aa.status_lppb,
+                         aa.po_number,
+                         aa.po_header_id";
 
-        $runQuery = $oracle->query($query);
-        // echo"<pre>";echo $query; exit();
-        $arr = $runQuery->result_array();
-        foreach ($arr as $key => $value) {
-          $arr[$key]['PO_NUMBER'] = $this->get_ora_blob_value($arr[$key]['PO_NUMBER']);
-          $arr[$key]['PO_HEADER_ID'] = $this->get_ora_blob_value($arr[$key]['PO_HEADER_ID']);
-        }
-        return $arr;
-}
+    $runQuery = $oracle->query($query);
+    // echo"<pre>";echo $query; exit();
+    $arr = $runQuery->result_array();
+    // foreach ($arr as $key => $value) {
+    //   $arr[$key]['PO_NUMBER'] = $this->get_ora_blob_value($value['PO_NUMBER']);
+    //   $arr[$key]['PO_HEADER_ID'] = $this->get_ora_blob_value($value['PO_HEADER_ID']);
+    // }
+    return $arr;
+  }
 
-    function get_ora_blob_value($value)
-    {
-        $size = $value->size();
-        $result = $value->read($size);
-        return ($result)?$result:NULL;
-    }
+  function get_ora_blob_value($value)
+  {
+    $size = $value->size();
+    $result = $value->read($size);
+    return ($result) ? $result : NULL;
+  }
 
-    public function lppbBatchDetail($batch_number) //,$lppb_number
-    {
-        $oracle = $this->load->database('oracle',TRUE);
-        $query ="SELECT DISTINCT 
+  public function lppbBatchDetail($batch_number) //,$lppb_number
+  {
+    $oracle = $this->load->database('oracle', TRUE);
+    $query = "SELECT DISTINCT 
                 rsh.receipt_num lppb_number,
                 a.status_date action_date,
                 poh.segment1 po_number, 
@@ -181,58 +189,62 @@ class M_monitoringlppbadmin extends CI_Model {
                 AND a.po_header_id = poh.po_header_id 
                 AND a.lppb_number = rsh.receipt_num 
                 order by a.batch_detail_id";
-// echo "<pre>";
-// print_r($query);
-// exit();
-        $run = $oracle->query($query);
-        return $run->result_array();
-    }
-    public function getInventory(){
-      $oracle = $this->load->database("oracle",true);
-      $query = "SELECT 
+    // echo "<pre>";
+    // print_r($query);
+    // exit();
+    $run = $oracle->query($query);
+    return $run->result_array();
+  }
+  public function getInventory()
+  {
+    $oracle = $this->load->database('oracle', true);
+    $query = "SELECT 
                     MP.ORGANIZATION_CODE, 
                     MP.ORGANIZATION_ID
                   FROM 
                     MTL_PARAMETERS MP
                   ORDER BY
                     MP.ORGANIZATION_CODE";
-      $run = $oracle->query($query);
-      return $run->result_array();
-    }
+    $run = $oracle->query($query);
+    return $run->result_array();
+  }
 
-    public function getStatus() //toxic
-    {
-        $oracle = $this->load->database("oracle",true);
-      $query = "SELECT DISTINCT 
+  public function getStatus() //toxic
+  {
+    $oracle = $this->load->database('oracle', true);
+    $query = "SELECT DISTINCT 
                 rt.transaction_type status_lppb 
                 FROM rcv_transactions rt, po_headers_all poh 
                 WHERE rt.po_header_id = poh.po_header_id";
-      $run = $oracle->query($query);
-      return $run->result_array();     
-    }
+    $run = $oracle->query($query);
+    return $run->result_array();
+  }
 
-    public function getOpsiGudang($section_name){
-      $oracle = $this->load->database("oracle",true);
-      $query = "SELECT * FROM KHS_LPPB_SECTION WHERE SECTION_ID NOT IN 18 AND SECTION_NAME = '$section_name' ";
-      $run = $oracle->query($query);
-      return $run->result_array();
-    }
-    public function getOpsiGudang2(){
-      $oracle = $this->load->database("oracle",true);
-      $query = "SELECT * FROM KHS_LPPB_SECTION WHERE SECTION_ID NOT IN 18 ";
-      $run = $oracle->query($query);
-      return $run->result_array();
-    }
-    public function getOpsiGudangById($id){
-      $oracle = $this->load->database("oracle",true);
-      $query = "SELECT * FROM KHS_LPPB_SECTION WHERE SECTION_ID NOT IN 18 AND SECTION_ID = '$id'";
-      $run = $oracle->query($query);
-      return $run->result_array();
-    }
-    public function saveLppbNumber($create_date,$lppb_info,$source,$group_batch,$id_gudang)
-    {
-        $oracle = $this->load->database('oracle',true);
-        $query = "INSERT INTO khs_lppb_batch
+  public function getOpsiGudang($section_name)
+  {
+    $oracle = $this->load->database('oracle', true);
+    $query = "SELECT * FROM KHS_LPPB_SECTION WHERE SECTION_ID NOT IN 18 AND SECTION_NAME = '$section_name' ";
+    $run = $oracle->query($query);
+    return $run->result_array();
+  }
+  public function getOpsiGudang2()
+  {
+    $oracle = $this->load->database('oracle', true);
+    $query = "SELECT * FROM KHS_LPPB_SECTION WHERE SECTION_ID NOT IN 18 ";
+    $run = $oracle->query($query);
+    return $run->result_array();
+  }
+  public function getOpsiGudangById($id)
+  {
+    $oracle = $this->load->database('oracle', true);
+    $query = "SELECT * FROM KHS_LPPB_SECTION WHERE SECTION_ID NOT IN 18 AND SECTION_ID = '$id'";
+    $run = $oracle->query($query);
+    return $run->result_array();
+  }
+  public function saveLppbNumber($create_date, $lppb_info, $source, $group_batch, $id_gudang)
+  {
+    $oracle = $this->load->database('oracle', true);
+    $query = "INSERT INTO khs_lppb_batch
                       (create_date, 
                       lppb_info, 
                       source, 
@@ -244,15 +256,15 @@ class M_monitoringlppbadmin extends CI_Model {
                       '$source', 
                       '$group_batch', 
                       '$id_gudang')";
-        $oracle->query($query);
-        $ssql = "select max(batch_number) batch_number from khs_lppb_batch";
-        $data = $oracle->query($ssql);
-        return $data->result_array();
-    }
-    public function saveLppbNumber2($batch_number,$lppb_number,$status_date, $io_id, $po_number,$po_header_id)
-    {
-        $oracle = $this->load->database('oracle',true);
-        $query = "INSERT INTO khs_lppb_batch_detail
+    $oracle->query($query);
+    $ssql = "select max(batch_number) batch_number from khs_lppb_batch";
+    $data = $oracle->query($ssql);
+    return $data->result_array();
+  }
+  public function saveLppbNumber2($batch_number, $lppb_number, $status_date, $io_id, $po_number, $po_header_id)
+  {
+    $oracle = $this->load->database('oracle', true);
+    $query = "INSERT INTO khs_lppb_batch_detail
                       (batch_number, 
                       lppb_number, 
                       status, 
@@ -267,61 +279,59 @@ class M_monitoringlppbadmin extends CI_Model {
                       '$io_id', 
                       '$po_number', 
                       '$po_header_id')";
-        $run = $oracle->query($query); 
-    }
-    public function batch_detail_id($batch_number)
-    {
-        $oracle = $this->load->database('oracle',true);
-        $sql = "select batch_detail_id from khs_lppb_batch_detail WHERE batch_number = '$batch_number' ORDER BY BATCH_DETAIL_ID";
-        $run = $oracle->query($sql);
-        return $run->result_array();
-    }
+    $run = $oracle->query($query);
+  }
+  public function batch_detail_id($batch_number)
+  {
+    $oracle = $this->load->database('oracle', true);
+    $sql = "select batch_detail_id from khs_lppb_batch_detail WHERE batch_number = '$batch_number' ORDER BY BATCH_DETAIL_ID";
+    $run = $oracle->query($sql);
+    return $run->result_array();
+  }
 
-     public function getBdi($po_header_id)
-     {
-        $oracle = $this->load->database('oracle',true);
-        $sql = "SELECT batch_detail_id FROM
+  public function getBdi($po_header_id)
+  {
+    $oracle = $this->load->database('oracle', true);
+    $sql = "SELECT batch_detail_id FROM
                  (SELECT batch_detail_id FROM khs_lppb_batch_detail 
                  where po_header_id = $po_header_id
                 ORDER BY batch_detail_id DESC)
                 WHERE ROWNUM <= 1";
-       //  echo "<pre>";
-       // print_r($sql);
-        $run = $oracle->query($sql);
-        return $run->result_array();
-       
-     }
+    //  echo "<pre>";
+    // print_r($sql);
+    $run = $oracle->query($sql);
+    return $run->result_array();
+  }
 
-    public function limitBatchDetId($batch_number)
-    {
-        $oracle = $this->load->database('oracle',true);
-        $sql = "SELECT batch_detail_id FROM
+  public function limitBatchDetId($batch_number)
+  {
+    $oracle = $this->load->database('oracle', true);
+    $sql = "SELECT batch_detail_id FROM
                  (SELECT batch_detail_id FROM khs_lppb_batch_detail 
                  where batch_number = $batch_number
                 ORDER BY batch_detail_id DESC)
                 WHERE ROWNUM <= 1";
-        $run = $oracle->query($sql);
-        return $run->result_array();
-    }
+    $run = $oracle->query($sql);
+    return $run->result_array();
+  }
 
-    
-    public function saveLppbNumber3($batch_detail_id,$action_date)
-    {
-        $oracle = $this->load->database('oracle', true);
-        $query = "INSERT INTO khs_lppb_action_detail_1
+
+  public function saveLppbNumber3($batch_detail_id, $action_date)
+  {
+    $oracle = $this->load->database('oracle', true);
+    $query = "INSERT INTO khs_lppb_action_detail_1
                     (batch_detail_id,
                     status,
                     action_date) 
             VALUES ('$batch_detail_id', 
                     '0', to_date('$action_date', 
                     'DD/MM/YYYY HH24:MI:SS'))";
-        $oracle->query($query);
-        
-    }
-    public function showKhsLppbBatch($id)
-    {
-        $oracle = $this->load->database('oracle',true);
-        $query = "SELECT DISTINCT a.batch_number, a.lppb_info, a.create_date, a.group_batch,
+    $oracle->query($query);
+  }
+  public function showKhsLppbBatch($id)
+  {
+    $oracle = $this->load->database('oracle', true);
+    $query = "SELECT DISTINCT a.batch_number, a.lppb_info, a.create_date, a.group_batch,
                         (SELECT COUNT (lppb_number)
                            FROM khs_lppb_batch_detail c
                            WHERE c.batch_number = a.batch_number) jumlah_lppb,
@@ -364,87 +374,88 @@ class M_monitoringlppbadmin extends CI_Model {
                    AND b.status in (0,1)
                    AND a.id_gudang = '$id'
                ORDER BY a.batch_number DESC";
-        // echo "<pre>";print_r($query);exit();
-        $run = $oracle->query($query);
-        return $run->result_array();
-    }
-    public function deleteNumberBatch($batch_number)
-    {
-        $oracle = $this->load->database('oracle',true);
-        $query1 = "DELETE 
+    // echo "<pre>";print_r($query);exit();
+    $run = $oracle->query($query);
+    return $run->result_array();
+  }
+  public function deleteNumberBatch($batch_number)
+  {
+    $oracle = $this->load->database('oracle', true);
+    $query1 = "DELETE 
                     FROM khs_lppb_batch
                     WHERE batch_number = '$batch_number' ";
-        $runQuery1 = $oracle->query($query1);
-        $query2 = "DELETE 
+    $runQuery1 = $oracle->query($query1);
+    $query2 = "DELETE 
                     FROM khs_lppb_batch_detail
                     WHERE batch_number = '$batch_number' ";
-        $runQuery2 = $oracle->query($query2);
-        // oci_commit($oracle);
-    }
-    public function submitToKasieGudang($status_date,$batch_number){
-        $oracle = $this->load->database('oracle',true);
-        $query = "UPDATE khs_lppb_batch_detail
+    $runQuery2 = $oracle->query($query2);
+    // oci_commit($oracle);
+  }
+  public function submitToKasieGudang($status_date, $batch_number)
+  {
+    $oracle = $this->load->database('oracle', true);
+    $query = "UPDATE khs_lppb_batch_detail
                     SET status = '2',
                     status_date = to_date('$status_date', 'DD/MM/YYYY HH24:MI:SS')
                     WHERE batch_number = '$batch_number'";
-        $run = $oracle->query($query);
-    }
-    public function submitToKasieGudang2($action_date,$batch_detail_id){
-        $oracle = $this->load->database('oracle',true);
-        $query = "INSERT INTO khs_lppb_action_detail_1 (status, action_date, batch_detail_id)
+    $run = $oracle->query($query);
+  }
+  public function submitToKasieGudang2($action_date, $batch_detail_id)
+  {
+    $oracle = $this->load->database('oracle', true);
+    $query = "INSERT INTO khs_lppb_action_detail_1 (status, action_date, batch_detail_id)
                     VALUES ('2', to_date('$action_date', 'DD/MM/YYYY HH24:MI:SS'), '$batch_detail_id')";
-        $run = $oracle->query($query);
-    }
-    public function getBatchDetailId($batch_number)
-    {
-        $oracle = $this->load->database('oracle',true);
-        $query = "SELECT b.BATCH_DETAIL_ID BATCH_DETAIL_ID, b.lppb_number
+    $run = $oracle->query($query);
+  }
+  public function getBatchDetailId($batch_number)
+  {
+    $oracle = $this->load->database('oracle', true);
+    $query = "SELECT b.BATCH_DETAIL_ID BATCH_DETAIL_ID, b.lppb_number
                     FROM KHS_LPPB_BATCH_DETAIL b,
                     KHS_LPPB_BATCH a
                     WHERE a.batch_number = '$batch_number'
                     AND a.batch_number = b.batch_number
                     ORDER BY b.lppb_number";
-        $run = $oracle->query($query);
-        return $run->result_array();
-    }
+    $run = $oracle->query($query);
+    return $run->result_array();
+  }
 
-    
-    public function saveEditLppbNumber($batch_number)
-    {
-        $oracle = $this->load->database('oracle',true);
-        $query = "SELECT BATCH_NUMBER FROM KHS_LPPB_BATCH WHERE BATCH_NUMBER = '$batch_number'";
-        // echo "<pre>";
-        // print_r($query);
-        $run = $oracle->query($query);        
-        return $run->result_array();
-    }
 
-    public function saveEditLppbNumber2($batch_number,$lppb_number,$status_date, $io_id, $po_number,$po_header_id)
-    {
-        $oracle = $this->load->database('oracle',true);
-        $query = "INSERT INTO khs_lppb_batch_detail
+  public function saveEditLppbNumber($batch_number)
+  {
+    $oracle = $this->load->database('oracle', true);
+    $query = "SELECT BATCH_NUMBER FROM KHS_LPPB_BATCH WHERE BATCH_NUMBER = '$batch_number'";
+    // echo "<pre>";
+    // print_r($query);
+    $run = $oracle->query($query);
+    return $run->result_array();
+  }
+
+  public function saveEditLppbNumber2($batch_number, $lppb_number, $status_date, $io_id, $po_number, $po_header_id)
+  {
+    $oracle = $this->load->database('oracle', true);
+    $query = "INSERT INTO khs_lppb_batch_detail
                       (batch_number, lppb_number, status, status_date, io_id, po_number, po_header_id) values ('$batch_number', '$lppb_number', '1', to_date('$status_date', 'DD/MM/YYYY HH24:MI:SS'), '$io_id', '$po_number', '$po_header_id')";
-       // echo "<pre>";
-       // print_r($query);
-        $run = $oracle->query($query); 
-    }
+    // echo "<pre>";
+    // print_r($query);
+    $run = $oracle->query($query);
+  }
 
-   
-    public function saveEditLppbNumber3($batch_detail_id,$action_date)
-    {
-        $oracle = $this->load->database('oracle', true);
-        $query = "INSERT INTO khs_lppb_action_detail_1
+
+  public function saveEditLppbNumber3($batch_detail_id, $action_date)
+  {
+    $oracle = $this->load->database('oracle', true);
+    $query = "INSERT INTO khs_lppb_action_detail_1
                     (batch_detail_id, status, action_date) VALUES ('$batch_detail_id', '1', to_date('$action_date', 'DD/MM/YYYY HH24:MI:SS'))";
-       //  echo "<pre>";
-       // print_r($query);
-        $oracle->query($query);
-        
-    }
+    //  echo "<pre>";
+    // print_r($query);
+    $oracle->query($query);
+  }
 
-    public function saveEditLppbNumber2Update($batch_number,$lppb_number,$status_date,$io_id,$po_number,$po_header_id)
-    {
-        $oracle = $this->load->database('oracle',true);
-        $query = "UPDATE khs_lppb_batch_detail 
+  public function saveEditLppbNumber2Update($batch_number, $lppb_number, $status_date, $io_id, $po_number, $po_header_id)
+  {
+    $oracle = $this->load->database('oracle', true);
+    $query = "UPDATE khs_lppb_batch_detail 
                         SET batch_number = '$batch_number',
                             lppb_number = '$lppb_number',
                             status = '1',
@@ -456,43 +467,45 @@ class M_monitoringlppbadmin extends CI_Model {
                             AND po_number = '$po_number'
                             AND po_header_id = '$po_header_id'
                             AND status = '0'";
-       // echo "<pre>";
-       // print_r($query);
-        $oracle->query($query);
-    }
-    public function saveEditLppbNumber3Update($batch_detail_id,$action_date)
-    {
-        $oracle = $this->load->database('oracle', true);
-        $query = "UPDATE khs_lppb_action_detail_1
+    // echo "<pre>";
+    // print_r($query);
+    $oracle->query($query);
+  }
+  public function saveEditLppbNumber3Update($batch_detail_id, $action_date)
+  {
+    $oracle = $this->load->database('oracle', true);
+    $query = "UPDATE khs_lppb_action_detail_1
                     set batch_detail_id='$batch_detail_id',
                     status='1',
                     action_date=to_date('$action_date', 'DD/MM/YYYY HH24:MI:SS')
                     where batch_detail_id='$batch_detail_id' ";
-       //  echo "<pre>";
-       // print_r($query);            
-        $oracle->query($query);
-    }
-  
-    public function delBatchDetailId($batch_detail_id)
-    {
-        $oracle = $this->load->database('oracle',true);
-        $query2 = "DELETE 
+    //  echo "<pre>";
+    // print_r($query);            
+    $oracle->query($query);
+  }
+
+  public function delBatchDetailId($batch_detail_id)
+  {
+    $oracle = $this->load->database('oracle', true);
+    $query2 = "DELETE 
                     FROM khs_lppb_batch_detail
                     WHERE batch_detail_id = '$batch_detail_id' ";
-        $run = $oracle->query($query2);
-    }
-    public function editableLppbNumber($lppb_number,$date,$batch_detail_id){
-        $oracle = $this->load->database('oracle',true);
-        $query = "UPDATE khs_lppb_batch_detail
+    $run = $oracle->query($query2);
+  }
+  public function editableLppbNumber($lppb_number, $date, $batch_detail_id)
+  {
+    $oracle = $this->load->database('oracle', true);
+    $query = "UPDATE khs_lppb_batch_detail
                     SET lppb_number = '$lppb_number',
                     status = '1',
                     status_date = to_date('$status_date', 'DD/MM/YYYY HH24:MI:SS')
                     WHERE batch_detail_id = '$batch_detail_id'";
-        $run = $oracle->query($query);
-    }
-    public function showRejectLppb(){
-        $oracle = $this->load->database('oracle',true);
-        $query = "SELECT DISTINCT a.batch_number, a.lppb_info, a.create_date, a.group_batch,
+    $run = $oracle->query($query);
+  }
+  public function showRejectLppb()
+  {
+    $oracle = $this->load->database('oracle', true);
+    $query = "SELECT DISTINCT a.batch_number, a.lppb_info, a.create_date, a.group_batch,
                         (SELECT COUNT (lppb_number)
                            FROM khs_lppb_batch_detail c
                            WHERE c.batch_number = a.batch_number
@@ -532,13 +545,13 @@ class M_monitoringlppbadmin extends CI_Model {
                    AND (b.status = 4
                    OR b.status = 7)
                ORDER BY a.batch_number DESC";
-        $run = $oracle->query($query);
-        return $run->result_array();
-    }
-    public function showRejectDetail($batch_number,$lppb_number)
-    {
-        $oracle = $this->load->database('oracle',TRUE);
-        $query = "SELECT DISTINCT rsh.receipt_num lppb_number,
+    $run = $oracle->query($query);
+    return $run->result_array();
+  }
+  public function showRejectDetail($batch_number, $lppb_number)
+  {
+    $oracle = $this->load->database('oracle', TRUE);
+    $query = "SELECT DISTINCT rsh.receipt_num lppb_number,
                 poh.segment1 po_number,
                 pov.vendor_name vendor_name, rsh.creation_date tanggal_lppb,
                 MP.ORGANIZATION_CODE, 
@@ -594,13 +607,13 @@ class M_monitoringlppbadmin extends CI_Model {
                     AND a.po_header_id = poh.po_header_id
                     AND a.lppb_number = rsh.receipt_num
                     $lppb_number";
-        $run = $oracle->query($query);
-        return $run->result_array();
-    }
-    public function finishLppbKasie()
-    {
-        $oracle = $this->load->database('oracle',true);
-        $query = "SELECT DISTINCT a.batch_number, a.lppb_info, a.create_date, a.group_batch,
+    $run = $oracle->query($query);
+    return $run->result_array();
+  }
+  public function finishLppbKasie()
+  {
+    $oracle = $this->load->database('oracle', true);
+    $query = "SELECT DISTINCT a.batch_number, a.lppb_info, a.create_date, a.group_batch,
                         (SELECT COUNT (lppb_number)
                            FROM khs_lppb_batch_detail c
                            WHERE c.batch_number = a.batch_number
@@ -643,12 +656,13 @@ class M_monitoringlppbadmin extends CI_Model {
                AND c.status = 2
                AND b.status not in 7
                ORDER BY a.batch_number DESC";
-        $run = $oracle->query($query);
-        return $run->result_array();
-    }
-    public function finishdetail($batch_number){
-        $oracle = $this->load->database('oracle',true);
-        $query = "SELECT DISTINCT poh.po_header_id,
+    $run = $oracle->query($query);
+    return $run->result_array();
+  }
+  public function finishdetail($batch_number)
+  {
+    $oracle = $this->load->database('oracle', true);
+    $query = "SELECT DISTINCT poh.po_header_id,
                 a.lppb_number,
                 poh.segment1 po_number,
                 pov.vendor_name vendor_name, rsh.creation_date tanggal_lppb,
@@ -700,32 +714,34 @@ class M_monitoringlppbadmin extends CI_Model {
                     AND a.po_header_id = poh.po_header_id
                     AND a.lppb_number = rsh.receipt_num
                     ";
-        $run = $oracle->query($query);
-        return $run->result_array();
-    }
-    public function deleteAllRows($batch_number)
-    {
-        $oracle = $this->load->database('oracle',true);
-        $query2 = "DELETE 
+    $run = $oracle->query($query);
+    return $run->result_array();
+  }
+  public function deleteAllRows($batch_number)
+  {
+    $oracle = $this->load->database('oracle', true);
+    $query2 = "DELETE 
                     FROM khs_lppb_batch_detail
                     WHERE batch_number = '$batch_number' ";
-        $runQuery2 = $oracle->query($query2);
-        // oci_commit($oracle);
-    }
-    public function cekSessionGudang(){
-        $oracle = $this->load->database('oracle',true);
-        $query2 = "SELECT * FROM KHS_LPPB_BATCH WHERE BATCH_NUMBER IN (SELECT MAX(BATCH_NUMBER) FROM KHS_LPPB_BATCH) ";
-        $run = $oracle->query($query2);
-        return $run->result_array();
-    }
-    public function cekJumlahData($batch_number){ //,$status
-        $oracle = $this->load->database('oracle',true);
-        $query2 = "SELECT DISTINCT COUNT(klbd.batch_detail_id) jumlah_data
+    $runQuery2 = $oracle->query($query2);
+    // oci_commit($oracle);
+  }
+  public function cekSessionGudang()
+  {
+    $oracle = $this->load->database('oracle', true);
+    $query2 = "SELECT * FROM KHS_LPPB_BATCH WHERE BATCH_NUMBER IN (SELECT MAX(BATCH_NUMBER) FROM KHS_LPPB_BATCH) ";
+    $run = $oracle->query($query2);
+    return $run->result_array();
+  }
+  public function cekJumlahData($batch_number)
+  { //,$status
+    $oracle = $this->load->database('oracle', true);
+    $query2 = "SELECT DISTINCT COUNT(klbd.batch_detail_id) jumlah_data
                     FROM khs_lppb_batch klb, khs_lppb_batch_detail klbd
                     WHERE klb.batch_number = klbd.batch_number
                     AND klbd.batch_number = '$batch_number'
                     ";
-        $run = $oracle->query($query2);
-        return $run->result_array();
-    }
+    $run = $oracle->query($query2);
+    return $run->result_array();
+  }
 }

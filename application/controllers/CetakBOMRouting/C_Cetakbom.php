@@ -12,9 +12,9 @@ class C_Cetakbom extends CI_Controller
 		$this->load->library('form_validation');
 		$this->load->library('session');
 		$this->load->library('encrypt');
-		
 
-		
+
+
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('CetakBOMRouting/M_cetakbom');
 
@@ -24,7 +24,7 @@ class C_Cetakbom extends CI_Controller
 	public function checkSession()
 	{
 		if($this->session->is_logged){
-			
+
 		} else {
 			redirect('');
 		}
@@ -63,7 +63,7 @@ class C_Cetakbom extends CI_Controller
 		$data = $this->M_cetakbom->selectproduk($term);
 		// echo "<pre>";print_r($data);exit();
 		echo json_encode($data);
-		
+
 	}
 
 	public function getkomponen()
@@ -81,18 +81,18 @@ class C_Cetakbom extends CI_Controller
 		$term	= $this->input->post('segment1');
 		$html = '<option></option>';
 		if ($term=='ODM') {
-			$seksi=$this->M_cetakbom->getseksiodm();	
+			$seksi=$this->M_cetakbom->getseksiodm();
 			foreach ($seksi as $s) {
 			$html = $html.'<option value="'.$s['ROUTING_CLASS'].'">'.$s['ROUTING_CLASS'].'</option>';
 			}
 			echo $html;
 		} elseif ($term=='OPM') {
-			echo '<option></option>';	
+			echo '<option></option>';
 		} else {
-			echo '<option></option>';	
+			echo '<option></option>';
 		}
 
-	
+
 	}
 
 	public function getAlternate(){
@@ -114,7 +114,7 @@ class C_Cetakbom extends CI_Controller
 	{
 		$term	= $this->input->post('segment1');
 		$html = '';
-			$recipe=$this->M_cetakbom->dataopm1($term);	
+			$recipe=$this->M_cetakbom->dataopm1($term);
 			foreach ($recipe as $s) {
 			$html = $html.'<option value="'.$s['ROUTING_ID'].'|'.$s['FORMULA_ID'].'">'.$s['RECIPE_NO'].' - Versi '.$s['RECIPE_VERSION'].'</option>';
 			}
@@ -129,13 +129,13 @@ class C_Cetakbom extends CI_Controller
 		$produk = $this->input->post('prodd');
 		$organization = $this->input->post('org');
 		// $tipe = $this->input->post('typeCetak');
-		
+
 		if ($this->input->post('recipe') != null) {
 			$recipeformula = explode("|",$this->input->post('recipe'));
 			$recipe = $recipeformula[0];
 			$formula = $recipeformula[1];
 		}
-		
+
 
 		/////////////////////DEFAULT DETAIL/////////////////////////
 		$tipe = 'Y';
@@ -146,7 +146,7 @@ class C_Cetakbom extends CI_Controller
 		$data['kode'] = $kode;
 
 
-		 $data['user'] = $this->session->user;        
+		 $data['user'] = $this->session->user;
 		 $nama = $this->M_cetakbom->getNama($this->session->user);
 		 // echo "<pre>";print_r($nama[0]['nama']);
 		 // exit();
@@ -198,8 +198,8 @@ class C_Cetakbom extends CI_Controller
 						$p1 = '<br>P1: '.$datapdf[$i]['P1'];
 					} else {
 						$p1 = '';
-					}	
-					//P2	
+					}
+					//P2
 					if ($datapdf[$i]['P2'] != null) {
 						$p2 = '<br>P2: '.$datapdf[$i]['P2'];
 					} else {
@@ -230,7 +230,7 @@ class C_Cetakbom extends CI_Controller
 
 			}
 			// echo "<pre>";
-			// print_r($array_Resource);
+			// print_r($datapdf);
 			// exit();
 
 			$array_pdf = array();
@@ -253,6 +253,7 @@ class C_Cetakbom extends CI_Controller
 				$array_pdf[$i]['OPT_QTY'] = $pdf['OPT_QTY'];
 				$array_pdf[$i]['CYCLE_TIME'] = $pdf['CT'];
 				$array_pdf[$i]['TARGET'] = $pdf['TARGET'];
+				$array_pdf[$i]['STATUS_TARGET'] = $pdf['STATUS_TARGET'];
 				$array_pdf[$i]['OPR_NO'] = $pdf['OPR_NO'];
 				$array_pdf[$i]['LAST_UPDATE_DATE'] = $pdf['LAST_UPDATE_DATE'];
 				$array_pdf[$i]['P1'] = $pdf['P1'];
@@ -266,8 +267,8 @@ class C_Cetakbom extends CI_Controller
 					$p1 = 'P1: '.$pdf['P1'];
 				} else {
 					$p1 = '';
-				}	
-				//P2	
+				}
+				//P2
 				if ($pdf['P2'] != null) {
 					$p2 = '<br>P2: '.$pdf['P2'];
 				} else {
@@ -295,6 +296,7 @@ class C_Cetakbom extends CI_Controller
 
 				$i++;
 			}
+
 			if ($array_Resource2['ALT'] != null) {
 				$merge = $this->batasMerge($array_Resource2['ALT']);
 				$tabelBoM = $this->generateTableBoM($merge, $datapdf2);
@@ -302,9 +304,8 @@ class C_Cetakbom extends CI_Controller
 				$merge = null;
 				$tabelBoM = null;
 			}
-			
 			// echo "<pre>";
-			// print_r($merge);
+			// print_r($tabelBoM);
 			// exit();
 			$data['tabel'] = $tabelBoM;
 			$data['merge'] = $merge;
@@ -312,10 +313,12 @@ class C_Cetakbom extends CI_Controller
 			$data['arrayR2'] = $array_Resource2;
 			$data['datapdf'] = $array_pdf;
 			$data['datapdf2'] = $datapdf2;
-			
-			
 
-			
+			// echo "<pre>";
+			// print_r($data);
+			// exit();
+
+
 
 		//komen
 			// 	$kodeproses = array();
@@ -350,14 +353,14 @@ class C_Cetakbom extends CI_Controller
 				// echo "<pre>";print_r($dataopm1);exit();
 				// $dataopm2 =  $this->M_cetakbom->dataopm2($dataopm1[0]['ROUTING_ID']);
 				$dataopm2 =  $this->M_cetakbom->dataopm2($recipe);
-				for ($i=0; $i < sizeof($dataopm2); $i++) { 
+				for ($i=0; $i < sizeof($dataopm2); $i++) {
 					//P1
 					if ($dataopm2[$i]['P1'] != null) {
 						$p1 = 'P1: '.$dataopm2[$i]['P1'];
 					} else {
 						$p1 = '';
-					}	
-					//P2	
+					}
+					//P2
 					if ($dataopm2[$i]['P2'] != null) {
 						$p2 = '<br>P2: '.$dataopm2[$i]['P2'];
 					} else {
@@ -369,27 +372,27 @@ class C_Cetakbom extends CI_Controller
 					} else {
 						$p3 = '';
 					}
-					
+
 					$dataopm2[$i]['DETAILPROSES'] = $p1.$p2.$p3;
 
-					$route_id[$dataopm2[$i]['ROUTING_ID']][] = $i; 
+					$route_id[$dataopm2[$i]['ROUTING_ID']][] = $i;
 				}
 				$dataopm3 =  $this->M_cetakbom->dataopm3($formula);
-				
-				for ($i=0; $i < sizeof($dataopm2); $i++) { 
-					$activity[$dataopm2[$i]['ACTIVITY']][] = $i;  
+
+				for ($i=0; $i < sizeof($dataopm2); $i++) {
+					$activity[$dataopm2[$i]['ACTIVITY']][] = $i;
 				}
 				foreach ($activity as $key => $value) {
 					$act[] = $key;
 				}
 				$acti = '';
-				for ($i=0; $i < sizeof($act); $i++) { 
+				for ($i=0; $i < sizeof($act); $i++) {
 					if ($i === (sizeof($act)-1)) {
 						$acti = $acti.$act[$i];
 					} else {
 						$acti = $acti.$act[$i].', ';
 					}
-					
+
 				}
 				$data['act'] = $acti;
 				$data['r_id'] = $route_id;
@@ -401,7 +404,7 @@ class C_Cetakbom extends CI_Controller
 			// echo "<pre>";
 			// print_r($data);
 			// exit();
-			
+
 		}
 
 		$data['name'] = $name;
@@ -410,7 +413,7 @@ class C_Cetakbom extends CI_Controller
 		$data['organization'] = $organization;
 		$data['desckomp'] = $desckomp[0]['DESCRIPTION'];
 		$data['descprod'] = $descprod[0]['DESCRIPTION'];
-		
+
 		// print_r(); exit();
 		$dataRecipe = $this->input->post('recipe');
 		$urutan = $this->generate_Doc_No($data['user'], $kode, $organization, $dataRecipe, $alt);
@@ -434,18 +437,17 @@ class C_Cetakbom extends CI_Controller
 
 			}
 		// }
-    	$foot = $this->load->view('CetakBOMRouting/V_CetakanFoot', $data, true);	
+    	$foot = $this->load->view('CetakBOMRouting/V_CetakanFoot', $data, true);
 
 		ob_end_clean();
-		$pdf->shrink_tables_to_fit = 0;
-		$pdf->setHTMLHeader($head);	
-    	$pdf->WriteHTML($html);	
+		$pdf->shrink_tables_to_fit = 1;
+		$pdf->setHTMLHeader($head);
+    	$pdf->WriteHTML($html);
   		$pdf->setHTMLFooter($foot);												//-----> Pakai Library MPDF
-
 		$pdf->Output($filename, 'I');
 
-		
-		
+
+
 	}
 
 	public function SingkatNama($nama, $jumlah_Kata)
@@ -455,14 +457,14 @@ class C_Cetakbom extends CI_Controller
 
 		// echo "<pre>";print_r($array_Nama);
 
-		for ($i=0; $i < sizeof($array_Nama); $i++) { 
+		for ($i=0; $i < sizeof($array_Nama); $i++) {
 			if ($i < $jumlah_Kata) {
 				if($i == 0){
-					$nama_Jadi = $array_Nama[$i];    
+					$nama_Jadi = $array_Nama[$i];
 				} else {
-					$nama_Jadi = $nama_Jadi.' '.$array_Nama[$i];        
+					$nama_Jadi = $nama_Jadi.' '.$array_Nama[$i];
 				}
-				
+
 			} else{
 				if($i == $jumlah_Kata){
 					$nama_Jadi = $nama_Jadi.' .'.substr($array_Nama[$i], 0,1);
@@ -476,18 +478,18 @@ class C_Cetakbom extends CI_Controller
 	}
 
 	public function batasMerge($arrayALT){
-		$batas = 50;
+		$batas = 21; //50
 		// $halsatu = 25;
 		foreach ($arrayALT as $key => $value) {
 			$barisalt[$key] = sizeof($arrayALT[$key]);
 			$frek[$key] = ceil($barisalt[$key]/$batas);
 			$sisa[$key] = $barisalt[$key]%$batas;
-			for ($i=1; $i <= $frek[$key]; $i++) { 
+			for ($i=1; $i <= $frek[$key]; $i++) {
 				$batasmax[$key][$i] = $batas * $i;
 			}
 		}
 
-		
+
 
 		$hasil['batas'] = $batas;
 		// $hasil['halsatu'] = $halsatu;
@@ -502,11 +504,11 @@ class C_Cetakbom extends CI_Controller
 		return $hasil;
 	}
 
-	public function generateTableBoM ($merge, $data){	
+	public function generateTableBoM ($merge, $data){
 		$hal = 0;
 		$step = 1;
 		$count = 0;
-		for ($i=0; $i < sizeof($data); $i++) { 
+		for ($i=0; $i < sizeof($data); $i++) {
 			if ($data[$i]['ALT'] == '') {
 				$alt = 'primary';
 			} else {

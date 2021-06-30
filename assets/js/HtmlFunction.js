@@ -232,18 +232,7 @@ function addRowSpLine(base) {
 function addRowSpFaqs(base) {
 	var n = $("#tblFaq tbody tr").length;
 	counter = n + 1;
-	var newRow = jQuery(
-		"<tr>" +
-			"<td><select name='slcFaqType[]' id='slcFaqType'  class='form-control'>" +
-			"<option value='' ></option>" +
-			"<option value='Complain' >Complain</option>" +
-			"<option value='Feedback' >Feedback</option>" +
-			"<option value='Question' >Question</option>" +
-			"<option value='Other' >Other</option></select></td>" +
-			"<td><input type='text' name='txtFaqDescription1[]' id='txtFaqDescription1' class='form-control faq-descriptions' /></td>" +
-			"<td><input type='text' name='txtFaqDescription2[]' id='txtFaqDescription2' class='form-control' /></td>" +
-			"</tr>"
-	);
+	var newRow = jQuery("<tr>" + "<td><select name='slcFaqType[]' id='slcFaqType'  class='form-control'>" + "<option value='' ></option>" + "<option value='Complain' >Complain</option>" + "<option value='Feedback' >Feedback</option>" + "<option value='Question' >Question</option>" + "<option value='Other' >Other</option></select></td>" + "<td><input type='text' name='txtFaqDescription1[]' id='txtFaqDescription1' class='form-control faq-descriptions' /></td>" + "<td><input type='text' name='txtFaqDescription2[]' id='txtFaqDescription2' class='form-control' /></td>" + "</tr>");
 	jQuery("#tblFaq").append(newRow);
 
 	//check the function inside jquery too
@@ -275,17 +264,7 @@ function addRowSpFaqs(base) {
 function addRowAddAct(base) {
 	var n = $("#tblAddAct tbody tr").length;
 	counter = n + 1;
-	var newRow = jQuery(
-		"<tr>" +
-			"<td>" +
-			counter +
-			"</td>" +
-			"<td>" +
-			"<select name='txtAdditionalAct[]' id='txtAdditionalAct' class='form-control jsAdditionalActivity'>" +
-			"<option value=''></option></select></td>" +
-			"<td><input type='text' name='txtActDescription[]' id='txtActDescription' class='form-control' /></td>" +
-			"</tr>"
-	);
+	var newRow = jQuery("<tr>" + "<td>" + counter + "</td>" + "<td>" + "<select name='txtAdditionalAct[]' id='txtAdditionalAct' class='form-control jsAdditionalActivity'>" + "<option value=''></option></select></td>" + "<td><input type='text' name='txtActDescription[]' id='txtActDescription' class='form-control' /></td>" + "</tr>");
 	jQuery("#tblAddAct").append(newRow);
 
 	/*$(".additional-activity").autocomplete({
@@ -325,66 +304,24 @@ function addRowResponsibility(base) {
 	var newgroup = $("<tr>").addClass("clone");
 	var e = jQuery.Event("click");
 	e.preventDefault();
-	$("select#slcUserResponsbility:last").select2("destroy");
-	$("select#slcActive:last").select2("destroy");
-	$("select#slcLokal:last").select2("destroy");
-	$("select#slcInternet:last").select2("destroy");
 
-	$(".clone")
-		.last()
-		.clone()
-		.appendTo(newgroup)
-		.appendTo("#tbodyUserResponsibility");
+	$(".clone").last().clone().appendTo(newgroup).appendTo("#tbodyUserResponsibility");
+	$("select#slcUserResponsbility:last").siblings("span").remove();
+	$("select#slcActive:last").siblings("span").remove();
+	$("select#slcLokal:last").siblings("span").remove();
+	$("select#slcInternet:last").siblings("span").remove();
 
-	$("select#slcUserResponsbility").select2({
-		placeholder: "",
-		allowClear: true,
-	});
-
-	$("select#slcUserResponsbility:last").select2({
-		placeholder: "",
-		allowClear: true,
-	});
-
-	$("select#slcActive").select2({
-		placeholder: "",
-		allowClear: true,
-	});
-
-	$("select#slcActive:last").select2({
-		placeholder: "",
-		allowClear: true,
-	});
-
-	$("select#slcLokal").select2({
-		placeholder: "",
-		allowClear: true,
-	});
-
-	$("select#slcLokal:last").select2({
-		placeholder: "",
-		allowClear: true,
-	});
-
-	$("select#slcInternet").select2({
-		placeholder: "",
-		allowClear: true,
-	});
-
-	$("select#slcInternet:last").select2({
-		placeholder: "",
+	$("select#slcUserResponsbility:last, select#slcActive:last, select#slcLokal:last, select#slcInternet:last").select2({
+		placeholder: "Choose option",
 		allowClear: true,
 	});
 
 	$("select#slcUserResponsbility:last").val("").change();
-	$("select#slcActive:last").val("").change();
-	$("select#slcLokal:last").val("").change();
-	$("select#slcInternet:last").val("").change();
+	$("select#slcActive:last").val("Y").change();
+	$("select#slcLokal:last").val("1").change();
+	$("select#slcInternet:last").val("0").change();
 	$("input#hdnUserApplicationId:last").val("0");
-	$("button.btnDeleteUserResponsibility:last").attr(
-		"id-user-responsibility",
-		"0"
-	);
+	$("button.btnDeleteUserResponsibility:last").attr("id-user-responsibility", "0");
 }
 
 function addRowMenu(base) {
@@ -689,60 +626,36 @@ function sendValueCustomer(cust_id, cust_name, cat_id, base) {
 			if (rowCountConnect > 0 || rowCountService > 0) {
 				//untuk new connect
 				$("#tblCallLines tbody tr").remove();
-				$.post(
-					base + "CustomerRelationship/Search/Ownership",
-					{ id: id, cust: cust },
-					function (data) {
-						if (data) {
-							data = $.parseJSON(data); //change to json array cause data is in string
-							var len = data.length;
-							var txt = "";
-							if (len > 0) {
-								for (var i = 0; i < len; i++) {
-									if (data[i].segment1 && data[i].item_name) {
-										txt +=
-											"<tr><td><input type='text' id='txtOwnership' name='txtOwnership[]' value='" +
-											data[i].segment1 +
-											"' class='form-control' readonly/>" +
-											"<input type='hidden' id='hdnOwnershipId' name='hdnOwnershipId[]' value='" +
-											data[i].customer_ownership_id +
-											"' /></td>" +
-											"<td><input type='text' id='txtItemDescription' name='txtItemDescription[]' value='" +
-											data[i].item_name +
-											"' class='form-control' readonly/></td>" +
-											"<td><input type='text' id='txtBody' name='txtBody[]' value='" +
-											data[i].no_body +
-											"' class='form-control' readonly/></td>" +
-											"<td><input type='text' id='txtEngine' name='txtEngine[]' value='" +
-											data[i].no_engine +
-											"' class='form-control' readonly/></td>" +
-											"<td><input type='text' id='txtUse' name='txtUse[]' class='form-control'/></td>" +
-											"</tr>";
-										//txt += txt;
-									}
+				$.post(base + "CustomerRelationship/Search/Ownership", { id: id, cust: cust }, function (data) {
+					if (data) {
+						data = $.parseJSON(data); //change to json array cause data is in string
+						var len = data.length;
+						var txt = "";
+						if (len > 0) {
+							for (var i = 0; i < len; i++) {
+								if (data[i].segment1 && data[i].item_name) {
+									txt += "<tr><td><input type='text' id='txtOwnership' name='txtOwnership[]' value='" + data[i].segment1 + "' class='form-control' readonly/>" + "<input type='hidden' id='hdnOwnershipId' name='hdnOwnershipId[]' value='" + data[i].customer_ownership_id + "' /></td>" + "<td><input type='text' id='txtItemDescription' name='txtItemDescription[]' value='" + data[i].item_name + "' class='form-control' readonly/></td>" + "<td><input type='text' id='txtBody' name='txtBody[]' value='" + data[i].no_body + "' class='form-control' readonly/></td>" + "<td><input type='text' id='txtEngine' name='txtEngine[]' value='" + data[i].no_engine + "' class='form-control' readonly/></td>" + "<td><input type='text' id='txtUse' name='txtUse[]' class='form-control'/></td>" + "</tr>";
+									//txt += txt;
 								}
-								$("input#txtUse").keypress(function (eve) {
-									if (
-										(event.which != 46 || $(this).val().indexOf(".") != -1) &&
-										(event.which < 48 || event.which > 57)
-									) {
-										eve.preventDefault();
-									}
+							}
+							$("input#txtUse").keypress(function (eve) {
+								if ((event.which != 46 || $(this).val().indexOf(".") != -1) && (event.which < 48 || event.which > 57)) {
+									eve.preventDefault();
+								}
 
-									// this part is when left part of number is deleted and leaves a . in the leftmost position. For example, 33.25, then 33 is deleted
-									$("input#txtUse").keyup(function (eve) {
-										if ($(this).val().indexOf(".") == 0) {
-											$(this).val($(this).val().substring(1));
-										}
-									});
+								// this part is when left part of number is deleted and leaves a . in the leftmost position. For example, 33.25, then 33 is deleted
+								$("input#txtUse").keyup(function (eve) {
+									if ($(this).val().indexOf(".") == 0) {
+										$(this).val($(this).val().substring(1));
+									}
 								});
-								if (txt != "") {
-									$("tbody#result").append(txt);
-								}
+							});
+							if (txt != "") {
+								$("tbody#result").append(txt);
 							}
 						}
 					}
-				);
+				});
 				///////
 
 				//untuk new service
@@ -798,13 +711,9 @@ function sendValueItem(item_id, item_code, item_name, i, base) {
 function checkWarranty(base, i, owner_id) {
 	var id = document.getElementById("hdnCustomerId").value;
 	var item_id = owner_id;
-	$.post(
-		base + "ajax/CheckProductWarranty",
-		{ id: id, item_id: item_id },
-		function (data) {
-			$("input#txtWarranty").eq(i).val(data);
-		}
-	);
+	$.post(base + "ajax/CheckProductWarranty", { id: id, item_id: item_id }, function (data) {
+		$("input#txtWarranty").eq(i).val(data);
+	});
 }
 
 // function qtyProcessCheck(base,i,owner_id){
@@ -824,43 +733,30 @@ function getUnit(url) {
 	} else {
 		//$( "#result" ).html(id);
 
-		$.post(
-			"CustomerRelationship/Search/Ownership",
-			{ id: id, cust: cust },
-			function (data) {
-				if (data) {
-					data = $.parseJSON(data); //change to json array cause data is in string
-					var len = data.length;
-					var txt = "";
-					if (len > 0) {
-						for (var i = 0; i < len; i++) {
-							if (data[i].segment1 && data[i].item_name) {
-								txt +=
-									"<tr><td>" +
-									data[i].segment1 +
-									"</td><td>" +
-									data[i].item_name +
-									"</td><td>" +
-									data[i].no_body +
-									"</td><td>" +
-									data[i].no_engine +
-									"</td></tr>";
-							}
+		$.post("CustomerRelationship/Search/Ownership", { id: id, cust: cust }, function (data) {
+			if (data) {
+				data = $.parseJSON(data); //change to json array cause data is in string
+				var len = data.length;
+				var txt = "";
+				if (len > 0) {
+					for (var i = 0; i < len; i++) {
+						if (data[i].segment1 && data[i].item_name) {
+							txt += "<tr><td>" + data[i].segment1 + "</td><td>" + data[i].item_name + "</td><td>" + data[i].no_body + "</td><td>" + data[i].no_engine + "</td></tr>";
 						}
-						/*$.each(data, function(k, v) {
+					}
+					/*$.each(data, function(k, v) {
 							$.each(v, function(key, value) {
 								$('tbody#result').append("<tr><td>"+key+"</td><td>"+value+"</td></tr>");
 							})
 						})*/
-						//alert(JSON.stringify(data[1].segment1));
-						alert(txt);
-						if (txt != "") {
-							$("tbody#result").append(txt);
-						}
+					//alert(JSON.stringify(data[1].segment1));
+					alert(txt);
+					if (txt != "") {
+						$("tbody#result").append(txt);
 					}
 				}
 			}
-		);
+		});
 	}
 }
 
@@ -929,9 +825,7 @@ function checkPass() {
 		$("#btnUser").prop("disabled", false);
 	} else {
 		if (o == 0) {
-			$("div#divPassCheck").after(
-				"<span id='statusPass'><b>Password didn't match.</b></span>"
-			);
+			$("div#divPassCheck").after("<span id='statusPass'><b>Password didn't match.</b></span>");
 		} else {
 			$("span#statusPass").html("<b>Password didn't match.</b>");
 		}
@@ -944,10 +838,7 @@ function checkSave() {
 	$("#tbodyUserResponsibility")
 		.find("select")
 		.each(function () {
-			if (
-				($(this).val() === null || $(this).val() === "") &&
-				!$(this).parents("tr").hasClass("error-save")
-			) {
+			if (($(this).val() === null || $(this).val() === "") && !$(this).parents("tr").hasClass("error-save")) {
 				$(this).parents("tr").addClass("error-save bg-warning-important");
 			}
 		});
@@ -1048,61 +939,37 @@ $(document).ready(function () {
 			if (rowCount > 0 && $("input#txtConnectId").length < 1) {
 				$("#tblCallLines tbody tr").remove();
 
-				$.post(
-					base + "CustomerRelationship/Search/Ownership",
-					{ id: id, cust: cust },
-					function (data) {
-						if (data) {
-							data = $.parseJSON(data); //change to json array cause data is in string
-							var len = data.length;
-							var txt = "";
-							if (len > 0) {
-								for (var i = 0; i < len; i++) {
-									if (data[i].segment1 && data[i].item_name) {
-										txt +=
-											"<tr><td><input type='text' id='txtOwnership' name='txtOwnership[]' value='" +
-											data[i].segment1 +
-											"' class='form-control' readonly/>" +
-											"<input type='hidden' id='hdnOwnershipId' name='hdnOwnershipId[]' value='" +
-											data[i].customer_ownership_id +
-											"' /></td>" +
-											"<td><input type='text' id='txtItemDescription' name='txtItemDescription[]' value='" +
-											data[i].item_name +
-											"' class='form-control' readonly/></td>" +
-											"<td><input type='text' id='txtBody' name='txtBody[]' value='" +
-											data[i].no_body +
-											"' class='form-control' readonly/></td>" +
-											"<td><input type='text' id='txtEngine' name='txtEngine[]' value='" +
-											data[i].no_engine +
-											"' class='form-control' readonly/></td>" +
-											"<td><input type='text' id='txtUse' name='txtUse[]' class='form-control'/></td>" +
-											"</tr>";
-									}
+				$.post(base + "CustomerRelationship/Search/Ownership", { id: id, cust: cust }, function (data) {
+					if (data) {
+						data = $.parseJSON(data); //change to json array cause data is in string
+						var len = data.length;
+						var txt = "";
+						if (len > 0) {
+							for (var i = 0; i < len; i++) {
+								if (data[i].segment1 && data[i].item_name) {
+									txt += "<tr><td><input type='text' id='txtOwnership' name='txtOwnership[]' value='" + data[i].segment1 + "' class='form-control' readonly/>" + "<input type='hidden' id='hdnOwnershipId' name='hdnOwnershipId[]' value='" + data[i].customer_ownership_id + "' /></td>" + "<td><input type='text' id='txtItemDescription' name='txtItemDescription[]' value='" + data[i].item_name + "' class='form-control' readonly/></td>" + "<td><input type='text' id='txtBody' name='txtBody[]' value='" + data[i].no_body + "' class='form-control' readonly/></td>" + "<td><input type='text' id='txtEngine' name='txtEngine[]' value='" + data[i].no_engine + "' class='form-control' readonly/></td>" + "<td><input type='text' id='txtUse' name='txtUse[]' class='form-control'/></td>" + "</tr>";
+								}
+							}
+
+							$("input#txtUse").keypress(function (eve) {
+								if ((event.which != 46 || $(this).val().indexOf(".") != -1) && (event.which < 48 || event.which > 57)) {
+									eve.preventDefault();
 								}
 
-								$("input#txtUse").keypress(function (eve) {
-									if (
-										(event.which != 46 || $(this).val().indexOf(".") != -1) &&
-										(event.which < 48 || event.which > 57)
-									) {
-										eve.preventDefault();
+								// this part is when left part of number is deleted and leaves a . in the leftmost position. For example, 33.25, then 33 is deleted
+								$("input#txtUse").keyup(function (eve) {
+									if ($(this).val().indexOf(".") == 0) {
+										$(this).val($(this).val().substring(1));
 									}
-
-									// this part is when left part of number is deleted and leaves a . in the leftmost position. For example, 33.25, then 33 is deleted
-									$("input#txtUse").keyup(function (eve) {
-										if ($(this).val().indexOf(".") == 0) {
-											$(this).val($(this).val().substring(1));
-										}
-									});
 								});
+							});
 
-								if (txt != "") {
-									$("tbody#result").append(txt);
-								}
+							if (txt != "") {
+								$("tbody#result").append(txt);
 							}
 						}
 					}
-				);
+				});
 			}
 		}
 	}
@@ -1663,9 +1530,7 @@ $(document).ready(function () {
 			dataType: "json",
 			type: "GET",
 			data: function (params) {
-				var val =
-					$("select#slcIo option:selected").val() ||
-					$("select#slcIoInterOrg option:selected").val();
+				var val = $("select#slcIo option:selected").val() || $("select#slcIoInterOrg option:selected").val();
 				var queryParameters = {
 					term: params.term,
 					term2: val,

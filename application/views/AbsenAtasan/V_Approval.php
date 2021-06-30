@@ -32,18 +32,7 @@
 
 
 						 ?>">
-							<img src="<?php 
-
-							if (base_url()=='http://erp.quick.com/')
-								{
-									echo str_replace('182.23.18.195','erp.quick.com',$dataEmployee[0]['gambar']);
-								}
-								else
-								{
-									echo $dataEmployee[0]['gambar'];
-								}
-
-							?>" style="width: 300px;height: 300px;margin-bottom: 15px;"/> 
+							<img src="<?= $gambar ?>" style="width: 300px;height: 300px;margin-bottom: 15px;"/> 
 						</a>
 				</div>
 			</div>
@@ -179,6 +168,11 @@
 				<?php endif ?>
 				<div class="col-sm-2" align="center" style="margin: 7px">
 					<a id="btnCetak" class="btn btn-info btn-block" href="<?php echo base_url('AbsenAtasan/List/cetakApproval/'.$dataEmployee[0]['absen_id']); ?>" ><i class="fa fa-print"></i>   Cetak</a>
+				</div>
+				<div class="col-sm-12">
+					<?php if ($dataEmployee[0]['status'] !=1 && $dataEmployee[0]['status'] !=2 &&  isset($pres)): ?>
+						<label style="color: red;">* <?= $pres; ?></label>
+					<?php endif ?>
 				</div>
 			</div>
 		</div>

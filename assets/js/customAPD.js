@@ -47,11 +47,14 @@ $("#group_add").click(function (e) {
 				},
 				cache: true,
 			},
-			minimumInputLength: 2,
+			minimumInputLength: 0,
 			placeholder: "Select Item",
 			allowClear: true,
 		});
 	}
+
+	// initialize tippy again
+	tippyInit();
 });
 
 $(document).on("click", ".group_rem", function (e) {
@@ -62,6 +65,20 @@ $(document).on("click", ".group_rem", function (e) {
 		alert("Minimal harus ada satu baris tersisa");
 	}
 });
+
+function tippyInit() {
+	// Popup
+	return tippy("[tippy-title]", {
+		onCreate(instance) {
+			tippyku = instance;
+		},
+		content(ref) {
+			const title = ref.getAttribute("tippy-title");
+			return title;
+		},
+		allowHTML: true,
+	});
+}
 
 $("#group_add2").click(function (e) {
 	var d = new Date();
@@ -107,11 +124,14 @@ $("#group_add2").click(function (e) {
 				},
 				cache: true,
 			},
-			minimumInputLength: 2,
+			// minimumInputLength: 0,
 			placeholder: "Select Item",
 			allowClear: true,
 		});
 	}
+
+	// initialize tippy again
+	tippyInit();
 });
 
 $(function () {
@@ -155,7 +175,7 @@ $(function () {
 			},
 			cache: true,
 		},
-		minimumInputLength: 2,
+		// minimumInputLength: 0,
 		placeholder: "Select Item",
 		allowClear: true,
 	});
@@ -356,6 +376,11 @@ $("#tanggal").datepicker({
 });
 
 $("input.p2k3_tanggal_periode").monthpicker({
+	changeYear: true,
+	dateFormat: "mm - yy",
+});
+
+$("input.p2k3_tanggal_periodeUnlimited").monthpicker({
 	changeYear: true,
 	dateFormat: "mm - yy",
 });
@@ -744,6 +769,42 @@ $(document).ready(function () {
 		});
 	});
 
+	$(".p2k3_detail_seksi_hitung").click(function () {
+		var ks = $(this).val();
+		var periodehitung = $(".p2k3_tanggal_periode").val();
+		$("#surat-loading").attr("hidden", false);
+		$.ajax({
+			url: baseurl + "p2k3adm_V2/Admin/getDetailSeksi",
+			method: "POST",
+			data: {
+				ks: ks,
+				pr: periodehitung,
+			},
+			success: function (data) {
+				$("#phone_result_seksi_hitung").html(data);
+				$("#surat-loading").attr("hidden", true);
+				$("#p2k3_detail_seksi_hitung").modal("show");
+				const table = $("#tbl_detailHitungOrderSeksi").DataTable({
+					dom: "frtp",
+					scrollX: true,
+					scrollY: 400,
+					paging: false,
+					ordering: false,
+					initComplete() {
+						setTimeout(() => {
+							$($.fn.dataTable.tables(true)).DataTable().columns.adjust();
+						}, 800);
+					},
+				});
+			},
+			error: function () {
+				$("#phone_result_seksi_hitung").html('Data Masih Kosong Pada Bulan Tersebut');
+				$("#surat-loading").attr("hidden", true);
+				$("#p2k3_detail_seksi_hitung").modal("show");
+			},
+		});
+	});
+
 	$(".p2k3_cek_hitung").click(function () {
 		var pr = $(".p2k3_tanggal_periode").val();
 		var ks = $(".k3_admin_monitorbon").val();
@@ -1086,12 +1147,20 @@ function pad(d) {
 
 //Kecelakaan Kerja
 $(document).ready(function () {
+
+	$("#apdtblmkk").DataTable({
+		scrollX: true,
+		fixedColumns: {
+			leftColumns: 3,
+		},
+	});
 	getPekerjaTpribadi("#apdslcpic");
 
 	$("#apdslcpkj").change(function () {
 		var noind = $(this).val();
 		var tglKec = $('#apdinptglkc').val()
 		if (noind == null) return;
+
 		$("#surat-loading").attr("hidden", false);
 		$.ajax({
 			type: "get",
@@ -1123,6 +1192,7 @@ $(document).ready(function () {
 			return false;
 		}
 		$("#surat-loading").attr("hidden", false);
+
 
 		$.ajax({
 			type: "get",
@@ -1192,7 +1262,6 @@ $(document).ready(function () {
 			},
 			success: function (response) {
 				var data = JSON.parse(response);
-				console.log(data)
 				if (data["success"] == "1") {
 					// $('[name="range1"]').val(data['ket1']);
 					// $('[name="range2"]').val(data['ket2']);
@@ -1370,6 +1439,12 @@ $(document).ready(function () {
 		minViewMode: "years",
 	});
 
+
+	$("#apdmkkbyyear").click(function () {
+		var y = $("#apd_yearonly").val();
+		window.location.replace(baseurl + "p2k3adm_V2/Admin/monitoringKK?y=" + y);
+	});
+
 	$(".apd_delbonspt").click(function () {
 		var id = $(this).val();
 		$("#apd_mdldelspt").find("#apd_btnsubdelspt").val(id);
@@ -1392,7 +1467,6 @@ function InitK3kForm() {
 	$(document).on("ifChanged", "input", function () {
 		changed = true;
 	});
-
 	$("#apdbtnupdatemkk").click(function () {
 		changed = false;
 	});
@@ -1487,6 +1561,10 @@ $(document).ready(function () {
 			}
 		});
 	});
+
+	$(".apd_slccostc").select2({
+		placeholder: "Pilih Seksi Pemakai",
+	});
 });
 
 function showSwal(d) {
@@ -1499,3 +1577,21 @@ function showSwal(d) {
 		},
 	});
 }
+
+$(document).ready(function () {
+	$('.tbl_periodeSafetyShoes').DataTable();
+
+	$(".btn_editPeriodeSafetyShoes").click(function () {
+		var kodesie = $(this).closest("tr").find("td.ess_kodesie").text();
+		var seksi = $(this).closest("tr").find("td.ess_seksi").text();
+		var periode = $(this).closest("tr").find("td.ess_periode").text();
+
+		$("#editSafetyShoes_Kodesie").val(kodesie.substring(0, 7));
+		$("#editSafetyShoes_Kodesie2").val(kodesie);
+		$("#editSafetyShoes_Seksi").val(seksi);
+		$("#editSafetyShoes_Periode").val(periode);
+		$("#editSafetyShoes_Modal").modal("show");
+	});
+
+	$('.apd_slcBasic').select2();
+});

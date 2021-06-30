@@ -21,6 +21,7 @@
                 <th class="text-center">Produk</th>
                 <th class="text-center">Sarana Handling</th>
                 <th class="text-center">Seksi</th>
+                <th class="text-center">Rev. by</th>
                 <th class="text-center">View</th>
                 <th class="text-center">Action</th>
 
@@ -46,6 +47,7 @@
                     } ?>
                     <td class="text-center" style="color: <?= $color ?>;font-weight:<?= $bold ?>;"><?= $data['sarana'] ?></td>
                     <td class="text-center"><?= $data['seksi'] ?></td>
+                    <td class="text-center"><?= $data['last_update_by'].' - '.$data['nama_pic'].'<br>'.$data['seksi_pic'] ?></td>
                     <td class="text-center"><a onclick="imgcarousel(<?= $data['id_handling'] ?>)" class="btn btn-default btn-xs">Foto</a> <a onclick="proseshandling(<?= $data['id_handling'] ?>)" class="btn btn-warning btn-xs">proses</a></td>
                     <td class="text-center"><button type="submit" formaction="<?php echo base_url('DbHandling/MonitoringHandling/detaildatahandling/' . $data['id_handling']); ?>" class="btn btn-success btn-xs">Detail</button></td>
 

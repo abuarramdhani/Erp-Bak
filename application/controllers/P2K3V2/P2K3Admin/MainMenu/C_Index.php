@@ -138,10 +138,10 @@ class C_Index extends CI_Controller
 			$baru = $cek_terbaru[0]['tgl_approve_tim'];
 		}
 		$data['list'] = $this->M_dtmasuk->getListAprove($ks, $baru);
-		$data['daftar_pekerjaan']	= $this->M_order->daftar_pekerjaan($ks);
-		$data['seksi'] = $this->M_dtmasuk->cekseksi($ks);
 		// echo "<pre>";
 		// print_r($data['list']);exit();
+		$data['daftar_pekerjaan']	= $this->M_order->daftar_pekerjaan($ks);
+		$data['seksi'] = $this->M_dtmasuk->cekseksi($ks);
 
 		$this->load->view('V_Header', $data);
 		$this->load->view('V_Sidemenu', $data);
@@ -260,6 +260,10 @@ class C_Index extends CI_Controller
 			// echo "<pre>";
 			foreach ($data['toHitung'] as $key) {
 				$kode = $key['item_kode'];
+				$moq = $this->M_dtmasuk->getMoq($kode)['MINIMUM_ORDER_QUANTITY'];
+				if (empty($moq)) {
+					$moq = 1;
+				}
 				$stok = $this->M_dtmasuk->stokOracle($kode, 'PNL-DM');
 				$po = $this->M_dtmasuk->OutstandingPO($kode);
 				$totalPO = 0;
@@ -267,7 +271,7 @@ class C_Index extends CI_Controller
 				$poarr = array();
 				if (!empty($po)) {
 					foreach ($po as $p) {
-						if (substr($p['PO_NUM'], 0, 2) == substr(date('Y'), 0, 2) && $p['LOCATION_CODE'] == 'PNL-DM') {
+						if (substr($p['PO_NUM'], 0, 2) == substr(date('Y'), 2, 2) && $p['LOCATION_CODE'] == 'PNL-DM') {
 							$totalPO += $p['OUTSTANDING_PO_QTY'];
 							$poarr[] = $p['PO_NUM'];
 						}
@@ -282,8 +286,15 @@ class C_Index extends CI_Controller
 				$key['outBon'] = $out;
 				$key['stokg'] = $stok;
 
+				$lnobon = $key['list_no_bon'];
+				if (empty($lnobon)) {
+					$key['transact'] = 0;
+				} else {
+					$key['transact'] = $this->M_dtmasuk->getttlTransactAPD($lnobon, $kode, $pr);
+				}
+
 				$jpp = ceil(($a * 1.1) + $out - $stok - $totalPO);
-				$key['jpp'] = ($jpp < 0) ? 0 : $jpp;
+				$key['jpp'] = ($jpp < 0) ? 0 : ceil($jpp / $moq) * $moq;
 
 				$new[] = $key;
 				$data['toHitung'] = $new;
@@ -293,6 +304,10 @@ class C_Index extends CI_Controller
 			foreach ($data['toHitung2'] as $row) {
 				$kode = $row['item_kode'];
 				//tks saat ini 2 gudang
+				$moq = $this->M_dtmasuk->getMoq($kode)['MINIMUM_ORDER_QUANTITY'];
+				if (empty($moq)) {
+					$moq = 1;
+				}
 				$stok = $this->M_dtmasuk->stokOracle($kode, "PNL-TKS");
 				$stok += $this->M_dtmasuk->stokOracle($kode, "PNL-NPR");
 				$po = $this->M_dtmasuk->OutstandingPO($kode);
@@ -301,7 +316,7 @@ class C_Index extends CI_Controller
 				$poarr = array();
 				if (!empty($po)) {
 					foreach ($po as $p) {
-						if (substr($p['PO_NUM'], 0, 2) == substr(date('Y'), 0, 2) && ($p['LOCATION_CODE'] == 'PNL-TKS' || $p['LOCATION_CODE'] == 'PNL-NPR')) {
+						if (substr($p['PO_NUM'], 0, 2) == substr(date('Y'), 2, 2) && ($p['LOCATION_CODE'] == 'PNL-TKS' || $p['LOCATION_CODE'] == 'PNL-NPR')) {
 							$totalPO += $p['OUTSTANDING_PO_QTY'];
 							$poarr[] = $p['PO_NUM'];
 						}
@@ -316,8 +331,15 @@ class C_Index extends CI_Controller
 				$row['outBon'] = $out;
 				$row['stokg'] = $stok;
 
+				$lnobon = $key['list_no_bon'];
+				if (empty($lnobon)) {
+					$row['transact'] = 0;
+				} else {
+					$row['transact'] = $this->M_dtmasuk->getttlTransactAPD($lnobon, $kode, $pr);
+				}
+
 				$jpp = ceil(($a * 1.1) + $out - $stok - $totalPO);
-				$row['jpp'] = ($jpp < 0) ? 0 : $jpp;
+				$row['jpp'] = ($jpp < 0) ? 0 : ceil($jpp / $moq) * $moq;
 
 				$new2[] = $row;
 				$data['toHitung2'] = $new2;
@@ -687,8 +709,9 @@ class C_Index extends CI_Controller
 		$umum = $this->input->post('txtkebUmum');
 		$staff = $this->input->post('txtkebStaff');
 		$jumlah = $this->input->post('p2k3_isk_standar');
+		$keterangan = $this->input->post('keterangan');
+		$lampiran = $this->input->post('lampiran');
 		$tgl_input = date('Y-m-d H:i:s');
-
 		// implode kdpekerjaan
 		foreach ($daftar_pekerjaan as $key) {
 			$kd[] = $key['kdpekerjaan'];
@@ -718,6 +741,8 @@ class C_Index extends CI_Controller
 				'approve_tim_by'	=>	$noind,
 				'jml_kebutuhan_umum'	=>	$itemUmum,
 				'jml_kebutuhan_staff'	=>	$itemStaf,
+				'keterangan' => $keterangan[$i],
+				'lampiran'	=> str_replace(' ', '_', $_FILES['lampiran']['name'][$i])
 			);
 			$a += count($daftar_pekerjaan);
 			//insert to sys.t_log_activity
@@ -727,7 +752,48 @@ class C_Index extends CI_Controller
 			//
 			$input = $this->M_order->save_standar($data);
 		}
+
+		$this->load->library('upload');
+		if (!is_dir('./assets/upload/P2K3DocumentApproval')) {
+			mkdir('./assets/upload/P2K3DocumentApproval', 0777, true);
+			chmod('./assets/upload/P2K3DocumentApproval', 0777);
+		}
+
+		$cpt = count($_FILES['lampiran']['name']);
+		// echo $cpt;
+		$arrayName = array();
+		$files = $_FILES;
+		for ($i = 0; $i < $cpt; $i++) {
+			$filename = $files['lampiran']['name'][$i];
+			if (empty($filename)) continue;
+
+			$_FILES['lampiran']['name'] = str_replace(' ', '_', $files['lampiran']['name'][$i]);
+			$arrayName[] = $_FILES['lampiran']['name'];
+			$_FILES['lampiran']['type'] = $files['lampiran']['type'][$i];
+			$_FILES['lampiran']['tmp_name'] = $files['lampiran']['tmp_name'][$i];
+			$_FILES['lampiran']['error'] = $files['lampiran']['error'][$i];
+			$_FILES['lampiran']['size'] = $files['lampiran']['size'][$i];
+
+			$this->upload->initialize($this->init_config());
+			if ($this->upload->do_upload('lampiran')) {
+				$this->upload->data();
+			} else {
+				$errorinfo = $this->upload->display_errors();
+				echo $errorinfo;
+				exit();
+			}
+		}
 		redirect('p2k3adm_V2/Admin/inputStandarTIM');
+	}
+
+	function init_config()
+	{
+		$config = array();
+		$config['upload_path'] = 'assets/upload/P2K3DocumentApproval';
+		$config['allowed_types'] = 'pdf';
+		$config['overwrite']     = 1;
+
+		return $config;
 	}
 
 	public function saveInputOrder()
@@ -1711,7 +1777,6 @@ class C_Index extends CI_Controller
 				$lampiran_list[] = $actualFilename;
 			}
 		}
-
 		$tgl_car = $this->input->post('tgl_car') ?: null;
 		$pic = $this->input->post('pic') ?: null;
 		$target_car = $this->input->post('target_car') ?: null;
@@ -1859,7 +1924,6 @@ class C_Index extends CI_Controller
 
 		try {
 			if (!$this->isAdmin) throw new Exception("Anda tidak berwenang untuk menghapus data ini");
-
 			$this->M_dtmasuk->delK3K('k3.k3k_kecelakaan', $id);
 			$this->M_dtmasuk->delK3K('k3.k3k_bagian_tubuh', $id);
 			$this->M_dtmasuk->delK3K('k3.k3k_faktor_kecelakaan', $id);
@@ -1907,6 +1971,7 @@ class C_Index extends CI_Controller
 
 		$data['kategori'] = $this->M_dtmasuk->getAllk3k('k3.k3k_kategori_kecelakaan', $id);
 		$data['kategoric'] = array_column($data['kategori'], 'kategori');
+
 
 		$data['apd'] = $this->M_dtmasuk->getAllk3k('k3.k3k_penggunaan_apd', $id);
 		$data['apdc'] = array_column($data['apd'], 'penggunaan_apd');
@@ -2020,6 +2085,7 @@ class C_Index extends CI_Controller
 		$jenis_pekerjaan = $this->input->post('jenis_pekerjaan') ?: null;
 		$kasus = $this->input->post('kasus');
 		$kronologi = $this->input->post('kronologi');
+
 		$kondisi = $this->input->post('kondisi');
 		$penyebab = $this->input->post('penyebab');
 		$tindakan = $this->input->post('tindakan');
@@ -3272,6 +3338,12 @@ class C_Index extends CI_Controller
 		// $objWriter->writeAttribute('val', "low");
 		// $objWriter->setIncludeCharts(TRUE); // This method is not exist
 		$objWriter->save('php://output');
+		$objWriter->setIncludeCharts(TRUE);
+		$objWriter->save('php://output');
+
+		//help im lost my mind :( this export is insane
+		//dont forget to drink :) love ya
+
 	}
 
 	public function pdf_monitoringKK()
@@ -3334,6 +3406,8 @@ class C_Index extends CI_Controller
 			else $m = $i;
 			$d[] = $this->M_dtmasuk->getTtlLoker('', $tahun . '-' . $m);
 		}
+
+
 
 		for ($i = 1; $i <= 12; $i++) {
 			if ($i < 10) $m = '0' . $i;
@@ -3770,6 +3844,7 @@ class C_Index extends CI_Controller
 	public function getlaka($tahun)
 	{
 		$x = 0;
+
 		if ($tahun == date('Y')) {
 			$x = date('m');
 		}
@@ -3779,6 +3854,7 @@ class C_Index extends CI_Controller
 
 			$tm = "$tahun-$m-01";
 			$tm2 = "$tahun-$m";
+
 
 			$tgl = date('Y-m-t', strtotime($tm));
 			$t1[] = $this->M_dtmasuk->getRekapLaka($tgl, '01');
@@ -3822,5 +3898,160 @@ class C_Index extends CI_Controller
 		$data['chart'] = $this->clearXMLTag($graph->fetch($type));
 
 		return $data;
+	}
+
+	public function getDetailSeksi()
+	{
+		$ks = $this->input->post('ks');
+		$pr = $this->input->post('pr');
+		$m = substr($pr, 0, 2);
+		$y = substr($pr, 5, 5);
+		$pr = $y . '-' . $m;
+
+		if (isset($ks) and !empty($ks)) {
+			$baru = '1999-01-01 01:10:10';
+			$cek_terbaru = $this->M_dtmasuk->cek_terbaru($ks);
+			if (!isset($cek_terbaru) || !empty($cek_terbaru)) {
+				$baru = $cek_terbaru[0]['tgl_approve_tim'];
+			}
+			$data = $this->M_dtmasuk->getListAprove($ks, $baru);
+			$getorder = $this->M_order->getTglInputOrder($ks, $pr);
+			$tglinput = $getorder->tgl_input;
+			echo '<p>Tanggal Order : ' . $tglinput . '</p>';
+			echo '<p style = "color : red;">Merah : Pekerja keluar setelah tanggal order</p>';
+			echo '<p style = "color : blue;">Biru   : Pekerja masuk setelah tanggal order</p>';
+			$getPekerja = $this->M_order->getPekerjaforDetail($ks, $tglinput);
+			if (empty($getPekerja)) {
+				echo '<center><ul class="list-group"><li class="list-group-item">' . 'Kosong' . '</li></ul></center>';
+			} else {
+				echo '
+				<div class="table-responsive">
+				<table id="tbl_detailHitungOrderSeksi" class="table table-bordered table-striped">
+				<thead>
+					<tr>
+						<th width="3%">No</th>
+						<th width="5%">Noind</th>
+						<th width="10%">Nama</th>
+						<th width="10%">Pekerjaan</th>';
+				foreach ($data as $key => $value) {
+					echo '<th>' . $value['item'] . '</th>';
+				}
+
+				echo '</tr></thead>';
+				$i = 2;
+				echo '
+				<tbody>
+				<tr>
+				<td>1</td>
+				<td>-</td>
+				<td>-</td>
+				<td>KEBUTUHAN UMUM</td>
+				';
+				foreach ($data as $key => $value) {
+					echo '<td>' . $value['jml_kebutuhan_umum'] . '</td>';
+				}
+				echo '</tr>';
+				foreach ($getPekerja as $key) {
+					echo '
+					<tr>
+						<td style="color : ' . $key["color"] . ';">' . $i . '</td>
+						<td style="color : ' . $key["color"] . ';">' . $key["noind"] . '</td>
+						<td style="color : ' . $key["color"] . ';">' . $key["nama"] . '</td>
+						<td style="color : ' . $key["color"] . ';">' . $key["pekerjaan"] . '</td>';
+					foreach ($data as $key2 => $val) {
+						$explode = explode(",", $val['kd_pekerjaan']);
+						$explode2 = explode(",", $val['jml_item']);
+						foreach ($explode as $key3 => $valkode) {
+							foreach ($explode2 as $key4 => $valjml) {
+								if ($valkode == $key['kdpekerjaan'] && $key3 == $key4 && $valkode != null) {
+									echo '<td style="color : ' . $key['color'] . ';">';
+									echo $key['color'] != 'blue' ? $valjml : '0' . '</td>';
+								}
+							}
+						}
+						if ($key['pekerjaan'] == 'STAFF') {
+							echo '<td style="color : ' . $key['color'] . ';">';
+							echo  $key['color'] != 'blue' ? $val['jml_kebutuhan_staff'] : '0' . '</td>';
+						}
+					}
+					$i++;
+					echo '</tr>';
+				}
+				echo '</tbody>';
+				echo '<tfoot><tr>
+				<td> </td>			
+				<td> </td>			
+				<td> </td>			
+				<td>Jumlah</td>';
+				foreach ($data as $key => $val) {
+					$total = 0;
+					$b = 0;
+					$explode = explode(",", $val['kd_pekerjaan']);
+					$explode2 = explode(",", $val['jml_item']);
+					foreach ($getPekerja as $key) {
+						foreach ($explode as $key3 => $valkode) {
+							foreach ($explode2 as $key4 => $valjml) {
+								if ($valkode == $key['kdpekerjaan'] && $key3 == $key4) {
+									$key['color'] == 'blue' ? $total - $valjml : $total += $valjml;
+								}
+							}
+						}
+						if ($key['pekerjaan'] == 'STAFF') {
+							$key['color'] == 'blue' ? $b - $val['jml_kebutuhan_staff'] : $b += $val['jml_kebutuhan_staff'];
+						}
+					}
+					$sum = $total + $b + $val['jml_kebutuhan_umum'];
+					echo '<td>' . round($sum) . '</td>';
+				}
+				echo '</tr></tfoot></table>
+				</div>';
+			}
+		} else {
+			echo '<center><ul class="list-group"><li class="list-group-item">' . 'Kodesie tidak ditemukan' . '</li></ul></center>';
+		}
+	}
+
+	public function PeriodeSafetyShoes()
+	{
+		$user1 = $this->session->user;
+		$user_id = $this->session->userid;
+		$kodesie = $this->session->kodesie;
+
+		$data['Title'] = 'Setup';
+		$data['Menu'] = 'Setup';
+		$data['SubMenuOne'] = 'Periode Safety Shoes';
+		$data['SubMenuTwo'] = '';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
+
+		$data['lseksi'] = $this->M_dtmasuk->getSeksiNotPeriode();
+
+		$data['periode'] = $this->M_dtmasuk->GetPeriodeSepatu();
+		$this->load->view('V_Header', $data);
+		$this->load->view('V_Sidemenu', $data);
+		$this->load->view('P2K3V2/P2K3Admin/APD/V_Admin_Setup_Periode_SafetyShoes', $data);
+		$this->load->view('V_Footer', $data);
+	}
+
+	public function EditPeriodeSafetyShoes()
+	{
+		$kodesie = $this->input->post('kodesie');
+		$periode = $this->input->post('periode');
+		$this->M_dtmasuk->UpdatePeriodeSepatu($kodesie, $periode);
+		redirect('p2k3adm_V2/Admin/PeriodeSafetyShoes');
+	}
+
+	public function AddPeriodeSafetyShoes()
+	{
+		$kodesie = $this->input->post('kodesie');
+		$periode = $this->input->post('periode');
+		$arr = [
+			'kodesie'	=>	$kodesie,
+			'periode'	=>	$periode,
+		];
+		$this->M_dtmasuk->addPeriodeSepatu($arr);
+		redirect('p2k3adm_V2/Admin/PeriodeSafetyShoes');
 	}
 }

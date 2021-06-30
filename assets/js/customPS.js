@@ -113,6 +113,8 @@ function delete_flow(id) {
 		showCancelButton: true,
 		confirmButtonText: 'Delete',
 		cancelButtonText: 'Cancel',
+		allowOutsideClick: false,
+		allowEscapeKey: false,
 		reverseButtons: true
 	}).then(function(isConfirm) {
 			if (isConfirm.value === true) {
@@ -150,10 +152,84 @@ function delete_flow(id) {
 }
 
 function link_ps(id) {
-	var a = $("#fp_lilola"+id).attr('href');
-	var str = a.replace(/[\s\&]/g, "_");
-	$("#fp_lilola"+id).attr('href',str);
+	var data2 = $("#fp_lilola"+id).attr('kkk');
+	var link2 = data2.split('-');
+	var data = $("#fp_lilola"+id).attr('data-id');
+	var str = data.replace(/[\s\&]/g, "_");
+	var link = str.split('=');
+		var	typelink = link[1].split('.');
+		var b	= typelink.length;
+		
+		if (typelink[b-1] === 'mp4' || typelink[b-1] === 'avi' || typelink[b-1] === 'mp3' || typelink[b-1] === 'AVI') {
+			var types = "Download Video";
+		}else{
+			var types = "View File";
+		}
+	if (link2[0]) {
+		Swal.fire({
+			title: 'QR Code ?',
+			type: 'warning',
+			showCancelButton: true,
+			confirmButtonText: 'Scan QR Code',
+			cancelButtonText: types,
+			reverseButtons: true
+		}).then(function(isConfirm) {
+			if (isConfirm.value === true && link[1] !== "") {
+				Swal.fire({
+					imageUrl: baseurl+'assets/upload/PengembanganSistem/fp/'+link[0]+'.png',
+					text: 'Scan QR code barcode!',
+					imageHeight: 200,
+					imageWidth: 200,
+					imageClass:'img-responsive rounded-circle',
+					allowOutsideClick: false,
+					allowEscapeKey: false,
+					animation: false  
+				});
+			}else if (isConfirm.dismiss === "cancel" && link[1] !== "") {
+				window.open(baseurl+link[1], '_blank');
+			}else if (isConfirm.dismiss === "backdrop") {
+				;
+			} else {
+				Swal.fire({
+					type: 'error',
+					title: 'Data Kosong',
+					text: 'File belum di upload !',
+					allowOutsideClick: false,
+					allowEscapeKey: false,
+				});
+	
+			}
+		})
+	} else {
+		Swal.fire({
+			type: 'error',
+			title: 'ID Anda Tidak Memiliki Hak Akses !!',
+		});
+	}
 };
+
+$(document).on('change','#numberflow', function() {
+	var stdnumber = $(this).val();
+	$.ajax({
+		type: "POST",
+		url: baseurl+"DokumenUnit/cek_nomor_flow",
+		data: {
+			stdnumber : stdnumber,
+		},
+		dataType: "JSON",
+		success: function (response) {
+			if (response > 0) {
+				if (confirm('Data dengan nomor tersebut sudah pernah diinput.')) {
+					$("#numberflow").val()
+				} else {
+					
+				}
+			}else{
+				
+			}
+		}
+	});
+})
 
 //COPWI
 
@@ -165,6 +241,8 @@ function delete_cop_wi(id) {
 		showCancelButton: true,
 		confirmButtonText: 'Delete',
 		cancelButtonText: 'Cancel',
+		allowOutsideClick: false,
+		allowEscapeKey: false,
 		reverseButtons: true
 	}).then(function(isConfirm) {
 			if (isConfirm.value === true) {
@@ -213,6 +291,12 @@ $("#nomor_sop_cw").change(function(){
 		$("#nomor_sop_cw").val(number_rev);
 })
 
+$("#nomor_sop").change(function(){
+	var number = $("#nomor_sop_cw").val();
+	var number_rev = (number>9)?(number>99)?number:''+number:'0'+number;
+		$("#nomor_sop_cw").val(number_rev);
+})
+
 $("#seksi_copwi_ps").change(function(){
 	var seksicop = $("#seksi_copwi_ps").val();
 	var doc_copwi = $("#cop_wi_cw").val();
@@ -232,8 +316,8 @@ $("#seksi_copwi_ps").change(function(){
 				success: function (data) {
 					if (data > 0) {
 						var plus = parseInt(data) + 1;
-						var y = (plus>9)?(plus<99)?plus:'0'+plus:'00'+plus;
-						$("#number_copwi_ps").val(doc_copwi+"-"+seksicop+"-"+doc_sop+"-"+y);
+						var x	= plus.toString().padStart(3,"0");
+						$("#number_copwi_ps").val(doc_copwi+"-"+seksicop+"-"+doc_sop+"-"+x);
 					}else{
 						$("#number_copwi_ps").val(doc_copwi+"-"+seksicop+"-"+doc_sop+"-001");
 					}
@@ -300,20 +384,24 @@ $("#number_copwi_ps").change(function() {
 	}
 })
 
-$(document).on('change','#number_copwi_ps', function() {
-	var datanum_cek_cw = $(this).val();
-
+$(document).on('change','#ceknumberdoc', function() {
+	var stdnumber = $(this).val();
 	$.ajax({
 		type: "POST",
-		url: baseurl+"PengembanganSistem/cek_nomor_cop_wi",
+		url: baseurl+"DokumenUnit/cek_number_cop_wi",
 		data: {
-			number_cw : datanum_cek_cw,
+			stdnumber : stdnumber,
 		},
 		dataType: "JSON",
-		success: function (data) {
-			if (data.length > 0) {
-				var numa = data[0].number_doc;
-				alert(numa);
+		success: function (response) {
+			if (response > 0) {
+				if (confirm('Data dengan nomor tersebut sudah pernah diinput.')) {
+					$("#ceknumberdoc").val()
+				} else {
+					
+				}
+			}else{
+				
 			}
 		}
 	});
@@ -328,7 +416,6 @@ $("#seksi_cw").change(function(){
 	var c3 = c[2];
 
 	$("#sop_cw").val(seksi_copwi);
-	// alert(hasil);
 	$.ajax({
 		type: "POST",
 		url: baseurl+"PengembanganSistem/cek_nomor_cop_wi",
@@ -341,7 +428,7 @@ $("#seksi_cw").change(function(){
 		success: function (data) {
 			if (data > 0) {
 				var plus = parseInt(data) + 1;
-				var y = (plus>9)?(plus<99)?plus:'0'+plus:'00'+plus;
+				var y	= plus.toString().padStart(3,"0");
 				$("#number_copwi_ps").val(c1+"-"+seksi_copwi+"-"+c3+"-"+y);
 			}else{
 				$("#number_copwi_ps").val(c1+"-"+seksi_copwi+"-"+c3+"-001");
@@ -371,7 +458,7 @@ $("#cop_wi_cw").change(function(){
 		success: function (data) {
 			if (data > 0) {
 				var plus = parseInt(data) + 1;
-				var y = (plus>9)?(plus<99)?plus:'0'+plus:'00'+plus;
+				var y	= plus.toString().padStart(3,"0");
 				$("#number_copwi_ps").val(cop_wi+"-"+seksi_copwi+"-"+c3+"-"+y);
 			}else{
 				$("#number_copwi_ps").val(cop_wi+"-"+seksi_copwi+"-"+c3+"-001");
@@ -416,7 +503,7 @@ $("#nomor_sop_cw").change(function() {
 			}else{
 				if (data > 0) {
 					var plus = parseInt(data) + 1;
-					var y = (plus>9)?(plus<99)?plus:'0'+plus:'00'+plus;
+					var y	= plus.toString().padStart(3,"0");
 					$("#number_copwi_ps").val(a+"-"+a1+"-"+a2+"-"+y);
 				}else{
 					$("#number_copwi_ps").val(a+"-"+a1+"-"+a2+"-001");
@@ -434,6 +521,16 @@ function nomor_cop_wi_ps() {
 	a[2] = number;
 	var b = a.join('-')
 	$("#number_copwi_ps").val(b);
+}
+
+function savedata() {
+	Swal.fire({
+		title: 'Please Wait !',
+		allowOutsideClick: false,
+		onBeforeOpen: () => {
+			Swal.showLoading()
+		},
+	});
 }
 
 function upload_file_cop(id) {
@@ -480,9 +577,60 @@ function upload_file_cop(id) {
 }
 
 function link_cop(id) {
-	var a = $("#cop_lilola"+id).attr('href');
-	var str = a.replace(/[\s\&]/g, "_");
-	$("#cop_lilola"+id).attr('href',str);
+	var data2 = $("#cop_lilola"+id).attr('kkk');
+	var link2 = data2.split('-');
+	var data = $("#cop_lilola"+id).attr('data-id');
+	var str = data.replace(/[\s\&]/g, "_");
+	var link = str.split('=');
+	var	typelink = link[1].split('.');
+	var b	= typelink.length;
+	
+		if (typelink[b-1] === 'mp4' || typelink[b-1] === 'avi' || typelink[b-1] === 'mp3' || typelink[b-1] === 'AVI') {
+			var types = "Download Video";
+		}else{
+			var types = "View File";
+		}
+	if (link2[0]) {
+		Swal.fire({
+			title: 'QR Code ?',
+			type: 'warning',
+			showCancelButton: true,
+			confirmButtonText: 'Scan QR Code',
+			cancelButtonText: types,
+			reverseButtons: true
+		}).then(function(isConfirm) {
+			if (isConfirm.value === true && link[1] !== "") {
+				Swal.fire({
+					imageUrl: baseurl+'assets/upload/PengembanganSistem/copwi/qrcop/'+link[0]+'.png',
+					text: 'Scan QR code barcode!',
+					imageHeight: 200,
+					imageWidth: 200,
+					imageClass:'img-responsive rounded-circle',
+					allowOutsideClick: false,
+					allowEscapeKey: false,
+					animation: false  
+				});
+			}else if (isConfirm.dismiss === "cancel" && link[1] !== "") {
+				window.open(baseurl+link[1], '_blank');
+			}else if (isConfirm.dismiss === "backdrop") {
+				;
+			} else {
+				Swal.fire({
+					type: 'error',
+					title: 'Data Kosong',
+					text: 'File belum di upload !',
+					allowOutsideClick: false,
+					allowEscapeKey: false,
+				});
+	
+			}
+		})
+	} else {
+		Swal.fire({
+			type: 'error',
+			title: 'ID Anda Tidak Memiliki Hak Akses !!',
+		});
+	}
 };
 
 $(function(){
@@ -506,12 +654,17 @@ $(function(){
 	});	
 });	
 
+function reset_date_jquery() {
+	$('.date_pengSistem').val('')
+	  .attr('type', 'text')
+  }
+
 function datepsfunction(){
 	$('.date_pengSistem').daterangepicker({
 		"singleDatePicker": true,
 		"showDropdowns": true,
-		"autoApply": true,
-		"mask": true,
+		"autoApply": false,
+		"mask": false,
 		"locale": {
 			"format": "DD-MM-YYYY",
 			"separator": " - ",
@@ -650,7 +803,9 @@ function notif_input_flow() {
 		var e = $("#number_rev-fp").val();
 		var f = $("#pic-fp").val();
 		var g = $("#status-fp").val();
+		var x = $("#numberflow").val();
 		$(".as").text(a);
+		$(".as").text(x);
 		$(".as").attr("style","text-align: center ; font: bold;");
 		$(".bs").text(b);
 		$(".bs").attr("style","text-align: center ; font: bold;");
@@ -676,11 +831,15 @@ function notif_edit_flow() {
 		var e = $("#number_rev-fp").val();
 		var f = $("#pic-fp").val();
 		var g = $("#status-fp").val();
+		var x = $("#numberflow").val();
+		var y = $("#seksi_fp option:selected").text();
+		$(".as").text(x);
 		$(".as").text(a);
 		$(".as").attr("style","text-align: center ; font: bold;");
 		$(".bs").text(b);
 		$(".bs").attr("style","text-align: center ; font: bold;");
 		$(".cs").text(c);
+		$(".cs").text(y);
 		$(".cs").attr("style","text-align: center ; font: bold;");
 		$(".ds").text(d);
 		$(".ds").attr("style","text-align: center ; font: bold;");
@@ -695,7 +854,6 @@ function notif_edit_flow() {
 
 function notif_input_cop_wi() {
 	$("#number_copwi_ps").ready(function(){
-		var a = $("#cop_wi_cw").val();
 		var b = $("#number_copwi_ps").val();
 		var c = $("#judulcw").val();
 		var d = $("#doc_cw").val();
@@ -707,26 +865,26 @@ function notif_input_cop_wi() {
 		var i = $("#pic-cw").val();
 		var j = $("#seksi_copwi_ps option:selected").text();
 		var k = $("#status-cw").val();
-		$(".ac").text(a);
+		var z = $("#ceknumberdoc").val();
+		$(".ac").text(z);
+		$(".ac").text(b);
 		$(".ac").attr("style","text-align: center ; font: bold;");
-		$(".bc").text(b);
+		$(".bc").text(c);
 		$(".bc").attr("style","text-align: center ; font: bold;");
-		$(".cc").text(c);
+		$(".cc").text(d);
 		$(".cc").attr("style","text-align: center ; font: bold;");
-		$(".dc").text(d);
+		$(".dc").text(e);
 		$(".dc").attr("style","text-align: center ; font: bold;");
-		$(".ec").text(e);
+		$(".ec").text(f);
 		$(".ec").attr("style","text-align: center ; font: bold;");
-		$(".fc").text(f);
+		$(".fc").text(x);
 		$(".fc").attr("style","text-align: center ; font: bold;");
-		$(".gc").text(x);
+		$(".gc").text(i);
 		$(".gc").attr("style","text-align: center ; font: bold;");
-		$(".hc").text(i);
+		$(".hc").text(j);
 		$(".hc").attr("style","text-align: center ; font: bold;");
-		$(".ic").text(j);
+		$(".ic").text(k);
 		$(".ic").attr("style","text-align: center ; font: bold;");
-		$(".jc").text(k);
-		$(".jc").attr("style","text-align: center ; font: bold;");
 	})
 }
 
@@ -744,8 +902,10 @@ function notif_edit_cop_wi() {
 		var i = $("#pic-cw").val();
 		var j = $("#seksi_cw option:selected").text();
 		var k = $("#status-cw").val();
+		var x = $("#ceknumberdoc").val();
 		$(".ac").text(a);
 		$(".ac").attr("style","text-align: center ; font: bold;");
+		$(".bc").text(x);
 		$(".bc").text(b);
 		$(".bc").attr("style","text-align: center ; font: bold;");
 		$(".cc").text(c);
@@ -917,6 +1077,29 @@ $(document).on('change','#number_um', function() {
 	});
 })
 
+$(document).on('change','#um-numberstd', function() {
+	var stdnumber = $(this).val();
+	$.ajax({
+		type: "POST",
+		url: baseurl+"DokumenUnit/user_manual/cek_nomor_um",
+		data: {
+			number_um : stdnumber,
+		},
+		dataType: "JSON",
+		success: function (response) {
+			if (response > 0) {
+				if (confirm('Data dengan nomor tersebut sudah pernah diinput.')) {
+					$("#numberflow").val()
+				} else {
+					
+				}
+			}else{
+				
+			}
+		}
+	});
+})
+
 function upload_file_um(id) {
 	var doc = $("#judul_doc_"+id).val().split('?');
 	var	 ida= doc[1];
@@ -961,9 +1144,60 @@ function upload_file_um(id) {
 }
 
 function link_um(id) {
-	var a = $("#um_lilola"+id).attr('href');
-	var str = a.replace(/[\s\&]/g, "_");
-	$("#um_lilola"+id).attr('href',str);
+	var data2 = $("#um_lilola"+id).attr('kkk');
+	var link2 = data2.split('-');
+	var data = $("#um_lilola"+id).attr('data-id');
+	var str = data.replace(/[\s\&]/g, "_");
+	var link = str.split('=');
+	var	typelink = link[1].split('.');
+	var b	= typelink.length;
+	
+		if (typelink[b-1] === 'mp4' || typelink[b-1] === 'avi' || typelink[b-1] === 'mp3' || typelink[b-1] === 'AVI') {
+			var types = "Download Video";
+		}else{
+			var types = "View File";
+		}
+	if (link2[0]) {
+		Swal.fire({
+			title: 'QR Code ?',
+			type: 'warning',
+			showCancelButton: true,
+			confirmButtonText: 'Scan QR Code',
+			cancelButtonText: types,
+			reverseButtons: true
+		}).then(function(isConfirm) {
+			if (isConfirm.value === true && link[1] !== "") {
+				Swal.fire({
+					imageUrl: baseurl+'assets/upload/PengembanganSistem/um/'+link[0]+'.png',
+					text: 'Scan QR code barcode!',
+					imageHeight: 200,
+					imageWidth: 200,
+					imageClass:'img-responsive rounded-circle',
+					allowOutsideClick: false,
+					allowEscapeKey: false,
+					animation: false  
+				});
+			}else if (isConfirm.dismiss === "cancel" && link[1] !== "") {
+				window.open(baseurl+link[1]+'#toolbar=0', '_blank');
+			}else if (isConfirm.dismiss === "backdrop") {
+				;
+			} else {
+				Swal.fire({
+					type: 'error',
+					title: 'Data Kosong',
+					text: 'File belum di upload !',
+					allowOutsideClick: false,
+					allowEscapeKey: false,
+				});
+	
+			}
+		})
+	} else {
+		Swal.fire({
+			type: 'error',
+			title: 'ID Anda Tidak Memiliki Hak Akses !!',
+		});
+	}
 };
 
 function notif_input_um() {
@@ -975,11 +1209,13 @@ function notif_input_um() {
 		var e = $("#number_rev-fp").val();
 		var f = $("#sop_um").val();
 		var g = $("#nomor_sop_um").val();
-		var x = 'SOP-'+f+'-'+g;
+		var y = 'SOP-'+f+'-'+g;
 		var h = $("#pic-um").val();
 		var i = $("#seksi_um option:selected").text();
 		var j = $("#status-um").val();
+		var x = $("#um-numberstd").val();
 		$(".am").text(a);
+		$(".am").text(x);
 		$(".am").attr("style","text-align: center ; font: bold;");
 		$(".bm").text(b);
 		$(".bm").attr("style","text-align: center ; font: bold;");
@@ -989,7 +1225,7 @@ function notif_input_um() {
 		$(".dm").attr("style","text-align: center ; font: bold;");
 		$(".em").text(e);
 		$(".em").attr("style","text-align: center ; font: bold;");
-		$(".fm").text(x);
+		$(".fm").text(y);
 		$(".fm").attr("style","text-align: center ; font: bold;");
 		$(".gm").text(h);
 		$(".gm").attr("style","text-align: center ; font: bold;");
@@ -1009,11 +1245,13 @@ function notif_edit_um() {
 		var e = $("#number_rev-fp").val();
 		var f = $("#sop_um").val();
 		var g = $("#nomor_sop_um").val();
-		var x = 'SOP-'+f+'-'+g;
+		var y = 'SOP-'+f+'-'+g;
 		var h = $("#pic-um").val();
 		var i = $("#seksi_um option:selected").text();
 		var j = $("#status-um").val();
+		var x = $("#um-numberstd").val();
 		$(".am").text(a);
+		$(".am").text(x);
 		$(".am").attr("style","text-align: center ; font: bold;");
 		$(".bm").text(b);
 		$(".bm").attr("style","text-align: center ; font: bold;");
@@ -1023,7 +1261,7 @@ function notif_edit_um() {
 		$(".dm").attr("style","text-align: center ; font: bold;");
 		$(".em").text(e);
 		$(".em").attr("style","text-align: center ; font: bold;");
-		$(".fm").text(x);
+		$(".fm").text(y);
 		$(".fm").attr("style","text-align: center ; font: bold;");
 		$(".gm").text(h);
 		$(".gm").attr("style","text-align: center ; font: bold;");
@@ -1431,11 +1669,14 @@ $("#waktu_selesai").change(function() {
 			var o = mulai.split(":");
 				if (o[0] == 14) {
 					z = 15;
-				}else{z = null};
+				}else{z = null}
+				if (o[0] == 12) {
+					z = 15;
+				};
 					var total = hmsToSeconds(selesai) - hmsToSeconds(mulai);
 			var perbedaan = Math.floor(total/60)-75+z;
 			$("#total_waktu").val(perbedaan);
-
+				console.log(z);
 
 			var target = $("#total_target").val();
 			var total = $("#total_waktu").val();
@@ -1674,6 +1915,8 @@ function delete_lkh(id) {
 			showCancelButton: true,
 			confirmButtonText: 'Delete',
 			cancelButtonText: 'Cancel',
+			allowOutsideClick: false,
+			allowEscapeKey: false,
 			reverseButtons: true
 		}).then(function(isConfirm) {
 				if (isConfirm.value === true) {
@@ -1781,6 +2024,8 @@ $("#tmbh_data").click(function() {
 		showCancelButton: true,
 		confirmButtonText: 'Submit',
 		cancelButtonText: 'Cancel',
+		allowOutsideClick: false,
+		allowEscapeKey: false,
 		reverseButtons: false
 		}).then(function(isConfirm) {
 			if (isConfirm.value === true) {
@@ -1886,7 +2131,9 @@ $("#view_seunt").click(function(){
 			+'</thead>'
 				+'<tbody>'
 				+'</tbody>'
-			+'</table>'
+			+'</table>',
+			allowOutsideClick: false,
+			allowEscapeKey: false,
 		})
 	});
 
@@ -1898,6 +2145,8 @@ $("#view_seunt").click(function(){
 				showCancelButton: true,
 				confirmButtonText: 'Delete',
 				cancelButtonText: 'Cancel',
+				allowOutsideClick: false,
+				allowEscapeKey: false,
 				reverseButtons: true
 			}).then(function(isConfirm) {
 					if (isConfirm.value === true) {
@@ -1942,6 +2191,8 @@ $("#view_seunt").click(function(){
 				showCancelButton: true,
 				confirmButtonText: 'Delete',
 				cancelButtonText: 'Cancel',
+				allowOutsideClick: false,
+				allowEscapeKey: false,
 				reverseButtons: true
 			}).then(function(isConfirm) {
 					if (isConfirm.value === true) {

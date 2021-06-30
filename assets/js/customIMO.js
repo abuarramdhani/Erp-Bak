@@ -64,7 +64,7 @@ function getRequirementMO(th){
 	var request = $.ajax({
 		url: baseurl+'InventoryManagement/CreateMoveOrder/search/',
 		data: {
-			dept : dept, date : date, shift : shift
+			dept : dept, date : date, shift : shift, ket : th
 		},
 		type: "POST",
 		datatype: 'html', 
@@ -81,6 +81,64 @@ function getRequirementMO(th){
 	// }
 }
 
+
+function getRequirementMO2(th){
+	var nojob = $('input[name="txtNojobIMO[]"]').map(function(){return $(this).val();}).get();
+	
+	var request = $.ajax({
+		url: baseurl+'InventoryManagement/CreateMoveOrder/search2/',
+		data: {nojob : nojob},
+		type: "POST",
+		datatype: 'html', 
+	});
+	$('#ResultJob').html('');
+	$('#ResultJob').html('<center><img style="width:130px; height:auto" src="'+baseurl+'assets/img/gif/loading10.gif"></center>' );
+	request.done(function(result){
+		$('#ResultJob').html(result);
+	})
+}
+
+function print_sticker(item, nojob, qty, ket){
+	var request = $.ajax({
+		url: baseurl+'InventoryManagement/CreateMoveOrder/print_sticker',
+		data: { nojob : nojob },
+		type: "POST",
+		datatype: 'html', 
+	});
+	request.done(function(result){
+		// console.log(result);
+		if (result == 0) {
+			qty2 = qty/2;
+		}else{
+			qty2 = result/2;
+		}
+		if (ket == 'select') {
+			var select = '&select=1';
+		}else{
+			var select = '';
+		}
+		window.open("http://produksi.quick.com/print-qr-sticker-packaging/khs_cetak_barcode.php?org=102&segment1="+item+"&jumlah="+qty2+select+"");
+		// window.open("http://produksi.quick.com/print-qr-sticker-packaging/khs_cetak_barcode_besar.php?org=102&segment1="+item+"&jumlah="+qty2+"");
+	})
+}
+
+function print_sticker2(){
+	var nojob = $('input[name="selectedPicklistIMO"]').val();
+	var wip = $('input[name="wip_entity_name[]"]').map(function(){return $(this).val();}).get();
+	var item = $('input[name="kodeitem[]"]').map(function(){return $(this).val();}).get();
+	var qty = $('input[name="startqty[]"]').map(function(){return $(this).val();}).get();
+	var nojob2 = nojob.split('+');
+	// console.log(nojob, wip, item, qty);
+	for (let i = 0; i < nojob2.length; i++) {
+		for (let x = 0; x < wip.length; x++) {
+			if (nojob2[i] == wip[x]) {
+				// console.log(wip[x], item[x], qty[x]);
+				print_sticker(item[x], wip[x], qty[x], 'select');
+			}
+		}
+		
+	}
+}
 
 function getDetailJobInv(th){
 	var nojob = $('#NoJob').val();

@@ -102,48 +102,92 @@
                   </div>
                   </div>                
                   </form>
-      <?php
-        $data_seksi_final = array();
-        for($i = 0; $i < count($data_seksi); $i++) {
-          $data_seksi_final[$i] = array($data_seksi[$i]['kelompok'], (int) $data_seksi[$i]['target'], (int) $data_seksi[$i]['done']);
-        }
-      ?>
-      <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-        <script type="text/javascript">
-          google.charts.load('current', {'packages':['corechart']});
-          google.charts.setOnLoadCallback(drawVisualization);
-          function drawVisualization() {
-            var data = google.visualization.arrayToDataTable([
-              ['TIM', 'Target', 'Done'],
-              <?php foreach($data_seksi_final as $item) { echo json_encode($item).','; } ?>
-            ]);
-            var options = {
-              animationEnabled: true,
-              vAxis: {title: 'Jumlah Kaizen'},
-              hAxis: {title: 'TIM'},
-              seriesType: 'bars',
-              series: {
-                0: {color: '#006bb3'},
-                1: {color: '#2d2d2d'},
-              },
-            };
-            var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));
-                chart.draw(data, options);
-            }
-        </script>
-        </head>
-        <div >
-        <body>
-          <div id="chart_div" style="width: 100%; height: 300px;"></div>
-        </body>
-      <div id="seksi" style="display: block; padding: 15px">
-      <!-- 
-        <div style="overflow: auto; height: 100%">
-        <?php $widthuwu = 0; foreach ($data_seksi as $key => $value) {
-            $widthuwu += 160;
-          } ?>
-          <div id="chartContainer" style="height: 300px; width: <?= $widthuwu ?>px"></div> -->
-           <table class="datatable table table-striped table-bordered table-hover text-left" style="font-size:12px; width: 100%">
+                  <script src="<?= base_url('assets/plugins/chartjs/Chart.js') ?>"></script>
+                  <div class="col-md-12">
+                    <canvas id="myChart"  height="100" style="margin-bottom: 20px;"></canvas>
+                  </div>
+                  <script>
+                    <?php
+                    $label = array_column($data_seksi, 'kelompok');
+                    $label = "'".implode("','", $label)."'";
+
+                    $target1 = array_column($data_seksi, 'target');
+                    $target = implode(",", $target1);
+
+                    $done1 = array_column($data_seksi, 'done');
+                    $done = implode(",", $done1);
+
+                    $marge = array_merge($target1, $done1);
+                    $max = ceil(max($marge)/10)*10;
+                    ?>
+                    var ctx = document.getElementById('myChart').getContext('2d');
+                    var myChart = new Chart(ctx, {
+                      type: 'bar',
+                      data: {
+                        labels: [<?=$label?>],
+                        datasets: [{
+                          label: 'Target',
+                          data: [<?= $target ?>],
+                          backgroundColor: 
+                          'rgb(0,107,179)'
+                          ,
+                          borderColor: 
+                          'rgb(0,107,179)'
+                          ,
+                          borderWidth: 1
+                        },
+                        {
+                          label: 'Done',
+                          data: [<?= $done ?>],
+                          backgroundColor: 
+                          'rgb(0,0,0)'
+                          ,
+                          borderColor: 
+                          'rgb(0,0,0)'
+                          ,
+                          borderWidth: 1
+                        }]
+                      },
+                      options: {
+                        scales: {
+                          yAxes: [{
+                            ticks: {
+                              fontColor: "black",
+                              beginAtZero: true,
+                              suggestedMax : <?=$max?>
+                            },
+                            scaleLabel: {
+                              display: true,
+                              labelString: 'Jumlah Kaizen',
+                              fontColor: '#000',
+                              fontSize: 11
+                            }
+                          }],
+                          xAxes: [{
+                            ticks: {
+                              fontColor: "black",
+                            },
+
+                            scaleLabel: {
+                              display: true,
+                              labelString: 'TIM',
+                              fontColor: '#000',
+                              fontSize: 11
+                            }
+                          }
+                          ]
+                        },
+                        legend: {
+                          display: true,
+                          labels: {
+                            fontColor: 'rgb(0, 0, 0)'
+                          }
+                        }
+                      }
+                    });
+                  </script>
+      <div id="seksi" style="display: block; padding: 15px;">
+           <table class="datatable table table-striped table-bordered table-hover text-left" style="font-size:12px; width: 100%;">
           <thead class="bg-primary">
                 <tr>
                     <th class="text-center"> No.</th>
@@ -208,5 +252,4 @@
       </div>
     </div>
   </div>
-
 </section>

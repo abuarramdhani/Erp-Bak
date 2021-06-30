@@ -459,7 +459,7 @@ class C_HitungPesanan extends CI_Controller
       if (!empty($pekerjaTidakMakan)) {
         foreach ($pekerjaTidakMakan as $ptm) {
           $noind = $ptm['pekerja'];
-          $cekPresensi = $this->M_hitungpesanan->getAbsenShiftSatuByTanggalLokasiTempatMakanNoind($tanggal,$lokasi,$tempatMakan,$noind);
+          $cekPresensi = $this->M_hitungpesanan->getAbsenShiftSatuByTanggalLokasiTempatMakanNoind($tanggal,$lokasi,$tempatMakan,$noind,$jenis);
           if (!empty($cekPresensi)) {
             $cekPesananPenguranganTidakMakan = $this->M_hitungpesanan->getPesananPenguranganByTanggalShiftTempatMakanKategori($tanggal,$shift,$tempatMakan,'8');
             if (!empty($cekPesananPenguranganTidakMakan)) {
@@ -481,7 +481,7 @@ class C_HitungPesanan extends CI_Controller
             }
           }
         }
-        $this->M_hitungpesanan->updatePesananPenguranganTotalByTanggalShiftTempatMakanKategori($tanggal,$shift,$tempatMakan,'1');
+        $this->M_hitungpesanan->updatePesananPenguranganTotalByTanggalShiftTempatMakanKategori($tanggal,$shift,$tempatMakan,'8');
       }
 
       // Pesanan Tambahan
@@ -686,7 +686,7 @@ class C_HitungPesanan extends CI_Controller
             }
           }
         }
-        $this->M_hitungpesanan->updatePesananPenguranganTotalByTanggalShiftTempatMakanKategori($tanggal,$shift,$tempatMakan,'1');
+        $this->M_hitungpesanan->updatePesananPenguranganTotalByTanggalShiftTempatMakanKategori($tanggal,$shift,$tempatMakan,'8');
       }
 
       // Pesanan Tambahan
@@ -889,7 +889,7 @@ class C_HitungPesanan extends CI_Controller
             }
           }
         }
-        $this->M_hitungpesanan->updatePesananPenguranganTotalByTanggalShiftTempatMakanKategori($tanggal,$shift,$tempatMakan,'1');
+        $this->M_hitungpesanan->updatePesananPenguranganTotalByTanggalShiftTempatMakanKategori($tanggal,$shift,$tempatMakan,'8');
       }
 
       // Pesanan Tambahan
@@ -1719,18 +1719,24 @@ class C_HitungPesanan extends CI_Controller
             $isi .= "<table style=\"width: 100%\">
               <tr>
                 <td style=\"width: 50%\">Nama Katering : ".$bagi['fs_nama_katering']."</td>
-                <td style=\"width: 50%\">Nama Petugas GA : ..................................................</td>
+                <td style=\"width: 50%\">Nama ". ($lokasi == '2' ? "Pendamping Katering" : "Petugas GA") . " : ..................................................</td>
               </tr>
             </table>";
             $supplier = "Katering";
+            if ($lokasi == "1") {
+              $seksiPenerima = "Seksi GA";
+            }else{
+              $seksiPenerima = "Seksi Penerima";
+            }
           }else{
             $isi .= "<table style=\"width: 100%\">
               <tr>
                 <td style=\"width: 50%\">Nama Supplier : ..................................................</td>
-                <td style=\"width: 50%\">Nama Petugas GA: ..................................................</td>
+                <td style=\"width: 50%\">Nama ". ($lokasi == '2' ? "Pendamping Katering" : "Petugas GA") . " : ..................................................</td>
               </tr>
             </table>";
             $supplier = "Supplier";
+            $seksiPenerima = "Seksi GA";
           }
           $isi .= "<table border=\"1\" style=\"width: 100%;border-collapse: collapse;\">
           <thead>
@@ -1748,7 +1754,7 @@ class C_HitungPesanan extends CI_Controller
             </tr>
             <tr>
               <th style=\"text-align: center;font-weight: bold;border-right: 1px solid black;border-left: 1px solid black;border-top: 2px solid black;border-bottom: 2px solid black;width: 10%\">".$supplier."</th>
-              <th style=\"text-align: center;font-weight: bold;border-right: 1px solid black;border-left: 1px solid black;border-top: 2px solid black;border-bottom: 2px solid black;width: 10%\">Seksi GA</th>
+              <th style=\"text-align: center;font-weight: bold;border-right: 1px solid black;border-left: 1px solid black;border-top: 2px solid black;border-bottom: 2px solid black;width: 10%\">".$seksiPenerima."</th>
             </tr>
           </thead>";
 

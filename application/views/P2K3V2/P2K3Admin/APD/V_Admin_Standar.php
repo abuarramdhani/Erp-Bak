@@ -76,8 +76,16 @@
                                             <td><?php echo $key['jml_kebutuhan_umum']; ?></td>
                                             <td><?php echo $key['jml_kebutuhan_staff']; ?></td>
                                             <?php $jml = explode(',', $key['jml_item']);
-                                            foreach ($jml as $row) { if($row == '') continue; ?>
-                                            <td><?php echo $row; ?></td>
+                                            $kdpkj = explode(',', $key['kd_pekerjaan']);
+                                            $arrn = array_combine($kdpkj, $jml);
+                                            foreach ($daftar_pekerjaan as $dp) {
+                                                if (in_array($dp['kdpekerjaan'], $kdpkj)) {
+                                                    $r = $arrn[$dp['kdpekerjaan']];
+                                                }else{
+                                                    $r = 0;
+                                                }
+                                                ?>
+                                            <td><?php echo $r; ?></td>
                                             <?php  } ?>
                                             <td><?=$key['keterangan']?></td>
                                             <td>

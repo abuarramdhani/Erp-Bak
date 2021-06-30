@@ -163,6 +163,16 @@ class M_penyerahan extends CI_Model
 			->get()->row();
 	}
 
+	public function getTpribadi($noind, $field)
+	{
+		return $this->personalia
+			->select($field)
+			->from('hrd_khs.tpribadi')
+			->where('noind', $noind)
+			->get()
+			->row();
+	}
+
 	public function ambilDataAll($kodesie, $tanggal, $jenis, $ruangLingkup)
 	{
 		$sql = "SELECT trim(b.noind) as noind,
@@ -256,6 +266,8 @@ class M_penyerahan extends CI_Model
 						trim(a.nik) as nik,
 						trim(a.no_kk) as no_kk,
 						trim(a.nokeb) as nokeb,
+						nullif(trim(a.pidgin_account), '-') pidgin_account,
+						nullif(trim(a.email_internal), '-') email_internal,
 						b.kodelamaran,
 						(SELECT trim(kd_shift) from \"Presensi\".tshiftpekerja d where d.noind = a.noind and d.kodesie = a.kodesie limit 1) as pola_shift 
 				FROM hrd_khs.tpribadi a
@@ -272,14 +284,28 @@ class M_penyerahan extends CI_Model
 		return $this->personalia->query($sql)->row()->kd_jabatan;
 	}
 
-	public function getKepada($kodesie, $kd_jabatan, $jenis)
+	public function getKepada($kodesie, $kd_jabatan, $jenis, $fullks)
 	{
 		if ($kd_jabatan >= '13') {
 			$kd_jabatan = '13';
 		}
 
 		if ($jenis == '1') {
-			$where = "and a.kd_jabatan <= '07'";
+			//logic |  if ga ada bidang milih unit if unit ga ada milih kasie utama
+			//10 kasie utama, 9 askanit, 7 askabid
+			$where = "and a.kd_jabatan <= '10'";
+			$fks = substr($fullks, 0,5);
+			foreach (['07','09'] as $k) {
+			$sqlj = "SELECT
+						* from
+						hrd_khs.tpribadi t
+					where
+						kodesie like 'fks%'
+						and keluar = false
+						and kd_jabatan <= '$k'";
+			if($this->personalia->query($sqlj)->num_rows() > 0)
+				$where = "and a.kd_jabatan <= '$k'";
+			}
 		} else if ($jenis == '6') {
 			$where = "and a.kd_jabatan < '10'";
 		} else {
@@ -617,5 +643,21 @@ class M_penyerahan extends CI_Model
 				WHERE tanggal = '$tanggal' and noind = '$noind'";
 		$this->personalia->query($sql);
 		return;
+	}
+
+	public function getLamaPKL($nama, $nik)
+	{
+		$sql = "SELECT
+					*,
+					to_char(to_date(t.tglsurat, 'dd-mm-yyyy'), 'yyyy-mm-dd') as tgll
+				from
+					\"Adm_Seleksi\".tberkas t
+				where
+					nik = '$nik'
+					and nama = '$nama'
+				order by
+					tgll desc
+				limit 1";
+		return $this->personalia->query($sql)->row_array();
 	}
 }
