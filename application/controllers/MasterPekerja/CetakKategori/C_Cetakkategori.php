@@ -123,7 +123,8 @@ class C_Cetakkategori extends CI_Controller
         $dataheader = explode(', ', $this->input->get('dataHeader'));
         $data = $this->M_cetakkategori->GetFilter($kodeind, $pend, $jenkel,  $lokasi, $kategori, $select, $rangekeluarstart, $rangekeluarend,  $rangemasukstart, $rangemasukend, $status, $masakerja);
 
-        $this->load->library('excel');
+        $this->load->library(array('Excel', 'Excel/PHPExcel/IOFactory'));
+        $worksheet = new PHPExcel();
         $worksheet = $this->excel->getActiveSheet();
 
         $worksheet->setCellValue('A2', 'DATA PEKERJA');
@@ -209,7 +210,7 @@ class C_Cetakkategori extends CI_Controller
         header('Content-Disposition:attachment;filename="' . $filename . '"');
         header('Cache-Control: max-age=0');
 
-        $writer = PHPExcel_IOFactory::createWriter($this->excel, 'Excel5');
+        $writer = PHPExcel_IOFactory::createWriter($this->excel, 'Excel2007');
         $writer->save('php://output');
     }
 }
