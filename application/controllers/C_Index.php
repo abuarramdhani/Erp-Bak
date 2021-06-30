@@ -175,10 +175,10 @@ class C_Index extends CI_Controller
 		$log = $this->M_Index->login($username, $password_md5);
 		if ($log) {
 			if ($getAksesKDJabatan[0]['kd_jabatan'] <= '13' || $getAksesKDJabatan[0]['kd_jabatan'] == '16' || $getAksesKDJabatan[0]['kd_jabatan'] == '19') {
-				// if ($username == 'B0661' || $username == 'B0898' || $username == 'B0773') {
+				// if ($username == 'B0661' || $username == 'T0017' || $username == 'B0773') {
 
 				if ($ip != $ipaddresslast[0]['ip_address']) {
-					$this->getAkses($username, $password_md5);
+					$this->getAkses($username, $password_md5, $ip);
 				} else {
 					$user = $this->M_Index->getDetail($username);
 					$path = $this->M_Index->path_photo($username);
@@ -411,13 +411,18 @@ class C_Index extends CI_Controller
 			exit();
 		}
 	}
-	public function getAkses($u, $p)
+	public function getAkses($u, $p, $ip)
 	{
 		$otp = rand(1000, 9999);
 		// echo $u;
 		$data['otp'] = $otp;
 		$data['user'] = $u;
 		$data['pass'] = $p;
+
+		$date = date("Y/m/d");
+		$time = date("H:i:s");
+
+		$this->log_activity->otp_log($date, $time, $ip, $otp);
 
 
 		$getnama = $this->M_Index->getEmail($u);
@@ -484,12 +489,13 @@ class C_Index extends CI_Controller
 	{
 		$u = $_POST['user_name'];
 		$p = $_POST['password_u'];
-		$this->getAkses($u, $p);
+		$ip = $this->input->ip_address();
+		$this->getAkses($u, $p, $ip);
 	}
 	public function LoginAtasan()
 	{
 		$ip = $this->input->ip_address();
-		// $ip = '192.168.168.133';
+		// $ip = '192.168.168.135';
 		$username = $this->input->post('username');
 		$password_md5 = $this->input->post('password');
 		$log = $this->M_Index->login($username, $password_md5);
