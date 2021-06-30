@@ -257,6 +257,21 @@ class C_Cetak extends CI_Controller
 			$id = $xyz[0];
 
 			$data['get_header'] = $this->M_cetak->headfootSurat($id);
+			foreach ($data['get_header'] as $key => $value) {
+				$getnama_app1 = $this->db->query("SELECT employee_name
+																		FROM
+																			er.er_employee_all
+																		WHERE
+																			employee_code = '{$value['APPROVE_TO_1']}'")->row_array();
+				$data['get_header'][$key]['APPROVE_TONAME'] = $getnama_app1['employee_name'];
+
+				$getnama_created_by = $this->db->query("SELECT employee_name
+																		FROM
+																			er.er_employee_all
+																		WHERE
+																			employee_code = '{$value['CREATED_BY']}'")->row_array();
+				$data['get_header'][$key]['CREATED_BYNAME'] = $getnama_created_by['employee_name'];
+			}
 			$data['get_body'] = $this->M_cetak->bodySurat($id);
 			$data['get_colly'] = $this->M_cetak->getTotalColly($id);
 			$data['total_colly'] = sizeof($data['get_colly']);
@@ -404,6 +419,26 @@ class C_Cetak extends CI_Controller
 			$id = $xyz[0];
 
 			$data['get_header'] = $this->M_cetak->headfootSurat($id);
+
+			foreach ($data['get_header'] as $key => $value) {
+				$getnama_app1 = $this->db->query("SELECT employee_name
+																		FROM
+																			er.er_employee_all
+																		WHERE
+																			employee_code = '{$value['APPROVE_TO_1']}'")->row_array();
+				$data['get_header'][$key]['APPROVE_TONAME'] = $getnama_app1['employee_name'];
+
+				$getnama_created_by = $this->db->query("SELECT employee_name
+																		FROM
+																			er.er_employee_all
+																		WHERE
+																			employee_code = '{$value['CREATED_BY']}'")->row_array();
+				$data['get_header'][$key]['CREATED_BYNAME'] = $getnama_created_by['employee_name'];
+			}
+
+			// echo "<pre>";
+			// print_r($data['get_header']);
+			// die;
 			$data['get_body'] = $this->M_cetak->bodySurat($id);
 			$data['get_colly'] = $this->M_cetak->getTotalColly($id);
 			$data['total_colly'] = sizeof($data['get_colly']);
