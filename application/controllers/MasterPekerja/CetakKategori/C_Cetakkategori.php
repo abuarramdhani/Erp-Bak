@@ -108,6 +108,7 @@ class C_Cetakkategori extends CI_Controller
     {
         $list_filter = $this->session->list_filter;
         set_time_limit(0);
+        ini_set('precision', '17');
         $kodeind = $list_filter[0];
         $pend = $list_filter[1];
         $jenkel = $list_filter[2];
