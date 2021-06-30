@@ -154,6 +154,12 @@ class C_Cetakkategori extends CI_Controller
                         $worksheet->setCellValue($cell[$cellInd] . $rowStart, str_replace(['years', 'mons', 'days'], ['Tahun', 'Bulan', 'Hari'], $datvkv));
                     } else {
                         $worksheet->setCellValue($cell[$cellInd] . $rowStart, $datvkv);
+                        $worksheet
+                        ->getStyle($cell[$cellInd] . $rowStart)
+                        ->getNumberFormat()
+                        ->setFormatCode(
+                            PHPExcel_Style_NumberFormat::FORMAT_TEXT
+                            );
                     }
                     $worksheet->getStyle($cell[$cellInd] . $rowStart)->applyFromArray([
                         'borders' => [
