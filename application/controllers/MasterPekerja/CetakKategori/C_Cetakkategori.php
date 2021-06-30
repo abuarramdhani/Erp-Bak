@@ -161,7 +161,7 @@ class C_Cetakkategori extends CI_Controller
                         ->setFormatCode(
                             PHPExcel_Style_NumberFormat::FORMAT_TEXT
                             );
-                        $worksheet->setCellValue($cell[$cellInd] . $rowStart, $datvkv);
+                        $worksheet->setCellValueExplicit($cell[$cellInd] . $rowStart, $datvkv, PHPExcel_Cell_DataType::TYPE_STRING);
                     }
                     $worksheet->getStyle($cell[$cellInd] . $rowStart)->applyFromArray([
                         'borders' => [
