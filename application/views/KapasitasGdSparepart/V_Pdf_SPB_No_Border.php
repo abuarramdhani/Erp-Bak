@@ -17,11 +17,11 @@
 						echo '</tr><tr>';
 					}
 				?>
-					<td style="font-size: 9px; padding: 3.5px; text-align: left;">
-						<?php echo $gc['CNUM'].' : '.number_format($gc['BERAT'],1).' kg' ?>
+					<td style="font-size: 12px; padding: 3.5px; text-align: left;">
+						<?php echo $gc['CNUM'].' : '.round($gc['BERAT'],2).' kg' ?>
 					</td>
 					<!-- <td style="font-size: 8px; padding: 3.5px; text-align: right; border: 1px solid red;">
-						<?php echo number_format($gc['BERAT'],1).' KG' ?>
+						<?php echo round($gc['BERAT'],2).' KG' ?>
 					</td>				 -->
 				<?php $no++; } ?>
 				</tr>
@@ -38,12 +38,12 @@
 					<td style="padding-left: 28mm; font-size:14pt; height: 9mm;padding-top:2mm"> <?php echo $row['REQUEST_NUMBER']; ?></td>
 				</tr>
 			</table>
-			<table style="border-collapse:collapse; width: 197mm">
+			<table style="border-collapse:collapse; width: 197mm;">
 				<tr>
 					<td style="height: 21mm; width: 89mm; padding-left: 4mm;font-size: 10pt;">
 						<?php echo $row['NAMA_ASAL'].'<br>'.$row['ALAMAT_ASAL'].'<br>'.$row['KOTA_ASAL']; ?>
 					</td>
-					<td style="width: 108mm; padding-left: 25mm; vertical-align: middle;font-size: 10pt;">
+						<td style="width: 108mm; padding-left: 25mm; vertical-align: middle;font-size: 10pt;padding-top:3.5mm;">
 						<?php echo $row['NAMA_KIRIM'].' ['.$row['ORGANIZATION_CODE'].']' ?> <br>
 						<?php echo $row['ALAMAT_KIRIM'] ?>, <?php echo $row['KOTA_KIRIM'] ?>
 					</td>
@@ -53,7 +53,7 @@
 				<tr>
 					<td colspan="2" style="vertical-align: top; height: 11mm;"><!-- No Order : --></td>
 					<td colspan="2" style="vertical-align: top;"><!-- Tgl. Order : --></td>
-					<td rowspan="2" style="vertical-align: middle; width: 108mm; padding-left: 15mm">
+					<td rowspan="2" style="vertical-align: middle; width: 108mm; padding-left: 15mm;padding-top:3.5mm;">
 							<?php
 								$arr = explode("#", $row['LAIN']);
 								foreach($arr as $i) {
@@ -63,7 +63,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td style="height: 17mm; vertical-align: top; width: 20mm;padding-left:2.5mm;padding-top:6.2mm"><!-- Berat : --> <?php echo number_format($get_berat[0]['TTL_BERAT'],3).' Kg' ?></td>
+					<td style="height: 17mm; vertical-align: top; width: 20mm;padding-left:2.5mm;padding-top:6.2mm"><!-- Berat : --> <?php echo round($get_berat[0]['TTL_BERAT'],2).' Kg' ?></td>
 					<td style="vertical-align: middle;padding-left:15mm; width: 40mm;font-size:12px;" colspan="2">
 						<!-- Ekspedisi : -->
 						<?php echo $row['EKSPEDISI']; ?>
@@ -125,10 +125,10 @@
 				</tr>
 				<tr>
 					<td width="156mm"></td>
-					<td width="41mm" style="text-align: left;color:white">
+					<td width="41mm" style="text-align: left;color:white;">
 						Estimasi
 						<br>
-						Total Berat : <?php echo number_format($get_berat[0]['TTL_BERAT'],3).' Kg' ?>
+						Total Berat : <?php echo round($get_berat[0]['TTL_BERAT'],2).' Kg' ?>
 					</td>
 				</tr>
 			</table>
@@ -157,7 +157,7 @@
 						<td width="20mm">
 						</td>
 						<td style="padding-left:1mm;text-align:right" width="24mm"><br><br><br><br><br><br>
-								<?php echo $row['ASSIGNER_NAME']; ?>
+								NELSON REYNALDI
 						</td>
 						<td style="padding-left:2mm;text-align:right" width="25mm"><!-- Mengetahui : --><br><br><br><br><br><br>
 								<?php echo '('.$row['APPROVE_TONAME'].')'; ?>
