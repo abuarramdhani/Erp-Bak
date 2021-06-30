@@ -15,6 +15,45 @@ function filter_apd($array)
 	return (@$array['standard'] || @$array['actual']) && @$array['nama_apd'];
 }
 
+class EncryptCar
+{
+	const key = '1';
+
+	static function encode($str)
+	{
+		return str_replace(
+			array(
+				'+',
+				'/',
+				'='
+			),
+			array(
+				'-',
+				'_',
+				'~'
+			),
+			(new CI_Encrypt)->encode($str, static::key)
+		);
+	}
+
+	static function decode($encoded)
+	{
+		return (new CI_Encrypt)->decode(str_replace(
+			array(
+				'-',
+				'_',
+				'~'
+			),
+			array(
+				'+',
+				'/',
+				'='
+			),
+			$encoded
+		), static::key);
+	}
+}
+
 class C_Index extends CI_Controller
 {
 	/**
@@ -46,6 +85,7 @@ class C_Index extends CI_Controller
 		$this->load->library('ciqrcode');
 		$this->load->library('upload');
 		$this->load->library('general');
+		$this->load->library('personalia');
 
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('P2K3V2/P2K3Admin/M_dtmasuk');
@@ -68,8 +108,7 @@ class C_Index extends CI_Controller
 	/* CHECK SESSION */
 	public function checkSession()
 	{
-		if ($this->session->is_logged) {
-		} else {
+		if ($this->session->is_logged) { } else {
 			redirect('');
 		}
 	}
@@ -1421,18 +1460,26 @@ class C_Index extends CI_Controller
 				$data  = $this->general->loadHeaderandSidemenu('P2K2 - Monitoring Kecelakaan Kerja', 'Monitoring Kecelakaan Kerja', 'Monitoring Kecelakaan Kerja', 'Seksi', '');
 			}
 		}
+
 		$data['year'] = $this->input->get('y');
+		$data['isUnit'] = substr($this->session->kodesie, 5) === '0000';
 
 		if (empty($data['year'])) redirect(current_url() . '?y=' . date('Y'));
 
 		if ($this->isAdmin || $index == $allIndex) {
 			// get all data
 			$data['list'] = $this->M_dtmasuk->getK3K($data['year']);
+		} elseif ($data['isUnit']) {
+			$trefjabatan = $this->M_order->getTrefjabatan($this->session->user);
+			$trefjabatan = array_map(function ($refjabatan) {
+				return substr($refjabatan['kodesie'], 0, 5);
+			}, $trefjabatan);
+
+			$data['list'] = $this->M_dtmasuk->getK3K($data['year'], $trefjabatan);
 		} else {
 			// get all from their section
 			$data['list'] = $this->M_dtmasuk->getK3K($data['year'], $kodesie);
 		}
-
 
 		$data['lokasi'] = array_column($this->M_pekerjakeluar->getLokasiKerja(), 'lokasi_kerja', 'id_');
 		$data['lokasi'][999] = 'LAKA';
@@ -1487,6 +1534,8 @@ class C_Index extends CI_Controller
 	public function detail_pkj_mkk()
 	{
 		$noind = $this->input->get('noind');
+		$date = $this->input->get('tglKec');
+		$tgl = explode(' ', $date)[0];
 		$data = $this->M_dtmasuk->getdetail_pkj_mkk($noind);
 
 		return response()->json($data);
@@ -1577,7 +1626,7 @@ class C_Index extends CI_Controller
 		$kode = substr($noind, 0, 1);
 		$dat = $this->M_dtmasuk->getdetail_pkj_mkk($noind);
 		$kd_jabatan = $dat['kd_jabatan'];
-		if ($kode == 'K' || $kode == 'P'  || $kode == 'R') {
+		if ($kode == 'K' || $kode == 'P'  || $kode == 'R' || $kode = 'F') {
 			$masakrj = $this->M_dtmasuk->getMasaKerja($noind, $tgl);
 		} elseif ($kode == 'A' || $kode == 'B' || $kode == 'C' || $kode == 'H' || $kode == 'J' || $kode == 'T') {
 			$masakrj = $this->M_dtmasuk->getMasaKerja3($noind, $tgl);
@@ -1598,6 +1647,7 @@ class C_Index extends CI_Controller
 		} else {
 			$masa = '-';
 		}
+		$data['masa'] = $dat['masa_kerja'];
 		$data['masa_kerja'] = $masa;
 		// print_r($ket2);
 		$data['success'] = '1';
@@ -1617,17 +1667,19 @@ class C_Index extends CI_Controller
 	public function submit_monitoringKK()
 	{
 		$this->load->library('upload');
-
-		// print_r($_POST);
 		$noind = $this->input->post('noind');
 		$kodesie_berlaku = $this->input->post('kodesie_berlaku');
 		$tgl_kecelakaan = $this->input->post('tgl_kecelakaan');
+		$tgl_masuk_pos = $this->input->post('tgl_masuk_pos');
+		// var_dump(date_diff(date_create($tgl_kecelakaan), date_create($tgl_masuk_pos))->format('%y Tahun %m Bulan %d Hari'));
+		// die;
 		$tkp = $this->input->post('tkp');
 		$range1 = $this->input->post('range1');
 		$range2 = $this->input->post('range2');
 		$masa_kerja = $this->input->post('masa_kerja');
 		$lokasi_kerja = $this->input->post('lokasi_kerja');
 		$jenis_pekerjaan = $this->input->post('jenis_pekerjaan');
+		$kasus = $this->input->post('kasus');
 		$kronologi = $this->input->post('kronologi');
 		$kondisi = $this->input->post('kondisi');
 		$penyebab = $this->input->post('penyebab');
@@ -1669,7 +1721,6 @@ class C_Index extends CI_Controller
 		$bagian_tubuh = $this->input->post('bagian_tubuh');
 		$apd = $this->input->post('apd');
 		$faktor = $this->input->post('faktor');
-
 		$datapkj = $this->M_dtmasuk->getdetail_pkj_mkk($noind);
 		$kodesie = $datapkj['kodesie'];
 		$lokasi = $datapkj['lokasi_kerja'];
@@ -1683,12 +1734,14 @@ class C_Index extends CI_Controller
 			'lokasi_kerja' => $lokasi, // 
 			'masa_kerja' => $masa_kerja, // string
 			'waktu_kecelakaan' => $tgl_kecelakaan, // Y-m-d H:i:s
+			'tgl_masuk_pos' => $tgl_masuk_pos, // Y-m-d
 			'range_waktu1' => $range1, // 1|2|3
 			'range_waktu2' => $range2, // 1-8
 			'tkp' => $tkp, // string
 			'lokasi_kerja_kecelakaan' => $lokasi_kerja, // 01-21
 			'nama_pekerjaan' => $nama_pekerjaan, // string
 			'jenis_pekerjaan' => $jenis_pekerjaan, // 1-3
+			'kasus' => $kasus, // long text
 			'kronologi' => $kronologi, // long text
 			'kondisi' => $kondisi, // long text
 			'penyebab' => $penyebab, // long text
@@ -1802,7 +1855,7 @@ class C_Index extends CI_Controller
 	 */
 	public function del_k3k()
 	{
-		$id = $this->input->post('id');
+		$id = EncryptCar::decode($this->input->post('id'));
 
 		try {
 			if (!$this->isAdmin) throw new Exception("Anda tidak berwenang untuk menghapus data ini");
@@ -1836,7 +1889,8 @@ class C_Index extends CI_Controller
 	private function getKecelakaanDetail($id)
 	{
 		$data['kecelakaan'] = $this->M_dtmasuk->getKecelakaan($id);
-
+		$data['kecelakaan']['masa_masuk_pos'] = date_diff(date_create($data['kecelakaan']['waktu_kecelakaan']), date_create($data['kecelakaan']['tgl_masuk_pos']))->format('%y Tahun %m Bulan %d Hari');
+		$data['kecelakaan']['userName_created_by'] = $this->M_dtmasuk->getEmployeeByNoind($data['kecelakaan']['user_created_by'])->nama;
 		if (empty($data['kecelakaan'])) return NULL;
 
 		$noind = $data['kecelakaan']['noind'];
@@ -1901,10 +1955,9 @@ class C_Index extends CI_Controller
 	public function edit_monitoringKK()
 	{
 		$data  = $this->general->loadHeaderandSidemenu('P2K2 - Monitoring Kecelakaan Kerja', 'Edit Data', 'Kecelakaan Kerja', '', '');
-		$id = $this->input->get('id');
+		$id = EncryptCar::decode($this->input->get('id'));
 
 		$kecelakaan = $this->getKecelakaanDetail($id);
-
 		if (empty($kecelakaan)) return $this->load->view('V_404');
 
 		// merge
@@ -1953,14 +2006,19 @@ class C_Index extends CI_Controller
 	 */
 	public function update_monitoringKK()
 	{
+		// var_dump($_POST);
+		// die;
 		$noind = $this->input->post('noind');
 		$tgl_kecelakaan = $this->input->post('tgl_kecelakaan');
+		$tgl_masuk_pos = $this->input->post('tgl_masuk_pos');
+
 		$tkp = $this->input->post('tkp');
 		$range1 = $this->input->post('range1') ?: null;
 		$range2 = $this->input->post('range2') ?: null;
 		$masa_kerja = $this->input->post('masa_kerja');
 		$lokasi_kerja = $this->input->post('lokasi_kerja');
 		$jenis_pekerjaan = $this->input->post('jenis_pekerjaan') ?: null;
+		$kasus = $this->input->post('kasus');
 		$kronologi = $this->input->post('kronologi');
 		$kondisi = $this->input->post('kondisi');
 		$penyebab = $this->input->post('penyebab');
@@ -1986,7 +2044,6 @@ class C_Index extends CI_Controller
 		$detail = $this->M_dtmasuk->getAllk3k('k3.k3k_kecelakaan', $id_kecelakaan)[0];
 
 		$lampiran_foto = $this->input->post('lampiran_foto');
-
 		$error_log = [];
 
 		$md5_string = md5(date('Ymdhis'));
@@ -1996,6 +2053,7 @@ class C_Index extends CI_Controller
 		if ($lampiran_foto && is_array($lampiran_foto)) {
 			$path = 'assets/upload/P2K3v2/kecelakaan_kerja/foto/';
 			foreach ($lampiran_foto as $i => $base64String) {
+				if (empty($base64String)) continue;
 				$filename = "accident-$md5_string-$i";
 				$actualFilename = $this->StoreBase64Image($path, $base64String, $filename);
 
@@ -2013,8 +2071,10 @@ class C_Index extends CI_Controller
 
 		if (!empty($masa_kerja)) $arr['masa_kerja'] = $masa_kerja;
 		if (!empty($tgl_kecelakaan)) $arr['waktu_kecelakaan'] = $tgl_kecelakaan;
+		if (!empty($tgl_masuk_pos)) $arr['tgl_masuk_pos'] = $tgl_masuk_pos;
 		if (!empty($tkp)) $arr['tkp'] = $tkp;
 		if (!empty($lokasi_kerja)) $arr['lokasi_kerja_kecelakaan'] = $lokasi_kerja;
+		if (!empty($kasus)) $arr['kasus'] = $kasus;
 		if (!empty($kronologi)) $arr['kronologi'] = $kronologi;
 		if (!empty($kondisi)) $arr['kondisi'] = $kondisi;
 		if (!empty($penyebab)) $arr['penyebab'] = $penyebab;
@@ -2033,7 +2093,8 @@ class C_Index extends CI_Controller
 		if ($detail['kriteria_stop_six'] != $kriteria) $arr['kriteria_stop_six'] = $kriteria;
 		if ($detail['jenis_pekerjaan'] != $jenis_pekerjaan) $arr['jenis_pekerjaan'] = $jenis_pekerjaan;
 		if ($detail['tgl_close_car'] != $close_car) $arr['tgl_close_car'] = $close_car;
-
+		// var_dump($arr);
+		// die;
 		if (!empty($arr)) {
 			$upd = $this->M_dtmasuk->upk3k_kecelakaan($arr, $id_kecelakaan);
 		}
@@ -2158,7 +2219,7 @@ class C_Index extends CI_Controller
 
 		// add flash status
 		// $this->session->set_flashdata('success', "Sukses mengupdate data kecelakaan");
-		redirect('p2k3adm_V2/Admin/edit_monitoringKK?id=' . $id_kecelakaan);
+		redirect('p2k3adm_V2/Admin/edit_monitoringKK?id=' . EncryptCar::encode($id_kecelakaan));
 	}
 
 
@@ -2167,11 +2228,12 @@ class C_Index extends CI_Controller
 	 */
 	public function exportKecelakaanKerjaPDF()
 	{
-
-		$id = $this->input->get('id');
+		set_time_limit(0);
+		$id = EncryptCar::decode($this->input->get('id'));
 
 		$data = $this->getKecelakaanDetail($id);
-
+		// var_dump($data);
+		// die;
 		if (isset($_GET['debug'])) {
 			debug($data);
 		}
@@ -2179,7 +2241,7 @@ class C_Index extends CI_Controller
 		$this->load->library('pdf');
 
 		$pdf = $this->pdf->load();
-		$pdf = new mPDF('', 'F6', 10, '', 4, 4, 4, 4, 10, 3);
+		$pdf = new mPDF('', 'A4', 10, '', 4, 4, 4, 4, 10, 3);
 		$filename = 'P2K3Seksi.pdf';
 		$html = $this->load->view('P2K3V2/P2K3Admin/KecelakaanKerja/Export/V_Pdf', $data, true);
 		$footer = "
@@ -2254,6 +2316,7 @@ class C_Index extends CI_Controller
 
 	public function excel_monitoringKK()
 	{
+		set_time_limit(0);
 		// only P2K3 TIM can used
 		if (!$this->isAdmin) return $this->load->view('V_404');
 
@@ -2790,7 +2853,8 @@ class C_Index extends CI_Controller
 				}
 				//masa kerja
 				$mass = explode(' ', $key['masa_kerja']);
-				if (!empty($mass)) {
+
+				if (!empty($mass) && $key['masa_kerja'] !== '-') {
 					$tahun = $mass[0];
 					$bulan = $mass[2];
 					if ($tahun > 0) {
@@ -3212,6 +3276,8 @@ class C_Index extends CI_Controller
 
 	public function pdf_monitoringKK()
 	{
+		set_time_limit(0);
+
 		// only P2K3 TIM can used
 		if (!$this->isAdmin) return $this->load->view('V_404');
 

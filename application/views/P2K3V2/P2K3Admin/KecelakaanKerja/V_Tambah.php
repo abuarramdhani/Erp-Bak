@@ -1,3 +1,4 @@
+<!-- Form TRial -->
 <style>
   .nopadding {
     padding: 0 !important;
@@ -25,7 +26,6 @@
   }
 </style>
 <link rel="stylesheet" href="<?= base_url('assets/plugins/cropperjs/dist/cropper.min.css') ?>">
-
 <section class="content">
   <div class="inner">
     <div class="row">
@@ -47,7 +47,7 @@
             <div class="box box-primary box-solid">
               <div class="box-header with-border"></div>
               <div class="box-body">
-                <form method="post" action="<?= base_url('p2k3adm_V2/Admin/submit_monitoringKK'); ?>" enctype="multipart/form-data">
+                <form id="form" method="post" action="<?= base_url('p2k3adm_V2/Admin/submit_monitoringKK'); ?>" enctype="multipart/form-data">
                   <input type="hidden" name="user_kodesie">
                   <div class="panel-body">
                     <div class="col-md-6 nopadding">
@@ -56,7 +56,7 @@
                           <label style="margin-top: 5px;">No Induk</label>
                         </div>
                         <div class="col-md-8 nopadding">
-                          <select class="form-control" id="apdslcpkj" name="noind" required="">
+                          <select class="form-control" id="apdslcpkj" name="noind" required>
 
                           </select>
                         </div>
@@ -104,7 +104,15 @@
                           <label style="margin-top: 0px;">Tgl Kecelakaan & Jam Kecelakaan</label>
                         </div>
                         <div class="col-md-8 nopadding">
-                          <input class="form-control daterangepickerYMDhis" name="tgl_kecelakaan" id="apdinptglkc" required="">
+                          <input class="form-control daterangepickerYMDhis" name="tgl_kecelakaan" id="apdinptglkc" required>
+                        </div>
+                      </div>
+                      <div class="col-md-12 nopadding martop" style="margin-top: 0px;">
+                        <div class="col-md-3 nopadding">
+                          <label style="margin-top: 5px;">Tgl Mulai Di Pos Kecelakaan</label>
+                        </div>
+                        <div class="col-md-8 nopadding">
+                          <input class="form-control" id="apdmaspos" name="tgl_masuk_pos" placeholder="Tanggal Mulai Di Pos" required>
                         </div>
                       </div>
                       <div class="col-md-12 nopadding martop">
@@ -112,7 +120,7 @@
                           <label style="margin-top: 5px;">Tempat / TKP</label>
                         </div>
                         <div class="col-md-8 nopadding">
-                          <select class="form-control apdSlcTags" name="tkp" id="apdslclstkp-xxx" required="">
+                          <select class="form-control apdSlcTags" name="tkp" id="apdslclstkp-xxx" required>
                             <option></option>
                             <?php foreach ($tkp as $k) : ?>
                               <option value="<?= $k['tkp'] ?>"><?= $k['tkp'] ?></option>
@@ -120,14 +128,6 @@
                           </select>
                         </div>
                       </div>
-                      <!-- <div class="col-md-12 nopadding martop" style="margin-top: 15px;">
-                          <div class="col-md-3 nopadding">
-                              <label style="margin-top: 5px;">Range Waktu 1</label>
-                          </div>
-                          <div class="col-md-8 nopadding">
-                              <input class="form-control" name="range1" readonly="">
-                          </div>
-                      </div> -->
                       <div class="col-md-12 nopadding martop" style="margin-top: 15px;">
                         <div class="col-md-3 nopadding">
                           <label style="margin-top: 5px;">Range Waktu 1</label>
@@ -155,7 +155,7 @@
                           <label style="margin-top: 5px;">Lokasi Kerja</label>
                         </div>
                         <div class="col-md-8 nopadding">
-                          <select class="form-control apd_select2" name="lokasi_kerja" placeholder="Pilih Salah 1" id="apdslcmkkloker" required="">
+                          <select class="form-control apd_select2" name="lokasi_kerja" placeholder="Pilih Salah 1" id="apdslcmkkloker" required>
                             <option></option>
                             <?php foreach ($lokasi as $key) : ?>
                               <option value="<?= $key['id_'] ?>"><?= $key['lokasi_kerja'] ?></option>
@@ -227,10 +227,20 @@
                     <div class="col-md-6 nopadding" style="margin-top: 20px;">
                       <div class="col-md-12 nopadding martop">
                         <div class="col-md-3 nopadding">
+                          <label style="margin-top: 5px;">Kasus</label>
+                        </div>
+                        <div class="col-md-8 nopadding">
+                          <textarea class="form-control toupper- limiter" maxlength="340" placeholder="Judul Kasus" name="kasus" style="width: 100%; min-height: 80px; height: 100px; max-height: 200px; resize: vertical;" required></textarea>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6 nopadding" style="margin-top: 20px;">
+                      <div class="col-md-12 nopadding martop">
+                        <div class="col-md-3 nopadding">
                           <label style="margin-top: 5px;">Kronologi</label>
                         </div>
                         <div class="col-md-8 nopadding">
-                          <textarea class="form-control toupper- limiter" maxlength="340" placeholder="Kronologi kejadian" name="kronologi" style="width: 100%; min-height: 80px; height: 100px; max-height: 200px; resize: vertical;" required=""></textarea>
+                          <textarea class="form-control toupper- limiter" maxlength="340" placeholder="Kronologi kejadian" name="kronologi" style="width: 100%; min-height: 80px; height: 100px; max-height: 200px; resize: vertical;" required></textarea>
                         </div>
                       </div>
                     </div>
@@ -259,7 +269,7 @@
                           <label style="margin-top: 5px;">Kondisi</label>
                         </div>
                         <div class="col-md-8 nopadding">
-                          <textarea class="form-control toupper-" maxlength="340" placeholder="Kondisi korban" name="kondisi" style="width: 100%; min-height: 80px; height: 100px; max-height: 200px; resize: vertical;" required=""></textarea>
+                          <textarea class="form-control toupper-" maxlength="340" placeholder="Kondisi korban" name="kondisi" style="width: 100%; min-height: 80px; height: 100px; max-height: 200px; resize: vertical;" required></textarea>
                         </div>
                       </div>
                     </div>
@@ -269,7 +279,7 @@
                           <label style="margin-top: 5px;">Penyebab</label>
                         </div>
                         <div class="col-md-8 nopadding">
-                          <textarea class="form-control toupper-" maxlength="340" placeholder="Penyebab kejadian" name="penyebab" style="width: 100%; min-height: 80px; height: 100px; max-height: 200px; resize: vertical;" required=""></textarea>
+                          <textarea class="form-control toupper-" maxlength="340" placeholder="Penyebab kejadian" name="penyebab" style="width: 100%; min-height: 80px; height: 100px; max-height: 200px; resize: vertical;" required></textarea>
                         </div>
                       </div>
                     </div>
@@ -295,7 +305,7 @@
                           <br>
                           <label><input type="checkbox" name="kategori[]" value="7"> Tersangkut</label>
                           <br>
-                          <label><input type="checkbox" name="kategori[]" value="8"> Tergires</label>
+                          <label><input type="checkbox" name="kategori[]" value="8"> Tergores</label>
                           <br>
                           <label><input type="checkbox" name="kategori[]" value="9"> Lain</label>
                         </div>
@@ -307,7 +317,7 @@
                           <label style="margin-top: 5px;">Tindakan/Penanganan</label>
                         </div>
                         <div class="col-md-8 nopadding">
-                          <textarea class="form-control toupper-" placeholder="Tindakan/Penanganan terhadap korban" name="tindakan" style="width: 100%; min-height: 80px; height: 100px; max-height: 200px; resize: vertical;" required=""></textarea>
+                          <textarea class="form-control toupper-" placeholder="Tindakan/Penanganan terhadap korban" name="tindakan" style="width: 100%; min-height: 80px; height: 100px; max-height: 200px; resize: vertical;" required></textarea>
                         </div>
                       </div>
                     </div>
@@ -317,7 +327,7 @@
                         <div class="col-md-3 nopadding">
                           <label style="margin-top: 5px;">BSRL</label>
                         </div>
-                        <div class="col-md-4 nopadding">
+                        <div class="col-md-3 nopadding">
                           <label><input class="apdinpbsrlmkk" type="radio" name="bsrl" value="0"> Sangat Berat</label>
                           <br>
                           <label><input class="apdinpbsrlmkk" type="radio" name="bsrl" value="1"> Berat</label>
@@ -327,6 +337,9 @@
                           <label><input class="apdinpbsrlmkk" type="radio" name="bsrl" value="3"> Ringan</label>
                           <br>
                           <label><input class="apdinpbsrlmkk" type="radio" name="bsrl" value="4"> Laka</label>
+                        </div>
+                        <div class="col-md-5 nopadding float-left">
+                          <textarea rows="3" id="keterangan" class="form-control" style="resize:none"></textarea>
                         </div>
                       </div>
                     </div>
@@ -489,7 +502,7 @@
                               <label style="margin-top: 5px;">Lampiran <?= $x ?></label>
                             </div>
                             <div class="col-md-7 nopadding">
-                              <input type="hidden" name="lampiran_foto[<?= $x ?>]">
+                              <input type="hidden" name="lampiran_foto[<?= $x; ?>]" class="attachment<?= $x; ?>">
                               <input class="form-control" accept="image/jpg, image/jpeg, image/png" type="file" data-attachment="<?= $x ?>">
                             </div>
                             <div class="col-md-1">
@@ -516,7 +529,7 @@
                       <label style="color: red;">* Pastikan Data Sudah Sesuai Sebelum Klik Submit</label>
                       <br>
                       <a href="<?= base_url('p2k3adm_V2/Admin/monitoringKK') ?>" class="btn btn-warning btn-md">Kembali</a>
-                      <button type="submit" class="btn btn-success btn-md" id="apdbtnupdatemkk">Simpan</button>
+                      <button type="submit" class="btn btn-success" id="apdbtnupdatemkk">Submit</button>
                     </div>
                   </div>
                 </form>
@@ -577,6 +590,24 @@
   $('#surat-loading').removeAttr('hidden')
   $(document).on('ready', function() {
     $('#surat-loading').attr('hidden', 'hidden')
+    $('#apdmaspos').datepicker({
+      format: 'yyyy-mm-dd',
+      autoClose: true,
+      autoApply: true,
+    })
+    // Add Keterangan
+    const keterangan = [
+      'Meninggal Dunia',
+      'Terluka, Diobati & Dirawat Inap',
+      'Terluka, Diobati & Diminta Pulang Tidak Bisa Melanjutkan Pekerjaan',
+      'Terluka, Diobati & Bisa Melanjutkan Pekerjaan',
+      'Kecelakaan Lalu Lintas'
+    ]
+    $.makeArray($('input[name="bsrl"]')).forEach(function(bsrl) {
+      $(bsrl).on('ifChecked', function() {
+        $('#keterangan').val(keterangan[$(this).val()])
+      })
+    })
 
     // input limiter
     $('.limiter').each(function() {
@@ -630,15 +661,14 @@
       delay: 1000,
       minimumInputLength: 3,
       placeholder: "Pilih Pekerja",
+      allowClear: true
     });
 
     $('#apdslcpkj').on('change', function() {
       const val = $(this).val()
       const getDetail = temp_select2.find((item) => item.id == val)
-
+      if (val == null) return
       $('input[name=user_kodesie]').val(getDetail.kodesie)
-
-      console.log(getDetail);
     })
 
     // img preview
@@ -686,7 +716,6 @@
 
     $('input[type=file][data-attachment]').on('change', function() {
       id_attachment = $(this).attr('data-attachment');
-
       // if user click an image
       if ($(this).val()) {
         readURL(this, $modalImageCropperImage)
@@ -699,7 +728,6 @@
         $(`img[data-bind-attachment=${id_attachment}]`).attr('src', '')
         $(`lampiran_foto[${id_attachment}]`).val('')
       }
-
     });
 
     $modalImageCropper
@@ -725,13 +753,15 @@
       });
 
     // crop button
-    $modalImageCropper.find('#crop').on('click', function() {
+    $modalImageCropper.find('#crop').on('click', () => {
       const $preview = $(`img[data-bind-attachment=${id_attachment}]`)
       const $fileInput = $(`input[name='lampiran_foto[${id_attachment}]'`)
 
       const canvas = cropper.getCroppedCanvas({
+        width: 120,
+        height: 120,
         imageSmoothingEnabled: true,
-        imageSmoothingQuality: 'low' // low, medium, high
+        imageSmoothingQuality: 'low',
       });
       const base64Image = canvas.toDataURL()
 

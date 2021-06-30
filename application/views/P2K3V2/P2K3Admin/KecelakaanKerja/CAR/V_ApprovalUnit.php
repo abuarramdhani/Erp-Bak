@@ -15,7 +15,7 @@
       <div class="col-lg-12">
         <div class="col-lg-12">
           <div class="pull-left">
-            <a href="<?= base_url('p2k3adm_V2/Admin/monitoringKK') ?>" class="btn btn-primary">
+            <a href="<?= base_url('p2k3adm_V2/Admin/Car/Approval/Unit') ?>" class="btn btn-primary">
               <i class="fa fa-arrow-left"></i>
               Kembali
             </a>

@@ -61,7 +61,7 @@
                       <hr>
                       <span class="pull-left">Action :</span>
                       <div class="pull-right">
-                        <?php if (!$isAllClosed) : ?>
+                        <?php if (!$isAllClosed && !$isUnit) : ?>
                           <button id="add_button" class="btn btn-primary">
                             <i class="fa fa-plus"></i>
                             Tambah
@@ -100,31 +100,31 @@
                                   </td>
                                   <td>
                                     <?php
-                                    $factors = ['Man', 'Machine', 'Method', 'Working', 'Area', 'Other'];
-                                    ?>
-                                    <select class="form-control" name="factor[]" required <?= $car->approval_status == CAR_STATUS::PROCESS ? '' : 'disabled' ?>>
+                                      $factors = ['Man', 'Machine', 'Method', 'Working', 'Area', 'Other'];
+                                      ?>
+                                    <select class="form-control" name="factor[]" required <?= $car->approval_status == CAR_STATUS::PROCESS ? '' : 'disabled' ?> <?= $isUnit ? 'disabled' : ''; ?>>
                                       <?php foreach ($factors as $factor) : ?>
                                         <option value="<?= $factor ?>" <?= $factor == $car->factor ? 'selected' : '' ?>><?= $factor ?></option>
                                       <?php endforeach ?>
                                     </select>
                                   </td>
                                   <td>
-                                    <input autocomplete="off" type="text" placeholder="Tulis akar masalah ..." value="<?= $car->root_cause ?>" name="root_cause[]" class="form-control" required <?= $car->approval_status == CAR_STATUS::PROCESS ? '' : 'disabled' ?>>
+                                    <input autocomplete="off" type="text" placeholder="Tulis akar masalah ..." value="<?= $car->root_cause ?>" name="root_cause[]" class="form-control" required <?= $car->approval_status == CAR_STATUS::PROCESS ? '' : 'disabled' ?> <?= $isUnit ? 'disabled' : ''; ?>>
                                   </td>
                                   <td>
-                                    <input autocomplete="off" type="text" placeholder="Tulis tindakan ..." value="<?= $car->corrective_action ?>" name="corrective_action[]" class="form-control" required <?= $car->approval_status == CAR_STATUS::PROCESS ? '' : 'disabled' ?>>
+                                    <input autocomplete="off" type="text" placeholder="Tulis tindakan ..." value="<?= $car->corrective_action ?>" name="corrective_action[]" class="form-control" required <?= $car->approval_status == CAR_STATUS::PROCESS ? '' : 'disabled' ?> <?= $isUnit ? 'disabled' : ''; ?>>
                                   </td>
                                   <td>
                                     <?php if ($car->approval_status == CAR_STATUS::PROCESS) : ?>
-                                      <select class="form-control js-pic-select2" name="noind_pic[]" required>
+                                      <select class="form-control js-pic-select2" name="noind_pic[]" required <?= $isUnit ? 'disabled' : ''; ?>>
                                         <option value="<?= $car->noind_pic ?>" selected="selected"><?= $car->noind_pic . " - " . $car->nama_pic ?></option>
                                       </select>
                                     <?php else : ?>
-                                      <input autocomplete="off" type="text" value="<?= $car->noind_pic . " - " . $car->nama_pic ?>" name="noind_pic[]" class="form-control" disabled>
+                                      <input autocomplete="off" type="text" value="<?= $car->noind_pic . " - " . $car->nama_pic ?>" name="noind_pic[]" class="form-control" disabled <?= $isUnit ? 'disabled' : ''; ?>>
                                     <?php endif ?>
                                   </td>
                                   <td>
-                                    <input type="text" autocomplete="off" placeholder="Tanggal jatuh tempo" value="<?= $car->due_date ?>" name="due_date[]" class="form-control js-datepicker" required <?= $car->approval_status == CAR_STATUS::PROCESS ? '' : 'disabled' ?>>
+                                    <input type="text" autocomplete="off" placeholder="Tanggal jatuh tempo" value="<?= $car->due_date ?>" name="due_date[]" class="form-control js-datepicker" required <?= $car->approval_status == CAR_STATUS::PROCESS ? '' : 'disabled' ?> <?= $isUnit ? 'disabled' : ''; ?>>
                                   </td>
                                   <td>
                                     <?= $car->notes ?>
@@ -147,31 +147,31 @@
                                     </td>
                                     <td>
                                       <?php
-                                      $factors = ['Man', 'Machine', 'Method', 'Working', 'Area', 'Other'];
-                                      ?>
-                                      <select class="form-control" name="factor[]" required <?= $car_revisi->approval_status == CAR_STATUS::PROCESS ? '' : 'disabled' ?>>
+                                          $factors = ['Man', 'Machine', 'Method', 'Working', 'Area', 'Other'];
+                                          ?>
+                                      <select class="form-control" name="factor[]" required <?= $car_revisi->approval_status == CAR_STATUS::PROCESS ? '' : 'disabled' ?> <?= $isUnit ? 'disabled' : ''; ?>>
                                         <?php foreach ($factors as $factor) : ?>
                                           <option value="<?= $factor ?>" <?= $factor == $car_revisi->factor ? 'selected' : '' ?>><?= $factor ?></option>
                                         <?php endforeach ?>
                                       </select>
                                     </td>
                                     <td>
-                                      <input autocomplete="off" type="text" placeholder="Tulis akar masalah ..." value="<?= $car_revisi->root_cause ?>" name="root_cause[]" class="form-control" required <?= $car_revisi->approval_status == CAR_STATUS::PROCESS ? '' : 'disabled' ?>>
+                                      <input autocomplete="off" type="text" placeholder="Tulis akar masalah ..." value="<?= $car_revisi->root_cause ?>" name="root_cause[]" class="form-control" required <?= $car_revisi->approval_status == CAR_STATUS::PROCESS ? '' : 'disabled' ?> <?= $isUnit ? 'disabled' : ''; ?>>
                                     </td>
                                     <td>
-                                      <input autocomplete="off" type="text" placeholder="Tulis tindakan ..." value="<?= $car_revisi->corrective_action ?>" name="corrective_action[]" class="form-control" required <?= $car_revisi->approval_status == CAR_STATUS::PROCESS ? '' : 'disabled' ?>>
+                                      <input autocomplete="off" type="text" placeholder="Tulis tindakan ..." value="<?= $car_revisi->corrective_action ?>" name="corrective_action[]" class="form-control" required <?= $car_revisi->approval_status == CAR_STATUS::PROCESS ? '' : 'disabled' ?> <?= $isUnit ? 'disabled' : ''; ?>>
                                     </td>
                                     <td>
                                       <?php if ($car_revisi->approval_status == CAR_STATUS::PROCESS) : ?>
-                                        <select class="form-control js-pic-select2" value="<?= $car_revisi->noind_pic ?>" name="noind_pic[]" required <?= $car_revisi->approval_status == CAR_STATUS::PROCESS ? '' : 'disabled' ?>>
+                                        <select class="form-control js-pic-select2" value="<?= $car_revisi->noind_pic ?>" name="noind_pic[]" required <?= $car_revisi->approval_status == CAR_STATUS::PROCESS ? '' : 'disabled' ?> <?= $isUnit ? 'disabled' : ''; ?>>
                                           <option value="<?= $car_revisi->noind_pic ?>" selected><?= $car_revisi->noind_pic . " - " . $car_revisi->nama_pic ?></option>
                                         </select>
                                       <?php else : ?>
-                                        <input autocomplete="off" type="text" value="<?= $car_revisi->noind_pic . " - " . $car_revisi->nama_pic ?>" name="noind_pic[]" class="form-control" disabled>
+                                        <input autocomplete="off" type="text" value="<?= $car_revisi->noind_pic . " - " . $car_revisi->nama_pic ?>" name="noind_pic[]" class="form-control" disabled <?= $isUnit ? 'disabled' : ''; ?>>
                                       <?php endif ?>
                                     </td>
                                     <td>
-                                      <input type="text" autocomplete="off" placeholder="Tanggal jatuh tempo" value="<?= $car_revisi->due_date ?>" name="due_date[]" class="form-control js-datepicker" required <?= $car_revisi->approval_status == CAR_STATUS::PROCESS ? '' : 'disabled' ?>>
+                                      <input type="text" autocomplete="off" placeholder="Tanggal jatuh tempo" value="<?= $car_revisi->due_date ?>" name="due_date[]" class="form-control js-datepicker" required <?= $car_revisi->approval_status == CAR_STATUS::PROCESS ? '' : 'disabled' ?> <?= $isUnit ? 'disabled' : ''; ?>>
                                     </td>
                                     <td>
                                       <?= $car_revisi->notes ?>
@@ -189,29 +189,33 @@
 
                                 <?php if (count($car->revisi) > 0 && end($car->revisi)->approval_status == CAR_STATUS::REVISI) : ?>
                                   <?php
-                                  $this->load->view('P2K3V2/P2K3Admin/KecelakaanKerja/CAR/_partials/EmptyCarList', [
-                                    'kecelakaan_car_id' => $car->kecelakaan_car_id
-                                  ]);
-                                  ?>
+                                      $this->load->view('P2K3V2/P2K3Admin/KecelakaanKerja/CAR/_partials/EmptyCarList', [
+                                        'kecelakaan_car_id' => $car->kecelakaan_car_id,
+                                        'isUnit' => $isUnit
+                                      ]);
+                                      ?>
                                 <?php endif ?>
 
                                 <!-- jika ada car dengan status revisi dan belum ada revisi maka tampilkan form revisi kosong -->
                                 <?php if ($car->approval_status == CAR_STATUS::REVISI && count($car->revisi) == 0) : ?>
                                   <?php $this->load->view('P2K3V2/P2K3Admin/KecelakaanKerja/CAR/_partials/EmptyCarList', [
-                                    'kecelakaan_car_id' => $car->kecelakaan_car_id
-                                  ]) ?>
+                                        'kecelakaan_car_id' => $car->kecelakaan_car_id,
+                                        'isUnit' => $isUnit
+                                      ]) ?>
                                 <?php endif ?>
                               <?php endforeach ?>
                             </tbody>
                           </table>
                         </div>
                       </div>
-                      <div class="col-md-12">
-                        <div class="pull-right">
-                          <a id="cancel_button" style="display: none;" class="btn">Batal</a>
-                          <button class="btn btn-success" style="display: none;" id="save_button">Simpan dan ajukan</button>
+                      <?php if (!$isUnit) : ?>
+                        <div class="col-md-12">
+                          <div class="pull-right">
+                            <a id="cancel_button" style="display: none;" class="btn">Batal</a>
+                            <button class="btn btn-success" style="display: none;" id="save_button">Simpan dan ajukan</button>
+                          </div>
                         </div>
-                      </div>
+                      <?php endif; ?>
                     </form>
                   </div>
                 </div>

@@ -25,7 +25,7 @@
   }
 </style>
 <link rel="stylesheet" href="<?= base_url('assets/plugins/cropperjs/dist/cropper.min.css') ?>">
-
+<!-- ie; ?> -->
 <section class="content">
   <div class="inner">
     <div class="row">
@@ -110,6 +110,14 @@
                           <input class="form-control daterangepickerYMDhis" attr-name="tgl_kecelakaan" id="apdinptglkc" required="" value="<?= $kecelakaan['waktu_kecelakaan'] ?>">
                         </div>
                       </div>
+                      <div class="col-md-12 nopadding martop" style="margin-top: 0px;">
+                        <div class="col-md-3 nopadding">
+                          <label style="margin-top: 5px;">Tgl Mulai Di Pos Kecelakaan</label>
+                        </div>
+                        <div class="col-md-8 nopadding">
+                          <input class="form-control" id="apdmaspos" name="tgl_masuk_pos" placeholder="Tanggal Mulai Di Pos" required value="<?= $kecelakaan['tgl_masuk_pos']; ?>">
+                        </div>
+                      </div>
                       <div class="col-md-12 nopadding martop">
                         <div class="col-md-3 nopadding">
                           <label style="margin-top: 5px;">Tempat / TKP</label>
@@ -157,8 +165,9 @@
                         <div class="col-md-8 nopadding">
                           <select class="form-control apd_select2" attr-name="lokasi_kerja" placeholder="Pilih Salah 1" id="apdslcmkkloker" required="">
                             <option selected="" value="<?= $kecelakaan['lokasi_kerja'] ?>"><?= $lokasi[$kecelakaan['lokasi_kerja']] ?></option>
-                            <?php foreach ($lokasi as $key) : ?>
-                              <option value="<?= $key['id_'] ?>"><?= $key['lokasi_kerja'] ?></option>
+                            <?php foreach ($lokasi as $lokasiKey => $lokasiVal) : ?>
+                              <?php if ($lokasiKey == $kecelakaan['lokasi_kerja']) continue; ?>
+                              <option value="<?= $lokasiKey ?>"><?= $lokasiVal ?></option>
                             <?php endforeach ?>
                             <option value="999">LAKA</option>
                           </select>
@@ -221,6 +230,16 @@
                           <label><input class="apdinpjpmkk" type="radio" attr-name="jenis_pekerjaan" name="jenis_pekerjaan" value="2" <?= ($kecelakaan['jenis_pekerjaan'] == '2') ? 'checked' : '' ?>> Non Reguler</label>
                           <br>
                           <label><input class="apdinpjpmkk" type="radio" attr-name="jenis_pekerjaan" name="jenis_pekerjaan" value="3" <?= ($kecelakaan['jenis_pekerjaan'] == '3') ? 'checked' : '' ?>> Lain - lain</label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6 nopadding" style="margin-top: 20px;">
+                      <div class="col-md-12 nopadding martop">
+                        <div class="col-md-3 nopadding">
+                          <label style="margin-top: 5px;">Kasus</label>
+                        </div>
+                        <div class="col-md-8 nopadding">
+                          <textarea class="form-control toupper- limiter" maxlength="340" placeholder="Judul Kasus" name="kasus" style="width: 100%; min-height: 80px; height: 100px; max-height: 200px; resize: vertical;" required><?= $kecelakaan['kasus']; ?></textarea>
                         </div>
                       </div>
                     </div>
@@ -295,7 +314,7 @@
                           <br>
                           <label><input type="checkbox" attr-name="kategori[]" name="kategori[]" value="7" <?= (in_array('7', $kategoric)) ? 'checked' : '' ?>> Tersangkut</label>
                           <br>
-                          <label><input type="checkbox" attr-name="kategori[]" name="kategori[]" value="8" <?= (in_array('8', $kategoric)) ? 'checked' : '' ?>> Tergires</label>
+                          <label><input type="checkbox" attr-name="kategori[]" name="kategori[]" value="8" <?= (in_array('8', $kategoric)) ? 'checked' : '' ?>> Tergores</label>
                           <br>
                           <label><input type="checkbox" attr-name="kategori[]" name="kategori[]" value="9" <?= (in_array('9', $kategoric)) ? 'checked' : '' ?>> Lain</label>
                         </div>
@@ -317,14 +336,28 @@
                         <div class="col-md-3 nopadding">
                           <label style="margin-top: 5px;">BSRL</label>
                         </div>
-                        <div class="col-md-4 nopadding">
-                          <label><input <?= ($kecelakaan['bsrl'] == '1') ? 'checked' : '' ?> class="apdinpbsrlmkk" type="radio" attr-name="bsrl" name="bsrl" value="1" required=""> Berat</label>
+                        <div class="col-md-3 nopadding">
+                          <label><input <?= ($kecelakaan['bsrl'] == '0') ? 'checked' : '' ?> class="apdinpbsrlmkk" type="radio" attr-name="bsrl" name="bsrl" value="0" required> Sangat Berat</label>
+                          <br>
+                          <label><input <?= ($kecelakaan['bsrl'] == '1') ? 'checked' : '' ?> class="apdinpbsrlmkk" type="radio" attr-name="bsrl" name="bsrl" value="1" required> Berat</label>
                           <br>
                           <label><input <?= ($kecelakaan['bsrl'] == '2') ? 'checked' : '' ?> class="apdinpbsrlmkk" type="radio" attr-name="bsrl" name="bsrl" value="2" required> Sedang</label>
                           <br>
                           <label><input <?= ($kecelakaan['bsrl'] == '3') ? 'checked' : '' ?> class="apdinpbsrlmkk" type="radio" attr-name="bsrl" name="bsrl" value="3" required> Ringan</label>
                           <br>
                           <label><input <?= ($kecelakaan['bsrl'] == '4') ? 'checked' : '' ?> class="apdinpbsrlmkk" type="radio" attr-name="bsrl" name="bsrl" value="4" required> Laka</label>
+                        </div>
+                        <?php
+                        $keterangan = [
+                          'Meninggal Dunia',
+                          'Terluka, Diobati & Dirawat Inap',
+                          'Terluka, Diobati & Diminta Pulang Tidak Bisa Melanjutkan Pekerjaan',
+                          'Terluka, Diobati & Bisa Melanjutkan Pekerjaan',
+                          'Kecelakaan Lalu Lintas'
+                        ]
+                        ?>
+                        <div class="col-md-5 nopadding float-left">
+                          <textarea rows="3" id="keterangan" class="form-control" style="resize:none"><?= $keterangan[$kecelakaan['bsrl']]; ?></textarea>
                         </div>
                       </div>
                     </div>
@@ -428,16 +461,16 @@
                                   <?php foreach ($items as $i => $item) : ?>
                                     <tr>
                                       <?php
-                                      $used_apd_index = array_search($item['name'], $apd_digunakan_name);
-                                      $standard_checklist = '';
-                                      $actual_checklist = '';
+                                          $used_apd_index = array_search($item['name'], $apd_digunakan_name);
+                                          $standard_checklist = '';
+                                          $actual_checklist = '';
 
-                                      if ($used_apd_index !== false) {
-                                        $standard_checklist = $apd_digunakan[$used_apd_index]['standard'] == 't';
-                                        $actual_checklist = $apd_digunakan[$used_apd_index]['actual'] == 't';
-                                      }
+                                          if ($used_apd_index !== false) {
+                                            $standard_checklist = $apd_digunakan[$used_apd_index]['standard'] == 't';
+                                            $actual_checklist = $apd_digunakan[$used_apd_index]['actual'] == 't';
+                                          }
 
-                                      ?>
+                                          ?>
                                       <input type="hidden" name="apd_digunakan[<?= $item['id'] ?>][nama_apd]" value="<?= $item['name'] ?>">
                                       <td class="bordered square-checkbox">
                                         <input type="checkbox" name="apd_digunakan[<?= $item['id'] ?>][standard]" <?= $standard_checklist ? 'checked' : '' ?>>
@@ -591,7 +624,24 @@
   $('#surat-loading').removeAttr('hidden')
   $(document).on('ready', function() {
     $('#surat-loading').attr('hidden', 'hidden')
-
+    $('#apdmaspos').datepicker({
+      format: 'yyyy-mm-dd',
+      autoClose: true,
+      autoApply: true,
+    })
+    // Add Keterangan
+    const keterangan = [
+      'Meninggal Dunia',
+      'Terluka, Diobati & Dirawat Inap',
+      'Terluka, Diobati & Diminta Pulang Tidak Bisa Melanjutkan Pekerjaan',
+      'Terluka, Diobati & Bisa Melanjutkan Pekerjaan',
+      'Kecelakaan Lalu Lintas'
+    ]
+    $.makeArray($('input[name="bsrl"]')).forEach(function(bsrl) {
+      $(bsrl).on('ifChecked', function() {
+        $('#keterangan').val(keterangan[$(this).val()])
+      })
+    })
     // force close loading in second if not work
     setTimeout(() => {
       $('#surat-loading').attr('hidden', 'hidden')
@@ -699,8 +749,10 @@
       const $fileInput = $(`input[name='lampiran_foto[${id_attachment}]'`)
 
       const canvas = cropper.getCroppedCanvas({
+        width: 120,
+        height: 120,
         imageSmoothingEnabled: true,
-        imageSmoothingQuality: 'low' // low, medium, high
+        imageSmoothingQuality: 'low',
       });
       const base64Image = canvas.toDataURL()
 

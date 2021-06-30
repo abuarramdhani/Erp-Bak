@@ -765,7 +765,7 @@ class M_Order extends CI_Model
                         and substring(t.kodesie,1,5) = substring(ts.kodesie,1,5)
                         and substring(noind, 1, 1) in ('B','D','J')
                         and t.kd_jabatan <= '08') = 0";
-                        // echo $sql;exit();
+        // echo $sql;exit();
         return $this->personalia->query($sql)->result_array();
     }
 
@@ -791,7 +791,7 @@ class M_Order extends CI_Model
                     where
                         kodesie like '$ks%'
                         and keluar = false)";
-         return $this->personalia->query($sql)->row()->noind;
+        return $this->personalia->query($sql)->row()->noind;
     }
 
     /**
@@ -1085,8 +1085,9 @@ class M_Order extends CI_Model
         $row = $this->db->query($sql)->num_rows();
         if ($row == 1) {
             return $this->db->query($sql)->row_array();
-        }else{
-            echo "Terdapat Anomali Data";exit();
+        } else {
+            echo "Terdapat Anomali Data";
+            exit();
         }
     }
 

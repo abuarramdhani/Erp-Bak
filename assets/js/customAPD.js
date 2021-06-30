@@ -1059,26 +1059,55 @@ function pad(d) {
 	return d < 10 ? "0" + d.toString() : d.toString();
 }
 
+
+/**
+ * Function to get 
+ * 
+ * All parameter should be valid date string
+ * 
+ * @param {string} date1  date 1 should be greater than date
+ * @param {string} date2  
+ * 
+ * @returns string
+ * 
+ */
+// function dateDiff(date1 = newDate(), date2 = newDate()) {
+// 	let date1 = date1
+// 	let date2 = date2
+// 	let year;
+// 	let month
+// 	let day;
+
+// 	let dateDiff = date1 - date2
+
+// 	year = dateDiff - (1000 * 60 * 60 * 24 * 30) / 12
+// 	return `${year} Tahun ${month} Bulan ${day} Hari`
+// }
+
 //Kecelakaan Kerja
 $(document).ready(function () {
 	getPekerjaTpribadi("#apdslcpic");
 
 	$("#apdslcpkj").change(function () {
 		var noind = $(this).val();
+		var tglKec = $('#apdinptglkc').val()
+		if (noind == null) return;
 		$("#surat-loading").attr("hidden", false);
 		$.ajax({
 			type: "get",
 			url: baseurl + "p2k3adm_V2/Admin/detail_pkj_mkk",
 			data: {
 				noind: noind,
+				tglKec
 			},
 			dataType: "json",
 			success: function (response) {
+				console.log(response)
 				$('[name="seksi"]').val(response["seksi"].trim());
 				$('[name="unit"]').val(response["unit"].trim());
 				$('[name="bidang"]').val(response["bidang"].trim());
 				$('[name="dept"]').val(response["dept"].trim());
-				$('[name="masa_kerja"]').val(response["masa_kerja_seksi"].trim());
+				$('[name="masa_kerja"]').val(response["masa_kerja"].trim());
 			},
 			complete: function (response) {
 				$("#surat-loading").attr("hidden", true);
@@ -1106,7 +1135,7 @@ $(document).ready(function () {
 				$('[name="seksi_car"]').val(response["seksi"].trim());
 				$('[attr-name="seksi_car"]').val(response["seksi"].trim());
 			},
-			error() {},
+			error() { },
 			complete: function (response) {
 				$("#surat-loading").attr("hidden", true);
 			},
@@ -1163,7 +1192,7 @@ $(document).ready(function () {
 			},
 			success: function (response) {
 				var data = JSON.parse(response);
-				console.log(data["success"]);
+				console.log(data)
 				if (data["success"] == "1") {
 					// $('[name="range1"]').val(data['ket1']);
 					// $('[name="range2"]').val(data['ket2']);
@@ -1282,13 +1311,14 @@ $(document).ready(function () {
 						$("#surat-loading").prop("hidden", false);
 					},
 					success: function (response) {
+						// console.log(response)
 						location.reload();
 					},
 					error(response) {
 						Swal.fire({
-							title: response.message,
-							text: "",
-							type: "error",
+							title: `Error ${response.responseJSON.code}`,
+							text: response.responseJSON.message,
+							type: "warning",
 						});
 					},
 					complete: function (response) {

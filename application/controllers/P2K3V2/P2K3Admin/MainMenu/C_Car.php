@@ -9,7 +9,8 @@ if (!function_exists('nullWhenEmpty')) {
 }
 
 /**
- * Not yet used
+ * Used to encrypt url, Reference from Library general->dekripsi (to prevent forbidden char for uri)
+ * If you look closely This function looks identical with $this->general->enkripsi/$this->general->dekripsi LOL (silly Me)
  */
 class EncryptCar
 {
@@ -17,12 +18,36 @@ class EncryptCar
 
   static function encode($str)
   {
-    return (new CI_Encrypt)->encode($str, static::key);
+    return str_replace(
+      array(
+        '+',
+        '/',
+        '='
+      ),
+      array(
+        '-',
+        '_',
+        '~'
+      ),
+      (new CI_Encrypt)->encode($str, static::key)
+    );
   }
 
   static function decode($encoded)
   {
-    return (new CI_Encrypt)->decode($encoded, static::key);
+    return (new CI_Encrypt)->decode(str_replace(
+      array(
+        '-',
+        '_',
+        '~'
+      ),
+      array(
+        '+',
+        '/',
+        '='
+      ),
+      $encoded
+    ), static::key);
   }
 }
 
@@ -30,9 +55,45 @@ class EncryptCar
 class HelperClass
 {
   const indonesianWeeks =  ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+  const phpMonth = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December'
+  ];
+  const indMonth = [
+    'Januari',
+    'Februari',
+    'Maret',
+    'April',
+    'Mei',
+    'Juni',
+    'Juli',
+    'Agustus',
+    'September',
+    'Oktober',
+    'November',
+    'Desember'
+  ];
   static function dateToIndonesianWeeks($date)
   {
     return static::indonesianWeeks[date('w', strtotime($date))];
+  }
+  static function dateMonthToIndoWTime($date)
+  {
+    return str_replace(static::phpMonth, static::indMonth, date('d F Y H:i:s', strtotime($date)));
+  }
+  static function dateMonthToIndoNoTime($date)
+  {
+    return str_replace(static::phpMonth, static::indMonth, date('d F Y', strtotime($date)));
   }
 }
 
@@ -78,10 +139,10 @@ class CAR_STATUS
  * TODO LIST
  * 
  * dibagian seksi, jika sudah closed semua, tidak ada fitur tambah (Ok)
- * dibagian unit, warna CAR dibuat beda antara yg sudah di verifikasi sama belum (-)
- * dibagian tim, warna car dibuat beda antara yang sudah di closed, (-)
+ * dibagian unit, warna CAR dibuat beda antara yg sudah di verifikasi sama belum (Ok)
+ * dibagian tim, warna car dibuat beda antara yang sudah di closed, (Ok)
  * 
- * - Enkripsi id url
+ * - Enkripsi id url (Ok)
  */
 
 /**
@@ -118,6 +179,7 @@ class C_Car extends CI_Controller
    */
   public function CreateCarView($id_kecelakaan)
   {
+    $id_kecelakaan = EncryptCar::decode($id_kecelakaan);
     $data['Title'] = 'Kebutuhan APD';
     $data['Menu'] = 'Kebutuhan APD';
     $data['SubMenuOne'] = 'Standar';
@@ -129,13 +191,13 @@ class C_Car extends CI_Controller
 
     $data['kecelakaanDetail'] = $this->M_dtmasuk->getKecelakaan($id_kecelakaan);
 
-    // TODO: make into page
+    // TODO: make into page (Ok)
     if (empty($data['kecelakaanDetail'])) return debug("Data tidak ditemukan");
 
     $data['pekerjaDetail'] = $this->M_dtmasuk->getdetail_pkj_mkk($data['kecelakaanDetail']['noind']);
 
     $data['kecelakaanDetail']['hari'] = HelperClass::dateToIndonesianWeeks($data['kecelakaanDetail']['waktu_kecelakaan']);
-
+    $data['isUnit'] = substr($this->session->kodesie, 5) === '0000';
     // Param
     $data['id_kecelakaan'] = $id_kecelakaan;
 
@@ -199,7 +261,7 @@ class C_Car extends CI_Controller
 
       // update to kecelakaan if car is has been created
       $this->M_car->updateCarIfHasBeenCreated($id_kecelakaan);
-
+      $id_kecelakaan = EncryptCar::encode($id_kecelakaan);
       $this->session->set_flashdata("success", "Berhasil menambahkan lampiran CAR");
 
       return redirect('p2k3adm_V2/Admin/Car/View/' . $id_kecelakaan);
@@ -221,7 +283,8 @@ class C_Car extends CI_Controller
     $cars = array_map(function ($car) {
       if ($car->approval_status == CAR_STATUS::REVISI) {
         $endRevisi = end($car->revisi);
-        if ($endRevisi->approval_status === CAR_STATUS::CLOSED) return true;
+        if (!empty($endRevisi))
+          if ($endRevisi->approval_status === CAR_STATUS::CLOSED) return true;
       }
 
       if ($car->approval_status === CAR_STATUS::CLOSED) return true;
@@ -246,6 +309,7 @@ class C_Car extends CI_Controller
    */
   public function ViewCar($id_kecelakaan)
   {
+    $id_kecelakaan = EncryptCar::decode($id_kecelakaan);
     $data['Title'] = 'Kebutuhan APD';
     $data['Menu'] = 'Kebutuhan APD';
     $data['SubMenuOne'] = 'Standar';
@@ -257,7 +321,7 @@ class C_Car extends CI_Controller
 
     $data['kecelakaanDetail'] = $this->M_dtmasuk->getKecelakaan($id_kecelakaan);
 
-    // TODO: make into page
+    // TODO: make into page (Ok)
     if (empty($data['kecelakaanDetail'])) return debug("Data tidak ditemukan");
 
     $data['pekerjaDetail'] = $this->M_dtmasuk->getdetail_pkj_mkk($data['kecelakaanDetail']['noind']);
@@ -267,9 +331,8 @@ class C_Car extends CI_Controller
 
     // check if all is closed
     $data['isAllClosed'] = $this->isAllCarIsClosed($cars);
-
     $data['kecelakaanDetail']['hari'] = HelperClass::dateToIndonesianWeeks($data['kecelakaanDetail']['waktu_kecelakaan']);
-
+    $data['isUnit'] = substr($this->session->kodesie, 5) === '0000';
     // Param
     $data['id_kecelakaan'] = $id_kecelakaan;
 
@@ -308,7 +371,7 @@ class C_Car extends CI_Controller
         'approval_status' => CAR_STATUS::PROCESS, // only process can update data
         'created_by' => $this->session->user,
         'id_kecelakaan' => $id_kecelakaan,
-        'sub_revisi_kecelakaan_car_id' => nullWhenEmpty((int)$sub_car_revision_id[$i])
+        'sub_revisi_kecelakaan_car_id' => nullWhenEmpty((int) $sub_car_revision_id[$i])
       ];
     }
 
@@ -335,6 +398,8 @@ class C_Car extends CI_Controller
   {
     $kodesie = $this->session->kodesie;
 
+    $noind = $this->session->user;
+
     $data  = $this->general->loadHeaderandSidemenu('P2K2 - Monitoring Kecelakaan Kerja', 'Monitoring Kecelakaan Kerja', 'Monitoring Kecelakaan Kerja', 'Approval CAR', '');
 
     $data['year'] = $this->input->get('year');
@@ -357,7 +422,7 @@ class C_Car extends CI_Controller
     $this->load->view('V_Header', $data);
     $this->load->view('V_Sidemenu', $data);
 
-    if (in_array($employee->kd_jabatan, $kd_jabatan_unit)) {
+    if (in_array($employee->kd_jabatan, $kd_jabatan_unit) || $noind == 'B0463') {
       $this->load->view('P2K3V2/P2K3Admin/KecelakaanKerja/CAR/V_ApprovalUnitList', $data);
     } else {
       $this->load->view('P2K3V2/P2K3Admin/KecelakaanKerja/Page/V_NotAllowed', [
@@ -376,6 +441,9 @@ class C_Car extends CI_Controller
    */
   public function approvalUnitView($id_kecelakaan)
   {
+    $id_kecelakaan = EncryptCar::decode($id_kecelakaan);
+    $noind = $this->session->user;
+
     $data['Title'] = 'Kebutuhan APD';
     $data['Menu'] = 'Kebutuhan APD';
     $data['SubMenuOne'] = 'Standar';
@@ -387,7 +455,7 @@ class C_Car extends CI_Controller
 
     $data['kecelakaanDetail'] = $this->M_dtmasuk->getKecelakaan($id_kecelakaan);
 
-    // TODO: make into page
+    // TODO: make into page (Ok)
     if (empty($data['kecelakaanDetail'])) return debug("Data tidak ditemukan");
 
     $data['pekerjaDetail'] = $this->M_dtmasuk->getdetail_pkj_mkk($data['kecelakaanDetail']['noind']);
@@ -421,7 +489,7 @@ class C_Car extends CI_Controller
     $employee = $this->M_dtmasuk->getEmployeeByNoind($this->session->user);
 
     // Hanya jabatan UNIT ke atas yang dapat Mengapprove
-    if (in_array($employee->kd_jabatan, $kd_jabatan_unit)) {
+    if (in_array($employee->kd_jabatan, $kd_jabatan_unit) || $noind == 'B0463') {
       $this->load->view('P2K3V2/P2K3Admin/KecelakaanKerja/CAR/V_ApprovalUnit', $data);
     } else {
       $this->load->view('P2K3V2/P2K3Admin/KecelakaanKerja/Page/V_NotAllowed', [
@@ -464,6 +532,7 @@ class C_Car extends CI_Controller
    */
   public function approvalTimView($id_kecelakaan)
   {
+    $id_kecelakaan = EncryptCar::decode($id_kecelakaan);
     $data['Title'] = 'Kebutuhan APD';
     $data['Menu'] = 'Kebutuhan APD';
     $data['SubMenuOne'] = 'Standar';
@@ -475,7 +544,7 @@ class C_Car extends CI_Controller
 
     $data['kecelakaanDetail'] = $this->M_dtmasuk->getKecelakaan($id_kecelakaan);
 
-    // TODO: make into page
+    // TODO: make into page (Ok)
     if (empty($data['kecelakaanDetail'])) return debug("Data tidak ditemukan");
 
     $data['pekerjaDetail'] = $this->M_dtmasuk->getdetail_pkj_mkk($data['kecelakaanDetail']['noind']);
@@ -635,19 +704,20 @@ class C_Car extends CI_Controller
    * To Export CAR to PDF file
    * 
    * TODO: 
-   * Ubah format tanggal menjadi DD MMMM YYYY, ex: 31 Januari 2021
+   * Ubah format tanggal menjadi DD MMMM YYYY, ex: 31 Januari 2021 (Ok)
    * 
    * Print CAR handler
    * @method POST
    */
   public function ExportPDF($id_kecelakaan)
   {
+    set_time_limit(0);
+    $id_kecelakaan = EncryptCar::decode($id_kecelakaan);
     $this->load->library('pdf');
 
     $data['kecelakaanDetail'] = $this->M_dtmasuk->getKecelakaan($id_kecelakaan);
     $data['pekerjaDetail'] = $this->M_dtmasuk->getdetail_pkj_mkk($data['kecelakaanDetail']['noind']);
     $cars = $this->M_car->getCarByIdKecelakaan($id_kecelakaan);
-
     $data['cars'] = $cars;
 
     // get last Head Section approval (Process)
@@ -664,7 +734,7 @@ class C_Car extends CI_Controller
     $filename = 'P2K3Seksi.pdf';
     $html = $this->load->view('P2K3V2/P2K3Admin/KecelakaanKerja/CAR/Export/V_Pdf', $data, true);
     $footer = "
-			Dicetak melalui Quick ERP - P2K3 Kecelakaan Kerja pada " . date('Y-m-d H:i:s') . " oleh " . $this->session->user . " - " . $this->session->employee . "
+			   Kecelakaan Kerja pada " . date('Y-m-d H:i:s') . " oleh " . $this->session->user . " - " . $this->session->employee . "
 		";
     $pdf->SetFooter($footer);
     $pdf->WriteHTML($html, 0);

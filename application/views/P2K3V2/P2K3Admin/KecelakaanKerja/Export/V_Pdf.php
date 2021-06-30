@@ -154,9 +154,9 @@
         <h4 class="text-center" style="margin-top: 0.5em; margin-bottom: 0.5em;">LAPORAN KECELAKAAN</h4>
         <table class="table" id="form">
           <tr>
-            <td class="italic bold" width="35%">1. No Induk / Nama</td>
+            <td class="italic bold" width="35%">1. Nama / No Induk</td>
             <td width="2%">:</td>
-            <td colspan="2" class="border-bottom"><?= $pkj['noind'] . " / " . $pkj['nama'] ?> </td>
+            <td colspan="2" class="border-bottom"><?= $pkj['nama'] . " / " . $pkj['noind'] ?> </td>
           </tr>
           <tr>
             <td class="italic bold">2. Seksi/Unit/Plant *</td>
@@ -186,22 +186,32 @@
           <tr>
             <td class="italic bold">5. Masa Kerja</td>
             <td>:</td>
-            <td colspan="2" class="border-bottom"><?= $pkj['masa_kerja'] ?></td>
+            <td colspan="2" class="border-bottom"><?= $kecelakaan['masa_kerja'] ?></td>
           </tr>
           <tr>
-            <td class="italic bold">6. Masa Kerja D Pos Accident</td>
+            <td class="italic bold">6. Masa Kerja Di Pos Accident</td>
             <td>:</td>
-            <td colspan="2" class="border-bottom">4 Bulan</td>
+            <td colspan="2" class="border-bottom"><?= $kecelakaan['masa_masuk_pos']; ?></td>
           </tr>
           <tr>
             <td class="italic bold">7. Tanggal Kecelakaan</td>
             <td>:</td>
-            <td colspan="2" class="border-bottom"><?= date('d-m-Y', strtotime($kecelakaan['waktu_kecelakaan'])) ?></td>
+            <td colspan="2" class="border-bottom"><?= $this->personalia->konversitanggalIndonesia($kecelakaan['waktu_kecelakaan']) ?></td>
           </tr>
           <tr>
             <td class="italic bold">8. Jam terjadi Kecelakaan</td>
             <td>:</td>
-            <td colspan="2" class="border-bottom"><?= date('H.m', strtotime($kecelakaan['waktu_kecelakaan'])) ?> WIB</td>
+            <td colspan="2" class="border-bottom"><?= date('H.i', strtotime($kecelakaan['waktu_kecelakaan'])) ?> WIB</td>
+          </tr>
+          <tr>
+            <td class="italic bold">9. Lokasi Kejadian</td>
+            <td>:</td>
+            <td colspan="2" class="border-bottom"><?= $kecelakaan['tkp'] ?></td>
+          </tr>
+          <tr>
+            <td class="italic bold">10. Penyebab Kecelakaan</td>
+            <td>:</td>
+            <td colspan="2" class="border-bottom"><?= $kecelakaan['penyebab'] ?></td>
           </tr>
           <!-- ALASAN COMMENT: 
           - User minta agar tidak ditampilkan
@@ -243,11 +253,6 @@
             <td class="italic bold">10. Lokasi Kerja</td>
             <td>:</td>
             <td colspan="2" class="border-bottom"><?= $kecelakaan['lokasi_kerja_kecelakaan'] ?></td>
-          </tr>
-          <tr>
-            <td class="italic bold">11. Lokasi Kejadian</td>
-            <td>:</td>
-            <td colspan="2" class="border-bottom"><?= $kecelakaan['tkp'] ?></td>
           </tr>
           <tr>
             <td class="italic bold">12. Penyebab Kecelakaan</td>
@@ -392,7 +397,7 @@
             <td colspan="2" class="border-bottom"><?= $penggunaanAPD ?></td>
           </tr> -->
           <tr>
-            <td class="italic bold">9. Urutan Terjadinya Kecelakaan</td>
+            <td class="italic bold">11. Urutan Terjadinya Kecelakaan</td>
             <td></td>
             <td colspan="2"></td>
           </tr>
@@ -400,39 +405,50 @@
         <div class="ml-4">
           <table class="table" id="sub-content" autosize="0">
             <tr>
-              <td class="vertical-top bold italic" style="width: 33%;">a. Kronologis Kejadian</td>
+              <td class="vertical-top bold italic" style="width: 33%;">a. Kasus</td>
               <td class="vertical-top" width="2%">:</td>
               <td class="vertical-top"></td>
             </tr>
             <tr>
-              <td class="vertical-top pl-5" colspan="3" style="text-align: justify;">
+              <td class="vertical-top pl-5" colspan="3" style="text-align: justify; font-size:12px;">
+                <?php $maxLength = 340; ?>
+                <?= substr($kecelakaan['kasus'], 0, $maxLength) ?>
+              </td>
+            </tr>
+            <tr>
+              <td class="vertical-top bold italic" style="width: 33%;">b. Kronologis Kejadian</td>
+              <td class="vertical-top" width="2%">:</td>
+              <td class="vertical-top"></td>
+            </tr>
+            <tr>
+              <td class="vertical-top pl-5" colspan="3" style="text-align: justify; font-size:12px;">
                 <?php $maxLength = 340; ?>
                 <?= substr($kecelakaan['kronologi'], 0, $maxLength) ?>
               </td>
             </tr>
             <tr>
-              <td class="vertical-top bold italic">b. Kondisi Korban</td>
+              <td class="vertical-top bold italic">c. Kondisi Korban</td>
               <td class="vertical-top">:</td>
               <td style=""></td>
             </tr>
             <tr>
-              <td class="vertical-top pl-5" colspan="3" style="text-align: justify;">
+              <td class="vertical-top pl-5" colspan="3" style="text-align: justify; font-size:12px;">
                 <?= substr($kecelakaan['kondisi'], 0, $maxLength) ?>
               </td>
             </tr>
             <tr>
-              <td class="vertical-top bold italic">c. Penanganan Korban</td>
+              <td class="vertical-top bold italic">d. Penanganan Korban</td>
               <td class="vertical-top">:</td>
               <td></td>
             </tr>
             <tr>
-              <td class="vertical-top pl-5" colspan="3" style="text-align: justify;">
+              <td class="vertical-top pl-5" colspan="3" style="text-align: justify; font-size:12px;">
                 <?= substr($kecelakaan['tindakan'], 0, $maxLength) ?>
               </td>
             </tr>
             <tr>
               <td colspan="3">
-                <span class="bold italic">d. Prosedur Kerja **</span>
+                <span class="bold italic">e. Prosedur Kerja **</span>
                 <table class="ml-4">
                   <tr>
                     <td class="checkbox bordered italic px-5px"><?= ($kecelakaan['prosedur'] == '1') ? 'v' : '<span style="color: white;">0</span>' ?></td>
@@ -447,7 +463,7 @@
             </tr>
             <tr>
               <td colspan="3">
-                <span class="bold italic" style="display: block;">e. APD yang digunakan **</span>
+                <span class="bold italic" style="display: block;">f. APD yang digunakan **</span>
               </td>
             </tr>
           </table>
@@ -462,16 +478,16 @@
                   </tr>
                   <?php foreach ($items as $apd) : ?>
                     <?php
-                    $used_apd_index = array_search($apd['name'], $apd_digunakan_name);
-                    $standard_checklist = '';
-                    $actual_checklist = '';
+                        $used_apd_index = array_search($apd['name'], $apd_digunakan_name);
+                        $standard_checklist = '';
+                        $actual_checklist = '';
 
-                    if ($used_apd_index !== false) {
-                      $standard_checklist = $apd_digunakan[$used_apd_index]['standard'] == 't' ? 'v' : '';
-                      $actual_checklist = $apd_digunakan[$used_apd_index]['actual'] == 't' ? 'v' : '';
-                    }
+                        if ($used_apd_index !== false) {
+                          $standard_checklist = $apd_digunakan[$used_apd_index]['standard'] == 't' ? 'v' : '';
+                          $actual_checklist = $apd_digunakan[$used_apd_index]['actual'] == 't' ? 'v' : '';
+                        }
 
-                    ?>
+                        ?>
                     <tr>
                       <td class="bordered checkbox italic"><?= $standard_checklist ?></td>
                       <td class="bordered checkbox"><?= $actual_checklist ?></td>
@@ -508,23 +524,23 @@
         </div>
         <!-- <pagebreak /> -->
         <div class="width-100">
-          <span class="bold italic">10. Gambar</span>
+          <span class="bold italic">12. Gambar</span>
           <div class="width-50">
             <div class="ml-4">
-              <img style="min-width: 70%; width: auto; height: 140px; max-height: 140px; object-fit: cover;" src="<?= base_url('assets/upload/P2K3v2/kecelakaan_kerja/foto/' . $kecelakaan['lampiran_1']) ?>" alt="">
+              <img style="min-width: 70%; width: auto; height: 120px; max-height: 120px; object-fit: cover;" src="<?= base_url('assets/upload/P2K3v2/kecelakaan_kerja/foto/' . $kecelakaan['lampiran_1']) ?>" alt="">
               <!-- <p>---Keterangan gambar---</p> -->
             </div>
           </div>
           <div class="width-50">
             <div class="ml-4">
-              <img style="min-width: 70%; width: auto; height: 140px; max-height: 140px; object-fit: cover;" src="<?= base_url('assets/upload/P2K3v2/kecelakaan_kerja/foto/' . $kecelakaan['lampiran_2']) ?>" alt="">
+              <img style="min-width: 70%; width: auto; height: 120px; max-height: 120px; object-fit: cover;" src="<?= base_url('assets/upload/P2K3v2/kecelakaan_kerja/foto/' . $kecelakaan['lampiran_2']) ?>" alt="">
               <!-- <p>---Keterangan gambar---</p> -->
             </div>
           </div>
         </div>
       </div>
     </main>
-    <footer class="avoid-pagebreak-@" style="margin-top: 2em;">
+    <footer class="avoid-pagebreak-@" style="margin-top: 1em;">
       <div class="width-50">
         <span>Tembusan</span>
         <ol style="padding-left: 1.5em;">
@@ -538,7 +554,10 @@
         <div class="text-center" style="width: 300px; float: right;">
           <p class="m-0 block">Yogyakarta, <?= date('d-m-Y') ?></p>
           <p class="m-0 block">Yang melaporkan</p>
-          <div style="margin-top: 50px">___________________</div>
+          <div style="margin-top: 50px">
+            <div><?= $kecelakaan['userName_created_by']; ?></div>
+            <div style="margin-top:-10px"> _______________________</div>
+          </div>
         </div>
       </div>
     </footer>

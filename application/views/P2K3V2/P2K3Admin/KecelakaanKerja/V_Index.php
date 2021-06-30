@@ -46,7 +46,7 @@
                     <a href="<?= base_url('p2k3adm_V2/Admin/pdf_monitoringKK?y=' . $year); ?>" title="Cetak daftar rekapan ke PDF" class="btn btn-danger pull-left" style="margin-left: 10px;" target="_blank">
                       <i class="fa fa-file-pdf-o"></i> PDF
                     </a>
-                    <?php if ($index != $allIndex) : ?>
+                    <?php if ($index != $allIndex && !$isUnit) : ?>
                       <a href="<?= base_url('p2k3adm_V2/Admin/add_monitoringKK'); ?>" title="Tambah data kecelakaan baru" class="btn btn-info pull-right">
                         <i class="fa fa-plus"></i> Tambah
                       </a>
@@ -73,6 +73,8 @@
                       <?php
                       $x = 1;
                       foreach ($list as $key) : ?>
+                        <!-- Di Enkripsi Dulu Ya -->
+                        <?php $key['id_kecelakaan'] = EncryptCar::encode($key['id_kecelakaan']) ?>
                         <tr>
                           <td class="text-center"><?= $x++; ?></td>
                           <td class="text-center" nowrap>
@@ -81,36 +83,39 @@
                             </a>
                             <?php if ($index !== $allIndex) : ?>
                               <!-- Dapat di edit sebelum 7 hari dari tanggal pembuatan-->
-                              <?php if ((new DateTime($key['user_created_at']))->diff(new DateTime())->d < 700) : ?>
+                              <?php if ((new DateTime($key['user_created_at']))->diff(new DateTime())->d < 700 && !$isUnit) : ?>
                                 <a href="<?= base_url('p2k3adm_V2/Admin/edit_monitoringKK?id=' . $key['id_kecelakaan']); ?>" title="Edit rekapan" class="btn btn-primary btn-sm" title="Edit">
                                   <i class="fa fa-edit"></i>
                                 </a>
                               <?php endif ?>
-                              <button class="btn btn-danger btn-sm apdbtndelmkk" title="Hapus Rekap" value="<?= $key['id_kecelakaan'] ?>" pkj="<?= $key['noind'] . ' - ' . $key['nama'] ?>">
-                                <i class="fa fa-trash"></i>
-                              </button>
+                              <?php if (!$isUnit) : ?>
+                                <button class="btn btn-danger btn-sm apdbtndelmkk" title="Hapus Rekap" value="<?= $key['id_kecelakaan'] ?>" pkj="<?= $key['noind'] . ' - ' . $key['nama'] ?>">
+                                  <i class="fa fa-trash"></i>
+                                </button>
+                              <?php endif; ?>
+
                               <?php
-                              // tim approved && unit approved -> closed |
-                              if ($key['car_tim_is_approved'] == 't' && $key['car_unit_is_approved'] == 't') {
-                                $carButtonClass = 'status closed';
-                                $seksiCarButtonTitle = 'CAR is closed';
-                                $timCarButtonTitle = 'CAR is closed';
-                              } else if ($key['car_unit_is_approved'] == 't') {
-                                // unit approved -> verified -> green
-                                $carButtonClass = 'status verified';
-                                $seksiCarButtonTitle = 'CAR telah di approve';
-                                $timCarButtonTitle = 'Verifikasi CAR';
-                              } else {
-                                // else -> prosess
-                                $carButtonClass = 'status process';
-                                $seksiCarButtonTitle = 'Menunggu CAR diapprove (Proses)';
-                                $timCarButtonTitle = 'Lihat CAR (Proses)';
-                              }
-                              ?>
+                                  // tim approved && unit approved -> closed |
+                                  if ($key['car_tim_is_approved'] == 't' && $key['car_unit_is_approved'] == 't') {
+                                    $carButtonClass = 'status closed';
+                                    $seksiCarButtonTitle = 'CAR is closed';
+                                    $timCarButtonTitle = 'CAR is closed';
+                                  } else if ($key['car_unit_is_approved'] == 't') {
+                                    // unit approved -> verified -> green
+                                    $carButtonClass = 'status verified';
+                                    $seksiCarButtonTitle = 'CAR telah di approve';
+                                    $timCarButtonTitle = 'Verifikasi CAR';
+                                  } else {
+                                    // else -> prosess
+                                    $carButtonClass = 'status process';
+                                    $seksiCarButtonTitle = 'Menunggu CAR diapprove (Proses)';
+                                    $timCarButtonTitle = 'Lihat CAR (Proses)';
+                                  }
+                                  ?>
                               <?php if ($isAdmin) : ?>
                                 <!-- Tampilan di TIM -->
                                 <?php if ($key['car_is_created'] == 't') : ?>
-                                  <a target="_blank" href="<?= base_url("p2k3adm_V2/Admin/Car/Approval/Tim/$key[id_kecelakaan]") ?>" title="<?= $timCarButtonTitle ?>" class="btn <?= $carButtonClass ?> btn-sm">
+                                  <a target="_blank" href="<?= base_url("p2k3adm_V2/Admin/Car/Approval/Tim/$key[id_kecelakaan]") ?>" title="<?= $timCarButtonTitle ?>" class="btn <?= $carButtonClass ?> btn-sm" style="display:none;">
                                     <i class="fa fa-check-circle"></i>
                                   </a>
                                 <?php else : ?>
@@ -118,11 +123,11 @@
                               <?php else : ?>
                                 <!-- Tampilan di seksi -->
                                 <?php if ($key['car_is_created'] == 't') : ?>
-                                  <a target="_blank" href="<?= base_url("p2k3adm_V2/Admin/Car/View/$key[id_kecelakaan]") ?>" title="<?= $seksiCarButtonTitle ?>" class="btn <?= $carButtonClass ?> btn-sm">
+                                  <a target="_blank" href="<?= base_url("p2k3adm_V2/Admin/Car/View/$key[id_kecelakaan]") ?>" title="<?= $seksiCarButtonTitle ?>" class="btn <?= $carButtonClass ?> btn-sm" style="display:none;">
                                     <i class="fa fa-check-circle"></i>
                                   </a>
                                 <?php else : ?>
-                                  <a target="_blank" href="<?= base_url("p2k3adm_V2/Admin/Car/Create/$key[id_kecelakaan]") ?>" title="Lampirkan file CAR" class="btn btn-sm">
+                                  <a target="_blank" href="<?= base_url("p2k3adm_V2/Admin/Car/Create/$key[id_kecelakaan]") ?>" title="<?= $isUnit ? 'Lihat Car' : 'Lampirkan File Car'; ?>" class="btn btn-sm" style="display:none;">
                                     <i class="fa fa-check"></i>
                                   </a>
                                 <?php endif ?>

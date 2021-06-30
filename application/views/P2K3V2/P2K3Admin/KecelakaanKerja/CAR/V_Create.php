@@ -14,6 +14,7 @@
     color: #d17c00;
   }
 </style>
+
 <section class="content">
   <div class="inner">
     <div class="row">
@@ -42,12 +43,14 @@
                     <div class="col-md-12 mb-2">
                       <hr>
                       <span class="pull-left">Action :</span>
-                      <div class="pull-right">
-                        <button id="add_button" class="btn btn-primary">
-                          <i class="fa fa-plus"></i>
-                          Tambah
-                        </button>
-                      </div>
+                      <?php if (!$isUnit) : ?>
+                        <div class="pull-right">
+                          <button id="add_button" class="btn btn-primary">
+                            <i class="fa fa-plus"></i>
+                            Tambah
+                          </button>
+                        </div>
+                      <?php endif; ?>
                     </div>
                     <form action="<?= base_url('p2k3adm_V2/Admin/Car/Create') ?>" method="POST">
                       <input type="hidden" name="id_kecelakaan" value="<?= $id_kecelakaan ?>">
@@ -70,7 +73,7 @@
                               <tr>
                                 <td class="text-center js-row-number">1</td>
                                 <td>
-                                  <select class="form-control" name="factor[]" required>
+                                  <select class="form-control" name="factor[]" required <?= $isUnit ? 'disabled' : ''; ?>>
                                     <option value="Man" selected>Man</option>
                                     <option value="Machine">Machine</option>
                                     <option value="Method">Method</option>
@@ -80,17 +83,17 @@
                                   </select>
                                 </td>
                                 <td>
-                                  <input type="text" placeholder="Tulis akar masalah ..." name="root_cause[]" class="form-control" required>
+                                  <input type="text" placeholder="Tulis akar masalah ..." name="root_cause[]" class="form-control" required <?= $isUnit ? 'disabled' : ''; ?>>
                                 </td>
                                 <td>
-                                  <input type="text" placeholder="Tulis tindakan ..." name="corrective_action[]" class="form-control" required>
+                                  <input type="text" placeholder="Tulis tindakan ..." name="corrective_action[]" class="form-control" required <?= $isUnit ? 'disabled' : ''; ?>>
                                 </td>
                                 <td>
-                                  <select class="form-control js-pic-select2" name="noind_pic[]" required>
+                                  <select class="form-control js-pic-select2" name="noind_pic[]" required <?= $isUnit ? 'disabled' : ''; ?>>
                                   </select>
                                 </td>
                                 <td>
-                                  <input type="text" autocomplete="off" placeholder="Tanggal jatuh tempo" name="due_date[]" class="form-control js-datepicker" required>
+                                  <input type="text" autocomplete="off" placeholder="Tanggal jatuh tempo" name="due_date[]" class="form-control js-datepicker" required <?= $isUnit ? 'disabled' : ''; ?>>
                                 </td>
                                 <td style="display: flex; align-items: center;">
                                   <span class="status process">
@@ -98,20 +101,24 @@
                                   </span>
                                 </td>
                                 <td class="text-center">
-                                  <a class="text-danger js-remove-row" href="">
-                                    <i class="fa fa-trash"></i>
-                                  </a>
+                                  <div <?= $isUnit ? 'style="cursor:not-allowed;"' : ''; ?>>
+                                    <a class="text-danger js-remove-row" href="" <?= $isUnit ? 'style="pointer-events:none;"' : ''; ?>>
+                                      <i class="fa fa-trash" <?= $isUnit ? 'style="cursor:not-allowed;"' : ''; ?>></i>
+                                    </a>
+                                  </div>
                                 </td>
                               </tr>
                             </tbody>
                           </table>
                         </div>
                       </div>
-                      <div class="col-md-12">
-                        <div class="pull-right">
-                          <button class="btn btn-success" id="save_button">Simpan</button>
+                      <?php if (!$isUnit) : ?>
+                        <div class="col-md-12">
+                          <div class="pull-right">
+                            <button class="btn btn-success" id="save_button">Simpan</button>
+                          </div>
                         </div>
-                      </div>
+                      <?php endif; ?>
                     </form>
                   </div>
                 </div>

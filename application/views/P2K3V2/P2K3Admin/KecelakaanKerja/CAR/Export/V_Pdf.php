@@ -182,7 +182,7 @@
           <table class="table v-top">
             <tr>
               <td width="15%">KASUS</td>
-              <td colspan="5">:</td>
+              <td colspan="5">: <?= $kecelakaanDetail['kasus']; ?></td>
             </tr>
             <tr>
               <td width="15%">HARI</td>
@@ -195,7 +195,7 @@
             <tr>
               <td>TANGGAL</td>
               <td>:</td>
-              <td><?= date('d M Y', strtotime($kecelakaanDetail['waktu_kecelakaan'])) ?></td>
+              <td><?= HelperClass::dateMonthToIndoNoTime($kecelakaanDetail['waktu_kecelakaan']) ?></td>
               <td>UMUR</td>
               <td>:</td>
               <td><?= $pekerjaDetail['age'] ?> tahun</td>
@@ -206,7 +206,7 @@
               <td><?= date('H:i:s', strtotime($kecelakaanDetail['waktu_kecelakaan'])) ?></td>
               <td>LAMA BEKERJA</td>
               <td>:</td>
-              <td><?= $pekerjaDetail['masa_kerja_seksi'] ?></td>
+              <td><?= $kecelakaanDetail['masa_kerja'] ?></td>
             </tr>
             <tr>
               <td>LOKASI</td>
@@ -228,36 +228,36 @@
             <thead>
               <tr>
                 <th class="text-center" width="5%">No</th>
-                <th class="text-center" width="10%">Faktor *)</th>
+                <th class="text-center" width="10%">Faktor</th>
                 <th class="text-center">Root Cause</th>
                 <th class="text-center">Corrective Action</th>
                 <th class="text-center" width="12%">PIC</th>
-                <th class="text-center" width="12%">Status</th>
                 <th class="text-center" width="12%">Due Date</th>
               </tr>
             </thead>
             <tbody>
+              <?php $caIndex = 1 ?>
               <?php foreach ($cars as $i => $car) : ?>
                 <tr>
                   <td class="text-center v-top" rowspan="<?= count($car->revisi) + 1 ?>"><?= $i + 1 ?></td>
                   <td><?= $car->factor ?></td>
                   <td><?= $car->root_cause ?></td>
-                  <td><?= $car->corrective_action ?></td>
+                  <td><?= $caIndex . '.' . $car->corrective_action ?></td>
                   <td><?= $car->created_by . " - " . $car->nama_pic ?></td>
-                  <td><?= $car->approval_status ?></td>
-                  <td><?= $car->due_date ?></td>
+                  <td><?= HelperClass::dateMonthToIndoNoTime($car->due_date) ?></td>
                 </tr>
                 <?php foreach ($car->revisi as $car_revisi) : ?>
                   <tr>
                     <!-- <td></td> -->
                     <td><?= $car_revisi->factor ?></td>
                     <td><?= $car_revisi->root_cause ?></td>
-                    <td><?= $car_revisi->corrective_action ?></td>
+                    <td><?= $caIndex . '.' . $car_revisi->corrective_action ?></td>
                     <td><?= $car_revisi->created_by . " - " . $car_revisi->nama_pic ?></td>
-                    <td><?= $car_revisi->approval_status ?></td>
-                    <td><?= $car_revisi->due_date ?></td>
+                    <td><?= HelperClass::dateMonthToIndoNoTime($car_revisi->due_date) ?></td>
                   </tr>
+                  <?php $caIndex++; ?>
                 <?php endforeach ?>
+                <?php $caIndex++; ?>
               <?php endforeach ?>
             </tbody>
           </table>
@@ -274,12 +274,12 @@
             <tbody>
               <tr>
                 <td class="text-center" height="70px">
-                  <span style="display: block; color: red;">Approved By Kasie at <?= date('Y-m-d H:i:s', strtotime($kasieApproval->created_at)) ?></span><br />
-                  <span>(<?= $kasieApproval->approval_by ?>)</span>
+                  <!-- <span style="display: block; color: red;">Approved By Kasie at <?= HelperClass::dateMonthToIndoWTime($kasieApproval->created_at) ?></span><br />
+                  <span>(<?= $kasieApproval->approval_by ?>)</span> -->
                 </td>
                 <td class="text-center">
-                  <span style="display: block; color: red;">Approved By Unit at <?= date('Y-m-d H:i:s', strtotime($unitApproval->created_at)) ?></span><br />
-                  <span>(<?= $unitApproval->approval_by ?>)</span>
+                  <!-- <span style="display: block; color: red;">Approved By Unit at <?= HelperClass::dateMonthToIndoWTime($unitApproval->created_at) ?></span><br />
+                  <span>(<?= $unitApproval->approval_by ?>)</span> -->
                 </td>
                 <td rowspan="2">
                   <div style="display: block; font-size: 17px;">
@@ -293,8 +293,8 @@
                 </td>
               </tr>
               <tr>
-                <td>Date: <?= date('d-m-Y', strtotime($kasieApproval->created_at)) ?></td>
-                <td>Date: <?= date('d-m-Y', strtotime($unitApproval->created_at)) ?></td>
+                <td>Date: <?= HelperClass::dateMonthToIndoNoTime($kasieApproval->created_at) ?></td>
+                <td>Date: <?= HelperClass::dateMonthToIndoNoTime($unitApproval->created_at) ?></td>
               </tr>
             </tbody>
           </table>
@@ -307,11 +307,11 @@
             <tr>
               <td rowspan="2"></td>
               <td class="text-center v-bot" height="50px">
-                ( <?= $this->session->employee ?> )
+
               </td>
             </tr>
             <tr>
-              <td>Date: <?= date('Y-m-d') ?></td>
+              <td>Date: <?= HelperClass::dateMonthToIndoNoTime(date('Y-m-d')) ?></td>
             </tr>
           </table>
         </div>

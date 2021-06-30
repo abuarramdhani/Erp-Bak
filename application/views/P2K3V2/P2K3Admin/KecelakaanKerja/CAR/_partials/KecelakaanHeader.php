@@ -2,7 +2,7 @@
   <div class="col-md-12">
     <div class="row">
       <div class="col-md-12 mb-3">
-        <a href="<?= base_url('p2k3adm_V2/Admin/Car/Pdf/' . $kecelakaanDetail['id_kecelakaan']) ?>" target="_blank" class="btn btn-danger">
+        <a href="<?= base_url('p2k3adm_V2/Admin/Car/Pdf/' . EncryptCar::encode($kecelakaanDetail['id_kecelakaan'])) ?>" target="_blank" class="btn btn-danger">
           <i class="fa fa-file-pdf-o"></i>
           Cetak PDF
         </a>
@@ -12,7 +12,7 @@
           <div class="row">
             <label for="" class="label-control col-md-4">Kasus</label>
             <div class="col-md-8">
-              <input disabled type="text" class="form-control">
+              <input disabled type="text" class="form-control" value="<?= $kecelakaanDetail['kasus']; ?>">
             </div>
           </div>
         </div>
@@ -74,7 +74,7 @@
       <div class="row">
         <label for="" class="label-control col-md-4">Lama Bekerja</label>
         <div class="col-md-8">
-          <input disabled type="text" value="<?= $pekerjaDetail['masa_kerja'] ?>" class="form-control">
+          <input disabled type="text" value="<?= $kecelakaanDetail['masa_kerja'] ?>" class="form-control">
         </div>
       </div>
     </div>

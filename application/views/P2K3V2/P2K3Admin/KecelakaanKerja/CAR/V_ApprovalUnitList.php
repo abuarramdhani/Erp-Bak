@@ -49,9 +49,9 @@
                   </form>
                   <div class="col-md-12" style="height: 50px;"></div>
                   <div class="col-md-12" style="margin-bottom: 20px; padding: 0px;">
-                    <a href="<?= base_url('p2k3adm_V2/Admin/excel_monitoringKK?y=' . $year); ?>" title="Cetak daftar rekapan ke Excel" class="btn btn-success pull-left">
+                    <!-- <a href="<?= base_url('p2k3adm_V2/Admin/excel_monitoringKK?y=' . $year); ?>" title="Cetak daftar rekapan ke Excel" class="btn btn-success pull-left">
                       <i class="fa fa-file-excel-o"></i> Excel
-                    </a>
+                    </a> -->
                     <a href="<?= base_url('p2k3adm_V2/Admin/pdf_monitoringKK?y=' . $year); ?>" title="Cetak daftar rekapan ke PDF" class="btn btn-danger pull-left" style="margin-left: 10px;" target="_blank">
                       <i class="fa fa-file-pdf-o"></i> PDF
                     </a>
@@ -78,21 +78,23 @@
                       <?php
                       $x = 1;
                       foreach ($list as $key) : ?>
+                        <!-- Enkripsi Dulu Ya Sayang :* -->
+                        <?php $key['id_kecelakaan'] = EncryptCar::encode($key['id_kecelakaan']) ?>
                         <?php
-                        // tim approved && unit approved -> closed |
-                        if ($key['car_tim_is_approved'] == 't' && $key['car_unit_is_approved'] == 't') {
-                          $carButtonClass = 'status closed';
-                          $unitCarButtonTitle = 'CAR is closed';
-                        } else if ($key['car_unit_is_approved'] == 't') {
-                          // unit approved -> verified -> green
-                          $carButtonClass = 'status verified';
-                          $unitCarButtonTitle = 'CAR telah di approve';
-                        } else {
-                          // else -> prosess
-                          $carButtonClass = 'status process';
-                          $unitCarButtonTitle = 'Approve CAR';
-                        }
-                        ?>
+                          // tim approved && unit approved -> closed |
+                          if ($key['car_tim_is_approved'] == 't' && $key['car_unit_is_approved'] == 't') {
+                            $carButtonClass = 'status closed';
+                            $unitCarButtonTitle = 'CAR is closed';
+                          } else if ($key['car_unit_is_approved'] == 't') {
+                            // unit approved -> verified -> green
+                            $carButtonClass = 'status verified';
+                            $unitCarButtonTitle = 'CAR telah di approve';
+                          } else {
+                            // else -> prosess
+                            $carButtonClass = 'status process';
+                            $unitCarButtonTitle = 'Approve CAR';
+                          }
+                          ?>
                         <tr>
                           <td class="text-center"><?= $x++; ?></td>
                           <td class="text-center" nowrap>

@@ -1244,7 +1244,9 @@ class M_Dtmasuk extends CI_Model
                     t.noind = '$noind'";
         $result = $this->personalia->query($sql)->row_array();
 
+
         // find on surat first, if null then show from tpribadi
+
         $result['masa_kerja_seksi'] = $this->getPostMasaKerjaKecelakaanFromSurat($noind) ?: $result['masa_kerja'];
 
         return $result;
@@ -1665,8 +1667,11 @@ class M_Dtmasuk extends CI_Model
     {
         $withSection = "";
 
-        if ($kodesie) {
+        if (gettype($kodesie) == 'string') {
             $withSection = "AND LEFT(kk.user_kodesie, 7) = LEFT('$kodesie', 7)";
+        } elseif (gettype($kodesie) == 'array') {
+            $trefjabatan = implode("', '", $kodesie);
+            $withSection = "AND LEFT(kk.user_kodesie,5) IN ('$trefjabatan')";
         }
 
         $sql = "SELECT
@@ -1692,6 +1697,7 @@ class M_Dtmasuk extends CI_Model
                 where 
                     kk.waktu_kecelakaan::text like '$year%'
                     $withSection
+                order by kk.user_created_at desc
                 ";
         return $this->db->query($sql)->result_array();
     }
@@ -1751,10 +1757,11 @@ class M_Dtmasuk extends CI_Model
     public function getKecelakaan($id_kecelakaan)
     {
         return $this->db
-            ->select('
+            ->select("
                 kk.*,
-                el.location_name as lokasi_kerja_kecelakaan
-            ')
+                el.location_name as lokasi_kerja_kecelakaan,
+                replace(replace(replace(age(date(kk.tgl_masuk_pos), date(kk.waktu_kecelakaan))::VARCHAR,'years', 'Tahun'),'mons','Bulan'),'days','Hari') as masuk_pos
+            ")
             ->from('k3.k3k_kecelakaan kk')
             ->join('er.er_location el', 'el.location_code = kk.lokasi_kerja_kecelakaan', 'left')
             ->where('id_kecelakaan', $id_kecelakaan)

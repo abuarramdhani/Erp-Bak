@@ -2531,7 +2531,7 @@ $route['p2k3adm_V2/Admin/Car/Approval/Tim/(:any)'] = 'P2K3V2/P2K3Admin/MainMenu/
 $route['p2k3adm_V2/Admin/Car/Approval/Tim']['post'] = 'P2K3V2/P2K3Admin/MainMenu/C_Car/approvalTimAction';
 $route['p2k3adm_V2/Admin/Car/Approval/Tim/Notes']['post'] = 'P2K3V2/P2K3Admin/MainMenu/C_Car/approvalTimNotes';
 
-$route['p2k3adm_V2/Admin/Car/Pdf/(:num)'] = 'P2K3V2/P2K3Admin/MainMenu/C_Car/ExportPDF/$1';
+$route['p2k3adm_V2/Admin/Car/Pdf/(:any)'] = 'P2K3V2/P2K3Admin/MainMenu/C_Car/ExportPDF/$1';
 
 $route['p2k3adm_V2/Admin/Car/api/employeePIC'] = 'P2K3V2/P2K3Admin/MainMenu/C_Car/getEmployeePIC';
 
