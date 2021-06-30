@@ -33,7 +33,7 @@ class C_ApprovalEkatalog extends CI_Controller {
         $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $resp_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $resp_id);
 
-        if ($this->session->user == 'B0445' || $this->session->user == 'H7611' || $this->session->user == 'H6843' || $this->session->user == 'K1778' || $this->session->user == 'H6968') {
+        if ($this->session->user == 'P0420' || $this->session->user == 'B0915' || $this->session->user == 'B0445' || $this->session->user == 'H7611' || $this->session->user == 'H6843' || $this->session->user == 'K1778' || $this->session->user == 'H6968') {
             $data['DOList']         = $this->M_listekatalog->getDOListB0445();
         }else{
             $data['DOList']         = $this->M_listekatalog->getDOList();
@@ -58,7 +58,7 @@ class C_ApprovalEkatalog extends CI_Controller {
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $resp_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $resp_id);
         // echo $this->session->user;exit;
-        if ($this->session->user == 'B0445' || $this->session->user == 'H7611' || $this->session->user == 'H6843' || $this->session->user == 'K1778' || $this->session->user == 'H6968') {
+        if ($this->session->user == 'P0420' || $this->session->user == 'B0915' || $this->session->user == 'B0445' || $this->session->user == 'H7611' || $this->session->user == 'H6843' || $this->session->user == 'K1778' || $this->session->user == 'H6968') {
             $data['SPBList']        = $this->M_listekatalog->getSPBListB0445();
         }else {
             $data['SPBList']        = $this->M_listekatalog->getSPBList();
