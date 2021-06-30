@@ -761,7 +761,7 @@ class M_Dtmasuk extends CI_Model
         return $query->result_array();
     }
 
-    public function delPeriode($pr, $ks = '', $apd = '')
+    public function delPeriode($pr, $ks = '', $apd = [])
     {
         $and = '';
         if ($apd != '') {
@@ -1223,21 +1223,123 @@ class M_Dtmasuk extends CI_Model
         return $this->db->query($sql)->result_array();
     }
 
-    public function getdetail_pkj_mkk($noind)
+    public function getdetail_pkj_mkk($noind, $date = false)
     {
         $sql = "select
-                    *,
+                    t.*,
+                    date_part('year', age(t.tgllahir)) age,
+                    (
+                        CASE
+                            when date_part('year',age(CURRENT_DATE, t.masukkerja)) > 0 then concat(date_part('year',age(CURRENT_DATE, t.masukkerja)), ' Tahun ', date_part('month',age(CURRENT_DATE, t.masukkerja)), ' Bulan ', date_part('day',age(CURRENT_DATE, t.masukkerja)), ' Hari')
+                            when date_part('month',age(CURRENT_DATE, t.masukkerja)) > 0 then concat(date_part('month',age(CURRENT_DATE, t.masukkerja)), ' Bulan ', date_part('day',age(CURRENT_DATE, t.masukkerja)), ' Hari')
+                            else concat(date_part('day',age(CURRENT_DATE, t.masukkerja)), ' Hari')
+                        END
+                    ) masa_kerja,
+                    t2.seksi,
+                    t2.unit,
+                    t2.bidang,
+                    t2.dept,
+                    t3.lokasi_kerja lokasi_kerja_nama,
                     now()::date - t.masukkerja::date
                 from
                     hrd_khs.tpribadi t
-                left join hrd_khs.tseksi t2 on
-                    t2.kodesie = t.kodesie
+                    left join hrd_khs.tseksi t2 on t2.kodesie = t.kodesie
+                    left join hrd_khs.tlokasi_kerja t3 on t3.id_ = t.lokasi_kerja
                 where
                     t.noind = '$noind'";
-        return $this->personalia->query($sql)->row_array();
+        $result = $this->personalia->query($sql)->row_array();
+
+        $diangkat = $result['diangkat'];
+
+        // find on surat first, if null then show from tpribadi
+        $result['masa_kerja_seksi'] = $this->getPostMasaKerjaKecelakaanFromSurat($noind) ?: $result['masa_kerja'];
+        $result['maskerja'] = date_diff(date_create($date), date_create($diangkat))->format('%y Tahun %m Bulan %d Hari');
+
+        return $result;
     }
 
-    public function getMasaKerja($noinduk, $tgl) {
+    /**
+     * Cari pekerja aktif dengan keyword noind / nama
+     * Pekerja aktif adalah keluar = false
+     * 
+     * 
+     * @param String $keyword
+     * @return Array<Object>
+     */
+    public function findActiveEmployeeWithKeyword($keyword, $kodesie = false)
+    {
+        $keywordLowerCase = strtolower($keyword);
+        $query =  $this->personalia
+            ->select('
+                noind,
+                trim(nama) nama,
+                kodesie,
+                kd_jabatan
+            ')
+            ->from('hrd_khs.tpribadi')
+            ->where('keluar', false)
+            ->group_start()
+            ->like('LOWER(noind)', $keywordLowerCase, 'right')
+            ->or_like('LOWER(nama)', $keywordLowerCase, 'both')
+            ->group_end();
+
+        if ($kodesie) {
+            $query->where('LEFT(kodesie, 7) = ', substr($kodesie, 0, 7));
+        }
+
+        return $query->get()->result_object();
+    }
+
+
+    /**
+     * Cari surat perbantuan aktif dengan noind/nama
+     * 
+     * @param String $keyword
+     */
+    public function findActivePerbantuanWithKeyword($keyword, $kodesie = false)
+    {
+        $keywordLowerCase = strtolower($keyword);
+        $today = date('Y-m-d');
+
+        $query = $this->personalia
+            ->select('
+                noind,
+                trim(nama) nama,
+                kodesie_baru as kodesie
+            ')
+            ->from('"Surat".tsurat_perbantuan')
+            ->where('tanggal_mulai_perbantuan <= ', $today)
+            ->where('tanggal_selesai_perbantuan >= ', $today)
+            ->group_start()
+            ->like('LOWER(noind)', $keywordLowerCase, 'right')
+            ->or_like('LOWER(nama)', $keywordLowerCase, 'both')
+            ->group_end();
+
+        if ($kodesie) {
+            $query->where('LEFT(kodesie_baru, 7) = ', substr($kodesie, 0, 7));
+        }
+
+        return $query->get()->result_object();
+    }
+
+    /**
+     * Get employee by noind 
+     * 
+     * @param String $noind
+     * @return Object of employee
+     */
+    public function getEmployeeByNoind($noind)
+    {
+        return $this->personalia->get_where('hrd_khs.tpribadi', [
+            'noind' => $noind
+        ])->row();
+    }
+
+    /**
+     * ??
+     */
+    public function getMasaKerja($noinduk, $tgl)
+    {
         $noinduk = "'$noinduk'";
         $sql = "select      masa_kerja.nik,
                                 masa_kerja.tgllahir,
@@ -1323,7 +1425,11 @@ class M_Dtmasuk extends CI_Model
         return $query->row_array();
     }
 
-    public function getMasaKerja2($noinduk, $tgl) {
+    /**
+     * ??
+     */
+    public function getMasaKerja2($noinduk, $tgl)
+    {
         $noinduk = "'$noinduk'";
         $sql2 = "select         masa_kerja.nik,
                                 masa_kerja.tgllahir,
@@ -1430,7 +1536,11 @@ class M_Dtmasuk extends CI_Model
         return $query2->row_array();
     }
 
-    public function getMasaKerja3($noinduk, $tgl) {
+    /**
+     * ??
+     */
+    public function getMasaKerja3($noinduk, $tgl)
+    {
         $noinduk = "'$noinduk'";
         $sql3 = "select         masa_kerja.nik,
                                 masa_kerja.tgllahir,
@@ -1537,8 +1647,19 @@ class M_Dtmasuk extends CI_Model
 
     public function insk3k_kecelakaan_lain($data, $table)
     {
+        $id_kecelakaan = $data[0]['id_kecelakaan'];
+
+        $this->db->delete($table, [
+            'id_kecelakaan' => $id_kecelakaan
+        ]);
+
         $this->db->insert_batch($table, $data);
         return $this->db->affected_rows() > 0;
+    }
+
+    public function insertKecelakaanApd($table, $data)
+    {
+        return $this->db->insert_batch($table, $data);
     }
 
     public function upk3k_kecelakaan($data, $id)
@@ -1548,8 +1669,17 @@ class M_Dtmasuk extends CI_Model
         return $this->db->affected_rows() > 0;
     }
 
-    public function getK3K($year)
+    public function getK3K($year, $kodesie = false)
     {
+        $withSection = "";
+
+        if (gettype($kodesie) == 'string') {
+            $withSection = "AND LEFT(kk.user_kodesie, 7) = LEFT('$kodesie', 7)";
+        } elseif (gettype($kodesie) == 'array') {
+            $trefjabatan = implode("', '", $kodesie);
+            $withSection = "AND LEFT(kk.user_kodesie,5) IN ('$trefjabatan')";
+        }
+
         $sql = "SELECT
                     kk.id_kecelakaan,
                     kk.noind,
@@ -1558,15 +1688,66 @@ class M_Dtmasuk extends CI_Model
                     kk.lokasi_kerja,
                     kk.lokasi_kerja_kecelakaan,
                     kk.tkp,
+                    kk.car_is_created,
                     es.section_name seksi,
                     es.unit_name unit,
-                    es.department_name dept
+                    es.department_name dept,
+                    kk.user_created_by,
+                    kk.user_created_at,
+                    car_tim_is_approved,
+                    car_unit_is_approved
                 from
                     k3.k3k_kecelakaan kk
-                left join er.er_employee_all eea on eea.employee_code = kk.noind
-                left join er.er_section es on
-                    es.section_code = kk.kodesie::text
-                where kk.waktu_kecelakaan::text like '$year%'";
+                    left join er.er_employee_all eea on eea.employee_code = kk.noind
+                    left join er.er_section es on es.section_code = kk.kodesie::text
+                where 
+                    kk.waktu_kecelakaan::text like '$year%'
+                    $withSection
+                order by kk.user_created_at desc
+                ";
+        return $this->db->query($sql)->result_array();
+    }
+
+    public function getKecelakaanKerjaByUnit($year, $unitKodesie)
+    {
+        $withSection = "";
+
+        if (!empty($unitKodesie)) {
+            if (is_string($unitKodesie)) {
+                $withSection = "AND LEFT(kk.user_kodesie, 5) = LEFT('$unitKodesie', 5)";
+            } else if (is_array($unitKodesie)) {
+                $stringKodesie = implode(', ', array_map(function ($it) {
+                    return "'$it'";
+                }, $unitKodesie));
+                $withSection = "AND LEFT(kk.user_kodesie, 5) in ($stringKodesie)";
+            }
+        }
+
+        $sql = "SELECT
+                    kk.id_kecelakaan,
+                    kk.noind,
+                    eea.employee_name nama,
+                    kk.waktu_kecelakaan,
+                    kk.lokasi_kerja,
+                    kk.lokasi_kerja_kecelakaan,
+                    kk.tkp,
+                    kk.car_is_created,
+                    es.section_name seksi,
+                    es.unit_name unit,
+                    es.department_name dept,
+                    kk.user_created_by,
+                    kk.user_created_at,
+                    car_tim_is_approved,
+                    car_unit_is_approved
+                from
+                    k3.k3k_kecelakaan kk
+                    left join er.er_employee_all eea on eea.employee_code = kk.noind
+                    left join er.er_section es on es.section_code = kk.kodesie::text
+                where 
+                    kk.waktu_kecelakaan::text like '$year%'
+                    and kk.car_is_created = true
+                    $withSection
+                ";
         return $this->db->query($sql)->result_array();
     }
 
@@ -1579,13 +1760,31 @@ class M_Dtmasuk extends CI_Model
         // echo "<br>";
     }
 
+    public function getKecelakaan($id_kecelakaan)
+    {
+        return $this->db
+            ->select("
+                kk.*,
+                el.location_name as lokasi_kerja_kecelakaan
+            ")
+            ->from('k3.k3k_kecelakaan kk')
+            ->join('er.er_location el', 'el.location_code = kk.lokasi_kerja_kecelakaan', 'left')
+            ->where('id_kecelakaan', $id_kecelakaan)
+            ->get()
+            ->row_array();
+    }
+
     public function getAllk3k($table, $id)
     {
-        $this->db->where('id_kecelakaan', $id);
+        $this->db
+            ->where('id_kecelakaan', $id);
         // echo $this->db->get_compiled_select($table);
         return $this->db->get($table)->result_array();
     }
 
+    /**
+     * Cari tkp dari data kecelakaan yg pernah diinput
+     */
     public function getlistTKP($txt)
     {
         $sql = "SELECT distinct tkp FROM k3.k3k_kecelakaan
@@ -1604,7 +1803,7 @@ class M_Dtmasuk extends CI_Model
     {
         $this->db->where('id_kecelakaan', $id);
         $this->db->delete($table);
-        return $this->db->affected_rows()>0;
+        return $this->db->affected_rows() > 0;
     }
 
     public function getDatak3k($ym)
@@ -1629,6 +1828,10 @@ class M_Dtmasuk extends CI_Model
         return $this->db->get($tabel)->result_array();
     }
 
+    /**
+     * PLEASE CHECK THIS QUERY
+     * kk.lokasi_kerja_kecelakaan
+     */
     public function getTtlBagian($id_bagian, $year)
     {
         $sql = "SELECT
@@ -1639,6 +1842,7 @@ class M_Dtmasuk extends CI_Model
                     kkbt.id_kecelakaan = kk.id_kecelakaan
                 where
                     kkbt.bagian_tubuh = $id_bagian
+                    and kk.lokasi_kerja_kecelakaan in ('01', '02') 
                     and kk.waktu_kecelakaan::text like '$year%'";
         return $this->db->query($sql)->row()->ttl;
     }
@@ -1686,11 +1890,22 @@ class M_Dtmasuk extends CI_Model
         return $this->db->query($sql)->row()->ttl;
     }
 
-    public function getTtlLoker($id_loker, $year)//lokasikerja
+    public function getTtlLoker($id_loker, $year) //lokasikerja
     {
-        $sql = "SELECT count(*) ttl from k3.k3k_kecelakaan kkk where lokasi_kerja_kecelakaan like '$id_loker%'
-                and kkk.waktu_kecelakaan::text like '$year%'";
-                // echo $sql;exit();
+        $loker = "lokasi_kerja_kecelakaan in ('01', '02') and";
+
+        if ($id_loker) {
+            $loker = "lokasi_kerja_kecelakaan like '$id_loker%' and";
+        }
+
+        $sql = "SELECT 
+                    count(*) ttl 
+                FROM 
+                    k3.k3k_kecelakaan kkk 
+                WHERE 
+                    $loker
+                    kkk.waktu_kecelakaan::text like '$year%'";
+        // echo $sql;exit();
         return $this->db->query($sql)->row()->ttl;;
     }
 
@@ -1703,46 +1918,46 @@ class M_Dtmasuk extends CI_Model
 
     public function getTtlrange2($id, $year)
     {
-       $sql = "SELECT count(*) ttl from k3.k3k_kecelakaan kkk where range_waktu2 = '$id'
+        $sql = "SELECT count(*) ttl from k3.k3k_kecelakaan kkk where range_waktu2 = '$id'
                 and kkk.waktu_kecelakaan::text like '$year%'";
-       return $this->db->query($sql)->row()->ttl;
+        return $this->db->query($sql)->row()->ttl;
     }
 
     public function getTtlunsafe($id, $year)
     {
-       $sql = "SELECT count(*) ttl from k3.k3k_kecelakaan kkk where unsafe = '$id'
+        $sql = "SELECT count(*) ttl from k3.k3k_kecelakaan kkk where unsafe = '$id'
                 and kkk.waktu_kecelakaan::text like '$year%'";
-       return $this->db->query($sql)->row()->ttl;
+        return $this->db->query($sql)->row()->ttl;
     }
 
     public function getTtldept($id, $year)
     {
-        if($id) $t = 'not';
+        if ($id) $t = 'not';
         else $t = '';
-       $sql = "SELECT count(*) ttl from k3.k3k_kecelakaan kkk where kodesie::text $t like '$id%'
+        $sql = "SELECT count(*) ttl from k3.k3k_kecelakaan kkk where kodesie::text $t like '$id%'
                 and kkk.waktu_kecelakaan::text like '$year%'";
-       return $this->db->query($sql)->row()->ttl;
+        return $this->db->query($sql)->row()->ttl;
     }
 
     public function getTtljp($id, $year)
     {
-       $sql = "SELECT count(*) ttl from k3.k3k_kecelakaan kkk where jenis_pekerjaan::text like '$id%'
+        $sql = "SELECT count(*) ttl from k3.k3k_kecelakaan kkk where jenis_pekerjaan::text like '$id%'
                 and kkk.waktu_kecelakaan::text like '$year%'";
-       return $this->db->query($sql)->row()->ttl;
+        return $this->db->query($sql)->row()->ttl;
     }
 
     public function getTtlkolom($id, $year, $kolom)
     {
-       $sql = "SELECT count(*) ttl from k3.k3k_kecelakaan kkk where $kolom::text like '$id%'
-                and kkk.waktu_kecelakaan::text like '$year%'";
-       return $this->db->query($sql)->row()->ttl;
+        $sql = "SELECT count(*) ttl from k3.k3k_kecelakaan kkk where $kolom::text like '$id%'
+                and kkk.waktu_kecelakaan::text like '$year%' and kkk.lokasi_kerja_kecelakaan in ('01', '02')";
+        return $this->db->query($sql)->row()->ttl;
     }
 
     public function getTtlkolomLok($id, $year, $kolom, $lokasi = '')
     {
-       $sql = "SELECT count(*) ttl from k3.k3k_kecelakaan kkk where $kolom::text like '$id%'
+        $sql = "SELECT count(*) ttl from k3.k3k_kecelakaan kkk where $kolom::text like '$id%'
                 and kkk.waktu_kecelakaan::text like '$year%' and kkk.lokasi_kerja_kecelakaan like '$lokasi%'";
-       return $this->db->query($sql)->row()->ttl;
+        return $this->db->query($sql)->row()->ttl;
     }
 
     public function getTtlapd($id, $year)
@@ -1795,7 +2010,7 @@ class M_Dtmasuk extends CI_Model
                 order by
                     jml desc
                 limit 5";
-                // echo $sql;exit();
+        // echo $sql;exit();
         return $this->db->query($sql)->result_array();
     }
 
@@ -1846,17 +2061,161 @@ class M_Dtmasuk extends CI_Model
                 FROM im_master_bon mb
                 where NO_BON = '$nobon'
                 and NO_ID in ($id_oracle)";
-         return $this->oracle->query($sql)->result_array();
+        return $this->oracle->query($sql)->result_array();
     }
 
     public function getTbonSpatu($id_oracle)
     {
-        if(empty($id_oracle)) return false;
+        if (empty($id_oracle)) return false;
         if (is_array($id_oracle)) {
             $id_oracle = implode(',', $id_oracle);
         }
         $sql = "SELECT * FROM k3.tbon_sepatu where id_oracle in ($id_oracle)";
         return $this->db->query($sql)->result_array();
+    }
+    public function getRefJabatan($noind, $trim = 9)
+    {
+        return $this->personalia
+            ->select("
+                left(kodesie, '$trim') as kodesie
+            ")
+            ->where('noind', $noind)
+            ->from('hrd_khs.trefjabatan')
+            ->get()
+            ->result_array();
+    }
+
+    private function getDifferenceDateFromNow($date)
+    {
+        $sql = "
+            select (
+                CASE
+                    when date_part('year',age(CURRENT_DATE, $date)) > 0 then concat(date_part('year',age(CURRENT_DATE, $date)), ' Tahun ', date_part('month',age(CURRENT_DATE, $date)), ' Bulan ', date_part('day',age(CURRENT_DATE, $date)), ' Hari')
+                    when date_part('month',age(CURRENT_DATE, $date)) > 0 then concat(date_part('month',age(CURRENT_DATE, $date)), ' Bulan ', date_part('day',age(CURRENT_DATE, $date)), ' Hari')
+                    else concat(date_part('day',age(CURRENT_DATE, $date)), ' Hari')
+                END
+            ) masa_kerja
+        ";
+
+        return $this->personalia->query($sql)->row()->masa_kerja;
+    }
+
+    /**
+     * Only support for
+     * Surat.tsurat_perbantuan
+     * Surat.tsurat_mutasi
+     * Surat.tsurat_rotasi
+     * Surat.tsurat_promosi
+     * Surat.tsurat_demosi
+     */
+    public function getActiveSuratChanges($table, $noind)
+    {
+        $sql = "
+            SELECT 
+                tanggal_berlaku as tanggal,
+                (
+                    CASE
+                        when date_part('year',age(CURRENT_DATE, tanggal_berlaku)) > 0 then concat(date_part('year',age(CURRENT_DATE, tanggal_berlaku)), ' Tahun ', date_part('month',age(CURRENT_DATE, tanggal_berlaku)), ' Bulan ', date_part('day',age(CURRENT_DATE, tanggal_berlaku)), ' Hari')
+                        when date_part('month',age(CURRENT_DATE, tanggal_berlaku)) > 0 then concat(date_part('month',age(CURRENT_DATE, tanggal_berlaku)), ' Bulan ', date_part('day',age(CURRENT_DATE, tanggal_berlaku)), ' Hari')
+                        else concat(date_part('day',age(CURRENT_DATE, tanggal_berlaku)), ' Hari')
+                    END
+                ) masa_kerja
+            FROM $table 
+            WHERE
+                noind = '$noind'
+                and tanggal_berlaku <= CURRENT_DATE
+            ORDER BY 
+                tanggal_berlaku DESC
+            LIMIT 1
+        ";
+
+        return $this->personalia->query($sql)->row_array();
+    }
+
+    public function getActiveSuratPerbantuan($noind)
+    {
+        $sql = "
+            SELECT
+                tanggal_mulai_perbantuan as tanggal,
+                (
+                    CASE
+                        WHEN date_part('year', age(CURRENT_DATE, tanggal_mulai_perbantuan::date)) > 0 
+                            THEN concat(
+                                date_part('year', age(CURRENT_DATE, tanggal_mulai_perbantuan::date)), 
+                                ' Tahun ', 
+                                date_part('month', age(CURRENT_DATE, tanggal_mulai_perbantuan::date)), 
+                                ' Bulan ', 
+                                date_part('day', age(CURRENT_DATE, tanggal_mulai_perbantuan::date)), 
+                                ' Hari'
+                            )
+                        WHEN date_part('month', age(CURRENT_DATE, tanggal_mulai_perbantuan::date)) > 0 
+                            THEN concat(
+                                date_part('month', age(CURRENT_DATE, tanggal_mulai_perbantuan::date)), 
+                                ' Bulan ', 
+                                date_part('day', age(CURRENT_DATE, tanggal_mulai_perbantuan::date)), 
+                                ' Hari'
+                            )
+                        ELSE 
+                            concat(
+                                date_part('day', age(CURRENT_DATE, tanggal_mulai_perbantuan::date)), 
+                                ' Hari'
+                            )
+                    END
+                ) masa_kerja
+            FROM \"Surat\".tsurat_perbantuan
+            WHERE 
+                noind = '$noind'
+                and tanggal_mulai_perbantuan <= CURRENT_DATE
+                and tanggal_selesai_perbantuan >= CURRENT_DATE
+            ORDER BY 
+                tanggal_mulai_perbantuan DESC
+            LIMIT 1";
+
+        return $this->personalia->query($sql)->row_array();
+    }
+
+    /**
+     * Untuk mencari masa kerja saat di seksi
+     * 
+     * tabel terkait:
+     * Surat.tsurat_perbantuan
+     * Surat.tsurat_mutasi
+     * Surat.tsurat_rotasi
+     * Surat.tsurat_promosi
+     * Surat.tsurat_demosi
+     */
+    public function getPostMasaKerjaKecelakaanFromSurat($noind)
+    {
+        $today = date('Y-m-d');
+
+        // Get latest surat / surat yang masih berlaku pada saat tanggal $today
+
+        $allSurat = [];
+
+        $perbantuan = $this->getActiveSuratPerbantuan($noind);
+        if (!empty($perbantuan)) array_push($allSurat, $perbantuan);
+
+        $mutasi = $this->getActiveSuratChanges('"Surat".tsurat_mutasi', $noind);
+        if (!empty($mutasi)) array_push($allSurat, $mutasi);
+
+        $rotasi = $this->getActiveSuratChanges('"Surat".tsurat_rotasi', $noind);
+        if (!empty($rotasi)) array_push($allSurat, $rotasi);
+
+        $promosi = $this->getActiveSuratChanges('"Surat".tsurat_promosi', $noind);
+        if (!empty($promosi)) array_push($allSurat, $promosi);
+
+        $demosi = $this->getActiveSuratChanges('"Surat".tsurat_demosi', $noind);
+        if (!empty($demosi)) array_push($allSurat, $demosi);
+
+
+        if (empty($allSurat)) return null;
+
+        // sort last date / tanggal berlaku paling akhir
+        usort($allSurat, function ($a, $b) {
+            return $a['tanggal'] - $b['tanggal'];
+        });
+
+        return $allSurat[0]['masa_kerja'];
     }
 
     public function GetPeriodeSepatu()
@@ -1877,7 +2236,7 @@ class M_Dtmasuk extends CI_Model
         return $this->oracle->query($sql)->row_array();
     }
 
-    function getttlTransactAPD($no_bon, $apd, $pr='')
+    function getttlTransactAPD($no_bon, $apd, $pr = '')
     {
         if ($pr == '') {
             $pr = date('Y-m');

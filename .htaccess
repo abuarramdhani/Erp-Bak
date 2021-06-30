@@ -1,6 +1,7 @@
 # Checks to see if the user is attempting to access a valid file,
 # such as an image or css document, if this isnâ€™t true it sends the
 # request to index.php
+php_value post_max_size 50M
 <IfModule mod_rewrite.c>
 RewriteEngine On
 RewriteCond %{REQUEST_URI} ^system.*
