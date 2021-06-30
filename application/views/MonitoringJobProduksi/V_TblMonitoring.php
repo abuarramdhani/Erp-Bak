@@ -7,7 +7,7 @@
             <th rowspan="2" style="width:5%;vertical-align:middle;background-color:#60BCEB">No
                 <input type="hidden" name="ket" value="<?= $ket?>">
             </th>
-            <th rowspan="2" style="width:130px;vertical-align:middle;background-color:#60BCEB">Item</th>
+            <th rowspan="2" style="width:170px;vertical-align:middle;background-color:#60BCEB">Item</th>
             <th rowspan="2" style="background-color:#60BCEB"></th>
             <th colspan="<?= $hari?>" >Tanggal</th>
             <th rowspan="2" style="vertical-align:middle;background-color:#60BCEB">Jumlah</th>
@@ -31,8 +31,8 @@
                 <input type="hidden" class="nama_item" id="item<?= $no?>" name="item<?= $no?>" value="<?= $value['ITEM']?>">
                 <input type="hidden" id="desc<?= $no?>" name="desc<?= $no?>" value="<?= $value['DESC']?>"> 
                 <input type="hidden" id="inv<?= $no?>" name="inv<?= $no?>" value="<?= $value['INVENTORY_ITEM_ID']?>"> 
-                <input type="hidden" name="wip<?= $no?>"> 
-                <input type="hidden" name="picklist<?= $no?>"> 
+                <input type="hidden" name="wip<?= $no?>" class="val_wip"> 
+                <input type="hidden" name="picklist<?= $no?>" class="val_picklist"> 
                 <input type="hidden" name="completion<?= $no?>" class="val_completion"> 
                 <input type="hidden" name="gudang1<?= $no?>"> 
                 <input type="hidden" name="gudang2<?= $no?>"> 
@@ -144,6 +144,8 @@
         <tr>
             <td style="font-weight:bold">Total</td>
             <td><input type="hidden" name="jml_item" value="<?= $no-1?>"><?= $no-1?>
+                <br><span class="jml_all_wip"></span>
+                <br><span class="jml_all_pick"></span>
                 <br><span class="jml_all_comp"></span>
             </td>
             <td><p>P</p>
