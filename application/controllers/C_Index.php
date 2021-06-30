@@ -639,7 +639,7 @@ class C_Index extends CI_Controller
 
 		$isi_sms = urlencode("Password Akun ERP Anda (".trim($nama).") hari ini ".strftime('%A, %d %B %Y')." adalah ".$rand_pass);
 		// echo 'http://192.168.168.122/sendsms?username=ict&password=quick1953&phonenumber='.$nomor.'&message='.$isi_sms.'&[port='.$port.'&][report=1&][timeout=20]';
-		$http_result = file_get_contents( 'http://192.168.168.122/sendsms?username=ict&password=quick1953&phonenumber='.$nomor.'&message='.$isi_sms.'&[port='.$port.'&][report=1&][timeout=20]' );
+		$http_result = file_get_contents( 'http://192.168.168.122/sendsms?username=ict&password=quick1953&phonenumber='.$nomor.'&message='.$isi_sms.'&[port='.$port.']&[report=1]&[timeout=20]' );
 		$res = json_decode($http_result);
 		$this->insert_log_sms($res);
 	}
