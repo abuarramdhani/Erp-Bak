@@ -78,9 +78,23 @@ class C_Master extends CI_Controller
     {
       $item_id = explode(',', $this->input->post('item_id'));
       $data['item_id'] = $item_id[0];
-      $data['old_job'] = $this->M_master->getOldJob($item_id[0]);
+      if ($item_id[0] != '-') {
+        $data['old_job'] = $this->M_master->getOldJob($item_id[0]);
+      }
       // 11190
-      if (!empty($data['old_job'])) {
+      if (!empty($data['old_job']) && $item_id[0] != '-') {
+        $this->load->view('CompletionAGT/ajax/V_Item', $data);
+      }elseif ($item_id[0] == '-') {
+        $data['old_job'] = [
+          'ITEM_ID' => '0',
+          'CREATION_DATE' => '-',
+          'NO_JOB' => 'DATAEMPTY',
+          'KODE_ITEM' => 'DATAEMPTY',
+          'DESCRIPTION' => 'DATAEMPTY',
+          'QTY_JOB' => 'DATAEMPTY',
+          'REMAINING_QTY' => 'DATAEMPTY',
+          'REMAINING_WIP' => 'DATAEMPTY'
+        ];
         $this->load->view('CompletionAGT/ajax/V_Item', $data);
       }else {
         echo 0;

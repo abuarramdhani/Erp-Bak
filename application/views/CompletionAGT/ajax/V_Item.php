@@ -18,9 +18,9 @@
     <td> Creation Date</td>
     <td hidden style="text-align:center"> Action</td>
   </tr>
-  <?php foreach ($old_job as $key => $value): ?>
+  <?php $value = $old_job; //foreach ($old_job as $key => $value): ?>
     <tr>
-      <td><center><?php echo $key+1 ?><center></td>
+      <td><center><?php echo 1//$key+1 ?><center></td>
       <td><b><?php echo $value['NO_JOB'] ?></b></td>
       <td><?php echo $value['KODE_ITEM'] ?></td>
       <td><?php echo $value['DESCRIPTION'] ?></td>
@@ -36,5 +36,5 @@
          <center>
        </td>
     </tr>
-  <?php endforeach; ?>
+  <?php //endforeach; ?>
 </table>

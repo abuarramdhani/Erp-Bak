@@ -89,7 +89,8 @@ class M_master extends CI_Model
                AND wdj.creation_date =
                             (SELECT MIN (wdj.creation_date)
                                FROM wip_discrete_jobs wdj
-                              WHERE wdj.primary_item_id = $item_id AND wdj.status_type = 3)")->row_array();
+                              WHERE wdj.primary_item_id = $item_id AND wdj.status_type = 3)
+              ORDER BY we.wip_entity_name ASC")->row_array();
 
     }
 
