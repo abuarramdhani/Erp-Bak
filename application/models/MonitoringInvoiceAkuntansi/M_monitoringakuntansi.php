@@ -1081,6 +1081,7 @@ class M_monitoringakuntansi extends CI_Model
                 ami.last_status_purchasing_date last_status_purchasing_date,
                 ami.last_status_finance_date last_status_finance_date,
                 ami.finance_batch_number finance_batch_number,
+                ami.last_purchasing_invoice_status last_purchasing_invoice_status,
                 ami.last_finance_invoice_status last_finance_invoice_status,
                 ami.reason reason, 
                 ami.info info,
