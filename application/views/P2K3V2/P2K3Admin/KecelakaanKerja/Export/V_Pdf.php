@@ -422,7 +422,7 @@
             </tr>
             <tr>
               <td class="vertical-top pl-5" colspan="3" style="text-align: justify; font-size:12px;">
-                <?php $maxLength = 340; ?>
+                <?php $maxLength = 680; ?>
                 <?= substr($kecelakaan['kronologi'], 0, $maxLength) ?>
               </td>
             </tr>
@@ -433,6 +433,7 @@
             </tr>
             <tr>
               <td class="vertical-top pl-5" colspan="3" style="text-align: justify; font-size:12px;">
+                <?php $maxLength = 340; ?>
                 <?= substr($kecelakaan['kondisi'], 0, $maxLength) ?>
               </td>
             </tr>
@@ -540,6 +541,7 @@
         </div>
       </div>
     </main>
+
     <footer class="avoid-pagebreak-@" style="margin-top: 1em;">
       <div class="width-50">
         <span>Tembusan</span>
