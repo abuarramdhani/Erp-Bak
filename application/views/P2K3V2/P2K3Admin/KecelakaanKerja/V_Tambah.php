@@ -240,7 +240,7 @@
                           <label style="margin-top: 5px;">Kronologi</label>
                         </div>
                         <div class="col-md-8 nopadding">
-                          <textarea class="form-control toupper- limiter" maxlength="340" placeholder="Kronologi kejadian" name="kronologi" style="width: 100%; min-height: 80px; height: 100px; max-height: 200px; resize: vertical;" required></textarea>
+                          <textarea class="form-control toupper- limiter" maxlength="680" placeholder="Kronologi kejadian" name="kronologi" style="width: 100%; min-height: 80px; height: 100px; max-height: 200px; resize: vertical;" required></textarea>
                         </div>
                       </div>
                     </div>
@@ -269,7 +269,7 @@
                           <label style="margin-top: 5px;">Kondisi</label>
                         </div>
                         <div class="col-md-8 nopadding">
-                          <textarea class="form-control toupper-" maxlength="340" placeholder="Kondisi korban" name="kondisi" style="width: 100%; min-height: 80px; height: 100px; max-height: 200px; resize: vertical;" required></textarea>
+                          <textarea class="form-control toupper- limiter" maxlength="340" placeholder="Kondisi korban" name="kondisi" style="width: 100%; min-height: 80px; height: 100px; max-height: 200px; resize: vertical;" required></textarea>
                         </div>
                       </div>
                     </div>
@@ -279,7 +279,7 @@
                           <label style="margin-top: 5px;">Penyebab</label>
                         </div>
                         <div class="col-md-8 nopadding">
-                          <textarea class="form-control toupper-" maxlength="340" placeholder="Penyebab kejadian" name="penyebab" style="width: 100%; min-height: 80px; height: 100px; max-height: 200px; resize: vertical;" required></textarea>
+                          <textarea class="form-control toupper- limiter" maxlength="340" placeholder="Penyebab kejadian" name="penyebab" style="width: 100%; min-height: 80px; height: 100px; max-height: 200px; resize: vertical;" required></textarea>
                         </div>
                       </div>
                     </div>
@@ -317,7 +317,7 @@
                           <label style="margin-top: 5px;">Tindakan/Penanganan</label>
                         </div>
                         <div class="col-md-8 nopadding">
-                          <textarea class="form-control toupper-" placeholder="Tindakan/Penanganan terhadap korban" name="tindakan" style="width: 100%; min-height: 80px; height: 100px; max-height: 200px; resize: vertical;" required></textarea>
+                          <textarea class="form-control toupper- limiter" maxlength="340" placeholder="Tindakan/Penanganan terhadap korban" name="tindakan" style="width: 100%; min-height: 80px; height: 100px; max-height: 200px; resize: vertical;" required></textarea>
                         </div>
                       </div>
                     </div>
@@ -758,10 +758,10 @@
       const $fileInput = $(`input[name='lampiran_foto[${id_attachment}]'`)
 
       const canvas = cropper.getCroppedCanvas({
-        width: 120,
-        height: 120,
-        imageSmoothingEnabled: true,
-        imageSmoothingQuality: 'low',
+        width: 200,
+        height: 200,
+        imageSmoothingEnabled: false,
+        imageSmoothingQuality: 'low'
       });
       const base64Image = canvas.toDataURL()
 
