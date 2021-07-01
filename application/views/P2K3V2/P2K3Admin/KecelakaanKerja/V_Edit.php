@@ -249,7 +249,7 @@
                           <label style="margin-top: 5px;">Kronologi</label>
                         </div>
                         <div class="col-md-8 nopadding">
-                          <textarea class="form-control toupper-" placeholder="Kronologi kejadian" name="kronologi" style="width: 100%; min-height: 80px; height: 100px; max-height: 200px; resize: vertical;" required=""><?= $kecelakaan['kronologi'] ?></textarea>
+                          <textarea class="form-control toupper- limiter" maxlength="680" placeholder="Kronologi kejadian" name="kronologi" style="width: 100%; min-height: 80px; height: 100px; max-height: 200px; resize: vertical;" required=""><?= $kecelakaan['kronologi'] ?></textarea>
                         </div>
                       </div>
                     </div>
@@ -278,7 +278,7 @@
                           <label style="margin-top: 5px;">Kondisi</label>
                         </div>
                         <div class="col-md-8 nopadding">
-                          <textarea class="form-control toupper-" attr-name="kondisi" style="width: 100%; height: 100px;" required=""><?= $kecelakaan['kondisi'] ?></textarea>
+                          <textarea class="form-control toupper-" maxlength="340" attr-name="kondisi" style="width: 100%; height: 100px;" required=""><?= $kecelakaan['kondisi'] ?></textarea>
                         </div>
                       </div>
                     </div>
@@ -288,7 +288,7 @@
                           <label style="margin-top: 5px;">Penyebab</label>
                         </div>
                         <div class="col-md-8 nopadding">
-                          <textarea class="form-control toupper-" attr-name="penyebab" style="width: 100%; height: 100px;" required=""><?= $kecelakaan['penyebab'] ?></textarea>
+                          <textarea class="form-control toupper- limiter" maxlength="340" attr-name="penyebab" style="width: 100%; height: 100px;" required=""><?= $kecelakaan['penyebab'] ?></textarea>
                         </div>
                       </div>
                     </div>
@@ -326,7 +326,7 @@
                           <label style="margin-top: 5px;">Tindakan/Penanganan</label>
                         </div>
                         <div class="col-md-8 nopadding">
-                          <textarea class="form-control toupper-" attr-name="tindakan" style="width: 100%; height: 100px;" required=""><?= $kecelakaan['tindakan'] ?></textarea>
+                          <textarea class="form-control toupper- limiter" maxlength="340" attr-name="tindakan" style="width: 100%; height: 100px;" required=""><?= $kecelakaan['tindakan'] ?></textarea>
                         </div>
                       </div>
                     </div>
@@ -642,6 +642,16 @@
         $('#keterangan').val(keterangan[$(this).val()])
       })
     })
+
+    $('.limiter').each(function() {
+      const maxLength = $(this).attr('maxlength')
+      $(this).inputlimiter({
+        limit: maxLength,
+        remText: 'Sisa %n karakter lagi...',
+        limitText: 'Limit %n karakter.'
+      });
+    })
+
     // force close loading in second if not work
     setTimeout(() => {
       $('#surat-loading').attr('hidden', 'hidden')
@@ -749,10 +759,10 @@
       const $fileInput = $(`input[name='lampiran_foto[${id_attachment}]'`)
 
       const canvas = cropper.getCroppedCanvas({
-        width: 120,
-        height: 120,
+        width: 200,
+        height: 200,
         imageSmoothingEnabled: true,
-        imageSmoothingQuality: 'low',
+        imageSmoothingQuality: 'low'
       });
       const base64Image = canvas.toDataURL()
 
