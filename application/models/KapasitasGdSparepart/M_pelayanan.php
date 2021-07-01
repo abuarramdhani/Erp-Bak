@@ -367,8 +367,8 @@ class M_pelayanan extends CI_Model
                                  END num
                             FROM khs_qweb_bodycolly_dospb_sp1 aa
                            WHERE aa.request_number = '$id'
-                          UNION
-                          SELECT aa.header_id, aa.request_number, aa.colly_number, 'TOTAL',
+                          UNION ALL
+                          SELECT DISTINCT aa.header_id, aa.request_number, aa.colly_number, 'TOTAL',
                                  NULL, NULL, NULL,
                                  (SELECT SUM (bb.berat)
                                     FROM khs_qweb_bodycolly_dospb_sp1 bb
