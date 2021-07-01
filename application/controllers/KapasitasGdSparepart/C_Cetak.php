@@ -287,14 +287,16 @@ class C_Cetak extends CI_Controller
 			}
 
 			$data['get_body'] = $one_page_is;
-
+			// echo "<pre>";
+			// print_r($data['get_header']);
+			// die;
 			if (!empty($id)) {
 					// ====================== do something =========================
 					$this->load->library('Pdf');
 					$this->load->library('ciqrcode');
 
 					$pdf = $this->pdf->load();
-					$pdf = new mPDF('utf-8', array(202.5 , 267), 0, '', 3, 3, 3, 0, 0, 16);
+					$pdf = new mPDF('utf-8', array(202.5 , 267), 0, '', 3, 2, 3, 0, 0, 16);
 
 					// ------ GENERATE QRCODE ------
 					if (!is_dir('./assets/img/monitoringDOSPQRCODE')) {
@@ -370,7 +372,7 @@ class C_Cetak extends CI_Controller
 							</td>
 						<td rowspan="3" style="vertical-align: top; width: 90px; border-top: 1px solid white; border-bottom: 1px solid white; border-left: 1px solid white; font-size: 10px; padding: 5px;padding-top:4.2mm">
 						 <br><br>
-							&nbsp;&nbsp;&nbsp;'.$data['get_header'][0]['ASSIGN_DATE'].'
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$data['get_header'][0]['ASSIGN_DATE'].'
 							<br><br><br><br><br>NELSON REYNALDI
 						</td>
 						<td colspan="2" style="vertical-align: top; border-right: 1px solid white; border-top: 1px solid white; border-left: 1px solid white; font-size: 10px; padding: 5px; height: 20px!important;">
