@@ -667,36 +667,12 @@ class C_Import extends CI_Controller
 
      $row_number = 2;
      foreach ($data_lph as $key => $value) {
-       $worksheet->setCellValue('A'.$row_number, $value['tanggal']);
-       $worksheet->setCellValue('B'.$row_number, explode(' - ', $value['operator'])[1]);
-       $worksheet->setCellValue('C'.$row_number, $value['kelompok']);
-       $worksheet->setCellValue('D'.$row_number, $value['kode_komponen']);
-       $worksheet->setCellValue('E'.$row_number, $value['kode_proses']);
-       $worksheet->setCellValue('F'.$row_number, $value['nama_komponen']);
-       $worksheet->setCellValue('G'.$row_number, $value['aktual']);
-       $worksheet->setCellValue('H'.$row_number, $value['hasil_baik']);
-       if ($value['hari'] == 'Sabtu' || $value['hari'] == 'Jumat') {
-         $tgtpe = $value['target_js'];
-       }else {
-         $tgtpe = $value['target_sk'];
-       }
-       $worksheet->setCellValue('I'.$row_number, $tgtpe);
-       $worksheet->setCellValue('J'.$row_number,str_replace('%', '', $value['persentase_aktual']));
-       $worksheet->setCellValue('K'.$row_number, empty($value['scrap_mat']) ? 0 : $value['scrap_mat']);
-       $worksheet->setCellValue('L'.$row_number, empty($value['scrap_mach']) ? 0 : $value['scrap_mach']);
-       $worksheet->setCellValue('M'.$row_number, ''); //repair
-       $worksheet->setCellValue('N'.$row_number, ''); //setting tanyakan dulu
-       $shift = explode(' : ', explode(' - ',$value['shift'])[1])[0];
-       $worksheet->setCellValue('O'.$row_number, $shift);
-       $worksheet->setCellValue('P'.$row_number, '');
-       $worksheet->setCellValue('Q'.$row_number, '');
-       $worksheet->setCellValue('R'.$row_number, '');
-       $worksheet->setCellValue('S'.$row_number, '');
 
        $dies = '';
        $non_dies = '';
        $stopper = '';
        $non_set = '';
+       $setting = '';
        foreach ($co as $i_ => $v_) {
          if ($v_['lph_group_id'] == $value['lph_group_id']) {
            $cek_1 = explode(',', $v_['co']);
@@ -719,18 +695,47 @@ class C_Import extends CI_Controller
            $non_dies_ = $non_dies;
            $stopper_ = $stopper;
            $non_set_ = $non_set;
+           $setting = (!empty($dies) ? explode(': ', $dies)[1] : '') + (!empty($non_dies) ? explode(': ', $non_dies)[1] : '');
          }else {
            $dies_ = '';
            $non_dies_ = '';
            $stopper_ = '';
            $non_set_ = '';
+           $setting = '';
          }
        }else {
          $dies_ = $dies;
          $non_dies_ = $non_dies;
          $stopper_ = $stopper;
          $non_set_ = $non_set;
+         $setting = (!empty($dies) ? explode(': ', $dies)[1] : '') + (!empty($non_dies) ? explode(': ', $non_dies)[1] : '');
        }
+
+       $worksheet->setCellValue('A'.$row_number, $value['tanggal']);
+       $worksheet->setCellValue('B'.$row_number, explode(' - ', $value['operator'])[1]);
+       $worksheet->setCellValue('C'.$row_number, $value['kelompok']);
+       $worksheet->setCellValue('D'.$row_number, $value['kode_komponen']);
+       $worksheet->setCellValue('E'.$row_number, $value['kode_proses']);
+       $worksheet->setCellValue('F'.$row_number, $value['nama_komponen']);
+       $worksheet->setCellValue('G'.$row_number, $value['aktual']);
+       $worksheet->setCellValue('H'.$row_number, $value['hasil_baik']);
+       if ($value['hari'] == 'Sabtu' || $value['hari'] == 'Jumat') {
+         $tgtpe = $value['target_js'];
+       }else {
+         $tgtpe = $value['target_sk'];
+       }
+       $worksheet->setCellValue('I'.$row_number, $tgtpe);
+       $worksheet->setCellValue('J'.$row_number,str_replace('%', '', $value['persentase_aktual']));
+       $worksheet->setCellValue('K'.$row_number, empty($value['scrap_mat']) ? 0 : $value['scrap_mat']);
+       $worksheet->setCellValue('L'.$row_number, empty($value['scrap_mach']) ? 0 : $value['scrap_mach']);
+       $worksheet->setCellValue('M'.$row_number, $value['repair_man'] + $value['repair_mat'] + $value['repair_mach']); //repair
+       $worksheet->setCellValue('N'.$row_number, $setting); //dies + non dies
+       $shift = explode(' : ', explode(' - ',$value['shift'])[1])[0];
+       $worksheet->setCellValue('O'.$row_number, $shift);
+       $worksheet->setCellValue('P'.$row_number, '');
+       $worksheet->setCellValue('Q'.$row_number, '');
+       $worksheet->setCellValue('R'.$row_number, '');
+       $worksheet->setCellValue('S'.$row_number, '');
        $worksheet->setCellValue('T'.$row_number, !empty($dies_) ? substr($dies_, 0, -2) : ''); //DIES
        $worksheet->setCellValue('U'.$row_number, !empty($non_dies_) ? substr($non_dies_, 0, -2) : ''); //NON DIES
        $worksheet->setCellValue('V'.$row_number, !empty($stopper_) ? substr($stopper_, 0, -2) : ''); //STOPPER
