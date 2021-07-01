@@ -10,7 +10,7 @@
  *
  */
 
- let accountState = {
+ var accountState = {
  	email: {
  		checked: false,
  		exist: false,
@@ -1420,6 +1420,51 @@ $(document).ready(function () {
 						const nameWithSnakeCase = result.pkj[0].nama && result.pkj[0].nama.toLowerCase().replace(/ /g, "_");
 						const nameWithCapitalize = result.pkj[0].nama && result.pkj[0].nama.toLowerCase().replace(/(^\w{1})|(\s+\w{1})/g, (letter) => letter.toUpperCase());
 						const defaultPassword = "123456";
+
+						// EMAIL
+						$(document).on("change", "input[name=create_email_account]", function () {
+							const isChecked = $(this).is(":checked");
+							accountState.email.checked = isChecked;
+							accountVerify();
+							const $wrapper = $("#form_email_account");
+
+							$wrapper.find("input[type=text], input[type=password]").prop("disabled", !isChecked);
+
+							if (isChecked) {
+								const domain = "quick.com";
+
+								$wrapper.find("input[name=email_address]").val(`${nameWithSnakeCase}@${domain}`).trigger("change");
+								$wrapper.find("input[name=email_display_name]").val(nameWithCapitalize);
+								$wrapper.find("input[name=email_password]").val(defaultPassword);
+							} else {
+								$("#email_error_alert").text("");
+								$wrapper.find("input[name=email_address]").val("");
+								$wrapper.find("input[name=email_display_name]").val("");
+								$wrapper.find("input[name=email_password]").val("");
+							}
+						});
+
+						// PIDGIN
+						$(document).on("change", "input[name=create_pidgin_account]", function () {
+							const isChecked = $(this).is(":checked");
+							accountState.pidgin.checked = isChecked;
+							accountVerify();
+							const $wrapper = $("#form_pidgin_account");
+
+							// to disable/enable input
+							$wrapper.find("input[type=text], input[type=password]").prop("disabled", !isChecked);
+
+							if (isChecked) {
+								$wrapper.find("input[name=pidgin_username]").val(`${nameWithSnakeCase}`).trigger("change");
+								$wrapper.find("input[name=pidgin_name]").val(nameWithCapitalize);
+								$wrapper.find("input[name=pidgin_password]").val(defaultPassword);
+							} else {
+								$("#pidgin_error_alert").text("");
+								$wrapper.find("input[name=pidgin_username]").val("");
+								$wrapper.find("input[name=pidgin_email]").val("");
+								$wrapper.find("input[name=pidgin_password]").val("");
+							}
+						});
 					})();
 
 					$(".cekSameNoHP").on("change", function (e) {
@@ -2147,51 +2192,6 @@ function openNav(a) {
 function closeNav() {
 	$(".myNav").attr("style", "width: 0%");
 }
-
-// EMAIL
-$(document).on("change", "input[name=create_email_account]", function () {
-	const isChecked = $(this).is(":checked");
-	accountState.email.checked = isChecked;
-	accountVerify();
-	const $wrapper = $("#form_email_account");
-
-	$wrapper.find("input[type=text], input[type=password]").prop("disabled", !isChecked);
-
-	if (isChecked) {
-		const domain = "quick.com";
-
-		$wrapper.find("input[name=email_address]").val(`${nameWithSnakeCase}@${domain}`).trigger("change");
-		$wrapper.find("input[name=email_display_name]").val(nameWithCapitalize);
-		$wrapper.find("input[name=email_password]").val(defaultPassword);
-	} else {
-		$("#email_error_alert").text("");
-		$wrapper.find("input[name=email_address]").val("");
-		$wrapper.find("input[name=email_display_name]").val("");
-		$wrapper.find("input[name=email_password]").val("");
-	}
-});
-
-// PIDGIN
-$(document).on("change", "input[name=create_pidgin_account]", function () {
-	const isChecked = $(this).is(":checked");
-	accountState.pidgin.checked = isChecked;
-	accountVerify();
-	const $wrapper = $("#form_pidgin_account");
-
-	// to disable/enable input
-	$wrapper.find("input[type=text], input[type=password]").prop("disabled", !isChecked);
-
-	if (isChecked) {
-		$wrapper.find("input[name=pidgin_username]").val(`${nameWithSnakeCase}`).trigger("change");
-		$wrapper.find("input[name=pidgin_name]").val(nameWithCapitalize);
-		$wrapper.find("input[name=pidgin_password]").val(defaultPassword);
-	} else {
-		$("#pidgin_error_alert").text("");
-		$wrapper.find("input[name=pidgin_username]").val("");
-		$wrapper.find("input[name=pidgin_email]").val("");
-		$wrapper.find("input[name=pidgin_password]").val("");
-	}
-});
 
 // EMAIL CHECK
 $(document).on("change", "input[name=email_address]", function () {
