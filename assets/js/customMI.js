@@ -1685,6 +1685,9 @@ $(document).ready(function () {
     ordering: true,
     info: false,
   });
+  $("#unprocessTabel").DataTable({
+    "scrollX": true
+  })
   $('span[class~="statusInvoice"]').each(function () {
     var status = $(this).attr("value");
     if (status == 2) {
