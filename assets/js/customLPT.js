@@ -762,6 +762,52 @@ $(document).ready(function (){
         }
     })
 
+    $("#button-delete-input-analytics-lpt-cabang").on('click', function(){
+        Swal.fire({
+            title: 'Hapus Analisa ?',
+            type: 'warning',
+            confirmButtonText: 'Hapus',
+            showCancelButton: true,
+            cancelButtonText: 'Cancel'
+        })
+        .then(function(isConfirm) {
+            if(isConfirm.value){
+                var id = $("#button-delete-input-analytics-lpt-cabang").data('id')
+                var cabang = $("#button-delete-input-analytics-lpt-cabang").data('cabang')
+                $.ajax({
+                    url: baseurl + 'laporanPenjualanTR2/deleteAnalisa',
+                    type: 'POST',
+                    data: {
+                        id: id
+                    },
+                    beforeSend: function(){
+                        Swal.fire({
+                            allowOutsideClick: false,
+                            html: 'Delete Analisa ...',
+                            onBeforeOpen: () => {
+                                Swal.showLoading()
+                            },
+                        })
+                    },
+                    success: function(){
+                        Swal.fire({
+                            title: 'Finished!',
+                            html: 'Data Analisa berhasil dihapus',
+                            type: 'success',
+                            allowOutsideClick: false,
+                            confirmButtonText: 'OK'
+                        })
+                        .then(function(isConfirm){
+                            if(isConfirm.value){
+                                window.location.href = baseurl + 'laporanPenjualanTR2/Cabang/'+cabang+'/inputAnalisa'
+                            }
+                        })
+                    }
+                })
+            }
+        })
+    })
+
     var cra = $("#table-list-analys-lpt tbody tr").length
 
     for ($i = 0; $i < cra; $i++) {
@@ -772,6 +818,20 @@ $(document).ready(function (){
                 $('.text-list-analys-month-lpt-'+$i).html(analyticsFinal)
             } else {
                 $('.text-list-analys-month-lpt-'+$i).html(analytics)
+            }
+    }
+
+    var crh = $("#table-list-history-lpt tbody tr").length
+
+    for ($i = 0; $i < crh; $i++) {
+        var vh = $(".text-list-history-lpt-"+$i).html()
+        vh = $.trim(vh)
+
+        if (vh.length > 120) {
+                var vhf = vh.replace(vh.substring(110, vh.length), " ... ")
+                $('.text-list-history-lpt-'+$i).html(vhf)
+            } else {
+                $('.text-list-history-lpt-'+$i).html(vh)
             }
     }
 })

@@ -49,18 +49,11 @@ class M_pusat extends CI_Model
         $query = $this->oracle->query("WITH data_hari AS
                                         (SELECT hari.curr_date, TO_CHAR (hari.curr_date, 'FMDAY') hari
                                             FROM (SELECT     LEVEL,
-                                                            TO_DATE ('01' || TO_CHAR (SYSDATE, 'mm/yyyy'),
-                                                                        'dd/mm/yyyy'
-                                                                    )
-                                                            + LEVEL
-                                                            - 1 curr_date
+                                                            TRUNC(SYSDATE
+                                                            - LEVEL)
+                                                            curr_date
                                                         FROM DUAL
-                                                CONNECT BY LEVEL <=
-                                                                TO_DATE (LAST_DAY (SYSDATE))
-                                                                - TO_DATE ('01' || TO_CHAR (SYSDATE, 'mm/yyyy'),
-                                                                        'dd/mm/yyyy'
-                                                                        )
-                                                                + 1) hari),
+                                                CONNECT BY LEVEL <= 7) hari),
                                         data_hari2 AS
                                         (SELECT ( -- get last saturday before SYSDATE
                                                 SELECT DISTINCT MAX (curr_date)
@@ -126,18 +119,11 @@ class M_pusat extends CI_Model
         $query = $this->oracle->query("WITH data_hari AS
                                         (SELECT hari.curr_date, TO_CHAR (hari.curr_date, 'FMDAY') hari
                                             FROM (SELECT     LEVEL,
-                                                            TO_DATE ('01' || TO_CHAR (SYSDATE, 'mm/yyyy'),
-                                                                        'dd/mm/yyyy'
-                                                                    )
-                                                            + LEVEL
-                                                            - 1 curr_date
+                                                            TRUNC(SYSDATE
+                                                            - LEVEL)
+                                                            curr_date
                                                         FROM DUAL
-                                                CONNECT BY LEVEL <=
-                                                                TO_DATE (LAST_DAY (SYSDATE))
-                                                                - TO_DATE ('01' || TO_CHAR (SYSDATE, 'mm/yyyy'),
-                                                                        'dd/mm/yyyy'
-                                                                        )
-                                                                + 1) hari),
+                                                CONNECT BY LEVEL <= 7) hari),
                                         data_hari2 AS
                                         (SELECT ( -- get last saturday before SYSDATE
                                                 SELECT DISTINCT MAX (curr_date)
@@ -257,18 +243,11 @@ class M_pusat extends CI_Model
         $query = $this->oracle->query("WITH data_hari AS
                                     (SELECT hari.curr_date, TO_CHAR (hari.curr_date, 'FMDAY') hari
                                         FROM (SELECT     LEVEL,
-                                                        TO_DATE ('01' || TO_CHAR (SYSDATE, 'mm/yyyy'),
-                                                                    'dd/mm/yyyy'
-                                                                )
-                                                        + LEVEL
-                                                        - 1 curr_date
+                                                        TRUNC(SYSDATE
+                                                        - LEVEL)
+                                                        curr_date
                                                     FROM DUAL
-                                            CONNECT BY LEVEL <=
-                                                            TO_DATE (LAST_DAY (SYSDATE))
-                                                            - TO_DATE ('01' || TO_CHAR (SYSDATE, 'mm/yyyy'),
-                                                                    'dd/mm/yyyy'
-                                                                    )
-                                                            + 1) hari),
+                                            CONNECT BY LEVEL <= 7) hari),
                                     data_hari2 AS
                                     (SELECT ( -- get last saturday before sysdate
                                             SELECT DISTINCT MAX (curr_date)
@@ -306,6 +285,92 @@ class M_pusat extends CI_Model
                                     data_hari3 d3 ON klm.days = d3.days
                                 WHERE TO_CHAR (d3.days, 'FMDAY') != 'SUNDAY'
                                 ORDER BY 1");
+        return $query->result_array();
+    }
+
+    public function deleteAnalisa($id)
+    {
+        $this->oracle->query("DELETE FROM KHS_LPB_ANALYS WHERE ANALYS_ID = $id");
+    }
+
+    public function getHistoryAnalysis($cabang)
+    {
+        $query = $this->oracle->query("WITH data_hari AS
+                                        (SELECT hari.curr_date, TO_CHAR (hari.curr_date, 'FMDAY') hari
+                                            FROM (SELECT     LEVEL,
+                                                            TRUNC(SYSDATE
+                                                            - LEVEL)
+                                                            curr_date
+                                                        FROM DUAL
+                                                CONNECT BY LEVEL <=
+                                                                TO_DATE (LAST_DAY (SYSDATE))
+                                                                - TO_DATE ('01' || TO_CHAR (SYSDATE, 'mm/yyyy'),
+                                                                        'dd/mm/yyyy'
+                                                                        )
+                                                                + 1) hari),
+                                        data_hari2 AS
+                                        (SELECT ( -- get last saturday before SYSDATE
+                                                SELECT DISTINCT MAX (curr_date)
+                                                            FROM data_hari
+                                                            WHERE hari = 'SATURDAY'
+                                                            AND TRUNC (curr_date) < TRUNC (SYSDATE)) last_sat,
+                                                TO_DATE (SYSDATE) curr_date
+                                            FROM DUAL),
+                                        data_hari3 AS
+                                        (SELECT     LEVEL, TRUNC (last_sat - LEVEL) days
+                                                FROM data_hari2
+                                        CONNECT BY LEVEL <= 7)
+                                    SELECT to_char(d3.days, 'DD-MM-YYYY') days, 
+                                            nvl(to_char(klm.analys_id), '-') id,
+                                            nvl(klm.branch,'-') branch,
+                                            nvl(klm.problem,'-') problem,
+                                            nvl(klm.root_cause,'-') root_cause,
+                                            nvl(klm.action,'-') action,
+                                            nvl(to_char(klm.due_date, 'DD-MM-YYYY'), '-') due_date
+                                    FROM (SELECT klm1.*, TRUNC (klm1.creation_date) days
+                                            FROM khs_lpb_analys klm1
+                                            WHERE klm1.branch = '$cabang') klm
+                                        RIGHT JOIN
+                                        data_hari3 d3 ON klm.days = d3.days
+                                    WHERE TO_CHAR (d3.days, 'FMDAY') != 'SUNDAY'
+                                    ORDER BY 1");
+        return $query->result_array();
+    }
+
+    public function getHistoryMarketInfo($cabang)
+    {
+        $query = $this->oracle->query("WITH data_hari AS
+                                        (SELECT hari.curr_date, TO_CHAR (hari.curr_date, 'FMDAY') hari
+                                            FROM (SELECT     LEVEL,
+                                                            TRUNC(SYSDATE
+                                                            - LEVEL)
+                                                            curr_date
+                                                        FROM DUAL
+                                                CONNECT BY LEVEL <= 7) hari),
+                                        data_hari2 AS
+                                        (SELECT ( -- get last saturday before SYSDATE
+                                                SELECT DISTINCT MAX (curr_date)
+                                                            FROM data_hari
+                                                            WHERE hari = 'SATURDAY'
+                                                            AND TRUNC (curr_date) < TRUNC (SYSDATE)) last_sat,
+                                                TO_DATE (SYSDATE) curr_date
+                                            FROM DUAL),
+                                        data_hari3 AS
+                                        (SELECT     LEVEL, TRUNC(last_sat - LEVEL) days
+                                                FROM data_hari2
+                                        CONNECT BY LEVEL <= 7)
+                                    SELECT to_char(d3.days, 'DD-MM-YYYY') days,
+                                            nvl(to_char(klm.market_id), '-') id,
+                                            nvl(klm.branch,'-') branch,
+                                            nvl(klm.description,'-') description,
+                                            nvl(klm.attachment,'-') attachment
+                                    FROM (SELECT klm1.*, TRUNC (klm1.creation_date) days
+                                            FROM khs_lpb_market klm1
+                                            WHERE klm1.branch = '$cabang') klm
+                                        RIGHT JOIN
+                                        data_hari3 d3 ON klm.days = d3.days
+                                    WHERE TO_CHAR (d3.days, 'FMDAY') != 'SUNDAY'
+                                    ORDER BY 1 ");
         return $query->result_array();
     }
 }

@@ -1186,6 +1186,10 @@ class C_laporanPenjualanTraktor extends CI_Controller
         $fill3 = $this->load->view('LaporanPenjualanTraktor/V_pdf3', $data, true);
         $fill4 = $this->load->view('LaporanPenjualanTraktor/V_graph', $data, true);
 
+        // echo '<pre>';
+        // print_r($fill2);
+        // die;
+
         $pdf = $this->pdf->load();
 
         $pdf = new mPDF('utf-8', 'Legal', '', 'Calibri', 10, 10, 10, 10, 6, 3);
@@ -1195,6 +1199,81 @@ class C_laporanPenjualanTraktor extends CI_Controller
         $pdf->WriteHTML($fill3);
 
         $pdf->Output('Laporan Penjualan Traktor ' . $data['date'] . '.pdf', 'D');
+    }
+
+    public function exportPdfLastWeek($cabang)
+    {
+
+        $data['date'] = $this->dateInd(date('Y-m-d'));
+        $data['namaCabang'] = array('MKS', 'GJK', 'YGY', 'JKT', 'TJK', 'MDN', 'PLU', 'PKU', 'PNK', 'BJM', 'EKSPOR');
+
+        if ($cabang == 'Pusat') {
+            $mksa = $this->M_pusat->getHistoryAnalysis('MKS');
+            $mksl = '-';
+            $mksi = $this->M_pusat->getHistoryMarketInfo('MKS');
+
+            $gjka = $this->M_pusat->getHistoryAnalysis('GJK');
+            $gjkl = '-';
+            $gjki = $this->M_pusat->getHistoryMarketInfo('GJK');
+
+            $ygya = $this->M_pusat->getHistoryAnalysis('YGY');
+            $ygyl = '-';
+            $ygyi = $this->M_pusat->getHistoryMarketInfo('YGY');
+
+            $jkta = $this->M_pusat->getHistoryAnalysis('JKT');
+            $jktl = '-';
+            $jkti = $this->M_pusat->getHistoryMarketInfo('JKT');
+
+            $tjka = $this->M_pusat->getHistoryAnalysis('TJK');
+            $tjkl = '-';
+            $tjki = $this->M_pusat->getHistoryMarketInfo('TJK');
+
+            $mdna = $this->M_pusat->getHistoryAnalysis('MDN');
+            $mdnl = '-';
+            $mdni = $this->M_pusat->getHistoryMarketInfo('MDN');
+
+            $plua = $this->M_pusat->getHistoryAnalysis('PLU');
+            $plul = '-';
+            $plui = $this->M_pusat->getHistoryMarketInfo('PLU');
+
+            $pkua = $this->M_pusat->getHistoryAnalysis('PKU');
+            $pkul = '-';
+            $pkui = $this->M_pusat->getHistoryMarketInfo('PKU');
+
+            $pnka = $this->M_pusat->getHistoryAnalysis('PNK');
+            $pnkl = '-';
+            $pnki = $this->M_pusat->getHistoryMarketInfo('PNK');
+
+            $bjma = $this->M_pusat->getHistoryAnalysis('BJM');
+            $bjml = '-';
+            $bjmi = $this->M_pusat->getHistoryMarketInfo('BJM');
+
+            $ekspora = $this->M_pusat->getHistoryAnalysis('EKSPOR');
+            $eksporl = '-';
+            $ekspori = $this->M_pusat->getHistoryMarketInfo('EKSPOR');
+
+            $data['status'] = 0;
+            $data['analisa'] = array($mksa, $gjka, $ygya, $jkta, $tjka, $mdna, $plua, $pkua, $pnka, $bjma, $ekspora);
+            $data['lajupenjualan'] = array($mksl, $gjkl, $ygyl, $jktl, $tjkl, $mdnl, $plul, $pkul, $pnkl, $bjml, $eksporl);
+            $data['infoPasar'] = array($mksi, $gjki, $ygyi, $jkti, $tjki, $mdni, $plui, $pkui, $pnki, $bjmi, $ekspori);
+        } else {
+            $data['analisa'] = $this->M_pusat->getHistoryAnalysis($cabang);
+            $data['infoPasar'] = $this->M_pusat->getHistoryMarketInfo($cabang);
+            $data['infoDetail'] = '-';
+            $data['status'] = 1;
+            $data['cabang'] = $cabang;
+        }
+
+        $fill = $this->load->view('LaporanPenjualanTraktor/V_pdf2', $data, true);
+        $fill2 = $this->load->view('LaporanPenjualanTraktor/V_pdf3', $data, true);
+
+        $pdf = $this->pdf->load();
+
+        $pdf = new mPDF('utf-8', 'Legal', '', 'Calibri', 10, 10, 10, 10, 6, 3);
+        $pdf->WriteHTML($fill);
+        $pdf->WriteHTML($fill2);
+
+        $pdf->Output('Laporan Penjualan Traktor ' . $cabang . ' ' . $data['date'] .  ' (Last Week)' . '.pdf', 'D');
     }
 
     // function tanggal = tanggal sekarang dikurangi 1 hari

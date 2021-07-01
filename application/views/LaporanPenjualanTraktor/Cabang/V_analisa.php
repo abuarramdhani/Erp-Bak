@@ -150,7 +150,11 @@ input[type=number] {
                                     <tr>
                                         <td style="border:unset;" colspan="2">
                                             <i class="fa fa-history" style="padding-right:8px;"></i>
-                                            <b>History Analisa</b>
+                                            <b>History Analisa</b>&emsp;or&emsp;
+                                            <a href="<?= base_url('laporanPenjualanTR2/Cabang/' . $cabang . '/lastWeekHistoryOfAnalysis') ?>"
+                                                class="btn btn-success">History
+                                                Minggu
+                                                Kemarin</a>
                                         </td>
                                     </tr>
                                     <tr>
@@ -197,7 +201,11 @@ input[type=number] {
                                     <tr>
                                         <td style="border:unset;" colspan="2">
                                             <i class="fa fa-history" style="padding-right:8px;"></i>
-                                            <b>History Analisa</b>
+                                            <b>History Analisa</b>&emsp;or&emsp;
+                                            <a href="<?= base_url('laporanPenjualanTR2/Cabang/' . $cabang . '/lastWeekHistoryOfAnalysis') ?>"
+                                                class="btn btn-success">History
+                                                Minggu
+                                                Kemarin</a>
                                         </td>
                                     </tr>
                                     <tr>

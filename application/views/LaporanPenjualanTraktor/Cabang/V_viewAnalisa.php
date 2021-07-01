@@ -134,13 +134,21 @@ input[type=number] {
                                 <div style="margin-top:20px;padding-left:22px;">
                                     <button class="btn" style="background-color: #4C575E;color:white;"
                                         id="button-edit-input-analytics-lpt-cabang">Edit
-                                        Analisa</button>
+                                        Analisa
+                                    </button>
+                                    <button class="btn btn-danger" id="button-delete-input-analytics-lpt-cabang"
+                                        style="margin-left:10px" data-id="<?= $analys['ANALYS_ID'] ?>"
+                                        data-cabang="<?= $cabang ?>">
+                                        <i class="fa fa-trash" style="padding-right:8px"></i>Hapus
+                                    </button>
                                     <button class="btn btn-success" style="display:none;"
-                                        id="button-save-edit-analytics-lpt-cabang"><i class="fa fa-save"
-                                            style="padding-right:8px;"></i>Save</button>
+                                        id="button-save-edit-analytics-lpt-cabang">
+                                        <i class="fa fa-save" style="padding-right:8px;"></i>Save
+                                    </button>
                                     <button class="btn btn-danger" style="display:none;"
-                                        id="button-cancel-edit-analytics-lpt-cabang"><i class="fa fa-close"
-                                            style="padding-right:8px;"></i>Cancel</button>
+                                        id="button-cancel-edit-analytics-lpt-cabang">
+                                        <i class="fa fa-close" style="padding-right:8px;"></i>Cancel
+                                    </button>
                                     <a href="<?= base_url('laporanPenjualanTR2/Cabang/' . $cabang . '/inputAnalisa') ?>"
                                         style="float:right" class="btn btn-primary">Kembali</a>
                                 </div>

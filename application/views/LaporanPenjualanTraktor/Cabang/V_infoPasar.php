@@ -55,7 +55,7 @@ input[readonly] {
                             <hr style="width:100%;height:1px;">
                             <?php if ($info_target == '') { ?>
                             <label style="font-weight:normal;"><b>Maaf</b> kamu belum bisa menginputkan data
-                                info pasar sekarang</label>
+                                info pasar sekarang, karena marketing pusat belum menginputkan target</label>
                             <?php } else { ?>
                             <?php if ($info_today == '') { ?>
                             <form id="form-input-info-pasar-lpt">
@@ -129,7 +129,11 @@ input[readonly] {
                                     <tr>
                                         <td style="border:unset;" colspan="2">
                                             <i class="fa fa-history" style="padding-right:8px;"></i>
-                                            <b>History Analisa</b>
+                                            <b>History Analisa</b>&emsp;or&emsp;
+                                            <a href="<?= base_url('laporanPenjualanTR2/Cabang/' . $cabang . '/lastWeekHistoryOfMarketInfo') ?>"
+                                                class="btn btn-success">History
+                                                Minggu
+                                                Kemarin</a>
                                         </td>
                                     </tr>
                                     <tr>
@@ -181,7 +185,11 @@ input[readonly] {
                                     <tr>
                                         <td style="border:unset;" colspan="2">
                                             <i class="fa fa-history" style="padding-right:8px;"></i>
-                                            <b>History Analisa</b>
+                                            <b>History Analisa</b>&emsp;or&emsp;
+                                            <a href="<?= base_url('laporanPenjualanTR2/Cabang/' . $cabang . '/lastWeekHistoryOfMarketInfo') ?>"
+                                                class="btn btn-success">History
+                                                Minggu
+                                                Kemarin</a>
                                         </td>
                                     </tr>
                                     <tr>

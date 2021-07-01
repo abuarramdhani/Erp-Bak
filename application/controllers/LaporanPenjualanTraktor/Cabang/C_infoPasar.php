@@ -124,4 +124,47 @@ class C_infoPasar extends CI_Controller
         $this->load->view('LaporanPenjualanTraktor/Cabang/V_viewInfoPasar', $data);
         $this->load->view('V_Footer', $data);
     }
+
+    public function lastWeekHistory($cabang)
+    {
+        $this->checkSession();
+        $user_id = $this->session->userid;
+        $data['Menu'] = 'Dashboard';
+        $data['SubMenuOne'] = '';
+
+        $data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
+
+        $data['history'] = $this->M_pusat->getHistoryMarketInfo($cabang);
+        $data['namaMenu'] = 'infoPasar';
+
+        $data['cabang'] = $cabang;
+
+        $this->load->view('V_Header', $data);
+        $this->load->view('V_Sidemenu', $data);
+        $this->load->view('LaporanPenjualanTraktor/Cabang/V_viewHistory', $data);
+        $this->load->view('V_Footer', $data);
+    }
+
+    public function viewHistory($cabang, $id)
+    {
+        $this->checkSession();
+        $user_id = $this->session->userid;
+        $data['Menu'] = 'Dashboard';
+        $data['SubMenuOne'] = '';
+
+        $data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
+
+        $data['data'] = $this->M_pusat->getViewInfoPasar($id);
+        $data['namaMenu'] = 'History Info Pasar';
+        $data['cabang'] = $cabang;
+
+        $this->load->view('V_Header', $data);
+        $this->load->view('V_Sidemenu', $data);
+        $this->load->view('LaporanPenjualanTraktor/Cabang/V_viewDetailHistory', $data);
+        $this->load->view('V_Footer', $data);
+    }
 }
