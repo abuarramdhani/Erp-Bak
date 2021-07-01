@@ -103,13 +103,13 @@
 				$i=1;
 				foreach ($get_body as $key => $rowCont) {?>
 				<tr>
-					<td style="text-align: center; vertical-align: top"><?php echo $i++; ?></td>
-					<td style="padding-left: 1mm;text-align: center; vertical-align: top"><?php echo $rowCont['QTY_REQUESTED']; ?></td>
-					<td style="padding-left: 1.8mm;text-align: center; vertical-align: top"><?php echo $rowCont['QTY_DELIVERED']; ?></td>
-					<td style="padding-left: 2mm;text-align: center; vertical-align: top"><?php echo $rowCont['UOM_CODE']; ?></td>
-					<td style="padding-left: 2mm;text-align: center; vertical-align: top"><?php echo $rowCont['SEGMENT1']; ?></td>
-					<td style="padding-left: 4mm;text-align: left;"><?php echo $rowCont['DESCRIPTION'] ?></td>
-					<td style="padding-left: 4mm;text-align: left;">
+					<td style="padding-bottom:1mm;text-align: center; vertical-align: top"><?php echo $i++; ?></td>
+					<td style="padding-bottom:1mm;padding-left: 1mm;text-align: center; vertical-align: top"><?php echo $rowCont['QTY_REQUESTED']; ?></td>
+					<td style="padding-bottom:1mm;padding-left: 1.8mm;text-align: center; vertical-align: top"><?php echo $rowCont['QTY_DELIVERED']; ?></td>
+					<td style="padding-bottom:1mm;padding-left: 2mm;text-align: center; vertical-align: top"><?php echo $rowCont['UOM_CODE']; ?></td>
+					<td style="padding-bottom:1mm;padding-left: 2mm;text-align: center; vertical-align: top"><?php echo $rowCont['SEGMENT1']; ?></td>
+					<td style="padding-bottom:1mm;padding-left: 4mm;text-align: left;"><?php echo $rowCont['DESCRIPTION'] ?></td>
+					<td style="padding-bottom:1mm;padding-left: 4mm;text-align: left;">
 					</td>
 				</tr>
 				<?php $z++; }?>
@@ -159,11 +159,11 @@
 						<td style="padding-left:1mm;text-align:right" width="24mm"><br><br><br><br><br><br>
 								NELSON REYNALDI
 						</td>
-						<td style="padding-left:2mm;text-align:right" width="25mm"><!-- Mengetahui : --><br><br><br><br><br><br>
+						<td style="padding-left:2mm;text-align:right" width="25mm"><!-- Mengetahui : --><br><br><br>Approved by<br><?php echo $row['APPROVE_TO_1']?><br><br>
 								<?php echo '('.$row['APPROVE_TONAME'].')'; ?>
 						</td>
 						<td style="padding-left:2mm;text-align:right;width:20mm!important" width="30mm"><br> <span style="color:white"><?php echo $row['ASSIGN_DATE']?></span> <br>
-								<br><br><br><br><?php echo '('.$row['CREATED_BYNAME'].')';?>
+								<br>Approved by<br><?php echo $row['CREATED_BY']?><br><br><?php echo '('.$row['CREATED_BYNAME'].')';?>
 						</td>
 					</tr>
 				</table>
@@ -178,6 +178,6 @@
 			</table>
 		</div> -->
 	</div>
-	<div style="position:absolute;right: 12mm;bottom: 38mm"><?php echo $row['ASSIGN_DATE']?></div>
+	<div style="position:absolute;right: 12mm;bottom: 37mm"><?php echo $row['ASSIGN_DATE']?></div>
 </body>
 </html>
