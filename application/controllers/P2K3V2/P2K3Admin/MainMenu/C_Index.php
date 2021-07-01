@@ -1955,7 +1955,7 @@ class C_Index extends CI_Controller
 		$data['kecelakaan'] = $this->M_dtmasuk->getKecelakaan($id);
 		$data['kecelakaan']['masa_masuk_pos'] = date_diff(date_create($data['kecelakaan']['waktu_kecelakaan']), date_create($data['kecelakaan']['tgl_masuk_pos']))->format('%y Tahun %m Bulan %d Hari');
 		$created = $this->M_dtmasuk->getEmployeeByNoind($data['kecelakaan']['user_created_by']);
-		$data['kecelakaan']['userName_created_by'] = !empty($created) ? $created->name : '-';
+		$data['kecelakaan']['userName_created_by'] = !empty($created) ? $created->nama : '-';
 		if (empty($data['kecelakaan'])) return NULL;
 
 		$noind = $data['kecelakaan']['noind'];
