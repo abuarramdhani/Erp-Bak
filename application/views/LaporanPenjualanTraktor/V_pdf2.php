@@ -1,5 +1,5 @@
 <style>
-.table-utama. {
+.table-utama {
     border-collapse: collapse;
 }
 
@@ -52,10 +52,13 @@ th {
                 <center><?= $namaCabang[$i] ?></center>
             </td>
             <td style="padding:10px;vertical-align: middle;" rowspan="<?= count($analisa[$i]) ?>">
+                <?php if ($lajupenjualan[$i] != '-') { ?>
                 <table style="width:100%" class="table-kedua">
                     <tbody>
                         <tr>
-                            <th colspan="3" style="text-align:left;">Laju Penjualan</th>
+                            <th colspan="3" style="text-align:left;padding-bottom:10px">Laju Penjualan<br>
+                                <label><?= date('F Y') ?></label>
+                            </th>
                         </tr>
                         <tr>
                             <td>Rata2</td>
@@ -75,10 +78,10 @@ th {
                             <td>Keterangan</td>
                             <td colspan="2" rowspan="2" style="padding-left:5px">
                                 <?php if ($lajupenjualan[$i]['TOTAL_PER_HARI'] < $lajupenjualan[$i]['TARGET_PER_HARI']) {
-                                            echo 'Dibawah Target Laju Penjualan';
-                                        } else {
-                                            echo 'Diatas Target Laju Penjualan';
-                                        } ?></b>
+                                                echo 'Dibawah Target Laju Penjualan';
+                                            } else {
+                                                echo 'Diatas Target Laju Penjualan';
+                                            } ?></b>
                             </td>
                         </tr>
                         <tr>
@@ -88,7 +91,9 @@ th {
                             <td style="padding:2px;"></td>
                         </tr>
                         <tr>
-                            <th colspan="3" style="text-align:left;">Penjualan per Bulan</th>
+                            <th colspan="3" style="text-align:left;padding-bottom:10px">Penjualan per Bulan<br>
+                                <label><?= date('F Y') ?></label>
+                            </th>
                         </tr>
                         <tr>
                             <td>Akumulasi</td>
@@ -112,6 +117,9 @@ th {
                         </tr>
                     </tbody>
                 </table>
+                <?php } else {
+                            echo '-';
+                        } ?>
             </td>
             <td style="padding:10px;vertical-align: middle;">
                 <center><?php if ($analisa[$i] != NULL) {
@@ -168,6 +176,7 @@ th {
                 <center><?= $cabang ?></center>
             </td>
             <td style="padding:10px;vertical-align: middle;" rowspan="<?= count($analisa) ?>">
+                <?php if ($infoDetail != '-') { ?>
                 <table style="width:100%" class="table-kedua">
                     <tbody>
                         <tr>
@@ -191,10 +200,10 @@ th {
                             <td>Keterangan</td>
                             <td colspan="2" rowspan="2" style="padding-left:5px">
                                 <?php if ($infoDetail['TOTAL_PER_HARI'] < $infoDetail['TARGET_PER_HARI']) {
-                                        echo 'Dibawah Target Laju Penjualan';
-                                    } else {
-                                        echo 'Diatas Target Laju Penjualan';
-                                    } ?></b>
+                                            echo 'Dibawah Target Laju Penjualan';
+                                        } else {
+                                            echo 'Diatas Target Laju Penjualan';
+                                        } ?></b>
                             </td>
                         </tr>
                         <tr>
@@ -228,6 +237,9 @@ th {
                         </tr>
                     </tbody>
                 </table>
+                <?php } else {
+                        echo '-';
+                    } ?>
             </td>
             <td style="padding:10px;vertical-align: middle;">
                 <center><?php if ($analisa != NULL) {
