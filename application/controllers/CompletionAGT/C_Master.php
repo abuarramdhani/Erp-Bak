@@ -193,5 +193,11 @@ class C_Master extends CI_Controller
       $this->load->view('CompletionAGT/monitoring/V_Job_Filtered', $data);
     }
 
+    public function timerAndon($value='')
+    {
+      $data['get'] = '';//$this->M_master->dataTimer();
+      $this->load->view('CompletionAGT/monitoring/V_Timer_Andon', $data);
+    }
+
 
 }

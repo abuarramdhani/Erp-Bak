@@ -214,6 +214,31 @@ function agtHistoryAndon() {
   })
 }
 
+function agtTimerAndon() {
+  $.ajax({
+    url: baseurl + 'CompletionAssemblyGearTrans/action/timerAndon',
+    type: 'POST',
+    // dataType: 'JSON',
+    data: {
+
+    },
+    cache:false,
+    beforeSend: function() {
+      $('.area-time-andon').html(`<div style ="width: 70%;margin:auto;height: 30%;background: #fff;overflow: hidden;z-index: 9999;padding:20px 0 30px 0;border-radius:10px;text-align:center">
+                                <img style="width: 8%;" src="${baseurl}assets/img/gif/loading5.gif"><br>
+                                <span style="font-size:14px;font-weight:bold">Sedang memuat data...</span>
+                            </div>`);
+    },
+    success: function(result) {
+      $('.area-time-andon').html(result);
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+    swalAGT('error', 'Terdapat Kesalahan, Coba Lagi...');
+    $('.area-time-andon').html('');
+    console.error();
+    }
+  })
+}
 
 function update_pos_1(no_job, item_code, description, item_id) {
   swalAGTLoading(`Sedang menambahkan job ${no_job} di POS 1`);

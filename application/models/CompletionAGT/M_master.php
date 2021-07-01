@@ -12,13 +12,13 @@ class M_master extends CI_Model
     {
       $range =  explode(' - ', $range_date);
       return $this->oracle->query("SELECT *
-                                   FROM KHS_ANDON_ITEM
+                                   FROM KHS_ANDON_ITEM_DEV
                                    WHERE TO_CHAR(creation_date, 'YYYY-MM-DD') BETWEEN '$range[0]' AND '$range[1]'")->result_array();
     }
 
     public function updatepos($data)
     {
-      $this->oracle->where('ITEM_ID', $data['ITEM_ID'])->update('KHS_ANDON_ITEM', $data);
+      $this->oracle->where('ITEM_ID', $data['ITEM_ID'])->update('KHS_ANDON_ITEM_DEV', $data);
       if ($this->oracle->affected_rows()) {
         return 200;
       }else {
@@ -28,7 +28,7 @@ class M_master extends CI_Model
 
     public function delpos($item_id)
     {
-      $this->oracle->query("DELETE FROM KHS_ANDON_ITEM WHERE ITEM_ID = '$item_id'");
+      $this->oracle->query("DELETE FROM khs_andon_item_dev WHERE ITEM_ID = '$item_id'");
       if ($this->oracle->affected_rows()) {
         return 200;
       }else {
@@ -38,17 +38,17 @@ class M_master extends CI_Model
 
     public function historyandon($value='')
     {
-      return $this->oracle->query("SELECT * FROM KHS_ANDON_ITEM WHERE rownum<=100 ORDER BY CREATION_DATE DESC")->result_array();
+      return $this->oracle->query("SELECT * FROM khs_andon_item_dev WHERE rownum<=100 ORDER BY CREATION_DATE DESC")->result_array();
     }
 
     public function runningandon($value='')
     {
-      return $this->oracle->query("SELECT * FROM KHS_ANDON_ITEM WHERE STATUS_JOB IN ('POS_1', 'POS_2', 'POS_3', 'POS_4') ORDER BY CREATION_DATE ASC")->result_array();
+      return $this->oracle->query("SELECT * FROM khs_andon_item_dev WHERE STATUS_JOB IN ('POS_1', 'POS_2', 'POS_3', 'POS_4') ORDER BY CREATION_DATE ASC")->result_array();
     }
 
     public function cekjobdipos1($nojob)
     {
-      $cek =  $this->oracle->query("SELECT NO_JOB FROM KHS_ANDON_ITEM WHERE NO_JOB = '$nojob'")->row_array();
+      $cek =  $this->oracle->query("SELECT NO_JOB FROM khs_andon_item_dev WHERE NO_JOB = '$nojob'")->row_array();
       if (!empty($cek['NO_JOB'])) {
         return 200;
       }else {
@@ -59,7 +59,7 @@ class M_master extends CI_Model
     public function insertpos1($nojob, $itemkode, $desc, $item_id)
     {
       $user = $this->session->user;
-      $this->oracle->query("INSERT INTO KHS_ANDON_ITEM(ITEM_ID, KODE_ITEM, DESCRIPTION, NO_JOB, STATUS_JOB, CREATION_DATE, USER_LOGIN)
+      $this->oracle->query("INSERT INTO khs_andon_item_dev(ITEM_ID, KODE_ITEM, DESCRIPTION, NO_JOB, STATUS_JOB, CREATION_DATE, USER_LOGIN)
                             VALUES ('$item_id', '$itemkode', '$desc', '$nojob', 'POS_1', SYSDATE, '$user')");
       if ($this->oracle->affected_rows()) {
         return 200;
@@ -76,7 +76,7 @@ class M_master extends CI_Model
                    ) remaining_qty,
                    (  wdj.start_quantity
                     - (SELECT COUNT (kai.no_job)
-                         FROM KHS_ANDON_ITEM kai
+                         FROM khs_andon_item_dev kai
                         WHERE kai.no_job = we.wip_entity_name
                           AND wdj.primary_item_id = kai.item_id)
                    ) remaining_wip
@@ -126,7 +126,7 @@ class M_master extends CI_Model
     //        ) remaining_qty,
     //        (  wdj.start_quantity
     //         - (SELECT COUNT (kai.no_job)
-    //              FROM KHS_ANDON_ITEM kai
+    //              FROM khs_andon_item_dev kai
     //             WHERE kai.no_job = we.wip_entity_name
     //               AND wdj.primary_item_id = kai.item_id)
     //        ) remaining_wip
