@@ -102,7 +102,7 @@ $(document).ready(function () {
 
 	$(".txtNPWP_SP").mask("00.000.000.0-000.000", { placeholder: "00.000.000.0-000.000" });
 
-	$(".txt_noHP_SP, .txt_noTlp_SP").mask("0000 0000 0000", { placeholder: "0000 0000 0000" });
+	$(".txt_noHP_SP, .txt_noTlp_SP").mask("0000 0000 0000", { placeholder: "0000 0000 00000" });
 
 	$(".SuratPenyerahan").dataTable();
 	$("#txt_tglCetak_SP").datepicker({
