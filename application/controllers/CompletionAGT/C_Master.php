@@ -195,8 +195,14 @@ class C_Master extends CI_Controller
 
     public function timerAndon($value='')
     {
-      $data['get'] = '';//$this->M_master->dataTimer();
+      $data['get'] = $this->M_master->dataTimer();
       $this->load->view('CompletionAGT/monitoring/V_Timer_Andon', $data);
+    }
+
+    public function save_timer($value='')
+    {
+      $res = $this->M_master->andon_timer($this->input->post('data_timer'));
+      echo json_encode($res);
     }
 
 

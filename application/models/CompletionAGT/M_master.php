@@ -8,6 +8,30 @@ class M_master extends CI_Model
         $this->oracle = $this->load->database('oracle', true);
     }
 
+    public function andon_timer($data)
+    {
+      $this->oracle->query("DELETE FROM KHS_TIMER_ANDON WHERE ID IS NOT NULL");
+      foreach ($data as $key => $value) {
+        $master = [
+          'ID' => date('YmdHis'),
+          'TIME_START' => $value['start_time'],
+          'TIME_STOP' => $value['stop_time'],
+          'HAR' => $value['hari']
+        ];
+        $this->oracle->insert('KHS_TIMER_ANDON', $master);
+      }
+      if ($this->oracle->affected_rows()) {
+        return 1;
+      }else {
+        return 0;
+      }
+    }
+
+    public function dataTimer($value='')
+    {
+      return $this->oracle->get('KHS_TIMER_ANDON')->result_array();
+    }
+
     public function filter_history_agt($range_date)
     {
       $range =  explode(' - ', $range_date);

@@ -29,7 +29,7 @@ const swalAGTLoading = (pesan) => {
        Swal.showLoading();
        $('.swal2-loading').children('button').css({'width': '40px', 'height': '40px'})
      },
-    text: pesan
+    text: pesan,
   })
 }
 
