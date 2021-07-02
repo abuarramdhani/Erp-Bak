@@ -1767,7 +1767,7 @@ public function exportExcel($idnya){
 		 $id_tskk          = $this->input->post('id');
 
 		 $takt_time        = $this->input->post('takt_time');
-		 if ($takt_time != '-') {
+		 if ($takt_time != '-' && $takt_time != 99999) {
 			 $takt_time = $takt_time * $qty;
 		 }
 		 $jenis_proses     = $this->input->post('jenis_proses_elemen');
@@ -1832,7 +1832,7 @@ public function exportExcel($idnya){
 		//DATA FOR TSKK (elements table)
 		$id_tskk          	= $newID[0]['id_tskk'];
 		$takt_time        	= $newID[0]['takt_time'];
-		if ($takt_time != '-') {
+		if ($takt_time != '-' && $takt_time != 99999) {
 			$takt_time = $takt_time * $qty;
 		}
 		$jenis_proses 	  	= array_column($newID, 'jenis_proses');
