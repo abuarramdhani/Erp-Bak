@@ -1,6 +1,10 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-
+set_time_limit(0);
+ini_set('date.timezone', 'Asia/Jakarta');
+setlocale(LC_TIME, "id_ID.utf8");
+ini_set('memory_limit', '-1');
+ini_set('max_execution_time', 300);
 class C_GenTSKK extends CI_Controller {
 
 	public function __construct()

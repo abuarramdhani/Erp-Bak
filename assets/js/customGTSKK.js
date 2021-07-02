@@ -3256,6 +3256,11 @@ function generateTSKK(a) {
     },
     error: function(xhr, ajaxOptions, thrownError) {
       console.log(xhr.responseText);
+      Swal.fire({
+        title: 'Terjadi Kesalahan',
+        type: 'error',
+        text: xhr.responseText
+      });
     }
 
   });
