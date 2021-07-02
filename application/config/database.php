@@ -61,7 +61,7 @@ $active_group = 'default';
 $query_builder = TRUE;
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'database.quick.com',
+	'hostname' => 'personalia.quick.com',
 	'username' => 'postgres',
 	'password' => 'password',
 	'database' => 'erp',
@@ -104,7 +104,7 @@ $db['oracle'] = array(
 );
 $db['personalia'] = array(
 	'dsn'	=> '',
-	'hostname' => 'database.quick.com',
+	'hostname' => 'personalia.quick.com',
 	'username' => 'postgres',
 	'password' => 'password',
 	'database' => 'Personalia',
@@ -256,7 +256,7 @@ $db['oracle_dev'] = array(
 );
 $db['dpostgre'] = array(
 	'dsn'	=> '',
-	'hostname' => 'database.quick.com',
+	'hostname' => 'personalia.quick.com',
 	'username' => 'postgres',
 	'password' => 'password',
 	'database' => 'erp',
@@ -364,7 +364,7 @@ $db['alamat'] = array(
 );
 $db['erp_db'] = array(
 	'dsn'	=> '',
-	'hostname' => 'database.quick.com',
+	'hostname' => 'personalia.quick.com',
 	'username' => 'postgres',
 	'password' => 'password',
 	'database' => 'erp',
