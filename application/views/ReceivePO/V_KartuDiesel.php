@@ -28,7 +28,7 @@
 
         <tr>
           <td align="center">
-            <b><?=$descrecipt?></b>
+            <b <?= $descrecipt == 'DIESEL RD 65 DI-2S (A)' ? 'style="background:#ffe21d"' : '' ?>><?=$descrecipt?></b>
             <br>
             Nomor Seri :
             <br>
