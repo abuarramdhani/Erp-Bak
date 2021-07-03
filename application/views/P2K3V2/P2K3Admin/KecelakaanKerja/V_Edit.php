@@ -239,7 +239,7 @@
                           <label style="margin-top: 5px;">Kasus</label>
                         </div>
                         <div class="col-md-8 nopadding">
-                          <textarea class="form-control toupper- limiter" maxlength="340" placeholder="Judul Kasus" name="kasus" style="width: 100%; min-height: 80px; height: 100px; max-height: 200px; resize: vertical;" required><?= $kecelakaan['kasus']; ?></textarea>
+                          <textarea class="form-control toupper- limiter" maxlength="112" placeholder="Judul Kasus" name="kasus" style="width: 100%; min-height: 80px; height: 100px; max-height: 200px; resize: vertical;" required><?= $kecelakaan['kasus']; ?></textarea>
                         </div>
                       </div>
                     </div>
@@ -249,7 +249,7 @@
                           <label style="margin-top: 5px;">Kronologi</label>
                         </div>
                         <div class="col-md-8 nopadding">
-                          <textarea class="form-control toupper- limiter" maxlength="680" placeholder="Kronologi kejadian" name="kronologi" style="width: 100%; min-height: 80px; height: 100px; max-height: 200px; resize: vertical;" required=""><?= $kecelakaan['kronologi'] ?></textarea>
+                          <textarea class="form-control toupper- limiter" maxlength="672" placeholder="Kronologi kejadian" name="kronologi" style="width: 100%; min-height: 80px; height: 100px; max-height: 200px; resize: vertical;" required=""><?= $kecelakaan['kronologi'] ?></textarea>
                         </div>
                       </div>
                     </div>
@@ -278,7 +278,7 @@
                           <label style="margin-top: 5px;">Kondisi</label>
                         </div>
                         <div class="col-md-8 nopadding">
-                          <textarea class="form-control toupper-" maxlength="340" attr-name="kondisi" style="width: 100%; height: 100px;" required=""><?= $kecelakaan['kondisi'] ?></textarea>
+                          <textarea class="form-control toupper- limiter" maxlength="224" attr-name="kondisi" style="width: 100%; height: 100px;" required=""><?= $kecelakaan['kondisi'] ?></textarea>
                         </div>
                       </div>
                     </div>
@@ -288,7 +288,7 @@
                           <label style="margin-top: 5px;">Penyebab</label>
                         </div>
                         <div class="col-md-8 nopadding">
-                          <textarea class="form-control toupper- limiter" maxlength="340" attr-name="penyebab" style="width: 100%; height: 100px;" required=""><?= $kecelakaan['penyebab'] ?></textarea>
+                          <textarea class="form-control toupper- limiter" maxlength="146" attr-name="penyebab" style="width: 100%; height: 100px;" required=""><?= $kecelakaan['penyebab'] ?></textarea>
                         </div>
                       </div>
                     </div>
@@ -326,7 +326,7 @@
                           <label style="margin-top: 5px;">Tindakan/Penanganan</label>
                         </div>
                         <div class="col-md-8 nopadding">
-                          <textarea class="form-control toupper- limiter" maxlength="340" attr-name="tindakan" style="width: 100%; height: 100px;" required=""><?= $kecelakaan['tindakan'] ?></textarea>
+                          <textarea class="form-control toupper- limiter" maxlength="336" attr-name="tindakan" style="width: 100%; height: 100px;" required=""><?= $kecelakaan['tindakan'] ?></textarea>
                         </div>
                       </div>
                     </div>
@@ -531,7 +531,7 @@
                               <!-- <?php if ($kecelakaan['lampiran_' . $x]) : ?>
                                 <a target="_blank" href="<?= base_url('/assets/upload/P2K3v2/kecelakaan_kerja/foto/' . $kecelakaan['lampiran_' . $x]) ?>">Klik disini untuk melihat gambar <?= $x ?></a>
                               <?php endif ?> -->
-                              <input type="hidden" name="lampiran_foto[<?= $x ?>]" value="<?= $base64Attachment[$x] ?>">
+                              <input type="hidden" name="lampiran_foto[<?= $x ?>]" class="<?= "lampiran_$x" ?>" value="<?= $base64Attachment[$x] ?>">
                               <input class="form-control" accept="image/jpg, image/jpeg, image/png" type="file" data-attachment="<?= $x ?>">
                             </div>
                             <div class="col-md-1">
@@ -546,11 +546,11 @@
                     <div class="col-md-6">
                       <div class="row">
                         <div class="col-md-6">
-                          <img src="<?= base_url('/assets/upload/P2K3v2/kecelakaan_kerja/foto/' . $kecelakaan['lampiran_1']) ?>" class="<?= $kecelakaan['lampiran_1'] ? '' : 'hidden' ?> img-preview" data-bind-attachment="1" style="height: 130px; width: 100%; object-fit: cover;" />
+                          <img src="<?= base_url('/assets/upload/P2K3v2/kecelakaan_kerja/foto/' . $kecelakaan['lampiran_1']) ?>" class="<?= $kecelakaan['lampiran_1'] ?> img-preview" data-bind-attachment="1" style="height: 130px; width: 100%; object-fit: cover;" />
                           <label for="" class="text-center">Lampiran 1</label>
                         </div>
                         <div class="col-md-6">
-                          <img src="<?= base_url('/assets/upload/P2K3v2/kecelakaan_kerja/foto/' . $kecelakaan['lampiran_2']) ?>" class="<?= $kecelakaan['lampiran_2'] ? '' : 'hidden' ?> img-preview" data-bind-attachment="2" style="height: 130px; width: 100%; object-fit: cover;" />
+                          <img src="<?= base_url('/assets/upload/P2K3v2/kecelakaan_kerja/foto/' . $kecelakaan['lampiran_2']) ?>" class="<?= $kecelakaan['lampiran_2'] ?> img-preview" data-bind-attachment="2" style="height: 130px; width: 100%; object-fit: cover;" />
                           <div>
                             <label for="" class="text-center">Lampiran 2</label>
                           </div>
@@ -702,8 +702,9 @@
       e.preventDefault()
       const id_attachment = $(this).attr('data-attachment-remove');
       $(`input[type=file][data-attachment=${id_attachment}]`).val('').trigger('change')
-      $(`img[data-bind-attachment=${id_attachment}]`).attr('src', '')
-      $(`lampiran_foto[${id_attachment}]`).val('')
+      $(`img[data-bind-attachment=${id_attachment}]`).removeAttr('src')
+      // $(`input[name="lampiran_foto[${id_attachment}]]"`).val('')
+      $(`input.lampiran_${id_attachment}`).val('')
     })
 
     // experimental image cropper with cropper.js
@@ -759,10 +760,10 @@
       const $fileInput = $(`input[name='lampiran_foto[${id_attachment}]'`)
 
       const canvas = cropper.getCroppedCanvas({
-        width: 200,
-        height: 200,
+        width: 400,
+        height: 400,
         imageSmoothingEnabled: true,
-        imageSmoothingQuality: 'low'
+        imageSmoothingQuality: 'high'
       });
       const base64Image = canvas.toDataURL()
 

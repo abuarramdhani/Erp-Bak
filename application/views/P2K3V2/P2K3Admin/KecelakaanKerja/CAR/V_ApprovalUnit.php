@@ -89,7 +89,7 @@
                                   <td>
                                     <?= $car->due_date ?>
                                   </td>
-                                  <td>
+                                  <td style="width:20%">
                                     <?= $car->notes ?>
                                   </td>
                                   <td style="display: flex; align-items: center;">
@@ -121,7 +121,7 @@
                                     <td>
                                       <?= $car_revisi->due_date ?>
                                     </td>
-                                    <td>
+                                    <td style="width:20%">
                                       <?= $car_revisi->notes ?>
                                     </td>
                                     <td style="display: flex; align-items: center;">

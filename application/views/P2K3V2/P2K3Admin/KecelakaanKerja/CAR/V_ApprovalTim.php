@@ -69,8 +69,8 @@
                     <form action="<?= base_url('p2k3adm_V2/Admin/Car/Update') ?>" method="POST">
                       <input type="hidden" name="id_kecelakaan" value="<?= $id_kecelakaan ?>">
                       <div class="col-md-12">
-                        <div class="table-responsive">
-                          <table class="table" id="car_table">
+                        <div class="table-responsive" style="overflow-x:scroll">
+                          <table class=" table" id="car_table">
                             <thead class="bg-primary">
                               <tr>
                                 <th>No</th>
@@ -110,7 +110,7 @@
                                   <td>
                                     <?= $car->due_date ?>
                                   </td>
-                                  <td>
+                                  <td style="width: 20%">
                                     <textarea data-id="<?= $car->kecelakaan_car_id ?>" name="" id="" placeholder="Catatan" style="resize: vertical; max-height: 75px; min-height: 25px; height: 35px;" class="form-control js-car-notes" <?= in_array($car->approval_status, [CAR_STATUS::CLOSED, CAR_STATUS::REVISI]) ? 'readonly' : '' ?>><?= $car->notes ?></textarea>
                                   </td>
                                   <td style="display: flex; align-items: center;">
@@ -156,7 +156,7 @@
                                     <td>
                                       <?= $car_revisi->due_date ?>
                                     </td>
-                                    <td>
+                                    <td style="width:20%">
                                       <textarea data-id="<?= $car_revisi->kecelakaan_car_id ?>" name="" id="" placeholder="Catatan" style="resize: vertical; max-height: 75px; min-height: 25px; height: 35px;" class="form-control js-car-notes" <?= in_array($car_revisi->approval_status, [CAR_STATUS::CLOSED, CAR_STATUS::REVISI]) ? 'readonly' : '' ?>><?= $car_revisi->notes ?></textarea>
                                     </td>
                                     <td style="display: flex; align-items: center;">
