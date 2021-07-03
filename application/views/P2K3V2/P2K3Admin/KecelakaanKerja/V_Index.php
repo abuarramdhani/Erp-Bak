@@ -1,5 +1,7 @@
 <style>
-
+  .btn-action {
+    display: none;
+  }
 </style>
 <?php $this->load->view('P2K3V2/P2K3Admin/KecelakaanKerja/CAR/css/StatusColor') ?>
 
@@ -115,7 +117,7 @@
                               <?php if ($isAdmin) : ?>
                                 <!-- Tampilan di TIM -->
                                 <?php if ($key['car_is_created'] == 't') : ?>
-                                  <a target="_blank" href="<?= base_url("p2k3adm_V2/Admin/Car/Approval/Tim/$key[id_kecelakaan]") ?>" title="<?= $timCarButtonTitle ?>" class="btn <?= $carButtonClass ?> btn-sm">
+                                  <a target="_blank" href="<?= base_url("p2k3adm_V2/Admin/Car/Approval/Tim/$key[id_kecelakaan]") ?>" title="<?= $timCarButtonTitle ?>" class="btn <?= $carButtonClass ?> btn-sm btn-action">
                                     <i class="fa fa-check-circle"></i>
                                   </a>
                                 <?php else : ?>
@@ -123,11 +125,11 @@
                               <?php else : ?>
                                 <!-- Tampilan di seksi -->
                                 <?php if ($key['car_is_created'] == 't') : ?>
-                                  <a target="_blank" href="<?= base_url("p2k3adm_V2/Admin/Car/View/$key[id_kecelakaan]") ?>" title="<?= $seksiCarButtonTitle ?>" class="btn <?= $carButtonClass ?> btn-sm">
+                                  <a target="_blank" href="<?= base_url("p2k3adm_V2/Admin/Car/View/$key[id_kecelakaan]") ?>" title="<?= $seksiCarButtonTitle ?>" class="btn <?= $carButtonClass ?> btn-sm btn-action">
                                     <i class="fa fa-check-circle"></i>
                                   </a>
                                 <?php else : ?>
-                                  <a target="_blank" href="<?= base_url("p2k3adm_V2/Admin/Car/Create/$key[id_kecelakaan]") ?>" title="<?= $isUnit ? 'Lihat Car' : 'Lampirkan File Car'; ?>" class="btn btn-sm">
+                                  <a target="_blank" href="<?= base_url("p2k3adm_V2/Admin/Car/Create/$key[id_kecelakaan]") ?>" title="<?= $isUnit ? 'Lihat Car' : 'Lampirkan File Car'; ?>" class="btn btn-sm btn-action">
                                     <i class="fa fa-check"></i>
                                   </a>
                                 <?php endif ?>
