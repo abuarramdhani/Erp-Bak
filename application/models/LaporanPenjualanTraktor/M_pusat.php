@@ -188,7 +188,8 @@ class M_pusat extends CI_Model
                                             (SELECT (SELECT COUNT (*) - (SELECT COUNT (*)
                                                     FROM khs_lpb_skip_date
                                                     WHERE EXTRACT (MONTH FROM skip_date) = EXTRACT
-                                                            (MONTH FROM khs_lpb_range_date (NULL,2))) jumlah_hari
+                                                            (MONTH FROM khs_lpb_range_date (NULL,2))
+                                                            AND TRUNC(SKIP_DATE) <= TRUNC(khs_lpb_range_date (NULL, 2))) jumlah_hari
                                                     FROM (SELECT TO_DATE ('01/' || TO_CHAR (khs_lpb_range_date (NULL,2),'mm/yyyy'),'dd/mm/yyyy')
                                                     + LEVEL - 1 tanggal,
                                                     TO_CHAR(TO_DATE('01/'|| TO_CHAR (khs_lpb_range_date (NULL, 2 ),'mm/yyyy'),'dd/mm/yyyy')
