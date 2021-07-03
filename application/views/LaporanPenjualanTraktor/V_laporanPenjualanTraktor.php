@@ -475,7 +475,7 @@
                                     </center>
                                 </th>
                                 <th rowspan=2 style="vertical-align:middle;">
-                                    <center style="writing-mode: vertical-lr;font-weight:normal;margin:auto;">ENA Rotary
+                                    <center style="writing-mode: vertical-lr;font-weight:normal;margin:auto;">ZENA Rotary
                                     </center>
                                 </th>
                                 <th rowspan=2 style="vertical-align:middle;">
