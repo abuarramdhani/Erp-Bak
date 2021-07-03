@@ -339,7 +339,8 @@ class M_laporanpenjualantraktor extends CI_Model
       $query = $this->oracle->query("SELECT COUNT (*)
                                             - (SELECT COUNT (*)
                                                     FROM khs_lpb_skip_date
-                                                WHERE EXTRACT (MONTH FROM skip_date) = EXTRACT (MONTH FROM khs_lpb_range_date (NULL, 2))) JUMLAH_HARI
+                                                WHERE EXTRACT (MONTH FROM skip_date) = EXTRACT (MONTH FROM khs_lpb_range_date (NULL, 2))
+                                                AND TRUNC(SKIP_DATE) <= TRUNC(khs_lpb_range_date (NULL, 2))) JUMLAH_HARI
                                         FROM (SELECT       TO_DATE ('01/' || TO_CHAR (khs_lpb_range_date(null, 2), 'mm/yyyy'),
                                                                     'dd/mm/yyyy'
                                                                     )
