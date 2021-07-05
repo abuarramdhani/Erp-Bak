@@ -108,7 +108,7 @@ class M_import extends CI_Model
         AND mic.CATEGORY_SET_ID = '1100000244'
         AND mic.category_id = mcb.category_id
         AND msib.INVENTORY_ITEM_STATUS_CODE = 'Active'
-        AND msi.STATUS_ID = 1
+        AND msi.STATUS_ID in (1,20)
         AND mp.ORGANIZATION_CODE = '$organization'
         -- parameter ORG
         AND msi.SECONDARY_INVENTORY_NAME = '$subinventory'
