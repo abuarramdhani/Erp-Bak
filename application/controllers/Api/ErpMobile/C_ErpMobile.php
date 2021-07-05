@@ -33,7 +33,7 @@ class C_ErpMobile extends CI_Controller {
 		}else{
 			$data['result'] = 'Email di Temukan';
 			$data['code'] = 2;
-			$rand_pass = $this->randomPassword();
+			$rand_pass = $this->randomPassword(6, false, 'lud');
 			$data['password'] = $rand_pass;
 			$pass = md5($rand_pass);
 			$this->M_erpmobile->changePassword($noind, $pass);
@@ -65,7 +65,7 @@ class C_ErpMobile extends CI_Controller {
 
 		$data = $this->M_erpmobile->getNoindErp($noind);
 		$data['result'] = 'Email di Temukan';
-		$rand_pass = $this->randomPassword();
+		$rand_pass = $this->randomPassword(6, false, 'lud');
 		$data['password'] = $rand_pass;
 		$pass = md5($rand_pass);
 		$this->M_erpmobile->changePassword($noind, $pass);
