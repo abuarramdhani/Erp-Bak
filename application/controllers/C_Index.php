@@ -658,6 +658,11 @@ class C_Index extends CI_Controller
 		$sms_sent_time = isset($res->report[0]->{'1'}[0]->time) ? $res->report[0]->{'1'}[0]->time:'';
 		$sms_result = isset($res->report[0]->{'1'}[0]->result) ? $res->report[0]->{'1'}[0]->result:'';
 
+		// echo "<pre>";
+		// print_r($res);exit();
+		if(empty($sms_sent_time)) return true;
+
+
 		$arr = array(
 			'message'		=> $sms_message,
 			'phone_number'	=> $sms_phone_number,
