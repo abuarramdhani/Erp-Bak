@@ -558,7 +558,7 @@ class C_Index extends CI_Controller
 		$tpribadi = $this->M_Index->getTpribadiIndex($data['employee_code']);
 		$email_internal = trim($tpribadi->email_internal);
 		$telkomsel_mygroup = trim($tpribadi->telkomsel_mygroup);
-		$rand_pass = $this->M_Index->randomPassword();
+		$rand_pass = $this->M_Index->randomPassword(6, false, 'lud');
 		echo $rand_pass.'1<br>';
 		$ubah_pswd = false;
 		if ($email_internal != '-' && $email_internal != '') {
@@ -657,6 +657,11 @@ class C_Index extends CI_Controller
 		$sms_port = isset($res->report[0]->{'1'}[0]->port) ? $res->report[0]->{'1'}[0]->port:'';
 		$sms_sent_time = isset($res->report[0]->{'1'}[0]->time) ? $res->report[0]->{'1'}[0]->time:'';
 		$sms_result = isset($res->report[0]->{'1'}[0]->result) ? $res->report[0]->{'1'}[0]->result:'';
+
+		// echo "<pre>";
+		// print_r($res);exit();
+		if(empty($sms_sent_time)) return true;
+
 
 		$arr = array(
 			'message'		=> $sms_message,

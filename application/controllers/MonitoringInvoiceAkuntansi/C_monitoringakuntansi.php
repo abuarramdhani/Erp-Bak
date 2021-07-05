@@ -1197,8 +1197,10 @@ class C_monitoringakuntansi extends CI_Controller
 	public function Receipt()
 	{
 		$invoice_number = $_POST['invoice_number'];
+		$po_num = $_POST['po_num'];
 
-		$getInvoice = $this->M_monitoringakuntansi->getInvoice($invoice_number);
+
+		$getInvoice = $this->M_monitoringakuntansi->getInvoice($invoice_number, $po_num);
 
 		$invoice_id = $getInvoice[0]['INVOICE_ID'];
 

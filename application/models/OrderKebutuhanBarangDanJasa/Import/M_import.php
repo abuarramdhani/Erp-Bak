@@ -7,13 +7,13 @@ class M_import extends CI_Model
     {
         parent::__construct();
         $this->load->database();
-        $this->oracle = $this->load->database('oracle',TRUE);
+        $this->oracle = $this->load->database('oracle', TRUE);
     }
 
     public function validasiItem($itemcode)
     {
-       $oracle = $this->load->database('oracle', true);
-       $query = $oracle->query("SELECT
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query("SELECT
             msib.INVENTORY_ITEM_ID ,
             msib.SEGMENT1 kode_item ,
             msib.DESCRIPTION ,
@@ -38,7 +38,7 @@ class M_import extends CI_Model
             -- parameter
             AND msib.INVOICEABLE_ITEM_FLAG = 'Y'");
 
-       return $query->result_array();
+        return $query->result_array();
     }
 
     public function validasiSubinventory($organization, $subinventory)
@@ -59,7 +59,7 @@ class M_import extends CI_Model
         return $query->result_array();
     }
 
-    public function validasiLengkap($itemcode,$organization,$subinventory)
+    public function validasiLengkap($itemcode, $organization, $subinventory)
     {
         $oracle = $this->load->database('oracle', true);
         $query = $oracle->query("SELECT
@@ -88,7 +88,8 @@ class M_import extends CI_Model
             67008)
             AND EXTRACT(DAY FROM SYSDATE)>= 10) THEN LAST_DAY(SYSDATE)+ 10 + NVL(msib.FULL_LEAD_TIME, 0) + NVL(msib.POSTPROCESSING_LEAD_TIME, 0)
             ELSE LAST_DAY(SYSDATE)+ 10 + NVL(msib.FULL_LEAD_TIME, 0) + NVL(msib.POSTPROCESSING_LEAD_TIME, 0)
-        END default_nbd
+        END default_nbd,
+        msib.ATTRIBUTE27 puller
     FROM
         mtl_system_items_b msib ,
         mtl_units_of_measure_tl muomt ,
