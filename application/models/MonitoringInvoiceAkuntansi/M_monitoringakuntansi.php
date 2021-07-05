@@ -1444,7 +1444,7 @@ class M_monitoringakuntansi extends CI_Model
         $runQuery = $oracle->query($query);
     }
 
-    public function getInvoice($invoice_number)
+    public function getInvoice($invoice_number, $po_number)
     {
         $oracle = $this->load->database("oracle", TRUE);
         $query = $oracle->query("select
@@ -1458,7 +1458,8 @@ class M_monitoringakuntansi extends CI_Model
             ,khs_ap_invoice_purchase_order aipo
             where
             ami.INVOICE_ID = aipo.INVOICE_ID
-            and ami.INVOICE_NUMBER = '$invoice_number'");
+            and ami.INVOICE_NUMBER = '$invoice_number'
+            and aipo.PO_NUMBER = '$po_number'");
 
         return $query->result_array();
     }
