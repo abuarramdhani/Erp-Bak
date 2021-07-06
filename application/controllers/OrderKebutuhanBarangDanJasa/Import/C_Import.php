@@ -90,7 +90,9 @@ class C_Import extends CI_Controller
                 $itemCode = $sheet->getCell('A' . $row);
                 $qty = $sheet->getCell('B' . $row);
                 $uom = $sheet->getCell('C' . $row);
-                $nbd = $sheet->getCell('D' . $row)->getFormattedValue();
+                $nbde = $sheet->getCell('D' . $row)->getValue();
+                $needby_date = PHPExcel_Shared_Date::ExcelToPHP($nbde);
+                $nbd = date('d/m/Y', $needby_date);
                 $destinationType = $sheet->getCell('E' . $row);
                 $organization = $sheet->getCell('F' . $row);
                 $location = $sheet->getCell('G' . $row);
@@ -181,7 +183,9 @@ class C_Import extends CI_Controller
                         'alasan_urgensi' => $alasanUrgensi,
                         'note_to_pengelola' => $noteToPengelola,
                         'notes' => $notes,
-                        'urgent_flag' => $urgentFlag
+                        'urgent_flag' => $urgentFlag,
+                        'cut_off' => $validasi[0]['CUTOFF_TERDEKAT']
+
                     );
 
                     array_push($data['item_oke'], $item);
