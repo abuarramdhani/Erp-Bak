@@ -187,6 +187,11 @@ class M_master extends CI_Model
       return $this->oracle->query("SELECT document_number from KHS_PENGIRIMAN_BARANG_BEKAS where DOCUMENT_NUMBER = '$doc_no' AND STATUS = 'SUDAH TRANSACT'")->row_array();
     }
 
+    public function rekapData($value='')
+    {
+      return $this->oracle->query("SELECT * from KHS_PENGIRIMAN_BARANG_BEKAS")->result_array();
+    }
+
     /*
     | -------------------------------------------------------------------------
     | RUN PROCEDURE

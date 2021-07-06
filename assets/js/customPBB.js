@@ -34,6 +34,7 @@ const swalPBB = (type, title) => {
 }
 
 $(document).ready(function () {
+  $('.rekap_pbb').dataTable();
   $(".slc_pbb_seksi").select2();
   $(".slc_pbb").select2({
     allowClear:true,
