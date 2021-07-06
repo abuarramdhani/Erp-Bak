@@ -5259,6 +5259,7 @@ $route['BarangBekas'] = 'BarangBekas/C_Master';
 $route['BarangBekas/pbbs'] = 'BarangBekas/C_Master/pbbs';
 $route['BarangBekas/pbbns'] = 'BarangBekas/C_Master/pbbns';
 $route['BarangBekas/Transact'] = 'BarangBekas/C_Master/transact';
+$route['BarangBekas/RekapPBB'] = 'BarangBekas/C_Master/rekapData';
 
 $route['BarangBekas/pbbs/(:any)'] = 'BarangBekas/C_Master/$1';
 $route['BarangBekas/pbbs/(:any)/(:any)'] = 'BarangBekas/C_Master/$1/$2';
@@ -5271,6 +5272,10 @@ $route['BarangBekas/pbbns/(:any)/(:any)/(:any)'] 	= 'BarangBekas/C_Master/$1/$2/
 $route['BarangBekas/transact/(:any)'] = 'BarangBekas/C_Master/$1';
 $route['BarangBekas/transact/(:any)/(:any)'] = 'BarangBekas/C_Master/$1/$2';
 $route['BarangBekas/transact/(:any)/(:any)/(:any)'] = 'BarangBekas/C_Master/$1/$2/$3';
+
+$route['BarangBekas/RekapPBB/(:any)'] = 'BarangBekas/C_Master/$1';
+$route['BarangBekas/RekapPBB/(:any)/(:any)'] = 'BarangBekas/C_Master/$1/$2';
+$route['BarangBekas/RekapPBB/(:any)/(:any)/(:any)'] = 'BarangBekas/C_Master/$1/$2/$3';
 
 $route['MonitoringSPB'] = 'MonitoringSPB/C_Index';
 $route['MonitoringSPB/List'] = 'MonitoringSPB/C_Monspb';
@@ -5726,3 +5731,15 @@ $route['MonitoringItemIntransit'] 	= 'MonitoringItemIntransit/C_Index';
 $route['MonitoringItemIntransit/Monitoring'] 	= 'MonitoringItemIntransit/C_Monitoring';
 $route['MonitoringItemIntransit/Monitoring/(:any)'] 	= 'MonitoringItemIntransit/C_Monitoring/$1';
 $route['MonitoringItemIntransit/Monitoring/(:any)/(:any)'] 	= 'MonitoringItemIntransit/C_Monitoring/$1/$2';
+
+//godel : RevisiMasterItem//
+$route['RevisiMasterItem'] 						= 'RevisiMasterItem/C_Index';
+
+$route['RevisiMasterItem/UpdateItem']			= 'RevisiMasterItem/C_RevisiWithExcel';
+$route['RevisiMasterItem/UpdateItem/(:any)']			= 'RevisiMasterItem/C_RevisiWithExcel/$1';
+$route['RevisiMasterItem/UpdateItem/(:any)/(:any)']			= 'RevisiMasterItem/C_RevisiWithExcel/$1/$2';
+
+$route['RevisiMasterItem/UpdatePerItem']			= 'RevisiMasterItem/C_RevisiPerItem';
+$route['RevisiMasterItem/UpdatePerItem/(:any)']			= 'RevisiMasterItem/C_RevisiPerItem/$1';
+$route['RevisiMasterItem/UpdatePerItem/(:any)/(:any)']			= 'RevisiMasterItem/C_RevisiPerItem/$1/$2';
+$route['RevisiMasterItem/UpdatePerItem/(:any)/(:any)/(:any)']			= 'RevisiMasterItem/C_RevisiPerItem/$1/$2/$3';
