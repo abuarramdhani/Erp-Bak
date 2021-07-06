@@ -2298,7 +2298,7 @@ function btn_cari(th) {
 $(document).ready(function () {
   $(document).on("click", ".btnReceiptMIA", function () {
     var invoice_number = $(this).val();
-    var po_num = $("#Po_NumInvAkt").val();
+    var po_num = $(this).closest('tr').find('.Po_NumInvAkt').val().replace('<br>', '')
     $.ajax({
       type: "POST",
       url: baseurl + "AccountPayables/MonitoringInvoice/Receipt",
