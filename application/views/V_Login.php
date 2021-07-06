@@ -100,15 +100,11 @@ $diff = ($now - $start) / (60 * 60 * 24);
                     <?php
                     $gambarData = array(
                       1 => array(
-                        '1.fakta.jpg',
-                        '2.manipulasi.jpg',
-                        '3.prosedur.jpg',
-                        '4.completion.jpg'
-                      ),
-                      2 => array(
-                        '5.stockopname.jpg',
-                        '6.Segera-tindak-lanjut.jpg',
-                        '7.scw.jpg'
+                        '19.FaktaCovid.jpg',
+                        '20.KipiVaksin.jpg',
+                        '21.VaksinProkes.jpg',
+                        '22.TujuanVaksin.jpg',
+                        '23.VaksinAmanHalal.jpg'
                       )
                     );
 
@@ -133,7 +129,7 @@ $diff = ($now - $start) / (60 * 60 * 24);
                       }
                     ?>
                       <div class="item <?php echo $active ?>">
-                        <img src="<?php echo base_url('assets/poster/AwarenessData/' . $value) ?>" style="width: 100%;height: auto" alt="<?php echo $value ?>">
+                        <img src="<?php echo base_url('assets/poster/Covid/' . $value) ?>" style="width: 100%;height: auto" alt="<?php echo $value ?>">
                       </div>
                     <?php } ?>
                   </div>
