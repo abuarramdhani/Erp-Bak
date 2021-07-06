@@ -411,9 +411,9 @@
               <td class="vertical-top"></td>
             </tr>
             <tr>
-              <td class="vertical-top pl-5 first-cap" colspan="3" style="text-align: justify; font-size:12px;">
+              <td class="vertical-top pl-5 first-cap" colspan="3" style="text-align: justify; font-size:11px;">
                 <?php $maxLength = 112; ?>
-                <p><?= substr($kecelakaan['kasus'], 0, $maxLength); ?></p>
+                <span style="text-transform:uppercase"><?= substr($kecelakaan['kasus'], 0, 1) ?></span><span><?= substr($kecelakaan['kasus'], 1, $maxLength); ?></span>
               </td>
             </tr>
             <tr>
@@ -422,7 +422,7 @@
               <td class="vertical-top"></td>
             </tr>
             <tr>
-              <td class="vertical-top pl-5 first-cap" colspan="3" style="text-align: justify; font-size:12px;">
+              <td class="vertical-top pl-5 first-cap" colspan="3" style="text-align: justify; font-size:11px;">
                 <?php $maxLength = 672; ?>
                 <?= substr($kecelakaan['kronologi'], 0, $maxLength); ?>
               </td>
@@ -433,7 +433,7 @@
               <td style=""></td>
             </tr>
             <tr>
-              <td class="vertical-top pl-5 first-cap" colspan="3" style="text-align: justify; font-size:12px;">
+              <td class="vertical-top pl-5 first-cap" colspan="3" style="text-align: justify; font-size:11px;">
                 <?php $maxLength = 224; ?>
                 <?= substr($kecelakaan['kondisi'], 0, $maxLength); ?>
               </td>
@@ -444,7 +444,7 @@
               <td></td>
             </tr>
             <tr>
-              <td class="vertical-top pl-5 first-cap" colspan="3" style="text-align: justify; font-size:12px;">
+              <td class="vertical-top pl-5 first-cap" colspan="3" style="text-align: justify; font-size:11px;">
                 <?php $maxLength = 336; ?>
                 <?= substr($kecelakaan['tindakan'], 0, $maxLength); ?>
               </td>
@@ -473,7 +473,7 @@
           <div class="width-100" style="padding-left: 1.5em;">
             <?php foreach ($apd_list_chunk_3 as $items) : ?>
               <div class="width-25">
-                <table width="170px" style="font-size: 9pt">
+                <table width="170px" style="font-size: 8.5pt">
                   <tr>
                     <td class="checkbox">Std</td>
                     <td class="checkbox">Act</td>
@@ -508,7 +508,7 @@
                   <td>(Lain-lain)</td>
                 </tr>
                 <?php
-                $apd_digunakan_lain = array_pad($apd_digunakan_lain, 7, [
+                $apd_digunakan_lain = array_pad($apd_digunakan_lain, 6, [
                   'nama_apd' => '-',
                   'standard' => 'f',
                   'actual' => 'f',
@@ -532,13 +532,13 @@
             <tr>
               <td style="width:50%;" style="text-align:center;">
                 <?php if (!empty($kecelakaan['lampiran_1']) && file_exists("./assets/upload/P2K3v2/kecelakaan_kerja/foto/" . $kecelakaan['lampiran_1'])) : ?>
-                  <img style="min-width: 70%; width: auto; height: 120px; max-height: 100px; object-fit: cover;" src="<?= base_url('assets/upload/P2K3v2/kecelakaan_kerja/foto/' . $kecelakaan['lampiran_1']) ?>" alt="">
+                  <img style="min-width: 70%; width: auto; height: 85px; max-height: 85px; object-fit: cover;" src="<?= base_url('assets/upload/P2K3v2/kecelakaan_kerja/foto/' . $kecelakaan['lampiran_1']) ?>" alt="">
                 <?php endif; ?>
                 <!-- <p>---Keterangan gambar---</p> -->
               </td>
               <td style="width:50%;" style="text-align:center;">
                 <?php if (!empty($kecelakaan['lampiran_2']) && file_exists("./assets/upload/P2K3v2/kecelakaan_kerja/foto/" . $kecelakaan['lampiran_1'])) : ?>
-                  <img style="min-width: 70%; width: auto; height: 120px; max-height: 100px; object-fit: cover;" src="<?= base_url('assets/upload/P2K3v2/kecelakaan_kerja/foto/' . $kecelakaan['lampiran_2']) ?>" alt="">
+                  <img style="min-width: 70%; width: auto; height: 85px; max-height: 85px; object-fit: cover;" src="<?= base_url('assets/upload/P2K3v2/kecelakaan_kerja/foto/' . $kecelakaan['lampiran_2']) ?>" alt="">
                 <?php endif; ?>
                 <!-- <p>---Keterangan gambar---</p> -->
               </td>
@@ -548,7 +548,7 @@
       </div>
     </main>
 
-    <footer class="avoid-pagebreak-@" style="margin-top: 1em;">
+    <footer class="avoid-pagebreak-@" style="margin-top: 0.5em;">
       <div class="width-50">
         <span>Tembusan</span>
         <ol style="padding-left: 1.5em;">

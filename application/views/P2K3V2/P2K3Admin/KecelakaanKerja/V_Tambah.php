@@ -112,7 +112,7 @@
                           <label style="margin-top: 5px;">Tgl Mulai Di Pos Kecelakaan</label>
                         </div>
                         <div class="col-md-8 nopadding">
-                          <input class="form-control" id="apdmaspos" name="tgl_masuk_pos" placeholder="Tanggal Mulai Di Pos" required>
+                          <input class="form-control" id="apdmaspos" name="tgl_masuk_pos" placeholder="Tanggal Mulai Di Pos" required autocomplete="off">
                         </div>
                       </div>
                       <div class="col-md-12 nopadding martop">
@@ -339,7 +339,7 @@
                           <label><input class="apdinpbsrlmkk" type="radio" name="bsrl" value="4"> Laka</label>
                         </div>
                         <div class="col-md-5 nopadding float-left">
-                          <textarea rows="3" id="keterangan" class="form-control" style="resize:none"></textarea>
+                          <textarea rows="3" id="keterangan" class="form-control" style="resize:none" readonly></textarea>
                         </div>
                       </div>
                     </div>

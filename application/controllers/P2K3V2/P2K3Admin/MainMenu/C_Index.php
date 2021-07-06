@@ -2309,7 +2309,7 @@ class C_Index extends CI_Controller
 		$this->load->library('pdf');
 
 		$pdf = $this->pdf->load();
-		$pdf = new mPDF('', 'F4', 9, '', 4, 4, 4, 4, 10, 3);
+		$pdf = new mPDF('', 'F4', 8.7, '', 4, 4, 4, 4, 10, 3);
 		$filename = 'P2K3Seksi.pdf';
 		$html = $this->load->view('P2K3V2/P2K3Admin/KecelakaanKerja/Export/V_Pdf', $data, true);
 		// echo $html;die;

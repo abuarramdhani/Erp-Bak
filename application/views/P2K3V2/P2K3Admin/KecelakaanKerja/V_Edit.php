@@ -115,7 +115,7 @@
                           <label style="margin-top: 5px;">Tgl Mulai Di Pos Kecelakaan</label>
                         </div>
                         <div class="col-md-8 nopadding">
-                          <input class="form-control" id="apdmaspos" name="tgl_masuk_pos" placeholder="Tanggal Mulai Di Pos" required value="<?= $kecelakaan['tgl_masuk_pos']; ?>">
+                          <input class="form-control" id="apdmaspos" name="tgl_masuk_pos" placeholder="Tanggal Mulai Di Pos" required value="<?= $kecelakaan['tgl_masuk_pos']; ?>" autocomplete="off">
                         </div>
                       </div>
                       <div class="col-md-12 nopadding martop">
@@ -357,7 +357,7 @@
                         ]
                         ?>
                         <div class="col-md-5 nopadding float-left">
-                          <textarea rows="3" id="keterangan" class="form-control" style="resize:none"><?= $keterangan[$kecelakaan['bsrl']]; ?></textarea>
+                          <textarea rows="3" id="keterangan" class="form-control" style="resize:none" readonly><?= $keterangan[$kecelakaan['bsrl']]; ?></textarea>
                         </div>
                       </div>
                     </div>
