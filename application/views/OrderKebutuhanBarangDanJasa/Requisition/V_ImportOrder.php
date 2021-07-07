@@ -50,7 +50,7 @@
 <section class="content">
     <div class="row">
         <div class="col-md-12">
-            <form action="<?= base_url('OrderKebutuhanBarangDanJasa/Requisition/createOrder') ?>" method="post" enctype="multipart/form-data">
+            <form class="CreateOrdOkbj" method="post" enctype="multipart/form-data">
 
                 <div class="box box-primary">
 
@@ -168,9 +168,10 @@
                     </div>
 
                     <div class="box-footer">
-                        <div class="pull-right">
+                        <div class="col-md-12" style="text-align: right;">
                             <!-- <button type="button" class="btn btn-default"><i class="fa fa-times"></i> Batal </button> -->
-                            <button type="submit" class="btn btn-primary btnBuatOrderOkebaja" disabled name="btnOKBSubmit" value="1"><i class="fa fa-shopping-cart"></i> Buat Order </button>
+                            <div class="col-md-10" id="LoadingOkbj" style="text-align: right;"></div>
+                            <div class="col-md-2"><button type="submit" class="btn btn-primary btnBuatOrderOkebaja" disabled name="btnOKBSubmit" value="1"><i class="fa fa-shopping-cart"></i> Buat Order </button></div>
                         </div>
                     </div>
                 </div>
