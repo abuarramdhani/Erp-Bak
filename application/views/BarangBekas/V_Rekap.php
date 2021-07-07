@@ -49,9 +49,9 @@
                               <td><?php echo $value['SUB_INVENTORY'] ?></td>
                               <td><?php echo $value['ID_LOCATOR'] ?></td>
                               <td><?php echo $value['ITEM'] ?></td>
-                              <td></td>
-                              <td></td>
-                              <td></td>
+                              <td><?php echo $value['SUBINV_TUJUAN'] ?></td>
+                              <td><?php echo $value['LOCATOR_TUJUAN'] ?></td>
+                              <td><?php echo $value['ITEM_TUJUAN'] ?></td>
                               <td><?php echo $value['ONHAND'] ?></td>
                               <td><?php echo $value['JUMLAH'] ?> <?php echo $value['UOM'] ?></td>
                               <td><?php echo $value['BERAT_TIMBANG'] ?></td>

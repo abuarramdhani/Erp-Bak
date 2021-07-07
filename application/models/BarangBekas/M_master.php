@@ -189,7 +189,14 @@ class M_master extends CI_Model
 
     public function rekapData($value='')
     {
-      return $this->oracle->query("SELECT * from KHS_PENGIRIMAN_BARANG_BEKAS")->result_array();
+      return $this->oracle->query("SELECT pbb.*,
+                              	  (SELECT DISTINCT segment1
+                              	  FROM mtl_system_items_b
+                              	  WHERE inventory_item_id = pbb.item_id_tujuan) item_tujuan,
+                              	  (SELECT DISTINCT mil.segment1
+                                     FROM mtl_item_locations mil
+                                     WHERE mil.inventory_location_id = pbb.locator_id_tujuan) locator_tujuan
+                              	  from KHS_PENGIRIMAN_BARANG_BEKAS pbb ORDER BY pbb.ID_PBB DESC")->result_array();
     }
 
     /*
@@ -243,6 +250,14 @@ class M_master extends CI_Model
       if (!empty(array_search($master['subinv_tujuan'], $subinv_tujuan))) {
         $io_tujuan = 101;
       }
+
+      $this->oracle->where('DOCUMENT_NUMBER', $doc_num)
+                   ->update('KHS_PENGIRIMAN_BARANG_BEKAS',
+                   [
+                     'ITEM_ID_TUJUAN' => $master['item_id_tujuan'],
+                     'SUBINV_TUJUAN' => $master['subinv_tujuan'],
+                     'LOCATOR_ID_TUJUAN' => $master['locator_tujuan']
+                   ]);
 
       foreach ($data as $key => $value) {
         $this->oracle->query("INSERT INTO khs_misc_issue_receipt
