@@ -301,3 +301,182 @@ $('#form_lph_add_mesin').on('submit', function(e) {
   e.preventDefault()
   swaLPHLarge('info', 'Wait fitur blm siap');
 })
+
+function pemakaianjammesin() {
+  $.ajax({
+    url: baseurl + 'LaporanProduksiHarian/actiontwo/monPemakaianJamMesin',
+    type: 'POST',
+    // dataType: 'JSON',
+    data: {
+      range_date : $('.tanggal_lph_99').val(),
+      shift : $('.lph_pilih_shift').val(),
+    },
+    cache:false,
+    beforeSend: function() {
+      // swalLoadingCKMB('Sedang Memproses Data...');
+      $('.area-pemakaian-jam-mesin').html(`<div style ="width: 70%;margin:auto;height: 30%;background: #fff;overflow: hidden;z-index: 9999;padding:20px 0 30px 0;border-radius:10px;text-align:center">
+                                <img style="width: 8%;" src="${baseurl}assets/img/gif/loading5.gif"><br>
+                                <span style="font-size:14px;font-weight:bold">Sedang memuat data...</span>
+                            </div>`);
+    },
+    success: function(result) {
+      $('.area-pemakaian-jam-mesin').html(result);
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+    swaLPHLarge('error', textStatus)
+     console.error();
+    }
+  })
+}
+
+
+// area setting lph
+
+function itungitung() {
+  //pwe
+  let pengurangan_waktu_efektif = 0;
+  $('.menit_pwe').each((index, item) => {
+    pengurangan_waktu_efektif += Number($(item).val());
+  });
+  let total_pwe = pengurangan_waktu_efektif;
+  pengurangan_waktu_efektif = (pengurangan_waktu_efektif/Number($('.lph_w_standar_efk').text()))*100;
+
+  // persentase pwe dan total print
+  $('.total_waktu_pengurangan').text(total_pwe);
+  $('input[name="total_waktu_pwe"]').val(total_pwe);
+  $('.persentase_waktu_pengurangan').text(`${(Number(pengurangan_waktu_efektif)).toFixed(2)}%`);
+  $('input[name="persentase_waktu_pwe"]').val(`${(Number(pengurangan_waktu_efektif)).toFixed(2)}%`)
+  //total
+  let total = 0;
+  $('.lph_persentase').each((index, item)=>{
+    total += Number($(item).val().replace('%',''));
+    total_master =(Number(total)+Number(pengurangan_waktu_efektif));
+    $('.lph_total').val(`${total_master.toFixed(2)}%`);
+    $('.lph_kurang').val(`${(100-Number(total_master)).toFixed(2)}%`);
+  });
+}
+
+function lph_kodepart(e) {
+  let ambil_desc = $(e).select2('data')[0].text.split(' ~ ');
+  if (ambil_desc != '') {
+    $(e).parent().parent('tr').find('input[name="namapart[]"]').val(ambil_desc[1]);
+  }
+
+  $(e).parent().parent('tr').find('input[name="namaproses[]"]').val('');
+  $(e).parent().parent('tr').find('input[name="target_harian_js[]"]').val('');
+  $(e).parent().parent('tr').find('input[name="target_harian_sk[]"]').val('');
+  $(e).parent().parent('tr').find('.lph_target_harian').val('');
+  $(e).parent().parent('tr').find('.lph_kode_proses').html('<option value="" selected></option>').trigger('change');
+
+  if (ambil_desc[0] != '') {
+    $.ajax({
+      url: baseurl + 'LaporanProduksiHarian/action/get_pe',
+      type: 'POST',
+      data : {
+        kode_komponen : ambil_desc[0]
+      },
+      dataType: "JSON",
+      beforeSend: function() {
+        toastLPHLoading('Sedang Mengambil Target PE...');
+      },
+      success: function(result) {
+        if (result != 500) {
+          toastLPH('success', 'Silahkan memilih kode proses');
+          $(e).parent().parent('tr').find('.lph_kode_proses').html(result);
+        }else {
+          toastLPH('warning', `Komponen ${ambil_desc[0]} tidak memiliki target PE (SK/JS)`);
+        }
+      },
+      error: function(XMLHttpRequest, textStatus, errorThrown) {
+        swaLPHLarge('error', 'Terjadi kesalahan');
+       console.error();
+      }
+    })
+  }
+
+}
+
+function lph_aktual(e) {
+  let target = $(e).parent().parent('tr').find('.lph_target_harian').val();
+  let aktual = $(e).val();
+  console.log(Number.isInteger(Number(target)), 'tipe number');
+  if (aktual != '') {
+    if (target == '' || !Number.isInteger(Number(target))) {
+      swaLPHLarge('info',`Target ${$('.lph_jenis_target').text()} tidak boleh kosong`);
+      $(e).parent().parent('tr').find('.lph_persentase').val('');
+      $(e).parent().parent('tr').find('.lph_hasil_baik').val('');
+      $(e).val('');
+      $(e).attr('required', false);
+    }else {
+      let persentase = ((Number(aktual)/Number(target))*100).toFixed(2)+'%';
+      $(e).parent().parent('tr').find('.lph_persentase').val(persentase);
+      $(e).parent().parent('tr').find('.lph_hasil_baik').val(aktual);
+      let jamPerHari = ''
+      if ($('.lph_jenis_target').text() == 'J-S') {
+        jamPerHari = 6;
+      }else {
+        jamPerHari = 7;
+      }
+      $(e).parent().parent('tr').find('.waktu_mesin').val(((aktual/target*1)*jamPerHari).toFixed(2));
+
+    }
+  }else {
+    $(e).parent().parent('tr').find('.lph_persentase').val('');
+    $(e).parent().parent('tr').find('.lph_hasil_baik').val('');
+  }
+  itungitung();
+}
+
+function fun_lphkodeproses(e) {
+  let val = $(e).val().split(' ~ ');
+
+  let ambil_kode_part = $('.lph_kodepart');
+  let kode_proses = $('.lph_kode_proses');
+  let my_index = Number($(e).parent().parent('tr').find('td:first').text()) - 1;
+  let kodepart_elemen = $(e).parent().parent('tr').find('.lph_kodepart').val();
+  let nama_proses_elemen = val[1];
+  let cek = 0;
+
+  ambil_kode_part.each((i,v)=>{
+    if (i != my_index) {
+      let a5ag27 = $(kode_proses[i]).val().split(' ~ ')[1];
+      let h83h = $(v).val();
+      if (nama_proses_elemen == a5ag27 && kodepart_elemen == h83h) {
+        cek = 1;
+      }
+    }
+  });
+
+  if (cek) {
+    Swal.fire({
+      allowOutsideClick: true,
+      type: 'warning',
+      showConfirmButton: 'Ok!',
+      html: `Kode part <b>${kodepart_elemen}</b> dengan proses <b>${nama_proses_elemen}</b> telah ada!`,
+    }).then(function(isConfirm) {
+      if (isConfirm) {
+        console.log('done');
+        $(e).parent().parent('tr').find('.lph_kodepart').val('').trigger('change');
+        $(e).parent().parent('tr').find('input[name="namapart[]"]').val('');
+      }
+      cek = 0;
+    })
+  }
+
+  console.log(val, 'ini data PE');
+  let t_pe = '';
+  let t_jam = '';
+  $(e).parent().parent('tr').find('input[name="namaproses[]"]').val(val[1]);
+  $(e).parent().parent('tr').find('input[name="target_harian_js[]"]').val(val[3]);
+  $(e).parent().parent('tr').find('input[name="target_harian_sk[]"]').val(val[2]);
+  if ($('.lph_jenis_target').text() == 'J-S') {
+    $(e).parent().parent('tr').find('.lph_target_harian').val(val[3]);
+    t_pe= val[3];
+    t_jam = 6;
+  }else {
+    $(e).parent().parent('tr').find('.lph_target_harian').val(val[2]);
+    t_pe = val[2];
+    t_jam = 7;
+  }
+
+}

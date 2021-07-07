@@ -19,7 +19,7 @@
         <td style="width:270px">Nama Part</td>
         <td style="width:200px">Alat Bantu</td>
         <td style="width:130px">Kode Mesin</td>
-        <td style="width:100px">Wkt. Mesin</td>
+        <td style="width:100px">Wkt. Mesin (Jam)</td>
         <td style="width:100px">Kode Proses</td>
         <td style="width:100px">Nama Proses</td>
         <td style="width:100px">Target PPIC</td>
@@ -94,10 +94,16 @@
     <button type="button" class="btn btn-danger" onclick="deleteselectedrowmonlkh()" name="button"> <i class="fa fa-trash"></i> Delete Selected Row</button>
   </div>
   <div class="col-md-8">
-    <form class="" action="<?php echo base_url('LaporanProduksiHarian/action/report_lkh') ?>" method="post" target="_blank">
+    <form action="<?php echo base_url('LaporanProduksiHarian/action/report_lkh') ?>" method="post" target="_blank">
       <input type="hidden" name="date" id="t22_date" value="">
       <input type="hidden" name="shift" id="t22_shift" value="">
-      <button type="submit" class="btn btn-success pull-right lph_export_hasil_kerja" name="button"><i class="fa fa-file-excel-o"></i>  Report Hasil Kerja</button>
+      <button type="submit" class="btn btn-success pull-right lph_export_hasil_kerja ml-3" name="button"><i class="fa fa-file-excel-o"></i>  Report Hasil Kerja</button>
+    </form>
+
+    <form class="" action="<?php echo base_url('LaporanProduksiHarian/action/report_jam_mesin') ?>" method="post" target="_blank">
+      <input type="hidden" name="date" id="t21_date" value="">
+      <input type="hidden" name="shift" id="t21_shift" value="">
+      <button type="submit" class="btn btn-success pull-right lph_export_hasil_kerja" name="button"><i class="fa fa-file-excel-o"></i>  Report Jam Mesin</button>
     </form>
     <!-- <button type="button" class="btn btn-success pull-right" name="button"> <i class="fa fa-file-excel-o"></i> Report Hasil Kerja</button> -->
   </div>
@@ -112,6 +118,9 @@ $(function() {
       $('.lph_export_hasil_kerja').attr('disabled', false);
       $('#t22_date').val(val_x[0]);
       $('#t22_shift').val($('.lph_pilih_shift_97').val());
+
+      $('#t21_date').val(val_x[0]);
+      $('#t21_shift').val($('.lph_pilih_shift_97').val());
     }
 })
 const table_lph = $('.tbl_lph_2021').DataTable({

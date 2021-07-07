@@ -56,7 +56,6 @@ class C_Add extends CI_Controller
       $this->load->view('V_Footer', $data);
     }
 
-
     public function employee()
     {
       $term = strtoupper($this->input->post('term'));
@@ -76,6 +75,7 @@ class C_Add extends CI_Controller
       $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
       $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
       $data['mesin'] = $this->db->get('lph.lph_mesin')->result_array();
+      $data['shift'] = $this->M_master->getShift();
 
       $this->load->view('V_Header', $data);
       $this->load->view('V_Sidemenu', $data);
@@ -90,6 +90,18 @@ class C_Add extends CI_Controller
          fs_no_mesin like '%$term%'
          or fs_nama_mesin like '%$term%'
       )")->result_array());
+    }
+
+    public function monPemakaianJamMesin($value='')
+    {
+      $range_date = $this->input->post('range_date');
+      $range =  explode(' - ', $range_date);
+      $shift = $this->input->post('shift');
+      // echo "<pre>";print_r($_POST);
+      // die;
+
+      $data['get']= $this->M_master->getMon($range, $shift);
+      $this->load->view('LaporanProduksiHarian/ajax/V_mon_lkh', $data);
     }
 
 }

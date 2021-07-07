@@ -767,5 +767,140 @@ class C_Import extends CI_Controller
 
    }
 
+   public function report_jam_mesin($value='')
+   {
+     $tanggal = $this->input->post('date');
+     $shift = $this->input->post('shift');
+
+     $data_lph = $this->db->query("SELECT rk.*, COALESCE ((select lm.fn_tonase
+                        from lph.lph_mesin lm
+                        where rk.kode_mesin = lm.fs_no_mesin), NULL) tonase FROM lph.lph_master rk WHERE rk.shift = '$shift' AND rk.tanggal = '$tanggal'")->result_array();
+     // echo "<pre>";
+     // print_r($this->db->last_query());
+     // die;
+     $title = 'Laporan-Pemakaian-Jam-Mesin';
+     $objPHPExcel = new PHPExcel();
+
+     $objPHPExcel->getProperties()->setCreator('CV. KHS')
+                              ->setLastModifiedBy('Quick')
+                              ->setTitle("Laporan Pekerja Harian")
+                              ->setSubject("CV. KHS")
+                              ->setDescription("Laporan Pekerja Harian")
+                              ->setKeywords("Laporan Pekerja Harian");
+
+     $worksheet = $objPHPExcel->getActiveSheet();
+     $styleHeader = array(
+       'borders' => array(
+         'allborders' => array(
+           'style' => PHPExcel_Style_Border::BORDER_THIN
+         )
+       ),
+       'alignment' => array(
+         'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+         'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+       ),
+       'fill' => array(
+           'type' => PHPExcel_Style_Fill::FILL_SOLID,
+           'color' => array('rgb' => 'c7c7c7')
+       ),
+       'font'  => array(
+         'bold'  => true,
+       )
+     );
+     $styleIsi = array(
+       'borders' => array(
+         'allborders' => array(
+           'style' => PHPExcel_Style_Border::BORDER_THIN
+         )
+       ),
+       'alignment' => array(
+         'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+         'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+       )
+     );
+
+     // penamaan menyesuaikan format import akutansi
+     $data_header = [
+       'No.',
+       'Shift',
+       'No.Mesin',
+       'Tonase',
+       'Dies',
+       'Jumlah',
+       'Kode Part',
+       'KoPro',
+       'Nama Part',
+       'Tgt.PE',
+       'Tgt.PPIC',
+       'Jam Mesin',
+       'Tanggal',
+     ];
+
+     $abc = 'A';
+     $objPHPExcel->getDefaultStyle()->getAlignment()->setWrapText(true);
+     foreach ($data_header as $key => $value) {
+       $worksheet->setCellValue($abc.'1', $value);
+       if ($abc == 'I') {
+         $worksheet->getColumnDimension($abc)->setWidth(23);
+       }elseif ($abc == 'A') {
+         $worksheet->getColumnDimension($abc)->setWidth(7);
+       }else {
+         $worksheet->getColumnDimension($abc)->setWidth(15);
+       }
+       $abc++;
+       if (sizeof($data_header)-2 == $key) {
+        $last_column = $abc;
+       }
+     }
+     $worksheet->getStyle('A1:'.$last_column.'1')->applyFromArray($styleHeader);
+
+     $row_number = 2;
+     foreach ($data_lph as $key => $value) {
+       $shift = explode(' : ', explode(' - ',$value['shift'])[1])[0];
+       if ($value['hari'] == 'Sabtu' || $value['hari'] == 'Jumat') {
+         $tgtpe = $value['target_js'];
+       }else {
+         $tgtpe = $value['target_sk'];
+       }
+
+       $worksheet->setCellValue('A'.$row_number, $key+1);
+       $worksheet->setCellValue('B'.$row_number, $shift);
+       $worksheet->setCellValue('C'.$row_number, $value['kode_mesin']);
+       $worksheet->setCellValue('D'.$row_number, $value['tonase']);
+       $worksheet->setCellValue('E'.$row_number, !empty($value['alat_bantu']) ? explode(' - ', $value['alat_bantu'])[1] : '');
+       $worksheet->setCellValue('F'.$row_number, $value['aktual']);
+       $worksheet->setCellValue('G'.$row_number, $value['kode_komponen']);
+       $worksheet->setCellValue('H'.$row_number, $value['kode_proses']);
+       $worksheet->setCellValue('I'.$row_number, $value['nama_komponen']);
+       $worksheet->setCellValue('J'.$row_number, $tgtpe);
+       $worksheet->setCellValue('K'.$row_number, $value['plan']);
+       $worksheet->setCellValue('L'.$row_number, $value['waktu_mesin']);
+       $worksheet->setCellValue('M'.$row_number, $value['tanggal']);
+       $row_number++;
+     }
+     $worksheet->getStyle('A2:'.$last_column.($row_number-1))->applyFromArray($styleIsi);
+     // $worksheet->getStyle('A2')->getNumberFormat()->setFormatCode('dd-mm-yyyy');
+     // $worksheet->getPageSetup()->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE);
+     // $worksheet->getPageSetup()->setPaperSize(PHPExcel_Worksheet_PageSetup::PAPERSIZE_FOLIO);
+     // $worksheet->getPageMargins()->setTop(0.10);
+     // $worksheet->getPageMargins()->setRight(0.10);
+     // $worksheet->getPageMargins()->setLeft(0.10);
+     // $worksheet->getPageMargins()->setBottom(0.10);
+
+     // $worksheet->getPageSetup()->setRowsToRepeatAtTopByStartAndEnd(1, 7);
+     // $worksheet->getSheetView()->setZoomScale(75);
+     // $worksheet->getPageSetup()->setFitToPage(true);
+     // $worksheet->getPageSetup()->setFitToWidth(1);
+     // $worksheet->getPageSetup()->setFitToHeight(0);
+
+     header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+     header('Content-Disposition: attachment;filename="'.$title.'-'.date('d-m-Y H:i:s').'.xls"');
+     header('Cache-Control: max-age=0');
+     $write = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+     $write->save('php://output');
+
+   }
+
+
 
 }
