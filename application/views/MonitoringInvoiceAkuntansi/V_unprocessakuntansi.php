@@ -97,7 +97,7 @@
                                                         }; ?>
                                                     </td>
                                                     <td><?php echo $u['PO_NUMBER'] ?></td>
-                                                    <input type="hidden" value="<?php echo $u['PO_NUMBER'] ?>" id="Po_NumInvAkt">
+                                                    <input type="hidden" value="<?php echo $u['PO_NUMBER'] ?>" class="Po_NumInvAkt">
                                                     <td><?php echo $u['LAST_STATUS_PURCHASING_DATE'] ?></td>
                                                     <td class="kasihInputInvoice">
 
