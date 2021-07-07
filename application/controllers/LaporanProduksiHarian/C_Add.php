@@ -94,14 +94,13 @@ class C_Add extends CI_Controller
 
     public function monPemakaianJamMesin($value='')
     {
-      $range_date = $this->input->post('range_date');
+      $range_date = $this->input->post('tanggal');
       $range =  explode(' - ', $range_date);
       $shift = $this->input->post('shift');
-      // echo "<pre>";print_r($_POST);
+      // echo "<pre>";print_r($range);
       // die;
-
-      $data['get']= $this->M_master->getMon($range, $shift);
-      $this->load->view('LaporanProduksiHarian/ajax/V_mon_lkh', $data);
+      $data['get'] = $this->db->query("SELECT * FROM lph.lph_master WHERE shift = '$shift' AND to_date(tanggal, 'dd-mm-yyyy') BETWEEN to_date('$range[0]', 'dd-mm-yyyy') AND to_date('$range[1]', 'dd-mm-yyyy') ORDER BY id")->result_array();
+      $this->load->view('LaporanProduksiHarian/ajax/V_mon_mesin', $data);
     }
 
 }
