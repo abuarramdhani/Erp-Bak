@@ -26,7 +26,7 @@
 </section>
 <section class="content">
     <div class="row">
-        <form action="<?= base_url('OrderKebutuhanBarangDanJasa/Requisition/createOrder') ?>" method="post" enctype="multipart/form-data">
+        <form class="CreateOrdOkbj" method="post" enctype="multipart/form-data">
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header">
@@ -322,8 +322,9 @@
                                 <span style="font-weight:normal">Order yang dibuat adalah sepenuhnya tanggung jawab pembuat order dan akan di teruskan ke atasan terkait serta pengelola.</span>
                             </label>
                         </div>
-                        <div class="pull-right">
-                            <button type="submit" class="btn btn-primary btnBuatOrderOkebaja" disabled name="btnOKBSubmit" value="0"><i class="fa fa-shopping-cart"></i> Buat Order </button>
+                        <div class="col-md-12" style="text-align: right;">
+                            <div class="col-md-10" id="LoadingOkbj" style="text-align: right;"></div>
+                            <div class="col-md-2"><button type="submit" class="btn btn-primary btnBuatOrderOkebaja" disabled name="btnOKBSubmit" value="0"><i class="fa fa-shopping-cart"></i> Buat Order </button></div>
                         </div>
                     </div>
                 </div>

@@ -2962,3 +2962,26 @@ function changeDescNewOrder(n) {
     }
   });
 }
+$(".CreateOrdOkbj").on("submit", function (e) {
+  e.preventDefault();
+  $(".btnBuatOrderOkebaja").attr("disabled", "disabled");
+  $.ajax({
+    url: baseurl + "OrderKebutuhanBarangDanJasa/Requisition/createOrder",
+    type: "POST",
+    data: new FormData(this),
+    contentType: false,
+    cache: false,
+    processData: false,
+    dataType: "html",
+    beforeSend: function () {
+      $("#LoadingOkbj").html(
+        '<center><img style="width:30px; height:auto" src="' +
+          baseurl +
+          'assets/img/gif/loading11.gif"></center>'
+      );
+    },
+    success: function (response) {
+      window.location.reload();
+    },
+  });
+});
