@@ -729,7 +729,7 @@ class C_Import extends CI_Controller
        $worksheet->setCellValue('K'.$row_number, empty($value['scrap_mat']) ? 0 : $value['scrap_mat']);
        $worksheet->setCellValue('L'.$row_number, empty($value['scrap_mach']) ? 0 : $value['scrap_mach']);
        $worksheet->setCellValue('M'.$row_number, $value['repair_man'] + $value['repair_mat'] + $value['repair_mach']); //repair
-       $worksheet->setCellValue('N'.$row_number, $setting); //dies + non dies
+       $worksheet->setCellValue('N'.$row_number, !empty($setting) ? $setting : ''); //dies + non dies
        $shift = explode(' : ', explode(' - ',$value['shift'])[1])[0];
        $worksheet->setCellValue('O'.$row_number, $shift);
        $worksheet->setCellValue('P'.$row_number, '');

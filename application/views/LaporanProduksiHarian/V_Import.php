@@ -67,7 +67,7 @@ vertical-align: middle;
 
                               <center>
                                 <button type="submit" class="btn btn-primary mt-4 pull-left" style="width:150px;font-weight:bold" name="button"> <i class="fa fa-download"></i> Import</button>
-                                <button type="button" class="btn btn-success mt-4 pull-right" name="button" style="width: 150px;font-weight:bold"> <i class="fa fa-file-excel-o"></i> Template</button>
+                                <a target="_blank" href="<?php echo base_url('assets/upload/LaporanProduksiHarian/example-lph-import-format.xlsx') ?>" class="btn btn-success mt-4 pull-right" name="button" style="width: 150px;font-weight:bold"> <i class="fa fa-file-excel-o"></i> Template</a>
                               </center>
                             </form>
                           </div>

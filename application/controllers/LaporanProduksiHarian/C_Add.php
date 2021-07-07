@@ -49,7 +49,7 @@ class C_Add extends CI_Controller
       $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
       $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
       $data['shift'] = $this->M_master->getShift();
-      
+
       $this->load->view('V_Header', $data);
       $this->load->view('V_Sidemenu', $data);
       $this->load->view('LaporanProduksiHarian/V_Add', $data);
@@ -61,6 +61,35 @@ class C_Add extends CI_Controller
     {
       $term = strtoupper($this->input->post('term'));
       echo json_encode($this->M_master->employee($term));
+    }
+
+    public function mesin($value='')
+    {
+      $this->checkSession();
+      $user_id = $this->session->userid;
+
+      $data['Menu'] = 'Dashboard Laporan Produksi Harian V.0.1';
+      $data['SubMenuOne'] = '';
+      $data['SubMenuTwo'] = '';
+
+      $data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+      $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+      $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
+      $data['mesin'] = $this->db->get('lph.lph_mesin')->result_array();
+
+      $this->load->view('V_Header', $data);
+      $this->load->view('V_Sidemenu', $data);
+      $this->load->view('LaporanProduksiHarian/V_Mesin', $data);
+      $this->load->view('V_Footer', $data);
+    }
+
+    public function getMesin($value='')
+    {
+      $term = strtoupper($this->input->post('term'));
+      echo json_encode($this->db->query("SELECT fs_no_mesin, fs_nama_mesin from lph.lph_mesin where (
+         fs_no_mesin like '%$term%'
+         or fs_nama_mesin like '%$term%'
+      )")->result_array());
     }
 
 }

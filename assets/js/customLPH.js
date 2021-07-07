@@ -97,6 +97,7 @@ function lph_empty_form() {
 }
 
 $(document).ready(function () {
+  $('.tbl_lph_mon_mesin').dataTable()
   $('.lphgetEmployee').select2({
     minimumInputLength: 2,
     placeholder: "Employee",
@@ -295,3 +296,8 @@ const lphgetmon = () => {
   })
 
 }
+
+$('#form_lph_add_mesin').on('submit', function(e) {
+  e.preventDefault()
+  swaLPHLarge('info', 'Wait fitur blm siap');
+})

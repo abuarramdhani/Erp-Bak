@@ -438,7 +438,11 @@ function lph_add_row_hasil_produksi() {
                                            <option value="" selected></option>
                                           </select>
                                         </td>
-                                        <td><input type="text" class="form-control" required name="kodemesin[]" value=""></td>
+                                        <td>
+                                        <select class="lphgetMesin" name="kodemesin[]" style="width:182px">
+                                          <option value="" selected></option>
+                                        </select>
+                                        </td>
                                         <td><input type="text" class="form-control" name="waktumesin[]" value=""></td>
                                         <td>
                                           <select class="lph_select2 lph_kode_proses" name="kodeproses[]" style="width:182px">
@@ -490,6 +494,31 @@ function lph_add_row_hasil_produksi() {
         }
       }
     });
+
+    $('.lphgetMesin').select2({
+      minimumInputLength: 2,
+      placeholder: "Employee",
+      ajax: {
+        url: baseurl + "LaporanProduksiHarian/actiontwo/getMesin",
+        dataType: "JSON",
+        type: "POST",
+        data: function(params) {
+          return {
+            term: params.term
+          };
+        },
+        processResults: function(data) {
+          return {
+            results: $.map(data, function(obj) {
+              return {
+                id: obj.fs_no_mesin,
+                text: `${obj.fs_no_mesin} - ${obj.fs_nama_mesin}`
+              }
+            })
+          }
+        }
+      }
+    })
 
     $('.lph_select2').select2({
       tags: true,
