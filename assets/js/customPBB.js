@@ -34,6 +34,34 @@ const swalPBB = (type, title) => {
 }
 
 $(document).ready(function () {
+  if ($('.rekap_pbb').html() != undefined) {
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth() + 1; //January is 0!
+
+    var yyyy = today.getFullYear();
+    if (dd < 10) {
+      dd = '0' + dd;
+    }
+    if (mm < 10) {
+      mm = '0' + mm;
+    }
+    var today = dd + '_' + mm + '_' + yyyy;
+  }
+  $('.rekap_pbb').dataTable({
+    dom: 'Bfrtip',
+    buttons: [
+      'pageLength',
+      {
+        extend: 'excelHtml5',
+        title: 'REKAP_PBB_' + today,
+        exportOptions: {
+          columns: ':visible',
+          columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+        }
+      }
+     ],
+  });
   $(".slc_pbb_seksi").select2();
   $(".slc_pbb").select2({
     allowClear:true,

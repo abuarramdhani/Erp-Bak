@@ -267,6 +267,36 @@ class C_Master extends CI_Controller
 
     }
 
+    // getAllData
+    public function rekapData($value='')
+    {
+      $this->checkSession();
+      $user_id = $this->session->userid;
+
+      $data['Menu'] = 'Pengiriman Barang Bekas V.1.3';
+      $data['SubMenuOne'] = '';
+      $data['SubMenuTwo'] = '';
+
+      $data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+
+      $admin = ['a'=>'B0724', 'b'=>'T0012', 'c'=>'B0713', 'd'=>'B0797', 'e'=>'B0285'];
+      if (empty(array_search($this->session->user, $admin))) {
+        unset($data['UserMenu'][2]);
+      }
+
+      $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+      $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
+
+      $data['get'] = $this->M_master->rekapData();
+
+      $this->load->view('V_Header', $data);
+      $this->load->view('V_Sidemenu', $data);
+      $this->load->view('BarangBekas/V_Rekap', $data);
+      $this->load->view('V_Footer', $data);
+
+
+    }
+
     public function apakah_sudah_trasact($value='')
     {
       $data = $this->M_master->cek_apakah_sudah_trasact($this->input->post('doc_num'));
