@@ -230,6 +230,42 @@ $("#lph_search_rkh").on('submit', function (e) {
   })
 })
 
+$("#lph_search_rkh_mesin").on('submit', function (e) {
+  e.preventDefault();
+  let tanggal = $('.tanggal_lph_99').val();
+  let shift = $('.lph_pilih_shift_97').val();
+  $.ajax({
+    url: baseurl + 'LaporanProduksiHarian/actiontwo/monPemakaianJamMesin',
+    type: 'POST',
+    // dataType: 'JSON',
+    data: {
+      tanggal : tanggal,
+      shift : shift,
+    },
+    cache:false,
+    beforeSend: function() {
+      $('.area-pemakaian-jam-mesin').html(`<div style ="width: 70%;margin:auto;height: 30%;background: #fff;overflow: hidden;z-index: 9999;padding:20px 0 30px 0;border-radius:10px;text-align:center">
+                                <img style="width: 8%;" src="${baseurl}assets/img/gif/loading5.gif"><br>
+                                <span style="font-size:14px;font-weight:bold">Sedang memuat data...</span>
+                            </div>`);
+    },
+    success: function(result) {
+      if (result != 'gada' && result != 'uda_ada') {
+        toastLPH('success', 'Selesai.')
+        $('.area-pemakaian-jam-mesin').html(result)
+      }else if (result == 'gada') {
+        $('.area-pemakaian-jam-mesin').html(`<center style="font-weight:bold;margin-bottom:13px;"><i class="fa fa-warning"></i> Data tidak ditemukan</center>`);
+      }else if (result == 'uda_ada') {
+        $('.area-pemakaian-jam-mesin').html(`<center style="margin-bottom:13px;"><i class="fa fa-warning"></i> No induk <b>${no_induk}</b> dengan tanggal <b>${tanggal}</b> dan shift <b>${shift}</b> telah ada di database</center>`);
+      }
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+    swaLPHLarge('error', textStatus)
+     console.error();
+    }
+  })
+})
+
 function lph_filter_shift(th) {
   $.ajax({
     url: baseurl + 'LaporanProduksiHarian/action/getShift',
@@ -308,8 +344,8 @@ function pemakaianjammesin() {
     type: 'POST',
     // dataType: 'JSON',
     data: {
-      range_date : $('.tanggal_lph_99').val(),
-      shift : $('.lph_pilih_shift').val(),
+      tanggal : $('.tanggal_lph_99').val(),
+      shift : $('.lph_pilih_shift_97').val(),
     },
     cache:false,
     beforeSend: function() {
