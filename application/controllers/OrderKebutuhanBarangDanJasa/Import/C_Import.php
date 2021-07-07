@@ -153,16 +153,24 @@ class C_Import extends CI_Controller
                         }
                     }
 
-                    if ($location != 'Yogyakarta' && $location != 'Tuksono') {
-                        $note .= '- Location harus Yogyakarta atau Tuksono<br>';
-                        $loc_id = '';
-                    } else if ($location == 'Yogyakarta') {
-                        $loc_id = 142;
-                    } else if ($organization == 'Tuksono') {
-                        $loc_id = 16103;
-                    }
-                }
+                    $validasi_lokasi = $this->M_import->validasi_lokasi($location);
 
+                    if (!$validasi_lokasi) {
+                        $note .= 'Lokasi Tidak Ditemukan';
+                        $loc_id = '';
+                    } else {
+                        $loc_id = $validasi_lokasi[0]['LOCATION_ID'];
+                    }
+
+                    // if ($location != 'Yogyakarta' && $location != 'Tuksono') {
+                    //     $note .= '- Location harus Yogyakarta atau Tuksono<br>';
+                    //     $loc_id = '';
+                    // } else if ($location == 'Yogyakarta') {
+                    //     $loc_id = 142;
+                    // } else if ($organization == 'Tuksono') {
+                    //     $loc_id = 16103;
+                    // }
+                }
 
                 if ($note == '') {
                     $notes = 'Order ini dapat diproses';

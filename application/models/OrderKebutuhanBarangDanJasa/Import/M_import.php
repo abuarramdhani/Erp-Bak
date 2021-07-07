@@ -112,8 +112,7 @@ class M_import extends CI_Model
         msib.SECONDARY_UOM_CODE = muomt.UOM_CODE(+)
         AND msib.ORGANIZATION_ID = mp.ORGANIZATION_ID
         AND msib.ORGANIZATION_ID = msi.ORGANIZATION_ID
-        AND msib.ORGANIZATION_ID IN (101,
-        102)
+        AND msib.ORGANIZATION_ID IN (101, 102, 122, 286)
         AND msib.INVENTORY_ITEM_ID = msibp.INVENTORY_ITEM_ID
         AND msibp.ORGANIZATION_ID = 81
         AND msib.INVENTORY_ITEM_ID = mic.INVENTORY_ITEM_ID
@@ -129,6 +128,20 @@ class M_import extends CI_Model
         AND msib.SEGMENT1 = '$itemcode'
         -- parameter masukan kode item
               ");
+
+        return $query->result_array();
+    }
+    public function validasi_lokasi($lokasi)
+    {
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query("select
+        hla.LOCATION_ID
+        ,hla.LOCATION_CODE
+        from
+        HR_LOCATIONS_ALL hla
+        where
+        hla.INACTIVE_DATE is null
+        and hla.LOCATION_CODE = '$lokasi' -- parameter");
 
         return $query->result_array();
     }
