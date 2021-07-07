@@ -4,7 +4,7 @@ class M_revisimasteritem extends CI_Model
 	
 	function __construct() {
 		parent::__construct();
-        $this->oracle = $this->load->database('oracle_dev',TRUE);
+        $this->oracle = $this->load->database('oracle',TRUE);
 	}
 
     function deleteKIT() {
