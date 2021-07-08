@@ -13,11 +13,11 @@
 if ($val['ket'] == 'Baru') { // view tabel baru
     $modifrekon = 'display:none'; // style inputan khusus modifikasi dan rekondisi
     $baru = ''; // style inputan khusus baru
-    $height = $val['revisi'] == 1 ? 1500 : 1130; // tinggi modal berdasarkan data tersebut sudah accept / belum (revisi 1 = belum accept, jadi masih bisa di revisi)
+    $height = $val['revisi'] == 1 ? 2000 : 1500; // tinggi modal berdasarkan data tersebut sudah accept / belum (revisi 1 = belum accept, jadi masih bisa di revisi)
 }else { // view tabel modifikasi dan rekondisi
     $modifrekon = '';
     $baru = 'display:none';
-    $height = $val['revisi'] == 1 ? 1100 : 1000;
+    $height = $val['revisi'] == 1 ? 1500 : 1300;
 }
 
 if(stripos($val['jenis'], 'FIXTURE') !== FALSE || stripos($val['jenis'], 'MASTER') !== FALSE || stripos($val['jenis'], 'GAUGE') !== FALSE || stripos($val['jenis'], 'ALAT LAIN') !== FALSE) {
@@ -99,6 +99,7 @@ $proses = ($val['status'] == 'FINISH' || $val['status'] == 'DALAM PROSES PENGIRI
                 <input type="hidden" name="siapa" value="<?= $val['siapa']?>">
                 <input type="hidden" name="seksi_order" value="<?= $val['seksi']?>">
                 <input type="hidden" id="tinggi" value="<?= $height?>">
+                <input type="hidden" id="gambar_produk" value="<?= $val['gamker']?>">
             </div>
         </div>
     </div>
@@ -123,17 +124,21 @@ $proses = ($val['status'] == 'FINISH' || $val['status'] == 'DALAM PROSES PENGIRI
             <span style="color:#3A4C52;">UNIT</span> <br><span style="color:#3A4C52;font-weight:bold"><?= $val['unit'] ?></span>
         </div>
         <div class="col-md-12"><br>
-            <span style="color:#3A4C52;">GAMBAR KERJA </span>
+            <span style="color:#3A4C52;">GAMBAR PRODUK </span>
             <br>
             <span style="color:#3A4C52">
-                <?php $filename = "assets/upload/OrderToolMaking/Gambar_kerja/".$val['folder_gamker']."/".$val['gamker']."";
-                    if (file_exists($filename)) {?>
-                        <a href="<?php echo base_url($filename)?>" target="_blank">
-                            <img style="max-width: 300px;max-height: 300px" src="<?php echo base_url($filename)?>">
-                        </a>
-                        <br><span style="color:#3A4C52;font-size:11px">*Klik gambar untuk membuka di Tab baru</span>
-                <?php }else {
-                    echo '<span style="font-size:12px">Gambar Kerja Tidak Ditemukan...</span>';
+                <?php $gb = explode(';', $val['gamker']);
+                for ($i=0; $i < count($val['folder_gamker']) ; $i++) { 
+                    $filename = "assets/upload/OrderToolMaking/Gambar_kerja/".$val['folder_gamker'][$i]."/".$gb[$i]."";
+                        if (file_exists($filename)) {?>
+                            <span><br><label><?= ($i+1)?>. </label></span>
+                            <a href="<?php echo base_url($filename)?>" target="_blank">
+                                <img style="max-width: 250px;max-height: 250px" src="<?php echo base_url($filename)?>">
+                            </a>
+                            <br><span style="color:#3A4C52;font-size:11px;margin-left:15px">*Klik gambar untuk membuka di Tab baru</span>
+                    <?php }else {
+                        echo '<span style="font-size:12px">Gambar Produk Tidak Ditemukan...</span>';
+                    }
                 }?>
             </span>
         </div>
@@ -144,7 +149,7 @@ $proses = ($val['status'] == 'FINISH' || $val['status'] == 'DALAM PROSES PENGIRI
                 <?php $filename = "assets/upload/OrderToolMaking/Skets/".$val['folder_skets']."/".$val['skets']."";
                     if (file_exists($filename)) {?>
                         <a href="<?php echo base_url($filename)?>" target="_blank">
-                            <img style="max-width: 300px;max-height: 300px" src="<?php echo base_url($filename)?>">
+                            <img style="max-width: 250px;max-height: 250px" src="<?php echo base_url($filename)?>">
                         </a>
                         <br><span style="color:#3A4C52;font-size:11px">*Klik gambar untuk membuka di Tab baru</span>
                 <?php }else {
@@ -265,7 +270,7 @@ $proses = ($val['status'] == 'FINISH' || $val['status'] == 'DALAM PROSES PENGIRI
         </div>
         <div class="col-md-12"><br>
             <div class="col-md-3">
-                Poin Yang Diproses :
+                Proses :
             </div>
             <div class="col-md-9">
                 <input readonly class="form-control" value="<?= $val['poin'] ?>">
@@ -354,7 +359,7 @@ $proses = ($val['status'] == 'FINISH' || $val['status'] == 'DALAM PROSES PENGIRI
                 Alasan Modifikasi :
             </div>
             <div class="col-md-9">
-                <input readonly class="form-control" value="<?php echo $val['ket'] != 'Baru' ? $val['alasan'] : ''; ?>">
+                <textarea disabled style="width:500px"><?php echo $val['ket'] != 'Baru' ? $val['alasan'] : ''; ?></textarea>
             </div>
         </div>
         <div class="col-md-12"><br>
@@ -362,7 +367,15 @@ $proses = ($val['status'] == 'FINISH' || $val['status'] == 'DALAM PROSES PENGIRI
                 Referensi / Datum Alat Bantu :
             </div>
             <div class="col-md-9">
-                <input readonly class="form-control" value="<?= $val['referensi'] ?>">
+                <textarea disabled style="width:500px"><?= $val['referensi'] ?></textarea>
+            </div>
+        </div>
+        <div class="col-md-12"><br>
+            <div class="col-md-3">
+                Assign Desainer :
+            </div>
+            <div class="col-md-9">
+                <input readonly class="form-control" value="<?= $val['assign_desainer'] ?>">
             </div>
         </div>
         <div class="col-md-12" style="display:none"><br>
@@ -375,6 +388,21 @@ $proses = ($val['status'] == 'FINISH' || $val['status'] == 'DALAM PROSES PENGIRI
         </div>
         <div class="col-md-12"><br>
         <div class="box box-info box-solid" style="<?= $revisi ?>">
+        <?php if ($val['status'] == 'DIPERIKSA KEPALA SEKSI PE') { ?>
+            <div class="panel-body">
+                <div class="col-md-3">
+                    <label>Assign Desainer</label>
+                </div>
+                <div class="col-md-9">
+                    <select id="assign_desain" name="assign_desainer" class="form-control select2" style="width:100%" data-placeholder="pilih assign desainer" required>
+                        <option></option>
+                        <option value="Desainer A">Desainer A</option>
+                        <option value="Desainer B">Desainer B</option>
+                        <option value="Desainer C">Desainer C</option>
+                    </select>
+                </div>
+            </div>
+        <?php }?>
             <div class="panel-body" id="tambahTarget">
                 <div class="col-md-12" style="color : #556F78">
                     <label>Revisi :</label>

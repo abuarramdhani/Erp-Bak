@@ -35,7 +35,7 @@ class C_MonitoringOrder extends CI_Controller
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Monitoring Order';
-		$data['Menu'] = 'Order Request';
+		$data['Menu'] = 'Request Order';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
 
@@ -99,7 +99,7 @@ class C_MonitoringOrder extends CI_Controller
 	public function daftarrevisi(){
 		$daftar = array('0' => array('nama_kolom' => 'User', 'status' => 1 ),
 						'1' => array('nama_kolom' => 'Usulan Order Selesai', 'status' => 1 ),
-						'2' => array('nama_kolom' => 'Gambar Kerja', 'status' => 9 ),
+						'2' => array('nama_kolom' => 'Gambar Produk', 'status' => 9 ),
 						'3' => array('nama_kolom' => 'Skets', 'status' => 9 ),
 						'4' => array('nama_kolom' => 'Kode Komponen', 'status' => 5 ),
 						'5' => array('nama_kolom' => 'Nama Komponen', 'status' => 1 ),
@@ -107,7 +107,7 @@ class C_MonitoringOrder extends CI_Controller
 						'7' => array('nama_kolom' => 'Tanggal Rilis Gambar', 'status' => 5 ),
 						'8' => array('nama_kolom' => 'Mesin Yang Digunakan', 'status' => 3 ),
 						'9' => array('nama_kolom' => 'No Alat Bantu', 'status' => 2 ),
-						'10' => array('nama_kolom' => 'Poin Yang Diproses', 'status' => 4 ),
+						'10' => array('nama_kolom' => 'Proses', 'status' => 4 ),
 						'11' => array('nama_kolom' => 'Proses Ke', 'status' => 4 ),
 						'12' => array('nama_kolom' => 'Dari', 'status' => 4 ),
 						'13' => array('nama_kolom' => 'Jumlah Alat', 'status' => 6 ),
@@ -185,13 +185,27 @@ class C_MonitoringOrder extends CI_Controller
 
 	public function carirevisi($no_order, $val, $cek){
 		$cari 	= $this->M_monitoringorder->cekrevisi($cek, $no_order); // cek data revisi
-		if ($cek == 'Gambar Kerja' || $cek == 'Skets') { // hal yg direvisi
-			if (!empty($cari)) { // ada revisi, ambil data file dari folder sesuai $hasil, berdasarkan responsibility yang dibuka user login/ $cari[0]['person]
+		
+		if ($cek == 'Gambar Produk') { // hal yang dicek
+			$gb = explode(';', $val);
+			for ($i=0; $i < count($gb) ; $i++) { 
+				$cari 	= $this->M_monitoringorder->cekrevisi2($cek, $no_order, $gb[$i]); // cek revisi dari approval terbaru
+				if (!empty($cari)) { // ada revisi -> ambil data file dari folder $hasil
+					$hasil[] = $cari[0]['person'] == 2 ? 'Ass_Ka_Nit_Pengorder' :
+							($cari[0]['person'] == 5 ? 'Designer_Produk' :
+							($cari[0]['person'] == 3 ? 'Kasie_PE' : 
+							($cari[0]['person'] == 4 ? 'Ass_Ka_Nit_PE' : '')));
+				}else { // tidak ada revisi -> ambil data file dari folder Pengorder
+					$hasil[] = 'Pengorder';
+				}
+			}
+		}elseif($cek == 'Skets'){
+			if (!empty($cari)) { // ada revisi -> ambil data file dari folder $hasil
 				$hasil = $cari[0]['person'] == 2 ? 'Ass_Ka_Nit_Pengorder' :
 						($cari[0]['person'] == 5 ? 'Designer_Produk' :
 						($cari[0]['person'] == 3 ? 'Kasie_PE' : 
 						($cari[0]['person'] == 4 ? 'Ass_Ka_Nit_PE' : '')));
-			}else { // tidak ada revisi
+			}else { // tidak ada revisi -> ambil data file dari folder Pengorder
 				$hasil = 'Pengorder';
 			}
 		}else {
@@ -234,9 +248,10 @@ class C_MonitoringOrder extends CI_Controller
 		$keterangan     = $this->input->post('keterangan');
 		$siapa 			= $this->input->post('siapa');
 		$seksi 			= $this->input->post('seksi_order');
+		$assign_desainer = $this->input->post('assign_desainer');
 
 		$person = $this->cariperson($siapa);
-		// echo "<pre>";print_r($nama);
+		// echo "<pre>";print_r($_FILES);
 		// echo "<br>";print_r($isi);exit();
 
 		if (!empty($action)) {
@@ -246,6 +261,16 @@ class C_MonitoringOrder extends CI_Controller
 				$this->M_monitoringorder->saveaction($no_order, $person, $action, $keterangan, date('Y-m-d H:i:s'));
 			}else {
 				$this->M_monitoringorder->updateaction($no_order, $person, $action, $keterangan, date('Y-m-d H:i:s'));
+			}
+		}
+
+		if ($siapa == 'Kasie PE' && !empty($assign_desainer)) {
+			if ($ket == 'Modifikasi') {
+				$this->M_monitoringorder->updatefilemodif("assign_desainer = '$assign_desainer'", $no_order);
+			}elseif ($ket == 'Baru') {
+				$this->M_monitoringorder->updatefilebaru("assign_desainer = '$assign_desainer'", $no_order);
+			}else {
+				$this->M_monitoringorder->updatefilerekon("assign_desainer = '$assign_desainer'", $no_order);
 			}
 		}
 
@@ -264,13 +289,68 @@ class C_MonitoringOrder extends CI_Controller
 			$this->M_monitoringorder->saveaction($no_order, ($person+1), 1, '', date('Y-m-d H:i:s'));
 		}
 		
+		// folder simpan revisi skets/gamker sesuai responsibility yg dibuka user login
+		$folder = $siapa == 'Kasie Pengorder' ? 'Pengorder' : 
+				($siapa == 'Ass Ka Nit Pengorder' ? 'Ass_Ka_Nit_Pengorder' :
+				($siapa == 'Designer Produk' ? 'Designer_Produk' : 
+				($siapa == 'Kasie PE' ? 'Kasie_PE' : 
+				($siapa == 'Ass Ka Nit PE'? 'Ass_Ka_Nit_PE' : ''))));
+		
 		// echo "<pre>";
+		$g = 0;
 		for ($i=0; $i < count($nama) ; $i++) { 
-			if ($nama[$i] == 'Gambar Kerja') {
-				$isi2 = 'GambarKerja_'.$no_order.'.png'; // buat nama file revisi
-				$this->M_monitoringorder->insertrevisi($no_order, $person, $nama[$i], $isi2, date('Y-m-d H:i:s'));
+			if ($nama[$i] == 'Gambar Produk') {
+				if (!empty($_FILES['gamker']['name'][$g])) {
+					if(!is_dir('./assets/upload/OrderToolMaking/Gambar_kerja/'.$folder.''))
+					{
+						mkdir('./assets/upload/OrderToolMaking/Gambar_kerja/'.$folder.'', 0777, true);
+						chmod('./assets/upload/OrderToolMaking/Gambar_kerja/'.$folder.'', 0777);
+					}
+					$format = explode(".", $_FILES['gamker']['name'][$g]);
+					if ($format[1] == 'png' || $format[1] == 'PNG') {
+						$im = imagecreatefrompng($_FILES['gamker']['tmp_name'][$g]);
+					}else {
+						$im = imagecreatefromjpeg($_FILES['gamker']['tmp_name'][$g]);
+					}
+					$color 	= imagecolorallocate($im,230, 90, 107);
+					$sx = imagesx($im) - 200;
+					$sy = imagesy($im) - 50;
+					imagestring($im,50,$sx,$sy,"KHUSUS ALAT BANTU",$color);
+					
+					if ($ket == 'Modifikasi') {
+						$getgb = $this->M_monitoringorder->getdatamodif("where no_order = '$no_order'");
+					}elseif ($ket == 'Baru') {
+						$getgb = $this->M_monitoringorder->getdatabaru("where no_order = '$no_order'");
+					}else {
+						$getgb = $this->M_monitoringorder->getdatarekondisi("where no_order = '$no_order'");
+					}
+
+					$gb = explode(";",$getgb[0]['gambar_kerja']);
+					$gk = 'GambarKerja_'.$no_order.'.png';
+					for ($k=0; $k < count($gb) ; $k++) { 
+						$gk = $gb[$k] == 'GambarKerja_'.$no_order.'-'.$isi[$i].'.png' ? $gb[$k] : $gk; 
+					}
+					
+					$filename = './assets/upload/OrderToolMaking/Gambar_kerja/'.$folder.'/'.$gk;
+					imagepng($im, $filename);
+					imagedestroy($im);
+					move_uploaded_file($im,$filename);
+					// move_uploaded_file($_FILES['gamker']['tmp_name'],$filename);
+				}
+				$g++;
+				$this->M_monitoringorder->insertrevisi($no_order, $person, $nama[$i], $gk, date('Y-m-d H:i:s'));
 			}elseif ($nama[$i] == 'Skets') {
 				$isi2 = 'Skets_'.$no_order.'.png';
+				if (!empty($_FILES['skets']['name'])) {
+					if(!is_dir('./assets/upload/OrderToolMaking/Skets/'.$folder.''))
+					{
+						mkdir('./assets/upload/OrderToolMaking/Skets/'.$folder.'', 0777, true);
+						chmod('./assets/upload/OrderToolMaking/Skets/'.$folder.'', 0777);
+					}
+					
+					$filename = './assets/upload/OrderToolMaking/Skets/'.$folder.'/Skets_'.$no_order.'.png';
+					move_uploaded_file($_FILES['skets']['tmp_name'],$filename);
+				}
 				$this->M_monitoringorder->insertrevisi($no_order, $person, $nama[$i], $isi2, date('Y-m-d H:i:s'));
 			}elseif ($nama[$i] == 'Layout Alat Bantu') { // revisi khusus tabel baru
 				if ($isi[$i] == 'Tunggal') {
@@ -293,35 +373,8 @@ class C_MonitoringOrder extends CI_Controller
 			}
 		}
 		// exit();
-		// folder simpan revisi skets/gamker sesuai responsibility yg dibuka user login
-		$folder = $siapa == 'Kasie Pengorder' ? 'Pengorder' : 
-				($siapa == 'Ass Ka Nit Pengorder' ? 'Ass_Ka_Nit_Pengorder' :
-				($siapa == 'Designer Produk' ? 'Designer_Produk' : 
-				($siapa == 'Kasie PE' ? 'Kasie_PE' : 
-				($siapa == 'Ass Ka Nit PE'? 'Ass_Ka_Nit_PE' : ''))));
 		// echo "<pre>";print_r($_FILES);exit();
-
-		if (!empty($_FILES['gamker']['name'])) {
-			if(!is_dir('./assets/upload/OrderToolMaking/Gambar_kerja/'.$folder.''))
-			{
-				mkdir('./assets/upload/OrderToolMaking/Gambar_kerja/'.$folder.'', 0777, true);
-				chmod('./assets/upload/OrderToolMaking/Gambar_kerja/'.$folder.'', 0777);
-			}
-			
-			$filename = './assets/upload/OrderToolMaking/Gambar_kerja/'.$folder.'/GambarKerja_'.$no_order.'.png';
-			move_uploaded_file($_FILES['gamker']['tmp_name'],$filename);
-		}
 		
-		if (!empty($_FILES['skets']['name'])) {
-			if(!is_dir('./assets/upload/OrderToolMaking/Skets/'.$folder.''))
-			{
-				mkdir('./assets/upload/OrderToolMaking/Skets/'.$folder.'', 0777, true);
-				chmod('./assets/upload/OrderToolMaking/Skets/'.$folder.'', 0777);
-			}
-			
-			$filename = './assets/upload/OrderToolMaking/Skets/'.$folder.'/Skets_'.$no_order.'.png';
-			move_uploaded_file($_FILES['skets']['tmp_name'],$filename);
-		}
 		// link redirect sesuai resp yg dibuka user login
 		$link = $siapa == 'Kasie Pengorder' ? 'OrderToolMaking/' :   // resp order tool making
 					($siapa == 'Ass Ka Nit Pengorder' ? 'ApprovalToolMaking/' : // resp approval tool making
@@ -367,20 +420,21 @@ class C_MonitoringOrder extends CI_Controller
 				// $fix['no_proposal'] = $this->carirevisi($val['no_order'], $val['no_proposal'], 'No Proposal');
 				$fix['tgl_usul'] 	= $this->carirevisi($val['no_order'], date('d/m/Y', strtotime($val['tgl_usulan'])), 'Usulan Order Selesai');
 				$fix['gamker'] 		= $val['gambar_kerja'];
-				$fix['folder_gamker'] = $this->carirevisi($val['no_order'], $val['gambar_kerja'], 'Gambar Kerja');
+				$fix['folder_gamker'] = $this->carirevisi($val['no_order'], $val['gambar_kerja'], 'Gambar Produk');
 				$fix['skets'] 		= $val['skets'];
 				$fix['folder_skets']= $this->carirevisi($val['no_order'], $val['skets'], 'Skets');
 				$fix['kodekomp'] 	= $this->carirevisi($val['no_order'], $val['kode_komponen'], 'Kode Komponen');
 				$fix['namakomp'] 	= $this->carirevisi($val['no_order'], $val['nama_komponen'], 'Nama Komponen');
 				$fix['tipe_produk'] = $this->carirevisi($val['no_order'], $val['tipe_produk'], 'Tipe Produk');
 				$fix['tgl_rilis'] 	= $this->carirevisi($val['no_order'], date('d/m/Y', strtotime($val['tgl_rilis'])), 'Tanggal Rilis Gambar');
-				$fix['poin'] 		= $this->carirevisi($val['no_order'], $val['poin'], 'Poin Yang Diproses');
+				$fix['poin'] 		= $this->carirevisi($val['no_order'], $val['poin'], 'Proses');
 				$fix['proses_ke'] 	= $this->carirevisi($val['no_order'], $val['proses_ke'], 'Proses Ke');
 				$fix['dari'] 		= $this->carirevisi($val['no_order'], $val['dari'], 'Dari');
 				$fix['referensi'] 	= $this->carirevisi($val['no_order'], $val['referensi'], 'Referensi / Datum Alat Bantu');
 				$fix['action']		= $this->cariaction($val['no_order'], $siapa);
 				$fix['no_alat_tm'] 	= $val['no_alat_tm'];
 				$fix['assign_order'] = $val['assign_order'];
+				$fix['assign_desainer'] = $val['assign_desainer'];
 				$fix['estimasi_finish'] = $val['estimasi_finish'] == '' || $val['estimasi_finish'] == '0001-01-01 BC' ? '' : date('d/m/Y', strtotime($val['estimasi_finish']));
 	
 				if ($ket == 'Baru') { // tebel baru
@@ -425,6 +479,32 @@ class C_MonitoringOrder extends CI_Controller
 		}
 		$select = '<select name="isi_rev[]" class="form-control actionorder" style="width:100%;" autocomplete="off">
 					<option>Pilih Tipe Produk</option>
+					'.$option.'
+					</select>';
+		echo $select;
+	}
+	
+	function selectProses(){
+		$data = $this->M_monitoringorder->getProses('');
+		$option = '';
+		foreach ($data as $key => $val) {
+			$option .= '<option style="font-size:15px" value="'.$val['nama_proses'].'">'.$val['nama_proses'].'</option>';
+		}
+		$select = '<select name="isi_rev[]" class="form-control actionorder" style="width:100%;" autocomplete="off">
+					<option>Pilih Proses</option>
+					'.$option.'
+					</select>';
+		echo $select;
+	}
+	
+	function selectMesin(){
+		$data = $this->M_monitoringorder->getmesin('');
+		$option = '';
+		foreach ($data as $key => $val) {
+			$option .= '<option style="font-size:15px" value="'.$val['nama_mesin'].'">'.$val['nama_mesin'].'</option>';
+		}
+		$select = '<select name="isi_rev[]" class="form-control actionorder" style="width:100%;" autocomplete="off">
+					<option>Pilih mesin</option>
 					'.$option.'
 					</select>';
 		echo $select;

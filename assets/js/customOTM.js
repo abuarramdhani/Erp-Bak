@@ -57,6 +57,24 @@ $(document).ready(function () {
             }
         })
     }
+    
+    var proses_otm = document.getElementById("tb_proses_otm");
+    if (proses_otm) {
+        data_proses_otm(this);
+    }
+    
+    var mesin_otm = document.getElementById("tb_mesin_otm");
+    if (mesin_otm) {
+        data_mesin_otm(this);
+    }
+    
+    $("#seksi_order").change(function(){ // onchange seksi pengorder
+        if ($(this).val() == 'PE' || $('#nama_seksi_order').val() == 'PRODUCTION ENGINEERING') {
+            $('.khususpe').css('display','');
+        }else{
+            $('.khususpe').css('display','none');
+        }
+    })
 
     // $(document).on("ifChecked", ".ganti", function () { //request order modifikasi / rekondisi 
     $(".ganti").change(function(){ //request order modifikasi / rekondisi 
@@ -181,6 +199,54 @@ $(document).ready(function () {
         $('#isi_multi').val('');
     })
 
+    
+    $(".getprosestm").select2({
+        allowClear: true,
+        minimumInputLength: 0,
+        ajax: {
+            url: baseurl + "OrderToolMaking/MonitoringOrder/getProses",
+            dataType: 'json',
+            type: "GET",
+            data: function (params) {
+                var queryParameters = {
+                    term: params.term,
+                }
+                return queryParameters;
+            },
+            processResults: function (data) {
+                // console.log(data);
+                return {
+                    results: $.map(data, function (obj) {
+                        return {id:obj.nama_proses, text:obj.nama_proses};
+                    })
+                };
+            }
+        }
+    });
+    
+    $(".getmesintm").select2({
+        allowClear: true,
+        minimumInputLength: 0,
+        ajax: {
+            url: baseurl + "OrderToolMaking/MonitoringOrder/getmesin",
+            dataType: 'json',
+            type: "GET",
+            data: function (params) {
+                var queryParameters = {
+                    term: params.term,
+                }
+                return queryParameters;
+            },
+            processResults: function (data) {
+                // console.log(data);
+                return {
+                    results: $.map(data, function (obj) {
+                        return {id:obj.nama_mesin, text:obj.nama_mesin};
+                    })
+                };
+            }
+        }
+    });
 
     $(".userorder").select2({
         allowClear: true,
@@ -259,7 +325,7 @@ $(document).ready(function () {
 
     // preview gambar setelah dipilih
     $("#img_gamker").change(function(){
-        readURLGamker(this);
+        readURLGamker(this, 1);
     });
     $("#img_skets").change(function(){
         readURLSkets(this);
@@ -268,12 +334,12 @@ $(document).ready(function () {
     
 })
 
-function readURLGamker(input) {
+function readURLGamker(input, g) {
     if (input.files && input.files[0]) {
         var reader = new FileReader();
         reader.onload = function (e) {
-            $('#view_gamker').css("display","block");             
-            $('#previewgamker').attr('src', e.target.result);
+            $('#view_gamker'+g).css("display","block");             
+            $('#previewgamker'+g).attr('src', e.target.result);
         }
         reader.readAsDataURL(input.files[0]);
     }
@@ -405,6 +471,25 @@ function addrevkolom() { // tambah baris revisi di modal view detail
     i++; 
 }
 
+g = 1;
+function tmb_gb_produk(th) { // tambah baris attachment gambar produk
+    g++; 
+    $('#tambah_gb_produk').append(`<div class="tambah_gb_produk">
+                                        <div class="col-md-4"></div>
+                                        <div class="col-md-6" style="margin-top:20px">
+                                            <span id="view_gamker`+g+`" style="display:none"><img id="previewgamker`+g+`" style="width:100%;max-width: 350px;max-height: 350px"></span>
+                                            <input name="gambar_kerja[]" type="file" id="img_gamker`+g+`" accept=".jpg, .png">
+                                        </div>
+                                        <div class="col-md-2" style="margin-top:20px"><button type="button" class="btn tombolhapusgb`+g+`" ><i class="fa fa-minus"></i></button></div>
+                                    </div>`);
+    $("#img_gamker"+g).change(function(){
+        readURLGamker(this, g);
+    });
+    // hapus baris revisi
+    $(document).on('click', '.tombolhapusgb'+g,  function() {
+		$(this).parents('.tambah_gb_produk').remove()
+	});
+}
 
 function revisiorderyuhuuu(apa, siapa) {
     $.ajax({
@@ -421,8 +506,15 @@ function revisiorderyuhuuu(apa, siapa) {
         var rev = $('.revisi:last').val();
         var d    = new Date();
         // console.log(rev, i)
-        if (rev == 'Gambar Kerja') { // hal yg direvisi
-            $('.ganti:last').html('<input type="file" class="form-control" name="gamker" accept=".jpg, .png">'); // yg ditampilkan
+        if (rev == 'Gambar Produk') { // hal yg direvisi
+            var gb = $('#gambar_produk').val();
+            var gb2 = gb.split(";");
+            var gambar = '<option value="1">-pilih urutan gambar produk yang ingin direvisi-</option>';
+            for (let g = 0; g < gb2.length; g++) {
+                gambar = gambar+'<option value="'+(g+1)+'">Gambar '+(g+1)+'</option>';
+            }
+            // console.log(gb2)
+            $('.ganti:last').html('<select name="isi_rev[]" class="form-control select2" data-placeholder="pilih urutan gambar produk yang ingin direvisi">'+gambar+'</select><input type="file" class="form-control" name="gamker[]" accept=".jpg, .png"><br>'); // yg ditampilkan
         }else if (rev == 'Skets') {
             $('.ganti:last').html('<input type="file" class="form-control" name="skets" accept=".jpg, .png">');
         }else if (rev == 'Usulan Order Selesai') {
@@ -483,6 +575,24 @@ function revisiorderyuhuuu(apa, siapa) {
                     $('.ganti:last').html(result)
                 }
             });
+        }else if (rev == 'Proses' || rev == 'Flow Proses Sebelumnya' || rev == 'Flow Proses Sesudahnya') {
+            $.ajax({
+                url: baseurl+("ApprovalToolMaking/MonitoringOrder/selectProses"),
+                type: "POST",
+                datatype: 'html',
+                success :function(result) {
+                    $('.ganti:last').html(result)
+                }
+            });
+        }else if (rev == 'Mesin Yang Digunakan') {
+            $.ajax({
+                url: baseurl+("ApprovalToolMaking/MonitoringOrder/selectMesin"),
+                type: "POST",
+                datatype: 'html',
+                success :function(result) {
+                    $('.ganti:last').html(result)
+                }
+            });
         }else{
             $('.ganti:last').html('<input class="form-control" name="isi_rev[]" placeholder="masukkan hasil revisi" autocomplete="off">');
         }
@@ -495,3 +605,261 @@ function(event){
     event.preventDefault();
     }
 });
+
+
+function data_proses_otm(th) {
+    $.ajax({
+        url: baseurl + 'OrderToolMakingTM/MasterData/data_proses',
+        type: 'POST',
+        beforeSend: function() {
+            $('div#tb_proses_otm' ).html('<center><img style="width:130px; height:auto" src="'+baseurl+'assets/img/gif/loading2.gif"></center>' );
+        },
+        success: function(result) {
+            $('div#tb_proses_otm').html(result);
+            $('#tb_proses').DataTable({
+                "scrollX": true,
+            });
+        }
+    })
+}
+
+function data_mesin_otm(th) {
+    $.ajax({
+        url: baseurl + 'OrderToolMakingTM/MasterData/data_mesin',
+        type: 'POST',
+        beforeSend: function() {
+            $('div#tb_mesin_otm' ).html('<center><img style="width:130px; height:auto" src="'+baseurl+'assets/img/gif/loading2.gif"></center>' );
+        },
+        success: function(result) {
+            $('div#tb_mesin_otm').html(result);
+            $('#tb_mesin').DataTable({
+                "scrollX": true,
+            });
+        }
+    })
+}
+
+function tambah_proses_otm(th) {
+	Swal.fire({
+		title: 'Masukkan Nama Proses',
+		// type: 'success',
+		input: 'text',
+		inputAttributes: {
+			autocapitalize: 'off'
+		},
+		showCancelButton: true,
+		confirmButtonText: 'Submit',
+		showLoaderOnConfirm: true,
+	}).then(result => {
+		if (result.value) {
+			var val = result.value;
+            $.ajax({
+                url : baseurl+"OrderToolMakingTM/MasterData/submit_proses",
+                data : {val : val},
+                type : "POST",
+                dataType : 'json',
+                success : function (result) {
+                    console.log(result);
+                    if (result == 'oke') {
+                        Swal.fire({
+                            title: 'Proses Berhasil di Tambahkan!',
+                            type: 'success',
+                            allowOutsideClick: false
+                        }).then(result => {
+                            if (result.value) {
+                                data_proses_otm(this)
+                        }})  
+                    }else{
+                        Swal.fire({
+                            title: 'Proses Sudah Ada!',
+                            type: 'error',
+                            allowOutsideClick: false
+                        })
+                    }
+                }
+            })
+	}})
+}
+
+function data_mesin_otm(th) {
+    $.ajax({
+        url: baseurl + 'OrderToolMakingTM/MasterData/data_mesin',
+        type: 'POST',
+        beforeSend: function() {
+            $('div#tb_mesin_otm' ).html('<center><img style="width:130px; height:auto" src="'+baseurl+'assets/img/gif/loading2.gif"></center>' );
+        },
+        success: function(result) {
+            $('div#tb_mesin_otm').html(result);
+            $('#tb_mesin').DataTable({
+                "scrollX": true,
+            });
+        }
+    })
+}
+
+function edit_proses_otm(id_proses, nama_proses) {
+	Swal.fire({
+        title: 'Edit Nama Proses',
+        html : '<p style="text-align:left">Nama Proses : '+nama_proses+'</p>',
+		// type: 'success',
+		input: 'text',
+		inputAttributes: {
+			autocapitalize: 'off'
+		},
+		showCancelButton: true,
+		confirmButtonText: 'Submit',
+		showLoaderOnConfirm: true,
+	}).then(result => {
+		if (result.value) {
+			var val = result.value;
+            $.ajax({
+                url : baseurl+"OrderToolMakingTM/MasterData/update_proses",
+                data : {nama_proses : val, id_proses : id_proses},
+                type : "POST",
+                dataType : 'html',
+                success : function (result) {
+                    console.log(result);
+                    Swal.fire({
+                        title: 'Proses Berhasil di Edit!',
+                        type: 'success',
+                        allowOutsideClick: false
+                    }).then(result => {
+                        if (result.value) {
+                            data_proses_otm(this)
+                    }})  
+                }
+            })
+	}})
+}
+
+function delete_proses_otm(id_proses) {
+    Swal.fire({
+        title: 'Apakah Anda Yakin ?',
+        type: 'question',
+        showCancelButton: true,
+        allowOutsideClick: false
+    }).then(result => {
+        if (result.value) {  
+            $.ajax({
+                url : baseurl + "OrderToolMakingTM/MasterData/delete_proses",
+                data: {id_proses : id_proses},
+                type : "POST",
+                dataType: "html",
+                success: function(data) {
+                    Swal.fire({
+                        title: 'Data Berhasil di Hapus!',
+                        type: 'success',
+                        allowOutsideClick: false
+                    }).then(result => {
+                        if (result.value) {
+                            data_proses_otm(this);
+                    }})  
+                }
+            })
+    }})  
+}
+
+function tambah_mesin_otm(th) {
+	Swal.fire({
+		title: 'Masukkan Nama Mesin',
+		// type: 'success',
+		input: 'text',
+		inputAttributes: {
+			autocapitalize: 'off'
+		},
+		showCancelButton: true,
+		confirmButtonText: 'Submit',
+		showLoaderOnConfirm: true,
+	}).then(result => {
+		if (result.value) {
+			var val = result.value;
+            $.ajax({
+                url : baseurl+"OrderToolMakingTM/MasterData/submit_mesin",
+                data : {val : val},
+                type : "POST",
+                dataType : 'json',
+                success : function (result) {
+                    console.log(result);
+                    if (result == 'oke') {
+                        Swal.fire({
+                            title: 'Mesin Berhasil di Tambahkan!',
+                            type: 'success',
+                            allowOutsideClick: false
+                        }).then(result => {
+                            if (result.value) {
+                                data_mesin_otm(this)
+                        }})  
+                    }else{
+                        Swal.fire({
+                            title: 'Mesin Sudah Ada!',
+                            type: 'error',
+                            allowOutsideClick: false
+                        })
+                    }
+                }
+            })
+	}})
+}
+
+function edit_mesin_otm(id_mesin, nama_mesin) {
+	Swal.fire({
+        title: 'Edit Nama Mesin',
+        html : '<p style="text-align:left">Nama Mesin : '+nama_mesin+'</p>',
+		// type: 'success',
+		input: 'text',
+		inputAttributes: {
+			autocapitalize: 'off'
+		},
+		showCancelButton: true,
+		confirmButtonText: 'Submit',
+		showLoaderOnConfirm: true,
+	}).then(result => {
+		if (result.value) {
+			var val = result.value;
+            $.ajax({
+                url : baseurl+"OrderToolMakingTM/MasterData/update_mesin",
+                data : {nama_mesin : val, id_mesin : id_mesin},
+                type : "POST",
+                dataType : 'html',
+                success : function (result) {
+                    console.log(result);
+                    Swal.fire({
+                        title: 'Mesin Berhasil di Edit!',
+                        type: 'success',
+                        allowOutsideClick: false
+                    }).then(result => {
+                        if (result.value) {
+                            data_mesin_otm(this)
+                    }})  
+                }
+            })
+	}})
+}
+
+
+function delete_mesin_otm(id_mesin) {
+    Swal.fire({
+        title: 'Apakah Anda Yakin ?',
+        type: 'question',
+        showCancelButton: true,
+        allowOutsideClick: false
+    }).then(result => {
+        if (result.value) {  
+            $.ajax({
+                url : baseurl + "OrderToolMakingTM/MasterData/delete_mesin",
+                data: {id_mesin : id_mesin},
+                type : "POST",
+                dataType: "html",
+                success: function(data) {
+                    Swal.fire({
+                        title: 'Data Berhasil di Hapus!',
+                        type: 'success',
+                        allowOutsideClick: false
+                    }).then(result => {
+                        if (result.value) {
+                            data_mesin_otm(this);
+                    }})  
+                }
+            })
+    }})  
+}
