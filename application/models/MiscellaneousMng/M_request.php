@@ -86,7 +86,7 @@ class M_request extends CI_Model
     public function getItem($term,$subinv, $lokator){
       $sql = "SELECT msib.INVENTORY_ITEM_ID, msib.SEGMENT1, msib.DESCRIPTION,
                     khs_inv_qty_oh (msib.organization_id, msib.inventory_item_id, msi.secondary_inventory_name, mil.inventory_location_id, NULL) onhand,
-                    msib.primary_uom_code, msib.secondary_uom_code
+                    msib.primary_uom_code, msib.secondary_uom_code,msib.SERIAL_NUMBER_CONTROL_CODE
               FROM mtl_system_items_b msib,
                     mtl_secondary_inventories msi,
                     mtl_item_locations mil

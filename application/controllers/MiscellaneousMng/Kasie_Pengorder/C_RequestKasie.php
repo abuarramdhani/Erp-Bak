@@ -168,7 +168,7 @@ class C_RequestKasie extends CI_Controller
 		$lok 	= $this->input->post('lok',TRUE);
 		$term 	= strtoupper($term);
 		$data 	= $this->M_request->getItem("AND msib.segment1 = '$term'", $sub, $lok);
-		$hasil 	= array($data[0]['DESCRIPTION'], $data[0]['ONHAND'], $data[0]['PRIMARY_UOM_CODE'], $data[0]['SECONDARY_UOM_CODE'], $data[0]['INVENTORY_ITEM_ID']);
+		$hasil 	= array($data[0]['DESCRIPTION'], $data[0]['ONHAND'], $data[0]['PRIMARY_UOM_CODE'], $data[0]['SECONDARY_UOM_CODE'], $data[0]['INVENTORY_ITEM_ID'], $data[0]['SERIAL_NUMBER_CONTROL_CODE']);
 		// $hasil  = array($hasil, $hasil);
 		echo json_encode($hasil);
 	}
