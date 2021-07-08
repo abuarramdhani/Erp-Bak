@@ -257,7 +257,7 @@
                                             <label>Mesin Yang Digunakan</label>
                                         </div>
                                         <div class="col-md-7">
-                                            <select name="mesin" class="form-control select2 getmesintm" style="width:100%"  data-placeholder="pilih mesin yang digunakan" required></select>
+                                            <select name="mesin" class="form-control select2 getmesintm" style="width:100%"  data-placeholder="pilih mesin yang digunakan" ></select>
                                         </div>
                                     </div>
                                 </div>
