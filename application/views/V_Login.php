@@ -105,6 +105,13 @@ $diff = ($now - $start) / (60 * 60 * 24);
                         '21.VaksinProkes.jpg',
                         '22.TujuanVaksin.jpg',
                         '23.VaksinAmanHalal.jpg'
+                      ),
+                      2 => array(
+                        '19.FaktaCovid.jpg',
+                        '20.KipiVaksin.jpg',
+                        '21.VaksinProkes.jpg',
+                        '22.TujuanVaksin.jpg',
+                        '23.VaksinAmanHalal.jpg'
                       )
                     );
 
