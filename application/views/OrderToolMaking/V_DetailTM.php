@@ -12,13 +12,13 @@
 if ($val['ket'] == 'Baru') { // view tabel baru
     $modifrekon = 'display:none'; // style inputan khusus modifikasi dan rekondisi
     $baru = ''; // style inputan khusus baru
-    $height = $val['revisi'] == 1 ? 1500 : 1200; // tinggi modal berdasarkan data tersebut sudah accept / belum (revisi 1 = belum accept, jadi masih bisa di revisi)
+    $height = $val['revisi'] == 1 ? 2000 : 1600; // tinggi modal berdasarkan data tersebut sudah accept / belum (revisi 1 = belum accept, jadi masih bisa di revisi)
     $noalat = ''; // style inputan no alat 
     // $height = 1630;
 }else {
     $modifrekon = '';
     $baru = 'display:none';
-    $height = $val['revisi'] == 1 ? 1100 : 1000;
+    $height = $val['revisi'] == 1 ? 1500 : 1300;
     $noalat = 'readonly';
     // $height = 1270;
 }
@@ -133,17 +133,20 @@ $revisi = $val['revisi'] == 1 ? '' : 'display:none;'; // style button revisi
             <span style="color:#3A4C52;">UNIT</span> <br><span style="color:#3A4C52;font-weight:bold"><?= $val['unit'] ?></span>
         </div>
         <div class="col-md-12"><br>
-            <span style="color:#3A4C52;">GAMBAR KERJA </span>
+            <span style="color:#3A4C52;">GAMBAR PRODUK </span>
             <br>
             <span style="color:#3A4C52">
-                <?php $filename = "assets/upload/OrderToolMaking/Gambar_kerja/".$val['folder_gamker']."/".$val['gamker']."";
-                    if (file_exists($filename)) {?>
-                        <a href="<?php echo base_url($filename)?>" target="_blank">
-                            <img style="max-width: 300px;max-height: 300px" src="<?php echo base_url($filename)?>">
-                        </a>
-                        <br><span style="color:#3A4C52;font-size:11px">*Klik gambar untuk membuka di Tab baru</span>
-                <?php }else {
-                    echo '<span style="font-size:12px">Gambar Kerja Tidak Ditemukan...</span>';
+                <?php $gb = explode(';', $val['gamker']);
+                for ($i=0; $i < count($val['folder_gamker']) ; $i++) { 
+                    $filename = "assets/upload/OrderToolMaking/Gambar_kerja/".$val['folder_gamker'][$i]."/".$gb[$i]."";
+                        if (file_exists($filename)) {?>
+                            <a href="<?php echo base_url($filename)?>" target="_blank">
+                                <img style="max-width: 250px;max-height: 250px" src="<?php echo base_url($filename)?>">
+                            </a>
+                            <br><span style="color:#3A4C52;font-size:11px">*Klik gambar untuk membuka di Tab baru</span>
+                    <?php }else {
+                        echo '<span style="font-size:12px">Gambar Produk Tidak Ditemukan...</span>';
+                    }
                 }?>
             </span>
         </div>
@@ -154,7 +157,7 @@ $revisi = $val['revisi'] == 1 ? '' : 'display:none;'; // style button revisi
                 <?php $filename = "assets/upload/OrderToolMaking/Skets/".$val['folder_skets']."/".$val['skets']."";
                     if (file_exists($filename)) {?>
                         <a href="<?php echo base_url($filename)?>" target="_blank">
-                            <img style="max-width: 300px;max-height: 300px" src="<?php echo base_url($filename)?>">
+                            <img style="max-width: 250px;max-height: 250px" src="<?php echo base_url($filename)?>">
                         </a>
                         <br><span style="color:#3A4C52;font-size:11px">*Klik gambar untuk membuka di Tab baru</span>
                 <?php }else {
@@ -275,7 +278,7 @@ $revisi = $val['revisi'] == 1 ? '' : 'display:none;'; // style button revisi
         </div>
         <div class="col-md-12"><br>
             <div class="col-md-3">
-                Poin Yang Diproses :
+                Proses :
             </div>
             <div class="col-md-9">
                 <input readonly class="form-control" value="<?= $val['poin'] ?>">
@@ -364,7 +367,7 @@ $revisi = $val['revisi'] == 1 ? '' : 'display:none;'; // style button revisi
                 Alasan Modifikasi :
             </div>
             <div class="col-md-9">
-                <input readonly class="form-control" value="<?php echo $val['ket'] != 'Baru' ? $val['alasan'] : ''; ?>">
+                <textarea disabled style="width:500px"><?php echo $val['ket'] != 'Baru' ? $val['alasan'] : ''; ?></textarea>
             </div>
         </div>
         <div class="col-md-12"><br>
@@ -372,7 +375,15 @@ $revisi = $val['revisi'] == 1 ? '' : 'display:none;'; // style button revisi
                 Referensi / Datum Alat Bantu :
             </div>
             <div class="col-md-9">
-                <input readonly class="form-control" value="<?= $val['referensi'] ?>">
+                <textarea disabled style="width:500px"><?= $val['referensi'] ?></textarea>
+            </div>
+        </div>
+        <div class="col-md-12"><br>
+            <div class="col-md-3">
+                Assign Desainer :
+            </div>
+            <div class="col-md-9">
+                <input readonly class="form-control" value="<?= $val['assign_desainer'] ?>">
             </div>
         </div>
         <div class="col-md-12" style="<?= $revisi?>"><br>

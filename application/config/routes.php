@@ -5561,6 +5561,8 @@ $route['OrderToolMakingTM/MonitoringOrder']					= 'OrderToolMaking/KasiePPCTM/C_
 $route['OrderToolMakingTM/MonitoringOrder/(:any)']			= 'OrderToolMaking/KasiePPCTM/C_MonitoringOrder/$1';
 $route['OrderToolMakingTM/MonitoringOrder/(:any)/(:any)'] = 'OrderToolMaking/KasiePPCTM/C_MonitoringOrder/$1/$2';
 $route['OrderToolMakingTM/MonitoringOrder/(:any)/(:any)/(:any)'] = 'OrderToolMaking/KasiePPCTM/C_MonitoringOrder/$1/$2/$3';
+$route['OrderToolMakingTM/MasterData']					= 'OrderToolMaking/KasiePPCTM/C_MasterData';
+$route['OrderToolMakingTM/MasterData/(:any)']			= 'OrderToolMaking/KasiePPCTM/C_MasterData/$1';
 
 $route['OrderToolMakingAssTM'] 						= 'OrderToolMaking/AssKaNitToolMaking/C_Index';
 $route['OrderToolMakingAssTM/MonitoringOrder']		= 'OrderToolMaking/AssKaNitToolMaking/C_MonitoringOrder';
