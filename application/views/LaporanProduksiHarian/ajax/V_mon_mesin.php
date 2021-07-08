@@ -17,9 +17,10 @@
         <td class="bg-primary" style="width:130px">Operator</td>
         <td style="width:100px">Kode Part</td>
         <td style="width:270px">Nama Part</td>
-        <td style="width:200px">Alat Bantu</td>
+        <td style="width:200px">Alat Bantu (Dies)</td>
         <td style="width:130px">Kode Mesin</td>
         <td style="width:100px">Wkt. Mesin (Jam)</td>
+        <td style="width:100px">Tonase</td>
         <td style="width:100px">Kode Proses</td>
         <td style="width:100px">Nama Proses</td>
         <td style="width:100px">Target PPIC</td>
@@ -55,6 +56,7 @@
           </td>
           <td><?php echo str_replace(' ','',$value['kode_mesin']) ?></td>
           <td><?php echo $value['waktu_mesin'] ?></td>
+          <td><?php echo $value['tonase'] ?></td>
           <td>
             <?php echo $value['kode_proses'] ?>
           </td>

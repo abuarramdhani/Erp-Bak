@@ -313,6 +313,63 @@ class M_master extends CI_Model
 			return $response;
 	}
 
+	public function selectAB($data)
+	{
+		$explode = strtoupper($data['search']['value']);
+			$res = $this->db
+					->query(
+							"SELECT kdav.*
+							FROM
+									(
+									SELECT
+													skdav.*,
+													ROW_NUMBER () OVER (ORDER BY id DESC) as pagination
+											FROM
+													(
+														SELECT mfo.*
+														FROM
+																(SELECT * FROM lph.lph_alat_bantu) mfo
+														WHERE
+																	(
+																		fs_no_ab LIKE '%{$explode}%'
+																		OR fs_proses LIKE '%{$explode}%'
+																	)
+													) skdav
+
+									) kdav
+							WHERE
+									pagination BETWEEN {$data['pagination']['from']} AND {$data['pagination']['to']}"
+					)->result_array();
+
+			return $res;
+	}
+
+	public function countAllAB()
+	{
+		return $this->db->query(
+			"SELECT
+					COUNT(*) AS \"count\"
+			FROM
+			(SELECT * FROM lph.lph_alat_bantu) lph"
+			)->row_array();
+	}
+
+	public function countFilteredAB($data)
+	{
+		$explode = strtoupper($data['search']['value']);
+		return $this->db->query(
+			"SELECT
+						COUNT(*) AS \"count\"
+					FROM
+					(SELECT * FROM lph.lph_alat_bantu) lph
+					WHERE
+					(
+						fs_no_ab LIKE '%{$explode}%'
+						OR fs_proses LIKE '%{$explode}%'
+					)"
+			)->row_array();
+	}
+
 // 	select msib.segment1
 // ,msib.description
 // ,grvr.PREFERENCE
