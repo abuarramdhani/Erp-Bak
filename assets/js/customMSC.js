@@ -504,7 +504,7 @@ $(document).on("change", "#noseri", function () {
 
 $(document).on("change", '.order_misc', function () {
         var order = $('input[name="order"]:checked').val();  
-        console.log(order); 
+        // console.log(order); 
         if (order == 'ISSUE') {
                 $('#noseri').removeClass('selectmanual').addClass('selectnoseri');
                 $(".selectnoseri").select2({
@@ -539,19 +539,15 @@ $(document).on("change", '.order_misc', function () {
                         width: "element",
                         tags: true,
                         id: function (object) {
-                        return object.text;
+                                return object.text;
                         },
                         createSearchChoice: function (term, data) {
-                        if (
-                        $(data).filter(function () {
-                        return this.text.localeCompare(term) === 0;
-                        }).length === 0
-                        ) {
-                        return {
-                        id: term,
-                        text: term,
-                        };
-                        }
+                                if ($(data).filter(function () {
+                                                return this.text.localeCompare(term) === 0;
+                                        }).length === 0
+                                ) {
+                                        return {id: term,text: term,};
+                                }
                         },
                 });
         }
@@ -622,6 +618,60 @@ function getdescreq(th) {
                                 // $('#sec_uom').css('display', 'none');
                                 // $('#sec_uom').html('<input name="second_uom" id="second_uom" class="form-control" value="" readonly>');
                         }
+
+                        if (result[5] == 5) { // item serial
+                                $('#noseri').attr('disabled', false);
+                                var order = $('input[name="order"]:checked').val();  
+                                // console.log(order); 
+                                if (order == 'ISSUE') {
+                                        $('#noseri').removeClass('selectmanual').addClass('selectnoseri');
+                                        $(".selectnoseri").select2({
+                                                allowClear: true,
+                                                minimumInputLength: 0,
+                                                ajax: {
+                                                        url: baseurl + "MiscellaneousKasie/Request/getNoSerial",
+                                                        dataType: 'json',
+                                                        type: "GET",
+                                                        data: function (params) {
+                                                                var queryParameters = {
+                                                                        term: params.term,
+                                                                        subinv : $('#subinvmis').val(),
+                                                                        item : $('#item').val()
+                                                                }
+                                                                return queryParameters;
+                                                        },
+                                                        processResults: function (data) {
+                                                                return {
+                                                                        results: $.map(data, function (obj) {
+                                                                                return {id:obj.SERIAL_NUMBER, text:obj.SERIAL_NUMBER};
+                                                                        })
+                                                                };
+                                                        }
+                                                }
+                                        });
+                                }else{
+                                        $('#noseri').removeClass('selectnoseri').addClass('selectmanual');
+                                        $(".selectmanual").select2({
+                                                allowClear: true,
+                                                width: "element",
+                                                tags: true,
+                                                id: function (object) {
+                                                        return object.text;
+                                                },
+                                                createSearchChoice: function (term, data) {
+                                                        if ($(data).filter(function () {
+                                                                        return this.text.localeCompare(term) === 0;
+                                                                }).length === 0
+                                                        ) {
+                                                                return {id: term,text: term,};
+                                                        }
+                                                },
+                                        });
+                                }
+                        }else{ //bukan item serial
+                                $('#noseri').attr('disabled', true);
+                        }
+
 		}
 	})
 }
