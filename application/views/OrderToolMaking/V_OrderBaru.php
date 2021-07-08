@@ -16,7 +16,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="box box-solid">
-                        <form method="post" id="orderbaru_otm" enctype="multipart/form-data" action="<?php echo base_url('OrderToolMaking/MonitoringOrder/saveorder')?>">
+                        <form method="post" id="orderbaru_otm" enctype="multipart/form-data" target="_blank" action="<?php echo base_url('OrderToolMaking/MonitoringOrder/saveorder')?>">
                             <div class="box-body">
                                 <h2 class="text-center">ORDER BARU</h2>
                                 <div class="panel-body">
@@ -257,7 +257,7 @@
                                             <label>Mesin Yang Digunakan</label>
                                         </div>
                                         <div class="col-md-7">
-                                            <select name="mesin" class="form-control select2 getmesintm" style="width:100%"  data-placeholder="pilih mesin yang digunakan" required></select>
+                                            <select name="mesin" class="form-control select2 getmesintm" style="width:100%"  data-placeholder="pilih mesin yang digunakan" ></select>
                                         </div>
                                     </div>
                                 </div>
