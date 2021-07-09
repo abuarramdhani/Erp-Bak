@@ -14,10 +14,10 @@ class M_revisimasteritem extends CI_Model
 
 	function runUpdate() {
         $nomorInduk = $this->session->user;
-		// $sql = "BEGIN KHSAPIMASTERITEM.update_master_item('$nomorInduk'); END;";
-		echo "<pre>";
-		print_r('cek');
-		exit();			
+		$sql = "BEGIN KHSAPIMASTERITEM.update_master_item('$nomorInduk'); END;";
+		// echo "<pre>";
+		// print_r('cek');
+		// exit();			
 		$query = $this->oracle->query($sql);
 		// return $query->result_array();
 		// return $sql;
