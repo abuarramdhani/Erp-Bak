@@ -17,6 +17,13 @@
                 <li class="nav-item" style="background:#e7e7e7">
                   <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false">ASSET </span></a>
                 </li>
+                <?php
+                $adm_design = ['a'=>'T0012', 'b' => 'B0444', 'c' => 'P0258', 'd' => 'P0071', 'e' => 'K2070'];
+                 if (!empty(array_search($this->session->user, $adm_design))) { ?>
+                   <li class="nav-item" style="background:#e7e7e7">
+                     <a class="nav-link" id="pills-adm-design-tab" data-toggle="pill" href="#pills-adm-design" role="tab" aria-controls="pills-adm-design" aria-selected="false">ADMINISTRASI DESAIN </span></a>
+                   </li>
+                <?php } ?>
                 <li></li>
               </ul>
             </div>
@@ -350,8 +357,109 @@
                     </div>
                   </div>
                 </form>
-
               </div>
+
+              <?php
+               if (!empty(array_search($this->session->user, $adm_design))) { ?>
+                 <div class="tab-pane fade" id="pills-adm-design" role="tabpanel" aria-labelledby="pills-contact-tab">
+                   <form action="<?php echo base_url('PengirimanBarangInternal/Input/SaveNon') ?>" method="post">
+                     <div class="col-md-2"></div>
+                     <div class="col-md-8 mt-4">
+                       <br>
+                       <div class="form-group">
+                         <label for="seksi_pengirim">Tujuan</label>
+                         <div class="row">
+                           <div class="col-md-12">
+                             <select class="form-control select2 desc_2_adm" name="tujuan" style="width:100%" required>
+                               <option value="">Select...</option>
+                               <option value="PUSAT">PUSAT</option>
+                               <option value="MLATI">MLATI</option>
+                               <option value="TUKSONO">TUKSONO</option>
+                             </select>
+                           </div>
+                         </div>
+                       </div>
+                       <div class="form-group">
+                         <label for="seksi_pengirim">Seksi Pengirim</label>
+                         <div class="row">
+                           <div class="col-md-4">
+                             <input type="text" class="form-control" name="nama_pengirim" value="<?php echo $this->session->employee ?>" readonly>
+                           </div>
+                           <div class="col-md-8">
+                             <input type="text" class="form-control" id="seksi_pengirim_adm" name="seksi_pengirim" value="" readonly>
+                           </div>
+                         </div>
+                       </div>
+                       <div class="form-group">
+                         <label for="tujuan">Seksi Tujuan</label>
+                         <div class="form-group">
+                           <div class="row">
+                             <div class="col-md-4">
+                               <select class="form-control select2PBI" style="width:100%" id="employee_adm" onchange="adm_nama()" name="employee_seksi_tujuan" required></select>
+                             </div>
+                             <div class="col-md-8">
+                               <input type="text" class="form-control" id="seksi_tujuan_adm" name="seksi_tujuan" value="" readonly>
+                             </div>
+                           </div>
+                         </div>
+                       </div>
+                       <div class="form-group">
+                         <label for="tujuan">Keterangan</label>
+                         <div class="form-group">
+                           <div class="row">
+                             <div class="col-md-12">
+                               <input type="text" class="form-control" id="keterangan_adm" name="keterangan" value="" autocomplete="off" required>
+                             </div>
+                           </div>
+                         </div>
+                       </div>
+                     </div>
+                     <div class="col-md-2"></div>
+                     <div class="col-md-12 mt-4">
+                       <hr>
+                     </div>
+                     <div class="col-lg-12 mt-4">
+                       <div class="table-responsive">
+                         <div class="row" style="margin: 1px;">
+                           <div class="panel-body">
+                             <table class="table table-bordered cektable_adm">
+                               <thead class="bg-success">
+                                 <tr>
+                                   <th class="text-center" style="width:35px; !important">Line</th>
+                                   <th class="text-center" style="width:210px; !important">Item Code</th>
+                                   <th class="text-center" style="width:300px;">Description</th>
+                                   <th class="text-center" style="width:120px;">Quantity</th>
+                                   <th class="text-center" style="width:70px;">UOM</th>
+                                   <th class="text-center" style="width:110px;">Item Type</th>
+                                   <th class="text-center" style="width:50px;">Add/Min</th>
+                                 </tr>
+                               </thead>
+                               <tbody id="adm_tambahisi">
+                                 <tr>
+                                   <td class="text-center"><input type="text" class="form-control" name="line_number[]" value="1" readonly></td>
+                                   <td class="text-center"><select class="form-control item_code_adm" name="item_code[]" style="text-transform:uppercase !important;width:210px !important;" required>
+                                     <option selected="selected"></option>
+                                   </select></td>
+                                   <td class="text-center"><input type="text" class="form-control description_adm" id="" name="description[]" readonly></td>
+                                   <td class="text-center"><input type="number" class="form-control quantity_adm" id="" name="quantity[]" autocomplete="off" required></td>
+                                   <td class="text-center"><input type="text" class="form-control uom_adm" id="" name="uom[]" readonly></td>
+                                   <td class="text-center"><input type="text" class="form-control itemtype_adm" id="" name="item_type[]" readonly></td>
+                                   <td class="text-center"><a class="btn btn-default btn-sm" onclick="btnPlusPBI_adm()"><i class="fa fa-plus"></i></a></td>
+                                 </tr>
+                               </tbody>
+                             </table>
+                           </div>
+                           <div class="panel-body pbi_check_desc_2_adm">
+                             <input type="hidden" name="type" value="2">
+                             <button type="submit" style="float:right !important;font-weight:bold" class="btn btn-success" name="button"><i class="fa fa-file"></i> Save</button>
+                           </div>
+                         </div>
+                       </div>
+                     </div>
+                   </form>
+                 </div>
+              <?php } ?>
+
             </div>
           </div>
         </div>
