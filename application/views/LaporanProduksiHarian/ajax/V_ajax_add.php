@@ -379,7 +379,7 @@ function lph_add_row_hasil_produksi() {
 
     $('.lphgetMesin').select2({
       minimumInputLength: 2,
-      placeholder: "Employee",
+      placeholder: "Mesin..",
       ajax: {
         url: baseurl + "LaporanProduksiHarian/actiontwo/getMesin",
         dataType: "JSON",

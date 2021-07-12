@@ -97,7 +97,67 @@ function lph_empty_form() {
 }
 
 $(document).ready(function () {
-  $('.tbl_lph_mon_mesin').dataTable()
+  $('.tbl_lph_alat_bantu').DataTable({
+     // dom: 'rtp',
+     ajax: {
+       data: (d) => $.extend({}, d, {
+         // org: null,    // optional
+         // id_plan: null // optional
+       }),
+       url: baseurl + "LaporanProduksiHarian/actiontwo/getalatbantu",
+       type: 'POST',
+     },
+     language:{
+       processing: "<div class='overlay custom-loader-background'><i class='fa fa-cog fa-spin custom-loader-color' style='color:#fff'></i></div>"
+     },
+     ordering: false,
+     pageLength: 10,
+     pagingType: 'first_last_numbers',
+     processing: true,
+     serverSide: true,
+     preDrawCallback: function(settings) {
+          if ($.fn.DataTable.isDataTable('.tbl_lph_alat_bantu')) {
+              var dt = $('.tbl_lph_alat_bantu').DataTable();
+
+              //Abort previous ajax request if it is still in process.
+              var settings = dt.settings();
+              if (settings[0].jqXHR) {
+                  settings[0].jqXHR.abort();
+              }
+          }
+      }
+  });
+
+  $('.tbl_lph_mon_mesin').dataTable({
+    // dom: 'rtp',
+    ajax: {
+      data: (d) => $.extend({}, d, {
+        // org: null,    // optional
+        // id_plan: null // optional
+      }),
+      url: baseurl + "LaporanProduksiHarian/actiontwo/getdatamesin",
+      type: 'POST',
+    },
+    language:{
+      processing: "<div class='overlay custom-loader-background'><i class='fa fa-cog fa-spin custom-loader-color' style='color:#fff'></i></div>"
+    },
+    ordering: false,
+    pageLength: 10,
+    pagingType: 'first_last_numbers',
+    processing: true,
+    serverSide: true,
+    preDrawCallback: function(settings) {
+         if ($.fn.DataTable.isDataTable('.tbl_lph_mon_mesin')) {
+             var dt = $('.tbl_lph_mon_mesin').DataTable();
+
+             //Abort previous ajax request if it is still in process.
+             var settings = dt.settings();
+             if (settings[0].jqXHR) {
+                 settings[0].jqXHR.abort();
+             }
+         }
+    }
+  })
   $('.lphgetEmployee').select2({
     minimumInputLength: 2,
     placeholder: "Employee",
@@ -335,8 +395,76 @@ const lphgetmon = () => {
 
 $('#form_lph_add_mesin').on('submit', function(e) {
   e.preventDefault()
-  swaLPHLarge('info', 'Wait fitur blm siap');
+  $.ajax({
+  url: baseurl + 'LaporanProduksiHarian/actiontwo/save_mesin',
+  type: 'POST',
+  data : new FormData($(this).get(0)),
+  contentType: false,
+  cache: false,
+  // async:false,
+  processData: false,
+  dataType: "JSON",
+  beforeSend: function() {
+    // $('#modalUP2LCompleteJob').modal('hide');
+    swaLPHLoading('Loading...')
+  },
+  success: function(result) {
+    if (result == 'done') {
+      toastLPH('success', `Data Berhasil Tersimpan`);
+      $('.tbl_lph_mon_mesin').DataTable().ajax.reload();
+      $('#form_lph_add_mesin')[0].reset();
+    }else {
+      toastLPH('warning', 'Terjadi Kesalahan Saat Menginput Data! Harap Coba lagi');
+    }
+  },
+  error: function(XMLHttpRequest, textStatus, errorThrown) {
+  swaLPHLarge('error', XMLHttpRequest);
+   console.error();
+  }
+ })
 })
+
+function del_lph_mesin(id) {
+  Swal.fire({
+    title: 'Are you sure?',
+    text: "You won't be able to revert this!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, delete it!'
+  }).then((result) => {
+    if (result.value) {
+      $.ajax({
+      url: baseurl + 'LaporanProduksiHarian/actiontwo/del_mesin',
+      type: 'POST',
+      data : {
+        id : id
+      },
+      cache: false,
+      // async:false,
+      dataType: "JSON",
+      beforeSend: function() {
+        // $('#modalUP2LCompleteJob').modal('hide');
+        swaLPHLoading('Loading...')
+      },
+      success: function(result) {
+        if (result == 'done') {
+          toastLPH('success', `Berhasil Dihapus`);
+          $('.tbl_lph_mon_mesin').DataTable().ajax.reload();
+        }else {
+          toastLPH('warning', 'Terjadi Kesalahan Saat Menghapus Data! Harap Coba lagi');
+        }
+      },
+      error: function(XMLHttpRequest, textStatus, errorThrown) {
+      swaLPHLarge('error', XMLHttpRequest);
+       console.error();
+      }
+      })
+    }
+  })
+
+}
 
 function pemakaianjammesin() {
   $.ajax({
@@ -514,5 +642,83 @@ function fun_lphkodeproses(e) {
     t_pe = val[2];
     t_jam = 7;
   }
+
+}
+
+$('#form_lph_add_alat_bantu').on('submit', function(e) {
+  e.preventDefault();
+    $.ajax({
+    url: baseurl + 'LaporanProduksiHarian/actiontwo/save_alat_bantu',
+    type: 'POST',
+    data : new FormData($(this).get(0)),
+    contentType: false,
+    cache: false,
+    // async:false,
+    processData: false,
+    dataType: "JSON",
+    beforeSend: function() {
+      // $('#modalUP2LCompleteJob').modal('hide');
+      swaLPHLoading('Loading...')
+    },
+    success: function(result) {
+      if (result == 'done') {
+        toastLPH('success', `Data Berhasil Tersimpan`);
+        $('.tbl_lph_alat_bantu').DataTable().ajax.reload();
+        $('#form_lph_add_alat_bantu')[0].reset();
+      }else {
+        toastLPH('warning', 'Terjadi Kesalahan Saat Menginput Data! Harap Coba lagi');
+      }
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+    swaLPHLarge('error', XMLHttpRequest);
+     console.error();
+    }
+  })
+})
+
+function del_alat_bantu(id) {
+
+  Swal.fire({
+    title: 'Are you sure?',
+    text: "You won't be able to revert this!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, delete it!'
+  }).then((result) => {
+    if (result.value) {
+      $.ajax({
+      url: baseurl + 'LaporanProduksiHarian/actiontwo/del_alat_bantu',
+      type: 'POST',
+      data : {
+        id : id
+      },
+      cache: false,
+      // async:false,
+      dataType: "JSON",
+      beforeSend: function() {
+        // $('#modalUP2LCompleteJob').modal('hide');
+        swaLPHLoading('Loading...')
+      },
+      success: function(result) {
+        if (result == 'done') {
+          toastLPH('success', `Berhasil Dihapus`);
+          $('.tbl_lph_alat_bantu').DataTable().ajax.reload();
+        }else {
+          toastLPH('warning', 'Terjadi Kesalahan Saat Menghapus Data! Harap Coba lagi');
+        }
+      },
+      error: function(XMLHttpRequest, textStatus, errorThrown) {
+      swaLPHLarge('error', XMLHttpRequest);
+       console.error();
+      }
+      })
+    }
+  })
+
+}
+
+function laporanpemakaianalatbantu() {
 
 }

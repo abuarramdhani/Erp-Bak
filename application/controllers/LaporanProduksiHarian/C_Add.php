@@ -83,6 +83,51 @@ class C_Add extends CI_Controller
       $this->load->view('V_Footer', $data);
     }
 
+    public function getdatamesin($value='')
+    {
+      $post = $this->input->post();
+
+      foreach ($post['columns'] as $val) {
+        $post['search'][$val['data']]['value'] = $val['search']['value'];
+      }
+
+      $countall = $this->M_master->countAllMS()['count'];
+      $countfilter = $this->M_master->countFilteredMS($post)['count'];
+
+      $post['pagination']['from'] = $post['start'] + 1;
+      $post['pagination']['to'] = $post['start'] + $post['length'];
+
+      $msdata = $this->M_master->selectMS($post);
+
+      $data = [];
+      foreach ($msdata as $row) {
+        $sub_array = [];
+        $sub_array[] = '<center>'.$row['pagination'].'</center>';
+        $sub_array[] = '<center>
+                        <button style="margin-right:4px" type="button" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" onclick="del_lph_mesin('.$row['id_num'].')" title="Hapus Data"><span class="fa fa-trash"></span></button>
+                        <button style="margin-right:4px" type="button" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o"></span></button>
+                       </center>';
+        $sub_array[] = '<center>'.$row['fs_no_mesin'].'</center>';
+        $sub_array[] = '<center>'.$row['fs_nama_mesin'].'</center>';
+        $sub_array[] = '<center>'.$row['fn_tonase'].'</center>';
+
+        $data[] = $sub_array;
+      }
+
+      $output = [
+        'draw' => $post['draw'],
+        'recordsTotal' => $countall,
+        'recordsFiltered' => $countfilter,
+        'data' => $data,
+      ];
+
+      die($this->output
+              ->set_status_header(200)
+              ->set_content_type('application/json')
+              ->set_output(json_encode($output))
+              ->_display());
+    }
+
     public function getMesin($value='')
     {
       $term = strtoupper($this->input->post('term'));
@@ -92,6 +137,31 @@ class C_Add extends CI_Controller
       )")->result_array());
     }
 
+    public function save_mesin($value='')
+    {
+      $data = [
+        'fs_no_mesin' => $this->input->post('no_mesin'),
+        'fs_nama_mesin' => $this->input->post('nama_mesin'),
+        'fn_tonase' => $this->input->post('tonase'),
+      ];
+      $this->db->insert('lph.lph_mesin', $data);
+      if ($this->db->affected_rows()) {
+        echo json_encode('done');
+      }else {
+        echo json_encode(500);
+      }
+    }
+
+    public function del_mesin($value='')
+    {
+      $this->db->delete('lph.lph_mesin', ['id_num' => $this->input->post('id')]);
+      if ($this->db->affected_rows()) {
+        echo json_encode('done');
+      }else {
+        echo json_encode(500);
+      }
+    }
+
     public function monPemakaianJamMesin($value='')
     {
       $range_date = $this->input->post('tanggal');
@@ -99,8 +169,103 @@ class C_Add extends CI_Controller
       $shift = $this->input->post('shift');
       // echo "<pre>";print_r($range);
       // die;
-      $data['get'] = $this->db->query("SELECT * FROM lph.lph_master WHERE shift = '$shift' AND to_date(tanggal, 'dd-mm-yyyy') BETWEEN to_date('$range[0]', 'dd-mm-yyyy') AND to_date('$range[1]', 'dd-mm-yyyy') ORDER BY id")->result_array();
+      $data['get'] = $this->db->query("SELECT lm.*, COALESCE ((select lme.fn_tonase
+                         from lph.lph_mesin lme
+                         where lm.kode_mesin = lme.fs_no_mesin), NULL) tonase FROM lph.lph_master lm WHERE lm.shift = '$shift' AND to_date(lm.tanggal, 'dd-mm-yyyy') BETWEEN to_date('$range[0]', 'dd-mm-yyyy') AND to_date('$range[1]', 'dd-mm-yyyy') ORDER BY lm.id")->result_array();
       $this->load->view('LaporanProduksiHarian/ajax/V_mon_mesin', $data);
+    }
+
+    public function alatbantu($value='')
+    {
+      $this->checkSession();
+      $user_id = $this->session->userid;
+
+      $data['Menu'] = 'Dashboard Laporan Produksi Harian V.0.1';
+      $data['SubMenuOne'] = '';
+      $data['SubMenuTwo'] = '';
+
+      $data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+      $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+      $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
+      $data['shift'] = $this->M_master->getShift();
+
+      $this->load->view('V_Header', $data);
+      $this->load->view('V_Sidemenu', $data);
+      $this->load->view('LaporanProduksiHarian/V_Alatbantu', $data);
+      $this->load->view('V_Footer', $data);
+    }
+
+    public function getalatbantu($value='')
+    {
+      $post = $this->input->post();
+
+      foreach ($post['columns'] as $val) {
+        $post['search'][$val['data']]['value'] = $val['search']['value'];
+      }
+
+      $countall = $this->M_master->countAllAB()['count'];
+      $countfilter = $this->M_master->countFilteredAB($post)['count'];
+
+      $post['pagination']['from'] = $post['start'] + 1;
+      $post['pagination']['to'] = $post['start'] + $post['length'];
+
+      $abdata = $this->M_master->selectAB($post);
+
+      $data = [];
+      foreach ($abdata as $row) {
+        $sub_array = [];
+        $sub_array[] = '<center>'.$row['pagination'].'</center>';
+        $sub_array[] = '<center>
+                        <button style="margin-right:4px" type="button" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" onclick="del_alat_bantu('.$row['id'].')" title="Hapus Data"><span class="fa fa-trash"></span></button>
+                        <button style="margin-right:4px" type="button" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o"></span></button>
+                       </center>';
+        $sub_array[] = '<center>'.$row['fs_no_ab'].'</center>';
+        $sub_array[] = '<center>'.$row['fs_umur_pakai'].'</center>';
+        $sub_array[] = '<center>'.$row['fs_toleransi'].'</center>';
+        $sub_array[] = '<center>'.$row['fs_proses'].'</center>';
+        $sub_array[] = '<center>'.$row['fs_umur_pakai_lama'].'</center>';
+
+        $data[] = $sub_array;
+      }
+
+      $output = [
+        'draw' => $post['draw'],
+        'recordsTotal' => $countall,
+        'recordsFiltered' => $countfilter,
+        'data' => $data,
+      ];
+
+      die($this->output
+              ->set_status_header(200)
+              ->set_content_type('application/json')
+              ->set_output(json_encode($output))
+              ->_display());
+    }
+
+    public function save_alat_bantu($value='')
+    {
+      $data = [
+        'fs_no_ab' => $this->input->post('kode_alat_bantu'),
+        'fs_umur_pakai' => $this->input->post('umur_pakai'),
+        'fs_toleransi' => $this->input->post('toleransi'),
+        'fs_proses' => $this->input->post('proses')
+      ];
+      $this->db->insert('lph.lph_alat_bantu', $data);
+      if ($this->db->affected_rows()) {
+        echo json_encode('done');
+      }else {
+        echo json_encode(500);
+      }
+    }
+
+    public function del_alat_bantu($value='')
+    {
+      $this->db->delete('lph.lph_alat_bantu', ['id' => $this->input->post('id')]);
+      if ($this->db->affected_rows()) {
+        echo json_encode('done');
+      }else {
+        echo json_encode(500);
+      }
     }
 
 }

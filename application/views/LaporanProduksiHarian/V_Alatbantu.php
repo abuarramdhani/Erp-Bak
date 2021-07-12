@@ -34,9 +34,9 @@ vertical-align: middle;
                 <input type="hidden" id="mon_agt_2021" value="1">
                 <div class="nav-tabs-custom">
                   <ul class="nav nav-tabs pull-right">
-                    <li><a href="#lph-data-mesin" data-toggle="tab" onclick="pemakaianjammesin()">Pemakaian Jam Mesin</a></li>
-                    <li class="active"><a href="#lph-tambah-mesin" data-toggle="tab">Tambah Mesin</a></li>
-                    <li class="pull-left header"><b class="fa fa-cog"></b> Setting Mesin</li>
+                    <li><a href="#lph-data-alatbantu" data-toggle="tab" onclick="laporanpemakaianalatbantu()">Pemakaian Alat Bantu</a></li>
+                    <li class="active"><a href="#lph-tambah-mesin" data-toggle="tab">Tambah Alat Bantu</a></li>
+                    <li class="pull-left header"><b class="fa fa-cog"></b> Setting Alat Bantu</li>
                   </ul>
                   <div class="tab-content">
                     <div class="tab-pane active" id="lph-tambah-mesin">
@@ -45,19 +45,23 @@ vertical-align: middle;
 
                         </div>
                         <div class="col-md-6">
-                          <form class="" action="#" method="post" id="form_lph_add_mesin">
+                          <form class="" action="#" method="post" id="form_lph_add_alat_bantu">
                             <table style="width:100%" class="tbl_lph_mesin">
                               <tr>
-                                <td style="width:20%">No Mesin</td>
-                                <td> <input type="text" required class="form-control" placeholder="ex: PUN19" name="no_mesin" value=""> </td>
+                                <td style="width:25%">Kode Alat Bantu</td>
+                                <td> <input type="text" required class="form-control" placeholder="ex: AAUA43901" name="kode_alat_bantu" value=""> </td>
                               </tr>
                               <tr>
-                                <td>Nama Mesin</td>
-                                <td> <input type="text" required class="form-control" placeholder="ex: CHINFONG" name="nama_mesin" value=""> </td>
+                                <td>Umur pakai</td>
+                                <td> <input type="text" required class="form-control" placeholder="ex: 50000" name="umur_pakai" value=""> </td>
                               </tr>
                               <tr>
-                                <td>Tonase</td>
-                                <td> <input type="text" required class="form-control" placeholder="ex: 110" name="tonase" value=""> </td>
+                                <td>Toleransi</td>
+                                <td> <input type="text" required class="form-control" placeholder="ex: 500" name="toleransi" value=""> </td>
+                              </tr>
+                              <tr>
+                                <td>Proses</td>
+                                <td> <input type="text" required class="form-control" placeholder="ex: Trimming AFA00CA031" name="proses" value=""> </td>
                               </tr>
                             </table>
                             <br>
@@ -71,19 +75,20 @@ vertical-align: middle;
                         </div>
                       </div>
                       <br>
-                      <h4 class="text-bold"> <i class="fa fa-database"></i> Data Mesin</h4>
+                      <h4 class="text-bold"> <i class="fa fa-database"></i> Data Alat Bantu</h4>
                       <hr style="margin: 0 0 20px;">
                       <div class="row">
                         <div class="col-md-12">
                           <div class="table-responsive">
-                            <table class="table table-bordered tbl_lph_mon_mesin" style="width:100%;text-align:center">
+                            <table class="table table-bordered tbl_lph_alat_bantu" style="width:100%;text-align:center">
                               <thead class="bg-primary">
                                 <tr>
                                   <td style="width:30px">No</td>
                                   <td style="width:100px">Action</td>
-                                  <td>No Mesin</td>
-                                  <td>Nama Mesin</td>
-                                  <td>Tonase</td>
+                                  <td>Kode Alat Bantu</td>
+                                  <td>Umur pakai</td>
+                                  <td>Toleransi</td>
+                                  <td>Proses</td>
                                 </tr>
                               </thead>
                               <tbody>
@@ -95,7 +100,7 @@ vertical-align: middle;
                       </div>
                     </div>
 
-                    <div class="tab-pane" id="lph-data-mesin">
+                    <div class="tab-pane" id="lph-data-alatbantu">
                       <br>
                       <div class="row">
                         <div class="col-md-12">
@@ -108,7 +113,7 @@ vertical-align: middle;
                             <strong>Sekilas Info! </strong> Klik 2 kali jika hanya memilih 1 tanggal</strong>
                           </div>
                         </div>
-                        <form id="lph_search_rkh_mesin" action="index.html" method="post">
+                        <form id="lph_search_alat_bantu" action="index.html" method="post">
                           <div class="col-md-5">
                             <label for="">Filter By Date Range</label>
                             <div class="input-group">
@@ -134,7 +139,7 @@ vertical-align: middle;
                         </form>
                       </div>
                       <hr>
-                      <div class="area-pemakaian-jam-mesin">
+                      <div class="lph-data-alatbantu">
 
                       </div>
                     </div>

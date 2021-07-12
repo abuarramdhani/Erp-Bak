@@ -238,7 +238,11 @@
                         <option value="" selected></option>
                       </select>
                     </td>
-                    <td><input type="text" class="form-control"  name="kodemesin[]" value=""></td>
+                    <td>
+                      <select class="lphgetMesin" name="kodemesin[]" style="width:182px">
+                        <option value="" selected></option>
+                      </select>
+                    </td>
                     <td><input type="text" class="form-control waktu_mesin"  name="waktumesin[]" value=""></td>
                     <td>
                       <select class="lph_select2 lph_kode_proses" name="kodeproses[]" style="width:182px">
@@ -281,7 +285,7 @@
       </div>
 
         </div>
-      </div>waktu_mesin
+      </div>
     </div>
     <div class="col-md-12">
       <center> <button type="submit" class="btn btn-primary mb-4 mt-2" name="button" style="width:20%;font-weight:bold"> <i class="fa fa-save"></i> Save</button> </center>
@@ -365,7 +369,7 @@ function lph_add_row_hasil_produksi() {
 
     $('.lphgetMesin').select2({
       minimumInputLength: 2,
-      placeholder: "Employee",
+      placeholder: "Mesin..",
       ajax: {
         url: baseurl + "LaporanProduksiHarian/actiontwo/getMesin",
         dataType: "JSON",
@@ -651,6 +655,32 @@ function lph_add_row_hasil_produksi() {
         }
       }
     });
+
+    $('.lphgetMesin').select2({
+      minimumInputLength: 2,
+      placeholder: "Mesin..",
+      ajax: {
+        url: baseurl + "LaporanProduksiHarian/actiontwo/getMesin",
+        dataType: "JSON",
+        type: "POST",
+        data: function(params) {
+          return {
+            term: params.term
+          };
+        },
+        processResults: function(data) {
+          return {
+            results: $.map(data, function(obj) {
+              return {
+                id: obj.fs_no_mesin,
+                text: `${obj.fs_no_mesin} - ${obj.fs_nama_mesin}`
+              }
+            })
+          }
+        }
+      }
+    })
+
   })
 
   $('.lphgetEmployee_form').select2({

@@ -5,7 +5,7 @@ class M_master extends CI_Model
 	function __construct()
 	{
 		parent::__construct();
-	  $this->oracle = $this->load->database('oracle_dev',TRUE);
+	  $this->oracle = $this->load->database('oracle',TRUE);
 		$this->lantuma = $this->load->database('lantuma', TRUE);
 	}
 
@@ -89,6 +89,7 @@ class M_master extends CI_Model
 --                        ,ffb.FORMULA_VERS";
 
 			return $this->oracle->query($sql)->row_array();
+
 	}
 
 	public function get_target_pe($code)
@@ -311,6 +312,122 @@ class M_master extends CI_Model
 							1";
 			$response = $this->db->query($sql)->result_array();
 			return $response;
+	}
+
+	public function selectMS($data)
+	{
+		$explode = strtoupper($data['search']['value']);
+			$res = $this->db
+					->query(
+							"SELECT kdav.*
+							FROM
+									(
+									SELECT
+													skdav.*,
+													ROW_NUMBER () OVER (ORDER BY id_num DESC) as pagination
+											FROM
+													(
+														SELECT lpm.*
+														FROM
+																(SELECT * FROM lph.lph_mesin) lpm
+														WHERE
+																	(
+																		fs_no_mesin LIKE '%{$explode}%'
+																		OR fs_nama_mesin LIKE '%{$explode}%'
+																	)
+													) skdav
+
+									) kdav
+							WHERE
+									pagination BETWEEN {$data['pagination']['from']} AND {$data['pagination']['to']}"
+					)->result_array();
+
+			return $res;
+	}
+
+	public function countAllMS()
+	{
+		return $this->db->query(
+			"SELECT
+					COUNT(*) AS \"count\"
+			FROM
+			(SELECT * FROM lph.lph_mesin) lph"
+			)->row_array();
+	}
+
+	public function countFilteredMS($data)
+	{
+		$explode = strtoupper($data['search']['value']);
+		return $this->db->query(
+			"SELECT
+						COUNT(*) AS \"count\"
+					FROM
+					(SELECT * FROM lph.lph_mesin) lph
+					WHERE
+					(
+						fs_no_mesin LIKE '%{$explode}%'
+						OR fs_nama_mesin LIKE '%{$explode}%'
+					)"
+			)->row_array();
+	}
+
+	//end mesin
+
+	public function selectAB($data)
+	{
+		$explode = strtoupper($data['search']['value']);
+			$res = $this->db
+					->query(
+							"SELECT kdav.*
+							FROM
+									(
+									SELECT
+													skdav.*,
+													ROW_NUMBER () OVER (ORDER BY id DESC) as pagination
+											FROM
+													(
+														SELECT mfo.*
+														FROM
+																(SELECT * FROM lph.lph_alat_bantu) mfo
+														WHERE
+																	(
+																		fs_no_ab LIKE '%{$explode}%'
+																		OR fs_proses LIKE '%{$explode}%'
+																	)
+													) skdav
+
+									) kdav
+							WHERE
+									pagination BETWEEN {$data['pagination']['from']} AND {$data['pagination']['to']}"
+					)->result_array();
+
+			return $res;
+	}
+
+	public function countAllAB()
+	{
+		return $this->db->query(
+			"SELECT
+					COUNT(*) AS \"count\"
+			FROM
+			(SELECT * FROM lph.lph_alat_bantu) lph"
+			)->row_array();
+	}
+
+	public function countFilteredAB($data)
+	{
+		$explode = strtoupper($data['search']['value']);
+		return $this->db->query(
+			"SELECT
+						COUNT(*) AS \"count\"
+					FROM
+					(SELECT * FROM lph.lph_alat_bantu) lph
+					WHERE
+					(
+						fs_no_ab LIKE '%{$explode}%'
+						OR fs_proses LIKE '%{$explode}%'
+					)"
+			)->row_array();
 	}
 
 // 	select msib.segment1
