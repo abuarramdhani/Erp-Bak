@@ -5,7 +5,7 @@ class M_master extends CI_Model
 	function __construct()
 	{
 		parent::__construct();
-	  $this->oracle = $this->load->database('oracle_dev',TRUE);
+	  $this->oracle = $this->load->database('oracle',TRUE);
 		$this->lantuma = $this->load->database('lantuma', TRUE);
 	}
 
@@ -89,6 +89,7 @@ class M_master extends CI_Model
 --                        ,ffb.FORMULA_VERS";
 
 			return $this->oracle->query($sql)->row_array();
+
 	}
 
 	public function get_target_pe($code)
@@ -312,6 +313,65 @@ class M_master extends CI_Model
 			$response = $this->db->query($sql)->result_array();
 			return $response;
 	}
+
+	public function selectMS($data)
+	{
+		$explode = strtoupper($data['search']['value']);
+			$res = $this->db
+					->query(
+							"SELECT kdav.*
+							FROM
+									(
+									SELECT
+													skdav.*,
+													ROW_NUMBER () OVER (ORDER BY id_num DESC) as pagination
+											FROM
+													(
+														SELECT lpm.*
+														FROM
+																(SELECT * FROM lph.lph_mesin) lpm
+														WHERE
+																	(
+																		fs_no_mesin LIKE '%{$explode}%'
+																		OR fs_nama_mesin LIKE '%{$explode}%'
+																	)
+													) skdav
+
+									) kdav
+							WHERE
+									pagination BETWEEN {$data['pagination']['from']} AND {$data['pagination']['to']}"
+					)->result_array();
+
+			return $res;
+	}
+
+	public function countAllMS()
+	{
+		return $this->db->query(
+			"SELECT
+					COUNT(*) AS \"count\"
+			FROM
+			(SELECT * FROM lph.lph_mesin) lph"
+			)->row_array();
+	}
+
+	public function countFilteredMS($data)
+	{
+		$explode = strtoupper($data['search']['value']);
+		return $this->db->query(
+			"SELECT
+						COUNT(*) AS \"count\"
+					FROM
+					(SELECT * FROM lph.lph_mesin) lph
+					WHERE
+					(
+						fs_no_mesin LIKE '%{$explode}%'
+						OR fs_nama_mesin LIKE '%{$explode}%'
+					)"
+			)->row_array();
+	}
+
+	//end mesin
 
 	public function selectAB($data)
 	{

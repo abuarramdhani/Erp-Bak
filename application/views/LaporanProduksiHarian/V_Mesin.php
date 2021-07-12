@@ -80,20 +80,14 @@ vertical-align: middle;
                               <thead class="bg-primary">
                                 <tr>
                                   <td style="width:30px">No</td>
+                                  <td style="width:100px">Action</td>
                                   <td>No Mesin</td>
                                   <td>Nama Mesin</td>
                                   <td>Tonase</td>
                                 </tr>
                               </thead>
                               <tbody>
-                                <?php foreach ($mesin as $key => $value): ?>
-                                  <tr>
-                                    <td><?php echo $key+1 ?></td>
-                                    <td><?php echo $value['fs_no_mesin'] ?></td>
-                                    <td><?php echo $value['fs_nama_mesin'] ?></td>
-                                    <td><?php echo $value['fn_tonase'] ?></td>
-                                  </tr>
-                                <?php endforeach; ?>
+
                               </tbody>
                             </table>
                           </div>

@@ -100,11 +100,11 @@
       <button type="submit" class="btn btn-success pull-right lph_export_hasil_kerja ml-3" name="button"><i class="fa fa-file-excel-o"></i>  Report Hasil Kerja</button>
     </form>
 
-    <form class="" action="<?php echo base_url('LaporanProduksiHarian/action/report_jam_mesin') ?>" method="post" target="_blank">
+    <!-- <form class="" action="<?php echo base_url('LaporanProduksiHarian/action/report_jam_mesin') ?>" method="post" target="_blank">
       <input type="hidden" name="date" id="t21_date" value="">
       <input type="hidden" name="shift" id="t21_shift" value="">
       <button type="submit" class="btn btn-success pull-right lph_export_hasil_kerja" name="button"><i class="fa fa-file-excel-o"></i>  Report Jam Mesin</button>
-    </form>
+    </form> -->
     <!-- <button type="button" class="btn btn-success pull-right" name="button"> <i class="fa fa-file-excel-o"></i> Report Hasil Kerja</button> -->
   </div>
 </div>

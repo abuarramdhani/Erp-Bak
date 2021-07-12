@@ -83,6 +83,51 @@ class C_Add extends CI_Controller
       $this->load->view('V_Footer', $data);
     }
 
+    public function getdatamesin($value='')
+    {
+      $post = $this->input->post();
+
+      foreach ($post['columns'] as $val) {
+        $post['search'][$val['data']]['value'] = $val['search']['value'];
+      }
+
+      $countall = $this->M_master->countAllMS()['count'];
+      $countfilter = $this->M_master->countFilteredMS($post)['count'];
+
+      $post['pagination']['from'] = $post['start'] + 1;
+      $post['pagination']['to'] = $post['start'] + $post['length'];
+
+      $msdata = $this->M_master->selectMS($post);
+
+      $data = [];
+      foreach ($msdata as $row) {
+        $sub_array = [];
+        $sub_array[] = '<center>'.$row['pagination'].'</center>';
+        $sub_array[] = '<center>
+                        <button style="margin-right:4px" type="button" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" onclick="del_lph_mesin('.$row['id_num'].')" title="Hapus Data"><span class="fa fa-trash"></span></button>
+                        <button style="margin-right:4px" type="button" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o"></span></button>
+                       </center>';
+        $sub_array[] = '<center>'.$row['fs_no_mesin'].'</center>';
+        $sub_array[] = '<center>'.$row['fs_nama_mesin'].'</center>';
+        $sub_array[] = '<center>'.$row['fn_tonase'].'</center>';
+
+        $data[] = $sub_array;
+      }
+
+      $output = [
+        'draw' => $post['draw'],
+        'recordsTotal' => $countall,
+        'recordsFiltered' => $countfilter,
+        'data' => $data,
+      ];
+
+      die($this->output
+              ->set_status_header(200)
+              ->set_content_type('application/json')
+              ->set_output(json_encode($output))
+              ->_display());
+    }
+
     public function getMesin($value='')
     {
       $term = strtoupper($this->input->post('term'));
@@ -90,6 +135,31 @@ class C_Add extends CI_Controller
          fs_no_mesin like '%$term%'
          or fs_nama_mesin like '%$term%'
       )")->result_array());
+    }
+
+    public function save_mesin($value='')
+    {
+      $data = [
+        'fs_no_mesin' => $this->input->post('no_mesin'),
+        'fs_nama_mesin' => $this->input->post('nama_mesin'),
+        'fn_tonase' => $this->input->post('tonase'),
+      ];
+      $this->db->insert('lph.lph_mesin', $data);
+      if ($this->db->affected_rows()) {
+        echo json_encode('done');
+      }else {
+        echo json_encode(500);
+      }
+    }
+
+    public function del_mesin($value='')
+    {
+      $this->db->delete('lph.lph_mesin', ['id_num' => $this->input->post('id')]);
+      if ($this->db->affected_rows()) {
+        echo json_encode('done');
+      }else {
+        echo json_encode(500);
+      }
     }
 
     public function monPemakaianJamMesin($value='')
@@ -197,6 +267,5 @@ class C_Add extends CI_Controller
         echo json_encode(500);
       }
     }
-
 
 }

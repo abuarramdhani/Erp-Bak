@@ -461,19 +461,27 @@ class C_Import extends CI_Controller
           $std = $this->M_master->get_sarana($value['kode_komponen']);
           if (!empty($std)) {
             $data[$key]['STD_HANDLING'] = $std['STD_HANDLING'];
-            $data[$key]['DESCRIPTION'] = $std['DESCRIPTION'];
+            $desc = '';
+            if (!empty($std['DESCRIPTION'])) {
+              $desc_ = explode(' ', $std['DESCRIPTION']);
+              // echo "<pre>";
+              // print_r($desc_[2]);
+              $desc = $desc_[0].' '.$desc_[1].' '.$desc_[2].' '.$desc_[3];
+            }
+            $data[$key]['DESCRIPTION'] = $desc;
           }
 
-          $ambil_no_dies = $this->M_master->get_no_dies($value['kode_komponen'], strtoupper($value['proses']));
-          $no_dies = '';
-          if (!empty($ambil_no_dies['SEGMENT1'])) {
-            for ($i=1; $i <= 7; $i++) {
-              if (!empty($ambil_no_dies['AB'.$i])) {
-                $no_dies .= substr(explode(' - ', $ambil_no_dies['AB'.$i])[0], 3) .', ';
-              }
-            }
-            $data[$key]['NO_DIES'] = $no_dies;
-          }
+          // $ambil_no_dies = $this->M_master->get_no_dies($value['kode_komponen'], strtoupper($value['proses']));
+          // $no_dies = '';
+          // if (!empty($ambil_no_dies['SEGMENT1'])) {
+          //   for ($i=1; $i <= 7; $i++) {
+          //     if (!empty($ambil_no_dies['AB'.$i])) {
+          //       $no_dies .= substr(explode(' - ', $ambil_no_dies['AB'.$i])[0], 3) .', ';
+          //     }
+          //   }
+            $data[$key]['NO_DIES'] = ''; //$no_dies sementara
+          // }
+
         }
       }
       $pengelompokan = [];
