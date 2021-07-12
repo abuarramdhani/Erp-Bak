@@ -31,6 +31,16 @@
 		<div class="panel box-body" >
 
 		<div class="table-responsive">
+
+		<style type="text/css">
+			.dataTables_length,.dataTables_info {
+				float: left;
+				width: 33%;
+			}
+			.dataTables_filter, .dataTables_paginate {
+				float: right;
+			}
+		</style>
 		<table id="tableAndroidApproval" class="table table-striped table-bordered table-hover">
 			<thead>
 				<tr style="background-color:#367FA9; color:white ">
@@ -152,7 +162,16 @@
 </section>
 <script type="text/javascript">
 	$(document).ready(function(){
-		$("#tableAndroidApproval").DataTable();
+		$("#tableAndroidApproval").DataTable({
+			"lengthMenu": [
+	            [ 5, 10, 25, 50, -1 ],
+	            [ '5 rows', '10 rows', '25 rows', '50 rows', 'Show all' ]
+	        ],
+	        "dom" : 'Blfrtip',
+	        "buttons" : [
+	            'excel', 'pdf'
+	        ],			
+		});
 
 		$('.btn-hapus').click(function(e){
 			e.preventDefault();
