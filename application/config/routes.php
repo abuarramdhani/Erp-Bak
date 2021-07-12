@@ -5745,3 +5745,17 @@ $route['RevisiMasterItem/UpdatePerItem']			= 'RevisiMasterItem/C_RevisiPerItem';
 $route['RevisiMasterItem/UpdatePerItem/(:any)']			= 'RevisiMasterItem/C_RevisiPerItem/$1';
 $route['RevisiMasterItem/UpdatePerItem/(:any)/(:any)']			= 'RevisiMasterItem/C_RevisiPerItem/$1/$2';
 $route['RevisiMasterItem/UpdatePerItem/(:any)/(:any)/(:any)']			= 'RevisiMasterItem/C_RevisiPerItem/$1/$2/$3';
+
+//-------------------------------Laporan Produksi Harian Sheet Metal---------------------------------------------------//
+$route['LaporanProduksiHarian']	=	'LaporanProduksiHarian/C_Import';
+$route['LaporanProduksiHarian/import']  = 'LaporanProduksiHarian/C_Import/import';
+$route['LaporanProduksiHarian/add']  = 'LaporanProduksiHarian/C_Add';
+$route['LaporanProduksiHarian/mesin']  = 'LaporanProduksiHarian/C_Add/mesin';
+$route['LaporanProduksiHarian/alatbantu']  = 'LaporanProduksiHarian/C_Add/alatbantu';
+
+$route['LaporanProduksiHarian/action/(:any)']			= 'LaporanProduksiHarian/C_Import/$1';
+$route['LaporanProduksiHarian/action/(:any)/(:any)']	= 'LaporanProduksiHarian/C_Import/$1/$2';
+
+$route['LaporanProduksiHarian/actiontwo/(:any)']			= 'LaporanProduksiHarian/C_Add/$1';
+$route['LaporanProduksiHarian/actiontwo/(:any)/(:any)']	= 'LaporanProduksiHarian/C_Add/$1/$2';
+
