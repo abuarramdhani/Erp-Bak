@@ -9,6 +9,10 @@
 </head>
 
 <body  style="font-size: 9pt">
+	<?php foreach ($get_body as $key_master => $v1010): ?>
+		<?php if ($key_master > 0): ?>
+			<pagebreak />
+		<?php endif; ?>
 	<div style="position:absolute;right:-59mm;top:76mm">
 			<table style="width: 40%; border-collapse: collapse; border-spacing: 0;">
 				<tr>
@@ -101,7 +105,7 @@
 				<?php
 				// }
 				$i=1;
-				foreach ($get_body as $key => $rowCont) {?>
+				foreach ($v1010 as $key => $rowCont) {?>
 				<tr>
 					<td style="padding-bottom:1mm;text-align: center; vertical-align: top"><?php echo $i++; ?></td>
 					<td style="padding-bottom:1mm;padding-left: 1mm;text-align: center; vertical-align: top"><?php echo $rowCont['QTY_REQUESTED']; ?></td>
@@ -179,5 +183,6 @@
 		</div> -->
 	</div>
 	<div style="position:absolute;right: 12mm;bottom: 37mm"><?php echo $row['ASSIGN_DATE']?></div>
+	<?php endforeach; ?>
 </body>
 </html>

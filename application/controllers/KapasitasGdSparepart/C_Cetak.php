@@ -441,7 +441,19 @@ class C_Cetak extends CI_Controller
 			// echo "<pre>";
 			// print_r($data['get_header']);
 			// die;
-			$data['get_body'] = $this->M_cetak->bodySurat($id);
+
+			$body = $this->M_cetak->bodySurat($id);
+			foreach ($body as $key => $value) {
+				$tampung[] = $value;
+				if (sizeof($tampung) == 27 || $key == sizeof($body) - 1 ) {
+					$one_page_is[] = $tampung;
+					$tampung = [];
+				}
+			}
+			$data['get_body'] = $one_page_is;
+			// echo "<pre>";
+			// print_r($one_page_is);
+			// die;
 			$data['get_colly'] = $this->M_cetak->getTotalColly($id);
 			$data['total_colly'] = sizeof($data['get_colly']);
 			$data['get_berat'] = $this->M_cetak->getTotalBerat($id);
