@@ -206,7 +206,7 @@ class C_Monitoring extends CI_Controller
 	public function searchavpickmonitoring(){
 		$item 		= $this->input->post('item', TRUE);
 		$av_pick 	= $this->M_monitoring->get_available_picklist($item);
-		$avpick 	= !empty($av_pick) ? round($av_pick[0]['AV_PICK'],0) : '';
+		$avpick 	= !empty($av_pick) ? round($av_pick[0]['AV_PICK'],1) : '';
 		echo json_encode($avpick);
 	}
 
