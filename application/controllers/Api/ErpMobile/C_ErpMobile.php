@@ -85,23 +85,23 @@ class C_ErpMobile extends CI_Controller {
 		$message = '<p>Password ERP Anda Adalah <b>'.$pwd.'</b></p>';
 
 		$mail = new PHPMailer();
-		$mail->SMTPDebug = 0;
+		$mail->SMTPDebug = 2;
 		$mail->Debugoutput = 'html';
 
 		$mail->isSMTP();
-		$mail->Host = 'mail.quick.co.id';
-		$mail->Port = 465;
+		$mail->Host = 'smtp.gmail.com';
+		$mail->Port = 587;
 		$mail->SMTPAuth = true;
-		$mail->SMTPSecure = 'ssl';
-		$mail->SMTPOptions = array(
-			'ssl' => array(
-				'verify_peer' => false,
-				'verify_peer_name' => false,
-				'allow_self_signed' => true
-			)
-		);
-		$mail->Username = 'noreply@quick.co.id';
-		$mail->Password = 'FH6vzD9vq';
+		$mail->SMTPSecure = 'tls';
+		// $mail->SMTPOptions = array(
+		// 	'ssl' => array(
+		// 		'verify_peer' => false,
+		// 		'verify_peer_name' => false,
+		// 		'allow_self_signed' => true
+		// 	)
+		// );
+		$mail->Username = 'notification.hrd.khs1@gmail.com';
+		$mail->Password = 'tes123123123';
 		$mail->WordWrap = 50;
 		$mail->setFrom('noreply@quick.co.id', 'Quick ERP Mobile');
 		$mail->addAddress($email);
