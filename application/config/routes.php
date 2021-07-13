@@ -2341,6 +2341,9 @@ $route['MasterPresensi/DataPresensi/DetailPresensi'] = 'MasterPresensi/DataPrese
 $route['MasterPresensi/DataPresensi/DetailPresensi/(:any)'] = 'MasterPresensi/DataPresensi/C_DetailPresensi/$1';
 $route['MasterPresensi/DataPresensi/DetailPresensi/(:any)/(:any)'] = 'MasterPresensi/DataPresensi/C_DetailPresensi/$1/$2';
 
+$route['MasterPresensi/DataPresensi/PresensiHariIni'] = 'MasterPresensi/DataPresensi/C_PresensiHariIni';
+$route['MasterPresensi/DataPresensi/PresensiHariIni/(:any)'] = 'MasterPresensi/DataPresensi/C_PresensiHariIni/$1';
+$route['MasterPresensi/DataPresensi/PresensiHariIni/(:any)/(:any)'] = 'MasterPresensi/DataPresensi/C_PresensiHariIni/$1/$2';
 
 //-------------------------------------Hambatan Produksi-------------------------------------------------
 $route['ManufacturingOperation/ProductionObstacles/master'] = 'ManufacturingOperation/ProductionObstacles/MainMenu/C_Master';
