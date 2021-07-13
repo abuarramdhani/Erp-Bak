@@ -72,75 +72,77 @@
 							<div class="box-body">
 								<div class="row">
 									<div class="col-lg-12">
-										<style type="text/css">
-											.table-tidak-masuk td, .table-tidak-masuk th {
-												text-align: center;
-											}
-											.table-tidak-masuk td {
-												font-size: 30pt;
-											}
-											.table-tidak-masuk > thead > tr > th, .table-tidak-masuk > tbody > tr > td {
-												border-color: #FF420E;
-											}
-										</style>
-										<table class="table table-bordered table-hover table-tidak-masuk" id="tblMPRPresensiHariIniRekap" style="width: 100%;border: 1px solid #FF420E;">
-											<thead>
-												<tr>
-													<th colspan="12" style="background-color: #FF420E;color: white;">Data Kehadiran</th>
-													<?php $lebar_col = 100/12; ?>
-												</tr>
-												<tr>
-													<th colspan="3" style="background-color: #46211A;color: white;">All</th>
-													<th colspan="3" style="background-color: #A43820;color: white;">Pusat & Mlati</th>
-													<th colspan="3" style="background-color: #A43820;color: white;">Tuksono</th>
-													<th colspan="3" style="background-color: #A43820;color: white;">Cabang</th>
-												</tr>
-												<tr>
-													<th style="background-color: #46211A;color: white;width: <?=$lebar_col; ?>%">Masuk</th>
-													<th style="background-color: #46211A;color: white;width: <?=$lebar_col; ?>%">Tidak Masuk</th>
-													<th style="background-color: #46211A;color: white;width: <?=$lebar_col; ?>%">Total</th>
-													<th style="background-color: #A43820;color: white;width: <?=$lebar_col; ?>%">Masuk</th>
-													<th style="background-color: #A43820;color: white;width: <?=$lebar_col; ?>%">Tidak Masuk</th>
-													<th style="background-color: #A43820;color: white;width: <?=$lebar_col; ?>%">Total</th>
-													<th style="background-color: #A43820;color: white;width: <?=$lebar_col; ?>%">Masuk</th>
-													<th style="background-color: #A43820;color: white;width: <?=$lebar_col; ?>%">Tidak Masuk</th>
-													<th style="background-color: #A43820;color: white;width: <?=$lebar_col; ?>%">Total</th>
-													<th style="background-color: #A43820;color: white;width: <?=$lebar_col; ?>%">Masuk</th>
-													<th style="background-color: #A43820;color: white;width: <?=$lebar_col; ?>%">Tidak Masuk</th>
-													<th style="background-color: #A43820;color: white;width: <?=$lebar_col; ?>%">Total</th>
-												</tr>
-											</thead>
-											<tbody>
-												<tr>
-													<td data-params="all_masuk"><?=$all_masuk ?></td>
-													<td data-params="all_tidak"><?=$all_tidak ?></td>
-													<td data-params="all_total"><?=$all_total ?></td>
-													<td data-params="pst_masuk"><?=$pst_masuk ?></td>
-													<td data-params="pst_tidak"><?=$pst_tidak ?></td>
-													<td data-params="pst_total"><?=$pst_total ?></td>
-													<td data-params="tks_masuk"><?=$tks_masuk ?></td>
-													<td data-params="tks_tidak"><?=$tks_tidak ?></td>
-													<td data-params="tks_total"><?=$tks_total ?></td>
-													<td data-params="cbg_masuk"><?=$cbg_masuk ?></td>
-													<td data-params="cbg_tidak"><?=$cbg_tidak ?></td>
-													<td data-params="cbg_total"><?=$cbg_total ?></td>
-												</tr>
-												<tr>
-													<td data-params="all_masuk"><?=round(($all_masuk/$all_total)*100); ?>%</td>
-													<td data-params="all_tidak"><?=round(($all_tidak/$all_total)*100); ?>%</td>
-													<td data-params="all_total"><?=round(($all_total/$all_total)*100); ?>%</td>
-													<td data-params="pst_masuk"><?=round(($pst_masuk/$pst_total)*100); ?>%</td>
-													<td data-params="pst_tidak"><?=round(($pst_tidak/$pst_total)*100); ?>%</td>
-													<td data-params="pst_total"><?=round(($pst_total/$pst_total)*100); ?>%</td>
-													<td data-params="tks_masuk"><?=round(($tks_masuk/$tks_total)*100); ?>%</td>
-													<td data-params="tks_tidak"><?=round(($tks_tidak/$tks_total)*100); ?>%</td>
-													<td data-params="tks_total"><?=round(($tks_total/$tks_total)*100); ?>%</td>
-													<td data-params="cbg_masuk"><?=round(($cbg_masuk/$cbg_total)*100); ?>%</td>
-													<td data-params="cbg_tidak"><?=round(($cbg_tidak/$cbg_total)*100); ?>%</td>
-													<td data-params="cbg_total"><?=round(($cbg_total/$cbg_total)*100); ?>%</td>
-												</tr>
-											</tbody>
-										</table>
+										<div class="table-responsive">
+											<style type="text/css">
+												.table-tidak-masuk td, .table-tidak-masuk th {
+													text-align: center;
+												}
+												.table-tidak-masuk td {
+													font-size: 30pt;
+												}
+												.table-tidak-masuk > thead > tr > th, .table-tidak-masuk > tbody > tr > td {
+													border-color: #FF420E;
+												}
+											</style>
+											<table class="table table-bordered table-hover table-tidak-masuk" id="tblMPRPresensiHariIniRekap" style="width: 100%;border: 1px solid #FF420E;">
+												<thead>
+													<tr>
+														<th colspan="12" style="background-color: #FF420E;color: white;">Data Kehadiran</th>
+														<?php $lebar_col = 100/12; ?>
+													</tr>
+													<tr>
+														<th colspan="3" style="background-color: #46211A;color: white;">All</th>
+														<th colspan="3" style="background-color: #A43820;color: white;">Pusat & Mlati</th>
+														<th colspan="3" style="background-color: #A43820;color: white;">Tuksono</th>
+														<th colspan="3" style="background-color: #A43820;color: white;">Cabang</th>
+													</tr>
+													<tr>
+														<th style="background-color: #46211A;color: white;width: <?=$lebar_col; ?>%">Masuk</th>
+														<th style="background-color: #46211A;color: white;width: <?=$lebar_col; ?>%">Tidak Masuk</th>
+														<th style="background-color: #46211A;color: white;width: <?=$lebar_col; ?>%">Total</th>
+														<th style="background-color: #A43820;color: white;width: <?=$lebar_col; ?>%">Masuk</th>
+														<th style="background-color: #A43820;color: white;width: <?=$lebar_col; ?>%">Tidak Masuk</th>
+														<th style="background-color: #A43820;color: white;width: <?=$lebar_col; ?>%">Total</th>
+														<th style="background-color: #A43820;color: white;width: <?=$lebar_col; ?>%">Masuk</th>
+														<th style="background-color: #A43820;color: white;width: <?=$lebar_col; ?>%">Tidak Masuk</th>
+														<th style="background-color: #A43820;color: white;width: <?=$lebar_col; ?>%">Total</th>
+														<th style="background-color: #A43820;color: white;width: <?=$lebar_col; ?>%">Masuk</th>
+														<th style="background-color: #A43820;color: white;width: <?=$lebar_col; ?>%">Tidak Masuk</th>
+														<th style="background-color: #A43820;color: white;width: <?=$lebar_col; ?>%">Total</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr>
+														<td data-params="all_masuk"><?=$all_masuk ?></td>
+														<td data-params="all_tidak"><?=$all_tidak ?></td>
+														<td data-params="all_total"><?=$all_total ?></td>
+														<td data-params="pst_masuk"><?=$pst_masuk ?></td>
+														<td data-params="pst_tidak"><?=$pst_tidak ?></td>
+														<td data-params="pst_total"><?=$pst_total ?></td>
+														<td data-params="tks_masuk"><?=$tks_masuk ?></td>
+														<td data-params="tks_tidak"><?=$tks_tidak ?></td>
+														<td data-params="tks_total"><?=$tks_total ?></td>
+														<td data-params="cbg_masuk"><?=$cbg_masuk ?></td>
+														<td data-params="cbg_tidak"><?=$cbg_tidak ?></td>
+														<td data-params="cbg_total"><?=$cbg_total ?></td>
+													</tr>
+													<tr>
+														<td data-params="all_masuk"><?=round(($all_masuk/$all_total)*100); ?>%</td>
+														<td data-params="all_tidak"><?=round(($all_tidak/$all_total)*100); ?>%</td>
+														<td data-params="all_total"><?=round(($all_total/$all_total)*100); ?>%</td>
+														<td data-params="pst_masuk"><?=round(($pst_masuk/$pst_total)*100); ?>%</td>
+														<td data-params="pst_tidak"><?=round(($pst_tidak/$pst_total)*100); ?>%</td>
+														<td data-params="pst_total"><?=round(($pst_total/$pst_total)*100); ?>%</td>
+														<td data-params="tks_masuk"><?=round(($tks_masuk/$tks_total)*100); ?>%</td>
+														<td data-params="tks_tidak"><?=round(($tks_tidak/$tks_total)*100); ?>%</td>
+														<td data-params="tks_total"><?=round(($tks_total/$tks_total)*100); ?>%</td>
+														<td data-params="cbg_masuk"><?=round(($cbg_masuk/$cbg_total)*100); ?>%</td>
+														<td data-params="cbg_tidak"><?=round(($cbg_tidak/$cbg_total)*100); ?>%</td>
+														<td data-params="cbg_total"><?=round(($cbg_total/$cbg_total)*100); ?>%</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
 									</div>
 								</div>
 								<div class="row">
