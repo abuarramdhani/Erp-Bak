@@ -123,7 +123,8 @@ class M_monitoring extends CI_Model
                     AND bic.disable_date IS NULL
                     AND bic.component_item_id = msib2.inventory_item_id
                     AND bom.organization_id = msib2.organization_id
-                    AND bic.attribute2 = mil.inventory_location_id
+                    AND bic.attribute1 IS NOT NULL
+                    AND bic.attribute2 = mil.inventory_location_id(+)
                     order by 9";
         $query = $this->oracle->query($sql);
         return $query->result_array();
