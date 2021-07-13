@@ -174,11 +174,13 @@ class C_MonitoringOrder extends CI_Controller
 			$cari = $this->M_monitoringorder->getseksiunit($noind);
 			$seksi = $cari[0]['seksi'];
 			if ($seksi == 'DESAIN A') {
-				$query = "where assign_desainer = 'Desainer A'";
+				$query = "where assign_desainer = 'Desainer A' or assign_desainer is null";
 			}elseif ($seksi == 'DESAIN B') {
-				$query = "where assign_desainer = 'Desainer B";
+				$query = "where assign_desainer = 'Desainer B' or assign_desainer is null";
 			}elseif ($seksi == 'DESAIN C') {
-				$query = "where assign_desainer = 'Desainer C'";
+				$query = "where assign_desainer = 'Desainer C' or assign_desainer is null";
+			}else {
+				$query = '';
 			}
 		} else { // resp order tool making lainnya
 			$query = '';
@@ -366,9 +368,9 @@ class C_MonitoringOrder extends CI_Controller
 					$im = imagecreatefromjpeg($_FILES['gambar_kerja']['tmp_name'][$i]);
 				}
 				$color 	= imagecolorallocate($im,230, 90, 107);
-				$sx = imagesx($im) - 200;
-				$sy = imagesy($im) - 50;
-				imagestring($im,50,$sx,$sy,"KHUSUS ALAT BANTU",$color);
+				$sx = imagesx($im)/8;
+				$sy = imagesy($im) - (imagesy($im)/5);
+				imagestring($im,5,$sx,$sy,"KHUSUS ALAT BANTU",$color); // beri stamping digambar
 		
 				$filename = './assets/upload/OrderToolMaking/Gambar_kerja/Pengorder/'.$gambar_kerja2; // save file gamker
 				imagepng($im, $filename);

@@ -232,10 +232,10 @@
                                             <label>Sebelumnya</label>
                                         </div>
                                         <div class="col-md-2">
-                                            <select name="flow_sebelum" class="form-control baru2 select2 getprosestm" data-placeholder="pilih proses" ></select>
+                                            <select name="flow_sebelum" class="form-control select2 getprosestm" data-placeholder="pilih proses"></select>
                                         </div>
                                         <div class="col-md-4">
-                                            <input name="detailflow_sebelum" class="form-control baru2" placeholder="detail" autocomplete="off">
+                                            <input name="detailflow_sebelum" class="form-control" placeholder="detail" autocomplete="off">
                                         </div>
                                     </div>
                                     <div class="panel-body baru">
@@ -245,10 +245,10 @@
                                             <label>Sesudahnya</label>
                                         </div>
                                         <div class="col-md-2">
-                                            <select name="flow_sesudah" class="form-control baru2 select2 getprosestm" data-placeholder="pilih proses"></select>
+                                            <select name="flow_sesudah" class="form-control select2 getprosestm" data-placeholder="pilih proses"></select>
                                         </div>
                                         <div class="col-md-4">
-                                            <input name="detailflow_sesudah" class="form-control baru2" placeholder="detail" autocomplete="off">
+                                            <input name="detailflow_sesudah" class="form-control" placeholder="detail" autocomplete="off">
                                         </div>
                                     </div>
                                     <div class="panel-body baru">
@@ -257,7 +257,7 @@
                                             <label>Mesin Yang Digunakan</label>
                                         </div>
                                         <div class="col-md-7">
-                                            <select name="mesin" class="form-control select2 getmesintm" style="width:100%"  data-placeholder="pilih mesin yang digunakan" ></select>
+                                            <select name="mesin" class="form-control select2 getmesintm baru2" style="width:100%"  data-placeholder="pilih mesin yang digunakan" required></select>
                                         </div>
                                     </div>
                                 </div>
@@ -270,7 +270,7 @@
                                             <label>Jumlah Alat</label>
                                         </div>
                                         <div class="col-md-7">
-                                            <select id="jml_alat" name="jml_alat" class="form-control select2 baru2" style="width:100%" data-placeholder="pilih jumlah alat">
+                                            <select id="jml_alat" name="jml_alat" class="form-control select2 baru2" style="width:100%" data-placeholder="pilih jumlah alat" required>
                                                 <option></option>
                                                 <?php for ($i=0; $i < 10 ; $i++) { 
                                                     echo '<option value="'.($i+1).'">'.($i+1).'</option>';
@@ -368,7 +368,7 @@
                                         </div>
                                         <div class="col-md-7">
                                             <textarea name="referensi2" class="modifrekon modifrekon2" placeholder="referensi / datum alat bantu" style="height:100px;width:100%;display:none"></textarea>
-                                            <input name="referensi1" id="referensi1" class="form-control baru baru2" placeholder="referensi / datum alat bantu" autocomplete="off">
+                                            <input name="referensi1" id="referensi1" class="form-control baru baru2" placeholder="referensi / datum alat bantu" autocomplete="off" required>
                                         </div>
                                     </div>
                                 </div>
@@ -398,7 +398,6 @@
                                             <option value="Desainer C">Desainer C</option>
                                         </select>
                                     </div>
-                                </div>
                                 </div>
 
                                 <div class="panel-body text-center">
