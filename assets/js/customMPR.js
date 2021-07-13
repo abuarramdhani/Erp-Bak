@@ -1961,3 +1961,59 @@ $(document).on('ready', function(){
     })
 })
 // end detail presensi
+
+// start presensi hari ini
+$(document).on('ready', function(){
+    var tblMPRPresensiHariIniDetail = $('#tblMPRPresensiHariIniDetail').DataTable({
+        "lengthMenu": [
+            [ 5, 10, 25, 50, -1 ],
+            [ '5 rows', '10 rows', '25 rows', '50 rows', 'Show all' ]
+        ],
+        "dom" : 'Blfrtip',
+        "buttons" : [
+            'excel', 'pdf'
+        ],      
+    });
+
+    $('#tblMPRPresensiHariIniRekap').on('dblclick','td',function(){
+        params = $(this).data('params');
+        $('#tblMPRPresensiHariIniRekap td').css('background-color','white');
+        $('#tblMPRPresensiHariIniRekap td').css('color','black');
+        $('[data-params='+params+']').css('background-color','#2196F3');
+        $('[data-params='+params+']').css('color','white');
+        $('#ldgMPRPresensiHariIniLoading').show();
+        $.ajax({
+            url: baseurl+'MasterPresensi/DataPresensi/PresensiHariIni/detail/'+params,
+            error: function(xhr,status,error){
+                $('#ldgMPRPresensiHariIniLoading').hide();
+                swal.fire({
+                    title: xhr['status'] + "(" + xhr['statusText'] + ")",
+                    html: xhr['responseText'],
+                    type: "error",
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#d63031',
+                })
+            },
+            success: function(result){
+                if(obj = JSON.parse(result)){
+                    tblMPRPresensiHariIniDetail.clear().draw();
+                    obj.map(function(value,index){
+                        tblMPRPresensiHariIniDetail.row.add([
+                            (index +1),
+                            value['noind'],
+                            value['nama'],
+                            value['kodesie'],
+                            value['shift'],
+                            value['waktu'],
+                            value['noind_baru']
+                        ]).draw(false);
+
+                    })
+                    tblMPRPresensiHariIniDetail.columns.adjust();
+                }
+                $('#ldgMPRPresensiHariIniLoading').hide();
+            }
+        })
+    })
+})
+// end presensi hari ini
