@@ -85,7 +85,7 @@ class C_ErpMobile extends CI_Controller {
 		$message = '<p>Password ERP Anda Adalah <b>'.$pwd.'</b></p>';
 
 		$mail = new PHPMailer();
-		$mail->SMTPDebug = 2;
+		$mail->SMTPDebug = 0;
 		$mail->Debugoutput = 'html';
 
 		$mail->isSMTP();
