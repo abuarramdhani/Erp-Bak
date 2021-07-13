@@ -125,10 +125,11 @@ $terima = $val['status'] == 'DALAM PROSES PENGIRIMAN' ? '' : 'display:none'; // 
                 for ($i=0; $i < count($val['folder_gamker']) ; $i++) { 
                     $filename = "assets/upload/OrderToolMaking/Gambar_kerja/".$val['folder_gamker'][$i]."/".$gb[$i]."";
                         if (file_exists($filename)) {?>
+                            <span><br><label><?= ($i+1)?>. </label></span>
                             <a href="<?php echo base_url($filename)?>" target="_blank">
                                 <img style="max-width: 250px;max-height: 250px" src="<?php echo base_url($filename)?>">
                             </a>
-                            <br><span style="color:#3A4C52;font-size:11px">*Klik gambar untuk membuka di Tab baru</span>
+                            <br><span style="color:#3A4C52;font-size:11px;margin-left:15px">*Klik gambar untuk membuka di Tab baru</span>
                     <?php }else {
                         echo '<span style="font-size:12px">Gambar Produk Tidak Ditemukan...</span>';
                     }

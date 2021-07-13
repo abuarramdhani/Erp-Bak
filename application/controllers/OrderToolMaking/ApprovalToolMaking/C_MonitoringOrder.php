@@ -313,9 +313,9 @@ class C_MonitoringOrder extends CI_Controller
 						$im = imagecreatefromjpeg($_FILES['gamker']['tmp_name'][$g]);
 					}
 					$color 	= imagecolorallocate($im,230, 90, 107);
-					$sx = imagesx($im) - 200;
-					$sy = imagesy($im) - 50;
-					imagestring($im,50,$sx,$sy,"KHUSUS ALAT BANTU",$color);
+					$sx = imagesx($im)/8;
+					$sy = imagesy($im) - (imagesy($im)/5);
+					imagestring($im,5,$sx,$sy,"KHUSUS ALAT BANTU",$color);
 					
 					if ($ket == 'Modifikasi') {
 						$getgb = $this->M_monitoringorder->getdatamodif("where no_order = '$no_order'");
