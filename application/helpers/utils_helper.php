@@ -4,7 +4,7 @@
  * Global function to print single variable
  */
 if (!function_exists('debug')) {
-  function debug(...$var)
+  function debug($var)
   {
     echo "<pre>";
     foreach ($var as $item) {
