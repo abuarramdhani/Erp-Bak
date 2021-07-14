@@ -126,7 +126,8 @@ class C_RevisiWithExcel extends CI_Controller
     }
 
 	public function insertData() {
-		$this->M_revisimasteritem->insertDataUpdate($arrayItem);
+		$this->M_revisimasteritem->deleteKIT();
+		$this->M_revisimasteritem->insertData($arrayItem);
 	}
 
 	
