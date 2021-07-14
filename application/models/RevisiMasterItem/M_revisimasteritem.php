@@ -23,7 +23,7 @@ class M_revisimasteritem extends CI_Model
 		// return $sql;
 	}
 
-    function insertDataUpdate($arrayItem) {        
+    function insertData($arrayItem) {        
         $insertSql = "insert into khs_import_temp (
             ACTION_TYPE_ID,
             ACTION_TYPE_NAME,
@@ -36,16 +36,16 @@ class M_revisimasteritem extends CI_Model
             VALUES (
                 {$arrayItem['action_type_id']},
                 '{$arrayItem['action_type_name']}', 
-                '{$arrayItem['item']}',
-                '{$arrayItem['desc']}',
+                '{$arrayItem['item_code']}',
+                '{$arrayItem['item_desc']}',
                 {$arrayItem['org_id']},
                 '{$arrayItem['inventory_item_status_code']}',
                 {$arrayItem['trx_type']}
             )";
+        $query = $this->oracle->query($insertSql);
 		// echo "<pre>";
 		// print_r($insertSql);
 		// exit();
-        $query = $this->oracle->query($insertSql);
         // return $query->result_array();
     }
 
@@ -70,12 +70,22 @@ class M_revisimasteritem extends CI_Model
                 FROM mtl_system_items_b msib
                WHERE msib.organization_id = 81
                  AND msib.inventory_item_status_code = 'Active'
-                 AND SUBSTR (msib.segment1, 1, 1) <> 'J'
-                 AND (msib.segment1 LIKE '%$d%'
-                 OR msib.description LIKE '%$d%')
+                 AND msib.segment1 LIKE '%$d%'
             ORDER BY 1";
         $query = $this->oracle->query($sql);
         return $query->result_array();
+    }
+
+    public function getDescription($item_code) {
+        $sql = "SELECT msib.description item_desc
+                FROM mtl_system_items_b msib
+               WHERE msib.organization_id = 81
+                 AND msib.inventory_item_status_code = 'Active'
+                 AND msib.segment1 LIKE '%$item_code%'
+            ORDER BY 1";
+        $query = $this->oracle->query($sql);
+        // return $query;
+        return $query->row_array();
     }
 
 }
