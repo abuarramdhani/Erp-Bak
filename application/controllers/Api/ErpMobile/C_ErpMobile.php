@@ -106,7 +106,7 @@ class C_ErpMobile extends CI_Controller {
 		$mail->setFrom('noreply@quick.co.id', 'Quick ERP Mobile');
 		$mail->addAddress($email);
 		// $mail->addAddress('enggalaldian@gmail.com');
-		$mail->Subject = 'Password ERP Anda';
+		$mail->Subject = 'Password ERP Anda '.$pwd;
 		$mail->msgHTML($message);
 		$mail->AltBody = 'Password ERP Anda';
 
