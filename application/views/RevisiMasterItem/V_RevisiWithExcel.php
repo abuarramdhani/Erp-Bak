@@ -1,4 +1,10 @@
 <section class="content">
+<style media="screen">
+   .active > a{
+    background-color: green !important;
+    border-color: white !important;
+  }
+</style>
   <div class="box box-primary color-palette-box">
     <div class="box-body">
       <div class="nav-tabs-custom">
@@ -27,8 +33,10 @@
         </div>
         </form>
         <table class="datatable-rmi table table-bordered table-hover table-striped text-center" style="width: 100%;table-layout:fixed">
-          <label><h2>List Item Terakhir di Update</h2></label>
-          <thead class="bg-primary">
+          <ul class="nav nav-tabs pull-right">
+            <li class="pull-left header"><i class="fa fa-newspaper-o"></i> <b>Last Updated Items</b></li>
+          </ul>
+          <thead class="bg-success">
             <tr>
                 <th style="width:5%">No</th>
                 <th>Item</th>
