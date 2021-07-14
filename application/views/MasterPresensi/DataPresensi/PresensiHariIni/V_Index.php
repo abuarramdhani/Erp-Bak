@@ -87,7 +87,7 @@
 											<table class="table table-bordered table-hover table-tidak-masuk" id="tblMPRPresensiHariIniRekap" style="width: 100%;border: 1px solid #FF420E;">
 												<thead>
 													<tr>
-														<th colspan="12" style="background-color: #FF420E;color: white;">Data Kehadiran</th>
+														<th colspan="12" style="background-color: #FF420E;color: white;">Data Kehadiran (Absen Barcode)</th>
 														<?php $lebar_col = 100/12; ?>
 													</tr>
 													<tr>
