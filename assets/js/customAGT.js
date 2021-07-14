@@ -95,7 +95,7 @@ function agt_update_pos(item_id, status_job, no_job) {
   $('.agt_item_id').val(item_id);
 }
 
-function del_agt_andon_pos(item_id) {
+function del_agt_andon_pos(item_id, s) {
   Swal.fire({
     title: 'Apakah anda yakin?',
     text: "Anda tidak akan dapat mengembalikan ini!",
@@ -120,7 +120,13 @@ function del_agt_andon_pos(item_id) {
         success: function(result) {
           if (result == 200) {
             toastAGT('success', 'Data berhasil dihapus');
-            agtRunningAndon();
+            if (s == 1) {
+              agtRunningAndon();
+            }else if (s == 2) {
+              agtHistoryAndon();
+            }else if (s == 3) {
+              filter_history_agt();
+            }
           }else {
             toastAGT('warning', 'Data gagal dihapus, coba lagi');
           }

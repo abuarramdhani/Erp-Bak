@@ -72,7 +72,7 @@ class M_master extends CI_Model
 
     public function cekjobdipos1($nojob)
     {
-      $cek =  $this->oracle->query("SELECT NO_JOB FROM khs_andon_item_dev WHERE NO_JOB = '$nojob'")->row_array();
+      $cek =  $this->oracle->query("SELECT NO_JOB FROM khs_andon_item_dev WHERE NO_JOB = '$nojob' AND STATUS_JOB != 'POS_5'")->row_array();
       if (!empty($cek['NO_JOB'])) {
         return 200;
       }else {
