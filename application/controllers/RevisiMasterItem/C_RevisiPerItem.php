@@ -49,34 +49,44 @@ class C_RevisiPerItem extends CI_Controller
 		$this->load->view('V_Footer',$data);
 	}
 
-	public function hiahia($param1, $param2)
-	{
-		echo $param1, $param2;
-	}
-
 	public function listCode() {
         $term = strtoupper($this->input->post('term'));
-        echo json_encode($this->M_revisimasteritem->listCode($term));
+		$data = $this->M_revisimasteritem->listCode($term);
+        echo json_encode($data);
     }
 
+	public function getDescription(){
+		$item_code = $this->input->post('params');
+		$data = $this->M_revisimasteritem->getDescription($item_code);
+		// echo print_r($data);
+		echo json_encode($data);
+	}
+
 	public function insertData() {
-		$arrayItem = [
-			'item' => $this->input->post('item'),
-			'desc' => $this->input->post('desc'),
-			'action_type_id' => 3,
-			'action_type_name' => 'UPDATE VALUE',
-			'org_id' => 81,
-			'inventory_item_status_code' => 'Active',
-			'trx_type' => 3
-		];
-		$item = $this->input->post('item');
-		$desc = $this->input->post('desc');
-		$action_type_id 	= 3;
+		$this->M_revisimasteritem->deleteKIT();
+		$no = $this->input->post('no');
+		$item = $this->input->post('item_code');
+		$desc = $this->input->post('item_desc');
+		$action_type_id = 3;
 		$action_type_name = 'UPDATE VALUE';
 		$org_id = 81;
 		$inventory_item_status_code = 'Active';
 		$trx_type = 3;
-		$this->M_revisimasteritem->insertDataUpdate($arrayItem);
+
+		foreach ($no as $key => $l) {
+			$arrayItem = [
+				'item_code' => $item[$key],
+				'item_desc' => $desc[$key],
+				'action_type_id' => $action_type_id,
+				'action_type_name' => $action_type_name,
+				'org_id' => $org_id,
+				'inventory_item_status_code' => $inventory_item_status_code,
+				'trx_type' => $trx_type
+			];
+			$this->M_revisimasteritem->insertData($arrayItem);
+		}
+		$this->M_revisimasteritem->runUpdate();
+		redirect(base_url("RevisiMasterItem/UpdatePerItem"));
 	}
 	
 }
