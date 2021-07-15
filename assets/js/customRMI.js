@@ -1,14 +1,13 @@
-// flyingdatmen style =====
 $(document).ready(function() {
   $('.itemRMI1').select2({
     minimumInputLength: 3,
-    placeholder: "Item Kode",
-    tags: true,
+    placeholder: "Item Code",
+    // tags: true,
     ajax: {
-      url: baseurl + "RevisiMasterItem/UpdateItem/listCode",
+      url: baseurl + "RevisiMasterItem/UpdatePerItem/listCode",
       dataType: "JSON",
       type: "POST",
-      tags: true,
+      // tags: true,
       data: function(params) {
         return {
           term: params.term
@@ -19,7 +18,7 @@ $(document).ready(function() {
           results: $.map(data, function(obj) {
             return {
               id: obj.SEGMENT1,
-              text: `${obj.SEGMENT1} - ${obj.DESCRIPTION}`
+              text: `${obj.SEGMENT1}`
             }
           })
         }
@@ -30,30 +29,75 @@ $(document).ready(function() {
 
 $('.itemRMI1').on('change',function () {
   let itemVal = $(this).select2('data')[0].text;
-  itemVal = itemVal.split(' - ')[1];
-  $('.descRMI1').val(itemVal);
+  console.log(itemVal);
+  // itemVal = itemVal.split(' - ')[1];
+  // $('.descRMI1').val(itemVal);
+  $.ajax({ 
+    url: baseurl + 'RevisiMasterItem/UpdatePerItem/getDescription',
+    type: 'POST',
+    dataType: 'JSON',
+    async: true,
+    data: {
+        params: itemVal,
+    },
+    beforeSend: function() {
+      $(`.descRMI1`).val('Loading ..'); 
+    },
+    success: function(result) {
+      console.log(result);
+    $(`.descRMI1`).val(result.ITEM_DESC);
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+    console.error();
+    }
+})
 })
 
+// const getDescription = _ => {
+//   const item_code = $('#item_code').last().val();
+//   console.log(item_code);
+//   $.ajax({
+//       url: baseurl + 'RevisiMasterItem/UpdatePerItem/getDescription',
+//       type: 'POST',
+//       dataType: 'JSON',
+//       async: true,
+//       data: {
+//           params: item_code,
+//       },
+//       beforeSend: function() {
+//         $(`#item_desc`).val('loading ..'); // loading nya biar ga blank
+//       },
+//       success: function(result) {
+//           $(`#item_desc`).val(result.ITEM_DESC);
+//       console.log(result);
+//       },
+//       error: function(XMLHttpRequest, textStatus, errorThrown) {
+//       console.error();
+//       }
+//   })
+// }
+
 function addElement() {
-  let nomor = Number($('.tablePerItem tbody').length) +1
-  let addRow = `<tr>
+  let nomor = Number($('.tablePerItem tbody tr').length)+1
+  console.log(nomor,'ini nomor');
+  let addRow = `<tr class="add_row${nomor}"> 
+  <td class="text-center"><input type="text" class="form-control no${nomor}" name="no[]" id="no" value="${nomor}" readonly></td>
   <td class="text-center">
-  <select class="form-control itemRMI${nomor}" name="item_code[]" style="text-transform:uppercase !important;width:210px !important;" required>
+  <select class="form-control itemRMI${nomor}" id="item_code" name="item_code[]" style="text-transform:uppercase !important;width:210px !important;" required>
     <option selected="selected"></option>
   </select></td>
-  <td> <input type="text" class="form-control descRMI${nomor}"></input>
+  <td> <input type="text" class="form-control descRMI${nomor}" id="item_desc" name="item_desc[]" placeholder="Item Description"></input>
   </td>
+  <td><button type="button" class="btn btn-danger btn-sm btn_del${nomor}"><i class="fa fa-minus"></i></button></td>
   </tr>`
 $('.tablePerItem tbody').append(addRow)
 $(`.itemRMI${nomor}`).select2({
   minimumInputLength: 3,
-  placeholder: "Item Kode",
-  tags: true,
+  placeholder: "Item Code",
   ajax: {
-    url: baseurl + "RevisiMasterItem/UpdateItem/listCode",
+    url: baseurl + "RevisiMasterItem/UpdatePerItem/listCode",
     dataType: "JSON",
     type: "POST",
-    tags: true,
     data: function(params) {
       return {
         term: params.term
@@ -64,18 +108,46 @@ $(`.itemRMI${nomor}`).select2({
         results: $.map(data, function(obj) {
           return {
             id: obj.SEGMENT1,
-            text: `${obj.SEGMENT1} - ${obj.DESCRIPTION}`
+            text: `${obj.SEGMENT1}`
           }
         })
       }
-    }
+    }    
   }
 })
-$(`.itemRMI${nomor}`).on('change',function () {
-  let itemVal = $(this).select2('data')[0].text;
-  itemVal = itemVal.split(' - ')[1];
-  $(`.descRMI${nomor}`).val(itemVal);
+
+
+$('.btn_del'+nomor).on('click', function() {
+  //  $(this).parents('tr').remove();
+  $('.add_row'+nomor).remove();
 })
+
+$(`.itemRMI${nomor}`).on('change',function () {
+  console.log(nomor);
+  let itemVal = $(this).val();
+  console.log(itemVal, 'current');
+  // itemVal = itemVal.split(' -')[1];
+  $.ajax({ 
+    url: baseurl + 'RevisiMasterItem/UpdatePerItem/getDescription',
+    type: 'POST',
+    dataType: 'JSON',
+    async: true,
+    data: {
+        params: itemVal,
+    },
+    beforeSend: function() {
+      $(`.descRMI${nomor}`).val('Loading ..'); // loading nya biar ga blank
+    },
+    success: function(result) {
+      console.log(result);
+    $(`.descRMI${nomor}`).val(result.ITEM_DESC); 
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+    console.error();
+    }
+})
+})
+
 }
 
 var today = new Date();
