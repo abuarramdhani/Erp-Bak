@@ -1977,13 +1977,54 @@ $(document).on('ready', function(){
 
     $('#tblMPRPresensiHariIniRekap').on('dblclick','td',function(){
         params = $(this).data('params');
-        $('#tblMPRPresensiHariIniRekap td').css('background-color','white');
-        $('#tblMPRPresensiHariIniRekap td').css('color','black');
-        $('[data-params='+params+']').css('background-color','#2196F3');
-        $('[data-params='+params+']').css('color','white');
+        $('table td').css('background-color','white');
+        $('table td').css('color','black');
+        $(this).closest('table').find('[data-params='+params+']').css('background-color','#2196F3');
+        $(this).closest('table').find('[data-params='+params+']').css('color','white');
         $('#ldgMPRPresensiHariIniLoading').show();
         $.ajax({
-            url: baseurl+'MasterPresensi/DataPresensi/PresensiHariIni/detail/'+params,
+            url: baseurl+'MasterPresensi/DataPresensi/PresensiHariIni/detailBarcode/'+params,
+            error: function(xhr,status,error){
+                $('#ldgMPRPresensiHariIniLoading').hide();
+                swal.fire({
+                    title: xhr['status'] + "(" + xhr['statusText'] + ")",
+                    html: xhr['responseText'],
+                    type: "error",
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#d63031',
+                })
+            },
+            success: function(result){
+                if(obj = JSON.parse(result)){
+                    tblMPRPresensiHariIniDetail.clear().draw();
+                    obj.map(function(value,index){
+                        tblMPRPresensiHariIniDetail.row.add([
+                            (index +1),
+                            value['noind'],
+                            value['nama'],
+                            value['kodesie'],
+                            value['shift'],
+                            value['waktu'],
+                            value['noind_baru']
+                        ]).draw(false);
+
+                    })
+                    tblMPRPresensiHariIniDetail.columns.adjust();
+                }
+                $('#ldgMPRPresensiHariIniLoading').hide();
+            }
+        })
+    })
+
+    $('[class*=tblMPRPresensiHariIniWfh]').on('dblclick','td',function(){
+        params = $(this).data('params');
+        $('table td').css('background-color','white');
+        $('table td').css('color','black');
+        $(this).closest('table').find('[data-params='+params+']').css('background-color','#2196F3');
+        $(this).closest('table').find('[data-params='+params+']').css('color','white');
+        $('#ldgMPRPresensiHariIniLoading').show();
+        $.ajax({
+            url: baseurl+'MasterPresensi/DataPresensi/PresensiHariIni/detailWfh/'+params,
             error: function(xhr,status,error){
                 $('#ldgMPRPresensiHariIniLoading').hide();
                 swal.fire({
