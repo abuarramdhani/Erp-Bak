@@ -246,16 +246,16 @@
 															</thead>
 															<tbody>
 																<tr>
-																	<td data-params="p_wfo"><?=$a_wfo ?></td>
-																	<td data-params="p_wfh"><?=$a_wfh ?></td>
-																	<td data-params="p_off"><?=$a_off ?></td>
-																	<td data-params="p_ttl"><?=$a_total ?></td>
+																	<td data-params="a_wfo"><?=$a_wfo ?></td>
+																	<td data-params="a_wfh"><?=$a_wfh ?></td>
+																	<td data-params="a_off"><?=$a_off ?></td>
+																	<td data-params="a_ttl"><?=$a_total ?></td>
 																</tr>
 																<tr>
-																	<td data-params="p_wfo"><?=round(($a_wfo	/ $a_total) * 100); ?>%</td>
-																	<td data-params="p_wfh"><?=round(($a_wfh	/ $a_total) * 100); ?>%</td>
-																	<td data-params="p_off"><?=round(($a_off	/ $a_total) * 100); ?>%</td>
-																	<td data-params="p_ttl"><?=round(($a_total	/ $a_total) * 100); ?>%</td>
+																	<td data-params="a_wfo"><?=round(($a_wfo	/ $a_total) * 100); ?>%</td>
+																	<td data-params="a_wfh"><?=round(($a_wfh	/ $a_total) * 100); ?>%</td>
+																	<td data-params="a_off"><?=round(($a_off	/ $a_total) * 100); ?>%</td>
+																	<td data-params="a_ttl"><?=round(($a_total	/ $a_total) * 100); ?>%</td>
 																</tr>
 															</tbody>
 														</table>
@@ -302,7 +302,7 @@
 																<tr>
 																	<th colspan="3">FABRIKASI</th>
 																	<th colspan="3">NON FABRIKASI</th>
-																	<th>TOTAL</th>
+																	<th style="width: <?=100/7 ?>%;">TOTAL</th>
 																</tr>
 																<tr>
 																	<th style="width: <?=100/7 ?>%;">WFO</th>
@@ -311,7 +311,6 @@
 																	<th style="width: <?=100/7 ?>%;">WFO</th>
 																	<th style="width: <?=100/7 ?>%;">WFH</th>
 																	<th style="width: <?=100/7 ?>%;">OFF/TIDAK MASUK</th>
-																	<th style="width: <?=100/7 ?>%;">TOTAL</th>
 																</tr>
 															</thead>
 															<tbody>
@@ -355,16 +354,16 @@
 															</thead>
 															<tbody>
 																<tr>
-																	<td data-params="t_wfo"><?=$a_wfo ?></td>
-																	<td data-params="t_wfh"><?=$a_wfh ?></td>
-																	<td data-params="t_off"><?=$a_off ?></td>
-																	<td data-params="t_ttl"><?=$a_total ?></td>
+																	<td data-params="a_wfo"><?=$a_wfo ?></td>
+																	<td data-params="a_wfh"><?=$a_wfh ?></td>
+																	<td data-params="a_off"><?=$a_off ?></td>
+																	<td data-params="a_ttl"><?=$a_total ?></td>
 																</tr>
 																<tr>
-																	<td data-params="t_wfo"><?=round(($a_wfo	/ $a_total) * 100); ?>%</td>
-																	<td data-params="t_wfh"><?=round(($a_wfh	/ $a_total) * 100); ?>%</td>
-																	<td data-params="t_off"><?=round(($a_off	/ $a_total) * 100); ?>%</td>
-																	<td data-params="t_ttl"><?=round(($a_total	/ $a_total) * 100); ?>%</td>
+																	<td data-params="a_wfo"><?=round(($a_wfo	/ $a_total) * 100); ?>%</td>
+																	<td data-params="a_wfh"><?=round(($a_wfh	/ $a_total) * 100); ?>%</td>
+																	<td data-params="a_off"><?=round(($a_off	/ $a_total) * 100); ?>%</td>
+																	<td data-params="a_ttl"><?=round(($a_total	/ $a_total) * 100); ?>%</td>
 																</tr>
 															</tbody>
 														</table>
@@ -411,7 +410,7 @@
 																<tr>
 																	<th colspan="3">FABRIKASI</th>
 																	<th colspan="3">NON FABRIKASI</th>
-																	<th>TOTAL</th>
+																	<th style="width: <?=100/7 ?>%;" rowspan="2">TOTAL</th>
 																</tr>
 																<tr>
 																	<th style="width: <?=100/7 ?>%;">WFO</th>
@@ -420,7 +419,6 @@
 																	<th style="width: <?=100/7 ?>%;">WFO</th>
 																	<th style="width: <?=100/7 ?>%;">WFH</th>
 																	<th style="width: <?=100/7 ?>%;">OFF/TIDAK MASUK</th>
-																	<th style="width: <?=100/7 ?>%;">TOTAL</th>
 																</tr>
 															</thead>
 															<tbody>

@@ -11,10 +11,12 @@ class C_PresensiHariIni extends CI_Controller
 	{
 		parent::__construct();
 		$this->load->library('session');
+		$this->load->helper('url');
+		$this->load->helper('html');
 
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('MasterPresensi/DataPresensi/M_presensihariini');
-		$this->checkSession();
+		
 	}
 
 	function checkSession()
@@ -24,6 +26,7 @@ class C_PresensiHariIni extends CI_Controller
 
 	public function index()
 	{
+		$this->checkSession();
 		$user_id = $this->session->userid;
 		
 		$data['Title'] = 'Presensi Hari ini';
