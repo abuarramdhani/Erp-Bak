@@ -36,7 +36,8 @@ class C_PresensiHariIni extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$data['data'] = $this->M_presensihariini->getPresensiHariIni();
+		$data['data_barcode'] = $this->M_presensihariini->getPresensiBarcodeHariIni();
+		$data['data_wfh'] = $this->M_presensihariini->getPresensiWFHHariIni();
 		
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -44,10 +45,28 @@ class C_PresensiHariIni extends CI_Controller
 		$this->load->view('V_Footer',$data);
 	}
 
-	public function detail($params)
+	public function detailBarcode($params)
 	{
-		$data = $this->M_presensihariini->getPresensiDetail($params);
+		$data = $this->M_presensihariini->getPresensiBarcodeDetail($params);
 		echo json_encode($data);
+	}
+
+	public function detailWfh($params)
+	{
+		$data = $this->M_presensihariini->getPresensiWfhDetail($params);
+		echo json_encode($data);
+	}
+
+	public function Pusat()
+	{
+		$data['data_wfh'] = $this->M_presensihariini->getPresensiWFHHariIni();
+		$this->load->view('MasterPresensi/DataPresensi/PresensiHariIni/V_Pusat',$data);
+	}
+
+	public function Tuksono()
+	{
+		$data['data_wfh'] = $this->M_presensihariini->getPresensiWFHHariIni();
+		$this->load->view('MasterPresensi/DataPresensi/PresensiHariIni/V_Tuksono',$data);
 	}
 }
 ?>
