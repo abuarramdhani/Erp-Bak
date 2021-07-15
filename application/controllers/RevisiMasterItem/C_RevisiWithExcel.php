@@ -62,15 +62,15 @@ class C_RevisiWithExcel extends CI_Controller
 		foreach ($sheets as $key => $val) {
 			if ($key!=1) {
 				$arrayItem = [
-					'item' => $val['A'],
-					'desc' => $val['B'],
+					'item_code' => $val['A'],
+					'item_desc' => $val['B'],
 					'action_type_id' => 3,
 					'action_type_name' => 'UPDATE VALUE',
 					'org_id' => 81,
 					'inventory_item_status_code' => 'Active',
 					'trx_type' => 3
 				];
-				$this->M_revisimasteritem->insertDataUpdate($arrayItem);
+				$this->M_revisimasteritem->insertData($arrayItem);
 			}
 		}
 		$this->M_revisimasteritem->runUpdate();
@@ -125,10 +125,10 @@ class C_RevisiWithExcel extends CI_Controller
         echo json_encode($this->M_revisimasteritem->listCode($term));
     }
 
-	public function insertData() {
-		$this->M_revisimasteritem->deleteKIT();
-		$this->M_revisimasteritem->insertData($arrayItem);
-	}
+	// public function insertData() {
+	// 	$this->M_revisimasteritem->deleteKIT();
+	// 	$this->M_revisimasteritem->insertData($arrayItem);
+	// }
 
 	
 }
