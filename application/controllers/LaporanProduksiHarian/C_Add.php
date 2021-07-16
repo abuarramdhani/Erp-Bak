@@ -4,7 +4,10 @@ defined('BASEPATH') or exit('No direct script access allowed');
 set_time_limit(0);
 ini_set('date.timezone', 'Asia/Jakarta');
 setlocale(LC_TIME, "id_ID.utf8");
-ini_set('memory_limit', '-1');
+ini_set('max_input_vars','10000');
+ini_set('max_execution_time', '1000');
+ini_set('max_input_time', '-1');
+ini_set('memory_limit', '4000M');
 
 class C_Add extends CI_Controller
 {
@@ -266,6 +269,100 @@ class C_Add extends CI_Controller
       }else {
         echo json_encode(500);
       }
+    }
+
+    public function alatbantu_slc($value='')
+    {
+      $ab = strtoupper($this->input->post('term'));
+      $res = $this->db->query("SELECT fs_no_ab, fs_proses from lph.lph_alat_bantu where (
+        fs_no_ab like '%$ab%' or fs_proses like '%$ab%'
+      )")->result_array();
+      echo json_encode($res);
+    }
+
+    private function sum_same_ab($get, $val)
+    {
+      $keys = array_keys(array_column($get, 'fs_no_ab'), $val);
+      $total = 0;
+      foreach ($keys as $k) {
+        $total += $get[$k]['aktual'];
+      }
+      return $total;
+    }
+
+    public function pemkaian_alat_bantu($value='')
+    {
+      $range_date = $this->input->post('range_date');
+      $range =  explode(' - ', $range_date);
+      $alatbantu = $this->input->post('alat_bantu');
+
+      $get = $this->db->query("SELECT lab.fs_no_ab,
+                               lab.fs_proses,
+                               lab.fs_umur_pakai,
+                               lab.fs_toleransi,
+                               (null) ke,
+                               rk.aktual,
+                               rk.kode_komponen,
+                               rk.kode_proses,
+                               rk.nama_komponen,
+                               rk.tanggal
+                              FROM lph.lph_alat_bantu lab,
+                                   lph.lph_master rk
+                              WHERE lab.fs_no_ab like '%$alatbantu%'
+                              AND lab.fs_no_ab = split_part(rk.alat_bantu, ' - ', 2)
+                              AND to_date(rk.tanggal, 'dd-mm-yyyy')
+                                    BETWEEN to_date('$range[0]', 'dd-mm-yyyy')
+                                    AND to_date('$range[1]', 'dd-mm-yyyy')
+                              ORDER BY lab.fs_no_ab ASC")->result_array();
+
+      $result = [];
+      $semua_sama = [];
+      $no_pakai = 0;
+      if (!empty($get[0]['fs_no_ab'])) {
+        $semua_sama = array_keys(array_column($get, 'fs_no_ab'), $get[0]['fs_no_ab']);
+      }
+      foreach ($get as $key => $value) {
+        $no_pakai+=1;
+        $value['ke'] = $no_pakai;
+        $result[] = $value;
+
+        $c = [
+          'fs_no_ab' => '',
+          'fs_proses' => 'TGL.KIRIM :',
+          'fs_umur_pakai' => '',
+          'fs_toleransi' => '',
+          'ke' => 'TOTAL :',
+          'aktual' => '',
+          'kode_komponen' => '',
+          'kode_proses' => '',
+          'nama_komponen' => '',
+          'tanggal' => ''
+        ];
+
+        if (sizeof($get) > 1 && $key != sizeof($get)-1 && $value['fs_no_ab'] != $get[$key+1]['fs_no_ab']) {
+          $c['aktual'] = $this->sum_same_ab($get, $value['fs_no_ab']);
+          $no_pakai = 0;
+          $result[] = $c;
+        }elseif (sizeof($get) > 1 && $key == sizeof($get)-1 && $value['fs_no_ab'] != $get[$key-1]['fs_no_ab']) {
+          $c['aktual'] = $this->sum_same_ab($get, $value['fs_no_ab']);
+          $no_pakai = 0;
+          $result[] = $c;
+        }elseif (sizeof($get) == 1) {
+          $c['aktual'] = $this->sum_same_ab($get, $value['fs_no_ab']);
+          $no_pakai = 0;
+          $result[] = $c;
+        }elseif (sizeof($semua_sama) == sizeof($get) && $key == sizeof($get)-1) {
+          $c['aktual'] = $this->sum_same_ab($get, $value['fs_no_ab']);
+          $no_pakai = 0;
+          $result[] = $c;
+        }
+
+      }
+      // echo "<pre>";
+      // print_r($get);
+      // die;
+      $data['get'] = $result;
+      $this->load->view('LaporanProduksiHarian/ajax/V_mon_alat_bantu', $data);
     }
 
 }

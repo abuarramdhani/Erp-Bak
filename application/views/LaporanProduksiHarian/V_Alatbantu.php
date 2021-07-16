@@ -110,7 +110,7 @@ vertical-align: middle;
                                 <i class="fa fa-close"></i>
                               </span>
                             </button>
-                            <strong>Sekilas Info! </strong> Klik 2 kali jika hanya memilih 1 tanggal</strong>
+                            <strong>Sekilas Info! </strong> Klik 2 kali jika hanya memilih 1 tanggal atau kosongi alat bantu untuk memunculkan semua alat bantu yang terpakai.</strong>
                           </div>
                         </div>
                         <form id="lph_search_alat_bantu" action="index.html" method="post">
@@ -118,17 +118,15 @@ vertical-align: middle;
                             <label for="">Filter By Date Range</label>
                             <div class="input-group">
                               <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
-                              <input type="text" required name="range_date" class="form-control tanggal_lph_99 123_lph_mon_tgl" placeholder="Select Yout Current Date" required="" >
+                              <input type="text" required name="range_date" class="form-control tanggal_lph_99" placeholder="Select Yout Current Date" >
                             </div>
                           </div>
                           <div class="col-md-5">
-                            <label for="">Pilih Shift</label>
+                            <label for="">Pilih Alat Bantu</label>
                             <div class="input-group">
-                              <div class="input-group-addon"><i class="fa fa-fire"></i></div>
-                              <select class="select2 lph_pilih_shift_97" required name="shift" style="width:380px">
-                                <?php foreach ($shift as $key => $value): ?>
-                                  <option value="<?php echo $value['SHIFT_NUM'] ?> - <?php echo $value['DESCRIPTION'] ?>"><?php echo $value['SHIFT_NUM'] ?> - <?php echo $value['DESCRIPTION'] ?></option>
-                                <?php endforeach; ?>
+                              <div class="input-group-addon"><i class="fa fa-cog"></i></div>
+                              <select class="lph_alat_bantu_97" name="shift" style="width:380px">
+                                <option value="" selected>Pilih...</option>
                               </select>
                             </div>
                           </div>

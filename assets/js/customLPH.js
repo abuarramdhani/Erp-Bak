@@ -182,6 +182,31 @@ $(document).ready(function () {
       }
     }
   })
+  $('.lph_alat_bantu_97').select2({
+    minimumInputLength: 3,
+    placeholder: "Alat Bantu..",
+    allowClear: true,
+    ajax: {
+      url: baseurl + "LaporanProduksiHarian/actiontwo/alatbantu_slc",
+      dataType: "JSON",
+      type: "POST",
+      data: function(params) {
+        return {
+          term: params.term
+        };
+      },
+      processResults: function(data) {
+        return {
+          results: $.map(data, function(obj) {
+            return {
+              id: obj.fs_no_ab,
+              text: `${obj.fs_no_ab} - ${obj.fs_proses}`
+            }
+          })
+        }
+      }
+    }
+  })
   $(".LphTanggal").daterangepicker({
     singleDatePicker: true,
     timePicker: false,
@@ -722,3 +747,31 @@ function del_alat_bantu(id) {
 function laporanpemakaianalatbantu() {
 
 }
+
+$('#lph_search_alat_bantu').on('submit', function(e) {
+  e.preventDefault();
+  $.ajax({
+  url: baseurl + 'LaporanProduksiHarian/actiontwo/pemkaian_alat_bantu',
+  type: 'POST',
+  data : {
+    range_date : $('.tanggal_lph_99').val(),
+    alat_bantu : $('.lph_alat_bantu_97').val()
+  },
+  cache: false,
+  // async:false,
+  // dataType: "JSON",
+  beforeSend: function() {
+    $('.lph-data-alatbantu').html(`<div style ="width: 70%;margin:auto;height: 30%;background: #fff;overflow: hidden;z-index: 9999;padding:20px 0 30px 0;border-radius:10px;text-align:center">
+                                      <img style="width: 8%;" src="${baseurl}assets/img/gif/loading5.gif"><br>
+                                      <span style="font-size:14px;font-weight:bold">Sedang memuat data...</span>
+                                  </div>`);
+  },
+  success: function(result) {
+    $('.lph-data-alatbantu').html(result)
+  },
+  error: function(XMLHttpRequest, textStatus, errorThrown) {
+  swaLPHLarge('error', XMLHttpRequest);
+   console.error();
+  }
+  })
+})
