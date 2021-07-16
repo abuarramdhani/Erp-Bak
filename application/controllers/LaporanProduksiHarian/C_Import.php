@@ -4,7 +4,9 @@ defined('BASEPATH') or exit('No direct script access allowed');
 set_time_limit(0);
 ini_set('date.timezone', 'Asia/Jakarta');
 setlocale(LC_TIME, "id_ID.utf8");
-ini_set('memory_limit', '-1');
+ini_set('max_execution_time', '1000');
+ini_set('max_input_time', '-1');
+ini_set('memory_limit', '4000M');
 
 class C_Import extends CI_Controller
 {
