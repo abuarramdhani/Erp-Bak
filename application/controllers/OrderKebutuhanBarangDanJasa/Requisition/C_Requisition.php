@@ -142,7 +142,7 @@ class C_Requisition extends CI_Controller
 				'DESTINATION_ORGANIZATION_ID' => $organization[$i],
 				'DELIVER_TO_LOCATION_ID' => $location[$i],
 				'DESTINATION_SUBINVENTORY' => $subinventory[$i],
-				'ITEM_DESCRIPTION' => $description[$i],
+				'ITEM_DESCRIPTION' => str_replace("'", "''", $description[$i]),
 				'REQUESTER' => $requster,
 				'IS_SUSULAN' => $statusOrder,
 			);
@@ -741,7 +741,7 @@ class C_Requisition extends CI_Controller
 		// echo $noind;exit;
 		$getEmail = $this->M_approver->getEmail($noind);
 		// echo 
-		// $emailUser = 'bondan_surya_n@quick.com';
+		// $emailUser = 'rizki_violin_radhiyan@quick.com';
 
 		//send Email
 
