@@ -2437,6 +2437,7 @@ $(document).ready(function () {
           prn.find(".subinventoryOKB").attr("disabled", "diabled");
         } else if (response[0]["SUBINV"] == "Y") {
           prn.find(".subinventoryOKB").removeAttr("disabled");
+          $(".subinventoryOKB").attr("required", "required");
         }
         // alert(response[0]['DESTINATION_TYPE_CODE']);
       },
@@ -2975,9 +2976,9 @@ $(".CreateOrdOkbj").on("submit", function (e) {
     dataType: "html",
     beforeSend: function () {
       $("#LoadingOkbj").html(
-        '<center><img style="width:30px; height:auto" src="' +
+        '<img style="width:30px; height:auto" src="' +
           baseurl +
-          'assets/img/gif/loading11.gif"></center>'
+          'assets/img/gif/loading11.gif">'
       );
     },
     success: function (response) {
