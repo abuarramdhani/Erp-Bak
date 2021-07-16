@@ -1975,12 +1975,12 @@ $(document).on('ready', function(){
         ],      
     });
 
-    $('#tblMPRPresensiHariIniRekap').on('dblclick','td',function(){
+    $('#tblMPRPresensiHariIniRekap').on('dblclick','.angka div',function(){
         params = $(this).data('params');
-        $('table td').css('background-color','white');
-        $('table td').css('color','black');
-        $(this).closest('table').find('[data-params='+params+']').css('background-color','#2196F3');
-        $(this).closest('table').find('[data-params='+params+']').css('color','white');
+        $('.angka div').css('background-color','white');
+        $('.angka div').css('color','black');
+        $(this).closest('.panel-body').find('[data-params='+params+']').css('background-color','#2196F3');
+        $(this).closest('.panel-body').find('[data-params='+params+']').css('color','white');
         $('#ldgMPRPresensiHariIniLoading').show();
         $.ajax({
             url: baseurl+'MasterPresensi/DataPresensi/PresensiHariIni/detailBarcode/'+params,
