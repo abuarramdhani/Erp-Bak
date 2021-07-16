@@ -302,7 +302,7 @@
 																<tr>
 																	<th colspan="3">FABRIKASI</th>
 																	<th colspan="3">NON FABRIKASI</th>
-																	<th style="width: <?=100/7 ?>%;">TOTAL</th>
+																	<th style="width: <?=100/7 ?>%;" rowspan="2">TOTAL</th>
 																</tr>
 																<tr>
 																	<th style="width: <?=100/7 ?>%;">WFO</th>

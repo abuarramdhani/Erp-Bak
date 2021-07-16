@@ -65,7 +65,28 @@ class M_presensihariini extends CI_Model
 			        end
 			    ) as lokasi,
 				(
-					case when left(tp.kodesie,1) = '3' then 'Fabrikasi'
+					case when tp.kodesie in (
+							select tsi.kodesie
+						    from hrd_khs.tseksi tsi
+						    where trim(tsi.unit) in (
+						        'ASSEMBLY, WELDING, PAINTING',
+						        'MACHINING PROTOTYPE',
+						        'RISET & TESTING',
+						        'ASSEMBLY GEAR TRANS-TKS',
+						        'MACHINING & HTM - TKS',
+						        'MAINTENANCE',
+						        'PRODUKSI PENGECORAN LOGAM',
+						        'PRODUKSI PENGECORAN LOGAM - TKS',
+						        'QUALITY CONTROL',
+						        'QUALITY ASSURANCE - TKS',
+						        'QUALITY CONTROL - TKS',
+						        'REKAYASA & REBUILDING MESIN',
+						        'TOOL MAKING',
+						        'SHEET METAL - TKS',
+						        'TOOL MAKING 1',
+						        'TOOL WARE HOUSE'
+						    )
+						) then 'Fabrikasi'
 					else 'Non Fabrikasi'
 					end
 				) as jenis,
@@ -114,7 +135,28 @@ class M_presensihariini extends CI_Model
 			        end
 			) ,
 			(
-				case when left(tp.kodesie,1) = '3' then 'Fabrikasi'
+				case when tp.kodesie in (
+							select tsi.kodesie
+						    from hrd_khs.tseksi tsi
+						    where trim(tsi.unit) in (
+						        'ASSEMBLY, WELDING, PAINTING',
+						        'MACHINING PROTOTYPE',
+						        'RISET & TESTING',
+						        'ASSEMBLY GEAR TRANS-TKS',
+						        'MACHINING & HTM - TKS',
+						        'MAINTENANCE',
+						        'PRODUKSI PENGECORAN LOGAM',
+						        'PRODUKSI PENGECORAN LOGAM - TKS',
+						        'QUALITY CONTROL',
+						        'QUALITY ASSURANCE - TKS',
+						        'QUALITY CONTROL - TKS',
+						        'REKAYASA & REBUILDING MESIN',
+						        'TOOL MAKING',
+						        'SHEET METAL - TKS',
+						        'TOOL MAKING 1',
+						        'TOOL WARE HOUSE'
+						    )
+						) then 'Fabrikasi'
 				else 'Non Fabrikasi'
 				end
 			)";
@@ -200,10 +242,52 @@ class M_presensihariini extends CI_Model
 		}
 		switch (substr($params, 2, 3) ) {
 			case 'nfb':
-				$jenis = "and left(tp.kodesie,1) != '3'";
+				$jenis = "and tp.kodesie not in (
+							select tsi.kodesie
+						    from hrd_khs.tseksi tsi
+						    where trim(tsi.unit) in (
+						        'ASSEMBLY, WELDING, PAINTING',
+						        'MACHINING PROTOTYPE',
+						        'RISET & TESTING',
+						        'ASSEMBLY GEAR TRANS-TKS',
+						        'MACHINING & HTM - TKS',
+						        'MAINTENANCE',
+						        'PRODUKSI PENGECORAN LOGAM',
+						        'PRODUKSI PENGECORAN LOGAM - TKS',
+						        'QUALITY CONTROL',
+						        'QUALITY ASSURANCE - TKS',
+						        'QUALITY CONTROL - TKS',
+						        'REKAYASA & REBUILDING MESIN',
+						        'TOOL MAKING',
+						        'SHEET METAL - TKS',
+						        'TOOL MAKING 1',
+						        'TOOL WARE HOUSE'
+						    )
+						)";
 				break;
 			case 'fb_':
-				$jenis = "and left(tp.kodesie,1) = '3'";
+				$jenis = "and tp.kodesie in (
+							select tsi.kodesie
+						    from hrd_khs.tseksi tsi
+						    where trim(tsi.unit) in (
+						        'ASSEMBLY, WELDING, PAINTING',
+						        'MACHINING PROTOTYPE',
+						        'RISET & TESTING',
+						        'ASSEMBLY GEAR TRANS-TKS',
+						        'MACHINING & HTM - TKS',
+						        'MAINTENANCE',
+						        'PRODUKSI PENGECORAN LOGAM',
+						        'PRODUKSI PENGECORAN LOGAM - TKS',
+						        'QUALITY CONTROL',
+						        'QUALITY ASSURANCE - TKS',
+						        'QUALITY CONTROL - TKS',
+						        'REKAYASA & REBUILDING MESIN',
+						        'TOOL MAKING',
+						        'SHEET METAL - TKS',
+						        'TOOL MAKING 1',
+						        'TOOL WARE HOUSE'
+						    )
+						)";
 				break;
 			default:
 				$jenis = "";
