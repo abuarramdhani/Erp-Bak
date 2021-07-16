@@ -52,78 +52,282 @@
 						<div class="box box-primary box-solid">
 							<div class="box-header with-border"></div>
 							<div class="box-body">
+								<style type="text/css">
+									.panel-kehadiran {
+										border-color: #FF420E;
+										border-radius: 0px;
+									}
+									.panel-kehadiran > .panel-heading {
+										background-color: #FF420E;
+									}
+									.panel-kehadiran .panel-heading {
+										color: white;
+										font-weight: bold;
+										border-radius: 0px;
+									}
+									.panel-kehadiran .panel-body {
+										padding: 0px;
+									}
+									.panel-kehadiran > .panel-body{
+										background-color: #FF420E;
+									}
+									.panel-kehadiran > .panel-body > .row {
+										margin: 0px;
+									}
+									.panel-kehadiran > .panel-body > .row .col-sm-12,
+									.panel-kehadiran > .panel-body > .row .col-md-6,
+									.panel-kehadiran > .panel-body > .row .col-lg-3 {
+										padding: 0px;
+									}
+									.panel-kehadiran .panel {
+										border-color: #FF420E;
+										border-radius: 0px;
+										margin-bottom: 10px;
+									}
+									.panel-kehadiran .panel-all > .panel-heading {
+										background-color: #46211A;
+										border-bottom: 1px solid #FF420E;
+									}
+									.panel-kehadiran .panel-lokasi > .panel-heading {
+										background-color: #A43820;
+										border-bottom: 1px solid #FF420E;
+									}
+									.panel-all > .panel-body .huruf {
+										background-color: #46211A;
+										color: white;
+										height: 40px;
+										font-weight: bold;
+									}
+									.panel-all > .panel-body > .row, .panel-lokasi > .panel-body > .row {
+										margin: 0px;
+									}
+									.panel-lokasi > .panel-body .huruf {
+										background-color: #A43820;
+										color: white;
+										height: 40px;
+										font-weight: bold;
+									}
+									.panel-all > .panel-body .angka, .panel-lokasi > .panel-body .angka{
+										font-size: 25pt;
+									}
+									@media only screen and (max-width: 400px) {
+										.panel-all > .panel-body .angka, .panel-lokasi > .panel-body .angka{
+											font-size: 20pt;
+										}
+									}
+									.angka, .huruf {
+										border-bottom: 1px solid #FF420E;
+										border-top: 1px solid #FF420E;
+									}
+									.angka > div, .huruf > div {
+										height: 100%;
+										border-right: 1px solid #FF420E;
+										border-left: 1px solid #FF420E;
+									}
+
+								</style>
 								<div class="row">
 									<div class="col-lg-12">
-										<div class="table-responsive">
-											<style type="text/css">
-												.table-tidak-masuk td, .table-tidak-masuk th {
-													text-align: center;
-												}
-												.table-tidak-masuk td {
-													font-size: 30pt;
-												}
-												.table-tidak-masuk > thead > tr > th, .table-tidak-masuk > tbody > tr > td {
-													border-color: #FF420E;
-												}
-											</style>
-											<table class="table table-bordered table-hover table-tidak-masuk" id="tblMPRPresensiHariIniRekap" style="width: 100%;border: 1px solid #FF420E;">
-												<thead>
-													<tr>
-														<th colspan="12" style="background-color: #FF420E;color: white;">Data Kehadiran (Absen Barcode)</th>
-														<?php $lebar_col = 100/12; ?>
-													</tr>
-													<tr>
-														<th colspan="3" style="background-color: #46211A;color: white;">All</th>
-														<th colspan="3" style="background-color: #A43820;color: white;">Pusat & Mlati</th>
-														<th colspan="3" style="background-color: #A43820;color: white;">Tuksono</th>
-														<th colspan="3" style="background-color: #A43820;color: white;">Cabang</th>
-													</tr>
-													<tr>
-														<th style="background-color: #46211A;color: white;width: <?=$lebar_col; ?>%">Masuk</th>
-														<th style="background-color: #46211A;color: white;width: <?=$lebar_col; ?>%">Tidak Masuk</th>
-														<th style="background-color: #46211A;color: white;width: <?=$lebar_col; ?>%">Total</th>
-														<th style="background-color: #A43820;color: white;width: <?=$lebar_col; ?>%">Masuk</th>
-														<th style="background-color: #A43820;color: white;width: <?=$lebar_col; ?>%">Tidak Masuk</th>
-														<th style="background-color: #A43820;color: white;width: <?=$lebar_col; ?>%">Total</th>
-														<th style="background-color: #A43820;color: white;width: <?=$lebar_col; ?>%">Masuk</th>
-														<th style="background-color: #A43820;color: white;width: <?=$lebar_col; ?>%">Tidak Masuk</th>
-														<th style="background-color: #A43820;color: white;width: <?=$lebar_col; ?>%">Total</th>
-														<th style="background-color: #A43820;color: white;width: <?=$lebar_col; ?>%">Masuk</th>
-														<th style="background-color: #A43820;color: white;width: <?=$lebar_col; ?>%">Tidak Masuk</th>
-														<th style="background-color: #A43820;color: white;width: <?=$lebar_col; ?>%">Total</th>
-													</tr>
-												</thead>
-												<tbody>
-													<tr>
-														<td data-params="all_masuk"><?=$all_masuk ?></td>
-														<td data-params="all_tidak"><?=$all_tidak ?></td>
-														<td data-params="all_total"><?=$all_total ?></td>
-														<td data-params="pst_masuk"><?=$pst_masuk ?></td>
-														<td data-params="pst_tidak"><?=$pst_tidak ?></td>
-														<td data-params="pst_total"><?=$pst_total ?></td>
-														<td data-params="tks_masuk"><?=$tks_masuk ?></td>
-														<td data-params="tks_tidak"><?=$tks_tidak ?></td>
-														<td data-params="tks_total"><?=$tks_total ?></td>
-														<td data-params="cbg_masuk"><?=$cbg_masuk ?></td>
-														<td data-params="cbg_tidak"><?=$cbg_tidak ?></td>
-														<td data-params="cbg_total"><?=$cbg_total ?></td>
-													</tr>
-													<tr>
-														<td data-params="all_masuk"><?=round(($all_masuk/$all_total)*100); ?>%</td>
-														<td data-params="all_tidak"><?=round(($all_tidak/$all_total)*100); ?>%</td>
-														<td data-params="all_total"><?=round(($all_total/$all_total)*100); ?>%</td>
-														<td data-params="pst_masuk"><?=round(($pst_masuk/$pst_total)*100); ?>%</td>
-														<td data-params="pst_tidak"><?=round(($pst_tidak/$pst_total)*100); ?>%</td>
-														<td data-params="pst_total"><?=round(($pst_total/$pst_total)*100); ?>%</td>
-														<td data-params="tks_masuk"><?=round(($tks_masuk/$tks_total)*100); ?>%</td>
-														<td data-params="tks_tidak"><?=round(($tks_tidak/$tks_total)*100); ?>%</td>
-														<td data-params="tks_total"><?=round(($tks_total/$tks_total)*100); ?>%</td>
-														<td data-params="cbg_masuk"><?=round(($cbg_masuk/$cbg_total)*100); ?>%</td>
-														<td data-params="cbg_tidak"><?=round(($cbg_tidak/$cbg_total)*100); ?>%</td>
-														<td data-params="cbg_total"><?=round(($cbg_total/$cbg_total)*100); ?>%</td>
-													</tr>
-												</tbody>
-											</table>
+										<div class="panel panel-kehadiran" id="tblMPRPresensiHariIniRekap">
+											<div class="panel-heading">
+												<div class="row">
+													<div class="col-lg-12 text-center">
+														Data Kehadiran( Absen Barcode )
+													</div>
+												</div>
+											</div>
+											<div class="panel-body">
+												<div class="row">
+													<div class="col-lg-12">
+														<div class="row">
+															<div class="col-sm-12 col-md-6 col-lg-3">
+																<div class="panel panel-all">
+																	<div class="panel-heading">
+																		<div class="row">
+																			<div class="col-xs-12 text-center title">
+																				All
+																			</div>
+																		</div>
+																	</div>
+																	<div class="panel-body">
+																		<div class="row huruf">
+																			<div class="col-xs-4 text-center title">
+																				Masuk
+																			</div>
+																			<div class="col-xs-4 text-center title">
+																				Tidak Masuk
+																			</div>
+																			<div class="col-xs-4 text-center">
+																				Total
+																			</div>
+																		</div>
+																		<div class="row angka">
+																			<div class="col-xs-4 text-center" data-params="all_masuk">
+																				<?=$all_masuk ?>
+																			</div>
+																			<div class="col-xs-4 text-center" data-params="all_tidak">
+																				<?=$all_tidak ?>
+																			</div>
+																			<div class="col-xs-4 text-center" data-params="all_total">
+																				<?=$all_total ?>
+																			</div>
+																		</div>
+																		<div class="row angka">
+																			<div class="col-xs-4 text-center" data-params="all_masuk">
+																				<?=round(($all_masuk/$all_total)*100); ?>%
+																			</div>
+																			<div class="col-xs-4 text-center" data-params="all_tidak">
+																				<?=round(($all_tidak/$all_total)*100); ?>%
+																			</div>
+																			<div class="col-xs-4 text-center" data-params="all_total">
+																				<?=round(($all_total/$all_total)*100); ?>%
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</div>
+															<div class="col-sm-12 col-md-6 col-lg-3">
+																<div class="panel panel-lokasi">
+																	<div class="panel-heading">
+																		<div class="row">
+																			<div class="col-xs-12 text-center title">
+																				Pusat & Mlati
+																			</div>
+																		</div>
+																	</div>
+																	<div class="panel-body">
+																		<div class="row huruf">
+																			<div class="col-xs-4 text-center title">
+																				Masuk
+																			</div>
+																			<div class="col-xs-4 text-center title">
+																				Tidak Masuk
+																			</div>
+																			<div class="col-xs-4 text-center title">
+																				Total
+																			</div>
+																		</div>
+																		<div class="row angka">
+																			<div class="col-xs-4 text-center" data-params="pst_masuk">
+																				<?=$pst_masuk ?>
+																			</div>
+																			<div class="col-xs-4 text-center" data-params="pst_tidak">
+																				<?=$pst_tidak ?>
+																			</div>
+																			<div class="col-xs-4 text-center" data-params="pst_total">
+																				<?=$pst_total ?>
+																			</div>
+																		</div>
+																		<div class="row angka">
+																			<div class="col-xs-4 text-center" data-params="pst_masuk">
+																				<?=round(($pst_masuk/$pst_total)*100); ?>%
+																			</div>
+																			<div class="col-xs-4 text-center" data-params="pst_tidak">
+																				<?=round(($pst_tidak/$pst_total)*100); ?>%
+																			</div>
+																			<div class="col-xs-4 text-center" data-params="pst_total">
+																				<?=round(($pst_total/$pst_total)*100); ?>%
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</div>
+															<div class="col-sm-12 col-md-6 col-lg-3">
+																<div class="panel panel-lokasi">
+																	<div class="panel-heading">
+																		<div class="row">
+																			<div class="col-xs-12 text-center title">
+																				Tuksono
+																			</div>
+																		</div>
+																	</div>
+																	<div class="panel-body">
+																		<div class="row huruf">
+																			<div class="col-xs-4 text-center title">
+																				Masuk
+																			</div>
+																			<div class="col-xs-4 text-center title">
+																				Tidak Masuk
+																			</div>
+																			<div class="col-xs-4 text-center title">
+																				Total
+																			</div>
+																		</div>
+																		<div class="row angka">
+																			<div class="col-xs-4 text-center" data-params="tks_masuk">
+																				<?=$tks_masuk ?>
+																			</div>
+																			<div class="col-xs-4 text-center" data-params="tks_tidak">
+																				<?=$tks_tidak ?>
+																			</div>
+																			<div class="col-xs-4 text-center" data-params="tks_total">
+																				<?=$tks_total ?>
+																			</div>
+																		</div>
+																		<div class="row angka">
+																			<div class="col-xs-4 text-center" data-params="tks_masuk">
+																				<?=round(($tks_masuk/$tks_total)*100); ?>%
+																			</div>
+																			<div class="col-xs-4 text-center" data-params="tks_tidak">
+																				<?=round(($tks_tidak/$tks_total)*100); ?>%
+																			</div>
+																			<div class="col-xs-4 text-center" data-params="tks_total">
+																				<?=round(($tks_total/$tks_total)*100); ?>%
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</div>
+															<div class="col-sm-12 col-md-6 col-lg-3">
+																<div class="panel panel-lokasi">
+																	<div class="panel-heading">
+																		<div class="row">
+																			<div class="col-xs-12 text-center title">
+																				Cabang
+																			</div>
+																		</div>
+																	</div>
+																	<div class="panel-body">
+																		<div class="row huruf">
+																			<div class="col-xs-4 text-center title">
+																				Masuk
+																			</div>
+																			<div class="col-xs-4 text-center title">
+																				Tidak Masuk
+																			</div>
+																			<div class="col-xs-4 text-center title">
+																				Total
+																			</div>
+																		</div>
+																		<div class="row angka">
+																			<div class="col-xs-4 text-center" data-params="cbg_masuk">
+																				<?=$cbg_masuk ?>
+																			</div>
+																			<div class="col-xs-4 text-center" data-params="cbg_tidak">
+																				<?=$cbg_tidak ?>
+																			</div>
+																			<div class="col-xs-4 text-center" data-params="cbg_total">
+																				<?=$cbg_total ?>
+																			</div>
+																		</div>
+																		<div class="row angka">
+																			<div class="col-xs-4 text-center" data-params="cbg_masuk">
+																				<?=round(($cbg_masuk/$cbg_total)*100); ?>%
+																			</div>
+																			<div class="col-xs-4 text-center" data-params="cbg_tidak">
+																				<?=round(($cbg_tidak/$cbg_total)*100); ?>%
+																			</div>
+																			<div class="col-xs-4 text-center" data-params="cbg_total">
+																				<?=round(($cbg_total/$cbg_total)*100); ?>%
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
 										</div>
 									</div>
 								</div>
