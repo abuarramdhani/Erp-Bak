@@ -5765,3 +5765,10 @@ $route['LaporanProduksiHarian/action/(:any)/(:any)']	= 'LaporanProduksiHarian/C_
 $route['LaporanProduksiHarian/actiontwo/(:any)']			= 'LaporanProduksiHarian/C_Add/$1';
 $route['LaporanProduksiHarian/actiontwo/(:any)/(:any)']	= 'LaporanProduksiHarian/C_Add/$1/$2';
 
+// ----------------------------------------------- New Fitur Okebaja --------------------------------------------
+$route['OrderKebutuhanBarangDanJasa/ExportApproval'] = 'OrderKebutuhanBarangDanJasa/Import/C_Importexport/ExportApproval';
+$route['OrderKebutuhanBarangDanJasa/ExportApproval/(:any)'] = 'OrderKebutuhanBarangDanJasa/Import/C_Importexport/$1';
+$route['OrderKebutuhanBarangDanJasa/ExportApproval/(:any)/(:any)'] = 'OrderKebutuhanBarangDanJasa/Import/C_Importexport/$1/$2';
+$route['OrderKebutuhanBarangDanJasa/ImportApproval'] = 'OrderKebutuhanBarangDanJasa/Import/C_Importexport/ImportApproval';
+$route['OrderKebutuhanBarangDanJasa/ImportApproval/(:any)'] = 'OrderKebutuhanBarangDanJasa/Import/C_Importexport/$1';
+$route['OrderKebutuhanBarangDanJasa/ImportApproval/(:any)/(:any)'] = 'OrderKebutuhanBarangDanJasa/Import/C_Importexport/$1/$2';
