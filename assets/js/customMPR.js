@@ -1969,21 +1969,23 @@ $(document).on('ready', function(){
             [ 5, 10, 25, 50, -1 ],
             [ '5 rows', '10 rows', '25 rows', '50 rows', 'Show all' ]
         ],
+        "pageLength": 10,
         "dom" : 'Blfrtip',
         "buttons" : [
             'excel', 'pdf'
         ],      
     });
 
-    $('#tblMPRPresensiHariIniRekap').on('dblclick','.angka div',function(){
+    $('.angka').on('click',function(){
         params = $(this).data('params');
+        console.log(params)
         $('.angka div').css('background-color','white');
         $('.angka div').css('color','black');
-        $(this).closest('.panel-body').find('[data-params='+params+']').css('background-color','#2196F3');
-        $(this).closest('.panel-body').find('[data-params='+params+']').css('color','white');
+        $(this).closest('.panel-body').find('[data-params='+params+'] div').css('background-color','#2196F3');
+        $(this).closest('.panel-body').find('[data-params='+params+'] div').css('color','white');
         $('#ldgMPRPresensiHariIniLoading').show();
         $.ajax({
-            url: baseurl+'MasterPresensi/DataPresensi/PresensiHariIni/detailBarcode/'+params,
+            url: baseurl+'MasterPresensi/DataPresensi/PresensiHariIni/detail/'+params,
             error: function(xhr,status,error){
                 $('#ldgMPRPresensiHariIniLoading').hide();
                 swal.fire({
@@ -1996,98 +1998,20 @@ $(document).on('ready', function(){
             },
             success: function(result){
                 if(obj = JSON.parse(result)){
+                    $('#mdlMPPRPresensiHariIniDetail').modal('show');
                     tblMPRPresensiHariIniDetail.clear().draw();
                     obj.map(function(value,index){
                         tblMPRPresensiHariIniDetail.row.add([
                             (index +1),
+                            value['dept'],
+                            value['bidang'],
+                            value['unit'],
+                            value['seksi'],
                             value['noind'],
                             value['nama'],
-                            value['kodesie'],
-                            value['shift'],
                             value['waktu'],
-                            value['noind_baru']
-                        ]).draw(false);
-
-                    })
-                    tblMPRPresensiHariIniDetail.columns.adjust();
-                }
-                $('#ldgMPRPresensiHariIniLoading').hide();
-            }
-        })
-    })
-
-    $('[class*=tblMPRPresensiHariIniWfh]').on('dblclick','td',function(){
-        params = $(this).data('params');
-        $('table td').css('background-color','white');
-        $('table td').css('color','black');
-        $(this).closest('table').find('[data-params='+params+']').css('background-color','#2196F3');
-        $(this).closest('table').find('[data-params='+params+']').css('color','white');
-        $('#ldgMPRPresensiHariIniLoading').show();
-        $.ajax({
-            url: baseurl+'MasterPresensi/DataPresensi/PresensiHariIni/detailWfh/'+params,
-            error: function(xhr,status,error){
-                $('#ldgMPRPresensiHariIniLoading').hide();
-                swal.fire({
-                    title: xhr['status'] + "(" + xhr['statusText'] + ")",
-                    html: xhr['responseText'],
-                    type: "error",
-                    confirmButtonText: 'OK',
-                    confirmButtonColor: '#d63031',
-                })
-            },
-            success: function(result){
-                if(obj = JSON.parse(result)){
-                    tblMPRPresensiHariIniDetail.clear().draw();
-                    obj.map(function(value,index){
-                        tblMPRPresensiHariIniDetail.row.add([
-                            (index +1),
-                            value['noind'],
-                            value['nama'],
-                            value['kodesie'],
-                            value['shift'],
-                            value['waktu'],
-                            value['noind_baru']
-                        ]).draw(false);
-
-                    })
-                    tblMPRPresensiHariIniDetail.columns.adjust();
-                }
-                $('#ldgMPRPresensiHariIniLoading').hide();
-            }
-        })
-    })
-
-    $('[class*=tblMPRPresensiHariIniWfh]').on('dblclick','.angka div',function(){
-        params = $(this).data('params');
-        $('.angka div').css('background-color','white');
-        $('.angka div').css('color','black');
-        $(this).closest('.panel-body').find('[data-params='+params+']').css('background-color','#2196F3');
-        $(this).closest('.panel-body').find('[data-params='+params+']').css('color','white');
-        $('#ldgMPRPresensiHariIniLoading').show();
-        $.ajax({
-            url: baseurl+'MasterPresensi/DataPresensi/PresensiHariIni/detailWfh/'+params,
-            error: function(xhr,status,error){
-                $('#ldgMPRPresensiHariIniLoading').hide();
-                swal.fire({
-                    title: xhr['status'] + "(" + xhr['statusText'] + ")",
-                    html: xhr['responseText'],
-                    type: "error",
-                    confirmButtonText: 'OK',
-                    confirmButtonColor: '#d63031',
-                })
-            },
-            success: function(result){
-                if(obj = JSON.parse(result)){
-                    tblMPRPresensiHariIniDetail.clear().draw();
-                    obj.map(function(value,index){
-                        tblMPRPresensiHariIniDetail.row.add([
-                            (index +1),
-                            value['noind'],
-                            value['nama'],
-                            value['kodesie'],
-                            value['shift'],
-                            value['waktu'],
-                            value['noind_baru']
+                            value['lokasi'],
+                            value['shift']
                         ]).draw(false);
 
                     })
