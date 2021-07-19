@@ -191,8 +191,7 @@ class M_presensihariini extends CI_Model
 						switch ($param[2]) {
 							case 'f':
 								$seksi = "and (
-									tp.lokasi_kerja ='02' /*tuksono*/
-					                or left(tp.kodesie,1) ='3' /*dep prod*/
+					                left(tp.kodesie,1) ='3' /*dep prod*/
 					                or left(tp.kodesie, 7) in ('4050101','4060101') /*personalia civil maintenance dan waste management*/
 					                or tp.kd_pkj in (
 					                    '401010204', /*OP. DAPUR UMUM*/
@@ -204,18 +203,19 @@ class M_presensihariini extends CI_Model
 					            )";
 					            break;
 							case 'n':
-								$seksi = "and !(
-									tp.lokasi_kerja ='02' /*tuksono*/
-					                or left(tp.kodesie,1) ='3' /*dep prod*/
-					                or left(tp.kodesie, 7) in ('4050101','4060101') /*personalia civil maintenance dan waste management*/
-					                or tp.kd_pkj in (
+								$seksi = "and (
+					                case when left(tp.kodesie,1) ='3' /*dep prod*/ then true
+					                when left(tp.kodesie, 7) in ('4050101','4060101') /*personalia civil maintenance dan waste management*/ then true
+					                when tp.kd_pkj in (
 					                    '401010204', /*OP. DAPUR UMUM*/
 					                    '401010102', /*SATUAN PENGAMAN*/
 					                    '401010201', /*OP. PEKERJAAN UMUM*/
 					                    '401010202', /*KERNET*/
 					                    '401010203' /*SOPIR*/
-					                )
-					            )";
+					                ) then true
+					                else false 
+					                end
+					            ) = false";
 								break;
 							default:
 								$seksi = "";

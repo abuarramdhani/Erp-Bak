@@ -394,14 +394,9 @@
 																		TOTAL KHS PUSAT
 																	</div>
 																	<div class="panel-body">
-																		<div class="row angka" data-params="p_o_a_ttl">
+																		<div class="row angka" data-params="p_o_a_ttl" style="height: 160px;line-height: 159px;">
 																			<div class="col-lg-12 text-center">
 																				<?=$p_ttl ?>
-																			</div>
-																		</div>
-																		<div class="row angka" data-params="p_o_a_ttl">
-																			<div class="col-lg-12 text-center">
-																				<?=round(($p_ttl	/ $p_ttl) * 100); ?>%
 																			</div>
 																		</div>
 																	</div>
@@ -525,14 +520,9 @@
 																		TOTAL KHS TUKSONO
 																	</div>
 																	<div class="panel-body">
-																		<div class="row angka" data-params="t_o_a_ttl">
+																		<div class="row angka" data-params="t_o_a_ttl" style="height: 160px;line-height: 159px;">
 																			<div class="col-lg-12 text-center">
 																				<?=$t_ttl ?>
-																			</div>
-																		</div>
-																		<div class="row angka" data-params="t_o_a_ttl">
-																			<div class="col-lg-12 text-center">
-																				<?=round(($t_ttl	/ $t_ttl) * 100); ?>%
 																			</div>
 																		</div>
 																	</div>
@@ -812,14 +802,9 @@
 																		TOTAL KHS PUSAT
 																	</div>
 																	<div class="panel-body">
-																		<div class="row angka" data-params="p_p_a_ttl">
+																		<div class="row angka" data-params="p_p_a_ttl" style="height: 160px;line-height: 159px;">
 																			<div class="col-lg-12 text-center">
 																				<?=$p_ttl ?>
-																			</div>
-																		</div>
-																		<div class="row angka" data-params="p_p_a_ttl">
-																			<div class="col-lg-12 text-center">
-																				<?=round(($p_ttl	/ $p_ttl) * 100); ?>%
 																			</div>
 																		</div>
 																	</div>
@@ -943,14 +928,9 @@
 																		TOTAL KHS TUKSONO
 																	</div>
 																	<div class="panel-body">
-																		<div class="row angka" data-params="t_p_a_ttl">
+																		<div class="row angka" data-params="t_p_a_ttl" style="height: 160px;line-height: 159px;">
 																			<div class="col-lg-12 text-center">
 																				<?=$t_ttl ?>
-																			</div>
-																		</div>
-																		<div class="row angka" data-params="t_p_a_ttl">
-																			<div class="col-lg-12 text-center">
-																				<?=round(($t_ttl	/ $t_ttl) * 100); ?>%
 																			</div>
 																		</div>
 																	</div>
@@ -1003,7 +983,7 @@
 										<th class="text-center bg-primary">Seksi</th>
 										<th class="text-center bg-primary">No. Induk</th>
 										<th class="text-center bg-primary">Nama</th>
-										<th class="text-center bg-primary">Masuk</th>
+										<th class="text-center bg-primary">Waktu Absen</th>
 										<th class="text-center bg-primary">Lokasi Absen</th>
 										<th class="text-center bg-primary">Shift</th>
 									</tr>
