@@ -150,7 +150,7 @@
 			</td>
 		</tr>
 	</table>
-	<!-- item -->
+	<!-- item  -->
 	<div style="position: absolute;">
 		<table style="width: 81.5%; margin-top: 40px;">
 			<?php if ($key_master_who == 0): ?>
@@ -172,7 +172,7 @@
 			<?php $no = 1; foreach ($body_shelter[$key_master_who] as $key => $gb){ ?>
 			<tr>
 				<td style="font-size: 9.7px; padding: 3.5px; width: 7%; text-align: center;">
-					<?php echo $no+($key_master_body*22) ?>
+					<?php echo $no+($key_master_who*22) ?>
 				</td>
 				<td style="font-size: 9.7px; padding: 3.5px; width: 10%; text-align: center;">
 					<?php echo $gb['REQUIRED_QTY'] ?>
@@ -240,7 +240,14 @@
 		</thead>
 		<tbody style="vertical-align:top!important;">
 			<tr style="border-bottom:1px solid black;">
-				<td style="vertical-align: top; border-right: 1px solid black; border-left: 1px solid black; height: 560px; font-size: 10px; padding: 5px;">
+				<?php
+				if (strlen($get_footer[0]['APPROVER_NAME']) > 22) {
+					$set_height_template = '560px';
+				}else {
+					$set_height_template = '570px';
+				}
+				?>
+				<td style="vertical-align: top; border-right: 1px solid black; border-left: 1px solid black; height: <?php echo $set_height_template ?>; font-size: 10px; padding: 5px;">
 					<center>
 
 					</center>
@@ -279,7 +286,6 @@
 									<td style="padding: 5px; margin-top: 20px; font-size: 11.5px;">
 										<br>
 										<?php
-									 	// $size = sizeof($get_serial) > 87 ? '9.6px' : '11.5px';
 									  foreach ($header_sub as $key => $h) {
 										foreach ($check_header_sub as $key2 => $h2) {
 											$explode = explode(' ', $h2);
