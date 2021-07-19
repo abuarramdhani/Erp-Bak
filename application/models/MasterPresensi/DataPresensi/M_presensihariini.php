@@ -251,8 +251,9 @@ class M_presensihariini extends CI_Model
 				coalesce(
                     (
                         select string_agg(waktu,'|' order by waktu)
-                        from \"Presensi\".tpresensi_riil
-                        where tanggal = current_date
+                        from \"Presensi\".tpresensi_riil tpr
+                        where tpr.tanggal = current_date
+                        and tpr.noind = tp.noind
                         $user
                     ),
 				    '-'
@@ -278,8 +279,9 @@ class M_presensihariini extends CI_Model
                         	end,
                         	'|' order by waktu
                         )
-                        from \"Presensi\".tpresensi_riil
-                        where tanggal = current_date
+                        from \"Presensi\".tpresensi_riil tpr
+                        where tpr.tanggal = current_date
+                        and tpr.noind = tp.noind
                         $user
                     ),
 				    '-'
