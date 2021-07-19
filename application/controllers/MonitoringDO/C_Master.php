@@ -418,19 +418,21 @@ class C_Master extends CI_Controller
         ];
         $this->M_monitoringdo->insertDOCetak($datacetak);
         $this->M_monitoringdo->updateCetak($id);
-        // echo "<pre>";
-        // print_r($datacetak);
-        // die;
+
+        // pembagian item body
         $body_shelter = [];
         $shelter_key = 0;
+        $key_blabla = 1;
         foreach ($get_body as $key => $value) {
-          if ($key%23 != 0) {
+          if ($key_blabla%23 != 0) {
             $body_shelter[$shelter_key][] = $value;
           }else {
             $shelter_key++;
           }
+          $key_blabla++;
         }
         $data['body_shelter'] = array_values($body_shelter);
+        
         if (!empty($data['get_serial'])) {
             $s = [];
             $hasil = [];
