@@ -15,61 +15,106 @@
 				<h1><b>Kehadiran KHS Pusat <?=date('d/m/Y') ?></b></h1>
 			</div>
 		</div>
-		<div class="row" sty>
+		<div class="row">
 			<div class="col-lg-12">
 				<div class="panel panel-primary">
-					<div class="panel-heading">
+					<div class="panel-heading waktu">
 						
 					</div>
 					<div class="panel-body">
+						<style type="text/css">
+							.angka{
+								font-size: 25pt;
+								height: 80px;
+								vertical-align: middle;
+								line-height: 79px;
+								background-color: white;
+							}
+							.panel-pusat .panel,
+							.panel-tuksono .panel {
+								margin-bottom: 0px;
+							}
+
+							@media only screen and (max-width: 400px) {
+								.angka{
+									font-size: 20pt;
+								}
+								.panel-pusat .panel,
+								.panel-tuksono .panel {
+									margin-bottom: 10px !important;
+								}
+							}
+							@media only screen and (max-width:  1200px){
+								.panel-pusat .panel,
+								.panel-tuksono .panel {
+									margin-bottom: 10px !important;
+								}
+								.panel-pusat .panel .panel,
+								.panel-tuksono .panel .panel {
+									margin-bottom: 0px !important;
+								}
+							}
+							/**/
+							.panel-pusat, 
+							.panel-pusat .panel {
+								border-color: #5BC8AC;
+								border-radius: 0px;
+							}
+							.panel-pusat > .panel-heading {
+								background-color: #5BC8AC;
+								color: white;
+							}
+							.panel-pusat .panel > .panel-heading {
+								background-color: #98DBC6;
+								color: white;
+								height: 40px;
+								padding-top: 0px;
+							}
+							.panel-pusat .panel > .panel-heading.heading-total {
+								height: 80px;
+							}
+							.panel-pusat .panel-heading {
+								font-weight: bold;
+								border-radius: 0px;
+							}
+							.panel-pusat > .panel-body,
+							.panel-pusat > .panel-body .panel-body {
+								background-color: #5BC8AC;
+							}
+							.panel-pusat .panel-body {
+								padding: 0px;
+							}
+							.panel-pusat .panel-body > .row [class*=col] {
+								padding: 0px;
+							}
+							.panel-pusat .panel-body .row {
+								margin: 0px;
+							}
+							/*.panel-pusat .panel {
+								margin-bottom: 10px;
+							}*/
+							.panel-pusat .angka {
+								border-bottom: 1px solid #5BC8AC;
+								border-top: 1px solid #5BC8AC;
+							}
+						</style>
 						<div class="row">
 							<div class="col-lg-12">
-								<style type="text/css">
-									.tblMPRPresensiHariIniWfhall > tbody > tr > td, .tblMPRPresensiHariIniWfhlokasi > tbody > tr > td, .tblMPRPresensiHariIniWfhjenis > tbody > tr > td    {
-										font-size: 30pt;
-									}
-									.tblMPRPresensiHariIniWfhall > thead > tr > th, .tblMPRPresensiHariIniWfhall > tbody > tr > td {
-										border-color: #7CAA2D;
-										text-align: center;
-									}
-									.tblMPRPresensiHariIniWfhall > thead > tr > th {
-										background-color: #7CAA2D;
-										border-color: #F1F3CE;
-									}
-
-									.tblMPRPresensiHariIniWfhlokasi > thead > tr > th, .tblMPRPresensiHariIniWfhlokasi > tbody > tr > td {
-										border-color: #F5E356;
-										text-align: center;
-									}
-									.tblMPRPresensiHariIniWfhlokasi > thead > tr > th {
-										background-color: #F5E356;
-										border-color: #F1F3CE;
-									}
-
-									.tblMPRPresensiHariIniWfhjenis > thead > tr > th, .tblMPRPresensiHariIniWfhjenis > tbody > tr > td {
-										border-color: #CB6318;
-										text-align: center;
-									}
-									.tblMPRPresensiHariIniWfhjenis > thead > tr > th {
-										background-color: #CB6318;
-										border-color: #F1F3CE;
-									}
-								</style>
 								<?php 
 									$p_wfo		= 0;
 									$p_wfh		= 0;
 									$p_off		= 0;
-									$p_total	= 0;
+									$p_ttl		= 0;
 									$p_fb_wfo	= 0;
 									$p_fb_wfh	= 0;
 									$p_fb_off	= 0;
 									$p_nfb_wfo	= 0;
 									$p_nfb_wfh	= 0;
 									$p_nfb_off	= 0;
-									$p_total	= 0;
+									$p_ttl		= 0;
 									
-									if (isset($data_wfh) && !empty($data_wfh)) {
-										foreach ($data_wfh as $key => $value) {
+									if (isset($data_penyesuaian) && !empty($data_penyesuaian)) {
+										foreach ($data_penyesuaian as $key => $value) {
 											if ($value['lokasi'] == "Pusat") {
 												if ($value['jenis'] == "Fabrikasi") {
 													$p_fb_wfo	= $value['jumlah_wfo'];
@@ -82,92 +127,230 @@
 												}
 											}
 										}
-										$p_wfo		= $p_fb_wfo + $p_nfb_wfo;
-										$p_wfh		= $p_fb_wfh + $p_nfb_wfh;
-										$p_off		= $p_fb_off + $p_nfb_off;
-										$p_total	= $p_wfo + $p_wfh + $p_off;
+										$p_wfo	= $p_fb_wfo + $p_nfb_wfo;
+										$p_wfh	= $p_fb_wfh + $p_nfb_wfh;
+										$p_off	= $p_fb_off + $p_nfb_off;
+										$p_fb_ttl = $p_fb_wfo + $p_fb_wfh + $p_fb_off;
+										$p_nfb_ttl = $p_nfb_wfo + $p_nfb_wfh + $p_nfb_off;
+										$p_ttl	= $p_wfo + $p_wfh + $p_off;
+
+
 									}
 								?>
 								<div class="row">
 									<div class="col-lg-12">
-										<div class="row">
-											<div class="col-lg-12">
-												<div  class="table-responsive">
-													<table class="table table-bordered table-hover table-striped tblMPRPresensiHariIniWfhlokasi" style="width: 100%;">
-														<thead>
-															<tr>
-																<th colspan="4">KHS PUSAT</th>
-															</tr>
-															<tr>
-																<th style="width: 25%;">WFO</th>
-																<th style="width: 25%;">WFH</th>
-																<th style="width: 25%;">OFF/TIDAK MASUK</th>
-																<th style="width: 25%;">TOTAL</th>
-															</tr>
-														</thead>
-														<tbody>
-															<tr>
-																<td data-params="p_wfo"><?=$p_wfo ?></td>
-																<td data-params="p_wfh"><?=$p_wfh ?></td>
-																<td data-params="p_off"><?=$p_off ?></td>
-																<td data-params="p_ttl"><?=$p_total ?></td>
-															</tr>
-															<tr>
-																<td data-params="p_wfo"><?=round(($p_wfo	/ $p_total) * 100); ?>%</td>
-																<td data-params="p_wfh"><?=round(($p_wfh	/ $p_total) * 100); ?>%</td>
-																<td data-params="p_off"><?=round(($p_off	/ $p_total) * 100); ?>%</td>
-																<td data-params="p_ttl"><?=round(($p_total	/ $p_total) * 100); ?>%</td>
-															</tr>
-														</tbody>
-													</table>
+										<div class="panel panel-pusat">
+											<div class="panel-heading">
+												<div class="row">
+													<div class="col-lg-12 text-center">
+														KHS Pusat
+													</div>
 												</div>
 											</div>
-										</div>
-									</div>
-									<div class="col-lg-12">
-										<div class="row">
-											<div class="col-lg-12">
-												<div  class="table-responsive">
-													<table class="table table-bordered table-hover table-striped tblMPRPresensiHariIniWfhjenis" style="width: 100%;">
-														<thead>
-															<tr>
-																<th colspan="7">KHS PUSAT</th>
-															</tr>
-															<tr>
-																<th colspan="3">FABRIKASI</th>
-																<th colspan="3">NON FABRIKASI</th>
-																<th style="width: <?=100/7 ?>%;" rowspan="2">TOTAL</th>
-															</tr>
-															<tr>
-																<th style="width: <?=100/7 ?>%;">WFO</th>
-																<th style="width: <?=100/7 ?>%;">WFH</th>
-																<th style="width: <?=100/7 ?>%;">OFF/TIDAK MASUK</th>
-																<th style="width: <?=100/7 ?>%;">WFO</th>
-																<th style="width: <?=100/7 ?>%;">WFH</th>
-																<th style="width: <?=100/7 ?>%;">OFF/TIDAK MASUK</th>
-															</tr>
-														</thead>
-														<tbody>
-															<tr>
-																<td data-params="p_fb_wfo"><?=$p_fb_wfo ?></td>
-																<td data-params="p_fb_wfh"><?=$p_fb_wfh ?></td>
-																<td data-params="p_fb_off"><?=$p_fb_off ?></td>
-																<td data-params="p_nfb_wfo"><?=$p_nfb_wfo ?></td>
-																<td data-params="p_nfb_wfh"><?=$p_nfb_wfh ?></td>
-																<td data-params="p_nfb_off"><?=$p_nfb_off ?></td>
-																<td data-params="p_ttl"><?=$p_total ?></td>
-															</tr>
-															<tr>
-																<td data-params="p_fb_wfo"><?=round(($p_fb_wfo		/$p_total) * 100); ?>%</td>
-																<td data-params="p_fb_wfh"><?=round(($p_fb_wfh		/$p_total) * 100); ?>%</td>
-																<td data-params="p_fb_off"><?=round(($p_fb_off		/$p_total) * 100); ?>%</td>
-																<td data-params="p_nfb_wfo"><?=round(($p_nfb_wfo	/$p_total) * 100); ?>%</td>
-																<td data-params="p_nfb_wfh"><?=round(($p_nfb_wfh	/$p_total) * 100); ?>%</td>
-																<td data-params="p_nfb_off"><?=round(($p_nfb_off	/$p_total) * 100); ?>%</td>
-																<td data-params="p_ttl"><?=round(($p_total		/$p_total) * 100); ?>%</td>
-															</tr>
-														</tbody>
-													</table>
+											<div class="panel-body">
+												<div class="row">
+													<div class="col-lg-12">
+														<div class="row">
+															<div class="col-sm-12 col-lg-5">
+																<div class="row">
+																	<div class="col-md-9">
+																		<div class="panel">
+																			<div class="panel-heading text-center">
+																				FABRIKASI
+																			</div>
+																			<div class="panel-body">
+																				<div class="row">
+																					<div class="col-xs-4">
+																						<div class="panel">
+																							<div class="panel-heading text-center">
+																								WFO
+																							</div>
+																							<div class="panel-body">
+																								<div class="row angka jumlah" data-params="p_p_f_wfo">
+																									<div class="col-lg-12 text-center">
+																										<?=$p_fb_wfo ?>
+																									</div>
+																								</div>
+																								<div class="row angka persen" data-params="p_p_f_wfo">
+																									<div class="col-lg-12 text-center">
+																										<?=round(($p_fb_wfo	/ $p_fb_ttl) * 100); ?>%
+																									</div>
+																								</div>
+																							</div>
+																						</div>
+																					</div>
+																					<div class="col-xs-4">
+																						<div class="panel">
+																							<div class="panel-heading text-center">
+																								WFH
+																							</div>
+																							<div class="panel-body">
+																								<div class="row angka jumlah" data-params="p_p_f_wfh">
+																									<div class="col-lg-12 text-center">
+																										<?=$p_fb_wfh ?>
+																									</div>
+																								</div>
+																								<div class="row angka persen" data-params="p_p_f_wfh">
+																									<div class="col-lg-12 text-center">
+																										<?=round(($p_fb_wfh	/ $p_fb_ttl) * 100); ?>%
+																									</div>
+																								</div>
+																							</div>
+																						</div>
+																					</div>
+																					<div class="col-xs-4">
+																						<div class="panel">
+																							<div class="panel-heading text-center">
+																								OFF / TIDAK MASUK
+																							</div>
+																							<div class="panel-body">
+																								<div class="row angka jumlah" data-params="p_p_f_off">
+																									<div class="col-lg-12 text-center">
+																										<?=$p_fb_off ?>
+																									</div>
+																								</div>
+																								<div class="row angka persen" data-params="p_p_f_off">
+																									<div class="col-lg-12 text-center">
+																										<?=round(($p_fb_off	/ $p_fb_ttl) * 100); ?>%
+																									</div>
+																								</div>
+																							</div>
+																						</div>
+																					</div>
+																				</div>
+																			</div>
+																		</div>
+																	</div>
+																	<div class="col-md-3">
+																		<div class="panel">
+																			<div class="panel-heading heading-total text-center">
+																				TOTAL FABRIKASI
+																			</div>
+																			<div class="panel-body">
+																				<div class="row angka jumlah" data-params="p_p_f_ttl">
+																					<div class="col-lg-12 text-center">
+																						<?=$p_fb_ttl ?>
+																					</div>
+																				</div>
+																				<div class="row angka persen" data-params="p_p_f_ttl">
+																					<div class="col-lg-12 text-center">
+																						<?=round(($p_fb_ttl	/ $p_fb_ttl) * 100); ?>%
+																					</div>
+																				</div>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</div>
+															<div class="col-sm-12 col-lg-5">
+																<div class="row">
+																	<div class="col-md-9">
+																		<div class="panel">
+																			<div class="panel-heading text-center">
+																				NON FABRIKASI
+																			</div>
+																			<div class="panel-body">
+																				<div class="row">
+																					<div class="col-xs-4">
+																						<div class="panel">
+																							<div class="panel-heading text-center">
+																								WFO
+																							</div>
+																							<div class="panel-body">
+																								<div class="row angka jumlah" data-params="p_p_n_wfo">
+																									<div class="col-lg-12 text-center">
+																										<?=$p_nfb_wfo ?>
+																									</div>
+																								</div>
+																								<div class="row angka persen" data-params="p_p_n_wfo">
+																									<div class="col-lg-12 text-center">
+																										<?=round(($p_nfb_wfo	/ $p_nfb_ttl) * 100); ?>%
+																									</div>
+																								</div>
+																							</div>
+																						</div>
+																					</div>
+																					<div class="col-xs-4">
+																						<div class="panel">
+																							<div class="panel-heading text-center">
+																								WFH
+																							</div>
+																							<div class="panel-body">
+																								<div class="row angka jumlah" data-params="p_p_n_wfh">
+																									<div class="col-lg-12 text-center">
+																										<?=$p_nfb_wfh ?>
+																									</div>
+																								</div>
+																								<div class="row angka persen" data-params="p_p_n_wfh">
+																									<div class="col-lg-12 text-center">
+																										<?=round(($p_nfb_wfh	/ $p_nfb_ttl) * 100); ?>%
+																									</div>
+																								</div>
+																							</div>
+																						</div>
+																					</div>
+																					<div class="col-xs-4">
+																						<div class="panel">
+																							<div class="panel-heading text-center">
+																								OFF / TIDAK MASUK
+																							</div>
+																							<div class="panel-body">
+																								<div class="row angka jumlah" data-params="p_p_n_off">
+																									<div class="col-lg-12 text-center">
+																										<?=$p_nfb_off ?>
+																									</div>
+																								</div>
+																								<div class="row angka persen" data-params="p_p_n_off">
+																									<div class="col-lg-12 text-center">
+																										<?=round(($p_nfb_off	/ $p_nfb_ttl) * 100); ?>%
+																									</div>
+																								</div>
+																							</div>
+																						</div>
+																					</div>
+																				</div>
+																			</div>
+																		</div>
+																	</div>
+																	<div class="col-md-3">
+																		<div class="panel">
+																			<div class="panel-heading heading-total text-center">
+																				TOTAL NON FABRIKASI
+																			</div>
+																			<div class="panel-body">
+																				<div class="row">
+																					<div class="row angka jumlah" data-params="p_p_n_ttl">
+																						<div class="col-lg-12 text-center">
+																							<?=$p_nfb_ttl ?>
+																						</div>
+																					</div>
+																					<div class="row angka persen" data-params="p_p_n_ttl">
+																						<div class="col-lg-12 text-center">
+																							<?=round(($p_nfb_ttl	/ $p_nfb_ttl) * 100); ?>%
+																						</div>
+																					</div>
+																				</div>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</div>
+															<div class="col-sm-12 col-lg-2">
+																<div class="panel">
+																	<div class="panel-heading text-center heading-total">
+																		TOTAL KHS PUSAT
+																	</div>
+																	<div class="panel-body">
+																		<div class="row angka jumlah" data-params="p_p_a_ttl" style="height: 160px;line-height: 159px;">
+																			<div class="col-lg-12 text-center">
+																				<?=$p_ttl ?>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
 												</div>
 											</div>
 										</div>
@@ -206,12 +389,15 @@
 								<thead>
 									<tr>
 										<th class="text-center bg-primary">No.</th>
+										<th class="text-center bg-primary">Dept</th>
+										<th class="text-center bg-primary">Bidang</th>
+										<th class="text-center bg-primary">Unit</th>
+										<th class="text-center bg-primary">Seksi</th>
 										<th class="text-center bg-primary">No. Induk</th>
 										<th class="text-center bg-primary">Nama</th>
-										<th class="text-center bg-primary">Kodesie</th>
-										<th class="text-center bg-primary">Shift</th>
 										<th class="text-center bg-primary">Waktu Absen</th>
-										<th class="text-center bg-primary">Noind Baru</th>
+										<th class="text-center bg-primary">Lokasi Absen</th>
+										<th class="text-center bg-primary">Shift</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -222,7 +408,7 @@
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+				<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
 			</div>
 		</div>
 	</div>
@@ -277,16 +463,17 @@
 		            [ 5, 10, 25, 50, -1 ],
 		            [ '5 rows', '10 rows', '25 rows', '50 rows', 'Show all' ]
 		        ],
+		        "pageLength": 10,
 		        "dom" : 'Blfrtip',
 		        "buttons" : [
 		            'excel', 'pdf'
 		        ],      
 		    });
-			$('[class*=tblMPRPresensiHariIniWfh]').on('dblclick','td',function(){
+			$('.angka').on('click',function(){
 		        params = $(this).data('params');
 		        $('#ldgMPRPresensiHariIniLoading').show();
 		        $.ajax({
-		            url: baseurl+'MasterPresensi/DataPresensi/PresensiHariIni/detailWfh/'+params,
+		            url: baseurl+'MasterPresensi/DataPresensi/PresensiHariIni/detail/'+params,
 		            error: function(xhr,status,error){
 		                $('#ldgMPRPresensiHariIniLoading').hide();
 		                swal.fire({
@@ -305,12 +492,15 @@
 		                    obj.map(function(value,index){
 		                        tblMPRPresensiHariIniDetail.row.add([
 		                            (index +1),
+		                            value['dept'],
+		                            value['bidang'],
+		                            value['unit'],
+		                            value['seksi'],
 		                            value['noind'],
 		                            value['nama'],
-		                            value['kodesie'],
-		                            value['shift'],
 		                            value['waktu'],
-		                            value['noind_baru']
+		                            value['lokasi'],
+		                            value['shift']
 		                        ]).draw(false);
 
 		                    })
@@ -320,6 +510,36 @@
 		            }
 		        })
 		    })
+
+		    setInterval(function(){
+		    	console.log("refresh")
+		    	$.ajax({
+		    		url: baseurl + "MasterPresensi/DataPresensi/PresensiHariIni/updateData",
+		    		success: function(result) {
+		    			if(obj = JSON.parse(result)){
+		    				$('.panel-heading.waktu').text(obj.waktu);
+		    				$('.jumlah [data-params=p_p_f_wfo]').text(obj.p_fb_wfo);
+							$('.jumlah [data-params=p_p_f_wfh]').text(obj.p_fb_wfh);
+							$('.jumlah [data-params=p_p_f_off]').text(obj.p_fb_off);
+							$('.jumlah [data-params=p_p_f_ttl]').text(obj.p_fb_ttl);
+		    				$('.jumlah [data-params=p_p_n_wfo]').text(obj.p_nfb_wfo);
+							$('.jumlah [data-params=p_p_n_wfh]').text(obj.p_nfb_wfh);
+							$('.jumlah [data-params=p_p_n_off]').text(obj.p_nfb_off);
+							$('.jumlah [data-params=p_p_n_ttl]').text(obj.p_nfb_ttl);
+							$('.jumlah [data-params=p_p_a_ttl]').text(obj.p_ttl);
+
+		    				$('.persentase [data-params=p_p_f_wfo]').text( Math.round(( Number(obj.p_fb_wfo) / Number(obj.p_fb_ttl) ) * 100) + "%" );
+							$('.persentase [data-params=p_p_f_wfh]').text( Math.round(( Number(obj.p_fb_wfh) / Number(obj.p_fb_ttl) ) * 100) + "%" );
+							$('.persentase [data-params=p_p_f_off]').text( Math.round(( Number(obj.p_fb_off) / Number(obj.p_fb_ttl) ) * 100) + "%" );
+							$('.persentase [data-params=p_p_f_ttl]').text( Math.round(( Number(obj.p_fb_ttl) / Number(obj.p_fb_ttl) ) * 100) + "%" );
+		    				$('.persentase [data-params=p_p_n_wfo]').text( Math.round(( Number(obj.p_nfb_wfo) / Number(obj.p_nfb_ttl) ) * 100) + "%" );
+							$('.persentase [data-params=p_p_n_wfh]').text( Math.round(( Number(obj.p_nfb_wfh) / Number(obj.p_nfb_ttl) ) * 100) + "%" );
+							$('.persentase [data-params=p_p_n_off]').text( Math.round(( Number(obj.p_nfb_off) / Number(obj.p_nfb_ttl) ) * 100) + "%" );
+							$('.persentase [data-params=p_p_n_ttl]').text( Math.round(( Number(obj.p_nfb_ttl) / Number(obj.p_nfb_ttl) ) * 100) + "%" );
+		    			}
+		    		}
+		    	})
+		    },5000);
 		})
 	</script>
 </body>

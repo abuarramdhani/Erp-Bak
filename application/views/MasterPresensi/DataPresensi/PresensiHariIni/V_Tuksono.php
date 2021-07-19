@@ -22,153 +22,235 @@
 						
 					</div>
 					<div class="panel-body">
+						<style type="text/css">
+							.angka{
+								font-size: 25pt;
+								height: 80px;
+								vertical-align: middle;
+								line-height: 79px;
+								background-color: white;
+							}
+							.panel-pusat .panel,
+							.panel-tuksono .panel {
+								margin-bottom: 0px;
+							}
+
+							@media only screen and (max-width: 400px) {
+								.angka{
+									font-size: 20pt;
+								}
+								.panel-pusat .panel,
+								.panel-tuksono .panel {
+									margin-bottom: 10px !important;
+								}
+							}
+							@media only screen and (max-width:  1200px){
+								.panel-pusat .panel,
+								.panel-tuksono .panel {
+									margin-bottom: 10px !important;
+								}
+								.panel-pusat .panel .panel,
+								.panel-tuksono .panel .panel {
+									margin-bottom: 0px !important;
+								}
+							}
+							/**/
+							.panel-tuksono, 
+							.panel-tuksono .panel {
+								border-color: #A43820;
+								border-radius: 0px;
+							}
+							.panel-tuksono > .panel-heading {
+								background-color: #A43820;
+								color: white;
+							}
+							.panel-tuksono .panel > .panel-heading {
+								background-color: #BA5536;
+								color: white;
+								height: 40px;
+								padding-top: 0px;
+							}
+							.panel-tuksono .panel > .panel-heading.heading-total {
+								height: 80px;
+							}
+							.panel-tuksono .panel-heading {
+								font-weight: bold;
+								border-radius: 0px;
+							}
+							.panel-tuksono > .panel-body,
+							.panel-tuksono > .panel-body .panel-body {
+								background-color: #A43820;
+							}
+							.panel-tuksono .panel-body {
+								padding: 0px;
+							}
+							.panel-tuksono .panel-body > .row [class*=col] {
+								padding: 0px;
+							}
+							.panel-tuksono .panel-body .row {
+								margin: 0px;
+							}
+							.panel-tuksono .panel {
+								/*margin-bottom: 10px;*/
+								border-color: #A43820;
+							}
+							.panel-tuksono .angka {
+								border-bottom: 1px solid #A43820;
+								border-top: 1px solid #A43820;
+							}
+						</style>
 						<div class="row">
 							<div class="col-lg-12">
-								<style type="text/css">
-									.tblMPRPresensiHariIniWfhall > tbody > tr > td, .tblMPRPresensiHariIniWfhlokasi > tbody > tr > td, .tblMPRPresensiHariIniWfhjenis > tbody > tr > td    {
-										font-size: 30pt;
-									}
-									.tblMPRPresensiHariIniWfhall > thead > tr > th, .tblMPRPresensiHariIniWfhall > tbody > tr > td {
-										border-color: #7CAA2D;
-										text-align: center;
-									}
-									.tblMPRPresensiHariIniWfhall > thead > tr > th {
-										background-color: #7CAA2D;
-										border-color: #F1F3CE;
-									}
-
-									.tblMPRPresensiHariIniWfhlokasi > thead > tr > th, .tblMPRPresensiHariIniWfhlokasi > tbody > tr > td {
-										border-color: #F5E356;
-										text-align: center;
-									}
-									.tblMPRPresensiHariIniWfhlokasi > thead > tr > th {
-										background-color: #F5E356;
-										border-color: #F1F3CE;
-									}
-
-									.tblMPRPresensiHariIniWfhjenis > thead > tr > th, .tblMPRPresensiHariIniWfhjenis > tbody > tr > td {
-										border-color: #CB6318;
-										text-align: center;
-									}
-									.tblMPRPresensiHariIniWfhjenis > thead > tr > th {
-										background-color: #CB6318;
-										border-color: #F1F3CE;
-									}
-								</style>
 								<?php 
 									$t_wfo		= 0;
 									$t_wfh		= 0;
 									$t_off		= 0;
-									$t_total	= 0;
+									$t_ttl		= 0;
 									$t_fb_wfo	= 0;
 									$t_fb_wfh	= 0;
 									$t_fb_off	= 0;
-									$t_nfb_wfo	= 0;
-									$t_nfb_wfh	= 0;
-									$t_nfb_off	= 0;
-									$t_total	= 0;
+									$t_ttl		= 0;
 									
-									if (isset($data_wfh) && !empty($data_wfh)) {
-										foreach ($data_wfh as $key => $value) {
+									if (isset($data_penyesuaian) && !empty($data_penyesuaian)) {
+										foreach ($data_penyesuaian as $key => $value) {
 											if ($value['lokasi'] == "Tuksono") {
 												if ($value['jenis'] == "Fabrikasi") {
 													$t_fb_wfo	= $value['jumlah_wfo'];
 													$t_fb_wfh	= $value['jumlah_wfh'];
 													$t_fb_off	= $value['jumlah_off'];
-												}elseif($value['jenis'] = "Non Fabrikasi"){
-													$t_nfb_wfo	= $value['jumlah_wfo'];
-													$t_nfb_wfh	= $value['jumlah_wfh'];
-													$t_nfb_off	= $value['jumlah_off'];
 												}
 											}
 										}
-										$t_wfo		= $t_fb_wfo + $t_nfb_wfo;
-										$t_wfh		= $t_fb_wfh + $t_nfb_wfh;
-										$t_off		= $t_fb_off + $t_nfb_off;
-										$t_total	= $t_wfo + $t_wfh + $t_off;
+
+										$t_wfo	= $t_fb_wfo;
+										$t_wfh	= $t_fb_wfh;
+										$t_off	= $t_fb_off;
+										$t_fb_ttl = $t_fb_wfo + $t_fb_wfh + $t_fb_off;
+										$t_ttl	= $t_wfo + $t_wfh + $t_off;
 
 									}
 								?>
 								<div class="row">
 									<div class="col-lg-12">
-										<div class="row">
-											<div class="col-lg-12">
-												<div  class="table-responsive">
-													<table class="table table-bordered table-hover table-striped tblMPRPresensiHariIniWfhlokasi" style="width: 100%;">
-														<thead>
-															<tr>
-																<th colspan="4">KHS PUSAT</th>
-															</tr>
-															<tr>
-																<th style="width: 25%;">WFO</th>
-																<th style="width: 25%;">WFH</th>
-																<th style="width: 25%;">OFF/TIDAK MASUK</th>
-																<th style="width: 25%;">TOTAL</th>
-															</tr>
-														</thead>
-														<tbody>
-															<tr>
-																<td data-params="t_wfo"><?=$t_wfo ?></td>
-																<td data-params="t_wfh"><?=$t_wfh ?></td>
-																<td data-params="t_off"><?=$t_off ?></td>
-																<td data-params="t_ttl"><?=$t_total ?></td>
-															</tr>
-															<tr>
-																<td data-params="t_wfo"><?=round(($t_wfo	/ $t_total) * 100); ?>%</td>
-																<td data-params="t_wfh"><?=round(($t_wfh	/ $t_total) * 100); ?>%</td>
-																<td data-params="t_off"><?=round(($t_off	/ $t_total) * 100); ?>%</td>
-																<td data-params="t_ttl"><?=round(($t_total	/ $t_total) * 100); ?>%</td>
-															</tr>
-														</tbody>
-													</table>
+										<div class="panel panel-tuksono">
+											<div class="panel-heading">
+												<div class="row">
+													<div class="col-lg-12 text-center">
+														KHS TUKSONO
+													</div>
 												</div>
 											</div>
-										</div>
-									</div>
-									<div class="col-lg-12">
-										<div class="row">
-											<div class="col-lg-12">
-												<div  class="table-responsive">
-													<table class="table table-bordered table-hover table-striped tblMPRPresensiHariIniWfhjenis" style="width: 100%;">
-														<thead>
-															<tr>
-																<th colspan="7">KHS PUSAT</th>
-															</tr>
-															<tr>
-																<th colspan="3">FABRIKASI</th>
-																<th colspan="3">NON FABRIKASI</th>
-																<th style="width: <?=100/7 ?>%;" rowspan="2">TOTAL</th>
-															</tr>
-															<tr>
-																<th style="width: <?=100/7 ?>%;">WFO</th>
-																<th style="width: <?=100/7 ?>%;">WFH</th>
-																<th style="width: <?=100/7 ?>%;">OFF/TIDAK MASUK</th>
-																<th style="width: <?=100/7 ?>%;">WFO</th>
-																<th style="width: <?=100/7 ?>%;">WFH</th>
-																<th style="width: <?=100/7 ?>%;">OFF/TIDAK MASUK</th>
-															</tr>
-														</thead>
-														<tbody>
-															<tr>
-																<td data-params="t_fb_wfo"><?=$t_fb_wfo ?></td>
-																<td data-params="t_fb_wfh"><?=$t_fb_wfh ?></td>
-																<td data-params="t_fb_off"><?=$t_fb_off ?></td>
-																<td data-params="t_nfb_wfo"><?=$t_nfb_wfo ?></td>
-																<td data-params="t_nfb_wfh"><?=$t_nfb_wfh ?></td>
-																<td data-params="t_nfb_off"><?=$t_nfb_off ?></td>
-																<td data-params="t_ttl"><?=$t_total ?></td>
-															</tr>
-															<tr>
-																<td data-params="t_fb_wfo"><?=round(($t_fb_wfo		/$t_total) * 100); ?>%</td>
-																<td data-params="t_fb_wfh"><?=round(($t_fb_wfh		/$t_total) * 100); ?>%</td>
-																<td data-params="t_fb_off"><?=round(($t_fb_off		/$t_total) * 100); ?>%</td>
-																<td data-params="t_nfb_wfo"><?=round(($t_nfb_wfo	/$t_total) * 100); ?>%</td>
-																<td data-params="t_nfb_wfh"><?=round(($t_nfb_wfh	/$t_total) * 100); ?>%</td>
-																<td data-params="t_nfb_off"><?=round(($t_nfb_off	/$t_total) * 100); ?>%</td>
-																<td data-params="t_ttl"><?=round(($t_total		/$t_total) * 100); ?>%</td>
-															</tr>
-														</tbody>
-													</table>
+											<div class="panel-body">
+												<div class="row">
+													<div class="col-lg-12">
+														<div class="row">
+															<div class="col-sm-12 col-lg-10">
+																<div class="row">
+																	<div class="col-md-9">
+																		<div class="panel">
+																			<div class="panel-heading text-center">
+																				FABRIKASI
+																			</div>
+																			<div class="panel-body">
+																				<div class="row">
+																					<div class="col-xs-4">
+																						<div class="panel">
+																							<div class="panel-heading text-center">
+																								WFO
+																							</div>
+																							<div class="panel-body">
+																								<div class="row angka jumlah" data-params="t_p_f_wfo">
+																									<div class="col-lg-12 text-center">
+																										<?=$t_fb_wfo ?>
+																									</div>
+																								</div>
+																								<div class="row angka persen" data-params="t_p_f_wfo">
+																									<div class="col-lg-12 text-center">
+																										<?=round(($t_fb_wfo	/ $t_fb_ttl) * 100); ?>%
+																									</div>
+																								</div>
+																							</div>
+																						</div>
+																					</div>
+																					<div class="col-xs-4">
+																						<div class="panel">
+																							<div class="panel-heading text-center">
+																								WFH
+																							</div>
+																							<div class="panel-body">
+																								<div class="row angka jumlah" data-params="t_p_f_wfh">
+																									<div class="col-lg-12 text-center">
+																										<?=$t_fb_wfh ?>
+																									</div>
+																								</div>
+																								<div class="row angka persen" data-params="t_p_f_wfh">
+																									<div class="col-lg-12 text-center">
+																										<?=round(($t_fb_wfh	/ $t_fb_ttl) * 100); ?>%
+																									</div>
+																								</div>
+																							</div>
+																						</div>
+																					</div>
+																					<div class="col-xs-4">
+																						<div class="panel">
+																							<div class="panel-heading text-center">
+																								OFF / TIDAK MASUK
+																							</div>
+																							<div class="panel-body">
+																								<div class="row angka jumlah" data-params="t_p_f_off">
+																									<div class="col-lg-12 text-center">
+																										<?=$t_fb_off ?>
+																									</div>
+																								</div>
+																								<div class="row angka persen" data-params="t_p_f_off">
+																									<div class="col-lg-12 text-center">
+																										<?=round(($t_fb_off	/ $t_fb_ttl) * 100); ?>%
+																									</div>
+																								</div>
+																							</div>
+																						</div>
+																					</div>
+																				</div>
+																			</div>
+																		</div>
+																	</div>
+																	<div class="col-md-3">
+																		<div class="panel">
+																			<div class="panel-heading heading-total text-center">
+																				TOTAL FABRIKASI
+																			</div>
+																			<div class="panel-body">
+																				<div class="row angka jumlah" data-params="t_p_f_ttl">
+																					<div class="col-lg-12 text-center">
+																						<?=$t_fb_ttl ?>
+																					</div>
+																				</div>
+																				<div class="row angka persen" data-params="t_p_f_ttl">
+																					<div class="col-lg-12 text-center">
+																						<?=round(($t_fb_ttl	/ $t_fb_ttl) * 100); ?>%
+																					</div>
+																				</div>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</div>
+															<div class="col-sm-12 col-lg-2">
+																<div class="panel">
+																	<div class="panel-heading text-center heading-total">
+																		TOTAL KHS TUKSONO
+																	</div>
+																	<div class="panel-body">
+																		<div class="row angka jumlah" data-params="t_p_a_ttl" style="height: 160px;line-height: 159px;">
+																			<div class="col-lg-12 text-center">
+																				<?=$t_ttl ?>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
 												</div>
 											</div>
 										</div>
@@ -207,12 +289,15 @@
 								<thead>
 									<tr>
 										<th class="text-center bg-primary">No.</th>
+										<th class="text-center bg-primary">Dept</th>
+										<th class="text-center bg-primary">Bidang</th>
+										<th class="text-center bg-primary">Unit</th>
+										<th class="text-center bg-primary">Seksi</th>
 										<th class="text-center bg-primary">No. Induk</th>
 										<th class="text-center bg-primary">Nama</th>
-										<th class="text-center bg-primary">Kodesie</th>
-										<th class="text-center bg-primary">Shift</th>
 										<th class="text-center bg-primary">Waktu Absen</th>
-										<th class="text-center bg-primary">Noind Baru</th>
+										<th class="text-center bg-primary">Lokasi Absen</th>
+										<th class="text-center bg-primary">Shift</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -223,7 +308,7 @@
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+				<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
 			</div>
 		</div>
 	</div>
@@ -278,16 +363,17 @@
 		            [ 5, 10, 25, 50, -1 ],
 		            [ '5 rows', '10 rows', '25 rows', '50 rows', 'Show all' ]
 		        ],
+		        "pageLength": 10,
 		        "dom" : 'Blfrtip',
 		        "buttons" : [
 		            'excel', 'pdf'
 		        ],      
 		    });
-			$('[class*=tblMPRPresensiHariIniWfh]').on('dblclick','td',function(){
+			$('.angka').on('click',function(){
 		        params = $(this).data('params');
 		        $('#ldgMPRPresensiHariIniLoading').show();
 		        $.ajax({
-		            url: baseurl+'MasterPresensi/DataPresensi/PresensiHariIni/detailWfh/'+params,
+		            url: baseurl+'MasterPresensi/DataPresensi/PresensiHariIni/detail/'+params,
 		            error: function(xhr,status,error){
 		                $('#ldgMPRPresensiHariIniLoading').hide();
 		                swal.fire({
@@ -306,12 +392,15 @@
 		                    obj.map(function(value,index){
 		                        tblMPRPresensiHariIniDetail.row.add([
 		                            (index +1),
+		                            value['dept'],
+		                            value['bidang'],
+		                            value['unit'],
+		                            value['seksi'],
 		                            value['noind'],
 		                            value['nama'],
-		                            value['kodesie'],
-		                            value['shift'],
 		                            value['waktu'],
-		                            value['noind_baru']
+		                            value['lokasi'],
+		                            value['shift']
 		                        ]).draw(false);
 
 		                    })
@@ -321,6 +410,28 @@
 		            }
 		        })
 		    })
+
+		    setInterval(function(){
+		    	console.log("refresh")
+		    	$.ajax({
+		    		url: baseurl + "MasterPresensi/DataPresensi/PresensiHariIni/updateData",
+		    		success: function(result) {
+		    			if(obj = JSON.parse(result)){
+		    				$('.panel-heading.waktu').text(obj.waktu);
+		    				$('.jumlah [data-params=t_p_f_wfo]').text(obj.t_fb_wfo);
+							$('.jumlah [data-params=t_p_f_wfh]').text(obj.t_fb_wfh);
+							$('.jumlah [data-params=t_p_f_off]').text(obj.t_fb_off);
+							$('.jumlah [data-params=t_p_f_ttl]').text(obj.t_fb_ttl);
+							$('.jumlah [data-params=t_p_a_ttl]').text(obj.t_ttl);
+
+		    				$('.persentase [data-params=t_p_f_wfo]').text( Math.round(( Number(obj.t_fb_wfo) / Number(obj.t_fb_ttl) ) * 100) + "%" );
+							$('.persentase [data-params=t_p_f_wfh]').text( Math.round(( Number(obj.t_fb_wfh) / Number(obj.t_fb_ttl) ) * 100) + "%" );
+							$('.persentase [data-params=t_p_f_off]').text( Math.round(( Number(obj.t_fb_off) / Number(obj.t_fb_ttl) ) * 100) + "%" );
+							$('.persentase [data-params=t_p_f_ttl]').text( Math.round(( Number(obj.t_fb_ttl) / Number(obj.t_fb_ttl) ) * 100) + "%" );
+		    			}
+		    		}
+		    	})
+		    },30000);
 		})
 	</script>
 </body>

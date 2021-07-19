@@ -56,43 +56,42 @@ class C_PresensiHariIni extends CI_Controller
 
 	public function Pusat()
 	{
-		$data['data_wfh'] = $this->M_presensihariini->getPresensiWFHHariIni();
-		echo "page under maintenance";
-		// $this->load->view('MasterPresensi/DataPresensi/PresensiHariIni/V_Pusat',$data);
+		$data['data_penyesuaian'] = $this->M_presensihariini->getPresensiPenyesuaianHariIni();
+		// echo "page under maintenance";
+		$this->load->view('MasterPresensi/DataPresensi/PresensiHariIni/V_Pusat',$data);
 	}
 
 	public function Tuksono()
 	{
-		$data['data_wfh'] = $this->M_presensihariini->getPresensiWFHHariIni();
-		echo "page under maintenance";
-		// $this->load->view('MasterPresensi/DataPresensi/PresensiHariIni/V_Tuksono',$data);
+		$data['data_penyesuaian'] = $this->M_presensihariini->getPresensiPenyesuaianHariIni();
+		// echo "page under maintenance";
+		$this->load->view('MasterPresensi/DataPresensi/PresensiHariIni/V_Tuksono',$data);
 	}
 
 	public function updateData()
 	{
-		$data = $this->M_presensihariini->getPresensiWFHHariIni();
+		$data = $this->M_presensihariini->getPresensiPenyesuaianHariIni();
 		$p_wfo 		= 0;
 		$p_wfh		= 0;
 		$p_off		= 0;
-		$p_total	= 0;
+		$p_ttl		= 0;
 		$p_fb_wfo	= 0;
 		$p_fb_wfh	= 0;
 		$p_fb_off	= 0;
+		$p_fb_ttl	= 0;
 		$p_nfb_wfo	= 0;
 		$p_nfb_wfh	= 0;
 		$p_nfb_off	= 0;
-		$p_total	= 0;
+		$p_nfb_ttl	= 0;
+		$p_ttl		= 0;
 		$t_wfo		= 0;
 		$t_wfh		= 0;
 		$t_off		= 0;
-		$t_total	= 0;
+		$t_ttl		= 0;
 		$t_fb_wfo	= 0;
 		$t_fb_wfh	= 0;
 		$t_fb_off	= 0;
-		$t_nfb_wfo	= 0;
-		$t_nfb_wfh	= 0;
-		$t_nfb_off	= 0;
-		$t_total	= 0;
+		$t_ttl		= 0;
 		$waktu 		= date('Y-m-d H:i:s');
 		
 		if (isset($data) && !empty($data)) {
@@ -112,47 +111,32 @@ class C_PresensiHariIni extends CI_Controller
 						$t_fb_wfo	= $value['jumlah_wfo'];
 						$t_fb_wfh	= $value['jumlah_wfh'];
 						$t_fb_off	= $value['jumlah_off'];
-					}elseif($value['jenis'] = "Non Fabrikasi"){
-						$t_nfb_wfo	= $value['jumlah_wfo'];
-						$t_nfb_wfh	= $value['jumlah_wfh'];
-						$t_nfb_off	= $value['jumlah_off'];
 					}
 				}
 			}
-			$p_wfo		= $p_fb_wfo + $p_nfb_wfo;
-			$p_wfh		= $p_fb_wfh + $p_nfb_wfh;
-			$p_off		= $p_fb_off + $p_nfb_off;
-			$p_total	= $p_wfo + $p_wfh + $p_off;
+			$p_fb_ttl 	= $p_fb_wfo + $p_fb_wfh + $p_fb_off;
+			$p_nfb_ttl 	= $p_nfb_wfo + $p_nfb_wfh + $p_nfb_off;
+			$p_ttl		= $p_wfo + $p_wfh + $p_off;
 
-			$t_wfo		= $t_fb_wfo + $t_nfb_wfo;
-			$t_wfh		= $t_fb_wfh + $t_nfb_wfh;
-			$t_off		= $t_fb_off + $t_nfb_off;
-			$t_total	= $t_wfo + $t_wfh + $t_off;
+			$t_fb_ttl 	= $t_fb_wfo + $t_fb_wfh + $t_fb_off;
+			$t_ttl		= $t_wfo + $t_wfh + $t_off;
 		}
 
 		$result = array(
-			'p_wfo'		=> $p_wfo,
-			'p_wfh'		=> $p_wfh,
-			'p_off'		=> $p_off,
-			'p_ttl'		=> $p_total,
 			'p_fb_wfo'	=> $p_fb_wfo,
 			'p_fb_wfh'	=> $p_fb_wfh,
 			'p_fb_off'	=> $p_fb_off,
+			'p_fb_ttl'	=> $p_fb_ttl,
 			'p_nfb_wfo'	=> $p_nfb_wfo,
 			'p_nfb_wfh'	=> $p_nfb_wfh,
 			'p_nfb_off'	=> $p_nfb_off,
-			'p_ttl'		=> $p_total,
-			't_wfo'		=> $t_wfo,
-			't_wfh'		=> $t_wfh,
-			't_off'		=> $t_off,
-			't_total'	=> $t_total,
+			'p_nfb_ttl'	=> $p_nfb_ttl,
+			'p_ttl'		=> $p_ttl,
 			't_fb_wfo'	=> $t_fb_wfo,
 			't_fb_wfh'	=> $t_fb_wfh,
 			't_fb_off'	=> $t_fb_off,
-			't_nfb_wfo'	=> $t_nfb_wfo,
-			't_nfb_wfh'	=> $t_nfb_wfh,
-			't_nfb_off'	=> $t_nfb_off,
-			't_ttl'		=> $t_total,
+			't_fb_ttl'	=> $t_fb_ttl,
+			't_ttl'		=> $t_ttl,
 			'waktu'		=> $waktu
 		);
 		echo json_encode($result);
