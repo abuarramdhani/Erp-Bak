@@ -150,7 +150,7 @@
 			</td>
 		</tr>
 	</table>
-	<!-- coba  coba  -->
+	<!-- item  -->
 	<div style="position: absolute;">
 		<table style="width: 81.5%; margin-top: 40px;">
 			<?php if ($key_master_who == 0): ?>
