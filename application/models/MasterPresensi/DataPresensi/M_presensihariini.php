@@ -239,10 +239,33 @@ class M_presensihariini extends CI_Model
 		switch ($param[3]) {
 			case 'wfo':
 				$user = "and user_ != 'ABSON'";
+				$jumlah_absen = "and (
+                        select count(*)
+                        from \"Presensi\".tpresensi_riil tpr
+                        where tpr.tanggal = current_date
+                        and tpr.noind = tp.noind
+                        $user
+                    ) > 0";
 				break;
 			case 'wfh':
 				$user = "and user_ = 'ABSON'";
+				$jumlah_absen = "and (
+                        select count(*)
+                        from \"Presensi\".tpresensi_riil tpr
+                        where tpr.tanggal = current_date
+                        and tpr.noind = tp.noind
+                        $user
+                    ) > 0";
 				break;
+			case 'off': 
+			$user = "";
+				$jumlah_absen = "and (
+                        select count(*)
+                        from \"Presensi\".tpresensi_riil tpr
+                        where tpr.tanggal = current_date
+                        and tpr.noind = tp.noind
+                    ) = 0";
+                break;
 			default:
 				$user = "";
 				break;
@@ -306,6 +329,7 @@ class M_presensihariini extends CI_Model
 			and left(tp.noind,1) not in ('M','L','Z')
 			$lokasi 
 			$seksi
+			$jumlah_absen
 			order by tp.noind";
 		return $this->personalia->query($query)->result_array();
 	}
