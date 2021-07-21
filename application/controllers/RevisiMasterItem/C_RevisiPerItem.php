@@ -92,6 +92,15 @@ class C_RevisiPerItem extends CI_Controller
 			$this->M_revisimasteritem->insertData($arrayItem);
 		}
 		$this->M_revisimasteritem->runUpdate();
+		//
+		$this->session->set_flashdata('flashdata_success', '<div class="alert alert-success alert-dismissible" role="alert">
+										<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+											<span aria-hidden="true">
+											<i class="fa fa-close"></i>
+											</span>
+										</button>
+										<span><strong>Data Updated !</strong> Silakan cek Master Item</span>
+										</div>'); //ini
 		redirect(base_url("RevisiMasterItem/UpdatePerItem"));
 	}
 	
