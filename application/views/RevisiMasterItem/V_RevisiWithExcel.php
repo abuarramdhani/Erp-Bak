@@ -11,6 +11,9 @@
         <ul class="nav nav-tabs pull-right">
           <li class="pull-left header"><i class="fa fa-pencil"></i> <b>Revisi Master Item - Excel</b></li>
         </ul>
+        <br>
+        <?= $this->session->flashdata('flashdata_success');?>
+        <br>
         <form method="post" enctype="multipart/form-data">
         <div class="tab-content">
           <div class="row">
