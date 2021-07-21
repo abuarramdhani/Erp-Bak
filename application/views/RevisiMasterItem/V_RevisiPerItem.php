@@ -11,6 +11,9 @@
         <ul class="nav nav-tabs pull-right">
           <li class="pull-left header"><i class="fa fa-pencil"></i> <b>Revisi Master Item - per Item</b></li>
         </ul>
+        <br>
+        <?= $this->session->flashdata('flashdata_success');?>
+        <br>
         <form method="post" enctype="multipart/form-data">
         <table class="table table-bordered table-hover table-striped text-center tablePerItem" style="width: 100%;table-layout:fixed">
           <thead class="bg-primary">
