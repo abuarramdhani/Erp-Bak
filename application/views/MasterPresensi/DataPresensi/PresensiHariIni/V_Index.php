@@ -3,8 +3,14 @@
 		<div class="row">
 			<div class="col-lg-12">
 				<div class="row">
-					<div class="col-lg-12">
+					<div class="col-lg-10">
 						<h1><b><?=$Title ?></b></h1>
+					</div>
+					<div class="col-lg-2">
+						<button class="btn btn-info" id="btnMPRPresensiHariIniKirimEmail">
+							<span class="fa fa-send"></span>
+							Kirim Data Ke Email
+						</button>
 					</div>
 				</div>
 				<div class="row">
@@ -992,6 +998,40 @@
 								</tbody>
 							</table>
 						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" id="mdlMPPRPresensiHariIniKirimEmail">
+	<div class="modal-dialog modal-sm">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title"></h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-lg-12">
+						<form class="form-horizontal">
+							<div class="form-group">
+								<label class="form-label col-lg-12">Email Tujuan</label>
+								<div class="col-lg-12">
+									<input type="email" name="email" required class="form-control" placeholder="abc@def.efg" value="<?php echo isset($email) && !empty($email) ? $email : '' ?>" id="txtMPRPresensiHariIniEmail">
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-lg-12 text-center">
+									<button type="button" class="btn btn-primary" id="btnMPRPresensiHariIniSubmitEmail">Kirim</button>
+								</div>
+							</div>
+						</form>
 					</div>
 				</div>
 			</div>
