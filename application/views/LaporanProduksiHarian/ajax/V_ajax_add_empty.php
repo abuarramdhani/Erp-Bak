@@ -725,13 +725,22 @@ function lph_add_row_hasil_produksi() {
         swaLPHLoading('Sedang memproses data...');
       },
       success: function(result) {
-        console.log(result);
-        swaLPHLarge(result.type, result.message);
+        if (result.type == 'success') {
+          swaLPHLarge(result.type, result.message);
+        }else {
+          swaLPHLarge('warning', 'Terjadi kesalahan saat insert data');
+        }
       },
       error: function(XMLHttpRequest, textStatus, errorThrown) {
-        swaLPHLarge('error', 'Terjadi kesalahan');
+        swaLPHLarge('error', 'Koneksi terputus');
        console.error();
       }
+    }).then(function(result) {
+        setTimeout(function () {
+          if (result.type == 'success') {
+            lph_empty_form();
+          }
+        }, 347);
     })
   });
 

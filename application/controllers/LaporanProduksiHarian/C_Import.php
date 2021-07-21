@@ -436,7 +436,7 @@ class C_Import extends CI_Controller
       $s[] =  '<option selected value=""></option>';
         foreach ($data as $key => $value) {
           if (!empty($value['SHIFT_NUM'])) {
-            $s[] = '<option value="'.$value['SHIFT_NUM'].'">'.$value['SHIFT_NUM'].' - '.$value['DESCRIPTION'].'</option>';
+            $s[] = '<option value="'.$value['SHIFT_NUM'].' - '.$value['DESCRIPTION'].'">'.$value['SHIFT_NUM'].' - '.$value['DESCRIPTION'].'</option>';
           }
         }
         if (!empty($s)) {
