@@ -100,7 +100,7 @@
 				$customJavascript_ = explode(";", $customJavascript);
 				foreach ($customJavascript_ as $key => $value) :
 					?>
-					<script src="<?= base_url('assets/js/' . trim($value)) ?>"></script>
+					<script src="<?= base_url('assets/js/' . trim($value).'?version=' . filemtime('assets/js/'.trim($value))) ?>"></script>
 				<?php endforeach ?>
 			<?php
 			} else {
