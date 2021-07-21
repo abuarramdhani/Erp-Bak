@@ -438,7 +438,8 @@ class M_presensihariini extends CI_Model
 		left join hrd_khs.tpekerjaan tpk
 		on tp.kd_pkj = tpk.kdpekerjaan
 		where tp.keluar = '0'
-		and left(tp.noind,1) not in ('M','L','Z')";
+		and left(tp.noind,1) not in ('M','L','Z')
+		order by ts.dept,ts.bidang,ts.unit,ts.seksi,tp.noind";
 		return $this->personalia->query($query)->result_array();
 	}
 }
