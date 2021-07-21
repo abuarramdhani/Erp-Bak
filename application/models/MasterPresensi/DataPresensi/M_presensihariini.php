@@ -333,5 +333,114 @@ class M_presensihariini extends CI_Model
 			order by tp.noind";
 		return $this->personalia->query($query)->result_array();
 	}
+
+	public function getEmailPekerja($noind)
+	{
+		$query = "select email
+			from hrd_khs.tpribadi
+			where noind='$noind';";
+		$result = $this->personalia->query($query)->row();
+		if (!empty($result)) {
+			return $result->email;
+		}else{
+			return null;
+		}
+	}
+
+	public function getDatDdetailExcel()
+	{
+		$query = "select ts.dept,ts.bidang,ts.unit,ts.seksi,tp.noind,tp.nama,
+		    coalesce(
+		        (
+		            select string_agg(waktu,'|' order by waktu)
+		            from \"Presensi\".tpresensi_riil tpr
+		            where tpr.tanggal = current_date
+		            and tpr.noind = tp.noind
+		        ),
+		        '-'
+		    ) as waktu,
+		    coalesce(
+		        (
+		            select string_agg(
+		                case user_
+		                when 'ABSON' then 'Absen Online'
+		                when 'BRCD1' then 'Depan Mushola'
+		                when 'BRCD2' then 'Dep Prod'
+		                when 'BRCD3' then 'Anjungan'
+		                when 'BRCD4' then 'Finishgood'
+		                when 'BRCD5' then 'Sheet Metal'
+		                when 'BRCD6' then 'Foundry'
+		                when 'BRCD7' then 'Machining'
+		                when 'BRCD0' then 'Civil Mtn'
+		                when 'BRCDa' then 'Finishgood2'
+		                when 'BRCDb' then 'Foundry2'
+		                when 'BRCDc' then 'Machining2'
+		                when 'BRCDf' then 'Painting'
+		                else user_
+		                end,
+		                '|' order by waktu
+		            )
+		            from \"Presensi\".tpresensi_riil tpr
+		            where tpr.tanggal = current_date
+		            and tpr.noind = tp.noind
+		        ),
+		        '-'
+		    ) as lokasi,
+		    coalesce(
+		        (
+		            select string_agg(ts1.shift, ',')
+		            from \"Presensi\".tshiftpekerja tsp
+		            inner join \"Presensi\".tshift ts1
+		            on tsp.kd_shift = ts1.kd_shift
+		            where tsp.noind = tp.noind
+		            and tsp.tanggal = current_date
+		        ),
+		        '-'
+		    ) as shift,
+		    case when tp.lokasi_kerja =  '02' then 'Tuksono'
+		    when tp.lokasi_kerja in ('01','03','04') then 'Pusat'
+		    else 'Cabang'
+		    end as tempat,
+		    case when left(tp.kodesie,1) = '3' then 'Fabrikasi'
+		    else 'Non Fabrikasi'
+		    end jenis_1,
+		    case when left(tp.kodesie,1) ='3'
+		    or left(tp.kodesie, 7) in ('4050101','4060101')
+		    or tp.kd_pkj in (
+		        '401010204',
+		        '401010102',
+		        '401010201',
+		        '401010202',
+		        '401010203'
+		    )
+		    then 'Fabrikasi'
+		    else 'Non Fabrikasi'
+		    end jenis_2,
+		    case when (
+		        select count(*)
+		        from \"Presensi\".tpresensi_riil tpr
+		        where tpr.tanggal = current_date
+		        and tpr.noind = tp.noind
+		        and user_ != 'ABSON'
+		    ) > 0 then 'WFO'
+		    when (
+		        select count(*)
+		        from \"Presensi\".tpresensi_riil tpr
+		        where tpr.tanggal = current_date
+		        and tpr.noind = tp.noind
+		        and user_ = 'ABSON'
+		    ) > 0 then 'WFH'
+		    else 'OFF/TIDAK MASUK'
+		    end as kategori
+		from hrd_khs.tpribadi tp
+		inner join hrd_khs.tseksi ts
+		on tp.kodesie = ts.kodesie
+		left join hrd_khs.tpekerjaan tpk
+		on tp.kd_pkj = tpk.kdpekerjaan
+		where tp.keluar = '0'
+		and left(tp.noind,1) not in ('M','L','Z')
+		order by ts.dept,ts.bidang,ts.unit,ts.seksi,tp.noind";
+		return $this->personalia->query($query)->result_array();
+	}
 }
 ?>

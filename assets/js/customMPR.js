@@ -2021,5 +2021,51 @@ $(document).on('ready', function(){
             }
         })
     })
+
+    $('#btnMPRPresensiHariIniKirimEmail').on('click', function(){
+        $('#mdlMPPRPresensiHariIniKirimEmail').modal('show');
+    })
+
+    $('#btnMPRPresensiHariIniSubmitEmail').on('click', function(){
+        email =$('#txtMPRPresensiHariIniEmail').val();
+        if(email.length > 0){
+            $('#ldgMPRPresensiHariIniLoading').show();
+            $.ajax({
+                type: 'POST',
+                data: {
+                    email: email
+                },
+                url: baseurl+'MasterPresensi/DataPresensi/PresensiHariIni/sendEmail',
+                error: function(xhr,status,error){
+                    $('#ldgMPRPresensiHariIniLoading').hide();
+                    swal.fire({
+                        title: xhr['status'] + "(" + xhr['statusText'] + ")",
+                        html: xhr['responseText'],
+                        type: "error",
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#d63031',
+                    })
+                },
+                success: function(result){
+                    if(result.trim() != "success"){
+                        swal.fire({
+                            title: "Oopss!!",
+                            html: result,
+                            type: "error",
+                            confirmButtonText: 'OK',
+                            confirmButtonColor: '#d63031',
+                        })
+                    }else{
+                        swal.fire(
+                            'success',
+                            'Email Berhasil Dikirim!',
+                            'success'
+                        )
+                    }
+                    $('#ldgMPRPresensiHariIniLoading').hide();
+                }
+            })
+        }
+    })
 })
 // end presensi hari ini
