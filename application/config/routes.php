@@ -3476,6 +3476,14 @@ $route['ADMSeleksi/Menu/Cetak/get_refresh_data_memo'] = 'ADMSeleksi/Menu/Cetak/C
 $route['ADMSeleksi/api/zimbra/check'] = 'ADMSeleksi/Api/C_Api/checkZimbra';
 $route['ADMSeleksi/api/pidgin/check'] = 'ADMSeleksi/Api/C_Api/checkPidgin';
 
+$route['ADMSeleksi/Penjadwalan'] = 'ADMSeleksi/Menu/C_Penjadwalan/Penjadwalan';
+$route['ADMSeleksi/Penjadwalan/(:any)'] = 'ADMSeleksi/Menu/C_Penjadwalan/$1';
+$route['ADMSeleksi/Penjadwalan/(:any)/(:any)'] = 'ADMSeleksi/Menu/C_Penjadwalan/$1/$2';
+$route['ADMSeleksi/MonitoringPenjadwalan'] = 'ADMSeleksi/Menu/C_Penjadwalan/Monitoring';
+$route['ADMSeleksi/MonitoringPenjadwalan/(:any)'] = 'ADMSeleksi/Menu/C_Penjadwalan/$1';
+$route['ADMSeleksi/MonitoringPenjadwalan/(:any)/(:any)'] = 'ADMSeleksi/Menu/C_Penjadwalan/$1/$2';
+
+
 // ------------------------------------------------- Monitoring LPPB Penerimaan ---------------------------------------------//
 $route['MonitoringLppbPenerimaan'] 								= 'MonitoringLppbPenerimaan/C_Index';
 
@@ -5772,3 +5780,18 @@ $route['OrderKebutuhanBarangDanJasa/ExportApproval/(:any)/(:any)'] = 'OrderKebut
 $route['OrderKebutuhanBarangDanJasa/ImportApproval'] = 'OrderKebutuhanBarangDanJasa/Import/C_Importexport/ImportApproval';
 $route['OrderKebutuhanBarangDanJasa/ImportApproval/(:any)'] = 'OrderKebutuhanBarangDanJasa/Import/C_Importexport/$1';
 $route['OrderKebutuhanBarangDanJasa/ImportApproval/(:any)/(:any)'] = 'OrderKebutuhanBarangDanJasa/Import/C_Importexport/$1/$2';
+
+//-------------------------Evaluasi Pekerja Non Staf--------------------------//
+$route['EvaluasiPekerjaNonStaf'] = 'EvaluasiNonStaf/C_Index';
+$route['EvaluasiPekerjaNonStaf/Create'] = 'EvaluasiNonStaf/C_EvaluasiNonStaf/Create';
+$route['EvaluasiPekerjaNonStaf/save'] = 'EvaluasiNonStaf/C_EvaluasiNonStaf/save';
+$route['EvaluasiPekerjaNonStaf/getBlangkoBelumTerkirim'] = 'EvaluasiNonStaf/C_EvaluasiNonStaf/getBlangkoBelumTerkirim';
+$route['EvaluasiPekerjaNonStaf/updateBlangkoMasuk'] = 'EvaluasiNonStaf/C_EvaluasiNonStaf/updateBlangkoMasuk';
+$route['EvaluasiPekerjaNonStaf/updateNow'] = 'EvaluasiNonStaf/C_EvaluasiNonStaf/updateNow';
+$route['EvaluasiPekerjaNonStaf/Create/getTabel'] = 'EvaluasiNonStaf/C_EvaluasiNonStaf/getTabel';
+$route['EvaluasiPekerjaNonStaf/Monitoring'] = 'EvaluasiNonStaf/C_EvaluasiNonStaf';
+$route['EvaluasiPekerjaNonStaf/Monitoring/(:any)'] = 'EvaluasiNonStaf/C_EvaluasiNonStaf/$1';
+$route['EvaluasiPekerjaNonStaf/Monitoring/(:any)/(:any)'] = 'EvaluasiNonStaf/C_EvaluasiNonStaf/$1/$2';
+$route['EvaluasiPekerjaNonStaf/MonitoringStaf'] = 'EvaluasiNonStaf/C_EvaluasiNonStaf/Monitoring_staf';
+$route['EvaluasiPekerjaNonStaf/MonitoringStaf/(:any)'] = 'EvaluasiNonStaf/C_EvaluasiNonStaf/$1';
+$route['EvaluasiPekerjaNonStaf/MonitoringStaf/(:any)/(:any)'] = 'EvaluasiNonStaf/C_EvaluasiNonStaf/$1/$2';
