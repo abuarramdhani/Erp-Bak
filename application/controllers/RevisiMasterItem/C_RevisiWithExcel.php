@@ -80,7 +80,16 @@ class C_RevisiWithExcel extends CI_Controller
 			}
 		}
 		$this->M_revisimasteritem->runUpdate();
-		redirect('RevisiMasterItem/UpdateItem');
+		//
+		$this->session->set_flashdata('flashdata_success', '<div class="alert alert-success alert-dismissible" role="alert">
+										<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+											<span aria-hidden="true">
+											<i class="fa fa-close"></i>
+											</span>
+										</button>
+										<span><strong>Data Updated !</strong> Silakan cek Master Item</span>
+										</div>'); //ini
+		redirect(base_url("RevisiMasterItem/UpdateItem"));
 	}
 
 	public function downloadtemplate(){
@@ -109,32 +118,26 @@ class C_RevisiWithExcel extends CI_Controller
 	}
 
 	//perITem
-	public function perItem() {
-		$this->checkSession();
-		$user_id = $this->session->userid;
-		$data['Menu'] = 'Dashboard';
-		$data['SubMenuOne'] = '';
-		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		$data['valueupdate'] = $this->M_revisimasteritem->showUpdatedData();
-		// echo "tes";exit();
+	// public function perItem() {
+	// 	$this->checkSession();
+	// 	$user_id = $this->session->userid;
+	// 	$data['Menu'] = 'Dashboard';
+	// 	$data['SubMenuOne'] = '';
+	// 	$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+	// 	$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+	// 	$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+	// 	$data['valueupdate'] = $this->M_revisimasteritem->showUpdatedData();
+	// 	// echo "tes";exit();
 
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('RevisiMasterItem/V_RevisiPerItem',$data);
-		$this->load->view('V_Footer',$data);
-	}
+	// 	$this->load->view('V_Header',$data);
+	// 	$this->load->view('V_Sidemenu',$data);
+	// 	$this->load->view('RevisiMasterItem/V_RevisiPerItem',$data);
+	// 	$this->load->view('V_Footer',$data);
+	// }
 
 	public function listCode() {
         $term = strtoupper($this->input->post('term'));
         echo json_encode($this->M_revisimasteritem->listCode($term));
     }
-
-	// public function insertData() {
-	// 	$this->M_revisimasteritem->deleteKIT();
-	// 	$this->M_revisimasteritem->insertData($arrayItem);
-	// }
-
 	
 }
