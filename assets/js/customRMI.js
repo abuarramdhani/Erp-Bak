@@ -150,6 +150,49 @@ $(`.itemRMI${nomor}`).on('change',function () {
 
 }
 
+const toastRMI = (type, message) => {
+  Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000
+  }).fire({
+    customClass: 'swal-font-small',
+    type: type,
+    title: message
+  })
+}
+
+const toastRMILoading = (pesan) => {
+  Swal.fire({
+    toast: true,
+    position: 'top-end',
+    onBeforeOpen: () => {
+       Swal.showLoading();
+       $('.swal2-loading').children('button').css({'width': '20px', 'height': '20px'})
+     },
+    text: pesan
+  })
+}
+
+const swalRMI = (type, title) => {
+  Swal.fire({
+    type: type,
+    title: title,
+    text: '',
+    showConfirmButton: false,
+    showCloseButton: true,
+  })
+}
+
+$(`#btn_changeItem`).on('click', function () {
+  toastRMILoading('Running Update Master Items..')
+})
+
+$(`#submit_go`).on('click', function () {
+  toastRMILoading('Running Update Master Items..')
+})
+
 var today = new Date();
 var dd = today.getDate();
 var mm = today.getMonth() + 1; //January is 0!
