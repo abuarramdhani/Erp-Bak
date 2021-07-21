@@ -439,6 +439,7 @@ class M_presensihariini extends CI_Model
 		on tp.kd_pkj = tpk.kdpekerjaan
 		where tp.keluar = '0'
 		and left(tp.noind,1) not in ('M','L','Z')
+		and tp.lokasi_kerja in ('01','02','03','04')
 		order by ts.dept,ts.bidang,ts.unit,ts.seksi,tp.noind";
 		return $this->personalia->query($query)->result_array();
 	}
