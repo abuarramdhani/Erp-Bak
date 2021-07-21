@@ -402,31 +402,6 @@ function lph_add_row_hasil_produksi() {
       }
     })
 
-    $('.lphgetMesin').select2({
-      minimumInputLength: 2,
-      placeholder: "Employee",
-      ajax: {
-        url: baseurl + "LaporanProduksiHarian/actiontwo/getMesin",
-        dataType: "JSON",
-        type: "POST",
-        data: function(params) {
-          return {
-            term: params.term
-          };
-        },
-        processResults: function(data) {
-          return {
-            results: $.map(data, function(obj) {
-              return {
-                id: obj.fs_no_mesin,
-                text: `${obj.fs_no_mesin} - ${obj.fs_nama_mesin}`
-              }
-            })
-          }
-        }
-      }
-    })
-
     $('.lph_select2').select2({
       tags: true,
       // allowClear:true,
@@ -769,7 +744,11 @@ function lph_add_row_hasil_produksi() {
         swaLPHLoading('Sedang memproses data...');
       },
       success: function(result) {
-        swaLPHLarge(result.type, result.message);
+        if (result.type == 'success') {
+          swaLPHLarge(result.type, result.message);
+        }else {
+          swaLPHLarge('warning', 'Terjadi kesalahan saat insert data');
+        }
       },
       error: function(XMLHttpRequest, textStatus, errorThrown) {
         swaLPHLarge('error', 'Terjadi kesalahan');

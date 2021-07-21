@@ -343,7 +343,7 @@ class C_Add extends CI_Controller
           $c['aktual'] = $this->sum_same_ab($get, $value['fs_no_ab']);
           $no_pakai = 0;
           $result[] = $c;
-        }elseif (sizeof($get) > 1 && $key == sizeof($get)-1 && $value['fs_no_ab'] != $get[$key-1]['fs_no_ab']) {
+        }elseif (sizeof($get) > 1 && $key == sizeof($get)-1) {
           $c['aktual'] = $this->sum_same_ab($get, $value['fs_no_ab']);
           $no_pakai = 0;
           $result[] = $c;
