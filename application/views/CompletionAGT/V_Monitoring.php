@@ -30,6 +30,7 @@ vertical-align: middle;
                 <input type="hidden" id="mon_agt_2021" value="1">
                 <div class="nav-tabs-custom">
                   <ul class="nav nav-tabs pull-right">
+                    <li onclick="agtTimerAndon()"><a href="#time-andon" data-toggle="tab">Set Running Andon Time</a></li>
                     <li onclick="agtHistoryAndon()"><a href="#history-andon" data-toggle="tab">History Andon System</a></li>
                     <li onclick="agtRunningAndon()"><a href="#running-andon" data-toggle="tab">Running Andon System</a></li>
                     <li class="active" onclick="agtMonJobRelease()"><a href="#job-release" data-toggle="tab">Monitoring Job Release (PRKTA)</a></li>
@@ -53,6 +54,11 @@ vertical-align: middle;
                     <div class="tab-pane" id="history-andon">
                       <div class="table-responsive area-agt-history-andon">
 
+                      </div>
+                    </div>
+                    <div class="tab-pane" id="time-andon">
+                      <div class="area-time-andon">
+                        <p>Break Time</p>
                       </div>
                     </div>
                   </div>

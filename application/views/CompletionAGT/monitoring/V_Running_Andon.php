@@ -39,7 +39,7 @@
         <td><?php echo $value['CREATION_DATE'] ?></td>
         <td>
           <center>
-            <button type="button" class="btn btn-sm btn-danger" name="button" style="width:40px;" onclick="del_agt_andon_pos('<?php echo $value['ITEM_ID'] ?>')"> <i class="fa fa-trash"></i> </button>
+            <button type="button" class="btn btn-sm btn-danger" name="button" style="width:40px;" onclick="del_agt_andon_pos('<?php echo $value['ITEM_ID'] ?>', 1)"> <i class="fa fa-trash"></i> </button>
           </center>
         </td>
       </tr>
