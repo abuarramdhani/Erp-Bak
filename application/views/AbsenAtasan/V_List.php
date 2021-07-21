@@ -217,7 +217,7 @@
 									foreach ($listData as $key => $value)
 									{
 										$date = date_create($value['waktu']);
-										if($value['status'] == 3){
+										if($value['status'] == 2){
 											$status = "Rejected";
 											$classLabel = "label label-danger";
 										?>
