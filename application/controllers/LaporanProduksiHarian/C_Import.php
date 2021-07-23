@@ -458,6 +458,16 @@ class C_Import extends CI_Controller
                                                  where SUBSTRING(rk.kode_komponen, 1, 3) = lp.product_code), NULL) product_name
                                 FROM lph.lph_rencana_kerja_operator rk WHERE rk.shift = '$shift' AND rk.tanggal = '$range'")->result_array();
       // ;
+
+      //ambil desc shift
+      if (!empty($data[0]['shift'])) {
+        $desc_shift = $this->M_master->get_detail_shift($data[0]['shift']);
+        $data_shift = explode(' : ', $desc_shift['DESCRIPTION'])[0];
+        foreach ($data as $key => $value) {
+          $data[$key]['shift'] = $data_shift;
+        }
+      }
+
       foreach ($data as $key => $value) {
         if (!empty($value['kode_komponen'])) {
           $std = $this->M_master->get_sarana($value['kode_komponen']);
