@@ -172,7 +172,7 @@
 			<?php $no = 1; foreach ($body_shelter[$key_master_who] as $key => $gb){ ?>
 			<tr>
 				<td style="font-size: 9.7px; padding: 3.5px; width: 7%; text-align: center;">
-					<?php echo $no+($key_master_who*22) ?>
+					<?php echo $no+($key_master_who*23) ?>
 				</td>
 				<td style="font-size: 9.7px; padding: 3.5px; width: 10%; text-align: center;">
 					<?php echo $gb['REQUIRED_QTY'] ?>

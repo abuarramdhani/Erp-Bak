@@ -424,10 +424,11 @@ class C_Master extends CI_Controller
         $shelter_key = 0;
         $key_blabla = 1;
         foreach ($get_body as $key => $value) {
-          if ($key_blabla%23 != 0) {
+          if ($key_blabla%24 != 0) {
             $body_shelter[$shelter_key][] = $value;
           }else {
             $shelter_key++;
+            $body_shelter[$shelter_key][] = $value;
           }
           $key_blabla++;
         }
@@ -460,6 +461,7 @@ class C_Master extends CI_Controller
             $serial_shelter[$shelter_serial_key][] = $value;
           }else {
             $shelter_serial_key++;
+            $serial_shelter[$shelter_serial_key][] = $value;
           }
           $key_bla++;
         }
