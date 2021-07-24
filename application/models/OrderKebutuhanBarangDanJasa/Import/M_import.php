@@ -145,4 +145,145 @@ class M_import extends CI_Model
 
         return $query->result_array();
     }
+    public function getApproverSeksi($number)
+    {
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query("SELECT DISTINCT pf.person_id, pf.full_name nama,
+        pf.national_identifier no_induk
+   FROM khs.khs_okbj_approve_hir kh, per_all_people_f pf
+  WHERE kh.approver = pf.person_id
+    AND approver_level = $number
+    AND pf.effective_end_date >= sysdate
+ORDER BY 1");
+
+        return $query->result_array();
+    }
+    public function getApproverPengelola($number)
+    {
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query("SELECT DISTINCT pf.person_id, pf.full_name nama,
+        pf.national_identifier no_induk
+   FROM khs.khs_okbj_approve_hir kh, per_all_people_f pf
+  WHERE kh.person_id = pf.person_id
+    AND approver_level = $number
+    AND pf.effective_end_date >= sysdate
+ORDER BY 1");
+
+        return $query->result_array();
+    }
+    public function getApproverDepartement($number)
+    {
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query("SELECT DISTINCT pf.full_name nama,
+        pf.person_id,
+        pf.national_identifier no_induk
+   FROM khs.khs_okbj_approve_hir kh, per_all_people_f pf
+  WHERE kh.approver = pf.person_id
+    AND approver_level = $number
+    AND pf.effective_end_date >= sysdate
+    AND pf.full_name not like '%WAHADA,%'
+ORDER BY 1");
+
+        return $query->result_array();
+    }
+    public function getExportHeadDataApproval($created_by, $okbj_name_approver, $okbj_lvl_approval)
+    {
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query("select distinct
+        ppf_create.national_identifier nik_pembuat,
+        ppf_create.full_name nama_pembuat,
+        ppf_req.national_identifier nik_requester,
+        ppf_req.full_name nama_requester,
+        ppf_appr.national_identifier nik_approver,
+        ppf_appr.full_name nama_approver,
+        tbl1.a_level level_approved
+    FROM khs.khs_okbj_order_header kooh,
+           per_people_f ppfa,
+           khs.khs_okbj_order_approval kkooa,
+           (SELECT   kooa.order_id, MIN (kooa.approver_type) a_level
+                FROM khs.khs_okbj_order_approval kooa
+               WHERE kooa.judgement IS NULL
+            GROUP BY kooa.order_id) tbl1,
+           per_all_people_f ppf_create,
+           per_all_people_f ppf_req,
+           per_all_people_f ppf_appr
+     WHERE kooh.order_id = tbl1.order_id
+       AND kooh.order_id = kkooa.order_id
+       AND kkooa.approver_type = tbl1.a_level
+       AND kkooa.approver_id = ppfa.person_id
+       AND kooh.order_status_id <> 4
+       AND ppf_create.person_id = kooh.create_by
+       AND ppf_req.person_id = kooh.requester
+       AND ppf_appr.person_id = kkooa.approver_id
+       AND ppf_create.national_identifier = '$created_by' -- parameter no induk pembuat
+       AND ppf_appr.national_identifier = '$okbj_name_approver'  -- parameter no induk approver
+       AND tbl1.a_level = $okbj_lvl_approval                     -- parameter tipe approval
+    ");
+
+        return $query->result_array();
+    }
+    public function getExportDataApproval($created_by, $okbj_name_approver, $okbj_lvl_approval)
+    {
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query("SELECT kooh.order_id, msib.segment1 item_code, kooh.item_description, kooh.quantity, kooh.uom,
+        kooh.need_by_date, kooh.order_purpose, kooh.note_to_pengelola, kooh.urgent_reason,
+        kooh.note_to_buyer,
+        CASE
+           WHEN kooh.is_susulan = 'Y'
+              THEN 'Susulan'
+           WHEN kooh.urgent_flag = 'Y'
+           AND (kooh.is_susulan = 'N' OR kooh.is_susulan IS NULL)
+              THEN 'Urgent'
+           WHEN (kooh.urgent_flag <> 'Y' OR kooh.urgent_flag IS NULL)
+           AND (kooh.is_susulan <> 'Y' OR kooh.is_susulan IS NULL)
+              THEN 'Normal'
+           ELSE 'Undefined'
+        END status
+   FROM khs.khs_okbj_order_header kooh,
+        per_people_f ppfa,
+        khs.khs_okbj_order_approval kkooa,
+        (SELECT   kooa.order_id, MIN (kooa.approver_type) a_level
+             FROM khs.khs_okbj_order_approval kooa
+            WHERE kooa.judgement IS NULL
+         GROUP BY kooa.order_id) tbl1,
+        mtl_system_items_b msib,
+        per_all_people_f ppf_create,
+        per_all_people_f ppf_req,
+        per_all_people_f ppf_appr
+  WHERE kooh.order_id = tbl1.order_id
+    AND kooh.order_id = kkooa.order_id
+    AND kkooa.approver_type = tbl1.a_level
+    AND kkooa.approver_id = ppfa.person_id
+    AND kooh.order_status_id <> 4
+    AND msib.inventory_item_id = kooh.inventory_item_id
+    AND msib.organization_id = 81
+    AND ppf_create.person_id = kooh.create_by
+    AND ppf_req.person_id = kooh.requester
+    AND ppf_appr.person_id = kkooa.approver_id
+    AND ppf_create.national_identifier = '$created_by' -- parameter no induk pembuat
+    AND ppf_appr.national_identifier = '$okbj_name_approver'  -- parameter no induk approver
+    AND tbl1.a_level = $okbj_lvl_approval");
+
+        return $query->result_array();
+    }
+    public function UpdateApproval($j, $o, $l)
+    {
+        $oracle = $this->load->database('oracle', true);
+        $oracle->query("UPDATE khs.khs_okbj_order_approval kooa
+        SET kooa.judgement = '$j',              -- 'A' atau 'R' 
+            kooa.judgement_date = SYSDATE
+      WHERE kooa.order_id = $o     -- kooh.order_id
+        AND kooa.approver_type = $l   -- approveer level");
+
+        $oracle->query("UPDATE khs.khs_okbj_order_header kooh
+        SET kooh.approve_level_pos = $l -- approver level
+      WHERE kooh.order_id = $o");
+    }
+    public function getDataperson($approver)
+    {
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query("SELECT PERSON_ID, FULL_NAME FROM PER_ALL_PEOPLE_F WHERE NATIONAL_IDENTIFIER = '$approver'");
+
+        return $query->result_array();
+    }
 }
