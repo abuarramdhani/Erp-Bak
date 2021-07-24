@@ -286,4 +286,21 @@ ORDER BY 1");
 
         return $query->result_array();
     }
+    public function getStatusOrder($order_id, $dataapprover, $level)
+    {
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query("select
+        kooa.ORDER_ID,
+        kooa.JUDGEMENT
+    from
+        khs.khs_okbj_order_approval kooa,
+        per_all_people_f ppf
+    where 1=1
+        and ppf.person_id = kooa.approver_id
+        and kooa.APPROVER_TYPE = $level
+        and ppf.national_identifier = '$dataapprover'
+        and kooa.ORDER_ID = $order_id");
+
+        return $query->result_array();
+    }
 }

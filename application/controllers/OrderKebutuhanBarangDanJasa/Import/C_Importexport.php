@@ -271,25 +271,29 @@ class C_Importexport extends CI_Controller
         $dataapprover = explode(' - ', $data_header[2]);
         $tbody = "";
         foreach ($array_line_order as $key => $ord) {
-            $tbody .= '
-            <tr>
-                <td class="text-center">' . $ord['order_id'] . '</td>
-                <input type="hidden" value="' . $ord['order_id'] . '" name="ord_id_okbj">
-                <td class="text-center">' . $ord['item_code'] . '</td>
-                <td class="text-center">' . $ord['item_desc'] . '</td>
-                <td class="text-center">' . $ord['quantity'] . '</td>
-                <td class="text-center">' . $ord['uom'] . '</td>
-                <td class="text-center">' . $ord['nbd'] . '</td>
-                <td class="text-center">' . $ord['order_purpose'] . '</td>
-                <td class="text-center">' . $ord['note_to_pengelola'] . '</td>
-                <td class="text-center">' . $ord['urgent_reason'] . '</td>
-                <td class="text-center">' . $ord['note_to_buyer'] . '</td>
-                <td class="text-center">' . $ord['status'] . '</td>
-                <td class="text-center">' . $ord['judgement'] . '</td>
-                <input type="hidden" value="' . $ord['judgement'] . '" name="judgement_okbj">
+            $cek_status_approval = $this->M_import->getStatusOrder($ord['order_id'], $dataapprover[0], $data_header[3]);
+            if ($cek_status_approval[0]['JUDGEMENT'] == 'A' || $cek_status_approval[0]['JUDGEMENT'] == 'R') {
+            } else {
+                $tbody .= '
+                <tr>
+                    <td class="text-center">' . $ord['order_id'] . '</td>
+                    <input type="hidden" value="' . $ord['order_id'] . '" name="ord_id_okbj">
+                    <td class="text-center">' . $ord['item_code'] . '</td>
+                    <td class="text-center">' . $ord['item_desc'] . '</td>
+                    <td class="text-center">' . $ord['quantity'] . '</td>
+                    <td class="text-center">' . $ord['uom'] . '</td>
+                    <td class="text-center">' . $ord['nbd'] . '</td>
+                    <td class="text-center">' . $ord['order_purpose'] . '</td>
+                    <td class="text-center">' . $ord['note_to_pengelola'] . '</td>
+                    <td class="text-center">' . $ord['urgent_reason'] . '</td>
+                    <td class="text-center">' . $ord['note_to_buyer'] . '</td>
+                    <td class="text-center">' . $ord['status'] . '</td>
+                    <td class="text-center">' . $ord['judgement'] . '</td>
+                    <input type="hidden" value="' . $ord['judgement'] . '" name="judgement_okbj">
 
-            </tr>
-           ';
+                </tr>
+                ';
+            }
         }
 
         $table = '
@@ -335,10 +339,16 @@ class C_Importexport extends CI_Controller
             <div class="col-md-1"><a class="btn btn-success" onclick ="UpdateApprExcelOKBJ()">Update Approval</a></div>
         </div>
         ';
-        $error = '
-        <div class="col=md-12" style="text-align:center"><b>File Tidak dapat di Proses</b></div>
-        ';
-        if ($katakunci[0] != 'OKEBAJAQUICKYOSYOSYOS') {
+        if ($katakunci[0] != 'OKEBAJAQUICKYOSYOSYOS' || $tbody == "") {
+            if ($tbody == "") {
+                $error = '
+                <div class="col=md-12" style="text-align:center"><b>Data sudah di Update</b></div>
+                ';
+            } else {
+                $error = '
+                <div class="col=md-12" style="text-align:center"><b>File Tidak dapat di Proses</b></div>
+                ';
+            }
             echo $error;
         } else {
             echo $table;
