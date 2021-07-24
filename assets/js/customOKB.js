@@ -2986,3 +2986,98 @@ $(".CreateOrdOkbj").on("submit", function (e) {
     },
   });
 });
+function ChangeLevelApproval() {
+  var val = $("#okbj_lvl_approval").val();
+  $("#okbj_name_approver").select2({
+    ajax: {
+      url:
+        baseurl + "OrderKebutuhanBarangDanJasa/ExportApproval/searchApproval",
+      dataType: "json",
+      data: function (params) {
+        return {
+          q: val,
+        };
+      },
+      processResults: function (data) {
+        return {
+          results: $.map(data, function (item) {
+            return {
+              id: item.NO_INDUK,
+              text: item.NO_INDUK + " - " + item.NAMA,
+            };
+          }),
+        };
+      },
+    },
+    minimumInputLength: 0,
+  });
+}
+$(".ImportApprovalOkbj").on("submit", function (e) {
+  e.preventDefault();
+  $.ajax({
+    url:
+      baseurl + "OrderKebutuhanBarangDanJasa/ImportApproval/ImportFileApproval",
+    type: "POST",
+    data: new FormData(this),
+    contentType: false,
+    cache: false,
+    processData: false,
+    dataType: "html",
+    beforeSend: function () {
+      $("#TablHasilImportOkbj").html(
+        '<center><img style="width:100px; height:auto" src="' +
+          baseurl +
+          'assets/img/gif/loading11.gif"></center>'
+      );
+    },
+    success: function (response) {
+      $("#TablHasilImportOkbj").html(response);
+    },
+  });
+});
+function UpdateApprExcelOKBJ() {
+  var order_id = [];
+  $('[name="ord_id_okbj"]')
+    .map(function () {
+      order_id.push($(this).val());
+    })
+    .get();
+
+  var judgement = [];
+  $('[name="judgement_okbj"]')
+    .map(function () {
+      judgement.push($(this).val());
+    })
+    .get();
+
+  $.ajax({
+    url: baseurl + "OrderKebutuhanBarangDanJasa/ImportApproval/UpdateApproval",
+    type: "POST",
+    dataType: "html",
+    data: {
+      creator: $("#IndukCreatorOkbj").val(),
+      requester: $("#IndukRequesterOkbj").val(),
+      approver: $("#IndukApproverOkbj").val(),
+      level: $("#LvlApproverOkbj").val(),
+      order_id: order_id,
+      judgement: judgement,
+    },
+    beforeSend: function () {
+      $("#LoadingOkbj").html(
+        '<img style="width:30px; height:auto" src="' +
+          baseurl +
+          'assets/img/gif/loading11.gif">'
+      );
+    },
+    success: function (response) {
+      Swal.fire({
+        position: "top",
+        type: "success",
+        title: "Berhasil",
+        showConfirmButton: true,
+      }).then(() => {
+        window.location.reload();
+      });
+    },
+  });
+}
