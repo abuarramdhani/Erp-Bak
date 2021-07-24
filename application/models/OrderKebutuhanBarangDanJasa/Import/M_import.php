@@ -260,7 +260,10 @@ ORDER BY 1");
     AND ppf_create.person_id = kooh.create_by
     AND ppf_req.person_id = kooh.requester
     AND ppf_appr.person_id = kkooa.approver_id
-    AND ppf_create.national_identifier = '$created_by' -- parameter no induk pembuat
+    AND (ppf_create.national_identifier = '$created_by' -- parameter no induk pembuat / login
+        OR
+        ppf_req.national_identifier = '$created_by' -- parameter no induk pembuat / login
+        )
     AND ppf_appr.national_identifier = '$okbj_name_approver'  -- parameter no induk approver
     AND tbl1.a_level = $okbj_lvl_approval");
 
