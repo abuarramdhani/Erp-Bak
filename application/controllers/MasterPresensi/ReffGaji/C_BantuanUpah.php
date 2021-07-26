@@ -3,6 +3,7 @@ defined('BASEPATH') or exit("No Direct Script Access Allowed");
 set_time_limit(0);
 ini_set('date.timezone', 'Asia/Jakarta');
 setlocale(LC_TIME, "id_ID.utf8");
+ini_set('memory_limit', '1024M');
 /**
  * 
  */
@@ -233,7 +234,8 @@ class C_BantuanUpah extends CI_Controller
  		// print_r($detail);
 
  		$this->load->library('excel');
-		$worksheet = $this->excel->getActiveSheet();
+		$excel = $this->excel;
+		$worksheet = $excel->getActiveSheet();
 
 		$worksheet->setCellValue('A1','Periode');
 		$worksheet->setCellValue('A2','Status Hubungan Kerja');
@@ -374,13 +376,15 @@ class C_BantuanUpah extends CI_Controller
 		$worksheet->getColumnDimension('E')->setAutoSize(true);
 		$worksheet->getColumnDimension('X')->setAutoSize(true);
 		$worksheet->getColumnDimension('Y')->setAutoSize(true);
-
+		// exit();
+		ob_end_clean();
 		$filename ='BantuanUpah-'.date('Ymd_His').'.xls';
 		header('Content-Type: aplication/vnd.ms-excel');
 		header('Content-Disposition:attachment;filename="'.$filename.'"');
 		header('Cache-Control: max-age=0');
-		$writer = PHPExcel_IOFactory::createWriter($this->excel,'Excel5');
+		$writer = PHPExcel_IOFactory::createWriter($excel,'Excel2007');
 		$writer->save('php://output');
+		ob_end_clean();
 	}
 
 	public function Pdf($encryptedId)
