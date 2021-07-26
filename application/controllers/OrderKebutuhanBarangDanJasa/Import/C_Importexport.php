@@ -86,10 +86,7 @@ class C_Importexport extends CI_Controller
             $this->load->view('V_Sidemenu', $data);
             $this->load->view('V_Footer', $data);
         } else {
-            // echo "<pre>";
-            // print_r($headexportdata);
-            // print_r($exportdata);
-            // exit();
+
 
             require_once APPPATH . 'third_party/Excel/PHPExcel.php';
             require_once APPPATH . 'third_party/Excel/PHPExcel/IOFactory.php';
@@ -129,9 +126,11 @@ class C_Importexport extends CI_Controller
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A4', "Approver Level");
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B4', $headexportdata[0]['LEVEL_APPROVED']);
 
-            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C1', 'OKEBAJAQUICKYOSYOSYOS');
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('AZ1', 'OKEBAJAQUICKYOSYOSYOS');
 
-            $worksheet->getStyle("C1")->getFont()->getColor()->setRGB('FFFFFF');
+            $worksheet->getStyle("AZ1")->getFont()->getColor()->setRGB('FFFFFF');
+
+            $objPHPExcel->getActiveSheet()->getColumnDimension('AZ')->setVisible(false);
 
 
             $thin = array();
@@ -233,13 +232,13 @@ class C_Importexport extends CI_Controller
         // load excel
         $file = $_FILES['FileApprovalOkebaja']['tmp_name'];
         $load = PHPExcel_IOFactory::load($file);
-        $sheets = $load->setActiveSheetIndex(0)->toArray(null, true, true, true);
+        $sheets = $load->getActiveSheet(0)->toArray(null, true, true, true);
         $k = 0;
         $array_line_order = array();
         foreach ($sheets as $row) {
             if ($k < 4) {
                 $data_header[] = $row['B'];
-                $katakunci[] = $row['C'];
+                $katakunci[] = $row['AZ'];
             }
 
             if ($k > 4) {
@@ -263,8 +262,7 @@ class C_Importexport extends CI_Controller
             $k++;
         }
         // echo "<pre>";
-        // print_r($tmpData);
-        // print_r($array_line_order);
+        // print_r($katakunci);
         // exit();
         $datacreator = explode(' - ', $data_header[0]);
         $datarequester = explode(' - ', $data_header[1]);
