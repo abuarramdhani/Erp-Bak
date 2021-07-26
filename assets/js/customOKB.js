@@ -3049,6 +3049,12 @@ function UpdateApprExcelOKBJ() {
       judgement.push($(this).val());
     })
     .get();
+  var alasan_reject_okbj = [];
+  $('[name="alasan_reject_okbj"]')
+    .map(function () {
+      alasan_reject_okbj.push($(this).val());
+    })
+    .get();
 
   $.ajax({
     url: baseurl + "OrderKebutuhanBarangDanJasa/ImportApproval/UpdateApproval",
@@ -3061,6 +3067,7 @@ function UpdateApprExcelOKBJ() {
       level: $("#LvlApproverOkbj").val(),
       order_id: order_id,
       judgement: judgement,
+      alasan_reject_okbj: alasan_reject_okbj,
     },
     beforeSend: function () {
       $("#LoadingOkbj").html(
