@@ -91,6 +91,7 @@ class C_BantuanUpah extends CI_Controller
 		
 		$pekerja = $this->M_bantuanupah->getPekerja($hubker,$awal,$akhir,$awal_bulan_lalu,$akhir_bulan_lalu);
 		$jumlah_total = count($pekerja);
+		$this->M_bantuanupah->deleteProgress($user);
 		$this->M_bantuanupah->insertProgress($user,$jumlah_total);
 		$progres = 0;
 		$this->M_bantuanupah->updateProgress($user,$progres,"Mempersiapkan Data");
