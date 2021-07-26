@@ -215,9 +215,11 @@ ORDER BY 1");
        AND ppf_create.person_id = kooh.create_by
        AND ppf_req.person_id = kooh.requester
        AND ppf_appr.person_id = kkooa.approver_id
-       AND ppf_create.national_identifier = '$created_by' -- parameter no induk pembuat
+       AND (ppf_create.national_identifier = '$created_by' -- parameter no induk pembuat/yg login 
+            OR
+            ppf_req.national_identifier = '$created_by') -- parameter no induk pembuat/yg login     
        AND ppf_appr.national_identifier = '$okbj_name_approver'  -- parameter no induk approver
-       AND tbl1.a_level = $okbj_lvl_approval                     -- parameter tipe approval
+       AND tbl1.a_level = $okbj_lvl_approval
     ");
 
         return $query->result_array();
@@ -272,15 +274,7 @@ ORDER BY 1");
     public function UpdateApproval($j, $o, $l)
     {
         $oracle = $this->load->database('oracle', true);
-        $oracle->query("UPDATE khs.khs_okbj_order_approval kooa
-        SET kooa.judgement = '$j',              -- 'A' atau 'R' 
-            kooa.judgement_date = SYSDATE
-      WHERE kooa.order_id = $o     -- kooh.order_id
-        AND kooa.approver_type = $l   -- approveer level");
-
-        $oracle->query("UPDATE khs.khs_okbj_order_header kooh
-        SET kooh.approve_level_pos = $l -- approver level
-      WHERE kooh.order_id = $o");
+        $oracle->query("begin APPS.KHS_APPROVE_OKBJ_IMPOR($o, $l, '$j'); end;");
     }
     public function getDataperson($approver)
     {
