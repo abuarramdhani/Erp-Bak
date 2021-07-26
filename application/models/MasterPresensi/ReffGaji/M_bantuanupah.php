@@ -65,7 +65,7 @@ class M_bantuanupah extends CI_Model
 		return $this->personalia->get("\"Presensi\".t_bantuan_upah")->row();
 	}
 
-	function getPekerja($hubker,$awal,$akhir)
+	function getPekerja($hubker,$awal,$akhir,$awal_bulan_lalu,$akhir_bulan_lalu)
 	{
 		if (!empty($hubker)) {
 			$string = "";
@@ -83,15 +83,22 @@ class M_bantuanupah extends CI_Model
 		$sql = "select tdp.noind
 			from \"Presensi\".tdatapresensi tdp
 			where tdp.tanggal between ? and ?
-			and tdp.kd_ket in ('PRM','PSK','PKJ')
+			--and tdp.kd_ket in ('PRM','PSK','PKJ')
 			and replace(trim(tdp.alasan),' ','') like '%ISOLASIDIRI%'
 			$where
 			group by tdp.noind
-			order by tdp.noind";
-		return $this->personalia->query($sql,array($awal,$akhir))->result_array();
+			union
+			select tdp.noind
+			from \"Presensi\".tdatapresensi tdp
+			where tdp.tanggal between ? and ?
+			and replace(trim(tdp.alasan),' ','') like '%ISOLASIDIRI%'
+			$where
+			group by tdp.noind
+			order by noind";
+		return $this->personalia->query($sql,array($awal,$akhir,$awal_bulan_lalu,$akhir_bulan_lalu))->result_array();
 	}
 
-	function getHasil($noind,$awal,$akhir)
+	function getHasil($noind,$awal,$akhir,$awal_bulan_lalu,$akhir_bulan_lalu)
 	{
 		$sql = "select t1.noind,
 				t1.nama,
@@ -241,13 +248,132 @@ class M_bantuanupah extends CI_Model
 				  tp.lokasi_kerja,
 				  tlk.lokasi_kerja,
 				  replace(trim(tdp.alasan),' ','')
+				union all 
+				select 
+				  tdp.noind,
+				  tp.nama,
+				  tor.kd_jabatan,
+				  tor.jabatan,
+				  case tp.lokasi_kerja 
+				  	when '01' then 
+				  		'pusat'
+				  	when '02' then 
+				  		'tuksono'
+				  	when '03' then 
+				  		'pusat'
+				  	when '04' then 
+				  		'pusat'
+				  	else 
+				  		'cabang'
+				  end as lokasi,
+				  tlk.lokasi_kerja,
+				  string_agg(tdp.tanggal::date::varchar,' ; ' order by tdp.tanggal) as tanggal,
+				  min(tdp.tanggal::date) as mulai, 
+				  max(tdp.tanggal::date) as selesai,
+				  0 as jumlah,
+				  replace(trim(tdp.alasan),' ','') as alasan,
+				  case when tp.lokasi_kerja in ('01','02','03','04') then 
+					  case trim(tor.jabatan)
+					    when 'Direktur Utama' then 
+					      'Pekerja Tetap Staf'
+					    when 'Kepala Departemen' then 
+					      'Pekerja Tetap Staf'
+					    when 'Wakil Kepala Departemen' then 
+					      'Pekerja Tetap Staf'
+					    when 'Asisten Kepala Departemen' then 
+					      'Pekerja Tetap Staf'
+					    when 'Koordinator Bidang' then 
+					     'Pekerja Tetap Staf'
+					    when 'Asisten Kepala Bidang' then 
+					      'Pekerja Tetap Staf'
+					    when 'Kepala Bidang' then 
+					     'Pekerja Tetap Staf'
+					    when 'Kepala Unit' then 
+					      'Pekerja Tetap Staf'
+					    when 'Asisten Kepala Unit' then 
+					     'Pekerja Tetap Staf'
+					    when 'Kepala Seksi Utama' then 
+					     'Pekerja Tetap Staf'
+					    when 'Kepala Seksi Madya' then 
+					      'Pekerja Tetap Staf'
+					    when 'Kepala Seksi Pratama' then 
+					      'Pekerja Tetap Staf'
+					    when 'Supervisor' then 
+					     'Pekerja Tetap Staf'
+					    when 'Pekerja Staf' then 
+					     'Pekerja Tetap Staf'
+					    when 'Pekerja Non Staf' then
+					      'Pekerja Tetap Non Staf'
+					    when 'Pekerja Kontrak Staff' then 
+					      'Pekerja Kontrak Staf'
+					    when 'Pekerja Kontrak Nonstaff' then 
+					      'Pekerja Kontrak Non Staf'
+					    when 'Pekerja Outsourcing' then 
+					     'Pekerja Outsourching'
+					    when 'Trainee staff' then 
+					      ''
+					    when 'TKPW' then 
+					      ''
+					    when 'Tenaga Harian Lepas' then 
+					     'Pekerja Harian Lepas'
+					    when 'PEMBORONGAN' then 
+					      'Pekerja Outsourching'
+					    when 'TRAINEE NONSTAFF' then 
+					      ''
+					    when 'PKL Non Staff' then 
+					      ''
+					    when 'PKL Staff' then 
+					      '' 
+					  end
+					else 
+						case when left(tdp.noind,1) != 'C' then 
+							'pekerja Tetap Staf Pusat ditempatkan di Cabang'
+						else 
+							case right(left(tdp.noind,3),1)
+								when '1' then 
+									'Pekerja Tetap'
+								when '2' then 
+									'Pekerja Kontrak'
+								when '3' then 
+									'Pekerja Outsourching'
+								when '4' then
+									'Harian Lepas'
+								else 
+									''
+							end
+						end
+					end as klasifikasi
+				from \"Presensi\".tdatapresensi tdp
+				left join hrd_khs.tpribadi tp 
+					on tp.noind = tdp.noind
+				left join hrd_khs.torganisasi tor 
+					on tor.kd_jabatan=tp.kd_jabatan
+				left join hrd_khs.tlokasi_kerja tlk 
+					on tlk.id_=tp.lokasi_kerja
+				where tdp.tanggal between ? and ?
+				and replace(trim(tdp.alasan),' ','') like '%ISOLASIDIRI%'
+				and tdp.noind = ?
+				and (
+					select count(*)
+					from \"Presensi\".tdatapresensi tdp2
+					where tdp2.tanggal between ? and ?
+					and replace(trim(tdp2.alasan),' ','') = replace(trim(tdp.alasan),' ','')
+					and tdp2.noind = tdp.noind
+				)  = 0
+				group by tdp.noind,
+				  tp.nama,
+				  tor.kd_jabatan,
+				  tor.jabatan,
+				  tp.lokasi_kerja,
+				  tlk.lokasi_kerja,
+				  replace(trim(tdp.alasan),' ','')
 			) as t1 
 			left join \"Presensi\".t_komponen_isolasi tki
 			on t1.lokasi = tki.lokasi
 			and replace(trim(t1.alasan),' ','') = replace(trim(tki.kategori),' ','')
 			and t1.klasifikasi = tki.hubungan_kerja
 			order by 1,t1.mulai";
-		return $this->personalia->query($sql,array($awal,$akhir,$noind))->result_array();
+		return $this->personalia->query($sql,array($awal,$akhir,$noind,$awal_bulan_lalu,$akhir_bulan_lalu,$noind,$awal,$akhir))->result_array();
 	}
 
 	function getProgress($user)

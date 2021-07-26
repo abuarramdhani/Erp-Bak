@@ -89,7 +89,7 @@ class C_BantuanUpah extends CI_Controller
 		$awal_bulan_lalu = date('Y-m-01',strtotime($akhir." - 1 month"));
 		$akhir_bulan_lalu = date('Y-m-d',strtotime($awal_bulan_lalu." + 1 month - 1 day"));
 		
-		$pekerja = $this->M_bantuanupah->getPekerja($hubker,$awal,$akhir);
+		$pekerja = $this->M_bantuanupah->getPekerja($hubker,$awal,$akhir,$awal_bulan_lalu,$akhir_bulan_lalu);
 		$jumlah_total = count($pekerja);
 		$this->M_bantuanupah->insertProgress($user,$jumlah_total);
 		$progres = 0;
@@ -107,7 +107,7 @@ class C_BantuanUpah extends CI_Controller
 
 		if (!empty($pekerja)) {
 			foreach ($pekerja as $pkj) {
-				$hasil = $this->M_bantuanupah->getHasil($pkj['noind'],$awal,$akhir);
+				$hasil = $this->M_bantuanupah->getHasil($pkj['noind'],$awal,$akhir,$awal_bulan_lalu,$akhir_bulan_lalu);
 				if (!empty($hasil)) {
 					foreach ($hasil as $res) {
 						$if 	= 0;
@@ -124,7 +124,7 @@ class C_BantuanUpah extends CI_Controller
 						}
 
 						$bulan_ini = $this->M_bantuanupah->getTanggalDataPres($res['noind'],$res['alasan'],$awal,$akhir);
-						if (!empty($bulan_ini)) {
+						if (!empty($bulan_ini) && !in_array(trim($res['gp_jumlah']),array('-','0'))) {
 							foreach($bulan_ini as $bi){
 								$if 	+= $this->M_bantuanupah->hitungIf($res['noind'],$bi['tanggal']);
 							}
