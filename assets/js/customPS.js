@@ -860,7 +860,7 @@ function notif_input_cop_wi() {
 		var e = $("#date_rev_cw").val();
 		var f = $("#number_rev-cw").val();
 		var g = $("#doc_sop_cw").val();
-		var h = $("#nomor_sop_cw").val();
+		var h = $("#number_sop-cw").val();
 		var x = 'SOP-'+g+'-'+h;
 		var i = $("#pic-cw").val();
 		var j = $("#seksi_copwi_ps option:selected").text();
