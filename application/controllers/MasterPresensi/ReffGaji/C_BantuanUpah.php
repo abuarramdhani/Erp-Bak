@@ -21,7 +21,6 @@ class C_BantuanUpah extends CI_Controller
 
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('MasterPresensi/ReffGaji/M_bantuanupah');
-		$this->load->model('MasterPresensi/ReffGaji/M_hitunggaji');
 
 		$this->checkSession();
 	}
