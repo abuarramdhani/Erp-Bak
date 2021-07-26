@@ -21,6 +21,7 @@ class C_BantuanUpah extends CI_Controller
 
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('MasterPresensi/ReffGaji/M_bantuanupah');
+		$this->load->model('MasterPresensi/ReffGaji/M_hitunggaji');
 
 		$this->checkSession();
 	}
@@ -85,6 +86,8 @@ class C_BantuanUpah extends CI_Controller
 		$prd 	= explode(" - ", $periode);
 		$awal 	= $prd[0];
 		$akhir 	= $prd[1];
+		$awal_bulan_lalu = date('Y-m-01',strtotime($akhir." - 1 month"));
+		$akhir_bulan_lalu = date('Y-m-d',strtotime($awal_bulan_lalu." + 1 month - 1 day"));
 		
 		$pekerja = $this->M_bantuanupah->getPekerja($hubker,$awal,$akhir);
 		$jumlah_total = count($pekerja);
@@ -107,18 +110,37 @@ class C_BantuanUpah extends CI_Controller
 				$hasil = $this->M_bantuanupah->getHasil($pkj['noind'],$awal,$akhir);
 				if (!empty($hasil)) {
 					foreach ($hasil as $res) {
-						
+						$if 	= 0;
+						$ip 	= 0;
+						$ik 	= 0;
+						$ipt 	= 0;
+						$bulan_lalu = $this->M_bantuanupah->getTanggalDataPres($res['noind'],$res['alasan'],$awal_bulan_lalu,$akhir_bulan_lalu);
+						if (!empty($bulan_lalu)) {
+							foreach($bulan_lalu as $bl){
+								$ip 	+= $this->M_bantuanupah->hitungIp($res['noind'],$bl['tanggal']);
+								$ipt 	+= $this->M_bantuanupah->hitungIpt($res['noind'],$bl['tanggal']);
+								$ik 	+= $this->M_bantuanupah->hitungIk($res['noind'],$bl['tanggal']);
+							}
+						}
+
+						$bulan_ini = $this->M_bantuanupah->getTanggalDataPres($res['noind'],$res['alasan'],$awal,$akhir);
+						if (!empty($bulan_ini)) {
+							foreach($bulan_ini as $bi){
+								$if 	+= $this->M_bantuanupah->hitungIf($res['noind'],$bi['tanggal']);
+							}
+						}
+
 						$bantuanUpahDetail = array(
 							'id_bantuan_upah' 			=> $id_bantuan_upah,
 							'noind' 					=> $res['noind'], 
 							'nama' 						=> $res['nama'], 
 							'lokasi_kerja' 				=> $res['lokasi_kerja'],
 							'kom_gp'		 			=> trim($res['gp_jumlah']) != '-' ? $res['gp_jumlah'] : null ,
-							'kom_if' 					=> trim($res['if_jumlah']) != '-' ? $res['if_jumlah'] : null ,
-							'kom_ip'		 			=> trim($res['ip_jumlah']) != '-' ? $res['ip_jumlah'] : null , 
-							'kom_ipt' 					=> trim($res['ipt_jumlah']) != '-' ? $res['ipt_jumlah'] : null ,
-							'kom_ik' 					=> trim($res['ik_jumlah']) != '-' ? $res['ik_jumlah'] : null ,
-							'kom_ikr' 					=> trim($res['ikr_jumlah']) != '-' ? $res['ikr_jumlah'] : null ,
+							'kom_if' 					=> trim($res['if_jumlah']) != '-' ? $if : null ,
+							'kom_ip'		 			=> trim($res['ip_jumlah']) != '-' ? $ip : null , 
+							'kom_ipt' 					=> trim($res['ipt_jumlah']) != '-' ? $ipt : null ,
+							'kom_ik' 					=> trim($res['ik_jumlah']) != '-' ? $ik : null ,
+							'kom_ikr' 					=> trim($res['ikr_jumlah']) != '-' ? $ip : null ,
 							'kom_ins_kepatuhan'			=> trim($res['ins_patuh_jumlah']) != '-' ? $res['ins_patuh_jumlah'] : null ,
 							'kom_ins_kemahalan'			=> trim($res['ins_mahal_jumlah']) != '-' ? $res['ins_mahal_jumlah'] : null ,
 							'kom_ins_penempatan'		=> trim($res['ins_tempat_jumlah']) != '-' ? $res['ins_tempat_jumlah'] : null ,
