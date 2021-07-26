@@ -271,10 +271,10 @@ ORDER BY 1");
 
         return $query->result_array();
     }
-    public function UpdateApproval($j, $o, $l)
+    public function UpdateApproval($j, $o, $l, $a)
     {
         $oracle = $this->load->database('oracle', true);
-        $oracle->query("begin APPS.KHS_APPROVE_OKBJ_IMPOR($o, $l, '$j'); end;");
+        $oracle->query("begin APPS.KHS_APPROVE_OKBJ_IMPOR($o, $l, '$j', '$a'); end;");
     }
     public function getDataperson($approver)
     {

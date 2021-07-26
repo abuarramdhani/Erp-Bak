@@ -112,6 +112,8 @@ class C_Importexport extends CI_Controller
             $worksheet->getColumnDimension('J')->setAutoSize(true);
             $worksheet->getColumnDimension('K')->setAutoSize(true);
             $worksheet->getColumnDimension('L')->setAutoSize(true);
+            $worksheet->getColumnDimension('M')->setAutoSize(true);
+
 
 
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A1', "Creator");
@@ -170,9 +172,11 @@ class C_Importexport extends CI_Controller
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('J5', "Note to Buyer");
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('K5', "Status");
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('L5', "Judgement");
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('M5', "Alasan Reject");
 
-            $worksheet->getStyle('A5:L5')->applyFromArray($thin);
-            $worksheet->getStyle('A5:L5')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+
+            $worksheet->getStyle('A5:M5')->applyFromArray($thin);
+            $worksheet->getStyle('A5:M5')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 
             $row = 6;
             foreach ($exportdata as $key => $export) {
@@ -188,8 +192,9 @@ class C_Importexport extends CI_Controller
                 $objPHPExcel->setActiveSheetIndex(0)->setCellValue('J' . $row, $export['NOTE_TO_BUYER']);
                 $objPHPExcel->setActiveSheetIndex(0)->setCellValue('K' . $row, $export['STATUS']);
                 $objPHPExcel->setActiveSheetIndex(0)->setCellValue('L' . $row, "");
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue('M' . $row, "");
 
-                $worksheet->getStyle('A' . $row . ':L' . $row)->applyFromArray($thin);
+                $worksheet->getStyle('A' . $row . ':M' . $row)->applyFromArray($thin);
 
                 $row++;
             }
@@ -254,7 +259,9 @@ class C_Importexport extends CI_Controller
                     'urgent_reason' => $row['I'],
                     'note_to_buyer' => $row['J'],
                     'status' => $row['K'],
-                    'judgement' => $row['L']
+                    'judgement' => $row['L'],
+                    'alasan_reject' => $row['M'],
+
                 );
 
                 array_push($array_line_order, $a);
@@ -288,6 +295,8 @@ class C_Importexport extends CI_Controller
                     <td class="text-center">' . $ord['status'] . '</td>
                     <td class="text-center">' . $ord['judgement'] . '</td>
                     <input type="hidden" value="' . $ord['judgement'] . '" name="judgement_okbj">
+                    <td class="text-center">' . $ord['alasan_reject'] . '</td>
+                    <input type="hidden" value="' . $ord['alasan_reject'] . '" name="alasan_reject_okbj">
 
                 </tr>
                 ';
@@ -325,6 +334,8 @@ class C_Importexport extends CI_Controller
                         <th class="text-center">Note to Buyer</th>
                         <th class="text-center">Status</th>
                         <th class="text-center">Judgement</th>
+                        <th class="text-center">Alasan Reject</th>
+
                     </tr>
                 </thead>
                 <tbody>
@@ -361,7 +372,7 @@ class C_Importexport extends CI_Controller
         $approver = $_POST['approver'];
         $lvl_approver = $_POST['level'];
         $judgement = $_POST['judgement'];
-        $note = "";
+        $alasan_reject_okbj = $_POST['alasan_reject_okbj'];
         $person = $this->M_import->getDataperson($approver);
         $person_id = $person[0]['PERSON_ID'];
         $emailBatch = array();
@@ -370,7 +381,7 @@ class C_Importexport extends CI_Controller
 
         for ($i = 0; $i < sizeof($orderid); $i++) {
             $orderStatus = $this->M_approver->checkFinishOrder($orderid[$i]);
-            $this->M_import->UpdateApproval($judgement[$i], $orderid[$i], $lvl_approver);
+            $this->M_import->UpdateApproval($judgement[$i], $orderid[$i], $lvl_approver, $alasan_reject_okbj[$i]);
 
             if ($judgement[$i] == 'A') {
                 $order = $this->M_approver->getOrderToApprove1($orderid[$i]);
@@ -691,7 +702,7 @@ class C_Importexport extends CI_Controller
             }
             $body .= "</body>";
             $body .= "</table> <br><br>";
-            $body .= "Tidak Disetujui oleh $jklApprover $namaApprover dengan alasan : <b>$note</b><br><br>";
+            $body .= "Tidak Disetujui oleh $jklApprover $namaApprover </b><br><br>";
 
             $body .= "<span style='font-size:10px;'>*Email ini dikirimkan secara otomatis oleh aplikasi <b>Order Kebutuhan Barang Dan Jasa</b> pada $emailSendDate pukul $pukul<br>";
             $body .= "*Apabila Anda menemukan kendala atau kesulitan maka dapat menghubungi Call Center ICT <b>12300 extensi 1. </span>";
