@@ -20,6 +20,8 @@ class C_Importexport extends CI_Controller
         $this->load->model('OrderKebutuhanBarangDanJasa/Requisition/M_requisition');
         $this->load->model('OrderKebutuhanBarangDanJasa/Approver/M_approver');
         $this->load->model('OrderKebutuhanBarangDanJasa/Import/M_import');
+        $this->load->model('OrderKebutuhanBarangDanJasa/Puller/M_puller');
+
 
 
         if ($this->session->userdata('logged_in') != TRUE) {
@@ -56,6 +58,8 @@ class C_Importexport extends CI_Controller
         $number = $_GET['q'];
         if ($number == 3 || $number == 5) {
             $data = $this->M_import->getApproverSeksi($number);
+        } else if ($number == 6) {
+            $data = $this->M_import->getPuller();
         } else if ($number == 7) {
             $data = $this->M_import->getApproverPengelola($number);
         } else if ($number == 8) {
@@ -67,8 +71,15 @@ class C_Importexport extends CI_Controller
     public function ExportFileApproval()
     {
         $created_by = $this->session->user;
-        $headexportdata = $this->M_import->getExportHeadDataApproval($created_by, $_POST['okbj_name_approver'], $_POST['okbj_lvl_approval']);
-        $exportdata = $this->M_import->getExportDataApproval($created_by, $_POST['okbj_name_approver'], $_POST['okbj_lvl_approval']);
+        if ($_POST['okbj_lvl_approval'] == 6) {
+            $headexportdata = $this->M_import->getExportHeadDataPuller($_POST['okbj_name_approver']);
+            $exportdata = $this->M_import->getExportDataPuller($_POST['okbj_name_approver']);
+        } else {
+            $headexportdata = $this->M_import->getExportHeadDataApproval($created_by, $_POST['okbj_name_approver'], $_POST['okbj_lvl_approval']);
+            $exportdata = $this->M_import->getExportDataApproval($created_by, $_POST['okbj_name_approver'], $_POST['okbj_lvl_approval']);
+        }
+
+
 
         if ($headexportdata == null || $exportdata == null) {
 
@@ -133,7 +144,6 @@ class C_Importexport extends CI_Controller
             $worksheet->getStyle("AZ1")->getFont()->getColor()->setRGB('FFFFFF');
 
             $objPHPExcel->getActiveSheet()->getColumnDimension('AZ')->setVisible(false);
-
 
             $thin = array();
             $thin['borders'] = array();
@@ -275,10 +285,27 @@ class C_Importexport extends CI_Controller
         $datarequester = explode(' - ', $data_header[1]);
         $dataapprover = explode(' - ', $data_header[2]);
         $tbody = "";
+        $statusss = '';
+        $display = '';
         foreach ($array_line_order as $key => $ord) {
-            $cek_status_approval = $this->M_import->getStatusOrder($ord['order_id'], $dataapprover[0], $data_header[3]);
-            if ($cek_status_approval[0]['JUDGEMENT'] == 'A' || $cek_status_approval[0]['JUDGEMENT'] == 'R') {
+            if ($data_header[3] == '-') {
+                $cek_status_approval = $this->M_import->getStatusRilis($ord['order_id']);
+                if ($cek_status_approval[0]['ORDER_STATUS_ID'] != 3) {
+                    $statusss = 'NO';
+                }
             } else {
+                $cek_status_approval = $this->M_import->getStatusOrder($ord['order_id'], $dataapprover[0], $data_header[3]);
+                if ($cek_status_approval[0]['JUDGEMENT'] == 'A' || $cek_status_approval[0]['JUDGEMENT'] == 'R') {
+                    $statusss = 'NO';
+                }
+            }
+            if ($statusss == 'NO') {
+            } else {
+                if ($data_header[3] == '-') {
+                    $display = 'none';
+                } else {
+                    $display = '';
+                }
                 $tbody .= '
                 <tr>
                     <td class="text-center">' . $ord['order_id'] . '</td>
@@ -304,16 +331,16 @@ class C_Importexport extends CI_Controller
         }
 
         $table = '
-        <div class="col-md-1"><b>Creator</b></div>
-        <div class=" col-md-11"><b>:</b> ' . $datacreator[1] . '</div>
+        <div class="col-md-2"><b>Creator</b></div>
+        <div class=" col-md-10"><b>:</b> ' . $datacreator[1] . '</div>
         <input type="hidden" value="' . $datacreator[0] . '" id="IndukCreatorOkbj">
 
-        <div class="col-md-1"><b>Requester</b></div>
-        <div class=" col-md-11"><b>:</b> ' . $datarequester[1] . '</div>
+        <div class="col-md-2"><b>Requester</b></div>
+        <div class=" col-md-10"><b>:</b> ' . $datarequester[1] . '</div>
         <input type="hidden" value="' . $datarequester[0] . '" id="IndukRequesterOkbj">
 
-        <div class="col-md-1"><b>Approver</b></div>
-        <div class=" col-md-11"><b>:</b> ' . $dataapprover[1] . '</div>
+        <div class="col-md-2"><b>Approver / Puller</b></div>
+        <div class=" col-md-10"><b>:</b> ' . $dataapprover[1] . '</div>
         <input type="hidden" value="' . $dataapprover[0] . '" id="IndukApproverOkbj">
 
         <input type="hidden" value="' . $data_header[3] . '" id="LvlApproverOkbj">
@@ -333,8 +360,8 @@ class C_Importexport extends CI_Controller
                         <th class="text-center">Urgent Reason</th>
                         <th class="text-center">Note to Buyer</th>
                         <th class="text-center">Status</th>
-                        <th class="text-center">Judgement</th>
-                        <th class="text-center">Alasan Reject</th>
+                        <th class="text-center"> Judgement</th>
+                        <th class="text-center"> Alasan Reject</th>
 
                     </tr>
                 </thead>
@@ -345,7 +372,7 @@ class C_Importexport extends CI_Controller
         </div>
         <div class="col-md-12" style="margin-top:10px;text-align:right">
             <div class="col-md-10" id="LoadingOkbj" style="text-align:right"></div>
-            <div class="col-md-1"><a class="btn btn-success" onclick ="UpdateApprExcelOKBJ()">Update Approval</a></div>
+            <div class="col-md-1"><a class="btn btn-success" onclick ="UpdateApprExcelOKBJ()">Update</a></div>
         </div>
         ';
         if ($katakunci[0] != 'OKEBAJAQUICKYOSYOSYOS' || $tbody == "") {
@@ -378,102 +405,125 @@ class C_Importexport extends CI_Controller
         $emailBatch = array();
         $emailBackRequester = array();
         $emailBackRequesterR = array();
+        if ($lvl_approver == '-') {
+            $data['approver'] = $this->M_requisition->getPersonId($approver);
+            $person_id = $data['approver'][0]['PERSON_ID'];
 
-        for ($i = 0; $i < sizeof($orderid); $i++) {
-            $orderStatus = $this->M_approver->checkFinishOrder($orderid[$i]);
-            $this->M_import->UpdateApproval($judgement[$i], $orderid[$i], $lvl_approver, $alasan_reject_okbj[$i]);
+            // $order_id = $_POST['order_id'];
 
-            if ($judgement[$i] == 'A') {
-                $order = $this->M_approver->getOrderToApprove1($orderid[$i]);
-                $getNextApproval = $this->M_approver->getNextApproval($orderid[$i]);
-                if ($person_id == $orderStatus[0]['APPROVER_ID']) {
-                    $stat = 1;
-                } else {
-                    if (!isset($emailBatch[$getNextApproval[0]['NATIONAL_IDENTIFIER']])) {
-                        $emailBatch[$getNextApproval[0]['NATIONAL_IDENTIFIER']] = array();
-                    }
-                    array_push($emailBatch[$getNextApproval[0]['NATIONAL_IDENTIFIER']], $order[0]);
-                    $stat = 0;
+            $pre_req = array(
+                'CREATED_BY' => $person_id,
+            );
+
+            $pre_req_id = $this->M_puller->releaseOrder($pre_req);
+
+            for ($i = 0; $i < count($orderid); $i++) {
+                if ($judgement[$i] == 'A') {
+
+                    $order = array(
+                        'PRE_REQ_ID' => $pre_req_id[0]['PRE_REQ_ID'],
+                        'ORDER_STATUS_ID' => '6'
+                    );
+
+                    $this->M_puller->updateOrder($orderid[$i], $order);
                 }
-                if (!isset($emailBackRequester[$order[0]['NATIONAL_IDENTIFIER']])) {
-                    $emailBackRequester[$order[0]['NATIONAL_IDENTIFIER']] = array();
-                }
-
-                array_push($emailBackRequester[$order[0]['NATIONAL_IDENTIFIER']], $order[0]);
-            } else {
-                $order = $this->M_approver->getOrderToApprove1($orderid[$i]);
-
-                if (!isset($emailBackRequesterR[$order[0]['NATIONAL_IDENTIFIER']])) {
-                    $emailBackRequesterR[$order[0]['NATIONAL_IDENTIFIER']] = array();
-                }
-
-                array_push($emailBackRequesterR[$order[0]['NATIONAL_IDENTIFIER']], $order[0]);
             }
-        }
+        } else {
+            for ($i = 0; $i < sizeof($orderid); $i++) {
+                $orderStatus = $this->M_approver->checkFinishOrder($orderid[$i]);
+                $this->M_import->UpdateApproval($judgement[$i], $orderid[$i], $lvl_approver, $alasan_reject_okbj[$i]);
 
-        // echo "<pre>";
-        // print_r($emailBackRequester);
-        // exit();
-        if ($stat == 0) {
-            foreach ($emailBatch as $key => $pesan) {
-                $noindemail = $key;
-                $normal = array();
-                $urgent = array();
-                $susulan = array();
+                if ($judgement[$i] == 'A') {
+                    $order = $this->M_approver->getOrderToApprove1($orderid[$i]);
+                    $getNextApproval = $this->M_approver->getNextApproval($orderid[$i]);
+                    if ($person_id == $orderStatus[0]['APPROVER_ID']) {
+                        $stat = 1;
+                    } else {
+                        if (!isset($emailBatch[$getNextApproval[0]['NATIONAL_IDENTIFIER']])) {
+                            $emailBatch[$getNextApproval[0]['NATIONAL_IDENTIFIER']] = array();
+                        }
+                        array_push($emailBatch[$getNextApproval[0]['NATIONAL_IDENTIFIER']], $order[0]);
+                        $stat = 0;
+                    }
+                    if (!isset($emailBackRequester[$order[0]['NATIONAL_IDENTIFIER']])) {
+                        $emailBackRequester[$order[0]['NATIONAL_IDENTIFIER']] = array();
+                    }
 
-                $nApprover = $this->M_requisition->getNamaUser($key);
-                $namaApprover = $nApprover[0]['nama'];
-
-                $encrypt = $this->encrypt->encode($key);
-                $encrypt = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypt);
-
-                $link = "<a href='" . base_url("OrderKebutuhanBarangDanJasa/directEmail/$encrypt/") . "'>Disini</a>";
-
-                if ($nApprover[0]['jenkel'][0] == 'L') {
-                    $jklApprover = 'Bapak ';
+                    array_push($emailBackRequester[$order[0]['NATIONAL_IDENTIFIER']], $order[0]);
                 } else {
-                    $jklApprover = 'Ibu ';
-                };
+                    $order = $this->M_approver->getOrderToApprove1($orderid[$i]);
 
-                $cond = "WHERE ppf.NATIONAL_IDENTIFIER = '$key'";
+                    if (!isset($emailBackRequesterR[$order[0]['NATIONAL_IDENTIFIER']])) {
+                        $emailBackRequesterR[$order[0]['NATIONAL_IDENTIFIER']] = array();
+                    }
 
-                $getNoindFromOracle = $this->M_requisition->getNoind($cond);
+                    array_push($emailBackRequesterR[$order[0]['NATIONAL_IDENTIFIER']], $order[0]);
+                }
+            }
 
-                $allOrder = $this->M_approver->getListDataOrder();
+            // echo "<pre>";
+            // print_r($emailBackRequester);
+            // exit();
+            if ($stat == 0) {
+                foreach ($emailBatch as $key => $pesan) {
+                    $noindemail = $key;
+                    $normal = array();
+                    $urgent = array();
+                    $susulan = array();
 
-                foreach ($allOrder as $key => $order) {
-                    $checkOrder = $this->M_approver->checkOrder($order['ORDER_ID']);
-                    if (isset($checkOrder[0])) {
-                        if ($checkOrder[0]['APPROVER_ID'] == $getNoindFromOracle[0]['PERSON_ID']) {
-                            $orderSiapTampil = $this->M_approver->getOrderToApprove($order['ORDER_ID']);
-                            if ($orderSiapTampil[0]['ORDER_CLASS'] != '2') {
-                                if ($orderSiapTampil[0]['URGENT_FLAG'] == 'N' && $orderSiapTampil[0]['IS_SUSULAN'] == 'N') {
-                                    array_push($normal, $orderSiapTampil[0]);
-                                } elseif ($orderSiapTampil[0]['URGENT_FLAG'] == 'Y' && $orderSiapTampil[0]['IS_SUSULAN'] == 'N') {
-                                    array_push($urgent, $orderSiapTampil[0]);
-                                } elseif ($orderSiapTampil[0]['IS_SUSULAN'] == 'Y') {
-                                    array_push($susulan, $orderSiapTampil[0]);
+                    $nApprover = $this->M_requisition->getNamaUser($key);
+                    $namaApprover = $nApprover[0]['nama'];
+
+                    $encrypt = $this->encrypt->encode($key);
+                    $encrypt = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypt);
+
+                    $link = "<a href='" . base_url("OrderKebutuhanBarangDanJasa/directEmail/$encrypt/") . "'>Disini</a>";
+
+                    if ($nApprover[0]['jenkel'][0] == 'L') {
+                        $jklApprover = 'Bapak ';
+                    } else {
+                        $jklApprover = 'Ibu ';
+                    };
+
+                    $cond = "WHERE ppf.NATIONAL_IDENTIFIER = '$key'";
+
+                    $getNoindFromOracle = $this->M_requisition->getNoind($cond);
+
+                    $allOrder = $this->M_approver->getListDataOrder();
+
+                    foreach ($allOrder as $key => $order) {
+                        $checkOrder = $this->M_approver->checkOrder($order['ORDER_ID']);
+                        if (isset($checkOrder[0])) {
+                            if ($checkOrder[0]['APPROVER_ID'] == $getNoindFromOracle[0]['PERSON_ID']) {
+                                $orderSiapTampil = $this->M_approver->getOrderToApprove($order['ORDER_ID']);
+                                if ($orderSiapTampil[0]['ORDER_CLASS'] != '2') {
+                                    if ($orderSiapTampil[0]['URGENT_FLAG'] == 'N' && $orderSiapTampil[0]['IS_SUSULAN'] == 'N') {
+                                        array_push($normal, $orderSiapTampil[0]);
+                                    } elseif ($orderSiapTampil[0]['URGENT_FLAG'] == 'Y' && $orderSiapTampil[0]['IS_SUSULAN'] == 'N') {
+                                        array_push($urgent, $orderSiapTampil[0]);
+                                    } elseif ($orderSiapTampil[0]['IS_SUSULAN'] == 'Y') {
+                                        array_push($susulan, $orderSiapTampil[0]);
+                                    }
                                 }
                             }
                         }
                     }
-                }
 
-                $create = $pesan[0]['NATIONAL_IDENTIFIER'];
-                // $getNoindFromOracle = $this->M_requisition->getNoind($create);
-                $nCreator = $this->M_requisition->getNamaUser($create);
-                $namaCreator = $nCreator[0]['nama'];
+                    $create = $pesan[0]['NATIONAL_IDENTIFIER'];
+                    // $getNoindFromOracle = $this->M_requisition->getNoind($create);
+                    $nCreator = $this->M_requisition->getNamaUser($create);
+                    $namaCreator = $nCreator[0]['nama'];
 
-                if ($nCreator[0]['jenkel'][0] == 'L') {
-                    $jklCreator = 'Bapak ';
-                } else {
-                    $jklCreator = 'Ibu ';
-                };
+                    if ($nCreator[0]['jenkel'][0] == 'L') {
+                        $jklCreator = 'Bapak ';
+                    } else {
+                        $jklCreator = 'Ibu ';
+                    };
 
-                $subject = '[PRE-LAUNCH]Persetujuan Order Kebutuhan Barang Dan jasa';
-                $body = "<b>Yth. $jklApprover $namaApprover</b>,<br><br>";
-                $body .= "$jklCreator $namaCreator meminta approval Anda terkait order barang-barang berikut : <br><br>";
-                $body .= "	<table border='1' style=' border-collapse: collapse;'>
+                    $subject = '[PRE-LAUNCH]Persetujuan Order Kebutuhan Barang Dan jasa';
+                    $body = "<b>Yth. $jklApprover $namaApprover</b>,<br><br>";
+                    $body .= "$jklCreator $namaCreator meminta approval Anda terkait order barang-barang berikut : <br><br>";
+                    $body .= "	<table border='1' style=' border-collapse: collapse;'>
                             <thead>
                                 <tr>
                                     <th>Kode Barang</th>
@@ -486,35 +536,35 @@ class C_Importexport extends CI_Controller
                                 </tr>
                             </thead>
                             <tbody>";
-                for ($i = 0; $i < count($pesan); $i++) {
-                    if ($pesan[$i]['URGENT_FLAG'] == 'Y' && $pesan[$i]['IS_SUSULAN'] == 'N') {
-                        $statusOrder = 'Urgent';
-                        $bgColor = '#d73925';
-                    } else if ($pesan[$i]['URGENT_FLAG'] == 'N' && $pesan[$i]['IS_SUSULAN'] == 'N') {
-                        $statusOrder = 'Reguler';
-                        $bgColor = '#009551';
-                    } elseif ($pesan[$i]['IS_SUSULAN'] == 'Y') {
-                        $statusOrder = 'Emergency';
-                        $bgColor = '#da8c10';
-                    }
+                    for ($i = 0; $i < count($pesan); $i++) {
+                        if ($pesan[$i]['URGENT_FLAG'] == 'Y' && $pesan[$i]['IS_SUSULAN'] == 'N') {
+                            $statusOrder = 'Urgent';
+                            $bgColor = '#d73925';
+                        } else if ($pesan[$i]['URGENT_FLAG'] == 'N' && $pesan[$i]['IS_SUSULAN'] == 'N') {
+                            $statusOrder = 'Reguler';
+                            $bgColor = '#009551';
+                        } elseif ($pesan[$i]['IS_SUSULAN'] == 'Y') {
+                            $statusOrder = 'Emergency';
+                            $bgColor = '#da8c10';
+                        }
 
-                    if ($pesan[$i]['URGENT_REASON'] == '') {
-                        $urgentReason = '-';
-                    } else {
-                        $urgentReason = $pesan[$i]['URGENT_REASON'];
-                    }
+                        if ($pesan[$i]['URGENT_REASON'] == '') {
+                            $urgentReason = '-';
+                        } else {
+                            $urgentReason = $pesan[$i]['URGENT_REASON'];
+                        }
 
-                    $emailSendDate = date("d-M-Y");
-                    $pukul = date("h:i:sa");
+                        $emailSendDate = date("d-M-Y");
+                        $pukul = date("h:i:sa");
 
-                    $itemDanDeskripsi = $pesan[$i]['SEGMENT1'] . ' - ' . $pesan[$i]['DESCRIPTION'];
-                    $kodeBarang = $itemDanDeskripsi;
-                    $deskripsi = $pesan[$i]['ITEM_DESCRIPTION'];
-                    $qty = $pesan[$i]['QUANTITY'];
-                    $uom = $pesan[$i]['UOM'];
-                    $alasanPengadaan = $pesan[$i]['ORDER_PURPOSE'];
+                        $itemDanDeskripsi = $pesan[$i]['SEGMENT1'] . ' - ' . $pesan[$i]['DESCRIPTION'];
+                        $kodeBarang = $itemDanDeskripsi;
+                        $deskripsi = $pesan[$i]['ITEM_DESCRIPTION'];
+                        $qty = $pesan[$i]['QUANTITY'];
+                        $uom = $pesan[$i]['UOM'];
+                        $alasanPengadaan = $pesan[$i]['ORDER_PURPOSE'];
 
-                    $body .= "<tr>
+                        $body .= "<tr>
                                         <td>$kodeBarang</td>
                                         <td>$deskripsi</td>
                                         <td>$qty</td>
@@ -523,45 +573,45 @@ class C_Importexport extends CI_Controller
                                         <td>$alasanPengadaan</td>
                                         <td>$urgentReason</td>
                                     </tr>";
+                    }
+                    $body .= "</body>";
+                    $body .= "</table> <br><br>";
+                    $body .= "<b>INFO :</b><br>";
+                    $body .= "Terdapat <b>" . count($normal) . " order reguler, " . count($susulan) . " order susulan, dan " . count($urgent) . " order urgent</b> menunggu keputusan Anda!<br>";
+                    $body .= "Apabila Anda ingin mengambil tindakan terhadap Order tersebut, Anda dapat klik link <b>$link</b> <br><br>";
+                    $body .= "Demikian yang dapat kami sampaikan. Atas perhatian dan kerjasamanya kami ucapkan terima kasih. <br><br>";
+                    $body .= "<span style='font-size:10px;'>*Email ini dikirimkan secara otomatis oleh aplikasi <b>Order Kebutuhan Barang Dan Jasa</b> pada $emailSendDate pukul $pukul<br>";
+                    $body .= "*Apabila Anda menemukan kendala atau kesulitan maka dapat menghubungi Call Center ICT <b>12300 extensi 1. </span>";
+
+
+                    $this->EmailAlert($noindemail, $subject, $body);
                 }
-                $body .= "</body>";
-                $body .= "</table> <br><br>";
-                $body .= "<b>INFO :</b><br>";
-                $body .= "Terdapat <b>" . count($normal) . " order reguler, " . count($susulan) . " order susulan, dan " . count($urgent) . " order urgent</b> menunggu keputusan Anda!<br>";
-                $body .= "Apabila Anda ingin mengambil tindakan terhadap Order tersebut, Anda dapat klik link <b>$link</b> <br><br>";
-                $body .= "Demikian yang dapat kami sampaikan. Atas perhatian dan kerjasamanya kami ucapkan terima kasih. <br><br>";
-                $body .= "<span style='font-size:10px;'>*Email ini dikirimkan secara otomatis oleh aplikasi <b>Order Kebutuhan Barang Dan Jasa</b> pada $emailSendDate pukul $pukul<br>";
-                $body .= "*Apabila Anda menemukan kendala atau kesulitan maka dapat menghubungi Call Center ICT <b>12300 extensi 1. </span>";
-
-
-                $this->EmailAlert($noindemail, $subject, $body);
             }
-        }
 
-        foreach ($emailBackRequester as $key => $pesanRequester) {
-            $noindemail = $key;
-            $nRequester = $this->M_requisition->getNamaUser($key);
-            $namaRequester = $nRequester[0]['nama'];
+            foreach ($emailBackRequester as $key => $pesanRequester) {
+                $noindemail = $key;
+                $nRequester = $this->M_requisition->getNamaUser($key);
+                $namaRequester = $nRequester[0]['nama'];
 
-            if ($nRequester[0]['jenkel'][0] == 'L') {
-                $jklRequester = 'Bapak ';
-            } else {
-                $jklRequester = 'Ibu ';
-            };
+                if ($nRequester[0]['jenkel'][0] == 'L') {
+                    $jklRequester = 'Bapak ';
+                } else {
+                    $jklRequester = 'Ibu ';
+                };
 
-            $nApprover = $this->M_requisition->getNamaUser($approver);
-            $namaApprover = $nApprover[0]['nama'];
+                $nApprover = $this->M_requisition->getNamaUser($approver);
+                $namaApprover = $nApprover[0]['nama'];
 
-            if ($nApprover[0]['jenkel'][0] == 'L') {
-                $jklApprover = 'Bapak ';
-            } else {
-                $jklApprover = 'Ibu ';
-            };
+                if ($nApprover[0]['jenkel'][0] == 'L') {
+                    $jklApprover = 'Bapak ';
+                } else {
+                    $jklApprover = 'Ibu ';
+                };
 
-            $subject = '[PRE-LAUNCH] Order Disetujui';
-            $body = "<b>Yth. $jklRequester $namaRequester</b>,<br><br>";
-            $body .= "Order anda terkait barang - barang berikut :<br><br>";
-            $body .= "<table border='1' style=' border-collapse: collapse;'>
+                $subject = '[PRE-LAUNCH] Order Disetujui';
+                $body = "<b>Yth. $jklRequester $namaRequester</b>,<br><br>";
+                $body .= "Order anda terkait barang - barang berikut :<br><br>";
+                $body .= "<table border='1' style=' border-collapse: collapse;'>
                             <thead>
                                 <tr>
                                     <th>Order Id</th>
@@ -575,36 +625,36 @@ class C_Importexport extends CI_Controller
                                 </tr>
                             </thead>
                             <tbody>";
-            for ($i = 0; $i < count($pesanRequester); $i++) {
-                if ($pesanRequester[$i]['URGENT_FLAG'] == 'Y' && $pesanRequester[$i]['IS_SUSULAN'] == 'N') {
-                    $statusOrder = 'Urgent';
-                    $bgColor = '#d73925';
-                } else if ($pesanRequester[$i]['URGENT_FLAG'] == 'N' && $pesanRequester[$i]['IS_SUSULAN'] == 'N') {
-                    $statusOrder = 'Reguler';
-                    $bgColor = '#009551';
-                } elseif ($pesanRequester[$i]['IS_SUSULAN'] == 'Y') {
-                    $statusOrder = 'Emergency';
-                    $bgColor = '#da8c10';
-                }
+                for ($i = 0; $i < count($pesanRequester); $i++) {
+                    if ($pesanRequester[$i]['URGENT_FLAG'] == 'Y' && $pesanRequester[$i]['IS_SUSULAN'] == 'N') {
+                        $statusOrder = 'Urgent';
+                        $bgColor = '#d73925';
+                    } else if ($pesanRequester[$i]['URGENT_FLAG'] == 'N' && $pesanRequester[$i]['IS_SUSULAN'] == 'N') {
+                        $statusOrder = 'Reguler';
+                        $bgColor = '#009551';
+                    } elseif ($pesanRequester[$i]['IS_SUSULAN'] == 'Y') {
+                        $statusOrder = 'Emergency';
+                        $bgColor = '#da8c10';
+                    }
 
-                if ($pesanRequester[$i]['URGENT_REASON'] == '') {
-                    $urgentReason = '-';
-                } else {
-                    $urgentReason = $pesanRequester[$i]['URGENT_REASON'];
-                }
+                    if ($pesanRequester[$i]['URGENT_REASON'] == '') {
+                        $urgentReason = '-';
+                    } else {
+                        $urgentReason = $pesanRequester[$i]['URGENT_REASON'];
+                    }
 
-                $emailSendDate = date("d-M-Y");
-                $pukul = date("h:i:sa");
+                    $emailSendDate = date("d-M-Y");
+                    $pukul = date("h:i:sa");
 
-                $orderId = $pesanRequester[$i]['ORDER_ID'];
-                $itemDanDeskripsi = $pesanRequester[$i]['SEGMENT1'] . ' - ' . $pesanRequester[$i]['DESCRIPTION'];
-                $kodeBarang = $itemDanDeskripsi;
-                $deskripsi = $pesanRequester[$i]['ITEM_DESCRIPTION'];
-                $qty = $pesanRequester[$i]['QUANTITY'];
-                $uom = $pesanRequester[$i]['UOM'];
-                $alasanPengadaan = $pesanRequester[$i]['ORDER_PURPOSE'];
+                    $orderId = $pesanRequester[$i]['ORDER_ID'];
+                    $itemDanDeskripsi = $pesanRequester[$i]['SEGMENT1'] . ' - ' . $pesanRequester[$i]['DESCRIPTION'];
+                    $kodeBarang = $itemDanDeskripsi;
+                    $deskripsi = $pesanRequester[$i]['ITEM_DESCRIPTION'];
+                    $qty = $pesanRequester[$i]['QUANTITY'];
+                    $uom = $pesanRequester[$i]['UOM'];
+                    $alasanPengadaan = $pesanRequester[$i]['ORDER_PURPOSE'];
 
-                $body .= "<tr>
+                    $body .= "<tr>
                                                 <td>$orderId</td>
                                                 <td>$kodeBarang</td>
                                                 <td>$deskripsi</td>
@@ -614,42 +664,42 @@ class C_Importexport extends CI_Controller
                                                 <td>$alasanPengadaan</td>
                                                 <td>$urgentReason</td>
                                             </tr>";
+                }
+                $body .= "</body>";
+                $body .= "</table> <br><br>";
+                $body .= "Telah Disetujui oleh $jklApprover $namaApprover <br><br>";
+
+                $body .= "<span style='font-size:10px;'>*Email ini dikirimkan secara otomatis oleh aplikasi <b>Order Kebutuhan Barang Dan Jasa</b> pada $emailSendDate pukul $pukul<br>";
+                $body .= "*Apabila Anda menemukan kendala atau kesulitan maka dapat menghubungi Call Center ICT <b>12300 extensi 1. </span>";
+
+                if ($namaApprover != $namaRequester) {
+                    $this->EmailAlert($noindemail, $subject, $body);
+                }
             }
-            $body .= "</body>";
-            $body .= "</table> <br><br>";
-            $body .= "Telah Disetujui oleh $jklApprover $namaApprover <br><br>";
+            foreach ($emailBackRequesterR as $key => $pesanRequester) {
+                $noindemail = $key;
+                $nRequester = $this->M_requisition->getNamaUser($key);
+                $namaRequester = $nRequester[0]['nama'];
 
-            $body .= "<span style='font-size:10px;'>*Email ini dikirimkan secara otomatis oleh aplikasi <b>Order Kebutuhan Barang Dan Jasa</b> pada $emailSendDate pukul $pukul<br>";
-            $body .= "*Apabila Anda menemukan kendala atau kesulitan maka dapat menghubungi Call Center ICT <b>12300 extensi 1. </span>";
+                if ($nRequester[0]['jenkel'][0] == 'L') {
+                    $jklRequester = 'Bapak ';
+                } else {
+                    $jklRequester = 'Ibu ';
+                };
 
-            if ($namaApprover != $namaRequester) {
-                $this->EmailAlert($noindemail, $subject, $body);
-            }
-        }
-        foreach ($emailBackRequesterR as $key => $pesanRequester) {
-            $noindemail = $key;
-            $nRequester = $this->M_requisition->getNamaUser($key);
-            $namaRequester = $nRequester[0]['nama'];
+                $nApprover = $this->M_requisition->getNamaUser($approver);
+                $namaApprover = $nApprover[0]['nama'];
 
-            if ($nRequester[0]['jenkel'][0] == 'L') {
-                $jklRequester = 'Bapak ';
-            } else {
-                $jklRequester = 'Ibu ';
-            };
+                if ($nApprover[0]['jenkel'][0] == 'L') {
+                    $jklApprover = 'Bapak ';
+                } else {
+                    $jklApprover = 'Ibu ';
+                };
 
-            $nApprover = $this->M_requisition->getNamaUser($approver);
-            $namaApprover = $nApprover[0]['nama'];
-
-            if ($nApprover[0]['jenkel'][0] == 'L') {
-                $jklApprover = 'Bapak ';
-            } else {
-                $jklApprover = 'Ibu ';
-            };
-
-            $subject = '[PRE-LAUNCH] Order Ditolak';
-            $body = "<b>Yth. $jklRequester $namaRequester</b>,<br><br>";
-            $body .= "Order anda terkait barang - barang berikut :<br><br>";
-            $body .= "<table border='1' style=' border-collapse: collapse;'>
+                $subject = '[PRE-LAUNCH] Order Ditolak';
+                $body = "<b>Yth. $jklRequester $namaRequester</b>,<br><br>";
+                $body .= "Order anda terkait barang - barang berikut :<br><br>";
+                $body .= "<table border='1' style=' border-collapse: collapse;'>
                             <thead>
                                 <tr>
                                     <th>Kode Barang</th>
@@ -662,35 +712,35 @@ class C_Importexport extends CI_Controller
                                 </tr>
                             </thead>
                             <tbody>";
-            for ($i = 0; $i < count($pesanRequester); $i++) {
-                if ($pesanRequester[$i]['URGENT_FLAG'] == 'Y' && $pesanRequester[$i]['IS_SUSULAN'] == 'N') {
-                    $statusOrder = 'Urgent';
-                    $bgColor = '#d73925';
-                } else if ($pesanRequester[$i]['URGENT_FLAG'] == 'N' && $pesanRequester[$i]['IS_SUSULAN'] == 'N') {
-                    $statusOrder = 'Reguler';
-                    $bgColor = '#009551';
-                } elseif ($pesanRequester[$i]['IS_SUSULAN'] == 'Y') {
-                    $statusOrder = 'Emergency';
-                    $bgColor = '#da8c10';
-                }
+                for ($i = 0; $i < count($pesanRequester); $i++) {
+                    if ($pesanRequester[$i]['URGENT_FLAG'] == 'Y' && $pesanRequester[$i]['IS_SUSULAN'] == 'N') {
+                        $statusOrder = 'Urgent';
+                        $bgColor = '#d73925';
+                    } else if ($pesanRequester[$i]['URGENT_FLAG'] == 'N' && $pesanRequester[$i]['IS_SUSULAN'] == 'N') {
+                        $statusOrder = 'Reguler';
+                        $bgColor = '#009551';
+                    } elseif ($pesanRequester[$i]['IS_SUSULAN'] == 'Y') {
+                        $statusOrder = 'Emergency';
+                        $bgColor = '#da8c10';
+                    }
 
-                if ($pesanRequester[$i]['URGENT_REASON'] == '') {
-                    $urgentReason = '-';
-                } else {
-                    $urgentReason = $pesanRequester[$i]['URGENT_REASON'];
-                }
+                    if ($pesanRequester[$i]['URGENT_REASON'] == '') {
+                        $urgentReason = '-';
+                    } else {
+                        $urgentReason = $pesanRequester[$i]['URGENT_REASON'];
+                    }
 
-                $emailSendDate = date("d-M-Y");
-                $pukul = date("h:i:sa");
+                    $emailSendDate = date("d-M-Y");
+                    $pukul = date("h:i:sa");
 
-                $itemDanDeskripsi = $pesanRequester[$i]['SEGMENT1'] . ' - ' . $pesanRequester[$i]['DESCRIPTION'];
-                $kodeBarang = $itemDanDeskripsi;
-                $deskripsi = $pesanRequester[$i]['ITEM_DESCRIPTION'];
-                $qty = $pesanRequester[$i]['QUANTITY'];
-                $uom = $pesanRequester[$i]['UOM'];
-                $alasanPengadaan = $pesanRequester[$i]['ORDER_PURPOSE'];
+                    $itemDanDeskripsi = $pesanRequester[$i]['SEGMENT1'] . ' - ' . $pesanRequester[$i]['DESCRIPTION'];
+                    $kodeBarang = $itemDanDeskripsi;
+                    $deskripsi = $pesanRequester[$i]['ITEM_DESCRIPTION'];
+                    $qty = $pesanRequester[$i]['QUANTITY'];
+                    $uom = $pesanRequester[$i]['UOM'];
+                    $alasanPengadaan = $pesanRequester[$i]['ORDER_PURPOSE'];
 
-                $body .= "<tr>
+                    $body .= "<tr>
                                                 <td>$kodeBarang</td>
                                                 <td>$deskripsi</td>
                                                 <td>$qty</td>
@@ -699,16 +749,17 @@ class C_Importexport extends CI_Controller
                                                 <td>$alasanPengadaan</td>
                                                 <td>$urgentReason</td>
                                             </tr>";
+                }
+                $body .= "</body>";
+                $body .= "</table> <br><br>";
+                $body .= "Tidak Disetujui oleh $jklApprover $namaApprover </b><br><br>";
+
+                $body .= "<span style='font-size:10px;'>*Email ini dikirimkan secara otomatis oleh aplikasi <b>Order Kebutuhan Barang Dan Jasa</b> pada $emailSendDate pukul $pukul<br>";
+                $body .= "*Apabila Anda menemukan kendala atau kesulitan maka dapat menghubungi Call Center ICT <b>12300 extensi 1. </span>";
+
+
+                $this->EmailAlert($noindemail, $subject, $body);
             }
-            $body .= "</body>";
-            $body .= "</table> <br><br>";
-            $body .= "Tidak Disetujui oleh $jklApprover $namaApprover </b><br><br>";
-
-            $body .= "<span style='font-size:10px;'>*Email ini dikirimkan secara otomatis oleh aplikasi <b>Order Kebutuhan Barang Dan Jasa</b> pada $emailSendDate pukul $pukul<br>";
-            $body .= "*Apabila Anda menemukan kendala atau kesulitan maka dapat menghubungi Call Center ICT <b>12300 extensi 1. </span>";
-
-
-            $this->EmailAlert($noindemail, $subject, $body);
         }
     }
     public function EmailAlert($noind, $subject, $body)
