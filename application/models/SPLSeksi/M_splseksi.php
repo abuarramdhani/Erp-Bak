@@ -378,7 +378,7 @@ class M_splseksi extends CI_Model
 				and tsp.noind = tdp.noind
 				where tdp.noind = '$noind'
 				and tdp.tanggal = '$tanggal'
-				and trim(tdp.kd_ket) in ('PKJ','PID')";
+				and (trim(tdp.kd_ket) in ('PKJ','PID') or (trim(tdp.kd_ket) = 'PRM' and alasan like '%WFH%' and alasan not like '%NON WFH%' ) )";
 		return $this->prs->query($sql)->result_array();
 	}
 
