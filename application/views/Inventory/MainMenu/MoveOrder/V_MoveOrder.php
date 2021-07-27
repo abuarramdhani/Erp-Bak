@@ -23,19 +23,19 @@
               </div>
               <div class="form-group col-md-12" style="margin-left:-15px">
                 <div class="col-md-6" style="width:250px">
-                  <label> Pilih Tanggal Awal</label>
+                  <label> Pilih Tanggal</label>
                   <div class="input-group date">
                     <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
                     <input type="text" class="form-control pull-right" id="txtTanggalIMO" name="txtTanggalIMO" placeholder="Start Date.." autocomplete="off">
                   </div>
                 </div>
-                <div class="col-md-6" style="width:250px">
+                <!-- <div class="col-md-6" style="width:250px">
                   <label> Pilih Tanggal Akhir </label>
                   <div class="input-group date">
                     <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
                     <input type="text" class="form-control pull-right" id="txtTanggalIMOAkhir" name="txtTanggalIMOAkhir" placeholder="End Date.." autocomplete="off">
                   </div>
-                </div>
+                </div> -->
               </div>
               <div class="form-group shiftForm">
                 <div class="col-md-12">
