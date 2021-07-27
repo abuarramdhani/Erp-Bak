@@ -61,7 +61,7 @@ class C_MoveOrder extends CI_Controller
 
 	public function search(){
 		$date = $this->input->post('date');
-		$date_akhir = strtoupper(DateTime::createFromFormat('d/m/Y', $this->input->post('date2'))->format('d-M-y'));
+		// $date_akhir = strtoupper(DateTime::createFromFormat('d/m/Y', $this->input->post('date2'))->format('d-M-y'));
 		$dept = $this->input->post('dept');
 		$shift1 = $this->input->post('shift');
 		$ket	= $this->input->post('ket');
@@ -82,7 +82,7 @@ class C_MoveOrder extends CI_Controller
 		$datenew = $date ? $date2[1].'/'.$date2[0].'/'.$date2[2] : '';
 		$date = strtoupper(date('d-M-y', strtotime($datenew)));
 
-		$dataGET = $this->M_MoveOrder->search($date,$date_akhir,$dept,$shift,$atr, $ket);
+		$dataGET = $this->M_MoveOrder->search($date,$dept,$shift,$atr, $ket);
 		
 		// echo "<pre>";
 		// // print_r($date);
