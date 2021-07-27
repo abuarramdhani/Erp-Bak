@@ -740,33 +740,33 @@ function GetSudahCetakDetail(rm, rowID) {
 
 let do_cekcetak;
 function startintervalcetak(rn) {
- do_cekcetak = setInterval(function() {
+ // do_cekcetak = setInterval(function() {
    ceksudahcetak(rn);
- }, 2000);
+ // }, 2000);
 }
 
 function ceksudahcetak(rn) {
-  $.ajax({
-    url: baseurl + 'MonitoringDO/SettingDO/cek_sudah_cetak',
-    type: 'POST',
-    dataType:'JSON',
-    data: {
-      rn:rn,
-    },
-    beforeSend: function() {
-    },
-    success: function(result) {
-      console.log(result.STATUS, 'ini statusnya');
-      if (result.STATUS == 'C') {
-         clearInterval(do_cekcetak);
-         swalDO2021('success', 'Selesai.');
+  // $.ajax({
+  //   url: baseurl + 'MonitoringDO/SettingDO/cek_sudah_cetak',
+  //   type: 'POST',
+  //   dataType:'JSON',
+  //   data: {
+  //     rn:rn,
+  //   },
+  //   beforeSend: function() {
+  //   },
+  //   success: function(result) {
+  //     console.log(result.STATUS, 'ini statusnya');
+  //     if (result.STATUS == 'C') {
+  //        clearInterval(do_cekcetak);
+  //        swalDO2021('success', 'Selesai.');
          dodo3();
-      }
-    },
-    error: function(XMLHttpRequest, textStatus, errorThrown) {
-      console.error();
-    }
-  })
+  //     }
+  //   },
+  //   error: function(XMLHttpRequest, textStatus, errorThrown) {
+  //     console.error();
+  //   }
+  // })
 }
 
 function runapi_interorg(tipe, request_number, org_id, subinv) {
@@ -800,7 +800,7 @@ function runapi_interorg(tipe, request_number, org_id, subinv) {
               // swalDO2021('success', 'Berhasil menjalankan prosedur');
               // swalDO2021Loading('Sedang Mencetak Dokumen')
               $('#MyModalSPBKIT').modal('hide');
-              // startintervalcetak(request_number);
+              startintervalcetak(request_number);
               window.open(baseurl+'MonitoringDO/PDF/'+request_number);
             }else {
               swalDO2021('warning', 'tipe dan request_number kosong');
@@ -813,7 +813,7 @@ function runapi_interorg(tipe, request_number, org_id, subinv) {
         })
       }else {
         // swalDO2021Loading('Sedang Mencetak Dokumen')
-        // startintervalcetak(request_number);
+        startintervalcetak(request_number);
         window.open(baseurl+'MonitoringDO/PDF/'+request_number);
       }
     },
@@ -852,7 +852,7 @@ function cetakDO(rn, tipe, header_id) {
         //tambahan kondisi 2021
         if (tipe == 'DO') {
           // swalDO2021Loading('Sedang Mencetak Dokumen')
-          // startintervalcetak(rn);
+          startintervalcetak(rn);
           window.open(baseurl+'MonitoringDO/PDF/'+rn)
         }else {
           $.ajax({
@@ -941,7 +941,7 @@ function cetakDO(rn, tipe, header_id) {
 
                       }else {
                         // swalDO2021Loading('Sedang Mencetak Dokumen')
-                        // startintervalcetak(rn);
+                        startintervalcetak(rn);
                         window.open(baseurl+'MonitoringDO/PDF/'+rn);
                       }
                     },
