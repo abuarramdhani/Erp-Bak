@@ -186,6 +186,18 @@ ORDER BY 1");
 
         return $query->result_array();
     }
+    public function getPuller()
+    {
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query("SELECT ppf.person_id, ppf.full_name nama, ppf.national_identifier no_induk,ppf.person_id
+        FROM (SELECT DISTINCT attribute27
+                         FROM mtl_system_items_b
+                        WHERE attribute27 IS NOT NULL) msib,
+             per_all_people_f ppf
+       WHERE msib.attribute27 = ppf.person_id");
+
+        return $query->result_array();
+    }
     public function getExportHeadDataApproval($created_by, $okbj_name_approver, $okbj_lvl_approval)
     {
         $oracle = $this->load->database('oracle', true);
@@ -221,6 +233,32 @@ ORDER BY 1");
        AND ppf_appr.national_identifier = '$okbj_name_approver'  -- parameter no induk approver
        AND tbl1.a_level = $okbj_lvl_approval
     ");
+
+        return $query->result_array();
+    }
+    public function getExportHeadDataPuller($noind)
+    {
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query("SELECT DISTINCT ppf_create.national_identifier nik_pembuat,
+        ppf_create.full_name nama_pembuat,
+        ppf_requester.national_identifier nik_requester,
+        ppf_requester.full_name nama_requester,
+        ppf_puller.national_identifier nik_approver,
+        ppf_puller.full_name nama_approver, ooh.order_id,
+        '-' level_approved
+   FROM khs.khs_okbj_order_header ooh,
+        mtl_system_items_b msib,
+        per_people_f ppf_requester,
+        per_people_f ppf_puller,
+        per_all_people_f ppf_create
+  WHERE ooh.requester = ppf_requester.person_id
+    AND msib.attribute27 = ppf_puller.person_id
+    AND ooh.create_by = ppf_create.person_id
+    AND ooh.inventory_item_id = msib.inventory_item_id
+    AND msib.organization_id = 81
+    AND ooh.order_status_id = '3'
+    AND ooh.pre_req_id IS NULL
+    AND ppf_puller.national_identifier = '$noind' -- nomer induk puller");
 
         return $query->result_array();
     }
@@ -271,6 +309,37 @@ ORDER BY 1");
 
         return $query->result_array();
     }
+    public function getExportDataPuller($noind)
+    {
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query("SELECT DISTINCT ooh.order_id, msib.segment1 item_code,
+        ooh.item_description item_description, ooh.quantity, ooh.uom,
+        ooh.need_by_date, ooh.order_purpose, ooh.note_to_pengelola,
+        ooh.urgent_reason, ooh.note_to_buyer,
+        CASE
+           WHEN ooh.is_susulan = 'Y'
+              THEN 'Susulan'
+           WHEN ooh.urgent_flag = 'Y'
+           AND (ooh.is_susulan = 'N' OR ooh.is_susulan IS NULL)
+              THEN 'Urgent'
+           WHEN (ooh.urgent_flag <> 'Y' OR ooh.urgent_flag IS NULL)
+           AND (ooh.is_susulan <> 'Y' OR ooh.is_susulan IS NULL)
+              THEN 'Normal'
+           ELSE 'Undefined'
+        END status
+   FROM khs.khs_okbj_order_header ooh,
+        mtl_system_items_b msib,
+        per_people_f ppf_puller
+  WHERE 1 = 1
+    AND msib.attribute27 = ppf_puller.person_id
+    AND ooh.inventory_item_id = msib.inventory_item_id
+    AND msib.organization_id = 81
+    AND ooh.order_status_id = '3'
+    AND ooh.pre_req_id IS NULL
+    AND ppf_puller.national_identifier = '$noind' -- nomer induk puller");
+
+        return $query->result_array();
+    }
     public function UpdateApproval($j, $o, $l, $a)
     {
         $oracle = $this->load->database('oracle', true);
@@ -297,6 +366,13 @@ ORDER BY 1");
         and kooa.APPROVER_TYPE = $level
         and ppf.national_identifier = '$dataapprover'
         and kooa.ORDER_ID = $order_id");
+
+        return $query->result_array();
+    }
+    public function getStatusRilis($no)
+    {
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query("select order_status_id from khs.khs_okbj_order_header where order_id = $no");
 
         return $query->result_array();
     }
