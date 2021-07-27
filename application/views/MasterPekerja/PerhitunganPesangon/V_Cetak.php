@@ -253,19 +253,40 @@
 		<tr>
 		    <td style="border-left: 1px solid black;border-bottom: 1px solid black;width: 29%;padding-left: 20px">HUTANG KOPERASI</td>
 			<td style="border-bottom: 1px solid black;width: 1%;padding-left: 20px">:</td>
-			<td style="border-bottom: 1px solid black;width: 60%;padding-left: 20px">Rp. <?php echo number_format($data->hutang_koperasi,0,',','.')?>,00</td>
+			<td style="border-bottom: 1px solid black;width: 60%;padding-left: 20px">
+				<table>
+					<tr>
+						<td style="width: 20px;">Rp. </td>
+						<td style="width: 100px;text-align: right;"><?php echo number_format($data->hutang_koperasi,0,',','.')?>,00</td>
+					</tr>
+				</table>
+			</td>
 			<td style="border-right: 1px solid black;border-left: 1px solid black;border-bottom: 1px solid black;width: 10%;padding-left: 20px"></td>
 		</tr>
 		<tr>
 		    <td style="border-left: 1px solid black;border-bottom: 1px solid black;width: 29%;padding-left: 20px">HUTANG PERUSAHAAN</td>
 			<td style="border-bottom: 1px solid black;width: 1%;padding-left: 20px">:</td>
-			<td style="border-bottom: 1px solid black;width: 60%;padding-left: 20px">Rp. <?php echo number_format($data->hutang_perusahaan,0,',','.')?>,00</td>
+			<td style="border-bottom: 1px solid black;width: 60%;padding-left: 20px">
+				<table>
+					<tr>
+						<td style="width: 20px;">Rp. </td>
+						<td style="width: 100px;text-align: right;"><?php echo number_format($data->hutang_perusahaan,0,',','.')?>,00</td>
+					</tr>
+				</table>
+			</td>
 			<td style="border-right: 1px solid black;border-left: 1px solid black;border-bottom: 1px solid black;width: 10%;padding-left: 20px"></td>
 		</tr>
 		<tr>
 		    <td style="border-left: 1px solid black;border-bottom: 1px solid black;width: 29%;padding-left: 20px">LAIN-LAIN</td>
 			<td style="border-bottom: 1px solid black;width: 1%;padding-left: 20px">:</td>
-			<td style="border-bottom: 1px solid black;width: 60%;padding-left: 20px">Rp. <?php echo number_format($data->lain_lain,0,',','.')?>,00</td>
+			<td style="border-bottom: 1px solid black;width: 60%;padding-left: 20px">
+				<table>
+					<tr>
+						<td style="width: 20px;">Rp. </td>
+						<td style="width: 100px;text-align: right;"><?php echo number_format($data->lain_lain,0,',','.')?>,00</td>
+					</tr>
+				</table>
+			</td>
 			<td style="border-right: 1px solid black;border-left: 1px solid black;border-bottom: 1px solid black;width: 10%;padding-left: 20px"></td>
 		</tr>
 		<tr>
