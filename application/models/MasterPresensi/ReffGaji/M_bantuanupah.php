@@ -198,7 +198,7 @@ class M_bantuanupah extends CI_Model
 					    when 'Pekerja Outsourcing' then 
 					     'Pekerja Outsourching'
 					    when 'Trainee staff' then 
-					      ''
+					      'Pekerja Tetap Staf'
 					    when 'TKPW' then 
 					      ''
 					    when 'Tenaga Harian Lepas' then 
@@ -311,7 +311,7 @@ class M_bantuanupah extends CI_Model
 					    when 'Pekerja Outsourcing' then 
 					     'Pekerja Outsourching'
 					    when 'Trainee staff' then 
-					      ''
+					      'Pekerja Tetap Staf'
 					    when 'TKPW' then 
 					      ''
 					    when 'Tenaga Harian Lepas' then 
