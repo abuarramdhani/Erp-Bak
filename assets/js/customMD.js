@@ -798,9 +798,9 @@ function runapi_interorg(tipe, request_number, org_id, subinv) {
           success: function(result) {
             if (result == 200) {
               // swalDO2021('success', 'Berhasil menjalankan prosedur');
-              swalDO2021Loading('Sedang Mencetak Dokumen')
+              // swalDO2021Loading('Sedang Mencetak Dokumen')
               $('#MyModalSPBKIT').modal('hide');
-              startintervalcetak(request_number);
+              // startintervalcetak(request_number);
               window.open(baseurl+'MonitoringDO/PDF/'+request_number);
             }else {
               swalDO2021('warning', 'tipe dan request_number kosong');
@@ -812,8 +812,8 @@ function runapi_interorg(tipe, request_number, org_id, subinv) {
           }
         })
       }else {
-        swalDO2021Loading('Sedang Mencetak Dokumen')
-        startintervalcetak(request_number);
+        // swalDO2021Loading('Sedang Mencetak Dokumen')
+        // startintervalcetak(request_number);
         window.open(baseurl+'MonitoringDO/PDF/'+request_number);
       }
     },
@@ -851,8 +851,8 @@ function cetakDO(rn, tipe, header_id) {
 
         //tambahan kondisi 2021
         if (tipe == 'DO') {
-          swalDO2021Loading('Sedang Mencetak Dokumen')
-          startintervalcetak(rn);
+          // swalDO2021Loading('Sedang Mencetak Dokumen')
+          // startintervalcetak(rn);
           window.open(baseurl+'MonitoringDO/PDF/'+rn)
         }else {
           $.ajax({
@@ -940,8 +940,8 @@ function cetakDO(rn, tipe, header_id) {
                         })
 
                       }else {
-                        swalDO2021Loading('Sedang Mencetak Dokumen')
-                        startintervalcetak(rn);
+                        // swalDO2021Loading('Sedang Mencetak Dokumen')
+                        // startintervalcetak(rn);
                         window.open(baseurl+'MonitoringDO/PDF/'+rn);
                       }
                     },
