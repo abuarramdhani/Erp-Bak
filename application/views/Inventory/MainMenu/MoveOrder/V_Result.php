@@ -98,6 +98,7 @@
 			<th width="5%"> &nbsp;
 				<input type="checkbox" class="checkedAllIMO1">&nbsp;
 			</th>
+			<th width="10%"></th>
 			<th width="10%">WIP NAME</th>
 			<th width="13%">KODE ITEM</th>
 			<th width="14%">NAMA ITEM </th>
@@ -171,6 +172,7 @@
 				<input type="hidden" name="kodeitem[]" value="<?= $value['header']['ITEM_CODE'] ?>">
 				<input type="hidden" name="startqty[]" value="<?= $value['header']['START_QUANTITY'] ?>">
 			</td>
+			<td class="<?= $penanda ?>" ><input type="number" id="urutan<?= $value['header']['WIP_ENTITY_NAME']?>" name="urutan[]" class="form-control" style="width:70px" onchange="urutanpicklist('<?= $value['header']['WIP_ENTITY_NAME']?>')" <?= $penandabutton == 1 ? 'disabled' : ''?>></td>
 			<td class="<?= $penanda ?>" ><b><?= $value['header']['WIP_ENTITY_NAME']; ?></b></td>
 			<td class="<?= $penanda ?>" ><?= $value['header']['ITEM_CODE'] ?></td>
 			<td class="<?= $penanda ?>" ><?= $value['header']['ITEM_DESC'] ?></td>
@@ -229,7 +231,7 @@
 
 		</tr>
 		<tr >
-			<td colspan="8"  class="<?= $penanda ?>" ><span onclick="seeDetailIMO(this,'<?= $key ?>')" class="btn btn-xs btn-primary"> see detail >> </span>
+			<td colspan="9"  class="<?= $penanda ?>" ><span onclick="seeDetailIMO(this,'<?= $key ?>')" class="btn btn-xs btn-primary"> see detail >> </span>
 				<div style="margin-top: 5px ; display: none; " id="detail<?= $key ?>" >
 				<form method="post" target="_blank" id="form<?= $value['header']['WIP_ENTITY_NAME']; ?>" action="<?php echo base_url('InventoryManagement/CreateMoveOrder/create'); ?>">
 				<table class="table table-sm table-bordered table-hover table-striped table-responsive"  style="border: 2px solid #ddd">
@@ -295,7 +297,7 @@
 						<?php }
 						else:?>
 							<tr>
-								<td colspan="10">
+								<td colspan="11">
 									Tidak ada komponen..
 								</td>
 							</tr>
@@ -340,7 +342,7 @@
 						<?php }
 						else:?>
 							<tr>
-								<td colspan="9">
+								<td colspan="10">
 									Tidak ada komponen..
 								</td>
 							</tr>
@@ -364,6 +366,7 @@
 	if ($requirement) { ?>
 	<form method="post" target="_blank" id="createall_picklist" action="<?php echo base_url('InventoryManagement/CreateMoveOrder/createall'); ?>">
 		<input type="hidden" name="selectedPicklistIMO" value="">
+		<input type="hidden" id="urutanPicklistIMO" name="urutanPicklistIMO" value="">
 		<?php foreach ($allInvID as $key => $value) { ?>
 		<input type="hidden" name="no_job[]" value="<?= implode('<>', $allNojob[$key]) ?>">
 		<input type="hidden" name="invID[]" value="<?= implode('<>', $allInvID[$key]) ?>">
@@ -385,6 +388,7 @@
 	<br><br>
 	<form method="post" target="_blank" id="createall_plheader" action="<?php echo base_url('InventoryManagement/CreateMoveOrder/createall'); ?>">
 		<input type="hidden" name="selectedPicklistIMO" value="">
+		<input type="hidden" name="urutanPicklistIMO" value="">
 		<?php foreach ($allInvID as $key => $value) { ?>
 		<input type="hidden" name="no_job[]" value="<?= implode('<>', $allNojob[$key]) ?>">
 		<input type="hidden" name="invID[]" value="<?= implode('<>', $allInvID[$key]) ?>">
