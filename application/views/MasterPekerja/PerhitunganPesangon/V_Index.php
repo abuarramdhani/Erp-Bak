@@ -9,7 +9,6 @@
                         </div>
                         <div class="col-lg-1">
                             <div class="text-right hidden-md hidden-sm hidden-xs">
-                                <!-- Ganti yang di dalam site url dengan alamat main menu yang diinginkan -->
                                 <a class="btn btn-default btn-lg" href="<?php echo site_url('MasterPekerja/PerhitunganPesangon');?>">
                                     <i class="icon-wrench icon-2x"></i>
                                     <br/>
@@ -30,7 +29,7 @@
                             </div>
                             <div class="box-body">
                                 <div class="table-responsive">
-                                    <table class="table table-striped table-bordered table-hover text-left" id="tbl" .$new_table_name. "" style="font-size:12px;">
+                                    <table class="table table-striped table-bordered table-hover text-left" id="tbl" style="font-size:12px;">
                                         <thead class="bg-primary">
                                             <tr>
                                                 <th style="text-align:center;">No</th>
@@ -38,12 +37,14 @@
                                                 <th style="text-align:center;">NoInduk</th>
                                                 <th style="text-align:center;">Nama</th>
                                                 <th style="text-align:center;">Jabatan Terakhir</th>
+                                                <th style="text-align:center;">Sebab Keluar</th>
+                                                <th style="text-align:center;">Pengali<br>U.Pesangon</th>
                                                 <th style="text-align:center;">U.Pesangon</th>
-                                                <th style="text-align:center;">U.UPMK</th>
+                                                <th style="text-align:center;">Pengali<br>U.PMK</th>
+                                                <th style="text-align:center;">U.PMK</th>
                                                 <th style="text-align:center;">Sisa Cuti</th>
-                                                <th style="text-align:center;">U.Ganti Rugi</th>
-                                                <th style="text-align:center;">Htg Koperasi</th>
-                                                <th style="text-align:center;">Htg Perusahaan</th>
+                                                <th style="text-align:center;">Hutang<br>Koperasi</th>
+                                                <th style="text-align:center;">Hutang<br>Perusahaan</th>
                                                 <th style="text-align:center;">Lain lain</th>
                                          </thead>
 
@@ -66,10 +67,12 @@
                                                 <td><?php echo $pesangon['noinduk'];?></td>
                                                 <td><?php echo $pesangon['nama'];?></td>
                                                 <td><?php echo $pesangon['jabatan_terakhir'];?></td>
+                                                <td><?php echo $pesangon['dasar_hukum']." - ".$pesangon['sebab_keluar'];?></td>
+                                                <td><?php echo $pesangon['pengali_u_pesangon'];?></td>
                                                 <td><?php echo $pesangon['jml_pesangon'];?></td>
+                                                <td><?php echo $pesangon['pengali_upmk'];?></td>
                                                 <td><?php echo $pesangon['jml_upmk'];?></td>
                                                 <td><?php echo $pesangon['jml_cuti'];?></td>
-                                                <td><?php echo $pesangon['uang_ganti_kerugian'];?></td>
                                                 <td><?php echo $pesangon['hutang_koperasi'];?></td>
                                                 <td><?php echo $pesangon['hutang_perusahaan'];?></td>
                                                 <td><?php echo $pesangon['lain_lain'];?></td>

@@ -68,14 +68,16 @@ class M_pekerjakeluar extends CI_Model
 
 	public function dataPekerja($noind)
 	{
-		$sql = "SELECT tp.*, tref.jabatan as jabatanref, tb.no_peserta as nokes, tk.no_peserta as noket,
+		$sql = "SELECT tp.*, tref.jabatan as jabatanref, tb.no_peserta as nokes, tk.no_peserta as noket, tsk.*,
 						case when tf.namafaskes is null then tb.bpu when tf.namafaskes is not null then tf.namafaskes end as faskes
 						FROM hrd_khs.tpribadi tp
 						LEFT JOIN hrd_khs.trefjabatan tref on tp.noind = tref.noind and tp.kodesie = tref.kodesie
 						LEFT JOIN hrd_khs.tbpjskes tb on tb.noind = tp.noind
 						LEFT JOIN hrd_khs.tbpjstk tk on tk.noind = tp.noind
 						LEFT JOIN hrd_khs.tfaskes tf on tf.kd_faskes=tb.bpu
+						LEFT JOIN hrd_khs.t_sebab_keluar tsk on tsk.kode = tp.sebabklr
 						WHERE tp.noind = '$noind' limit 1";
+						// echo $sql;exit();
 		return $this->personalia->query($sql)->row();
 	}
 
@@ -103,7 +105,7 @@ class M_pekerjakeluar extends CI_Model
 
 		$this->personalia->where('noind', $noind);
 		$this->personalia->update('hrd_khs.tpribadi', $data);
-		return;
+		return $this->personalia->affected_rows();
 	}
 
 	public function updatePekerjaan($data, $noind)
@@ -1076,6 +1078,7 @@ class M_pekerjakeluar extends CI_Model
 	{
 		$this->personalia->where('noind', $noind);
 		$this->personalia->update('hrd_khs.tpribadi', $data);
+		return $this->personalia->affected_rows();
 	}
 
 	public function upPPJ($data, $id)
@@ -1101,5 +1104,27 @@ class M_pekerjakeluar extends CI_Model
 	{
 		$this->personalia->where('id_perpanjangan', $id);
 		$this->personalia->delete('hrd_khs.tperpanjangan_pkwt');
+	}
+
+	public function getListSbabKlr()
+	{
+		$sql = "SELECT * from hrd_khs.t_sebab_keluar order by urutan";
+		return $this->personalia->query($sql)->result_array();
+	}
+
+	public function getSebabKeluar2($noind)
+	{
+		$sql = "select
+					case
+						when tsk.sebab_keluar is not null then tsk.sebab_keluar
+						else t.sebabklr
+					end sebabklr
+				from
+					hrd_khs.tpribadi t
+				left join hrd_khs.t_sebab_keluar tsk on
+					tsk.kode = t.sebabklr
+				where
+					noind = '$noind'";
+		return $this->personalia->query($sql)->row_array();
 	}
 }

@@ -251,7 +251,8 @@ class C_Index extends CI_Controller
 			'nokoperasi'				=> $pekerja->nokoperasi,
 			/**Putus Hubungan Kerja */
 			'tglkeluar'         => (new DateTime($pekerja->tglkeluar))->format('d-m-Y'),
-			'sebabklr'          => $pekerja->sebabklr,
+			'sebabklr'          => empty($pekerja->sebab_keluar) ? $pekerja->sebabklr:$pekerja->sebab_keluar,
+			'sebabklr_kode'     => $pekerja->kode,
 
 			/**Pernikahan */
 			'statnikah'					=> $pekerja->statnikah,
@@ -330,6 +331,8 @@ class C_Index extends CI_Controller
 
 		$lama = $this->getLamaperpanjangan($noind);
 		$data['lama'] = $lama;
+
+		$data['l_sebabklr'] = $this->M_pekerjakeluar->getListSbabKlr();
 
 		// debug($data);
 
@@ -1474,5 +1477,18 @@ class C_Index extends CI_Controller
 		}
 
 		return $lama;
+	}
+
+	public function editSbabKeluar()
+	{
+		$noind = $this->input->post('noind');
+		$kode = $this->input->post('kode');
+		
+		$arr = array('sebabklr' => $kode);
+		$upd = $this->M_pekerjakeluar->updateDataPekerja($arr, $noind);
+		if ($upd) {
+			$sbabklr = $this->M_pekerjakeluar->getSebabKeluar2($noind);
+			echo json_encode(['result'=>'success', 'sebabklr' => $sbabklr['sebabklr']]);
+		}
 	}
 }
