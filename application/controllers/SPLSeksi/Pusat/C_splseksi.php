@@ -781,7 +781,7 @@ class C_splseksi extends CI_Controller
 						}
 					} else {
 						$error = "1";
-						$errortext = "Tidak Bisa Input Lembur (Nomor Induk Tidak memiliki Absen PKJ atau PID pada tanggal tersebut)";
+						$errortext = "Tidak Bisa Input Lembur (Nomor Induk Tidak memiliki Absen PKJ, PID, PRM (WFH) pada tanggal tersebut)";
 					}
 				}
 			}
