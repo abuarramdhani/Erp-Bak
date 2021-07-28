@@ -6,11 +6,12 @@ class M_master extends CI_Model
         parent::__construct();
         $this->load->database();
         $this->oracle = $this->load->database('oracle_dev', true);
+        $this->personalia = $this->load->database('personalia', true);
     }
 
     public function getItem($value)
     {
-      return $this->oracle->query("SELECT msib.segment1, msib.description, msib.primary_uom_code,
+      return $this->oracle->query("SELECT msib.inventory_item_id, msib.segment1, msib.description, msib.primary_uom_code,
                                    msib.postprocessing_lead_time
                                  + msib.preprocessing_lead_time
                                  + msib.full_lead_time leadtime,
@@ -23,15 +24,18 @@ class M_master extends CI_Model
 
     public function savekebutuhan($post)
     {
-      $no_indk = $this->session->user;
-      foreach ($post['item_code'] as $key => $value) {
-        $this->oracle->query("INSERT INTO KHS_CONSUMABLEV2_SEKSI
-                              (item_code, description, quantity, creation_date, created_by)
-                              VALUES ('{$post['item_code'][$key]}',
+      $noind = $this->session->user;
+      $kodesie = $this->personalia->query("SELECT substring(kodesie, 1, 7) kodesie from hrd_khs.tpribadi where noind = '$noind'")->row_array();
+      $kodesie = $kodesie['kodesie'];
+      foreach ($post['item_id'] as $key => $value) {
+        $this->oracle->query("INSERT INTO KHS_CSM_KEBUTUHAN
+                              (KODESIE, ITEM_ID, REQ_QUANTITY, CREATION_DATE, CREATED_BY)
+                              VALUES ('$kodesie',
+                                      '$value',
                                       '{$post['description'][$key]}',
                                       '{$post['qty_kebutuhan'][$key]}',
                                       SYSDATE,
-                                      '$no_indk'
+                                      '$noind'
                                     )");
       }
       if ($this->oracle->affected_rows()) {

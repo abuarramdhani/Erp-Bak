@@ -123,6 +123,7 @@ vertical-align: middle;
                           <tbody id="tambahannya_disini">
                             <tr>
                               <td class="text-center" style="width:50%">
+                                <input type="hidden" name="item_id[]" class="item_id" value="">
                                 <select class="select2_inpkebutuhan_cst" required style="width:100%" name="description[]">
                                   <option value="" selected></option>
                                 </select>

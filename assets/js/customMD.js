@@ -797,7 +797,7 @@ function runapi_interorg(tipe, request_number, org_id, subinv) {
           },
           success: function(result) {
             if (result == 200) {
-              // swalDO2021('success', 'Berhasil menjalankan prosedur');
+              swalDO2021('success', 'Berhasil menjalankan prosedur');
               // swalDO2021Loading('Sedang Mencetak Dokumen')
               $('#MyModalSPBKIT').modal('hide');
               startintervalcetak(request_number);

@@ -84,14 +84,23 @@ class C_Master extends CI_Controller
 
     public function savekebutuhan($value='')
     {
-      if ($this->session->is_logged) {
-        $res = $this->md->savekebutuhan($this->input->post());
-      }else {
-        $res = 0;
+      try {
+        if ($this->session->is_logged) {
+          $res = $this->md->savekebutuhan($this->input->post());
+        }else {
+          $res = 0;
+        }
+        // echo "<pre>";
+        // print_r($this->input->post());
+        echo json_encode($res);
+      } catch (\Exception $e) {
+        return $this->output
+          ->set_content_type('application/json')
+          ->set_status_header(400)
+          ->set_output(json_encode(array(
+            'message' => $e->getMessage()
+          )));
       }
-      // echo "<pre>";
-      // print_r($this->input->post());
-      echo json_encode($res);
     }
 
     public function pengajuan()

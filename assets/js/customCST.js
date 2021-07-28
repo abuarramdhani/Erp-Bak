@@ -99,6 +99,7 @@ function runsctselect2() {
             return {
               id: `${obj.DESCRIPTION}`,
               text:`${obj.DESCRIPTION} - ${obj.SEGMENT1}`,
+              item_id: `${obj.INVENTORY_ITEM_ID}`,
               segment1: `${obj.SEGMENT1}`
             }
           })
@@ -109,8 +110,9 @@ function runsctselect2() {
 
   $('.select2_inpkebutuhan_cst').on('change', function() {
     let segment1 = $(this).select2('data')[0].segment1
-    console.log(segment1);
+    let item_id = $(this).select2('data')[0].item_id
     $(this).parent().parent('tr').find('.item-code').val(segment1)
+    $(this).parent().parent('tr').find('.item_id').val(item_id)
   })
 }
 
@@ -176,6 +178,7 @@ $(document).ready(function () {
 function btnPlusIKCST() {
   $('#tambahannya_disini').append(`<tr>
                                     <td class="text-center" style="width:50%">
+                                      <input type="hidden" name="item_id[]" class="item_id" value="">
                                       <select class="select2_inpkebutuhan_cst" required style="width:100%" name="description[]">
                                         <option value="" selected></option>
                                       </select>
