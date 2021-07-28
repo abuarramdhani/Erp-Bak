@@ -63,6 +63,8 @@
             <th class="tdp_th diangkat">Tgl. Diangkat</th>
             <th class="tdp_th lmkontrak">Lama Kontrak</th>
             <th class="tdp_th akhkontrak">Akhir Kontrak</th>
+            <th class="tdp_th mulai_perpanjangan">Mulai Perpanjangan</th>
+            <th class="tdp_th lama_perpanjangan">Lama Perpanjangan</th>
             <th class="tdp_th tglkeluar">Tgl. Keluar</th>
             <th class="tdp_th sebabklr">Sebab Keluar</th>
             <th class="tdp_th status_diangkat">Status Diangkat</th>
@@ -91,13 +93,14 @@
             <th class="tdp_th tglmulai">Tgl. Mulai</th>
             <th class="tdp_th tglakhir">Tgl. Akhir</th>
             <th class="tdp_th pensiun">Kartu Jaminan Pensiun</th>
-            </trtdp_thh </thead> <tbody>
-            <?php foreach ($FilterAktif as $key => $val) : {
-                    if (isset($select)) {
-                        ?>
-        <tr>
-            <td><?= ($key + 1) ?></td>
-            <?php
+            </trtdp_thh </thead>
+    <tbody>
+        <?php foreach ($FilterAktif as $key => $val) : {
+                if (isset($select)) {
+        ?>
+                    <tr>
+                        <td><?= ($key + 1) ?></td>
+                        <?php
                         if (in_array("tp.noind", $select)) {
                             echo "<td>" . $val['noind'] . "</td>";
                         }
@@ -281,6 +284,12 @@
                         if (in_array("to_char(akhkontrak, 'DD-MM-YYYY') AS akhkontrak", $select)) {
                             echo "<td>" . $val['akhkontrak'] . "</td>";
                         }
+                        if (in_array('pkwt.mulai_perpanjangan', $select)) {
+                            echo "<td>$val[mulai_perpanjangan]</td>";
+                        }
+                        if (in_array('pkwt.lama_perpanjangan', $select)) {
+                            echo "<td>$val[lama_perpanjangan]</td>";
+                        }
                         if (in_array("to_char(tglkeluar, 'DD-MM-YYYY') AS tglkeluar", $select)) {
                             echo "<td>" . $val['tglkeluar'] . "</td>";
                         }
@@ -370,8 +379,8 @@
                             echo "<td>" . $val['kartu_jaminan_pensiun'] . "</td>";
                         }
                         ?>
-        </tr>
-<?php }
-    }
-endforeach; ?>
-</td>
+                    </tr>
+        <?php }
+            }
+        endforeach; ?>
+        </td>

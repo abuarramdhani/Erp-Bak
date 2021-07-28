@@ -64,32 +64,46 @@ class M_cetakkategori extends CI_Model
         if ($rangekeluarstart == "1000-01-01" && $rangemasukstart == "1000-01-01") {
             $sql = "SELECT DISTINCT tp.noind,$select $masakerja
             FROM hrd_khs.tseksi ts, hrd_khs.tpribadi tp
-            LEFT JOIN hrd_khs.tbpjskes tb ON tb.noind = tp.noind
-            LEFT JOIN hrd_khs.tbpjstk ttk ON ttk.noind=tp.noind
-            LEFT JOIN hrd_khs.tb_master_jab tmj ON tmj.kd_jabatan=tp.kd_jabatan
-            LEFT JOIN hrd_khs.tb_status_jabatan tj ON tj.noind=tp.noind
-            LEFT JOIN
-                (
-                    SELECT
-                        tkel.noind,
-                        string_agg(tkel.nama, ';') AS nama_keluarga,
-                        string_agg(tkel.jenisanggota, ';') AS status_keluarga
-                    FROM
-                        (
-                            SELECT 
-                                tk.noind,
-                                tmk.nokel,
-                                tk.nama as nama,
-                                tmk.jenisanggota as jenisanggota
-                            FROM hrd_khs.tkeluarga tk
-                            INNER JOIN hrd_khs.tmasterkel tmk ON tmk.nokel = tk.nokel
-                            ORDER BY  noind,nokel
-                        )as tkel
-                    GROUP BY tkel.noind
-                ) AS tk ON tp.noind = tk.noind
-            WHERE ts.kodesie = tp.kodesie
-            AND tp.kodesie LIKE '$kategori%' AND (tp.noind LIKE '$kodeind%') AND tp.pendidikan LIKE '$pend%' AND tp.jenkel 
-            LIKE '$jenkel%' AND tp.lokasi_kerja LIKE '$lokasi%' AND tp.keluar = '$status' order by tp.noind";
+                LEFT JOIN hrd_khs.tbpjskes tb ON tb.noind = tp.noind
+                LEFT JOIN hrd_khs.tbpjstk ttk ON ttk.noind=tp.noind
+                LEFT JOIN hrd_khs.tb_master_jab tmj ON tmj.kd_jabatan=tp.kd_jabatan
+                LEFT JOIN hrd_khs.tb_status_jabatan tj ON tj.noind=tp.noind
+                LEFT JOIN
+                    (
+                        SELECT
+                            tkel.noind,
+                            string_agg(tkel.nama, ';') AS nama_keluarga,
+                            string_agg(tkel.jenisanggota, ';') AS status_keluarga
+                        FROM
+                            (
+                                SELECT 
+                                    tk.noind,
+                                    tmk.nokel,
+                                    tk.nama as nama,
+                                    tmk.jenisanggota as jenisanggota
+                                FROM hrd_khs.tkeluarga tk
+                                INNER JOIN hrd_khs.tmasterkel tmk ON tmk.nokel = tk.nokel
+                                ORDER BY  noind,nokel
+                            )as tkel
+                        GROUP BY tkel.noind
+                    ) AS tk ON tp.noind = tk.noind
+                LEFT JOIN (
+                    -- cari perpanjangan terakhir setiap noind
+                    SELECT 
+                        z.noind,
+                        z.lama_perpanjangan, 
+                        to_char(z.mulai_perpanjangan, 'DD/MM/YYYY') mulai_perpanjangan
+                    FROM hrd_khs.tperpanjangan_pkwt z 
+                        inner join 
+                            (select noind, max(perpanjangan_ke) max_ke 
+                                from hrd_khs.tperpanjangan_pkwt 
+                                group by noind
+                            ) r on r.noind = z.noind and r.max_ke = z.perpanjangan_ke
+                ) pkwt ON pkwt.noind = tp.noind
+            WHERE 
+                ts.kodesie = tp.kodesie
+                AND tp.kodesie LIKE '$kategori%' AND (tp.noind LIKE '$kodeind%') AND tp.pendidikan LIKE '$pend%' AND tp.jenkel 
+                LIKE '$jenkel%' AND tp.lokasi_kerja LIKE '$lokasi%' AND tp.keluar = '$status' order by tp.noind";
             return $this->personalia->query($sql)->result_array();
         } else {
             $sql = "SELECT DISTINCT tp.noind,$select $masakerja
