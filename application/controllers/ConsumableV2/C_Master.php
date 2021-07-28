@@ -69,11 +69,61 @@ class C_Master extends CI_Controller
         $data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
         $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
-        $data['get'] = $this->md->getkebutuhan();
+
         $this->load->view('V_Header', $data);
         $this->load->view('V_Sidemenu', $data);
         $this->load->view('ConsumableV2/SEKSI/V_Inputkebutuhan', $data);
         $this->load->view('V_Footer', $data);
+    }
+
+    public function getkebutuhan($value='')
+    {
+      {
+        $post = $this->input->post();
+
+        foreach ($post['columns'] as $val) {
+          $post['search'][$val['data']]['value'] = $val['search']['value'];
+        }
+
+        $countall = $this->md->countAllKebutuhan()['count'];
+        $countfilter = $this->md->countFilteredKebutuhan($post)['count'];
+
+        $post['pagination']['from'] = $post['start'] + 1;
+        $post['pagination']['to'] = $post['start'] + $post['length'];
+
+        $msdata = $this->md->selectKebutuhan($post);
+
+        $data = [];
+        foreach ($msdata as $row) {
+          $sub_array = [];
+          $sub_array[] = '<center>'.$row['PAGINATION'].'</center>';
+          $sub_array[] = '<center>'.$row['SEGMENT1'].'</center>';
+          $sub_array[] = '<center>'.$row['DESCRIPTION'].'</center>';
+          $sub_array[] = '<center>'.$row['REQ_QUANTITY'].'</center>';
+          $sub_array[] = '<center>'.$row['PRIMARY_UOM_CODE'].'</center>';
+          $sub_array[] = '<center>'.$row['CREATED_BY'].'</center>';
+          $sub_array[] = '<center>'.$row['TGL_BUAT'].'</center>';
+          $sub_array[] = '<center>'.$row['STATUS'].'</center>';
+          $sub_array[] = '<center>
+                           <button type="button" class="btn btn-sm" name="button" title="hapus?" onclick="delcstkebutuhan('.$row['ITEM_ID'].')"> <i class="fa fa-trash"></i> </button>
+                         </center>';
+
+          $data[] = $sub_array;
+        }
+
+        $output = [
+          'draw' => $post['draw'],
+          'recordsTotal' => $countall,
+          'recordsFiltered' => $countfilter,
+          'data' => $data,
+        ];
+
+        die($this->output
+                ->set_status_header(200)
+                ->set_content_type('application/json')
+                ->set_output(json_encode($output))
+                ->_display());
+      }
     }
 
     public function getitem()
@@ -101,6 +151,12 @@ class C_Master extends CI_Controller
             'message' => $e->getMessage()
           )));
       }
+    }
+
+    public function delkebutuhan($value='')
+    {
+      $res = $this->md->delkebutuhan($this->input->post('id'));
+      echo json_encode($res);
     }
 
     public function pengajuan()

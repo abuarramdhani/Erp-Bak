@@ -160,9 +160,10 @@ td{
                     <table class="table table-bordered tableinputkebutuhan" style="width:100%">
                       <thead class="bg-primary">
                         <tr>
-                          <th class="text-center" style="vertical-align:middle;width:52%;">Nama Item</th>
+                          <th class="text-center" style="vertical-align:middle;width:45%;">Nama Item</th>
                           <th class="text-center" style="vertical-align:middle;width:25%">Item Code</th>
                           <th class="text-center" style="vertical-align:middle;width:15%">Quantity</th>
+                          <th class="text-center" style="vertical-align:middle;width:7%">UOM</th>
                           <th class="text-center" style="width:8%"> <button class="btn btn-default btn-sm" onclick="btnPlusIKCST()"><i class="fa fa-plus"></i></button> </th>
                         </tr>
                       </thead>
@@ -170,12 +171,13 @@ td{
                         <tr>
                           <td class="text-center" style="width:50%">
                             <input type="hidden" name="item_id[]" class="item_id" value="">
-                            <select class="select2_inpkebutuhan_cst" required style="width:100%" name="description[]">
+                            <select class="select2_inpkebutuhan_cst" required style="width:380px" name="description[]">
                               <option value="" selected></option>
                             </select>
                           </td>
-                          <td class="text-center" style="width:30%"><input type="text" class="form-control item-code" name="item_code[]" readonly="readonly"></td>
+                          <td class="text-center"><input type="text" class="form-control item-code" name="item_code[]" readonly="readonly"></td>
                           <td class="text-center"><input type="number" required class="form-control" id="qty_kebutuhan_consum1" name="qty_kebutuhan[]" required="required"></td>
+                          <td class="text-center"><input type="text" class="form-control uom" readonly="readonly"></td>
                           <td class="text-center">
                             <button class="btn btn-default btn-sm" disabled>
                               <i class="fa fa-minus"></i>

@@ -100,7 +100,8 @@ function runsctselect2() {
               id: `${obj.DESCRIPTION}`,
               text:`${obj.DESCRIPTION} - ${obj.SEGMENT1}`,
               item_id: `${obj.INVENTORY_ITEM_ID}`,
-              segment1: `${obj.SEGMENT1}`
+              segment1: `${obj.SEGMENT1}`,
+              uom: `${obj.PRIMARY_UOM_CODE}`
             }
           })
         }
@@ -111,14 +112,45 @@ function runsctselect2() {
   $('.select2_inpkebutuhan_cst').on('change', function() {
     let segment1 = $(this).select2('data')[0].segment1
     let item_id = $(this).select2('data')[0].item_id
+    let uom = $(this).select2('data')[0].uom
     $(this).parent().parent('tr').find('.item-code').val(segment1)
     $(this).parent().parent('tr').find('.item_id').val(item_id)
+    $(this).parent().parent('tr').find('.uom').val(uom)
   })
 }
 
 $(document).ready(function () {
   runsctselect2()
   $('.tbl_cst_kebutuhan').dataTable()
+  $('.tbl_cst_kebutuhan_ss').DataTable({
+     // dom: 'rtp',
+     ajax: {
+       data: (d) => $.extend({}, d, {
+         // org: null,    // optional
+         // id_plan: null // optional
+       }),
+       url: baseurl + "consumableseksiv2/action/getkebutuhan",
+       type: 'POST',
+     },
+     language:{
+       processing: "<div class='overlay custom-loader-background'><i class='fa fa-cog fa-spin custom-loader-color' style='color:#fff'></i></div>"
+     },
+     ordering: false,
+     pageLength: 10,
+     pagingType: 'first_last_numbers',
+     processing: true,
+     serverSide: true,
+     preDrawCallback: function(settings) {
+          if ($.fn.DataTable.isDataTable('.tbl_cst_kebutuhan_ss')) {
+              var dt = $('.tbl_cst_kebutuhan_ss').DataTable();
+              //Abort previous ajax request if it is still in process.
+              var settings = dt.settings();
+              if (settings[0].jqXHR) {
+                  settings[0].jqXHR.abort();
+              }
+          }
+      }
+  });
   $('.tbl_cst_pengajuan_seksi').dataTable()
 
   function pad(val) {
@@ -177,14 +209,15 @@ $(document).ready(function () {
 
 function btnPlusIKCST() {
   $('#tambahannya_disini').append(`<tr>
-                                    <td class="text-center" style="width:50%">
+                                    <td class="text-center">
                                       <input type="hidden" name="item_id[]" class="item_id" value="">
-                                      <select class="select2_inpkebutuhan_cst" required style="width:100%" name="description[]">
+                                      <select class="select2_inpkebutuhan_cst" required style="width:380px" name="description[]">
                                         <option value="" selected></option>
                                       </select>
                                     </td>
-                                    <td class="text-center" style="width:30%"><input type="text" name="item_code[]" class="form-control item-code" readonly="readonly"></td>
+                                    <td class="text-center"><input type="text" name="item_code[]" class="form-control item-code" readonly="readonly"></td>
                                     <td class="text-center"><input type="number" required class="form-control" name="qty_kebutuhan[]" required="required"></td>
+                                    <td class="text-center"><input type="text" class="form-control uom" readonly="readonly"></td>
                                     <td class="text-center">
                                       <button class="btn btn-default btn-sm" onclick="btnMinIKCST(this)">
                                         <i class="fa fa-minus"></i>
@@ -217,7 +250,8 @@ $('.saveinputkebutuhan').on('submit', function(e) {
       toastCST('success', `Data Berhasil Tersimpan`);
       $('.tableinputkebutuhan tbody tr').remove();
       btnPlusIKCST();
-      $('#tambahitemcst').modal('show');
+      $('.tbl_cst_kebutuhan_ss').DataTable().ajax.reload();
+      $('#tambahitemcst').modal('hide');
     }else {
       toastCST('warning', 'Terjadi Kesalahan Saat Menyipan Data. Coba lagi..');
     }
@@ -229,5 +263,45 @@ $('.saveinputkebutuhan').on('submit', function(e) {
  })
 })
 
+function delcstkebutuhan(id) {
+  Swal.fire({
+    title: 'Apakah anda yakin?',
+    text: "....",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, delete it!'
+  }).then((result) => {
+    if (result.value) {
+      $.ajax({
+      url: baseurl + 'consumableseksiv2/action/delkebutuhan',
+      type: 'POST',
+      data : {
+        id : id
+      },
+      cache: false,
+      // async:false,
+      dataType: "JSON",
+      beforeSend: function() {
+        // $('#modalUP2LCompleteJob').modal('hide');
+        swaCSTLoading('Menghapus data')
+      },
+      success: function(result) {
+        if (result == 'done') {
+          toastCST('success', `Berhasil Dihapus`);
+          $('.tbl_cst_kebutuhan_ss').DataTable().ajax.reload();
+        }else {
+          toastCST('warning', 'Terjadi Kesalahan Saat Menghapus Data! Harap Coba lagi');
+        }
+      },
+      error: function(XMLHttpRequest, textStatus, errorThrown) {
+      swaLPHLarge('error', XMLHttpRequest);
+       console.error();
+      }
+      })
+    }
+  })
 
+}
 // ==================== area consumable tim v2 ======================== //

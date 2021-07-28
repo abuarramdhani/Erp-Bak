@@ -32,7 +32,6 @@ class M_master extends CI_Model
                               (KODESIE, ITEM_ID, REQ_QUANTITY, CREATION_DATE, CREATED_BY)
                               VALUES ('$kodesie',
                                       '$value',
-                                      '{$post['description'][$key]}',
                                       '{$post['qty_kebutuhan'][$key]}',
                                       SYSDATE,
                                       '$noind'
@@ -45,10 +44,100 @@ class M_master extends CI_Model
       }
     }
 
-    public function getkebutuhan($value='')
+    public function delkebutuhan($id)
     {
-      return $this->oracle->get('KHS_CONSUMABLEV2_SEKSI')->result_array();
+      $this->oracle->query("DELETE FROM KHS_CSM_KEBUTUHAN WHERE item_id = $id");
+      if ($this->oracle->affected_rows()) {
+        $c = 'done';
+      }else {
+        $c= 500;
+      }
+      return $c;
     }
+
+    // public function employee($data)
+  	// {
+  	// 		$sql = "SELECT
+  	// 						employee_code,
+  	// 						employee_name
+  	// 					from
+  	// 						er.er_employee_all
+  	// 					where
+  	// 						resign = '0'
+  	// 						and (employee_code like '%$data%'
+  	// 						or employee_name like '%$data%')
+  	// 					order by
+  	// 						1";
+  	// 		$response = $this->db->query($sql)->result_array();
+  	// 		return $response;
+  	// }
+
+  	public function selectKebutuhan($data)
+  	{
+  		$val = strtoupper($data['search']['value']);
+  			$res = $this->oracle
+  					->query(
+  							"SELECT kdav.*
+  							FROM
+  									(
+  									SELECT
+  													skdav.*,
+  													ROW_NUMBER () OVER (ORDER BY tgl_buat DESC) as pagination
+  											FROM
+  													(
+                              SELECT kck.*, TO_CHAR(kck.creation_date, 'DD/MM/YYYY HH:MI:SS') tgl_buat, msib.segment1, msib.description, msib.primary_uom_code
+                              FROM KHS_CSM_KEBUTUHAN kck, mtl_system_items_b msib
+                              WHERE kck.item_id = msib.inventory_item_id
+                              AND msib.organization_id = 81
+                              AND (
+                                msib.segment1 LIKE '%$val%'
+                                OR msib.description LIKE '%$val%'
+                                OR kck.creation_date LIKE '%$val%'
+                                OR kck.created_by LIKE '%$val%'
+                              )
+  													) skdav
+  									) kdav
+  							WHERE
+  									pagination BETWEEN {$data['pagination']['from']} AND {$data['pagination']['to']}"
+  					)->result_array();
+
+  			return $res;
+  	}
+
+  	public function countAllKebutuhan()
+  	{
+  		return $this->oracle->query(
+  			"SELECT
+  					COUNT(*) AS \"count\"
+  			FROM
+  			(SELECT kck.*, msib.segment1, msib.description
+        FROM KHS_CSM_KEBUTUHAN kck, mtl_system_items_b msib
+        WHERE kck.item_id = msib.inventory_item_id
+        AND msib.organization_id = 81) bla"
+  			)->row_array();
+  	}
+
+  	public function countFilteredKebutuhan($data)
+  	{
+  		$val = strtoupper($data['search']['value']);
+  		return $this->oracle->query(
+  			"SELECT
+  						COUNT(*) AS \"count\"
+  					FROM
+            (
+              SELECT kck.*, msib.segment1, msib.description
+              FROM KHS_CSM_KEBUTUHAN kck, mtl_system_items_b msib
+              WHERE kck.item_id = msib.inventory_item_id
+              AND msib.organization_id = 81
+              AND (
+                msib.segment1 LIKE '%$val%'
+                OR msib.description LIKE '%$val%'
+                OR kck.creation_date LIKE '%$val%'
+                OR kck.created_by LIKE '%$val%'
+              )
+          ) bla"
+  			)->row_array();
+  	}
 
 
 }

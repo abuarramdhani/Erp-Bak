@@ -47,13 +47,14 @@ vertical-align: middle;
                   <div class="row pt-5">
                     <div class="col-md-12">
                       <div class="table-responsive pb-3">
-                        <table class="table table-bordered tbl_cst_kebutuhan" style="width:100%;text-align:center">
+                        <table class="table table-bordered tbl_cst_kebutuhan_ss" style="width:100%;text-align:center">
                           <thead class="bg-primary">
                             <tr>
                               <th class="text-center" style="width:5%">No</th>
-                              <th class="text-center">Item</th>
-                              <th class="text-center">Desc</th>
+                              <th class="text-center" style="width:15%">Item</th>
+                              <th class="text-center" style="width:35%">Desc</th>
                               <th class="text-center">Qty Req</th>
+                              <th class="text-center">UOM</th>
                               <th class="text-center">Created By</th>
                               <th class="text-center">Creation Date</th>
                               <th class="text-center">Status</th>
@@ -61,18 +62,7 @@ vertical-align: middle;
                             </tr>
                           </thead>
                           <tbody>
-                            <?php foreach ($get as $key => $value): ?>
-                              <tr>
-                                <td><?php echo $key+1 ?></td>
-                                <td><?php echo $value['ITEM_CODE'] ?></td>
-                                <td><?php echo $value['DESCRIPTION'] ?></td>
-                                <td><?php echo $value['QUANTITY'] ?></td>
-                                <td><?php echo $value['CREATED_BY'] ?></td>
-                                <td><?php echo $value['CREATION_DATE'] ?></td>
-                                <td><?php echo $value['PPIC_APPROVE_STATUS'] ?></td>
-                                <td> <button type="button" class="btn btn-sm" name="button" title="hapus?"> <i class="fa fa-trash"></i> </button> </td>
-                              </tr>
-                            <?php endforeach; ?>
+
                           </tbody>
                         </table>
                       </div>
@@ -114,9 +104,10 @@ vertical-align: middle;
                         <table class="table table-bordered tableinputkebutuhan" style="width:100%">
                           <thead class="bg-primary">
                             <tr>
-                              <th class="text-center" style="vertical-align:middle;width:52%;">Nama Item</th>
+                              <th class="text-center" style="vertical-align:middle;width:40%;">Nama Item</th>
                               <th class="text-center" style="vertical-align:middle;width:25%">Item Code</th>
                               <th class="text-center" style="vertical-align:middle;width:15%">Quantity</th>
+                              <th class="text-center" style="vertical-align:middle;width:12%">UOM</th>
                               <th class="text-center" style="width:8%"> <button class="btn btn-default btn-sm" onclick="btnPlusIKCST()"><i class="fa fa-plus"></i></button> </th>
                             </tr>
                           </thead>
@@ -124,12 +115,13 @@ vertical-align: middle;
                             <tr>
                               <td class="text-center" style="width:50%">
                                 <input type="hidden" name="item_id[]" class="item_id" value="">
-                                <select class="select2_inpkebutuhan_cst" required style="width:100%" name="description[]">
+                                <select class="select2_inpkebutuhan_cst" required style="width:380px" name="description[]">
                                   <option value="" selected></option>
                                 </select>
                               </td>
-                              <td class="text-center" style="width:30%"><input type="text" class="form-control item-code" name="item_code[]" readonly="readonly"></td>
+                              <td class="text-center"><input type="text" class="form-control item-code" name="item_code[]" readonly="readonly"></td>
                               <td class="text-center"><input type="number" required class="form-control" id="qty_kebutuhan_consum1" name="qty_kebutuhan[]" required="required"></td>
+                              <td class="text-center"><input type="text" class="form-control uom" readonly="readonly"></td>
                               <td class="text-center">
                                 <button class="btn btn-default btn-sm" disabled>
                                   <i class="fa fa-minus"></i>
