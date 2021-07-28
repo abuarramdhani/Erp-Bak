@@ -5804,3 +5804,28 @@ $route['EvaluasiPekerjaNonStaf/Monitoring/(:any)/(:any)'] = 'EvaluasiNonStaf/C_E
 $route['EvaluasiPekerjaNonStaf/MonitoringStaf'] = 'EvaluasiNonStaf/C_EvaluasiNonStaf/Monitoring_staf';
 $route['EvaluasiPekerjaNonStaf/MonitoringStaf/(:any)'] = 'EvaluasiNonStaf/C_EvaluasiNonStaf/$1';
 $route['EvaluasiPekerjaNonStaf/MonitoringStaf/(:any)/(:any)'] = 'EvaluasiNonStaf/C_EvaluasiNonStaf/$1/$2';
+
+//---------------------------------------- Order Tim Handling -----------------------------------------------------------------------
+$route['OrderHandling'] 						= 'OrderHandling/C_Index';
+$route['OrderHandling/InputOrder']				= 'OrderHandling/C_Order/Input_Order';
+$route['OrderHandling/StatusOrder']				= 'OrderHandling/C_Order/Status_Order';
+$route['OrderHandling/InputOrder/(:any)']			= 'OrderHandling/C_Order/$1';
+$route['OrderHandling/InputOrder/(:any)/(:any)']	= 'OrderHandling/C_Order/$1/$2';
+$route['OrderHandling/StatusOrder/(:any)']			= 'OrderHandling/C_Order/$1';
+$route['OrderHandling/StatusOrder/(:any)/(:any)']	= 'OrderHandling/C_Order/$1/$2';
+
+$route['OrderHandling/MonitoringOrder']			= 'OrderHandling/C_Monitoring/Monitoring';
+$route['OrderHandling/MonitoringOrder/(:any)']			= 'OrderHandling/C_Monitoring/$1';
+$route['OrderHandling/MonitoringOrder/(:any)/(:any)']	= 'OrderHandling/C_Monitoring/$1/$2';
+
+$route['OrderHandling/PlottingOrder']			= 'OrderHandling/C_Monitoring/Plotting';
+$route['OrderHandling/PlottingOrder/(:any)']			= 'OrderHandling/C_Monitoring/$1';
+$route['OrderHandling/PlottingOrder/(:any)/(:any)']		= 'OrderHandling/C_Monitoring/$1/$2';
+
+$route['OrderHandling/InProgressOrder']			= 'OrderHandling/C_Monitoring/InProgress';
+$route['OrderHandling/InProgressOrder/(:any)']			= 'OrderHandling/C_Monitoring/$1';
+$route['OrderHandling/InProgressOrder/(:any)/(:any)']	= 'OrderHandling/C_Monitoring/$1/$2';
+
+$route['OrderHandling/AchievementOrder']		= 'OrderHandling/C_Monitoring/Achievement';
+$route['OrderHandling/AchievementOrder/(:any)']			= 'OrderHandling/C_Monitoring/$1';
+$route['OrderHandling/AchievementOrder/(:any)/(:any)']	= 'OrderHandling/C_Monitoring/$1/$2';
