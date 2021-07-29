@@ -42,9 +42,10 @@
           <thead class="bg-success">
             <tr>
                 <th style="width:5%">No</th>
-                <th>Item</th>
-                <th>Description</th>
-                <th>Updated By</th>
+                <th>ITEM</th>
+                <th>DESCRIPTION</th>
+                <th>STD PACKING</th>
+                <th>UPDATED BY</th>
             </tr>
           </thead>
           <tbody>
@@ -55,6 +56,8 @@
               <td> <?php echo $val['ITEM'] ; ?>
               </td>
               <td> <?php echo $val['DESCRIPTION'] ; ?>
+              </td>
+              <td> <?php echo $val['STD_PACKING'] ; ?>
               </td>
               <td> <?php echo $val['UPDATED_BY'] ; ?>
               </td>

@@ -73,6 +73,7 @@ class C_RevisiPerItem extends CI_Controller
 		$no = $this->input->post('no');
 		$item = $this->input->post('item_code');
 		$desc = $this->input->post('item_desc');
+		$std_packing = $this->input->post('std_packing');
 		$action_type_id = 3;
 		$action_type_name = 'UPDATE VALUE';
 		$org_id = 81;
@@ -83,6 +84,7 @@ class C_RevisiPerItem extends CI_Controller
 			$arrayItem = [
 				'item_code' => $item[$key],
 				'item_desc' => $desc[$key],
+				'std_packing' => $std_packing[$key],
 				'action_type_id' => $action_type_id,
 				'action_type_name' => $action_type_name,
 				'org_id' => $org_id,

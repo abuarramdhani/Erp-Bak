@@ -70,6 +70,7 @@ class C_RevisiWithExcel extends CI_Controller
 				$arrayItem = [
 					'item_code' => $val['A'],
 					'item_desc' => $val['B'],
+					'std_packing' => $val['C'],
 					'action_type_id' => 3,
 					'action_type_name' => 'UPDATE VALUE',
 					'org_id' => 81,
@@ -103,8 +104,9 @@ class C_RevisiWithExcel extends CI_Controller
 			->setDescription("Revisi Master Items")
 			->setKeywords("IMO");
 
-		$excel->setActiveSheetIndex(0)->setCellValue('A1', "Item");
-		$excel->setActiveSheetIndex(0)->setCellValue('B1', "Description");
+		$excel->setActiveSheetIndex(0)->setCellValue('A1', "ITEM CODE");
+		$excel->setActiveSheetIndex(0)->setCellValue('B1', "DESCRIPTION");
+		$excel->setActiveSheetIndex(0)->setCellValue('C1', "STD PACKING");
 
 		$excel->getActiveSheet()->getDefaultRowDimension()->setRowHeight(-1);
 		$excel->getActiveSheet()->getPageSetup()->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE);
