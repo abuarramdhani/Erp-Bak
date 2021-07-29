@@ -18,10 +18,11 @@
         <table class="table table-bordered table-hover table-striped text-center tablePerItem" style="width: 100%;table-layout:fixed">
           <thead class="bg-primary">
           <tr>
-            <th class="text-center" style="width:5%; !important">No</th>
-            <th class="text-center" style="width:25%; !important">Item Code</th>
-            <th class="text-center" style="width:60%; !important">Description</th>
-            <th class="text-center" style="width:5%; !important"><button class="btn btn-sm btn-default" onClick="addElement()"><i class="fa fa-plus"></i></button></th>
+            <th class="text-center" style="width:4%; !important">NO</th>
+            <th class="text-center" style="width:15%; !important">ITEM CODE</th>
+            <th class="text-center" style="width:40%; !important">DESCRIPTION</th>
+            <th class="text-center" style="width:8%; !important">STD PACKING</th>
+            <th class="text-center" style="width:4%; !important"><button class="btn btn-sm btn-default" onClick="addElement()"><i class="fa fa-plus"></i></button></th>
           </tr>
           </thead>
           <tbody>
@@ -31,9 +32,11 @@
           <select class="form-control itemRMI1" id="item_code" name="item_code[]" style="text-transform:uppercase !important;width:210px !important;" required>
             <option selected="selected"></option>
           </select></td>
-          <td> <input type="text" class="form-control descRMI1" id="item_desc" name="item_desc[]" placeholder="Item Description"></input>          
-          <td><button class="btn btn-danger btn-sm btn_del1" onClick="addElement()"><i class="fa fa-trash-o"></i></button></td>
+          <td> <input type="text" class="form-control descRMI1" id="item_desc" name="item_desc[]" placeholder="Item Description"></input>
           </td>
+          <td> <input type="text" class="form-control stdPACKING1" id="std_packing" name="std_packing[]" placeholder="STD Packing"></input>          
+          </td>
+          <td><button class="btn btn-danger btn-sm btn_del1" onClick="addElement()"><i class="fa fa-trash-o"></i></button></td>
           </tr>
           </tbody>
         </table>
@@ -50,9 +53,10 @@
             <thead class="bg-success">
               <tr>
                   <th style="width:5%">No</th>
-                  <th>Item</th>
-                  <th>Description</th>
-                  <th>Updated By</th>
+                  <th>ITEM CODE</th>
+                  <th>DESCRIPTION</th>
+                  <th>STD PACKING</th>
+                  <th>UPDATED BY</th>
               </tr>
             </thead>
             <tbody>
@@ -63,6 +67,8 @@
                 <td> <?php echo $val['ITEM'] ; ?>
                 </td>
                 <td> <?php echo $val['DESCRIPTION'] ; ?>
+                </td>
+                <td> <?php echo $val['STD_PACKING'] ; ?>
                 </td>
                 <td> <?php echo $val['UPDATED_BY'] ; ?>
                 </td>
