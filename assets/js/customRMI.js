@@ -88,6 +88,8 @@ function addElement() {
   </select></td>
   <td> <input type="text" class="form-control descRMI${nomor}" id="item_desc" name="item_desc[]" placeholder="Item Description"></input>
   </td>
+  <td> <input type="text" class="form-control stdPACKING${nomor}" id="std_packing" name="std_packing[]" placeholder="STD Packing"></input>          
+  </td>
   <td><button type="button" class="btn btn-danger btn-sm btn_del${nomor}"><i class="fa fa-minus"></i></button></td>
   </tr>`
 $('.tablePerItem tbody').append(addRow)
