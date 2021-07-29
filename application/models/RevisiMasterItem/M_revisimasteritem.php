@@ -15,10 +15,12 @@ class M_revisimasteritem extends CI_Model
 	function runUpdate() {
         $nomorInduk = $this->session->user;
 		$sql = "BEGIN KHSAPIMASTERITEM.update_master_item('$nomorInduk'); END;";
+        $sql2 = "BEGIN KHSAPIMASTERITEM.run_fnd_import_item('ITEM','81','2'); END;";
 		// echo "<pre>";
 		// print_r('cek');
 		// exit();			
 		$query = $this->oracle->query($sql);
+		$query = $this->oracle->query($sql2);
 		// return $query->result_array();
 		// return $sql;
 	}
@@ -31,7 +33,8 @@ class M_revisimasteritem extends CI_Model
             DESCRIPTION,
             ORGANIZATION_ID,
             INVENTORY_ITEM_STATUS_CODE,
-            TRANSACTION_TYPE
+            TRANSACTION_TYPE,
+            STD_PACKING
             ) 
             VALUES (
                 {$arrayItem['action_type_id']},
@@ -40,7 +43,8 @@ class M_revisimasteritem extends CI_Model
                 '{$arrayItem['item_desc']}',
                 {$arrayItem['org_id']},
                 '{$arrayItem['inventory_item_status_code']}',
-                {$arrayItem['trx_type']}
+                {$arrayItem['trx_type']},
+                '{$arrayItem['std_packing']}'
             )";
         $query = $this->oracle->query($insertSql);
 		// echo "<pre>";
@@ -52,6 +56,7 @@ class M_revisimasteritem extends CI_Model
     function showUpdatedData() {
         $showSql = "select msib.SEGMENT1 item
         ,msib.DESCRIPTION
+        ,msib.ATTRIBUTE14 std_packing
         ,msib.ATTRIBUTE29 updated_by
         from khs_import_temp kit
         ,mtl_system_items_b msib
