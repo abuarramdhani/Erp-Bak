@@ -38,37 +38,94 @@ vertical-align: middle;
                       <ul class="nav nav-tabs" style="border-bottom:0.5px solid #e6e6e6">
                         <!-- <li><a href="#monitoring" data-toggle="tab">Monitoring</a></li> -->
                         <!-- <li class="active"><a href="#input" data-toggle="tab">Input Kebutuhan</a></li> -->
-                        <li class="pull-right"><h3 class="text-bold" style="margin:10px 0 10px;"><i class="fa fa-cog"></i> Input Standar Kebutuhan</h3></li>
-                        <li class="pull-left"><button type="button" class="btn btn-primary text-bold" data-toggle="modal" data-target="#tambahitemcst" name="button"> <i class="fa fa-plus"></i> Tambah</button></li>
+                        <li class="pull-right"><h3 class="text-bold" title="klik elemen ini untuk memperbarui data" style="margin:10px 0 10px;" onclick="reloadsstblkebutuhan()"><i class="fa fa-cog"></i> Input Standar Kebutuhan</h3></li>
+                        <!-- <li class="pull-left"><button type="button" class="btn btn-primary text-bold btninputkebutuhankeputusan" data-toggle="modal" data-target="#tambahitemcst" name="button"> <i class="fa fa-plus"></i> Tambah Pengajuan</button></li> -->
+                        <li class="pull-left"><button type="button" class="btn btn-primary text-bold btncstslc" name="button" status="+"> <i class="fa fa-plus"></i> Tambah Pengajuan</button></li>
                       </ul>
                     </div>
                   </div>
 
-                  <div class="row pt-5">
-                    <div class="col-md-12">
-                      <div class="table-responsive pb-3">
-                        <table class="table table-bordered tbl_cst_kebutuhan_ss" style="width:100%;text-align:center">
-                          <thead class="bg-primary">
-                            <tr>
-                              <th class="text-center" style="width:5%">No</th>
-                              <th class="text-center" style="width:15%">Item</th>
-                              <th class="text-center" style="width:35%">Desc</th>
-                              <th class="text-center">Qty Req</th>
-                              <th class="text-center">UOM</th>
-                              <th class="text-center">Created By</th>
-                              <th class="text-center">Creation Date</th>
-                              <th class="text-center">Status</th>
-                              <th class="text-center">Action</th>
-                            </tr>
-                          </thead>
-                          <tbody>
+                  <?php
+                    $monthnow = date('m')*1;
+                    if ($monthnow > 1 && $monthnow < 12) {
+                      $monthnownext = $monthnow + 1;
+                    }else if ($monthnow == 12) {
+                      $monthnownext = 1;
+                    }
+                    $monthnownext = DateTime::createFromFormat('!m', $monthnownext);
 
-                          </tbody>
-                        </table>
+                  ?>
+                  <div class="monitoring-cst" >
+                    <div class="row pt-5">
+                      <div class="col-md-12">
+                        <div class="table-responsive pb-3">
+                          <table class="table table-bordered tbl_cst_kebutuhan_ss" style="width:1400px;text-align:center">
+                            <thead class="bg-primary">
+                              <tr>
+                                <th class="text-center" style="width:50px">No</th>
+                                <th class="text-center" style="width:150px">Item</th>
+                                <th class="text-center" style="width:300px">Desc</th>
+                                <th class="text-center">Qty Req</th>
+                                <th class="text-center">UOM</th>
+                                <th class="text-center">Req. Bulan <?php echo date('F') ?></th>
+                                <th class="text-center">Consumed</th>
+                                <th class="text-center">Sisa Jatah</th>
+                                <th class="text-center">Req. Bulan <?php echo $monthnownext->format('F') ?></th>
+                                <th class="text-center">Created By</th>
+                                <th class="text-center">Creation Date</th>
+                                <th class="text-center">Status</th>
+                                <th class="text-center">Action</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                          </table>
+                        </div>
                       </div>
                     </div>
                   </div>
 
+                  <div class="addkebutuhan-cst" style="display:none">
+                    <div class="row pt-5">
+                        <div class="col-md-12">
+                          <form class="saveinputkebutuhan" action="" method="post">
+                          <table class="table table-bordered tableinputkebutuhan" style="width:100%">
+                            <thead class="bg-primary">
+                              <tr>
+                                <th class="text-center" style="vertical-align:middle;width:33%;">Nama Item</th>
+                                <th class="text-center" style="vertical-align:middle;width:25%">Item Code</th>
+                                <th class="text-center" style="vertical-align:middle;width:17%">Quantity</th>
+                                <th class="text-center" style="vertical-align:middle;width:17%">UOM</th>
+                                <th class="text-center" style="width:8%"> <button class="btn btn-default btn-sm" onclick="btnPlusIKCST()"><i class="fa fa-plus"></i></button> </th>
+                              </tr>
+                            </thead>
+                            <tbody id="tambahannya_disini">
+                              <tr>
+                                <td class="text-center">
+                                  <input type="hidden" name="item_id[]" class="item_id" value="">
+                                  <select class="select2_inpkebutuhan_cst" required style="width:380px" name="description[]">
+                                    <option value="" selected></option>
+                                  </select>
+                                </td>
+                                <td class="text-center"><input type="text" class="form-control item-code" name="item_code[]" readonly="readonly"></td>
+                                <td class="text-center"><input type="number" required class="form-control" id="qty_kebutuhan_consum1" name="qty_kebutuhan[]" required="required"></td>
+                                <td class="text-center"><input type="text" class="form-control uom" readonly="readonly"></td>
+                                <td class="text-center">
+                                  <button class="btn btn-default btn-sm" disabled>
+                                    <i class="fa fa-minus"></i>
+                                  </button>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                          <center> <button type="submit" class="btn btn-primary text-bold " name="button" style="width:130px"> <i class="fa fa-save"></i> Ajukan</button> </center>
+                        </form>
+                        </div>
+                    </div>
+
+                  </div>
+                  <br>
                 </div>
               </div>
 
@@ -99,8 +156,8 @@ vertical-align: middle;
               <div class="box-body">
                 <div class="row">
                   <div class="col-md-12 pt-3 pb-3">
-                    <form class="saveinputkebutuhan" action="" method="post">
-                      <div class="col-md-12" style="padding:0">
+                    <!-- <form class="saveinputkebutuhan" action="" method="post">
+                      <div class="col-md-12" style="padding:0;">
                         <table class="table table-bordered tableinputkebutuhan" style="width:100%">
                           <thead class="bg-primary">
                             <tr>
@@ -130,9 +187,9 @@ vertical-align: middle;
                             </tr>
                           </tbody>
                         </table>
-                        <center> <button type="submit" class="btn btn-primary text-bold" name="button" style="width:130px"> <i class="fa fa-save"></i> Save</button> </center>
+                        <center> <button type="submit" class="btn btn-primary text-bold" name="button" style="width:130px"> <i class="fa fa-save"></i> Ajukan</button> </center>
                       </div>
-                    </form>
+                    </form> -->
                   </div>
                 </div>
               </div>

@@ -47,32 +47,23 @@ const swaCSTLoading = (a) =>{
   })
 }
 
-// $('.lph_search').on('submit', function(e) {
-//   e.preventDefault()
-//   $.ajax({
-//     url: baseurl + 'LaporanProduksiHarian/action/getDataRKH',
-//     type: 'POST',
-//     // dataType: 'JSON',
-//     data: {
-//       range_date: $('.tanggal_lph_99').val(),
-//       shift: $('.lph_pilih_shift_97').val()
-//     },
-//     cache:false,
-//     beforeSend: function() {
-//       $('.area-getlph-2021').html(`<div style ="width: 70%;margin:auto;height: 30%;background: #fff;overflow: hidden;z-index: 9999;padding:20px 0 30px 0;border-radius:10px;text-align:center">
-//                                     <img style="width: 8%;" src="${baseurl}assets/img/gif/loading5.gif"><br>
-//                                     <span style="font-size:14px;font-weight:bold">Sedang memuat form input...</span>
-//                                 </div>`);
-//     },
-//     success: function(result) {
-//       $('.area-getlph-2021').html(result)
-//     },
-//     error: function(XMLHttpRequest, textStatus, errorThrown) {
-//     swaLPHLarge('error', textStatus)
-//      console.error();
-//     }
-//   })
-// })
+$('.btncstslc').on('click', function() {
+  let stat = $(this).attr('status');
+  let htm
+  if (stat == '+') {
+    $('.monitoring-cst').hide();
+    $('.addkebutuhan-cst').show();
+    stat = '-'
+    htm = ` <i class="fa fa-caret-square-o-left"></i> Kembali`
+  }else if (stat == '-') {
+    $('.monitoring-cst').show();
+    $('.addkebutuhan-cst').hide();
+    stat = '+'
+    htm = ` <i class="fa fa-plus"></i> Tambah Pengajuan`
+  }
+  $(this).attr('status', stat);
+  $(this).html(htm)
+})
 
 function runsctselect2() {
   $('.select2_inpkebutuhan_cst').select2({
@@ -251,7 +242,8 @@ $('.saveinputkebutuhan').on('submit', function(e) {
       $('.tableinputkebutuhan tbody tr').remove();
       btnPlusIKCST();
       $('.tbl_cst_kebutuhan_ss').DataTable().ajax.reload();
-      $('#tambahitemcst').modal('hide');
+      // $('#tambahitemcst').modal('hide');
+      $('.btncstslc').trigger('click')
     }else {
       toastCST('warning', 'Terjadi Kesalahan Saat Menyipan Data. Coba lagi..');
     }
@@ -262,6 +254,10 @@ $('.saveinputkebutuhan').on('submit', function(e) {
   }
  })
 })
+
+function reloadsstblkebutuhan() {
+  $('.tbl_cst_kebutuhan_ss').DataTable().ajax.reload();
+}
 
 function delcstkebutuhan(id) {
   Swal.fire({
@@ -296,7 +292,7 @@ function delcstkebutuhan(id) {
         }
       },
       error: function(XMLHttpRequest, textStatus, errorThrown) {
-      swaLPHLarge('error', XMLHttpRequest);
+      swaCSTLarge('error', XMLHttpRequest);
        console.error();
       }
       })
@@ -304,4 +300,34 @@ function delcstkebutuhan(id) {
   })
 
 }
+
 // ==================== area consumable tim v2 ======================== //
+function viewapprovalkeb(kodesie) {
+  $.ajax({
+  url: baseurl + 'consumabletimv2/action/viewapprovalkeb',
+  type: 'POST',
+  // data : {
+  //   kodesie : kodesie
+  // },
+  cache: false,
+  beforeSend: function() {
+    $('.areaviewapprovalkeb').html(`<div style ="width: 70%;margin:auto;height: 30%;background: #fff;overflow: hidden;z-index: 9999;padding:20px 0 30px 0;border-radius:10px;text-align:center">
+                                        <img style="width: 8%;" src="${baseurl}assets/img/gif/loading5.gif"><br>
+                                        <span style="font-size:14px;font-weight:bold">Sedang memuat form input...</span>
+                                    </div>`)
+  },
+  success: function(result) {
+    $('.areaviewapprovalkeb').html(result)
+  },
+  error: function(XMLHttpRequest, textStatus, errorThrown) {
+  swaCSTLarge('error', XMLHttpRequest);
+   console.error();
+  }
+  })
+}
+
+$(document).ready(function() {
+  if ($('#consumablepermintaanv2').val() == 1) {
+    viewapprovalkeb()
+  }
+})

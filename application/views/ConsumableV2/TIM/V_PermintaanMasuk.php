@@ -35,7 +35,7 @@ td{
           <div class="col-lg-12">
             <div class="box box-primary color-palette-box">
               <div class="panel-body">
-                <input type="hidden" id="consumablev2" value="1">
+                <input type="hidden" id="consumablepermintaanv2" value="1">
                 <div class="nav-tabs-custom">
                   <div class="row">
                     <div class="col-md-12">
@@ -46,6 +46,18 @@ td{
                       </ul>
                     </div>
                   </div>
+
+                  <?php
+                    $monthnow = date('m')*1;
+                    if ($monthnow > 1 && $monthnow < 12) {
+                      $monthnownext = $monthnow + 1;
+                    }else if ($monthnow == 12) {
+                      $monthnownext = 1;
+                    }
+                    $monthnownext = DateTime::createFromFormat('!m', $monthnownext);
+
+                  ?>
+
                   <div class="tab-content">
                     <div class="tab-pane active" id="input">
                       <div class="row pt-3">
@@ -66,6 +78,12 @@ td{
 
                               </tbody>
                             </table>
+                          </div>
+                          <br>
+                          <h4 class="text-bold" style="margin-bottom:-11px">Approval Kebutuhan</h4>
+                          <hr>
+                          <div class="table-responsive areaviewapprovalkeb">
+
                           </div>
                           <br>
                           <h4 class="text-bold" style="margin-bottom:-11px">Pengajuan Seksi</h4>
@@ -181,6 +199,37 @@ td{
 
                         </tbody>
                       </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- approval detail -->
+<div class="modal fade bd-example-modal-xl" id="detailitem-approval-cst" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content" style="border-radius: 5px !important; background-color:transparent !important; box-shadow:none;">
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="box box-primary box-solid">
+              <div class="box-header with-border">
+                <div style="float:left">
+                  <h4 style="font-weight:bold;">Approval Pengajuan Kebutuhan <span id="juduldetailapprovalpengajuan"></span> </h4>
+                </div>
+                <button type="button" class="btn btn-default" style="float:right;font-weight:bold" data-dismiss="modal" onclick="viewapprovalkeb()"> <i class="fa fa-close"></i> Selesai</button>
+              </div>
+              <div class="box-body">
+                <div class="row">
+                  <div class="col-md-12 pt-3 pb-3">
+                    <div class="table-responsive areaapprovalpengajuan">
+
                     </div>
                   </div>
                 </div>

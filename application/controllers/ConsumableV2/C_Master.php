@@ -101,6 +101,10 @@ class C_Master extends CI_Controller
           $sub_array[] = '<center>'.$row['DESCRIPTION'].'</center>';
           $sub_array[] = '<center>'.$row['REQ_QUANTITY'].'</center>';
           $sub_array[] = '<center>'.$row['PRIMARY_UOM_CODE'].'</center>';
+          $sub_array[] = '<center>-</center>';
+          $sub_array[] = '<center>-</center>';
+          $sub_array[] = '<center>-</center>';
+          $sub_array[] = '<center>-</center>';
           $sub_array[] = '<center>'.$row['CREATED_BY'].'</center>';
           $sub_array[] = '<center>'.$row['TGL_BUAT'].'</center>';
           $sub_array[] = '<center>'.$row['STATUS'].'</center>';

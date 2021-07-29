@@ -29,12 +29,13 @@ class M_master extends CI_Model
       $kodesie = $kodesie['kodesie'];
       foreach ($post['item_id'] as $key => $value) {
         $this->oracle->query("INSERT INTO KHS_CSM_KEBUTUHAN
-                              (KODESIE, ITEM_ID, REQ_QUANTITY, CREATION_DATE, CREATED_BY)
+                              (KODESIE, ITEM_ID, REQ_QUANTITY, CREATION_DATE, CREATED_BY, STATUS)
                               VALUES ('$kodesie',
                                       '$value',
                                       '{$post['qty_kebutuhan'][$key]}',
                                       SYSDATE,
-                                      '$noind'
+                                      '$noind',
+                                      0
                                     )");
       }
       if ($this->oracle->affected_rows()) {
@@ -82,7 +83,7 @@ class M_master extends CI_Model
   									(
   									SELECT
   													skdav.*,
-  													ROW_NUMBER () OVER (ORDER BY tgl_buat DESC) as pagination
+  													ROW_NUMBER () OVER (ORDER BY creation_date DESC) as pagination
   											FROM
   													(
                               SELECT kck.*, TO_CHAR(kck.creation_date, 'DD/MM/YYYY HH:MI:SS') tgl_buat, msib.segment1, msib.description, msib.primary_uom_code
@@ -138,6 +139,47 @@ class M_master extends CI_Model
           ) bla"
   			)->row_array();
   	}
+
+    public function ambillistapprove($value='')
+    {
+      $kck = $this->oracle->query("select distinct kodesie, count(*) jumlah from KHS_CSM_KEBUTUHAN where status = 0 group by kodesie")->result_array();
+      $data = [];
+      if (empty($kck)) return $data;
+      foreach ($kck as $key => $value) {
+        $personalia = $this->personalia->query("select distinct seksi from hrd_khs.tseksi where kodesie like '{$value['KODESIE']}%'")->row_array();
+        $data[] = [
+          'seksi' => $personalia['seksi'],
+          'jumlah_item' => $value['JUMLAH'],
+          'kodesie' => $value['KODESIE']
+        ];
+      }
+      return $data;
+    }
+
+    public function itemkebutuhanbykodesie($kodesie)
+    {
+      return $this->oracle->query("SELECT kck.*, TO_CHAR(kck.creation_date, 'DD/MM/YYYY HH:MI:SS') tgl_buat, msib.segment1, msib.description, msib.primary_uom_code
+                                   FROM KHS_CSM_KEBUTUHAN kck, mtl_system_items_b msib
+                                   WHERE kck.item_id = msib.inventory_item_id
+                                   AND msib.organization_id = 81
+                                   AND kck.status = 0
+                                   AND kck.kodesie = '$kodesie'")->result_array();
+    }
+
+    public function updatestatusitemkebutuhan($item_id, $status, $reason)
+    {
+      if ($reason != '') {
+        $this->oracle->query("UPDATE KHS_CSM_KEBUTUHAN SET status = '$status', reason = '$reason' WHERE item_id = $item_id");
+      }else {
+        $this->oracle->query("UPDATE KHS_CSM_KEBUTUHAN SET status = '$status' WHERE item_id = $item_id");
+      }
+      if ($this->oracle->affected_rows()) {
+        $res = 200;
+      }else {
+        $res = 0;
+      }
+      return $res;
+    }
 
 
 }

@@ -76,6 +76,26 @@ class C_Sensei extends CI_Controller
         $this->load->view('V_Footer', $data);
     }
 
+    public function viewapprovalkeb($value='')
+    {
+      $data['approvalkebutuhan'] = $this->md->ambillistapprove();
+      $this->load->view('ConsumableV2/TIM/AJAX/V_ViewApprovalKeb', $data);
+    }
+
+    public function detailitemapproval($value='')
+    {
+      $data['get'] = $this->md->itemkebutuhanbykodesie($this->input->post('kodesie'));
+      $data['kodesie'] = $this->input->post('kodesie');
+      $this->load->view('ConsumableV2/TIM/AJAX/V_ItemKebutuhanApproval', $data);
+    }
+
+    public function updatestatusitemkebutuhan($value='')
+    {
+      if ($this->session->is_logged) {
+        echo json_encode($this->md->updatestatusitemkebutuhan($this->input->post('item_id'), $this->input->post('status'), $this->input->post('reason')));
+      }
+    }
+
     public function getitem()
     {
       $term = strtoupper($this->input->post('term'));

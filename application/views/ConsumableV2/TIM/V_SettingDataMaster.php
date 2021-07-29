@@ -169,7 +169,7 @@ td{
                       </thead>
                       <tbody id="tambahannya_disini">
                         <tr>
-                          <td class="text-center" style="width:50%">
+                          <td class="text-center">
                             <input type="hidden" name="item_id[]" class="item_id" value="">
                             <select class="select2_inpkebutuhan_cst" required style="width:380px" name="description[]">
                               <option value="" selected></option>
