@@ -341,7 +341,8 @@ class M_splseksi extends CI_Model
 				where tdt.noind = '$noind'
 				and tdt.tanggal = '$tanggal'
 				and trim(tdt.kd_ket) = 'TM'";
-		return $this->prs->query($sql)->row();
+		return $this->prs->query($sql)->result_array();
+		// return $this->prs->query($sql)->row();
 	}
 
 	public function getPresensi($noind, $tanggal)
