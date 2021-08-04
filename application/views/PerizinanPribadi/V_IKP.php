@@ -54,7 +54,7 @@
                         <div class="col-lg-12">
                           <div class="tab-content">
                             <div class="tab-pane" id="all-all">
-                              <div class="table-responsive">
+                              <div class="table-responsive-x">
                                 <table class="table table-responsive-xs table-sm table-bordered tabel_ikp_all table-hover" style="width: 100%">
                                   <thead>
                                     <tr>
@@ -155,7 +155,7 @@
                               </div>
                             </div>
                             <div class="tab-pane active" id="all-new">
-                              <div class="table-responsive">
+                              <div class="table-responsive-x">
                                 <table class="table table-responsive-xs table-sm table-bordered tabel_ikp_all table-hover" style="width: 100%">
                                   <thead>
                                     <tr>
@@ -258,7 +258,7 @@
                               </div>
                             </div>
                             <div class="tab-pane" id="all-approved">
-                              <div class="table-responsive">
+                              <div class="table-responsive-x">
                                 <table class="table table-responsive-xs table-sm table-bordered tabel_ikp_all table-hover" style="width: 100%">
                                   <thead>
                                     <tr>
@@ -361,7 +361,7 @@
                               </div>
                             </div>
                             <div class="tab-pane" id="all-rejected">
-                              <div class="table-responsive">
+                              <div class="table-responsive-x">
                                 <table class="table table-responsive-xs table-sm table-bordered tabel_ikp_all table-hover" style="width: 100%">
                                   <thead>
                                     <tr>
@@ -464,7 +464,7 @@
                               </div>
                             </div>
                             <div class="tab-pane" id="all-expired">
-                              <div class="table-responsive">
+                              <div class="table-responsive-x">
                                 <table class="table table-responsive-xs table-sm table-bordered tabel_ikp_all table-hover" style="width: 100%">
                                   <thead>
                                     <tr>
@@ -585,7 +585,7 @@
                         <div class="col-lg-12">
                           <div class="tab-content">
                             <div class="tab-pane active" id="pribadi-new">
-                              <div class="table-responsive">
+                              <div class="table-responsive-x">
                                 <table class="table table-responsive-xs table-sm table-bordered tabel_ikp_pribadi table-hover" style="width: 100%">
                                   <thead>
                                     <tr>
@@ -688,7 +688,7 @@
                               </div>
                             </div>
                             <div class="tab-pane" id="pribadi-approved">
-                              <div class="table-responsive">
+                              <div class="table-responsive-x">
                                 <table class="table table-responsive-xs table-sm table-bordered tabel_ikp_pribadi table-hover" style="width: 100%">
                                   <thead>
                                     <tr>
@@ -791,7 +791,7 @@
                               </div>
                             </div>
                             <div class="tab-pane" id="pribadi-rejected">
-                              <div class="table-responsive">
+                              <div class="table-responsive-x">
                                 <table class="table table-responsive-xs table-sm table-bordered tabel_ikp_pribadi table-hover" style="width: 100%">
                                   <thead>
                                     <tr>
@@ -894,7 +894,7 @@
                               </div>
                             </div>
                             <div class="tab-pane" id="pribadi-expired">
-                              <div class="table-responsive">
+                              <div class="table-responsive-x">
                                 <table class="table table-responsive-xs table-sm table-bordered tabel_ikp_pribadi table-hover" style="width: 100%">
                                   <thead>
                                     <tr>
@@ -1015,7 +1015,7 @@
                         <div class="col-lg-12">
                           <div class="tab-content">
                             <div class="tab-pane active" id="dinas-new">
-                              <div class="table-responsive">
+                              <div class="table-responsive-x">
                                 <table class="table table-responsive-xs table-sm table-bordered tabel_ikp_dinas table-hover" style="width: 100%">
                                   <thead>
                                     <tr>
@@ -1118,7 +1118,7 @@
                               </div>
                             </div>
                             <div class="tab-pane" id="dinas-approved">
-                              <div class="table-responsive">
+                              <div class="table-responsive-x">
                                 <table class="table table-responsive-xs table-sm table-bordered tabel_ikp_dinas table-hover" style="width: 100%">
                                   <thead>
                                     <tr>
@@ -1221,7 +1221,7 @@
                               </div>
                             </div>
                             <div class="tab-pane" id="dinas-rejected">
-                              <div class="table-responsive">
+                              <div class="table-responsive-x">
                                 <table class="table table-responsive-xs table-sm table-bordered tabel_ikp_dinas table-hover" style="width: 100%">
                                   <thead>
                                     <tr>
@@ -1324,7 +1324,7 @@
                               </div>
                             </div>
                             <div class="tab-pane" id="dinas-expired">
-                              <div class="table-responsive">
+                              <div class="table-responsive-x">
                                 <table class="table table-responsive-xs table-sm table-bordered tabel_ikp_dinas table-hover" style="width: 100%">
                                   <thead>
                                     <tr>
@@ -1445,7 +1445,7 @@
                         <div class="col-lg-12">
                           <div class="tab-content">
                             <div class="tab-pane active" id="sakit-new">
-                              <div class="table-responsive">
+                              <div class="table-responsive-x">
                                 <table class="table table-responsive-xs table-sm table-bordered tabel_ikp_sakit table-hover" style="width: 100%">
                                   <thead>
                                     <tr>
@@ -1544,7 +1544,7 @@
                               </div>
                             </div>
                             <div class="tab-pane" id="sakit-approved">
-                              <div class="table-responsive">
+                              <div class="table-responsive-x">
                                 <table class="table table-responsive-xs table-sm table-bordered tabel_ikp_sakit table-hover" style="width: 100%">
                                   <thead>
                                     <tr>
@@ -1643,7 +1643,7 @@
                               </div>
                             </div>
                             <div class="tab-pane" id="sakit-rejected">
-                              <div class="table-responsive">
+                              <div class="table-responsive-x">
                                 <table class="table table-responsive-xs table-sm table-bordered tabel_ikp_sakit table-hover" style="width: 100%">
                                   <thead>
                                     <tr>
@@ -1742,7 +1742,7 @@
                               </div>
                             </div>
                             <div class="tab-pane" id="sakit-expired">
-                              <div class="table-responsive">
+                              <div class="table-responsive-x">
                                 <table class="table table-responsive-xs table-sm table-bordered tabel_ikp_sakit table-hover" style="width: 100%">
                                   <thead>
                                     <tr>
@@ -1857,7 +1857,7 @@
 
 <!-- Modal -->
 <div class="modal fade" id="modal-approve-ikp" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document" style="width: 600px">
+  <div class="modal-dialog modal-md" role="document">
     <div class="modal-content">
       <div class="modal-header text-center">
         <button type="button" class="close hover" data-dismiss="modal">&times;</button>
@@ -1891,8 +1891,8 @@
           </div>
           <div class="form-group">
             <div class="col-lg-12">
-              <div class="table-responsive">
-                <table border="1" width="500px" style="margin-left: 50px;">
+              <div class="table-responsive-x">
+                <table border="1" width="500px" style="margin: 0 auto;">
                   <thead>
                     <th style="text-align: center; white-space: nowrap;"><input type="checkbox" id="checkAll_edit_ikp"></th>
                     <th style="text-align: center; white-space: nowrap;">No. Induk</th>

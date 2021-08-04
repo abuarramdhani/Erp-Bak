@@ -281,7 +281,7 @@ $(document).ready(function() {
           },
           success: function(data) {
             $("#txtHakCuti").val('');
-            $("#txtHakCuti").val(data);
+            $("#txtHakCuti").val(data.trim());
           }
         })
       });

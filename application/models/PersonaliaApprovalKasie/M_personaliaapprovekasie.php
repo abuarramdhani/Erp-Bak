@@ -122,15 +122,11 @@ class M_personaliaapprovekasie extends CI_Model
 		$sql = "select count(*) as jumlah
                 from
                     ips.tinput_tukar_shift
-                where
-                	(noind1 = '$noind'
-					and approve1_tgl is null and status != '03')
-					or (noind2 = '$noind'
-					and approve2_tgl is null and status != '03')
-					or (appr_ = '$noind'
+                where appr_ = '$noind'
 					and approve1_tgl is not null
 					and approve2_tgl is not null
-					and approve_timestamp = '9999-12-12 00:00:00' and status != '03')";
+					and approve_timestamp = '9999-12-12 00:00:00' 
+					and status = '01'";
         $result = $this->erp->query($sql)->row();
 		if (!empty($result)) {
 			return $result->jumlah;
