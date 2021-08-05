@@ -38,7 +38,7 @@ vertical-align: middle;
                       <ul class="nav nav-tabs" style="border-bottom:0.5px solid #e6e6e6">
                         <!-- <li><a href="#monitoring" data-toggle="tab">Monitoring</a></li>
                         <li class="active"><a href="#input" data-toggle="tab">Input Kebutuhan</a></li> -->
-                        <li class="pull-right header"><h3 class="text-bold" style="margin:10px 0 10px"><i class="fa fa-cog"></i> Pengajuan Kebutuhan Consumable Part</h3></li>
+                        <li class="pull-right header"><h3 class="text-bold" style="margin:10px 0 10px"><i class="fa fa-cog"></i> Pengajuan Item Kebutuhan</h3></li>
                       </ul>
                     </div>
                   </div>
@@ -60,6 +60,16 @@ vertical-align: middle;
                             </table>
                           </div>
                           <hr>
+                          <?php
+                            $monthnow = date('m')*1;
+                            if ($monthnow > 1 && $monthnow < 12) {
+                              $monthnownext = $monthnow + 1;
+                            }else if ($monthnow == 12) {
+                              $monthnownext = 1;
+                            }
+                            $monthnownext = DateTime::createFromFormat('!m', $monthnownext);
+
+                          ?>
                           <div class="table-responsive">
                             <table class="table table-bordered tbl_cst_kebutuhan" style="width:100%;text-align:center">
                               <thead class="bg-primary">
@@ -67,10 +77,10 @@ vertical-align: middle;
                                   <th class="text-center" style="width:5%">No</th>
                                   <th class="text-center">Item</th>
                                   <th class="text-center">Desc</th>
-                                  <th class="text-center">Req Bulan -</th>
+                                  <th class="text-center">Req Bulan <?php echo date('F') ?></th>
                                   <th class="text-center">Consumed</th>
                                   <th class="text-center">Sisa Jatah</th>
-                                  <th class="text-center">Req Bulan +</th>
+                                  <th class="text-center">Req Bulan <?php echo $monthnownext->format('F') ?></th>
                                 </tr>
                               </thead>
                               <tbody>

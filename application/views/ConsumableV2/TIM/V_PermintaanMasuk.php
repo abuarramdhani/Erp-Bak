@@ -80,9 +80,15 @@ td{
                             </table>
                           </div>
                           <br>
-                          <h4 class="text-bold" style="margin-bottom:-11px">Approval Kebutuhan</h4>
+                          <h4 class="text-bold" style="margin-bottom:-11px">Approval Pengajuan Kebutuhan</h4>
                           <hr>
                           <div class="table-responsive areaviewapprovalkeb">
+
+                          </div>
+                          <br>
+                          <h4 class="text-bold" style="margin-bottom:-11px">Approval Pengajuan Item</h4>
+                          <hr>
+                          <div class="table-responsive areaviewapprovalitem">
 
                           </div>
                           <br>
@@ -221,7 +227,7 @@ td{
             <div class="box box-primary box-solid">
               <div class="box-header with-border">
                 <div style="float:left">
-                  <h4 style="font-weight:bold;">Approval Pengajuan Kebutuhan <span id="juduldetailapprovalpengajuan"></span> </h4>
+                  <h4 style="font-weight:bold;">Approval Pengajuan Kebutuhan <span id="seksiapprovalpengajuan"></span> </h4>
                 </div>
                 <button type="button" class="btn btn-default" style="float:right;font-weight:bold" data-dismiss="modal" onclick="viewapprovalkeb()"> <i class="fa fa-close"></i> Selesai</button>
               </div>

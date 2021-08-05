@@ -38,9 +38,9 @@ vertical-align: middle;
                       <ul class="nav nav-tabs" style="border-bottom:0.5px solid #e6e6e6">
                         <!-- <li><a href="#monitoring" data-toggle="tab">Monitoring</a></li> -->
                         <!-- <li class="active"><a href="#input" data-toggle="tab">Input Kebutuhan</a></li> -->
-                        <li class="pull-right"><h3 class="text-bold" title="klik elemen ini untuk memperbarui data" style="margin:10px 0 10px;" onclick="reloadsstblkebutuhan()"><i class="fa fa-cog"></i> Input Standar Kebutuhan</h3></li>
-                        <!-- <li class="pull-left"><button type="button" class="btn btn-primary text-bold btninputkebutuhankeputusan" data-toggle="modal" data-target="#tambahitemcst" name="button"> <i class="fa fa-plus"></i> Tambah Pengajuan</button></li> -->
-                        <li class="pull-left"><button type="button" class="btn btn-primary text-bold btncstslc" name="button" status="+"> <i class="fa fa-plus"></i> Tambah Pengajuan</button></li>
+                        <li class="pull-right"><h3 class="text-bold" title="klik elemen ini untuk memperbarui data" style="margin:10px 0 10px;" onclick="reloadsstblkebutuhan()"><i class="fa fa-cog"></i> Proposal Penambahan Item</h3></li>
+                        <li class="pull-left"><button type="button" class="btn btncstslc" style="border: 1px solid #a8a8a8;
+    background: white;" name="button" status="+"> <i class="fa fa-plus"></i> Tambah Item</button></li>
                       </ul>
                     </div>
                   </div>
@@ -55,22 +55,19 @@ vertical-align: middle;
                     $monthnownext = DateTime::createFromFormat('!m', $monthnownext);
 
                   ?>
+            
                   <div class="monitoring-cst" >
                     <div class="row pt-5">
                       <div class="col-md-12">
                         <div class="table-responsive pb-3">
-                          <table class="table table-bordered tbl_cst_kebutuhan_ss" style="width:1400px;text-align:center">
+                          <table class="table table-bordered tbl_cst_kebutuhan_ss" style="width:100%;text-align:center">
                             <thead class="bg-primary">
                               <tr>
                                 <th class="text-center" style="width:50px">No</th>
                                 <th class="text-center" style="width:150px">Item</th>
                                 <th class="text-center" style="width:300px">Desc</th>
-                                <th class="text-center">Qty Req</th>
+                                <!-- <th class="text-center">Qty Req</th> -->
                                 <th class="text-center">UOM</th>
-                                <th class="text-center">Req. Bulan <?php echo date('F') ?></th>
-                                <th class="text-center">Consumed</th>
-                                <th class="text-center">Sisa Jatah</th>
-                                <th class="text-center">Req. Bulan <?php echo $monthnownext->format('F') ?></th>
                                 <th class="text-center">Created By</th>
                                 <th class="text-center">Creation Date</th>
                                 <th class="text-center">Status</th>
@@ -95,7 +92,7 @@ vertical-align: middle;
                               <tr>
                                 <th class="text-center" style="vertical-align:middle;width:33%;">Nama Item</th>
                                 <th class="text-center" style="vertical-align:middle;width:25%">Item Code</th>
-                                <th class="text-center" style="vertical-align:middle;width:17%">Quantity</th>
+                                <!-- <th class="text-center" style="vertical-align:middle;width:17%">Quantity</th> -->
                                 <th class="text-center" style="vertical-align:middle;width:17%">UOM</th>
                                 <th class="text-center" style="width:8%"> <button class="btn btn-default btn-sm" onclick="btnPlusIKCST()"><i class="fa fa-plus"></i></button> </th>
                               </tr>
@@ -109,7 +106,7 @@ vertical-align: middle;
                                   </select>
                                 </td>
                                 <td class="text-center"><input type="text" class="form-control item-code" name="item_code[]" readonly="readonly"></td>
-                                <td class="text-center"><input type="number" required class="form-control" id="qty_kebutuhan_consum1" name="qty_kebutuhan[]" required="required"></td>
+                                <!-- <td class="text-center"><input type="number" required class="form-control" id="qty_kebutuhan_consum1" name="qty_kebutuhan[]" required="required"></td> -->
                                 <td class="text-center"><input type="text" class="form-control uom" readonly="readonly"></td>
                                 <td class="text-center">
                                   <button class="btn btn-default btn-sm" disabled>

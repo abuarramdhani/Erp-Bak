@@ -53,6 +53,7 @@
           swaCSTLarge('success', `Item successfully rejected`);
         }
         detailapprovalcst(<?php echo $kodesie ?>);
+        apporreject = 2;
       }else {
         swaCSTLarge('warning', 'Terjadi Kesalahan Saat Melakukan Approve Data! Harap Coba lagi');
       }

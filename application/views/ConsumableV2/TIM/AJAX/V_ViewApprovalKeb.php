@@ -18,7 +18,7 @@
         <td></td>
         <td><?php echo $value['jumlah_item'] ?></td>
         <td>
-          <button type="button" class="btn" name="button" data-toggle="modal" data-target="#detailitem-approval-cst" title="detail" onclick="detailapprovalcst('<?php echo $value['kodesie'] ?>')"> <i class="fa fa-eye"></i> Detail Item</button>
+          <button type="button" class="btn" name="button" data-toggle="modal" data-target="#detailitem-approval-cst" title="detail" onclick="detailapprovalcst('<?php echo $value['kodesie'] ?>', '<?php echo $value['seksi'] ?>')"> <i class="fa fa-eye"></i> Detail Item</button>
         </td>
       </tr>
     <?php endforeach; ?>
@@ -28,7 +28,9 @@
 <script type="text/javascript">
   $('.tbl_cst_apprkeb').dataTable()
 
-  function detailapprovalcst(kodesie) {
+  function detailapprovalcst(kodesie, seksi) {
+    apporreject = 1;
+    $('#seksiapprovalpengajuan').text(seksi)
     $.ajax({
     url: baseurl + 'consumabletimv2/action/detailitemapproval',
     type: 'POST',

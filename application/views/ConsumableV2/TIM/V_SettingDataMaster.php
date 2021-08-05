@@ -26,9 +26,10 @@ vertical-align: middle;
   display: none !important;
 }
 
-td{
+td, th{
   vertical-align: middle !important;
 }
+
 </style>
 <section class="content">
   <div class="inner">
@@ -39,7 +40,7 @@ td{
           <div class="col-lg-12">
             <div class="box box-primary color-palette-box">
               <div class="panel-body">
-                <input type="hidden" id="consumabletimtrackv2" value="1">
+                <input type="hidden" id="consumabletimsettingdatav2" value="1">
                 <div class="nav-tabs-custom">
                   <div class="row">
                     <div class="col-md-12">
@@ -54,8 +55,11 @@ td{
                     <div class="tab-pane active" id="input">
                       <div class="row pt-3">
                         <div class="col-md-12">
-                          <h4 class="text-bold" style="margin-bottom:-11px">Master Data Seksi</h4>
-                          <hr>
+                          <div style="width:100%;display:inline">
+                            <h4 class="text-bold pull-left">Master Data Seksi</h4>
+                            <button type="button" class="btn csttambahdataseksi pull-right" style="border: 1px solid #a8a8a8;background: white;" name="button" status="+"> <i class="fa fa-plus"></i> Tambah Data Seksi</button>
+                          </div>
+                          <br><hr>
                           <div class="table-responsive">
                             <table class="table table-bordered tbl_cst_kebutuhan" style="width:100%;text-align:center">
                               <thead class="bg-primary">
@@ -83,28 +87,91 @@ td{
                             </table>
                           </div>
                           <br>
-                          <h4 class="text-bold" style="margin-bottom:-11px">Master Data Item</h4>
-                          <hr>
-                          <div class="table-responsive">
-                            <table class="table table-bordered tbl_cst_kebutuhan" style="width:100%;text-align:center">
-                              <thead class="bg-primary">
-                                <tr>
-                                  <th class="text-center" style="width:5%">No</th>
-                                  <th class="text-center" style="width:15%">Kode Barang</th>
-                                  <th class="text-center" style="width:26%">Nama Barang</th>
-                                  <th class="text-center">UOM</th>
-                                  <th class="text-center">Leadtime</th>
-                                  <th class="text-center">MOQ</th>
-                                  <th class="text-center">Min Stok</th>
-                                  <th class="text-center">Max Stock</th>
-                                  <th class="text-center" style="width:8%">Action</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-
-                              </tbody>
-                            </table>
+                          <div style="width:100%;display:inline">
+                            <h4 class="text-bold pull-left">Master Data Item</h4>
+                            <button type="button" class="btn csttambahdataitem pull-right" status="+" style="border: 1px solid #a8a8a8;background: white;" name="button" status="+"> <i class="fa fa-plus"></i> Tambah Data Item</button>
                           </div>
+                          <br><hr>
+                          <div class="cstmasteritem">
+                            <div class="table-responsive">
+                              <table class="table table-bordered tbl_cst_master_item" style="width:100%;text-align:center">
+                                <thead class="bg-primary">
+                                  <tr>
+                                    <th class="text-center" style="width:3%">No</th>
+                                    <th class="text-center" style="width:17%">Kode Barang</th>
+                                    <th class="text-center" style="width:26%">Nama Barang</th>
+                                    <th class="text-center">UOM</th>
+                                    <th class="text-center">Leadtime</th>
+                                    <th class="text-center">MOQ</th>
+                                    <th class="text-center">Min Stok</th>
+                                    <th class="text-center">Max Stock</th>
+                                    <th class="text-center" style="width:8%">Action</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                          <div class="csttambahitem" style="display:none">
+                            <div class="table-responsive">
+                              <form class="savecstitem" action="" method="post">
+                                <table class="table table-bordered tblcsttmbi" style="width:100%;text-align:center;">
+                                  <thead style="background:#eee">
+                                    <tr>
+                                      <th class="text-center" style="width:3%">No</th>
+                                      <th class="text-center" style="width:19%">Kode Barang</th>
+                                      <th class="text-center" style="width:26%">Nama Barang</th>
+                                      <th class="text-center">UOM</th>
+                                      <th class="text-center">Leadtime</th>
+                                      <th class="text-center">MOQ</th>
+                                      <th class="text-center">Min Stok</th>
+                                      <th class="text-center">Max Stock</th>
+                                      <th class="text-center" style="width:4%"><button class="btn btn-default btn-sm" style="border: 1px solid #a8a8a8;background:white" onclick="btnPlusMasterItem()"><i class="fa fa-plus"></i></button></th>
+                                    </tr>
+                                  </thead>
+                                  <tbody id="areaaddmsibitem">
+                                    <tr>
+                                      <td>1</td>
+                                      <td>
+                                        <input type="hidden" name="item_id[]" class="item_id" value="">
+                                        <select class="select2_cstmsib" required style="width:170px" name="kodeitem[]">
+                                          <option value="" selected></option>
+                                        </select>
+                                      </td>
+                                      <td>
+                                        <input type="text" readonly class="form-control" name="description" value="">
+                                      </td>
+                                      <td>
+                                        <input type="text" readonly class="form-control" name="uom" value="">
+                                      </td>
+                                      <td>
+                                        <input type="text" readonly class="form-control" name="leadtime" value="">
+                                      </td>
+                                      <td>
+                                       <input type="text" readonly class="form-control" name="moq" value="">
+                                      </td>
+                                      <td>
+                                       <input type="text" readonly class="form-control" name="min_stock" value="">
+                                      </td>
+                                      <td>
+                                       <input type="text" readonly class="form-control" name="max_stock" value="">
+                                      </td>
+                                      <td>
+                                        <button class="btn btn-default btn-sm" onclick="cstitemmin(this)" style="border: 1px solid #a8a8a8;background:white">
+                                          <i class="fa fa-minus"></i>
+                                        </button>
+                                      </td>
+                                    </tr>
+
+                                  </tbody>
+                                </table>
+                                <center> <button type="submit" class="btn btn-primary" name="button" style="width:130px"> <i class="fa fa-save"></i> Save</button> </center>
+                              </form>
+                            </div>
+                          </div>
+
                         </div>
                       </div>
                       <br>

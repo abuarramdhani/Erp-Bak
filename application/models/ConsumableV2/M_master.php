@@ -19,7 +19,25 @@ class M_master extends CI_Model
                                  NVL (msib.min_minmax_quantity, 0) min_stock,
                                  NVL (msib.max_minmax_quantity, 0) max_stock
                             FROM mtl_system_items_b msib
-                            WHERE msib.organization_id = 81 AND (msib.segment1 like '%$value%'or msib.description like '%$value%')")->result_array();
+                            WHERE msib.organization_id = 81 AND (msib.segment1 like '%$value%'or msib.description like '%$value%')
+                            ORDER BY msib.segment1 ASC")->result_array();
+    }
+
+    public function getItemKebutuhan($value)
+    {
+      return $this->oracle->query("SELECT msib.inventory_item_id, msib.segment1, msib.description, msib.primary_uom_code,
+                                   msib.postprocessing_lead_time
+                                 + msib.preprocessing_lead_time
+                                 + msib.full_lead_time leadtime,
+                                 NVL (msib.minimum_order_quantity, 0) moq,
+                                 NVL (msib.min_minmax_quantity, 0) min_stock,
+                                 NVL (msib.max_minmax_quantity, 0) max_stock
+                            FROM mtl_system_items_b msib,
+                                 KHS_CSM_ITEM kci
+                            WHERE msib.organization_id = 81
+                            AND msib.inventory_item_id = kci.item_id
+                            AND (msib.segment1 like '%$value%'or msib.description like '%$value%')
+                            ORDER BY msib.segment1 ASC")->result_array();
     }
 
     public function savekebutuhan($post)
@@ -28,11 +46,10 @@ class M_master extends CI_Model
       $kodesie = $this->personalia->query("SELECT substring(kodesie, 1, 7) kodesie from hrd_khs.tpribadi where noind = '$noind'")->row_array();
       $kodesie = $kodesie['kodesie'];
       foreach ($post['item_id'] as $key => $value) {
-        $this->oracle->query("INSERT INTO KHS_CSM_KEBUTUHAN
-                              (KODESIE, ITEM_ID, REQ_QUANTITY, CREATION_DATE, CREATED_BY, STATUS)
+        $this->oracle->query("INSERT INTO KHS_CSM_ITEM_SEKSI
+                              (KODESIE, ITEM_ID, PENGAJUAN_DATE, PENGAJUAN_BY, STATUS)
                               VALUES ('$kodesie',
                                       '$value',
-                                      '{$post['qty_kebutuhan'][$key]}',
                                       SYSDATE,
                                       '$noind',
                                       0
@@ -45,9 +62,32 @@ class M_master extends CI_Model
       }
     }
 
+    public function cekmasteritem($post)
+    {
+      return $this->oracle->where('ITEM_ID', $post)->get('KHS_CSM_ITEM')->result_array();
+    }
+
+    public function savemasteritem($post)
+    {
+      $noind = $this->session->user;
+      foreach ($post['item_id'] as $key => $value) {
+        $this->oracle->query("INSERT INTO KHS_CSM_ITEM
+                              (ITEM_ID, CREATION_DATE, CREATED_BY)
+                              VALUES ('$value',
+                                       SYSDATE,
+                                       '$noind'
+                                    )");
+      }
+      if ($this->oracle->affected_rows()) {
+        return 'done';
+      }else {
+        return 0;
+      }
+    }
+
     public function delkebutuhan($id)
     {
-      $this->oracle->query("DELETE FROM KHS_CSM_KEBUTUHAN WHERE item_id = $id");
+      $this->oracle->query("DELETE FROM KHS_CSM_ITEM_SEKSI WHERE item_id = $id");
       if ($this->oracle->affected_rows()) {
         $c = 'done';
       }else {
@@ -83,18 +123,18 @@ class M_master extends CI_Model
   									(
   									SELECT
   													skdav.*,
-  													ROW_NUMBER () OVER (ORDER BY creation_date DESC) as pagination
+  													ROW_NUMBER () OVER (ORDER BY pengajuan_date DESC) as pagination
   											FROM
   													(
-                              SELECT kck.*, TO_CHAR(kck.creation_date, 'DD/MM/YYYY HH:MI:SS') tgl_buat, msib.segment1, msib.description, msib.primary_uom_code
-                              FROM KHS_CSM_KEBUTUHAN kck, mtl_system_items_b msib
+                              SELECT kck.*, TO_CHAR(kck.pengajuan_date, 'DD/MM/YYYY HH:MI:SS') tgl_buat, msib.segment1, msib.description, msib.primary_uom_code
+                              FROM KHS_CSM_ITEM_SEKSI kck, mtl_system_items_b msib
                               WHERE kck.item_id = msib.inventory_item_id
                               AND msib.organization_id = 81
                               AND (
                                 msib.segment1 LIKE '%$val%'
                                 OR msib.description LIKE '%$val%'
-                                OR kck.creation_date LIKE '%$val%'
-                                OR kck.created_by LIKE '%$val%'
+                                OR kck.pengajuan_date LIKE '%$val%'
+                                OR kck.pengajuan_by LIKE '%$val%'
                               )
   													) skdav
   									) kdav
@@ -112,7 +152,7 @@ class M_master extends CI_Model
   					COUNT(*) AS \"count\"
   			FROM
   			(SELECT kck.*, msib.segment1, msib.description
-        FROM KHS_CSM_KEBUTUHAN kck, mtl_system_items_b msib
+        FROM KHS_CSM_ITEM_SEKSI kck, mtl_system_items_b msib
         WHERE kck.item_id = msib.inventory_item_id
         AND msib.organization_id = 81) bla"
   			)->row_array();
@@ -127,14 +167,14 @@ class M_master extends CI_Model
   					FROM
             (
               SELECT kck.*, msib.segment1, msib.description
-              FROM KHS_CSM_KEBUTUHAN kck, mtl_system_items_b msib
+              FROM KHS_CSM_ITEM_SEKSI kck, mtl_system_items_b msib
               WHERE kck.item_id = msib.inventory_item_id
               AND msib.organization_id = 81
               AND (
                 msib.segment1 LIKE '%$val%'
                 OR msib.description LIKE '%$val%'
-                OR kck.creation_date LIKE '%$val%'
-                OR kck.created_by LIKE '%$val%'
+                OR kck.pengajuan_date LIKE '%$val%'
+                OR kck.pengajuan_by LIKE '%$val%'
               )
           ) bla"
   			)->row_array();
@@ -180,6 +220,89 @@ class M_master extends CI_Model
       }
       return $res;
     }
+
+    //serverside datatable
+    public function selectMasterItem($data)
+  	{
+  		$val = strtoupper($data['search']['value']);
+  			$res = $this->oracle
+  					->query(
+  							"SELECT kdav.*
+  							FROM
+  									(
+  									SELECT
+  													skdav.*,
+  													ROW_NUMBER () OVER (ORDER BY segment1 DESC) as pagination
+  											FROM
+  													(
+                              SELECT msib.inventory_item_id, msib.segment1, msib.description, msib.primary_uom_code,
+                                      msib.postprocessing_lead_time
+                                    + msib.preprocessing_lead_time
+                                    + msib.full_lead_time leadtime,
+                                    NVL (msib.minimum_order_quantity, 0) moq,
+                                    NVL (msib.min_minmax_quantity, 0) min_stock,
+                                    NVL (msib.max_minmax_quantity, 0) max_stock
+                               FROM mtl_system_items_b msib
+                               WHERE msib.organization_id = 81
+                               AND msib.inventory_item_id IN (SELECT item_id FROM KHS_CSM_ITEM)
+                              AND (
+                                msib.segment1 LIKE '%$val%'
+                                OR msib.description LIKE '%$val%'
+                              )
+  													) skdav
+  									) kdav
+  							WHERE
+  									pagination BETWEEN {$data['pagination']['from']} AND {$data['pagination']['to']}"
+  					)->result_array();
+
+  			return $res;
+  	}
+
+  	public function countAllMasterItem()
+  	{
+  		return $this->oracle->query(
+  			"SELECT
+  					COUNT(*) AS \"count\"
+  			FROM
+  			(SELECT msib.inventory_item_id, msib.segment1, msib.description, msib.primary_uom_code,
+                msib.postprocessing_lead_time
+              + msib.preprocessing_lead_time
+              + msib.full_lead_time leadtime,
+              NVL (msib.minimum_order_quantity, 0) moq,
+              NVL (msib.min_minmax_quantity, 0) min_stock,
+              NVL (msib.max_minmax_quantity, 0) max_stock
+         FROM mtl_system_items_b msib
+         WHERE msib.organization_id = 81
+         AND msib.inventory_item_id IN (SELECT item_id FROM KHS_CSM_ITEM)
+       ) bla"
+  			)->row_array();
+  	}
+
+  	public function countFilteredMasterItem($data)
+  	{
+  		$val = strtoupper($data['search']['value']);
+  		return $this->oracle->query(
+  			"SELECT
+  						COUNT(*) AS \"count\"
+  					FROM
+            (
+              SELECT msib.inventory_item_id, msib.segment1, msib.description, msib.primary_uom_code,
+                      msib.postprocessing_lead_time
+                    + msib.preprocessing_lead_time
+                    + msib.full_lead_time leadtime,
+                    NVL (msib.minimum_order_quantity, 0) moq,
+                    NVL (msib.min_minmax_quantity, 0) min_stock,
+                    NVL (msib.max_minmax_quantity, 0) max_stock
+               FROM mtl_system_items_b msib
+               WHERE msib.organization_id = 81
+               AND msib.inventory_item_id IN (SELECT item_id FROM KHS_CSM_ITEM)
+              AND (
+                msib.segment1 LIKE '%$val%'
+                OR msib.description LIKE '%$val%'
+              )
+          ) bla"
+  			)->row_array();
+  	}
 
 
 }

@@ -78,7 +78,6 @@ class C_Master extends CI_Controller
 
     public function getkebutuhan($value='')
     {
-      {
         $post = $this->input->post();
 
         foreach ($post['columns'] as $val) {
@@ -95,19 +94,32 @@ class C_Master extends CI_Controller
 
         $data = [];
         foreach ($msdata as $row) {
+
+          $status_ = '';
+          switch ($row['STATUS']) {
+            case 0:
+              $status_ = '<label class="label-info" style="padding:5px;font-size:12px;border-radius:8px">Pending</label>';
+              break;
+            case 1:
+              $status_ = '<label class="label-success" style="padding:5px;font-size:12px;border-radius:8px">Approved</label>';
+              break;
+            case 2:
+              $status_ = '<label class="label-danger" style="padding:5px;font-size:12px;border-radius:8px">Rejected</label>';
+              break;
+            default:
+              $status_ = '';
+              break;
+          }
+
           $sub_array = [];
           $sub_array[] = '<center>'.$row['PAGINATION'].'</center>';
           $sub_array[] = '<center>'.$row['SEGMENT1'].'</center>';
           $sub_array[] = '<center>'.$row['DESCRIPTION'].'</center>';
-          $sub_array[] = '<center>'.$row['REQ_QUANTITY'].'</center>';
+          // $sub_array[] = '<center>'.$row['REQ_QUANTITY'].'</center>';
           $sub_array[] = '<center>'.$row['PRIMARY_UOM_CODE'].'</center>';
-          $sub_array[] = '<center>-</center>';
-          $sub_array[] = '<center>-</center>';
-          $sub_array[] = '<center>-</center>';
-          $sub_array[] = '<center>-</center>';
-          $sub_array[] = '<center>'.$row['CREATED_BY'].'</center>';
+          $sub_array[] = '<center>'.$row['PENGAJUAN_BY'].'</center>';
           $sub_array[] = '<center>'.$row['TGL_BUAT'].'</center>';
-          $sub_array[] = '<center>'.$row['STATUS'].'</center>';
+          $sub_array[] = '<center>'.$status_.'  </center>';
           $sub_array[] = '<center>
                            <button type="button" class="btn btn-sm" name="button" title="hapus?" onclick="delcstkebutuhan('.$row['ITEM_ID'].')"> <i class="fa fa-trash"></i> </button>
                          </center>';
@@ -127,13 +139,12 @@ class C_Master extends CI_Controller
                 ->set_content_type('application/json')
                 ->set_output(json_encode($output))
                 ->_display());
-      }
     }
 
     public function getitem()
     {
       $term = strtoupper($this->input->post('term'));
-      echo json_encode($this->md->getItem($term));
+      echo json_encode($this->md->getItemKebutuhan($term));
     }
 
     public function savekebutuhan($value='')
