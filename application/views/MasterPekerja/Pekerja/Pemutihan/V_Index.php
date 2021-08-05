@@ -223,7 +223,15 @@ function truncate($string, $length)
                       <td><?= $item->status_update_by ?></td>
                       <td><?= date('d/F/Y', strtotime($item->status_update_at)) ?></td>
                       <td><?= $item->feedback ?></td>
-                      <td><?= date('d/F/Y', strtotime($item->distributed_at)) ?></td>
+                      <td><?php date('d/F/Y', strtotime($item->distributed_at));
+                      if ( $row['date'] != '0000-00-00'){
+                           echo date('d-m-Y', strtotime($row['date']));
+                            }
+                            else
+                            {
+                            echo "<b>Blm terproses</b>";    
+                            }
+                      ?></td>
                     </tr>
                   <?php endforeach ?>
                 </tbody>
