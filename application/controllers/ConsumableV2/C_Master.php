@@ -141,10 +141,94 @@ class C_Master extends CI_Controller
                 ->_display());
     }
 
+    public function getpengajuankeb($value='')
+    {
+      $post = $this->input->post();
+
+      foreach ($post['columns'] as $val) {
+        $post['search'][$val['data']]['value'] = $val['search']['value'];
+      }
+
+      $countall = $this->md->countAllPengajuan()['count'];
+      $countfilter = $this->md->countFilteredPengajuan($post)['count'];
+
+      $post['pagination']['from'] = $post['start'] + 1;
+      $post['pagination']['to'] = $post['start'] + $post['length'];
+
+      $msdata = $this->md->selectPengajuan($post);
+
+      $data = [];
+      foreach ($msdata as $row) {
+
+        $status_ = '';
+        switch ($row['STATUS']) {
+          case 0:
+            $status_ = '<label class="label-info" style="padding:5px;font-size:12px;border-radius:8px">Pending</label>';
+            break;
+          case 1:
+            $status_ = '<label class="label-success" style="padding:5px;font-size:12px;border-radius:8px">Approved</label>';
+            break;
+          case 2:
+            $status_ = '<label class="label-danger"  data-toggle="tooltip" data-placement="top" title="'.$row['REASON'].'" style="padding:5px;font-size:12px;border-radius:8px">Rejected</label>';
+            break;
+          default:
+            $status_ = '';
+            break;
+        }
+
+        $sub_array = [];
+        $sub_array[] = '<center>'.$row['PAGINATION'].'</center>';
+        $sub_array[] = '<center>'.$row['SEGMENT1'].'</center>';
+        $sub_array[] = '<center>'.$row['DESCRIPTION'].'</center>';
+        $sub_array[] = '<center>'.$row['REQ_QUANTITY'].'</center>';
+        $sub_array[] = '<center>'.$row['PRIMARY_UOM_CODE'].'</center>';
+        $sub_array[] = '<center>'.$status_.'  </center>';
+        $sub_array[] = '<center>-</center>';
+        $sub_array[] = '<center>-</center>';
+        $sub_array[] = '<center>-</center>';
+        $sub_array[] = '<center>-</center>';
+        $sub_array[] = '<center>'.$row['CREATED_BY'].'</center>';
+        $sub_array[] = '<center>'.$row['TGL_BUAT'].'</center>';
+        $sub_array[] = '<center>
+                         <button type="button" class="btn btn-sm" name="button" title="hapus?" onclick="delcstpengajuan('.$row['ITEM_ID'].')"> <i class="fa fa-trash"></i> </button>
+                       </center>';
+
+        $data[] = $sub_array;
+      }
+
+      $output = [
+        'draw' => $post['draw'],
+        'recordsTotal' => $countall,
+        'recordsFiltered' => $countfilter,
+        'data' => $data,
+      ];
+
+      die($this->output
+              ->set_status_header(200)
+              ->set_content_type('application/json')
+              ->set_output(json_encode($output))
+              ->_display());
+    }
+
     public function getitem()
     {
       $term = strtoupper($this->input->post('term'));
       echo json_encode($this->md->getItemKebutuhan($term));
+    }
+
+    public function getitempengajuan($value='')
+    {
+      $term = strtoupper($this->input->post('term'));
+      echo json_encode($this->md->getitempengajuan($term));
+    }
+
+    public function savepengajuankeb(){
+      if ($this->session->is_logged) {
+        $res = $this->md->savepengajuankeb($this->input->post());
+      }else {
+        $res = 0;
+      }
+      echo json_encode($res);
     }
 
     public function savekebutuhan($value='')
@@ -171,6 +255,12 @@ class C_Master extends CI_Controller
     public function delkebutuhan($value='')
     {
       $res = $this->md->delkebutuhan($this->input->post('id'));
+      echo json_encode($res);
+    }
+
+    public function delpengajuan($value='')
+    {
+      $res = $this->md->delpengajuan($this->input->post('id'));
       echo json_encode($res);
     }
 

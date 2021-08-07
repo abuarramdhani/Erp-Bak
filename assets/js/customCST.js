@@ -65,6 +65,42 @@ $('.btncstslc').on('click', function() {
   $(this).html(htm)
 })
 
+$('.csttambahdataseksi').on('click', function() {
+  let stat = $(this).attr('status');
+  let htm
+  if (stat == '+') {
+    $('.areacsmmds').hide();
+    $('.areacsmmdsadd').fadeIn(400);
+    stat = '-'
+    htm = ` <i class="fa fa-caret-square-o-left"></i> Kembali`
+  }else if (stat == '-') {
+    $('.areacsmmds').fadeIn(400);
+    $('.areacsmmdsadd').hide();
+    stat = '+'
+    htm = ` <i class="fa fa-plus"></i> Tambah Seksi`
+  }
+  $(this).attr('status', stat);
+  $(this).html(htm)
+})
+
+$('.btncstslckeb').on('click', function() {
+  let stat = $(this).attr('status');
+  let htm
+  if (stat == '+') {
+    $('.areamkeb').hide();
+    $('.areapkeb').fadeIn(400);
+    stat = '-'
+    htm = ` <i class="fa fa-caret-square-o-left"></i> Kembali`
+  }else if (stat == '-') {
+    $('.areamkeb').fadeIn(400);
+    $('.areapkeb').hide();
+    stat = '+'
+    htm = ` <i class="fa fa-plus"></i> Ajukan Kebutuhan`
+  }
+  $(this).attr('status', stat);
+  $(this).html(htm)
+})
+
 function runsctselect2() {
   $('.select2_inpkebutuhan_cst').select2({
     placeholder: "Item Desc..",
@@ -110,9 +146,115 @@ function runsctselect2() {
   })
 }
 
+function runsctselect2pengajuankeb() {
+  $('.slccsmkeb').select2({
+    placeholder: "Item Desc..",
+    templateSelection: (options) => {
+      return options.id;
+    },
+    tags: true,
+    allowClear:true,
+    // minimumInputLength: 1,
+    ajax: {
+      url: baseurl + "consumableseksiv2/action/getitempengajuan",
+      dataType: "JSON",
+      type: "POST",
+      cache: false,
+      data: function(params) {
+        return {
+          term: params.term
+        };
+      },
+      processResults: function(data) {
+        return {
+          results: $.map(data, function(obj) {
+            return {
+              id: `${obj.DESCRIPTION}`,
+              text:`${obj.DESCRIPTION} - ${obj.SEGMENT1}`,
+              item_id: `${obj.INVENTORY_ITEM_ID}`,
+              segment1: `${obj.SEGMENT1}`,
+              uom: `${obj.PRIMARY_UOM_CODE}`,
+              tglpengajuan: `${obj.PENGAJUAN_DATE}`
+            }
+          })
+        }
+      }
+    }
+  })
+
+  $('.slccsmkeb').on('change', function() {
+    let segment1 = $(this).select2('data')[0].segment1
+    let item_id = $(this).select2('data')[0].item_id
+    let uom = $(this).select2('data')[0].uom
+    $(this).parent().parent('tr').find('.item-code').val(segment1)
+    $(this).parent().parent('tr').find('.item_id').val(item_id)
+    $(this).parent().parent('tr').find('.uom').val(uom)
+    $(this).parent().parent('tr').find('.tglpengajuan').val($(this).select2('data')[0].tglpengajuan)
+  })
+}
+
+function btnPlusKCIS() {
+  $('#addrow_pengajuankeb').append(`<tr>
+                                      <td class="text-center">${Number($('#addrow_pengajuankeb tr').length) + 1}</td>
+                                      <td class="text-center">
+                                        <input type="hidden" name="item_id[]" class="item_id" value="">
+                                        <select class="slccsmkeb" required style="width:300px" name="description[]">
+                                          <option value="" selected></option>
+                                        </select>
+                                      </td>
+                                      <td class="text-center"><input type="text" class="form-control item-code" name="item_code[]" readonly="readonly"></td>
+                                      <td class="text-center"><input type="number" required class="form-control" name="qty_kebutuhan[]" required="required"></td>
+                                      <td class="text-center"><input type="text" class="form-control uom" readonly="readonly"></td>
+                                      <td class="text-center"><input type="text" class="form-control tglpengajuan" readonly="readonly"></td>
+                                      <td class="text-center">
+                                        <button class="btn btn-default btn-sm" onclick="btnMinKCIS(this)">
+                                          <i class="fa fa-minus"></i>
+                                        </button>
+                                      </td>
+                                    </tr>`)
+  runsctselect2pengajuankeb()
+}
+
+function btnMinKCIS(th) {
+  $(th).parent().parent('tr').remove();
+  $('#addrow_pengajuankeb tr').each((i,v)=>{
+    $(v).find('td:first-child').html(Number(i)+1);
+  })
+}
+
 $(document).ready(function () {
   runsctselect2()
+  runsctselect2pengajuankeb()
   $('.tbl_cst_kebutuhan').dataTable()
+  $('.tblcsmpengajuankeb').dataTable({
+    // dom: 'rtp',
+    ajax: {
+      data: (d) => $.extend({}, d, {
+        // org: null,    // optional
+        // id_plan: null // optional
+      }),
+      url: baseurl + "consumableseksiv2/action/getpengajuankeb",
+      type: 'POST',
+    },
+    language:{
+      processing: "<div class='overlay custom-loader-background'><i class='fa fa-cog fa-spin custom-loader-color' style='color:#fff'></i></div>"
+    },
+    ordering: false,
+    pageLength: 10,
+    pagingType: 'first_last_numbers',
+    processing: true,
+    serverSide: true,
+    preDrawCallback: function(settings) {
+         if ($.fn.DataTable.isDataTable('.tblcsmpengajuankeb')) {
+             var dt = $('.tblcsmpengajuankeb').DataTable();
+             //Abort previous ajax request if it is still in process.
+             var settings = dt.settings();
+             if (settings[0].jqXHR) {
+                 settings[0].jqXHR.abort();
+             }
+         }
+     }
+  })
   $('.tbl_cst_kebutuhan_ss').DataTable({
      // dom: 'rtp',
      ajax: {
@@ -176,7 +318,7 @@ $(document).ready(function () {
     if (m < 10) {
       m = "0" + m;
     }
-    console.log(m);
+    // console.log(m);
     var v = $(this).val().split("-");
     if (v[0] < n) {
       Swal.fire(
@@ -221,40 +363,88 @@ function btnMinIKCST(th) {
   $(th).parent().parent('tr').remove();
 }
 
-$('.saveinputkebutuhan').on('submit', function(e) {
+$('.savepengajuankeb').on('submit', function(e) {
   e.preventDefault()
-  $.ajax({
-  url: baseurl + 'consumableseksiv2/action/savekebutuhan',
-  type: 'POST',
-  data : new FormData($(this).get(0)),
-  contentType: false,
-  cache: false,
-  // async:false,
-  processData: false,
-  dataType: "JSON",
-  beforeSend: function() {
-    swaCSTLoading('Sedang memproses item pengajuan')
-  },
-  success: function(result) {
-    if (result == 'done') {
-      toastCST('success', `Item Berhasil Diajukan`);
-      $('.tableinputkebutuhan tbody tr').remove();
-      btnPlusIKCST();
-      $('.tbl_cst_kebutuhan_ss').DataTable().ajax.reload();
-      $('.btncstslc').trigger('click')
-    }else {
-      toastCST('warning', 'Terjadi Kesalahan Saat Menyipkan Data. Coba lagi..');
+  if ($('#addrow_pengajuankeb tr').length) {
+    $.ajax({
+    url: baseurl + 'consumableseksiv2/action/savepengajuankeb',
+    type: 'POST',
+    data : new FormData($(this).get(0)),
+    contentType: false,
+    cache: false,
+    // async:false,
+    processData: false,
+    dataType: "JSON",
+    beforeSend: function() {
+      swaCSTLoading('Sedang memproses item pengajuan')
+    },
+    success: function(result) {
+      if (result == 'done') {
+        toastCST('success', `Item Berhasil Diajukan`);
+        $('#addrow_pengajuankeb tr').remove();
+        btnPlusKCIS();
+        $('.tblcsmpengajuankeb').DataTable().ajax.reload();
+        $('.btncstslckeb').trigger('click')
+      }else if (result.status == 'wesono') {
+        swaCSTLarge('warning', `${result.message}`);
+      }else {
+        toastCST('warning', 'Terjadi Kesalahan Saat Menyipkan Data. Coba lagi..');
+      }
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+    swaCSTLarge('error', `${XMLHttpRequest.responseText}`);
+     console.error();
     }
-  },
-  error: function(XMLHttpRequest, textStatus, errorThrown) {
-  swaCSTLarge('error', XMLHttpRequest);
-   console.error();
+   })
+  }else {
+    swaCSTLarge('info', 'Pilih item terlebih dahulu')
   }
- })
 })
 
-function reloadsstblkebutuhan() {
+$('.saveinputkebutuhan').on('submit', function(e) {
+  e.preventDefault()
+  if ($('#tambahannya_disini tr').length) {
+    $.ajax({
+    url: baseurl + 'consumableseksiv2/action/savekebutuhan',
+    type: 'POST',
+    data : new FormData($(this).get(0)),
+    contentType: false,
+    cache: false,
+    // async:false,
+    processData: false,
+    dataType: "JSON",
+    beforeSend: function() {
+      swaCSTLoading('Sedang memproses item pengajuan')
+    },
+    success: function(result) {
+      if (result == 'done') {
+        toastCST('success', `Item Berhasil Diajukan`);
+        $('.tableinputkebutuhan tbody tr').remove();
+        btnPlusIKCST();
+        $('.tbl_cst_kebutuhan_ss').DataTable().ajax.reload();
+        $('.btncstslc').trigger('click')
+      }else if (result.status == 'wesono') {
+        swaCSTLarge('warning', `${result.message}`);
+      }else {
+        toastCST('warning', 'Terjadi Kesalahan Saat Menyipkan Data. Coba lagi..');
+      }
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+    swaCSTLarge('error', `${XMLHttpRequest.responseText}`);
+     console.error();
+    }
+   })
+  }else {
+    swaCSTLarge('info', `Pilih item dulu`);
+  }
+})
+
+function reloadsstblpengajuanitem() {
   $('.tbl_cst_kebutuhan_ss').DataTable().ajax.reload();
+}
+
+function reloadsstblpengajuankebutuhan() {
+  $('.tblcsmpengajuankeb').DataTable().ajax.reload();
 }
 
 function delcstkebutuhan(id) {
@@ -283,8 +473,50 @@ function delcstkebutuhan(id) {
       },
       success: function(result) {
         if (result == 'done') {
-          toastCST('success', `Berhasil Dihapus`);
+          toastCST('success', `Item Berhasil Dihapus`);
           $('.tbl_cst_kebutuhan_ss').DataTable().ajax.reload();
+        }else {
+          toastCST('warning', 'Terjadi Kesalahan Saat Menghapus Data! Harap Coba lagi');
+        }
+      },
+      error: function(XMLHttpRequest, textStatus, errorThrown) {
+      swaCSTLarge('error', XMLHttpRequest);
+       console.error();
+      }
+      })
+    }
+  })
+
+}
+
+function delcstpengajuan(id) {
+  Swal.fire({
+    title: 'Apakah anda yakin?',
+    text: "....",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, delete it!'
+  }).then((result) => {
+    if (result.value) {
+      $.ajax({
+      url: baseurl + 'consumableseksiv2/action/delpengajuan',
+      type: 'POST',
+      data : {
+        id : id
+      },
+      cache: false,
+      // async:false,
+      dataType: "JSON",
+      beforeSend: function() {
+        // $('#modalUP2LCompleteJob').modal('hide');
+        swaCSTLoading('Menghapus data')
+      },
+      success: function(result) {
+        if (result == 'done') {
+          toastCST('success', `Pengajuan Berhasil Dihapus`);
+          $('.tblcsmpengajuankeb').DataTable().ajax.reload();
         }else {
           toastCST('warning', 'Terjadi Kesalahan Saat Menghapus Data! Harap Coba lagi');
         }
@@ -312,7 +544,7 @@ function viewapprovalkeb(kodesie) {
   beforeSend: function() {
     $('.areaviewapprovalkeb').html(`<div style ="width: 70%;margin:auto;height: 30%;background: #fff;overflow: hidden;z-index: 9999;padding:20px 0 30px 0;border-radius:10px;text-align:center">
                                         <img style="width: 8%;" src="${baseurl}assets/img/gif/loading5.gif"><br>
-                                        <span style="font-size:14px;font-weight:bold">Sedang memuat form input...</span>
+                                        <span style="font-size:14px;font-weight:bold">Sedang memuat data...</span>
                                     </div>`)
   },
   success: function(result) {
@@ -336,7 +568,7 @@ function viewapprovalitem(kodesie) {
   beforeSend: function() {
     $('.areaviewapprovalitem').html(`<div style ="width: 70%;margin:auto;height: 30%;background: #fff;overflow: hidden;z-index: 9999;padding:20px 0 30px 0;border-radius:10px;text-align:center">
                                         <img style="width: 8%;" src="${baseurl}assets/img/gif/loading5.gif"><br>
-                                        <span style="font-size:14px;font-weight:bold">Sedang memuat form input...</span>
+                                        <span style="font-size:14px;font-weight:bold">Sedang memuat data...</span>
                                     </div>`)
   },
   success: function(result) {
@@ -377,7 +609,7 @@ function runtimselect2() {
     allowClear:true,
     minimumInputLength: 3,
     ajax: {
-      url: baseurl + "consumableseksiv2/action/getitem",
+      url: baseurl + "consumabletimv2/action/getitem",
       dataType: "JSON",
       type: "POST",
       cache: false,
@@ -459,13 +691,88 @@ function btnPlusMasterItem() {
    runtimselect2()
 }
 
+function csmdataseksi() {
+  $.ajax({
+  url: baseurl + 'consumabletimv2/action/datacsmseksi',
+  type: 'POST',
+  cache: false,
+  beforeSend: function() {
+    $('.areadataseksi').html(`<div style ="width: 70%;margin:auto;height: 30%;background: #fff;overflow: hidden;z-index: 9999;padding:20px 0 30px 0;border-radius:10px;text-align:center">
+                                        <img style="width: 8%;" src="${baseurl}assets/img/gif/loading5.gif"><br>
+                                        <span style="font-size:14px;font-weight:bold">Sedang memuat data...</span>
+                                    </div>`)
+  },
+  success: function(result) {
+    $('.areadataseksi').html(result)
+  },
+  error: function(XMLHttpRequest, textStatus, errorThrown) {
+  swaCSTLarge('error', `${XMLHttpRequest.responseText}`);
+   console.error();
+  }
+  })
+}
+
+function seksiblmmengajukan() {
+  $.ajax({
+    url: baseurl + 'consumabletimv2/action/seksiygblmmengajukan',
+    type: 'POST',
+    cache: false,
+    beforeSend: function() {
+      $('.areaseksiblmmengajukan').html(`<div style ="width: 70%;margin:auto;height: 30%;background: #fff;overflow: hidden;z-index: 9999;padding:20px 0 30px 0;border-radius:10px;text-align:center">
+                                          <img style="width: 8%;" src="${baseurl}assets/img/gif/loading5.gif"><br>
+                                          <span style="font-size:14px;font-weight:bold">Sedang memuat data...</span>
+                                      </div>`)
+    },
+    success: function(result) {
+      $('.areaseksiblmmengajukan').html(result)
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+    swaCSTLarge('error', `${XMLHttpRequest.responseText}`);
+     console.error();
+    }
+  })
+}
+
 $(document).ready(function() {
   if ($('#consumablepermintaanv2').val() == 1) {
     viewapprovalkeb()
+    viewapprovalitem()
+    seksiblmmengajukan()
   }
   if ($('#consumabletimsettingdatav2').val() == 1) {
+    csmdataseksi()
     runtimselect2()
-
+    $('.slc_csm_seksi').select2({
+      placeholder: "Pilih Seksi..",
+      tags: true,
+      allowClear:true,
+      minimumInputLength: 3,
+      ajax: {
+        url: baseurl + "consumabletimv2/action/getseksi",
+        dataType: "JSON",
+        type: "POST",
+        cache: false,
+        data: function(params) {
+          return {
+            term: params.term
+          };
+        },
+        processResults: function(data) {
+          return {
+            results: $.map(data, function(obj) {
+              return {
+                id: `${obj.seksi}`,
+                text:`${obj.seksi}`,
+                kodesie:`${obj.kodesie}`
+              }
+            })
+          }
+        }
+      }
+    })
+    $('.slc_csm_employ').select2({
+      placeholder: "Pilih Seksi Dulu..",
+    })
     $('.tbl_cst_master_item').DataTable({
        // dom: 'rtp',
        ajax: {
@@ -543,4 +850,103 @@ $('.savecstitem').on('submit', function(e) {
  }else {
    swaCSTLarge('info', `tambahkan item dulu.`);
  }
+})
+
+$('.savecsmseksi').on('submit', function(e) {
+  e.preventDefault()
+    $.ajax({
+    url: baseurl + 'consumabletimv2/action/savecsmseksi',
+    type: 'POST',
+    data : new FormData($(this).get(0)),
+    contentType: false,
+    cache: false,
+    // async:false,
+    processData: false,
+    dataType: "JSON",
+    beforeSend: function() {
+      swaCSTLoading('Sedang menyimpan data')
+    },
+    success: function(result) {
+      if (result.status == 'done') {
+        toastCST('success', `Data Berhasil Tersimpan`);
+        $('.savecsmseksi')[0].reset()
+        $('.slc_csm_seksi').val('').trigger('change')
+        $('.slc_csm_employ').val('').trigger('change')
+        $('.csttambahdataseksi').trigger('click')
+        csmdataseksi()
+      }else if (result.status == 'wesono') {
+        swaCSTLarge('warning', `${result.message}`);
+      }else {
+        toastCST('warning', 'Terjadi Kesalahan Saat Menyipan Data. Coba lagi..');
+      }
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+     console.log(XMLHttpRequest);
+     swaCSTLarge('error', `${XMLHttpRequest.responseText}`);
+     console.error();
+    }
+   })
+})
+
+$('.slc_csm_seksi').on('change', function() {
+  let val = $(this).val().split(' - ')[1];
+  let kodesie = $(this).select2('data')[0].kodesie;
+  $('.slc_csm_employ').select2({
+    placeholder: "Employee Name..",
+    tags: true,
+    allowClear:true,
+    minimumInputLength: 1,
+    ajax: {
+      url: baseurl + "consumabletimv2/action/employee",
+      dataType: "JSON",
+      type: "POST",
+      cache: false,
+      data: function(params) {
+        return {
+          term: params.term,
+          kodesie: kodesie
+        };
+      },
+      processResults: function(data) {
+        return {
+          results: $.map(data, function(obj) {
+            return {
+              id: `${obj.nama} - ${obj.noind}`,
+              text:`${obj.nama} - ${obj.noind}`
+            }
+          })
+        }
+      }
+    }
+  })
+ //  $.ajax({
+ //  url: baseurl + 'consumabletimv2/action/getseksi',
+ //  type: 'POST',
+ //  data : {
+ //    noind:val
+ //  },
+ //  cache: false,
+ //  // async:false,
+ //  dataType: "JSON",
+ //  beforeSend: function() {
+ //    $('input[name="seksi"]').val('Loading...')
+ //  },
+ //  success: function(result) {
+ //    $('input[name="seksi"]').val(result)
+ //  },
+ //  error: function(XMLHttpRequest, textStatus, errorThrown) {
+ //   console.log(XMLHttpRequest);
+ //   swaCSTLarge('error', `${XMLHttpRequest.responseText}`);
+ //   console.error();
+ //  }
+ // })
+})
+
+$('.csm_voip').on('input', function() {
+  let val = $(this).val().length
+  if (val > 5) {
+    swaCSTLarge('info', 'panjang nomor maksimal 5')
+    let new_ = $(this).val().substr(0,5)
+    $(this).val(new_)
+  }
 })

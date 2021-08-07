@@ -38,7 +38,7 @@ vertical-align: middle;
                       <ul class="nav nav-tabs" style="border-bottom:0.5px solid #e6e6e6">
                         <!-- <li><a href="#monitoring" data-toggle="tab">Monitoring</a></li> -->
                         <!-- <li class="active"><a href="#input" data-toggle="tab">Input Kebutuhan</a></li> -->
-                        <li class="pull-right"><h3 class="text-bold" title="klik elemen ini untuk memperbarui data" style="margin:10px 0 10px;" onclick="reloadsstblkebutuhan()"><i class="fa fa-cog"></i> Proposal Penambahan Item</h3></li>
+                        <li class="pull-right"><h3 class="text-bold" title="klik elemen ini untuk memperbarui data" style="margin:10px 0 10px;" onclick="reloadsstblpengajuanitem()"><i class="fa fa-cog"></i> Proposal Penambahan Item</h3></li>
                         <li class="pull-left"><button type="button" class="btn btncstslc" style="border: 1px solid #a8a8a8;
     background: white;" name="button" status="+"> <i class="fa fa-plus"></i> Tambah Item</button></li>
                       </ul>
@@ -55,7 +55,7 @@ vertical-align: middle;
                     $monthnownext = DateTime::createFromFormat('!m', $monthnownext);
 
                   ?>
-            
+
                   <div class="monitoring-cst" >
                     <div class="row pt-5">
                       <div class="col-md-12">
@@ -109,7 +109,7 @@ vertical-align: middle;
                                 <!-- <td class="text-center"><input type="number" required class="form-control" id="qty_kebutuhan_consum1" name="qty_kebutuhan[]" required="required"></td> -->
                                 <td class="text-center"><input type="text" class="form-control uom" readonly="readonly"></td>
                                 <td class="text-center">
-                                  <button class="btn btn-default btn-sm" disabled>
+                                  <button class="btn btn-default btn-sm" onclick="btnMinIKCST(this)">
                                     <i class="fa fa-minus"></i>
                                   </button>
                                 </td>

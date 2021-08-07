@@ -91,16 +91,22 @@ class C_Sensei extends CI_Controller
 
     public function viewapprovalitem($value='')
     {
-      $data['approvalkebutuhan'] = $this->md->ambillistapprove();
+      $data['approvalkebutuhan'] = $this->md->ambillistapproveitem();
       $this->load->view('ConsumableV2/TIM/AJAX/V_ViewApprovalItem', $data);
     }
 
-    // public function detailitemapproval($value='')
-    // {
-    //   $data['get'] = $this->md->itemkebutuhanbykodesie($this->input->post('kodesie'));
-    //   $data['kodesie'] = $this->input->post('kodesie');
-    //   $this->load->view('ConsumableV2/TIM/AJAX/V_ItemKebutuhanApproval', $data);
-    // }
+    public function seksiygblmmengajukan($value='')
+    {
+      $data['get'] = $this->md->seksiygblmmengajuakan();
+      $this->load->view('ConsumableV2/TIM/AJAX/V_SeksiBlmMengajukan', $data);
+    }
+
+    public function detailitemapproval2($value='')
+    {
+      $data['get'] = $this->md->itembykodesie($this->input->post('kodesie'));
+      $data['kodesie'] = $this->input->post('kodesie');
+      $this->load->view('ConsumableV2/TIM/AJAX/V_ItemApproval2', $data);
+    }
 
     public function getmasteritem($value='')
     {
@@ -157,10 +163,29 @@ class C_Sensei extends CI_Controller
       }
     }
 
+    public function updatestatusitem($value='')
+    {
+      if ($this->session->is_logged) {
+        echo json_encode($this->md->updatestatusitem($this->input->post('item_id'), $this->input->post('status')));
+      }
+    }
+
     public function getitem()
     {
       $term = strtoupper($this->input->post('term'));
       echo json_encode($this->md->getItem($term));
+    }
+
+    public function getseksi($value='')
+    {
+      $term = strtoupper($this->input->post('term'));
+      echo json_encode($this->md->getseksi($term));
+    }
+
+    public function employee($value='')
+    {
+      $term = strtoupper($this->input->post('term'));
+      echo json_encode($this->md->employee($term, $this->input->post('kodesie')));
     }
 
     public function savemasteritem($value='')
@@ -181,6 +206,43 @@ class C_Sensei extends CI_Controller
         $res = 0;
       }
       echo json_encode(['status' => $res]);
+    }
+
+    public function savecsmseksi($value='')
+    {
+      if ($this->session->is_logged) {
+        $cek = [];
+          $cek = $this->md->cekseksi($this->input->post('pic'));
+          if ($cek == 'wesono') {
+              echo json_encode([
+              'status' => 'wesono',
+              'message' => 'Seksi '.$this->input->post('seksi').' telah ada di database,'
+            ]); die;
+          }
+        $data = [
+          'KODESIE' => $cek,
+          'PIC' => explode(' - ', $this->input->post('pic'))[1],
+          'SEKSI' => $this->input->post('seksi'),
+          'VOIP' => $this->input->post('voip')
+        ];
+        $res = $this->md->saveseksi($data);
+      }else {
+        $res = 0;
+      }
+      echo json_encode(['status' => $res]);
+    }
+
+    public function datacsmseksi($value='')
+    {
+      $data['get'] = $this->md->getdataseksi();
+      $this->load->view('ConsumableV2/TIM/AJAX/V_Dataseksi', $data);
+    }
+
+    public function delseksi($value='')
+    {
+      if ($this->session->is_logged) {
+        echo json_encode($this->md->delseksi($this->input->post('id')));
+      }
     }
 
     public function pengajuan()

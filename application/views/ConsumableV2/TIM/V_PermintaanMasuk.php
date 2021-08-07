@@ -1,4 +1,10 @@
 <style media="screen">
+.pagination > .active a{
+  background: #f1f1f1 !important;
+  color: black;
+  border: 1px solid black;
+}
+
 .modal {
 text-align: center;
 padding: 0!important;
@@ -62,41 +68,72 @@ td{
                     <div class="tab-pane active" id="input">
                       <div class="row pt-3">
                         <div class="col-md-12">
-                          <h4 class="text-bold" style="margin-bottom:-11px">Seksi Belum Mengajukan Permintaan</h4>
-                          <hr>
-                          <div class="table-responsive">
-                            <table class="table table-bordered tbl_cst_kebutuhan" style="width:100%;text-align:center">
-                              <thead class="bg-primary">
-                                <tr>
-                                  <th class="text-center" style="width:5%">No</th>
-                                  <th class="text-center">Seksi</th>
-                                  <th class="text-center">PIC</th>
-                                  <th class="text-center">VoIP</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-
-                              </tbody>
-                            </table>
+                          <div style="width:100%;background: #f35325;padding: 8px;color: white;border-radius: 6px;">
+                            <div class="row">
+                              <div class="col-md-6">
+                                <h4 class="">Seksi Belum Mengajukan Permintaan</h4>
+                              </div>
+                              <div class="col-md-6">
+                                <button type="button" class="btn mt-1" onclick="seksiblmmengajukan()" style="color:black;float:right;background:white;border:1px solid #a8a8a8" name="button">Perbarui Data</button>
+                              </div>
+                            </div>
                           </div>
-                          <br>
-                          <h4 class="text-bold" style="margin-bottom:-11px">Approval Pengajuan Kebutuhan</h4>
-                          <hr>
-                          <div class="table-responsive areaviewapprovalkeb">
+                        </div>
+                        <div class="col-md-12 mt-3">
+                          <div class="table-responsive areaseksiblmmengajukan">
 
                           </div>
-                          <br>
-                          <h4 class="text-bold" style="margin-bottom:-11px">Approval Pengajuan Item</h4>
                           <hr>
-                          <div class="table-responsive areaviewapprovalitem">
+                        </div>
+
+                        <div class="col-md-12 mt-3">
+                          <div style="width:100%;background: #81bc06;padding: 8px;color: white;border-radius: 6px;">
+                            <div class="row">
+                              <div class="col-md-6">
+                                <h4 class="">Approval Pengajuan Kebutuhan</h4>
+                              </div>
+                              <div class="col-md-6">
+                                <button type="button" class="btn mt-1" onclick="viewapprovalkeb()" style="color:black;float:right;background:white;border:1px solid #a8a8a8" name="button">Perbarui Data</button>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="table-responsive areaviewapprovalkeb mt-3">
 
                           </div>
-                          <br>
-                          <h4 class="text-bold" style="margin-bottom:-11px">Pengajuan Seksi</h4>
                           <hr>
-                          <div class="table-responsive">
+                        </div>
+
+                        <div class="col-md-12 mt-3">
+                          <div style="width:100%;background: #05a6f0;padding: 8px;color: white;border-radius: 6px;">
+                            <div class="row">
+                              <div class="col-md-6">
+                                <h4 class="">Approval Pengajuan Item</h4>
+                              </div>
+                              <div class="col-md-6">
+                                <button type="button" class="btn mt-1" onclick="viewapprovalitem()" style="color:black;float:right;background:white;border:1px solid #a8a8a8" name="button">Perbarui Data</button>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="table-responsive areaviewapprovalitem mt-3">
+
+                          </div>
+                          <hr>
+                        </div>
+
+                        <div class="col-md-12 mt-3">
+                          <div style="width:100%;background: #3b3b3b;padding: 8px;color: white;border-radius: 6px;">
+                            <div class="row">
+                              <div class="col-md-6">
+                                <h4 class="">Pengajuan Seksi</h4>
+                              </div>
+                              <div class="col-md-6">
+                                <button type="button" class="btn mt-1" onclick="emmm()" style="color:black;float:right;background:white;border:1px solid #a8a8a8" name="button">Perbarui Data</button>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="table-responsive area? mt-3">
                             <table class="table table-bordered tbl_cst_pengajuan_seksi" style="width:1500px;text-align:center">
-                              <thead class="bg-primary">
+                              <thead style="background:#3b3b3b;color:white;">
                                 <tr>
                                   <th rowspan="2" class="text-center" style="width:5%">No</th>
                                   <th rowspan="2" class="text-center">Kode Barang</th>
@@ -148,8 +185,10 @@ td{
                               </tbody>
                             </table>
                           </div>
-                          <br>
-                          <center> <button type="submit" class="btn btn-primary btn-lg text-bold" id="prosesCSTtim" disabled name="button"> <i class="fa fa-cogs"></i> Proses Pengajuan Seksi</button> </center>
+                          <center> <button type="submit" style="background:#3b3b3b;color:white;" class="btn text-bold mt-3" id="prosesCSTtim" disabled name="button"> <i class="fa fa-cogs"></i> Proses Pengajuan Seksi</button> </center>
+                        </div>
+
+
                         </div>
                       </div>
                       <br>
@@ -217,7 +256,7 @@ td{
   </div>
 </div>
 
-<!-- approval detail -->
+<!-- approval detail kebutuhan -->
 <div class="modal fade bd-example-modal-xl" id="detailitem-approval-cst" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content" style="border-radius: 5px !important; background-color:transparent !important; box-shadow:none;">
@@ -227,7 +266,7 @@ td{
             <div class="box box-primary box-solid">
               <div class="box-header with-border">
                 <div style="float:left">
-                  <h4 style="font-weight:bold;">Approval Pengajuan Kebutuhan <span id="seksiapprovalpengajuan"></span> </h4>
+                  <h4 style="font-weight:bold;">Approval Pengajuan Kebutuhan <span id="seksiapprovalpengajuan" style="text-transform:capitalize"></span> </h4>
                 </div>
                 <button type="button" class="btn btn-default" style="float:right;font-weight:bold" data-dismiss="modal" onclick="viewapprovalkeb()"> <i class="fa fa-close"></i> Selesai</button>
               </div>
@@ -235,6 +274,37 @@ td{
                 <div class="row">
                   <div class="col-md-12 pt-3 pb-3">
                     <div class="table-responsive areaapprovalpengajuan">
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- approval detail pengajuan item -->
+<div class="modal fade bd-example-modal-xl" id="detail-approval-cst-item" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content" style="border-radius: 5px !important; background-color:transparent !important; box-shadow:none;">
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="box box-primary box-solid">
+              <div class="box-header with-border">
+                <div style="float:left">
+                  <h4 style="font-weight:bold;">Approval Pengajuan Item <span id="seksiapprovalpengajuanitem" style="text-transform:capitalize"></span> </h4>
+                </div>
+                <button type="button" class="btn btn-default" style="float:right;font-weight:bold" data-dismiss="modal" onclick="viewapprovalitem()"> <i class="fa fa-close"></i> Selesai</button>
+              </div>
+              <div class="box-body">
+                <div class="row">
+                  <div class="col-md-12 pt-3 pb-3">
+                    <div class="table-responsive areaapprovalpengajuan2">
 
                     </div>
                   </div>

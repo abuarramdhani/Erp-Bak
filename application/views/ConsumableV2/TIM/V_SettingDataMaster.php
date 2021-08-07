@@ -1,4 +1,10 @@
 <style media="screen">
+.pagination > .active a{
+  background: #f1f1f1 !important;
+  color: black;
+  border: 1px solid black;
+}
+
 .modal {
 text-align: center;
 padding: 0!important;
@@ -54,48 +60,65 @@ td, th{
                   <div class="tab-content">
                     <div class="tab-pane active" id="input">
                       <div class="row pt-3">
-                        <div class="col-md-12">
-                          <div style="width:100%;display:inline">
-                            <h4 class="text-bold pull-left">Master Data Seksi</h4>
-                            <button type="button" class="btn csttambahdataseksi pull-right" style="border: 1px solid #a8a8a8;background: white;" name="button" status="+"> <i class="fa fa-plus"></i> Tambah Data Seksi</button>
+                        <div class="col-md-12 mt-3">
+                          <div style="width:100%;background: #f35325;padding: 8px;color: white;border-radius: 6px;">
+                            <div class="row">
+                              <div class="col-md-6">
+                                <h4 class="">Master Data Seksi</h4>
+                              </div>
+                              <div class="col-md-6">
+                                <button type="button" class="btn mt-1 csttambahdataseksi" onclick="()" style="color:black;float:right;background:white;border:1px solid #a8a8a8" status="+" name="button">Tambah Data Seksi</button>
+                              </div>
+                            </div>
                           </div>
-                          <br><hr>
-                          <div class="table-responsive">
-                            <table class="table table-bordered tbl_cst_kebutuhan" style="width:100%;text-align:center">
-                              <thead class="bg-primary">
-                                <tr>
-                                  <th class="text-center" style="width:5%">No</th>
-                                  <th class="text-center">Seksi</th>
-                                  <th class="text-center">PIC</th>
-                                  <th class="text-center">VoIP</th>
-                                  <th class="text-center">Jumlah Item</th>
-                                  <th class="text-center" style="width:8%">Action</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <tr>
-                                  <td>1</td>
-                                  <td>Information Technology Trial</td>
-                                  <td>Eren Yeager</td>
-                                  <td>123456</td>
-                                  <td>4</td>
-                                  <td>
-                                    <button type="button" class="btn" name="button" data-toggle="modal" data-target="#editmasterseksi"> <i class="fa fa-eye"></i> Edit</button>
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
+                          <div class="areacsmmds">
+                            <div class="table-responsive mt-3 areadataseksi">
+
+                            </div>
                           </div>
-                          <br>
-                          <div style="width:100%;display:inline">
-                            <h4 class="text-bold pull-left">Master Data Item</h4>
-                            <button type="button" class="btn csttambahdataitem pull-right" status="+" style="border: 1px solid #a8a8a8;background: white;" name="button" status="+"> <i class="fa fa-plus"></i> Tambah Data Item</button>
+                          <div class="areacsmmdsadd" style="display:none">
+                            <form class="savecsmseksi mt-3" action="" method="post">
+                              <div class="row">
+                                <div class="col-md-6 mb-3">
+                                  <label for="">Seksi</label>
+                                  <select class="slc_csm_seksi" name="seksi" style="width:100%">
+                                    <option value="" selected></option>
+                                  </select>
+                                  <!-- <input type="text" readonly class="form-control" name="seksi" value=""> -->
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                  <label for="">PIC</label>
+                                  <select class="slc_csm_employ" style="width:100%" name="pic">
+                                    <option value="" selected></option>
+                                  </select>
+                                </div>
+                                <div class="col-md-12">
+                                  <label for="">VOIP</label>
+                                  <input type="number" class="form-control csm_voip" placeholder="max length 5" name="voip" value="">
+                                </div>
+                                <div class="col-md-12 mt-4">
+                                  <center> <button type="submit" class="btn text-bold" name="button" style="background: #f35325;color: white;width:130px"> Simpan</button> </center>
+                                </div>
+                              </div>
+                            </form>
                           </div>
-                          <br><hr>
+                          <hr>
+                        </div>
+                        <div class="col-md-12 mt-3">
+                          <div style="width:100%;background: #81bc06;padding: 8px;color: white;border-radius: 6px;">
+                            <div class="row">
+                              <div class="col-md-6">
+                                <h4 class="">Master Data Item</h4>
+                              </div>
+                              <div class="col-md-6">
+                                <button type="button" class="btn csttambahdataitem pull-right" status="+" style="border: 1px solid #a8a8a8;background: white;color:black" name="button" status="+"> <i class="fa fa-plus"></i> Tambah Data Item</button>
+                              </div>
+                            </div>
+                          </div>
                           <div class="cstmasteritem">
-                            <div class="table-responsive">
+                            <div class="table-responsive mt-3">
                               <table class="table table-bordered tbl_cst_master_item" style="width:100%;text-align:center">
-                                <thead class="bg-primary">
+                                <thead style="background:#81bc06;color:white">
                                   <tr>
                                     <th class="text-center" style="width:3%">No</th>
                                     <th class="text-center" style="width:17%">Kode Barang</th>
@@ -137,7 +160,7 @@ td, th{
                                       <td>
                                         <input type="hidden" name="item_id[]" class="item_id" value="">
                                         <select class="select2_cstmsib" required style="width:170px" name="kodeitem[]">
-                                          <option value="" selected></option>
+                                          <option value="" selected>Pilih Item..</option>
                                         </select>
                                       </td>
                                       <td>
@@ -171,7 +194,6 @@ td, th{
                               </form>
                             </div>
                           </div>
-
                         </div>
                       </div>
                       <br>
