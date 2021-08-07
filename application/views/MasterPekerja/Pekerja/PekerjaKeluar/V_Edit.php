@@ -417,7 +417,7 @@
 																	<label for="PK_txt_teleponPekerja">Telepon </label>
 																</div>
 																<div class="col-lg-8">
-																	<input type="number" name="telepon" id="" class="form-control numberOnly" value="<?= $data['telepon'] ?>">
+																	<input type="tel" name="telepon" id="" class="form-control numberOnly" value="<?= $data['telepon'] ?>">
 																</div>
 															</div>
 															<div class="row mt-10">
