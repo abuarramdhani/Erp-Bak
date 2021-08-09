@@ -265,7 +265,13 @@ ORDER BY 1");
     public function getExportDataApproval($created_by, $okbj_name_approver, $okbj_lvl_approval)
     {
         $oracle = $this->load->database('oracle', true);
-        $query = $oracle->query("SELECT kooh.order_id, msib.segment1 item_code, kooh.item_description, kooh.quantity, kooh.uom,
+        $query = $oracle->query("SELECT kooh.order_id, msib.segment1 item_code, 
+        case 
+            when msib.allow_item_desc_update_flag = 'Y' then 
+                msib.description || ' ' || kooh.ITEM_DESCRIPTION 
+            else msib.description
+        end item_description, 
+        kooh.quantity, kooh.uom,
         kooh.need_by_date, kooh.order_purpose, kooh.note_to_pengelola, kooh.urgent_reason,
         kooh.note_to_buyer,
         CASE
