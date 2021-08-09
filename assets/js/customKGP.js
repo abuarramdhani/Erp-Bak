@@ -372,13 +372,35 @@ function finishselectedKGP() {
     });
 }
 
-async function run99(){
-    var no_dokumen = $('.noall').map(function(){return $(this).val();}).get();
-    // console.log(no_dokumen.length);
-    for (let i = 0; i < no_dokumen.length; i++) {
-      const cek = await getDetailItem(no_dokumen[i]); 
+// async function run99(){
+//     var no_dokumen = $('.noall').map(function(){return $(this).val();}).get();
+//     // console.log(no_dokumen.length);
+//     for (let i = 0; i < no_dokumen.length; i++) {
+//       const cek = await getDetailItem(no_dokumen[i]); 
       
+//     }
+// }
+
+// hasil convert script di babeljs.io karena chrome versi lama tidak bisa run function async
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+function run99() {
+  return _run.apply(this, arguments);
+}
+
+function _run() {
+  _run = _asyncToGenerator(function* () {
+    var no_dokumen = $('.noall').map(function () {
+      return $(this).val();
+    }).get(); // console.log(no_dokumen.length);
+
+    for (let i = 0; i < no_dokumen.length; i++) {
+      const cek = yield getDetailItem(no_dokumen[i]);
     }
+  });
+  return _run.apply(this, arguments);
 }
 
 function getDetailItem(no) {
@@ -761,43 +783,6 @@ function addDetailKGP(no){
 }
 
 //------------------------------------------ Pasang Ban ------------------------------------------------------
-$(document).ready(function () {
-    var siap1 = document.getElementById("persiapan_line1");
-    if (siap1) {
-        view_pasangban('siap1', 'persiapan_line1', 'primary');
-    }
-    var siap2 = document.getElementById("persiapan_line2");
-    if (siap2) {
-        view_pasangban('siap2', 'persiapan_line2', 'primary');
-    }
-    var pasang1 = document.getElementById("pasang_line1");
-    if (pasang1) {
-        view_pasangban('pasang1', 'pasang_line1', 'success');
-    }
-    var pasang2 = document.getElementById("pasang_line2");
-    if (pasang2) {
-        view_pasangban('pasang2', 'pasang_line2', 'success');
-    }
-
-    
-    $(document).on('change', '.no_induk_siap1:last',  function() {
-        var noind = $('.no_induk_siap1:last').val();
-        get_username(noind, 'siap1');
-    })
-    $(document).on('change', '.no_induk_siap2:last',  function() {
-        var noind = $('.no_induk_siap2:last').val();
-        get_username(noind, 'siap2');
-    })
-    $(document).on('change', '.no_induk_pasang1:last',  function() {
-        var noind = $('.no_induk_pasang1:last').val();
-        get_username(noind, 'pasang1');
-    })
-    $(document).on('change', '.no_induk_pasang2:last',  function() {
-        var noind = $('.no_induk_pasang2:last').val();
-        get_username(noind, 'pasang2');
-    })
-})
-
 function view_pasangban(ket, id_lokasi, warna) {
     $.ajax({
         url: baseurl + "KapasitasGdPusat/PasangBan/view_pasangban",
@@ -838,6 +823,56 @@ function view_pasangban(ket, id_lokasi, warna) {
     })
 }
 
+$(document).ready(function () {
+    var siap1 = document.getElementById("persiapan_line1");
+    if (siap1) {
+        view_pasangban('siap1', 'persiapan_line1', 'primary');
+    }
+    var siap2 = document.getElementById("persiapan_line2");
+    if (siap2) {
+        view_pasangban('siap2', 'persiapan_line2', 'primary');
+    }
+    var pasang1 = document.getElementById("pasang_line1");
+    if (pasang1) {
+        view_pasangban('pasang1', 'pasang_line1', 'success');
+    }
+    var pasang2 = document.getElementById("pasang_line2");
+    if (pasang2) {
+        view_pasangban('pasang2', 'pasang_line2', 'success');
+    }
+
+    
+    $(document).on('change', '.no_induk_siap1:last',  function() {
+        var noind = $('.no_induk_siap1:last').val();
+        get_username(noind, 'siap1');
+    })
+    $(document).on('change', '.no_induk_siap2:last',  function() {
+        var noind = $('.no_induk_siap2:last').val();
+        get_username(noind, 'siap2');
+    })
+    $(document).on('change', '.no_induk_pasang1:last',  function() {
+        var noind = $('.no_induk_pasang1:last').val();
+        get_username(noind, 'pasang1');
+    })
+    $(document).on('change', '.no_induk_pasang2:last',  function() {
+        var noind = $('.no_induk_pasang2:last').val();
+        get_username(noind, 'pasang2');
+    })
+})
+
+function get_username(noind, ket) {
+    $.ajax({
+        url: baseurl + "KapasitasGdPusat/PasangBan/getUsername",
+        type: 'POST',
+        dataType: 'html',
+        data: { noind : noind},
+        cache: false,
+        success : function(result) {
+            $('.nama_'+ket+':last').val(result);
+        }
+    })
+}
+
 var i = 1;
 function add_new_line(ket, ket2, warna) {
     $('#'+ket+'_'+ket2).append('<tr class="'+ket+'_'+ket2+'"><td><select id="no_induk" name="no_induk_'+ket+'[]" class="form-control no_induk_'+ket+' select2 getPICBan" ></select></td><td><input id="nama" name="nama_'+ket+'[]" class="form-control nama_'+ket+'" readonly></td><td><button type="button" class="btn btn-'+warna+' tombolhapus'+i+'"><i class="fa fa-minus"></i></button></td><tr>');
@@ -869,19 +904,6 @@ function add_new_line(ket, ket2, warna) {
             }
 		}
     });
-}
-
-function get_username(noind, ket) {
-    $.ajax({
-        url: baseurl + "KapasitasGdPusat/PasangBan/getUsername",
-        type: 'POST',
-        dataType: 'html',
-        data: { noind : noind},
-        cache: false,
-        success : function(result) {
-            $('.nama_'+ket+':last').val(result);
-        }
-    })
 }
 
 function pasangban_timer(no, ket) {
