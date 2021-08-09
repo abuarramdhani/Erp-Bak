@@ -11,7 +11,8 @@ if ($val['item_kom'] == '0'
 && $val['jml_tanggungan_fg'] == '0'
 && $val['item_mat'] == '0' 
 && $val['jml_selesai_mat'] == '0' 
-&& $val['jml_tanggungan_mat'] == '0') {
+&& $val['jml_tanggungan_mat'] == '0'
+&& $val['realisasi'] == '0') {
     
 } else{
 ?>
