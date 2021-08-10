@@ -128,7 +128,7 @@ class C_Import extends CI_Controller
                     } elseif ($organization == 'ODM') {
                         $org_id = 102;
                     } elseif ($organization == 'IDM') {
-                        $org_id = 112;
+                        $org_id = 122;
                     } elseif ($organization == 'IPM') {
                         $org_id = 286;
                     }
