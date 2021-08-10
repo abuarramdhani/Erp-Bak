@@ -103,7 +103,7 @@ class C_Master extends CI_Controller
 
     public function cekjobdipos1()
     {
-      echo json_encode($this->M_master->cekjobdipos1($this->input->post('no_job')));
+      echo json_encode($this->M_master->cekjobdipos1($this->input->post('item_id')));
     }
 
     public function insertpos1()

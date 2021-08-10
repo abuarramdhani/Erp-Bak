@@ -13,7 +13,7 @@
                 <div class="row">
                   <div class="col-md-10">
                    <label for="">Scan QR Code</label>
-                   <input type="text" name="QRCODE" class="form-control" id="qrcodeAGT" placeholder="Scan your QRcode" required="" oninput="ScanKartuBodyAGT(this)">
+                   <input type="text" name="QRCODE" class="form-control" id="qrcodeAGT" placeholder="Scan your QRcode" required="" onchange="ScanKartuBodyAGT(this)">
                   </div>
                   <div class="col-md-2">
                     <button type="button" class="btn btn-success btn-reset-agt" name="button" style="width:100%;margin-top:24px"> <b>Reset</b> </button>
