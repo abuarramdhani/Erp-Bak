@@ -253,19 +253,19 @@ function update_pos_1(no_job, item_code, description, item_id) {
     type: 'POST',
     dataType: 'JSON',
     data: {
-      no_job: no_job,
+      item_id: item_id,
     },
     cache:false,
     success: function(result) {
       if (result == 200) {
-        swalAGT('warning',`Nomor job ${no_job} sudah pernah dipakai sebelumnya`);
+        swalAGT('warning',`Qty Nomor job ${no_job} sudah terpenuhi`);
         $('.agt_alert_area').html(`<div class="alert alert-danger alert-dismissible" role="alert">
                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                       <span aria-hidden="true">
                                         <i class="fa fa-close"></i>
                                       </span>
                                     </button>
-                                    <strong> Nomor job ${no_job} sudah ada di POS</strong>
+                                    <strong>Qty Nomor job ${no_job} sudah terpenuhi</strong>
                                   </div>`);
       }else {
         //insert job ke andon
@@ -321,7 +321,7 @@ function update_pos_1(no_job, item_code, description, item_id) {
 $('.dt-mon-agt').DataTable();
 
 $('.btn-reset-agt').on('click', function () {
-  $('#qrcodeAGT').val('').trigger('input');
+  $('#qrcodeAGT').val('').trigger('change');
 })
 
 // 1710840,10002
