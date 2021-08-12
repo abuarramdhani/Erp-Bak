@@ -106,6 +106,12 @@ class C_Master extends CI_Controller
       echo json_encode($this->M_master->cekjobdipos1($this->input->post('item_id')));
     }
 
+    public function getitemcode($value='')
+    {
+      $param = strtoupper($this->input->post('term'));
+      echo json_encode($this->M_master->getinvid($param));
+    }
+
     public function insertpos1()
     {
       echo json_encode($this->M_master->insertpos1($this->input->post('no_job'), $this->input->post('item_code'), $this->input->post('description'), $this->input->post('item_id')));
@@ -160,7 +166,7 @@ class C_Master extends CI_Controller
 
     public function delpos($value='')
     {
-      echo json_encode($this->M_master->delpos($this->input->post('item_id')));
+      echo json_encode($this->M_master->delpos($this->input->post('item_id'), $this->input->post('date_time')));
     }
 
     public function jobrelease($value='')
