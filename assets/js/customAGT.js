@@ -95,7 +95,7 @@ function agt_update_pos(item_id, status_job, no_job) {
   $('.agt_item_id').val(item_id);
 }
 
-function del_agt_andon_pos(item_id, s) {
+function del_agt_andon_pos(item_id, s, date) {
   Swal.fire({
     title: 'Apakah anda yakin?',
     text: "Anda tidak akan dapat mengembalikan ini!",
@@ -111,7 +111,8 @@ function del_agt_andon_pos(item_id, s) {
         type: 'POST',
         dataType: 'JSON',
         data: {
-          item_id: item_id
+          item_id: item_id,
+          date_time: date
         },
         cache:false,
         beforeSend: function() {
@@ -321,8 +322,56 @@ function update_pos_1(no_job, item_code, description, item_id) {
 $('.dt-mon-agt').DataTable();
 
 $('.btn-reset-agt').on('click', function () {
-  $('#qrcodeAGT').val('').trigger('change');
+  let cek = $('#agt_jenis_scan').val();
+  if (cek == 'qr') {
+    $('#qrcodeAGT').val('').trigger('change');
+  }else if (cek == 'item_code') {
+    $('.agt_get_item_code').val('').trigger('change')
+  }
 })
+
+function byqrorkodeitem_agt(th) {
+  let tipe = $('#agt_jenis_scan').val();
+  if (tipe == 'qr') {
+    $('#agt_jenis_scan').val('item_code');
+    $('.agt_area_qr').hide()
+    $('.agt_area_item').show()
+    $(th).html('<b>By Item Code</b>').removeClass('btn-primary').addClass('btn-danger')
+    $('.agt_get_item_code').select2({
+      placeholder: "Ketikan kode item/ deskripsi item",
+      minimumInputLength: 3,
+      ajax: {
+        url: baseurl + "CompletionAssemblyGearTrans/action/getitemcode",
+        dataType: "JSON",
+        type: "POST",
+        data: function(params) {
+          return {
+            term: params.term
+          };
+        },
+        processResults: function(data) {
+          return {
+            results: $.map(data, function(obj) {
+              return {
+                id: obj.INVENTORY_ITEM_ID,
+                text: `${obj.SEGMENT1} - ${obj.DESCRIPTION}`
+              }
+            })
+          }
+        }
+      }
+    })
+  }else {
+    $('#agt_jenis_scan').val('qr');
+    $('.agt_area_qr').show()
+    $('.agt_area_item').hide()
+    $(th).html('<b>By QR Code</b>').removeClass('btn-danger').addClass('btn-primary')
+    setTimeout(function () {
+      $('#qrcodeAGT').focus();
+    }, 400);
+  }
+
+}
 
 // 1710840,10002
 function ScanKartuBodyAGT(th) {

@@ -29,10 +29,10 @@
           <td><?php echo $value['TIMER_POS_2'] ?></td>
           <td><?php echo $value['TIMER_POS_3'] ?></td>
           <td><?php echo $value['TIMER_POS_4'] ?></td>
-          <td><?php echo $value['CREATION_DATE'] ?></td>
+          <td><?php echo $value['DATE_TIME'] ?></td>
           <td>
             <center>
-              <button type="button" class="btn btn-sm btn-danger" <?php echo $value['STATUS_JOB'] != 'POS_5' ? 'disabled' : '' ?> name="button" style="width:40px;" onclick="del_agt_andon_pos('<?php echo $value['ITEM_ID'] ?>', 3)"> <i class="fa fa-trash"></i> </button>
+              <button type="button" class="btn btn-sm btn-danger" <?php echo $value['STATUS_JOB'] != 'POS_5' ? 'disabled' : '' ?> name="button" style="width:40px;" onclick="del_agt_andon_pos('<?php echo $value['ITEM_ID'] ?>', 3, '<?php echo $value['DATE_TIME'] ?>')"> <i class="fa fa-trash"></i> </button>
             </center>
           </td>
         </tr>
