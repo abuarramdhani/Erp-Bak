@@ -79,30 +79,30 @@ class M_master extends CI_Model
 
     public function cekjobdipos1($item_id)
     {
-      $cek = $this->oracle->query("SELECT distinct ((wdj.start_quantity - wdj.quantity_completed)
-                                                              - (SELECT COUNT (kai.no_job)
-                                                                   FROM khs_andon_item_dev kai
-                                                                  WHERE kai.no_job = we.wip_entity_name
-                                                                    AND wdj.primary_item_id = kai.item_id)
-                                                    ) remaining_wip
-                                          FROM wip_entities we
-                                              ,wip_discrete_jobs wdj
-                                              ,mtl_system_items_b msib
-                                              ,(SELECT min(wo.wip_entity_id) wip_entity_id
-                                                  FROM wip_operations wo ,wip_discrete_jobs wdj
-                                                 WHERE wo.wip_entity_id = wdj.wip_entity_id
-                                                   AND wdj.status_type = 3
-                                                   AND wdj.PRIMARY_ITEM_ID = '$item_id'
-                                                   ) xx
-                                          WHERE we.WIP_ENTITY_ID = xx.WIP_ENTITY_ID
-                                            AND we.WIP_ENTITY_ID = wdj.WIP_ENTITY_ID
-                                            AND msib.INVENTORY_ITEM_ID = wdj.PRIMARY_ITEM_ID
-                                            AND msib.ORGANIZATION_ID = wdj.ORGANIZATION_ID")->row_array();
-      if ($cek['REMAINING_WIP'] == 0) {
-        return 200;
-      }else {
+      // $cek = $this->oracle->query("SELECT distinct ((wdj.start_quantity - wdj.quantity_completed)
+      //                                                         - (SELECT COUNT (kai.no_job)
+      //                                                              FROM khs_andon_item_dev kai
+      //                                                             WHERE kai.no_job = we.wip_entity_name
+      //                                                               AND wdj.primary_item_id = kai.item_id)
+      //                                               ) remaining_wip
+      //                                     FROM wip_entities we
+      //                                         ,wip_discrete_jobs wdj
+      //                                         ,mtl_system_items_b msib
+      //                                         ,(SELECT min(wo.wip_entity_id) wip_entity_id
+      //                                             FROM wip_operations wo ,wip_discrete_jobs wdj
+      //                                            WHERE wo.wip_entity_id = wdj.wip_entity_id
+      //                                              AND wdj.status_type = 3
+      //                                              AND wdj.PRIMARY_ITEM_ID = '$item_id'
+      //                                              ) xx
+      //                                     WHERE we.WIP_ENTITY_ID = xx.WIP_ENTITY_ID
+      //                                       AND we.WIP_ENTITY_ID = wdj.WIP_ENTITY_ID
+      //                                       AND msib.INVENTORY_ITEM_ID = wdj.PRIMARY_ITEM_ID
+      //                                       AND msib.ORGANIZATION_ID = wdj.ORGANIZATION_ID")->row_array();
+      // if ($cek['REMAINING_WIP'] == 0) {
+      //   return 200;
+      // }else {
         return 0;
-      }
+      // }
     }
 
     public function insertpos1($nojob, $itemkode, $desc, $item_id)
@@ -133,10 +133,17 @@ class M_master extends CI_Model
                                         ,wip_discrete_jobs wdj
                                         ,mtl_system_items_b msib
                                         ,(SELECT min(wo.wip_entity_id) wip_entity_id
-                                            FROM wip_operations wo ,wip_discrete_jobs wdj
+                                            FROM wip_operations wo ,wip_discrete_jobs wdj, wip_entities we
                                            WHERE wo.wip_entity_id = wdj.wip_entity_id
+                                             AND we.wip_entity_id = wdj.wip_entity_id
                                              AND wdj.status_type = 3
                                              AND wdj.PRIMARY_ITEM_ID = '$item_id'
+                                             AND ((wdj.start_quantity - wdj.quantity_completed)
+                                                           - (SELECT COUNT (kai.no_job)
+                                                                FROM khs_andon_item_dev kai
+                                                               WHERE kai.no_job = we.wip_entity_name
+                                                                 AND wdj.primary_item_id = kai.item_id)
+                                                          ) <> 0
                                              ) xx
                                     WHERE we.WIP_ENTITY_ID = xx.WIP_ENTITY_ID
                                       AND we.WIP_ENTITY_ID = wdj.WIP_ENTITY_ID
