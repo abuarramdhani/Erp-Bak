@@ -247,7 +247,7 @@ function agtTimerAndon() {
   })
 }
 
-function update_pos_1(no_job, item_code, description, item_id) {
+function update_pos_1(no_job, item_code, description, item_id, serial) {
   swalAGTLoading(`Sedang menambahkan job ${no_job} di POS 1`);
   $.ajax({
     url: baseurl + 'CompletionAssemblyGearTrans/action/cekjobdipos1',
@@ -255,20 +255,22 @@ function update_pos_1(no_job, item_code, description, item_id) {
     dataType: 'JSON',
     data: {
       item_id: item_id,
+      serial: serial
     },
     cache:false,
     success: function(result) {
-      if (result == 200) {
-        swalAGT('warning',`Qty Nomor job ${no_job} sudah terpenuhi`);
+      console.log(result);
+      if (result.status == 200) {
+        swalAGT('warning',`Nomor job ${no_job} dengan serial ${result.serial} telah di scan sebelumnya`);
         $('.agt_alert_area').html(`<div class="alert alert-danger alert-dismissible" role="alert">
                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                       <span aria-hidden="true">
                                         <i class="fa fa-close"></i>
                                       </span>
                                     </button>
-                                    <strong>Qty Nomor job ${no_job} sudah terpenuhi</strong>
+                                    <strong>Nomor job ${no_job} dengan serial ${result.serial} telah di scan sebelumnya</strong>
                                   </div>`);
-      }else {
+      }else if (result.status == 0) {
         //insert job ke andon
         $.ajax({
           url: baseurl + 'CompletionAssemblyGearTrans/action/insertpos1',
@@ -278,7 +280,8 @@ function update_pos_1(no_job, item_code, description, item_id) {
             item_id: item_id,
             no_job: no_job,
             item_code: item_code,
-            description: description
+            description: description,
+            serial: result.serial
           },
           cache:false,
           beforeSend: function() {

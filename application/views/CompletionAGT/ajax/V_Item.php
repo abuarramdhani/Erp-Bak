@@ -10,6 +10,7 @@
   <tr class="bg-primary">
     <td> No</td>
     <td> No Job</td>
+    <td> Serial</td>
     <td> Kode Item</td>
     <td> Description</td>
     <td> Qty Job</td>
@@ -22,6 +23,7 @@
     <tr>
       <td><center><?php echo 1//$key+1 ?><center></td>
       <td><b><?php echo $value['NO_JOB'] ?></b></td>
+      <td><b><?php echo $serial ?></b></td>
       <td><?php echo $value['KODE_ITEM'] ?></td>
       <td><?php echo $value['DESCRIPTION'] ?></td>
       <td><?php echo $value['QTY_JOB'] ?></td>
@@ -30,7 +32,7 @@
       <td><?php echo $value['CREATION_DATE'] ?></td>
       <td hidden>
         <center>
-            <button type="button" class="btn btn-success submitagtjob" name="button" onclick="update_pos_1('<?php echo $value['NO_JOB'] ?>', '<?php echo $value['KODE_ITEM'] ?>', '<?php echo $value['DESCRIPTION'] ?>', '<?php echo $value['ITEM_ID'] ?>')">
+            <button type="button" class="btn btn-success submitagtjob" name="button" onclick="update_pos_1('<?php echo $value['NO_JOB'] ?>', '<?php echo $value['KODE_ITEM'] ?>', '<?php echo $value['DESCRIPTION'] ?>', '<?php echo $value['ITEM_ID'] ?>', '<?php echo $serial ?>')">
              <b><i class="fa fa-send"></i> Send</b>
            </button>
          <center>

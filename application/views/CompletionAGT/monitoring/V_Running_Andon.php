@@ -14,6 +14,7 @@
       <td> Component Code</td>
       <td> Component Name</td>
       <td> No Job</td>
+      <td> Serial</td>
       <td> Running Pos</td>
       <td> Time Post 1</td>
       <td> Time Post 2</td>
@@ -30,6 +31,7 @@
         <td><?php echo $value['KODE_ITEM'] ?></td>
         <td><?php echo $value['DESCRIPTION'] ?></td>
         <td><b><?php echo $value['NO_JOB'] ?></b></td>
+        <td><b><?php echo $value['SERIAL'] ?></b></td>
         <!-- onclick="agt_update_pos('<?php //echo $value['ITEM_ID'] ?>', '<?php //echo $value['STATUS_JOB'] ?>', '<?php //echo $value['NO_JOB'] ?>')" -->
         <td> <center><button type="button" class="btn btn-sm" name="button" style="font-weight:bold"><?php echo $value['STATUS_JOB'] ?></button><center> </td>
         <td><?php echo $value['TIMER_POS_1'] ?></td>
