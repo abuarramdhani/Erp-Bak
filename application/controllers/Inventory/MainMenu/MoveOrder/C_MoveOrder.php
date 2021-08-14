@@ -399,12 +399,12 @@ class C_MoveOrder extends CI_Controller
 	public function pdf($array_mo2,$nama_satu, $nama_dua, $piklis){
 		// ------ GET DATA ------
 		foreach ($array_mo2 as $key => $row) {
-			$return_urut[$key]  = $row['URUTAN_PICKLIST'];
+			// $return_urut[$key]  = $row['URUTAN_PICKLIST'];
 			$return_fare[$key]  = $row['FROM_SUBINVENTORY_CODE'];
 			$one_way_fare[$key] = $row['LOCATOR'];
 		}
 		// Sort the data with volume descending, edition ascending
-		array_multisort($return_urut, SORT_ASC,$return_fare, SORT_ASC, $one_way_fare, SORT_ASC, $array_mo2);
+		array_multisort($return_fare, SORT_ASC, $one_way_fare, SORT_ASC, $array_mo2);
 		// echo "<pre>";print_r($array_mo2);exit();
 		$array_mo = array();
 		foreach ($array_mo2 as $key => $val) {
