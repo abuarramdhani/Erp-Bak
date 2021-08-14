@@ -2437,7 +2437,7 @@ $(document).ready(function () {
           prn.find(".subinventoryOKB").attr("disabled", "diabled");
         } else if (response[0]["SUBINV"] == "Y") {
           prn.find(".subinventoryOKB").removeAttr("disabled");
-          $(".subinventoryOKB").attr("required", "required");
+          prn.find(".subinventoryOKB").attr("required", "required");
         }
         // alert(response[0]['DESTINATION_TYPE_CODE']);
       },
@@ -2982,7 +2982,7 @@ $(".CreateOrdOkbj").on("submit", function (e) {
       );
     },
     success: function (response) {
-      window.location.reload();
+      // window.location.reload();
     },
   });
 });
