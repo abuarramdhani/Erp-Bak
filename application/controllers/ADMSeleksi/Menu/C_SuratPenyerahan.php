@@ -1253,6 +1253,8 @@ class C_SuratPenyerahan extends CI_Controller
         $digit = '4';
       } elseif ($a == 'SAMPIT' || $a == 'SAMARINDA') {
         $digit = '5';
+      } elseif ($a == 'SUBANG') {
+        $digit = '6';
       }
 
       $kedua = '';
