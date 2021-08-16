@@ -9,6 +9,7 @@ class C_MonitoringOrder extends CI_Controller
 		$this->load->helper('url');
 		$this->load->helper('html');
 
+		$this->load->library('PHPMailerAutoload');
 		$this->load->library('form_validation');
 		$this->load->library('session');
 		$this->load->library('encrypt');
@@ -256,9 +257,19 @@ class C_MonitoringOrder extends CI_Controller
 		$noid = $this->session->user;
 		$cari = $this->M_monitoringorder->getseksiunit($noid);
 		$data['tipe_produk'] = $this->M_monitoringorder->gettipeproduk();
+		$seksiorder = $this->db->select('mp.*')->where("mp.nama_seksi = '".$cari[0]['seksi']."'")->get('otm.otm_master_seksi mp')->result_array();
+		$data['seksi_order'] = !empty($seksiorder) ? $seksiorder[0]['kode_seksi'] : '';
 		$data['seksi'] = $cari[0]['seksi'];
 		$data['unit'] = $cari[0]['unit'];
 		$data['jenis'] = array('DIES', 'MOULD/POLA', 'IJSM', 'INSPECTION JIG', 'TEMPLATE', 'DRILL JIG', 'FIXTURE', 'MASTER', 'GAUGE', 'ALAT LAIN');
+		$noasset = $this->M_monitoringorder->getnoasset(date('ymd'));
+		if (empty($noasset)) {
+			$data['noasset'] = 'N'.date('ymd').'000';
+		}else {
+			$urut = substr($noasset[0]['DOK_NUM'],-3);
+			$data['noasset'] = 'N'.date('ymd').sprintf("%03d", ($urut+1));
+		}
+
 		// echo "<pre>";print_r($nomor);exit();
 
 		$this->load->view('V_Header',$data);
@@ -282,6 +293,7 @@ class C_MonitoringOrder extends CI_Controller
 		}
 		$user_mr		= $this->input->post('user_mr'); // kalo order MODIFIKASI / REKONDISI
         $no_proposal    = $this->input->post('no_proposal');
+        $alasan_asset   = $this->input->post('alasan_asset');
 		$proposal		= $no_order.'_'.$no_proposal.'.pdf'; // nama file proposal
         $tgl_usul       = $this->input->post('tgl_usul');
         $jenis          = $this->input->post('jenis');
@@ -340,6 +352,7 @@ class C_MonitoringOrder extends CI_Controller
 		$assign_desainer	= $this->input->post('assign_desainer'); // approver desainer khusus order PE
 		$pengorder	= $this->session->user;
 		
+		if (!empty($_FILES['file_proposal']['name'])) {
 		if(!is_dir('./assets/upload/OrderToolMaking/Proposal'))
 		{
 			mkdir('./assets/upload/OrderToolMaking/Proposal', 0777, true);
@@ -347,7 +360,7 @@ class C_MonitoringOrder extends CI_Controller
 		}
 		$filename = './assets/upload/OrderToolMaking/Proposal/'.$proposal; // save file approval
 		move_uploaded_file($_FILES['file_proposal']['tmp_name'],$filename);
-
+		}
 		// save gambar kerja
 		// $gb = $this->input->post('gamkernya');
 		// echo "<pre>";print_r($gb);exit();
@@ -406,7 +419,8 @@ class C_MonitoringOrder extends CI_Controller
 		if ($order == 'BARU') { // save ke tabel baru
 			$this->M_monitoringorder->saveorderbaru($no_order, $tgl_order, $seksi_order, $unit_order, $user2, $proposal, $no_proposal, $tgl_usul, $jenis, $gambar_kerja, $skets,
 			$kode_komponen, $nama_komponen, $tipe_produk, $tgl_rilis, $mesin, $poin, $proses_ke, $dari, $jml_alat, $user2, $dimensi, $flow_sebelum, $flow_sesudah,
-			$acuan_alat, $layout, $material, $referensi1, $assign, $pengorder, $assign_desainer);
+			$acuan_alat, $layout, $material, $referensi1, $assign, $pengorder, $assign_desainer, $alasan_asset);
+			$this->M_monitoringorder->save_noasset($no_proposal, date('Y-m-d H:i:s'));
 		}elseif($order == 'MODIFIKASI') { // save ke tabel modifikasi
 			$this->M_monitoringorder->saveordermodif($no_order, $tgl_order, $seksi_order, $unit_order, $user_mr, $tgl_usul, $jenis, $gambar_kerja, $skets,
 			$kode_komponen, $nama_komponen, $tipe_produk, $tgl_rilis, $no_alat, $poin, $proses_ke, $dari, $alasan, $referensi2, $assign, $pengorder, $inspect_report, $assign_desainer);
@@ -415,11 +429,60 @@ class C_MonitoringOrder extends CI_Controller
 			$kode_komponen, $nama_komponen, $tipe_produk, $tgl_rilis, $no_alat, $poin, $proses_ke, $dari, $alasan, $referensi2, $assign, $pengorder, $inspect_report, $assign_desainer);
 		}
 		if ($seksi_order == 'PE') { // jika order dari PE, auto approve Ass Ka Nit Pengorder dan PE, jadi langsung ke Ass Ka Nit PE
-			$this->M_monitoringorder->saveaction($no_order, 2, 1, '', date('Y-m-d H:i:s'));
-			$this->M_monitoringorder->saveaction($no_order, 3, 1, '', date('Y-m-d H:i:s'));
+			$this->M_monitoringorder->saveaction($no_order, 2, 1, '', date('Y-m-d H:i:s'), $this->session->user);
+			$this->M_monitoringorder->saveaction($no_order, 3, 1, '', date('Y-m-d H:i:s'), $this->session->user);
 		}
 
+		$this->send_email($assign, $no_order, $seksi_order,$this->input->post('jenis'));
+
 		redirect(base_url('OrderToolMaking/MonitoringOrder/'));
+	}
+
+	public function send_email($tujuan, $no_order, $seksi_order, $jenis){
+		// kirim email ke tujuan kirim
+		$mail = new PHPMailer();
+		$mail->SMTPDebug = 0;
+		$mail->Debugoutput = 'html';
+		// set smtp
+		$mail->isSMTP();
+		$mail->Host = 'm.quick.com';
+		$mail->Port = 465;
+		$mail->SMTPAuth = true;
+		$mail->SMTPSecure = 'ssl';
+		$mail->SMTPOptions = array(
+		'ssl' => array(
+		'verify_peer' => false,
+		'verify_peer_name' => false,
+		'allow_self_signed' => true)
+		);
+		$mail->Username = 'no-reply';
+		$mail->Password = '123456';
+		$mail->WordWrap = 50;
+		// set email content
+		$mail->setFrom('no-reply@quick.com', 'Email Sistem');
+		// cari email berdasarkan tujuan kirim
+		$email = $this->M_monitoringorder->dataEmail($tujuan);
+		// echo "<pre>";print_r($email);
+		foreach ($email as $a) {
+			$mail->addAddress($a['email_internal']);   
+			// echo $a['email'];    
+		}
+
+		$isi = '<h4>REQUEST ORDER TOOL MAKING TELAH DIBUAT :</h4>
+				<b>No Order : '.$no_order.'</b><br>
+				<b>Pengorder : '.$tujuan.' - '.$email[0]['nama'].'</b><br>
+				<b>Seksi Pengorder : '.$seksi_order.'</b><br>
+				<b>Pembuatan : '.$jenis.'</b><br><br>
+				Untuk proses approval kunjungi : '.base_url("ApprovalToolMaking/MonitoringOrder").' atau <a href="'.base_url("ApprovalToolMaking/MonitoringOrder").'" target="_blank">klik disini</a>';
+
+		$mail->Subject = 'Request Order Tool Making';
+		$mail->msgHTML($isi);
+		if (!$mail->send()) {
+			// echo "Mailer Error: " . $mail->ErrorInfo;
+			// exit();
+		} else {
+			// echo "Message sent!..<br>";
+		}
 	}
 
 	public function ViewModifikasi(){ // lihat detail modifikasi
@@ -529,6 +592,7 @@ class C_MonitoringOrder extends CI_Controller
 				$fix['material'] 	= $this->carirevisi($val['no_order'], $val['material_blank'], 'Material Blank (Khusus DIES)');
 				$fix['jml_alat']	= $this->carirevisi($val['no_order'], $val['jumlah_alat'], 'Jumlah Alat');
 				$fix['distribusi'] 	= $this->carirevisi($val['no_order'], $val['distribusi'], 'Distribusi');
+				$fix['alasan_asset'] = $val['alasan_asset'];
 			}else { // tabel modifikasi dan rekondisi
 				$fix['alasan'] 		= $this->carirevisi($val['no_order'], $val['alasan_modifikasi'], 'Alasan Modifikasi');
 				$fix['no_alat'] 	= $this->carirevisi($val['no_order'], $val['no_alat_bantu'], 'No Alat Bantu');
@@ -542,9 +606,9 @@ class C_MonitoringOrder extends CI_Controller
 		$no_order 		= $this->input->post('no_order');
 		$cek = $this->M_monitoringorder->cekaction($no_order, "and person = 11"); // status 11 = barang sudah diterima seksi pengorder
 		if (empty($cek)) {
-			$this->M_monitoringorder->saveaction($no_order, 11, 1, '', date('Y-m-d H:i:s'));
+			$this->M_monitoringorder->saveaction($no_order, 11, 1, '', date('Y-m-d H:i:s'), $this->session->user);
 		}else {
-			$this->M_monitoringorder->updateaction($no_order, 11, 1, '', date('Y-m-d H:i:s'));
+			$this->M_monitoringorder->updateaction($no_order, 11, 1, '', date('Y-m-d H:i:s'), $this->session->user);
 		}
 		redirect(base_url('OrderToolMaking/MonitoringOrder/'));
 	}

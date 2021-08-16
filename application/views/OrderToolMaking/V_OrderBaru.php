@@ -52,9 +52,13 @@
                                         <label>Seksi Pengorder</label>
                                     </div>
                                     <div class="col-md-7">
+                                    <?php if (!empty($seksi_order)){ ?>
+                                            <input name="seksi_order" class="form-control" value="<?= $seksi_order?>" readonly>
+                                    <?php }else{?>
                                         <select id="seksi_order" name="seksi_order" class="form-control select2 seksiorder" style="width:100%" data-placeholder="pilih seksi pengorder">
                                             <option></option>
                                         </select>
+                                    <?php }?>
                                     </div>
                                 </div>
                                 <div class="col-md-12 box box-primary box-solid">
@@ -74,11 +78,20 @@
                                         <div class="col-md-2">
                                             <label>Proposal Aset</label>
                                         </div>
-                                        <div class="col-md-4">
+                                        <!-- <div class="col-md-4">
                                             <input name="file_proposal" type="file" class="form-control" accept=".pdf">
+                                        </div> -->
+                                        <div class="col-md-7">
+                                            <input name="no_proposal" class="form-control baru2" placeholder="no proposal" autocomplete="off" readonly value="<?= $noasset?>">
                                         </div>
-                                        <div class="col-md-3">
-                                            <input name="no_proposal" class="form-control baru2" placeholder="no proposal" autocomplete="off" required>
+                                    </div>
+                                    <div class="panel-body baru">
+                                        <div class="col-md-2"></div>
+                                        <div class="col-md-2">
+                                            <label>Alasan Pengadaan Aset</label>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <textarea name="alasan_asset" style="width:100%;height:100px" required></textarea>
                                         </div>
                                     </div>
                                     
@@ -125,26 +138,6 @@
                                     <div class="panel-body">
                                         <div class="col-md-2"></div>
                                         <div class="col-md-2">
-                                            <label>Skets</label>
-                                        </div>
-                                        <div class="col-md-7">
-                                            <span id="view_skets" style="display:none"><img id="previewskets" style="width:100%;max-width: 350px;max-height: 350px"></span>
-                                            <input name="file_skets" type="file" id="img_skets" accept=".jpg, .png" required>
-                                        </div>
-                                    </div>
-                                    <div class="panel-body modifrekon" style="display:none">
-                                        <div class="col-md-2"></div>
-                                        <div class="col-md-2">
-                                            <label>Inspection Report</label>
-                                        </div>
-                                        <div class="col-md-7">
-                                            <input name="file_inspect" id="inspect_report" type="file"  accept="">
-                                            <!-- <input name="inspection_report" class="form-control" placeholder="inspection report" autocomplete="off" required> -->
-                                        </div>
-                                    </div>
-                                    <div class="panel-body">
-                                        <div class="col-md-2"></div>
-                                        <div class="col-md-2">
                                             <label>Nama Komponen</label>
                                         </div>
                                         <div class="col-md-7">
@@ -166,7 +159,7 @@
                                             <label>Tipe Produk</label>
                                         </div>
                                         <div class="col-md-7">
-                                            <select id="tipe_produk" name="tipe_produk" class="form-control select2" style="width:100%" data-placeholder="tipe produk" required>
+                                            <select id="tipe_produk" name="tipe_produk" class="form-control select2 selectmanual" style="width:100%" data-placeholder="tipe produk" required>
                                                 <option></option>
                                                 <?php foreach ($tipe_produk as $key2 => $val) {
                                                     echo '<option value="'.$val['PRODUK_DESC'].'">'.$val['PRODUK_DESC'].'</option>';
@@ -232,10 +225,10 @@
                                             <label>Sebelumnya</label>
                                         </div>
                                         <div class="col-md-2">
-                                            <select name="flow_sebelum" class="form-control select2 getprosestm" data-placeholder="pilih proses"></select>
+                                            <select name="flow_sebelum" class="form-control select2 getprosestm baru2" data-placeholder="pilih proses" required></select>
                                         </div>
                                         <div class="col-md-4">
-                                            <input name="detailflow_sebelum" class="form-control" placeholder="detail" autocomplete="off">
+                                            <input name="detailflow_sebelum" class="form-control baru2" placeholder="isi - jika tidak ada detail" autocomplete="off" required>
                                         </div>
                                     </div>
                                     <div class="panel-body baru">
@@ -245,10 +238,10 @@
                                             <label>Sesudahnya</label>
                                         </div>
                                         <div class="col-md-2">
-                                            <select name="flow_sesudah" class="form-control select2 getprosestm" data-placeholder="pilih proses"></select>
+                                            <select name="flow_sesudah" class="form-control select2 getprosestm baru2" data-placeholder="pilih proses" required></select>
                                         </div>
                                         <div class="col-md-4">
-                                            <input name="detailflow_sesudah" class="form-control" placeholder="detail" autocomplete="off">
+                                            <input name="detailflow_sesudah" class="form-control baru2" placeholder="isi - jika tidak ada detail" autocomplete="off" required>
                                         </div>
                                     </div>
                                     <div class="panel-body baru">
@@ -264,6 +257,26 @@
                                 
                                 <div class="col-md-12 box box-primary box-solid">
                                 <h4 style="font-weight:bold;">Detail Alat Bantu</h4>
+                                    <div class="panel-body">
+                                        <div class="col-md-2"></div>
+                                        <div class="col-md-2">
+                                            <label>Skets / Referensi AB</label>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <span id="view_skets" style="display:none"><img id="previewskets" style="width:100%;max-width: 350px;max-height: 350px"></span>
+                                            <input name="file_skets" type="file" id="img_skets" accept=".jpg, .png" required>
+                                        </div>
+                                    </div>
+                                    <div class="panel-body modifrekon" style="display:none">
+                                        <div class="col-md-2"></div>
+                                        <div class="col-md-2">
+                                            <label>Inspection Report</label>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <input name="file_inspect" id="inspect_report" type="file"  accept="">
+                                            <!-- <input name="inspection_report" class="form-control" placeholder="inspection report" autocomplete="off" required> -->
+                                        </div>
+                                    </div>
                                     <div class="panel-body baru">
                                         <div class="col-md-2"></div>
                                         <div class="col-md-2">
