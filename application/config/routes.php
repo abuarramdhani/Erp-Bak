@@ -5829,3 +5829,29 @@ $route['OrderHandling/InProgressOrder/(:any)/(:any)']	= 'OrderHandling/C_Monitor
 $route['OrderHandling/AchievementOrder']		= 'OrderHandling/C_Monitoring/Achievement';
 $route['OrderHandling/AchievementOrder/(:any)']			= 'OrderHandling/C_Monitoring/$1';
 $route['OrderHandling/AchievementOrder/(:any)/(:any)']	= 'OrderHandling/C_Monitoring/$1/$2';
+
+//------------------------------- Pengembalian Barang Gudang --------------------------------------------------//
+$route['PengembalianBarangGudang']	= 'PengembalianBarangGudang/Gudang/C_Index';
+
+$route['PengembalianBarangGudang/Input']				= 'PengembalianBarangGudang/Gudang/C_Input';
+$route['PengembalianBarangGudang/Input/(:any)']			= 'PengembalianBarangGudang/Gudang/C_Input/$1';
+$route['PengembalianBarangGudang/Input/(:any)/(:any)']	= 'PengembalianBarangGudang/Gudang/C_Input/$1/$2';
+
+$route['PengembalianBarangGudang/Monitoring']			= 'PengembalianBarangGudang/Gudang/C_Monitoring';
+$route['PengembalianBarangGudang/Monitoring/(:any)']	= 'PengembalianBarangGudang/Gudang/C_Monitoring/$1';
+$route['PengembalianBarangGudang/Monitoring/(:any)/(:any)']	= 'PengembalianBarangGudang/Gudang/C_Monitoring/$1/$2';
+
+$route['PengembalianBarangGudang/Rekap']				= 'PengembalianBarangGudang/Gudang/C_Rekap';
+$route['PengembalianBarangGudang/Rekap/(:any)']			= 'PengembalianBarangGudang/Gudang/C_Rekap/$1';
+$route['PengembalianBarangGudang/Rekap/(:any)/(:any)']	= 'PengembalianBarangGudang/Gudang/C_Rekap/$1/$2';
+
+$route['PengembalianBarangGudang/Email']				= 'PengembalianBarangGudang/Gudang/C_Email';
+$route['PengembalianBarangGudang/Email/(:any)']			= 'PengembalianBarangGudang/Gudang/C_Email/$1';
+$route['PengembalianBarangGudang/Email/(:any)/(:any)']	= 'PengembalianBarangGudang/Gudang/C_Email/$1/$2';
+
+
+$route['VerifikasiPengembalianBarang']	= 'PengembalianBarangGudang/QC/C_Index';
+
+$route['VerifikasiPengembalianBarang/Verifikasi']			= 'PengembalianBarangGudang/QC/C_Verifikasi';
+$route['VerifikasiPengembalianBarang/Verifikasi/(:any)']	= 'PengembalianBarangGudang/QC/C_Verifikasi/$1';
+$route['VerifikasiPengembalianBarang/Verifikasi/(:any)/(:any)']	= 'PengembalianBarangGudang/QC/C_Verifikasi/$1/$2';
