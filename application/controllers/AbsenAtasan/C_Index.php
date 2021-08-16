@@ -244,7 +244,7 @@ class C_Index extends CI_Controller
 
 				$cekRill = $this->M_absenatasan->cekPresensiRill($ins);
 
-				if ($cekRill == 0) {
+				if ($cekRill == 0 && !in_array($value['jenis_absen'], array('Berangkat Dinas Luar','Pulang Dinas Luar'))) {
 					$cek = $this->M_absenatasan->cekPresensi($ins);
 
 					if ($cek == 0) {
