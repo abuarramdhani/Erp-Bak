@@ -47,7 +47,12 @@ class C_MasterData extends CI_Controller
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('OrderToolMaking/V_MasterData', $data);
 		$this->load->view('V_Footer',$data);
-    }
+	}
+	
+    public function data_seksi(){
+        $data['data'] = $this->db->select('mp.*')->order_by('mp.nama_seksi')->get('otm.otm_master_seksi mp')->result_array();
+		$this->load->view('OrderToolMaking/V_Tblseksi', $data);
+	}
 
     public function data_proses(){
         $data['data'] = $this->db->select('mp.*')->order_by('mp.nama_proses')->get('otm.otm_master_proses mp')->result_array();
@@ -57,7 +62,101 @@ class C_MasterData extends CI_Controller
     public function data_mesin(){
         $data['data'] = $this->db->select('mp.*')->order_by('mp.nama_mesin')->get('otm.otm_master_mesin mp')->result_array();
 		$this->load->view('OrderToolMaking/V_TblMesin', $data);
-    }
+	}
+	
+	public function tambah_seksi(){
+		$view = '
+				<div class="modal-header" style="font-size:25px;">
+					<i class="fa fa-list-alt"></i> Tambah Seksi
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<div class="modal-body">
+					<div class="box-body">
+						<div class="panel-body">
+							<div class="col-md-4 text-right">
+								<label>Nama Seksi:</label>
+							</div>
+							<div class="col-md-6">
+								<select id="nama_seksi" class="form-control select2 userorder" data-placeholder="Pilih Nama Seksi" style="width:100%"></select>
+							</div>
+						</div>
+						<div class="panel-body">
+							<div class="col-md-4 text-right">
+								<label>Kode Seksi:</label>
+							</div>
+							<div class="col-md-6">
+							<select id="kode_seksi" class="form-control select2 seksiorder" data-placeholder="Pilih Kode Seksi" style="width:100%"></select>
+							</div>
+						</div>
+						<div class="panel-body">
+							<div class="col-md-12 text-center">
+								<button type="button" class="btn bg-orange" style="margin-left:15px" onclick="saveseksiOTM(this)"><i class="fa fa-plus"></i> Tambah</button>
+							</div>
+						</div>
+					</div>
+				</div>';
+		echo $view;
+	}
+
+		
+	public function edit_seksi(){
+        $data = $this->db->select('mp.*')->where("mp.id_seksi = ".$this->input->post('id')."")->get('otm.otm_master_seksi mp')->result_array();
+		$view = '
+				<div class="modal-header" style="font-size:25px;">
+					<i class="fa fa-list-alt"></i> Edit Seksi
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<div class="modal-body">
+					<div class="box-body">
+						<div class="panel-body">
+							<div class="col-md-4 text-right">
+								<label>Nama Seksi:</label>
+							</div>
+							<div class="col-md-6">
+								<select id="nama_seksi" class="form-control select2 userorder" data-placeholder="Pilih Nama Seksi" style="width:100%">
+									<option value="'.$data[0]['nama_seksi'].'">'.$data[0]['nama_seksi'].'</option>
+								</select>
+								<input type="hidden" id="id_seksi" value="'.$data[0]['id_seksi'].'">
+							</div>
+						</div>
+						<div class="panel-body">
+							<div class="col-md-4 text-right">
+								<label>Kode Seksi:</label>
+							</div>
+							<div class="col-md-6">
+							<select id="kode_seksi" class="form-control select2 seksiorder" data-placeholder="Pilih Kode Seksi" style="width:100%">
+								<option value="'.$data[0]['kode_seksi'].'">'.$data[0]['kode_seksi'].'</option>
+							</select>
+							</div>
+						</div>
+						<div class="panel-body">
+							<div class="col-md-12 text-center">
+								<button type="button" class="btn bg-orange" style="margin-left:15px" onclick="updateseksiOTM(this)"><i class="fa fa-check"></i> Update</button>
+							</div>
+						</div>
+					</div>
+				</div>';
+		echo $view;
+	}
+
+    public function submit_seksi(){
+        $nama = $this->input->post('nama');
+        $kode = $this->input->post('kode');
+        $cek = $this->db->select('mp.*')->where("mp.nama_seksi = '$nama'")->get('otm.otm_master_seksi mp')->result_array();
+        if (empty($cek)) {
+            $this->M_monitoringorder->save_seksi(array('nama_seksi' => $nama, 'kode_seksi' => $kode));
+            echo json_encode('oke');
+        }else {
+            echo json_encode('not');
+        }
+	}
+	
+    public function update_seksi(){
+        $id = $this->input->post('id');
+        $nama = $this->input->post('nama');
+        $kode = $this->input->post('kode');
+		$this->M_monitoringorder->update_seksi($id,  $nama, $kode);
+	}
 
     public function submit_proses(){
         $proses = $this->input->post('val');
@@ -101,6 +200,11 @@ class C_MasterData extends CI_Controller
     public function delete_mesin(){
         $id_mesin = $this->input->post('id_mesin');
         $this->M_monitoringorder->delete_mesin($id_mesin);
+	}
+	
+    public function delete_seksi(){
+        $id_seksi = $this->input->post('id_seksi');
+        $this->M_monitoringorder->delete_seksi($id_seksi);
     }
 
 }

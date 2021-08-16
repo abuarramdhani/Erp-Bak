@@ -58,6 +58,11 @@ $(document).ready(function () {
         })
     }
     
+    var seksi_otm = document.getElementById("tb_seksi_otm");
+    if (seksi_otm) {
+        data_seksi_otm(this);
+    }
+    
     var proses_otm = document.getElementById("tb_proses_otm");
     if (proses_otm) {
         data_proses_otm(this);
@@ -200,6 +205,24 @@ $(document).ready(function () {
     })
 
     
+    $(".selectmanual").select2({
+        allowClear: true,
+        width: "element",
+        tags: true,
+        id: function (object) {
+                return object.text;
+        },
+        createSearchChoice: function (term, data) {
+                if ($(data).filter(function () {
+                                return this.text.localeCompare(term) === 0;
+                        }).length === 0
+                ) {
+                        return {id: term,text: term,};
+                }
+        },
+    });
+
+    
     $(".getprosestm").select2({
         allowClear: true,
         minimumInputLength: 0,
@@ -221,7 +244,20 @@ $(document).ready(function () {
                     })
                 };
             }
-        }
+        },
+        width: "element",
+        tags: true,
+        id: function (object) {
+                return object.text;
+        },
+        createSearchChoice: function (term, data) {
+                if ($(data).filter(function () {
+                                return this.text.localeCompare(term) === 0;
+                        }).length === 0
+                ) {
+                        return {id: term,text: term,};
+                }
+        },
     });
     
     $(".getmesintm").select2({
@@ -607,6 +643,23 @@ function(event){
 });
 
 
+function data_seksi_otm(th) {
+    $.ajax({
+        url: baseurl + 'OrderToolMakingTM/MasterData/data_seksi',
+        type: 'POST',
+        beforeSend: function() {
+            $('div#tb_seksi_otm' ).html('<center><img style="width:130px; height:auto" src="'+baseurl+'assets/img/gif/loading2.gif"></center>' );
+        },
+        success: function(result) {
+            $('div#tb_seksi_otm').html(result);
+            $('#tb_seksi').DataTable({
+                "scrollX": true,
+            });
+        }
+    })
+}
+
+
 function data_proses_otm(th) {
     $.ajax({
         url: baseurl + 'OrderToolMakingTM/MasterData/data_proses',
@@ -636,6 +689,182 @@ function data_mesin_otm(th) {
                 "scrollX": true,
             });
         }
+    })
+}
+
+function tambah_seksi_otm(th) {
+    var request = $.ajax({
+        url: baseurl+"OrderToolMakingTM/MasterData/tambah_seksi",
+        type: "POST",
+        datatype: 'html'
+    });
+    request.done(function(result){
+        $('#data_seksi_otm').html(result);
+        $('#mdltambahseksiOTM').modal('show');
+        $(".userorder").select2({
+            allowClear: true,
+            placeholder: "user",
+            minimumInputLength: 0,
+            ajax: {
+                url: baseurl + "OrderToolMaking/MonitoringOrder/getUser",
+                dataType: 'json',
+                type: "GET",
+                data: function (params) {
+                    var queryParameters = {
+                        term: params.term,
+                    }
+                    return queryParameters;
+                },
+                processResults: function (data) {
+                    // console.log(data);
+                    return {
+                        results: $.map(data, function (obj) {
+                            return {id:obj.NAMA_USER, text:obj.NAMA_USER};
+                        })
+                    };
+                }
+            }
+        });
+        
+        $(".seksiorder").select2({
+            allowClear: true,
+            placeholder: "user",
+            minimumInputLength: 0,
+            ajax: {
+                url: baseurl + "OrderToolMaking/MonitoringOrder/getSeksiOrder",
+                dataType: 'json',
+                type: "GET",
+                data: function (params) {
+                    var queryParameters = {
+                        term: params.term,
+                    }
+                    return queryParameters;
+                },
+                processResults: function (data) {
+                    // console.log(data);
+                    return {
+                        results: $.map(data, function (obj) {
+                            return {id:obj.fs_nm_seksi, text:obj.fs_nm_seksi};
+                        })
+                    };
+                }
+            }
+        });
+        
+    });
+}
+
+function edit_seksi_otm(id) {
+    var request = $.ajax({
+        url: baseurl+"OrderToolMakingTM/MasterData/edit_seksi",
+        data: {id:id},
+        type: "POST",
+        datatype: 'html'
+    });
+    request.done(function(result){
+        $('#data_seksi_otm').html(result);
+        $('#mdltambahseksiOTM').modal('show');
+        $(".userorder").select2({
+            allowClear: true,
+            placeholder: "user",
+            minimumInputLength: 0,
+            ajax: {
+                url: baseurl + "OrderToolMaking/MonitoringOrder/getUser",
+                dataType: 'json',
+                type: "GET",
+                data: function (params) {
+                    var queryParameters = {
+                        term: params.term,
+                    }
+                    return queryParameters;
+                },
+                processResults: function (data) {
+                    // console.log(data);
+                    return {
+                        results: $.map(data, function (obj) {
+                            return {id:obj.NAMA_USER, text:obj.NAMA_USER};
+                        })
+                    };
+                }
+            }
+        });
+        
+        $(".seksiorder").select2({
+            allowClear: true,
+            placeholder: "user",
+            minimumInputLength: 0,
+            ajax: {
+                url: baseurl + "OrderToolMaking/MonitoringOrder/getSeksiOrder",
+                dataType: 'json',
+                type: "GET",
+                data: function (params) {
+                    var queryParameters = {
+                        term: params.term,
+                    }
+                    return queryParameters;
+                },
+                processResults: function (data) {
+                    // console.log(data);
+                    return {
+                        results: $.map(data, function (obj) {
+                            return {id:obj.fs_nm_seksi, text:obj.fs_nm_seksi};
+                        })
+                    };
+                }
+            }
+        });
+        
+    });
+}
+
+function saveseksiOTM(th) {
+    var request = $.ajax({
+        url: baseurl+"OrderToolMakingTM/MasterData/submit_seksi",
+        data : {nama : $('#nama_seksi').val(),
+                kode : $('#kode_seksi').val()},
+        type: "POST",
+        dataType : 'json',
+    });
+    request.done(function(result){
+        $('#mdltambahseksiOTM').modal('hide');
+        if (result == 'oke') {
+            Swal.fire({
+                title: 'Seksi Berhasil di Tambahkan!',
+                type: 'success',
+                allowOutsideClick: false
+            }).then(result => {
+                if (result.value) {
+                    data_seksi_otm(this)
+            }})  
+        }else{
+            Swal.fire({
+                title: 'Seksi Sudah Ada!',
+                type: 'error',
+                allowOutsideClick: false
+            })
+        }
+    })
+}
+
+function updateseksiOTM(th) {
+    var request = $.ajax({
+        url: baseurl+"OrderToolMakingTM/MasterData/update_seksi",
+        data : {nama : $('#nama_seksi').val(),
+                kode : $('#kode_seksi').val(),
+                id : $('#id_seksi').val()},
+        type: "POST",
+        dataType : 'html',
+    });
+    request.done(function(result){
+        $('#mdltambahseksiOTM').modal('hide');
+        Swal.fire({
+            title: 'Seksi Berhasil di Update!',
+            type: 'success',
+            allowOutsideClick: false
+        }).then(result => {
+            if (result.value) {
+                data_seksi_otm(this)
+        }})  
     })
 }
 
@@ -730,6 +959,33 @@ function edit_proses_otm(id_proses, nama_proses) {
                 }
             })
 	}})
+}
+
+function delete_seksi_otm(id_seksi) {
+    Swal.fire({
+        title: 'Apakah Anda Yakin ?',
+        type: 'question',
+        showCancelButton: true,
+        allowOutsideClick: false
+    }).then(result => {
+        if (result.value) {  
+            $.ajax({
+                url : baseurl + "OrderToolMakingTM/MasterData/delete_seksi",
+                data: {id_seksi : id_seksi},
+                type : "POST",
+                dataType: "html",
+                success: function(data) {
+                    Swal.fire({
+                        title: 'Data Berhasil di Hapus!',
+                        type: 'success',
+                        allowOutsideClick: false
+                    }).then(result => {
+                        if (result.value) {
+                            data_seksi_otm(this);
+                    }})  
+                }
+            })
+    }})  
 }
 
 function delete_proses_otm(id_proses) {

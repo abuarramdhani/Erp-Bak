@@ -137,7 +137,7 @@ $terima = $val['status'] == 'DALAM PROSES PENGIRIMAN' ? '' : 'display:none'; // 
             </span>
         </div>
         <div class="col-md-12"><br>
-            <span style="color:#3A4C52;">SKETS </span>
+            <span style="color:#3A4C52;">SKETS / REFERENSI AB </span>
             <br>
             <span style="color:#3A4C52">
                 <?php $filename = "assets/upload/OrderToolMaking/Skets/".$val['folder_skets']."/".$val['skets']."";
@@ -167,15 +167,23 @@ $terima = $val['status'] == 'DALAM PROSES PENGIRIMAN' ? '' : 'display:none'; // 
             <div class="col-md-3">
                 Proposal Asset :
             </div>
-            <div class="col-md-2">
+            <!-- <div class="col-md-2">
                 <?php $filename = "assets/upload/OrderToolMaking/Proposal/".$val['file_proposal']."";
                 $proposal =  (file_exists($filename)) ? 'href="'.base_url($filename).'" target="_blank"' : '' ; ?>
                 <a <?= $proposal?>>
                     <span class="btn btn-info" style="border-radius:25px"><i class="fa fa-eye"></i> View</span>
                 </a>
-            </div>
-            <div class="col-md-7">
+            </div> -->
+            <div class="col-md-9">
                 <input readonly class="form-control" value="<?= $val['no_proposal'] ?>">
+            </div>
+        </div>
+        <div class="col-md-12" style="<?= $baru?>"><br>
+            <div class="col-md-3">
+                Alasan Pengadaan Asset:
+            </div>
+            <div class="col-md-9">
+                <textarea style="width:100%;height:100px" disabled><?= $val['alasan_asset'] ?></textarea>
             </div>
         </div>
         <?php } ?>

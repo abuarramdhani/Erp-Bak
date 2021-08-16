@@ -75,9 +75,9 @@ class C_MonitoringOrder extends CI_Controller
 		$action = 1; // action auto accept wkwkw
 		$cek = $this->M_monitoringorder->cekaction($no_order, "and person = 9"); // status 9 = sudah approve resp otm - tool making
 		if (empty($cek)) {
-			$this->M_monitoringorder->saveaction($no_order, 9, $action, $keterangan, date('Y-m-d H:i:s'));
+			$this->M_monitoringorder->saveaction($no_order, 9, $action, $keterangan, date('Y-m-d H:i:s'), $this->session->user);
 		}else {
-			$this->M_monitoringorder->updateaction($no_order, 9, $action, $keterangan, date('Y-m-d H:i:s'));
+			$this->M_monitoringorder->updateaction($no_order, 9, $action, $keterangan, date('Y-m-d H:i:s'), $this->session->user);
 		}
 
 			// echo "<pre>";print_r($ket);exit();
@@ -244,7 +244,37 @@ class C_MonitoringOrder extends CI_Controller
 		$pdf->WriteHTML($html);			
 		$pdf->Output($filename, 'I');
 	}
+	
+	public function PrintAsset($no_order){
+		$getdata = $this->M_monitoringorder->getdatabaru("where no_order = '".$no_order."'");
+		$ket = 'Baru';
+		$data['fix'] = $this->getdatafix($getdata, $ket, ''); // cari data yg akan ditampilkan
+		$data['approval'] = $this->getapproval2($no_order);
+		// echo "<pre>";print_r($data['komen']);exit();
+		// echo "<pre>";print_r($data['fix']);exit();
+		
+		ob_start();
+		$this->load->library('pdf');
+		$pdf = $this->pdf->load();
+		$pdf = new mPDF('utf-8','f4-P', 0, '', 8, 8, 8, 8, 0, 0);
+		$filename 	= 'ImportToolRoom.pdf';
+		$html = $this->load->view('OrderToolMaking/V_PdfAsset', $data, true);
+		ob_end_clean();
+		$pdf->WriteHTML($html);			
+		$pdf->Output($filename, 'I');
+	}
 
+	public function getapproval2($no_order){
+		$data = $this->M_monitoringorder->cekapproval2($no_order);
+		$approval[2] = $approval[9] = $approval[6] = $approval[7] = array();
+		for ($i=0; $i < count($data) ; $i++) { 
+			$nama = $this->M_monitoringorder->getseksiunit($data[$i]['approved_by']);
+			$data[$i]['nama_approver'] = !empty($nama) ? $nama[0]['nama'] : '';
+			$approval[$data[$i]['approval']] = $data[$i];
+		}
+		return $approval;
+	}
+	
 	public function getapproval($no_order){
 		$data = $this->M_monitoringorder->cekapproval($no_order);
 		$approval = array();
@@ -260,6 +290,9 @@ class C_MonitoringOrder extends CI_Controller
 			$fix['ket'] 		= $ket;
 			$fix['no_order'] 	= $val['no_order'];
 			$fix['tgl_order'] 	= date('d/m/Y', strtotime($val['tgl_order']));
+			$fix['pengorder'] 	= $val['pengorder'];
+			$nama = $this->M_monitoringorder->getseksiunit($val['pengorder']);
+			$fix['nama_pengorder'] 		= $nama[0]['nama'];
 			$fix['seksi'] 		= $val['seksi'];
 			$fix['unit'] 		= $val['unit'];
 			$fix['jenis'] 		= $val['jenis'];
@@ -284,6 +317,9 @@ class C_MonitoringOrder extends CI_Controller
 			$fix['action']		= $this->cariaction($val['no_order'], 'Kepala Seksi Tool Making');
 			$fix['no_alat_tm'] 	= $val['no_alat_tm'];
 			$fix['assign_order'] = $val['assign_order'];
+			$fix['assign_approval'] = $val['assign_approval'];
+			$nama = $this->M_monitoringorder->getseksiunit($val['assign_approval']);
+			$fix['nama_assignapproval'] = $nama[0]['nama'];
 			$fix['assign_desainer'] = $val['assign_desainer'];
 			$fix['estimasi_finish'] = $val['estimasi_finish'] == '' || $val['estimasi_finish'] == '0001-01-01 BC' ? '' : date('d/m/Y', strtotime($val['estimasi_finish']));
 		
@@ -303,6 +339,7 @@ class C_MonitoringOrder extends CI_Controller
 				$fix['material'] 	= $this->carirevisi($val['no_order'], $val['material_blank'], 'Material Blank (Khusus DIES)');
 				$fix['jml_alat']	= $this->carirevisi($val['no_order'], $val['jumlah_alat'], 'Jumlah Alat');
 				$fix['distribusi']	= $this->carirevisi($val['no_order'], $val['distribusi'], 'Distribusi');
+				$fix['alasan_asset'] = $val['alasan_asset'];
 			}else {
 				$fix['alasan'] 		= $this->carirevisi($val['no_order'], $val['alasan_modifikasi'], 'Alasan Modifikasi');
 				$fix['no_alat'] 	= $this->carirevisi($val['no_order'], $val['no_alat_bantu'], 'No Alat Bantu');
@@ -396,9 +433,9 @@ class C_MonitoringOrder extends CI_Controller
 		$no_order 	= $this->input->post('no_order');
 		$cek 		= $this->M_monitoringorder->cekaction($no_order, "and person = 10"); // status 10 = barang sudah selesai / akan kirim ke seksi pengorder
 		if (empty($cek)) {
-			$this->M_monitoringorder->saveaction($no_order, 10, 1, '', date('Y-m-d H:i:s'));
+			$this->M_monitoringorder->saveaction($no_order, 10, 1, '', date('Y-m-d H:i:s'), $this->session->user);
 		}else {
-			$this->M_monitoringorder->updateaction($no_order, 10, 1, '', date('Y-m-d H:i:s'));
+			$this->M_monitoringorder->updateaction($no_order, 10, 1, '', date('Y-m-d H:i:s'), $this->session->user);
 		}
 		redirect(base_url('OrderToolMakingTM/MonitoringOrder/'));
 	}

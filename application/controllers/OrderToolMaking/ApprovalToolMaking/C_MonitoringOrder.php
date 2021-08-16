@@ -258,9 +258,9 @@ class C_MonitoringOrder extends CI_Controller
 			$action = 1; // action static Accept wkkw
 			$cek = $this->M_monitoringorder->cekaction($no_order, "and person = $person"); // cek sudah save/ belum
 			if (empty($cek)) {
-				$this->M_monitoringorder->saveaction($no_order, $person, $action, $keterangan, date('Y-m-d H:i:s'));
+				$this->M_monitoringorder->saveaction($no_order, $person, $action, $keterangan, date('Y-m-d H:i:s'), $this->session->user);
 			}else {
-				$this->M_monitoringorder->updateaction($no_order, $person, $action, $keterangan, date('Y-m-d H:i:s'));
+				$this->M_monitoringorder->updateaction($no_order, $person, $action, $keterangan, date('Y-m-d H:i:s'), $this->session->user);
 			}
 		}
 
@@ -284,9 +284,9 @@ class C_MonitoringOrder extends CI_Controller
 		// }
 		
 		if ($siapa == 'Designer Produk' && ($seksi == 'QA' || stripos($seksi, 'QC') !== FALSE)) {  // kalau order dari QA & QC auto approve QA & QC
-			$this->M_monitoringorder->saveaction($no_order, ($person+1), 1, '', date('Y-m-d H:i:s'));
+			$this->M_monitoringorder->saveaction($no_order, ($person+1), 1, '', date('Y-m-d H:i:s'), $this->session->user);
 		}elseif ($siapa == 'Ass Ka Nit PE' && stripos($seksi, 'DES') !== FALSE) {  // kalau order dari Designer auto approve Designer
-			$this->M_monitoringorder->saveaction($no_order, ($person+1), 1, '', date('Y-m-d H:i:s'));
+			$this->M_monitoringorder->saveaction($no_order, ($person+1), 1, '', date('Y-m-d H:i:s'), $this->session->user);
 		}
 		
 		// folder simpan revisi skets/gamker sesuai responsibility yg dibuka user login
@@ -449,6 +449,7 @@ class C_MonitoringOrder extends CI_Controller
 					$fix['material'] 	= $this->carirevisi($val['no_order'], $val['material_blank'], 'Material Blank (Khusus DIES)');
 					$fix['jml_alat']	= $this->carirevisi($val['no_order'], $val['jumlah_alat'], 'Jumlah Alat');
 					$fix['distribusi'] 	= $this->carirevisi($val['no_order'], $val['distribusi'], 'Distribusi');
+					$fix['alasan_asset'] = $val['alasan_asset'];
 				}else { // tabel modifikasi dan rekondisi
 					$fix['alasan'] 		= $this->carirevisi($val['no_order'], $val['alasan_modifikasi'], 'Alasan Modifikasi');
 					$fix['no_alat'] 	= $this->carirevisi($val['no_order'], $val['no_alat_bantu'], 'No Alat Bantu');
