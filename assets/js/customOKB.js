@@ -2982,7 +2982,7 @@ $(".CreateOrdOkbj").on("submit", function (e) {
       );
     },
     success: function (response) {
-      // window.location.reload();
+      window.location.reload();
     },
   });
 });
