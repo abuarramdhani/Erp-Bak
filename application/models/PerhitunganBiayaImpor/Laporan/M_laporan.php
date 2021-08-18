@@ -173,4 +173,20 @@ class M_laporan extends CI_Model
         $oracle->update('KHS_BIAYA_IMPOR', array('HARGA' => $price, ));
     }
 
+    public function get_location_code($po){
+        $oracle = $this->load->database('oracle',true);
+        $sql = "SELECT DISTINCT
+                    HL.LOCATION_CODE
+                FROM
+                    PO_HEADERS_ALL PHA,
+                    PO_LINE_LOCATIONS_ALL PLLA,
+                    HR_LOCATIONS_ALL HL
+                WHERE
+                    PHA.PO_HEADER_ID = PLLA.PO_HEADER_ID
+                    AND PLLA.SHIP_TO_LOCATION_ID = HL.LOCATION_ID
+                    AND PHA.SEGMENT1 = $po";
+        $data = $oracle->query($sql);
+        return $data->result_array();
+    }
+
 }
