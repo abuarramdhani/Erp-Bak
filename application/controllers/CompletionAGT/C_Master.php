@@ -78,6 +78,12 @@ class C_Master extends CI_Controller
     {
       $item_id = explode(',', $this->input->post('item_id'));
       $data['item_id'] = $item_id[0];
+
+      $data['serial'] = '';
+      if (!empty($item_id[1])) {
+        $data['serial'] = $item_id[1];
+      }
+
       if ($item_id[0] != '-') {
         $data['old_job'] = $this->M_master->getOldJob($item_id[0]);
       }
@@ -103,7 +109,7 @@ class C_Master extends CI_Controller
 
     public function cekjobdipos1()
     {
-      echo json_encode($this->M_master->cekjobdipos1($this->input->post('item_id')));
+      echo json_encode($this->M_master->cekjobdipos1($this->input->post('item_id'), $this->input->post('serial')));
     }
 
     public function getitemcode($value='')
@@ -114,7 +120,7 @@ class C_Master extends CI_Controller
 
     public function insertpos1()
     {
-      echo json_encode($this->M_master->insertpos1($this->input->post('no_job'), $this->input->post('item_code'), $this->input->post('description'), $this->input->post('item_id')));
+      echo json_encode($this->M_master->insertpos1($this->input->post('no_job'), $this->input->post('item_code'), $this->input->post('description'), $this->input->post('item_id'), $this->input->post('serial')));
     }
 
     public function Completion()
