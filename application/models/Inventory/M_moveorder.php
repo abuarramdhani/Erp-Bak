@@ -7,7 +7,7 @@ class M_moveorder extends CI_Model
 		parent::__construct();
 	}
 
-	function search($date,$date2,$dept,$shift,$atr, $ket)
+	function search($date,$dept,$shift,$atr, $ket)
 	{
 		$oracle = $this->load->database('oracle',TRUE);
 		// $sql = "SELECT we.WIP_ENTITY_ID job_id
@@ -116,7 +116,7 @@ class M_moveorder extends CI_Model
 
 		$sql = "select *
 				from khs_qweb_ect_listjob kqel
-				where trunc (kqel.TANGGAL) between '$date' and '$date2'
+				where trunc (kqel.TANGGAL) = '$date'
 				and kqel.DEPARTMENT_CLASS_CODE = '$dept'
 				$shift
 				and kqel.KET = '$ket'
