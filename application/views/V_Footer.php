@@ -93,6 +93,8 @@
 
 			<!-- CUSTOM JAVASCRIPT FOR APPLICATION | DO NOT EDIT!! -->
 			<script src="<?= base_url('assets/js/custom.js') ?>"></script>
+			<script src="<?= base_url('assets/js/customOKB-Dashboard.js?version=' . filemtime('assets/js/customOKB-Dashboard.js')) ?>"></script>
+
 			<?php
 			$customJavascript = $this->session->javascript;
 
@@ -194,7 +196,6 @@
 				<script src="<?= base_url('assets/js/customFPD.js'); ?>"></script>
 				<script src="<?= base_url('assets/js/customBD.js'); ?>"></script>
 				<script src="<?= base_url('assets/js/customMSB.js'); ?>"></script>
-				<script src="<?= base_url('assets/js/customOKB-Dashboard.js?version=' . filemtime('assets/js/customOKB-Dashboard.js')) ?>"></script>
 				<script src="<?= base_url('assets/js/customMPL.js'); ?>"></script>
 				<script src="<?= base_url('assets/js/customSMS.js'); ?>"></script>
 				<script src="<?= base_url('assets/js/customPDP.js'); ?>"></script>
