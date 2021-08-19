@@ -5855,3 +5855,6 @@ $route['VerifikasiPengembalianBarang']	= 'PengembalianBarangGudang/QC/C_Index';
 $route['VerifikasiPengembalianBarang/Verifikasi']			= 'PengembalianBarangGudang/QC/C_Verifikasi';
 $route['VerifikasiPengembalianBarang/Verifikasi/(:any)']	= 'PengembalianBarangGudang/QC/C_Verifikasi/$1';
 $route['VerifikasiPengembalianBarang/Verifikasi/(:any)/(:any)']	= 'PengembalianBarangGudang/QC/C_Verifikasi/$1/$2';
+
+// ---------------------------------- Laporan Penjualan Traktor Pipeline ----------------------------------------------//
+$route['LaporanPenjualanTraktor/pipeline'] = 'LaporanPenjualanTraktor/Pipeline/C_index';
