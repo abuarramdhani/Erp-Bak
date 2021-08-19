@@ -5858,3 +5858,5 @@ $route['VerifikasiPengembalianBarang/Verifikasi/(:any)/(:any)']	= 'PengembalianB
 
 // ---------------------------------- Laporan Penjualan Traktor Pipeline ----------------------------------------------//
 $route['LaporanPenjualanTraktor/pipeline'] = 'LaporanPenjualanTraktor/Pipeline/C_index';
+
+$route['OrderKebutuhanBarangDanJasa/SMSGagalPR'] = 'OrderKebutuhanBarangDanJasa/C_SendSMS/gagalPR';
