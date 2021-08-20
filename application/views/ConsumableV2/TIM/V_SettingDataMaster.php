@@ -1,4 +1,10 @@
 <style media="screen">
+.pagination > .active a{
+  background: #f1f1f1 !important;
+  color: black;
+  border: 1px solid black;
+}
+
 .modal {
 text-align: center;
 padding: 0!important;
@@ -26,9 +32,10 @@ vertical-align: middle;
   display: none !important;
 }
 
-td{
+td, th{
   vertical-align: middle !important;
 }
+
 </style>
 <section class="content">
   <div class="inner">
@@ -39,7 +46,7 @@ td{
           <div class="col-lg-12">
             <div class="box box-primary color-palette-box">
               <div class="panel-body">
-                <input type="hidden" id="consumabletimtrackv2" value="1">
+                <input type="hidden" id="consumabletimsettingdatav2" value="1">
                 <div class="nav-tabs-custom">
                   <div class="row">
                     <div class="col-md-12">
@@ -53,57 +60,139 @@ td{
                   <div class="tab-content">
                     <div class="tab-pane active" id="input">
                       <div class="row pt-3">
-                        <div class="col-md-12">
-                          <h4 class="text-bold" style="margin-bottom:-11px">Master Data Seksi</h4>
-                          <hr>
-                          <div class="table-responsive">
-                            <table class="table table-bordered tbl_cst_kebutuhan" style="width:100%;text-align:center">
-                              <thead class="bg-primary">
-                                <tr>
-                                  <th class="text-center" style="width:5%">No</th>
-                                  <th class="text-center">Seksi</th>
-                                  <th class="text-center">PIC</th>
-                                  <th class="text-center">VoIP</th>
-                                  <th class="text-center">Jumlah Item</th>
-                                  <th class="text-center" style="width:8%">Action</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <tr>
-                                  <td>1</td>
-                                  <td>Information Technology Trial</td>
-                                  <td>Eren Yeager</td>
-                                  <td>123456</td>
-                                  <td>4</td>
-                                  <td>
-                                    <button type="button" class="btn" name="button" data-toggle="modal" data-target="#editmasterseksi"> <i class="fa fa-eye"></i> Edit</button>
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
+                        <div class="col-md-12 mt-3">
+                          <div style="width:100%;background: #f35325;padding: 8px;color: white;border-radius: 6px;">
+                            <div class="row">
+                              <div class="col-md-6">
+                                <h4 class="">Master Data Seksi</h4>
+                              </div>
+                              <div class="col-md-6">
+                                <button type="button" class="btn mt-1 csttambahdataseksi" onclick="()" style="color:black;float:right;background:white;border:1px solid #a8a8a8" status="+" name="button">Tambah Data Seksi</button>
+                              </div>
+                            </div>
                           </div>
-                          <br>
-                          <h4 class="text-bold" style="margin-bottom:-11px">Master Data Item</h4>
-                          <hr>
-                          <div class="table-responsive">
-                            <table class="table table-bordered tbl_cst_kebutuhan" style="width:100%;text-align:center">
-                              <thead class="bg-primary">
-                                <tr>
-                                  <th class="text-center" style="width:5%">No</th>
-                                  <th class="text-center" style="width:15%">Kode Barang</th>
-                                  <th class="text-center" style="width:26%">Nama Barang</th>
-                                  <th class="text-center">UOM</th>
-                                  <th class="text-center">Leadtime</th>
-                                  <th class="text-center">MOQ</th>
-                                  <th class="text-center">Min Stok</th>
-                                  <th class="text-center">Max Stock</th>
-                                  <th class="text-center" style="width:8%">Action</th>
-                                </tr>
-                              </thead>
-                              <tbody>
+                          <div class="areacsmmds">
+                            <div class="table-responsive mt-3 areadataseksi">
 
-                              </tbody>
-                            </table>
+                            </div>
+                          </div>
+                          <div class="areacsmmdsadd" style="display:none">
+                            <form class="savecsmseksi mt-3" action="" method="post">
+                              <div class="row">
+                                <div class="col-md-6 mb-3">
+                                  <label for="">Seksi</label>
+                                  <select class="slc_csm_seksi" name="seksi" style="width:100%">
+                                    <option value="" selected></option>
+                                  </select>
+                                  <!-- <input type="text" readonly class="form-control" name="seksi" value=""> -->
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                  <label for="">PIC</label>
+                                  <select class="slc_csm_employ" style="width:100%" name="pic">
+                                    <option value="" selected></option>
+                                  </select>
+                                </div>
+                                <div class="col-md-12">
+                                  <label for="">VOIP</label>
+                                  <input type="number" class="form-control csm_voip" placeholder="max length 5" name="voip" value="">
+                                </div>
+                                <div class="col-md-12 mt-4">
+                                  <center> <button type="submit" class="btn text-bold" name="button" style="background: #f35325;color: white;width:130px"> Simpan</button> </center>
+                                </div>
+                              </div>
+                            </form>
+                          </div>
+                          <hr>
+                        </div>
+                        <div class="col-md-12 mt-3">
+                          <div style="width:100%;background: #81bc06;padding: 8px;color: white;border-radius: 6px;">
+                            <div class="row">
+                              <div class="col-md-6">
+                                <h4 class="">Master Data Item</h4>
+                              </div>
+                              <div class="col-md-6">
+                                <button type="button" class="btn csttambahdataitem pull-right" status="+" style="border: 1px solid #a8a8a8;background: white;color:black" name="button" status="+"> <i class="fa fa-plus"></i> Tambah Data Item</button>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="cstmasteritem">
+                            <div class="table-responsive mt-3">
+                              <table class="table table-bordered tbl_cst_master_item" style="width:100%;text-align:center">
+                                <thead style="background:#81bc06;color:white">
+                                  <tr>
+                                    <th class="text-center" style="width:3%">No</th>
+                                    <th class="text-center" style="width:17%">Kode Barang</th>
+                                    <th class="text-center" style="width:26%">Nama Barang</th>
+                                    <th class="text-center">UOM</th>
+                                    <th class="text-center">Leadtime</th>
+                                    <th class="text-center">MOQ</th>
+                                    <th class="text-center">Min Stok</th>
+                                    <th class="text-center">Max Stock</th>
+                                    <th class="text-center" style="width:8%">Action</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                          <div class="csttambahitem" style="display:none">
+                            <div class="table-responsive mt-3">
+                              <form class="savecstitem" action="" method="post">
+                                <table class="table table-bordered tblcsttmbi" style="width:100%;text-align:center;">
+                                  <thead style="background:#eee">
+                                    <tr>
+                                      <th class="text-center" style="width:3%">No</th>
+                                      <th class="text-center" style="width:19%">Kode Barang</th>
+                                      <th class="text-center" style="width:26%">Nama Barang</th>
+                                      <th class="text-center">UOM</th>
+                                      <th class="text-center">Leadtime</th>
+                                      <th class="text-center">MOQ</th>
+                                      <th class="text-center">Min Stok</th>
+                                      <th class="text-center">Max Stock</th>
+                                      <th class="text-center" style="width:4%"><button class="btn btn-default btn-sm" style="border: 1px solid #a8a8a8;background:white" onclick="btnPlusMasterItem()"><i class="fa fa-plus"></i></button></th>
+                                    </tr>
+                                  </thead>
+                                  <tbody id="areaaddmsibitem">
+                                    <tr>
+                                      <td>1</td>
+                                      <td>
+                                        <input type="hidden" name="item_id[]" class="item_id" value="">
+                                        <select class="select2_cstmsib" required style="width:170px" name="kodeitem[]">
+                                          <option value="" selected>Pilih Item..</option>
+                                        </select>
+                                      </td>
+                                      <td>
+                                        <input type="text" readonly class="form-control" name="description" value="">
+                                      </td>
+                                      <td>
+                                        <input type="text" readonly class="form-control" name="uom" value="">
+                                      </td>
+                                      <td>
+                                        <input type="text" readonly class="form-control" name="leadtime" value="">
+                                      </td>
+                                      <td>
+                                       <input type="text" readonly class="form-control" name="moq" value="">
+                                      </td>
+                                      <td>
+                                       <input type="text" readonly class="form-control" name="min_stock" value="">
+                                      </td>
+                                      <td>
+                                       <input type="text" readonly class="form-control" name="max_stock" value="">
+                                      </td>
+                                      <td>
+                                        <button class="btn btn-default btn-sm" onclick="cstitemmin(this)" style="border: 1px solid #a8a8a8;background:white">
+                                          <i class="fa fa-minus"></i>
+                                        </button>
+                                      </td>
+                                    </tr>
+
+                                  </tbody>
+                                </table>
+                                <center> <button type="submit" class="btn " name="button" style="width:130px;background: #81bc06;color:white"> <i class="fa fa-save"></i> Save</button> </center>
+                              </form>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -133,55 +222,46 @@ td{
       <div class="panel-body">
         <div class="row">
           <div class="col-lg-12">
-            <div class="box box-primary box-solid">
+            <div class="box box-solid">
               <div class="box-header with-border">
                 <div style="float:left">
-                  <h4 style="font-weight:bold;">Edit Master Seksi <span id="juduleditmasterseksi">Information Technology Trial</span> </h4>
+                  <h4 style="font-weight:bold;">Edit Master Seksi <span id="juduleditmasterseksi" style="color: #f35325"></span> </h4>
                 </div>
-                <button type="button" class="btn btn-danger" style="float:right;font-weight:bold" data-dismiss="modal"> <i class="fa fa-close"></i> Close</button>
+                <button type="button" class="btn" style="float:right;font-weight:bold;border:1px solid #a8a8a8" data-dismiss="modal"> <i class="fa fa-close"></i> Close</button>
               </div>
               <div class="box-body">
                 <div class="row pt-3 pb-3">
-                  <div class="col-md-4 ">
-                    <label for="">Seksi</label>
-                    <input type="text" class="form-control" name="" value="">
-                  </div>
-                  <div class="col-md-4 ">
+                  <div class="col-md-6 ">
                     <label for="">PIC</label>
-                    <input type="text" class="form-control" name="" value="">
+                    <input type="hidden" id="edtds_kodesie" value="">
+                    <select class="slc_csm_employ_" style="width:100%" id="edtds_pic">
+                      <!-- <option value="" selected></option> -->
+                    </select>
                   </div>
-                  <div class="col-md-4 ">
+                  <div class="col-md-4">
                     <label for="">VOIP</label>
-                    <input type="text" class="form-control" name="" value="">
+                    <input type="text" class="form-control csm_voip" id="edtds_voip" value="">
+                  </div>
+                  <div class="col-md-2">
+                    <button type="button" class="btn" onclick="updatepicvoip()" style="background: #f35325;color:white;width:100%;margin-top:25px" name="button">Update</button>
                   </div>
                   <div class="col-md-12">
                     <hr>
-
-                    <table class="table table-bordered tableinputkebutuhan" style="width:100%">
-                      <thead class="bg-primary">
+                    <table class="table table-bordered detailitembyseksi" style="width:100%">
+                      <thead style="background: #f35325;color:white">
                         <tr>
-                          <th class="text-center" style="vertical-align:middle;width:52%;">Nama Item</th>
-                          <th class="text-center" style="vertical-align:middle;width:25%">Item Code</th>
-                          <th class="text-center" style="vertical-align:middle;width:15%">Quantity</th>
-                          <th class="text-center" style="width:8%"> <button class="btn btn-default btn-sm" onclick="btnPlusIKCST()"><i class="fa fa-plus"></i></button> </th>
+                          <th class="text-center" style="width:50px">No</th>
+                          <th class="text-center" style="width:150px">Item</th>
+                          <th class="text-center" style="width:300px">Desc</th>
+                          <!-- <th class="text-center">Qty Req</th> -->
+                          <th class="text-center">UOM</th>
+                          <th class="text-center">Created By</th>
+                          <th class="text-center">Creation Date</th>
+                          <th class="text-center">Status</th>
                         </tr>
                       </thead>
-                      <tbody id="tambahannya_disini">
-                        <tr>
-                          <td class="text-center" style="width:50%">
-                            <input type="hidden" name="item_id[]" class="item_id" value="">
-                            <select class="select2_inpkebutuhan_cst" required style="width:100%" name="description[]">
-                              <option value="" selected></option>
-                            </select>
-                          </td>
-                          <td class="text-center" style="width:30%"><input type="text" class="form-control item-code" name="item_code[]" readonly="readonly"></td>
-                          <td class="text-center"><input type="number" required class="form-control" id="qty_kebutuhan_consum1" name="qty_kebutuhan[]" required="required"></td>
-                          <td class="text-center">
-                            <button class="btn btn-default btn-sm" disabled>
-                              <i class="fa fa-minus"></i>
-                            </button>
-                          </td>
-                        </tr>
+                      <tbody>
+
                       </tbody>
                     </table>
 
