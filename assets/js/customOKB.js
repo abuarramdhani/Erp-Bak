@@ -3088,3 +3088,22 @@ function UpdateApprExcelOKBJ() {
     },
   });
 }
+$(document).ready(function () {
+  var view = document.getElementsByClassName("table_outstanding_ord_okbj");
+  if (view) {
+    $(".table_outstanding_ord_okbj").dataTable({
+      paging: false,
+      scrollX: true,
+      scrollY: 500,
+      scrollCollapse: true,
+      searching: true,
+      dom: "Bfrtip",
+      buttons: [
+        {
+          extend: "excelHtml5",
+          title: "Outstanding Order Okebaja",
+        },
+      ],
+    });
+  }
+});

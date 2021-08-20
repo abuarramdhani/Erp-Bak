@@ -16,7 +16,7 @@
                 </div>
 
                 <div class="box-body">
-                    <table class="table table-bordered">
+                    <table class="table table-bordered table_outstanding_ord_okbj">
                         <thead class="bg-danger">
                             <tr>
                                 <!-- <th>No</th> -->
