@@ -72,7 +72,7 @@ vertical-align: middle;
                           <div class="areamkeb">
                             <i>* Untuk melihat alasan reject, arahkan Kursor ke status reject </i>
                             <div class="table-responsive mt-4">
-                             <table class="table table-bordered tblcsmpengajuankeb" style="width:130%;text-align:center">
+                             <table class="table table-bordered tblcsmpengajuankeb" style="width:140%;text-align:center">
                                <thead class="bg-primary">
                                  <tr>
                                    <th class="text-center" style="width:4%">No</th>
@@ -85,7 +85,7 @@ vertical-align: middle;
                                    <th class="text-center">Consumed</th>
                                    <th class="text-center">Sisa Jatah</th>
                                    <th class="text-center">Req Bulan <?php echo $monthnownext->format('F') ?></th>
-                                   <th class="text-center">Created By</th>
+                                   <th class="text-center" style="width:10%">Created By</th>
                                    <th class="text-center">Created Date</th>
                                    <th class="text-center">Aksi</th>
                                  </tr>

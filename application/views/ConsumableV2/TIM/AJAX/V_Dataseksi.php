@@ -3,7 +3,7 @@
     <tr>
       <th class="text-center" style="width:5%">No</th>
       <th class="text-center">Seksi</th>
-      <th class="text-center">PIC</th>
+      <th class="text-center" style="width:25%">PIC</th>
       <th class="text-center">VoIP</th>
       <th class="text-center">Jumlah Item</th>
       <th class="text-center" style="width:13%">Action</th>
@@ -14,11 +14,11 @@
       <tr>
         <td><?php echo $key+1 ?></td>
         <td><?php echo $value['SEKSI'] ?></td>
-        <td><?php echo $value['PIC'] ?></td>
+        <td><?php echo $value['PIC'] ?><br><?php echo $value['NAMA'] ?></td>
         <td><?php echo $value['VOIP'] ?></td>
-        <td>-</td>
+        <td><?php echo $value['JUMLAH'] ?></td>
         <td>
-          <button type="button" class="btn" name="button" data-toggle="modal" style="border:1px solid #a8a8a8" data-target="#editmasterseksi"> <i class="fa fa-pencil"></i> Edit</button>
+          <button type="button" class="btn" name="button" data-toggle="modal" style="border:1px solid #a8a8a8" data-target="#editmasterseksi" onclick="detaildataseksi(<?php echo $value['KODESIE'] ?>,'<?php echo $value['PIC'] ?>', '<?php echo $value['NAMA'] ?>', '<?php echo $value['VOIP'] ?>', '<?php echo $value['SEKSI'] ?>')"> <i class="fa fa-pencil"></i> Edit</button>
           <button type="button" class="btn" name="button ml-2" style="border:1px solid #a8a8a8" onclick="deldataseksi(<?php echo $value['KODESIE'] ?>)"> <i class="fa fa-trash"></i></button>
         </td>
       </tr>
@@ -68,6 +68,77 @@ function deldataseksi(id) {
       })
     }
   })
+}
+
+function detaildataseksi(kodesie, pic, name, voip, seksi) {
+  $('.slc_csm_employ_').select2({
+    placeholder: "Employee Name..",
+    tags: true,
+    allowClear:true,
+    minimumInputLength: 1,
+    ajax: {
+      url: baseurl + "consumabletimv2/action/employee",
+      dataType: "JSON",
+      type: "POST",
+      cache: false,
+      data: function(params) {
+        return {
+          term: params.term,
+          kodesie: kodesie
+        };
+      },
+      processResults: function(data) {
+        return {
+          results: $.map(data, function(obj) {
+            return {
+              id: `${obj.nama} - ${obj.noind}`,
+              text:`${obj.nama} - ${obj.noind}`
+            }
+          })
+        }
+      }
+    }
+  })
+    $('#edtds_kodesie').val(kodesie);
+    $('#edtds_voip').val(voip);
+   $('#juduleditmasterseksi').text(seksi)
+   $('.slc_csm_employ_').html('').trigger('change');
+   $('.detailitembyseksi').DataTable().destroy();
+   $('.detailitembyseksi tbody').html('')
+   setTimeout(function () {
+     var newOption = new Option(`${name} - ${pic}`, `${name} - ${pic}`, false, false);
+     $('.slc_csm_employ_').append(newOption).trigger('change');
+
+     $('.detailitembyseksi').dataTable({
+       // dom: 'rtp',
+       ajax: {
+         data: (d) => $.extend({}, d, {
+           kodesie: kodesie,    // optional
+           // id_plan: null // optional
+         }),
+         url: baseurl + "consumabletimv2/action/getdetailitemseksi",
+         type: 'POST',
+       },
+       language:{
+         processing: "<div class='overlay custom-loader-background'><i class='fa fa-cog fa-spin custom-loader-color' style='color:#fff'></i></div>"
+       },
+       ordering: false,
+       pageLength: 10,
+       pagingType: 'first_last_numbers',
+       processing: true,
+       serverSide: true,
+       preDrawCallback: function(settings) {
+            if ($.fn.DataTable.isDataTable('.tblcsmpengajuankeb')) {
+                var dt = $('.tblcsmpengajuankeb').DataTable();
+                //Abort previous ajax request if it is still in process.
+                var settings = dt.settings();
+                if (settings[0].jqXHR) {
+                    settings[0].jqXHR.abort();
+                }
+            }
+        }
+     })
+   }, 605);
 
 }
 </script>

@@ -245,6 +245,141 @@ class C_Sensei extends CI_Controller
       }
     }
 
+    public function updatepicvoip($value='')
+    {
+      if ($this->session->is_logged) {
+        echo json_encode($this->md->updatepicvoip($this->input->post()));
+      }
+    }
+
+    public function getkebutuhan($value='')
+    {
+        $post = $this->input->post();
+
+        foreach ($post['columns'] as $val) {
+          $post['search'][$val['data']]['value'] = $val['search']['value'];
+        }
+
+        $countall = $this->md->countAllKebutuhan()['count'];
+        $countfilter = $this->md->countFilteredKebutuhan($post)['count'];
+
+        $post['pagination']['from'] = $post['start'] + 1;
+        $post['pagination']['to'] = $post['start'] + $post['length'];
+
+        $msdata = $this->md->selectKebutuhan($post);
+
+        $data = [];
+        foreach ($msdata as $row) {
+
+          $status_ = '';
+          switch ($row['STATUS']) {
+            case 0:
+              $status_ = '<label class="label-info" style="padding:5px;font-size:12px;border-radius:8px">Pending</label>';
+              break;
+            case 1:
+              $status_ = '<label class="label-success" style="padding:5px;font-size:12px;border-radius:8px">Approved</label>';
+              break;
+            case 2:
+              $status_ = '<label class="label-danger" style="padding:5px;font-size:12px;border-radius:8px">Rejected</label>';
+              break;
+            default:
+              $status_ = '';
+              break;
+          }
+
+          $sub_array = [];
+          $sub_array[] = '<center>'.$row['PAGINATION'].'</center>';
+          $sub_array[] = '<center>'.$row['SEGMENT1'].'</center>';
+          $sub_array[] = '<center>'.$row['DESCRIPTION'].'</center>';
+          // $sub_array[] = '<center>'.$row['REQ_QUANTITY'].'</center>';
+          $sub_array[] = '<center>'.$row['PRIMARY_UOM_CODE'].'</center>';
+          $sub_array[] = '<center>'.$row['PENGAJUAN_BY'].'</center>';
+          $sub_array[] = '<center>'.$row['TGL_BUAT'].'</center>';
+          $sub_array[] = '<center>'.$status_.'  </center>';
+          $sub_array[] = '<center>
+                           <button type="button" class="btn btn-sm" name="button" title="hapus?" onclick="delcstkebutuhan('.$row['ITEM_ID'].')"> <i class="fa fa-trash"></i> </button>
+                         </center>';
+
+          $data[] = $sub_array;
+        }
+
+        $output = [
+          'draw' => $post['draw'],
+          'recordsTotal' => $countall,
+          'recordsFiltered' => $countfilter,
+          'data' => $data,
+        ];
+
+        die($this->output
+                ->set_status_header(200)
+                ->set_content_type('application/json')
+                ->set_output(json_encode($output))
+                ->_display());
+    }
+
+    public function getdetailitemseksi($value='')
+    {
+      $post = $this->input->post();
+      $kodesie = $this->input->post('kodesie');
+      foreach ($post['columns'] as $val) {
+        $post['search'][$val['data']]['value'] = $val['search']['value'];
+      }
+
+      $countall = $this->md->countAllDetailitemseksi($kodesie)['count'];
+      $countfilter = $this->md->countFilteredDetailitemseksi($post, $kodesie)['count'];
+
+      $post['pagination']['from'] = $post['start'] + 1;
+      $post['pagination']['to'] = $post['start'] + $post['length'];
+
+      $msdata = $this->md->selectDetailitemseksi($post, $kodesie);
+
+      $data = [];
+      foreach ($msdata as $row) {
+
+        $status_ = '';
+        switch ($row['STATUS']) {
+          case 0:
+            $status_ = '<label class="label-info" style="padding:5px;font-size:12px;border-radius:8px">Pending</label>';
+            break;
+          case 1:
+            $status_ = '<label class="label-success" style="padding:5px;font-size:12px;border-radius:8px">Approved</label>';
+            break;
+          case 2:
+            $status_ = '<label class="label-danger"  data-toggle="tooltip" data-placement="top" style="padding:5px;font-size:12px;border-radius:8px">Rejected</label>';
+            break;
+          default:
+            $status_ = '';
+            break;
+        }
+
+        $sub_array = [];
+        $sub_array[] = '<center>'.$row['PAGINATION'].'</center>';
+        $sub_array[] = '<center>'.$row['SEGMENT1'].'</center>';
+        $sub_array[] = '<center>'.$row['DESCRIPTION'].'</center>';
+        // $sub_array[] = '<center>'.$row['REQ_QUANTITY'].'</center>';
+        $sub_array[] = '<center>'.$row['PRIMARY_UOM_CODE'].'</center>';
+        $sub_array[] = '<center>'.$row['PENGAJUAN_BY'].'</center>';
+        $sub_array[] = '<center>'.$row['TGL_BUAT'].'</center>';
+        $sub_array[] = '<center>'.$status_.'  </center>';
+
+        $data[] = $sub_array;
+      }
+
+      $output = [
+        'draw' => $post['draw'],
+        'recordsTotal' => $countall,
+        'recordsFiltered' => $countfilter,
+        'data' => $data,
+      ];
+
+      die($this->output
+              ->set_status_header(200)
+              ->set_content_type('application/json')
+              ->set_output(json_encode($output))
+              ->_display());
+    }
+
+
     public function pengajuan()
     {
         $this->checkSession();

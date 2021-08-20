@@ -138,7 +138,7 @@ td, th{
                             </div>
                           </div>
                           <div class="csttambahitem" style="display:none">
-                            <div class="table-responsive">
+                            <div class="table-responsive mt-3">
                               <form class="savecstitem" action="" method="post">
                                 <table class="table table-bordered tblcsttmbi" style="width:100%;text-align:center;">
                                   <thead style="background:#eee">
@@ -190,7 +190,7 @@ td, th{
 
                                   </tbody>
                                 </table>
-                                <center> <button type="submit" class="btn btn-primary" name="button" style="width:130px"> <i class="fa fa-save"></i> Save</button> </center>
+                                <center> <button type="submit" class="btn " name="button" style="width:130px;background: #81bc06;color:white"> <i class="fa fa-save"></i> Save</button> </center>
                               </form>
                             </div>
                           </div>
@@ -222,57 +222,46 @@ td, th{
       <div class="panel-body">
         <div class="row">
           <div class="col-lg-12">
-            <div class="box box-primary box-solid">
+            <div class="box box-solid">
               <div class="box-header with-border">
                 <div style="float:left">
-                  <h4 style="font-weight:bold;">Edit Master Seksi <span id="juduleditmasterseksi">Information Technology Trial</span> </h4>
+                  <h4 style="font-weight:bold;">Edit Master Seksi <span id="juduleditmasterseksi" style="color: #f35325"></span> </h4>
                 </div>
-                <button type="button" class="btn btn-danger" style="float:right;font-weight:bold" data-dismiss="modal"> <i class="fa fa-close"></i> Close</button>
+                <button type="button" class="btn" style="float:right;font-weight:bold;border:1px solid #a8a8a8" data-dismiss="modal"> <i class="fa fa-close"></i> Close</button>
               </div>
               <div class="box-body">
                 <div class="row pt-3 pb-3">
-                  <div class="col-md-4 ">
-                    <label for="">Seksi</label>
-                    <input type="text" class="form-control" name="" value="">
-                  </div>
-                  <div class="col-md-4 ">
+                  <div class="col-md-6 ">
                     <label for="">PIC</label>
-                    <input type="text" class="form-control" name="" value="">
+                    <input type="hidden" id="edtds_kodesie" value="">
+                    <select class="slc_csm_employ_" style="width:100%" id="edtds_pic">
+                      <!-- <option value="" selected></option> -->
+                    </select>
                   </div>
-                  <div class="col-md-4 ">
+                  <div class="col-md-4">
                     <label for="">VOIP</label>
-                    <input type="text" class="form-control" name="" value="">
+                    <input type="text" class="form-control csm_voip" id="edtds_voip" value="">
+                  </div>
+                  <div class="col-md-2">
+                    <button type="button" class="btn" onclick="updatepicvoip()" style="background: #f35325;color:white;width:100%;margin-top:25px" name="button">Update</button>
                   </div>
                   <div class="col-md-12">
                     <hr>
-
-                    <table class="table table-bordered tableinputkebutuhan" style="width:100%">
-                      <thead class="bg-primary">
+                    <table class="table table-bordered detailitembyseksi" style="width:100%">
+                      <thead style="background: #f35325;color:white">
                         <tr>
-                          <th class="text-center" style="vertical-align:middle;width:45%;">Nama Item</th>
-                          <th class="text-center" style="vertical-align:middle;width:25%">Item Code</th>
-                          <th class="text-center" style="vertical-align:middle;width:15%">Quantity</th>
-                          <th class="text-center" style="vertical-align:middle;width:7%">UOM</th>
-                          <th class="text-center" style="width:8%"> <button class="btn btn-default btn-sm" onclick="btnPlusIKCST()"><i class="fa fa-plus"></i></button> </th>
+                          <th class="text-center" style="width:50px">No</th>
+                          <th class="text-center" style="width:150px">Item</th>
+                          <th class="text-center" style="width:300px">Desc</th>
+                          <!-- <th class="text-center">Qty Req</th> -->
+                          <th class="text-center">UOM</th>
+                          <th class="text-center">Created By</th>
+                          <th class="text-center">Creation Date</th>
+                          <th class="text-center">Status</th>
                         </tr>
                       </thead>
-                      <tbody id="tambahannya_disini">
-                        <tr>
-                          <td class="text-center">
-                            <input type="hidden" name="item_id[]" class="item_id" value="">
-                            <select class="select2_inpkebutuhan_cst" required style="width:380px" name="description[]">
-                              <option value="" selected></option>
-                            </select>
-                          </td>
-                          <td class="text-center"><input type="text" class="form-control item-code" name="item_code[]" readonly="readonly"></td>
-                          <td class="text-center"><input type="number" required class="form-control" id="qty_kebutuhan_consum1" name="qty_kebutuhan[]" required="required"></td>
-                          <td class="text-center"><input type="text" class="form-control uom" readonly="readonly"></td>
-                          <td class="text-center">
-                            <button class="btn btn-default btn-sm" disabled>
-                              <i class="fa fa-minus"></i>
-                            </button>
-                          </td>
-                        </tr>
+                      <tbody>
+
                       </tbody>
                     </table>
 

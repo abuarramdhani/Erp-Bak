@@ -26,6 +26,16 @@ class M_master extends CI_Model
       // return $res['seksi'];
     }
 
+    public function updatepicvoip($value)
+    {
+      $this->oracle->where('KODESIE', $value['kodesie'])->update('KHS_CSM_SEKSI', ['PIC'=>explode(' - ', $value['pic'])[1],'VOIP'=>$value['voip']]);
+      if ($this->oracle->affected_rows()) {
+        return 'done';
+      }else {
+        return 0;
+      }
+    }
+
     public function employee($data, $kodesie)
     {
         $sql = "select noind, nama from hrd_khs.tpribadi where kodesie like '$kodesie%' and keluar = 'f'
@@ -238,7 +248,10 @@ class M_master extends CI_Model
   							WHERE
   									pagination BETWEEN {$data['pagination']['from']} AND {$data['pagination']['to']}"
   					)->result_array();
-
+        foreach ($res as $key => $value) {
+          $get_nama = $this->personalia->query("select nama from hrd_khs.tpribadi where noind = '$value[PENGAJUAN_BY]'")->row_array();
+          $res[$key]['NAMA'] = $get_nama['nama'];
+        }
   			return $res;
   	}
 
@@ -416,7 +429,6 @@ class M_master extends CI_Model
   							WHERE
   									pagination BETWEEN {$data['pagination']['from']} AND {$data['pagination']['to']}"
   					)->result_array();
-
   			return $res;
   	}
 
@@ -496,7 +508,10 @@ class M_master extends CI_Model
                 WHERE
                     pagination BETWEEN {$data['pagination']['from']} AND {$data['pagination']['to']}"
             )->result_array();
-
+        foreach ($res as $key => $value) {
+          $get_nama = $this->personalia->query("select nama from hrd_khs.tpribadi where noind = '$value[CREATED_BY]'")->row_array();
+          $res[$key]['NAMA'] = $get_nama['nama'];
+        }
         return $res;
     }
 
@@ -561,7 +576,20 @@ class M_master extends CI_Model
 
     public function getdataseksi($value='')
     {
-      return $this->oracle->get('KHS_CSM_SEKSI')->result_array();
+      $data = $this->oracle->query("SELECT a.*, (select count(b.item_id) j from KHS_CSM_ITEM_SEKSI b where b.kodesie = a.kodesie and status = 1) jumlah from khs_csm_seksi a ")->result_array();
+      foreach ($data as $key => $value) {
+        $get_nama = $this->personalia->query("select nama from hrd_khs.tpribadi where noind = '$value[PIC]'")->row_array();
+        $data[$key]['NAMA'] = $get_nama['nama'];
+      }
+      return $data;
+    }
+
+    public function detailseksi($kodesie)
+    {
+      $data = $this->oracle->where('KODESIE', $kodesie)->get('KHS_CSM_SEKSI')->row_array();
+      $get_nama = $this->personalia->query("select nama from hrd_khs.tpribadi where noind = '$data[PIC]'")->row_array();
+      $data['NAMA'] = $get_nama['nama'];
+      return $data;
     }
 
     public function delseksi($kodesie)
@@ -573,5 +601,78 @@ class M_master extends CI_Model
         return 0;
       }
     }
+
+    public function selectDetailitemseksi($data, $kodesie)
+    {
+      $val = strtoupper($data['search']['value']);
+        $res = $this->oracle
+            ->query(
+                "SELECT kdav.*
+                FROM
+                    (
+                    SELECT
+                            skdav.*,
+                            ROW_NUMBER () OVER (ORDER BY segment1 DESC) as pagination
+                        FROM
+                            (
+                              SELECT kck.*, TO_CHAR(kck.pengajuan_date, 'DD/MM/YYYY HH:MI:SS') tgl_buat, msib.segment1, msib.description, msib.primary_uom_code
+                              FROM KHS_CSM_ITEM_SEKSI kck, mtl_system_items_b msib
+                              WHERE kck.item_id = msib.inventory_item_id
+                              AND kck.kodesie = '$kodesie'
+                              AND kck.STATUS = 1
+                              AND msib.organization_id = 81
+                              AND (
+                                msib.segment1 LIKE '%$val%'
+                                OR msib.description LIKE '%$val%'
+                                OR kck.pengajuan_date LIKE '%$val%'
+                                OR kck.pengajuan_by LIKE '%$val%'
+                              )
+                            ) skdav
+                    ) kdav
+                WHERE
+                    pagination BETWEEN {$data['pagination']['from']} AND {$data['pagination']['to']}"
+            )->result_array();
+
+        return $res;
+    }
+
+    public function countAllDetailitemseksi($kodesie)
+    {
+      return $this->oracle->query(
+        "SELECT
+            COUNT(*) AS \"count\"
+        FROM
+        (SELECT kck.*, TO_CHAR(kck.pengajuan_date, 'DD/MM/YYYY HH:MI:SS') tgl_buat, msib.segment1, msib.description, msib.primary_uom_code
+          FROM KHS_CSM_ITEM_SEKSI kck, mtl_system_items_b msib
+          WHERE kck.item_id = msib.inventory_item_id
+          AND kck.kodesie = '$kodesie'
+          AND kck.STATUS = 1
+          AND msib.organization_id = 81) bla"
+        )->row_array();
+    }
+
+    public function countFilteredDetailitemseksi($data, $kodesie)
+    {
+      $val = strtoupper($data['search']['value']);
+      return $this->oracle->query(
+        "SELECT
+              COUNT(*) AS \"count\"
+            FROM
+            (
+              SELECT kck.*, TO_CHAR(kck.pengajuan_date, 'DD/MM/YYYY HH:MI:SS') tgl_buat, msib.segment1, msib.description, msib.primary_uom_code
+              FROM KHS_CSM_ITEM_SEKSI kck, mtl_system_items_b msib
+              WHERE kck.item_id = msib.inventory_item_id
+              AND kck.kodesie = '$kodesie'
+              AND msib.organization_id = 81
+              AND kck.STATUS = 1
+              AND (
+                msib.segment1 LIKE '%$val%'
+                OR msib.description LIKE '%$val%'
+                OR kck.pengajuan_date LIKE '%$val%'
+                OR kck.pengajuan_by LIKE '%$val%'
+              )
+            )bla")->row_array();
+    }
+    // end pengajuan
 
 }

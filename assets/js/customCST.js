@@ -888,9 +888,7 @@ $('.savecsmseksi').on('submit', function(e) {
    })
 })
 
-$('.slc_csm_seksi').on('change', function() {
-  let val = $(this).val().split(' - ')[1];
-  let kodesie = $(this).select2('data')[0].kodesie;
+function slccsmemploy(kodesie) {
   $('.slc_csm_employ').select2({
     placeholder: "Employee Name..",
     tags: true,
@@ -919,27 +917,13 @@ $('.slc_csm_seksi').on('change', function() {
       }
     }
   })
- //  $.ajax({
- //  url: baseurl + 'consumabletimv2/action/getseksi',
- //  type: 'POST',
- //  data : {
- //    noind:val
- //  },
- //  cache: false,
- //  // async:false,
- //  dataType: "JSON",
- //  beforeSend: function() {
- //    $('input[name="seksi"]').val('Loading...')
- //  },
- //  success: function(result) {
- //    $('input[name="seksi"]').val(result)
- //  },
- //  error: function(XMLHttpRequest, textStatus, errorThrown) {
- //   console.log(XMLHttpRequest);
- //   swaCSTLarge('error', `${XMLHttpRequest.responseText}`);
- //   console.error();
- //  }
- // })
+}
+
+$('.slc_csm_seksi').on('change', function() {
+  let val = $(this).val().split(' - ')[1];
+  let kodesie = $(this).select2('data')[0].kodesie;
+  slccsmemploy(kodesie);
+
 })
 
 $('.csm_voip').on('input', function() {
@@ -950,3 +934,40 @@ $('.csm_voip').on('input', function() {
     $(this).val(new_)
   }
 })
+
+function updatepicvoip() {
+  let kodesie = $('#edtds_kodesie').val()
+  let pic = $('#edtds_pic').val();
+  let voip = $('#edtds_voip').val();
+  if (pic != '' && voip != '') {
+     $.ajax({
+     url: baseurl + 'consumabletimv2/action/updatepicvoip',
+     type: 'POST',
+     data : {
+       kodesie:kodesie,
+       pic:pic,
+       voip:voip
+     },
+     cache: false,
+     // async:false,
+     dataType: "JSON",
+     beforeSend: function() {
+       swaCSTLoading('Mengupdate...')
+     },
+     success: function(result) {
+      if (result == 'done') {
+        swaCSTLarge('success', 'Berhasil mengupdate data')
+        csmdataseksi();
+        $('#editmasterseksi').modal('hide');
+      }else {
+        swaCSTLarge('warning', 'Gagal melakukan update');
+      }
+     },
+     error: function(XMLHttpRequest, textStatus, errorThrown) {
+      console.log(XMLHttpRequest);
+      swaCSTLarge('error', `${XMLHttpRequest.responseText}`);
+      console.error();
+     }
+    })
+  }
+}

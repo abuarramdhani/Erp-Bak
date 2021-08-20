@@ -117,7 +117,7 @@ class C_Master extends CI_Controller
           $sub_array[] = '<center>'.$row['DESCRIPTION'].'</center>';
           // $sub_array[] = '<center>'.$row['REQ_QUANTITY'].'</center>';
           $sub_array[] = '<center>'.$row['PRIMARY_UOM_CODE'].'</center>';
-          $sub_array[] = '<center>'.$row['PENGAJUAN_BY'].'</center>';
+          $sub_array[] = '<center>'.$row['PENGAJUAN_BY'].'<br>'.$row['NAMA'].'</center>';
           $sub_array[] = '<center>'.$row['TGL_BUAT'].'</center>';
           $sub_array[] = '<center>'.$status_.'  </center>';
           $sub_array[] = '<center>
@@ -187,7 +187,7 @@ class C_Master extends CI_Controller
         $sub_array[] = '<center>-</center>';
         $sub_array[] = '<center>-</center>';
         $sub_array[] = '<center>-</center>';
-        $sub_array[] = '<center>'.$row['CREATED_BY'].'</center>';
+        $sub_array[] = '<center>'.$row['CREATED_BY'].'<br>'.$row['NAMA'].'</center>';
         $sub_array[] = '<center>'.$row['TGL_BUAT'].'</center>';
         $sub_array[] = '<center>
                          <button type="button" class="btn btn-sm" name="button" title="hapus?" onclick="delcstpengajuan('.$row['ITEM_ID'].')"> <i class="fa fa-trash"></i> </button>
