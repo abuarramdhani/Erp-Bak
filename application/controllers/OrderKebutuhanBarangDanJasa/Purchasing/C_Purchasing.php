@@ -1,7 +1,8 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class C_Purchasing extends CI_Controller {
+class C_Purchasing extends CI_Controller
+{
     public function __construct()
     {
         parent::__construct();
@@ -10,136 +11,136 @@ class C_Purchasing extends CI_Controller {
         $this->load->helper('url');
         $this->load->helper('html');
         $this->load->library('form_validation');
-          //load the login model
-		$this->load->library('session');
-		$this->load->model('SystemAdministration/MainMenu/M_user');
-		$this->load->model('OrderKebutuhanBarangDanJasa/Requisition/M_requisition');
-		$this->load->model('OrderKebutuhanBarangDanJasa/Approver/M_approver');
-		$this->load->model('OrderKebutuhanBarangDanJasa/Pengelola/M_pengelola');
-		$this->load->model('OrderKebutuhanBarangDanJasa/Puller/M_puller');
-		$this->load->model('OrderKebutuhanBarangDanJasa/Purchasing/M_purchasing');
-        	  
-		 if($this->session->userdata('logged_in')!=TRUE) {
-			$this->load->helper('url');
-			$this->session->set_userdata('last_page', current_url());
-			$this->session->set_userdata('Responsbility', 'some_value');
-         }
-        if($this->session->is_logged == FALSE){
+        //load the login model
+        $this->load->library('session');
+        $this->load->model('SystemAdministration/MainMenu/M_user');
+        $this->load->model('OrderKebutuhanBarangDanJasa/Requisition/M_requisition');
+        $this->load->model('OrderKebutuhanBarangDanJasa/Approver/M_approver');
+        $this->load->model('OrderKebutuhanBarangDanJasa/Pengelola/M_pengelola');
+        $this->load->model('OrderKebutuhanBarangDanJasa/Puller/M_puller');
+        $this->load->model('OrderKebutuhanBarangDanJasa/Purchasing/M_purchasing');
+
+        if ($this->session->userdata('logged_in') != TRUE) {
+            $this->load->helper('url');
+            $this->session->set_userdata('last_page', current_url());
+            $this->session->set_userdata('Responsbility', 'some_value');
+        }
+        if ($this->session->is_logged == FALSE) {
             redirect();
         }
     }
 
     public function index()
-	{   
-		$user_id = $this->session->userid;
-		
-		$data['Menu'] = '';
-		$data['SubMenuOne'] = '';
-		
-		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
-        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-     
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
-        $this->load->view('OrderKebutuhanBarangDanJasa/V_Index',$data);
-        $this->load->view('V_Footer',$data);
+    {
+        $user_id = $this->session->userid;
+
+        $data['Menu'] = '';
+        $data['SubMenuOne'] = '';
+
+        $data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
+
+        $this->load->view('V_Header', $data);
+        $this->load->view('V_Sidemenu', $data);
+        $this->load->view('OrderKebutuhanBarangDanJasa/V_Index', $data);
+        $this->load->view('V_Footer', $data);
     }
 
     public function PermintaanApprove()
-	{   
+    {
         $user_id = $this->session->userid;
         $noind = $this->session->user;
-		
-		$data['Menu'] = 'Approve Order';
-		$data['SubMenuOne'] = 'Daftar Permintaan Approve Order';
-		
-		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
-        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+        $data['Menu'] = 'Approve Order';
+        $data['SubMenuOne'] = 'Daftar Permintaan Approve Order';
+
+        $data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
         $data['approver'] = $this->M_requisition->getPersonId($noind);
         $person_id = $data['approver'][0]['PERSON_ID'];
 
         $data['listOrder'] = $this->M_purchasing->getReleasedOrder();
 
-     
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
-        $this->load->view('OrderKebutuhanBarangDanJasa/Purchasing/V_PermintaanApprove',$data);
-        $this->load->view('V_Footer',$data);
+
+        $this->load->view('V_Header', $data);
+        $this->load->view('V_Sidemenu', $data);
+        $this->load->view('OrderKebutuhanBarangDanJasa/Purchasing/V_PermintaanApprove', $data);
+        $this->load->view('V_Footer', $data);
     }
 
     public function PermintaanApproveNormal()
-	{   
+    {
         $user_id = $this->session->userid;
         $noind = $this->session->user;
-		
-		$data['Menu'] = 'Approve Order';
-		$data['SubMenuOne'] = 'Permintaan Approve Order Normal';
-		
-		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
-        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+        $data['Menu'] = 'Approve Order';
+        $data['SubMenuOne'] = 'Permintaan Approve Order Normal';
+
+        $data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
         $data['approver'] = $this->M_requisition->getPersonId($noind);
         $person_id = $data['approver'][0]['PERSON_ID'];
 
         $data['listOrder'] = $this->M_purchasing->getReleasedOrderReguler();
 
-     
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
-        $this->load->view('OrderKebutuhanBarangDanJasa/Purchasing/V_PermintaanApprove',$data);
-        $this->load->view('V_Footer',$data);
+
+        $this->load->view('V_Header', $data);
+        $this->load->view('V_Sidemenu', $data);
+        $this->load->view('OrderKebutuhanBarangDanJasa/Purchasing/V_PermintaanApprove', $data);
+        $this->load->view('V_Footer', $data);
     }
 
     public function PermintaanApproveSusulan()
-	{   
+    {
         $user_id = $this->session->userid;
         $noind = $this->session->user;
-		
-		$data['Menu'] = 'Approve Order';
-		$data['SubMenuOne'] = 'Permintaan Approve Order Susulan';
-		
-		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
-        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+        $data['Menu'] = 'Approve Order';
+        $data['SubMenuOne'] = 'Permintaan Approve Order Susulan';
+
+        $data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
         $data['approver'] = $this->M_requisition->getPersonId($noind);
         $person_id = $data['approver'][0]['PERSON_ID'];
 
         $data['listOrder'] = $this->M_purchasing->getReleasedOrderEmergency();
 
-     
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
-        $this->load->view('OrderKebutuhanBarangDanJasa/Purchasing/V_PermintaanApprove',$data);
-        $this->load->view('V_Footer',$data);
+
+        $this->load->view('V_Header', $data);
+        $this->load->view('V_Sidemenu', $data);
+        $this->load->view('OrderKebutuhanBarangDanJasa/Purchasing/V_PermintaanApprove', $data);
+        $this->load->view('V_Footer', $data);
     }
 
     public function PermintaanApproveUrgent()
-	{   
+    {
         $user_id = $this->session->userid;
         $noind = $this->session->user;
-		
-		$data['Menu'] = 'Approve Order';
-		$data['SubMenuOne'] = 'Permintaan Approve Order Urgent';
-		
-		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
-        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+        $data['Menu'] = 'Approve Order';
+        $data['SubMenuOne'] = 'Permintaan Approve Order Urgent';
+
+        $data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
         $data['approver'] = $this->M_requisition->getPersonId($noind);
         $person_id = $data['approver'][0]['PERSON_ID'];
 
         $data['listOrder'] = $this->M_purchasing->getReleasedOrderUrgent();
 
-     
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
-        $this->load->view('OrderKebutuhanBarangDanJasa/Purchasing/V_PermintaanApprove',$data);
-        $this->load->view('V_Footer',$data);
+
+        $this->load->view('V_Header', $data);
+        $this->load->view('V_Sidemenu', $data);
+        $this->load->view('OrderKebutuhanBarangDanJasa/Purchasing/V_PermintaanApprove', $data);
+        $this->load->view('V_Footer', $data);
     }
 
     public function ReleaseOrder()
@@ -152,31 +153,31 @@ class C_Purchasing extends CI_Controller {
         $order_id = $_POST['order_id'];
 
         $pre_req = array(
-                            'CREATED_BY' => $person_id,
-                        );
+            'CREATED_BY' => $person_id,
+        );
 
         $pre_req_id = $this->M_puller->releaseOrder($pre_req);
 
-        for ($i=0; $i < count($order_id); $i++) { 
-            
+        for ($i = 0; $i < count($order_id); $i++) {
+
             $order = array(
-                            'PRE_REQ_ID' => $pre_req_id[0]['PRE_REQ_ID'],
-                         );
-            
-            $this->M_puller->updateOrder($order_id[$i],$order);
+                'PRE_REQ_ID' => $pre_req_id[0]['PRE_REQ_ID'],
+            );
+
+            $this->M_puller->updateOrder($order_id[$i], $order);
         }
-        
+
 
         echo 1;
     }
-    
+
     public function ShowDetailReleasedOrder()
     {
         $pre_req_id = $_POST['pre_req_id'];
         $data['listOrder'] = $this->M_puller->getDetailReleasedOrder($pre_req_id);
-        $returnTable = $this->load->view('OrderKebutuhanBarangDanJasa/Puller/V_ReleasedOrderTable',$data, true);
+        $returnTable = $this->load->view('OrderKebutuhanBarangDanJasa/Puller/V_ReleasedOrderTable', $data, true);
 
-        echo($returnTable);
+        echo ($returnTable);
     }
 
     public function ApproveOrder()
@@ -187,22 +188,22 @@ class C_Purchasing extends CI_Controller {
 
         // echo $judgement;exit;
 
-        for ($i=0; $i < count($pre_req_id); $i++) { 
+        for ($i = 0; $i < count($pre_req_id); $i++) {
             if ($judgement == 'Y') {
                 $order = array(
-                                'APPROVED_FLAG' => $judgement,
-                                'APPROVED_BY' => $person_id,
-                             );
+                    'APPROVED_FLAG' => $judgement,
+                    'APPROVED_BY' => $person_id,
+                );
                 $this->M_purchasing->updateReleasedOrder($pre_req_id[$i], $order);
-            }elseif ($judgement == 'N') {
+            } elseif ($judgement == 'N') {
                 $order = array(
                     'APPROVED_FLAG' => $judgement,
                     'APPROVED_BY' => $person_id,
                     'NOTE' => $_POST['note'],
-                 );
+                );
                 $this->M_purchasing->updateReleasedOrder($pre_req_id[$i], $order);
             }
-            
+
             if ($judgement == 'Y') {
                 $dataOrder = $this->M_purchasing->getOrder($pre_req_id[$i]);
                 $puller = $this->M_purchasing->getPuller($pre_req_id[$i]);
@@ -217,13 +218,13 @@ class C_Purchasing extends CI_Controller {
 
                     if ($desc[0]['ALLOW_ITEM_DESC_UPDATE_FLAG'] == 'N') {
                         $itemdesc = $data['ITEM_DESCRIPTION'];
-                    }else {
-                        $itemdesc = $desc[0]['DESCRIPTION'].' '.$data['ITEM_DESCRIPTION'];
+                    } else {
+                        $itemdesc = $desc[0]['DESCRIPTION'] . ' ' . $data['ITEM_DESCRIPTION'];
                     }
 
-                    if($data['IS_SUSULAN'] == 'Y'){
-                        $notebuyer = 'SUSULAN - '.$data['NOTE_TO_BUYER'];
-                    }else{
+                    if ($data['IS_SUSULAN'] == 'Y') {
+                        $notebuyer = 'SUSULAN - ' . $data['NOTE_TO_BUYER'];
+                    } else {
                         $notebuyer = $data['NOTE_TO_BUYER'];
                     }
 
@@ -252,7 +253,7 @@ class C_Purchasing extends CI_Controller {
                         'LINE_ATTRIBUTE9' => $data['ORDER_ID'],
                         'HEADER_ATTRIBUTE4' => $data['PRE_REQ_ID'],
                         'REFERENCE_NUM' => $data['ORDER_ID'],
-                     );
+                    );
 
                     $headerAtribut1 = date("Y/m/d H:i:s", strtotime($data['ORDER_DATE']));
                     $headerAtribut2 = date("Y/m/d H:i:s");
@@ -260,19 +261,17 @@ class C_Purchasing extends CI_Controller {
                     $this->M_approver->insertPo_Requisitions_Interface_all($orderPR, $headerAtribut1, $headerAtribut2);
                 }
                 $orderHead = array(
-                    'ORDER_STATUS_ID' => '7', 
+                    'ORDER_STATUS_ID' => '7',
                 );
                 // print_r($orderHead);exit;
-                $this->M_purchasing->UpdateOrder($pre_req_id[$i],$orderHead);
-
-            }elseif ($judgement == 'N') {
+                $this->M_purchasing->UpdateOrder($pre_req_id[$i], $orderHead);
+            } elseif ($judgement == 'N') {
 
                 $orderHead = array(
                     'ORDER_STATUS_ID' => '8',
                 );
 
                 $this->M_purchasing->UpdateOrder($pre_req_id[$i], $orderHead);
-
             }
         }
 
@@ -284,13 +283,13 @@ class C_Purchasing extends CI_Controller {
     {
         $user_id = $this->session->userid;
         $noind = $this->session->user;
-		
-		$data['Menu'] = 'My Action';
-		$data['SubMenuOne'] = 'List Approved Order';
-		
-		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
-        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+        $data['Menu'] = 'My Action';
+        $data['SubMenuOne'] = 'List Approved Order';
+
+        $data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
         $data['approver'] = $this->M_requisition->getPersonId($noind);
         $person_id = $data['approver'][0]['PERSON_ID'];
@@ -302,24 +301,24 @@ class C_Purchasing extends CI_Controller {
         $cond = "AND oprh.APPROVED_FLAG = 'Y'";
 
         $data['listOrder'] = $this->M_purchasing->getActOrder($person_id, $cond);
-     
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
-        $this->load->view('OrderKebutuhanBarangDanJasa/Purchasing/V_ApprovedPurchasing',$data);
-        $this->load->view('V_Footer',$data);
+
+        $this->load->view('V_Header', $data);
+        $this->load->view('V_Sidemenu', $data);
+        $this->load->view('OrderKebutuhanBarangDanJasa/Purchasing/V_ApprovedPurchasing', $data);
+        $this->load->view('V_Footer', $data);
     }
 
     public function ListApprovedPurchasingForBuyer()
     {
         $user_id = $this->session->userid;
         $noind = $this->session->user;
-		
-		$data['Menu'] = 'My Action';
-		$data['SubMenuOne'] = 'List Approved Order';
-		
-		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
-        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+        $data['Menu'] = 'My Action';
+        $data['SubMenuOne'] = 'List Approved Order';
+
+        $data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
         $data['approver'] = $this->M_requisition->getPersonId($noind);
         $person_id = $data['approver'][0]['PERSON_ID'];
@@ -331,24 +330,24 @@ class C_Purchasing extends CI_Controller {
         $cond = "AND oprh.APPROVED_FLAG = 'Y'";
 
         $data['listOrder'] = $this->M_purchasing->getActOrderForBuyer($cond);
-     
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
-        $this->load->view('OrderKebutuhanBarangDanJasa/Purchasing/V_ApprovedPurchasing',$data);
-        $this->load->view('V_Footer',$data);
+
+        $this->load->view('V_Header', $data);
+        $this->load->view('V_Sidemenu', $data);
+        $this->load->view('OrderKebutuhanBarangDanJasa/Purchasing/V_ApprovedPurchasing', $data);
+        $this->load->view('V_Footer', $data);
     }
 
     public function ListRejectedPurchasing()
     {
         $user_id = $this->session->userid;
         $noind = $this->session->user;
-		
-		$data['Menu'] = 'My Action';
-		$data['SubMenuOne'] = 'List Rejected Order';
-		
-		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
-        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+        $data['Menu'] = 'My Action';
+        $data['SubMenuOne'] = 'List Rejected Order';
+
+        $data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
         $data['approver'] = $this->M_requisition->getPersonId($noind);
         $person_id = $data['approver'][0]['PERSON_ID'];
@@ -360,11 +359,11 @@ class C_Purchasing extends CI_Controller {
         $cond = "AND oprh.APPROVED_FLAG = 'N'";
 
         $data['listOrder'] = $this->M_purchasing->getActOrder($person_id, $cond);
-     
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
-        $this->load->view('OrderKebutuhanBarangDanJasa/Purchasing/V_RejectedPurchasing',$data);
-        $this->load->view('V_Footer',$data);
+
+        $this->load->view('V_Header', $data);
+        $this->load->view('V_Sidemenu', $data);
+        $this->load->view('OrderKebutuhanBarangDanJasa/Purchasing/V_RejectedPurchasing', $data);
+        $this->load->view('V_Footer', $data);
     }
 
     public function ShowAttachment($orderid)
@@ -373,13 +372,13 @@ class C_Purchasing extends CI_Controller {
         // print_r($data);exit;
         if (count($data) == 0) {
             echo '<span><i class="fa fa-warning"></i>Tidak ada attachment</span><br>';
-        }else {
+        } else {
             foreach ($data as $key => $att) {
-                
+
                 if ($att['FILE_NAME'] == null) {
                     echo '<span><i class="fa fa-warning"></i>Tidak ada attachment</span><br>';
-                }else {
-                    $file = explode('.',$att['FILE_NAME']);
+                } else {
+                    $file = explode('.', $att['FILE_NAME']);
                     $ext  = strtolower($file[1]);
                     echo '<center>';
                     if ($ext == 'pdf') {
@@ -405,36 +404,35 @@ class C_Purchasing extends CI_Controller {
                     //     echo '<img src="'.base_url('assets/upload/Okebaja/'.$att['FILE_NAME']).'">';
                     // }
                 }
-            }            
+            }
         }
-        
     }
 
     public function ListDetailApprovedPurchasing()
     {
         $user_id = $this->session->userid;
         $noind = $this->session->user;
-		
-		$data['Menu'] = 'My Action';
-		$data['SubMenuOne'] = 'List Detail Approved Order';
-		
-		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
-        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+        $data['Menu'] = 'My Action';
+        $data['SubMenuOne'] = 'List Detail Approved Order';
+
+        $data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
         $data['list_detail'] = $this->M_purchasing->DetailApprovedOrder();
 
-        $this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
-        $this->load->view('OrderKebutuhanBarangDanJasa/Purchasing/V_DetailApprovedPurchasing',$data);
-        $this->load->view('V_Footer',$data);
+        $this->load->view('V_Header', $data);
+        $this->load->view('V_Sidemenu', $data);
+        $this->load->view('OrderKebutuhanBarangDanJasa/Purchasing/V_DetailApprovedPurchasing', $data);
+        $this->load->view('V_Footer', $data);
     }
 
     public function ShowDetailOrderApproved()
     {
         $order_id = $_POST['order_id'];
         $data['listOrder'] = $this->M_purchasing->getDetailApprovedOrder($order_id);
-        $returnTable = $this->load->view('OrderKebutuhanBarangDanJasa/Puller/V_ReleasedOrderTable',$data, true);
+        $returnTable = $this->load->view('OrderKebutuhanBarangDanJasa/Puller/V_ReleasedOrderTable', $data, true);
 
         echo $returnTable;
     }
@@ -444,22 +442,22 @@ class C_Purchasing extends CI_Controller {
 
         $plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $pre_req_id);
         $plaintext_string = $this->encrypt->decode($plaintext_string);
-        
+
         $this->load->library('pdf');
-		$pdf = $this->pdf->load();
-		$filename = 'Okebaja-pre_req_id-'.$plaintext_string.'-tanggal_cetak-'.date('d-m-Y').'.pdf';
-		$pdf = new mPDF('utf-8', 'A4-L', 0, 'arial',3, 3, 46, 3, 3, 3);
-        
+        $pdf = $this->pdf->load();
+        $filename = 'Okebaja-pre_req_id-' . $plaintext_string . '-tanggal_cetak-' . date('d-m-Y') . '.pdf';
+        $pdf = new mPDF('utf-8', 'A4-L', 0, 'arial', 3, 3, 46, 3, 3, 3);
+
         $lines = $this->M_purchasing->cetakOrder($plaintext_string);
 
         $finishLines = array();
-        for ($i=0; $i < count($lines); $i++) { 
+        for ($i = 0; $i < count($lines); $i++) {
             $approver = $this->M_purchasing->cetakApprover($lines[$i]['ORDER_ID']);
 
-            if (!isset($lines[$i]['APPROVER'])) {        
-				$lines[$i]['APPROVER'] = $approver;    
-			}
-            array_push($finishLines,$lines[$i]);
+            if (!isset($lines[$i]['APPROVER'])) {
+                $lines[$i]['APPROVER'] = $approver;
+            }
+            array_push($finishLines, $lines[$i]);
         }
         $data['headers'] = $this->M_purchasing->cetakHeader($plaintext_string);
         $data['lines'] = $finishLines;
@@ -468,15 +466,15 @@ class C_Purchasing extends CI_Controller {
         // print_r($data['headers']);
         // exit;
 
-        $header = $this->load->view('OrderKebutuhanBarangDanJasa/Purchasing/V_CetakOrderHeader',$data,true);
-        $line = $this->load->view('OrderKebutuhanBarangDanJasa/Purchasing/V_CetakOrderLine',$data,true);
+        $header = $this->load->view('OrderKebutuhanBarangDanJasa/Purchasing/V_CetakOrderHeader', $data, true);
+        $line = $this->load->view('OrderKebutuhanBarangDanJasa/Purchasing/V_CetakOrderLine', $data, true);
 
         $pdf->setHeader($header, 2);
         $pdf->writeHTML($line, 2);
-		$pdf->setTitle($filename);
-		$pdf->Output($filename, 'I');
+        $pdf->setTitle($filename);
+        $pdf->Output($filename, 'I');
     }
-    
+
     public function getUnapprovedOrderCount()
     {
         $total_unapproved_order = $this->M_purchasing->getUnapprovedOrderCount('ALL');
@@ -485,5 +483,86 @@ class C_Purchasing extends CI_Controller {
             ->set_status_header(200)
             ->set_content_type('application/json')
             ->set_output(json_encode($total_unapproved_order));
+    }
+    public function OutstandingApprover()
+    {
+        // echo "haha";
+        $user_id = $this->session->userid;
+        $noind = $this->session->user;
+
+        $data['Menu'] = 'Outstanding Approver';
+        // $data['SubMenuOne'] = 'Outstanding';
+        $data['Title'] = 'List Outstanding Order Approver';
+        $data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
+
+        // $data['list_detail'] = $this->M_purchasing->DetailApprovedOrder();
+        $list_outstanding = $this->M_purchasing->list_outstandingApprover();
+
+        // echo "<pre>";
+        // print_r($list_outstanding);
+        // exit();
+
+        $data['outstanding'] = $list_outstanding;
+
+        $this->load->view('V_Header', $data);
+        $this->load->view('V_Sidemenu', $data);
+        $this->load->view('OrderKebutuhanBarangDanJasa/Purchasing/V_OutstandingOrder', $data);
+        $this->load->view('V_Footer', $data);
+    }
+    public function OutstandingPengelola()
+    {
+        // echo "haha";
+        $user_id = $this->session->userid;
+        $noind = $this->session->user;
+
+        $data['Menu'] = 'Outstanding Pengelola';
+        // $data['SubMenuOne'] = 'Outstanding';
+        $data['Title'] = 'List Outstanding Order Pengelola';
+        $data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
+
+        // $data['list_detail'] = $this->M_purchasing->DetailApprovedOrder();
+        $list_outstanding = $this->M_purchasing->list_outstandingPengelola();
+
+        // echo "<pre>";
+        // print_r($list_outstanding);
+        // exit();
+
+        $data['outstanding'] = $list_outstanding;
+
+        $this->load->view('V_Header', $data);
+        $this->load->view('V_Sidemenu', $data);
+        $this->load->view('OrderKebutuhanBarangDanJasa/Purchasing/V_OutstandingOrder2', $data);
+        $this->load->view('V_Footer', $data);
+    }
+    public function OutstandingPuller()
+    {
+        // echo "haha";
+        $user_id = $this->session->userid;
+        $noind = $this->session->user;
+
+        $data['Menu'] = 'Outstanding Puller';
+        // $data['SubMenuOne'] = 'Outstanding';
+        $data['Title'] = 'List Outstanding Order Puller';
+        $data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
+
+        // $data['list_detail'] = $this->M_purchasing->DetailApprovedOrder();
+        $list_outstanding = $this->M_purchasing->list_outstandingPuller();
+
+        // echo "<pre>";
+        // print_r($list_outstanding);
+        // exit();
+
+        $data['outstanding'] = $list_outstanding;
+
+        $this->load->view('V_Header', $data);
+        $this->load->view('V_Sidemenu', $data);
+        $this->load->view('OrderKebutuhanBarangDanJasa/Purchasing/V_OutstandingOrder2', $data);
+        $this->load->view('V_Footer', $data);
     }
 }
