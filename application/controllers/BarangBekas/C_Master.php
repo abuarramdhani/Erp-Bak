@@ -48,8 +48,8 @@ class C_Master extends CI_Controller
 
         $data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
 
-        $admin = ['a'=>'B0724', 'b'=>'T0012', 'c'=>'B0713', 'd'=>'B0797', 'e'=>'B0285'];
-        if (empty(array_search($this->session->user, $admin))) {
+        $admin = $this->M_master->transact_acc();
+        if (empty(in_array($this->session->user, $admin))) {
           unset($data['UserMenu'][2]);
         }
 
@@ -73,8 +73,8 @@ class C_Master extends CI_Controller
 
       $data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
 
-      $admin = ['a'=>'B0724', 'b'=>'T0012', 'c'=>'B0713', 'd'=>'B0797', 'e'=>'B0285'];
-      if (empty(array_search($this->session->user, $admin))) {
+      $admin = $this->M_master->transact_acc();
+      if (empty(in_array($this->session->user, $admin))) {
         unset($data['UserMenu'][2]);
       }
 
@@ -175,8 +175,8 @@ class C_Master extends CI_Controller
 
       $data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
 
-      $admin = ['a'=>'B0724', 'b'=>'T0012', 'c'=>'B0713', 'd'=>'B0797', 'e'=>'B0285'];
-      if (empty(array_search($this->session->user, $admin))) {
+      $admin = $this->M_master->transact_acc();
+      if (empty(in_array($this->session->user, $admin))) {
         unset($data['UserMenu'][2]);
       }
 
@@ -240,8 +240,8 @@ class C_Master extends CI_Controller
 
       $data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
 
-      $admin = ['a'=>'B0724', 'b'=>'T0012', 'c'=>'B0713', 'd'=>'B0797', 'e'=>'B0285'];
-      if (empty(array_search($this->session->user, $admin))) {
+      $admin = $this->M_master->transact_acc();
+      if (empty(in_array($this->session->user, $admin))) {
         unset($data['UserMenu'][2]);
       }
 
@@ -279,8 +279,8 @@ class C_Master extends CI_Controller
 
       $data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
 
-      $admin = ['a'=>'B0724', 'b'=>'T0012', 'c'=>'B0713', 'd'=>'B0797', 'e'=>'B0285'];
-      if (empty(array_search($this->session->user, $admin))) {
+      $admin = $this->M_master->transact_acc();
+      if (empty(in_array($this->session->user, $admin))) {
         unset($data['UserMenu'][2]);
       }
 
