@@ -8,6 +8,18 @@ class M_master extends CI_Model
         $this->oracle = $this->load->database('oracle', true);
     }
 
+    public function transact_acc($value='')
+    {
+      $data = $this->oracle->get('KHS_TRANSACT_BARKAS')->result_array();
+      $d = [];
+      if (!empty($data)) {
+        foreach ($data as $key => $value) {
+          $d[] = $value['NO_INDUK'];
+        }
+      }
+      return $d;
+    }
+
     public function getSeksi($value='')
     {
       return $this->oracle->query("SELECT ffv.FLEX_VALUE as COST_CENTER,
