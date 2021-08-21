@@ -2699,6 +2699,20 @@ $route['SystemIntegration/KaizenAkt/(:any)/(:any)'] = 'SystemIntegration/MainMen
 
 //kaizen tuksono
 $route['SystemIntegration/KaizenPekerjaTks/TeamKaizen'] = 'SystemIntegration/MainMenu/KaizenTeamTks/C_KaizenTimTks';
+
+$route['SystemIntegration/KaizenPekerjaTks/TeamKaizen/Import'] = 'SystemIntegration/MainMenu/KaizenTeamTks/Import/C_Index';
+$route['SystemIntegration/KaizenPekerjaTks/TeamKaizen/Import/(:any)'] = 'SystemIntegration/MainMenu/KaizenTeamTks/Import/C_Index/$1';
+$route['SystemIntegration/KaizenPekerjaTks/TeamKaizen/Import/(:any)/(:any)'] = 'SystemIntegration/MainMenu/KaizenTeamTks/Import/C_Index/$1/$2';
+
+$route['SystemIntegration/KaizenPekerjaTks/TeamKaizen/Export/Tahunan'] = 'SystemIntegration/MainMenu/KaizenTeamTks/Export/C_Tahunan';
+$route['SystemIntegration/KaizenPekerjaTks/TeamKaizen/Export/Tahunan/(:any)'] = 'SystemIntegration/MainMenu/KaizenTeamTks/Export/C_Tahunan/$1';
+$route['SystemIntegration/KaizenPekerjaTks/TeamKaizen/Export/Bulanan'] = 'SystemIntegration/MainMenu/KaizenTeamTks/Export/C_Bulanan';
+$route['SystemIntegration/KaizenPekerjaTks/TeamKaizen/Export/Bulanan/(:any)'] = 'SystemIntegration/MainMenu/KaizenTeamTks/Export/C_Bulanan/$1';
+$route['SystemIntegration/KaizenPekerjaTks/TeamKaizen/Export/Resume'] = 'SystemIntegration/MainMenu/KaizenTeamTks/Export/C_Resume';
+$route['SystemIntegration/KaizenPekerjaTks/TeamKaizen/Export/Resume/(:any)'] = 'SystemIntegration/MainMenu/KaizenTeamTks/Export/C_Resume/$1';
+$route['SystemIntegration/KaizenPekerjaTks/TeamKaizen/Export/Buletin'] = 'SystemIntegration/MainMenu/KaizenTeamTks/Export/C_Buletin';
+$route['SystemIntegration/KaizenPekerjaTks/TeamKaizen/Export/Buletin/(:any)'] = 'SystemIntegration/MainMenu/KaizenTeamTks/Export/C_Buletin/$1';
+
 $route['SystemIntegration/KaizenPekerjaTks/TeamKaizen/HoverCard/(:any)'] = 'SystemIntegration/MainMenu/KaizenTeamTks/HoverCard/C_HoverCard/$1';
 $route['SystemIntegration/KaizenPekerjaTks/TeamKaizen/(:any)'] = 'SystemIntegration/MainMenu/KaizenTeamTks/C_KaizenTimTks/$1';
 $route['SystemIntegration/KaizenPekerjaTks/TeamKaizen/(:any)/(:any)'] = 'SystemIntegration/MainMenu/KaizenTeamTks/C_KaizenTimTks/$1/$2';
