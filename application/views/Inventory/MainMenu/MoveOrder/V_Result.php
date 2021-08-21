@@ -245,7 +245,7 @@
 							<th>Unit</th>
 							<th>Jumlah Dibutuhkan</th>
 							<!-- EDIT LUTFI -->
-							<th>ATT</th>
+							<th>OH - MO</th>
 							<th>MO</th>
 							<th>STOK</th>
 							
