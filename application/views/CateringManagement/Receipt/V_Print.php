@@ -1,5 +1,5 @@
 <div style="position: fixed; right: 3mm; top: 3mm;">
-	<img style="width: 120px;" src="<?= base_url('./assets/upload/CateringManagement/ReciptQr/'.$id.'.png') ?>">
+	<img style="width: 120px;" src="<?= base_url('./assets/upload/CateringManagement/ReciptQr/'.$qr_code.'.png') ?>">
 </div>
 <div style="border: 2px solid #b7a96c; height: 95%;background: url('http://erp.quick.com/assets/img/rb.png');background-size: 100% 100%;
     background-repeat: no-repeat;">
