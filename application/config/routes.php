@@ -2699,8 +2699,10 @@ $route['SystemIntegration/KaizenAkt/(:any)/(:any)'] = 'SystemIntegration/MainMen
 
 //kaizen tuksono
 $route['SystemIntegration/KaizenPekerjaTks/TeamKaizen'] = 'SystemIntegration/MainMenu/KaizenTeamTks/C_KaizenTimTks';
+$route['SystemIntegration/KaizenPekerjaTks/TeamKaizen/HoverCard/(:any)'] = 'SystemIntegration/MainMenu/KaizenTeamTks/HoverCard/C_HoverCard/$1';
 $route['SystemIntegration/KaizenPekerjaTks/TeamKaizen/(:any)'] = 'SystemIntegration/MainMenu/KaizenTeamTks/C_KaizenTimTks/$1';
 $route['SystemIntegration/KaizenPekerjaTks/TeamKaizen/(:any)/(:any)'] = 'SystemIntegration/MainMenu/KaizenTeamTks/C_KaizenTimTks/$1/$2';
+
 
 $route['SystemIntegration/KaizenPekerjaTks/input'] = 'SystemIntegration/MainMenu/KaizenPekerjaTks/C_KaizenPekerjaTks';
 $route['SystemIntegration/KaizenPekerjaTks/rekap'] = 'SystemIntegration/MainMenu/KaizenPekerjaTks/C_KaizenPekerjaTks/rekapDataKaizen';
