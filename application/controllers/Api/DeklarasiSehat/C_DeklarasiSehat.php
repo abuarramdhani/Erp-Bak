@@ -13,7 +13,36 @@ class C_DeklarasiSehat extends CI_Controller
         $this->load->helper('url');
         $this->load->library('form_validation');
         $this->load->model('Api/DeklarasiSehat/M_deklarasi');
+        $this->load->model('M_index');
         date_default_timezone_set('Asia/Jakarta');
+    }
+
+    function loginDS()
+    {
+        $ret['error'] = 1;
+        $username = $this->input->post('username');
+        $password = $this->input->post('password');
+        $password_md5 = md5($password);
+        $log = $this->M_index->login($username, $password_md5);
+
+        if ($log) {
+            $ret['error'] = 0;
+            $ret['data'] = $this->M_deklarasi->getDetailPKJ($username);
+        }
+        echo json_encode($ret);
+    }
+
+    function DetailPKJ()
+    {
+        $ret['error'] = 1;
+        $noind = $this->input->get('noind');
+        $data = $this->M_deklarasi->getDetailPKJ($noind);
+        if (!empty($data)) {
+            $ret['error'] = 0;
+            $ret['data'] = $data;
+        }
+
+        echo json_encode($ret);
     }
 
     function insertDeklarasi()
