@@ -90,12 +90,21 @@ class M_pipeline extends CI_Model
         $this->update_uploaded_column($table, $value);
     }
 
-    public function get_column_type($table){
-        $sql = "SELECT column_name, data_type
-                 FROM information_schema.COLUMNS
-                WHERE table_name = '".$table."'";
-        $data = $this->db->query($sql);
-        return $data->result_array();
+    // Function tambahan
+
+    public function get_all_skip_date($db){
+
+      if ($db == 'ORACLE'){
+        $query = $this->oracle->query("SELECT DATE_ID FROM KHS_LPB_SKIP_DATE");
+      } else if ($db == 'POSTGRES'){
+        $query = $this->db->query('SELECT "DATE_ID" FROM mb.khs_lpb_skip_date');
+      }
+
+      return $query->result_array();
+    }
+
+    public function delete_data($table, $column, $value){
+      $this->db->query('DELETE FROM mb.'.$table.' WHERE "'.$column.'" = '.$value);
     }
 
 }
