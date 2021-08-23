@@ -10,6 +10,7 @@ class M_presensihariini extends CI_Model
 	{
 		parent::__construct();
 		$this->personalia = $this->load->database('personalia', true);
+		$this->server = $_SERVER['SERVER_ADDR'] != $_SERVER['REMOTE_ADDR'] ? 'database.quick.com' : 'dev.quick.com';
 	}
 
 	public function getPresensiOriginalHariIni()
@@ -40,11 +41,14 @@ class M_presensihariini extends CI_Model
 		    sum(
 		        case when (
 		            select count(*)
-		            from \"Presensi\".tpresensi_riil tps
-		            where tp.noind = tps.noind
-		            and tps.user_ = 'ABSON'
-		            and trim(tps.waktu) !='0'
-		            and tps.tanggal = current_date
+					from dblink(
+						'host=".$this->server." port=5432 dbname=erp user=postgres password=password ',
+						'select tgl tanggal,noind,waktu::time waktu
+						from at.at_absen 
+						where tgl = current_date 
+						and jenis_absen_id in (1,2)'
+					) as aa (tanggal date, noind varchar, waktu time)
+		            where tp.noind = aa.noind
 		        ) = 0 then 0
 		        else 1
 		        end
@@ -56,6 +60,17 @@ class M_presensihariini extends CI_Model
 		            where tp.noind = tps.noind
 		            and trim(tps.waktu) !='0'
 		            and tps.tanggal = current_date
+		        ) = 0 
+		        and (
+		            select count(*)
+					from dblink(
+						'host=".$this->server." port=5432 dbname=erp user=postgres password=password ',
+						'select tgl tanggal,noind,waktu::time waktu
+						from at.at_absen 
+						where tgl = current_date 
+						and jenis_absen_id in (1,2)'
+					) as aa (tanggal date, noind varchar, waktu time)
+		            where tp.noind = aa.noind
 		        ) = 0 then 1
 		        else 0
 		        end
@@ -117,11 +132,14 @@ class M_presensihariini extends CI_Model
 		    sum(
 		        case when (
 		            select count(*)
-		            from \"Presensi\".tpresensi_riil tps
-		            where tp.noind = tps.noind
-		            and tps.user_ = 'ABSON'
-		            and trim(tps.waktu) !='0'
-		            and tps.tanggal = current_date
+					from dblink(
+						'host=".$this->server." port=5432 dbname=erp user=postgres password=password ',
+						'select tgl tanggal,noind,waktu::time waktu
+						from at.at_absen 
+						where tgl = current_date 
+						and jenis_absen_id in (1,2)'
+					) as aa (tanggal date, noind varchar, waktu time)
+		            where tp.noind = aa.noind
 		        ) = 0 then 0
 		        else 1
 		        end
@@ -133,6 +151,17 @@ class M_presensihariini extends CI_Model
 		            where tp.noind = tps.noind
 		            and trim(tps.waktu) !='0'
 		            and tps.tanggal = current_date
+		        ) = 0 
+		        and (
+		            select count(*)
+					from dblink(
+						'host=".$this->server." port=5432 dbname=erp user=postgres password=password ',
+						'select tgl tanggal,noind,waktu::time waktu
+						from at.at_absen 
+						where tgl = current_date 
+						and jenis_absen_id in (1,2)'
+					) as aa (tanggal date, noind varchar, waktu time)
+		            where tp.noind = aa.noind
 		        ) = 0 then 1
 		        else 0
 		        end
@@ -248,14 +277,18 @@ class M_presensihariini extends CI_Model
                     ) > 0";
 				break;
 			case 'wfh':
-				$user = "and user_ = 'ABSON'";
+				$user = "and user_ != 'ABSON'";
 				$jumlah_absen = "and (
-                        select count(*)
-                        from \"Presensi\".tpresensi_riil tpr
-                        where tpr.tanggal = current_date
-                        and tpr.noind = tp.noind
-                        $user
-                    ) > 0";
+		            select count(*)
+					from dblink(
+						'host=".$this->server." port=5432 dbname=erp user=postgres password=password ',
+						'select tgl tanggal,noind,waktu::time waktu
+						from at.at_absen 
+						where tgl = current_date 
+						and jenis_absen_id in (1,2)'
+					) as aa (tanggal date, noind varchar, waktu time)
+		            where tp.noind = aa.noind
+		        ) > 0";
 				break;
 			case 'off': 
 			$user = "";
@@ -264,7 +297,18 @@ class M_presensihariini extends CI_Model
                         from \"Presensi\".tpresensi_riil tpr
                         where tpr.tanggal = current_date
                         and tpr.noind = tp.noind
-                    ) = 0";
+                    ) = 0
+                    and (
+			            select count(*)
+						from dblink(
+							'host=".$this->server." port=5432 dbname=erp user=postgres password=password ',
+							'select tgl tanggal,noind,waktu::time waktu
+							from at.at_absen 
+							where tgl = current_date 
+							and jenis_absen_id in (1,2)'
+						) as aa (tanggal date, noind varchar, waktu time)
+			            where tp.noind = aa.noind
+			        ) = 0";
                 break;
 			default:
 				$user = "";
@@ -272,41 +316,67 @@ class M_presensihariini extends CI_Model
 		}
 		$query = "select ts.dept,ts.bidang,ts.unit,ts.seksi,tp.noind,tp.nama,
 				coalesce(
-                    (
-                        select string_agg(waktu,'|' order by waktu)
-                        from \"Presensi\".tpresensi_riil tpr
-                        where tpr.tanggal = current_date
-                        and tpr.noind = tp.noind
-                        $user
-                    ),
+                    concat(
+	                    (
+	                        select string_agg(waktu,'|' order by waktu)
+	                        from \"Presensi\".tpresensi_riil tpr
+	                        where tpr.tanggal = current_date
+	                        and tpr.noind = tp.noind
+	                        $user
+	                    ),
+	                    (
+				            select string_agg(waktu::varchar,'|' order by waktu)
+							from dblink(
+								'host=".$this->server." port=5432 dbname=erp user=postgres password=password ',
+								'select tgl tanggal,noind,waktu::time waktu
+								from at.at_absen 
+								where tgl = current_date 
+								and jenis_absen_id in (1,2)'
+							) as aa (tanggal date, noind varchar, waktu time)
+				            where tp.noind = aa.noind
+				        )
+                    ) ,
 				    '-'
                 ) as waktu,
 				coalesce(
-                    (
-                        select string_agg(
-                        	case user_ 
-                        	when 'ABSON' then 'Absen Online'
-                        	when 'BRCD1' then 'Depan Mushola'
-                        	when 'BRCD2' then 'Dep Prod'
-                        	when 'BRCD3' then 'Anjungan'
-                        	when 'BRCD4' then 'Finishgood'
-                        	when 'BRCD5' then 'Sheet Metal'
-                        	when 'BRCD6' then 'Foundry'
-                        	when 'BRCD7' then 'Machining'
-                        	when 'BRCD0' then 'Civil Mtn'
-                        	when 'BRCDa' then 'Finishgood2'
-                        	when 'BRCDb' then 'Foundry2'
-                        	when 'BRCDc' then 'Machining2'
-                        	when 'BRCDf' then 'Painting'
-                        	else user_
-                        	end,
-                        	'|' order by waktu
-                        )
-                        from \"Presensi\".tpresensi_riil tpr
-                        where tpr.tanggal = current_date
-                        and tpr.noind = tp.noind
-                        $user
-                    ),
+                    concat(
+	                    (
+	                        select string_agg(
+	                        	case user_ 
+	                        	when 'ABSON' then 'Absen Online'
+	                        	when 'BRCD1' then 'Depan Mushola'
+	                        	when 'BRCD2' then 'Dep Prod'
+	                        	when 'BRCD3' then 'Anjungan'
+	                        	when 'BRCD4' then 'Finishgood'
+	                        	when 'BRCD5' then 'Sheet Metal'
+	                        	when 'BRCD6' then 'Foundry'
+	                        	when 'BRCD7' then 'Machining'
+	                        	when 'BRCD0' then 'Civil Mtn'
+	                        	when 'BRCDa' then 'Finishgood2'
+	                        	when 'BRCDb' then 'Foundry2'
+	                        	when 'BRCDc' then 'Machining2'
+	                        	when 'BRCDf' then 'Painting'
+	                        	else user_
+	                        	end,
+	                        	'|' order by waktu
+	                        )
+	                        from \"Presensi\".tpresensi_riil tpr
+	                        where tpr.tanggal = current_date
+	                        and tpr.noind = tp.noind
+	                        $user
+	                    ),
+	                    (
+				            select string_agg('Absen Online','|')
+							from dblink(
+								'host=".$this->server." port=5432 dbname=erp user=postgres password=password ',
+								'select tgl tanggal,noind,waktu::time waktu
+								from at.at_absen 
+								where tgl = current_date 
+								and jenis_absen_id in (1,2)'
+							) as aa (tanggal date, noind varchar, waktu time)
+				            where tp.noind = aa.noind
+				        )
+	                ),
 				    '-'
                 ) as lokasi, 
 				coalesce(
@@ -331,6 +401,7 @@ class M_presensihariini extends CI_Model
 			$seksi
 			$jumlah_absen
 			order by tp.noind";
+			// echo "<pre>".$query."</pre>";
 		return $this->personalia->query($query)->result_array();
 	}
 
@@ -351,41 +422,69 @@ class M_presensihariini extends CI_Model
 	{
 		$query = "select ts.dept,ts.bidang,ts.unit,ts.seksi,tp.noind,tp.nama,
 		    coalesce(
-		        (
-		            select string_agg(waktu,'|' order by waktu)
-		            from \"Presensi\".tpresensi_riil tpr
-		            where tpr.tanggal = current_date
-		            and tpr.noind = tp.noind
-		        ),
-		        '-'
-		    ) as waktu,
-		    coalesce(
-		        (
-		            select string_agg(
-		                case user_
-		                when 'ABSON' then 'Absen Online'
-		                when 'BRCD1' then 'Depan Mushola'
-		                when 'BRCD2' then 'Dep Prod'
-		                when 'BRCD3' then 'Anjungan'
-		                when 'BRCD4' then 'Finishgood'
-		                when 'BRCD5' then 'Sheet Metal'
-		                when 'BRCD6' then 'Foundry'
-		                when 'BRCD7' then 'Machining'
-		                when 'BRCD0' then 'Civil Mtn'
-		                when 'BRCDa' then 'Finishgood2'
-		                when 'BRCDb' then 'Foundry2'
-		                when 'BRCDc' then 'Machining2'
-		                when 'BRCDf' then 'Painting'
-		                else user_
-		                end,
-		                '|' order by waktu
-		            )
-		            from \"Presensi\".tpresensi_riil tpr
-		            where tpr.tanggal = current_date
-		            and tpr.noind = tp.noind
-		        ),
-		        '-'
-		    ) as lokasi,
+                    concat(
+	                    (
+	                        select string_agg(waktu,'|' order by waktu)
+	                        from \"Presensi\".tpresensi_riil tpr
+	                        where tpr.tanggal = current_date
+	                        and tpr.noind = tp.noind
+	                        and tpr.user_ != 'ABSON'
+	                    ),
+	                    (
+				            select string_agg(waktu::varchar,'|' order by waktu)
+							from dblink(
+								'host=".$this->server." port=5432 dbname=erp user=postgres password=password ',
+								'select tgl tanggal,noind,waktu::time waktu
+								from at.at_absen 
+								where tgl = current_date 
+								and jenis_absen_id in (1,2)'
+							) as aa (tanggal date, noind varchar, waktu time)
+				            where tp.noind = aa.noind
+				        )
+                    ) ,
+				    '-'
+                ) as waktu,
+				coalesce(
+                    concat(
+	                    (
+	                        select string_agg(
+	                        	case user_ 
+	                        	when 'ABSON' then 'Absen Online'
+	                        	when 'BRCD1' then 'Depan Mushola'
+	                        	when 'BRCD2' then 'Dep Prod'
+	                        	when 'BRCD3' then 'Anjungan'
+	                        	when 'BRCD4' then 'Finishgood'
+	                        	when 'BRCD5' then 'Sheet Metal'
+	                        	when 'BRCD6' then 'Foundry'
+	                        	when 'BRCD7' then 'Machining'
+	                        	when 'BRCD0' then 'Civil Mtn'
+	                        	when 'BRCDa' then 'Finishgood2'
+	                        	when 'BRCDb' then 'Foundry2'
+	                        	when 'BRCDc' then 'Machining2'
+	                        	when 'BRCDf' then 'Painting'
+	                        	else user_
+	                        	end,
+	                        	'|' order by waktu
+	                        )
+	                        from \"Presensi\".tpresensi_riil tpr
+	                        where tpr.tanggal = current_date
+	                        and tpr.noind = tp.noind
+	                        and tpr.user_ != 'ABSON'
+	                    ),
+	                    (
+				            select string_agg('Absen Online','|')
+							from dblink(
+								'host=".$this->server." port=5432 dbname=erp user=postgres password=password ',
+								'select tgl tanggal,noind,waktu::time waktu
+								from at.at_absen 
+								where tgl = current_date 
+								and jenis_absen_id in (1,2)'
+							) as aa (tanggal date, noind varchar, waktu time)
+				            where tp.noind = aa.noind
+				        )
+	                ),
+				    '-'
+                ) as lokasi, 
 		    coalesce(
 		        (
 		            select string_agg(ts1.shift, ',')
@@ -424,12 +523,16 @@ class M_presensihariini extends CI_Model
 		        and user_ != 'ABSON'
 		    ) > 0 then 'WFO'
 		    when (
-		        select count(*)
-		        from \"Presensi\".tpresensi_riil tpr
-		        where tpr.tanggal = current_date
-		        and tpr.noind = tp.noind
-		        and user_ = 'ABSON'
-		    ) > 0 then 'WFH'
+	            select count(*)
+				from dblink(
+					'host=".$this->server." port=5432 dbname=erp user=postgres password=password ',
+					'select tgl tanggal,noind,waktu::time waktu
+					from at.at_absen 
+					where tgl = current_date 
+					and jenis_absen_id in (1,2)'
+				) as aa (tanggal date, noind varchar, waktu time)
+	            where tp.noind = aa.noind
+	        ) > 0 then 'WFH'
 		    else 'OFF/TIDAK MASUK'
 		    end as kategori
 		from hrd_khs.tpribadi tp
