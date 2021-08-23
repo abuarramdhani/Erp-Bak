@@ -113,6 +113,8 @@ class C_Import extends CI_Controller
                     $org_id = '';
                 } else if ($validasi[0]['PULLER'] == null) {
                     $note .= 'Item Belum di Set';
+                } else if (strlen($noteToPengelola) > 470) {
+                    $note .= 'Note to Pengelola terlalu Panjang, maksimal 470 karakter';
                 } else {
                     $inv_item_id = $validasi[0]['INVENTORY_ITEM_ID'];
                     if ($uom != $validasi[0]['PRIMARY_UOM'] && $uom != $validasi[0]['SECONDARY_UOM']) {
