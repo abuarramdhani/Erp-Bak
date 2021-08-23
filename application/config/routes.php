@@ -5862,8 +5862,3 @@ $route['VerifikasiPengembalianBarang/Verifikasi/(:any)/(:any)']	= 'PengembalianB
 $route['LaporanPenjualanTraktor/pipeline'] = 'LaporanPenjualanTraktor/Pipeline/C_index';
 
 $route['OrderKebutuhanBarangDanJasa/SMSGagalPR'] = 'OrderKebutuhanBarangDanJasa/C_SendSMS/gagalPR';
-
-
-//------------------------------------------- API Deklarasi Sehat -------------------------------
-$route['Api/DeklarasiSehat/(:any)'] = 'Api/DeklarasiSehat/C_DeklarasiSehat/$1';
-$route['Api/DeklarasiSehat/(:any)/(:any)'] = 'Api/DeklarasiSehat/C_DeklarasiSehat/$1/$2';
