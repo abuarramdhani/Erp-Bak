@@ -71,7 +71,7 @@ class C_KaizenTimTks extends CI_Controller
 
     $this->load->view('V_Header', $data);
     $this->load->view('V_Sidemenu', $data);
-    $this->load->view('SystemIntegration/MainMenu/KaizenTeamTks/RekapDataTotalPekerja/V_periode_satu_tahun', $data);
+    $this->load->view('SystemIntegration/MainMenu/KaizenTeamTks/RekapDataTotalPekerja/V_Periode_satu_tahun', $data);
     $this->load->view('V_Footer', $data);
   }
 
@@ -94,7 +94,7 @@ class C_KaizenTimTks extends CI_Controller
 
     $this->load->view('V_Header', $data);
     $this->load->view('V_Sidemenu', $data);
-    $this->load->view('SystemIntegration/MainMenu/KaizenTeamTks/RekapDataTotalPekerja/V_periode_satu_bulan', $data);
+    $this->load->view('SystemIntegration/MainMenu/KaizenTeamTks/RekapDataTotalPekerja/V_Periode_satu_bulan', $data);
     $this->load->view('V_Footer', $data);
   }
 
@@ -117,7 +117,7 @@ class C_KaizenTimTks extends CI_Controller
 
     $this->load->view('V_Header', $data);
     $this->load->view('V_Sidemenu', $data);
-    $this->load->view('SystemIntegration/MainMenu/KaizenTeamTks/RekapDataTotalKaizen/V_periode_satu_tahun', $data);
+    $this->load->view('SystemIntegration/MainMenu/KaizenTeamTks/RekapDataTotalKaizen/V_Periode_satu_tahun', $data);
     $this->load->view('V_Footer', $data);
   }
 
@@ -140,7 +140,7 @@ class C_KaizenTimTks extends CI_Controller
 
     $this->load->view('V_Header', $data);
     $this->load->view('V_Sidemenu', $data);
-    $this->load->view('SystemIntegration/MainMenu/KaizenTeamTks/RekapDataTotalKaizen/V_periode_satu_bulan', $data);
+    $this->load->view('SystemIntegration/MainMenu/KaizenTeamTks/RekapDataTotalKaizen/V_Periode_satu_bulan', $data);
     $this->load->view('V_Footer', $data);
   }
 
