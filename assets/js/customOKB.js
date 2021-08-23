@@ -786,7 +786,7 @@ $(document).ready(function () {
       "<tr>" +
       "<th>Note to Pengelola</th>" +
       "<th>:</th>" +
-      '<td><textarea style="height: 34px; width:360px; " class="form-control txaOKBNewOrderListNote" name="txtOKBinputNote[]"></textarea></td>' +
+      '<td><textarea style="height: 34px; width:360px; " maxlength="470" class="form-control txaOKBNewOrderListNote" name="txtOKBinputNote[]"></textarea></td>' +
       "</tr>" +
       "<tr>" +
       "<th>Attachment</th>" +
