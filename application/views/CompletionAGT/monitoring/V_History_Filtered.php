@@ -44,5 +44,29 @@
 </div>
 
 <script type="text/javascript">
-  $('.agt-history-filtered').DataTable();
+  let h87 = [];
+  for (var i = 0; i < 12; i++) {
+    h87.push(i)
+  }
+  $('.agt-history-filtered').DataTable({
+    columnDefs: [
+      {orderable: false, targets: [12]},
+    ],
+    select: {
+        style: 'multi',
+        selector: 'tr'
+    },
+    dom: 'Bfrtip',
+    buttons: [
+      'pageLength',
+      {
+        extend: 'excelHtml5',
+        title: 'History Andon ~ Exported At <?php echo date('d-m-y') ?>',
+        exportOptions: {
+          columns: ':visible',
+          columns: h87,
+        }
+      }
+     ],
+  });
 </script>
