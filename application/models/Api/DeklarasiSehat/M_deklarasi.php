@@ -36,7 +36,7 @@ class M_deklarasi extends CI_Model
     function getDeklaraibyID($id)
     {
         $this->personalia->where('id_deklarasi', $id);
-        return $this->personalia->get('hrd_khs.deklarasi_sehat')->result_array();
+        return $this->personalia->get('hrd_khs.deklarasi_sehat')->row_array();
     }
 
     function updDeklarasi($data, $id)
