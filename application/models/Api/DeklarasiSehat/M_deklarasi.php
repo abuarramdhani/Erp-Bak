@@ -21,8 +21,16 @@ class M_deklarasi extends CI_Model
 
     function getDeklaraibyNoind($noind)
     {
-        $this->personalia->where('noind', $noind);
-        return $this->personalia->get('hrd_khs.deklarasi_sehat')->result_array();
+        $sql = "SELECT
+					*
+				from
+					hrd_khs.deklarasi_sehat
+				where
+					noind = '$noind'
+				order by
+					waktu_input desc,
+					id_deklarasi desc";
+        return $this->personalia->query($sql)->result_array();
     }
 
     function getDeklaraibyID($id)
@@ -47,6 +55,13 @@ class M_deklarasi extends CI_Model
 
     function getAllPernyataan()
     {
-        return $this->personalia->get('hrd_khs.deklarasi_sehat_pertanyaan')->result_array();
+        $sql = "SELECT * FROM hrd_khs.deklarasi_sehat_pertanyaan dsp order by aspek";
+        return $this->personalia->query($sql)->result_array();
+    }
+
+    function getDetailPKJ($noind)
+    {
+        $this->personalia->where('noind', $noind);
+        return $this->personalia->get('hrd_khs.tpribadi')->row_array();
     }
 }
