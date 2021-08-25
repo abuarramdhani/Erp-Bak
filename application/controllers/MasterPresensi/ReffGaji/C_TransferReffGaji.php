@@ -335,6 +335,7 @@ class C_TransferReffGaji extends CI_Controller
 							$record->JKN =  $dppn['jml_jkn'] ;
 							$record->JHT =  $dppn['jml_jht'] ;
 							$record->JP =  $dppn['jml_jp'] ;
+							$record->HR_SNACK = !empty($dppn['snack']) ? $dppn['snack'] : 0;
 							$table->writeRecord();
 
 							$progres +=1;
@@ -554,6 +555,7 @@ class C_TransferReffGaji extends CI_Controller
 				$record->HR_IP_LM = $ip_lama;
 				$record->HR_IK_LM = $ik_lama;
 				$record->HR_IPT_LM = $ipt_lama;
+				$record->HR_SNACK = !empty($ds['snack']) ? $ds['snack'] : 0;
 				// echo "<pre>";print_r($record);exit();
 				$table3->writeRecord();
 
@@ -784,6 +786,7 @@ class C_TransferReffGaji extends CI_Controller
 				$record->HR_IP_LM = $ip_lama;
 				$record->HR_IK_LM = $ik_lama;
 				$record->HR_IPT_LM = $ipt_lama;
+				$record->HR_SNACK = !empty($ds['snack']) ? $ds['snack'] : 0;
 				// echo "<pre>";print_r($record);exit();
 				$table3_new->writeRecord();
 				$progres +=1;
@@ -978,6 +981,7 @@ class C_TransferReffGaji extends CI_Controller
 				$record->JKN =  $dn['jml_jkn'] ;
 				$record->JHT =  $dn['jml_jht'] ;
 				$record->JP =  $dn['jml_jp'] ;
+				$record->HR_SNACK = !empty($dn['snack']) ? $dn['snack'] : 0;
 				$table4->writeRecord();
 
 				$progres +=1;
@@ -1094,6 +1098,8 @@ class C_TransferReffGaji extends CI_Controller
 					$record->JKN =  $do['jml_jkn'] ;
 					$record->JHT =  $do['jml_jht'] ;
 					$record->JP =  $do['jml_jp'] ;
+					$record->HR_SNACK = !empty($do['snack']) ? $do['snack'] : 0;
+
 					$table5->writeRecord();
 
 					$progres +=1;
@@ -1167,6 +1173,7 @@ class C_TransferReffGaji extends CI_Controller
 									<td style='border: 1px solid #b2bec3;text-align: right;'>".number_format($simpan_dldobat,0,',','.')."</td>
 									<td style='border: 1px solid #b2bec3;'></td>
 									<td style='border: 1px solid #b2bec3;'></td>
+									<td style='border: 1px solid #b2bec3;'></td>
 								</tr>";
 							}elseif(in_array($simpan_kode_induk, array("B","D","G","J","T"))){
 								$html_cetak_per_kode_induk .= "
@@ -1193,6 +1200,7 @@ class C_TransferReffGaji extends CI_Controller
 									<td style='border: 1px solid #b2bec3;text-align: right;'>".number_format($simpan_putkop_pikop,0,',','.')."</td>
 									<td style='border: 1px solid #b2bec3;text-align: right;'>".number_format($simpan_pduka_spsi,0,',','.')."</td>
 									<td style='border: 1px solid #b2bec3;text-align: right;'>".number_format($simpan_plain,0,',','.')."</td>
+									<td style='border: 1px solid #b2bec3;'></td>
 								</tr>";
 							}elseif(in_array($simpan_kode_induk, array("Q"))){
 								$html_cetak_per_kode_induk .= "
@@ -1219,6 +1227,7 @@ class C_TransferReffGaji extends CI_Controller
 									<td style='border: 1px solid #b2bec3;text-align: right;'>".number_format($simpan_putkop_pikop,0,',','.')."</td>
 									<td style='border: 1px solid #b2bec3;text-align: right;'>".number_format($simpan_pduka_spsi,0,',','.')."</td>
 									<td style='border: 1px solid #b2bec3;text-align: right;'>".number_format($simpan_plain,0,',','.')."</td>
+									<td style='border: 1px solid #b2bec3;'></td>
 									<td style='border: 1px solid #b2bec3;'></td>
 									<td style='border: 1px solid #b2bec3;'></td>
 									<td style='border: 1px solid #b2bec3;'></td>
@@ -1265,6 +1274,7 @@ class C_TransferReffGaji extends CI_Controller
 											<td style='width: 4%;text-align: center;border: 1px solid #b2bec3;'>DL&<br>OBAT</td>
 											<td style='width: 4%;text-align: center;border: 1px solid #b2bec3;'>POT.2</td>
 											<td style='width: 4%;text-align: center;border: 1px solid #b2bec3;'>TAMB.2</td>
+											<td style='width: 4%;text-align: center;border: 1px solid #b2bec3;'>SNACK</td>
 										</tr>
 									</thead>
 									<tbody>";
@@ -1294,6 +1304,7 @@ class C_TransferReffGaji extends CI_Controller
 											<td style='border: 1px solid #b2bec3;width: 60px;text-align: center'>P.KOPR</td>
 											<td style='border: 1px solid #b2bec3;width: 50px;text-align: center'>P.DUKA<br>+SPSI</td>
 											<td style='border: 1px solid #b2bec3;width: 60px;text-align: center'>P.LAIN</td>
+											<td style='border: 1px solid #b2bec3;width: 60px;text-align: center'>SNACK</td>
 										</tr>
 									</thead>
 									<tbody>";
@@ -1326,6 +1337,7 @@ class C_TransferReffGaji extends CI_Controller
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>SEKOLAH</td>
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>JURUSAN</td>
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>PEND.</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>SNACK</td>
 										</tr>
 									</thead>
 									<tbody>";
@@ -1359,6 +1371,7 @@ class C_TransferReffGaji extends CI_Controller
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>DL&<br>OBAT</td>
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>POT.2</td>
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>TAMB.2</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>SNACK</td>
 										</tr>
 									</thead>
 									<tbody>";
@@ -1418,6 +1431,7 @@ class C_TransferReffGaji extends CI_Controller
 							<td style='border: 1px solid #b2bec3;text-align: right;'>".number_format(trim($value['dldobat']),0,',','.')."</td>
 							<td style='border: 1px solid #b2bec3;text-align: right;'>".$value['potongan_str']."</td>
 							<td style='border: 1px solid #b2bec3;text-align: right;'>".$value['tambahan_str']."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".$value['snack']."</td>
 						</tr>";
 					}elseif(in_array(substr($value['noind'], 0, 1), array("B","D","G","J","T"))){
 						$html_cetak_per_kode_induk .= "
@@ -1444,6 +1458,7 @@ class C_TransferReffGaji extends CI_Controller
 							<td style='border: 1px solid #b2bec3;text-align: right;'>".number_format((intval(trim($value['putkop'])) + intval(trim($value['pikop']))),0,',','.')."</td>
 							<td style='border: 1px solid #b2bec3;text-align: right;'>".number_format((intval(trim($value['pduka'])) + intval(trim($value['pspsi']))),0,',','.')."</td>
 							<td style='border: 1px solid #b2bec3;text-align: right;'>".number_format(trim($value['plain']),0,',','.')."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".$value['snack']."</td>
 						</tr>";
 					}elseif(in_array(substr($value['noind'], 0, 1), array("Q"))){
 						$html_cetak_per_kode_induk .= "
@@ -1473,6 +1488,7 @@ class C_TransferReffGaji extends CI_Controller
 							<td style='border: 1px solid #b2bec3;'>".substr($value['sekolah'], 0, 10)."</td>
 							<td style='border: 1px solid #b2bec3;'>".substr($value['jurusan'], 0, 10)."</td>
 							<td style='border: 1px solid #b2bec3;'>".substr($value['pendidikan'], 0, 5)."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".$value['snack']."</td>
 						</tr>";
 					}else{
 						$html_cetak_per_kode_induk .= "
@@ -1528,6 +1544,7 @@ class C_TransferReffGaji extends CI_Controller
 					<td style='border: 1px solid #b2bec3;text-align: right;'>".$simpan_dldobat."</td>
 					<td style='border: 1px solid #b2bec3;'></td>
 					<td style='border: 1px solid #b2bec3;'></td>
+					<td style='border: 1px solid #b2bec3;'></td>
 				</tr>";
 			}elseif(in_array($simpan_kode_induk, array("B","D","G","J","T"))){
 				$html_cetak_per_kode_induk .= "
@@ -1554,6 +1571,7 @@ class C_TransferReffGaji extends CI_Controller
 					<td style='border: 1px solid #b2bec3;text-align: right;'>".$simpan_putkop_pikop."</td>
 					<td style='border: 1px solid #b2bec3;text-align: right;'>".$simpan_pduka_spsi."</td>
 					<td style='border: 1px solid #b2bec3;text-align: right;'>".$simpan_plain."</td>
+					<td style='border: 1px solid #b2bec3;'></td>
 				</tr>";
 			}elseif(in_array($simpan_kode_induk, array("Q"))){
 				$html_cetak_per_kode_induk .= "
@@ -1580,6 +1598,7 @@ class C_TransferReffGaji extends CI_Controller
 					<td style='border: 1px solid #b2bec3;text-align: right;'>".$simpan_putkop_pikop."</td>
 					<td style='border: 1px solid #b2bec3;text-align: right;'>".$simpan_pduka_spsi."</td>
 					<td style='border: 1px solid #b2bec3;text-align: right;'>".$simpan_plain."</td>
+					<td style='border: 1px solid #b2bec3;'></td>
 					<td style='border: 1px solid #b2bec3;'></td>
 					<td style='border: 1px solid #b2bec3;'></td>
 					<td style='border: 1px solid #b2bec3;'></td>
@@ -1681,6 +1700,7 @@ class C_TransferReffGaji extends CI_Controller
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>DL&<br>OBAT</td>
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>POT.2</td>
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>TAMB.2</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>SNACK</td>
 										</tr>
 									</thead>
 									<tbody>";
@@ -1710,6 +1730,7 @@ class C_TransferReffGaji extends CI_Controller
 											<td style='border: 1px solid #b2bec3;width: 60px;text-align: center'>P.KOPR</td>
 											<td style='border: 1px solid #b2bec3;width: 60px;text-align: center'>P.DUKA+<br>SPSI</td>
 											<td style='border: 1px solid #b2bec3;width: 60px;text-align: center'>P.LAIN</td>
+											<td style='border: 1px solid #b2bec3;width: 60px;text-align: center'>SNACK</td>
 										</tr>
 									</thead>
 									<tbody>";
@@ -1742,6 +1763,7 @@ class C_TransferReffGaji extends CI_Controller
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>SEKOLAH</td>
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>JURUSAN</td>
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>PEND.</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center'>SNACK</td>
 										</tr>
 									</thead>
 									<tbody>";
@@ -1775,6 +1797,7 @@ class C_TransferReffGaji extends CI_Controller
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>DL&<br>OBAT</td>
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>POT.2</td>
 											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>TAMB.2</td>
+											<td style='border: 1px solid #b2bec3;width: 4%;text-align: center;'>SNACK</td>
 										</tr>
 									</thead>
 									<tbody>";
@@ -1829,6 +1852,7 @@ class C_TransferReffGaji extends CI_Controller
 							<td style='border: 1px solid #b2bec3;text-align: right;'>".number_format(trim($value['dldobat']),0,',','.')."</td>
 							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['potongan_str']))."</td>
 							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['tambahan_str']))."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['snack']))."</td>
 						</tr>";
 					}elseif(in_array(substr($value['noind'], 0, 1), array("B","D","G","J"))){
 						$html_cetak_per_kodesie .= "
@@ -1855,6 +1879,7 @@ class C_TransferReffGaji extends CI_Controller
 							<td style='border: 1px solid #b2bec3;text-align: right;'>".number_format((intval(trim($value['putkop'])) + intval(trim($value['pikop']))),0,',','.')."</td>
 							<td style='border: 1px solid #b2bec3;text-align: right;'>".number_format((intval(trim($value['pduka'])) + intval(trim($value['pspsi']))),0,',','.')."</td>
 							<td style='border: 1px solid #b2bec3;text-align: right;'>".number_format(trim($value['plain']),0,',','.')."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['snack']))."</td>
 						</tr>";
 					}elseif(in_array(substr($value['noind'], 0, 1), array("Q"))){
 						$html_cetak_per_kodesie .= "
@@ -1884,6 +1909,7 @@ class C_TransferReffGaji extends CI_Controller
 							<td style='border: 1px solid #b2bec3;'>".substr($value['sekolah'], 0, 10)."</td>
 							<td style='border: 1px solid #b2bec3;'>".substr($value['jurusan'], 0, 10)."</td>
 							<td style='border: 1px solid #b2bec3;'>".substr($value['pendidikan'], 0, 5)."</td>
+							<td style='border: 1px solid #b2bec3;text-align: right;'>".str_replace(".00", "", trim($value['snack']))."</td>
 						</tr>";
 					}else{
 						$html_cetak_per_kodesie .= "
