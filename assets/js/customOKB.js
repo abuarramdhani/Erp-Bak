@@ -988,6 +988,8 @@ $(document).ready(function () {
       },
     ],
     order: [[1, "asc"]],
+    paging: false,
+    info: false,
   });
 
   $(".checkAllApproveOKB").on("ifChecked ifUnchecked", function (event) {
