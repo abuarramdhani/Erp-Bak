@@ -41,7 +41,14 @@ const swalAGT = (type, title) => {
     showConfirmButton: false,
     showCloseButton: false,
     timer: 1100
+  })
+}
 
+const swalLargeAGT = (type, title) => {
+  Swal.fire({
+    type: type,
+    html: title,
+    text: '',
   })
 }
 

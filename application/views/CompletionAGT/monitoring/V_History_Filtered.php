@@ -1,4 +1,8 @@
-
+<style media="screen">
+.btn-group{
+margin-bottom: -40px !important;
+}
+</style>
   <table class="table table-bordered agt-history-filtered" style="width:100%">
     <thead>
       <tr class="bg-primary">

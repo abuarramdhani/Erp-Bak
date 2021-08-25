@@ -201,7 +201,7 @@ class C_Master extends CI_Controller
 
     public function filter_job_agt()
     {
-      $data['get'] = $this->M_master->filter_job_agt($this->input->post('range_date'));
+      $data['get'] = $this->M_master->filter_job_agt($this->input->post('range_date'), $this->input->post('picklist'));
       $this->load->view('CompletionAGT/monitoring/V_Job_Filtered', $data);
     }
 
