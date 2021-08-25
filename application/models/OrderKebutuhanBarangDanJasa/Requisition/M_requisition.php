@@ -484,19 +484,32 @@ class M_requisition extends CI_Model
         $oracle = $this->load->database('oracle', true);
         $query = $oracle->query(
             "SELECT
-                msi.SECONDARY_INVENTORY_NAME subinv,
-                msi.description,
-                hla.LOCATION_CODE,
-                hla.LOCATION_ID
-            FROM
-                mtl_secondary_inventories msi,
-                hr_locations_all hla
-            WHERE
-                msi.LOCATION_ID = hla.LOCATION_ID(+)
-                AND msi.ORGANIZATION_ID = $organization
-                AND hla.LOCATION_ID = NVL($location, hla.LOCATION_ID) -- 142 Yogyakarta, 16103 Tuksono, selain itu kosongi aja
-            ORDER BY
-                subinv"
+            msi.SECONDARY_INVENTORY_NAME subinv,
+            msi.description,
+            hla.LOCATION_CODE,
+            hla.LOCATION_ID
+        FROM
+            mtl_secondary_inventories msi,
+            hr_locations_all hla
+        WHERE
+            msi.LOCATION_ID = hla.LOCATION_ID(+)
+            AND msi.ORGANIZATION_ID = $organization
+            AND msi.LOCATION_ID = $location
+        UNION ALL
+        SELECT
+            msi.SECONDARY_INVENTORY_NAME subinv,
+            msi.description,
+            hla.LOCATION_CODE,
+            hla.LOCATION_ID
+        FROM
+            mtl_secondary_inventories msi,
+            hr_locations_all hla
+        WHERE
+            msi.LOCATION_ID = hla.LOCATION_ID(+)
+            AND msi.ORGANIZATION_ID = $organization
+            AND msi.LOCATION_ID is null
+        ORDER BY
+            subinv"
         );
 
         return $query->result_array();
