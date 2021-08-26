@@ -64,4 +64,10 @@ class M_deklarasi extends CI_Model
         $this->personalia->where('noind', $noind);
         return $this->personalia->get('hrd_khs.tpribadi')->row_array();
     }
+
+    function cekNIK($nik)
+    {
+        $sql = "SELECT * FROM hrd_khs.tpribadi WHERE trim(nik) = '$nik' AND keluar in ('f', '0') limit 1";
+        return $this->personalia->query($sql)->row_array();
+    }
 }
