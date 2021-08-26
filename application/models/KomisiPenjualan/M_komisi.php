@@ -64,4 +64,10 @@ class M_komisi extends CI_Model
         $query = $this->oracle->query($sql);
         return $sql;
     }
+    public function ValidasiMemo($memo)
+    {
+        $sql = "SELECT COUNT(*) hasil FROM KHS_KOMISI_PENJ_HEADERS WHERE MEMO_NUM =  '$memo'";
+        $query = $this->oracle->query($sql);
+        return $sql;
+    }
 }

@@ -125,115 +125,118 @@ class C_Komisi extends CI_Controller
                 );
                 array_push($dataSheet, $a);
                 $line = $this->getLineId();
+                $validasi = $this->M_komisi->ValidasiMemo($a['nomor_memo']);
                 $memo_date = $row['C'];
                 $due_date = $row['D'];
-                $header = array(
-                    'PROGRAM_ID' => $line,
-                    'PROGRAM_NAME' => $row['B'],
-                    'MEMO_DATE' => $row['AI'],
-                    'DUE_DATE' => $row['AJ'],
-                    'MEMO_NUM' => $row['C'],
-                    'MEMO_LINE' => $row['D'],
-                    'METHODE' => $row['AH'],
-                    'PPH' => $row['AD'],
-                    'ACCOUNT_NUMBER' => $row['G'],
-                    'BANK_ACCOUNT_NUM' => $row['H'],
-                    'BANK_ACCOUNT_NAME' => $row['I'],
-                    'BANK_NAME' => $row['J'],
-                    'KC_BANK' => $row['K'],
-                    'NPWP_NUM' => $row['L'],
-                    'NPWP_NAME' => $row['M'],
-                    'TOTAL_AMOUNT' => $row['AC'],
-                );
-                $this->M_komisi->InsertHeaderKomisi($header);
+                if ($validasi[0]['HASIL'] == 0) {
+                    $header = array(
+                        'PROGRAM_ID' => $line,
+                        'PROGRAM_NAME' => $row['B'],
+                        'MEMO_DATE' => $row['AI'],
+                        'DUE_DATE' => $row['AJ'],
+                        'MEMO_NUM' => $row['C'],
+                        'MEMO_LINE' => $row['D'],
+                        'METHODE' => $row['AH'],
+                        'PPH' => $row['AD'],
+                        'ACCOUNT_NUMBER' => $row['G'],
+                        'BANK_ACCOUNT_NUM' => $row['H'],
+                        'BANK_ACCOUNT_NAME' => $row['I'],
+                        'BANK_NAME' => $row['J'],
+                        'KC_BANK' => $row['K'],
+                        'NPWP_NUM' => $row['L'],
+                        'NPWP_NAME' => $row['M'],
+                        'TOTAL_AMOUNT' => $row['AC'],
+                    );
+                    $this->M_komisi->InsertHeaderKomisi($header);
 
-                $line5 = array(
-                    'PROGRAM_ID' => $line,
-                    'ITEM' => 'AAH',
-                    'AMOUNT' => $row['N'],
-                );
-                $this->M_komisi->InsertLineKomisi($line5);
-                $line1 = array(
-                    'PROGRAM_ID' => $line,
-                    'ITEM' => 'AAB',
-                    'AMOUNT' => $row['O'],
-                );
-                $this->M_komisi->InsertLineKomisi($line1);
-                $line4 = array(
-                    'PROGRAM_ID' => $line,
-                    'ITEM' => 'AAG',
-                    'AMOUNT' => $row['P'],
-                );
-                $this->M_komisi->InsertLineKomisi($line4);
-                $line3 = array(
-                    'PROGRAM_ID' => $line,
-                    'ITEM' => 'AAE',
-                    'AMOUNT' => $row['Q'],
-                );
-                $this->M_komisi->InsertLineKomisi($line3);
-                $line2 = array(
-                    'PROGRAM_ID' => $line,
-                    'ITEM' => 'AAC',
-                    'AMOUNT' => $row['R'],
-                );
-                $this->M_komisi->InsertLineKomisi($line2);
+                    $line5 = array(
+                        'PROGRAM_ID' => $line,
+                        'ITEM' => 'AAH',
+                        'AMOUNT' => $row['N'],
+                    );
+                    $this->M_komisi->InsertLineKomisi($line5);
+                    $line1 = array(
+                        'PROGRAM_ID' => $line,
+                        'ITEM' => 'AAB',
+                        'AMOUNT' => $row['O'],
+                    );
+                    $this->M_komisi->InsertLineKomisi($line1);
+                    $line4 = array(
+                        'PROGRAM_ID' => $line,
+                        'ITEM' => 'AAG',
+                        'AMOUNT' => $row['P'],
+                    );
+                    $this->M_komisi->InsertLineKomisi($line4);
+                    $line3 = array(
+                        'PROGRAM_ID' => $line,
+                        'ITEM' => 'AAE',
+                        'AMOUNT' => $row['Q'],
+                    );
+                    $this->M_komisi->InsertLineKomisi($line3);
+                    $line2 = array(
+                        'PROGRAM_ID' => $line,
+                        'ITEM' => 'AAC',
+                        'AMOUNT' => $row['R'],
+                    );
+                    $this->M_komisi->InsertLineKomisi($line2);
 
-                $line9 = array(
-                    'PROGRAM_ID' => $line,
-                    'ITEM' => 'ACA',
-                    'AMOUNT' => $row['S'],
-                );
-                $this->M_komisi->InsertLineKomisi($line9);
-                $line6 = array(
-                    'PROGRAM_ID' => $line,
-                    'ITEM' => 'AAK',
-                    'AMOUNT' => $row['T'],
-                );
-                $this->M_komisi->InsertLineKomisi($line6);
+                    $line9 = array(
+                        'PROGRAM_ID' => $line,
+                        'ITEM' => 'ACA',
+                        'AMOUNT' => $row['S'],
+                    );
+                    $this->M_komisi->InsertLineKomisi($line9);
+                    $line6 = array(
+                        'PROGRAM_ID' => $line,
+                        'ITEM' => 'AAK',
+                        'AMOUNT' => $row['T'],
+                    );
+                    $this->M_komisi->InsertLineKomisi($line6);
 
-                $line7 = array(
-                    'PROGRAM_ID' => $line,
-                    'ITEM' => 'AAL',
-                    'AMOUNT' => $row['U'],
-                );
-                $this->M_komisi->InsertLineKomisi($line7);
-                $line8 = array(
-                    'PROGRAM_ID' => $line,
-                    'ITEM' => 'AAN',
-                    'AMOUNT' => $row['V'],
-                );
-                $this->M_komisi->InsertLineKomisi($line8);
+                    $line7 = array(
+                        'PROGRAM_ID' => $line,
+                        'ITEM' => 'AAL',
+                        'AMOUNT' => $row['U'],
+                    );
+                    $this->M_komisi->InsertLineKomisi($line7);
+                    $line8 = array(
+                        'PROGRAM_ID' => $line,
+                        'ITEM' => 'AAN',
+                        'AMOUNT' => $row['V'],
+                    );
+                    $this->M_komisi->InsertLineKomisi($line8);
 
-                $line10 = array(
-                    'PROGRAM_ID' => $line,
-                    'ITEM' => 'ADA',
-                    'AMOUNT' => $row['W'],
-                );
-                $this->M_komisi->InsertLineKomisi($line10);
-                $line11 = array(
-                    'PROGRAM_ID' => $line,
-                    'ITEM' => 'ADB',
-                    'AMOUNT' => $row['X'],
-                );
-                $this->M_komisi->InsertLineKomisi($line11);
-                $line12 = array(
-                    'PROGRAM_ID' => $line,
-                    'ITEM' => 'ADC',
-                    'AMOUNT' => $row['Y'],
-                );
-                $this->M_komisi->InsertLineKomisi($line12);
-                $line13 = array(
-                    'PROGRAM_ID' => $line,
-                    'ITEM' => 'ADD',
-                    'AMOUNT' => $row['Z'],
-                );
-                $this->M_komisi->InsertLineKomisi($line13);
-                $line14 = array(
-                    'PROGRAM_ID' => $line,
-                    'ITEM' => 'GAA',
-                    'AMOUNT' => $row['AA'],
-                );
-                $this->M_komisi->InsertLineKomisi($line14);
+                    $line10 = array(
+                        'PROGRAM_ID' => $line,
+                        'ITEM' => 'ADA',
+                        'AMOUNT' => $row['W'],
+                    );
+                    $this->M_komisi->InsertLineKomisi($line10);
+                    $line11 = array(
+                        'PROGRAM_ID' => $line,
+                        'ITEM' => 'ADB',
+                        'AMOUNT' => $row['X'],
+                    );
+                    $this->M_komisi->InsertLineKomisi($line11);
+                    $line12 = array(
+                        'PROGRAM_ID' => $line,
+                        'ITEM' => 'ADC',
+                        'AMOUNT' => $row['Y'],
+                    );
+                    $this->M_komisi->InsertLineKomisi($line12);
+                    $line13 = array(
+                        'PROGRAM_ID' => $line,
+                        'ITEM' => 'ADD',
+                        'AMOUNT' => $row['Z'],
+                    );
+                    $this->M_komisi->InsertLineKomisi($line13);
+                    $line14 = array(
+                        'PROGRAM_ID' => $line,
+                        'ITEM' => 'GAA',
+                        'AMOUNT' => $row['AA'],
+                    );
+                    $this->M_komisi->InsertLineKomisi($line14);
+                }
             }
             $k++;
         }
