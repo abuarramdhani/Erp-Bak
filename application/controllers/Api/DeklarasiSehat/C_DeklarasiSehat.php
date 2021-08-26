@@ -32,6 +32,36 @@ class C_DeklarasiSehat extends CI_Controller
         echo json_encode($ret);
     }
 
+    public function loginNIK()
+    {
+        $nik = $this->input->post('username');
+        $password = $this->input->post('password'); //tgl lahir
+        $ret['error'] = 1;
+        if (!is_numeric($nik)) {
+            echo json_encode($ret);
+            return;
+            exit;
+        }
+
+        $log = $this->M_deklarasi->cekNIK($nik);
+        if (empty($log)) {
+            echo json_encode($ret);
+            return;
+            exit;
+        }
+
+        $tglLahir = date('dmY', strtotime($log['tgllahir']));
+        if ($password != $tglLahir) {
+            echo json_encode($ret);
+            return;
+            exit;
+        } else {
+            $ret['error'] = 0;
+            $ret['data'] = $log;
+            echo json_encode($ret);
+        }
+    }
+
     function DetailPKJ()
     {
         $ret['error'] = 1;
