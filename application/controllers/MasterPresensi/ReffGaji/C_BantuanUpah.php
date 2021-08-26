@@ -141,7 +141,7 @@ class C_BantuanUpah extends CI_Controller
 							'kom_ip'		 			=> trim($res['ip_jumlah']) != '-' ? $ip : null , 
 							'kom_ipt' 					=> trim($res['ipt_jumlah']) != '-' ? $ipt : null ,
 							'kom_ik' 					=> trim($res['ik_jumlah']) != '-' ? $ik : null ,
-							'kom_ikr' 					=> trim($res['ikr_jumlah']) != '-' ? $ip : null ,
+							'kom_ikr' 					=> trim($res['ikr_jumlah']) != '-' ? $if : null ,
 							'kom_ins_kepatuhan'			=> trim($res['ins_patuh_jumlah']) != '-' ? $res['ins_patuh_jumlah'] : null ,
 							'kom_ins_kemahalan'			=> trim($res['ins_mahal_jumlah']) != '-' ? $res['ins_mahal_jumlah'] : null ,
 							'kom_ins_penempatan'		=> trim($res['ins_tempat_jumlah']) != '-' ? $res['ins_tempat_jumlah'] : null ,
