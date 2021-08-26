@@ -5880,3 +5880,14 @@ $route['OrderKebutuhanBarangDanJasa/SMSGagalPR'] = 'OrderKebutuhanBarangDanJasa/
 //------------------------------------------- API Deklarasi Sehat -------------------------------
 $route['Api/DeklarasiSehat/(:any)'] = 'Api/DeklarasiSehat/C_DeklarasiSehat/$1';
 $route['Api/DeklarasiSehat/(:any)/(:any)'] = 'Api/DeklarasiSehat/C_DeklarasiSehat/$1/$2';
+
+// -------------------------------------- Rekap Data Ekspedisi Express --------------------------------------------------
+
+$route['ReportEkspedisi'] 	= 'RekapEkspedisi/C_Index';
+$route['ReportEkspedisi/CreateReport'] 	= 'RekapEkspedisi/C_Report';
+$route['ReportEkspedisi/CreateReport/(:any)'] 	= 'RekapEkspedisi/C_Report/$1';
+$route['ReportEkspedisi/CreateReport/(:any)/(:any)'] 	= 'RekapEkspedisi/C_Report/$1/$2';
+
+$route['ReportEkspedisi/HistoryReport'] 	= 'RekapEkspedisi/C_Report/HistoryReport';
+$route['ReportEkspedisi/HistoryReport/(:any)'] 	= 'RekapEkspedisi/C_Report/$1';
+$route['ReportEkspedisi/HistoryReport/(:any)/(:any)'] 	= 'RekapEkspedisi/C_Report/$1/$2';
