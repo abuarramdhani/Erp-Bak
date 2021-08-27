@@ -101,6 +101,7 @@
                                     <option value="B0809">B0809 - YUSRINA KARTIKA RISTANTI</option>
                                     <option value="B0906">B0906 - FAJRI PARMI</option>
                                     <option value="B0854">B0854 - AJI CAHYARUBIN</option>
+                                    <option value="B0915">B0915 - ROMANSYAH MAKALALAG</option>
 
                                 </select>
                             </div>
