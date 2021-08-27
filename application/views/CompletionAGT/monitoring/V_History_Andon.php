@@ -131,8 +131,7 @@ let h87 = [];
         ],
         firstDay: 1,
       },
-    },
-  );
+    });
 });
 
 function filter_history_agt() {

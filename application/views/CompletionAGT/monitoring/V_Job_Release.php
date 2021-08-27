@@ -34,7 +34,7 @@
 
 <script type="text/javascript">
   $('.andon_slc_cek_picklist').select2();
-  $(document).ready(function () {
+  $(document).ready(function(){
     setTimeout(function () {
       filter_job_agt();
     }, 50);
@@ -68,8 +68,7 @@
         ],
         firstDay: 1,
       },
-    },
-  );
+    })
 });
 
 function filter_job_agt() {
