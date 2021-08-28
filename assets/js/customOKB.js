@@ -738,7 +738,7 @@ $(document).ready(function () {
       'assets/img/gif/loading5.gif"/>' +
       "</div>" +
       '<div class="viewLocationOKB">' +
-      '<select class="select2 locationOKB slcLocation" id="slcLocation" style="width: 250px; text-align:center" name="locationOKB[]" required title="Location>' +
+      '<select class="select2 locationOKB slcLocation" id="slcLocation" style="width: 250px; text-align:center" name="locationOKB[]" required title="Location">' +
       "<option></option>" +
       "</select>" +
       "</div>" +
