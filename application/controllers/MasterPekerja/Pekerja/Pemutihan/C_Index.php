@@ -90,6 +90,7 @@ class C_Index extends CI_Controller
 
     $family = $this->ModelPemutihan->getFamilyByPribadiId($id);
     // debug($family);
+    $vaccination = $this->ModelPemutihan->getVaccinationByPribadiId($id);
     $verifier = null;
     if ($request->status_update_by) {
       $verifier = $this->ModelPemutihan->getPribadiByNoind($request->noind);
@@ -113,6 +114,7 @@ class C_Index extends CI_Controller
     $data['pribadi'] = $pribadi;
     $data['request'] = $request;
     $data['family'] = $family;
+    $data['vaccination'] = $vaccination;
     $data['session'] = $request->current_session ?: $this->user;
     $data['user'] = $this->user;
     $data['verifier'] = $verifier ? $request->status_update_by . ' - ' . $verifier->nama : '';
