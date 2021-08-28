@@ -146,6 +146,8 @@ class C_Approve extends CI_Controller
 
         $alamat = $this->M_car->getEmailVendor($po_num[0]['PO_NUMBER']);
 
+        $sites = $this->M_car->M_car->getSitesVendor($po_num[0]['PO_NUMBER']);
+
         // echo "<pre>";
         // print_r($alamat);
         // exit();
@@ -162,7 +164,7 @@ class C_Approve extends CI_Controller
                 }
             }
         }
-        // $alamat = 'quick.sec8@gmail.com,riskiviolin@gmail.com,';
+        // $alamat = 'riskiviolin@gmail.com,';
         // $e = explode(',', $alamat);
         // $email = array();
         // for ($i = 0; $i < sizeof($e); $i++) {
@@ -209,20 +211,47 @@ class C_Approve extends CI_Controller
 
         $mail->addAttachment($pdf_dir . $filename);
         $mail->Subject = 'NEED FEEDBACK - [' . $list_supplier[0]['SUPPLIER_NAME'] . '] Corrective Action Request (CAR) No. ' . $list_supplier[0]['CAR_NUM'] . '';
-        $mail->msgHTML('Dengan hormat,<br><br>
-
-        Berikut kami kirimkan CAR terkait ' . $list_supplier[0]['NC_SCOPE'] . '  yang bermasalah, mohon untuk membalas CAR dengan mengisi kolom Rootcause (analisa masalah) dan kolom Corrective Action (perbaikan yang akan dilakukan). Dokumen pada lampiran.<br>
-        Vendor berkewajiban untuk memberikan konfirmasi dan mengirimkan balasan CAR dalam kurun waktu 7 hari sejak email dikirim oleh CV. KHS dan mengirimkan balasan ke cpar@quick.co.id (atau dengan "reply" email ini)<br><br>
-
-        Demikian informasi ini kami sampaikan.<br><br>
+        if ($sites[0]['SITE'] == 'IMPOR') {
+            $mail->msgHTML('Dear Sir/Madam <br><br>
 
 
-        Terima kasih,<br>
-        Ikhwan<br>
-        Adm. Sistem Pembelian<br>
-        CV. Karya Hidup Sentosa<br>
-        Telp. +62-274-512095 ext 225<br>
-        Fax. +62-274-563523');
+            Here we are send CAR (Corrective Action Request) regarding to the delivery problem, please reply by filling in the Rootcause column (problem analysis) and the Corrective Action column (improvements to be made). Once you finish it please put your company stamp and sign it then send it back to by replying this email.<br>
+            We are waiting for confirmation. <br><br>
+            
+            
+            *) For your information,<br>
+            that there will be a maximum of 3x reminders within 1 week after this email is received. Reminder will be done by email (and/or phone) by CV. KHS, and carried out periodically,<br>
+            if until the third reminder there is still no feedback / reply to the CAR, then a warning letter will be issued by CV. KHS if within 14 days the CAR has not been replied to.<br><br>
+            
+            
+            Thus, we convey this information, attached is the CAR in question.<br>
+            Please process immediately.<br><br><br>
+            
+            
+            
+            
+            Regards,<br>
+            Ikhwan<br>
+            Adm. Purchasing System<br>
+            CV. Karya Hidup Sentosa<br>
+            Tel. +62-274-512095 ext 225<br>
+            Fax. +62-274-563523<br>');
+        } else {
+            $mail->msgHTML('Dengan hormat,<br><br>
+
+            Berikut kami kirimkan CAR terkait ' . $list_supplier[0]['NC_SCOPE'] . '  yang bermasalah, mohon untuk membalas CAR dengan mengisi kolom Rootcause (analisa masalah) dan kolom Corrective Action (perbaikan yang akan dilakukan). Dokumen pada lampiran.<br>
+            Vendor berkewajiban untuk memberikan konfirmasi dan mengirimkan balasan CAR dalam kurun waktu 7 hari sejak email dikirim oleh CV. KHS dan mengirimkan balasan ke cpar@quick.co.id (atau dengan "reply" email ini)<br><br>
+    
+            Demikian informasi ini kami sampaikan.<br><br>
+    
+    
+            Terima kasih,<br>
+            Ikhwan<br>
+            Adm. Sistem Pembelian<br>
+            CV. Karya Hidup Sentosa<br>
+            Telp. +62-274-512095 ext 225<br>
+            Fax. +62-274-563523');
+        }
 
         if (!$mail->send()) {
             echo 'Pesan Tidak Terkirim!';
