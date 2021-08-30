@@ -46,7 +46,7 @@
            return $query->result_array();
         }
 
-        public function getPasangBan($date){
+        public function getPasangBan($date, $jenis_ban){
             $sql = "SELECT   num, ket, SUM (jumlah) jumlah
             FROM (SELECT DISTINCT DECODE (ket,
                                         --   'siap1', 1,
@@ -57,8 +57,9 @@
                                   ket, mulai, selesai, waktu, jumlah
                              FROM khs_inv_pasang_ban
                             WHERE TO_CHAR (mulai, 'DD/MM/YYYY') = '$date'
-                              AND TO_CHAR (selesai, 'DD/MM/YYYY') = '$date'
-                              AND ket like 'pasang%')
+                              -- AND TO_CHAR (selesai, 'DD/MM/YYYY') = '$date'
+                              AND ket like 'pasang%'
+                              AND jenis_ban = '$jenis_ban')
         GROUP BY num, ket
         ORDER BY num";
         $query = $this->oracle->query($sql);

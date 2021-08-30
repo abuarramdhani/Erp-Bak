@@ -372,35 +372,13 @@ function finishselectedKGP() {
     });
 }
 
-// async function run99(){
-//     var no_dokumen = $('.noall').map(function(){return $(this).val();}).get();
-//     // console.log(no_dokumen.length);
-//     for (let i = 0; i < no_dokumen.length; i++) {
-//       const cek = await getDetailItem(no_dokumen[i]); 
-      
-//     }
-// }
-
-// hasil convert script di babeljs.io karena chrome versi lama tidak bisa run function async
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
-
-function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
-
-function run99() {
-  return _run.apply(this, arguments);
-}
-
-function _run() {
-  _run = _asyncToGenerator(function* () {
-    var no_dokumen = $('.noall').map(function () {
-      return $(this).val();
-    }).get(); // console.log(no_dokumen.length);
-
+async function run99(){
+    var no_dokumen = $('.noall').map(function(){return $(this).val();}).get();
+    // console.log(no_dokumen.length);
     for (let i = 0; i < no_dokumen.length; i++) {
-      const cek = yield getDetailItem(no_dokumen[i]);
+      const cek = await getDetailItem(no_dokumen[i]); 
+      
     }
-  });
-  return _run.apply(this, arguments);
 }
 
 function getDetailItem(no) {
@@ -783,12 +761,54 @@ function addDetailKGP(no){
 }
 
 //------------------------------------------ Pasang Ban ------------------------------------------------------
-function view_pasangban(ket, id_lokasi, warna) {
+// $(document).ready(function () {
+$(document).on('change', '.jenis_ban',  function() {
+    var jenis_ban = $(this).val();
+    // console.log(jenis_ban);
+
+    var siap1 = document.getElementById("persiapan_line1");
+    if (siap1) {
+        view_pasangban('siap1', 'persiapan_line1', 'primary', jenis_ban);
+    }
+    var siap2 = document.getElementById("persiapan_line2");
+    if (siap2) {
+        view_pasangban('siap2', 'persiapan_line2', 'primary', jenis_ban);
+    }
+    var pasang1 = document.getElementById("pasang_line1");
+    if (pasang1) {
+        view_pasangban('pasang1', 'pasang_line1', 'success', jenis_ban);
+    }
+    var pasang2 = document.getElementById("pasang_line2");
+    if (pasang2) {
+        view_pasangban('pasang2', 'pasang_line2', 'success', jenis_ban);
+    }
+
+    
+    $(document).on('change', '.no_induk_siap1:last',  function() {
+        var noind = $('.no_induk_siap1:last').val();
+        get_username(noind, 'siap1');
+    })
+    $(document).on('change', '.no_induk_siap2:last',  function() {
+        var noind = $('.no_induk_siap2:last').val();
+        get_username(noind, 'siap2');
+    })
+    $(document).on('change', '.no_induk_pasang1:last',  function() {
+        var noind = $('.no_induk_pasang1:last').val();
+        get_username(noind, 'pasang1');
+    })
+    $(document).on('change', '.no_induk_pasang2:last',  function() {
+        var noind = $('.no_induk_pasang2:last').val();
+        get_username(noind, 'pasang2');
+    })
+})
+
+function view_pasangban(ket, id_lokasi, warna, jenis_ban) {
+    // console.log(ket, id_lokasi, warna, jenis_ban);
     $.ajax({
         url: baseurl + "KapasitasGdPusat/PasangBan/view_pasangban",
         type: 'POST',
         dataType: 'html',
-        data: { ket : ket, warna : warna},
+        data: { ket : ket, warna : warna, jenis_ban : jenis_ban},
         cache: false,
         beforeSend: function() {
             $('#'+id_lokasi).html('<center><img style="width:70px; height:auto" src="'+baseurl+'assets/img/gif/loading5.gif"></center>' );
@@ -819,56 +839,6 @@ function view_pasangban(ket, id_lokasi, warna) {
                     }
                 }
             });
-        }
-    })
-}
-
-$(document).ready(function () {
-    var siap1 = document.getElementById("persiapan_line1");
-    if (siap1) {
-        view_pasangban('siap1', 'persiapan_line1', 'primary');
-    }
-    var siap2 = document.getElementById("persiapan_line2");
-    if (siap2) {
-        view_pasangban('siap2', 'persiapan_line2', 'primary');
-    }
-    var pasang1 = document.getElementById("pasang_line1");
-    if (pasang1) {
-        view_pasangban('pasang1', 'pasang_line1', 'success');
-    }
-    var pasang2 = document.getElementById("pasang_line2");
-    if (pasang2) {
-        view_pasangban('pasang2', 'pasang_line2', 'success');
-    }
-
-    
-    $(document).on('change', '.no_induk_siap1:last',  function() {
-        var noind = $('.no_induk_siap1:last').val();
-        get_username(noind, 'siap1');
-    })
-    $(document).on('change', '.no_induk_siap2:last',  function() {
-        var noind = $('.no_induk_siap2:last').val();
-        get_username(noind, 'siap2');
-    })
-    $(document).on('change', '.no_induk_pasang1:last',  function() {
-        var noind = $('.no_induk_pasang1:last').val();
-        get_username(noind, 'pasang1');
-    })
-    $(document).on('change', '.no_induk_pasang2:last',  function() {
-        var noind = $('.no_induk_pasang2:last').val();
-        get_username(noind, 'pasang2');
-    })
-})
-
-function get_username(noind, ket) {
-    $.ajax({
-        url: baseurl + "KapasitasGdPusat/PasangBan/getUsername",
-        type: 'POST',
-        dataType: 'html',
-        data: { noind : noind},
-        cache: false,
-        success : function(result) {
-            $('.nama_'+ket+':last').val(result);
         }
     })
 }
@@ -906,7 +876,20 @@ function add_new_line(ket, ket2, warna) {
     });
 }
 
-function pasangban_timer(no, ket) {
+function get_username(noind, ket) {
+    $.ajax({
+        url: baseurl + "KapasitasGdPusat/PasangBan/getUsername",
+        type: 'POST',
+        dataType: 'html',
+        data: { noind : noind},
+        cache: false,
+        success : function(result) {
+            $('.nama_'+ket+':last').val(result);
+        }
+    })
+}
+
+function pasangban_timer(no, ket, jenis_ban) {
     var d    = new Date();
     var date = d.getDate()+'/'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'/'+d.getFullYear()+" "+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
     var wkt  = d.getFullYear()+'-'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'-'+d.getDate()+' '+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
@@ -950,7 +933,8 @@ function pasangban_timer(no, ket) {
                 noind : $('[name="no_induk_'+no+'[]"]').map(function(){return $(this).val();}).get(),
                 nama : $('[name="nama_'+no+'[]"]').map(function(){return $(this).val();}).get(),
                 ket : no,
-                date : date
+                date : date,
+                jenis_ban : jenis_ban
             },
             cache: false,
         })
@@ -969,7 +953,17 @@ function pasangban_timer(no, ket) {
             confirmButtonText: 'OK',
             showLoaderOnConfirm: true,
         }).then(result => {
-            if (result.value) {
+            if(result.value % 2 != 0) {
+                Swal.fire({
+                    title: "Bilangan yang Anda Inputkan adalah Bilangan Ganjil",
+                    text: "Mohon untuk Menginputkan Jumlah Aktual dalam Bilangan Genap",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes",
+                })
+            } else {
                 $('#button_selesai_'+no).attr('disabled','disabled');
                 $('#button_pause_'+no).attr('disabled','disabled');
                 $('#button_restart_'+no).attr('disabled','disabled');
@@ -978,17 +972,41 @@ function pasangban_timer(no, ket) {
                     type: "POST",
                     url: baseurl + "KapasitasGdPusat/PasangBan/save_selesai",
                     data: { 
+                        id : $('[name="id_'+no+'[]"]').map(function(){return $(this).val();}).get(),
                         noind : $('[name="no_induk_'+no+'[]"]').map(function(){return $(this).val();}).get(),
                         ket : no,
                         date : date,
                         wkt : wkt,
-                        jumlah: result.value 
+                        jumlah : result.value,
+                        jenis_ban : jenis_ban
                     },
                     success: function (response) {
                         location.reload();
                     },
                 });
-        }})
+            }
+            // if (result.value) {
+            //     $('#button_selesai_'+no).attr('disabled','disabled');
+            //     $('#button_pause_'+no).attr('disabled','disabled');
+            //     $('#button_restart_'+no).attr('disabled','disabled');
+
+            //     $.ajax({
+            //         type: "POST",
+            //         url: baseurl + "KapasitasGdPusat/PasangBan/save_selesai",
+            //         data: { 
+            //             noind : $('[name="no_induk_'+no+'[]"]').map(function(){return $(this).val();}).get(),
+            //             ket : no,
+            //             date : date,
+            //             wkt : wkt,
+            //             jumlah : result.value,
+            //             jenis_ban : jenis_ban
+            //         },
+            //         success: function (response) {
+            //             location.reload();
+            //         },
+            //     });
+            // }
+        })
         
     }
     
@@ -1019,9 +1037,29 @@ function addRinMAT(th){
 	$('#RinTanggunganMAT').slideToggle('slow');
 }
 
-function addRinPasangBan(th){
+// function addRinPasangBan(th){
+// 	var title = $(th).text();
+// 	$('#RinPasangBan').slideToggle('slow');
+// }
+
+function addRinPasangBan12v(th){
 	var title = $(th).text();
-	$('#RinPasangBan').slideToggle('slow');
+	$('#RinPasangBan12v').slideToggle('slow');
+}
+
+function addRinPasangBan12nv(th){
+	var title = $(th).text();
+	$('#RinPasangBan12nv').slideToggle('slow');
+}
+
+function addRinPasangBan13v(th){
+	var title = $(th).text();
+	$('#RinPasangBan13v').slideToggle('slow');
+}
+
+function addRinPasangBan13nv(th){
+	var title = $(th).text();
+	$('#RinPasangBan13nv').slideToggle('slow');
 }
 
 function addRinKOM_src(th, num){
@@ -1048,9 +1086,29 @@ function addRinMAT_src(th, num){
 	$('#RinTanggunganMAT'+num).slideToggle('slow');
 }
 
-function addRinPasangBan_src(th, num){
+// function addRinPasangBan_src(th, num){
+// 	var title = $(th).text();
+// 	$('#RinPasangBan'+num).slideToggle('slow');
+// }
+
+function addRinPasangBan12v_src(th, num){
 	var title = $(th).text();
-	$('#RinPasangBan'+num).slideToggle('slow');
+	$('#RinPasangBan12v'+num).slideToggle('slow');
+}
+
+function addRinPasangBan12nv_src(th, num){
+	var title = $(th).text();
+	$('#RinPasangBan12nv'+num).slideToggle('slow');
+}
+
+function addRinPasangBan13v_src(th, num){
+	var title = $(th).text();
+	$('#RinPasangBan13v'+num).slideToggle('slow');
+}
+
+function addRinPasangBan13nv_src(th, num){
+	var title = $(th).text();
+	$('#RinPasangBan13nv'+num).slideToggle('slow');
 }
 
 function schRekap(th) {
