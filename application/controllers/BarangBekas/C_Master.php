@@ -87,6 +87,7 @@ class C_Master extends CI_Controller
 
           $data['seksi'] = $this->M_master->getSeksi();
           $data['io'] = $this->M_master->get_io();
+          $data['item_barkas'] = $this->M_master->getItemTujuan();
 
           $this->load->view('V_Header', $data);
           $this->load->view('V_Sidemenu', $data);
@@ -97,6 +98,20 @@ class C_Master extends CI_Controller
       //
       // }
 
+    }
+
+    public function item_barkas()
+    {
+      $data = $this->M_master->item_barkas($this->input->post('subinv'), $this->input->post('locator'), $this->input->post('org_id'));
+      if (!empty($data)) {
+        foreach ($data as $key => $value) {
+          $s[] = '<option value="'.$value['INVENTORY_ITEM_ID'].' ~ '.$value['SEGMENT1'].'">'.$value['SEGMENT1'].' - '.$value['DESCRIPTION'].' </option>';
+        }
+        $res = implode('', $s);
+      }else {
+        $res = 0;
+      }
+      echo json_encode($res);
     }
 
     public function SubInv($value='')
@@ -118,17 +133,22 @@ class C_Master extends CI_Controller
       }else {
         echo json_encode(0);
       }
+    }
 
-
+    public function submit_filter_grafik($value='')
+    {
+      $res = $this->M_master->getFilterGrafik($this->input->post());
+      echo json_encode($res);
     }
 
     public function submit_pbbs($value='')
     {
+      // echo "<pre>";echo print_r($this->input->post());die;
       $res = $this->M_master->insertPBBS($this->input->post());
       if (!empty($res)) {
-        echo $res;
+        echo json_encode(['no_doc' => $res, 'status' => 100]);
       }else {
-        echo 11;
+        echo json_encode(['status' => 150]);
       }
     }
 
@@ -267,6 +287,43 @@ class C_Master extends CI_Controller
 
     }
 
+    public function monitoringstok($value='')
+    {
+      $this->checkSession();
+      $user_id = $this->session->userid;
+
+      $data['Menu'] = 'Pengiriman Barang Bekas V.1.3';
+      $data['SubMenuOne'] = '';
+      $data['SubMenuTwo'] = '';
+
+      $data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+
+      $admin = $this->M_master->transact_acc();
+      if (empty(in_array($this->session->user, $admin))) {
+        unset($data['UserMenu'][2]);
+      }
+
+      $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+      $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
+
+      $data['io'] = $this->M_master->get_io();
+
+      $this->load->view('V_Header', $data);
+      $this->load->view('V_Sidemenu', $data);
+      $this->load->view('BarangBekas/V_MonitoringStok', $data);
+      $this->load->view('V_Footer', $data);
+    }
+
+    public function itemTujuan($value='')
+    {
+      $data['item'] = $this->M_master->getItemTujuan();
+    }
+
+    public function cek_max_onhand($value='')
+    {
+      echo json_encode($this->M_master->cek_max_onhand($this->input->post('item_barkas'), $this->input->post('estimasi_berat')));
+    }
+
     // getAllData
     public function rekapData($value='')
     {
@@ -293,8 +350,6 @@ class C_Master extends CI_Controller
       $this->load->view('V_Sidemenu', $data);
       $this->load->view('BarangBekas/V_Rekap', $data);
       $this->load->view('V_Footer', $data);
-
-
     }
 
     public function apakah_sudah_trasact($value='')
