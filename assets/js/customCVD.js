@@ -1949,3 +1949,11 @@ function initNoSelect()
 			}
 	});
 }
+
+// start data vaksinasi
+$(document).on('ready', function(){
+	$('#tbl-CVD-DataVaksinasi-table').DataTable({
+		scrollX: true
+	});
+})
+// end data vaksinasi

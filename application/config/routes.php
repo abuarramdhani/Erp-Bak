@@ -5044,6 +5044,11 @@ $route['Covid/ZonaKHS/(:any)'] = 'Covid/ZonaKHS/C_ZonaCovidKhs/$1';
 $route['Covid/ZonaKHS/(:any)/(:any)'] = 'Covid/ZonaKHS/C_ZonaCovidKhs/$1/$2';
 $route['Covid/ZonaKHS/(:any)/(:any)/(:any)'] = 'Covid/ZonaKHS/C_ZonaCovidKhs/$1/$2/$3';
 
+$route['Covid/DataVaksinasi'] = 'Covid/DataVaksinasi/C_DataVaksinasi';
+$route['Covid/DataVaksinasi/(:any)'] = 'Covid/DataVaksinasi/C_DataVaksinasi/$1';
+$route['Covid/DataVaksinasi/(:any)/(:any)'] = 'Covid/DataVaksinasi/C_DataVaksinasi/$1/$2';
+$route['Covid/DataVaksinasi/(:any)/(:any)/(:any)'] = 'Covid/DataVaksinasi/C_DataVaksinasi/$1/$2/$3';
+
 // --------------------------------- Laporan Kerja Operator welding ------------------------------ //
 $route['LaporanKerjaOperator'] = 'LKOWelding/C_Index';
 $route['LaporanKerjaOperator/Input'] = 'LKOWelding/C_Input';
