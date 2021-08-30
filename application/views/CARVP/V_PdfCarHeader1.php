@@ -41,7 +41,7 @@
             $displayqual = '&#9744;';
             $displayquan = '&#9745;';
             $displayot = '&#9744;';
-        } else if ($car[0]['NC_SCOPE'] == 'OTHER') {
+        } else {
             $displaydel = '&#9744;';
             $displayqual = '&#9744;';
             $displayquan = '&#9744;';
