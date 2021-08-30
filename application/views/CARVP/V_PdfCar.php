@@ -1,6 +1,6 @@
 <?php foreach ($car as $c) { ?>
     <!-- Page1 -->
-    <strong style="font-size:10pt;font-family:arial">Filled By CV. KHS</strong>
+    <strong style="font-size:10pt;font-family:arial">Filled By CV. KHS / Diisi oleh CV. KHS</strong>
     <table style="width: 100%;border:1px solid black;border-collapse:collapse;font-family:arial;font-size:10pt;">
         <tr>
             <td style="padding-left:10px;padding-top:10px;font-size:10pt" colspan="3"><strong>Requested To</strong></td>
@@ -45,14 +45,15 @@
         </tr>
         <tr>
             <td style="padding-left:10px;font-size:10pt">Related form</td>
-            <td style="padding-left:10px;font-size:10pt" colspan="2">: Penilaian Quality Objective Pembelian Supplier CV KHS Periode <?= $c['PERIODE'] ?></td>
+            <td style="padding-left:10px;font-size:10pt" colspan="2">: Assessment of ontime delivery of goods/services to CV KHS <?= $c['PERIODE'] ?> / Penilaian ketepatan waktu
+                pengiriman barang/jasa ke CV KHS <?= $c['PERIODE'] ?></td>
         </tr>
         <tr>
-            <td style="padding-left:10px;padding-top:10px;font-size:10pt;border-top:1px solid black;border-collapse:collapse" colspan="3"><strong>Description of Fact Finding</strong></td>
+            <td style="padding-left:10px;padding-top:10px;font-size:10pt;border-top:1px solid black;border-collapse:collapse" colspan="3"><strong>Case Description / Deskripsi Kasus</strong></td>
         </tr>
         <tr>
             <?php if ($c['DETAIL'][0]['NC_SCOPE'] == 'DELIVERY') {
-                $finding = 'PENGIRIMAN BARANG/JASA TERLAMBAT SAMPAI CV. KHS';
+                $finding = 'Goods / services are received later than it scheduled, detail attached. / PENGIRIMAN BARANG/JASA TERLAMBAT SAMPAI CV. KHS';
             } else {
                 $finding = $c['DETAIL'][0]['ROOTCAUSE_CATEGORI'];
             } ?>
@@ -77,22 +78,24 @@
 
         </tr>
         <tr>
-            <td style="padding-left:10px;" colspan="2"><strong>CAR ini dikirimkan agar dilakukan perbaikan sehingga kasus serupa tidak terulang di kemudian hari.</strong></td>
+            <td style="padding-left:10px;" colspan="2"><strong>This CAR was sent as an improvement request so that similar cases do
+                    not recur in the future / CAR ini dikirimkan agar dilakukan perbaikan
+                    sehingga kasus serupa tidak terulang di kemudian hari.</strong></td>
             <td style="padding-left:7px;font-size:10pt;border:1px solid black; border-collapse:collapse;font-size:8pt">Date : <?= $c['DETAIL'][0]['APPROVE_DATE'] ?></td>
 
         </tr>
     </table>
     <p style="text-align: right;margin-bottom:10px;font-size:8pt;font-style:italic;font-family:Arial, Helvetica, sans-serif"><?= $c['KET'] ?></p>
-    <strong style="font-size:10pt;font-family:arial;">Filled By Vendor</strong>
+    <strong style="font-size:10pt;font-family:arial;">Filled By Vendor / Diisi oleh Vendor</strong>
     <table style="width: 100%;border:1px solid black;border-collapse:collapse;font-family:arial;font-size:10pt;margin-bottom:10px">
         <tr>
-            <td style="padding-left:10px;padding-top:10px;font-size:10pt" colspan="5"><strong>Rootcause Analysis</strong></td>
+            <td style="padding-left:10px;padding-top:10px;font-size:10pt" colspan="5"><strong>Rootcause Analysis / Analisa Penyebab</strong></td>
         </tr>
         <tr>
             <td colspan="5" style="padding-left:10px"><br><br><br><br><br><br><br><br><br></td>
         </tr>
         <tr>
-            <td style="padding-left:10px;padding-top:10px;font-size:10pt;border-top:1px solid black;border-collapse:collapse" colspan="5"><strong>Corrective Action</strong></td>
+            <td style="padding-left:10px;padding-top:10px;font-size:10pt;border-top:1px solid black;border-collapse:collapse" colspan="5"><strong>Corrective Action / Tindakan Perbaikan</strong></td>
         </tr>
         <tr>
             <td style="padding-left:10px"></td>
@@ -124,10 +127,10 @@
         </tr>
     </table>
 
-    <strong style="font-size:10pt;font-family:arial;">Filled By CV. KHS</strong>
+    <strong style="font-size:10pt;font-family:arial;">Filled By CV. KHS / Diisi oleh CV. KHS</strong>
     <table style="width: 100%;border:1px solid black;border-collapse:collapse;font-family:arial;font-size:10pt">
         <tr>
-            <td style="padding-left:10px;padding-top:10px;font-size:10pt;border-top:1px solid black;border-collapse:collapse" colspan="5"><strong>Verification <br><br><br><br></strong></td>
+            <td style="padding-left:10px;padding-top:10px;font-size:10pt;border-top:1px solid black;border-collapse:collapse" colspan="5"><strong>Verification / Verifikasi <br><br><br><br></strong></td>
         </tr>
         <tr>
             <td style="padding-left:10px"></td>

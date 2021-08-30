@@ -119,7 +119,7 @@ class C_Approve extends CI_Controller
             } else {
                 $nama = $this->M_car->getNamaApprover($list_supplier[$w]['DETAIL'][0]['APPROVE_TO']);
                 $list_supplier[$w]['APPROVER'] = $nama[0]['nama'];
-                $list_supplier[$w]['KET'] = 'Form ini sudah melalui Approval by sistem.';
+                $list_supplier[$w]['KET'] = 'This form has been approved by the system / Form ini sudah melalui Approval by sistem';
             }
 
             $w++;
