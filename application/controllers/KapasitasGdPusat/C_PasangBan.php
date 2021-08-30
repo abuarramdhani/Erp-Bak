@@ -61,14 +61,17 @@ class C_PasangBan extends CI_Controller{
 		
 	public function view_pasangban(){
 		$ket = $this->input->post('ket');
+		$jenis_ban = $this->input->post('jenis_ban');
+
 		$data['ket'] = $ket;
+		$data['jenis_ban'] = $jenis_ban;
 		$data['onklik'] = $this->input->post('onklik');
 		$data['warna'] = $this->input->post('warna');
 		$data['title'] = $ket == 'siap1' || $ket == 'pasang1' ? 'Line 1' : 'Line 2';
 		$data['ket2'] = $ket == 'siap1' || $ket == 'pasang1' ? 'line1' : 'line2';
 
-		$data['getpasang'] = $this->M_pasangban->getPasang($ket);
-		$data['getmulai'] = $this->M_pasangban->getJamMulai($ket);
+		$data['getpasang'] = $this->M_pasangban->getPasang($ket, $jenis_ban);
+		$data['getmulai'] = $this->M_pasangban->getJamMulai($ket, $jenis_ban );
 		// echo "<pre>";print_r($data['getpasang']);exit();
 
 		$this->load->view('KapasitasGdPusat/V_Ajax_Pasangban', $data);
@@ -79,6 +82,7 @@ class C_PasangBan extends CI_Controller{
 		$nama = $this->input->post('nama');
 		$ket = $this->input->post('ket');
 		$date = $this->input->post('date');
+		$jenis_ban = $this->input->post('jenis_ban');
 		// $creation_date	= date("Y/m/d H:i:s");
 
 		foreach ($noind as $key => $l) {
@@ -86,26 +90,67 @@ class C_PasangBan extends CI_Controller{
 				'NO_INDUK' => $noind[$key],
 				'NAMA' => $nama[$key],
 				'KET' => $ket,
-				'DATE' => $date
+				'DATE' => $date,
+				'JENIS_BAN' => $jenis_ban
 			];
 			$this->M_pasangban->SaveMulai($data);
 		}
 	}
 
 	public function save_selesai(){
+		$id = $this->input->post('id');
 		$noind = $this->input->post('noind');
 		$ket = $this->input->post('ket');
 		$date = $this->input->post('date');
 		$selesai = $this->input->post('wkt');
 		$jumlah = $this->input->post('jumlah');
+		$jenis_ban = $this->input->post('jenis_ban');
+		$user_id = 5177;
 
-		foreach ($noind as $key => $l) {
+		$jumlah_per_assy = $jumlah/2;
+		$cek_assy = $this->M_pasangban->getAssy($jenis_ban);
+
+		$i=0;
+		foreach ($cek_assy as $val) {
+			$cek_assy[$i]['QTY'] = $jumlah_per_assy;
+			$cek_assy[$i]['SUBINV'] = 'FG-DM';
+			$i++;
+		}
+
+		// SaveTemp
+		for ($i=0; $i <sizeof($cek_assy); $i++) {
 			$data = [
+				'ASSY' => $cek_assy[$i]['KODE_ASSY'],
+				'QTY' => $cek_assy[$i]['QTY'],
+				'SUBINV' => $cek_assy[$i]['SUBINV']
+			];
+			$this->M_pasangban->SaveTemp($data);
+		}
+
+		// CreateWOLC
+		$this->M_pasangban->InsertMTI($user_id, 102, 'ERP WOLC');
+
+		$this->M_pasangban->runApi($user_id);
+
+		// DeleteTemp
+		for ($i=0; $i <sizeof($cek_assy); $i++) {
+			$data = [
+				'ASSY' => $cek_assy[$i]['KODE_ASSY'],
+				'QTY' => $cek_assy[$i]['QTY'],
+				'SUBINV' => $cek_assy[$i]['SUBINV']
+			];
+			$this->M_pasangban->deleteTemp($data);
+		}
+
+		foreach ($id as $key => $l) {
+			$data = [
+				'ID' => $id[$key],
 				'NO_INDUK' => $noind[$key],
 				'KET' => $ket,
 				'DATE' => $date,
 				'SELESAI' => $selesai,
-				'JUMLAH' => $jumlah
+				'JUMLAH' => $jumlah,
+				'JENIS_BAN' => $jenis_ban
 			];
 
 			$cek = $this->M_pasangban->cekMulai($data);

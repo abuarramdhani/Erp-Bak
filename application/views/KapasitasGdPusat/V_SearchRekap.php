@@ -12,7 +12,10 @@ if ($val['item_kom'] == '0'
 && $val['item_mat'] == '0' 
 && $val['jml_selesai_mat'] == '0' 
 && $val['jml_tanggungan_mat'] == '0'
-&& $val['realisasi'] == '0') {
+&& $val['realisasi12v'] == '0'
+&& $val['realisasi12nv'] == '0'
+&& $val['realisasi13v'] == '0'
+&& $val['realisasi13nv'] == '0') {
     
 } else{
 ?>
@@ -326,13 +329,14 @@ if ($val['item_kom'] == '0'
             <table class="table table-bordered table-hover table-striped text-center" id="myTable" style="width: 100%; table-layout:fixed">
                 <thead>
                     <tr>
+                        <th>Jenis Ban</th>
                         <th>Target</th>
                         <th>Realisasi</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
+                    <!-- <tr>
                         <td>100</td>
                         <td><?= $val['realisasi']?></td>
                         <td><button type="button" class="btn btn-xs btn-info" onclick="addRinPasangBan_src(this, <?= $num?>)">Rincian</button></td>
@@ -350,6 +354,122 @@ if ($val['item_kom'] == '0'
                                     </thead>
                                     <tbody>
                                         <?php $i= 0; foreach($val['pasangban'] as $pb) {?>
+                                        <tr>
+                                            <td><?= $pb['KET']?></td>
+                                            <td><?= $pb['JUMLAH']?></td>
+                                        </tr>
+                                        <?php $i++; }?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </td>
+                    </tr> -->
+                    <tr>
+                        <td>RUBBER TIRE RING 12 SUB GROUP (VULKANISIR / GRAN PRINX / GP)</td>
+                        <td>80 SET</td>
+                        <td><?= $val['realisasi12v']?></td>
+                        <td><button type="button" class="btn btn-xs btn-info" onclick="addRinPasangBan12v_src(this, <?= $num?>)">Rincian</button></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td colspan="3">
+                            <div id="RinPasangBan12v<?= $num?>" style="display:none">
+                                <table class="table table-bordered table-hover table-striped text-center" id="myTable" style="width: 100%; table-layout:fixed">
+                                    <thead class="bg-primary">
+                                        <tr>
+                                            <th>Keterangan</th>
+                                            <th>Jumlah</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php $i= 0; foreach($val['pasangban12v'] as $pb) {?>
+                                        <tr>
+                                            <td><?= $pb['KET']?></td>
+                                            <td><?= $pb['JUMLAH']?></td>
+                                        </tr>
+                                        <?php $i++; }?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>RUBBER TIRE RING 12 SUB GROUP (NON VULKANISIR / NV / PRIMEX)</td>
+                        <td>80 SET</td>
+                        <td><?= $val['realisasi12nv']?></td>
+                        <td><button type="button" class="btn btn-xs btn-info" onclick="addRinPasangBan12nv_src(this, <?= $num?>)">Rincian</button></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td colspan="3">
+                            <div id="RinPasangBan12nv<?= $num?>" style="display:none">
+                                <table class="table table-bordered table-hover table-striped text-center" id="myTable" style="width: 100%; table-layout:fixed">
+                                    <thead class="bg-primary">
+                                        <tr>
+                                            <th>Keterangan</th>
+                                            <th>Jumlah</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php $i= 0; foreach($val['pasangban12nv'] as $pb) {?>
+                                        <tr>
+                                            <td><?= $pb['KET']?></td>
+                                            <td><?= $pb['JUMLAH']?></td>
+                                        </tr>
+                                        <?php $i++; }?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>RUBBER TIRE RING 13 SUB GROUP (VULKANISIR / GRAN PRINX / GP)</td>
+                        <td>80 SET</td>
+                        <td><?= $val['realisasi13v']?></td>
+                        <td><button type="button" class="btn btn-xs btn-info" onclick="addRinPasangBan13v_src(this, <?= $num?>)">Rincian</button></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td colspan="3">
+                            <div id="RinPasangBan13v<?= $num?>" style="display:none">
+                                <table class="table table-bordered table-hover table-striped text-center" id="myTable" style="width: 100%; table-layout:fixed">
+                                    <thead class="bg-primary">
+                                        <tr>
+                                            <th>Keterangan</th>
+                                            <th>Jumlah</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php $i= 0; foreach($val['pasangban13v'] as $pb) {?>
+                                        <tr>
+                                            <td><?= $pb['KET']?></td>
+                                            <td><?= $pb['JUMLAH']?></td>
+                                        </tr>
+                                        <?php $i++; }?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>RUBBER TIRE RING 13 SUB GROUP (NON VULKANISIR / NV / PRIMEX)</td>
+                        <td>80 SET</td>
+                        <td><?= $val['realisasi13nv']?></td>
+                        <td><button type="button" class="btn btn-xs btn-info" onclick="addRinPasangBan13nv_src(this, <?= $num?>)">Rincian</button></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td colspan="3">
+                            <div id="RinPasangBan13nv<?= $num?>" style="display:none">
+                                <table class="table table-bordered table-hover table-striped text-center" id="myTable" style="width: 100%; table-layout:fixed">
+                                    <thead class="bg-primary">
+                                        <tr>
+                                            <th>Keterangan</th>
+                                            <th>Jumlah</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php $i= 0; foreach($val['pasangban13nv'] as $pb) {?>
                                         <tr>
                                             <td><?= $pb['KET']?></td>
                                             <td><?= $pb['JUMLAH']?></td>

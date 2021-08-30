@@ -13,8 +13,20 @@
                                 <br>
                                 <div class="panel-body">
                                     <div class="col-md-12 text-center">
-                                        <h3>TARGET</h3>
-                                        <h3 style="font-weight:bold">100 PCS / Shift</h3>
+                                        <div class="col-md-6">
+                                            <h3><label class="control-label">Jenis Ban</label></h3>
+                                            <select class="form-control select2 jenis_ban" data-placeholder="Pilih Jenis Ban" id="jenis_ban" name="jenis_ban">
+                                                <option value=""> </option>
+                                                <option value="RUBBER TIRE RING 12 SUB GROUP (VULKANISIR / GRAN PRINX / GP)">RUBBER TIRE RING 12 SUB GROUP (VULKANISIR / GRAN PRINX / GP)</option>
+                                                <option value="RUBBER TIRE RING 12 SUB GROUP (NON VULKANISIR / NV / PRIMEX)">RUBBER TIRE RING 12 SUB GROUP (NON VULKANISIR / NV / PRIMEX)</option>
+                                                <option value="RUBBER TIRE RING 13 SUB GROUP (VULKANISIR / GRAN PRINX / GP)">RUBBER TIRE RING 13 SUB GROUP (VULKANISIR / GRAN PRINX / GP)</option>
+                                                <option value="RUBBER TIRE RING 13 SUB GROUP (NON VULKANISIR / NV / PRIMEX)">RUBBER TIRE RING 13 SUB GROUP (NON VULKANISIR / NV / PRIMEX)</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h3>TARGET</h3>
+                                            <h3 style="font-weight:bold">80 SET/LINE</h3>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="panel-body  box box-info box-solid">
