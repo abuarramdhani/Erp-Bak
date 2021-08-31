@@ -266,6 +266,10 @@
                                         </tbody>
                                     </table>
                                 </div>
+                                <div class="panel-body">
+                                    <div class="col-md-1" style="background-color:rgba(213, 184, 255, 1);color:rgba(213, 184, 255, 1)">A</div>
+                                    <div class="col-md-3"><b>Order Telah Direvisi</b></div>
+                                </div>
                             </div>
                         </div>
                     </div>
