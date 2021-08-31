@@ -3507,6 +3507,10 @@ $route['ADMSeleksi/Penjadwalan/(:any)/(:any)'] = 'ADMSeleksi/Menu/C_Penjadwalan/
 $route['ADMSeleksi/MonitoringPenjadwalan'] = 'ADMSeleksi/Menu/C_Penjadwalan/Monitoring';
 $route['ADMSeleksi/MonitoringPenjadwalan/(:any)'] = 'ADMSeleksi/Menu/C_Penjadwalan/$1';
 $route['ADMSeleksi/MonitoringPenjadwalan/(:any)/(:any)'] = 'ADMSeleksi/Menu/C_Penjadwalan/$1/$2';
+$route['ADMSeleksi/MonitoringPenjadwalan/(:any)/(:any)/(:any)'] = 'ADMSeleksi/Menu/C_Penjadwalan/$1/$2/$3';
+$route['ADMSeleksi/MonitoringHasilTes'] = 'ADMSeleksi/Menu/C_HasilTes/MonitoringHasilTes';
+$route['ADMSeleksi/MonitoringHasilTes/(:any)'] = 'ADMSeleksi/Menu/C_HasilTes/$1';
+$route['ADMSeleksi/MonitoringHasilTes/(:any)/(:any)'] = 'ADMSeleksi/Menu/C_HasilTes/$1/$2';
 
 $route['ADMSeleksi/Setting/SetupPertanyaan'] = 'ADMSeleksi/Menu/C_Setting/index';
 $route['ADMSeleksi/Setting/SetupPertanyaan/(:any)'] = 'ADMSeleksi/Menu/C_Setting/$1';
