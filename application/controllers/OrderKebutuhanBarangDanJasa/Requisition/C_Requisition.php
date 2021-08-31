@@ -489,11 +489,45 @@ class C_Requisition extends CI_Controller
 				$where = 'AND ooh.order_status_id = ooh.order_status_id';
 			}
 
-			$data['listOrder'] = $this->M_requisition->getListDataOrder2($noind, $where);
+			$lorder = $this->M_requisition->getListDataOrder2($noind, $where);
+
+			for ($k = 0; $k < sizeof($lorder); $k++) {
+				$hist = $this->M_requisition->getHistoryOrder($lorder[$k]['ORDER_ID']);
+				$ket = '';
+				for ($h = 0; $h < sizeof($hist); $h++) {
+					if ($hist[$h]['QUANTITY_AFTER'] != null || $hist[$h]['ITEM_DESCRIPTION_AFTER'] != null || $hist[$h]['ORDER_PURPOSE_AFTER'] != null) {
+						$ket = 'berubah';
+					}
+				}
+				$lorder[$k]['CHANGES'] = $ket;
+			}
+
+			// echo "<pre>";
+			// print_r($lorder);
+			// exit();
+
+			$data['listOrder'] = $lorder;
 
 			$this->load->view('OrderKebutuhanBarangDanJasa/Requisition/V_TableListDataAdmin', $data);
 		} else {
-			$data['listOrder'] = $this->M_requisition->getListDataOrder2($noind, $where);
+
+			$lorder = $this->M_requisition->getListDataOrder2($noind, $where);
+			for ($k = 0; $k < sizeof($lorder); $k++) {
+				$hist = $this->M_requisition->getHistoryOrder($lorder[$k]['ORDER_ID']);
+				$ket = '';
+				for ($h = 0; $h < sizeof($hist); $h++) {
+					if ($hist[$h]['QUANTITY_AFTER'] != null || $hist[$h]['ITEM_DESCRIPTION_AFTER'] != null || $hist[$h]['ORDER_PURPOSE_AFTER'] != null) {
+						$ket = 'berubah';
+					}
+				}
+				$lorder[$k]['CHANGES'] = $ket;
+			}
+
+			// echo "<pre>";
+			// print_r($lorder);
+			// exit();
+
+			$data['listOrder'] = $lorder;
 
 			$this->load->view('V_Header', $data);
 			$this->load->view('V_Sidemenu', $data);

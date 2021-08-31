@@ -146,8 +146,14 @@
                                                     $flag = 'label-warning';
                                                     $tag = 'emergency';
                                                 }
+
+                                                if ($list['CHANGES'] == 'berubah') {
+                                                    $bgcolor = 'rgba(213, 184, 255, 1)';
+                                                } else {
+                                                    $bgcolor = '';
+                                                }
                                                 ?>
-                                                <tr>
+                                                <tr style="background-color: <?= $bgcolor ?>;">
                                                     <td><?php echo $no; ?></td>
                                                     <td><span class="tdOKBListOrderId" style="display: none;"><?php echo $list['ORDER_ID']; ?></span><button type="button" class="btn btn-sm btn-default btnOKBInfoPR"><?php echo $list['ORDER_ID']; ?></button></td>
                                                     <td><?= $list['NATIONAL_IDENTIFIER'] . ', ' . $list['FULL_NAME']; ?></td>
@@ -259,6 +265,10 @@
                                             <?php } ?>
                                         </tbody>
                                     </table>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="col-md-1" style="background-color:rgba(213, 184, 255, 1);color:rgba(213, 184, 255, 1)">A</div>
+                                    <div class="col-md-3"><b>Order Telah Direvisi</b></div>
                                 </div>
                             </div>
                         </div>
