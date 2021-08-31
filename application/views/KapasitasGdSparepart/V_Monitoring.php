@@ -86,13 +86,17 @@
                                             <label class="text-right">Tanggal : <?php echo date("d F Y") ?></label>
                                         </div>
                                         <div class="col-md-6">
-                                            <label class="text-right">DOSP / SPB masuk hari ini : <?= $jml_spb ?> lembar (<?= $dopcs?> pcs)</label>
+                                            <label class="text-right">DOSP / SPB Masuk Sebelum pk 12:00 : <?= $jml_spb ?> lembar (<?= $dopcs?> item)</label>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
+                                            <label class="text-right">Terselesaikan : <?= $jml_spb_selesai ?> lembar (<?= $dopcs_selesai?> item)</label>
+                                        </div>
+                                        <div class="col-md-2">
                                             <button type="button" class="btn btn-xs btn-info" onclick="addDoSpb(this)">Rincian</button></td>
                                         </div>
                                         <div class="col-md-12">
                                             <div id="DoSpb" class="table-responsive" style="display:none">
+                                            <center><label>DOSP / SPB Masuk Sebelum pk 12:00</label></center>
                                                 <table class="datatable table table-bordered table-hover table-striped text-center" id="myTable" style="width: 100%;">
                                                     <thead class="bg-primary">
                                                         <tr>
@@ -119,19 +123,116 @@
                                                         <?php $no++; $i++;}?>
                                                     </tbody>
                                                 </table>
+                                                <br>
+                                                <center><label>Terselesaikan</label></center>
+                                                <table class="datatable table table-bordered table-hover table-striped text-center" id="myTable" style="width: 100%;">
+                                                    <thead class="bg-primary">
+                                                        <tr>
+                                                            <th width="5px">No</th>
+                                                            <th>Jam</th>
+                                                            <th>Jenis Dokumen</th>
+                                                            <th>No Dokumen</th>
+                                                            <th>Jumlah Item</th>
+                                                            <th>Jumlah Pcs</th>
+                                                            <th>Keterangan</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <?php $i= 0; $no=1; foreach($dospb_selesai as $val){ ?>
+                                                            <tr>
+                                                                <td width="5px"><?= $no; ?></td>
+                                                                <td><input type="hidden" name="jam[]" value="<?= $val['TGL_DIBUAT']?>"><?= $val['TGL_DIBUAT']?></td>
+                                                                <td><input type="hidden" name="jenis_doc[]" value="<?= $val['JENIS_DOKUMEN']?>"><?= $val['JENIS_DOKUMEN']?></td>
+                                                                <td><input type="hidden" name="no_doc[]" value="<?= $val['NO_DOKUMEN']?>"><?= $val['NO_DOKUMEN']?></td>
+                                                                <td><input type="hidden" name="jml_item[]" value="<?= $val['JUMLAH_ITEM']?>"><?= $val['JUMLAH_ITEM']?></td>
+                                                                <td><input type="hidden" name="jml_pcs[]" value="<?= $val['JUMLAH_PCS']?>"><?= $val['JUMLAH_PCS']?></td>
+                                                                <td><input type="hidden" name="urgent[]" value="<?= $val['URGENT']?> <?= $val['BON'] ?>"><?= $val['URGENT']?> <?= $val['BON'] ?></td>
+                                                            </tr>
+                                                        <?php $no++; $i++;}?>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="text-right">DOSP / SPB Masuk Setelah pk 12:00 : <?= $jml_spb2 ?> lembar (<?= $dopcs2?> item)</label>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="text-right">Terselesaikan : <?= $jml_spb2_selesai ?> lembar (<?= $dopcs2_selesai?> item)</label>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <button type="button" class="btn btn-xs btn-info" onclick="addDoSpb2(this, 2)">Rincian</button></td>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div id="DoSpb2" class="table-responsive" style="display:none">
+                                            <center><label>DOSP / SPB Masuk Setelah pk 12:00</label></center>
+                                                <table class="datatable table table-bordered table-hover table-striped text-center" id="myTable" style="width: 100%;">
+                                                    <thead class="bg-primary">
+                                                        <tr>
+                                                            <th width="5px">No</th>
+                                                            <th>Jam</th>
+                                                            <th>Jenis Dokumen</th>
+                                                            <th>No Dokumen</th>
+                                                            <th>Jumlah Item</th>
+                                                            <th>Jumlah Pcs</th>
+                                                            <th>Keterangan</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <?php $i= 0; $no=1; foreach($dospb2 as $val){ ?>
+                                                            <tr>
+                                                                <td width="5px"><?= $no; ?></td>
+                                                                <td><input type="hidden" name="jam[]" value="<?= $val['TGL_DIBUAT']?>"><?= $val['TGL_DIBUAT']?></td>
+                                                                <td><input type="hidden" name="jenis_doc[]" value="<?= $val['JENIS_DOKUMEN']?>"><?= $val['JENIS_DOKUMEN']?></td>
+                                                                <td><input type="hidden" name="no_doc[]" value="<?= $val['NO_DOKUMEN']?>"><?= $val['NO_DOKUMEN']?></td>
+                                                                <td><input type="hidden" name="jml_item[]" value="<?= $val['JUMLAH_ITEM']?>"><?= $val['JUMLAH_ITEM']?></td>
+                                                                <td><input type="hidden" name="jml_pcs[]" value="<?= $val['JUMLAH_PCS']?>"><?= $val['JUMLAH_PCS']?></td>
+                                                                <td><input type="hidden" name="urgent[]" value="<?= $val['URGENT']?> <?= $val['BON'] ?>"><?= $val['URGENT']?> <?= $val['BON'] ?></td>
+                                                            </tr>
+                                                        <?php $no++; $i++;}?>
+                                                    </tbody>
+                                                </table>
+                                                <br>
+                                                <center><label>Terselesaikan</label></center>
+                                                <table class="datatable table table-bordered table-hover table-striped text-center" id="myTable" style="width: 100%;">
+                                                    <thead class="bg-primary">
+                                                        <tr>
+                                                            <th width="5px">No</th>
+                                                            <th>Jam</th>
+                                                            <th>Jenis Dokumen</th>
+                                                            <th>No Dokumen</th>
+                                                            <th>Jumlah Item</th>
+                                                            <th>Jumlah Pcs</th>
+                                                            <th>Keterangan</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <?php $i= 0; $no=1; foreach($dospb2_selesai as $val){ ?>
+                                                            <tr>
+                                                                <td width="5px"><?= $no; ?></td>
+                                                                <td><input type="hidden" name="jam[]" value="<?= $val['TGL_DIBUAT']?>"><?= $val['TGL_DIBUAT']?></td>
+                                                                <td><input type="hidden" name="jenis_doc[]" value="<?= $val['JENIS_DOKUMEN']?>"><?= $val['JENIS_DOKUMEN']?></td>
+                                                                <td><input type="hidden" name="no_doc[]" value="<?= $val['NO_DOKUMEN']?>"><?= $val['NO_DOKUMEN']?></td>
+                                                                <td><input type="hidden" name="jml_item[]" value="<?= $val['JUMLAH_ITEM']?>"><?= $val['JUMLAH_ITEM']?></td>
+                                                                <td><input type="hidden" name="jml_pcs[]" value="<?= $val['JUMLAH_PCS']?>"><?= $val['JUMLAH_PCS']?></td>
+                                                                <td><input type="hidden" name="urgent[]" value="<?= $val['URGENT']?> <?= $val['BON'] ?>"><?= $val['URGENT']?> <?= $val['BON'] ?></td>
+                                                            </tr>
+                                                        <?php $no++; $i++;}?>
+                                                    </tbody>
+                                                </table>
                                             </div>
                                         </div>
 
                                         <div class="col-md-12">
                                             <label class="text-right">Pelayanan</label>
                                         </div>
-                                        <div class="col-md-3">
+                                        <div class="col-md-6">
                                             Terselesaikan : <?= $jml_pelayanan ?> lembar
                                         </div>
-                                        <div class="col-md-3">
+                                        <div class="col-md-4">
                                             Tanggungan : <?= $krg_pelayanan ?> lembar
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-2">
                                             <button type="button" class="btn btn-xs btn-info" onclick="addRinPelayanan1(this)">Rincian</button>
                                         </div>
                                         <div class="col-md-12">
@@ -206,13 +307,13 @@
                                         <div class="col-md-12">
                                             <label class="text-right">Packing</label>
                                         </div>
-                                        <div class="col-md-3">
+                                        <div class="col-md-6">
                                         Terselesaikan : <?= $jml_packing ?> lembar
                                         </div>
-                                        <div class="col-md-3">
+                                        <div class="col-md-4">
                                         Tanggungan : <?= $krg_packing ?> lembar
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-2">
                                             <button type="button" class="btn btn-xs btn-info" onclick="addRinPacking1(this)">Rincian</button></td>
                                         </div>
                                         <div class="col-md-12">
@@ -287,18 +388,18 @@
                                         </div>
 
                                         <div>
-                                            <table style="width: 50%;table-layout:fixed">
+                                            <table style="width: 100%;table-layout:fixed">
                                                 <tbody>
                                                     <tr>
-                                                       <th width="53.5%" style="padding-left:15px">Jumlah lembar selesai</th>
+                                                       <th width="52%" style="padding-left:15px">Jumlah lembar selesai</th>
                                                        <th>: <?= $jml_selesai ?> lembar</th>
                                                     </tr>
                                                     <tr>
-                                                       <th width="53.5%" style="padding-left:15px">Jumlah item selesai</th>
+                                                       <th width="52%" style="padding-left:15px">Jumlah item selesai</th>
                                                        <th>: <?= $jml_item_selesai ?> item</th>
                                                     </tr>
                                                     <tr>
-                                                       <th width="53.5%" style="padding-left:15px">Jumlah pcs selesai</th>
+                                                       <th width="52%" style="padding-left:15px">Jumlah pcs selesai</th>
                                                        <th>: <?= $jml_pcs_selesai ?> pcs</th>
                                                     </tr>
                                                     <tr>
