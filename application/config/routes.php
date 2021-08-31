@@ -5904,3 +5904,13 @@ $route['ReportEkspedisi/CreateReport/(:any)/(:any)'] 	= 'RekapEkspedisi/C_Report
 $route['ReportEkspedisi/HistoryReport'] 	= 'RekapEkspedisi/C_Report/HistoryReport';
 $route['ReportEkspedisi/HistoryReport/(:any)'] 	= 'RekapEkspedisi/C_Report/$1';
 $route['ReportEkspedisi/HistoryReport/(:any)/(:any)'] 	= 'RekapEkspedisi/C_Report/$1/$2';
+
+//------------------------------------------- API Psikotes -------------------------------
+$route['Api/Psikotes/(:any)'] = 'Api/Psikotes/C_Psikotes/$1';
+$route['Api/Psikotes/(:any)/(:any)'] = 'Api/Psikotes/C_Psikotes/$1/$2';
+
+$route['Api/SetupPertanyaan/'] = 'Api/Psikotes/C_SetupPertanyaan';
+$route['Api/SetupPertanyaan/(:any)'] = 'Api/Psikotes/C_SetupPertanyaan/$1';
+
+$route['Api/SetupPenjadwalan/'] = 'Api/Psikotes/C_SetupPenjadwalan';
+$route['Api/SetupPenjadwalan/(:any)'] = 'Api/Psikotes/C_SetupPenjadwalan/$1';
