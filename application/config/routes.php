@@ -3508,6 +3508,10 @@ $route['ADMSeleksi/MonitoringPenjadwalan'] = 'ADMSeleksi/Menu/C_Penjadwalan/Moni
 $route['ADMSeleksi/MonitoringPenjadwalan/(:any)'] = 'ADMSeleksi/Menu/C_Penjadwalan/$1';
 $route['ADMSeleksi/MonitoringPenjadwalan/(:any)/(:any)'] = 'ADMSeleksi/Menu/C_Penjadwalan/$1/$2';
 
+$route['ADMSeleksi/Setting/SetupPertanyaan'] = 'ADMSeleksi/Menu/C_Setting/index';
+$route['ADMSeleksi/Setting/SetupPertanyaan/(:any)'] = 'ADMSeleksi/Menu/C_Setting/$1';
+$route['ADMSeleksi/Setting/SetupPertanyaan/(:any)/(:any)'] = 'ADMSeleksi/Menu/C_Setting/$1/$2';
+
 
 // ------------------------------------------------- Monitoring LPPB Penerimaan ---------------------------------------------//
 $route['MonitoringLppbPenerimaan'] 								= 'MonitoringLppbPenerimaan/C_Index';
