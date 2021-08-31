@@ -77,12 +77,15 @@ class C_DeklarasiSehat extends CI_Controller
 
     function insertDeklarasi()
     {
+        /*
+        tidak harus diisi
         $aspek_1_a = $this->input->post('aspek_1_a');
         $ret['error'] = 1;
         if (empty($aspek_1_a)) {
             echo json_encode($ret);
             return;
         }
+        */
         $arr = array(
             'noind' => $this->input->post('noind'),
             'waktu_input' => date('Y-m-d H:i:s'),
