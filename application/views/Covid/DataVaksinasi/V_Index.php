@@ -10,7 +10,11 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="box box-primary box-solid">
-							<div class="box-header with-border"></div>
+							<div class="box-header with-border text-right">
+								<a href="<?=base_url('Covid/DataVaksinasi/Tambah') ?>" class="btn btn-primary">
+									<span class="fa fa-plus-square"></span>&nbsp;Tambah
+								</a>
+							</div>
 							<div class="box-body">
 								<div class="row">
 									<div class="col-lg-12">
@@ -18,6 +22,7 @@
 											<thead>
 												<tr>
 													<th class="bg-primary">No.</th>
+													<th class="bg-primary">Action</th>
 													<th class="bg-primary">No. Induk</th>
 													<th class="bg-primary">Nama</th>
 													<th class="bg-primary">NIK</th>
@@ -40,6 +45,15 @@
 														?>
 														<tr>
 															<td><?=$nomor ?></td>
+															<td>
+																<?php 
+																	$encrypted_id = $this->encryption->encrypt($dt['id']);
+																	$encrypted_id = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_id);
+																?>	
+																<button class="btn btn-danger btn-CVD-DataVaksinasi-Delete" type="button" data-id="<?=$encrypted_id ?>">
+																	<span class="fa fa-trash"></span>
+																</button>
+															</td>
 															<td><?=$dt['noind'] ?></td>
 															<td><?=$dt['nama'] ?></td>
 															<td><?=$dt['nik'] ?></td>
@@ -62,6 +76,7 @@
 															<td><?=$dt['user_input'] ?></td>
 														</tr>
 														<?php
+														$nomor++;
 													}
 												}
 												?>
