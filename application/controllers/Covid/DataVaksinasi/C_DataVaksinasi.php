@@ -183,7 +183,17 @@ class C_DataVaksinasi extends CI_Controller
 	{
 		$id = str_replace(array('-', '_', '~'), array('+', '/', '='), $encrypted_id);
 		$id = $this->encryption->decrypt($id);
+		$user = $this->session->user;
 		$this->M_datavaksinasi->deleteDataVaksinasiById($id);
+		$log = array(
+	    	'wkt' 		=> date('Y-m-d H:i:s'),
+	    	'menu'		=> 'TIM COVID 19 -> DATA VAKSINASI',
+	    	'ket'		=> "id: ".$id,
+	    	'noind'		=> $user,
+	    	'jenis'		=> 'DELETE DATA VAKSINASI',
+	    	'program'	=> 'ERP'
+	    );
+	    $this->M_datavaksinasi->insertLog($log);
 		echo "success";
 	}
 }
