@@ -62,15 +62,31 @@
 															<td><?=$dt['jenis_vaksin'] ?></td>
 															<td><?=$dt['lokasi_vaksin'] ?></td>
 															<td><?=$dt['vaksin_ke'] ?></td>
-															<td>
+															<td><?php if(is_null($dt['path_kartu_vaksin']))
+															{
+															echo "-";
+															}
+															else 
+															{
+															echo '
 																<a target="_blank" href="<?php echo base_url('assets/upload/pemutihan_data_pekerja/attachment/'.$dt['path_kartu_vaksin']) ?>">
 																	<span class="fa fa-image"></span>
-																</a>
+																</a> ';
+															}
+															?>
 															</td>
-															<td>
+															<td><?php if(is_null($dt['path_sertifikat_vaksin']))
+															{
+															echo "-";
+															}
+															else 
+															{
+															echo '
 																<a target="_blank" href="<?php echo base_url('assets/upload/pemutihan_data_pekerja/attachment/'.$dt['path_sertifikat_vaksin']) ?>">
 																	<span class="fa fa-image"></span>
-																</a>
+																</a>';
+															}
+															?>
 															</td>
 															<td><?=$dt['tanggal_input'] ?></td>
 															<td><?=$dt['user_input'] ?></td>
