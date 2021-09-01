@@ -116,6 +116,7 @@ class C_Master extends CI_Controller
 
     public function SubInv($value='')
     {
+
       $check_io = $this->M_master->checkSubInv($this->input->post('io'));
       // echo "<pre>";print_r($check_io);die;
       if (!empty($check_io[0]['OPEN_FLAG'])) {
@@ -307,6 +308,7 @@ class C_Master extends CI_Controller
       $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
       $data['io'] = $this->M_master->get_io();
+      $data['getitembarkas'] = $this->M_master->getAllItemBarkas();
 
       $this->load->view('V_Header', $data);
       $this->load->view('V_Sidemenu', $data);

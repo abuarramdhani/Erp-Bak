@@ -12,7 +12,7 @@
           <div class="col-lg-12">
             <div class="box box-primary box-solid">
               <div class="box-header with-border">
-                 <h4 style="font-weight:bold"><i aria-hidden="true" class="fa fa-file-pdf-o"></i> Pengiriman Barang Bekas Stok</h4>
+                 <h4 style="font-weight:bold"><i aria-hidden="true" class="fa fa-file-pdf-o"></i> Input Pengiriman Barang Bekas</h4>
               </div>
                 <div class="row">
                   <div class="col-md-12">
@@ -69,8 +69,8 @@
                     </div>
                     <div class="form-group">
                       <label for="">SubInv</label>
-                      <div class="pbb_sudah_pilih_io">
-                        <select class="slc_pbb pbb_subinv" name="subinv" style="width:100%">
+                      <div class="pbb_sudah_pilih_io" style="height:35px;">
+                        <select class="form-control slc_pbb pbb_subinv" name="subinv" style="width:100%">
                           <option value="">Select..</option>
                         </select>
                       </div>
@@ -125,7 +125,7 @@
                                 <th class="text-center" style="width:10%;">Jumlah</th>
                                 <th class="text-center" style="width:7%;">UOM</th>
                                 <th class="text-center">Item Barkas</th>
-                                <th class="text-center" style="width:12%;">Estimasi Berat</th>
+                                <th class="text-center" style="width:12%;">Estimasi Berat (Kg)</th>
                                 <th class="text-center" style="width:5%;"></th>
                               </tr>
                             </thead>
