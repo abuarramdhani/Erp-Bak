@@ -5278,6 +5278,7 @@ $route['BarangBekas/pbbs'] = 'BarangBekas/C_Master/pbbs';
 $route['BarangBekas/pbbns'] = 'BarangBekas/C_Master/pbbns';
 $route['BarangBekas/Transact'] = 'BarangBekas/C_Master/transact';
 $route['BarangBekas/RekapPBB'] = 'BarangBekas/C_Master/rekapData';
+$route['BarangBekas/monitoring-stok'] = 'BarangBekas/C_Master/monitoringstok';
 
 $route['BarangBekas/pbbs/(:any)'] = 'BarangBekas/C_Master/$1';
 $route['BarangBekas/pbbs/(:any)/(:any)'] = 'BarangBekas/C_Master/$1/$2';
@@ -5799,3 +5800,19 @@ $route['EvaluasiPekerjaNonStaf/Monitoring/(:any)/(:any)'] = 'EvaluasiNonStaf/C_E
 $route['EvaluasiPekerjaNonStaf/MonitoringStaf'] = 'EvaluasiNonStaf/C_EvaluasiNonStaf/Monitoring_staf';
 $route['EvaluasiPekerjaNonStaf/MonitoringStaf/(:any)'] = 'EvaluasiNonStaf/C_EvaluasiNonStaf/$1';
 $route['EvaluasiPekerjaNonStaf/MonitoringStaf/(:any)/(:any)'] = 'EvaluasiNonStaf/C_EvaluasiNonStaf/$1/$2';
+
+//-------------------------------Consumable V2---------------------------------------------------//
+$route['consumableseksiv2']	=	'ConsumableV2/C_Master';
+$route['consumableseksiv2/inputkebutuhan']  = 'ConsumableV2/C_Master/inputkebutuhan';
+$route['consumableseksiv2/pengajuan']  = 'ConsumableV2/C_Master/pengajuan';
+
+$route['consumableseksiv2/action/(:any)']			= 'ConsumableV2/C_Master/$1';
+$route['consumableseksiv2/action/(:any)/(:any)']	= 'ConsumableV2/C_Master/$1/$2';
+
+$route['consumabletimv2']	=	'ConsumableV2/C_Sensei';
+$route['consumabletimv2/permintaanmasuk']  = 'ConsumableV2/C_Sensei/permintaanmasuk';
+$route['consumabletimv2/trackrecord']  = 'ConsumableV2/C_Sensei/trackrecord';
+$route['consumabletimv2/settingdatamaster']  = 'ConsumableV2/C_Sensei/settingdatamaster';
+
+$route['consumabletimv2/action/(:any)']			= 'ConsumableV2/C_Sensei/$1';
+$route['consumabletimv2/action/(:any)/(:any)']	= 'ConsumableV2/C_Sensei/$1/$2';
