@@ -2198,6 +2198,11 @@ $route['MasterPekerja/SebabKeluar'] = 'MasterPekerja/SebabKeluar/C_SebabKeluar';
 $route['MasterPekerja/SebabKeluar/(:any)'] = 'MasterPekerja/SebabKeluar/C_SebabKeluar/$1';
 $route['MasterPekerja/SebabKeluar/(:any)/(:any)'] = 'MasterPekerja/SebabKeluar/C_SebabKeluar/$1/$2';
 
+// ----------------------------------Maser Pekerja Deklarasi Sehat-------------------------------------------
+$route['MasterPekerja/DeklarasiSehat'] = 'MasterPekerja/Pekerja/DeklarasiSehat/C_DeklarasiSehat';
+$route['MasterPekerja/DeklarasiSehat/(:any)'] = 'MasterPekerja/Pekerja/DeklarasiSehat/C_DeklarasiSehat/$1';
+$route['MasterPekerja/DeklarasiSehat/(:any)/(:any)'] = 'MasterPekerja/Pekerja/DeklarasiSehat/C_DeklarasiSehat/$1/$2';
+
 //------------------------------------ Penerimaan PO ----------------------------------------
 $route['PenerimaanPO']						   = 'PenerimaanPO/C_Penerimaan';
 
