@@ -69,7 +69,7 @@
 															else 
 															{
 															echo '
-																<a target="_blank" href="<?php echo base_url('assets/upload/pemutihan_data_pekerja/attachment/'.$dt['path_kartu_vaksin']) ?>">
+																<a target="_blank" href="'.base_url('assets/upload/pemutihan_data_pekerja/attachment/'.$dt['path_kartu_vaksin']).'">
 																	<span class="fa fa-image"></span>
 																</a> ';
 															}
@@ -82,7 +82,7 @@
 															else 
 															{
 															echo '
-																<a target="_blank" href="<?php echo base_url('assets/upload/pemutihan_data_pekerja/attachment/'.$dt['path_sertifikat_vaksin']) ?>">
+																<a target="_blank" href="'.base_url('assets/upload/pemutihan_data_pekerja/attachment/'.$dt['path_sertifikat_vaksin']).'">
 																	<span class="fa fa-image"></span>
 																</a>';
 															}
