@@ -59,6 +59,28 @@ class M_deklarasi extends CI_Model
         return $this->personalia->query($sql)->result_array();
     }
 
+    function getAllPernyataanByID($id_deklarasi)
+    {
+        $sql = "SELECT *,(select 
+                    case dsp.aspek
+                    when 'aspek_1_a' then b.aspek_1_a
+                    when 'aspek_1_b' then b.aspek_1_b
+                    when 'aspek_2_a' then b.aspek_2_a
+                    when 'aspek_2_b' then b.aspek_2_b
+                    when 'aspek_2_c' then b.aspek_2_c
+                    when 'aspek_2_d' then b.aspek_2_d
+                    when 'aspek_2_e' then b.aspek_2_e
+                    when 'aspek_2_f' then b.aspek_2_f
+                    when 'aspek_2_g' then b.aspek_2_g
+                    when 'aspek_2_h' then b.aspek_2_h
+                    when 'aspek_2_i' then b.aspek_2_i
+                    when 'aspek_3_a' then b.aspek_3_a
+                    end 
+                    from hrd_khs.deklarasi_sehat b where id_deklarasi='$id_deklarasi') as status
+                    FROM hrd_khs.deklarasi_sehat_pertanyaan dsp order by aspek";
+        return $this->personalia->query($sql)->result_array();
+    }
+
     function getDetailPKJ($noind)
     {
         $this->personalia->where('noind', $noind);

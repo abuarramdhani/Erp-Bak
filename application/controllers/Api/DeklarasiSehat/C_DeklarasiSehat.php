@@ -124,6 +124,19 @@ class C_DeklarasiSehat extends CI_Controller
         echo json_encode($ret);
     }
 
+    function ListPernyataanByID($id)
+    {
+        $id = $this->input->get('id');
+        $ret['error'] = 1;
+        if (!is_numeric($id)) {
+            echo json_encode($ret);
+            return;
+        }
+        $ret['data'] = $this->M_deklarasi->getAllPernyataanByID($id);
+
+        echo json_encode($ret);
+    }
+
     function ReadDeklarasibyID()
     {
         $id = $this->input->get('id');
