@@ -779,6 +779,7 @@
                               <td>Jenis Anggota</td>
                               <td>Tgllahir</td>
                               <td>NIK</td>
+                              <td>Serumah</td>
                             </tr>
                           </thead>
                           <tbody>
@@ -788,6 +789,24 @@
                                 <td><?= $people->jenisanggota ?></td>
                                 <td><?= date('d/m/Y', strtotime($people->tgllahir)); ?></td>
                                 <td><?= $people->nik ?></td>
+                                <td><?php 
+                                
+                                switch ($people->serumah) {
+                                  case 't':
+                                    $isi = "fa-check";
+                                    $color = "green";
+                                    break;
+                                  case 'f':
+                                    $isi = "fa-times";
+                                    $color = "red";
+                                    break;
+                                  default:
+                                    $isi = "fa-question";
+                                    $color = "grey";
+                                    break;
+                                }
+                                echo "<span class='fa $isi' style='color: $color'></span>";
+                                ?></td>
                               </tr>
                             <?php endforeach ?>
                           </tbody>
