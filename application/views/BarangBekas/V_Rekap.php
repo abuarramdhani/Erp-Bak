@@ -54,7 +54,7 @@
                               <td><?php echo $value['ITEM_TUJUAN'] ?></td>
                               <td><?php echo $value['ONHAND'] ?></td>
                               <td><?php echo $value['JUMLAH'] ?> <?php echo $value['UOM'] ?></td>
-                              <td><?php echo $value['BERAT_TIMBANG'] ?></td>
+                              <td><?php echo $value['BERAT_TIMBANG'] ?> Kg</td>
                               <td><?php echo $value['STATUS'] ?></td>
                             </tr>
                           <?php endforeach; ?>

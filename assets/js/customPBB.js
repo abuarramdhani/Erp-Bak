@@ -34,6 +34,10 @@ const swalPBB = (type, title) => {
 }
 
 $(document).ready(function () {
+  // if ($('#pbb_mon_stok_barkas').val()) {
+  //   getmonpbbgrafik();
+  //   console.log();
+  // }
   if ($('.rekap_pbb').html() != undefined) {
     var today = new Date();
     var dd = today.getDate();
@@ -48,6 +52,7 @@ $(document).ready(function () {
     }
     var today = dd + '_' + mm + '_' + yyyy;
   }
+  $('.pbb_default_datatable').dataTable();
   $('.rekap_pbb').dataTable({
     dom: 'Bfrtip',
     buttons: [
@@ -63,6 +68,7 @@ $(document).ready(function () {
      ],
   });
   $(".slc_pbb_seksi").select2();
+  $(".slc_default_pbb").select2();
   $(".slc_pbb").select2({
     allowClear:true,
   });
@@ -160,35 +166,219 @@ $('.pbb_transact').select2({
 
 })
 
-$('.pbb_io').on('change', function() {
-  let val = $(this).val();
-  $.ajax({
-    url: baseurl + 'BarangBekas/pbbs/SubInv',
-    type: 'POST',
-    dataType: 'JSON',
-    data: {
-      io : val
-    },
-    cache: false,
-    beforeSend: function() {
-      toastPBBLoading('Sedang Mengambil SubInv..');
-    },
-    success: function(result) {
-      if (result != 0) {
-        toastPBB('success', 'Selesai..');
-        $('.pbb_subinv').html(result);
-        $('.pbb_subinv').val('').trigger('change');
-        $('.pbb_locator').html('-')
-      }else {
-        swalPBB('warning', 'IO belum Open Period');
-        $('.pbb_subinv').html('');
+$('input[name="jenis_pbb"]').on('change', function() {
+  let val = $('input[name="jenis_pbb"]:checked').val();
+  if (val == 'PBB-NS') {
+    $('.pbb_io').val(81).trigger('change');
+  }else {
+    $('.pbb_io').val('').trigger('change');
+  }
+})
+
+function slc_pbb_item_nons(elem) {
+  $(`.${elem}`).select2({
+    tags: true,
+    allowClear:true,
+    minimumInputLength: 3,
+    placeholder: "Item Kode",
+    ajax: {
+      url: baseurl + "BarangBekas/pbbs/item",
+      dataType: "JSON",
+      type: "POST",
+      cache: false,
+      data: function(params) {
+        return {
+          term: params.term,
+          subinv: '-',
+          locator: '-',
+          org_id: 81,
+        };
+      },
+      processResults: function(data) {
+        return {
+          results: $.map(data, function(obj) {
+            return {
+              id: obj.SEGMENT1==''?params.term:`${obj.SEGMENT1} - ${obj.PRIMARY_UOM_CODE} - ${obj.INVENTORY_ITEM_ID} - ${obj.OH}`,
+              text: obj.SEGMENT1==''?params.term:`${obj.SEGMENT1} - ${obj.ITEM_DESC}`
+            }
+          })
+        }
       }
-    },
-    error: function(XMLHttpRequest, textStatus, errorThrown) {
-    swalPBB('error', 'Koneksi Terputus...')
-     console.error();
     }
   })
+}
+
+$('.pbb_io').on('change', function() {
+  let val = $(this).val();
+  if (val == 81) {
+    $('.pbb_sudah_pilih_io').html(` - <input type="hidden" name="subinv" value="">`)
+    $('.pbb_locator').html('-')
+    slc_pbb_item_nons('slc_pbb_item')
+  }else {
+    $('.pbb_sudah_pilih_io').html(`<select class="form-control slc_pbb pbb_subinv" name="subinv" style="width:100%">
+                                    <option value="">Select..</option>
+                                  </select>`);
+    $('.pbb_subinv').select2();
+    if (val!='') {
+      $.ajax({
+        url: baseurl + 'BarangBekas/pbbs/SubInv',
+        type: 'POST',
+        dataType: 'JSON',
+        data: {
+          io : val
+        },
+        cache: false,
+        beforeSend: function() {
+          toastPBBLoading('Sedang Mengambil SubInv..');
+        },
+        success: function(result) {
+          if (result != 0) {
+            toastPBB('success', 'Selesai..');
+            $('.pbb_subinv').html(result);
+            $('.pbb_subinv').val('').trigger('change');
+            $('.pbb_locator').html('-')
+          }else {
+            swalPBB('warning', 'IO belum Open Period');
+            $('.pbb_subinv').html('');
+          }
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+        swalPBB('error', 'Koneksi Terputus...')
+         console.error();
+        }
+      })
+    }
+
+    // pbb_subinv_change
+    $('.pbb_subinv').on('change', function() {
+
+      if ($(this).val() != '') {
+
+      $('.pbbs_table tbody tr').each((i,v)=>{
+        // console.log(v);
+        if (i != 0) {
+          $(v).remove();
+        }else {
+          $('.slc_pbb_item').val('').trigger('change');
+          $('#pbb_uom').val('');
+          $('#onhand').val('');
+          $('#jumlah').val('');
+        }
+      })
+
+      let val_ = $(this).val().split(' - ');
+      let val = val_[0];
+
+        $.ajax({
+          url: baseurl + 'BarangBekas/pbbs/locator',
+          type: 'POST',
+          dataType: 'JSON',
+          data: {
+            subinv: val,
+            org_id: val_[1]
+          },
+          cache:false,
+          beforeSend: function() {
+            $('.pbb_locator').html('<b>Sedang Mengambil Locator...</b>');
+          },
+          success: function(result) {
+            if (result != 0) {
+              $('.pbb_locator').html(`<select class="slc_pbb_locator pbbs_loc" name="locator" style="width:100%" required >
+                                      <option selected value="">Select..</option>
+                                      ${result}
+                                      </select>`);
+              $('.slc_pbb_locator').select2();
+
+              $('.slc_pbb_locator').on('change', function() {
+                let val_9 = $('.pbb_subinv').val().split(' - ')
+                $('.pbbs_table tbody tr').each((i,v)=>{
+                  // console.log(v);
+                  if (i != 0) {
+                    $(v).remove();
+                  }else {
+                    $('.slc_pbb_item').val('').trigger('change');
+                    $('#pbb_uom').val('');
+                    $('#onhand').val('');
+                    $('#jumlah').val('');
+                  }
+                })
+                $('.slc_pbb_item').select2({
+                  tags: true,
+                  allowClear:true,
+                  minimumInputLength: 3,
+                  placeholder: "Item Kode",
+                  ajax: {
+                    url: baseurl + "BarangBekas/pbbs/item",
+                    dataType: "JSON",
+                    type: "POST",
+                    cache: false,
+                    data: function(params) {
+                      return {
+                        term: params.term,
+                        subinv: val_9[0],
+                        locator: $('.slc_pbb_locator').select2('data')[0]['text'],
+                        org_id: val_9[1],
+                      };
+                    },
+                    processResults: function(data) {
+                      return {
+                        results: $.map(data, function(obj) {
+                          return {
+                            id: obj.SEGMENT1==''?params.term:`${obj.SEGMENT1} - ${obj.PRIMARY_UOM_CODE} - ${obj.INVENTORY_ITEM_ID} - ${obj.OH}`,
+                            text: obj.SEGMENT1==''?params.term:`${obj.SEGMENT1} - ${obj.ITEM_DESC}`
+                          }
+                        })
+                      }
+                    }
+                  }
+                })
+                $('.slc_pbb_item').val('').trigger('change');
+              })
+            }else {
+              $('.pbb_locator').html('-')
+            }
+            // getOnhand();
+          },
+          error: function(XMLHttpRequest, textStatus, errorThrown) {
+          swalPBB('error', 'Koneksi Terputus...')
+           console.error();
+          }
+        }).done(()=>{
+          $('.slc_pbb_item').select2({
+            tags: true,
+            allowClear:true,
+            minimumInputLength: 3,
+            placeholder: "Item Kode",
+            ajax: {
+              url: baseurl + "BarangBekas/pbbs/item",
+              dataType: "JSON",
+              type: "POST",
+              cache: false,
+              data: function(params) {
+                return {
+                  term: params.term,
+                  subinv: val,
+                  locator: $('.slc_pbb_locator').val() === undefined ? '' : $('.slc_pbb_locator').select2('data')[0]['text'],
+                  org_id: val_[1],
+                };
+              },
+              processResults: function(data) {
+                return {
+                  results: $.map(data, function(obj) {
+                    return {
+                      id: obj.SEGMENT1==''?params.term:`${obj.SEGMENT1} - ${obj.PRIMARY_UOM_CODE} - ${obj.INVENTORY_ITEM_ID} - ${obj.OH}`,
+                      text: obj.SEGMENT1==''?params.term:`${obj.SEGMENT1} - ${obj.ITEM_DESC}`
+                    }
+                  })
+                }
+              }
+            }
+          })
+        })
+      }
+    })
+    //end change pbb
+  }
 })
 
 $('.pbb_sudah_pilih_io').on('click', function() {
@@ -197,10 +387,53 @@ $('.pbb_sudah_pilih_io').on('click', function() {
   }
 })
 
-$('.form_submit_pbbs').on('submit', function (e) {
+// =============
+$('.pbb_io_tujuan').on('change', function() {
+  let val = $(this).val();
+  if (val != '') {
+    $.ajax({
+      url: baseurl + 'BarangBekas/pbbs/SubInv',
+      type: 'POST',
+      dataType: 'JSON',
+      data: {
+        io : val
+      },
+      cache: false,
+      beforeSend: function() {
+        toastPBBLoading('Sedang Mengambil SubInv..');
+      },
+      success: function(result) {
+        if (result != 0) {
+          toastPBB('success', 'Selesai..');
+          $('.pbb_subinv_tujuan').html(result);
+          $('.pbb_subinv_tujuan').val('').trigger('change');
+          $('.pbb_locator_tujuan').html('-')
+        }else {
+          swalPBB('warning', 'IO belum Open Period');
+          $('.pbb_subinv_tujuan').html('');
+        }
+      },
+      error: function(XMLHttpRequest, textStatus, errorThrown) {
+      swalPBB('error', 'Koneksi Terputus...')
+       console.error();
+      }
+    })
+  }
+})
+
+$('.pbb_sudah_pilih_io_tujuan').on('click', function() {
+  if ($('.pbb_io_tujuan').val() == '') {
+    swalPBB('warning','Pilih IO Dulu!');
+  }
+})
+
+// ===========
+
+// function getmonpbbgrafik() {
+$('.form_submit_filter_grafik').on('submit', function (e) {
   e.preventDefault();
   $.ajax({
-    url: baseurl + 'BarangBekas/pbbs/submit_pbbs',
+    url: baseurl + 'BarangBekas/pbbs/submit_filter_grafik',
     type: 'POST',
     // dataType: 'JSON',
     data: new FormData(this),
@@ -211,27 +444,170 @@ $('.form_submit_pbbs').on('submit', function (e) {
       toastPBBLoading('Sedang memproses data..')
     },
     success: function(result) {
-      if (result != 11) {
-        toastPBB('success', `Data berhasil disimpan dengan no dokumen ${result}`);
-        $('.form_submit_pbbs')[0].reset();
-        $('.pbbs_table tbody tr').each((i,v)=>{
-          if (i != 0) {
-            $(v).remove();
-          }else {
-            $('.slc_pbb_item').val('').trigger('change');
-            $('#pbb_uom').val('');
-            $('#onhand').val('');
-            $('#jumlah').val('');
+      let onhand = [];
+      let max_stok = [];
+      let segment1 = [];
+      let oh_un_max_stok = [];
+      let data_result = JSON.parse(result);
+      // console.log(data_result);
+      data_result.forEach((v,i) => {
+        segment1.push(v.SEGMENT1)
+        onhand.push(v.MAX_QUANTITY == null ? 0 : v.ONHAND)
+        max_stok.push(v.MAX_QUANTITY == null ? 0 : (Number(v.MAX_QUANTITY) - Number(v.ONHAND)))
+        oh_un_max_stok.push(v.MAX_QUANTITY == null ? v.ONHAND : 0)
+      })
+      // console.log(onhand);
+      $('.pbb_grafik_mon').html(`<div style="padding:1px 10px 1px 10px;display:inline;background:#ef476f"></div>&nbsp; OnHand;&nbsp;&nbsp;&nbsp;
+      <div style="padding:1px 10px 1px 10px;display:inline;background:#06d6a0"></div>&nbsp Available Space;&nbsp;&nbsp;&nbsp;
+       <div style="padding:1px 10px 1px 10px;display:inline;background:#073b4c"></div>&nbsp Onhand With Unlimited Max Stok;&nbsp;&nbsp;&nbsp;<br>
+      <canvas id="pbbChart" style="width:100%;margin-top:20px" height="500"></canvas>`)
+
+      const labels = segment1;
+      const data = {
+        labels: labels,
+        datasets: [
+          {
+            label: 'Onhand',
+            data: onhand,
+            stack: 0,
+            backgroundColor: '#ef476f',
+          },
+          {
+            label: 'available space',
+            data: max_stok,
+            stack: 0,
+            backgroundColor: '#06d6a0',
+          },
+          {
+            label: 'onhand with unlimited Max stok',
+            data: oh_un_max_stok,
+            stack: 0,
+            backgroundColor: '#073b4c',
+          },
+        ]
+      };
+
+      const config = {
+        type: 'bar',
+        data: data,
+        options: {
+          plugins: {
+            title: {
+              display: true,
+              text: 'Stok Barkas'
+            },
+          },
+          responsive: true,
+          // tooltips: {
+          //   mode: 'index',
+          //   intersect: true,
+          //   enable: true
+          // },
+          // states: {
+          //   hover: false,
+          // },
+          scales: {
+            xAxes: [{
+              stacked: true,
+              gridLines: {
+                display: false
+              },
+            }],
+            yAxes: [{
+              stacked: true,
+            }],
+          }, // scales
+          legend: {
+            display: false
+          },
+          showTooltips: true,
+            onAnimationComplete: function() {
+              this.showTooltip(this.datasets[0].points, true);
+            },
           }
-        });
-        $('.slc_pbb_seksi').trigger('change');
-        $('.pbb_subinv').trigger('change');
-        $('.slc_pbb_locator').trigger('change');
-        setTimeout(function () {
-          window.open(`${baseurl}BarangBekas/pbbs/pdf/${result}`);
-        }, 1500);
+        };
+    let ctx = document.getElementById('pbbChart').getContext('2d');
+    let pbbChart = new Chart(ctx, config);
+    toastPBB('success', 'done')
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+    swalPBB('error', 'Koneksi Terputus...')
+     console.error();
+    }
+  })
+})
+// }
+
+$('.form_submit_pbbs').on('submit', function (e) {
+  e.preventDefault();
+  let form = new FormData(this);
+  // $(this).get(0)
+  // cek max - onhand
+  let es = $('.estimasi_berat');
+  let item_barkas_cek = [];
+  let estimasi_berat = [];
+  $('.item_barkas').each((i,v)=>{
+    item_barkas_cek.push($(v).val());
+    estimasi_berat.push($(es[i]).val());
+  })
+
+  $.ajax({
+    url: baseurl + 'BarangBekas/pbbs/cek_max_onhand',
+    type: 'POST',
+    dataType: 'JSON',
+    data: {
+      item_barkas : item_barkas_cek,
+      estimasi_berat : estimasi_berat
+    },
+    cache: false,
+    beforeSend: function() {
+      toastPBBLoading('Mengecek ketersediaan barkas');
+    },
+    success: function(result_0) {
+      if (result_0.status == 200) {
+        $.ajax({
+          url: baseurl + 'BarangBekas/pbbs/submit_pbbs',
+          type: 'POST',
+          // dataType: 'JSON',
+          data: form,
+          contentType: false,
+          cache: false,
+          processData:false,
+          beforeSend: function() {
+            toastPBBLoading('Sedang memproses data..')
+          },
+          success: function(result) {
+            let result_1 = JSON.parse(result);
+            if (result_1.status == 100) {
+              toastPBB('success', `Data berhasil disimpan dengan no dokumen ${result_1.no_doc}`);
+              $('.form_submit_pbbs')[0].reset();
+              $('.pbbs_table tbody tr').each((i,v)=>{
+                if (i != 0) {
+                  $(v).remove();
+                }else {
+                  $('.slc_pbb_item').val('').trigger('change');
+                  $('#pbb_uom').val('');
+                  $('#onhand').val('');
+                  $('#jumlah').val('');
+                }
+              });
+              $('.slc_pbb_seksi').trigger('change');
+              $('.pbb_subinv').trigger('change');
+              $('.slc_pbb_locator').trigger('change');
+              setTimeout(function () {
+                window.open(`${baseurl}BarangBekas/pbbs/pdf/${result_1.no_doc}`);
+              }, 1500);
+            }else {
+              toastPBB('warning', 'Gagal melakukan insert data, hubungi pihak yang berwajib!');
+            }
+          },
+          error: function(XMLHttpRequest, textStatus, errorThrown) {
+          swalPBB('error', 'Koneksi Terputus...')
+           console.error();
+          }
+        })
       }else {
-        toastPBB('warning', 'Gagal melakukan insert data, hubungi pihak yang berwajib!');
+        swalPBB('warning', `${result_0.message}`);
       }
     },
     error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -239,6 +615,7 @@ $('.form_submit_pbbs').on('submit', function (e) {
      console.error();
     }
   })
+
 })
 
 $('.form_submit_pbbns').on('submit', function (e) {
@@ -287,8 +664,10 @@ const getOnhand = () => {
 }
 
 $('.check_pbb_param').on('click', function () {
-  if ($('.slc_pbb_seksi').val() === '' || $('.pbb_subinv').val() === '') {
+  if (($('.slc_pbb_seksi').val() === '' || $('.pbb_subinv').val() === '') && $('.pbb_io').val() != 81) {
     swalPBB('warning', 'Seksi dan SubInv Wajib Diisi Terlebih Dahulu!');
+  }else if ($('.pbb_io').val() == 81 && $('.slc_pbb_seksi').val() === '') {
+    swalPBB('warning', 'Seksi Wajib Diisi Terlebih Dahulu!');
   }
   if ($('.pbbs_loc').val() != undefined && $('.pbbs_loc').val() == '') {
     swalPBB('warning', 'Pilih Locator Terlebih Dahulu!');
@@ -298,6 +677,12 @@ $('.check_pbb_param').on('click', function () {
 $('.check_locator__').on('click', function () {
   if ($('.pbbs_loc').val() != undefined && $('.pbbs_loc').val() == '') {
     swalPBB('warning', 'Pilih Locator Terlebih Dahulu!');
+  }
+})
+
+$('.check_locator_tujuan').on('click', function () {
+  if ($('.pbbs_loc_tujuan').val() != undefined && $('.pbbs_loc_tujuan').val() == '') {
+    swalPBB('warning', 'Pilih Locator Barkas Terlebih Dahulu!');
   }
 })
 
@@ -332,21 +717,14 @@ $('#jumlah').on('input', function () {
   }
 })
 
-$('.pbb_subinv').on('change', function() {
+$('.pbb_subinv_tujuan').on('change', function() {
 
   if ($(this).val() != '') {
 
-  $('.pbbs_table tbody tr').each((i,v)=>{
-    console.log(v);
-    if (i != 0) {
-      $(v).remove();
-    }else {
-      $('.slc_pbb_item').val('').trigger('change');
-      $('#pbb_uom').val('');
-      $('#onhand').val('');
-      $('#jumlah').val('');
-    }
-  })
+    $('.pbbs_table tbody tr').each((i,v)=>{
+      $(v).find('.slc_default_pbb').val('').trigger('change');
+      $(v).find('.estimasi_berat').val('');
+    })
 
   let val_ = $(this).val().split(' - ');
   let val = val_[0];
@@ -361,22 +739,57 @@ $('.pbb_subinv').on('change', function() {
       },
       cache:false,
       beforeSend: function() {
-        $('.pbb_locator').html('<b>Sedang Mengambil Locator...</b>');
+        $('.pbb_locator_tujuan').html('<b>Sedang Mengambil Locator...</b>');
       },
       success: function(result) {
         if (result != 0) {
-          $('.pbb_locator').html(`<select class="slc_pbb_locator pbbs_loc" name="locator" style="width:100%" required >
-                                  <option selected value="">Select..</option>
+          $('.pbb_locator_tujuan').html(`<select class="slc_pbb_locator_tujuan pbbs_loc_tujuan" style="width:100%" required >
+                                  <option value="">Pilih Item</option>
                                   ${result}
                                   </select>`);
-          $('.slc_pbb_locator').select2();
 
-          $('.slc_pbb_locator').on('change', function() {
-            getOnhand();
+          $('.slc_pbb_locator_tujuan').on('change', function() {
+            let val_9 = $('.pbb_subinv_tujuan').val().split(' - ')
+            $('.pbbs_table tbody tr').each((i,v)=>{
+              $(v).find('.slc_default_pbb').val('').trigger('change');
+              $(v).find('.estimasi_berat').val('');
+            })
+            $.ajax({
+              url: baseurl + 'BarangBekas/pbbs/item_barkas',
+              type: 'POST',
+              dataType: 'JSON',
+              data: {
+                subinv: val_9[0],
+                locator: $('.slc_pbb_locator_tujuan').select2('data')[0]['id'],
+                org_id: val_9[1],
+              },
+              cache:false,
+              beforeSend: function() {
+               toastPBBLoading('Sedang mengambil item barkas..')
+              },
+              success: function(result) {
+
+                  console.log(result, 'heiii');
+                if (result != 0) {
+                  $('.slc_default_pbb').html(`<option selected value="">Select..</option>${result}`);
+                  toastPBB('success', 'Selesai');
+                }else {
+                  $('.slc_default_pbb').html('<option selected value="">Empty Item..</option>')
+                  toastPBB('warning', `Item barkas tidak ditemukan`);
+                }
+                $('.slc_default_pbb').select2();
+              },
+              error: function(XMLHttpRequest, textStatus, errorThrown) {
+              swalPBB('error', 'Koneksi Terputus...')
+               console.error();
+              }
+            })
           })
         }else {
-          $('.pbb_locator').html('-')
+          $('.pbb_locator_tujuan').html('-')
         }
+
+        $('.slc_pbb_locator_tujuan').select2();
         // getOnhand();
       },
       error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -384,40 +797,37 @@ $('.pbb_subinv').on('change', function() {
        console.error();
       }
     }).done(()=>{
-      $('.slc_pbb_item').select2({
-        tags: true,
-        allowClear:true,
-        minimumInputLength: 3,
-        placeholder: "Item Kode",
-        ajax: {
-          url: baseurl + "BarangBekas/pbbs/item",
-          dataType: "JSON",
-          type: "POST",
-          cache: false,
-          data: function(params) {
-            return {
-              term: params.term,
-              subinv: val,
-              locator: $('.slc_pbb_locator').val() === undefined ? '' : $('.slc_pbb_locator').select2('data')[0]['text'],
-              org_id: val_[1],
-            };
-          },
-          processResults: function(data) {
-            return {
-              results: $.map(data, function(obj) {
-                return {
-                  id: obj.SEGMENT1==''?params.term:`${obj.SEGMENT1} - ${obj.PRIMARY_UOM_CODE} - ${obj.INVENTORY_ITEM_ID} - ${obj.OH}`,
-                  text: obj.SEGMENT1==''?params.term:`${obj.SEGMENT1} - ${obj.ITEM_DESC}`
-                }
-              })
-            }
+      $.ajax({
+        url: baseurl + 'BarangBekas/pbbs/item_barkas',
+        type: 'POST',
+        dataType: 'JSON',
+        data: {
+          subinv: val,
+          locator: $('.slc_pbb_locator_tujuan').val() === undefined ? '' : $('.slc_pbb_locator_tujuan').select2('data')[0]['id'],
+          org_id: val_[1],
+        },
+        cache:false,
+        beforeSend: function() {
+         toastPBBLoading('Sedang mengambil item barkas..')
+        },
+        success: function(result) {
+            console.log(result, 'heiii');
+          if (result != 0) {
+            $('.slc_default_pbb').html(`<option selected value="">Select..</option>${result}`);
+            toastPBB('success', 'Selesai');
+          }else {
+            $('.slc_default_pbb').html('<option selected value="">Empty Item..</option>')
+            toastPBB('warning', `Item barkas tidak ditemukan`);
           }
+          $('.slc_default_pbb').select2();
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+        swalPBB('error', 'Koneksi Terputus...')
+         console.error();
         }
       })
     })
-
   }
-
 })
 
 const btnPBBS = () => {
@@ -427,16 +837,22 @@ const btnPBBS = () => {
   } else {
     let n = $('.pbbs_table tbody tr').length;
     let a = n + 1;
+    let ambil = $('#pbb_item_barkas').html();
+    let select_ = `<select class="form-control slc_default_pbb item_barkas" name="item_barkas[]" style="width:250px" required>
+                    ${ambil}
+                  </select>`;
     $('#pbbs_set_row').append(`<tr row-id="${a}">
                           <td class="text-center">${a}</td>
                           <td class="text-center check_pbbns_param">
-                            <select class="form-control slc_pbb_item_line" name="item_code[]" style="text-transform:uppercase !important;width:582px;" required>
+                            <select class="form-control slc_pbb_item_line" name="item_code[]" style="text-transform:uppercase !important;width:250px;" required>
                               <option selected="selected"></option>
                             </select>
                           </td>
                           <td class="text-center"><input type="text" class="form-control" id="onhand_${a}" name="onhand[]" readonly autocomplete="off"></td>
                           <td class="text-center"><input type="number" class="form-control jumlah_online" name="jumlah[]"></td>
                           <td class="text-center"><input type="text" class="form-control" id="pbb_uom_${a}" name="uom[]" readonly></td>
+                          <td>${select_}</td>
+                          <td><input type="number" class="form-control estimasi_berat" name="estimasi_berat[]" required></td>
                           <td class="text-center">
                             <a class="btn btn-danger btn-sm" onclick="btnpbbs_min(${a})">
                               <i class="fa fa-minus"></i>
@@ -444,38 +860,44 @@ const btnPBBS = () => {
                           </td>
                         </tr>`);
 //------
-    let val_ = $('.pbb_subinv').val().split(' - ');
-    let val = val_[0];
-    $('.pbbs_table tbody tr[row-id="'+ a +'"] .slc_pbb_item_line').select2({
-        tags: true,
-        allowClear:true,
-        minimumInputLength: 3,
-        placeholder: "Item Kode",
-        ajax: {
-          url: baseurl + "BarangBekas/pbbs/item",
-          dataType: "JSON",
-          type: "POST",
-          cache: false,
-          data: function(params) {
-            return {
-              term: params.term,
-              subinv: val,
-              locator: $('.slc_pbb_locator').val() === undefined ? '' : $('.slc_pbb_locator').select2('data')[0]['text'],
-              org_id: val_[1],
-            };
-          },
-          processResults: function(data) {
-            return {
-              results: $.map(data, function(obj) {
-                return {
-                  id: obj.SEGMENT1==''?params.term:`${obj.SEGMENT1} - ${obj.PRIMARY_UOM_CODE} - ${obj.INVENTORY_ITEM_ID} - ${obj.OH}`,
-                  text: obj.SEGMENT1==''?params.term:`${obj.SEGMENT1} - ${obj.ITEM_DESC}`
-                }
-              })
+console.log($('.pbb_io').val(), 'cekcekcek');
+    if ($('.pbb_subinv').val() == undefined && $('.pbb_io').val() == 81) {
+      slc_pbb_item_nons('pbbs_table tbody tr[row-id="'+ a +'"] .slc_pbb_item_line')
+    }else {
+      let val_ = $('.pbb_subinv').val().split(' - ');
+      let val = val_[0];
+      $('.pbbs_table tbody tr[row-id="'+ a +'"] .slc_pbb_item_line').select2({
+          tags: true,
+          allowClear:true,
+          minimumInputLength: 3,
+          placeholder: "Item Kode",
+          ajax: {
+            url: baseurl + "BarangBekas/pbbs/item",
+            dataType: "JSON",
+            type: "POST",
+            cache: false,
+            data: function(params) {
+              return {
+                term: params.term,
+                subinv: val_[0],
+                locator: $('.slc_pbb_locator').val() === undefined ? '' : $('.slc_pbb_locator').select2('data')[0]['text'],
+                org_id: val_[1],
+              };
+            },
+            processResults: function(data) {
+              return {
+                results: $.map(data, function(obj) {
+                  return {
+                    id: obj.SEGMENT1==''?params.term:`${obj.SEGMENT1} - ${obj.PRIMARY_UOM_CODE} - ${obj.INVENTORY_ITEM_ID} - ${obj.OH}`,
+                    text: obj.SEGMENT1==''?params.term:`${obj.SEGMENT1} - ${obj.ITEM_DESC}`
+                  }
+                })
+              }
             }
           }
-        }
-    });
+      });
+    }
+    $('.slc_default_pbb').select2()
 
     $('.pbbs_table tbody tr[row-id="'+ a +'"] .slc_pbb_item_line').on('change', function () {
       let give_uom = $(this).val().split(' - ');

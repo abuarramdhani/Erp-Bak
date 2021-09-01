@@ -5312,6 +5312,7 @@ $route['BarangBekas/pbbs'] = 'BarangBekas/C_Master/pbbs';
 $route['BarangBekas/pbbns'] = 'BarangBekas/C_Master/pbbns';
 $route['BarangBekas/Transact'] = 'BarangBekas/C_Master/transact';
 $route['BarangBekas/RekapPBB'] = 'BarangBekas/C_Master/rekapData';
+$route['BarangBekas/monitoring-stok'] = 'BarangBekas/C_Master/monitoringstok';
 
 $route['BarangBekas/pbbs/(:any)'] = 'BarangBekas/C_Master/$1';
 $route['BarangBekas/pbbs/(:any)/(:any)'] = 'BarangBekas/C_Master/$1/$2';
