@@ -37,9 +37,12 @@ class C_SetupPertanyaan extends CI_Controller
 	function AddPertanyaan(){
 		// echo 'asdas';
 		parse_str($_POST[0], $_POST);
-		// print_r($_POST);
-		// print_r($_FILES);
-		// exit;
+		$debug = $this->input->post('debug');
+		if ($debug == '1') {
+			print_r($_POST);
+			print_r($_FILES);
+			exit;
+		}
 		$id_tes = $this->M_setting->get_max_id_tes();
 		if ($id_tes == null) {
 			$num = 1;
