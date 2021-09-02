@@ -167,6 +167,9 @@
                       <li class="">
                         <a href="#Jamsostek" data-toggle="tab">Jamsostek</a>
                       </li>
+                      <li class="">
+                        <a href="#Vaksinasi" data-toggle="tab">Vaksinasi</a>
+                      </li>
                     </ul>
                   </div>
                   <div class="tab-content">
@@ -389,6 +392,29 @@
                         <label> Tgl. Akhir</label><br>
                         <input name="pensiun" type="checkbox" class="chk_FilterTarikData" value="ttk.kartu_jaminan_pensiun">
                         <label> Kartu Jaminan Pensiun</label><br>
+                      </div>
+                    </div>
+                    <div class="tab-pane" id="Vaksinasi">
+                      <div class="col-sm-3">
+                        <h3 class="text-primary">Data Vaksinasi</h3>
+                        <input name="nokes" type="checkbox" class="chk_FilterTarikData" value="tv.nik">
+                        <label> NIK Peserta Vaksinasi</label><br>
+                        <input name="nokes" type="checkbox" class="chk_FilterTarikData" value="tv.nama">
+                        <label> Nama Peserta Vaksinasi</label><br>
+                        <input name="nokes" type="checkbox" class="chk_FilterTarikData" value="tv.status_vaksin">
+                        <label> Status Vaksinani</label><br>
+                        <input name="tglmulaik" type="checkbox" class="chk_FilterTarikData" value="tv.jenis_vaksin">
+                        <label> Jenis Vaksin</label><br>
+                        <input name="tglakhirk" type="checkbox" class="chk_FilterTarikData" value="tv.tgl_vaksin_1">
+                        <label> Tgl. Vaksinasi 1</label><br>
+                        <input name="tglakhirk" type="checkbox" class="chk_FilterTarikData" value="tv.tgl_vaksin_2">
+                        <label> Tgl. Vaksinasi 2</label><br>
+                        <input name="bpu" type="checkbox" class="chk_FilterTarikData" value="tv.lokasi_vaksin">
+                        <label> Lokasi Vaksinasi</label><br>
+                        <input name="bpg" type="checkbox" class="chk_FilterTarikData" value="tv.kelompok_vaksin">
+                        <label> Kelompok Vaksinasi</label><br>
+                        <input name="rsb" type="checkbox" class="chk_FilterTarikData" value="tv.anggota_serumah">
+                        <label> Anggota Serumah</label>
                       </div>
                     </div>
                   </div>

@@ -93,7 +93,17 @@
             <th class="tdp_th tglmulai">Tgl. Mulai</th>
             <th class="tdp_th tglakhir">Tgl. Akhir</th>
             <th class="tdp_th pensiun">Kartu Jaminan Pensiun</th>
-            </trtdp_thh </thead>
+            <th class="tdp_th status_vaksin">NIK Peserta Vaksinasi</th>
+            <th class="tdp_th status_vaksin">Nama Peserta Vaksinasi</th>
+            <th class="tdp_th status_vaksin">Status Vaksinasi</th>
+            <th class="tdp_th jenis_vaksin">Jenis Vaksin</th>
+            <th class="tdp_th tgl_vaksin_1">Tgl. Vaksin 1</th>
+            <th class="tdp_th tgl_vaksin_2">Tgl. Vaksin 2</th>
+            <th class="tdp_th lokasi_vaksin">Lokasi Vaksinasi</th>
+            <th class="tdp_th kelompok_vaksin">Kelompok Vaksinasi</th>
+            <th class="tdp_th anggota_serumah">Anggota Serumah</th>
+        </tr>  
+    </thead>
     <tbody>
         <?php foreach ($FilterAktif as $key => $val) : {
                 if (isset($select)) {
@@ -285,10 +295,10 @@
                             echo "<td>" . $val['akhkontrak'] . "</td>";
                         }
                         if (in_array('pkwt.mulai_perpanjangan', $select)) {
-                            echo "<td>$val[mulai_perpanjangan]</td>";
+                            echo "<td>" . $val['mulai_perpanjangan'] . "</td>";
                         }
                         if (in_array('pkwt.lama_perpanjangan', $select)) {
-                            echo "<td>$val[lama_perpanjangan]</td>";
+                            echo "<td>" . $val['lama_perpanjangan'] . "</td>";
                         }
                         if (in_array("to_char(tglkeluar, 'DD-MM-YYYY') AS tglkeluar", $select)) {
                             echo "<td>" . $val['tglkeluar'] . "</td>";
@@ -377,6 +387,33 @@
                         }
                         if (in_array("ttk.kartu_jaminan_pensiun", $select)) {
                             echo "<td>" . $val['kartu_jaminan_pensiun'] . "</td>";
+                        }
+                        if (in_array("tv.nik", $select)) {
+                            echo "<td>" . $val['nik'] . "</td>";
+                        }
+                        if (in_array("tv.nama", $select)) {
+                            echo "<td>" . $val['nama'] . "</td>";
+                        }
+                        if (in_array("tv.status_vaksin", $select)) {
+                            echo "<td>" . $val['status_vaksin'] . "</td>";
+                        }
+                        if (in_array("tv.jenis_vaksin", $select)) {
+                            echo "<td>" . $val['jenis_vaksin'] . "</td>";
+                        }
+                        if (in_array("tv.tgl_vaksin_1", $select)) {
+                            echo "<td>" . $val['tgl_vaksin_1'] . "</td>";
+                        }
+                        if (in_array("tv.tgl_vaksin_2", $select)) {
+                            echo "<td>" . $val['tgl_vaksin_2'] . "</td>";
+                        }
+                        if (in_array("tv.lokasi_vaksin", $select)) {
+                            echo "<td>" . $val['lokasi_vaksin'] . "</td>";
+                        }
+                        if (in_array("tv.kelompok_vaksin", $select)) {
+                            echo "<td>" . $val['kelompok_vaksin'] . "</td>";
+                        }
+                        if (in_array("tv.anggota_serumah", $select)) {
+                            echo "<td>" . $val['anggota_serumah'] . "</td>";
                         }
                         ?>
                     </tr>
