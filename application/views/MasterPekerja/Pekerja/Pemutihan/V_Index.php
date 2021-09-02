@@ -79,7 +79,23 @@ function truncate($string, $length)
   <div class="panel-group">
     <div class="panel panel-primary">
       <div class="panel-heading">
-        <h3>List Pengajuan Pemutihan Data Pekerja</h3>
+        <div class="row">
+          <div class="col-lg-12">
+            <h3>List Pengajuan Pemutihan Data Pekerja</h3>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-12 text-right">
+            <a href="http://personalia.quick.com/cronjob/pemutihan_data_pekerja/scripts/local/trequest_tpribadi.php" 
+              target="_blank" class="btn btn-primary"><span class="fa fa-download"></span>Download Perubahan</a>
+            <a href="http://personalia.quick.com/cronjob/pemutihan_data_pekerja/scripts/transaction/migrate.php" 
+              target="_blank" class="btn btn-primary"><span class="fa fa-cog"></span>Proses Hasil Approve Hubker</a>
+            <a href="http://personalia.quick.com/cronjob/pemutihan_data_pekerja/scripts/online/trequest_tpribadi.php" 
+              target="_blank" class="btn btn-primary"><span class="fa fa-upload"></span>Upload Status</a>
+            <a href="http://personalia.quick.com/cronjob/pemutihan_data_pekerja/scripts/online/tarik_base_database.php" 
+              target="_blank" class="btn btn-primary"><span class="fa fa-upload"></span>Upload Data</a>
+          </div>
+        </div>
       </div>
       <div class="panel-body">
         <?php

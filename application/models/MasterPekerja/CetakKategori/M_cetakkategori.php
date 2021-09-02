@@ -100,6 +100,56 @@ class M_cetakkategori extends CI_Model
                                 group by noind
                             ) r on r.noind = z.noind and r.max_ke = z.perpanjangan_ke
                 ) pkwt ON pkwt.noind = tp.noind
+                left join (
+                    select tk1.noind,tk1.nama,tk1.nik,tk1.anggota_serumah,
+                        tv1.status_vaksin,tv1.jenis_vaksin,tv1.tgl_vaksin_1,tv1.tgl_vaksin_2, tv1.lokasi_vaksin, tv1.kelompok_vaksin
+                    from (
+                        select tk2.noind,tk2.nama,tk2.nik, 
+                            case tk2.serumah 
+                            when '1' then 'Serumah'
+                            when '0' then 'tidak serumah'
+                            else 'Tidak Diketahui'
+                            end  as anggota_serumah
+                        from hrd_khs.tkeluarga tk2
+                        union
+                        select tp2.noind,tp2.nama,tp2.nik,'Pekerja' as anggota_serumah
+                        from hrd_khs.tpribadi tp2
+                    ) tk1
+                    left join (
+                        select noind,nik,nama,
+                            (
+                                case string_agg(vaksin_ke, '' order by vaksin_ke)
+                                    when '1' then 'Sudah Vaksin 1'
+                                    when '12' then 'Sudah Vaksin 2'
+                                    when '123' then 'Sudah Vaksin 3'
+                                    when '1234' then 'Sudah Vaksin 4'
+                                    when '12345' then 'Sudah Vaksin 5'
+                                    else string_agg(vaksin_ke, '' order by vaksin_ke)
+                                    end
+                            ) as status_vaksin,
+                            string_agg(distinct jenis_vaksin,',') as jenis_vaksin,
+                            string_agg(
+                                (
+                                    case when vaksin_ke ='1' then tanggal_vaksin::text
+                                    else ''
+                                    end
+                                ),
+                                ''
+                            ) as tgl_vaksin_1,
+                            string_agg(
+                                (
+                                    case when vaksin_ke ='2' then tanggal_vaksin::text
+                                    else ''
+                                    end
+                                ),
+                                ''
+                            ) as tgl_vaksin_2,
+                            string_agg(distinct lokasi_vaksin,',') as lokasi_vaksin,
+                            string_agg(distinct kelompok_vaksin,',') as kelompok_vaksin
+                        from hrd_khs.tvaksinasi
+                        group by noind,nik,nama
+                    ) tv1 on tk1.nik = tv1.nik and tk1.noind = tv1.noind
+                ) as tv on tv.noind = tp.noind
             WHERE 
                 ts.kodesie = tp.kodesie
                 AND tp.kodesie LIKE '$kategori%' AND (tp.noind LIKE '$kodeind%') AND tp.pendidikan LIKE '$pend%' AND tp.jenkel 
@@ -131,6 +181,56 @@ class M_cetakkategori extends CI_Model
                         )as tkel
                     GROUP BY tkel.noind
                 ) AS tk ON tp.noind = tk.noind
+                left join (
+                    select tk1.noind,tk1.nama,tk1.nik,tk1.anggota_serumah,
+                        tv1.status_vaksin,tv1.jenis_vaksin,tv1.tgl_vaksin_1,tv1.tgl_vaksin_2, tv1.lokasi_vaksin, tv1.kelompok_vaksin
+                    from (
+                        select tk2.noind,tk2.nama,tk2.nik, 
+                            case tk2.serumah 
+                            when '1' then 'Serumah'
+                            when '0' then 'tidak serumah'
+                            else 'Tidak Diketahui'
+                            end  as anggota_serumah
+                        from hrd_khs.tkeluarga tk2
+                        union
+                        select tp2.noind,tp2.nama,tp2.nik,'Pekerja' as anggota_serumah
+                        from hrd_khs.tpribadi tp2
+                    ) tk1
+                    left join (
+                        select noind,nik,nama,
+                            (
+                                case string_agg(vaksin_ke, '' order by vaksin_ke)
+                                    when '1' then 'Sudah Vaksin 1'
+                                    when '12' then 'Sudah Vaksin 2'
+                                    when '123' then 'Sudah Vaksin 3'
+                                    when '1234' then 'Sudah Vaksin 4'
+                                    when '12345' then 'Sudah Vaksin 5'
+                                    else string_agg(vaksin_ke, '' order by vaksin_ke)
+                                    end
+                            ) as status_vaksin,
+                            string_agg(distinct jenis_vaksin,',') as jenis_vaksin,
+                            string_agg(
+                                (
+                                    case when vaksin_ke ='1' then tanggal_vaksin::text
+                                    else ''
+                                    end
+                                ),
+                                ''
+                            ) as tgl_vaksin_1,
+                            string_agg(
+                                (
+                                    case when vaksin_ke ='2' then tanggal_vaksin::text
+                                    else ''
+                                    end
+                                ),
+                                ''
+                            ) as tgl_vaksin_2,
+                            string_agg(distinct lokasi_vaksin,',') as lokasi_vaksin,
+                            string_agg(distinct kelompok_vaksin,',') as kelompok_vaksin
+                        from hrd_khs.tvaksinasi
+                        group by noind,nik,nama
+                    ) tv1 on tk1.nik = tv1.nik and tk1.noind = tv1.noind
+                ) as tv on tv.noind = tp.noind
             WHERE ts.kodesie = tp.kodesie 
             AND tp.kodesie LIKE '$kategori%' AND (tp.noind LIKE '$kodeind%') AND tp.pendidikan LIKE '$pend%' AND tp.jenkel 
             LIKE '$jenkel%' AND tp.lokasi_kerja LIKE '$lokasi%' AND tp.keluar = '$status'
