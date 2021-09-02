@@ -101,7 +101,8 @@ class M_cetakkategori extends CI_Model
                             ) r on r.noind = z.noind and r.max_ke = z.perpanjangan_ke
                 ) pkwt ON pkwt.noind = tp.noind
                 left join (
-                    select tv1.*,tk1.anggota_serumah
+                    select tk1.noind,tk1.nama,tk1.nik,tk1.anggota_serumah,
+                        tv1.status_vaksin,tv1.jenis_vaksin,tv1.tgl_vaksin_1,tv1.tgl_vaksin_2, tv1.lokasi_vaksin, tv1.kelompok_vaksin
                     from (
                         select tk2.noind,tk2.nama,tk2.nik, 
                             case tk2.serumah 
@@ -181,7 +182,8 @@ class M_cetakkategori extends CI_Model
                     GROUP BY tkel.noind
                 ) AS tk ON tp.noind = tk.noind
                 left join (
-                    select tv1.*,tk1.anggota_serumah
+                    select tk1.noind,tk1.nama,tk1.nik,tk1.anggota_serumah,
+                        tv1.status_vaksin,tv1.jenis_vaksin,tv1.tgl_vaksin_1,tv1.tgl_vaksin_2, tv1.lokasi_vaksin, tv1.kelompok_vaksin
                     from (
                         select tk2.noind,tk2.nama,tk2.nik, 
                             case tk2.serumah 
