@@ -31,19 +31,19 @@
                         <div class="col-md-4">
                           <label for="">Seksi</label>
                           <select class="form-control mpds_getseksi" name="" style="width:100%">
-                            <option value="" selected>Select..</option>
+                            <option value="" selected>Semua Seksi</option>
                           </select>
                         </div>
                         <div class="col-md-4">
                           <label for="">No Induk</label>
                           <select class="form-control mpds_getnoind" name="" style="width:100%">
-                            <option value="" selected>Select..</option>
+                            <option value="" selected>Semua Pekerja</option>
                           </select>
                         </div>
                         <div class="col-md-8 mt-4">
-                          <label for="">Pernyataan Kosong</label>
+                          <label for="">Pertanyaan Tanpa Jawaban</label>
                           <select class="form-control mpds_pertanyaan" name="" style="width:100%" multiple>
-                            <option value="" selected>Select..</option>
+                            <option value="" selected>Tidak Memilih</option>
                             <?php foreach ($pertanyaan as $key => $value): ?>
                               <option value="<?php echo $value['aspek'] ?>"><?php echo $value['pertanyaan'] ?></option>
                             <?php endforeach; ?>
@@ -55,11 +55,11 @@
                         </div>
                         <div class="col-md-1 mt-4">
                           <label for="" style="color:transparent">hiahia</label>
-                          <button type="button" class="btn btn-success text-bold" style="width:100%" name="button"> Excel </button>
+                          <button type="button" class="btn btn-success text-bold" onclick="mpds_excel()" style="width:100%" name="button"> Excel </button>
                         </div>
                         <div class="col-md-1 mt-4">
                           <label for="" style="color:transparent">hiahia</label>
-                          <button type="button" class="btn btn-danger text-bold" style="width:100%" name="button"> PDF </button>
+                          <button type="button" class="btn btn-danger text-bold" onclick="mpds_pdf()" style="width:100%" name="button"> PDF </button>
                         </div>
                       </div>
                       <div class="row">

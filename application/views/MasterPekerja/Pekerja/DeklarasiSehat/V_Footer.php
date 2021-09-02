@@ -102,6 +102,18 @@ const toast_mpds = (type, message) => {
   })
 }
 
+const toastMPDSLoading = (pesan) => {
+  Swal.fire({
+    toast: true,
+    position: 'top-end',
+    onBeforeOpen: () => {
+       Swal.showLoading();
+       $('.swal2-loading').children('button').css({'width': '20px', 'height': '20px'})
+     },
+    text: pesan
+  })
+}
+
 const swalMPDSLarge = (type, a) =>{
   Swal.fire({
     allowOutsideClick: true,
@@ -228,6 +240,116 @@ function mpds_employee(kodesie) {
       toast_mpds('info', `Me-filter No. Induk dengan seksi ${$(this).select2('data')[0].text}`);
     }
   })
+
+  function mpds_excel() {
+    let tanggal = $(".mpds_range_tgl").val().split(' - ');
+    let kodesie = $('.mpds_getseksi').val();
+    let noind = $('.mpds_getnoind').val();
+    let pertanyaan = $('.mpds_pertanyaan').val();
+    $.ajax({
+      url: baseurl + 'MasterPekerja/DeklarasiSehat/excelds',
+      type: 'POST',
+      dataType: 'JSON',
+      data : {
+        tanggal_awal : tanggal[0],
+        tanggal_akhir : tanggal[1],
+        kodesie : kodesie,
+        noind : noind,
+        pertanyaan : pertanyaan,
+        seksi: $('.mpds_getseksi').select2('data')[0].text
+      },
+      cache: false,
+      beforeSend: function() {
+        toastMPDSLoading('Sedang Memproses Data Excel...')
+      },
+      success: function(result) {
+        if (result != 'kosong') {
+          toast_mpds('success', 'Selesai Mengexport Excel '+result)
+          window.open(baseurl+'/assets/upload/GeneratorTSKK/'+result);
+          $.ajax({
+            url: baseurl + 'MasterPekerja/DeklarasiSehat/hapus_file',
+            type: 'POST',
+            dataType: 'JSON',
+            data : {
+              filename : result
+            },
+            cache: false,
+            success: function(result_) {
+              if (result_) {
+                console.log('Berhasil Menghapus File Excel di Server');
+              }
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+            swalMPDSLarge('error', `${XMLHttpRequest.responseText}`);
+             console.error();
+            }
+          })
+        }else {
+          toast_mpds('warning', 'Tidak Dapat Mengexport Excel, Data Kosong')
+        }
+
+      },
+      error: function(XMLHttpRequest, textStatus, errorThrown) {
+      swalMPDSLarge('error', `${XMLHttpRequest.responseText}`);
+       console.error();
+      }
+    })
+  }
+
+  function mpds_pdf() {
+    let tanggal = $(".mpds_range_tgl").val().split(' - ');
+    let kodesie = $('.mpds_getseksi').val();
+    let noind = $('.mpds_getnoind').val();
+    let pertanyaan = $('.mpds_pertanyaan').val();
+    $.ajax({
+      url: baseurl + 'MasterPekerja/DeklarasiSehat/pdf',
+      type: 'POST',
+      dataType: 'JSON',
+      data : {
+        tanggal_awal : tanggal[0],
+        tanggal_akhir : tanggal[1],
+        kodesie : kodesie,
+        noind : noind,
+        pertanyaan : pertanyaan,
+        seksi: $('.mpds_getseksi').select2('data')[0].text
+      },
+      cache: false,
+      beforeSend: function() {
+        toastMPDSLoading('Sedang Memproses Data PDF...')
+      },
+      success: function(result) {
+        if (result != 'kosong') {
+          toast_mpds('success', 'Selesai Mengexport PDF '+result)
+          window.open(baseurl+'/assets/upload/GeneratorTSKK/'+result);
+          $.ajax({
+            url: baseurl + 'MasterPekerja/DeklarasiSehat/hapus_file',
+            type: 'POST',
+            dataType: 'JSON',
+            data : {
+              filename : result
+            },
+            cache: false,
+            success: function(result_) {
+              if (result_) {
+                console.log('Berhasil Menghapus File PDF di Server');
+              }
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+            swalMPDSLarge('error', `${XMLHttpRequest.responseText}`);
+             console.error();
+            }
+          })
+        }else {
+          toast_mpds('warning', 'Tidak Dapat Mengexport PDF, Data Kosong')
+        }
+
+      },
+      error: function(XMLHttpRequest, textStatus, errorThrown) {
+      swalMPDSLarge('error', `${XMLHttpRequest.responseText}`);
+       console.error();
+      }
+    })
+  }
 
   function mpds_getdata() {
     let tanggal = $(".mpds_range_tgl").val().split(' - ');
