@@ -91,7 +91,7 @@
                                             <label>Alasan Pengadaan Aset</label>
                                         </div>
                                         <div class="col-md-7">
-                                            <textarea name="alasan_asset" style="width:100%;height:100px" required></textarea>
+                                            <textarea name="alasan_asset" style="width:100%;height:100px"></textarea>
                                         </div>
                                     </div>
                                     

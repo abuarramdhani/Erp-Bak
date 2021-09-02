@@ -482,8 +482,205 @@ function viewbaru(no) { // view detail tabel baru
     });
 }
 
+function editmodif(no) { // view detail tabel modifikasi
+    var no_order 	= $('#no_order_modif'+no).val();
+    var status 	    = $('#status_modif'+no).val();
+    var apa         = 'Modifikasi'; // tabel modifikasi
+    var siapa 	    = $('#siapa').val(); // resp yg dibuka user login
+    var request = $.ajax({
+        url: baseurl+'OrderToolMaking/MonitoringOrder/EditModifikasi',
+        data: { no_order : no_order, siapa : siapa, status : status},
+        type: "POST",
+        datatype: 'html'
+    });
+    request.done(function(result){
+        $('#datamodifrekon').html(result);
+        $('#mdlOrderMonitoring').modal('show');
+        $('.datepickorder').datepicker({
+            format: 'dd/mm/yyyy',
+            todayHighlight: true,
+            autoClose: true
+        }).on('change', function(){
+            $('.datepicker').hide();
+        });
+        revisiorderyuhuuu(apa, siapa);
+    });
+}
+
+function editrekon(no) { // view detail tabel rekondisi
+    var no_order 	= $('#no_order_rekon'+no).val();
+    var status 	    = $('#status_rekon'+no).val();
+    var apa         = 'Rekondisi'; // tabel rekondisi
+    var siapa 	    = $('#siapa').val(); // resp yg dibuka user login
+    var request = $.ajax({
+        url: baseurl+'OrderToolMaking/MonitoringOrder/EditRekondisi',
+        data: { no_order : no_order, siapa : siapa, status : status},
+        type: "POST",
+        datatype: 'html'
+    });
+    request.done(function(result){
+        $('#datamodifrekon').html(result);
+        $('#mdlOrderMonitoring').modal('show');
+        $('.datepickorder').datepicker({
+            format: 'dd/mm/yyyy',
+            todayHighlight: true,
+            autoClose: true
+        }).on('change', function(){
+            $('.datepicker').hide();
+        });
+        revisiorderyuhuuu(apa, siapa);
+    });
+}
+
+function editbaru(no) { // view detail tabel baru
+    var no_order 	= $('#no_order_baru'+no).val();
+    var status  	= $('#status_baru'+no).val();
+    var apa         = 'Baru'; // tabel baru
+    var siapa 	    = $('#siapa').val(); // resp yg dibuka user login
+    var request = $.ajax({
+        url: baseurl+"OrderToolMaking/MonitoringOrder/EditBaru",
+        data: { no_order : no_order, siapa : siapa, status : status},
+        type: "POST",
+        datatype: 'html'
+    });
+    request.done(function(result){
+        $('#datamodifrekon').html(result);
+        $('#mdlOrderMonitoring').modal('show');
+        $('.datepickorder').datepicker({
+            format: 'dd/mm/yyyy',
+            todayHighlight: true,
+            autoClose: true
+        }).on('change', function(){
+            $('.datepicker').hide();
+        });
+        revisiorderyuhuuu(apa, siapa);
+    });
+}
+
+function sendorder(no, ket) {
+    var no_order = $('#no_order_'+ket+no).val();
+    var pengorder = $('#pengorder_'+ket+no).val();
+    var seksi_order = $('#seksi_order_'+ket+no).val();
+    var assign = $('#assign_'+ket+no).val();
+    var jenis = $('#jenis_'+ket+no).val();
+    console.log(no_order, pengorder, seksi_order, assign, jenis);
+    $.ajax({
+        url : baseurl + "OrderToolMaking/MonitoringOrder/sendorder",
+        data : {no_order : no_order,
+                pengorder : pengorder,
+                seksi_order : seksi_order,
+                assign : assign,
+                jenis : jenis,
+                ket : ket},
+        type : 'post',
+        success : function (result) {
+            Swal.fire({
+                title: 'Order Berhasil Dikirim!',
+                type: 'success',
+                allowOutsideClick: false
+            }).then(result => {
+                if (result.value) {
+                    window.location.reload();
+            }})  
+        }
+    })
+}
+
+function cancelorder(no, ket) {
+    var no_order = $('#no_order_'+ket+no).val();
+    var pengorder = $('#pengorder_'+ket+no).val();
+    var seksi_order = $('#seksi_order_'+ket+no).val();
+    var assign = $('#assign_'+ket+no).val();
+    var jenis = $('#jenis_'+ket+no).val();
+    var status = $('#status_'+ket+no).val();
+    var siapa = $('#siapa_'+ket+no).val();
+    var status_order = $('#status_order_'+ket+no).val();
+    console.log(no_order, pengorder, seksi_order, assign, jenis);
+    Swal.fire({
+        title: 'Apakah Anda Yakin ?',
+        type: 'question',
+        showCancelButton: true,
+    }).then(result => {
+        if (result.value) {
+        $.ajax({
+            url : baseurl + "OrderToolMaking/MonitoringOrder/cancelorder",
+            data : {no_order : no_order,
+                    pengorder : pengorder,
+                    seksi_order : seksi_order,
+                    assign : assign,
+                    jenis : jenis,
+                    ket : ket,
+                    status : status,
+                    siapa : siapa,
+                    status_order : status_order},
+            type : 'post',
+            success : function (result) {
+                Swal.fire({
+                    title: 'Order Berhasil Dicancel!',
+                    type: 'success',
+                    allowOutsideClick: false
+                }).then(result => {
+                    if (result.value) {
+                        window.location.reload();
+                }})  
+            }
+        })
+        }
+    })
+}
+
+
+function tolakorder(no_order, ket) {
+    var pengorder = $('#pengorder').val();
+    var seksi_order = $('#seksi_order').val();
+    var jenis = $('#jenis').val();
+    var status = $('#status').val();
+    var siapa = $('#siapa').val();
+    var status_order = $('#status_order').val();
+    console.log(no_order, pengorder, seksi_order, jenis, status, siapa, status_order);
+	Swal.fire({
+		title: 'Berikan Alasan Penolakan Order',
+		// html : "",
+		// type: 'success',
+		input: 'textarea',
+		inputAttributes: {
+			autocapitalize: 'off'
+		},
+		showCancelButton: false,
+		confirmButtonText: 'Submit',
+		showLoaderOnConfirm: true,
+	}).then(result => {
+		if (result.value) {
+			var val 		= result.value;
+        $.ajax({
+            url : baseurl + "OrderToolMaking/MonitoringOrder/tolakorder",
+            data : {no_order : no_order,
+                    pengorder : pengorder,
+                    seksi_order : seksi_order,
+                    jenis : jenis,
+                    ket : ket,
+                    status : status,
+                    siapa : siapa,
+                    status_order : status_order,
+                    keterangan : val},
+            type : 'post',
+            success : function (result) {
+                Swal.fire({
+                    title: 'Order Berhasil Ditolak!',
+                    type: 'success',
+                    allowOutsideClick: false
+                }).then(result => {
+                    if (result.value) {
+                        window.location.reload();
+                }})  
+            }
+        })
+        }
+    })
+}
+
 var i = 2;
-function addrevkolom() { // tambah baris revisi di modal view detail
+function addrevkolom() { // tambah baris edit di modal view detail
     var apa = $('#ket').val(); // view tabel yg dibuka (baru, modifikasi, rekondisi)
     var siapa = $('#siapa').val(); // resp. yg dibuka user login
     $('#tambahTarget').append('<div class="tambahtarget" ><br><br><br><div class="col-md-3"><select class="form-control select2 revisi" id="revisi'+i+'" name="revisi[]" style="width:100%"><option></option></select></div><div class="col-md-8 ganti"><input class="form-control isi_rev" id="isi_rev" name="isi_rev[]" placeholder="masukkan hasil revisi"></div><div class="col-md-1" style="text-align:left"><button class = "btn btn-default tombolhapus'+i+'" type="button"><i class = "fa fa-minus" ></i></button></div></div></div></div>');
@@ -503,6 +700,39 @@ function addrevkolom() { // tambah baris revisi di modal view detail
         document.getElementById('panelbiru').style.height = kurang_tinggi+'px';
 	});
     revisiorderyuhuuu(apa, siapa);
+
+    i++; 
+}
+
+var r = 2;
+function addrevkolom2() { // tambah baris revisi di modal view detail
+    var apa = $('#ket').val(); // view tabel yg dibuka (baru, modifikasi, rekondisi)
+    var siapa = $('#siapa').val(); // resp. yg dibuka user login
+    $('#tambahTarget2').append('<div class="tambahtarget" ><br><br><br><div class="col-md-11"><select class="form-control select2 revisi2" id="poinrevisi'+r+'" name="poinrevisi[]" style="width:100%"  data-placeholder="pilih poin revisi">><option></option></select></div><div class="col-md-1" style="text-align:left"><button class = "btn btn-default tombolhapus'+r+'" type="button"><i class = "fa fa-minus" ></i></button></div></div></div></div>');
+    // ubah tinggi modal sesuai pertambahan baris revisi
+    var height = $("#tinggi").val();
+    var h = parseInt(height);
+    var tambah_tinggi = h + 60;
+    $('#tinggi').val(tambah_tinggi);
+    document.getElementById('panelbiru').style.height = tambah_tinggi+'px';
+    // hapus baris revisi
+    $(document).on('click', '.tombolhapus'+r,  function() {
+		$(this).parents('.tambahtarget').remove()
+        var height = $("#tinggi").val(); // ubah tinggi modal sesuai pengurangan baris revisi
+        var t = parseInt(height);
+        var kurang_tinggi = t - 60;
+        $('#tinggi').val(kurang_tinggi);
+        document.getElementById('panelbiru').style.height = kurang_tinggi+'px';
+	});
+    $.ajax({
+        url: baseurl+("ApprovalToolMaking/MonitoringOrder/daftarrevisi"),
+        data: { apa : apa, siapa : 'Kasie Pengorder', jenis : $('#jenis').val()},
+        type: "POST",
+        datatype: 'html',
+        success : function (result) {
+            $(".revisi2:last").html(result);
+        }
+    })
 
     i++; 
 }
@@ -527,7 +757,194 @@ function tmb_gb_produk(th) { // tambah baris attachment gambar produk
 	});
 }
 
+function editorder(poin, no) {
+    console.log(poin, no);
+    var ket = $('#ket_edit_'+no).val();
+    var height = $("#tinggi").val();
+    var h = parseInt(height);
+    var d    = new Date();
+    if (ket == 'N') {
+        $('#ket_edit_'+no).val('Y');
+        var tambah_tinggi = h + 60;
+        $('#tinggi').val(tambah_tinggi);
+        document.getElementById('panelbiru').style.height = tambah_tinggi+'px';
+        if (poin == 'Gambar Produk') { // hal yg direvisi
+            var num = no.split('_');
+            $('#edit_'+no).append('<div class="hasil_edit_'+no+'"><div class="col-md-0"><input type="hidden" name="revisi[]" value="'+poin+'"></div><div class="col-md-12"><input type="hidden" name="isi_rev[]" value="'+num[1]+'"><input type="file" class="form-control" name="gamker[]" accept=".jpg, .png" required><br></div>'); // yg ditampilkan
+        }else if (poin == 'Skets') {
+            $('#edit_'+no).append('<div class="hasil_edit_'+no+'"><div class="col-md-0"><input type="hidden" name="revisi[]" value="'+poin+'"><input type="hidden" name="isi_rev[]" value="sketsfview"></div><input type="file" class="form-control" name="skets" accept=".jpg, .png" required></div>');
+        }else if (poin == 'Usulan Order Selesai') {
+            $('#edit_'+no).append('<div class="hasil_edit_'+no+'"><div class="col-md-3"><input type="hidden" name="revisi[]" value="'+poin+'"></div><div class="col-md-8"><div class="input-group date"><div class="input-group-addon"><i class="fa fa-calendar"></i></div><input name="isi_rev[]" class="form-control datepickorder" placeholder="example: '+d.getDate()+'/'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'/'+d.getFullYear()+'" style="width:100%" autocomplete="off" required></div></div>');
+            $('.datepickorder').datepicker({
+                format: 'dd/mm/yyyy',
+                todayHighlight: true,
+                autoClose: true
+            }).on('change', function(){
+                $('.datepicker').hide();
+            });
+        }else if (poin == 'Tanggal Rilis Gambar') {
+            $('#edit_'+no).append('<div class="hasil_edit_'+no+'"><div class="col-md-3"><input type="hidden" name="revisi[]" value="'+poin+'"></div><div class="col-md-8"><div class="input-group date"><div class="input-group-addon"><i class="fa fa-calendar"></i></div><input name="isi_rev[]" class="form-control datepickorder" placeholder="example: '+d.getDate()+'/'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'/'+d.getFullYear()+'" style="width:100%" autocomplete="off" required></div></div>');
+            $('.datepickorder').datepicker({
+                format: 'dd/mm/yyyy',
+                todayHighlight: true,
+                autoClose: true
+            }).on('change', function(){
+                $('.datepicker').hide();
+            });
+        }else if (poin == 'User') {
+            $.ajax({
+                url: baseurl+("ApprovalToolMaking/MonitoringOrder/selectUser"),
+                type: "POST",
+                datatype: 'html',
+                success :function(result) {
+                    $('#edit_'+no).append('<div class="hasil_edit_'+no+'"><div class="col-md-3"><input type="hidden" name="revisi[]" value="'+poin+'"></div><div class="col-md-8">'+result+'</div>')
+                }
+            });
+        }else if (poin == 'Jumlah Alat') {
+            $('#edit_'+no).append('<div class="hasil_edit_'+no+'"><div class="col-md-3"><input type="hidden" name="revisi[]" value="'+poin+'"></div><div class="col-md-8"><input class="form-control" name="isi_rev[]" placeholder="masukkan hasil revisi" autocomplete="off" required><span style="color:red">* Wajib edit DISTRIBUSI!!!</span></div>');
+            var no2 = no +1;
+            $('#ket_edit_'+no2).val('Y');
+            $('#edit_'+no2).append('<div class="hasil_edit_'+no2+'"><div class="col-md-3"><input type="hidden" name="revisi[]" value="Distribusi"><input type="hidden" name="isi_rev[]" value="distribusi"></div><div class="col-md-8"><select class="form-control select2 getmultiuser" multiple name="rev_distribusi[]" style="width:100%" required></select></div>')
+            $(".getmultiuser").select2({
+                allowClear: true,
+                placeholder: "user",
+                minimumInputLength: 0,
+                ajax: {
+                    url: baseurl + "OrderToolMaking/MonitoringOrder/getUser",
+                    dataType: 'json',
+                    type: "GET",
+                    data: function (params) {
+                        var queryParameters = {
+                            term: params.term,
+                        }
+                        return queryParameters;
+                    },
+                    processResults: function (data) {
+                        // console.log(data);
+                        return {
+                            results: $.map(data, function (obj) {
+                                return {id:obj.NAMA_USER, text:obj.NAMA_USER};
+                            })
+                        };
+                    }
+                }
+            });
+        }else if (poin == 'Distribusi') {
+            $('#edit_'+no).append('<div class="hasil_edit_'+no+'"><div class="col-md-3"><input type="hidden" name="revisi[]" value="'+poin+'"><input type="hidden" name="isi_rev[]" value="distribusi"></div><div class="col-md-8"><select class="form-control select2 getmultiuser" multiple name="rev_distribusi[]" style="width:100%" required></select></div>')
+            $(".getmultiuser").select2({
+                allowClear: true,
+                placeholder: "user",
+                minimumInputLength: 0,
+                ajax: {
+                    url: baseurl + "OrderToolMaking/MonitoringOrder/getUser",
+                    dataType: 'json',
+                    type: "GET",
+                    data: function (params) {
+                        var queryParameters = {
+                            term: params.term,
+                        }
+                        return queryParameters;
+                    },
+                    processResults: function (data) {
+                        // console.log(data);
+                        return {
+                            results: $.map(data, function (obj) {
+                                return {id:obj.NAMA_USER, text:obj.NAMA_USER};
+                            })
+                        };
+                    }
+                }
+            });
+        }else if (poin == 'Acuan Alat Bantu') {
+            $('#edit_'+no).append('<div class="hasil_edit_'+no+'"><div class="col-md-3"><input type="hidden" name="revisi[]" value="'+poin+'"></div><div class="col-md-8"><input type="radio" name="isi_rev[]" value="Produk">Produk <input type="radio" name="isi_rev[]" value="Gambar Produk" style="margin-left: 25px">Gambar Produk</div>');
+        }else if (poin == 'Layout Alat Bantu') {
+            $('#edit_'+no).append('<div class="hasil_edit_'+no+'"><div class="col-md-3"><input type="hidden" name="revisi[]" value="'+poin+'"></div><div class="col-md-3"><input type="radio" name="isi_rev[]" id="tunggal1" value="Tunggal">Tunggal <input type="radio" name="isi_rev[]" id="multi1" value="Multi" style="margin-left: 23px">Multi</div> <div class="col-md-2" ><input type="number" name="multi" id="isi_multi1" class="form-control" style="margin-left:20px" disabled autocomplete="off"></div></div>');
+            $('#multi1').change(function(e) { 
+                $('#isi_multi1').removeAttr('disabled');
+            })
+
+            $('#tunggal1').change(function(e) { 
+                $('#isi_multi1').attr('disabled', 'disabled');
+                $('#isi_multi1').val('');
+            })
+        }else if (poin == 'Material Blank (Khusus DIES)') {
+            $('#edit_'+no).append('<div class="hasil_edit_'+no+'"><div class="col-md-0"><input type="hidden" name="revisi[]" value="'+poin+'"></div><div class="col-md-4"><input type="radio" name="isi_rev[]" class="material" id="afval1" value="Afval" >Afval <input style="margin-left: 38px" type="radio" name="isi_rev[]" class="material" id="lembar0" value="Lembaran">Lembaran</div><div class="col-md-2" ><input type="number" name="lembar1" class="form-control lembar1" disabled autocomplete="off"></div><div class="col-md-1 text-center" style="margin-left:-20px;margin-right:-50px"><label>X</label></div><div class="col-md-2"><input type="number" name="lembar2" class="form-control lembar1" disabled autocomplete="off"></div></div>');
+            $('#lembar0').change(function(e) { 
+                $('.lembar1').removeAttr('disabled');
+            })
+    
+            $('#afval1').change(function(e) { 
+                $('.lembar1').attr('disabled', 'disabled');
+                $('.lembar1').val('');
+            })
+        }else if (poin == 'Tipe Produk') {
+            $.ajax({
+                url: baseurl+("ApprovalToolMaking/MonitoringOrder/selectTipeProduk"),
+                type: "POST",
+                datatype: 'html',
+                success :function(result) {
+                    $('#edit_'+no).append('<div class="hasil_edit_'+no+'"><div class="col-md-3"><input type="hidden" name="revisi[]" value="'+poin+'"></div><div class="col-md-8">'+result+'</div>')
+                }
+            });
+        }else if (poin == 'Proses') {
+            $.ajax({
+                url: baseurl+("ApprovalToolMaking/MonitoringOrder/selectProses"),
+                type: "POST",
+                datatype: 'html',
+                success :function(result) {
+                    $('#edit_'+no).append('<div class="hasil_edit_'+no+'"><div class="col-md-3"><input type="hidden" name="revisi[]" value="'+poin+'"></div><div class="col-md-8">'+result+'</div>')
+                }
+            });
+        }else if (poin == 'Flow Proses Sebelumnya') {
+            $.ajax({
+                url: baseurl+("ApprovalToolMaking/MonitoringOrder/selectProses"),
+                type: "POST",
+                datatype: 'html',
+                success :function(result) {
+                    $('#edit_'+no).append('<div class="hasil_edit_'+no+'"><div class="col-md-3"><input type="hidden" name="revisi[]" value="'+poin+'"></div><div class="col-md-4">'+result+'</div><div class="col-md-4"><input name="detailsblm" class="form-control" placeholder="isi - jika tidak ada detail"  required></div></div>')
+                }
+            });
+        }else if (poin == 'Flow Proses Sesudahnya') {
+            $.ajax({
+                url: baseurl+("ApprovalToolMaking/MonitoringOrder/selectProses"),
+                type: "POST",
+                datatype: 'html',
+                success :function(result) {
+                    $('#edit_'+no).append('<div class="hasil_edit_'+no+'"><div class="col-md-3"><input type="hidden" name="revisi[]" value="'+poin+'"></div><div class="col-md-4">'+result+'</div><div class="col-md-4"><input name="detailssdh" class="form-control" placeholder="isi - jika tidak ada detail" required></div></div>')
+                }
+            });
+        }else if (poin == 'Mesin Yang Digunakan') {
+            $.ajax({
+                url: baseurl+("ApprovalToolMaking/MonitoringOrder/selectMesin"),
+                type: "POST",
+                datatype: 'html',
+                success :function(result) {
+                    $('#edit_'+no).append('<div class="hasil_edit_'+no+'"><div class="col-md-3"><input type="hidden" name="revisi[]" value="'+poin+'"></div><div class="col-md-8">'+result+'</div>')
+                }
+            });
+        }else{
+            $('#edit_'+no).append('<div class="hasil_edit_'+no+'"><div class="col-md-3"><input type="hidden" name="revisi[]" value="'+poin+'"></div><div class="col-md-8"><input class="form-control" name="isi_rev[]" placeholder="masukkan hasil revisi" autocomplete="off" required></div>');
+        }
+    }else{
+        $('#ket_edit_'+no).val('N');
+		$('.hasil_edit_'+no).remove()
+        var kurang_tinggi = h - 60;
+        $('#tinggi').val(kurang_tinggi);
+        document.getElementById('panelbiru').style.height = kurang_tinggi+'px';
+    }
+}
+
 function revisiorderyuhuuu(apa, siapa) {
+    $.ajax({
+        url: baseurl+("ApprovalToolMaking/MonitoringOrder/daftarrevisi"),
+        data: { apa : apa, siapa : 'Kasie Pengorder', jenis : $('#jenis').val()},
+        type: "POST",
+        datatype: 'html',
+        success : function (result) {
+            $(".revisi2:last").html(result);
+        }
+    })
+
     $.ajax({
         url: baseurl+("ApprovalToolMaking/MonitoringOrder/daftarrevisi"),
         data: { apa : apa, siapa : siapa, jenis : $('#jenis').val()},
@@ -611,13 +1028,31 @@ function revisiorderyuhuuu(apa, siapa) {
                     $('.ganti:last').html(result)
                 }
             });
-        }else if (rev == 'Proses' || rev == 'Flow Proses Sebelumnya' || rev == 'Flow Proses Sesudahnya') {
+        }else if (rev == 'Proses') {
             $.ajax({
                 url: baseurl+("ApprovalToolMaking/MonitoringOrder/selectProses"),
                 type: "POST",
                 datatype: 'html',
                 success :function(result) {
                     $('.ganti:last').html(result)
+                }
+            });
+        }else if (rev == 'Flow Proses Sebelumnya') {
+            $.ajax({
+                url: baseurl+("ApprovalToolMaking/MonitoringOrder/selectProses"),
+                type: "POST",
+                datatype: 'html',
+                success :function(result) {
+                    $('.ganti:last').html('<div class="col-md-6">'+result+'</div><div class="col-md-6"><input name="detailsblm" class="form-control" placeholder="detail flow sebelum"></div>')
+                }
+            });
+        }else if (rev == 'Flow Proses Sesudahnya') {
+            $.ajax({
+                url: baseurl+("ApprovalToolMaking/MonitoringOrder/selectProses"),
+                type: "POST",
+                datatype: 'html',
+                success :function(result) {
+                    $('.ganti:last').html('<div class="col-md-6">'+result+'</div><div class="col-md-6"><input name="detailssdh" class="form-control" placeholder="detail flow sesudah"></div>')
                 }
             });
         }else if (rev == 'Mesin Yang Digunakan') {
