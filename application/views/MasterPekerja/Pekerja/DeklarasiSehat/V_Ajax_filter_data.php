@@ -43,10 +43,10 @@ for (var i = 0; i < 15; i++) {
   ii.push(i);
 }
   $('.dt_dsehat').dataTable({
-      dom: 'Bfrtip',
-    buttons: [
-        'csv', 'excel', 'pdf'
-    ]
+      // dom: 'Bfrtip',
+    // buttons: [
+    //     'csv', 'excel', 'pdf'
+    // ]
    //  buttons: [
    //  'pageLength',
    //  {

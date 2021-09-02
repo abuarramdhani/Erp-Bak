@@ -74,7 +74,7 @@ class M_deklarasisehat extends CI_Model
     if (!empty($pertanyaan[0])) {
       $w_pertanyaan = '';
       foreach ($pertanyaan as $key => $value) {
-        $w_pertanyaan .= "and $value = 'f'";
+        $w_pertanyaan .= "and ($value is null or $value = 'f') ";
       }
     }else {
       $w_pertanyaan = '';
