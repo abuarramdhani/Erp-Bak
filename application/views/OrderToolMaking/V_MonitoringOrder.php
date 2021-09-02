@@ -5,9 +5,9 @@ $judul = $siapa == 'Kasie Pengorder' ? 'Monitoring Order' :
         ($siapa == 'Ass Ka Nit PE' ? 'Approval Ass. Ka. Unit PE' :
         ($siapa == 'Designer Produk' ? 'Approval Designer Produk' :
         ($siapa == 'Unit QA/QC' ? 'Approval Unit QC/QA' :
-        ($siapa == 'KaDep Produksi' ? 'Approval Kepala Department Produksi' :
+        ($siapa == 'KaDep Produksi' ? 'Approval Kepala Department' :
         ($siapa == 'Ass Ka Nit TM' ? 'Approval Ass. Ka. Unit Tool Making' :
-        ($siapa == 'Kasie PPC TM' ? 'Approval Kepala Seksi PPC Tool Making' : ''))))))));
+        ($siapa == 'Kasie PPC TM' ? 'Approval Kepala Seksi PPC Tool Making' : 'Monitoring Admin PPC'))))))));
 
 $order = $siapa == 'Kasie Pengorder' ? '' : 'display:none'; // style button order baru
 $batas = $siapa == 'KaDep Produksi' ? 'display:none' : ''; // kadep cuma nampilin data tabel baru

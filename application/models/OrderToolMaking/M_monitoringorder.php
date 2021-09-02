@@ -84,7 +84,7 @@ class M_monitoringorder extends CI_Model
     }
     
     public function getnoasset($term){
-        $oracle = $this->load->database('oracle', true);
+        $oracle = $this->load->database('oracle_dev', true);
         $sql = "select *
                 from khs_asset_dokumen_header
                 where dok_num like '%$term%'
@@ -94,7 +94,7 @@ class M_monitoringorder extends CI_Model
     }
     
     public function save_noasset($no, $date){
-        $oracle = $this->load->database('oracle', true);
+        $oracle = $this->load->database('oracle_dev', true);
         $sql = "insert into khs_asset_dokumen_header (dok_num, document_type, creation_date, last_modified)
                 values('$no', 'PPA', to_timestamp('$date', 'yyyy-mm-dd hh24:mi:ss'),to_timestamp('$date', 'yyyy-mm-dd hh24:mi:ss'))";
         // echo "<pre>";print_r($sql);exit();
@@ -106,10 +106,10 @@ class M_monitoringorder extends CI_Model
     $acuan_alat, $layout, $material, $referensi, $assign_order, $pengorder, $assign_desainer, $alasan_asset){
          $sql = "insert into otm.otm_order_baru (no_order, tgl_order, seksi, unit, nama_user, file_proposal, no_proposal, tgl_usulan, jenis, gambar_kerja, skets,
                 kode_komponen, nama_komponen, tipe_produk, tgl_rilis, mesin, poin, proses_ke, dari, jumlah_alat, distribusi, dimensi, flow_sebelum, flow_sesudah,
-                acuan_alat_bantu, layout_alat_bantu, material_blank, referensi, assign_approval, pengorder, assign_desainer, alasan_asset)
+                acuan_alat_bantu, layout_alat_bantu, material_blank, referensi, assign_approval, pengorder, assign_desainer, alasan_asset, status_order)
                 values('$no_order', to_timestamp('$tgl_order', 'DD/MM/YYYY'), '$seksi_order', '$unit_order', '$user', '$proposal', '$no_proposal', to_timestamp('$tgl_usul', 'DD/MM/YYYY'), '$jenis', '$gambar_kerja', '$skets',
                 '$kode_komponen', '$nama_komponen', '$tipe_produk', to_timestamp('$tgl_rilis', 'DD/MM/YYYY'), '$mesin', '$poin', '$proses_ke', '$dari', '$jml_alat', '$distribusi', '$dimensi', '$flow_sebelum', '$flow_sesudah',
-                '$acuan_alat', '$layout', '$material', '$referensi', '$assign_order', '$pengorder', '$assign_desainer', '$alasan_asset')";
+                '$acuan_alat', '$layout', '$material', '$referensi', '$assign_order', '$pengorder', '$assign_desainer', '$alasan_asset', 1)";
         $query = $this->db->query($sql);
         // echo "<pre>";print_r($sql);exit();
     }
@@ -117,9 +117,9 @@ class M_monitoringorder extends CI_Model
     public function saveordermodif($no_order, $tgl_order, $seksi_order, $unit_order, $user, $tgl_usul, $jenis, $gambar_kerja, $skets,
     $kode_komponen, $nama_komponen, $tipe_produk, $tgl_rilis, $no_alat, $poin,$proses_ke, $dari, $alasan, $referensi, $assign_order, $pengorder, $inspect_report, $assign_desainer){
          $sql = "insert into otm.otm_order_modifikasi (no_order, tgl_order, seksi, unit, nama_user, tgl_usulan, jenis, gambar_kerja, skets,
-                kode_komponen, nama_komponen, tipe_produk, tgl_rilis, no_alat_bantu, poin, proses_ke, dari, alasan_modifikasi, referensi, assign_approval, pengorder, inspection_report, assign_desainer)
+                kode_komponen, nama_komponen, tipe_produk, tgl_rilis, no_alat_bantu, poin, proses_ke, dari, alasan_modifikasi, referensi, assign_approval, pengorder, inspection_report, assign_desainer, status_order)
                 values('$no_order', to_timestamp('$tgl_order', 'DD/MM/YYYY'), '$seksi_order', '$unit_order', '$user', to_timestamp('$tgl_usul', 'DD/MM/YYYY'), '$jenis', '$gambar_kerja', '$skets',
-                '$kode_komponen', '$nama_komponen', '$tipe_produk', to_timestamp('$tgl_rilis', 'DD/MM/YYYY'), '$no_alat', '$poin', '$proses_ke', '$dari', '$alasan', '$referensi', '$assign_order', '$pengorder', '$inspect_report', '$assign_desainer')";
+                '$kode_komponen', '$nama_komponen', '$tipe_produk', to_timestamp('$tgl_rilis', 'DD/MM/YYYY'), '$no_alat', '$poin', '$proses_ke', '$dari', '$alasan', '$referensi', '$assign_order', '$pengorder', '$inspect_report', '$assign_desainer', 1)";
                 // echo "<pre>";print_r($sql);exit();
         $query = $this->db->query($sql);
     }
@@ -127,9 +127,9 @@ class M_monitoringorder extends CI_Model
     public function saveorderrekon($no_order, $tgl_order, $seksi_order, $unit_order, $user, $tgl_usul, $jenis, $gambar_kerja, $skets,
     $kode_komponen, $nama_komponen, $tipe_produk, $tgl_rilis, $no_alat, $poin,$proses_ke, $dari, $alasan, $referensi, $assign_order, $pengorder, $inspect_report, $assign_desainer){
          $sql = "insert into otm.otm_order_rekondisi (no_order, tgl_order, seksi, unit, nama_user, tgl_usulan, jenis, gambar_kerja, skets,
-                kode_komponen, nama_komponen, tipe_produk, tgl_rilis, no_alat_bantu, poin, proses_ke, dari, alasan_modifikasi, referensi, assign_approval, pengorder, inspection_report, assign_desainer)
+                kode_komponen, nama_komponen, tipe_produk, tgl_rilis, no_alat_bantu, poin, proses_ke, dari, alasan_modifikasi, referensi, assign_approval, pengorder, inspection_report, assign_desainer, status_order)
                 values('$no_order', to_timestamp('$tgl_order', 'DD/MM/YYYY'), '$seksi_order', '$unit_order', '$user', to_timestamp('$tgl_usul', 'DD/MM/YYYY'), '$jenis', '$gambar_kerja', '$skets',
-                '$kode_komponen', '$nama_komponen', '$tipe_produk', to_timestamp('$tgl_rilis', 'DD/MM/YYYY'), '$no_alat', '$poin', '$proses_ke', '$dari', '$alasan', '$referensi', '$assign_order', '$pengorder', '$inspect_report', '$assign_desainer')";
+                '$kode_komponen', '$nama_komponen', '$tipe_produk', to_timestamp('$tgl_rilis', 'DD/MM/YYYY'), '$no_alat', '$poin', '$proses_ke', '$dari', '$alasan', '$referensi', '$assign_order', '$pengorder', '$inspect_report', '$assign_desainer', 1)";
         $query = $this->db->query($sql);
     }
     
@@ -238,9 +238,25 @@ class M_monitoringorder extends CI_Model
         return $query->result_array();
     }
     
-    public function insertrevisi($no, $person, $nama, $isi, $date){
-        $sql = "insert into otm.otm_rev_order (no_order, person, kolom_rev, value_rev, date_rev)
-                values('$no', $person, '$nama', '$isi',to_timestamp('$date', 'yyyy-mm-dd hh24:mi:ss'))";
+    public function user_ppc_tm(){
+        $sql = "SELECT su.user_name, vsu.employee_name
+                FROM sys.sys_user su,
+                sys.sys_user_application sua,
+                sys.sys_user_group_menu sugm,
+                sys.sys_module smod,
+                sys.vi_sys_user vsu
+                WHERE su.user_id = sua.user_id
+                AND vsu.user_id = su.user_id
+                AND sua.user_group_menu_id = sugm.user_group_menu_id
+                AND smod.module_id= sugm.module_id
+                AND sugm.user_group_menu_id = 2823";
+        $query = $this->db->query($sql);
+        return $query->result_array();
+    }
+    
+    public function insertrevisi($no, $person, $nama, $isi, $date, $rev_by){
+        $sql = "insert into otm.otm_rev_order (no_order, person, kolom_rev, value_rev, date_rev, rev_by)
+                values('$no', $person, '$nama', '$isi',to_timestamp('$date', 'yyyy-mm-dd hh24:mi:ss'), '$rev_by')";
         // echo "<pre>";print_r($sql);exit();
         $query = $this->db->query($sql);
     }
@@ -279,6 +295,12 @@ class M_monitoringorder extends CI_Model
                 values('$no_order', $siapa, '$action', '$ket', to_timestamp('$date', 'yyyy-mm-dd hh24:mi:ss'), '$noind')";
         $query = $this->db->query($sql);
     }
+    
+    public function deleteaction($no_order){
+        $sql = "delete from otm.otm_ket_action where no_order = '$no_order'";
+        $query = $this->db->query($sql);
+        $query = $this->db->query('commit');
+    }
 
     public function updateaction($no_order, $siapa, $action, $ket, $date, $noind){
         $sql = "update otm.otm_ket_action 
@@ -287,6 +309,23 @@ class M_monitoringorder extends CI_Model
                     approve_date = to_timestamp('$date', 'yyyy-mm-dd hh24:mi:ss'),
                     approved_by = '$noind'
                 where no_order = '$no_order' and person = $siapa";
+        $query = $this->db->query($sql);
+    }
+    
+    public function getpoinrevisi($no_order){
+        $sql = "select * from otm.otm_poin_revisi where no_order = '$no_order' and status = 1";
+        $query = $this->db->query($sql);
+        return $query->result_array();
+    }
+    
+    public function savepoinrevisi($no_order, $revisi, $noind, $date){
+        $sql = "insert into otm.otm_poin_revisi (no_order, poin_revisi, creation_date, created_by, status)
+                values('$no_order', '$revisi', to_timestamp('$date', 'yyyy-mm-dd hh24:mi:ss'), '$noind', 1)";
+        $query = $this->db->query($sql);
+    }
+    
+    public function update_status_revisi($no_order){
+        $sql = "update otm.otm_poin_revisi set status = 0 where no_order = '$no_order'";
         $query = $this->db->query($sql);
     }
     

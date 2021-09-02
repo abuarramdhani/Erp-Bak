@@ -361,7 +361,7 @@ $terima = $val['status'] == 'DALAM PROSES PENGIRIMAN' ? '' : 'display:none'; // 
                 Alasan Modifikasi :
             </div>
             <div class="col-md-9">
-                <textarea disabled style="width:500px"><?php echo $val['ket'] != 'Baru' ? $val['alasan'] : ''; ?></textarea>
+                <textarea disabled style="width:100%"><?php echo $val['ket'] != 'Baru' ? $val['alasan'] : ''; ?></textarea>
             </div>
         </div>
         <div class="col-md-12"><br>
@@ -369,9 +369,23 @@ $terima = $val['status'] == 'DALAM PROSES PENGIRIMAN' ? '' : 'display:none'; // 
                 Referensi / Datum Alat Bantu :
             </div>
             <div class="col-md-9">
-                <textarea disabled style="width:500px"><?= $val['referensi'] ?></textarea>
+                <textarea disabled style="width:100%"><?= $val['referensi'] ?></textarea>
             </div>
         </div>
+        <?php if(!empty($val['stp_gambar_kerja'])){?>
+        <div class="col-md-12"><br>
+            <div class="col-md-3">
+                STP Gambar Kerja :
+            </div>
+            <div class="col-md-9">
+                <?php $filename = "assets/upload/OrderToolMaking/STP_GAMKER/".$val['stp_gambar_kerja']."";
+                $inspect =  (file_exists($filename)) && !empty($val['stp_gambar_kerja']) ? 'href="'.base_url($filename).'" download="'.$val['stp_gambar_kerja'].'" target="_blank"' : '' ; ?>
+                <a <?= $inspect?>>
+                    <span class="btn btn-info" style="border-radius:25px" <?= empty($val['stp_gambar_kerja']) ? 'disabled' : ''; ?>><i class="fa fa-download"></i> Download</span>
+                </a>
+            </div>
+        </div>
+        <?php }?>
         <div class="col-md-12"><br>
             <div class="col-md-3">
                 Assign Approval :

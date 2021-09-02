@@ -321,6 +321,10 @@ class C_MonitoringOrder extends CI_Controller
 			$nama = $this->M_monitoringorder->getseksiunit($val['assign_approval']);
 			$fix['nama_assignapproval'] = $nama[0]['nama'];
 			$fix['assign_desainer'] = $val['assign_desainer'];
+			$fix['stp_gambar_kerja'] = $val['stp_gambar_kerja'];
+			$fix['status_order'] = $val['status_order'];
+			$fix['pengorder'] = $val['pengorder'];
+			$fix['reject_by'] = $val['reject_by'];
 			$fix['estimasi_finish'] = $val['estimasi_finish'] == '' || $val['estimasi_finish'] == '0001-01-01 BC' ? '' : date('d/m/Y', strtotime($val['estimasi_finish']));
 		
 			if ($ket == 'Baru') {
@@ -393,7 +397,7 @@ class C_MonitoringOrder extends CI_Controller
 					$hasil[] = $cari[0]['person'] == 2 ? 'Ass_Ka_Nit_Pengorder' :
 							($cari[0]['person'] == 5 ? 'Designer_Produk' :
 							($cari[0]['person'] == 3 ? 'Kasie_PE' : 
-							($cari[0]['person'] == 4 ? 'Ass_Ka_Nit_PE' : '')));
+							($cari[0]['person'] == 4 ? 'Ass_Ka_Nit_PE' : 'Pengorder')));
 				}else { // tidak ada revisi -> ambil data file dari folder Pengorder
 					$hasil[] = 'Pengorder';
 				}
@@ -403,7 +407,7 @@ class C_MonitoringOrder extends CI_Controller
 				$hasil = $cari[0]['person'] == 2 ? 'Ass_Ka_Nit_Pengorder' :
 						($cari[0]['person'] == 5 ? 'Designer_Produk' :
 						($cari[0]['person'] == 3 ? 'Kasie_PE' : 
-						($cari[0]['person'] == 4 ? 'Ass_Ka_Nit_PE' : '')));
+						($cari[0]['person'] == 4 ? 'Ass_Ka_Nit_PE' : 'Pengorder')));
 			}else { // tidak ada revisi -> ambil data file dari folder Pengorder
 				$hasil = 'Pengorder';
 			}
@@ -427,17 +431,6 @@ class C_MonitoringOrder extends CI_Controller
 
 		$action = array('action' => $acc, 'keterangan' => $ket);
 		return $action;
-	}
-
-	public function kirimbarang(){
-		$no_order 	= $this->input->post('no_order');
-		$cek 		= $this->M_monitoringorder->cekaction($no_order, "and person = 10"); // status 10 = barang sudah selesai / akan kirim ke seksi pengorder
-		if (empty($cek)) {
-			$this->M_monitoringorder->saveaction($no_order, 10, 1, '', date('Y-m-d H:i:s'), $this->session->user);
-		}else {
-			$this->M_monitoringorder->updateaction($no_order, 10, 1, '', date('Y-m-d H:i:s'), $this->session->user);
-		}
-		redirect(base_url('OrderToolMakingTM/MonitoringOrder/'));
 	}
 
 }
