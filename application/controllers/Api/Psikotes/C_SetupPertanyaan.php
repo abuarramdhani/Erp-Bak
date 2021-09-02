@@ -43,6 +43,7 @@ class C_SetupPertanyaan extends CI_Controller
 			print_r($_FILES);
 			exit;
 		}
+		
 		$id_tes = $this->M_setting->get_max_id_tes();
 		if ($id_tes == null) {
 			$num = 1;
@@ -77,31 +78,19 @@ class C_SetupPertanyaan extends CI_Controller
 			$answerText = $jawaban[$i];
 			$id_soal = $id_pertanyaan[$i];
 			$correctAnswer = $correct_answer[$i];
-
-			$config = $this->set_upload_options();
-			$this->upload->initialize($config);
-			if (isset($_FILES['userfile']['name'][$i])) {
+			if (isset($_POST['userfile']['name'][$i])) {
 				$time = time();
 
-				foreach ($_FILES['userfile']['name'][$i] as $j => $raw_filename) {
-					$filename = "question_{$num}_{$time}_{$raw_filename}";
+				foreach ($_POST['userfile']['name'][$i] as $j => $raw_filename) {
+					$file_type = $_POST['userfile']['name'][$i][$j]['ext'];
+					$file_name = "question_{$num}_{$time}_{$i}_{$j}.{$file_type}";
 
-					$_FILES['uploaded']['name'] = $filename;
-					$_FILES['uploaded']['type'] = $_FILES['userfile']['type'][$i][$j];
-					$_FILES['uploaded']['tmp_name'] = $_FILES['userfile']['tmp_name'][$i][$j];
-					$_FILES['uploaded']['error'] = $_FILES['userfile']['error'][$i][$j];
-					$_FILES['uploaded']['size'] = $_FILES['userfile']['size'][$i][$j];
+					$urlFoto = $_POST['userfile']['name'][$i][$j]['file_url'];
+					$foto = $this->curlFoto($urlFoto);
+					$file_path = "assets/upload/ADMSeleksi/" . $file_name;
+					file_put_contents( $file_path, $foto );
 
-					if ($this->upload->do_upload('uploaded')) {
-						$uploadedFile = $this->upload->data();
-						$file_path = "assets/upload/ADMSeleksi/" . $uploadedFile['file_name'];
-
-						$this->M_setting->save_file_question($id_soal, $uploadedFile['file_name'], $file_path, $uploadedFile['file_type']);
-					} else {
-						// $errorinfo = $this->upload->display_errors();
-						// echo $errorinfo;
-						// print_r($_FILES['userfile']['name'][$i][$j]);exit;
-					}
+					$this->M_setting->save_file_question($id_soal, $file_name, $file_path, $file_type);
 				}
 			}
 
@@ -111,20 +100,14 @@ class C_SetupPertanyaan extends CI_Controller
 				$file_type = null;
 				$file_path = null;
 
-				if (isset($_FILES['file_answers']['name'][$i][$j])) {
-					$fileAnswerName = $_FILES['file_answers']['name'][$i][$j];
-					$_FILES['file_answer']['name'] = "answer_" . $num . "_" . time() . "_" . $_FILES['file_answers']['name'][$i][$j];
-					$_FILES['file_answer']['type'] = $_FILES['file_answers']['type'][$i][$j];
-					$_FILES['file_answer']['tmp_name'] = $_FILES['file_answers']['tmp_name'][$i][$j];
-					$_FILES['file_answer']['error'] = $_FILES['file_answers']['error'][$i][$j];
-					$_FILES['file_answer']['size'] = $_FILES['file_answers']['size'][$i][$j];
-					
-					$this->upload->do_upload("file_answer");
-					$uploadedFile = $this->upload->data();
+				if (isset($_POST['file_answers']['name'][$i][$j])) {
+					$file_type = $_POST['file_answers']['name'][$i][$j]['ext'];
+					$file_name = "answer_{$num}_{$time}_{$i}_{$j}.{$file_type}";
 
-					$file_name = $uploadedFile['file_name'];
-					$file_type = $uploadedFile['file_type'];
-					$file_path = "assets/upload/ADMSeleksi/" . $uploadedFile['file_name'];
+					$urlFoto = $_POST['file_answers']['name'][$i][$j]['file_url'];
+					$foto = $this->curlFoto($urlFoto);
+					$file_path = "assets/upload/ADMSeleksi/" . $file_name;
+					file_put_contents( $file_path, $foto );
 				}
 
 				$this->M_setting->SaveJawaban($id_soal, $answer, $isCorrect, $file_name, $file_type, $file_path);
@@ -144,6 +127,19 @@ class C_SetupPertanyaan extends CI_Controller
 		$config['overwrite']     = TRUE;
 
 		return $config;
+	}
+
+	function curlFoto($urlFoto)
+	{
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_HEADER, 0);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_URL, $urlFoto);
+
+		$data = curl_exec($ch);
+		curl_close($ch);
+
+		return $data;
 	}
 
 	function getidmaxpertenyaan()
@@ -174,9 +170,12 @@ class C_SetupPertanyaan extends CI_Controller
 		parse_str($_POST[0], $_POST);
 		echo '<pre>';
 
-		// print_r($_POST);
-		// print_r($_FILES);
-		// exit;
+		$debug = $this->input->post('debug');
+		if($debug == '1'){
+			print_r($_POST);
+			print_r($_FILES);
+			exit;
+		}
 		// pertanyaan
 		$id_tes = $this->input->post('id_tes');
 		$id_pertanyaan = $this->input->post('id_pertanyaan');
@@ -192,31 +191,26 @@ class C_SetupPertanyaan extends CI_Controller
 		// files
 		$files = $_FILES;
 		// echo "<pre>"; print_r($files); die;
+		$time = time();
 
-		if(isset($_FILES['userfile']) && !empty($files['userfile']['name'])){
-		// if (!empty($image_path)) {
-			// $_FILES['userfile']['name'] = "question_" . $num_soal . "_" . $id_tes . "_" . time() . "_" . $files['userfile']['name'][$k];
-			$_FILES['userfile']['name'] = "question_" . $id_tes . "_" . time() . "_" . $files['userfile']['name'];
-			$_FILES['userfile']['type'] = $files['userfile']['type'];
-			$_FILES['userfile']['tmp_name'] = $files['userfile']['tmp_name'];
-			$_FILES['userfile']['error'] = $files['userfile']['error'];
-			$_FILES['userfile']['size'] = $files['userfile']['size'];
-
-			if (!empty($files['userfile']['name'])) {
+		if(isset($_POST['userfile']) && !empty($_POST['userfile']['name'])){
+			if (!empty($_POST['userfile']['name'])) {
 				if (!empty($image_path)) {
 					@unlink($image_path);
 				}
 
-				$this->upload->initialize($this->set_upload_options());
-				$this->upload->do_upload();
+				$file_type = $_POST['userfile']['name']['ext'];
+				$file_name = "question_{$id_tes}_{$time}.{$file_type}";
 
-				$uploadedFile = $this->upload->data();
-				$docpath = "assets/upload/ADMSeleksi/" . $uploadedFile['file_name'];
+				$urlFoto = $_POST['userfile']['name']['file_url'];
+				$foto = $this->curlFoto($urlFoto);
+				$file_path = "assets/upload/ADMSeleksi/" . $file_name;
+				file_put_contents( $file_path, $foto );
 
 				if(!empty($image_path)){
-					$update_file_image = $this->M_setting->update_file_image($id_file, $uploadedFile['file_name'], $docpath, $uploadedFile['file_type']);
+					$update_file_image = $this->M_setting->update_file_image($id_file, $file_name, $file_path, $file_type);
 				}else{
-					$update_file_image = $this->M_setting->save_file_question($id_pertanyaan, $uploadedFile['file_name'], $docpath, $uploadedFile['file_type']);
+					$update_file_image = $this->M_setting->save_file_question($id_pertanyaan, $file_name, $file_path, $file_type);
 				}
 			} 
 		} 
@@ -227,30 +221,16 @@ class C_SetupPertanyaan extends CI_Controller
 			$rename_txt_ans = str_replace("'", "''", $txt_ans);
 			$txt_ans_status = $answer_val[$g];
 			$path_image_ans = $image_path_ans[$g];
-			// echo "<pre>"; print_r($path_image_ans); die;
+			if (isset($_POST['file_answer']['name'][$g]) && !empty($_POST['file_answer']['name'][$g])) {
+				$file_type = $_POST['file_answer']['name'][$g]['ext'];
+				$file_name = "question_{$id_tes}_{$time}_{$g}.{$file_type}";
 
-			// if (!empty($path_image_ans)) {
-			if (isset($files['file_answer']['name'][$g]) && !empty($files['file_answer']['name'][$g])) {
-				// echo "<pre>"; print_r($path_image_ans); die;
+				$urlFoto = $_POST['file_answer']['name'][$g]['file_url'];
+				$foto = $this->curlFoto($urlFoto);
+				$file_path = "assets/upload/ADMSeleksi/" . $file_name;
+				file_put_contents( $file_path, $foto );
 
-				// $_FILES['file_answer']['name'] = "answer_" . $num_soal . "_" . $id_tes . "_" . time() . "_" . $files['file_answer']['name'][$g];
-				$_FILES['file_answer']['name'] = "answer_" . $id_tes . "_" . time() . "_" . $files['file_answer']['name'][$g];
-				$_FILES['file_answer']['type'] = $files['file_answer']['type'][$g];
-				$_FILES['file_answer']['tmp_name'] = $files['file_answer']['tmp_name'][$g];
-				$_FILES['file_answer']['error'] = $files['file_answer']['error'][$g];
-				$_FILES['file_answer']['size'] = $files['file_answer']['size'][$g];
-
-				// if (!empty($files['file_answer']['name'][$g])) {
-				unlink($path_image_ans);
-
-				$this->upload->initialize($this->set_upload_options());
-				$this->upload->do_upload("file_answer");
-
-				$uploadedFile = $this->upload->data();
-				$docpath = "assets/upload/ADMSeleksi/" . $uploadedFile['file_name'];
-
-				$update_file_image = $this->M_setting->update_file_image_ans($txt_id, $uploadedFile['file_name'], $docpath, $uploadedFile['file_type']);
-				// } 
+				$update_file_image = $this->M_setting->update_file_image_ans($txt_id, $file_name, $file_path, $file_type);
 			}
 
 			$update_ans = $this->M_setting->update_ans($txt_id, $rename_txt_ans, $txt_ans_status);
@@ -288,9 +268,12 @@ class C_SetupPertanyaan extends CI_Controller
 		parse_str($_POST[0], $_POST);
 		echo '<pre>';
 
-		// print_r($_POST);
-		// print_r($_FILES);
-		// exit;
+		$debug = $this->input->post('debug');
+		if ($debug == '1') {
+			print_r($_POST);
+			print_r($_FILES);
+			exit;
+		}
 		$id_tes = $this->input->post('id_tes');
 		$jml_soal = $this->input->post('jml_soal');
 		$id_pertanyaan = $this->input->post('id_pertanyaan');
@@ -317,62 +300,44 @@ class C_SetupPertanyaan extends CI_Controller
 				$config = $this->set_upload_options();
 				$this->upload->initialize($config);
 
-				if (isset($_FILES['userfile']) && isset($_FILES['userfile']['name'][$i])) {
+				if (isset($_POST['userfile']) && isset($_POST['userfile']['name'][$i])) {
 					$time = time();
-					// print_r($time); exit;
 
-					foreach ($_FILES['userfile']['name'][$i] as $j => $raw_filename) {
-						// $filename = "question_{$questionNumber}_{$id_tes}_{$time}_{$raw_filename}";
-						$filename = "question_{$id_tes}_{$time}_{$raw_filename}";
+					foreach ($_POST['userfile']['name'][$i] as $j => $raw_filename) {
+						$file_type = $_POST['userfile']['name'][$i][$j]['ext'];
+						$file_name = "question_{$id_tes}_{$time}_{$i}_{$j}.{$file_type}";
 
-						$_FILES['uploaded']['name'] = $filename;
-						$_FILES['uploaded']['type'] = $_FILES['userfile']['type'][$i][$j];
-						$_FILES['uploaded']['tmp_name'] = $_FILES['userfile']['tmp_name'][$i][$j];
-						$_FILES['uploaded']['error'] = $_FILES['userfile']['error'][$i][$j];
-						$_FILES['uploaded']['size'] = $_FILES['userfile']['size'][$i][$j];
+						$urlFoto = $_POST['userfile']['name'][$i][$j]['file_url'];
+						$foto = $this->curlFoto($urlFoto);
+						$file_path = "assets/upload/ADMSeleksi/" . $file_name;
+						file_put_contents( $file_path, $foto );
 
-						if ($this->upload->do_upload('uploaded')) {
-							$uploadedFile = $this->upload->data();
-							$file_path = "assets/upload/ADMSeleksi/" . $uploadedFile['file_name'];
-
-							// $this->M_setting->save_file_question($id_soal, $questionNumber, $uploadedFile['file_name'], $file_path, $uploadedFile['file_type']);
-							$this->M_setting->save_file_question($id_soal, $uploadedFile['file_name'], $file_path, $uploadedFile['file_type']);
-						} else {
-
-						}
+						$this->M_setting->save_file_question($id_soal, $file_name, $file_path, $file_type);
 					}
 				}
 
 				foreach ($answerText as $j => $answer) {
 					$isCorrect = $correctAnswer[$j] ? 1 : 0;  // 1 or 0
-					$fileAnswerName = isset($_FILES['file_answers']['name'][$i][$j]) ? $_FILES['file_answers']['name'][$i][$j]:false;
+					$fileAnswerName = isset($_POST['file_answers']['name'][$i][$j]) ? $_POST['file_answers']['name'][$i][$j]:false;
 
 					$file_name = null;
 					$file_type = null;
 					$file_path = null;
 
 					if ($fileAnswerName) {
-						// $_FILES['file_answer']['name'] = "answer_" . $questionNumber . "_" . $id_tes . "_" . time() . "_" . $_FILES['file_answers']['name'][$i][$j];
-						$_FILES['file_answer']['name'] = "answer_" . $id_tes . "_" . time() . "_" . $_FILES['file_answers']['name'][$i][$j];
-						$_FILES['file_answer']['type'] = $_FILES['file_answers']['type'][$i][$j];
-						$_FILES['file_answer']['tmp_name'] = $_FILES['file_answers']['tmp_name'][$i][$j];
-						$_FILES['file_answer']['error'] = $_FILES['file_answers']['error'][$i][$j];
-						$_FILES['file_answer']['size'] = $_FILES['file_answers']['size'][$i][$j];
-						
-						$this->upload->do_upload("file_answer");
-						$uploadedFile = $this->upload->data();
+						$file_type = $_POST['file_answers']['name'][$i][$j]['ext'];
+						$file_name = "answer_{$id_tes}_{$time}_{$i}_{$j}.{$file_type}";
 
-						$file_name = $uploadedFile['file_name'];
-						$file_type = $uploadedFile['file_type'];
-						$file_path = "assets/upload/ADMSeleksi/" . $uploadedFile['file_name'];
+						$urlFoto = $_POST['file_answers']['name'][$i][$j]['file_url'];
+						$foto = $this->curlFoto($urlFoto);
+						$file_path = "assets/upload/ADMSeleksi/" . $file_name;
+						file_put_contents( $file_path, $foto );
 					}
 
-					// $this->M_setting->SaveJawaban($id_soal, $questionNumber, $answer, $file_name, $file_type, $file_path);
 					$this->M_setting->SaveJawaban($id_soal, $answer, $isCorrect, $file_name, $file_type, $file_path);
 				}
 
 				$this->M_setting->SavePertanyaan($id_tes, $id_soal, $questionText);
-				// $this->M_setting->SavePertanyaan($id_tes, $id_soal, $questionNumber, $questionText);
 			}
 		}
 
