@@ -59,7 +59,7 @@ AND moqd.ORGANIZATION_ID = msib.ORGANIZATION_ID")->result_array();
           $locator = "NULL";
         }
 
-        return $this->oracle->query("SELECT msib.inventory_item_id, msib.segment1,
+        return $this->oracle->query("SELECT DISTINCT msib.inventory_item_id, msib.segment1,
                 msib.description, msib.MAX_MINMAX_QUANTITY max_quantity
                                         ,khs_inv_qty_oh(msib.ORGANIZATION_ID,msib.INVENTORY_ITEM_ID, moqd.SUBINVENTORY_CODE, moqd.LOCATOR_ID,'') onhand
                                       from mtl_system_items_b msib, mtl_onhand_quantities_detail moqd
@@ -610,7 +610,18 @@ AND moqd.ORGANIZATION_ID = msib.ORGANIZATION_ID")->result_array();
 
     public function cek_max_onhand($item, $berat)
     {
-      foreach ($item as $key => $value) {
+      $item_sama = array_unique($item);
+      foreach ($item_sama as $key2 => $value2) {
+        $berat_m = 0;
+        foreach ($item as $key => $value) {
+          if ($value2 == $value) {
+            $berat_m+=$berat[$key];
+          }
+        }
+        $berat_final[] = $berat_m;
+      }
+
+      foreach ($item_sama as $key => $value) {
         $item_id = explode(' ~ ', $value)[0];
         $item_code = explode(' ~ ', $value)[1];
         $cek = $this->oracle->query("SELECT DISTINCT msib.inventory_item_id, msib.segment1,
@@ -628,9 +639,9 @@ AND moqd.ORGANIZATION_ID = msib.ORGANIZATION_ID")->result_array();
         if (empty($cek['ONHAND'])) {
           return ['status' => 2, 'message' => "Tidak ada onhand di $item_code"];
         }elseif (!empty($cek['ONHAND']) && !empty($cek['MAX_MINMAX_QUANTITY'])) {
-          if ($berat[$key] > ($cek['MAX_MINMAX_QUANTITY'] - $cek['ONHAND'])) {
+          if ($berat_final[$key] > ($cek['MAX_MINMAX_QUANTITY'] - $cek['ONHAND'])) {
             $h = $cek['MAX_MINMAX_QUANTITY'] - $cek['ONHAND'];
-            return ['status' => 2, 'message' => "Estimasi Berat ($berat[$key]) > MAX - Onhand ($h) !"];
+            return ['status' => 2, 'message' => "Jumlah Estimasi Berat Item $item_code ($berat_final[$key]) > MAX - Onhand ($h) !"];
           }
         }
       }
