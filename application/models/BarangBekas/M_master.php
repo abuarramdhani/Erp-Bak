@@ -195,7 +195,7 @@ AND moqd.ORGANIZATION_ID = msib.ORGANIZATION_ID")->result_array();
       }else {
         $andloc = "";
       }
-      $sql = "SELECT msib.inventory_item_id, msib.segment1,
+      $sql = "SELECT DISTINCT msib.inventory_item_id, msib.segment1,
                 msib.description, msib.MAX_MINMAX_QUANTITY max_quantity
                 -- ,khs_inv_qty_oh(msib.ORGANIZATION_ID,msib.INVENTORY_ITEM_ID, moqd.SUBINVENTORY_CODE, moqd.LOCATOR_ID,'') onhand
               from mtl_system_items_b msib, mtl_onhand_quantities_detail moqd
