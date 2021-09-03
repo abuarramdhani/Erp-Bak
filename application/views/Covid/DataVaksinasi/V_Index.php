@@ -26,6 +26,8 @@
 													<th class="bg-primary">No. Induk</th>
 													<th class="bg-primary">Nama</th>
 													<th class="bg-primary">NIK</th>
+													<th class="bg-primary">Status</th>
+													<th class="bg-primary">Keluarga</th>
 													<th class="bg-primary">Kelompok Vaksin</th>
 													<th class="bg-primary">Tanggal Vaksin</th>
 													<th class="bg-primary">Jenis Vaksin</th>
@@ -57,6 +59,8 @@
 															<td><?=$dt['noind'] ?></td>
 															<td><?=$dt['nama'] ?></td>
 															<td><?=$dt['nik'] ?></td>
+															<td><?=$dt['status'] ?></td>
+															<td><?=$dt['jenis'] ?></td>
 															<td><?=$dt['kelompok_vaksin'] ?></td>
 															<td><?=$dt['tanggal_vaksin'] ?></td>
 															<td><?=$dt['jenis_vaksin'] ?></td>

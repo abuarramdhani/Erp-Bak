@@ -1953,7 +1953,21 @@ function initNoSelect()
 // start data vaksinasi
 $(document).on('ready', function(){
 	$('#tbl-CVD-DataVaksinasi-table').DataTable({
-		scrollX: true
+		"lengthMenu": [
+            [ 5, 10, 25, 50, -1 ],
+            [ '5 rows', '10 rows', '25 rows', '50 rows', 'Show all' ]
+        ],
+        "dom" : 'Bfrtip',
+        "buttons" : [
+            'copy', 'csv', 'excel', 
+            {
+                extend: 'pdfHtml5',
+                orientation: 'landscape',
+                pageSize: 'LEGAL'
+            },
+            'print', 'pageLength'
+        ],
+		"scrollX" : true,
 	});
 
 	$('#slc-CVD-DataVaksinasi-Pekerja').select2({

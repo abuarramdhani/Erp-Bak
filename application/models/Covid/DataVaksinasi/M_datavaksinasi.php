@@ -14,8 +14,19 @@ class M_datavaksinasi extends CI_Model
 
 	public function getData()
 	{
-		$query = "Select * from 
-			hrd_khs.tvaksinasi
+		$query = "select * 
+			from hrd_khs.tvaksinasi tv
+			left join (
+				select noind,nama,nik , 'Pekerja' as status, 'Pekerja' as jenis
+				from hrd_khs.tpribadi
+				union all
+				select noind,nama,nik,'Keluarga' as status, tmk.jenisanggota as jenis
+				from hrd_khs.tkeluarga tk 
+				left join hrd_khs.tmasterkel tmk 
+				on tk.nokel = tmk.nokel
+			) td 
+			on tv.noind = td.noind
+			and tv.nik = td.nik
 			order by tanggal_input desc";
 		return $this->personalia->query($query)->result_array();
 	}
