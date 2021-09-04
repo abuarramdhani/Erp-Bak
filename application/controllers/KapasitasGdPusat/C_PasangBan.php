@@ -63,6 +63,24 @@ class C_PasangBan extends CI_Controller{
 		$ket = $this->input->post('ket');
 		$jenis_ban = $this->input->post('jenis_ban');
 
+		if($jenis_ban = 'RUBBER TIRE RING 12 SUB GROUP (VULKANISIR / GRAN PRINX / GP)'){
+			$ban = '12V';
+		}else if($jenis_ban = 'RUBBER TIRE RING 12 SUB GROUP (NON VULKANISIR / NV / PRIMEX)'){
+			$ban = '12NV';
+		}else if($jenis_ban = 'RUBBER TIRE RING 13 SUB GROUP (VULKANISIR / GRAN PRINX / GP)'){
+			$ban = '13V';
+		}else{
+			$ban = '13NV';
+		}
+
+		$data['ban'] = $ban;
+
+		$getID = $this->M_pasangban->getID();
+        $newID = !empty($getID) ? $getID[0]['NUM'] + 1 : '1';
+        // $newID = sprintf("%07d", $id);
+
+		$data['id'] = $ket.'-'.$ban.'-'.$newID;
+
 		$data['ket'] = $ket;
 		$data['jenis_ban'] = $jenis_ban;
 		$data['onklik'] = $this->input->post('onklik');
@@ -78,6 +96,7 @@ class C_PasangBan extends CI_Controller{
 	}
 
 	public function save_mulai(){
+		$id = $this->input->post('id');
 		$noind = $this->input->post('noind');
 		$nama = $this->input->post('nama');
 		$ket = $this->input->post('ket');
@@ -85,8 +104,9 @@ class C_PasangBan extends CI_Controller{
 		$jenis_ban = $this->input->post('jenis_ban');
 		// $creation_date	= date("Y/m/d H:i:s");
 
-		foreach ($noind as $key => $l) {
+		foreach ($id as $key => $l) {
 			$data = [
+				'ID' => $id[$key],
 				'NO_INDUK' => $noind[$key],
 				'NAMA' => $nama[$key],
 				'KET' => $ket,
@@ -107,39 +127,43 @@ class C_PasangBan extends CI_Controller{
 		$jenis_ban = $this->input->post('jenis_ban');
 		$user_id = 5177;
 
-		$jumlah_per_assy = $jumlah/2;
-		$cek_assy = $this->M_pasangban->getAssy($jenis_ban);
+		$cek_id = $this->M_pasangban->getId($noind, $ket, $jenis_ban);
 
-		$i=0;
-		foreach ($cek_assy as $val) {
-			$cek_assy[$i]['QTY'] = $jumlah_per_assy;
-			$cek_assy[$i]['SUBINV'] = 'FG-DM';
-			$i++;
-		}
+		if ($ket == 'pasang1' || $ket == 'pasang2') {
+			$jumlah_per_assy = $jumlah/2;
+			$cek_assy = $this->M_pasangban->getAssy($jenis_ban);
 
-		// SaveTemp
-		for ($i=0; $i <sizeof($cek_assy); $i++) {
-			$data = [
-				'ASSY' => $cek_assy[$i]['KODE_ASSY'],
-				'QTY' => $cek_assy[$i]['QTY'],
-				'SUBINV' => $cek_assy[$i]['SUBINV']
-			];
-			$this->M_pasangban->SaveTemp($data);
-		}
+			$i=0;
+			foreach ($cek_assy as $val) {
+				$cek_assy[$i]['QTY'] = $jumlah_per_assy;
+				$cek_assy[$i]['SUBINV'] = 'FG-DM';
+				$i++;
+			}
 
-		// CreateWOLC
-		$this->M_pasangban->InsertMTI($user_id, 102, 'ERP WOLC');
+			// SaveTemp
+			for ($i=0; $i <sizeof($cek_assy); $i++) {
+				$data = [
+					'ASSY' => $cek_assy[$i]['KODE_ASSY'],
+					'QTY' => $cek_assy[$i]['QTY'],
+					'SUBINV' => $cek_assy[$i]['SUBINV']
+				];
+				$this->M_pasangban->SaveTemp($data);
+			}
 
-		$this->M_pasangban->runApi($user_id);
+			// CreateWOLC
+			$this->M_pasangban->InsertMTI($user_id, 102, 'ERP WOLC');
 
-		// DeleteTemp
-		for ($i=0; $i <sizeof($cek_assy); $i++) {
-			$data = [
-				'ASSY' => $cek_assy[$i]['KODE_ASSY'],
-				'QTY' => $cek_assy[$i]['QTY'],
-				'SUBINV' => $cek_assy[$i]['SUBINV']
-			];
-			$this->M_pasangban->deleteTemp($data);
+			$this->M_pasangban->runApi($user_id);
+
+			// DeleteTemp
+			for ($i=0; $i <sizeof($cek_assy); $i++) {
+				$data = [
+					'ASSY' => $cek_assy[$i]['KODE_ASSY'],
+					'QTY' => $cek_assy[$i]['QTY'],
+					'SUBINV' => $cek_assy[$i]['SUBINV']
+				];
+				$this->M_pasangban->deleteTemp($data);
+			}
 		}
 
 		foreach ($id as $key => $l) {
@@ -153,8 +177,11 @@ class C_PasangBan extends CI_Controller{
 				'JENIS_BAN' => $jenis_ban
 			];
 
+			// echo "<pre>";print_r($data);exit();
+
 			$cek = $this->M_pasangban->cekMulai($data);
-			if ($cek[0]['WAKTU'] == '') {
+			// echo "<pre>";print_r($cek );exit();
+			if ($cek[0]['WAKTU'] == NULL) {
 				$waktu1 	= strtotime($cek[0]['JAM_MULAI']);
 				$waktu2 	= strtotime($selesai);
 				$selisih 	= ($waktu2 - $waktu1);

@@ -844,8 +844,15 @@ function view_pasangban(ket, id_lokasi, warna, jenis_ban) {
 }
 
 var i = 1;
-function add_new_line(ket, ket2, warna) {
-    $('#'+ket+'_'+ket2).append('<tr class="'+ket+'_'+ket2+'"><td><select id="no_induk" name="no_induk_'+ket+'[]" class="form-control no_induk_'+ket+' select2 getPICBan" ></select></td><td><input id="nama" name="nama_'+ket+'[]" class="form-control nama_'+ket+'" readonly></td><td><button type="button" class="btn btn-'+warna+' tombolhapus'+i+'"><i class="fa fa-minus"></i></button></td><tr>');
+function add_new_line(ket, ket2, warna, ban) {
+    var tbody = $('#'+ket+'_'+ket2);
+    var last = tbody.find('tr:last');
+    var lastRow = last.find('.id_'+ket).val();
+    // console.log(lastRow);
+    var substr = lastRow.split('-');
+    var num = Number(substr[2]) + 1;
+    // console.log(substr[2], num);
+    $('#'+ket+'_'+ket2).append('<tr class="'+ket+'_'+ket2+'"><td style="display:none;"><input id="id" name="id_'+ket+'[]" class="form-control id_'+ket+'" value="'+ket+'-'+ban+'-'+num+'"></td><td><select id="no_induk" name="no_induk_'+ket+'[]" class="form-control no_induk_'+ket+' select2 getPICBan" ></select></td><td><input id="nama" name="nama_'+ket+'[]" class="form-control nama_'+ket+'" readonly></td><td><button type="button" class="btn btn-'+warna+' tombolhapus'+i+'" id="tombol_hapus_'+ket+'"><i class="fa fa-minus"></i></button></td></tr>');
 
     $(document).on('click', '.tombolhapus'+i,  function() {
 		$(this).parents('.'+ket+'_'+ket2).remove()
@@ -924,12 +931,15 @@ function pasangban_timer(no, ket, jenis_ban) {
     if (ket == 'mulai') {
         $('#button_mulai_'+no).css('display','none');
         $('#button_selesai_'+no).css('display','');
+        $('#add_new_line_'+no).attr('disabled','disabled');
+        $('#tombol_hapus_'+no).attr('disabled','disabled');
     
         $.ajax({
             url: baseurl + "KapasitasGdPusat/PasangBan/save_mulai",
             type: 'POST',
             // dataType: 'JSON',
             data: {
+                id : $('[name="id_'+no+'[]"]').map(function(){return $(this).val();}).get(),
                 noind : $('[name="no_induk_'+no+'[]"]').map(function(){return $(this).val();}).get(),
                 nama : $('[name="nama_'+no+'[]"]').map(function(){return $(this).val();}).get(),
                 ket : no,
@@ -944,7 +954,7 @@ function pasangban_timer(no, ket, jenis_ban) {
             clearInterval(timer);
         }
         Swal.fire({
-            title: 'Jumlah Aktual : ',
+            title: 'Jumlah Aktual (SET) : ',
             input: 'text',
             inputAttributes: {
                 autocapitalize: 'off'
@@ -955,15 +965,13 @@ function pasangban_timer(no, ket, jenis_ban) {
         }).then(result => {
             if(result.value % 2 != 0) {
                 Swal.fire({
-                    title: "Bilangan yang Anda Inputkan adalah Bilangan Ganjil",
-                    text: "Mohon untuk Menginputkan Jumlah Aktual dalam Bilangan Genap",
+                    title: "Mohon untuk Menginputkan Jumlah Aktual dalam SET",
                     type: "warning",
-                    showCancelButton: true,
+                    showCancelButton: false,
                     confirmButtonColor: "#3085d6",
-                    cancelButtonColor: "#d33",
                     confirmButtonText: "Yes",
                 })
-            } else {
+            }else{
                 $('#button_selesai_'+no).attr('disabled','disabled');
                 $('#button_pause_'+no).attr('disabled','disabled');
                 $('#button_restart_'+no).attr('disabled','disabled');
@@ -981,31 +989,23 @@ function pasangban_timer(no, ket, jenis_ban) {
                         jenis_ban : jenis_ban
                     },
                     success: function (response) {
-                        location.reload();
+                        if(result.value < 80){
+                            Swal.fire({
+                                title: "Anda Tidak Mencapai Target Pasang Ban",
+                                type: "warning",
+                                showCancelButton: false,
+                                confirmButtonColor: "#3085d6",
+                                confirmButtonText: "Yes",
+                            }).then(result => {
+                                location.reload();
+                            })
+                        }else{
+                            location.reload();
+                        }
                     },
                 });
             }
-            // if (result.value) {
-            //     $('#button_selesai_'+no).attr('disabled','disabled');
-            //     $('#button_pause_'+no).attr('disabled','disabled');
-            //     $('#button_restart_'+no).attr('disabled','disabled');
-
-            //     $.ajax({
-            //         type: "POST",
-            //         url: baseurl + "KapasitasGdPusat/PasangBan/save_selesai",
-            //         data: { 
-            //             noind : $('[name="no_induk_'+no+'[]"]').map(function(){return $(this).val();}).get(),
-            //             ket : no,
-            //             date : date,
-            //             wkt : wkt,
-            //             jumlah : result.value,
-            //             jenis_ban : jenis_ban
-            //         },
-            //         success: function (response) {
-            //             location.reload();
-            //         },
-            //     });
-            // }
+            
         })
         
     }
