@@ -170,6 +170,7 @@ class C_PresensiHariIni extends CI_Controller
 		$objexcel->setCellValue('L1','Versi Original');
 		$objexcel->setCellValue('M1','Versi Penyesuaian');
 		$objexcel->setCellValue('N1','Status');
+		$objexcel->setCellValue('O1','Deklarasi Sehat');
 
 		if(!empty($data)){
 			$row = 2;
@@ -188,6 +189,7 @@ class C_PresensiHariIni extends CI_Controller
 				$objexcel->setCellValue('L'.($row),$value['jenis_1']);
 				$objexcel->setCellValue('M'.($row),$value['jenis_2']);
 				$objexcel->setCellValue('N'.($row),$value['kategori']);
+				$objexcel->setCellValue('O'.($row),$value['deklarasi_sehat']);
 				$row++;
 			}
 		}

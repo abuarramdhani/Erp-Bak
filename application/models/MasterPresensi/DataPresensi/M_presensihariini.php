@@ -534,7 +534,33 @@ class M_presensihariini extends CI_Model
 	            where tp.noind = aa.noind
 	        ) > 0 then 'WFH'
 		    else 'OFF/TIDAK MASUK'
-		    end as kategori
+		    end as kategori,
+		    coalesce(
+		    	(
+		    		select case when (
+							aspek_1_a = true 
+							and aspek_1_b = true 
+							and aspek_2_a = true
+							and aspek_2_b = true
+							and aspek_2_c = true
+							and aspek_2_d = true
+							and aspek_2_e = true
+							and aspek_2_f = true
+							and aspek_2_g = true
+							and aspek_2_h = true
+							and aspek_2_i = true
+							and aspek_3_a = true
+						) then 'OK' 
+						else 'NOT OK'
+						end as deklarasi_sehat
+					from hrd_khs.deklarasi_sehat ds
+					where ds.noind = tp.noind
+					and ds.waktu_input::date = current_date
+					order by ds.waktu_input desc 
+					limit 1
+		    	),
+		    	'Belum Input'
+		    ) as deklarasi_sehat
 		from hrd_khs.tpribadi tp
 		inner join hrd_khs.tseksi ts
 		on tp.kodesie = ts.kodesie
