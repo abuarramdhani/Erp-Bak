@@ -16,14 +16,21 @@
             <td style="display:none;"><input id="id" name="id_<?= $ket?>[]" class="form-control id_<?= $ket?>" value="<?= $i['ID']?>"></td>
             <td><input id="no_induk" name="no_induk_<?= $ket?>[]" class="form-control no_induk_<?= $ket?>" style="width:150px" value="<?= $i['NO_INDUK']?>"></td>
             <td><input id="nama" name="nama_<?= $ket?>[]" class="form-control nama_<?= $ket?>" style="width:200px" readonly value="<?= $i['NAMA']?>"></td>
-            <td><button type="button" onclick="add_new_line('<?= $ket?>', '<?= $ket2?>', '<?= $warna?>')" class="btn btn-<?= $warna?>"> <i class="fa fa-plus"></i></button></td>
+            <td>
+                <button type="button" onclick="add_new_line('<?= $ket?>', '<?= $ket2?>', '<?= $warna?>')" class="btn btn-<?= $warna?>" id="add_new_line_<?= $ket?>"> 
+                <i class="fa fa-plus"></i></button>
+            </td>
         </tr>
         <?php }?>
     <?php }else{?>
         <tr>
+            <td style="display:none;"><input id="id" name="id_<?= $ket?>[]" class="form-control id_<?= $ket?>" value="<?= $id?>"></td>
             <td><select id="no_induk" name="no_induk_<?= $ket?>[]" class="form-control no_induk_<?= $ket?> select2 getPICBan" style="width:150px" ></select></td>
             <td><input id="nama" name="nama_<?= $ket?>[]" class="form-control nama_<?= $ket?>" style="width:200px" readonly></td>
-            <td><button type="button" onclick="add_new_line('<?= $ket?>', '<?= $ket2?>', '<?= $warna?>')" class="btn btn-<?= $warna?>"> <i class="fa fa-plus"></i></button></td>
+            <td>
+                <button type="button" onclick="add_new_line('<?= $ket?>', '<?= $ket2?>', '<?= $warna?>', '<?= $ban?>')" class="btn btn-<?= $warna?>" id="add_new_line_<?= $ket?>"> 
+                <i class="fa fa-plus"></i></button>
+            </td>
         </tr>
     <?php }?>
     <tbody>

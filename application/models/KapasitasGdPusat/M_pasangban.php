@@ -20,6 +20,27 @@ class M_pasangban extends CI_Model
         return $query->result_array();
     }
 
+    public function getID(){
+        $sql = "SELECT TRIM (SUBSTR (ID, 1, INSTR (ID, '-') - 1)) ket,
+        TRIM (SUBSTR (ID,
+                      INSTR (ID, '-', 1, 1) + 1,
+                      INSTR (ID, '-', 1, 2) - INSTR (ID, '-', 1, 1) - 1
+                     )
+             ) ban,
+        TRIM (SUBSTR (ID,
+                      INSTR (ID, '-', 1, 2) + 1,
+                      LENGTH (ID) - INSTR (ID, '-', 1, 2)
+                     )
+             ) num
+        FROM khs_inv_pasang_ban
+        ORDER BY 3 DESC";
+        $query = $this->oracle->query($sql);
+        return $query->result_array();
+        // $response = $this->oracle->query("SELECT TRIM (TO_CHAR (SYSDATE, 'RRMMDD') || LPAD (khs_inv_pasang_ban_s.NEXTVAL, 3, '0')) id
+        // FROM DUAL")->row_array();
+        // return $response['ID'];
+    }
+
     public function getPasang($ket, $jenis_ban){
         $sql = "SELECT kipb.id, kipb.no_induk, kipb.nama, kipb.ket,
         TO_CHAR (kipb.mulai, 'YYYY-MM-DD HH24:MI:SS') mulai,
@@ -44,10 +65,10 @@ class M_pasangban extends CI_Model
 
     public function SaveMulai($data){
         $sql = "INSERT INTO khs_inv_pasang_ban
-                 (no_induk, nama, ket, 
+                 (id, no_induk, nama, ket, 
                  mulai, jenis_ban
                  )
-         VALUES ('$data[NO_INDUK]', '$data[NAMA]', '$data[KET]', 
+         VALUES ('$data[ID]', '$data[NO_INDUK]', '$data[NAMA]', '$data[KET]', 
                 TO_TIMESTAMP ('$data[DATE]', 'DD-MM-YYYY HH24:MI:SS'), '$data[JENIS_BAN]'
                  )";
         $query = $this->oracle->query($sql);
@@ -64,6 +85,7 @@ class M_pasangban extends CI_Model
     //    WHERE no_induk = '$data[NO_INDUK]' AND ket = '$data[KET]'";
         $query = $this->oracle->query($sql);
         return $query->result_array();
+        echo $sql;
     }
 
     public function SaveSelesai($data, $slsh){
