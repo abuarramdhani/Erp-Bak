@@ -418,6 +418,35 @@ $('.pbb_io_tujuan').on('change', function() {
        console.error();
       }
     })
+    $.ajax({
+      url: baseurl + 'BarangBekas/pbbs/item_barkas',
+      type: 'POST',
+      dataType: 'JSON',
+      data: {
+        // subinv: val,
+        // locator: $('.slc_pbb_locator_tujuan').val() === undefined ? '' : $('.slc_pbb_locator_tujuan').select2('data')[0]['id'],
+        org_id: val,
+      },
+      cache:false,
+      beforeSend: function() {
+       toastPBBLoading('Sedang mengambil item barkas..')
+      },
+      success: function(result) {
+          console.log(result, 'heiii');
+        if (result != 0) {
+          $('.slc_default_pbb').html(`<option selected value="">Select..</option>${result}`);
+          toastPBB('success', 'Selesai');
+        }else {
+          $('.slc_default_pbb').html('<option selected value="">Empty Item..</option>')
+          toastPBB('warning', `Item barkas tidak ditemukan`);
+        }
+        $('.slc_default_pbb').select2();
+      },
+      error: function(XMLHttpRequest, textStatus, errorThrown) {
+      swalPBB('error', 'Koneksi Terputus...')
+       console.error();
+      }
+    })
   }
 })
 
@@ -557,7 +586,10 @@ $('.form_submit_pbbs').on('submit', function (e) {
     dataType: 'JSON',
     data: {
       item_barkas : item_barkas_cek,
-      estimasi_berat : estimasi_berat
+      estimasi_berat : estimasi_berat,
+      subinv: $('.pbb_subinv_tujuan').val().split(' - ')[0],
+      locator: $('.slc_pbb_locator_tujuan').val(),
+      io: $('.pbb_io_tujuan').val()
     },
     cache: false,
     beforeSend: function() {
@@ -754,36 +786,6 @@ $('.pbb_subinv_tujuan').on('change', function() {
               $(v).find('.slc_default_pbb').val('').trigger('change');
               $(v).find('.estimasi_berat').val('');
             })
-            $.ajax({
-              url: baseurl + 'BarangBekas/pbbs/item_barkas',
-              type: 'POST',
-              dataType: 'JSON',
-              data: {
-                subinv: val_9[0],
-                locator: $('.slc_pbb_locator_tujuan').select2('data')[0]['id'],
-                org_id: val_9[1],
-              },
-              cache:false,
-              beforeSend: function() {
-               toastPBBLoading('Sedang mengambil item barkas..')
-              },
-              success: function(result) {
-
-                  console.log(result, 'heiii');
-                if (result != 0) {
-                  $('.slc_default_pbb').html(`<option selected value="">Select..</option>${result}`);
-                  toastPBB('success', 'Selesai');
-                }else {
-                  $('.slc_default_pbb').html('<option selected value="">Empty Item..</option>')
-                  toastPBB('warning', `Item barkas tidak ditemukan`);
-                }
-                $('.slc_default_pbb').select2();
-              },
-              error: function(XMLHttpRequest, textStatus, errorThrown) {
-              swalPBB('error', 'Koneksi Terputus...')
-               console.error();
-              }
-            })
           })
         }else {
           $('.pbb_locator_tujuan').html('-')
@@ -797,35 +799,7 @@ $('.pbb_subinv_tujuan').on('change', function() {
        console.error();
       }
     }).done(()=>{
-      $.ajax({
-        url: baseurl + 'BarangBekas/pbbs/item_barkas',
-        type: 'POST',
-        dataType: 'JSON',
-        data: {
-          subinv: val,
-          locator: $('.slc_pbb_locator_tujuan').val() === undefined ? '' : $('.slc_pbb_locator_tujuan').select2('data')[0]['id'],
-          org_id: val_[1],
-        },
-        cache:false,
-        beforeSend: function() {
-         toastPBBLoading('Sedang mengambil item barkas..')
-        },
-        success: function(result) {
-            console.log(result, 'heiii');
-          if (result != 0) {
-            $('.slc_default_pbb').html(`<option selected value="">Select..</option>${result}`);
-            toastPBB('success', 'Selesai');
-          }else {
-            $('.slc_default_pbb').html('<option selected value="">Empty Item..</option>')
-            toastPBB('warning', `Item barkas tidak ditemukan`);
-          }
-          $('.slc_default_pbb').select2();
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown) {
-        swalPBB('error', 'Koneksi Terputus...')
-         console.error();
-        }
-      })
+
     })
   }
 })

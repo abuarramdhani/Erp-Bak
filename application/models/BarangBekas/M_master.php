@@ -190,21 +190,15 @@ AND moqd.ORGANIZATION_ID = msib.ORGANIZATION_ID")->result_array();
 
     public function item_barkas($subinv, $locator, $org_id)
     {
-      if (!empty($locator)) {
-        $andloc = "and moqd.LOCATOR_ID ='$locator'";
-      }else {
-        $andloc = "";
-      }
+
       $sql = "SELECT DISTINCT msib.inventory_item_id, msib.segment1,
                 msib.description, msib.MAX_MINMAX_QUANTITY max_quantity
-                -- ,khs_inv_qty_oh(msib.ORGANIZATION_ID,msib.INVENTORY_ITEM_ID, moqd.SUBINVENTORY_CODE, moqd.LOCATOR_ID,'') onhand
-              from mtl_system_items_b msib, mtl_onhand_quantities_detail moqd
+                ,nvl(khs_inv_qty_oh(msib.ORGANIZATION_ID,msib.INVENTORY_ITEM_ID,'$subinv', '$locator',''), 0) onhand
+              from mtl_system_items_b msib
               where msib.ORGANIZATION_ID = $org_id
               and (msib.segment1 LIKE 'DA%' OR msib.segment1 = 'LBAFV0006')
-              and moqd.INVENTORY_ITEM_ID = msib.INVENTORY_ITEM_ID
-						  and moqd.ORGANIZATION_ID = msib.ORGANIZATION_ID
-						  and moqd.SUBINVENTORY_CODE = nvl ('$subinv',moqd.SUBINVENTORY_CODE)
-              $andloc
+              -- and moqd.INVENTORY_ITEM_ID = msib.INVENTORY_ITEM_ID
+						  -- and moqd.ORGANIZATION_ID = msib.ORGANIZATION_ID
               ORDER BY 2";
       $query = $this->oracle->query($sql);
       return $query->result_array();
@@ -608,7 +602,7 @@ AND moqd.ORGANIZATION_ID = msib.ORGANIZATION_ID")->result_array();
 
     }
 
-    public function cek_max_onhand($item, $berat)
+    public function cek_max_onhand($item, $berat, $subinv, $locator, $org_id)
     {
       $item_sama = array_unique($item);
       foreach ($item_sama as $key2 => $value2) {
@@ -626,19 +620,17 @@ AND moqd.ORGANIZATION_ID = msib.ORGANIZATION_ID")->result_array();
         $item_code = explode(' ~ ', $value)[1];
         $cek = $this->oracle->query("SELECT DISTINCT msib.inventory_item_id, msib.segment1,
                                           msib.description, msib.MAX_MINMAX_QUANTITY,
-                                          moqd.SUBINVENTORY_CODE, moqd.LOCATOR_ID,
-                                          khs_inv_qty_oh(msib.ORGANIZATION_ID, msib.INVENTORY_ITEM_ID, moqd.SUBINVENTORY_CODE, moqd.LOCATOR_ID,'') onhand
-                                     FROM mtl_system_items_b msib, mtl_onhand_quantities_detail moqd
+                                          nvl(khs_inv_qty_oh(msib.ORGANIZATION_ID, msib.INVENTORY_ITEM_ID, '$subinv', '$locator',''), 0) onhand
+                                     FROM mtl_system_items_b msib
                                     WHERE msib.INVENTORY_ITEM_ID = '$item_id'
-                                      AND (msib.organization_id = 102 OR msib.organization_id = 101)
+                                      AND msib.organization_id = '$org_id'
                                       AND msib.inventory_item_status_code = 'Active'
                                       AND msib.stock_enabled_flag = 'Y'
-                                      AND msib.mtl_transactions_enabled_flag = 'Y'
-                                      and moqd.INVENTORY_ITEM_ID = msib.INVENTORY_ITEM_ID
-                                      and moqd.ORGANIZATION_ID = msib.ORGANIZATION_ID")->row_array();
-        if (empty($cek['ONHAND'])) {
-          return ['status' => 2, 'message' => "Tidak ada onhand di $item_code"];
-        }elseif (!empty($cek['ONHAND']) && !empty($cek['MAX_MINMAX_QUANTITY'])) {
+                                      AND msib.mtl_transactions_enabled_flag = 'Y'")->row_array();
+
+        if (empty($cek['INVENTORY_ITEM_ID'])) {
+          return ['status' => 2, 'message' => "Item $item_code tidak ada di io $org_id"];
+        }elseif ((!empty($cek['ONHAND']) && !empty($cek['MAX_MINMAX_QUANTITY'])) || (empty($cek['ONHAND']) && !empty($cek['MAX_MINMAX_QUANTITY']))) {
           if ($berat_final[$key] > ($cek['MAX_MINMAX_QUANTITY'] - $cek['ONHAND'])) {
             $h = $cek['MAX_MINMAX_QUANTITY'] - $cek['ONHAND'];
             return ['status' => 2, 'message' => "Jumlah Estimasi Berat Item $item_code ($berat_final[$key]) > MAX - Onhand ($h) !"];
