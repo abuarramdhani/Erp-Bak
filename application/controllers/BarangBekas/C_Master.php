@@ -323,7 +323,11 @@ class C_Master extends CI_Controller
 
     public function cek_max_onhand($value='')
     {
-      echo json_encode($this->M_master->cek_max_onhand($this->input->post('item_barkas'), $this->input->post('estimasi_berat')));
+      echo json_encode($this->M_master->cek_max_onhand($this->input->post('item_barkas'),
+                                                       $this->input->post('estimasi_berat'),
+                                                       $this->input->post('subinv'),
+                                                       $this->input->post('locator'),
+                                                       $this->input->post('io')));
     }
 
     // getAllData

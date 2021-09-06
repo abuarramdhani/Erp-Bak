@@ -99,7 +99,7 @@
                       </div> -->
                       <div class="col-md-12">
                         <div class="table-responsive">
-                          <table class="table table-bordered pbb_default_datatable">
+                          <table class="table table-bordered pbb_default_datatable" style="width:100%">
                             <thead class="bg-primary">
                               <tr>
                                 <td>No.</td>
