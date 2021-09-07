@@ -97,14 +97,22 @@
 
 	<table style="width: 100%; margin-top: 10px ;border:1px solid black; text-align: center;vertical-align: text-top; font-size: 11px;border-collapse: collapse;" >
 		<tr>
-			<td style="padding: 5px;width: 20%; border-right: 1px solid black;" >Gudang</td>
-			<td style="padding: 5px;width: 20%; border-right: 1px solid black;" >Menyerahkan</td>
-			<td style="padding: 5px;width: 20%; border-right: 1px solid black;" >Disetujui :<br/> PPIC </td>
-			<td style="padding: 5px;width: 20%; border-right: 1px solid black;" >Diserahkan : <br/> Kepala Unit</td>
-			<td style="padding: 5px;width: 20%; height: 70px; " >Diserahkan : <br/> Kepala Seksi</td>
+			<td style="padding: 5px;border-right: 1px solid black;" >Gudang</td>
+			<td style="padding: 5px;border-right: 1px solid black;" >Menyerahkan</td>
+
+			<?php if ($get[0]['TYPE_DOCUMENT'] == 'PBB-S'): ?>
+				<td style="padding: 5px;border-right: 1px solid black;" >Disetujui :<br/> Kepala Departemen </td>
+				<td style="padding: 5px;border-right: 1px solid black;" >Disetujui :<br/> PPIC </td>
+			<?php endif; ?>
+
+			<td style="padding: 5px;border-right: 1px solid black;" >Diserahkan : <br/> Kepala Unit</td>
+			<td style="padding: 5px;height: 70px; " >Diserahkan : <br/> Kepala Seksi</td>
 		</tr>
 		<tr>
-			<td style="padding: 5px;border-right: 1px solid black;">(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
+			<?php if ($get[0]['TYPE_DOCUMENT'] == 'PBB-S'): ?>
+				<td style="padding: 5px;border-right: 1px solid black;">(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
+				<td style="padding: 5px;border-right: 1px solid black;">(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
+			<?php endif; ?>
 			<td style="padding: 5px;border-right: 1px solid black;">(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
 			<td style="padding: 5px;border-right: 1px solid black;">(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
 			<td style="padding: 5px;border-right: 1px solid black;">(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
