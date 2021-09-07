@@ -2816,6 +2816,10 @@ $route['InventoryManagement/CreateMoveOrder'] = 'Inventory/MainMenu/MoveOrder/C_
 $route['InventoryManagement/CreateMoveOrder/search/(:any)'] = 'Inventory/MainMenu/MoveOrder/C_MoveOrder/search/$1';
 $route['InventoryManagement/CreateMoveOrder/(:any)'] = 'Inventory/MainMenu/MoveOrder/C_MoveOrder/$1';
 
+$route['InventoryManagement/CreateMoveOrderOPM'] = 'Inventory/MainMenu/MoveOrder/C_MoveOrderOPM';
+$route['InventoryManagement/CreateMoveOrderOPM/(:any)'] = 'Inventory/MainMenu/MoveOrder/C_MoveOrderOPM/$1';
+$route['InventoryManagement/CreateMoveOrderOPM/(:any)/(:any)'] = 'Inventory/MainMenu/MoveOrder/C_MoveOrderOPM/$1/$2';
+
 $route['InventoryManagement/ExportMoveOrder'] = 'Inventory/MainMenu/MoveOrder/C_Export';
 $route['InventoryManagement/ExportMoveOrder/search'] = 'Inventory/MainMenu/MoveOrder/C_Export/search';
 $route['InventoryManagement/ExportMoveOrder/export'] = 'Inventory/MainMenu/MoveOrder/C_Export/export';
@@ -2846,6 +2850,10 @@ $route['InventoryManagement/CreateKIBDEV/pdf3/(:any)'] = 'InventoryKIB/MainMenu/
 $route['InventoryManagement/Monitoring'] = 'Inventory/MainMenu/MoveOrder/C_Monitoringassy';
 $route['InventoryManagement/Monitoring/(:any)'] = 'Inventory/MainMenu/MoveOrder/C_Monitoringassy/$1';
 
+//Create Job Move Order
+$route['InventoryManagement/CreateJobMO'] = 'MoveOrder/C_CreateMO';
+$route['InventoryManagement/CreateJobMO/(:any)'] = 'MoveOrder/C_CreateMO/$1';
+$route['InventoryManagement/CreateJobMO/(:any)/(:any)'] = 'MoveOrder/C_CreateMO/$1/$2';
 
 //------------------------------------ Manufacturing Operation ----------------------------------------
 $route['ManufacturingOperationUP2L']								= 'ManufacturingOperationUP2L/C_Index/index';
@@ -5009,6 +5017,10 @@ $route['MonitoringJobProduksi/LaporanProduksi/(:any)/(:any)']	= 'MonitoringJobPr
 $route['MonitoringJobProduksi/Import']					= 'MonitoringJobProduksi/C_Import';
 $route['MonitoringJobProduksi/Import/(:any)']			= 'MonitoringJobProduksi/C_Import/$1';
 $route['MonitoringJobProduksi/Import/(:any)/(:any)']	= 'MonitoringJobProduksi/C_Import/$1/$2';
+
+$route['MonitoringJobProduksi/MonitoringJob']					= 'MonitoringJobProduksi/C_Job';
+$route['MonitoringJobProduksi/MonitoringJob/(:any)']			= 'MonitoringJobProduksi/C_Job/$1';
+$route['MonitoringJobProduksi/MonitoringJob/(:any)/(:any)']	= 'MonitoringJobProduksi/C_Job/$1/$2';
 // -------------------------------------- Consumable ------------------------------------------ //
 // PPIC
 $route['ConsumablePPIC'] = 'Consumable/C_Index';
