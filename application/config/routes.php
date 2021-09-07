@@ -5935,3 +5935,10 @@ $route['Api/SetupPertanyaan/(:any)'] = 'Api/Psikotes/C_SetupPertanyaan/$1';
 
 $route['Api/SetupPenjadwalan/'] = 'Api/Psikotes/C_SetupPenjadwalan';
 $route['Api/SetupPenjadwalan/(:any)'] = 'Api/Psikotes/C_SetupPenjadwalan/$1';
+
+// --------------------------------- Report Pembuatan LPPB ---------------------------------------------
+$route['ReportPembuatanLPPB']	= 'ReportPembuatanLPPB/C_Index';
+
+$route['ReportPembuatanLPPB/Report']				= 'ReportPembuatanLPPB/C_Report';
+$route['ReportPembuatanLPPB/Report/(:any)']			= 'ReportPembuatanLPPB/C_Report/$1';
+$route['ReportPembuatanLPPB/Report/(:any)/(:any)']	= 'ReportPembuatanLPPB/C_Report/$1/$2';
