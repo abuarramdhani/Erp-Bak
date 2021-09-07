@@ -57,7 +57,7 @@
                   </div>
                   <div class="col-md-2"></div>
                   <div class="col-md-6">
-                    <h4 class="text-primary"><b>Item Asal</h4></b><hr>
+                    <h4 class="text-primary"><b>Subinv Asal</h4></b><hr>
                     <div class="form-group">
                       <label for="">IO</label>
                       <select class="slc_pbb pbb_io" name="io" style="width:100%">
@@ -84,7 +84,7 @@
                     </div>
                   </div>
                   <div class="col-md-6">
-                    <h4 class="text-primary"><b>Item Barkas</b></h4> <hr>
+                    <h4 class="text-primary"><b>Subinv Barkas</b></h4> <hr>
                     <div class="form-group">
                       <label for="">IO</label>
                       <select class="slc_pbb pbb_io_tujuan" required style="width:100%">
