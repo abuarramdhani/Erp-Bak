@@ -90,9 +90,9 @@ function truncate($string, $length)
               target="_blank" class="btn btn-primary"><span class="fa fa-download"></span>Download Perubahan</a>
             <a href="http://personalia.quick.com/cronjob/pemutihan_data_pekerja/scripts/transaction/migrate.php" 
               target="_blank" class="btn btn-primary"><span class="fa fa-cog"></span>Proses Hasil Approve Hubker</a>
-            <a href="http://personalia.quick.com/cronjob/pemutihan_data_pekerja/scripts/online/trequest_tpribadi.php" 
+            <a href="http://personalia.quick.com/cronjob/pemutihan_data_pekerja/scripts/online/trequest_tpribadi_new.php" 
               target="_blank" class="btn btn-primary"><span class="fa fa-upload"></span>Upload Status</a>
-            <a href="http://personalia.quick.com/cronjob/pemutihan_data_pekerja/scripts/online/tarik_base_database.php" 
+            <a href="http://personalia.quick.com/cronjob/pemutihan_data_pekerja/scripts/online/tarik_base_database_new.php" 
               target="_blank" class="btn btn-primary"><span class="fa fa-upload"></span>Upload Data</a>
           </div>
         </div>
