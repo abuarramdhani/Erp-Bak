@@ -109,6 +109,8 @@
                                         <option value="MLATI">MLATI</option>
                                         <option value="PUSAT">PUSAT</option>
                                         <option value="JAKARTA">JAKARTA</option>
+                                        <option value="SUBANG">SUBANG</option>
+
 
                                     </select>
                                 </div>

@@ -51,4 +51,16 @@ class M_erpmobile extends CI_Model
         $this->db->update('sys.sys_user', ['user_password'=>$pass]);
         return $this->db->affected_rows();
     }
+
+    function getinfoPKJ($noind)
+    {
+        $this->personalia->where('noind', $noind);
+        return $this->personalia->get('hrd_khs.tpribadi')->row_array();
+    }
+
+    function save_smslog($data)
+    {
+        $this->db->insert('si.si_sent_sms', $data);
+        return $this->db->affected_rows();
+    }
 }

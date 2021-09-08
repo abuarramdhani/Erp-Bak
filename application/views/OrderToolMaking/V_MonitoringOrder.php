@@ -5,9 +5,9 @@ $judul = $siapa == 'Kasie Pengorder' ? 'Monitoring Order' :
         ($siapa == 'Ass Ka Nit PE' ? 'Approval Ass. Ka. Unit PE' :
         ($siapa == 'Designer Produk' ? 'Approval Designer Produk' :
         ($siapa == 'Unit QA/QC' ? 'Approval Unit QC/QA' :
-        ($siapa == 'KaDep Produksi' ? 'Approval Kepala Department Produksi' :
+        ($siapa == 'KaDep Produksi' ? 'Approval Kepala Department' :
         ($siapa == 'Ass Ka Nit TM' ? 'Approval Ass. Ka. Unit Tool Making' :
-        ($siapa == 'Kasie PPC TM' ? 'Approval Kepala Seksi PPC Tool Making' : ''))))))));
+        ($siapa == 'Kasie PPC TM' ? 'Approval Kepala Seksi PPC Tool Making' : 'Monitoring Admin PPC'))))))));
 
 $order = $siapa == 'Kasie Pengorder' ? '' : 'display:none'; // style button order baru
 $batas = $siapa == 'KaDep Produksi' ? 'display:none' : ''; // kadep cuma nampilin data tabel baru
@@ -32,7 +32,7 @@ $batas = $siapa == 'KaDep Produksi' ? 'display:none' : ''; // kadep cuma nampili
                             </div>
                             <div class="box-body" >
                                 <div class="col-md-3">
-                                    <input id="search_otm" class="form-control" placeholder="cari dokumen...">
+                                    <input id="search_otm" class="form-control" placeholder="cari dokumen..." autocomplete="off">
                                 </div>
                             </div>
                             
@@ -58,7 +58,7 @@ $batas = $siapa == 'KaDep Produksi' ? 'display:none' : ''; // kadep cuma nampili
 
 <form method="post" enctype="multipart/form-data">
 <div class="modal fade" id="mdlOrderMonitoring" role="dialog">
-    <div class="modal-dialog" style="width:80%">
+    <div class="modal-dialog" style="width:90%">
       <!-- Modal content-->
       <div class="modal-content">
         <div class="modal-body">

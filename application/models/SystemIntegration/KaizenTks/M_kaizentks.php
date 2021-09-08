@@ -142,7 +142,7 @@ class M_kaizentks extends CI_Model
 
     if (!empty($_FILES['file'])) {
       unlink(FCPATH . "assets/upload/uploadKaizenTks/" . $old_file);
-      $kaizenFile = $this->uploadImage($user, $id);
+      $kaizenFile = $this->uploadImage($user);
     } else {
       $kaizenFile = $post['old_file'];
     }
@@ -193,9 +193,7 @@ class M_kaizentks extends CI_Model
     $config['overwrite'] = true;
     $config['max_size'] = 4096; // 4 Mb
 
-    $this->load->library('upload', $config);
-
-    if ($config['allowed_types'] && $this->upload->do_upload('file')) {
+    if ($this->upload->do_upload('file')) {
       return $this->upload->data("file_name");
     } else {
       return "gagal";

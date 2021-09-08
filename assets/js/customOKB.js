@@ -738,7 +738,7 @@ $(document).ready(function () {
       'assets/img/gif/loading5.gif"/>' +
       "</div>" +
       '<div class="viewLocationOKB">' +
-      '<select class="select2 locationOKB slcLocation" id="slcLocation" style="width: 250px; text-align:center" name="locationOKB[]" required title="Location>' +
+      '<select class="select2 locationOKB slcLocation" id="slcLocation" style="width: 250px; text-align:center" name="locationOKB[]" required title="Location">' +
       "<option></option>" +
       "</select>" +
       "</div>" +
@@ -786,7 +786,7 @@ $(document).ready(function () {
       "<tr>" +
       "<th>Note to Pengelola</th>" +
       "<th>:</th>" +
-      '<td><textarea style="height: 34px; width:360px; " class="form-control txaOKBNewOrderListNote" name="txtOKBinputNote[]"></textarea></td>' +
+      '<td><textarea style="height: 34px; width:360px; " maxlength="470" class="form-control txaOKBNewOrderListNote" name="txtOKBinputNote[]"></textarea></td>' +
       "</tr>" +
       "<tr>" +
       "<th>Attachment</th>" +
@@ -988,6 +988,8 @@ $(document).ready(function () {
       },
     ],
     order: [[1, "asc"]],
+    paging: false,
+    info: false,
   });
 
   $(".checkAllApproveOKB").on("ifChecked ifUnchecked", function (event) {
@@ -2437,6 +2439,7 @@ $(document).ready(function () {
           prn.find(".subinventoryOKB").attr("disabled", "diabled");
         } else if (response[0]["SUBINV"] == "Y") {
           prn.find(".subinventoryOKB").removeAttr("disabled");
+          prn.find(".subinventoryOKB").attr("required", "required");
         }
         // alert(response[0]['DESTINATION_TYPE_CODE']);
       },
@@ -2962,3 +2965,147 @@ function changeDescNewOrder(n) {
     }
   });
 }
+$(".CreateOrdOkbj").on("submit", function (e) {
+  e.preventDefault();
+  $(".btnBuatOrderOkebaja").attr("disabled", "disabled");
+  $.ajax({
+    url: baseurl + "OrderKebutuhanBarangDanJasa/Requisition/createOrder",
+    type: "POST",
+    data: new FormData(this),
+    contentType: false,
+    cache: false,
+    processData: false,
+    dataType: "html",
+    beforeSend: function () {
+      $("#LoadingOkbj").html(
+        '<img style="width:30px; height:auto" src="' +
+          baseurl +
+          'assets/img/gif/loading11.gif">'
+      );
+    },
+    success: function (response) {
+      window.location.reload();
+    },
+  });
+});
+function ChangeLevelApproval() {
+  var val = $("#okbj_lvl_approval").val();
+  $("#okbj_name_approver").select2({
+    ajax: {
+      url:
+        baseurl + "OrderKebutuhanBarangDanJasa/ExportApproval/searchApproval",
+      dataType: "json",
+      data: function (params) {
+        return {
+          q: val,
+        };
+      },
+      processResults: function (data) {
+        return {
+          results: $.map(data, function (item) {
+            return {
+              id: item.NO_INDUK,
+              text: item.NO_INDUK + " - " + item.NAMA,
+            };
+          }),
+        };
+      },
+    },
+    minimumInputLength: 0,
+  });
+}
+$(".ImportApprovalOkbj").on("submit", function (e) {
+  e.preventDefault();
+  $.ajax({
+    url:
+      baseurl + "OrderKebutuhanBarangDanJasa/ImportApproval/ImportFileApproval",
+    type: "POST",
+    data: new FormData(this),
+    contentType: false,
+    cache: false,
+    processData: false,
+    dataType: "html",
+    beforeSend: function () {
+      $("#TablHasilImportOkbj").html(
+        '<center><img style="width:100px; height:auto" src="' +
+          baseurl +
+          'assets/img/gif/loading11.gif"></center>'
+      );
+    },
+    success: function (response) {
+      $("#TablHasilImportOkbj").html(response);
+    },
+  });
+});
+function UpdateApprExcelOKBJ() {
+  var order_id = [];
+  $('[name="ord_id_okbj"]')
+    .map(function () {
+      order_id.push($(this).val());
+    })
+    .get();
+
+  var judgement = [];
+  $('[name="judgement_okbj"]')
+    .map(function () {
+      judgement.push($(this).val());
+    })
+    .get();
+  var alasan_reject_okbj = [];
+  $('[name="alasan_reject_okbj"]')
+    .map(function () {
+      alasan_reject_okbj.push($(this).val());
+    })
+    .get();
+
+  $.ajax({
+    url: baseurl + "OrderKebutuhanBarangDanJasa/ImportApproval/UpdateApproval",
+    type: "POST",
+    dataType: "html",
+    data: {
+      creator: $("#IndukCreatorOkbj").val(),
+      requester: $("#IndukRequesterOkbj").val(),
+      approver: $("#IndukApproverOkbj").val(),
+      level: $("#LvlApproverOkbj").val(),
+      order_id: order_id,
+      judgement: judgement,
+      alasan_reject_okbj: alasan_reject_okbj,
+    },
+    beforeSend: function () {
+      $("#LoadingOkbj").html(
+        '<img style="width:30px; height:auto" src="' +
+          baseurl +
+          'assets/img/gif/loading11.gif">'
+      );
+    },
+    success: function (response) {
+      Swal.fire({
+        position: "top",
+        type: "success",
+        title: "Berhasil",
+        showConfirmButton: true,
+      }).then(() => {
+        window.location.reload();
+      });
+    },
+  });
+}
+$(document).ready(function () {
+  var view = document.getElementsByClassName("table_outstanding_ord_okbj");
+  if (view) {
+    $(".table_outstanding_ord_okbj").dataTable({
+      paging: false,
+      scrollX: true,
+      scrollY: 500,
+      scrollCollapse: true,
+      searching: true,
+      dom: "Bfrtip",
+      buttons: [
+        {
+          extend: "excelHtml5",
+          title: "Outstanding Order Okebaja",
+        },
+      ],
+    });
+  }
+});

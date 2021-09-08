@@ -1,32 +1,32 @@
 <style>
-.ml-15px {
-    margin-left: 15px;
-}
+    .ml-15px {
+        margin-left: 15px;
+    }
 
-.bold {
-    font-weight: bold;
-}
+    .bold {
+        font-weight: bold;
+    }
 
-.approved {
-    color: #00a65a;
-    padding: 2px 4px;
-    background-color: #ebfff6;
-    border-radius: 4px;
-}
+    .approved {
+        color: #00a65a;
+        padding: 2px 4px;
+        background-color: #ebfff6;
+        border-radius: 4px;
+    }
 
-.rejected {
-    color: #c7254e;
-    padding: 2px 4px;
-    background-color: #f9f2f4;
-    border-radius: 4px;
-}
+    .rejected {
+        color: #c7254e;
+        padding: 2px 4px;
+        background-color: #f9f2f4;
+        border-radius: 4px;
+    }
 
-.waiting {
-    color: #f39c12;
-    padding: 2px 4px;
-    background-color: #fffbf5;
-    border-radius: 4px;
-}
+    .waiting {
+        color: #f39c12;
+        padding: 2px 4px;
+        background-color: #fffbf5;
+        border-radius: 4px;
+    }
 </style>
 
 <!-- Content Header (Page header) -->
@@ -41,7 +41,7 @@
             <div class="box box-primary">
 
                 <div class="box-header with-border">
-                    <h3 class="box-title">Daftar Opened Order <?= $statOrder;?></h3>
+                    <h3 class="box-title">Daftar Opened Order <?= $statOrder; ?></h3>
                 </div>
 
                 <div class="box-body">
@@ -61,7 +61,7 @@
                             <div class="input-group">
                                 <span class="input-group-addon"><i style="width:15px;" class="fa fa-list-ol"></i></span>
                                 <input class="form-control" id="txtOKBOrderRequestorId" name="" value="<?php echo $this->session->user; ?>" readonly>
-                                <input type="hidden" class="form-control txtOKBPerson_id" id="txtOKBOrderRequestorId" name="txtOKBOrderRequestorId" value="<?php echo $approver[0]['PERSON_ID'];?>" readonly>
+                                <input type="hidden" class="form-control txtOKBPerson_id" id="txtOKBOrderRequestorId" name="txtOKBOrderRequestorId" value="<?php echo $approver[0]['PERSON_ID']; ?>" readonly>
                             </div>
                         </div>
                     </div> <br><br>
@@ -69,7 +69,7 @@
                     <div class="box-body table-responsive no-padding">
                         <div class="panel <?= $panelStatOrder; ?>">
                             <div class="panel-heading">
-                                <p class="bold">List Order <?= $statOrder;?></p>
+                                <p class="bold">List Order <?= $statOrder; ?></p>
                             </div>
                             <div class="panel-body">
                                 <table class="table table-bordered table-hover table-striped tblOKBOrderList">
@@ -93,112 +93,113 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <?php $no = 0; foreach ($listOrder as $key => $order) { $no++;?>
-                                        <tr>
-                                            <td style="text-align:center;"><input type="checkbox" class="minimal checkApproveOKB" value="<?php echo $order['ORDER_ID']; ?>"></td>
-                                            <!-- <td><?php echo $no; ?></td> -->
-                                            <?php if ($order['URGENT_FLAG'] == 'Y') {
-                                                        $flag = 'label-danger';
-                                                        $tag = 'urgent';
-                                                    }else {
-                                                        $flag = 'label-success';
-                                                        $tag = 'normal';
-
-                                                    }?>
-                                            <td><span class="tdOKBListOrderId"><?php echo $order['ORDER_ID']; ?></span><br><?php echo date("d-M-Y",strtotime($order['ORDER_DATE'])); ?></td>
-                                            <!-- <td><?php echo date("d-M-Y",strtotime($order['ORDER_DATE'])); ?></td> -->
-                                            <td><?php echo $order['NATIONAL_IDENTIFIER'].'-'.$order['FULL_NAME'].'<br>'.$order['ATTRIBUTE3'];?></td>
-                                            <!-- <td><?php echo $order['ATTRIBUTE3'];?></td> -->
-                                            <td><button type="button" class=" btn btn-xs btn-default checkStokOKB"><?php echo $order['SEGMENT1'].'-'.$order['DESCRIPTION'];?></button></td>
-                                            <td><span class="okbDesc"><?php echo $order['ITEM_DESCRIPTION']; ?></span><br><?php if ($order['ALLOW_DESC'] == 'Y') {?>
-                                                <button type="button" class="btn btn-xs btn-primary btnUbahDescOKB">Edit Desc</button>
-                                                <?php }?><br><?php if ($order['ATTACHMENT'] != 0) { ?>
-                                                <button type="button" class="btn btn-info btn-xs btnAttachmentOKB">view attachment</button>
-                                                <?php }?>
-                                            </td>
-                                            <td><span class="okbQty"><?php echo $order['QUANTITY'].' '.$order['UOM']; ?></span><br><button type="button" class="btn btn-xs btn-primary btnUbahQtyOKB">Edit</button></td>
-                                            <td><?php echo date("d-M-Y", strtotime($order['NEED_BY_DATE'])); ?></td>
-                                            <td>Alasan Order :<span class="okbOrderPurp"><?php echo $order['ORDER_PURPOSE']; ?></span><button type="button" class="btn btn-xs btn-primary btnUbahOrderPurpOKB">Edit</button><br>Alasan Urgensi : <?php echo $order['URGENT_REASON']; ?></td>
-                                            <td><?php echo $order['NOTE_TO_PENGELOLA'];?></td>
-                                            <td><textArea class="form-control noteBuyerOKB" style="width:200px;"></textArea></td>
-                                            <?php if ($order['ORDER_STATUS_ID'] == '2') { 
-                                                        $status = "WIP APPROVE ORDER";
-                                                    }else if ($order['ORDER_STATUS_ID'] == '3') {
-                                                        $status = "ORDER APPROVED";
-                                                    } ?>
-                                            <td><button type="button" class="btn btn-info btn-sm btnOKBListOrderHistory"><?php echo $status; ?></button></td>
-                                        </tr>
-                                        <div class="modal fade mdlOKBListOrderHistory-<?php echo $order['ORDER_ID']; ?>" role="dialog" aria-labelledby="modalDelete" aria-hidden="true">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                        <h4><i style="vertical-align: middle;" class="fa fa-check-circle-o"> </i> Status <b>Order</b></h4>
-                                                    </div>
-                                                    <div class="modal-body" style="height: 400px;">
-                                                        <center>
-                                                            <div class="row text-primary divOKBListOrderHistoryLoading-<?php echo $order['ORDER_ID']; ?>" style="width: 400px; margin-top: 25px; display: none;">
-                                                                <label class="control-label">
-                                                                    <h4><img src="<?php echo base_url('assets/img/gif/loading5.gif') ?>" style="width:30px"> <b>Sedang Mengambil Data ...</b></h4>
-                                                                </label>
+                                        <?php $no = 0;
+                                        foreach ($listOrder as $key => $order) {
+                                            $no++; ?>
+                                            <tr>
+                                                <td style="text-align:center;"><input type="checkbox" class="minimal checkApproveOKB" value="<?php echo $order['ORDER_ID']; ?>"></td>
+                                                <!-- <td><?php echo $no; ?></td> -->
+                                                <?php if ($order['URGENT_FLAG'] == 'Y') {
+                                                    $flag = 'label-danger';
+                                                    $tag = 'urgent';
+                                                } else {
+                                                    $flag = 'label-success';
+                                                    $tag = 'normal';
+                                                } ?>
+                                                <td><span class="tdOKBListOrderId"><?php echo $order['ORDER_ID']; ?></span><br><?php echo date("d-M-Y", strtotime($order['ORDER_DATE'])); ?></td>
+                                                <!-- <td><?php echo date("d-M-Y", strtotime($order['ORDER_DATE'])); ?></td> -->
+                                                <td><?php echo $order['NATIONAL_IDENTIFIER'] . '-' . $order['FULL_NAME'] . '<br>' . $order['ATTRIBUTE3']; ?></td>
+                                                <!-- <td><?php echo $order['ATTRIBUTE3']; ?></td> -->
+                                                <td><button type="button" class=" btn btn-xs btn-default checkStokOKB"><?php echo $order['SEGMENT1'] . '-' . $order['DESCRIPTION']; ?></button></td>
+                                                <td><span class="okbDesc"><?php echo $order['ITEM_DESCRIPTION']; ?></span><br><?php if ($order['ALLOW_DESC'] == 'Y') { ?>
+                                                        <button type="button" class="btn btn-xs btn-primary btnUbahDescOKB">Edit Desc</button>
+                                                    <?php } ?><br><?php if ($order['ATTACHMENT'] != 0) { ?>
+                                                        <button type="button" class="btn btn-info btn-xs btnAttachmentOKB">view attachment</button>
+                                                    <?php } ?>
+                                                </td>
+                                                <td><span class="okbQty"><?php echo $order['QUANTITY'] . ' ' . $order['UOM']; ?></span><br><button type="button" class="btn btn-xs btn-primary btnUbahQtyOKB">Edit</button></td>
+                                                <td><?php echo date("d-M-Y", strtotime($order['NEED_BY_DATE'])); ?></td>
+                                                <td>Alasan Order :<span class="okbOrderPurp"><?php echo $order['ORDER_PURPOSE']; ?></span><button type="button" class="btn btn-xs btn-primary btnUbahOrderPurpOKB">Edit</button><br>Alasan Urgensi : <?php echo $order['URGENT_REASON']; ?></td>
+                                                <td><?php echo $order['NOTE_TO_PENGELOLA']; ?></td>
+                                                <td><textArea class="form-control noteBuyerOKB" style="width:200px;" maxlength="470"><?= $order['NOTE_TO_BUYER'] ?></textArea></td>
+                                                <?php if ($order['ORDER_STATUS_ID'] == '2') {
+                                                    $status = "WIP APPROVE ORDER";
+                                                } else if ($order['ORDER_STATUS_ID'] == '3') {
+                                                    $status = "ORDER APPROVED";
+                                                } ?>
+                                                <td><button type="button" class="btn btn-info btn-sm btnOKBListOrderHistory"><?php echo $status; ?></button></td>
+                                            </tr>
+                                            <div class="modal fade mdlOKBListOrderHistory-<?php echo $order['ORDER_ID']; ?>" role="dialog" aria-labelledby="modalDelete" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                            <h4><i style="vertical-align: middle;" class="fa fa-check-circle-o"> </i> Status <b>Order</b></h4>
+                                                        </div>
+                                                        <div class="modal-body" style="height: 400px;">
+                                                            <center>
+                                                                <div class="row text-primary divOKBListOrderHistoryLoading-<?php echo $order['ORDER_ID']; ?>" style="width: 400px; margin-top: 25px; display: none;">
+                                                                    <label class="control-label">
+                                                                        <h4><img src="<?php echo base_url('assets/img/gif/loading5.gif') ?>" style="width:30px"> <b>Sedang Mengambil Data ...</b></h4>
+                                                                    </label>
+                                                                </div>
+                                                            </center>
+                                                            <div class="col-lg-12 divOKBListOrderHistory-<?php echo $order['ORDER_ID']; ?>" style="overflow: auto; height: 400px; display: none;">
+                                                                <span></span>
                                                             </div>
-                                                        </center>
-                                                        <div class="col-lg-12 divOKBListOrderHistory-<?php echo $order['ORDER_ID']; ?>" style="overflow: auto; height: 400px; display: none;">
-                                                            <span></span>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
                                                         </div>
                                                     </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+                                                </div>
+                                            </div>
+                                            <div class="modal fade mdlOKBListOrderStock-<?php echo $order['ORDER_ID']; ?>" role="dialog" aria-labelledby="modalDelete" aria-hidden="true">
+                                                <div class="modal-dialog" style="width:750px;">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                            <h4><i style="vertical-align: middle;" class="fa fa-check-circle-o"> </i> Stock <b>Item</b></h4>
+                                                        </div>
+                                                        <div class="modal-body" style="height: 300px;">
+                                                            <center>
+                                                                <div class="row text-primary divOKBListOrderStockLoading-<?php echo $order['ORDER_ID']; ?>" style="width: 400px; margin-top: 25px; display: none;">
+                                                                    <label class="control-label">
+                                                                        <h4><img src="<?php echo base_url('assets/img/gif/loading5.gif') ?>" style="width:30px"> <b>Sedang Mengambil Data ...</b></h4>
+                                                                    </label>
+                                                                </div>
+                                                            </center>
+                                                            <div class="row divStockOKB-<?php echo $order['ORDER_ID']; ?>"></div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="modal fade mdlOKBListOrderStock-<?php echo $order['ORDER_ID']; ?>" role="dialog" aria-labelledby="modalDelete" aria-hidden="true">
-                                            <div class="modal-dialog" style="width:750px;">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                        <h4><i style="vertical-align: middle;" class="fa fa-check-circle-o"> </i> Stock <b>Item</b></h4>
-                                                    </div>
-                                                    <div class="modal-body" style="height: 300px;">
-                                                        <center>
-                                                            <div class="row text-primary divOKBListOrderStockLoading-<?php echo $order['ORDER_ID']; ?>" style="width: 400px; margin-top: 25px; display: none;">
-                                                                <label class="control-label">
-                                                                    <h4><img src="<?php echo base_url('assets/img/gif/loading5.gif') ?>" style="width:30px"> <b>Sedang Mengambil Data ...</b></h4>
-                                                                </label>
-                                                            </div>
-                                                        </center>
-                                                        <div class="row divStockOKB-<?php echo $order['ORDER_ID'];?>"></div>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="modal fade mdlOKBListOrderAttachment-<?php echo $order['ORDER_ID']; ?>" role="dialog" aria-labelledby="modalDelete" aria-hidden="true">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                        <h4><i style="vertical-align: middle;" class="fa fa-check-circle-o"></i><b> Attachment</b></h4>
-                                                    </div>
-                                                    <div class="modal-body" style="min-height: 400px;">
-                                                        <center>
-                                                            <div class="row text-primary divOKBListOrderAttachmentLoading-<?php echo $order['ORDER_ID']; ?>" style="width: 400px; margin-top: 25px; display: none;">
-                                                                <label class="control-label">
-                                                                    <h4><img src="<?php echo base_url('assets/img/gif/loading5.gif') ?>" style="width:30px"> <b>Sedang Mengambil Data ...</b></h4>
-                                                                </label>
-                                                            </div>
-                                                        </center>
-                                                        <div class="row divAttachmentOKB-<?php echo $order['ORDER_ID'];?>"></div>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+                                            <div class="modal fade mdlOKBListOrderAttachment-<?php echo $order['ORDER_ID']; ?>" role="dialog" aria-labelledby="modalDelete" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                            <h4><i style="vertical-align: middle;" class="fa fa-check-circle-o"></i><b> Attachment</b></h4>
+                                                        </div>
+                                                        <div class="modal-body" style="min-height: 400px;">
+                                                            <center>
+                                                                <div class="row text-primary divOKBListOrderAttachmentLoading-<?php echo $order['ORDER_ID']; ?>" style="width: 400px; margin-top: 25px; display: none;">
+                                                                    <label class="control-label">
+                                                                        <h4><img src="<?php echo base_url('assets/img/gif/loading5.gif') ?>" style="width:30px"> <b>Sedang Mengambil Data ...</b></h4>
+                                                                    </label>
+                                                                </div>
+                                                            </center>
+                                                            <div class="row divAttachmentOKB-<?php echo $order['ORDER_ID']; ?>"></div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
                                         <?php } ?>
                                     </tbody>
                                 </table>

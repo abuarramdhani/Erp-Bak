@@ -343,7 +343,7 @@ class M_kaizentimtks extends CI_Model
 						distinct left(section_code, 7) section_code
 					from 
 						er.er_employee_all eea
-						inner join dblink(
+						inner join er.dblink(
 							'host={$this->personalia->hostname} user={$this->personalia->username} password={$this->personalia->password} dbname={$this->personalia->database}',
 							'select noind, kd_jabatan from hrd_khs.tpribadi'
 						) as tp(noind varchar, kd_jabatan varchar) on tp.noind = eea.employee_code
@@ -441,7 +441,7 @@ class M_kaizentimtks extends CI_Model
 					distinct left(section_code, 7) section_code
 				from 
 					er.er_employee_all eea
-					inner join dblink(
+					inner join er.dblink(
 						'host={$this->personalia->hostname} user={$this->personalia->username} password={$this->personalia->password} dbname={$this->personalia->database}',
 						'select noind, kd_jabatan from hrd_khs.tpribadi'
 					) as tp(noind varchar, kd_jabatan varchar) on tp.noind = eea.employee_code
@@ -760,7 +760,7 @@ class M_kaizentimtks extends CI_Model
 						distinct left(section_code, 7) section_code
 					from 
 						er.er_employee_all eea
-						inner join dblink(
+						inner join er.dblink(
 							'host={$this->personalia->hostname} user={$this->personalia->username} password={$this->personalia->password} dbname={$this->personalia->database}',
 							'select noind, kd_jabatan from hrd_khs.tpribadi'
 						) as tp(noind varchar, kd_jabatan varchar) on tp.noind = eea.employee_code
@@ -858,7 +858,7 @@ class M_kaizentimtks extends CI_Model
 					distinct left(section_code, 7) section_code
 				from 
 					er.er_employee_all eea
-					inner join dblink(
+					inner join er.dblink(
 						'host={$this->personalia->hostname} user={$this->personalia->username} password={$this->personalia->password} dbname={$this->personalia->database}',
 						'select noind, kd_jabatan from hrd_khs.tpribadi'
 					) as tp(noind varchar, kd_jabatan varchar) on tp.noind = eea.employee_code
@@ -899,7 +899,7 @@ class M_kaizentimtks extends CI_Model
 					distinct left(section_code, 7) section_code
 				from 
 					er.er_employee_all eea
-					inner join dblink(
+					inner join er.dblink(
 						'host={$this->personalia->hostname} user={$this->personalia->username} password={$this->personalia->password} dbname={$this->personalia->database}',
 						'select noind, kd_jabatan from hrd_khs.tpribadi'
 					) as tp(noind varchar, kd_jabatan varchar) on tp.noind = eea.employee_code
@@ -1005,7 +1005,7 @@ class M_kaizentimtks extends CI_Model
 					distinct left(section_code, 7) section_code
 				from 
 					er.er_employee_all eea
-					inner join dblink(
+					inner join er.dblink(
 						'host={$this->personalia->hostname} user={$this->personalia->username} password={$this->personalia->password} dbname={$this->personalia->database}',
 						'select noind, kd_jabatan from hrd_khs.tpribadi'
 					) as tp(noind varchar, kd_jabatan varchar) on tp.noind = eea.employee_code
@@ -1175,7 +1175,7 @@ class M_kaizentimtks extends CI_Model
 						count(section_code)
 					from
 						er.er_employee_all eea
-						inner join dblink(
+						inner join er.dblink(
 							'host={$this->personalia->hostname} user={$this->personalia->username} password={$this->personalia->password} dbname={$this->personalia->database}',
 							'select noind, kd_jabatan from hrd_khs.tpribadi'
 						) as tp(noind varchar, kd_jabatan varchar) on tp.noind = eea.employee_code
@@ -1209,7 +1209,7 @@ class M_kaizentimtks extends CI_Model
 						count(section_code)
 					from
 						er.er_employee_all eea
-						inner join dblink(
+						inner join er.dblink(
 							'host={$this->personalia->hostname} user={$this->personalia->username} password={$this->personalia->password} dbname={$this->personalia->database}',
 							'select noind, kd_jabatan from hrd_khs.tpribadi'
 						) as tp(noind varchar, kd_jabatan varchar) on tp.noind = eea.employee_code
@@ -1243,7 +1243,7 @@ class M_kaizentimtks extends CI_Model
 						count(section_code)
 					from
 						er.er_employee_all eea
-						inner join dblink(
+						inner join er.dblink(
 							'host={$this->personalia->hostname} user={$this->personalia->username} password={$this->personalia->password} dbname={$this->personalia->database}',
 							'select noind, kd_jabatan from hrd_khs.tpribadi'
 						) as tp(noind varchar, kd_jabatan varchar) on tp.noind = eea.employee_code
@@ -1277,7 +1277,7 @@ class M_kaizentimtks extends CI_Model
 						count(section_code)
 					from
 						er.er_employee_all eea
-						inner join dblink(
+						inner join er.dblink(
 							'host={$this->personalia->hostname} user={$this->personalia->username} password={$this->personalia->password} dbname={$this->personalia->database}',
 							'select noind, kd_jabatan from hrd_khs.tpribadi'
 						) as tp(noind varchar, kd_jabatan varchar) on tp.noind = eea.employee_code
@@ -1311,7 +1311,7 @@ class M_kaizentimtks extends CI_Model
 						count(section_code)
 					from
 						er.er_employee_all eea
-						inner join dblink(
+						inner join er.dblink(
 							'host={$this->personalia->hostname} user={$this->personalia->username} password={$this->personalia->password} dbname={$this->personalia->database}',
 							'select noind, kd_jabatan from hrd_khs.tpribadi'
 						) as tp(noind varchar, kd_jabatan varchar) on tp.noind = eea.employee_code
@@ -1345,7 +1345,7 @@ class M_kaizentimtks extends CI_Model
 						count(section_code)
 					from
 						er.er_employee_all eea
-						inner join dblink(
+						inner join er.dblink(
 							'host={$this->personalia->hostname} user={$this->personalia->username} password={$this->personalia->password} dbname={$this->personalia->database}',
 							'select noind, kd_jabatan from hrd_khs.tpribadi'
 						) as tp(noind varchar, kd_jabatan varchar) on tp.noind = eea.employee_code
@@ -1379,7 +1379,7 @@ class M_kaizentimtks extends CI_Model
 						count(section_code)
 					from
 						er.er_employee_all eea
-						inner join dblink(
+						inner join er.dblink(
 							'host={$this->personalia->hostname} user={$this->personalia->username} password={$this->personalia->password} dbname={$this->personalia->database}',
 							'select noind, kd_jabatan from hrd_khs.tpribadi'
 						) as tp(noind varchar, kd_jabatan varchar) on tp.noind = eea.employee_code
@@ -1413,7 +1413,7 @@ class M_kaizentimtks extends CI_Model
 						count(section_code)
 					from
 						er.er_employee_all eea
-						inner join dblink(
+						inner join er.dblink(
 							'host={$this->personalia->hostname} user={$this->personalia->username} password={$this->personalia->password} dbname={$this->personalia->database}',
 							'select noind, kd_jabatan from hrd_khs.tpribadi'
 						) as tp(noind varchar, kd_jabatan varchar) on tp.noind = eea.employee_code
@@ -1447,7 +1447,7 @@ class M_kaizentimtks extends CI_Model
 						count(section_code)
 					from
 						er.er_employee_all eea
-						inner join dblink(
+						inner join er.dblink(
 							'host={$this->personalia->hostname} user={$this->personalia->username} password={$this->personalia->password} dbname={$this->personalia->database}',
 							'select noind, kd_jabatan from hrd_khs.tpribadi'
 						) as tp(noind varchar, kd_jabatan varchar) on tp.noind = eea.employee_code
@@ -1481,7 +1481,7 @@ class M_kaizentimtks extends CI_Model
 						count(section_code)
 					from
 						er.er_employee_all eea
-						inner join dblink(
+						inner join er.dblink(
 							'host={$this->personalia->hostname} user={$this->personalia->username} password={$this->personalia->password} dbname={$this->personalia->database}',
 							'select noind, kd_jabatan from hrd_khs.tpribadi'
 						) as tp(noind varchar, kd_jabatan varchar) on tp.noind = eea.employee_code
@@ -1515,7 +1515,7 @@ class M_kaizentimtks extends CI_Model
 						count(section_code)
 					from
 						er.er_employee_all eea
-						inner join dblink(
+						inner join er.dblink(
 							'host={$this->personalia->hostname} user={$this->personalia->username} password={$this->personalia->password} dbname={$this->personalia->database}',
 							'select noind, kd_jabatan from hrd_khs.tpribadi'
 						) as tp(noind varchar, kd_jabatan varchar) on tp.noind = eea.employee_code
@@ -1549,7 +1549,7 @@ class M_kaizentimtks extends CI_Model
 						count(section_code)
 					from
 						er.er_employee_all eea
-						inner join dblink(
+						inner join er.dblink(
 							'host={$this->personalia->hostname} user={$this->personalia->username} password={$this->personalia->password} dbname={$this->personalia->database}',
 							'select noind, kd_jabatan from hrd_khs.tpribadi'
 						) as tp(noind varchar, kd_jabatan varchar) on tp.noind = eea.employee_code
@@ -1583,7 +1583,7 @@ class M_kaizentimtks extends CI_Model
 						distinct left(section_code, 7) section_code
 					from 
 						er.er_employee_all eea
-						inner join dblink(
+						inner join er.dblink(
 							'host={$this->personalia->hostname} user={$this->personalia->username} password={$this->personalia->password} dbname={$this->personalia->database}',
 							'select noind, kd_jabatan from hrd_khs.tpribadi'
 						) as tp(noind varchar, kd_jabatan varchar) on tp.noind = eea.employee_code
@@ -1649,7 +1649,7 @@ class M_kaizentimtks extends CI_Model
 						count($distinctEmployee eea.section_code)
 					from
 						er.er_employee_all eea inner join
-						dblink(
+						er.dblink(
 							'host={$this->personalia->hostname} user={$this->personalia->username} password={$this->personalia->password} dbname={$this->personalia->database}',
 							'select noind, kd_jabatan from hrd_khs.tpribadi'
 						) as tp(noind varchar, kd_jabatan varchar) on tp.noind = eea.employee_code
@@ -1700,7 +1700,7 @@ class M_kaizentimtks extends CI_Model
 				count(*) employee_count
 			from 
 				er.er_employee_all eea
-				inner join dblink(
+				inner join er.dblink(
 					'host={$this->personalia->hostname} user={$this->personalia->username} password={$this->personalia->password} dbname={$this->personalia->database}',
 					'select noind, kd_jabatan from hrd_khs.tpribadi'
 				) as tp(noind varchar, kd_jabatan varchar) on tp.noind = eea.employee_code
@@ -1755,7 +1755,7 @@ class M_kaizentimtks extends CI_Model
 						distinct left(section_code, 7) section_code
 					from 
 						er.er_employee_all eea
-						inner join dblink(
+						inner join er.dblink(
 							'host={$this->personalia->hostname} user={$this->personalia->username} password={$this->personalia->password} dbname={$this->personalia->database}',
 							'select noind, kd_jabatan from hrd_khs.tpribadi'
 						) as tp(noind varchar, kd_jabatan varchar) on tp.noind = eea.employee_code

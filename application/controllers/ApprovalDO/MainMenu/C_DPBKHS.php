@@ -234,6 +234,9 @@ class C_DPBKHS extends CI_Controller
         } elseif ($gudang == 'JAKARTA') {
             $org_id = 207;
             $kode_gudang = 'FG-JFG';
+        } elseif ($gudang == 'SUBANG') {
+            $org_id = 1230;
+            $kode_gudang = 'FG-CFG';
         }
 
         $line = $data['line'];

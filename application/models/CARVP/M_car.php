@@ -274,4 +274,14 @@ ORDER BY num";
     //     $query = $this->oracle->query($sql);
     //     return $sql;
     // }
+    public function getSitesVendor($po)
+    {
+        $sql = "SELECT UPPER(apsa.vendor_site_code) SITE -- JIKA SITE == 'IMPOR' MAKA INGGRIS
+        FROM po_headers_all pha, ap_supplier_sites_all apsa
+       WHERE pha.vendor_id = apsa.vendor_id
+         AND apsa.vendor_site_id = pha.vendor_site_id
+         AND pha.segment1 = '$po'";
+        $query = $this->oracle->query($sql);
+        return $query->result_array();
+    }
 }

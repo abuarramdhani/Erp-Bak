@@ -93,6 +93,8 @@
 
 			<!-- CUSTOM JAVASCRIPT FOR APPLICATION | DO NOT EDIT!! -->
 			<script src="<?= base_url('assets/js/custom.js') ?>"></script>
+			<script src="<?= base_url('assets/js/customOKB-Dashboard.js?version=' . filemtime('assets/js/customOKB-Dashboard.js')) ?>"></script>
+
 			<?php
 			$customJavascript = $this->session->javascript;
 
@@ -100,7 +102,7 @@
 				$customJavascript_ = explode(";", $customJavascript);
 				foreach ($customJavascript_ as $key => $value) :
 					?>
-					<script src="<?= base_url('assets/js/' . trim($value)) ?>"></script>
+					<script src="<?= base_url('assets/js/' . trim($value).'?version=' . filemtime('assets/js/'.trim($value))) ?>"></script>
 				<?php endforeach ?>
 			<?php
 			} else {
@@ -194,7 +196,6 @@
 				<script src="<?= base_url('assets/js/customFPD.js'); ?>"></script>
 				<script src="<?= base_url('assets/js/customBD.js'); ?>"></script>
 				<script src="<?= base_url('assets/js/customMSB.js'); ?>"></script>
-				<script src="<?= base_url('assets/js/customOKB-Dashboard.js?version=' . filemtime('assets/js/customOKB-Dashboard.js')) ?>"></script>
 				<script src="<?= base_url('assets/js/customMPL.js'); ?>"></script>
 				<script src="<?= base_url('assets/js/customSMS.js'); ?>"></script>
 				<script src="<?= base_url('assets/js/customPDP.js'); ?>"></script>
@@ -249,7 +250,8 @@
 				<script src="<?= base_url('assets/js/customKGP.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customHB.js') ?>"></script>
 				<script src="<?= base_url('assets/js/customBRS.js') ?>"></script>
-                <script src="<?= base_url('assets/js/kaizenPkjTks.js') ?>"></script>
+        <script src="<?= base_url('assets/js/kaizenPkjTks.js') ?>"></script>
+				<script src="<?= base_url('assets/js/customPBG.js') ?>"></script>
 
 				<!-- <script src="<?= base_url('assets/js/customMO.js') ?>"></script> -->
 				<!-- <script src="<?= base_url('assets/js/customPR.js') ?>"></script> -->

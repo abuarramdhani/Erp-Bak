@@ -142,6 +142,7 @@ class C_Receipt extends CI_Controller
 	public function printreceipt($id)
 	{
 		$this->load->library('pdf');
+		$this->load->library('ciqrcode');
 		$pdf = $this->pdf->load();
 
 		$pdf = new mPDF('utf-8', array(215, 120), 0, '', 0, 0, 0, 0);
@@ -151,6 +152,17 @@ class C_Receipt extends CI_Controller
 
 		$data['Receipt'] = $this->M_receipt->GetReceiptDetails($id);
 		$data['ReceiptFine'] = $this->M_receipt->GetReceiptFineForEdit($id);
+		$data['id'] = $id;
+
+		$no_kuitansi_asli = isset($data['Receipt'][0]['receipt_no']) ? $data['Receipt'][0]['receipt_no']:0;
+		$no_kuitansi_save = str_replace('/', '--', $no_kuitansi_asli);
+		$data['qr_code'] = $no_kuitansi_save;
+
+		$params['data'] = $no_kuitansi_asli;
+		$params['level'] = 'H';
+		$params['size'] = 10;
+		$params['savename'] = 'assets/upload/CateringManagement/ReciptQr/'.$no_kuitansi_save.'.png';
+		$this->ciqrcode->generate($params);
 
 		$stylesheet = file_get_contents(base_url('assets/plugins/bootstrap/3.3.6/css/bootstrap.css'));
 		$html = $this->load->view('CateringManagement/Receipt/V_Print', $data, true);

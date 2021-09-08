@@ -30,6 +30,8 @@
 							}
 						?>
 						<?= $no_mo; ?>
+						<br>
+						<h1><?= $dataall['head'][0]['urutan'] == 99 ? '' : $dataall['head'][0]['urutan']?></h1>
 					</td>
 				</tr>
 				<tr>

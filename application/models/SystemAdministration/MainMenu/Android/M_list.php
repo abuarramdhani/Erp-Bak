@@ -20,6 +20,7 @@ class M_list extends CI_Model
                  when a.validation = '4' then concat('Approved by Atasan (',(select string_agg(concat(approver,' - ',(select employee_name from er.er_employee_all d where c.approver = d.employee_code)),', ') from sys.sys_android_approve_atasan c where a.gadget_id = c.gadget_id and c.status = '1'),')')
                  end as status_approve
                  from sys.sys_android a
+                 order by a.validation, a.register_request_date desc
 			");
 		return $query->result_array();
     }

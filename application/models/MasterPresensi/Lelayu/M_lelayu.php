@@ -21,26 +21,52 @@ class M_lelayu extends CI_Model
 
   public function getPekerja()
   {
-    $sql = "SELECT noind, nama FROM hrd_khs.tpribadi WHERE keluar = '0' AND (noind like 'A%' OR noind like 'B%')
-            ORDER BY noind";
+    $sql = "SELECT noind, nama 
+      FROM hrd_khs.tpribadi  tp
+      WHERE keluar = '0' 
+      AND (
+        left(noind,1) in ('A','B')
+        or (
+          left(noind,1) = 'D'
+          and (
+            select count(*)
+            from hrd_khs.tpribadi tp2 
+            where tp.nik = tp2.nik  
+            and tp2.keluar='1'
+            and left(tp2.noind,1) = 'A'
+          ) >= 1
+        )
+      )
+      ORDER BY noind";
     return $this->personalia->query($sql)->result_array();
   }
 
   public function getPekerjaMengajukanResign($tanggal_awal)
   {
     $sql = "select tp.noind ,trim(tp.nama) as nama, '',ts.seksi, case when tp.keluar = '0' then 'Masih Aktif' else 'Sudah Keluar' end as status_keluar,tp.tglkeluar
-            from hrd_khs.tpribadi tp  
-            left join hrd_khs.tseksi ts 
+          from hrd_khs.tpribadi tp  
+          left join hrd_khs.tseksi ts 
             on tp.kodesie = ts.kodesie
-            where 
-            tp.keluar = '0'
-            and
-            (tp.tglkeluar<= current_date
+          where 
+           tp.keluar = '0'
+          and (tp.tglkeluar<= current_date
               or 
               noind in (select noind from hrd_khs.t_pengajuan_resign_pekerja)
+          )
+          and (
+            left(noind,1) in ('A','B')
+            or (
+              left(noind,1) = 'D'
+              and (
+                select count(*)
+                from hrd_khs.tpribadi tp2 
+                where tp.nik = tp2.nik  
+                and tp2.keluar='1'
+                and left(tp2.noind,1) = 'A'
+              ) >= 1
             )
-           and left(noind,1) in ('A','B')
-           order by tp.noind ";
+           )
+          order by tp.noind ";
     return $this->personalia->query($sql)->result_array();
   }
 

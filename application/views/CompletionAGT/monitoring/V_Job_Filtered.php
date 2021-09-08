@@ -1,3 +1,8 @@
+<style media="screen">
+.btn-group{
+margin-bottom: -40px !important;
+}
+</style>
 <table class="table table-bordered agt-job-release" style="width:100%">
   <thead>
     <tr class="bg-primary">
@@ -27,5 +32,27 @@
   </tbody>
 </table>
 <script type="text/javascript">
-$('.agt-job-release').DataTable();
+let h87 = [];
+for (var i = 0; i < 8; i++) {
+  h87.push(i)
+}
+console.log(h87);
+$('.agt-job-release').DataTable({
+  select: {
+      style: 'multi',
+      selector: 'tr'
+  },
+  dom: 'Bfrtip',
+  buttons: [
+    'pageLength',
+    {
+      extend: 'excelHtml5',
+      title: 'Job Realase '+ $('.tanggal_agt_job_andon').val(),
+      exportOptions: {
+        columns: ':visible',
+        columns: h87,
+      }
+    }
+   ],
+});
 </script>

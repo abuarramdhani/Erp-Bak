@@ -61,6 +61,7 @@ class C_MoveOrder extends CI_Controller
 
 	public function search(){
 		$date = $this->input->post('date');
+		// $date_akhir = strtoupper(DateTime::createFromFormat('d/m/Y', $this->input->post('date2'))->format('d-M-y'));
 		$dept = $this->input->post('dept');
 		$shift1 = $this->input->post('shift');
 		$ket	= $this->input->post('ket');
@@ -68,10 +69,13 @@ class C_MoveOrder extends CI_Controller
 		if ($dept == 'SUBKT') {
 			$shift = '';
 			$atr = ",khs_inv_qty_att(wdj.ORGANIZATION_ID,wro.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'') atr";
-		} else {
+		} elseif(!empty($shift1)) {
 			$shift = "and kqel.SHIFT = ".$this->input->post('shift')."";
 			// $shift = "and bcs.SHIFT_NUM = '".$this->input->post('shift')."'";
 			// EDIT LUTFI
+			$atr = ",khs_inv_qty_att(wdj.ORGANIZATION_ID,wro.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'') atr";	
+		}else {
+			$shift = '';
 			$atr = ",khs_inv_qty_att(wdj.ORGANIZATION_ID,wro.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'') atr";	
 		}
 		$date2 = explode('/', $date);
@@ -113,7 +117,7 @@ class C_MoveOrder extends CI_Controller
 				}
 				$sorting_1 = $sorting_2 = array();
 				for ($i=0; $i < count($getBody); $i++) { 
-					$bagi = $getBody[$i]['ATR'] / $getBody[$i]['QUANTITY_PER_ASSEMBLY'];
+					$bagi = $getBody[$i]['ATR'] / ($getBody[$i]['QUANTITY_PER_ASSEMBLY'] == 0 ? 1 : $getBody[$i]['QUANTITY_PER_ASSEMBLY']);
 					$getBody[$i]['BAGI'] = $bagi;
 					$sorting_1[$i] = $getBody[$i]['LOCATOR_ASAL'];
 					$sorting_2[$i] = $getBody[$i]['BAGI'];
@@ -279,6 +283,7 @@ class C_MoveOrder extends CI_Controller
 
 		if (count($checkPicklist) > 0) {
 			foreach ($checkPicklist as $key => $value) {
+				$value['URUTAN_PICKLIST'] = 99;
 				$no_mo = $value;
 				array_push($array_mo, $no_mo);
 				//tinggal cetak jika sudah ada mo
@@ -371,7 +376,7 @@ class C_MoveOrder extends CI_Controller
 
 					$checkPicklist = $this->M_MoveOrder->checkPicklist($job);
 					foreach ($checkPicklist as $key => $value) {
-						// $no_mo = $value['REQUEST_NUMBER'];
+						$value['URUTAN_PICKLIST'] = 99;
 						$no_mo = $value;
 						array_push($array_mo, $no_mo);
 					}
@@ -394,12 +399,13 @@ class C_MoveOrder extends CI_Controller
 	public function pdf($array_mo2,$nama_satu, $nama_dua, $piklis){
 		// ------ GET DATA ------
 		foreach ($array_mo2 as $key => $row) {
+			// $return_urut[$key]  = $row['URUTAN_PICKLIST'];
 			$return_fare[$key]  = $row['FROM_SUBINVENTORY_CODE'];
 			$one_way_fare[$key] = $row['LOCATOR'];
 		}
 		// Sort the data with volume descending, edition ascending
 		array_multisort($return_fare, SORT_ASC, $one_way_fare, SORT_ASC, $array_mo2);
-
+		// echo "<pre>";print_r($array_mo2);exit();
 		$array_mo = array();
 		foreach ($array_mo2 as $key => $val) {
 			$no_mo = $val['REQUEST_NUMBER'];
@@ -482,6 +488,7 @@ class C_MoveOrder extends CI_Controller
 				$dataall[$a]['head'][0]['piklis'] = $piklis;
 				$dataall[$a]['line']	= $this->M_MoveOrder->getDetail($moveOrderAwal, $moveOrderAkhir);
 				$sub_assy = $dataall[$a]['head'][0]['PRODUK'];
+				$dataall[$a]['head'][0]['urutan'] = $array_mo2[$key]['URUTAN_PICKLIST'];
 				if ($sub_assy == 'AGF0000AA1AZ-0' || $sub_assy == 'AGF0000AA2AZ-0') {
 					usort($dataall[$a]['line'], function($y, $z) {
 						return strcasecmp($y['KODE_DESC'], $z['KODE_DESC']);
@@ -591,8 +598,10 @@ class C_MoveOrder extends CI_Controller
 		$subinv_from 	  = $this->input->post('subinvfrom');
 		$locator_from 	  = $this->input->post('locatorfromid');
 		$selected = $this->input->post('selectedPicklistIMO');
+		$urutan = $this->input->post('urutanPicklistIMO');
 		$piklis = $this->input->post('piklis');
 		$arraySelected = explode('+', $selected);
+		$arrayUrutan = explode('+', $urutan);
 		$array_mo = array();
 
 		foreach ($no_job as $key => $value) {
@@ -610,11 +619,21 @@ class C_MoveOrder extends CI_Controller
 				$i =1;
 				
 				if (in_array($no_job2[0], $arraySelected)){
+					$nourut = 99;
+					if (!empty($urutan)) {
+						foreach ($arrayUrutan as $urut) {
+							if (strpos($urut, $no_job2[0]) !== false ) {
+								$no_urutan = explode("_",$urut);
+								$nourut = empty($no_urutan[0]) ? 99 : $no_urutan[0];
+							}
+						}
+					}
 					// echo "sebelum check picklist <br>";
 					$checkPicklist = $this->M_MoveOrder->checkPicklist($no_job2[0]);
 					// echo "checkPicklist";print_r($checkPicklist);echo"<br>";print_r($no_job2);echo "<br>";
 					if (count($checkPicklist) > 0) {
 						foreach ($checkPicklist as $keymo => $valuemo) {
+							$valuemo['URUTAN_PICKLIST'] = $nourut;
 							$no_mo = $valuemo;
 							array_push($array_mo, $no_mo);
 							// ECHO "tinggal cetak jika sudah ada mo";
@@ -682,6 +701,7 @@ class C_MoveOrder extends CI_Controller
 								$checkPicklist = $this->M_MoveOrder->checkPicklist($no_job2[0]);
 								// print_r($checkPicklist);
 								foreach ($checkPicklist as $keymo => $valuemo) {
+									$valuemo['URUTAN_PICKLIST'] = $nourut;
 									$no_mo = $valuemo;
 									array_push($array_mo, $no_mo);
 								}
@@ -689,11 +709,22 @@ class C_MoveOrder extends CI_Controller
 						}
 					} 
 			}else{
+				$nourut = 99;
+				if (!empty($urutan)) {
+					$nourut = 99;
+					foreach ($arrayUrutan as $urut) {
+						if (strpos($urut, $no_job2[0]) !== false ) {
+							$no_urutan = explode("_",$urut);
+							$nourut = empty($no_urutan[0]) ? 99 : $no_urutan[0];
+						}
+					}
+				}
 				// echo "masuk sini bruh";
 				if (in_array($value, $arraySelected)){
 					$checkPicklist = $this->M_MoveOrder->checkPicklist($value);
 					if (count($checkPicklist) > 0) {
 						foreach ($checkPicklist as $keymo => $valuemo) {
+							$valuemo['URUTAN_PICKLIST'] = $nourut;
 							$no_mo = $valuemo;
 							array_push($array_mo, $no_mo);
 						}
@@ -738,6 +769,7 @@ class C_MoveOrder extends CI_Controller
 							$checkPicklist = $this->M_MoveOrder->checkPicklist($value);
 
 							foreach ($checkPicklist as $keymo => $valuemo) {
+								$valuemo['URUTAN_PICKLIST'] = $nourut;
 								$no_mo = $valuemo;
 								array_push($array_mo, $no_mo);
 							}

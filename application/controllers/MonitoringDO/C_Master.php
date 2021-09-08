@@ -395,7 +395,7 @@ class C_Master extends CI_Controller
     {
         //data trial
         $data['get_header'] = $this->M_monitoringdo->headerSurat($id);
-        $data['get_body'] = $this->M_monitoringdo->bodySurat($id,$data['get_header'][0]['TIPE']);
+        $get_body = $this->M_monitoringdo->bodySurat($id,$data['get_header'][0]['TIPE']);
         $data['get_serial'] = $this->M_monitoringdo->serial($id);
         $data['get_footer'] = $this->M_monitoringdo->footersurat($id);
         $data['totalbody'] = sizeof($data['get_body']);
@@ -418,9 +418,22 @@ class C_Master extends CI_Controller
         ];
         $this->M_monitoringdo->insertDOCetak($datacetak);
         $this->M_monitoringdo->updateCetak($id);
-        // echo "<pre>";
-        // print_r($datacetak);
-        // die;
+
+        // pembagian item body
+        $body_shelter = [];
+        $shelter_key = 0;
+        $key_blabla = 1;
+        foreach ($get_body as $key => $value) {
+          if ($key_blabla%24 != 0) {
+            $body_shelter[$shelter_key][] = $value;
+          }else {
+            $shelter_key++;
+            $body_shelter[$shelter_key][] = $value;
+          }
+          $key_blabla++;
+        }
+        $data['body_shelter'] = array_values($body_shelter);
+        
         if (!empty($data['get_serial'])) {
             $s = [];
             $hasil = [];
@@ -439,6 +452,20 @@ class C_Master extends CI_Controller
             }
             $data['header_sub'] = $tampungan;
         }
+        // pembagian serial
+        $serial_shelter = [];
+        $shelter_serial_key = 0;
+        $key_bla = 1;
+        foreach ($data['get_serial'] as $key => $value) {
+          if ($key_bla%75 != 0) {
+            $serial_shelter[$shelter_serial_key][] = $value;
+          }else {
+            $shelter_serial_key++;
+            $serial_shelter[$shelter_serial_key][] = $value;
+          }
+          $key_bla++;
+        }
+        $data['serial_shelter'] = array_values($serial_shelter);
         if (!empty($id)) {
             // ====================== do something =========================
             $this->load->library('Pdf');
@@ -548,7 +575,7 @@ class C_Master extends CI_Controller
     {
         //data trial
         $data['get_header'] = $this->M_monitoringdo->headerSurat($id);
-        $data['get_body'] = $this->M_monitoringdo->bodySurat($id,$data['get_header'][0]['TIPE']);
+        $get_body  = $this->M_monitoringdo->bodySurat($id,$data['get_header'][0]['TIPE']);
         $data['get_serial'] = $this->M_monitoringdo->serial($id);
         $data['get_footer'] = $this->M_monitoringdo->footersurat($id);
         $data['totalbody'] = sizeof($data['get_body']);
@@ -564,6 +591,22 @@ class C_Master extends CI_Controller
             }
             return $randomString;
         }
+        
+        // pembagian item body
+        $body_shelter = [];
+        $shelter_key = 0;
+        $key_blabla = 1;
+        foreach ($get_body as $key => $value) {
+          if ($key_blabla%24 != 0) {
+            $body_shelter[$shelter_key][] = $value;
+          }else {
+            $shelter_key++;
+            $body_shelter[$shelter_key][] = $value;
+          }
+          $key_blabla++;
+        }
+        $data['body_shelter'] = array_values($body_shelter);
+        
         if (!empty($data['get_serial'])) {
             $s = [];
             $hasil = [];
@@ -583,6 +626,20 @@ class C_Master extends CI_Controller
             }
             $data['header_sub'] = $tampungan;
         }
+        // pembagian serial
+        $serial_shelter = [];
+        $shelter_serial_key = 0;
+        $key_bla = 1;
+        foreach ($data['get_serial'] as $key => $value) {
+          if ($key_bla%75 != 0) {
+            $serial_shelter[$shelter_serial_key][] = $value;
+          }else {
+            $shelter_serial_key++;
+            $serial_shelter[$shelter_serial_key][] = $value;
+          }
+          $key_bla++;
+        }
+        $data['serial_shelter'] = array_values($serial_shelter);
         if (!empty($id)) {
             // ====================== do something =========================
             $this->load->library('Pdf');

@@ -10,10 +10,28 @@ class M_pbi extends CI_Model
         $this->personalia = $this->load->database('personalia', true);
     }
 
+    //gambar kerja
+    public function listMemo($d)
+    {
+      $adm_design = ['a'=>'T0012', 'b' => 'B0444', 'c' => 'P0258', 'd' => 'P0071', 'e' => 'K2070'];
+      if (!empty(array_search($this->session->user, $adm_design))) {
+        $design = $this->load->database('design', true);
+          $sql = "SELECT memo_number, memo_title FROM md.md_memo WHERE (
+                  memo_number like '%$d%'
+                  OR memo_title like '%$d%'
+                ) ORDER BY memo_id";
+
+          return $design->query($sql)->result_array();
+      }else {
+        return [];
+      }
+    }
+    //end gambar kerja
+
     public function delete_pbi($no_doc)
     {
       $this->oracle->delete('KHS_KIRIM_INTERNAL', ['DOC_NUMBER' => $no_doc]);
-      if ($this->oracle->affected_rows() == 1) {
+      if ($this->oracle->affected_rows()) {
           return 1;
       } else {
           return 0;

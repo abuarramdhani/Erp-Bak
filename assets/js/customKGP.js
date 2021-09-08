@@ -761,22 +761,26 @@ function addDetailKGP(no){
 }
 
 //------------------------------------------ Pasang Ban ------------------------------------------------------
-$(document).ready(function () {
+// $(document).ready(function () {
+$(document).on('change', '.jenis_ban',  function() {
+    var jenis_ban = $(this).val();
+    // console.log(jenis_ban);
+
     var siap1 = document.getElementById("persiapan_line1");
     if (siap1) {
-        view_pasangban('siap1', 'persiapan_line1', 'primary');
+        view_pasangban('siap1', 'persiapan_line1', 'primary', jenis_ban);
     }
     var siap2 = document.getElementById("persiapan_line2");
     if (siap2) {
-        view_pasangban('siap2', 'persiapan_line2', 'primary');
+        view_pasangban('siap2', 'persiapan_line2', 'primary', jenis_ban);
     }
     var pasang1 = document.getElementById("pasang_line1");
     if (pasang1) {
-        view_pasangban('pasang1', 'pasang_line1', 'success');
+        view_pasangban('pasang1', 'pasang_line1', 'success', jenis_ban);
     }
     var pasang2 = document.getElementById("pasang_line2");
     if (pasang2) {
-        view_pasangban('pasang2', 'pasang_line2', 'success');
+        view_pasangban('pasang2', 'pasang_line2', 'success', jenis_ban);
     }
 
     
@@ -798,12 +802,13 @@ $(document).ready(function () {
     })
 })
 
-function view_pasangban(ket, id_lokasi, warna) {
+function view_pasangban(ket, id_lokasi, warna, jenis_ban) {
+    // console.log(ket, id_lokasi, warna, jenis_ban);
     $.ajax({
         url: baseurl + "KapasitasGdPusat/PasangBan/view_pasangban",
         type: 'POST',
         dataType: 'html',
-        data: { ket : ket, warna : warna},
+        data: { ket : ket, warna : warna, jenis_ban : jenis_ban},
         cache: false,
         beforeSend: function() {
             $('#'+id_lokasi).html('<center><img style="width:70px; height:auto" src="'+baseurl+'assets/img/gif/loading5.gif"></center>' );
@@ -839,8 +844,15 @@ function view_pasangban(ket, id_lokasi, warna) {
 }
 
 var i = 1;
-function add_new_line(ket, ket2, warna) {
-    $('#'+ket+'_'+ket2).append('<tr class="'+ket+'_'+ket2+'"><td><select id="no_induk" name="no_induk_'+ket+'[]" class="form-control no_induk_'+ket+' select2 getPICBan" ></select></td><td><input id="nama" name="nama_'+ket+'[]" class="form-control nama_'+ket+'" readonly></td><td><button type="button" class="btn btn-'+warna+' tombolhapus'+i+'"><i class="fa fa-minus"></i></button></td><tr>');
+function add_new_line(ket, ket2, warna, ban) {
+    var tbody = $('#'+ket+'_'+ket2);
+    var last = tbody.find('tr:last');
+    var lastRow = last.find('.id_'+ket).val();
+    // console.log(lastRow);
+    var substr = lastRow.split('-');
+    var num = Number(substr[2]) + 1;
+    // console.log(substr[2], num);
+    $('#'+ket+'_'+ket2).append('<tr class="'+ket+'_'+ket2+'"><td style="display:none;"><input id="id" name="id_'+ket+'[]" class="form-control id_'+ket+'" value="'+ket+'-'+ban+'-'+num+'"></td><td><select id="no_induk" name="no_induk_'+ket+'[]" class="form-control no_induk_'+ket+' select2 getPICBan" ></select></td><td><input id="nama" name="nama_'+ket+'[]" class="form-control nama_'+ket+'" readonly></td><td><button type="button" class="btn btn-'+warna+' tombolhapus'+i+'" id="tombol_hapus_'+ket+'"><i class="fa fa-minus"></i></button></td></tr>');
 
     $(document).on('click', '.tombolhapus'+i,  function() {
 		$(this).parents('.'+ket+'_'+ket2).remove()
@@ -884,7 +896,7 @@ function get_username(noind, ket) {
     })
 }
 
-function pasangban_timer(no, ket) {
+function pasangban_timer(no, ket, jenis_ban) {
     var d    = new Date();
     var date = d.getDate()+'/'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'/'+d.getFullYear()+" "+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
     var wkt  = d.getFullYear()+'-'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'-'+d.getDate()+' '+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
@@ -919,16 +931,20 @@ function pasangban_timer(no, ket) {
     if (ket == 'mulai') {
         $('#button_mulai_'+no).css('display','none');
         $('#button_selesai_'+no).css('display','');
+        $('#add_new_line_'+no).attr('disabled','disabled');
+        $('#tombol_hapus_'+no).attr('disabled','disabled');
     
         $.ajax({
             url: baseurl + "KapasitasGdPusat/PasangBan/save_mulai",
             type: 'POST',
             // dataType: 'JSON',
             data: {
+                id : $('[name="id_'+no+'[]"]').map(function(){return $(this).val();}).get(),
                 noind : $('[name="no_induk_'+no+'[]"]').map(function(){return $(this).val();}).get(),
                 nama : $('[name="nama_'+no+'[]"]').map(function(){return $(this).val();}).get(),
                 ket : no,
-                date : date
+                date : date,
+                jenis_ban : jenis_ban
             },
             cache: false,
         })
@@ -938,7 +954,7 @@ function pasangban_timer(no, ket) {
             clearInterval(timer);
         }
         Swal.fire({
-            title: 'Jumlah Aktual : ',
+            title: 'Jumlah Aktual (SET) : ',
             input: 'text',
             inputAttributes: {
                 autocapitalize: 'off'
@@ -947,7 +963,15 @@ function pasangban_timer(no, ket) {
             confirmButtonText: 'OK',
             showLoaderOnConfirm: true,
         }).then(result => {
-            if (result.value) {
+            if(result.value % 2 != 0) {
+                Swal.fire({
+                    title: "Mohon untuk Menginputkan Jumlah Aktual dalam SET",
+                    type: "warning",
+                    showCancelButton: false,
+                    confirmButtonColor: "#3085d6",
+                    confirmButtonText: "Yes",
+                })
+            }else{
                 $('#button_selesai_'+no).attr('disabled','disabled');
                 $('#button_pause_'+no).attr('disabled','disabled');
                 $('#button_restart_'+no).attr('disabled','disabled');
@@ -956,17 +980,33 @@ function pasangban_timer(no, ket) {
                     type: "POST",
                     url: baseurl + "KapasitasGdPusat/PasangBan/save_selesai",
                     data: { 
+                        id : $('[name="id_'+no+'[]"]').map(function(){return $(this).val();}).get(),
                         noind : $('[name="no_induk_'+no+'[]"]').map(function(){return $(this).val();}).get(),
                         ket : no,
                         date : date,
                         wkt : wkt,
-                        jumlah: result.value 
+                        jumlah : result.value,
+                        jenis_ban : jenis_ban
                     },
                     success: function (response) {
-                        location.reload();
+                        if(result.value < 80){
+                            Swal.fire({
+                                title: "Anda Tidak Mencapai Target Pasang Ban",
+                                type: "warning",
+                                showCancelButton: false,
+                                confirmButtonColor: "#3085d6",
+                                confirmButtonText: "Yes",
+                            }).then(result => {
+                                location.reload();
+                            })
+                        }else{
+                            location.reload();
+                        }
                     },
                 });
-        }})
+            }
+            
+        })
         
     }
     
@@ -997,9 +1037,29 @@ function addRinMAT(th){
 	$('#RinTanggunganMAT').slideToggle('slow');
 }
 
-function addRinPasangBan(th){
+// function addRinPasangBan(th){
+// 	var title = $(th).text();
+// 	$('#RinPasangBan').slideToggle('slow');
+// }
+
+function addRinPasangBan12v(th){
 	var title = $(th).text();
-	$('#RinPasangBan').slideToggle('slow');
+	$('#RinPasangBan12v').slideToggle('slow');
+}
+
+function addRinPasangBan12nv(th){
+	var title = $(th).text();
+	$('#RinPasangBan12nv').slideToggle('slow');
+}
+
+function addRinPasangBan13v(th){
+	var title = $(th).text();
+	$('#RinPasangBan13v').slideToggle('slow');
+}
+
+function addRinPasangBan13nv(th){
+	var title = $(th).text();
+	$('#RinPasangBan13nv').slideToggle('slow');
 }
 
 function addRinKOM_src(th, num){
@@ -1026,9 +1086,29 @@ function addRinMAT_src(th, num){
 	$('#RinTanggunganMAT'+num).slideToggle('slow');
 }
 
-function addRinPasangBan_src(th, num){
+// function addRinPasangBan_src(th, num){
+// 	var title = $(th).text();
+// 	$('#RinPasangBan'+num).slideToggle('slow');
+// }
+
+function addRinPasangBan12v_src(th, num){
 	var title = $(th).text();
-	$('#RinPasangBan'+num).slideToggle('slow');
+	$('#RinPasangBan12v'+num).slideToggle('slow');
+}
+
+function addRinPasangBan12nv_src(th, num){
+	var title = $(th).text();
+	$('#RinPasangBan12nv'+num).slideToggle('slow');
+}
+
+function addRinPasangBan13v_src(th, num){
+	var title = $(th).text();
+	$('#RinPasangBan13v'+num).slideToggle('slow');
+}
+
+function addRinPasangBan13nv_src(th, num){
+	var title = $(th).text();
+	$('#RinPasangBan13nv'+num).slideToggle('slow');
 }
 
 function schRekap(th) {

@@ -297,6 +297,12 @@ $("#nomor_sop").change(function(){
 		$("#nomor_sop_cw").val(number_rev);
 })
 
+$("#number_sop-cw").change(function(){
+	var number = $(this).val();
+	var number_rev = (number>9)?(number>99)?number:''+number:'0'+number;
+		$(this).val(number_rev);
+})
+
 $("#seksi_copwi_ps").change(function(){
 	var seksicop = $("#seksi_copwi_ps").val();
 	var doc_copwi = $("#cop_wi_cw").val();
@@ -860,7 +866,7 @@ function notif_input_cop_wi() {
 		var e = $("#date_rev_cw").val();
 		var f = $("#number_rev-cw").val();
 		var g = $("#doc_sop_cw").val();
-		var h = $("#nomor_sop_cw").val();
+		var h = $("#number_sop-cw").val();
 		var x = 'SOP-'+g+'-'+h;
 		var i = $("#pic-cw").val();
 		var j = $("#seksi_copwi_ps option:selected").text();

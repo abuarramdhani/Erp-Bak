@@ -1961,3 +1961,292 @@ $(document).on('ready', function(){
     })
 })
 // end detail presensi
+
+// start presensi hari ini
+$(document).on('ready', function(){
+    var tblMPRPresensiHariIniDetail = $('#tblMPRPresensiHariIniDetail').DataTable({
+        "lengthMenu": [
+            [ 5, 10, 25, 50, -1 ],
+            [ '5 rows', '10 rows', '25 rows', '50 rows', 'Show all' ]
+        ],
+        "pageLength": 10,
+        "dom" : 'Blfrtip',
+        "buttons" : [
+            'excel', 'pdf'
+        ],      
+    });
+
+    $('.angka').on('click',function(){
+        params = $(this).data('params');
+        console.log(params)
+        $('.angka div').css('background-color','white');
+        $('.angka div').css('color','black');
+        $(this).closest('.panel-body').find('[data-params='+params+'] div').css('background-color','#2196F3');
+        $(this).closest('.panel-body').find('[data-params='+params+'] div').css('color','white');
+        $('#ldgMPRPresensiHariIniLoading').show();
+        $.ajax({
+            url: baseurl+'MasterPresensi/DataPresensi/PresensiHariIni/detail/'+params,
+            error: function(xhr,status,error){
+                $('#ldgMPRPresensiHariIniLoading').hide();
+                swal.fire({
+                    title: xhr['status'] + "(" + xhr['statusText'] + ")",
+                    html: xhr['responseText'],
+                    type: "error",
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#d63031',
+                })
+            },
+            success: function(result){
+                if(obj = JSON.parse(result)){
+                    $('#mdlMPPRPresensiHariIniDetail').modal('show');
+                    tblMPRPresensiHariIniDetail.clear().draw();
+                    obj.map(function(value,index){
+                        tblMPRPresensiHariIniDetail.row.add([
+                            (index +1),
+                            value['dept'],
+                            value['bidang'],
+                            value['unit'],
+                            value['seksi'],
+                            value['noind'],
+                            value['nama'],
+                            value['waktu'],
+                            value['lokasi'],
+                            value['shift']
+                        ]).draw(false);
+
+                    })
+                    tblMPRPresensiHariIniDetail.columns.adjust();
+                }
+                $('#ldgMPRPresensiHariIniLoading').hide();
+            }
+        })
+    })
+
+    $('#btnMPRPresensiHariIniKirimEmail').on('click', function(){
+        $('#mdlMPPRPresensiHariIniKirimEmail').modal('show');
+    })
+
+    $('#btnMPRPresensiHariIniSubmitEmail').on('click', function(){
+        email =$('#txtMPRPresensiHariIniEmail').val();
+        if(email.length > 0){
+            $('#ldgMPRPresensiHariIniLoading').show();
+            $.ajax({
+                type: 'POST',
+                data: {
+                    email: email
+                },
+                url: baseurl+'MasterPresensi/DataPresensi/PresensiHariIni/sendEmail',
+                error: function(xhr,status,error){
+                    $('#ldgMPRPresensiHariIniLoading').hide();
+                    swal.fire({
+                        title: xhr['status'] + "(" + xhr['statusText'] + ")",
+                        html: xhr['responseText'],
+                        type: "error",
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#d63031',
+                    })
+                },
+                success: function(result){
+                    if(result.trim() != "success"){
+                        swal.fire({
+                            title: "Oopss!!",
+                            html: result,
+                            type: "error",
+                            confirmButtonText: 'OK',
+                            confirmButtonColor: '#d63031',
+                        })
+                    }else{
+                        swal.fire(
+                            'success',
+                            'Email Berhasil Dikirim!',
+                            'success'
+                        )
+                    }
+                    $('#ldgMPRPresensiHariIniLoading').hide();
+                }
+            })
+        }
+    })
+})
+// end presensi hari ini
+
+// start bantuan upah
+$(document).on('ready', function(){
+    var tblMPRBantuanUpahIndex = $('#tbl-MPR-BantuanUpah-Index').DataTable({
+        "lengthMenu": [
+            [ 10, 25, 50, -1 ],
+            [ '10 rows', '25 rows', '50 rows', 'Show all' ]
+        ],
+        "dom" : 'Bfrtip',
+        "buttons" : [
+            'pageLength'
+        ]
+    });
+
+    var tblMPRBantuanUpahHasilProses = $('#tbl-MPR-BantuanUpah-HasilProses').DataTable({
+        "scrollX" : true,
+        "lengthMenu": [
+            [ 10, 25, 50, -1 ],
+            [ '10 rows', '25 rows', '50 rows', 'Show all' ]
+        ],
+        "dom" : 'Bfrtip',
+        "buttons" : [
+            'pageLength'
+        ],
+        "fixedColumns":   {
+            leftColumns: 5
+        },
+    });
+
+    $('#txt-MPR-BantuanUpah-Periode').daterangepicker({
+        "autoclose": true,
+        "todayHiglight": true,
+        locale: {
+            cancelLabel: 'Clear',
+            "format": "YYYY-MM-DD",
+            "separator": " - ",
+        }
+    });
+
+    $('#btn-MPR-BantuanUpah-Proses').on('click', function(){
+        periode = $('#txt-MPR-BantuanUpah-Periode').val();
+        hubker = $('#slc-MPR-BantuanUpah-StatusPekerja').val();
+        $('#MPR-status-Read').val("1");
+        
+        $('#ldg-MPR-BantuanUpah-progress').css("width","0%");
+        $.ajax({
+            data : {
+                periode : periode,
+                hubker: hubker
+            },
+            url : baseurl + 'MasterPresensi/ReffGaji/BantuanUpah/Hitung',
+            type : 'GET',
+            error: function(xhr,status,error){
+                swal.fire({
+                    title: xhr['status'] + "(" + xhr['statusText'] + ")",
+                    html: xhr['responseText'],
+                    type: "error",
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#d63031',
+                })
+                $('#MPR-status-Read').val("0");
+            },
+            success: function(result){
+                $('#MPR-status-Read').val("0");
+                obj = JSON.parse(result);
+                tblMPRBantuanUpahHasilProses.clear().draw();
+                // console.log(obj);
+                obj.detail.forEach(function(daftar, index){
+                    tblMPRBantuanUpahHasilProses.row.add([
+                        index+1,
+                        daftar.noind ,
+                        daftar.nama,
+                        daftar.tanggal_perhitungan_awal + " s/d " + daftar.tanggal_perhitungan_akhir,
+                        daftar.lokasi_kerja,
+                        daftar.kom_gp,
+                        daftar.persen_gp,
+                        daftar.kom_if,
+                        daftar.persen_if,
+                        daftar.kom_ip,
+                        daftar.persen_ip,
+                        daftar.kom_ipt,
+                        daftar.persen_ipt,
+                        daftar.kom_ik,
+                        daftar.persen_ik,
+                        daftar.kom_ikr,
+                        daftar.persen_ikr,
+                        daftar.kom_ins_kepatuhan,
+                        daftar.persen_ins_kepatuhan,
+                        daftar.kom_ins_kemahalan,
+                        daftar.persen_ins_kemahalan,
+                        daftar.kom_ins_penempatan,
+                        daftar.persen_ins_penempatan,
+                        daftar.kategori,
+                        daftar.keterangan
+                    ]).draw(false);
+                })
+
+                $('#btn-MPR-BantuanUpah-Proses-Pdf').data('id', obj.id);
+                $('#btn-MPR-BantuanUpah-Proses-Excel').data('id', obj.id);
+
+            }
+        })
+    })
+
+    $('#btn-MPR-BantuanUpah-Proses-Pdf').on('click', function(){
+        id = $(this).data('id');
+        if (id.length !== 0) {
+            window.open(baseurl + "MasterPresensi/ReffGaji/BantuanUpah/Pdf/" + id,"_blank");
+        }else{
+            swal.fire(
+                'Peringatan!',
+                'Pastikan Anda Sudah Memproses!',
+                'warning'
+            )
+        }
+    })
+    $('#btn-MPR-BantuanUpah-Proses-Excel').on('click', function(){
+        id = $(this).data('id');
+        if (id.length !== 0) {
+            window.open(baseurl + "MasterPresensi/ReffGaji/BantuanUpah/Excel/" + id,"_blank");
+        }else{
+            swal.fire(
+                'Peringatan!',
+                'Pastikan Anda Sudah Memproses!',
+                'warning'
+            )
+        }
+    })
+
+    $('#tbl-MPR-BantuanUpah-Index').on('click','.btn-MPR-BantuanUpah-Hapus',function(){
+        id = $(this).data('id');
+
+        Swal.fire({
+            title: 'Anda yakin ingin menghapus data ini ?',
+            html: "Daya yang sudah dihapus tidak dapat dikembalikan",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, Hapus Data',
+            cancelButtonText: 'Tidak'
+        }).then((result) => {
+            if (result.value) {
+                $.ajax({
+                    url : baseurl + 'MasterPresensi/ReffGaji/BantuanUpah/Hapus/' + id,
+                    type : 'GET',
+                    error: function(xhr,status,error){
+                        swal.fire({
+                            title: xhr['status'] + "(" + xhr['statusText'] + ")",
+                            html: xhr['responseText'],
+                            type: "error",
+                            confirmButtonText: 'OK',
+                            confirmButtonColor: '#d63031',
+                        })
+                    },
+                    success: function(result){
+                        obj = JSON.parse(result);
+                        tblMPRBantuanUpahIndex.clear().draw();
+                        // console.log(obj);
+                        obj.forEach(function(daftar, index){
+                            tblMPRBantuanUpahIndex.row.add([
+                                index+1,
+                                daftar.tanggal,
+                                daftar.user,
+                                daftar.periode,
+                                daftar.hubker,
+                                `<a href="${baseurl + "MasterPresensi/ReffGaji/BantuanUpah/Detail/" + daftar.id}" class="btn btn-info">Detail</a>
+                                <a target="_blank" href="${baseurl + "MasterPresensi/ReffGaji/BantuanUpah/Pdf/" + daftar.id}" class="btn btn-danger">Pdf</a>
+                                <a target="_blank" href="${baseurl + "MasterPresensi/ReffGaji/BantuanUpah/Excel/" + daftar.id}" class="btn btn-success">Excel</a>
+                                <button type="button" data-id="${daftar.id}" class="btn btn-danger btn-MPR-BantuanUpah-Hapus">Hapus</button>`
+                            ]).draw(false);
+                        })
+                    }
+                })
+            }
+        });
+    })
+})
+// end bantuan upah
+
+ 

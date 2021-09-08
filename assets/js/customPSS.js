@@ -207,7 +207,9 @@ $(document).ready(function () {
 		}
 	});
 
-	$(table.table().header()).addClass("highlight");
+	if(typeof table !== 'undefined'){
+		$(table.table().header()).addClass("highlight");
+	}
 
 	$(".pss_coba_document").on("click", "#pssbtnhpsbrs", function () {
 		$("#psstblsh").DataTable().row(".selected").remove().draw(false);
@@ -233,7 +235,9 @@ function ips_swetAlert() {
 }
 
 function pss_init() {
-	$(".tbl_ips_pr_shift").DataTable();
+	$(".tbl_ips_pr_shift").DataTable({
+		"scrollX": true
+	});
 }
 
 function pss_init_approve() {
@@ -419,7 +423,9 @@ function show_success(stat) {
 
 $(document).ready(function () {
 	// js untuk tukar shift
-	$(".tabel_tukarShift").DataTable({});
+	$(".tabel_tukarShift").DataTable({
+		"scrollX": true
+	});
 
 	initTglPick(); //untuk menginisialisasi tanggalnya
 

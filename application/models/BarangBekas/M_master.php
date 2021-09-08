@@ -8,6 +8,81 @@ class M_master extends CI_Model
         $this->oracle = $this->load->database('oracle', true);
     }
 
+    public function getAllItemBarkas($value='')
+    {
+      return $this->oracle->query(" SELECT msib.inventory_item_id
+      ,msib.segment1
+      ,msib.description
+      ,msib.MAX_MINMAX_QUANTITY
+      ,moqd.qty_onhand
+      ,moqd.subinventory_code
+      ,(select mil.SEGMENT1
+          from mtl_item_locations mil
+         where mil.INVENTORY_LOCATION_ID = moqd.LOCATOR_ID
+         ) locator
+FROM (
+SELECT DISTINCT msib.inventory_item_id, msib.segment1,
+                msib.description, msib.MAX_MINMAX_QUANTITY,
+                msib.ORGANIZATION_ID
+           FROM mtl_system_items_b msib
+          WHERE (msib.segment1 LIKE 'DA%' OR msib.segment1 IN ('LBAFV0006'))
+            AND (msib.organization_id = 102 OR msib.organization_id = 101)
+            AND msib.inventory_item_status_code = 'Active'
+            AND msib.stock_enabled_flag = 'Y'
+            AND msib.mtl_transactions_enabled_flag = 'Y'
+            ) MSIB
+LEFT JOIN (select sum (moqd.PRIMARY_TRANSACTION_QUANTITY) qty_onhand
+                 ,moqd.INVENTORY_ITEM_ID
+                 ,moqd.ORGANIZATION_ID
+                 ,moqd.SUBINVENTORY_CODE
+                 ,moqd.LOCATOR_ID
+             from mtl_onhand_quantities_detail moqd
+         group by moqd.ORGANIZATION_ID
+                 ,moqd.INVENTORY_ITEM_ID
+                 ,moqd.SUBINVENTORY_CODE
+                 ,moqd.LOCATOR_ID
+                 ) moqd
+ON moqd.INVENTORY_ITEM_ID = msib.INVENTORY_ITEM_ID
+AND moqd.ORGANIZATION_ID = msib.ORGANIZATION_ID")->result_array();
+    }
+
+    public function getFilterGrafik($data)
+    {
+      if (!empty($data)) {
+        $subinv_ = explode(' - ', $data['subinv']);
+        $subinv = $subinv_[0];
+        $org_id = $data['io'];
+
+        if (!empty($data['locator'])) {
+          $locator = $data['locator'];
+        }else {
+          $locator = "NULL";
+        }
+
+        return $this->oracle->query("SELECT DISTINCT msib.inventory_item_id, msib.segment1,
+                msib.description, msib.MAX_MINMAX_QUANTITY max_quantity
+                                        ,khs_inv_qty_oh(msib.ORGANIZATION_ID,msib.INVENTORY_ITEM_ID, moqd.SUBINVENTORY_CODE, moqd.LOCATOR_ID,'') onhand
+                                      from mtl_system_items_b msib, mtl_onhand_quantities_detail moqd
+                                      where msib.ORGANIZATION_ID = $org_id
+                                      and (msib.segment1 LIKE 'DA%' OR msib.segment1 = 'LBAFV0006')
+                                      and moqd.INVENTORY_ITEM_ID = msib.INVENTORY_ITEM_ID
+           							  and moqd.ORGANIZATION_ID = msib.ORGANIZATION_ID
+           							  and moqd.SUBINVENTORY_CODE = '$subinv'")->result_array();
+      }
+    }
+
+    public function transact_acc($value='')
+    {
+      $data = $this->oracle->get('KHS_TRANSACT_BARKAS')->result_array();
+      $d = [];
+      if (!empty($data)) {
+        foreach ($data as $key => $value) {
+          $d[] = $value['NO_INDUK'];
+        }
+      }
+      return $d;
+    }
+
     public function getSeksi($value='')
     {
       return $this->oracle->query("SELECT ffv.FLEX_VALUE as COST_CENTER,
@@ -30,40 +105,59 @@ class M_master extends CI_Model
 
     public function item($d, $subinv, $locator, $org_id)
     {
-      $sql = "SELECT msi.organization_id, msi.secondary_inventory_name subinv,
-                   msi.description, mil.segment1 locators, msib.inventory_item_id,
-                   msib.segment1, msib.description item_desc,
-                   NVL (SUM (moqd.transaction_quantity), 0) oh, msib.primary_uom_code
-              FROM mtl_secondary_inventories msi,
-                   mtl_item_locations mil,
-                   mtl_system_items_b msib,
-                   mtl_onhand_quantities_detail moqd
-             WHERE msi.disable_date IS NULL
-               -- AND msi.organization_id IN (101, 102)
-               AND msi.organization_id = mil.organization_id(+)
-               AND msi.secondary_inventory_name = mil.subinventory_code(+)
-               AND msi.organization_id = msib.organization_id
-               AND msib.organization_id = moqd.organization_id
-               AND msi.secondary_inventory_name = moqd.subinventory_code
-               -- AND mil.inventory_location_id = moqd.locator_id
-               AND msib.inventory_item_id = moqd.inventory_item_id
-               AND msi.organization_id = $org_id --102
-               AND msi.secondary_inventory_name = '$subinv' --'AFVAL-DM'
-               AND NVL (mil.segment1, 0) IN (NVL ('$locator', NVL (mil.segment1, 0))) --'ASSEMBLING'
-               AND (msib.segment1 LIKE '%$d%'
-                    OR msib.description LIKE '%$d%')
-          GROUP BY msi.organization_id,
-                   msi.secondary_inventory_name,
-                   msi.description,
-                   mil.segment1,
-                   msib.inventory_item_id,
-                   msib.segment1,
-                   msib.description,
-                   msib.primary_uom_code
-          ORDER BY msi.secondary_inventory_name";
-      //tambah segment1 untuk liat munculin  berdasrkan itiem_code;
-      $query = $this->oracle->query($sql);
-      return $query->result_array();
+      if ($subinv == '-' && $locator == '-') {
+        //karan mst/81 tidak pernah di buka periodnya sejak oracle lahir
+        // return $this->item_pbbns($d);
+        $sql = "SELECT msib.INVENTORY_ITEM_ID,
+        msib.segment1,
+        msib.description item_desc,
+        msib.primary_uom_code,
+        msib.organization_id,
+        ('~') oh
+                FROM mtl_system_items_b msib
+                WHERE msib.organization_id = 81
+                 AND msib.inventory_item_status_code = 'Active'
+                 AND (msib.segment1 LIKE '%$d%'
+                      OR msib.description LIKE '%$d%')
+                ORDER BY 1";
+        $query = $this->oracle->query($sql);
+        return $query->result_array();
+      }else {
+        $sql = "SELECT msi.organization_id, msi.secondary_inventory_name subinv,
+                     msi.description, mil.segment1 locators, msib.inventory_item_id,
+                     msib.segment1, msib.description item_desc,
+                     NVL (SUM (moqd.transaction_quantity), 0) oh, msib.primary_uom_code
+                FROM mtl_secondary_inventories msi,
+                     mtl_item_locations mil,
+                     mtl_system_items_b msib,
+                     mtl_onhand_quantities_detail moqd
+               WHERE msi.disable_date IS NULL
+                 -- AND msi.organization_id IN (101, 102)
+                 AND msi.organization_id = mil.organization_id(+)
+                 AND msi.secondary_inventory_name = mil.subinventory_code(+)
+                 AND msi.organization_id = msib.organization_id
+                 AND msib.organization_id = moqd.organization_id
+                 AND msi.secondary_inventory_name = moqd.subinventory_code
+                 -- AND mil.inventory_location_id = moqd.locator_id
+                 AND msib.inventory_item_id = moqd.inventory_item_id
+                 AND msi.organization_id = $org_id --102
+                 AND msi.secondary_inventory_name = '$subinv' --'AFVAL-DM'
+                 AND NVL (mil.segment1, 0) IN (NVL ('$locator', NVL (mil.segment1, 0))) --'ASSEMBLING'
+                 AND (msib.segment1 LIKE '%$d%'
+                      OR msib.description LIKE '%$d%')
+            GROUP BY msi.organization_id,
+                     msi.secondary_inventory_name,
+                     msi.description,
+                     mil.segment1,
+                     msib.inventory_item_id,
+                     msib.segment1,
+                     msib.description,
+                     msib.primary_uom_code
+            ORDER BY msi.secondary_inventory_name";
+        //tambah segment1 untuk liat munculin  berdasrkan itiem_code;
+        $query = $this->oracle->query($sql);
+        return $query->result_array();
+      }
     }
 
     public function getItemTujuan($value='')
@@ -90,6 +184,22 @@ class M_master extends CI_Model
                     OR msib.description LIKE '%$d%')
 
               ORDER BY 1";
+      $query = $this->oracle->query($sql);
+      return $query->result_array();
+    }
+
+    public function item_barkas($subinv, $locator, $org_id)
+    {
+
+      $sql = "SELECT DISTINCT msib.inventory_item_id, msib.segment1,
+                msib.description, msib.MAX_MINMAX_QUANTITY max_quantity
+                ,nvl(khs_inv_qty_oh(msib.ORGANIZATION_ID,msib.INVENTORY_ITEM_ID,'$subinv', '$locator',''), 0) onhand
+              from mtl_system_items_b msib
+              where msib.ORGANIZATION_ID = $org_id
+              and (msib.segment1 LIKE 'DA%' OR msib.segment1 = 'LBAFV0006')
+              -- and moqd.INVENTORY_ITEM_ID = msib.INVENTORY_ITEM_ID
+						  -- and moqd.ORGANIZATION_ID = msib.ORGANIZATION_ID
+              ORDER BY 2";
       $query = $this->oracle->query($sql);
       return $query->result_array();
     }
@@ -187,6 +297,18 @@ class M_master extends CI_Model
       return $this->oracle->query("SELECT document_number from KHS_PENGIRIMAN_BARANG_BEKAS where DOCUMENT_NUMBER = '$doc_no' AND STATUS = 'SUDAH TRANSACT'")->row_array();
     }
 
+    public function rekapData($value='')
+    {
+      return $this->oracle->query("SELECT pbb.*,
+                              	  (SELECT DISTINCT segment1
+                              	  FROM mtl_system_items_b
+                              	  WHERE inventory_item_id = pbb.item_id_tujuan) item_tujuan,
+                              	  (SELECT DISTINCT mil.segment1
+                                     FROM mtl_item_locations mil
+                                     WHERE mil.inventory_location_id = pbb.locator_id_tujuan) locator_tujuan
+                              	  from KHS_PENGIRIMAN_BARANG_BEKAS pbb ORDER BY pbb.ID_PBB DESC")->result_array();
+    }
+
     /*
     | -------------------------------------------------------------------------
     | RUN PROCEDURE
@@ -238,6 +360,14 @@ class M_master extends CI_Model
       if (!empty(array_search($master['subinv_tujuan'], $subinv_tujuan))) {
         $io_tujuan = 101;
       }
+
+      $this->oracle->where('DOCUMENT_NUMBER', $doc_num)
+                   ->update('KHS_PENGIRIMAN_BARANG_BEKAS',
+                   [
+                     'ITEM_ID_TUJUAN' => $master['item_id_tujuan'],
+                     'SUBINV_TUJUAN' => $master['subinv_tujuan'],
+                     'LOCATOR_ID_TUJUAN' => $master['locator_tujuan']
+                   ]);
 
       foreach ($data as $key => $value) {
         $this->oracle->query("INSERT INTO khs_misc_issue_receipt
@@ -291,7 +421,7 @@ class M_master extends CI_Model
     */
     public function pbb_transact($doc_no)
     {
-      $this->pbb_api_transact($doc_no); // run api
+      // $this->pbb_api_transact($doc_no); // run api
 
       $this->oracle->where('DOCUMENT_NUMBER', $doc_no)->update('KHS_PENGIRIMAN_BARANG_BEKAS', ['STATUS' => "SUDAH TRANSACT"]);
       if ($this->oracle->affected_rows()) {
@@ -324,9 +454,14 @@ class M_master extends CI_Model
     public function insertPBBS($data)
     {
       if (!empty($data)) {
-        $subinv_ = explode(' - ', $data['subinv']);
-        $subinv = $subinv_[0];
-        $org_id = $subinv_[1];
+        if (!empty($data['subinv'])) {
+          $subinv_ = explode(' - ', $data['subinv']);
+          $subinv = $subinv_[0];
+          $org_id = $subinv_[1];
+        }else {
+          $subinv = '';
+          $org_id = $data['io'];
+        }
 
         $uhuk = explode(' ~ ', $data['seksi_n_cc']);
         $seksi = $uhuk[0];
@@ -339,14 +474,19 @@ class M_master extends CI_Model
         }
 
         $doc_no = $this->generate_doc_num();
+        $type_document = $data['jenis_pbb'];
 
         foreach ($data['item_code'] as $key => $value) {
           $item = explode(' - ', $value);
           $item_code = $item[0];
           $uom = $item[1];
           $inv_item_id = $item[2];
-          $onhand = $item[3];
+          $onhand = $item[3] == '~' ? '' : $item[3];
           $jumlah = $data['jumlah'][$key];
+
+          $item_id_barkas = explode(' ~ ', $data['item_barkas'][$key])[0];
+          $item_barkas = explode(' ~ ', $data['item_barkas'][$key])[1];
+          $estimasi_berat = $data['estimasi_berat'][$key];
 
           $this->oracle->query("INSERT INTO KHS_PENGIRIMAN_BARANG_BEKAS (DOCUMENT_NUMBER
                                  ,TYPE_DOCUMENT
@@ -362,9 +502,12 @@ class M_master extends CI_Model
                                  ,CREATED_DATE
                                  ,BERAT_TIMBANG
                                  ,ORG_ID
+                                 ,INVENTORY_ITEM_ID_BARKAS
+                                 ,ITEM_BARKAS
+                                 ,BERAT_ESTIMASI
                                  )
                                 VALUES ('$doc_no'
-                                       ,'PBB-S'
+                                       ,'$type_document'
                                        ,'$seksi'
                                        ,'$cost_center'
                                        ,'$subinv'
@@ -377,6 +520,9 @@ class M_master extends CI_Model
                                        ,SYSDATE
                                        ,NULL
                                        ,$org_id
+                                       ,$item_id_barkas
+                                       ,'$item_barkas'
+                                       ,$estimasi_berat
                                       )
                                   ");
         }
@@ -454,6 +600,44 @@ class M_master extends CI_Model
         }
       }
 
+    }
+
+    public function cek_max_onhand($item, $berat, $subinv, $locator, $org_id)
+    {
+      $item_sama = array_unique($item);
+      foreach ($item_sama as $key2 => $value2) {
+        $berat_m = 0;
+        foreach ($item as $key => $value) {
+          if ($value2 == $value) {
+            $berat_m+=$berat[$key];
+          }
+        }
+        $berat_final[] = $berat_m;
+      }
+
+      foreach ($item_sama as $key => $value) {
+        $item_id = explode(' ~ ', $value)[0];
+        $item_code = explode(' ~ ', $value)[1];
+        $cek = $this->oracle->query("SELECT DISTINCT msib.inventory_item_id, msib.segment1,
+                                          msib.description, msib.MAX_MINMAX_QUANTITY,
+                                          nvl(khs_inv_qty_oh(msib.ORGANIZATION_ID, msib.INVENTORY_ITEM_ID, '$subinv', '$locator',''), 0) onhand
+                                     FROM mtl_system_items_b msib
+                                    WHERE msib.INVENTORY_ITEM_ID = '$item_id'
+                                      AND msib.organization_id = '$org_id'
+                                      AND msib.inventory_item_status_code = 'Active'
+                                      AND msib.stock_enabled_flag = 'Y'
+                                      AND msib.mtl_transactions_enabled_flag = 'Y'")->row_array();
+
+        if (empty($cek['INVENTORY_ITEM_ID'])) {
+          return ['status' => 2, 'message' => "Item $item_code tidak ada di io $org_id"];
+        }elseif ((!empty($cek['ONHAND']) && !empty($cek['MAX_MINMAX_QUANTITY'])) || (empty($cek['ONHAND']) && !empty($cek['MAX_MINMAX_QUANTITY']))) {
+          if ($berat_final[$key] > ($cek['MAX_MINMAX_QUANTITY'] - $cek['ONHAND'])) {
+            $h = $cek['MAX_MINMAX_QUANTITY'] - $cek['ONHAND'];
+            return ['status' => 2, 'message' => "Jumlah Estimasi Berat Item $item_code ($berat_final[$key]) > MAX - Onhand ($h) !"];
+          }
+        }
+      }
+      return ['status' => 200];
     }
 
 

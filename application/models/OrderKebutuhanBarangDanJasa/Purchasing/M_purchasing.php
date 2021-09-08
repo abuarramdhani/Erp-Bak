@@ -106,7 +106,7 @@ class M_purchasing extends CI_Model
     public function updateReleasedOrder($pre_req_id, $order)
     {
         $oracle = $this->load->database('oracle', true);
-        $oracle->set('APPROVED_DATE',"SYSDATE",false);
+        $oracle->set('APPROVED_DATE', "SYSDATE", false);
         $oracle->where('PRE_REQ_ID', $pre_req_id);
         $oracle->update('KHS.KHS_OKBJ_PRE_REQ_HEADER', $order);
     }
@@ -120,7 +120,7 @@ class M_purchasing extends CI_Model
         return $query->result_array();
     }
 
-    public function getActOrder($person_id,$cond)
+    public function getActOrder($person_id, $cond)
     {
         $oracle = $this->load->database('oracle', true);
         $query = $oracle->query("SELECT
@@ -247,11 +247,11 @@ class M_purchasing extends CI_Model
         return $query->result_array();
     }
 
-    public function UpdateOrder($pre_req_id,$orderHead)
+    public function UpdateOrder($pre_req_id, $orderHead)
     {
         $oracle = $this->load->database('oracle', true);
-        $oracle->where('PRE_REQ_ID',$pre_req_id);
-        $oracle->update('KHS.KHS_OKBJ_ORDER_HEADER',$orderHead);
+        $oracle->where('PRE_REQ_ID', $pre_req_id);
+        $oracle->update('KHS.KHS_OKBJ_ORDER_HEADER', $orderHead);
     }
 
     public function cetakHeader($pre_req_id)
@@ -397,5 +397,26 @@ class M_purchasing extends CI_Model
             )
             ->row()
             ->count;
+    }
+    public function list_outstandingApprover()
+    {
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query("select * from khs_okbj_outstand_approver_v");
+
+        return $query->result_array();
+    }
+    public function list_outstandingPengelola()
+    {
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query("select * from khs_okbj_outstand_pengelola_v");
+
+        return $query->result_array();
+    }
+    public function list_outstandingPuller()
+    {
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query("select * from khs_okbj_outstand_puller_v");
+
+        return $query->result_array();
     }
 }

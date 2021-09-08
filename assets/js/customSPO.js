@@ -279,7 +279,7 @@ $(document).ready(function () {
   });
 
   $("#txtPMSPOBCCEmailAddr")
-    .val("purchasingsec12.quick@gmail.com")
+    .val("purchasingsec12.quick1@gmail.com")
     .on({
       click: function () {
         $(".divPMSPOBCCEmailAddrWarn").fadeIn();

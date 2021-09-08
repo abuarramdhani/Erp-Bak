@@ -1369,74 +1369,56 @@ $(function () {
     console.log("STATUS CUTI : " + cuti);
     if (noind) {
       $.ajax({
-        type: "POST",
+        type: "GET",
         data: { noind: noind, cuti: cuti },
-        url: baseurl + "MasterPekerja/PerhitunganPesangon/detailPekerja",
+        url: baseurl + "MasterPekerja/PerhitunganPesangon/getDetailPekerja",
         success: function (result) {
-          if (result !== "Data Kosong") {
-            var res = JSON.parse(result);
-            $("#txtSeksi").val(res[0]["seksi"]);
-            $("#txtUnit").val(res[0]["unit"]);
-            $("#txtDepartemen").val(res[0]["departemen"]);
-            $("#txtLokasi").val(res[0]["lokasi_kerja"]);
-            $("#txtJabatan").val(res[0]["pekerjaan"]);
-            $("#txtDiangkat").val(res[0]["diangkat"]);
-            $("#txtAlamat").val(res[0]["alamat"]);
-            $("#txtLahir").val(res[0]["tempat"]);
-            $("#txtMasaKerja").val(res[0]["masakerja"]);
-            if (cuti == "0") {
-              $("#txtSisaCuti").val("0 hari");
-            } else {
-              $("#txtSisaCuti").val(res[0]["sisacuti"]);
+          if (result !== "Data Kosong" ) {
+            var res = JSON.parse(result)
+            $("#txtSeksi").val(res["seksi"]);
+            $("#txtUnit").val(res["unit"]);
+            $("#txtDepartemen").val(res["dept"]);
+            $("#txtLokasi").val(res["lokasi_kerja"]);
+            $("#txtJabatan").val((res["pekerjaan"] !== null && res["pekerjaan"].length > 0) ? res["pekerjaan"] : res["jabatan"]);
+            $("#txtDiangkat").val(res["diangkat"]);
+            $("#txtAlamat").val(res["alamat"] + ", " + res['kec'] + ", " + res['kab'] + ", " + res['prop']);
+            $("#txtLahir").val(res["tempat_lahir"] + ", " + res["tanggal_lahir"]);
+            $("#txtMasaKerja").val(res["masa_kerja"]['tahun'] + " Tahun " + res["masa_kerja"]['bulan'] + " Bulan " + res["masa_kerja"]['hari'] + " Hari");
+            $("#txtSisaCuti").val(res["sisa_cuti"] + " Hari");
+            $("#txtCuti").val(res['sisa_cuti']);
+            
+            $("#txtStatus").val(res["sebab_keluar"]);
+            $("#txtHukum").val(res["dasar_hukum"]);
+            $("#txtUangPesangon").val(" ".repeat(6 - res["pengali_u_pesangon"].length) + res["pengali_u_pesangon"] + " X " + " ".repeat(6 - res['banyak_gp']['u_pesangon'].length) + res['banyak_gp']['u_pesangon'] + " GP");
+            $("#txtUangUMPK").val(" ".repeat(6 - res["pengali_u_pmk"].length) + res["pengali_u_pmk"] + " X " + " ".repeat(6 - res['banyak_gp']['u_pmk'].length) + res['banyak_gp']['u_pmk'] + " GP");
+            $("#txtSisaCutiHari").val(" ".repeat(15 - res["sisa_cuti"].length) + res["sisa_cuti"] + " (GP/30)");
+            $("#txtTahun").val(res["masa_kerja"]['tahun']);
+            $("#txtBulan").val(res["masa_kerja"]['bulan']);
+            $("#txtHari").val(res["masa_kerja"]['hari']);
+            $("#txtPengaliUPesangon").val(res["pengali_u_pesangon"]);
+            $("#txtPesangon").val(res['banyak_gp']['u_pesangon']);
+            $("#txtPengaliUPMK").val(res["pengali_u_pmk"]);
+            $("#txtUPMK").val(res['banyak_gp']['u_pmk']);
+            
+            $("#txtAkhir").val(res["tglkeluar"]);
+            $("#txtNPWP").val(res["npwp"]);
+            $("#txtNIK").val(res["nik"]);
+            if (res["hari"] == "Minggu") {
+              var styles = {
+                color: "red",
+                fontWeight: "bold",
+              };
+              $(this).css(styles);
             }
-            $("#txtStatus").val(res[0]["alasan"]);
-            $("#txtUangPesangon").val(res[0]["pengali"]);
-            $("#txtUangUMPK").val(res[0]["upmk"]);
-            $("#txtSisaCutiHari").val(res[0]["sisacutihari"]);
-            $("#txtUangGantiRugi").val(res[0]["gantirugi"]);
-            $("#txtTahun").val(res[0]["masakerja_tahun"]);
-            $("#txtBulan").val(res[0]["masakerja_bulan"]);
-            $("#txtHari").val(res[0]["masakerja_hari"]);
-            $("#txtPasal").val(res[0]["pasal"]);
-            $("#txtPesangon").val(res[0]["pesangon"]);
-            $("#txtUPMK").val(res[0]["up"]);
-            if (cuti == "0") {
-              $("#txtCuti").val("0");
-            } else {
-              $("#txtCuti").val(res[0]["cuti"]);
-            }
-            $("#txtRugi").val(res[0]["rugi"]);
-            $("#txtAkhir").val(res[0]["metu"]);
-            $("#txtNPWP").val(res[0]["npwp"]);
-            $("#txtNIK").val(res[0]["nik"]);
-            $("#txtHariLmt").val(function () {
-              if (res["hari_terakhir"] == "Sun") {
-                var styles = {
-                  color: "red",
-                  fontWeight: "bold",
-                };
-                $(this).css(styles);
-                return "Minggu";
-              } else if (res["hari_terakhir"] == "Mon") {
-                return "Senin";
-              } else if (res["hari_terakhir"] == "Tue") {
-                return "Selasa";
-              } else if (res["hari_terakhir"] == "Wed") {
-                return "Rabu";
-              } else if (res["hari_terakhir"] == "Thu") {
-                return "Kamis";
-              } else if (res["hari_terakhir"] == "Fri") {
-                return "Jumat";
-              } else if (res["hari_terakhir"] == "Sat") {
-                return "Sabtu";
-              }
-            });
+            $("#txtHariLmt").val(res["hari"]);
+            $('#btnSubmit').attr('disabled', false);
           } else {
             swal.fire({
               title: "Data pekerja Tidak Ditemukan",
-              text: "Mohon Lakukan Pengecekan Ulang Data Pekerja",
+              text: "Mohon Lakukan Pengecekan Ulang Data Pekerja. Salah satu kemungkinan penyebabnya karena sebab keluar belum sesuai.",
               type: "warning",
             });
+            $('#btnSubmit').attr('disabled', true);
           }
         },
       });
@@ -2988,11 +2970,9 @@ $(".prevSangu").click(function () {
     dataType: "json",
     url: baseurl + "MasterPekerja/PerhitunganPesangon/getDataPreview/" + a,
     success: function (result) {
-      $("#Psg_approver1").val(result.dataPreview[0].pengirim).trigger("change");
-      $("#id_prev_sangu").val(result.dataPreview[0].id).trigger("change");
-      $("#psg_tglCetak")
-        .val(result.dataPreview[0].tgl_cetak_prev)
-        .trigger("change");
+      $("#Psg_approver1").val(result.pengirim).trigger("change");
+      $("#id_prev_sangu").val(result.id_pesangon).trigger("change");
+      $("#psg_tglCetak").val(result.tgl_cetak_prev).trigger("change");
       $("#Modal_Tertanda_Pesangon").modal("show");
     },
   });
@@ -6505,3 +6485,255 @@ $(document).ready(() => {
     allowClear: true,
   })
 })
+
+
+// start sebab keluar
+$(document).on('ready', function(){
+  var tblMPKSebabKeluarList = $('#tblMPKSebabKeluarList').DataTable({
+    columnDefs: [
+      {
+        "targets" : [0,1,2,5,6,7],
+        "className": "text-center"
+      }
+    ]
+  });
+
+  $('#btnMPKSebabKeluarAdd').on('click', function(){
+    $('#txtMPKSebabKeluarKode').attr('disabled', false);
+    $('#divMPKSebabKeluarKodeKet').hide()
+    $('#txtMPKSebabKeluarKode').val('');
+    $('#txtMPKSebabKeluaSebabKeluar').val('');
+    $('#txtMPKSebabKeluarDasarhukum').val('');
+    $('#txtMPKSebabKeluarUpesangon').val('0');
+    $('#txtMPKSebabKeluarUmpk').val('0');
+    $('#txtMPKSebabKeluarUrutan').val(tblMPKSebabKeluarList.page.info().recordsTotal + 1);
+    $('#txtMPKSebabKeluarID').val('');
+    $('#mdlMPKSebabKeluar').modal('show');
+  })
+  $('#tblMPKSebabKeluarList').on('click','.btnMPKSebabKeluarEdit', function(){
+    id = $(this).data('id');
+    $('#ldgMPKSebabKeluarLoading').show();
+    $.ajax({
+      url: baseurl + "MasterPekerja/SebabKeluar/getData/" + id,
+      error: function(xhr,status,error){
+          $('#ldgMPKSebabKeluarLoading').hide();
+          swal.fire({
+              title: xhr['status'] + "(" + xhr['statusText'] + ")",
+              html: xhr['responseText'],
+              type: "error",
+              confirmButtonText: 'OK',
+              confirmButtonColor: '#d63031',
+          })
+      },
+      success: function(result){
+          $('#ldgMPKSebabKeluarLoading').hide();
+          if (obj = JSON.parse(result)) {
+            $('#txtMPKSebabKeluarID').val(id);
+            if (obj.digunakan != "0") {
+              $('#txtMPKSebabKeluarKode').attr('disabled', true);
+              $('#divMPKSebabKeluarKodeKet').show()
+              $('#divMPKSebabKeluarKodeKet b').html(obj.digunakan)
+            }else{
+              $('#txtMPKSebabKeluarKode').attr('disabled', false);
+              $('#divMPKSebabKeluarKodeKet').hide()
+            }
+            $('#txtMPKSebabKeluarKode').val(obj.kode);
+            $('#txtMPKSebabKeluaSebabKeluar').val(obj.sebab_keluar);
+            $('#txtMPKSebabKeluarDasarhukum').val(obj.dasar_hukum);
+            $('#txtMPKSebabKeluarUpesangon').val(obj.pengali_u_pesangon);
+            $('#txtMPKSebabKeluarUmpk').val(obj.pengali_u_pmk);
+            $('#txtMPKSebabKeluarUrutan').val(obj.urutan);
+            $('#mdlMPKSebabKeluar').modal('show');
+          }else{
+            swal.fire({
+                title: "Oops, Something Wrong !!",
+                html: result,
+                type: "error",
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#d63031',
+            })
+          }
+      }
+    })
+  })
+
+  $('#tblMPKSebabKeluarList').on('click','.btnMPKSebabKeluarHapus', function(){
+    id = $(this).data('id');
+    Swal.fire({
+      title: 'Apakah Anda Yakin?',
+      text: "Mengapus data ini secara permanent !",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.value) {
+        $('#ldgMPKSebabKeluarLoading').show();
+        $.ajax({
+          url: baseurl + "MasterPekerja/SebabKeluar/deleteData/" + id,
+          error: function(xhr,status,error){
+              $('#ldgMPKSebabKeluarLoading').hide();
+              swal.fire({
+                  title: xhr['status'] + "(" + xhr['statusText'] + ")",
+                  html: xhr['responseText'],
+                  type: "error",
+                  confirmButtonText: 'OK',
+                  confirmButtonColor: '#d63031',
+              })
+          },
+          success: function(result){
+              $('#ldgMPKSebabKeluarLoading').hide();
+              if (obj = JSON.parse(result)) {
+                swal.fire(
+                  "Sukses !!!",
+                  "Data Berhasil Dihapus",
+                  "success"
+                )
+                tblMPKSebabKeluarList.clear().draw();
+                obj.forEach(function(daftar, index){
+
+                  var tombol = `
+                    <button 
+                      type="button" 
+                      data-id="${daftar.id}" 
+                      class="btn btn-primary btnMPKSebabKeluarEdit"
+                      >
+                      <span class="fa fa-edit"></span>
+                    </button>`
+                  if(daftar.digunakan == 0){
+                    tombol += `
+                      <button 
+                        type="button" 
+                        data-id="${daftar.id}" 
+                        class="btn btn-danger btnMPKSebabKeluarHapus"
+                        >
+                        <span class="fa fa-trash"></span>
+                      </button>`
+                  }
+
+                  tblMPKSebabKeluarList.row.add([
+                    (index + 1),
+                    tombol,
+                    daftar.kode,
+                    daftar.sebab_keluar,
+                    daftar.dasar_hukum,
+                    daftar.pengali_u_pesangon,
+                    daftar.pengali_u_pmk,
+                    daftar.urutan
+                  ]).draw(false);
+                })
+                tblMPKSebabKeluarList.columns.adjust().draw();
+              }else{
+                swal.fire({
+                    title: "Oops, Something Wrong !!",
+                    html: result,
+                    type: "error",
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#d63031',
+                })
+              }
+          }
+        })
+        
+      }
+    });
+  })
+
+  $('#btnMPKSebabKeluarSimpan').on('click', function(){
+    id            = $('#txtMPKSebabKeluarID').val();
+    kode          = $('#txtMPKSebabKeluarKode').val();
+    sebab_keluar  = $('#txtMPKSebabKeluaSebabKeluar').val();
+    dasar_hukum   = $('#txtMPKSebabKeluarDasarhukum').val();
+    pengali_u_pes = $('#txtMPKSebabKeluarUpesangon').val();
+    pengali_u_pmk = $('#txtMPKSebabKeluarUmpk').val();
+    urutan        = $('#txtMPKSebabKeluarUrutan').val();
+    
+    if (kode.length > 0 && sebab_keluar.length > 0) {
+        $('#mdlMPKSebabKeluar').modal('hide');
+        $('#ldgMPKSebabKeluarLoading').show();
+        $.ajax({
+          url: baseurl + "MasterPekerja/SebabKeluar/simpanData",
+          type: 'POST',
+          data: {
+            id            : id,
+            kode          : kode,
+            sebab_keluar  : sebab_keluar,
+            dasar_hukum   : dasar_hukum,
+            pengali_u_pes : pengali_u_pes,
+            pengali_u_pmk : pengali_u_pmk,
+            urutan        : urutan
+          },
+          error: function(xhr,status,error){
+              $('#ldgMPKSebabKeluarLoading').hide();
+              swal.fire({
+                  title: xhr['status'] + "(" + xhr['statusText'] + ")",
+                  html: xhr['responseText'],
+                  type: "error",
+                  confirmButtonText: 'OK',
+                  confirmButtonColor: '#d63031',
+              })
+          },
+          success: function(result){
+              $('#ldgMPKSebabKeluarLoading').hide();
+              if (obj = JSON.parse(result)) {
+                swal.fire(
+                  "Sukses !!!",
+                  "Data Berhasil Disimpan",
+                  "success"
+                )
+                tblMPKSebabKeluarList.clear().draw();
+                obj.forEach(function(daftar, index){
+
+                  var tombol = `
+                    <button 
+                      type="button" 
+                      data-id="${daftar.id}" 
+                      class="btn btn-primary btnMPKSebabKeluarEdit"
+                      >
+                      <span class="fa fa-edit"></span>
+                    </button>`
+                  if(daftar.digunakan == 0){
+                    tombol += `
+                      <button 
+                        type="button" 
+                        data-id="${daftar.id}" 
+                        class="btn btn-danger btnMPKSebabKeluarHapus"
+                        >
+                        <span class="fa fa-trash"></span>
+                      </button>`
+                  }
+
+                  tblMPKSebabKeluarList.row.add([
+                    (index + 1),
+                    tombol,
+                    daftar.kode,
+                    daftar.sebab_keluar,
+                    daftar.dasar_hukum,
+                    daftar.pengali_u_pesangon,
+                    daftar.pengali_u_pmk,
+                    daftar.urutan
+                  ]).draw(false);
+                })
+                tblMPKSebabKeluarList.columns.adjust().draw();
+              }else{
+                swal.fire({
+                    title: "Oops, Something Wrong !!",
+                    html: result,
+                    type: "error",
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#d63031',
+                })
+              }
+          }
+        })
+    }else{
+      swal.fire(
+        "Data Belum Lengkap !!!",
+        "Kode dan sebab keluar wajib diisi",
+        "warning"
+      )
+    }
+  })
+})
+// end sebab keluar

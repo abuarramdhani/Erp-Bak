@@ -135,6 +135,7 @@ class C_Requisition extends CI_Controller
 				'UOM' => $uom[$i],
 				'ORDER_PURPOSE' => $orderReason[$i],
 				'NOTE_TO_PENGELOLA' => $orderNote[$i],
+				'NOTE_TO_BUYER' => $orderNote[$i],
 				'ORDER_STATUS_ID' => 2,
 				'URGENT_FLAG' => $urgentFlag[$i],
 				'URGENT_REASON' => $urgentReason[$i],
@@ -142,7 +143,7 @@ class C_Requisition extends CI_Controller
 				'DESTINATION_ORGANIZATION_ID' => $organization[$i],
 				'DELIVER_TO_LOCATION_ID' => $location[$i],
 				'DESTINATION_SUBINVENTORY' => $subinventory[$i],
-				'ITEM_DESCRIPTION' => $description[$i],
+				'ITEM_DESCRIPTION' => str_replace("'", "''", $description[$i]),
 				'REQUESTER' => $requster,
 				'IS_SUSULAN' => $statusOrder,
 			);
@@ -154,6 +155,7 @@ class C_Requisition extends CI_Controller
 				'UOM' => $uom[$i],
 				'ORDER_PURPOSE' => $orderReason[$i],
 				'NOTE_TO_PENGELOLA' => $orderNote[$i],
+				'NOTE_TO_BUYER' => $orderNote[$i],
 				'ORDER_STATUS_ID' => 2,
 				'URGENT_FLAG' => $urgentFlag[$i],
 				'URGENT_REASON' => $urgentReason[$i],
@@ -288,25 +290,32 @@ class C_Requisition extends CI_Controller
 
 			$getNoindFromOracle = $this->M_requisition->getNoind($cond);
 
-			$allOrder = $this->M_approver->getListDataOrder();
+			// $allOrder = $this->M_approver->getListDataOrder();
 
-			foreach ($allOrder as $key => $order) {
-				$checkOrder = $this->M_approver->checkOrder($order['ORDER_ID']);
-				if (isset($checkOrder[0])) {
-					if ($checkOrder[0]['APPROVER_ID'] == $getNoindFromOracle[0]['PERSON_ID']) {
-						$orderSiapTampil = $this->M_approver->getOrderToApprove($order['ORDER_ID']);
-						if ($orderSiapTampil[0]['ORDER_CLASS'] != '2') {
-							if ($orderSiapTampil[0]['URGENT_FLAG'] == 'N' && $orderSiapTampil[0]['IS_SUSULAN'] == 'N') {
-								array_push($normal, $orderSiapTampil[0]);
-							} elseif ($orderSiapTampil[0]['URGENT_FLAG'] == 'Y' && $orderSiapTampil[0]['IS_SUSULAN'] == 'N') {
-								array_push($urgent, $orderSiapTampil[0]);
-							} elseif ($orderSiapTampil[0]['IS_SUSULAN'] == 'Y') {
-								array_push($susulan, $orderSiapTampil[0]);
-							}
-						}
-					}
-				}
-			}
+			// foreach ($allOrder as $key => $order) {
+			// 	$checkOrder = $this->M_approver->checkOrder($order['ORDER_ID']);
+			// 	if (isset($checkOrder[0])) {
+			// 		if ($checkOrder[0]['APPROVER_ID'] == $getNoindFromOracle[0]['PERSON_ID']) {
+			// 			$orderSiapTampil = $this->M_approver->getOrderToApprove($order['ORDER_ID']);
+			// 			if ($orderSiapTampil[0]['ORDER_CLASS'] != '2') {
+			// 				if ($orderSiapTampil[0]['URGENT_FLAG'] == 'N' && $orderSiapTampil[0]['IS_SUSULAN'] == 'N') {
+			// 					array_push($normal, $orderSiapTampil[0]);
+			// 				} elseif ($orderSiapTampil[0]['URGENT_FLAG'] == 'Y' && $orderSiapTampil[0]['IS_SUSULAN'] == 'N') {
+			// 					array_push($urgent, $orderSiapTampil[0]);
+			// 				} elseif ($orderSiapTampil[0]['IS_SUSULAN'] == 'Y') {
+			// 					array_push($susulan, $orderSiapTampil[0]);
+			// 				}
+			// 			}
+			// 		}
+			// 	}
+			// }
+			$array_normal = $this->M_approver->getOutstanding($key, 'NORMAL');
+			$array_urgent = $this->M_approver->getOutstanding($key, 'URGENT');
+			$array_susulan = $this->M_approver->getOutstanding($key, 'SUSULAN');
+
+			$normal = $array_normal[0]['TOTAL_BELUM_APPROVE'];
+			$urgent = $array_urgent[0]['TOTAL_BELUM_APPROVE'];
+			$susulan = $array_susulan[0]['TOTAL_BELUM_APPROVE'];
 
 			$create = $pesan[0]['CREATE_BY'];
 			// $getNoindFromOracle = $this->M_requisition->getNoind($create);
@@ -375,7 +384,7 @@ class C_Requisition extends CI_Controller
 			$body .= "</body>";
 			$body .= "</table> <br><br>";
 			$body .= "<b>INFO :</b><br>";
-			$body .= "Terdapat <b>" . count($normal) . " order reguler, " . count($susulan) . " order emergency, dan " . count($urgent) . " order urgent</b> menunggu keputusan Anda!<br>";
+			$body .= "Terdapat <b>" . $normal . " order reguler, " . $susulan . " order emergency, dan " . $urgent . " order urgent</b> menunggu keputusan Anda!<br>";
 			$body .= "Apabila Anda ingin mengambil tindakan terhadap Order tersebut, Anda dapat klik link <b>$link</b> <br><br>";
 			$body .= "Demikian yang dapat kami sampaikan. Atas perhatian dan kerjasamanya kami ucapkan terima kasih. <br><br>";
 			$body .= "<span style='font-size:10px;'>*Email ini dikirimkan secara otomatis oleh aplikasi <b>Order Kebutuhan Barang Dan Jasa</b> pada $emailSendDate pukul $pukul<br>";
@@ -387,11 +396,11 @@ class C_Requisition extends CI_Controller
 			// echo $key;
 		}
 
-		if ($statusPage == 0) {
-			redirect('OrderKebutuhanBarangDanJasa/Requisition/Input', 'refresh');
-		} elseif ($statusPage == 1) {
-			redirect('OrderKebutuhanBarangDanJasa/Requisition/InputExcel', 'refresh');
-		}
+		// if ($statusPage == 0) {
+		// 	redirect('OrderKebutuhanBarangDanJasa/Requisition/Input', 'refresh');
+		// } elseif ($statusPage == 1) {
+		// 	redirect('OrderKebutuhanBarangDanJasa/Requisition/InputExcel', 'refresh');
+		// }
 	}
 
 	public function listDataAdmin()
@@ -480,11 +489,45 @@ class C_Requisition extends CI_Controller
 				$where = 'AND ooh.order_status_id = ooh.order_status_id';
 			}
 
-			$data['listOrder'] = $this->M_requisition->getListDataOrder2($noind, $where);
+			$lorder = $this->M_requisition->getListDataOrder2($noind, $where);
+
+			for ($k = 0; $k < sizeof($lorder); $k++) {
+				$hist = $this->M_requisition->getHistoryOrder($lorder[$k]['ORDER_ID']);
+				$ket = '';
+				for ($h = 0; $h < sizeof($hist); $h++) {
+					if ($hist[$h]['QUANTITY_AFTER'] != null || $hist[$h]['ITEM_DESCRIPTION_AFTER'] != null || $hist[$h]['ORDER_PURPOSE_AFTER'] != null) {
+						$ket = 'berubah';
+					}
+				}
+				$lorder[$k]['CHANGES'] = $ket;
+			}
+
+			// echo "<pre>";
+			// print_r($lorder);
+			// exit();
+
+			$data['listOrder'] = $lorder;
 
 			$this->load->view('OrderKebutuhanBarangDanJasa/Requisition/V_TableListDataAdmin', $data);
 		} else {
-			$data['listOrder'] = $this->M_requisition->getListDataOrder2($noind, $where);
+
+			$lorder = $this->M_requisition->getListDataOrder2($noind, $where);
+			for ($k = 0; $k < sizeof($lorder); $k++) {
+				$hist = $this->M_requisition->getHistoryOrder($lorder[$k]['ORDER_ID']);
+				$ket = '';
+				for ($h = 0; $h < sizeof($hist); $h++) {
+					if ($hist[$h]['QUANTITY_AFTER'] != null || $hist[$h]['ITEM_DESCRIPTION_AFTER'] != null || $hist[$h]['ORDER_PURPOSE_AFTER'] != null) {
+						$ket = 'berubah';
+					}
+				}
+				$lorder[$k]['CHANGES'] = $ket;
+			}
+
+			// echo "<pre>";
+			// print_r($lorder);
+			// exit();
+
+			$data['listOrder'] = $lorder;
 
 			$this->load->view('V_Header', $data);
 			$this->load->view('V_Sidemenu', $data);
@@ -741,7 +784,7 @@ class C_Requisition extends CI_Controller
 		// echo $noind;exit;
 		$getEmail = $this->M_approver->getEmail($noind);
 		// echo 
-		// $emailUser = 'bondan_surya_n@quick.com';
+		// $emailUser = 'rizki_violin_radhiyan@quick.com';
 
 		//send Email
 

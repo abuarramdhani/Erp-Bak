@@ -5,7 +5,35 @@
 <?php
 		set_time_limit(0);
 		ini_set("memory_limit", "2048M");
+		$bulan_singkat = array(
+			'Jan',
+			'Feb',
+			'Mar',
+			'Apr',
+			'May',
+			'Jun',
+			'Jul',
+			'Aug',
+			'Sep',
+			'Oct',
+			'Nov',
+			'Dec'
+		);
 
+		$bulan_panjang = array(
+			'Januari',
+			'Februari',
+			'Maret',
+			'April',
+			'Mei',
+			'Juni',
+			'Juli',
+			'Agustus',
+			'September',
+			'Oktober',
+			'November',
+			'Desember'
+		);
 	?>
 <div style="width: 100%;padding-right: 30px;">
 	<table style="width:100%;font-size: 18px;text-align: center;padding-left: 20px;">
@@ -44,99 +72,109 @@
 		<tr>
 		    <td style="border-left: 1px solid black;border-top: 1px solid black;border-bottom: 1px solid black;width: 29%;padding-left: 20px">NAMA</td>
 			<td style="border-bottom: 1px solid black;width: 1%;padding-left: 20px">:</td>
-			<td style="border-bottom: 1px solid black;width: 60%;padding-left: 20px"><?php echo $data['0']['nama']?></td>
+			<td style="border-bottom: 1px solid black;width: 60%;padding-left: 20px"><?php echo $data->nama?></td>
 			<td style="border-right: 1px solid black;border-left: 1px solid black;border-bottom: 1px solid black;width: 10%;padding-left: 20px"></td>
 		</tr>
 		<tr>
 		    <td style="border-left: 1px solid black;border-bottom: 1px solid black;width: 29%;padding-left: 20px">NO.IND</td>
 			<td style="border-bottom: 1px solid black;width: 1%;padding-left: 20px">:</td>
-			<td style="border-bottom: 1px solid black;width: 60%;padding-left: 20px"><?php echo $data['0']['noind']?></td>
+			<td style="border-bottom: 1px solid black;width: 60%;padding-left: 20px"><?php echo $data->noind?></td>
 			<td style="border-right: 1px solid black;border-left: 1px solid black;border-bottom: 1px solid black;width: 10%;padding-left: 20px"></td>
 		</tr>
 		<tr>
 		    <td style="border-left: 1px solid black;border-bottom: 1px solid black;width: 29%;padding-left: 20px">SEKSI</td>
 			<td style="border-bottom: 1px solid black;width: 1%;padding-left: 20px">:</td>
-			<td style="border-bottom: 1px solid black;width: 60%;padding-left: 20px"><?php echo $data['0']['seksi']?></td>
+			<td style="border-bottom: 1px solid black;width: 60%;padding-left: 20px"><?php echo $data->seksi?></td>
 			<td style="border-right: 1px solid black;border-left: 1px solid black;border-bottom: 1px solid black;width: 10%;padding-left: 20px"></td>
 		</tr>
 		<tr>
 		    <td style="border-left: 1px solid black;border-bottom: 1px solid black;width: 29%;padding-left: 20px">UNIT</td>
 			<td style="border-bottom: 1px solid black;width: 1%;padding-left: 20px">:</td>
-			<td style="border-bottom: 1px solid black;width: 60%;padding-left: 20px"><?php echo $data['0']['unit']?></td>
+			<td style="border-bottom: 1px solid black;width: 60%;padding-left: 20px"><?php echo $data->unit?></td>
 			<td style="border-right: 1px solid black;border-left: 1px solid black;border-bottom: 1px solid black;width: 10%;padding-left: 20px"></td>
 		</tr>
 		<tr>
 		    <td style="border-left: 1px solid black;border-bottom: 1px solid black;width: 29%;padding-left: 20px">LOKASI</td>
 			<td style="border-bottom: 1px solid black;width: 1%;padding-left: 20px">:</td>
-			<td style="border-bottom: 1px solid black;width: 60%;padding-left: 20px"><?php echo $data['0']['lokasi_kerja']?></td>
+			<td style="border-bottom: 1px solid black;width: 60%;padding-left: 20px"><?php echo $data->lokasi_kerja?></td>
 			<td style="border-right: 1px solid black;border-left: 1px solid black;border-bottom: 1px solid black;width: 10%;padding-left: 20px"></td>
 		</tr>
 		<tr>
 		    <td style="border-left: 1px solid black;border-bottom: 1px solid black;width: 29%;padding-left: 20px">JABATAN TERAKHIR
 		    </td>
 			<td style="border-bottom: 1px solid black;width: 1%;padding-left: 20px">:</td>
-			<td style="border-bottom: 1px solid black;width: 60%;padding-left: 20px"><?php echo $data['0']['pekerjaan']?></td>
+			<td style="border-bottom: 1px solid black;width: 60%;padding-left: 20px"><?php echo $data->jabatan_terakhir?></td>
 			<td style="border-right: 1px solid black;border-left: 1px solid black;border-bottom: 1px solid black;width: 10%;padding-left: 20px"></td>
 		</tr>
 		<tr>
 		    <td style="border-left: 1px solid black;border-bottom: 1px solid black;width: 29%;padding-left: 20px">TANGGAL DIANGKAT
 		    </td>
 			<td style="border-bottom: 1px solid black;width: 1%;padding-left: 20px">:</td>
-			<td style="border-bottom: 1px solid black;width: 60%;padding-left: 20px"><?php echo $data['0']['diangkat']?></td>
+			<td style="border-bottom: 1px solid black;width: 60%;padding-left: 20px">
+				<?php echo str_replace($bulan_singkat,$bulan_panjang,date('d M Y',strtotime($data->diangkat)))?>
+			</td>
 			<td style="border-right: 1px solid black;border-left: 1px solid black;border-bottom: 1px solid black;width: 10%;padding-left: 20px"></td>
 		</tr>
 		<tr>
 		    <td style="border-left: 1px solid black;border-bottom: 1px solid black;width: 29%;padding-left: 20px">MASA KERJA</td>
 			<td style="border-bottom: 1px solid black;width: 1%;padding-left: 20px">:</td>
-			<td style="border-bottom: 1px solid black;width: 60%;padding-left: 20px"><?php echo $data['0']['masakerja']?></td>
+			<td style="border-bottom: 1px solid black;width: 60%;padding-left: 20px">
+				<?php echo $data->masa_kerja_tahun." Tahun ".$data->masa_kerja_bulan." Bulan ".$data->masa_kerja_hari." Hari" ?>
+			</td>
 			<td style="border-right: 1px solid black;border-left: 1px solid black;border-bottom: 1px solid black;width: 10%;padding-left: 20px"></td>
 		</tr>
 		<tr>
 		    <td style="border-left: 1px solid black;border-bottom: 1px solid black;width: 29%;padding-left: 20px">SISA CUTI</td>
 			<td style="border-bottom: 1px solid black;width: 1%;padding-left: 20px">:</td>
-			<td style="border-bottom: 1px solid black;width: 60%;padding-left: 20px"><?php echo $data['0']['sisacuti']?></td>
+			<td style="border-bottom: 1px solid black;width: 60%;padding-left: 20px"><?php echo $data->jml_cuti?></td>
 			<td style="border-right: 1px solid black;border-left: 1px solid black;border-bottom: 1px solid black;width: 10%;padding-left: 20px"></td>
 		</tr>
 		<tr>
 		    <td style="border-left: 1px solid black;border-bottom: 1px solid black;width: 29%;padding-left: 20px">TEMPAT/TGL LAHIR</td>
 			<td style="border-bottom: 1px solid black;width: 1%;padding-left: 20px">:</td>
-			<td style="border-bottom: 1px solid black;width: 60%;padding-left: 20px"><?php echo $data['0']['tempat']?></td>
+			<td style="border-bottom: 1px solid black;width: 60%;padding-left: 20px">
+				<?php echo $data->tempat_lahir.", ".str_replace($bulan_singkat,$bulan_panjang,date('d M Y',strtotime($data->tanggal_lahir))) ?>
+			</td>
 			<td style="border-right: 1px solid black;border-left: 1px solid black;border-bottom: 1px solid black;width: 10%;padding-left: 20px"></td>
 		</tr>
 		<tr>
 		    <td style="border-left: 1px solid black;border-bottom: 1px solid black;width: 29%;padding-left: 20px">ALAMAT</td>
 			<td style="border-bottom: 1px solid black;width: 1%;padding-left: 20px">:</td>
-			<td style="border-bottom: 1px solid black;width: 60%;padding-left: 20px"><?php echo $data['0']['alamat']?></td>
+			<td style="border-bottom: 1px solid black;width: 60%;padding-left: 20px"><?php echo $data->alamat?></td>
 			<td style="border-right: 1px solid black;border-left: 1px solid black;border-bottom: 1px solid black;width: 10%;padding-left: 20px"></td>
 		</tr>
 		<tr>
 		    <td style="border-left: 1px solid black;border-bottom: 1px solid black;width: 29%;padding-left: 20px">STATUS</td>
 			<td style="border-bottom: 1px solid black;width: 1%;padding-left: 20px">:</td>
-			<td style="border-bottom: 1px solid black;width: 60%;padding-left: 20px"><?php echo $data['0']['alasan']?></td>
+			<td style="border-bottom: 1px solid black;width: 60%;padding-left: 20px"><?php echo $data->sebab_keluar?></td>
 			<td style="border-right: 1px solid black;border-left: 1px solid black;border-bottom: 1px solid black;width: 10%;padding-left: 20px"></td>
 		</tr>
 		<tr>
 		    <td style="border-left: 1px solid black;border-bottom: 1px solid black;width: 29%;padding-left: 20px">TANGGAL KELUAR</td>
 			<td style="border-bottom: 1px solid black;width: 1%;padding-left: 20px">:</td>
-			<td style="border-bottom: 1px solid black;width: 60%;padding-left: 20px"><?php echo $data['0']['metu']?></td>
+			<td style="border-bottom: 1px solid black;width: 60%;padding-left: 20px">
+				<?php echo str_replace($bulan_singkat,$bulan_panjang,date('d M Y',strtotime($data->tglkeluar))) ?>
+			</td>
 			<td style="border-right: 1px solid black;border-left: 1px solid black;border-bottom: 1px solid black;width: 10%;padding-left: 20px"></td>
 		</tr>
 		<tr>
 		    <td style="border-left: 1px solid black;border-bottom: 1px solid black;width: 29%;padding-left: 20px">PROSES PHK</td>
 			<td style="border-bottom: 1px solid black;width: 1%;padding-left: 20px">:</td>
-			<td style="border-bottom: 1px solid black;width: 60%;padding-left: 20px"><?php echo (!empty($data['0']['tgl_phk']))? $data['0']['tgl_phk']:''?></td>
+			<td style="border-bottom: 1px solid black;width: 60%;padding-left: 20px">
+				<?php echo (!empty($data->tgl_proses_phk))? str_replace($bulan_singkat,$bulan_panjang,date('d M Y',strtotime($data->tgl_proses_phk))) :'' ?>
+			</td>
 			<td style="border-right: 1px solid black;border-left: 1px solid black;border-bottom: 1px solid black;width: 10%;padding-left: 20px"></td>
 		</tr>
 		<tr>
 		    <td style="border-left: 1px solid black;border-bottom: 1px solid black;width: 29%;padding-left: 20px">NPWP</td>
 			<td style="border-bottom: 1px solid black;width: 1%;padding-left: 20px">:</td>
-			<td style="border-bottom: 1px solid black;width: 60%;padding-left: 20px"><?php echo $data['0']['npwp']?></td>
+			<td style="border-bottom: 1px solid black;width: 60%;padding-left: 20px"><?php echo $data->npwp?></td>
 			<td style="border-right: 1px solid black;border-left: 1px solid black;border-bottom: 1px solid black;width: 10%;padding-left: 20px"></td>
 		</tr>
 		<tr>
 		    <td style="border-left: 1px solid black;border-bottom: 1px solid black;width: 29%;padding-left: 20px">NIK</td>
 			<td style="border-bottom: 1px solid black;width: 1%;padding-left: 20px">:</td>
-			<td style="border-bottom: 1px solid black;width: 60%;padding-left: 20px"><?php echo $data['0']['nik']?></td>
+			<td style="border-bottom: 1px solid black;width: 60%;padding-left: 20px"><?php echo $data->nik?></td>
 			<td style="border-right: 1px solid black;border-left: 1px solid black;border-bottom: 1px solid black;width: 10%;padding-left: 20px"></td>
 		</tr>
 		<tr>
@@ -157,9 +195,9 @@
 			<td style="border-bottom: 1px solid black;width: 60%;padding-left: 80px">
 				<table>
 					<tr>
-						<td style="width: 30px"><?php echo $data['0']['pasal'] ?></td>
+						<td style="width: 30px"><?php echo $data->pengali_u_pesangon ?></td>
 						<td style="width: 30px">X</td>
-						<td style="width: 30px"><?php echo $data['0']['pesangon'] ?></td>
+						<td style="width: 30px"><?php echo $data->jml_pesangon ?></td>
 						<td style="width: 30px">X</td>
 						<td style="width: 30px">GP</td>
 					</tr>
@@ -174,9 +212,9 @@
 			<td style="border-bottom: 1px solid black;width: 60%;padding-left: 80px">
 				<table>
 					<tr>
-						<td style="width: 30px">&nbsp;</td>
-						<td style="width: 30px">&nbsp;</td>
-						<td style="width: 30px"><?php echo $data['0']['up'] ?></td>
+						<td style="width: 30px"><?php echo $data->pengali_upmk ?></td>
+						<td style="width: 30px">X</td>
+						<td style="width: 30px"><?php echo $data->jml_upmk ?></td>
 						<td style="width: 30px">X</td>
 						<td style="width: 30px">GP</td>
 					</tr>
@@ -192,18 +230,12 @@
 					<tr>
 						<td style="width: 30px">&nbsp;</td>
 						<td style="width: 30px">&nbsp;</td>
-						<td style="width: 30px"><?php echo $data['0']['cuti'] ?></td>
+						<td style="width: 30px"><?php echo $data->jml_cuti ?></td>
 						<td style="width: 30px">X</td>
 						<td style="width: 90px">(GP/30)</td>
 					</tr>
 				</table>
 			</td>
-			<td style="border-right: 1px solid black;border-left: 1px solid black;border-bottom: 1px solid black;width: 10%;padding-left: 20px"></td>
-		</tr>
-		<tr>
-		    <td style="border-left: 1px solid black;border-bottom: 1px solid black;width: 29%;padding-left: 20px">UANG GANTI KERUGIAN</td>
-			<td style="border-bottom: 1px solid black;width: 1%;padding-left: 20px">:</td>
-			<td style="border-bottom: 1px solid black;width: 60%;padding-left: 80px"><?php echo $data['0']['gantirugi']?></td>
 			<td style="border-right: 1px solid black;border-left: 1px solid black;border-bottom: 1px solid black;width: 10%;padding-left: 20px"></td>
 		</tr>
 		<tr>
@@ -221,26 +253,46 @@
 		<tr>
 		    <td style="border-left: 1px solid black;border-bottom: 1px solid black;width: 29%;padding-left: 20px">HUTANG KOPERASI</td>
 			<td style="border-bottom: 1px solid black;width: 1%;padding-left: 20px">:</td>
-			<td style="border-bottom: 1px solid black;width: 60%;padding-left: 20px">Rp <?php echo number_format($data['0']['hutang_koperasi'],0,',','.')?>,00</td>
+			<td style="border-bottom: 1px solid black;width: 60%;padding-left: 20px">
+				<table>
+					<tr>
+						<td style="width: 20px;">Rp. </td>
+						<td style="width: 100px;text-align: right;"><?php echo number_format($data->hutang_koperasi,0,',','.')?>,00</td>
+					</tr>
+				</table>
+			</td>
 			<td style="border-right: 1px solid black;border-left: 1px solid black;border-bottom: 1px solid black;width: 10%;padding-left: 20px"></td>
 		</tr>
 		<tr>
 		    <td style="border-left: 1px solid black;border-bottom: 1px solid black;width: 29%;padding-left: 20px">HUTANG PERUSAHAAN</td>
 			<td style="border-bottom: 1px solid black;width: 1%;padding-left: 20px">:</td>
-			<td style="border-bottom: 1px solid black;width: 60%;padding-left: 20px">Rp <?php echo number_format($data['0']['hutang_perusahaan'],0,',','.')?>,00</td>
+			<td style="border-bottom: 1px solid black;width: 60%;padding-left: 20px">
+				<table>
+					<tr>
+						<td style="width: 20px;">Rp. </td>
+						<td style="width: 100px;text-align: right;"><?php echo number_format($data->hutang_perusahaan,0,',','.')?>,00</td>
+					</tr>
+				</table>
+			</td>
 			<td style="border-right: 1px solid black;border-left: 1px solid black;border-bottom: 1px solid black;width: 10%;padding-left: 20px"></td>
 		</tr>
 		<tr>
 		    <td style="border-left: 1px solid black;border-bottom: 1px solid black;width: 29%;padding-left: 20px">LAIN-LAIN</td>
 			<td style="border-bottom: 1px solid black;width: 1%;padding-left: 20px">:</td>
-			<td style="border-bottom: 1px solid black;width: 60%;padding-left: 20px">Rp <?php echo number_format($data['0']['lain_lain'],0,',','.')?>,00</td>
+			<td style="border-bottom: 1px solid black;width: 60%;padding-left: 20px">
+				<table>
+					<tr>
+						<td style="width: 20px;">Rp. </td>
+						<td style="width: 100px;text-align: right;"><?php echo number_format($data->lain_lain,0,',','.')?>,00</td>
+					</tr>
+				</table>
+			</td>
 			<td style="border-right: 1px solid black;border-left: 1px solid black;border-bottom: 1px solid black;width: 10%;padding-left: 20px"></td>
 		</tr>
 		<tr>
 		    <td style="border-left: 1px solid black;border-bottom: 1px solid black;width: 29%;padding-left: 20px">NO REKENING</td>
 			<td style="border-bottom: 1px solid black;width: 1%;padding-left: 20px">:</td>
-			<td style="border-bottom: 1px solid black;width: 60%;padding-left: 20px"><?php echo $data['0']
-			[no_rek].'              '.$data['0']['bank'].'       an        '.$data['0']['nama_rek']?></td>
+			<td style="border-bottom: 1px solid black;width: 60%;padding-left: 20px"><?php echo $data->no_rekening.'              '.$data->bank.'       an        '.$data->nama_rekening?></td>
 			<td style="border-right: 1px solid black;border-left: 1px solid black;border-bottom: 1px solid black;width: 10%;padding-left: 20px"></td>
 		</tr>
 
@@ -256,34 +308,7 @@
 
 			<td>Yogyakarta,
 			<?php
-				echo $tglCetak[2];
-				$month=$tglCetak[1];
-				if ($month=='01') {
-					echo " Januari ";
-				}elseif ($month=='02') {
-					echo " Februari ";
-				}elseif ($month=='03') {
-					echo " Maret ";
-				}elseif ($month=='04') {
-					echo " April ";
-				}elseif ($month=='05') {
-					echo " Mei ";
-				}elseif ($month=='06') {
-					echo " Juni ";
-				}elseif ($month=='07') {
-					echo " Juli ";
-				}elseif ($month=='08') {
-					echo " Agustus ";
-				}elseif ($month=='09') {
-					echo " September ";
-				}elseif ($month=='10') {
-					echo " Oktober ";
-				}elseif ($month=='11') {
-					echo " November ";
-				}elseif ($month=='12') {
-					echo " Desember ";
-				};
-				echo $tglCetak[0];
+				echo str_replace($bulan_singkat,$bulan_panjang,date('d M Y',strtotime($tglCetak)))
 			?></td>
 			<td>Mengetahui</td>
 		</tr>

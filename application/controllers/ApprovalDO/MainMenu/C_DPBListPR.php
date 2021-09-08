@@ -157,6 +157,9 @@ class C_DPBListPR extends CI_Controller
         } elseif ($gudang == 'JAKARTA') {
             $org_id = 207;
             $kode_gudang = 'FG-JFG';
+        } elseif ($gudang == 'SUBANG') {
+            $org_id = 1230;
+            $kode_gudang = 'FG-CFG';
         }
 
         $no_do = $_POST['noDO'];
@@ -232,6 +235,12 @@ class C_DPBListPR extends CI_Controller
         } elseif ($gudang == 'JAKARTA') {
             $kode_gudang = 'FG-JFG';
             $org = 207;
+        } elseif ($gudang == 'PUSAT') {
+            $kode_gudang = 'FG-DM';
+            $org = 102;
+        } elseif ($gudang == 'SUBANG') {
+            $kode_gudang = 'FG-CFG';
+            $org = 1230;
         }
 
         for ($i = 0; $i < count($no_do); $i++) {

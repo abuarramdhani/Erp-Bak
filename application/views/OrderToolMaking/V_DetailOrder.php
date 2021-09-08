@@ -13,11 +13,11 @@
 if ($val['ket'] == 'Baru') { // view tabel baru
     $modifrekon = 'display:none'; // style inputan khusus modifikasi dan rekondisi
     $baru = ''; // style inputan khusus baru
-    $height = 1300; // tinggi modal
+    $height = 1600; // tinggi modal
 }else { // view tabel modifikasi dan rekondisi
     $modifrekon = '';
     $baru = 'display:none';
-    $height = 1000;
+    $height = 1300;
 }
 
 if(stripos($val['jenis'], 'FIXTURE') !== FALSE || stripos($val['jenis'], 'MASTER') !== FALSE || stripos($val['jenis'], 'GAUGE') !== FALSE || stripos($val['jenis'], 'ALAT LAIN') !== FALSE) {
@@ -118,28 +118,32 @@ $terima = $val['status'] == 'DALAM PROSES PENGIRIMAN' ? '' : 'display:none'; // 
             <span style="color:#3A4C52;">UNIT</span> <br><span style="color:#3A4C52;font-weight:bold"><?= $val['unit'] ?></span>
         </div>
         <div class="col-md-12"><br>
-            <span style="color:#3A4C52;">GAMBAR KERJA </span>
+            <span style="color:#3A4C52;">GAMBAR PRODUK </span>
             <br>
             <span style="color:#3A4C52">
-                <?php $filename = "assets/upload/OrderToolMaking/Gambar_kerja/".$val['folder_gamker']."/".$val['gamker']."";
-                    if (file_exists($filename)) {?>
-                        <a href="<?php echo base_url($filename)?>" target="_blank">
-                            <img style="max-width: 300px;max-height: 300px" src="<?php echo base_url($filename)?>">
-                        </a>
-                        <br><span style="color:#3A4C52;font-size:11px">*Klik gambar untuk membuka di Tab baru</span>
-                <?php }else {
-                    echo '<span style="font-size:12px">Gambar Kerja Tidak Ditemukan...</span>';
+                <?php $gb = explode(';', $val['gamker']);
+                for ($i=0; $i < count($val['folder_gamker']) ; $i++) { 
+                    $filename = "assets/upload/OrderToolMaking/Gambar_kerja/".$val['folder_gamker'][$i]."/".$gb[$i]."";
+                        if (file_exists($filename)) {?>
+                            <span><br><label><?= ($i+1)?>. </label></span>
+                            <a href="<?php echo base_url($filename)?>" target="_blank">
+                                <img style="max-width: 250px;max-height: 250px" src="<?php echo base_url($filename)?>">
+                            </a>
+                            <br><span style="color:#3A4C52;font-size:11px;margin-left:15px">*Klik gambar untuk membuka di Tab baru</span>
+                    <?php }else {
+                        echo '<span style="font-size:12px">Gambar Produk Tidak Ditemukan...</span>';
+                    }
                 }?>
             </span>
         </div>
         <div class="col-md-12"><br>
-            <span style="color:#3A4C52;">SKETS </span>
+            <span style="color:#3A4C52;">SKETS / REFERENSI AB </span>
             <br>
             <span style="color:#3A4C52">
                 <?php $filename = "assets/upload/OrderToolMaking/Skets/".$val['folder_skets']."/".$val['skets']."";
                     if (file_exists($filename)) {?>
                         <a href="<?php echo base_url($filename)?>" target="_blank">
-                            <img style="max-width: 300px;max-height: 300px" src="<?php echo base_url($filename)?>">
+                            <img style="max-width: 250px;max-height: 250px" src="<?php echo base_url($filename)?>">
                         </a>
                         <br><span style="color:#3A4C52;font-size:11px">*Klik gambar untuk membuka di Tab baru</span>
                 <?php }else {
@@ -163,15 +167,23 @@ $terima = $val['status'] == 'DALAM PROSES PENGIRIMAN' ? '' : 'display:none'; // 
             <div class="col-md-3">
                 Proposal Asset :
             </div>
-            <div class="col-md-2">
+            <!-- <div class="col-md-2">
                 <?php $filename = "assets/upload/OrderToolMaking/Proposal/".$val['file_proposal']."";
                 $proposal =  (file_exists($filename)) ? 'href="'.base_url($filename).'" target="_blank"' : '' ; ?>
                 <a <?= $proposal?>>
                     <span class="btn btn-info" style="border-radius:25px"><i class="fa fa-eye"></i> View</span>
                 </a>
-            </div>
-            <div class="col-md-7">
+            </div> -->
+            <div class="col-md-9">
                 <input readonly class="form-control" value="<?= $val['no_proposal'] ?>">
+            </div>
+        </div>
+        <div class="col-md-12" style="<?= $baru?>"><br>
+            <div class="col-md-3">
+                Alasan Pengadaan Asset:
+            </div>
+            <div class="col-md-9">
+                <textarea style="width:100%;height:100px" disabled><?= $val['alasan_asset'] ?></textarea>
             </div>
         </div>
         <?php } ?>
@@ -260,7 +272,7 @@ $terima = $val['status'] == 'DALAM PROSES PENGIRIMAN' ? '' : 'display:none'; // 
         </div>
         <div class="col-md-12"><br>
             <div class="col-md-3">
-                Poin Yang Diproses :
+                Proses :
             </div>
             <div class="col-md-9">
                 <input readonly class="form-control" value="<?= $val['poin'] ?>">
@@ -349,7 +361,7 @@ $terima = $val['status'] == 'DALAM PROSES PENGIRIMAN' ? '' : 'display:none'; // 
                 Alasan Modifikasi :
             </div>
             <div class="col-md-9">
-                <input readonly class="form-control" value="<?php echo $val['ket'] != 'Baru' ? $val['alasan'] : ''; ?>">
+                <textarea disabled style="width:100%"><?php echo $val['ket'] != 'Baru' ? $val['alasan'] : ''; ?></textarea>
             </div>
         </div>
         <div class="col-md-12"><br>
@@ -357,15 +369,37 @@ $terima = $val['status'] == 'DALAM PROSES PENGIRIMAN' ? '' : 'display:none'; // 
                 Referensi / Datum Alat Bantu :
             </div>
             <div class="col-md-9">
-                <input readonly class="form-control" value="<?= $val['referensi'] ?>">
+                <textarea disabled style="width:100%"><?= $val['referensi'] ?></textarea>
             </div>
         </div>
+        <?php if(!empty($val['stp_gambar_kerja'])){?>
+        <div class="col-md-12"><br>
+            <div class="col-md-3">
+                STP Gambar Kerja :
+            </div>
+            <div class="col-md-9">
+                <?php $filename = "assets/upload/OrderToolMaking/STP_GAMKER/".$val['stp_gambar_kerja']."";
+                $inspect =  (file_exists($filename)) && !empty($val['stp_gambar_kerja']) ? 'href="'.base_url($filename).'" download="'.$val['stp_gambar_kerja'].'" target="_blank"' : '' ; ?>
+                <a <?= $inspect?>>
+                    <span class="btn btn-info" style="border-radius:25px" <?= empty($val['stp_gambar_kerja']) ? 'disabled' : ''; ?>><i class="fa fa-download"></i> Download</span>
+                </a>
+            </div>
+        </div>
+        <?php }?>
         <div class="col-md-12"><br>
             <div class="col-md-3">
                 Assign Approval :
             </div>
             <div class="col-md-9">
                 <input readonly class="form-control" value="<?= $val['assign'] ?>">
+            </div>
+        </div>
+        <div class="col-md-12"><br>
+            <div class="col-md-3">
+                Assign Desainer :
+            </div>
+            <div class="col-md-9">
+                <input readonly class="form-control" value="<?= $val['assign_desainer'] ?>">
             </div>
         </div>
         <div class="col-md-12 text-center" style="<?= $terima?>"><br>

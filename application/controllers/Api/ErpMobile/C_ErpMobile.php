@@ -14,6 +14,7 @@ class C_ErpMobile extends CI_Controller {
 	public function cekNoind()
 	{
 		$noind = $this->input->get('noind');
+		$noind = strtoupper($noind);
 		if (strlen($noind) > 7) {
 			$data['result'] = 'Username Tidak di Temukan';
 			$data['code'] = 0;
@@ -42,12 +43,17 @@ class C_ErpMobile extends CI_Controller {
 			$data['external_mail'] = preg_replace('/(?:^|@).\K|\.[^@]*$(*SKIP)(*F)|.(?=.*?\.)/', '*', trim($data['external_mail']));
 		}
 
+		$pkj = $this->M_erpmobile->getinfoPKJ($noind);
+		if(!empty($pkj) && !empty(trim($pkj['telkomsel_mygroup'])))
+			$data['sms'] = $this->kirimSMSpass($pkj['telkomsel_mygroup'], $pkj['nama'], $rand_pass);
+
 		echo json_encode($data);
 	}
 
 	public function saveEmail()
 	{
 		$noind = $this->input->post('noind');
+		$noind = strtoupper($noind);
 		$email = $this->input->post('email');
 
 		if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -73,6 +79,10 @@ class C_ErpMobile extends CI_Controller {
 		$this->kirimEmailEx(trim($data['external_mail']), $data['password']);
 		$data['external_mail'] = preg_replace('/(?:^|@).\K|\.[^@]*$(*SKIP)(*F)|.(?=.*?\.)/', '*', trim($data['external_mail']));
 
+		$pkj = $this->M_erpmobile->getinfoPKJ($noind);
+		if(!empty($pkj) && !empty(($pkj['telkomsel_mygroup'])))
+			$data['sms'] = $this->kirimSMSpass($pkj['telkomsel_mygroup'], $pkj['nama'], $rand_pass);
+
 		echo json_encode($data);
 	}
 
@@ -89,24 +99,24 @@ class C_ErpMobile extends CI_Controller {
 		$mail->Debugoutput = 'html';
 
 		$mail->isSMTP();
-		$mail->Host = 'mail.quick.co.id';
-		$mail->Port = 465;
+		$mail->Host = 'smtp.gmail.com';
+		$mail->Port = 587;
 		$mail->SMTPAuth = true;
-		$mail->SMTPSecure = 'ssl';
-		$mail->SMTPOptions = array(
-			'ssl' => array(
-				'verify_peer' => false,
-				'verify_peer_name' => false,
-				'allow_self_signed' => true
-			)
-		);
-		$mail->Username = 'noreply@quick.co.id';
-		$mail->Password = 'FH6vzD9vq';
+		$mail->SMTPSecure = 'tls';
+		// $mail->SMTPOptions = array(
+		// 	'ssl' => array(
+		// 		'verify_peer' => false,
+		// 		'verify_peer_name' => false,
+		// 		'allow_self_signed' => true
+		// 	)
+		// );
+		$mail->Username = 'notification.hrd.khs1@gmail.com';
+		$mail->Password = 'tes123123123';
 		$mail->WordWrap = 50;
 		$mail->setFrom('noreply@quick.co.id', 'Quick ERP Mobile');
 		$mail->addAddress($email);
 		// $mail->addAddress('enggalaldian@gmail.com');
-		$mail->Subject = 'Password ERP Anda';
+		$mail->Subject = 'Password ERP Anda '.$pwd;
 		$mail->msgHTML($message);
 		$mail->AltBody = 'Password ERP Anda';
 
@@ -151,5 +161,51 @@ class C_ErpMobile extends CI_Controller {
 		}
 		$dash_str .= $password;
 		return $dash_str;
+	}
+
+	function insert_log_sms($res)
+	{
+		$sms_message = isset($res->message) ? $res->message:'';
+		$sms_phone_number = isset($res->report[0]->{'1'}[0]->phonenumber) ? $res->report[0]->{'1'}[0]->phonenumber:'';
+		$sms_port = isset($res->report[0]->{'1'}[0]->port) ? $res->report[0]->{'1'}[0]->port:'';
+		$sent_time = isset($res->report[0]->{'1'}[0]->time) ? $res->report[0]->{'1'}[0]->time:'';
+		$sms_result = isset($res->report[0]->{'1'}[0]->result) ? $res->report[0]->{'1'}[0]->result:'';
+		$queryInsertLog = "insert into si.si_sent_sms
+		(message,phone_number,port,sent_time,result,version)
+		values($1,$2,$3,$4,$5,$6)";
+		$arr = [
+		'message'=> $sms_message,
+		'phone_number'=> $sms_phone_number,
+		'port'=> $sms_port,
+		'sent_time'=> $sent_time,
+		'result'=> $sms_result,
+		'version'=> 1,
+		];
+
+		return $this->M_erpmobile->save_smslog($arr);
+	}
+
+	function kirimSMSpass($nomor, $nama, $rand_pass)
+	{
+		$nomor = trim($nomor);
+		$nama = trim($nama);
+		$rand_pass = trim($rand_pass);
+		if (substr($nomor, 0,2) == "62") {
+    		$nomor = '+'.$nomor;
+		}
+		$nomor = urlencode($nomor);
+		if ($nomor%2 == 0) {
+			$port = "gsm-1.2";
+		}else{
+			$port = "gsm-1.2";
+		}
+
+		$isi_sms = urlencode("Password Akun ERP Anda (".$nama.") hari ini adalah ".$rand_pass);
+		// echo 'http://192.168.168.122/sendsms?username=ict&password=quick1953&phonenumber='.$nomor.'&message='.$isi_sms.'&[port='.$port.'&][report=1&][timeout=20]';exit();
+		$http_result = file_get_contents( 'http://192.168.168.122/sendsms?username=ict&password=quick1953&phonenumber='.$nomor.'&message='.$isi_sms.'&[port='.$port.']&[report=1]&[timeout=20]' );
+		$res = json_decode($http_result);
+
+
+		return $this->insert_log_sms($res);
 	}
 }

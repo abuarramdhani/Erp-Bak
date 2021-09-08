@@ -85,6 +85,14 @@ class M_import extends CI_Model
         $query = $this->oracle->query('commit');
         // echo $sql;
     }
+    
+    public function updatePlanDate($id, $value){
+        $sql = "update khs_plan_item_monitoring_date set value_plan_date = $value
+                where plan_id = $id";
+        $query = $this->oracle->query($sql);
+        $query = $this->oracle->query('commit');
+        // echo $sql;
+    }
 
 
 

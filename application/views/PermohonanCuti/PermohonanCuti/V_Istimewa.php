@@ -85,7 +85,7 @@
 									</div>
 									<div class="form-group">
 										<label class="control-label col-lg-4 col-md-4 col-sm-4 col-xs-12">Hak Cuti</label>
-										<div class="col-lg-5 col-md-2 col-sm-3 col-xs-6">
+										<div class="col-lg-5 col-md-4 col-sm-4 col-xs-12">
 											<div class="col-lg-4" data-intro="Jumlah hari yang dapat dilakukan pengajuan cuti sesuai jenis cuti yang dipilih">
 												<div class="input-group">
 													<input type="text" style="text-align: center;" class="form-control" name="txtHakCuti" id="txtHakCuti" readonly>

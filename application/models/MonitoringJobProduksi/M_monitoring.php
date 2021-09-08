@@ -89,21 +89,55 @@ class M_monitoring extends CI_Model
                     msib.primary_uom_code uom_assy, msib2.inventory_item_id,
                     msib2.segment1 komponen, msib2.description komp_desc,
                     msib2.primary_uom_code uom_komponen, bic.component_quantity,
-                    khs_inv_qty_att (msib2.organization_id,
+                    khs_inv_qty_oh (msib2.organization_id,
                                         msib2.inventory_item_id,
                                         bic.attribute1,
                                         bic.attribute2,
                                         ''
-                                        ) att,
+                                        ) -
+                            (nvl(
+                                (select sum(mtrl.QUANTITY) - sum (nvl (mtrl.QUANTITY_DELIVERED,0)) quantity
+                                        from mtl_txn_request_headers mtrh
+                                                ,mtl_txn_request_lines mtrl
+                                    where mtrh.HEADER_ID = mtrl.HEADER_ID
+                                        --
+                                        and mtrl.LINE_STATUS in (3,7)
+                                        and mtrh.HEADER_STATUS in (3,7)
+                                        and mtrl.INVENTORY_ITEM_ID = bic.COMPONENT_ITEM_ID
+                                        and mtrh.ORGANIZATION_ID = bom.ORGANIZATION_ID
+                                        --and substr(mtrh.REQUEST_NUMBER,1,2) = 'PL'
+                                        --and mtrh.REQUEST_NUMBER like 'D%'
+                                        and mtrl.FROM_SUBINVENTORY_CODE = bic.ATTRIBUTE1
+                                        and nvl(mtrl.FROM_LOCATOR_ID,0) = nvl(bic.ATTRIBUTE2,0)
+                                group by mtrl.INVENTORY_ITEM_ID
+                                    ),0)
+                                    ) att,
                         (CASE
                             WHEN bic.component_quantity = 0
                             THEN 0
-                            ELSE   khs_inv_qty_att (msib2.organization_id,
-                                                    msib2.inventory_item_id,
-                                                    bic.attribute1,
-                                                    bic.attribute2,
-                                                    ''
-                                                )
+                            ELSE   (khs_inv_qty_oh (msib2.organization_id,
+                                        msib2.inventory_item_id,
+                                        bic.attribute1,
+                                        bic.attribute2,
+                                        ''
+                                        ) -
+                            (nvl(
+                                (select sum(mtrl.QUANTITY) - sum (nvl (mtrl.QUANTITY_DELIVERED,0)) quantity
+                                        from mtl_txn_request_headers mtrh
+                                                ,mtl_txn_request_lines mtrl
+                                    where mtrh.HEADER_ID = mtrl.HEADER_ID
+                                        --
+                                        and mtrl.LINE_STATUS in (3,7)
+                                        and mtrh.HEADER_STATUS in (3,7)
+                                        and mtrl.INVENTORY_ITEM_ID = bic.COMPONENT_ITEM_ID
+                                        and mtrh.ORGANIZATION_ID = bom.ORGANIZATION_ID
+                                        --and substr(mtrh.REQUEST_NUMBER,1,2) = 'PL'
+--                                        and mtrh.REQUEST_NUMBER like 'D%'
+                                        and mtrl.FROM_SUBINVENTORY_CODE = bic.ATTRIBUTE1
+                                        and nvl(mtrl.FROM_LOCATOR_ID,0) = nvl(bic.ATTRIBUTE2,0)
+                                group by mtrl.INVENTORY_ITEM_ID
+                                    ),0)
+                                    ))
                                 / bic.component_quantity
                         END
                         ) av_pick,
@@ -123,7 +157,8 @@ class M_monitoring extends CI_Model
                     AND bic.disable_date IS NULL
                     AND bic.component_item_id = msib2.inventory_item_id
                     AND bom.organization_id = msib2.organization_id
-                    AND bic.attribute2 = mil.inventory_location_id
+                    AND bic.attribute1 IS NOT NULL
+                    AND bic.attribute2 = mil.inventory_location_id(+)
                     order by 9";
         $query = $this->oracle->query($sql);
         return $query->result_array();
@@ -151,8 +186,42 @@ class M_monitoring extends CI_Model
                 ,bic.SUPPLY_SUBINVENTORY gudang_tujuan
                 ,bic.SUPPLY_LOCATOR_ID locator_tujuan_id 
                 ,mil.SEGMENT1 locator_tujuan
-                ,khs_inv_qty_att(msib2.ORGANIZATION_ID,msib2.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'') att
-                ,(khs_inv_qty_att(msib2.ORGANIZATION_ID,msib2.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'') - bic.COMPONENT_QUANTITY*'$qty') kekurangan
+                ,khs_inv_qty_oh(msib2.ORGANIZATION_ID,msib2.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'') -
+                            (nvl(
+                                (select sum(mtrl.QUANTITY) - sum (nvl (mtrl.QUANTITY_DELIVERED,0)) quantity
+                                        from mtl_txn_request_headers mtrh
+                                                ,mtl_txn_request_lines mtrl
+                                    where mtrh.HEADER_ID = mtrl.HEADER_ID
+                                        --
+                                        and mtrl.LINE_STATUS in (3,7)
+                                        and mtrh.HEADER_STATUS in (3,7)
+                                        and mtrl.INVENTORY_ITEM_ID = bic.COMPONENT_ITEM_ID
+                                        and mtrh.ORGANIZATION_ID = bom.ORGANIZATION_ID
+                                        --and substr(mtrh.REQUEST_NUMBER,1,2) = 'PL'
+                                        --and mtrh.REQUEST_NUMBER like 'D%'
+                                        and mtrl.FROM_SUBINVENTORY_CODE = bic.ATTRIBUTE1
+                                        and nvl(mtrl.FROM_LOCATOR_ID,0) = nvl(bic.ATTRIBUTE2,0)
+                                group by mtrl.INVENTORY_ITEM_ID
+                                    ),0)
+                                    ) att
+                ,((khs_inv_qty_oh(msib2.ORGANIZATION_ID,msib2.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'') -
+                            (nvl(
+                                (select sum(mtrl.QUANTITY) - sum (nvl (mtrl.QUANTITY_DELIVERED,0)) quantity
+                                        from mtl_txn_request_headers mtrh
+                                                ,mtl_txn_request_lines mtrl
+                                    where mtrh.HEADER_ID = mtrl.HEADER_ID
+                                        --
+                                        and mtrl.LINE_STATUS in (3,7)
+                                        and mtrh.HEADER_STATUS in (3,7)
+                                        and mtrl.INVENTORY_ITEM_ID = bic.COMPONENT_ITEM_ID
+                                        and mtrh.ORGANIZATION_ID = bom.ORGANIZATION_ID
+                                        --and substr(mtrh.REQUEST_NUMBER,1,2) = 'PL'
+                                        --and mtrh.REQUEST_NUMBER like 'D%'
+                                        and mtrl.FROM_SUBINVENTORY_CODE = bic.ATTRIBUTE1
+                                        and nvl(mtrl.FROM_LOCATOR_ID,0) = nvl(bic.ATTRIBUTE2,0)
+                                group by mtrl.INVENTORY_ITEM_ID
+                                    ),0)
+                                    )) - bic.COMPONENT_QUANTITY*'$qty') kekurangan
                 ,nvl(
                         (select sum(mtrl.QUANTITY)
                             from mtl_txn_request_headers mtrh
@@ -166,16 +235,33 @@ class M_monitoring extends CI_Model
                             and mtrh.HEADER_STATUS in (3,7)
                             and mtrl.INVENTORY_ITEM_ID = bic.COMPONENT_ITEM_ID
                             and mtrh.ORGANIZATION_ID = bom.ORGANIZATION_ID
-                and mtrh.REQUEST_NUMBER like 'D%'
+            --                and mtrh.REQUEST_NUMBER like 'D%'
                     --           and mtrh.TRANSACTION_TYPE_ID in (64,137)
                     --           and msib_komp.SEGMENT1 in ('AAG1BA0021A1-0','AAG1BA0011A1-0')
                         group by mtrl.INVENTORY_ITEM_ID
                             ),0) mo
                     ,(
-                            (khs_inv_qty_att(msib2.ORGANIZATION_ID,msib2.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'')
+                            (khs_inv_qty_oh(msib2.ORGANIZATION_ID,msib2.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'') -
+                            (nvl(
+                                (select sum(mtrl.QUANTITY) - sum (nvl (mtrl.QUANTITY_DELIVERED,0)) quantity
+                                        from mtl_txn_request_headers mtrh
+                                                ,mtl_txn_request_lines mtrl
+                                    where mtrh.HEADER_ID = mtrl.HEADER_ID
+                                        --
+                                        and mtrl.LINE_STATUS in (3,7)
+                                        and mtrh.HEADER_STATUS in (3,7)
+                                        and mtrl.INVENTORY_ITEM_ID = bic.COMPONENT_ITEM_ID
+                                        and mtrh.ORGANIZATION_ID = bom.ORGANIZATION_ID
+                                        --and substr(mtrh.REQUEST_NUMBER,1,2) = 'PL'
+                                       --and mtrh.REQUEST_NUMBER like 'D%'             
+                                        and mtrl.FROM_SUBINVENTORY_CODE = bic.ATTRIBUTE1
+                                        and nvl(mtrl.FROM_LOCATOR_ID,0) = nvl(bic.ATTRIBUTE2,0)
+                                group by mtrl.INVENTORY_ITEM_ID
+                                    ),0)
+                                    )
                                 )-
                             (nvl(
-                                (select sum(mtrl.QUANTITY)
+                                (select sum(mtrl.QUANTITY) - sum (nvl (mtrl.QUANTITY_DELIVERED,0)) quantity
                                     from mtl_txn_request_headers mtrh
                                         ,mtl_txn_request_lines mtrl
                                         ,mtl_system_items_b msib_komp
@@ -187,28 +273,265 @@ class M_monitoring extends CI_Model
                                     and mtrh.HEADER_STATUS in (3,7)
                                     and mtrl.INVENTORY_ITEM_ID = bic.COMPONENT_ITEM_ID
                                     and mtrh.ORGANIZATION_ID = bom.ORGANIZATION_ID
-                and mtrh.REQUEST_NUMBER like 'D%'
-                and mtrl.FROM_SUBINVENTORY_CODE = bic.ATTRIBUTE1
+                                    --and mtrh.REQUEST_NUMBER like 'D%'
+                                    and mtrl.FROM_SUBINVENTORY_CODE = bic.ATTRIBUTE1
                             --           and mtrh.TRANSACTION_TYPE_ID in (64,137)
                             --           and msib_komp.SEGMENT1 in ('AAG1BA0021A1-0','AAG1BA0011A1-0')
                                 group by mtrl.INVENTORY_ITEM_ID
                                     ),0) )
-                                            ) kurang
-                ,khs_inv_qty_att(msib2.organization_id,msib2.inventory_item_id,'DFG','','') DFG            
-                ,khs_inv_qty_att(msib2.organization_id,msib2.inventory_item_id,'DMC','','') DMC            
-                ,khs_inv_qty_att(msib2.organization_id,msib2.inventory_item_id,'FG-TKS','','') FG_TKS            
-                ,khs_inv_qty_att(msib2.organization_id,msib2.inventory_item_id,'INT-PAINT','','') INT_PAINT            
-                ,khs_inv_qty_att(msib2.organization_id,msib2.inventory_item_id,'INT-WELD','','') INT_WELD            
-                ,khs_inv_qty_att(msib2.organization_id,msib2.inventory_item_id,'INT-SUB','','') INT_SUB            
-                ,khs_inv_qty_att(msib2.organization_id,msib2.inventory_item_id,'PNL-TKS','','') PNL_TKS            
-                --,khs_inv_qty_att(msib2.organization_id,msib2.inventory_item_id,'SM-TKS','','') SM_TKS
-                ,khs_inv_qty_att(101,msib2.inventory_item_id,'SM-TKS','','') SM_TKS
-                ,khs_inv_qty_att(msib2.organization_id,msib2.inventory_item_id,'INT-ASSYGT','','') INT_ASSYGT,
-                khs_inv_qty_att(msib2.organization_id,msib2.inventory_item_id,'INT-ASSY','','') INT_ASSY,
-                khs_inv_qty_att(msib2.organization_id,msib2.inventory_item_id,'INT-MACHA','','') INT_MACHA,
-                khs_inv_qty_att(msib2.organization_id,msib2.inventory_item_id,'INT-MACHB','','') INT_MACHB,
-                khs_inv_qty_att(msib2.organization_id,msib2.inventory_item_id,'INT-MACHC','','') INT_MACHC,
-                khs_inv_qty_att(msib2.organization_id,msib2.inventory_item_id,'INT-MACHD','','') INT_MACHD     
+                                            ) kurang  
+                ,khs_inv_qty_oh(msib2.ORGANIZATION_ID,msib2.INVENTORY_ITEM_ID,'DFG','','') -
+                (nvl(
+                    (select sum(mtrl.QUANTITY) - sum (nvl (mtrl.QUANTITY_DELIVERED,0)) quantity
+                            from mtl_txn_request_headers mtrh
+                                    ,mtl_txn_request_lines mtrl
+                        where mtrh.HEADER_ID = mtrl.HEADER_ID
+                            --
+                            and mtrl.LINE_STATUS in (3,7)
+                            and mtrh.HEADER_STATUS in (3,7)
+                            and mtrl.INVENTORY_ITEM_ID = bic.COMPONENT_ITEM_ID
+                            and mtrh.ORGANIZATION_ID = bom.ORGANIZATION_ID
+                            --and substr(mtrh.REQUEST_NUMBER,1,2) = 'PL'
+                            --and mtrh.REQUEST_NUMBER like 'D%'
+                            and mtrl.FROM_SUBINVENTORY_CODE = 'DFG'
+                            and nvl(mtrl.FROM_LOCATOR_ID,0) = nvl('',0)
+                    group by mtrl.INVENTORY_ITEM_ID
+                        ),0)
+                        ) DFG
+                ,khs_inv_qty_oh(msib2.ORGANIZATION_ID,msib2.INVENTORY_ITEM_ID,'DMC','','') -
+                (nvl(
+                    (select sum(mtrl.QUANTITY) - sum (nvl (mtrl.QUANTITY_DELIVERED,0)) quantity
+                            from mtl_txn_request_headers mtrh
+                                    ,mtl_txn_request_lines mtrl
+                        where mtrh.HEADER_ID = mtrl.HEADER_ID
+                            --
+                            and mtrl.LINE_STATUS in (3,7)
+                            and mtrh.HEADER_STATUS in (3,7)
+                            and mtrl.INVENTORY_ITEM_ID = bic.COMPONENT_ITEM_ID
+                            and mtrh.ORGANIZATION_ID = bom.ORGANIZATION_ID
+                            --and substr(mtrh.REQUEST_NUMBER,1,2) = 'PL'
+                            --and mtrh.REQUEST_NUMBER like 'D%'
+                            and mtrl.FROM_SUBINVENTORY_CODE = 'DMC'
+                            and nvl(mtrl.FROM_LOCATOR_ID,0) = nvl('',0)
+                    group by mtrl.INVENTORY_ITEM_ID
+                        ),0)
+                        ) DMC          
+                ,khs_inv_qty_oh(msib2.ORGANIZATION_ID,msib2.INVENTORY_ITEM_ID,'FG-TKS','','') -
+                (nvl(
+                    (select sum(mtrl.QUANTITY) - sum (nvl (mtrl.QUANTITY_DELIVERED,0)) quantity
+                            from mtl_txn_request_headers mtrh
+                                    ,mtl_txn_request_lines mtrl
+                        where mtrh.HEADER_ID = mtrl.HEADER_ID
+                            --
+                            and mtrl.LINE_STATUS in (3,7)
+                            and mtrh.HEADER_STATUS in (3,7)
+                            and mtrl.INVENTORY_ITEM_ID = bic.COMPONENT_ITEM_ID
+                            and mtrh.ORGANIZATION_ID = bom.ORGANIZATION_ID
+                            --and substr(mtrh.REQUEST_NUMBER,1,2) = 'PL'
+                            --and mtrh.REQUEST_NUMBER like 'D%'
+                            and mtrl.FROM_SUBINVENTORY_CODE = 'FG-TKS'
+                            and nvl(mtrl.FROM_LOCATOR_ID,0) = nvl('',0)
+                    group by mtrl.INVENTORY_ITEM_ID
+                        ),0)
+                        ) FG_TKS         
+                ,khs_inv_qty_oh(msib2.ORGANIZATION_ID,msib2.INVENTORY_ITEM_ID,'INT-PAINT','','') -
+                (nvl(
+                    (select sum(mtrl.QUANTITY) - sum (nvl (mtrl.QUANTITY_DELIVERED,0)) quantity
+                            from mtl_txn_request_headers mtrh
+                                    ,mtl_txn_request_lines mtrl
+                        where mtrh.HEADER_ID = mtrl.HEADER_ID
+                            --
+                            and mtrl.LINE_STATUS in (3,7)
+                            and mtrh.HEADER_STATUS in (3,7)
+                            and mtrl.INVENTORY_ITEM_ID = bic.COMPONENT_ITEM_ID
+                            and mtrh.ORGANIZATION_ID = bom.ORGANIZATION_ID
+                            --and substr(mtrh.REQUEST_NUMBER,1,2) = 'PL'
+                            --and mtrh.REQUEST_NUMBER like 'D%'
+                            and mtrl.FROM_SUBINVENTORY_CODE = 'INT-PAINT'
+                            and nvl(mtrl.FROM_LOCATOR_ID,0) = nvl('',0)
+                    group by mtrl.INVENTORY_ITEM_ID
+                        ),0)
+                        ) INT_PAINT           
+                ,khs_inv_qty_oh(msib2.ORGANIZATION_ID,msib2.INVENTORY_ITEM_ID,'INT-WELD','','') -
+                (nvl(
+                    (select sum(mtrl.QUANTITY) - sum (nvl (mtrl.QUANTITY_DELIVERED,0)) quantity
+                            from mtl_txn_request_headers mtrh
+                                    ,mtl_txn_request_lines mtrl
+                        where mtrh.HEADER_ID = mtrl.HEADER_ID
+                            --
+                            and mtrl.LINE_STATUS in (3,7)
+                            and mtrh.HEADER_STATUS in (3,7)
+                            and mtrl.INVENTORY_ITEM_ID = bic.COMPONENT_ITEM_ID
+                            and mtrh.ORGANIZATION_ID = bom.ORGANIZATION_ID
+                            --and substr(mtrh.REQUEST_NUMBER,1,2) = 'PL'
+                            --and mtrh.REQUEST_NUMBER like 'D%'
+                            and mtrl.FROM_SUBINVENTORY_CODE = 'INT-WELD'
+                            and nvl(mtrl.FROM_LOCATOR_ID,0) = nvl('',0)
+                    group by mtrl.INVENTORY_ITEM_ID
+                        ),0)
+                        ) INT_WELD
+                ,khs_inv_qty_oh(msib2.ORGANIZATION_ID,msib2.INVENTORY_ITEM_ID,'INT-SUB','','') -
+                (nvl(
+                    (select sum(mtrl.QUANTITY) - sum (nvl (mtrl.QUANTITY_DELIVERED,0)) quantity
+                            from mtl_txn_request_headers mtrh
+                                    ,mtl_txn_request_lines mtrl
+                        where mtrh.HEADER_ID = mtrl.HEADER_ID
+                            --
+                            and mtrl.LINE_STATUS in (3,7)
+                            and mtrh.HEADER_STATUS in (3,7)
+                            and mtrl.INVENTORY_ITEM_ID = bic.COMPONENT_ITEM_ID
+                            and mtrh.ORGANIZATION_ID = bom.ORGANIZATION_ID
+                            --and substr(mtrh.REQUEST_NUMBER,1,2) = 'PL'
+                            --and mtrh.REQUEST_NUMBER like 'D%'
+                            and mtrl.FROM_SUBINVENTORY_CODE = 'INT-SUB'
+                            and nvl(mtrl.FROM_LOCATOR_ID,0) = nvl('',0)
+                    group by mtrl.INVENTORY_ITEM_ID
+                        ),0)
+                        ) INT_SUB
+                ,khs_inv_qty_oh(msib2.ORGANIZATION_ID,msib2.INVENTORY_ITEM_ID,'PNL_TKS','','') -
+                (nvl(
+                    (select sum(mtrl.QUANTITY) - sum (nvl (mtrl.QUANTITY_DELIVERED,0)) quantity
+                            from mtl_txn_request_headers mtrh
+                                    ,mtl_txn_request_lines mtrl
+                        where mtrh.HEADER_ID = mtrl.HEADER_ID
+                            --
+                            and mtrl.LINE_STATUS in (3,7)
+                            and mtrh.HEADER_STATUS in (3,7)
+                            and mtrl.INVENTORY_ITEM_ID = bic.COMPONENT_ITEM_ID
+                            and mtrh.ORGANIZATION_ID = bom.ORGANIZATION_ID
+                            --and substr(mtrh.REQUEST_NUMBER,1,2) = 'PL'
+                            --and mtrh.REQUEST_NUMBER like 'D%'
+                            and mtrl.FROM_SUBINVENTORY_CODE = 'PNL_TKS'
+                            and nvl(mtrl.FROM_LOCATOR_ID,0) = nvl('',0)
+                    group by mtrl.INVENTORY_ITEM_ID
+                        ),0)
+                        ) PNL_TKS
+                ,khs_inv_qty_oh(101,msib2.INVENTORY_ITEM_ID,'SM-TKS','','') -
+                (nvl(
+                    (select sum(mtrl.QUANTITY) - sum (nvl (mtrl.QUANTITY_DELIVERED,0)) quantity
+                            from mtl_txn_request_headers mtrh
+                                    ,mtl_txn_request_lines mtrl
+                        where mtrh.HEADER_ID = mtrl.HEADER_ID
+                            --
+                            and mtrl.LINE_STATUS in (3,7)
+                            and mtrh.HEADER_STATUS in (3,7)
+                            and mtrl.INVENTORY_ITEM_ID = bic.COMPONENT_ITEM_ID
+                            and mtrh.ORGANIZATION_ID = bom.ORGANIZATION_ID
+                            --and substr(mtrh.REQUEST_NUMBER,1,2) = 'PL'
+                            --and mtrh.REQUEST_NUMBER like 'D%'
+                            and mtrl.FROM_SUBINVENTORY_CODE = 'SM-TKS'
+                            and nvl(mtrl.FROM_LOCATOR_ID,0) = nvl('',0)
+                    group by mtrl.INVENTORY_ITEM_ID
+                        ),0)
+                        ) SM_TKS
+                ,khs_inv_qty_oh(msib2.ORGANIZATION_ID,msib2.INVENTORY_ITEM_ID,'INT-ASSYGT','','') -
+                (nvl(
+                    (select sum(mtrl.QUANTITY) - sum (nvl (mtrl.QUANTITY_DELIVERED,0)) quantity
+                            from mtl_txn_request_headers mtrh
+                                    ,mtl_txn_request_lines mtrl
+                        where mtrh.HEADER_ID = mtrl.HEADER_ID
+                            --
+                            and mtrl.LINE_STATUS in (3,7)
+                            and mtrh.HEADER_STATUS in (3,7)
+                            and mtrl.INVENTORY_ITEM_ID = bic.COMPONENT_ITEM_ID
+                            and mtrh.ORGANIZATION_ID = bom.ORGANIZATION_ID
+                            --and substr(mtrh.REQUEST_NUMBER,1,2) = 'PL'
+                            --and mtrh.REQUEST_NUMBER like 'D%'
+                            and mtrl.FROM_SUBINVENTORY_CODE = 'INT-ASSYGT'
+                            and nvl(mtrl.FROM_LOCATOR_ID,0) = nvl('',0)
+                    group by mtrl.INVENTORY_ITEM_ID
+                        ),0)
+                        ) INT_ASSYGT
+                ,khs_inv_qty_oh(msib2.ORGANIZATION_ID,msib2.INVENTORY_ITEM_ID,'INT-ASSY','','') -
+                (nvl(
+                    (select sum(mtrl.QUANTITY) - sum (nvl (mtrl.QUANTITY_DELIVERED,0)) quantity
+                            from mtl_txn_request_headers mtrh
+                                    ,mtl_txn_request_lines mtrl
+                        where mtrh.HEADER_ID = mtrl.HEADER_ID
+                            --
+                            and mtrl.LINE_STATUS in (3,7)
+                            and mtrh.HEADER_STATUS in (3,7)
+                            and mtrl.INVENTORY_ITEM_ID = bic.COMPONENT_ITEM_ID
+                            and mtrh.ORGANIZATION_ID = bom.ORGANIZATION_ID
+                            --and substr(mtrh.REQUEST_NUMBER,1,2) = 'PL'
+                            --and mtrh.REQUEST_NUMBER like 'D%'
+                            and mtrl.FROM_SUBINVENTORY_CODE = 'INT-ASSY'
+                            and nvl(mtrl.FROM_LOCATOR_ID,0) = nvl('',0)
+                    group by mtrl.INVENTORY_ITEM_ID
+                        ),0)
+                        ) INT_ASSY
+                ,khs_inv_qty_oh(msib2.ORGANIZATION_ID,msib2.INVENTORY_ITEM_ID,'INT-MACHA','','') -
+                (nvl(
+                    (select sum(mtrl.QUANTITY) - sum (nvl (mtrl.QUANTITY_DELIVERED,0)) quantity
+                            from mtl_txn_request_headers mtrh
+                                    ,mtl_txn_request_lines mtrl
+                        where mtrh.HEADER_ID = mtrl.HEADER_ID
+                            --
+                            and mtrl.LINE_STATUS in (3,7)
+                            and mtrh.HEADER_STATUS in (3,7)
+                            and mtrl.INVENTORY_ITEM_ID = bic.COMPONENT_ITEM_ID
+                            and mtrh.ORGANIZATION_ID = bom.ORGANIZATION_ID
+                            --and substr(mtrh.REQUEST_NUMBER,1,2) = 'PL'
+                            --and mtrh.REQUEST_NUMBER like 'D%'
+                            and mtrl.FROM_SUBINVENTORY_CODE = 'INT-MACHA'
+                            and nvl(mtrl.FROM_LOCATOR_ID,0) = nvl('',0)
+                    group by mtrl.INVENTORY_ITEM_ID
+                        ),0)
+                        ) INT_MACHA
+                ,khs_inv_qty_oh(msib2.ORGANIZATION_ID,msib2.INVENTORY_ITEM_ID,'INT-MACHB','','') -
+                (nvl(
+                    (select sum(mtrl.QUANTITY) - sum (nvl (mtrl.QUANTITY_DELIVERED,0)) quantity
+                            from mtl_txn_request_headers mtrh
+                                    ,mtl_txn_request_lines mtrl
+                        where mtrh.HEADER_ID = mtrl.HEADER_ID
+                            --
+                            and mtrl.LINE_STATUS in (3,7)
+                            and mtrh.HEADER_STATUS in (3,7)
+                            and mtrl.INVENTORY_ITEM_ID = bic.COMPONENT_ITEM_ID
+                            and mtrh.ORGANIZATION_ID = bom.ORGANIZATION_ID
+                            --and substr(mtrh.REQUEST_NUMBER,1,2) = 'PL'
+                            --and mtrh.REQUEST_NUMBER like 'D%'
+                            and mtrl.FROM_SUBINVENTORY_CODE = 'INT-MACHB'
+                            and nvl(mtrl.FROM_LOCATOR_ID,0) = nvl('',0)
+                    group by mtrl.INVENTORY_ITEM_ID
+                        ),0)
+                        ) INT_MACHB
+                ,khs_inv_qty_oh(msib2.ORGANIZATION_ID,msib2.INVENTORY_ITEM_ID,'INT-MACHC','','') -
+                (nvl(
+                    (select sum(mtrl.QUANTITY) - sum (nvl (mtrl.QUANTITY_DELIVERED,0)) quantity
+                            from mtl_txn_request_headers mtrh
+                                    ,mtl_txn_request_lines mtrl
+                        where mtrh.HEADER_ID = mtrl.HEADER_ID
+                            --
+                            and mtrl.LINE_STATUS in (3,7)
+                            and mtrh.HEADER_STATUS in (3,7)
+                            and mtrl.INVENTORY_ITEM_ID = bic.COMPONENT_ITEM_ID
+                            and mtrh.ORGANIZATION_ID = bom.ORGANIZATION_ID
+                            --and substr(mtrh.REQUEST_NUMBER,1,2) = 'PL'
+                            --and mtrh.REQUEST_NUMBER like 'D%'
+                            and mtrl.FROM_SUBINVENTORY_CODE = 'INT-MACHC'
+                            and nvl(mtrl.FROM_LOCATOR_ID,0) = nvl('',0)
+                    group by mtrl.INVENTORY_ITEM_ID
+                        ),0)
+                        ) INT_MACHC
+                ,khs_inv_qty_oh(msib2.ORGANIZATION_ID,msib2.INVENTORY_ITEM_ID,'INT-MACHD','','') -
+                (nvl(
+                    (select sum(mtrl.QUANTITY) - sum (nvl (mtrl.QUANTITY_DELIVERED,0)) quantity
+                            from mtl_txn_request_headers mtrh
+                                    ,mtl_txn_request_lines mtrl
+                        where mtrh.HEADER_ID = mtrl.HEADER_ID
+                            --
+                            and mtrl.LINE_STATUS in (3,7)
+                            and mtrh.HEADER_STATUS in (3,7)
+                            and mtrl.INVENTORY_ITEM_ID = bic.COMPONENT_ITEM_ID
+                            and mtrh.ORGANIZATION_ID = bom.ORGANIZATION_ID
+                            --and substr(mtrh.REQUEST_NUMBER,1,2) = 'PL'
+                            --and mtrh.REQUEST_NUMBER like 'D%'
+                            and mtrl.FROM_SUBINVENTORY_CODE = 'INT-MACHD'
+                            and nvl(mtrl.FROM_LOCATOR_ID,0) = nvl('',0)
+                    group by mtrl.INVENTORY_ITEM_ID
+                        ),0)
+                        ) INT_MACHD   
                 ,wip.qty wip
                 --,decode(bic.basis_type,'','Item','2','Lot') Basis
                 --,bic.INCLUDE_IN_COST_ROLLUP

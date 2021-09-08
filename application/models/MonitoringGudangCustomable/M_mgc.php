@@ -11,26 +11,40 @@ class M_mgc extends CI_Model
   }
   public function get()
   {
-    return $this->oracle->query("SELECT  msib.segment1 kode, msib.description, msib.inventory_item_id,
+    return $this->oracle->query("SELECT msib.segment1 kode, msib.description, msib.inventory_item_id,
                                  msib.min_minmax_quantity min_stok, msib.max_minmax_quantity max_stok,
-                                 floor (SUM (moqd.transaction_quantity)) stok
-                              -- (SELECT SUM (mmt.transaction_quantity * -1)
-                              --    FROM mtl_material_transactions mmt
-                              --   WHERE msib.organization_id = mmt.organization_id
-                              --     AND msib.inventory_item_id = mmt.inventory_item_id
-                              --     AND TO_CHAR (mmt.transaction_date, 'Mon-YY') =
-                              --                                             TO_CHAR (SYSDATE, 'Mon-YY')
-                              --     AND mmt.subinventory_code = 'PNL-TKS'
-                              --     AND mmt.transaction_quantity LIKE '-%') aktual_out,
-                              -- (SELECT SUM (mmt.transaction_quantity)
-                              --    FROM mtl_material_transactions mmt
-                              --   WHERE msib.organization_id = mmt.organization_id
-                              --     AND msib.inventory_item_id = mmt.inventory_item_id
-                              --     AND TO_CHAR (mmt.transaction_date, 'Mon-YY') =
-                              --                                             TO_CHAR (SYSDATE, 'Mon-YY')
-                              --     AND mmt.subinventory_code = 'PNL-TKS'
-                              --     AND mmt.transaction_quantity NOT LIKE '-%') aktual_in
-                        FROM     mtl_system_items_b msib, mtl_onhand_quantities_detail moqd
+                                 FLOOR (SUM (moqd.transaction_quantity)) stok,
+                                 NVL
+                                    ((SELECT   TO_CHAR (  SUM (pla.quantity)
+                                                        - SUM (pda.quantity_delivered)
+                                                       ) outstanding_po
+                                          FROM po_headers_all pha,
+                                               po_lines_all pla,
+                                               po_line_locations_all plla,
+                                               po_distributions_all pda
+                                         WHERE pha.po_header_id = pla.po_header_id
+                                           AND pla.po_line_id = plla.po_line_id
+                                           AND plla.po_line_id = pda.po_line_id
+                                           AND pla.closed_code = 'OPEN'
+                                           AND pla.item_id = msib.inventory_item_id
+                                           AND pda.destination_subinventory = 'PNL-TKS'
+                                      GROUP BY pla.item_id),
+                                     'belum ada PO'
+                                    ) outstanding_po,
+                                 NVL
+                                    ((SELECT   TO_CHAR (  SUM (prla.quantity)
+                                                        - SUM (prla.quantity_delivered)
+                                                       ) outstanding_pp
+                                          FROM po_requisition_headers_all prha,
+                                               po_requisition_lines_all prla
+                                         WHERE prha.requisition_header_id = prla.requisition_header_id
+                                           AND prla.destination_subinventory = 'PNL-TKS'
+                                           AND prla.closed_code IS NULL
+                                           AND prla.item_id = msib.inventory_item_id
+                                      GROUP BY prla.item_id),
+                                     'belum ada PP'
+                                    ) outstanding_pp
+                            FROM mtl_system_items_b msib, mtl_onhand_quantities_detail moqd
                            WHERE msib.inventory_item_status_code = 'Active'
                              AND msib.organization_id = 102
                              AND msib.organization_id = moqd.organization_id

@@ -232,4 +232,25 @@ class C_SendSMS extends CI_Controller
             curl_close($cui);
         }
     }
+    public function gagalPR()
+    {
+        $gagalPR = $this->M_sendsms->getGagalPR();
+
+        // echo "<pre>";
+        // print_r($gagalPR);
+        // exit();
+        if ($gagalPR['V_GAGAL_PR'] == 0) {
+        } else {
+            $message = 'OKEBAJA terdapat ' . $gagalPR['V_GAGAL_PR'] . ' order gagal jadi PR';
+            $message = rawurlencode($message);
+            $url     = 'http://192.168.168.122:80/sendsms?username=ict&password=quick1953&phonenumber=08112669449&message=' . $message . '&[port=gsm-1.1]&[report=1]&[timeout=20]';
+            // print_r($url);
+            $cui = curl_init();
+            curl_setopt($cui, CURLOPT_URL, $url);
+            curl_setopt($cui, CURLOPT_HEADER, 0);
+
+            curl_exec($cui);
+            curl_close($cui);
+        }
+    }
 }
