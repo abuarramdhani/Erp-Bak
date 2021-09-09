@@ -561,6 +561,7 @@ $(document).on("ifUnchecked", ".p2k3_chkAll", function () {
 	$(".p2k3_chk").iCheck("uncheck");
 });
 
+
 /* Formatting function for row details - modify as you need */
 function format(d) {
 	// `d` is the original data object for the row
@@ -890,14 +891,6 @@ $(document).ready(function () {
 			type: "POST",
 			url: baseurl + "p2k3adm_V2/Admin/getFoto",
 			data: { id: vall },
-			beforeSend: () => {
-				swal.fire({
-					title: `Loading Gambar Apd ...`,
-					imageUrl: `${baseurl}assets/img/gif/loading99.gif`,
-					showConfirmButton: false,
-					allowOutsideClick: false
-				})
-			},
 			success: function (response) {
 				// alert(response['foto']);
 				$("#surat-loading").attr("hidden", true);
@@ -1553,47 +1546,26 @@ $('.dataTable-noOrder').dataTable({
 })
 $('.apd-staff').on('click', function () {
 	let kodeSie = $(this).data('ks')
+	let seksiName = $('#seksiName').text()
 	$.ajax({
 		url: `${baseurl}p2k3adm_V2/Admin/ajax/ajaxGetKebStaff`,
 		method: 'get',
-		dataType: 'json',
 		data: {
-			kodeSie
+			kodeSie,
+			seksiName
 		},
 		beforeSend: () => {
-			swal.fire({
-				title: `Loading Gambar Apd ...`,
-				imageUrl: `${baseurl}assets/img/gif/loading99.gif`,
-				showConfirmButton: false,
-				allowOutsideClick: false
-			})
+			$("#surat-loading").attr("hidden", false)
 		},
 		success: res => {
-			swal.fire({
-				title: `STAFF`,
-				confirmButtonText: "Ok",
-				allowOutsideClick: "true",
-				imageUrl: false,
-				animation: false
-			})
-			const fotoel = `
-				<div class="apd-wrapper">
-					${res.filter(item => item.jml_kebutuhan_staff > 0).sort((a, b) => a.urutan - b.urutan)
-					.map(it => `
-							<div class="apd-container">
-								<img style="width:60px; margin-bottom:20px;" src="${baseurl}assets/upload/P2K3/item/${it.nama_file}?>" alt="${it.nama_file}"></img>
-								<h5>${it.item}</h5>
-							</div>`).join('')}
-							<img style="width:70px; grid-column:2/3; grid-row:${Math.round((Math.round(((res.filter(item => item.jml_kebutuhan_staff > 0).length) + 1) / 3) + 1) / 2)}/${Math.ceil((Math.ceil(((res.filter(item => item.jml_kebutuhan_staff > 0).length) + 1) / 3) + 1) / 2) + 1};"  src="${baseurl}assets/img/pegawaiKHS/PegawaiKHS-Staff.png"></img>
-					</div>`
-			$('.swal2-content').html(fotoel)
+			$("#surat-loading").attr("hidden", true)
+			$('#view_apd > .modal-dialog > .modal-content > .modal-body').html(res)
+			$('#seksi').html(`Seksi : ${seksiName}`)
+			$('#view_apd').modal('show')
 		},
-		error: () => {
-			swal.fire({
-				type: 'error',
-				title: 'error',
-				text: 'Error Dalam Mengambil Gambar, Harap Coba Kembali'
-			})
+		error: (xhr, ajaxOptions, thrownError) => {
+			$("#surat-loading").attr("hidden", true)
+			$.toaster(xhr + "," + ajaxOptions + "," + thrownError);
 		}
 	})
 })
@@ -1603,56 +1575,37 @@ $('.apd-pekerja').each(function () {
 		let kdPekerjaan = $(this).data('kp')
 		let kodeSie = $(this).data('ks')
 		let pekerjaan = $(this).text().toUpperCase()
-		console.log(kodeSie)
+		let seksiName = $('#seksiName').text()
 		$.ajax({
 			url: `${baseurl}p2k3adm_V2/Admin/ajax/ajaxGetKebSet`,
 			method: 'get',
-			dataType: 'json',
 			data: {
 				kodeSie,
-				kdPekerjaan
+				kdPekerjaan,
+				pekerjaan,
+				seksiName
 			},
 			beforeSend: () => {
-				swal.fire({
-					title: `Loading Gambar Apd ...`,
-					imageUrl: `${baseurl}assets/img/gif/loading99.gif`,
-					showConfirmButton: false,
-					allowOutsideClick: false
-				})
+				$("#surat-loading").attr("hidden", false)
 			},
 			success: res => {
-				console.log(baseurl)
-				swal.fire({
-					title: `${pekerjaan}`,
-					confirmButtonText: "Ok",
-					allowOutsideClick: "true",
-					imageUrl: false,
-					animation: false
-				})
-				if (res.length > 0) {
-					let fotoel = `
-						<div class="apd-wrapper">
-							${res.filter(item => item.jml_item > 0).sort((a, b) => a.urutan - b.urutan)
-							.map(it => `
-									<div class="apd-container">
-										<img style="width:60px; margin-bottom:20px;" src="${baseurl}assets/upload/P2K3/item/${it.nama_file}?>" alt="${it.nama_file}"></img>
-										<h5>${it.item}</h5>
-									</div>`).join('')}
-									<img style="width:70px; grid-column:2/3; grid-row:${Math.round((Math.floor(((res.filter(item => item.jml_item > 0).length) + 1) / 3) + 1) / 2)}/${Math.ceil((Math.ceil(((res.filter(item => item.jml_item > 0).length) + 1) / 3) + 1) / 2) + 1};" src="${baseurl}assets/img/pegawaiKHS/PegawaiKHS-Operator.png"></img>
-							</div>`
-
-					$('.swal2-content').html(fotoel)
-				} else {
-					$('.swal2-content').html('Gambar Apd Tidak Ditemukan')
-				}
+				$("#surat-loading").attr("hidden", true)
+				$('#view_apd > .modal-dialog > .modal-content > .modal-body').html(res)
+				$('#pekerjaan').html(pekerjaan)
+				$('#seksi').html(`Seksi : ${seksiName}`)
+				$('#view_apd').modal('show')
 			},
-			error: () => {
-				swal.fire({
-					type: 'error',
-					title: 'error',
-					text: 'Error Dalam Mengambil Gambar, Harap Coba Kembali'
-				})
+			error: (xhr, ajaxOptions, thrownError) => {
+				$("#surat-loading").attr("hidden", true)
+				$.toaster(xhr + "," + ajaxOptions + "," + thrownError);
 			}
 		})
 	})
+})
+
+$(document).on('ifChecked', '.p2k3_chkAll_kanit', function () {
+	$(this).closest('table').find('.p2k3_chk').iCheck("check");
+})
+$(document).on('ifUnchecked', '.p2k3_chkAll_kanit', function () {
+	$(this).closest('table').find('.p2k3_chk').iCheck("uncheck");
 })

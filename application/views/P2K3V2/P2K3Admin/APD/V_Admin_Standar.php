@@ -1,4 +1,10 @@
 <style type="text/css">
+    .flex-center {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
     .dataTables_filter {
         float: right;
     }
@@ -9,11 +15,18 @@
     }
 
     .apd-wrapper {
-        display: grid;
-        align-self: center;
-        grid-template-columns: repeat(3, 1fr);
-        justify-items: center;
-        align-content: center;
+        display: flex;
+        padding: 0 3rem;
+        height: 200px;
+    }
+
+    .apd-container {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .wrapped-apd {
+        width: 100%;
     }
 
     .apd-wrapper>.apd-container {
@@ -23,6 +36,7 @@
         justify-content: center;
     }
 </style>
+<!--  -->
 <section class="content">
     <div class="inner">
         <div class="row">
@@ -61,7 +75,7 @@
                                         </div>
                                     </form>
                                     <div style="margin-top: 20px;" class="col-md-12 text-center">
-                                        <h4 style="color: #000; font-weight: bold;">
+                                        <h4 id="seksiName" style="color: #000; font-weight: bold;">
                                             <?php if (!empty($seksi) || !isset($seksi)) {
                                                 echo $seksi[0]['section_name'];
                                             } ?>
@@ -123,3 +137,39 @@
         </div>
     </div>
 </section>
+<div id="surat-loading" style="top: 0;left: 0;right: 0;bottom: 0; margin: auto; position: fixed; background: rgba(0,0,0,.5); z-index: 11;" hidden="hidden">
+    <img src="http://erp.quick.com/assets/img/gif/loadingtwo.gif" style="position: fixed; top: 0;left: 0;right: 0;bottom: 0; margin: auto; width: 40%;">
+</div>
+<div class="modal fade" id="view_apd" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true" style="margin-top: -20px; font-family:Arial, Helvetica, sans-serif !important;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <table style="width:100%" border="1px solid black">
+                    <tr>
+                        <td rowspan="3">
+                            <div class="flex-center">
+                                <img width="60" src="<?= base_url('assets/img/logo/logo.png') ?>" alt="">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-size:24px; font-weight:bold; text-align:center; padding:.5rem 0;">STANDART ALAT PELINDUNG DIRI (APD)</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:center; line-height:20px; padding:.5rem 0;">
+                            <p id="pekerjaan" style="font-size:20px; font-weight:bold; text-transform:uppercase;"></p>
+                            <p id="seksi" style="font-size:20px; font-weight:bold; text-transform:uppercase;"></p>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <a target="__blank" href="<?= base_url('p2k3adm_V2/Admin/exportPdf') ?>" class="btn btn-danger">Export Pdf</a>
+            </div>
+        </div>
+    </div>
+</div>

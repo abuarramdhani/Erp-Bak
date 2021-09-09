@@ -16,6 +16,7 @@ class C_Index extends CI_Controller
 		$this->load->library('ciqrcode');
 		$this->load->library('upload');
 		$this->load->library('general');
+		$this->load->library('personalia');
 
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('P2K3V2/P2K3Admin/M_dtmasuk');
@@ -59,7 +60,6 @@ class C_Index extends CI_Controller
 		}
 		$data['list'] = $this->M_dtmasuk->getListAprove($ks, $baru);
 		$data['get_list_approve_new'] = $this->M_dtmasuk->getListApproveNew($ks);
-		$data['get_daftar_pekerjaan_by_std'] = $this->M_dtmasuk->getDaftarPekerjaanByStd($ks);
 		$data['daftar_pekerjaan']	= $this->M_order->daftar_pekerjaan($ks);
 		$data['seksi'] = '';
 		$data['seksi'] = $this->M_dtmasuk->cekseksi($ks);
@@ -3565,23 +3565,99 @@ class C_Index extends CI_Controller
 
 	public function ajaxGetKebSet()
 	{
-		header('Content-Type: json');
-
 		$key = $this->input->get('kodeSie');
 		$key2 = $this->input->get('kdPekerjaan');
+		$apd = $this->M_dtmasuk->getItemPekerja($key, $key2);
+		if (!empty($apd)) {
+			$apd = array_filter($apd, function ($a) {
+				return $a['jml_item'] > 0;
+			});
+			usort($apd, function ($a, $b) {
+				return $a['urutan'] > $b['urutan'];
+			});
+			$kelompok_tubuh  = array_column($apd, 'kelompok_tubuh');
+			$data['apd'] = [];
 
-		$result = $this->M_dtmasuk->getItemPekerja($key, $key2);
+			foreach ($kelompok_tubuh as $kelTubuh) {
+				$adp_filtered = array_filter($apd, function ($apdval) use ($kelTubuh) {
+					return $apdval['kelompok_tubuh'] == $kelTubuh;
+				});
+				$data['apd'][$kelTubuh] = $adp_filtered;
+			}
 
-		echo json_encode($result);
+			$askaNit = $this->M_order->getTrefjabatanKanit($this->M_dtmasuk->getDataKop($key)[0]['noindaskanit'], substr($key, 0, 5));
+			$data['pekerjaan'] = $this->input->get('pekerjaan');
+			$data['seksiName'] = $this->input->get('seksiName');
+			$data['kelompok_tubuh'] = $kelompok_tubuh;
+			$data['person'] = 'PegawaiKHS.jpg';
+			$data['data_kop'] = $this->M_dtmasuk->getDataKop($key)[0];
+			$data['seksiUnit'] = $askaNit;
+			$view_apd = $this->load->view('P2K3V2/P2K3Admin/APD/V_Standar_pdf', $data, TRUE);
+			$this->session->set_userdata('view_apd', $view_apd);
+			echo $this->load->view('P2K3V2/P2K3Admin/APD/V_Standar_apd', $data, TRUE);
+		} else {
+			echo "<h1 class='text-center'>APD KOSONG</h1>";
+		}
 	}
+
 	public function getKebstaff()
 	{
-		header('Content-Type: json');
-
 		$ks = $this->input->get('kodeSie');
+		$data['seksiName'] = $this->input->get('seksiName');
+		$data['pekerjaan'] = 'STAFF';
+		$apd = $this->M_dtmasuk->getItemStaff($ks);
+		$apd = array_filter($apd, function ($a) {
+			return $a['jml_kebutuhan_staff'] > 0;
+		});
 
-		$result = $this->M_dtmasuk->getItemStaff($ks);
+		usort($apd, function ($a, $b) {
+			return $a['urutan'] > $b['urutan'];
+		});
 
-		echo json_encode($result);
+		$kelompok_tubuh  = array_column($apd, 'kelompok_tubuh');
+
+		$data['apd'] = [];
+
+		foreach ($kelompok_tubuh as $kelTubuh) {
+			$adp_filtered = array_filter($apd, function ($apdval) use ($kelTubuh) {
+				return $apdval['kelompok_tubuh'] == $kelTubuh;
+			});
+			$data['apd'][$kelTubuh] = $adp_filtered;
+		}
+
+		$askaNit = $this->M_order->getTrefjabatanKanit($this->M_dtmasuk->getDataKop($ks)[0]['noindaskanit'], substr($ks, 0, 5));
+		$data['data_kop'] = $this->M_dtmasuk->getDataKop($ks)[0];
+		$data['seksiUnit'] = $askaNit;
+		$data['person'] = 'PegawaiKHS.jpg';
+		$view_apd =  $this->load->view('P2K3V2/P2K3Admin/APD/V_Standar_pdf', $data, TRUE);
+		$this->session->set_userdata('view_apd', $view_apd);
+		echo $this->load->view('P2K3V2/P2K3Admin/APD/V_Standar_apd', $data, TRUE);
+	}
+
+	public function exportPdf()
+	{
+		set_time_limit(0);
+		$tanggal = date('Y-m-d H:i:s');
+		$user = $this->session->user;
+		$name = $this->session->employee;
+
+		$pdf     =  $this->pdf->load();
+		$standar_pdf = $this->session->view_apd;
+		$pdf     =  new mPDF('utf-8', array(215, 330), 10, "Arial", 20, 20, 20, 20, 0, 0, 'P', ['default_font' => 'Arial']);
+		$pdf->useSubstitutions = false;
+		$pdf->AddPage();
+		$pdf->WriteHTML($standar_pdf);
+		$pdf->setTitle('KKK-KHS-01');
+		$pdf->setFooter("Dicetak Melalui Quick ERP - P2K3 Pada $tanggal Oleh $user - $name");
+		$pdf->Output('KKK-KHS-01.pdf', 'I');
+	}
+
+	public function exportPdf2()
+	{
+		$pdf     =  $this->pdf->load();
+		$pdf->writeHTML('hello1');
+		$pdf->AddPage();
+		$pdf->writeHTML('hello2');
+		$pdf->Output('KKK-KHS-01.pdf', 'I');
 	}
 }
