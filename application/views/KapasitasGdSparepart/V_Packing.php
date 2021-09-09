@@ -87,7 +87,7 @@
                 </div>
 		    </div>
             <div class="modal-footer">
-                <input type="button" class="btn btn-md btn-success" id="" onclick="transactDOSP(this)" value="Transact">
+                <input type="button" class="btn btn-md btn-success" id="" onclick="packingDOSP(this)" value="Packing">
             </div>
 		</div>
 	</div>
