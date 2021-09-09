@@ -87,7 +87,7 @@ class M_import extends CI_Model
     }
     
     public function updatePlanDate($id, $value){
-        $sql = "update khs_plan_item_monitoring_date set value_plan_date = $value
+        $sql = "update khs_plan_item_monitoring_date set value_plan_month = $value
                 where plan_id = $id";
         $query = $this->oracle->query($sql);
         $query = $this->oracle->query('commit');
