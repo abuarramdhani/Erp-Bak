@@ -78,7 +78,7 @@
 
 		public function ambilLokasi($lokasi)
 		{
-			$ambilLokasi			= "	SELECT * FROM hrd_khs.tlokasi_kerja WHERE id_ LIKE '%$lokasi%' OR lokasi_kerja LIKE '%$lokasi%' 
+			$ambilLokasi			= "	SELECT id_, lokasi_kerja FROM hrd_khs.tlokasi_kerja WHERE id_ LIKE '%$lokasi%' OR lokasi_kerja LIKE '%$lokasi%' 
 										union select '00' as id_, 'SEMUA LOKASI KERJA' as lokasi_kerja ORDER BY id_;";
 			$queryAmbilLokasi	=	$this->personalia->query($ambilLokasi);
 			return $queryAmbilLokasi->result_array();

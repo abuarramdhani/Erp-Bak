@@ -45,7 +45,7 @@
 																</div>
 																<br>
 																<!-- <form method="POST" action="<?php echo site_url('CateringManagement/Extra/EditTempatMakan/getShow'); ?>"> -->
-																<table class="datatable table table-striped table-bordered table-hover text-left tblOrderListACC" id="tblOrderListACC" style="">
+																<table class="datatable table table-striped table-bordered table-hover text-left tblOrderListOpenSeksi" id="tblOrderListOpenSeksi" style="">
 															<thead class="bg-primary">
 																<tr>
 																	<th class="text-center">No Order</th>
@@ -100,7 +100,7 @@
 																</div>
 																<br>
 																<!-- <form method="POST" action="<?php echo site_url('CateringManagement/Extra/EditTempatMakan/getShow'); ?>"> -->
-																<table class="datatable table table-striped table-bordered table-hover text-left tblOrderListACC" id="tblOrderListACC" style="">
+																<table class="datatable table table-striped table-bordered table-hover text-left tblOrderListACCSeksi" id="tblOrderListACCSeksi" style="">
 															<thead class="bg-green">
 																<tr>
 																	<th class="text-center">No Order</th>
@@ -156,7 +156,7 @@
 																</div>
 																<br>
 																<form method="POST" action="<?php echo site_url('CateringManagement/Extra/EditTempatMakan/getShow'); ?>">
-																<table class="datatable table table-striped table-bordered table-hover text-left tblOrderListReviewed" id="tblOrderListReviewed" style="">
+																<table class="datatable table table-striped table-bordered table-hover text-left tblOrderListReviewedSeksi" id="tblOrderListReviewedSeksi" style="">
 															<thead style="background-color:#3fc5f0;">
 																<tr>
 																	<th class="text-center">No Order</th>
@@ -213,7 +213,7 @@
 																</div>
 																<br>
 																<form method="POST" action="<?php echo site_url('CateringManagement/Extra/EditTempatMakan/getShow'); ?>">
-																<table class="datatable table table-striped table-bordered table-hover text-left tblOrderListAction" id="tblOrderListAction" style="">
+																<table class="datatable table table-striped table-bordered table-hover text-left tblOrderListActionSeksi" id="tblOrderListActionSeksi" style="">
 															<thead style="background-color:#6decb9;">
 																<tr>
 																	<th class="text-center">No Order</th>
@@ -229,7 +229,7 @@
 															<?php foreach ($order as $nganggur) {
 																if ($nganggur['status_order'] == 'action' && $nganggur['perkiraan_selesai'] >= date('Y-m-d')) {
 																	# code...
-																// }else{	
+																// }else{
 															?>
 																<tr>
 																	<td class="text-center"><?= $nganggur['no_order']?></td>
@@ -270,7 +270,7 @@
 																</div>
 																<br>
 																<form method="POST" action="<?php echo site_url('CateringManagement/Extra/EditTempatMakan/getShow'); ?>">
-																<table class="datatable table table-striped table-bordered table-hover text-left tblOrderListOverdue" id="tblOrderListOverdue" style="">
+																<table class="datatable table table-striped table-bordered table-hover text-left tblOrderListOverdueSeksi" id="tblOrderListOverdueSeksi" style="">
 															<thead style="background-color:#eef5b2;">
 																<tr>
 																	<th class="text-center">No Order</th>
@@ -284,7 +284,7 @@
 															<form action="" method="post">
 															<tbody>
 															<?php foreach ($order as $nganggur) {
-																if ($nganggur['perkiraan_selesai'] < date('Y-m-d') && $nganggur['status_order'] !== 'close' && $nganggur['status_order'] !== 'reject' && $nganggur['status_order'] !== 'open' && $nganggur['status_order'] !== 'done') {						
+																if ($nganggur['perkiraan_selesai'] < date('Y-m-d') && $nganggur['status_order'] !== 'close' && $nganggur['status_order'] !== 'reject' && $nganggur['status_order'] !== 'open' && $nganggur['status_order'] !== 'done') {
 															?>
 																<tr>
 																	<td class="text-center"><?= $nganggur['no_order']?></td>
@@ -324,7 +324,7 @@
 																	<label>Order Done</label>
 																</div>
 																	<br>
-																<table class="datatable table table-striped table-bordered table-hover text-left tblOrderListDone" id="tblOrderListDone" style="">
+																<table class="datatable table table-striped table-bordered table-hover text-left tblOrderListDoneSeksi" id="tblOrderListDoneSeksi" style="">
 															<thead style="background-color:#42dee1;">
 																<tr>
 																	<th class="text-center">No Order</th>
@@ -341,7 +341,7 @@
 																$tanggal_order_selesai = $nganggur['tgl_order_selesai'];
 																$tos = explode(" ", $tanggal_order_selesai);
 																$tanggal = $tos[0];
-																$batas_order = date('Y-m-d', strtotime($tanggal. '+3 day'));	
+																$batas_order = date('Y-m-d', strtotime($tanggal. '+3 day'));
 
 																	if ($nganggur['status_order'] == 'done' && date('Y-m-d') < $batas_order) {
 															?>
@@ -353,8 +353,8 @@
 																	<td class="text-center"><?= date("d-M-Y H:i:s", strtotime($nganggur['last_response']));?></td>
 																	<td style="text-align:center;">
 																	<!-- href="<?= base_url("TicketingMaintenance/Seksi/MyOrder/closeOrder/".$nganggur['no_order']) ?>" -->
-                                                                    <a class="btn btn-primary btn-sm" title="Detail Order" href="<?= base_url("TicketingMaintenance/Seksi/MyOrder/detail/". $nganggur['no_order']) ?>"><span class="fa fa-search"> Detail</span></a> 
-                                                                    <a class="btn btn-danger btn-sm" title="Close Order" onclick="AreYouSureWantToCloseYourOrder(this)"><span class="fa fa-times"> Close</span></a> 
+                                                                    <a class="btn btn-primary btn-sm" title="Detail Order" href="<?= base_url("TicketingMaintenance/Seksi/MyOrder/detail/". $nganggur['no_order']) ?>"><span class="fa fa-search"> Detail</span></a>
+                                                                    <a class="btn btn-danger btn-sm" title="Close Order" onclick="AreYouSureWantToCloseYourOrder(this)"><span class="fa fa-times"> Close</span></a>
                                                                     </td>
 																</tr>
 															<?php } } ?>
@@ -385,7 +385,7 @@
 																</div>
 																	<br>
 																<form method="POST" action="<?php echo site_url('CateringManagement/Extra/EditTempatMakan/getShow'); ?>">
-																<table class="datatable table table-striped table-bordered table-hover text-left tblOrderListClose" id="tblOrderListClose" style="">
+																<table class="datatable table table-striped table-bordered table-hover text-left tblOrderListCloseSeksi" id="tblOrderListCloseSeksi" style="">
 															<thead style="color:white">
 																<tr>
 																	<th class="text-center" style="background-color:black;">No Order</th>
@@ -403,7 +403,7 @@
 																	$tanggal_order_selesai = $nganggur['tgl_order_selesai'];
 																	$tos = explode(" ", $tanggal_order_selesai);
 																	$tanggal = $tos[0];
-																	$batas_order = date('Y-m-d', strtotime($tanggal. '+3 day'));														
+																	$batas_order = date('Y-m-d', strtotime($tanggal. '+3 day'));
 																}
 																if ($nganggur['status_order'] == 'close' || $nganggur['status_order'] == 'done' || date('Y-m-d') < $batas_order && $nganggur['status_order'] != 'open') {
 															?>
@@ -446,7 +446,7 @@
 																</div>
 																<br>
 																<form method="POST" action="<?php echo site_url('CateringManagement/Extra/EditTempatMakan/getShow'); ?>">
-																<table class="datatable table table-striped table-bordered table-hover text-left tblOrderListRejected" id="tblOrderListRejected" style="">
+																<table class="datatable table table-striped table-bordered table-hover text-left tblOrderListRejectedSeksi" id="tblOrderListRejectedSeksi" style="">
 															<thead style="background-color: #f0134d">
 																<tr>
 																	<th class="text-center" style="color:white;">No Order</th>
