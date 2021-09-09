@@ -73,21 +73,20 @@ class M_cetak extends CI_Model
     public function bodySurat($id)
     {
         $oracle = $this->load->database('oracle', true);
-        $sql = "SELECT   msib.segment1, msib.description,
-                         kdds.required_quantity qty_requested,
-                         NVL (TO_CHAR (mtrl.quantity_delivered), '--') qty_delivered, mtrl.*
-                    FROM mtl_txn_request_headers mtrh,
-                         mtl_txn_request_lines mtrl,
-                         mtl_system_items_b msib,
-                         khs_detail_dospb_sp kdds
-                   WHERE mtrh.header_id = mtrl.header_id
-                     AND mtrl.inventory_item_id = msib.inventory_item_id
-                     AND msib.organization_id = mtrl.organization_id
-                     AND mtrh.header_id = kdds.header_id
-                     AND mtrl.line_id = kdds.line_id
-                     AND mtrl.line_status IN (5,6)
-                     AND mtrh.request_number = '$id'
-                ORDER BY mtrl.line_number";
+        $sql = "SELECT msib.segment1, msib.description,
+                     kdds.required_quantity qty_requested,
+                     NVL (TO_CHAR (kdds.allocated_quantity), '--') qty_delivered, mtrl.*
+                FROM mtl_txn_request_headers mtrh,
+                     mtl_txn_request_lines mtrl,
+                     mtl_system_items_b msib,
+                     khs_detail_dospb_sp kdds
+               WHERE mtrh.header_id = mtrl.header_id
+                 AND mtrl.inventory_item_id = msib.inventory_item_id
+                 AND msib.organization_id = mtrl.organization_id
+                 AND mtrh.header_id = kdds.header_id
+                 AND mtrl.line_id = kdds.line_id
+                 AND mtrh.request_number = '$id'
+            ORDER BY mtrl.line_number";
         $query = $oracle->query($sql);
         return $query->result_array();
     }
