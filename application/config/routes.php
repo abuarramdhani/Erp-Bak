@@ -2362,6 +2362,10 @@ $route['MasterPresensi/DataPresensi/PresensiHariIni/(:any)/(:any)'] = 'MasterPre
 $route['absen_hari_ini_pusat'] = 'MasterPresensi/DataPresensi/C_PresensiHariIni/Pusat';
 $route['absen_hari_ini_tuksono'] = 'MasterPresensi/DataPresensi/C_PresensiHariIni/Tuksono';
 
+$route['MasterPresensi/SetupCuti'] = "MasterPresensi/setupCuti/C_Cuti";
+$route['MasterPresensi/ExportPdf'] = "MasterPresensi/setupCuti/C_Cuti/exportPdf";
+$route['MasterPresensi/SetupCuti/ajax/(:any)'] = "MasterPresensi/setupCuti/C_Cuti/$1";
+
 //-------------------------------------Hambatan Produksi-------------------------------------------------
 $route['ManufacturingOperation/ProductionObstacles/master'] = 'ManufacturingOperation/ProductionObstacles/MainMenu/C_Master';
 $route['ManufacturingOperation/ProductionObstacles/master/(:any)'] = 'ManufacturingOperation/ProductionObstacles/MainMenu/C_Master/$1';
