@@ -123,9 +123,35 @@
                 </table>
             </div>
         </div>
+        <?php
+            if(sizeof($gambar) == "0") {
+            ?>
+                 <div class="col-md-12" style="text-align:center"><br>
+            <span ><b>Belum ada lampiran gambar</b></span>
+            <br><br>
+        </div>                
+            <?php } 
+                else { ?>
+                <div class="col-md-12" style="text-align:center"><br>
+            <span ><b>Lampiran gambar :  </b></span>
+            <br><br>
+            <span >
+            <?php $filename = $gambar['0']['FILE_DIR_ADDRESS']; ?>
 
-        <form name="formMPA" class="form-horizontal" enctype="multipart/form-data" method="post"
+                                        <a href="<?php echo base_url($filename)?>" target="_blank">
+                            <img style="max-width: 300px;max-height: 300px"  src="<?php echo base_url($filename)?>">
+                        </a>
+                        <br><span style="color:#3A4C52;font-size:11px">*Klik gambar untuk membuka di Tab baru</span>
+                            </span>
+                            <br><br>
+        </div>                
+            <?php } ?>
+       
+
+
+        <form class="form-horizontal" enctype="multipart/form-data" method="post"
             action="<?php echo site_url('PeriodicalMaintenance/Management/Uploadimg'); ?>">
+            
             <div id="addgambarMPA">
             <?php
             if(sizeof($top) == "0") {
@@ -138,15 +164,41 @@
                 <div class="panel-body">
                     <div class="col-md-4" style="text-align: right;"><label>Gambar</label></div>
                     <div class="col-md-4"><input required type="file" name="gambarMPA[]" class="form-control"
-                            accept=".jpg,.png,.jpeg"></div>
-                    <div class="col-md-2"><a class="btn btn-default" onclick="addgambarMPA()"><i
-                                class="fa fa-plus"></i></a></div>
+                            accept="image/*"><br>
+                            <input type="hidden" name="MAX_FILE_SIZE" value="2097152" /></div>
+                    <!-- <div class="col-md-2"><a class="btn btn-default" onclick="addgambarMPA()"><i
+                                class="fa fa-plus"></i></a></div> -->
                 </div>
             </div>
+            <?php
+            if(sizeof($gambar) == "0") {
+            ?>          
             <div class="panel-body">
                 <div class="col-md-12" style="text-align: center;"><button id="save_mpa"
-                        class="btn btn-success">Save</button></div>
-            </div>
+                        class="btn btn-success"><i class="fa fa-save"></i> Simpan Gambar</button></div>
+            </div>     
+            <?php } 
+                else { ?>
+                <div class="panel-body">
+                <div class="col-md-12" style="text-align: center;"><button id="save_mpa"
+                        class="btn btn-primary"><i class="fa fa-pencil"></i>&nbsp; Ubah Gambar&nbsp;</button></div>
+            </div>         
+            <?php } ?>
+            
         </form>
+
+            <?php
+            if(sizeof($gambar) == "0") {
+            ?>               
+            <?php } 
+                else { ?>
+                 <!-- <input type="hidden" name="del_mesin" value="<?= $top['0']['NAMA_MESIN'] ?>" />       -->
+                   <div class="panel-body">
+                <div class="col-md-12" style="text-align: center;">
+                <button id="delete_img_mpa"
+                        class="btn btn-danger" onclick="delImageMPA('<?= $top['0']['NAMA_MESIN'] ?>','<?= $gambar['0']['FILE_DIR_ADDRESS'] ?>')"><i class="fa fa-trash"></i> Hapus Gambar</button></div>
+            </div>             
+            <?php } ?>
+            
     </div>
 </div>

@@ -235,7 +235,6 @@ class C_Index extends CI_Controller
 			'kd_pkj'						=> $pekerja->kd_pkj,
 			'golkerja'					=> $pekerja->golkerja,
 			'jenispekerjaan'		=> $pekerjaan->jenispekerjaan === 't', // direct = false, indirect = true
-			'npwp'							=> $pekerja->npwp,
 			'ruang'							=> $pekerja->ruang,
 			'lmkontrak'         => $pekerja->lmkontrak,
 			'akhkontrak'        => (new DateTime($pekerja->akhkontrak))->format('d-m-Y'),
@@ -252,7 +251,8 @@ class C_Index extends CI_Controller
 			'nokoperasi'				=> $pekerja->nokoperasi,
 			/**Putus Hubungan Kerja */
 			'tglkeluar'         => (new DateTime($pekerja->tglkeluar))->format('d-m-Y'),
-			'sebabklr'          => $pekerja->sebabklr,
+			'sebabklr'          => empty($pekerja->sebab_keluar) ? $pekerja->sebabklr:$pekerja->sebab_keluar,
+			'sebabklr_kode'     => $pekerja->kode,
 
 			/**Pernikahan */
 			'statnikah'					=> $pekerja->statnikah,
@@ -271,6 +271,7 @@ class C_Index extends CI_Controller
 			'statpajak'					=> $pekerja->statpajak,
 			'jtanak'						=> $pekerja->jtanak,
 			'jtbknanak'					=> $pekerja->jtbknanak,
+			'npwp'							=> $pekerja->npwp,
 
 			// lain 
 			'kodesie'						=> $pekerja->kodesie,
@@ -285,6 +286,7 @@ class C_Index extends CI_Controller
 			'uk_baju'           => $pekerja->uk_baju,
 			'uk_celana'         => $pekerja->uk_celana,
 			'uk_sepatu'         => $pekerja->uk_sepatu,
+			'warna_celana'      => $pekerja->warna_celana,
 		);
 
 		// remove whitespace right and left all key
@@ -329,6 +331,8 @@ class C_Index extends CI_Controller
 
 		$lama = $this->getLamaperpanjangan($noind);
 		$data['lama'] = $lama;
+
+		$data['l_sebabklr'] = $this->M_pekerjakeluar->getListSbabKlr();
 
 		// debug($data);
 
@@ -621,6 +625,7 @@ class C_Index extends CI_Controller
 				'uk_baju'           => $this->input->post('uk_baju'),
 				'uk_celana'         => $this->input->post('uk_celana'),
 				'uk_sepatu'         => $this->input->post('uk_sepatu'),
+				'warna_celana'         => $this->input->post('warna_celana'),
 			);
 
 			$tpekerjaan = array(
@@ -1472,5 +1477,18 @@ class C_Index extends CI_Controller
 		}
 
 		return $lama;
+	}
+
+	public function editSbabKeluar()
+	{
+		$noind = $this->input->post('noind');
+		$kode = $this->input->post('kode');
+		
+		$arr = array('sebabklr' => $kode);
+		$upd = $this->M_pekerjakeluar->updateDataPekerja($arr, $noind);
+		if ($upd) {
+			$sbabklr = $this->M_pekerjakeluar->getSebabKeluar2($noind);
+			echo json_encode(['result'=>'success', 'sebabklr' => $sbabklr['sebabklr']]);
+		}
 	}
 }

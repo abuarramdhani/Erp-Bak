@@ -29,7 +29,7 @@ const swalAGTLoading = (pesan) => {
        Swal.showLoading();
        $('.swal2-loading').children('button').css({'width': '40px', 'height': '40px'})
      },
-    text: pesan
+    text: pesan,
   })
 }
 
@@ -41,7 +41,14 @@ const swalAGT = (type, title) => {
     showConfirmButton: false,
     showCloseButton: false,
     timer: 1100
+  })
+}
 
+const swalLargeAGT = (type, title) => {
+  Swal.fire({
+    type: type,
+    html: title,
+    text: '',
   })
 }
 
@@ -95,7 +102,7 @@ function agt_update_pos(item_id, status_job, no_job) {
   $('.agt_item_id').val(item_id);
 }
 
-function del_agt_andon_pos(item_id) {
+function del_agt_andon_pos(item_id, s, date) {
   Swal.fire({
     title: 'Apakah anda yakin?',
     text: "Anda tidak akan dapat mengembalikan ini!",
@@ -111,7 +118,8 @@ function del_agt_andon_pos(item_id) {
         type: 'POST',
         dataType: 'JSON',
         data: {
-          item_id: item_id
+          item_id: item_id,
+          date_time: date
         },
         cache:false,
         beforeSend: function() {
@@ -120,7 +128,13 @@ function del_agt_andon_pos(item_id) {
         success: function(result) {
           if (result == 200) {
             toastAGT('success', 'Data berhasil dihapus');
-            agtRunningAndon();
+            if (s == 1) {
+              agtRunningAndon();
+            }else if (s == 2) {
+              agtHistoryAndon();
+            }else if (s == 3) {
+              filter_history_agt();
+            }
           }else {
             toastAGT('warning', 'Data gagal dihapus, coba lagi');
           }
@@ -214,29 +228,56 @@ function agtHistoryAndon() {
   })
 }
 
+function agtTimerAndon() {
+  $.ajax({
+    url: baseurl + 'CompletionAssemblyGearTrans/action/timerAndon',
+    type: 'POST',
+    // dataType: 'JSON',
+    data: {
 
-function update_pos_1(no_job, item_code, description, item_id) {
+    },
+    cache:false,
+    beforeSend: function() {
+      $('.area-time-andon').html(`<div style ="width: 70%;margin:auto;height: 30%;background: #fff;overflow: hidden;z-index: 9999;padding:20px 0 30px 0;border-radius:10px;text-align:center">
+                                <img style="width: 8%;" src="${baseurl}assets/img/gif/loading5.gif"><br>
+                                <span style="font-size:14px;font-weight:bold">Sedang memuat data...</span>
+                            </div>`);
+    },
+    success: function(result) {
+      $('.area-time-andon').html(result);
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+    swalAGT('error', 'Terdapat Kesalahan, Coba Lagi...');
+    $('.area-time-andon').html('');
+    console.error();
+    }
+  })
+}
+
+function update_pos_1(no_job, item_code, description, item_id, serial) {
   swalAGTLoading(`Sedang menambahkan job ${no_job} di POS 1`);
   $.ajax({
     url: baseurl + 'CompletionAssemblyGearTrans/action/cekjobdipos1',
     type: 'POST',
     dataType: 'JSON',
     data: {
-      no_job: no_job,
+      item_id: item_id,
+      serial: serial
     },
     cache:false,
     success: function(result) {
-      if (result == 200) {
-        swalAGT('warning',`Nomor job ${no_job} sudah pernah dipakai sebelumnya`);
+      console.log(result);
+      if (result.status == 200) {
+        swalAGT('warning',`Nomor job ${no_job} dengan serial ${result.serial} telah di scan sebelumnya`);
         $('.agt_alert_area').html(`<div class="alert alert-danger alert-dismissible" role="alert">
                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                       <span aria-hidden="true">
                                         <i class="fa fa-close"></i>
                                       </span>
                                     </button>
-                                    <strong> Nomor job ${no_job} sudah ada di POS</strong>
+                                    <strong>Nomor job ${no_job} dengan serial ${result.serial} telah di scan sebelumnya</strong>
                                   </div>`);
-      }else {
+      }else if (result.status == 0) {
         //insert job ke andon
         $.ajax({
           url: baseurl + 'CompletionAssemblyGearTrans/action/insertpos1',
@@ -246,7 +287,8 @@ function update_pos_1(no_job, item_code, description, item_id) {
             item_id: item_id,
             no_job: no_job,
             item_code: item_code,
-            description: description
+            description: description,
+            serial: result.serial
           },
           cache:false,
           beforeSend: function() {
@@ -290,8 +332,56 @@ function update_pos_1(no_job, item_code, description, item_id) {
 $('.dt-mon-agt').DataTable();
 
 $('.btn-reset-agt').on('click', function () {
-  $('#qrcodeAGT').val('').trigger('input');
+  let cek = $('#agt_jenis_scan').val();
+  if (cek == 'qr') {
+    $('#qrcodeAGT').val('').trigger('change');
+  }else if (cek == 'item_code') {
+    $('.agt_get_item_code').val('').trigger('change')
+  }
 })
+
+function byqrorkodeitem_agt(th) {
+  let tipe = $('#agt_jenis_scan').val();
+  if (tipe == 'qr') {
+    $('#agt_jenis_scan').val('item_code');
+    $('.agt_area_qr').hide()
+    $('.agt_area_item').show()
+    $(th).html('<b>By Item Code</b>').removeClass('btn-primary').addClass('btn-danger')
+    $('.agt_get_item_code').select2({
+      placeholder: "Ketikan kode item/ deskripsi item",
+      minimumInputLength: 3,
+      ajax: {
+        url: baseurl + "CompletionAssemblyGearTrans/action/getitemcode",
+        dataType: "JSON",
+        type: "POST",
+        data: function(params) {
+          return {
+            term: params.term
+          };
+        },
+        processResults: function(data) {
+          return {
+            results: $.map(data, function(obj) {
+              return {
+                id: obj.INVENTORY_ITEM_ID,
+                text: `${obj.SEGMENT1} - ${obj.DESCRIPTION}`
+              }
+            })
+          }
+        }
+      }
+    })
+  }else {
+    $('#agt_jenis_scan').val('qr');
+    $('.agt_area_qr').show()
+    $('.agt_area_item').hide()
+    $(th).html('<b>By QR Code</b>').removeClass('btn-danger').addClass('btn-primary')
+    setTimeout(function () {
+      $('#qrcodeAGT').focus();
+    }, 400);
+  }
+
+}
 
 // 1710840,10002
 function ScanKartuBodyAGT(th) {

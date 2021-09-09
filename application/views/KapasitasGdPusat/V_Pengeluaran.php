@@ -24,12 +24,13 @@
                                                     <option>KOM1-DM</option>
                                                     <option>PNL-DM</option>
                                                     <option>FG-DM</option>
+                                                    <option>MAT-PM</option>
                                                 </select>
                                             </div>
                                             <div class="col-md-4 text-center">
                                                 <label>Input Picklist / Bon</label>
                                                 <div class="input-group">
-                                                    <input id="no_dokumen" name="no_dokumen" class="form-control" >
+                                                    <input id="no_dokumen" name="no_dokumen" class="form-control">
                                                     <span class="input-group-btn">
                                                         <button type="button" onclick="cekPengeluaranKGP(this)" class="btn btn-primary"> <i class="fa fa-search"></i></button>    
                                                     </span>

@@ -32,7 +32,16 @@
 							</div>
 							<div class="box-body">
 								<div class="table-responsive">
-									<table class="table table-striped table-bordered table-hover text-left dataTables" id="tblMenuGroup" style="font-size:12px;">
+									<style type="text/css">
+										.dataTables_length,.dataTables_info {
+											float: left;
+											width: 33%;
+										}
+										.dataTables_filter, .dataTables_paginate {
+											float: right;
+										}
+									</style>
+									<table class="table table-striped table-bordered table-hover text-left" id="tblMenuGroup" style="font-size:12px;">
 										<thead>
 											<tr class="bg-primary">
 												<th width="5%"><center>No</center></th>

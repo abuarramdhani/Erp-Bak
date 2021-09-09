@@ -115,6 +115,7 @@ $(function () {
 		singleDatePicker: true,
 		timePicker: false,
 		autoclose: true,
+		"maxDate": getDate1(),
 		locale: {
 			format: "DD-MM-YYYY",
 		},
@@ -1032,6 +1033,17 @@ $(document).ready(function () {
 			}
 		}
 		$(this).val(value);
+
+		var time = $(this).val();
+		var date = $(this).closest('div.form-group').find('input.spl-date').val();
+		var now = getDate2();
+
+		var d1 = Date.parse(date.replace( /(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3")+' '+time);
+		var d2 = Date.parse(now);
+		if(d1 > d2){
+			alert('Tidak bisa memilih waktu lebih dari hari ini!');
+			$(this).val('00:00:00');
+		}
 	});
 
 	$("#spl-memopresensi").on("submit", function (e) {
@@ -1985,3 +1997,33 @@ $(window).load(() => {
 		spl_load_data();
 	});
 });
+
+function getDate1()
+{
+	var D = new Date();
+	var y = D.getFullYear();
+	var m = D.getMonth()+1;
+	var d = D.getDate();
+
+	var h = D.getHours();
+	var min = D.getMinutes();
+	var s = D.getSeconds(); 
+
+	console.log(d+'/'+m+'/'+y+' '+h+':'+m+':'+s);
+	return d+'/'+m+'/'+y+' '+h+':'+m+':'+s;
+}
+
+function getDate2()
+{
+	var D = new Date();
+	var y = D.getFullYear();
+	var m = D.getMonth()+1;
+	var d = D.getDate();
+
+	var h = D.getHours();
+	var min = D.getMinutes();
+	var s = D.getSeconds(); 
+
+	console.log(d+'/'+m+'/'+y+' '+h+':'+m+':'+s);
+	return m+'/'+d+'/'+y+' '+h+':'+m+':'+s;
+}

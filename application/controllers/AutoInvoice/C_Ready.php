@@ -1,5 +1,25 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
+set_include_path(get_include_path() . PATH_SEPARATOR . 'phpseclib');
+
+include(APPPATH . 'third_party/phpseclib/Net/SSH2.php');
+include(APPPATH . 'third_party/phpseclib/Net/SFTP.php');
+include(APPPATH . 'third_party/phpseclib/Crypt/RSA.php');
+include(APPPATH . 'third_party/phpseclib/Math/BigInteger.php');
+include(APPPATH . 'third_party/phpseclib/Crypt/Hash.php');
+include(APPPATH . 'third_party/phpseclib/Crypt/Random.php');
+include(APPPATH . 'third_party/phpseclib/Crypt/Base.php');
+include(APPPATH . 'third_party/phpseclib/Crypt/Rijndael.php');
+include(APPPATH . 'third_party/phpseclib/Crypt/AES.php');
+include(APPPATH . 'third_party/phpseclib/Crypt/Blowfish.php');
+include(APPPATH . 'third_party/phpseclib/Crypt/DES.php');
+include(APPPATH . 'third_party/phpseclib/Crypt/RC2.php');
+include(APPPATH . 'third_party/phpseclib/Crypt/RC4.php');
+include(APPPATH . 'third_party/phpseclib/Crypt/TripleDES.php');
+include(APPPATH . 'third_party/phpseclib/Crypt/Twofish.php');
+
+use phpseclib\Net\SFTP;
+
 class C_Ready extends CI_Controller
 {
     function __construct()
@@ -54,11 +74,31 @@ class C_Ready extends CI_Controller
     public function ListReady()
     {
 
+        // FTP Connect
+        $sftp = new SFTP('produksi.quick.com');
+        error_reporting(0);
+        if (!$sftp->login('root', '123456')) {
+            throw new Exception('Gagal melakukan autentikasi ke Server Produksi.');
+        }
+
+        $files = $sftp->nlist('/var/www/html/api-scanner-doc-satpam/assets/img/docsatpam',true);
         $DoReady = $this->M_autoinvoice->DoReady();
 
-        // echo "<pre>";
-        // print_r($DoReady);
-        // exit();
+        for ($i=0; $i < count($files); $i++) { 
+            $info = pathinfo($files[$i]);
+            $name = basename($files[$i],'.'.$info['extension']);
+            $files[$i] = $name;
+        }
+
+        for ($i=0; $i < count($DoReady); $i++) { 
+            if(in_array($DoReady[$i]['NO_SPB'], $files)){
+                $DoReady[$i]['LINK'] = $DoReady[$i]['NO_SPB'];
+            } else if (in_array($DoReady[$i]['NO_DO'], $files)){
+                $DoReady[$i]['LINK'] = $DoReady[$i]['NO_DO'];
+            } else {
+                $DoReady[$i]['LINK'] = '-';
+            }
+        }
 
         $data['DoReady'] = $DoReady;
 

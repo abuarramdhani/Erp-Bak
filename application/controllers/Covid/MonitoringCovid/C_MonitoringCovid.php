@@ -1626,6 +1626,11 @@ class C_MonitoringCovid extends CI_Controller
 		}else{
 			$nomor = $telepon;
 		}
+
+		$nomorWA = str_replace(' ', '', $nomor);
+		if(substr($nomorWA, 0,2) == '08')
+			$nomorWA = preg_replace('/0/', '62', $nomorWA, 1);
+
 		$aemail = trim($pkj['email']);
 		if(empty($aemail)) $aemail = '-';
 
@@ -1634,7 +1639,7 @@ class C_MonitoringCovid extends CI_Controller
 		$message .= '<p>Data :</p>';
 		$message .= '<p>Keterangan : '.$data['keterangan'].'</p>';
 		$message .= $data['wawancara'];
-		$message .= 'Nomor HP : '.$nomor;
+		$message .= 'Nomor HP : '.$nomor.' (<a target="_blank" href="https://wa.me/'.$nomorWA.'">https://wa.me/'.$nomorWA.'</a>)';
 		$message .= '<br>Alamat Email : '.$aemail;
 
 		$mail = new PHPMailer();
@@ -1657,17 +1662,19 @@ class C_MonitoringCovid extends CI_Controller
 		$mail->Password = '123456';
 		$mail->WordWrap = 50;
 		$mail->setFrom('noreply@quick.com', 'TIM COVID 19');
-		$mail->addAddress('emanuel_dakris@quick.com');
-		$mail->addAddress('enggal_aldiansyah@quick.com');
-		$mail->addAddress('rheza_egha@quick.com');
+		$mail->addAddress('khoerul_amri@quick.com');
 		$mail->addAddress('nurul_wachidah@quick.com');
+		$mail->addAddress('enggal_aldiansyah@quick.com');
+		$mail->addAddress('reny_sulistiyaningtyas@quick.com');
+		$mail->addAddress('ika_narati@quick.com');
+		$mail->addAddress('johannes_andri@quick.com');
+		$mail->addAddress('bambang_yudhosuseno@quick.com');
 		$mail->addAddress('tim_pencegahan_covid19@quick.com');
 		$mail->Subject = 'Laporan Covid Baru dari '.trim($pkj['nama']).' ('.$noind.')';
 		$mail->msgHTML($message);
 
 		if (!$mail->send()) {
 			echo "Mailer Error: " . $mail->ErrorInfo;
-			show_error($this->email->print_debugger());
 			exit();
 		} else {
 			// okey
@@ -1698,9 +1705,13 @@ class C_MonitoringCovid extends CI_Controller
 		$mail->WordWrap = 50;
 		
 		$mail->setFrom('noreply@quick.co.id', 'KHS TIM-COVID19');
-		$mail->addAddress('enggalaldian@gmail.com');
-		$mail->addAddress('emanueldakris.ditya25@gmail.com');
+		$mail->addAddress('khoerulamri.id@gmail.com');
+		$mail->addAddress('nuruliik2@gmail.com');
 		$mail->addAddress('timcovid19.khs@quick.co.id');
+		$mail->addAddress('renysulistya@yahoo.com');
+		$mail->addAddress('ika.narati3007@gmail.com');
+		$mail->addAddress('xiau_long@yahoo.com');
+		$mail->addAddress('hrd.head3@quick.co.id');
 		$mail->Subject = 'Laporan Covid Baru dari '.trim($pkj['nama']).' ('.$noind.')';
 		$mail->msgHTML($message);
 		

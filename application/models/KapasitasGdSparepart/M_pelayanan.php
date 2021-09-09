@@ -5,7 +5,7 @@ class M_pelayanan extends CI_Model
     public function __construct()
     {
         parent::__construct();
-        $this->load->database();    
+        $this->load->database();
     }
 
 
@@ -28,6 +28,25 @@ class M_pelayanan extends CI_Model
     }
 
 
+    public function dataJumlah()
+    {
+        $oracle = $this->load->database('oracle', true);
+        $sql = "SELECT DISTINCT kts.tipe,
+                                (SELECT COUNT (kts2.tipe)
+                                   FROM khs_tampung_spb kts2
+                                  WHERE kts2.selesai_pelayanan IS NULL
+                                    AND kts2.CANCEL IS NULL
+                                    AND kts2.approval_flag = 'Y'
+                                    AND kts2.tipe = kts.tipe) jumlah
+                           FROM khs_tampung_spb kts
+                          WHERE kts.tipe IS NOT NULL
+                       ORDER BY 1";
+        $query = $oracle->query($sql);
+
+        return $query->result_array();
+    }
+
+
     public function dataNormal()
     {
         $oracle = $this->load->database('oracle', true);
@@ -36,7 +55,7 @@ class M_pelayanan extends CI_Model
                          tgl_dibuat,
                          TO_CHAR (mulai_pelayanan, 'HH24:MI:SS') AS mulai_pelayanan,
                          pic_pelayan, jenis_dokumen, no_dokumen, jumlah_item, jumlah_pcs,
-                         selesai_pelayanan, urgent, waktu_pelayanan, bon, tipe
+                         selesai_pelayanan, urgent, waktu_pelayanan, bon, tipe, NVL(keterangan,'-') keterangan
                     FROM khs_tampung_spb
                    WHERE selesai_pelayanan IS NULL
                      AND CANCEL IS NULL
@@ -56,7 +75,7 @@ class M_pelayanan extends CI_Model
                          tgl_dibuat,
                          TO_CHAR (mulai_pelayanan, 'HH24:MI:SS') AS mulai_pelayanan,
                          pic_pelayan, jenis_dokumen, no_dokumen, jumlah_item, jumlah_pcs,
-                         selesai_pelayanan, urgent, waktu_pelayanan, bon, tipe
+                         selesai_pelayanan, urgent, waktu_pelayanan, bon, tipe, NVL(keterangan,'-') keterangan
                     FROM khs_tampung_spb
                    WHERE selesai_pelayanan IS NULL
                      AND CANCEL IS NULL
@@ -76,7 +95,7 @@ class M_pelayanan extends CI_Model
                          tgl_dibuat,
                          TO_CHAR (mulai_pelayanan, 'HH24:MI:SS') AS mulai_pelayanan,
                          pic_pelayan, jenis_dokumen, no_dokumen, jumlah_item, jumlah_pcs,
-                         selesai_pelayanan, urgent, waktu_pelayanan, bon, tipe
+                         selesai_pelayanan, urgent, waktu_pelayanan, bon, tipe, NVL(keterangan,'-') keterangan
                     FROM khs_tampung_spb
                    WHERE selesai_pelayanan IS NULL
                      AND CANCEL IS NULL
@@ -96,7 +115,7 @@ class M_pelayanan extends CI_Model
                          tgl_dibuat,
                          TO_CHAR (mulai_pelayanan, 'HH24:MI:SS') AS mulai_pelayanan,
                          pic_pelayan, jenis_dokumen, no_dokumen, jumlah_item, jumlah_pcs,
-                         selesai_pelayanan, urgent, waktu_pelayanan, bon, tipe
+                         selesai_pelayanan, urgent, waktu_pelayanan, bon, tipe, NVL(keterangan,'-') keterangan
                     FROM khs_tampung_spb
                    WHERE selesai_pelayanan IS NULL
                      AND CANCEL IS NULL
@@ -116,7 +135,7 @@ class M_pelayanan extends CI_Model
                          tgl_dibuat,
                          TO_CHAR (mulai_pelayanan, 'HH24:MI:SS') AS mulai_pelayanan,
                          pic_pelayan, jenis_dokumen, no_dokumen, jumlah_item, jumlah_pcs,
-                         selesai_pelayanan, urgent, waktu_pelayanan, bon, tipe
+                         selesai_pelayanan, urgent, waktu_pelayanan, bon, tipe, NVL(keterangan,'-') keterangan
                     FROM khs_tampung_spb
                    WHERE selesai_pelayanan IS NULL
                      AND CANCEL IS NULL
@@ -131,13 +150,14 @@ class M_pelayanan extends CI_Model
     public function dataCetak()
     {
         $oracle = $this->load->database('oracle', true);
-        $sql = "SELECT   *
-                    FROM khs_tampung_spb
+        $sql = "SELECT   kts.*, NVL (keterangan, '-') keterangan_mkt
+                    FROM khs_tampung_spb kts
                    WHERE CANCEL IS NULL
                      AND mulai_pelayanan IS NOT NULL
                      AND no_dokumen IN (SELECT DISTINCT kcds.request_number
                                                    FROM khs_colly_dospb_sp kcds)
-                ORDER BY TO_DATE (jam_input, 'DD/MM/YYYY HH24:MI:SS')";
+                     AND TRUNC (kts.mulai_pelayanan) = TRUNC (SYSDATE)
+                ORDER BY TO_DATE (jam_input, 'DD/MM/YYYY HH24:MI:SS') DESC";
         $query = $oracle->query($sql);
         return $query->result_array();
     }
@@ -186,9 +206,9 @@ class M_pelayanan extends CI_Model
                  SET mulai_pelayanan = TO_TIMESTAMP ('$date', 'DD-MM-YYYY HH24:MI:SS'),
                      pic_pelayan = '$pic'
                WHERE jenis_dokumen = '$jenis' AND no_dokumen = '$nospb'";
-        $query = $oracle->query($sql);         
-        $query2 = $oracle->query('commit');          
-        echo $sql; 
+        $query = $oracle->query($sql);
+        $query2 = $oracle->query('commit');
+        echo $sql;
     }
 
 
@@ -200,9 +220,9 @@ class M_pelayanan extends CI_Model
                        aa.assigner_id = '$user',
                        aa.assignee_id = '$pic'
                  WHERE aa.request_number = '$nospb'";
-        $query = $oracle->query($sql);         
-        $query2 = $oracle->query('commit');          
-        echo $sql; 
+        $query = $oracle->query($sql);
+        $query2 = $oracle->query('commit');
+        echo $sql;
     }
 
 
@@ -214,9 +234,9 @@ class M_pelayanan extends CI_Model
                        waktu_pelayanan = '$wkt',
                        pic_pelayan = '$pic'
                  WHERE jenis_dokumen = '$jenis' AND no_dokumen = '$nospb'";
-        $query = $oracle->query($sql);            
-        $query2 = $oracle->query('commit');       
-        echo $sql; 
+        $query = $oracle->query($sql);
+        $query2 = $oracle->query('commit');
+        echo $sql;
     }
 
 
@@ -278,8 +298,8 @@ class M_pelayanan extends CI_Model
         $sql = "UPDATE khs_tampung_spb
                    SET waktu_pelayanan = '$slsh'
                  WHERE jenis_dokumen = '$jenis' AND no_dokumen = '$nospb'";
-        $query = $oracle->query($sql);            
-        $query2 = $oracle->query('commit');       
+        $query = $oracle->query($sql);
+        $query2 = $oracle->query('commit');
     }
 
 
@@ -339,20 +359,30 @@ class M_pelayanan extends CI_Model
     {
         $oracle = $this->load->database('oracle', true);
         $sql = "SELECT   *
-                  FROM (SELECT aa.*, TO_NUMBER (SUBSTR (aa.colly_number, 10)) num
-                          FROM khs_qweb_bodycolly_dospb_sp1 aa
-                         WHERE aa.request_number = '$id'
-                        UNION
-                        SELECT aa.header_id, aa.request_number, aa.colly_number, 'TOTAL',
-                               NULL, NULL, NULL,
-                               (SELECT SUM (bb.berat)
-                                  FROM khs_qweb_bodycolly_dospb_sp1 bb
-                                 WHERE bb.request_number = aa.request_number
-                                   AND bb.colly_number = aa.colly_number),
-                               NULL, TO_NUMBER (SUBSTR (aa.colly_number, 10)) num
-                          FROM khs_qweb_bodycolly_dospb_sp1 aa
-                         WHERE aa.request_number = '$id') x
-              ORDER BY x.num, x.description NULLS LAST";
+                    FROM (SELECT aa.*,
+                                 CASE
+                                    WHEN LENGTH (aa.request_number) > 7
+                                       THEN TO_NUMBER (SUBSTR (aa.colly_number, 11))
+                                    ELSE TO_NUMBER (SUBSTR (aa.colly_number, 10))
+                                 END num
+                            FROM khs_qweb_bodycolly_dospb_sp1 aa
+                           WHERE aa.request_number = '$id'
+                          UNION ALL
+                          SELECT DISTINCT aa.header_id, aa.request_number, aa.colly_number, 'TOTAL',
+                                 NULL, NULL, NULL,
+                                 (SELECT SUM (bb.berat)
+                                    FROM khs_qweb_bodycolly_dospb_sp1 bb
+                                   WHERE bb.request_number = aa.request_number
+                                     AND bb.colly_number = aa.colly_number),
+                                 NULL,
+                                 CASE
+                                    WHEN LENGTH (aa.request_number) > 7
+                                       THEN TO_NUMBER (SUBSTR (aa.colly_number, 11))
+                                    ELSE TO_NUMBER (SUBSTR (aa.colly_number, 10))
+                                 END num
+                            FROM khs_qweb_bodycolly_dospb_sp1 aa
+                           WHERE aa.request_number = '$id') x
+                ORDER BY x.num, x.description NULLS LAST";
         $query = $oracle->query($sql);
         return $query->result_array();
     }
@@ -388,7 +418,7 @@ class M_pelayanan extends CI_Model
         $query = $oracle->query($sql);
         return $query->result_array();
     }
-    
+
 
     public function getAll($id)
     {

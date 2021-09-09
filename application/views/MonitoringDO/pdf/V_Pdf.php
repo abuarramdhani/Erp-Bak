@@ -1,4 +1,5 @@
 <html>
+
 <head>
 	<style media="screen">
 		/* body{
@@ -9,11 +10,25 @@
 		}
 	</style>
 </head>
+
 <body>
-<br>
-<div style="position: absolute;">
+	<?php
+		if (sizeof($body_shelter) > sizeof($serial_shelter)) {
+			$who = $body_shelter;
+		}else {
+			$who = $serial_shelter;
+		}
+	?>
+	<?php foreach ($who as $key_master_who => $value_master):
+		if ($key_master_who > 0) {
+			echo "<pagebreak />";
+		}
+	?>
+
 	<br>
-</div>
+	<div style="position: absolute;">
+		<br>
+	</div>
 	<table style="width: 100%; border-collapse: collapse !important; page-break-inside: avoid;">
 		<tr>
 			<td style="border-bottom: 1px solid black; border-right: 1px solid black; border-left: 1px solid black; border-top: 1px solid black; width: 10%; padding: 5px;" rowspan="2">
@@ -32,9 +47,9 @@
 			</td>
 			<td colspan="2" style="text-align: center; border-bottom: 1px solid black; border-right: 1px solid black; border-top: 1px solid black; height: 25px;">
 				<?php if (!empty($cek_spb_do[0]['DELIVERY_TYPE'])){ ?>
-					<b style="font-size: 14px; padding: 10px;">SURAT PENGANTAR BARANG </b>
+				<b style="font-size: 14px; padding: 10px;">SURAT PENGANTAR BARANG </b>
 				<?php }else { ?>
-					<b style="font-size: 16px;">DELIVERY ORDER</b>
+				<b style="font-size: 16px;">DELIVERY ORDER</b>
 				<?php } ?>
 			</td>
 		</tr>
@@ -46,7 +61,7 @@
 				<center>
 					<img style="width: 19.5mm; height: auto;" src="<?php echo base_url('assets/img/monitoringDOQRCODE/'.$get_header[0]['REQUEST_NUMBER'].'.png') ?>">
 				</center>
-		  		<span style="font-size: 13.5px;"><?php echo $get_header[0]['REQUEST_NUMBER'] ?></span>
+				<span style="font-size: 13.5px;"><?php echo $get_header[0]['REQUEST_NUMBER'] ?></span>
 			</td>
 		</tr>
 	</table>
@@ -59,16 +74,16 @@
 				NPWP : <?php echo $get_header[0]['NPWP'] ?><br>
 
 				<?php if (!empty($get_header[0]['ALAMAT_BONGKAR'])){ ?>
-					Kepada Yth : <br>
-					<?php echo $get_header[0]['NAMA_KIRIM'] ?> <br>
-					<?php echo $get_header[0]['ALAMAT_KIRIM'] ?>, <?php echo $get_header[0]['KOTA_KIRIM'] ?><br>
-					<?php
+				Kepada Yth : <br>
+				<?php echo $get_header[0]['NAMA_KIRIM'] ?> <br>
+				<?php echo $get_header[0]['ALAMAT_KIRIM'] ?>, <?php echo $get_header[0]['KOTA_KIRIM'] ?><br>
+				<?php
 						if (strlen($get_header[0]['ALAMAT_KIRIM']) < 60) {
 							echo "<br>";
 						}
 					 ?>
 				<?php }else{?>
-					<?php echo $get_header[0]['ALAMAT_BONGKAR'] ?> <br>
+				<?php echo $get_header[0]['ALAMAT_BONGKAR'] ?> <br>
 				<?php } ?>
 
 			</td>
@@ -83,8 +98,8 @@
 					}
 				?>
 				<?php if (!empty($get_header[0]['NOTES'])){ ?>
-					<br><br><br>
-					<?php
+				<br><br><br>
+				<?php
 						$arr = explode("#", $get_header[0]['LAIN']); //jika mau ganti baris gunakan tanda # (pagar)
 						foreach($arr as $i) {
 							echo $i.'<br>';
@@ -92,20 +107,20 @@
 					?>
 				<?php }else {?>
 
-					<?php if (!empty($get_header[0]['ALAMAT_BONGKAR'])){ ?>
-						<?php echo $get_header[0]['ALAMAT_BONGKAR'] ?> <br><br>
-					<?php }else{?>
-						<?php echo $get_header[0]['NAMA_KIRIM'] ?> <br>
-						<?php echo $get_header[0]['ALAMAT_KIRIM'] ?>, <?php echo $get_header[0]['KOTA_KIRIM'] ?><br>
-						<?php
+				<?php if (!empty($get_header[0]['ALAMAT_BONGKAR'])){ ?>
+				<?php echo $get_header[0]['ALAMAT_BONGKAR'] ?> <br><br>
+				<?php }else{?>
+				<?php echo $get_header[0]['NAMA_KIRIM'] ?> <br>
+				<?php echo $get_header[0]['ALAMAT_KIRIM'] ?>, <?php echo $get_header[0]['KOTA_KIRIM'] ?><br>
+				<?php
 							if (strlen($get_header[0]['ALAMAT_KIRIM']) < 60) {
 								echo "<br>";
 							}
 						 ?>
-					<?php } ?>
+				<?php } ?>
 
-					<?php echo !empty($cek_spb_do[0]['DELIVERY_TYPE'])?'Dikirim Kepada :  <br>':'<br> ' ?>
-					<?php
+				<?php echo !empty($cek_spb_do[0]['DELIVERY_TYPE'])?'Dikirim Kepada :  <br>':'<br> ' ?>
+				<?php
 						$arr = explode("#", $get_header[0]['LAIN']); //jika mau ganti baris gunakan tanda # (pagar)
 						foreach($arr as $i) {
 							echo $i.'<br>';
@@ -135,27 +150,29 @@
 			</td>
 		</tr>
 	</table>
-<!-- coba  coba  -->
-<div style="position: absolute;">
-	<table style="width: 81.5%; margin-top: 40px;">
-	        <tr>
-				<td style="font-size: 9.7px; padding: 3.5px; width: 7%; text-align: center;"></td>
-				<td style="font-size: 9.7px; padding: 3.5px; width: 10%; text-align: center;"></td>
-				<td style="font-size: 9.7px; padding: 3.5px; width: 8%; text-align: center;"></td>
-				<td style="font-size: 9.7px; padding: 3.5px 3.5px 3.5px 10px; width: 7%; text-align: left;">
-					<?php echo $get_header[0]['UOM'] ?>
-				</td>
-				<td style="font-size: 9.7px; padding: 3.5px 3.5px 3.5px 8px; width: 20.5%;">
-					<?php echo $get_header[0]['ITEM'] ?>
-				</td>
-				<td colspan="2" style="font-size: 9.7px; padding: 3.5px; width: 49.5%; white-space: pre-line;">
-					<?php echo $get_header[0]['DESCRIPTION'] ?>
-				</td>
-			</tr>
-		<?php $no = 1; foreach ($get_body as $key => $gb){ ?>
+	<!-- item  -->
+	<div style="position: absolute;">
+		<table style="width: 81.5%; margin-top: 40px;">
+			<?php if ($key_master_who == 0): ?>
+				<tr>
+					<td style="font-size: 9.7px; padding: 3.5px; width: 7%; text-align: center;"></td>
+					<td style="font-size: 9.7px; padding: 3.5px; width: 10%; text-align: center;"></td>
+					<td style="font-size: 9.7px; padding: 3.5px; width: 8%; text-align: center;"></td>
+					<td style="font-size: 9.7px; padding: 3.5px 3.5px 3.5px 10px; width: 7%; text-align: left;">
+						<?php echo $get_header[0]['UOM'] ?>
+					</td>
+					<td style="font-size: 9.7px; padding: 3.5px 3.5px 3.5px 8px; width: 20.5%;">
+						<?php echo $get_header[0]['ITEM'] ?>
+					</td>
+					<td colspan="2" style="font-size: 9.7px; padding: 3.5px; width: 49.5%; white-space: pre-line;">
+						<?php echo $get_header[0]['DESCRIPTION'] ?>
+					</td>
+				</tr>
+			<?php endif; ?>
+			<?php $no = 1; foreach ($body_shelter[$key_master_who] as $key => $gb){ ?>
 			<tr>
 				<td style="font-size: 9.7px; padding: 3.5px; width: 7%; text-align: center;">
-					<?php echo $no ?>
+					<?php echo $no+($key_master_who*23) ?>
 				</td>
 				<td style="font-size: 9.7px; padding: 3.5px; width: 10%; text-align: center;">
 					<?php echo $gb['REQUIRED_QTY'] ?>
@@ -174,22 +191,22 @@
 					<?php echo $gb['DESCRIPTION'] ?>
 				</td>
 			</tr>
-		<?php $no++; } ?>
-	</table>
-</div>
-<div style="position: absolute;">
-	<div style="margin-top: 470px; margin-left: 297px;">
-		<!-- <watermarktext content="HIAHIAHIA" alpha="0.4" /> -->
-		<h4 style="color: black; alpha: 0.4" alpha="0.4">
-		<?php
+			<?php $no++; } ?>
+		</table>
+	</div>
+	<div style="position: absolute;">
+		<div style="margin-top: 470px; margin-left: 297px;">
+			<!-- <watermarktext content="HIAHIAHIA" alpha="0.4" /> -->
+			<h4 style="color: black; alpha: 0.4" alpha="0.4">
+				<?php
 			$arr = explode("#", $get_header[0]['NOTES']); //jika mau ganti baris gunakan tanda # (pagar)
 						foreach($arr as $i) {
 							echo $i.'<br>';
 						}
 		 ?>
-	 </h4>
+			</h4>
+		</div>
 	</div>
-</div>
 	<table style="border-collapse: collapse !important; margin-top: -1px; page-break-inside: avoid;">
 		<thead>
 			<tr>
@@ -222,81 +239,93 @@
 			</tr>
 		</thead>
 		<tbody style="vertical-align:top!important;">
-		<tr style="border-bottom:1px solid black;">
-			<td style="vertical-align: top; border-right: 1px solid black; border-left: 1px solid black; height: 570px; font-size: 10px; padding: 5px;">
-				<center>
+			<tr style="border-bottom:1px solid black;">
+				<?php
+				if (strlen($get_footer[0]['APPROVER_NAME']) > 22) {
+					$set_height_template = '560px';
+				}else {
+					$set_height_template = '570px';
+				}
+				?>
+				<td style="vertical-align: top; border-right: 1px solid black; border-left: 1px solid black; height: <?php echo $set_height_template ?>; font-size: 10px; padding: 5px;">
+					<center>
 
-				</center>
-			</td>
-			<td style="vertical-align: top; border-right: 1px solid black; font-size: 10px; padding: 5px;">
-				<center>
+					</center>
+				</td>
+				<td style="vertical-align: top; border-right: 1px solid black; font-size: 10px; padding: 5px;">
+					<center>
 
-				</center>
-			</td>
-			<td style="vertical-align: top; border-right: 1px solid black; font-size: 10px; padding: 5px;">
-				<center>
+					</center>
+				</td>
+				<td style="vertical-align: top; border-right: 1px solid black; font-size: 10px; padding: 5px;">
+					<center>
 
-				</center>
-			</td>
-			<td style="vertical-align: top; border-right: 1px solid black; font-size: 10px; padding: 5px;">
-				<center>
+					</center>
+				</td>
+				<td style="vertical-align: top; border-right: 1px solid black; font-size: 10px; padding: 5px;">
+					<center>
 
-				</center>
-			</td>
-			<td style="vertical-align: top; border-right: 1px solid black; font-size: 10px; padding: 5px;">
+					</center>
+				</td>
+				<td style="vertical-align: top; border-right: 1px solid black; font-size: 10px; padding: 5px;">
 
-			</td>
-			<td style="vertical-align: top; border-right: 1px solid black; font-size: 10px; padding: 5px;">
+				</td>
+				<td style="vertical-align: top; border-right: 1px solid black; font-size: 10px; padding: 5px;">
 
-			</td>
-			<td style="vertical-align: top; font-size: 11.5px; padding: 5px; border-right: 1px solid black;">
-				<center>
-					<?php if (!empty($get_serial)){ ?>
-					<table style="border-collapse: collapse !important; margin-top: -30px !important;">
-						<thead>
-							<tr>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td style="padding: 5px; margin-top: 20px; font-size: 11.5px;">
-									<br>
-									 <?php
-									 	$size = sizeof($get_serial) > 87 ? '9.6px' : '11.5px';
+				</td>
+				<td style="vertical-align: top; font-size: 11.5px; padding: 5px; border-right: 1px solid black;">
+					<center>
+						<?php if (!empty($get_serial)){ ?>
+						<table style="border-collapse: collapse !important; margin-top: -30px !important;">
+							<thead>
+								<tr>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td style="padding: 5px; margin-top: 20px; font-size: 11.5px;">
+										<br>
+										<?php
 									  foreach ($header_sub as $key => $h) {
 										foreach ($check_header_sub as $key2 => $h2) {
 											$explode = explode(' ', $h2);
-											if ($h == $explode[0]) {
+											if ($h == $explode[0] && !empty($serial_shelter[$key_master_who])) {
 												echo '<div style="width:250px;">';
-												echo '<br /><b style="font-size:11.5px;">'."$h".'</b><br>';
-												foreach ($get_serial as $key3 => $h3) {
+												$key_ok = 0;
+												foreach ($serial_shelter[$key_master_who] as $key3 => $h3) {
 													if ($h3['DESCRIPTION'] == $h2) {
-														echo '<span style = "font-size:'.$size.';">'.$h3['SERIAL_NUMBER'].', </span>';
+														if ($key_ok == 0) {
+															echo '<br /><b style="font-size:11.5px;">'."$h".'</b><br>';
+														}
+														echo '<span style = "font-size:11.5px;">'.$h3['SERIAL_NUMBER'].', </span>';
+														$key_ok++;
 													}
 												}
-												echo "</div><br>";
+												echo "</div>";
 											}
 										}
-									} ?>
-								</td>
-							</tr>
-						</tbody>
-					</table>
-				<center>
-				<?php }else {
+									}
+									?>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<center>
+							<?php }else {
 					echo "";
 				} ?>
-				<?php $gass = 0; foreach ($get_body as $key => $gb){
-					$gass += strlen($gb['DESCRIPTION']);
-				}
-				if ($gass > 600) {
-					// echo "<pagebreak />";
-				}
-				?>
-			</td>
-		</tr>
+							<!-- <?php
+				// $gass = 0; foreach ($get_body as $key => $gb){
+				// 	$gass += strlen($gb['DESCRIPTION']);
+				// }
+				// if ($gass > 600) {
+				// }
+				?> -->
+				</td>
+			</tr>
 		</tbody>
 	</table>
 	<br>
+	<?php endforeach; ?>
 </body>
 </html>

@@ -54,10 +54,17 @@
     <tr>
         <td style="border-bottom:0px solid black; border-collapse: collapse;text-align:center;font-size: 12px"><?= ($tanggal)?>/<?= ($data['hari'] - 4)?> hari kerja = <?= round((($tanggal)/($data['hari'] - 4)) * 100, 2)?>% </td>
     </tr>
+	<?php
+	$target_laju = ($data['hari'] - 4) - $tanggal == 0 ? 0 : round(($data['ttl_target'] - $data['ttl_real'])/ (($data['hari'] - 4) - $tanggal));
+	$satuan_laju = $data['id_kategori'] == 15 || $data['id_kategori'] == 19 || $data['id_kategori'] == 13 || $data['id_kategori'] == 14 ? 'pcs' : 'unit';
+	?>
+    <tr>
+        <td style="border-bottom:0px solid black; border-collapse: collapse;text-align:center;font-size: 12px">Target laju saat ini : <?= $target_laju.' '.$satuan_laju?></td>
+    </tr>
 </table>
 </div>
 <br>
-<?php if ($data['kategori'] != 'SPAREPART') { // tampilan jika kategori bukan sparepart ?>
+<?php if ($data['id_kategori'] != 15 && $data['id_kategori'] != 19) { // tampilan jika kategori bukan sparepart ?>
 <table class="table table-bordered hor-center ver-center" repeat_header="1">
 <thead>
 	<tr style="background-color: #f0f0f0;" class="table-head">

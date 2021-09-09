@@ -17,14 +17,21 @@ class M_packing extends CI_Model
                          TO_CHAR (mulai_packing, 'YYYY-MM-DD HH24:MI:SS') AS jam_packing,
                          pic_packing, jenis_dokumen, no_dokumen, jumlah_item, jumlah_pcs,
                          selesai_packing, urgent, waktu_packing, bon, tipe,
+                         NVL (keterangan, '-') keterangan,
                          (SELECT DISTINCT mtrh.attribute15
                                      FROM mtl_txn_request_headers mtrh
                                     WHERE mtrh.request_number = no_dokumen) ekspedisi
-                    FROM khs_tampung_spb
-                   WHERE selesai_pelayanan IS NOT NULL
-                     AND selesai_packing IS NULL
-                     AND CANCEL IS NULL
-                     AND tipe IS NOT NULL
+                    FROM khs_tampung_spb kts
+                   WHERE kts.selesai_pelayanan IS NOT NULL
+                     AND kts.selesai_packing IS NULL
+                     AND kts.CANCEL IS NULL
+                     AND kts.tipe IS NOT NULL
+                     AND NOT EXISTS (
+                            SELECT DISTINCT kdds.status
+                                       FROM khs_detail_dospb_sp kdds
+                                      WHERE kdds.request_number = kts.no_dokumen
+                                        AND kdds.allocated_quantity <> 0
+                                        AND kdds.status IN ('A', 'V'))
                 ORDER BY TO_DATE (jam_input, 'DD/MM/YYYY HH24:MI:SS')";
         $query = $oracle->query($sql);
         return $query->result_array();

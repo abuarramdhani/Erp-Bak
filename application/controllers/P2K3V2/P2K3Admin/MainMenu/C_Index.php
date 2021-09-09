@@ -1,7 +1,76 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
+/**
+ * 
+ * When i trying to understanding this code
+ * https://jambiekspres.co.id/foto_berita/2021/03/23/977.jpg
+ * 
+ */
+
+date_default_timezone_set("Asia/Jakarta");
+
+// array must have index of standard/actual and nama_apd
+function filter_apd($array)
+{
+	return (@$array['standard'] || @$array['actual']) && @$array['nama_apd'];
+}
+
+class EncryptCar
+{
+	const key = '1';
+
+	static function encode($str)
+	{
+		return str_replace(
+			array(
+				'+',
+				'/',
+				'='
+			),
+			array(
+				'-',
+				'_',
+				'~'
+			),
+			(new CI_Encrypt)->encode($str, static::key)
+		);
+	}
+
+	static function decode($encoded)
+	{
+		return (new CI_Encrypt)->decode(str_replace(
+			array(
+				'-',
+				'_',
+				'~'
+			),
+			array(
+				'+',
+				'/',
+				'='
+			),
+			$encoded
+		), static::key);
+	}
+}
+
 class C_Index extends CI_Controller
 {
+	/**
+	 * P2K3 Responsibility ID
+	 * Nomor ini didapat dari tabel erp
+	 */
+	const P2K3_TIM_RESPONSIBILITY_ID = 2615;
+	const P2K3_SEKSI_RESPONSIBILITY_ID = 2614;
+
+	/**
+	 * Hak akses admin
+	 * - Dapat melihat data kecelakaan semua seksi
+	 * - Dapat menghapus data kecelakaan
+	 * - Dapat menginputkan data kecelakaan semua orang pada seksi
+	 */
+	protected $isAdmin = false;
+
 	function __construct()
 	{
 		parent::__construct();
@@ -23,7 +92,17 @@ class C_Index extends CI_Controller
 		$this->load->model('P2K3V2/MainMenu/M_order');
 		$this->load->model('MasterPekerja/Pekerja/PekerjaKeluar/M_pekerjakeluar');
 		$this->checkSession();
-		date_default_timezone_set("Asia/Jakarta");
+
+		// P2K3 TIM member / ordinally user
+		$this->setPrevilages();
+	}
+
+	private function setPrevilages()
+	{
+		// check admin p2k3
+		if ($this->session->responsibility_id == self::P2K3_TIM_RESPONSIBILITY_ID) {
+			$this->isAdmin = true;
+		}
 	}
 
 	/* CHECK SESSION */
@@ -60,8 +139,8 @@ class C_Index extends CI_Controller
 		}
 		$data['list'] = $this->M_dtmasuk->getListAprove($ks, $baru);
 		$data['get_list_approve_new'] = $this->M_dtmasuk->getListApproveNew($ks);
+
 		$data['daftar_pekerjaan']	= $this->M_order->daftar_pekerjaan($ks);
-		$data['seksi'] = '';
 		$data['seksi'] = $this->M_dtmasuk->cekseksi($ks);
 
 		$data['ks'] = substr($ks, 0, 7);
@@ -78,12 +157,6 @@ class C_Index extends CI_Controller
 		$user_id = $this->session->userid;
 		$noind = $this->session->user;
 		$kodesie = $this->session->kodesie;
-
-		$data['Title'] = 'Kebutuhan APD';
-		$data['Menu'] = 'Kebutuhan APD';
-		$data['SubMenuOne'] = 'Order';
-		$data['SubMenuTwo'] = '';
-
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
@@ -105,7 +178,6 @@ class C_Index extends CI_Controller
 			$ks = '';
 		}
 
-
 		// $data['listtobon'] = $this->M_dtmasuk->listtobon2($ks, $pr);
 		$data['listtobon'] = $this->M_dtmasuk->listtobonHitung2($ks, $pr);
 		$jml = '';
@@ -113,7 +185,7 @@ class C_Index extends CI_Controller
 		// print_r($data['listtobon']);exit();
 		// foreach ($data['listtobon'] as $key) {
 		// 	$a = $key['jml_item'];
-		// 	$b = $key['jml_pekerja'];
+		// 	$b = $key['jml_pekerja'];P2K3_TIM_RESPONSIBILITY_ID
 		// 	$c = $key['jml_kebutuhan_umum'];
 		// 	$d = $key['jml_kebutuhan_staff'];
 		// 	$e = $key['jml_pekerja_staff'];
@@ -133,10 +205,12 @@ class C_Index extends CI_Controller
 		// }
 		// echo "<pre>";
 		$data['seksi'] = $this->M_dtmasuk->cekseksi($ks);
+
 		if (empty($data['seksi'])) {
 			$data['seksi'] = array('section_name' 	=>	'');
 			$data['seksi'] = array('0' 	=>	$data['seksi']);
 		}
+
 		if ($ks == '') {
 			$data['seksi'] = array('section_name' 	=>	'SEMUA SEKSI');
 			$data['seksi'] = array('0' 	=>	$data['seksi']);
@@ -151,8 +225,6 @@ class C_Index extends CI_Controller
 
 	public function perhitungan()
 	{
-		// print_r($_POST);exit();
-		// echo "<pre>";
 		$user1 = $this->session->user;
 		$user_id = $this->session->userid;
 
@@ -190,9 +262,14 @@ class C_Index extends CI_Controller
 			// echo "<pre>";
 			foreach ($data['toHitung'] as $key) {
 				$kode = $key['item_kode'];
+				$moq = $this->M_dtmasuk->getMoq($kode)['MINIMUM_ORDER_QUANTITY'];
+				if (empty($moq)) {
+					$moq = 1;
+				}
 				$stok = $this->M_dtmasuk->stokOracle($kode, 'PNL-DM');
 				$po = $this->M_dtmasuk->OutstandingPO($kode);
 				$totalPO = 0;
+
 				$poarr = array();
 				if (!empty($po)) {
 					foreach ($po as $p) {
@@ -202,6 +279,7 @@ class C_Index extends CI_Controller
 						}
 					}
 				}
+
 				$key['po'] = $totalPO;
 				$key['ponum'] = implode(', ', $poarr);
 				$a = $key['jml_kebutuhan'];
@@ -210,8 +288,15 @@ class C_Index extends CI_Controller
 				$key['outBon'] = $out;
 				$key['stokg'] = $stok;
 
+				$lnobon = $key['list_no_bon'];
+				if (empty($lnobon)) {
+					$key['transact'] = 0;
+				} else {
+					$key['transact'] = $this->M_dtmasuk->getttlTransactAPD($lnobon, $kode, $pr);
+				}
+
 				$jpp = ceil(($a * 1.1) + $out - $stok - $totalPO);
-				$key['jpp'] = ($jpp < 0) ? 0 : $jpp;
+				$key['jpp'] = ($jpp < 0) ? 0 : ceil($jpp / $moq) * $moq;
 
 				$new[] = $key;
 				$data['toHitung'] = $new;
@@ -221,10 +306,15 @@ class C_Index extends CI_Controller
 			foreach ($data['toHitung2'] as $row) {
 				$kode = $row['item_kode'];
 				//tks saat ini 2 gudang
+				$moq = $this->M_dtmasuk->getMoq($kode)['MINIMUM_ORDER_QUANTITY'];
+				if (empty($moq)) {
+					$moq = 1;
+				}
 				$stok = $this->M_dtmasuk->stokOracle($kode, "PNL-TKS");
 				$stok += $this->M_dtmasuk->stokOracle($kode, "PNL-NPR");
 				$po = $this->M_dtmasuk->OutstandingPO($kode);
 				$totalPO = 0;
+
 				$poarr = array();
 				if (!empty($po)) {
 					foreach ($po as $p) {
@@ -234,6 +324,7 @@ class C_Index extends CI_Controller
 						}
 					}
 				}
+
 				$row['po'] = $totalPO;
 				$row['ponum'] = implode(', ', $poarr);
 				$a = $row['jml_kebutuhan'];
@@ -242,8 +333,15 @@ class C_Index extends CI_Controller
 				$row['outBon'] = $out;
 				$row['stokg'] = $stok;
 
+				$lnobon = $key['list_no_bon'];
+				if (empty($lnobon)) {
+					$row['transact'] = 0;
+				} else {
+					$row['transact'] = $this->M_dtmasuk->getttlTransactAPD($lnobon, $kode, $pr);
+				}
+
 				$jpp = ceil(($a * 1.1) + $out - $stok - $totalPO);
-				$row['jpp'] = ($jpp < 0) ? 0 : $jpp;
+				$row['jpp'] = ($jpp < 0) ? 0 : ceil($jpp / $moq) * $moq;
 
 				$new2[] = $row;
 				$data['toHitung2'] = $new2;
@@ -286,6 +384,7 @@ class C_Index extends CI_Controller
 			$pr = date('Y-m');
 			$periode = date('m - Y');
 		}
+
 		if (empty($sub)) {
 			$sub = '0';
 		}
@@ -864,12 +963,15 @@ class C_Index extends CI_Controller
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
+
 		if (empty($ks)) {
 			$ks = $this->input->post('k3_adm_ks');
 		}
+
 		if (empty($ks)) {
 			$ks = $kodesie;
 		}
+
 		$baru = '1999-01-01 01:10:10';
 		$cek_terbaru = $this->M_dtmasuk->cek_terbaru($ks);
 		if (!isset($cek_terbaru) || !empty($cek_terbaru)) {
@@ -978,6 +1080,9 @@ class C_Index extends CI_Controller
 		}
 	}
 
+	/**
+	 * Page
+	 */
 	public function RiwayatOrder($kosie = false)
 	{
 		$user1 = $this->session->user;
@@ -1016,6 +1121,9 @@ class C_Index extends CI_Controller
 		$this->load->view('V_Footer', $data);
 	}
 
+	/**
+	 * Page
+	 */
 	public function Email()
 	{
 		$user1 = $this->session->user;
@@ -1044,6 +1152,7 @@ class C_Index extends CI_Controller
 		$email = $this->input->post('email');
 		$addEmail = $this->M_dtmasuk->addEmail($email);
 	}
+
 	public function editEmail()
 	{
 		$email = $this->input->post('email');
@@ -1057,6 +1166,9 @@ class C_Index extends CI_Controller
 		$addEmail = $this->M_dtmasuk->hapusEmail($id);
 	}
 
+	/**
+	 * Page
+	 */
 	public function MasterItem()
 	{
 		$user1 = $this->session->user;
@@ -1083,6 +1195,9 @@ class C_Index extends CI_Controller
 		$this->load->view('V_Footer', $data);
 	}
 
+	/**
+	 * Action
+	 */
 	public function EditMasterItem()
 	{
 		// print_r($_POST);exit();
@@ -1135,9 +1250,11 @@ class C_Index extends CI_Controller
 		redirect('p2k3adm_V2/Admin/MasterItem');
 	}
 
+	/**
+	 * Delete action
+	 */
 	public function HapusMasterItem()
 	{
-
 		$id = $this->input->post('hapus_id');
 
 		$delete = $this->M_dtmasuk->delItem($id);
@@ -1208,13 +1325,16 @@ class C_Index extends CI_Controller
 		$insert = $this->M_dtmasuk->insertItem($data);
 		//insert to sys.t_log_activity
 		$aksi = 'P2K3 V2';
-		$detail = "Menambah master item kode= " . $kode_item;
+		$detail = "Menambah master item kode= " . $kodeItem;
 		$this->log_activity->activity_log($aksi, $detail);
 		//
 
 		redirect('p2k3adm_V2/Admin/MasterItem');
 	}
 
+	/**
+	 * Get APD Foto and result json
+	 */
 	public function getFoto()
 	{
 		header('Content-Type: application/json');
@@ -1237,6 +1357,9 @@ class C_Index extends CI_Controller
 		echo json_encode($data);
 	}
 
+	/**
+	 * Print pdf
+	 */
 	public function CetakBon($id)
 	{
 
@@ -1259,111 +1382,9 @@ class C_Index extends CI_Controller
 		// @readfile($file);
 	}
 
-	public function CetakBongagal($id)
-	{
-		echo '<pre>';
-		$getBon = $this->M_dtmasuk->getBon($id);
-		print_r($getBon);
-		exit();
-
-		//pdf
-
-		$this->load->library('ciqrcode');
-		if (!is_dir('./assets/img/temp_qrcode')) {
-			mkdir('./assets/img/temp_qrcode', 0777, true);
-			chmod('./assets/img/temp_qrcode', 0777);
-		}
-		$lembar = ceil(count($getBon) / 10);
-		// echo $lembar;exit();
-		$y = 0;
-		$k = 1;
-		for ($i = 0; $i < $lembar; $i++) {
-			$max = (10 * $k);
-			$data_array_2 = array();
-			for ($x = $y; $x < $max; $x++) {
-				if ($x < count($getBon)) {
-					// echo $getBon[$x]['item_code'];
-					$data_array_2[] = array(
-						'kode' => $getBon[$x]['item_code'],
-						'nama' => $getBon[$x]['item'],
-						'satuan' => $getBon[$x]['satuan'],
-						'diminta' => $getBon[$x]['jml_bon'],
-						'account' => $getBon[$x]['account'],
-						'ket' => 'UNTUK KEBUTUHAN APD PERIODE ' . $getBon[$x]['periode'],
-					);
-				} else {
-					$data_array_2[] = array(
-						'kode' => '',
-						'nama' => '',
-						'satuan' => '',
-						'diminta' => '',
-						'ket' => '',
-						'account' => '',
-						'produk' => '',
-						'exp' => '',
-						'lokasi_simpanku' => ''
-					);
-				}
-				// echo $x;
-			}
-			// print_r($data_array_2);
-			// exit();
-
-			$data_array[] = array(
-				'nomor' => $id,
-				'tgl' => $getBon[0]['tanggal'],
-				'gudang' => 'PNL-NPR',
-				// 'seksi' => '',
-				'seksi' => $getBon[0]['seksi_bon'],
-				'pemakai' => $getBon[0]['pemakai'],
-				'rdPemakai' => 'Seksi',
-				'fungsi' => 'BARANG P2K3 & APD',
-				'cost' => $getBon[0]['cost_center'],
-				'kocab' => $getBon[0]['kode_cabang'],
-				'data_body' => $data_array_2,
-			);
-			$y = $y + 10;
-			$k++;
-		}
-		// 		print_r($data_array);
-		// exit();
-		$params['data']		= $id;
-		$params['level']	= 'H';
-		$params['size']		= 10;
-		$config['black']	= array(224, 255, 255);
-		$config['white']	= array(70, 130, 180);
-		$params['savename'] = './assets/img/temp_qrcode/' . $id . '.png';
-		$this->ciqrcode->generate($params);
-
-		$data['kumpulandata'] = $data_array;
-		// print_r($data_array);
-		// exit;
-		$this->load->library('Pdf');
-		$pdf = $this->pdf->load();
-		$pdf = new mPDF('', array(210, 148.5), 0, '', 10, 10, 5, 0, 0, 5, 'P');
-		$pdf->setAutoTopMargin = 'stretch';
-		$pdf->setAutoBottomMargin = 'stretch';
-		$filename = $nomor_urut . '-Bon-Bppbg.pdf';
-		$stylesheet = file_get_contents(base_url('assets/plugins/bootstrap/3.3.6/css/bootstrap.css'));
-		$html = $this->load->view('P2K3V2/Order/V_pdfBon', $data, true);
-		// echo ($html);
-		// exit();
-
-
-		$pdf->setFooter('<div style="float: left; margin-right: 30px; width:200px">
-  		<i style="font-size: 10px;margin-right: 10%">FRM-WHS-02-PDN-02 (Rev.04)</i>
-  	</div>
-  	<div style="float: left; width: 350px; background-color=red">
-  		<i style="padding-left: 60%; font-size: 10px;margin-left: 10%">**) Pengebonan komponen/material produksi harus disetujui PPIC</i>
-  	</div>
-  	<div style="float: right; width: 100px">
-  		<i style="padding-left: 60%; font-size: 10px;margin-left: 10%">Hal. {PAGENO} dari {nb}</i>
-  	</div>');
-		$pdf->WriteHTML($stylesheet, 1);
-		$pdf->WriteHTML($html);
-		$pdf->Output($filename, 'I');
-	}
-
+	/**
+	 * ??
+	 */
 	public function cekHitung()
 	{
 		$pr = $this->input->post('pr');
@@ -1456,6 +1477,9 @@ class C_Index extends CI_Controller
 		}
 	}
 
+	/**
+	 * Page
+	 */
 	public function monitoring_stok()
 	{
 		$user1 = $this->session->user;
@@ -1482,15 +1506,55 @@ class C_Index extends CI_Controller
 		$this->load->view('V_Footer', $data);
 	}
 
-	public function monitoringKK()
+	/**
+	 * Page
+	 * 
+	 * @param String next index
+	 */
+	public function monitoringKK($index = null)
 	{
-		$data  = $this->general->loadHeaderandSidemenu('P2K2 - Monitoring Kecelakaan Kerja', 'Monitoring Kecelakaan Kerja', 'Monitoring Kecelakaan Kerja', '', '');
+		$allIndex = 'Semua';
+
+		if ($index !== null && $index !== $allIndex) return show_404();
+
+		$kodesie = $this->session->kodesie;
+
+		if ($this->isAdmin) {
+			$data  = $this->general->loadHeaderandSidemenu('P2K2 - Monitoring Kecelakaan Kerja', 'Monitoring Kecelakaan Kerja', 'Monitoring Kecelakaan Kerja', '', '');
+		} else {
+			if ($index == $allIndex) {
+				$data  = $this->general->loadHeaderandSidemenu('P2K2 - Monitoring Kecelakaan Kerja', 'Monitoring Kecelakaan Kerja', 'Monitoring Kecelakaan Kerja', 'Semua', '');
+			} else {
+				$data  = $this->general->loadHeaderandSidemenu('P2K2 - Monitoring Kecelakaan Kerja', 'Monitoring Kecelakaan Kerja', 'Monitoring Kecelakaan Kerja', 'Seksi', '');
+			}
+		}
+
 		$data['year'] = $this->input->get('y');
-		if (empty($data['year'])) redirect('p2k3adm_V2/Admin/monitoringKK?y=' . date('Y'));
-		$data['list'] = $this->M_dtmasuk->getK3K($data['year']);
+		$data['isUnit'] = substr($this->session->kodesie, 5) === '0000';
+
+		if (empty($data['year'])) redirect(current_url() . '?y=' . date('Y'));
+
+		if ($this->isAdmin || $index == $allIndex) {
+			// get all data
+			$data['list'] = $this->M_dtmasuk->getK3K($data['year']);
+		} elseif ($data['isUnit']) {
+			$trefjabatan = $this->M_order->getTrefjabatan($this->session->user);
+			$trefjabatan = array_map(function ($refjabatan) {
+				return substr($refjabatan['kodesie'], 0, 5);
+			}, $trefjabatan);
+
+			$data['list'] = $this->M_dtmasuk->getK3K($data['year'], $trefjabatan);
+		} else {
+			// get all from their section
+			$data['list'] = $this->M_dtmasuk->getK3K($data['year'], $kodesie);
+		}
+
 		$data['lokasi'] = array_column($this->M_pekerjakeluar->getLokasiKerja(), 'lokasi_kerja', 'id_');
 		$data['lokasi'][999] = 'LAKA';
-		// print_r($data['list']);exit();
+
+		$data['isAdmin'] = $index == $allIndex ? false : $this->isAdmin;
+		$data['allIndex'] = $allIndex;
+		$data['index'] = $index;
 
 		$this->load->view('V_Header', $data);
 		$this->load->view('V_Sidemenu', $data);
@@ -1498,6 +1562,9 @@ class C_Index extends CI_Controller
 		$this->load->view('V_Footer', $data);
 	}
 
+	/**
+	 * Page
+	 */
 	public function add_monitoringKK()
 	{
 		$data  = $this->general->loadHeaderandSidemenu('P2K2 - Monitoring Kecelakaan Kerja', 'Tambah Data', 'Monitoring Kecelakaan Kerja', '', '');
@@ -1505,19 +1572,46 @@ class C_Index extends CI_Controller
 		$data['lokasi'] = $this->M_pekerjakeluar->getLokasiKerja();
 		$data['tkp'] = $this->M_dtmasuk->getlistTKP('');
 
+		$apd_list = require(__DIR__ . "/../Data/Apd.php");
+		$apd_list_chunk = array_chunk($apd_list, 7); // 3 bagian
+
+		$data['apd_list_chunk'] = $apd_list_chunk;
+
+
 		$this->load->view('V_Header', $data);
 		$this->load->view('V_Sidemenu', $data);
-		$this->load->view('P2K3V2/P2K3Admin/KecelakaanKerja/V_Tambah', $data);
+
+		$kd_jabatan_supervisor = 13;
+
+		// for development
+		// $kd_jabatan_supervisor = 99;
+
+		$employee = $this->M_dtmasuk->getEmployeeByNoind($this->session->user);
+		// Hanya jabatan supervisor ke atas yang dapat menambahkan kecelakaan kerja
+		if ($employee->kd_jabatan <= $kd_jabatan_supervisor) {
+			$this->load->view('P2K3V2/P2K3Admin/KecelakaanKerja/V_Tambah', $data);
+		} else {
+			$this->load->view('P2K3V2/P2K3Admin/KecelakaanKerja/Page/V_NotAllowed', [
+				'text' => 'Hanya supervisor ke atas yang dapat melakukan penginputan data'
+			]);
+		}
+
 		$this->load->view('V_Footer', $data);
 	}
 
 	public function detail_pkj_mkk()
 	{
 		$noind = $this->input->get('noind');
+		$date = $this->input->get('tglKec');
+		$tgl = explode(' ', $date)[0];
 		$data = $this->M_dtmasuk->getdetail_pkj_mkk($noind);
-		echo json_encode($data);
+
+		return response()->json($data);
 	}
 
+	/**
+	 * ??
+	 */
 	public function ket_mkk()
 	{
 		$date = $this->input->get('tgl');
@@ -1526,20 +1620,21 @@ class C_Index extends CI_Controller
 		$wkt = $ex[1];
 		$tgl = $ex[0];
 
-		$shif = $this->M_dtmasuk->getShiftByPKJ($noind, $tgl);
-		if (empty($shif) || $shif == '') {
+		$shift = $this->M_dtmasuk->getShiftByPKJ($noind, $tgl);
+		if (empty($shift) || $shift == '') {
 			$data['success'] = '0';
 			echo json_encode($data);
 			return;
 			exit();
 		}
-		// print_r($shif);exit();
-		$brk = strtotime($shif['break_mulai']);
-		$ist = strtotime($shif['ist_mulai']);
-		$msk = strtotime($shif['jam_msk']);
-		$plg = strtotime($shif['jam_plg']);
+		// print_r($shift);exit();
+		$brk = strtotime($shift['break_mulai']);
+		$ist = strtotime($shift['ist_mulai']);
+		$msk = strtotime($shift['jam_msk']);
+		$plg = strtotime($shift['jam_plg']);
 		$time = strtotime($wkt);
-		if (trim($shif['kd_shift']) == '2' || trim($shif['kd_shift']) == '3') {
+
+		if (trim($shift['kd_shift']) == '2' || trim($shift['kd_shift']) == '3') {
 			if ($time >= strtotime('10:00:00') && $time <= $brk) {
 				$ket1 = 'Awal - Break';
 				$rng1 = 1;
@@ -1577,6 +1672,7 @@ class C_Index extends CI_Controller
 		$rngs[]  = ['22:00:00', '23:59:59'];
 		$rngs[]  = ['00:00:00', '01:00:00'];
 		$ket2 = 'Tidak Ada';
+
 		foreach ($rng as $k) {
 			if ($time >= strtotime($k[0]) && $time <= strtotime($k[1])) {
 				$ket2 = $k[2] . ' - ' . $k[3];
@@ -1596,9 +1692,9 @@ class C_Index extends CI_Controller
 		}
 
 		$kode = substr($noind, 0, 1);
-		$dat = $this->M_dtmasuk->getdetail_pkj_mkk($noind);
+		$dat = $this->M_dtmasuk->getdetail_pkj_mkk($noind, $date);
 		$kd_jabatan = $dat['kd_jabatan'];
-		if ($kode == 'K' || $kode == 'P'  || $kode == 'R') {
+		if ($kode == 'K' || $kode == 'P'  || $kode == 'R' || $kode = 'F') {
 			$masakrj = $this->M_dtmasuk->getMasaKerja($noind, $tgl);
 		} elseif ($kode == 'A' || $kode == 'B' || $kode == 'C' || $kode == 'H' || $kode == 'J' || $kode == 'T') {
 			$masakrj = $this->M_dtmasuk->getMasaKerja3($noind, $tgl);
@@ -1619,6 +1715,7 @@ class C_Index extends CI_Controller
 		} else {
 			$masa = '-';
 		}
+		$data['masa'] = $dat['maskerja'];
 		$data['masa_kerja'] = $masa;
 		// print_r($ket2);
 		$data['success'] = '1';
@@ -1629,17 +1726,29 @@ class C_Index extends CI_Controller
 		echo json_encode($data);
 	}
 
+	/**
+	 * 
+	 * Submit kecelakaan kerja
+	 * 
+	 * 
+	 */
 	public function submit_monitoringKK()
 	{
-		// print_r($_POST);
+		$this->load->library('upload');
 		$noind = $this->input->post('noind');
+		$kodesie_berlaku = $this->input->post('kodesie_berlaku');
 		$tgl_kecelakaan = $this->input->post('tgl_kecelakaan');
+		$tgl_masuk_pos = $this->input->post('tgl_masuk_pos');
+		// var_dump(date_diff(date_create($tgl_kecelakaan), date_create($tgl_masuk_pos))->format('%y Tahun %m Bulan %d Hari'));
+		// die;
 		$tkp = $this->input->post('tkp');
 		$range1 = $this->input->post('range1');
 		$range2 = $this->input->post('range2');
 		$masa_kerja = $this->input->post('masa_kerja');
 		$lokasi_kerja = $this->input->post('lokasi_kerja');
 		$jenis_pekerjaan = $this->input->post('jenis_pekerjaan');
+		$kasus = $this->input->post('kasus');
+		$kronologi = $this->input->post('kronologi');
 		$kondisi = $this->input->post('kondisi');
 		$penyebab = $this->input->post('penyebab');
 		$tindakan = $this->input->post('tindakan');
@@ -1647,67 +1756,99 @@ class C_Index extends CI_Controller
 		$prosedur = $this->input->post('prosedur');
 		$unsafe = $this->input->post('unsafe');
 		$kriteria = $this->input->post('kriteria');
+		$nama_pekerjaan = $this->input->post('nama_pekerjaan');
+		// kodesie pekerja disaat itu (kodesie bisa berubah karena sedang diperbantukan)
+		$user_kodesie = $this->input->post('user_kodesie');
 
-		$tgl_car = $this->input->post('tgl_car');
-		if (empty($tgl_car)) $tgl_car = null;
-		$pic = $this->input->post('pic');
-		if (empty($pic)) $pic = null;
-		$target_car = $this->input->post('target_car');
-		if (empty($target_car)) $target_car = null;
-		$close_car = $this->input->post('close_car');
-		if (empty($close_car)) $close_car = null;
+		$lampiran_foto = $this->input->post('lampiran_foto');
+
+		$error_log = [];
+
+		$md5_string = md5(date('Ymdhis'));
+
+		// lampiran foto
+		$lampiran_list = [];
+		if ($lampiran_foto && is_array($lampiran_foto)) {
+			$path = 'assets/upload/P2K3v2/kecelakaan_kerja/foto/';
+			foreach ($lampiran_foto as $i => $base64String) {
+				if (empty($base64String)) continue;
+
+				$filename = "accident-$md5_string-$i";
+				$actualFilename = $this->StoreBase64Image($path, $base64String, $filename);
+
+				$lampiran_list[] = $actualFilename;
+			}
+		}
+		$tgl_car = $this->input->post('tgl_car') ?: null;
+		$pic = $this->input->post('pic') ?: null;
+		$target_car = $this->input->post('target_car') ?: null;
+		$close_car = $this->input->post('close_car') ?: null;
 
 		$kategori = $this->input->post('kategori');
 		$bagian_tubuh = $this->input->post('bagian_tubuh');
 		$apd = $this->input->post('apd');
 		$faktor = $this->input->post('faktor');
-
 		$datapkj = $this->M_dtmasuk->getdetail_pkj_mkk($noind);
 		$kodesie = $datapkj['kodesie'];
 		$lokasi = $datapkj['lokasi_kerja'];
-		$arr = array(
-			'noind' => $noind,
-			'masa_kerja' => $masa_kerja,
-			'waktu_kecelakaan' => $tgl_kecelakaan,
-			'range_waktu1' => $range1,
-			'range_waktu2' => $range2,
-			'tkp' => strtoupper($tkp),
-			'lokasi_kerja_kecelakaan' => $lokasi_kerja,
-			'jenis_pekerjaan' => $jenis_pekerjaan,
-			'kondisi' => strtoupper($kondisi),
-			'penyebab' => strtoupper($penyebab),
-			'tindakan' => strtoupper($tindakan),
-			'prosedur' => $prosedur,
-			'unsafe' => $unsafe,
-			'kriteria_stop_six' => $kriteria,
-			'tgl_car' => $tgl_car,
-			'pic' => $pic,
-			'tgl_selesai_car' => $target_car,
-			'tgl_close_car' => $close_car,
-			'bsrl' => $bsrl,
-			'kodesie' => $kodesie,
-			'lokasi_kerja'	=>	$lokasi
-		);
-		// $ins = 1;
-		$ins = $this->M_dtmasuk->insk3k_kecelakaan($arr);
 
+		# :TODO -> Cari Aktual masa kerja di seksi
+
+		$arr = array(
+			'noind' => $noind, // 
+			'kodesie' => $kodesie, // 
+			// 'kodesie_berlaku' => $kodesie_berlaku, // seksi pekerja saat itu
+			'lokasi_kerja' => $lokasi, // 
+			'masa_kerja' => $masa_kerja, // string
+			'waktu_kecelakaan' => $tgl_kecelakaan, // Y-m-d H:i:s
+			'tgl_masuk_pos' => $tgl_masuk_pos, // Y-m-d
+			'range_waktu1' => $range1, // 1|2|3
+			'range_waktu2' => $range2, // 1-8
+			'tkp' => $tkp, // string
+			'lokasi_kerja_kecelakaan' => $lokasi_kerja, // 01-21
+			'nama_pekerjaan' => $nama_pekerjaan, // string
+			'jenis_pekerjaan' => $jenis_pekerjaan, // 1-3
+			'kasus' => $kasus, // long text
+			'kronologi' => $kronologi, // long text
+			'kondisi' => $kondisi, // long text
+			'penyebab' => $penyebab, // long text
+			'tindakan' => $tindakan, // long text
+			'prosedur' => $prosedur, // 1-3
+			'bsrl' => $bsrl, // 1-6
+			'unsafe' => $unsafe, // 1|2
+			'kriteria_stop_six' => $kriteria, // 1-6
+			'pic' => $pic, // noind
+			'tgl_car' => $tgl_car, 	// Y-m-d H:i:s
+			'tgl_selesai_car' => $target_car, // Y-m-d H:i:s
+			'tgl_close_car' => $close_car, // Y-m-d H:i:s
+			'lampiran_1' => isset($lampiran_list[0]) ? $lampiran_list[0] : null, // filename
+			'lampiran_2' => isset($lampiran_list[1]) ? $lampiran_list[1] : null, // filename
+			'car_is_created' => false, // filename
+			'user_created_by' => $this->session->user, // string of noind
+			'user_kodesie' => $user_kodesie // string of kodesie
+		);
+
+		$id_kecelakaan = $this->M_dtmasuk->insk3k_kecelakaan($arr); // int
+
+		# Insert k3k_bagian_tubuh
 		$arrB = array();
 		if (!empty($bagian_tubuh)) {
-			foreach ($bagian_tubuh as $k) {
+			foreach ($bagian_tubuh as $organ) {
 				$arrB[] = array(
-					'id_kecelakaan' => $ins,
-					'bagian_tubuh' => $k,
+					'id_kecelakaan' => $id_kecelakaan,
+					'bagian_tubuh' => $organ,
 				);
 			}
 			if (!empty($arrB))
 				$ins2 = $this->M_dtmasuk->insk3k_kecelakaan_lain($arrB, 'k3.k3k_bagian_tubuh');
 		}
 
+		# Insert k3k_faktor_kecelakaan
 		$arrF = array();
 		if (!empty($faktor)) {
 			foreach ($faktor as $k) {
 				$arrF[] = array(
-					'id_kecelakaan' => $ins,
+					'id_kecelakaan' => $id_kecelakaan,
 					'faktor' => $k,
 				);
 			}
@@ -1715,11 +1856,12 @@ class C_Index extends CI_Controller
 				$ins2 = $this->M_dtmasuk->insk3k_kecelakaan_lain($arrF, 'k3.k3k_faktor_kecelakaan');
 		}
 
+		# Insert k3k_kategori_kecelakaan
 		if (!empty($kategori)) {
 			$arrK = array();
 			foreach ($kategori as $k) {
 				$arrK[] = array(
-					'id_kecelakaan' => $ins,
+					'id_kecelakaan' => $id_kecelakaan,
 					'kategori' => $k,
 				);
 			}
@@ -1727,60 +1869,182 @@ class C_Index extends CI_Controller
 				$ins2 = $this->M_dtmasuk->insk3k_kecelakaan_lain($arrK, 'k3.k3k_kategori_kecelakaan');
 		}
 
+		# Insert k3k_penggunaan_apd
 		if (!empty($apd)) {
 			$arrP = array();
 			foreach ($apd as $k) {
 				$arrP[] = array(
-					'id_kecelakaan' => $ins,
+					'id_kecelakaan' => $id_kecelakaan,
 					'penggunaan_apd' => $k,
 				);
 			}
 			if (!empty($arrP))
 				$ins2 = $this->M_dtmasuk->insk3k_kecelakaan_lain($arrP, 'k3.k3k_penggunaan_apd');
 		}
-		redirect('p2k3adm_V2/Admin/monitoringKK');
+
+		# Insert k3k_kecelakaan_apd
+
+		// apd terdaftar
+		$apd_digunakan = $this->input->post('apd_digunakan');
+		$apd_digunakan = array_filter($apd_digunakan, 'filter_apd'); // filter valid user input
+
+		// apd lain
+		$apd_digunakan_lain = $this->input->post('apd_digunakan_lain');
+		$apd_digunakan_lain = array_filter($apd_digunakan_lain, 'filter_apd'); // filter valid user input
+
+		// merge all
+		$all_apd_digunakan = array_merge($apd_digunakan, $apd_digunakan_lain);
+
+		// map with true value
+		// change standard & actual to TRUE
+		$all_apd_digunakan = array_map(function ($apd) use ($id_kecelakaan) {
+			return [
+				'id_kecelakaan' => $id_kecelakaan,
+				'nama_apd' => $apd['nama_apd'],
+				'standard' => isset($apd['standard']),
+				'actual'	 => isset($apd['actual'])
+			];
+		}, $all_apd_digunakan);
+
+		// if array is not empty
+		if (!empty($all_apd_digunakan)) {
+			$this->M_dtmasuk->insertKecelakaanApd($table = 'k3.k3k_kecelakaan_apd', $data = $all_apd_digunakan);
+		}
+
+		# End reference
+
+		return redirect('p2k3adm_V2/Admin/monitoringKK');
 	}
 
+	/**
+	 * Delete all related Kecelakaan
+	 * AJAX
+	 */
 	public function del_k3k()
 	{
-		$id = $this->input->post('id');
+		$id = EncryptCar::decode($this->input->post('id'));
 
-		$this->M_dtmasuk->delK3K('k3.k3k_kecelakaan', $id);
-		$this->M_dtmasuk->delK3K('k3.k3k_bagian_tubuh', $id);
-		$this->M_dtmasuk->delK3K('k3.k3k_faktor_kecelakaan', $id);
-		$this->M_dtmasuk->delK3K('k3.k3k_kategori_kecelakaan', $id);
-		$this->M_dtmasuk->delK3K('k3.k3k_penggunaan_apd', $id);
+		try {
+			if (!$this->isAdmin) throw new Exception("Anda tidak berwenang untuk menghapus data ini");
+			$this->M_dtmasuk->delK3K('k3.k3k_kecelakaan', $id);
+			$this->M_dtmasuk->delK3K('k3.k3k_bagian_tubuh', $id);
+			$this->M_dtmasuk->delK3K('k3.k3k_faktor_kecelakaan', $id);
+			$this->M_dtmasuk->delK3K('k3.k3k_kategori_kecelakaan', $id);
+			$this->M_dtmasuk->delK3K('k3.k3k_penggunaan_apd', $id);
+			$this->M_dtmasuk->delK3K('k3.k3k_kecelakaan_apd', $id);
+
+			return response()->json([
+				'code' => 200,
+				'message' => "Success"
+			]);
+		} catch (Exception $e) {
+			return response()->json([
+				'code' => 400,
+				'message' => $e->getMessage()
+			], 400);
+		}
 	}
 
-	public function edit_monitoringKK()
+	/**
+	 * Get kecelakaan with detail
+	 * 
+	 * @param Int $id
+	 * 
+	 * @return Array<Array>|Null
+	 */
+	private function getKecelakaanDetail($id)
 	{
-		$data  = $this->general->loadHeaderandSidemenu('P2K2 - Monitoring Kecelakaan Kerja', 'Edit Data', 'Monitoring Kecelakaan Kerja', '', '');
-		$id = $this->input->get('id');
+		$data['kecelakaan'] = $this->M_dtmasuk->getKecelakaan($id);
+		$data['kecelakaan']['masa_masuk_pos'] = date_diff(date_create($data['kecelakaan']['waktu_kecelakaan']), date_create($data['kecelakaan']['tgl_masuk_pos']))->format('%y Tahun %m Bulan %d Hari');
+		$created = $this->M_dtmasuk->getEmployeeByNoind($data['kecelakaan']['user_created_by']);
+		$data['kecelakaan']['userName_created_by'] = !empty($created) ? $created->nama : '-';
+		if (empty($data['kecelakaan'])) return NULL;
 
-		$data['kecelakaan'] = $this->M_dtmasuk->getAllk3k('k3.k3k_kecelakaan', $id)[0];
-		if (isset($data['kecelakaan']['noind'])) {
-			$noind = $data['kecelakaan']['noind'];
-			$data['pkj'] = $this->M_dtmasuk->getdetail_pkj_mkk($noind);
-		}
-		if (isset($data['kecelakaan']['pic'])) {
-			$noind = $data['kecelakaan']['pic'];
-			$data['pic'] = $this->M_dtmasuk->getdetail_pkj_mkk($noind);
-		}
+		$noind = $data['kecelakaan']['noind'];
+		$data['pkj'] = $this->M_dtmasuk->getdetail_pkj_mkk($noind);
+
+		$noind = $data['kecelakaan']['pic'];
+		$data['pic'] = $this->M_dtmasuk->getdetail_pkj_mkk($noind);
 
 		$data['bagian'] = $this->M_dtmasuk->getAllk3k('k3.k3k_bagian_tubuh', $id);
 		$data['bagianc'] = array_column($data['bagian'], 'bagian_tubuh');
+
 		$data['faktor'] = $this->M_dtmasuk->getAllk3k('k3.k3k_faktor_kecelakaan', $id);
 		$data['faktorc'] = array_column($data['faktor'], 'faktor');
+
 		$data['kategori'] = $this->M_dtmasuk->getAllk3k('k3.k3k_kategori_kecelakaan', $id);
 		$data['kategoric'] = array_column($data['kategori'], 'kategori');
+
+
 		$data['apd'] = $this->M_dtmasuk->getAllk3k('k3.k3k_penggunaan_apd', $id);
 		$data['apdc'] = array_column($data['apd'], 'penggunaan_apd');
-		// print_r($data['pic']);exit();
 
+		$apd_digunakan_all = $this->M_dtmasuk->getAllk3k('k3.k3k_kecelakaan_apd', $id);
+
+		$listOfAPD = require(__DIR__ . "/../Data/Apd.php");
+		$listOfAPD_name = array_column($listOfAPD, 'name');
+
+		$data['apd_list'] = $listOfAPD;
+		$data['apd_list_chunk_3'] = array_chunk($listOfAPD, 7);
+
+		// apd in list of apd
+		$data['apd_digunakan'] = array_filter($apd_digunakan_all, function ($apd) use ($listOfAPD_name) {
+			return in_array($apd['nama_apd'], $listOfAPD_name);
+		});
+		$data['apd_digunakan_name'] = array_column($data['apd_digunakan'], 'nama_apd');
+
+		// apd not in fixed list of apd
+		$data['apd_digunakan_lain'] = array_filter($apd_digunakan_all, function ($apd) use ($listOfAPD_name) {
+			return !in_array($apd['nama_apd'], $listOfAPD_name);
+		});
+
+		return $data;
+	}
+
+	/**
+	 * Convert image file to base64 string format
+	 */
+	private function imageToBase64($source)
+	{
+		if (empty($source)) return "";
+		$type = pathinfo($source, PATHINFO_EXTENSION);
+		$data = file_get_contents($source);
+
+		if (empty($data)) return "";
+
+		$base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+
+		return $base64;
+	}
+
+	/**
+	 * Page
+	 */
+	public function edit_monitoringKK()
+	{
+		$data  = $this->general->loadHeaderandSidemenu('P2K2 - Monitoring Kecelakaan Kerja', 'Edit Data', 'Kecelakaan Kerja', '', '');
+		$id = EncryptCar::decode($this->input->get('id'));
+
+		$kecelakaan = $this->getKecelakaanDetail($id);
+		if (empty($kecelakaan)) return $this->load->view('V_404');
+
+		// merge
+		$data = array_merge($data, $kecelakaan);
 
 		$data['lokasi'] = array_column($this->M_pekerjakeluar->getLokasiKerja(), 'lokasi_kerja', 'id_');
 		$data['lokasi'][999] = 'LAKA';
-		// print_r($data['bagianc']);exit();
+
+		if (isset($_GET['debug'])) {
+			debug($data);
+		}
+
+		// lampiran photo in base64
+		$attachment_path = "/assets/upload/P2K3v2/kecelakaan_kerja/foto/";
+		$data['base64Attachment'] = [
+			null, // because number on front end start from 1
+			$this->imageToBase64(empty($kecelakaan['kecelakaan']['lampiran_1']) ? null : base_url($attachment_path . $kecelakaan['kecelakaan']['lampiran_1'])),
+			$this->imageToBase64(empty($kecelakaan['kecelakaan']['lampiran_2']) ? null : base_url($attachment_path . $kecelakaan['kecelakaan']['lampiran_2'])),
+		];
 
 		$this->load->view('V_Header', $data);
 		$this->load->view('V_Sidemenu', $data);
@@ -1789,53 +2053,98 @@ class C_Index extends CI_Controller
 		$this->session->unset_userdata('update_mkk');
 	}
 
+	protected function StoreBase64Image($path, $base64String, $filename)
+	{
+		list($type, $imageData) = explode(';', $base64String);
+		list(, $extension) = explode('/', $type);
+		list(, $imageData)      = explode(',', $imageData);
+		$fileName = $filename . '.' . $extension;
+		$fullFilename = $path . $fileName;
+		$imageData = base64_decode($imageData);
+		@file_put_contents($fullFilename, $imageData);
+
+		return $fileName;
+	}
+
+	/**
+	 * YPJ
+	 * Need refactory, this code is not DRY n clean code
+	 * 
+	 * @method POST
+	 */
 	public function update_monitoringKK()
 	{
-		// print_r($_POST);exit();
+		// var_dump($_POST);
+		// die;
 		$noind = $this->input->post('noind');
 		$tgl_kecelakaan = $this->input->post('tgl_kecelakaan');
+		$tgl_masuk_pos = $this->input->post('tgl_masuk_pos');
+
 		$tkp = $this->input->post('tkp');
-		$range1 = $this->input->post('range1');
-		if (empty($range1)) $range1 = null;
-		$range2 = $this->input->post('range2');
-		if (empty($range2)) $range2 = null;
+		$range1 = $this->input->post('range1') ?: null;
+		$range2 = $this->input->post('range2') ?: null;
 		$masa_kerja = $this->input->post('masa_kerja');
 		$lokasi_kerja = $this->input->post('lokasi_kerja');
-		$jenis_pekerjaan = $this->input->post('jenis_pekerjaan');
-		if (empty($jenis_pekerjaan)) $jenis_pekerjaan = null;
+		$jenis_pekerjaan = $this->input->post('jenis_pekerjaan') ?: null;
+		$kasus = $this->input->post('kasus');
+		$kronologi = $this->input->post('kronologi');
+
 		$kondisi = $this->input->post('kondisi');
 		$penyebab = $this->input->post('penyebab');
 		$tindakan = $this->input->post('tindakan');
 		$bsrl = $this->input->post('bsrl');
-		$prosedur = $this->input->post('prosedur');
-		if (empty($prosedur)) $prosedur = null;
-		$unsafe = $this->input->post('unsafe');
-		if (empty($unsafe)) $unsafe = null;
-		$kriteria = $this->input->post('kriteria');
-		if (empty($kriteria)) $kriteria = null;
+		$prosedur = $this->input->post('prosedur') ?: null;
+		$unsafe = $this->input->post('unsafe') ?: null;
+		$kriteria = $this->input->post('kriteria') ?: null;
 
-		$tgl_car = $this->input->post('tgl_car');
-		if (empty($tgl_car)) $tgl_car = null;
-		$pic = $this->input->post('pic');
-		if (empty($pic)) $pic = null;
-		$target_car = $this->input->post('target_car');
-		if (empty($target_car)) $target_car = null;
-		$close_car = $this->input->post('close_car');
-		if (empty($close_car)) $close_car = null;
+		$tgl_car = $this->input->post('tgl_car') ?: null;
+		$pic = $this->input->post('pic') ?: null;
+		$target_car = $this->input->post('target_car') ?: null;
+		$close_car = $this->input->post('close_car') ?: null;
 
 		$kategori = $this->input->post('kategori');
 		$bagian_tubuh = $this->input->post('bagian_tubuh');
 		$apd = $this->input->post('apd');
 		$faktor = $this->input->post('faktor');
-		$id = $this->input->post('id_kecelakaan');
+		$id_kecelakaan = $this->input->post('id_kecelakaan');
+
 		$arr = array();
 
-		$detail = $this->M_dtmasuk->getAllk3k('k3.k3k_kecelakaan', $id)[0];
+		$detail = $this->M_dtmasuk->getAllk3k('k3.k3k_kecelakaan', $id_kecelakaan)[0];
+
+		$lampiran_foto = $this->input->post('lampiran_foto');
+		$error_log = [];
+
+		$md5_string = md5(date('Ymdhis'));
+		// lampiran foto
+		$lampiran_list = [];
+
+		if ($lampiran_foto && is_array($lampiran_foto)) {
+			$path = 'assets/upload/P2K3v2/kecelakaan_kerja/foto/';
+			foreach ($lampiran_foto as $i => $base64String) {
+				if (empty($base64String)) continue;
+				$filename = "accident-$md5_string-$i";
+				$actualFilename = $this->StoreBase64Image($path, $base64String, $filename);
+
+				$lampiran_list[] = $actualFilename;
+			}
+		}
+
+		// file upload
+		if (isset($lampiran_list[0])) {
+			$arr['lampiran_1'] = $lampiran_list[0];
+		}
+		if (isset($lampiran_list[1])) {
+			$arr['lampiran_2'] = $lampiran_list[1];
+		}
 
 		if (!empty($masa_kerja)) $arr['masa_kerja'] = $masa_kerja;
 		if (!empty($tgl_kecelakaan)) $arr['waktu_kecelakaan'] = $tgl_kecelakaan;
+		if (!empty($tgl_masuk_pos)) $arr['tgl_masuk_pos'] = $tgl_masuk_pos;
 		if (!empty($tkp)) $arr['tkp'] = $tkp;
 		if (!empty($lokasi_kerja)) $arr['lokasi_kerja_kecelakaan'] = $lokasi_kerja;
+		if (!empty($kasus)) $arr['kasus'] = $kasus;
+		if (!empty($kronologi)) $arr['kronologi'] = $kronologi;
 		if (!empty($kondisi)) $arr['kondisi'] = $kondisi;
 		if (!empty($penyebab)) $arr['penyebab'] = $penyebab;
 		if (!empty($tindakan)) $arr['tindakan'] = $tindakan;
@@ -1853,20 +2162,24 @@ class C_Index extends CI_Controller
 		if ($detail['kriteria_stop_six'] != $kriteria) $arr['kriteria_stop_six'] = $kriteria;
 		if ($detail['jenis_pekerjaan'] != $jenis_pekerjaan) $arr['jenis_pekerjaan'] = $jenis_pekerjaan;
 		if ($detail['tgl_close_car'] != $close_car) $arr['tgl_close_car'] = $close_car;
-		// print_r($arr);exit();
+		// var_dump($arr);
+		// die;
 		if (!empty($arr)) {
-			$upd = $this->M_dtmasuk->upk3k_kecelakaan($arr, $id);
+			$upd = $this->M_dtmasuk->upk3k_kecelakaan($arr, $id_kecelakaan);
 		}
 
-		$getArB = $this->M_dtmasuk->getKKLain('k3.k3k_bagian_tubuh', 'bagian_tubuh', $id);
+		// check on table first
+		// if changes and data get is different, then do delete and insert again
+		// i think this will make bad perfomance
+		$getArB = $this->M_dtmasuk->getKKLain('k3.k3k_bagian_tubuh', 'bagian_tubuh', $id_kecelakaan);
 		$getArB = array_column($getArB, 'bagian_tubuh');
 		if ($getArB != $kategori) {
-			$delK3K = $this->M_dtmasuk->delK3K_lain('k3.k3k_bagian_tubuh', $id);
+			$delK3K = $this->M_dtmasuk->delK3K_lain('k3.k3k_bagian_tubuh', $id_kecelakaan);
 			$arrB = array();
 			if (!empty($bagian_tubuh)) {
 				foreach ($bagian_tubuh as $k) {
 					$arrB[] = array(
-						'id_kecelakaan' => $id,
+						'id_kecelakaan' => $id_kecelakaan,
 						'bagian_tubuh' => $k,
 					);
 				}
@@ -1875,15 +2188,18 @@ class C_Index extends CI_Controller
 			}
 		}
 
-		$getArF = $this->M_dtmasuk->getKKLain('k3.k3k_faktor_kecelakaan', 'faktor', $id);
+		// check on table first
+		// if changes and data get is different, then do delete and insert again
+		// i think this will make bad perfomance
+		$getArF = $this->M_dtmasuk->getKKLain('k3.k3k_faktor_kecelakaan', 'faktor', $id_kecelakaan);
 		$getArF = array_column($getArF, 'faktor');
 		if ($getArF != $kategori) {
-			$delK3K = $this->M_dtmasuk->delK3K_lain('k3.k3k_faktor_kecelakaan', $id);
+			$delK3K = $this->M_dtmasuk->delK3K_lain('k3.k3k_faktor_kecelakaan', $id_kecelakaan);
 			$arrF = array();
 			if (!empty($faktor)) {
 				foreach ($faktor as $k) {
 					$arrF[] = array(
-						'id_kecelakaan' => $id,
+						'id_kecelakaan' => $id_kecelakaan,
 						'faktor' => $k,
 					);
 				}
@@ -1892,16 +2208,18 @@ class C_Index extends CI_Controller
 			}
 		}
 
-
-		$getArK = $this->M_dtmasuk->getKKLain('k3.k3k_kategori_kecelakaan', 'kategori', $id);
+		// check on table first
+		// if changes and data get is different, then do delete and insert again
+		// i think this will make bad perfomance
+		$getArK = $this->M_dtmasuk->getKKLain('k3.k3k_kategori_kecelakaan', 'kategori', $id_kecelakaan);
 		$getArK = array_column($getArK, 'kategori');
 		if ($getArK != $kategori) {
-			$delK3K = $this->M_dtmasuk->delK3K_lain('k3.k3k_kategori_kecelakaan', $id);
+			$delK3K = $this->M_dtmasuk->delK3K_lain('k3.k3k_kategori_kecelakaan', $id_kecelakaan);
 			if (!empty($kategori)) {
 				$arrK = array();
 				foreach ($kategori as $k) {
 					$arrK[] = array(
-						'id_kecelakaan' => $id,
+						'id_kecelakaan' => $id_kecelakaan,
 						'kategori' => $k,
 					);
 				}
@@ -1910,15 +2228,18 @@ class C_Index extends CI_Controller
 			}
 		}
 
-		$getArP = $this->M_dtmasuk->getKKLain('k3.k3k_penggunaan_apd', 'penggunaan_apd', $id);
+		// check on table first
+		// if changes and data get is different, then do delete and insert again
+		// i think this will make bad perfomance
+		$getArP = $this->M_dtmasuk->getKKLain('k3.k3k_penggunaan_apd', 'penggunaan_apd', $id_kecelakaan);
 		$getArP = array_column($getArP, 'penggunaan_apd');
 		if ($getArP != $kategori) {
-			$delK3K = $this->M_dtmasuk->delK3K_lain('k3.k3k_penggunaan_apd', $id);
+			$delK3K = $this->M_dtmasuk->delK3K_lain('k3.k3k_penggunaan_apd', $id_kecelakaan);
 			if (!empty($apd)) {
 				$arrP = array();
 				foreach ($apd as $k) {
 					$arrP[] = array(
-						'id_kecelakaan' => $id,
+						'id_kecelakaan' => $id_kecelakaan,
 						'penggunaan_apd' => $k,
 					);
 				}
@@ -1926,10 +2247,134 @@ class C_Index extends CI_Controller
 					$ins2 = $this->M_dtmasuk->insk3k_kecelakaan_lain($arrP, 'k3.k3k_penggunaan_apd');
 			}
 		}
+
+		// kecelakaan APD
+
+		// delete
+		$this->M_dtmasuk->delK3K_lain('k3.k3k_kecelakaan_apd', $id_kecelakaan);
+
+		# Insert k3k_kecelakaan_apd
+
+		// apd terdaftar
+		$apd_digunakan = $this->input->post('apd_digunakan');
+		$apd_digunakan = array_filter($apd_digunakan, 'filter_apd'); // filter valid user input
+
+		// apd lain
+		$apd_digunakan_lain = $this->input->post('apd_digunakan_lain');
+		$apd_digunakan_lain = array_filter($apd_digunakan_lain, 'filter_apd'); // filter valid user input
+
+		// merge all
+		$all_apd_digunakan = array_merge($apd_digunakan, $apd_digunakan_lain);
+
+		// map with true value
+		// change standard & actual to TRUE
+		$all_apd_digunakan = array_map(function ($apd) use ($id_kecelakaan) {
+			return [
+				'id_kecelakaan' => $id_kecelakaan,
+				'nama_apd' => $apd['nama_apd'],
+				'standard' => isset($apd['standard']),
+				'actual'	 => isset($apd['actual'])
+			];
+		}, $all_apd_digunakan);
+
+		// if array is not empty
+		if (!empty($all_apd_digunakan)) {
+			$this->M_dtmasuk->insertKecelakaanApd($table = 'k3.k3k_kecelakaan_apd', $data = $all_apd_digunakan);
+		}
+
+		# End reference
+
 		$this->session->set_userdata('update_mkk', 'true');
-		redirect('p2k3adm_V2/Admin/edit_monitoringKK?id=' . $id);
+
+		// add flash status
+		// $this->session->set_flashdata('success', "Sukses mengupdate data kecelakaan");
+		redirect('p2k3adm_V2/Admin/edit_monitoringKK?id=' . EncryptCar::encode($id_kecelakaan));
 	}
 
+
+	/**
+	 * Export Kecelakaan kerja
+	 */
+	public function exportKecelakaanKerjaPDF()
+	{
+		set_time_limit(0);
+		$id = EncryptCar::decode($this->input->get('id'));
+
+		$data = $this->getKecelakaanDetail($id);
+		if (isset($_GET['debug'])) {
+			debug($data);
+		}
+
+		$this->load->library('pdf');
+
+		$pdf = $this->pdf->load();
+		$pdf = new mPDF('', 'A4', 10, '', 4, 4, 4, 4, 10, 3);
+		$filename = 'P2K3Seksi.pdf';
+		$html = $this->load->view('P2K3V2/P2K3Admin/KecelakaanKerja/Export/V_Pdf', $data, true);
+		// echo $html;die;
+		$footer = "
+			Dicetak melalui Quick ERP - P2K3 Kecelakaan Kerja pada " . date('Y-m-d H:i:s') . " oleh " . $this->session->user . " - " . $this->session->employee . "
+		";
+		// $stylesheet1 = file_get_contents(base_url('assets/plugins/bootstrap/3.3.7/css/bootstrap.css'));
+		// $pdf->WriteHTML($stylesheet1, 1);
+		$pdf->SetFooter($footer);
+		$pdf->WriteHTML($html, 0);
+		$pdf->Output($filename, 'I');
+	}
+
+	/**
+	 * Cari pekerja berdasarkan seksi, semua
+	 * aktual seksi saat ini (apakah diperbantukan, jika iya maka tampilkan seksi diperbantukan)
+	 * 
+	 * // This can use by query, but creator is too lazy :D
+	 * 
+	 */
+	public function getAllEmployees()
+	{
+		$start = microtime(true);
+		$keyword = $this->input->get('keyword');
+		$kodesie = false;
+
+		try {
+			if (!$keyword) throw new Exception("Bad Request");
+
+			if (!$this->isAdmin) {
+				$kodesie = $this->session->kodesie;
+			}
+
+			// find on hrd_khs.tpribadi
+			$from_tpribadi = $this->M_dtmasuk->findActiveEmployeeWithKeyword($keyword, $kodesie);
+
+			// find on Surat.tsurat_perbantuan
+			$from_tperbantukan = $this->M_dtmasuk->findActivePerbantuanWithKeyword($keyword, $kodesie);
+
+			// array_column didn't support array of object, so we convert to array of arrray
+			$from_tperbantukan_array = json_decode(json_encode($from_tperbantukan), 1);
+			$from_tperbantukan_noind = array_column($from_tperbantukan_array, 'noind');
+
+			// filter tpribadi where not in from tperbantukan
+			$from_tpribadi = array_filter($from_tpribadi, function ($employee) use ($from_tperbantukan_noind) {
+				return !in_array($employee->noind, $from_tperbantukan_noind);
+			});
+
+			// merge it
+			$allEmployee = array_merge($from_tpribadi, $from_tperbantukan);
+
+			return response()->json([
+				'code' => 200,
+				'data' => $allEmployee
+			]);
+		} catch (Exception $e) {
+			return response()->json([
+				'code' => 500,
+				'message' => $e->getMessage()
+			], 500);
+		}
+	}
+
+	/**
+	 * Ajax Get Tempat Kejadian Perkara
+	 */
 	public function get_tkp()
 	{
 		$txt = $this->input->get('s');
@@ -1939,6 +2384,10 @@ class C_Index extends CI_Controller
 
 	public function excel_monitoringKK()
 	{
+		set_time_limit(0);
+		// only P2K3 TIM can used
+		if (!$this->isAdmin) return $this->load->view('V_404');
+
 		$year = $this->input->get('y');
 		if (strlen($year) != 4) {
 			echo "Tahun Tidak di Temukan :(";
@@ -2472,7 +2921,8 @@ class C_Index extends CI_Controller
 				}
 				//masa kerja
 				$mass = explode(' ', $key['masa_kerja']);
-				if (!empty($mass)) {
+
+				if (!empty($mass) && $key['masa_kerja'] !== '-') {
 					$tahun = $mass[0];
 					$bulan = $mass[2];
 					if ($tahun > 0) {
@@ -2888,26 +3338,37 @@ class C_Index extends CI_Controller
 
 		$objWriter = IOFactory::createWriter($objPHPExcel, 'Excel2007');
 		// $objWriter->writeAttribute('val', "low");
+		// $objWriter->setIncludeCharts(TRUE); // This method is not exist
+		$objWriter->save('php://output');
 		$objWriter->setIncludeCharts(TRUE);
 		$objWriter->save('php://output');
 
 		//help im lost my mind :( this export is insane
 		//dont forget to drink :) love ya
+
 	}
 
 	public function pdf_monitoringKK()
 	{
-		$year = $this->input->get('y');
-		$data['tahun'] = $year;
+		set_time_limit(0);
+
+		// only P2K3 TIM can used
+		if (!$this->isAdmin) return $this->load->view('V_404');
 
 		require_once(APPPATH . 'libraries/SVGGraph/autoloader.php');
 
+		$year = $this->input->get('y');
+		$data['tahun'] = $year;
+
 		$data['perbandingan1'] = $this->grapPerbandingan1($year);
 		$data['perbandingan2'] = $this->grapPerbandingan2($year);
+
 		$data['bagian1'] = $this->grapBagian1($year);
 		$data['bagian2'] = $this->grapBagian2($year);
+
 		$data['bsrl1'] = $this->grapbsrl1($year);
 		$data['bsrl2'] = $this->grapbsrl2($year);
+
 		$data['six1'] = $this->grapsix1($year);
 		$data['six2'] = $this->grapsix2($year);
 
@@ -2920,6 +3381,7 @@ class C_Index extends CI_Controller
 		$data['bebas'] = $this->grapbebas($year);
 
 		$data['laka'] = $this->getlaka($year);
+		// debug($data['laka']);
 		// $data['glaka'] = $this->getlakaGraph($data['laka']);
 
 		$this->load->library('Pdf');
@@ -2931,7 +3393,8 @@ class C_Index extends CI_Controller
 		$filename = $nomor_urut . '-Bon-Bppbg.pdf';
 		$stylesheet = file_get_contents(base_url('assets/plugins/bootstrap/3.3.6/css/bootstrap.css'));
 		$html = $this->load->view('P2K3V2/P2K3Admin/KecelakaanKerja/V_Buletin', $data, true);
-		// print_r($html);exit();
+		// print_r($html);
+		// exit();
 
 		$pdf->WriteHTML($stylesheet, 1);
 		$pdf->WriteHTML($html);
@@ -2945,11 +3408,15 @@ class C_Index extends CI_Controller
 			else $m = $i;
 			$d[] = $this->M_dtmasuk->getTtlLoker('', $tahun . '-' . $m);
 		}
+
+
+
 		for ($i = 1; $i <= 12; $i++) {
 			if ($i < 10) $m = '0' . $i;
 			else $m = $i;
 			$e[] = $this->M_dtmasuk->getTtlLoker('', ($tahun - 1) . '-' . $m);
 		}
+
 		$shortMonth = array('Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Ags', 'Sep', 'Okt', 'Nov', 'Des');
 		$dataValue = [array_combine($shortMonth, $e), array_combine($shortMonth, $d)];
 		// print_r($values);
@@ -3370,16 +3837,27 @@ class C_Index extends CI_Controller
 		return $data;
 	}
 
+	/**
+	 * ??
+	 * 
+	 * @param String $tahun Year
+	 * @return Array
+	 */
 	public function getlaka($tahun)
 	{
 		$x = 0;
-		if ($tahun == date('Y'))
+
+		if ($tahun == date('Y')) {
 			$x = date('m');
+		}
+
 		for ($i = 1; $i <= 12; $i++) {
-			if ($i < 10) $m = '0' . $i;
-			else $m = $i;
-			$tm = $tahun . '-' . $m . '-01';
-			$tm2 = $tahun . '-' . $m;
+			$m = str_pad($i, 2, '0', STR_PAD_LEFT);
+
+			$tm = "$tahun-$m-01";
+			$tm2 = "$tahun-$m";
+
+
 			$tgl = date('Y-m-t', strtotime($tm));
 			$t1[] = $this->M_dtmasuk->getRekapLaka($tgl, '01');
 			$t2[] = $this->M_dtmasuk->getRekapLaka($tgl, '02');
@@ -3394,6 +3872,7 @@ class C_Index extends CI_Controller
 		}
 		// print_r($k1);
 		// print_r($k2);exit();
+
 		$data['break'] = $x;
 		$data['jmlp'] = $t1;
 		$data['jmlt'] = $t2;
@@ -3417,6 +3896,7 @@ class C_Index extends CI_Controller
 		$graph = new Goat1000\SVGGraph\SVGGraph($width, $height, $settings);
 		$graph->colours($colours);
 		$graph->values($dataValue);
+
 		$data['chart'] = $this->clearXMLTag($graph->fetch($type));
 
 		return $data;
@@ -3548,6 +4028,8 @@ class C_Index extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
+		$data['lseksi'] = $this->M_dtmasuk->getSeksiNotPeriode();
+
 		$data['periode'] = $this->M_dtmasuk->GetPeriodeSepatu();
 		$this->load->view('V_Header', $data);
 		$this->load->view('V_Sidemenu', $data);
@@ -3651,13 +4133,15 @@ class C_Index extends CI_Controller
 		$pdf->setFooter("Dicetak Melalui Quick ERP - P2K3 Pada $tanggal Oleh $user - $name");
 		$pdf->Output('KKK-KHS-01.pdf', 'I');
 	}
-
-	public function exportPdf2()
+	public function AddPeriodeSafetyShoes()
 	{
-		$pdf     =  $this->pdf->load();
-		$pdf->writeHTML('hello1');
-		$pdf->AddPage();
-		$pdf->writeHTML('hello2');
-		$pdf->Output('KKK-KHS-01.pdf', 'I');
+		$kodesie = $this->input->post('kodesie');
+		$periode = $this->input->post('periode');
+		$arr = [
+			'kodesie'	=>	$kodesie,
+			'periode'	=>	$periode,
+		];
+		$this->M_dtmasuk->addPeriodeSepatu($arr);
+		redirect('p2k3adm_V2/Admin/PeriodeSafetyShoes');
 	}
 }

@@ -1,3 +1,17 @@
+// FORMAT TANGGAL FOR EXPORT EXCELL
+var thisday = new Date();
+var hari = thisday.getDate();
+var bulan = thisday.getMonth() + 1; //January is 0
+var tahun = thisday.getFullYear();
+
+if (hari < 10) {
+	hari = '0' + hari;
+}
+if (bulan < 10) {
+	bulan = '0' + bulan;
+}
+var thisday = hari + '-' + bulan + '-' + tahun;
+
 //TABEL RIWAYAT REPARASI//
 $('#tblReparasi').DataTable({
 	"lengthMenu" : [10],
@@ -37,7 +51,25 @@ $('#tblOrderListAgent').DataTable({
 $('.tblMonitoringOrder').DataTable({
 	// "lengthMenu" : [10],
 	// "ordering": false,
-	// "lengthChange": false
+	// "lengthChange": false,
+});
+
+// TABEL ORDER LIST OPEN (NEW)
+$('.tblOrderListOpenSeksi').DataTable({
+  info:true,
+  ordering:false,
+  buttons: true,
+  dom: 'frtpBi',
+  buttons: [
+    {
+      extend: 'excelHtml5',
+      title: 'Order_Open_' + thisday,
+      exportOptions: {
+        columns: ':visible',
+        columns: [0, 1, 2, 3],
+      }
+    }
+   ],
 });
 
 //TABEL MONITORING ORDER ACC
@@ -46,12 +78,50 @@ $('.tblOrderListACC').DataTable({
 	"ordering": false,
 	"lengthChange": false
 });
+$('.tblOrderListACCSeksi').DataTable({
+	// "lengthMenu" : [10],
+	// "ordering": false,
+	// "lengthChange": false
+	info:true,
+  ordering:false,
+  buttons: true,
+  dom: 'frtpBi',
+  buttons: [
+    {
+      extend: 'excelHtml5',
+      title: 'Order_ACC_' + thisday,
+      exportOptions: {
+        columns: ':visible',
+        columns: [0, 1, 2, 3, 4],
+      }
+    }
+   ],
+});
 
 //TABEL MONITORING ORDER REVIEWED
 $('.tblOrderListReviewed').DataTable({
 	"lengthMenu" : [10],
 	"ordering": false,
 	"lengthChange": false
+});
+$('.tblOrderListReviewedSeksi').DataTable({
+	// "lengthMenu" : [10],
+	// "ordering": false,
+	// "lengthChange": false
+	info:true,
+  ordering:false,
+  buttons: true,
+  dom: 'frtpBi',
+  buttons: [
+    {
+      extend: 'excelHtml5',
+      title: 'Order_Reviewed_' + thisday,
+      exportOptions: {
+        columns: ':visible',
+        columns: [0, 1, 2, 3, 4],
+      }
+    }
+   ],
 });
 
 //TABEL MONITORING ORDER ACTION
@@ -60,12 +130,50 @@ $('.tblOrderListAction').DataTable({
 	"ordering": false,
 	"lengthChange": false
 });
+$('.tblOrderListActionSeksi').DataTable({
+	// "lengthMenu" : [10],
+	// "ordering": false,
+	// "lengthChange": false
+	info:true,
+  ordering:false,
+  buttons: true,
+  dom: 'frtpBi',
+  buttons: [
+    {
+      extend: 'excelHtml5',
+      title: 'Order_Action_' + thisday,
+      exportOptions: {
+        columns: ':visible',
+        columns: [0, 1, 2, 3, 4],
+      }
+    }
+   ],
+});
 
 //TABEL MONITORING ORDER OVERDUE
 $('.tblOrderListOverdue').DataTable({
 	"lengthMenu" : [10],
 	"ordering": false,
 	"lengthChange": false
+});
+$('.tblOrderListOverdueSeksi').DataTable({
+	// "lengthMenu" : [10],
+	// "ordering": false,
+	// "lengthChange": false
+	info:true,
+  ordering:false,
+  buttons: true,
+  dom: 'frtpBi',
+  buttons: [
+    {
+      extend: 'excelHtml5',
+      title: 'Order_Overdue_' + thisday,
+      exportOptions: {
+        columns: ':visible',
+        columns: [0, 1, 2, 3, 4],
+      }
+    }
+   ],
 });
 
 //TABEL MONITORING ORDER DONE
@@ -74,6 +182,25 @@ $('.tblOrderListDone').DataTable({
 	"ordering": false,
 	"lengthChange": false
 });
+$('.tblOrderListDoneSeksi').DataTable({
+	// "lengthMenu" : [10],
+	// "ordering": false,
+	// "lengthChange": false
+	info:true,
+  ordering:false,
+  buttons: true,
+  dom: 'frtpBi',
+  buttons: [
+    {
+      extend: 'excelHtml5',
+      title: 'Order_Done_' + thisday,
+      exportOptions: {
+        columns: ':visible',
+        columns: [0, 1, 2, 3, 4],
+      }
+    }
+   ],
+});
 
 //TABEL MONITORING ORDER CLOSE
 $('.tblOrderListClose').DataTable({
@@ -81,12 +208,50 @@ $('.tblOrderListClose').DataTable({
 	"ordering": false,
 	"lengthChange": false
 });
+$('.tblOrderListCloseSeksi').DataTable({
+	// "lengthMenu" : [10],
+	// "ordering": false,
+	// "lengthChange": false
+	info:true,
+  ordering:false,
+  buttons: true,
+  dom: 'frtpBi',
+  buttons: [
+    {
+      extend: 'excelHtml5',
+      title: 'Order_Close_' + thisday,
+      exportOptions: {
+        columns: ':visible',
+        columns: [0, 1, 2, 3, 4],
+      }
+    }
+   ],
+});
 
 //TABEL MONITORING ORDER REJECTED
 $('.tblOrderListRejected').DataTable({
 	"lengthMenu" : [10],
 	"ordering": false,
 	"lengthChange": false
+});
+$('.tblOrderListRejectedSeksi').DataTable({
+	// "lengthMenu" : [10],
+	// "ordering": false,
+	// "lengthChange": false
+	info:true,
+  ordering:false,
+  buttons: true,
+  dom: 'frtpBi',
+  buttons: [
+    {
+      extend: 'excelHtml5',
+      title: 'Order_Reject_' + thisday,
+      exportOptions: {
+        columns: ':visible',
+        columns: [0, 1, 2, 3, 4, 5],
+      }
+    }
+   ],
 });
 
 //TABEL KODE SEKSI
@@ -106,7 +271,7 @@ function addLangkahPerbaikan() {
 	console.log(nomor);
 	// KOLOM 2
 	html += '<td class="text-center"><input type="text" style="width:420px" name="txtPerbaikan[]" class="form-control langkahPerbaikan" placeholder="Input Langkah Perbaikan" required></td>'
-	// KOLOM 3        
+	// KOLOM 3
 	html += '<td class="text-center"><a class="btn btn-primary btn-md"><i class="fa fa-plus fa-md" title="Tambah Langkah Perbaikan" onclick="addLangkahPerbaikan(this)"></i></a><a class="btn btn-danger btn-md" title="Hapus Langkah Perbaikan" onclick="onClickDeleteLpB(this)"><span class="fa fa-times fa-md"></span></a></td>';
 	html += "</tr>";
     // html += '<div class="col-lg-2"><input type="text" style="text-align:center; margin-left=0%;" name="txtUrutan[]" class="form-control urutan" value="'+nomor+'" readonly></div><div class="col-lg-10"><input type="text" style="width:490px" name="txtPerbaikan[]" class="form-control langkahPerbaikan" placeholder="Input Langkah Perbaikan" required></div><br/>';
@@ -125,11 +290,11 @@ function addRowTabelPerbaikan(){
 		<td class="text-center langkahTabel">${nomor}</td>
 		<td>
 			<input type="text" name="txtPerbaikan[]" class="form-control langkahPerbaikan" placeholder="Input Langkah Perbaikan" required>
-		</td> 
+		</td>
 		<td class="text-center">
 			<a class="btn btn-primary btn-md"><i class="fa fa-plus fa-md" title="Tambah Langkah Perbaikan" onclick="addRowTabelPerbaikan(this)"></i></a>
-			<a class="btn btn-danger btn-md" title="Hapus Langkah Perbaikan" onclick="onClickDeleteLpB(this)"><span class="fa fa-times fa-md"></span></a> 
-		</td> 
+			<a class="btn btn-danger btn-md" title="Hapus Langkah Perbaikan" onclick="onClickDeleteLpB(this)"><span class="fa fa-times fa-md"></span></a>
+		</td>
 	</tr>
 	`);
 
@@ -151,7 +316,7 @@ const onClickDeleteLpB = (th) => {
 	// console.log(id, "INI ID")
 			$('table tbody tr:nth('+row_index+')').remove();
 
-			
+
 	$('.langkahTabel').each((i, item) => {
 		document.getElementsByClassName('langkahTabel')[i].innerHTML = i + 1
 	})
@@ -169,7 +334,7 @@ const onClickDeleteLpB = (th) => {
 $(document).ready(function() {
 	$("#pelaksanaReparasi").select2({
 		minimumInputLength: 3,
-		ajax: {	
+		ajax: {
 		url:baseurl+'TicketingMaintenance/C_OrderList/Pelaksana/',
 		dataType: 'json',
 		type: "GET",
@@ -187,7 +352,7 @@ $(document).ready(function() {
 					})
 				};
 			}
-		}	
+		}
 	});
 });
 
@@ -259,7 +424,7 @@ function saveLaporanPerbaikan(a) {
 	var langkahPencegahan 	= $('.langkahPencegahan').val();
 	var verPerbaikan        = $('.verPerbaikan').val();
 	// console.log(id, kerusakan, penyebab, langkahPencegahan, verPerbaikan);
-	
+
 	var arry = [];
 	$('td.langkahTabel').each(function(){
 	var urutan = $(this).text();
@@ -288,7 +453,7 @@ function saveLaporanPerbaikan(a) {
 			verPerbaikan		: verPerbaikan
 		},
 		success:function(response){
-			// $('#loading').attr('hidden', true); 
+			// $('#loading').attr('hidden', true);
 			window.location.replace(baseurl+"TicketingMaintenance/Agent/OrderList/detail/"+id);
 		}
 	});
@@ -304,7 +469,7 @@ function saveLaporanPerbaikanEdit(a) {
 	var langkahPencegahan 	= $('.langkahPencegahan').val();
 	var verPerbaikan        = $('.verPerbaikan').val();
 	console.log(id, kerusakan, penyebab, langkahPencegahan, verPerbaikan);
-	
+
 	var arry = [];
 	$('td.langkahTabel').each(function(){
 	var urutan = $(this).text();
@@ -332,7 +497,7 @@ function saveLaporanPerbaikanEdit(a) {
 			verPerbaikan		: verPerbaikan
 		},
 		success:function(response){
-			// $('#loading').attr('hidden', true); 
+			// $('#loading').attr('hidden', true);
 			window.location.replace(baseurl+"TicketingMaintenance/Agent/OrderList/detail/"+id);
 		}
 	});
@@ -345,10 +510,10 @@ function AreYouSureWantToDoneYourOrder(){
 	var yyyy = today.getFullYear();
 	if (dd < 10) {
 	dd = '0' + dd;
-	} 
+	}
 	if (mm < 10) {
 	mm = '0' + mm;
-	} 
+	}
 	date = yyyy + '-' + mm + '-' + dd;
 	var today = new Date();
 	var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
@@ -398,10 +563,10 @@ function AreYouSureWantToCloseYourOrder(){
 	var yyyy = today.getFullYear();
 	if (dd < 10) {
 	dd = '0' + dd;
-	} 
+	}
 	if (mm < 10) {
 	mm = '0' + mm;
-	} 
+	}
 	date = yyyy + '-' + mm + '-' + dd;
 	var today = new Date();
 	var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
@@ -448,7 +613,7 @@ function AreYouSureWantToCloseYourOrder(){
 $(document).ready(function() {
 	$("#txtNoMesin").select2({
 		minimumInputLength: 3,
-		ajax: {	
+		ajax: {
 		url:baseurl+'TicketingMaintenance/C_NewOrder/NoMesin/',
 		dataType: 'json',
 		type: "GET",
@@ -466,11 +631,11 @@ $(document).ready(function() {
 					})
 				};
 			}
-		}	
+		}
 	});
 });
 
-//AUTOFILL JENIS MESIN// 
+//AUTOFILL JENIS MESIN//
 $('#txtNoMesin').change(function(){
 	$.ajax({
 		type: "POST",
@@ -482,29 +647,29 @@ $('#txtNoMesin').change(function(){
 	e.overrideMimeType("application/json;charset=UTF-8");
 		}
 	},
-	success: function(response){ 
+	success: function(response){
 		if(response != null){
 			// alert("Data Masuk")
 			// var sblm = $('#jenisMesin').val();
 			// $('select[name^=txtSlcElemen]')
 			var sblm = $('#jenisMesin').val();
-			
+
 			console.log(sblm);
 			if (sblm == '') {
 				$("#jenisMesin").val(response[0].SPEC_MESIN);
-			} 
+			}
 			else {
 				$("#jenisMesin").val(response[0].SPEC_MESIN);
 			}
 		console.log(response[0].SPEC_MESIN);
-		}else{ 
+		}else{
 			alert("Data Tidak Ditemukan");
 		}
 	},
-	error: function (xhr) { 
+	error: function (xhr) {
 	alert(xhr.responseText);
 		}
-	});	
+	});
 	});
 
 	$('.ModalEditSparepart').on('click', function(e) {
@@ -512,7 +677,7 @@ $('#txtNoMesin').change(function(){
 		var sparepart = $('#namaSparepart'+userid).val();
 		var spesifikasi = $('#spesifikasi'+userid).val();
 		var jumlah = $('#jumlah'+userid).val();
-	
+
 		$('#modalSparepart').val(sparepart);
 		$('#modalSpesifikasi').val(spesifikasi);
 		$('#modalJumlah').val(jumlah);
@@ -523,7 +688,7 @@ $('#txtNoMesin').change(function(){
 $(document).ready(function() {
 	$("#sparepartAgent").select2({
 		minimumInputLength: 3,
-		ajax: {	
+		ajax: {
 		url:baseurl+'TicketingMaintenance/C_OrderList/SparePart/',
 		dataType: 'json',
 		type: "GET",
@@ -541,7 +706,7 @@ $(document).ready(function() {
 					})
 				};
 			}
-		}	
+		}
 	});
 });
 
@@ -558,7 +723,7 @@ function deleteSparepart(th) {
 			no_order	 : no_order,
 			id_sparepart : id_sparepart
 			},
-			dataType: 'json',		
+			dataType: 'json',
 			// cache:false,
 			success:function(data){
 				console.log(data);
@@ -595,7 +760,7 @@ $(document).ready(function () {
 // 	showMeridian: false,
 // 	defaultTime: false,
 // 	use24hours: true,
-// 	minuteStep: 1 
+// 	minuteStep: 1
 // });
 
 // $('.jamSelesai').timepicker({
@@ -619,10 +784,10 @@ $('#txtJamSelesai').datetimepicker({
 })
 
 //SELECT SEKSI//
-$(document).ready(function(){    
+$(document).ready(function(){
 	$("#kodeNamaSeksi").select2({
 		minimumInputLength: 3,
-		ajax: {	
+		ajax: {
 		url:baseurl+'TicketingMaintenance/C_OrderList/Seksi/',
 		dataType: 'json',
 		type: "GET",
@@ -636,11 +801,11 @@ $(document).ready(function(){
 		processResults: function (seksi) {
 	return {
 		results: $.map(seksi, function(obj) {
-	return { id:obj.seksi, text:obj.seksi}; 
+	return { id:obj.seksi, text:obj.seksi};
 					})
 				};
 			}
-		}	
+		}
 	});
 });
 
@@ -649,14 +814,14 @@ function deleteMasterKodeSeksi(th) {
 	var row_index = $(th).parent().parent('tr').index();
 	var id_seksi = $('table tbody tr:nth('+row_index+') td .id_kode').val();
 	console.log(id_seksi);
-	
+
 		$.ajax({
 			type: "POST",
 			url: baseurl+'TicketingMaintenance/C_OrderList/deleteKodeSeksi/'+id_seksi,
 			data:{
 			id_seksi : id_seksi
 			},
-			dataType: 'json',		
+			dataType: 'json',
 			// cache:false,
 			success:function(data){
 				console.log(data);
@@ -669,13 +834,13 @@ function deleteMasterKodeSeksi(th) {
 		})
 }
 
-$('#rangeAwal').datepicker({ 
+$('#rangeAwal').datepicker({
 	todayHighlight: true,
 	format: 'dd-M-yyyy',
 	autoclose: true
 });
 
-$('#rangeAkhir').datepicker({ 
+$('#rangeAkhir').datepicker({
 	todayHighlight: true,
 	format: 'dd-M-yyyy',
 	autoclose: true
@@ -704,7 +869,7 @@ $(document).ready(function () {
 			$('.filterRange').css("display", "")
 			$('.filterSeksi').css("display", "none")
 			$('.filterMesin').css("display", "none")
-		} 
+		}
 	});
 });
 
@@ -712,7 +877,7 @@ $(document).ready(function () {
 $(document).ready(function() {
 	$("#parMesin").select2({
 		// minimumInputLength: 3,
-		ajax: {	
+		ajax: {
 		url:baseurl+'TicketingMaintenance/C_OrderList/slcMesinRekap/',
 		dataType: 'json',
 		type: "GET",
@@ -730,7 +895,7 @@ $(document).ready(function() {
 					})
 				};
 			}
-		}	
+		}
 	});
 });
 
@@ -738,7 +903,7 @@ $(document).ready(function() {
 $(document).ready(function() {
 	$("#parSeksi").select2({
 		// minimumInputLength: 3,
-		ajax: {	
+		ajax: {
 		url:baseurl+'TicketingMaintenance/C_OrderList/slcSeksiRekap/',
 		dataType: 'json',
 		type: "GET",
@@ -756,6 +921,6 @@ $(document).ready(function() {
 					})
 				};
 			}
-		}	
+		}
 	});
 });

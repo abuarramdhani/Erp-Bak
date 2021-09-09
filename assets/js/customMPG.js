@@ -1,123 +1,29 @@
-$(document).ready(function(){
-    if($('#inputmpg').val() == "ok"){
-        // console.log("cek")
-        Swal.fire({
-            title: 'Pilih Subinventory Terlebih Dahulu',
-            input: 'select',
-            inputOptions: {
-                'SP-YSP':'SP-YSP',
-                'KOM1-DM':'KOM1-DM',
-                'PNL-DM':'PNL-DM',
-                'FG-DM':'FG-DM'
+//---------------------------------------------- Input ---------------------------------------------------
+function getMON(th){
+    var subinv   = $('#subinventory').val();
+    $.ajax({
+        url: baseurl+'MonitoringGdSparepart/Monitoring/getMon',
+        data: {
+            subinv : subinv
+        },
+        type: "POST",
+        datatype: 'html',
+        beforeSend: function() {
+            $('#TblMon').html(`<div id="loadingArea">
+                                    <center>
+                                        <img style="width:20%;margin-bottom:13px" src="${baseurl}assets/img/gif/loadingtwo.gif">
+                                    </center>
+                                </div>`)
             },
-            inputPlaceholder: 'Pilih Subinventory',
-            allowOutsideClick: false,
-            inputValidator: (value) => {
-                return !value && 'Anda Harus Memilih Salah Satu Subinventory'
-            },
-        }).then((result) => {
-            if (result.value) {
-                // let subinv = result.value
-                // console.log(subinv);
-                $('#subinventory').val(result.value)
-            }
-        })
-    }
-
-    if($('#monmpg').val() == "ok"){
-        // console.log("cek")
-        Swal.fire({
-            title: 'Pilih Subinventory Terlebih Dahulu',
-            input: 'select',
-            inputOptions: {
-                'SP-YSP':'SP-YSP',
-                'KOM1-DM':'KOM1-DM',
-                'PNL-DM':'PNL-DM',
-                'FG-DM':'FG-DM'
-            },
-            inputPlaceholder: 'Pilih Subinventory',
-            allowOutsideClick: false,
-            inputValidator: (value) => {
-                return !value && 'Anda Harus Memilih Salah Satu Subinventory'
-            },
-        }).then((result) => {
-            if (result.value) {
-                // let subinv = result.value
-                // console.log(subinv);
-                $('#subinventory').val(result.value)
-                $.ajax({
-                    url: baseurl+'MonitoringGdSparepart/Monitoring/getMon',
-                    data: {
-                        subinv : result.value
-                    },
-                    type: "POST",
-                    datatype: 'html',
-                    beforeSend: function() {
-                        $('#TblMon').html(`<div id="loadingArea">
-                                                <center>
-                                                    <img style="width:20%;margin-bottom:13px" src="${baseurl}assets/img/gif/loadingtwo.gif">
-                                                </center>
-                                            </div>`)
-                        },
-                    success: function(result) {
-                        // console.log(result);
-                        $('#TblMon').html(result)
-                    },
-                    error: function(XMLHttpRequest, textStatus, errorThrown) {
-                        console.error();
-                    }
-                })
-            }
-        })
-    }
-
-    if($('#rekapmpg').val() == "ok"){
-        // console.log("cek")
-        Swal.fire({
-            title: 'Pilih Subinventory Terlebih Dahulu',
-            input: 'select',
-            inputOptions: {
-                'SP-YSP':'SP-YSP',
-                'KOM1-DM':'KOM1-DM',
-                'PNL-DM':'PNL-DM',
-                'FG-DM':'FG-DM'
-            },
-            inputPlaceholder: 'Pilih Subinventory',
-            allowOutsideClick: false,
-            inputValidator: (value) => {
-                return !value && 'Anda Harus Memilih Salah Satu Subinventory'
-            },
-        }).then((result) => {
-            if (result.value) {
-                // let subinv = result.value
-                // console.log(subinv);
-                $('#subinventory').val(result.value)
-                $.ajax({
-                    url: baseurl+'MonitoringGdSparepart/Rekap/getRekap',
-                    data: {
-                        subinv : result.value
-                    },
-                    type: "POST",
-                    datatype: 'html',
-                    beforeSend: function() {
-                        $('#tb_RkpMGS').html(`<div id="loadingArea">
-                                                <center>
-                                                    <img style="width:20%;margin-bottom:13px" src="${baseurl}assets/img/gif/loadingtwo.gif">
-                                                </center>
-                                            </div>`)
-                        },
-                    success: function(result) {
-                        // console.log(result);
-                        $('#tb_RkpMGS').html(result)
-                    },
-                    error: function(XMLHttpRequest, textStatus, errorThrown) {
-                        console.error();
-                    }
-                })
-            }
-        })
-    }
-})
+        success: function(result) {
+            // console.log(result);
+            $('#TblMon').html(result)
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+            console.error();
+        }
+    })
+}
 
 function getMPG(th) {
     // $(document).ready(function(){
@@ -161,37 +67,56 @@ $('#noDokumen').keypress(function (e) {
 // jenis dokumen otomatis INPUT
 function getAutoFillDocument(){
     var no_document = $('input[name="noDokumen"]').val();
-
     $('input[name="no_document"]').val(no_document)
-
-    // var subinv = $('input[name="subinventory"]').val();
-
+    var subinv = $('#subinventory').val();
     // $('input[name="subinv"]').val(subinv)
-
+    console.log(subinv)
     var length = no_document.length
     // console.log(length)
-    if(length == 12){
-         var awl = no_document.substring(0, 3);
-         if (awl == 'FPB') {
-            $('#jenis_dokumen').val('FPB').trigger('change')
-         }else{
-            $('#jenis_dokumen').val('IO').trigger('change')
-         }
-    }else if(length == 5){
-        $('#jenis_dokumen').val('LPPB').trigger('change')
-    }else if(length == 9) {
-        $('#jenis_dokumen').val('KIB').trigger('change')
-    }else if(length == 7) {
-        $('#jenis_dokumen').val('MO').trigger('change')
+    if (subinv == 'SP-YSP' || subinv == 'MAT-PM'){
+        if(length == 12){
+            var awl = no_document.substring(0, 3);
+            if (awl == 'FPB') {
+               $('#jenis_dokumen').val('FPB').trigger('change')
+            }else{
+               $('#jenis_dokumen').val('IO').trigger('change')
+            }
+        }else if(length == 5){
+            $('#jenis_dokumen').val('LPPB').trigger('change')
+        }else if(length == 9) {
+            $('#jenis_dokumen').val('KIB').trigger('change')
+        }else if(length == 7) {
+            $('#jenis_dokumen').val('MO').trigger('change')
+        }else{
+            var awl = no_document.substring(0, 5);
+            if (awl) {
+                $('#jenis_dokumen').val('SPBSPI').trigger('change')
+            }else{
+                $('#jenis_dokumen').val('').trigger('change')
+            }
+        }
     }else{
-        var awl = no_document.substring(0, 5);
-        if (awl) {
-            $('#jenis_dokumen').val('SPBSPI').trigger('change')
+        if(length == 12){
+            var awl = no_document.substring(0, 3);
+            if (awl == 'FPB') {
+               $('#jenis_dokumen').val('FPB').trigger('change')
+            }else{
+               $('#jenis_dokumen').val('IO').trigger('change')
+            }
+        }else if(length == 6){
+            $('#jenis_dokumen').val('LPPB').trigger('change')
+        }else if(length == 9) {
+            $('#jenis_dokumen').val('KIB').trigger('change')
+        }else if(length == 7) {
+            $('#jenis_dokumen').val('MO').trigger('change')
         }else{
             $('#jenis_dokumen').val('').trigger('change')
         }
     }
+    
 }
+
+//---------------------------------------------- Monitoring ---------------------------------------------------
 
 function getMGS(th) {
     // $(document).ready(function(){
@@ -202,7 +127,8 @@ function getMGS(th) {
     var tglAkhir        = $('input[name="tglAkhir"]').val();
     var pic             = $('#pic').val();
     var item            = $('input[name="item"]').val();
-    var subinv          = $('input[name="subinventory"]').val();
+    // var subinv          = $('input[name="subinventory"]').val();
+    var subinv          = $('#subinventory').val();
     // console.log(search_by,jenis_dokumen,no_document,tglAwal,tglAkhir,pic,item);
     var request = $.ajax({
         url: baseurl+'MonitoringGdSparepart/Monitoring/search',
@@ -214,7 +140,7 @@ function getMGS(th) {
             tglAkhir        : tglAkhir, 
             pic             : pic, 
             item            : item,
-            subinv            : subinv
+            subinv          : subinv
         },
         type: "POST",
         datatype: 'html'
@@ -252,7 +178,7 @@ function getMGS(th) {
         $(".picGDSP").select2({
             allowClear: false,
             placeholder: "",
-            minimumInputLength: 3,
+            minimumInputLength: 0,
             ajax: {
                 url: baseurl + "MonitoringGdSparepart/Monitoring/getPIC",
                 dataType: 'json',
@@ -445,7 +371,7 @@ $("#frmMGS").keypress(function(e) {   //Enter key
         $(".picGDSP").select2({
             allowClear: false,
             placeholder: "",
-            minimumInputLength: 3,
+            minimumInputLength: 0,
             ajax: {
                 url: baseurl + "MonitoringGdSparepart/Monitoring/getPIC",
                 dataType: 'json',
@@ -467,6 +393,34 @@ $("#frmMGS").keypress(function(e) {   //Enter key
             }
         });
     });
+
+//---------------------------------------------- Rekap ---------------------------------------------------
+
+function getRekap(th){
+    var subinv = $('#subinventory').val();
+    $.ajax({
+        url: baseurl+'MonitoringGdSparepart/Rekap/getRekap',
+        data: {
+            subinv : subinv
+        },
+        type: "POST",
+        datatype: 'html',
+        beforeSend: function() {
+            $('#tb_RkpMGS').html(`<div id="loadingArea">
+                                    <center>
+                                        <img style="width:20%;margin-bottom:13px" src="${baseurl}assets/img/gif/loadingtwo.gif">
+                                    </center>
+                                </div>`)
+            },
+        success: function(result) {
+            // console.log(result);
+            $('#tb_RkpMGS').html(result)
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+            console.error();
+        }
+    })
+}
     
 function adddrekap(th){
 	var title = $(th).text();
@@ -496,6 +450,8 @@ function schRekapMGS(th) {
         
         })
 }
+
+//---------------------------------------------- Item Intransit ---------------------------------------------------
 
 function getItemIntransit(th) {
     var param = $('#param').val();
@@ -554,7 +510,7 @@ function tmb_tanpa_surat(th) {
             $(".picGDSP").select2({
                 allowClear: false,
                 placeholder: "",
-                minimumInputLength: 3,
+                minimumInputLength: 0,
                 ajax: {
                     url: baseurl + "MonitoringGdSparepart/Monitoring/getPIC",
                     dataType: 'json',
@@ -582,6 +538,8 @@ function tmb_tanpa_surat(th) {
 		$(this).parents('.tr_tanpa_surat').remove()
 	});
 }
+
+//---------------------------------------------- Peminjaman Barang ---------------------------------------------------
 
 function tmb_peminjam(th) {
     var x = $('.nomor:last').val();
@@ -643,7 +601,7 @@ function tmb_peminjam(th) {
             $(".picGDSP").select2({
                 allowClear: false,
                 placeholder: "",
-                minimumInputLength: 3,
+                minimumInputLength: 0,
                 ajax: {
                     url: baseurl + "MonitoringGdSparepart/Monitoring/getPIC",
                     dataType: 'json',

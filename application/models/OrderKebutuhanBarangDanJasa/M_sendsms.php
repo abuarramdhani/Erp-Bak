@@ -1,6 +1,7 @@
-<?php 
-defined('BASEPATH') or exit ('No direct script access allowed');
-class M_sendsms extends CI_Model{
+<?php
+defined('BASEPATH') or exit('No direct script access allowed');
+class M_sendsms extends CI_Model
+{
     public function __construct()
     {
         parent::__construct();
@@ -31,8 +32,7 @@ class M_sendsms extends CI_Model{
                                             ,ppf.SEX
                                             ,kep.EMAIL_INTERNAL
                                             ,kep.NOMOR_MYGROUP
-                                            ,oah.APPROVER"
-                                      );
+                                            ,oah.APPROVER");
         return $query->result_array();
     }
 
@@ -96,6 +96,11 @@ class M_sendsms extends CI_Model{
                                         FROM 
                                             DUAL
                                     ");
+        return $query->row_array();
+    }
+    public function getGagalPR()
+    {
+        $query = $this->oracle->query("select * from APPS.KHS_OKBJ_ORDER_GAGAL_PR");
         return $query->row_array();
     }
 }

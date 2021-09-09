@@ -36,7 +36,7 @@ class M_hakaksespresensiharian extends CI_Model
 
   public function getDataPekerja($key)
   {
-    $sql = "select p.noind,p.nama,p.keluar,p.sebabklr from hrd_khs.tpribadi p where (p.nama like '$key%' or p.noind like '$key%') and p.keluar = '0'";
+    $sql = "select p.noind,p.nama,p.keluar,p.sebabklr,p.kodesie from hrd_khs.tpribadi p where (p.nama like '$key%' or p.noind like '$key%') and p.keluar = '0'";
     return $this->personalia->query($sql)->result_array();
   }
 

@@ -458,9 +458,9 @@ class M_isolasimandiri extends CI_Model
 		return $this->personalia->affected_rows() > 0;
 	}
 
-	public function updateKePRM($tgl, $pekerja)
+	public function updateKePRM($tgl, $pekerja, $alasan)
 	{
-		$sql = "UPDATE \"Presensi\".tdatapresensi set kd_ket = 'PRM' where tanggal = '$tgl' and noind = '$pekerja' and kd_ket in ('PKJ', 'PSP')";
+		$sql = "UPDATE \"Presensi\".tdatapresensi set kd_ket = 'PRM', alasan = '$alasan' where tanggal = '$tgl' and noind = '$pekerja' and kd_ket in ('PKJ', 'PSP')";
 		$query = $this->personalia->query($sql);
 		return $this->personalia->affected_rows() > 0;
 	}

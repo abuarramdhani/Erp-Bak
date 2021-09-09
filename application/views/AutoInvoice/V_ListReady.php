@@ -20,7 +20,22 @@
                         <td class="text-center"><input type="hidden" class="nom_SPB" data-row="<?= $angka ?>" id="nom_SPB<?= $angka ?>" value="<?= $red['NO_SPB'] ?>" /><?= $red['NO_SPB'] ?></td>
                         <td class="text-center"><input type="hidden" class="nom_SO" data-row="<?= $angka ?>" id="nom_SO<?= $angka ?>" value="<?= $red['SO_NUMBER'] ?>" /><?= $red['SO_NUMBER'] ?></td>
                         <td class="text-center"><input type="hidden" class="ou_DO" data-row="<?= $angka ?>" id="ou_DO<?= $angka ?>" value="<?= $red['OU'] ?>" /><?= $red['OU'] ?></td>
-                        <td class="text-center"><button class="btn btn-default btn-sm" onclick="DetDo(<?= $red['NO_DO'] ?>)">Detail</button></td>
+                        <td class="text-center">
+                            <button class="btn btn-default btn-sm" onclick="DetDo(<?= $red['NO_DO'] ?>)">Detail</button>
+                            <!-- <button class="btn btn-primary btn-sm" id="btn-view-AIN">View</button> -->
+                            <!-- <?php
+                                    if ($red['LINK'] != '-') {
+                                    ?>
+                                <a href="http://produksi.quick.com/api-scanner-doc-satpam/assets/img/docsatpam/<?= $red['LINK'] ?>.jpeg" target="_blank" class="btn btn-primary btn-sm">View Dokument Fisik</a>
+                            <?php } ?> -->
+                            <?php if ($red['LINK'] == "-") { ?>
+                                <a disabled="disabled" target="_blank" class="btn btn-primary btn-sm">View Dokumen Fisik</a>
+                                <p style="font-size: 8pt;color:red;">*Dokumen Belum Ada</p>
+                            <?php } else { ?>
+                                <a href="http://produksi.quick.com/api-scanner-doc-satpam/assets/img/docsatpam/<?= $red['LINK'] ?>.jpeg" target="_blank" class="btn btn-primary btn-sm">View Dokumen Fisik</a>
+                                <p style="font-size: 8pt;">*Dokumen Sudah Ada, Silahkan Klik Tombol View Dokumen</p>
+                            <?php } ?>
+                        </td>
                     </tr>
                 <?php $angka++;
                 } ?>

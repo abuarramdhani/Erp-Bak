@@ -241,9 +241,21 @@
     <!-- <option value="AUTO (Inheritance)">AUTO (Inheritance)</option> -->
     <option value="WALK">WALK</option>
   </datalist>
-
   <datalist id="brow_slc_elemen">
-    <?php foreach ($data_element_kerja as $key => $value): ?>
+    <?php foreach ($data_element_kerja_auto as $key => $value): ?>
+      <option value="<?php echo $value['elemen_kerja'] ?>"><?php echo $value['elemen_kerja'] ?></option>
+    <?php endforeach; ?>
+    <?php foreach ($data_element_kerja_manual as $key => $value): ?>
+      <option value="<?php echo $value['elemen_kerja'] ?>"><?php echo $value['elemen_kerja'] ?></option>
+    <?php endforeach; ?>
+  </datalist>
+  <datalist id="brow_slc_elemen_manual">
+    <?php foreach ($data_element_kerja_manual as $key => $value): ?>
+      <option value="<?php echo $value['elemen_kerja'] ?>"><?php echo $value['elemen_kerja'] ?></option>
+    <?php endforeach; ?>
+  </datalist>
+  <datalist id="brow_slc_elemen_auto">
+    <?php foreach ($data_element_kerja_auto as $key => $value): ?>
       <option value="<?php echo $value['elemen_kerja'] ?>"><?php echo $value['elemen_kerja'] ?></option>
     <?php endforeach; ?>
   </datalist>
@@ -966,7 +978,7 @@
                                         <option value="AUTO">AUTO</option>
                                         <option value="WALK">WALK</option>
                                       </select> -->
-                                      <input list="brow_jenis_proses" class="form-control select00004" value="<?php echo $jenis_proses ?>" onchange="myFunctionTSKK(this)" style="text-align:left;width:100%" data-placeholder="Jenis Proses" name="slcJenisProses[]" id="slcJenis_<?= $no ?>">
+                                      <input list="brow_jenis_proses" class="form-control select00004" required value="<?php echo $jenis_proses ?>" onchange="myFunctionTSKK(this)" style="text-align:left;width:100%" data-placeholder="Jenis Proses" name="slcJenisProses[]" id="slcJenis_<?= $no ?>">
 
                                     </td>
                                     <!--ELEMEN KERJA-->
@@ -980,10 +992,11 @@
 																				//}
                                                                             ?>
                                           </select> -->
-                                          <input list="brow_slc_elemen" value="<?php echo !empty($elemen) ? $elemen : '' ?>" class="form-control slcElemen0000" onchange="//disableOrnot(this)" name="txtSlcElemen[]" data-placeholder="Elemen">
+                                          <input <?php echo $jenis_proses == 'MANUAL' ? 'list="brow_slc_elemen_manual"' : 'list="brow_slc_elemen_auto"' ?> value="<?php echo !empty($elemen) ? $elemen : '' ?>" <?php echo $jenis_proses == 'WALK' ? 'readonly' : '' ?> class="form-control slcElemen0000"
+                                           onchange="//disableOrnot(this)" name="txtSlcElemen[]" autocomplete="off" data-placeholder="Elemen" required>
                                         </div>
                                         <div class="col-lg-6">
-                                          <input type="text" value="<?php echo $keterangan_elemen; ?>" id="elemen" name="elemen[]" class="form-control elemen" placeholder="Keterangan Elemen">
+                                          <input type="text" value="<?php echo $keterangan_elemen; ?>" id="elemen" name="elemen[]" <?php echo $jenis_proses == 'WALK' ? 'readonly' : '' ?> class="form-control elemen" placeholder="Keterangan Elemen">
                                         </div>
                                       </div>
                                     </td>

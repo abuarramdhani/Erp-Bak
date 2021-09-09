@@ -33,11 +33,12 @@
 							<div class="box-body">
 								<div class="table-responsive">
 									<style type="text/css">
+										.dataTables_length,.dataTables_info {
+											float: left;
+											width: 33%;
+										}
 										.dataTables_filter, .dataTables_paginate {
 											float: right;
-										}
-										.dataTables_info {
-											float: left;
 										}
 									</style>
 									<table class="table table-striped table-bordered table-hover text-left" id="tbl-Sys-Responsibility-index" style="font-size:12px;">

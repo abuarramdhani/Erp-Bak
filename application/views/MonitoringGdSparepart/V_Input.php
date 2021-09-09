@@ -1,4 +1,4 @@
-<input type="hidden" value="ok" id="inputmpg">
+<!-- <input type="hidden" value="ok" id="inputmpg"> -->
 <section class="content">
     <div class="inner">
         <div class="row">
@@ -35,9 +35,17 @@
                             <div class="box-header with-border"><b>Input</b></div>
                             <div class="box-body">
                                 <div class="panel-body">
-                                    <div class="col-md-2">
+                                    <div class="col-md-4" align="center">
                                         <label class="control-label">Subinventory</label>
-                                        <input id="subinventory" name="subinventory" class="form-control pull-right" placeholder="Subinventory" readonly>
+                                        <select class="form-control select2" data-placeholder="Pilih Subinventory Terlebih Dahulu" id="subinventory" name="subinventory">
+                                            <option> </option>
+                                            <option>SP-YSP</option>
+                                            <option>KOM1-DM</option>
+                                            <option>PNL-DM</option>
+                                            <option>FG-DM</option>
+                                            <option>MAT-PM</option>
+                                        </select>
+                                        <!-- <input id="subinventory" name="subinventory" class="form-control pull-right" placeholder="Subinventory" readonly> -->
                                     </div>
                                     <div class="col-md-4" align="center" style="float:none; margin: 0 auto">
                                         <label class="control-label">Masukan Nomor Dokumen</label>
@@ -58,7 +66,6 @@
                                 </div>
                                 <div class="panel-body">
                                     <div class="col-md-2">
-                                        <!-- <label id="jam_input" name="jam_input"class="control-label" >Jam Input  : <?php echo gmdate("H:i", time()+60*60*7); ?></label> -->
                                         <label name="jam_input"class="control-label" >Jam Input  : <a id="jam_input" style="color:black;"></a></label>
                                     </div>
                                 </div>
@@ -79,7 +86,6 @@
                                                         <th>Jumlah</th>
                                                         <th>Satuan</th>
                                                         <th>Status</th>
-                                                        <!-- <th>Ket</th> -->
                                                     </tr>
                                                 </thead>
                                                 <tbody id="tb_GudangSparepart"></tbody>
@@ -89,7 +95,6 @@
                                     <div class="panel-body">
                                         <div class="col-md-2" align="center" style="float:none; margin: 0 auto">
                                             <label>PIC</label>
-                                            <!-- <input id="pic" name="pic" class="form-control" style="width:100%;" required> -->
                                             <select id="pic" name="pic" class="form-control select2 select2-hidden-accessible picGDSP" style="width:100%;" required>
                                             <option></option>
                                         </select>

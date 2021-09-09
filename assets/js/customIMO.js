@@ -57,6 +57,7 @@ $('#txtTanggalIMO').change(function(){
 function getRequirementMO(th){
 	var dept = $('select[name="slcDeptIMO"]').val();
 	var date = $('input[name="txtTanggalIMO"]').val();
+	var date2 = $('input[name="txtTanggalIMOAkhir"]').val();
 	var shift = $('select[name="slcShiftIMO"]').val();
 	
 	// if (nojob != "") {
@@ -64,7 +65,7 @@ function getRequirementMO(th){
 	var request = $.ajax({
 		url: baseurl+'InventoryManagement/CreateMoveOrder/search/',
 		data: {
-			dept : dept, date : date, shift : shift, ket : th
+			dept : dept, date : date, date2 : date2, shift : shift, ket : th
 		},
 		type: "POST",
 		datatype: 'html', 
@@ -98,7 +99,16 @@ function getRequirementMO2(th){
 	})
 }
 
-function print_sticker(item, nojob, qty){
+function urutanpicklist(job) {
+	var urutan = $('#urutan'+job).val();
+	var urutannya = urutan+'_'+job+'+';
+	var urutan_all = $('#urutanPicklistIMO').val();
+	var urutan_lagi = urutan_all+urutannya;
+	$('#urutanPicklistIMO').val(urutan_lagi);
+	// console.log(urutan, job, urutan_all)
+}
+
+function print_sticker(item, nojob, qty, ket){
 	var request = $.ajax({
 		url: baseurl+'InventoryManagement/CreateMoveOrder/print_sticker',
 		data: { nojob : nojob },
@@ -112,7 +122,12 @@ function print_sticker(item, nojob, qty){
 		}else{
 			qty2 = result/2;
 		}
-		window.open("http://produksi.quick.com/print-qr-sticker-packaging/khs_cetak_barcode.php?org=102&segment1="+item+"&jumlah="+qty2+"");
+		if (ket == 'select') {
+			var select = '&select=1';
+		}else{
+			var select = '';
+		}
+		window.open("http://produksi.quick.com/print-qr-sticker-packaging/khs_cetak_barcode.php?org=102&segment1="+item+"&jumlah="+qty2+select+"");
 		// window.open("http://produksi.quick.com/print-qr-sticker-packaging/khs_cetak_barcode_besar.php?org=102&segment1="+item+"&jumlah="+qty2+"");
 	})
 }
@@ -128,7 +143,7 @@ function print_sticker2(){
 		for (let x = 0; x < wip.length; x++) {
 			if (nojob2[i] == wip[x]) {
 				// console.log(wip[x], item[x], qty[x]);
-				print_sticker(item[x], wip[x], qty[x]);
+				print_sticker(item[x], wip[x], qty[x], 'select');
 			}
 		}
 		

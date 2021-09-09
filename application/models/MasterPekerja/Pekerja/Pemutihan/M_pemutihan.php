@@ -185,4 +185,16 @@ class M_pemutihan extends CI_Model
       ->where('id_req', $id)
       ->update('hrd_khs.trequest_tpribadi', $field);
   }
+
+  /**
+   * 
+   */
+  public function getVaccinationByPribadiId($id)
+  {
+    return $this->personalia
+      ->from('hrd_khs.trequest_tvaksinasi')
+      ->where('id_trequest_tpribadi',$id)
+      ->get()
+      ->result_array();
+  }
 }

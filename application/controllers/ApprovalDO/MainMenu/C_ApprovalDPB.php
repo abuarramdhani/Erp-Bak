@@ -107,7 +107,7 @@ class C_ApprovalDPB extends CI_Controller {
             'catatan'          => 'readonly',
             'estdate'          => ''
         ];
-        if ($this->session->user === 'B0445') {
+        if ($this->session->user === 'P0420' || $this->session->user === 'B0915' || $this->session->user === 'B0445' || $this->session->user === 'H7611' || $this->session->user === 'H6843' || $this->session->user === 'K1778' || $this->session->user === 'H6968') {
             $data['UserAccess'] = [   
                     'jenis_kendaraan'  => '',
                     'no_kendaraan'     => 'readonly',
@@ -170,7 +170,7 @@ class C_ApprovalDPB extends CI_Controller {
             'catatan'          => 'readonly',
             'estdate'          => ''
         ];
-        if ($this->session->user === 'B0445') {
+        if ($this->session->user === 'P0420' || $this->session->user === 'B0915' || $this->session->user === 'B0445' || $this->session->user === 'H7611' || $this->session->user === 'H6843' || $this->session->user === 'K1778' || $this->session->user === 'H6968') {
             $data['UserAccess'] = [   
                     'jenis_kendaraan'  => '',
                     'no_kendaraan'     => 'readonly',

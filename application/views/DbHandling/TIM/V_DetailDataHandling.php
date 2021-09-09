@@ -172,7 +172,7 @@
                                     } ?>
                                     <div class="panel-body">
                                         <div class="col-md-4" style="text-align: right;"><label>Keterangan</label></div>
-                                        <div class="col-md-6" style="text-align: left;"><textarea readonly id="ketr" class="form-control"><?= $datahandling[0]['keterangan'] ?></textarea></div>
+                                        <div class="col-md-6" style="text-align: left;"><textarea readonly id="ketr" class="form-control"><?= str_replace("`","'",$datahandling[0]['keterangan']) ?></textarea></div>
                                     </div>
                                     <?php if ($datahandling[0]['status'] == 'active') {
                                         if ($datahandling[0]['rev_no'] == 0) {

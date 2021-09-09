@@ -337,6 +337,7 @@ class C_Laporan extends CI_Controller {
 		$objset->mergeCells('F8:J8');
 		$objset->mergeCells('F9:J9');
 		$objset->mergeCells('F10:J10');
+		$objset->mergeCells('F11:J11');
 
 		$objset->mergeCells('A12:A14');
 		$objset->mergeCells('B12:C14');
@@ -347,15 +348,15 @@ class C_Laporan extends CI_Controller {
 		$objset->mergeCells('P12:P13');
 		$objset->mergeCells('Q12:T12');
 
-		$objPHPExcel->getActiveSheet()->getStyle('E3:E10')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-		$objPHPExcel->getActiveSheet()->getStyle('E3:E10')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+		$objPHPExcel->getActiveSheet()->getStyle('E3:E11')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+		$objPHPExcel->getActiveSheet()->getStyle('E3:E11')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
 		
 		$objPHPExcel->getActiveSheet()->getStyle('A12:T14')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 		$objPHPExcel->getActiveSheet()->getStyle('A')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 		$objPHPExcel->getActiveSheet()->getStyle('A')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
 
-		$objPHPExcel->getActiveSheet()->getStyle('F3:F10')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
-		$objPHPExcel->getActiveSheet()->getStyle('F3:F10')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+		$objPHPExcel->getActiveSheet()->getStyle('F3:F11')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+		$objPHPExcel->getActiveSheet()->getStyle('F3:F11')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
 		$objPHPExcel->getActiveSheet()->getStyle('A12:T14')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
 		$objPHPExcel->getActiveSheet()->getStyle('H12:T13')->getAlignment()->setWrapText(true);
 		
@@ -390,6 +391,8 @@ class C_Laporan extends CI_Controller {
 		$objset->setCellValue("E9", ':');
 		$objset->setCellValue("C10", 'No. Receipt');
 		$objset->setCellValue("E10", ':');
+		$objset->setCellValue("C11", 'Subinventory ; Locator Tujuan');
+		$objset->setCellValue("E11", ':');
 
 		$objset->setCellValue("A12", 'No');
 		$objset->setCellValue("B12", 'Kode barang');
@@ -430,6 +433,7 @@ class C_Laporan extends CI_Controller {
 		$objPHPExcel->getActiveSheet()->getStyle('T')->getNumberFormat()->setFormatCode('0.00%;[Red]-0.00%');
 		
 		//header
+		$locator = $this->M_laporan->get_location_code($header['noPOPBI']);
 		$objset->setCellValue("F3", $header['nomorUrutPBI']);		
 		$objset->setCellValue("F4", $header['IOPBI']);		
 		$objset->setCellValue("F5", $header['vendorPBI']);		
@@ -438,6 +442,7 @@ class C_Laporan extends CI_Controller {
 		$objset->setCellValue("F8", $header['noPOPBI']);		
 		$objset->setCellValue("F9", $header['noInterorgPBI']);		
 		$objset->setCellValue("F10", $header['noReceiptPBI']);	
+		$objset->setCellValue("F11", $locator[0]['LOCATION_CODE']);	
 		//end
 		
 		// ambil data
@@ -455,6 +460,19 @@ class C_Laporan extends CI_Controller {
 		// print_r($additional_cost);exit;
 		$row = 15;
 		$no = 0;
+
+		if ($header['IOPBI'] == 'IPM'){
+			$objPHPExcel->getActiveSheet()->getStyle('P8:T10')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB('E6B8B7');
+			$objPHPExcel->getActiveSheet()->getStyle('P8:T10')->getAlignment()->setWrapText(true);
+			$objPHPExcel->getActiveSheet()->getStyle('P12')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB('E6B8B7');
+			$objPHPExcel->getActiveSheet()->getStyle('P13')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB('E6B8B7');
+			$objPHPExcel->getActiveSheet()->getStyle('P14')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB('E6B8B7');
+			$objPHPExcel->getActiveSheet()->getStyle('P8:T10')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+			$ipm_cell_val = 'Total Biaya : Nilai yang harus dimasukan saat melakukan Actual Cost Adjusment dengan type : Value Cost Adjusment';
+			$objset->mergeCells('P8:T10');
+			$objset->setCellValue("P8", $ipm_cell_val);	
+		}
+
 		for ($i=0; $i < count($line); $i++) { $no++;
 
 			$objset->mergeCells("B".$row.":C".$row);
@@ -506,6 +524,10 @@ class C_Laporan extends CI_Controller {
 			$objset->setCellValue("R".$row, '=P'.$row.'/H'.$row);
 			$objset->setCellValue("S".$row, '=Q'.$row.'+R'.$row);
 			$objset->setCellValue("T".$row, '=R'.$row.'/Q'.$row);
+
+			if ($header['IOPBI'] == 'IPM'){
+				$objPHPExcel->getActiveSheet()->getStyle('P'.$row)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB('E6B8B7');
+			}
 				
 			$row++;
 		}
@@ -515,6 +537,10 @@ class C_Laporan extends CI_Controller {
 		$objPHPExcel->getActiveSheet()->getStyle("N".$row)->getNumberFormat()->setFormatCode('#,##0.00');
 		$objPHPExcel->getActiveSheet()->getStyle("O".$row)->getNumberFormat()->setFormatCode('#,##0.00');
 		$objPHPExcel->getActiveSheet()->getStyle("P".$row)->getNumberFormat()->setFormatCode('#,##0.00');
+
+		if ($header['IOPBI'] == 'IPM'){
+			$objPHPExcel->getActiveSheet()->getStyle('P'.$row)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB('E6B8B7');
+		}
 
 		if ($bea_masuk) {
 			$bea = $bea_masuk[0]['HARGA'];

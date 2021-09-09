@@ -12,8 +12,8 @@
                 <th>No Dokumen</th>
                 <th>Jumlah Item</th>
                 <th>Jumlah Pcs</th>
+                <th>Catatan Marketing</th>
                 <th style="width: 200px;">PIC</th>
-                <!-- <th>Keterangan</th> -->
                 <th></th>
             </tr>
         </thead>
@@ -63,6 +63,9 @@
                     <td class="<?= $td?>">
                         <input type="hidden" id="jml_pcs<?= $val['NO_DOKUMEN']?>" value="<?= $val['JUMLAH_PCS']?>">
                         <?= $val['JUMLAH_PCS']?>
+                    </td>
+                    <td class="<?= $td?>">
+                        <?= $val['KETERANGAN']?>
                     </td>
                     <td class="<?= $td?>">
                     <?php if (!empty($val['PIC_PELAYAN'])) { 

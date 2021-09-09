@@ -16,8 +16,8 @@
                 },
                 //Set column definition initialisation properties.
                 "columnDefs": [
-                { 
-                    "targets": [ 0 ], //first column / numbering column
+                {
+                    "targets": [ 0, 19 ], //first column / numbering column
                     "orderable": false, //set not orderable
                 },
                 ],
@@ -46,7 +46,7 @@
                             <div class="text-right">
                                 <h1>
                                     <b>
-                                        <?= $Title ?> 
+                                        <?= $Title ?>
                                     </b>
                                 </h1>
                             </div>
@@ -84,7 +84,7 @@
                                         <div class="input-group">
                                         <input id="tglAkhir" name="tglAkhir" class="form-control pull-right datepicktgl" placeholder="dd/mm/yyyy" autocomplete="off">
                                         <span class="input-group-btn">
-                                            <button type="button" onclick="schArsipdospb(this)" class="btn btn-flat" style="background:inherit; text-align:left;padding:0px;padding-left:10px;"><i class="fa fa-2x fa-arrow-circle-right" ></i></button>    
+                                            <button type="button" onclick="schArsipdospb(this)" class="btn btn-flat" style="background:inherit; text-align:left;padding:0px;padding-left:10px;"><i class="fa fa-2x fa-arrow-circle-right" ></i></button>
                                         </span>
                                         </div>
                                     </div>
@@ -114,6 +114,7 @@
                                                     <th>Tanggal Cancel</th>
                                                     <th>Jumlah Coly</th>
                                                     <th>Edit Coly</th>
+																										<th style="width:50px">Cetak</th>
                                                 </tr>
                                             </thead>
                                         </table>

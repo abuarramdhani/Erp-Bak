@@ -1685,6 +1685,9 @@ $(document).ready(function () {
     ordering: true,
     info: false,
   });
+  $("#unprocessTabel").DataTable({
+    scrollX: true,
+  });
   $('span[class~="statusInvoice"]').each(function () {
     var status = $(this).attr("value");
     if (status == 2) {
@@ -2295,11 +2298,11 @@ function btn_cari(th) {
 $(document).ready(function () {
   $(document).on("click", ".btnReceiptMIA", function () {
     var invoice_number = $(this).val();
-
+    var po_num = $(this).closest('tr').find('.Po_NumInvAkt').val().replace('<br>', '')
     $.ajax({
       type: "POST",
       url: baseurl + "AccountPayables/MonitoringInvoice/Receipt",
-      data: { invoice_number },
+      data: { invoice_number, po_num },
       success: function (resp) {
         if (resp == 1) {
           swal.fire({

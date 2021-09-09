@@ -1,4 +1,13 @@
-<input type="hidden" value="ok" id="monmpg">
+<script>
+    $(document).ready(function () {            
+        $('.dateMonMPG').datepicker({
+            format: 'dd/mm/yyyy',
+            todayHighlight: true,
+            autoclose: true
+        });
+    });
+</script>
+
 <section class="content">
     <div class="inner">
         <div class="row">
@@ -40,21 +49,29 @@
                                     </div>
                                 </div>
                                 <div class="panel-body">
-                                    <div class="col-md-3">
+                                    <div class="col-md-4">
                                         <label class="control-label">Subinventory</label>
-                                        <input id="subinventory" name="subinventory" class="form-control pull-right" placeholder="Subinventory" readonly>
+                                        <select class="form-control select2" data-placeholder="Pilih Subinventory Terlebih Dahulu" id="subinventory" name="subinventory" onchange="getMON(this)">
+                                            <option> </option>
+                                            <option>SP-YSP</option>
+                                            <option>KOM1-DM</option>
+                                            <option>PNL-DM</option>
+                                            <option>FG-DM</option>
+                                            <option>MAT-PM</option>
+                                        </select>
+                                        <!-- <input id="subinventory" name="subinventory" class="form-control pull-right" placeholder="Subinventory" readonly> -->
                                     </div>
                                     <div class="col-md-3">
                                         <label class="control-label">Search by </label>
                                             <select id="search_by" name="search_by" class="form-control select2 select2-hidden-accessible" style="width:100%;" data-placeholder="Cari berdasarkan">
-                                            <option></option>
-                                            <option value="dokumen">Dokumen</option>
-                                            <option value="tanggal">Tanggal</option>
-                                            <option value="pic">PIC</option>
-                                            <option value="item">Item</option>
-                                            <option value="belumterlayani">Belum Terlayani</option>
-                                            <option value="export" id="slcExMGS">Export Excel</option>
-                                            <option value="tanpa_surat" id="tanpa_surat">Tanpa Surat</option>
+                                                <option></option>
+                                                <option value="dokumen">Dokumen</option>
+                                                <option value="tanggal">Tanggal</option>
+                                                <option value="pic">PIC</option>
+                                                <option value="item">Item</option>
+                                                <option value="belumterlayani">Belum Terlayani</option>
+                                                <option value="export" id="slcExMGS">Export Excel</option>
+                                                <option value="tanpa_surat" id="tanpa_surat">Tanpa Surat</option>
                                             </select>
                                     </div>
                                 </div>
@@ -66,13 +83,13 @@
                                     <div class="col-md-3" style="display:none" id="slcjenis">
                                         <label class="control-label">Jenis Dokumen </label>
                                             <select id="jenis_dokumen" name="jenis_dokumen" class="form-control select2 select2-hidden-accessible" style="width:100%;" data-placeholder="Pilih Jenis Dokumen">
-                                            <option></option>
-                                            <option value="IO">IO</option>
-                                            <option value="KIB">KIB</option>
-                                            <option value="LPPB">LPPB</option>
-                                            <option value="MO">MO</option>
-                                            <!-- <option value="FPB">FPB</option> -->
-                                            <option value="SPBSPI">SPBSPI</option>
+                                                <option></option>
+                                                <option value="IO">IO</option>
+                                                <option value="KIB">KIB</option>
+                                                <option value="LPPB">LPPB</option>
+                                                <option value="MO">MO</option>
+                                                <!-- <option value="FPB">FPB</option> -->
+                                                <option value="SPBSPI">SPBSPI</option>
                                             </select>
                                     </div>
                                 </div>
@@ -81,14 +98,14 @@
                                         <label class="control-label">Tanggal Awal</label>
                                         <div class="input-group date">
                                             <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
-                                            <input id="tglAwal" name="tglAwal" type="text" class="form-control pull-right" style="width:100%;" placeholder="dd/mm/yyyy" autocomplete="off">
+                                            <input id="tglAwal" name="tglAwal" type="text" class="form-control pull-right dateMonMPG" style="width:100%;" placeholder="dd/mm/yyyy" autocomplete="off">
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <label class="control-label">Tanggal Akhir</label>
                                         <div class="input-group date">
                                             <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
-                                            <input id="tglAkhir" name="tglAkhir" type="text" class="form-control pull-right" style="width:100%;" placeholder="dd/mm/yyyy" autocomplete="off">
+                                            <input id="tglAkhir" name="tglAkhir" type="text" class="form-control pull-right dateMonMPG" style="width:100%;" placeholder="dd/mm/yyyy" autocomplete="off">
                                         </div>
                                     </div>
                                 </div>

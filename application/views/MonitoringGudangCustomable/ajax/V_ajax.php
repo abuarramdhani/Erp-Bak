@@ -15,6 +15,8 @@
         <th class="text-center">KEBUTUHAN SESUAI MPS</th>
         <th class="text-center">OUT</th>
         <th class="text-center">IN</th>
+        <th class="text-center">OUTSTANDING PP</th>
+        <th class="text-center">OUTSTANDING PO</th>
         <th class="text-center" hidden></th>
       </tr>
     </thead>
@@ -30,6 +32,8 @@
           <td style="text-align:center" id="pod_<?php echo $g['INVENTORY_ITEM_ID'] ?>"></td>
           <td style="text-align:center" id="out_<?php echo $g['INVENTORY_ITEM_ID'] ?>"></td>
           <td style="text-align:center" id="in_<?php echo $g['INVENTORY_ITEM_ID'] ?>"></td>
+          <td style="text-align:center"><?php echo $g['OUTSTANDING_PP'] ?></td>
+          <td style="text-align:center"><?php echo $g['OUTSTANDING_PO'] ?></td>
           <td style="text-align:center" hidden class="inv_id"><?php echo $g['INVENTORY_ITEM_ID'] ?></td>
         </tr>
       <?php endforeach;?>

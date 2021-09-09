@@ -24,62 +24,222 @@
 			</div>
 	</div>
 	<div class="panel box-body" >
-		<div class="table-responsive" id="asa_divasatable">
-			<table id="absenAtasanTable" class="table table-striped table-bordered table-hover" style="width:100%">
-				<thead>
-					<tr id="rowT">
-						<th class="text-center " style="width:15px">No</th>
-						<th class="text-center ">Action</th>
-						<th class="text-center ">Status</th>
-						<th class="text-center ">No Induk</th>
-						<th class="text-center ">Nama</th>
-						<th class="text-center ">Jenis Absen</th>
-						<th class="text-center ">Waktu Absen</th>
-						<th class="text-center ">Lokasi</th>						
-					</tr>
-				</thead>
-				<tbody>
-					<?php 
-					$no=0;
-					$no++;
+		<ul class="nav nav-tabs" role="tablist">
+			<li role="presentation">
+				<a href="#allEntry" aria-controls="allEntry" role="Tab" data-toggle="tab">All</a>
+			</li>
+			<li role="presentation" class="active">
+				<a href="#newEntry" aria-controls="newEntry" role="Tab" data-toggle="tab">New Entry</a>
+			</li>
+			<li role="presentation">
+				<a href="#approvedEntry" aria-controls="approvedEntry" role="Tab" data-toggle="tab">Approved</a>
+			</li>
+			<li role="presentation">
+				<a href="#rejectedEntry" aria-controls="rejectedEntry" role="Tab" data-toggle="tab">Rejected</a>
+			</li>
+		</ul>
+		<hr>
+		<div class="tab-content">
+			<div role="tabpanel" class="tab-pane" id="allEntry">
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="table-responsive" id="asa_divasatable">
+							<table class="table table-striped table-bordered table-hover absenAtasanTable" style="width:100%">
+								<thead>
+									<tr id="rowT">
+										<th class="text-center " style="width:15px">No</th>
+										<th class="text-center ">Action</th>
+										<th class="text-center ">Status</th>
+										<th class="text-center ">No Induk</th>
+										<th class="text-center ">Nama</th>
+										<th class="text-center ">Jenis Absen</th>
+										<th class="text-center ">Waktu Absen</th>
+										<th class="text-center ">Lokasi</th>						
+									</tr>
+								</thead>
+								<tbody>
+									<?php 
+									$no=0;
+									$no++;
 
-					foreach ($listData as $key => $value)
-					{
-						if($value['status'] == 0){
-							$status = "New Entry";
-							$classLabel = "label label-default";
-						}else if($value['status']==1){
-							$status = "Approved";
-							$classLabel = "label label-success";
-						}else{
-							$status = "Rejected";
-							$classLabel = "label label-danger";
-						}
+									foreach ($listData as $key => $value)
+									{
+										if($value['status'] == 0){
+											$status = "New Entry";
+											$classLabel = "label label-default";
+										}else if($value['status']==1){
+											$status = "Approved";
+											$classLabel = "label label-success";
+										}else{
+											$status = "Rejected";
+											$classLabel = "label label-danger";
+										}
 
-						$date = date_create($value['waktu']);
+										$date = date_create($value['waktu']);
 
-						?>
+										?>
 
-					<tr>
-						<td class="text-center"><?php echo $no++; ?></td>
-						<td><center><a target="_blank" href="<?php echo base_url('AbsenAtasan/List/detail/'.$value['absen_id']); ?>" class="btn btn-primary">Detail</a></center></td>
-						<td id="dataStatus"><span id="textStatus" class="<?php  echo $classLabel;?>"><?php echo $status; ?></span></td>
-						<td><?php echo $value['noind']; ?></td>
-						<td><?php echo $value['nama']; ?></td>
-						<td><?php echo $value['jenis_absen']; ?></td>
-						<td data-order="<?=date_format($date,'Y-m-d H:i:s')?>"><?php echo date_format($date,"d-M-Y H:i:s"); ?></td>
-						<td><?php echo $value['lokasi']." (". $value['longitude'] .", ". $value['latitude'].")"; ?></td>
-					</tr>
-					<?php } ?>
-				</tbody>
-			</table>
-		</div>
-		<div class="col-md-12 text-center">
-			<?php if (count($listData2) > 20): ?>
-				<button class="btn btn-info" id="aba_btnshowall" onclick="this.remove()">
-					Tampilkan Semua Data
-				</button>
-			<?php endif ?>
+									<tr>
+										<td class="text-center"><?php echo $no++; ?></td>
+										<td><center><a target="_blank" href="<?php echo base_url('AbsenAtasan/List/detail/'.$value['absen_id']); ?>" class="btn btn-primary">Detail</a></center></td>
+										<td id="dataStatus"><span id="textStatus" class="<?php  echo $classLabel;?>"><?php echo $status; ?></span></td>
+										<td><?php echo $value['noind']; ?></td>
+										<td><?php echo $value['nama']; ?></td>
+										<td><?php echo $value['jenis_absen']; ?></td>
+										<td data-order="<?=date_format($date,'Y-m-d H:i:s')?>"><?php echo date_format($date,"d-M-Y H:i:s"); ?></td>
+										<td><?php echo $value['lokasi']." (". $value['longitude'] .", ". $value['latitude'].")"; ?></td>
+									</tr>
+									<?php } ?>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div role="tabpanel" class="tab-pane active" id="newEntry">
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="table-responsive" id="asa_divasatable">
+							<table class="table table-striped table-bordered table-hover absenAtasanTable" style="width:100%">
+								<thead>
+									<tr id="rowT">
+										<th class="text-center " style="width:15px">No</th>
+										<th class="text-center ">Action</th>
+										<th class="text-center ">Status</th>
+										<th class="text-center ">No Induk</th>
+										<th class="text-center ">Nama</th>
+										<th class="text-center ">Jenis Absen</th>
+										<th class="text-center ">Waktu Absen</th>
+										<th class="text-center ">Lokasi</th>						
+									</tr>
+								</thead>
+								<tbody>
+									<?php 
+									$no=0;
+									$no++;
+
+									foreach ($listData as $key => $value)
+									{
+										$date = date_create($value['waktu']);
+										if($value['status'] == 0){
+											$status = "New Entry";
+											$classLabel = "label label-default";
+										?>
+											<tr>
+												<td class="text-center"><?php echo $no++; ?></td>
+												<td><center><a target="_blank" href="<?php echo base_url('AbsenAtasan/List/detail/'.$value['absen_id']); ?>" class="btn btn-primary">Detail</a></center></td>
+												<td id="dataStatus"><span id="textStatus" class="<?php  echo $classLabel;?>"><?php echo $status; ?></span></td>
+												<td><?php echo $value['noind']; ?></td>
+												<td><?php echo $value['nama']; ?></td>
+												<td><?php echo $value['jenis_absen']; ?></td>
+												<td data-order="<?=date_format($date,'Y-m-d H:i:s')?>"><?php echo date_format($date,"d-M-Y H:i:s"); ?></td>
+												<td><?php echo $value['lokasi']." (". $value['longitude'] .", ". $value['latitude'].")"; ?></td>
+											</tr>
+										<?php 
+										}
+									} ?>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div role="tabpanel" class="tab-pane" id="approvedEntry">
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="table-responsive" id="asa_divasatable">
+							<table class="table table-striped table-bordered table-hover absenAtasanTable" style="width:100%">
+								<thead>
+									<tr id="rowT">
+										<th class="text-center " style="width:15px">No</th>
+										<th class="text-center ">Action</th>
+										<th class="text-center ">Status</th>
+										<th class="text-center ">No Induk</th>
+										<th class="text-center ">Nama</th>
+										<th class="text-center ">Jenis Absen</th>
+										<th class="text-center ">Waktu Absen</th>
+										<th class="text-center ">Lokasi</th>						
+									</tr>
+								</thead>
+								<tbody>
+									<?php 
+									$no=0;
+									$no++;
+
+									foreach ($listData as $key => $value)
+									{
+										$date = date_create($value['waktu']);
+										if($value['status']==1){
+											$status = "Approved";
+											$classLabel = "label label-success";
+										?>
+											<tr>
+												<td class="text-center"><?php echo $no++; ?></td>
+												<td><center><a target="_blank" href="<?php echo base_url('AbsenAtasan/List/detail/'.$value['absen_id']); ?>" class="btn btn-primary">Detail</a></center></td>
+												<td id="dataStatus"><span id="textStatus" class="<?php  echo $classLabel;?>"><?php echo $status; ?></span></td>
+												<td><?php echo $value['noind']; ?></td>
+												<td><?php echo $value['nama']; ?></td>
+												<td><?php echo $value['jenis_absen']; ?></td>
+												<td data-order="<?=date_format($date,'Y-m-d H:i:s')?>"><?php echo date_format($date,"d-M-Y H:i:s"); ?></td>
+												<td><?php echo $value['lokasi']." (". $value['longitude'] .", ". $value['latitude'].")"; ?></td>
+											</tr>
+										<?php 
+										}
+									} ?>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div role="tabpanel" class="tab-pane" id="rejectedEntry">
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="table-responsive" id="asa_divasatable">
+							<table class="table table-striped table-bordered table-hover absenAtasanTable" style="width:100%">
+								<thead>
+									<tr id="rowT">
+										<th class="text-center " style="width:15px">No</th>
+										<th class="text-center ">Action</th>
+										<th class="text-center ">Status</th>
+										<th class="text-center ">No Induk</th>
+										<th class="text-center ">Nama</th>
+										<th class="text-center ">Jenis Absen</th>
+										<th class="text-center ">Waktu Absen</th>
+										<th class="text-center ">Lokasi</th>						
+									</tr>
+								</thead>
+								<tbody>
+									<?php 
+									$no=0;
+									$no++;
+
+									foreach ($listData as $key => $value)
+									{
+										$date = date_create($value['waktu']);
+										if($value['status'] == 2){
+											$status = "Rejected";
+											$classLabel = "label label-danger";
+										?>
+											<tr>
+												<td class="text-center"><?php echo $no++; ?></td>
+												<td><center><a target="_blank" href="<?php echo base_url('AbsenAtasan/List/detail/'.$value['absen_id']); ?>" class="btn btn-primary">Detail</a></center></td>
+												<td id="dataStatus"><span id="textStatus" class="<?php  echo $classLabel;?>"><?php echo $status; ?></span></td>
+												<td><?php echo $value['noind']; ?></td>
+												<td><?php echo $value['nama']; ?></td>
+												<td><?php echo $value['jenis_absen']; ?></td>
+												<td data-order="<?=date_format($date,'Y-m-d H:i:s')?>"><?php echo date_format($date,"d-M-Y H:i:s"); ?></td>
+												<td><?php echo $value['lokasi']." (". $value['longitude'] .", ". $value['latitude'].")"; ?></td>
+											</tr>
+										<?php 
+										}
+									} ?>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 
@@ -109,29 +269,6 @@
 <script src="<?= base_url('assets/plugins/fakeLoading/fakeLoading.js') ?>"></script>
 <script type="text/javascript">
 	$(document).ready(function(){
-		$("#absenAtasanTable").DataTable();
-
-		$('#aba_btnshowall').click(function(){
-			fakeLoading(0);
-			$.ajax({
-				data: null,
-				method: 'GET',
-				url: baseurl + 'AbsenAtasan/List/getListAbsenAll',
-				error: function(xhr,status,error){
-					swal.fire({
-						title: xhr['status'] + "(" + xhr['statusText'] + ")",
-						html: xhr['responseText'],
-						type: "error",
-						confirmButtonText: 'OK',
-						confirmButtonColor: '#d63031',
-					})
-				},
-				success: function(data){
-					fakeLoading(1);
-					$('#asa_divasatable').html(data);
-					$("#absenAtasanTable").DataTable();
-				}
-			});
-		});
+		$(".absenAtasanTable").DataTable();
 	});
 </script>

@@ -82,12 +82,20 @@ class C_Import extends CI_Controller
 			
 			if ($row['A'] != '' && $row['B'] != '') {
 				$cari_inv = $this->M_import->cekInvItem($row['A']);
+				if (empty($cari_inv)) {
+					echo "Terjadi kesalahan pada item ".$row['A'].", mohon cek kembali...";exit();
+				}
 				$inv    = $cari_inv[0]['INVENTORY_ITEM_ID'];
 				$org_id = $cari_inv[0]['ORGANIZATION_ID'];
 				$plan   = $row['B'];
 				$cek_item = $this->M_import->cekItem($inv, $kategori, $subctgr);
 				if (empty($cek_item)) {
-					$this->M_import->saveitem($kategori, $inv, $org_id, $subctgr);
+					$cek_inv = $this->M_import->cekInvItem2($row['A']);
+					if (empty($cek_inv)) {
+						echo "Item ".$row['A']." sudah inactive...";exit();
+					}else {
+						$this->M_import->saveitem($kategori, $inv, $org_id, $subctgr);
+					}
 				}
 				$cek_plan = $this->M_import->cekplan("where inventory_item_id = $inv and month = '$bulan' and id_category = $kategori $idsub");
 				// echo "<pre>";print_r($cek_plan);exit();
@@ -96,6 +104,8 @@ class C_Import extends CI_Controller
 					$id_plan = $cek_id[0]['PLAN_ID'] + 1;
 					$this->M_import->savePlan($id_plan, $inv, $bulan, $kategori, $subctgr);
 					$this->M_import->savePlanDate($id_plan, $plan);
+				}else{
+					$this->M_import->updatePlanDate($cek_plan[0]['PLAN_ID'], $plan);
 				}
 			}
             $i++;
@@ -107,11 +117,10 @@ class C_Import extends CI_Controller
         include APPPATH.'third_party/Excel/PHPExcel.php';
 		$excel = new PHPExcel();
 		$excel->getProperties()->setCreator('CV. KHS')
-					->setLastModifiedBy('Quick')
+					->setLastModifiedBy('CV. KHS')
 					->setTitle("Monitoring Job Produksi")
-					->setSubject("CV. KHS")
-					->setDescription("Monitoring Job Produksi")
-                    ->setKeywords("MJP");
+					->setSubject("Monitoring Job Produksi")
+					->setDescription("Monitoring Job Produksi");
         $excel->setActiveSheetIndex(0)->setCellValue('A1', "SUBCATEGORY (isi disini, kosongi jika tidak membutuhkan subcategory)");
         $excel->setActiveSheetIndex(0)->setCellValue('A2', "ITEM (isi item mulai dari baris 2)");
         $excel->setActiveSheetIndex(0)->setCellValue('B2', "PLAN (isi plan mulai dari baris 2)");

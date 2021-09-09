@@ -25,17 +25,21 @@ function cekPengeluaranKGP(th) {
         // console.log(result);
         $('#tb_pengeluaran').html(result);
 
-        var length = no_dokumen.length
-        if(length == 12){
-            var awl = no_dokumen.substring(0, 1);
-            if (awl == 'D') {
-                $('#jenis_dokumen').val('PICKLIST').trigger('change')
-            }
-        }else if(length == 9) {
-            $('#jenis_dokumen').val('BON').trigger('change')
-        }else{
-            $('#jenis_dokumen').val('').trigger('change')
-        }
+        // var length = no_dokumen.length
+        // if(length == 12){
+        //     var awl = no_dokumen.substring(0, 1);
+        //     if (awl == 'D') {
+        //         $('#jenis_dokumen').val('PICKLIST').trigger('change')
+        //     }else{
+        //         $('#jenis_dokumen').val('IO').trigger('change')
+        //      }
+        // }else if(length == 9) {
+        //     $('#jenis_dokumen').val('BON').trigger('change')
+        // }else if(length == 7) {
+        //     $('#jenis_dokumen').val('MO').trigger('change')
+        // }else{
+        //     $('#jenis_dokumen').val('').trigger('change')
+        // }
     })
 }
 
@@ -55,9 +59,34 @@ if (pengeluaran) {
         $('#tbl_pglr_kgp').dataTable();
 
         $(".picKGP").select2({
-            allowClear: false,
+            allowClear: true,
             placeholder: "",
-            minimumInputLength: 2,
+            minimumInputLength: 0,
+            ajax: {
+                url: baseurl + "KapasitasGdPusat/Pengeluaran/getPIC",
+                dataType: 'json',
+                type: "GET",
+                data: function (params) {
+                    var queryParameters = {
+                            term: params.term,
+                    }
+                    return queryParameters;
+                },
+                processResults: function (data) {
+                    // console.log(data);
+                    return {
+                        results: $.map(data, function (obj) {
+                            return {id:obj.PIC, text:obj.PIC};
+                        })
+                    };
+                }
+            }
+        });
+
+        $(".picKGP2").select2({
+            allowClear: true,
+            placeholder: "",
+            minimumInputLength: 0,
             ajax: {
                 url: baseurl + "KapasitasGdPusat/Pengeluaran/getPIC",
                 dataType: 'json',
@@ -81,7 +110,7 @@ if (pengeluaran) {
     })
 }
 
-function savePIC($no_dokumen) {
+function savePIC(no_dokumen) {
     // var ket = 'kirim_qc';
     var pic = $('#pic'+no_dokumen).val();
     console.log(pic);
@@ -99,6 +128,47 @@ function savePIC($no_dokumen) {
     });
 
 }
+
+function btnDeleteKGP(no) {
+    var jenis_dokumen = $('#jenis_dokumen'+no).val();
+    var no_dokumen = $('#no_dokumen'+no).val();
+
+    Swal.fire({
+        title: "Anda Yakin?",
+        text: "Data Akan Di Hapus",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes",
+    }).then((result) => {
+        // console.log(result);
+        if (result.value) {
+            var request = $.ajax({
+              url: baseurl + "KapasitasGdPusat/Pengeluaran/deleteDokumen",
+              data: {
+                jenis_dokumen: jenis_dokumen,
+                no_dokumen: no_dokumen,
+              },
+              type: "POST",
+              datatype: "html",
+            });
+            request.done(function (result) {
+              Swal.fire({
+                position: "top",
+                type: "success",
+                title: "Berhasil Dihapus",
+                showConfirmButton: false,
+                timer: 1500,
+              }).then(() => {
+                window.location.reload();
+              });
+            });
+        }
+    })
+}
+
+//----------------------------------------- Mulai 1 -----------------------------------------------
 
 function btnTimerKGP(no) {
     var valBtn = $('#btnTimerKGP'+no).val();
@@ -153,31 +223,199 @@ function btnTimerKGP(no) {
             },
             type : "POST",
             dataType: "html"
-            });
+        });
     }else if(valBtn == 'Selesai'){
-        $('#btnTimerKGP'+no).attr("disabled", "disabled"); 
-        var mulai  = $('#mulai'+no).val();
-        $('#timer'+no).css('display','none');     
+        testmodalKGP(no);
+    }
+}
 
+function testmodalKGP(no) {
+    $('#modalDetailDOK').modal();
+
+    var no_dokumen = $('#no_dokumen'+no).val();
+
+    $.ajax({
+        url: baseurl + 'KapasitasGdPusat/Pengeluaran/getDetail',
+        type: 'POST',
+        datatype: 'html',
+        data: {
+            no_dokumen: no_dokumen
+        },
+        beforeSend: function() {
+            $('#loadingAreaDetail').show();
+            $('div.table_detail').hide();
+        },
+        success: function(result) {
+            $('#loadingAreaDetail').hide();
+            $('div.table_detail').show();
+            $('div.table_detail').html(result);
+            getDetailItem(no_dokumen);
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+            console.error();
+        }
+    });
+}
+
+//------------------------------------------ Mulai Checked ------------------------------------------------
+
+function checkdokumenKGP(no) {
+    var val = $('#tandacheck'+no).val();
+    // console.log(val);
+
+    if (val == 'check') {
+        $('#tandacheck'+no).val('uncheck');
+        $('#checka'+no).removeClass('fa-square-o').addClass('fa-check-square-o');
+        $('#no_dokumen'+no).addClass('noall');
+        $('#pic'+no).addClass('picall');
+    }else{
+        $('#tandacheck'+no).val('check');
+        $('#checka'+no).removeClass('fa-check-square-o').addClass('fa-square-o');
+        $('#no_dokumen'+no).removeClass('noall');
+        $('#pic'+no).removeClass('picall');
+    }
+}
+
+function startselectedKGP() {
+    var no = $('.noall').map(function(){return $(this).val();}).get();
+    for (let i = 0; i < no.length; i++) {
+        const n = no[i];
+        MulaiChecked(n);        
+    }
+}
+
+function MulaiChecked(no) {
+    var valBtn = $('#btnTimerKGP'+no).val();
+    var jenis_dokumen = $('#jenis_dokumen'+no).val();
+    var no_dokumen = $('#no_dokumen'+no).val();
+    var pic = $('#pic'+no).val();
+    var d    = new Date();
+    var date = d.getDate()+'/'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'/'+d.getFullYear()+" "+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
+    var waktu = d.getFullYear()+'-'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'-'+d.getDate()+' '+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
+    // console.log(jenis_dokumen);
+
+    var hoursLabel   = document.getElementById("hours"+no);
+    var minutesLabel = document.getElementById("minutes"+no);
+    var secondsLabel = document.getElementById("seconds"+no);
+    var totalSeconds = 0;
+    var timer = null;
+
+    function setTime() {
+        totalSeconds++;
+        secondsLabel.innerHTML = pad(totalSeconds % 60);
+        minutesLabel.innerHTML = pad(parseInt(totalSeconds / 60));
+        hoursLabel.innerHTML = pad(parseInt(totalSeconds / 3600))
+    }
+    
+    function pad(val) {
+        var valString = val + "";
+        if (valString.length < 2) {
+        return "0" + valString;
+        } else {
+        return valString;
+        }
+    }
+
+    if (valBtn == 'Mulai') {
+        $('#btnTimerKGP'+no).each(function() {
+            $('#btnTimerKGP'+no).val('Selesai'); 
+            $('#mulai'+no).val(waktu); 
+            $(this).removeClass('btn-success').addClass('btn-danger');
+            $('#pic'+no).prop("disabled", true); 
+
+            if (!timer) {
+                timer = setInterval(setTime, 1000);
+            }
+        })
         $.ajax ({
-            url : baseurl + "KapasitasGdPusat/Pengeluaran/getSelesai",
+            url : baseurl + "KapasitasGdPusat/Pengeluaran/getMulai",
             data: { 
-                date : date,
+                date : date , 
                 jenis_dokumen : jenis_dokumen, 
                 no_dokumen : no_dokumen, 
-                mulai : mulai, 
-                waktu : waktu, 
                 pic : pic
             },
             type : "POST",
             dataType: "html"
-        });
+            });
+        
     }
 }
 
-function btnDeleteKGP(no) {
-    var jenis_dokumen = $('#jenis_dokumen'+no).val();
-    var no_dokumen = $('#no_dokumen'+no).val();
+//----------------------------------------- Selesai Checked -----------------------------------------------
+function finishselectedKGP() {
+    // $('#modalDetailDOK').modal({backdrop: 'static', keyboard: false}); //disable allow outside click
+    $('#modalDetailDOK').modal();
+
+    var no_dokumen = $('.noall').map(function(){return $(this).val();}).get();
+    // console.log(no_dokumen);
+
+    $.ajax({
+        url: baseurl + 'KapasitasGdPusat/Pengeluaran/getDetail',
+        type: 'POST',
+        data: {
+            no_dokumen: no_dokumen
+        },
+        beforeSend: function() {
+            $('#loadingAreaDetail').show();
+            $('div.table_detail').hide();
+        },
+        success: function(result) {
+            $('#loadingAreaDetail').hide();
+            $('div.table_detail').show();
+            $('div.table_detail').html(result);
+            run99();
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+            console.error();
+        }
+    });
+}
+
+async function run99(){
+    var no_dokumen = $('.noall').map(function(){return $(this).val();}).get();
+    // console.log(no_dokumen.length);
+    for (let i = 0; i < no_dokumen.length; i++) {
+      const cek = await getDetailItem(no_dokumen[i]); 
+      
+    }
+}
+
+function getDetailItem(no) {
+    return new Promise((resolve, reject) =>{
+        var no_dokumen = $('#no_dok'+no).val();
+        $.ajax({
+            url: baseurl + 'KapasitasGdPusat/Pengeluaran/getDetailItem',
+            type: 'POST',
+            datatype: 'html',
+            data: {
+                no_dokumen: no_dokumen
+            },
+            beforeSend: function() {
+                // console.log(no, 'sedang mengambil')
+                $('#loadingAreaDetail2').show();
+                $('div.table_detail_item_'+no).hide();
+            },
+            success: function(result) {
+                $('#loadingAreaDetail2').hide();
+                $('div.table_detail_item_'+no).show();
+                $('div.table_detail_item_'+no).html(result); 
+                // console.log(result, 'hasilnya');
+                resolve(1);
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                console.error();
+            }
+        });
+    })
+}
+
+//----------------------------------------- Modal -----------------------------------------------
+
+function btnHapusDetailKGP(nodok, no) {
+    var no_dokumen = $('#no_dokumen_'+nodok+'_'+no).val();
+    var item = $('#item_'+nodok+'_'+no).val();
+    // console.log(no_dokumen, item);
 
     Swal.fire({
         title: "Anda Yakin?",
@@ -191,27 +429,184 @@ function btnDeleteKGP(no) {
         // console.log(result);
         if (result.value) {
             var request = $.ajax({
-              url: baseurl + "KapasitasGdPusat/Pengeluaran/deleteDokumen",
-              data: {
-                jenis_dokumen: jenis_dokumen,
-                no_dokumen: no_dokumen,
-              },
-              type: "POST",
-              datatype: "html",
+                url: baseurl + "KapasitasGdPusat/Pengeluaran/hpsDetailDok",
+                data: {
+                    no_dokumen: no_dokumen,
+                    item: item
+                },
+                type: "POST",
+                datatype: "html",
             });
             request.done(function (result) {
-              Swal.fire({
-                position: "top",
-                type: "success",
-                title: "Berhasil Dihapus",
-                showConfirmButton: false,
-                timer: 1500,
-              }).then(() => {
-                window.location.reload();
-              });
+                Swal.fire({
+                    position: "top",
+                    type: "success",
+                    title: "Berhasil Dihapus",
+                    showConfirmButton: false,
+                    timer: 1500,
+                }).then(() => {
+                    // window.location.reload();
+                    $.ajax({
+                        url: baseurl + 'KapasitasGdPusat/Pengeluaran/getDetailItem',
+                        type: 'POST',
+                        data: {
+                            no_dokumen: no_dokumen
+                        },
+                        beforeSend: function() {
+                            $('#loadingAreaDetail2').show();
+                            $('div.table_detail_item_'+no_dokumen).hide();
+                        },
+                        success: function(result) {
+                            $('#loadingAreaDetail2').hide();
+                            $('div.table_detail_item_'+no_dokumen).show();
+                            $('div.table_detail_item_'+no_dokumen).html(result);
+                        },
+                        error: function(XMLHttpRequest, textStatus, errorThrown) {
+                            console.error();
+                        }
+                    })
+                });
             });
         }
     })
+    
+}
+
+function btnEditQtyKGP(nodok, no) {
+    // console.log(nodok, no);
+    var no_dokumen = $('#no_dokumen_'+nodok+'_'+no).val();
+    var item = $('#item_'+nodok+'_'+no).val();
+    var desc = $('#desc_'+nodok+'_'+no).val();
+    var qty = $('#qty_'+nodok+'_'+no).val();
+    // console.log(no_dokumen, item, qty);
+    Swal.fire({
+        title: 'Edit Quantity '+item+' ('+desc+')',
+        input: 'text',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        showCancelButton: true,
+        inputValue: qty,
+        inputPlaceholder: 'Masukkan Quantity Baru',
+    }).then(function (result) {
+        if (result.value) {
+            var request = $.ajax({
+                url: baseurl + "KapasitasGdPusat/Pengeluaran/editQty",
+                data: {
+                    no_dokumen: no_dokumen,
+                    item: item,
+                    qty : result.value
+                },
+                type: "POST",
+                datatype: "html",
+            });
+            request.done(function (result) {
+                Swal.fire({
+                    position: "top",
+                    type: "success",
+                    title: "Berhasil Diupdate",
+                    showConfirmButton: false,
+                    timer: 1500,
+                }).then(() => {
+                    // window.location.reload();
+                    $.ajax({
+                        url: baseurl + 'KapasitasGdPusat/Pengeluaran/getDetailItem',
+                        type: 'POST',
+                        data: {
+                            no_dokumen: no_dokumen
+                        },
+                        beforeSend: function() {
+                            $('#loadingAreaDetail2').show();
+                            $('div.table_detail_item_'+no_dokumen).hide();
+                        },
+                        success: function(result) {
+                            $('#loadingAreaDetail2').hide();
+                            $('div.table_detail_item_'+no_dokumen).show();
+                            $('div.table_detail_item_'+no_dokumen).html(result);
+                        },
+                        error: function(XMLHttpRequest, textStatus, errorThrown) {
+                            console.error();
+                        }
+                    })
+                });
+            });
+        }
+    });
+}
+
+function selesaikan(){
+    var no = $('.no_dok_selesai').map(function(){return $(this).val();}).get();
+    var pic = $('.pic_selesai').map(function(){return $(this).val();}).get();
+    var pic_finish = $('#picfinish').val();
+    // console.log(no, pic, 'pic_all', pic_finish);
+    $("#modalDetailDOK").modal('hide');
+    var j = 0;
+    for (let i = 0; i < no.length; i++) {
+        if (pic[i] == pic_finish) {
+            j = j + 1;
+            // console.log(j);
+        }       
+    }
+    for (let i = 0; i < no.length; i++) {
+        const n = no[i];
+        SelesaiSemua(n, pic_finish, j);  
+    }
+}
+
+function SelesaiSemua(no, pic_finish, j) {
+    var valBtn = $('#btnTimerKGP'+no).val();
+    var jenis_dokumen = $('#jenis_dokumen'+no).val();
+    var no_dokumen = $('#no_dokumen'+no).val();
+    var pic = $('#pic'+no).val();
+    var d    = new Date();
+    var date = d.getDate()+'/'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'/'+d.getFullYear()+" "+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
+    var waktu  = d.getFullYear()+'-'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'-'+d.getDate()+' '+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
+    // console.log(valBtn, jenis_dokumen, no_dokumen, pic, waktu);
+
+    var hoursLabel   = document.getElementById("hours"+no);
+    var minutesLabel = document.getElementById("minutes"+no);
+    var secondsLabel = document.getElementById("seconds"+no);
+    var totalSeconds = 0;
+    var timer = null;
+
+    function setTime() {
+        totalSeconds++;
+        secondsLabel.innerHTML = pad(totalSeconds % 60);
+        minutesLabel.innerHTML = pad(parseInt(totalSeconds / 60));
+        hoursLabel.innerHTML = pad(parseInt(totalSeconds / 3600))
+    }
+    
+    function pad(val) {
+        var valString = val + "";
+        if (valString.length < 2) {
+        return "0" + valString;
+        } else {
+        return valString;
+        }
+    }
+
+    if(valBtn == 'Selesai' && pic == pic_finish){
+        $('#btnTimerKGP'+no).attr("disabled", "disabled"); 
+        var mulai  = $('#mulai'+no).val();
+        $('#timer'+no).css('display','none');     
+
+        $.ajax ({
+        url : baseurl + "KapasitasGdPusat/Pengeluaran/getSelesai2",
+        data: { 
+            date : date,
+            jenis_dokumen : jenis_dokumen,
+            no_dokumen : no_dokumen, 
+            mulai : mulai,
+            waktu : waktu, 
+            pic : pic, 
+            j : j
+        },
+        success: function (response) {
+            location.reload();
+        },
+        type : "POST",
+        dataType: "html"
+        });
+    }
 }
 
 //------------------------------------------- Monitoring Pengeluaran -------------------------------------------
@@ -366,22 +761,26 @@ function addDetailKGP(no){
 }
 
 //------------------------------------------ Pasang Ban ------------------------------------------------------
-$(document).ready(function () {
+// $(document).ready(function () {
+$(document).on('change', '.jenis_ban',  function() {
+    var jenis_ban = $(this).val();
+    // console.log(jenis_ban);
+
     var siap1 = document.getElementById("persiapan_line1");
     if (siap1) {
-        view_pasangban('siap1', 'persiapan_line1', 'primary');
+        view_pasangban('siap1', 'persiapan_line1', 'primary', jenis_ban);
     }
     var siap2 = document.getElementById("persiapan_line2");
     if (siap2) {
-        view_pasangban('siap2', 'persiapan_line2', 'primary');
+        view_pasangban('siap2', 'persiapan_line2', 'primary', jenis_ban);
     }
     var pasang1 = document.getElementById("pasang_line1");
     if (pasang1) {
-        view_pasangban('pasang1', 'pasang_line1', 'success');
+        view_pasangban('pasang1', 'pasang_line1', 'success', jenis_ban);
     }
     var pasang2 = document.getElementById("pasang_line2");
     if (pasang2) {
-        view_pasangban('pasang2', 'pasang_line2', 'success');
+        view_pasangban('pasang2', 'pasang_line2', 'success', jenis_ban);
     }
 
     
@@ -403,12 +802,13 @@ $(document).ready(function () {
     })
 })
 
-function view_pasangban(ket, id_lokasi, warna) {
+function view_pasangban(ket, id_lokasi, warna, jenis_ban) {
+    // console.log(ket, id_lokasi, warna, jenis_ban);
     $.ajax({
         url: baseurl + "KapasitasGdPusat/PasangBan/view_pasangban",
         type: 'POST',
         dataType: 'html',
-        data: { ket : ket, warna : warna},
+        data: { ket : ket, warna : warna, jenis_ban : jenis_ban},
         cache: false,
         beforeSend: function() {
             $('#'+id_lokasi).html('<center><img style="width:70px; height:auto" src="'+baseurl+'assets/img/gif/loading5.gif"></center>' );
@@ -444,8 +844,15 @@ function view_pasangban(ket, id_lokasi, warna) {
 }
 
 var i = 1;
-function add_new_line(ket, ket2, warna) {
-    $('#'+ket+'_'+ket2).append('<tr class="'+ket+'_'+ket2+'"><td><select id="no_induk" name="no_induk_'+ket+'[]" class="form-control no_induk_'+ket+' select2 getPICBan" ></select></td><td><input id="nama" name="nama_'+ket+'[]" class="form-control nama_'+ket+'" readonly></td><td><button type="button" class="btn btn-'+warna+' tombolhapus'+i+'"><i class="fa fa-minus"></i></button></td><tr>');
+function add_new_line(ket, ket2, warna, ban) {
+    var tbody = $('#'+ket+'_'+ket2);
+    var last = tbody.find('tr:last');
+    var lastRow = last.find('.id_'+ket).val();
+    // console.log(lastRow);
+    var substr = lastRow.split('-');
+    var num = Number(substr[2]) + 1;
+    // console.log(substr[2], num);
+    $('#'+ket+'_'+ket2).append('<tr class="'+ket+'_'+ket2+'"><td style="display:none;"><input id="id" name="id_'+ket+'[]" class="form-control id_'+ket+'" value="'+ket+'-'+ban+'-'+num+'"></td><td><select id="no_induk" name="no_induk_'+ket+'[]" class="form-control no_induk_'+ket+' select2 getPICBan" ></select></td><td><input id="nama" name="nama_'+ket+'[]" class="form-control nama_'+ket+'" readonly></td><td><button type="button" class="btn btn-'+warna+' tombolhapus'+i+'" id="tombol_hapus_'+ket+'"><i class="fa fa-minus"></i></button></td></tr>');
 
     $(document).on('click', '.tombolhapus'+i,  function() {
 		$(this).parents('.'+ket+'_'+ket2).remove()
@@ -489,7 +896,7 @@ function get_username(noind, ket) {
     })
 }
 
-function pasangban_timer(no, ket) {
+function pasangban_timer(no, ket, jenis_ban) {
     var d    = new Date();
     var date = d.getDate()+'/'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'/'+d.getFullYear()+" "+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
     var wkt  = d.getFullYear()+'-'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'-'+d.getDate()+' '+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
@@ -524,16 +931,20 @@ function pasangban_timer(no, ket) {
     if (ket == 'mulai') {
         $('#button_mulai_'+no).css('display','none');
         $('#button_selesai_'+no).css('display','');
+        $('#add_new_line_'+no).attr('disabled','disabled');
+        $('#tombol_hapus_'+no).attr('disabled','disabled');
     
         $.ajax({
             url: baseurl + "KapasitasGdPusat/PasangBan/save_mulai",
             type: 'POST',
             // dataType: 'JSON',
             data: {
+                id : $('[name="id_'+no+'[]"]').map(function(){return $(this).val();}).get(),
                 noind : $('[name="no_induk_'+no+'[]"]').map(function(){return $(this).val();}).get(),
                 nama : $('[name="nama_'+no+'[]"]').map(function(){return $(this).val();}).get(),
                 ket : no,
-                date : date
+                date : date,
+                jenis_ban : jenis_ban
             },
             cache: false,
         })
@@ -543,7 +954,7 @@ function pasangban_timer(no, ket) {
             clearInterval(timer);
         }
         Swal.fire({
-            title: 'Jumlah Aktual : ',
+            title: 'Jumlah Aktual (SET) : ',
             input: 'text',
             inputAttributes: {
                 autocapitalize: 'off'
@@ -552,7 +963,15 @@ function pasangban_timer(no, ket) {
             confirmButtonText: 'OK',
             showLoaderOnConfirm: true,
         }).then(result => {
-            if (result.value) {
+            if(result.value % 2 != 0) {
+                Swal.fire({
+                    title: "Mohon untuk Menginputkan Jumlah Aktual dalam SET",
+                    type: "warning",
+                    showCancelButton: false,
+                    confirmButtonColor: "#3085d6",
+                    confirmButtonText: "Yes",
+                })
+            }else{
                 $('#button_selesai_'+no).attr('disabled','disabled');
                 $('#button_pause_'+no).attr('disabled','disabled');
                 $('#button_restart_'+no).attr('disabled','disabled');
@@ -561,17 +980,33 @@ function pasangban_timer(no, ket) {
                     type: "POST",
                     url: baseurl + "KapasitasGdPusat/PasangBan/save_selesai",
                     data: { 
+                        id : $('[name="id_'+no+'[]"]').map(function(){return $(this).val();}).get(),
                         noind : $('[name="no_induk_'+no+'[]"]').map(function(){return $(this).val();}).get(),
                         ket : no,
                         date : date,
                         wkt : wkt,
-                        jumlah: result.value 
+                        jumlah : result.value,
+                        jenis_ban : jenis_ban
                     },
                     success: function (response) {
-                        location.reload();
+                        if(result.value < 80){
+                            Swal.fire({
+                                title: "Anda Tidak Mencapai Target Pasang Ban",
+                                type: "warning",
+                                showCancelButton: false,
+                                confirmButtonColor: "#3085d6",
+                                confirmButtonText: "Yes",
+                            }).then(result => {
+                                location.reload();
+                            })
+                        }else{
+                            location.reload();
+                        }
                     },
                 });
-        }})
+            }
+            
+        })
         
     }
     
@@ -596,9 +1031,35 @@ function addRinFG(th){
 	$('#RinTanggunganFG').slideToggle('slow');
 }
 
-function addRinPasangBan(th){
+function addRinMAT(th){
 	var title = $(th).text();
-	$('#RinPasangBan').slideToggle('slow');
+	$('#RinSelesaiMAT').slideToggle('slow');
+	$('#RinTanggunganMAT').slideToggle('slow');
+}
+
+// function addRinPasangBan(th){
+// 	var title = $(th).text();
+// 	$('#RinPasangBan').slideToggle('slow');
+// }
+
+function addRinPasangBan12v(th){
+	var title = $(th).text();
+	$('#RinPasangBan12v').slideToggle('slow');
+}
+
+function addRinPasangBan12nv(th){
+	var title = $(th).text();
+	$('#RinPasangBan12nv').slideToggle('slow');
+}
+
+function addRinPasangBan13v(th){
+	var title = $(th).text();
+	$('#RinPasangBan13v').slideToggle('slow');
+}
+
+function addRinPasangBan13nv(th){
+	var title = $(th).text();
+	$('#RinPasangBan13nv').slideToggle('slow');
 }
 
 function addRinKOM_src(th, num){
@@ -619,9 +1080,35 @@ function addRinFG_src(th, num){
 	$('#RinTanggunganFG'+num).slideToggle('slow');
 }
 
-function addRinPasangBan_src(th, num){
+function addRinMAT_src(th, num){
 	var title = $(th).text();
-	$('#RinPasangBan'+num).slideToggle('slow');
+	$('#RinSelesaiMAT'+num).slideToggle('slow');
+	$('#RinTanggunganMAT'+num).slideToggle('slow');
+}
+
+// function addRinPasangBan_src(th, num){
+// 	var title = $(th).text();
+// 	$('#RinPasangBan'+num).slideToggle('slow');
+// }
+
+function addRinPasangBan12v_src(th, num){
+	var title = $(th).text();
+	$('#RinPasangBan12v'+num).slideToggle('slow');
+}
+
+function addRinPasangBan12nv_src(th, num){
+	var title = $(th).text();
+	$('#RinPasangBan12nv'+num).slideToggle('slow');
+}
+
+function addRinPasangBan13v_src(th, num){
+	var title = $(th).text();
+	$('#RinPasangBan13v'+num).slideToggle('slow');
+}
+
+function addRinPasangBan13nv_src(th, num){
+	var title = $(th).text();
+	$('#RinPasangBan13nv'+num).slideToggle('slow');
 }
 
 function schRekap(th) {

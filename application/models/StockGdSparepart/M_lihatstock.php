@@ -386,5 +386,15 @@ class M_lihatstock extends CI_Model
         $sql = "delete from sp_monitoring_peti where kode = '$item'";
         $query = $mysql->query($sql);
     }
+    
+    public function getseksi($user){
+        $oracle = $this->load->database('personalia',true);
+        $sql = "select ts.seksi, ts.unit, tp.nama
+                from hrd_khs.tseksi ts, hrd_khs.tpribadi tp
+                where tp.kodesie = ts.kodesie
+                and tp.noind = '$user'";
+        $query = $oracle->query($sql);
+        return $query->result_array();
+    }
 
 }

@@ -99,6 +99,12 @@ class C_Master extends CI_Controller
         echo json_encode($this->M_pbi->listCode($term));
     }
 
+    public function listMemo() // gambar kerja
+    {
+        $term = strtoupper($this->input->post('term'));
+        echo json_encode($this->M_pbi->listMemo($term));
+    }
+
     public function employee()
     {
         $term = strtoupper($this->input->post('term'));

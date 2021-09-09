@@ -51,10 +51,24 @@ class C_MasterKategori extends CI_Controller
     }
     
     public function search(){
-			$data['data'] = $this->M_masterkategori->getdata('');
+			$data['data'] = $this->M_masterkategori->getdata('order by category_name');
 		// echo "<pre>";print_r($data['data']);exit();
 			$this->load->view('MonitoringJobProduksi/V_TblMaster', $data);
-		}
+	}
+	
+    public function search_master_qty(){
+		$data['data'] = $this->M_masterkategori->getdataqty();
+	// echo "<pre>";print_r($data['data']);exit();
+		$this->load->view('MonitoringJobProduksi/V_TblMasterQTY', $data);
+	}
+
+	public function getkodeitem(){
+		$term = $this->input->get('term',TRUE);
+		$term = strtoupper($term);
+		$data = $this->M_masterkategori->getdataitem($term);
+		// echo "<pre>";print_r($data);exit();
+		echo json_encode($data);
+	}
 	
     public function saveCategory(){
 			$kategori = strtoupper($this->input->post('kategori'));
@@ -83,6 +97,9 @@ class C_MasterKategori extends CI_Controller
 			$data['kategori'] 		= $this->input->post('kategori');
 			$data['sub_kategori']	= $this->M_masterkategori->getSubKategori("where id_category = ".$data['id']."");
 			$data['data_kategori']	= $this->M_masterkategori->getdata("where id_category = ".$data['id']."");
+			$gudang = explode(";", $data['data_kategori'][0]['SUBINVENTORY']);
+			$data['gudang1'] = !empty($gudang) ? $gudang[0] : '';
+			$data['gudang2'] = !empty($gudang) && count($gudang) > 1 ? $gudang[1] : '';
 			// echo "<pre>";print_r($data);exit();
 			$this->load->view('MonitoringJobProduksi/V_MdlEditMaster', $data);
 		}
@@ -110,13 +127,21 @@ class C_MasterKategori extends CI_Controller
 		
 		public function updateCategory(){
 			$id 			= $this->input->post('id');
-			$kategori 		= strtoupper($this->input->post('kategori'));
+			$kategori = strtoupper($this->input->post('kategori'));
 			$sub			= $this->input->post('sub_kategori');
+			$gudang		= $this->input->post('gudang');
 			// echo "<pre>";print_r($sub);exit();
 			$cek = $this->M_masterkategori->getdata("where category_name = '".$kategori."'");
 			if (empty($cek) && $kategori != '') {
 				$this->M_masterkategori->updateKategori($id, $kategori);
 			}
+
+			$gd = '';
+			for ($i=0; $i < count($gudang) ; $i++) { 
+				$gd = $i == 0 ? $gudang[$i] : $gd.';'.$gudang[$i];
+			}
+			$this->M_masterkategori->updateGudang($id, $gd);
+			
 			for ($i=0; $i < count($sub) ; $i++) { 
 				$ceksub		= $this->M_masterkategori->getSubKategori("where id_category = $id and subcategory_name = '".$sub[$i]."'");
 				if (empty($ceksub) && !empty($sub[$i])) {
@@ -164,7 +189,34 @@ class C_MasterKategori extends CI_Controller
 				}
 			}
 		}
+		
+		public function saveQuantityItem(){
+			$item	= $this->input->post('item');
+			$qty	= $this->input->post('qty');
+			$cek	= $this->M_masterkategori->cek_master_qty($item);
+			if (empty($cek)) {
+				$this->M_masterkategori->savequantityitem($item, $qty);
+			}
+		}
 
+		public function editItemQty(){
+			$data['inv']	= $this->input->post('inv');
+			$data['item']	= $this->input->post('item');
+			$data['qty']	= $this->input->post('qty');
+			// echo "<pre>";print_r($data);exit();
+			$this->load->view('MonitoringJobProduksi/V_MdlEditMasterQty', $data);
+		}
+		
+		public function updateQuantity(){
+			$inv	= $this->input->post('id_item');
+			$qty	= $this->input->post('qty');
+			$this->M_masterkategori->updatequantityitem($inv, $qty);
+		}
+		
+		public function deleteitemQuantity(){
+			$inv	= $this->input->post('inv');
+			$this->M_masterkategori->deleteqtyitem($inv);
+		}
 
 
 }

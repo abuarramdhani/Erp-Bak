@@ -132,14 +132,81 @@
 		}
 		$data['jml_tanggungan_fg'] = $tanggungan_fg;
 
-		//pasang ban
-		$data['pasangban'] = $this->M_rekap->getPasangBan($date);
-		$realisasi = 0;
-		for ($p=0; $p < count($data['pasangban']) ; $p++) { 
-			$realisasi += $data['pasangban'][$p]['JUMLAH'];
+		// MAT
+		$query1 = "WHERE TO_CHAR (creation_date, 'DD/MM/YYYY') = '$date' AND gudang = 'MAT-PM'";
+		$RkpMAT = $this->M_rekap->getRekap($query1);
+		$item_mat = 0;
+		for ($p=0; $p < count($RkpMAT) ; $p++) { 
+			$item_mat += $RkpMAT[$p]['JUMLAH_ITEM'];
 		}
-		$data['realisasi'] = $realisasi;
-		// echo "<pre>";print_r($data['realisasi']);exit();
+		$data['item_mat'] = $item_mat;
+
+		$query2 = "WHERE TO_CHAR (selesai, 'DD/MM/YYYY') = '$date' AND gudang = 'MAT-PM'";
+		$selesai = $this->M_rekap->getRekap($query2);
+		$data['selesai_mat'] = $selesai;
+		$selesai_mat = 0;
+		for ($p=0; $p < count($selesai) ; $p++) { 
+			$selesai_mat += $selesai[$p]['JUMLAH_ITEM'];
+		}
+		$data['jml_selesai_mat'] = $selesai_mat;
+
+		$query3 = "WHERE TO_CHAR (creation_date, 'DD/MM/YYYY') = '$date'
+		AND (TO_CHAR (selesai, 'DD/MM/YYYY') > '$date' OR selesai IS NULL)
+		AND gudang = 'MAT-PM'";
+		$tanggungan = $this->M_rekap->getTanggungan($query3);
+		$data['tanggungan_mat'] = $tanggungan;
+		$tanggungan = $this->M_rekap->getTanggungan($query3);
+		$tanggungan_mat = 0;
+		for ($p=0; $p < count($tanggungan) ; $p++) { 
+			$tanggungan_mat += $tanggungan[$p]['JUMLAH_ITEM'];
+		}
+		$data['jml_tanggungan_mat'] = $tanggungan_mat;
+
+		// //pasang ban
+		// $data['pasangban'] = $this->M_rekap->getPasangBan($date);
+		// $realisasi = 0;
+		// for ($p=0; $p < count($data['pasangban']) ; $p++) { 
+		// 	$realisasi += $data['pasangban'][$p]['JUMLAH'];
+		// }
+		// $data['realisasi'] = $realisasi;
+		// // echo "<pre>";print_r($data['realisasi']);exit();
+
+		//pasang ban 12 V
+		$jenis_ban = "RUBBER TIRE RING 12 SUB GROUP (VULKANISIR / GRAN PRINX / GP)";
+		$data['pasangban12v'] = $this->M_rekap->getPasangBan($date, $jenis_ban);
+		// echo "<pre>";print_r($data['pasangban']);exit();
+		$realisasi12v = 0;
+		for ($p=0; $p < count($data['pasangban12v']) ; $p++) { 
+			$realisasi12v += $data['pasangban12v'][$p]['JUMLAH'];
+		}
+		$data['realisasi12v'] = $realisasi12v;
+
+		//pasang ban 12 NV
+		$jenis_ban = "RUBBER TIRE RING 12 SUB GROUP (NON VULKANISIR / NV / PRIMEX)";
+		$data['pasangban12nv'] = $this->M_rekap->getPasangBan($date, $jenis_ban);
+		$realisasi12nv = 0;
+		for ($p=0; $p < count($data['pasangban12nv']) ; $p++) { 
+			$realisasi12nv += $data['pasangban12nv'][$p]['JUMLAH'];
+		}
+		$data['realisasi12nv'] = $realisasi12nv;
+
+		//pasang ban 13 V
+		$jenis_ban = "RUBBER TIRE RING 13 SUB GROUP (VULKANISIR / GRAN PRINX / GP)";
+		$data['pasangban13v'] = $this->M_rekap->getPasangBan($date, $jenis_ban);
+		$realisasi13v = 0;
+		for ($p=0; $p < count($data['pasangban13v']) ; $p++) { 
+			$realisasi13v += $data['pasangban13v'][$p]['JUMLAH'];
+		}
+		$data['realisasi13v'] = $realisasi13v;
+
+		//pasang ban 13 NV
+		$jenis_ban = "RUBBER TIRE RING 13 SUB GROUP (NON VULKANISIR / NV / PRIMEX)";
+		$data['pasangban13nv'] = $this->M_rekap->getPasangBan($date, $jenis_ban);
+		$realisasi13nv = 0;
+		for ($p=0; $p < count($data['pasangban13nv']) ; $p++) { 
+			$realisasi13nv += $data['pasangban13nv'][$p]['JUMLAH'];
+		}
+		$data['realisasi13nv'] = $realisasi13nv;
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -263,13 +330,78 @@
 			}
 			$hasil[$a]['jml_tanggungan_fg'] = $tanggungan_fg;
 
-			//pasang ban
-			$hasil[$a]['pasangban'] = $this->M_rekap->getPasangBan($date);
-			$realisasi = 0;
-			for ($p=0; $p < count($hasil[$a]['pasangban']) ; $p++) { 
-				$realisasi += $hasil[$a]['pasangban'][$p]['JUMLAH'];
+			// MAT
+			$query1 = "WHERE TO_CHAR (creation_date, 'DD/MM/YYYY') = '$date' AND gudang = 'MAT-PM'";
+			$RkpMAT = $this->M_rekap->getRekap($query1);
+			$item_mat = 0;
+			for ($p=0; $p < count($RkpMAT) ; $p++) { 
+				$item_mat += $RkpMAT[$p]['JUMLAH_ITEM'];
 			}
-			$hasil[$a]['realisasi'] = $realisasi;
+			$hasil[$a]['item_mat'] = $item_mat;
+
+			$query2 = "WHERE TO_CHAR (selesai, 'DD/MM/YYYY') = '$date' AND gudang = 'MAT-PM'";
+			$selesai = $this->M_rekap->getRekap($query2);
+			$hasil[$a]['selesai_mat'] = $selesai;
+			$selesai_mat = 0;
+			for ($p=0; $p < count($selesai) ; $p++) { 
+				$selesai_mat += $selesai[$p]['JUMLAH_ITEM'];
+			}
+			$hasil[$a]['jml_selesai_mat'] = $selesai_mat;
+
+			$query3 = "WHERE TO_CHAR (creation_date, 'DD/MM/YYYY') = '$date'
+			AND (TO_CHAR (selesai, 'DD/MM/YYYY') > '$date' OR selesai IS NULL)
+			AND gudang = 'MAT-PM'";
+			$tanggungan = $this->M_rekap->getTanggungan($query3);
+			$hasil[$a]['tanggungan_mat'] = $tanggungan;
+			$tanggungan_mat = 0;
+			for ($p=0; $p < count($tanggungan) ; $p++) { 
+				$tanggungan_mat += $tanggungan[$p]['JUMLAH_ITEM'];
+			}
+			$hasil[$a]['jml_tanggungan_mat'] = $tanggungan_mat;
+
+			// //pasang ban
+			// $hasil[$a]['pasangban'] = $this->M_rekap->getPasangBan($date);
+			// $realisasi = 0;
+			// for ($p=0; $p < count($hasil[$a]['pasangban']) ; $p++) { 
+			// 	$realisasi += $hasil[$a]['pasangban'][$p]['JUMLAH'];
+			// }
+			// $hasil[$a]['realisasi'] = $realisasi;
+
+			//pasang ban 12v
+			$jenis_ban = "RUBBER TIRE RING 12 SUB GROUP (VULKANISIR / GRAN PRINX / GP)";
+			$hasil[$a]['pasangban12v'] = $this->M_rekap->getPasangBan($date, $jenis_ban);
+			$realisasi12v = 0;
+			for ($p=0; $p < count($hasil[$a]['pasangban12v']) ; $p++) { 
+				$realisasi12v += $hasil[$a]['pasangban12v'][$p]['JUMLAH'];
+			}
+			$hasil[$a]['realisasi12v'] = $realisasi12v;
+
+			//pasang ban 12nv
+			$jenis_ban = "RUBBER TIRE RING 12 SUB GROUP (NON VULKANISIR / NV / PRIMEX)";
+			$hasil[$a]['pasangban12nv'] = $this->M_rekap->getPasangBan($date, $jenis_ban);
+			$realisasi12nv = 0;
+			for ($p=0; $p < count($hasil[$a]['pasangban12nv']) ; $p++) { 
+				$realisasi12nv += $hasil[$a]['pasangban12nv'][$p]['JUMLAH'];
+			}
+			$hasil[$a]['realisasi12nv'] = $realisasi12nv;
+
+			//pasang ban 13v
+			$jenis_ban = "RUBBER TIRE RING 13 SUB GROUP (VULKANISIR / GRAN PRINX / GP)";
+			$hasil[$a]['pasangban13v'] = $this->M_rekap->getPasangBan($date, $jenis_ban);
+			$realisasi13v = 0;
+			for ($p=0; $p < count($hasil[$a]['pasangban13v']) ; $p++) { 
+				$realisasi13v += $hasil[$a]['pasangban13v'][$p]['JUMLAH'];
+			}
+			$hasil[$a]['realisasi13v'] = $realisasi13v;
+
+			//pasang ban 13nv
+			$jenis_ban = "RUBBER TIRE RING 13 SUB GROUP (NON VULKANISIR / NV / PRIMEX)";
+			$hasil[$a]['pasangban13nv'] = $this->M_rekap->getPasangBan($date, $jenis_ban);
+			$realisasi13nv = 0;
+			for ($p=0; $p < count($hasil[$a]['pasangban13nv']) ; $p++) { 
+				$realisasi13nv += $hasil[$a]['pasangban13nv'][$p]['JUMLAH'];
+			}
+			$hasil[$a]['realisasi13nv'] = $realisasi13nv;
 		}
 		$data['hasil'] = $hasil;
 		// echo "<pre>";print_r($hasil);exit();

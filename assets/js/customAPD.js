@@ -1121,8 +1121,34 @@ function pad(d) {
 	return d < 10 ? "0" + d.toString() : d.toString();
 }
 
+
+/**
+ * Function to get 
+ * 
+ * All parameter should be valid date string
+ * 
+ * @param {string} date1  date 1 should be greater than date
+ * @param {string} date2  
+ * 
+ * @returns string
+ * 
+ */
+// function dateDiff(date1 = newDate(), date2 = newDate()) {
+// 	let date1 = date1
+// 	let date2 = date2
+// 	let year;
+// 	let month
+// 	let day;
+
+// 	let dateDiff = date1 - date2
+
+// 	year = dateDiff - (1000 * 60 * 60 * 24 * 30) / 12
+// 	return `${year} Tahun ${month} Bulan ${day} Hari`
+// }
+
 //Kecelakaan Kerja
 $(document).ready(function () {
+
 	$("#apdtblmkk").DataTable({
 		scrollX: true,
 		fixedColumns: {
@@ -1133,19 +1159,25 @@ $(document).ready(function () {
 
 	$("#apdslcpkj").change(function () {
 		var noind = $(this).val();
+		var tglKec = $('#apdinptglkc').val()
+		if (noind == null) return;
+
 		$("#surat-loading").attr("hidden", false);
 		$.ajax({
 			type: "get",
 			url: baseurl + "p2k3adm_V2/Admin/detail_pkj_mkk",
 			data: {
 				noind: noind,
+				tglKec
 			},
+			dataType: "json",
 			success: function (response) {
-				var d = JSON.parse(response);
-				$('[name="seksi"]').val(d["seksi"].trim());
-				$('[name="unit"]').val(d["unit"].trim());
-				$('[name="bidang"]').val(d["bidang"].trim());
-				$('[name="dept"]').val(d["dept"].trim());
+				console.log(response)
+				$('[name="seksi"]').val(response["seksi"].trim());
+				$('[name="unit"]').val(response["unit"].trim());
+				$('[name="bidang"]').val(response["bidang"].trim());
+				$('[name="dept"]').val(response["dept"].trim());
+				$('[name="masa_kerja"]').val(response["maskerja"].trim());
 			},
 			complete: function (response) {
 				$("#surat-loading").attr("hidden", true);
@@ -1161,17 +1193,20 @@ $(document).ready(function () {
 			return false;
 		}
 		$("#surat-loading").attr("hidden", false);
+
+
 		$.ajax({
 			type: "get",
 			url: baseurl + "p2k3adm_V2/Admin/detail_pkj_mkk",
 			data: {
 				noind: noind,
 			},
+			dataType: "json",
 			success: function (response) {
-				var d = JSON.parse(response);
-				$('[name="seksi_car"]').val(d["seksi"].trim());
-				$('[attr-name="seksi_car"]').val(d["seksi"].trim());
+				$('[name="seksi_car"]').val(response["seksi"].trim());
+				$('[attr-name="seksi_car"]').val(response["seksi"].trim());
 			},
+			error() { },
 			complete: function (response) {
 				$("#surat-loading").attr("hidden", true);
 			},
@@ -1228,7 +1263,6 @@ $(document).ready(function () {
 			},
 			success: function (response) {
 				var data = JSON.parse(response);
-				console.log(data["success"]);
 				if (data["success"] == "1") {
 					// $('[name="range1"]').val(data['ket1']);
 					// $('[name="range2"]').val(data['ket2']);
@@ -1241,8 +1275,8 @@ $(document).ready(function () {
 					$(".apdinprngwkt2mkk")
 						.eq(data["rng2"] - 1)
 						.iCheck("check");
-					$('[name="masa_kerja"]').val(data["masa_kerja"]);
-					$('[attr-name="masa_kerja"]').val(data["masa_kerja"]).trigger("change");
+					$('[name="masa_kerja"]').val(data["masa"]);
+					$('[attr-name="masa_kerja"]').val(data["masa"]).trigger("change");
 				}
 			},
 			complete: function (response) {
@@ -1322,9 +1356,13 @@ $(document).ready(function () {
 		});
 	});
 
-	$(document).on("click", ".apdbtndelmkk", function () {
+	$(document).on("click", ".apdbtndelmkk", function (e) {
+		e.preventDefault();
+
+		const $this = $(this);
 		var id = $(this).val();
 		var pkj = $(this).attr("pkj");
+
 		Swal.fire({
 			title: "Anda Yakin?",
 			text: "Hapus Data " + pkj + "?",
@@ -1338,15 +1376,34 @@ $(document).ready(function () {
 					data: {
 						id: id,
 					},
+					beforeSend() {
+						$this.prop("disabled", true);
+						$("#surat-loading").prop("hidden", false);
+					},
 					success: function (response) {
+						// console.log(response)
 						location.reload();
 					},
+					error(response) {
+						Swal.fire({
+							title: `Error ${response.responseJSON.code}`,
+							text: response.responseJSON.message,
+							type: "warning",
+						});
+					},
 					complete: function (response) {
-						$("#surat-loading").attr("hidden", true);
+						$("#surat-loading").prop("hidden", true);
 					},
 				});
 			}
 		});
+	});
+
+	$("#apdtblmkk").DataTable({
+		scrollX: true,
+		fixedColumns: {
+			leftColumns: 3,
+		},
 	});
 
 	$("#apdslclstkp").select2({
@@ -1383,6 +1440,7 @@ $(document).ready(function () {
 		minViewMode: "years",
 	});
 
+
 	$("#apdmkkbyyear").click(function () {
 		var y = $("#apd_yearonly").val();
 		window.location.replace(baseurl + "p2k3adm_V2/Admin/monitoringKK?y=" + y);
@@ -1413,6 +1471,7 @@ function InitK3kForm() {
 	$("#apdbtnupdatemkk").click(function () {
 		changed = false;
 	});
+
 	$(window).bind("beforeunload", function () {
 		if (changed) {
 			return "Are you sure you want to leave?";
@@ -1609,3 +1668,5 @@ $(document).on('ifChecked', '.p2k3_chkAll_kanit', function () {
 $(document).on('ifUnchecked', '.p2k3_chkAll_kanit', function () {
 	$(this).closest('table').find('.p2k3_chk').iCheck("uncheck");
 })
+
+$('.apd_slcBasic').select2();

@@ -23,6 +23,12 @@ const toastGTSKKLoading = (pesan) => {
   })
 }
 
+function ambildataelemenby(id, elemen, jenis) {
+  $('#id_elemen_kerja').val(id);
+  $('#gtskk_upd_nama').val(elemen);
+  $('#gtskk_upd_jenis').val(jenis).trigger('change');
+}
+
 //TABLE INPUT ELEMENT'S STANDARDIZATION//
 $('.tabel_elemen').DataTable({
   "lengthMenu": [10],
@@ -44,6 +50,9 @@ function checkBoxParalel_(th) {
   } else {
     $(th).closest('tr').find('input[name="start_time_together[]"]').attr('readonly', true);
     $(th).closest('tr').find('input[name="end_time_together[]"]').attr('readonly', true);
+
+    $(th).closest('tr').find('input[name="start_time_together[]"]').val('');
+    $(th).closest('tr').find('input[name="end_time_together[]"]').val('');
   }
 }
 
@@ -260,7 +269,7 @@ $(document).ready(function() {
   if ($('#untuk_keperluan_gtskk').val() != undefined) {
     $('input[type=checkbox]').iCheck('destroy');
   }
-  $('input[name="perhitunganTakt"]').on('ifChanged', function() {
+  $('input[name="perhitunganTakt"]').on('change', function() {
       if ($('input[name=perhitunganTakt]:checked').val() == "1") {
         $('.tskk_delik_cek_pakai').show()
         $('input[name=taktTime]').show()
@@ -331,7 +340,7 @@ function addRowObservation() {
   //ini dulu
   // html += '<td class="second-col"><div class="col-lg-12"><div class="col-lg-6"><select class="form-control select2 slcElemen" id="slcElemen_' + nomor + '" name="txtSlcElemen[]" data-placeholder="Elemen" tabindex="-1" aria-hidden="true" ></select></div><div class="col-lg-6"><input type="text" class="form-control elemen" style="width: 100%" type="text" id="elemen_' + nomor + '" name="elemen[]" placeholder="Keterangan Elemen"></div></div></td>';
   //ini sekarang
-  html += '<td class="second-col"><div class="row"><div class="col-lg-6"><input list="brow_slc_elemen" class="form-control slcElemen0000" onchange="//disableOrnot(this)" name="txtSlcElemen[]" data-placeholder="Elemen"></div><div class="col-lg-6"><input type="text" class="form-control elemen" style="width: 100%" type="text" id="elemen_' + nomor + '" name="elemen[]" placeholder="Keterangan Elemen"></div></div></td>';
+  html += '<td class="second-col"><div class="row"><div class="col-lg-6"><input list="brow_slc_elemen" class="form-control slcElemen0000" onchange="//disableOrnot(this)" name="txtSlcElemen[]" autocomplete="off" data-placeholder="Elemen"></div><div class="col-lg-6"><input type="text" class="form-control elemen" style="width: 100%" type="text" id="elemen_' + nomor + '" name="elemen[]" placeholder="Keterangan Elemen"></div></div></td>';
 
   // KOLOM 4
   html += '<td><input type="number" onchange="minMaxId(this)" name="waktu1[]" class="form-control waktuObs inputWaktuKolom1" placeholder="Detik" ></td>';
@@ -379,7 +388,7 @@ function addRowObservation() {
   //   radioClass: 'iradio_flat-blue'
   // });
 
-  $('input[name="terdaftar"]').on('ifChanged', function() {
+  $('input[name="terdaftar"]').on('change', function() {
     if ($('input[name=terdaftar]:checked').val() == "TidakTerdaftar") {
       console.log("tdk");
       $('.terdaftar').css("display", "none");
@@ -391,7 +400,7 @@ function addRowObservation() {
     }
   });
 
-  $('input[name="equipmenTerdaftarMesin"]').on('ifChanged', function() {
+  $('input[name="equipmenTerdaftarMesin"]').on('change', function() {
     if ($('input[name=equipmenTerdaftarMesin]:checked').val() == "TidakTerdaftar") {
       console.log("tdk");
       $('.equipmenTerdaftarMesin').css("display", "none");
@@ -403,7 +412,7 @@ function addRowObservation() {
     }
   });
 
-  $('input[name="equipmenTerdaftar"]').on('ifChanged', function() {
+  $('input[name="equipmenTerdaftar"]').on('change', function() {
     if ($('input[name=equipmenTerdaftar]:checked').val() == "TidakTerdaftar") {
       console.log("tdk");
       $('.equipmenTerdaftar').css("display", "none");
@@ -603,7 +612,7 @@ function addRowObservationEdit() {
   //ini dulu
   // html += '<td class="second-col"><div class="col-lg-12"><div class="col-lg-6"><select class="form-control select2 slcElemen" id="slcElemen_' + nomor + '" name="txtSlcElemen[]" data-placeholder="Elemen" tabindex="-1" aria-hidden="true" ></select></div><div class="col-lg-6"><input type="text" class="form-control elemen" style="width: 100%" type="text" id="elemen_' + nomor + '" name="elemen[]" placeholder="Keterangan Elemen"></div></div></td>';
   //ini sekarang
-  html += '<td class="second-col"><div class="row"><div class="col-lg-6"><input list="brow_slc_elemen" class="form-control slcElemen0000" onchange="//disableOrnot(this)" name="txtSlcElemen[]" data-placeholder="Elemen"></div><div class="col-lg-6"><input type="text" class="form-control elemen" style="width: 100%" type="text" id="elemen_' + nomor + '" name="elemen[]" placeholder="Keterangan Elemen"></div></div></td>';
+  html += '<td class="second-col"><div class="row"><div class="col-lg-6"><input list="brow_slc_elemen" class="form-control slcElemen0000" onchange="//disableOrnot(this)" name="txtSlcElemen[]" autocomplete="off" data-placeholder="Elemen"></div><div class="col-lg-6"><input type="text" class="form-control elemen" style="width: 100%" type="text" id="elemen_' + nomor + '" name="elemen[]" placeholder="Keterangan Elemen"></div></div></td>';
 
   // KOLOM 4
   // KOLOM 5
@@ -652,7 +661,7 @@ function addRowObservationEdit() {
   //   radioClass: 'iradio_flat-blue'
   // });
 
-  $('input[name="terdaftar"]').on('ifChanged', function() {
+  $('input[name="terdaftar"]').on('change', function() {
     if ($('input[name=terdaftar]:checked').val() == "TidakTerdaftar") {
       console.log("tdk");
       $('.terdaftar').css("display", "none");
@@ -664,7 +673,7 @@ function addRowObservationEdit() {
     }
   });
 
-  $('input[name="equipmenTerdaftarMesin"]').on('ifChanged', function() {
+  $('input[name="equipmenTerdaftarMesin"]').on('change', function() {
     if ($('input[name=equipmenTerdaftarMesin]:checked').val() == "TidakTerdaftar") {
       console.log("tdk");
       $('.equipmenTerdaftarMesin').css("display", "none");
@@ -676,7 +685,7 @@ function addRowObservationEdit() {
     }
   });
 
-  $('input[name="equipmenTerdaftar"]').on('ifChanged', function() {
+  $('input[name="equipmenTerdaftar"]').on('change', function() {
     if ($('input[name=equipmenTerdaftar]:checked').val() == "TidakTerdaftar") {
       console.log("tdk");
       $('.equipmenTerdaftar').css("display", "none");
@@ -688,7 +697,7 @@ function addRowObservationEdit() {
     }
   });
 
-  $('input[name="perhitunganTakt"]').on('ifChanged', function() {
+  $('input[name="perhitunganTakt"]').on('change', function() {
       if ($('input[name=perhitunganTakt]:checked').val() == "1") {
         $('.tskk_delik_cek_pakai').show()
         $('input[name=taktTime]').show()
@@ -1220,7 +1229,7 @@ function addRowElement() {
   // html += '<option value="WALK (Inheritance)" id="walk"> WALK (Inheritance) </option>';
   html += "</select></td>";
   // KOLOM 3
-  html += '<td><select class="form-control select2 slcElemen"  onmouseover="slcElemen(' + num + ')" id="slcElemen_' + num + '" name="txtSlcElemen[]" data-placeholder="Elemen" tabindex="-1" aria-hidden="true"></select><input type="text" class="form-control" style="width: 100%" type="text" onchange="myFunctionTSKK(' + num + ')" id="elemen_' + num + '" name="elemen[]" placeholder="Input Keterangan"></td>';
+  html += '<td><select class="form-control select2 slcElemen"  onmouseover="slcElemen(' + num + ')" id="slcElemen_' + num + '" name="txtSlcElemen[]" autocomplete="off" data-placeholder="Elemen" tabindex="-1" aria-hidden="true"></select><input type="text" class="form-control" style="width: 100%" type="text" onchange="myFunctionTSKK(' + num + ')" id="elemen_' + num + '" name="elemen[]" placeholder="Input Keterangan"></td>';
   // KOLOM 4
   html += '<td><select id="slcTipeUrutan_' + num + '" name="slcTipeUrutan[]" class="form-control tipe_urutan" style="width:100%;" onchange="editTimie(' + num + ')" title="Tipe Urutan Proses">';
   html += '<option value="" >  </option>';
@@ -1375,7 +1384,7 @@ const onClickNasgor = (th) => {
 
 //DISPLAY AND UNDISPLAY DIV IN PART SECTION//
 $(document).ready(function() {
-  $('input[name="terdaftar"]').on('ifChanged', function() {
+  $('input[name="terdaftar"]').on('change', function() {
     if ($('input[name=terdaftar]:checked').val() == "TidakTerdaftar") {
       console.log("tdk");
       $('.terdaftar').css("display", "none");
@@ -1393,7 +1402,7 @@ $(document).ready(function() {
 
 //DISPLAY AND UNDISPLAY DIV IN EQUIPMENT SECTION//
 $(document).ready(function() {
-  $('input[name="equipmenTerdaftar"]').on('ifChanged', function() {
+  $('input[name="equipmenTerdaftar"]').on('change', function() {
     if ($('input[name=equipmenTerdaftar]:checked').val() == "TidakTerdaftar") {
       console.log("tdk");
       $('.equipmenTerdaftar').css("display", "none");
@@ -1405,7 +1414,7 @@ $(document).ready(function() {
     }
   });
 
-  $('input[name="equipmenTerdaftarMesin"]').on('ifChanged', function() {
+  $('input[name="equipmenTerdaftarMesin"]').on('change', function() {
     if ($('input[name=equipmenTerdaftarMesin]:checked').val() == "TidakTerdaftar") {
       console.log("tdk");
       $('.equipmenTerdaftarMesin').css("display", "none");
@@ -1944,16 +1953,18 @@ function myFunctionTSKK(th) {
     $('table tbody tr:nth(' + row_index + ') td .tipe_urutan').trigger('change');
     // console.log("ini element: ", Element, elemen, elemen_kerja, keterangan)
   } else if (elemen == 'AUTO') { //how to make it works completely?
-    $('table tbody tr:nth(' + row_index + ') td .slcElemen0000').val(null).trigger('change');
-    $('table tbody tr:nth(' + row_index + ') td .elemen').val('');
+    $('table tbody tr:nth(' + row_index + ') td .slcElemen0000').attr('list', 'brow_slc_elemen_auto');
+    $('table tbody tr:nth(' + row_index + ') td .slcElemen0000').val(null).trigger('change').attr('readonly', false);
+    $('table tbody tr:nth(' + row_index + ') td .elemen').val('').attr('readonly', false);
     $('table tbody tr:nth(' + row_index + ') td .tipe_urutan').val(null).trigger('change');
   } else if (elemen == 'MANUAL') { //how to make it works completely?
-    $('table tbody tr:nth(' + row_index + ') td .slcElemen0000').val(null).trigger('change');
-    $('table tbody tr:nth(' + row_index + ') td .elemen').val('');
+    $('table tbody tr:nth(' + row_index + ') td .slcElemen0000').attr('list', 'brow_slc_elemen_manual');
+    $('table tbody tr:nth(' + row_index + ') td .slcElemen0000').val(null).trigger('change').attr('readonly', false);
+    $('table tbody tr:nth(' + row_index + ') td .elemen').val('').attr('readonly', false);
     $('table tbody tr:nth(' + row_index + ') td .tipe_urutan').val(null).trigger('change');
   } else if (elemen == 'WALK') { //how to make it works completely?
-    $('table tbody tr:nth(' + row_index + ') td .slcElemen0000').val(null).trigger('change');
-    $('table tbody tr:nth(' + row_index + ') td .elemen').val('');
+    $('table tbody tr:nth(' + row_index + ') td .slcElemen0000').val('Jalan').trigger('change').attr('readonly', true);
+    $('table tbody tr:nth(' + row_index + ') td .elemen').val('-').attr('readonly', true);
     $('table tbody tr:nth(' + row_index + ') td .tipe_urutan').val('SERIAL').trigger('change');
   } else if (elemen == 'WALK (Inheritance)') {
     var Element = `<option value="${elemen_kerja}">${elemen_kerja}</option>`;
@@ -2276,7 +2287,7 @@ function attachRow() {
 			<select id="slcJenis_${num}" name="slcJenisProses[]" onchange="myFunctionTSKK(this)" class="form-control select00004 slcJenisProses_num" style="width:100%;" onFocus="onBakso()" title="Jenis Proses"><option value=""> </option><option value="MANUAL" id="manual"> MANUAL </option><option value="AUTO" id="auto" onclick="setElemenGTSKK()"> AUTO </option><option value="WALK" id="walk"> WALK </option><option value="WALK (Inheritance)" id="walk"> WALK (Inheritance) </option></select>
 		</td>
 		<td>
-			<select class="form-control select2 slcElemen0000" id="slcElemen_${num}" name="txtSlcElemen[]" data-placeholder="Input Elemen Kerja" tabindex="-1" aria-hidden="true"></select><input type="text" class="form-control elemen" style="width: 100%" type="text" id="elemen_${num}" name="elemen[]" placeholder="Input Keterangan">
+			<select class="form-control select2 slcElemen0000" id="slcElemen_${num}" name="txtSlcElemen[]" autocomplete="off" data-placeholder="Input Elemen Kerja" tabindex="-1" aria-hidden="true"></select><input type="text" class="form-control elemen" style="width: 100%" type="text" id="elemen_${num}" name="elemen[]" placeholder="Input Keterangan">
 		</td>
 		<td>
 			<select id="slcTipeUrutan_${num}" name="slcTipeUrutan[]" class="form-control tipe_urutan" style="width:100%;" onchange="AutomaticTime(this)" title="Tipe Urutan Proses"><option value="" >  </option><option value="SERIAL"> SERIAL  </option><option value="PARALEL"> PARALEL </option></select>
@@ -2422,7 +2433,7 @@ function attachRowObservation_new(th) {
 		</td>
 		<td class="second-col">
 		<div class="row"><div class="col-lg-6">
-      <input list="brow_slc_elemen" class="form-control slcElemen0000" id="slcElemen_${posisi}" onchange="//disableOrnot(this)" name="txtSlcElemen[]" data-placeholder="Elemen">
+      <input list="brow_slc_elemen" class="form-control slcElemen0000" id="slcElemen_${posisi}" onchange="//disableOrnot(this)" name="txtSlcElemen[]" autocomplete="off" data-placeholder="Elemen">
     </div>
     <div class="col-lg-6"><input type="text" class="form-control elemen" style="width: 100%" type="text" id="elemen_'+nomor+'" name="elemen[]" placeholder="Keterangan Elemen"></div></div>
 		</td>
@@ -2605,7 +2616,7 @@ function attachRowObservation_new(th) {
     })
   }, 50);
 
-  $('input[name="terdaftar"]').on('ifChanged', function() {
+  $('input[name="terdaftar"]').on('change', function() {
     if ($('input[name=terdaftar]:checked').val() == "TidakTerdaftar") {
       console.log("tdk");
       $('.terdaftar').css("display", "none");
@@ -2617,7 +2628,7 @@ function attachRowObservation_new(th) {
     }
   });
 
-  $('input[name="equipmenTerdaftarMesin"]').on('ifChanged', function() {
+  $('input[name="equipmenTerdaftarMesin"]').on('change', function() {
     if ($('input[name=equipmenTerdaftarMesin]:checked').val() == "TidakTerdaftar") {
       console.log("tdk");
       $('.equipmenTerdaftarMesin').css("display", "none");
@@ -2629,7 +2640,7 @@ function attachRowObservation_new(th) {
     }
   });
 
-  $('input[name="equipmenTerdaftar"]').on('ifChanged', function() {
+  $('input[name="equipmenTerdaftar"]').on('change', function() {
     if ($('input[name=equipmenTerdaftar]:checked').val() == "TidakTerdaftar") {
       console.log("tdk");
       $('.equipmenTerdaftar').css("display", "none");
@@ -2676,7 +2687,7 @@ function attachRowObservation(th) {
 		<td class="second-col">
 		<div class="row">
     <div class="col-lg-6">
-      <input list="brow_slc_elemen" class="form-control slcElemen0000" id="slcElemen_${posisi}" onchange="//disableOrnot(this)" name="txtSlcElemen[]" data-placeholder="Elemen">
+      <input list="brow_slc_elemen" class="form-control slcElemen0000" id="slcElemen_${posisi}" onchange="//disableOrnot(this)" name="txtSlcElemen[]" autocomplete="off" data-placeholder="Elemen">
     </div>
     <div class="col-lg-6"><input type="text" class="form-control elemen" style="width: 100%" type="text" id="elemen_'+nomor+'" name="elemen[]" placeholder="Keterangan Elemen"></div></div>
 		</td>
@@ -2860,7 +2871,7 @@ function attachRowObservation(th) {
   }, 50);
 
 
-  $('input[name="terdaftar"]').on('ifChanged', function() {
+  $('input[name="terdaftar"]').on('change', function() {
     if ($('input[name=terdaftar]:checked').val() == "TidakTerdaftar") {
       console.log("tdk");
       $('.terdaftar').css("display", "none");
@@ -2872,7 +2883,7 @@ function attachRowObservation(th) {
     }
   });
 
-  $('input[name="equipmenTerdaftarMesin"]').on('ifChanged', function() {
+  $('input[name="equipmenTerdaftarMesin"]').on('change', function() {
     if ($('input[name=equipmenTerdaftarMesin]:checked').val() == "TidakTerdaftar") {
       console.log("tdk");
       $('.equipmenTerdaftarMesin').css("display", "none");
@@ -2884,7 +2895,7 @@ function attachRowObservation(th) {
     }
   });
 
-  $('input[name="equipmenTerdaftar"]').on('ifChanged', function() {
+  $('input[name="equipmenTerdaftar"]').on('change', function() {
     if ($('input[name=equipmenTerdaftar]:checked').val() == "TidakTerdaftar") {
       console.log("tdk");
       $('.equipmenTerdaftar').css("display", "none");
@@ -2896,7 +2907,7 @@ function attachRowObservation(th) {
     }
   });
 
-  $('input[name="perhitunganTakt"]').on('ifChanged', function() {
+  $('input[name="perhitunganTakt"]').on('change', function() {
       if ($('input[name=perhitunganTakt]:checked').val() == "1") {
         $('.tskk_delik_cek_pakai').show()
         $('input[name=taktTime]').show()
@@ -3245,6 +3256,11 @@ function generateTSKK(a) {
     },
     error: function(xhr, ajaxOptions, thrownError) {
       console.log(xhr.responseText);
+      Swal.fire({
+        title: 'Terjadi Kesalahan',
+        type: 'error',
+        text: xhr.responseText
+      });
     }
 
   });

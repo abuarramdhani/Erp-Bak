@@ -9,7 +9,7 @@
 
 	<body>
 		<?php //$a=0; while ($a < $total_hal) { ?>
-			<?php foreach ($total_hal as $key => $body_){ ?>
+			<?php foreach ($total_hal as $key2 => $body_){ ?>
 
 			<br>
 			<div style="position: absolute;">
@@ -87,7 +87,7 @@
 									$arr = explode("#", $get_header[0]['ALAMAT_KIRIM']); //jika mau ganti baris gunakan tanda # (pagar)
 									foreach($arr as $i) {
 										echo $i.'<br>';
-									}									
+									}
 								}
 								else {
 									echo $get_header[0]['ALAMAT_KIRIM'].', '.$get_header[0]['KOTA_KIRIM'];
@@ -141,11 +141,11 @@
 											<span style="font-size: 11.5px"><?php echo $gb['COLLY_NUMBER'] ?></span>
 										</center> -->
 									</td>
-							<?php	}
-								else {
-									echo '';
-								}
-							?>
+								<?php	}elseif($jumlah_colly == 1 && $key2 != 0) { ?>
+										<td style="font-size: 14px; font-weight: bold; padding: 3.5px; width: 127px; text-align: center; vertical-align: top;">
+
+										</td>
+								<?php }?>
 							<td style="font-size: 9.7px;  padding: 3.5px; width: 48px; text-align: center; vertical-align: top;">
 								<?php echo $gb['QUANTITY'] ?>
 							</td>
@@ -174,7 +174,7 @@
 								<?php echo $garis ?>
 							</td>
 							<td style="white-space:pre-line; font-size: 9.7px; <?php echo $size.$bold ?> padding: 3.5px; width: 60px; text-align: left; vertical-align: top;">
-								
+
 							</td>
 						</tr>
 					<?php $no++; } ?>
@@ -252,7 +252,8 @@
 						Tgl. <?php echo $get_header[0]['ASSIGN_DATE'] ?><br>
 						Pengawas : <br>
 						<br><br><br><br><br>
-						<?php echo $get_header[0]['ASSIGNER_NAME'] ?>
+						<!-- <?php echo $get_header[0]['ASSIGNER_NAME'] ?> -->
+						<?php echo 'REYNALDI, NELSON'; ?>
 					</td>
 					<td rowspan="2" style="vertical-align: top; width: 100px; border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black; border-right: 1px solid black; font-size: 10px; padding: 5px">
 						Tgl. <br>

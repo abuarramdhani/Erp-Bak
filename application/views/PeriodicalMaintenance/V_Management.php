@@ -28,6 +28,8 @@
                     </div>
                 </div>
                 <br />
+                <form name="Orderform" action="<?php echo base_url('PeriodicalMaintenance/Management/cetakForm'); ?>" class="form-horizontal" target="_blank" onsubmit="return validasi();window.location.reload();" method="post">
+
                 <div class="row">
                     <div class="col-md-12">
                         <div class="box box-primary box-solid">
@@ -52,21 +54,26 @@
                                     </div>
                                 </div>
                                 <div class="panel-body">
-                                    <div class="col-md-6">
+                                    <div class="col-md-1">
                                         <button type="button" onclick="getPME(this)" class="btn btn-success"
                                             id="btnfind" title="search"><i class="fa fa-search"></i> Find</button>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <button class="btn btn-danger" id="btncetak" title="cetak" target="_blank"><i class="fa fa-print"></i> Cetak</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-12" id="ResultPME"></div>
-                        </div>
+                       
                     </div>
                 </div>
             </div>
 
         </div>
+                                            </form>
+        <div class="row">
+                            <div class="col-md-12" id="ResultPME"></div>
+                        </div>
 </section>
 <!-- Modal Edit -->
 <div class="modal fade" id="modalEditManagement" role="dialog">

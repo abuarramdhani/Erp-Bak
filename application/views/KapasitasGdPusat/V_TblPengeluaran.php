@@ -14,7 +14,7 @@
     <div class="panel-body" style="margin-left:-10px">
         <div class="col-md-3">
             <label>Jenis Dokumen :</label>
-            <input id="jenis_dokumen" name="jenis_dokumen" class="form-control" readonly>
+            <input id="jenis_dokumen" name="jenis_dokumen" class="form-control" readonly value="<?= $cek[0]['JENIS_DOKUMEN']?>">
         </div>
     </div>
     <div class="panel-body">

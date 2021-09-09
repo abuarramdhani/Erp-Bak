@@ -43,15 +43,44 @@ class C_Monitoring extends CI_Controller
 
 		$date 	= date('d/m/Y');
 		$tgl 	= date('d-M-Y');
-		$query1 = "where TO_CHAR(jam_input,'DD/MM/YYYY') between '$date' and '$date'";
+		$query1 = "where TO_CHAR(jam_input,'DD/MM/YYYY HH24:MI:SS') between '$date 00:00:00' and '$date 12:00:00'";
 		$dataMon = $this->M_monitoring->getDataSPB($query1);
 		$data['dospb'] = $dataMon;
 		$data['jml_spb'] = count($dataMon);
 		$pcs = 0;
 		for ($p=0; $p < count($dataMon) ; $p++) { 
-			$pcs += $dataMon[$p]['JUMLAH_PCS'];
+			$pcs += $dataMon[$p]['JUMLAH_ITEM'];
 		}
 		$data['dopcs'] = $pcs;
+		$query1 = "where TO_CHAR(jam_input,'DD/MM/YYYY HH24:MI:SS') between '$date 00:00:00' and '$date 12:00:00' and selesai_packing is not null";
+		$dataMonS = $this->M_monitoring->getDataSPB($query1);
+		$data['dospb_selesai'] = $dataMonS;
+		$data['jml_spb_selesai'] = count($dataMonS);
+		$pcs = 0;
+		for ($p=0; $p < count($dataMonS) ; $p++) { 
+			$pcs += $dataMonS[$p]['JUMLAH_ITEM'];
+		}
+		$data['dopcs_selesai'] = $pcs;
+
+		$query1 = "where TO_CHAR(jam_input,'DD/MM/YYYY HH24:MI:SS') between '$date 12:00:00' and '$date 24:00:00'";
+		$dataMon2 = $this->M_monitoring->getDataSPB($query1);
+		$data['dospb2'] = $dataMon2;
+		$data['jml_spb2'] = count($dataMon2);
+		$pcs = 0;
+		for ($p=0; $p < count($dataMon2) ; $p++) { 
+			$pcs += $dataMon2[$p]['JUMLAH_ITEM'];
+		}
+		$data['dopcs2'] = $pcs;
+		
+		$query1 = "where TO_CHAR(jam_input,'DD/MM/YYYY HH24:MI:SS') between '$date 12:00:00' and '$date 24:00:00' and selesai_packing is not null";
+		$dataMon2S = $this->M_monitoring->getDataSPB($query1);
+		$data['dospb2_selesai'] = $dataMon2S;
+		$data['jml_spb2_selesai'] = count($dataMon2S);
+		$pcs = 0;
+		for ($p=0; $p < count($dataMon2S) ; $p++) { 
+			$pcs += $dataMon2S[$p]['JUMLAH_ITEM'];
+		}
+		$data['dopcs2_selesai'] = $pcs;
 		// echo "<pre>";print_r($pcs);exit();
 
 		$query2 = "where TO_CHAR(selesai_pelayanan,'DD/MM/YYYY') between '$date' and '$date' and selesai_pelayanan is not null and (bon != 'PENDING' or bon is null)";
@@ -144,16 +173,47 @@ class C_Monitoring extends CI_Controller
 		$hasil= array();
 		for ($a=0; $a < count($tanggal) ; $a++) { 
 			$date = $tanggal[$a];
-			$query1 = "where (BON != 'PENDING' OR BON IS NULL) AND TO_CHAR(jam_input,'DD/MM/YYYY') between '$date' and '$date'";
+			$query1 = "where (BON != 'PENDING' OR BON IS NULL) AND TO_CHAR(jam_input,'DD/MM/YYYY HH24:MI:SS') between '$date 00:00:00' and '$date 12:00:00'";
 			$dataMon = $this->M_monitoring->getDataSPB($query1);
 			$hasil[$a]['tanggal'] = $tgl[$a];
 			$hasil[$a]['dosp'] = $dataMon;
 			$hasil[$a]['jml_spb'] = count($dataMon);
 			$pcs = 0;
 			for ($p=0; $p < count($dataMon) ; $p++) { 
-				$pcs += $dataMon[$p]['JUMLAH_PCS'];
+				$pcs += $dataMon[$p]['JUMLAH_ITEM'];
 			}
 			$hasil[$a]['dopcs'] = $pcs;
+			
+			$query1 = "where (BON != 'PENDING' OR BON IS NULL) AND TO_CHAR(jam_input,'DD/MM/YYYY HH24:MI:SS') between '$date 00:00:00' and '$date 12:00:00' and selesai_packing is not null";
+			$dataMonS = $this->M_monitoring->getDataSPB($query1);
+			$hasil[$a]['dosp_selesai'] = $dataMonS;
+			$hasil[$a]['jml_spb_selesai'] = count($dataMonS);
+			$pcs = 0;
+			for ($p=0; $p < count($dataMonS) ; $p++) { 
+				$pcs += $dataMonS[$p]['JUMLAH_ITEM'];
+			}
+			$hasil[$a]['dopcs_selesai'] = $pcs;
+			
+			$query1 = "where (BON != 'PENDING' OR BON IS NULL) AND TO_CHAR(jam_input,'DD/MM/YYYY HH24:MI:SS') between '$date 12:00:00' and '$date 24:00:00'";
+			$dataMon = $this->M_monitoring->getDataSPB($query1);
+			$hasil[$a]['dosp2'] = $dataMon;
+			$hasil[$a]['jml_spb2'] = count($dataMon);
+			$pcs = 0;
+			for ($p=0; $p < count($dataMon) ; $p++) { 
+				$pcs += $dataMon[$p]['JUMLAH_ITEM'];
+			}
+			$hasil[$a]['dopcs2'] = $pcs;
+			
+			$query1 = "where (BON != 'PENDING' OR BON IS NULL) AND TO_CHAR(jam_input,'DD/MM/YYYY HH24:MI:SS') between '$date 12:00:00' and '$date 24:00:00'  and selesai_packing is not null";
+			$dataMon = $this->M_monitoring->getDataSPB($query1);
+			$hasil[$a]['tanggal2_selesai'] = $tgl[$a];
+			$hasil[$a]['dosp2_selesai'] = $dataMon;
+			$hasil[$a]['jml_spb2_selesai'] = count($dataMon);
+			$pcs = 0;
+			for ($p=0; $p < count($dataMon) ; $p++) { 
+				$pcs += $dataMon[$p]['JUMLAH_ITEM'];
+			}
+			$hasil[$a]['dopcs2_selesai'] = $pcs;
 			
 			$query2 = "where TO_CHAR(selesai_pelayanan,'DD/MM/YYYY') between '$date' and '$date' and selesai_pelayanan is not null and (bon != 'PENDING' or bon is null)";
 			$pelayanan = $this->M_monitoring->getDataSPB($query2);
@@ -168,7 +228,7 @@ class C_Monitoring extends CI_Controller
 				}else {
 					$tmb = "and trunc(jam_input) <= '$tgl[$a]' or (selesai_pelayanan is null and trunc(jam_input) <= '$tgl[$a]')";
 				}
-				$kurang = "where (bon != 'PENDING' or bon is null) and TO_CHAR(jam_input,'DD/MM/YYYY') != '".date('d/m/Y')."' and (trunc(selesai_pelayanan) > '$tgl[$a]' ".$tmb.")";
+				$kurang = "where (bon != 'PENDING' or bon is null) and TO_CHAR(jam_input,'DD/MM/YYYY') != '".date('d/m/Y')."' and approval_flag ='Y' and (trunc(selesai_pelayanan) > '$tgl[$a]' ".$tmb.")";
 			}
 			$hasil[$a]['krgpelayanan'] = $this->M_monitoring->dataKurang($kurang);
 			$hasil[$a]['krg_pelayanan'] = count($hasil[$a]['krgpelayanan']);
@@ -186,7 +246,7 @@ class C_Monitoring extends CI_Controller
 				}else {
 					$tmb = "and trunc(selesai_pelayanan) <= '$tgl[$a]' or (selesai_packing is null and trunc(selesai_pelayanan) <= '$tgl[$a]')";
 				}
-				$kurang = "where (bon is null or bon = 'BEST') and TO_CHAR(selesai_pelayanan,'DD/MM/YYYY') != '".date('d/m/Y')."' and (trunc(selesai_packing) > '$tgl[$a]' ".$tmb.") and selesai_pelayanan is not null";
+				$kurang = "where (bon is null or bon = 'BEST') and TO_CHAR(selesai_pelayanan,'DD/MM/YYYY') != '".date('d/m/Y')."' and tipe is not null and (trunc(selesai_packing) > '$tgl[$a]' ".$tmb.") and selesai_pelayanan is not null";
 			}
 			$hasil[$a]['krgpacking'] = $this->M_monitoring->dataKurang($kurang);
 			$hasil[$a]['krg_packing'] = count($hasil[$a]['krgpacking']);

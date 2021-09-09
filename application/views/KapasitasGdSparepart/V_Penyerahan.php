@@ -9,7 +9,7 @@
                             <div class="text-right">
                                 <h1>
                                     <b>
-                                        <?= $Title ?> 
+                                        <?= $Title ?>
                                     </b>
                                 </h1>
                             </div>
@@ -33,48 +33,39 @@
                     <div class="col-md-12">
                         <div class="box box-primary">
                             <div class="box-body">
-                                <div class="col-md-12 text-right">
-                                    <label class="control-label"><?php echo gmdate("l, d F Y, H:i:s", time()+60*60*7) ?></label>
-                                </div>
-                                <br>
                                 <div class="panel-body">
-                                    <div class="form-group">
-                                        <div class="row">
-                                            <div class="col-md-2">
-                                                <label style="padding-top: 5px;">Ekspedisi :</label>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <!-- <input id="tglAwal" name="tglAwal[]" class="form-control pull-right datepicktgl" placeholder="masukkan tanggal" autocomplete="off"> -->
-                                                <select id="jenisEksped" name="eksped" class="form-control select2 select2-hidden-accessible eksped" style="width: 80%;" required>
-                                                    <option></option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <br>
-                                        <div class="row">
+                                        <!-- <div class="row">
                                             <div class="col-md-2">
                                                 <label style="padding-top: 5px;">Scan SPB/DOSP :</label>
                                             </div>
                                             <div class="col-md-3">
                                                 <input type="text" id="inputSPBMan" class="form-control" style="width: 80%;" onkeyup="inputManifest(event,this)" autofocus>
                                             </div>
-                                        </div>                                        
-                                        <!-- <button type="button" class="btn btn-primary" onclick="getDataPenyerahan(this)"><i class="fa fa-search"></i> Find</button>   -->  
+                                        </div> -->
+                                        <!-- <div class="row">
+                                            <div class="col-md-5">
+
+                                            </div>
+                                        </div> -->
+                                    <div class="nav-tabs-custom">
+                                      <ul class="nav nav-tabs pull-right" style="border:none">
+                                        <li style="vertical-align:middle"><label class="control-label"><?php echo gmdate("l, d F Y, H:i:s", time()+60*60*7) ?></label></li>
+                                        <li class="pull-left"><label style="padding-top: 5px;">Ekspedisi :</label></li>
+                                        <li class="pull-left ml-3"> <select id="jenisEksped" name="eksped" class="eksped " style="float:left;width:200px"  required><option></option></select> </li>
+                                        <li class="pull-left ml-2"><button type="button" class="btn btn-primary" style="float: left;" onclick="manifest()"><i class="fa fa-search"></i> Find</button></li>
+                                      </ul>
+                                      <br>
                                     </div>
-                                </div>
-                                <div class="panel-body">
-                                    <!-- <div id="tb_penyerahan">
-                                        
-                                    </div> -->
+                                    <h3 class="text-bold"> <i class="fa fa-cube"></i>  Penyerahan</h3>
                                     <div id="loadingAreaPenyerahan" style="display:none;">
                                         <center><img style="width: 5%" src="<?php echo base_url('assets/img/gif/loading5.gif') ?>"></center>
                                     </div>
                                     <div class="table_penyerahan">
 
                                     </div>
-
-                                    <br>
-                                    <br>
+                                    <br><br>
+                                    <hr>
+                                    <h3 class="text-bold"> <i class="fa fa-dropbox"></i>Sudah Penyerahan</h3>
 
                                     <div id="loadingAreaSdhPenyerahan" style="display:none;">
                                         <center><img style="width: 5%" src="<?php echo base_url('assets/img/gif/loading5.gif') ?>"></center>

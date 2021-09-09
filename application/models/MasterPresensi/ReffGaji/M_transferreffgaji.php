@@ -160,7 +160,7 @@ class M_transferreffgaji extends CI_Model
  						ubs_rp, um_puasa, noind_baru, jns_transaksi, 
  						angg_jkn, potongan_str, tambahan_str, reff_id, 
  						lokasi_krj, 
- 						ipet, um_cabang, susulan, jml_jkn, jml_jht, jml_jp
+ 						ipet, um_cabang, susulan, jml_jkn, jml_jht, jml_jp,snack
  				from \"Presensi\".Treffgaji 
  				where left(noind,1) in ('K','P') 
  				and to_char(tanggal,'mmyy') ='$periode'
@@ -176,7 +176,7 @@ class M_transferreffgaji extends CI_Model
  						'' as ubs_rp, '0' as um_puasa, noind_baru as noind_baru, '01' as jns_transaksi, 
  						'0' as angg_jkn, '0' as potongan_str, '0' as tambahan_str, '0' as reff_id, 
  						(select lokasi_kerja from hrd_khs.tlokasi_kerja where ID_ = tp.lokasi_kerja) as lokasi_krj, 
- 						'0' as ipet, 0 as um_cabang, null as susulan, 0 as jml_jkn, 0 as jml_jht, 0 as jml_jp
+ 						'0' as ipet, 0 as um_cabang, null as susulan, 0 as jml_jkn, 0 as jml_jht, 0 as jml_jp, 0 as snack
  				from hrd_khs.tpribadi tp 
  				where left(noind,1) in ('K','P')
  				and to_char(tglkeluar,'yy')::int = right('$periode',2)::int
@@ -368,7 +368,7 @@ class M_transferreffgaji extends CI_Model
 						pgp, tlain, xduka, ket, cicil, ubs, 
 						ubs_rp, um_puasa, reff.noind_baru, jns_transaksi, 
 						angg_jkn, potongan_str, tambahan_str, reff_id, 
-						lokasi_krj, ipet, um_cabang, susulan, jml_jkn, jml_jht, jml_jp, 
+						lokasi_krj, ipet, um_cabang, susulan, jml_jkn, jml_jht, jml_jp, snack,
 						sie.seksi, sie.unit, sie.dept,pri.sekolah,pri.jurusan,pri.pendidikan,0 as ip_lama,0 as ik_lama, 0 as ipt_lama, 
 						pri.asal_outsourcing,(
 							select count(*)::varchar
@@ -393,7 +393,7 @@ class M_transferreffgaji extends CI_Model
 						'' as ubs_rp, '0' as um_puasa, noind_baru as noind_baru, '01' as jns_transaksi,
 						'0' as angg_jkn, '0' as potongan_str, '0' as tambahan_str, '0' as reff_id, 
 						(select lokasi_kerja from hrd_khs.tlokasi_kerja where ID_ = tp.lokasi_kerja) as lokasi_krj, 
-						'0' as ipet, 0 as um_cabang, null as susulan, 0 as jml_jkn, 0 as jml_jht, 0 as jml_jp, 
+						'0' as ipet, 0 as um_cabang, null as susulan, 0 as jml_jkn, 0 as jml_jht, 0 as jml_jp, 0 as snack,
 						sie.seksi, sie.unit, sie.dept,tp.sekolah,tp.jurusan,tp.pendidikan,0 as ip_lama,0 as ik_lama, 0 as ipt_lama, 
 						tp.asal_outsourcing,'~'  as cutoff
 					from hrd_khs.tpribadi tp 
@@ -427,7 +427,7 @@ class M_transferreffgaji extends CI_Model
 						pgp, tlain, xduka, ket, cicil, ubs, 
 						ubs_rp, um_puasa, reff.noind_baru, jns_transaksi, 
 						angg_jkn, potongan_str, tambahan_str, reff_id, 
-						lokasi_krj, ipet, um_cabang, susulan, jml_jkn, jml_jht, jml_jp, 
+						lokasi_krj, ipet, um_cabang, susulan, jml_jkn, jml_jht, jml_jp, snack,
 						sie.seksi, sie.unit, sie.dept,pri.sekolah,pri.jurusan,pri.pendidikan,0 as ip_lama,0 as ik_lama, 0 as ipt_lama, 
 						pri.asal_outsourcing,(
 							select count(*)::varchar
@@ -452,7 +452,7 @@ class M_transferreffgaji extends CI_Model
 						'' as ubs_rp, '0' as um_puasa, noind_baru as noind_baru, '01' as jns_transaksi,
 						'0' as angg_jkn, '0' as potongan_str, '0' as tambahan_str, '0' as reff_id, 
 						(select lokasi_kerja from hrd_khs.tlokasi_kerja where ID_ = tp.lokasi_kerja) as lokasi_krj, 
-						'0' as ipet, 0 as um_cabang, null as susulan, 0 as jml_jkn, 0 as jml_jht, 0 as jml_jp, 
+						'0' as ipet, 0 as um_cabang, null as susulan, 0 as jml_jkn, 0 as jml_jht, 0 as jml_jp, 0 as snack,
 						sie.seksi, sie.unit, sie.dept,tp.sekolah,tp.jurusan,tp.pendidikan,0 as ip_lama,0 as ik_lama, 0 as ipt_lama, 
 						tp.asal_outsourcing,'~' as cutoff
 					from hrd_khs.tpribadi tp 

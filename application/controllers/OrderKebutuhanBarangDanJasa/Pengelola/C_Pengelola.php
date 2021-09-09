@@ -1,46 +1,47 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class C_Pengelola extends CI_Controller {
-	public function __construct()
-	{
-		parent::__construct();
-		  
+class C_Pengelola extends CI_Controller
+{
+    public function __construct()
+    {
+        parent::__construct();
+
         $this->load->helper('form');
         $this->load->helper('url');
         $this->load->helper('html');
-		$this->load->library('session');
-		$this->load->model('SystemAdministration/MainMenu/M_user');
-		$this->load->model('OrderKebutuhanBarangDanJasa/Requisition/M_requisition');
-		$this->load->model('OrderKebutuhanBarangDanJasa/Approver/M_approver');
-		$this->load->model('OrderKebutuhanBarangDanJasa/Pengelola/M_pengelola');
-        	  
-        if ( $this->session->userdata('logged_in') != TRUE ) {
+        $this->load->library('session');
+        $this->load->model('SystemAdministration/MainMenu/M_user');
+        $this->load->model('OrderKebutuhanBarangDanJasa/Requisition/M_requisition');
+        $this->load->model('OrderKebutuhanBarangDanJasa/Approver/M_approver');
+        $this->load->model('OrderKebutuhanBarangDanJasa/Pengelola/M_pengelola');
+
+        if ($this->session->userdata('logged_in') != TRUE) {
             $this->load->helper('url');
             $this->session->set_userdata('last_page', current_url());
             $this->session->set_userdata('Responsbility', 'some_value');
         }
 
-        if ( $this->session->is_logged == FALSE ) {
+        if ($this->session->is_logged == FALSE) {
             redirect();
         }
     }
-    
+
     public function index()
-	{   
-		$user_id = $this->session->userid;
-		
-		$data['Menu'] = '';
-		$data['SubMenuOne'] = '';
-		
-		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
-        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-     
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
-        $this->load->view('OrderKebutuhanBarangDanJasa/V_Index',$data);
-        $this->load->view('V_Footer',$data);
+    {
+        $user_id = $this->session->userid;
+
+        $data['Menu'] = '';
+        $data['SubMenuOne'] = '';
+
+        $data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
+
+        $this->load->view('V_Header', $data);
+        $this->load->view('V_Sidemenu', $data);
+        $this->load->view('OrderKebutuhanBarangDanJasa/V_Index', $data);
+        $this->load->view('V_Footer', $data);
     }
 
     public function OpenedOrder()
@@ -48,13 +49,13 @@ class C_Pengelola extends CI_Controller {
         $user_id = $this->session->userid;
 
         $noind = $this->session->user;
-		
-		$data['Menu']       = 'Pengelola';
-		$data['SubMenuOne'] = 'Daftar Opened Order';
-		
-		$data['UserMenu']       = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
-        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+        $data['Menu']       = 'Pengelola';
+        $data['SubMenuOne'] = 'Daftar Opened Order';
+
+        $data['UserMenu']       = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
         $data['approver'] = $this->M_requisition->getPersonId($noind);
 
@@ -64,7 +65,7 @@ class C_Pengelola extends CI_Controller {
 
         foreach ($allOrder as $key => $order) {
             $checkOrder = $this->M_approver->checkOrder($order['ORDER_ID']);
-            if(isset($checkOrder[0])){
+            if (isset($checkOrder[0])) {
                 if ($checkOrder[0]['APPROVER_ID'] == $data['approver'][0]['PERSON_ID'] && $checkOrder[0]['APPROVER_TYPE'] == '7') {
                     $orderSiapTampil = $this->M_approver->getOrderToApprove($order['ORDER_ID']);
                     if ($orderSiapTampil[0]['ORDER_STATUS_ID'] != '4' && $orderSiapTampil[0]['ORDER_STATUS_ID'] != '5') {
@@ -74,8 +75,8 @@ class C_Pengelola extends CI_Controller {
             }
         }
 
-		$this->load->view('V_Header', $data);
-		$this->load->view('V_Sidemenu', $data);
+        $this->load->view('V_Header', $data);
+        $this->load->view('V_Sidemenu', $data);
         $this->load->view('OrderKebutuhanBarangDanJasa/Pengelola/V_OpenedOrder', $data);
         $this->load->view('V_Footer', $data);
     }
@@ -85,13 +86,13 @@ class C_Pengelola extends CI_Controller {
         $user_id = $this->session->userid;
 
         $noind = $this->session->user;
-		
-		$data['Menu']       = 'Opened Order';
-		$data['SubMenuOne'] = 'Daftar Opened Order Reguler';
-		
-		$data['UserMenu']       = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
-        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+        $data['Menu']       = 'Opened Order';
+        $data['SubMenuOne'] = 'Daftar Opened Order Reguler';
+
+        $data['UserMenu']       = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
         $data['approver'] = $this->M_requisition->getPersonId($noind);
 
@@ -106,7 +107,7 @@ class C_Pengelola extends CI_Controller {
 
         foreach ($allOrder as $key => $order) {
             $checkOrder = $this->M_approver->checkOrder($order['ORDER_ID']);
-            if(isset($checkOrder[0])){
+            if (isset($checkOrder[0])) {
                 if ($checkOrder[0]['APPROVER_ID'] == $data['approver'][0]['PERSON_ID'] && $checkOrder[0]['APPROVER_TYPE'] == '7') {
                     $orderSiapTampil = $this->M_approver->getOrderToApprove($order['ORDER_ID']);
                     if ($orderSiapTampil[0]['ORDER_STATUS_ID'] != '4' && $orderSiapTampil[0]['ORDER_STATUS_ID'] != '5') {
@@ -116,8 +117,8 @@ class C_Pengelola extends CI_Controller {
             }
         }
 
-		$this->load->view('V_Header', $data);
-		$this->load->view('V_Sidemenu', $data);
+        $this->load->view('V_Header', $data);
+        $this->load->view('V_Sidemenu', $data);
         $this->load->view('OrderKebutuhanBarangDanJasa/Pengelola/V_OpenedOrder', $data);
         $this->load->view('V_Footer', $data);
     }
@@ -127,13 +128,13 @@ class C_Pengelola extends CI_Controller {
         $user_id = $this->session->userid;
 
         $noind = $this->session->user;
-		
-		$data['Menu']       = 'Opened Order';
-		$data['SubMenuOne'] = 'Daftar Opened Order Emergency';
-		
-		$data['UserMenu']       = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
-        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+        $data['Menu']       = 'Opened Order';
+        $data['SubMenuOne'] = 'Daftar Opened Order Emergency';
+
+        $data['UserMenu']       = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
         $data['approver'] = $this->M_requisition->getPersonId($noind);
 
@@ -148,7 +149,7 @@ class C_Pengelola extends CI_Controller {
 
         foreach ($allOrder as $key => $order) {
             $checkOrder = $this->M_approver->checkOrder($order['ORDER_ID']);
-            if(isset($checkOrder[0])){
+            if (isset($checkOrder[0])) {
                 if ($checkOrder[0]['APPROVER_ID'] == $data['approver'][0]['PERSON_ID'] && $checkOrder[0]['APPROVER_TYPE'] == '7') {
                     $orderSiapTampil = $this->M_approver->getOrderToApprove($order['ORDER_ID']);
                     if ($orderSiapTampil[0]['ORDER_STATUS_ID'] != '4' && $orderSiapTampil[0]['ORDER_STATUS_ID'] != '5') {
@@ -159,8 +160,8 @@ class C_Pengelola extends CI_Controller {
             }
         }
 
-		$this->load->view('V_Header', $data);
-		$this->load->view('V_Sidemenu', $data);
+        $this->load->view('V_Header', $data);
+        $this->load->view('V_Sidemenu', $data);
         $this->load->view('OrderKebutuhanBarangDanJasa/Pengelola/V_OpenedOrder', $data);
         $this->load->view('V_Footer', $data);
     }
@@ -170,13 +171,13 @@ class C_Pengelola extends CI_Controller {
         $user_id = $this->session->userid;
 
         $noind = $this->session->user;
-		
-		$data['Menu']       = 'Opened Order';
-		$data['SubMenuOne'] = 'Daftar Opened Order Urgent';
-		
-		$data['UserMenu']       = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
-        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+        $data['Menu']       = 'Opened Order';
+        $data['SubMenuOne'] = 'Daftar Opened Order Urgent';
+
+        $data['UserMenu']       = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
         $data['approver'] = $this->M_requisition->getPersonId($noind);
 
@@ -191,7 +192,7 @@ class C_Pengelola extends CI_Controller {
 
         foreach ($allOrder as $key => $order) {
             $checkOrder = $this->M_approver->checkOrder($order['ORDER_ID']);
-            if(isset($checkOrder[0])){
+            if (isset($checkOrder[0])) {
                 if ($checkOrder[0]['APPROVER_ID'] == $data['approver'][0]['PERSON_ID'] && $checkOrder[0]['APPROVER_TYPE'] == '7') {
                     $orderSiapTampil = $this->M_approver->getOrderToApprove($order['ORDER_ID']);
                     if ($orderSiapTampil[0]['ORDER_STATUS_ID'] != '4' && $orderSiapTampil[0]['ORDER_STATUS_ID'] != '5') {
@@ -201,8 +202,8 @@ class C_Pengelola extends CI_Controller {
             }
         }
 
-		$this->load->view('V_Header', $data);
-		$this->load->view('V_Sidemenu', $data);
+        $this->load->view('V_Header', $data);
+        $this->load->view('V_Sidemenu', $data);
         $this->load->view('OrderKebutuhanBarangDanJasa/Pengelola/V_OpenedOrder', $data);
         $this->load->view('V_Footer', $data);
     }
@@ -212,13 +213,13 @@ class C_Pengelola extends CI_Controller {
         $user_id = $this->session->userid;
 
         $noind = $this->session->user;
-		
-		$data['Menu']       = 'Pengelola';
-		$data['SubMenuOne'] = 'Daftar Order Beli';
-		
-		$data['UserMenu']       = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
-        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+        $data['Menu']       = 'Pengelola';
+        $data['SubMenuOne'] = 'Daftar Order Beli';
+
+        $data['UserMenu']       = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
         $data['approver'] = $this->M_requisition->getPersonId($noind);
 
@@ -235,10 +236,10 @@ class C_Pengelola extends CI_Controller {
                 array_push($data['listOrder'], $orderSiapTampil[0]);
             }
         }
-     
-		$this->load->view('V_Header', $data);
-		$this->load->view('V_Sidemenu', $data);
-        $this->load->view('OrderKebutuhanBarangDanJasa/Pengelola/V_OrderBeli',$data);
+
+        $this->load->view('V_Header', $data);
+        $this->load->view('V_Sidemenu', $data);
+        $this->load->view('OrderKebutuhanBarangDanJasa/Pengelola/V_OrderBeli', $data);
         $this->load->view('V_Footer', $data);
     }
 
@@ -249,7 +250,7 @@ class C_Pengelola extends CI_Controller {
         // $person_id = $_POST['person_id'];
 
         // for ($i=0; $i < count($orderid); $i++) { 
-            
+
         //     $this->M_pengelola->TindakanPengelola($orderid[$i], $orderClass);
         //     $approval_position = $this->M_approver->checkPositionApprover($orderid[$i],$person_id);
         //     $orderStatus = $this->M_approver->checkFinishOrder($orderid[$i]);
@@ -265,14 +266,14 @@ class C_Pengelola extends CI_Controller {
         //             'ORDER_STATUS_ID' => '3',
         //          );
         //     }else {
-                
+
         //         $orderPos = array(
         //                             'APPROVE_LEVEL_POS' => $approval_position[0]['APPROVER_TYPE'],
         //                          );
         //     }
-            
+
         //     $this->M_approver->updatePosOrder($orderid[$i],$orderPos);
-            
+
         // }
 
         $orderid = $_POST['orderid'];
@@ -281,23 +282,23 @@ class C_Pengelola extends CI_Controller {
 
         $emailBatch = array();
 
-        for ($i=0; $i < count($orderid); $i++) { 
+        for ($i = 0; $i < count($orderid); $i++) {
             if ($orderClass != 'R') {
                 $judgement = 'A';
             }
 
-            $approve = array('JUDGEMENT' => $judgement, );
+            $approve = array('JUDGEMENT' => $judgement,);
 
             $this->M_approver->ApproveOrder($orderid[$i], $person_id, $approve);
-            
+
             if (isset($_POST['note'])) {
                 $classOrder = array(
-                    'ORDER_CLASS' => $orderClass, 
-                    'NOTE_TO_BUYER' => $_POST['note'], 
+                    'ORDER_CLASS' => $orderClass,
+                    'NOTE_TO_BUYER' => $_POST['note'],
                 );
             } else {
                 $classOrder = array(
-                    'ORDER_CLASS' => $orderClass, 
+                    'ORDER_CLASS' => $orderClass,
                 );
             }
 
@@ -317,24 +318,24 @@ class C_Pengelola extends CI_Controller {
         $emailBatch = array();
         $emailBackRequester = array();
 
-        for ($i=0; $i < count($orderid); $i++) { 
+        for ($i = 0; $i < count($orderid); $i++) {
             $ordid = explode("-", $orderid[$i]);
-            $approval_position = $this->M_approver->checkPositionApprover($ordid[0],$person_id);
+            $approval_position = $this->M_approver->checkPositionApprover($ordid[0], $person_id);
 
             if ($orderClass != 'R') {
                 $judgement = 'A';
             }
 
-            $approve = array('JUDGEMENT' => $judgement, );
+            $approve = array('JUDGEMENT' => $judgement,);
 
             $this->M_approver->ApproveOrderKaDep($ordid[0], $person_id, $approve);
-            
+
             // if ($ordid[1] != '' || $ordid[1]!= null) {
-                $classOrder = array(
-                    'ORDER_CLASS' => $orderClass, 
-                    'NOTE_TO_BUYER' => $ordid[1],
-                    'APPROVE_LEVEL_POS' => $approval_position[0]['APPROVER_TYPE'],
-                );
+            $classOrder = array(
+                'ORDER_CLASS' => $orderClass,
+                'NOTE_TO_BUYER' => $ordid[1],
+                'APPROVE_LEVEL_POS' => $approval_position[0]['APPROVER_TYPE'],
+            );
             // } else {
             //     $classOrder = array(
             //         'ORDER_CLASS' => $orderClass, 
@@ -364,53 +365,60 @@ class C_Pengelola extends CI_Controller {
             $normal = array();
             $urgent = array();
             $susulan = array();
-                
+
             $nApprover = $this->M_requisition->getNamaUser($key);
             $namaApprover = $nApprover[0]['nama'];
 
             $encrypt = $this->encrypt->encode($key);
-			$encrypt = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypt);
+            $encrypt = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypt);
 
-			$link = "<a href='".base_url("OrderKebutuhanBarangDanJasa/directEmail/$encrypt/")."'>Disini</a>";
-                
-            if ($nApprover[0]['jenkel'][0]=='L') {
+            $link = "<a href='" . base_url("OrderKebutuhanBarangDanJasa/directEmail/$encrypt/") . "'>Disini</a>";
+
+            if ($nApprover[0]['jenkel'][0] == 'L') {
                 $jklApprover = 'Bapak ';
-            }else {
+            } else {
                 $jklApprover = 'Ibu ';
             };
 
             $cond = "WHERE ppf.NATIONAL_IDENTIFIER = '$key'";
-            
+
             $getNoindFromOracle = $this->M_requisition->getNoind($cond);
 
-            $allOrder = $this->M_approver->getListDataOrder();
+            // $allOrder = $this->M_approver->getListDataOrder();
 
-            foreach ($allOrder as $key => $order) {
-                $checkOrder = $this->M_approver->checkOrder($order['ORDER_ID']);
-                if (isset($checkOrder[0])) {
-                    if ($checkOrder[0]['APPROVER_ID'] == $getNoindFromOracle[0]['PERSON_ID']) {
-                        $orderSiapTampil = $this->M_approver->getOrderToApprove($order['ORDER_ID']);
-                        if ($orderSiapTampil[0]['ORDER_CLASS'] != '2') {
-                            if ($orderSiapTampil[0]['URGENT_FLAG'] == 'N' && $orderSiapTampil[0]['IS_SUSULAN'] =='N') {
-                                array_push($normal, $orderSiapTampil[0]);
-                            }elseif ($orderSiapTampil[0]['URGENT_FLAG'] == 'Y' && $orderSiapTampil[0]['IS_SUSULAN'] =='N') {
-                                array_push($urgent, $orderSiapTampil[0]);
-                            }elseif ($orderSiapTampil[0]['IS_SUSULAN'] =='Y') {
-                                array_push($susulan, $orderSiapTampil[0]);
-                            }
-                        }
-                    }
-                }
-            }
+            // foreach ($allOrder as $key => $order) {
+            //     $checkOrder = $this->M_approver->checkOrder($order['ORDER_ID']);
+            //     if (isset($checkOrder[0])) {
+            //         if ($checkOrder[0]['APPROVER_ID'] == $getNoindFromOracle[0]['PERSON_ID']) {
+            //             $orderSiapTampil = $this->M_approver->getOrderToApprove($order['ORDER_ID']);
+            //             if ($orderSiapTampil[0]['ORDER_CLASS'] != '2') {
+            //                 if ($orderSiapTampil[0]['URGENT_FLAG'] == 'N' && $orderSiapTampil[0]['IS_SUSULAN'] == 'N') {
+            //                     array_push($normal, $orderSiapTampil[0]);
+            //                 } elseif ($orderSiapTampil[0]['URGENT_FLAG'] == 'Y' && $orderSiapTampil[0]['IS_SUSULAN'] == 'N') {
+            //                     array_push($urgent, $orderSiapTampil[0]);
+            //                 } elseif ($orderSiapTampil[0]['IS_SUSULAN'] == 'Y') {
+            //                     array_push($susulan, $orderSiapTampil[0]);
+            //                 }
+            //             }
+            //         }
+            //     }
+            // }
+            $array_normal = $this->M_approver->getOutstanding($key, 'NORMAL');
+            $array_urgent = $this->M_approver->getOutstanding($key, 'URGENT');
+            $array_susulan = $this->M_approver->getOutstanding($key, 'SUSULAN');
+
+            $normal = $array_normal[0]['TOTAL_BELUM_APPROVE'];
+            $urgent = $array_urgent[0]['TOTAL_BELUM_APPROVE'];
+            $susulan = $array_susulan[0]['TOTAL_BELUM_APPROVE'];
 
             $create = $pesan[0]['NATIONAL_IDENTIFIER'];
             // $getNoindFromOracle = $this->M_requisition->getNoind($create);
             $nCreator = $this->M_requisition->getNamaUser($create);
             $namaCreator = $nCreator[0]['nama'];
-            
-            if ($nCreator[0]['jenkel'][0]=='L') {
+
+            if ($nCreator[0]['jenkel'][0] == 'L') {
                 $jklCreator = 'Bapak ';
-            }else {
+            } else {
                 $jklCreator = 'Ibu ';
             };
 
@@ -430,35 +438,35 @@ class C_Pengelola extends CI_Controller {
                                 </tr>
                             </thead>
                             <tbody>";
-                        for ($i=0; $i < count($pesan); $i++) { 
-                            if ($pesan[$i]['URGENT_FLAG']=='Y' && $pesan[$i]['IS_SUSULAN'] =='N') {
-                                $statusOrder = 'Urgent';
-                                $bgColor = '#d73925';
-                            }else if($pesan[$i]['URGENT_FLAG']=='N' && $pesan[$i]['IS_SUSULAN'] =='N'){
-                                $statusOrder = 'Regular';
-                                $bgColor = '#009551';
-                            }elseif ($pesan[$i]['IS_SUSULAN'] =='Y') {
-                                $statusOrder = 'Emergency';
-                                $bgColor = '#da8c10';
-                            }
+            for ($i = 0; $i < count($pesan); $i++) {
+                if ($pesan[$i]['URGENT_FLAG'] == 'Y' && $pesan[$i]['IS_SUSULAN'] == 'N') {
+                    $statusOrder = 'Urgent';
+                    $bgColor = '#d73925';
+                } else if ($pesan[$i]['URGENT_FLAG'] == 'N' && $pesan[$i]['IS_SUSULAN'] == 'N') {
+                    $statusOrder = 'Regular';
+                    $bgColor = '#009551';
+                } elseif ($pesan[$i]['IS_SUSULAN'] == 'Y') {
+                    $statusOrder = 'Emergency';
+                    $bgColor = '#da8c10';
+                }
 
-                            if ($pesan[$i]['URGENT_REASON']=='') {
-                                $urgentReason = '-';
-                            }else{
-                                $urgentReason = $pesan[$i]['URGENT_REASON'];
-                            }
+                if ($pesan[$i]['URGENT_REASON'] == '') {
+                    $urgentReason = '-';
+                } else {
+                    $urgentReason = $pesan[$i]['URGENT_REASON'];
+                }
 
-                            $emailSendDate = date("d-M-Y");
-                            $pukul = date("h:i:sa");
-                            
-                            $itemDanDeskripsi = $pesan[$i]['SEGMENT1'].' - '.$pesan[$i]['DESCRIPTION'];
-                            $kodeBarang = $itemDanDeskripsi;
-                            $deskripsi = $pesan[$i]['ITEM_DESCRIPTION'];
-                            $qty = $pesan[$i]['QUANTITY'];
-                            $uom = $pesan[$i]['UOM'];
-                            $alasanPengadaan = $pesan[$i]['ORDER_PURPOSE'];
+                $emailSendDate = date("d-M-Y");
+                $pukul = date("h:i:sa");
 
-                            $body .="<tr>
+                $itemDanDeskripsi = $pesan[$i]['SEGMENT1'] . ' - ' . $pesan[$i]['DESCRIPTION'];
+                $kodeBarang = $itemDanDeskripsi;
+                $deskripsi = $pesan[$i]['ITEM_DESCRIPTION'];
+                $qty = $pesan[$i]['QUANTITY'];
+                $uom = $pesan[$i]['UOM'];
+                $alasanPengadaan = $pesan[$i]['ORDER_PURPOSE'];
+
+                $body .= "<tr>
                                         <td>$kodeBarang</td>
                                         <td>$deskripsi</td>
                                         <td>$qty</td>
@@ -467,19 +475,18 @@ class C_Pengelola extends CI_Controller {
                                         <td>$alasanPengadaan</td>
                                         <td>$urgentReason</td>
                                     </tr>";
-                        }
-                        $body .= "</body>";
-                        $body .= "</table> <br><br>";
-                        $body .= "<b>INFO :</b><br>";
-                        $body .= "Terdapat <b>".count($normal)." order regular, ".count($susulan)." order susulan, dan ". count($urgent)." order urgent</b> menunggu keputusan Anda!<br>";
-                        $body .= "Apabila Anda ingin mengambil tindakan terhadap Order tersebut, Anda dapat klik link <b>$link</b> <br><br>";
-                        $body .= "Demikian yang dapat kami sampaikan. Atas perhatian dan kerjasamanya kami ucapkan terima kasih. <br><br>";
-                        $body .= "<span style='font-size:10px;'>*Email ini dikirimkan secara otomatis oleh aplikasi <b>Order Kebutuhan Barang Dan Jasa</b> pada $emailSendDate pukul $pukul<br>";
-                        $body .= "*Apabila Anda menemukan kendala atau kesulitan maka dapat menghubungi Call Center ICT <b>12300 extensi 1. </span>";
+            }
+            $body .= "</body>";
+            $body .= "</table> <br><br>";
+            $body .= "<b>INFO :</b><br>";
+            $body .= "Terdapat <b>" . $normal . " order regular, " . $susulan . " order susulan, dan " . $urgent . " order urgent</b> menunggu keputusan Anda!<br>";
+            $body .= "Apabila Anda ingin mengambil tindakan terhadap Order tersebut, Anda dapat klik link <b>$link</b> <br><br>";
+            $body .= "Demikian yang dapat kami sampaikan. Atas perhatian dan kerjasamanya kami ucapkan terima kasih. <br><br>";
+            $body .= "<span style='font-size:10px;'>*Email ini dikirimkan secara otomatis oleh aplikasi <b>Order Kebutuhan Barang Dan Jasa</b> pada $emailSendDate pukul $pukul<br>";
+            $body .= "*Apabila Anda menemukan kendala atau kesulitan maka dapat menghubungi Call Center ICT <b>12300 extensi 1. </span>";
 
 
-                $this->EmailAlert($noindemail,$subject,$body);
-
+            $this->EmailAlert($noindemail, $subject, $body);
         }
 
         foreach ($emailBackRequester as $key => $pesanRequester) {
@@ -487,18 +494,18 @@ class C_Pengelola extends CI_Controller {
             $nRequester = $this->M_requisition->getNamaUser($key);
             $namaRequester = $nRequester[0]['nama'];
 
-            if ($nRequester[0]['jenkel'][0]=='L') {
+            if ($nRequester[0]['jenkel'][0] == 'L') {
                 $jklRequester = 'Bapak ';
-            }else {
+            } else {
                 $jklRequester = 'Ibu ';
             };
 
             $nApprover = $this->M_requisition->getNamaUser($noind);
             $namaApprover = $nApprover[0]['nama'];
 
-            if ($nApprover[0]['jenkel'][0]=='L') {
+            if ($nApprover[0]['jenkel'][0] == 'L') {
                 $jklApprover = 'Bapak ';
-            }else {
+            } else {
                 $jklApprover = 'Ibu ';
             };
 
@@ -508,6 +515,7 @@ class C_Pengelola extends CI_Controller {
             $body .= "<table border='1' style=' border-collapse: collapse;'>
                         <thead>
                             <tr>
+                                <th>Order Id</th>
                                 <th>Kode Barang</th>
                                 <th>Deskripsi Barang</th>
                                 <th>Quantity</th>
@@ -518,35 +526,37 @@ class C_Pengelola extends CI_Controller {
                             </tr>
                         </thead>
                         <tbody>";
-                            for ($i=0; $i < count($pesanRequester); $i++) { 
-                                if ($pesanRequester[$i]['URGENT_FLAG']=='Y' && $pesanRequester[$i]['IS_SUSULAN'] =='N') {
-                                    $statusOrder = 'Urgent';
-                                    $bgColor = '#d73925';
-                                }else if($pesanRequester[$i]['URGENT_FLAG']=='N' && $pesanRequester[$i]['IS_SUSULAN'] =='N'){
-                                    $statusOrder = 'Reguler';
-                                    $bgColor = '#009551';
-                                }elseif ($pesanRequester[$i]['IS_SUSULAN'] =='Y') {
-                                    $statusOrder = 'Emergency';
-                                    $bgColor = '#da8c10';
-                                }
+            for ($i = 0; $i < count($pesanRequester); $i++) {
+                if ($pesanRequester[$i]['URGENT_FLAG'] == 'Y' && $pesanRequester[$i]['IS_SUSULAN'] == 'N') {
+                    $statusOrder = 'Urgent';
+                    $bgColor = '#d73925';
+                } else if ($pesanRequester[$i]['URGENT_FLAG'] == 'N' && $pesanRequester[$i]['IS_SUSULAN'] == 'N') {
+                    $statusOrder = 'Reguler';
+                    $bgColor = '#009551';
+                } elseif ($pesanRequester[$i]['IS_SUSULAN'] == 'Y') {
+                    $statusOrder = 'Emergency';
+                    $bgColor = '#da8c10';
+                }
 
-                                if ($pesanRequester[$i]['URGENT_REASON']=='') {
-                                    $urgentReason = '-';
-                                }else{
-                                    $urgentReason = $pesanRequester[$i]['URGENT_REASON'];
-                                }
+                if ($pesanRequester[$i]['URGENT_REASON'] == '') {
+                    $urgentReason = '-';
+                } else {
+                    $urgentReason = $pesanRequester[$i]['URGENT_REASON'];
+                }
 
-                                $emailSendDate = date("d-M-Y");
-                                $pukul = date("h:i:sa");
-                                
-                                $itemDanDeskripsi = $pesanRequester[$i]['SEGMENT1'].' - '.$pesanRequester[$i]['DESCRIPTION'];
-                                $kodeBarang = $itemDanDeskripsi;
-                                $deskripsi = $pesanRequester[$i]['ITEM_DESCRIPTION'];
-                                $qty = $pesanRequester[$i]['QUANTITY'];
-                                $uom = $pesanRequester[$i]['UOM'];
-                                $alasanPengadaan = $pesanRequester[$i]['ORDER_PURPOSE'];
+                $emailSendDate = date("d-M-Y");
+                $pukul = date("h:i:sa");
 
-                                $body .="<tr>
+                $orderId = $pesanRequester[$i]['ORDER_ID'];
+                $itemDanDeskripsi = $pesanRequester[$i]['SEGMENT1'] . ' - ' . $pesanRequester[$i]['DESCRIPTION'];
+                $kodeBarang = $itemDanDeskripsi;
+                $deskripsi = $pesanRequester[$i]['ITEM_DESCRIPTION'];
+                $qty = $pesanRequester[$i]['QUANTITY'];
+                $uom = $pesanRequester[$i]['UOM'];
+                $alasanPengadaan = $pesanRequester[$i]['ORDER_PURPOSE'];
+
+                $body .= "<tr>
+                                            <td>$orderId</td>
                                             <td>$kodeBarang</td>
                                             <td>$deskripsi</td>
                                             <td>$qty</td>
@@ -555,7 +565,7 @@ class C_Pengelola extends CI_Controller {
                                             <td>$alasanPengadaan</td>
                                             <td>$urgentReason</td>
                                         </tr>";
-                            }
+            }
             $body .= "</body>";
             $body .= "</table> <br><br>";
             $body .= "Telah Disetujui oleh $jklApprover $namaApprover <br><br>";
@@ -564,7 +574,7 @@ class C_Pengelola extends CI_Controller {
             $body .= "*Apabila Anda menemukan kendala atau kesulitan maka dapat menghubungi Call Center ICT <b>12300 extensi 1. </span>";
 
 
-            $this->EmailAlert($noindemail,$subject,$body);
+            $this->EmailAlert($noindemail, $subject, $body);
         }
 
         echo 1;
@@ -591,37 +601,37 @@ class C_Pengelola extends CI_Controller {
         $charge_account_id = $this->M_pengelola->getChargeAccountId($itemkode);
 
         $order = array(
-                        'REQUESTOR_ID' => $pengelola[0]['PERSON_ID'],
-                        'INVENTORY_ITEM_ID' => $itemkode,
-                        'ITEM_DESCRIPTION' => $desc,
-                        'QUANTITY' => $quantity,
-                        'UOM' => $uom,
-                        'NOTE_TO_AGENT' => $note,
-                        'DESTINATION_TYPE_CODE' => $dest,
-                        'DESTINATION_ORGANIZATION_ID' => $org,
-                        'DELIVER_TO_LOCATION_ID' => $loc,
-                        'INTERFACE_SOURCE_CODE' => $interface_source_code[0]['INTERFACE_SOURCE_CODE'],
-                        'CHARGE_ACCOUNT_ID' => $charge_account_id[0]['CHARGE_ACCOUNT_ID'],
-                        'CATEGORY_ID' => $category_id[0]['CATEGORY_ID'],
-                        'PRE_REQ_STATUS_ID' => 4
-                    );
+            'REQUESTOR_ID' => $pengelola[0]['PERSON_ID'],
+            'INVENTORY_ITEM_ID' => $itemkode,
+            'ITEM_DESCRIPTION' => $desc,
+            'QUANTITY' => $quantity,
+            'UOM' => $uom,
+            'NOTE_TO_AGENT' => $note,
+            'DESTINATION_TYPE_CODE' => $dest,
+            'DESTINATION_ORGANIZATION_ID' => $org,
+            'DELIVER_TO_LOCATION_ID' => $loc,
+            'INTERFACE_SOURCE_CODE' => $interface_source_code[0]['INTERFACE_SOURCE_CODE'],
+            'CHARGE_ACCOUNT_ID' => $charge_account_id[0]['CHARGE_ACCOUNT_ID'],
+            'CATEGORY_ID' => $category_id[0]['CATEGORY_ID'],
+            'PRE_REQ_STATUS_ID' => 4
+        );
 
         $pre_requisition_id = $this->M_pengelola->PengelolaCreatePR($order, date("Y-m-d", strtotime($nbd)));
-        $approverPR = $this->M_pengelola->ApproverPR($noind,$itemkode);
+        $approverPR = $this->M_pengelola->ApproverPR($noind, $itemkode);
 
         foreach ($approverPR as $key => $approver) {
-            
+
             $appPR = array(
-                        'PRE_REQ_ID' => $pre_requisition_id[0]['PRE_REQ_ID'],
-                        'APPROVER_ID' => $approver['APPROVER'],
-                        'APPROVER_TYPE' => $approver['APPROVER_LEVEL'],
-                     );
+                'PRE_REQ_ID' => $pre_requisition_id[0]['PRE_REQ_ID'],
+                'APPROVER_ID' => $approver['APPROVER'],
+                'APPROVER_TYPE' => $approver['APPROVER_LEVEL'],
+            );
             $this->M_pengelola->setApproverPR($appPR);
         }
-        
-        for ($i=0; $i < count($orderid); $i++) { 
-            
-            $orderHead = array('PRE_REQ_ID' => $pre_requisition_id[0]['PRE_REQ_ID'], );
+
+        for ($i = 0; $i < count($orderid); $i++) {
+
+            $orderHead = array('PRE_REQ_ID' => $pre_requisition_id[0]['PRE_REQ_ID'],);
             $this->M_pengelola->updatePreReqId($orderid[$i], $orderHead);
         }
 
@@ -633,21 +643,21 @@ class C_Pengelola extends CI_Controller {
         $user_id = $this->session->userid;
 
         $noind = $this->session->user;
-		
-		$data['Menu']       = 'Pengelola';
-		$data['SubMenuOne'] = 'Daftar Requisition';
-		
-		$data['UserMenu']       = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
-        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+        $data['Menu']       = 'Pengelola';
+        $data['SubMenuOne'] = 'Daftar Requisition';
+
+        $data['UserMenu']       = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
         $data['approver'] = $this->M_requisition->getPersonId($noind);
 
         $data['monitoringRequisition'] = $this->M_pengelola->listRequisition($data['approver'][0]['PERSON_ID']);
         // echo '<pre>';
         // print_r($data['monitoringRequisition']);exit;
-		$this->load->view('V_Header', $data);
-		$this->load->view('V_Sidemenu', $data);
+        $this->load->view('V_Header', $data);
+        $this->load->view('V_Sidemenu', $data);
         $this->load->view('OrderKebutuhanBarangDanJasa/Pengelola/V_DaftarRequisition', $data);
         $this->load->view('V_Footer', $data);
     }
@@ -655,27 +665,27 @@ class C_Pengelola extends CI_Controller {
     public function getHistoryRequisition()
     {
         $pre_req = $this->input->post('pre_req_id');
-		$data	 = $this->M_pengelola->getHistoryRequisition($pre_req);
+        $data     = $this->M_pengelola->getHistoryRequisition($pre_req);
 
-		echo json_encode($data);
+        echo json_encode($data);
     }
 
     public function EmailAlert($noind, $subject, $body)
-	{
-		//email
-		$getEmail = $this->M_approver->getEmail($noind);
-		// echo 
-		// $emailUser = 'bondan_surya_n@quick.com';
-		
+    {
+        //email
+        $getEmail = $this->M_approver->getEmail($noind);
+        // echo 
+        // $emailUser = 'bondan_surya_n@quick.com';
+
         //send Email
-        
+
         if ($getEmail) {
             $emailUser = $getEmail[0]['EMAIL_INTERNAL'];
             $this->load->library('PHPMailerAutoload');
             $mail = new PHPMailer();
             $mail->SMTPDebug = 0;
             $mail->Debugoutput = 'html';
-            
+
             // set smtp
             $mail->isSMTP();
             $mail->Host = 'm.quick.com';
@@ -683,22 +693,23 @@ class C_Pengelola extends CI_Controller {
             $mail->SMTPAuth = true;
             $mail->SMTPSecure = 'ssl';
             $mail->SMTPOptions = array(
-                    'ssl' => array(
+                'ssl' => array(
                     'verify_peer' => false,
                     'verify_peer_name' => false,
-                    'allow_self_signed' => true)
-                    );
+                    'allow_self_signed' => true
+                )
+            );
             $mail->Username = 'no-reply';
             $mail->Password = '123456';
             $mail->WordWrap = 50;
-            
+
             // set email content
             $mail->setFrom('no-reply@quick.com', 'ERP OKEBAJA');
             $mail->addAddress($emailUser);
             $mail->Subject = $subject;
             $mail->msgHTML($body);
-    
-            
+
+
             if (!$mail->send()) {
                 // echo "Mailer Error: " . $mail->ErrorInfo;
                 exit();
@@ -706,23 +717,22 @@ class C_Pengelola extends CI_Controller {
                 // echo "Message sent!";
             }
         }
-
     }
-    
+
     public function RejectedOrder()
     {
         $user_id = $this->session->userid;
 
-		$noind = $this->session->user;
-		
-		$data['Menu'] = 'Pengelola';
-		$data['SubMenuOne'] = 'Daftar Rejected Order';
-		$data['SubMenuTwo'] = '';
-		
-		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
-        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-        
+        $noind = $this->session->user;
+
+        $data['Menu'] = 'Pengelola';
+        $data['SubMenuOne'] = 'Daftar Rejected Order';
+        $data['SubMenuTwo'] = '';
+
+        $data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
+
         $data['approver'] = $this->M_requisition->getPersonId($noind);
         $data['listOrder'] = array();
 
@@ -741,11 +751,11 @@ class C_Pengelola extends CI_Controller {
 
         // echo '<pre>';
         // print_r($data['approver']);exit;
-        
-        $this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
-        $this->load->view('OrderKebutuhanBarangDanJasa/Approver/V_OrderApproved',$data);
-        $this->load->view('V_Footer',$data);
+
+        $this->load->view('V_Header', $data);
+        $this->load->view('V_Sidemenu', $data);
+        $this->load->view('OrderKebutuhanBarangDanJasa/Approver/V_OrderApproved', $data);
+        $this->load->view('V_Footer', $data);
     }
 
     public function getUnapprovedOrderCount()
@@ -758,5 +768,4 @@ class C_Pengelola extends CI_Controller {
             ->set_content_type('application/json')
             ->set_output(json_encode($total_unapproved_order));
     }
-
 }

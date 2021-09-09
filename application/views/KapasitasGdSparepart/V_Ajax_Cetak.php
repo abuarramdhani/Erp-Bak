@@ -11,6 +11,7 @@
                 <th>No Dokumen</th>
                 <th>Jumlah Item</th>
                 <th>Jumlah Pcs</th>
+                <th>Catatan Marketing</th>
                 <th style="width: 200px;">PIC</th>
                 <th>Cetak</th>
             </tr>
@@ -55,7 +56,10 @@
                         <?= $val['JUMLAH_PCS']?>
                     </td>
                     <td class="<?= $td?>">
-                    <?php 
+                        <?= $val['KETERANGAN_MKT']?>
+                    </td>
+                    <td class="<?= $td?>">
+                    <?php
                         foreach($noind as $n) {
                             if ($n['noind'] == $val['PIC_PELAYAN']) {
                                 $nama = $n['nama'];
@@ -66,8 +70,9 @@
                         <?= $val['PIC_PELAYAN'] ?><br><?= $nama ?>
                     </td>
                     <td class="<?= $td?>">
-                        <a href="<?php echo base_url('KapasitasGdSparepart/Pelayanan/cetakPL/'.$val['NO_DOKUMEN']) ?>" target="_blank" class="btn btn-danger btn-md"><i class="fa fa-file-pdf-o"> PL</i></a>
-                        <a href="<?php echo base_url('KapasitasGdSparepart/Pelayanan/cetakSM/'.$val['NO_DOKUMEN']) ?>" target="_blank" class="btn btn-info btn-md"><i class="fa fa-file-pdf-o"> SM</i></a>
+                        <a href="<?php echo base_url('KapasitasGdSparepart/Pelayanan/cetakPL/'.$val['NO_DOKUMEN']) ?>" target="_blank" class="btn btn-danger btn-md"><i class="fa fa-file-pdf-o"> PL1</i></a>
+                        <a style="margin-top:2px;" href="<?php echo base_url('KapasitasGdSparepart/Pelayanan/cetakPL2/'.$val['NO_DOKUMEN']) ?>" target="_blank" class="btn btn-danger btn-md"><i class="fa fa-file-pdf-o"> PL2</i></a>
+                        <a style="margin-top:2px;" href="<?php echo base_url('KapasitasGdSparepart/Pelayanan/cetakSM/'.$val['NO_DOKUMEN']) ?>" target="_blank" class="btn btn-info btn-md"><i class="fa fa-file-pdf-o"> SM</i></a>
                     </td>
                 </tr>
             <?php $no++; $i++; } ?>
@@ -80,5 +85,5 @@
 <script type="text/javascript">
   $('#tblCetak').DataTable({
     drawCallback: function(dt) { }
-  });  
+  });
 </script>

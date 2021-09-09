@@ -191,7 +191,9 @@ class M_absenatasan extends CI_Model
 			}else{
 				$result2 = array_merge(array_values($result2),array_values($result3));
 			}
-
+			// echo json_encode($result2);
+			// echo $sql3;
+			// exit();
 		} else if ($jabatan == '3') {
 			$sql4 = "SELECT 
 						a.noind employee_code, a.nama employee_name

@@ -58,7 +58,7 @@ class M_input extends CI_Model
     public function getInputKIB($atr, $subinv) {
         $oracle = $this->load->database('oracle', true);
         $sql = "SELECT kk.kibcode no_interorg, msib.segment1 item, msib.description,
-        msib.primary_uom_code uom, wdj.quantity_completed qty, kk.qty_kib qbt,
+        msib.primary_uom_code uom, wdj.quantity_completed qty, --kk.qty_kib qbt,
         kk.verify_date creation_date, bor.attribute1 subinv
    FROM khs_kib kk,
         bom_operational_routings bor,
@@ -74,7 +74,19 @@ class M_input extends CI_Model
     AND kk.order_id = wdj.wip_entity_id
     AND kk.primary_item_id = wdj.primary_item_id
     AND bor.attribute1 = '$subinv'
-    $atr";
+    and kk.KIBCODE LIKE '%$atr%'
+UNION
+SELECT kkk.kibcode no_interorg, msib.segment1 item, msib.description,
+       msib.primary_uom_code uom, --wdj.quantity_completed qty, 
+       kkk.qty_kib qty,
+       kkk.verify_date creation_date, kkk.to_subinventory_code subinv
+  FROM khs_kib_kanban kkk, mtl_system_items_b msib --, wip_discrete_jobs wdj
+ WHERE kkk.primary_item_id = msib.inventory_item_id
+   AND kkk.organization_id = msib.organization_id
+--   AND kkk.order_id = wdj.wip_entity_id
+--   AND kkk.primary_item_id = wdj.primary_item_id
+   AND kkk.to_subinventory_code = '$subinv'
+   AND kkk.kibcode LIKE '%$atr%'";
         // $sql = "
         //         select kk.KIBCODE no_interorg
         //                 ,msib.SEGMENT1 item
@@ -407,13 +419,13 @@ class M_input extends CI_Model
       return $query->result_array();
     }
 
-    public function ceknoKIB($no_document){
-        $oracle = $this->load->database('oracle', true);
-      $sql = "SELECT NO_DOCUMENT FROM KHS_MONITORING_GD_SP WHERE NO_DOCUMENT = 'PACKG$no_document'";
+    // public function ceknoKIB($no_document){
+    //     $oracle = $this->load->database('oracle', true);
+    //   $sql = "SELECT NO_DOCUMENT FROM KHS_MONITORING_GD_SP WHERE NO_DOCUMENT = 'PACKG$no_document'";
 
-      $query = $oracle->query($sql);
-      return $query->result_array();
-    }
+    //   $query = $oracle->query($sql);
+    //   return $query->result_array();
+    // }
 
 }
 

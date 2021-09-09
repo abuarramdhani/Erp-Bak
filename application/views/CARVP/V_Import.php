@@ -80,6 +80,7 @@
                                                             <td class="text-center"><input type="hidden" name="car_rootcause_category[]" value="<?= $v['rootcause_category'] ?>" /><?= $v['rootcause_category'] ?></td>
                                                             <td class="text-center"><input type="hidden" name="car_car_type[]" value="<?= $v['car_type'] ?>" /><?= $v['car_type'] ?></td>
                                                             <td class="text-center"><input type="hidden" name="car_nc_scope[]" value="<?= $v['nc_scope'] ?>" /><?= $v['nc_scope'] ?></td>
+                                                            <input type="hidden" name="date_source[]" value="<?= $v['date_source'] ?>" />
                                                         </tr>
                                                     <?php $i++;
                                                     } ?>

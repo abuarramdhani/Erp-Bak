@@ -3,6 +3,11 @@ var master = document.getElementById("tbl_master_category");
     if(master){
       getMasterCategory(this);
     }
+
+var masterqty = document.getElementById("tbl_master_quantity");
+    if(masterqty){
+        getMasterQuantity(this);
+    }
       
 var simulasi = document.getElementById("tbl_simulasi_produksi");
     if(simulasi){
@@ -37,6 +42,31 @@ var user = document.getElementById("tbl_usermng");
             }
         }
     });	 
+
+    
+    $(".getitemqty").select2({
+        allowClear: true,
+        placeholder: "pilih Item",
+        minimumInputLength: 3,
+        ajax: {
+            url: baseurl + "MonitoringJobProduksi/MasterKategori/getkodeitem",
+            dataType: 'json',
+            type: "GET",
+            data: function (params) {
+                    var queryParameters = {
+                            term: params.term,
+                    }
+                    return queryParameters;
+            },
+            processResults: function (data) {
+                return {
+                    results: $.map(data, function (obj) {
+                        return {id:obj.INVENTORY_ITEM_ID, text:obj.SEGMENT1+' - '+obj.DESCRIPTION};
+                    })
+                };
+            }
+        }
+    });	
 });
 
 //-----------------------------------------------MONITORING---------------------------------------------------------------------------------
@@ -75,10 +105,13 @@ function schMonJob(ket) {
             if (nomor != undefined) {
                 getWipMonitoring(1, nomor);
                 getGdMonitoring(1, nomor);
-                // getPickMonitoring(1, nomor);
+                getCompMonitoring(1, nomor);
+                getAvPickMonitoring(1, nomor);
                 $('.loadingwip').html('<center><img style="width:30px; height:auto" src="'+baseurl+'assets/img/gif/loading5.gif"></center>' );
                 $('.loadingpick').html('<center><img style="width:30px; height:auto" src="'+baseurl+'assets/img/gif/loading5.gif"></center>' );
                 $('.loadinggd').html('<center><img style="width:30px; height:auto" src="'+baseurl+'assets/img/gif/loading5.gif"></center>' );
+                $('.loadingcomp').html('<center><img style="width:30px; height:auto" src="'+baseurl+'assets/img/gif/loading5.gif"></center>' );
+                $('.loadingavpick').html('<center><img style="width:30px; height:auto" src="'+baseurl+'assets/img/gif/loading5.gif"></center>' );
             }
         }
     })
@@ -96,6 +129,14 @@ function getWipMonitoring(no, batas) {
                 // console.log(result,no)
                 $('[name = "ini_wip'+no+'"]').html('<b>WIP :</b> '+result+'')
                 $('[name ="wip'+no+'"]').val(result);
+                var jumlah      = $('.val_wip').map(function(){return $(this).val();}).get();
+                var sumjml      = jumlah.map( function(elt){ // assure the value can be converted into a number
+                                        return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
+                                    }).reduce( function(a,b){ // sum all resulting numbers
+                                        return a+b
+                                    })
+                // console.log(sumjml/2)
+                $('.jml_all_wip').html('<b>WIP :</b> '+(sumjml/2)+'')
                 getWipMonitoring((no+1), batas);
             }
         })
@@ -116,7 +157,41 @@ function getPickMonitoring(no, batas) {
                 // console.log(result,no)
                 $('[name = "ini_pick'+no+'"]').html('<b>Picklist :</b> '+result+'')
                 $('[name ="picklist'+no+'"]').val(result);
+                var jumlah      = $('.val_picklist').map(function(){return $(this).val();}).get();
+                var sumjml      = jumlah.map( function(elt){ // assure the value can be converted into a number
+                                        return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
+                                    }).reduce( function(a,b){ // sum all resulting numbers
+                                        return a+b
+                                    })
+                // console.log(sumjml/2)
+                $('.jml_all_pick').html('<b>Picklist :</b> '+(sumjml/2)+'')
                 getPickMonitoring((no+1), batas);
+            }
+        })
+    }
+}
+
+function getCompMonitoring(no, batas) {
+    if (no <= batas) {
+        var item = $('#item'+no).val();
+        $.ajax ({
+            url : baseurl + "MonitoringJobProduksi/Monitoring/searchcompmonitoring",
+            data : {item : item},
+            dataType : 'json',
+            type : 'POST',
+            success : function (result) {
+                // console.log(result,no)
+                $('[name = "ini_comp'+no+'"]').html('<b>Completion :</b> '+result+'')
+                $('[name ="completion'+no+'"]').val(result);
+                var jumlah      = $('.val_completion').map(function(){return $(this).val();}).get();
+                var sumjml      = jumlah.map( function(elt){ // assure the value can be converted into a number
+                                        return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
+                                    }).reduce( function(a,b){ // sum all resulting numbers
+                                        return a+b
+                                    })
+                // console.log(sumjml/2)
+                $('.jml_all_comp').html('<b>Completion :</b> '+(sumjml/2)+'')
+                getCompMonitoring((no+1), batas);
             }
         })
     }
@@ -125,17 +200,46 @@ function getPickMonitoring(no, batas) {
 function getGdMonitoring(no, batas) {
     if (no <= batas) {
         var item = $('#item'+no).val();
+        var  kategori   = $('#kategori').val();
         $.ajax ({
             url : baseurl + "MonitoringJobProduksi/Monitoring/searchgdmonitoring",
+            data : {item : item, kategori : kategori},
+            dataType : 'json',
+            type : 'POST',
+            success : function (result) {
+                // console.log(result,no)
+                if (result[0][0] != '') {
+                    var gd1 = '<b>'+result[0][0]+' :</b> '+result[0][1]+'';
+                }else{
+                    var gd1 = '';
+                }
+                if (result[1][0] != '') {
+                    var gd2 = '<br><b>'+result[1][0]+':</b> '+result[1][1]+'';
+                }else{
+                    var gd2 = '';
+                }
+                $('[name = "ini_gd'+no+'"]').html(gd1+gd2)
+                $('[name ="gudang1'+no+'"]').val(result[0][1]);
+                $('[name ="gudang2'+no+'"]').val(result[1][1]);
+                getGdMonitoring((no+1), batas);
+            }
+        })
+    }
+}
+
+function getAvPickMonitoring(no, batas) {
+    if (no <= batas) {
+        var item = $('#item'+no).val();
+        $.ajax ({
+            url : baseurl + "MonitoringJobProduksi/Monitoring/searchavpickmonitoring",
             data : {item : item},
             dataType : 'json',
             type : 'POST',
             success : function (result) {
                 // console.log(result,no)
-                $('[name = "ini_gd'+no+'"]').html('<b>FG-TKS :</b> '+result[0]+'<br><b>MLATI-DM :</b> '+result[1]+'')
-                $('[name ="fg_tks'+no+'"]').val(result[0]);
-                $('[name ="mlati'+no+'"]').val(result[1]);
-                getGdMonitoring((no+1), batas);
+                $('[name = "ini_avpick'+no+'"]').html('<b>Available Picklist :</b></span><br><span style="font-size:35px">'+result+'</span>')
+                $('[name ="av_pick'+no+'"]').val(result);
+                getAvPickMonitoring((no+1), batas);
             }
         })
     }
@@ -402,7 +506,7 @@ function schSetPlan(th) {
     })
 }
 
-function sumSetplan(no, tgl) {
+function sumSetplan(no, tgl, inv) {
     // var bulan   = $('#bulan'+no).val();
     // var id_plan = $('#id_plan'+no).val();
     // var item    = $('#item'+no).val();
@@ -415,16 +519,105 @@ function sumSetplan(no, tgl) {
       return a+b
     })
     $('#jml'+no).html(sumplan);
+    
+    if ($('#plan'+inv+'_'+tgl).val() != '') {
+        $('#ket'+inv+'_'+tgl).val(1);
+    }else{
+        $('#ket'+inv+'_'+tgl).val(0);
+    }
+}
 
-    // console.log(sumplan)
-    // $.ajax({
-    //     type: "POST",
-    //     data: { bulan: bulan, item : item, plan : plan, tgl : tgl, id_plan : id_plan},
-    //     url: baseurl + "MonitoringJobProduksi/SetPlan/saveSetPlan",
-    //     // success: function (result) {
-    //     //     console.log(result);
-    //     // },
-    // });
+function create_job_otomatis(th) {
+    var kategori    = $('#kategori').val();
+    var bulan       = $('#periode_bulan').val();
+    var item        = $('[name="kode_item[]"]').map(function(){return $(this).val();}).get();
+    var inv         = $('[name="item[]"]').map(function(){return $(this).val();}).get();
+    var plan_all    = $('[name="plan[]"]').map(function(){return $(this).val();}).get();
+    var subcategory = $('[name="kode_subcategory[]"]').map(function(){return $(this).val();}).get();
+    $('#ket_create_job').html('Loading.. <i class="fa fa-spinner fa-spin"></i>');
+    $.ajax({
+        url : baseurl + "MonitoringJobProduksi/SetPlan/create_job2",
+        data : {
+            kategori : kategori,
+            bulan : bulan,
+            item : item,
+            inv : inv,
+            plan : plan_all,
+            subcategory : subcategory
+        },
+        type : 'post',
+        dataType : 'html',
+        success : function (result) {
+            console.log('sudah insert');
+            $.ajax({
+                url : baseurl+"MonitoringJobProduksi/SetPlan/count_job",
+                data : {kategori : kategori, bulan : bulan},
+                type : 'POST',
+                dataType : 'JSON',
+                success : function (jml_job) {
+                    console.log(jml_job, Math.ceil(jml_job[0]));
+                    if (jml_job[1] == Math.ceil(jml_job[0])) {
+                        $('#ket_create_job').html(jml_job[1]+'/'+jml_job[0]+' <i class="fa fa-check" style="color:green"></i>');
+                    }else{
+                        $('#ket_create_job').html('0/'+jml_job[0]+' <i class="fa fa-spinner fa-spin"></i>');  
+                        
+                        //timer waktu create job
+                        var totalSeconds = 0;
+                        var timer = null;                        
+                        function setTime() {
+                            totalSeconds++;
+                            var menitnya = totalSeconds - pad(parseInt(totalSeconds / 3600)) * 3600;
+                            // $('#timer_create_job').html(''+pad(parseInt(totalSeconds / 3600))+':'+(pad(parseInt(menitnya / 60)))+':'+pad(totalSeconds % 60)+'')
+                            // console.log((pad(parseInt(totalSeconds / 3600))), (pad(parseInt(menitnya / 60))), (pad(totalSeconds % 60)));
+                        }
+                        
+                        function pad(val) {
+                            var valString = val + "";
+                            if (valString.length < 2) {
+                            return "0" + valString;
+                            } else {
+                            return valString;
+                            }
+                        }
+                        if (!timer) {
+                            timer = setInterval(setTime, 1000);
+                        }
+                        //run api
+                        var present = null
+                        $.ajax({
+                            url : baseurl+"MonitoringJobProduksi/SetPlan/runAPICreateJob",
+                            data : {kategori : kategori, bulan : bulan},
+                            type : 'POST',
+                            dataType : 'json',
+                            cache : false,
+                            beforeSend: function() {
+                                var jumelah = 0;
+                                if (!present) {
+                                    present = setInterval(function(){ // looping tambah jumlah job sukses tiap 20s
+                                        console.log('masuk setinterval')
+                                        if (jumelah == (Math.ceil(jml_job[0]) - 1)) {
+                                            $('#ket_create_job').html(jumelah+'/'+jml_job[0]+' <i class="fa fa-spinner fa-spin"></i>');
+                                        }else{
+                                            jumelah = parseInt(jumelah) + 1;
+                                            $('#ket_create_job').html(jumelah+'/'+jml_job[0]+' <i class="fa fa-spinner fa-spin"></i>');
+                                        }
+                                    }, 20000);
+                                }
+                            },
+                            success : function (result) {
+                                console.log('sukses api', result)
+                                clearInterval(present);
+                                clearInterval(timer);
+                                $('#ket_create_job').html(result+'/'+jml_job[0]+' <i class="fa fa-check" style="color:green"></i>');
+                            }
+                        });    
+                    }
+
+                }
+            })
+        }
+    })
+    
 }
 
 //------------------------------------------------------ITEM LIST-----------------------------------------------------------------
@@ -622,6 +815,22 @@ function getMasterCategory(th) {
         }
     })
 }
+function getMasterQuantity(th) {
+    $.ajax({
+        url : baseurl + "MonitoringJobProduksi/MasterKategori/search_master_qty",
+        dataType : 'html',
+        type : 'POST',
+        beforeSend: function() {
+        $('div#tbl_master_quantity' ).html('<center><img style="width:100px; height:auto" src="'+baseurl+'assets/img/gif/loading12.gif"></center>' );
+        },
+        success : function(data) {
+            $('div#tbl_master_quantity' ).html(data);
+            $('#tb_master_qty').dataTable({
+                "scrollX": true,
+            });
+        }
+    })
+}
 
 function deletecategory(no) {
     var id          = $('#id_kategori'+no).val();
@@ -664,6 +873,28 @@ function editcategory(no) {
         success: function(data) {
             $('#mdl_masterctgr').modal('show');
             $('#data_masterctgr').html(data);
+            
+            $(".getsubinv2").select2({
+                allowClear: true,
+                ajax: {
+                    url: baseurl + "MonitoringJobProduksi/LaporanProduksi/getSubinv",
+                    dataType: 'json',
+                    type: "GET",
+                    data: function (params) {
+                            var queryParameters = {
+                                    term: params.term,
+                            }
+                            return queryParameters;
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: $.map(data, function (obj) {
+                                return {id:obj.SECONDARY_INVENTORY_NAME, text:obj.SECONDARY_INVENTORY_NAME};
+                            })
+                        };
+                    }
+                }
+            });	
         }
     })
     // Swal.fire({
@@ -741,14 +972,15 @@ function updateCategory() {
     var id          = $('#id_kategori').val();
     var kategori    = $('#kategorii').val();
     var sub_kategori = $('[name="sub_kategori2[]"]').map(function(){return $(this).val();}).get();
+    var gudang      = $('[name="gudang[]"]').map(function(){return $(this).val();}).get();
     $.ajax({
         url : baseurl + "MonitoringJobProduksi/MasterKategori/updateCategory",
-        data: {id : id,kategori : kategori, sub_kategori : sub_kategori},
+        data: {id : id,kategori : kategori, sub_kategori : sub_kategori, gudang : gudang},
         type : "POST",
         dataType: "html",
         success: function(data) {
             $('#mdl_masterctgr').modal('hide');
-            window.location.reload();
+            getMasterCategory(this)
         }
     })
 }
@@ -764,9 +996,9 @@ function tmb_subkategori() {
 
 var j = 2;
 function tmb_subkategori2() {
-    $('#tambah_subkategori2').append('<div class="tambah_subkategori2"><div class="col-md-3 text-right"></div><div class="col-md-6"><input name="sub_kategori2[]" class="form-control" style="text-transform:uppercase" placeholder="Masukkan SubKategori"></div><div class="col-md-1"><button type="button" class="btn bg-default tombolhapus'+j+'" style="margin-left:15px"><i class="fa fa-minus"></i></button></div><br><br></div>');
+    $('#tambah_subkategori2').append('<div class="tambah_subkategori2"><div class="col-md-2 text-right"></div><div class="col-md-8"><input name="sub_kategori2[]" class="form-control" style="text-transform:uppercase" placeholder="Masukkan SubKategori"></div><div class="col-md-1"><button type="button" class="btn bg-default tombolhapus'+j+'" style="margin-left:15px"><i class="fa fa-minus"></i></button></div><br><br></div>');
 
-    $(document).on('click', '.tombolhapus'+i,  function() {
+    $(document).on('click', '.tombolhapus'+j,  function() {
 		$(this).parents('.tambah_subkategori2').remove()
 	});
 }
@@ -786,6 +1018,136 @@ function save_bulan(bulan, id) {
         type : "POST",
         dataType: "html"
     })
+}
+
+function inputQuantityItem(th) {
+    $.ajax({
+        url : baseurl + "MonitoringJobProduksi/MasterKategori/input_quantity",
+        type : "POST",
+        dataType: "html",
+        success: function(data) {
+            $('#mdl_masterctgr').modal('show');
+            $('#data_masterctgr').html(data);
+            $(".getitemqty").select2({
+                allowClear: true,
+                placeholder: "pilih Item",
+                minimumInputLength: 3,
+                ajax: {
+                    url: baseurl + "MonitoringJobProduksi/MasterKategori/getkodeitem",
+                    dataType: 'json',
+                    type: "GET",
+                    data: function (params) {
+                            var queryParameters = {
+                                    term: params.term,
+                            }
+                            return queryParameters;
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: $.map(data, function (obj) {
+                                return {id:obj.INVENTORY_ITEM_ID, text:obj.SEGMENT1+' - '+obj.DESCRIPTION};
+                            })
+                        };
+                    }
+                }
+            });	
+        }
+    })
+}
+
+function importQuantityItem(th) {
+    $.ajax({
+        url : baseurl + "MonitoringJobProduksi/MasterKategori/import_quantity",
+        type : "POST",
+        dataType: "html",
+        success: function(data) {
+            $('#mdl_masterctgr').modal('show');
+            $('#data_masterctgr').html(data);
+        }
+    })
+}
+
+function saveQuantityItem(th) {
+    var item   = $('#kode_item').val();
+    var qty    = $('#qty_item').val();
+    $.ajax({
+        url : baseurl + "MonitoringJobProduksi/MasterKategori/saveQuantityItem",
+        data: {item : item, qty : qty},
+        type : "POST",
+        dataType: "html",
+        success: function(data) {
+            $('#mdl_masterctgr').modal('hide');
+            // $('#kode_item').select2('val', '');
+            // $('#qty_item').val('');
+            getMasterQuantity(this);
+        }
+    }) 
+}
+
+function editmasterqty(no) {
+    var item   = $('#item'+no).val();
+    var inv   = $('#inv'+no).val();
+    var qty    = $('#qty'+no).val();
+    
+	Swal.fire({
+		title: 'Edit Quantity Item',
+        html : `<span style="margin-left:-10px">Kode Item : `+item+`</span>
+                <br><span style="margin-left:-145px">Quantity : `+qty+`</span>`,
+		// type: 'success',
+		input: 'number',
+		inputAttributes: {
+			autocapitalize: 'off'
+		},
+		showCancelButton: true,
+		confirmButtonText: 'Submit',
+		showLoaderOnConfirm: true,
+	}).then(result => {
+		if (result.value) {
+        var val = result.value;
+        $.ajax({
+            url : baseurl + "MonitoringJobProduksi/MasterKategori/updateQuantity",
+            data: {id_item : inv,qty : val,},
+            type : "POST",
+            dataType: "html",
+            success: function(data) {
+                Swal.fire({
+                    title: 'Quantity berhasil diedit!',
+                    type: 'success',
+                    allowOutsideClick: false
+                }).then(result => {
+                    if (result.value) {
+                        getMasterQuantity(this);
+                }})  
+            }
+        })
+	}})
+}
+
+function deletemasterqty(inv) {
+    Swal.fire({
+        title: 'Apakah Anda Yakin?',
+        type: 'question',
+        showCancelButton: true,
+        allowOutsideClick: false
+    }).then(result => {
+        if (result.value) {  
+            $.ajax({
+                url : baseurl + "MonitoringJobProduksi/MasterKategori/deleteitemQuantity",
+                data: {inv : inv},
+                type : "POST",
+                dataType: "html",
+                success: function(data) {
+                    Swal.fire({
+                        title: 'Data Berhasil di Hapus!',
+                        type: 'success',
+                        allowOutsideClick: false
+                    }).then(result => {
+                        if (result.value) {
+                            getMasterQuantity(this);
+                    }})  
+                }
+            })
+    }})  
 }
 
 //------------------------------------------------- USER MANAGEMENT ------------------------------------------------------------------

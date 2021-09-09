@@ -64,9 +64,8 @@ class C_Cetakkategori extends CI_Controller
         $jenkel = $this->input->POST('jenkel');
         $lokasi = $this->input->POST('lokasi');
         $kategori = $this->input->POST('kategori');
-
         $select = $this->input->POST('arrselect');
-        $data['select'] = explode(', ', $select);
+        $data['select'] = explode(';', $select);
         $rangekeluarstart = $this->input->POST('rangekeluarstart');
         $rangekeluarend = $this->input->POST('rangekeluarend');
         $rangemasukstart = $this->input->POST('rangemasukstart');
@@ -74,9 +73,145 @@ class C_Cetakkategori extends CI_Controller
         $status = $this->input->POST('status');
         $data['masakerja'] = "," . $this->input->POST('masakerja');
         $masakerja = $this->input->POST('masakerja');
-
+        $this->session->set_userdata('list_filter', [$kodeind, $pend, $jenkel, $lokasi, $kategori, trim($select), $rangekeluarstart, $rangekeluarend, $rangemasukstart, $rangemasukend, $status, $masakerja]);
         $data['FilterAktif'] = $this->M_cetakkategori->GetFilter($kodeind, $pend, $jenkel,  $lokasi, $kategori, $select, $rangekeluarstart, $rangekeluarend,  $rangemasukstart, $rangemasukend, $status, $masakerja);
         $html = $this->load->view('MasterPekerja/CetakKategori/V_Table', $data);
         echo json_encode($html);
+    }
+    // Utilities Function Don't Call it In The Uri
+    private function createColumnsArray($end_column, $first_letters = '')
+    {
+        $columns = array();
+        $length = strlen($end_column);
+        $letters = range('A', 'Z');
+        foreach ($letters as $letter) {
+            $column = $first_letters . $letter;
+            $columns[] = $column;
+            if ($column == $end_column)
+                return $columns;
+        }
+        foreach ($columns as $column) {
+            if (!in_array($end_column, $columns) && strlen($column) < $length) {
+                $new_columns = $this->createColumnsArray($end_column, $column);
+                $columns = array_merge($columns, $new_columns);
+            }
+        }
+        return $columns;
+    }
+
+    private function rangeWL($length = null)
+    {
+        $end_column = $this->createColumnsArray('ZZ');
+        return $this->createColumnsArray($end_column[$length]);
+    }
+    public function exportExcel()
+    {
+        $list_filter = $this->session->list_filter;
+        set_time_limit(0);
+        ini_set('precision', '17');
+        $kodeind = $list_filter[0];
+        $pend = $list_filter[1];
+        $jenkel = $list_filter[2];
+        $lokasi = $list_filter[3];
+        $kategori = $list_filter[4];
+        $select = $list_filter[5];
+        $rangekeluarstart = $list_filter[6];
+        $rangekeluarend = $list_filter[7];
+        $rangemasukstart = $list_filter[8];
+        $rangemasukend = $list_filter[9];
+        $status = $list_filter[10];
+        $masakerja = $list_filter[11];
+        $dataheader = explode(', ', $this->input->get('dataHeader'));
+        $data = $this->M_cetakkategori->GetFilter($kodeind, $pend, $jenkel,  $lokasi, $kategori, $select, $rangekeluarstart, $rangekeluarend,  $rangemasukstart, $rangemasukend, $status, $masakerja);
+
+        $this->load->library(array('Excel', 'Excel/PHPExcel/IOFactory'));
+        $worksheet = new PHPExcel();
+        $worksheet = $this->excel->getActiveSheet();
+
+        $worksheet->setCellValue('A2', 'DATA PEKERJA');
+
+        if (!empty($data) && !empty($dataheader)) {
+            $cell = $this->rangeWL(count($data[0]) - 1);
+            foreach ($cell as $cellk => $cellv) {
+                if ($cellk > count($dataheader) - 1) break;
+                $worksheet->setCellValue($cellv . '5', $dataheader[$cellk]);
+            }
+
+            $highestCell = $worksheet->getHighestColumn();
+
+            if (array_key_exists('nama_keluarga', $data[0])) {
+                $worksheet->setCellValue($cell[array_search($highestCell, $cell) + 1] . '5', 'Nama Keluarga');
+                $worksheet->setCellValue($cell[array_search($highestCell, $cell) + 2] . '5', 'Status Keluarga');
+            }
+
+            $rowStart = 6;
+            $rowStartnamk = 6;
+            $rowStartstatk = 6;
+
+            foreach ($data as $datav) {
+                $cellInd = 0;
+                foreach ($datav as $datvk => $datvkv) {
+                    if ($datvk == 'nama_keluarga' || $datvk == 'status_keluarga') continue;
+                    if ($datvk == 'masa_kerja') {
+                        $worksheet->setCellValue($cell[$cellInd] . $rowStart, str_replace(['years', 'mons', 'days'], ['Tahun', 'Bulan', 'Hari'], $datvkv));
+                    } else {
+                        $worksheet
+                        ->getStyle($cell[$cellInd] . $rowStart)
+                        ->getNumberFormat()
+                        ->setFormatCode(
+                            PHPExcel_Style_NumberFormat::FORMAT_TEXT
+                            );
+                        $worksheet->setCellValueExplicit($cell[$cellInd] . $rowStart, $datvkv, PHPExcel_Cell_DataType::TYPE_STRING);
+                    }
+                    $worksheet->getStyle($cell[$cellInd] . $rowStart)->applyFromArray([
+                        'borders' => [
+                            'top' => [
+                                'style' => PHPExcel_Style_Border::BORDER_THIN
+                            ]
+                        ]
+                    ]);
+                    $cellInd++;
+                }
+                if (array_key_exists('nama_keluarga', $datav)) {
+                    foreach (explode(';', $datav['nama_keluarga']) as $namk) {
+                        $worksheet->setCellValue($cell[array_search($highestCell, $cell) + 1] . $rowStartnamk, $namk);
+                        $worksheet->getStyle($cell[array_search($highestCell, $cell) + 1] . $rowStartnamk)->applyFromArray([
+                            'borders' => [
+                                'top' => [
+                                    'style' => PHPExcel_Style_Border::BORDER_THIN
+                                ]
+                            ]
+                        ]);
+                        $rowStartnamk++;
+                        $rowStart++;
+                    }
+                } else {
+                    $rowStart++;
+                }
+
+                if (array_key_exists('nama_keluarga', $datav)) {
+                    foreach (explode(';', $datav['status_keluarga']) as $statk) {
+                        $worksheet->setCellValue($cell[array_search($highestCell, $cell) + 2] . $rowStartstatk, $statk);
+                        $worksheet->getStyle($cell[array_search($highestCell, $cell) + 2] . $rowStartstatk)->applyFromArray([
+                            'borders' => [
+                                'top' => [
+                                    'style' => PHPExcel_Style_Border::BORDER_THIN
+                                ]
+                            ]
+                        ]);
+                        $rowStartstatk++;
+                    }
+                }
+            }
+        }
+        // die;
+
+        $filename = 'cetak kategori.xls';
+        header('Content-Type: aplication/vnd.ms-excel');
+        header('Content-Disposition:attachment;filename="' . $filename . '"');
+        header('Cache-Control: max-age=0');
+
+        $writer = PHPExcel_IOFactory::createWriter($this->excel, 'Excel2007');
+        $writer->save('php://output');
     }
 }

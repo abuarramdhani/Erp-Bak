@@ -25,9 +25,20 @@ class M_import extends CI_Model
     public function cekInvItem($item){
         $sql = "SELECT DISTINCT msib.segment1, msib.description, msib.inventory_item_id, msib.organization_id        
                 FROM mtl_system_items_b msib            
+                WHERE msib.segment1 = '$item'             
+                AND msib.organization_id IN (101, 102, 225) --OPM, ODM, YSP        
+                ORDER BY msib.segment1, msib.organization_id desc
+                ";
+        $query = $this->oracle->query($sql);
+        return $query->result_array();
+    }
+    
+    public function cekInvItem2($item){
+        $sql = "SELECT DISTINCT msib.segment1, msib.description, msib.inventory_item_id, msib.organization_id        
+                FROM mtl_system_items_b msib            
                 WHERE msib.inventory_item_status_code = 'Active'              
                 AND msib.segment1 = '$item'             
-                AND msib.organization_id IN (101, 102) --OPM, ODM         
+                AND msib.organization_id IN (101, 102, 225) --OPM, ODM, YSP        
                 ORDER BY msib.segment1, msib.organization_id desc
                 ";
         $query = $this->oracle->query($sql);
@@ -70,6 +81,14 @@ class M_import extends CI_Model
     public function savePlanDate($id, $plan){
         $sql = "insert into khs_plan_item_monitoring_date (plan_id, value_plan_month)
                 values($id, $plan)";
+        $query = $this->oracle->query($sql);
+        $query = $this->oracle->query('commit');
+        // echo $sql;
+    }
+    
+    public function updatePlanDate($id, $value){
+        $sql = "update khs_plan_item_monitoring_date set value_plan_month = $value
+                where plan_id = $id";
         $query = $this->oracle->query($sql);
         $query = $this->oracle->query('commit');
         // echo $sql;

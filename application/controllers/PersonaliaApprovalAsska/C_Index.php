@@ -110,7 +110,7 @@ class C_Index extends CI_Controller
 		// Pengajuan Cuti
 		$data['dashboard'][] = array(
 			'ket' 		=> 'Pengajuan Cuti',
-			'link'		=> 'PermohonanCuti',
+			'link'		=> 'PermohonanCuti/Approval',
 			'jumlah' 	=> $this->M_personaliaapproveasska->getCutiByApprover($user)
 		); 
 

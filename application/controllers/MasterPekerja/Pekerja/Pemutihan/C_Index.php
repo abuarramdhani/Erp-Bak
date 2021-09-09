@@ -90,6 +90,7 @@ class C_Index extends CI_Controller
 
     $family = $this->ModelPemutihan->getFamilyByPribadiId($id);
     // debug($family);
+    $vaccination = $this->ModelPemutihan->getVaccinationByPribadiId($id);
     $verifier = null;
     if ($request->status_update_by) {
       $verifier = $this->ModelPemutihan->getPribadiByNoind($request->noind);
@@ -113,6 +114,7 @@ class C_Index extends CI_Controller
     $data['pribadi'] = $pribadi;
     $data['request'] = $request;
     $data['family'] = $family;
+    $data['vaccination'] = $vaccination;
     $data['session'] = $request->current_session ?: $this->user;
     $data['user'] = $this->user;
     $data['verifier'] = $verifier ? $request->status_update_by . ' - ' . $verifier->nama : '';
@@ -188,13 +190,23 @@ class C_Index extends CI_Controller
       'status_update_by' => $this->user,
       'status_req' => $status_type // fraud
     ];
-    // debug(array_merge($filtered_field, $additional_field));
 
     // try to update
     try {
-      $execute = $this->ModelPemutihan->updateVerifyCheck($request_id, array_merge($filtered_field, $additional_field));
+      $data = array_merge($filtered_field, $additional_field);
+      $execute = $this->ModelPemutihan->updateVerifyCheck($request_id, $data);
 
       if (!$execute) throw new Exception("Error Ketika Mengupdate Database");
+
+      if ($status_type === self::REJECT) {
+        $request = $this->ModelPemutihan->getDataById($request_id);
+        $employee = $this->ModelPemutihan->getPribadiByNoind($request->noind);
+
+        if ($employee && $employee->email) {
+          $gmail = $this->_gmail_service($employee->email, $status_type, $data);
+          $gmail->send();
+        }
+      }
 
       $this->session->set_flashdata('success', "Berhasil Mengupdate Data");
       redirect($redirect_to);
@@ -203,5 +215,48 @@ class C_Index extends CI_Controller
 
       redirect($_SERVER['HTTP_REFERED']);
     }
+  }
+
+  public function _gmail_service($email, $status_type, $data)
+  {
+    $html = $this->load->view('MasterPekerja/Pekerja/Pemutihan/email/template_notification_approval', $data, true);
+
+    $this->load->library('PHPMailerAutoload');
+    $mail = new PHPMailer;
+    $mail->isSMTP();
+    $mail->SMTPDebug = 0;
+    $mail->Debugoutput = 'html';
+    $mail->Host = 'smtp.gmail.com';
+    $mail->Port = 587;
+    $mail->SMTPAuth = true;
+    $mail->SMTPSecure = 'tls';
+    $mail->Username = 'notification.hrd.khs1@gmail.com';
+    $mail->Password = "tes123123123";
+    $mail->setFrom('noreply@quick.co.id', 'Pemutihan Data Pekerja');
+    $mail->IsHTML(true);
+    $mail->AltBody = '';
+    $mail->addAddress($email);
+    // $mail->addAddress('<your email for debugging>@gmail.com');
+    // $mail->AddCC('it.sec1@quick.co.id');
+
+    $status_title = '';
+    switch ($status_type) {
+      case self::REJECT:
+        $status_title = 'Pengajuanmu ditolak';
+        break;
+      case self::ACCEPT:
+        $status_title = 'Pengajuanmu diterima';
+        break;
+      case self::REVISI:
+        $status_title = 'Pengajuanmu perlu direvisi';
+        break;
+      default:
+        $status_title = 'Pengajuan';
+    }
+
+    $mail->Subject = "$status_title - Pemutihan Data Pekerja - Quick";
+    $mail->msgHTML($html);
+
+    return $mail;
   }
 }

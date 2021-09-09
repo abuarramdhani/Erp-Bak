@@ -155,9 +155,15 @@ class C_RequestAskanit extends CI_Controller
 					$this->M_request->updateHeader('Proses Approve Ka. Seksi Akt Biaya', $id_header);
 				}
 			}
-		}else {
-			//bukan IO cabang
+		}elseif ($io == 'ODM' || $io == 'OPM') {
 			$this->M_request->updateHeader('Proses Approve Seksi PPC', $id_header);
+		}else {
+			//bukan IO cabang dan bukan IO OPM ODM
+			if ($jumlah_cost > 10000000) { // jumlah cost > 10juta
+				$this->M_request->updateHeader('Proses Approve WaKa / Ka. Department', $id_header);
+			}else {
+				$this->M_request->updateHeader('Proses Approve Ka. Seksi Akt Biaya', $id_header);
+			}
 		}
 
 

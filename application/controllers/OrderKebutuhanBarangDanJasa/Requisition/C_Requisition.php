@@ -1,53 +1,54 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class C_Requisition extends CI_Controller {
+class C_Requisition extends CI_Controller
+{
 	public function __construct()
 	{
 		parent::__construct();
-		  
-        $this->load->helper('form');
-        $this->load->helper('url');
-        $this->load->helper('html');
+
+		$this->load->helper('form');
+		$this->load->helper('url');
+		$this->load->helper('html');
 		$this->load->library('form_validation');
 		$this->load->library('upload');
 		$this->load->library('encrypt');
-          //load the login model
+		//load the login model
 		$this->load->library('session');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('OrderKebutuhanBarangDanJasa/Requisition/M_requisition');
 		$this->load->model('OrderKebutuhanBarangDanJasa/Approver/M_approver');
-		
-        	  
-		if($this->session->userdata('logged_in')!=TRUE) {
+
+
+		if ($this->session->userdata('logged_in') != TRUE) {
 			$this->load->helper('url');
 			$this->session->set_userdata('last_page', current_url());
 			$this->session->set_userdata('Responsbility', 'some_value');
 		}
-		
-        if($this->session->is_logged == FALSE){
-            redirect();
+
+		if ($this->session->is_logged == FALSE) {
+			redirect();
 		}
-		
+
 		date_default_timezone_set("Asia/Bangkok");
-    }
-    
-    public function index()
-	{   
+	}
+
+	public function index()
+	{
 		$user_id = $this->session->userid;
-		
+
 		$data['Menu'] = '';
 		$data['SubMenuOne'] = '';
-		
-		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
-        $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-     
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
-        $this->load->view('OrderKebutuhanBarangDanJasa/V_Index',$data);
-        $this->load->view('V_Footer',$data);
-    }
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
+
+		$this->load->view('V_Header', $data);
+		$this->load->view('V_Sidemenu', $data);
+		$this->load->view('OrderKebutuhanBarangDanJasa/V_Index', $data);
+		$this->load->view('V_Footer', $data);
+	}
 
 	public function searchItem()
 	{
@@ -57,44 +58,44 @@ class C_Requisition extends CI_Controller {
 		echo json_encode($data);
 	}
 
-    public function Input()
-    {   
+	public function Input()
+	{
 		// print_r($this->session);exit;
 		$user_id = $this->session->userid;
 
 		$noind = $this->session->user;
 
-		
+
 		$data['Menu'] = 'Order';
 		$data['SubMenuOne'] = 'Order Baru';
 		$data['SubMenuTwo'] = '';
-		
-		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
+
 		$data['pengorder'] = $this->M_requisition->getPersonId($noind);
 
 		// echo '<pre>';
 		// print_r($data['UserMenu']);exit;
-		
+
 		if ($this->session->responsibility_id == 2678) { //set admin atau bukan
-		// if ($this->session->responsibility_id == 2683) { //set admin atau bukan dev
+			// if ($this->session->responsibility_id == 2683) { //set admin atau bukan dev
 			$data['requester'] = $this->M_requisition->getRequsterAdmin($noind);
 		} else {
 			$data['requester'] = $data['pengorder'];
 		}
-		
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
-        $this->load->view('OrderKebutuhanBarangDanJasa/Requisition/V_Input3',$data);
-        $this->load->view('V_Footer',$data);
+
+		$this->load->view('V_Header', $data);
+		$this->load->view('V_Sidemenu', $data);
+		$this->load->view('OrderKebutuhanBarangDanJasa/Requisition/V_Input3', $data);
+		$this->load->view('V_Footer', $data);
 	}
 
 	public function createOrder()
 	{
 		$noind = $this->session->user;
-		
+
 		$creator = $this->input->post('txtOKBOrderCreatorId');
 		$requster = $this->input->post('txtOKBOrderRequesterId');
 		$itemCode = $this->input->post('slcOKBinputCode[]');
@@ -118,7 +119,7 @@ class C_Requisition extends CI_Controller {
 		$itemkodDanNamaBarang = $this->input->post('hdnItemCodeOKB[]');
 
 		$emailBatch = array();
-		for ($i=0; $i < count($itemCode); $i++) { 
+		for ($i = 0; $i < count($itemCode); $i++) {
 
 			if ($subinventory[$i] == '') {
 				$subinventory[$i] = null;
@@ -128,127 +129,127 @@ class C_Requisition extends CI_Controller {
 			}
 
 			$line = array(
-							'CREATE_BY' => $creator, 
-							'INVENTORY_ITEM_ID' => $itemCode[$i], 
-							'QUANTITY' => str_replace(',','',$quantity[$i]), 
-							'UOM' => $uom[$i], 
-							'ORDER_PURPOSE' => $orderReason[$i], 
-							'NOTE_TO_PENGELOLA' => $orderNote[$i], 
-							'ORDER_STATUS_ID' => 2, 
-							'URGENT_FLAG' => $urgentFlag[$i], 
-							'URGENT_REASON' => $urgentReason[$i], 
-							'DESTINATION_TYPE_CODE' => $destination[$i], 
-							'DESTINATION_ORGANIZATION_ID' => $organization[$i], 
-							'DELIVER_TO_LOCATION_ID' => $location[$i], 
-							'DESTINATION_SUBINVENTORY' => $subinventory[$i], 
-							'ITEM_DESCRIPTION' => $description[$i], 
-							'REQUESTER' => $requster, 
-							'IS_SUSULAN' => $statusOrder, 
-						);
+				'CREATE_BY' => $creator,
+				'INVENTORY_ITEM_ID' => $itemCode[$i],
+				'QUANTITY' => str_replace(',', '', $quantity[$i]),
+				'UOM' => $uom[$i],
+				'ORDER_PURPOSE' => $orderReason[$i],
+				'NOTE_TO_PENGELOLA' => $orderNote[$i],
+				'NOTE_TO_BUYER' => $orderNote[$i],
+				'ORDER_STATUS_ID' => 2,
+				'URGENT_FLAG' => $urgentFlag[$i],
+				'URGENT_REASON' => $urgentReason[$i],
+				'DESTINATION_TYPE_CODE' => $destination[$i],
+				'DESTINATION_ORGANIZATION_ID' => $organization[$i],
+				'DELIVER_TO_LOCATION_ID' => $location[$i],
+				'DESTINATION_SUBINVENTORY' => $subinventory[$i],
+				'ITEM_DESCRIPTION' => str_replace("'", "''", $description[$i]),
+				'REQUESTER' => $requster,
+				'IS_SUSULAN' => $statusOrder,
+			);
 
 			$email = array(
-				'CREATE_BY' => $creator, 
-				'INVENTORY_ITEM_ID' => $itemCode[$i], 
-				'QUANTITY' => $quantity[$i], 
-				'UOM' => $uom[$i], 
-				'ORDER_PURPOSE' => $orderReason[$i], 
-				'NOTE_TO_PENGELOLA' => $orderNote[$i], 
-				'ORDER_STATUS_ID' => 2, 
-				'URGENT_FLAG' => $urgentFlag[$i], 
-				'URGENT_REASON' => $urgentReason[$i], 
-				'DESTINATION_TYPE_CODE' => $destination[$i], 
-				'DESTINATION_ORGANIZATION_ID' => $organization[$i], 
-				'DELIVER_TO_LOCATION_ID' => $location[$i], 
-				'DESTINATION_SUBINVENTORY' => $subinventory[$i], 
-				'ITEM_DESCRIPTION' => $description[$i], 
-				'REQUESTER' => $requster, 
+				'CREATE_BY' => $creator,
+				'INVENTORY_ITEM_ID' => $itemCode[$i],
+				'QUANTITY' => $quantity[$i],
+				'UOM' => $uom[$i],
+				'ORDER_PURPOSE' => $orderReason[$i],
+				'NOTE_TO_PENGELOLA' => $orderNote[$i],
+				'NOTE_TO_BUYER' => $orderNote[$i],
+				'ORDER_STATUS_ID' => 2,
+				'URGENT_FLAG' => $urgentFlag[$i],
+				'URGENT_REASON' => $urgentReason[$i],
+				'DESTINATION_TYPE_CODE' => $destination[$i],
+				'DESTINATION_ORGANIZATION_ID' => $organization[$i],
+				'DELIVER_TO_LOCATION_ID' => $location[$i],
+				'DESTINATION_SUBINVENTORY' => $subinventory[$i],
+				'ITEM_DESCRIPTION' => $description[$i],
+				'REQUESTER' => $requster,
 				'IS_SUSULAN' => $statusOrder,
 				'KODEITEM' => $itemkodDanNamaBarang[$i]
 			);
 
 			$order_id = $this->M_requisition->saveLine($line, date("Y-m-d", strtotime($nbd[$i])), date("Y-m-d", strtotime($cutoff[$i])));
 
-			if($urgentFlag[$i] == 'Y' || $statusOrder == 'Y'){
+			if ($urgentFlag[$i] == 'Y' || $statusOrder == 'Y') {
 
 				$setApprover = $this->M_requisition->setApproverItemUrgent($creator, $itemCode[$i]);
-				
-			}else {
-							
+			} else {
+
 				$setApprover = $this->M_requisition->setApproverItem($creator, $itemCode[$i]);
-				
 			}
 
-			
+
 			foreach ($setApprover as $key => $set) {
-							
+
 				$approver = array(
-									'ORDER_ID' => $order_id[0]['ORDER_ID'],
-									'APPROVER_ID' => $set['APPROVER'],
-									'APPROVER_TYPE' => $set['APPROVER_LEVEL'],
-								);
-							
-							
+					'ORDER_ID' => $order_id[0]['ORDER_ID'],
+					'APPROVER_ID' => $set['APPROVER'],
+					'APPROVER_TYPE' => $set['APPROVER_LEVEL'],
+				);
+
+
 				$this->M_requisition->ApproveOrder($approver);
 			}
 
 			if ($creator != $requster) {
-				if($urgentFlag[$i] == 'Y' || $statusOrder == 'Y'){
+				if ($urgentFlag[$i] == 'Y' || $statusOrder == 'Y') {
 
 					$setApproverRequester = $this->M_requisition->setApproverItemUrgent($requster, $itemCode[$i]);
-				}else {
-								
+				} else {
+
 					$setApproverRequester = $this->M_requisition->setApproverItem($requster, $itemCode[$i]);
 				}
 
 				foreach ($setApproverRequester as $key => $set) {
-							
+
 					$approverRequester = array(
-												'ORDER_ID' => $order_id[0]['ORDER_ID'],
-												'APPROVER_ID' => $set['APPROVER'],
-												'APPROVER_TYPE' => $set['APPROVER_LEVEL'],
-											);
-								
-								
+						'ORDER_ID' => $order_id[0]['ORDER_ID'],
+						'APPROVER_ID' => $set['APPROVER'],
+						'APPROVER_TYPE' => $set['APPROVER_LEVEL'],
+					);
+
+
 					$this->M_requisition->ApproveOrder($approverRequester);
 				}
 			}
 
 			// upload files
 			$x = $i + 1;
-			$number_of_files = sizeof($_FILES['fileOKBAttachment'.$x]['tmp_name']);
+			$number_of_files = sizeof($_FILES['fileOKBAttachment' . $x]['tmp_name']);
 
-			$files = $_FILES['fileOKBAttachment'.$x];
+			$files = $_FILES['fileOKBAttachment' . $x];
 
-   			$config = array(
-				   				'upload_path' => './assets/upload/Okebaja/',
-								'allowed_types' => '*',
-								'overwrite' => false,         
-    			);
+			$config = array(
+				'upload_path' => './assets/upload/Okebaja/',
+				'allowed_types' => '*',
+				'overwrite' => false,
+			);
 
 			$path = ('./assets/upload/Okebaja/');
 			// print_r($files);exit;
 
-			for ($j=0; $j < $number_of_files; $j++) { 
-				$new_filename = $order_id[0]['ORDER_ID'].'-'.$files['name'][$j];
-				$_FILES['fileOKBAttachment'.$x]['name']		= $new_filename;
-				$_FILES['fileOKBAttachment'.$x]['type']		= $files['type'][$j];
-				$_FILES['fileOKBAttachment'.$x]['tmp_name']	= $files['tmp_name'][$j];
-				$_FILES['fileOKBAttachment'.$x]['error']	= $files['error'][$j];
-				$_FILES['fileOKBAttachment'.$x]['size']		= $files['size'][$j];
-				
+			for ($j = 0; $j < $number_of_files; $j++) {
+				$new_filename = $order_id[0]['ORDER_ID'] . '-' . $files['name'][$j];
+				$_FILES['fileOKBAttachment' . $x]['name']		= $new_filename;
+				$_FILES['fileOKBAttachment' . $x]['type']		= $files['type'][$j];
+				$_FILES['fileOKBAttachment' . $x]['tmp_name']	= $files['tmp_name'][$j];
+				$_FILES['fileOKBAttachment' . $x]['error']	= $files['error'][$j];
+				$_FILES['fileOKBAttachment' . $x]['size']		= $files['size'][$j];
+
 				$this->upload->initialize($config);
-				
-				$this->upload->do_upload('fileOKBAttachment'.$x);
-				
+
+				$this->upload->do_upload('fileOKBAttachment' . $x);
+
 				$media	= $this->upload->data();
-				$inputFileName 	= './assets/upload/Okebaja/'.$media['file_name'];
-				if(is_file($inputFileName)){
+				$inputFileName 	= './assets/upload/Okebaja/' . $media['file_name'];
+				if (is_file($inputFileName)) {
 					// echo('ada');
 					chmod($inputFileName, 0777); ## this should change the permissions
-				}else {
+				} else {
 					// echo('nothing');
 				}
-				$replaceFileName = str_replace(' ','_',$media['file_name']);
+				$replaceFileName = str_replace(' ', '_', $media['file_name']);
 				$upload = array(
 					'ORDER_ID' => $order_id[0]['ORDER_ID'],
 					'ADDRESS' => $path,
@@ -257,9 +258,9 @@ class C_Requisition extends CI_Controller {
 				);
 				$this->M_requisition->uploadFiles($upload);
 			}
-			
-			if (!isset($emailBatch[$setApprover[0]['APPROVER_NOIND']])) {        
-				$emailBatch[$setApprover[0]['APPROVER_NOIND']] = array();    
+
+			if (!isset($emailBatch[$setApprover[0]['APPROVER_NOIND']])) {
+				$emailBatch[$setApprover[0]['APPROVER_NOIND']] = array();
 			}
 
 			array_push($emailBatch[$setApprover[0]['APPROVER_NOIND']], $email);
@@ -270,53 +271,60 @@ class C_Requisition extends CI_Controller {
 			$normal = array();
 			$urgent = array();
 			$susulan = array();
-			
+
 			$nApprover = $this->M_requisition->getNamaUser($key);
 			$namaApprover = $nApprover[0]['nama'];
 
 			$encrypt = $this->encrypt->encode($key);
 			$encrypt = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypt);
 
-			$link = "<a href='".base_url("OrderKebutuhanBarangDanJasa/directEmail/$encrypt/")."'>Disini</a>";
-			
-			if ($nApprover[0]['jenkel'][0]=='L') {
+			$link = "<a href='" . base_url("OrderKebutuhanBarangDanJasa/directEmail/$encrypt/") . "'>Disini</a>";
+
+			if ($nApprover[0]['jenkel'][0] == 'L') {
 				$jklApprover = 'Bapak ';
-			}else {
+			} else {
 				$jklApprover = 'Ibu ';
 			};
 
 			$cond = "WHERE ppf.NATIONAL_IDENTIFIER = '$key'";
-			
+
 			$getNoindFromOracle = $this->M_requisition->getNoind($cond);
 
-			$allOrder = $this->M_approver->getListDataOrder();
+			// $allOrder = $this->M_approver->getListDataOrder();
 
-			foreach ($allOrder as $key => $order) {
-				$checkOrder = $this->M_approver->checkOrder($order['ORDER_ID']);
-				if (isset($checkOrder[0])) {
-					if ($checkOrder[0]['APPROVER_ID'] == $getNoindFromOracle[0]['PERSON_ID']) {
-						$orderSiapTampil = $this->M_approver->getOrderToApprove($order['ORDER_ID']);
-						if ($orderSiapTampil[0]['ORDER_CLASS'] != '2') {
-							if ($orderSiapTampil[0]['URGENT_FLAG'] == 'N' && $orderSiapTampil[0]['IS_SUSULAN'] =='N') {
-								array_push($normal, $orderSiapTampil[0]);
-							}elseif ($orderSiapTampil[0]['URGENT_FLAG'] == 'Y' && $orderSiapTampil[0]['IS_SUSULAN'] =='N') {
-								array_push($urgent, $orderSiapTampil[0]);
-							}elseif ($orderSiapTampil[0]['IS_SUSULAN'] =='Y') {
-								array_push($susulan, $orderSiapTampil[0]);
-							}
-						}
-					}
-				}
-			}
+			// foreach ($allOrder as $key => $order) {
+			// 	$checkOrder = $this->M_approver->checkOrder($order['ORDER_ID']);
+			// 	if (isset($checkOrder[0])) {
+			// 		if ($checkOrder[0]['APPROVER_ID'] == $getNoindFromOracle[0]['PERSON_ID']) {
+			// 			$orderSiapTampil = $this->M_approver->getOrderToApprove($order['ORDER_ID']);
+			// 			if ($orderSiapTampil[0]['ORDER_CLASS'] != '2') {
+			// 				if ($orderSiapTampil[0]['URGENT_FLAG'] == 'N' && $orderSiapTampil[0]['IS_SUSULAN'] == 'N') {
+			// 					array_push($normal, $orderSiapTampil[0]);
+			// 				} elseif ($orderSiapTampil[0]['URGENT_FLAG'] == 'Y' && $orderSiapTampil[0]['IS_SUSULAN'] == 'N') {
+			// 					array_push($urgent, $orderSiapTampil[0]);
+			// 				} elseif ($orderSiapTampil[0]['IS_SUSULAN'] == 'Y') {
+			// 					array_push($susulan, $orderSiapTampil[0]);
+			// 				}
+			// 			}
+			// 		}
+			// 	}
+			// }
+			$array_normal = $this->M_approver->getOutstanding($key, 'NORMAL');
+			$array_urgent = $this->M_approver->getOutstanding($key, 'URGENT');
+			$array_susulan = $this->M_approver->getOutstanding($key, 'SUSULAN');
+
+			$normal = $array_normal[0]['TOTAL_BELUM_APPROVE'];
+			$urgent = $array_urgent[0]['TOTAL_BELUM_APPROVE'];
+			$susulan = $array_susulan[0]['TOTAL_BELUM_APPROVE'];
 
 			$create = $pesan[0]['CREATE_BY'];
 			// $getNoindFromOracle = $this->M_requisition->getNoind($create);
 			$nCreator = $this->M_requisition->getNamaUser($noind);
 			$namaCreator = $nCreator[0]['nama'];
-		
-			if ($nCreator[0]['jenkel'][0]=='L') {
+
+			if ($nCreator[0]['jenkel'][0] == 'L') {
 				$jklCreator = 'Bapak ';
-			}else {
+			} else {
 				$jklCreator = 'Ibu ';
 			};
 
@@ -336,34 +344,34 @@ class C_Requisition extends CI_Controller {
 								</tr>
 							</thead>
 							<tbody>";
-						for ($i=0; $i < count($pesan); $i++) { 
-							if ($pesan[$i]['URGENT_FLAG']=='Y' && $pesan[$i]['IS_SUSULAN'] =='N') {
-								$statusOrder = 'Urgent';
-								$bgColor = '#d73925';
-							}else if($pesan[$i]['URGENT_FLAG']=='N' && $pesan[$i]['IS_SUSULAN'] =='N'){
-								$statusOrder = 'Reguler';
-								$bgColor = '#009551';
-							}elseif ($pesan[$i]['IS_SUSULAN'] =='Y') {
-								$statusOrder = 'Emergency';
-								$bgColor = '#da8c10';
-                            }
+			for ($i = 0; $i < count($pesan); $i++) {
+				if ($pesan[$i]['URGENT_FLAG'] == 'Y' && $pesan[$i]['IS_SUSULAN'] == 'N') {
+					$statusOrder = 'Urgent';
+					$bgColor = '#d73925';
+				} else if ($pesan[$i]['URGENT_FLAG'] == 'N' && $pesan[$i]['IS_SUSULAN'] == 'N') {
+					$statusOrder = 'Reguler';
+					$bgColor = '#009551';
+				} elseif ($pesan[$i]['IS_SUSULAN'] == 'Y') {
+					$statusOrder = 'Emergency';
+					$bgColor = '#da8c10';
+				}
 
-							if ($pesan[$i]['URGENT_REASON']=='') {
-								$urgentReason = '-';
-							}else{
-								$urgentReason = $pesan[$i]['URGENT_REASON'];
-							}
+				if ($pesan[$i]['URGENT_REASON'] == '') {
+					$urgentReason = '-';
+				} else {
+					$urgentReason = $pesan[$i]['URGENT_REASON'];
+				}
 
-							$emailSendDate = date("d-M-Y");
-							$pukul = date("h:i:sa");
+				$emailSendDate = date("d-M-Y");
+				$pukul = date("h:i:sa");
 
-							$kodeBarang = $pesan[$i]['KODEITEM'];
-							$deskripsi = $pesan[$i]['ITEM_DESCRIPTION'];
-							$qty = $pesan[$i]['QUANTITY'];
-							$uom = $pesan[$i]['UOM'];
-							$alasanPengadaan = $pesan[$i]['ORDER_PURPOSE'];
+				$kodeBarang = $pesan[$i]['KODEITEM'];
+				$deskripsi = $pesan[$i]['ITEM_DESCRIPTION'];
+				$qty = $pesan[$i]['QUANTITY'];
+				$uom = $pesan[$i]['UOM'];
+				$alasanPengadaan = $pesan[$i]['ORDER_PURPOSE'];
 
-							$body .="<tr>
+				$body .= "<tr>
 										<td>$kodeBarang</td>
 										<td>$deskripsi</td>
 										<td>$qty</td>
@@ -372,27 +380,27 @@ class C_Requisition extends CI_Controller {
 										<td>$alasanPengadaan</td>
 										<td>$urgentReason</td>
 									</tr>";
-						}
-						$body .= "</body>";
-						$body .= "</table> <br><br>";
-						$body .= "<b>INFO :</b><br>";
-						$body .= "Terdapat <b>".count($normal)." order reguler, ".count($susulan)." order emergency, dan ". count($urgent)." order urgent</b> menunggu keputusan Anda!<br>";
-						$body .= "Apabila Anda ingin mengambil tindakan terhadap Order tersebut, Anda dapat klik link <b>$link</b> <br><br>";
-						$body .= "Demikian yang dapat kami sampaikan. Atas perhatian dan kerjasamanya kami ucapkan terima kasih. <br><br>";
-						$body .= "<span style='font-size:10px;'>*Email ini dikirimkan secara otomatis oleh aplikasi <b>Order Kebutuhan Barang Dan Jasa</b> pada $emailSendDate pukul $pukul<br>";
-						$body .= "*Apabila Anda menemukan kendala atau kesulitan maka dapat menghubungi Call Center ICT <b>12300 extensi 1. </span>";
+			}
+			$body .= "</body>";
+			$body .= "</table> <br><br>";
+			$body .= "<b>INFO :</b><br>";
+			$body .= "Terdapat <b>" . $normal . " order reguler, " . $susulan . " order emergency, dan " . $urgent . " order urgent</b> menunggu keputusan Anda!<br>";
+			$body .= "Apabila Anda ingin mengambil tindakan terhadap Order tersebut, Anda dapat klik link <b>$link</b> <br><br>";
+			$body .= "Demikian yang dapat kami sampaikan. Atas perhatian dan kerjasamanya kami ucapkan terima kasih. <br><br>";
+			$body .= "<span style='font-size:10px;'>*Email ini dikirimkan secara otomatis oleh aplikasi <b>Order Kebutuhan Barang Dan Jasa</b> pada $emailSendDate pukul $pukul<br>";
+			$body .= "*Apabila Anda menemukan kendala atau kesulitan maka dapat menghubungi Call Center ICT <b>12300 extensi 1. </span>";
 
 
 
-			$this->EmailAlert($noindemail,$subject,$body);
+			$this->EmailAlert($noindemail, $subject, $body);
 			// echo $key;
 		}
 
-		if ($statusPage == 0) {
-			redirect('OrderKebutuhanBarangDanJasa/Requisition/Input', 'refresh');
-		}elseif ($statusPage == 1) {
-			redirect('OrderKebutuhanBarangDanJasa/Requisition/InputExcel', 'refresh');
-		}
+		// if ($statusPage == 0) {
+		// 	redirect('OrderKebutuhanBarangDanJasa/Requisition/Input', 'refresh');
+		// } elseif ($statusPage == 1) {
+		// 	redirect('OrderKebutuhanBarangDanJasa/Requisition/InputExcel', 'refresh');
+		// }
 	}
 
 	public function listDataAdmin()
@@ -400,96 +408,131 @@ class C_Requisition extends CI_Controller {
 		$user_id = $this->session->userid;
 
 		$noind = $this->session->user;
-		
+
 		$data['Menu'] = 'Order';
 		$data['SubMenuOne'] = 'List Order';
 		$data['SubMenuTwo'] = '';
-		
-		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
+
 		$data['pengorder'] = $this->M_requisition->getPengorder($noind);
-		
+
 		$where = 'AND ooh.order_status_id = ooh.order_status_id';
-		
-		if(isset($_POST['filter'])){
+
+		if (isset($_POST['filter'])) {
 			$filter = $this->input->post('filter');
-			if($filter == 'wipapproveatasan'){
+			if ($filter == 'wipapproveatasan') {
 				$where = 'AND ooh.order_status_id = 2';
-			} else if($filter == 'wipreleasepuller'){
+			} else if ($filter == 'wipreleasepuller') {
 				$where = 'AND ooh.order_status_id = 3';
-			} else if($filter == 'wipapprovepembelian'){
+			} else if ($filter == 'wipapprovepembelian') {
 				$where = 'AND ooh.order_status_id = 6';
-			} else if($filter == 'fullapprove'){
+			} else if ($filter == 'fullapprove') {
 				$where = 'AND ooh.order_status_id = 7';
-			} else if($filter == 'rejectbypembelian'){
+			} else if ($filter == 'rejectbypembelian') {
 				$where = 'AND ooh.order_status_id = 8';
-			} else if($filter == 'rejectbyatasan'){
+			} else if ($filter == 'rejectbyatasan') {
 				$where = 'AND ooh.order_status_id = 4';
 			} else {
 				$where = 'AND ooh.order_status_id = ooh.order_status_id';
 			}
 
 			$data['listOrder'] = $this->M_requisition->getListDataOrder2($noind, $where);
-			
-			$this->load->view('OrderKebutuhanBarangDanJasa/Requisition/V_TableListDataAdmin',$data);
+
+			$this->load->view('OrderKebutuhanBarangDanJasa/Requisition/V_TableListDataAdmin', $data);
 		} else {
 
 			$data['listOrder'] = $this->M_requisition->getListDataOrder2($noind, $where);
-			
-			$this->load->view('V_Header',$data);
-			$this->load->view('V_Sidemenu',$data);
-        	$this->load->view('OrderKebutuhanBarangDanJasa/Requisition/V_Listdataadmin',$data);
-        	$this->load->view('V_Footer',$data);
+
+			$this->load->view('V_Header', $data);
+			$this->load->view('V_Sidemenu', $data);
+			$this->load->view('OrderKebutuhanBarangDanJasa/Requisition/V_Listdataadmin', $data);
+			$this->load->view('V_Footer', $data);
 		}
 	}
 
-	public function listData(){
+	public function listData()
+	{
 		$user_id = $this->session->userid;
 
 		$noind = $this->session->user;
-		
+
 		$data['Menu'] = 'Order';
 		$data['SubMenuOne'] = 'List Order';
 		$data['SubMenuTwo'] = '';
-		
-		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
+
 		$data['pengorder'] = $this->M_requisition->getPengorder($noind);
 
 		$where = 'AND ooh.order_status_id = ooh.order_status_id';
-		
-		if(isset($_POST['filter'])){
+
+		if (isset($_POST['filter'])) {
 			$filter = $this->input->post('filter');
-			if($filter == 'wipapproveatasan'){
+			if ($filter == 'wipapproveatasan') {
 				$where = 'AND ooh.order_status_id = 2';
-			} else if($filter == 'wipreleasepuller'){
+			} else if ($filter == 'wipreleasepuller') {
 				$where = 'AND ooh.order_status_id = 3';
-			} else if($filter == 'wipapprovepembelian'){
+			} else if ($filter == 'wipapprovepembelian') {
 				$where = 'AND ooh.order_status_id = 6';
-			} else if($filter == 'fullapprove'){
+			} else if ($filter == 'fullapprove') {
 				$where = 'AND ooh.order_status_id = 7';
-			} else if($filter == 'rejectbypembelian'){
+			} else if ($filter == 'rejectbypembelian') {
 				$where = 'AND ooh.order_status_id = 8';
-			} else if($filter == 'rejectbyatasan'){
+			} else if ($filter == 'rejectbyatasan') {
 				$where = 'AND ooh.order_status_id = 4';
 			} else {
 				$where = 'AND ooh.order_status_id = ooh.order_status_id';
 			}
 
-			$data['listOrder'] = $this->M_requisition->getListDataOrder2($noind, $where);
-			
-			$this->load->view('OrderKebutuhanBarangDanJasa/Requisition/V_TableListDataAdmin',$data);
-		} else {
-			$data['listOrder'] = $this->M_requisition->getListDataOrder2($noind, $where);
+			$lorder = $this->M_requisition->getListDataOrder2($noind, $where);
 
-			$this->load->view('V_Header',$data);
-			$this->load->view('V_Sidemenu',$data);
-        	$this->load->view('OrderKebutuhanBarangDanJasa/Requisition/V_Listdata',$data);
-        	$this->load->view('V_Footer',$data);
+			for ($k = 0; $k < sizeof($lorder); $k++) {
+				$hist = $this->M_requisition->getHistoryOrder($lorder[$k]['ORDER_ID']);
+				$ket = '';
+				for ($h = 0; $h < sizeof($hist); $h++) {
+					if ($hist[$h]['QUANTITY_AFTER'] != null || $hist[$h]['ITEM_DESCRIPTION_AFTER'] != null || $hist[$h]['ORDER_PURPOSE_AFTER'] != null) {
+						$ket = 'berubah';
+					}
+				}
+				$lorder[$k]['CHANGES'] = $ket;
+			}
+
+			// echo "<pre>";
+			// print_r($lorder);
+			// exit();
+
+			$data['listOrder'] = $lorder;
+
+			$this->load->view('OrderKebutuhanBarangDanJasa/Requisition/V_TableListDataAdmin', $data);
+		} else {
+
+			$lorder = $this->M_requisition->getListDataOrder2($noind, $where);
+			for ($k = 0; $k < sizeof($lorder); $k++) {
+				$hist = $this->M_requisition->getHistoryOrder($lorder[$k]['ORDER_ID']);
+				$ket = '';
+				for ($h = 0; $h < sizeof($hist); $h++) {
+					if ($hist[$h]['QUANTITY_AFTER'] != null || $hist[$h]['ITEM_DESCRIPTION_AFTER'] != null || $hist[$h]['ORDER_PURPOSE_AFTER'] != null) {
+						$ket = 'berubah';
+					}
+				}
+				$lorder[$k]['CHANGES'] = $ket;
+			}
+
+			// echo "<pre>";
+			// print_r($lorder);
+			// exit();
+
+			$data['listOrder'] = $lorder;
+
+			$this->load->view('V_Header', $data);
+			$this->load->view('V_Sidemenu', $data);
+			$this->load->view('OrderKebutuhanBarangDanJasa/Requisition/V_Listdata', $data);
+			$this->load->view('V_Footer', $data);
 		}
 	}
 
@@ -521,13 +564,15 @@ class C_Requisition extends CI_Controller {
 	public function getSubinventory()
 	{
 		$organization = $_POST['organization'];
+		$location = $_POST['location'] == 142 || $_POST['location'] == 16103 ? $_POST['location'] : 'null';
 
-		$data = $this->M_requisition->getSubinventory($organization);
+		$data = $this->M_requisition->getSubinventory($organization, $location);
 
 		echo json_encode($data);
 	}
-	
-	public function getHistoryOrder() {
+
+	public function getHistoryOrder()
+	{
 		$order_id = $this->input->post('orderid');
 		$data	  = $this->M_requisition->getHistoryOrder($order_id);
 
@@ -540,34 +585,34 @@ class C_Requisition extends CI_Controller {
 		$user_id = $this->session->userid;
 
 		$noind = $this->session->user;
-		
+
 		$data['Menu'] = 'Order';
 		$data['SubMenuOne'] = 'Setup User';
 		$data['SubMenuTwo'] = '';
-		
-		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
 		$data['pengorder'] = $this->M_requisition->getPersonId($noind);
 		$person_id = $data['pengorder'][0]['PERSON_ID'];
-		
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
+
+		$this->load->view('V_Header', $data);
+		$this->load->view('V_Sidemenu', $data);
 		if ($this->session->responsibility_id == 2678) {
 			$data['activeRequestor'] = $this->M_requisition->getRequestor($person_id);
 
-			$this->load->view('OrderKebutuhanBarangDanJasa/Requisition/V_SetupRequestor',$data);
-		}else {
+			$this->load->view('OrderKebutuhanBarangDanJasa/Requisition/V_SetupRequestor', $data);
+		} else {
 			$levelUnit = "AND oah.APPROVER_LEVEL = '5'";
 			$levelDepartment = "AND oah.APPROVER_LEVEL = '8'";
-	
-			$data['approverUnit'] = $this->M_requisition->getApprover($person_id,$levelUnit);
-			$data['approverDepartment'] = $this->M_requisition->getApprover($person_id,$levelDepartment);
-			
-			$this->load->view('OrderKebutuhanBarangDanJasa/Requisition/V_SetupApprover',$data);
+
+			$data['approverUnit'] = $this->M_requisition->getApprover($person_id, $levelUnit);
+			$data['approverDepartment'] = $this->M_requisition->getApprover($person_id, $levelDepartment);
+
+			$this->load->view('OrderKebutuhanBarangDanJasa/Requisition/V_SetupApprover', $data);
 		}
-        $this->load->view('V_Footer',$data);
+		$this->load->view('V_Footer', $data);
 	}
 
 	public function searchAtasan()
@@ -589,28 +634,27 @@ class C_Requisition extends CI_Controller {
 		$department = $this->input->post('slcAtasanDepartmentOKB');
 
 		$atasanUnit = array(
-							'PERSON_ID' => $pengorder[0]['PERSON_ID'],
-							'APPROVER_LEVEL' => 5,
-							'APPROVER' => $unit,
-						 );
+			'PERSON_ID' => $pengorder[0]['PERSON_ID'],
+			'APPROVER_LEVEL' => 5,
+			'APPROVER' => $unit,
+		);
 		$this->M_requisition->setAtasan($atasanUnit);
 
 		$atasanDepartment = array(
-							'PERSON_ID' => $pengorder[0]['PERSON_ID'],
-							'APPROVER_LEVEL' => 8,
-							'APPROVER' => $department,
-						);
+			'PERSON_ID' => $pengorder[0]['PERSON_ID'],
+			'APPROVER_LEVEL' => 8,
+			'APPROVER' => $department,
+		);
 		$this->M_requisition->setAtasan($atasanDepartment);
-		
+
 		$atasanDireksi = array(
-							'PERSON_ID' => $pengorder[0]['PERSON_ID'],
-							'APPROVER_LEVEL' => 9,
-							'APPROVER' => 6355,
-						);
+			'PERSON_ID' => $pengorder[0]['PERSON_ID'],
+			'APPROVER_LEVEL' => 9,
+			'APPROVER' => 6355,
+		);
 		$this->M_requisition->setAtasan($atasanDireksi);
 
 		redirect('OrderKebutuhanBarangDanJasa/Requisition/SetupApprover', 'refresh');
-		
 	}
 	public function SetupUser()
 	{
@@ -622,16 +666,16 @@ class C_Requisition extends CI_Controller {
 		$data['SubMenuOne'] = 'Setup User';
 		$data['SubMenuTwo'] = '';
 
-		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
 		$data['pengorder'] = $this->M_requisition->getPersonId($noind);
 
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
-        $this->load->view('OrderKebutuhanBarangDanJasa/Requisition/V_SetupUser',$data);
-        $this->load->view('V_Footer',$data);
+		$this->load->view('V_Header', $data);
+		$this->load->view('V_Sidemenu', $data);
+		$this->load->view('OrderKebutuhanBarangDanJasa/Requisition/V_SetupUser', $data);
+		$this->load->view('V_Footer', $data);
 	}
 
 	public function setUser()
@@ -641,19 +685,19 @@ class C_Requisition extends CI_Controller {
 		$unit2 = $this->input->post('slcAtasanUnit2OKB[]');
 		$department = $this->input->post('slcAtasanDepartmentOKB[]');
 
-		for ($i=0; $i < count($kasie); $i++) { 
+		for ($i = 0; $i < count($kasie); $i++) {
 			$atasanUnit = array(
 				'PERSON_ID' => $kasie[$i],
 				'APPROVER_LEVEL' => 5,
 				'APPROVER' => $unit1[$i],
-			 );
+			);
 			$this->M_requisition->setAtasan($atasanUnit);
 			if ($unit2[$i] != '') {
 				$atasanUnit2 = array(
 					'PERSON_ID' => $kasie[$i],
 					'APPROVER_LEVEL' => 5,
 					'APPROVER' => $unit2[$i],
-				 );
+				);
 				$this->M_requisition->setAtasan($atasanUnit2);
 			}
 
@@ -692,8 +736,8 @@ class C_Requisition extends CI_Controller {
 		$approver = $_POST['approver'];
 		$person_id = $_POST['person_id'];
 
-		$this->M_requisition->setDeactiveApprover($approver,$person_id);
-		$this->M_requisition->setActiveApprover($approver,$person_id);
+		$this->M_requisition->setDeactiveApprover($approver, $person_id);
+		$this->M_requisition->setActiveApprover($approver, $person_id);
 
 		echo 1;
 	}
@@ -705,10 +749,10 @@ class C_Requisition extends CI_Controller {
 
 		$this->M_requisition->removeRequestor($person_id);
 		$data = array(
-						'PERSON_ID' => $person_id,
-						'APPROVER_LEVEL' => '3',
-						'APPROVER' => $requestor,
-					 );
+			'PERSON_ID' => $person_id,
+			'APPROVER_LEVEL' => '3',
+			'APPROVER' => $requestor,
+		);
 		$this->M_requisition->setRequestor($data);
 
 		echo 1;
@@ -720,9 +764,9 @@ class C_Requisition extends CI_Controller {
 
 		$data['info'] = $this->M_requisition->getInfoOrderPR($order_id);
 
-		$returnTable = $this->load->view('OrderKebutuhanBarangDanJasa/Requisition/V_TableInfoPR',$data,true);
+		$returnTable = $this->load->view('OrderKebutuhanBarangDanJasa/Requisition/V_TableInfoPR', $data, true);
 
-		echo($returnTable);
+		echo ($returnTable);
 	}
 
 	public function CancelOrder()
@@ -740,8 +784,8 @@ class C_Requisition extends CI_Controller {
 		// echo $noind;exit;
 		$getEmail = $this->M_approver->getEmail($noind);
 		// echo 
-		// $emailUser = 'bondan_surya_n@quick.com';
-		
+		// $emailUser = 'rizki_violin_radhiyan@quick.com';
+
 		//send Email
 
 		if ($getEmail) {
@@ -750,7 +794,7 @@ class C_Requisition extends CI_Controller {
 			$mail = new PHPMailer();
 			$mail->SMTPDebug = 0;
 			$mail->Debugoutput = 'html';
-	
+
 			// set smtp
 			$mail->isSMTP();
 			$mail->Host = 'm.quick.com';
@@ -758,21 +802,22 @@ class C_Requisition extends CI_Controller {
 			$mail->SMTPAuth = true;
 			$mail->SMTPSecure = 'ssl';
 			$mail->SMTPOptions = array(
-					'ssl' => array(
+				'ssl' => array(
 					'verify_peer' => false,
 					'verify_peer_name' => false,
-					'allow_self_signed' => true)
-					);
+					'allow_self_signed' => true
+				)
+			);
 			$mail->Username = 'no-reply';
 			$mail->Password = '123456';
 			$mail->WordWrap = 50;
-	
+
 			// set email content
 			$mail->setFrom('no-reply@quick.com', 'ERP OKEBAJA');
 			$mail->addAddress($emailUser);
 			$mail->Subject = $subject;
 			$mail->msgHTML($body);
-	
+
 			if (!$mail->send()) {
 				echo "Mailer Error: " . $mail->ErrorInfo;
 				exit();
@@ -780,7 +825,6 @@ class C_Requisition extends CI_Controller {
 				// echo "Message sent!";
 			}
 		}
-
 	}
 
 	public function InputExcel()
@@ -793,9 +837,9 @@ class C_Requisition extends CI_Controller {
 		$data['SubMenuOne'] = 'Input Order Via Excel';
 		$data['SubMenuTwo'] = '';
 
-		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
 		$data['pengorder'] = $this->M_requisition->getPersonId($noind);
 
@@ -805,19 +849,27 @@ class C_Requisition extends CI_Controller {
 			$data['requester'] = $data['pengorder'];
 		}
 
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
-        $this->load->view('OrderKebutuhanBarangDanJasa/Requisition/V_ImportOrder',$data);
-        $this->load->view('V_Footer',$data);
+		$this->load->view('V_Header', $data);
+		$this->load->view('V_Sidemenu', $data);
+		$this->load->view('OrderKebutuhanBarangDanJasa/Requisition/V_ImportOrder', $data);
+		$this->load->view('V_Footer', $data);
 	}
 
-	public function downloadAttachment(){
+	public function downloadAttachment()
+	{
 		$this->load->helper('download');
 
 		$attachment_id = $this->input->get('id-attachment');
 		$path	  = './assets/upload/Okebaja/';
 		$filename = $this->M_requisition->getAttachment($attachment_id)['FILE_NAME'];
 
-		force_download($path.$filename, NULL);
+		force_download($path . $filename, NULL);
+	}
+	public function getDescbiInvID()
+	{
+		$id = $_POST['item_desc'];
+		$desc = $this->M_requisition->getDescItem($id);
+
+		echo json_encode($desc[0]['DESCRIPTION']);
 	}
 }

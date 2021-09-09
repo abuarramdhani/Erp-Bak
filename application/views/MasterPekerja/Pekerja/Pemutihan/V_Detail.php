@@ -779,6 +779,7 @@
                               <td>Jenis Anggota</td>
                               <td>Tgllahir</td>
                               <td>NIK</td>
+                              <td>Serumah</td>
                             </tr>
                           </thead>
                           <tbody>
@@ -788,13 +789,125 @@
                                 <td><?= $people->jenisanggota ?></td>
                                 <td><?= date('d/m/Y', strtotime($people->tgllahir)); ?></td>
                                 <td><?= $people->nik ?></td>
+                                <td><?php 
+                                
+                                switch ($people->serumah) {
+                                  case 't':
+                                    $isi = "fa-check";
+                                    $color = "green";
+                                    break;
+                                  case 'f':
+                                    $isi = "fa-times";
+                                    $color = "red";
+                                    break;
+                                  default:
+                                    $isi = "fa-question";
+                                    $color = "grey";
+                                    break;
+                                }
+                                echo "<span class='fa $isi' style='color: $color'></span>";
+                                ?></td>
                               </tr>
                             <?php endforeach ?>
                           </tbody>
                         </table>
                       </div>
                     <?php endif ?>
-
+                    <?php 
+                    if (isset($vaccination) && !empty($vaccination)) {
+                      foreach ($vaccination as $vac) {
+                        ?>
+                        <div class="form-group">
+                        <label for="">Data Vaksinasi (<?= $vac['status_changes'] ?>)</label>
+                        <div class="row">
+                          <div class="col-lg-10">
+                            <div class="form-group">
+                              <label class="control-label col-lg-4">NIK</label>
+                              <div class="col-lg-8">
+                                <span type="text" class="form-control">
+                                  <?php 
+                                    echo $vac['nik'];
+                                  ?>
+                                </span>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="control-label col-lg-4">Nama</label>
+                              <div class="col-lg-8">
+                                <span type="text" class="form-control">
+                                  <?php 
+                                    echo $vac['nama'];
+                                  ?>
+                                </span>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="control-label col-lg-4">Kelompok</label>
+                              <div class="col-lg-8">
+                                <span type="text" class="form-control">
+                                  <?php 
+                                    echo $vac['kelompok_vaksin'];
+                                  ?>
+                                </span>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="control-label col-lg-4">Tanggal</label>
+                              <div class="col-lg-8">
+                                <span type="text" class="form-control">
+                                  <?php 
+                                    echo $vac['tanggal_vaksin'];
+                                  ?>
+                                </span>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="control-label col-lg-4">Jenis</label>
+                              <div class="col-lg-8">
+                                <span type="text" class="form-control">
+                                  <?php 
+                                    echo $vac['jenis_vaksin'];
+                                  ?>
+                                </span>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="control-label col-lg-4">Lokasi</label>
+                              <div class="col-lg-8">
+                                <span type="text" class="form-control">
+                                  <?php 
+                                    echo $vac['lokasi_vaksin'];
+                                  ?>
+                                </span>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="control-label col-lg-4">Dosis Ke</label>
+                              <div class="col-lg-8">
+                                <span type="text" class="form-control">
+                                  <?php 
+                                    echo $vac['vaksin_ke']; 
+                                  ?>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-lg-2">
+                            <button role="button" data-attachment-filename="<?= $vac['path_kartu_vaksin'] ?>" data-toggle="tooltip" title="Kartu Vaksin" class="btn btn-secondary attachment-modal-trigger">
+                              <i class="fa fa-image"></i>
+                            </button>
+                            <br>
+                            <br>
+                            <button role="button" data-attachment-filename="<?= $vac['path_sertifikat_vaksin'] ?>" data-toggle="tooltip" title="Sertifikat Vaksin" class="btn btn-secondary attachment-modal-trigger">
+                              <i class="fa fa-image"></i>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                        <?php
+                      }
+                    } 
+                    ?>
                     <?php if ($request->status_req == 'pending') : ?>
                       <hr>
                       <div>
@@ -967,7 +1080,7 @@
 </script>
 <script>
   !(function() {
-    const attachment_base_link = '{{ $attachment_path }}'
+    const attachment_base_link = "<?= $attachment_path ?>"
 
     $('img.attachment').click(function() {
       return

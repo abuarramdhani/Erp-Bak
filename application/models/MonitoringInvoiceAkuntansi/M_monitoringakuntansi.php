@@ -1081,6 +1081,7 @@ class M_monitoringakuntansi extends CI_Model
                 ami.last_status_purchasing_date last_status_purchasing_date,
                 ami.last_status_finance_date last_status_finance_date,
                 ami.finance_batch_number finance_batch_number,
+                ami.last_purchasing_invoice_status last_purchasing_invoice_status,
                 ami.last_finance_invoice_status last_finance_invoice_status,
                 ami.reason reason, 
                 ami.info info,
@@ -1443,7 +1444,7 @@ class M_monitoringakuntansi extends CI_Model
         $runQuery = $oracle->query($query);
     }
 
-    public function getInvoice($invoice_number)
+    public function getInvoice($invoice_number, $po_number)
     {
         $oracle = $this->load->database("oracle", TRUE);
         $query = $oracle->query("select
@@ -1457,7 +1458,8 @@ class M_monitoringakuntansi extends CI_Model
             ,khs_ap_invoice_purchase_order aipo
             where
             ami.INVOICE_ID = aipo.INVOICE_ID
-            and ami.INVOICE_NUMBER = '$invoice_number'");
+            and ami.INVOICE_NUMBER = '$invoice_number'
+            and aipo.PO_NUMBER = '$po_number'");
 
         return $query->result_array();
     }

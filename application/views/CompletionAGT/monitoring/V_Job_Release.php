@@ -10,9 +10,16 @@
       <strong>Sekilas Info! </strong> Klik 2 kali jika hanya memilih 1 tanggal</strong>
     </div>
   </div>
-  <div class="col-md-10">
+  <div class="col-md-7">
     <label for="">Filter By Date Range</label>
     <input type="text" name="" class="form-control tanggal_agt_job_andon" placeholder="Select Yout Current Date" required="" >
+  </div>
+  <div class="col-md-3">
+    <label for="">Sudah Cetak Picklist</label>
+    <select class="andon_slc_cek_picklist" name="" style="width:100%">
+      <option value="Y" selected>Ya</option>
+      <option value="N">Tidak</option>
+    </select>
   </div>
   <div class="col-md-2">
     <label for="" style="color:transparent">Ini Filter</label>
@@ -26,7 +33,8 @@
 </div>
 
 <script type="text/javascript">
-  $(document).ready(function () {
+  $('.andon_slc_cek_picklist').select2();
+  $(document).ready(function(){
     setTimeout(function () {
       filter_job_agt();
     }, 50);
@@ -60,8 +68,7 @@
         ],
         firstDay: 1,
       },
-    },
-  );
+    })
 });
 
 function filter_job_agt() {
@@ -72,6 +79,7 @@ function filter_job_agt() {
    // dataType: 'JSON',
    data: {
      range_date: val,
+     picklist: $('.andon_slc_cek_picklist').val()
    },
    cache:false,
    beforeSend: function() {
@@ -87,7 +95,7 @@ function filter_job_agt() {
     $('.label_agt_job').show()
    },
    error: function(XMLHttpRequest, textStatus, errorThrown) {
-    swalAGT('error', 'Terdapat Kesalahan...');
+    swalLargeAGT('error', `${XMLHttpRequest.responseText}`);
     $('.area_job_filtered').html('')
     console.error();
    }

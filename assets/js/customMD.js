@@ -740,33 +740,33 @@ function GetSudahCetakDetail(rm, rowID) {
 
 let do_cekcetak;
 function startintervalcetak(rn) {
- do_cekcetak = setInterval(function() {
+ // do_cekcetak = setInterval(function() {
    ceksudahcetak(rn);
- }, 2000);
+ // }, 2000);
 }
 
 function ceksudahcetak(rn) {
-  $.ajax({
-    url: baseurl + 'MonitoringDO/SettingDO/cek_sudah_cetak',
-    type: 'POST',
-    dataType:'JSON',
-    data: {
-      rn:rn,
-    },
-    beforeSend: function() {
-    },
-    success: function(result) {
-      console.log(result.STATUS, 'ini statusnya');
-      if (result.STATUS == 'C') {
-         clearInterval(do_cekcetak);
-         swalDO2021('success', 'Selesai.');
+  // $.ajax({
+  //   url: baseurl + 'MonitoringDO/SettingDO/cek_sudah_cetak',
+  //   type: 'POST',
+  //   dataType:'JSON',
+  //   data: {
+  //     rn:rn,
+  //   },
+  //   beforeSend: function() {
+  //   },
+  //   success: function(result) {
+  //     console.log(result.STATUS, 'ini statusnya');
+  //     if (result.STATUS == 'C') {
+  //        clearInterval(do_cekcetak);
+  //        swalDO2021('success', 'Selesai.');
          dodo3();
-      }
-    },
-    error: function(XMLHttpRequest, textStatus, errorThrown) {
-      console.error();
-    }
-  })
+  //     }
+  //   },
+  //   error: function(XMLHttpRequest, textStatus, errorThrown) {
+  //     console.error();
+  //   }
+  // })
 }
 
 function runapi_interorg(tipe, request_number, org_id, subinv) {
@@ -797,8 +797,8 @@ function runapi_interorg(tipe, request_number, org_id, subinv) {
           },
           success: function(result) {
             if (result == 200) {
-              // swalDO2021('success', 'Berhasil menjalankan prosedur');
-              swalDO2021Loading('Sedang Mencetak Dokumen')
+              swalDO2021('success', 'Berhasil menjalankan prosedur');
+              // swalDO2021Loading('Sedang Mencetak Dokumen')
               $('#MyModalSPBKIT').modal('hide');
               startintervalcetak(request_number);
               window.open(baseurl+'MonitoringDO/PDF/'+request_number);
@@ -812,7 +812,7 @@ function runapi_interorg(tipe, request_number, org_id, subinv) {
           }
         })
       }else {
-        swalDO2021Loading('Sedang Mencetak Dokumen')
+        // swalDO2021Loading('Sedang Mencetak Dokumen')
         startintervalcetak(request_number);
         window.open(baseurl+'MonitoringDO/PDF/'+request_number);
       }
@@ -851,7 +851,7 @@ function cetakDO(rn, tipe, header_id) {
 
         //tambahan kondisi 2021
         if (tipe == 'DO') {
-          swalDO2021Loading('Sedang Mencetak Dokumen')
+          // swalDO2021Loading('Sedang Mencetak Dokumen')
           startintervalcetak(rn);
           window.open(baseurl+'MonitoringDO/PDF/'+rn)
         }else {
@@ -887,6 +887,7 @@ function cetakDO(rn, tipe, header_id) {
                         $('#MyModalSPBKIT').modal({
                             backdrop: 'static'
                         });
+                        $('.select2subinv_spbkit').val('').trigger('change');
                         //ambil org code
                         $.ajax({
                           url: baseurl + 'MonitoringDO/SettingDO/org_spbkit',
@@ -899,7 +900,7 @@ function cetakDO(rn, tipe, header_id) {
                             toastDO2021Loading('Mencoba Mendapatkan ORGANIZATION ID..');
                           },
                           success: function(result_2) {
-                            if (result_2[0].ORGANIZATION_ID) {
+                            if (result_2 != '') {
                               toastDO2021('success', `ORGANIZATION ID Ditemukan ${result_2[0].ORGANIZATION_CODE} - ${result_2[0].ORGANIZATION_ID}`)
                               $('#org_code_spbkit').val(result_2[0].ORGANIZATION_CODE)
                               $('#org_id_spbkit').val(result_2[0].ORGANIZATION_ID)
@@ -939,7 +940,7 @@ function cetakDO(rn, tipe, header_id) {
                         })
 
                       }else {
-                        swalDO2021Loading('Sedang Mencetak Dokumen')
+                        // swalDO2021Loading('Sedang Mencetak Dokumen')
                         startintervalcetak(rn);
                         window.open(baseurl+'MonitoringDO/PDF/'+rn);
                       }

@@ -9,13 +9,6 @@ $(document).ready(function () {
     scrollX: true,
     scrollCollapse: true,
   });
-
-  $("#tblMonitoringDSP").DataTable({
-    scrollY: "300px",
-    scrollX: true,
-    scrollCollapse: true,
-  });
-
   $(document).on("click", ".btnReqNumberDSP", function () {
     var reqNumber = $(this).html();
 
@@ -220,10 +213,12 @@ $(document).ready(function () {
                   }
                 }
 
+                const ekspedisiDSP_tambahan = '<option value="Bareng Truk Cabang Medan">Bareng Truk Cabang Medan</option><option value="Bareng Truk Cabang Tanjungkarang">Bareng Truk Cabang Tanjungkarang</option><option value="Bareng Truk Cabang Subang">Bareng Truk Cabang Subang</option><option value="Bareng Truk Cabang Nganjuk">Bareng Truk Cabang Nganjuk</option><option value="Bareng Truk Cabang Makassar">Bareng Truk Cabang Makassar</option><option value="Bareng Truk Showroom Banjarmasin">Bareng Truk Showroom Banjarmasin</option><option value="Bareng Truk Showroom Pekanbaru">Bareng Truk Showroom Pekanbaru</option><option value="Bareng Truk Showroom Pontianak">Bareng Truk Showroom Pontianak</option><option value="Bareng Truk Showroom Palu">Bareng Truk Showroom Palu</option>';
+
                 if (resp[0]["EKSPEDISI"] == null) {
                   // $(".ekspedisiDSP").val(" - ");
                   $(".ekspedisiDSP").html(
-                    '<option></option><option value="ADEX">ADEX</option><option value="BARANG TRUK">BARANG TRUK</option><option value="INDIE">INDIE</option><option value="KGP">KGP</option><option value="POS KILAT KHUSUS">POS KILAT KHUSUS</option><option value="QDS 1">QDS 1</option><option value="QDS 2">QDS 2</option><option value="SADANA">SADANA</option><option value="TAM">TAM</option><option value="JPM">JPM</option><option value="JNE OKE">JNE OKE</option><option value="JNE REGULER">JNE REGULER</option><option value="JNE YES">JNE YES</option><option value="JNE TRUCKING">JNE TRUCKING</option><option value="J&T REGULER / EZ">J&T REGULER / EZ</option><option value="J&T DFOD">J&T DFOD</option><option value="TIKI ECO">TIKI ECO</option><option value="TIKI REGULER">TIKI REGULER</option><option value="TIKI ONS">TIKI ONS</option><option value="SICEPAT GOKIL">SICEPAT GOKIL</option><option value="SICEPAT REGULER">SICEPAT REGULER</option><option value="SICEPAT SIUNTUNG">SICEPAT SIUNTUNG</option><option value="LION PARCEL">LION PARCEL</option><option value="GRAB / GOJEK">GRAB / GOJEK</option><option value="PENGAMBILAN DI KANTOR">PENGAMBILAN DI KANTOR</option><option value="JNE CTC YES">JNE CTC YES</option>'
+                    '<option></option><option value="ADEX">ADEX</option><option value="BARANG TRUK">BARANG TRUK</option><option value="INDIE">INDIE</option><option value="KGP">KGP</option><option value="POS KILAT KHUSUS">POS KILAT KHUSUS</option><option value="QDS 1">QDS 1</option><option value="QDS 2">QDS 2</option><option value="SADANA">SADANA</option><option value="TAM">TAM</option><option value="JPM">JPM</option><option value="JNE OKE">JNE OKE</option><option value="JNE REGULER">JNE REGULER</option><option value="JNE YES">JNE YES</option><option value="JNE TRUCKING">JNE TRUCKING</option><option value="J&T REGULER / EZ">J&T REGULER / EZ</option><option value="J&T DFOD">J&T DFOD</option><option value="TIKI ECO">TIKI ECO</option><option value="TIKI REGULER">TIKI REGULER</option><option value="TIKI ONS">TIKI ONS</option><option value="SICEPAT GOKIL">SICEPAT GOKIL</option><option value="SICEPAT REGULER">SICEPAT REGULER</option><option value="SICEPAT SIUNTUNG">SICEPAT SIUNTUNG</option><option value="LION PARCEL">LION PARCEL</option><option value="GRAB / GOJEK">GRAB / GOJEK</option><option value="PENGAMBILAN DI KANTOR">PENGAMBILAN DI KANTOR</option><option value="JNE CTC YES">JNE CTC YES</option>' + ekspedisiDSP_tambahan
                   );
                 } else {
                   if (resp[0]["EKSPEDISI"].indexOf("#") != -1) {
@@ -245,7 +240,7 @@ $(document).ready(function () {
                     $(".ekspedisiDSP").append(newOption).trigger("change");
                     $(".ekspedisiDSP")
                       .append(
-                        '<option value="ADEX">ADEX</option><option value="BARANG TRUK">BARANG TRUK</option><option value="INDIE">INDIE</option><option value="KGP">KGP</option><option value="POS KILAT KHUSUS">POS KILAT KHUSUS</option><option value="QDS 1">QDS 1</option><option value="QDS 2">QDS 2</option><option value="SADANA">SADANA</option><option value="TAM">TAM</option><option value="JPM">JPM</option><option value="JNE OKE">JNE OKE</option><option value="JNE REGULER">JNE REGULER</option><option value="JNE YES">JNE YES</option><option value="JNE TRUCKING">JNE TRUCKING</option><option value="J&T REGULER / EZ">J&T REGULER / EZ</option><option value="J&T DFOD">J&T DFOD</option><option value="TIKI ECO">TIKI ECO</option><option value="TIKI REGULER">TIKI REGULER</option><option value="TIKI ONS">TIKI ONS</option><option value="SICEPAT GOKIL">SICEPAT GOKIL</option><option value="SICEPAT REGULER">SICEPAT REGULER</option><option value="SICEPAT SIUNTUNG">SICEPAT SIUNTUNG</option><option value="LION PARCEL">LION PARCEL</option><option value="GRAB / GOJEK">GRAB / GOJEK</option><option value="PENGAMBILAN DI KANTOR">PENGAMBILAN DI KANTOR</option><option value="JNE CTC YES">JNE CTC YES</option>'
+                        '<option value="ADEX">ADEX</option><option value="BARANG TRUK">BARANG TRUK</option><option value="INDIE">INDIE</option><option value="KGP">KGP</option><option value="POS KILAT KHUSUS">POS KILAT KHUSUS</option><option value="QDS 1">QDS 1</option><option value="QDS 2">QDS 2</option><option value="SADANA">SADANA</option><option value="TAM">TAM</option><option value="JPM">JPM</option><option value="JNE OKE">JNE OKE</option><option value="JNE REGULER">JNE REGULER</option><option value="JNE YES">JNE YES</option><option value="JNE TRUCKING">JNE TRUCKING</option><option value="J&T REGULER / EZ">J&T REGULER / EZ</option><option value="J&T DFOD">J&T DFOD</option><option value="TIKI ECO">TIKI ECO</option><option value="TIKI REGULER">TIKI REGULER</option><option value="TIKI ONS">TIKI ONS</option><option value="SICEPAT GOKIL">SICEPAT GOKIL</option><option value="SICEPAT REGULER">SICEPAT REGULER</option><option value="SICEPAT SIUNTUNG">SICEPAT SIUNTUNG</option><option value="LION PARCEL">LION PARCEL</option><option value="GRAB / GOJEK">GRAB / GOJEK</option><option value="PENGAMBILAN DI KANTOR">PENGAMBILAN DI KANTOR</option><option value="JNE CTC YES">JNE CTC YES</option>' + ekspedisiDSP_tambahan
                       )
                       .trigger("change");
                   } else {
@@ -264,7 +259,7 @@ $(document).ready(function () {
                     $(".ekspedisiDSP").append(newOption).trigger("change");
                     $(".ekspedisiDSP")
                       .append(
-                        '<option value="ADEX">ADEX</option><option value="BARANG TRUK">BARANG TRUK</option><option value="INDIE">INDIE</option><option value="JNE">JNE</option><option value="JNT">JNT</option><option value="KGP">KGP</option><option value="POS">POS</option><option value="QDS 1">QDS 1</option><option value="QDS 2">QDS 2</option><option value="SADANA">SADANA</option><option value="TAM">TAM</option><option value="TIKI">TIKI</option><option value="JPM">JPM</option>'
+                        '<option value="ADEX">ADEX</option><option value="BARANG TRUK">BARANG TRUK</option><option value="INDIE">INDIE</option><option value="JNE">JNE</option><option value="JNT">JNT</option><option value="KGP">KGP</option><option value="POS">POS</option><option value="QDS 1">QDS 1</option><option value="QDS 2">QDS 2</option><option value="SADANA">SADANA</option><option value="TAM">TAM</option><option value="TIKI">TIKI</option><option value="JPM">JPM</option>' + ekspedisiDSP_tambahan
                       )
                       .trigger("change");
                   }
@@ -629,6 +624,193 @@ function SearchArsSPBDO() {
           },
         ],
       });
+    },
+  });
+}
+$(document).ready(function () {
+  var view = document.getElementById("V_Monitoring_List");
+  if (view) {
+    ajax1 = $.ajax({
+      url: baseurl + "DPBSparepart/Approver/getNormal",
+      type: "POST",
+      beforeSend: function () {
+        $("#loadingAreanormal").show();
+        $("div.table_area_normal").hide();
+      },
+      success: function (result) {
+        // console.log(result);
+        $("#loadingAreanormal").hide();
+        $("div.table_area_normal").show();
+        $("div.table_area_normal").html(result);
+        $("div.table_area_urgent").html("");
+        $("div.table_area_eceran").html("");
+        $("div.table_area_bagro").html("");
+        $("div.table_area_ecommerce").html("");
+        $(".tblMonitoringDSP").DataTable({
+          scrollY: "300px",
+          scrollX: true,
+          scrollCollapse: true,
+        });
+      },
+      error: function (XMLHttpRequest, textStatus, errorThrown) {
+        console.error();
+      },
+    });
+  }
+});
+function normalll() {
+  if (ajax2 != null) ajax2.abort();
+  if (ajax3 != null) ajax3.abort();
+
+  ajax1 = $.ajax({
+    url: baseurl + "DPBSparepart/Approver/getNormal",
+    type: "POST",
+    beforeSend: function () {
+      $("#loadingAreanormal").show();
+      $("div.table_area_normal").hide();
+    },
+    success: function (result) {
+      // console.log(result);
+      $("#loadingAreanormal").hide();
+      $("div.table_area_normal").show();
+      $("div.table_area_normal").html(result);
+      $("div.table_area_urgent").html("");
+      $("div.table_area_eceran").html("");
+      $("div.table_area_bagro").html("");
+      $("div.table_area_ecommerce").html("");
+      $(".tblMonitoringDSP").DataTable({
+        scrollY: "300px",
+        scrollX: true,
+        scrollCollapse: true,
+      });
+    },
+    error: function (XMLHttpRequest, textStatus, errorThrown) {
+      console.error();
+    },
+  });
+}
+function urgentttt() {
+  if (ajax1 != null) ajax1.abort();
+  if (ajax3 != null) ajax3.abort();
+
+  ajax1 = $.ajax({
+    url: baseurl + "DPBSparepart/Approver/geturgent",
+    type: "POST",
+    beforeSend: function () {
+      $("#loadingAreaurgent").show();
+      $("div.table_area_urgent").hide();
+    },
+    success: function (result) {
+      // console.log(result);
+      $("#loadingAreaurgent").hide();
+      $("div.table_area_urgent").show();
+      $("div.table_area_urgent").html(result);
+      $("div.table_area_normal").html("");
+      $("div.table_area_eceran").html("");
+      $("div.table_area_bagro").html("");
+      $("div.table_area_ecommerce").html("");
+      $(".tblMonitoringDSP").DataTable({
+        scrollY: "300px",
+        scrollX: true,
+        scrollCollapse: true,
+      });
+    },
+    error: function (XMLHttpRequest, textStatus, errorThrown) {
+      console.error();
+    },
+  });
+}
+function ecerannnn() {
+  if (ajax1 != null) ajax1.abort();
+  if (ajax2 != null) ajax2.abort();
+
+  ajax1 = $.ajax({
+    url: baseurl + "DPBSparepart/Approver/geteceran",
+    type: "POST",
+    beforeSend: function () {
+      $("#loadingAreaeceran").show();
+      $("div.table_area_eceran").hide();
+    },
+    success: function (result) {
+      // console.log(result);
+      $("#loadingAreaeceran").hide();
+      $("div.table_area_eceran").show();
+      $("div.table_area_eceran").html(result);
+      $("div.table_area_normal").html("");
+      $("div.table_area_urgent").html("");
+      $("div.table_area_bagro").html("");
+      $("div.table_area_ecommerce").html("");
+      $(".tblMonitoringDSP").DataTable({
+        scrollY: "300px",
+        scrollX: true,
+        scrollCollapse: true,
+      });
+    },
+    error: function (XMLHttpRequest, textStatus, errorThrown) {
+      console.error();
+    },
+  });
+}
+function bagroooo() {
+  if (ajax1 != null) ajax1.abort();
+  if (ajax2 != null) ajax2.abort();
+
+  ajax1 = $.ajax({
+    url: baseurl + "DPBSparepart/Approver/getbagro",
+    type: "POST",
+    beforeSend: function () {
+      $("#loadingAreabagro").show();
+      $("div.table_area_bagro").hide();
+    },
+    success: function (result) {
+      // console.log(result);
+      $("#loadingAreabagro").hide();
+      $("div.table_area_bagro").show();
+      $("div.table_area_bagro").html(result);
+      $("div.table_area_normal").html("");
+      $("div.table_area_urgent").html("");
+      $("div.table_area_eceran").html("");
+      $("div.table_area_ecommerce").html("");
+      $(".tblMonitoringDSP").DataTable({
+        scrollY: "300px",
+        scrollX: true,
+        scrollCollapse: true,
+      });
+    },
+    error: function (XMLHttpRequest, textStatus, errorThrown) {
+      console.error();
+    },
+  });
+}
+function ecommerceee() {
+  if (ajax1 != null) ajax1.abort();
+  if (ajax2 != null) ajax2.abort();
+
+  ajax1 = $.ajax({
+    url: baseurl + "DPBSparepart/Approver/getecommerce",
+    type: "POST",
+    beforeSend: function () {
+      $("#loadingAreaecommerce").show();
+      $("div.table_area_ecommerce").hide();
+    },
+    success: function (result) {
+      // console.log(result);
+      $("#loadingAreaecommerce").hide();
+      $("div.table_area_ecommerce").show();
+      $("div.table_area_ecommerce").html(result);
+      $("div.table_area_normal").html("");
+      $("div.table_area_urgent").html("");
+      $("div.table_area_eceran").html("");
+      $("div.table_area_bagro").html("");
+
+      $(".tblMonitoringDSP").DataTable({
+        scrollY: "300px",
+        scrollX: true,
+        scrollCollapse: true,
+      });
+    },
+    error: function (XMLHttpRequest, textStatus, errorThrown) {
+      console.error();
     },
   });
 }

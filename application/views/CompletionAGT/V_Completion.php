@@ -25,25 +25,23 @@
     padding-right: 0px!important;
   }
 </style>
+
 <section class="content">
   <div class="inner">
     <div class="row">
       <div class="col-lg-12">
-
         <div class="row">
           <div class="col-lg-12">
-            <div class="box box-primary box-solid">
+            <div class="box box box-primary color-palette-box">
               <div class="box-header with-border">
-                 <h4 style="font-weight:bold"><i aria-hidden="true" class="fa fa-file"></i> Completion</h4>
+                 <h4 style="font-weight:bold" class="text-primary"><i aria-hidden="true" class="fa fa-cog"></i> Completion Assembly Gear Trans</h4>
               </div>
               <div class="panel-body">
-
+                <center>Sementara Proses Complation Menggunakan Android</center>
               </div>
             </div>
           </div>
         </div>
-
-
       </div>
     </div>
   </div>

@@ -75,6 +75,9 @@ $route['api/services/notification/read/all']['post'] = 'Api/Services/Notificatio
 $route['api/services/notification/delete']['post'] = 'Api/Services/Notifications/C_Index/setDelete';
 $route['api/services/notification/delete/all']['post'] = 'Api/Services/Notifications/C_Index/setDeleteAll';
 
+//API ERP MOBILE
+$route['Api/ErpMobile/(:any)'] = 'Api/ErpMobile/C_ErpMobile/$1';
+
 //-------------------------------------------------Notification-------------------------------------------------------
 $route['notifications'] = 'Notifications/C_Index/index';
 $route['notifications/(:any)'] = 'Notifications/C_Index/redirect/$1';
@@ -574,6 +577,16 @@ $route['CateringManagement/PrintPP/(:any)/(:any)'] 	= 'CateringManagement/C_Prin
 $route['CateringManagement/PrintPPCatering'] 				= 'CateringManagement/C_PrintppCatering';
 $route['CateringManagement/PrintPPCatering/(:any)'] 		= 'CateringManagement/C_PrintppCatering/$1';
 $route['CateringManagement/PrintPPCatering/(:any)/(:any)'] 	= 'CateringManagement/C_PrintppCatering/$1/$2';
+
+//----------------------------------- Catering Management - Notula Sampling --------------------------------- //
+$route['CateringManagement/NotulaSampling'] 				= 'CateringManagement/Catering/NotulaSampling/C_NotulaSampling/index';
+$route['CateringManagement/NotulaSampling/Sampling']['post'] = 'CateringManagement/Catering/NotulaSampling/C_NotulaSampling/insert_sampling';
+$route['CateringManagement/NotulaSampling/Export']	= 'CateringManagement/Catering/NotulaSampling/C_NotulaSampling/export';
+
+$route['CateringManagement/NotulaSampling/GenerateSamplingTemplate']['post']	= 'CateringManagement/Catering/NotulaSampling/C_NotulaSampling/GenerateSamplingTemplate';
+$route['CateringManagement/NotulaSampling/CheckCateringGenerated']['get']	= 'CateringManagement/Catering/NotulaSampling/C_NotulaSampling/CheckCateringGenerated';
+
+$route['CateringManagement/NotulaSampling/Api/UpdateSampling']['post']	= 'CateringManagement/Catering/NotulaSampling/C_NotulaSampling/updateSampling';
 
 //-----------------------------------Catering Management -Setup-----------------------------------------------//
 $route['CateringManagement/catering'] 			= 'CateringManagement/Setup/C_Catering/index';
@@ -2180,6 +2193,16 @@ $route['MasterPekerja/PekerjaPuasa/(:any)'] = 'MasterPekerja/PekerjaPuasa/C_Inde
 $route['MasterPekerja/KronologisKecelakaanKerja'] = 'MasterPekerja/Other/KronologisKecelakaanKerja/C_KronologisKK';
 $route['MasterPekerja/KronologisKecelakaanKerja/(:any)'] = 'MasterPekerja/Other/KronologisKecelakaanKerja/C_KronologisKK/$1';
 
+// ---------------------------------------Sebab Keluar-------------------------------------------------------
+$route['MasterPekerja/SebabKeluar'] = 'MasterPekerja/SebabKeluar/C_SebabKeluar';
+$route['MasterPekerja/SebabKeluar/(:any)'] = 'MasterPekerja/SebabKeluar/C_SebabKeluar/$1';
+$route['MasterPekerja/SebabKeluar/(:any)/(:any)'] = 'MasterPekerja/SebabKeluar/C_SebabKeluar/$1/$2';
+
+// ----------------------------------Maser Pekerja Deklarasi Sehat-------------------------------------------
+$route['MasterPekerja/DeklarasiSehat'] = 'MasterPekerja/Pekerja/DeklarasiSehat/C_DeklarasiSehat';
+$route['MasterPekerja/DeklarasiSehat/(:any)'] = 'MasterPekerja/Pekerja/DeklarasiSehat/C_DeklarasiSehat/$1';
+$route['MasterPekerja/DeklarasiSehat/(:any)/(:any)'] = 'MasterPekerja/Pekerja/DeklarasiSehat/C_DeklarasiSehat/$1/$2';
+
 //------------------------------------ Penerimaan PO ----------------------------------------
 $route['PenerimaanPO']						   = 'PenerimaanPO/C_Penerimaan';
 
@@ -2286,6 +2309,10 @@ $route['MasterPresensi/ReffGaji/THR'] = 'MasterPresensi/ReffGaji/C_THRPekerja';
 $route['MasterPresensi/ReffGaji/THR/(:any)'] = 'MasterPresensi/ReffGaji/C_THRPekerja/$1';
 $route['MasterPresensi/ReffGaji/THR/(:any)/(:any)'] = 'MasterPresensi/ReffGaji/C_THRPekerja/$1/$2';
 
+$route['MasterPresensi/ReffGaji/BantuanUpah'] = 'MasterPresensi/ReffGaji/C_BantuanUpah';
+$route['MasterPresensi/ReffGaji/BantuanUpah/(:any)'] = 'MasterPresensi/ReffGaji/C_BantuanUpah/$1';
+$route['MasterPresensi/ReffGaji/BantuanUpah/(:any)/(:any)'] = 'MasterPresensi/ReffGaji/C_BantuanUpah/$1/$2';
+
 $route['MasterPresensi/Proses/CutiBersama'] = 'MasterPresensi/Proses/C_CutiBersama';
 $route['MasterPresensi/Proses/CutiBersama/(:any)'] = 'MasterPresensi/Proses/C_CutiBersama/$1';
 $route['MasterPresensi/Proses/CutiBersama/(:any)/(:any)'] = 'MasterPresensi/Proses/C_CutiBersama/$1/$2';
@@ -2320,6 +2347,24 @@ $route['MasterPresensi/Lelayu/TarifSPSI'] = 'MasterPresensi/Lelayu/C_TarifSPSI';
 $route['MasterPresensi/Lelayu/TarifSPSI/(:any)'] = 'MasterPresensi/Lelayu/C_TarifSPSI/$1';
 $route['MasterPresensi/Lelayu/TarifSPSI/(:any)/(:any)'] = 'MasterPresensi/Lelayu/C_TarifSPSI/$1/$2';
 
+$route['MasterPresensi/DataPresensi/CetakPresensiHarian'] = 'MasterPresensi/DataPresensi/C_CetakPresensiHarian';
+$route['MasterPresensi/DataPresensi/CetakPresensiHarian/(:any)'] = 'MasterPresensi/DataPresensi/C_CetakPresensiHarian/$1';
+$route['MasterPresensi/DataPresensi/CetakPresensiHarian/(:any)/(:any)'] = 'MasterPresensi/DataPresensi/C_CetakPresensiHarian/$1/$2';
+
+$route['MasterPresensi/DataPresensi/DetailPresensi'] = 'MasterPresensi/DataPresensi/C_DetailPresensi';
+$route['MasterPresensi/DataPresensi/DetailPresensi/(:any)'] = 'MasterPresensi/DataPresensi/C_DetailPresensi/$1';
+$route['MasterPresensi/DataPresensi/DetailPresensi/(:any)/(:any)'] = 'MasterPresensi/DataPresensi/C_DetailPresensi/$1/$2';
+
+$route['MasterPresensi/DataPresensi/PresensiHariIni'] = 'MasterPresensi/DataPresensi/C_PresensiHariIni';
+$route['MasterPresensi/DataPresensi/PresensiHariIni/(:any)'] = 'MasterPresensi/DataPresensi/C_PresensiHariIni/$1';
+$route['MasterPresensi/DataPresensi/PresensiHariIni/(:any)/(:any)'] = 'MasterPresensi/DataPresensi/C_PresensiHariIni/$1/$2';
+
+$route['absen_hari_ini_pusat'] = 'MasterPresensi/DataPresensi/C_PresensiHariIni/Pusat';
+$route['absen_hari_ini_tuksono'] = 'MasterPresensi/DataPresensi/C_PresensiHariIni/Tuksono';
+
+$route['MasterPresensi/SetupCuti'] = "MasterPresensi/setupCuti/C_Cuti";
+$route['MasterPresensi/ExportPdf'] = "MasterPresensi/setupCuti/C_Cuti/exportPdf";
+$route['MasterPresensi/SetupCuti/ajax/(:any)'] = "MasterPresensi/setupCuti/C_Cuti/$1";
 
 //-------------------------------------Hambatan Produksi-------------------------------------------------
 $route['ManufacturingOperation/ProductionObstacles/master'] = 'ManufacturingOperation/ProductionObstacles/MainMenu/C_Master';
@@ -2533,6 +2578,27 @@ $route['p2k3adm_V2/datamasuk'] = 'P2K3V2/P2K3Admin/MainMenu/C_DataMasuk';
 $route['p2k3adm_V2/datamasuk/(:any)'] = 'P2K3V2/P2K3Admin/MainMenu/C_DataMasuk/$1';
 $route['p2k3adm_V2/datamasuk/(:any)/(:any)'] = 'P2K3V2/P2K3Admin/MainMenu/C_DataMasuk/$1/$2';
 $route['p2k3adm_V2/datamasuk/(:any)/(:any)/(:any)'] = 'P2K3V2/P2K3Admin/MainMenu/C_DataMasuk/$1/$2/$3';
+
+$route['p2k3adm_V2/Admin/Car/Create/(:any)'] = 'P2K3V2/P2K3Admin/MainMenu/C_Car/CreateCarView/$1';
+$route['p2k3adm_V2/Admin/Car/Create']['post'] = 'P2K3V2/P2K3Admin/MainMenu/C_Car/CreateCar';
+
+$route['p2k3adm_V2/Admin/Car/View/(:any)'] = 'P2K3V2/P2K3Admin/MainMenu/C_Car/ViewCar/$1';
+$route['p2k3adm_V2/Admin/Car/Update/(:any)']['post'] = 'P2K3V2/P2K3Admin/MainMenu/C_Car/UpdateCar/$1';
+
+$route['p2k3adm_V2/Admin/Car/Approval/History'] = 'P2K3V2/P2K3Admin/MainMenu/C_Car/ApprovalHistory';
+
+$route['p2k3adm_V2/Admin/Car/Approval/Unit'] = 'P2K3V2/P2K3Admin/MainMenu/C_Car/ApprovalUnitListView';
+$route['p2k3adm_V2/Admin/Car/Approval/Unit/Action']['post'] = 'P2K3V2/P2K3Admin/MainMenu/C_Car/approvalUnitAction';
+$route['p2k3adm_V2/Admin/Car/Approval/Unit/(:any)'] = 'P2K3V2/P2K3Admin/MainMenu/C_Car/approvalUnitView/$1';
+
+$route['p2k3adm_V2/Admin/Car/Approval/Tim/(:any)'] = 'P2K3V2/P2K3Admin/MainMenu/C_Car/approvalTimView/$1';
+$route['p2k3adm_V2/Admin/Car/Approval/Tim']['post'] = 'P2K3V2/P2K3Admin/MainMenu/C_Car/approvalTimAction';
+$route['p2k3adm_V2/Admin/Car/Approval/Tim/Notes']['post'] = 'P2K3V2/P2K3Admin/MainMenu/C_Car/approvalTimNotes';
+
+$route['p2k3adm_V2/Admin/Car/Pdf/(:any)'] = 'P2K3V2/P2K3Admin/MainMenu/C_Car/ExportPDF/$1';
+
+$route['p2k3adm_V2/Admin/Car/api/employeePIC'] = 'P2K3V2/P2K3Admin/MainMenu/C_Car/getEmployeePIC';
+
 $route['p2k3adm_V2/Admin/(:any)'] = 'P2K3V2/P2K3Admin/MainMenu/C_Index/$1';
 $route['p2k3adm_V2/Admin/(:any)/(:any)'] = 'P2K3V2/P2K3Admin/MainMenu/C_Index/$1/$2';
 $route['p2k3adm_V2/Admin/(:any)/(:any)/(:any)'] = 'P2K3V2/P2K3Admin/MainMenu/C_Index/$1/$2/$3';
@@ -2643,6 +2709,34 @@ $route['SystemIntegration/KaizenAkt'] = 'SystemIntegration/MainMenu/Akuntansi/C_
 $route['SystemIntegration/KaizenAkt/(:any)'] = 'SystemIntegration/MainMenu/Akuntansi/C_KaizenAkuntansi/$1';
 $route['SystemIntegration/KaizenAkt/(:any)/(:any)'] = 'SystemIntegration/MainMenu/Akuntansi/C_KaizenAkuntansi/$1/$2';
 
+//kaizen tuksono
+$route['SystemIntegration/KaizenPekerjaTks/TeamKaizen'] = 'SystemIntegration/MainMenu/KaizenTeamTks/C_KaizenTimTks';
+
+$route['SystemIntegration/KaizenPekerjaTks/TeamKaizen/Import'] = 'SystemIntegration/MainMenu/KaizenTeamTks/Import/C_Index';
+$route['SystemIntegration/KaizenPekerjaTks/TeamKaizen/Import/(:any)'] = 'SystemIntegration/MainMenu/KaizenTeamTks/Import/C_Index/$1';
+$route['SystemIntegration/KaizenPekerjaTks/TeamKaizen/Import/(:any)/(:any)'] = 'SystemIntegration/MainMenu/KaizenTeamTks/Import/C_Index/$1/$2';
+
+$route['SystemIntegration/KaizenPekerjaTks/TeamKaizen/Export/Tahunan'] = 'SystemIntegration/MainMenu/KaizenTeamTks/Export/C_Tahunan';
+$route['SystemIntegration/KaizenPekerjaTks/TeamKaizen/Export/Tahunan/(:any)'] = 'SystemIntegration/MainMenu/KaizenTeamTks/Export/C_Tahunan/$1';
+$route['SystemIntegration/KaizenPekerjaTks/TeamKaizen/Export/Bulanan'] = 'SystemIntegration/MainMenu/KaizenTeamTks/Export/C_Bulanan';
+$route['SystemIntegration/KaizenPekerjaTks/TeamKaizen/Export/Bulanan/(:any)'] = 'SystemIntegration/MainMenu/KaizenTeamTks/Export/C_Bulanan/$1';
+$route['SystemIntegration/KaizenPekerjaTks/TeamKaizen/Export/Resume'] = 'SystemIntegration/MainMenu/KaizenTeamTks/Export/C_Resume';
+$route['SystemIntegration/KaizenPekerjaTks/TeamKaizen/Export/Resume/(:any)'] = 'SystemIntegration/MainMenu/KaizenTeamTks/Export/C_Resume/$1';
+$route['SystemIntegration/KaizenPekerjaTks/TeamKaizen/Export/Buletin'] = 'SystemIntegration/MainMenu/KaizenTeamTks/Export/C_Buletin';
+$route['SystemIntegration/KaizenPekerjaTks/TeamKaizen/Export/Buletin/(:any)'] = 'SystemIntegration/MainMenu/KaizenTeamTks/Export/C_Buletin/$1';
+
+$route['SystemIntegration/KaizenPekerjaTks/TeamKaizen/HoverCard/(:any)'] = 'SystemIntegration/MainMenu/KaizenTeamTks/HoverCard/C_HoverCard/$1';
+$route['SystemIntegration/KaizenPekerjaTks/TeamKaizen/(:any)'] = 'SystemIntegration/MainMenu/KaizenTeamTks/C_KaizenTimTks/$1';
+$route['SystemIntegration/KaizenPekerjaTks/TeamKaizen/(:any)/(:any)'] = 'SystemIntegration/MainMenu/KaizenTeamTks/C_KaizenTimTks/$1/$2';
+
+
+$route['SystemIntegration/KaizenPekerjaTks/input'] = 'SystemIntegration/MainMenu/KaizenPekerjaTks/C_KaizenPekerjaTks';
+$route['SystemIntegration/KaizenPekerjaTks/rekap'] = 'SystemIntegration/MainMenu/KaizenPekerjaTks/C_KaizenPekerjaTks/rekapDataKaizen';
+$route['SystemIntegration/KaizenPekerjaTks/input/(:any)'] = 'SystemIntegration/MainMenu/KaizenPekerjaTks/C_KaizenPekerjaTks/$1';
+$route['SystemIntegration/KaizenPekerjaTks/input/(:any)/(:any)'] = 'SystemIntegration/MainMenu/KaizenPekerjaTks/C_KaizenPekerjaTks/$1/$2';
+$route['SystemIntegration/KaizenPekerjaTks/rekap/(:any)'] = 'SystemIntegration/MainMenu/KaizenPekerjaTks/C_KaizenPekerjaTks/$1';
+$route['SystemIntegration/KaizenPekerjaTks/rekap/(:any)/(:any)'] = 'SystemIntegration/MainMenu/KaizenPekerjaTks/C_KaizenPekerjaTks/$1/$2';
+$route['assets/upload/uploadKaizenTks/(:any)'] = 'assets/upload/uploadKaizenTks/$1';
 
 //---------------------------------------------------- Upah Pekerja Harian Lepas----------------------------------//
 $route['UpahHlCm'] 		= 'UpahHlCm/C_UpahPHL';
@@ -2729,6 +2823,10 @@ $route['InventoryManagement/CreateMoveOrder'] = 'Inventory/MainMenu/MoveOrder/C_
 $route['InventoryManagement/CreateMoveOrder/search/(:any)'] = 'Inventory/MainMenu/MoveOrder/C_MoveOrder/search/$1';
 $route['InventoryManagement/CreateMoveOrder/(:any)'] = 'Inventory/MainMenu/MoveOrder/C_MoveOrder/$1';
 
+$route['InventoryManagement/CreateMoveOrderOPM'] = 'Inventory/MainMenu/MoveOrder/C_MoveOrderOPM';
+$route['InventoryManagement/CreateMoveOrderOPM/(:any)'] = 'Inventory/MainMenu/MoveOrder/C_MoveOrderOPM/$1';
+$route['InventoryManagement/CreateMoveOrderOPM/(:any)/(:any)'] = 'Inventory/MainMenu/MoveOrder/C_MoveOrderOPM/$1/$2';
+
 $route['InventoryManagement/ExportMoveOrder'] = 'Inventory/MainMenu/MoveOrder/C_Export';
 $route['InventoryManagement/ExportMoveOrder/search'] = 'Inventory/MainMenu/MoveOrder/C_Export/search';
 $route['InventoryManagement/ExportMoveOrder/export'] = 'Inventory/MainMenu/MoveOrder/C_Export/export';
@@ -2759,6 +2857,10 @@ $route['InventoryManagement/CreateKIBDEV/pdf3/(:any)'] = 'InventoryKIB/MainMenu/
 $route['InventoryManagement/Monitoring'] = 'Inventory/MainMenu/MoveOrder/C_Monitoringassy';
 $route['InventoryManagement/Monitoring/(:any)'] = 'Inventory/MainMenu/MoveOrder/C_Monitoringassy/$1';
 
+//Create Job Move Order
+$route['InventoryManagement/CreateJobMO'] = 'MoveOrder/C_CreateMO';
+$route['InventoryManagement/CreateJobMO/(:any)'] = 'MoveOrder/C_CreateMO/$1';
+$route['InventoryManagement/CreateJobMO/(:any)/(:any)'] = 'MoveOrder/C_CreateMO/$1/$2';
 
 //------------------------------------ Manufacturing Operation ----------------------------------------
 $route['ManufacturingOperationUP2L']								= 'ManufacturingOperationUP2L/C_Index/index';
@@ -2817,7 +2919,17 @@ $route['ManufacturingOperationUP2L/Absen/(:any)/(:any)']			= 'ManufacturingOpera
 $route['ManufacturingOperationUP2L/DeleteDataUP2L']							= 'ManufacturingOperationUP2L/MainMenu/C_Delete';
 $route['ManufacturingOperationUP2L/DeleteDataUP2L/(:any)']					= 'ManufacturingOperationUP2L/MainMenu/C_Delete/$1';
 
+$route['ManufacturingOperationUP2L/CreateKIB/pdf/(:any)/(:any)/(:any)'] = 'ManufacturingOperationUP2L/KIB/CreateKIB/C_CreateKIB/pdf/$1/$2/$3';
+$route['ManufacturingOperationUP2L/CreateKIB/pdf1/(:any)/(:any)'] = 'ManufacturingOperationUP2L/KIB/CreateKIB/C_CreateKIB/pdf1/$1/$2/';
+$route['ManufacturingOperationUP2L/CreateKIB/pdf1/(:any)/(:any)/(:any)'] = 'ManufacturingOperationUP2L/KIB/CreateKIB/C_CreateKIB/pdf1/$1/$2/$3';
+$route['ManufacturingOperationUP2L/CreateKIB/pdf2/(:any)/(:any)/(:any)'] = 'ManufacturingOperationUP2L/KIB/CreateKIB/C_CreateKIB/pdf2/$1/$2/$3';
+$route['ManufacturingOperationUP2L/CreateKIB/pdf3/(:any)'] = 'ManufacturingOperationUP2L/KIB/CreateKIB/C_CreateKIB/pdf3/$1';
 
+$route['ManufacturingOperationUP2L/CreateKIBDEV/pdf/(:any)/(:any)/(:any)'] = 'ManufacturingOperationUP2L/KIB/CreateKIBDEV/C_CreateKIBDEV/pdf/$1/$2/$3';
+$route['ManufacturingOperationUP2L/CreateKIBDEV/pdf1/(:any)/(:any)'] = 'ManufacturingOperationUP2L/KIB/CreateKIB/C_CreateKIBDEV/pdf1/$1/$2/';
+$route['ManufacturingOperationUP2L/CreateKIBDEV/pdf1/(:any)/(:any)/(:any)'] = 'ManufacturingOperationUP2L/KIB/CreateKIBDEV/C_CreateKIBDEV/pdf1/$1/$2/$3';
+$route['ManufacturingOperationUP2L/CreateKIBDEV/pdf2/(:any)/(:any)/(:any)'] = 'ManufacturingOperationUP2L/KIB/CreateKIBDEV/C_CreateKIBDEV/pdf2/$1/$2/$3';
+$route['ManufacturingOperationUP2L/CreateKIBDEV/pdf3/(:any)'] = 'ManufacturingOperationUP2L/KIB/CreateKIBDEV/C_CreateKIBDEV/pdf3/$1';
 //------------------------------------Employee Recruitment---------------------------------------------//
 
 $route['EmployeeRecruitment']		= 'EmployeeRecruitment/C_TestCorrection/index';
@@ -3408,6 +3520,22 @@ $route['ADMSeleksi/Menu/Cetak/get_refresh_data_memo'] = 'ADMSeleksi/Menu/Cetak/C
 
 $route['ADMSeleksi/api/zimbra/check'] = 'ADMSeleksi/Api/C_Api/checkZimbra';
 $route['ADMSeleksi/api/pidgin/check'] = 'ADMSeleksi/Api/C_Api/checkPidgin';
+
+$route['ADMSeleksi/Penjadwalan'] = 'ADMSeleksi/Menu/C_Penjadwalan/Penjadwalan';
+$route['ADMSeleksi/Penjadwalan/(:any)'] = 'ADMSeleksi/Menu/C_Penjadwalan/$1';
+$route['ADMSeleksi/Penjadwalan/(:any)/(:any)'] = 'ADMSeleksi/Menu/C_Penjadwalan/$1/$2';
+$route['ADMSeleksi/MonitoringPenjadwalan'] = 'ADMSeleksi/Menu/C_Penjadwalan/Monitoring';
+$route['ADMSeleksi/MonitoringPenjadwalan/(:any)'] = 'ADMSeleksi/Menu/C_Penjadwalan/$1';
+$route['ADMSeleksi/MonitoringPenjadwalan/(:any)/(:any)'] = 'ADMSeleksi/Menu/C_Penjadwalan/$1/$2';
+$route['ADMSeleksi/MonitoringPenjadwalan/(:any)/(:any)/(:any)'] = 'ADMSeleksi/Menu/C_Penjadwalan/$1/$2/$3';
+$route['ADMSeleksi/MonitoringHasilTes'] = 'ADMSeleksi/Menu/C_HasilTes/MonitoringHasilTes';
+$route['ADMSeleksi/MonitoringHasilTes/(:any)'] = 'ADMSeleksi/Menu/C_HasilTes/$1';
+$route['ADMSeleksi/MonitoringHasilTes/(:any)/(:any)'] = 'ADMSeleksi/Menu/C_HasilTes/$1/$2';
+
+$route['ADMSeleksi/Setting/SetupPertanyaan'] = 'ADMSeleksi/Menu/C_Setting/index';
+$route['ADMSeleksi/Setting/SetupPertanyaan/(:any)'] = 'ADMSeleksi/Menu/C_Setting/$1';
+$route['ADMSeleksi/Setting/SetupPertanyaan/(:any)/(:any)'] = 'ADMSeleksi/Menu/C_Setting/$1/$2';
+
 
 // ------------------------------------------------- Monitoring LPPB Penerimaan ---------------------------------------------//
 $route['MonitoringLppbPenerimaan'] 								= 'MonitoringLppbPenerimaan/C_Index';
@@ -4896,6 +5024,10 @@ $route['MonitoringJobProduksi/LaporanProduksi/(:any)/(:any)']	= 'MonitoringJobPr
 $route['MonitoringJobProduksi/Import']					= 'MonitoringJobProduksi/C_Import';
 $route['MonitoringJobProduksi/Import/(:any)']			= 'MonitoringJobProduksi/C_Import/$1';
 $route['MonitoringJobProduksi/Import/(:any)/(:any)']	= 'MonitoringJobProduksi/C_Import/$1/$2';
+
+$route['MonitoringJobProduksi/MonitoringJob']					= 'MonitoringJobProduksi/C_Job';
+$route['MonitoringJobProduksi/MonitoringJob/(:any)']			= 'MonitoringJobProduksi/C_Job/$1';
+$route['MonitoringJobProduksi/MonitoringJob/(:any)/(:any)']	= 'MonitoringJobProduksi/C_Job/$1/$2';
 // -------------------------------------- Consumable ------------------------------------------ //
 // PPIC
 $route['ConsumablePPIC'] = 'Consumable/C_Index';
@@ -4943,6 +5075,11 @@ $route['Covid/ZonaKHS'] = 'Covid/ZonaKHS/C_ZonaCovidKhs';
 $route['Covid/ZonaKHS/(:any)'] = 'Covid/ZonaKHS/C_ZonaCovidKhs/$1';
 $route['Covid/ZonaKHS/(:any)/(:any)'] = 'Covid/ZonaKHS/C_ZonaCovidKhs/$1/$2';
 $route['Covid/ZonaKHS/(:any)/(:any)/(:any)'] = 'Covid/ZonaKHS/C_ZonaCovidKhs/$1/$2/$3';
+
+$route['Covid/DataVaksinasi'] = 'Covid/DataVaksinasi/C_DataVaksinasi';
+$route['Covid/DataVaksinasi/(:any)'] = 'Covid/DataVaksinasi/C_DataVaksinasi/$1';
+$route['Covid/DataVaksinasi/(:any)/(:any)'] = 'Covid/DataVaksinasi/C_DataVaksinasi/$1/$2';
+$route['Covid/DataVaksinasi/(:any)/(:any)/(:any)'] = 'Covid/DataVaksinasi/C_DataVaksinasi/$1/$2/$3';
 
 // --------------------------------- Laporan Kerja Operator welding ------------------------------ //
 $route['LaporanKerjaOperator'] = 'LKOWelding/C_Index';
@@ -5198,6 +5335,8 @@ $route['BarangBekas'] = 'BarangBekas/C_Master';
 $route['BarangBekas/pbbs'] = 'BarangBekas/C_Master/pbbs';
 $route['BarangBekas/pbbns'] = 'BarangBekas/C_Master/pbbns';
 $route['BarangBekas/Transact'] = 'BarangBekas/C_Master/transact';
+$route['BarangBekas/RekapPBB'] = 'BarangBekas/C_Master/rekapData';
+$route['BarangBekas/monitoring-stok'] = 'BarangBekas/C_Master/monitoringstok';
 
 $route['BarangBekas/pbbs/(:any)'] = 'BarangBekas/C_Master/$1';
 $route['BarangBekas/pbbs/(:any)/(:any)'] = 'BarangBekas/C_Master/$1/$2';
@@ -5210,6 +5349,10 @@ $route['BarangBekas/pbbns/(:any)/(:any)/(:any)'] 	= 'BarangBekas/C_Master/$1/$2/
 $route['BarangBekas/transact/(:any)'] = 'BarangBekas/C_Master/$1';
 $route['BarangBekas/transact/(:any)/(:any)'] = 'BarangBekas/C_Master/$1/$2';
 $route['BarangBekas/transact/(:any)/(:any)/(:any)'] = 'BarangBekas/C_Master/$1/$2/$3';
+
+$route['BarangBekas/RekapPBB/(:any)'] = 'BarangBekas/C_Master/$1';
+$route['BarangBekas/RekapPBB/(:any)/(:any)'] = 'BarangBekas/C_Master/$1/$2';
+$route['BarangBekas/RekapPBB/(:any)/(:any)/(:any)'] = 'BarangBekas/C_Master/$1/$2/$3';
 
 $route['MonitoringSPB'] = 'MonitoringSPB/C_Index';
 $route['MonitoringSPB/List'] = 'MonitoringSPB/C_Monspb';
@@ -5495,11 +5638,16 @@ $route['OrderToolMakingTM/MonitoringOrder']					= 'OrderToolMaking/KasiePPCTM/C_
 $route['OrderToolMakingTM/MonitoringOrder/(:any)']			= 'OrderToolMaking/KasiePPCTM/C_MonitoringOrder/$1';
 $route['OrderToolMakingTM/MonitoringOrder/(:any)/(:any)'] = 'OrderToolMaking/KasiePPCTM/C_MonitoringOrder/$1/$2';
 $route['OrderToolMakingTM/MonitoringOrder/(:any)/(:any)/(:any)'] = 'OrderToolMaking/KasiePPCTM/C_MonitoringOrder/$1/$2/$3';
+$route['OrderToolMakingTM/MasterData']					= 'OrderToolMaking/KasiePPCTM/C_MasterData';
+$route['OrderToolMakingTM/MasterData/(:any)']			= 'OrderToolMaking/KasiePPCTM/C_MasterData/$1';
 
 $route['OrderToolMakingAssTM'] 						= 'OrderToolMaking/AssKaNitToolMaking/C_Index';
 $route['OrderToolMakingAssTM/MonitoringOrder']		= 'OrderToolMaking/AssKaNitToolMaking/C_MonitoringOrder';
 $route['OrderToolMakingAssTM/MonitoringOrder/(:any)'] = 'OrderToolMaking/AssKaNitToolMaking/C_MonitoringOrder/$1';
 
+$route['OrderToolMakingAdminPPC'] 						= 'OrderToolMaking/AdminPPC/C_Index';
+$route['OrderToolMakingAdminPPC/MonitoringOrder']		= 'OrderToolMaking/AdminPPC/C_MonitoringOrder';
+$route['OrderToolMakingAdminPPC/MonitoringOrder/(:any)'] = 'OrderToolMaking/AdminPPC/C_MonitoringOrder/$1';
 //-------------------------------Completion Assembly Gear Transmission SS------------------------------------------------------------//
 $route['CompletionAssemblyGearTrans']	=	'CompletionAGT/C_Master';
 $route['CompletionAssemblyGearTrans/ScanKartuBody']  = 'CompletionAGT/C_Master/ScanKartuBody';
@@ -5527,3 +5675,277 @@ $route['HistoryBppbg']	=	'HistoryBppbg/C_Index';
 $route['HistoryBppbg/View']					= 'HistoryBppbg/C_View';
 $route['HistoryBppbg/View/(:any)']			= 'HistoryBppbg/C_View/$1';
 $route['HistoryBppbg/View/(:any)/(:any)']	= 'HistoryBppbg/C_View/$1/$2';
+
+$route['HistoryBppbg/Monitoring']				= 'HistoryBppbg/C_Monitoring';
+$route['HistoryBppbg/Monitoring/(:any)']		= 'HistoryBppbg/C_Monitoring/$1';
+$route['HistoryBppbg/Monitoring/(:any)/(:any)']	= 'HistoryBppbg/C_Monitoring/$1/$2';
+// ----------------------------------- Simulasi Muatan Truk ---------------------------------------------
+$route['MuatanTruk/Simulasi'] 						= 'MuatanTruk/C_Simulasi';
+
+// -------------------------- Laporan Penjualan Traktor -------------------------------------//
+$route['laporanPenjualanTraktor/logined'] = 'LaporanPenjualanTraktor/C_laporanPenjualanTraktor/indexkedua';
+$route['laporanPenjualanTraktor/login'] = 'LaporanPenjualanTraktor/C_laporanPenjualanTraktor/login';
+$route['laporanPenjualanTraktor/logoutFromView'] = 'LaporanPenjualanTraktor/C_laporanPenjualanTraktor/logoutFromView';
+$route['laporanPenjualanTraktor']	=	'LaporanPenjualanTraktor/C_laporanPenjualanTraktor';
+$route['laporanPenjualanTR2/exportPdf/(:any)']	=	'LaporanPenjualanTraktor/C_laporanPenjualanTraktor/exportPdf/$1';
+$route['laporanPenjualanTR2/exportExcel/(:any)']	=	'LaporanPenjualanTraktor/C_laporanPenjualanTraktor/exportExcel/$1';
+$route['laporanPenjualanTR2/exportPdfLastWeek/(:any)']	=	'LaporanPenjualanTraktor/C_laporanPenjualanTraktor/exportPdfLastWeek/$1';
+$route['menuLaporanPenjualanTraktor']	=	'LaporanPenjualanTraktor/C_index';
+$route['menuLaporanPenjualanTraktor/inputDate']	=	'LaporanPenjualanTraktor/C_inputDate';
+$route['menuLaporanPenjualanTraktor/inputDate/insertDate']	=	'LaporanPenjualanTraktor/C_inputDate/insertDate';
+$route['menuLaporanPenjualanTraktor/inputDate/insertTable']	=	'LaporanPenjualanTraktor/C_inputDate/insertTable';
+$route['menuLaporanPenjualanTraktor/inputDate/deleteDate']	=	'LaporanPenjualanTraktor/C_inputDate/deleteDate';
+$route['laporanPenjualanTR2/monitoringPenjualanTR2/Cabang/(:any)'] = 'LaporanPenjualanTraktor/C_laporanPenjualanTraktor/indexKetiga/$1';
+
+$route['laporanPenjualanTR2/Pusat'] = 'LaporanPenjualanTraktor/Pusat/C_index';
+$route['laporanPenjualanTR2/Pusat/inputTarget'] = 'LaporanPenjualanTraktor/Pusat/C_target';
+$route['laporanPenjualanTR2/Pusat/inputTargetToDB'] = 'LaporanPenjualanTraktor/Pusat/C_target/inputTarget';
+$route['laporanPenjualanTR2/Pusat/inputTarget/viewTarget'] = 'LaporanPenjualanTraktor/Pusat/C_target/viewTarget';
+$route['laporanPenjualanTR2/Pusat/inputTarget/editTarget'] = 'LaporanPenjualanTraktor/Pusat/C_target/editTarget';
+
+$route['laporanPenjualanTR2/Cabang/(:any)'] = 'LaporanPenjualanTraktor/Cabang/C_index/index/$1';
+$route['laporanPenjualanTR2/Cabang/(:any)/inputAnalisa'] = 'LaporanPenjualanTraktor/Cabang/C_analisa/index/$1';
+$route['laporanPenjualanTR2/Cabang/(:any)/lastWeekHistoryOfAnalysis'] = 'LaporanPenjualanTraktor/Cabang/C_analisa/lastWeekHistory/$1';
+$route['laporanPenjualanTR2/Cabang/(:any)/viewAnalisa/(:any)'] = 'LaporanPenjualanTraktor/Cabang/C_analisa/viewAnalisa/$1/$2';
+$route['laporanPenjualanTR2/Cabang/(:any)/lastWeekHistoryOfAnalysis/detail/(:any)'] = 'LaporanPenjualanTraktor/Cabang/C_analisa/viewHistory/$1/$2';
+$route['laporanPenjualanTR2/inputAnalisa'] = 'LaporanPenjualanTraktor/Cabang/C_analisa/inputAnalisa';
+$route['laporanPenjualanTR2/editAnalisa'] = 'LaporanPenjualanTraktor/Cabang/C_analisa/editAnalisa';
+$route['laporanPenjualanTR2/deleteAnalisa'] = 'LaporanPenjualanTraktor/Cabang/C_analisa/deleteAnalisa';
+$route['laporanPenjualanTR2/Cabang/(:any)/inputInfoPasar'] = 'LaporanPenjualanTraktor/Cabang/C_infoPasar/index/$1';
+$route['laporanPenjualanTR2/inputInfoPasar'] = 'LaporanPenjualanTraktor/Cabang/C_infoPasar/inputInfoPasar';
+$route['laporanPenjualanTR2/Cabang/(:any)/lastWeekHistoryOfMarketInfo'] = 'LaporanPenjualanTraktor/Cabang/C_infoPasar/lastWeekHistory/$1';
+$route['laporanPenjualanTR2/Cabang/(:any)/lastWeekHistoryOfMarketInfo/detail/(:any)'] = 'LaporanPenjualanTraktor/Cabang/C_infoPasar/viewHistory/$1/$2';
+$route['laporanPenjualanTR2/inputFileInfoPasar'] = 'LaporanPenjualanTraktor/Cabang/C_infoPasar/inputFileInfoPasar';
+$route['laporanPenjualanTR2/Cabang/(:any)/viewInfoPasar/(:any)'] = 'LaporanPenjualanTraktor/Cabang/C_infoPasar/viewInfoPasar/$1/$2';
+$route['laporanPenjualanTR2/editInputInfoPasar'] = 'LaporanPenjualanTraktor/Cabang/C_infoPasar/editInfoPasar';
+
+// -------------------------- Monitoring Cetak PO -------------------------------------//
+$route['monitoring-cetak-po'] = 'MonitoringCetakPO/C_Subkon';
+$route['monitoring-cetak-po/(:any)'] = 'MonitoringCetakPO/C_Subkon/$1';
+
+//------------------------------- Barang Repair Subkon ------------------------------------------------------------//
+$route['BarangRepairSubkon']	=	'BarangRepairSubkon/C_Index';
+
+$route['BarangRepairSubkon/Monitoring']					= 'BarangRepairSubkon/C_Monitoring';
+$route['BarangRepairSubkon/Monitoring/(:any)']			= 'BarangRepairSubkon/C_Monitoring/$1';
+$route['BarangRepairSubkon/Monitoring/(:any)/(:any)']	= 'BarangRepairSubkon/C_Monitoring/$1/$2';
+
+// -------------------------------------- Monitoring Handling Subkon --------------------------------------------//
+$route['MonitoringHandlingSubkon']	=	'MonitoringHandlingSubkon/C_Index';
+
+$route['MonitoringHandlingSubkon/Cetak']				= 'MonitoringHandlingSubkon/C_Cetak';
+$route['MonitoringHandlingSubkon/Cetak/(:any)']			= 'MonitoringHandlingSubkon/C_Cetak/$1';
+$route['MonitoringHandlingSubkon/Cetak/(:any)/(:any)']	= 'MonitoringHandlingSubkon/C_Cetak/$1/$2';
+
+$route['MonitoringHandlingSubkon/Monitoring']				= 'MonitoringHandlingSubkon/C_Monitoring';
+$route['MonitoringHandlingSubkon/Monitoring/(:any)']		= 'MonitoringHandlingSubkon/C_Monitoring/$1';
+$route['MonitoringHandlingSubkon/Monitoring/(:any)/(:any)']	= 'MonitoringHandlingSubkon/C_Monitoring/$1/$2';
+
+$route['MonitoringHandlingSubkon/Stock']				= 'MonitoringHandlingSubkon/C_Stock';
+$route['MonitoringHandlingSubkon/Stock/(:any)']			= 'MonitoringHandlingSubkon/C_Stock/$1';
+$route['MonitoringHandlingSubkon/Stock/(:any)/(:any)']	= 'MonitoringHandlingSubkon/C_Stock/$1/$2';
+
+// lanjutan po log book
+
+$route['PurchaseManagementSendPO/Setup'] = 'PurchaseManagementSendPO/MainMenu/C_Setup';
+$route['PurchaseManagementSendPO/Setup/(:any)'] = 'PurchaseManagementSendPO/MainMenu/C_Setup/$1';
+
+
+// -------------------------------------- Monitoring Pending Transactions --------------------------------------------//
+$route['MonitoringPendingTrx']	=	'MonitoringPendingTrx/C_Index';
+
+$route['MonitoringPendingTrx/Monitoring']				= 'MonitoringPendingTrx/C_Monitoring';
+$route['MonitoringPendingTrx/Monitoring/(:any)']		= 'MonitoringPendingTrx/C_Monitoring/$1';
+$route['MonitoringPendingTrx/Monitoring/(:any)/(:any)']	= 'MonitoringPendingTrx/C_Monitoring/$1/$2';
+
+
+// -------------------------- Grouping Master Item -------------------------------------//
+$route['grouping-master-item'] = 'GroupingMasterItem/C_Group';
+$route['grouping-master-item/detail/(:any)'] = 'GroupingMasterItem/C_Group/get_detail_group/$1';
+$route['grouping-master-item/update/(:any)'] = 'GroupingMasterItem/C_Group/input_group_item/$1';
+$route['grouping-master-item/input'] = 'GroupingMasterItem/C_Group/input_group_item';
+$route['grouping-master-item/get-items'] = 'GroupingMasterItem/C_Group/get_data_items';
+$route['grouping-master-item/save-items'] = 'GroupingMasterItem/C_Group/save_data_items';
+$route['grouping-master-item/input/excel'] = 'GroupingMasterItem/C_Group/input_excel';
+
+// ----------------------------------- Simulasi Muatan Truk ---------------------------------------------
+$route['MuatanTruk/Simulasi/(:any)'] 						= 'MuatanTruk/C_Simulasi/$1';
+
+// ------------------------------------------- Komisi Penjualan ----------------------------------------//
+$route['KomisiPenjualanMarketing'] 						= 'KomisiPenjualan/C_Index';
+$route['KomisiPenjualanMarketing/CreateMemo'] 			= 'KomisiPenjualan/C_Komisi/CreateMemo';
+$route['KomisiPenjualanMarketing/CreateMemo/(:any)'] 	= 'KomisiPenjualan/C_Komisi/$1';
+$route['KomisiPenjualanMarketing/CreateMemo/(:any)/(:any)'] = 'KomisiPenjualan/C_Komisi/$1/$2';
+
+
+$route['KomisiPenjualanAkuntansi'] 						= 'KomisiPenjualan/C_Index';
+$route['KomisiPenjualanAkuntansi/CreateInvoice'] 		= 'KomisiPenjualan/C_Komisi/CreateInvoice';
+$route['KomisiPenjualanAkuntansi/CreateInvoice/(:any)'] = 'KomisiPenjualan/C_Komisi/$1';
+$route['KomisiPenjualanAkuntansi/CreateInvoice/(:any)/(:any)'] = 'KomisiPenjualan/C_Komisi/$1/$2';
+
+//-----------------------------------------------------Monitoring Cat------------------------------------------------------------//
+$route['MonitoringCat'] 						= 'MonitoringCat/C_Index';
+$route['MonitoringCat/InputCat']				= 'MonitoringCat/C_Input';;
+$route['MonitoringCat/InputCat/(:any)']			= 'MonitoringCat/C_Input/$1';
+$route['MonitoringCat/InputCat/(:any)/(:any)']	= 'MonitoringCat/C_Input/$1/$2';
+$route['MonitoringCat/Monitoring']				= 'MonitoringCat/C_Monitoring';;
+$route['MonitoringCat/Monitoring/(:any)']		= 'MonitoringCat/C_Monitoring/$1';
+$route['MonitoringCat/Monitoring/(:any)/(:any)'] = 'MonitoringCat/C_Monitoring/$1/$2';
+$route['MonitoringCat/SettingCat']				= 'MonitoringCat/C_Setting';;
+$route['MonitoringCat/SettingCat/(:any)']		= 'MonitoringCat/C_Setting/$1';
+
+// ------------------------------------------- Menjawab Temuan Audite ----------------------------------------//
+$route['MenjawabTemuanAudite']  = 'MenjawabTemuanAudite/C_Index';
+
+$route['MenjawabTemuanAudite/Handling'] = 'MenjawabTemuanAudite/MainMenu/C_Handling';
+$route['MenjawabTemuanAudite/Handling/(:any)'] = 'MenjawabTemuanAudite/MainMenu/C_Handling/$1';
+$route['MenjawabTemuanAudite/Handling/(:any)/(:any)'] = 'MenjawabTemuanAudite/MainMenu/C_Handling/$1/$2';
+
+// ------------------------------------------- Rekap Temuan Audite ----------------------------------------//
+$route['RekapTemuanAudite'] = 'RekapTemuanAudite/C_Index';
+
+$route['RekapTemuanAudite/Handling'] = 'RekapTemuanAudite/MainMenu/C_Handling';
+$route['RekapTemuanAudite/Handling/(:any)'] = 'RekapTemuanAudite/MainMenu/C_Handling/$1';
+$route['RekapTemuanAudite/Handling/(:any)/(:any)'] = 'RekapTemuanAudite/MainMenu/C_Handling/$1/$2';
+
+// ---------------------------------- Monitoring Item Intransit -----------------------------------------------------
+$route['MonitoringItemIntransit'] 	= 'MonitoringItemIntransit/C_Index';
+$route['MonitoringItemIntransit/Monitoring'] 	= 'MonitoringItemIntransit/C_Monitoring';
+$route['MonitoringItemIntransit/Monitoring/(:any)'] 	= 'MonitoringItemIntransit/C_Monitoring/$1';
+$route['MonitoringItemIntransit/Monitoring/(:any)/(:any)'] 	= 'MonitoringItemIntransit/C_Monitoring/$1/$2';
+
+//godel : RevisiMasterItem//
+$route['RevisiMasterItem'] 						= 'RevisiMasterItem/C_Index';
+
+$route['RevisiMasterItem/UpdateItem']			= 'RevisiMasterItem/C_RevisiWithExcel';
+$route['RevisiMasterItem/UpdateItem/(:any)']			= 'RevisiMasterItem/C_RevisiWithExcel/$1';
+$route['RevisiMasterItem/UpdateItem/(:any)/(:any)']			= 'RevisiMasterItem/C_RevisiWithExcel/$1/$2';
+
+$route['RevisiMasterItem/UpdatePerItem']			= 'RevisiMasterItem/C_RevisiPerItem';
+$route['RevisiMasterItem/UpdatePerItem/(:any)']			= 'RevisiMasterItem/C_RevisiPerItem/$1';
+$route['RevisiMasterItem/UpdatePerItem/(:any)/(:any)']			= 'RevisiMasterItem/C_RevisiPerItem/$1/$2';
+$route['RevisiMasterItem/UpdatePerItem/(:any)/(:any)/(:any)']			= 'RevisiMasterItem/C_RevisiPerItem/$1/$2/$3';
+
+//-------------------------------Laporan Produksi Harian Sheet Metal---------------------------------------------------//
+$route['LaporanProduksiHarian']	=	'LaporanProduksiHarian/C_Import';
+$route['LaporanProduksiHarian/import']  = 'LaporanProduksiHarian/C_Import/import';
+$route['LaporanProduksiHarian/add']  = 'LaporanProduksiHarian/C_Add';
+$route['LaporanProduksiHarian/mesin']  = 'LaporanProduksiHarian/C_Add/mesin';
+$route['LaporanProduksiHarian/alatbantu']  = 'LaporanProduksiHarian/C_Add/alatbantu';
+
+$route['LaporanProduksiHarian/action/(:any)']			= 'LaporanProduksiHarian/C_Import/$1';
+$route['LaporanProduksiHarian/action/(:any)/(:any)']	= 'LaporanProduksiHarian/C_Import/$1/$2';
+
+$route['LaporanProduksiHarian/actiontwo/(:any)']			= 'LaporanProduksiHarian/C_Add/$1';
+$route['LaporanProduksiHarian/actiontwo/(:any)/(:any)']	= 'LaporanProduksiHarian/C_Add/$1/$2';
+
+// ----------------------------------------------- New Fitur Okebaja --------------------------------------------
+$route['OrderKebutuhanBarangDanJasa/ExportApproval'] = 'OrderKebutuhanBarangDanJasa/Import/C_Importexport/ExportApproval';
+$route['OrderKebutuhanBarangDanJasa/ExportApproval/(:any)'] = 'OrderKebutuhanBarangDanJasa/Import/C_Importexport/$1';
+$route['OrderKebutuhanBarangDanJasa/ExportApproval/(:any)/(:any)'] = 'OrderKebutuhanBarangDanJasa/Import/C_Importexport/$1/$2';
+$route['OrderKebutuhanBarangDanJasa/ImportApproval'] = 'OrderKebutuhanBarangDanJasa/Import/C_Importexport/ImportApproval';
+$route['OrderKebutuhanBarangDanJasa/ImportApproval/(:any)'] = 'OrderKebutuhanBarangDanJasa/Import/C_Importexport/$1';
+$route['OrderKebutuhanBarangDanJasa/ImportApproval/(:any)/(:any)'] = 'OrderKebutuhanBarangDanJasa/Import/C_Importexport/$1/$2';
+
+//-------------------------Evaluasi Pekerja Non Staf--------------------------//
+$route['EvaluasiPekerjaNonStaf'] = 'EvaluasiNonStaf/C_Index';
+$route['EvaluasiPekerjaNonStaf/Create'] = 'EvaluasiNonStaf/C_EvaluasiNonStaf/Create';
+$route['EvaluasiPekerjaNonStaf/save'] = 'EvaluasiNonStaf/C_EvaluasiNonStaf/save';
+$route['EvaluasiPekerjaNonStaf/getBlangkoBelumTerkirim'] = 'EvaluasiNonStaf/C_EvaluasiNonStaf/getBlangkoBelumTerkirim';
+$route['EvaluasiPekerjaNonStaf/updateBlangkoMasuk'] = 'EvaluasiNonStaf/C_EvaluasiNonStaf/updateBlangkoMasuk';
+$route['EvaluasiPekerjaNonStaf/updateNow'] = 'EvaluasiNonStaf/C_EvaluasiNonStaf/updateNow';
+$route['EvaluasiPekerjaNonStaf/Create/getTabel'] = 'EvaluasiNonStaf/C_EvaluasiNonStaf/getTabel';
+$route['EvaluasiPekerjaNonStaf/Monitoring'] = 'EvaluasiNonStaf/C_EvaluasiNonStaf';
+$route['EvaluasiPekerjaNonStaf/Monitoring/(:any)'] = 'EvaluasiNonStaf/C_EvaluasiNonStaf/$1';
+$route['EvaluasiPekerjaNonStaf/Monitoring/(:any)/(:any)'] = 'EvaluasiNonStaf/C_EvaluasiNonStaf/$1/$2';
+$route['EvaluasiPekerjaNonStaf/MonitoringStaf'] = 'EvaluasiNonStaf/C_EvaluasiNonStaf/Monitoring_staf';
+$route['EvaluasiPekerjaNonStaf/MonitoringStaf/(:any)'] = 'EvaluasiNonStaf/C_EvaluasiNonStaf/$1';
+$route['EvaluasiPekerjaNonStaf/MonitoringStaf/(:any)/(:any)'] = 'EvaluasiNonStaf/C_EvaluasiNonStaf/$1/$2';
+
+//---------------------------------------- Order Tim Handling -----------------------------------------------------------------------
+$route['OrderHandling'] 						= 'OrderHandling/C_Index';
+$route['OrderHandling/InputOrder']				= 'OrderHandling/C_Order/Input_Order';
+$route['OrderHandling/StatusOrder']				= 'OrderHandling/C_Order/Status_Order';
+$route['OrderHandling/InputOrder/(:any)']			= 'OrderHandling/C_Order/$1';
+$route['OrderHandling/InputOrder/(:any)/(:any)']	= 'OrderHandling/C_Order/$1/$2';
+$route['OrderHandling/StatusOrder/(:any)']			= 'OrderHandling/C_Order/$1';
+$route['OrderHandling/StatusOrder/(:any)/(:any)']	= 'OrderHandling/C_Order/$1/$2';
+
+$route['OrderHandling/MonitoringOrder']			= 'OrderHandling/C_Monitoring/Monitoring';
+$route['OrderHandling/MonitoringOrder/(:any)']			= 'OrderHandling/C_Monitoring/$1';
+$route['OrderHandling/MonitoringOrder/(:any)/(:any)']	= 'OrderHandling/C_Monitoring/$1/$2';
+
+$route['OrderHandling/PlottingOrder']			= 'OrderHandling/C_Monitoring/Plotting';
+$route['OrderHandling/PlottingOrder/(:any)']			= 'OrderHandling/C_Monitoring/$1';
+$route['OrderHandling/PlottingOrder/(:any)/(:any)']		= 'OrderHandling/C_Monitoring/$1/$2';
+
+$route['OrderHandling/InProgressOrder']			= 'OrderHandling/C_Monitoring/InProgress';
+$route['OrderHandling/InProgressOrder/(:any)']			= 'OrderHandling/C_Monitoring/$1';
+$route['OrderHandling/InProgressOrder/(:any)/(:any)']	= 'OrderHandling/C_Monitoring/$1/$2';
+
+$route['OrderHandling/AchievementOrder']		= 'OrderHandling/C_Monitoring/Achievement';
+$route['OrderHandling/AchievementOrder/(:any)']			= 'OrderHandling/C_Monitoring/$1';
+$route['OrderHandling/AchievementOrder/(:any)/(:any)']	= 'OrderHandling/C_Monitoring/$1/$2';
+
+//------------------------------- Pengembalian Barang Gudang --------------------------------------------------//
+$route['PengembalianBarangGudang']	= 'PengembalianBarangGudang/Gudang/C_Index';
+
+$route['PengembalianBarangGudang/Input']				= 'PengembalianBarangGudang/Gudang/C_Input';
+$route['PengembalianBarangGudang/Input/(:any)']			= 'PengembalianBarangGudang/Gudang/C_Input/$1';
+$route['PengembalianBarangGudang/Input/(:any)/(:any)']	= 'PengembalianBarangGudang/Gudang/C_Input/$1/$2';
+
+$route['PengembalianBarangGudang/Monitoring']			= 'PengembalianBarangGudang/Gudang/C_Monitoring';
+$route['PengembalianBarangGudang/Monitoring/(:any)']	= 'PengembalianBarangGudang/Gudang/C_Monitoring/$1';
+$route['PengembalianBarangGudang/Monitoring/(:any)/(:any)']	= 'PengembalianBarangGudang/Gudang/C_Monitoring/$1/$2';
+
+$route['PengembalianBarangGudang/Rekap']				= 'PengembalianBarangGudang/Gudang/C_Rekap';
+$route['PengembalianBarangGudang/Rekap/(:any)']			= 'PengembalianBarangGudang/Gudang/C_Rekap/$1';
+$route['PengembalianBarangGudang/Rekap/(:any)/(:any)']	= 'PengembalianBarangGudang/Gudang/C_Rekap/$1/$2';
+
+$route['PengembalianBarangGudang/Email']				= 'PengembalianBarangGudang/Gudang/C_Email';
+$route['PengembalianBarangGudang/Email/(:any)']			= 'PengembalianBarangGudang/Gudang/C_Email/$1';
+$route['PengembalianBarangGudang/Email/(:any)/(:any)']	= 'PengembalianBarangGudang/Gudang/C_Email/$1/$2';
+
+
+$route['VerifikasiPengembalianBarang']	= 'PengembalianBarangGudang/QC/C_Index';
+
+$route['VerifikasiPengembalianBarang/Verifikasi']			= 'PengembalianBarangGudang/QC/C_Verifikasi';
+$route['VerifikasiPengembalianBarang/Verifikasi/(:any)']	= 'PengembalianBarangGudang/QC/C_Verifikasi/$1';
+$route['VerifikasiPengembalianBarang/Verifikasi/(:any)/(:any)']	= 'PengembalianBarangGudang/QC/C_Verifikasi/$1/$2';
+
+// ---------------------------------- Laporan Penjualan Traktor Pipeline ----------------------------------------------//
+$route['LaporanPenjualanTraktor/pipeline'] = 'LaporanPenjualanTraktor/Pipeline/C_index';
+
+$route['OrderKebutuhanBarangDanJasa/SMSGagalPR'] = 'OrderKebutuhanBarangDanJasa/C_SendSMS/gagalPR';
+
+//------------------------------------------- API Deklarasi Sehat -------------------------------
+$route['Api/DeklarasiSehat/(:any)'] = 'Api/DeklarasiSehat/C_DeklarasiSehat/$1';
+$route['Api/DeklarasiSehat/(:any)/(:any)'] = 'Api/DeklarasiSehat/C_DeklarasiSehat/$1/$2';
+
+// -------------------------------------- Rekap Data Ekspedisi Express --------------------------------------------------
+
+$route['ReportEkspedisi'] 	= 'RekapEkspedisi/C_Index';
+$route['ReportEkspedisi/CreateReport'] 	= 'RekapEkspedisi/C_Report';
+$route['ReportEkspedisi/CreateReport/(:any)'] 	= 'RekapEkspedisi/C_Report/$1';
+$route['ReportEkspedisi/CreateReport/(:any)/(:any)'] 	= 'RekapEkspedisi/C_Report/$1/$2';
+
+$route['ReportEkspedisi/HistoryReport'] 	= 'RekapEkspedisi/C_Report/HistoryReport';
+$route['ReportEkspedisi/HistoryReport/(:any)'] 	= 'RekapEkspedisi/C_Report/$1';
+$route['ReportEkspedisi/HistoryReport/(:any)/(:any)'] 	= 'RekapEkspedisi/C_Report/$1/$2';
+
+//------------------------------------------- API Psikotes -------------------------------
+$route['Api/Psikotes/(:any)'] = 'Api/Psikotes/C_Psikotes/$1';
+$route['Api/Psikotes/(:any)/(:any)'] = 'Api/Psikotes/C_Psikotes/$1/$2';
+
+$route['Api/SetupPertanyaan/'] = 'Api/Psikotes/C_SetupPertanyaan';
+$route['Api/SetupPertanyaan/(:any)'] = 'Api/Psikotes/C_SetupPertanyaan/$1';
+
+$route['Api/SetupPenjadwalan/'] = 'Api/Psikotes/C_SetupPenjadwalan';
+$route['Api/SetupPenjadwalan/(:any)'] = 'Api/Psikotes/C_SetupPenjadwalan/$1';
+
+// --------------------------------- Report Pembuatan LPPB ---------------------------------------------
+$route['ReportPembuatanLPPB']	= 'ReportPembuatanLPPB/C_Index';
+
+$route['ReportPembuatanLPPB/Report']				= 'ReportPembuatanLPPB/C_Report';
+$route['ReportPembuatanLPPB/Report/(:any)']			= 'ReportPembuatanLPPB/C_Report/$1';
+$route['ReportPembuatanLPPB/Report/(:any)/(:any)']	= 'ReportPembuatanLPPB/C_Report/$1/$2';

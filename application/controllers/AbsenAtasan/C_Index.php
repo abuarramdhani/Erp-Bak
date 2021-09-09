@@ -65,7 +65,7 @@ class C_Index extends CI_Controller
 		$employee = $this->session->employee;
 		$nama = trim($employee);
 		$noind = trim($this->session->user);
-		$data['listData'] = $this->M_absenatasan->getList($noind,$nama, 'limit 20');
+		$data['listData'] = $this->M_absenatasan->getList($noind,$nama);
 		$data['listData2'] = $this->M_absenatasan->getList($noind,$nama);
 		
 		$this->load->view('AbsenAtasan/V_CHeader',$data);
@@ -244,7 +244,7 @@ class C_Index extends CI_Controller
 
 				$cekRill = $this->M_absenatasan->cekPresensiRill($ins);
 
-				if ($cekRill == 0) {
+				if ($cekRill == 0 && !in_array($value['jenis_absen'], array('Berangkat Dinas Luar','Pulang Dinas Luar'))) {
 					$cek = $this->M_absenatasan->cekPresensi($ins);
 
 					if ($cek == 0) {

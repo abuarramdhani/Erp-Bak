@@ -88,7 +88,7 @@
                                                       </div>
                                                       <div class="col-sm-1">-</div>
                                                       <div class="col-sm-4">
-                                                          <input autocomplete="off" type="number" min="00" value="00" required="" name="number_sop_cw" class="form-control" id="number_rev-cw" placeholder="00" >
+                                                          <input autocomplete="off" type="number" min="00" value="00" required="" name="number_sop_cw" class="form-control" id="number_sop-cw" placeholder="00" >
                                                       </div>
                                                   </div>
                                               </div>

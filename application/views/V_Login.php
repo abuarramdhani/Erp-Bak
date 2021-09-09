@@ -100,15 +100,18 @@ $diff = ($now - $start) / (60 * 60 * 24);
                     <?php
                     $gambarData = array(
                       1 => array(
-                        '1.fakta.jpg',
-                        '2.manipulasi.jpg',
-                        '3.prosedur.jpg',
-                        '4.completion.jpg'
+                        '19.FaktaCovid.jpg',
+                        '20.KipiVaksin.jpg',
+                        '21.VaksinProkes.jpg',
+                        '22.TujuanVaksin.jpg',
+                        '23.VaksinAmanHalal.jpg'
                       ),
                       2 => array(
-                        '5.stockopname.jpg',
-                        '6.Segera-tindak-lanjut.jpg',
-                        '7.scw.jpg'
+                        '19.FaktaCovid.jpg',
+                        '20.KipiVaksin.jpg',
+                        '21.VaksinProkes.jpg',
+                        '22.TujuanVaksin.jpg',
+                        '23.VaksinAmanHalal.jpg'
                       )
                     );
 
@@ -133,7 +136,7 @@ $diff = ($now - $start) / (60 * 60 * 24);
                       }
                     ?>
                       <div class="item <?php echo $active ?>">
-                        <img src="<?php echo base_url('assets/poster/AwarenessData/' . $value) ?>" style="width: 100%;height: auto" alt="<?php echo $value ?>">
+                        <img src="<?php echo base_url('assets/poster/Covid/' . $value) ?>" style="width: 100%;height: auto" alt="<?php echo $value ?>">
                       </div>
                     <?php } ?>
                   </div>
@@ -152,7 +155,11 @@ $diff = ($now - $start) / (60 * 60 * 24);
               </div>
               <?php if ($this->session->gagal) : ?>
                 <div class="alert alert-danger text-left">
-                  <?php echo $error; ?>
+                  <?php if (strlen($this->session->error) < 2): ?>
+                    <?php echo $error; ?>
+                  <?php else: ?>
+                    <?php echo $this->session->error; ?>
+                  <?php endif ?>
                 </div>
               <?php else : ?>
                 <div class="alert alert-info text-left center">
@@ -261,7 +268,7 @@ $diff = ($now - $start) / (60 * 60 * 24);
       </div>
 
       <!-- Forgot Password Modal -->
-      <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal fade" id="myModalx" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
@@ -280,6 +287,30 @@ $diff = ($now - $start) / (60 * 60 * 24);
             <div class="modal-footer">
               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Forgot Password Modal -->
+      <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+          <form method="post" action="<?= site_url('lupa_password'); ?>">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title text-center" id="myModalLabel">
+                  Anda Lupa Password ?
+                </h4>
+              </div>
+              <div class="modal-body">
+                <label>Masukan Username Akun Anda!</label>
+                <input placeholder="Masukan Username" class="form-control" type="text" name="username" required="" />
+              </div>
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-success">Submit</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+              </div>
+            </form>
           </div>
         </div>
       </div>

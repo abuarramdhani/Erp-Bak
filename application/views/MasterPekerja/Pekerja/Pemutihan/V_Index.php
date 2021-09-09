@@ -79,7 +79,23 @@ function truncate($string, $length)
   <div class="panel-group">
     <div class="panel panel-primary">
       <div class="panel-heading">
-        <h3>List Pengajuan Pemutihan Data Pekerja</h3>
+        <div class="row">
+          <div class="col-lg-12">
+            <h3>List Pengajuan Pemutihan Data Pekerja</h3>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-12 text-right">
+            <a href="http://personalia.quick.com/cronjob/pemutihan_data_pekerja/scripts/local/trequest_tpribadi.php" 
+              target="_blank" class="btn btn-primary"><span class="fa fa-download"></span>Download Perubahan</a>
+            <a href="http://personalia.quick.com/cronjob/pemutihan_data_pekerja/scripts/transaction/migrate.php" 
+              target="_blank" class="btn btn-primary"><span class="fa fa-cog"></span>Proses Hasil Approve Hubker</a>
+            <a href="http://personalia.quick.com/cronjob/pemutihan_data_pekerja/scripts/online/trequest_tpribadi_new.php" 
+              target="_blank" class="btn btn-primary"><span class="fa fa-upload"></span>Upload Status</a>
+            <a href="http://personalia.quick.com/cronjob/pemutihan_data_pekerja/scripts/online/tarik_base_database_new.php" 
+              target="_blank" class="btn btn-primary"><span class="fa fa-upload"></span>Upload Data</a>
+          </div>
+        </div>
       </div>
       <div class="panel-body">
         <?php
@@ -126,7 +142,7 @@ function truncate($string, $length)
                     <tr class="<?= $item->status_req ?>">
                       <td class="text-center"><?= $item->id_req ?></td>
                       <td nowrap>
-                        <a href="<?= base_url("/MasterPekerja/Pemutihan/Request?id={$item->id_req}&redirect=pending") ?>" class="btn btn-primary btn-sm">Check</a>
+                        <a href="<?= base_url("MasterPekerja/Pemutihan/Request?id={$item->id_req}&redirect=pending") ?>" class="btn btn-primary btn-sm">Check</a>
                       </td>
                       <td><?= $item->noind ?></td>
                       <td><?= $item->nama ?></td>
@@ -168,7 +184,7 @@ function truncate($string, $length)
                     <tr class="<?= $item->status_req ?>">
                       <td class="text-center">#<?= $item->id_req ?></td>
                       <td nowrap>
-                        <a href="<?= base_url("/MasterPekerja/Pemutihan/Request?id={$item->id_req}&redirect=revision") ?>" class="btn btn-primary btn-sm">Check</a>
+                        <a href="<?= base_url("MasterPekerja/Pemutihan/Request?id={$item->id_req}&redirect=revision") ?>" class="btn btn-primary btn-sm">Check</a>
                       </td>
                       <td><?= $item->noind ?></td>
                       <td><?= $item->nama ?></td>
@@ -210,7 +226,7 @@ function truncate($string, $length)
                     <tr class="<?= $item->status_req ?>">
                       <td class="text-center">#<?= $item->id_req ?></td>
                       <td nowrap>
-                        <a href="<?= base_url("/MasterPekerja/Pemutihan/Request?id={$item->id_req}&redirect=approved") ?>" class="btn btn-primary btn-sm">Check</a>
+                        <a href="<?= base_url("MasterPekerja/Pemutihan/Request?id={$item->id_req}&redirect=approved") ?>" class="btn btn-primary btn-sm">Check</a>
                       </td>
                       <td><?= $item->noind ?></td>
                       <td><?= $item->nama ?></td>
@@ -223,7 +239,15 @@ function truncate($string, $length)
                       <td><?= $item->status_update_by ?></td>
                       <td><?= date('d/F/Y', strtotime($item->status_update_at)) ?></td>
                       <td><?= $item->feedback ?></td>
-                      <td><?= date('d/F/Y', strtotime($item->distributed_at)) ?></td>
+                      <td><?php 
+                      if ( $item->distributed_at != '0000-00-00'){
+                           echo date('d/F/Y', strtotime($item->distributed_at));
+                            }
+                            else
+                            {
+                            echo "<b>Blm terproses</b>";    
+                            }
+                      ?></td>
                     </tr>
                   <?php endforeach ?>
                 </tbody>
@@ -252,7 +276,7 @@ function truncate($string, $length)
                     <tr class="#<?= $item->status_req ?>">
                       <td class="text-center"><?= $item->id_req ?></td>
                       <td nowrap>
-                        <a href="<?= base_url("/MasterPekerja/Pemutihan/Request?id={$item->id_req}&redirect=rejected") ?>" class="btn btn-primary btn-sm">Check</a>
+                        <a href="<?= base_url("MasterPekerja/Pemutihan/Request?id={$item->id_req}&redirect=rejected") ?>" class="btn btn-primary btn-sm">Check</a>
                       </td>
                       <td><?= $item->noind ?></td>
                       <td><?= $item->nama ?></td>
@@ -350,7 +374,7 @@ function truncate($string, $length)
             {
               targets: 1, // first column is 0
               render(data, type, row, meta) {
-                return `<a href="${baseurl}/MasterPekerja/Pemutihan/Request?id=${row.id_req}&redirect=pending" class="btn btn-primary btn-sm">Check</a>`
+                return `<a href="${baseurl}MasterPekerja/Pemutihan/Request?id=${row.id_req}&redirect=pending" class="btn btn-primary btn-sm">Check</a>`
               }
             }
           ],

@@ -199,6 +199,11 @@ class C_Monitoring extends CI_Controller
 		}else if($value['JENIS_DOKUMEN'] == 'MO'){
 			$getKet = $this->M_monitoring->getKetMO($value['NO_DOCUMENT']);;
 			$gudang = $this->M_monitoring->gdAsalMO($value['NO_DOCUMENT']);
+			if (empty($getKet)) {
+				$cari['status'] = 'Belum input';
+			}else {
+				$cari['status'] = 'Sudah input';
+			}
 			if (empty($gudang)) {
 				$cari['asal'] = '';
 			}else {
@@ -229,7 +234,7 @@ class C_Monitoring extends CI_Controller
 				}
 			}
 		}
-		if ($value['JENIS_DOKUMEN'] != 'FPB' && $value['JENIS_DOKUMEN'] != 'SPBSPI') {
+		if ($value['JENIS_DOKUMEN'] != 'FPB' && $value['JENIS_DOKUMEN'] != 'SPBSPI'  && $value['JENIS_DOKUMEN'] != 'MO') {
 			$hitung_bd = count($cari['getbody']);
 			$hitung_ket = count($getKet);
 			if ($hitung_bd <= $hitung_ket) {

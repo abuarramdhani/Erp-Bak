@@ -1,16 +1,14 @@
-<input type="hidden" value="ok" id="rekapmpg">
 <script src="<?php echo base_url('assets/plugins/dataTables/jquery.dataTables.js');?>"></script>
-	<script src="<?php echo base_url('assets/plugins/dataTables/dataTables.bootstrap.js');?>"></script>
-     <script>
-            $(document).ready(function () {            
-            $('.datepicktgl').datepicker({
-                format: 'yyyy-mm-dd',
-                todayHighlight: true,
-                autoClose: true
-            });
-            
-            });
-    </script>
+<script src="<?php echo base_url('assets/plugins/dataTables/dataTables.bootstrap.js');?>"></script>
+<script>
+    $(document).ready(function () {            
+        $('.datepicktgl').datepicker({
+            format: 'yyyy-mm-dd',
+            todayHighlight: true,
+            autoclose: true
+        });
+    });
+</script>
 
 <section class="content">
     <div class="inner">
@@ -53,9 +51,17 @@
                                       <label class="control-label"><?php echo date("l, d F Y") ?></label>
                                     </div>
                                     <div class="col-md-12">
-                                        <div class="col-md-3">
+                                        <div class="col-md-4">
                                             <label class="control-label">Subinventory</label>
-                                            <input id="subinventory" name="subinventory" class="form-control pull-right" placeholder="Subinventory" readonly>
+                                            <select class="form-control select2" data-placeholder="Pilih Subinventory Terlebih Dahulu" id="subinventory" name="subinventory" onchange="getRekap(this)">
+                                                <option> </option>
+                                                <option>SP-YSP</option>
+                                                <option>KOM1-DM</option>
+                                                <option>PNL-DM</option>
+                                                <option>FG-DM</option>
+                                                <option>MAT-PM</option>
+                                            </select>
+                                            <!-- <input id="subinventory" name="subinventory" class="form-control pull-right" placeholder="Subinventory" readonly> -->
                                         </div>
                                         <div class="col-md-3">
                                             <label class="text-right">Tanggal Awal</label>
@@ -73,66 +79,8 @@
                                     </div>
                                 </div>
                                 <form method="post" action="<?= base_url('MonitoringGdSparepart/Rekap/exportRekap'); ?>">
-                                <div class="panel-body" id="tb_RkpMGS">
-                                    <!-- <div class="col-md-12">
-                                        <table class="datatable table table-bordered table-hover table-striped text-center" id="myTable" style="width: 100%; table-layout:fixed">
-                                            <thead class="bg-info">
-                                                <tr>
-                                                    <th rowspan="2" style="width5%;">Tanggal</th>
-                                                    <th rowspan="2">Jumlah Lembar</th>
-                                                    <th rowspan="2">Jumlah Pcs</th>
-                                                    <th colspan="2">Status / lembar</th>
-                                                    <th rowspan="2">Asal</th>
-                                                </tr>
-                                                <tr>
-                                                    <th>Sudah Terlayani</th>
-                                                    <th>Belum Terlayani</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td><?php echo date("d-M-Y") ?></td>
-                                                    <td><?= $masuk?></td>
-                                                    <td><?= $pcs?></td>
-                                                    <td><?= $sudah?></td>
-                                                    <td><?= $belum?></td>
-                                                    <td><button type="button" class="btn btn-success" onclick="adddrekap(this)"> Detail</button></td>
-                                                </tr>
-                                                    <td colspan="6">
-                                                        <div id="drekapmgs" style="display:none">
-                                                            <table class="datatable table table-bordered table-hover table-striped text-center" style="width: 100%;table-layout:fixed">
-                                                                <thead class="bg-success">
-                                                                    <tr>
-                                                                        <th rowspan="2">Asal Gudang</th>
-                                                                        <th colspan="2">Sudah Terlayani</th>
-                                                                        <th colspan="2">Belum Terlayani</th>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <th>Item</th>
-                                                                        <th>Pcs</th>
-                                                                        <th>Item</th>
-                                                                        <th>Pcs</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    <?php foreach ($asal as $key => $val) { ?>
-                                                                    <tr>
-                                                                        <td><?= $key?></td>
-                                                                        <td><?= $val['sudah']?></td>
-                                                                        <td><?= $val['pcs_sudah']?></td>
-                                                                        <td><?= $val['belum'] ?></td>
-                                                                        <td><?= $val['pcs_belum']?></td>
-                                                                    </tr>
-                                                                    <?php }?>
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div> -->
-                                </div>
+                                    <div class="panel-body" id="tb_RkpMGS">
+                                    </div>
                                 </form>
                             </div>
                         </div>

@@ -169,7 +169,7 @@
                                     } ?>
                                     <div class="panel-body">
                                         <div class="col-md-4" style="text-align: right;"><label>Keterangan</label></div>
-                                        <div class="col-md-6" style="text-align: left;"><textarea readonly id="ketr" class="form-control"><?= $datahandling[0]['keterangan'] ?></textarea></div>
+                                        <div class="col-md-6" style="text-align: left;"><textarea readonly id="ketr" class="form-control"><?= str_replace("`","'",$datahandling[0]['keterangan']) ?></textarea></div>
                                     </div>
                                     <div class="panel-body">
                                         <div class="col-md-6" style="text-align: left;">

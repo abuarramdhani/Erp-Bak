@@ -643,6 +643,10 @@ $(document).ready(function(){
 			$('[name="gejala[]"]').not('#cvd_tidakgejala').attr('disabled', false);
 		}
 	});
+
+	$('#cvd_frmsbmtcvd').on('submit', function(){
+		fakeLoading(0);
+	});
 });
 
 function cvd_deleteAttachment(id)
@@ -1945,3 +1949,371 @@ function initNoSelect()
 			}
 	});
 }
+
+// start data vaksinasi
+$(document).on('ready', function(){
+	$('#tbl-CVD-DataVaksinasi-table').DataTable({
+		"lengthMenu": [
+            [ 5, 10, 25, 50, -1 ],
+            [ '5 rows', '10 rows', '25 rows', '50 rows', 'Show all' ]
+        ],
+        "dom" : 'Bfrtip',
+        "buttons" : [
+            'copy', 'csv', 'excel', 
+            {
+                extend: 'pdfHtml5',
+                orientation: 'landscape',
+                pageSize: 'LEGAL'
+            },
+            'print', 'pageLength'
+        ],
+		"scrollX" : true,
+	});
+
+	$('#slc-CVD-DataVaksinasi-Pekerja').select2({
+		placeholder: "No. Induk / Nama Pekerja",
+		minimumInputLength: 1,
+		ajax: {
+			url: baseurl+'Covid/DataVaksinasi/getPekerjaBykey',
+			dataType:'json',
+			type: "GET",
+			data: function (params) {
+				return {
+					key: params.term
+				};
+			},
+			processResults: function (data) {
+				return {
+					results: $.map(data, function (item) {
+						return {
+							id: item.noind,
+							text: item.noind + " - " + item.nama
+						};
+					})
+				};
+			},
+		}
+	});
+	$('#slc-CVD-DataVaksinasi-Peserta').select2({
+		placeholder: "NIK / Nama Peserta",
+		minimumInputLength: 0,
+		ajax: {
+			url: baseurl+'Covid/DataVaksinasi/getPesertaByNoindKey',
+			dataType:'json',
+			type: "GET",
+			data: function (params) {
+				return {
+					noind: $('#slc-CVD-DataVaksinasi-Pekerja').val(),
+					key: params.term
+				};
+			},
+			processResults: function (data) {
+				return {
+					results: $.map(data, function (item) {
+						return {
+							id: item.nik + " - " + item.nama,
+							text: item.nik + " - " + item.nama,
+							nik: item.nik,
+							nama: item.nama
+						};
+					})
+				};
+			},
+		}
+	});
+	$('#slc-CVD-DataVaksinasi-Kelompok').select2({
+		placeholder: "Kelompok Vaksin"
+	});
+	$('#slc-CVD-DataVaksinasi-Jenis').select2({
+		placeholder: "Jenis Vaksin"
+	});
+	$('#slc-CVD-DataVaksinasi-Ke').select2({
+		placeholder: "No."
+	});
+
+	$('#txt-CVD-DataVaksinasi-Tanggal').datepicker({
+		"autoclose": true,
+		"todayHighlight": true,
+		"todayBtn": "linked",
+		"format":'yyyy-mm-dd'
+	});
+
+	$('#slc-CVD-DataVaksinasi-Pekerja').on('change', function(){
+		noind = $(this).val();
+		if(noind){
+			$('#slc-CVD-DataVaksinasi-Peserta').attr('disabled', false);
+		}else{
+			$('#slc-CVD-DataVaksinasi-Peserta').attr('disabled', true);
+		}
+
+		$('#slc-CVD-DataVaksinasi-Peserta').val(null).change();
+	})
+
+	$('#slc-CVD-DataVaksinasi-Peserta').on('change', function(){
+		peserta = $(this).val();
+		if(peserta){
+			$('#slc-CVD-DataVaksinasi-Kelompok').attr('disabled', false);
+			$('#slc-CVD-DataVaksinasi-Jenis').attr('disabled', false);
+			$('#txt-CVD-DataVaksinasi-Tanggal').attr('disabled', false);
+			$('#txa-CVD-DataVaksinasi-Lokasi').attr('disabled', false);
+			$('#slc-CVD-DataVaksinasi-Ke').attr('disabled', false);
+			$('#fl-CVD-DataVaksinasi-Kartu').attr('disabled', false);
+			$('#fl-CVD-DataVaksinasi-Sertifikat').attr('disabled', false);
+		}else{
+			$('#slc-CVD-DataVaksinasi-Kelompok').attr('disabled', true);
+			$('#slc-CVD-DataVaksinasi-Jenis').attr('disabled', true);
+			$('#txt-CVD-DataVaksinasi-Tanggal').attr('disabled', true);
+			$('#txa-CVD-DataVaksinasi-Lokasi').attr('disabled', true);
+			$('#slc-CVD-DataVaksinasi-Ke').attr('disabled', true);
+			$('#fl-CVD-DataVaksinasi-Kartu').attr('disabled', true);
+			$('#fl-CVD-DataVaksinasi-Sertifikat').attr('disabled', true);
+		}
+
+		$('#slc-CVD-DataVaksinasi-Kelompok').val(null).change();
+		$('#slc-CVD-DataVaksinasi-Jenis').val(null).change();
+		$('#txt-CVD-DataVaksinasi-Tanggal').val(null).change();
+		$('#txa-CVD-DataVaksinasi-Lokasi').val(null).change();
+		$('#slc-CVD-DataVaksinasi-Ke').val(null).change();
+		$('#fl-CVD-DataVaksinasi-Kartu').val(null).change();
+		$('#fl-CVD-DataVaksinasi-Kartu').closest('.col-lg-4').find('img').attr('src',baseurl + 'assets/img/TimCovid/sertifikat_vaksin.svg')
+		$('#fl-CVD-DataVaksinasi-Sertifikat').val(null).change();
+		$('#fl-CVD-DataVaksinasi-Sertifikat').closest('.col-lg-4').find('img').attr('src',baseurl + 'assets/img/TimCovid/sertifikat_vaksin.svg')
+	})
+
+	$('#slc-CVD-DataVaksinasi-Kelompok').on('change', function(){
+		id = $(this).find('option:selected').data('id');
+		if(id){
+			$.ajax({
+				data: {
+					id: id
+				},
+				type: 'GET',
+				url: baseurl + 'Covid/DataVaksinasi/DetailKelompok',
+				error: function(xhr){
+					swal.fire({
+		                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+		                html: xhr['responseText'],
+		                type: "error",
+		                confirmButtonText: 'OK',
+		                confirmButtonColor: '#d63031',
+		            })
+				},
+				success: function(result){
+					obj = JSON.parse(result);
+					if(obj.jenis_vaksin !== null){
+						$('#slc-CVD-DataVaksinasi-Jenis').attr('disabled', true);
+						$('#slc-CVD-DataVaksinasi-Jenis').val(obj.jenis_vaksin).change();
+					}else{
+						$('#slc-CVD-DataVaksinasi-Jenis').attr('disabled', false);
+						$('#slc-CVD-DataVaksinasi-Jenis').val(null).change();
+					}
+
+					if(obj.tanggal_vaksin !== null){
+						$('#txt-CVD-DataVaksinasi-Tanggal').attr('disabled', true);
+						$('#txt-CVD-DataVaksinasi-Tanggal').val(obj.tanggal_vaksin).change();
+					}else{
+						$('#txt-CVD-DataVaksinasi-Tanggal').attr('disabled', false);
+						$('#txt-CVD-DataVaksinasi-Tanggal').val(null).change();
+					}
+
+					if(obj.lokasi_vaksin !== null){
+						$('#txa-CVD-DataVaksinasi-Lokasi').attr('disabled', true);
+						$('#txa-CVD-DataVaksinasi-Lokasi').val(obj.lokasi_vaksin).change();
+					}else{
+						$('#txa-CVD-DataVaksinasi-Lokasi').attr('disabled', false);
+						$('#txa-CVD-DataVaksinasi-Lokasi').val(null).change();
+					}
+				}
+			})
+		}
+	})
+
+	$('#fl-CVD-DataVaksinasi-Sertifikat, #fl-CVD-DataVaksinasi-Kartu').on('change', function(e){
+		file = e.target.files[0];
+		if(file){
+			$(this).closest('.col-lg-4').find('img').attr('src',URL.createObjectURL(e.target.files[0]))
+		}
+	})
+
+	$('#frm-CVD-DataVaksinasi-Tambah').on('change','input, select, textarea', function(){
+		pekerja 	= $('#slc-CVD-DataVaksinasi-Pekerja').val()
+		peserta 	= $('#slc-CVD-DataVaksinasi-Peserta').val()
+		kelompok 	= $('#slc-CVD-DataVaksinasi-Kelompok').val()
+		tanggal 	= $('#txt-CVD-DataVaksinasi-Tanggal').val()
+		jenis 		= $('#slc-CVD-DataVaksinasi-Jenis').val()
+		lokasi 		= $('#txa-CVD-DataVaksinasi-Lokasi').val()
+		vaksinke 	= $('#slc-CVD-DataVaksinasi-Ke').val()
+		kartu 		= $('#fl-CVD-DataVaksinasi-Kartu').val()
+		sertifikat 	= $('#fl-CVD-DataVaksinasi-Sertifikat').val()
+		
+		kosong = 0;
+		if(pekerja !== null && pekerja.length > 0){
+			if (peserta !== null && peserta.length > 0) {
+				$('#div-CVD-DataVaksinasi-Warning').html("");
+
+				if (!(kelompok !== null && kelompok.length > 0)){
+					$('#div-CVD-DataVaksinasi-Warning').append("<br>Kelompok Vaksinasi Masih Kosong");
+					kosong++	
+				} 
+
+				if (!(tanggal !== null && tanggal.length > 0)){
+					$('#div-CVD-DataVaksinasi-Warning').append("<br>Tanggal Vaksin Masih Kosong");
+					kosong++
+				}
+
+				if (!(jenis !== null && jenis.length > 0)){
+					$('#div-CVD-DataVaksinasi-Warning').append("<br>Jenis Vaksin Masih Kosong");
+					kosong++
+				}
+
+				if (!(lokasi !== null && lokasi.length > 0)){
+					$('#div-CVD-DataVaksinasi-Warning').append("<br>Lokasi Vaksinasi Masih Kosong");
+					kosong++
+				}
+
+				if (!(vaksinke !== null && vaksinke.length > 0)){
+					$('#div-CVD-DataVaksinasi-Warning').append("<br>'Vaksin Ke' Masih Kosong");
+					kosong++
+				}
+
+				if (!(kartu !== null && kartu.length > 0)){
+					$('#div-CVD-DataVaksinasi-Warning').append("<br>Kartu Vaksinasi Masih Kosong");
+					kosong++
+				}
+
+				if (!(sertifikat !== null && sertifikat.length > 0)){
+					$('#div-CVD-DataVaksinasi-Warning').append("<br>Sertifikat Vaksinasi Masih Kosong");
+					kosong++
+				}
+			}else{
+				$('#div-CVD-DataVaksinasi-Warning').html("Peserta Masih Kosong");
+				kosong++
+			}
+		}else{
+			$('#div-CVD-DataVaksinasi-Warning').html("Pekerja Masih Kosong");
+			kosong++
+		}
+
+		if(kosong === 0){
+			$('#btn-CVD-DataVaksinasi-Simpan').attr('disabled', false)
+		}else{
+			$('#btn-CVD-DataVaksinasi-Simpan').attr('disabled', true)
+		}
+	})
+
+	$('#btn-CVD-DataVaksinasi-Simpan').on('click', function(){
+		peserta = $('#slc-CVD-DataVaksinasi-Peserta').find('option:selected').data();
+		jenis = $('#slc-CVD-DataVaksinasi-Jenis').val()
+		tanggal = $('#txt-CVD-DataVaksinasi-Tanggal').val()
+		lokasi = $('#txa-CVD-DataVaksinasi-Lokasi').val()
+
+		$('input[name=txt-CVD-DataVaksinasi-Peserta-NIK]').val(peserta.data.nik)
+		$('input[name=txt-CVD-DataVaksinasi-Peserta-Nama]').val(peserta.data.nama)
+		$('input[name=txt-CVD-DataVaksinasi-Tanggal]').val(tanggal)
+		$('input[name=txt-CVD-DataVaksinasi-Jenis]').val(jenis)
+		$('input[name=txt-CVD-DataVaksinasi-Lokasi]').val(lokasi)
+
+		form = document.getElementById('frm-CVD-DataVaksinasi-Tambah');
+		formData = new FormData(form);
+
+		$.ajax({
+			data: formData,
+			type: 'POST',
+			url: baseurl + 'Covid/DataVaksinasi/Simpan',
+			processData: false,
+			cache:false,
+            contentType: false,
+			error: function(xhr){
+				swal.fire({
+	                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+	                html: xhr['responseText'],
+	                type: "error",
+	                confirmButtonText: 'OK',
+	                confirmButtonColor: '#d63031',
+	            })
+			},
+			success: function(result){
+				if(result == "success"){
+					Swal.fire({
+						title: 'Data Berhasil Disimpan',
+						text: "Apakah Anda ingin Menambahkan data lagi ?",
+						type: 'success',
+						showCancelButton: true,
+						confirmButtonColor: '#3085d6',
+						cancelButtonColor: '#d33',
+						confirmButtonText: 'Ya'
+					}).then((result) => {
+						if (result.value) {
+							$('#slc-CVD-DataVaksinasi-Pekerja').val(null).change();
+						}else{
+							window.location.href = baseurl+"Covid/DataVaksinasi";
+						}
+					});
+				}else{
+					swal.fire({
+		                title: "Oops, Something wrong...",
+		                html: result,
+		                type: "error",
+		                confirmButtonText: 'OK',
+		                confirmButtonColor: '#d63031',
+		            })
+				}
+			}
+		})
+	})
+
+	$('#tbl-CVD-DataVaksinasi-table').on('click', '.btn-CVD-DataVaksinasi-Delete', function(){
+		id = $(this).data('id');
+		Swal.fire({
+			title: 'Anda Yakin ingin Menghapus Data Ini ?',
+			text: "Data yang sudah dihapus tidak bisa dikembalikan.",
+			type: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: 'Ya'
+		}).then((result) => {
+			if (result.value) {
+				$.ajax({
+					data: {
+						id: id
+					},
+					url: baseurl + 'Covid/DataVaksinasi/Hapus/' + id,
+					error: function(xhr){
+						swal.fire({
+			                title: xhr['status'] + "(" + xhr['statusText'] + ")",
+			                html: xhr['responseText'],
+			                type: "error",
+			                confirmButtonText: 'OK',
+			                confirmButtonColor: '#d63031',
+			            })
+					},
+					success: function(result){
+						if(result == "success"){
+							Swal.fire(
+								'Hapus Data Berhasil',
+								'Hapus Data Berhasil dilakukan.',
+								'success'
+							)
+						}else{
+							swal.fire({
+				                title: "Oops, Something wrong...",
+				                html: result,
+				                type: "error",
+				                confirmButtonText: 'OK',
+				                confirmButtonColor: '#d63031',
+				            })
+						}
+					}
+				})
+			}else{
+				Swal.fire(
+					'Hapus Data Dibatalkan',
+					'Action Hapus Data Dibatalkan oleh User.',
+					'error'
+				)
+			}
+		});
+	})
+})
+// end data vaksinasi

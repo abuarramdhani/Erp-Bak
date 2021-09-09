@@ -7,13 +7,13 @@ class M_import extends CI_Model
     {
         parent::__construct();
         $this->load->database();
-        $this->oracle = $this->load->database('oracle',TRUE);
+        $this->oracle = $this->load->database('oracle', TRUE);
     }
 
     public function validasiItem($itemcode)
     {
-       $oracle = $this->load->database('oracle', true);
-       $query = $oracle->query("SELECT
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query("SELECT
             msib.INVENTORY_ITEM_ID ,
             msib.SEGMENT1 kode_item ,
             msib.DESCRIPTION ,
@@ -38,7 +38,7 @@ class M_import extends CI_Model
             -- parameter
             AND msib.INVOICEABLE_ITEM_FLAG = 'Y'");
 
-       return $query->result_array();
+        return $query->result_array();
     }
 
     public function validasiSubinventory($organization, $subinventory)
@@ -59,7 +59,7 @@ class M_import extends CI_Model
         return $query->result_array();
     }
 
-    public function validasiLengkap($itemcode,$organization,$subinventory)
+    public function validasiLengkap($itemcode, $organization, $subinventory)
     {
         $oracle = $this->load->database('oracle', true);
         $query = $oracle->query("SELECT
@@ -70,50 +70,315 @@ class M_import extends CI_Model
         muomt.UNIT_OF_MEASURE secondary_uom ,
         mp.ORGANIZATION_CODE ,
         msi.SECONDARY_INVENTORY_NAME ,
-        CASE
-            WHEN (mcb.CATEGORY_ID IN (67009,
-            67010)
-            AND EXTRACT(DAY FROM SYSDATE)<10) THEN ADD_MONTHS(LAST_DAY(SYSDATE),-1)+ 10 + NVL(msib.FULL_LEAD_TIME, 0) + NVL(msib.POSTPROCESSING_LEAD_TIME, 0)
-            WHEN (mcb.CATEGORY_ID IN (67009,
-            67010)
-            AND EXTRACT(DAY FROM SYSDATE)>= 10
-            AND EXTRACT(DAY FROM SYSDATE)<25) THEN ADD_MONTHS(LAST_DAY(SYSDATE),-1)+ 25 + NVL(msib.FULL_LEAD_TIME, 0) + NVL(msib.POSTPROCESSING_LEAD_TIME, 0)
-            WHEN (mcb.CATEGORY_ID IN (67009,
-            67010)
-            AND EXTRACT(DAY FROM SYSDATE)>= 25) THEN LAST_DAY(SYSDATE)+ 10 + NVL(msib.FULL_LEAD_TIME, 0) + NVL(msib.POSTPROCESSING_LEAD_TIME, 0)
-            WHEN (mcb.CATEGORY_ID IN (67007,
-            67008)
-            AND EXTRACT(DAY FROM SYSDATE)<10) THEN ADD_MONTHS(LAST_DAY(SYSDATE),-1)+ 10 + NVL(msib.FULL_LEAD_TIME, 0) + NVL(msib.POSTPROCESSING_LEAD_TIME, 0)
-            WHEN (mcb.CATEGORY_ID IN (67007,
-            67008)
-            AND EXTRACT(DAY FROM SYSDATE)>= 10) THEN LAST_DAY(SYSDATE)+ 10 + NVL(msib.FULL_LEAD_TIME, 0) + NVL(msib.POSTPROCESSING_LEAD_TIME, 0)
-            ELSE LAST_DAY(SYSDATE)+ 10 + NVL(msib.FULL_LEAD_TIME, 0) + NVL(msib.POSTPROCESSING_LEAD_TIME, 0)
-        END default_nbd
+        TO_CHAR(
+            (CASE 
+                WHEN (mcb.CATEGORY_ID IN (67009, 67010) AND EXTRACT(DAY FROM SYSDATE)<10) 
+                    THEN ADD_MONTHS(LAST_DAY(SYSDATE),-1)+ 10 + NVL(msib.FULL_LEAD_TIME, 0) + NVL(msib.POSTPROCESSING_LEAD_TIME, 0) 
+                WHEN (mcb.CATEGORY_ID IN (67009, 67010) AND EXTRACT(DAY FROM SYSDATE)>= 10 AND EXTRACT(DAY FROM SYSDATE)<25) 
+                    THEN ADD_MONTHS(LAST_DAY(SYSDATE),-1)+ 25 + NVL(msib.FULL_LEAD_TIME, 0) + NVL(msib.POSTPROCESSING_LEAD_TIME, 0) 
+                WHEN (mcb.CATEGORY_ID IN (67009, 67010) AND EXTRACT(DAY FROM SYSDATE)>= 25) 
+                    THEN LAST_DAY(SYSDATE)+ 10 + NVL(msib.FULL_LEAD_TIME, 0) + NVL(msib.POSTPROCESSING_LEAD_TIME, 0) 
+                WHEN (mcb.CATEGORY_ID IN (67007, 67008) AND EXTRACT(DAY FROM SYSDATE)<10) 
+                    THEN ADD_MONTHS(LAST_DAY(SYSDATE),-1)+ 10 + NVL(msib.FULL_LEAD_TIME, 0) + NVL(msib.POSTPROCESSING_LEAD_TIME, 0) 
+                WHEN (mcb.CATEGORY_ID IN (67007, 67008) AND EXTRACT(DAY FROM SYSDATE)>= 10) 
+                    THEN LAST_DAY(SYSDATE)+ 10 + NVL(msib.FULL_LEAD_TIME, 0) + NVL(msib.POSTPROCESSING_LEAD_TIME, 0) 
+                ELSE LAST_DAY(SYSDATE)+ 10 + NVL(msib.FULL_LEAD_TIME, 0) + NVL(msib.POSTPROCESSING_LEAD_TIME, 0) 
+            END)
+        , 'DD-Mon-YYYY') default_nbd,
+        TO_CHAR(
+            (CASE 
+                WHEN (mcb.CATEGORY_ID IN (67009, 67010) AND EXTRACT(DAY FROM SYSDATE)<10) 
+                    THEN ADD_MONTHS(LAST_DAY(SYSDATE),-1)+ 10 
+                WHEN (mcb.CATEGORY_ID IN (67009, 67010) AND EXTRACT(DAY FROM SYSDATE)>= 10 AND EXTRACT(DAY FROM SYSDATE)<25) 
+                    THEN ADD_MONTHS(LAST_DAY(SYSDATE),-1)+ 25
+                WHEN (mcb.CATEGORY_ID IN (67009, 67010) AND EXTRACT(DAY FROM SYSDATE)>= 25) 
+                    THEN LAST_DAY(SYSDATE)+ 10
+                WHEN (mcb.CATEGORY_ID IN (67007, 67008) AND EXTRACT(DAY FROM SYSDATE)<10) 
+                    THEN ADD_MONTHS(LAST_DAY(SYSDATE),-1)+ 10 
+                WHEN (mcb.CATEGORY_ID IN (67007, 67008) AND EXTRACT(DAY FROM SYSDATE)>= 10) 
+                    THEN LAST_DAY(SYSDATE)+ 10
+            END)
+        , 'DD-Mon-YYYY') CUTOFF_TERDEKAT,
+        msibp.ATTRIBUTE27 puller
     FROM
         mtl_system_items_b msib ,
         mtl_units_of_measure_tl muomt ,
         mtl_secondary_inventories msi ,
         mtl_parameters mp ,
         mtl_item_categories mic ,
-        mtl_categories_b mcb
+        mtl_categories_b mcb,
+        mtl_system_items_b msibp
     WHERE
         msib.SECONDARY_UOM_CODE = muomt.UOM_CODE(+)
         AND msib.ORGANIZATION_ID = mp.ORGANIZATION_ID
         AND msib.ORGANIZATION_ID = msi.ORGANIZATION_ID
-        AND msib.ORGANIZATION_ID IN (101,
-        102)
+        AND msib.ORGANIZATION_ID IN (101, 102, 122, 286)
+        AND msib.INVENTORY_ITEM_ID = msibp.INVENTORY_ITEM_ID
+        AND msibp.ORGANIZATION_ID = 81
         AND msib.INVENTORY_ITEM_ID = mic.INVENTORY_ITEM_ID
         AND msib.ORGANIZATION_ID = mic.ORGANIZATION_ID
         AND mic.CATEGORY_SET_ID = '1100000244'
         AND mic.category_id = mcb.category_id
         AND msib.INVENTORY_ITEM_STATUS_CODE = 'Active'
-        AND msi.STATUS_ID = 1
+        AND msi.STATUS_ID IN (1,20)
         AND mp.ORGANIZATION_CODE = '$organization'
         -- parameter ORG
         AND msi.SECONDARY_INVENTORY_NAME = '$subinventory'
         -- parameter subinventory
         AND msib.SEGMENT1 = '$itemcode'
-        -- parameter masukan kode item");
+        -- parameter masukan kode item
+              ");
+
+        return $query->result_array();
+    }
+    public function validasi_lokasi($lokasi)
+    {
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query("select
+        hla.LOCATION_ID
+        ,hla.LOCATION_CODE
+        from
+        HR_LOCATIONS_ALL hla
+        where
+        hla.INACTIVE_DATE is null
+        and hla.LOCATION_CODE = '$lokasi' -- parameter");
+
+        return $query->result_array();
+    }
+    public function getApproverSeksi($number)
+    {
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query("SELECT DISTINCT pf.person_id, pf.full_name nama,
+        pf.national_identifier no_induk
+   FROM khs.khs_okbj_approve_hir kh, per_all_people_f pf
+  WHERE kh.approver = pf.person_id
+    AND approver_level = $number
+    AND pf.effective_end_date >= sysdate
+ORDER BY 1");
+
+        return $query->result_array();
+    }
+    public function getApproverPengelola($number)
+    {
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query("SELECT DISTINCT pf.person_id, pf.full_name nama,
+        pf.national_identifier no_induk
+   FROM khs.khs_okbj_approve_hir kh, per_all_people_f pf
+  WHERE kh.person_id = pf.person_id
+    AND approver_level = $number
+    AND pf.effective_end_date >= sysdate
+ORDER BY 1");
+
+        return $query->result_array();
+    }
+    public function getApproverDepartement($number)
+    {
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query("SELECT DISTINCT pf.full_name nama,
+        pf.person_id,
+        pf.national_identifier no_induk
+   FROM khs.khs_okbj_approve_hir kh, per_all_people_f pf
+  WHERE kh.approver = pf.person_id
+    AND approver_level = $number
+    AND pf.effective_end_date >= sysdate
+    AND pf.full_name not like '%WAHADA,%'
+ORDER BY 1");
+
+        return $query->result_array();
+    }
+    public function getPuller()
+    {
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query("SELECT ppf.person_id, ppf.full_name nama, ppf.national_identifier no_induk,ppf.person_id
+        FROM (SELECT DISTINCT attribute27
+                         FROM mtl_system_items_b
+                        WHERE attribute27 IS NOT NULL) msib,
+             per_all_people_f ppf
+       WHERE msib.attribute27 = ppf.person_id");
+
+        return $query->result_array();
+    }
+    public function getExportHeadDataApproval($created_by, $okbj_name_approver, $okbj_lvl_approval)
+    {
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query("select distinct
+        ppf_create.national_identifier nik_pembuat,
+        ppf_create.full_name nama_pembuat,
+        ppf_req.national_identifier nik_requester,
+        ppf_req.full_name nama_requester,
+        ppf_appr.national_identifier nik_approver,
+        ppf_appr.full_name nama_approver,
+        tbl1.a_level level_approved
+    FROM khs.khs_okbj_order_header kooh,
+           per_people_f ppfa,
+           khs.khs_okbj_order_approval kkooa,
+           (SELECT   kooa.order_id, MIN (kooa.approver_type) a_level
+                FROM khs.khs_okbj_order_approval kooa
+               WHERE kooa.judgement IS NULL
+            GROUP BY kooa.order_id) tbl1,
+           per_all_people_f ppf_create,
+           per_all_people_f ppf_req,
+           per_all_people_f ppf_appr
+     WHERE kooh.order_id = tbl1.order_id
+       AND kooh.order_id = kkooa.order_id
+       AND kkooa.approver_type = tbl1.a_level
+       AND kkooa.approver_id = ppfa.person_id
+       AND kooh.order_status_id <> 4
+       AND ppf_create.person_id = kooh.create_by
+       AND ppf_req.person_id = kooh.requester
+       AND ppf_appr.person_id = kkooa.approver_id
+       AND (ppf_create.national_identifier = '$created_by' -- parameter no induk pembuat/yg login 
+            OR
+            ppf_req.national_identifier = '$created_by') -- parameter no induk pembuat/yg login     
+       AND ppf_appr.national_identifier = '$okbj_name_approver'  -- parameter no induk approver
+       AND tbl1.a_level = $okbj_lvl_approval
+    ");
+
+        return $query->result_array();
+    }
+    public function getExportHeadDataPuller($noind)
+    {
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query("SELECT DISTINCT ppf_create.national_identifier nik_pembuat,
+        ppf_create.full_name nama_pembuat,
+        ppf_requester.national_identifier nik_requester,
+        ppf_requester.full_name nama_requester,
+        ppf_puller.national_identifier nik_approver,
+        ppf_puller.full_name nama_approver, ooh.order_id,
+        '-' level_approved
+   FROM khs.khs_okbj_order_header ooh,
+        mtl_system_items_b msib,
+        per_people_f ppf_requester,
+        per_people_f ppf_puller,
+        per_all_people_f ppf_create
+  WHERE ooh.requester = ppf_requester.person_id
+    AND msib.attribute27 = ppf_puller.person_id
+    AND ooh.create_by = ppf_create.person_id
+    AND ooh.inventory_item_id = msib.inventory_item_id
+    AND msib.organization_id = 81
+    AND ooh.order_status_id = '3'
+    AND ooh.pre_req_id IS NULL
+    AND ppf_puller.national_identifier = '$noind' -- nomer induk puller");
+
+        return $query->result_array();
+    }
+    public function getExportDataApproval($created_by, $okbj_name_approver, $okbj_lvl_approval)
+    {
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query("SELECT kooh.order_id, msib.segment1 item_code, 
+        case 
+            when msib.allow_item_desc_update_flag = 'Y' then 
+                msib.description || ' ' || kooh.ITEM_DESCRIPTION 
+            else msib.description
+        end item_description, 
+        kooh.quantity, kooh.uom,
+        kooh.need_by_date, kooh.order_purpose, kooh.note_to_pengelola, kooh.urgent_reason,
+        kooh.note_to_buyer,
+        CASE
+           WHEN kooh.is_susulan = 'Y'
+              THEN 'Susulan'
+           WHEN kooh.urgent_flag = 'Y'
+           AND (kooh.is_susulan = 'N' OR kooh.is_susulan IS NULL)
+              THEN 'Urgent'
+           WHEN (kooh.urgent_flag <> 'Y' OR kooh.urgent_flag IS NULL)
+           AND (kooh.is_susulan <> 'Y' OR kooh.is_susulan IS NULL)
+              THEN 'Normal'
+           ELSE 'Undefined'
+        END status
+   FROM khs.khs_okbj_order_header kooh,
+        per_people_f ppfa,
+        khs.khs_okbj_order_approval kkooa,
+        (SELECT   kooa.order_id, MIN (kooa.approver_type) a_level
+             FROM khs.khs_okbj_order_approval kooa
+            WHERE kooa.judgement IS NULL
+         GROUP BY kooa.order_id) tbl1,
+        mtl_system_items_b msib,
+        per_all_people_f ppf_create,
+        per_all_people_f ppf_req,
+        per_all_people_f ppf_appr
+  WHERE kooh.order_id = tbl1.order_id
+    AND kooh.order_id = kkooa.order_id
+    AND kkooa.approver_type = tbl1.a_level
+    AND kkooa.approver_id = ppfa.person_id
+    AND kooh.order_status_id <> 4
+    AND msib.inventory_item_id = kooh.inventory_item_id
+    AND msib.organization_id = 81
+    AND ppf_create.person_id = kooh.create_by
+    AND ppf_req.person_id = kooh.requester
+    AND ppf_appr.person_id = kkooa.approver_id
+    AND (ppf_create.national_identifier = '$created_by' -- parameter no induk pembuat / login
+        OR
+        ppf_req.national_identifier = '$created_by' -- parameter no induk pembuat / login
+        )
+    AND ppf_appr.national_identifier = '$okbj_name_approver'  -- parameter no induk approver
+    AND tbl1.a_level = $okbj_lvl_approval");
+
+        return $query->result_array();
+    }
+    public function getExportDataPuller($noind)
+    {
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query("SELECT DISTINCT ooh.order_id, msib.segment1 item_code,
+        ooh.item_description item_description, ooh.quantity, ooh.uom,
+        ooh.need_by_date, ooh.order_purpose, ooh.note_to_pengelola,
+        ooh.urgent_reason, ooh.note_to_buyer,
+        CASE
+           WHEN ooh.is_susulan = 'Y'
+              THEN 'Susulan'
+           WHEN ooh.urgent_flag = 'Y'
+           AND (ooh.is_susulan = 'N' OR ooh.is_susulan IS NULL)
+              THEN 'Urgent'
+           WHEN (ooh.urgent_flag <> 'Y' OR ooh.urgent_flag IS NULL)
+           AND (ooh.is_susulan <> 'Y' OR ooh.is_susulan IS NULL)
+              THEN 'Normal'
+           ELSE 'Undefined'
+        END status
+   FROM khs.khs_okbj_order_header ooh,
+        mtl_system_items_b msib,
+        per_people_f ppf_puller
+  WHERE 1 = 1
+    AND msib.attribute27 = ppf_puller.person_id
+    AND ooh.inventory_item_id = msib.inventory_item_id
+    AND msib.organization_id = 81
+    AND ooh.order_status_id = '3'
+    AND ooh.pre_req_id IS NULL
+    AND ppf_puller.national_identifier = '$noind' -- nomer induk puller");
+
+        return $query->result_array();
+    }
+    public function UpdateApproval($j, $o, $l, $a)
+    {
+        $oracle = $this->load->database('oracle', true);
+        $oracle->query("begin APPS.KHS_APPROVE_OKBJ_IMPOR($o, $l, '$j', '$a'); end;");
+    }
+    public function getDataperson($approver)
+    {
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query("SELECT PERSON_ID, FULL_NAME FROM PER_ALL_PEOPLE_F WHERE NATIONAL_IDENTIFIER = '$approver'");
+
+        return $query->result_array();
+    }
+    public function getStatusOrder($order_id, $dataapprover, $level)
+    {
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query("select
+        kooa.ORDER_ID,
+        kooa.JUDGEMENT
+    from
+        khs.khs_okbj_order_approval kooa,
+        per_all_people_f ppf
+    where 1=1
+        and ppf.person_id = kooa.approver_id
+        and kooa.APPROVER_TYPE = $level
+        and ppf.national_identifier = '$dataapprover'
+        and kooa.ORDER_ID = $order_id");
+
+        return $query->result_array();
+    }
+    public function getStatusRilis($no)
+    {
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query("select order_status_id from khs.khs_okbj_order_header where order_id = $no");
 
         return $query->result_array();
     }

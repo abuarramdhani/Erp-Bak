@@ -2,68 +2,69 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="box box-primary">
-                <div class="box-header">
-                    <h3 class="box-title">Approved List DPB</h3>
+                <div class="box-header" id="V_Monitoring_List">
+                    <!-- <h3 class="box-title">Approved List DPB</h3> -->
+                    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                        <li class="nav-item active" style="background:#e7e7e7">
+                            <a class="nav-link" onclick="normalll()" id="pills-normal-tab" data-toggle="pill" href="#pills-normal" aria-controls="pills-normal" role="tab" aria-selected="true">NORMAL </a>
+                        </li>
+                        <li class="nav-item" style="background:#e7e7e7">
+                            <a class="nav-link" onclick="urgentttt()" id="pills-urgent-tab" data-toggle="pill" href="#pills-urgent" role="tab" aria-controls="pills-urgent" aria-selected="false">URGENT</a>
+                        </li>
+                        <li class="nav-item" style="background:#e7e7e7">
+                            <a class="nav-link" onclick="ecerannnn()" id="pills-eceran-tab" data-toggle="pill" href="#pills-eceran" role="tab" aria-controls="pills-eceran" aria-selected="false">ECERAN</a>
+                        </li>
+                        <li class="nav-item" style="background:#e7e7e7">
+                            <a class="nav-link" onclick="bagroooo()" id="pills-bagro-tab" data-toggle="pill" href="#pills-bagro" role="tab" aria-controls="pills-bagro" aria-selected="false">BEST AGRO</a>
+                        </li>
+                        <li class="nav-item" style="background:#e7e7e7">
+                            <a class="nav-link" onclick="ecommerceee()" id="pills-ecommerce-tab" data-toggle="pill" href="#pills-ecommerce" role="tab" aria-controls="pills-ecommerce" aria-selected="false">E-COMMERCE</a>
+                        </li>
+                    </ul>
                 </div>
                 <div class="box-body">
-                    <table class="table table-striped table-hover table-bordered" id="tblMonitoringDSP" width="100%">
-                        <thead>
-                            <tr class="bg-primary"> 
-                                <th style="vertical-align:middle;" rowspan="2">No Dokumen</th>
-                                <th style="vertical-align:middle;" rowspan="2">Jenis Dokumen</th>
-                                <th style="vertical-align:middle;" rowspan="2">Tipe</th>
-                                <th style="vertical-align:middle;" rowspan="2">Ekspedisi</th>
-                                <th style="text-align:center;" colspan="3">Pelayanan</th>
-                                <th style="text-align:center;" colspan="3">Packing</th>
-                            </tr>
-                            <tr class="bg-primary text-center">
-                                <th>Mulai</th>
-                                <th>Selesai</th>
-                                <th>Waktu</th>
-                                <th>Mulai</th>
-                                <th>Selesai</th>
-                                <th>Waktu</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                           <?php foreach($monitoring_list as $key => $list) { ?>
-                              <tr>
-                                <td>
-                                    <button type="button" class="btn btn-primary btnReqNumberDSP"><?= $list['NO_DOKUMEN'];?></button>
-                                    <div class="modal fade" id="mdlDSP-<?= $list['NO_DOKUMEN'];?>">
-                                        <div class="modal-dialog">
-                                             <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span></button>
-                                                    <h4 class="modal-title">Detail <b><?= $list['NO_DOKUMEN'];?></b></h4>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <div class="loadingDetailDSP-<?= $list['NO_DOKUMEN'];?>" align="center" style="display:none">
-                                                        <img src="<?= base_url('assets/img/gif/loading3.gif');?>" class="img-responsive" alt="Image">
-                                                    </div>
-                                                    <div class="dataDSP-<?= $list['NO_DOKUMEN'];?>"></div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-primary pull-right" data-dismiss="modal">OK</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td><?= $list['JENIS_DOKUMEN'];?></td>
-                                <td><?= $list['TIPE'];?></td>
-                                <td><?= $list['EKSPEDISI'];?></td>
-                                <td><?= $list['MULAI_PELAYANAN'];?></td>
-                                <td><?= $list['SELESAI_PELAYANAN'];?></td>
-                                <td><?= $list['WAKTU_PELAYANAN'];?></td>
-                                <td><?= $list['MULAI_PACKING'];?></td>
-                                <td><?= $list['SELESAI_PACKING'];?></td>
-                                <td><?= $list['WAKTU_PACKING'];?></td>
-                              </tr>
-                           <?php } ?>
-                        </tbody>
-                    </table>
+                    <div class="tab-content" id="pills-tabContent">
+                        <div class="tab-pane fade in active" id="pills-normal" role="tabpanel" aria-labelledby="pills-normal-tab">
+                            <div id="loadingAreanormal" style="display:none;">
+                                <center><img style="width: 5%" src="<?php echo base_url('assets/img/gif/loading5.gif') ?>"></center>
+                            </div>
+                            <div class="table_area_normal">
+
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="pills-urgent" role="tabpanel" aria-labelledby="pills-urgent-tab">
+                            <div id="loadingAreaurgent" style="display:none;">
+                                <center><img style="width: 5%" src="<?php echo base_url('assets/img/gif/loading5.gif') ?>"></center>
+                            </div>
+                            <div class="table_area_urgent">
+
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="pills-eceran" role="tabpanel" aria-labelledby="pills-eceran-tab">
+                            <div id="loadingAreaeceran" style="display:none;">
+                                <center><img style="width: 5%" src="<?php echo base_url('assets/img/gif/loading5.gif') ?>"></center>
+                            </div>
+                            <div class="table_area_eceran">
+
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="pills-bagro" role="tabpanel" aria-labelledby="pills-bagro-tab">
+                            <div id="loadingAreabagro" style="display:none;">
+                                <center><img style="width: 5%" src="<?php echo base_url('assets/img/gif/loading5.gif') ?>"></center>
+                            </div>
+                            <div class="table_area_bagro">
+
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="pills-ecommerce" role="tabpanel" aria-labelledby="pills-ecommerce-tab">
+                            <div id="loadingAreaecommerce" style="display:none;">
+                                <center><img style="width: 5%" src="<?php echo base_url('assets/img/gif/loading5.gif') ?>"></center>
+                            </div>
+                            <div class="table_area_ecommerce">
+
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

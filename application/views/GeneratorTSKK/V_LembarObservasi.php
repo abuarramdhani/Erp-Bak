@@ -201,7 +201,20 @@
   </datalist>
 
   <datalist id="brow_slc_elemen">
-    <?php foreach ($data_element_kerja as $key => $value): ?>
+    <?php foreach ($data_element_kerja_auto as $key => $value): ?>
+      <option value="<?php echo $value['elemen_kerja'] ?>"><?php echo $value['elemen_kerja'] ?></option>
+    <?php endforeach; ?>
+    <?php foreach ($data_element_kerja_manual as $key => $value): ?>
+      <option value="<?php echo $value['elemen_kerja'] ?>"><?php echo $value['elemen_kerja'] ?></option>
+    <?php endforeach; ?>
+  </datalist>
+  <datalist id="brow_slc_elemen_manual">
+    <?php foreach ($data_element_kerja_manual as $key => $value): ?>
+      <option value="<?php echo $value['elemen_kerja'] ?>"><?php echo $value['elemen_kerja'] ?></option>
+    <?php endforeach; ?>
+  </datalist>
+  <datalist id="brow_slc_elemen_auto">
+    <?php foreach ($data_element_kerja_auto as $key => $value): ?>
       <option value="<?php echo $value['elemen_kerja'] ?>"><?php echo $value['elemen_kerja'] ?></option>
     <?php endforeach; ?>
   </datalist>
@@ -694,7 +707,7 @@
                               </thead>
                               <tbody id="tbodyLembarObservasi">
                                 <?php
-																			for ($no = 1; $no <=5;) {
+																			for ($no = 1; $no <=1;) {
 																		?>
                                 <tr class="nomor_<?= $no ?>">
                                   <!--NO-->
@@ -726,7 +739,7 @@
                                       <div class="col-lg-6">
                                         <!-- <select class="form-control select2 slcElemen" onchange="//disableOrnot(this)" id="slcElemen" name="txtSlcElemen[]" data-placeholder="Elemen">
                                         </select> -->
-                                        <input list="brow_slc_elemen" class="form-control slcElemen0000" onchange="//disableOrnot(this)" name="txtSlcElemen[]" data-placeholder="Elemen">
+                                        <input list="brow_slc_elemen" class="form-control slcElemen0000" onchange="//disableOrnot(this)" name="txtSlcElemen[]" data-placeholder="Elemen" autocomplete="off">
                                       </div>
                                       <div class="col-lg-6">
                                         <input type="text" name="elemen[]" class="form-control elemen" placeholder="Keterangan Elemen">

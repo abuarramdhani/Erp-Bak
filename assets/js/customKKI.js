@@ -62,7 +62,7 @@ const hapus_pbi = (no_doc) => {
           if (result === 1) {
             Swal.fire({
               type: 'success',
-              title: 'Berhasil menghapus data dengan no document'+ no_doc,
+              title: 'Berhasil menghapus data dengan no document '+ no_doc,
               text: ''
             }).then(_ => {
               monitoring_ajx();
@@ -741,6 +741,7 @@ const updatePBI = (doc, no) => {
 }
 
 $(document).ready(function() {
+
   let pbi_cek_monitoring = $('#cek-pbi-pengiriman').val();
   if (pbi_cek_monitoring == 'ok') {
     monitoring_ajx();
@@ -826,6 +827,33 @@ $(document).ready(function() {
     }
   })
 
+  $('.item_code_adm').select2({
+    tags: true,
+    allowClear:true,
+    minimumInputLength: 3,
+    placeholder: "Memo Number/Title",
+    ajax: {
+      url: baseurl + "PengirimanBarangInternal/Input/listMemo",
+      dataType: "JSON",
+      type: "POST",
+      data: function(params) {
+        return {
+          term: params.term,
+        };
+      },
+      processResults: function(data) {
+        return {
+          results: $.map(data, function(obj) {
+            return {
+              id: obj.memo_number==''?params.term:obj.memo_number,
+              text: obj.memo_number==''?params.term:`${obj.memo_number} - ${obj.memo_title}`,
+            }
+          })
+        }
+      }
+    }
+  })
+
   if ($('#cekapp').val() === 'punyaPBI') {
     $.ajax({
       url: baseurl + 'PengirimanBarangInternal/Input/getSeksiku',
@@ -835,11 +863,14 @@ $(document).ready(function() {
       success: function(result) {
         $('#seksi_pengirim').val(result.seksi)
         $('#ast_seksi_pengirim').val(result.seksi)
+        $('#seksi_pengirim_adm').val(result.seksi)
       },
       error: function(XMLHttpRequest, textStatus, errorThrown) {
         console.error();
       }
     })
+
+    autofll_admd()
   }
 })
 
@@ -915,6 +946,68 @@ const btnPlusPBI = () => {
 
 }
 
+function btnPlusPBI_adm() {
+  const cekemployee = $('#employee_adm').val();
+  console.log(cekemployee);
+  if (cekemployee === null) {
+    Swal.fire({
+      type: 'warning',
+      text: 'Harap mengisi form Seksi Tujuan terlebih dahulu!',
+    })
+  } else {
+    let n = $('.cektable_adm tbody tr').length;
+    let a = n + 1;
+    $('#adm_tambahisi').append(`<tr class="rowbaru">
+                              <td class="text-center"><input type="text" class="form-control" name="line_number[]" value="${a}" readonly></td>
+                              <td class="text-center"><select class="form-control item_code_adm" name="item_code[]" style="text-transform:uppercase;width:210px !important;" required>
+                              <option selected="selected"></option>
+                              </select></td>
+                              <td class="text-center"><input type="text" class="form-control description_adm"  name="description[]" readonly></td>
+                              <td class="text-center"><input type="number" class="form-control quantity_adm" name="quantity[]" autocomplete="off" required></td>
+                              <td class="text-center"><input type="text" class="form-control uom_adm" name="uom[]" readonly></td>
+                              <td class="text-center"><input type="text" class="form-control itemtype_adm" name="item_type[]" readonly></td>
+                              <td class="text-center">
+                                <a class="btn btn-danger btn-sm" onclick="btnpbi_min_adm(this)">
+                                <i class="fa fa-minus"></i>
+                                </a>
+                              </td>
+                            </tr>`);
+
+    $('.item_code_adm').select2({
+      tags: true,
+      allowClear:true,
+      minimumInputLength: 3,
+      placeholder: "Memo Number/Title",
+      ajax: {
+        url: baseurl + "PengirimanBarangInternal/Input/listMemo",
+        dataType: "JSON",
+        type: "POST",
+        data: function(params) {
+          return {
+            term: params.term,
+          };
+        },
+        processResults: function(data) {
+          return {
+            results: $.map(data, function(obj) {
+              return {
+                id: obj.memo_number==''?params.term:obj.memo_number,
+                text: obj.memo_number==''?params.term:`${obj.memo_number} - ${obj.memo_title}`,
+              }
+            })
+          }
+        }
+      }
+    })
+    autofll_admd()
+  }
+
+}
+
+function btnpbi_min_adm(th) {
+  $(th).parents('.rowbaru').remove()
+}
+
 const autofill = (n) => {
   const code = $(`#item_code_${n}`).val();
   if (code != '') {
@@ -988,6 +1081,19 @@ const autofill = (n) => {
   }
 }
 
+function autofll_admd() {
+  $('.item_code_adm').on('change', function() {
+    let desc = $(this).select2('data')[0].text;
+    console.log(desc, 'deskripsi');
+    console.log($(this).select2('data'),'data adm');
+    desc_ = desc.split(' - ')[1];
+    console.log(desc_, 'iniiiii');
+    $(this).parent().parent('tr').find('.description_adm').val(desc_ == undefined ? desc : desc_);
+    $(this).parent().parent('tr').find('.uom_adm').val('PCS');
+    $(this).parent().parent('tr').find('.itemtype_adm').val('LAIN-LAIN');
+  })
+}
+
 const nama = _ => {
   const employee_code = $('#employee').val();
   $.ajax({
@@ -1000,6 +1106,25 @@ const nama = _ => {
     },
     success: function(result) {
       $(`#seksi_tujuan`).val(result.seksi);
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+      console.error();
+    }
+  })
+}
+
+function adm_nama() {
+  const employee_code = $('#employee_adm').val();
+  $.ajax({
+    url: baseurl + 'PengirimanBarangInternal/Input/getSeksimu',
+    type: 'POST',
+    dataType: 'JSON',
+    async: true,
+    data: {
+      code: employee_code,
+    },
+    success: function(result) {
+      $(`#seksi_tujuan_adm`).val(result.seksi);
     },
     error: function(XMLHttpRequest, textStatus, errorThrown) {
       console.error();
@@ -1040,19 +1165,25 @@ function pbi_big_alert(type, message) {
   })
 }
 
-$('.pbi_check_desc_1').on('mouseover', function () {
+$('.pbi_check_desc_1').on('click', function () {
   if ($('.desc_1').val() == '') {
     pbi_big_alert('warning', 'Input <b>Tujuan</b> Tidak Boleh Kosong');
   }
 })
 
-$('.pbi_check_desc_2').on('mouseover', function () {
+$('.pbi_check_desc_2').on('click', function () {
   if ($('.desc_2').val() == '') {
     pbi_big_alert('warning', 'Input <b>Tujuan</b> Tidak Boleh Kosong');
   }
 })
 
-$('.pbi_check_desc_3').on('mouseover', function () {
+$('.pbi_check_desc_2_adm').on('click', function () {
+  if ($('.desc_2_adm').val() == '') {
+    pbi_big_alert('warning', 'Input <b>Tujuan</b> Tidak Boleh Kosong');
+  }
+})
+
+$('.pbi_check_desc_3').on('click', function () {
   if ($('.desc_3').val() == '') {
     pbi_big_alert('warning', 'Input <b>Tujuan</b> Tidak Boleh Kosong');
   }

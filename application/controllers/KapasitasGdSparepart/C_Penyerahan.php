@@ -31,8 +31,8 @@ class C_Penyerahan extends CI_Controller
 		$user = $this->session->username;
 		$user_id = $this->session->userid;
 
-		$data['Title'] = 'Penyerahan SPB/DO';
-		$data['Menu'] = 'Penyerahan SPB/DO';
+		$data['Title'] = 'Manifest SPB/DO';
+		$data['Menu'] = 'Manifest SPB/DO';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
 
@@ -45,22 +45,22 @@ class C_Penyerahan extends CI_Controller
 		$this->load->view('KapasitasGdSparepart/V_Penyerahan', $data);
 		$this->load->view('V_Footer',$data);
     }
-    
+
     public function getData(){
         $tglAwal = $this->input->post('tglAwal');
-		
+
 		$nomor = $this->M_penyerahan->getNomorSPB($tglAwal);
 		$data['spb'] = array();
 		$a = 0;
-		foreach ($nomor as $no) { 
-			// for ($a=0; $a < 8; $a++) { 
+		foreach ($nomor as $no) {
+			// for ($a=0; $a < 8; $a++) {
 			$getdata = $this->M_penyerahan->getDataSPB($no['no_SPB']);
 			$berat = $this->M_penyerahan->cariberat($no['no_SPB']);
 			// echo "<pre>";print_r($getdata);exit();
 			if (!empty($getdata)) {
 				if (!empty($berat)) {
 					$spb = array();
-					for ($i=0; $i < count($berat) ; $i++) { 
+					for ($i=0; $i < count($berat) ; $i++) {
 						if ($i == 0) {
 							$array = array(
 								'MO_NUMBER' 		=> $getdata[0]['REQUEST_NUMBER'],
@@ -93,7 +93,7 @@ class C_Penyerahan extends CI_Controller
 
         $this->load->view('KapasitasGdSparepart/V_TblPenyerahan', $data);
 	}
-	
+
 	public function cetakData(){
 		$nospb 		= $this->input->post('nospb[]');
 		$ekspedisi 	= $this->input->post('ekspedisi[]');
@@ -131,7 +131,7 @@ class C_Penyerahan extends CI_Controller
 			}
 		}
 		// echo "<pre>";print_r($size);exit();
-		
+
 		$data['cetak'] = $coba;
 
 		$this->load->library('Pdf');
@@ -144,17 +144,17 @@ class C_Penyerahan extends CI_Controller
 			$data['data'] = $val;
 			$data['urut'] = $x;
 			$data['eks'] = $key;
-			$head 	= $this->load->view('KapasitasGdSparepart/V_Headpdf', $data, true);	
-			$html 	= $this->load->view('KapasitasGdSparepart/V_PdfPenyerahan', $data, true);	
+			$head 	= $this->load->view('KapasitasGdSparepart/V_Headpdf', $data, true);
+			$html 	= $this->load->view('KapasitasGdSparepart/V_PdfPenyerahan', $data, true);
 			$footer = $this->load->view('KapasitasGdSparepart/V_Footerpdf', $data, true);
-			
+
 		ob_end_clean();
-		$pdf->SetHTMLHeader($head);		
-		$pdf->WriteHTML($html);	
-		$pdf->SetHTMLFooter($footer);									
-		// $pdf->debug = true; 
+		$pdf->SetHTMLHeader($head);
+		$pdf->WriteHTML($html);
+		$pdf->SetHTMLFooter($footer);
+		// $pdf->debug = true;
 		$x++;
-		}	
+		}
 		$pdf->Output($filename, 'I');
 			// echo "<pre>";print_r($data['exs']);exit();
 
@@ -171,17 +171,29 @@ class C_Penyerahan extends CI_Controller
 	}
 
 
-	public function getManifest()
+	public function getSiapManifest()
     {
     	$this->checkSession();
     	$date = date('d/m/Y');
-		$data['value'] 	= $this->M_penyerahan->dataManifest();
+    	$ekspedisi = $this->input->post('ekspedisi');
+
+		$data['value'] 	= $this->M_penyerahan->getSiapManifest($ekspedisi);
 		$data['noind']  = $this->M_penyerahan->getPIC();
-		// $data['noind']  = $this->M_penyerahan->getPIC(null);
-		// $pelayanan 		= $this->M_penyerahan->dataPelayanan($date);
-		// $data['data']	= $pelayanan;
         $this->load->view('KapasitasGdSparepart/V_Ajax_Penyerahan', $data);
     }
+
+
+	// public function getManifest()
+ //    {
+ //    	$this->checkSession();
+ //    	$date = date('d/m/Y');
+	// 	$data['value'] 	= $this->M_penyerahan->dataManifest();
+	// 	$data['noind']  = $this->M_penyerahan->getPIC();
+	// 	// $data['noind']  = $this->M_penyerahan->getPIC(null);
+	// 	// $pelayanan 		= $this->M_penyerahan->dataPelayanan($date);
+	// 	// $data['data']	= $pelayanan;
+ //        $this->load->view('KapasitasGdSparepart/V_Ajax_Penyerahan', $data);
+ //    }
 
 
     public function getSudahManifest()
@@ -213,54 +225,34 @@ class C_Penyerahan extends CI_Controller
         ));
     }
 
-
-    public function insertManifest()
-    {
-    	echo json_encode($this->M_penyerahan->insertManifest(
-          	$this->input->post('no_spb'),
-          	$this->session->userdata('user'),
-          	$this->input->post('ekspedisi')
-        ));
-    }
-
-
-    public function cekBeforeGenerate()
-    {
-    	echo json_encode($this->M_penyerahan->cekBeforeGenerate(
-          	$this->session->userdata('user'),
-          	$this->input->post('ekspedisi')
-        ));
-    }
-
-
     public function generateManifestNum()
     {
     	$new = $this->M_penyerahan->generateManifestNum();
     	$user = $this->session->userdata('user');
 
-    	$this->M_penyerahan->updateManifest($new,$user);
-
-    	echo json_encode($this->M_penyerahan->updateManifest($new,$user));  	
+    	echo json_encode($new);
     }
 
 
     public function cetakMNF($id)
     {
     	$data['get_data'] = $this->M_penyerahan->getDataCetak($id);
+			// echo "<pre>";print_r($data['get_data']);die;
     	$data['get_nama'] = $this->M_penyerahan->getNamaEkspedisi();
-  //       $data['get_body'] = $this->M_penyerahan->bodyPL($id);
-		// $data['get_colly'] = $this->M_penyerahan->getTotalColly($id);
-  //       $data['total_colly'] = sizeof($data['get_colly']);
-  //       $data['total_berat'] = $this->M_penyerahan->getTotalBerat($id);
-  //       $data['petugas'] = $this->M_penyerahan->getAll($id);
-        
+			// $data['get_body'] = $this->M_penyerahan->bodyPL($id);
+			// $data['get_colly'] = $this->M_penyerahan->getTotalColly($id);
+			// $data['total_colly'] = sizeof($data['get_colly']);
+			// $data['total_berat'] = $this->M_penyerahan->getTotalBerat($id);
+			// $data['petugas'] = $this->M_penyerahan->getAll($id);
+
         if (!empty($id)) {
             // ====================== do something =========================
             $this->load->library('Pdf');
             $this->load->library('ciqrcode');
 
             $pdf 		= $this->pdf->load();
-            $pdf 		= new mPDF('utf-8', 'F4', 0, '', 3, 3, 3, 0, 0, 0);
+            // $pdf 		= new mPDF('utf-8', 'F4', 0, '', 3, 3, 3, 0, 0, 0);
+						$pdf    = new mPDF('utf-8', array(210 , 267), 0, '', 3, 3, 3, 0, 0, 0);
 
             // ------ GENERATE QRCODE ------
             if (!is_dir('./assets/img/monitoringDOSPQRCODE')) {
@@ -274,14 +266,14 @@ class C_Penyerahan extends CI_Controller
             $params['black']	= array(255,255,255);
             $params['white']	= array(0,0,0);
             $params['savename'] = './assets/img/monitoringDOSPQRCODE/'.$data['get_data'][0]['MANIFEST_NUMBER'].'.png';
-            
+
             $this->ciqrcode->generate($params);
-            
+
             ob_end_clean() ;
-            
+
             $filename 	= 'Manifest_'.$data['get_data'][0]['EKSPEDISI'].'_'.$data['get_data'][0]['MANIFEST_NUMBER'].'.pdf';
             $cetakPL	= $this->load->view('KapasitasGdSparepart/V_Pdf_MNF', $data, true);
-                               
+
             $pdf->SetFillColor(0,255,0);
             // $pdf->SetAlpha(0.4);
             $pdf->WriteHTML($cetakPL);
@@ -300,4 +292,20 @@ class C_Penyerahan extends CI_Controller
             unlink($params['savename']);
         }
     }
+
+
+		//======== =======
+		public function savePenyerahan($value='')
+		{
+			$reque = $this->input->post('request_number', true);
+			$no_manifest = $this->input->post('no_manifest', true);
+			$eks = $this->input->post('ekspedisi', true);
+			echo json_encode($this->M_penyerahan->savePenyerahan($reque, $no_manifest, $eks));
+		}
+
+		public function cekudatransactblm($value='')
+		{
+			$rn = $this->input->post('request_number', true);
+			echo json_encode($this->M_penyerahan->cekudatransactblm($rn));
+		}
 }

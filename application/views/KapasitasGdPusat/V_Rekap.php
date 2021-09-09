@@ -259,6 +259,76 @@
                                                             </div>
                                                         </td>
                                                     </tr>
+                                                    <tr>
+                                                        <td>MAT</td>
+                                                        <td><?= $item_mat?></td>
+                                                        <td><?= $jml_selesai_mat?></td>
+                                                        <td><?= $jml_tanggungan_mat?></td>
+                                                        <td><button type="button" class="btn btn-xs btn-info" onclick="addRinMAT(this)">Rincian</button></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td></td>
+                                                        <td colspan="4">
+                                                            <div id="RinSelesaiMAT" style="display:none">
+                                                                <center><label>Terselesaikan</label></center>
+                                                                <table class="table table-bordered table-hover table-striped text-center" id="myTable" style="width: 100%; table-layout:fixed">
+                                                                    <thead class="bg-primary">
+                                                                        <tr>
+                                                                            <th>No</th>
+                                                                            <th>Creation Date</th>
+                                                                            <th>No Dokumen</th>
+                                                                            <th>Jenis Dokumen</th>
+                                                                            <th>Jumlah Item</th>
+                                                                            <th>PIC</th>
+                                                                            <th>Mulai</th>
+                                                                            <th>Selesai</th>
+                                                                            <th>Waktu</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <?php $i= 0 ;$no=1; foreach($selesai_mat as $val) {?>
+                                                                        <tr>
+                                                                            <td><?= $no; ?></td>
+                                                                            <td><?= $val['CREATION_DATE']?></td>
+                                                                            <td><?= $val['NO_DOKUMEN']?></td>
+                                                                            <td><?= $val['JENIS_DOKUMEN']?></td>
+                                                                            <td><?= $val['JUMLAH_ITEM']?></td>
+                                                                            <td><?= $val['PIC']?></td>
+                                                                            <td><?= $val['MULAI']?></td>
+                                                                            <td><?= $val['SELESAI']?></td>
+                                                                            <td><?= $val['WAKTU']?></td>
+                                                                        </tr>
+                                                                        <?php $no++; $i++; }?>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                            <div id="RinTanggunganMAT" style="display:none">
+                                                                <center><label>Tanggungan</label></center>
+                                                                <table class="table table-bordered table-hover table-striped text-center" id="myTable" style="width: 100%; table-layout:fixed">
+                                                                    <thead class="bg-primary">
+                                                                        <tr>
+                                                                            <th>No</th>
+                                                                            <th>Creation Date</th>
+                                                                            <th>No Dokumen</th>
+                                                                            <th>Jenis Dokumen</th>
+                                                                            <th>Jumlah Item</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <?php $i= 0 ;$no=1; foreach($tanggungan_mat as $val) {?>
+                                                                        <tr>
+                                                                            <td><?= $no; ?></td>
+                                                                            <td><?= $val['CREATION_DATE']?></td>
+                                                                            <td><?= $val['NO_DOKUMEN']?></td>
+                                                                            <td><?= $val['JENIS_DOKUMEN']?></td>
+                                                                            <td><?= $val['JUMLAH_ITEM']?></td>
+                                                                        </tr>
+                                                                        <?php $no++; $i++; }?>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
                                                 </tbody>
                                             </table>
                                         </div>
@@ -269,6 +339,7 @@
                                             <table class="table table-bordered table-hover table-striped text-center" id="myTable" style="width: 100%; table-layout:fixed">
                                                 <thead>
                                                     <tr>
+                                                        <th>Jenis Ban</th>
                                                         <th>Target</th>
                                                         <th>Realisasi</th>
                                                         <th></th>
@@ -276,14 +347,15 @@
                                                 </thead>
                                                 <tbody>
                                                     <tr>
-                                                        <td>100</td>
-                                                        <td><?= $realisasi?></td>
-                                                        <td><button type="button" class="btn btn-xs btn-info" onclick="addRinPasangBan(this)">Rincian</button></td>
+                                                        <td>RUBBER TIRE RING 12 SUB GROUP (VULKANISIR / GRAN PRINX / GP)</td>
+                                                        <td>80 SET</td>
+                                                        <td><?= $realisasi12v?></td>
+                                                        <td><button type="button" class="btn btn-xs btn-info" onclick="addRinPasangBan12v(this)">Rincian</button></td>
                                                     </tr>
                                                     <tr>
                                                         <td></td>
-                                                        <td colspan="2">
-                                                            <div id="RinPasangBan" style="display:none">
+                                                        <td colspan="3">
+                                                            <div id="RinPasangBan12v" style="display:none">
                                                                 <table class="table table-bordered table-hover table-striped text-center" id="myTable" style="width: 100%; table-layout:fixed">
                                                                     <thead class="bg-primary">
                                                                         <tr>
@@ -292,7 +364,94 @@
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
-                                                                        <?php $i= 0; foreach($pasangban as $val) {?>
+                                                                        <?php $i= 0; foreach($pasangban12v as $val) {?>
+                                                                        <tr>
+                                                                            <td><?= $val['KET']?></td>
+                                                                            <td><?= $val['JUMLAH']?></td>
+                                                                        </tr>
+                                                                        <?php $i++; }?>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>RUBBER TIRE RING 12 SUB GROUP (NON VULKANISIR / NV / PRIMEX)</td>
+                                                        <td>80 SET</td>
+                                                        <td><?= $realisasi12nv?></td>
+                                                        <td><button type="button" class="btn btn-xs btn-info" onclick="addRinPasangBan12nv(this)">Rincian</button></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td></td>
+                                                        <td colspan="3">
+                                                            <div id="RinPasangBan12nv" style="display:none">
+                                                                <table class="table table-bordered table-hover table-striped text-center" id="myTable" style="width: 100%; table-layout:fixed">
+                                                                    <thead class="bg-primary">
+                                                                        <tr>
+                                                                            <th>Keterangan</th>
+                                                                            <th>Jumlah</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <?php $i= 0; foreach($pasangban12nv as $val) {?>
+                                                                        <tr>
+                                                                            <td><?= $val['KET']?></td>
+                                                                            <td><?= $val['JUMLAH']?></td>
+                                                                        </tr>
+                                                                        <?php $i++; }?>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>RUBBER TIRE RING 13 SUB GROUP (VULKANISIR / GRAN PRINX / GP)</td>
+                                                        <td>80 SET</td>
+                                                        <td><?= $realisasi13v?></td>
+                                                        <td><button type="button" class="btn btn-xs btn-info" onclick="addRinPasangBan13v(this)">Rincian</button></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td></td>
+                                                        <td colspan="3">
+                                                            <div id="RinPasangBan13v" style="display:none">
+                                                                <table class="table table-bordered table-hover table-striped text-center" id="myTable" style="width: 100%; table-layout:fixed">
+                                                                    <thead class="bg-primary">
+                                                                        <tr>
+                                                                            <th>Keterangan</th>
+                                                                            <th>Jumlah</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <?php $i= 0; foreach($pasangban13v as $val) {?>
+                                                                        <tr>
+                                                                            <td><?= $val['KET']?></td>
+                                                                            <td><?= $val['JUMLAH']?></td>
+                                                                        </tr>
+                                                                        <?php $i++; }?>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>RUBBER TIRE RING 13 SUB GROUP (NON VULKANISIR / NV / PRIMEX)</td>
+                                                        <td>80 SET</td>
+                                                        <td><?= $realisasi13nv?></td>
+                                                        <td><button type="button" class="btn btn-xs btn-info" onclick="addRinPasangBan13nv(this)">Rincian</button></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td></td>
+                                                        <td colspan="3">
+                                                            <div id="RinPasangBan13nv" style="display:none">
+                                                                <table class="table table-bordered table-hover table-striped text-center" id="myTable" style="width: 100%; table-layout:fixed">
+                                                                    <thead class="bg-primary">
+                                                                        <tr>
+                                                                            <th>Keterangan</th>
+                                                                            <th>Jumlah</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <?php $i= 0; foreach($pasangban13nv as $val) {?>
                                                                         <tr>
                                                                             <td><?= $val['KET']?></td>
                                                                             <td><?= $val['JUMLAH']?></td>

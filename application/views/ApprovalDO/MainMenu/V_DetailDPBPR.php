@@ -1,13 +1,15 @@
-<style>    
+<style>
     label {
         font-weight: normal !important;
     }
+
     .label {
         font-size: 90% !important;
         display: inline-block;
         width: 100px;
         padding: 5px;
     }
+
     .swal-font-small {
         font-size: 1.5rem !important;
     }
@@ -55,7 +57,7 @@
                                 </div>
                             </div>
                         </div>
-                        <br/>
+                        <br />
                         <div class="form-group">
                             <label class="col-sm-2 control-label">Kontak Supir</label>
                             <div class="col-sm-5">
@@ -81,7 +83,7 @@
                             <div class="col-sm-5">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i style="width:15px;" class="fa fa-clock-o"></i></span>
-                                    <input class="form-control <?= $UserAccess['estdate'] ?> txtADOEstDatang" <?= $UserAccess['estimasi_datang'] ?> value="<?php if (isset($DPBVendorDetail[0]['ESTIMASI_DATANG'])) echo date("Y/m/d H:i",strtotime($DPBVendorDetail[0]['ESTIMASI_DATANG']));?>">
+                                    <input class="form-control <?= $UserAccess['estdate'] ?> txtADOEstDatang" <?= $UserAccess['estimasi_datang'] ?> value="<?php if (isset($DPBVendorDetail[0]['ESTIMASI_DATANG'])) echo date("Y/m/d H:i", strtotime($DPBVendorDetail[0]['ESTIMASI_DATANG'])); ?>">
                                 </div>
                             </div>
                         </div>
@@ -105,6 +107,11 @@
                                         <option></option>
                                         <option value="TUKSONO">TUKSONO</option>
                                         <option value="MLATI">MLATI</option>
+                                        <option value="PUSAT">PUSAT</option>
+                                        <option value="JAKARTA">JAKARTA</option>
+                                        <option value="SUBANG">SUBANG</option>
+
+
                                     </select>
                                 </div>
                             </div>
@@ -138,7 +145,7 @@
                             <div class="panel-body">
                                 <div class="col-sm-12 text-center divADOLoadingTable">
                                     <label class="control-label">
-                                        <p><img src="<?= base_url('assets/img/gif/loading5.gif') ?>" style="width:30px"> Sedang Memproses ...</p> 
+                                        <p><img src="<?= base_url('assets/img/gif/loading5.gif') ?>" style="width:30px"> Sedang Memproses ...</p>
                                     </label>
                                 </div>
                                 <table class="table table-bordered table-hover table-striped tblADODetailList" style="display: none">
@@ -155,15 +162,15 @@
                                     </thead>
                                     <tbody>
                                         <?php foreach ($DPBVendorDetail as $key => $val) : ?>
-                                        <tr>
-                                            <td class="text-right"><?= $key+1 ?></td>
-                                            <td class="text-right"><?= $val['NO_DO_SPB'] ?> <input type="hidden" class="form-control nodoADO" value="<?= $val['NO_DO_SPB'] ?>"></td>
-                                            <td class="text-left"><?= $val['ITEM'] ?></td>
-                                            <td class="text-right"><?= $val['QUANTITY'] ?></td>
-                                            <td class="text-left"><?= $val['UOM'] ?></td>
-                                            <td class="text-left"><?= $val['RELATION'] ?></td>
-                                            <td class="text-left"><?= $val['CITY'] ?></td>
-                                        </tr>
+                                            <tr>
+                                                <td class="text-right"><?= $key + 1 ?></td>
+                                                <td class="text-right"><?= $val['NO_DO_SPB'] ?> <input type="hidden" class="form-control nodoADO" value="<?= $val['NO_DO_SPB'] ?>"></td>
+                                                <td class="text-left"><?= $val['ITEM'] ?></td>
+                                                <td class="text-right"><?= $val['QUANTITY'] ?></td>
+                                                <td class="text-left"><?= $val['UOM'] ?></td>
+                                                <td class="text-left"><?= $val['RELATION'] ?></td>
+                                                <td class="text-left"><?= $val['CITY'] ?></td>
+                                            </tr>
                                         <?php endforeach ?>
                                     </tbody>
                                 </table>
@@ -172,7 +179,7 @@
                     </div>
                 </div>
                 <div class="box-footer">
-                    <button type="button" title="Approve" class="btn btn-primary pull-right btnADOCreateDPB" >
+                    <button type="button" title="Approve" class="btn btn-primary pull-right btnADOCreateDPB">
                         <i class="fa fa-save"></i>&nbsp; Create DPB
                     </button>
                     <button type="button" title="stok" class="btn btn-primary pull-right btnADOCekStok" style="margin-right: 10px">Cek Stok</button>

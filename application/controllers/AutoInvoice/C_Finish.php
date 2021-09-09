@@ -52,6 +52,40 @@ class C_Finish extends CI_Controller
         $this->load->view('AutoInvoice/V_Finish', $data);
         $this->load->view('V_Footer', $data);
     }
+    
+    public function ListFinishKasie()
+    {
+
+        $DoFinish = $this->M_autoinvoice->DoFinish();
+
+        for ($i = 0; $i < sizeof($DoFinish); $i++) {
+            $InvoiceToCetak = $this->M_autoinvoice->InvoiceToCetak($DoFinish[$i]['CETAK_INVOICE_REQ_ID']);
+            $RDOToCetak = $this->M_autoinvoice->RDOToCetak($DoFinish[$i]['CETAK_RDO_REQ_ID']);
+            if ($InvoiceToCetak != null) {
+                $DoFinish[$i]['AMMOUNT_INVOICE'] = $InvoiceToCetak[0]['CS_TOTAL'];
+            } else {
+                $DoFinish[$i]['AMMOUNT_INVOICE'] = 0;
+            }
+            if ($RDOToCetak != null) {
+                $DoFinish[$i]['AMMOUNT_RDO'] = $RDOToCetak[0]['NETTO'];
+            } else {
+                $DoFinish[$i]['AMMOUNT_RDO'] = 0;
+            }
+        }
+
+
+        $path = explode('/', $_SERVER['PATH_INFO']);
+
+        // echo "<pre>";
+        // print_r($DoFinish);
+        // exit();
+
+        $data['DoFinish'] = $DoFinish;
+
+        $data['path'] = $path;
+
+        echo json_encode($data);
+    }
     public function ListFinish()
     {
 

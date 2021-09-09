@@ -55,11 +55,12 @@ class C_Input extends CI_Controller
 		$jenis_dokumen = $this->input->post('jenis_dokumen');
 		$atr=NULL;
 		
-		if ($jenis_dokumen == 'KIB') {
-			$ceknomor = $this->M_input->ceknoKIB($noDokumen);
-		}else{
-			$ceknomor = $this->M_input->ceknodoc($noDokumen, $jenis_dokumen);
-		}
+		// if ($jenis_dokumen == 'KIB') {
+		// 	$ceknomor = $this->M_input->ceknoKIB($noDokumen);
+		// }else{
+		// 	$ceknomor = $this->M_input->ceknodoc($noDokumen, $jenis_dokumen);
+		// }
+		$ceknomor = $this->M_input->ceknodoc($noDokumen, $jenis_dokumen);
 
 		if ($ceknomor != null) {
 			echo "<tr><td colspan='6'>No Dokumen sudah ada.</td></tr>";
@@ -68,8 +69,8 @@ class C_Input extends CI_Controller
 				$atr = "and mmt.SHIPMENT_NUMBER = '$noDokumen'";
 				$data['input'] = $this->M_input->getInput($atr, $subinv);
 			} else if ($jenis_dokumen == 'KIB'){
-				$atr = "and kk.KIBCODE = 'PACKG$noDokumen'";
-				$data['input'] = $this->M_input->getInputKIB($atr, $subinv);
+				// $atr = "and (kk.KIBCODE = 'PACKG$noDokumen' or kk.KIBCODE = 'MACHB$noDokumen')'";
+				$data['input'] = $this->M_input->getInputKIB($noDokumen, $subinv);
 			} else if ($jenis_dokumen == 'LPPB'){
 				$atr = "and RSH.RECEIPT_NUM ='$noDokumen'";
 				$data['input'] = $this->M_input->getInputLPPB($atr, $subinv);
@@ -111,7 +112,7 @@ class C_Input extends CI_Controller
 			$this->M_input->save($NO_DOCUMENT[$key],$JENIS_DOKUMEN[$key],$no,$DESCRIPTION[$key],$UOM[$key],$QTY[$key],$CREATION_DATE[$key],$STATUS[$key],$PIC, $SUBINV[$key]);
 		}
 		
-		redirect(base_url('MonitoringGdSparepart/Monitoring/'));
+		redirect(base_url('MonitoringGdSparepart/Input/'));
 	}
 
 }

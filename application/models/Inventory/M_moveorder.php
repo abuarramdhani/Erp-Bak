@@ -321,7 +321,24 @@ class M_moveorder extends CI_Model
                         ,wro.SUPPLY_SUBINVENTORY         gudang_tujuan
                         ,wro.SUPPLY_LOCATOR_ID              locator_tujuan_id 
                         ,mil2.SEGMENT1                            locator_tujuan
-                        ,khs_inv_qty_att(wdj.ORGANIZATION_ID,wro.INVENTORY_ITEM_ID,wro.ATTRIBUTE1,wro.ATTRIBUTE2,'') atr
+                        ,khs_inv_qty_oh(wdj.ORGANIZATION_ID,wro.INVENTORY_ITEM_ID,wro.ATTRIBUTE1,wro.ATTRIBUTE2,'')-
+                            (nvl(
+                                (select sum(mtrl.QUANTITY) - sum (nvl (mtrl.QUANTITY_DELIVERED,0)) quantity
+                                        from mtl_txn_request_headers mtrh
+                                                ,mtl_txn_request_lines mtrl
+                                    where mtrh.HEADER_ID = mtrl.HEADER_ID
+                                        --
+                                        and mtrl.LINE_STATUS in (3,7)
+                                        and mtrh.HEADER_STATUS in (3,7)
+                                        and mtrl.INVENTORY_ITEM_ID = wro.INVENTORY_ITEM_ID
+                                        and mtrh.ORGANIZATION_ID = wro.ORGANIZATION_ID
+                                        --and substr(mtrh.REQUEST_NUMBER,1,2) = 'PL'
+                                        and mtrh.REQUEST_NUMBER like 'D%'
+                                        and mtrl.FROM_SUBINVENTORY_CODE = wro.ATTRIBUTE1
+                                        and nvl(mtrl.FROM_LOCATOR_ID,0) = nvl(wro.ATTRIBUTE2,0)
+                                group by mtrl.INVENTORY_ITEM_ID
+                                    ),0)
+                                    ) atr
                         ,(select sum(moqd.PRIMARY_TRANSACTION_QUANTITY)
                                                 from mtl_onhand_quantities_detail moqd
                                                 where moqd.ORGANIZATION_ID = wdj.ORGANIZATION_ID
@@ -346,7 +363,7 @@ class M_moveorder extends CI_Model
                                         and mtrl.INVENTORY_ITEM_ID = wro.INVENTORY_ITEM_ID
                                         and mtrh.ORGANIZATION_ID = wro.ORGANIZATION_ID
                                         --and substr(mtrh.REQUEST_NUMBER,1,2) = 'PL'
-										and mtrh.REQUEST_NUMBER like 'D%'
+                                        and mtrh.REQUEST_NUMBER like 'D%'
                                         and mtrl.FROM_SUBINVENTORY_CODE = wro.ATTRIBUTE1
                                         and nvl(mtrl.FROM_LOCATOR_ID,0) = nvl(wro.ATTRIBUTE2,0)
                                 group by mtrl.INVENTORY_ITEM_ID
@@ -361,7 +378,7 @@ class M_moveorder extends CI_Model
                                     and nvl(moqd.LOCATOR_ID,0) = nvl(wro.ATTRIBUTE2,0)
                                 )-
                             (nvl(
-                                (select sum(mtrl.QUANTITY)
+                                (select sum(mtrl.QUANTITY) - sum (nvl (mtrl.QUANTITY_DELIVERED,0)) quantity
                                         from mtl_txn_request_headers mtrh
                                                 ,mtl_txn_request_lines mtrl
                                                 ,mtl_system_items_b msib_komp
@@ -374,7 +391,7 @@ class M_moveorder extends CI_Model
                                         and mtrl.INVENTORY_ITEM_ID = wro.INVENTORY_ITEM_ID
                                         and mtrh.ORGANIZATION_ID = wro.ORGANIZATION_ID
                                         --and substr(mtrh.REQUEST_NUMBER,1,2) = 'PL'
-										and mtrh.REQUEST_NUMBER like 'D%'
+                                        and mtrh.REQUEST_NUMBER like 'D%'
                                         and mtrl.FROM_SUBINVENTORY_CODE = wro.ATTRIBUTE1
                                         and nvl(mtrl.FROM_LOCATOR_ID,0) = nvl(wro.ATTRIBUTE2,0)
                                 group by mtrl.INVENTORY_ITEM_ID
@@ -1039,46 +1056,43 @@ class M_moveorder extends CI_Model
 	function getQuantityActual($job,$atr)
 	{
 		$oracle = $this->load->database('oracle',TRUE);
-		$sql = "SELECT msib2.INVENTORY_ITEM_ID, wro.REQUIRED_QUANTITY req $atr
-                     from wip_entities we
-                    ,wip_discrete_jobs wdj
-                    ,mtl_system_items_b msib
-                    ,wip_requirement_operations wro 
-                    ,mtl_system_items_b msib2
---                    ,bom_bill_of_materials bom
---                    ,bom_inventory_components bic
-                    ,MTL_ITEM_LOCATIONS mil
-                    ,MTL_ITEM_LOCATIONS mil2
-                    ,wip_operations wo
-                    ,bom_calendar_shifts bcs
-                    ,bom_departments bd
-                    ,BOM_OPERATIONAL_ROUTINGS bor
-                where we.WIP_ENTITY_ID = wdj.WIP_ENTITY_ID
-                and we.ORGANIZATION_ID = wdj.ORGANIZATION_ID
-                and we.PRIMARY_ITEM_ID = msib.INVENTORY_ITEM_ID
-                and we.ORGANIZATION_ID = msib.ORGANIZATION_ID
-                and wdj.WIP_ENTITY_ID = wro.WIP_ENTITY_ID
-                and wro.INVENTORY_ITEM_ID = msib2.INVENTORY_ITEM_ID
-                and wro.ORGANIZATION_ID = msib2.ORGANIZATION_ID
---                and bom.BILL_SEQUENCE_ID = bic.BILL_SEQUENCE_ID
---                and bom.ASSEMBLY_ITEM_ID = msib.INVENTORY_ITEM_ID
---                and bom.ORGANIZATION_ID = msib.ORGANIZATION_ID
---                and bic.COMPONENT_ITEM_ID = msib2.INVENTORY_ITEM_ID
---                and wdj.COMMON_BOM_SEQUENCE_ID = bom.COMMON_BILL_SEQUENCE_ID
-                and wro.ATTRIBUTE2 = mil.INVENTORY_LOCATION_ID(+)
-                and wro.SUPPLY_LOCATOR_ID = mil2.INVENTORY_LOCATION_ID(+)
-                --routing
-                and wdj.COMMON_ROUTING_SEQUENCE_ID = bor.ROUTING_SEQUENCE_ID
-                --
-                and wo.WIP_ENTITY_ID = wdj.WIP_ENTITY_ID
-                and wo.ORGANIZATION_ID = we.ORGANIZATION_ID
-                and wo.DEPARTMENT_ID = bd.DEPARTMENT_ID
-                and khs_shift(wdj.SCHEDULED_START_DATE) = bcs.SHIFT_NUM
-                -- INT THE TRUTH IT WILL USED --
-                and wro.ATTRIBUTE1 is not null
-                -- INT THE TRUTH ABOVE IT WILL USED --
-				and we.WIP_ENTITY_NAME = '$job'--'D191103750'
-				order by 3 asc";
+		$sql = "SELECT wro.INVENTORY_ITEM_ID, wro.REQUIRED_QUANTITY req 
+		,khs_inv_qty_oh(wdj.ORGANIZATION_ID,wro.INVENTORY_ITEM_ID,wro.ATTRIBUTE1,wro.ATTRIBUTE2,'')-
+									(nvl(
+										(select sum(mtrl.QUANTITY) - sum (nvl (mtrl.QUANTITY_DELIVERED,0)) quantity
+												from mtl_txn_request_headers mtrh
+														,mtl_txn_request_lines mtrl
+											where mtrh.HEADER_ID = mtrl.HEADER_ID
+												--
+												and mtrl.LINE_STATUS in (3,7)
+												and mtrh.HEADER_STATUS in (3,7)
+												and mtrl.INVENTORY_ITEM_ID = wro.INVENTORY_ITEM_ID
+												and mtrh.ORGANIZATION_ID = wro.ORGANIZATION_ID
+												--and substr(mtrh.REQUEST_NUMBER,1,2) = 'PL'
+												and mtrh.REQUEST_NUMBER like 'D%'
+												and mtrl.FROM_SUBINVENTORY_CODE = wro.ATTRIBUTE1
+												and nvl(mtrl.FROM_LOCATOR_ID,0) = nvl(wro.ATTRIBUTE2,0)
+										group by mtrl.INVENTORY_ITEM_ID
+											),0)
+											) atr
+							 from wip_entities we
+							,wip_discrete_jobs wdj
+							,wip_requirement_operations wro
+							,wip_operations wo
+							,BOM_OPERATIONAL_ROUTINGS bor
+						where we.WIP_ENTITY_ID = wdj.WIP_ENTITY_ID
+						and we.ORGANIZATION_ID = wdj.ORGANIZATION_ID
+						and wdj.WIP_ENTITY_ID = wro.WIP_ENTITY_ID
+						--routing
+						and wdj.COMMON_ROUTING_SEQUENCE_ID = bor.ROUTING_SEQUENCE_ID
+						--
+						and wo.WIP_ENTITY_ID = wdj.WIP_ENTITY_ID
+						and wo.ORGANIZATION_ID = we.ORGANIZATION_ID
+						-- INT THE TRUTH IT WILL USED --
+						and wro.ATTRIBUTE1 is not null
+						-- INT THE TRUTH ABOVE IT WILL USED --
+						and we.WIP_ENTITY_NAME = '$job'--'D191103750'
+						order by 3 asc";
 		$query = $oracle->query($sql);
 		return $query->result_array();
 	}

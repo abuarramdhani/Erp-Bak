@@ -16,6 +16,9 @@
                                 <th>Tipe</th>
                                 <th>Ekspedisi</th>
                                 <th>Estimasi Berat</th>
+                                <th>Shipping Instruction</th>
+                                <th>Keterangan Tambahan</th>
+
                                 <th width="180px">Action</th>
                             </tr>
                         </thead>
@@ -51,6 +54,9 @@
                                     <td><?= $list['TIPE']; ?></td>
                                     <td><?= $list['EKSPEDISI'] ?></td>
                                     <td><?= $list['ESTIMASI_BERAT'] ?></td>
+                                    <td><?= $list['SHIPPING_INSTRUCTIONS'] ?></td>
+                                    <td><?= $list['KETERANGAN'] ?></td>
+
                                     <input type="hidden" id="EksToEdit<?= $list['REQUEST_NUMBER'] ?>" value="<?= $list['EKSPEDISI'] ?>" />
                                     <td>
                                         <button type="button" class="btn btn-danger btn-sm btnRejectDSP" title="reject" value="<?= $list['REQUEST_NUMBER']; ?>"><i class="fa fa-remove"></i> Reject</button>

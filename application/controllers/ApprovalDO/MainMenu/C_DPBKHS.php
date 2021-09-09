@@ -36,7 +36,7 @@ class C_DPBKHS extends CI_Controller
             'delete'    => 'disabled'
         ];
 
-        if ($this->session->user === 'B0445' || $this->session->user === 'A2146') {
+        if ($this->session->user === 'P0420' || $this->session->user === 'B0915' || $this->session->user === 'B0445' || $this->session->user === 'H7611' || $this->session->user === 'H6843' || $this->session->user === 'H6968' || $this->session->user === 'K1778' || $this->session->user === 'A2146') {
             $data['UserAccess'] = [
                 'add_data' => '',
                 'delete'   => ''
@@ -95,7 +95,7 @@ class C_DPBKHS extends CI_Controller
             'delete'    => 'disabled'
         ];
 
-        if ($this->session->user === 'B0445') {
+        if ($this->session->user === 'P0420' || $this->session->user === 'B0915' || $this->session->user === 'B0445' || $this->session->user === 'H7611' || $this->session->user === 'H6843' || $this->session->user === 'H6968' || $this->session->user === 'K1778') {
             $data['UserAccess'] = [
                 'add_data' => '',
                 'delete'   => ''
@@ -140,7 +140,7 @@ class C_DPBKHS extends CI_Controller
             'save'       => 'disabled'
         ];
 
-        if ($this->session->user === 'B0445') {
+        if ($this->session->user === 'P0420' || $this->session->user === 'B0915' || $this->session->user === 'B0445' || $this->session->user === 'H7611' || $this->session->user === 'H6843' || $this->session->user === 'H6968' || $this->session->user === 'K1778') {
             $data['UserAccess'] = [
                 'add_row'    => '',
                 'edit_field' => '',
@@ -234,6 +234,9 @@ class C_DPBKHS extends CI_Controller
         } elseif ($gudang == 'JAKARTA') {
             $org_id = 207;
             $kode_gudang = 'FG-JFG';
+        } elseif ($gudang == 'SUBANG') {
+            $org_id = 1230;
+            $kode_gudang = 'FG-CFG';
         }
 
         $line = $data['line'];

@@ -66,7 +66,7 @@ class C_DPBListPR extends CI_Controller
             'catatan'          => 'readonly',
             'estdate'          => ''
         ];
-        if ($this->session->user === 'B0445' || $this->session->user === 'A2146') {
+        if ($this->session->user === 'P0420' || $this->session->user === 'B0915' || $this->session->user === 'B0445' || $this->session->user === 'H7611' || $this->session->user === 'H6843' || $this->session->user === 'H6968' || $this->session->user === 'K1778' || $this->session->user === 'A2146' || $this->session->user === 'P0616') {
             $data['UserAccess'] = [
                 'jenis_kendaraan'  => '',
                 'no_kendaraan'     => 'readonly',
@@ -99,7 +99,7 @@ class C_DPBListPR extends CI_Controller
         //         'vendor_ekspedisi' => '',
         //         'lain_lain'        => ''
         //     ];
-        // } else if ( $this->session->user === 'B0445' ) {
+        // } else if ( $this->session->user === 'P0420' || $this->session->user === 'B0915' || $this->session->user === 'B0445' || $this->session->user === 'H7611' || $this->session->user === 'H6843' || $this->session->user === 'K1778' ) {
         //     $data['UserAccess'] = [   
         //         'jenis_kendaraan'  => '',
         //         'no_kendaraan'     => 'readonly',
@@ -151,6 +151,15 @@ class C_DPBListPR extends CI_Controller
         } elseif ($gudang == 'TUKSONO') {
             $org_id = 102;
             $kode_gudang = 'FG-TKS';
+        } elseif ($gudang == 'PUSAT') {
+            $org_id = 102;
+            $kode_gudang = 'FG-DM';
+        } elseif ($gudang == 'JAKARTA') {
+            $org_id = 207;
+            $kode_gudang = 'FG-JFG';
+        } elseif ($gudang == 'SUBANG') {
+            $org_id = 1230;
+            $kode_gudang = 'FG-CFG';
         }
 
         $no_do = $_POST['noDO'];
@@ -226,6 +235,12 @@ class C_DPBListPR extends CI_Controller
         } elseif ($gudang == 'JAKARTA') {
             $kode_gudang = 'FG-JFG';
             $org = 207;
+        } elseif ($gudang == 'PUSAT') {
+            $kode_gudang = 'FG-DM';
+            $org = 102;
+        } elseif ($gudang == 'SUBANG') {
+            $kode_gudang = 'FG-CFG';
+            $org = 1230;
         }
 
         for ($i = 0; $i < count($no_do); $i++) {

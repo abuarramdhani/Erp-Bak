@@ -417,7 +417,7 @@
 																	<label for="PK_txt_teleponPekerja">Telepon </label>
 																</div>
 																<div class="col-lg-8">
-																	<input type="number" name="telepon" id="" class="form-control numberOnly" value="<?= $data['telepon'] ?>">
+																	<input type="tel" name="telepon" id="" class="form-control numberOnly" value="<?= str_replace(" ","", $data['telepon']) ?>">
 																</div>
 															</div>
 															<div class="row mt-10">
@@ -589,6 +589,9 @@
 																			<option value="-">-</option>
 																			<option value="MAN" <?= $data['jenis_baju'] === 'MAN' ? 'selected' : '' ?>>MAN</option>
 																			<option value="LADIES" <?= $data['jenis_baju'] === 'LADIES' ? 'selected' : '' ?>>LADIES</option>
+																			<option value="BAJU KANCING PENDEK" <?= $data['jenis_baju'] === 'BAJU KANCING PENDEK' ? 'selected' : '' ?>>BAJU KANCING PENDEK</option>
+																			<option value="BAJU KANCING PANJANG" <?= $data['jenis_baju'] === 'BAJU KANCING PANJANG' ? 'selected' : '' ?>>BAJU KANCING PANJANG</option>
+																			<option value="BAJU REKAT PANJANG" <?= $data['jenis_baju'] === 'BAJU REKAT PANJANG' ? 'selected' : '' ?>>BAJU REKAT PANJANG</option>
 																		</select>
 																	</div>
 																	<div class="col-lg-3 text-right" style="padding: 0;">
@@ -614,6 +617,20 @@
 															</div>
 															<div class="col-lg-8">
 																<input type="text" name="uk_celana" id="" class="form-control" value="<?= $data['uk_celana'] ?>">
+															</div>
+														</div>
+														<div class="row" style="margin-top: 10px;">
+															<div class="col-lg-4">
+																<label for="PK_txt_ukurancelana">Warna Celana </label>
+															</div>
+															<div class="col-lg-8">
+																<select type="text" name="warna_celana" id="" class="form-control mepk_select_basic">
+																	<option>-</option>
+																	<option <?= ($data['warna_celana'] == 'MERAH') ? 'selected':'' ?>>MERAH</option>
+																	<option <?= ($data['warna_celana'] == 'MERAH SAKU') ? 'selected':'' ?>>MERAH SAKU</option>
+																	<option <?= ($data['warna_celana'] == 'COKLAT') ? 'selected':'' ?>>COKLAT</option>
+																	<option <?= ($data['warna_celana'] == 'COKLAT SAKU') ? 'selected':'' ?>>COKLAT SAKU</option>
+																</select>
 															</div>
 														</div>
 														<div class="row" style="margin-top: 10px;">
@@ -835,12 +852,6 @@
 																	<div class="col-md-3">
 																		<input type="text" name="ruang" class="form-control uppercase" value="<?= $data['ruang'] ?>">
 																	</div>
-																	<div class="col-md-2">
-																		<label for="">NPWP</label>
-																	</div>
-																	<div class="col-md-4">
-																		<input type="text" name="npwp" class="form-control" value="<?= $data['npwp'] ?>">
-																	</div>
 																</div>
 															</div>
 															<div class="row mt-10">
@@ -983,20 +994,15 @@
 																	<div class="col-md-4">
 																		<label for="">Sebab Keluar</label>
 																	</div>
-																	<div class="col-md-8">
-																		<?php
-																		if (!in_array($data['sebabklr'], $arrsebabkeluar)) {
-																			array_push($arrsebabkeluar, array(
-																				'fs_sbb_keluar' => $data['sebabklr']
-																			));
-																		}
-																		?>
-																		<select name="sebabklr" id="" class="form-control">
-																			<option value="-">-</option>
-																			<?php foreach ($arrsebabkeluar as $item) : ?>
-																				<option value="<?= $item['fs_sbb_keluar'] ?>" <?= ($item['fs_sbb_keluar'] === $data['sebabklr']) ? 'selected' : '' ?>><?= $item['fs_sbb_keluar'] ?></option>
-																			<?php endforeach ?>
-																		</select>
+																	<div class="col-md-8" id="mpk_divtxtsbbklr">
+																		<?= $data['sebabklr'] ?>
+																	</div>
+																</div>
+																<div class="row mt-10" style="margin-bottom: 20px;">
+																	<div class="col-md-12 text-center">
+																		<button class="btn btn-primary btn-sm" id="mpk_btnedtsbbbklr">
+																			Edit Sebab Keluar
+																		</button>
 																	</div>
 																</div>
 																<div class="row mt-10">
@@ -1177,6 +1183,14 @@
 																			<option value="<?= $item ?>" <?= $item === $statpajak ? 'selected' : '' ?>><?= $item ?></option>
 																		<?php endforeach ?>
 																	</select>
+																</div>
+															</div>
+															<div class="row mt-10">
+																<div class="col-lg-6">
+																	<label for="PK_txt_alamatPekerja">NPWP </label>
+																</div>
+																<div class="col-lg-4">
+																	<input type="text" name="npwp" class="form-control" value="<?= $data['npwp'] ?>">
 																</div>
 															</div>
 															<div class="row mt-10">
@@ -1836,6 +1850,38 @@
 					<label class="pull-left" style="color: red">*Pastikan Data sudah Sesuai sebelum Klik Simpan!</label>
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 					<button type="button" id="mpkedksvppj1" class="btn btn-primary" value="<?= $data['noind'] ?>">Simpan</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="mpk_mdledtsbbklr" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<label class="modal-title" id="exampleModalLabelPPJ1">Edit Sebab Keluar <?= $data['noind'].' - '.$data['nama'] ?></label>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body" style="height: 400px; overflow: auto;">
+					<table class="table table-hover">
+						<?php foreach ($l_sebabklr as $key): ?>
+							<tr class="last_scrolll <?= ($key['kode'] == $data['sebabklr_kode']) ? 'scrolll_this':'' ?>">
+								<td>
+									<input <?= ($key['kode'] == $data['sebabklr_kode']) ? 'checked':'' ?> type="radio" class="form-control" name="new_sbabklr" value="<?= $key['kode'] ?>">
+								</td>
+								<td>
+									<label class="mpk_lblsbbklr" style="cursor: pointer;"><?= $key['sebab_keluar'] ?></label>
+								</td>
+							</tr>
+						<?php endforeach ?>
+					</table>
+				</div>
+				<div class="modal-footer">
+					<label class="pull-left" style="color: red">*Pastikan Data sudah Sesuai sebelum Klik Update!</label>
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					<button disabled="" type="button" id="mpk_btnmdlsvsbbklr" class="btn btn-success" value="<?= $data['noind'] ?>">Update</button>
 				</div>
 			</div>
 		</div>

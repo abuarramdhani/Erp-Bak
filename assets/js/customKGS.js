@@ -109,6 +109,33 @@ $(document).ready(function () {
       });
 });
 
+function jumlah() {
+    $.ajax({
+        url: baseurl + 'KapasitasGdSparepart/Pelayanan/getJumlah',
+        type: 'POST',
+        dataType: 'JSON',
+        beforeSend: function() {
+        },
+        success: function(result) {
+          // console.log(result.length);
+          var notif = [];
+          for (var i = 0; i < result.length; i++) {
+              notif[result[i].TIPE] = result[i].JUMLAH;
+          }
+          // console.log(notif['NORMAL']);
+
+          $('#lblNormal').html(notif['NORMAL']);
+          $('#lblUrgent').html(notif['URGENT']);
+          $('#lblEceran').html(notif['ECERAN']);
+          $('#lblBest').html(notif['BEST AGRO']);
+          $('#lblEcom').html(notif['E-COMMERCE']);
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+          console.error();
+        }
+    })
+}
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////// PELAYANAN //////////////////////////////////////////////////////////
@@ -157,6 +184,7 @@ ajax1 = $.ajax({
     beforeSend: function() {
       $('#loadingArea1').show();
       $('div.table_area_1').hide();
+      jumlah();
       selesai();
     },
     success: function(result) {
@@ -165,7 +193,6 @@ ajax1 = $.ajax({
       $('div.table_area_1').show();
       $('div.table_area_1').html(result);
       $('#tipe').val('NORMAL');
-
     },
     error: function(XMLHttpRequest, textStatus, errorThrown) {
       console.error();
@@ -186,6 +213,7 @@ function urgent() {
         beforeSend: function() {
           $('#loadingArea2').show();
           $('div.table_area_2').hide();
+          jumlah();
           selesai();
         },
         success: function(result) {
@@ -194,7 +222,6 @@ function urgent() {
           $('div.table_area_2').show();
           $('div.table_area_2').html(result);
           $('#tipe').val('URGENT');
-
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
           console.error();
@@ -215,6 +242,7 @@ function eceran() {
         beforeSend: function() {
           $('#loadingArea3').show();
           $('div.table_area_3').hide();
+          jumlah();
           selesai();
         },
         success: function(result) {
@@ -223,7 +251,6 @@ function eceran() {
           $('div.table_area_3').show();
           $('div.table_area_3').html(result);
           $('#tipe').val('ECERAN');
-
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
           console.error();
@@ -244,6 +271,7 @@ function best() {
         beforeSend: function() {
           $('#loadingArea4').show();
           $('div.table_area_4').hide();
+          jumlah();
           selesai();
         },
         success: function(result) {
@@ -252,7 +280,6 @@ function best() {
           $('div.table_area_4').show();
           $('div.table_area_4').html(result);
           $('#tipe').val('BEST');
-
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
           console.error();
@@ -273,6 +300,7 @@ function ecom() {
         beforeSend: function() {
           $('#loadingArea6').show();
           $('div.table_area_6').hide();
+          jumlah();
           selesai();
         },
         success: function(result) {
@@ -281,7 +309,6 @@ function ecom() {
           $('div.table_area_6').show();
           $('div.table_area_6').html(result);
           $('#tipe').val('ECOM');
-
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
           console.error();
@@ -303,6 +330,7 @@ function cetak() {
           $('#loadingArea5').show();
           $('div.table_area_5').hide();
           $('div.table_area_selesai').hide();
+          jumlah();
         },
         success: function(result) {
           // console.log(result);
@@ -1858,7 +1886,7 @@ function gantikemasan(no) {
 }
 
 
-function transactDOSP(th) {
+function packingDOSP(th) {
     var no_spb  = $('#spbcolly').val();
     var valBtn = $('#btnPacking'+no_spb).val();
     var jenis  = $('#jenis'+no_spb).val();
@@ -1888,21 +1916,21 @@ function transactDOSP(th) {
         },
         success: function(result) {
             if (result) {
-                $.ajax ({
-                    url: baseurl + 'KapasitasGdSparepart/Packing/transactDOSP',
-                    type: 'POST',
-                    data: {
-                        no_spb: no_spb
-                    },
-                    beforeSend: function() {
-                        Swal.showLoading();
-                    },
-                    success: function(result) {
-                        Swal.fire({
-                            title: "Sukses",
-                            text: "Transact " + no_spb + " berhasil!",
-                            type: "success"
-                        }).then(function() {
+                // $.ajax ({
+                //     url: baseurl + 'KapasitasGdSparepart/Packing/transactDOSP',
+                //     type: 'POST',
+                //     data: {
+                //         no_spb: no_spb
+                //     },
+                //     beforeSend: function() {
+                //         Swal.showLoading();
+                //     },
+                //     success: function(result) {
+                //         Swal.fire({
+                //             title: "Sukses",
+                //             text: "Transact " + no_spb + " berhasil!",
+                //             type: "success"
+                //         }).then(function() {
                             $('#btnPacking'+no_spb).attr("disabled", "disabled");
                             $('#btnrestartSPB'+no_spb).attr("disabled", "disabled");
                             var mulai  = $('#mulai'+no_spb).val();
@@ -1920,14 +1948,13 @@ function transactDOSP(th) {
                             });
                             $(th).removeAttr('disabled');
                             $('#modalPacking').modal('hide');
-                        });
-                    },
-                    error: function(XMLHttpRequest, textStatus, errorThrown) {
-                        console.error();
-                    }
-                })
-            }
-            else {
+                        // });
+    //                 },
+    //                 error: function(XMLHttpRequest, textStatus, errorThrown) {
+    //                     console.error();
+    //                 }
+    //             })
+            }else {
                 Swal.fire(
                     'Oops!',
                     'Ada item yang belum dipacking!!',
@@ -2079,6 +2106,7 @@ function schMonitoringSPB(th) {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
+
 function getDataPenyerahan(th) {
     var tglAwal = $('#tglAwal').val();
 
@@ -2121,8 +2149,13 @@ function upnostttpenyerahan(event, th) {
 
 
 function manifest() {
-    ajax_manifest = $.ajax({
-        url: baseurl + 'KapasitasGdSparepart/Penyerahan/getManifest',
+    var ekspedisi = $('#jenisEksped option:selected').val();
+
+    ajax = $.ajax({
+        url: baseurl + 'KapasitasGdSparepart/Penyerahan/getSiapManifest',
+        data: {
+            ekspedisi : ekspedisi
+        },
         type: 'POST',
         beforeSend: function() {
           $('#loadingAreaPenyerahan').show();
@@ -2140,7 +2173,6 @@ function manifest() {
         }
     })
 }
-
 
 function sudah_manifest() {
     ajax_sudah_manifest = $.ajax({
@@ -2251,52 +2283,6 @@ function inputManifest(event,no_spb) {
 }
 
 
-function generateNumber() {
-    var ekspedisi = $('#jenisEksped').val();
-
-    $.ajax({
-        url: baseurl + 'KapasitasGdSparepart/Penyerahan/cekBeforeGenerate',
-        type: 'POST',
-        dataType: 'JSON',
-        data: {
-            ekspedisi: ekspedisi
-        },
-        beforeSend: function() {
-            Swal.showLoading();
-        },
-        success: function(result) {
-            if (result) {
-                $.ajax({
-                    url: baseurl + 'KapasitasGdSparepart/Penyerahan/generateManifestNum',
-                    type: 'POST',
-                    dataType: 'JSON',
-                    beforeSend: function() {
-                        Swal.showLoading();
-                    },
-                    success: function(result) {
-                        Swal.fire({
-                            title: "Sukses",
-                            text: "Berhasil membuat manifest!!",
-                            type: "success"
-                        }).then(function() {
-                            // $('#inputSPBMan').val();
-                            manifest();
-                            sudah_manifest();
-                        })
-                    }
-                })
-            }
-            else {
-                Swal.fire(
-                    'Oops!',
-                    'Tidak ditemukan data yang sudah discan <br> atau salah memilih ekspedisi!!!',
-                    'error'
-                )
-            }
-        }
-      })
-}
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////// ARSIP ////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -2346,7 +2332,7 @@ function saveColly2(no) {
     var no_spb = $('#no_spb'+no).val();
     var no_colly = $('#no_colly'+no).val();
     var berat = $('#berat'+no).val();
-    
+
     var request = $.ajax ({
         url : baseurl + "KapasitasGdSparepart/Arsip/saveColly2",
         data: { no_colly : no_colly, no_spb : no_spb, berat : berat},

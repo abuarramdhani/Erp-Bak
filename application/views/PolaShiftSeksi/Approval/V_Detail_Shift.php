@@ -59,7 +59,7 @@
 										<div class="callout callout-danger">
 											<h4><i class="icon fa fa-ban"></i> Keterangan!</h4>
 											<b>Data shift pekerja yang diimport adalah mulai dari tanggal <?= date('d-M-Y', strtotime(date('d-m-Y') . "+1 days")) ?> s/d <?= date('t-M-Y') ?> (H+1 setelah approve atasan).<br>
-											Untuk merubah shift pekerja sebelum tanggal tsb, silahkan hubungi seksi EDP (VoIP 15113).</b>
+											Untuk merubah shift pekerja sebelum tanggal tsb, silahkan hubungi seksi Hubungan Kerja (VoIP 15113).</b>
 										</div>
 									<?php endif ?>
 										<div class="col-md-12">
@@ -79,14 +79,14 @@
 											<table class="table table-bordered tabel_polashiftInit">
 												<thead>
 													<tr>
-														<th class="text-center" style="vertical-align: middle;" rowspan="2">No</th>
-			                                            <th class="text-center" style="vertical-align: middle;" rowspan="2">Noind</th>
-			                                            <th class="text-center" style="vertical-align: middle;" rowspan="2">Nama</th>
-			                                            <th class="text-center" style="vertical-align: middle;" colspan="31">Tanggal</th>
+														<th class="text-center bg-success" style="vertical-align: middle;" rowspan="2">No</th>
+			                                            <th class="text-center bg-success" style="vertical-align: middle;" rowspan="2">Noind</th>
+			                                            <th class="text-center bg-success" style="vertical-align: middle;" rowspan="2">Nama</th>
+			                                            <th class="text-center bg-success" style="vertical-align: middle;" colspan="31">Tanggal</th>
 													</tr>
 													<tr class="">
 													<?php for ($i=1; $i <= $tgl_akhir; $i++) { ?>
-														<th data-orderable="false" class="text-center ips_head" style="vertical-align: middle;"><?php echo $i ?></th>
+														<th data-orderable="false" class="text-center ips_head bg-success" style="vertical-align: middle;"><?php echo $i ?></th>
 													<?php } ?>
 													</tr>
 												</thead>
@@ -121,14 +121,14 @@
 											<table class="table table-bordered tabel_polashiftInit">
 												<thead>
 													<tr>
-														<th class="text-center" style="vertical-align: middle;" rowspan="2">No</th>
-			                                            <th class="text-center" style="vertical-align: middle;" rowspan="2">Noind</th>
-			                                            <th class="text-center" style="vertical-align: middle;" rowspan="2">Nama</th>
-			                                            <th class="text-center" style="vertical-align: middle;" colspan="31">Tanggal</th>
+														<th class="text-center bg-info" style="vertical-align: middle;" rowspan="2">No</th>
+			                                            <th class="text-center bg-info" style="vertical-align: middle;" rowspan="2">Noind</th>
+			                                            <th class="text-center bg-info" style="vertical-align: middle;" rowspan="2">Nama</th>
+			                                            <th class="text-center bg-info" style="vertical-align: middle;" colspan="31">Tanggal</th>
 													</tr>
 													<tr class="">
 													<?php for ($i=1; $i <= $tgl_akhir; $i++) { ?>
-														<th data-orderable="false" class="text-center ips_head" style="vertical-align: middle;"><?php echo $i ?></th>
+														<th data-orderable="false" class="text-center ips_head bg-info" style="vertical-align: middle;"><?php echo $i ?></th>
 													<?php } ?>
 													</tr>
 												</thead>
@@ -155,10 +155,16 @@
 									</div>
 								</div>
 								<div class="panel-footer col-md-12">
-									<div class="col-md-12 text-right">
-										<a href="<?php echo base_url('PolaShiftSeksi/Approval/ApprovalShift') ?>" class="btn btn-warning btn-lg" style="margin-right: 10px; float: left;">Kembali</a>
-										<button class="btn btn-success btn-lg" id="btn_ips_update" style="margin-right: 10px;">Approve</button>
-										<button class="btn btn-danger btn-lg" id="btn_ips_rej">Reject</button>
+									<div class="col-lg-4 col-lg-offset-8 col-md-6 col-md-offset-6">
+										<div class="col-sm-4 text-center">
+											<a href="<?php echo base_url('PolaShiftSeksi/Approval/ApprovalShift') ?>" class="btn btn-warning btn-lg">Kembali</a>
+										</div>
+										<div class="col-sm-4 text-center">
+											<button class="btn btn-success btn-lg" id="btn_ips_update">Approve</button>
+										</div>
+										<div class="col-sm-4 text-center">
+											<button class="btn btn-danger btn-lg" id="btn_ips_rej">Reject</button>
+										</div>
 									</div>
 								</div>
 							</div>

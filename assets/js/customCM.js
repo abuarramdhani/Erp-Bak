@@ -6554,31 +6554,11 @@ $(document).ready(function(){
         ],
         'columnDefs': [
 			{
-			    "targets": 0,
+			    "targets": [0,-1],
 			    "className": "text-center"
 			},
 			{
-			    "targets": 2,
-			    "className": "text-right"
-			},
-			{
-			    "targets": 3,
-			    "className": "text-right"
-			},
-			{
-			    "targets": 4,
-			    "className": "text-right"
-			},
-			{
-			    "targets": 5,
-			    "className": "text-right"
-			},
-			{
-			    "targets": 6,
-			    "className": "text-right"
-			},
-			{
-			    "targets": 7,
+			    "targets": [2,3,4,5,6,7,8,9,10],
 			    "className": "text-right"
 			}
 		],

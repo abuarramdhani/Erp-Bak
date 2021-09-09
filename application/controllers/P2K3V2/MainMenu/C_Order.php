@@ -2649,6 +2649,21 @@ class C_Order extends CI_Controller
 		|--------------------------------------------------|
 		*/
 		if (!empty($latestBon)) {
+			// $nobon = $latestBon->no_bon;
+			// $cekRombongannya = $this->M_order->getNobondtl($nobon);
+			// $id_orc = array_column($cekRombongannya, 'id_oracle');
+			// $id_orc = implode(',', $id_orc);
+			// $transcT = $this->M_dtmasuk->getTranscT($id_orc, $nobon);
+			// $x = 0;
+			// foreach ($transcT as $key) {
+			// 	$transcT[$x]['noind'] = explode(' - ', $key['KETERANGAN'])[0];
+			// 	$x++;
+			// }
+			// $arrF = array_column($transcT, 'FLAG');
+			// $arrN = array_column($transcT, 'FLAG', 'noind');
+			// if (in_array('Y', $arrF) && $arrN[$noind] == 'N' && 1 == 2) {
+			// 	//skip
+			// } else {
 			$latestTransact = $this->M_order->getLatestTransactSafetyShoes($latestBon->no_bon, $latestBon->date, $gudang);
 			if (!empty($latestTransact)) {
 				$transact = $latestTransact;

@@ -132,19 +132,23 @@ function insertPUM(th) {
 }
 
 // //---------------------------------------------- OPM -------------------------------------------//
+$('#routclass').change(function(){
+	$('#findPUMopm').removeAttr("disabled");
 
-$(document).ready(function(){
-	$("#routclass").select2({
+	var routclass = $(this).val();
+	// console.log(routclass);
+	$("#rsrc").select2({
 		allowClear: true,
-		placeholder: "Routing Class",
-		minimumInputLength: 0,
+		placeholder: "Resource Code",
+		// minimumInputLength: 0,
 		ajax: {		
-			url:baseurl+"PerhitunganUM/HitungOPM/RoutClass",
+			url:baseurl+"PerhitunganUM/HitungOPM/getResources",
 			dataType: 'json',
 			type: "GET",
 			data: function (params) {
 				var queryParameters = {
-					term: params.term
+					term: params.term,
+					routclass : routclass
 				}
 				return queryParameters;
 			},
@@ -152,7 +156,7 @@ $(document).ready(function(){
 				// console.log(data);
 				return {
 					results: $.map(data, function(obj) {
-						return { id:obj.ROUTING_CLASS, text:obj.ROUTING_CLASS};
+						return { id:obj.RESOURCES, text:obj.RESOURCES};
 					})
 				};
 			}
@@ -160,22 +164,24 @@ $(document).ready(function(){
 	});
 });
 
-$('.slcRoclas').change(function(){
-	$('#findPUMopm').removeAttr("disabled");
-})
+let ajax_1 = null;
 
 function getPUMopm(th) {
 	$(document).ready(function(){
+		if (ajax_1 != null) {
+			ajax_1.abort();
+		}
+
 		var routclass = $('select[name="routclass"]').val();
-		var planopm = $('select[name="planopm"]').val();
-		var usernameopm = $('#usernameopm').val();
+		var plan = $('select[name="planopm"]').val();
+		var rsrc = $('select[name="rsrc"]').val();
 
 		var request = $.ajax({
-			url: baseurl+'PerhitunganUM/HitungOPM/search',
+			url: baseurl+'PerhitunganUM/HitungOPM/getData',
 			data: {
 				routclass : routclass, 
-				planopm : planopm,
-				usernameopm : usernameopm
+				plan : plan,
+				rsrc : rsrc
 			},
 			type: "POST",
 			datatype: 'html'
@@ -186,26 +192,17 @@ function getPUMopm(th) {
 		request.done(function(result){
 			// console.log(result);
 			$('#ResultPUMopm').html(result);
-			$('#tblsatuopm').DataTable({
+			$('#tblhtgopm').DataTable({
 				scrollX: true,
 				scrollY:  500,
 				scrollCollapse: true,
 				paging:false,
 				info:true,
-				ordering:false
+				ordering:false,
+				fixedColumns: {
+					leftColumns: 1
+				}
 			});
 		});
 	});
 }
-
-$('#tblduaopm').DataTable({
-	scrollX: true,
-	scrollY:  500,
-	scrollCollapse: true,
-	paging:false,
-	info:true,
-	ordering:false,
-	fixedColumns: {
-		leftColumns: 1
-	}
-});

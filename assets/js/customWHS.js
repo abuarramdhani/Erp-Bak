@@ -4,6 +4,9 @@
 //     }
 // });
 
+var checkpacklist = document.getElementById('tablePackingListArea');
+var checkspb = document.getElementById('tableSPBArea');
+if (checkspb || checkpacklist) {
 $("#formPackingList").ready(function() {
   $.ajax({
     url: baseurl + "WarehouseSPB/Ajax/checkSPB",
@@ -29,6 +32,7 @@ $("#formPackingList").ready(function() {
   });
 
 });
+}
 
 
 function getDataSPB() {
