@@ -75,9 +75,9 @@ class C_PasangBan extends CI_Controller{
 
 		$data['ban'] = $ban;
 
-		$getID = $this->M_pasangban->getID();
-        $newID = !empty($getID) ? $getID[0]['NUM'] + 1 : '1';
-        // $newID = sprintf("%07d", $id);
+		$getLastID = $this->M_pasangban->getLastID();
+		$newID = !empty($getLastID) ? $getLastID[0]['NUM'] + 1 : '1';
+		// echo "<pre>";print_r($newID);exit();
 
 		$data['id'] = $ket.'-'.$ban.'-'.$newID;
 

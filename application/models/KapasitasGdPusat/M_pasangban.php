@@ -20,7 +20,7 @@ class M_pasangban extends CI_Model
         return $query->result_array();
     }
 
-    public function getID(){
+    public function getLastID(){
         $sql = "SELECT TRIM (SUBSTR (ID, 1, INSTR (ID, '-') - 1)) ket,
         TRIM (SUBSTR (ID,
                       INSTR (ID, '-', 1, 1) + 1,
@@ -33,6 +33,7 @@ class M_pasangban extends CI_Model
                      )
              ) num
         FROM khs_inv_pasang_ban
+        WHERE ID IS NOT NULL
         ORDER BY 3 DESC";
         $query = $this->oracle->query($sql);
         return $query->result_array();
@@ -140,8 +141,8 @@ class M_pasangban extends CI_Model
         // echo ':P_PARAM3 = '.$source_code.'<br>';
         // exit();
 
-        // $conn = oci_connect('APPS', 'APPS', '192.168.7.3:1522/DEV');
-        $conn = oci_connect('APPS', 'APPS', '192.168.7.1:1521/PROD');
+        $conn = oci_connect('APPS', 'APPS', '192.168.7.3:1522/DEV');
+        // $conn = oci_connect('APPS', 'APPS', '192.168.7.1:1521/PROD');
         if (!$conn) {
             $e = oci_error();
             trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
@@ -166,8 +167,8 @@ class M_pasangban extends CI_Model
     }
 
     public function runAPI($user_id){
-        // $conn = oci_connect('APPS', 'APPS', '192.168.7.3:1522/DEV');
-        $conn = oci_connect('APPS', 'APPS', '192.168.7.1:1521/PROD');
+        $conn = oci_connect('APPS', 'APPS', '192.168.7.3:1522/DEV');
+        // $conn = oci_connect('APPS', 'APPS', '192.168.7.1:1521/PROD');
         if (!$conn) {
             $e = oci_error();
             trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
