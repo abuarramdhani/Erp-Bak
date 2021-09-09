@@ -2182,6 +2182,21 @@ $(document).ready(function () {
     }
   });
 
+  // var tableOKBPengorder = $(".tblOKBOrderListPengorder").DataTable({
+  //   scrollY: "370px",
+  //   scrollX: true,
+  //   scrollCollapse: true,
+  //   fixedColumns: {
+  //     leftColumns: 5,
+  //   },
+  //   columnDefs: [
+  //     { width: 196, targets: 8 },
+  //     { width: 150, targets: 10 },
+  //   ],
+  // });
+
+  // edit bayu
+
   var tableOKBPengorder = $(".tblOKBOrderListPengorder").DataTable({
     scrollY: "370px",
     scrollX: true,
@@ -2723,7 +2738,7 @@ $(document).ready(function () {
 
     $(document).on("click", ".btnActUbahQtyOrderOKB", function () {
       $(document).off("click", ".btnActUbahQtyOrderOKB");
-      var qty2 = $(".txtEditQtyOrderOKB").val();
+      var qty2 = $(".txtEditQtyOrderOKB").val().replace(/,/g, '');
 
       if (qty2 != qty) {
         $.ajax({
