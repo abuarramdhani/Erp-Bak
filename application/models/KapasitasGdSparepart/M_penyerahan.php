@@ -122,6 +122,7 @@ class M_penyerahan extends CI_Model {
                                                  kcds.berat
                                             FROM khs_colly_dospb_sp kcds) cl
                           WHERE kms.request_number = cl.request_number
+                          AND kms.manifest_number is not null
                           ORDER BY kms.manifest_number DESC";
         $query = $oracle->query($sql);
         return $query->result_array();
