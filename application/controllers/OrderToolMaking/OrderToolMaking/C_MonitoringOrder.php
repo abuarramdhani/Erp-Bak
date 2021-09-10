@@ -459,7 +459,7 @@ class C_MonitoringOrder extends CI_Controller
 		$jenis = $this->input->post('jenis');
 		$ket = $this->input->post('ket');
 
-		$this->send_email_order($assign, $no_order, $seksi_order,$jenis, $pengorder);
+		$this->send_email_order($assign, $noorder, $seksi_order,$jenis, $pengorder);
 		if ($ket == 'baru') {
 			$this->M_monitoringorder->updatefilebaru('status_order = null',$noorder);
 		}elseif ($ket == 'modif') {
@@ -479,39 +479,40 @@ class C_MonitoringOrder extends CI_Controller
 		$status = $this->input->post('status');
 		$status_order = $this->input->post('status_order');
 		$siapa = $this->input->post('siapa');
+		$alasan = $this->input->post('alasan');
 		$cek_approval = $this->M_monitoringorder->cekaction($noorder, ''); // cek approval dari data yg terbaru
 		// status 2 = tidak muncul
 		// status 3 = approval pengorder
 		// status 4 = approval ppc tm
-		if ($cek_approval[0]['person'] < 9 && $siapa == 'Kasie Pengorder') {
+		if (($cek_approval[0]['person'] < 9 || empty($cek_approval)) && $siapa == 'Kasie Pengorder') {
 			$cancel = 2; // cancel dari pengorder belum approve PPC TM, langsung ilang
 		}elseif ($cek_approval[0]['person'] >= 9 && $siapa == 'Kasie Pengorder') {
 			$cancel = 4; // cancel dari pengorder sudah approve PPC TM, butuh approval PPC TM
 			$ppctm = $this->M_monitoringorder->user_ppc_tm();
 			foreach ($ppctm as $key => $value) {
-				$this->send_email_cancel($value['user_name'], $noorder, $seksi_order, $jenis, $pengorder, 'Kasie PPC TM', $siapa, $ket);
+				$this->send_email_cancel($value['user_name'], $noorder, $seksi_order, $jenis, $pengorder, 'Kasie PPC TM', $siapa, $ket, $alasan);
 			}
 		}elseif (($siapa == 'Kasie PE' || $siapa == 'Askanit PE') && $cek_approval[0]['person'] < 9) {
 			$cancel = 3; // cancel dari PE belum approve PPC TM, butuh approval pengorder
-			$this->send_email_cancel($pengorder, $noorder, $seksi_order, $jenis, $pengorder, 'Kasie Pengorder', $siapa, $ket);
+			$this->send_email_cancel($pengorder, $noorder, $seksi_order, $jenis, $pengorder, 'Kasie Pengorder', $siapa, $ket, $alasan);
 		}elseif (($siapa == 'Kasie PE' || $siapa == 'Askanit PE') && $cek_approval[0]['person'] >= 9) {
 			$cancel = 34; // cancel dari PE belum approve PPC TM, butuh approval PPC TM dan pengorder
-			$this->send_email_cancel($pengorder, $noorder, $seksi_order, $jenis, $pengorder, 'Kasie Pengorder', $siapa, $ket);
+			$this->send_email_cancel($pengorder, $noorder, $seksi_order, $jenis, $pengorder, 'Kasie Pengorder', $siapa, $ket, $alasan);
 			$ppctm = $this->M_monitoringorder->user_ppc_tm();
 			foreach ($ppctm as $key => $value) {
-				$this->send_email_cancel($value['user_name'], $noorder, $seksi_order, $jenis, $pengorder, 'Kasie PPC TM', $siapa, $ket);
+				$this->send_email_cancel($value['user_name'], $noorder, $seksi_order, $jenis, $pengorder, 'Kasie PPC TM', $siapa, $ket, $alasan);
 			}
 		}elseif ($siapa == 'Kasie PPC TM') {
 			$cancel = 3; // cancel dari PPC TM belum approve PPC TM, butuh approval pengorder
-			$this->send_email_cancel($pengorder, $noorder, $seksi_order, $jenis, $pengorder, 'Kasie Pengorder', $siapa, $ket);
+			$this->send_email_cancel($pengorder, $noorder, $seksi_order, $jenis, $pengorder, 'Kasie Pengorder', $siapa, $ket, $alasan);
 		}
 
 		if ($ket == 'baru') {
-			$this->M_monitoringorder->updatefilebaru("status_order = $cancel, reject_by = '".$this->session->user."'",$noorder);
+			$this->M_monitoringorder->updatefilebaru("status_order = $cancel, reject_by = '".$this->session->user."', alasan_reject = '$alasan'",$noorder);
 		}elseif ($ket == 'modif') {
-			$this->M_monitoringorder->updatefilemodif("status_order = $cancel, reject_by = '".$this->session->user."'",$noorder);
+			$this->M_monitoringorder->updatefilemodif("status_order = $cancel, reject_by = '".$this->session->user."', alasan_reject = '$alasan'",$noorder);
 		}else{
-			$this->M_monitoringorder->updatefilerekon("status_order = $cancel, reject_by = '".$this->session->user."'",$noorder);
+			$this->M_monitoringorder->updatefilerekon("status_order = $cancel, reject_by = '".$this->session->user."', alasan_reject = '$alasan'",$noorder);
 		}
 	}
 	
@@ -529,11 +530,11 @@ class C_MonitoringOrder extends CI_Controller
 		// status tolak 5, berubah 0 jika sudah disetujui pengorder
 		// echo "<pre>";print_r($ket);exit();
 		if ($ket == 'Baru') {
-			$this->M_monitoringorder->updatefilebaru("status_order = 5, reject_by = '".$this->session->user."'",$noorder);
+			$this->M_monitoringorder->updatefilebaru("status_order = 5, reject_by = '".$this->session->user."', alasan_reject = '$keterangan'",$noorder);
 		}elseif ($ket == 'Modifikasi') {
-			$this->M_monitoringorder->updatefilemodif("status_order = 5, reject_by = '".$this->session->user."'",$noorder);
+			$this->M_monitoringorder->updatefilemodif("status_order = 5, reject_by = '".$this->session->user."', alasan_reject = '$keterangan'",$noorder);
 		}else{
-			$this->M_monitoringorder->updatefilerekon("status_order = 5, reject_by = '".$this->session->user."'",$noorder);
+			$this->M_monitoringorder->updatefilerekon("status_order = 5, reject_by = '".$this->session->user."', alasan_reject = '$keterangan'",$noorder);
 		}
 		// $person = $this->cariperson($siapa);
 		// $this->M_monitoringorder->saveaction($noorder, $person, 0, $keterangan, date('Y-m-d H:i:s'), $this->session->user);
@@ -603,7 +604,7 @@ class C_MonitoringOrder extends CI_Controller
 	}
 
 	
-	public function send_email_cancel($tujuan, $no_order, $seksi_order, $jenis, $pengorder,$seksi_tujuan, $seksi_cancel, $ket){
+	public function send_email_cancel($tujuan, $no_order, $seksi_order, $jenis, $pengorder,$seksi_tujuan, $seksi_cancel, $ket, $alasan){
 		// kirim email ke tujuan kirim
 		$mail = new PHPMailer();
 		$mail->SMTPDebug = 0;
@@ -642,6 +643,7 @@ class C_MonitoringOrder extends CI_Controller
 				<b>Pembuatan :</b> '.$jenis.'<br><br>
 				<b>Dicancel oleh :</b> '.$seksi_cancel.'<br>
 				<b> Pengcancel :</b> '.$this->session->user.' - '.$nama2[0]['nama'].'<br><br>
+				<b>Alasan dicancel :</b> '.$alasan.'<br><br>
 				Klik tombol dibawah ini untuk menyetujui :<br>
 				<a href="'.base_url("OrderToolMaking/MonitoringOrder/konfirmasicancel/".$no_order."_".$ket."/".$seksi_tujuan."").'">
 				<button class="btn">Setuju Cancel</button></a>';
@@ -930,6 +932,34 @@ class C_MonitoringOrder extends CI_Controller
 				if ($isi2 != '') {
 					$this->M_monitoringorder->insertrevisi($no_order, 1, $nama[$i], $isi2, date('Y-m-d H:i:s'),$this->session->user);
 				}
+			}elseif ($nama[$i] == 'Assign Desainer') { // revisi khusus assign desainer
+				if ($ket == 'Baru') {
+					$this->M_monitoringorder->updatefilebaru("assign_desainer = '".$isi[$i]."'",$no_order);
+				}elseif ($ket == 'Modifikasi') {
+					$this->M_monitoringorder->updatefilemodif("assign_desainer = '".$isi[$i]."'",$no_order);
+				}else{
+					$this->M_monitoringorder->updatefilerekon("assign_desainer = '".$isi[$i]."'",$no_order);
+				}
+			}elseif ($nama[$i] == 'Jenis') { // revisi khusus jenis
+				$detail = $this->input->post('detail_jenis');
+				$isi2 = !empty($detail) ? $isi[$i].' '.$detail : $isi[$i];
+				if ($ket == 'Baru') {
+					$this->M_monitoringorder->updatefilebaru("jenis = '".$isi2."'",$no_order);
+				}elseif ($ket == 'Modifikasi') {
+					$this->M_monitoringorder->updatefilemodif("jenis = '".$isi2."'",$no_order);
+				}else{
+					$this->M_monitoringorder->updatefilerekon("jenis = '".$isi2."'",$no_order);
+				}
+			}elseif ($nama[$i] == 'Detail Jenis') { // revisi khusus detail jenis
+				$jenis = $this->input->post('jenis');
+				$isi2 = $jenis.' '.$isi[$i];
+				if ($ket == 'Baru') {
+					$this->M_monitoringorder->updatefilebaru("jenis = '".$isi2."'",$no_order);
+				}elseif ($ket == 'Modifikasi') {
+					$this->M_monitoringorder->updatefilemodif("jenis = '".$isi2."'",$no_order);
+				}else{
+					$this->M_monitoringorder->updatefilerekon("jenis = '".$isi2."'",$no_order);
+				}
 			}elseif (!empty($nama[$i])) {
 				$this->M_monitoringorder->insertrevisi($no_order, 1, $nama[$i], $isi[$i], date('Y-m-d H:i:s'),$this->session->user);
 			}
@@ -1018,7 +1048,7 @@ class C_MonitoringOrder extends CI_Controller
 				$fix['material'] 	= $this->carirevisi($val['no_order'], $val['material_blank'], 'Material Blank (Khusus DIES)');
 				$fix['jml_alat']	= $this->carirevisi($val['no_order'], $val['jumlah_alat'], 'Jumlah Alat');
 				$fix['distribusi'] 	= $this->carirevisi($val['no_order'], $val['distribusi'], 'Distribusi');
-				$fix['alasan_asset'] = $val['alasan_asset'];
+				$fix['alasan_asset'] = $this->carirevisi($val['no_order'], $val['alasan_asset'], 'Alasan Asset');
 			}else { // tabel modifikasi dan rekondisi
 				$fix['alasan'] 		= $this->carirevisi($val['no_order'], $val['alasan_modifikasi'], 'Alasan Modifikasi');
 				$fix['no_alat'] 	= $this->carirevisi($val['no_order'], $val['no_alat_bantu'], 'No Alat Bantu');
