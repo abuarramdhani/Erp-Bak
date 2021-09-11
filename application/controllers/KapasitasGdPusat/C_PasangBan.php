@@ -127,8 +127,6 @@ class C_PasangBan extends CI_Controller{
 		$jenis_ban = $this->input->post('jenis_ban');
 		$user_id = 5177;
 
-		$cek_id = $this->M_pasangban->getId($noind, $ket, $jenis_ban);
-
 		if ($ket == 'pasang1' || $ket == 'pasang2') {
 			$jumlah_per_assy = $jumlah/2;
 			$cek_assy = $this->M_pasangban->getAssy($jenis_ban);
