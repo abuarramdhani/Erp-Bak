@@ -443,7 +443,6 @@ class C_Car extends CI_Controller
   {
     $id_kecelakaan = EncryptCar::decode($id_kecelakaan);
     $noind = $this->session->user;
-
     $data['Title'] = 'Kebutuhan APD';
     $data['Menu'] = 'Kebutuhan APD';
     $data['SubMenuOne'] = 'Standar';
@@ -474,7 +473,6 @@ class C_Car extends CI_Controller
 
       return false;
     })) > 0;
-
     $data['kecelakaanDetail']['hari'] = HelperClass::dateToIndonesianWeeks($data['kecelakaanDetail']['waktu_kecelakaan']);
 
     // Param
