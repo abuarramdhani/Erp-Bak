@@ -50,7 +50,7 @@ class M_absenatasan extends CI_Model
 		$sql = "SELECT count(*) as jumlah
 			FROM at.at_absen_approval approval, 
 				at.at_absen absen
-			WHERE (left(approval.approver,5) = 'T0006' OR approval.approver LIKE '%AJI KURNIAWAN%' ) 
+			WHERE (left(approval.approver,5) = '$noind' OR approval.approver LIKE '%$approver%' ) 
 				AND approval.absen_id = absen.absen_id 
 				and absen.noind not in (select noind from at.at_laju) 
 				and absen.status =0 ";
