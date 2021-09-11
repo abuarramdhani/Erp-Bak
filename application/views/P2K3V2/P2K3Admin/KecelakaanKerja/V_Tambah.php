@@ -112,7 +112,7 @@
                           <label style="margin-top: 5px;">Tgl Mulai Di Pos Kecelakaan</label>
                         </div>
                         <div class="col-md-8 nopadding">
-                          <input class="form-control" id="apdmaspos" name="tgl_masuk_pos" placeholder="Tanggal Mulai Di Pos" required>
+                          <input class="form-control" id="apdmaspos" name="tgl_masuk_pos" placeholder="Tanggal Mulai Di Pos" required autocomplete="off">
                         </div>
                       </div>
                       <div class="col-md-12 nopadding martop">
@@ -230,7 +230,7 @@
                           <label style="margin-top: 5px;">Kasus</label>
                         </div>
                         <div class="col-md-8 nopadding">
-                          <textarea class="form-control toupper- limiter" maxlength="340" placeholder="Judul Kasus" name="kasus" style="width: 100%; min-height: 80px; height: 100px; max-height: 200px; resize: vertical;" required></textarea>
+                          <textarea class="form-control toupper- limiter" maxlength="112" placeholder="Judul Kasus" name="kasus" style="width: 100%; min-height: 80px; height: 100px; max-height: 200px; resize: vertical;" required></textarea>
                         </div>
                       </div>
                     </div>
@@ -240,7 +240,7 @@
                           <label style="margin-top: 5px;">Kronologi</label>
                         </div>
                         <div class="col-md-8 nopadding">
-                          <textarea class="form-control toupper- limiter" maxlength="680" placeholder="Kronologi kejadian" name="kronologi" style="width: 100%; min-height: 80px; height: 100px; max-height: 200px; resize: vertical;" required></textarea>
+                          <textarea class="form-control toupper- limiter" maxlength="672" placeholder="Kronologi kejadian" name="kronologi" style="width: 100%; min-height: 80px; height: 100px; max-height: 200px; resize: vertical;" required></textarea>
                         </div>
                       </div>
                     </div>
@@ -269,7 +269,7 @@
                           <label style="margin-top: 5px;">Kondisi</label>
                         </div>
                         <div class="col-md-8 nopadding">
-                          <textarea class="form-control toupper- limiter" maxlength="340" placeholder="Kondisi korban" name="kondisi" style="width: 100%; min-height: 80px; height: 100px; max-height: 200px; resize: vertical;" required></textarea>
+                          <textarea class="form-control toupper- limiter" maxlength="224" placeholder="Kondisi korban" name="kondisi" style="width: 100%; min-height: 80px; height: 100px; max-height: 200px; resize: vertical;" required></textarea>
                         </div>
                       </div>
                     </div>
@@ -279,7 +279,7 @@
                           <label style="margin-top: 5px;">Penyebab</label>
                         </div>
                         <div class="col-md-8 nopadding">
-                          <textarea class="form-control toupper- limiter" maxlength="340" placeholder="Penyebab kejadian" name="penyebab" style="width: 100%; min-height: 80px; height: 100px; max-height: 200px; resize: vertical;" required></textarea>
+                          <textarea class="form-control toupper- limiter" maxlength="146" placeholder="Penyebab kejadian" name="penyebab" style="width: 100%; min-height: 80px; height: 100px; max-height: 200px; resize: vertical;" required></textarea>
                         </div>
                       </div>
                     </div>
@@ -317,7 +317,7 @@
                           <label style="margin-top: 5px;">Tindakan/Penanganan</label>
                         </div>
                         <div class="col-md-8 nopadding">
-                          <textarea class="form-control toupper- limiter" maxlength="340" placeholder="Tindakan/Penanganan terhadap korban" name="tindakan" style="width: 100%; min-height: 80px; height: 100px; max-height: 200px; resize: vertical;" required></textarea>
+                          <textarea class="form-control toupper- limiter" maxlength="336" placeholder="Tindakan/Penanganan terhadap korban" name="tindakan" style="width: 100%; min-height: 80px; height: 100px; max-height: 200px; resize: vertical;" required></textarea>
                         </div>
                       </div>
                     </div>
@@ -339,7 +339,7 @@
                           <label><input class="apdinpbsrlmkk" type="radio" name="bsrl" value="4"> Laka</label>
                         </div>
                         <div class="col-md-5 nopadding float-left">
-                          <textarea rows="3" id="keterangan" class="form-control" style="resize:none"></textarea>
+                          <textarea rows="3" id="keterangan" class="form-control" style="resize:none" readonly></textarea>
                         </div>
                       </div>
                     </div>
@@ -502,7 +502,7 @@
                               <label style="margin-top: 5px;">Lampiran <?= $x ?></label>
                             </div>
                             <div class="col-md-7 nopadding">
-                              <input type="hidden" name="lampiran_foto[<?= $x; ?>]" class="attachment<?= $x; ?>">
+                              <input type="hidden" name="lampiran_foto[<?= $x; ?>]" class="<?= "lampiran_$x" ?>">
                               <input class="form-control" accept="image/jpg, image/jpeg, image/png" type="file" data-attachment="<?= $x ?>">
                             </div>
                             <div class="col-md-1">
@@ -703,8 +703,9 @@
       e.preventDefault()
       const id_attachment = $(this).attr('data-attachment-remove');
       $(`input[type=file][data-attachment=${id_attachment}]`).val('').trigger('change')
-      $(`img[data-bind-attachment=${id_attachment}]`).attr('src', '')
-      $(`lampiran_foto[${id_attachment}]`).val('')
+      $(`img[data-bind-attachment=${id_attachment}]`).removeAttr('src')
+      // $(`input[name="lampiran_foto[${id_attachment}]]"`).val('')
+      $(`input.lampiran_${id_attachment}`).val('')
     })
 
     // experimental image cropper with cropper.js
@@ -758,10 +759,10 @@
       const $fileInput = $(`input[name='lampiran_foto[${id_attachment}]'`)
 
       const canvas = cropper.getCroppedCanvas({
-        width: 200,
-        height: 200,
-        imageSmoothingEnabled: false,
-        imageSmoothingQuality: 'low'
+        width: 400,
+        height: 400,
+        imageSmoothingEnabled: true,
+        imageSmoothingQuality: 'high'
       });
       const base64Image = canvas.toDataURL()
 

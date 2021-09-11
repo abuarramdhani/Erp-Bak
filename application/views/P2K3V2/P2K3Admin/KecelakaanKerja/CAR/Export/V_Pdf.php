@@ -316,7 +316,13 @@
           </table>
         </div>
       </div>
+      <span style="font-style: italic; margin-top:20px;">Note :</span>
+      <ol style="margin-left:-10px; text-align:justify">
+        <li><small><strong><i style="text-decoration:underline;">Analisa Kecelakaan Kerja </i></strong> dibuat oleh Seksi <strong><i style="text-decoration:underline">maksimal 3 hari </i></strong>setelah terjadinya kecelkaan kerja, kemudian didistribusikan oleh Seksi ke Koord. Tim P2K3 (Asli), Kepala Departemen, Koordinator Bidang, dan Kepala unit</small></li>
+        <li><small><strong><i style="text-decoration:underline;">Verifikasi Keclakaan Kerja</i></strong>dilaksanakan oleh Tim P2K3 <strong><i style="text-decoration:underline;">maksimal 6 hari</i></strong> setelah tanggal jatuh tempo, kemudian didistribusikan oleh Seksi ke Koord Tim P2K3 (Asli), Kepala Departemen, Koordinator Bidang, dan Kepala Unit</small></li>
+      </ol>
     </main>
+
   </div>
 </body>
 

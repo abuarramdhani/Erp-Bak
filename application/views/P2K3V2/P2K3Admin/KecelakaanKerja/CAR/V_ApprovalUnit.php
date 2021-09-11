@@ -8,7 +8,6 @@
   }
 </style>
 <?php $this->load->view('P2K3V2/P2K3Admin/KecelakaanKerja/CAR/css/StatusColor') ?>
-
 <section class="content">
   <div class="inner">
     <div class="row">
@@ -89,7 +88,7 @@
                                   <td>
                                     <?= $car->due_date ?>
                                   </td>
-                                  <td>
+                                  <td style="width:20%">
                                     <?= $car->notes ?>
                                   </td>
                                   <td style="display: flex; align-items: center;">
@@ -121,7 +120,7 @@
                                     <td>
                                       <?= $car_revisi->due_date ?>
                                     </td>
-                                    <td>
+                                    <td style="width:20%">
                                       <?= $car_revisi->notes ?>
                                     </td>
                                     <td style="display: flex; align-items: center;">

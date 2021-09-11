@@ -108,7 +108,8 @@ class C_Index extends CI_Controller
 	/* CHECK SESSION */
 	public function checkSession()
 	{
-		if ($this->session->is_logged) { } else {
+		if ($this->session->is_logged) {
+		} else {
 			redirect('');
 		}
 	}
@@ -2004,7 +2005,7 @@ class C_Index extends CI_Controller
 	 */
 	private function imageToBase64($source)
 	{
-		if (empty($source)) return "";
+		if (empty($source) || !file_exists(str_replace(base_url(), './', $source))) return "";
 		$type = pathinfo($source, PATHINFO_EXTENSION);
 		$data = file_get_contents($source);
 
@@ -2043,7 +2044,6 @@ class C_Index extends CI_Controller
 			$this->imageToBase64(empty($kecelakaan['kecelakaan']['lampiran_1']) ? null : base_url($attachment_path . $kecelakaan['kecelakaan']['lampiran_1'])),
 			$this->imageToBase64(empty($kecelakaan['kecelakaan']['lampiran_2']) ? null : base_url($attachment_path . $kecelakaan['kecelakaan']['lampiran_2'])),
 		];
-
 		$this->load->view('V_Header', $data);
 		$this->load->view('V_Sidemenu', $data);
 		$this->load->view('P2K3V2/P2K3Admin/KecelakaanKerja/V_Edit', $data);
@@ -2053,6 +2053,7 @@ class C_Index extends CI_Controller
 
 	protected function StoreBase64Image($path, $base64String, $filename)
 	{
+		if (empty($base64String)) return '';
 		list($type, $imageData) = explode(';', $base64String);
 		list(, $extension) = explode('/', $type);
 		list(, $imageData)      = explode(',', $imageData);
@@ -2117,16 +2118,19 @@ class C_Index extends CI_Controller
 		// lampiran foto
 		$lampiran_list = [];
 
+		$currentLampiran = [NULL, $detail['lampiran_1'], $detail['lampiran_2']];
 		if ($lampiran_foto && is_array($lampiran_foto)) {
 			$path = 'assets/upload/P2K3v2/kecelakaan_kerja/foto/';
 			foreach ($lampiran_foto as $i => $base64String) {
-				if (empty($base64String)) continue;
 				$filename = "accident-$md5_string-$i";
 				$actualFilename = $this->StoreBase64Image($path, $base64String, $filename);
-
+				if (file_exists("./$path" . $currentLampiran[$i])) {
+					unlink("./$path" . $currentLampiran[$i]);
+				}
 				$lampiran_list[] = $actualFilename;
 			}
 		}
+
 
 		// file upload
 		if (isset($lampiran_list[0])) {
@@ -2306,7 +2310,7 @@ class C_Index extends CI_Controller
 		$this->load->library('pdf');
 
 		$pdf = $this->pdf->load();
-		$pdf = new mPDF('', 'A4', 10, '', 4, 4, 4, 4, 10, 3);
+		$pdf = new mPDF('', 'F4', 8.7, '', 4, 4, 4, 4, 10, 3);
 		$filename = 'P2K3Seksi.pdf';
 		$html = $this->load->view('P2K3V2/P2K3Admin/KecelakaanKerja/Export/V_Pdf', $data, true);
 		// echo $html;die;

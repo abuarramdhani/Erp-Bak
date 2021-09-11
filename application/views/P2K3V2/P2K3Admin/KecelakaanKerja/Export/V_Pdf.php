@@ -149,19 +149,19 @@
         </div>
       </div>
     </header>
-    <main>
+    <main style="text-transform:capitalize;">
       <div id="content">
         <h4 class="text-center" style="margin-top: 0.5em; margin-bottom: 0.5em;">LAPORAN KECELAKAAN</h4>
-        <table class="table" id="form">
+        <table class="table" id="form" style="overflow:wrap;">
           <tr>
             <td class="italic bold" width="35%">1. Nama / No Induk</td>
             <td width="2%">:</td>
-            <td colspan="2" class="border-bottom"><?= $pkj['nama'] . " / " . $pkj['noind'] ?> </td>
+            <td colspan="2" class="border-bottom" style="text-transform:capitalize;"><?= $pkj['nama'] . " / " . $pkj['noind'] ?> </td>
           </tr>
           <tr>
             <td class="italic bold">2. Seksi/Unit/Plant *</td>
             <td>:</td>
-            <td class="border-bottom">
+            <td class="border-bottom" style="text-transform:capitalize;">
               <?= $pkj['seksi'] . " / " . $pkj['unit'] ?>
             </td>
             <td width="15%">
@@ -171,7 +171,7 @@
           <tr>
             <td class="italic bold">3. Jenis Pekerjaan *</td>
             <td>:</td>
-            <td class="border-bottom">
+            <td class="border-bottom" style="text-transform:capitalize;">
               <span><?= $kecelakaan['nama_pekerjaan'] ?></span>
             </td>
             <td width="15%">
@@ -181,12 +181,12 @@
           <tr>
             <td class="italic bold">4. Umur</td>
             <td>:</td>
-            <td colspan="2" class="border-bottom"><?= $pkj['age'] ?> Tahun</td>
+            <td colspan="2" class="border-bottom" style="text-transform:capitalize;"><?= $pkj['age'] ?> Tahun</td>
           </tr>
           <tr>
             <td class="italic bold">5. Masa Kerja</td>
             <td>:</td>
-            <td colspan="2" class="border-bottom"><?= $kecelakaan['masa_kerja'] ?></td>
+            <td colspan="2" class="border-bottom" style="text-transform:capitalize;"><?= $kecelakaan['masa_kerja'] ?></td>
           </tr>
           <tr>
             <td class="italic bold">6. Masa Kerja Di Pos Accident</td>
@@ -209,9 +209,10 @@
             <td colspan="2" class="border-bottom"><?= $kecelakaan['tkp'] ?></td>
           </tr>
           <tr>
-            <td class="italic bold">10. Penyebab Kecelakaan</td>
+            <td class="italic bold" style="vertical-align:top">10. Penyebab Kecelakaan</td>
             <td>:</td>
-            <td colspan="2" class="border-bottom"><?= $kecelakaan['penyebab'] ?></td>
+            <?php $maxLength = 146; ?>
+            <td colspan="2" class="border-bottom"><?= substr($kecelakaan['penyebab'], 0, $maxLength); ?></td>
           </tr>
           <!-- ALASAN COMMENT: 
           - User minta agar tidak ditampilkan
@@ -403,16 +404,16 @@
           </tr>
         </table>
         <div class="ml-4">
-          <table class="table" id="sub-content" autosize="0">
+          <table class="table" id="sub-content" autosize="1" style="overflow:wrap;">
             <tr>
               <td class="vertical-top bold italic" style="width: 33%;">a. Kasus</td>
               <td class="vertical-top" width="2%">:</td>
               <td class="vertical-top"></td>
             </tr>
             <tr>
-              <td class="vertical-top pl-5" colspan="3" style="text-align: justify; font-size:12px;">
-                <?php $maxLength = 340; ?>
-                <?= substr($kecelakaan['kasus'], 0, $maxLength) ?>
+              <td class="vertical-top pl-5 first-cap" colspan="3" style="text-align: justify; font-size:11px;">
+                <?php $maxLength = 112; ?>
+                <span style="text-transform:uppercase"><?= substr($kecelakaan['kasus'], 0, 1) ?></span><span><?= substr($kecelakaan['kasus'], 1, $maxLength); ?></span>
               </td>
             </tr>
             <tr>
@@ -421,9 +422,9 @@
               <td class="vertical-top"></td>
             </tr>
             <tr>
-              <td class="vertical-top pl-5" colspan="3" style="text-align: justify; font-size:12px;">
-                <?php $maxLength = 680; ?>
-                <?= substr($kecelakaan['kronologi'], 0, $maxLength) ?>
+              <td class="vertical-top pl-5 first-cap" colspan="3" style="text-align: justify; font-size:11px;">
+                <?php $maxLength = 672; ?>
+                <?= substr($kecelakaan['kronologi'], 0, $maxLength); ?>
               </td>
             </tr>
             <tr>
@@ -432,9 +433,9 @@
               <td style=""></td>
             </tr>
             <tr>
-              <td class="vertical-top pl-5" colspan="3" style="text-align: justify; font-size:12px;">
-                <?php $maxLength = 340; ?>
-                <?= substr($kecelakaan['kondisi'], 0, $maxLength) ?>
+              <td class="vertical-top pl-5 first-cap" colspan="3" style="text-align: justify; font-size:11px;">
+                <?php $maxLength = 224; ?>
+                <?= substr($kecelakaan['kondisi'], 0, $maxLength); ?>
               </td>
             </tr>
             <tr>
@@ -443,8 +444,9 @@
               <td></td>
             </tr>
             <tr>
-              <td class="vertical-top pl-5" colspan="3" style="text-align: justify; font-size:12px;">
-                <?= substr($kecelakaan['tindakan'], 0, $maxLength) ?>
+              <td class="vertical-top pl-5 first-cap" colspan="3" style="text-align: justify; font-size:11px;">
+                <?php $maxLength = 336; ?>
+                <?= substr($kecelakaan['tindakan'], 0, $maxLength); ?>
               </td>
             </tr>
             <tr>
@@ -471,7 +473,7 @@
           <div class="width-100" style="padding-left: 1.5em;">
             <?php foreach ($apd_list_chunk_3 as $items) : ?>
               <div class="width-25">
-                <table width="170px" style="font-size: 9pt">
+                <table width="170px" style="font-size: 8.5pt">
                   <tr>
                     <td class="checkbox">Std</td>
                     <td class="checkbox">Act</td>
@@ -506,7 +508,7 @@
                   <td>(Lain-lain)</td>
                 </tr>
                 <?php
-                $apd_digunakan_lain = array_pad($apd_digunakan_lain, 7, [
+                $apd_digunakan_lain = array_pad($apd_digunakan_lain, 6, [
                   'nama_apd' => '-',
                   'standard' => 'f',
                   'actual' => 'f',
@@ -526,23 +528,27 @@
         <!-- <pagebreak /> -->
         <div class="width-100">
           <span class="bold italic">12. Gambar</span>
-          <div class="width-50">
-            <div class="ml-4">
-              <img style="min-width: 70%; width: auto; height: 120px; max-height: 120px; object-fit: cover;" src="<?= base_url('assets/upload/P2K3v2/kecelakaan_kerja/foto/' . $kecelakaan['lampiran_1']) ?>" alt="">
-              <!-- <p>---Keterangan gambar---</p> -->
-            </div>
-          </div>
-          <div class="width-50">
-            <div class="ml-4">
-              <img style="min-width: 70%; width: auto; height: 120px; max-height: 120px; object-fit: cover;" src="<?= base_url('assets/upload/P2K3v2/kecelakaan_kerja/foto/' . $kecelakaan['lampiran_2']) ?>" alt="">
-              <!-- <p>---Keterangan gambar---</p> -->
-            </div>
-          </div>
+          <table width="100%" cellpadding="0" cellspacing="0">
+            <tr>
+              <td style="width:50%;" style="text-align:center;">
+                <?php if (!empty($kecelakaan['lampiran_1']) && file_exists("./assets/upload/P2K3v2/kecelakaan_kerja/foto/" . $kecelakaan['lampiran_1'])) : ?>
+                  <img style="min-width: 70%; width: auto; height: 85px; max-height: 85px; object-fit: cover;" src="<?= base_url('assets/upload/P2K3v2/kecelakaan_kerja/foto/' . $kecelakaan['lampiran_1']) ?>" alt="">
+                <?php endif; ?>
+                <!-- <p>---Keterangan gambar---</p> -->
+              </td>
+              <td style="width:50%;" style="text-align:center;">
+                <?php if (!empty($kecelakaan['lampiran_2']) && file_exists("./assets/upload/P2K3v2/kecelakaan_kerja/foto/" . $kecelakaan['lampiran_1'])) : ?>
+                  <img style="min-width: 70%; width: auto; height: 85px; max-height: 85px; object-fit: cover;" src="<?= base_url('assets/upload/P2K3v2/kecelakaan_kerja/foto/' . $kecelakaan['lampiran_2']) ?>" alt="">
+                <?php endif; ?>
+                <!-- <p>---Keterangan gambar---</p> -->
+              </td>
+            </tr>
+          </table>
         </div>
       </div>
     </main>
 
-    <footer class="avoid-pagebreak-@" style="margin-top: 1em;">
+    <footer class="avoid-pagebreak-@" style="margin-top: 0.5em;">
       <div class="width-50">
         <span>Tembusan</span>
         <ol style="padding-left: 1.5em;">
@@ -553,10 +559,10 @@
         </ol>
       </div>
       <div class="width-50">
-        <div class="text-center" style="width: 300px; float: right;">
+        <div class="text-center" style="width: 200px; float: right;">
           <p class="m-0 block">Yogyakarta, <?= date('d-m-Y') ?></p>
           <p class="m-0 block">Yang melaporkan</p>
-          <div style="margin-top: 50px">
+          <div style="margin-top: 40px">
             <div><?= $kecelakaan['userName_created_by']; ?></div>
             <div style="margin-top:-10px"> _______________________</div>
           </div>
