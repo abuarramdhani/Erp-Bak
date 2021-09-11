@@ -16,6 +16,7 @@ class C_Order extends CI_Controller
 		$this->load->library('encrypt');
 		$this->load->library('ciqrcode');
 		$this->load->library('upload');
+		$this->load->library('general');
 
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('P2K3V2/MainMenu/M_order');
@@ -1110,7 +1111,6 @@ class C_Order extends CI_Controller
 		$data['SubMenuTwo'] = '';
 
 		$data['seksi'] 		= $this->M_order->getSeksi($noind);
-		// print_r($data['seksi']);exit();
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
@@ -1123,7 +1123,6 @@ class C_Order extends CI_Controller
 		if (substr($kodesie, 5) != '0000') {
 			$seksiBawah = $this->M_order->cekSeksiDibawah2($kodesie);
 		}
-		// print_r($tertinggi);exit();
 		//jika yang login kepala unit
 		if (substr($kodesie, 5) == '0000') {
 			$seksiBawah = $this->M_order->cekSeksiDibawah($kodesie);
@@ -1140,7 +1139,7 @@ class C_Order extends CI_Controller
 			}
 		}
 		$data['listKs'] = $refjabatan;
-		// print_r($refjabatan);exit();
+
 		$data['daftar_pekerjaan']	= $this->M_order->daftar_pekerjaan($kodesie);
 		$tgl = date('Y-m');
 		$data['inputStandar'] = $this->M_order->getInputstd2($tgl, $kodesie);
@@ -1148,11 +1147,11 @@ class C_Order extends CI_Controller
 		$test = array_filter($refjabatan, function ($elem) use ($actInputStd) {
 			return in_array($elem['kodesie'], $actInputStd);
 		});
+
 		$data['refseksi'] = $test;
-		// echo "<pre>";
-		// print_r($test);exit();
+
 		$n = substr($noind, 0, 1);
-		if ($n == 'B' || $n == 'D' || $n == 'J' || $noind == 'T0007') {
+		if ($n == 'B' || $n == 'D' || $n == 'J' || $noind == 'T0007' || $noind == 'F2365') {
 			$this->load->view('V_Header', $data);
 			$this->load->view('V_Sidemenu', $data);
 			$this->load->view('P2K3V2/Order/V_Approve_standar', $data);
@@ -1163,6 +1162,86 @@ class C_Order extends CI_Controller
 			$this->load->view('P2K3V2/Order/V_Akses_deny2', $data);
 			$this->load->view('V_Footer', $data);
 		}
+	}
+
+	// Approve Atasan Ass.Ka.unit Akbar Sani Order #518177
+	public function approveAskanit()
+	{
+		$user = $this->session->username;
+		$noind = $this->session->user;
+		$kodesie = $this->session->kodesie;
+
+		// Seksi
+		$data  = $this->general->loadHeaderandSidemenu('Approve ASKANIT', 'Approve ASKANIT', 'Approve ASKANIT', '', '');
+		$seksiBawah = array();
+		//cek seksi dalam satu unit yang tidak memiliki kasie dan kanit :u
+		if (substr($kodesie, 5) != '0000') {
+			$seksiBawah = $this->M_order->cekSeksiDibawah2($kodesie);
+		}
+		//jika yang login kepala unit
+		if (substr($kodesie, 5) == '0000') {
+			$seksiBawah = $this->M_order->cekSeksiDibawah($kodesie);
+		}
+
+		$refjabatan = $this->M_order->getTrefjabatan($noind);
+		$kodesie = array_column($refjabatan, 'kodesie');
+		$refjabatankanit = $this->M_order->getTrefjabatanKanit($noind);
+		$kodesiekanit = array_column($refjabatankanit, 'kodesie');
+		$listSeksi = $this->M_order->getListUnit($kodesiekanit);
+		$namaSie = array_column($listSeksi, 'seksi');
+		$codeSie = array_column($listSeksi, 'kodesie');
+
+		// These dude Really Confuse Me
+		$x = count($refjabatan);
+		if (!empty($seksiBawah)) {
+			foreach ($seksiBawah as $key) {
+				$kodesie[] = $key['kodesie'];
+				$refjabatan[$x]['kodesie'] = $key['kodesie'];
+				$refjabatan[$x]['seksi'] = $key['seksi'];
+				$x++;
+			}
+		}
+
+		$listInput = [];
+		$listPekerjaan = [];
+		$namaSeksi = array_combine($codeSie, $namaSie);
+
+		foreach ($kodesiekanit as $kodekanit) {
+			$listInputBundle = [];
+			foreach (array_column($listSeksi, 'kodesie') as $seksi) {
+				if (substr($seksi, 0, 5) != $kodekanit) continue;
+				$daftarInput = $this->M_order->getInputstdAskanit($seksi);
+				if (empty($daftarInput)) continue;
+				$listInputBundle[$seksi] = $daftarInput;
+			}
+			$listInput[$kodekanit] = $listInputBundle;
+		}
+
+		foreach (array_column($listSeksi, 'kodesie') as $kodesieVal) {
+			$daftarPekerja = $this->M_order->daftar_pekerjaan($kodesieVal);
+			$listPekerjaan[$kodesieVal] = $daftarPekerja;
+		}
+
+		$data['listKs'] = $refjabatan;
+		$data['seksi'] = $this->M_order->getSeksi($noind);
+		$data['daftar_pekerjaan']	= $listPekerjaan;
+		$data['inputStandar'] = $listInput;
+		$data['namaSeksi'] = $namaSeksi;
+		$data['refseksi'] = $refjabatankanit;
+
+		// This Is Done
+		$kd_jabatan = $this->M_order->getKdjab($this->session->user)[0]['kd_jabatan'];
+		if ((int) $kd_jabatan <= 9 || $noind == 'F2365') {
+			$this->load->view('V_Header', $data);
+			$this->load->view('V_Sidemenu', $data);
+			$this->load->view('P2K3V2/Order/V_Approve_askanit', $data);
+			$this->load->view('V_Footer', $data);
+		} else {
+			$this->load->view('V_Header', $data);
+			$this->load->view('V_Sidemenu', $data);
+			$this->load->view('P2K3V2/Order/V_Akses_deny3', $data);
+			$this->load->view('V_Footer', $data);
+		};
 	}
 
 	public function submitStandar()
@@ -1191,46 +1270,88 @@ class C_Order extends CI_Controller
 			$this->log_activity->activity_log($aksi, $detail);
 			//
 		}
+		redirect('P2K3_V2/Order/approveStandar');
+	}
+
+	public function submitAskanit()
+	{
+		$this->load->library('PHPMailerAutoload');
+		$noind = $this->session->user;
+
+		//masuk ke database
+		$noind = $this->session->user;
+
+		$idStandar = $this->input->post('p2k3_idStandar');
+
+		$id = array_map(function ($id) {
+			return explode(',', $id)[0];
+		}, $idStandar);
+
+		$seksi = array_map(function ($id) {
+			return explode(',', $id)[1];
+		}, $idStandar);
+
+		$seksi = implode(',', array_unique($seksi));
+
+		if (empty($id)) {
+			redirect('P2K3_V2/Order/approveAskanit');
+			exit();
+		}
+		$status = $this->input->post('p2k3_action');
+		$st = '5';
+		if ($status == 'reject') {
+			$st = '6';
+		}
+		foreach ($id as $key) {
+			$update = $this->M_order->updateSt2($st, $key, $noind);
+			//insert to sys.t_log_activity
+			$aksi = 'P2K3 V2';
+			$detail = "Update Standar ID= $key";
+			$this->log_activity->activity_log($aksi, $detail);
+			//
+		}
+
+		// Get Seksi
+
 
 		$message = '	<!DOCTYPE HTML">
-				<html>
-				<head>
-			 	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-			  	<title>Mail Generated By System</title>
-			  	<style>
-				#main 	{
-   	 						border: 1px solid black;
-   	 						text-align: center;
-   	 						border-collapse: collapse;
-   	 						width: 100%;
-						}
-				#detail {
-   	 						border: 1px solid black;
-   	 						text-align: justify;
-   	 						border-collapse: collapse;
-						}
+		<html>
+		<head>
+		 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+			<title>Mail Generated By System</title>
+			<style>
+		#main 	{
+							border: 1px solid black;
+							text-align: center;
+							border-collapse: collapse;
+							width: 100%;
+				}
+		#detail {
+							border: 1px solid black;
+							text-align: justify;
+							border-collapse: collapse;
+				}
 
-			  	</style>
-				</head>
-				<body>
-						<h3 style="text-decoration: underline;">P2K3 TIM V.2</h3>
-					<hr/>
+			</style>
+		</head>
+		<body>
+				<h3 style="text-decoration: underline;">P2K3 TIM V.2</h3>
+			<hr/>
 
-					<p>Anda mendapatkan kiriman update standar kebutuhan APD dari seksi ' . $seksi[0]['section'] . '
-					</p>
-					<hr/>
-					<p>
-					Untuk melihat/mengelola, silahkan login ke ERP
-					</p>
+			<p>Anda mendapatkan kiriman update standar kebutuhan APD dari seksi ' . $seksi . '
+			</p>
+			<hr/>
+			<p>
+			Untuk melihat/mengelola, silahkan login ke ERP
+			</p>
 
-				</body>
-				</html>';
+		</body>
+		</html>';
 		$emel = $this->M_dtmasuk->getEmail();
 		$arr = array();
 		foreach ($emel as $key) {
 			$arr[] = $key['email'];
 		}
-		// print_r($arr); exit();
 
 		$mail = new PHPMailer();
 		$mail->SMTPDebug = 0;
@@ -1252,18 +1373,23 @@ class C_Order extends CI_Controller
 		$mail->Password = '123456';
 		$mail->WordWrap = 50;
 		$mail->setFrom('noreply@quick.com', 'P2K3');
-		// $mail->addAddress('your_mail@quick.com');
+		$mail->addAddress('akbar_sani_hasan@quick.com');
+
 		foreach ($arr as $key) {
 			$mail->addAddress($key);
 		}
 		$mail->Subject = 'NEW!!! P2K3 Approval Standar Kebutuhan';
 		$mail->msgHTML($message);
 
-		if (!$mail->send()) {
-			echo "Mailer Error: " . $mail->ErrorInfo;
-			show_error($this->email->print_debugger());
+		if ($st !== '6') {
+			if (!$mail->send()) {
+				echo "Mailer Error: " . $mail->ErrorInfo;
+				show_error($this->email->print_debugger());
+			} else {
+				redirect('P2K3_V2/Order/approveAskanit');
+			}
 		} else {
-			redirect('P2K3_V2/Order/approveStandar');
+			redirect('P2K3_V2/Order/approveAskanit');
 		}
 	}
 

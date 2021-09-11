@@ -66,6 +66,31 @@ class M_Order extends CI_Model
         $query = $this->personalia->query($sql);
         return $query->result_array();
     }
+    public function daftar_pekerjaankanit($kodesie)
+    {
+        if (gettype($kodesie) == 'string') {
+            $kodesie = substr($kodesie, 0, 5);
+        } elseif (gettype($kodesie) == 'array') {
+            $kodesie = implode("', '", $kodesie);
+        }
+        $sql = "select
+                    tn.*,
+                    (select count(kd_pkj)
+                    from
+                        hrd_khs.tpribadi ti
+                    where
+                        ti.kd_pkj = tn.kdpekerjaan
+                        and ti.keluar = '0') jumlah
+                from
+                    hrd_khs.tpekerjaan tn
+                where
+                    substring(kdpekerjaan, 1, 5) in ('$kodesie')
+                    order by kdpekerjaan asc
+                    ";
+        // echo $sql;exit();
+        $query = $this->personalia->query($sql);
+        return $query->result_array();
+    }
 
     public function kode_pekerjaan($kodesie)
     {
@@ -262,7 +287,7 @@ class M_Order extends CI_Model
     {
         $sql = "select
                     tgl_input::date periode,
-                    tgl_approve tgl_approve_atasan,
+                    tgl_approve_askanit tgl_approve_atasan,
                     substring(kodesie, 0, 8) kodesie,
                     er.section_name
                 from
@@ -270,14 +295,14 @@ class M_Order extends CI_Model
                 left join er.er_section er on
                     substring(er.section_code, 0, 8) = substring(ks.kodesie, 0, 8)
                 where
-                    status = '1'
+                    status = '5'
                 group by
                     tgl_input::date,
                     substring(kodesie, 0, 8),
                     er.section_name,
-                    tgl_approve
+                    tgl_approve_askanit
                 order by
-                    tgl_approve,
+                    tgl_approve_askanit,
                     er.section_name asc";
         $query = $this->db->query($sql);
         return $query->result_array();
@@ -346,7 +371,23 @@ class M_Order extends CI_Model
 
         return $query->result_array();
     }
-
+    public function getInputstdAskanit($kodesie)
+    {
+        if (gettype($kodesie) == 'string') {
+            $kodesie = substr($kodesie, 0, 7);
+        } elseif (gettype($kodesie) == 'array') {
+            $kodesie = implode("', '", $kodesie);
+        }
+        $sql = "select 
+                    ks.*, 
+                    km.item 
+                from 
+                    k3.k3n_standar_kebutuhan ks
+                left join 
+                    k3.k3_master_item km on km.kode_item = ks.kode_item
+                where status = '1' and ks.kodesie in ('$kodesie') order by tgl_input,ks.kodesie desc";
+        return $this->erp->query($sql)->result_array();
+    }
     public function getInputstd3($id)
     {
         // echo $kodesie;exit();
@@ -390,6 +431,15 @@ class M_Order extends CI_Model
     {
         $tgl = date('Y-m-d H:i:s');
         $sql = "update k3.k3n_standar_kebutuhan set status = '$st', tgl_approve = '$tgl', approve_by = '$noind' where id = '$id'";
+        // echo $sql;exit();
+        $query = $this->erp->query($sql);
+
+        return $query;
+    }
+    public function updateSt2($st, $id, $noind)
+    {
+        $tgl = date('Y-m-d H:i:s');
+        $sql = "update k3.k3n_standar_kebutuhan set status = '$st', tgl_approve_askanit = '$tgl', approve_askanit_by = '$noind' where id = '$id'";
         // echo $sql;exit();
         $query = $this->erp->query($sql);
 
@@ -753,6 +803,26 @@ class M_Order extends CI_Model
                     ts.seksi";
         return $this->personalia->query($sql)->result_array();
     }
+    public function getTrefjabatanKanit($noind, $kodesie = null)
+    {
+        $expandQuery = '';
+        if ($kodesie != null) {
+            $expandQuery = "and substring(t.kodesie,1,5) = '$kodesie'";
+        }
+        $sql = "select
+                    substring(t.kodesie,1,5) kodesie,
+                    ts.unit
+                from
+                    hrd_khs.trefjabatan t
+                left join hrd_khs.tseksi ts on
+                    ts.kodesie = t.kodesie
+                where
+                    noind = '$noind' $expandQuery
+                group by
+                    t.kodesie,
+                    ts.unit";
+        return $this->personalia->query($sql)->result_array();
+    }
 
     public function cekSeksiDibawah($ks)
     {
@@ -766,13 +836,13 @@ class M_Order extends CI_Model
                 where
                     ts.kodesie like '$ks%'
                     and (select
-                        count(noind)
-                    from
-                        hrd_khs.tpribadi t
-                    where
-                        t.keluar = false
-                        and substring(t.kodesie,1,7) = substring(ts.kodesie,1,7)
-                        and substring(noind, 1, 1) in ('B','D','J')) = 0";
+                            count(noind)
+                        from
+                            hrd_khs.tpribadi t
+                        where
+                            t.keluar = false
+                            and substring(t.kodesie,1,7) = substring(ts.kodesie,1,7)
+                            and substring(noind, 1, 1) in ('B','D','J')) = 0";
         return $this->personalia->query($sql)->result_array();
     }
 
@@ -788,7 +858,7 @@ class M_Order extends CI_Model
                 where
                     ts.kodesie like '$ks%'
                     and (select
-                        count(noind)
+                            count(noind)
                     from
                         hrd_khs.tpribadi t
                     where
@@ -796,14 +866,14 @@ class M_Order extends CI_Model
                         and substring(t.kodesie,1,7) = substring(ts.kodesie,1,7)
                         and substring(noind, 1, 1) in ('B','D','J')) = 0
                     and (select
-                        count(noind)
-                    from
-                        hrd_khs.tpribadi t
-                    where
-                        t.keluar = false
-                        and substring(t.kodesie,1,5) = substring(ts.kodesie,1,5)
-                        and substring(noind, 1, 1) in ('B','D','J')
-                        and t.kd_jabatan <= '08') = 0";
+                            count(noind)
+                        from
+                            hrd_khs.tpribadi t
+                        where
+                            t.keluar = false
+                            and substring(t.kodesie,1,5) = substring(ts.kodesie,1,5)
+                            and substring(noind, 1, 1) in ('B','D','J')
+                            and t.kd_jabatan <= '08') = 0";
         // echo $sql;exit();
         return $this->personalia->query($sql)->result_array();
     }
@@ -1200,5 +1270,30 @@ class M_Order extends CI_Model
     {
         $kodesie = substr($kodesie, 0, 7);
         return $this->db->query("select trim(periode)periode from \"k3\".tbon_sepatu_periode where left(kodesie,7) = '$kodesie'")->row();
+    }
+
+    // Akbar 24 Mei 2021
+    public function getKdjab($noind)
+    {
+        $sql = "SELECT kd_jabatan::integer FROM hrd_khs.tpribadi where noind = '$noind'";
+        return $this->personalia->query($sql)->result_array();
+    }
+
+    public function getListUnit($unit)
+    {
+        if (gettype($unit) == 'string') {
+            $unit = substr($unit, 0, 7);
+        } elseif (gettype($unit) == 'array') {
+            $unit = implode("', '", $unit);
+        }
+        $sql = "select distinct
+                    substring(ts.kodesie,1,7) kodesie,
+                    ts.seksi
+                from
+                    hrd_khs.tseksi ts
+                where 
+                    substring(ts.kodesie,1,5) in('$unit') and seksi != '-'
+                order by kodesie";
+        return $this->personalia->query($sql)->result_array();
     }
 }
