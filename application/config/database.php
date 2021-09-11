@@ -1,5 +1,6 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
+
 /*
 | -------------------------------------------------------------------
 | DATABASE CONNECTIVITY SETTINGS
@@ -61,7 +62,7 @@ $active_group = 'default';
 $query_builder = TRUE;
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'database.quick.com',
+	'hostname' => 'dev.quick.com',
 	'username' => 'postgres',
 	'password' => 'password',
 	'database' => 'erp',
@@ -83,7 +84,7 @@ $db['default'] = array(
 );
 $db['oracle'] = array(
 	'dsn'	=> '',
-	'hostname' => '192.168.7.1:1521/PROD', //192.168.7.3:1522/DEV
+	'hostname' => '192.168.7.3:1522/DEV', //192.168.7.3:1522/DEV
 	'username' => 'apps',
 	'password' => 'apps',
 	'database' => 'KHS_PROD', //KHS_DEV
@@ -104,7 +105,7 @@ $db['oracle'] = array(
 );
 $db['personalia'] = array(
 	'dsn'	=> '',
-	'hostname' => 'database.quick.com',
+	'hostname' => 'dev.quick.com',
 	'username' => 'postgres',
 	'password' => 'password',
 	'database' => 'Personalia',
@@ -148,9 +149,11 @@ $db['tokoquick'] = array(
 );
 $db['quickcom'] = array(
 	'dsn'	=> '',
-	'hostname' => 'database.quick.com',
-	'username' => 'erp',
-	'password' => 'qu1ck1953',
+	'hostname' => 'dev.quick.com',
+	'username' => 'amri',
+	'password' => 'amri',
+	// 'username' => 'erp',
+	// 'password' => 'qu1ck1953',
 	'database' => 'fp_distribusi',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
@@ -170,9 +173,11 @@ $db['quickcom'] = array(
 );
 $db['quick'] = array(
 	'dsn'	=> '',
-	'hostname' => 'database.quick.com',
-	'username' => 'erp',
-	'password' => 'qu1ck1953',
+	'hostname' => 'dev.quick.com',
+	'username' => 'amri',
+	'password' => 'amri',
+	// 'username' => 'erp',
+	// 'password' => 'qu1ck1953',
 	'database' => '',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
@@ -192,9 +197,11 @@ $db['quick'] = array(
 );
 $db['kaizen'] = array(
 	'dsn'	=> '',
-	'hostname' => 'database.quick.com',
-	'username' => 'erp',
-	'password' => 'qu1ck1953',
+	'hostname' => 'dev.quick.com',
+	'username' => 'amri',
+	'password' => 'amri',
+	// 'username' => 'erp',
+	// 'password' => 'qu1ck1953',
 	'database' => 'kaizen',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
@@ -256,7 +263,7 @@ $db['oracle_dev'] = array(
 );
 $db['dpostgre'] = array(
 	'dsn'	=> '',
-	'hostname' => 'database.quick.com',
+	'hostname' => 'dev.quick.com',
 	'username' => 'postgres',
 	'password' => 'password',
 	'database' => 'erp',
@@ -278,9 +285,11 @@ $db['dpostgre'] = array(
 );
 $db['tpb_sql'] = array(
 	'dsn'	=> '',
-	'hostname' => 'database.quick.com',
-	'username' => 'erp',
-	'password' => 'qu1ck1953',
+	'hostname' => 'dev.quick.com',
+	'username' => 'amri',
+	'password' => 'amri',
+	// 'username' => 'erp',
+	// 'password' => 'qu1ck1953',
 	'database' => 'quickc01_trackingpengirimanbarang',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
@@ -322,9 +331,9 @@ $db['dinas_luar'] = array(
 );
 $db['daerah'] = array(
 	'dsn'	=> '',
-	'hostname' => 'database.quick.com',
-	'username' => 'root',
-	'password' => 'password',
+	'hostname' => 'dev.quick.com',
+	'username' => 'amri',
+	'password' => 'amri',
 	'database' => 'db_daerah',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
@@ -343,9 +352,9 @@ $db['daerah'] = array(
 );
 $db['alamat'] = array(
 	'dsn'	=> '',
-	'hostname' => 'database.quick.com',
-	'username' => 'erp',
-	'password' => 'qu1ck1953',
+	'hostname' => 'dev.quick.com',
+	'username' => 'amri',
+	'password' => 'amri',
 	'database' => 'db_recruitment',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
@@ -364,7 +373,7 @@ $db['alamat'] = array(
 );
 $db['erp_db'] = array(
 	'dsn'	=> '',
-	'hostname' => 'database.quick.com',
+	'hostname' => 'dev.quick.com',
 	'username' => 'postgres',
 	'password' => 'password',
 	'database' => 'erp',
@@ -385,9 +394,9 @@ $db['erp_db'] = array(
 );
 $db['spl_db'] = array(
 	'dsn'	=> '',
-	'hostname' => 'database.quick.com',
-	'username' => 'spl',
-	'password' => '123321',
+	'hostname' => 'dev.quick.com',
+	'username' => 'amri',
+	'password' => 'amri',
 	'database' => 'splseksi',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
@@ -406,9 +415,9 @@ $db['spl_db'] = array(
 );
 $db['lantuma'] = array(
 	'dsn'	=> '',
-	'hostname' => 'database.quick.com',
-	'username' => 'erp',
-	'password' => 'qu1ck1953',
+	'hostname' => 'dev.quick.com',
+	'username' => 'amri',
+	'password' => 'amri',
 	'database' => 'db_lantoolmaking',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
@@ -428,9 +437,9 @@ $db['lantuma'] = array(
 );
 $db['khs_packing'] = array(
 	'dsn'	=> '',
-	'hostname' => 'database.quick.com',
-	'username' => 'erp',
-	'password' => 'qu1ck1953',
+	'hostname' => 'dev.quick.com',
+	'username' => 'amri',
+	'password' => 'amri',
 	'database' => 'khs_packing',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
@@ -471,6 +480,7 @@ $db['design'] = array(
 	'port' => '5432'
 );
 //di offkan dahulu karena absen menggunakan barcode, jika absen finger on, perlu diaktifkan kembali, data didatabasenya perlu ditambahkan lagi.
+
 /*$efg="";
 		$data = explode('.',$_SERVER['SERVER_NAME']);
 		if (!empty($data[0])) {
@@ -599,6 +609,7 @@ $db['quickcom_hrd_khs'] = array(
 	'save_queries'		=> TRUE,
 	'port' 				=> 3306
 );
+
 $db['db_fingerspot'] = array(
 	'dsn'				=> '',
 	'hostname' 			=> '192.168.168.50',

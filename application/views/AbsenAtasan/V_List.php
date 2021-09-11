@@ -25,10 +25,10 @@
 	</div>
 	<div class="panel box-body" >
 		<ul class="nav nav-tabs" role="tablist">
-			<li role="presentation">
+			<li role="presentation" class="active">
 				<a href="#allEntry" aria-controls="allEntry" role="Tab" data-toggle="tab">All</a>
 			</li>
-			<li role="presentation" class="active">
+			<li role="presentation">
 				<a href="#newEntry" aria-controls="newEntry" role="Tab" data-toggle="tab">New Entry</a>
 			</li>
 			<li role="presentation">
@@ -40,7 +40,7 @@
 		</ul>
 		<hr>
 		<div class="tab-content">
-			<div role="tabpanel" class="tab-pane" id="allEntry">
+			<div role="tabpanel" class="tab-pane active" id="allEntry">
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="table-responsive" id="asa_divasatable">
@@ -96,7 +96,7 @@
 					</div>
 				</div>
 			</div>
-			<div role="tabpanel" class="tab-pane active" id="newEntry">
+			<div role="tabpanel" class="tab-pane" id="newEntry">
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="table-responsive" id="asa_divasatable">

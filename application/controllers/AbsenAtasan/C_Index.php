@@ -52,26 +52,65 @@ class C_Index extends CI_Controller
 		}
 
 		public function listData(){
-		$user_id = $this->session->userid;
+			$user_id = $this->session->userid;
 
-		$data['Menu'] = 'Dashboard';
-		$data['SubMenuOne'] = '';
-		$data['SubMenuTwo'] = '';
+			$data['Menu'] = 'Dashboard';
+			$data['SubMenuOne'] = '';
+			$data['SubMenuTwo'] = '';
 
-		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+			$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+			$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+			$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$employee = $this->session->employee;
-		$nama = trim($employee);
-		$noind = trim($this->session->user);
-		$data['listData'] = $this->M_absenatasan->getList($noind,$nama);
-		$data['listData2'] = $this->M_absenatasan->getList($noind,$nama);
-		
-		$this->load->view('AbsenAtasan/V_CHeader',$data);
-		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('AbsenAtasan/V_List',$data);
-		$this->load->view('AbsenAtasan/V_CFooter',$data);
+			$employee = $this->session->employee;
+			$nama = trim($employee);
+			$noind = trim($this->session->user);
+			$_status = $this->input->get('status');
+
+			switch ($_status) {
+				case 'new_entry':
+					$status = "0";
+					break;
+				case 'approved':
+					$status = '1';
+					break;
+				case 'rejected':
+					$status = '2';
+					break;
+				default:
+					$status = "0";
+					break;
+			}
+
+			$data['listData'] = $this->M_absenatasan->getListByStatus($noind,$nama,$status);
+			$data['new_entry'] = $this->M_absenatasan->getNewEntryCount($noind,$nama);
+			
+			$this->load->view('AbsenAtasan/V_CHeader',$data);
+			$this->load->view('V_Sidemenu',$data);
+			$this->load->view('AbsenAtasan/V_ListStatus',$data);
+			$this->load->view('AbsenAtasan/V_CFooter',$data);
+		}
+
+		public function listDataAll(){
+			$user_id = $this->session->userid;
+
+			$data['Menu'] = 'Dashboard';
+			$data['SubMenuOne'] = '';
+			$data['SubMenuTwo'] = '';
+
+			$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+			$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+			$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+			$employee = $this->session->employee;
+			$nama = trim($employee);
+			$noind = trim($this->session->user);
+			$data['listData'] = $this->M_absenatasan->getList($noind,$nama);
+			
+			$this->load->view('AbsenAtasan/V_CHeader',$data);
+			$this->load->view('V_Sidemenu',$data);
+			$this->load->view('AbsenAtasan/V_List',$data);
+			$this->load->view('AbsenAtasan/V_CFooter',$data);
 		}
 
 		public function getAtasan(){
