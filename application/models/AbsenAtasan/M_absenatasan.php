@@ -27,6 +27,37 @@ class M_absenatasan extends CI_Model
 		return $query->result_array();
 	}
 
+	
+	public function getListByStatus($noind,$approver, $status){
+		// print_r($approver);exit();	
+		$sql = "SELECT approval.approver, absen.*,jenis.* 
+			FROM at.at_absen_approval approval, 
+				at.at_absen absen,
+				at.at_jenis_absen jenis 
+			WHERE (left(approval.approver,5) = '$noind' OR approval.approver LIKE '%$approver%' ) 
+				AND approval.absen_id = absen.absen_id 
+				AND absen.jenis_absen_id = jenis.jenis_absen_id 
+				and absen.noind not in (select noind from at.at_laju) 
+				and absen.status = '$status'
+			ORDER BY waktu desc";
+		$query = $this->db->query($sql);
+
+		return $query->result_array();
+	}
+
+	public function getNewEntryCount($noind,$approver)
+	{
+		$sql = "SELECT count(*) as jumlah
+			FROM at.at_absen_approval approval, 
+				at.at_absen absen
+			WHERE (left(approval.approver,5) = '$noind' OR approval.approver LIKE '%$approver%' ) 
+				AND approval.absen_id = absen.absen_id 
+				and absen.noind not in (select noind from at.at_laju) 
+				and absen.status =0 ";
+		return $this->db->query($sql)->num_rows();
+	}
+
+
 	public function getListabsLaju($noind,$approver){
 		// print_r($approver);exit();	
 		$sql = "SELECT approval.approver, absen.*,jenis.* FROM at.at_absen_approval approval, at.at_absen absen,at.at_jenis_absen jenis WHERE approval.absen_id = absen.absen_id AND absen.jenis_absen_id = jenis.jenis_absen_id and absen.noind in (select noind from at.at_laju) ORDER BY approval.status desc";
