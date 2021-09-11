@@ -93,8 +93,8 @@
             <th class="tdp_th tglmulai">Tgl. Mulai</th>
             <th class="tdp_th tglakhir">Tgl. Akhir</th>
             <th class="tdp_th pensiun">Kartu Jaminan Pensiun</th>
-            <th class="tdp_th status_vaksin">NIK Peserta Vaksinasi</th>
-            <th class="tdp_th status_vaksin">Nama Peserta Vaksinasi</th>
+            <th class="tdp_th nik_vaksinasi">NIK Peserta Vaksinasi</th>
+            <th class="tdp_th nama_vaksinasi">Nama Peserta Vaksinasi</th>
             <th class="tdp_th status_vaksin">Status Vaksinasi</th>
             <th class="tdp_th jenis_vaksin">Jenis Vaksin</th>
             <th class="tdp_th tgl_vaksin_1">Tgl. Vaksin 1</th>
@@ -388,11 +388,11 @@
                         if (in_array("ttk.kartu_jaminan_pensiun", $select)) {
                             echo "<td>" . $val['kartu_jaminan_pensiun'] . "</td>";
                         }
-                        if (in_array("tv.nik", $select)) {
-                            echo "<td>" . $val['nik'] . "</td>";
+                        if (in_array("tv.nik as nik_vaksinasi", $select)) {
+                            echo "<td>" . $val['nik_vaksinasi'] . "</td>";
                         }
-                        if (in_array("tv.nama", $select)) {
-                            echo "<td>" . $val['nama'] . "</td>";
+                        if (in_array("tv.nama as nama_vaksinasi", $select)) {
+                            echo "<td>" . $val['nama_vaksinasi'] . "</td>";
                         }
                         if (in_array("tv.status_vaksin", $select)) {
                             echo "<td>" . $val['status_vaksin'] . "</td>";

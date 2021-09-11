@@ -36,14 +36,25 @@ if(stripos($val['jenis'], 'FIXTURE') !== FALSE || stripos($val['jenis'], 'MASTER
         $nama = substr($val['jenis'],0,9);
     }
     $valjenis = '<div class="col-md-3">
-                <input id="jenis" name="jenis" class="form-control" value="'.$nama.'" readonly>
-            </div>
-            <div class="col-md-5">
-                <input readonly class="form-control" value="'.$value.'">
-            </div>';
+                    <input id="jenis" name="jenis" class="form-control" value="'.$nama.'" readonly>
+                </div>
+                <div class="col-md-1">
+                    <button type="button" id="btn_edit_jenis" class="btn btn-sm btn-info" onclick="editorder(`Jenis`, 25)"><i class="fa fa-edit"></i></button>
+                    <input type="hidden" id="ket_edit_25" name="ket_edit[]" value="N">
+                </div>
+                <div class="col-md-4">
+                    <input readonly class="form-control" value="'.$value.'">
+                </div>
+                <div class="col-md-1">
+                    <button type="button" id="btn_det_jenis" class="btn btn-sm btn-info" onclick="editorder(`Detail Jenis`, 25)"><i class="fa fa-edit"></i></button>
+                </div>';
 }else {
     $valjenis = '<div class="col-md-8">
                 <input id="jenis" name="jenis" class="form-control" value="'.$val['jenis'].'" readonly>
+            </div>
+            <div class="col-md-1">
+                <button type="button" id="btn_edit_jenis" class="btn btn-sm btn-info" onclick="editorder(`Jenis`, 25)"><i class="fa fa-edit"></i></button>
+                <input type="hidden" id="ket_edit_25" name="ket_edit[]" value="N">
             </div>';
 }
 
@@ -210,12 +221,16 @@ if ($val['ket'] == 'Baru') { // view dari tabel baru
                 <input readonly class="form-control" value="<?= $val['no_proposal'] ?>">
             </div>
         </div>
-        <div class="col-md-12" style="<?= $baru?>"><br>
+        <div class="col-md-12" style="<?= $baru?>" id="edit_23"><br>
             <div class="col-md-3">
                 Alasan Pengadaan Asset:
             </div>
             <div class="col-md-8">
                 <textarea style="width:100%;height:100px" disabled><?= $val['alasan_asset'] ?></textarea>
+            </div>
+            <div class="col-md-1">
+                <button type="button" class="btn btn-sm btn-info" onclick="editorder('Alasan Asset', 23)"><i class="fa fa-edit"></i></button>
+                <input type="hidden" id="ket_edit_23" name="ket_edit[]" value="N">
             </div>
         </div>
         <?php } ?>
@@ -234,7 +249,7 @@ if ($val['ket'] == 'Baru') { // view dari tabel baru
                 <input type="hidden" id="ket_edit_1" name="ket_edit[]" value="N">
             </div>
         </div>
-        <div class="col-md-12"><br>
+        <div class="col-md-12" id="edit_25"><br>
             <div class="col-md-3">
                 Jenis :
             </div>
@@ -500,12 +515,16 @@ if ($val['ket'] == 'Baru') { // view dari tabel baru
             </div>
         </div>
         <?php }?>
-        <div class="col-md-12"><br>
+        <div class="col-md-12" id="edit_24"><br>
             <div class="col-md-3">
                 Assign Desainer :
             </div>
             <div class="col-md-8">
                 <input readonly class="form-control" value="<?= $val['assign_desainer'] ?>">
+            </div>
+            <div class="col-md-1">
+                <button type="button" class="btn btn-sm btn-info" onclick="editorder('Assign Desainer', 24)"><i class="fa fa-edit"></i></button>
+                <input type="hidden" id="ket_edit_24" name="ket_edit[]" value="N">
             </div>
         </div>
         <div class="col-md-12" style="display:none"><br>

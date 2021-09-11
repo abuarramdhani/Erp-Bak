@@ -147,6 +147,9 @@
             <?php foreach ($komen as $key => $k) {?>
                 <p style="font-size:11px">- <?= $k['person'] ?> : <?= $k['keterangan'] ?></p>
             <?php }?>
+            <br> <br>
+            <span style="font-size:11px">ALASAN CANCEL / DITOLAK :</span><br>
+            <span style="font-size:11px"><?= $fix['alasan_reject']?></span>
         </td>
     </tr>
     <tr>

@@ -2602,6 +2602,9 @@ $route['p2k3adm_V2/Admin/Car/api/employeePIC'] = 'P2K3V2/P2K3Admin/MainMenu/C_Ca
 $route['p2k3adm_V2/Admin/(:any)'] = 'P2K3V2/P2K3Admin/MainMenu/C_Index/$1';
 $route['p2k3adm_V2/Admin/(:any)/(:any)'] = 'P2K3V2/P2K3Admin/MainMenu/C_Index/$1/$2';
 $route['p2k3adm_V2/Admin/(:any)/(:any)/(:any)'] = 'P2K3V2/P2K3Admin/MainMenu/C_Index/$1/$2/$3';
+$route['p2k3adm_V2/Admin/ajax/ajaxGetKebSet'] = 'P2K3V2/P2K3Admin/MainMenu/C_Index/ajaxGetKebSet';
+$route['p2k3adm_V2/Admin/ajax/ajaxGetKebStaff'] = 'P2K3V2/P2K3Admin/MainMenu/C_Index/getKebStaff';
+$route['p2k3adm_V2/Admin/exportPdf'] = 'P2K3V2/P2K3Admin/MainMenu/C_Index/exportPdf';
 
 
 //--------------------------------------------------- Monitoring Invoice Admin Pembelian --------------------------------------------------//

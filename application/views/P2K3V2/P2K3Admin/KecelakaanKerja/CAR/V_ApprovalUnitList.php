@@ -101,7 +101,7 @@
                               <i class="fa fa-file-pdf-o"></i>
                             </a>
                             <?php if ($key['car_is_created'] == 't') : ?>
-                              <a target="_blank" href="<?= base_url("p2k3adm_V2/Admin/Car/Approval/Unit/$key[id_kecelakaan]") ?>" title="<?= $unitCarButtonTitle ?>" class="btn <?= $carButtonClass ?> btn-sm">
+                              <a target="_blank" href="<?= base_url("p2k3adm_V2/Admin/Car/Approval/Unit/$key[id_kecelakaan]") ?>" title="<?= $unitCarButtonTitle ?>" class="btn <?= $carButtonClass ?> btn-sm" style="display:none">
                                 <i class="fa fa-check-circle"></i>
                               </a>
                             <?php else : ?>
