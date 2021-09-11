@@ -139,10 +139,12 @@ class C_Index extends CI_Controller
 			$baru = $cek_terbaru[0]['tgl_approve_tim'];
 		}
 		$data['list'] = $this->M_dtmasuk->getListAprove($ks, $baru);
-		// echo "<pre>";
-		// print_r($data['list']);exit();
+		$data['get_list_approve_new'] = $this->M_dtmasuk->getListApproveNew($ks);
+
 		$data['daftar_pekerjaan']	= $this->M_order->daftar_pekerjaan($ks);
 		$data['seksi'] = $this->M_dtmasuk->cekseksi($ks);
+
+		$data['ks'] = substr($ks, 0, 7);
 
 		$this->load->view('V_Header', $data);
 		$this->load->view('V_Sidemenu', $data);
@@ -4047,6 +4049,94 @@ class C_Index extends CI_Controller
 		redirect('p2k3adm_V2/Admin/PeriodeSafetyShoes');
 	}
 
+	public function ajaxGetKebSet()
+	{
+		$key = $this->input->get('kodeSie');
+		$key2 = $this->input->get('kdPekerjaan');
+		$apd = $this->M_dtmasuk->getItemPekerja($key, $key2);
+		if (!empty($apd)) {
+			$apd = array_filter($apd, function ($a) {
+				return $a['jml_item'] > 0;
+			});
+			usort($apd, function ($a, $b) {
+				return $a['urutan'] > $b['urutan'];
+			});
+			$kelompok_tubuh  = array_column($apd, 'kelompok_tubuh');
+			$data['apd'] = [];
+
+			foreach ($kelompok_tubuh as $kelTubuh) {
+				$adp_filtered = array_filter($apd, function ($apdval) use ($kelTubuh) {
+					return $apdval['kelompok_tubuh'] == $kelTubuh;
+				});
+				$data['apd'][$kelTubuh] = $adp_filtered;
+			}
+
+			$askaNit = $this->M_order->getTrefjabatanKanit($this->M_dtmasuk->getDataKop($key)[0]['noindaskanit'], substr($key, 0, 5));
+			$data['pekerjaan'] = $this->input->get('pekerjaan');
+			$data['seksiName'] = $this->input->get('seksiName');
+			$data['kelompok_tubuh'] = $kelompok_tubuh;
+			$data['person'] = 'PegawaiKHS.jpg';
+			$data['data_kop'] = $this->M_dtmasuk->getDataKop($key)[0];
+			$data['seksiUnit'] = $askaNit;
+			$view_apd = $this->load->view('P2K3V2/P2K3Admin/APD/V_Standar_pdf', $data, TRUE);
+			$this->session->set_userdata('view_apd', $view_apd);
+			echo $this->load->view('P2K3V2/P2K3Admin/APD/V_Standar_apd', $data, TRUE);
+		} else {
+			echo "<h1 class='text-center'>APD KOSONG</h1>";
+		}
+	}
+
+	public function getKebstaff()
+	{
+		$ks = $this->input->get('kodeSie');
+		$data['seksiName'] = $this->input->get('seksiName');
+		$data['pekerjaan'] = 'STAFF';
+		$apd = $this->M_dtmasuk->getItemStaff($ks);
+		$apd = array_filter($apd, function ($a) {
+			return $a['jml_kebutuhan_staff'] > 0;
+		});
+
+		usort($apd, function ($a, $b) {
+			return $a['urutan'] > $b['urutan'];
+		});
+
+		$kelompok_tubuh  = array_column($apd, 'kelompok_tubuh');
+
+		$data['apd'] = [];
+
+		foreach ($kelompok_tubuh as $kelTubuh) {
+			$adp_filtered = array_filter($apd, function ($apdval) use ($kelTubuh) {
+				return $apdval['kelompok_tubuh'] == $kelTubuh;
+			});
+			$data['apd'][$kelTubuh] = $adp_filtered;
+		}
+
+		$askaNit = $this->M_order->getTrefjabatanKanit($this->M_dtmasuk->getDataKop($ks)[0]['noindaskanit'], substr($ks, 0, 5));
+		$data['data_kop'] = $this->M_dtmasuk->getDataKop($ks)[0];
+		$data['seksiUnit'] = $askaNit;
+		$data['person'] = 'PegawaiKHS.jpg';
+		$view_apd =  $this->load->view('P2K3V2/P2K3Admin/APD/V_Standar_pdf', $data, TRUE);
+		$this->session->set_userdata('view_apd', $view_apd);
+		echo $this->load->view('P2K3V2/P2K3Admin/APD/V_Standar_apd', $data, TRUE);
+	}
+
+	public function exportPdf()
+	{
+		set_time_limit(0);
+		$tanggal = date('Y-m-d H:i:s');
+		$user = $this->session->user;
+		$name = $this->session->employee;
+
+		$pdf     =  $this->pdf->load();
+		$standar_pdf = $this->session->view_apd;
+		$pdf     =  new mPDF('utf-8', array(215, 330), 10, "Arial", 20, 20, 20, 20, 0, 0, 'P', ['default_font' => 'Arial']);
+		$pdf->useSubstitutions = false;
+		$pdf->AddPage();
+		$pdf->WriteHTML($standar_pdf);
+		$pdf->setTitle('KKK-KHS-01');
+		$pdf->setFooter("Dicetak Melalui Quick ERP - P2K3 Pada $tanggal Oleh $user - $name");
+		$pdf->Output('KKK-KHS-01.pdf', 'I');
+	}
 	public function AddPeriodeSafetyShoes()
 	{
 		$kodesie = $this->input->post('kodesie');
