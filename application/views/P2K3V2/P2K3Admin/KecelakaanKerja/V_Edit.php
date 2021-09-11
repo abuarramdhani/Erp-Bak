@@ -458,19 +458,20 @@
                                     <td class="">Act</td>
                                     <td></td>
                                   </tr>
+
                                   <?php foreach ($items as $i => $item) : ?>
                                     <tr>
                                       <?php
-                                          $used_apd_index = array_search($item['name'], $apd_digunakan_name);
-                                          $standard_checklist = '';
-                                          $actual_checklist = '';
+                                      $used_apd_index = array_search($item['name'], $apd_digunakan_name);
+                                      $standard_checklist = '';
+                                      $actual_checklist = '';
 
-                                          if ($used_apd_index !== false) {
-                                            $standard_checklist = $apd_digunakan[$used_apd_index]['standard'] == 't';
-                                            $actual_checklist = $apd_digunakan[$used_apd_index]['actual'] == 't';
-                                          }
+                                      if ($used_apd_index !== false) {
+                                        $standard_checklist = $apd_digunakan[$used_apd_index]['standard'] == 't';
+                                        $actual_checklist = $apd_digunakan[$used_apd_index]['actual'] == 't';
+                                      }
 
-                                          ?>
+                                      ?>
                                       <input type="hidden" name="apd_digunakan[<?= $item['id'] ?>][nama_apd]" value="<?= $item['name'] ?>">
                                       <td class="bordered square-checkbox">
                                         <input type="checkbox" name="apd_digunakan[<?= $item['id'] ?>][standard]" <?= $standard_checklist ? 'checked' : '' ?>>

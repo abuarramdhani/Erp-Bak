@@ -8,7 +8,6 @@
   }
 </style>
 <?php $this->load->view('P2K3V2/P2K3Admin/KecelakaanKerja/CAR/css/StatusColor') ?>
-
 <section class="content">
   <div class="inner">
     <div class="row">
