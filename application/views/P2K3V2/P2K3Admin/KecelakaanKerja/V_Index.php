@@ -1,5 +1,9 @@
 <?php $this->load->view('P2K3V2/P2K3Admin/KecelakaanKerja/CAR/css/StatusColor') ?>
-
+<style type="text/css">
+  .btn-action {
+    display: none;
+  }
+</style>
 <section class="content">
   <div class="inner">
     <div class="row">
