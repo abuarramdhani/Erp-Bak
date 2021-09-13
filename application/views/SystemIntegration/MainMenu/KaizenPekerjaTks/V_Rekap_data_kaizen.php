@@ -30,7 +30,7 @@
       </div>
     </div>
     <div class="panel-body">
-      <table id="tableRekapKaizen" class="table table-bordered table-striped" cellspacing="0" width="100%">
+      <table id="tableRekapKaizen" data-username="<?= $this->session->user ?>" data-sectioncode="<?= $this->session->kodesie ?>" class="table table-bordered table-striped" cellspacing="0" width="100%">
         <thead class="bg-primary">
           <tr>
             <th style=" width: 5%;">Action</th>
