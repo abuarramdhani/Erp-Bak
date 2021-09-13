@@ -148,7 +148,7 @@
 				</div>
 				<?php if(!strpos(base_url(),"erp.quick.com")): ?>
 			 	<div class="col-md-2">
-			 		<button data-toggle="modal" data-target="#locationModal" class="btn btn-success" href="#"><i class="fa fa-map-marker"></i>  Lihat di Google Maps</button>
+			 		<button id="btn-locationModal" data-toggle="modal" data-target="#locationModal" class="btn btn-success" href="#"><i class="fa fa-map-marker"></i>  Lihat di Google Maps</button>
 			 	</div>
 			 	<?php endif; ?>	 
 			 </div>
@@ -221,22 +221,7 @@
 			        <center><h4 class="modal-title"><strong>Lokasi</strong></h4></center>
 			      </div>
 			      <div class="modal-body">
-			      <center>
-			      	<iframe 
-					  width="800" 
-					  height="400" 
-					  frameborder="1" 
-					  scrolling="yes" 
-					  marginheight="0" 
-					  marginwidth="0"
-					  <?php if(!strpos(base_url(),"erp.quick.com")): ?>
-					  src="https://maps.google.com/maps?q=<?php echo $dataEmployee[0]['latitude'];?>,<?php echo $dataEmployee[0]	['longitude']; ?>&hl=es;z=14&amp;output=embed"
-					<?php else: ?>
-						src=""
-					<?php endif; ?>
-					 >
-					 </iframe>
-					 </center>
+			      
 			      </div>
 			      <div class="modal-footer">
 			        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -245,5 +230,24 @@
 			    </div>
 			  </div>
 		</div>
-
 </section>
+<script>
+	window.addEventListener('load', function () {
+		var xnum = 0;
+		$('#btn-locationModal').click(function(){
+			if (xnum != 0) return true;
+			$.ajax({
+				type: "get",
+				url: baseurl + "AbsenAtasan/List/getMAP",
+				data: {
+					latitude: "<?= $dataEmployee[0]['latitude'] ?>",
+					longitude: "<?= $dataEmployee[0]['longitude'] ?>",
+				},
+				success: function (response) {
+					$('#locationModal .modal-body').html(response);
+				},
+			});
+			xnum++;
+		});
+	});
+</script>
