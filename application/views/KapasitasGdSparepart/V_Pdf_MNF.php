@@ -8,14 +8,14 @@ foreach ($get_data as $key => $man) {
 				$talt .= $i.' ';
 			}
 	 } else { // JIKA TIPE DO
-		 $talt .= $man['NAMA_KIRIM'];
+		 $talt .= $man['NAMA_KIRIM'].' ';
 		 if (!empty($man['LAIN'])) {
 				$arr = explode("#", $man['ALAMAT_KIRIM']);
 				foreach($arr as $i) {
 					$talt .= $i.' ';
 				}
 			}else {
-				$talt = $man['ALAMAT_KIRIM'].', '.$man['KOTA_KIRIM'];
+				$talt .= $man['ALAMAT_KIRIM'].', '.$man['KOTA_KIRIM'];
 			}
  		}
 
