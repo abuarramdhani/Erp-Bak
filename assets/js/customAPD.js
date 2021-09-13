@@ -561,7 +561,6 @@ $(document).on("ifUnchecked", ".p2k3_chkAll", function () {
 	$(".p2k3_chk").iCheck("uncheck");
 });
 
-
 /* Formatting function for row details - modify as you need */
 function format(d) {
 	// `d` is the original data object for the row
@@ -1593,80 +1592,6 @@ $(document).ready(function () {
 		$("#editSafetyShoes_Periode").val(periode);
 		$("#editSafetyShoes_Modal").modal("show");
 	});
+
+	$('.apd_slcBasic').select2();
 });
-
-//-------------// 16-Maret-2021 - Akbar Sani Hasan Order #518177 //-------------//
-$('.dataTable-noOrder').dataTable({
-	scrollX: true,
-	fixedColumns: {
-		leftColumns: 3,
-	},
-	ordering: false
-})
-$('.apd-staff').on('click', function () {
-	let kodeSie = $(this).data('ks')
-	let seksiName = $('#seksiName').text()
-	$.ajax({
-		url: `${baseurl}p2k3adm_V2/Admin/ajax/ajaxGetKebStaff`,
-		method: 'get',
-		data: {
-			kodeSie,
-			seksiName
-		},
-		beforeSend: () => {
-			$("#surat-loading").attr("hidden", false)
-		},
-		success: res => {
-			$("#surat-loading").attr("hidden", true)
-			$('#view_apd > .modal-dialog > .modal-content > .modal-body').html(res)
-			$('#seksi').html(`Seksi : ${seksiName}`)
-			$('#view_apd').modal('show')
-		},
-		error: (xhr, ajaxOptions, thrownError) => {
-			$("#surat-loading").attr("hidden", true)
-			$.toaster(xhr + "," + ajaxOptions + "," + thrownError);
-		}
-	})
-})
-
-$('.apd-pekerja').each(function () {
-	$(this).on('click', function () {
-		let kdPekerjaan = $(this).data('kp')
-		let kodeSie = $(this).data('ks')
-		let pekerjaan = $(this).text().toUpperCase()
-		let seksiName = $('#seksiName').text()
-		$.ajax({
-			url: `${baseurl}p2k3adm_V2/Admin/ajax/ajaxGetKebSet`,
-			method: 'get',
-			data: {
-				kodeSie,
-				kdPekerjaan,
-				pekerjaan,
-				seksiName
-			},
-			beforeSend: () => {
-				$("#surat-loading").attr("hidden", false)
-			},
-			success: res => {
-				$("#surat-loading").attr("hidden", true)
-				$('#view_apd > .modal-dialog > .modal-content > .modal-body').html(res)
-				$('#pekerjaan').html(pekerjaan)
-				$('#seksi').html(`Seksi : ${seksiName}`)
-				$('#view_apd').modal('show')
-			},
-			error: (xhr, ajaxOptions, thrownError) => {
-				$("#surat-loading").attr("hidden", true)
-				$.toaster(xhr + "," + ajaxOptions + "," + thrownError);
-			}
-		})
-	})
-})
-
-$(document).on('ifChecked', '.p2k3_chkAll_kanit', function () {
-	$(this).closest('table').find('.p2k3_chk').iCheck("check");
-})
-$(document).on('ifUnchecked', '.p2k3_chkAll_kanit', function () {
-	$(this).closest('table').find('.p2k3_chk').iCheck("uncheck");
-})
-
-$('.apd_slcBasic').select2();
