@@ -63,11 +63,11 @@ class C_PasangBan extends CI_Controller{
 		$ket = $this->input->post('ket');
 		$jenis_ban = $this->input->post('jenis_ban');
 
-		if($jenis_ban = 'RUBBER TIRE RING 12 SUB GROUP (VULKANISIR / GRAN PRINX / GP)'){
+		if($jenis_ban == 'RUBBER TIRE RING 12 SUB GROUP (VULKANISIR / GRAN PRINX / GP)'){
 			$ban = '12V';
-		}else if($jenis_ban = 'RUBBER TIRE RING 12 SUB GROUP (NON VULKANISIR / NV / PRIMEX)'){
+		}else if($jenis_ban == 'RUBBER TIRE RING 12 SUB GROUP (NON VULKANISIR / NV / PRIMEX)'){
 			$ban = '12NV';
-		}else if($jenis_ban = 'RUBBER TIRE RING 13 SUB GROUP (VULKANISIR / GRAN PRINX / GP)'){
+		}else if($jenis_ban == 'RUBBER TIRE RING 13 SUB GROUP (VULKANISIR / GRAN PRINX / GP)'){
 			$ban = '13V';
 		}else{
 			$ban = '13NV';
