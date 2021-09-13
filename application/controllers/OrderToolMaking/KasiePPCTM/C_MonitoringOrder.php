@@ -325,7 +325,6 @@ class C_MonitoringOrder extends CI_Controller
 			$fix['status_order'] = $val['status_order'];
 			$fix['pengorder'] = $val['pengorder'];
 			$fix['reject_by'] = $val['reject_by'];
-			$fix['alasan_reject'] = $val['alasan_reject'];
 			$fix['estimasi_finish'] = $val['estimasi_finish'] == '' || $val['estimasi_finish'] == '0001-01-01 BC' ? '' : date('d/m/Y', strtotime($val['estimasi_finish']));
 		
 			if ($ket == 'Baru') {
@@ -344,7 +343,7 @@ class C_MonitoringOrder extends CI_Controller
 				$fix['material'] 	= $this->carirevisi($val['no_order'], $val['material_blank'], 'Material Blank (Khusus DIES)');
 				$fix['jml_alat']	= $this->carirevisi($val['no_order'], $val['jumlah_alat'], 'Jumlah Alat');
 				$fix['distribusi']	= $this->carirevisi($val['no_order'], $val['distribusi'], 'Distribusi');
-				$fix['alasan_asset'] = $this->carirevisi($val['no_order'], $val['alasan_asset'], 'Alasan Asset');
+				$fix['alasan_asset'] = $val['alasan_asset'];
 			}else {
 				$fix['alasan'] 		= $this->carirevisi($val['no_order'], $val['alasan_modifikasi'], 'Alasan Modifikasi');
 				$fix['no_alat'] 	= $this->carirevisi($val['no_order'], $val['no_alat_bantu'], 'No Alat Bantu');

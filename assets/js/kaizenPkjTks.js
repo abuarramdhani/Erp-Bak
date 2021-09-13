@@ -120,7 +120,6 @@ $(document).ready(function () {
         success: function (result) {
           $toggleIcon.attr("src", toggleIcon.close.url);
           $toggleIcon.attr("data-original-title", toggleIcon.close.title);
-
           row.child(format(result.data)).show();
           tr.addClass("shown");
         },
@@ -129,6 +128,22 @@ $(document).ready(function () {
   });
 
   $("#tableRekapKaizen tbody").on("click", "button.btnEditKaizen", function () {
+    const validationData = {
+      currentUser:$('#tableRekapKaizen').data('username'),
+      currentSectionCode:$('#tableRekapKaizen').data('sectioncode'),
+      createdBy: $(this).data('createdby'),
+      sectionCode: $(this).data('sectioncode'),
+      section: $(this).data('section')
+    }
+    const isValid = adminValidation(validationData)
+    if (!isValid.valid) {
+      Swal.fire({
+        title: 'Tindakan Dilarang',
+        text: `Data ini hanya dapat diubah oleh admin user ${isValid.createdBy} atau pekerja seksi ${isValid.section}`,
+        type: 'warning'
+      })
+      return
+    }
     $(this)
       .parent()
       .parent()
@@ -220,7 +235,7 @@ $(document).ready(function () {
       $.ajax({
         type: "POST",
         url:
-          baseurl + "SystemIntegration/KaizenPekerjaTks/rekap/updateKaizenKu",
+        baseurl + "SystemIntegration/KaizenPekerjaTks/rekap/updateKaizenKu",
         processData: false,
         contentType: false,
         dataType: "json",
@@ -244,8 +259,22 @@ $(document).ready(function () {
     function () {
       let id = $(this).attr("data-id");
       let kaizen_file = $(this).attr("data-file");
-      console.log(id);
-      console.log(kaizen_file);
+      const validationData = {
+        currentUser:$('#tableRekapKaizen').data('username'),
+        currentSectionCode:$('#tableRekapKaizen').data('sectioncode'),
+        createdBy: $(this).data('createdby'),
+        sectionCode: $(this).data('sectioncode'),
+        section: $(this).data('section')
+      }
+      const isValid = adminValidation(validationData)
+      if (!isValid.valid) {
+        Swal.fire({
+          title: 'Tindakan Dilarang',
+          text: `Data ini hanya dapat dihapus oleh admin user ${isValid.createdBy} atau pekerja seksi ${isValid.section}`,
+          type: 'warning'
+        })
+        return
+      }
 
       Swal.fire({
         title: "Anda Yakin?",
@@ -285,6 +314,13 @@ $(document).ready(function () {
       });
     }
   );
+  function adminValidation({ currentUser, currentSectionCode, createdBy, sectionCode, section }) {
+    return {
+      section,
+      createdBy,
+      valid:(currentUser == createdBy) || (currentSectionCode.toString().substr(0,8) == sectionCode.toString().substr(0,8))
+    }
+  }
 });
 
 function format(d) {
@@ -342,11 +378,11 @@ function format(d) {
       <button class="btn btn-sm btn-success btnSimpanKaizen hidden" data-file="${
         data.kaizen_file
       }" data-id="${data.kaizen_id}" style="margin-right: 8px;">Simpan</button>
-      <button class="btn btn-sm btn-warning btnEditKaizen" style="margin-right: 8px;">Edit</button>
+      <button data-section="${data.section}" data-sectioncode="${data.section_code}" data-createdby="${data.created_by}" class="btn btn-sm btn-warning btnEditKaizen" style="margin-right: 8px;">Edit</button>
       <button class="btn btn-sm btn-danger btnDeleteKaizen" data-id="${
         data.kaizen_id
-      }" data-file="${data.kaizen_file}">Hapus</button>
-      <button class="btn btn-sm btn-danger btnBatalKaizen hidden">Batal</button>
+      }" data-file="${data.kaizen_file}" data-section="${data.section}" data-sectioncode="${data.section_code}" data-createdby="${data.created_by}">Hapus</button>
+      <button data-section="${data.section}" data-sectioncode="${data.section_code}" data-createdby="${data.created_by}" class="btn btn-sm btn-danger btnBatalKaizen hidden">Batal</button>
       </td>
       </tr>
       `;
