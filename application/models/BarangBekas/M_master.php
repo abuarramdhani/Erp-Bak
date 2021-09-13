@@ -285,7 +285,7 @@ AND moqd.ORGANIZATION_ID = msib.ORGANIZATION_ID")->result_array();
 
     public function ambilItem($id)
     {
-      return $this->oracle->query("SELECT pbb.berat_timbang, pbb.no_urut_timbang, msib.segment1, msib.description
+      return $this->oracle->query("SELECT pbb.berat_timbang, pbb.no_urut_timbang, pbb.HISTORY_TIMBANG_MB, msib.segment1, msib.description
         FROM KHS_PENGIRIMAN_BARANG_BEKAS pbb, mtl_system_items_b msib
         WHERE ID_PBB = $id
         AND msib.INVENTORY_ITEM_ID = pbb.INVENTORY_ITEM_ID
