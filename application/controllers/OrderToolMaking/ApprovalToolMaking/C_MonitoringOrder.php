@@ -386,14 +386,6 @@ class C_MonitoringOrder extends CI_Controller
 				if ($isi2 != '') {
 					$this->M_monitoringorder->insertrevisi($no_order, $person, $nama[$i], $isi2, date('Y-m-d H:i:s'),$this->session->user);
 				}
-			}elseif ($nama[$i] == 'Assign Desainer') { // revisi khusus assign desainer
-				if ($ket == 'Baru') {
-					$this->M_monitoringorder->updatefilebaru("assign_desainer = '".$isi[$i]."'",$no_order);
-				}elseif ($ket == 'Modifikasi') {
-					$this->M_monitoringorder->updatefilemodif("assign_desainer = '".$isi[$i]."'",$no_order);
-				}else{
-					$this->M_monitoringorder->updatefilerekon("assign_desainer = '".$isi[$i]."'",$no_order);
-				}
 			}elseif (!empty($nama[$i])) {
 				$this->M_monitoringorder->insertrevisi($no_order, $person, $nama[$i], $isi[$i], date('Y-m-d H:i:s'),$this->session->user);
 			}
@@ -578,7 +570,7 @@ class C_MonitoringOrder extends CI_Controller
 					$fix['material'] 	= $this->carirevisi($val['no_order'], $val['material_blank'], 'Material Blank (Khusus DIES)');
 					$fix['jml_alat']	= $this->carirevisi($val['no_order'], $val['jumlah_alat'], 'Jumlah Alat');
 					$fix['distribusi'] 	= $this->carirevisi($val['no_order'], $val['distribusi'], 'Distribusi');
-					$fix['alasan_asset'] = $this->carirevisi($val['no_order'], $val['alasan_asset'], 'Alasan Asset');
+					$fix['alasan_asset'] = $val['alasan_asset'];
 				}else { // tabel modifikasi dan rekondisi
 					$fix['alasan'] 		= $this->carirevisi($val['no_order'], $val['alasan_modifikasi'], 'Alasan Modifikasi');
 					$fix['no_alat'] 	= $this->carirevisi($val['no_order'], $val['no_alat_bantu'], 'No Alat Bantu');
@@ -635,20 +627,6 @@ class C_MonitoringOrder extends CI_Controller
 		}
 		$select = '<select name="isi_rev[]" class="form-control actionorder" style="width:100%;" autocomplete="off">
 					<option>Pilih mesin</option>
-					'.$option.'
-					</select>';
-		echo $select;
-	}
-	
-	function selectJenis(){
-		$data = array('DIES', 'MOULD/POLA', 'IJSM', 'INSPECTION JIG', 'TEMPLATE', 'DRILL JIG', 'FIXTURE', 'MASTER', 'GAUGE', 'ALAT LAIN');
-		
-		$option = '';
-		foreach ($data as $key => $val) {
-			$option .= '<option style="font-size:15px" value="'.$val.'">'.$val.'</option>';
-		}
-		$select = '<select name="isi_rev[]" class="form-control action_jenis" style="width:100%;" autocomplete="off">
-					<option>Pilih jenis</option>
 					'.$option.'
 					</select>';
 		echo $select;
