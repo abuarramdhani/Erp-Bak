@@ -13,6 +13,9 @@
                     <th>Tanggal & Jam Transfer</th>
                     <th>Tanggal & Jam Inspect</th>
                     <th>Tanggal & Jam Deliver</th>
+                    <th>Subinventory Tujuan</th>
+                    <th>Locator Tujuan</th>
+                    <th>Akun yang Mereceipt</th>
                 </tr>
             </thead>
             <tbody>
@@ -34,6 +37,9 @@
                     <td><input type="hidden" name="tg_transfer[]" id="tg_transfer" value="<?= $v['TGL_TRANSFER']?>"><?= $v['TGL_TRANSFER'] ?></td>
                     <td><input type="hidden" name="tgl_inspect[]" id="tgl_inspect" value="<?= $v['TGL_INSPECT']?>"><?= $v['TGL_INSPECT'] ?></td>
                     <td><input type="hidden" name="tgl_deliver[]" id="tgl_deliver" value="<?= $v['TGL_DELIVER']?>"><?= $v['TGL_DELIVER'] ?></td>
+                    <td><input type="hidden" name="to_subinv[]" id="to_subinv" value="<?= $v['TO_SUBINVENTORY']?>"><?= $v['TO_SUBINVENTORY'] ?></td>
+                    <td><input type="hidden" name="to_locator[]" id="to_locator" value="<?= $v['TO_LOCATOR']?>"><?= $v['TO_LOCATOR'] ?></td>
+                    <td><input type="hidden" name="akun_receipt[]" id="akun_receipt" value="<?= $v['AKUN_RECEIPT']?>"><?= $v['AKUN_RECEIPT'] ?></td>
                 </tr>
                 <?php $no++; } ?>
         </table>

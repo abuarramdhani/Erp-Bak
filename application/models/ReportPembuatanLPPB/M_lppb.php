@@ -28,8 +28,9 @@ class M_lppb extends CI_Model{
         }
 
         $sql = "SELECT   mp.organization_code, rsh.receipt_num no_lppb, rsl.shipment_line_id,
-        msib.segment1 kode_item, msib.description item,
-        TO_CHAR (rsh.creation_date, 'DD/MM/YYYY HH24:MI:SS') tgl_shipment,
+        msib.segment1 kode_item, rsl.item_description item, --msib.description item,
+        --TO_CHAR (rsh.creation_date, 'DD/MM/YYYY HH24:MI:SS') tgl_shipment,
+        TO_CHAR (rsh.shipped_date, 'DD/MM/YYYY HH24:MI:SS') tgl_shipment,
         (SELECT MIN (TO_CHAR (transaction_date, 'DD/MM/YYYY HH24:MI:SS'))
            FROM rcv_transactions
           WHERE transaction_type = 'RECEIVE'
@@ -45,15 +46,21 @@ class M_lppb extends CI_Model{
         (SELECT MIN (TO_CHAR (transaction_date, 'DD/MM/YYYY HH24:MI:SS'))
            FROM rcv_transactions
           WHERE transaction_type = 'DELIVER'
-            AND shipment_line_id = rsl.shipment_line_id) tgl_deliver
+            AND shipment_line_id = rsl.shipment_line_id) tgl_deliver,
+        rsl.to_subinventory, mil.segment1 to_locator, 
+        fu.user_name akun_receipt
    FROM mtl_parameters mp,
         rcv_shipment_headers rsh,
         rcv_shipment_lines rsl,
-        mtl_system_items_b msib
+        mtl_system_items_b msib,
+        mtl_item_locations mil,
+        fnd_user fu
   WHERE rsh.ship_to_org_id = mp.organization_id
     AND rsh.shipment_header_id = rsl.shipment_header_id
     AND rsl.item_id = msib.inventory_item_id
     AND mp.organization_id = msib.organization_id
+    AND rsl.locator_id = mil.inventory_location_id(+)
+    AND rsh.created_by = fu.user_id
     AND mp.organization_id IN ($org_id)
     AND rsh.created_by IN ($created_by)
     AND TRUNC (rsh.creation_date) BETWEEN TO_DATE('$tgl_dari') AND TO_DATE('$tgl_sampai')";
