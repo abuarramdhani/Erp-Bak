@@ -17,7 +17,7 @@
             <td><input id="no_induk" name="no_induk_<?= $ket?>[]" class="form-control no_induk_<?= $ket?>" style="width:150px" value="<?= $i['NO_INDUK']?>"></td>
             <td><input id="nama" name="nama_<?= $ket?>[]" class="form-control nama_<?= $ket?>" style="width:200px" readonly value="<?= $i['NAMA']?>"></td>
             <td>
-                <button type="button" onclick="add_new_line('<?= $ket?>', '<?= $ket2?>', '<?= $warna?>')" class="btn btn-<?= $warna?>" id="add_new_line_<?= $ket?>"> 
+                <button type="button" onclick="add_new_line('<?= $ket?>', '<?= $ket2?>', '<?= $warna?>')" class="btn btn-<?= $warna?>" id="add_new_line_<?= $ket?>" disabled> 
                 <i class="fa fa-plus"></i></button>
             </td>
         </tr>
