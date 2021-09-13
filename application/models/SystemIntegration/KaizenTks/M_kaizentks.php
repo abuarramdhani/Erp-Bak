@@ -100,7 +100,10 @@ class M_kaizentks extends CI_Model
   function saveKaizen($user)
   {
     $post = $this->input->post();
-
+    $this->erp->select_max('kaizen_id');
+    $maxId = array_column($this->erp->get('si.si_kaizen_tks')->result_array(), 'kaizen_id');
+    $this->kaizen_id = $maxId[0] + 1;
+    $this->created_at = date('Y-m-d H:i:s');
     $this->no_ind = $post["slcNoind"];
     $this->name = $post["employeeName"];
     $this->kaizen_title = $post["kaizenTitle"];
@@ -110,7 +113,6 @@ class M_kaizentks extends CI_Model
     $this->section = $post["employeeSection"];
     $this->section_code = $post["sectionCode"];
     $this->unit = $post["employeeUnit"];
-
     if ($this->kaizen_file == "gagal") {
       return "gagal";
     } else {
@@ -192,8 +194,8 @@ class M_kaizentks extends CI_Model
     $config['file_name']  = $user . "_" . time();
     $config['overwrite'] = true;
     $config['max_size'] = 4096; // 4 Mb
-
-    if ($this->upload->do_upload('file')) {
+    $this->load->library('upload', $config);
+    if ($this->upload->do_upload('user_file')) {
       return $this->upload->data("file_name");
     } else {
       return "gagal";
