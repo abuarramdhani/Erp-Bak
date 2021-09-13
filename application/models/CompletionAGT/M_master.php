@@ -74,7 +74,7 @@ class M_master extends CI_Model
 
     public function runningandon($value='')
     {
-      return $this->oracle->query("SELECT d.*, TO_CHAR(d.CREATION_DATE, 'YYYY-MM-DD HH:MI:SS') date_time FROM KHS_ANDON_ITEM_DEV d WHERE STATUS_JOB IN ('POS_1', 'POS_2', 'POS_3', 'POS_4') ORDER BY CREATION_DATE ASC")->result_array();
+      return $this->oracle->query("SELECT d.*, TO_CHAR(d.CREATION_DATE, 'YYYY-MM-DD HH:MI:SS') date_time FROM KHS_ANDON_ITEM_DEV d WHERE STATUS_JOB IN ('POS_0', 'POS_1', 'POS_2', 'POS_3', 'POS_4') ORDER BY CREATION_DATE ASC")->result_array();
     }
 
     private function ambilserialdepanbelakang($item_id, $serial)
