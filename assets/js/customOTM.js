@@ -596,12 +596,20 @@ function cancelorder(no, ket) {
     var siapa = $('#siapa_'+ket+no).val();
     var status_order = $('#status_order_'+ket+no).val();
     console.log(no_order, pengorder, seksi_order, assign, jenis);
-    Swal.fire({
-        title: 'Apakah Anda Yakin ?',
-        type: 'question',
-        showCancelButton: true,
-    }).then(result => {
-        if (result.value) {
+	Swal.fire({
+		title: 'Berikan Alasan Cancel Order',
+		// html : "",
+		// type: 'success',
+		input: 'textarea',
+		inputAttributes: {
+			autocapitalize: 'off'
+		},
+		showCancelButton: true,
+		confirmButtonText: 'Submit',
+		showLoaderOnConfirm: true,
+	}).then(result => {
+		if (result.value) {
+			var val 		= result.value;
         $.ajax({
             url : baseurl + "OrderToolMaking/MonitoringOrder/cancelorder",
             data : {no_order : no_order,
@@ -612,7 +620,8 @@ function cancelorder(no, ket) {
                     ket : ket,
                     status : status,
                     siapa : siapa,
-                    status_order : status_order},
+                    status_order : status_order,
+                    alasan : val},
             type : 'post',
             success : function (result) {
                 Swal.fire({
@@ -646,7 +655,7 @@ function tolakorder(no_order, ket) {
 		inputAttributes: {
 			autocapitalize: 'off'
 		},
-		showCancelButton: false,
+		showCancelButton: true,
 		confirmButtonText: 'Submit',
 		showLoaderOnConfirm: true,
 	}).then(result => {
@@ -922,6 +931,36 @@ function editorder(poin, no) {
                     $('#edit_'+no).append('<div class="hasil_edit_'+no+'"><div class="col-md-3"><input type="hidden" name="revisi[]" value="'+poin+'"></div><div class="col-md-8">'+result+'</div>')
                 }
             });
+        }else if (poin == 'Jenis') {
+            $('#btn_det_jenis').attr('disabled', true);
+            $.ajax({
+                url: baseurl+("ApprovalToolMaking/MonitoringOrder/selectJenis"),
+                type: "POST",
+                datatype: 'html',
+                success :function(result) {
+                    $('#edit_'+no).append('<div class="hasil_edit_'+no+'"><div class="col-md-3"><input type="hidden" name="revisi[]" value="'+poin+'"></div><div class="col-md-8">'+result+'</div>')
+                }
+            });
+            $(document).on('change', '.action_jenis',  function() {
+                var jen = $(this).val();
+                if (jen == 'FIXTURE' || jen == 'MASTER' || jen == 'GAUGE' || jen == 'ALAT LAIN') {
+                    $('#edit_'+no).append('<div class="hasil_edit_'+no+' det_jen"><div class="col-md-3"></div><div class="col-md-8"><input name="detail_jenis" class="form-control" value=""></div>')
+                }else{
+                    $('.det_jen').remove();
+                }
+            })
+        }else if(poin = 'Detail Jenis'){
+            $('#btn_edit_jenis').attr('disabled', true);
+            $('#edit_'+no).append('<div class="hasil_edit_'+no+'"><div class="col-md-3"><input type="hidden" name="revisi[]" value="'+poin+'"></div><div class="col-md-8"><input class="form-control" name="isi_rev[]" placeholder="masukkan hasil revisi" autocomplete="off" required></div>');
+        }else if(poin == 'Assign Desainer'){
+            $('#edit_'+no).append(`<div class="hasil_edit_`+no+`"><div class="col-md-3"><input type="hidden" name="revisi[]" value="`+poin+`"></div>
+                                    <div class="col-md-8"><select class="form-control" name="isi_rev[]" data-placeholder="pilih revisi assign desainer" autocomplete="off" required>
+                                    <option></option>
+                                    <option value="Desainer A">Desainer A</option>
+                                    <option value="Desainer B">Desainer B</option>
+                                    <option value="Desainer C">Desainer C</option>
+                                    </select>
+                                    </div>`);
         }else{
             $('#edit_'+no).append('<div class="hasil_edit_'+no+'"><div class="col-md-3"><input type="hidden" name="revisi[]" value="'+poin+'"></div><div class="col-md-8"><input class="form-control" name="isi_rev[]" placeholder="masukkan hasil revisi" autocomplete="off" required></div>');
         }
@@ -931,6 +970,11 @@ function editorder(poin, no) {
         var kurang_tinggi = h - 60;
         $('#tinggi').val(kurang_tinggi);
         document.getElementById('panelbiru').style.height = kurang_tinggi+'px';
+        if (poin == 'Jenis') {
+            $('#btn_det_jenis').attr('disabled', false);
+        }else if(poin == 'Detail Jenis'){
+            $('#btn_edit_jenis').attr('disabled', false);
+        }
     }
 }
 
