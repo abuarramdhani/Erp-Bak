@@ -54,7 +54,7 @@ class M_absenatasan extends CI_Model
 				AND approval.absen_id = absen.absen_id 
 				and absen.noind not in (select noind from at.at_laju) 
 				and absen.status =0 ";
-		return $this->db->query($sql)->num_rows();
+		return $this->db->query($sql)->row()->jumlah;
 	}
 
 
