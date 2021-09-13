@@ -89,7 +89,7 @@
                                     <?= $car->due_date ?>
                                   </td>
                                   <td style="width:20%">
-                                    <?= $car->notes ?>
+                                    <textarea placeholder="Catatan Dari Tim" style="resize: vertical; max-height: 75px; min-height: 25px; height: 35px;" class="form-control js-car-notes" readonly><?= $car->notes ?></textarea>
                                   </td>
                                   <td style="display: flex; align-items: center;">
                                     <span class="status <?= $car->approval_status ?>">
@@ -121,7 +121,7 @@
                                       <?= $car_revisi->due_date ?>
                                     </td>
                                     <td style="width:20%">
-                                      <?= $car_revisi->notes ?>
+                                      <textarea placeholder="Catatan Dari Tim" style="resize: vertical; max-height: 75px; min-height: 25px; height: 35px;" class="form-control js-car-notes" readonly><?= $car_revisi->notes ?></textarea>
                                     </td>
                                     <td style="display: flex; align-items: center;">
                                       <span class="status <?= $car_revisi->approval_status ?>">

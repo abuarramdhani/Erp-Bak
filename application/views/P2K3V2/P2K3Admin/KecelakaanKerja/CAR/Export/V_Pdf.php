@@ -239,7 +239,7 @@
               <?php $caIndex = 1 ?>
               <?php foreach ($cars as $i => $car) : ?>
                 <tr>
-                  <td class="text-center v-top" rowspan="<?= count($car->revisi) + 1 ?>"><?= $i + 1 ?></td>
+                  <td class="text-center" rowspan="<?= count($car->revisi) + 1 ?>"><?= $i + 1 ?></td>
                   <td><?= $car->factor ?></td>
                   <td><?= $car->root_cause ?></td>
                   <td><?= $caIndex . '.' . $car->corrective_action ?></td>
@@ -247,6 +247,7 @@
                   <td><?= HelperClass::dateMonthToIndoNoTime($car->due_date) ?></td>
                 </tr>
                 <?php foreach ($car->revisi as $car_revisi) : ?>
+                  <?php $caIndex++; ?>
                   <tr>
                     <!-- <td></td> -->
                     <td><?= $car_revisi->factor ?></td>
@@ -255,7 +256,6 @@
                     <td><?= $car_revisi->created_by . " - " . $car_revisi->nama_pic ?></td>
                     <td><?= HelperClass::dateMonthToIndoNoTime($car_revisi->due_date) ?></td>
                   </tr>
-                  <?php $caIndex++; ?>
                 <?php endforeach ?>
                 <?php $caIndex++; ?>
               <?php endforeach ?>
@@ -311,7 +311,7 @@
               </td>
             </tr>
             <tr>
-              <td>Date: <?= HelperClass::dateMonthToIndoNoTime(date('Y-m-d')) ?></td>
+              <td>Date:</td>
             </tr>
           </table>
         </div>
