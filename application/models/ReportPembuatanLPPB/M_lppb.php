@@ -47,19 +47,25 @@ class M_lppb extends CI_Model{
            FROM rcv_transactions
           WHERE transaction_type = 'DELIVER'
             AND shipment_line_id = rsl.shipment_line_id) tgl_deliver,
-        rsl.to_subinventory, mil.segment1 to_locator, 
-        fu.user_name akun_receipt
+        -- rsl.to_subinventory, mil.segment1 to_locator, 
+        hrl.location_code, fu.user_name akun_receipt
    FROM mtl_parameters mp,
         rcv_shipment_headers rsh,
         rcv_shipment_lines rsl,
         mtl_system_items_b msib,
         mtl_item_locations mil,
-        fnd_user fu
+        fnd_user fu,
+        rcv_transactions rt,
+        hr_locations hrl
   WHERE rsh.ship_to_org_id = mp.organization_id
     AND rsh.shipment_header_id = rsl.shipment_header_id
     AND rsl.item_id = msib.inventory_item_id
     AND mp.organization_id = msib.organization_id
     AND rsl.locator_id = mil.inventory_location_id(+)
+    AND rsh.shipment_header_id = rt.shipment_header_id
+    AND rsl.shipment_line_id = rt.shipment_line_id
+    AND rt.transaction_type = 'RECEIVE'
+    AND rt.location_id = hrl.location_id(+)
     AND rsh.created_by = fu.user_id
     AND mp.organization_id IN ($org_id)
     AND rsh.created_by IN ($created_by)

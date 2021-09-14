@@ -5946,3 +5946,14 @@ $route['ReportPembuatanLPPB']	= 'ReportPembuatanLPPB/C_Index';
 $route['ReportPembuatanLPPB/Report']				= 'ReportPembuatanLPPB/C_Report';
 $route['ReportPembuatanLPPB/Report/(:any)']			= 'ReportPembuatanLPPB/C_Report/$1';
 $route['ReportPembuatanLPPB/Report/(:any)/(:any)']	= 'ReportPembuatanLPPB/C_Report/$1/$2';
+
+//------------------------------------------- API Scanner Doc Satpam -------------------------------
+$route['ScannerDocSatpam/get/(:any)'] = 'ScannerDocSatpam/C_Master/$1';
+$route['ScannerDocSatpam/post/(:any)'] = 'ScannerDocSatpam/C_Master/$1';
+
+//------------------------------------------- Setting Kalibrasi -------------------------------
+$route['SettingKalibrasi'] = 'SettingKalibrasi/C_Master';
+$route['SettingKalibrasi/Setting'] = 'SettingKalibrasi/C_Master/Setting';
+$route['SettingKalibrasi/Setting/(:any)'] = 'SettingKalibrasi/C_Master/$1';
+$route['SettingKalibrasi/Inactive'] = 'SettingKalibrasi/C_Master/Inactive';
+$route['SettingKalibrasi/Inactive/(:any)'] = 'SettingKalibrasi/C_Master/$1';

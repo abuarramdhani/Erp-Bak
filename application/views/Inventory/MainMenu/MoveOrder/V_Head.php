@@ -4,7 +4,8 @@
 			<h4>CV. KARYA HIDUP SENTOSA</h4>
 		</td>
 		<td class="ver-center" rowspan="2">
-			<h3>PICK LIST GUDANG (MO) (ODM)</h3>
+		<?php $direct = $dataall['head'][0]['LOKASI'] == 'SM-TKS' ? 'Direct OPM' : 'ODM'; ?>
+			<h3>PICK LIST GUDANG (MO) (<?= $direct?>)</h3>
 		</td>
 	</tr>
 	<tr>
