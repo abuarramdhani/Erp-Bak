@@ -6,7 +6,7 @@
   </head>
   <body>
     <?php
-      $folder = ('./assets/img/docsatpam');
+      $folder = ('./assets/upload/docsatpam');
       if (!($open_folder = opendir($folder))) {
         die("eRorr... Tidak bisa membuka folder");
       }
@@ -21,7 +21,7 @@
 
       while (list($index, $file_name) = each($file_array)) {
         $nomor = $index + 1;
-        echo "$nomor. <a href='".base_url('/assets/img/docsatpam/'.$file_name)."'>$file_name</a>";
+        echo "$nomor. <a href='".base_url('/assets/upload/docsatpam/'.$file_name)."'>$file_name</a>";
         echo "<br>";
       }
 

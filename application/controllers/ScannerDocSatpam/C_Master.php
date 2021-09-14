@@ -59,15 +59,15 @@ class C_Master extends CI_Controller
           $_FILES['file']['error'] = $_FILES['foto_doc_satpam']['error'];
           $_FILES['file']['size'] = $_FILES['foto_doc_satpam']['size'];
 
-          $config['upload_path']      = './assets/assets/docsatpam/';
+          $config['upload_path']      = './assets/upload/docsatpam/';
           $config['file_name']        = $name_path.'.jpeg';
           $config['remove_spaces']    = true;
           $config['overwrite']        = true;
           $config['allowed_types']    = 'jpg|png|jpeg';
           $this->upload->initialize($config);
-          if (!is_dir('./assets/assets/docsatpam/')) {
-              mkdir('./assets/assets/docsatpam/', 0777, true);
-              chmod('./assets/assets/docsatpam/', 0777);
+          if (!is_dir('./assets/upload/docsatpam/')) {
+              mkdir('./assets/upload/docsatpam/', 0777, true);
+              chmod('./assets/upload/docsatpam/', 0777);
           }
           if (! $this->upload->do_upload('file')) {
               $error = array('error' => $this->upload->display_errors());
