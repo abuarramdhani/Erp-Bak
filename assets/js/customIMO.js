@@ -459,3 +459,52 @@ function getAssy(th) {
 $(document).on("click", "#submit_go", function(){
 	$('#loadingsimulasi').html('<center><img style="width:100px; height:auto" src="'+baseurl+'assets/img/gif/loading12.gif"></center>' );
  });
+
+
+ //------------------------------ MOVE ORDER OPM ---------------------------------------------------
+
+ 
+function getRequirementOPM(th){
+	var dept = $('select[name="slcDeptIMO"]').val();
+	var date = $('input[name="txtTanggalIMO"]').val();
+	var date2 = $('input[name="txtTanggalIMOAkhir"]').val();
+	var shift = $('select[name="slcShiftIMO"]').val();
+	
+	// if (nojob != "") {
+		// $('#NoJob').css("border-color","#d2d6de");
+	var request = $.ajax({
+		url: baseurl+'InventoryManagement/CreateMoveOrderOPM/search/',
+		data: {
+			dept : dept, date : date, date2 : date2, shift : shift, ket : th
+		},
+		type: "POST",
+		datatype: 'html', 
+	});
+		$('#ResultJob').html('');
+		$('#ResultJob').html('<center><img style="width:130px; height:auto" src="'+baseurl+'assets/img/gif/loading10.gif"></center>' );
+
+	request.done(function(result){
+			$('#ResultJob').html(result);
+		})
+
+	// }else{
+	// 	$('#NoJob').css("border-color","red");
+	// }
+}
+
+
+function getRequirementOPM2(th){
+	var nojob = $('input[name="txtNojobIMO[]"]').map(function(){return $(this).val();}).get();
+	
+	var request = $.ajax({
+		url: baseurl+'InventoryManagement/CreateMoveOrderOPM/search2/',
+		data: {nojob : nojob},
+		type: "POST",
+		datatype: 'html', 
+	});
+	$('#ResultJob').html('');
+	$('#ResultJob').html('<center><img style="width:130px; height:auto" src="'+baseurl+'assets/img/gif/loading10.gif"></center>' );
+	request.done(function(result){
+		$('#ResultJob').html(result);
+	})
+}

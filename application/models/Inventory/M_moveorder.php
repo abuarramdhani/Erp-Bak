@@ -333,7 +333,7 @@ class M_moveorder extends CI_Model
                                         and mtrl.INVENTORY_ITEM_ID = wro.INVENTORY_ITEM_ID
                                         and mtrh.ORGANIZATION_ID = wro.ORGANIZATION_ID
                                         --and substr(mtrh.REQUEST_NUMBER,1,2) = 'PL'
-                                        and mtrh.REQUEST_NUMBER like 'D%'
+                                        --and mtrh.REQUEST_NUMBER like 'D%'
                                         and mtrl.FROM_SUBINVENTORY_CODE = wro.ATTRIBUTE1
                                         and nvl(mtrl.FROM_LOCATOR_ID,0) = nvl(wro.ATTRIBUTE2,0)
                                 group by mtrl.INVENTORY_ITEM_ID
@@ -363,7 +363,7 @@ class M_moveorder extends CI_Model
                                         and mtrl.INVENTORY_ITEM_ID = wro.INVENTORY_ITEM_ID
                                         and mtrh.ORGANIZATION_ID = wro.ORGANIZATION_ID
                                         --and substr(mtrh.REQUEST_NUMBER,1,2) = 'PL'
-                                        and mtrh.REQUEST_NUMBER like 'D%'
+										--and mtrh.REQUEST_NUMBER like 'D%'
                                         and mtrl.FROM_SUBINVENTORY_CODE = wro.ATTRIBUTE1
                                         and nvl(mtrl.FROM_LOCATOR_ID,0) = nvl(wro.ATTRIBUTE2,0)
                                 group by mtrl.INVENTORY_ITEM_ID
@@ -391,7 +391,7 @@ class M_moveorder extends CI_Model
                                         and mtrl.INVENTORY_ITEM_ID = wro.INVENTORY_ITEM_ID
                                         and mtrh.ORGANIZATION_ID = wro.ORGANIZATION_ID
                                         --and substr(mtrh.REQUEST_NUMBER,1,2) = 'PL'
-                                        and mtrh.REQUEST_NUMBER like 'D%'
+                                        --and mtrh.REQUEST_NUMBER like 'D%'
                                         and mtrl.FROM_SUBINVENTORY_CODE = wro.ATTRIBUTE1
                                         and nvl(mtrl.FROM_LOCATOR_ID,0) = nvl(wro.ATTRIBUTE2,0)
                                 group by mtrl.INVENTORY_ITEM_ID
@@ -1069,7 +1069,7 @@ class M_moveorder extends CI_Model
 												and mtrl.INVENTORY_ITEM_ID = wro.INVENTORY_ITEM_ID
 												and mtrh.ORGANIZATION_ID = wro.ORGANIZATION_ID
 												--and substr(mtrh.REQUEST_NUMBER,1,2) = 'PL'
-												and mtrh.REQUEST_NUMBER like 'D%'
+												--and mtrh.REQUEST_NUMBER like 'D%'
 												and mtrl.FROM_SUBINVENTORY_CODE = wro.ATTRIBUTE1
 												and nvl(mtrl.FROM_LOCATOR_ID,0) = nvl(wro.ATTRIBUTE2,0)
 										group by mtrl.INVENTORY_ITEM_ID
