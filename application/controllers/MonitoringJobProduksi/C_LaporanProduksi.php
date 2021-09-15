@@ -406,7 +406,7 @@ class C_LaporanProduksi extends CI_Controller
 				$asal = 'COMPLETION';
 				$olah = $this->olah_data_sp($getdata, $asal, $hari, $bln[1].$bln[0], $kat['ID_CATEGORY']);
 			}else {
-				if ($kat['ID_CATEGORY'] == 1 || $id_kategori == 23) { // kategori PACKAGING BODY SET
+				if ($kat['ID_CATEGORY'] == 1 || $kat['ID_CATEGORY'] == 23) { // kategori PACKAGING BODY SET
 					$tujuan = "'INT-ASSY', 'INT-PAINT'";
 				}elseif ($kat['ID_CATEGORY'] == 2) { // kategori PACKAGING HANDLE BAR
 					$tujuan = "'INT-PAINT'";
@@ -845,7 +845,7 @@ class C_LaporanProduksi extends CI_Controller
 				$asal = 'COMPLETION';
 				$olah = $this->olah_data_sp($getdata, $asal, $hari, $bln[1].$bln[0], $kat['ID_CATEGORY']);
 			}else {
-				if ($kat['ID_CATEGORY'] == 1 || $id_kategori == 23) { // kategori PACKAGING BODY SET
+				if ($kat['ID_CATEGORY'] == 1 || $kat['ID_CATEGORY'] == 23) { // kategori PACKAGING BODY SET
 					$tujuan = "'INT-ASSY', 'INT-PAINT'";
 				}elseif ($kat['ID_CATEGORY'] == 2) { // kategori PACKAGING HANDLE BAR
 					$tujuan = "'INT-PAINT'";
