@@ -82,8 +82,7 @@ class C_Report extends CI_Controller {
         $tgl_transfer = $this->input->post('tgl_transfer[]');
         $tgl_inspect = $this->input->post('tgl_inspect[]');
         $tgl_deliver = $this->input->post('tgl_deliver[]');
-        $to_subinv = $this->input->post('to_subinv[]');
-        $to_locator = $this->input->post('to_locator[]');
+        $location_code = $this->input->post('location_code[]');
         $akun_receipt = $this->input->post('akun_receipt[]');
 
         $tanggal = $tanggal[0];
@@ -103,8 +102,7 @@ class C_Report extends CI_Controller {
                 'tgl_transfer' => $tgl_transfer[$i],
                 'tgl_inspect' => $tgl_inspect[$i],
                 'tgl_deliver' => $tgl_deliver[$i],
-                'to_subinv' => $to_subinv[$i],
-                'to_locator' => $to_locator[$i],
+                'location_code' => $location_code[$i],
                 'akun_receipt' => $akun_receipt[$i]
 			);
 			array_push($dataRPL, $array);
@@ -163,11 +161,11 @@ class C_Report extends CI_Controller {
         $excel->setActiveSheetIndex(0)->setCellValue('A2', "PERIODE : $tanggal"); 
         $excel->setActiveSheetIndex(0)->setCellValue('A3', "LOKASI : $lokasi"); 
         $excel->setActiveSheetIndex(0)->setCellValue('A4', "IO : $io"); 
-		$excel->getActiveSheet()->mergeCells('A1:M1'); 
-        $excel->getActiveSheet()->mergeCells('A2:M2');
-        $excel->getActiveSheet()->mergeCells('A3:M3'); 
-        $excel->getActiveSheet()->mergeCells('A4:M4');
-        $excel->getActiveSheet()->mergeCells('A5:M5');
+		$excel->getActiveSheet()->mergeCells('A1:L1'); 
+        $excel->getActiveSheet()->mergeCells('A2:L2');
+        $excel->getActiveSheet()->mergeCells('A3:L3'); 
+        $excel->getActiveSheet()->mergeCells('A4:L4');
+        $excel->getActiveSheet()->mergeCells('A5:L5');
 		$excel->getActiveSheet()->getStyle('A1')->applyFromArray($style_title);
         $excel->getActiveSheet()->getStyle('A2')->applyFromArray($style_title);
         $excel->getActiveSheet()->getStyle('A3')->applyFromArray($style_title);
@@ -184,9 +182,8 @@ class C_Report extends CI_Controller {
         $excel->setActiveSheetIndex(0)->setCellValue('H6', "TANGGAL DAN JAM TRANSFER");
         $excel->setActiveSheetIndex(0)->setCellValue('I6', "TANGGAL DAN JAM INSPECT");
         $excel->setActiveSheetIndex(0)->setCellValue('J6', "TANGGAL DAN JAM DELIVER");
-        $excel->setActiveSheetIndex(0)->setCellValue('K6', "SUBINVENTORY TUJUAN");
-        $excel->setActiveSheetIndex(0)->setCellValue('L6', "LOCATOR TUJUAN");
-        $excel->setActiveSheetIndex(0)->setCellValue('M6', "AKUN YANG MERECEIPT");
+        $excel->setActiveSheetIndex(0)->setCellValue('K6', "SUBINVENTORY/LOCATOR TUJUAN");
+        $excel->setActiveSheetIndex(0)->setCellValue('L6', "AKUN YANG MERECEIPT");
 
         // style header
 		$excel->getActiveSheet()->getStyle('A6')->applyFromArray($style_col);
@@ -201,7 +198,6 @@ class C_Report extends CI_Controller {
         $excel->getActiveSheet()->getStyle('J6')->applyFromArray($style_col);
         $excel->getActiveSheet()->getStyle('K6')->applyFromArray($style_col);
         $excel->getActiveSheet()->getStyle('L6')->applyFromArray($style_col);
-        $excel->getActiveSheet()->getStyle('M6')->applyFromArray($style_col);
 
         $no=1;
         $numrow = 7;
@@ -216,9 +212,8 @@ class C_Report extends CI_Controller {
             $excel->setActiveSheetIndex(0)->setCellValue('H'.$numrow, $dataRPL[$i]['tgl_transfer']);
             $excel->setActiveSheetIndex(0)->setCellValue('I'.$numrow, $dataRPL[$i]['tgl_inspect']);
             $excel->setActiveSheetIndex(0)->setCellValue('J'.$numrow, $dataRPL[$i]['tgl_deliver']);
-            $excel->setActiveSheetIndex(0)->setCellValue('K'.$numrow, $dataRPL[$i]['to_subinv']);
-            $excel->setActiveSheetIndex(0)->setCellValue('L'.$numrow, $dataRPL[$i]['to_locator']);
-            $excel->setActiveSheetIndex(0)->setCellValue('M'.$numrow, $dataRPL[$i]['akun_receipt']);
+            $excel->setActiveSheetIndex(0)->setCellValue('K'.$numrow, $dataRPL[$i]['location_code']);
+            $excel->setActiveSheetIndex(0)->setCellValue('L'.$numrow, $dataRPL[$i]['akun_receipt']);
             
             $excel->getActiveSheet()->getStyle('A'.$numrow)->applyFromArray($style_row);
             $excel->getActiveSheet()->getStyle('B'.$numrow)->applyFromArray($style_row);
@@ -232,7 +227,6 @@ class C_Report extends CI_Controller {
             $excel->getActiveSheet()->getStyle('J'.$numrow)->applyFromArray($style_row);
             $excel->getActiveSheet()->getStyle('K'.$numrow)->applyFromArray($style_row);
             $excel->getActiveSheet()->getStyle('L'.$numrow)->applyFromArray($style_row);
-            $excel->getActiveSheet()->getStyle('M'.$numrow)->applyFromArray($style_row);
 
             $no++;
             $numrow++; 
@@ -251,7 +245,6 @@ class C_Report extends CI_Controller {
         $excel->getActiveSheet()->getColumnDimension('J')->setWidth(20);
         $excel->getActiveSheet()->getColumnDimension('K')->setWidth(20);
         $excel->getActiveSheet()->getColumnDimension('L')->setWidth(20);
-        $excel->getActiveSheet()->getColumnDimension('M')->setWidth(20);
 
         // Set height semua kolom menjadi auto (mengikuti height isi dari kolommnya, jadi otomatis)
         $excel->getActiveSheet()->getDefaultRowDimension()->setRowHeight(-1);

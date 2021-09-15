@@ -106,10 +106,10 @@
                         </section>
 
                         <!-- Button Section -->
-                        <section class="btn-container flex" style="padding-top:3rem; width: 70%; margin:auto; justify-content:space-around;">
+                        <section id="btnContainerCuti" class="btn-container flex" style="padding-top:3rem; width: 70%; margin:auto; justify-content:space-around;">
                            <button class="btn btn-primary" data-action="0">Tambah</button>
                            <button class="btn btn-success" disabled>Edit</button>
-                           <button class="btn btn-warning"><a style="color:white" href="<?= base_url('MasterPresensi/ExportPdf') ?>">Cetak</a></button>
+                           <button class="btn btn-warning" style="padding: 0;"><a class="flex" style="color:white; width:100%; height:100%; justify-content:center" href="<?= base_url('MasterPresensi/SetupCuti/ExportPdf') ?>">Cetak</a></button>
                            <button class="btn btn-danger" data-action="0" disabled>Hapus</button>
                            <!-- <button id="scroll" class="btn btn-default">Scroll</button> -->
                         </section>
