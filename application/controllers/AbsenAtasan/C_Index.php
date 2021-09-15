@@ -944,4 +944,13 @@ class C_Index extends CI_Controller
 				);
 			$this->M_isolasimandiri->instoLog2($arl);
 		}
+
+		function getMAP()
+		{
+			$data['latitude'] = $this->input->get('latitude');
+			$data['longitude'] = $this->input->get('longitude');
+
+			$html = $this->load->view('AbsenAtasan/V_Map', $data, true);
+			echo $html;
+		}
 	}

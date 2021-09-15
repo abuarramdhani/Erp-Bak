@@ -105,7 +105,7 @@ class C_LaporanProduksi extends CI_Controller
 			$olah 	= $this->olah_data($getdata, $asal, $hari, $kategori, $bln[1].$bln[0]);
 		}
 		usort($olah[0], function($y, $z) {
-			return strcasecmp($y['DESKRIPSI'], $z['DESKRIPSI']);
+			return strcasecmp($y['ITEM'], $z['ITEM']);
 		});
 			
 		$data['data'] = $olah[0];
@@ -406,7 +406,7 @@ class C_LaporanProduksi extends CI_Controller
 				$asal = 'COMPLETION';
 				$olah = $this->olah_data_sp($getdata, $asal, $hari, $bln[1].$bln[0], $kat['ID_CATEGORY']);
 			}else {
-				if ($kat['ID_CATEGORY'] == 1) { // kategori PACKAGING BODY SET
+				if ($kat['ID_CATEGORY'] == 1 || $kat['ID_CATEGORY'] == 23) { // kategori PACKAGING BODY SET
 					$tujuan = "'INT-ASSY', 'INT-PAINT'";
 				}elseif ($kat['ID_CATEGORY'] == 2) { // kategori PACKAGING HANDLE BAR
 					$tujuan = "'INT-PAINT'";
@@ -420,7 +420,7 @@ class C_LaporanProduksi extends CI_Controller
 			
 			if (!empty($olah[0])) {
 				usort($olah[0], function($y, $z) {
-					return strcasecmp($y['DESKRIPSI'], $z['DESKRIPSI']);
+					return strcasecmp($y['ITEM'], $z['ITEM']);
 				});
 				$datanya[$kat['CATEGORY_NAME']] = $olah[0];
 				$total[$kat['CATEGORY_NAME']] = $olah[1];
@@ -845,7 +845,7 @@ class C_LaporanProduksi extends CI_Controller
 				$asal = 'COMPLETION';
 				$olah = $this->olah_data_sp($getdata, $asal, $hari, $bln[1].$bln[0], $kat['ID_CATEGORY']);
 			}else {
-				if ($kat['ID_CATEGORY'] == 1) { // kategori PACKAGING BODY SET
+				if ($kat['ID_CATEGORY'] == 1 || $kat['ID_CATEGORY'] == 23) { // kategori PACKAGING BODY SET
 					$tujuan = "'INT-ASSY', 'INT-PAINT'";
 				}elseif ($kat['ID_CATEGORY'] == 2) { // kategori PACKAGING HANDLE BAR
 					$tujuan = "'INT-PAINT'";
@@ -859,7 +859,7 @@ class C_LaporanProduksi extends CI_Controller
 			
 			if (!empty($olah[0])) {
 				usort($olah[0], function($y, $z) {
-					return strcasecmp($y['DESKRIPSI'], $z['DESKRIPSI']);
+					return strcasecmp($y['ITEM'], $z['ITEM']);
 				});
 				$datanya[$kat['CATEGORY_NAME']] = $olah[0];
 				$total[$kat['CATEGORY_NAME']] = $olah[1];
@@ -1204,7 +1204,7 @@ class C_LaporanProduksi extends CI_Controller
 			$asal = 'TRANSAKSI';
 			$olah = $this->olah_data_sp($getdata, $asal, $hari, $bln[1].$bln[0], $id_kategori);
 		}else {
-			if ($id_kategori == 1) { // kategori PACKAGING BODY SET
+			if ($id_kategori == 1 || $id_kategori == 23) { // kategori PACKAGING BODY SET
 				$tujuan = "'INT-ASSY', 'INT-PAINT'";
 			}elseif ($id_kategori == 2) { // kategori PACKAGING HANDLE BAR
 				$tujuan = "'INT-PAINT'";

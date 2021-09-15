@@ -372,13 +372,34 @@ function finishselectedKGP() {
     });
 }
 
-async function run99(){
-    var no_dokumen = $('.noall').map(function(){return $(this).val();}).get();
-    // console.log(no_dokumen.length);
-    for (let i = 0; i < no_dokumen.length; i++) {
-      const cek = await getDetailItem(no_dokumen[i]); 
+// async function run99(){
+//     var no_dokumen = $('.noall').map(function(){return $(this).val();}).get();
+//     // console.log(no_dokumen.length);
+//     for (let i = 0; i < no_dokumen.length; i++) {
+//       const cek = await getDetailItem(no_dokumen[i]); 
       
+//     }
+// }
+// hasil convert script di babeljs.io karena chrome versi lama tidak bisa run function async
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+function run99() {
+  return _run.apply(this, arguments);
+}
+
+function _run() {
+  _run = _asyncToGenerator(function* () {
+    var no_dokumen = $('.noall').map(function () {
+      return $(this).val();
+    }).get(); // console.log(no_dokumen.length);
+
+    for (let i = 0; i < no_dokumen.length; i++) {
+      const cek = yield getDetailItem(no_dokumen[i]);
     }
+  });
+  return _run.apply(this, arguments);
 }
 
 function getDetailItem(no) {
