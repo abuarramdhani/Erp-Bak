@@ -322,9 +322,9 @@ $db['dinas_luar'] = array(
 );
 $db['daerah'] = array(
 	'dsn'	=> '',
-	'hostname' => 'database.quick.com',
+	'hostname' => 'localhost',
 	'username' => 'root',
-	'password' => 'password',
+	'password' => '',
 	'database' => 'db_daerah',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
