@@ -78,11 +78,16 @@ class C_SetupCutoff extends CI_Controller
    public function insertCutoff()
    {
       $inputCutoff = $this->input->post('dataCutoff');
+      $max_id = $this->input->post('max_id');
       $inputCutoff['periode'] = HelperFunction::convertToNumber($inputCutoff['periode']);
       $checkCutoff = count($this->M_setupcutoff->checkCutoff($inputCutoff['id_cutoff']));
       if ($checkCutoff <= 0) {
          $this->M_setupcutoff->insertCutoff($inputCutoff);
          $inputCutoff['periodeTxt'] = HelperFunction::convertTodate($inputCutoff['periode']);
+
+         $ket = "PERIODE:" . $inputCutoff['periodeTxt'] . " TGL:" . $inputCutoff['tanggal_awal'] . " - " . $inputCutoff['tanggal_akhir'] . " OS:" . ($inputCutoff['os'] > 0 ? 'Yes' : 'No') . " ID:" . ((int)$max_id + 1);
+         $this->M_setupcutoff->insertLog(date('Y-m-d H:i:s'), 'SETUP -> CUTOFF', $ket, $this->session->user, 'SIMPAN -> EDIT DATA', 'MASTER PRESENSI ERP');
+
          return $this->output->set_content_type('application/json')
             ->set_output(json_encode([
                'code' => 200,
@@ -91,8 +96,11 @@ class C_SetupCutoff extends CI_Controller
                'action' => 0
             ]));
       }
+
       $this->M_setupcutoff->updateCutoff($inputCutoff);
       $inputCutoff['periodeTxt'] = HelperFunction::convertTodate($inputCutoff['periode']);
+      $ket = "PERIODE:" . $inputCutoff['periodeTxt'] . " TGL:" . $inputCutoff['tanggal_awal'] . " - " . $inputCutoff['tanggal_akhir'] . " OS:" . ($inputCutoff['os'] > 0 ? 'Yes' : 'No') . " ID:" . $inputCutoff['id_cutoff'];
+      $this->M_setupcutoff->insertLog(date('Y-m-d H:i:s'), 'SETUP -> CUTOFF', $ket, $this->session->user, 'SIMPAN -> EDIT DATA', 'MASTER PRESENSI ERP');
       return $this->output->set_content_type('application/json')
          ->set_output(json_encode([
             'code' => 200,
@@ -104,7 +112,13 @@ class C_SetupCutoff extends CI_Controller
    public function deleteCutoff()
    {
       $alteredId = $this->input->post('id_cutoff');
+      $inputCutoff = $this->input->post('dataCutoff');
+
       $this->M_setupcutoff->deleteCutoff($alteredId);
+
+      $ket = "PERIODE:" . $inputCutoff['periode'] . " TGL:" . $inputCutoff['tanggal_awal'] . " - " . $inputCutoff['tanggal_akhir'] . " OS:" . ($inputCutoff['os'] > 0 ? 'Yes' : 'No') . " ID:" . $inputCutoff['id_cutoff'];
+      $this->M_setupcutoff->insertLog(date('Y-m-d H:i:s'), 'SETUP -> CUTOFF', $ket, $this->session->user, 'SIMPAN -> EDIT DATA', 'MASTER PRESENSI ERP');
+
       return $this->output->set_content_type('application/json')
          ->set_output(json_encode([
             'code' => 200,

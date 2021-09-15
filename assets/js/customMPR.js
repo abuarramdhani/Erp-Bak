@@ -2586,6 +2586,7 @@ $(document).ready(function () {
             method: 'post',
             delay: 500,
             data: {
+                max_id :tableCutoff.children('tbody').find('tr:first-child').children('td:nth-child(2)').text(),
                 dataCutoff
             },
             beforeSend: function () {
@@ -2699,6 +2700,7 @@ $(document).ready(function () {
                 method: 'post',
                 delay: 500,
                 data: {
+                    dataCutoff,
                     id_cutoff: dataCutoff.id_cutoff
                 },
                 beforeSend: function () {

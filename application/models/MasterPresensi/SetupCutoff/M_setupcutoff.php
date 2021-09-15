@@ -48,4 +48,9 @@ class M_setupcutoff extends CI_Model
       $this->personalia->where('id_cutoff', $id);
       $this->personalia->delete('"Presensi".tcutoff');
    }
+   public function insertLog($wkt, $menu, $ket, $noind, $jenis, $program)
+   {
+      $query_sql = "INSERT INTO hrd_khs.tlog (wkt,menu,ket,noind,jenis,program,noind_baru) VALUES('$wkt','$menu','$ket','$noind','$jenis','$program',null)";
+      $this->personalia->query($query_sql);
+   }
 }
