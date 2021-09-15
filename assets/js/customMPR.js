@@ -2251,7 +2251,7 @@ $(document).on('ready', function () {
 
 // Start Setup Cuti
 $(document).ready(function () {
-    var [btnPrimary, btnSuccess, btnWarning, btnDanger] = $.makeArray($('.btn-container > .btn')) //Button
+    var [btnPrimary, btnSuccess, btnWarning, btnDanger] = $.makeArray($('#btnContainerCuti > .btn')) //Button
     var tableCuti = $('#table-cuti')
     var cuti = $('.cuti-item') //Item Cuti
     var input = $('.input-wrapper > input')
@@ -2363,7 +2363,7 @@ $(document).ready(function () {
 
                     var template = "<tr id=\"" + latestNum + "\"" + "class=\"cuti-item inserted " + selector + "\">" + "<td class=\"no\">" + (latestNum + 1) + "</td>" + "<td>" + kdCuti + "</td>" + "<td>" + namaCuti + "</td>" + "<td>" + maxHari + "</td>" + "</tr>"
                     $('#table-cuti > tbody').append(template)
-                    $('.' + selector).on('click', function () {
+                    $('.' + selector).on('dblclick', function () {
                         addActionCutiItem(this)
                     })
                     var offset = $('#' + latestNum).offset()
@@ -2379,6 +2379,12 @@ $(document).ready(function () {
                         })
                     })
                     resetToDefault()
+                })
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                Swal.fire({
+                    text: textStatus,
+                    type: 'warning'
                 })
             }
         })
@@ -2400,7 +2406,7 @@ $(document).ready(function () {
         Swal.fire({
             title: 'Anda yakin ingin menghapus data ini ?',
             html: "Data yang sudah dihapus tidak dapat dikembalikan",
-            type: 'warning',
+            type: 'question',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
@@ -2421,7 +2427,7 @@ $(document).ready(function () {
                 },
                 beforeSend: function () {
                     Swal.fire({
-                        text: 'Sedang Menginput Data',
+                        text: 'Sedang Mengahapus Data',
                         onBeforeOpen: function () {
                             Swal.showLoading();
                         }
@@ -2440,11 +2446,18 @@ $(document).ready(function () {
                                 opacity: 0
                             }, 'slow', function () {
                                 $(this).remove()
+                                resetToDefault()
                                 resetNumber()
                             })
                         })
                     })
-                }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    Swal.fire({
+                        text: textStatus,
+                        type:'warning'
+                    })
+                },
             })
         })
     })
@@ -2477,3 +2490,364 @@ $(document).ready(function () {
     }
 })
 // End Setup Cuti
+
+// Setup Cutoff
+$(document).ready(function () {
+    var [btnPrimary, btnSuccess, btnWarning, btnDanger] = $.makeArray($('#btnContainer > .btn'))
+    var tableCutoff = $('#tableCutoff')
+    var input = $('.input-item-Co input')
+    
+    tableCutoff.DataTable({
+        searching: false,
+        paging: false,
+        ordering: false,
+        scrollY: "200px",
+        fixedHeader: true
+    })
+
+    tableCutoff.find('tr').each(function () {
+        $(this).on('dblclick', function () {
+            addActionTable(this)
+        })
+    })
+
+    $(input[2]).iCheck('disable')
+    $(input[3]).iCheck('disable')
+    $(input[0]).datepicker({
+        format: 'MM yyyy',
+        minViewMode: 'months',
+    })
+
+    $(btnPrimary).on('click', function () {
+        if ($(this).attr('data-action') == 0) {
+            input.each(function () {
+                $(this).val('')
+                $(this).iCheck('enable')
+                $(this).iCheck('uncheck')
+                $(this).removeAttr('disabled')
+            })
+            $(this).text('Simpan')
+            $(this).attr('data-action', 1)
+            $(this).attr('data-tambah', 1)
+            $(btnSuccess).attr('disabled', true)
+            $(btnWarning).attr('disabled', true)
+            $(input[2]).val(1)
+            $(input[3]).val(0)
+            $('.id_cutoff').val('')
+            $(input[1]).focus(function () {
+                $(input[1]).daterangepicker({
+                    showDropdowns:true,
+                    locale: {
+                        format: "YYYY-MM-DD",
+                        separator: " - ",
+                        applyLabel: "OK",
+                        cancelLabel: "Batal",
+                        fromLabel: "Dari",
+                        toLabel: "Hingga",
+                        customRangeLabel: "Custom",
+                        weekLabel: "W",
+                        daysOfWeek: ["Mg", "Sn", "Sl", "Rb", "Km", "Jm", "Sa"],
+                        monthNames: [
+                          "Januari",
+                          "Februari",
+                          "Maret",
+                          "April",
+                          "Mei",
+                          "Juni",
+                          "Juli",
+                          "Agustus ",
+                          "September",
+                          "Oktober",
+                          "November",
+                          "Desember",
+                        ],
+                        firstDay: 1,
+                    },
+                })
+            })
+            toBatal()
+            return false
+        }
+
+        if (formValidation()) {
+            Swal.fire({
+                title: 'Terjadi Kesalahan',
+                text: 'Peringatan, Data Yang Dimasukan Tidak Boleh Kosong',
+                type: 'warning'
+            })
+            return
+        }
+
+        var dataCutoff = getData()
+        console.log(dataCutoff)
+        $.ajax({
+            url: baseurl + 'MasterPresensi/SetupCutoff/ajax/insertCutoff',
+            type: 'json',
+            method: 'post',
+            delay: 500,
+            data: {
+                dataCutoff
+            },
+            beforeSend: function () {
+                Swal.fire({
+                    text: 'Sedang Menginput Data',
+                    onBeforeOpen: function () {
+                        Swal.showLoading();
+                    }
+                })
+            },
+            success: function (result) {
+                if (result.action > 0) {
+                    Swal.fire({
+                        text: result.message,
+                        type:'success'
+                    }).then(function () {
+                        var alteredData = result.alteredData
+                        $('#' + alteredData.id_cutoff).removeAttr('style')
+                        $('#' + alteredData.id_cutoff).addClass('updated')
+                        var alteredElement = $('#' + alteredData.id_cutoff).children().not('.no')
+                        $(alteredElement[0]).text(alteredData.id_cutoff)
+                        $(alteredElement[1]).text(parseInt(alteredData.os) > 0 ? 'Ya' : 'Tidak')
+                        $(alteredElement[2]).text(alteredData.periodeTxt)
+                        $(alteredElement[2]).attr('id',alteredData.periode)
+                        $(alteredElement[2]).attr('data-periode',alteredData.periode)
+                        $(alteredElement[3]).text(alteredData.tanggal_awal)
+                        $(alteredElement[4]).text(alteredData.tanggal_akhir)
+
+                        $('.dataTables_scrollBody').animate({
+                            scrollTop: $('#' + alteredData.id_cutoff).offset().top - $('.dataTables_scrollBody').offset().top + $('.dataTables_scrollBody').scrollTop()
+                        }, 100, function () {                            
+                            $('#' + alteredData.id_cutoff).animate({
+                                opacity:1
+                            },1000)
+                        })
+                        resetToDefault()
+                    })
+                    return
+                }
+                var maxId = tableCutoff.children('tbody').find('tr:first-child').children('td:nth-child(2)').text()
+                var template = `
+                <tr class="cutoff-item inserted" data-id="${parseInt(maxId)+1}" id="${parseInt(maxId)+1}">
+                    <td class="no"></td>
+                    <td>${parseInt(maxId)+1}</td>
+                    <td>${result.alteredData.os > 0 ? 'Ya' : 'Tidak' }</td>
+                    <td class="periode" data-periode="${result.alteredData.periode}">${result.alteredData.periodeTxt}</td>
+                    <td>${result.alteredData.tanggal_awal}</td>
+                    <td>${result.alteredData.tanggal_akhir}</td>
+                </tr>
+                `
+                $(template).insertBefore('#' + maxId)
+                $('#' + (parseInt(maxId) + 1)).on('dblclick', function () {
+                    addActionTable(this)
+                })
+                Swal.fire({
+                    text: result.message,
+                    type: 'success'
+                }).then(function () {
+                    $('.dataTables_scrollBody').animate({
+                        scrollTop: 0
+                    }, 100, function () {
+                        $('.inserted').animate({
+                            opacity:1
+                        }, 1000)
+                        resetNumber()
+                    })
+                    resetToDefault()
+                })
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                Swal.fire({
+                    text: textStatus,
+                    type: 'warning'
+                })
+            }
+        })
+    })
+
+    $(btnSuccess).on('click', function () {
+        toBatal()
+        input.each(function () {
+            $(this).iCheck('enable')
+            $(this).removeAttr('disabled')
+        })
+        $(btnPrimary).text('Simpan')
+        $(btnPrimary).attr('data-action', 1)
+        $(btnWarning).attr('disabled', true)
+        $(this).attr('disabled', true)
+    })
+
+    $(btnDanger).on('click', function () {
+        if ($(this).attr('data-action') > 0) {
+            resetToDefault();
+            return false
+        }
+        Swal.fire({
+            title: 'Anda yakin ingin menghapus data ini ?',
+            html: "Data yang sudah dihapus tidak dapat dikembalikan",
+            type: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya',
+            cancelButtonText: 'Tidak'
+        }).then(function (result) {
+            if (result.value)
+            var dataCutoff = getData()
+            $.ajax({
+                url: baseurl + 'MasterPresensi/SetupCutoff/ajax/deleteCutoff',
+                type: 'json',
+                method: 'post',
+                delay: 500,
+                data: {
+                    id_cutoff: dataCutoff.id_cutoff
+                },
+                beforeSend: function () {
+                    Swal.fire({
+                        text: 'Sedang Menghapus Data',
+                        onBeforeOpen: function () {
+                            Swal.showLoading();
+                        }
+                    })
+                },
+                success: function (result) {
+                    resetNumber()
+                    Swal.fire({
+                        text: result.message,
+                        type:'success'
+                    }).then(function () {
+                        $('.dataTables_scrollBody').animate({
+                            scrollTop: $('#' + result.alteredData).offset().top - $('.dataTables_scrollBody').offset().top + $('.dataTables_scrollBody').scrollTop()
+                        }, 100, function () {
+                            $('#' + result.alteredData).animate({
+                                opacity: 0
+                            }, 'slow', function () {
+                                $(this).remove()
+                                resetToDefault()
+                                resetNumber()
+                            })
+                        })
+                    })
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    Swal.fire({
+                        text: textStatus,
+                        type: 'warning'
+                    })
+                }
+            })
+        })
+    })
+
+    function toBatal() {
+        $(btnDanger).removeAttr('disabled')
+        $(btnDanger).text('Batal')
+        $(btnDanger).attr('data-action', 1)
+    }
+
+    function addActionTable(item) {
+        var cutOff = $.makeArray($.makeArray($(item).children().not('.no'))).map(function (cutoff) { return $(cutoff).text().trim() })
+        var [id, os, periode, tanggalAwal, tanggalAkhir] = cutOff
+        var dataPeriode = $(item).children('.periode').attr('data-periode')
+        var year = dataPeriode.toString().substr(0,4)
+        var month = dataPeriode.toString().substr(4, 2)
+        
+        if (os == 'Ya') {
+            $(input[2]).iCheck('check')
+        }
+
+        if (os == 'Tidak') {
+            $(input[3]).iCheck('check')
+        }
+
+        input.each(function (index) {
+            $(this).attr('disabled', true)
+            $(this).iCheck('disable')
+        })
+
+        $('.id_cutoff').val(id)
+
+        $(input[0]).datepicker('setDate',new Date(year + '-' + month))
+        $(input[1]).daterangepicker({
+            startDate: new Date(tanggalAwal),
+            endDate: new Date(tanggalAkhir),
+            showDropdowns: true,
+            autoApply: true,
+            locale: {
+                format: "YYYY-MM-DD",
+                separator: " - ",
+                applyLabel: "OK",
+                cancelLabel: "Batal",
+                fromLabel: "Dari",
+                toLabel: "Hingga",
+                customRangeLabel: "Custom",
+                weekLabel: "W",
+                daysOfWeek: ["Mg", "Sn", "Sl", "Rb", "Km", "Jm", "Sa"],
+                monthNames: [
+                  "Januari",
+                  "Februari",
+                  "Maret",
+                  "April",
+                  "Mei",
+                  "Juni",
+                  "Juli",
+                  "Agustus ",
+                  "September",
+                  "Oktober",
+                  "November",
+                  "Desember",
+                ],
+                firstDay: 1,
+            },
+        })
+        
+        window.scrollTo(0, 0)
+        
+        $(btnPrimary).attr('data-action', 0)
+        $(btnPrimary).attr('data-tambah', 0)
+        $(btnPrimary).text('Tambah')
+        $(btnSuccess).removeAttr('disabled')
+        $(btnDanger).removeAttr('disabled')
+        $(btnDanger).text('Hapus')
+    }
+    function resetToDefault() {
+        input.each(function (index) {
+            $(this).val('')
+            $(this).iCheck('uncheck')
+            $(this).iCheck('disable')
+            $(this).attr('disabled', true)
+        })
+        $('.id_cutoff').val('')
+        $(input[2]).val(1)
+        $(input[3]).val(0)
+        $(btnPrimary).text('Tambah')
+        $(btnPrimary).attr('data-action', 0)
+        $(btnPrimary).removeAttr('data-tambah')
+        $(btnSuccess).attr('disabled', true)
+        $(btnWarning).removeAttr('disabled')
+        $(btnDanger).text('Hapus')
+        $(btnDanger).attr('disabled', true)
+        $(btnDanger).attr('data-action', 0)
+    }
+    function getData() {
+        var inputCutoff = {
+            id_cutoff:$('.id_cutoff').val() == "" ? null : $('.id_cutoff').val(),
+            periode: $('.input-item-Co #inputPeriode').val(),
+            os: $('.input-item-Co input:radio:checked').val().toString(),
+            tanggal_awal : $('.input-item-Co #inputTanggal').val().split(' - ')[0],
+            tanggal_akhir: $('.input-item-Co #inputTanggal').val().split(' - ')[1],
+            status:0
+        }
+        return inputCutoff
+    }
+
+    function formValidation() {
+        if($(input[0]).val() == "") return true
+        if($(input[0]).val() == "") return true
+        if ($('.input-item-Co input:checked').length < 1) return true;
+    }
+    function resetNumber() {
+        $(tableCutoff).children('tbody').find('tr').each(function (index) {
+            $($.makeArray($(this).children())[0]).text(index + 1)
+        })
+    }
+})
