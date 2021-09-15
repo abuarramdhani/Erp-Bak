@@ -34,6 +34,11 @@
       background: none;
    }
 
+   .disable {
+      pointer-events: none;
+      cursor: not-allowed;
+   }
+
    @keyframes updated {
       from {
          background: none;

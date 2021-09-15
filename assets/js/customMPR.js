@@ -2296,6 +2296,7 @@ $(document).ready(function () {
             $(this).attr('data-tambah', 1)
             $(btnSuccess).attr('disabled', true)
             $(btnWarning).attr('disabled', true)
+            $(btnWarning).children('a').addClass('disable')
             toBatal()
             return false
         }
@@ -2395,6 +2396,7 @@ $(document).ready(function () {
         $(btnPrimary).text('Simpan')
         $(btnPrimary).attr('data-action', 1)
         $(btnWarning).attr('disabled', true)
+        $(btnWarning).children('a').addClass('disable')
         $(input[2]).removeAttr('disabled')
         $(this).attr('disabled', true)
     })
@@ -2478,6 +2480,7 @@ $(document).ready(function () {
         $(btnPrimary).attr('data-tambah', 1)
         $(btnSuccess).attr('disabled', true)
         $(btnWarning).removeAttr('disabled')
+        $(btnWarning).children('a').removeClass('disable')
         $(btnDanger).text('Hapus')
         $(btnDanger).attr('disabled', true)
         $(btnDanger).attr('data-action', 0)
@@ -2531,6 +2534,7 @@ $(document).ready(function () {
             $(this).attr('data-tambah', 1)
             $(btnSuccess).attr('disabled', true)
             $(btnWarning).attr('disabled', true)
+            $(btnWarning).children('a').addClass('disable')
             $(input[2]).val(1)
             $(input[3]).val(0)
             $('.id_cutoff').val('')
@@ -2674,6 +2678,7 @@ $(document).ready(function () {
         $(btnPrimary).text('Simpan')
         $(btnPrimary).attr('data-action', 1)
         $(btnWarning).attr('disabled', true)
+        $(btnWarning).children('a').addClass('disable')
         $(this).attr('disabled', true)
     })
 
@@ -2826,6 +2831,7 @@ $(document).ready(function () {
         $(btnPrimary).removeAttr('data-tambah')
         $(btnSuccess).attr('disabled', true)
         $(btnWarning).removeAttr('disabled')
+        $(btnWarning).children('a').removeClass('disable')
         $(btnDanger).text('Hapus')
         $(btnDanger).attr('disabled', true)
         $(btnDanger).attr('data-action', 0)

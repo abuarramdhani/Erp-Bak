@@ -54,6 +54,11 @@
    .updated {
       opacity: 0;
    }
+
+   .disable {
+      pointer-events: none;
+      cursor: not-allowed;
+   }
 </style>
 
 <section class="content">
